@@ -1,0 +1,43 @@
+{
+  "generatedAt": "2026-09-29T05:21:25.943Z",
+  "moved": 0,
+  "held": [],
+  "tours": [
+    {
+      "tourId": "beetlejuice-tour-2022",
+      "fromIds": [
+        "beetlejuice-2019",
+        "beetlejuice-2022",
+        "beetlejuice-2025"
+      ],
+      "held": false,
+      "counts": {
+        "already-routed": 1,
+        "non-review": 2,
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "shucked-tour-2024",
+      "fromIds": [
+        "shucked-2023"
+      ],
+      "held": false,
+      "counts": {
+        "wrong-show": 1,
+        "duplicate-on-tour": 1
+      }
+    },
+    {
+      "tourId": "life-of-pi-tour-2024",
+      "fromIds": [
+        "life-of-pi-2023"
+      ],
+      "held": false,
+      "counts": {
+        "undated-after-close": 1,
+        "wrong-show": 1
+      }
+    }
+  ]
+}

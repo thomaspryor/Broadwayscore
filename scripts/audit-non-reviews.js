@@ -55,6 +55,7 @@ const AUDIT_DIR = path.join(__dirname, '../data/audit');
 const { NON_REVIEW_PATTERNS, REVIEW_INDICATORS, heuristicClassify } = require('./lib/non-review-patterns');
 const { GEMINI_FLASH } = require('./lib/models');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // ============================================================
 // LLM Classification (Layer 2 — Gemini Flash)
@@ -142,11 +143,7 @@ async function main() {
   if (SHOW_FILTER) console.log(`Show filter: ${SHOW_FILTER}`);
   console.log('');
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(d => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); }
-      catch { return false; }
-    })
+  const shows = listShowDirs(REVIEW_TEXTS_DIR)
     .filter(d => !SHOW_FILTER || d === SHOW_FILTER);
 
   const stats = {

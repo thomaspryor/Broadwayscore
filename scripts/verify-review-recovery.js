@@ -37,6 +37,9 @@
  *   0 = all checks pass
  *   1 = at least one check failed
  *   2 = show not found or bad arguments
+ *   3 = inconclusive: every check passed, but the local review-texts copy
+ *       differs from (or could not be compared to) origin/main. Local only —
+ *       skipped in CI and under --pre-merge.
  */
 
 const fs = require('fs');
@@ -49,6 +52,12 @@ const { parseOriginalScore } = require('./lib/score-parsers');
 // ── Parse args ──────────────────────────────────────────────────────────────
 
 const args = process.argv.slice(2);
+// --help/-h before any real work (the review-texts freshness check below runs git fetch).
+if (require('./lib/cli-help.js').hasHelpFlag(args)) {
+  console.log('Usage: node scripts/verify-review-recovery.js --show=SHOW_ID [--file=FILE] [--production] [--pre-merge] [--verbose]\n'
+    + 'Exit: 0 pass, 1 check failed, 2 bad args, 3 inconclusive (local review-texts differ from origin).');
+  process.exit(0);
+}
 const flags = {};
 args.forEach(a => {
   const m = a.match(/^--([a-z-]+)(?:=(.+))?$/);
@@ -103,6 +112,51 @@ console.log(`${'─'.repeat(60)}\n`);
 if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
   console.error(`Directory not found: ${REVIEW_TEXTS_DIR}`);
   process.exit(2);
+}
+
+// ── Check 0b: is THIS show's local copy current? ────────────────────────────
+// Every check below reads data/review-texts from disk. That clone is shared and
+// routinely behind origin (CI scoring/refresh jobs commit to origin, not here),
+// so a file scored on origin minutes ago still reads "has content but NO LLM
+// score" locally — a false "Recovery incomplete" that sent the 2026-09-25
+// coverage session re-dispatching scoring runs that had already succeeded
+// (kimberly-akimbo-off-west-end-2026). Fetch (refs only, never touches the
+// working tree) and diff just this show's directory against origin/main.
+// Compares the WORKING TREE (what the checks below actually read, including
+// uncommitted and untracked files) to origin/main, so local edits can't pass as
+// "current". Skipped in CI (fresh checkout per run; the poller's own unpushed
+// commits would read as drift every run) and under --pre-merge (HEAD is a
+// candidate branch by design, and a fetch there would write the shared clone's
+// refs from a worktree).
+let localCopyStale = null; // null = unknown/unchecked, true/false = checked
+const freshnessCheckApplies = !process.env.CI && !preMerge;
+if (freshnessCheckApplies) {
+  const rtRoot = path.join(ROOT, 'data', 'review-texts');
+  try {
+    const { execFileSync } = require('child_process');
+    const git = (args, timeout = 20000) => execFileSync('git', ['-C', rtRoot, ...args], { encoding: 'utf8', timeout, stdio: ['ignore', 'pipe', 'pipe'] });
+    // setup-local-data.sh strips review-texts' .git on fresh/cloud setups; git -C
+    // would then silently answer for the PARENT web repo (where this path is
+    // gitignored, so every diff is empty) and certify a false "current".
+    const top = fs.realpathSync(git(['rev-parse', '--show-toplevel']).trim());
+    if (top !== fs.realpathSync(rtRoot)) {
+      throw new Error('data/review-texts is not its own git clone');
+    }
+    git(['fetch', '--quiet', 'origin', 'main']);
+    const differing = git(['diff', '--name-only', 'origin/main', '--', showId]).trim().split('\n').filter(Boolean);
+    const untracked = git(['ls-files', '--others', '--exclude-standard', '--', showId]).trim().split('\n').filter(Boolean);
+    const all = [...differing, ...untracked.map((u) => `${u} (untracked)`)];
+    localCopyStale = all.length > 0;
+    if (localCopyStale) {
+      warn(`LOCAL COPY DIFFERS FROM ORIGIN for this show: ${all.length} file(s) — results below may be wrong. `
+        + `Check origin directly (git -C data/review-texts show origin/main:<path>) before acting on any result.`);
+      for (const c of all.slice(0, 10)) console.log(`      ${c}`);
+    } else {
+      pass('Local review-texts for this show match origin/main (working tree, incl. untracked)');
+    }
+  } catch (e) {
+    warn(`Could not confirm local review-texts match origin (${(e.message || '').split('\n')[0]}) — results below may be stale-clone artifacts`);
+  }
 }
 
 const allFiles = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => f.endsWith('.json'));
@@ -275,7 +329,28 @@ try {
 if (reviewsData) {
   const reviews = reviewsData.reviews || [];
   const showReviews = reviews.filter(r => r.showId === showId);
-  const reviewKeys = new Set(showReviews.map(r => `${r.outletId}||${(r.criticName || '').toLowerCase()}`));
+  // Match the way the rebuild merges, not by exact outlet+critic string: the
+  // rebuild resolves an "Unknown" byline from a same-outlet twin (a URL-less
+  // aggregator stub carrying the name) and folds the two into ONE entry, so
+  // british-theatre--unknown.json reaches reviews.json as critic "Vera Liber".
+  // Exact-string matching reported those as "scored but MISSING" (4 false
+  // failures on how-the-other-half-loves-west-end-2026, 2026-09-25).
+  const { foldDiacritics } = require('./lib/title-match');
+  const normCritic = (c) => foldDiacritics(String(c || '')).toLowerCase().replace(/[^a-z]/g, '');
+  const isUnknownCritic = (c) => !normCritic(c) || normCritic(c) === 'unknown';
+  const normUrl = (u) => String(u || '').toLowerCase().replace(/^https?:\/\/(www\.)?/, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+  const byOutlet = new Map();
+  for (const r of showReviews) {
+    if (!byOutlet.has(r.outletId)) byOutlet.set(r.outletId, []);
+    byOutlet.get(r.outletId).push(r);
+  }
+  const fileInReviews = (data) => (byOutlet.get(data.outletId) || []).some((r) =>
+    (data.url && r.url && normUrl(data.url) === normUrl(r.url))
+    || normCritic(r.criticName) === normCritic(data.criticName)
+    // File-side Unknown only: the rebuild drops an Unknown file when a named
+    // critic exists at the outlet. Never the reverse — an Unknown/null entry
+    // in reviews.json must not vouch for a different named review.
+    || isUnknownCritic(data.criticName));
 
   console.log(`  Reviews in reviews.json for ${showId}: ${showReviews.length}`);
 
@@ -294,8 +369,7 @@ if (reviewsData) {
     const hasParseableRating = data.originalScore
       && parseOriginalScore(data.originalScore, data.outletId) !== null;
     if (data.assignedScore == null && !hasParseableRating) continue;
-    const key = `${data.outletId}||${(data.criticName || '').toLowerCase()}`;
-    if (reviewKeys.has(key)) {
+    if (fileInReviews(data)) {
       inReviews++;
       info(`${file} — found in reviews.json`);
     } else {
@@ -368,6 +442,9 @@ console.log(`Files: ${allFiles.length} total, ${includable.length} includable, $
 
 if (totalFail > 0) {
   console.log(`\n${FAIL} ${BOLD}Recovery incomplete — ${totalFail} issue(s) to fix${RESET}`);
+  if (freshnessCheckApplies && localCopyStale !== false) {
+    console.log(`  ${WARN} ${BOLD}INCONCLUSIVE:${RESET} local review-texts ${localCopyStale ? 'differ from origin for this show' : 'could not be compared to origin'} — re-check against origin before re-dispatching anything.`);
+  }
 
   // Actionable next steps
   if (conflictCount > 0) {
@@ -395,6 +472,12 @@ if (totalFail > 0) {
   console.log('');
   process.exit(1);
 } else {
+  if (freshnessCheckApplies && localCopyStale !== false) {
+    // A clean pass over a copy that differs from origin (or couldn't be
+    // compared) proves nothing: origin may hold a newly unscored review.
+    console.log(`\n${WARN} ${BOLD}INCONCLUSIVE — all local checks passed, but the local copy ${localCopyStale ? 'differs from' : 'could not be compared to'} origin${RESET}\n`);
+    process.exit(3);
+  }
   console.log(`\n${PASS} ${BOLD}Recovery complete — all checks passed${RESET}\n`);
   process.exit(0);
 }

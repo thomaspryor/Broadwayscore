@@ -19,7 +19,7 @@
  */
 import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawn } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -35,7 +35,7 @@ const REPOS_HELPER = fileURLToPath(new URL('../lib/worktree-gc-repos.js', import
  *  wrong shape for it). Mirrors scripts/tests/gc-merged-worktrees-liveness.test.mjs. */
 const FIXTURE_ROOTS = [];
 after(() => {
-  for (const root of FIXTURE_ROOTS) fs.rmSync(root, { recursive: true, force: true });
+  for (const root of FIXTURE_ROOTS) fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 function git(cwd, ...args) {
@@ -156,6 +156,12 @@ function runGc(fixture, { dryRun }) {
     encoding: 'utf8',
     stdio: ['ignore', 'pipe', 'pipe'],
     env,
+    // Bound the call (code-review finding, BRO-2153): the script's own
+    // internal fetch/cherry/lsof timeouts sum to well under this, so a
+    // genuine hang throws here instead of stalling the test indefinitely —
+    // load-bearing for the liveness test below, whose spawned child process
+    // only reaches cleanup in a `finally` after this call returns or throws.
+    timeout: 45000,
   });
 
   // Belt and braces: the LOGGED fallback (node or the helper missing entirely),
@@ -292,4 +298,63 @@ test('the real run leaves the source-dirty worktree and its edit on disk', () =>
   assert.ok(fs.existsSync(kept), 'the refused worktree must survive');
   assert.match(fs.readFileSync(kept, 'utf8'), /export const b = 2;/, 'its uncommitted edit must survive');
   assert.ok(!fs.existsSync(path.join(fx.wtRoot, 'wt-clean')), 'the clean worktree is removed');
+});
+
+// Busy-wait: node:test has no built-in sleep primitive worth pulling in for a
+// delay this short. Same technique as
+// scripts/tests/gc-merged-worktrees-liveness.test.mjs's waitForPid().
+function wait(ms) {
+  const until = Date.now() + ms;
+  while (Date.now() < until) { /* spin */ }
+}
+
+/**
+ * BRO-2153 — end-to-end acceptance test for the liveness guard added under
+ * task #1709: gc-merged-worktrees.sh's flush() already calls
+ * scripts/lib/gc-worktree-liveness.js before every `git worktree remove` on a
+ * merged worktree (see that guard's comment block, ~line 540 of the script).
+ * scripts/tests/gc-merged-worktrees-liveness.test.mjs already proves the pure
+ * hasLiveProcessInDir() function works in isolation; this proves the SCRIPT's
+ * wiring of it — the call site, the exit-code contract, and the SKIP branch —
+ * actually behaves correctly end-to-end against a real merged, clean worktree
+ * with a real process rooted in it, using the SAME isolated fixture/seam
+ * machinery as the rest of this file (never a second copy of it).
+ *
+ * A dedicated worktree is added on top of buildFixture()'s base set (rather
+ * than folding it into the shared list) so the other tests' fixed removed=2 /
+ * skipped= assertions above are untouched by this test's extra worktree.
+ */
+test('a live process rooted in a merged worktree survives the real run, and is removed once the process exits', async () => {
+  const fx = buildFixture();
+  const liveDir = path.join(fx.wtRoot, 'wt-live');
+  git(fx.repo, 'worktree', 'add', '-q', '-b', 'worktree-wt-live', liveDir, 'main');
+
+  // A real, long-lived child process standing in for a dev server or
+  // background watcher left running in the worktree — same technique as
+  // scripts/tests/gc-merged-worktrees-liveness.test.mjs's liveProc.
+  const liveProc = spawn(process.execPath, ['-e', 'setInterval(() => {}, 1000)'], {
+    cwd: liveDir,
+    stdio: 'ignore',
+    detached: false,
+  });
+  // Give the child a moment to actually start and register its cwd with the
+  // kernel before the script's lsof-based check goes looking for it.
+  wait(300);
+
+  try {
+    const out = runGc(fx, { dryRun: false });
+    const decision = decisionFor(out, 'wt-live');
+    assert.match(decision, /^\[[^\]]+\] SKIP/, `must SKIP a worktree with a live process as cwd: ${decision}`);
+    assert.match(decision, /live process/, `SKIP reason must name the live process: ${decision}`);
+    assert.ok(fs.existsSync(liveDir), 'a worktree with a live process as cwd must survive the GC run');
+  } finally {
+    liveProc.kill('SIGKILL');
+    await new Promise((resolve) => liveProc.once('exit', resolve));
+  }
+  // Give the kernel a moment to release the fd table entry before re-checking.
+  wait(300);
+
+  const out2 = runGc(fx, { dryRun: false });
+  assert.match(decisionFor(out2, 'wt-live'), /^\[[^\]]+\] REMOVE\b/, 'once the process exits, the same merged/clean worktree must be removed on the next run');
+  assert.ok(!fs.existsSync(liveDir), 'the worktree directory must actually be gone');
 });

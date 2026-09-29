@@ -63,6 +63,17 @@ test('promote-ob-historical buildShowEntry: both venue sources being placeholder
   assert.equal(e.venue, null);
 });
 
+// BRO-3716: off-broadway is gated by validate-market-expansion.js's
+// required-fields check, which only exempts type when status==='announced'
+// — this builder always writes status='closed', so a null type here would
+// reproduce the exact CI-red incident the next time this script runs.
+test('promote-ob-historical buildShowEntry: type defaults to play (not null) so status=closed never fails the required-fields gate', () => {
+  const play = buildObHistoricalEntry(OB_HISTORICAL_MATCH);
+  assert.equal(play.type, 'play');
+  const musical = buildObHistoricalEntry({ ...OB_HISTORICAL_MATCH, title: 'Some Old Musical' });
+  assert.equal(musical.type, 'musical');
+});
+
 // --- promote-historical-we.js ----------------------------------------------
 
 const WE_HISTORICAL_CANDIDATE = {
@@ -88,6 +99,17 @@ test('promote-historical-we buildShowEntry: a placeholder/neighbourhood-blob ven
 test('promote-historical-we buildShowEntry: a TBD venue is refused (venue: null)', () => {
   const e = buildWeHistoricalEntry({ ...WE_HISTORICAL_CANDIDATE, venue: 'TBD' });
   assert.equal(e.venue, null);
+});
+
+// BRO-3716: west-end is gated by validate-market-expansion.js's required-
+// fields check, which only exempts type when status==='announced' — this
+// builder always writes status='closed', so a null type here would
+// reproduce the exact CI-red incident the next time this script runs.
+test('promote-historical-we buildShowEntry: type defaults to play (not null) so status=closed never fails the required-fields gate', () => {
+  const play = buildWeHistoricalEntry(WE_HISTORICAL_CANDIDATE);
+  assert.equal(play.type, 'play');
+  const musical = buildWeHistoricalEntry({ ...WE_HISTORICAL_CANDIDATE, title: 'Some Old Musical' });
+  assert.equal(musical.type, 'musical');
 });
 
 // --- enrich-west-end-shows.js decideVenueUpdate -----------------------------

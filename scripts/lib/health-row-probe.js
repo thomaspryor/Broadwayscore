@@ -24,7 +24,7 @@
  *      write-stub does not need updating when the check list changes).
  *
  * WHY "unknown" exists as a third verdict, not just present/absent: several
- * of the 22 checks skip themselves — under a missing credential (no GH_TOKEN /
+ * of the checks skip themselves — under a missing credential (no GH_TOKEN /
  * NOTION_API_KEY / VERCEL_TOKEN / SCRAPINGBEE_API_KEY / SCRAPINGDOG_API_KEY —
  * exactly the environment scripts/lib/autonomous-checks.js's checksEnv()
  * hands this command when it runs as a card's checkableDone verify step), or

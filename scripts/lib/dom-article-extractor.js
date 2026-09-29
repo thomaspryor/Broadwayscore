@@ -29,9 +29,23 @@
 /**
  * Extract article text from a Document.
  * @param {Document} document - Browser DOM or jsdom document.
+ * @param {string} [url] - Current page URL, if known.
  * @returns {string} Cleaned article text, or '' if no plausible body found.
  */
-function extractArticleTextFromDocument(document) {
+function extractArticleTextFromDocument(document, url) {
+  // BRO-912: talkinbroadway.com's 'section.page' selector below (added for
+  // this DOM path) has no byline anchor and blends stacked "Past Reviews"
+  // runs together — the same bug class collect-review-texts.js's HTML-string
+  // path had until it was wired to the byline-anchored extractor in
+  // scripts/lib/article-extractor.js. That fix can't run here: this function
+  // must stay closure-free to survive .toString() serialization for
+  // page.evaluate, so it can't require() the shared lib. This path is
+  // currently unreachable for TB (talkinbroadway.com is in
+  // CONFIG.knownBlockedSites, which gates the Playwright tier off unless
+  // cookies are loaded, and TB has no cookie auth) — bail out rather than
+  // silently return a possibly-blended result if that ever changes.
+  if (url && /talkinbroadway\.com/i.test(url)) return '';
+
   // Constants live INSIDE the function body so they survive .toString()
   // serialization for page.evaluate. Do not move them out.
   const SELECTORS = [

@@ -12,6 +12,8 @@ const {
   updateTodayTixMissingState,
   decideTodayTixCandidates,
   shouldSuppressCandidate,
+  shouldSuppressTodayTixCandidate,
+  isEligibleForFutureClosingDateFill,
   findTitleOffsets,
   selectAutoApplyClosures,
 } = require('./ob-closing-detector.js');
@@ -210,10 +212,72 @@ test('suppress: proposal more than a year past = extended/open-ended, not stale-
   assert.equal(shouldSuppressCandidate(show, '2020-01-19', '2026-07-12'), 'stale-evidence');
 });
 
-test('suppress: recent past and future proposals on date-less shows are actionable', () => {
+test('suppress: a recent past proposal on a date-less show is actionable', () => {
   const show = { id: 'my-joy-2025', closingDate: null, status: 'open' };
   assert.equal(shouldSuppressCandidate(show, '2026-04-05', '2026-07-12'), null);
-  assert.equal(shouldSuppressCandidate(show, '2026-09-11', '2026-07-12'), null);
+});
+
+test('suppress: a future-dated proposal is not yet closed — nothing to review (card #799)', () => {
+  const show = { id: 'america-who-hurt-you-2026', closingDate: null, status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2026-09-11', '2026-07-12'), 'future-date-not-yet-closed');
+});
+
+test('suppress: a proposal dated exactly today is actionable, not future', () => {
+  const show = { id: 'shifters-2026', closingDate: null, status: 'open' };
+  assert.equal(shouldSuppressCandidate(show, '2026-07-12', '2026-07-12'), null);
+});
+
+// --- shouldSuppressTodayTixCandidate (Drunk Shakespeare class: confirmed still open) ---
+
+test('suppress-todaytix: flagged show is suppressed', () => {
+  const show = { id: 'drunk-shakespeare-off-broadway-2022', todaytixStalenessIgnore: true };
+  assert.equal(shouldSuppressTodayTixCandidate(show), true);
+});
+
+test('suppress-todaytix: unflagged show with no closingDate is not suppressed', () => {
+  const show = { id: 'pied-a-terre-off-broadway-2026' };
+  assert.equal(shouldSuppressTodayTixCandidate(show), false);
+});
+
+test('suppress-todaytix: a show that already has a closingDate is suppressed (Shifters class)', () => {
+  const show = { id: 'shifters-off-broadway-2026', status: 'open', closingDate: '2026-09-20' };
+  assert.equal(shouldSuppressTodayTixCandidate(show), true);
+});
+
+test('suppress-todaytix: missing show record is not suppressed (never throws)', () => {
+  assert.equal(shouldSuppressTodayTixCandidate(undefined), false);
+});
+
+// --- isEligibleForFutureClosingDateFill (card #799 auto-fill gate) ---
+
+const FUTURE_HIGH = {
+  showId: 'america-who-hurt-you-off-broadway-2026',
+  proposedClosingDate: '2026-10-04',
+  latestMentionedDate: '2026-10-04',
+  confidence: 'high',
+  reason: 'future-date-not-yet-closed',
+  evidence: [],
+};
+
+test('future-fill: high confidence, no later mention, is eligible', () => {
+  assert.equal(isEligibleForFutureClosingDateFill(FUTURE_HIGH), true);
+});
+
+test('future-fill: medium confidence stays alert-only (weaker evidence bar)', () => {
+  assert.equal(isEligibleForFutureClosingDateFill({ ...FUTURE_HIGH, confidence: 'medium' }), false);
+});
+
+test('future-fill: refuses when a later date is mentioned (extension guard, ship-check finding)', () => {
+  const extended = { ...FUTURE_HIGH, proposedClosingDate: '2026-10-04', latestMentionedDate: '2026-10-18' };
+  assert.equal(isEligibleForFutureClosingDateFill(extended), false);
+});
+
+test('future-fill: wrong suppression reason is never eligible', () => {
+  assert.equal(isEligibleForFutureClosingDateFill({ ...FUTURE_HIGH, reason: 'already-has-closing-date' }), false);
+});
+
+test('future-fill: missing/undefined candidate is not eligible (never throws)', () => {
+  assert.equal(isEligibleForFutureClosingDateFill(undefined), false);
 });
 
 // --- title-proximity disambiguation (multi-show roundup columns) ---
@@ -294,6 +358,11 @@ test('auto-apply: review agreement alone is not enough (Little Shop class)', () 
 
 test('auto-apply: TodayTix absence alone is not enough (Drunk Shakespeare class)', () => {
   assert.deepEqual(selectAutoApplyClosures([], OPEN_NO_DATE, MISSING_8, '2026-09-08'), []);
+});
+
+test('auto-apply: a todaytixStalenessIgnore show never auto-closes off the staleness signal (ship-check finding, card #799)', () => {
+  const ignored = { s1: { id: 's1', status: 'open', todaytixStalenessIgnore: true } };
+  assert.deepEqual(selectAutoApplyClosures([HIGH], ignored, MISSING_8, '2026-09-08'), []);
 });
 
 test('auto-apply: medium confidence stays alert-only', () => {

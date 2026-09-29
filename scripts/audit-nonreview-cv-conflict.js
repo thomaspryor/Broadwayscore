@@ -66,22 +66,30 @@ function parseArgs(argv) {
   return args;
 }
 
-function listShowDirs(showFilter) {
+// Returns { dirs, rootMissing } — same shape and rationale as
+// audit-self-contradictory-clears.js's listShowDirs (BRO-2283): a missing or
+// truly-empty REVIEW_TEXTS_DIR has no legitimate reading (the private repo
+// checkout isn't there), distinct from `--show=ID` matching no directory in
+// an otherwise-populated corpus. Collapsing both into a bare `[]` is the same
+// vacuous-pass bug class that script was fixed for.
+function listShowDirs(dir, showFilter) {
   let entries;
   try {
-    entries = fs.readdirSync(REVIEW_TEXTS_DIR, { withFileTypes: true });
+    entries = fs.readdirSync(dir, { withFileTypes: true });
   } catch {
-    return [];
+    return { dirs: [], rootMissing: true };
   }
-  return entries
+  if (entries.length === 0) return { dirs: [], rootMissing: true };
+  const dirs = entries
     .filter((e) => e.isDirectory() || e.isSymbolicLink())
     .map((e) => e.name)
     .filter((name) => !SKIP_DIRS.has(name))
     .filter((name) => !showFilter || name === showFilter)
     .filter((name) => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, name)).isDirectory(); }
+      try { return fs.statSync(path.join(dir, name)).isDirectory(); }
       catch { return false; }
     });
+  return { dirs, rootMissing: false };
 }
 
 function main() {
@@ -91,7 +99,15 @@ function main() {
   const hits = [];
   let scanned = 0;
 
-  for (const showId of listShowDirs(args.show)) {
+  const { dirs: showDirs, rootMissing } = listShowDirs(REVIEW_TEXTS_DIR, args.show);
+  try {
+    assertCorpusScanned(0, { corpusRootMissing: rootMissing });
+  } catch (e) {
+    if (!(e instanceof CorpusNotScannedError)) throw e;
+    console.error(`FAIL: ${e.message}`);
+    process.exit(1);
+  }
+  for (const showId of showDirs) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
     let files;
     try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json')); }

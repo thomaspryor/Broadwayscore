@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-05",
+  "generatedAt": "2026-09-15",
   "hits": [
     {
       "showId": "as-you-like-it-globe-west-end-2026",
@@ -12,11 +12,6 @@
       "flag": "wrongProduction"
     },
     {
-      "showId": "electra-persona-west-end-2026",
-      "file": "westendtheatre--ghenet-pinderhughes-randall.json",
-      "flag": "isRoundupArticle"
-    },
-    {
       "showId": "how-the-other-half-loves-west-end-2026",
       "file": "london-box-office--andrew-bewley.json",
       "flag": "wrongProduction"
@@ -27,29 +22,9 @@
       "flag": "wrongProduction"
     },
     {
-      "showId": "paranormal-activity-2026",
-      "file": "broadwayworld--nicole-rosky.json",
-      "flag": "isRoundupArticle"
-    },
-    {
-      "showId": "paranormal-activity-2026",
-      "file": "playbill--unknown.json",
-      "flag": "isRoundupArticle"
-    },
-    {
       "showId": "the-revlon-girl-off-west-end-2026",
       "file": "london-box-office--stacey-tyler.json",
       "flag": "wrongProduction"
-    },
-    {
-      "showId": "the-story-west-end-2026",
-      "file": "bestoftheatre--maria-boot.json",
-      "flag": "isRoundupArticle"
-    },
-    {
-      "showId": "the-winters-tale-off-broadway-2026",
-      "file": "broadwayworld--stephi-wild.json",
-      "flag": "isRoundupArticle"
     },
     {
       "showId": "tosca-off-broadway-2026",
@@ -61,5 +36,6 @@
       "file": "operawire--chris-ruel.json",
       "flag": "wrongProduction"
     }
-  ]
+  ],
+  "note": "isRoundupArticle rows removed 2026-09-15 (BRO-3416): detectCvFlagContradiction no longer escalates isRoundupArticle when the URL is itself a roundup (isRoundupUrl), so these 5 rows are structurally unreachable and the baseline had been absorbing one row per ingested roundup. wrongProduction rows are left as-is \u2014 a row not firing today may simply have aged out of the 30d window."
 }

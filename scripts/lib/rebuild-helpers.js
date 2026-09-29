@@ -43,9 +43,141 @@ function isUnambiguousRatingString(raw) {
 // TEXT CLEANING
 // ===================================================
 
+// Canonical thumb spellings are 'Up' / 'Flat' / 'Down'. Aggregator scrapers
+// have written 'Meh' (DTLI's own label), and — BRO-4204 audit S6-T6 — the
+// upper-case 'UP' / 'MEH' / 'DOWN' (112 corpus files as of 2026-09-28), which
+// the old exact-match version passed through untouched: the P2 thumb
+// validation then read 'UP' as neutral and silently lost the signal. Any
+// casing of up/meh/flat/down normalizes; an unknown spelling still passes
+// through unchanged (callers treat it as neutral).
 function normalizeThumb(thumb) {
-  if (thumb === 'Meh' || thumb === 'Flat') return 'Flat';
-  return thumb; // 'Up' or 'Down'
+  if (thumb == null) return thumb;
+  const key = String(thumb).trim().toLowerCase();
+  if (key === 'meh' || key === 'flat') return 'Flat';
+  if (key === 'up') return 'Up';
+  if (key === 'down') return 'Down';
+  return thumb;
+}
+
+// Direction of a 0-100 score's bucket: Rave/Positive → positive, Negative/Pan
+// → negative, Mixed → neutral.
+function bucketDirectionOfScore(score) {
+  const bucket = scoreToBucket(score);
+  if (bucket === 'Rave' || bucket === 'Positive') return 'positive';
+  if (bucket === 'Negative' || bucket === 'Pan') return 'negative';
+  return 'neutral';
+}
+
+/**
+ * BRO-4204 audit S6-T6: do BOTH aggregator thumbs (DTLI + BWW) agree with each
+ * other AND point the opposite way from the verdict — a two-bucket
+ * disagreement (both Up vs a Negative/Pan score, both Down vs a Positive/Rave
+ * score)? Mixed verdicts and Flat thumbs never qualify: a one-bucket gap
+ * (Up vs Mixed) is ordinary calibration noise that the P2 thumb validation
+ * already handles. Two editors who both read the full review and both
+ * disagree with the LLM by two buckets is the case the adjudication queue
+ * exists for, so the rebuild stamps `needsAdjudication: true` on the emitted
+ * record and queues it (reason 'both-thumbs-disagree-with-llm').
+ *
+ * Pure. Thumb spellings go through normalizeThumb.
+ *
+ * @param {object} data   review-text record (dtliThumb / bwwThumb read)
+ * @param {number} score  the verdict being emitted
+ * @returns {boolean}
+ */
+function bothThumbsOpposeVerdict(data, score) {
+  if (!data || typeof score !== 'number' || !Number.isFinite(score)) return false;
+  const dtli = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
+  const bww = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
+  if (!dtli || !bww || dtli !== bww) return false;
+  if (dtli !== 'Up' && dtli !== 'Down') return false;
+  const verdictDir = bucketDirectionOfScore(score);
+  if (verdictDir === 'neutral') return false;
+  const thumbDir = dtli === 'Up' ? 'positive' : 'negative';
+  return thumbDir !== verdictDir;
+}
+
+/**
+ * BRO-4204 audit S6-T5: what makes an `originalScore` value a PUBLISHED rating
+ * the P0.5 path may score from, as opposed to a bare number some upstream
+ * writer relayed (Show-Score's 0-100 critic score, a manual --score, an
+ * aggregator's normalized value) that only LOOKS like a rating?
+ *
+ *   'unambiguous'                 — letter grade / star form / X-out-of-N
+ *                                   (isUnambiguousRatingString)
+ *   'verified-scoreSource'        — the extraction source is one of the
+ *                                   outlet-verified extractors
+ *   'verified-originalScoreSource'— same, recorded on originalScoreSource
+ *   'starRating'                  — the file carries the star form alongside
+ *                                   the normalized number (manual ingest shape:
+ *                                   starRating "4/5", originalScore 80)
+ *   null                          — a bare numeric / percentage / freeform
+ *                                   string with no verified provenance: NOT a
+ *                                   published rating; P0.5 must not score it
+ *
+ * The Rocky Horror 2026 shape that motivated this (originalScore 75 numeric,
+ * source 'manual', no starRating, no scoreSource) returns null. "88.6/100"
+ * returns 'unambiguous' — an explicit denominator is a rating form by
+ * isUnambiguousRatingString's definition — even from a relay source such as
+ * theatre-record; provenance gating of X/100 strings would need its own field
+ * and is out of scope here (documented in the colocated test).
+ *
+ * Parsing itself is unchanged: parseOriginalScore (score-parsers.js) keeps
+ * its semantics; this is a gate at its P0.5 call site only.
+ *
+ * @param {string|number} raw  the candidate originalScore value
+ * @param {object} data        review-text record (scoreSource / originalScoreSource / starRating read)
+ * @returns {string|null}
+ */
+// Registry starScale by outletId (lazy, cached). Tests pass opts.starScale
+// instead of touching the registry.
+let _starScaleRegistry = null;
+function registryStarScale(outletId) {
+  if (!outletId) return null;
+  if (_starScaleRegistry === null) {
+    try {
+      const _fs = require('fs');
+      const _path = require('path');
+      _starScaleRegistry = JSON.parse(_fs.readFileSync(_path.join(__dirname, '..', '..', 'data', 'outlet-registry.json'), 'utf-8'));
+    } catch {
+      _starScaleRegistry = { outlets: {} };
+    }
+  }
+  const entry = (_starScaleRegistry.outlets || {})[outletId];
+  if (!entry || !Number.isFinite(entry.starScale) || entry.starScale <= 0) return null;
+  return entry.starScale;
+}
+
+// 'star-ladder' (S6-T5 follow-up): a bare number at an outlet the registry says
+// publishes N-star ratings, sitting exactly on that ladder (k * 100/N for a
+// whole k in 1..N — Time Out's 60 = ★★★, the Guardian's 80 = ★★★★, USA Today's
+// 75 = ★★★ of 4), is the older web-search pipeline's star relay, not a made-up
+// number. The strict gate's scoring-delta showed ~50 such T1 relays (timeout,
+// guardian, times-uk) would otherwise be replaced by an LLM read within a few
+// points of the published star. A number OFF the ladder (75 at a 5-star
+// outlet, EW's 88) or at an outlet with no starScale stays ambiguous.
+function isOnStarLadder(raw, starScale) {
+  if (!Number.isFinite(starScale) || starScale <= 0) return false;
+  const n = typeof raw === 'number' ? raw : (typeof raw === 'string' && /^\s*\d+(?:\.\d+)?\s*$/.test(raw) ? Number(raw) : NaN);
+  if (!Number.isFinite(n) || n <= 0 || n > 100) return false;
+  const k = n / (100 / starScale);
+  return Math.abs(k - Math.round(k)) < 1e-9 && Math.round(k) >= 1 && Math.round(k) <= starScale;
+}
+
+function publishedRatingEvidence(raw, data, opts) {
+  if (raw == null || raw === '') return null;
+  if (isUnambiguousRatingString(raw)) return 'unambiguous';
+  const d = data || {};
+  if (d.scoreSource && OUTLET_VERIFIED_SOURCES.has(d.scoreSource)) return 'verified-scoreSource';
+  if (d.originalScoreSource && OUTLET_VERIFIED_SOURCES.has(d.originalScoreSource)) return 'verified-originalScoreSource';
+  if (isUnambiguousRatingString(d.starRating)) return 'starRating';
+  const starScale = opts && Object.prototype.hasOwnProperty.call(opts, 'starScale') ? opts.starScale : registryStarScale(d.outletId);
+  if (isOnStarLadder(raw, starScale)) return 'star-ladder';
+  return null;
+}
+
+function isPublishedRatingEvidence(raw, data) {
+  return publishedRatingEvidence(raw, data) !== null;
 }
 
 const { normalizeDate } = require('./date-utils');
@@ -343,6 +475,79 @@ function isContentVerificationActive(data) {
   return true;
 }
 
+// Distinctive-word tokens: lowercase alpha runs of 5+ chars. Short/common words
+// carry no cross-show signal, so they're excluded from both sides of the
+// overlap check below.
+const _DISTINCTIVE_TOKEN_RE = /[a-z]{5,}/g;
+
+// Only westEndTheatreExcerpt is checked here, NOT the full EXCERPT_FIELDS list.
+// westEndTheatreExcerpt is scraped straight off the review's own page section
+// (extractSectionReviews/extractStarRatings in sweep-we-aggregators.js) — when
+// correctly matched, its wording is a literal slice of that same fullText.
+// The other excerpt fields (theStageExcerpt, dtliExcerpt, bwwExcerpt, etc.) are
+// frequently ROUNDUP blurbs that paraphrase or quote SEVERAL critics in one
+// outlet's own words (e.g. "Dominic Cavendish labels it 'fiercely timely'") —
+// legitimately about the right show and critic, but not a substring of that
+// critic's own fullText elsewhere. Checking those too produced 45 false
+// positives corpus-wide (ship-check on this fix, 2026-09-22) — restricting to
+// westEndTheatreExcerpt, the field actually implicated in the Book of Mormon
+// incident, keeps the signal clean.
+const _AGGREGATOR_STAR_EXCERPT_FIELD = 'westEndTheatreExcerpt';
+
+/**
+ * Guard against aggregatorStars (a THIRD-PARTY-relayed rating — e.g.
+ * WestEndTheatre.com reporting "Guardian: 2/5") being cross-attributed from a
+ * DIFFERENT show's roundup entry that happens to share this file's outlet+critic
+ * slot. Caught 2026-09-22 (Broadway Scorecard feedback form): a WestEndTheatre
+ * roundup match wrote aggregatorStars="2/5" and westEndTheatreExcerpt onto
+ * the-book-of-mormon-west-end-2024/guardian--arifa-akbar.json from Brigadoon's
+ * roundup row, not Book of Mormon's — this file's own fullText was (and remained)
+ * a correct, unanimous-ensemble Rave review, but the contaminated aggregatorStars
+ * won P0.5 precedence over it and later drove a bad adjudicatedScore=40.
+ *
+ * When the file carries BOTH a full-length review body (fullText) and a
+ * westEndTheatreExcerpt (the same WET sweep writes aggregatorStars alongside
+ * it), the excerpt should describe the SAME review as fullText. A short
+ * excerpt sharing essentially none of its distinctive words with a long,
+ * unrelated fullText is the signature of this cross-attribution bug, not of
+ * normal excerpting (a real WET excerpt is a verbatim slice of the review it's
+ * paired with).
+ *
+ * Deliberately permissive: returns true (don't block) whenever there isn't
+ * enough signal to judge — no fullText, no westEndTheatreExcerpt, or too few
+ * distinctive words in the excerpt to trust a ratio. This is a targeted
+ * contamination check, not a general content-quality gate.
+ *
+ * @param {object} data - a parsed review-text record
+ * @returns {boolean} false only when westEndTheatreExcerpt looks like it
+ *   belongs to a different review than fullText
+ */
+function aggregatorStarsCorroboratedByFullText(data) {
+  if (!data || typeof data.fullText !== 'string' || data.fullText.length < 200) return true;
+
+  const excerpts = [data[_AGGREGATOR_STAR_EXCERPT_FIELD]].filter((v) => typeof v === 'string' && v.length >= 40);
+  if (excerpts.length === 0) return true;
+
+  const fullTextLower = data.fullText.toLowerCase();
+  let judged = false;
+  for (const excerpt of excerpts) {
+    const tokens = new Set((excerpt.toLowerCase().match(_DISTINCTIVE_TOKEN_RE) || []));
+    if (tokens.size < 4) continue; // too short to judge — don't penalize
+    judged = true;
+
+    let matched = 0;
+    for (const t of tokens) {
+      if (fullTextLower.includes(t)) matched++;
+    }
+    // At least one excerpt corroborates fullText — good enough (a file can carry
+    // several excerpt fields from different aggregators; only one needs to agree).
+    if (matched / tokens.size >= 0.2) return true;
+  }
+  // true (don't block) when no excerpt had enough signal to judge; false only
+  // when at least one judgeable excerpt failed to overlap with fullText.
+  return !judged;
+}
+
 /**
  * Determine the best score for a review from all available sources.
  *
@@ -355,6 +560,39 @@ function isContentVerificationActive(data) {
  * @param {function} [opts.flagForHumanReview] - Callback for flagging reviews
  * @returns {{ score: number, source: string } | null}
  */
+/**
+ * Every `source` label getBestScore() can emit, in priority order. BRO-4204
+ * S7-T11: rebuild-all-reviews.js initialises `_meta.stats.scoreSources` from
+ * this list so a label that no review hits in a given rebuild still reports 0
+ * (not absent — and, before S6-T5 made the counter safe, not `null`: the
+ * three main sources 'llm-v6'/'anchored-v6'/'adjudicated' were missing from
+ * the seed object, `undefined++` produced NaN and JSON serialised it as null).
+ * tests/unit/rebuild-score-source-stats.test.mjs scans this function's source
+ * so a new `source: '…'` literal without a matching entry here fails CI.
+ */
+const SCORE_SOURCE_LABELS = Object.freeze([
+  'human-review',
+  'adjudicated',
+  'anchored-v6',
+  'llm-v6',
+  'originalScore-priority0',
+  'aggregatorStars-relay',
+  'llmScore-override-star-conflict',
+  'originalScore-inline-recovery',
+  'llmScore-override-inline-recovery-conflict',
+  'llmScore',
+  'originalScore-showscore-downgraded',
+  'llmScore-lowconf',
+  'llmScore-review',
+  'assignedScore',
+  'bucket',
+  'bwwScore-fallback',
+  'aggregatorStars-fallback',
+  'thumb',
+  'llmScore-thumb-validated',
+  'llmScore-thumb-boosted',
+]);
+
 function getBestScore(data, opts = {}) {
   const stats = opts.stats || {};
   const flagForHumanReview = opts.flagForHumanReview || (() => {});
@@ -469,7 +707,17 @@ function getBestScore(data, opts = {}) {
       && lateStarReliable
       && parseOriginalScore(data.originalScore, data.outletId) !== null;
     if (!llmV6HasLateStar) {
-      return { score: data.llmScore.score, source: effectiveV6Source };
+      const v6Score = data.llmScore.score;
+      // S6-T6: both aggregator editors disagree with the v6 verdict by two
+      // buckets → emit the verdict but mark it for the adjudication queue.
+      if (bothThumbsOpposeVerdict(data, v6Score)) {
+        inc('bothThumbsOpposeV6Verdict');
+        flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
+          `${effectiveV6Source} verdict ${v6Score} (${scoreToBucket(v6Score)}) vs both aggregator thumbs `
+          + `${normalizeThumb(data.dtliThumb)}/${normalizeThumb(data.bwwThumb)} — two-bucket disagreement, needsAdjudication`);
+        return { score: v6Score, source: effectiveV6Source, needsAdjudication: true };
+      }
+      return { score: v6Score, source: effectiveV6Source };
     }
   }
 
@@ -556,9 +804,42 @@ function getBestScore(data, opts = {}) {
     // Score was nulled by P0 script — recover from previousOriginalScore
     resolvedOriginalScore = String(data.previousOriginalScore);
   }
-  const effectiveOriginalScore = (!scoreCleared && !isAggregatorScoreSource && resolvedOriginalScore)
-    || (data.aggregatorStars && (isKnownStarOutlet || isLBOFirstParty) ? data.aggregatorStars : null);
-  const effectiveScoreLabel = data.originalScore ? 'originalScore' : 'aggregatorStars (known star outlet)';
+  // aggregatorStars corroboration guard (2026-09-22, Book of Mormon West End
+  // feedback report): only trust a third-party-relayed star rating when it
+  // isn't contradicted by a mismatched excerpt riding along with it (see
+  // aggregatorStarsCorroboratedByFullText docblock). resolvedOriginalScore is
+  // NOT gated here — it comes from the outlet's own fetched page, a different,
+  // lower-risk pipeline than the aggregator-roundup excerpt+star pairing this
+  // guards against.
+  const aggregatorStarsUsable = data.aggregatorStars && (isKnownStarOutlet || isLBOFirstParty)
+    && aggregatorStarsCorroboratedByFullText(data);
+  if (data.aggregatorStars && (isKnownStarOutlet || isLBOFirstParty) && !aggregatorStarsUsable) {
+    inc('aggregatorStarsExcerptMismatch');
+    flagForHumanReview(data, 'aggregatorStars-excerpt-mismatch',
+      `aggregatorStars "${data.aggregatorStars}" ignored — its excerpt field doesn't overlap with fullText (likely cross-attributed from a different show's aggregator roundup row)`);
+  }
+  // S6-T5 (BRO-4204 audit): a bare NUMBER in originalScore (Show-Score's 75
+  // relayed by a manual/web-search writer, a normalized value with no
+  // extraction source) is NOT a published rating — the old code parsed it via
+  // parseNumericRating and shipped it as 'originalScore-priority0' over the
+  // ensemble LLM read. Require the unambiguous star/letter form, an
+  // outlet-verified extraction source, or the star form riding alongside in
+  // starRating (publishedRatingEvidence). An ambiguous originalScore falls
+  // through — to a usable aggregatorStars relay here, else to P1+ — and is
+  // counted as skippedAmbiguousOriginalScore.
+  const originalCandidate = (!scoreCleared && !isAggregatorScoreSource && resolvedOriginalScore) || null;
+  const originalEvidence = originalCandidate ? publishedRatingEvidence(originalCandidate, data) : null;
+  if (originalCandidate && !originalEvidence) inc('skippedAmbiguousOriginalScore');
+  const gatedOriginalScore = originalEvidence === 'starRating' ? data.starRating
+    : originalEvidence ? originalCandidate : null;
+  // When aggregatorStars drives the score the emitted record labels it
+  // 'aggregatorStars-relay' (and rebuild-all-reviews.js displays the relayed
+  // star as originalRating) instead of masquerading as the outlet's own
+  // originalScore.
+  const effectiveFromAggregatorStars = !gatedOriginalScore && !!aggregatorStarsUsable;
+  const effectiveOriginalScore = gatedOriginalScore || (effectiveFromAggregatorStars ? data.aggregatorStars : null);
+  const effectiveScoreLabel = effectiveFromAggregatorStars ? 'aggregatorStars (known star outlet)' : 'originalScore';
+  const p05Source = effectiveFromAggregatorStars ? 'aggregatorStars-relay' : 'originalScore-priority0';
 
   if (effectiveOriginalScore && !downgradeShowScore) {
     if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon' || data.scoreSource === 'star-icon-cleared') {
@@ -629,7 +910,7 @@ function getBestScore(data, opts = {}) {
             }
           }
         }
-        return { score: parsed, source: 'originalScore-priority0' };
+        return { score: parsed, source: p05Source };
       }
     }
   }
@@ -788,9 +1069,12 @@ function getBestScore(data, opts = {}) {
   }
 
   // P5.7: aggregatorStars fallback — third-party star ratings from aggregator sites.
-  // Only trust if the outlet actually publishes star ratings (KNOWN_STAR_OUTLETS).
-  // Otherwise the aggregator may have invented the rating (e.g., London Theatre).
-  if (data.aggregatorStars && isKnownStarOutlet) {
+  // Only trust if the outlet actually publishes star ratings (KNOWN_STAR_OUTLETS)
+  // and, same as P0.5 above, the rating isn't contradicted by a mismatched
+  // excerpt riding along with it (aggregatorStarsCorroboratedByFullText).
+  // Otherwise the aggregator may have invented the rating (e.g., London Theatre)
+  // or cross-attributed it from a different show's roundup row.
+  if (data.aggregatorStars && isKnownStarOutlet && aggregatorStarsCorroboratedByFullText(data)) {
     const parsed = parseOriginalScore(data.aggregatorStars, data.outletId);
     if (parsed !== null) {
       inc('aggregatorStarsFallback');
@@ -1006,7 +1290,11 @@ function compareFilesForDedupPriority(a, b) {
 }
 
 module.exports = {
+  isOnStarLadder,
   isUnambiguousRatingString,
+  publishedRatingEvidence,
+  isPublishedRatingEvidence,
+  bothThumbsOpposeVerdict,
   // Text cleaning
   normalizeThumb,
   normalizePublishDate,
@@ -1020,7 +1308,9 @@ module.exports = {
   cleanExcerpt,
   // Scoring
   isContentVerificationActive,
+  aggregatorStarsCorroboratedByFullText,
   getBestScore,
+  SCORE_SOURCE_LABELS,
   // URL date extraction
   extractDateFromUrl,
   // Dedup tiebreaking

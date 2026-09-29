@@ -236,6 +236,11 @@ jobs:
                 }).then(r=>{console.log('routeAlert ->',r.action);process.exit(0);}).catch(e=>{console.error('routeAlert failed:',e.message);process.exit(0);});
               " || true
               git add data/audit/alert-ledger.json 2>/dev/null || true
+              # BRO-3662: logDispatchAttempt() rewrites this TRACKED file on
+              # every dispatch attempt (this call is disposition:'auto'); left
+              # unstaged it makes every later rebase refuse pre-flight and
+              # forces the clobber-prone merge path.
+              git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
             else
               echo "::warning::validate-data failed with ZERO promotions this run — pre-existing corpus drift, not this job's doing. No owner email (covered by the Data Validation CI gate + morning digest)."
             fi
@@ -334,7 +339,11 @@ jobs:
           # never told a regional show went live (same silent-drop class as
           # card #475). Precedent: data-health-check.yml:125, test.yml:2658,
           # opening-night-checklist.yml:96 all stage these.
-          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/playbill-verdict-sitemap-seen.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl data/audit/alert-digest-queue.json data/audit/alert-ledger.json
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/playbill-verdict-sitemap-seen.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/lortel-last-success.json
           if ! git diff --staged --quiet; then
             git commit -m "data: Playbill Verdict unmatched audit + candidate staging [skip ci]"
             bash scripts/lib/push-with-retry.sh
@@ -506,7 +515,9 @@ jobs:
     # (no `time_budget_min` input) + ~3min checkout/npm-ci overhead observed
     # = ~25min before the commit step can even start, + 900s(15min) new
     # deadline = ~40min. 45min leaves ~5min of margin over that worst case.
-    timeout-minutes: 45
+    # 45->60 (BRO-4262): the tour auto-create, its core-data push and the
+    # gather dispatch add up to ~12 min ahead of the audit commit step.
+    timeout-minutes: 60
     needs: [scrape-lbo-roundups]
     if: ${{ always() && (github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'bww-landing') }}
 
@@ -549,6 +560,48 @@ jobs:
           TB="${{ inputs.time_budget_min }}"
           [ -z "$TB" ] && TB=22
           node scripts/scrape-bww-reviews.js --landing-discover --time-budget-min=$TB
+
+      # BRO-4262: a recorded national-tour roundup becomes a tour entry when
+      # Tours To You lists the tour and Wikipedia names its launch
+      # (create-tour-entries.js). Report-only until 2026-10-06 unless the
+      # TOUR_AUTOCREATE repo variable says otherwise (off|report|write).
+      - name: Create national-tour entries from roundups
+        # lint-allow-swallow: best-effort; an uncreated candidate stays a digest suggestion (next step), details in data/audit/tour-autocreate.json
+        id: create_tours
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 10
+        env:
+          TOUR_AUTOCREATE: ${{ vars.TOUR_AUTOCREATE }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/create-tour-entries.js --write --time-budget-min=8
+
+      - name: Push core data (new tour entries)
+        if: always() && steps.create_tours.outputs.created != ''
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: add national tour entries (create-tour-entries, BRO-4262)'
+
+      # After the push above, so the dispatched run checks out the new ids.
+      - name: Gather reviews for new tour entries
+        if: always() && steps.create_tours.outputs.created != ''
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+          CREATED: ${{ steps.create_tours.outputs.created }}
+        run: gh workflow run gather-reviews.yml -f shows="$CREATED" || echo "::warning::gather-reviews dispatch failed for $CREATED"
+
+      # BRO-4211: national-tour roundups for a Broadway show with no tour entry,
+      # recorded by the step above, become owner digest suggestions. Before the
+      # commit step below, which stages the files routeAlert writes. Candidates
+      # create-tour-entries.js turned into entries are no longer open.
+      - name: Suggest national tours to add
+        if: always()
+        continue-on-error: true
+        run: node scripts/route-tour-candidates.js
 
       - name: Push review-texts to private repo (BWW landing)
         if: always()
@@ -598,10 +651,20 @@ jobs:
           # whole 90s cap with zero transfer progress, so only ~4-6 retries fit
           # inside the 900s deadline above. Matches BRO-334/BRO-346.
           GIT_NET_TIMEOUT_SEC: '30'
+          # The alert files below are merged JSON other jobs also write; same
+          # setting as the scrape-playbill-verdict commit step.
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/bww-roundup-unmatched.json 2>/dev/null || true
+          # tour-roundup-candidates.json + alert-digest-queue.json + alert-ledger.json
+          # + alert-router-attempts.jsonl: route-tour-candidates.js (step above)
+          # routes national-tour roundups for a Broadway show with no tour entry
+          # through routeAlert(disposition:'digest') as an "add this tour?"
+          # decision (BRO-4211). routeAlert writes these on this runner; unstaged,
+          # the digest line dies with it (same reason as the Playbill Verdict
+          # commit step above).
+          bash scripts/lib/git-add-existing.sh data/audit/bww-roundup-unmatched.json data/audit/tour-roundup-candidates.json data/audit/tour-autocreate.json data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
           if ! git diff --staged --quiet; then
             git commit -m "data: BWW landing-page unmatched roundups audit [skip ci]"
             bash scripts/lib/push-with-retry.sh

@@ -125,6 +125,8 @@ const PROTECTED_FIELDS = [
   'previousOriginalScore',
   'humanReviewNote',
   'humanReviewedWrongProduction',
+  // Human-verified escape hatch for review-guards.js's listingPageUrl rule (2026 audit S1-T0) — same family as the *ManualClear breadcrumbs below.
+  'listingPageUrlManualClear',
   'humanReviewedWrongArticle',
   // Operator opt-out for the anticipatory pre-opening gate (content-filters.js
   // isAnticipatoryPreviewPost). Same family as the two above and it was simply
@@ -508,6 +510,29 @@ function invalidateWrongProductionAutoClear(d) {
 }
 
 /**
+ * Invalidate the auto-clear breadcrumb when a writer RE-FLAGS wrongShow. Mirrors
+ * invalidateWrongProductionAutoClear above exactly — same inverted-ping-pong shape
+ * (BRO-3225): without this, a legitimate re-flag within AUTO_CLEAR_FRESH_DAYS of a
+ * fresh wrongShowAutoCleared stamp could have its restore suppressed by that
+ * now-stale stamp if a stale checkout races the push.
+ *
+ * @param {object} d - review record being flagged (mutated in place)
+ */
+function invalidateWrongShowAutoClear(d) {
+  if (!d) return;
+  const retracted = [];
+  if (!_isEmptyValue(d.wrongShowAutoCleared)) retracted.push('wrongShowAutoCleared');
+  if (!_isEmptyValue(d.wrongShowAutoClearedAt)) retracted.push('wrongShowAutoClearedAt');
+  delete d.wrongShowAutoCleared;
+  delete d.wrongShowAutoClearedAt;
+  _recordClearBreadcrumbRetraction(
+    d,
+    retracted,
+    'retracted wrongShowAutoCleared: re-flagged wrongShow (BRO-3225)'
+  );
+}
+
+/**
  * Stamp (or extend) the field-scoped retraction breadcrumb that makes deleting a PROTECTED
  * clear-breadcrumb field legible to safeWriteReview as intent rather than data loss.
  *
@@ -534,6 +559,43 @@ const _freshWrongProductionAutoClear = (d) => {
   if (Number.isNaN(at)) return false;
   return (Date.now() - at) <= AUTO_CLEAR_FRESH_DAYS * 86400000;
 };
+
+// Shared freshness-gate shape (BRO-3225 codebase review, plan-review 2026-09-14):
+// this is the 6th near-identical "flag + *At stamp, fresh within N days" predicate
+// in this file (wrongProduction above; staleScoredBeforeOpening/fullTextWrongAuthor/
+// stuckRescoreCleared/rescoreCompletedAt below). The three most recent siblings
+// (_freshStaleScoredBeforeOpening, _freshFullTextWrongAuthor, _freshStuckRescoreCleared)
+// all carry an `age >= 0` future-dated-stamp guard that _freshWrongProductionAutoClear
+// above does NOT — added specifically because a codex adversarial review (task #1237,
+// "apply-audit-flags.js fullTextWrongAuthor is the same same-job restore-resurrection
+// bug as task #97's staleScoredBeforeOpening") found a clock-skewed/malformed future
+// stamp can pass `<= FRESH_DAYS` via a negative age and suppress a real data-loss
+// restore FOREVER, not just for the intended window. Copying the OLDER
+// _freshWrongProductionAutoClear shape for a new field would silently reintroduce
+// that already-fixed defect class. This helper is the fix's actual generalization:
+// used by the new wrongShow predicate below; the 4 existing ones are deliberately
+// NOT retrofitted in this diff (out of scope — they are independently battle-tested
+// and retrofitting them is a separate, lower-risk-when-isolated cleanup).
+//
+// `flagIsString`: wrongProduction/wrongShow's own AutoCleared stamps are STRING
+// annotations ("rebuild: ..."), so the flag check is truthiness, matching
+// _freshWrongProductionAutoClear's `!d[flagField]` (not the boolean `!== true`
+// check the 3 newer siblings use for their own, boolean-typed flags).
+function _freshAutoClearStamp(d, { flagField, atField, days, flagIsString = true }) {
+  if (!d) return false;
+  const flagOk = flagIsString ? !!d[flagField] : d[flagField] === true;
+  if (!flagOk || !d[atField]) return false;
+  const at = Date.parse(String(d[atField]));
+  if (Number.isNaN(at)) return false;
+  const age = Date.now() - at;
+  return age >= 0 && age <= days * 86400000;
+}
+
+const _freshWrongShowAutoClear = (d) => _freshAutoClearStamp(d, {
+  flagField: 'wrongShowAutoCleared',
+  atField: 'wrongShowAutoClearedAt',
+  days: AUTO_CLEAR_FRESH_DAYS,
+});
 
 // staleScoredBeforeOpening freshness gate (task #97 codex adversarial review).
 // Same shape as _freshWrongProductionAutoClear above but a shorter window: this
@@ -817,9 +879,18 @@ const CLEAR_BREADCRUMBS = {
   wrongProduction: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionNote: (d) => _wrongProductionCleared(d) || _freshWrongProductionAutoClear(d),
   wrongProductionReason: _wrongProductionCleared,
-  wrongShow: _wrongShowCleared,
-  wrongShowReason: _wrongShowCleared,
-  wrongShowNote: _wrongShowCleared,
+  // BRO-3225: OR'd with _freshWrongShowAutoClear so shouldAutoClearWrongShowUkUrl's
+  // rebuild-time auto-clear (rebuild-all-reviews.js ~3019/3033, which deletes all
+  // three of wrongShow/wrongShowNote/wrongShowReason together — see
+  // shouldAutoClearWrongShow) is honored the same way wrongProduction's sibling
+  // auto-clear already is. wrongShowReason is included (plan-review "structure &
+  // devil's advocate" finding, 2026-09-14): shouldAutoClearWrongShow deletes it
+  // alongside the flag/note, but the original plan only gated wrongShow/
+  // wrongShowNote, which would have left a stale wrongShowReason resurrectable
+  // by the restore even while wrongShow itself stayed freshness-protected cleared.
+  wrongShow: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
+  wrongShowReason: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
+  wrongShowNote: (d) => _wrongShowCleared(d) || _freshWrongShowAutoClear(d),
   wrongFullText: _wrongArticleCleared,
   wrongAttribution: _wrongArticleCleared,
   // wrongAttributionReason (task #1624, found by ship-check codebase review):
@@ -1419,10 +1490,12 @@ function safeWriteReview(filePath, newData, options = {}) {
         if (existingUrlReal && incomingUrlGarbage && newData.url !== existing.url) {
           console.warn(`[review-write-guard] rejecting garbage url ${JSON.stringify(newData.url)} on ${path.basename(filePath)}: keeping ${existing.url}`);
           newData.url = existing.url;
-        } else if (normalizedUrlDiffers && (lockedOverride || existing.urlVerified === true || existing.urlManualOverride === true)) {
+        } else if (normalizedUrlDiffers && (lockedOverride || existing.urlManualOverride === true
+          || (existing.urlVerified === true && !(existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url))))) {
           console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
           newData.url = existing.url;
-        } else if (normalizedUrlDiffers && isUrlFlipFlop(existing, newData.url)) {
+        } else if (normalizedUrlDiffers && isUrlFlipFlop(existing, newData.url)
+          && !_flipFlopShouldTakeIncoming(existing.url, newData.url)) {
           // Flip-flop breaker (BRO-121): newData.url matches the url this file
           // held before its last URL-change clear (_urlChangedClear.from) — a
           // poller/aggregator is oscillating between two url variants
@@ -1431,13 +1504,40 @@ function safeWriteReview(filePath, newData, options = {}) {
           console.warn(`[review-write-guard] blocked url flip-flop on ${path.basename(filePath)}: ${existing.url} <-> ${newData.url} — pinning urlVerified`);
           const flippedFromUrl = newData.url;
           newData.url = existing.url;
+          // BRO-4130: maybeUpgradeUrl (upstream, in _mergeIntoExisting) may
+          // already have merged URL_DERIVED_FIELDS (originalScore, etc.) that
+          // arrived paired with flippedFromUrl in THIS write — those values
+          // describe the article at flippedFromUrl, not the pinned
+          // existing.url the write is being forced back onto. Since the url
+          // change itself is being rejected, roll those fields back to their
+          // genuine on-disk (existing) state too, or a score/flag that
+          // belongs to the rejected url gets misattributed to the pinned one.
+          const { URL_DERIVED_FIELDS } = require('./url-change-invariant');
+          for (const field of URL_DERIVED_FIELDS) {
+            if (newData[field] === existing[field]) continue;
+            if (existing[field] === undefined) delete newData[field];
+            else newData[field] = existing[field];
+          }
           if (!newData.urlVerified) {
             newData.urlVerified = true;
             newData.urlVerifiedAuto = true;
             newData.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} <-> ${flippedFromUrl}) — locked against further automated changes (BRO-121).`;
           }
         } else if (urlCanonicallyChanged(existing.url, newData.url)) {
+          const liftAutoPin = existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url);
+          if (liftAutoPin) {
+            // The auto-pin belonged to the non-review url being replaced; it must
+            // not lock in the incoming url (its note names the old one).
+            delete newData.urlVerified; delete newData.urlVerifiedAuto; delete newData.urlVerifiedNote;
+          }
           const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
+          if (liftAutoPin && newData._urlChangedClear && Array.isArray(newData._urlChangedClear.cleared)) {
+            // Breadcrumb so restore-protected-fields.js treats the lifted pin as an
+            // intentional clear, not a loss to restore (urlVerified* are PROTECTED).
+            for (const f of ['urlVerified', 'urlVerifiedAuto', 'urlVerifiedNote']) {
+              if (!newData._urlChangedClear.cleared.includes(f)) newData._urlChangedClear.cleared.push(f);
+            }
+          }
           for (const f of inv.cleared) {
             const i = preserved.indexOf(f);
             if (i !== -1) preserved.splice(i, 1);
@@ -1450,6 +1550,81 @@ function safeWriteReview(filePath, newData, options = {}) {
             removeLlmScoreSidecar(filePath);
           }
         }
+      }
+    }
+  }
+
+  // Orphaned protected-verdict rescue (BRO-2559). A review's on-disk identity
+  // can be RENAMED to a different filename — url-change-invariant above
+  // correctly clears old-URL-derived state when a file's OWN url moves to a
+  // new canonical article, stamping previousUrl/urlCorrectedFrom to remember
+  // where it came from — but that leaves the OLD filename empty. If some
+  // OTHER writer later recreates a file at that now-empty path for the exact
+  // same url (a stale aggregator page that never re-scraped, e.g. BWW's
+  // cached roundup still listing a legacy article id long after a
+  // byline-correction moved this outlet's review to a different filename),
+  // the write looks like a brand-new file with nothing on disk at filePath
+  // to merge/preserve from — so a human-set wrongProduction/wrongShow/
+  // isNotReview verdict on that exact url never lands on the recreated file.
+  //
+  // Measured incident: the-producers-west-end-2025/variety--bob-verini.json,
+  // flagged wrongProduction by hand twice (6092d7b42ac, b7b31d3285a) and
+  // dropped both times by exactly this path — collect-review-texts.js
+  // renamed it to variety--ellise-shafer.json (a legitimate url-change-
+  // invariant clear, recorded via _urlChangedClear), then scrape-bww-
+  // reviews.js recreated variety--bob-verini.json days later from BWW's
+  // still-stale roundup listing of the SAME legacy url.
+  //
+  // Scoped narrowly: only runs for a genuinely brand-new file (nothing at
+  // filePath to merge from), and only matches a sibling in the SAME show
+  // directory, same outlet, whose recorded previousUrl/urlCorrectedFrom
+  // (never its current url — see _findOrphanedProtectedVerdict) equals this
+  // write's url — i.e. the sibling's identity traces back to the exact
+  // article this write is (re)creating a file for. Deliberately separate
+  // from checkUrlCollision/findExistingReviewFile (which decide whether to
+  // MERGE content, and which intentionally skip wrongProduction/duplicateOf
+  // files as merge targets) — this only rescues a narrow set of exclusion-
+  // verdict fields onto the new write, it never merges content into an
+  // existing file.
+  if (!force && !fs.existsSync(filePath) && typeof newData.url === 'string' && newData.url) {
+    const orphan = _findOrphanedProtectedVerdict(filePath, newData);
+    if (orphan) {
+      for (const field of orphan.fields) {
+        const v = newData[field];
+        const incomingIsEmpty = v === undefined || v === null || v === ''
+          || (Array.isArray(v) && v.length === 0);
+        if (incomingIsEmpty) newData[field] = orphan.data[field];
+      }
+      newData._orphanedVerdictRescuedFrom = orphan.filename;
+      console.warn(`[review-write-guard] ${path.basename(filePath)}: rescued protected verdict (${orphan.fields.join(', ')}) from orphaned sibling ${orphan.filename} (same url, different filename)`);
+    } else {
+      // Fallback: no sibling carries a LIVE verdict for this url, but one may
+      // have had wrongProduction/wrongShow CLEARED specifically because ITS
+      // OWN url moved away from this one (url-change-invariant's
+      // _urlChangedClear breadcrumb — see applyUrlChangeInvariant above). That
+      // clear only records field NAMES, not the original reason text, so
+      // there is nothing left to rescue verbatim — but the fact that this
+      // exact url was previously judged wrongProduction/wrongShow is real
+      // signal that a scraper blindly recreating it here (the actual
+      // the-producers-west-end-2025/variety--bob-verini.json incident: BWW's
+      // stale roundup page recreated the identity the sibling's rename had
+      // legitimately moved away from) needs a human look, not a silent
+      // pristine write. Quarantine to _pending/, mirroring the
+      // date-plausibility/cross-market quarantine pattern already used
+      // earlier in this function for the same reason: recoverable, not lossy.
+      const clearedOrphan = _findClearedVerdictOrphan(filePath, newData);
+      if (clearedOrphan) {
+        const parentDirName = path.basename(path.dirname(filePath));
+        const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
+        fs.mkdirSync(pendingDir, { recursive: true });
+        const pendingPath = path.join(pendingDir, path.basename(filePath));
+        fs.writeFileSync(pendingPath, JSON.stringify({
+          ...newData,
+          pendingReason: 'recreated_previously_excluded_url',
+          _recreatedPreviouslyExcludedUrlDetail: `url previously carried ${clearedOrphan.clearedFields.join('/')} on ${clearedOrphan.filename}, cleared ${clearedOrphan.at || 'at an unknown date'} when that file's own url changed away from this one`,
+        }, null, 2) + '\n');
+        console.warn(`[review-write-guard] ${path.basename(filePath)}: quarantined to _pending/${parentDirName}/${path.basename(filePath)} — url previously excluded (${clearedOrphan.clearedFields.join(', ')}) on ${clearedOrphan.filename}, cleared via url change, no live verdict to rescue`);
+        return { wrote: false, skipped: 'recreated_previously_excluded_url', quarantinedPath: pendingPath };
       }
     }
   }
@@ -1560,8 +1735,24 @@ function safeWriteReview(filePath, newData, options = {}) {
       } else {
         const siblingData = JSON.parse(fs.readFileSync(siblingPath, 'utf-8'));
         if (siblingData.url) {
-          const normHere = _normalizeUrlForCollision(newData.url);
-          const normSibling = _normalizeUrlForCollision(siblingData.url);
+          // BRO-2409: compare with the query string stripped entirely
+          // (_trivialCanonUrl), not bare _normalizeUrlForCollision. Two
+          // fetches of the same article routinely differ by an outlet's own
+          // share/recirculation param (NYT smtyp=/_r=1&, Guardian CMP=,
+          // EW taid=, Variety categoryid=/cmpid=, AP page=, …) that
+          // normalizeUrl's tracking-param allowlist doesn't (and, given how
+          // many outlets mint their own, never fully will) enumerate. Without
+          // this, this self-heal was the SECOND of two independent repairs
+          // that could each clear one side of an A<->B pair with no
+          // knowledge of the other, landing on a same-URL cluster with ZERO
+          // duplicateOf pointer on either side — audit-duplicate-of-url-
+          // mismatch.js already treats exactly this query-string variance as
+          // trivial (its own stripTrivial), so the two must agree on what
+          // "the same URL" means or they keep fighting each other. A
+          // genuinely different article still differs by PATH, which
+          // stripTrivial never touches.
+          const normHere = _trivialCanonUrl(newData.url);
+          const normSibling = _trivialCanonUrl(siblingData.url);
           if (normHere !== normSibling) {
             console.warn(`[review-write-guard] clearing stale duplicateOf in ${path.basename(filePath)}: URL no longer matches ${newData.duplicateOf} (${newData.url} vs ${siblingData.url})`);
             newData.duplicateClearReason = `auto-cleared at write: URL ${newData.url} no longer matches sibling ${newData.duplicateOf} URL ${siblingData.url}`;
@@ -1590,6 +1781,14 @@ function safeWriteReview(filePath, newData, options = {}) {
       try {
         colliderData = JSON.parse(fs.readFileSync(path.join(path.dirname(filePath), collider), 'utf-8'));
       } catch { /* unreadable collider — fall back to marking dup (historical behavior) */ }
+      // BRO-4192: the inclusion check behind the invalid-collider rule needs the
+      // show record; the parent dir IS the show id (same rule as the showId
+      // backstop below), so fill it where a writer omitted it.
+      const dirShowId = path.basename(path.dirname(filePath));
+      if (dirShowId && !dirShowId.startsWith('_') && !dirShowId.startsWith('.')) {
+        if (colliderData && !colliderData.showId) colliderData.showId = dirShowId;
+        if (!newData.showId) newData.showId = dirShowId;
+      }
       // Sibling loader for the N-hop cycle walk, seeded with the collider read
       // above so it costs no extra I/O in the (overwhelmingly common) 2-node
       // case; only walking past the collider touches disk again.
@@ -1811,6 +2010,46 @@ function wouldFormDuplicateCycle(thisBasename, candidateTarget, loadSibling) {
 const SUBSTANTIVE_BODY_CHARS = 500;
 const NEAR_EMPTY_BODY_CHARS = 200;
 
+/**
+ * BRO-4192: true when the same-URL collider is itself invalidated
+ * (wrongShow / wrongProduction / nonReview / rejected, via the heal module's
+ * canonical isTargetInvalidated) while the incoming record is not. Such a
+ * collider is not a legitimate canonical, so the incoming record must stay
+ * primary. Without this, heal-orphaned-duplicate-pointers cleared 97 pointers
+ * per rebuild and this collision check re-set every one in the same write
+ * (e.g. you-got-older 2026 Helen Shaw buried under a misfiled 2014 Isherwood
+ * review, hiding its NYT Critic's Pick).
+ *
+ * Lazy require: orphaned-duplicate-pointer-heal.js requires this module at
+ * load time, so a top-level require here would be circular.
+ */
+function isInvalidCollisionCanonical(newData, colliderData) {
+  if (!newData || !colliderData) return false;
+  return isExcludedIgnoringDuplicate(colliderData) && !isExcludedIgnoringDuplicate(newData);
+}
+
+/**
+ * Would the rebuild exclude this record for a reason OTHER than its own
+ * duplicate pointer? Uses the canonical predicate (review-guards
+ * explainExclusion) with duplicateOf/duplicateTextOf blanked, so "is this a
+ * legitimate canonical?" matches what actually ships. The heal's narrower
+ * isTargetInvalidated disagrees with the rebuild on some records (e.g. a raw
+ * wrongProduction the rebuild still includes: all-my-sons-2019 Vulture Sara
+ * Holdren), and using it here admitted a same-URL double count.
+ * Falls back to isTargetInvalidated when the show record is unavailable
+ * (pure unit tests, orphan dirs).
+ */
+function isExcludedIgnoringDuplicate(rec) {
+  if (!rec) return false;
+  const show = rec.showId ? _getShowById(rec.showId) : null;
+  if (!show) {
+    const { isTargetInvalidated } = require('./orphaned-duplicate-pointer-heal.js');
+    return isTargetInvalidated(rec);
+  }
+  const { explainExclusion } = require('./review-guards');
+  return explainExclusion({ ...rec, duplicateOf: null, duplicateTextOf: null }, show, null) !== null;
+}
+
 function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   // A prior cleanup pass explicitly reviewed this URL collision and cleared it
   // as a false positive (_duplicateOfCleared breadcrumb — e.g. two distinct
@@ -1822,6 +2061,8 @@ function shouldMarkUrlCollisionDuplicate(newData, colliderData) {
   // Can't read the collider → defer to historical behavior (mark duplicate). We
   // only keep the new file primary when we can PROVE the collider is thinner.
   if (!colliderData) return true;
+  // BRO-4192: never bury a valid review under an invalid same-URL sibling.
+  if (isInvalidCollisionCanonical(newData, colliderData)) return false;
   const newLen = String((newData && newData.fullText) || '').trim().length;
   const colLen = String((colliderData && colliderData.fullText) || '').trim().length;
   // New file has a real body AND the collider is (near-)empty → new file is the
@@ -1866,6 +2107,7 @@ function shouldMarkPostCorrectionDuplicate(newData, colliderData) {
   if (!newData) return false;
   if (newData._duplicateOfCleared) return false;
   if (!colliderData) return false;
+  if (isInvalidCollisionCanonical(newData, colliderData)) return false;
   const newLen = String(newData.fullText || '').trim().length;
   if (newLen >= NEAR_EMPTY_BODY_CHARS) return false;
   // Sole-score guard: a bodyless file can still be the pair's only scored copy
@@ -1881,6 +2123,203 @@ function shouldMarkPostCorrectionDuplicate(newData, colliderData) {
   return true;
 }
 
+// Exclusion-verdict field FAMILIES the orphan rescue carries forward.
+// Deliberately a NARROW subset of PROTECTED_FIELDS — not fullText/
+// assignedScore/contentTier/duplicateOf/etc, which have their own dedicated
+// collision/dedup reasoning elsewhere (checkUrlCollision, findExistingReviewFile's
+// body-length tiebreaks) that a blind field-copy here would silently corrupt
+// (a rescued fullText made a bodyless post-correction write look "substantive"
+// and defeated shouldMarkPostCorrectionDuplicate's tombstone decision in
+// testing). This is exactly "a human or auditor decided this identity does
+// not belong here" — the class of verdict that must never depend on which
+// exact filename currently holds it.
+//
+// Grouped by family with an `isClearedOnIncoming` predicate (reusing the
+// SAME canonical clear predicates the rest of this file uses —
+// _wrongProductionCleared/_wrongShowCleared/_isNotReviewCleared/
+// _wrongArticleCleared) so the rescue never resurrects a family the incoming
+// write is itself in the middle of clearing (codex adversarial review: a
+// caller supplying wrongProductionManualClear=true without also explicitly
+// setting wrongProduction=false must not have wrongProduction resurrected).
+// `primaryFields`: at least one must be TRUTHY (or a non-empty string, for
+// the reason-only case) for a sibling to count as carrying a live verdict for
+// this family at all. Without this, a sibling carrying ONLY a secondary field
+// (e.g. a stale wrongProductionReason left behind after wrongProduction was
+// independently reset to false) would "match" on that secondary field alone —
+// both hiding a BETTER sibling further down the directory listing and
+// producing a nonsensical rescue (a reason with no flag). Codex adversarial
+// review, second pass.
+const ORPHAN_RESCUE_FAMILIES = [
+  {
+    primaryFields: ['wrongProduction', 'wrongProductionOverride', 'wrongProductionManualClear'],
+    fields: ['wrongProduction', 'wrongProductionNote', 'wrongProductionReason', 'wrongProductionReasonAt',
+      'wrongProductionOverride', 'wrongProductionOverrideReason', 'wrongProductionOverrideSetAt', 'wrongProductionOverrideSetBy',
+      'wrongProductionManualClear', 'humanReviewedWrongProduction'],
+    isClearedOnIncoming: _wrongProductionCleared,
+  },
+  {
+    primaryFields: ['wrongShow', 'wrongShowOverride', 'wrongShowManualClear'],
+    fields: ['wrongShow', 'wrongShowReason', 'wrongShowNote', 'wrongShowReasonAt',
+      'wrongShowOverride', 'wrongShowOverrideReason', 'wrongShowOverrideAt', 'wrongShowManualClear'],
+    isClearedOnIncoming: _wrongShowCleared,
+  },
+  {
+    primaryFields: ['isNotReview', 'isNotReviewManualClear'],
+    fields: ['isNotReview', 'isNotReviewReason', 'isNotReviewSetAt', 'isNotReviewSetBy', 'isNotReviewManualClear'],
+    isClearedOnIncoming: _isNotReviewCleared,
+  },
+  {
+    primaryFields: ['wrongAttribution', 'wrongFullText', 'wrongArticleManualClear'],
+    fields: ['wrongAttribution', 'wrongAttributionReason', 'wrongArticleManualClear', 'humanReviewedWrongArticle', 'wrongFullText'],
+    isClearedOnIncoming: _wrongArticleCleared,
+  },
+];
+const ORPHAN_RESCUE_FIELDS = ORPHAN_RESCUE_FAMILIES.flatMap((f) => f.fields);
+
+function _isLiveValue(v) {
+  return v !== undefined && v !== null && v !== false
+    && !(typeof v === 'string' && v.length === 0)
+    && !(Array.isArray(v) && v.length === 0);
+}
+
+// Sibling lookup for the "orphaned protected-verdict rescue" call site above.
+// Only ever reads OTHER files in the directory (filePath itself is known not
+// to exist at the call site). Matches on previousUrl/urlCorrectedFrom ONLY
+// (not the sibling's current url) — a live url match is a DUPLICATE-content
+// question checkUrlCollision already owns; previousUrl/urlCorrectedFrom means
+// the sibling's identity used to BE this exact url before it moved on, which
+// is the orphaned-identity question this function exists to answer. Returns
+// { filename, data, fields } for the first same-outlet sibling whose recorded
+// prior url matches newData.url and carries a live verdict field (a family
+// with a truthy primary field, not already being cleared by the incoming
+// write), or null.
+function _findOrphanedProtectedVerdict(filePath, newData) {
+  const dir = path.dirname(filePath);
+  let files;
+  try {
+    files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  } catch {
+    return null;
+  }
+  const { normalizeOutlet } = require('./review-normalization');
+  const targetOutlet = normalizeOutlet(newData.outletId || newData.outlet || path.basename(filePath).split('--')[0]);
+  const targetUrl = _normalizeUrlForCollision(newData.url);
+  const eligibleFamilies = ORPHAN_RESCUE_FAMILIES.filter((fam) => !fam.isClearedOnIncoming(newData));
+  for (const f of files) {
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
+    } catch {
+      continue;
+    }
+    if (!data) continue;
+    const fileOutlet = normalizeOutlet(data.outletId || f.split('--')[0]);
+    if (fileOutlet !== targetOutlet) continue;
+    const priorUrls = [data.previousUrl, data.urlCorrectedFrom]
+      .filter(u => typeof u === 'string' && u);
+    const urlMatches = priorUrls.some(u => _normalizeUrlForCollision(u) === targetUrl);
+    if (!urlMatches) continue;
+    const liveFamilies = eligibleFamilies.filter((fam) => fam.primaryFields.some((k) => _isLiveValue(data[k])));
+    if (liveFamilies.length === 0) continue;
+    const fields = liveFamilies.flatMap((fam) => fam.fields).filter((k) => _isLiveValue(data[k]));
+    if (fields.length === 0) continue;
+    return { filename: f, data, fields };
+  }
+  return null;
+}
+
+// Field-name-to-family map for _findClearedVerdictOrphan's incoming-clear
+// check below — reuses the SAME family definitions as the live rescue so the
+// two paths can never disagree about what counts as "the incoming write is
+// already handling this."
+const ORPHAN_RESCUE_FAMILY_BY_FIELD = new Map(
+  ORPHAN_RESCUE_FAMILIES.flatMap((fam) => fam.fields.map((k) => [k, fam]))
+);
+
+// Which flag fields url-change-invariant.js's URL_DERIVED_FIELDS can actually
+// clear, mapped to the corroborating field(s) that must ALSO appear in
+// `cleared` before treating the flag's presence in `cleared` as proof it was
+// a live exclusion (see the function doc below). isNotReview is deliberately
+// absent — url-change-invariant never touches it (not in URL_DERIVED_FIELDS),
+// so it can never legitimately appear in a `cleared` array.
+//
+//   wrongProduction/wrongShow: corroborate with their reason/note siblings.
+//   Every producer in this codebase that sets the flag true also sets a
+//   reason or note; the self-heal scripts that write `= false` (confirmed via
+//   grep — audit-bro79-ensemble-rejections.js, rebuild-all-reviews.js,
+//   clear-stale-wrong-production-flags.js, etc.) never set one.
+//
+//   wrongAttribution/wrongFullText: no corroboration required — grepping this
+//   codebase found zero producers that ever write `wrongAttribution: false`
+//   or `wrongFullText: false` (unlike wrongProduction/wrongShow, these have
+//   no dedicated "reset to false" self-heal script), so the false-positive
+//   risk _findOrphanedProtectedVerdict's `_isLiveValue` guard exists to catch
+//   doesn't apply here. codex adversarial review (third pass): the original
+//   cut of this fallback only watched wrongProduction/wrongShow, silently
+//   missing the exact same failure shape one family over.
+const CLEARABLE_VERDICT_FLAGS = {
+  wrongProduction: ['wrongProductionReason', 'wrongProductionNote'],
+  wrongShow: ['wrongShowReason', 'wrongShowNote'],
+  wrongAttribution: [],
+  wrongFullText: [],
+};
+
+// Fallback for the "orphaned protected-verdict rescue" call site when no
+// sibling carries a LIVE verdict, but one has _urlChangedClear recording that
+// one of CLEARABLE_VERDICT_FLAGS was among the fields cleared specifically
+// because its own url moved away from newData.url (applyUrlChangeInvariant,
+// above).
+//
+// The breadcrumb's `cleared` array names fields that were REMOVED, but
+// url-change-invariant pushes a field onto it whenever the OLD value was
+// merely *defined* (including an explicit `false`, e.g. a prior auto-heal
+// clearing wrongProduction=false) — not only when it was a live exclusion
+// (codex adversarial review, second pass; confirmed against
+// url-change-invariant.js's "cleared BY OMISSION" branch, which pushes on
+// `existing[field] !== undefined` with no truthiness check). A bare
+// `cleared.includes('wrongProduction')` would therefore quarantine recreations
+// of urls that were never actually flagged — so for flags with a real
+// "reset to false" self-heal producer, this requires a corroborating
+// reason/note field to also appear in `cleared`.
+function _findClearedVerdictOrphan(filePath, newData) {
+  const dir = path.dirname(filePath);
+  let files;
+  try {
+    files = fs.readdirSync(dir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
+  } catch {
+    return null;
+  }
+  const { normalizeOutlet } = require('./review-normalization');
+  const targetOutlet = normalizeOutlet(newData.outletId || newData.outlet || path.basename(filePath).split('--')[0]);
+  const targetUrl = _normalizeUrlForCollision(newData.url);
+  for (const f of files) {
+    let data;
+    try {
+      data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
+    } catch {
+      continue;
+    }
+    if (!data || !data._urlChangedClear || !data._urlChangedClear.from) continue;
+    const fileOutlet = normalizeOutlet(data.outletId || f.split('--')[0]);
+    if (fileOutlet !== targetOutlet) continue;
+    if (_normalizeUrlForCollision(data._urlChangedClear.from) !== targetUrl) continue;
+    const cleared = Array.isArray(data._urlChangedClear.cleared) ? data._urlChangedClear.cleared : [];
+    const clearedFields = Object.keys(CLEARABLE_VERDICT_FLAGS).filter((flag) => {
+      if (!cleared.includes(flag)) return false;
+      const corroboration = CLEARABLE_VERDICT_FLAGS[flag];
+      if (corroboration.length > 0 && !cleared.some((c) => corroboration.includes(c))) return false;
+      // Don't quarantine a family the INCOMING write is itself clearing (same
+      // contract as the live rescue above).
+      const fam = ORPHAN_RESCUE_FAMILY_BY_FIELD.get(flag);
+      if (fam && fam.isClearedOnIncoming(newData)) return false;
+      return true;
+    });
+    if (clearedFields.length === 0) continue;
+    return { filename: f, clearedFields, at: data._urlChangedClear.at };
+  }
+  return null;
+}
+
 function checkUrlCollision(filePath, newData) {
   if (!newData || !newData.url || typeof newData.url !== 'string') return null;
   const dir = path.dirname(filePath);
@@ -1892,15 +2331,22 @@ function checkUrlCollision(filePath, newData) {
     return null;
   }
   const normNew = _normalizeUrlForCollision(newData.url);
+  // BRO-4192: prefer a VALID same-URL sibling. The write-time decision now
+  // declines to bury a valid record under an invalid collider, so returning an
+  // invalid sibling first would hide a valid twin and admit a double count
+  // (all-my-sons-2019 Vulture: Jesse Green + Sara Holdren, one URL).
+  let firstInvalid = null;
   for (const f of files) {
     try {
       const data = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
       if (data.url && typeof data.url === 'string' && _normalizeUrlForCollision(data.url) === normNew) {
-        return f;
+        if (!data.showId && !path.basename(dir).startsWith('_')) data.showId = path.basename(dir);
+        if (!isExcludedIgnoringDuplicate(data)) return f;
+        if (!firstInvalid) firstInvalid = f;
       }
     } catch { /* skip unreadable */ }
   }
-  return null;
+  return firstInvalid;
 }
 
 // Normalize a URL for collision comparison.
@@ -1916,6 +2362,35 @@ function _normalizeUrlForCollision(url) {
   // Lazy require to avoid circular dep at module load.
   const { normalizeUrl } = require('./review-normalization');
   return normalizeUrl(url);
+}
+
+// BRO-2409: normalizeUrl() PLUS a full query-string strip (review-normalization's
+// stripTrivial — the same comparator audit-duplicate-of-url-mismatch.js uses to
+// decide whether a duplicateOf pointer's URL mismatch is real or trivial). Used
+// ONLY by the stale-duplicateOf self-heal above, deliberately more lenient than
+// _normalizeUrlForCollision: that function still gates whether a BRAND NEW
+// duplicateOf gets set on a fresh URL collision, where the tighter tracking-param
+// allowlist is the right level of caution (recirculation/share params are the
+// noise there too, but a false NEGATIVE just means a real dupe goes unflagged
+// until the next write, not a live review getting silently dropped).
+//
+// KNOWN RESIDUAL GAP (ship-check finding, not fixed here): audit-duplicate-of-
+// url-mismatch.js's own comparator additionally applies canonicalizeHost()
+// (folds a registered domain alias, e.g. theater.nytimes.com -> nytimes.com,
+// via outlet-registry.json). This does NOT. A pair whose URLs differ ONLY by
+// such a domain alias could still hit the exact race this fix closes for
+// query-string variance. Not ported here because canonicalizeHost requires
+// loading outlet-registry.json, and review-write-guard.js is loaded by nearly
+// every script in the repo — pulling registry I/O into its module-scope
+// self-heal path is a broader change than this ticket's confirmed failure
+// mode warrants. Zero of the 22 real corpus clusters BRO-2409 was filed
+// against involved a domain-alias mismatch; if one surfaces, promote
+// canonicalizeHost (and its registry load) into review-normalization.js
+// alongside stripTrivial so both comparators share it, rather than
+// duplicating the domain-alias map here.
+function _trivialCanonUrl(url) {
+  const { normalizeUrl, stripTrivial } = require('./review-normalization');
+  return stripTrivial(normalizeUrl(url));
 }
 
 /**
@@ -2493,4 +2968,23 @@ function protectStagedDeletions(cwd, options = {}) {
   return restored;
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS };
+/**
+ * A url flip-flop between a named NON-review page (e.g. a The Stage /news/
+ * item, a ticket listing) and a real review url must resolve to the review,
+ * not to whichever side the file happened to hold when the breaker fired.
+ * my-sons-a-queer-but-what-can-you-do-west-end-2026 and
+ * white-rabbit-red-rabbit-west-end-2026 were auto-pinned (BRO-121) onto
+ * thestage.co.uk/news/ urls while the /reviews/ url kept arriving (2026-09-25).
+ * Also lets an AUTO pin (urlVerifiedAuto) on such a url be corrected; a human
+ * pin (urlManualOverride / urlVerified without Auto) is never overridden.
+ */
+function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl) {
+  const { namedNonReviewReason } = require('./non-review-url-patterns');
+  if (!namedNonReviewReason(existingUrl || '') || namedNonReviewReason(incomingUrl || '')) return false;
+  // Same site only: a host-wide named pattern can sit over real reviews
+  // elsewhere, so never let this hop an auto-pin to a different outlet.
+  const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };
+  return !!host(existingUrl) && host(existingUrl) === host(incomingUrl);
+}
+
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };

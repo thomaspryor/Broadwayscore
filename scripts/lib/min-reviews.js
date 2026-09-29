@@ -33,6 +33,7 @@ function getMarketMinReviews(category) {
     case 'off-broadway':
     case 'off-off-broadway':
     case 'regional':
+    case 'tour':
       return MIN_REVIEWS_OFF_BROADWAY;
     case 'off-west-end':
       return MIN_REVIEWS_OFF_WEST_END;

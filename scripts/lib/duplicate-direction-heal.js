@@ -52,13 +52,26 @@ function hasAnchoredBand(data) {
  * promoted to canonical — mirrors byline-recovery.js's gate 2 (clean-source):
  * canonicalizing a flagged record just manufactures a fresh problem.
  *
- * @param {{wrongProduction?: any, wrongShow?: any, isNonReview?: any, contentTier?: string}} data
+ * Also defers to review-guards.js's isRejectedNonReview (BRO-3821): a record
+ * the ensemble-scoreability-check already rejected as garbage_text/not_a_review
+ * (or a high-confidence contentVerification.wrongArticle verdict) is just as
+ * unpromotable as an explicit wrongProduction/wrongShow flag, even when
+ * contentTier isn't 'invalid' — e.g. the-lion-king-west-end-2021
+ * guardian--lyngardner.json carries contentTier:'truncated' +
+ * rejectionReason:'garbage_text' (OCR-garbled text about an unrelated show)
+ * and would otherwise slip past this gate. Reusing the canonical predicate
+ * instead of re-deriving the rejection logic here keeps this gate and the
+ * rebuild's own exclusion in lock-step (memory
+ * feedback_includability_predicates_must_be_canonical.md).
+ *
+ * @param {{wrongProduction?: any, wrongShow?: any, isNonReview?: any, contentTier?: string, rejectionReason?: string, contentVerification?: object}} data
  * @returns {boolean}
  */
 function isFlaggedRecord(data) {
   if (!data) return true;
   if (data.wrongProduction || data.wrongShow || data.isNonReview) return true;
   if (data.contentTier === 'invalid') return true;
+  if (require('./review-guards').isRejectedNonReview(data)) return true;
   return false;
 }
 
@@ -75,18 +88,89 @@ function isFlaggedRecord(data) {
  *   1. `loser` carries a real personal byline (isPlausiblePersonName) OR an
  *      anchored-scorer band (hasAnchoredBand) — a genuine quality signal the
  *      Unknown/unanchored `winner` lacks.
- *   2. `winner`'s byline is Unknown/blank AND `winner` has no anchored band —
- *      the winner must be provably the WEAKER record, not merely different.
+ *   2. `winner`'s byline is Unknown/blank — the winner must be provably the
+ *      WEAKER record on attribution, not merely different.
  *   3. `loser` is not itself flagged (wrongProduction/wrongShow/isNonReview/
- *      contentTier==='invalid') — the clean-source gate.
+ *      contentTier==='invalid'/ensemble-rejected non-review) — the
+ *      clean-source gate.
+ *   3b. `loser`'s fullText clears MIN_LOSER_BODY_CHARS — a loser with no real
+ *      body contributes nothing but a byline, and canonicalizing it silently
+ *      discards whatever content `winner` actually held. Found live while
+ *      verifying BRO-3821 against the real corpus: a-little-night-music-2009
+ *      (backstage--luke-crowe.json, rejectionReason 'wrong_show', 0 chars),
+ *      matilda-the-musical-2013 (bloomberg--jeremy-gerard.json, 'not_a_review',
+ *      0 chars), and moulin-rouge-the-musical-west-end-2021 (nytg--gillian-russo.json,
+ *      0 chars, no score at all) were all about to be promoted over winners
+ *      that — Unknown byline or not — held the only real text/score. None of
+ *      the three touch the hasAnchoredBand(winner) branch below (their
+ *      winners aren't anchored) — this gate existed as a gap independent of
+ *      the anchored-band veto, just never triggered until the corpus sweep.
+ *   4. If `winner` DOES carry an anchored band, the flip still proceeds when
+ *      `loser` has a real byline AND `winner`'s fullText is not shorter than
+ *      `loser`'s — an anchored band only vouches for the SCORE (it's pinned
+ *      to an explicit star rating found in the text), not for the BODY, and
+ *      an Unknown-byline scrape routinely drags in page chrome (subscription
+ *      banners, related-article rails, newsletter footers) that a properly
+ *      attributed sibling's scrape never picked up, inflating both length
+ *      and the anchored score along with it (BRO-3821: 16 corpus pairs,
+ *      winner fullText length >= loser's in every one — man-to-man-west-end-2026
+ *      artsdesk--unknown.json literally opens with "Help keep arts journalism
+ *      alive... SUBSCRIBE TODAY" ahead of the review text its named sibling
+ *      artsdesk--aleks-sierz.json lacks). The veto still fires when `winner`'s
+ *      body IS shorter than `loser`'s — that's the genuine "short anchored
+ *      stub shouldn't lose to a padded/longer body" case, and it still fires
+ *      when `loser` lacks a real byline (anchored-only or mutual-Unknown
+ *      case — url-collision-canonical.test.mjs's
+ *      "mutual anchored-but-Unknown siblings" pair keeps deferring to the
+ *      collider, unchanged).
  *
- * @param {{criticName?: string, wrongProduction?: any, wrongShow?: any, isNonReview?: any, contentTier?: string, llmScore?: object}} loser
- * @param {{criticName?: string, llmScore?: object}} winner
+ * @param {{criticName?: string, wrongProduction?: any, wrongShow?: any, isNonReview?: any, contentTier?: string, llmScore?: object, fullText?: string}} loser
+ * @param {{criticName?: string, llmScore?: object, fullText?: string}} winner
  * @returns {boolean}
  */
+// Same threshold review-write-guard.js's SUBSTANTIVE_BODY_CHARS uses — a body
+// this short holds nothing unique, so it can never justify becoming canonical.
+const MIN_LOSER_BODY_CHARS = 500;
+
+// Ceiling on how much longer `winner` may be than `loser` while still reading
+// as "boilerplate on the winner" rather than "loser is a truncated excerpt".
+// The real BRO-3821 corpus tops out at 1.74x (the-children-off-west-end-2026,
+// 2456 vs 4276 chars); this leaves generous headroom above that while still
+// refusing a pathological case a length-only check can't otherwise tell apart
+// from real contamination — e.g. a bare-minimum 500-char loser "beating" a
+// genuinely complete 6000-char anchored winner just because it has a byline
+// (ship-check adversarial review, BRO-3821).
+const MAX_WINNER_TO_LOSER_RATIO = 3;
+
+/**
+ * Does this record carry a usable numeric score? `assignedScore` is the field
+ * rebuild actually consumes; `llmScore.score` is the upstream value it is
+ * derived from, so either one present means the record can still contribute a
+ * score once it is canonical.
+ */
+function hasUsableScore(data) {
+  if (!data) return false;
+  if (Number.isFinite(data.assignedScore)) return true;
+  return !!(data.llmScore && Number.isFinite(data.llmScore.score));
+}
+
 function shouldFlipDuplicateDirection(loser, winner) {
   if (!loser || !winner) return false;
   if (isFlaggedRecord(loser)) return false;
+  const loserLen = String(loser.fullText || '').trim().length;
+  if (loserLen < MIN_LOSER_BODY_CHARS) return false;
+  // Never trade a scored record for an unscored one. A byline is only worth
+  // promoting if the promoted record can still be SCORED once canonical —
+  // otherwise the flip silently deletes the pair's only score. Found by
+  // re-running findDirectionFlips over the real corpus after the first two
+  // BRO-3821 commits: archduke-west-end-2026 (thestage--tom-wicker, no score,
+  // would have displaced thestage--unknown at 65), golden-boy-off-west-end-2026
+  // (standard--nick-curtis, no score, would have displaced a T1 Evening
+  // Standard 88) and vanya-off-broadway-2025 (theatermania--dan-rubins,
+  // assignedScore null, would have displaced theatermania--unknown at 93).
+  // All three losers are isIncludableForRebuild=false on their own merits, so
+  // promoting them drops the review from the show entirely.
+  if (!hasUsableScore(loser) && hasUsableScore(winner)) return false;
   const loserName = (loser.criticName || '').trim();
   const loserNamed = isPlausiblePersonName(loserName);
   const loserAnchored = hasAnchoredBand(loser);
@@ -94,7 +178,12 @@ function shouldFlipDuplicateDirection(loser, winner) {
   const winnerName = (winner.criticName || '').trim().toLowerCase();
   const winnerUnknown = !winnerName || winnerName === 'unknown';
   if (!winnerUnknown) return false;
-  if (hasAnchoredBand(winner)) return false;
+  if (hasAnchoredBand(winner)) {
+    if (!loserNamed) return false;
+    const winnerLen = String(winner.fullText || '').trim().length;
+    if (winnerLen < loserLen) return false;
+    if (winnerLen > loserLen * MAX_WINNER_TO_LOSER_RATIO) return false;
+  }
   return true;
 }
 
@@ -128,6 +217,7 @@ function findDirectionFlips(records) {
 
 module.exports = {
   hasAnchoredBand,
+  hasUsableScore,
   isFlaggedRecord,
   shouldFlipDuplicateDirection,
   findDirectionFlips,

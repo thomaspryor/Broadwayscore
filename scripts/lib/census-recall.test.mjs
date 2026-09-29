@@ -276,6 +276,28 @@ test('a real arm death still fires when its absolute yield collapses too', () =>
   assert.equal(r.regressions[0].rule, 'week-on-week');
 });
 
+test('BRO-4185: a thin sample week (low truth URLs per show) is not a regression', () => {
+  // 2026-09-21 shape: 4 small shows, 18 truth URLs (4.5/show) vs ~24/show
+  // before. Every arm's yield/show falls with the density; the per-show
+  // yield drop is the sample mix, not decay.
+  const wk = (date, onDisk, shows, truthUrls, y) => ({ date, families: { onDisk }, shows, truthUrls, familyYield: { onDisk: y } });
+  const r = detectRecallRegression([
+    wk('2026-08-24', 0.88, 5, 120, 21.1),
+    wk('2026-09-07', 0.96, 5, 115, 22.1),
+    wk('2026-09-14', 0.88, 5, 119, 19.2),
+    wk('2026-09-21', 0.72, 4, 18, 3.25),
+  ]);
+  assert.equal(r.verdict, 'ok', JSON.stringify(r.regressions));
+});
+
+test('BRO-4185: a real collapse at unchanged truth density still regresses', () => {
+  const wk = (date, onDisk, y) => ({ date, families: { onDisk }, shows: 5, truthUrls: 120, familyYield: { onDisk: y } });
+  const r = detectRecallRegression([
+    wk('2026-08-24', 0.88, 21), wk('2026-09-07', 0.9, 22), wk('2026-09-14', 0.88, 21), wk('2026-09-21', 0.3, 7),
+  ]);
+  assert.equal(r.verdict, 'regressed');
+});
+
 test('a slow decline that never trips week-on-week is caught by the drift rule', () => {
   // 0.05/week for 10 weeks: 0.80 -> 0.30. The sliding median follows it down,
   // so no single week ever clears 0.15 — verified silent before this rule.

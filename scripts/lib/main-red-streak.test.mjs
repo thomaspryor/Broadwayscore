@@ -3,7 +3,11 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { assessMainRedStreak } = require('./main-red-streak.js');
+const {
+  assessMainRedStreak, failingJobsFromNeeds,
+  stepFailureSignature, firstFailingTestNameInJobLog, isBashIntegrationStep, isBashTestStepCommand, failingStepSignatures, signaturesToResolve,
+  trackSignatureAbsence, jobNameFromRedKey, STALE_ABSENT_RUN_THRESHOLD,
+} = require('./main-red-streak.js');
 
 const NOW = Date.parse('2026-08-17T15:40:00.000Z');
 const ago = (min) => new Date(NOW - min * 60000).toISOString();
@@ -226,6 +230,270 @@ test('an in-progress run reported with conclusion "" (not null) does not fire a 
   assert.equal(r.redRunCount, 0);
 });
 
+test('failingJobsFromNeeds returns empty string when every job in `needs` succeeded or was skipped', () => {
+  const needs = { 'unit-tests': { result: 'success' }, 'dependency-audit': { result: 'skipped' } };
+  assert.equal(failingJobsFromNeeds(needs), '');
+});
+
+test('failingJobsFromNeeds names the one failing job', () => {
+  const needs = { 'unit-tests': { result: 'success' }, 'data-validation': { result: 'failure' } };
+  assert.equal(failingJobsFromNeeds(needs), 'data-validation');
+});
+
+test('failingJobsFromNeeds comma-joins multiple failing jobs and excludes skipped/success ones', () => {
+  const needs = {
+    'unit-tests': { result: 'success' },
+    'data-validation': { result: 'failure' },
+    'lint-workflows': { result: 'failure' },
+    'dependency-audit': { result: 'skipped' },
+  };
+  assert.equal(failingJobsFromNeeds(needs), 'data-validation, lint-workflows');
+});
+
+test('failingJobsFromNeeds treats cancelled jobs as failing too (not success/skipped)', () => {
+  const needs = { 'e2e-tests': { result: 'cancelled' } };
+  assert.equal(failingJobsFromNeeds(needs), 'e2e-tests');
+});
+
+test('failingJobsFromNeeds handles an empty/missing needs object without crashing', () => {
+  assert.equal(failingJobsFromNeeds({}), '');
+  assert.equal(failingJobsFromNeeds(undefined), '');
+});
+
+// ── per-breakage signature (BRO-3865) ───────────────────────────────────────
+
+test('failingStepSignatures: two different failing steps produce two distinct conditions', () => {
+  const run = {
+    jobs: [
+      testJob('unit-tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'failure', [okStep('Set up job'), failedStep('Lint workflow files')]),
+    ],
+  };
+  const sigs = failingStepSignatures(run);
+  assert.equal(sigs.length, 2);
+  assert.notEqual(sigs[0].conditionKey, sigs[1].conditionKey);
+  assert.ok(sigs.every((s) => s.conditionKey.startsWith('test-yml:red:')));
+});
+
+test('failingStepSignatures: the same failing step recurring on a later push produces the SAME conditionKey (stays dedupe-friendly)', () => {
+  const makeRun = () => ({
+    jobs: [testJob('unit-tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')])],
+  });
+  const sigsA = failingStepSignatures(makeRun());
+  const sigsB = failingStepSignatures(makeRun());
+  assert.equal(sigsA.length, 1);
+  assert.equal(sigsB.length, 1);
+  assert.equal(sigsA[0].conditionKey, sigsB[0].conditionKey);
+});
+
+test('signaturesToResolve: a step that goes CONFIRMED green resolves while a still-failing sibling stays open', () => {
+  const keyA = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', null);
+  const keyB = stepFailureSignature('lint-workflows', 'Lint workflow files', null);
+  const openKeys = [keyA, keyB, 'test-yml:main-streak-escalation']; // non-red key must be ignored, not resolved
+  // unit-tests recovered (conclusion success); lint-workflows is still red.
+  const laterRun = {
+    jobs: [
+      testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'failure', [okStep('Set up job'), failedStep('Lint workflow files')]),
+    ],
+  };
+  const currentSignatures = failingStepSignatures(laterRun);
+  const toResolve = signaturesToResolve(openKeys, laterRun, currentSignatures);
+  assert.deepEqual(toResolve, [keyA]);
+});
+
+test('signaturesToResolve: a fully-green run resolves every open red-signature key', () => {
+  const keyA = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', null);
+  const keyB = stepFailureSignature('lint-workflows', 'Lint workflow files', null);
+  const greenRun = {
+    jobs: [
+      testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'success', [okStep('Set up job'), okStep('Lint workflow files')]),
+    ],
+  };
+  const toResolve = signaturesToResolve([keyA, keyB], greenRun, []);
+  assert.deepEqual(new Set(toResolve), new Set([keyA, keyB]));
+});
+
+test('signaturesToResolve does NOT resolve a signature whose job is merely ABSENT/SKIPPED this run (absence of evidence is not evidence of recovery)', () => {
+  // Adversarial-review finding (BRO-3865): a job skipped by a path filter, or
+  // cancelled upstream before it ran, gives ZERO evidence the previously
+  // broken step now passes. Only an explicit conclusion:'success' may
+  // resolve a signature — the same "absence must not manufacture an excuse"
+  // principle classify()/isInfraOnlyFailure apply elsewhere in this file.
+  const keyA = stepFailureSignature('lint-workflows', 'Lint workflow files', null);
+  const runWithLintSkipped = {
+    jobs: [
+      testJob('unit-tests', 'success', [okStep('Set up job'), okStep('Run unit tests (no-data-dependency)')]),
+      testJob('lint-workflows', 'skipped', []),
+    ],
+  };
+  const currentSignatures = failingStepSignatures(runWithLintSkipped);
+  const toResolve = signaturesToResolve([keyA], runWithLintSkipped, currentSignatures);
+  assert.deepEqual(toResolve, []);
+});
+
+test('signaturesToResolve does NOT resolve a signature for a job that is STILL failing, even on a different step than currently reported', () => {
+  // Only the job's OWN FIRST failing step is ever reported by
+  // failingStepSignatures (GitHub Actions skips later steps once one fails),
+  // so an older open signature for a step that isn't the CURRENT one must
+  // stay open rather than being inferred as fixed — the job's conclusion is
+  // still 'failure', not 'success'.
+  const staleKey = stepFailureSignature('data-validation', 'An earlier step that used to fail', null);
+  const stillRedRun = {
+    jobs: [testJob('data-validation', 'failure', [okStep('Set up job'), failedStep('A different, currently-failing step')])],
+  };
+  const currentSignatures = failingStepSignatures(stillRedRun);
+  const toResolve = signaturesToResolve([staleKey], stillRedRun, currentSignatures);
+  assert.deepEqual(toResolve, []);
+});
+
+test('firstFailingTestNameInJobLog extracts the first TAP failing test name from one job\'s raw log', () => {
+  const log = [
+    '2026-09-20T10:00:00.0000000Z not ok 42 - url collision canonical dedupe removes exact duplicate',
+    "2026-09-20T10:00:00.0000000Z   location: '/repo/tests/unit/url-collision-canonical.test.mjs:10:1'",
+    '2026-09-20T10:00:01.0000000Z not ok 88 - lastFeaturedInWeek marks the most recent issue',
+  ].join('\n');
+  // Only the FIRST failing test is kept — later ones in the same batched
+  // step don't overwrite it.
+  assert.equal(firstFailingTestNameInJobLog(log), 'url collision canonical dedupe removes exact duplicate');
+});
+
+test('firstFailingTestNameInJobLog ignores an echoed shell comment that merely CONTAINS the literal string "not ok N - <name>" as documentation text', () => {
+  // Live-verified (BRO-3865): this repo's own run_batch() shell function
+  // prints a comment containing this exact substring as part of GitHub
+  // Actions' "Run <script>" echo of the step's own source — with ANSI color
+  // codes prefixed, so it can never accidentally match the anchored regex,
+  // but worth pinning explicitly since it looks deceptively similar.
+  const log = [
+    "2026-09-20T18:38:38.2331444Z \x1b[36;1m    # (`not ok N - <name>` plus a `location: 'file:line'`\x1b[0m",
+    '2026-09-20T18:39:00.0000000Z not ok 2223 - the real failing test',
+  ].join('\n');
+  assert.equal(firstFailingTestNameInJobLog(log), 'the real failing test');
+});
+
+test('firstFailingTestNameInJobLog returns null when there is no TAP line (a non-test step, e.g. actionlint)', () => {
+  const log = '2026-09-20T10:00:00.0000000Z ::error::some actionlint failure with no TAP output at all';
+  assert.equal(firstFailingTestNameInJobLog(log), null);
+});
+
+test('failingStepSignatures uses the per-job test name map when supplied', () => {
+  const run = { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')])] };
+  const testNameByJob = new Map([['Unit Tests', 'named-only new write (no band) still beats an Unknown+unanchored collider']]);
+  const sigs = failingStepSignatures(run, testNameByJob);
+  assert.equal(sigs.length, 1);
+  assert.equal(sigs[0].testName, 'named-only new write (no band) still beats an Unknown+unanchored collider');
+});
+
+test('stepFailureSignature: same job+step, different first-failing-test names produce different conditionKeys', () => {
+  const keyA = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', 'url collision canonical dedupe removes exact duplicate');
+  const keyB = stepFailureSignature('unit-tests', 'Run unit tests (no-data-dependency)', 'lastFeaturedInWeek marks the most recent issue');
+  assert.notEqual(keyA, keyB);
+});
+
+test('failingStepSignatures skips setup-job-only infra failures (no signature manufactured from zero test evidence)', () => {
+  const run = { jobs: [testJob('unit-tests', 'failure', [failedStep('Set up job')])] };
+  assert.deepEqual(failingStepSignatures(run), []);
+});
+
+// ── BRO-4151: a bash integration step never gets a testName from the job's
+// whole-log TAP scan, even when the map has one for that job ──────────────
+
+test('isBashIntegrationStep matches test.yml\'s "(bash integration)" naming convention only', () => {
+  assert.equal(isBashIntegrationStep('Run push-with-retry stranded-commit-cascade test (bash integration)'), true);
+  assert.equal(isBashIntegrationStep('Run unit tests (no-data-dependency)'), false);
+  assert.equal(isBashIntegrationStep('Lint workflow files'), false);
+  assert.equal(isBashIntegrationStep(''), false);
+  assert.equal(isBashIntegrationStep(undefined), false);
+});
+
+test('failingStepSignatures never attributes a testName to a bash-integration step, even when the job-log TAP scan found one from a different step', () => {
+  // BRO-4149: "Unit Tests" job log contains a real `not ok` line from an
+  // EARLIER `node --test` batch step, but the job's own FIRST FAILING step is
+  // the bash integration test (which never prints TAP output at all — the
+  // whole-job-log scan cannot distinguish which step a `not ok` line actually
+  // belongs to). Attributing it anyway titled the filed card with an
+  // unrelated test's name.
+  const run = {
+    jobs: [testJob('Unit Tests', 'failure', [
+      okStep('Set up job'),
+      okStep('Run unit tests (no-data-dependency)'),
+      failedStep('Run push-with-retry stranded-commit-cascade test (bash integration)'),
+    ])],
+  };
+  const testNameByJob = new Map([['Unit Tests', 'foo returns the contracted value']]);
+  const sigs = failingStepSignatures(run, testNameByJob);
+  assert.equal(sigs.length, 1);
+  assert.equal(sigs[0].step, 'Run push-with-retry stranded-commit-cascade test (bash integration)');
+  assert.equal(sigs[0].testName, null, 'a bash-integration step must never inherit an unrelated TAP name');
+});
+
+test('failingStepSignatures still attributes a testName to a non-bash-integration failing step', () => {
+  const run = { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests (no-data-dependency)')])] };
+  const testNameByJob = new Map([['Unit Tests', 'a real node --test failure']]);
+  const sigs = failingStepSignatures(run, testNameByJob);
+  assert.equal(sigs[0].testName, 'a real node --test failure');
+});
+
+// ── BRO-4151 ship-check finding: the "(bash integration)" name suffix alone
+// is not reliable — a live scan of the REAL test.yml found bash-test.sh
+// steps named "(bash unit)" or with a bare task reference instead. The
+// run-command check (isBashTestStepCommand / resolveRunCommand) must catch
+// those too, not just the ones that follow the naming convention.
+
+test('isBashTestStepCommand matches bare and timeout-wrapped `bash <path>.test.sh`, not node --test or arbitrary bash', () => {
+  assert.equal(isBashTestStepCommand('bash scripts/lib/github-remote-parse.test.sh'), true);
+  assert.equal(isBashTestStepCommand('timeout 180 bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh'), true);
+  assert.equal(isBashTestStepCommand('node --test scripts/lib/x.test.mjs'), false);
+  assert.equal(isBashTestStepCommand('bash scripts/lib/some-script.sh'), false, 'not a .test.sh file');
+  assert.equal(isBashTestStepCommand('bash scripts/lib/x.test.sh extra-arg'), false, 'no trailing args admitted');
+  assert.equal(isBashTestStepCommand(null), false);
+});
+
+test('isBashIntegrationStep: the run-command check catches real test.yml steps the name-suffix convention misses', () => {
+  // "Run github-remote-parse test (bash unit)" — real step name in test.yml,
+  // does NOT end in "(bash integration)".
+  assert.equal(isBashIntegrationStep('Run github-remote-parse test (bash unit)'), false, 'name alone: convention miss');
+  assert.equal(isBashIntegrationStep('Run github-remote-parse test (bash unit)', 'bash scripts/lib/github-remote-parse.test.sh'), true, 'run-command check catches it');
+  // "Run merge-worktree-to-main checkout-fail regression test (task #819)" —
+  // real step name, no "(bash ...)" tag of any kind.
+  assert.equal(isBashIntegrationStep('Run merge-worktree-to-main checkout-fail regression test (task #819)'), false);
+  assert.equal(isBashIntegrationStep('Run merge-worktree-to-main checkout-fail regression test (task #819)', 'timeout 180 bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh'), true);
+  // Still true via the name-suffix fallback alone when no run command is available.
+  assert.equal(isBashIntegrationStep('Run push-with-retry deadline-guard test (bash integration)'), true);
+});
+
+test('failingStepSignatures suppresses testName via resolveRunCommand even when the step name does not follow the "(bash integration)" convention', () => {
+  const run = {
+    jobs: [testJob('Unit Tests', 'failure', [
+      okStep('Set up job'),
+      failedStep('Run github-remote-parse test (bash unit)'),
+    ])],
+  };
+  const testNameByJob = new Map([['Unit Tests', 'foo returns the contracted value']]);
+  const resolveRunCommand = (job, step) => (step === 'Run github-remote-parse test (bash unit)' ? 'bash scripts/lib/github-remote-parse.test.sh' : null);
+  const sigs = failingStepSignatures(run, testNameByJob, resolveRunCommand);
+  assert.equal(sigs[0].testName, null);
+});
+
+test('against the REAL test.yml: findStepRunCommandInWorkflow + isBashIntegrationStep correctly flags every non-conventionally-named bash-test.sh step', () => {
+  const fs = require('fs');
+  const path = require('path');
+  const { findStepRunCommandInWorkflow } = require('./red-signature-verify-cmd.js');
+  const dirname = path.dirname(new URL(import.meta.url).pathname);
+  const realYml = fs.readFileSync(path.join(dirname, '..', '..', '.github', 'workflows', 'test.yml'), 'utf8');
+  const cases = [
+    { job: 'Unit Tests', step: 'Run github-remote-parse test (bash unit)' },
+    { job: 'Unit Tests', step: 'Run merge-worktree-to-main checkout-fail regression test (task #819)' },
+  ];
+  for (const { job, step } of cases) {
+    const cmd = findStepRunCommandInWorkflow(realYml, job, step);
+    assert.ok(cmd, `expected a resolvable run: command for "${step}"`);
+    assert.equal(isBashIntegrationStep(step, cmd), true, `"${step}" (run: ${cmd}) must be classified as a bash-integration step`);
+    assert.equal(isBashIntegrationStep(step), false, `"${step}" is a live example of the name-suffix convention NOT holding — pins the regression this test guards`);
+  }
+});
+
 test('an unparseable createdAt on the anchor run reports null duration, not a silent pass (code-review finding)', () => {
   // A version of the health-check.js caller rendered this as
   // "N red run(s), undefinedh since last green" and returned status 'pass' —
@@ -240,4 +508,71 @@ test('an unparseable createdAt on the anchor run reports null duration, not a si
   assert.equal(r.redRunCount, 1);
   assert.equal(r.redStreakHours, null);
   assert.equal(r.alarm, null);
+});
+
+// ── BRO-4054: stale signature tracking ───────────────────────────────────────
+
+test('jobNameFromRedKey strips the prefix and the trailing hash', () => {
+  assert.equal(jobNameFromRedKey('test-yml:red:E2E Tests:c2df710e'), 'E2E Tests');
+  assert.equal(jobNameFromRedKey('test-yml:red:Unit Tests:0858c92a'), 'Unit Tests');
+});
+
+test('trackSignatureAbsence: 3 consecutive failed runs without the signature resolve it; 2 do not', () => {
+  const key = stepFailureSignature('Unit Tests', 'Run unit tests', 'old test');
+  const otherSig = [{ conditionKey: stepFailureSignature('Unit Tests', 'Run unit tests', 'new test') }];
+  const failingRun = { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] };
+  let cond = { [key]: { status: 'open' } };
+  const r1 = trackSignatureAbsence(cond, otherSig, failingRun, '1001');
+  assert.deepEqual(r1, { toResolve: [], updates: { [key]: ['1001'] } });
+  cond = { [key]: { status: 'open', absentRunIds: r1.updates[key] } };
+  const r2 = trackSignatureAbsence(cond, otherSig, failingRun, '1002');
+  assert.deepEqual(r2.toResolve, []);
+  assert.deepEqual(r2.updates[key], ['1001', '1002']);
+  cond = { [key]: { status: 'open', absentRunIds: r2.updates[key] } };
+  const r3 = trackSignatureAbsence(cond, otherSig, failingRun, '1003');
+  assert.deepEqual(r3.toResolve, [key]);
+  assert.equal(r3.updates[key].length, STALE_ABSENT_RUN_THRESHOLD);
+  // the same run id never counts twice (a re-run of the step in one run)
+  const dup = trackSignatureAbsence({ [key]: { status: 'open', absentRunIds: ['1001', '1002'] } }, otherSig, failingRun, '1002');
+  assert.deepEqual(dup, { toResolve: [], updates: {} });
+});
+
+test('trackSignatureAbsence: the signature reappearing resets the counter to zero', () => {
+  const key = stepFailureSignature('Unit Tests', 'Run unit tests', 'flaky test');
+  const failingRun = { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] };
+  const r = trackSignatureAbsence({ [key]: { status: 'open', absentRunIds: ['1', '2'] } }, [{ conditionKey: key }], failingRun, '3');
+  assert.deepEqual(r, { toResolve: [], updates: { [key]: [] } });
+  // present and already at zero → no update row at all
+  assert.deepEqual(trackSignatureAbsence({ [key]: { status: 'open' } }, [{ conditionKey: key }], failingRun, '4').updates, {});
+});
+
+test('trackSignatureAbsence counts absence ONLY when the key\'s job ran and failed on a real step (skipped/green/setup-only/other job never tick)', () => {
+  const key = stepFailureSignature('E2E Tests', 'Run unit tests', 'x');
+  const cond = { [key]: { status: 'open', absentRunIds: ['1', '2'] } };
+  const none = [];
+  // skipped job → no evidence
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('E2E Tests', 'skipped', [])] }, '3'), { toResolve: [], updates: {} });
+  // green job → resolve-on-green's business, not a stale tick
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('E2E Tests', 'success', [okStep('Run unit tests')])] }, '3'), { toResolve: [], updates: {} });
+  // setup-only infra failure → no evidence
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('E2E Tests', 'failure', [failedStep('Set up job')])] }, '3'), { toResolve: [], updates: {} });
+  // a DIFFERENT job failing says nothing about this key
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('Unit Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] }, '3'), { toResolve: [], updates: {} });
+  // cancelled job (timed out) with phantom failures after the cancel → no evidence
+  assert.deepEqual(trackSignatureAbsence(cond, none, { jobs: [testJob('E2E Tests', 'cancelled', [{ name: 'Checkout', conclusion: 'cancelled' }, failedStep('Run unit tests')])] }, '3'), { toResolve: [], updates: {} });
+  // the job DID fail on a real step, but on another test → tick → stale
+  const r = trackSignatureAbsence(cond, [{ conditionKey: stepFailureSignature('E2E Tests', 'Run unit tests', 'y') }],
+    { jobs: [testJob('E2E Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] }, '3');
+  assert.deepEqual(r.toResolve, [key]);
+});
+
+test('trackSignatureAbsence: a job whose log fetch failed this run gets no absence tick (job+step-only signature must not read as "gone")', () => {
+  const key = stepFailureSignature('E2E Tests', 'Run unit tests', 'x');
+  const cond = { [key]: { status: 'open', absentRunIds: ['1', '2'] } };
+  const run = { jobs: [testJob('E2E Tests', 'failure', [okStep('Set up job'), failedStep('Run unit tests')])] };
+  const stepOnly = [{ conditionKey: stepFailureSignature('E2E Tests', 'Run unit tests', null) }];
+  assert.deepEqual(trackSignatureAbsence(cond, stepOnly, run, '3', { unreliableJobs: new Set(['E2E Tests']) }), { toResolve: [], updates: {} });
+  // non-red keys are ignored entirely
+  assert.deepEqual(trackSignatureAbsence({ 'health-check:Cookies': { status: 'open' } }, none(), run, '3'), { toResolve: [], updates: {} });
+  function none() { return []; }
 });

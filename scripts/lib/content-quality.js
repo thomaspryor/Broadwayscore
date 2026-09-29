@@ -8,6 +8,8 @@
  * @module content-quality
  */
 
+const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle } = require('./show-title-variants');
+
 /**
  * Patterns that indicate ad blocker messages
  * @type {RegExp[]}
@@ -42,7 +44,11 @@ const PAYWALL_PATTERNS = [
   /free\s+trial/i,
   /unlock\s+(this\s+)?(story|article|content)/i,
   /exclusive\s+(content|access)/i,
-  /paywall/i,
+  // \b prevents "paywalling"/"paywalled" prose-metaphor FPs (BRO-4124: Vulture's
+  // "the paywalling of everything" mid-review) while still matching the bare
+  // word, e.g. "...full text behind paywall.)" — same technique as
+  // AD_BLOCKER_PATTERNS::0's \bad\s*block(er)?/i fix for "roadblock".
+  /\bpaywall\b/i,
   /continue\s+reading\s+(your\s+)?article\s+with\s+a/i,
   /with\s+a\s+\w+\s+subscription/i,
   // NYT bot-detection / JS-loader artifact appended after partial article text.
@@ -130,6 +136,21 @@ const STRONG_ERROR_PAGE_PATTERNS = [
   /\b404\s+(?:error|not\s+found)\b/i,
   /\berror\s+404\b/i,
   /the\s+page\s+you('re|\s+are)\s+looking\s+for/i,
+  // Anubis proof-of-work bot wall (myreviewer.com and other small sites). Its
+  // interstitial was stored as the whole "review" for
+  // as-you-like-it-globe-west-end-2026/myreviewer--unknown.json (43 words,
+  // tier 'truncated', so it sat in the scoring queue as includable-but-unscored).
+  // Both phrases are Anubis chrome only; 0 hits on real review text.
+  /\bprotected\s+by\s+anubis\b/i,
+  /making\s+sure\s+you(?:'|&#39;|’)re\s+not\s+a\s+bot/i,
+  // Ticket-reseller event-page boilerplate (RESELLER_BOILERPLATE): scorebig,
+  // boxofficeticketsales and stuborder event pages were stored as Disruption /
+  // The Gin Game "reviews" (contentTier complete, includable, never scored).
+  // Domain lists can't keep up with resellers, so catch the page itself.
+  // Corpus 2026-09-25: each phrase hits exactly its reseller page, 0 reviews.
+  /resale\s+ticket\s+prices\s+may\s+be\s+above\s+face\s+value/i,
+  /whether\s+you\s+are\s+buying\s+or\s+selling\s+tickets\s+on\s+our\s+site/i,
+  /\bresale\b[^.]{0,40}\bprices\s+are\s+set\s+by\s+sellers\s+and\s+move\s+with\s+demand/i,
 ];
 
 /**
@@ -140,6 +161,41 @@ const STRONG_ERROR_PAGE_PATTERNS = [
 function detectStrongErrorPageAnywhere(text) {
   const t = (typeof text === 'string') ? text : '';
   for (const pattern of STRONG_ERROR_PAGE_PATTERNS) {
+    const m = t.match(pattern);
+    if (m) return { detected: true, match: m[0] };
+  }
+  return { detected: false, match: null };
+}
+
+// BRO-3572: WSJ's dowjones.com archive-reprint capture sometimes cuts the
+// article off right at the syndication interstitial — the review's real lede
+// sentence ends mid-thought with an ellipsis, immediately followed by the
+// page's "Most Popular Videos"/"Most Popular Articles" navigation rail
+// instead of the rest of the review. Unconditional/position-independent like
+// STRONG_ERROR_PAGE_PATTERNS above, for the same reason: this exact adjacency
+// never occurs in real review prose or in a real review's own trailing
+// footer (verified against the full ~43k-file corpus, 2026-09-16 — the one
+// non-WSJ "Most Popular Articles" hit, an Exeunt Magazine sidebar with no
+// ellipsis immediately before it, correctly does not match). Deliberately
+// classified as isGarbageContent -> contentTier='invalid' (excluded from
+// isIncludableForRebuild), NOT routed through TRUNCATION_SIGNALS.severeAnywhere
+// (which only ever produces 'truncated', still counted at 0.85 confidence
+// weight by compute-critic-score.js) — these files have a single truncated
+// lede fragment with zero critical judgment, not partial-credit truncated
+// content.
+const STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS = [
+  /(?:\.{3,}|…)\s+Most Popular (?:Videos|Articles)\b/,
+];
+
+/**
+ * Scan the entire body for the WSJ archive-interstitial truncation signature
+ * (position-independent).
+ * @param {string} text
+ * @returns {{ detected: boolean, match: string|null }}
+ */
+function detectStrongWsjArchiveTruncationAnywhere(text) {
+  const t = (typeof text === 'string') ? text : '';
+  for (const pattern of STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS) {
     const m = t.match(pattern);
     if (m) return { detected: true, match: m[0] };
   }
@@ -163,6 +219,33 @@ function detectStrongErrorPageAnywhere(text) {
 // chrome-dump page, not a real review with a footer. Verified against the full
 // corpus (2026-06-05): 0 currently-scored real reviews newly flagged. See
 // memory/feedback_content_quality_regex_fps.md and the 404 origin note above.
+// Parked-domain / domain-for-sale pages (BRO-3862). A dead outlet's domain
+// lapses, a squatter picks it up, and the fetch returns a sales page with a
+// HTTP 200. The text is long enough to look like an article, so the gemini
+// non-review classifier labelled it `isNonReview: news/feature` — which reads
+// as "a real article that isn't a review", i.e. a reversible editorial call.
+// It therefore sat in the false-positive audit queue looking like a review we
+// might be wrongly excluding. theaternewsonline.com alone accounts for 20
+// files across 20 different shows this way; 88pulsapower (squatting a dead
+// theatre blog) another 4.
+//
+// Every pattern binds the word "domain" to a sale/parking phrase, or is a
+// parking-page call to action, so theatre prose about "the public domain"
+// cannot match. Verified over the whole corpus (44,179 review-text files,
+// 2026-09-20): 33 hits, 0 of them a scored review, 0 false positives.
+//
+// Scanned through detectStrongChromeDumpAnywhere below, so it inherits that
+// function's mandatory gate — callers only consult it for files that already
+// LACK substantial review content. A real review whose footer happened to
+// mention a domain sale is therefore never reachable by these patterns.
+const PARKED_DOMAIN_PATTERNS = [
+  /\bthe\s+domain\s+name\s+[\w.-]+\s+is\s+for\s+sale\b/i,
+  /\bthis\s+domain\s+(?:name\s+)?is\s+for\s+sale\b/i,
+  /\bbuy\s+this\s+domain\b/i,
+  /\bdomain\s+(?:name\s+)?is\s+(?:parked|for\s+sale)\b/i,
+  /\bget\s+a\s+price\s+in\s+less\s+than\s+24\s+hours\b/i,
+];
+
 const STRONG_CHROME_DUMP_PATTERNS = [
   // Cookie-consent / GDPR full sentences — never occur in review prose.
   /your\s+consent\s+will\s+be\s+valid/i,
@@ -205,7 +288,11 @@ const STRONG_CHROME_DUMP_PATTERNS = [
  */
 function detectStrongChromeDumpAnywhere(text) {
   const t = (typeof text === 'string') ? text : '';
-  for (const pattern of STRONG_CHROME_DUMP_PATTERNS) {
+  // PARKED_DOMAIN_PATTERNS ride this scan deliberately: they need exactly the
+  // same "only for text that lacks substantial review content" gate, and
+  // wiring them here means they reach every existing caller rather than
+  // needing a second call site nobody remembers to add.
+  for (const pattern of [...STRONG_CHROME_DUMP_PATTERNS, ...PARKED_DOMAIN_PATTERNS]) {
     const m = t.match(pattern);
     if (m) return { detected: true, match: m[0] };
   }
@@ -643,6 +730,16 @@ function validateShowMentioned(text, showTitle, showId) {
     if (withoutThe.length > 3 && lower.includes(withoutThe)) {
       return { valid: true, confidence: 'high', reason: 'Show title (without "The") found' };
     }
+
+    // Punctuation-insensitive title variants (shared helper): shows.json "Dog Man -
+    // The Musical" vs review "Dog Man: The Musical", "Oh, Mary!" vs "Oh Mary!",
+    // curly apostrophes, en/em dashes, accents, and the pre-subtitle short title
+    // ("Dog Man", "Dolly"). The literal checks above missed all of these, and
+    // backfill-review-flags.js set showNotMentioned on real reviews (2026-09-24).
+    const matchedVariant = textMentionsTitle(text, showTitle);
+    if (matchedVariant) {
+      return { valid: true, confidence: 'high', reason: `Show title variant found ("${matchedVariant}")` };
+    }
   }
 
   // Show ID words (e.g., "back-to-the-future-2023" -> ["back", "future"]).
@@ -1039,6 +1136,11 @@ function isGarbageContent(text) {
   const strongError = detectStrongErrorPageAnywhere(collapsedForErrorCheck);
   if (strongError.detected) {
     return { isGarbage: true, reason: `Error/404 page (body): "${strongError.match}"` };
+  }
+
+  const strongWsjTruncation = detectStrongWsjArchiveTruncationAnywhere(collapsedForErrorCheck);
+  if (strongWsjTruncation.detected) {
+    return { isGarbage: true, reason: `WSJ archive dump truncated at interstitial: "${strongWsjTruncation.match}"` };
   }
 
   // Check for legal/privacy page
@@ -1506,6 +1608,54 @@ function detectTruncationSignals(text) {
     moderateCount,
     likelyTruncated: severeCount > 0 || moderateCount >= 2
   };
+}
+
+// Truncation signal names that are unambiguous bot-detection/paywall STUB
+// evidence — the site served a wall instead of the article, not "the
+// article doesn't exist." Deliberately the 'severe'/'severeAnywhere' tier
+// only (nyt_bot_stub, wsj_paywall_cta, paywall_or_login_prompt) — excludes
+// the weaker 'moderate' tier (e.g. ends_with_ellipsis), which is genuinely
+// ambiguous truncation evidence, not a definite wall.
+//
+// Distinct purpose from scripts/lib/incomplete-reason.js's own Layer
+// A.5/A.6 nyt_bot_stub/wsj_paywall_cta checks: that module answers "why is
+// this text incomplete" (routes to an incompleteReason bucket, and
+// deliberately keeps paywall_or_login_prompt in a separate lower-priority
+// bucket there). This one answers a narrower question for the ensemble
+// scoreability check — "is a not_a_review/garbage_text verdict actually
+// just evidence of a wall, not evidence this isn't a review" (BRO-2495: an
+// NYT bot-stub body got the LLM ensemble to reject a real, correctly
+// THUMB-scored review as not_a_review on opening night).
+const BOT_STUB_TRUNCATION_SIGNALS = new Set([
+  'nyt_bot_stub', 'paywall_or_login_prompt', 'wsj_paywall_cta'
+]);
+
+/**
+ * True when a review file's stored body shows definite bot-detection/paywall
+ * stub evidence — checked in priority order: the signals already computed by
+ * classifyContentTier (data.truncationSignals), then the human-readable
+ * contentTierReason string it was derived from (`Truncation detected:
+ * ${signals.join(', ')}` — see classifyContentTier below), then (if fullText
+ * is present) a live re-scan, mirroring the same stored-then-live-fallback
+ * pattern incomplete-reason.js already uses for the identical signal names.
+ *
+ * @param {Object} data - review-text JSON
+ * @returns {boolean}
+ */
+function hasBotStubTruncationSignal(data) {
+  if (!data) return false;
+  const stored = Array.isArray(data.truncationSignals) ? data.truncationSignals : [];
+  if (stored.some(s => BOT_STUB_TRUNCATION_SIGNALS.has(s))) return true;
+  if (typeof data.contentTierReason === 'string') {
+    for (const sig of BOT_STUB_TRUNCATION_SIGNALS) {
+      if (data.contentTierReason.includes(sig)) return true;
+    }
+  }
+  if (data.fullText) {
+    const { signals } = detectTruncationSignals(data.fullText);
+    if (signals.some(s => BOT_STUB_TRUNCATION_SIGNALS.has(s))) return true;
+  }
+  return false;
 }
 
 /**
@@ -2711,6 +2861,20 @@ function extractAuthorFromHtml(html, text, options = {}) {
     if (inferred) return inferred;
   }
 
+  // Outlet-specific fallback for culturesauce.com. Its current "Date: ...
+  // Author: <name>" byline is inline prose (no HTML markup the generic
+  // strategies above recognize) and its older archive template has no
+  // inline byline at all. Resolve via data/critic-registry.json instead of
+  // a hardcoded name — self-disarming the moment a 2nd critic accumulates
+  // reviews for this outlet, same as resolveTheaterManiaByline() below.
+  // Anchored so a lookalike host (culturesauce.com.evil.net) can't match —
+  // require end-of-string or a path/port/query/fragment separator right
+  // after ".com" (adversarial review, 2026-09-15).
+  if (options && options.url && /(^|\/\/|\.)culturesauce\.com(?:[/:?#]|$)/i.test(String(options.url))) {
+    const single = resolveSingleCriticOutletByline('culturesauce');
+    if (single) return single;
+  }
+
   return null;
 }
 
@@ -2734,6 +2898,50 @@ function loadTheaterManiaCritics() {
     _cachedTheaterManiaCritics = [];
   }
   return _cachedTheaterManiaCritics;
+}
+
+/**
+ * Resolve the dominant critic for outletId from data/critic-registry.json's
+ * outletCounts (generated by audit-critic-outlets.js from confidently-
+ * attributed reviews — not a hand-maintained list). Empirically, a raw
+ * "knownOutlets.includes()" distinct-critic-count of 1 is NOT safe to use
+ * alone: culturesauce.com shows Thom Geier at 166 reviews but also "Erin
+ * Strecker" at 1 (a one-off guest/mis-scraped byline, not a second regular
+ * critic) — found live while building this function (2026-09-15). Requiring
+ * the top critic to have >=10x the next candidate's count, AND that next
+ * candidate to have <=2 reviews, treats that kind of noise as not-a-second-
+ * critic while still refusing to guess when a real second critic exists.
+ *
+ * MIN_REVIEWS_FOR_DOMINANCE also gates the single-candidate case (no other
+ * critic on record at all) — a lone 1-review candidate is one observation,
+ * not dominance, and offers no protection against a brand-new outlet whose
+ * real second critic just hasn't accumulated enough reviews to appear in
+ * this generated registry yet (adversarial review, 2026-09-15).
+ * @param {string} outletId
+ * @returns {string | null}
+ */
+const MIN_REVIEWS_FOR_DOMINANCE = 5;
+
+function resolveSingleCriticOutletByline(outletId) {
+  if (!outletId) return null;
+  try {
+    const fs = require('fs');
+    const registryPath = require('path').join(__dirname, '../../data/critic-registry.json');
+    const registry = JSON.parse(fs.readFileSync(registryPath, 'utf-8'));
+    const matches = Object.values(registry.critics || {})
+      .filter((c) => c.displayName && c.displayName !== 'Unknown' && (c.outletCounts || {})[outletId] > 0)
+      .map((c) => ({ name: c.displayName, count: c.outletCounts[outletId] }))
+      .sort((a, b) => b.count - a.count);
+    if (matches.length === 0) return null;
+    const top = matches[0];
+    if (top.count < MIN_REVIEWS_FOR_DOMINANCE) return null;
+    if (matches.length === 1) return top.name;
+    const second = matches[1];
+    if (second.count <= 2 && top.count >= 10 * second.count) return top.name;
+    return null;
+  } catch {
+    return null;
+  }
 }
 
 /**
@@ -2870,6 +3078,13 @@ function extractHighConfidenceAuthor(html) {
  * @param {number} [opts.minMentionsShort=1] - Threshold for text <1500 chars
  * @returns {{ valid: boolean, reason?: string, mentionCount: number, threshold: number, htmlTitle: string|null, htmlTitleMatch: boolean|null }}
  */
+// Bump when validateContentMentionsShow changes what it rejects. A
+// url_content_mismatch recorded under an older version gets one fresh fetch
+// (failed-fetch-policy.js shouldReopenStaleContentMismatch): the rule was
+// loosened repeatedly (diacritics, titleMatch, punctuation) but abandoned
+// ledger entries were never re-examined (BRO-4185 H).
+const URL_CONTENT_CHECK_VERSION = 2;
+
 function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   const minLong = opts.minMentionsLong != null ? opts.minMentionsLong : 3;
   const minShort = opts.minMentionsShort != null ? opts.minMentionsShort : 1;
@@ -2962,7 +3177,9 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     }
   }
 
-  let mentionCount = 0;
+  // Literal count (pre-2026-09-24 behavior, kept so no page ever counts FEWER
+  // mentions than before).
+  let literalCount = 0;
   for (const token of tokens) {
     if (!token) continue;
     // Count non-overlapping occurrences, word-boundary when single word.
@@ -2972,8 +3189,43 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
       ? new RegExp(`\\b${escaped}\\b`, 'gi')
       : new RegExp(escaped, 'gi');
     const matches = lower.match(re);
-    if (matches) mentionCount += matches.length;
+    if (matches) literalCount += matches.length;
   }
+
+  // Punctuation-insensitive count (scripts/lib/show-title-variants.js). shows.json
+  // "Dog Man - The Musical" vs prose "Dog Man: The Musical"/"Dog Man", and "Oh,
+  // Mary!" vs "Oh Mary!", never matched the literal tokens above, so real reviews
+  // counted 0 mentions and were nulled as url_content_mismatch (2026-09-24).
+  // The same token set is re-counted in the normalized space; the pre-subtitle
+  // short title ("dog man") adds ONLY occurrences not already covered by another
+  // token's match, so one "Les Misérables" in a roundup is not double-counted as
+  // prefix + ID word (keeps the roundup single-mention rejection intact).
+  const normMentionText = normalizeForMention(text);
+  const baseVariants = new Set(
+    (showTitle && showTitle.length > 2) ? buildShowTitleVariants(showTitle, { includePrefix: false }) : [],
+  );
+  for (const tok of tokens) {
+    const nt = normalizeForMention(tok);
+    if (nt) baseVariants.add(nt);
+  }
+  const prefixVariants = ((showTitle && showTitle.length > 2) ? buildShowTitleVariants(showTitle) : [])
+    .filter((v) => !baseVariants.has(v));
+  const titleVariants = [...baseVariants, ...prefixVariants];
+  let normalizedCount = 0;
+  const coveredSpans = [];
+  for (const v of baseVariants) {
+    const spans = findVariantSpans(normMentionText, v);
+    normalizedCount += spans.length;
+    coveredSpans.push(...spans);
+  }
+  for (const v of prefixVariants) {
+    for (const [a, b] of findVariantSpans(normMentionText, v)) {
+      if (coveredSpans.some(([c, d]) => a < d && c < b)) continue;
+      normalizedCount++;
+      coveredSpans.push([a, b]);
+    }
+  }
+  const mentionCount = Math.max(literalCount, normalizedCount);
 
   // HTML <title> check (optional — only when html is provided)
   let htmlTitle = null;
@@ -2998,6 +3250,12 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
             htmlTitleMatch = true;
             break;
           }
+        }
+        // Same punctuation-insensitive variants the body count uses ("Dog Man: The
+        // Musical review" <title> vs shows.json "Dog Man - The Musical").
+        if (!htmlTitleMatch) {
+          const normHtml = normalizeForMention(htmlTitle);
+          if (titleVariants.some((v) => countVariant(normHtml, v) > 0)) htmlTitleMatch = true;
         }
       }
     }
@@ -3026,8 +3284,16 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // ("...and more", "shows to see", "5 shows", "this week") — handles the "leads with
   // show A then lists B, C" comparison-piece case Codex raised in re-review.
   const ROUNDUP_HEADLINE_MARKERS = /\b(roundup|shows? to see|things to do|what to see|best (?:plays|musicals|shows|of)|this week|and more|top \d+|\d+ shows)\b/i;
+  // Full title in the punctuation-insensitive space ("dog man the musical") — the
+  // literal strippedTitle keeps " - " and so never matched a "Dog Man: The Musical"
+  // headline or body.
+  const fullMentionTitle = normalizeForMention(showTitle || '');
+  const mentionLeadForLong = htmlTitle
+    ? normalizeForMention(htmlTitle).replace(/^(?:review\s+)?/, '')
+    : '';
   const titleLeadsWithShow = isLongTitle && !!normHtmlTitle
-    && headlineLead.startsWith(strippedTitle)
+    && (headlineLead.startsWith(strippedTitle)
+      || (!!fullMentionTitle && (mentionLeadForLong === fullMentionTitle || mentionLeadForLong.startsWith(`${fullMentionTitle} `))))
     && !ROUNDUP_HEADLINE_MARKERS.test(normHtmlTitle);
   if (titleLeadsWithShow) {
     return {
@@ -3043,7 +3309,8 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // NOT an early return — the htmlTitleMatch===false backstop below still rejects a
   // page whose <title> is about a DIFFERENT show even if it name-drops this title
   // once in passing.
-  const bodyHasLongTitlePhrase = isLongTitle && lower.includes(strippedTitle);
+  const bodyHasLongTitlePhrase = isLongTitle
+    && (lower.includes(strippedTitle) || (!!fullMentionTitle && countVariant(normMentionText, fullMentionTitle) > 0));
 
   // When the HTML <title> matches the show, the URL is provably correct — relax
   // the body-mention threshold by 1 (but require at least 1 body mention so a
@@ -3069,8 +3336,11 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
   // the same proof titleLeadsWithShow uses for long titles. A review headline opens with
   // the show name; an unrelated article that merely contains the word does not. Reuses
   // headlineLead (computed above, "review:"-prefix stripped).
-  const headlineLeadsWithShow = !!headlineLead
-    && [...tokens].some((tok) => tok && headlineLead.startsWith(tok));
+  const mentionHeadlineLead = mentionLeadForLong;
+  const headlineLeadsWithShow = (!!headlineLead
+    && [...tokens].some((tok) => tok && headlineLead.startsWith(tok)))
+    || (!!mentionHeadlineLead && titleVariants.some((v) => v
+      && (mentionHeadlineLead === v || mentionHeadlineLead.startsWith(`${v} `))));
   const titleProvesShow = htmlTitleMatch === true && !htmlTitleIsRoundup && headlineLeadsWithShow;
   const effectiveThreshold = bodyHasLongTitlePhrase
     ? 1
@@ -3091,15 +3361,56 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
     };
   }
 
+  // BRO-4058: htmlTitleMatch===false only proves the <title> doesn't contain
+  // THIS show's title — it says nothing about whether the page is actually
+  // about a DIFFERENT show. Tabloid/feature headlines ("The Essex girl whose
+  // debut play charmed Margot Robbie", "Mamet With an Accent - WSJ") never
+  // name the show at all, yet the backstop below was rejecting them outright
+  // even with a body that names the show 5-15 times — 45 of 163
+  // url_content_mismatch drops (2026-09-22 scan) were reviews like this, none
+  // of them wrong-article. Only reject when the <title> headline actually
+  // LEADS WITH a different catalog show's title — the same "leads with" proof
+  // titleLeadsWithShow/headlineLeadsWithShow use above to establish a
+  // dedicated review — which is what a genuinely wrong-article fetch (CDN
+  // misroute, stale cache, wrong-slug redirect) looks like. Each catalog title
+  // is compared both after the same normalize() fold used for headlineLead/
+  // tokens above (loadBroadwayShows() only lowercases, so an accented title
+  // like "Les Misérables" would otherwise be silently exempted) and after the
+  // same trailing-punctuation strip applied to the CURRENT show's own title
+  // above (tStripped) — without it "Oliver review" wouldn't be recognized as
+  // leading with catalog title "Oliver!" (adversarial review, 2026-09-22).
   if (htmlTitleMatch === false) {
-    return {
-      valid: false,
-      reason: `HTML <title> "${htmlTitle}" does not reference show "${showTitle || showId}"`,
-      mentionCount,
-      threshold,
-      htmlTitle,
-      htmlTitleMatch,
-    };
+    const otherShowTitles = loadBroadwayShows();
+    const namesOtherShow = !!headlineLead && otherShowTitles.some((rawOtherTitle) => {
+      const otherTitle = normalize(rawOtherTitle).toLowerCase();
+      const otherTitleStripped = otherTitle.replace(/[?!.,;:'"]+/g, ' ').replace(/\s+/g, ' ').trim();
+      return [otherTitle, otherTitleStripped].some((candidate) => {
+        if (candidate.length <= 4) return false;
+        if (candidate === strippedTitle) return false;
+        if (strippedTitle && (strippedTitle.includes(candidate) || candidate.includes(strippedTitle))) return false;
+        return headlineLead.startsWith(candidate);
+      });
+    });
+    // The long-title body-mention discount (bodyHasLongTitlePhrase, below)
+    // exists to rescue reviews whose <title> PROVES the show — with
+    // htmlTitleMatch===false there is no positive title proof, so a single
+    // incidental body mention of the full title phrase in an otherwise
+    // unrelated article must not be enough to survive a negative title
+    // signal (adversarial review, 2026-09-22). Require the full, undiscounted
+    // length-scaled threshold here regardless of bodyHasLongTitlePhrase.
+    const insufficientBodyEvidence = mentionCount < threshold;
+    if (namesOtherShow || insufficientBodyEvidence) {
+      return {
+        valid: false,
+        reason: namesOtherShow
+          ? `HTML <title> "${htmlTitle}" does not reference show "${showTitle || showId}"`
+          : `show mentioned ${mentionCount}× (below undiscounted ${threshold} threshold required when HTML <title> doesn't reference the show)`,
+        mentionCount,
+        threshold,
+        htmlTitle,
+        htmlTitleMatch,
+      };
+    }
   }
 
   return {
@@ -3112,6 +3423,7 @@ function validateContentMentionsShow(text, html, showTitle, showId, opts = {}) {
 }
 
 module.exports = {
+  URL_CONTENT_CHECK_VERSION,
   isGarbageContent,
   hasReviewContent,
   assessTextQuality,
@@ -3126,6 +3438,7 @@ module.exports = {
   isEffectivelyWrongProductionOrShow,
   WRONG_PRODUCTION_OR_SHOW_FIELDS,
   detectTruncationSignals,
+  hasBotStubTruncationSignal,
   stripFooterContent,
   getScrapingPriority,
   countWords,
@@ -3144,6 +3457,7 @@ module.exports = {
   detectLegalPage,
   detectErrorPage,
   detectStrongErrorPageAnywhere,
+  detectStrongWsjArchiveTruncationAnywhere,
   detectStrongChromeDumpAnywhere,
   detectNewsletter,
   detectUrlOnly,
@@ -3153,6 +3467,7 @@ module.exports = {
   // Author extraction from HTML
   extractAuthorFromHtml,
   extractTheaterLifeByline,
+  resolveSingleCriticOutletByline,
   resolveTheaterManiaByline,
   matchTheaterManiaSlug,
   extractHighConfidenceAuthor,
@@ -3170,7 +3485,9 @@ module.exports = {
   COOKIE_CONSENT_PATTERNS,
   ERROR_PAGE_PATTERNS,
   STRONG_ERROR_PAGE_PATTERNS,
+  STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS,
   STRONG_CHROME_DUMP_PATTERNS,
+  PARKED_DOMAIN_PATTERNS,
   NEWSLETTER_PATTERNS,
   NAVIGATION_PATTERNS,
   WRONG_ARTICLE_PATTERNS,

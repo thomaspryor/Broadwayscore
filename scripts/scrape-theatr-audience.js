@@ -25,6 +25,7 @@ const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classificati
 const { normalizeTitle } = require('./lib/title-match');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { buildTheatrCoverageFlags } = require('./lib/theatr-coverage-audit');
+const { assertShowsQuerySuccess } = require('./lib/theatr-api-response');
 
 // Parse command line args
 const args = process.argv.slice(2);
@@ -186,8 +187,7 @@ async function fetchAllShows() {
     },
   });
 
-  if (!data.success) throw new Error(`Shows query failed: ${data.message}`);
-  return data.content.records;
+  return assertShowsQuerySuccess(data);
 }
 
 async function fetchShowStats(showId) {

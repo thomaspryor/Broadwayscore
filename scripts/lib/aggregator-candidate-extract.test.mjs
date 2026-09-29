@@ -345,6 +345,21 @@ test('venuesMatch does NOT collapse two unrelated venues that merely share a lea
   assert.equal(venuesMatch('The Theatre', 'The Theater'), true);   // was false
   assert.equal(venuesMatch('The Theatre', 'Theatre Theatre'), false); // was true
   assert.equal(venuesMatch('The (National Theatre)', 'The (National Theatre)'), true); // was false
+  // BRO-2255 what-else sweep: 4 VENUE_ALIASES entries hardcoded ONE spelling
+  // of "theater"/"theatre" (found live: a corpus-wide sweep read
+  // venuesMatch('Helen Hayes Theater', 'Helen Hayes Theatre') as false). The
+  // asymmetric alias hit — one side matches, the other returns null — trips
+  // the `aliasA !== null && aliasA === aliasB` early return before
+  // normalizeVenueName's spelling-insensitive fallback ever runs, so this is
+  // a DIFFERENT failure mode than the generic Theatre/Theater case at line
+  // 345 above, which never touches an alias at all.
+  assert.equal(venuesMatch('Helen Hayes Theater', 'Helen Hayes Theatre'), true);
+  assert.equal(venuesMatch('Atlantic Theater', 'Atlantic Theatre'), true);
+  assert.equal(venuesMatch('MCC Theater', 'MCC Theatre'), true);
+  assert.equal(venuesMatch('Vineyard Theatre', 'Vineyard Theater'), true);
+  // The Atlantic mainstage/Stage 2 distinction must survive the broadened regex.
+  assert.equal(venuesMatch('Atlantic Theater Stage 2', 'Atlantic Theater'), false);
+  assert.equal(venuesMatch('Atlantic Theatre Stage 2', 'Atlantic Theatre'), false);
   // Identical strings and null/empty inputs.
   assert.equal(venuesMatch('Signature Center', 'Signature Center'), true);
   assert.equal(venuesMatch('', 'Signature Center'), false);

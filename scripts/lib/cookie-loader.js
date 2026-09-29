@@ -74,6 +74,25 @@ let _bundleCache = null;
 let _bundleMetaCache = null;
 
 /**
+ * Extraction meta for one outlet inside a decoded bundle. Per-outlet
+ * `_meta.outlets[key]` (written by extract-safari-cookies.py since BRO-4183)
+ * beats the bundle-level `_meta`, because one bundle can mix outlets
+ * refreshed at different times (renew-cookies.js vs Safari extraction).
+ * Returns null when neither carries a timestamp.
+ */
+function bundleOutletMeta(bundle, outletKey) {
+  const meta = bundle && bundle._meta && typeof bundle._meta === 'object' ? bundle._meta : null;
+  if (!meta) return null;
+  const perOutlet = meta.outlets && typeof meta.outlets === 'object' ? meta.outlets[outletKey] : null;
+  if (perOutlet && (perOutlet.extractedAt || perOutlet.extractedAtUnix)) return perOutlet;
+  if (meta.extractedAt || meta.extractedAtUnix) {
+    const { outlets, ...bundleLevel } = meta;
+    return bundleLevel;
+  }
+  return null;
+}
+
+/**
  * Parse all COOKIES_BUNDLE_* env vars into a single map: { fileKey: [cookies] }
  * Cached after first call.
  *
@@ -91,12 +110,24 @@ function loadBundles() {
       const decoded = Buffer.from(val, 'base64').toString('utf-8');
       const bundle = JSON.parse(decoded);
       if (typeof bundle === 'object' && !Array.isArray(bundle)) {
-        const meta = bundle._meta && typeof bundle._meta === 'object' ? bundle._meta : null;
         for (const [outletKey, cookies] of Object.entries(bundle)) {
           if (outletKey.startsWith('_')) continue;
           if (Array.isArray(cookies) && cookies.length > 0) {
+            const meta = bundleOutletMeta(bundle, outletKey);
+            // Same outlet in two bundles (e.g. a leftover higher-numbered
+            // secret from when the extractor produced more bundles): the
+            // entry with the newer known timestamp wins, and a known
+            // timestamp beats an unknown one (a meta-less copy is a
+            // pre-_meta leftover). Unknown on both sides keeps the
+            // historical last-one-read-wins behavior.
+            if (_bundleCache[outletKey]) {
+              const prev = metaUnixTime(_bundleMetaCache[outletKey]);
+              const next = metaUnixTime(meta);
+              if (prev !== null && (next === null || prev > next)) continue;
+            }
             _bundleCache[outletKey] = cookies;
             if (meta) _bundleMetaCache[outletKey] = meta;
+            else delete _bundleMetaCache[outletKey];
           }
         }
       }
@@ -446,6 +477,7 @@ module.exports = {
   loadCookieMeta,
   loadEnvMeta,
   selectFresherCookieTier,
+  bundleOutletMeta,
   hasCookiesForUrl,
   buildCookieHeaderForUrl,
   getEnvVarForFileKey,

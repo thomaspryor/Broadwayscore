@@ -20,11 +20,11 @@
  * out of scope per the card's own acceptance criteria).
  *
  * Codex adversarial review (2026-08-19) caught an earlier draft overclaiming
- * "every passive trigger requires a second page view" — the page-view
- * minimum is actually the live 'gate-cold-start' A/B experiment's treatment
- * arm only; control/fallback intentionally have no minimum. Assertions below
- * are scoped to match real runtime wiring (src/contexts/ProGateContext.tsx),
- * not just the config value in isolation.
+ * "every passive trigger requires a second page view" — at the time, the
+ * page-view minimum was the live 'gate-cold-start' A/B experiment's treatment
+ * arm only. That experiment concluded 2026-09-15 in favor of applying the
+ * minimum to ALL traffic (docs/experiments/gate-cold-start.md "Conclusion"),
+ * so the assertion below now covers the universal case.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -35,7 +35,7 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '../..');
 
 const { emailCaptureConfig } = await import('../../src/config/email-capture.ts');
-const { getTriggerCopy, getMobileGateParams, coldStartCheckApplies } = await import('../../src/lib/gate-logic.ts');
+const { getTriggerCopy, getMobileGateParams, hasSeenEnoughPages } = await import('../../src/lib/gate-logic.ts');
 
 const MODAL_SRC = readFileSync(join(REPO_ROOT, 'src/components/EmailCaptureModal.tsx'), 'utf8');
 
@@ -54,16 +54,14 @@ test('modal no longer fires on the old immediate/aggressive trigger: passive gat
     'control mobile-scroll-gate variant must wait for meaningful dwell time, not the old 10s');
   assert.ok(getMobileGateParams('end-of-content').scrollThreshold >= 0.9,
     'end-of-content variant must require near-full-page scroll depth as its engagement signal');
-  // The page-view minimum is the 'gate-cold-start' A/B experiment's TREATMENT
-  // mechanism (docs/experiments/gate-cold-start.md) — it applies only to the
-  // 'cold-start' arm; 'control'/'fallback' reproduce the pre-experiment
-  // behavior with no page-view minimum, by design (that's what makes it a
-  // valid A/B test). Assert both halves so this doesn't overclaim universal
-  // coverage of a 50%-of-traffic control arm.
+  // The page-view minimum applies to ALL traffic now (concluded gate-cold-start
+  // A/B, docs/experiments/gate-cold-start.md "Conclusion") — no more arm split.
   assert.ok(emailCaptureConfig.minPageViewsForPassiveGate >= 2,
-    'cold-start arm must require more than a first-page-load visitor');
-  assert.equal(coldStartCheckApplies('cold-start'), true, 'page-view minimum must gate the cold-start treatment arm');
-  assert.equal(coldStartCheckApplies('control'), false, 'control arm intentionally has no page-view minimum (A/B baseline)');
+    'passive gates must require more than a first-page-load visitor');
+  assert.equal(hasSeenEnoughPages(0, emailCaptureConfig.minPageViewsForPassiveGate), false,
+    'first page load must not be enough to pass the gate');
+  assert.equal(hasSeenEnoughPages(emailCaptureConfig.minPageViewsForPassiveGate, emailCaptureConfig.minPageViewsForPassiveGate), true,
+    'reaching the configured minimum must pass the gate for everyone, not just a treatment arm');
 });
 
 test('updated copy: exit_intent/scroll_depth state a concrete deliverable, not a vague tease', () => {

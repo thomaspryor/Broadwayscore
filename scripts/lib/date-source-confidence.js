@@ -43,6 +43,9 @@ const ALWAYS_UNCONFIRMED = new Set([
   // which the reverse branch requires) and its whole review cluster now sits
   // on or after the corrected openingDate.
   'inferred-from-reviews-reverse',
+  // lib/opening-date-fallback.js: first-performance date used as a last
+  // resort when no source gave a press night. Always overwritable.
+  'previews-fallback',
   null,
   undefined,
   '',

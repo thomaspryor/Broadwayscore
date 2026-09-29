@@ -40,8 +40,43 @@ function showScoreUrlForShow(show, urlMap) {
     .replace(/^-+|-+$/g, '');
   if (!slug) return null;
   const cat = String(show.category || '').toLowerCase();
+  // Only NYC categories get a CONSTRUCTED url. The two NYC sections below are
+  // Show Score's New York pages; London shows live under a different path
+  // (/uk/london/west-end-shows/<slug> with inconsistent -london / -west-end
+  // suffixes) and regional shows have no page at all. Constructing a NYC url
+  // for a London/regional show fetched the same-title NYC production's page
+  // and fed its critic links into the gap audit as current-run misses
+  // (space-dogs-off-west-end-2026 listed MCC's 2022 Off-Broadway reviews,
+  // two of which were ingested and then flagged wrongProduction). Non-NYC
+  // shows get Show Score only via an explicit curated entry above.
+  if (cat !== 'broadway' && cat !== 'off-broadway') return null;
   const section = cat === 'off-broadway' ? 'off-broadway-shows' : 'broadway-shows';
-  return `https://www.show-score.com/${section}/${slug}`;
+  const constructed = `https://www.show-score.com/${section}/${slug}`;
+
+  // Never hand back a CONSTRUCTED url that another show already owns in the
+  // curated map (BRO-3416). Show Score keeps one page per title — the current
+  // or most recent production — so two same-title shows slugging to the same
+  // URL means at most one of them is the page's actual subject, and the other
+  // would ingest the wrong production's reviews. Deleting the wrong show's
+  // curated entry is the established remedy (scrape-show-score-audience.js:802
+  // deletes a duplicate outright), but on its own it does NOT stick here:
+  // deletion drops through to this slug construction, which rebuilds the exact
+  // same URL, so the mapping would effectively resurrect itself on the very
+  // next gap-audit pass. That is how she-loves-me-1994 accumulated the 2016
+  // Roundabout revival's notices — 21 of that directory's 22 files.
+  //
+  // Only CONSTRUCTED urls are gated. An explicit curated entry is returned
+  // above, untouched: if an operator deliberately points two shows at one page,
+  // that stays their call. This is the same "already cached for another show"
+  // test scrape-show-score-audience.js:550 applies during its own discovery.
+  if (urlMap) {
+    const want = constructed.toLowerCase();
+    for (const [id, u] of Object.entries(urlMap)) {
+      if (id === show.id || typeof u !== 'string') continue;
+      if (u.toLowerCase().replace(/\/+$/, '') === want) return null;
+    }
+  }
+  return constructed;
 }
 
 /** Pull the "Read more" outlet review links from Show Score tile HTML. These are
@@ -90,6 +125,27 @@ function parseShowScorePagination(html) {
 }
 
 /**
+ * The pagination pages to request after the initial render: 2..ceil(N/8)+1
+ * (the "+1 safety page" is the empty `{"html":" "}` terminator Show Score
+ * returns past the last page), or [] when the first 8 already cover N.
+ * Shared by fetchAllShowScoreReviewUrls below and by
+ * scripts/fetch-aggregator-pages.ts's archive renderer (BRO-4204 S7-T9) so
+ * the two can't drift on the page-count rule.
+ *
+ * @param {number|string} totalCount - data-total-count / "Critic Reviews (N)"
+ * @param {number} [perPage=8]
+ * @returns {number[]}
+ */
+function showScorePaginationPages(totalCount, perPage = 8) {
+  const n = parseInt(String(totalCount), 10);
+  if (!Number.isFinite(n) || n <= perPage) return [];
+  const last = Math.ceil(n / perPage) + 1; // safety margin
+  const pages = [];
+  for (let p = 2; p <= last; p++) pages.push(p);
+  return pages;
+}
+
+/**
  * Fetch ALL Show Score critic review URLs for a show, following pagination.
  *
  * @param {string} pageUrl - the show's Show Score page URL
@@ -107,9 +163,8 @@ async function fetchAllShowScoreReviewUrls(pageUrl, fetchHtml) {
   initial.forEach(u => all.add(u));
 
   const { nextPagePath, totalCount } = parseShowScorePagination(html);
-  if (nextPagePath && totalCount > 8) {
-    const maxPages = Math.ceil(totalCount / 8) + 1; // safety margin
-    for (let page = 2; page <= maxPages; page++) {
+  if (nextPagePath) {
+    for (const page of showScorePaginationPages(totalCount)) {
       let body = '';
       try { body = await fetchHtml(`https://www.show-score.com${nextPagePath}?page=${page}`); } catch { break; }
       if (!body) break;
@@ -124,10 +179,28 @@ async function fetchAllShowScoreReviewUrls(pageUrl, fetchHtml) {
   return [...all];
 }
 
+/**
+ * Curated show → Show Score page map (data/show-score-urls.json). Callers pass
+ * their repo root so worktrees/tests can point elsewhere. Missing or unreadable
+ * file → {} (constructed urls still work for NYC shows).
+ */
+function loadShowScoreUrlMap(root) {
+  try {
+    const fs = require('fs');
+    const path = require('path');
+    const raw = JSON.parse(fs.readFileSync(path.join(root, 'data', 'show-score-urls.json'), 'utf8'));
+    return raw.shows || raw || {};
+  } catch {
+    return {};
+  }
+}
+
 module.exports = {
   showScoreUrlForShow,
+  loadShowScoreUrlMap,
   extractShowScoreReviewUrls,
   extractReadMoreUrls,
   parseShowScorePagination,
+  showScorePaginationPages,
   fetchAllShowScoreReviewUrls,
 };

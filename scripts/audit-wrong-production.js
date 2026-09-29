@@ -19,6 +19,7 @@ const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { parseHistoricalDate } = require('./lib/date-utils');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const FIX_MODE = process.argv.includes('--fix');
 const GATE_MODE = process.argv.includes('--gate');
@@ -226,9 +227,7 @@ const LONDON_VENUES = [
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 let showDirs = [];
 try {
-  showDirs = fs.readdirSync(reviewTextsDir).filter(d =>
-    fs.statSync(path.join(reviewTextsDir, d)).isDirectory()
-  );
+  showDirs = listShowDirs(reviewTextsDir);
 } catch { /* missing checkout — showDirs stays [], corpus guard catches it */ }
 
 const findings = [];

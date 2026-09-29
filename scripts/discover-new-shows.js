@@ -29,6 +29,7 @@
  * Broadway shows use IBDB for dates, so this doesn't apply to BW paths.
  *
  * Usage: node scripts/discover-new-shows.js [--dry-run] [--include-off-broadway] [--include-west-end]
+ *        [--tm-page-budget=N]   Theatremonkey show pages fetched per run for venues (default 20; env TM_VENUE_PAGE_BUDGET)
  */
 
 const fs = require('fs');
@@ -40,7 +41,8 @@ const { parseShortDate } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
-const { computeShowReconciliation } = require('./lib/discovery-reconcile');
+const { computeShowReconciliation, resolveReconciliationFields, appendReconciliationAudit } = require('./lib/discovery-reconcile');
+const { validateChangeStability } = require('./lib/change-stability-guard');
 const { classifyTodayTixStartDate, unconfirmedStartFlags, productionIdYear } = require('./lib/todaytix-dates');
 const { batchLookupIBDBDates, checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const { ibdbYearMismatch, expectedShowYear } = require('./lib/ibdb-year-guard');
@@ -51,9 +53,77 @@ const { splitCombinedCredits } = require('./lib/credit-splitting');
 const { verifyCreativeTeamViaSerp } = require('./lib/creative-team-verify');
 const { scrapeCurrentRuntimes, matchRuntimesToShows, batchScrapeAgeRecommendations } = require('./lib/broadway-com-runtimes');
 const { classifyGenre, applyGenreCategoryOverride } = require('./lib/genre-classification');
-const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
+const { isLondonMarket, isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonTheatreVenue, isLondonReceivingHouse, isBroadwayCategory, sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./lib/broadway-theaters');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { matchesRetired } = require('./lib/retired-show-ids');
+
+// Tags each candidate with which discovery source produced it (BRO-2072) so
+// reconcileMatchedShow() below can require multi-source agreement before
+// trusting a venue/date patch. Internal field only — never copied into
+// shows.json (showEntry is built field-by-field) and stripped from the
+// pending-review JSON alongside the other `_`-prefixed internal fields.
+function tagSource(shows, sourceLabel) {
+  for (const s of shows) {
+    if (!s._discoverySource) s._discoverySource = sourceLabel;
+  }
+  return shows;
+}
+
+function isoDateOrNull(value) {
+  if (!value) return null;
+  const parsed = new Date(value);
+  return isNaN(parsed.getTime()) ? null : parsed.toISOString().split('T')[0];
+}
+
+// The id (and the ISO dates it derives from) a candidate WOULD mint. Computed
+// ONCE at the top of the candidate loop (2026 data audit, S0-T3) so the
+// retired-id refusal there and the row actually written further down can
+// never disagree about the id — a second copy of this arithmetic is exactly
+// how a "retired" id would quietly mint under a slightly different name.
+// Pure: no shows.json access, no side effects. Exported for the unit test.
+//
+// Year rule — use the production's own year for the ID. Order matters:
+// openingDate, then previewsStartDate, then the quarantined
+// unconfirmedStartDate, and only then fall back to "now".
+//
+// The `now.getFullYear()` fallback is the third link in the 2027-Encores!
+// chain (2026-08-12). A season announced 6-10 months out reaches here with
+// openingDate null (see classifyTodayTixStartDate), so every 2027 show was
+// minted as `<slug>-off-broadway-2026`. That is both wrong on its face and
+// self-blocking: "You're a Good Man, Charlie Brown" (Feb 2027) generated the
+// SAME id as the 92NY production that ran in March 2026, so the ID-collision
+// guard in the loop dropped it even after the twin guard was taught to let
+// it through. A date we don't trust enough to gate reviews on is still
+// plenty good enough to name a row.
+//
+// Slug rule — market-aware. withMarketSuffix() strips any pre-existing market
+// suffix before re-appending — idempotent, so a title/slug that already
+// carries the suffix (e.g. round-tripped through another discovery path)
+// doesn't get it appended a second time, which used to produce IDs like
+// `beetlejuice-the-musical-west-end-west-end-2026` (BRO-3237).
+//
+// Provisional year (BRO-4204 S5-T4). When NO date names the production the
+// year falls back to the current year — and that is where the audit's 22
+// wrong-year ids came from: a source (TodayTix, a venue season page, the
+// Playbill schedule) listed the title before any date, the row was minted as
+// `<slug>-2026`, the dates arrived through enrichment months later saying
+// 2027, and nothing ever renamed the id. The fallback itself is still the
+// right call (a dateless announcement must get SOME id), so instead of
+// changing it we stamp `idYearProvisional: true` on the minted row. That is
+// the breadcrumb validate-data's id-year-drift WARN reports and the S8-T1
+// rename tool can key on: a provisional year that later disagrees with the
+// dates is a rename candidate, a deliberate year is not.
+function mintCandidateId(show, now = new Date()) {
+  const openingDate = isoDateOrNull(show.openingDate);
+  const closingDate = isoDateOrNull(show.closingDate);
+  const previewsStartDate = isoDateOrNull(show.previewsStartDate);
+  const datedYear = productionIdYear({ openingDate, previewsStartDate, unconfirmedStartDate: show.unconfirmedStartDate });
+  const idYearProvisional = !datedYear;
+  const idYear = datedYear || String(now.getFullYear());
+  const marketSlug = withMarketSuffix(slugify(show.title), show.category);
+  return { openingDate, closingDate, previewsStartDate, idYear, idYearProvisional, marketSlug, showId: `${marketSlug}-${idYear}` };
+}
 
 // Strict exact-match set of the 41 official Broadway houses (canonical + aliases),
 // normalized. We deliberately do NOT use broadway-theaters' isOfficialBroadwayTheater
@@ -68,6 +138,7 @@ for (const t of Object.values(BROADWAY_THEATERS)) {
 const { classifyShow } = require('./lib/classify-show');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot, titleCaseFromAllCaps } = require('./lib/playbill-broadway-schedule');
+const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 const {
   OB_VENUE_CONFIGS,
   scrapeVenueListing,
@@ -85,6 +156,16 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd, hasJsonLdType } = require('./lib/jsonld');
+// OLT listing reader shared with scripts/enrich-west-end-dates.js (audit S7-T10).
+const { parseOltTheaterEvents, extractJsonLdBlocks } = require('./lib/olt-enrichment');
+// S4-T5 (2026 data audit, BRO-4204): per-source last-success markers and the
+// Theatremonkey show-page venue resolver (pure decision logic in the lib, §15).
+const { recordParseResult } = require('./lib/source-last-success');
+const {
+  TM_INDEX_URL, titleKey, parseTheatremonkeyIndex, extractTheatremonkeyVenue, extractTheatremonkeyDates,
+  parseVenuePageBudget, loadVenueCache, saveVenueCache, planVenueFetches, recordVenueResult,
+} = require('./lib/theatremonkey-venue');
+const { findConflictingShowId } = require('./lib/show-score-url-map');
 
 const USAGE = `discover-new-shows.js — Broadway New Show Discovery.
 
@@ -163,6 +244,38 @@ const NON_THEATER_PATTERNS = [
   'education program', 'student showcase',
 ];
 
+// Junk-title shapes from the 2026 data audit (BRO-4204 S4-T6): festivals,
+// panels / Q&As, NT Live cinema screenings, prize nights, comedy previews,
+// work-in-progress nights, venue "events" listings and sports double-headers.
+// A word-anchored regex rather than more NON_THEATER_PATTERNS substrings so
+// 'festival' cannot hit "Festen" and 'panel' cannot hit "Panelbeater".
+// Concert-tour titles ("Rachel Zegler – Live in London", "X in Concert") added
+// after the S4-T5 Theatremonkey dry-run admitted one at @sohoplace; 0 tracked
+// titles match either form (corpus check 2026-09-28).
+// Corpus-checked 2026-09-28 against every title in shows.json (3,073 rows):
+// each token hits only the audit's junk rows (Kilburn High Road Festival,
+// Migrant Qa Panel, Nt Live All My Sons 12a Tbc, Stiles Drewe Best New Song
+// Prize 2026, Edinburgh Fringe Comedy Previews, Rosie Jones: Anyone But Me
+// (WIP), Bar Events, Barbarians v Wales Double Header) and nothing tracked.
+const NON_THEATRE_TITLE_RE = /^nt live\b|\blive in (?:london|new york|concert)\b|\bin concert\b|\bfestival\b|\bpanel\b|\bq ?& ?a\b|\bqa\b|\bscreening\b|\bprize\b|\(wip\)|\bwork[- ]in[- ]progress\b|\bcomedy previews\b|\bfringe previews\b|\bdouble header\b|^(?:bar|venue|special) events\b/i;
+
+// TodayTix top-level categories that are never a staged production. Checked
+// on the raw TodayTix object (`show.category.name`); the same value is written
+// to shows.json as `todayTixCategory`. "Concerts" is how Betty Buckley at Joe's
+// Pub and Harry Connick Jr. at Carnegie Hall reached the Off-Broadway list.
+// "Events" is deliberately NOT here: on the live NYC feed it also carries NYU
+// Skirball's international theatre (Milo Rau, Romeo Castellucci, Dead Centre,
+// Manual Cinema), which the NYT reviews — and the owner's rule (2026 audit,
+// D3) is to keep anything that gets or might get reviewed. Junk that rides
+// "Events" still falls to the title regex, the venue gate and the one-night gate.
+const NON_THEATRE_TODAYTIX_CATEGORIES = new Set(['Concerts', 'Landmarks', 'Films', 'Conversations']);
+
+// TodayTix categories that vouch for a listing at a non-theatre venue: a
+// TodayTix Off-Broadway row at Radio City / Carnegie Hall / 54 Below is
+// admitted only when TodayTix itself tags it Plays or Musicals (owner rule,
+// 2026 audit). London paths do not get this override — see isNonTheaterContent.
+const STAGED_PRODUCTION_CATEGORIES = new Set(['Plays', 'Musicals']);
+
 // West End-specific additional patterns — shared by TodayTix London, OLT, and ShowScore candidate processing
 const WE_EXTRA_PATTERNS = [
   'dining experience', 'candlelight', 'by candlelight',
@@ -217,7 +330,13 @@ function isOneNightShow(show) {
   // filtered before ever reaching the dedup/new-show pipeline (Gap B, card
   // #1446: Mix and Master, The Full Monty, Warriors, Three Days of Rain were
   // all real full Broadway/Off-Broadway runs filtered this way).
-  if (show.startDate === 'null' || show.endDate === 'null') return false;
+  //
+  // The one place "null" dates DO mean a one-off booking is a non-theatre
+  // venue (2026 audit, BRO-4204 S4-T8): a Carnegie Hall / Royal Albert Hall /
+  // 54 Below listing with no run dates is a single concert or cabaret night,
+  // not a not-yet-on-sale production, so the skip fires there and only there.
+  // A "null"-dated listing at a theatre keeps the #1446 behaviour.
+  if (show.startDate === 'null' || show.endDate === 'null') return isNonTheatreVenue(show.venue);
   return show.startDate === show.endDate;
 }
 
@@ -236,16 +355,45 @@ function sanitizeTodayTixDate(startDate, showTitle) {
   return classifyTodayTixStartDate(startDate, showTitle).previewsStartDate;
 }
 
-function isNonTheaterContent(show) {
+// The admission rule this enforces is written up in docs/show-inclusion-policy.md
+// (2026 data audit, BRO-4204). `show` is TodayTix-shaped (displayName,
+// subcategories, venue as string or { name }, category { name }, description);
+// the Playbill / ShowScore paths synthesize that shape before calling.
+//
+// `market` is 'london' on the London discovery paths and 'nyc' (default)
+// otherwise. It changes exactly one gate: a non-theatre venue match rejects
+// outright in London, but in NYC is overridden when TodayTix tags the row
+// Plays or Musicals (a staged production booked into Radio City or Carnegie
+// Hall — Les Misérables: The Arena Concert Spectacular is the reviewed case).
+function isNonTheaterContent(show, { market = 'nyc' } = {}) {
   const title = (show.displayName || show.name || '').toLowerCase();
   if (EXCLUDED_TITLES.some(excluded => title.includes(excluded))) return true;
   if (NON_THEATER_PATTERNS.some(pattern => title.includes(pattern))) return true;
+  if (NON_THEATRE_TITLE_RE.test(title)) return true; // festival / panel / screening / Q&A / prize / WIP titles
   const subcatNames = (show.subcategories || []).map(sc => sc.name);
   if (subcatNames.includes('Classical')) return true; // Opera
+
+  // Gate 1b: TodayTix top-level category — Concerts, Landmarks, Films and
+  // Conversations are never staged productions, whatever the venue.
+  if (NON_THEATRE_TODAYTIX_CATEGORIES.has(show.category?.name)) return true;
 
   // Gate 2: Venue blocklist — categorically non-theater venues
   const venue = (typeof show.venue === 'string' ? show.venue : show.venue?.name || '').toLowerCase();
   if (NON_THEATER_VENUES.some(v => venue.includes(v))) return true;
+
+  // Gate 3: Stadiums, arenas, concert halls, cabaret rooms (NON_THEATRE_VENUE_RE,
+  // scripts/lib/venue-classification.js). London: reject outright. NYC: admit
+  // only when TodayTix tags the row Plays or Musicals. A production critics
+  // review at one of these still gets in via the aggregator promoters, which
+  // never consult this gate (the safety valve).
+  if (isNonTheatreVenue(show.venue)) {
+    if (market === 'london') return true;
+    if (!STAGED_PRODUCTION_CATEGORIES.has(show.category?.name)) return true;
+  }
+
+  // Gate 3b: Greater London receiving houses (Hackney Empire, New Wimbledon
+  // Theatre…) list UK tour stops, not London productions. London paths only.
+  if (market === 'london' && isLondonReceivingHouse(show.venue)) return true;
 
   // Gate 4: Synopsis keywords — catches shows with clean titles but non-theater descriptions
   const description = (show.description || '').toLowerCase();
@@ -339,6 +487,7 @@ async function fetchShowsFromTodayTix() {
   // Gate 1: One-night shows are filtered at TodayTix ingestion (not IBDB historical)
   const broadwayShows = allShows.filter(s => {
     if (isNonTheaterContent(s) || isOneNightShow(s)) return false;
+    if (isNonNycVenue(s.venue)) return false; // touring house in TodayTix's NYC feed (BRO-3211)
     // TodayTix mis-tags some Broadway shows (no "Broadway" subcat). Fall back to
     // venue: if it plays one of the 41 official Broadway houses, include it.
     // Other Desert Cities (Hudson Theatre) slipped through on subcat alone.
@@ -349,6 +498,11 @@ async function fetchShowsFromTodayTix() {
     // TodayTix mis-tags some OB shows (no "Off Broadway" subcat). Fall back to
     // venue name: if it plays a theatre we already classify as Off-Broadway,
     // include it. Broken Snow (Theatre 71) slipped through on subcat alone.
+    // Checked BEFORE taggedOB: TodayTix tags out-of-state touring houses
+    // "Off Broadway" (Beetlejuice @ State Theatre New Jersey, verified against
+    // the live API 2026-09-14), so the tag cannot be trusted to exclude them
+    // and the venue-allowlist fallback below never gets a chance to. BRO-3211.
+    if (isNonNycVenue(s.venue)) return false;
     const taggedOB = s.subcategories?.some(sc => sc.name === 'Off Broadway');
     if (!taggedOB && !isKnownOffBroadwayVenue(s.venue)) return false;
     return !isNonTheaterContent(s) && !isOneNightShow(s);
@@ -363,6 +517,14 @@ async function fetchShowsFromTodayTix() {
   if (filteredByOneNight.length > 0) {
     console.log(`  Filtered ${filteredByOneNight.length} one-night events: ${filteredByOneNight.map(s => s.displayName || s.name).join(', ')}`);
   }
+  // Non-NYC touring houses (BRO-3211). Logged even at zero: this guard is the
+  // only thing standing between a TodayTix row tagged "Off Broadway" at an
+  // out-of-state venue and a bogus Off-Broadway production, and it matches the
+  // venue by name. If TodayTix ever renames the venue the guard silently stops
+  // matching, so a run that prints 0 here when the road date is still listed is
+  // the signal that it has drifted — without the line there is no evidence either way.
+  const filteredByNonNyc = allShows.filter(s => isNonNycVenue(s.venue));
+  console.log(`  Filtered ${filteredByNonNyc.length} non-NYC touring-house shows${filteredByNonNyc.length ? `: ${filteredByNonNyc.map(s => `${s.displayName || s.name} @ ${s.venue?.name || s.venue}`).join(', ')}` : ''}`);
 
   // Deduplicate by displayName (API sometimes has duplicate listings)
   const seen = new Set();
@@ -565,7 +727,11 @@ async function fetchShowsFromPlaybillBroadway() {
       return null;
     }
     return {
-      title: titleCaseFromAllCaps(e.title),
+      // Canonical normaliser, not the local titleCaseFromAllCaps(): that
+      // helper is Latin-1 only, has no venue-suffix handling, and would
+      // disagree with the validate-data.js gate. One definition of a correct
+      // title, shared by ingestion, the gate and the sweep.
+      title: normalizeShowTitle({ title: e.title, venue: e.venue }).title,
       venue,
       slug: e.title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
       openingDate: e.opening || null,
@@ -647,7 +813,10 @@ async function fetchShowsFromTodayTixLondon() {
       if (!isTheaterCategory) return false;
     }
 
-    return !isNonTheaterContent(s) && !isOneNightShow(s);
+    // market:'london' — a stadium/arena/concert-hall/cabaret venue or a
+    // receiving-house tour stop rejects outright here, with no Plays/Musicals
+    // override (docs/show-inclusion-policy.md).
+    return !isNonTheaterContent(s, { market: 'london' }) && !isOneNightShow(s);
   });
 
   const seen = new Set();
@@ -711,70 +880,183 @@ async function fetchShowsFromTodayTixLondon() {
   return showsList;
 }
 
-// ── Theatremonkey — supplementary WE discovery source (catches shows TodayTix/OLT miss) ──
+// ── London listing fetch (scraper rule) ──
+//
+// Every London listing page below goes through fetchPage() (scripts/lib/
+// scraper.js: Scrapingdog → Bright Data → ScrapingBee → Playwright). The raw
+// https.get() this replaced for OLT 403'd on every Actions runner for 23
+// consecutive runs (CI log 2026-09-27, run 36322077623: "OLT fetch failed
+// (HTTP 403)") while returning ~100 shows locally — the G6 TLS-fingerprint
+// class in the scraper-reference skill, and exactly what the provider chain
+// exists for (S4-T4, 2026 data audit BRO-4204).
+//
+// The plain fetch() after it is NOT a scraping tier: fetchPage() has no
+// provider-less path (no keys + no Playwright → "All scraping methods
+// failed"), so a local run without scraper keys would report every London
+// source dark and the source counts could never be verified off-CI. It runs
+// only once fetchPage() has thrown or returned a stub, uses undici fetch()
+// (never https.get — G6) with an AbortSignal timeout, and in CI is reached
+// only after the whole provider chain has already failed.
+const LONDON_FETCH_HEADERS = {
+  'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+  'Accept': 'text/html,application/xhtml+xml',
+  'Accept-Language': 'en-GB,en;q=0.9',
+};
 
-const TM_INDEX_URL = 'https://www.theatremonkey.com/shows/';
-
-async function fetchShowsFromTheatremonkey() {
-  console.log('Fetching West End shows from Theatremonkey...');
+async function fetchLondonListingHtml(url, { label = url, minBytes = 3000 } = {}) {
+  let why;
   try {
-    const response = await fetch(TM_INDEX_URL, {
-      headers: { 'User-Agent': 'Mozilla/5.0 (compatible; BroadwayScorecard/1.0)', Accept: 'text/html' },
-      signal: AbortSignal.timeout(15000),
-    });
-    if (!response.ok) {
-      console.log(`  Theatremonkey returned HTTP ${response.status}`);
-      return [];
-    }
-    const html = await response.text();
-    const cheerio = require('cheerio');
-    const $ = cheerio.load(html);
-    const seen = new Set();
-    const showsList = [];
-    let skippedNoVenue = 0;
+    const result = await fetchPage(url);
+    const html = result?.content || '';
+    if (html.length >= minBytes) return { html, via: result.source || 'fetchPage' };
+    why = `${html.length} bytes (< ${minBytes})`;
+  } catch (e) {
+    why = e.message;
+  }
+  console.log(`  ${label}: fetchPage() gave ${why} — trying plain fetch()`);
+  // Literal timeout: scripts/discover-new-shows.test.mjs scopes its BRO-108
+  // guard to `AbortSignal.timeout(<number>)` at each fetch() site.
+  const response = await fetch(url, {
+    headers: LONDON_FETCH_HEADERS,
+    redirect: 'follow',
+    signal: AbortSignal.timeout(20000),
+  });
+  if (!response.ok) throw new Error(`HTTP ${response.status}`);
+  const html = await response.text();
+  if (html.length < minBytes) throw new Error(`content suspiciously short (${html.length} bytes)`);
+  return { html, via: 'direct-fetch' };
+}
 
-    $('a[href*="/show/"]').each((_, el) => {
-      const href = $(el).attr('href') || '';
-      const match = href.match(/\/show\/([^/]+)\/?$/);
-      if (!match) return;
-      const slug = match[1];
-      if (slug === 'shows' || seen.has(slug)) return;
-      const title = $(el).text().trim();
-      if (title.length < 2 || /^(Read more|Show Details|Reviews)/i.test(title)) return;
-      seen.add(slug);
+// ── Theatremonkey — supplementary WE discovery source (catches shows TodayTix/OLT miss) ──
+//
+// The index lists titles only; the venue is on each show page. Card #1060
+// closed the `venue: 'TBA'` leak by skipping every candidate, which left this
+// source contributing 0 for 23 consecutive CI runs ("skipped 78 candidates —
+// index has no venue data"). S4-T5 (2026 data audit, BRO-4204) adds the
+// per-show-page fetch that comment called for: bounded (--tm-page-budget=N /
+// TM_VENUE_PAGE_BUDGET, default 20 pages a run), cached across runs in
+// data/audit/theatremonkey-venue-cache.json (keyed by show URL), and index
+// titles that are not already a London show in shows.json are fetched first
+// — they are the only ones that can become new rows, so the budget lands on
+// them even before the cache fills. Venue strings go through
+// sanitizeVenueForWrite and the non-theatre / receiving-house gate exactly
+// like the OLT and LT paths. Decision logic: scripts/lib/theatremonkey-venue.js.
+const TM_VENUE_PAGE_BUDGET = parseVenuePageBudget(process.argv.slice(2), process.env);
+const TM_PAGE_DELAY_MS = 500;
 
-      // Clean Disney's prefix for consistency
-      const cleanedTitle = title.replace(/^Disney's\s+/i, '');
-      // The TM index genuinely carries no venue data (it's on each show's own
-      // page, which this scraper doesn't fetch) — unlike every other source
-      // in this file, there is no real value to fall back to here, only a
-      // fabricated one. Writing 'TBA' was exactly the #994-class leak this
-      // card (#1060) exists to close, so skip instead of writing a
-      // placeholder. This makes TM contribute 0 shows going forward — an
-      // accepted coverage tradeoff (design decision, not a guess): TM is a
-      // supplementary source layered under TodayTix/OLT in the dedup
-      // priority order, so titles it alone would have caught are lost until
-      // someone adds a per-show-page fetch for venue.
-      skippedNoVenue++;
-    });
-    if (skippedNoVenue > 0) {
-      console.log(`  Theatremonkey: skipped ${skippedNoVenue} candidates — index has no venue data (card #1060)`);
-    }
-
-    console.log(`Theatremonkey: ${showsList.length} shows on index`);
-    // showsList is always empty now (card #1060 — TM has no venue data, so
-    // every candidate is skipped, never pushed). The old "0 shows parsed"
-    // check would fire on every successful run. seen.size === 0 means the
-    // /show/ link selector itself matched nothing — the real HTML-structure
-    // regression this warning exists to catch.
-    if (html.length > 10000 && seen.size === 0) {
-      console.error('⚠️  WARNING: Theatremonkey page loaded but 0 candidates found — HTML structure may have changed');
-    }
-    return showsList;
+async function fetchShowsFromTheatremonkey(existingShows = []) {
+  console.log('Fetching West End shows from Theatremonkey...');
+  let html;
+  try {
+    ({ html } = await fetchLondonListingHtml(TM_INDEX_URL, { label: 'Theatremonkey index', minBytes: 10000 }));
   } catch (err) {
     console.log(`  Theatremonkey fetch failed: ${err.message}`);
     return [];
   }
+
+  const indexEntries = parseTheatremonkeyIndex(html);
+  console.log(`Theatremonkey: ${indexEntries.length} shows on index`);
+  if (indexEntries.length === 0) {
+    // A full-size page where the /show/ link selector matched nothing is the
+    // HTML-structure regression this warning exists to catch.
+    console.error('⚠️  WARNING: Theatremonkey page loaded but 0 candidates found — HTML structure may have changed');
+    return [];
+  }
+
+  const cache = loadVenueCache();
+  const existingLondonTitles = new Set(
+    existingShows.filter(s => s && isLondonMarket(s.category)).map(s => titleKey(s.title))
+  );
+  const plan = planVenueFetches(indexEntries, cache, {
+    budget: TM_VENUE_PAGE_BUDGET,
+    prioritize: (entry) => !existingLondonTitles.has(titleKey(entry.title)),
+  });
+  console.log(`  Theatremonkey: ${plan.fromCache.length} venues from cache, ${plan.toFetch.length} show pages to fetch (budget ${TM_VENUE_PAGE_BUDGET}), ${plan.deferred.length} deferred to a later run, ${plan.knownNoVenue} known without a venue`);
+
+  const resolved = plan.fromCache.map(e => ({ ...e, showingFrom: null, showingTo: null }));
+  let attempted = 0;
+  for (const entry of plan.toFetch) {
+    if (timeBudget.exceeded()) {
+      console.log(`  ⏱ Time budget reached — stopping Theatremonkey show-page fetches after ${attempted}`);
+      break;
+    }
+    if (attempted > 0) await new Promise(resolve => setTimeout(resolve, TM_PAGE_DELAY_MS));
+    attempted++;
+    try {
+      const { html: pageHtml } = await fetchLondonListingHtml(entry.url, { label: `Theatremonkey ${entry.slug}`, minBytes: 5000 });
+      // Sanitize BEFORE caching so a placeholder/blob venue line is cached as
+      // 'no-venue' (retried in 7 days) rather than resurfacing every run.
+      const rawVenue = extractTheatremonkeyVenue(pageHtml);
+      const venue = rawVenue ? sanitizeVenueForWrite(rawVenue) : null;
+      if (venue) {
+        recordVenueResult(cache, entry, { status: 'ok', venue });
+        resolved.push({ ...entry, venue, ...extractTheatremonkeyDates(pageHtml) });
+        if (verbose) console.log(`  [TM] "${entry.title}" → ${venue}`);
+      } else {
+        recordVenueResult(cache, entry, { status: 'no-venue' });
+        if (verbose) console.log(`  [TM] "${entry.title}" — show page has no usable venue line ("${rawVenue || ''}"), retry in 7 days`);
+      }
+    } catch (err) {
+      recordVenueResult(cache, entry, { status: /HTTP 404/.test(err.message) ? 'not-found' : 'error', error: err.message });
+      console.log(`  Theatremonkey: ${entry.slug} — ${err.message}`);
+    }
+  }
+  if (attempted > 0) {
+    try {
+      saveVenueCache(cache);
+    } catch (e) {
+      console.log(`  ⚠️  Theatremonkey venue cache not saved (${e.message})`);
+    }
+  }
+
+  const showsList = [];
+  const seen = new Set();
+  let skippedNoVenue = 0;
+  let filtered = 0;
+  for (const entry of resolved) {
+    const title = entry.title;
+    const titleLower = title.toLowerCase();
+    if (title.length < 3 || seen.has(titleLower)) continue;
+    if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
+    if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
+
+    // Same guards as OLT/LT: a placeholder/blob never reaches shows.json
+    // (card #1060), and London paths reject non-theatre venues and
+    // receiving-house tour stops outright (BRO-4204).
+    const venue = sanitizeVenueForWrite(entry.venue);
+    if (!venue) {
+      skippedNoVenue++;
+      if (verbose) console.log(`  [SKIP] "${title}" — Theatremonkey venue "${entry.venue || ''}" is a placeholder/blob (card #1060)`);
+      continue;
+    }
+    if (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue)) {
+      filtered++;
+      if (verbose) console.log(`  [FILTERED] "${title}" — Theatremonkey venue "${venue}" is a non-theatre venue or receiving house`);
+      continue;
+    }
+
+    seen.add(titleLower);
+    const genre = classifyGenre({ title, venue });
+    // Venue-based classification, as the LT path does: Theatremonkey is a
+    // West End index, so only a known Off-West End house that is NOT also a
+    // West End house is filed as off-west-end.
+    const baseCategory = isOffWestEndVenue(venue) && !isWestEndVenue(venue) ? 'off-west-end' : 'west-end';
+    showsList.push({
+      title,
+      venue,
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: null,
+      previewsStartDate: entry.showingFrom || null,
+      closingDate: entry.showingTo || null,
+      ...(genre ? { genre } : {}),
+      category: applyGenreCategoryOverride(baseCategory, genre),
+      description: '',
+    });
+  }
+
+  const awaitingFetch = plan.deferred.length + (plan.toFetch.length - attempted);
+  console.log(`  Theatremonkey: ${showsList.length} candidates with a venue (${skippedNoVenue} placeholder venues skipped, ${filtered} non-theatre/receiving-house filtered, ${awaitingFetch} awaiting a show-page fetch)`);
+  return showsList;
 }
 
 // ── Official London Theatre (SOLT) — supplementary WE discovery source ──
@@ -784,99 +1066,64 @@ const OLT_URL = 'https://officiallondontheatre.com/theatre-tickets/';
 async function fetchShowsFromOfficialLondonTheatre() {
   console.log('Fetching West End shows from Official London Theatre (SOLT)...');
 
-  // Plain HTTPS — site serves static HTML with JSON-LD, no scraping service needed
-  const html = await new Promise((resolve, reject) => {
-    const req = https.get(OLT_URL, {
-      headers: {
-        'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
-        'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'en-GB,en;q=0.9',
-      },
-      timeout: 20000,
-    }, (res) => {
-      // Follow one redirect (301/302/307/308)
-      if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
-        const redirectReq = https.get(res.headers.location, {
-          headers: { 'User-Agent': 'Mozilla/5.0', 'Accept': 'text/html' },
-          timeout: 20000,
-        }, (res2) => {
-          if (res2.statusCode !== 200) { reject(new Error(`HTTP ${res2.statusCode} after redirect`)); res2.resume(); return; }
-          let d = '';
-          res2.on('data', chunk => d += chunk);
-          res2.on('end', () => resolve(d));
-        }).on('error', reject);
-        redirectReq.on('timeout', () => { redirectReq.destroy(); reject(new Error('Timeout after redirect')); });
-        res.resume();
-        return;
-      }
-      if (res.statusCode !== 200) { reject(new Error(`HTTP ${res.statusCode}`)); res.resume(); return; }
-      let data = '';
-      res.on('data', chunk => data += chunk);
-      res.on('end', () => resolve(data));
-    });
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(); reject(new Error('Timeout')); });
-  });
+  // S4-T4 (2026 data audit, BRO-4204): fetchPage() per the scraper rule. The
+  // raw https.get() this replaced ("static HTML, no scraping service needed")
+  // was 403'd on every Actions runner — see fetchLondonListingHtml above.
+  // A short body (< 3000 bytes) throws there and surfaces as "OLT fetch
+  // failed (content suspiciously short …)" in the caller, same outcome as
+  // the old inline skip.
+  const { html, via } = await fetchLondonListingHtml(OLT_URL, { label: 'OLT', minBytes: 3000 });
+  if (verbose) console.log(`  OLT: ${html.length} bytes via ${via}`);
 
-  if (html.length < 3000) {
-    console.log(`  OLT: content suspiciously short (${html.length} bytes), skipping`);
-    return [];
-  }
-
-  // Parse JSON-LD TheaterEvent blocks (each is a standalone <script type="application/ld+json">)
-  const dom = new JSDOM(html);
-  const ldScripts = dom.window.document.querySelectorAll('script[type="application/ld+json"]');
+  // Parse JSON-LD TheaterEvent blocks (each is a standalone <script type="application/ld+json">).
+  // The reader lives in scripts/lib/olt-enrichment.js (audit S7-T10) so the
+  // West End date/age backfill (scripts/enrich-west-end-dates.js) parses the
+  // exact same page the exact same way; it also fixes the venue: OLT's
+  // `location.name` is the venue's URL and `location.title` the human name
+  // on every live entry (verified 2026-09-28), and the inline reader this
+  // replaced took `.name`.
+  const ldBlockCount = extractJsonLdBlocks(html).length;
   const shows = [];
   const seen = new Set();
 
-  for (const script of ldScripts) {
-    try {
-      for (const data of parseJsonLd(script.textContent)) {
-        if (!hasJsonLdType(data, 'TheaterEvent')) continue;
-        // Skip any with subEvent nesting (season containers)
-        if (data.subEvent) continue;
+  for (const event of parseOltTheaterEvents(html)) {
+    const title = event.title;
+    if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
 
-      const title = (data.name || '').trim()
-        .replace(/&#8217;|&#8216;|[\u2018\u2019]/g, "'")  // Curly quotes → straight
-        .replace(/&#8220;|&#8221;|[\u201C\u201D]/g, '"')  // Curly double quotes → straight
-        .replace(/&#8211;|[\u2013]/g, '–').replace(/&#8212;|[\u2014]/g, '—')
-        .replace(/&#038;/g, '&').replace(/&amp;/g, '&');
-      if (!title || title.length < 3 || seen.has(title.toLowerCase())) continue;
+    // Apply shared filters
+    const titleLower = title.toLowerCase();
+    if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
+    if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
 
-      // Apply shared filters
-      const titleLower = title.toLowerCase();
-      if (NON_THEATER_PATTERNS.some(p => titleLower.includes(p))) continue;
-      if (WE_EXTRA_PATTERNS.some(p => titleLower.includes(p))) continue;
-
-      // OLT's JSON-LD location can be missing/blank on a malformed entry —
-      // same #994-class leak, guarded here rather than resurrected via
-      // `|| 'TBA'` (card #1060).
-      const rawVenue = typeof data.location === 'object' ? data.location.name : data.location;
-      const venue = sanitizeVenueForWrite(rawVenue);
-      if (!venue) {
-        if (verbose) console.log(`  [SKIP] "${title}" — OLT venue "${rawVenue || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
-        continue;
-      }
-      const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
-
-      seen.add(titleLower);
-      const description = (data.description || '').substring(0, 500);
-      const genre = classifyGenre({ title, venue, description });
-      shows.push({
-        title,
-        venue,
-        slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
-        openingDate: null,
-        previewsStartDate: data.startDate || null,
-        closingDate: endDate,
-        ...(genre ? { genre } : {}),
-        category: applyGenreCategoryOverride('west-end', genre),
-        description,
-      });
-      }
-    } catch (e) {
-      // Skip malformed JSON-LD blocks
+    // OLT's JSON-LD location can be missing/blank on a malformed entry —
+    // same #994-class leak, guarded here rather than resurrected via
+    // `|| 'TBA'` (card #1060).
+    const venue = sanitizeVenueForWrite(event.venue);
+    if (!venue) {
+      if (verbose) console.log(`  [SKIP] "${title}" — OLT venue "${event.venue || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
+      continue;
     }
+    // London paths reject non-theatre venues and receiving-house tour stops
+    // outright (2026 audit, BRO-4204 — docs/show-inclusion-policy.md).
+    if (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue)) {
+      if (verbose) console.log(`  [FILTERED] "${title}" — OLT venue "${venue}" is a non-theatre venue or receiving house`);
+      continue;
+    }
+
+    seen.add(titleLower);
+    const description = (event.description || '').substring(0, 500);
+    const genre = classifyGenre({ title, venue, description });
+    shows.push({
+      title,
+      venue,
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: null,
+      previewsStartDate: event.startDate,
+      closingDate: event.endDate,
+      ...(genre ? { genre } : {}),
+      category: applyGenreCategoryOverride('west-end', genre),
+      description,
+    });
   }
 
   // Guards
@@ -889,7 +1136,7 @@ async function fetchShowsFromOfficialLondonTheatre() {
     return [];
   }
 
-  console.log(`  OLT: ${ldScripts.length} JSON-LD blocks, ${shows.length} TheaterEvent shows parsed`);
+  console.log(`  OLT: ${ldBlockCount} JSON-LD blocks, ${shows.length} TheaterEvent shows parsed`);
   return shows;
 }
 
@@ -972,6 +1219,12 @@ async function fetchShowsFromLondonTheatre() {
         const venue = sanitizeVenueForWrite(decodedVenue);
         if (!venue) {
           if (verbose) console.log(`  [SKIP] "${title}" — LT venue "${rawLocation || ''}" is a placeholder/blob, deferring to next run (card #1060)`);
+          continue;
+        }
+        // London paths reject non-theatre venues and receiving-house tour
+        // stops outright (2026 audit, BRO-4204 — docs/show-inclusion-policy.md).
+        if (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue)) {
+          if (verbose) console.log(`  [FILTERED] "${title}" — LT venue "${venue}" is a non-theatre venue or receiving house`);
           continue;
         }
         const endDate = data.endDate === 'null' || data.endDate === null ? null : data.endDate || null;
@@ -1096,6 +1349,22 @@ const VENUE_PAGE_EXCLUDE_PATTERNS = [
   'saturday seminar', 'holiday club', 'young company', 'young creatives',
   'directing lab', 'friday company', 'coffee concert', 'on screen',
   'youth theatre', 'writing lab',
+  // Orange Tree "Acting Lab" / "Acting Lab Devised Theatre" (BRO-4204
+  // S4-T11 promoter dry-run, 2026-09-28) — participation courses listed
+  // under the same /whats-on/<slug> pattern as productions. Corpus-audited:
+  // zero title collisions across 3,073 shows.json rows. NOT a bare
+  // 'conference' for "Sat Conference 2026": "Conference of the Birds" is a
+  // real, staged play.
+  'acting lab',
+  // Orange Tree / Marylebone recitals and talks the S4-T11 promoter dry-run
+  // (2026-09-28) would otherwise have confirmed from the venue page:
+  // "Schubert Winterreise", "Schubert Die Schöne Müllerin", "Impressions from
+  // Debussy to Coltrane", "The Sound of Shakespeare", "Solace of Pilgrims: A
+  // Lenten Journey", "David Owen Norris: Made in England", "SAT Conference
+  // 2026". Owner rule (D3): keep what gets or might get reviewed — recitals
+  // and conferences do not. Corpus-audited: zero hits across 3,073 titles.
+  'schubert', 'debussy', 'winterreise', 'lieder', 'song cycle', 'recital',
+  'lenten', 'sat conference', 'the sound of shakespeare', 'david owen norris',
 ];
 
 // Per-venue candidate cap (mirrors OB_VENUE_CAP below) — one bad parser
@@ -1177,7 +1446,26 @@ async function fetchSingleVenuePage(venue) {
     }
   }
 
-  if (html.length < 1000) return [];
+  return parseVenueListingPage(venue, html);
+}
+
+/**
+ * Pure parse of a VENUE_LISTING_PAGES venue's what's-on HTML into candidate
+ * rows — the second half of fetchSingleVenuePage, split out (BRO-4204
+ * S4-T11) so scripts/promote-owe-venue-candidates.js can re-fetch a venue
+ * page through fetchPage() and ask "is this staged title still listed?"
+ * with the SAME link pattern, title derivation and exclusion rules that
+ * staged the candidate in the first place (CLAUDE.md §15: one parser, never
+ * a copy in the promoter). Returns [] for a page too short to be a real
+ * listing (a soft-404 / interstitial), which callers treat as "nothing
+ * parsed", never as "the venue lists nothing".
+ *
+ * @param {{name: string, url: string, linkPattern: RegExp, titleFromSlug?: boolean, hasJsonLd?: boolean, category: string}} venue
+ * @param {string} html
+ * @returns {Array<object>} candidate rows in the staging shape
+ */
+function parseVenueListingPage(venue, html) {
+  if (typeof html !== 'string' || html.length < 1000) return [];
 
   const dom = new JSDOM(html);
   const doc = dom.window.document;
@@ -1597,8 +1885,9 @@ async function consumeShowScoreCandidatesFile() {
     } catch { /* TodayTix search failed — proceed without */ }
 
     if (ttShow) {
-      // Full TodayTix validation: all gates apply
-      if (isNonTheaterContent(ttShow)) {
+      // Full TodayTix validation: all gates apply (London candidates get the
+      // outright non-theatre-venue rejection, NYC the Plays/Musicals override)
+      if (isNonTheaterContent(ttShow, { market: isLondonMarket(candidate.category) ? 'london' : 'nyc' })) {
         filteredNonTheater++;
         if (verbose) console.log(`  [FILTERED] "${candidate.title}" — TT non-theater content`);
         continue;
@@ -1734,6 +2023,15 @@ async function consumeShowScoreCandidatesFile() {
         console.log(`  [SKIP] "${candidate.title}" — no verified venue yet (ShowScore ${ssData ? 'venue is a placeholder/blob' : 'fetch failed'}), deferring to next run (card #994)`);
         continue;
       }
+      // Same London rule as the TodayTix-confirmed branch above: a
+      // stadium/arena/concert-hall/cabaret venue or a receiving-house tour
+      // stop rejects outright (2026 audit, BRO-4204). The aggregator
+      // promoters remain the route in for anything critics actually review.
+      if (isLondonMarket(candidate.category) && (isNonTheatreVenue(venue) || isLondonReceivingHouse(venue))) {
+        filteredNonTheater++;
+        if (verbose) console.log(`  [FILTERED] "${candidate.title}" — ShowScore venue "${venue}" is a non-theatre venue or receiving house`);
+        continue;
+      }
       const openingDate = ssData?.openingDate || null;
       const openingDateSource = openingDate ? 'showscore' : null;
       const closingDate = ssData?.closingDate || null;
@@ -1835,7 +2133,7 @@ async function discoverShows() {
   // prior Broadway.org fallback was dead code for exactly that reason).
   let discoveredShows;
   try {
-    discoveredShows = await fetchShowsFromTodayTix();
+    discoveredShows = tagSource(await fetchShowsFromTodayTix(), 'todaytix');
     sourceCounts.todaytix = discoveredShows.length;
     console.log(`Found ${discoveredShows.length} shows via TodayTix API`);
   } catch (e) {
@@ -1865,7 +2163,7 @@ async function discoverShows() {
       console.error(`::error::Playbill Broadway returned ${playbillBroadwayShows.length} candidates (cap: ${BROADWAY_SCHEDULE_CAP}) — likely parser regression. Skipping this source only.`);
       process.exitCode = 1;
     } else {
-      discoveredShows.push(...playbillBroadwayShows);
+      discoveredShows.push(...tagSource(playbillBroadwayShows, 'playbill-broadway'));
     }
   } catch (e) {
     sourceCounts.playbillBroadway = 0;
@@ -1895,7 +2193,7 @@ async function discoverShows() {
         console.error(`::error::Playbill OB returned ${playbillOBShows.length} candidates (cap: ${OB_VENUE_CAP}) — likely parser regression. Skipping this source only.`);
         process.exitCode = 1;
       } else {
-        discoveredShows.push(...playbillOBShows);
+        discoveredShows.push(...tagSource(playbillOBShows, 'playbill-ob'));
       }
     } catch (e) {
       sourceCounts.playbillOB = 0;
@@ -1951,7 +2249,7 @@ async function discoverShows() {
     const [todayTixResult, oltResult, tmResult, ltResult, venueResult] = await Promise.allSettled([
       fetchShowsFromTodayTixLondon(),
       fetchShowsFromOfficialLondonTheatre(),
-      fetchShowsFromTheatremonkey(),
+      fetchShowsFromTheatremonkey(data.shows),
       fetchShowsFromLondonTheatre(),
       fetchShowsFromOweVenues()
     ]);
@@ -1982,6 +2280,17 @@ async function discoverShows() {
     } else {
       console.log(`Found ${tmShows.length} West End shows via Theatremonkey`);
     }
+
+    // S4-T5 (2026 data audit, BRO-4204): per-source last-success markers,
+    // data/audit/<source>-last-success.json, written on EVERY parse — a
+    // non-empty parse stamps `at`/`count`; a rejection or an empty parse
+    // bumps the marker's empty streak, and three in a row logs the soft-404
+    // warning (scripts/lib/source-last-success.js). Deliberately NOT gated
+    // on --dry-run like the coverage telemetry further down: a dry run still
+    // fetched and parsed the page, and "when did this source last work" is a
+    // fact about the source, not about what we did with the result.
+    recordParseResult('olt', oltShows.length);
+    recordParseResult('theatremonkey', tmShows.length);
 
     if (ltResult.status === 'rejected') {
       console.log(`⚠️  LondonTheatre.co.uk fetch failed (${ltResult.reason?.message}), continuing with other sources`);
@@ -2020,6 +2329,15 @@ async function discoverShows() {
     // TodayTix first (richer metadata), OLT second, TM third, LT fourth —
     // venue-page candidates are staged above, not merged here. Dedup prefers
     // earlier entries among the sources that DO write directly.
+    // tagSource() mutates in place and is called for its side effect, not its
+    // return value, so the discoveredShows.push(...) line right below stays
+    // byte-for-byte the literal pattern
+    // tests/unit/discover-new-shows-owe.test.mjs regex-matches to prove
+    // venueShows never joins this call (BRO-182).
+    tagSource(todayTixWEShows, 'todaytix-we');
+    tagSource(oltShows, 'olt');
+    tagSource(tmShows, 'theatremonkey');
+    tagSource(ltShows, 'londontheatre');
     discoveredShows.push(...todayTixWEShows, ...oltShows, ...tmShows, ...ltShows);
     console.log('');
   }
@@ -2053,7 +2371,7 @@ async function discoverShows() {
         for (const s of ssValidated) {
           if (s._showScoreUrl) consumedCandidateUrls.push({ title: s.title, url: s._showScoreUrl });
         }
-        discoveredShows.push(...ssValidated);
+        discoveredShows.push(...tagSource(ssValidated, 'showscore'));
         console.log(`Added ${ssValidated.length} ShowScore candidates to discovery pipeline`);
       }
     } catch (e) {
@@ -2092,6 +2410,11 @@ async function discoverShows() {
   // Find new shows not in our database using improved duplicate detection
   const newShows = [];
   const skippedDuplicates = [];
+  // S0-T3 (2026 data audit): candidates refused because the id they would
+  // mint, or their normalized title+venue, is in data/retired-show-ids.json.
+  // Kept apart from skippedDuplicates: a duplicate has an existing row to
+  // point at, a retired id has a deletion that must stay deleted.
+  const retiredSkipped = [];
   // Gap C (card #1446): shows discovery correctly re-matches to an existing
   // shows.json entry, but the entry's stale preview/opening date and venue
   // are never refreshed from the live source. reconciledShows tracks the
@@ -2101,17 +2424,26 @@ async function discoverShows() {
   const existingSlugs = new Set(data.shows.map(s => s.slug));
   const existingIds = new Set(data.shows.map(s => s.id));
 
+  // BRO-3863 — oracle 2 of the venue-suffix detector (see
+  // scripts/lib/title-venue-suffix.js): the set of venue names the corpus
+  // already knows about, so a title ending in "(Soho Playhouse)" is
+  // recognised even when THIS row's own venue field says something else.
+  // Built once from the pre-existing corpus rather than per candidate.
+  const discoveryVenueVocabulary = buildVenueVocabulary(data.shows);
+
   // Build todaytixId index for fast dedup
   const existingTodaytixIds = new Map();
   for (const s of data.shows) {
     if (s.todaytixId) existingTodaytixIds.set(s.todaytixId, s);
   }
 
-  // Applies computeShowReconciliation's patch (if any) directly onto the
-  // matched shows.json entry — `existing` is a reference into data.shows, so
-  // this mutation is what saveShows(data) below persists. Always logged (even
-  // in dry-run) so --dry-run output demonstrates the refresh; only mutated
-  // when actually writing.
+  // Records candidate patches keyed by existing show id (BRO-2072) instead of
+  // applying immediately — resolveReconciliationProposals() below decides,
+  // once every discoveredShows candidate in this run has been matched,
+  // whether each field is corroborated by >=2 independent sources before
+  // touching shows.json. `existing` objects are references into data.shows,
+  // so the eventual Object.assign in the resolver is what saveShows(data)
+  // persists.
   //
   // Gated to HIGH-CONFIDENCE match reasons only (adversarial ship-check
   // finding, card #1446): checkForDuplicate() also returns fuzzy/containment/
@@ -2123,16 +2455,170 @@ async function discoverShows() {
   // equality (exact title/slug, ID base) — todaytixId matches (Step 0 below)
   // are separately high-confidence and always eligible.
   const HIGH_CONFIDENCE_REASON_PREFIXES = ['Exact title match', 'Exact slug match', 'ID base match'];
+  // existingId -> { existing, fields: {
+  //   openingDate?: Map<dateValue, { sources: Set<sourceLabel>, openingDateSource }>,
+  //   previewsStartDate?: Map<value, Set<sourceLabel>>,
+  //   venue?: Map<value, Set<sourceLabel>>,
+  // } }
+  // openingDate keys its own openingDateSource per proposed VALUE (not as an
+  // independently-resolved field) so a winning date's provenance always
+  // comes from a candidate that actually proposed that date — resolving
+  // date and source-label as two separately-voted fields could pair a
+  // majority-popular source LABEL with a date that label never proposed
+  // (ship-check finding on the first version of this fix).
+  const reconciliationProposals = new Map();
   function reconcileMatchedShow(existing, candidate, reason) {
     if (reason && !HIGH_CONFIDENCE_REASON_PREFIXES.some(p => reason.startsWith(p))) return;
     const patch = computeShowReconciliation(existing, candidate);
     if (!patch) return;
-    reconciledShows.push({ id: existing.id, title: existing.title, patch });
-    console.log(`  🔄 "${existing.title}" (${existing.id}): refreshing stale field(s) from live source — ${Object.keys(patch).join(', ')}`);
-    if (!dryRun) Object.assign(existing, patch);
+    let proposal = reconciliationProposals.get(existing.id);
+    if (!proposal) {
+      proposal = { existing, fields: {} };
+      reconciliationProposals.set(existing.id, proposal);
+    }
+    const sourceLabel = candidate._discoverySource || 'unknown';
+    if (patch.openingDate) {
+      if (!proposal.fields.openingDate) proposal.fields.openingDate = new Map();
+      const byDate = proposal.fields.openingDate;
+      if (!byDate.has(patch.openingDate)) {
+        byDate.set(patch.openingDate, { sources: new Set(), openingDateSource: patch.openingDateSource });
+      }
+      byDate.get(patch.openingDate).sources.add(sourceLabel);
+    }
+    for (const field of ['previewsStartDate', 'venue']) {
+      if (!patch[field]) continue;
+      if (!proposal.fields[field]) proposal.fields[field] = new Map();
+      const byValue = proposal.fields[field];
+      if (!byValue.has(patch[field])) byValue.set(patch[field], new Set());
+      byValue.get(patch[field]).add(sourceLabel);
+    }
+  }
+
+  // Resolves every accumulated proposal (BRO-2072 gap #1) via the pure
+  // resolveReconciliationFields (scripts/lib/discovery-reconcile.js): picks
+  // the value with the most agreeing independent sources per field, then
+  // gates application through evaluateReconciliationSafety — a value seen
+  // from >=2 sources this run is trusted outright; a single source is only
+  // trusted for a small date nudge (the original card #1446 drift-repair
+  // case), never a venue change, a date fill with no existing baseline to
+  // sanity-check against, or a large date jump.
+  //
+  // A circuit breaker (mirrors change-stability-guard.js, used the same way
+  // by enrich-off-broadway-dates.js) sits in front of applying ANY patch
+  // this run: 2+ sources suffering a correlated failure (shared upstream
+  // outage/cache) could otherwise sail past the per-field agreement check
+  // above and rewrite every matched show's date/venue in one run. Tripping
+  // it holds every proposed patch for manual review instead of aborting the
+  // whole discovery run (reconciliation is one of several things this
+  // script does per run).
+  function resolveReconciliationProposals() {
+    const decisions = [];
+    for (const { existing, fields } of reconciliationProposals.values()) {
+      const { patch, heldFields } = resolveReconciliationFields(existing, fields);
+      decisions.push({ existing, patch, heldFields });
+    }
+
+    const toApply = decisions.filter(d => Object.keys(d.patch).length > 0);
+    const stability = validateChangeStability({
+      name: 'discover-new-shows-reconciliation',
+      changes: toApply.map(d => ({ id: d.existing.id })),
+      candidateCount: reconciliationProposals.size,
+      thresholds: { absoluteChanges: 15, changePercent: 0.5 },
+    });
+
+    const auditEntries = [];
+    if (!stability.ok) {
+      console.error(`::error::Reconciliation circuit breaker tripped (${stability.reason}) — holding all ${toApply.length} proposed patch(es) this run for manual review.`);
+      process.exitCode = 1;
+      for (const { existing, patch } of toApply) {
+        console.log(`  ⏸️  "${existing.title}" (${existing.id}): held ALL field(s) — circuit breaker (${stability.reason})`);
+        auditEntries.push({ kind: 'held', id: existing.id, title: existing.title, field: Object.keys(patch).join(','), value: patch, agreeingSourceCount: null, reason: `circuit-breaker: ${stability.reason}` });
+      }
+    } else {
+      for (const { existing, patch } of toApply) {
+        const before = {};
+        for (const field of Object.keys(patch)) before[field] = existing[field] ?? null;
+        reconciledShows.push({ id: existing.id, title: existing.title, patch });
+        console.log(`  🔄 "${existing.title}" (${existing.id}): refreshing stale field(s) from live source — ${Object.keys(patch).join(', ')}`);
+        if (!dryRun) Object.assign(existing, patch);
+        auditEntries.push({ kind: 'applied', id: existing.id, title: existing.title, before, after: patch });
+      }
+    }
+
+    for (const { existing, heldFields } of decisions) {
+      for (const held of heldFields) {
+        console.log(`  ⏸️  "${existing.title}" (${existing.id}): held reconciliation of ${held.field} (${held.reason}) — needs a 2nd corroborating source`);
+        auditEntries.push({ kind: 'held', id: existing.id, title: existing.title, ...held });
+      }
+    }
+    appendReconciliationAudit(auditEntries, { mode: { dryRun } });
+  }
+
+  // BRO-3863 — normalise every candidate title BEFORE anything reads it.
+  //
+  // Show-Score's listing pages disambiguate same-title productions in their
+  // own UI by appending the venue ("The Cherry Orchard (Park Avenue
+  // Armory)"), and the Show-Score branch above takes that display string as
+  // the title verbatim. Left in place it propagates into `slug` and `id`,
+  // which is why the corpus carries rows literally named
+  // the-cherry-orchard-park-avenue-armory-off-broadway-2026.
+  //
+  // This runs HERE, ahead of the dedup/twin loop below, not next to
+  // slugify() further down. deduplication.js's ordinary matcher already
+  // strips parentheticals, but its no-opening-date twin guard compares
+  // LITERAL titles — so a venue-qualified candidate slipped past that one
+  // specific protection and only acquired the existing show's title
+  // afterwards, minting a duplicate row. Normalising first means every
+  // downstream comparison sees the title the row will actually have
+  // (adversarial review finding).
+  // BRO-3920 — a shouted title is no longer auto-corrected (guessing from
+  // the shouted string alone already shipped wrong titles), so it must not
+  // reach shows.json unlabeled either: validate-data.js's gate would only
+  // catch it AFTER this run has already written it, failing CI for the
+  // whole batch instead of just holding the one bad candidate. Quarantine
+  // here — same shape as the circuit-breaker "held" path below.
+  const heldForTitleReview = [];
+  discoveredShows = discoveredShows.filter(show => {
+    const titleFix = normalizeShowTitle(show, { venueVocabulary: discoveryVenueVocabulary });
+    if (titleFix.changed) {
+      console.log(`  [TITLE] "${show.title}" -> "${titleFix.title}" (${titleFix.steps.map(st => st.kind).join(' + ')})`);
+      show.title = titleFix.title;
+    }
+    if (titleFix.manualReview) {
+      console.log(`  [TITLE] ⏸️  "${show.title}" held — looks shouted, needs a human to check the source's structured metadata (see scripts/lib/title-display-case.js)`);
+      heldForTitleReview.push({ title: show.title, venue: show.venue, source: show._discoverySource || show.source || null });
+      return false;
+    }
+    return true;
+  });
+  if (heldForTitleReview.length) {
+    console.log(`${heldForTitleReview.length} candidate(s) held this run for shouted-title review — not promoted, not written.`);
   }
 
   for (const show of discoveredShows) {
+    // S0-T3 (2026 data audit): a retired id never comes back. This runs
+    // BEFORE every dedup check because none of them can see a deleted row —
+    // the phantom "?tab=dates" row was deleted by hand and re-minted by the
+    // next run for exactly that reason. Match on the id this iteration would
+    // mint OR on the archived row's exact normalized title+venue (a re-slugged
+    // title or a different id-year still names the same retired listing).
+    const minted = mintCandidateId(show);
+    // Venue goes through sanitizeVenueForWrite so a placeholder ("TBA", "West End")
+    // can never match a retired title+venue pair; matchesRetired normalizes the rest.
+    const candidateVenue = sanitizeVenueForWrite(show.venue);
+    const retiredHit = matchesRetired({ id: minted.showId, title: show.title, venue: sanitizeVenueForWrite(show.venue) });
+    if (retiredHit) {
+      console.log(`  retired-skip: ${minted.showId} ("${show.title}" @ ${candidateVenue || 'no venue'}) matched retired ${retiredHit.id} by ${retiredHit.matchedBy}`);
+      retiredSkipped.push({
+        title: show.title,
+        venue: sanitizeVenueForWrite(show.venue),
+        candidateId: minted.showId,
+        retiredId: retiredHit.id,
+        matchedBy: retiredHit.matchedBy,
+      });
+      continue;
+    }
+
     // Step 0: TodayTix ID dedup — most reliable, catches name mismatches
     if (show.todaytixId && existingTodaytixIds.has(show.todaytixId)) {
       const existing = existingTodaytixIds.get(show.todaytixId);
@@ -2194,56 +2680,13 @@ async function discoverShows() {
       continue;
     }
 
-    // Convert date strings to ISO format
-    let openingDate = null;
-    if (show.openingDate) {
-      const parsed = new Date(show.openingDate);
-      if (!isNaN(parsed.getTime())) {
-        openingDate = parsed.toISOString().split('T')[0];
-      }
-    }
-
-    let closingDate = null;
-    if (show.closingDate) {
-      const parsed = new Date(show.closingDate);
-      if (!isNaN(parsed.getTime())) {
-        closingDate = parsed.toISOString().split('T')[0];
-      }
-    }
-
-    let previewsStartDate = null;
-    if (show.previewsStartDate) {
-      const parsed = new Date(show.previewsStartDate);
-      if (!isNaN(parsed.getTime())) {
-        previewsStartDate = parsed.toISOString().split('T')[0];
-      }
-    }
-
-    // Use the production's own year for the ID. Order matters: openingDate,
-    // then previewsStartDate, then the quarantined unconfirmedStartDate, and
-    // only then fall back to "now".
-    //
-    // The `new Date().getFullYear()` fallback is the third link in the
-    // 2027-Encores! chain (2026-08-12). A season announced 6-10 months out
-    // reaches here with openingDate null (see classifyTodayTixStartDate), so
-    // every 2027 show was minted as `<slug>-off-broadway-2026`. That is both
-    // wrong on its face and self-blocking: "You're a Good Man, Charlie Brown"
-    // (Feb 2027) generated the SAME id as the 92NY production that ran in
-    // March 2026, so the ID-collision guard below dropped it even after the
-    // twin guard was taught to let it through. A date we don't trust enough
-    // to gate reviews on is still plenty good enough to name a row.
-    const idYear = productionIdYear({ openingDate, previewsStartDate, unconfirmedStartDate: show.unconfirmedStartDate })
-      || String(new Date().getFullYear());
-    const baseSlug = slugify(show.title);
-
-    // Market-aware slug and ID generation. withMarketSuffix() strips any
-    // pre-existing market suffix before re-appending — idempotent, so a
-    // title/slug that already carries the suffix (e.g. round-tripped through
-    // another discovery path) doesn't get it appended a second time, which
-    // used to produce IDs like `beetlejuice-the-musical-west-end-west-end-2026`
-    // (BRO-3237).
-    const marketSlug = withMarketSuffix(baseSlug, show.category);
-    const showId = `${marketSlug}-${idYear}`;
+    // ISO dates, id-year, market slug and the id itself all come from the
+    // ONE mintCandidateId() call at the top of this iteration (S0-T3) — see
+    // that helper for the id-year rule (2027-Encores! chain) and the
+    // market-suffix idempotency note (BRO-3237). Nothing between there and
+    // here mutates `show`, so this is byte-for-byte the id the retired-id
+    // check just cleared.
+    const { openingDate, closingDate, previewsStartDate, idYear, idYearProvisional, marketSlug, showId } = minted;
 
     // Guard: skip if generated ID collides with existing DB or batch.
     if (existingIds.has(showId)) {
@@ -2293,8 +2736,16 @@ async function discoverShows() {
       openingDate,
       previewsStartDate,
       closingDate,
+      // S5-T4: only stamped when the id year is the current-year fallback —
+      // see mintCandidateId. A dated row carries no flag at all.
+      ...(idYearProvisional ? { idYearProvisional: true } : {}),
     });
   }
+
+  // Every discoveredShows candidate has now been matched or accepted as new —
+  // resolve the accumulated reconciliation proposals (BRO-2072) before any
+  // save/summary logic below reads reconciledShows.
+  resolveReconciliationProposals();
 
   // IBDB date enrichment: get accurate preview/opening/closing dates
   // Skip off-Broadway and London shows — IBDB only covers Broadway
@@ -2402,6 +2853,17 @@ async function discoverShows() {
     console.log('');
   }
 
+  // S0-T3 run summary: retired ids refused this run (see retired-skip lines
+  // above for the per-candidate detail). A non-zero count is expected while
+  // the retired listing is still live at its source; it is NOT a defect.
+  if (retiredSkipped.length > 0) {
+    console.log(`Skipped ${retiredSkipped.length} retired id(s) — never re-discovered (data/retired-show-ids.json):`);
+    for (const r of retiredSkipped) {
+      console.log(`   - "${r.title}" → ${r.candidateId} (matched ${r.retiredId} by ${r.matchedBy})`);
+    }
+    console.log('');
+  }
+
   if (newShows.length === 0) {
     if (reconciledShows.length > 0) {
       if (!dryRun) {
@@ -2413,7 +2875,7 @@ async function discoverShows() {
     } else {
       console.log('✅ No new shows discovered - database is up to date');
     }
-    return { newShows: [], count: 0, reconciledCount: reconciledShows.length };
+    return { newShows: [], count: 0, reconciledCount: reconciledShows.length, retiredSkippedCount: retiredSkipped.length };
   }
 
   console.log(`🎭 Found ${newShows.length} NEW show(s):`);
@@ -2758,7 +3220,7 @@ async function discoverShows() {
     fs.writeFileSync(OUTPUT_FILE, JSON.stringify({
       discoveredAt: new Date().toISOString(),
       shows: newShows.map(s => {
-        const { _showScoreUrl, _source, _ibdbRevivalChecked, ...clean } = s;
+        const { _showScoreUrl, _source, _ibdbRevivalChecked, _discoverySource, ...clean } = s;
         return clean;
       }),
     }, null, 2));
@@ -2775,8 +3237,16 @@ async function discoverShows() {
           // Find the newly created show by matching title
           const addedShow = newShows.find(s => s.title === title);
           if (addedShow && !urlData.shows[addedShow.id]) {
-            urlData.shows[addedShow.id] = url;
-            urlsAssigned++;
+            // BRO-4055: a candidate URL can already belong to an unrelated
+            // existing show (e.g. a same-title earlier production) — refuse
+            // rather than silently creating a new wrong-production mapping.
+            const conflictId = findConflictingShowId(urlData.shows, addedShow.id, url);
+            if (conflictId) {
+              console.log(`  [SKIP] ${url} already assigned to ${conflictId} — refusing to also assign it to ${addedShow.id}`);
+            } else {
+              urlData.shows[addedShow.id] = url;
+              urlsAssigned++;
+            }
           }
         }
         if (urlsAssigned > 0) {
@@ -2823,7 +3293,7 @@ async function discoverShows() {
     fs.appendFileSync(outputFile, `we_new_count=${weNewShows.length}\n`);
   }
 
-  return { newShows, count: newShows.length, reconciledCount: reconciledShows.length };
+  return { newShows, count: newShows.length, reconciledCount: reconciledShows.length, retiredSkippedCount: retiredSkipped.length };
 }
 
 if (require.main === module) {
@@ -2860,10 +3330,15 @@ module.exports = {
   resolveTodayTixVenue,
   EXCLUDED_TITLES,
   NON_THEATER_PATTERNS,
+  NON_THEATRE_TITLE_RE,
+  NON_THEATRE_TODAYTIX_CATEGORIES,
+  STAGED_PRODUCTION_CATEGORIES,
   WE_EXTRA_PATTERNS,
   VENUE_PAGE_EXCLUDE_PATTERNS,
   VENUE_LISTING_PAGES,
   fetchSingleVenuePage,
+  parseVenueListingPage,
   shouldExcludeVenueShow,
   applyVerifiedIbdbCreativeTeam,
+  mintCandidateId,
 };

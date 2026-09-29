@@ -100,6 +100,57 @@ test('isStaleSynopsis does NOT flag plot-verb future tense on an open show', () 
   assert.equal(isStaleSynopsis({ status: 'closed', synopsis: 'A chorus girl dreams she will play the lead one day.' }), false);
 });
 
+// S4-T13 (2026 data audit, BRO-4204): the four pre-opening shapes that sat
+// live on OPENED shows because none uses a "scheduled to"-style verb. The
+// Lost Boys lede below is the real Wikipedia text found on an open show.
+const LOST_BOYS_STALE =
+  'The Lost Boys: A New Musical is an upcoming 2026 musical with music and lyrics by The Rescues and a book by Chris Hoch, based on the 1987 film.';
+
+test('classifyBadSynopsis flags "is an upcoming <year> musical" (Wikipedia lede) on an opened show as stale', () => {
+  assert.deepEqual(classifyBadSynopsis({ status: 'open', synopsis: LOST_BOYS_STALE }), { bad: true, reason: 'stale' });
+  assert.equal(classifyBadSynopsis({ status: 'closed', synopsis: LOST_BOYS_STALE }).reason, 'stale');
+  // The same lede on a show that has NOT opened yet is accurate, not stale.
+  assert.deepEqual(classifyBadSynopsis({ status: 'upcoming', synopsis: LOST_BOYS_STALE }), { bad: false, reason: null });
+  assert.deepEqual(classifyBadSynopsis({ status: 'previews', synopsis: LOST_BOYS_STALE }), { bad: false, reason: null });
+});
+
+test('isStaleSynopsis catches the other S4-T13 pre-opening shapes on an open show', () => {
+  for (const s of [
+    'Lost Boys is an upcoming Broadway musical adapted from the cult vampire film.',
+    'After a sold-out Chichester run, the revival is coming to the West End this autumn.',
+    'The jukebox musical is coming to Broadway following its Toronto tryout.',
+    'Hedda is coming to the Adelphi Theatre after a record-breaking run at the Almeida.',
+    'The production will open on 12 March 2026 following previews from 3 March.',
+    'The musical will open in March 2026 with a cast led by two Olivier winners.',
+    'It opens on March 12, 2026, and has already announced a national tour.',
+    'The show opens on 5 March at the Lyric Theatre after two weeks of previews.',
+  ]) {
+    assert.equal(isStaleSynopsis({ status: 'open', synopsis: s }), true, `expected stale: ${s}`);
+  }
+});
+
+test('S4-T13 patterns do NOT trip on plot text that merely resembles them', () => {
+  for (const s of [
+    // "set to" without a schedule verb: jukebox framing, not a transfer date.
+    'A joyous jukebox romp in which the whole thing is set to Dion\'s hits and nobody stops dancing.',
+    // "is coming to" + a verb, not a market.
+    'A grieving family braces for a rich relative who is coming to visit and rewrite the will.',
+    // "is coming to the theatre" in lowercase plot prose.
+    'On opening night the company learns a feared critic is coming to the theatre to review the show.',
+    // "is an upcoming" + a person, not a work.
+    'Nina is an upcoming actress in a play whose leading man keeps forgetting his lines.',
+    // "opens on <date>" as a scene-setting device with a historical year.
+    'The action opens on June 6, 1944, as three brothers wait for news from the beaches.',
+    // "opens in <year>" and "will open" a shop — plot, not a production schedule.
+    'The story opens in 1962 in a Brooklyn kitchen where a widow decides she will open a bakery.',
+    // "will open in Chicago" — the pre-existing plot-verb guard still holds.
+    'A producer insists the show will open in Chicago before coming home.',
+  ]) {
+    assert.equal(isStaleSynopsis({ status: 'open', synopsis: s }), false, `expected NOT stale: ${s}`);
+    assert.deepEqual(classifyBadSynopsis({ status: 'open', synopsis: s }), { bad: false, reason: null }, `expected ok: ${s}`);
+  }
+});
+
 // --- classifyBadSynopsis (single source of truth) ---
 test('classifyBadSynopsis labels missing / placeholder / stale / refusal / ok', () => {
   assert.deepEqual(classifyBadSynopsis({ synopsis: '' }), { bad: true, reason: 'missing' });

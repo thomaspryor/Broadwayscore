@@ -33,7 +33,7 @@ export async function POST(request: NextRequest) {
   }
 
   try {
-    await fetch(`https://formspree.io/f/${formId}`, {
+    const res = await fetch(`https://formspree.io/f/${formId}`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
@@ -41,7 +41,15 @@ export async function POST(request: NextRequest) {
         action: 'unsubscribe',
       }),
     });
-  } catch {
+    // Still return 200 either way — RFC 8058 requires it for Gmail/Yahoo to
+    // show the one-click button — but a rejected unsubscribe with no record
+    // anywhere means the user silently keeps getting mail. Log it so it's at
+    // least visible in ops (same swallowed-failure class as BRO-3382).
+    if (!res.ok) {
+      console.error(`Unsubscribe forward to Formspree failed: ${res.status} ${res.statusText} (market=${market})`);
+    }
+  } catch (err) {
+    console.error(`Unsubscribe forward to Formspree errored (market=${market}):`, (err as Error).message);
     // Still return 200 — Gmail requires it to show the button
   }
 

@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const COOKIES_DIR = path.join(__dirname, '..', 'data', 'cookies');
@@ -296,10 +297,7 @@ async function main() {
 
   // Find all target files
   const targets = [];
-  const dirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-    try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); }
-    catch (e) { return false; }
-  });
+  const dirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const dir of dirs) {
     const files = fs.readdirSync(path.join(REVIEW_TEXTS_DIR, dir)).filter(f => f.endsWith('.json'));

@@ -45,4 +45,87 @@ function shouldRetryGarbageConsentWall({ hasGarbageStoredText, lastRetryMs, nowM
   return age > REFETCH_COOLDOWN_MS;
 }
 
-module.exports = { shouldRetryGarbageConsentWall, REFETCH_COOLDOWN_MS };
+/**
+ * True when a review's stored text is a consent-wall capture worth re-fetching:
+ * garbage outright, or text that OPENS with a strippable IAB consent layer
+ * (BRO-4185 A: WhatsOnStage captures put ~6,500 chars of consent notices ahead
+ * of the article, the verifier read only those and flagged the review). When
+ * fullText was quarantined into wrongFullText, that text is checked instead.
+ */
+function storedTextNeedsConsentRefetch(data) {
+  if (!data) return false;
+  const { isGarbageContent } = require('./content-quality');
+  const { hasStrippableConsentLayer } = require('./text-cleaning');
+  const full = typeof data.fullText === 'string' ? data.fullText : '';
+  // A flagged file whose QUARANTINED text is a consent capture: its flag was
+  // set on that capture even if fullText has since been refilled with the
+  // real article (Between the River and the Sea / WhatsOnStage).
+  const q = typeof data.wrongFullText === 'string' ? data.wrongFullText : '';
+  const flagged = data.wrongShow === true || data.isNonReview === true || data.wrongProduction === true;
+  if (flagged && q && hasStrippableConsentLayer(q)) return true;
+  if (full) return isGarbageContent(full).isGarbage || hasStrippableConsentLayer(full);
+  const quarantined = typeof data.wrongFullText === 'string' ? data.wrongFullText : '';
+  if (!quarantined) return false;
+  return isGarbageContent(quarantined).isGarbage || hasStrippableConsentLayer(quarantined);
+}
+
+const CV_PROMOTED_NON_REVIEW_PREFIXES = ['CV-promoted (not a review):', 'Collector LLM'];
+
+/**
+ * After a consent-layer refetch: release an isNonReview flag that the content
+ * verifier set on the consent text, once a fresh verdict on the stripped
+ * article says it is a review at high confidence. Only the verifier-promoted
+ * family is eligible; classifier-set and manual flags are left alone.
+ */
+function shouldReleaseConsentLayerNonReview(data) {
+  if (!data || data.isNonReview !== true) return false;
+  const reason = typeof data.isNonReviewReason === 'string' ? data.isNonReviewReason : '';
+  if (!CV_PROMOTED_NON_REVIEW_PREFIXES.some(p => reason.startsWith(p))) return false;
+  const cv = data.contentVerification;
+  if (!cv || cv.isValid !== true) return false;
+  if (cv.wrongArticle === true || cv.wrongProduction === true || cv.isFilmTv === true) return false;
+  if (cv.articleType !== 'review') return false;
+  if ((cv.articleTypeConfidence || cv.confidence) !== 'high') return false;
+  const { hasStrippableConsentLayer } = require('./text-cleaning');
+  const full = typeof data.fullText === 'string' ? data.fullText : '';
+  if (full.length < 500 || hasStrippableConsentLayer(full)) return false;
+  return true;
+}
+
+/**
+ * The article a consent-prefixed capture already holds, with the consent layer
+ * stripped, or null. Lets the drain re-verify stored text instead of
+ * refetching an outlet that is currently unreachable (WhatsOnStage on
+ * 2026-09-28: Playwright 'paywall', ScrapingBee 500, every review timing out
+ * at 90s). Uses fullText, or the quarantined wrongFullText when fullText is
+ * empty. Requires 1,500+ chars of non-garbage text after stripping.
+ */
+function salvageConsentPrefixedStoredText(data) {
+  if (!data) return null;
+  // Once per file: a stored-text verdict stands until the text changes.
+  if (data.consentSalvageVerifiedAt) return null;
+  const { stripConsentLayerPrefix, hasStrippableConsentLayer } = require('./text-cleaning');
+  const { isGarbageContent } = require('./content-quality');
+  const usable = (t) => t.length >= 1500 && !isGarbageContent(t).isGarbage && !hasStrippableConsentLayer(t);
+  const full = typeof data.fullText === 'string' ? data.fullText : '';
+  const q = typeof data.wrongFullText === 'string' ? data.wrongFullText : '';
+  if (full && hasStrippableConsentLayer(full)) {
+    const stripped = stripConsentLayerPrefix(full);
+    return usable(stripped) ? stripped : null;
+  }
+  if (q && hasStrippableConsentLayer(q)) {
+    // fullText refilled with a clean article since the flag: verify that.
+    if (full && usable(full)) return full;
+    const stripped = stripConsentLayerPrefix(q);
+    return usable(stripped) ? stripped : null;
+  }
+  return null;
+}
+
+module.exports = {
+  salvageConsentPrefixedStoredText,
+  shouldRetryGarbageConsentWall,
+  storedTextNeedsConsentRefetch,
+  shouldReleaseConsentLayerNonReview,
+  REFETCH_COOLDOWN_MS,
+};

@@ -175,19 +175,17 @@ jobs:
           fi
           node scripts/sweep-pending-commercial.js $ARGS
 
-      - name: Notion sweep — surface recouped claims
+      - name: Linear sweep — surface recouped claims
+        # BRO-3487: was "Notion sweep", filing onto the retired board via
+        # notify-pending-commercial-notion.js. Replaced with the Linear
+        # equivalent (notify-pending-commercial-linear.js) — see that file's
+        # header.
         if: inputs.dry_run != true
         env:
-          # notion-brain.js reads NOTION_API_KEY (not NOTION_TOKEN). The GH
-          # secret is named NOTION_API_KEY. Originally fixed in 1c661a9501;
-          # accidentally reverted by parallel session in 4b4c8f9790; re-applying.
-          # Per memory/feedback_parallel_worktree_race.md — when in doubt,
-          # re-pull + grep before editing.
-          NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
-          NOTION_DATABASE_ID: ${{ secrets.NOTION_DATABASE_ID }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           if [ -f /tmp/sweep-report.json ]; then
-            node scripts/notify-pending-commercial-notion.js \
+            node scripts/notify-pending-commercial-linear.js \
               --report-json=/tmp/sweep-report.json --cap=25
           fi
         continue-on-error: true

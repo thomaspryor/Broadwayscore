@@ -47,7 +47,14 @@ jobs:
   drift:
     name: Run corpus-statistics audits (non-blocking)
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    # 15 -> 20 (BRO-3535, 2026-09-16): 14 more audits were added to AUDITS,
+    # moved out of test.yml's blocking data-validation job. This worktree has
+    # no review-texts checkout to measure real per-audit runtime against the
+    # live corpus, so this is a conservative buffer, not a measured number —
+    # confirm against the first few real runs' logged durations and adjust
+    # (see BRO-2706 for the measured-cost-model precedent this should follow
+    # if 20 turns out to be wrong in either direction).
+    timeout-minutes: 20
 
     steps:
       - name: Checkout repository
@@ -58,6 +65,18 @@ jobs:
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - name: Checkout aggregator-archive (private repo)
+        # BRO-3535 ship-check catch (Codex): audit-aggregator-archive-integrity.js
+        # was moved here without this checkout. It does `if (!fs.existsSync(dir))
+        # continue;` per source (scripts/audit-aggregator-archive-integrity.js) —
+        # a missing data/aggregator-archive/ silently scans ZERO files and
+        # reports "clean" against the baseline, which routePerAuditAlerts()
+        # below would then resolve as healthy. Without this checkout the audit
+        # is a permanent, invisible no-op, not a passing check.
+        uses: ./.github/actions/checkout-aggregator-archive
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
@@ -101,6 +120,15 @@ jobs:
             || echo "::warning::history deepen failed — churn-merge-coverage will run degraded"
 
       - name: Run corpus-drift monitor
+        # LINEAR_API_KEY (BRO-3535): routePerAuditAlerts() in check-corpus-drift.js
+        # calls routeAlert(disposition:'digest') per audit, which self-promotes to
+        # disposition:'auto' (files a real Linear card via createLinearIssue) once
+        # a gate's notifyCount crosses owner-alert-router.js's escalation
+        # threshold. Without this secret, createLinearIssue() throws and the
+        # promotion silently degrades to a logged warning — see
+        # routePerAuditAlerts()'s catch block.
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
           ARGS=""
           if [ "${{ inputs.strict }}" = "true" ]; then
@@ -127,6 +155,42 @@ jobs:
             N=$(echo "$OUT" | head -1 | grep -oE '[0-9]+' | head -1)
             echo "::warning::review-url-cluster audit found $N byline-explosion cluster(s) — reviews likely buried/unscored. Run: node scripts/audit-review-url-clusters.js"
           fi
+
+      - name: Audit isNonReview content-type/wrongShow + slug coverage (BRO-3862)
+        if: always()
+        run: |
+          # Two independent, non-blocking measurements landed together for the
+          # same investigation (BRO-3862): classify-non-reviews.js's LLM
+          # classifier is documented as unreliable (memory:
+          # feedback_llm_verifier_hallucinates.md), and neither existing
+          # isNonReview false-positive audit (audit-exclusion-flags.js's
+          # essay-intro sweep, audit-cross-show-url.js's URL-slug detector)
+          # covers the content-based cross-show-misattribution class this adds.
+          # Soaking non-blocking here first rather than a hard --gate in
+          # test.yml's data-validation job — this is a brand-new predicate on
+          # a corpus that drifts every ~30min, and every sibling gate in that
+          # job that reached --strict/--gate hardness did so only after
+          # observing real trip frequency first.
+          set +e
+          OUT1=$(node scripts/audit-review-type-wrong-show.js 2>&1)
+          RC1=$?
+          echo "$OUT1"
+          OUT2=$(node scripts/audit-nonreview-slug-coverage.js 2>&1)
+          RC2=$?
+          echo "$OUT2"
+          set -e
+          if [ "$RC1" -ne 0 ]; then
+            echo "::warning::audit-review-type-wrong-show.js could not run (exit=$RC1) — no wrongShow-gap signal this run."
+          fi
+          N1=$(echo "$OUT1" | grep -oE '[0-9]+ match' | grep -oE '^[0-9]+' | head -1)
+          if [ "${N1:-0}" -gt 0 ]; then
+            echo "::warning::audit-review-type-wrong-show.js found $N1 isNonReview file(s) whose classifier contentType is 'review' (genuine review content) with no wrongShow promotion — likely misattributed to the wrong show. Run: node scripts/audit-review-type-wrong-show.js --apply (after manually verifying each hit is real cross-show content, not an extraction failure the classifier mislabeled — see that script's excluded rejectionReason/wrongProduction cases)."
+          fi
+          if [ "$RC2" -ne 0 ]; then
+            echo "::warning::audit-nonreview-slug-coverage.js could not run (exit=$RC2) — no slug-coverage signal this run."
+          fi
+          N2=$(echo "$OUT2" | grep -oE 'unaudited: *[0-9]+' | grep -oE '[0-9]+' | head -1)
+          echo "::notice::nonreview-slug-coverage: ${N2:-0} isNonReview file(s) with 400+ words and a review URL slug remain unaudited (no existing predicate covers them — no validated auto-clear rule exists yet, BRO-3862)."
 
       - name: Audit star-rating accuracy (HARD blocking-signal, SUSPECT warning)
         if: always()
@@ -226,3 +290,15 @@ jobs:
           severity: 'warning'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}
+
+      # Live-data node:test files moved OUT of test.yml's no-data unit batch
+      # (2026-09-24, BRO-3425): both assert on data state (stale AUTO-FLAGGED
+      # cast entries; gather-reviews scraper credits/day), so they turned main's
+      # code CI red with no code change (test.yml run 36077865497). Here a red
+      # result reds this data-health workflow, which the digest's
+      # "Workflow repeat-failure" row escalates. Placed AFTER "Notify on
+      # failure" on purpose: that email means "audit could not run", which is
+      # not what a data finding here means.
+      - name: Live-data assertions (moved from test.yml unit batch)
+        if: always()
+        run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs

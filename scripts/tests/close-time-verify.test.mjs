@@ -133,6 +133,38 @@ test('(a4) a command whose path is not on main yet says MERGE FIRST, not "your t
   assert.match(real.message, /Fix it on main/);
 });
 
+// BRO-3446 regression: acceptance-check-core.js's runVerify now detects a
+// missing acceptance path BEFORE running the command and reports it as
+// 'unverifiable' + `missingPath: true`, not 'fail'. Without this case,
+// decideClose's `status !== 'fail'` branch would ALLOW the close ("closing
+// without a verdict") for exactly the scenario (a1) exists to refuse: a
+// close attempted before the branch merged, so the card's own test exists
+// only in a worktree — the "it shipped" claim this whole check is here to
+// catch.
+test('(a5) a missingPath unverifiable result still says MERGE FIRST, not "closing without a verdict"', () => {
+  const dispatch = { entry: {}, verifyCmd: 'node --test scripts/tests/close-time-verify.test.mjs' };
+  const d = decideClose({
+    dispatch,
+    verifyResult: {
+      status: 'unverifiable',
+      detail: 'acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/tests/close-time-verify.test.mjs',
+      missingPath: true,
+    },
+  });
+  assert.equal(d.allowed, false);
+  assert.equal(d.verdict, VERDICTS.FAIL);
+  assert.equal(d.notOnMain, true);
+  assert.match(d.message, /NOT ON MAIN/);
+  assert.match(d.message, /Merge the branch first/);
+
+  // Other unverifiable causes (exit 3, timeout, unsafe command) are unaffected
+  // — they still fail open, exactly as before this fix.
+  const exit3 = decideClose({ dispatch, verifyResult: { status: 'unverifiable', detail: 'check exited 3' } });
+  assert.equal(exit3.allowed, true);
+  assert.equal(exit3.verdict, VERDICTS.UNVERIFIABLE);
+  assert.equal(exit3.notOnMain, undefined);
+});
+
 test('(a3) a re-dispatched card uses its NEWEST verifyCmd, not the launch it was redrawn from', () => {
   const entries = [
     { event: 'launch', taskId: '1003', notionId: 'cc', verifyCmd: 'node --test scripts/tests/trunk-close-gate.test.mjs' },
@@ -197,12 +229,33 @@ test('runVerify returns pass/fail/unverifiable against real commands', () => {
     // isSafeCheckCommand only admits node/npx/test, so a missing binary cannot
     // be expressed as a card command at all (Codex second pass: the old
     // comment claimed this test used a missing binary — it never did).
-    const spawnFail = runVerify('/definitely/not/a/directory-ctv', 'node --test scripts/tests/ctv-green.test.mjs', { attempts: 1 });
+    // BRO-3446: a pathless command (`npx tsc --noEmit` has no path token for
+    // extractCheckPaths to find) — a command naming a path would now be
+    // caught by the missing-path guard first (the same unusable cwd makes
+    // the joined path not exist either), which is a different, earlier
+    // "unverifiable" than the spawn-failure branch this specific assertion
+    // means to exercise.
+    const spawnFail = runVerify('/definitely/not/a/directory-ctv', 'npx tsc --noEmit', { attempts: 1 });
     assert.equal(spawnFail.status, 'unverifiable', `spawn failure must fail open, got ${spawnFail.status}`);
     assert.match(String(spawnFail.detail), /could not be started/);
   } finally {
     fs.rmSync(dir, { recursive: true, force: true });
   }
+});
+
+// BRO-3446 end-to-end: feed the REAL runVerify output straight into
+// decideClose, not a hand-built verifyResult — the mocked tests above
+// (a4/a5) would have kept passing even if the two modules disagreed on the
+// `missingPath` field's name or shape, since they never actually connect.
+test('runVerify + decideClose together: a card whose own test is only in this worktree cannot close', () => {
+  const dispatch = { entry: {}, verifyCmd: 'node --test scripts/tests/ctv-not-yet-merged.test.mjs' };
+  const verifyResult = runVerify(REPO, dispatch.verifyCmd, { attempts: 1 });
+  assert.equal(verifyResult.status, 'unverifiable');
+  assert.equal(verifyResult.missingPath, true);
+  const d = decideClose({ dispatch, verifyResult });
+  assert.equal(d.allowed, false);
+  assert.equal(d.notOnMain, true);
+  assert.match(d.message, /Merge the branch first/);
 });
 
 // ── wiring proof (the failure this card exists to prevent) ──────────────────

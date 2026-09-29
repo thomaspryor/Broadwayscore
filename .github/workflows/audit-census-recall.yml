@@ -105,6 +105,9 @@ jobs:
           # correct outcome for a measurement.
           SERP_NO_SB: '1'
         run: |
+          # pipefail: without it the step takes tee's exit code, so a crashed
+          # or empty-pool run still shows green (BRO-4139 review).
+          set -o pipefail
           node scripts/audit-serp-census-recall.js \
             --sample=${{ inputs.sample || '5' }} \
             --pages=${{ inputs.pages || '2' }} \

@@ -46,6 +46,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `fix-domain-mismatched-outlets.js — Fix review-text files mistagged with the
 wrong outletId, verified against the article's true URL domain (audit-review-
@@ -206,9 +207,7 @@ function processOne(showId, file, fromOutlet, toOutlet) {
 function main() {
   let showDirs;
   try {
-    showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
-    });
+    showDirs = listShowDirs(REVIEW_TEXTS_DIR);
   } catch (e) {
     console.error(`Cannot read ${REVIEW_TEXTS_DIR}: ${e.message}`);
     process.exit(1);

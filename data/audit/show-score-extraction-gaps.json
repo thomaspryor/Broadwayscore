@@ -1,11 +1,11 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-09T13:24:02.422Z",
+    "generatedAt": "2026-09-28T17:26:56.173Z",
     "description": "Per-show critic-review extraction gaps (extracted < page-stated count). See scripts/fetch-aggregator-pages.ts carousel-scroll logic."
   },
-  "totalGaps": 358,
-  "errorSeverity": 263,
-  "warningSeverity": 95,
+  "totalGaps": 361,
+  "errorSeverity": 264,
+  "warningSeverity": 97,
   "gaps": [
     {
       "showId": "1776-2022",
@@ -716,6 +716,15 @@
       "extracted": 8,
       "gap": 1,
       "ratio": 0.89,
+      "severity": "warning"
+    },
+    {
+      "showId": "drunk-shakespeare-off-broadway-2022",
+      "category": "off-broadway",
+      "expected": 8,
+      "extracted": 7,
+      "gap": 1,
+      "ratio": 0.88,
       "severity": "warning"
     },
     {
@@ -2159,6 +2168,15 @@
       "severity": "error"
     },
     {
+      "showId": "ride-the-cyclone-off-broadway-2016",
+      "category": "off-broadway",
+      "expected": 35,
+      "extracted": 8,
+      "gap": 27,
+      "ratio": 0.23,
+      "severity": "error"
+    },
+    {
       "showId": "saint-joan-2018",
       "category": "broadway",
       "expected": 53,
@@ -2778,6 +2796,15 @@
       "gap": 49,
       "ratio": 0.14,
       "severity": "error"
+    },
+    {
+      "showId": "the-pass-off-broadway-2026",
+      "category": "off-broadway",
+      "expected": 9,
+      "extracted": 8,
+      "gap": 1,
+      "ratio": 0.89,
+      "severity": "warning"
     },
     {
       "showId": "the-peculiar-patriot-off-broadway-2026",

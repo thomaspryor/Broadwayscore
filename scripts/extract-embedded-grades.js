@@ -19,6 +19,7 @@
 const fs = require('fs');
 const path = require('path');
 const { LETTER_GRADES: CANONICAL_LETTER_GRADES } = require('./lib/score-conversion-rules');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
@@ -231,9 +232,7 @@ const newlyScored = [];
 const designationsExtracted = [];
 
 // Process all shows
-const showDirs = fs.readdirSync(reviewTextsDir).filter(f =>
-  fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-);
+const showDirs = listShowDirs(reviewTextsDir);
 
 console.log('=== EXTRACTING EMBEDDED GRADES/RATINGS ===\n');
 

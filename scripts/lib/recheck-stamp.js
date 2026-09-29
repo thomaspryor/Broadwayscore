@@ -55,16 +55,37 @@ function parseRecheckAfter(text) {
 
 /**
  * Stamp for a whole card, scanning fields in precedence order:
- * notes → outcome → name. Notes wins because it is the author-controlled
- * acceptance-criteria field the recheck reads; Outcome is prepend-ordered at
- * wrap-up so its FIRST match is the newest stamp; the title is a cheap
- * last-resort some cards use. The first match in the highest-precedence field
- * that has one decides — a two-stamp disagreement resolves to notes.
- * @param {{notes?:string,outcome?:string,name?:string}|null} card
+ * comments (newest → oldest) → notes → outcome → name.
+ *
+ * Comments win over notes/outcome/name when present (BRO-3373): a Linear
+ * issue's description is rarely touched again after filing, so a session
+ * pausing a card writes RECHECK-AFTER into the wrap-up comment posted via
+ * `linear-session.js report`, not the description. Re-pausing the same card
+ * later re-posts a fresh stamp in a NEW comment rather than editing the old
+ * one, so the comments array (expected oldest-first, matching
+ * linear-dispatch.js's sortedCommentBodies contract) is scanned newest-first
+ * and the first match wins — the latest re-stamp supersedes an earlier one,
+ * the same "newest correction wins" contract evaluateVerifiability already
+ * uses for acceptance commands (verify-gate.js, BRO-2796).
+ *
+ * Purely additive: card.comments is undefined for every existing Notion
+ * caller (notion-brain cards have no such field), so this is a no-op for
+ * every caller that predates BRO-3373 — notes → outcome → name precedence
+ * among those fields is unchanged. Notes wins over outcome/name because it
+ * is the author-controlled acceptance-criteria field the recheck reads;
+ * Outcome is prepend-ordered at wrap-up so its FIRST match is the newest
+ * stamp; the title is a cheap last-resort some cards use.
+ * @param {{notes?:string,outcome?:string,name?:string,comments?:string[]}|null} card
  * @returns {number|null} ms since epoch (midnight UTC of the stamped day), or null
  */
 function parseRecheckAfterFromCard(card) {
   if (!card) return null;
+  if (Array.isArray(card.comments)) {
+    for (let i = card.comments.length - 1; i >= 0; i--) {
+      const t = parseRecheckAfter(card.comments[i]);
+      if (t != null) return t;
+    }
+  }
   for (const field of [card.notes, card.outcome, card.name]) {
     const t = parseRecheckAfter(field);
     if (t != null) return t;

@@ -19,7 +19,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { detectTransferPairs } = require('./lib/transfer-detection');
+const { detectTransferPairs, detectLondonTransferPairs } = require('./lib/transfer-detection');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -59,8 +59,19 @@ async function main() {
     console.log(`::warning::transfer detection ambiguous for ${a.regionalId}: ${a.reason} — link manually`);
   }
 
+  // London transfers / returns (S5-T5): suggestions only, never written —
+  // validate-data reserves transferOf/transferredTo for regional tryouts, and
+  // the priorRuns[] entry below is the cross-link the later row should carry.
+  for (const p of detectLondonTransferPairs(shows)) {
+    if (!p.earlierId) {
+      console.log(`::warning::London transfer detection ambiguous for ${p.laterId}: ${p.reason} — add priorRuns by hand`);
+    } else {
+      console.log(`SUGGEST priorRuns: ${p.laterId} ← ${p.earlierId} (${p.reason}) — add to ${p.laterId}: ${JSON.stringify(p.suggestedPriorRun)}`);
+    }
+  }
+
   if (applied.length === 0 && ambiguous.length === 0) {
-    console.log('No new transfer pairs detected.');
+    console.log('No new regional transfer pairs detected.');
     return;
   }
   if (dryRun) { console.log('(dry-run: no writes)'); return; }

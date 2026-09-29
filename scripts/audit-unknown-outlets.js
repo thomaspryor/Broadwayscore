@@ -32,6 +32,7 @@ const fs = require('fs');
 const path = require('path');
 const { isRejectedNonReview } = require('./lib/review-guards');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DATA_DIR = path.join(__dirname, '..', 'data');
 
@@ -61,9 +62,7 @@ function countResolvableUnknowns(reviewTextsDir, validOutlets) {
   let totalFiles = 0;
   const examples = [];
 
-  const showDirs = fs
-    .readdirSync(reviewTextsDir)
-    .filter((f) => fs.statSync(path.join(reviewTextsDir, f)).isDirectory());
+  const showDirs = listShowDirs(reviewTextsDir);
 
   for (const showDir of showDirs) {
     const files = fs

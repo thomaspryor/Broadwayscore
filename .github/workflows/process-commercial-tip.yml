@@ -4,6 +4,16 @@ on:
   issues:
     types: [opened]
 
+# Per-issue group (BRO-3500 what-else follow-up — same "issue-triggered
+# auto-processor" shape as process-review-submission.yml/
+# auto-fix-feedback-bug.yml, found while fixing those). Not in BRO-3500's
+# original scope (writes commercial.json, not review-texts) but had zero
+# concurrency group at all — a strict improvement with no regression risk,
+# since there was nothing to preserve. Different issues never collide.
+concurrency:
+  group: process-commercial-tip-${{ github.event.issue.number }}
+  cancel-in-progress: false
+
 jobs:
   process-tip:
     if: contains(github.event.issue.labels.*.name, 'commercial-tip')

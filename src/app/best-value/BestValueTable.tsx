@@ -141,7 +141,7 @@ export function BestValueTable({ rows, market = 'broadway' }: BestValueTableProp
               return (
                 <Fragment key={row.slug}>
                   <tr
-                    className={`border-b border-white/5 hover:bg-white/5 transition-colors ${hasMultiple ? 'cursor-pointer' : ''} ${isExpanded ? 'border-b-0' : ''}`}
+                    className={`border-b border-white/5 transition-colors ${hasMultiple ? 'cursor-pointer hover:bg-white/5' : ''} ${isExpanded ? 'border-b-0' : ''}`}
                     onClick={() => hasMultiple && setExpandedSlug(isExpanded ? null : row.slug)}
                   >
                     <td className="py-3 px-2 sm:px-3 w-6 sm:w-8 hidden sm:table-cell">

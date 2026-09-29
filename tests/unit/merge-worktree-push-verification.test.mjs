@@ -161,7 +161,9 @@ function runMergeScript(cwd, args, envOverrides = {}) {
   return spawnSync('bash', [MERGE_SCRIPT, ...args], {
     cwd,
     encoding: 'utf8',
-    env: { ...GIT_ENV, ...envOverrides },
+    // BRO-3873 step 4: these fixtures exercise the LEGACY direct merge+push
+    // path (stash / retry loop / verify); the default now lands via land/**.
+    env: { ...GIT_ENV, LAND_LEGACY_DIRECT: '1', MERGE_SCRIPT_NO_REEXEC: '1', ...envOverrides },
     timeout: 60_000,
   });
 }
@@ -197,7 +199,7 @@ test('merge-worktree-to-main.sh does NOT report "pushed" when the push never act
       `script printed its final success banner despite origin never advancing. stdout:\n${result.stdout}`
     );
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -268,7 +270,7 @@ test('merge-worktree-to-main.sh: a conflicted stash from a prior failed run is s
       );
     }
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -345,6 +347,6 @@ test('merge-worktree-to-main.sh: daemon re-dirties a tracked file during the pus
       );
     }
   } finally {
-    fs.rmSync(dir, { recursive: true, force: true });
+    fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

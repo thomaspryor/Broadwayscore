@@ -42,6 +42,30 @@ test('parseRecheckAfterFromCard is null-safe', () => {
   assert.equal(parseRecheckAfterFromCard({ notes: null, outcome: undefined }), null);
 });
 
+// ── card.comments (BRO-3373): a Linear card's stamp usually lives in a
+// wrap-up comment, not the description. Purely additive — card.comments is
+// undefined for every pre-BRO-3373 (Notion) card, so every test above this
+// point is unaffected.
+
+test('a stamp in card.comments wins over notes/outcome/name', () => {
+  const card = {
+    notes: 'no stamp here',
+    outcome: 'RECHECK-AFTER: 2026-01-01',
+    comments: ['no stamp', 'RECHECK-AFTER: 2026-08-20'],
+  };
+  assert.equal(parseRecheckAfterFromCard(card), Date.parse('2026-08-20T00:00:00Z'));
+});
+
+test('comments are scanned newest-to-oldest: a later re-stamp supersedes an earlier one', () => {
+  const card = { comments: ['RECHECK-AFTER: 2026-01-01', 'still waiting, RECHECK-AFTER: 2026-12-25'] };
+  assert.equal(parseRecheckAfterFromCard(card), Date.parse('2026-12-25T00:00:00Z'));
+});
+
+test('an empty or absent card.comments falls through to notes/outcome/name unaffected', () => {
+  assert.equal(parseRecheckAfterFromCard({ comments: [], notes: 'RECHECK-AFTER: 2026-03-03' }), Date.parse('2026-03-03T00:00:00Z'));
+  assert.equal(parseRecheckAfterFromCard({ comments: ['no stamp'], notes: 'RECHECK-AFTER: 2026-03-03' }), Date.parse('2026-03-03T00:00:00Z'));
+});
+
 // task #802: a stamp buried past the ~1800-char Notion property preview
 // (notion-brain.js PROP_CHUNK) is invisible to stuck-work.js's classifier —
 // it never sees the page-body overflow. hoistRecheckAfterStamp is called on

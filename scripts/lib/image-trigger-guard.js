@@ -197,10 +197,45 @@ async function executeSelfHealDispatch({ plan, dispatch, nowMs, onAlert, log = (
   return { dispatchCalls, ok, dispatched };
 }
 
+/**
+ * Ids tracked in the PREVIOUS run's ledger that now have POSITIVE proof of a
+ * real image (hasImageById.get(id) === true) — i.e. a show self-healed since
+ * the last cycle. Pure — no I/O.
+ *
+ * BRO-2765/BRO-2651: the caller uses this to resolveCondition() any
+ * escalation alert that fired for the id. Without it, a show whose image
+ * lands via a path OTHER than this script's own dispatch loop (e.g. the
+ * twice-weekly archive cron) self-prunes out of this ledger silently, but the
+ * alert-ledger.json entry — and the Linear card it filed — stays open
+ * forever, because nothing else was ever going to call resolveCondition()
+ * for it.
+ *
+ * Deliberately requires POSITIVE evidence (=== true), not merely "absent
+ * from flagged" — adversarial pre-ship review (2026-09-24) caught that an id
+ * can drop out of `flagged` for reasons that are NOT "image landed": a
+ * malformed/unreadable shows.json or reviews.json read falls back to an
+ * empty list (loadJson's catch), a show's review count can drop to 0, or its
+ * dates can become unresolvable. Any of those would silently mark every
+ * open incident "resolved" with a fabricated "image landed on disk" reason
+ * while the real problem (missing image, or broken data) persists. Keying
+ * off hasImageById instead means a data-read failure just produces an empty
+ * map — nothing gets falsely resolved, it only gets skipped for a cycle.
+ *
+ * @param {Map<string, object>} prevById ids tracked in the previous run's ledger
+ * @param {Map<string, boolean>|Object<string, boolean>} hasImageById id -> hasRealImage() this run
+ * @returns {Array<string>} ids with confirmed real images now (self-healed)
+ */
+function idsClearedSinceLastRun(prevById, hasImageById) {
+  const prev = prevById instanceof Map ? prevById : new Map(Object.entries(prevById || {}));
+  const hasImage = hasImageById instanceof Map ? hasImageById : new Map(Object.entries(hasImageById || {}));
+  return [...prev.keys()].filter((id) => hasImage.get(id) === true);
+}
+
 module.exports = {
   buildImageDispatchInputs,
   planSelfHealDispatch,
   executeSelfHealDispatch,
   findImagelessScoredShows,
+  idsClearedSinceLastRun,
   DEFAULT_THRESHOLD_HOURS,
 };

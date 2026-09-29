@@ -11,7 +11,32 @@
 
 set -euo pipefail
 
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REVIEW_TEXTS_DIR="$(cd "$(dirname "$0")/../data/review-texts" && pwd)"
+
+# BRO-3954: depth-bound this checkout's fetch/pull the same way scripts/lib/
+# push-with-retry.sh and scripts/lib/verify-review-texts-pushed.js do, via
+# scripts/lib/shallow-fetch-args.js's repoDepthArgs() — audit-unbounded-
+# fetch.js caught this file's bare `git fetch`/`git pull` calls live
+# (2026-09-21): setup-local-data.sh clones this repo with `--depth 1`, so an
+# unbounded fetch/pull here can ask upload-pack for the WHOLE remote history
+# instead of the small delta actually needed, the exact class of incident
+# scripts/lib/shallow-fetch-args.js's own header documents for the main repo
+# (task #466). Prints "" (no extra args) on a non-shallow checkout — that is
+# the correct, deliberate answer, not a failure. Falls back to --deepen=200
+# (never SHORTENS existing history) only if node/the helper itself errors,
+# matching push-with-retry.sh's fail-CLOSED precedent for the same helper.
+depth_args() {
+  local args
+  if args=$(node -e "
+    const { repoDepthArgs } = require('$SCRIPT_DIR/lib/shallow-fetch-args');
+    process.stdout.write(repoDepthArgs({ repoRoot: process.cwd() }).join(' '));
+  " 2>/dev/null); then
+    echo "$args"
+  else
+    echo "--deepen=200"
+  fi
+}
 
 CHECK_ONLY=0
 for arg in "$@"; do
@@ -35,7 +60,13 @@ cd "$REVIEW_TEXTS_DIR"
 if [ "$CHECK_ONLY" = "1" ]; then
   # Portable 5-second timeout (macOS has no `timeout` by default).
   # Uses perl's alarm() which is available on every macOS + Linux box.
-  if ! perl -e 'alarm shift; exec @ARGV' 5 git fetch origin main -q 2>/dev/null; then
+  # unbounded-fetch-ok: bound arrives via $(depth_args) below — a runtime
+  # command substitution scripts/audit-unbounded-fetch.js's static text scan
+  # cannot see through, same "waiver lives here, not a fake flag on the git
+  # line" shape as push-with-retry.sh's git_fetch() wrapper (scripts/lib/
+  # push-with-retry.sh ~line 154), the canonical precedent for this file's
+  # depth_args() helper defined near the top of this script.
+  if ! perl -e 'alarm shift; exec @ARGV' 5 git fetch origin main $(depth_args) -q 2>/dev/null; then
     echo "state=nofetch behind=0 ahead=0 dirty=no"
     exit 0
   fi
@@ -63,7 +94,9 @@ fi
 
 # SAFETY: Pull remote changes FIRST so we don't overwrite data (e.g., fullText)
 # that was fetched/committed by other processes while local changes were pending.
-git pull --rebase origin main -q 2>/dev/null || true
+# unbounded-fetch-ok: bound arrives via $(depth_args), see the depth_args()
+# definition near the top of this script for the full rationale.
+git pull --rebase origin main $(depth_args) -q 2>/dev/null || true
 
 # Restore protected fields (humanReviewScore, humanReviewedWrongProduction, etc.)
 # from pre-rebase HEAD. ORIG_HEAD is set by git when a rebase replayed commits.
@@ -129,7 +162,9 @@ git commit -m "$COMMIT_MSG" -m "Changed: $CHANGED"
 
 # Push with retry
 for i in 1 2 3 4 5; do
-  if git pull --rebase origin main 2>&1; then
+  # unbounded-fetch-ok: bound arrives via $(depth_args), see the depth_args()
+  # definition near the top of this script for the full rationale.
+  if git pull --rebase origin main $(depth_args) 2>&1; then
     # Resolve any conflicts by keeping ours (local is always newer for local sessions)
     UNMERGED=$(git diff --name-only --diff-filter=U 2>/dev/null || true)
     if [ -n "$UNMERGED" ]; then

@@ -89,7 +89,7 @@ function makeSharedMainWithTwoBranches() {
 
 test('ACCEPTANCE: gated-line count for a push includes ONLY the pushing branch\'s commits', (t) => {
   const repo = makeSharedMainWithTwoBranches();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const base = resolveBase(repo);
   const stats = gatedDiffStats(repo, base, 'HEAD');
   const paths = stats.files.map(f => f.path);
@@ -99,7 +99,7 @@ test('ACCEPTANCE: gated-line count for a push includes ONLY the pushing branch\'
 
 test('ACCEPTANCE: sessionB\'s small own-diff push is allowed even though shared main also carries sessionA\'s large unrelated merge', (t) => {
   const repo = makeSharedMainWithTwoBranches();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const r = queryPushAllowed({ repoRoot: repo });
   assert.equal(r.allowed, true, JSON.stringify(r));
   assert.equal(r.gated, false, JSON.stringify(r));
@@ -108,7 +108,7 @@ test('ACCEPTANCE: sessionB\'s small own-diff push is allowed even though shared 
 
 test('without own-merge scoping the naive diff would have wrongly inflated past budget (sanity check on fixture)', (t) => {
   const repo = makeSharedMainWithTwoBranches();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const base = resolveBase(repo);
   // Direct three-dot diff (the pre-fix behavior) conflates both sessions' work.
   const naive = execFileSync('git', ['-C', repo, 'diff', '--numstat', `${base}...HEAD`, '--', 'scripts'], { encoding: 'utf8' });
@@ -121,7 +121,7 @@ test('without own-merge scoping the naive diff would have wrongly inflated past 
 
 test('a merge commit whose own branch exceeds budget is still gated (fix does not disable the gate)', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   git(repo, 'checkout', '-q', '-b', 'other-session-branch');
   commitLines(repo, 'scripts/other.js', 60, 'other session, already reviewed elsewhere');
   git(repo, 'checkout', '-q', 'main');
@@ -150,7 +150,7 @@ test('a merge commit whose own branch exceeds budget is still gated (fix does no
 // this repo's parallel-session workflow hits constantly.
 test('REGRESSION: a git-pull merge (parent2 = origin/main) does not hide the session\'s own commits', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 
   // Clone BEFORE the session does its own work, so origin can diverge
   // independently (a real `git pull` merge, not a fast-forward) — matching
@@ -165,7 +165,7 @@ test('REGRESSION: a git-pull merge (parent2 = origin/main) does not hide the ses
   git(originClone, 'config', 'user.name', 'Test');
   git(originClone, 'config', 'commit.gpgsign', 'false');
   git(repo, 'remote', 'add', 'origin', originClone);
-  t.after(() => rmSync(originClone, { recursive: true, force: true }));
+  t.after(() => rmSync(originClone, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 
   git(repo, 'checkout', '-q', '-b', 'my-branch');
   commitLines(repo, 'scripts/mine.js', 80, 'my own unreviewed work');
@@ -197,7 +197,7 @@ test('REGRESSION: a git-pull merge (parent2 = origin/main) does not hide the ses
 // this push, not silently fall back to the old (conflated) behavior.
 test('REGRESSION: scoping survives a trailing non-merge commit on top of the merge (e.g. an auto-commit)', (t) => {
   const repo = makeSharedMainWithTwoBranches();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   commitLines(repo, 'scripts/session-b-followup.js', 5, 'small trailing commit after the merge');
 
   const base = resolveBase(repo);

@@ -33,7 +33,7 @@ const DATES_ONLY = process.argv.includes('--dates-only');
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'BroadwayScorecardBot/1.0 (broadway-scorecard project)' } }, (res) => {
+    const req = https.get(url, { headers: { 'User-Agent': 'BroadwayScorecardBot/1.0 (broadway-scorecard project)' }, timeout: 15000 }, (res) => {
       if (res.statusCode === 301 || res.statusCode === 302) {
         return fetchJson(res.headers.location).then(resolve).catch(reject);
       }
@@ -43,7 +43,9 @@ function fetchJson(url) {
         try { resolve(JSON.parse(data)); }
         catch (e) { reject(new Error('JSON parse error')); }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

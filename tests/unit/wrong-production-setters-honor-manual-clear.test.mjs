@@ -69,6 +69,11 @@ const KNOWN_SETTERS = [
   // hit, in addition to its own humanReviewedWrongProduction/manualClear/
   // override/explicit-false checks. (added 2026-08-15, #1617)
   'audit-sibling-title-misroute.js',
+  // Operator-invoked `--flag=<path>` CLI path of the pre-BRO-736 SERP
+  // contamination audit (BRO-2271). guards applyFlag() with
+  // shouldSkipWrongProductionAudit() before writing wrongProduction=true.
+  // (added 2026-09-16, BRO-3586)
+  'audit-corpus-contamination.js',
 ];
 
 describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
@@ -117,6 +122,14 @@ describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
       // 2026-04-26). It's a giant orchestration file — exempt because the
       // grep would always hit and the guard pattern is per-block, not per-line.
       'rebuild-all-reviews.js',
+      // A LINTER, not a writer. lint-autoclear-invalidate.js exists to find
+      // `.wrongProduction = true` writes that lack a matching autoclear
+      // invalidate call, so the pattern this test greps for appears in its
+      // own doc comment and in the regexes it scans other files with. It
+      // never opens a review file for writing — `grep -n "writeFileSync\|
+      // fs.write" scripts/lint-autoclear-invalidate.js` returns nothing.
+      // Landed by BRO-3908 (125eb35542d); this entry is the missing half.
+      'lint-autoclear-invalidate.js',
       // Sweep scripts are intentional flag-clearers + flag-restorers, not auditors.
       'clear-stale-wrong-production-flags.js',
       'restore-protected-fields.js',
@@ -178,6 +191,14 @@ describe('wrongProduction setter scripts honor manual-clear breadcrumb', () => {
       // evaluated against a reconstructed pre-incident git blob instead of the
       // live file. Not CI-scheduled; not in any workflow. (task #1086)
       'repair-noteless-wrongprod-autoclear.js',
+      // audit-corpus-contamination.js (BRO-2271) — its --flag=<path> mode is a
+      // manual CLI utility: a human runs `node scripts/audit-corpus-contamination.js
+      // --flag=<path> --note="..."` only AFTER manually verifying (reading the
+      // review's own fullText, comparing to the show's declared production) that
+      // a candidate the report mode surfaced is genuine contamination. It never
+      // auto-re-scans the corpus and write on its own — same category as
+      // flag-wrong-production-by-id.js/flag-wrong-production-by-date.js above.
+      'audit-corpus-contamination.js',
     ]);
 
     const allFiles = fs.readdirSync(SCRIPTS_DIR)

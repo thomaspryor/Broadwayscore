@@ -7,7 +7,7 @@
 
 export type ShowStatus = 'previews' | 'opened' | 'closing' | 'closed';
 
-export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end' | 'regional';
+export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-end' | 'regional' | 'tour';
 
 /**
  * A prior run of the SAME artistic production at a different venue or in
@@ -16,6 +16,7 @@ export type ShowCategory = 'broadway' | 'off-broadway' | 'west-end' | 'off-west-
  * date-based wrongProduction guards. See scripts/lib/wrong-production-autoclear.js.
  */
 export interface PriorRun {
+  id?: string; // shows.json id of the prior run's own row, when it has one — a cross-link, so scripts/lib/deduplication.js isCrossLinked() never reads the pair as duplicates
   openingDate: string; // ISO date — start of the prior run
   closingDate?: string; // ISO date — end of the prior run (defaults to openingDate + 180 days)
   venue?: string; // Display label, e.g. "Bushwick Starr"
@@ -47,6 +48,8 @@ export interface ShowMetadata {
   runtime?: string; // e.g., "2h 30m"
   intermissions?: number;
   priorRuns?: PriorRun[];
+  /** Ids of concurrent sibling productions this row is NOT a duplicate of (neither a transfer nor a prior run — e.g. a family panto and its adults-only twin at the same venue). Honoured by scripts/lib/deduplication.js isCrossLinked. */
+  distinctFrom?: string[];
   tourLegs?: TourLeg[];
 }
 

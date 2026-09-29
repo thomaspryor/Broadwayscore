@@ -64,7 +64,7 @@ const { TERMINAL_LAUNCH_EVENTS, TERMINAL_JOB_EVENTS } = require('./dispatch-ledg
 // that never started is not a session anyone can mislead.
 const TERMINAL_EVENTS = new Set([
   ...TERMINAL_LAUNCH_EVENTS,   // dead, vanished, prune-closed, remapped
-  ...TERMINAL_JOB_EVENTS,      // job-done, job-failed, job-orphaned
+  ...TERMINAL_JOB_EVENTS,      // job-done, job-failed, job-orphaned, job-blocked, job-stopped-short, job-stranded, ...
   'launch-failed',
 ]);
 

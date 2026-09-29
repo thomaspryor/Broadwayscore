@@ -39,6 +39,7 @@ const { buildCookieHeaderForUrl } = require('./lib/cookie-loader');
 const { setExtractedScore } = require('./lib/score-routing');
 const { isMissingOriginalScore } = require('./lib/star-score-mismatch');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Build showId → { title } map so isScoreable can activate the wrongShow
 // stale-flag override (Notion 34e637c5-416f-8121).
@@ -913,9 +914,7 @@ function trackOutlet(outletId, phase) {
 function findMissingRatings() {
   const reviews = [];
 
-  let shows = fs.readdirSync(REVIEW_DIR).filter(d => {
-    try { return fs.statSync(path.join(REVIEW_DIR, d)).isDirectory(); } catch { return false; }
-  });
+  let shows = listShowDirs(REVIEW_DIR);
 
   // Market filter: restrict to shows matching a market keyword (e.g., 'west-end')
   if (MARKET_FILTER) {

@@ -21,6 +21,7 @@ const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { countByShow, isStuckInPreviews, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
+const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./lib/opening-date-fallback');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion, blockAnnouncedCatchUp } = require('./lib/announced-promotion');
 const showsWriteGuard = require('./lib/shows-write-guard');
@@ -117,7 +118,7 @@ function isDateReached(dateStr) {
 function fetchTodayTixPage(location, offset = 0, limit = 100) {
   const url = `https://api.todaytix.com/api/v2/shows?location=${location}&limit=${limit}&offset=${offset}`;
   return new Promise((resolve, reject) => {
-    https.get(url, (response) => {
+    const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`TodayTix API HTTP ${response.statusCode}`));
         return;
@@ -128,7 +129,9 @@ function fetchTodayTixPage(location, offset = 0, limit = 100) {
         try { resolve(JSON.parse(body)); }
         catch (e) { reject(new Error('TodayTix JSON parse error')); }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
@@ -527,7 +530,22 @@ async function refreshShowScoreStatuses(data, updates, ttActiveIds) {
           to: 'closed',
           note: `ShowScore says "${ssData.raw}", TodayTix not active`
         });
-        if (!dryRun) show.status = 'closed';
+        if (!dryRun) {
+          show.status = 'closed';
+          // ShowScore reporting "Closed" means the run ended before its
+          // announced date — a stored future closingDate is now stale and
+          // contradicts status=closed (BRO-4099: slam-frank-off-broadway-2026
+          // sat closed with closingDate 2026-11-30 for a day, tripping
+          // pre-deploy-check.js's integrity gate and blocking every deploy).
+          // Clear it here so the writer never produces the contradiction;
+          // the true closing date is unknown, same as the stale-open
+          // auto-close path above.
+          const todayStr = new Date().toISOString().slice(0, 10);
+          if (show.closingDate && show.closingDate > todayStr && canWriteClosingDate(show)) {
+            const staleDate = show.closingDate;
+            writeClosingDate(show, null, `update-show-status ShowScore refresh: cleared stale future closingDate on closure (was ${staleDate})`, { todayStr });
+          }
+        }
         statusChanges++;
       }
     }
@@ -681,6 +699,23 @@ async function updateShowStatuses() {
     // Flag shows approaching closing (but don't change status)
     if (show.status === 'open' && show.closingDate && isDatePassed(show.closingDate) && !isDatePassedByDays(show.closingDate, graceDays)) {
       console.log(`  ⚠️  ${show.title}: closing date ${show.closingDate} passed - in grace period (check for extension)`);
+    }
+
+    // Check 2f: last-resort opening date (lib/opening-date-fallback.js).
+    // OB/OWE show performing 7+ days with no openingDate from any source:
+    // use the first-performance date, marked 'previews-fallback' (unconfirmed,
+    // so the date enrichers overwrite it with the real press night). Runs
+    // before Check 2 so the show flips to open this same run.
+    {
+      const fb = previewsFallbackOpening(show, new Date().toISOString().slice(0, 10));
+      if (fb) {
+        changes.openingDate = { from: null, to: fb.openingDate };
+        changes.note = `no openingDate from any source ${PREVIEWS_FALLBACK_GRACE_DAYS}+ days into previews; using first performance ${fb.openingDate} (source ${fb.openingDateSource}, overwritable)`;
+        if (!dryRun) {
+          show.openingDate = fb.openingDate;
+          show.openingDateSource = fb.openingDateSource;
+        }
+      }
     }
 
     // Check 2: Move previews to open if opening date has passed

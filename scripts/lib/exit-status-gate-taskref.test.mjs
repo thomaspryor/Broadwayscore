@@ -42,7 +42,14 @@ const HOOK_PATH = path.join(REAL_HOME, '.claude', 'hooks', 'exit-status-gate.sh'
 // os.path.expanduser('~'), which follows $HOME — so a sandboxed caller
 // (checksEnv() above) must have the REAL HOME threaded through the whole
 // bash→python3 chain, not just used to locate this script.
-const HOOK_ENV = { ...process.env, HOME: REAL_HOME };
+// BRO-4162: this spawns via the CURRENT process's full env (`...process.env`
+// below), which inherits ESG_HEADLESS=1 whenever the test itself is run by a
+// headless bsc-runner.js job (scripts/lib/bsc-runner.js, BRO-3442) — that
+// silently forced Gate H's headless rules onto every Gate T case here (none
+// of which exercise headless behavior), producing 3 false failures. Reset it
+// so the gate's cwd/env-independent default (non-headless) applies unless a
+// specific case opts in via extraEnv.
+const HOOK_ENV = { ...process.env, HOME: REAL_HOME, ESG_HEADLESS: '' };
 
 // The hook lives in the owner's PRIVATE ~/.claude repo, which a CI runner does
 // not check out — spawnSync('bash', [missing path]) exits 127, and every case
@@ -88,7 +95,10 @@ const NO_TITLE_MSG = [
   '',
   'DISPATCHED: workspace:257 ("Data·Some Title") — dispatched task #1152, see #1144',
   '',
-  'THIS SESSION: CLOSE ME — everything verified; follow-up continues in workspace:257 ("Data·Some Title")',
+  // Gate O v2 (hook 2026-09-16/09-22): a session that DISPATCHED something may not
+  // end CLOSE ME without a LANDED: line — this fixture is about Gate T (titles),
+  // so it stays KEEP OPEN and supervising, which Gate O accepts.
+  'THIS SESSION: KEEP OPEN — supervising workspace:257 ("Data·Some Title") until task #1152 lands',
 ].join('\n');
 
 const TITLED_MSG = [
@@ -96,13 +106,13 @@ const TITLED_MSG = [
   '',
   'DISPATCHED: workspace:257 ("Data·Some Title") — dispatched task #1152 ("P0: exit-status-gate Gate W misses TASK/CARD numbers"), see #1144 ("A DEAD dispatch marks its own task completed")',
   '',
-  'THIS SESSION: CLOSE ME — everything verified; follow-up continues in workspace:257 ("Data·Some Title")',
+  'THIS SESSION: KEEP OPEN — supervising workspace:257 ("Data·Some Title") until task #1152 ("P0: exit-status-gate Gate W misses TASK/CARD numbers") lands',
 ].join('\n');
 
 test('Gate T BLOCKS a final message with "task #1152" and no nearby title', { skip: skipIfNoHook }, () => {
   const { status, stderr } = runGate(NO_TITLE_MSG);
   assert.equal(status, 2, `expected block (exit 2), got ${status}\nstderr:\n${stderr}`);
-  assert.match(stderr, /task\/card by bare number/i);
+  assert.match(stderr, /Gate T: bare task\/card\/issue number/i);
 });
 
 test('Gate T PASSES the same message once a quoted title is added on that line', { skip: skipIfNoHook }, () => {

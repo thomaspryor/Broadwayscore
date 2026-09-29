@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const { verifyContent, heuristicVerify, quickValidityCheck } = require('./lib/content-verifier');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -89,8 +90,7 @@ async function runTests() {
 
   // Find a few real reviews with fullText
   let samplesChecked = 0;
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(f => fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory())
+  const shows = listShowDirs(REVIEW_TEXTS_DIR)
     .slice(0, 10); // Check first 10 shows
 
   for (const show of shows) {

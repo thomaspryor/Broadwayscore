@@ -331,21 +331,15 @@ const UNFOLDED_BASELINE_ROOT = new Set([
   'watch-aggregator-urls.js',
 ]);
 
-// The shred signature: an ASCII-only character-class filter applied to text.
-// Both the a-z and a-zA-Z spellings count — a matcher that keeps uppercase
-// still destroys accented letters, so the class is not narrower than /[^a-z0-9.
-// Task #790: a trailing 0-9 requirement here left NAME matchers (critic/cast
-// bylines never contain digits, e.g. [^a-z ] or [^a-z\s]) completely invisible
-// to this guard even though they shred accented names identically to a slug
-// builder. The signature now stops at the a-z(A-Z)? prefix — any ASCII-only
-// character class anchored there counts, digit or no digit.
-const SHRED_SIGNATURE = /\.replace\(\/\[\^a-z(A-Z)?/;
-// Every fold spelling in the codebase counts: foldDiacritics (the canonical
-// helper), .normalize('NFD')/.normalize("NFD") in either quote style, NFKD,
-// and the \p{Diacritic}/\p{M} property escapes review-guards.js:677 uses.
-// Missing a real spelling here fails CLOSED (the file looks unfolded and, if
-// unbaselined, reddens CI) — noisy but never silent.
-const FOLDS = /foldDiacritics|normalize\((['"])NFK?D\1\)|\\p\{(Diacritic|M)\}/;
+// SHRED_SIGNATURE, FOLDS and the per-line scan moved to
+// scripts/lib/diacritic-fold-guard.js on 2026-09-15 (CLAUDE.md rule 15 — the
+// test requires the real function instead of carrying its own copy). That
+// module's header documents the exemption marker and, importantly, the two
+// fixes that were REJECTED for the archive-outlet-identity.js red: baselining a
+// correct file, and stripping comment lines (proven fail-open by execution).
+const {
+  SHRED_SIGNATURE, FOLDS, findUnexemptedShredLines, isUnfolded,
+} = require('../../scripts/lib/diacritic-fold-guard.js');
 
 // .mjs as well as .js. The guard globbed .js only until 2026-09-08, and that
 // blind spot has a demonstrated cost: it caught the unfolded normalizer in
@@ -362,10 +356,7 @@ function scanUnfolded(dir) {
     .filter(f => f.endsWith('.js') || f.endsWith('.mjs'))
     .filter(f => !f.endsWith('.test.mjs') && !f.endsWith('.test.js'))
     .filter(f => fs.statSync(path.join(dir, f)).isFile())
-    .filter(f => {
-      const src = fs.readFileSync(path.join(dir, f), 'utf8');
-      return SHRED_SIGNATURE.test(src) && !FOLDS.test(src);
-    });
+    .filter(f => isUnfolded(fs.readFileSync(path.join(dir, f), 'utf8')));
 }
 
 describe('structural guard: no NEW unfolded title matcher', () => {
@@ -394,6 +385,71 @@ describe('structural guard: no NEW unfolded title matcher', () => {
       assert.ok(!unfolded.includes(f), `${f} regressed: it lost its diacritic fold`);
       assert.ok(!UNFOLDED_BASELINE.has(f), `${f} must not be baselined — it is fixed`);
     }
+  });
+
+  // archive-outlet-identity.js reddened main on 2026-09-15: its header QUOTES
+  // the legacy shred it exists to ban while its live code calls
+  // normalizeOutlet(). It must pass WITHOUT being baselined — baselining a
+  // correct file means "known-unfolded, still to fix" and would suppress a real
+  // future regression in it.
+  it('the file that reddened main passes on its marker, not on a baseline entry', () => {
+    assert.ok(!unfolded.includes('archive-outlet-identity.js'), 'must not be flagged');
+    assert.ok(!UNFOLDED_BASELINE.has('archive-outlet-identity.js'), 'and must not be baselined');
+    const src = fs.readFileSync(path.join(LIB, 'archive-outlet-identity.js'), 'utf8');
+    assert.ok(SHRED_SIGNATURE.test(src), 'it does still quote the pattern (else this test is vacuous)');
+    assert.deepStrictEqual(findUnexemptedShredLines(src), [], 'and the quote is marker-exempt');
+  });
+
+  it('the marker exempts on the match line and on a comment line directly above', () => {
+    const onLine = "//   legacy: x.replace(/[^a-z0-9]+/g, '-')  // diacritic-guard-ok: quoted anti-pattern";
+    const above = [
+      '// diacritic-guard-ok: quoted anti-pattern',
+      "//   legacy: x.replace(/[^a-z0-9]+/g, '-')",
+    ].join('\n');
+    assert.deepStrictEqual(findUnexemptedShredLines(onLine), []);
+    assert.deepStrictEqual(findUnexemptedShredLines(above), []);
+  });
+
+  it('a marker with NO reason exempts nothing, and neither does one on a line of real code', () => {
+    const bare = ['// diacritic-guard-ok:', "//   x.replace(/[^a-z0-9]+/g, '-')"].join('\n');
+    assert.equal(findUnexemptedShredLines(bare).length, 1, 'a reason is mandatory');
+
+    const onCode = ['const n = 1; // diacritic-guard-ok: unrelated', "const s = t.replace(/[^a-z0-9]+/g, '-');"].join('\n');
+    assert.equal(findUnexemptedShredLines(onCode).length, 1,
+      'only a COMMENT-ONLY line above may exempt — otherwise the lint goes dead silently');
+  });
+
+  it('an unmarked shred in live code still flags, and is reported with its line number', () => {
+    const src = ['// nothing folded here', "const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-');"].join('\n');
+    assert.deepStrictEqual(findUnexemptedShredLines(src).map(f => f.line), [2]);
+    assert.ok(isUnfolded(src));
+  });
+
+  // Codex adversarial review, 2026-09-15, EXECUTED these five: each really
+  // shreds accented text, and each would have been hidden by the rejected
+  // "strip lines starting with //, * or /*" approach. They are pinned here so
+  // nobody reintroduces a line-prefix stripper as a "false positive fix".
+  it('FAIL-CLOSED: the five shapes a comment-line stripper would have hidden all still flag', () => {
+    const shapes = {
+      'one-line block comment then live code': "/* note */ const s = 'café'.replace(/[^a-z]/g, '');",
+      'block-comment close then live code': ["/* note", "*/ const s = 'café'.replace(/[^a-z]/g, '');"].join('\n'),
+      'generator method (legitimately starts with a star)': ["const o = {", "*slug() { return 'café'.replace(/[^a-z]/g, ''); }", "};"].join('\n'),
+      'multiplication continuation (also starts with a star)': ["const n = 1", "* 'café'.replace(/[^a-z]/g, '').length;"].join('\n'),
+      'double-slash line inside a template literal still interpolates': ['const t = `prefix', "// ${'café'.replace(/[^a-z]/g, '')}`;"].join('\n'),
+    };
+    for (const [shape, src] of Object.entries(shapes)) {
+      assert.equal(findUnexemptedShredLines(src).length, 1, `fail-open regression — ${shape} escaped detection`);
+      assert.ok(isUnfolded(src), `fail-open regression — ${shape} read as folded`);
+    }
+  });
+
+  it('FOLDS still reads the whole raw buffer, so a folding file is never newly flagged', () => {
+    const src = [
+      "const folded = foldDiacritics(title);",
+      "const slug = folded.replace(/[^a-z0-9]+/g, '-');",
+    ].join('\n');
+    assert.equal(findUnexemptedShredLines(src).length, 1, 'the shred line is still found');
+    assert.ok(!isUnfolded(src), 'but the file folds, so it is out of scope');
   });
 });
 

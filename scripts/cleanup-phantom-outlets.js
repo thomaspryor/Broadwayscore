@@ -28,6 +28,7 @@ const {
   levenshteinDistance,
 } = require('./lib/review-normalization');
 const { safeWriteReview, safeUnlinkReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -55,9 +56,7 @@ function isCanonicalOutlet(outletId) {
 function run() {
   console.log(`\n=== Phantom Outlet Cleanup ${apply ? '(APPLY MODE)' : '(DRY RUN)'} ===\n`);
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-    try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
-  });
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   let totalDuplicates = 0;
   let totalMerged = 0;
@@ -251,9 +250,7 @@ function auditPhantomOutlets() {
     registryNames.set((data.displayName || id).toLowerCase(), id);
   }
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-    try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
-  });
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   // Scan all files, build outlet map
   const outletMap = new Map(); // outletId → { count, showIds, hasFullText }

@@ -23,6 +23,7 @@ const require = createRequire(import.meta.url);
 const {
   shouldAutoClearWrongProduction,
   shouldAutoClearWrongShow,
+  shouldAutoClearDatelessRevival,
   hasEnsembleConsensus,
 } = require('./wrong-production-autoclear.js');
 const { scanAutoclearVsEnsembleViolations } = require('./autoclear-vs-ensemble-scan.js');
@@ -101,6 +102,31 @@ test('shouldAutoClearWrongShow refuses to clear a unanimous ensemble wrong_show 
   };
   assert.strictEqual(shouldAutoClearWrongShow(data), false);
   assert.strictEqual(shouldAutoClearWrongShow({ wrongShow: true, allowEarlyDate: true }), true);
+});
+
+// BRO-3328: much-ado-about-nothing-2026's london-theatre--marianka-swain.json
+// had a live unanimous ensemble wrong_production rejection restored the
+// moment the show gained a usable date — shouldAutoClearDatelessRevival was
+// the one sibling auto-clear predicate in this file with no hasEnsembleConsensus
+// guard. Pins that it now refuses, while still honoring an explicit human
+// override even over an ensemble verdict (this function's original contract).
+test('shouldAutoClearDatelessRevival refuses to clear a unanimous ensemble wrong_production verdict, but a human override still wins', () => {
+  const ensembleRejected = {
+    wrongProduction: true,
+    wrongProductionNote: 'Dateless revival guard: no usable date on a recent revival title',
+    rejectionReason: 'wrong_production',
+    rejectedBy: 'ensemble-scoreability-check',
+    rejectionReasoning: 'claude: wrong production; openai: also wrong production',
+  };
+  assert.strictEqual(shouldAutoClearDatelessRevival(ensembleRejected, { hasUsableDate: true }), false);
+  // Sanity: without the ensemble rejection, gaining a usable date still clears normally.
+  const { rejectionReason, rejectedBy, rejectionReasoning, ...noEnsemble } = ensembleRejected;
+  assert.strictEqual(shouldAutoClearDatelessRevival(noEnsemble, { hasUsableDate: true }), true);
+  // A human override always wins, even over a live ensemble verdict.
+  assert.strictEqual(
+    shouldAutoClearDatelessRevival({ ...ensembleRejected, wrongProductionManualClear: true }, { hasUsableDate: false }),
+    true
+  );
 });
 
 test('corpus: 0 files where an auto-clear overrode a live unanimous ensemble verdict (wrongProduction + wrongShow)', (t) => {

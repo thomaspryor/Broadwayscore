@@ -46,8 +46,16 @@
 const PAGE_WORTHY_PREFIXES = [
   'on-monitor-launch-failed-', // opening-night-monitor-launch.js: the launcher could not start a monitor session tonight
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight
+  'on-monitor-auth-starved-sustained-', // opening-night-monitor-launch.js: Mac too starved to start ANY pass for 3 ticks (~1h) in an opening window (BRO-4141; single blips go to digest as on-monitor-auth-starved-)
   'on-monitor-attempts-exhausted-', // opening-night-monitor-launch.js: 3 launch attempts died tonight, falling back to the standing pipeline
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
+  // BRO-886: the draft itself was created and tracked fine — only the
+  // "hey, go review this in Resend" notification email failed. Without an
+  // immediate page here, the owner has no other heads-up that a time-
+  // sensitive opening-night draft is sitting unsent, and would only find out
+  // via the next morning's digest — same urgency class as
+  // 'broadcast:draft-creation-failed:' above, just a different failure point.
+  'broadcast:owner-notification-failed:',
   'broadcast:overdue:', // opening-night-broadcast.yml: broadcast hasn't sent 6+h after a show's opening — the pipeline (gather/rebuild/score) may be stuck
   // check-missed-broadcasts.js: a show opened, qualified on scored reviews, and
   // then left the 2-day broadcast window without an email ever going out. This
@@ -58,6 +66,22 @@ const PAGE_WORTHY_PREFIXES = [
   // owner noticed one show's email arriving and another's never had). Nothing
   // retries these automatically, so the page IS the recovery mechanism.
   'broadcast:never-sent:',
+  // 'opening-night-drift:' was listed here 2026-09 and REMOVED 2026-09-23
+  // (owner email-noise complaint): it emailed once per show every 6h for the
+  // whole ±7-day opening window, ~40 emails in one week across 5 shows. A
+  // review-count mismatch between review-texts, reviews.json and live prod is
+  // a data-reconciliation gap, not "the pipeline is dead tonight" — the
+  // opening-night pipeline's real dead-man signals are the on-monitor-* and
+  // broadcast:* keys above. check-opening-night-drift.yml still routes it
+  // (downgraded to the morning digest by the router), so nothing goes silent.
+  //
+  // renew-cookies.js (BRO-4183; owner request 2026-09-27: "if a CAPTCHA or
+  // emailed code appears, stop and alert me with one link"). Fires only on a
+  // sticky needs-human stop (CAPTCHA, emailed code, rejected login, 2 logins
+  // in 7 days, missing Keychain creds). The stop blocks every further login
+  // until the owner acts, so it cannot re-fire on its own; the router's
+  // per-key cooldown dedups too. All other renewal signals go to the digest.
+  'cookie-renew:needs-human:',
 ];
 
 const PAGE_WORTHY_CONDITION_KEYS = new Set([
@@ -96,6 +120,13 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // check-claude-auth-health.js (launchd, runs on the Mac — the token never
   // reaches CI).
   'claude-auth:revoked',
+  // 'claude-spawn-starved' / 'claude-spawn-error' (BRO-2971) were listed here
+  // and REMOVED 2026-09-25 (BRO-4141, owner: "confusing and un-actionable").
+  // They mean the Mac is overloaded or the claude binary is missing, not that
+  // the owner must do something: re-login is 'claude-auth:revoked' above.
+  // The owner received "[CRITICAL] Claude spawn failing from resource
+  // starvation" twice in two days with nothing they could do. They still
+  // route (downgraded to the morning digest), so nothing goes silent.
 
   // Not one of the 3 owner-approved categories above, but a deliberate
   // carve-out (BRO-1699 ship-check finding): this was a direct sendAlert()
@@ -116,6 +147,52 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // entries yet; scripts/check-rebuild-staleness.js (via
   // scripts/lib/guard-escalation.js's shouldEscalate) is the first sender.
   'guard-escalation:stale-checkout-staleness',
+
+  // Category 3 (BRO-2423, port of BRO-545's guard-escalation auto-recovery
+  // to llm-ensemble-score.yml + check-review-count-drift.yml, found during
+  // BRO-545's own /what-else pass): each of these three means the daily
+  // LLM-scoring pipeline — reviews never getting a score is the same
+  // "site's single source of truth has stopped advancing" class BRO-545
+  // covers for rebuild-reviews.yml — or the review-count-drift safety net
+  // that catches silently-suppressed opening-night reviews, has stopped
+  // working for 2+ consecutive daily runs.
+  'guard-escalation:scoring-queue-scan-failed', // scripts/check-scoring-queue-guard.js: count-scoring-queue.js can't trust the corpus scan (broken checkout) — the scoring cascade can't see its own queue depth
+  'guard-escalation:ensemble-scoring-pipeline-crashed', // scripts/run-ensemble-scoring-guard.js: scripts/llm-scoring/index.ts itself is crashing — new reviews stop getting scored
+  'guard-escalation:review-count-drift-strict-breach', // scripts/check-review-count-drift-guard.js: check-review-count-drift.yml's daily --strict run keeps blocking (stale reviews.json or opening-window reviews silently missing)
+
+  // 'test-yml:main-streak-escalation' was listed below and REMOVED 2026-09-25
+  // (BRO-4141). The history is kept for context. Its "24h cooldown caps this
+  // to one email per day" claim was false in practice: test.yml's "Resolve
+  // escalation alert on failing-job-set change" step resolves the condition
+  // whenever the red job set flickers (e.g. "Lint Workflows, Unit Tests" ->
+  // "Unit Tests"), so each flicker re-paged. The ledger shows notifyCount 102;
+  // the owner got it at 22:46 and 22:52 on 2026-09-24. A red trunk is for the
+  // automated fixers (the 2-failure 'auto' tier files the card), not the
+  // non-technical owner; it still reaches the digest's "trunk: RED" line.
+  //
+  // (was) Category 3 carve-out (BRO-1333): main's Test Suite went undetected-red for
+  // ~2 days (2026-06-13 → 06-15) because the only signal was a daily digest
+  // line nobody read in time — direct pushes to main are not gated by
+  // required checks (memory/feedback_branch_protection_direct_push.md), so
+  // broken code keeps landing the whole time it stays red. This is the
+  // "escalation" tier of that same detector (test.yml's own "Route alert —
+  // main test.yml red on consecutive pushes" step, disposition:'human' at 4+
+  // consecutive failures) — the 2-failure 'auto' tier still just files a
+  // Linear card. Verified still live and needed on 2026-09-16: with this key
+  // NOT yet on the allowlist, the 4+ tier had silently fired 73 times over
+  // three weeks with zero real pages, its ledger entry pointing at BRO-3030
+  // (an unrelated noise-audit issue matched by Linear's own substring search
+  // finding the conditionKey quoted in that issue's body, not a dedicated
+  // fix-main tracker) — i.e. the exact "digest line nobody reads" failure
+  // mode this card exists to close. 24h cooldown (routeAlert call site) caps
+  // this to at most one email per day while main stays red.
+  // 'test-yml:main-streak' (health-check.js's "no confirmed-green run in Nh"
+  // backstop) was listed here by BRO-3865 and REMOVED 2026-09-23 (owner
+  // email-noise complaint). It paged the SAME condition as
+  // 'test-yml:main-streak-escalation' above under a second conditionKey with
+  // its own cooldown, so a red trunk produced two independent email streams.
+  // The escalation tier stays the one email; this backstop now lands in the
+  // morning digest's "trunk: RED" line (router downgrade human -> digest).
 ]);
 
 function isPageWorthy(conditionKey) {

@@ -162,10 +162,11 @@ jobs:
       # overlap is all the redundancy the ingest needs. --backfill (400 days)
       # is for seeding the ledger on the first run or after a gap.
       #
-      # The ingest calls routeAlert(...) for action-severity findings — the
-      # literal name is here so scripts/lib/alert-ledger-commit-check.js can
-      # see that this job routes alerts and therefore must commit the alert
-      # ledger below (that gate greps the YAML for `routeAlert(`).
+      # The ingest calls routeAlert(...) for action-severity findings.
+      # scripts/lib/alert-ledger-commit-check.js sees this via BRO-3671's
+      # require-graph resolution (ingest-dmarc-reports.js directly requires
+      # owner-alert-router.js) — no literal YAML mention is needed for
+      # detection anymore, but the ledger below must still be committed.
       - name: Ingest DMARC reports
         env:
           GMAIL_CLIENT_ID: ${{ secrets.GMAIL_CLIENT_ID }}
@@ -197,7 +198,7 @@ jobs:
           # staging command and the filename on the SAME line, so splitting
           # these across backslash continuations reads to it as "never staged".
           bash scripts/lib/git-add-existing.sh data/audit/dmarc-summary.json data/audit/dmarc-report-ledger.jsonl
-          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json
+          bash scripts/lib/git-add-existing.sh data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
 
           if git diff --staged --quiet; then
             echo "No DMARC state changes."

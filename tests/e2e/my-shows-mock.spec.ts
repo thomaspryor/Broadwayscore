@@ -403,9 +403,17 @@ test.describe('My Shows — Watchlist', () => {
 
   test('watchlist cards have a rate-strip of five stars', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Grid cards carry a 5-star rate strip at the poster bottom (replaced the
-    // text "Rate" pill + centered hover stars, 2026-07-19).
-    const strips = page.locator('[class*="group/wl"] [role="radiogroup"]');
+    // Past-dated entries route to ToBeRatedCard's inline StarRating (no
+    // group/wl wrapper — that class only applies to WatchlistCard's flat
+    // alphabetical-list-view poster strip, per MyShowsClient.tsx's
+    // canRate/isFutureDated split). ToBeRatedCard also mounts BOTH a mobile
+    // (sm:hidden) and desktop (hidden sm:inline-flex) StarRating for the same
+    // entry — only one is actually visible per viewport, but both are
+    // present in the DOM, so an unfiltered `.first()` can land on the
+    // display:none copy and fail getByRole (which requires the accessibility
+    // tree, i.e. visible). `:visible` picks the one the current viewport
+    // actually renders.
+    const strips = page.locator('[role="tabpanel"] [role="radiogroup"]:visible');
     expect(await strips.count()).toBeGreaterThan(0);
     await expect(strips.first().getByRole('button', { name: '5 stars' })).toBeAttached();
   });

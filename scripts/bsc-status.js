@@ -34,7 +34,7 @@ const {
 } = require('./lib/cmux-workspaces.js');
 const {
   parseJsonLines, firstUserMessage, sessionLabel, finalAssistantEntry,
-  statusLine, workspaceVerdict,
+  statusLine, workspaceVerdict, recordedBlock,
 } = require('./lib/session-wrapups.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
@@ -87,7 +87,9 @@ function transcriptSummary(file) {
   const finalEntry = finalAssistantEntry(tail);
   return {
     label: sessionLabel(firstUserMessage(head)),
-    status: statusLine(finalEntry.text),
+    // BRO-3914: plain-English endings carry no verdict; fall back to the
+    // block the session recorded via wrapup-block (its tool_result).
+    status: statusLine(finalEntry.text) || statusLine(recordedBlock(tail)),
     // Wrap-up timestamp, NOT file mtime: transcript relocation (worktree
     // removal) touches mtime long after the session actually finished.
     endedAt: finalEntry.timestamp || null,
@@ -208,7 +210,7 @@ function main(argv = process.argv.slice(2)) {
         console.log(`  [${alive ? 'RUNNING' : 'UNKNOWN — next bsc-reconcile tick will resolve'}] #${j.taskId} ${j.subject || ''} (${j.jobId})`);
         console.log(`      log: ${j.logFile || '(none)'}`);
         if (alive) console.log(`      pid ${lease.pid} — live; do NOT resume while running`);
-        else if ((lease && lease.sessionId) || j.sessionId) console.log(`      attach: (cd ${j.cwd} && claude --resume ${(lease && lease.sessionId) || j.sessionId})`);
+        else if ((lease && lease.sessionId) || j.sessionId) console.log(`      attach: ${require('./lib/claude-tab-relaunch.js').RELAUNCH_SCRIPT} --cwd '${j.cwd}' --resume ${(lease && lease.sessionId) || j.sessionId}`);
       }
       for (const j of recentDone) {
         console.log(`  [${j.event.replace('job-', '').toUpperCase()}] #${j.taskId} ${j.subject || ''}${j.stage ? ` (${j.stage})` : ''}${typeof j.costUSD === 'number' ? ` $${j.costUSD.toFixed(2)}` : ''}`);

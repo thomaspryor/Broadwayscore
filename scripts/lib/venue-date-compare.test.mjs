@@ -696,7 +696,65 @@ test('showFingerprint covers isRevival, which compareShow validates (BRO-2701 re
   );
 });
 
+// BRO-2255 — same argument as isRevival above: compareShow now validates
+// `type` against Playbill's Play/Musical tag, so a type correction must
+// invalidate a stale 'match' row from before the fix, not leave it looking
+// like still-current evidence.
+test('showFingerprint covers type, which compareShow now validates (BRO-2255)', () => {
+  const base = { venue: 'V', openingDate: '2026-01-01', closingDate: null };
+  assert.notEqual(
+    showFingerprint({ ...base, type: 'play' }),
+    showFingerprint({ ...base, type: 'musical' }),
+    'correcting type must invalidate prior evidence',
+  );
+});
+
 // ---------------------------------------------------------------------------
+// BRO-2255 — showType (play vs musical) corpus-wide sweep. Mirrors the
+// isRevival tests above: Playbill's genre tag-line is authoritative, compared
+// only when both sides resolve to 'play' or 'musical'.
+// ---------------------------------------------------------------------------
+
+test('compareShow flags a showType mismatch when Playbill says Musical but shows.json says play', () => {
+  const show = { id: 'x-2026', title: 'X', venue: 'Some Theatre', category: 'broadway', type: 'play' };
+  const parsed = {
+    titleParse: null, dates: {},
+    tagLine: { tags: ['Broadway', 'Musical', 'Original'], market: 'Broadway', showType: 'musical', revivalStatus: 'original' },
+  };
+  const { mismatches } = compareShow(show, parsed, 'https://playbill.com/production/x-broadway-some-theatre-2026');
+  const m = mismatches.find((x) => x.field === 'showType');
+  assert.ok(m, 'expected a showType mismatch');
+  assert.equal(m.shows, 'play');
+  assert.equal(m.playbill, 'musical');
+});
+
+test('compareShow does not flag showType when shows.json already agrees with Playbill', () => {
+  const show = { id: 'x-2026', title: 'X', venue: 'Some Theatre', category: 'broadway', type: 'musical' };
+  const parsed = {
+    titleParse: null, dates: {},
+    tagLine: { tags: ['Broadway', 'Musical', 'Original'], market: 'Broadway', showType: 'musical', revivalStatus: 'original' },
+  };
+  const { mismatches } = compareShow(show, parsed, 'https://playbill.com/production/x-broadway-some-theatre-2026');
+  assert.ok(!mismatches.some((m) => m.field === 'showType'));
+});
+
+test('compareShow does not flag showType when Playbill has no play/musical tag', () => {
+  const show = { id: 'x-2026', title: 'X', venue: 'Some Theatre', category: 'broadway', type: 'play' };
+  const parsed = { titleParse: null, dates: {}, tagLine: { tags: [], market: null, showType: null, revivalStatus: 'unknown' } };
+  const { mismatches } = compareShow(show, parsed, 'https://playbill.com/production/x-broadway-some-theatre-2026');
+  assert.ok(!mismatches.some((m) => m.field === 'showType'));
+});
+
+test('compareShow does not flag showType for a corpus type Playbill has no equivalent for (opera/special)', () => {
+  const show = { id: 'x-2026', title: 'X', venue: 'Some Theatre', category: 'broadway', type: 'opera' };
+  const parsed = {
+    titleParse: null, dates: {},
+    tagLine: { tags: ['Broadway', 'Musical', 'Original'], market: 'Broadway', showType: 'musical', revivalStatus: 'original' },
+  };
+  const { mismatches } = compareShow(show, parsed, 'https://playbill.com/production/x-broadway-some-theatre-2026');
+  assert.ok(!mismatches.some((m) => m.field === 'showType'),
+    'an opera classified by shows.json is not contradicted by Playbill\'s coarser Play/Musical taxonomy');
+});
 // BRO-2701 fifth adversarial review.
 // ---------------------------------------------------------------------------
 

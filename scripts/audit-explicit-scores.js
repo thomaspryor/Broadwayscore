@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_DIR = 'data/review-texts';
 const OUTPUT_FILE = 'data/audit/suspicious-explicit-scores.json';
@@ -202,9 +203,7 @@ async function main() {
   };
 
   // Find all reviews
-  const shows = fs.readdirSync(REVIEW_DIR).filter(f =>
-    fs.statSync(path.join(REVIEW_DIR, f)).isDirectory()
-  );
+  const shows = listShowDirs(REVIEW_DIR);
 
   const allReviews = [];
 

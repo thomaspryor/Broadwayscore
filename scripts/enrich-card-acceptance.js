@@ -25,6 +25,19 @@
  *     "to be created" when its parent directory already exists on disk,
  *     same rule the nightly triage enforces.
  *
+ * BRO-3378: that path check asks whether the drafted command can ever PASS.
+ * It never asked whether it can ever FAIL — and `test -f <file already on
+ * origin/main>` satisfies every shape, prefix, traversal and phantom-path
+ * check while being green before the work starts, so re-running it at Done
+ * time proves nothing. That is the drafting model's weakest-command
+ * attractor: asked for a command that passes validation, a cheap model picks
+ * the cheapest shape that validates. 19 of this script's own 85 logged
+ * `test -f` drafts named a path already in the repo when it drafted them, and
+ * nothing downstream could catch it (extractVerifyCmd's rank() only helps
+ * when a card offers several candidates; here the enricher authors the only
+ * one). Guardrail 2b now rejects those into the existing one-retry loop with
+ * a verdict naming the real cause, and the prompt states the rule up front.
+ *
  * Every write is re-checked against verify-gate BEFORE it's sent to Notion —
  * an LLM that ignored instructions must never slip a bad or mutating command
  * into a card. A card that fails this final check is left untouched and
@@ -64,19 +77,32 @@ const path = require('path');
 const https = require('https');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE } = (() => {
+const { redactEmails } = require('./lib/pii-scan.js');
+const { evaluateVerifiability, isSafeCheckCommand, candidatesFrom, SECTION_RE, OWNER_JUDGMENT_RE } = (() => {
   const gate = require('./lib/verify-gate.js');
   const { SECTION_RE } = require('./lib/autonomous-verify-cmd.js');
   return {
     evaluateVerifiability: gate.evaluateVerifiability,
     isSafeCheckCommand: gate.isSafeCheckCommand,
     candidatesFrom: gate.candidatesFrom,
+    OWNER_JUDGMENT_RE: gate.OWNER_JUDGMENT_RE,
     SECTION_RE,
   };
 })();
 const { isCardEligible } = require('./lib/autonomous-eligibility.js');
 const { isTerminalStateType } = require('./lib/linear-state-types.js');
 const { resolveCheckPaths, explainUnsafeCheckCommand, SAFE_CHECK_DESCRIPTION } = require('./lib/autonomous-triage-core.js');
+// BRO-3378: the "can this command ever FAIL?" predicate, and the origin/main
+// oracle it must be asked against. Deliberately NOT the local fs probe
+// resolveCheckPaths uses: this script runs from worktrees and from CI shallow
+// checkouts, where a file's local presence says nothing about whether it is
+// really in the tree the card's work will land on — see card-premises-
+// auditor.js's header for the incident that settled this.
+const {
+  classifyVacuousCheck,
+  pathExistsOnOriginMain,
+  fetchOriginMain,
+} = require('./lib/card-premises-auditor.js');
 const audit = require('./audit-card-verifiability.js');
 const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
 // task #1830: the ONE chokepoint for Linear reads/writes — never a second,
@@ -84,6 +110,13 @@ const { CLAUDE_HAIKU, KIMI, GEMINI_FLASH } = require('./lib/models.js');
 // require unconditionally: getApiKey() is only called lazily inside an
 // actual graphql() call, so a Notion-only run never needs LINEAR_API_KEY set.
 const linear = require('./lib/linear-client.js');
+const { priorityOf } = require('./lib/linear-watchdog-source.js');
+// BRO-3395: the re-arm path's pure selection/refusal logic — see that
+// module's header for why armed-but-vacuous cards need a SEPARATE selector
+// from selectRefusedLinearIdentifiers (which explicitly excludes armed cards)
+// and why a rewrite is refused without the enricher's own label.
+const { selectRearmCandidates, refuseRearmWrite } = require('./lib/card-rearm.js');
+const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
 
 const REPO = path.join(__dirname, '..');
 const MODEL = process.env.ENRICH_CARD_MODEL || CLAUDE_HAIKU;
@@ -116,6 +149,8 @@ Usage:
   node scripts/enrich-card-acceptance.js [--limit N] [--dry-run] [--source notion|linear|both]
   node scripts/enrich-card-acceptance.js --cards id1,id2
   node scripts/enrich-card-acceptance.js --from-report
+  node scripts/enrich-card-acceptance.js --source linear [--identifiers BRO-1,BRO-2]
+  node scripts/enrich-card-acceptance.js --source linear --rearm [--identifiers BRO-1,BRO-2] [--allow-human-written]
 
   --limit N       max cards to enrich PER SOURCE this run (default ${DEFAULT_LIMIT})
   --dry-run       evaluate + draft, make zero Notion/Linear writes
@@ -125,6 +160,25 @@ Usage:
   --from-report   read the refused list from data/audit/card-verifiability.json
                   instead of running a fresh live Notion sweep (Notion leg only)
   --force         re-process cards already tagged auto-enriched
+  --rearm         BRO-3395: sweep open Linear issues for ARMED-but-vacuous
+                  acceptance commands (e.g. \`test -f <file already on
+                  origin/main>\`) instead of the normal !armed selection.
+                  Linear-only (--source must include linear). The correction
+                  is posted as a COMMENT, never a description rewrite (per
+                  BRO-2796). Refuses any card lacking the enricher's own
+                  'auto-enriched' label unless --allow-human-written is given.
+  --identifiers   comma-separated BRO-N identifiers to restrict the Linear
+                  leg to, processed in the order given (case-insensitive).
+                  Without it the sweep is P0 → P1 → rest, BRO-N ascending
+                  within a tier (BRO-3913: the watchdog never drains
+                  Medium/Low, so an id-ordered sweep armed cards nobody
+                  dispatches). A flag that yields no ids is refused (exit 2).
+                  With --rearm: restricts the rearm sweep instead (each must
+                  still be armed+vacuous) and is a FILTER only — the rearm
+                  selector keeps ascending BRO-N order, not the list order.
+                  Both "--identifiers A,B" and "--identifiers=A,B" work.
+  --allow-human-written  with --rearm, also rewrite cards whose acceptance
+                  section has no 'auto-enriched' marker (looks human-written)
   --help/-h       show this message, do nothing else
 `;
 
@@ -133,6 +187,13 @@ function parseArgs(argv) {
   for (let i = 0; i < argv.length; i++) {
     const t = argv[i];
     if (t.startsWith('--')) {
+      // `--key=value` (ship-check/Codex, BRO-3913): without this branch
+      // `--identifiers=BRO-1` became the unknown key "identifiers=BRO-1", so
+      // parseIdentifiersArg saw the flag as ABSENT and the run silently
+      // widened to the whole backlog — the exact case the empty-list refusal
+      // exists to stop.
+      const eq = t.indexOf('=');
+      if (eq > 2) { a[t.slice(2, eq)] = t.slice(eq + 1); continue; }
       const k = t.slice(2);
       const n = argv[i + 1];
       if (n === undefined || n.startsWith('--')) a[k] = true;
@@ -486,19 +547,75 @@ function repairDraftedCommand(cmd) {
   return stripped || original;
 }
 
+// BRO-3378: origin/main existence, fetched at most once per process and cached
+// per path. Lazy on purpose — a run that drafts no `test -f` never pays for the
+// fetch at all, matching findCardCheckPathDefects' own skip-the-fetch-when-
+// there-are-no-candidates behaviour.
+//
+// Fail-open on every uncertainty, the same contract pathExistsOnOriginMain
+// itself keeps: if the fetch fails we return null for every path, and
+// classifyVacuousCheck treats null as "not proven vacuous". A network blip
+// therefore degrades this guardrail to its pre-BRO-3378 behaviour rather than
+// rejecting every draft a model produces — the failure mode that would
+// otherwise starve the card pool.
+let originMainRef = undefined; // undefined = not attempted, string = pinned SHA, null = unavailable
+const originMainExistsCache = new Map();
+function resolveOriginMainRef() {
+  if (!fetchOriginMain({ repo: REPO, log: console.error })) return null;
+  // Pin the SHA the fetch just landed, and ask every subsequent question against
+  // THAT commit rather than the moving `origin/main` ref. This machine runs many
+  // parallel sessions sharing one clone, so another worktree's fetch can advance
+  // origin/main mid-run — leaving early cards judged against one tree and later
+  // cards against another, with a warm cache still serving the first tree's
+  // answers. Pinning makes the whole run one consistent snapshot (ship-check
+  // finding: "one fetch/cache is not a snapshot").
+  try {
+    return execFileSync('git', ['rev-parse', 'origin/main'], {
+      cwd: REPO, timeout: 10000, stdio: 'pipe', encoding: 'utf8',
+    }).trim() || null;
+  } catch (e) {
+    console.error(`[enrich-card-acceptance] WARN could not pin origin/main: ${String(e.message).slice(0, 120)}`);
+    return null;
+  }
+}
+function defaultExistsOnOriginMain(relPath) {
+  if (originMainRef === undefined) originMainRef = resolveOriginMainRef();
+  if (!originMainRef) return null;
+  if (!originMainExistsCache.has(relPath)) {
+    originMainExistsCache.set(relPath, pathExistsOnOriginMain(relPath, { repo: REPO, ref: originMainRef, log: console.error }));
+  }
+  return originMainExistsCache.get(relPath);
+}
+
 // The one retry (BRO-2546 defect 2). Same shape as triageCard's retry in
 // autonomous-triage-core.js: echo the ACTUAL validator verdict back to the
 // model exactly once, then take whatever comes back or fail for good. The
 // verdict text is the same string the refusal would have been logged with,
 // so a model that reads it is told the real cause — "the path is not under an
 // allowed directory", not "your shape is wrong" (defect 1).
-function buildEnrichRetryPrompt(card, rejectedCommand, rejectionReason) {
+function buildEnrichRetryPrompt(card, rejectedCommand, rejectionReason, rejectionKind) {
+  // BRO-3378: a vacuous rejection needs its OWN instruction, not the generic
+  // safe-form advice below. The generic text is all about shapes and directory
+  // allowlists, and the model's command was already correctly shaped — being
+  // told to fix its shape is what sent BRO-2311/BRO-2538 round the loop twice
+  // (defect 1). The fix here is a different FILE, not a different form.
+  const arityGuidance = rejectionKind === 'test-f-arity' ? `
+\`test -f\` takes exactly ONE file. Naming several is a shell error (exit 2), so that check can never pass at all.
+Name exactly one file — or, if you need to assert on several, name a \`node --test <path>.test.mjs\` test that checks them.
+` : '';
+  const vacuousGuidance = rejectionKind === 'test-f-satisfied' ? `
+That file already exists, so the check passes right now, before any work is done — it can never fail, so it proves nothing.
+Name a check that is RED today and only goes green once this card's work lands. In order of preference:
+  1. \`node --test <path>.test.mjs\` naming a NEW colocated test this work would add (this repo's convention, CLAUDE.md §15) — best, because it tests the card's actual claim rather than the presence of a file.
+  2. \`test -f <path>\` naming a file that does NOT exist yet and that this work would CREATE.
+Do NOT name any file that already exists in the repository.
+` : '';
   return `${buildEnrichPrompt(card)}
 
 YOUR PREVIOUS ANSWER WAS REJECTED BY THE VALIDATOR.
 Rejected command: ${String(rejectedCommand).slice(0, 200)}
 Validator verdict: ${String(rejectionReason).slice(0, 400)}
-
+${vacuousGuidance}${arityGuidance}
 Fix exactly that. The complete list of accepted forms is: ${SAFE_CHECK_DESCRIPTION}
 Note the directory allowlists differ per form: \`test -f\` accepts docs/, memory/, tests/, src/ and scripts/; \`node --test\` and \`npx tsx --test\` accept only tests/, scripts/ and src/. If the file you want to assert on is outside the relevant list, do NOT force that form — name a \`node --test tests/unit/<name>.test.mjs\` test that asserts the same thing, or fall back to \`npx tsc --noEmit\`.
 Name EXACTLY ONE command anywhere in acceptanceCriteria. A second backticked command, even a safe one, can outrank the one you named and become the command that actually runs.
@@ -520,6 +637,7 @@ Draft ONE "## Acceptance criteria" section ending in exactly one backticked comm
   - test -f <path under docs/, memory/, tests/, src/, or scripts/>
 
 Rules:
+  - THE COMMAND MUST BE ABLE TO FAIL TODAY. It is re-run later to prove the work happened, so a command that already passes on the current repository proves nothing and will be rejected. In particular: NEVER write \`test -f <path>\` for a file that already exists — that check is green before anyone starts, so it cannot tell finished work from untouched work. Use \`test -f\` only for a file this work would CREATE.
   - NEVER name a command that runs a script which writes/mutates data (rebuild-all-reviews.js, gather-reviews.js, collect-review-texts.js, or anything starting with push- or send-).
   - If the card's Problem describes a bug in EXISTING code, prefer naming a NEW colocated test that would prove the fix (this repo's convention — see CLAUDE.md §15) — do not claim an existing test already covers it unless the notes explicitly name that test file.
   - If you genuinely cannot infer what to test, fall back to \`npx tsc --noEmit\` — it is always a valid, safe, real check.
@@ -551,14 +669,26 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
   try {
     fs.mkdirSync(path.dirname(logPath), { recursive: true });
     const entry = {
-      ts: new Date().toISOString(), id: card.id, name: card.name, action,
+      ts: new Date().toISOString(), id: card.id,
+      // Redacted (BRO-3866 ship-check, Codex adversarial finding): the FIRST
+      // version of this fix only redacted previousNotes/newNotes and left
+      // name + demotedSpans writing free text verbatim. A card title can be
+      // pasted straight from an email subject line, and demotedSpans are
+      // arbitrary backtick-quoted spans lifted out of newNotes itself
+      // (demoteUnsafeSpans() above) — both are exactly as public-repo-committed
+      // as the two fields already covered, so both need the same guard.
+      name: redactEmails(card.name || ''), action,
       // identifier/url: null for a Notion card (no such fields), populated
       // for a Linear issue (task #1830, ship-check/Codex finding — the
       // pre-existing log had no human-readable Linear reference, only the
       // internal UUID, which makes a manual rollback lookup slower than it
       // needs to be).
       identifier: card.identifier || null, url: card.url || null,
-      previousNotes: card.notes || '', newNotes,
+      // Redacted before it ever reaches disk (BRO-3866, scripts/lib/pii-scan.js
+      // redactEmails) — this JSONL is committed to the PUBLIC repo, and card
+      // notes routinely quote forwarded emails whose headers carry the
+      // owner's/a submitter's real address verbatim.
+      previousNotes: redactEmails(card.notes || ''), newNotes: redactEmails(newNotes),
       // Guardrail-3 demotions, in full. The console line slices detail to 100
       // chars, so it truncates these to uselessness ("demoted 3 ... : pub");
       // this JSONL entry is the durable, greppable record of what the
@@ -566,7 +696,7 @@ function logEnrichmentWrite(card, action, newNotes, logPath = ENRICHMENT_LOG_PAT
       // healthy sweep from a prompt regression spraying script names into
       // every draft — which is exactly the blind spot that made the
       // guardrail's real false-positive rate unmeasurable before now.
-      demotedSpans: extra.demotedSpans || [],
+      demotedSpans: (extra.demotedSpans || []).map((s) => redactEmails(s)),
     };
     fs.appendFileSync(logPath, JSON.stringify(entry) + '\n');
   } catch (e) {
@@ -611,11 +741,66 @@ function linearIssueNumber(identifier) {
   return m ? parseInt(m[1], 10) : Infinity;
 }
 
-function selectRefusedLinearIdentifiers(openIssuesWithDesc) {
-  return (openIssuesWithDesc || [])
-    .filter(iss => iss && !evaluateVerifiability(iss.description || '').armed)
-    .map(iss => iss.identifier)
-    .sort((a, b) => linearIssueNumber(a) - linearIssueNumber(b));
+// BRO-3913, DEFAULT ORDER: priority tier first, BRO-N ascending within a tier.
+// The dispatch watchdog only ever drains P0/P1 (linear-watchdog-source.js
+// priorityOf: Linear priority field 1 → P0, 2 → P1, a "P0:"/"P1:" title
+// prefix only when the field is unset), so a purely id-ordered sweep spent
+// its Haiku calls and Linear writes arming Medium/Low cards nothing will
+// dispatch while 95 unarmed (2026-09-20) Urgent/High cards waited behind
+// them. Same priorityOf() the watchdog uses — never a re-derived mapping —
+// so the two can't disagree about what "P0" means. Issues with no priority
+// field at all (older fixtures) fall through priorityOf's title fallback and
+// then to the last tier.
+//
+// `identifiers` (optional) restricts the sweep to an explicit allow-list AND
+// returns them in the CALLER'S order, not tier/issue-number order — the
+// caller (or a wrapper) decides, this function only honours it. Unknown or
+// already-armed identifiers are dropped; see runLinearLeg for the log line
+// that names them. An EMPTY array means "no restriction" at this level; the
+// CLI refuses a flag that yields no ids before ever fetching (main()).
+const PRIORITY_TIER_RANK = Object.freeze({ P0: 0, P1: 1 });
+function priorityTierRank(issue) {
+  const tier = priorityOf(issue);
+  return tier in PRIORITY_TIER_RANK ? PRIORITY_TIER_RANK[tier] : Object.keys(PRIORITY_TIER_RANK).length;
+}
+
+// PURE. The dispatch-side notion of "armed": description OR any comment
+// supplies a safe acceptance command (same call shape as linear-next.js's
+// verify gate and this file's --rearm commentGate). The sweep selector above
+// is description-only on purpose (the list query does not fetch comments);
+// this re-check runs on the per-issue getIssue() payload, which does.
+function isArmedIncludingComments(issue) {
+  if (!issue) return false;
+  return !!evaluateVerifiability(String(issue.description || ''), sortedCommentBodies(issue)).armed;
+}
+
+function selectRefusedLinearIdentifiers(openIssuesWithDesc, { identifiers = null } = {}) {
+  const refused = (openIssuesWithDesc || [])
+    .filter(iss => iss && !evaluateVerifiability(iss.description || '').armed);
+  if (Array.isArray(identifiers) && identifiers.length) {
+    const refusedSet = new Set(refused.map(iss => iss.identifier));
+    const seen = new Set();
+    return identifiers.filter(id => refusedSet.has(id) && !seen.has(id) && seen.add(id));
+  }
+  return refused
+    .sort((a, b) => (priorityTierRank(a) - priorityTierRank(b))
+      || (linearIssueNumber(a.identifier) - linearIssueNumber(b.identifier)))
+    .map(iss => iss.identifier);
+}
+
+// Pure — one parser for --identifiers, shared by runLinearLeg and
+// runLinearRearmLeg (BRO-3913 second-opinion: the two legs had drifted into
+// two copies). null when the flag is absent; otherwise the comma-split,
+// trimmed, de-blanked, UPPERCASED list ('bro-2' must match Linear's 'BRO-2').
+// A flag that yields ZERO ids (bare `--identifiers`, or `--identifiers ""`
+// from an unset shell variable) returns [] — main() refuses that with exit 2
+// before any Linear fetch, because silently widening to the whole backlog is
+// the opposite of what the caller asked for.
+function parseIdentifiersArg(args) {
+  const raw = args ? args.identifiers : undefined;
+  if (raw === undefined || raw === null || raw === false) return null;
+  if (raw === true) return [];
+  return String(raw).split(',').map(s => s.trim()).filter(Boolean).map(s => s.toUpperCase());
 }
 
 // Pure — extracts the category a Linear issue inherited from its Notion
@@ -679,6 +864,48 @@ function makeLinearWriteCard(linearClient, teamId) {
     // addLabelToIssue is additive (read-modify-write over the CURRENT label
     // set — see linear-client.js) — safe to call even when the issue already
     // carries the label.
+    const label = await linearClient.findOrCreateLabel(teamId, 'auto-enriched');
+    await linearClient.addLabelToIssue(card.id, label.id);
+  };
+}
+
+// BRO-3395: the rearm write path, deliberately NOT updateIssue({description}).
+// audit-card-verifiability.js has documented since BRO-2977 round 2 that a
+// Linear issue's description is never edited after filing (BRO-2796) — the
+// only correction route is a comment, which evaluateVerifiability(notes,
+// comments) already reads NEWEST-FIRST (verify-gate.js), so a fresh comment
+// naming a real command supersedes the description's vacuous one for every
+// caller that passes comments through (linear-next.js's dispatch gate does —
+// see its evaluateVerifiability(issue.description, sortedCommentBodies(issue))
+// call). Rewriting the description here instead (as makeLinearWriteCard does
+// for the NORMAL, never-armed-before path) would just replace one
+// description-level command with another, unable to ever be corrected again
+// under the same policy that flagged this card as unfixable in the first
+// place.
+function makeLinearRearmWriteCard(linearClient, teamId) {
+  return async function writeLinearRearmComment(card, newNotes) {
+    // Extract just the drafted "## Acceptance criteria" section (SECTION_RE —
+    // same regex spliceNotes() and evaluateVerifiability() use, imported at
+    // this file's top) rather than posting the whole merged notes blob: the
+    // comment is a CORRECTION, not a restatement of the card's entire body.
+    const match = SECTION_RE.exec(newNotes || '');
+    let section = (match ? match[0] : String(newNotes || '')).trim();
+    // Codex adversarial-review finding (BRO-3395): a rearm card's ORIGINAL
+    // notes already carry a safe-form-shaped (if vacuous) command inside its
+    // "## Acceptance criteria" section. enrichOneCard's human-territory
+    // branch appends "VERIFY: owner-judgment" AFTER that section rather than
+    // replacing it (fine for the normal path, where the source card was
+    // unarmed to begin with) — so for a rearm write, SECTION_RE's match
+    // above still carries the STALE command alongside the new marker.
+    // extractVerifyCmd's own safe-candidates-only ranking (rank() in
+    // autonomous-verify-cmd.js: 'owner-judgment' fails isSafeCheckCommand and
+    // is filtered out entirely) would then re-arm the posted comment with
+    // the same vacuous command this whole path exists to retire. Post a
+    // clean, marker-only section instead whenever it's present, so the
+    // comment can only ever arm via ownerJudgment, never a leftover cmd.
+    if (OWNER_JUDGMENT_RE.test(section)) section = '## Acceptance criteria\n\nVERIFY: owner-judgment';
+    const body = `**Re-arm (auto, BRO-3395):** the existing acceptance-criteria command was vacuous (already satisfied on origin/main before the work starts, so re-running it at Done time proves nothing). Per BRO-2796 this issue's description is not edited after filing — this comment supersedes it for dispatch purposes.\n\n${section}`;
+    await linearClient.createComment(card.id, body);
     const label = await linearClient.findOrCreateLabel(teamId, 'auto-enriched');
     await linearClient.addLabelToIssue(card.id, label.id);
   };
@@ -861,15 +1088,29 @@ function buildDraftSection(parsed, bareCommand, pathCheck, sanitizedNotes) {
 
 /**
  * Enrich one card. Returns { id, name, action, detail }.
- * action: 'skipped' | 'owner-judgment' | 'llm-enriched' | 'failed'
+ * action: 'skipped' | 'refused' | 'owner-judgment' | 'llm-enriched' | 'failed'
+ * ('refused' only reachable with opts.rearm — BRO-3395, line ~1108)
  * opts.callLLM is injected (real provider-fallback callLLM in the CLI, a stub in tests).
  */
 async function enrichOneCard(card, opts = {}) {
   const gate = evaluateVerifiability(card.notes || '');
-  if (gate.armed) return { id: card.id, name: card.name, action: 'skipped', detail: 'already armed' };
+  // BRO-3395: a --rearm call is FOR armed cards — that's the exact
+  // population (armed-but-vacuous) selectRearmCandidates hands in — so this
+  // early return, which exists to protect every OTHER caller from redrafting
+  // a card that's already fine, must not fire here. Left unconditional for
+  // every non-rearm caller, unchanged.
+  if (gate.armed && !opts.rearm) return { id: card.id, name: card.name, action: 'skipped', detail: 'already armed' };
+
+  // BRO-3395: refuse before any LLM call — a card selected for rearm that
+  // lacks the enricher's own 'auto-enriched' label looks human-written, and
+  // spliceNotes() replaces the WHOLE acceptance section, not just the command.
+  if (opts.rearm) {
+    const refusal = refuseRearmWrite(card, opts);
+    if (refusal) return { id: card.id, name: card.name, action: 'refused', detail: refusal };
+  }
 
   const alreadyEnriched = (card.tags || []).map(t => String(t).toLowerCase()).includes('auto-enriched');
-  if (alreadyEnriched && !opts.force) {
+  if (alreadyEnriched && !opts.force && !opts.rearm) {
     return { id: card.id, name: card.name, action: 'skipped', detail: 'already tagged auto-enriched' };
   }
 
@@ -944,7 +1185,7 @@ async function enrichOneCard(card, opts = {}) {
   for (let attempt = 0; attempt < MAX_DRAFT_ATTEMPTS; attempt++) {
     const prompt = attempt === 0
       ? buildEnrichPrompt(card)
-      : buildEnrichRetryPrompt(card, lastRejection.command, lastRejection.reason);
+      : buildEnrichRetryPrompt(card, lastRejection.command, lastRejection.reason, lastRejection.kind);
     if (attempt > 0) retried = true;
 
     let raw;
@@ -1004,6 +1245,50 @@ async function enrichOneCard(card, opts = {}) {
     pathCheck = resolveCheckPaths(bareCommand, { repoRoot: REPO });
     if (!pathCheck.ok) {
       lastRejection = { command: bareCommand, reason: pathCheck.reason, kind: 'phantom-path' };
+      continue;
+    }
+
+    // Guardrail 2b (BRO-3378): guardrail 2 asks whether the command can ever
+    // PASS. This asks whether it can ever FAIL. `test -f <file already on
+    // origin/main>` satisfies every check above — shape, prefix, traversal,
+    // phantom-path — and is still worthless, because it is green before the
+    // work starts and therefore proves nothing when re-run at Done time.
+    //
+    // This is the drafting model's weakest-command attractor: asked for
+    // something that passes SAFE_CHECK_FORMS validation, a cheap model
+    // gravitates to the cheapest shape that validates. 19 of this script's own
+    // 85 logged `test -f` drafts named a path that was already in the repo when
+    // it drafted them (data/audit/card-enrichment-log.jsonl; BRO-2837's by
+    // seven months). Nothing downstream could catch it: extractVerifyCmd's
+    // rank() only helps when a card offers MULTIPLE candidates to choose
+    // between, and here the enricher is authoring the only one.
+    //
+    // Rejected into the SAME lastRejection/continue retry that every other
+    // guardrail uses, so the model is told the real verdict and gets its one
+    // re-prompt — no new loop, no extra LLM call beyond the retry that already
+    // exists. On exhaustion this falls through to the existing
+    // action:'failed' path: a card left unarmed is honest and already listed
+    // by audit-card-verifiability.js, whereas a vacuous command is a silent
+    // false green, which is strictly worse.
+    // Classified on pathCheck.checkableDone, NOT bareCommand: resolveCheckPaths
+    // may REWRITE the command it just validated (its near-match correction maps
+    // `tests/x.test.mjs` onto an existing `tests/unit/x.test.mjs`), and
+    // buildDraftSection writes that corrected string to the card. Checking the
+    // pre-correction string let the correction itself manufacture a vacuous
+    // command: the drafted path was absent, so 2b cleared it, and the card
+    // received the corrected path, which exists. Proven against the real
+    // resolver before this line was changed (ship-check finding) — always judge
+    // the string that actually gets written.
+    const finalCommand = pathCheck.checkableDone || bareCommand;
+    const vacuous = classifyVacuousCheck(finalCommand, opts.existsOnOriginMain || defaultExistsOnOriginMain);
+    if (vacuous) {
+      // An unresolved oracle is NOT a vacuous command — but it is also not a
+      // validated one, and this branch is about to WRITE. Deferring costs the
+      // card one nightly run; accepting on faith is how an oracle outage
+      // silently authorizes the exact weak checks this guardrail exists to
+      // stop. The read-only audit makes the opposite call on the same verdict
+      // (auditVacuousChecks drops it) because a report is an accusation.
+      lastRejection = { command: finalCommand, reason: vacuous.reason, kind: vacuous.kind };
       continue;
     }
 
@@ -1115,9 +1400,33 @@ async function runLinearLeg(args, { dryRun, limit }) {
     return [];
   }
 
-  const refusedIdentifiers = selectRefusedLinearIdentifiers(openIssues).slice(0, limit);
-  console.error(`[enrich-card-acceptance] linear: ${refusedIdentifiers.length} refused issue(s) to process (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
-  if (!refusedIdentifiers.length) return [];
+  const identifiers = parseIdentifiersArg(args);
+  const selected = selectRefusedLinearIdentifiers(openIssues, { identifiers });
+  if (identifiers && identifiers.length) {
+    const kept = new Set(selected);
+    const dropped = [...new Set(identifiers)].filter(id => !kept.has(id));
+    const shown = dropped.slice(0, 20).join(',') + (dropped.length > 20 ? `,… (+${dropped.length - 20} more)` : '');
+    console.error(`[enrich-card-acceptance] linear: --identifiers gave ${identifiers.length} ids; ${selected.length} selected, ${dropped.length} dropped (already armed or not an open issue)${dropped.length ? `: ${shown}` : ''}`);
+  }
+  // BRO-4135 (ship-check/Codex finding): --limit bounds ENRICHMENT ATTEMPTS,
+  // not raw candidates. selectRefusedLinearIdentifiers is description-only
+  // (the list query carries no comments), so a card already armed via a
+  // LATER comment (BRO-3395's rearm path, or a human's own comment) still
+  // shows up here and only resolves to 'skipped' once the loop below fetches
+  // its full issue. The old `selected.slice(0, limit)` spent the whole
+  // budget on the same P0/P1-sorted prefix every run — if that prefix is
+  // comment-armed, every scheduled run reprocesses and skips the identical
+  // cards and NEVER reaches the genuinely unarmed ones behind it. Scanning
+  // (not slicing) fixes that; SCAN_CEILING bounds the worst case (every
+  // candidate turns out to be a cheap comment-check skip) so a pathological
+  // run still can't turn into an unbounded Linear-API sweep.
+  const SCAN_CEILING = Math.max(limit * 4, 100);
+  const scanCandidates = selected.slice(0, SCAN_CEILING);
+  if (selected.length > scanCandidates.length) {
+    console.error(`[enrich-card-acceptance] linear: ${selected.length} selected issue(s), scanning at most ${scanCandidates.length} this run (SCAN_CEILING) toward a --limit ${limit} enrichment-attempt budget`);
+  }
+  console.error(`[enrich-card-acceptance] linear: up to ${scanCandidates.length} candidate(s) to scan, budget ${limit} enrichment attempt(s) (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
+  if (!scanCandidates.length) return [];
 
   // Team id is only needed to tag the 'auto-enriched' label on a real write —
   // resolved once per run, not per card. dryRun never reaches writeCard() (see
@@ -1135,14 +1444,20 @@ async function runLinearLeg(args, { dryRun, limit }) {
   }
 
   const results = [];
-  for (const [i, identifier] of refusedIdentifiers.entries()) {
+  let attempts = 0; // every action EXCEPT 'skipped' — see SCAN_CEILING comment above
+  for (const [i, identifier] of scanCandidates.entries()) {
+    if (attempts >= limit) {
+      console.error(`[enrich-card-acceptance] linear: --limit ${limit} enrichment attempt(s) reached after ${i}/${scanCandidates.length} scanned; ${scanCandidates.length - i} left for a later run`);
+      break;
+    }
     let full;
     try {
       full = await linear.getIssue(identifier);
     } catch (e) {
       const failResult = { id: identifier, name: identifier, action: 'failed', detail: `Linear fetch failed: ${e.message}`, source: 'linear' };
       results.push(failResult);
-      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → failed (${truncateDetail(failResult.detail)})`);
+      attempts++;
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${identifier} → failed (${truncateDetail(failResult.detail)})`);
       continue;
     }
     if (!full) continue;
@@ -1161,14 +1476,127 @@ async function runLinearLeg(args, { dryRun, limit }) {
         detail: `issue reached a terminal state ("${(full.state && full.state.name) || stateType}") since the sweep`,
       };
       results.push(skipResult);
-      console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${identifier} → skipped (${skipResult.detail})`);
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${identifier} → skipped (${skipResult.detail})`);
+      continue;
+    }
+    if (isArmedIncludingComments(full)) {
+      const skipResult = {
+        id: full.id, name: full.title, action: 'skipped', source: 'linear',
+        detail: 'already armed via a comment (linear-next reads comments; a description rewrite would add a second, conflicting command)',
+      };
+      results.push(skipResult);
+      console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${identifier} → skipped (${skipResult.detail})`);
       continue;
     }
     const card = normalizeLinearIssue(full);
     const result = await enrichOneCard(card, { callLLM, writeCard, dryRun, force: !!args.force });
     result.source = 'linear';
     results.push(result);
-    console.error(`[enrich-card-acceptance] linear ${i + 1}/${refusedIdentifiers.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
+    // enrichOneCard can itself return action:'skipped' (already armed,
+    // already tagged auto-enriched — idempotency checks internal to that
+    // function, not the two pre-checks above) — those must not count against
+    // the budget either, for the same reason the pre-checks don't (live-run
+    // caught this: BRO-3595 "already tagged auto-enriched" was consuming a
+    // budget slot before this fix). The call above never passes opts.rearm,
+    // so action:'refused' (BRO-3395, only reachable in rearm mode) can never
+    // reach this line — if a future edit threads rearm through this call
+    // path, a refusal is real work (a Linear fetch happened) and should
+    // count, so leaving it un-excluded here is correct by construction, not
+    // an oversight.
+    if (result.action !== 'skipped') attempts++;
+    console.error(`[enrich-card-acceptance] linear ${i + 1}/${scanCandidates.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
+    if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
+  }
+  return results;
+}
+
+// BRO-3395 rearm leg. Mirrors runLinearLeg's shape (fetch → resolve team →
+// per-issue terminal-state re-check → enrichOneCard) but selects with
+// selectRearmCandidates (armed+vacuous, never selectRefusedLinearIdentifiers'
+// !armed filter) and writes through makeLinearRearmWriteCard (a comment,
+// never updateIssue({description})).
+async function runLinearRearmLeg(args, { dryRun, limit }) {
+  let openIssues;
+  try {
+    openIssues = await linear.listOpenIssuesWithDescriptions();
+  } catch (e) {
+    console.error(`[enrich-card-acceptance] linear rearm: fetch failed, skipping this leg: ${e.message}`);
+    return [];
+  }
+
+  const identifiers = parseIdentifiersArg(args);
+  const candidates = selectRearmCandidates(openIssues, defaultExistsOnOriginMain, { identifiers }).slice(0, limit);
+  console.error(`[enrich-card-acceptance] linear rearm: ${candidates.length} armed-but-vacuous issue(s) to process (mode=${dryRun ? 'dry-run' : 'LIVE'}, model=${MODEL})`);
+  if (!candidates.length) return [];
+
+  let writeCard = null;
+  if (!dryRun) {
+    try {
+      const team = await linear.getTeam();
+      writeCard = makeLinearRearmWriteCard(linear, team.id);
+    } catch (e) {
+      console.error(`[enrich-card-acceptance] linear rearm: getTeam failed, aborting this leg: ${e.message}`);
+      return [];
+    }
+  }
+
+  const allowHumanWritten = !!args['allow-human-written'];
+  const results = [];
+  for (const [i, cand] of candidates.entries()) {
+    let full;
+    try {
+      full = await linear.getIssue(cand.identifier);
+    } catch (e) {
+      const failResult = { id: cand.identifier, name: cand.identifier, action: 'failed', detail: `Linear fetch failed: ${e.message}`, source: 'linear' };
+      results.push(failResult);
+      console.error(`[enrich-card-acceptance] linear rearm ${i + 1}/${candidates.length} ${cand.identifier} → failed (${truncateDetail(failResult.detail)})`);
+      continue;
+    }
+    if (!full) continue;
+    // Same re-check runLinearLeg does: the sweep snapshot can be stale by the
+    // time this specific issue is fetched and written to.
+    if (isLinearIssueTerminal(full)) {
+      const stateType = full.state && full.state.type;
+      const skipResult = {
+        id: full.id, name: full.title, action: 'skipped', source: 'linear',
+        detail: `issue reached a terminal state ("${(full.state && full.state.name) || stateType}") since the sweep`,
+      };
+      results.push(skipResult);
+      console.error(`[enrich-card-acceptance] linear rearm ${i + 1}/${candidates.length} ${cand.identifier} → skipped (${skipResult.detail})`);
+      continue;
+    }
+    // Idempotency guard: selectRearmCandidates evaluated the DESCRIPTION only
+    // (the bulk list query carries no comments, same cost tradeoff
+    // audit-card-verifiability.js's bulk sweep makes) — a card already fixed
+    // by an EARLIER rearm comment (or, per Codex adversarial-review finding,
+    // a HUMAN's own later `VERIFY: owner-judgment` comment) still looks
+    // vacuous from that snapshot and would otherwise get a redundant, or
+    // judgment-overriding, correction comment on every re-run. Re-evaluate
+    // against the fully-fetched issue's own comments (same precedence
+    // verify-gate.js documents) before drafting again. ownerJudgment is
+    // checked independently of cmd: a human deliberately marking a card
+    // owner-judgment must never be superseded by an automated redraft just
+    // because the description's original command still parses as a (vacuous)
+    // safe-form candidate alongside it.
+    const commentGate = evaluateVerifiability(full.description || '', sortedCommentBodies(full));
+    const alreadyResolvedByComment = commentGate.ownerJudgment
+      || (commentGate.armed && commentGate.cmd && !classifyVacuousCheck(commentGate.cmd, defaultExistsOnOriginMain));
+    if (alreadyResolvedByComment) {
+      const skipResult = {
+        id: full.id, name: full.title, action: 'skipped', source: 'linear',
+        detail: commentGate.ownerJudgment
+          ? 'already resolved by an owner-judgment comment'
+          : `already re-armed by an earlier comment (${commentGate.cmd})`,
+      };
+      results.push(skipResult);
+      console.error(`[enrich-card-acceptance] linear rearm ${i + 1}/${candidates.length} ${cand.identifier} → skipped (${skipResult.detail})`);
+      continue;
+    }
+    const card = normalizeLinearIssue(full);
+    const result = await enrichOneCard(card, { callLLM, writeCard, dryRun, rearm: true, allowHumanWritten });
+    result.source = 'linear';
+    results.push(result);
+    console.error(`[enrich-card-acceptance] linear rearm ${i + 1}/${candidates.length} ${card.identifier} ${card.name} → ${result.action}${result.detail ? ` (${truncateDetail(result.detail)})` : ''}`);
     if (result.action === 'llm-enriched' || result.action === 'failed') await new Promise(r => setTimeout(r, 1000));
   }
   return results;
@@ -1183,6 +1611,15 @@ async function main() {
     console.error(`--limit must be a positive integer, got ${JSON.stringify(args.limit)}`);
     process.exit(1);
   }
+  // BRO-3913: a --identifiers that yields no ids (bare flag, or "" from an
+  // unset shell variable) must not silently fall back to sweeping the whole
+  // backlog — refuse here, before any leg fetches from Linear. Exit 2 keeps
+  // it distinguishable from the exit-1 argument errors above.
+  const parsedIdentifiers = parseIdentifiersArg(args);
+  if (parsedIdentifiers && parsedIdentifiers.length === 0) {
+    console.error(`--identifiers was passed but yielded no ids (got ${JSON.stringify(args.identifiers)}) — pass a comma-separated BRO-N list, or omit the flag to sweep everything`);
+    process.exit(2);
+  }
   // Default 'notion', NOT 'both' (ship-check/Codex finding, task #1830): an
   // existing unflagged cron/manual invocation of this script has run
   // Notion-only for its whole history. Defaulting the zero-arg form to
@@ -1194,10 +1631,21 @@ async function main() {
     console.error(`--source must be one of notion, linear, both — got ${JSON.stringify(args.source)}`);
     process.exit(1);
   }
+  const rearm = !!args.rearm;
+  // BRO-3395: rearm targets cards the vacuous-check sweep flagged, which only
+  // runs against the Linear leg today — a notion-only invocation with
+  // --rearm would silently do nothing (no equivalent Notion selector exists
+  // yet), which is worse than refusing outright.
+  if (rearm && source === 'notion') {
+    console.error('--rearm requires --source linear (or both) — the Notion leg has no vacuous-check sweep yet');
+    process.exit(1);
+  }
 
   const results = [];
   if (source === 'notion' || source === 'both') results.push(...await runNotionLeg(args, { dryRun, limit }));
-  if (source === 'linear' || source === 'both') results.push(...await runLinearLeg(args, { dryRun, limit }));
+  if (source === 'linear' || source === 'both') {
+    results.push(...await (rearm ? runLinearRearmLeg(args, { dryRun, limit }) : runLinearLeg(args, { dryRun, limit })));
+  }
 
   const tally = results.reduce((acc, r) => { acc[r.action] = (acc[r.action] || 0) + 1; return acc; }, {});
   console.log('\n=== ENRICHMENT SUMMARY ===');
@@ -1205,6 +1653,7 @@ async function main() {
   console.log(`  LLM-enriched:        ${tally['llm-enriched'] || 0}`);
   console.log(`  Owner-judgment:      ${tally['owner-judgment'] || 0}`);
   console.log(`  Skipped:             ${tally.skipped || 0}`);
+  console.log(`  Refused:             ${tally.refused || 0}`);
   console.log(`  Failed:              ${tally.failed || 0}`);
   if (dryRun) console.log('\n  DRY RUN — no Notion/Linear writes were made');
 
@@ -1218,6 +1667,7 @@ async function main() {
       `| LLM-enriched | ${tally['llm-enriched'] || 0} |`,
       `| Owner-judgment | ${tally['owner-judgment'] || 0} |`,
       `| Skipped | ${tally.skipped || 0} |`,
+      `| Refused | ${tally.refused || 0} |`,
       `| Failed | ${tally.failed || 0} |`,
       '',
     ].join('\n');
@@ -1241,10 +1691,16 @@ module.exports = {
   parseEnrichResponse, mergeTags, spliceNotes, allFailed,
   logEnrichmentWrite, ENRICHMENT_LOG_PATH, MODEL, DEFAULT_LIMIT, USAGE,
   selectProvider, callLLM, callAnthropic, callOpenRouter, callGemini,
+  isArmedIncludingComments, parseArgs,
   OPENROUTER_MODEL, GEMINI_MODEL,
   // task #1830: Linear read/write path — exported for unit coverage without
   // a live Linear API call (writeBack/normalizeLinearIssue/selectRefused... are
   // pure; makeLinearWriteCard takes an injectable client).
   writeBack, selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard,
   linearIssueNumber, isLinearIssueTerminal, categoryOfLinearIssue,
+  // BRO-3913: pure — default P0/P1-first ordering + the shared --identifiers parser.
+  priorityTierRank, parseIdentifiersArg,
+  // BRO-3395: rearm path — makeLinearRearmWriteCard/runLinearRearmLeg take an
+  // injectable client/args the same way the task #1830 exports above do.
+  makeLinearRearmWriteCard, runLinearRearmLeg,
 };

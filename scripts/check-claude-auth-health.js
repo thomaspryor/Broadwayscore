@@ -15,9 +15,11 @@
  * already does for cmux-launch.js's own auth gate — reusing it here means
  * this health check reports exactly what a real launch attempt would see.
  *
- * On failure: pages immediately via routeAlert's page-worthy allowlist
- * (category 2 — opening-night pipeline dead — since a revoked token disables
- * cmux-launch.js's launch gate entirely, not just tonight's monitor).
+ * On failure: a real auth rejection ('claude-auth:revoked') pages
+ * immediately via routeAlert's page-worthy allowlist (category 2 —
+ * opening-night pipeline dead). Spawn starvation / spawn errors
+ * ('claude-spawn-starved' / 'claude-spawn-error') route to the morning digest
+ * only (BRO-4141: an overloaded Mac is not something the owner can act on).
  */
 'use strict';
 
@@ -58,7 +60,8 @@ Usage:
 
 Makes a REAL API call via preflightAuth() — \`claude auth status\` reports the
 on-disk token, not its server-side validity, and said {loggedIn:true} through
-the entire 2026-08-05 revocation. Exits 1 and pages the owner on failure.
+the entire 2026-08-05 revocation. Exits 1 on failure; pages the owner only
+when auth is actually rejected (starvation/spawn errors go to the digest).
 `;
 
 async function main(argv = process.argv.slice(2)) {
@@ -83,7 +86,11 @@ async function main(argv = process.argv.slice(2)) {
   // mirrors check-secrets-health.js's recovery path so a later recurrence
   // inside the same cooldown window re-notifies instead of being swallowed.
   // resolveCondition() is already a safe no-op on a missing/non-open key.
+  // All three keys resolved unconditionally (BRO-2971): a healthy run proves
+  // NONE of the failure modes is currently active, whichever one paged last.
   resolveCondition('claude-auth:revoked');
+  resolveCondition('claude-spawn-starved');
+  resolveCondition('claude-spawn-error');
 
   if (health.mode === 'api-key') {
     // Not a launch-blocking failure (preflightAuth's fallback still lets

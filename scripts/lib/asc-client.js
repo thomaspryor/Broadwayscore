@@ -28,7 +28,7 @@ function makeJWT() {
 function ascGet(path) {
   return new Promise((resolve, reject) => {
     const token = makeJWT();
-    https.get({ hostname: 'api.appstoreconnect.apple.com', path, headers: { Authorization: `Bearer ${token}` } }, (res) => {
+    const req = https.get({ hostname: 'api.appstoreconnect.apple.com', path, headers: { Authorization: `Bearer ${token}` }, timeout: 15000 }, (res) => {
       let data = '';
       res.on('data', (chunk) => { data += chunk; });
       res.on('end', () => {
@@ -40,7 +40,9 @@ function ascGet(path) {
           reject(new Error(`ASC API parse error (${res.statusCode}): ${data}`));
         }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

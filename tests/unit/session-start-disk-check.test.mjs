@@ -1,3 +1,14 @@
+// timebomb-audit-exempt: job-log-retention.js's pruneDue()/pruneJobLogs()
+//   compare a `now` argument against fs.statSync(...).mtimeMs of files this
+//   test just created for real. audit-time-bomb-tests.js shifts the PROCESS
+//   clock (`now`, via its Date.now() default) but cannot shift the
+//   FILESYSTEM, so under a shifted run every just-written marker/log reads as
+//   decades old or, for the mkdir-claim tests, wildly in the future. Not a
+//   real time bomb — production compares two readings of the same real
+//   clock. Same class as tests/unit/ttl-cache.test.mjs; see that file's
+//   exemption for the general note in scripts/audit-time-bomb-tests.js's own
+//   docstring.
+//
 // BRO-2258: disk hit 100% (117Mi free of 460Gi) with no warning anywhere,
 // silently breaking cmux runtime spawning and headless job logging. Asserts
 // (a) the disk-space check classifies free bytes at the required ~5GB warn /

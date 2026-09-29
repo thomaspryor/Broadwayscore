@@ -25,6 +25,13 @@ on:
 permissions:
   contents: write
 
+# BRO-3071: added so two overlapping workflow_dispatch runs can't race a
+# lost push on data/audit/creative-team-audit.json (now apiFallbackSafe —
+# see scripts/lib/core-data-merge-registry.js — which requires this group).
+concurrency:
+  group: audit-creative-team
+  cancel-in-progress: false
+
 jobs:
   audit:
     runs-on: ubuntu-latest

@@ -35,31 +35,26 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 
 const { shallowFetchArgs } = require('./shallow-fetch-args.js');
-const { isSafeCheckCommand } = require('./autonomous-triage-core.js');
+// extractCheckPaths is the SAME path-token extraction isSafeCheckCommand's own
+// SAFE_CHECK_FORMS matches on (CLAUDE.md §15 — one copy, reused here rather
+// than a second regex over the command string).
+const { isSafeCheckCommand, extractCheckPaths } = require('./autonomous-triage-core.js');
 const { checksEnv, cardCheckArgv, prepareCheckWorkdir, CHECK_TIMEOUT_MS } = require('./autonomous-checks.js');
 
 const DEFAULT_REPO = path.join(__dirname, '..', '..');
 // Per-git-call ceiling. Generous enough for a cold fetch on a large repo,
 // short enough that a synchronous caller can promise a bound.
 const GIT_TIMEOUT_MS = 120000;
+// A depth-1 clone of this repo took ~30s from a cloud session (BRO-4241).
+const CLONE_TIMEOUT_MS = 300000;
 
-// Where node_modules and the gitignored core data actually live. A caller
-// running from a git WORKTREE (every code session in this repo does — CLAUDE.md
-// makes worktrees mandatory) has no node_modules of its own: node resolves them
-// by walking up to the canonical checkout, which a fresh /tmp worktree cannot
-// do. Linking from the worktree root would hand every close an unprepared
-// checkout (measured: prepared=false on the first real run), so resolve the
-// canonical checkout via git's common dir and link from there.
-function resolveInstallRoot(repo) {
-  if (fs.existsSync(path.join(repo, 'node_modules'))) return repo;
-  try {
-    const common = execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'],
-      { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
-    const mainRoot = path.dirname(common);
-    if (mainRoot && fs.existsSync(path.join(mainRoot, 'node_modules'))) return mainRoot;
-  } catch { /* not a worktree, or old git — fall through */ }
-  return repo;
-}
+// node_modules/gitignored-core-data live at the MAIN checkout, not a git
+// WORKTREE (every code session in this repo runs from one, CLAUDE.md makes
+// it mandatory) — `repo` below may be either. prepareCheckWorkdir()
+// (autonomous-checks.js) resolves the real install root itself via
+// resolveInstallRoot(), originally written HERE and promoted there so
+// land-branch.js's callers hit the same fix instead of a second copy
+// (BRO-3907, CLAUDE.md §15).
 
 /**
  * ONE disposable worktree per run: every card verifies against the same
@@ -98,8 +93,19 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   // runs, and an unbounded `fetch`/`worktree add` can wait forever on a
   // contended lock or a stalled remote — a hang is worse than a failure,
   // because a failure fails OPEN and a hang does not (Codex ship-check P0).
-  // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
-  execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+  try {
+    // unbounded-fetch-ok: depthArgs IS the bound; the lint can't evaluate a spread.
+    execFileSync('git', ['fetch', ...depthArgs, 'origin', 'main'], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (err) {
+    // BRO-4241: cloud clones can't deepen (`fatal: error in object: unshallow
+    // <sha>`), which made every VERIFY command unverifiable there. When the
+    // caller only needs "origin/main now", clone its tip into a SEPARATE temp
+    // repo. Never fall back to `fetch --depth=1` in `repo` itself: that
+    // rewrites .git/shallow, orphans local main from origin/main and breaks
+    // later rebases and ancestry checks (see shallow-fetch-args.js).
+    if (!shouldCloneAfterFetchFailure(err, pinnedSha)) throw err;
+    return makeStandaloneCheckout({ repo, prefix });
+  }
   // Pin to the SHA we just fetched, not the moving ref: between this fetch and
   // the worktree add, a parallel session's push can advance origin/main, and
   // the card would then be judged against a commit that landed after it
@@ -112,7 +118,10 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   const wt = path.join(dir, 'main');
   try {
     execFileSync('git', ['worktree', 'add', '--detach', wt, sha], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
-    prepareCheckWorkdir(wt, resolveInstallRoot(repo));
+    // prepareCheckWorkdir resolves the real install root itself now (BRO-3907)
+    // — `repo` may be a node_modules-less worktree, same gap this file's
+    // resolveInstallRoot() originally closed only for its own caller.
+    prepareCheckWorkdir(wt, repo);
   } catch (err) {
     // Clean up our OWN tempdir before rethrowing. The caller's `finally` can
     // only remove a checkout it was handed, and it was never handed this one —
@@ -136,9 +145,50 @@ function makeFreshCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-', 
   return { dir, wt, repo, sha, prepared };
 }
 
+/**
+ * BRO-4241: fall back to a standalone clone ONLY for the shallow-clone
+ * "can't deepen" failure. A timeout, lock contention or an offline host keeps
+ * failing fast as before: a 5-minute clone on every ordinary fetch hiccup
+ * would stall synchronous close-time callers (Codex-style review finding).
+ * Never when the caller pinned a sha (the merge-gate baseline needs that
+ * exact commit, which a depth-1 clone of main may not contain).
+ */
+function shouldCloneAfterFetchFailure(err, pinnedSha) {
+  if (pinnedSha) return false;
+  if (!err || err.signal) return false; // killed by our own timeout
+  const text = `${err.stderr || ''} ${err.message || ''}`;
+  return /unshallow|error in object/i.test(text);
+}
+
+/**
+ * Depth-1 clone of origin/main into its own temp repo (BRO-4241). Used only
+ * when the in-repo fetch fails; the caller's repo and object store are never
+ * touched. Same return shape as makeFreshCheckout plus `standalone: true`,
+ * which tells removeCheckout to delete the directory instead of a worktree.
+ */
+function makeStandaloneCheckout({ repo = DEFAULT_REPO, prefix = 'acceptance-check-' } = {}) {
+  const url = execFileSync('git', ['remote', 'get-url', 'origin'], { cwd: repo, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), prefix));
+  const wt = path.join(dir, 'main');
+  try {
+    execFileSync('git', ['clone', '--quiet', '--depth', '1', '--single-branch', '-b', 'main', url, wt], { timeout: CLONE_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] });
+    prepareCheckWorkdir(wt, repo);
+  } catch (err) {
+    try { fs.rmSync(dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    throw err;
+  }
+  const sha = execFileSync('git', ['rev-parse', 'HEAD'], { cwd: wt, encoding: 'utf8', timeout: GIT_TIMEOUT_MS }).trim();
+  const prepared = fs.existsSync(path.join(wt, 'node_modules'));
+  return { dir, wt, repo, sha, prepared, standalone: true };
+}
+
 /** Best effort: a leftover worktree is picked up by `git worktree prune`. */
 function removeCheckout(co) {
   if (!co) return;
+  if (co.standalone) {
+    try { fs.rmSync(co.dir, { recursive: true, force: true }); } catch { /* best effort */ }
+    return;
+  }
   const repo = co.repo || DEFAULT_REPO;
   try { execFileSync('git', ['worktree', 'remove', '--force', co.wt], { cwd: repo, timeout: GIT_TIMEOUT_MS, stdio: ['ignore', 'pipe', 'pipe'] }); }
   catch { /* leave for git worktree prune */ }
@@ -157,6 +207,34 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
   if (!argv) return { status: 'unverifiable', detail: `command failed safe-form re-validation at run time: ${String(cmd).slice(0, 120)}` };
   if (!prepared) {
     return { status: 'unverifiable', detail: 'checkout has no node_modules — any result would measure the environment, not the card' };
+  }
+  // BRO-3446: a card's acceptance command can name a path that was never
+  // created — a --allow-phantom-path dispatch guess, or a stale reference to
+  // a file since renamed/deleted — and isSafeCheckCommand only validates
+  // SHAPE, never existence. Running it anyway makes node exit non-zero on a
+  // missing module and this function would report `fail`, which reads as
+  // "the fix broke" when the true state is "the evidence was never there".
+  // Same fail-open posture this function already takes for a timeout kill and
+  // for exit 3: the absence of evidence is not evidence of failure.
+  //
+  // `missingPath: true` is carried on the result (Codex adversarial finding):
+  // close-time-verify.js's decideClose() used to detect this exact case a
+  // different way — by pattern-matching "could not find" in a FAIL detail,
+  // AFTER actually running the command — to REFUSE the close with "merge the
+  // branch first" guidance (a close attempted before the branch merged, so
+  // the card's own test exists only in its worktree, is not a broken test).
+  // This guard now intercepts before the command ever runs, so that FAIL
+  // never happens and the regex-based detection would go dead, silently
+  // ALLOWING a close it used to correctly refuse. The flag lets that caller
+  // keep refusing on this specific cause without this module needing to know
+  // close-time-verify.js exists.
+  const missing = extractCheckPaths(cmd).filter(p => !fs.existsSync(path.join(cwd, p)));
+  if (missing.length) {
+    return {
+      status: 'unverifiable',
+      detail: `acceptance command names a path absent from this checkout, not evidence the fix broke: ${missing.join(', ')}`,
+      missingPath: true,
+    };
   }
   const env = checksEnv();
   const maxAttempts = Math.max(1, attempts);
@@ -196,4 +274,4 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
   return { status: 'fail', detail: last };
 }
 
-module.exports = { makeFreshCheckout, removeCheckout, runVerify, DEFAULT_REPO, CHECK_TIMEOUT_MS };
+module.exports = { makeFreshCheckout, removeCheckout, runVerify, shouldCloneAfterFetchFailure, DEFAULT_REPO, CHECK_TIMEOUT_MS };

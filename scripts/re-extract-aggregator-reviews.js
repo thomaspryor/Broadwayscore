@@ -396,7 +396,7 @@ function extractShowScoreFromHtml(html, showId) {
 
 function fetchUrl(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { timeout: 15000 }, (res) => {
+    const req = https.get(url, { timeout: 15000 }, (res) => {
       if (res.statusCode === 200) {
         let data = '';
         res.on('data', chunk => data += chunk);
@@ -404,7 +404,9 @@ function fetchUrl(url) {
       } else {
         resolve(null);
       }
-    }).on('error', () => resolve(null));
+    });
+    req.on('error', () => resolve(null));
+    req.on('timeout', () => { req.destroy(); resolve(null); });
   });
 }
 

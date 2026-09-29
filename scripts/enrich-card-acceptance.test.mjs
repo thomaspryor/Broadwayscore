@@ -8,7 +8,7 @@ const require = createRequire(import.meta.url);
 const {
   enrichOneCard, spliceNotes,
   selectRefusedLinearIdentifiers, normalizeLinearIssue, makeLinearWriteCard, linearIssueNumber,
-  isLinearIssueTerminal, categoryOfLinearIssue,
+  isLinearIssueTerminal, categoryOfLinearIssue, parseIdentifiersArg, priorityTierRank,
 } = require('./enrich-card-acceptance.js');
 // Rule 15: assert against the REAL validator the production path uses, never a
 // copy — if isSafeCheckCommand's notion of "safe" drifts, these tests move with
@@ -385,6 +385,36 @@ test('guardrail 3: demotions are recorded in the enrichment audit log, not just 
   assert.ok(Array.isArray(entry.demotedSpans), 'audit entry must carry demotedSpans');
   assert.ok(entry.demotedSpans.some(s => /rebuild-all-reviews/.test(s)),
     'the full demoted span must survive in the log even though the console line truncates it');
+  fs.unlinkSync(logPath);
+});
+
+// BRO-3866: data/audit/card-enrichment-log.jsonl is committed to the PUBLIC
+// repo. A card whose notes quote a forwarded email (a common escalation-card
+// shape — see scripts/newsletter-adjacent triage cards) carries a real
+// address in its header; logEnrichmentWrite must never persist it verbatim.
+test('logEnrichmentWrite redacts real emails out of previousNotes/newNotes before they hit the committed log (BRO-3866)', async () => {
+  const fs = require('node:fs');
+  const { scanJsonValue } = require('./lib/pii-scan.js');
+  const logPath = path.join(os.tmpdir(), `enrich-pii-log-${process.pid}.jsonl`);
+  try { fs.unlinkSync(logPath); } catch { /* first run */ }
+  const calls = [];
+  const card = {
+    id: 'pii1', name: 'Escalated from email', category: 'Product', tags: [],
+    notes: '## Problem\nForwarded from owner.\n\nOn Tue, 11 Aug 2026, <thomas.pryor@gmail.com> wrote:\n> fix it',
+  };
+  await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'npx tsc --noEmit',
+      acceptanceCriteria: '## Acceptance criteria\n`npx tsc --noEmit`',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath,
+  });
+  const entry = JSON.parse(fs.readFileSync(logPath, 'utf8').trim().split('\n').pop());
+  assert.doesNotMatch(entry.previousNotes, /thomas\.pryor@gmail\.com/);
+  assert.equal(scanJsonValue(entry).length, 0, 'logged entry must carry no scannable PII');
+  // The redaction is log-only — the real card write (writeBack/notionBrain)
+  // still carries the full notes, since that call never touches the public repo.
   fs.unlinkSync(logPath);
 });
 
@@ -878,4 +908,285 @@ test('enrichOneCard: dry-run mode never calls opts.writeCard either', async () =
   });
   assert.equal(r.action, 'llm-enriched');
   assert.equal(writeCalls.length, 0);
+});
+
+// ── Guardrail 2b: vacuous check rejection (BRO-3378) ────────────────────────
+// opts.existsOnOriginMain is injected in every test below; without it the real
+// oracle would shell out to `git fetch`, which no unit test should do.
+
+test('guardrail 2b: test -f on a file that already exists is rejected, zero writes', async () => {
+  const calls = [];
+  const card = {
+    id: 'v1', name: 'Opening-night poller re-renders outlets every tick', category: 'Product', tags: [],
+    notes: '## Problem\nThe poller wastes renders on outlets that can never match.',
+  };
+  const r = await enrichOneCard(card, {
+    // Both attempts return the same vacuous command, so the retry is exhausted.
+    callLLM: async () => JSON.stringify({
+      command: 'test -f scripts/opening-night-poller.js',
+      acceptanceCriteria: '## Acceptance criteria\n`test -f scripts/opening-night-poller.js` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    existsOnOriginMain: () => true,
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /test-f-satisfied/);
+  assert.match(r.detail, /after 1 retry/);
+  assert.equal(calls.length, 0, 'a vacuous command must never be written to a card');
+});
+
+test('guardrail 2b: the retry is told to name a file that does not exist yet', async () => {
+  const prompts = [];
+  const card = {
+    id: 'v2', name: 'Fix the thing', category: 'Product', tags: [],
+    notes: '## Problem\nBug in existing code.',
+  };
+  await enrichOneCard(card, {
+    callLLM: async (prompt) => {
+      prompts.push(prompt);
+      return JSON.stringify({
+        command: 'test -f scripts/health-check.js',
+        acceptanceCriteria: '## Acceptance criteria\n`test -f scripts/health-check.js` passes',
+      });
+    },
+    notionBrain: fakeNotionBrain([]),
+    existsOnOriginMain: () => true,
+  });
+  assert.equal(prompts.length, 2, 'the vacuous rejection must spend its one retry');
+  // The retry must carry the vacuity-specific instruction, not just the
+  // generic safe-form advice — being told to fix a SHAPE that was already
+  // correct is what sent BRO-2311/BRO-2538 round the loop twice.
+  assert.match(prompts[1], /can never fail/);
+  assert.match(prompts[1], /Do NOT name any file that already exists/);
+});
+
+test('guardrail 2b: a retry that names a to-be-created file is accepted and written', async () => {
+  const calls = [];
+  const card = {
+    id: 'v3', name: 'Fix the thing', category: 'Product', tags: [],
+    notes: '## Problem\nBug in existing code.',
+  };
+  let attempt = 0;
+  const r = await enrichOneCard(card, {
+    callLLM: async () => {
+      attempt += 1;
+      return attempt === 1
+        ? JSON.stringify({ command: 'test -f scripts/health-check.js', acceptanceCriteria: '## Acceptance criteria\n`test -f scripts/health-check.js` passes' })
+        : JSON.stringify({ command: 'test -f docs/brand-new-runbook.md', acceptanceCriteria: '## Acceptance criteria\n`test -f docs/brand-new-runbook.md` passes' });
+    },
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+    existsOnOriginMain: (p) => p === 'scripts/health-check.js',
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(r.detail, 'test -f docs/brand-new-runbook.md');
+  assert.equal(calls.length, 1);
+});
+
+test('guardrail 2b: test -f naming a to-be-created file passes on the FIRST attempt', async () => {
+  // The negative case that matters most: the NEW-ARTIFACT ALLOWANCE must
+  // survive. A card whose work creates a file is correctly armed this way, and
+  // vetoing it killed 3 in-scope cards in the 2026-07-26 live run.
+  const calls = [];
+  const card = { id: 'v4', name: 'Write the runbook', category: 'Product', tags: [], notes: '## Problem\nNo runbook exists.' };
+  let attempts = 0;
+  const r = await enrichOneCard(card, {
+    callLLM: async () => {
+      attempts += 1;
+      return JSON.stringify({ command: 'test -f docs/new-runbook.md', acceptanceCriteria: '## Acceptance criteria\n`test -f docs/new-runbook.md` passes' });
+    },
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+    existsOnOriginMain: () => false,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(attempts, 1, 'a falsifiable command must not burn the retry');
+  assert.equal(calls.length, 1);
+});
+
+test('guardrail 2b: node --test on an existing file is NOT rejected as vacuous', async () => {
+  // Its CONTENTS change with the work, so its verdict can change with them —
+  // the reason this rule is scoped to test -f alone.
+  const calls = [];
+  const card = { id: 'v5', name: 'Fix the thing', category: 'Product', tags: [], notes: '## Problem\nBug.' };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'node --test tests/unit/card-premises-auditor.test.mjs',
+      acceptanceCriteria: '## Acceptance criteria\n`node --test tests/unit/card-premises-auditor.test.mjs` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+    existsOnOriginMain: () => true,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(calls.length, 1);
+});
+
+test('guardrail 2b: an unresolvable origin/main DEFERS the test -f card, never writes it unvalidated', async () => {
+  // The enricher is about to WRITE, so "I could not check" must not be treated
+  // as "I checked and it is fine" — that is how an oracle outage silently
+  // authorizes exactly the weak checks this guardrail exists to stop. Deferring
+  // costs the card one nightly run. The read-only audit makes the opposite call
+  // on the same verdict, which tests/unit/card-premises-auditor.test.mjs pins.
+  const calls = [];
+  const card = { id: 'v6', name: 'Fix the thing', category: 'Product', tags: [], notes: '## Problem\nBug.' };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'test -f scripts/health-check.js',
+      acceptanceCriteria: '## Acceptance criteria\n`test -f scripts/health-check.js` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+    existsOnOriginMain: () => null,
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /test-f-unresolved/);
+  assert.equal(calls.length, 0);
+});
+
+test('guardrail 2b: an unresolvable oracle does NOT block a non-test -f draft', async () => {
+  // The deferral above must be scoped to the only form it can judge. An oracle
+  // outage must not stop the enricher drafting `node --test` commands.
+  const calls = [];
+  const card = { id: 'v7', name: 'Fix the thing', category: 'Product', tags: [], notes: '## Problem\nBug.' };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'node --test tests/unit/whatever-new.test.mjs',
+      acceptanceCriteria: '## Acceptance criteria\n`node --test tests/unit/whatever-new.test.mjs` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+    existsOnOriginMain: () => null,
+  });
+  assert.equal(r.action, 'llm-enriched');
+  assert.equal(calls.length, 1);
+});
+
+test('guardrail 2b: judges the CORRECTED command, so a path correction cannot smuggle a vacuous check through', async () => {
+  // resolveCheckPaths rewrites `tests/x.test.mjs` onto an existing
+  // `tests/unit/x.test.mjs`, and buildDraftSection writes that corrected
+  // string. Judging the pre-correction string let the correction itself
+  // manufacture a vacuous command: the drafted path was absent, so the
+  // guardrail cleared it, and the card received the path that exists.
+  const calls = [];
+  const card = { id: 'v8', name: 'Fix the thing', category: 'Product', tags: [], notes: '## Problem\nBug.' };
+  const r = await enrichOneCard(card, {
+    callLLM: async () => JSON.stringify({
+      command: 'test -f tests/card-premises-auditor.test.mjs',
+      acceptanceCriteria: '## Acceptance criteria\n`test -f tests/card-premises-auditor.test.mjs` passes',
+    }),
+    notionBrain: fakeNotionBrain(calls),
+    logPath: SCRATCH_LOG_PATH,
+    // Only the CORRECTED path exists — exactly the near-match the resolver
+    // rewrites onto. The drafted path does not.
+    existsOnOriginMain: (p) => p === 'tests/unit/card-premises-auditor.test.mjs',
+  });
+  assert.equal(r.action, 'failed');
+  assert.match(r.detail, /test-f-satisfied/);
+  assert.equal(calls.length, 0, 'the corrected-and-vacuous command must never reach the card');
+});
+
+// BRO-3913: --identifiers on the normal Linear leg — explicit allow-list,
+// caller's order preserved (priority-first sweeps), unknown/armed ids dropped.
+test('selectRefusedLinearIdentifiers honours an identifiers allow-list in the caller order', () => {
+  const armed = '## Acceptance criteria\nVERIFY: node --test scripts/enrich-card-acceptance.test.mjs\n';
+  const open = [
+    { identifier: 'BRO-10', description: 'no criteria here' },
+    { identifier: 'BRO-20', description: armed },
+    { identifier: 'BRO-30', description: '' },
+    { identifier: 'BRO-40', description: 'still nothing' },
+  ];
+  // Sanity: the fixture's "armed" card really is armed by the real gate.
+  assert.equal(evaluateVerifiability(armed).armed, true);
+  // Default: id-ascending, armed card excluded.
+  assert.deepEqual(selectRefusedLinearIdentifiers(open), ['BRO-10', 'BRO-30', 'BRO-40']);
+  // Allow-list: caller order wins, armed + unknown + duplicate ids are dropped.
+  assert.deepEqual(
+    selectRefusedLinearIdentifiers(open, { identifiers: ['BRO-40', 'BRO-20', 'BRO-999', 'BRO-10', 'BRO-40'] }),
+    ['BRO-40', 'BRO-10'],
+  );
+  // At the pure-function level an empty allow-list means "no restriction",
+  // not "nothing" — the CLI refuses a --identifiers that yields no ids
+  // (exit 2 in main(), see the parseIdentifiersArg tests below) so this
+  // branch is never reached from an empty flag.
+  assert.deepEqual(selectRefusedLinearIdentifiers(open, { identifiers: [] }), ['BRO-10', 'BRO-30', 'BRO-40']);
+});
+
+// BRO-3913 second-opinion blocker: the DEFAULT sweep must arm what the
+// watchdog drains first. Tier comes from the real linear-watchdog-source.js
+// priorityOf (field 1 → P0, 2 → P1, title prefix only when the field is
+// unset), tiebreak BRO-N ascending — never an id-only sort.
+test('selectRefusedLinearIdentifiers: default order is P0, then P1, then the rest, BRO-N ascending within a tier', () => {
+  const unarmed = '## Problem\nno command here';
+  const open = [
+    { identifier: 'BRO-500', title: 'Medium card', description: unarmed, priority: 3 },
+    { identifier: 'BRO-400', title: 'High card', description: unarmed, priority: 2 },
+    { identifier: 'BRO-300', title: 'P1: hand-filed, field unset', description: unarmed, priority: 0 },
+    { identifier: 'BRO-200', title: 'No priority at all (old fixture shape)', description: unarmed },
+    { identifier: 'BRO-100', title: 'Urgent card', description: unarmed, priority: 1 },
+    { identifier: 'BRO-50', title: 'P0: title says urgent but field says Low', description: unarmed, priority: 4 },
+    { identifier: 'BRO-450', title: 'Another High card', description: unarmed, priority: 2 },
+    { identifier: 'BRO-10', title: 'Armed urgent card must not appear', description: '## Acceptance criteria\n`npx tsc --noEmit`', priority: 1 },
+  ];
+  assert.deepEqual(selectRefusedLinearIdentifiers(open), [
+    'BRO-100',            // P0 (field 1)
+    'BRO-300', 'BRO-400', 'BRO-450', // P1: title-prefix fallback (field unset) sorts WITH field-2 issues, by number
+    'BRO-50', 'BRO-200', 'BRO-500',  // rest: explicit Low ignores its "P0:" title; missing field sorts last tier
+  ]);
+  // priority-2 before priority-3 regardless of BRO number.
+  assert.ok(selectRefusedLinearIdentifiers(open).indexOf('BRO-450') < selectRefusedLinearIdentifiers(open).indexOf('BRO-50'));
+  // The rank helper is the same mapping priorityOf exposes: P0 < P1 < everything else.
+  assert.equal(priorityTierRank({ priority: 1 }), 0);
+  assert.equal(priorityTierRank({ priority: 2 }), 1);
+  assert.equal(priorityTierRank({ priority: 0, title: 'P1: x' }), 1);
+  assert.equal(priorityTierRank({ priority: 3, title: 'P0: x' }), 2);
+  assert.equal(priorityTierRank({ title: 'plain' }), 2);
+  assert.equal(priorityTierRank(null), 2);
+  // The allow-list path is untouched: caller order wins even across tiers.
+  assert.deepEqual(
+    selectRefusedLinearIdentifiers(open, { identifiers: ['BRO-500', 'BRO-100', 'BRO-10'] }),
+    ['BRO-500', 'BRO-100'],
+  );
+});
+
+test('parseIdentifiersArg: absent → null; list is split, trimmed, de-blanked, uppercased; empty flag → []', () => {
+  assert.equal(parseIdentifiersArg({}), null);
+  assert.equal(parseIdentifiersArg({ identifiers: undefined }), null);
+  assert.equal(parseIdentifiersArg(undefined), null);
+  assert.deepEqual(parseIdentifiersArg({ identifiers: 'BRO-1, bro-2,,' }), ['BRO-1', 'BRO-2']);
+  assert.deepEqual(parseIdentifiersArg({ identifiers: '' }), []);
+  assert.deepEqual(parseIdentifiersArg({ identifiers: true }), []);  // bare --identifiers (parseArgs yields true)
+  assert.deepEqual(parseIdentifiersArg({ identifiers: ' , ' }), []);
+});
+
+// BRO-3913 ship-check (Codex): `--identifiers=BRO-1` used to parse as the
+// unknown key "identifiers=BRO-1", so the flag read as ABSENT and the sweep
+// silently widened to the whole backlog — bypassing the empty-list refusal.
+test('parseArgs accepts --key=value as well as --key value', () => {
+  const { parseArgs } = require('./enrich-card-acceptance.js');
+  assert.deepEqual(parseArgs(['--identifiers=BRO-1,BRO-2', '--dry-run']), { _: [], identifiers: 'BRO-1,BRO-2', 'dry-run': true });
+  assert.deepEqual(parseArgs(['--identifiers', 'BRO-1', '--limit=5']), { _: [], identifiers: 'BRO-1', limit: '5' });
+  // An explicit empty value is still an explicit (refusable) value, not "absent".
+  assert.deepEqual(parseArgs(['--identifiers=']), { _: [], identifiers: '' });
+});
+
+// BRO-3913 ship-check (Codex): a card armed through a COMMENT is dispatchable
+// (linear-next reads comments) but the description-only sweep still selected
+// it, and the write would have replaced the description with a second command.
+test('isArmedIncludingComments: comment-supplied command counts as armed, description-only selector still lists it', () => {
+  const { isArmedIncludingComments } = require('./enrich-card-acceptance.js');
+  const cmd = '## Acceptance criteria\nVERIFY: node --test scripts/enrich-card-acceptance.test.mjs\n';
+  const viaComment = {
+    identifier: 'BRO-1', description: 'no criteria in the body',
+    comments: { nodes: [{ body: cmd, createdAt: '2026-09-20T00:00:00.000Z' }] },
+  };
+  const viaDescription = { identifier: 'BRO-2', description: cmd, comments: { nodes: [] } };
+  const unarmed = { identifier: 'BRO-3', description: 'nothing', comments: { nodes: [{ body: 'just chatter', createdAt: '2026-09-20T00:00:00.000Z' }] } };
+  assert.equal(isArmedIncludingComments(viaComment), true);
+  assert.equal(isArmedIncludingComments(viaDescription), true);
+  assert.equal(isArmedIncludingComments(unarmed), false);
+  assert.equal(isArmedIncludingComments(null), false);
+  // The list-query selector cannot see comments, so BRO-1 is still selected
+  // there — the per-issue re-check in runLinearLeg is what skips it.
+  assert.deepEqual(selectRefusedLinearIdentifiers([viaComment, viaDescription, unarmed]), ['BRO-1', 'BRO-3']);
 });

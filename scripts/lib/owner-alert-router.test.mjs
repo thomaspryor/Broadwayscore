@@ -1237,3 +1237,782 @@ test('an unwritable ledger path does not throw — the alert still dispatches, l
     fs.rmSync(path.dirname(path.dirname(unwritable)), { recursive: true, force: true });
   }
 });
+
+// ── BRO-3030: digest escalation — a 'digest' condition that re-notifies past
+// ESCALATION_NOTIFY_THRESHOLD with no tracker attached gets one automatically
+// filed, then goes quiet (short "still open" reminder only every
+// DEFAULT_COOLDOWN_HOURS) instead of repeating the full line forever. ──────
+
+test('decideDigestEscalation: pure boundary — promotes at notifyCount>14, not at exactly 14, when untracked', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation, ESCALATION_NOTIFY_THRESHOLD } = router;
+    assert.equal(ESCALATION_NOTIFY_THRESHOLD, 14);
+    assert.equal(decideDigestEscalation({ existing: null, notifyCount: 14, now: Date.now() }).action, 'normal');
+    assert.equal(decideDigestEscalation({ existing: undefined, notifyCount: 15, now: Date.now() }).action, 'promote');
+    // Real starting values from the audit (BRO-3030): conditions already sat
+    // at notifyCount 31-39 when this shipped — an off-by-one against a small
+    // fixture wouldn't catch a bug that only shows up against a large,
+    // already-past-threshold existing count.
+    assert.equal(decideDigestEscalation({ existing: { notifyCount: 34 }, notifyCount: 35, now: Date.now() }).action, 'promote');
+  } finally {
+    restore();
+  }
+});
+
+test('decideDigestEscalation: pure — already-tracked stays quiet inside the resurface window, resurfaces once it elapses', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation, DEFAULT_COOLDOWN_HOURS } = router;
+    const now = Date.now();
+    const justSurfaced = new Date(now - 1000).toISOString();
+    const longAgo = new Date(now - (DEFAULT_COOLDOWN_HOURS + 1) * 60 * 60 * 1000).toISOString();
+    assert.equal(decideDigestEscalation({
+      existing: { linearIdentifier: 'BRO-999', lastSurfacedAt: justSurfaced }, notifyCount: 40, now,
+    }).action, 'quiet');
+    assert.equal(decideDigestEscalation({
+      existing: { linearIdentifier: 'BRO-999', lastSurfacedAt: longAgo }, notifyCount: 40, now,
+    }).action, 'resurface');
+    // No lastSurfacedAt at all on an otherwise-tracked row (defensive —
+    // should never happen in practice, but a condition tracked via the rail-2
+    // dedupe-match path before that path set lastSurfacedAt too would land
+    // here) must resurface rather than throw or stay silent forever.
+    assert.equal(decideDigestEscalation({
+      existing: { linearIdentifier: 'BRO-999', lastSurfacedAt: null }, notifyCount: 40, now,
+    }).action, 'resurface');
+    // A row carrying the OLD field name (lastNotifiedAt, no lastSurfacedAt)
+    // must also resurface, not silently misread lastNotifiedAt as if it were
+    // lastSurfacedAt — this is the exact confusion the ship-check catch was.
+    assert.equal(decideDigestEscalation({
+      existing: { linearIdentifier: 'BRO-999', lastNotifiedAt: justSurfaced }, notifyCount: 40, now,
+    }).action, 'resurface');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a digest condition escalates to a filed tracker exactly on the call that crosses notifyCount>14, not before', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    for (let i = 1; i <= 14; i++) {
+      const r = await router.routeAlert({
+        conditionKey: 'test:digest-escalation', title: 'Noisy check', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+      assert.equal(r.action, 'digest', `call ${i} should stay on the digest path (below threshold)`);
+    }
+    assert.equal(calls.createLinearIssue.length, 0, 'must not file before notifyCount>14');
+    assert.equal(router.loadLedger().conditions['test:digest-escalation'].notifyCount, 14);
+
+    const escalated = await router.routeAlert({
+      conditionKey: 'test:digest-escalation', title: 'Noisy check', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(escalated.action, 'auto', 'the 15th call is promoted so it reuses the auto dedupe/dispatch/persist path');
+    assert.equal(calls.createLinearIssue.length, 1);
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:digest-escalation'].linearIdentifier, 'BRO-999');
+    assert.equal(ledger.conditions['test:digest-escalation'].notifyCount, 15);
+
+    const queued = router.drainDigestQueue();
+    assert.equal(queued.length, 1);
+    assert.match(queued[0].title, /escalated after 15 notifications/);
+    assert.match(queued[0].description, /Filed BRO-999/);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: an escalated condition stays quiet on the next call, then resurfaces a short reminder once DEFAULT_COOLDOWN_HOURS elapses — never a repeat of the full noisy line', async () => {
+  const { router, calls, restore, tmpDir } = loadRouterWithFakes();
+  try {
+    for (let i = 1; i <= 15; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-quiet', title: 'Noisy check', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    assert.equal(calls.createLinearIssue.length, 1, 'escalated once at call 15');
+    router.drainDigestQueue(); // clear the one-time "escalated" line
+
+    // Call 16, immediately after escalation: must NOT re-file and must NOT
+    // queue anything (still inside the 7-day resurface window).
+    const quiet = await router.routeAlert({
+      conditionKey: 'test:digest-quiet', title: 'Noisy check', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(quiet.action, 'digest');
+    assert.equal(calls.createLinearIssue.length, 1, 'must not re-file while already tracked');
+    assert.equal(router.peekDigestQueue().length, 0, 'must not repeat the full noisy line once tracked');
+
+    // Force the resurface window to have elapsed by rewriting lastSurfacedAt
+    // directly on the temp ledger file (the router has no setter for this —
+    // it is real production drift, not a router-controlled clock). NOT
+    // lastNotifiedAt — that field is intentionally NOT what the resurface
+    // decision keys on (see decideDigestEscalation's header + the regression
+    // test right below this one, which proves why).
+    const ledgerPath = path.join(tmpDir, 'alert-ledger.json');
+    const onDisk = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
+    onDisk.conditions['test:digest-quiet'].lastSurfacedAt = new Date(Date.now() - (router.DEFAULT_COOLDOWN_HOURS + 1) * 60 * 60 * 1000).toISOString();
+    fs.writeFileSync(ledgerPath, JSON.stringify(onDisk, null, 2) + '\n');
+
+    const resurfaced = await router.routeAlert({
+      conditionKey: 'test:digest-quiet', title: 'Noisy check', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(resurfaced.action, 'digest');
+    assert.equal(calls.createLinearIssue.length, 1, 'a resurface reminder is not a re-file');
+    const queued = router.drainDigestQueue();
+    assert.equal(queued.length, 1);
+    assert.match(queued[0].title, /still open — BRO-999/);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a promoted digest escalation still runs the rail-2 Linear dedupe — an already-tracked conditionKey (e.g. filed by another card) is not double-filed', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-2943' }),
+  });
+  try {
+    for (let i = 1; i <= 14; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-dedupe', title: 'Shared circuit-breaker condition', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    const result = await router.routeAlert({
+      conditionKey: 'test:digest-dedupe', title: 'Shared circuit-breaker condition', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(result.action, 'silent', 'rail-2 dedupe short-circuits before any new card is filed');
+    assert.equal(result.linearIdentifier, 'BRO-2943');
+    assert.equal(calls.createLinearIssue.length, 0, 'must not file a duplicate tracker for a conditionKey another card already tracks');
+    assert.equal(router.loadLedger().conditions['test:digest-dedupe'].linearIdentifier, 'BRO-2943');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a failed dispatch during digest escalation does not mark the condition tracked, falls back to the plain line so the owner stays informed, and retries next call', async () => {
+  let dispatchAttempts = 0;
+  const { router, calls, restore } = loadRouterWithFakes({
+    createLinearIssueImpl: async () => {
+      dispatchAttempts++;
+      if (dispatchAttempts === 1) throw new Error('Linear API unavailable');
+      return { issue: { id: 'uuid-opaque', identifier: 'BRO-999', title: 't' }, mode: 'park', stateName: 'Backlog' };
+    },
+  });
+  try {
+    for (let i = 1; i <= 14; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-dispatch-fail', title: 'Flaky escalation', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    const failedCall = await router.routeAlert({
+      conditionKey: 'test:digest-dispatch-fail', title: 'Flaky escalation', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(dispatchAttempts, 1);
+    assert.equal(failedCall.dispatchOk, false);
+    assert.equal(router.loadLedger().conditions['test:digest-dispatch-fail'].linearIdentifier, null,
+      'a failed dispatch must not be recorded as tracked');
+    assert.equal(router.loadLedger().conditions['test:digest-dispatch-fail'].notifyCount, 14,
+      'ledger is not persisted on a failed notify, so the next call retries from the same count');
+    const fallbackLine = router.drainDigestQueue();
+    assert.equal(fallbackLine.length, 1, 'the owner still sees the plain line on a failed escalation attempt, not silence');
+    assert.equal(fallbackLine[0].title, 'Flaky escalation');
+
+    const retried = await router.routeAlert({
+      conditionKey: 'test:digest-dispatch-fail', title: 'Flaky escalation', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(retried.action, 'auto', 'the next call retries escalation from the same unpersisted state and succeeds');
+    assert.equal(dispatchAttempts, 2);
+    assert.equal(router.loadLedger().conditions['test:digest-dispatch-fail'].linearIdentifier, 'BRO-999');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: resolveCondition() after an escalation does not clear the filed tracker — a reoccurrence does not file a second card (matches existing cardId/linearIdentifier survival for every other disposition)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    for (let i = 1; i <= 15; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-resolve-reoccur', title: 'Recurs sometimes', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    assert.equal(calls.createLinearIssue.length, 1);
+    const filedIdentifier = router.loadLedger().conditions['test:digest-resolve-reoccur'].linearIdentifier;
+    assert.equal(filedIdentifier, 'BRO-999');
+
+    assert.equal(router.resolveCondition('test:digest-resolve-reoccur'), true);
+    assert.equal(router.loadLedger().conditions['test:digest-resolve-reoccur'].status, 'resolved');
+
+    await router.routeAlert({
+      conditionKey: 'test:digest-resolve-reoccur', title: 'Recurs sometimes', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(calls.createLinearIssue.length, 1, 'a reoccurrence must not file a second tracker while the old identifier is still on the row');
+    assert.equal(router.loadLedger().conditions['test:digest-resolve-reoccur'].linearIdentifier, filedIdentifier);
+  } finally {
+    restore();
+  }
+});
+
+// Ship-check catch (Bug 1): decideDigestEscalation originally keyed the
+// resurface decision on `lastNotifiedAt`, which the bottom ledger write
+// stamps to `now` on EVERY non-silent call including a 'quiet' one. Real
+// digest callers pass short cooldownHours (dispatch-drift-watch.js: 6,
+// check-corpus-drift.js: 1, cmux-reachability-check.js: 24) and call
+// routeAlert() about that often, so the "hours since last notified" gap
+// never accumulated to DEFAULT_COOLDOWN_HOURS — an escalated condition went
+// quiet FOREVER under any realistic calling cadence, reproducing the exact
+// "vanishes from the digest permanently" failure mode this card exists to
+// prevent. This test simulates that realistic cadence (repeated calls with
+// cooldownHours:0, standing in for "called again after its short cooldown
+// elapsed") and proves the fix (a separate lastSurfacedAt clock) survives it.
+test('routeAlert: repeated quiet calls at a realistic short cooldown do NOT reset the resurface clock (regression for the lastNotifiedAt-vs-lastSurfacedAt ship-check catch)', async () => {
+  const { router, calls, restore, tmpDir } = loadRouterWithFakes();
+  try {
+    for (let i = 1; i <= 15; i++) {
+      // cooldownHours:0 stands in for "this call landed after its real
+      // (short, e.g. 6h) cooldown had already elapsed" — a test loop has no
+      // way to let wall-clock hours actually pass between calls, and a
+      // nonzero cooldownHours here would just hit the top-of-function
+      // ledger-cooldown short-circuit every call since they run microseconds
+      // apart, never even reaching the escalation logic under test.
+      await router.routeAlert({
+        conditionKey: 'test:digest-realistic-cadence', title: 'Noisy check', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    assert.equal(calls.createLinearIssue.length, 1, 'escalated once at call 15');
+    router.drainDigestQueue();
+    const surfacedAtEscalation = router.loadLedger().conditions['test:digest-realistic-cadence'].lastSurfacedAt;
+    assert.ok(surfacedAtEscalation);
+
+    // Simulate 20 more "next day" calls, each finding the top-of-function
+    // cooldown already expired (cooldownHours:0 stands in for that — the
+    // exact realistic cadence that broke the old lastNotifiedAt-keyed logic).
+    for (let i = 0; i < 20; i++) {
+      const r = await router.routeAlert({
+        conditionKey: 'test:digest-realistic-cadence', title: 'Noisy check', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+      assert.equal(r.action, 'digest');
+    }
+    assert.equal(calls.createLinearIssue.length, 1, 'still only ever filed once');
+    assert.equal(router.peekDigestQueue().length, 0, 'no full-noise line repeated across 20 quiet calls');
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:digest-realistic-cadence'].lastSurfacedAt, surfacedAtEscalation,
+      'lastSurfacedAt must NOT advance on quiet calls — this is the field the resurface decision depends on');
+    assert.ok(ledger.conditions['test:digest-realistic-cadence'].lastNotifiedAt !== surfacedAtEscalation,
+      'lastNotifiedAt DOES keep advancing (that is expected/fine) — proving the test would have caught the old bug, which kept both fields in lockstep');
+
+    // Now actually cross the resurface window, measured from the ORIGINAL
+    // escalation moment (lastSurfacedAt), not from the last quiet call.
+    const ledgerPath = path.join(tmpDir, 'alert-ledger.json');
+    const onDisk = JSON.parse(fs.readFileSync(ledgerPath, 'utf8'));
+    onDisk.conditions['test:digest-realistic-cadence'].lastSurfacedAt =
+      new Date(Date.now() - (router.DEFAULT_COOLDOWN_HOURS + 1) * 60 * 60 * 1000).toISOString();
+    fs.writeFileSync(ledgerPath, JSON.stringify(onDisk, null, 2) + '\n');
+
+    await router.routeAlert({
+      conditionKey: 'test:digest-realistic-cadence', title: 'Noisy check', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    const queued = router.drainDigestQueue();
+    assert.equal(queued.length, 1, 'resurface fires once the window elapses, proving the mechanism is reachable in the first place');
+  } finally {
+    restore();
+  }
+});
+
+// Ship-check catch (Bug 2): a promoted-from-digest call that hits the rail-2
+// Linear dedupe match used to return `{action:'silent'}` with NO digest line
+// at all — the condition just vanished, the same failure mode this card
+// exists to fix, just via a different code path than Bug 1.
+test('routeAlert: a promoted digest escalation that dedupe-matches an existing tracker still queues a one-time notice (not silent disappearance)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-2943' }),
+  });
+  try {
+    for (let i = 1; i <= 14; i++) {
+      await router.routeAlert({
+        conditionKey: 'test:digest-dedupe-notice', title: 'Shared circuit-breaker condition', description: 'd',
+        disposition: 'digest', cooldownHours: 0,
+      });
+    }
+    assert.equal(router.peekDigestQueue().length, 1, 'sanity: queueDigestLine replaces, not stacks, per conditionKey');
+    router.drainDigestQueue();
+
+    const result = await router.routeAlert({
+      conditionKey: 'test:digest-dedupe-notice', title: 'Shared circuit-breaker condition', description: 'd',
+      disposition: 'digest', cooldownHours: 0,
+    });
+    assert.equal(result.action, 'silent');
+    assert.equal(calls.createLinearIssue.length, 0);
+
+    const queued = router.drainDigestQueue();
+    assert.equal(queued.length, 1, 'the owner must be told this condition is now tracked, not have it silently vanish');
+    assert.match(queued[0].title, /already tracked at BRO-2943/);
+
+    const ledger = router.loadLedger();
+    assert.equal(ledger.conditions['test:digest-dedupe-notice'].linearIdentifier, 'BRO-2943');
+    assert.ok(ledger.conditions['test:digest-dedupe-notice'].lastSurfacedAt, 'the resurface clock must start here too, not stay null forever');
+  } finally {
+    restore();
+  }
+});
+
+// -- BRO-3030 pre-mortem P0: paid-usage families are never silenced ----------
+// The card's own plan-review demanded this BEFORE implementation ("Recurring
+// cost alarms must keep firing until the metric returns to baseline, not until
+// a card exists. Allowlist which condition families may ever be quieted").
+// The first implementation shipped without it: decideDigestEscalation did not
+// even RECEIVE a conditionKey, so no family COULD be exempted, and a tracked
+// provider-spend:overspend on day 2 of a real overage returned 'quiet' and
+// stayed quiet for the full 168h default.
+const NEVER_QUIET_HOUR_MS = 3600 * 1000;
+const neverQuietTracked = (hrsAgo) => ({
+  linearIdentifier: 'BRO-9999',
+  lastSurfacedAt: new Date(Date.now() - hrsAgo * NEVER_QUIET_HOUR_MS).toISOString(),
+});
+
+test('BRO-3030 P0: every paid-usage family resurfaces instead of going quiet while tracked', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation } = router;
+    const now = Date.now();
+    for (const key of [
+      'provider-spend:overspend',
+      'bd-circuit-breaker-serp_api1',
+      'bd-circuit-breaker-web_unlocker2',
+      'sd-circuit-breaker',
+      // Real keys only — an earlier draft asserted six invented ones that
+      // exist nowhere in the repo, which proves nothing about production.
+      'provider-spend:unmeasured',
+    ]) {
+      const d = decideDigestEscalation({ conditionKey: key, existing: neverQuietTracked(1), notifyCount: 30, now });
+      assert.equal(d.action, 'resurface', key + ' must never be quieted');
+      assert.equal(d.neverQuiet, true, key + ' must be flagged neverQuiet');
+    }
+  } finally { restore(); }
+});
+
+test('BRO-3030 P0: a cost condition is still PROMOTED first, the escalation half is unchanged', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation } = router;
+    const now = Date.now();
+    assert.equal(decideDigestEscalation({ conditionKey: 'provider-spend:overspend', existing: null, notifyCount: 15, now }).action, 'promote');
+    assert.equal(decideDigestEscalation({ conditionKey: 'provider-spend:overspend', existing: null, notifyCount: 3, now }).action, 'normal');
+  } finally { restore(); }
+});
+
+test('BRO-3030 P0: non-cost families keep the quiet-then-resurface behaviour', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { decideDigestEscalation } = router;
+    const now = Date.now();
+    for (const key of ['t1-coverage:scoreboard', 'deployed-coverage:stale', 'review-gap:blast-radius-refused', 'test-yml:main-streak']) {
+      assert.equal(decideDigestEscalation({ conditionKey: key, existing: neverQuietTracked(1), notifyCount: 30, now }).action, 'quiet', key);
+      assert.equal(decideDigestEscalation({ conditionKey: key, existing: neverQuietTracked(169), notifyCount: 30, now }).action, 'resurface', key);
+    }
+  } finally { restore(); }
+});
+
+test('BRO-3030 P0: the predicate neither under- nor over-matches', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const { isNeverQuietCondition, decideDigestEscalation } = router;
+    assert.equal(decideDigestEscalation({ existing: neverQuietTracked(1), notifyCount: 30, now: Date.now() }).action, 'quiet');
+    for (const empty of [undefined, '', null]) assert.equal(isNeverQuietCondition(empty), false, String(empty));
+    for (const key of ['coverage:stale', 'opening-night:missed-broadcast', 'data-validation:red', 'costume-audit:missing']) {
+      assert.equal(isNeverQuietCondition(key), false, key + ' should NOT be a paid-usage family');
+    }
+  } finally { restore(); }
+});
+
+test('BRO-3030 P0: routeAlert threads conditionKey into the escalation decision (CALL SITE, not the signature)', () => {
+  // The first version of this test matched /decideDigestEscalation\(\{\s*conditionKey,/
+  // against the whole file, which ALSO matches the function DEFINITION's
+  // parameter list — so deleting conditionKey from the call site left the
+  // suite green while the exemption became unreachable in production, exactly
+  // the bug that shipped the first time. Mutation-verified by a reviewer.
+  // Anchor on the ASSIGNMENT instead, which only the call site can satisfy.
+  const src = fs.readFileSync(new URL('./owner-alert-router.js', import.meta.url), 'utf8');
+  assert.match(
+    src,
+    /digestDecision\s*=\s*decideDigestEscalation\(\{\s*conditionKey,/,
+    'routeAlert() must pass conditionKey to decideDigestEscalation at the CALL SITE',
+  );
+});
+
+test('BRO-3030 P0: end-to-end — a tracked cost condition surfaces a digest line instead of going silent', async () => {
+  // Behavioural backstop for the source assertion above: this fails if
+  // conditionKey stops reaching decideDigestEscalation, regardless of how the
+  // source is spelled. Goes through the real routeAlert(), real ledger file.
+  const { router, restore, tmpDir } = loadRouterWithFakes();
+  try {
+    const { routeAlert, drainDigestQueue } = router;
+    const ledgerPath = process.env.ALERT_LEDGER_PATH;
+    // Seed: already escalated and tracked, surfaced 1h ago (well inside the
+    // 168h resurface window), and last notified long enough ago to clear the
+    // caller's own cooldown gate.
+    const hoursAgo = (h) => new Date(Date.now() - h * 3600 * 1000).toISOString();
+    fs.writeFileSync(ledgerPath, JSON.stringify({
+      conditions: {
+        'provider-spend:overspend': {
+          status: 'open', disposition: 'digest', title: 'Browserbase over budget',
+          linearIdentifier: 'BRO-9999', notifyCount: 25,
+          lastNotifiedAt: hoursAgo(48), lastSurfacedAt: hoursAgo(1), lastSeen: hoursAgo(1),
+        },
+      },
+    }, null, 2));
+
+    const res = await routeAlert({
+      conditionKey: 'provider-spend:overspend',
+      title: 'Browserbase over budget',
+      description: 'browserbase $412.00 > $4 (today)',
+      disposition: 'digest',
+      severity: 'warning',
+      cooldownHours: 20,
+    });
+
+    assert.notEqual(res.action, 'silent', 'a cost condition must not be silenced inside the resurface window');
+    const queued = drainDigestQueue();
+    const line = queued.find(l => l.conditionKey === 'provider-spend:overspend');
+    assert.ok(line, 'a digest line must be queued for the tracked cost condition');
+    assert.match(line.description, /412\.00/, "the resurfaced line must carry TODAY's number, not just a counter");
+  } finally { restore(); }
+});
+
+test('BRO-3030 P2: the never-quiet callers keep a cooldown short enough for the exemption to run', () => {
+  // The ledger cooldown gate short-circuits to 'silent' BEFORE the escalation
+  // block, so this exemption only executes when the caller's own cooldownHours
+  // is well under the 168h default. Raising one of these silently restores the
+  // 7-day blackout with a fully green suite — so assert it here, against the
+  // real caller files.
+  const repoRoot = new URL('../../', import.meta.url);
+  for (const [file, maxHours] of [['scripts/check-provider-spend.js', 24]]) {
+    const src = fs.readFileSync(new URL(file, repoRoot), 'utf8');
+    const m = src.match(/cooldownHours:\s*(\d+)/);
+    assert.ok(m, `${file} must pass an explicit cooldownHours to routeAlert`);
+    assert.ok(
+      Number(m[1]) <= maxHours,
+      `${file} cooldownHours=${m && m[1]} is too long — the never-quiet exemption never runs above ~${maxHours}h`,
+    );
+  }
+});
+
+// ── BRO-3881: every card this router files must be DISPATCHABLE ─────────────
+// linear-next.js refuses to dispatch any issue whose acceptance criteria names
+// no runnable command — and it does so inside the DETACHED child, after the
+// morning digest has already spent one of its daily dispatch slots. So a
+// prose-only "## Acceptance criteria" section here is not a documentation nit:
+// it is a slot burned every single day, forever. BRO-3349 was picked and
+// refused on four consecutive days (2026-09-17 .. 2026-09-20) for exactly this.
+//
+// These tests call the REAL buildCardNotes and the REAL gate (CLAUDE.md rule
+// 15) — a copy of either would let them drift apart again, which is the whole
+// defect.
+
+test('BRO-3881: a health-check-sourced card carries a command the real dispatch gate arms', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const rowName = 'Data quality: provider spend ledger';
+  const notes = buildCardNotes({
+    description: 'Provider spend ledger newest entry (day=2026-09-04) is 11d old (>48h)',
+    hint: 'Check the commit step in data-health-check.yml',
+    fields: [{ name: 'Check', value: rowName }],
+    conditionKey: `health-check:${rowName}`,
+  });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.cmd, `router-filed card is undispatchable — linear-next.js refuses it and the digest slot is wasted: ${gate.reason}`);
+  assert.match(gate.cmd, /check-health-row-absent\.js --row-b64 /);
+  // The token must decode back to the row name check-health-row-absent.js
+  // compares against — a truncated or prose-sanitized name silently never matches.
+  const token = gate.cmd.split(' ').pop();
+  assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowName);
+});
+
+test('BRO-3881: the row name survives colons in the conditionKey', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  // Health-check row names contain colons of their own ("Data quality: X"), so
+  // splitting the conditionKey on every colon would truncate the name to
+  // "Data quality" and the generated command would never match anything.
+  const rowName = 'Dispatch: board targeting: stale';
+  const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: `health-check:${rowName}` });
+  const token = evaluateVerifiability(notes, []).cmd.split(' ').pop();
+  assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowName);
+});
+
+test('BRO-3881: a non-health-check condition keeps the prose criteria and is not given a bogus command', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: 'gap:some-show-2026/thestage--unknown.json' });
+  assert.ok(!notes.includes('check-health-row-absent.js'),
+    'only health-check rows have a check-health-row-absent.js answer — inventing one for other conditions would arm a command that can never pass');
+  assert.match(notes, /no longer fires on the next check/);
+});
+
+test('BRO-3881: both auto-filers build the command from the SAME encoder', () => {
+  // digest-autofix.js and owner-alert-router.js file cards for the same
+  // health-check rows by two different routes. They drifted once already —
+  // one emitted a runnable command, the other prose — so pin that they now
+  // share one builder rather than two copies of the encoding contract.
+  const shared = require('./health-row-check-cmd.js');
+  const digestSrc = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), 'digest-autofix.js'), 'utf8');
+  const routerSrc = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), 'owner-alert-router.js'), 'utf8');
+  for (const [name, src] of [['digest-autofix.js', digestSrc], ['owner-alert-router.js', routerSrc]]) {
+    assert.match(src, /require\('\.\/health-row-check-cmd\.js'\)/, `${name} must require the shared builder, not re-declare the encoding`);
+    assert.doesNotMatch(src, /Buffer\.from\([^)]*\)\.toString\('base64url'\)/, `${name} still hand-rolls the b64url token — that is the drift this card fixed`);
+  }
+  assert.equal(shared.rowAbsentCheckCmd('A: b'), `node scripts/check-health-row-absent.js --row-b64 ${Buffer.from('A: b', 'utf8').toString('base64url')}`);
+});
+
+// BRO-3881 (ship-check/Codex finding): the encoded row-name token has to pass
+// SAFE_CHECK_FORMS' own `[A-Za-z0-9_-]{1,200}` bound, or the acceptance command
+// is not a legal safe form and the card goes straight back to undispatchable —
+// the failure this card exists to remove. base64url of N bytes is ceil(N*4/3)
+// chars, so a 120-CHARACTER multi-byte name encoded to 480.
+test('BRO-3881: the generated command is a legal safe form even for a long multi-byte row name', () => {
+  const { rowAbsentCheckCmd, rowMatchKey } = require('./health-row-check-cmd.js');
+  const { isSafeCheckCommand } = require('./verify-gate.js');
+  const cjk = '劇'.repeat(120);          // 120 chars, 360 bytes -> 480 b64 chars unclamped
+  const accented = 'é'.repeat(120);      // 120 chars, 240 bytes -> 320 b64 chars unclamped
+  for (const name of [cjk, accented, 'A'.repeat(200), 'Data quality: provider spend ledger']) {
+    const cmd = rowAbsentCheckCmd(name);
+    assert.ok(isSafeCheckCommand(cmd), `not a safe form for a ${name.length}-char name: ${cmd.slice(0, 80)}…`);
+    // and the token must still round-trip to the key the checker compares on
+    const token = cmd.split(' ').pop();
+    assert.equal(Buffer.from(token, 'base64url').toString('utf8'), rowMatchKey(name));
+  }
+});
+
+test('BRO-3881: the encoder and check-health-row-absent.js share ONE bound, not two copies of 120', () => {
+  const src = fs.readFileSync(path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'check-health-row-absent.js'), 'utf8');
+  assert.match(src, /require\('\.\/lib\/health-row-check-cmd\.js'\)/,
+    'the checker must import the shared bound — its own `const LIMIT = 120` could drift from the encoder silently, and a drifted bound means a row name that never matches and a card that can never be verified');
+  // Anchored to a statement at line start, not the bare string: the comment
+  // that explains WHY the constant left quotes it verbatim, and an unanchored
+  // pattern matches that prose and fails on a correct file.
+  assert.doesNotMatch(src, /^\s*const LIMIT\s*=/m, 're-declared bound is back');
+});
+
+test('BRO-3881: rowMatchKey is idempotent — the checker re-applies it to an already-truncated decoded name', () => {
+  const { rowMatchKey } = require('./health-row-check-cmd.js');
+  for (const n of ['短'.repeat(300), 'plain name', '  padded  ', '']) {
+    assert.equal(rowMatchKey(rowMatchKey(n)), rowMatchKey(n));
+  }
+});
+
+test('BRO-3881: a backtick or VERIFY: in a row name cannot displace the real acceptance command', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  // candidatesFrom is a matchAll over EVERY backticked span in the acceptance
+  // section with rank-then-first selection, so an unsanitized backtick in row
+  // text could open a rival span and win the selection.
+  const hostile = 'Bad: `node --test scripts/lib/health-row-check-cmd.js` VERIFY: nope';
+  const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: `health-check:${hostile}` });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.cmd, 'still armed');
+  assert.match(gate.cmd, /check-health-row-absent\.js --row-b64 /,
+    `a crafted row name displaced the real acceptance command: ${gate.cmd}`);
+  // Scope to the acceptance SECTION — the trailing [conditionKey:...] anchor is
+  // deliberately raw (findLinearDuplicate and any exact-match consumer read it),
+  // sits after the section, and demonstrably does not win the selection above.
+  const prose = notes.split('## Acceptance criteria')[1].split('[conditionKey:')[0];
+  assert.ok(!/VERIFY:/i.test(prose), 'a literal VERIFY: survived into the acceptance prose');
+  // The hostile text survives as PROSE (its backticks became quotes) — that is
+  // fine and readable. What must not survive is a second backticked SPAN, since
+  // spans are what candidatesFrom collects and ranks.
+  const spans = prose.match(/\`[^\`]+\`/g) || [];
+  assert.equal(spans.length, 1, `acceptance section must contain exactly one backticked span, found ${spans.length}: ${JSON.stringify(spans)}`);
+});
+
+// ── BRO-3907: test-yml:red:<job>:<sig> cards must be DISPATCHABLE too ───────
+// The RED_SIGNATURE_PREFIX family has no health-check row to key off, so
+// BRO-3881's fix didn't cover it — route-main-streak-signatures.js kept
+// filing prose-only acceptance criteria and linear-next.js kept refusing
+// every one of these cards ("no runnable verify command (acceptance criteria
+// names no runnable command (prose only))"), same failure mode, different
+// caller. The `verify` param (scripts/lib/red-signature-verify-cmd.js) fixes
+// this the same way the health-row builder did: real command in, real gate
+// verdict out — no copy of either side.
+
+test('BRO-3907: a red-signature card with a resolvable safe-form step command is dispatchable', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const notes = buildCardNotes({
+    description: "main's Test Suite is failing on Data Validation / Run data validation",
+    hint: 'Investigate the failing validation.',
+    fields: [{ name: 'Job', value: 'Data Validation' }, { name: 'Step', value: 'Run data validation' }],
+    conditionKey: 'test-yml:red:Data Validation:abcd1234',
+    verify: { line: 'VERIFY: node scripts/validate-data.js', note: null },
+  });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.cmd, `red-signature card is undispatchable: ${gate.reason}`);
+  assert.equal(gate.cmd, 'node scripts/validate-data.js');
+});
+
+test('BRO-3907: a red-signature card that falls back to owner-judgment is still dispatchable (armed via the marker, not a command)', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  const notes = buildCardNotes({
+    description: "main's Test Suite is failing on Lint Workflows / Audit cast-changes.json",
+    hint: 'Investigate the failing audit.',
+    fields: [{ name: 'Job', value: 'Lint Workflows' }, { name: 'Step', value: 'Audit cast-changes.json' }],
+    conditionKey: 'test-yml:red:Lint Workflows:deadbeef',
+    verify: {
+      line: 'VERIFY: owner-judgment',
+      note: 'The failing step\'s own command (`node scripts/audit-cast-changes.js --gate`) is not on the safe-form allowlist — needs a human to name a safe re-verification command.',
+    },
+  });
+  const gate = evaluateVerifiability(notes, []);
+  assert.ok(gate.armed, `owner-judgment marker did not arm the card: ${gate.reason}`);
+  assert.ok(gate.ownerJudgment);
+  assert.match(notes, /VERIFY: owner-judgment/);
+  // The note explaining WHY must survive into the card body (own-judgment
+  // alone tells a human nothing about what was actually tried).
+  assert.match(notes, /audit-cast-changes\.js --gate/);
+});
+
+test('BRO-3907: verify.line is never sanitized — sanitizeRowText would silently disarm it', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  // sanitizeRowText rewrites "VERIFY:" -> "VERIFY -" — if it were ever applied
+  // to verify.line itself (rather than just verify.note), this would silently
+  // reproduce the exact bug BRO-3907 fixes.
+  const notes = buildCardNotes({
+    description: 'd', hint: 'h', fields: [],
+    conditionKey: 'test-yml:red:Unit Tests:cafebabe',
+    verify: { line: 'VERIFY: node scripts/run-unit-tests.js', note: null },
+  });
+  assert.match(notes, /^VERIFY: node scripts\/run-unit-tests\.js$/m);
+  assert.equal(evaluateVerifiability(notes, []).cmd, 'node scripts/run-unit-tests.js');
+});
+
+test('BRO-3907: a health-check row still wins over a verify param if both were somehow passed (health-row is the more specific answer)', () => {
+  const { buildCardNotes } = require('./owner-alert-router.js');
+  const rowName = 'Data quality: something';
+  const notes = buildCardNotes({
+    description: 'd', hint: 'h', fields: [],
+    conditionKey: `health-check:${rowName}`,
+    verify: { line: 'VERIFY: node scripts/validate-data.js', note: null },
+  });
+  assert.match(notes, /check-health-row-absent\.js/);
+  assert.doesNotMatch(notes, /VERIFY: node scripts\/validate-data\.js/);
+});
+
+// ── BRO-4054: dispatch-at-filing (red-main signature cards) ──────────────────
+
+test('routeAlert: dispatchAtFiling files in DISPATCH mode — no PARKED sentinel, provenance marker present, dispatch stamp on the ledger condition', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const result = await router.routeAlert({
+      conditionKey: 'test-yml:red:Unit Tests:deadbeef',
+      title: 'main test.yml red: Unit Tests / Run unit tests — "t"',
+      description: 'main is red.',
+      disposition: 'auto',
+      verify: { line: 'VERIFY: `node scripts/run-unit-tests.js`', note: null },
+      dispatchAtFiling: { runId: '424242', runUrl: 'https://github.com/x/y/actions/runs/424242' },
+    });
+    assert.equal(result.action, 'auto');
+    assert.equal(calls.createLinearIssue.length, 1);
+    const opts = calls.createLinearIssue[0];
+    assert.equal(opts.dispatch, true, 'dispatch mode, never park');
+    assert.equal(opts.park, undefined);
+    assert.doesNotMatch(opts.description, /^\s*PARKED\s*:/im, 'the sentinel headless-dispatchability.js refuses must be absent');
+    assert.match(opts.description, /Filed by owner-alert-router for dispatch-at-filing \(BRO-4054; condition: test-yml:red:Unit Tests:deadbeef\)/);
+    assert.doesNotMatch(opts.description, /Auto-filed by owner-alert-router/, 'must not be selectable by the parked drain too');
+    assert.match(opts.description, /VERIFY: `node scripts\/run-unit-tests.js`/, 'BRO-3907 VERIFY derivation stays on the card');
+    assert.deepEqual(result.dispatch, { requestedAt: result.dispatch.requestedAt, mode: 'dispatch-at-filing', runId: '424242', runUrl: 'https://github.com/x/y/actions/runs/424242' });
+    const cond = router.loadLedger().conditions['test-yml:red:Unit Tests:deadbeef'];
+    assert.equal(cond.status, 'open');
+    assert.equal(cond.dispatch.mode, 'dispatch-at-filing');
+    assert.equal(cond.dispatch.runId, '424242');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: without dispatchAtFiling the router still parks (every other auto alert is unchanged)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const result = await router.routeAlert({ conditionKey: 'test:still-parked', title: 't', description: 'd', disposition: 'auto' });
+    assert.equal(result.dispatch, undefined);
+    assert.ok(calls.createLinearIssue[0].park);
+    assert.equal(calls.createLinearIssue[0].dispatch, undefined);
+    assert.equal(router.loadLedger().conditions['test:still-parked'].dispatch, undefined);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert carries dispatch/absentRunIds across BOTH ledger rewrites (second-opinion blocker: fresh-record writes dropped them)', async () => {
+  // Rewrite 1: cooldown expired + Linear dedupe match → the dedupe-match path rebuilds the record.
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async () => ({ identifier: 'BRO-4100', title: 'tracked' }),
+  });
+  try {
+    const key = 'test-yml:red:Unit Tests:cafebabe';
+    const first = await router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto', dispatchAtFiling: { runId: '1' } });
+    assert.equal(first.action, 'silent', 'dedupe match');
+    // Simulate the stamps another writer (CI filer / stale tracker) put on the open record.
+    assert.ok(router.patchCondition(key, { dispatch: { requestedAt: '2026-09-23T00:00:00.000Z', mode: 'dispatch-at-filing', runId: '1' }, absentRunIds: ['1', '2'] }));
+    // Age the record past the cooldown so the next call re-enters the dedupe-match rewrite.
+    const aged = router.loadLedger();
+    aged.conditions[key].lastNotifiedAt = new Date(Date.now() - 400 * 3600 * 1000).toISOString();
+    fs.writeFileSync(router._LEDGER_PATH, JSON.stringify(aged));
+    const second = await router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto', dispatchAtFiling: { runId: '2' } });
+    assert.equal(second.action, 'silent');
+    const cond = router.loadLedger().conditions[key];
+    assert.deepEqual(cond.dispatch, { requestedAt: '2026-09-23T00:00:00.000Z', mode: 'dispatch-at-filing', runId: '1' });
+    assert.deepEqual(cond.absentRunIds, ['1', '2']);
+    assert.equal(calls.createLinearIssue.length, 0);
+  } finally {
+    restore();
+  }
+  // Rewrite 2: the new-incident path (no dedupe match) after a cooldown expiry keeps absentRunIds.
+  const second = loadRouterWithFakes();
+  try {
+    const key = 'test-yml:red:E2E Tests:feedface';
+    await second.router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto', dispatchAtFiling: { runId: '1' } });
+    assert.ok(second.router.patchCondition(key, { absentRunIds: ['7'] }));
+    const aged = second.router.loadLedger();
+    aged.conditions[key].lastNotifiedAt = new Date(Date.now() - 400 * 3600 * 1000).toISOString();
+    fs.writeFileSync(second.router._LEDGER_PATH, JSON.stringify(aged));
+    const r = await second.router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto', dispatchAtFiling: { runId: '9' } });
+    assert.equal(r.action, 'auto', 'no dedupe match → files again');
+    const cond = second.router.loadLedger().conditions[key];
+    assert.deepEqual(cond.absentRunIds, ['7'], 'carried across the new-incident rewrite');
+    assert.equal(cond.dispatch.runId, '9', 'a fresh filing takes the NEW dispatch stamp');
+  } finally {
+    second.restore();
+  }
+});
+
+test('patchCondition only touches OPEN conditions and resolveCondition records the reason', async () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    assert.equal(router.patchCondition('test:missing', { absentRunIds: ['1'] }), false);
+    await router.routeAlert({ conditionKey: 'test:patch', title: 't', description: 'd', disposition: 'auto' });
+    assert.ok(router.patchCondition('test:patch', { absentRunIds: ['1'] }));
+    assert.deepEqual(router.loadLedger().conditions['test:patch'].absentRunIds, ['1']);
+    assert.ok(router.resolveCondition('test:patch', { reason: 'stale-signature' }));
+    const cond = router.loadLedger().conditions['test:patch'];
+    assert.equal(cond.status, 'resolved');
+    assert.equal(cond.resolveReason, 'stale-signature');
+    assert.equal(router.patchCondition('test:patch', { absentRunIds: [] }), false, 'closed → no-op');
+  } finally {
+    restore();
+  }
+});

@@ -11,7 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, slugify, normalizeCritic, normalizePublishDate, findExistingReviewFile, generateReviewFilename, resolveOutletFromUrl, loadOutletRegistry, outletOwnsUrlDomainIgnoringPath } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { shouldRefuseAggregatorOutletRefinement, shouldSkipAggregatorUrlWrite } = require('./lib/aggregator-domains');
 const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
@@ -488,6 +488,7 @@ function saveReview(review, overwrite = false, dir = outputDir, _rerouteVisited)
       console.warn(`  ⏭️  Skipping wrongProduction stamp for ${review.showId}/${review.outletId}: human override in place`);
     } else {
       review = { ...review, wrongProduction: true, wrongProductionReason: routingDecision.reason || 'ambiguous-production' };
+      invalidateWrongProductionAutoClear(review);
       console.warn(`  ⚠️  Ambiguous production for ${review.showId}/${review.outletId}: stamping wrongProduction (${review.wrongProductionReason})`);
     }
   }

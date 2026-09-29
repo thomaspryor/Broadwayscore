@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isScoreable } = require('./lib/is-scoreable');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_JSON = path.join(__dirname, '..', 'data', 'shows.json');
@@ -45,8 +46,7 @@ function loadShowTitles() {
 function main() {
   const showTitles = loadShowTitles();
   const showFor = (d) => (d.showId ? showTitles.get(d.showId) : undefined);
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(d => fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
   let totalFiles = 0;
   let singleModelTotal = 0;

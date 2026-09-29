@@ -24,6 +24,7 @@ const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingRe
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { checkWrongShowMentionGuard, checkFilmTvGuard, isCorroboratedByRoundup } = require('./lib/tr-wrongshow-guard');
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
+const { resolveTheatreRecordWriteTarget, mergeTheatreRecordIntoExisting } = require('./lib/review-text-identity');
 
 // ─── PDF review parser ───
 // Parses reviews from pdftotext output. Reviews follow pattern:
@@ -460,6 +461,38 @@ function getOutletDisplayName(trName) {
 function makeFilename(outletId, criticName) {
   // Use shared normalization to prevent accent/alias variants creating duplicates
   return generateReviewFilename(outletId, criticName || 'unknown');
+}
+
+/**
+ * Resolve the TR write target from the CURRENT disk state (called right
+ * before writing — see the P2 note at the call site). Re-reads the exact file
+ * and re-runs findExistingReviewFile, so a merge target is one that still
+ * exists and still matches (stored byline + text) at write time.
+ * Returns resolveTheatreRecordWriteTarget's decision plus `data` (the fresh
+ * parsed merge target) and `variantPath` (for logging).
+ */
+function resolveFreshTheatreRecordTarget(showDir, outletId, filepath, review) {
+  const readJson = (p) => { try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; } };
+  const exactExists = fs.existsSync(filepath);
+  const exactData = exactExists ? readJson(filepath) : null;
+  const variant = exactExists ? null : findExistingReviewFile(showDir, outletId, review.critic);
+  const target = resolveTheatreRecordWriteTarget({
+    exactPath: filepath,
+    exactExists,
+    exactData,
+    variant,
+    incomingCritic: review.critic,
+    incomingText: review.fullText,
+  });
+  const variantPath = variant && variant.path ? variant.path : null;
+  if (target.action !== 'merge') return { ...target, variantPath };
+  const data = target.path === filepath ? exactData : (variant && variant.data);
+  if (!data || !fs.existsSync(target.path)) {
+    // Unreadable exact file / variant vanished between lookup and now: never
+    // blind-overwrite — skip this row (the next run re-evaluates).
+    return { action: 'skip', path: target.path, fillCritic: false, reason: 'merge-target-unreadable-or-gone', variantPath };
+  }
+  return { ...target, data, variantPath };
 }
 
 function parseDate(dateStr) {
@@ -945,32 +978,37 @@ async function main() {
         textWordCount: review.fullText.split(/\s+/).length
       };
 
-      if (fileExists && noSkipExisting) {
-        // Merge: preserve existing fields (especially url), add TR-specific fields
-        const existing = JSON.parse(fs.readFileSync(filepath, 'utf8'));
-        const merged = { ...existing };
-        // Add TR-sourced data without overwriting outlet-sourced data
-        if (!merged.fullText && reviewData.fullText) merged.fullText = reviewData.fullText;
-        if (!merged.textWordCount && reviewData.textWordCount) merged.textWordCount = reviewData.textWordCount;
-        if (!merged.contentTier || merged.contentTier === 'stub' || merged.contentTier === 'excerpt' || merged.contentTier === 'invalid') {
-          merged.contentTier = reviewData.contentTier;
-          merged.contentTierReason = reviewData.contentTierReason;
-        }
-        merged.theatreRecordUrl = reviewData.theatreRecordUrl;
-        if (!merged.source) merged.source = 'theatre-record';
-        if (merged.source && !merged.sources) merged.sources = [merged.source];
-        if (merged.sources && !merged.sources.includes('theatre-record')) merged.sources.push('theatre-record');
+      // --no-skip-existing (always passed in CI): merge into the existing
+      // file for this outlet+critic — including a URL-bearing "--unknown"
+      // twin of the same article found by findExistingReviewFile — instead of
+      // writing a second, URL-less named file beside it (that twin shape made
+      // the rebuild drop the URL: 27 url:null rows, 2026-09-24).
+      //
+      // Re-resolve from disk HERE, not from the fileExists/existingVariant
+      // read at the top of the loop: the awaited roundup discovery above can
+      // run long, and a concurrent writer may have created, renamed (the
+      // rebuild's --unknown cleanup) or re-attributed the file meanwhile.
+      const target = resolveFreshTheatreRecordTarget(showDir, outletId, filepath, review);
+      if (target.action === 'skip') {
+        console.log(`    SKIP: ${filename} — ${target.reason} (${path.basename(target.path)})`);
+        skippedCount++;
+        continue;
+      }
+      if (target.action === 'merge') {
+        const targetName = path.basename(target.path);
+        const existing = target.data;
+        const merged = mergeTheatreRecordIntoExisting(existing, reviewData, { fillCritic: target.fillCritic });
         if (dryRun) {
-          console.log(`    MERGE: ${filename} (adding TR data to existing review)`);
+          console.log(`    MERGE: ${filename} -> ${targetName} (${target.reason}; adding TR data to existing review)`);
         } else {
-          safeWriteReview(filepath, merged);
-          console.log(`    MERGED: ${filename} (preserved url=${!!merged.url}, added TR text=${!!reviewData.fullText})`);
+          safeWriteReview(target.path, merged);
+          console.log(`    MERGED: ${filename} -> ${targetName} (${target.reason}; preserved url=${!!merged.url}, critic=${merged.criticName})`);
         }
       } else if (dryRun) {
-        console.log(`    NEW: ${filename} (${review.fullText.length} chars, ${reviewData.textWordCount} words)`);
+        console.log(`    NEW: ${filename} (${review.fullText.length} chars, ${reviewData.textWordCount} words${target.variantPath ? `; not merged into ${path.basename(target.variantPath)}: ${target.reason}` : ''})`);
       } else {
         safeWriteReview(filepath, reviewData);
-        console.log(`    SAVED: ${filename} (${reviewData.textWordCount} words)`);
+        console.log(`    SAVED: ${filename} (${reviewData.textWordCount} words${target.variantPath ? `; not merged into ${path.basename(target.variantPath)}: ${target.reason}` : ''})`);
       }
       newCount++;
     }

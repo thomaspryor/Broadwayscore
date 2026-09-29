@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-06T03:58:30.890Z",
+  "generatedAt": "2026-09-28T14:42:59.664Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 2942,
-  "flaggedShows": 48,
+  "scannedShows": 3059,
+  "flaggedShows": 47,
   "flaggedFiles": 187,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 28,
-    "needs-human-review": 20
+    "needs-human-review": 19
   },
   "shows": [
     {
@@ -280,19 +280,20 @@
       "previewsStartDate": "2026-11-12",
       "openingDate": "2026-11-24",
       "verdict": "likely-contamination",
-      "reasoning": "13/13 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "15/16 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
-        "count": 13,
+        "count": 16,
         "distinctYears": [
           2015,
           2019,
           2020,
           2022,
+          2023,
           2024,
           2025
         ],
         "spanDays": 3651,
-        "flaggedCount": 13,
+        "flaggedCount": 15,
         "venueMentionCount": 6
       },
       "suggestedPriorRun": null,
@@ -317,8 +318,8 @@
           "afterReason": "wrongProduction",
           "outletId": "broadwayworld",
           "criticName": "Aliya Al-Hassan",
-          "publishDate": "2020-12-18",
-          "url": "https://www.broadwayworld.com/westend/article/BWW-Review-A-CHRISTMAS-CAROL-Old-Vic-In-Camera-20201218",
+          "publishDate": "2022-11-24",
+          "url": "https://www.broadwayworld.com/westend/article/Review-A-CHRISTMAS-CAROL-Old-Vic-Theatre-20221124",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -330,8 +331,8 @@
           "afterReason": "wrongProduction",
           "outletId": "broadwayworld",
           "criticName": "Aliya Al-Hassan",
-          "publishDate": "2022-11-24",
-          "url": "https://www.broadwayworld.com/westend/article/Review-A-CHRISTMAS-CAROL-Old-Vic-Theatre-20221124",
+          "publishDate": "2020-12-18",
+          "url": "https://www.broadwayworld.com/westend/article/BWW-Review-A-CHRISTMAS-CAROL-Old-Vic-In-Camera-20201218",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -370,7 +371,7 @@
           "outletId": "i-paper",
           "criticName": "Fiona Mountford",
           "publishDate": "2020-12-18",
-          "url": "https://inews.co.uk/culture/arts/a-christmas-carol-old-vic-review-andrew-lincoln-jack-thorne-how-to-watch-800856?srsltid=AfmBOopjNc6Wu1duF9boULrunzQ-38AIftQ7OxEwzmM4AUPVtbzBRfCw",
+          "url": "https://inews.co.uk/culture/arts/a-christmas-carol-old-vic-review-andrew-lincoln-jack-thorne-how-to-watch-800856?srsltid=AfmBOooVKCEcgDfBL7L3md5hYgUGdAKRL19KM73mw7SqSA7Wi4v4ZTPy",
           "wrongProduction": true,
           "wrongShow": true,
           "evaluationError": null
@@ -462,6 +463,45 @@
           "criticName": "Dan English",
           "publishDate": "2025-11-26",
           "url": null,
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--tom-wicker.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
+          "outletId": "thestage",
+          "criticName": "Tom Wicker",
+          "publishDate": "2023-11-23",
+          "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-review-at-the-old-vic-london-starring-christopher-eccleston",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--dominic-maxwell.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Dominic Maxwell",
+          "publishDate": "2025-11-26",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-review-old-vic-2gv5gqs7k",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--rachel-halliburton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Rachel Halliburton",
+          "publishDate": "2025-11-26",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-review-old-vic-2gv5gqs7k",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -649,353 +689,6 @@
       ]
     },
     {
-      "showId": "the-seagull-globe-off-west-end-2026",
-      "title": "The Seagull",
-      "market": "west-end",
-      "status": "announced",
-      "venue": "Sam Wanamaker Playhouse",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "12/12 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 12,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 12,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "daily-mail--patrick-marmion.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "daily-mail",
-          "criticName": "Patrick Marmion",
-          "publishDate": "2025-03-07",
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-14470617/PATRICK-MARMION-reviews-Seagull-Barbican-Theatre-West-End-drama-starring-movie-idol-thats-not-dud-bow-Cate.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "express-uk--neil-norman.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "express-uk",
-          "criticName": "Neil Norman",
-          "publishDate": "2025-03-07",
-          "url": "https://www.express.co.uk/entertainment/theatre/2023535/seagull-review-cate-blanchett-London",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--arifa-akbar.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Arifa Akbar",
-          "publishDate": "2025-03-07",
-          "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2025-03-07",
-          "url": "https://www.theguardian.com/stage/2025/mar/16/the-week-in-theatre-the-seagull-chekhov-thomas-ostermeier-barbican-cate-blanchett-emma-corrin-tom-burke-james-graham-young-vic-adam-penfold-nottingham-playhouse-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2025-03-07",
-          "url": "https://inews.co.uk/culture/arts/cate-blanchett-blazes-the-seagull-review-3569876?srsltid=AfmBOopmKAHqtr2MRMcq9hAMOTIOD7iGyk0OUGCvm8R2EFBAgu2WVIhx",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--alice-saville.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Alice Saville",
-          "publishDate": "2025-03-07",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-seagull-barbican-cate-blanchett-review-tom-burke-b2710342.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--tim-bano.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Tim Bano",
-          "publishDate": "2025-03-07",
-          "url": "https://www.standard.co.uk/culture/theatre/the-seagull-barbican-review-cate-blanchett-b1215074.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2025-03-07",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-seagull-barbican-theatre-review-cate-blanchett/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2025-03-07",
-          "url": "https://www.thestage.co.uk/reviews/the-seagull-review-barbican-theatre-london-chekhov-cate-blanchett-thomas-ostermeier-duncan-macmillan",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout-london--andrzej-lukowski.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout-london",
-          "criticName": "Andrzej Lukowski",
-          "publishDate": "2025-03-07",
-          "url": "https://www.timeout.com/london/theatre/the-seagull-12-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2025-03-07",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-seagull-review-cate-blanchett-barbican-32nz73mjv",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "whatsonstage--sarah-crompton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Sarah Crompton",
-          "publishDate": "2025-03-07",
-          "url": "https://www.whatsonstage.com/news/the-seagull-review-cate-blanchett-leads-an-all-star-production-with-vaping-and-rock-songs_1668200/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "medea-off-broadway-2026",
-      "title": "Medea",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": null,
-      "openingDate": "2026-10-30",
-      "verdict": "likely-contamination",
-      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 11,
-        "distinctYears": [
-          2014,
-          2015,
-          2023
-        ],
-        "spanDays": 3131,
-        "flaggedCount": 11,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "express-uk--neil-norman.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "express-uk",
-          "criticName": "Neil Norman",
-          "publishDate": "2014-07-24",
-          "url": "https://www.express.co.uk/entertainment/theatre/491278/Greek-tragedy-Medea-at-the-National-Theatre",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--arifa-akbar.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Arifa Akbar",
-          "publishDate": "2023-02-18",
-          "url": "https://www.theguardian.com/stage/2023/feb/18/medea-review-sohoplace-london",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "guardian--susannah-clapp.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Susannah Clapp",
-          "publishDate": "2023-02-18",
-          "url": "https://www.theguardian.com/stage/2023/feb/26/the-week-in-theatre-grenfell-system-failure-medea-trouble-in-butetown-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "i-paper--fiona-mountford.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "i-paper",
-          "criticName": "Fiona Mountford",
-          "publishDate": "2023-02-18",
-          "url": "https://inews.co.uk/culture/arts/medea-soho-place-review-sophie-okonedo-blisteringly-brilliant-revenge-tragedy-2159926",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "independent--alice-saville.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Alice Saville",
-          "publishDate": "2023-02-18",
-          "url": "https://www.independent.co.uk/independentpremium/culture/medea-review-sophie-okonedo-b2285262.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "standard--nick-curtis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2023-02-18",
-          "url": "https://www.standard.co.uk/culture/theatre/medea-sohoplace-review-sophie-okonedo-ben-daniels-must-see-b1061181.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--dominic-cavendish.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Dominic Cavendish",
-          "publishDate": "2023-02-18",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/medea-sohoplace-review-sophie-okonedo-gives-mythic-otherworldly/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--sam-marlowe.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "thestage",
-          "criticName": "Sam Marlowe",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thestage.co.uk/reviews/medea-review-the-byre-theatre-st-andrews",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "timeout--adam-feldman.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout",
-          "criticName": "Adam Feldman",
-          "publishDate": "2015-01-23",
-          "url": "https://www.timeout.com/newyork/theater/another-medea",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--clive-davis.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Clive Davis",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thetimes.co.uk/article/6d29aa7c-aed6-11ed-91ef-347dcf6a25f6",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--quentin-letts.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Quentin Letts",
-          "publishDate": "2023-02-18",
-          "url": "https://www.thetimes.co.uk/article/21e2de6c-b21e-11ed-93c1-9f4b65bf4405",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "orlando-off-west-end-2026",
       "title": "Orlando: A Pornobiography",
       "market": "west-end",
@@ -1162,23 +855,23 @@
       ]
     },
     {
-      "showId": "macbeth-off-broadway-2026",
-      "title": "Macbeth",
-      "market": "broadway",
+      "showId": "the-seagull-globe-off-west-end-2026",
+      "title": "The Seagull",
+      "market": "west-end",
       "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": null,
-      "openingDate": "2026-09-22",
+      "venue": "Sam Wanamaker Playhouse",
+      "previewsStartDate": "2027-01-15",
+      "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "11/11 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
-        "count": 10,
+        "count": 11,
         "distinctYears": [
           2022,
-          2024
+          2025
         ],
-        "spanDays": 894,
-        "flaggedCount": 10,
+        "spanDays": 1198,
+        "flaggedCount": 11,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
@@ -1189,35 +882,22 @@
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
           "outletId": "daily-mail",
-          "criticName": "Sarah Tetteh",
-          "publishDate": "2024-10-09",
-          "url": "https://www.dailymail.co.uk/tvshowbiz/article-3319922/Chic-Marion-Cotillard-flashes-hint-toned-tum-cropped-black-white-Macbeth-screening-Michael-Fassbender.html",
-          "wrongProduction": true,
-          "wrongShow": true,
-          "evaluationError": null
-        },
-        {
-          "file": "ew--leah-greenblatt.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "ew",
-          "criticName": "Leah Greenblatt",
-          "publishDate": "2022-04-29",
-          "url": "https://ew.com/theater/theater-reviews/macbeth-broadway-daniel-craig-ruth-negga/?srsltid=AfmBOooJNQuj_HN2SEY3xzhoaIUOc1g0yRU-matkmtFIUqToCGFeatx4",
+          "criticName": "Patrick Marmion",
+          "publishDate": "2025-03-07",
+          "url": "https://www.dailymail.com/tvshowbiz/article-14470617/PATRICK-MARMION-reviews-Seagull-Barbican-Theatre-West-End-drama-starring-movie-idol-thats-not-dud-bow-Cate.html",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
         {
-          "file": "financialtimes--shirley-apthorp.json",
+          "file": "express-uk--neil-norman.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
-          "outletId": "financialtimes",
-          "criticName": "Shirley Apthorp",
-          "publishDate": "2024-10-09",
-          "url": "https://www.ft.com/content/f7ebf4b5-c66e-4a01-940c-ecb280b4252c",
+          "outletId": "express-uk",
+          "criticName": "Neil Norman",
+          "publishDate": "2022-07-15",
+          "url": "https://www.express.co.uk/entertainment/theatre/1641045/the-seagull-emilia-clark-Harold-Pinter-Theatre-west-end-review",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -1229,8 +909,21 @@
           "afterReason": "wrongProduction",
           "outletId": "guardian",
           "criticName": "Arifa Akbar",
-          "publishDate": "2024-10-09",
-          "url": "https://www.theguardian.com/stage/2023/dec/16/macbeth-review-david-tennant-thrills-in-this-high-concept-production",
+          "publishDate": "2025-03-07",
+          "url": "https://www.theguardian.com/stage/2025/mar/06/the-seagull-review-cate-blanchett-thomas-ostermeier-barbican-london",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--susannah-clapp.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Susannah Clapp",
+          "publishDate": "2025-03-07",
+          "url": "https://www.theguardian.com/stage/2025/mar/16/the-week-in-theatre-the-seagull-chekhov-thomas-ostermeier-barbican-cate-blanchett-emma-corrin-tom-burke-james-graham-young-vic-adam-penfold-nottingham-playhouse-review",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -1242,34 +935,34 @@
           "afterReason": "wrongProduction",
           "outletId": "i-paper",
           "criticName": "Fiona Mountford",
-          "publishDate": "2024-10-09",
-          "url": "https://inews.co.uk/culture/arts/macbeth-donmar-warehouse-review-david-tennant-magnificent-style-over-substance-2812821",
+          "publishDate": "2025-03-07",
+          "url": "https://inews.co.uk/culture/arts/cate-blanchett-blazes-the-seagull-review-3569876?srsltid=AU7gw4WlaMfrpha3vC5V-343wduojcWXhET5qH4oN__8u8kHOCUnfaPa",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
         {
-          "file": "independent--alice-saville.json",
+          "file": "independent--jessie-thompson.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
           "outletId": "independent",
-          "criticName": "Alice Saville",
-          "publishDate": "2024-10-09",
-          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/macbeth-donmar-review-david-tennant-b2465197.html",
+          "criticName": "Jessie Thompson",
+          "publishDate": "2022-07-08",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/emilia-clarke-the-seagull-review-b2118781.html",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
         {
-          "file": "standard--nick-curtis.json",
+          "file": "standard--alice-saville.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
           "outletId": "standard",
-          "criticName": "Nick Curtis",
-          "publishDate": "2024-10-09",
-          "url": "https://www.standard.co.uk/culture/theatre/the-tragedy-of-macbeth-review-almeida-theatre-saoirse-ronan-london-b960539.html",
+          "criticName": "Alice Saville",
+          "publishDate": "2022-07-27",
+          "url": "https://www.standard.co.uk/culture/theatre/the-seagull-harold-pinter-theatre-london-review-emilia-clarke-b1011031.html",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -1281,8 +974,34 @@
           "afterReason": "wrongProduction",
           "outletId": "telegraph",
           "criticName": "Dominic Cavendish",
-          "publishDate": "2024-10-09",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/macbeth-chichester-festival-theatre-review-muted-john-simm-dervla/",
+          "publishDate": "2022-07-07",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/seagull-review-emelia-clarkes-wings-clipped-ascetic-chekhov/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--sam-marlowe.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Sam Marlowe",
+          "publishDate": "2025-10-16",
+          "url": "https://www.thestage.co.uk/reviews/the-seagull-review-royal-lyceum-theatre-edinburgh-caroline-quentin",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "timeout-london--andrzej-lukowski.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "timeout-london",
+          "criticName": "Andrzej Lukowski",
+          "publishDate": "2022-07-06",
+          "url": "https://www.timeout.com/london/theatre/the-seagull-review-1",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -1294,21 +1013,162 @@
           "afterReason": "wrongProduction",
           "outletId": "times-uk",
           "criticName": "Clive Davis",
-          "publishDate": "2024-10-09",
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/macbeth-review-more-brittas-empire-than-blasted-heath-cthw0bpcq",
+          "publishDate": "2025-03-07",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-seagull-review-cate-blanchett-barbican-32nz73mjv",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "medea-off-broadway-2026",
+      "title": "Medea",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Metropolitan Opera House",
+      "previewsStartDate": "2026-10-30",
+      "openingDate": "2026-10-30",
+      "verdict": "likely-contamination",
+      "reasoning": "10/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 10,
+        "distinctYears": [
+          2014,
+          2023
+        ],
+        "spanDays": 3131,
+        "flaggedCount": 10,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "express-uk--neil-norman.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "express-uk",
+          "criticName": "Neil Norman",
+          "publishDate": "2014-07-24",
+          "url": "https://www.express.co.uk/entertainment/theatre/491278/Greek-tragedy-Medea-at-the-National-Theatre",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
         {
-          "file": "whatsonstage--sarah-crompton.json",
+          "file": "guardian--arifa-akbar.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
-          "outletId": "whatsonstage",
-          "criticName": "Sarah Crompton",
-          "publishDate": "2024-10-09",
-          "url": "https://www.whatsonstage.com/news/ray-fearon-to-play-macbeth-in-globes-wonder-season_39744/",
+          "outletId": "guardian",
+          "criticName": "Arifa Akbar",
+          "publishDate": "2023-02-18",
+          "url": "https://www.theguardian.com/stage/2023/feb/18/medea-review-sohoplace-london",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--susannah-clapp.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Susannah Clapp",
+          "publishDate": "2023-02-18",
+          "url": "https://www.theguardian.com/stage/2023/feb/26/the-week-in-theatre-grenfell-system-failure-medea-trouble-in-butetown-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "i-paper--fiona-mountford.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "i-paper",
+          "criticName": "Fiona Mountford",
+          "publishDate": "2023-02-18",
+          "url": "https://inews.co.uk/culture/arts/medea-soho-place-review-sophie-okonedo-blisteringly-brilliant-revenge-tragedy-2159926",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "independent--alice-saville.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "independent",
+          "criticName": "Alice Saville",
+          "publishDate": "2023-02-18",
+          "url": "https://www.independent.co.uk/independentpremium/culture/medea-review-sophie-okonedo-b2285262.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--nick-curtis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Nick Curtis",
+          "publishDate": "2023-02-18",
+          "url": "https://www.standard.co.uk/culture/theatre/medea-sohoplace-review-sophie-okonedo-ben-daniels-must-see-b1061181.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--dominic-cavendish.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Dominic Cavendish",
+          "publishDate": "2023-02-18",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/medea-sohoplace-review-sophie-okonedo-gives-mythic-otherworldly/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--sam-marlowe.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Sam Marlowe",
+          "publishDate": "2023-02-18",
+          "url": "https://www.thestage.co.uk/reviews/medea-review-the-byre-theatre-st-andrews",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--clive-davis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Clive Davis",
+          "publishDate": "2023-02-18",
+          "url": "https://www.thetimes.co.uk/article/6d29aa7c-aed6-11ed-91ef-347dcf6a25f6",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--quentin-letts.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Quentin Letts",
+          "publishDate": "2023-02-18",
+          "url": "https://www.thetimes.co.uk/article/21e2de6c-b21e-11ed-93c1-9f4b65bf4405",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -1324,13 +1184,14 @@
       "previewsStartDate": "2026-12-18",
       "openingDate": null,
       "verdict": "likely-contamination",
-      "reasoning": "9/9 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "9/10 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
-        "count": 9,
+        "count": 10,
         "distinctYears": [
+          2017,
           2025
         ],
-        "spanDays": 2,
+        "spanDays": 2907,
         "flaggedCount": 9,
         "venueMentionCount": 0
       },
@@ -1415,6 +1276,19 @@
           "evaluationError": null
         },
         {
+          "file": "thestage--holly-o.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
+          "outletId": "thestage",
+          "criticName": "Holly O'",
+          "publishDate": "2017-12-31",
+          "url": "https://www.thestage.co.uk/reviews/a-christmas-carol-goes-wrong-review-on-bbc1--wonderfully-warped",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
           "file": "timeout-london--anya-ryan.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
@@ -1461,7 +1335,7 @@
       "market": "broadway",
       "status": "upcoming",
       "venue": "New York City Center",
-      "previewsStartDate": null,
+      "previewsStartDate": "2026-10-13",
       "openingDate": "2026-10-13",
       "verdict": "likely-contamination",
       "reasoning": "7/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
@@ -1479,8 +1353,8 @@
         {
           "file": "financialtimes--sarah-hemming.json",
           "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
           "outletId": "financialtimes",
           "criticName": "Sarah Hemming",
           "publishDate": "2025-10-21",
@@ -1518,8 +1392,8 @@
         {
           "file": "standard--nick-curtis.json",
           "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
           "outletId": "standard",
           "criticName": "Nick Curtis",
           "publishDate": "2025-10-21",
@@ -1531,8 +1405,8 @@
         {
           "file": "telegraph--dominic-cavendish.json",
           "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
           "outletId": "telegraph",
           "criticName": "Dominic Cavendish",
           "publishDate": "2025-10-21",
@@ -1544,8 +1418,8 @@
         {
           "file": "thestage--sam-marlowe.json",
           "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
           "outletId": "thestage",
           "criticName": "Sam Marlowe",
           "publishDate": "2025-10-21",
@@ -1557,8 +1431,8 @@
         {
           "file": "timeout-london--andrzej-lukowski.json",
           "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
           "outletId": "timeout-london",
           "criticName": "Andrzej Lukowski",
           "publishDate": "2025-10-21",
@@ -1570,100 +1444,116 @@
       ]
     },
     {
-      "showId": "school-girls-or-the-african-mean-girls-play-2026",
-      "title": "School Girls; Or, The African Mean Girls Play",
-      "market": "broadway",
+      "showId": "cinderella-west-end-2026",
+      "title": "Cinderella",
+      "market": "west-end",
       "status": "upcoming",
-      "venue": "Samuel J. Friedman Theatre",
-      "previewsStartDate": "2026-09-08",
-      "openingDate": "2026-09-08",
+      "venue": "London Palladium",
+      "previewsStartDate": "2026-12-05",
+      "openingDate": "2026-12-17",
       "verdict": "likely-contamination",
-      "reasoning": "6/6 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "reasoning": "6/7 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
-        "count": 6,
+        "count": 7,
         "distinctYears": [
+          2019,
+          2021,
+          2022,
           2023
         ],
-        "spanDays": 0,
+        "spanDays": 1204,
         "flaggedCount": 6,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
       "reviews": [
         {
-          "file": "guardian--miriam-gillinson.json",
+          "file": "ew--emlyn-travis.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "ew",
+          "criticName": "Emlyn Travis",
+          "publishDate": "2023-03-24",
+          "url": "https://ew.com/theater/theater-reviews/bad-cinderella-review-andrew-lloyd-webber-musical/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "financialtimes--sarah-hemming.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "financialtimes",
+          "criticName": "Sarah Hemming",
+          "publishDate": "2019-12-06",
+          "url": "https://www.ft.com/content/50c58d56-176c-11ea-9ee4-11f260415385?syn-25a6b1a6=1",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "guardian--chris-wiegand.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
           "outletId": "guardian",
-          "criticName": "Miriam Gillinson",
-          "publishDate": "2023-06-15",
-          "url": "https://www.theguardian.com/stage/2023/jun/18/school-girls-or-the-african-mean-girls-play-review-lyric-hammersmith",
+          "criticName": "Chris Wiegand",
+          "publishDate": "2021-08-20",
+          "url": "https://www.theguardian.com/stage/2021/aug/18/cinderella-review-not-so-much-a-ball-as-a-blast",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
         {
-          "file": "independent--culture-staff.json",
+          "file": "london-box-office--stuart-king.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
-          "outletId": "independent",
-          "criticName": "Culture Staff",
-          "publishDate": "2023-06-15",
-          "url": "https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2022-03-21",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-alw-cinderella",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
         {
-          "file": "standard--farah-najib.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "standard",
-          "criticName": "Farah Najib",
-          "publishDate": "2023-06-15",
-          "url": "https://www.standard.co.uk/culture/theatre/school-girls-or-the-african-mean-girls-play-lyric-hammersmith-review-b1087967.html",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "thestage--unknown.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
+          "file": "thestage--tim-bano.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
           "outletId": "thestage",
-          "criticName": "Unknown",
-          "publishDate": "2023-06-15",
-          "url": "https://www.thestage.co.uk/reviews/school-girls-or-the-african-mean-girls-play-review",
-          "wrongProduction": true,
+          "criticName": "Tim Bano",
+          "publishDate": "2021-08-19",
+          "url": "https://www.thestage.co.uk/long-reviews/cinderella-gillian-lynne-theatre-andrew-lloyd-webber-emerald-fennell-laurence-connor-carrie-hope-fletcher",
+          "wrongProduction": false,
           "wrongShow": false,
           "evaluationError": null
         },
         {
-          "file": "timeout-london--alice-saville.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "timeout-london",
-          "criticName": "Alice Saville",
-          "publishDate": "2023-06-15",
-          "url": "https://www.timeout.com/london/theatre/school-girls-or-the-african-mean-girls-play-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--rachel-halliburton.json",
+          "file": "times-uk--clive-davis.json",
           "readmissionRisk": "durably-excluded",
           "beforeReason": "wrongProduction",
           "afterReason": "wrongProduction",
           "outletId": "times-uk",
-          "criticName": "Rachel Halliburton",
-          "publishDate": "2023-06-15",
-          "url": "https://www.thetimes.co.uk/article/school-girls-or-the-africa-mean-girls-play-review-c26fjdvzq",
+          "criticName": "Clive Davis",
+          "publishDate": "2021-07-24",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/andrew-lloyd-webbers-cinderella-review-if-only-the-show-could-go-on-dp7wmr8kk",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--quentin-letts.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Quentin Letts",
+          "publishDate": "2021-08-19",
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/andrew-lloyd-webber-cinderella-review-fairytale-ending-emerald-fennell-h60sz5737",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -1775,7 +1665,7 @@
       "showId": "the-imaginary-invalid-2026",
       "title": "The Imaginary Invalid",
       "market": "broadway",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "Todd Haimes Theatre",
       "previewsStartDate": "2026-09-25",
       "openingDate": "2026-10-22",
@@ -1873,13 +1763,101 @@
       ]
     },
     {
+      "showId": "school-girls-or-the-african-mean-girls-play-2026",
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "market": "broadway",
+      "status": "previews",
+      "venue": "Samuel J. Friedman Theatre",
+      "previewsStartDate": "2026-09-08",
+      "openingDate": "2026-09-28",
+      "verdict": "likely-contamination",
+      "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 5,
+        "distinctYears": [
+          2023
+        ],
+        "spanDays": 0,
+        "flaggedCount": 5,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "guardian--miriam-gillinson.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Miriam Gillinson",
+          "publishDate": "2023-06-15",
+          "url": "https://www.theguardian.com/stage/2023/jun/18/school-girls-or-the-african-mean-girls-play-review-lyric-hammersmith",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "independent--culture-staff.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "independent",
+          "criticName": "Culture Staff",
+          "publishDate": "2023-06-15",
+          "url": "https://www.independent.co.uk/independentpremium/culture/romeo-juliet-winston-churchill-play-school-girls-b2358284.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "standard--farah-najib.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "standard",
+          "criticName": "Farah Najib",
+          "publishDate": "2023-06-15",
+          "url": "https://www.standard.co.uk/culture/theatre/school-girls-or-the-african-mean-girls-play-lyric-hammersmith-review-b1087967.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--unknown.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "thestage",
+          "criticName": "Unknown",
+          "publishDate": "2023-06-15",
+          "url": "https://www.thestage.co.uk/reviews/school-girls-or-the-african-mean-girls-play-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--rachel-halliburton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Rachel Halliburton",
+          "publishDate": "2023-06-15",
+          "url": "https://www.thetimes.co.uk/article/school-girls-or-the-africa-mean-girls-play-review-c26fjdvzq",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "the-curious-case-of-benjamin-button-off-broadway-2026",
       "title": "The Curious Case of Benjamin Button",
       "market": "broadway",
       "status": "upcoming",
-      "venue": "The Public Theater",
+      "venue": "The Public Theater/Newman Theater",
       "previewsStartDate": "2026-10-08",
-      "openingDate": null,
+      "openingDate": "2026-10-21",
       "verdict": "likely-contamination",
       "reasoning": "5/5 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
       "stats": {
@@ -2024,8 +2002,8 @@
         {
           "file": "times-uk--clive-davis.json",
           "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
           "outletId": "times-uk",
           "criticName": "Clive Davis",
           "publishDate": "2025-08-27",
@@ -2100,8 +2078,8 @@
         {
           "file": "times-uk--dominic-maxwell.json",
           "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
           "outletId": "times-uk",
           "criticName": "Dominic Maxwell",
           "publishDate": "2022-07-21",
@@ -2116,7 +2094,7 @@
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "title": "Who’s Afraid of Virginia Woolf?",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "Soho Place",
       "previewsStartDate": "2026-09-21",
       "openingDate": "2026-09-30",
@@ -2181,6 +2159,159 @@
           "criticName": "Peter Kessler",
           "publishDate": "2026-02-25",
           "url": null,
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "jack-and-the-beanstalk-off-west-end-2026",
+      "title": "Jack and The Beanstalk",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Hackney Empire",
+      "previewsStartDate": "2026-11-21",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "3/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 4,
+        "distinctYears": [
+          2015,
+          2022,
+          2023,
+          2025
+        ],
+        "spanDays": 3648,
+        "flaggedCount": 3,
+        "venueMentionCount": 1
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "guardian--brian-logan.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "guardian",
+          "criticName": "Brian Logan",
+          "publishDate": "2022-11-28",
+          "url": "https://www.theguardian.com/stage/2022/nov/28/jack-and-the-beanstalk-review-lyric-hammersmith",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "telegraph--claire-allfree.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "telegraph",
+          "criticName": "Claire Allfree",
+          "publishDate": "2015-11-29",
+          "url": "https://www.telegraph.co.uk/theatre/what-to-see/jack-and-the-beanstalk-hackney-empire-review/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "thestage--paul-vale.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
+          "outletId": "thestage",
+          "criticName": "Paul Vale",
+          "publishDate": "2025-11-24",
+          "url": "https://www.thestage.co.uk/reviews/jack-and-the-beanstalk-review-lyric-hammersmith-london-sonia-jalaly-nicholai-la-barrie",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "times-uk--rachel-halliburton.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "times-uk",
+          "criticName": "Rachel Halliburton",
+          "publishDate": "2023-11-27",
+          "url": "https://www.thetimes.com/uk/article/jack-and-the-beanstalk-review-not-enough-sparkle-in-this-london-panto-ktqjmgzf0?eafs_enabled=false",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "here-there-are-blueberries-2026",
+      "title": "Here There Are Blueberries",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Barrymore Theatre",
+      "previewsStartDate": "2026-11-02",
+      "openingDate": "2026-11-09",
+      "verdict": "likely-contamination",
+      "reasoning": "4/4 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 4,
+        "distinctYears": [
+          2024
+        ],
+        "spanDays": 7,
+        "flaggedCount": 4,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "nysr--david-finkle.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "nysr",
+          "criticName": "David Finkle",
+          "publishDate": "2024-05-14",
+          "url": "https://nystagereview.com/2024/05/13/here-there-are-blueberries-a-new-invaluable-holocaust-stage-documentary/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "nyt-theater--jonathan-mandell.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "nyt-theater",
+          "criticName": "Jonathan Mandell",
+          "publishDate": "2024-05-07",
+          "url": "https://newyorktheater.me/2024/05/07/here-there-are-blueberries-theater-review/",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "nytimes--jesse-green.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "nytimes",
+          "criticName": "Jesse Green",
+          "publishDate": "2024-05-14",
+          "url": "https://www.nytimes.com/2024/05/13/theater/here-there-are-blueberries-review.html",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "observer--david-cote.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "observer",
+          "criticName": "David Cote",
+          "publishDate": "2024-05-14",
+          "url": "https://observer.com/2024/05/review-here-there-are-blueberries-studies-holiday-photos-from-hell/",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2254,7 +2385,7 @@
       "title": "Jackals",
       "market": "broadway",
       "status": "upcoming",
-      "venue": "The New Group",
+      "venue": "Theatre at St. Clement's",
       "previewsStartDate": null,
       "openingDate": null,
       "verdict": "likely-contamination",
@@ -2374,133 +2505,6 @@
       ]
     },
     {
-      "showId": "cinderella-west-end-2026",
-      "title": "Cinderella",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "London Palladium",
-      "previewsStartDate": "2026-12-05",
-      "openingDate": "2026-12-17",
-      "verdict": "likely-contamination",
-      "reasoning": "2/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 3,
-        "distinctYears": [
-          2020,
-          2021
-        ],
-        "spanDays": 585,
-        "flaggedCount": 2,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "guardian--chris-wiegand.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Chris Wiegand",
-          "publishDate": "2021-08-20",
-          "url": "https://www.theguardian.com/stage/2021/aug/18/cinderella-review-not-so-much-a-ball-as-a-blast",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Josephine Balfour-Oatts",
-          "publishDate": "2020-01-13",
-          "url": "https://www.londonboxoffice.co.uk/news/post/alw-cinderella",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--marianka-swain.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "nonReview",
-          "outletId": "telegraph",
-          "criticName": "Marianka Swain",
-          "publishDate": "2021-08-18",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/cinderella-review-happy-ever-andrew-lloyd-webbers-long-awaited/",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "jack-and-the-beanstalk-off-west-end-2026",
-      "title": "Jack and The Beanstalk",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Hackney Empire",
-      "previewsStartDate": "2026-11-21",
-      "openingDate": null,
-      "verdict": "likely-contamination",
-      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 3,
-        "distinctYears": [
-          2015,
-          2022,
-          2023
-        ],
-        "spanDays": 2920,
-        "flaggedCount": 3,
-        "venueMentionCount": 1
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "guardian--brian-logan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "guardian",
-          "criticName": "Brian Logan",
-          "publishDate": "2022-11-28",
-          "url": "https://www.theguardian.com/stage/2022/nov/28/jack-and-the-beanstalk-review-lyric-hammersmith",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "telegraph--claire-allfree.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "telegraph",
-          "criticName": "Claire Allfree",
-          "publishDate": "2015-11-29",
-          "url": "https://www.telegraph.co.uk/theatre/what-to-see/jack-and-the-beanstalk-hackney-empire-review/",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "times-uk--rachel-halliburton.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "times-uk",
-          "criticName": "Rachel Halliburton",
-          "publishDate": "2023-11-27",
-          "url": "https://www.thetimes.com/uk/article/jack-and-the-beanstalk-review-not-enough-sparkle-in-this-london-panto-ktqjmgzf0?eafs_enabled=false",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "robin-hood-and-the-merry-mandem-off-west-end-2026",
       "title": "Robin Hood and the Merry Mandem",
       "market": "west-end",
@@ -2543,6 +2547,105 @@
           "criticName": "Dominic Maxwell",
           "publishDate": "2024-12-13",
           "url": "https://www.thetimes.com/culture/theatre-dance/article/robin-hood-london-palladium-panto-review-julian-clary-filth-risks-becoming-relentless-j0jfph8d2",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "miss-saigon-west-end-2026",
+      "title": "Miss Saigon",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Prince Edward Theatre",
+      "previewsStartDate": "2027-05-13",
+      "openingDate": "2027-05-27",
+      "verdict": "likely-contamination",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 2,
+        "distinctYears": [
+          2014
+        ],
+        "spanDays": 9,
+        "flaggedCount": 2,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--phil-willmott.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "london-box-office",
+          "criticName": "Phil Willmott",
+          "publishDate": "2014-05-30",
+          "url": "https://www.londonboxoffice.co.uk/news/post/miss-saigon-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "timeout-london--tim-byrne.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "previewPlaceholder",
+          "afterReason": "previewPlaceholder",
+          "outletId": "timeout-london",
+          "criticName": "Tim Byrne",
+          "publishDate": "2014-05-21",
+          "url": "https://www.timeout.com/london/theatre/miss-saigon",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "girls-off-west-end-2026",
+      "title": "Girls",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "The Maria Theatre",
+      "previewsStartDate": "2026-10-22",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Premature-scored reviews span 2 distinct years (2017, 2024) and 2586d — could be multiple legitimate prior runs or multi-production contamination; read the texts before deciding.",
+      "stats": {
+        "count": 2,
+        "distinctYears": [
+          2017,
+          2024
+        ],
+        "spanDays": 2586,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--christian-durham.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
+          "outletId": "london-box-office",
+          "criticName": "Christian Durham",
+          "publishDate": "2017-02-26",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-the-girls",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--emmie-newitt.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Emmie Newitt",
+          "publishDate": "2024-03-27",
+          "url": "https://www.londonboxoffice.co.uk/news/post/mean-girls-west-end-cast",
           "wrongProduction": true,
           "wrongShow": true,
           "evaluationError": null
@@ -2643,55 +2746,6 @@
           "criticName": "Kevin Ng",
           "publishDate": "2022-09-26",
           "url": "https://www.thetimes.com/culture/theatre-dance/article/aida-review-robert-carsens-new-production-misses-the-point-2dhm9d52m",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "tosca-off-broadway-2026",
-      "title": "Tosca",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": null,
-      "openingDate": "2026-11-01",
-      "verdict": "likely-contamination",
-      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
-      "stats": {
-        "count": 2,
-        "distinctYears": [
-          2026
-        ],
-        "spanDays": 0,
-        "flaggedCount": 2,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "broadwayworld--alexandre-diaconu.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Alexandre Diaconu",
-          "publishDate": "2026-07-02",
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-La-Monnaie-20260702",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        },
-        {
-          "file": "broadwayworld--aliya-al-hassan.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "Alexandre Diaconu",
-          "publishDate": "2026-07-02",
-          "url": "https://www.broadwayworld.com/bwwopera/article/Review-TOSCA-at-La-Monnaie-20260702",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -2888,7 +2942,7 @@
       "market": "broadway",
       "status": "upcoming",
       "venue": "New York City Center",
-      "previewsStartDate": null,
+      "previewsStartDate": "2026-10-28",
       "openingDate": "2026-10-28",
       "verdict": "needs-human-review",
       "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"New York City Center\") — too little evidence to call this a prior run on its own; read the review before deciding.",
@@ -2991,42 +3045,6 @@
       ]
     },
     {
-      "showId": "miss-saigon-west-end-2026",
-      "title": "Miss Saigon",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Prince Edward Theatre",
-      "previewsStartDate": "2027-05-13",
-      "openingDate": "2027-05-27",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Prince Edward Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2014
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--phil-willmott.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Phil Willmott",
-          "publishDate": "2014-05-30",
-          "url": "https://www.londonboxoffice.co.uk/news/post/miss-saigon-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "michael-off-west-end-2026",
       "title": "Michael",
       "market": "west-end",
@@ -3056,42 +3074,6 @@
           "criticName": "Stuart King",
           "publishDate": "2024-07-31",
           "url": "https://www.londonboxoffice.co.uk/news/post/death-of-england-michael-delroy-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "cosi-fan-tutte-off-broadway-2026",
-      "title": "Così fan tutte",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Metropolitan Opera House",
-      "previewsStartDate": null,
-      "openingDate": "2026-09-23",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Metropolitan Opera House\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2018
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "financialtimes--virginia-webb.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "financialtimes",
-          "criticName": "Virginia Webb",
-          "publishDate": "2018-03-17",
-          "url": "https://www.ft.com/content/df0e8380-290f-11e8-9274-2b13fccdc744",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -3171,78 +3153,6 @@
       ]
     },
     {
-      "showId": "table-17-off-west-end-2026",
-      "title": "Table 17",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "Kiln Theatre",
-      "previewsStartDate": "2026-09-17",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Kiln Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-01-22",
-          "url": "https://www.londonboxoffice.co.uk/news/post/under-the-table-barons-court-review",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
-      "showId": "the-sound-of-music-2027",
-      "title": "The Sound of Music",
-      "market": "broadway",
-      "status": "upcoming",
-      "venue": "Vivian Beaumont Theater",
-      "previewsStartDate": "2027-03-23",
-      "openingDate": "2027-04-15",
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Vivian Beaumont Theater\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "broadwayworld--paul-batterson.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "broadwayworld",
-          "criticName": "David Friscic",
-          "publishDate": "2025-09-24",
-          "url": "https://www.broadwayworld.com/reviews/The-Sound-of-Music",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "giant-the-play-off-west-end-2026",
       "title": "Giant The Play",
       "market": "west-end",
@@ -3272,6 +3182,42 @@
           "criticName": "Stuart King",
           "publishDate": "2025-05-03",
           "url": "https://www.londonboxoffice.co.uk/news/post/giant-harold-pinter-theatre-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
+      "title": "The Hairy Ape",
+      "market": "broadway",
+      "status": "previews",
+      "venue": "Irish Repertory Theatre",
+      "previewsStartDate": "2026-09-25",
+      "openingDate": "2026-10-04",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Irish Repertory Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2017
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "amny--matt-windman.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "amny",
+          "criticName": "Matt Windman",
+          "publishDate": "2017-04-02",
+          "url": "http://www.amny.com/entertainment/the-hairy-ape-review-a-stunning-staging-of-an-expressionist-classic-1.13351233",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
@@ -3315,42 +3261,6 @@
       ]
     },
     {
-      "showId": "the-children-off-west-end-2026",
-      "title": "The Children",
-      "market": "west-end",
-      "status": "previews",
-      "venue": "Lyric Hammersmith",
-      "previewsStartDate": "2026-09-02",
-      "openingDate": null,
-      "verdict": "needs-human-review",
-      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Lyric Hammersmith\") — too little evidence to call this a prior run on its own; read the review before deciding.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2016
-        ],
-        "spanDays": 0,
-        "flaggedCount": 1,
-        "venueMentionCount": 0
-      },
-      "suggestedPriorRun": null,
-      "reviews": [
-        {
-          "file": "london-box-office--andrew-bewley.json",
-          "readmissionRisk": "durably-excluded",
-          "beforeReason": "wrongProduction",
-          "afterReason": "wrongProduction",
-          "outletId": "london-box-office",
-          "criticName": "Andrew Bewley",
-          "publishDate": "2016-12-04",
-          "url": "https://www.londonboxoffice.co.uk/news/post/review-the-children",
-          "wrongProduction": true,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "the-pianist-off-west-end-2026",
       "title": "The Pianist",
       "market": "west-end",
@@ -3387,12 +3297,48 @@
       ]
     },
     {
+      "showId": "the-bridge-off-west-end-2026",
+      "title": "The Bridge",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Bush Theatre",
+      "previewsStartDate": "2026-10-28",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Bush Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2024
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--emmie-newitt.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Emmie Newitt",
+          "publishDate": "2024-01-30",
+          "url": "https://www.londonboxoffice.co.uk/news/post/a-view-from-the-bridge-west-end",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "la-distance-off-west-end-2026",
       "title": "La Distance",
       "market": "west-end",
-      "status": "announced",
+      "status": "upcoming",
       "venue": "Young Vic (Main House)",
-      "previewsStartDate": null,
+      "previewsStartDate": "2027-01-22",
       "openingDate": null,
       "verdict": "needs-human-review",
       "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Young Vic (Main House)\") — too little evidence to call this a prior run on its own; read the review before deciding.",
@@ -3560,6 +3506,42 @@
           "criticName": "Stacey Tyler",
           "publishDate": "2017-09-26",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-revlon-girl",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-west-end-2026",
+      "title": "Death of a Salesman",
+      "market": "west-end",
+      "status": "announced",
+      "venue": "Lyttelton Theatre",
+      "previewsStartDate": null,
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Lyttelton Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2019
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--nastazja-domaradzka.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Nastazja Domaradzka",
+          "publishDate": "2019-05-15",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-death-of-a-salesman",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

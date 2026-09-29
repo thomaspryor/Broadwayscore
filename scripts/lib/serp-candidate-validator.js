@@ -116,6 +116,7 @@ const US_DOMAIN_SUFFIXES = [
 ];
 
 const { foldDiacritics } = require('./title-match');
+const { namedNonReviewReason } = require('./non-review-url-patterns');
 
 function _loadShowsJson() {
   if (_showsJsonCache) return _showsJsonCache;
@@ -258,6 +259,24 @@ function validateSerpCandidate({ show, candidate }) {
   if (!url) {
     _recordResult(true, null);
     return { ok: true };
+  }
+
+  // ---------- Named non-review URL patterns (BRO-4101) ----------
+  // Ticketing/venue/event-listing host+path pairs (non-review-url-patterns.js's
+  // NAMED_NON_REVIEW_URL_PATTERNS) — e.g. londontheatre.co.uk/show/NNNN, a
+  // ticket-purchase page, not a review — even on hosts that DO publish real
+  // reviews under a different path. Checked BEFORE the cross-market markers
+  // below: this is a pre-fetch reject on positive evidence of the URL SHAPE,
+  // independent of production/market. Was already applied at discovery time
+  // by audit-show-review-gap.js's isReviewUrl() and the S5 probe's
+  // classifyNonReviewUrl(), but not here — so a SERP result for this URL
+  // shape reached discoverCorrectUrl() unfiltered and was ingested/scored as
+  // a review (the-last-ship-west-end-2026, 2026-09-24).
+  const named = namedNonReviewReason(url);
+  if (named) {
+    const result = { ok: false, reason: 'named-non-review-url', detail: named, confidence: 'high' };
+    _recordResult(false, result.reason);
+    return result;
   }
 
   // ---------- Cross-market hard markers (URL-domain gated) ----------

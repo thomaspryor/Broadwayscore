@@ -4,6 +4,7 @@ const path = require('path');
 
 const data = require('../data/shows.json');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `find-orphan-image-dirs.js — see file header for details.
 
@@ -17,7 +18,7 @@ if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const shows = data.shows || data;
 const ids = new Set((Array.isArray(shows) ? shows : Object.values(shows)).map(s => s.id));
 const imgDir = path.join(__dirname, '../public/images/shows');
-const dirs = fs.readdirSync(imgDir).filter(d => fs.statSync(path.join(imgDir, d)).isDirectory());
+const dirs = listShowDirs(imgDir);
 const orphans = dirs.filter(d => !ids.has(d));
 
 console.log(`Total image dirs: ${dirs.length}`);

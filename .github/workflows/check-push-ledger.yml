@@ -73,6 +73,11 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          # alert-router-attempts.jsonl (BRO-3671/BRO-3662): logDispatchAttempt()
+          # rewrites this TRACKED file on every dispatch attempt; unstaged, it
+          # makes a rebase refuse pre-flight and forces the clobber-prone merge
+          # path in push-with-retry.sh.
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --cached --quiet; then
             echo "No alert-state changes to commit."
           else

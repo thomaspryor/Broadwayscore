@@ -29,6 +29,7 @@
 
 const https = require('https');
 const { JSDOM } = require('jsdom');
+const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./table-schema-assertion');
 
 const ES_BASE_URL = 'https://en.wikipedia.org/wiki/Evening_Standard_Theatre_Award_for_';
 const FIRST_CEREMONY_YEAR = 1955; // 1st ceremony was in 1955
@@ -123,10 +124,54 @@ function extractCategoryEntries(html, category, minYear = 1990) {
   }
 
   for (const table of tables) {
-    const rows = table.querySelectorAll('tbody > tr');
+    const rowsArr = Array.from(table.querySelectorAll('tbody > tr'));
+    if (rowsArr.length === 0) continue;
+
+    // Resolve the SHOW column by header label rather than trusting the
+    // hardcoded SHOW_COL_BY_CATEGORY position alone (BRO-3596 — same
+    // column-drift class as BRO-2375: if Wikipedia reorders a category's
+    // data columns, a bare fixed index silently reads the wrong cell as the
+    // winner). Column 0 of the header is always Ceremony/Year (see file
+    // docstring); the label search operates in the same "data columns only"
+    // basis as showCol/winnerCells below (header cells minus column 0).
+    //
+    // This is a best-effort UPGRADE, never a rejection: some genuine ES
+    // tables open directly with a one-cell ceremony/ordinal row instead of a
+    // labeled multi-column header row (see the "Rowspan-combined first
+    // cell" and single-cell-ordinal branches below, which this file already
+    // handles). A short or unlabeled first row there is normal, not a sign
+    // of drift — so on any resolution failure we silently keep the fixed
+    // showCol rather than skipping the whole table (code review finding:
+    // an earlier version of this fix rejected such tables outright).
+    const headerCells = Array.from(rowsArr[0].children)
+      .filter((c) => c.tagName === 'TH' || c.tagName === 'TD')
+      .map((c) => (c.textContent || '').trim());
+    let resolvedShowCol = showCol;
+    try {
+      assertTableSchema([headerCells], { minCells: 2 });
+      const dataHeaderCells = headerCells.slice(1);
+      const candidates = ['Play', 'Musical', 'Work', 'Show'];
+      // Exact match across ALL candidates first, then substring across all
+      // candidates — otherwise an early candidate's substring match (e.g.
+      // "Play" inside "Playwright") could win over a later candidate's exact
+      // match (e.g. "Work") purely by list order.
+      let labelIdx = candidates
+        .map((l) => dataHeaderCells.findIndex((h) => h.toLowerCase() === l.toLowerCase()))
+        .find((i) => i !== -1);
+      if (labelIdx === undefined) {
+        labelIdx = candidates
+          .map((l) => findColumnIndex(dataHeaderCells, l))
+          .find((i) => i !== -1);
+      }
+      if (labelIdx !== undefined) resolvedShowCol = labelIdx;
+    } catch (err) {
+      if (!(err instanceof TableSchemaError)) throw err;
+      // No labeled multi-column header row found — fall back to showCol.
+    }
+
     let currentYear = null;
     let isFirstDataRowAfterHeader = false;
-    for (const row of rows) {
+    for (const row of rowsArr) {
       const cells = Array.from(row.children).filter((c) => c.tagName === 'TH' || c.tagName === 'TD');
       if (cells.length === 0) continue;
 
@@ -149,7 +194,7 @@ function extractCategoryEntries(html, category, minYear = 1990) {
       if (yearFromHeader != null && cells.length >= 2) {
         currentYear = yearFromHeader;
         const winnerCells = cells.slice(1);
-        const showCell = winnerCells[showCol] || winnerCells[0];
+        const showCell = winnerCells[resolvedShowCol] || winnerCells[0];
         if (showCell && currentYear >= minYear) {
           const name = extractWinner(showCell);
           if (name && !/^no award$/i.test(name)) {
@@ -171,7 +216,7 @@ function extractCategoryEntries(html, category, minYear = 1990) {
         isFirstDataRowAfterHeader = false;
         continue;
       }
-      const showCell = cells[showCol];
+      const showCell = cells[resolvedShowCol];
       if (!showCell) continue;
       const name = extractWinner(showCell);
       if (!name || /^no award$/i.test(name)) {

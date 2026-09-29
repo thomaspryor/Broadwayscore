@@ -164,6 +164,25 @@ function isCoverageComplete(windows, shows) {
 
 function nightStatePath(key) { return path.join(MON_DIR, `night-state-${key}.json`); }
 
+// Consecutive spawn-starved auth preflights (BRO-4141). Deliberately NOT in
+// night-state: carryForwardNightState() rebuilds that object from a fixed
+// field list (so an extra field never survived a tick), and the preflight
+// runs BEFORE the lock — writing night-state there could clobber a running
+// pass's attempts/spend. This tiny file is written only here, atomically.
+// ON_MONITOR_STARVED_DIR: test override only (CI has no /Users/tompryor).
+function starvedCountPath(key) { return path.join(process.env.ON_MONITOR_STARVED_DIR || MON_DIR, `auth-starved-${key}.json`); }
+function readStarvedCount(key) {
+  try { return Number(JSON.parse(fs.readFileSync(starvedCountPath(key), 'utf8')).count) || 0; } catch { return 0; }
+}
+function writeStarvedCount(key, count) {
+  try {
+    if (!count) { fs.rmSync(starvedCountPath(key), { force: true }); return; }
+    const tmp = `${starvedCountPath(key)}.${process.pid}.tmp`;
+    fs.writeFileSync(tmp, JSON.stringify({ count, at: new Date().toISOString() }) + '\n');
+    fs.renameSync(tmp, starvedCountPath(key));
+  } catch (e) { log(`could not persist starved-preflight count: ${e.message}`); }
+}
+
 // ── Did this pass actually do anything? ──────────────────────────────────
 // Two consumers, deliberately different strictness:
 //   - the alert path asks "was this worth waking the owner over?" and must be
@@ -290,57 +309,95 @@ async function alert(opts) {
 // review: the attempt cap only counts tries that reached a side effect).
 //
 // #457 root cause (2026-07-31, tao-of-glass night): the login lives in the
-// macOS Keychain (no ~/.claude/.credentials.json), which a launchd-parented
-// claude cannot open — so a pass launched with ANTHROPIC_API_KEY cleared
-// dies "Not logged in". The old preflight LIED about this: it inherited the
-// launcher's env, where load-env.js had already pulled the .env API key in,
-// so the ping billed through the key while the real pass then cleared it.
-// The preflight must probe the SAME env shape the pass will run with, and
-// when only the API key path works, the pass must be told to keep the key
-// (bounded spend: MAX_ATTEMPTS_PER_NIGHT passes, HEADLESS_MAX_WALL_MIN cap).
-function authPing(extraEnv) {
-  const r = spawnSync('claude', ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
-    { encoding: 'utf8', timeout: 120000, env: { ...process.env, ...extraEnv } });
-  if (r.status !== 0) return { ok: false, detail: (r.stderr || r.stdout || `exit ${r.status}`).slice(0, 300) };
-  // Positive validation (codex review 2026-07-31): require the envelope to
-  // actually contain the pong. The broken-auth CLI exits 0 with
-  // subtype:"success" and result:"Not logged in · Please run /login", and
-  // future CLI versions may reword that — so never grep for the error
-  // string, prove the success instead.
-  try {
-    const body = JSON.parse(r.stdout);
-    if (body.is_error === false && /pong/i.test(String(body.result || ''))) return { ok: true };
-    return { ok: false, detail: `ping returned no pong: ${String(body.result || r.stdout).slice(0, 200)}` };
-  } catch {
-    return { ok: false, detail: `unparseable ping output: ${String(r.stdout || r.stderr).slice(0, 200)}` };
-  }
-}
-
-// Pure decision, extracted for tests (CLAUDE.md rule 15): which auth mode
-// should the pass use given the two probe outcomes and key availability?
-function resolvePassAuth({ storedLoginOk, apiKeyPresent, apiKeyPingOk }) {
-  if (storedLoginOk) return { mode: 'oauth' };
-  if (apiKeyPresent && apiKeyPingOk) return { mode: 'api-key' };
-  return { mode: 'fail' };
-}
+// macOS Keychain, which a launchd-parented claude cannot open — so the probe
+// must use the SAME env shape the pass will run with, and when only the API
+// key path works, the pass is told to keep the key (bounded spend:
+// MAX_ATTEMPTS_PER_NIGHT passes, HEADLESS_MAX_WALL_MIN cap).
+//
+// BRO-4141: this file used to carry its OWN copy of authPing (no
+// --settings disableAllHooks, no failure classification), so the hooks-off
+// fix landed in scripts/lib/claude-cli.js never reached the one caller that
+// was emailing the owner — the ping kept running the global Stop hook's
+// ~200s claude-sync push, blew the 120s timeout, and paged "auth preflight
+// failed" with working auth. Delegate to the shared probe; never re-fork it.
+const cliAuth = require('./lib/claude-cli.js');
+const resolvePassAuth = cliAuth.resolvePassAuth;
 
 function preflightAuth() {
-  // Probe 1: the pass's real env — API key cleared, stored login only.
-  const stored = authPing({ ANTHROPIC_API_KEY: '' });
-  if (stored.ok) return { ok: true, mode: 'oauth' };
   // Operator kill switch for the pay-per-token path specifically (the
   // launcher-wide switches ON_MONITOR_DISABLED / KILL_FILE stop everything;
   // this one says "OAuth or nothing").
-  const fallbackAllowed = process.env.ON_MONITOR_NO_API_FALLBACK !== '1';
-  const apiKeyPresent = fallbackAllowed && Boolean(process.env.ANTHROPIC_API_KEY);
-  // Probe 2: only if a key exists — can the key path carry the pass?
-  const keyed = apiKeyPresent ? authPing({}) : { ok: false, detail: fallbackAllowed ? 'no ANTHROPIC_API_KEY in env' : 'API fallback disabled (ON_MONITOR_NO_API_FALLBACK=1)' };
-  const decision = resolvePassAuth({ storedLoginOk: false, apiKeyPresent, apiKeyPingOk: keyed.ok });
-  if (decision.mode === 'api-key') {
-    log(`preflight: stored login unreachable (${stored.detail.slice(0, 120)}) — falling back to ANTHROPIC_API_KEY (pay-per-token; spend hard-capped by NIGHTLY_USD_CAP $${NIGHTLY_USD_CAP}/night, disable with ON_MONITOR_NO_API_FALLBACK=1). Run \`claude setup-token\` + add CLAUDE_CODE_OAUTH_TOKEN to restore subscription billing.`);
-    return { ok: true, mode: 'api-key', storedDetail: stored.detail };
+  const allowApiKeyFallback = process.env.ON_MONITOR_NO_API_FALLBACK !== '1';
+  return cliAuth.preflightAuth({
+    allowApiKeyFallback,
+    log: msg => log(`${msg} (spend hard-capped by NIGHTLY_USD_CAP $${NIGHTLY_USD_CAP}/night, disable with ON_MONITOR_NO_API_FALLBACK=1)`),
+  });
+}
+
+/**
+ * One failed auth preflight tick (BRO-4141): bump/clear the starved counter,
+ * route the alert, return the routing verdict. Extracted so a test can drive
+ * several real consecutive ticks through the persisted counter.
+ */
+async function handleAuthFailure({ auth, key, windows, now }) {
+  // Key off the stored-login probe (the credential the pass uses): a revoked
+  // login must page as auth even if the API-key probe happened to time out.
+  const failReason = auth.storedReason || auth.reason;
+  const isStarved = authFailureRouting({ reason: failReason, consecutiveStarved: 0 }).kind === 'starved';
+  const consecutiveStarved = isStarved ? readStarvedCount(key) + 1 : 0;
+  writeStarvedCount(key, consecutiveStarved);
+  const route = authFailureRouting({ reason: failReason, consecutiveStarved });
+  log(`auth preflight failed (${failReason || 'unknown'}${isStarved ? `, ${consecutiveStarved} in a row` : ''}) — ${route.page ? 'paging owner' : 'digest only, next tick retries'}`);
+  const shows = windows.map(w => w.showId).join(', ');
+  if (route.kind === 'auth') {
+    await alert({
+      conditionKey: `on-monitor-auth-failed-${now.toISOString().slice(0, 10)}`,
+      title: 'Opening-night monitor: claude auth preflight failed — no session launched',
+      description: `Ping failed (${auth.reason}): ${auth.detail}. A show is in its opening-night window (${shows}). ` +
+        'Stored login is Keychain-only (unreachable from launchd) and no working ANTHROPIC_API_KEY fallback. ' +
+        'Fix: `claude setup-token` and put CLAUDE_CODE_OAUTH_TOKEN in .env; the next 20-min tick retries automatically.',
+      severity: 'error', disposition: 'human', cooldownHours: 6,
+    });
+  } else {
+    // Its own page-worthy prefix once it has persisted an hour — NOT the
+    // auth-failed key, whose 6h cooldown would then swallow a real
+    // revocation page later the same day. Digest-only key otherwise.
+    await alert({
+      conditionKey: route.page
+        ? `on-monitor-auth-starved-sustained-${now.toISOString().slice(0, 10)}`
+        : `on-monitor-auth-starved-${now.toISOString().slice(0, 10)}`,
+      title: route.page
+        ? `Opening-night monitor: Mac too overloaded to start a monitor pass for ${consecutiveStarved} ticks in a row`
+        : 'Opening-night monitor: auth ping timed out (machine busy) — retrying next tick',
+      description: `Ping did not complete (${failReason}): ${auth.detail}. ` +
+        (failReason === 'spawn-error'
+          ? 'The claude program could not be started (missing or crashing binary), not a revoked login. '
+          : 'This is the Mac being starved (load/memory), not a revoked login. ') +
+        `Show(s) in window: ${shows}. ${route.page ? (failReason === 'spawn-error' ? 'No pass has started for about an hour; check `which claude` under launchd.' : 'No pass has started for about an hour; free memory / close idle Claude tabs.') : 'The next 20-min tick retries automatically.'}`,
+      severity: route.page ? 'error' : 'info', disposition: route.page ? 'human' : 'digest', cooldownHours: 6,
+    });
   }
-  return { ok: false, detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
+  return route;
+}
+
+// How many consecutive spawn-starved/spawn-error preflights (one per 20-min
+// tick) before the owner is paged. A ping that times out because the Mac is
+// overloaded is not a credential problem and heals on the next tick; only a
+// sustained hour with zero monitor coverage is worth an email.
+const STARVED_PREFLIGHT_PAGE_AFTER = 3;
+
+/**
+ * Pure routing for a failed preflight (CLAUDE.md rule 15, BRO-4141).
+ * auth-rejected pages at once (real credential outage). spawn-starved /
+ * spawn-error go to the digest until STARVED_PREFLIGHT_PAGE_AFTER in a row.
+ * @param {{reason?: string, consecutiveStarved: number}} p consecutiveStarved INCLUDES this failure
+ * @returns {{page: boolean, kind: 'auth'|'starved'}}
+ */
+function authFailureRouting({ reason, consecutiveStarved }) {
+  if (reason !== cliAuth.AUTH_PING_REASONS.SPAWN_STARVED && reason !== cliAuth.AUTH_PING_REASONS.SPAWN_ERROR) {
+    return { page: true, kind: 'auth' };
+  }
+  return { page: consecutiveStarved >= STARVED_PREFLIGHT_PAGE_AFTER, kind: 'starved' };
 }
 
 function buildSeed(windows, { attempt, rehearsal, key, now = new Date() }) {
@@ -546,16 +603,10 @@ async function main(argv = process.argv.slice(2)) {
 
   const auth = preflightAuth();
   if (!auth.ok) {
-    await alert({
-      conditionKey: `on-monitor-auth-failed-${now.toISOString().slice(0, 10)}`,
-      title: 'Opening-night monitor: claude auth preflight failed — no session launched',
-      description: `Ping failed: ${auth.detail}. A show is in its opening-night window (${windows.map(w => w.showId).join(', ')}). ` +
-        'Stored login is Keychain-only (unreachable from launchd) and no working ANTHROPIC_API_KEY fallback. ' +
-        'Fix: `claude setup-token` and put CLAUDE_CODE_OAUTH_TOKEN in .env; the next 20-min tick retries automatically.',
-      severity: 'error', disposition: 'human', cooldownHours: 6,
-    });
+    await handleAuthFailure({ auth, key, windows, now });
     return 1;
   }
+  if (readStarvedCount(key)) writeStarvedCount(key, 0);
 
   // Atomic lock: mkdir is the test-and-set. A concurrent tick (launchd
   // overlap after a slow tick) loses the race here and exits — the
@@ -742,7 +793,7 @@ async function main(argv = process.argv.slice(2)) {
   return 0;
 }
 
-module.exports = { parseArgs, monitorCandidates, buildSeed, resolvePassAuth, alert, main };
+module.exports = { parseArgs, monitorCandidates, buildSeed, resolvePassAuth, authFailureRouting, STARVED_PREFLIGHT_PAGE_AFTER, readStarvedCount, writeStarvedCount, handleAuthFailure, alert, main };
 
 if (require.main === module) {
   main().then(code => process.exit(code)).catch(e => {

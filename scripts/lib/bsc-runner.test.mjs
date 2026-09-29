@@ -13,9 +13,14 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { runJob } = require('./bsc-runner.js');
+const { scanFile } = require('../audit-alert-senders.js');
+
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 function withEnv(vars, fn) {
   const saved = {};
@@ -57,4 +62,21 @@ test('runJob: killSwitchEnv override — LINEAR_NEXT_DISABLED=1 gates the linear
     assert.equal(res.ok, false);
     assert.equal(res.stage, 'runner-disabled');
   });
+});
+
+// BRO-2421 regression: bsc-runner.js's disk-pressure path used to call
+// sendAlert(email:true) directly, bypassing owner-alert-router.js's
+// ACTION-only bar + dedup (fixed under BRO-417 by swapping to
+// routeAlert(disposition:'digest')). Calls the SAME regex scanner
+// audit-alert-senders.js's CI gate runs (not a reimplementation, CLAUDE.md
+// §15) so a future direct sendAlert() bypass reintroduced into this file
+// fails here too, not just in the separate CI lint job.
+test('bsc-runner.js: no direct sendAlert(email:true) bypass of owner-alert-router (BRO-2421)', () => {
+  const absPath = path.join(__dirname, 'bsc-runner.js');
+  const findings = scanFile(absPath, 'scripts/lib/bsc-runner.js');
+  const direct = findings.filter((f) => f.classification === 'direct');
+  assert.deepEqual(direct, [], `expected no direct sendAlert bypass, found: ${JSON.stringify(direct)}`);
+
+  const routed = findings.filter((f) => f.kind === 'routeAlert');
+  assert.ok(routed.length >= 1, 'expected bsc-runner.js to route its alert(s) through routeAlert()');
 });

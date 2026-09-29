@@ -32,6 +32,7 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { wrongShowCleared } = require('./lib/review-guards');
+const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const {
   buildExcerptIndex,
   findCrossShowMatches,
@@ -226,6 +227,7 @@ function main() {
           // audit-cross-attribution-by-critic.js's --apply already applies.
           if (!data.wrongShow && !data.wrongProduction && !wrongShowCleared(data)) {
             data.wrongShow = true;
+            invalidateWrongShowAutoClear(data);
             data.wrongShowReason = `Cross-attribution (BRO-461 excerpt-only backfill audit): ${eligibleMatch.targetField} content verbatim-matches ${eligibleMatch.matchedShowId}/${eligibleMatch.matchedFile}'s ${eligibleMatch.matchedField}, which already carries verified wrong-show content for the identical text (match length ${eligibleMatch.matchLength} chars).`;
             data.crossAttributionAudit = {
               detectedShowId: eligibleMatch.matchedShowId,

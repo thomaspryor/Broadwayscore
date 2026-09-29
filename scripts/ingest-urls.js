@@ -18,11 +18,19 @@
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
+const { downstreamWorkflows } = require('./lib/ingest-downstream');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveOutletFromUrl } = require('./lib/review-normalization');
-const { extractArticleTextFromUrl } = require('./lib/article-extractor');
+const { extractArticleTextFromUrl, extractPublishDate } = require('./lib/article-extractor');
+const { extractAuthorFromHtml } = require('./lib/content-quality');
 const { execErrorDetail } = require('./lib/exec-error-detail');
+
+// An override id is used verbatim; flag a typo instead of writing a file under a bogus outletId.
+function isRegisteredOutletId(id) {
+  const reg = require('../data/outlet-registry.json');
+  return Object.prototype.hasOwnProperty.call(reg.outlets || {}, id);
+}
 
 // Parse CLI args
 const args = process.argv.slice(2);
@@ -116,6 +124,11 @@ async function main() {
     // Resolve outlet
     let outletId = outletOverride;
     let outletName = outletOverride;
+    if (outletOverride && !isRegisteredOutletId(outletOverride)) {
+      const msg = `Outlet override "${outletOverride}" is not in data/outlet-registry.json — check the id: ${url}`;
+      results.warnings.push(`${prefix} ${msg}`);
+      console.log(`::warning::${msg}`);
+    }
 
     if (!outletId) {
       const resolved = resolveOutletFromUrl(url);
@@ -142,6 +155,8 @@ async function main() {
     // Fetch text if requested
     let fullText = null;
     let fetchMethod = null;
+    let criticName = null;
+    let publishDate = null;
     if (fetchPage && !noFetch) {
       try {
         if (verbose) console.log(`    Fetching text...`);
@@ -152,6 +167,16 @@ async function main() {
           // raw chrome. Falls back to raw HTML only if no extractor pattern
           // matched and the raw HTML doesn't look like a full page.
           const extracted = extractArticleTextFromUrl(result.content, url);
+          // Name the critic now, the same way the collector does. Leaving every
+          // ingest as 'Unknown' created an --unknown file that a later rebuild
+          // merged into the named sibling and deleted (BRO-4185 follow-up).
+          try { criticName = extractAuthorFromHtml(result.content, extracted || '', { url }) || null; } catch { criticName = null; }
+          // Page metadata date (article:published_time / JSON-LD / <time>),
+          // from the HTML already in hand. Without it the file's date came
+          // from a later LLM guess, which slipped years and tripped the date
+          // guard on in-window reviews (BRO-4185 B). Merges fill it only
+          // when the file has none.
+          try { publishDate = extractPublishDate(result.content, url) || null; } catch { publishDate = null; }
           if (extracted && extracted.length >= 200) {
             fullText = extracted;
             if (verbose) console.log(`    ✓ Extracted ${fullText.length} chars (article body) via ${fetchMethod}`);
@@ -171,11 +196,12 @@ async function main() {
     const input = {
       outletId,
       outlet: outletName,
-      criticName: 'Unknown', // Will be populated by collect-review-texts later
+      criticName: criticName || 'Unknown', // collect-review-texts fills it in later when the page gave none
       url,
       source: 'ingest-urls',
       fields: {},
     };
+    if (publishDate) input.publishDate = publishDate;
 
     if (fullText) {
       input.fields.fullText = fullText;
@@ -214,6 +240,13 @@ async function main() {
     results.warnings.forEach(w => console.log(`    ⚠️  ${w}`));
   }
   console.log('━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━');
+  // A dropped URL must show on the run page, not only in the log of a green
+  // run (BRO-4185: Box Office Radio was skipped as an unknown outlet and the
+  // workflow reported success). Not a job failure: the next step commits the
+  // URLs that did succeed.
+  if (process.env.GITHUB_ACTIONS && results.failed > 0) {
+    console.log(`::warning::${results.failed} URL(s) not ingested for ${showId} — ${results.warnings.join(' | ').slice(0, 900)} (for an unknown outlet, re-dispatch with "URL outlet-id")`);
+  }
 
   // Push new review-text files to the private broadway-review-texts repo
   // BEFORE triggering workflows — CI checks out review-texts from GitHub, so
@@ -260,10 +293,7 @@ async function main() {
   if (newReviews > 0 && !noRebuild && !dryRun) {
     console.log('\nTriggering downstream pipelines...');
 
-    const workflows = [
-      { name: 'LLM Ensemble Score', file: 'llm-ensemble-score.yml', args: `-f show=${showId}` },
-      { name: 'Rebuild Reviews', file: 'rebuild-reviews.yml', args: `-f reason="ingest-urls: ${newReviews} reviews for ${showId}"` },
-    ];
+    const workflows = downstreamWorkflows(showId, newReviews);
 
     for (const wf of workflows) {
       try {
@@ -272,7 +302,10 @@ async function main() {
         execSync(cmd, { stdio: 'pipe' });
         console.log(`  ✓ ${wf.name} triggered`);
       } catch (e) {
-        console.log(`  ⚠️  ${wf.name} failed to trigger: ${e.message}`);
+        // ::warning:: so a failed dispatch is visible on the run page, not
+        // just buried in the log of a green run (BRO-4185: this failed on
+        // every run for as long as the arg was `-f show=`).
+        console.log(`::warning::${wf.name} failed to trigger for ${showId}: ${String(e.message).split('\n')[0]}`);
       }
     }
 

@@ -55,8 +55,9 @@ const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
-const { shouldSkipAlreadyAttempted } = require('./lib/collection-attempt-guard.js');
-const { protectStagedDeletions } = require('./lib/review-write-guard.js');
+const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
+const { protectStagedDeletions, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard.js');
+const { shouldPushReviewTextsCheckpoint } = require('./lib/review-texts-checkpoint-gate.js');
 const { sbPageBudgetDecision, resolveSbPageCreditBudget } = require('./lib/crt-sb-credit-guard.js');
 const https = require('https');
 
@@ -99,21 +100,24 @@ process.on('unhandledRejection', (reason, promise) => {
 const { extractScore, extractDesignation, extractNYTCriticsPick, OUTLET_VERIFIED_SOURCES, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 const { findBoldHeaderAnchors, loadShows: loadSplitterShows } = require('./lib/multi-show-splitter');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
+// BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
+// to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
+const { extractArticleText: extractArticleTextFromHtml } = require('./lib/article-extractor');
 
 // Text cleaning (entity decoding, junk stripping)
-const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS } = require('./lib/text-cleaning');
+const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
 
 // LLM-based content verification
 const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash } = require('./lib/content-verifier');
 const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
-const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor } = require('./lib/content-quality');
+const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
 const { runScoreExtractorPrePass } = require('./lib/score-extractor-prepass');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
-const { isTourReviewExcerpt, isFilmTvReview } = require('./lib/excerpt-validation');
+const { isTourReviewExcerpt, tourContextForShow, isFilmTvReview } = require('./lib/excerpt-validation');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const {
   NO_DATE_SENTINEL,
@@ -144,14 +148,15 @@ const {
   isWithinTourLeg,
   shouldPreserveExclusionFlagsOnUrlRecovery,
 } = require('./lib/wrong-production-autoclear');
-const { shouldRetryGarbageConsentWall } = require('./lib/consent-refetch');
+const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText } = require('./lib/consent-refetch');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
-const { shouldSkipPollerUpdate, safeRenameReview } = require('./lib/review-write-guard');
+const { shouldSkipPollerUpdate, safeRenameReview, invalidateWrongShowAutoClear, shouldMarkUrlCollisionDuplicate } = require('./lib/review-write-guard');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 const { extractDateFromUrl: extractDateFromUrlCanonical } = require('./lib/rebuild-helpers');
 const { parseDate } = require('./lib/date-utils');
+const { findExistingFileForUrl, decideSameUrlDifferentFileGuard } = require('./lib/review-url-clusters');
 
 /**
  * Rename a review-text file to match its in-memory criticName when one of the
@@ -186,6 +191,43 @@ function renameReviewFileForCriticOverride(review, data, extractedAuthor) {
 
   if (newFilename === currentFile) {
     return { action: 'noop' };
+  }
+
+  // Same URL already promoted under a DIFFERENT critic name/file — rotating-byline
+  // outlets (Times UK, WhatsOnStage: a "more from our critics" recirc widget) return
+  // a different extracted byline on the SAME url across fetches, so the exact-filename
+  // check below only catches a collision with the freshly-computed newFilename; it
+  // misses a sibling already promoted under some OTHER name for this url. That gap is
+  // the byline-explosion root cause (BRO-1391), fixed for the _pending drain in
+  // replay-pending-bylines.js and shared here (BRO-3550) so this 3x-daily primary
+  // collection pipeline gets the same protection instead of minting a second primary.
+  //
+  // The decision on whether to actually mark duplicate is delegated to
+  // shouldMarkUrlCollisionDuplicate — the SAME check safeWriteReview's own URL-collision
+  // path uses — rather than marking unconditionally: an empty/near-empty sibling found
+  // first must never bury a substantive recovered review, and a prior deliberate
+  // _duplicateOfCleared must never be silently re-flagged (ship-check, Codex review).
+  const showId = data.showId || review.showId;
+  if (data.url && showId) {
+    const existingSameUrl = findExistingFileForUrl(CONFIG.reviewTextsDir, showId, outletId, data.url, currentFile);
+    let colliderData = null;
+    if (existingSameUrl && existingSameUrl !== currentFile && existingSameUrl !== newFilename) {
+      try {
+        colliderData = JSON.parse(fs.readFileSync(path.join(showDir, existingSameUrl), 'utf8'));
+      } catch { /* unreadable collider — shouldMarkUrlCollisionDuplicate treats null as "mark" (historical behavior) */ }
+    }
+    const guardResult = decideSameUrlDifferentFileGuard({
+      currentFile, newFilename, existingSameUrl, newData: data, colliderData,
+      shouldMarkDuplicate: shouldMarkUrlCollisionDuplicate,
+    });
+    if (guardResult) {
+      data.duplicateOf = guardResult.duplicateOf;
+      data.duplicateTextOf = guardResult.duplicateOf;
+      data.duplicateReason = guardResult.duplicateReason;
+      delete data.duplicateClearReason;
+      console.warn(`    ⚠ Same URL already promoted as ${guardResult.duplicateOf} — marking ${currentFile} duplicateOf instead of renaming to ${newFilename}`);
+      return { action: 'conflict', newFile: guardResult.duplicateOf };
+    }
   }
 
   const newPath = path.join(showDir, newFilename);
@@ -490,15 +532,28 @@ const UNCOLLECTABLE_OUTLETS = (() => {
   return set;
 })();
 
+// BRO-4058 follow-up (2026-09-22): outlets whose <title>/og:title tag is
+// systemically unreliable — confirmed live for pages-on-stages, where the
+// <title> consistently reflects a DIFFERENT post than the one at the fetched
+// URL (a theme/widget bug, not a per-post fluke: verified on 2 independent
+// URLs). Passing that html to validateContentMentionsShow's <title>
+// cross-check risks a false url_content_mismatch reject whenever the wrong
+// title happens to collide with a real catalog show (birthright-off-broadway-
+// 2026: <title> read "The Heart", a real different show). Body-mention
+// evidence alone (htmlTitleMatch=null path, already the no-HTML behavior)
+// is the reliable signal for these outlets.
+const UNRELIABLE_TITLE_OUTLETS = new Set(['pages-on-stages']);
+
 // Domain alias matching — imported from shared lib (scraper.js)
 const { domainMatchesExpected, checkScrapingBeeCredits, getScraperStats } = require('./lib/scraper');
-const { shouldCountFailure, isPermanentlyFailed } = require('./lib/failed-fetch-policy');
+const { shouldCountFailure, isPermanentlyFailed, shouldReopenStaleContentMismatch } = require('./lib/failed-fetch-policy');
 const { consultBrightData } = require('./lib/brightdata-caps');
 const { recordBdCall } = require('./lib/bd-telemetry');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
+const { neutralizeStaleFlagsOnBodyReplacement } = require('./lib/stale-flag-neutralization');
 const { emitStage } = require('./lib/stage-latency');
 
 // Outlet-specific Playwright wait configurations
@@ -3731,9 +3786,14 @@ const { extractArticleTextFromDocument } = require('./lib/dom-article-extractor'
 
 async function extractArticleText(page) {
   // Serialize the lib function and run it in the browser. Wrapping in
-  // `(${fn.toString()})(document)` evaluates the IIFE with the browser's
-  // own document. Function must be self-contained — no closures.
-  return await page.evaluate(`(${extractArticleTextFromDocument.toString()})(document)`);
+  // `(${fn.toString()})(document, url)` evaluates the IIFE with the browser's
+  // own document. Function must be self-contained — no closures. The current
+  // page URL is passed through so BRO-912's talkinbroadway.com bail-out
+  // (dom-article-extractor.js) can domain-scope itself.
+  const currentUrl = page.url();
+  return await page.evaluate(
+    `(${extractArticleTextFromDocument.toString()})(document, ${JSON.stringify(currentUrl)})`
+  );
 }
 
 /**
@@ -3783,6 +3843,24 @@ function extractFromJsonLd(html) {
 function extractTextFromHtml(html, url) {
   if (!html || typeof html !== 'string') return '';
 
+  // Talkin' Broadway (BRO-912): checked FIRST (ahead of JSON-LD/generic
+  // parsing) and authoritative — a "known outlet, don't let a bad fallback
+  // masquerade as a real extraction" host, same as WSJ/Stage/Times in
+  // scripts/lib/article-extractor.js's DEDICATED_EXTRACTOR_HOSTS. The naive
+  // "grab every <p> inside <section class='page'>" scrape this used to fall
+  // through to has no byline anchor, so on a "Past Reviews" page (multiple
+  // runs stacked on one URL) it blends every stacked run into one fullText,
+  // and it doesn't structurally exclude the newsletter-signup sidebar either
+  // — the exact garbage/bleed failure modes BRO-912 reports. Delegate to the
+  // shared, unit-tested byline-anchored extractor (task #1887) instead, which
+  // anchors on the page's "Theatre Review by {Critic} - {Date}" marker. If it
+  // returns null (no byline marker — not a real review page), return ''
+  // rather than resurrecting the naive scrape: a null here means "this TB
+  // page isn't a review", not "the good extractor merely failed".
+  if (url && url.includes('talkinbroadway.com')) {
+    return extractArticleTextFromHtml(html, url) || '';
+  }
+
   // New Yorker-specific extraction: isolate article body before generic parsing
   if (url && url.includes('newyorker.com')) {
     const nyText = extractNewYorkerFromHtml(html);
@@ -3809,16 +3887,6 @@ function extractTextFromHtml(html, url) {
     .replace(/<div[^>]*class="[^"]*(?:sharedaddy|jp-relatedposts|sd-sharing|sd-like|wpcnt|related-posts|widget|sidebar|comment|author-bio|author-info|post-tags|post-meta|social-share|share-buttons)[^"]*"[^>]*>[\s\S]*?<\/div>/gi, '')
     .replace(/<section[^>]*class="[^"]*(?:related|comments|author)[^"]*"[^>]*>[\s\S]*?<\/section>/gi, '')
     .replace(/<ul[^>]*class="[^"]*(?:social|share|tag)[^"]*"[^>]*>[\s\S]*?<\/ul>/gi, '');
-
-  // Talkin' Broadway: content lives in <section class="page">, not a <div>.
-  // Check this BEFORE the generic div-class container loop.
-  const sectionPageMatch = text.match(/<section\s+class="page">([\s\S]*?)<\/section>/i);
-  if (sectionPageMatch && sectionPageMatch[1]) {
-    const sectionPs = Array.from(sectionPageMatch[1].matchAll(/<p[^>]*>[\s\S]*?<\/p>/gi));
-    if (sectionPs.length >= 3) {
-      text = sectionPageMatch[1];
-    }
-  }
 
   // Try to isolate article body container using broad class matches.
   // Use greedy [\s\S]* bounded by a known end-marker to capture all nested divs.
@@ -4324,6 +4392,11 @@ function mapSourceMethod(method) {
 
 async function updateReviewJson(review, text, validation, archivePath, method, attempts, archiveData = {}, html = '', contentVerification = null) {
   const data = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+  // BRO-1431: snapshot the body BEFORE any mutation below, so the stale-flag
+  // neutralization call (after contentTier reclassification) can tell "this
+  // fetch just filled/replaced the body" apart from an unrelated metadata-only
+  // update. See scripts/lib/stale-flag-neutralization.js.
+  const fullTextBeforeUpdate = data.fullText || '';
 
   // EMPTY-WRITE GUARD (Joe Turner postmortem A #1, A #16) — never overwrite
   // an existing non-empty fullText with empty/whitespace, and never modify a
@@ -4467,6 +4540,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       console.log(`  ✗ ANTICIPATORY PRE-OPENING POST: ${anticip.reason}`);
       data.fullText = null;
       data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(data);
       data.wrongProductionReason = 'anticipatory_pre_opening_post';
       data.wrongProductionDetail = anticip.reason;
       data.wrongProductionDetectedAt = new Date().toISOString();
@@ -5136,6 +5210,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
           data.fullText = null;
         }
         data.wrongProduction = true;
+        invalidateWrongProductionAutoClear(data);
         // Record the diagnostic reason so future audits can distinguish LLM-detected
         // wrong-production from silent (reason-less) guard fires. Before this line was
         // added, this code path stamped wrongProduction=true with no trail — reviews
@@ -5163,6 +5238,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
         data.wrongShow = true;
         data.wrongShowReason = `Collector LLM: film/TV content (${contentVerification.confidence}) — ${(contentVerification.reasoning || '').substring(0, 200)}`;
         data.contentTier = hasExcerpts ? 'excerpt' : 'needs-rescrape';
+        invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
         console.log(`    ✗ LLM: Film/TV content (${contentVerification.confidence}) — fullText nulled`);
       }
     }
@@ -5187,14 +5263,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
 
     // Tour detection (skip tour-stop shows)
     let isTourStop = false;
+    let tourShow = null;
     try {
       if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
-      const sm = _showsJsonCache.shows.find(s => s.id === showIdForTour);
-      if (sm && sm.status === 'tour-stop') isTourStop = true;
+      tourShow = _showsJsonCache.shows.find(s => s.id === showIdForTour) || null;
+      if (tourShow && tourShow.status === 'tour-stop') isTourStop = true;
     } catch (e) { /* shows.json unavailable */ }
 
     if (!isTourStop) {
-      const tourCheck = isTourReviewExcerpt(introText);
+      const tourCheck = isTourReviewExcerpt(introText, tourContextForShow(tourShow));
       if (tourCheck.isTourReview) {
         data.possibleTourReview = true;
         data.tourSignal = tourCheck.signal;
@@ -5209,6 +5286,26 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       data.filmTvSignals = filmCheck.signals;
       console.log(`    ⚠ Heuristic fallback — possible film/TV review: ${filmCheck.signals.join(', ')}`);
     }
+  }
+
+  // BRO-1431: neutralize stale exclusion state BEFORE reclassifying content
+  // tier below — classifyContentTier()'s T5/invalid check
+  // (isEffectivelyWrongProductionOrShow) reads wrongProduction/
+  // wrongProductionAutoCleared directly, so clearing the flag AFTER
+  // classification would classify against the stale flag and stay 'invalid'
+  // for one extra run. A stub ingested via ingest-urls.js/gather-reviews.js
+  // that this fetch fills in for the first time is the common trigger — see
+  // stale-flag-neutralization.js for the full reasoning and guardrails.
+  //
+  // Only when NO fresh LLM verification ran this pass (Codex adversarial
+  // review, BRO-1431 ship-check): the `if (contentVerification) {...}` block
+  // above (~line 5063) already wrote data.contentVerification and any
+  // wrongProduction stamp from a FRESH read of THIS body — that block IS the
+  // "re-evaluate against the new text" step this module exists to unblock for
+  // callers with no LLM verification of their own (e.g. ingest-urls.js).
+  // Running this too would strip the fresh verdict it just computed.
+  if (!contentVerification) {
+    neutralizeStaleFlagsOnBodyReplacement(data, fullTextBeforeUpdate);
   }
 
   // Reclassify contentTier using canonical 5-tier system
@@ -5358,7 +5455,6 @@ function loadState() {
       const startTime = new Date(saved.startTime);
       const hoursSinceStart = (Date.now() - startTime.getTime()) / (1000 * 60 * 60);
       if (hoursSinceStart < 24) {
-        console.log(`Resuming from previous run (${saved.processed.length} already processed)`);
         state = saved;
         // Ensure tierBreakdown and all sub-arrays exist (older state files may be missing keys)
         if (!state.tierBreakdown) {
@@ -5369,6 +5465,16 @@ function loadState() {
           }
         }
         if (!state.log) state.log = [];
+        // BRO-3024: a resumed file may already carry duplicates written by a
+        // CONCURRENT run (per-show concurrency groups share this one file) or
+        // by an earlier RETRY_FAILED=true pass. Normalise BEFORE the resume
+        // line below reports a count, so the run never prints a pre-dedupe
+        // and a post-dedupe figure for the same array one line apart.
+        const inherited = dedupeAttemptState(state);
+        console.log(`Resuming from previous run (${state.processed.length} already processed)`);
+        if (inherited.processed || inherited.failed || inherited.succeededAfterFailure || inherited.tierBreakdown) {
+          console.log(`  Normalised inherited attempt state: dropped ${inherited.processed} duplicate processed, ${inherited.failed} duplicate failed, ${inherited.tierBreakdown} duplicate tier entries; moved ${inherited.succeededAfterFailure} failed-then-succeeded into recoveredAfterFailure (${state.recoveredAfterFailure?.length || 0} total)`);
+        }
         return true;
       }
     } catch (e) {
@@ -5379,6 +5485,13 @@ function loadState() {
 }
 
 function saveState() {
+  // BRO-3024: dedupe at the WRITE, not only at the read. The in-process
+  // shouldSkipAlreadyAttempted() guard is bypassed by design under
+  // RETRY_FAILED=true and cannot see a concurrent run's appends at all, so
+  // this is the only point that holds under both mechanisms — whichever run
+  // serialises last writes a unique-only array. Also makes the "(N failed)"
+  // figure in each "chore: Checkpoint" commit message truthful.
+  dedupeAttemptState(state);
   fs.mkdirSync(CONFIG.stateDir, { recursive: true });
   fs.writeFileSync(
     path.join(CONFIG.stateDir, 'progress.json'),
@@ -5563,7 +5676,16 @@ function commitChanges(processed, forcePush = false) {
  * Runs at every checkpoint so data is saved incrementally, not just at the end.
  */
 function pushReviewTextsCheckpoint(processed) {
-  if (!process.env.REVIEW_TEXTS_TOKEN || !process.env.GITHUB_ACTIONS) return;
+  const gate = shouldPushReviewTextsCheckpoint(process.env);
+  if (!gate.ok) {
+    // BRO-2381: this used to be a bare `return` — several workflow steps
+    // invoke this script without REVIEW_TEXTS_TOKEN in their env, so the
+    // mid-run checkpoint silently no-op'd for the whole run with nothing in
+    // the job log to show it. Logging makes that visible without changing
+    // behavior for the correctly-configured case.
+    console.log(`  (Skipping review-texts checkpoint push — ${gate.reason})`);
+    return;
+  }
 
   const rtDir = path.join(process.cwd(), 'data', 'review-texts');
   if (!fs.existsSync(path.join(rtDir, '.git'))) {
@@ -5584,6 +5706,21 @@ function pushReviewTextsCheckpoint(processed) {
       execSync(`git remote set-url origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
     } catch (e) {
       execSync(`git remote add origin "${remoteUrl}"`, { cwd: rtDir, stdio: 'pipe' });
+    }
+
+    // ROOT-CAUSE GUARD (2026-05-27, mirrors .github/actions/push-review-texts):
+    // the review-texts data repo contains ONLY JSON review files — never
+    // symlinks. A stray symlink committed via `git add -A` from a local
+    // session once dangled in CI and crashed the collection pipeline for
+    // ~8h. This checkpoint previously never reached here in practice (the
+    // REVIEW_TEXTS_TOKEN gate above silently no-op'd on every workflow this
+    // script runs in until BRO-2381), so it never carried this guard — now
+    // that the gate is fixed and this path actually runs mid-collection,
+    // it needs the same protection the final push action has.
+    const strayLinks = execSync("find . -type l -not -path './.git/*'", { cwd: rtDir, stdio: 'pipe' }).toString().trim();
+    if (strayLinks) {
+      console.log(`  ⚠ Removing stray symlink(s) before checkpoint commit: ${strayLinks.split('\n').join(', ')}`);
+      execSync("find . -type l -not -path './.git/*' -delete", { cwd: rtDir, stdio: 'pipe' });
     }
 
     // Stage all changes
@@ -5701,6 +5838,15 @@ function findReviewsToProcess() {
   const failedFetches = new Set();  // For retry mode: IDs to include
   const failedFetchesByReviewId = new Map(); // reviewId → ledger entry, for the per-file gate below
   let permanentSkipCount = 0;
+  // Per-run caps on retry work that must hit the network (BRO-4185): the
+  // consent/garbage drain and the one-time stale-mismatch reopen. Uncapped,
+  // the 2026-09-28 12:39 run spent its whole 300-min job budget on
+  // WhatsOnStage URLs timing out at 90s each and was cancelled. Drain entries
+  // that can be re-verified from stored text need no fetch and are uncapped.
+  const DRAIN_NETWORK_PER_RUN = 15;
+  const MISMATCH_REOPEN_PER_RUN = 20;
+  let drainNetworkSelected = 0;
+  let mismatchReopenSelected = 0;
   const failedPath = path.join(CONFIG.reviewTextsDir, 'failed-fetches.json');
   if (fs.existsSync(failedPath)) {
     try {
@@ -5811,12 +5957,25 @@ function findReviewsToProcess() {
           // so the same 14-day clock that gates collector-flagged retries gates
           // these. A separate field didn't survive the fetch path's rewrite
           // (verified 2026-06-28 — consentRefetchAt was dropped, re-fetch looped).
-          const storedTextIsGarbage = isGarbageContent(data.fullText || '').isGarbage;
-          const garbageRetryAllowed = shouldRetryGarbageConsentWall({
+          // A stored text that OPENS with a strippable IAB consent layer counts
+          // too (BRO-4185 A): the article sits after the block, but the verifier
+          // read only the consent text and flagged the review. Quarantined text
+          // (fullText nulled into wrongFullText) is checked the same way.
+          const storedTextIsGarbage = storedTextNeedsConsentRefetch(data);
+          let garbageRetryAllowed = shouldRetryGarbageConsentWall({
             hasGarbageStoredText: storedTextIsGarbage,
             lastRetryMs: data.wrongShowRetryAt ? new Date(data.wrongShowRetryAt).getTime() : null,
             nowMs: Date.now(),
           });
+          const storedSalvageable = !!salvageConsentPrefixedStoredText(data);
+          if (storedSalvageable) {
+            // No fetch involved: the network cooldown does not apply, and the
+            // once-per-file stamp (consentSalvageVerifiedAt) stops repeats.
+            garbageRetryAllowed = true;
+          } else if (garbageRetryAllowed) {
+            if (drainNetworkSelected >= DRAIN_NETWORK_PER_RUN) garbageRetryAllowed = false;
+            else drainNetworkSelected++;
+          }
           // 14-day cooldown for collector-flagged retries; a URL correction is a
           // strong signal the next fetch will succeed, so it bypasses the cooldown.
           const retryAllowed = (isCollectorFlagged && retryAge > 14 * 24 * 60 * 60 * 1000)
@@ -5828,6 +5987,9 @@ function findReviewsToProcess() {
           // Mark retry attempt — the post-fetch handler stamps wrongShowRetryAt
           // (success clears the flag; failure starts the 14-day cooldown).
           data._wrongShowRetrying = true;
+          // Either field: a clean refilled fullText can sit beside the
+          // consent-captured wrongFullText the flag was set on.
+          if (hasStrippableConsentLayer(data.fullText || '') || hasStrippableConsentLayer(data.wrongFullText || '')) data._consentLayerRetry = true;
         }
 
         // Skip if already has good text (unless retrying failed or filtering by reason)
@@ -5840,7 +6002,14 @@ function findReviewsToProcess() {
           // Re-process showNotMentioned reviews for URL discovery (even if they have long text)
           const needsUrlDiscovery = data.showNotMentioned === true && !data._showNotMentionedDiscoveryAttempted;
           // Re-collect if existing fullText is garbage (cookie consent, GDPR banners, etc.)
-          const hasGarbageText = textLen > 0 && isGarbageContent(data.fullText).isGarbage;
+          let hasGarbageText = textLen > 0 && isGarbageContent(data.fullText).isGarbage;
+          if (!hasGarbageText && textLen > 0 && hasStrippableConsentLayer(data.fullText)) {
+            // Consent-prefixed text: free when the stored article can be
+            // re-verified, otherwise a capped network refetch.
+            if (salvageConsentPrefixedStoredText(data)) hasGarbageText = true;
+            else if (drainNetworkSelected < DRAIN_NETWORK_PER_RUN) { drainNetworkSelected++; hasGarbageText = true; }
+          }
+          if (hasStrippableConsentLayer(data.fullText || '') || hasStrippableConsentLayer(data.wrongFullText || '')) data._consentLayerRetry = true;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
           if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
             continue;
@@ -5872,7 +6041,18 @@ function findReviewsToProcess() {
         // corrected URL is a strong signal the next fetch will succeed, and
         // the OLD url's failure history says nothing about the NEW one.
         const fetchFailureEntry = failedFetchesByReviewId.get(reviewId);
-        if (fetchFailureEntry && !urlCorrectedRefetch) {
+        // A content mismatch judged by an older version of the content check
+        // gets one fresh fetch under the current rule (BRO-4185 H).
+        // Capped per run; the once-per-version stamp is written when the
+        // review is actually processed (processReview), so a reopen that
+        // falls past this run's review limit keeps its attempt.
+        const reopenStaleMismatch = mismatchReopenSelected < MISMATCH_REOPEN_PER_RUN
+          && shouldReopenStaleContentMismatch(fetchFailureEntry, data, URL_CONTENT_CHECK_VERSION);
+        if (reopenStaleMismatch) mismatchReopenSelected++;
+        // A stored-text re-verify fetches nothing, so the fetch-retry
+        // lifecycle (abandonment/cooldown) does not apply to it.
+        const storedTextOnly = data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data);
+        if (fetchFailureEntry && !urlCorrectedRefetch && !reopenStaleMismatch && !storedTextOnly) {
           const fetchGate = shouldRetryFetch(showsById.get(showId) || null, data, fetchFailureEntry);
           if (!fetchGate.shouldRetry && CONFIG.reviewFilter.size === 0 && !CONFIG.showFilter) {
             logExclusion({
@@ -5996,6 +6176,13 @@ function findReviewsToProcess() {
           fetchAttempts: fileAttempts,
           wrongShow: data.wrongShow || false,
           wrongShowReason: data.wrongShowReason || null,
+          // Retry markers set by the gates above. They were never copied onto
+          // the queued review, so the post-fetch outcome handler (clear on
+          // success, cooldown stamp on failure) only ran for the SERP path.
+          _wrongShowRetrying: data._wrongShowRetrying === true,
+          _consentLayerRetry: data._consentLayerRetry === true,
+          _mismatchReopen: reopenStaleMismatch,
+          _storedSalvage: data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data),
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -6009,6 +6196,18 @@ function findReviewsToProcess() {
   // then by outlet tier priority
   const closedShowMode = process.env.CLOSED_SHOW_MODE === 'true';
   reviews.sort((a, b) => compareReviewPriority(a, b, { closedShowMode }));
+  // Stored-text re-verifies (consent-prefixed captures, BRO-4185 A) need no
+  // fetch, only one verification call, so they go first: ranked by show
+  // recency they sat past the 300-review cut on older shows run after run.
+  {
+    const salvage = reviews.filter(r => r._storedSalvage);
+    if (salvage.length) {
+      const rest = reviews.filter(r => !r._storedSalvage);
+      reviews.length = 0;
+      reviews.push(...salvage, ...rest);
+      console.log(`  Stored-text re-verifies queued first: ${salvage.length}`);
+    }
+  }
 
   // Log sort stats
   const neverAttempted = reviews.filter(r => r.fetchAttempts === 0).length;
@@ -6238,6 +6437,7 @@ function recordFailedFetch(review, reason, details = {}) {
     critic: review.critic,
     url: review.url,
     failureReason: reason,
+    ...(reason === 'url_content_mismatch' ? { checkVersion: URL_CONTENT_CHECK_VERSION } : {}),
     failureCount: counts ? prevCount + 1 : prevCount,
     lastFailedAt: new Date().toISOString(),
     firstFailedAt: existing?.firstFailedAt || new Date().toISOString(),
@@ -6442,6 +6642,16 @@ async function processReview(review) {
     }
   }
 
+  // Stale-mismatch reopen (BRO-4185 H): stamp the once-per-version attempt now
+  // that this review is really being fetched.
+  if (review._mismatchReopen && review.filePath) {
+    try {
+      const d = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+      d.contentMismatchReopenedFor = URL_CONTENT_CHECK_VERSION;
+      fs.writeFileSync(review.filePath, JSON.stringify(d, null, 2) + '\n');
+    } catch (e) {}
+  }
+
   // Safety: no URL means we can't fetch (prevents crash on no_url reviews that missed SERP)
   if (!review.url) {
     console.log('  ✗ No URL available — skipping');
@@ -6456,7 +6666,27 @@ async function processReview(review) {
   const bdBlockedBefore = getScraperStats().bdBlocked || 0;
 
   try {
-    const result = await fetchReviewText(review);
+    // Consent-prefixed capture: the article is already on disk behind the
+    // consent layer. Re-verify that stored text first; fetch only when it
+    // doesn't strip to a usable article (BRO-4185 A).
+    let result = null;
+    if (review._consentLayerRetry && review.filePath) {
+      try {
+        const stored = salvageConsentPrefixedStoredText(JSON.parse(fs.readFileSync(review.filePath, 'utf8')));
+        if (stored) {
+          // Stamp first: updateReviewJson re-reads the file, so this persists
+          // whatever the verdict, and the file is not re-verified next run.
+          try {
+            const d = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+            d.consentSalvageVerifiedAt = new Date().toISOString();
+            fs.writeFileSync(review.filePath, JSON.stringify(d, null, 2) + '\n');
+          } catch (e) {}
+          result = { text: stored, method: 'stored-text-consent-stripped', html: null, attempts: null };
+          console.log(`  ↺ Using stored text with the consent layer stripped (${stored.length} chars) — no refetch`);
+        }
+      } catch (e) { /* fall through to a normal fetch */ }
+    }
+    if (!result) result = await fetchReviewText(review);
 
     console.log(`  ✓ SUCCESS via ${result.method} (${result.text.length} chars)`);
 
@@ -6468,6 +6698,25 @@ async function processReview(review) {
       // Don't save garbage content as fullText - log as failed fetch
       console.log(`  ✗ GARBAGE CONTENT DETECTED: ${qualityCheck.issues[0] || 'invalid content'}`);
       console.log(`    Reason: ${qualityCheck.issues.join(', ')}`);
+
+      // A registration-walled The Stage page still carries the article's
+      // date, byline and standfirst above the wall. Salvage them so the
+      // review doesn't go live with no date, critic or quote (walled-page-
+      // meta.js; reader report 2026-09-26). Gap-fill only, never overwrites.
+      if (result.html && review.filePath) {
+        try {
+          const { salvageWalledPageMetaToFile } = require('./lib/walled-page-meta');
+          const salvaged = salvageWalledPageMetaToFile(review.filePath, result.html, { showTitle, expectedUrl: review.url });
+          const suspect = salvaged.find((s) => s.endsWith('Suspect'));
+          if (suspect) {
+            console.log(`    ⚠ Walled page ${suspect} for "${showTitle}" — metadata not applied`);
+          } else if (salvaged.length) {
+            console.log(`    ↳ Salvaged walled-page metadata: ${salvaged.join(', ')}`);
+          }
+        } catch (e) {
+          console.log(`    ⚠ walled-page metadata salvage failed: ${e.message}`);
+        }
+      }
 
       // Record as failed fetch with reason (increments failure count)
       recordFailedFetch(review, 'garbage_content', {
@@ -6498,9 +6747,10 @@ async function processReview(review) {
       const canonicalTitle = _showsJsonCache
         ? (_showsJsonCache.shows.find(s => s.id === review.showId)?.title || showTitle)
         : showTitle;
+      const trustHtmlTitle = !UNRELIABLE_TITLE_OUTLETS.has((review.outletId || '').toLowerCase());
       const sanity = validateContentMentionsShow(
         result.text,
-        result.html || null,
+        trustHtmlTitle ? (result.html || null) : null,
         canonicalTitle,
         review.showId
       );
@@ -6711,6 +6961,24 @@ async function processReview(review) {
       } catch (e) {}
     }
 
+    // Consent-layer refetch (BRO-4185 A): the "not a review" verdict that set
+    // isNonReview judged a consent banner. A fresh, clean, high-confidence
+    // verdict on the stripped article releases it.
+    if (review._consentLayerRetry && review.filePath) {
+      try {
+        const postData = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+        if (shouldReleaseConsentLayerNonReview(postData)) {
+          postData.isNonReview = false;
+          if (postData.rejectionReason === 'not_a_review') postData.rejectionReason = null;
+          postData.isNonReviewReason = null;
+          postData.nonReviewOverride = 'collect-review-texts: consent-layer refetch re-verified as a review (BRO-4185 A)';
+          postData.nonReviewOverrideAt = new Date().toISOString();
+          fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
+          console.log('    ✓ isNonReview cleared — consent-layer refetch re-verified as a review');
+        }
+      } catch (e) {}
+    }
+
     return { success: true, method: result.method, validation };
 
   } catch (error) {
@@ -6779,9 +7047,10 @@ async function processReview(review) {
           const retryCanonicalTitle = _showsJsonCache
             ? (_showsJsonCache.shows.find(s => s.id === review.showId)?.title || showTitle)
             : showTitle;
+          const retryTrustHtmlTitle = !UNRELIABLE_TITLE_OUTLETS.has((review.outletId || '').toLowerCase());
           const retrySanity = validateContentMentionsShow(
             retryResult.text,
-            retryResult.html || null,
+            retryTrustHtmlTitle ? (retryResult.html || null) : null,
             retryCanonicalTitle,
             review.showId
           );
@@ -7259,8 +7528,14 @@ async function main() {
   generateReport();
 }
 
-// Run
-main().catch(error => {
-  console.error('Fatal error:', error);
-  closeBrowser().finally(() => process.exit(1));
-});
+module.exports = { pushReviewTextsCheckpoint };
+
+// Run (guarded so scripts/collect-review-texts.test.mjs can require() this
+// file for pushReviewTextsCheckpoint() without kicking off a real collection
+// run — see CLAUDE.md rule 15, test extraction pattern).
+if (require.main === module) {
+  main().catch(error => {
+    console.error('Fatal error:', error);
+    closeBrowser().finally(() => process.exit(1));
+  });
+}

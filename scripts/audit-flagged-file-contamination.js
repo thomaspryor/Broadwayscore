@@ -47,6 +47,7 @@ const path = require('path');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
 const { normalizeCritic, areCriticsSimilar, isRegisteredOutlet } = require('./lib/review-normalization');
 const { foldDiacritics } = require('./lib/title-match');
+const { listShowDirs: listShowDirsSafe } = require('./lib/list-show-dirs');
 
 const args = process.argv.slice(2);
 const asJson = args.includes('--json');
@@ -131,9 +132,9 @@ function criticNamesMatch(a, b) {
 }
 
 function listShowDirs() {
-  return fs.readdirSync(RT_DIR).filter((entry) => {
+  return listShowDirsSafe(RT_DIR).filter((entry) => {
     if (showFilter && entry !== showFilter) return false;
-    try { return fs.statSync(path.join(RT_DIR, entry)).isDirectory(); } catch { return false; }
+    return true;
   });
 }
 

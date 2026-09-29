@@ -73,7 +73,12 @@ function shouldEmailAlert(severity) {
  * Send an email alert via Resend (for truly critical issues)
  * Requires RESEND_API_KEY and OWNER_EMAIL env vars.
  */
-async function sendEmailAlert({ title, description, severity = 'error', fields = [], url }) {
+// idempotencyKey (BRO-4141): Resend's Idempotency-Key makes the FIRST send
+// with a key win for 24h; a repeat returns the original id (200) or 409 if the
+// body changed. This is the only cross-runner dedup that holds when parallel
+// CI jobs each read a stale cooldown ledger (7 identical "main test.yml STILL
+// red" emails in 20 min on 2026-09-23 through a 24h cooldown).
+async function sendEmailAlert({ title, description, severity = 'error', fields = [], url, idempotencyKey }) {
   if (!shouldEmailAlert(severity)) {
     console.log(`[Alert policy] email suppressed for severity=${severity} — "${title}" (actionable-only policy; see BSC Daily / run logs)`);
     if (process.env.GITHUB_STEP_SUMMARY) {
@@ -107,15 +112,48 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
     </div>
   `;
 
+  // Callers that don't pass a key (the direct sendAlert({email:true}) senders)
+  // get one keyed on the whole message, so only an exact duplicate from a
+  // parallel runner is dropped; two different incidents that share a static
+  // title still both reach the owner.
+  const subject = `[${severityLabel[severity] || 'ALERT'}] ${title}`;
+  idempotencyKey = idempotencyKey || defaultIdempotencyKey(subject + html, Date.now());
+  const data = JSON.stringify({
+    from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
+    to: [ownerEmail],
+    subject,
+    html,
+  });
+
+  // A concurrent_idempotent_requests 409 means another runner's identical-key
+  // send is still in flight and may yet fail, so it is not proof of delivery:
+  // wait and ask again. Once that send finishes, Resend answers 200 (same body)
+  // or invalid_idempotent_request (different body), and both mean it went out.
+  for (let attempt = 0; attempt < 4; attempt++) {
+    const res = await postResendEmail(apiKey, data, idempotencyKey);
+    const outcome = classifyResendResponse(res.statusCode, res.body);
+    if (outcome === 'sent') {
+      console.log('[Email] Alert email sent successfully');
+      logOwnerEmailSent({ title, severity });
+      return true;
+    }
+    if (outcome === 'duplicate') {
+      console.log(`[Email] Duplicate suppressed by Idempotency-Key ${idempotencyKey}`);
+      return true;
+    }
+    if (outcome !== 'in-flight') {
+      console.error(`[Email] Failed to send: ${res.statusCode} ${res.body}`);
+      return false;
+    }
+    await new Promise((r) => setTimeout(r, 1500 * (attempt + 1)));
+  }
+  console.error(`[Email] Gave up: identical send still in flight after retries (${idempotencyKey})`);
+  return false;
+}
+
+function postResendEmail(apiKey, data, idempotencyKey) {
   return new Promise((resolve) => {
     try {
-      const data = JSON.stringify({
-        from: 'Broadway Scorecard <alerts@broadwayscorecard.com>',
-        to: [ownerEmail],
-        subject: `[${severityLabel[severity] || 'ALERT'}] ${title}`,
-        html,
-      });
-
       const req = https.request({
         hostname: 'api.resend.com',
         path: '/emails',
@@ -124,45 +162,49 @@ async function sendEmailAlert({ title, description, severity = 'error', fields =
           'Content-Type': 'application/json',
           'Authorization': `Bearer ${apiKey}`,
           'Content-Length': Buffer.byteLength(data),
+          'Idempotency-Key': idempotencyKey,
         },
       }, (res) => {
         let body = '';
         res.on('data', (chunk) => body += chunk);
-        res.on('end', () => {
-          if (res.statusCode >= 200 && res.statusCode < 300) {
-            console.log('[Email] Alert email sent successfully');
-            logOwnerEmailSent({ title, severity });
-            resolve(true);
-          } else {
-            console.error(`[Email] Failed to send: ${res.statusCode} ${body}`);
-            resolve(false);
-          }
-        });
+        res.on('end', () => resolve({ statusCode: res.statusCode, body }));
       });
-
-      req.on('error', (err) => {
-        console.error('[Email] Request error:', err.message);
-        resolve(false);
-      });
-
+      req.on('error', (err) => resolve({ statusCode: 0, body: `request error: ${err.message}` }));
       req.write(data);
       req.end();
     } catch (err) {
-      console.error('[Email] Error:', err.message);
-      resolve(false);
+      resolve({ statusCode: 0, body: `error: ${err.message}` });
     }
   });
 }
 
-async function sendAlert({ title, description, severity = 'error', fields = [], url, email = false }) {
+// Hashed so a long key can't lose its time bucket to Resend's 256-char cap.
+function defaultIdempotencyKey(content, nowMs) {
+  const digest = require('crypto').createHash('sha1').update(String(content)).digest('hex').slice(0, 20);
+  return `owner-alert-msg:${digest}:${Math.floor(nowMs / 3600e3)}`;
+}
+
+// Resend reuses of an Idempotency-Key (verified live 2026-09-25):
+//   200 + original id                   -> same body, already sent
+//   409 invalid_idempotent_request      -> different body, first send completed
+//   409 concurrent_idempotent_requests  -> first send still in flight
+function classifyResendResponse(statusCode, body) {
+  if (statusCode >= 200 && statusCode < 300) return 'sent';
+  const b = String(body || '');
+  if (statusCode === 409 && /concurrent_idempotent_requests/.test(b)) return 'in-flight';
+  if (statusCode === 409 && /invalid_idempotent_request/.test(b)) return 'duplicate';
+  return 'failed';
+}
+
+async function sendAlert({ title, description, severity = 'error', fields = [], url, email = false, idempotencyKey }) {
   console.log(`[Alert] ${title}: ${description}`);
   if (email) {
     // Policy suppression is not a delivery failure — sendEmailAlert logs it
     // and returns false; don't fire the ::error:: delivery-failed annotation.
     if (!shouldEmailAlert(severity)) {
-      return sendEmailAlert({ title, description, severity, fields, url });
+      return sendEmailAlert({ title, description, severity, fields, url, idempotencyKey });
     }
-    const delivered = await sendEmailAlert({ title, description, severity, fields, url });
+    const delivered = await sendEmailAlert({ title, description, severity, fields, url, idempotencyKey });
     if (!delivered) {
       // A requested-but-failed alert is itself a critical failure: this exact
       // silent path is why months of completeness alerts reached nobody
@@ -205,6 +247,8 @@ module.exports = {
   sendAlert,
   sendEmailAlert, // resolves true/false — for callers that must act on delivery failure
   shouldEmailAlert, // pure policy predicate — unit-tested in alert-email-policy.test.mjs
+  classifyResendResponse,
+  defaultIdempotencyKey,
   sendReport,
   sendNewShowNotification,
   sendMessage,

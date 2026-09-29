@@ -32,6 +32,7 @@
 
 const { fetchPage } = require('./lib/scraper');
 const { extractArticleTextFromUrl } = require('./lib/article-extractor');
+const { COOKIE_PROBES } = require('./lib/cookie-probes');
 
 // Stable review URLs per subscription/paywalled outlet. minBody is the floor
 // below which we treat the result as a paywall/extractor failure — real theater
@@ -40,13 +41,11 @@ const TARGETS = [
   { outlet: 'nytimes',   url: 'https://www.nytimes.com/2026/04/22/theater/beaches-review-broadway.html', minBody: 1500 },
   { outlet: 'variety',   url: 'https://variety.com/2026/legit/reviews/rocky-horror-show-broadway-review-revival-lacks-shock-fun-luke-evans-1236728429/', minBody: 1500 },
   // The Stage: the old probe (a 2023 A Doll's House article) is free-to-anonymous,
-  // so "✅ logged-in" was vacuous — it passed with NO cookies while every recent
-  // walled article failed (Stage went silently logged-out ~11 days). Probe a
-  // recent walled 2026 review and additionally require the registration-wall
-  // marker to be ABSENT. knownLoggedOut: no working Stage login exists until the
-  // OTP-login infra (#876) lands — report the true state but don't gate exit 1
-  // on it, or this script becomes unusable as a post-cookie-extraction gate.
-  { outlet: 'thestage',  url: 'https://www.thestage.co.uk/reviews/now-you-see-me-live-review-london-coliseum-tim-lawson-simon-painter', minBody: 1200, wallMarker: /THIS IS NOT A PAYWALL/i, knownLoggedOut: 'no working Stage login until #876 OTP infra' },
+  // so "✅ logged-in" was vacuous. The shared probe in lib/cookie-probes.js is a
+  // recent walled review and also requires the registration-wall marker to be
+  // ABSENT. knownLoggedOut stays until renew-cookies.js has had its first
+  // supervised live run (BRO-4183); report the true state but don't gate exit 1.
+  { outlet: 'thestage',  url: COOKIE_PROBES.thestage.url, minBody: COOKIE_PROBES.thestage.minBody, wallMarker: COOKIE_PROBES.thestage.wallMarker, knownLoggedOut: 'renewed by scripts/renew-cookies.js (BRO-4183) pending first supervised run' },
   { outlet: 'wsj',       url: 'https://www.wsj.com/articles/gypsy-review-audra-mcdonalds-turn-on-broadway-ff528df3', minBody: 1500 },
   { outlet: 'newyorker', url: 'https://www.newyorker.com/magazine/2023/03/20/dolls-house-review-broadway-jessica-chastain', minBody: 1500 },
   { outlet: 'wapo',      url: 'https://www.washingtonpost.com/entertainment/theater/2025/04/10/boop-smash-broadway-review/', minBody: 1500 },

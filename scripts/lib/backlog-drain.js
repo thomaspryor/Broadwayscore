@@ -133,6 +133,14 @@ function computeConcurrency(drainDispatchedTaskIds, dispatchLedgerEntries, cap =
 // loop (spent >= threshold with zero completions), windowed to backlog-
 // drain's own ledger so a run of failed drain dispatches halts further
 // attempts the same way a bad loop night would.
+// DELIBERATELY aged by write time, NOT by dispatch-reconcile.js's
+// outcomeWindowTs (BRO-3321). Spend is CONFIRMED at reconcile time, and this
+// window is only DEFAULT_SPEND_WINDOW_H = 24h. Measured on the real ledger
+// (n=55 dispatch->outcome pairs): median lag 4h, max 140h, 2 rows past 24h.
+// Aged by dispatch time, those two rows' cost falls outside the window
+// entirely and the breaker never sees the money — and a spend breaker that
+// under-counts fails OPEN, the one direction a money guard must never fail.
+// See the DO-NOT-USE list in dispatch-reconcile.js's outcomeWindowTs header.
 function computeSpendCircuitBreaker(drainLedgerEntries, opts = {}) {
   const thresholdUSD = Number.isFinite(opts.thresholdUSD) ? opts.thresholdUSD : DEFAULT_SPEND_THRESHOLD_USD;
   const windowH = Number.isFinite(opts.windowH) ? opts.windowH : DEFAULT_SPEND_WINDOW_H;

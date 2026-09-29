@@ -26,6 +26,7 @@ const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE_TEXT = `Retroactive LLM Content Verification
 
@@ -56,6 +57,7 @@ if (hasHelpFlag(process.argv.slice(2))) {
 const { verifyContent, resolveCvMarket } = require('./lib/content-verifier');
 const { isLongRunningProduction } = require('./lib/long-runner-registry');
 const { wrongShowCleared } = require('./lib/review-guards');
+const { invalidateWrongShowAutoClear, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 
 const BASE = 'data/review-texts';
@@ -90,9 +92,7 @@ for (const s of (showsData.shows || showsData)) {
 // ============================================================
 
 function getAllReviewFiles() {
-  const allDirs = fs.readdirSync(BASE).filter(d => {
-    try { return fs.statSync(path.join(BASE, d)).isDirectory(); } catch { return false; }
-  });
+  const allDirs = listShowDirs(BASE);
 
   // Apply show filters
   let dirs = allDirs;
@@ -219,6 +219,7 @@ async function processVerify(items) {
 
           if (result.wrongProduction) {
             data.wrongProduction = true;
+            invalidateWrongProductionAutoClear(data);
             data.wrongProductionReason = `Retroactive LLM verify: ${result.reasoning || reason}`;
           } else if (!wrongShowCleared(data)) {
             if (result.isFilmTv) {
@@ -228,6 +229,7 @@ async function processVerify(items) {
               data.wrongShow = true;
               data.wrongShowReason = `Retroactive LLM verify: ${result.reasoning || reason}`;
             }
+            invalidateWrongShowAutoClear(data); // BRO-3225: this file's own workflow calls push-review-texts in the SAME job
           }
 
           // Preserve fullText in wrongFullText before nulling

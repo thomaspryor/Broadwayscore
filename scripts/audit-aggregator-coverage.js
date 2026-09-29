@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const cheerio = require('cheerio');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Import existing counting functions for DTLI, Show Score, BWW
 const { extractShowScoreCount, extractDTLICount, extractBWWCount } = require('./build-aggregator-truth.js');
@@ -318,10 +319,7 @@ function main() {
     console.error('  Add `.github/actions/checkout-review-texts` to the workflow.');
     process.exit(1);
   }
-  const showDirCount = fs.readdirSync(REVIEW_TEXTS_DIR).filter(name => {
-    try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, name)).isDirectory(); }
-    catch { return false; }
-  }).length;
+  const showDirCount = listShowDirs(REVIEW_TEXTS_DIR).length;
   if (showDirCount < 200) {
     console.error(`::error::review-texts dir present but only ${showDirCount} show subdirs — expected hundreds. Bad checkout?`);
     process.exit(1);

@@ -1,10 +1,14 @@
 {
   "version": 1,
   "description": "Tracks countries already identified as bot-dominated. New bot countries trigger alerts via weekly-geo-audit.yml. See memory/analytics-real-users-segment.md for the canonical Real Users lens definition.",
-  "lastUpdated": "2026-04-10",
+  "lastUpdated": "2026-09-15",
   "knownBots": [
     "Singapore",
     "China",
-    "Vietnam"
-  ]
+    "Vietnam",
+    "Hong Kong"
+  ],
+  "notes": {
+    "Hong Kong": "PostHog-only bot geo (BRO-3419): sessions == users, ~1 page/visit, GA4 sees ~5/week. Added to REAL_USERS_WHERE in scripts/lib/posthog-query.js the same day."
+  }
 }

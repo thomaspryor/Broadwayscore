@@ -185,6 +185,37 @@ function buildReplyToAddress() {
   return REPLY_TO_EMAIL;
 }
 
+// Derives the email-worker's +claude alias from any address by inserting
+// "+claude" before the "@" (standard plus-addressing — same mailbox, distinct
+// recipient the IMAP worker's search can match).
+//
+// NOTE (BRO-40 Phase 2, verified 2026-09-15): the owner still has to
+// explicitly forward the [DRAFT] preview to this alias with edits + "ship
+// it" — a "Reply-All" does NOT do it for them. Gmail treats a +alias of your
+// own account as receive-only and deliberately excludes it from Reply-All's
+// recipient list (it's YOUR address, not a third party's), so CC'ing +claude
+// on the original send does not make it ride along on a reply. What this
+// DOES buy: the alias's mailbox already holds the original [DRAFT] message
+// (Message-ID + full content) before the owner ever forwards anything, so a
+// later forward references a message the worker can already see in-thread
+// rather than depending entirely on quoted text.
+function buildClaudeAliasAddress(email) {
+  const at = email.indexOf('@');
+  if (at === -1) throw new Error(`Invalid email address: ${email}`);
+  return `${email.slice(0, at)}+claude${email.slice(at)}`;
+}
+
+// Recipient list for the [DRAFT] preview send: the owner's own address plus
+// the +claude alias (deduped — a caller who passes an address whose local
+// part already ends in "+claude" doesn't get a nonsensical "+claude+claude"
+// second recipient tacked on).
+function buildDraftPreviewRecipients(ownerEmail) {
+  const at = ownerEmail.indexOf('@');
+  const localPart = at === -1 ? ownerEmail : ownerEmail.slice(0, at);
+  if (localPart.endsWith('+claude')) return [ownerEmail];
+  return [ownerEmail, buildClaudeAliasAddress(ownerEmail)];
+}
+
 // Canonical NEWSLETTER_EDITION parser for the weekly-newsletter scripts
 // (generate.mjs, send-test.mjs, create-broadcast-draft.mjs). Throws on any
 // unknown value instead of degrading: 'westend', 'West-End' or 'off-west-end'
@@ -955,6 +986,8 @@ module.exports = {
   buildFromAddress,
   buildReplyToAddress,
   REPLY_TO_EMAIL,
+  buildClaudeAliasAddress,
+  buildDraftPreviewRecipients,
   resolveNewsletterEdition,
   buildFooterHtml,
   buildBroadcastFooterHtml,

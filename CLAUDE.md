@@ -15,7 +15,7 @@ Global rules apply (worktree-first, branch check, commit frequently). Project ad
 ### 2. Vercel Deployment
 Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **5-min cron + content-aware gate.** Deploys only when site-relevant paths changed vs live, or deploy is >6h old (`scripts/lib/should-deploy-gate.js`; kill switch: `DEPLOY_GATE_DISABLED=true`). Lands in ~5-10 min — do NOT `gh workflow run "Deploy to Vercel"` (races the cron, re-triggers cancel-cascade); manual dispatch is emergency-only. Private core-data-only changes ride the next rebuild/6h backstop.
-- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` to poll; deploys lag 20-30 min in bursts). A cancel-cascade run reports success while its Vercel deploy is CANCELED — READY prod deployment is the only proof (2026-06-26).
+- **"Pushed" ≠ "Deployed" — verify against Vercel, not the GitHub run.** `node scripts/check-prod-deploy.js HEAD` exits 0 only when live on prod (`--wait` to poll; deploys lag 20-30 min in bursts). A cancel-cascade run reports success while its Vercel deploy is CANCELED — READY prod deployment is the only proof.
 - **CI monitoring:** see global CLAUDE.md (`wait-for-run.sh`, never `gh run watch`); project outcome checks: prod URL, check-prod-deploy.js, raw.githubusercontent.com, data-repo `git log`. Detail: `memory/feedback_github_polling_rate_limit.md`.
 
 ### 3. Core Data Rules
@@ -23,7 +23,7 @@ Git-triggered builds are BLOCKED. Deploys ONLY via `vercel-deploy.yml`.
 - **Copyrighted text, PII, API keys** → private repos, all gitignored (see §11).
 - **Session data check:** `npm run data:check` at start. Missing → `./scripts/setup-local-data.sh`.
 - **Never add stub shows.json entries without running `scripts/validate-show-venue.js` first.** Provisional/manual entries (`discoverySource: manual-user-request`/`venue-page:*`, or `provisional: true`) cross-validate against Playbill before commit: `node scripts/validate-show-venue.js --show=ID` (or `--all-provisional`). Catches wrong-year revivals + stub-from-memory dates. Regional feeder-venue exception: `memory/project_regional_expansion_watchlist.md`.
-- **Critic Score for external claims:** use `getCriticScore(showId)` from `scripts/lib/canonical-critic-scores.ts` only. Reads `public/data/shows/{id}.json:cs` so it's parity-by-definition with the live site. Never raw-mean `reviews.json` and never use `getAllShows()/engine.ts compositeScore` — both diverged in shipped copy. Rationale + incidents: `memory/feedback_critic_score_canonical_helper.md`.
+- **Critic Score for external claims:** use `getCriticScore(showId)` from `scripts/lib/canonical-critic-scores.ts` only. Reads `public/data/shows/{id}.json:cs` so it's parity-by-definition with the live site. Never raw-mean `reviews.json` and never use `getAllShows()/engine.ts compositeScore` — both diverged in shipped copy. Why: `memory/feedback_critic_score_canonical_helper.md`.
 
 ### 4. Design System (MANDATORY — read `memory/design-system.md` before ANY UI work)
 Use shared components from `src/components/show-cards/` — never create custom versions.
@@ -39,8 +39,8 @@ Use shared components from `src/components/show-cards/` — never create custom 
 **Run `/visual-qa` before any push touching UI files** (`src/**/*.{tsx,jsx,css,scss}`, `tailwind.config.*`, `src/app/**`): element crops + overflow probe + two-model LLM diff vs references. Stop hook blocks visual-correctness claims without a fresh verdict; pre-push hook blocks `git push`/`gh pr merge` without user `APPROVED: <verdictHash>`. Bypass: `NO-VERIFY: <reason>` or `ship immediately for: <reason>`. **Score badges sacred** (`w-20 sm:w-24`). Full rules: `memory/feedback_local_preview_before_push.md`.
 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
-**Linear is the source of truth — do NOT create Notion cards.** Notion is being retired; its mirror froze 2026-08-20 at task id 1285, so anything filed there since has no Linear twin and `linearMirrorGuard` can't stop two sessions taking the same work. Flow: `memory/notion-brain-workflow.md`.
-- **Session start:** `linear-brain.js create "<title>" --dispatch|--park "<reason>" --notes "..."`; output the URL. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done|Paused`.
+**Linear is the source of truth — do NOT create Notion cards.** Notion is retired (mirror froze 2026-08-20): cards filed there have no Linear twin, so `linearMirrorGuard` can't dedupe them. Flow: `memory/notion-brain-workflow.md`.
+- **Session start:** `linear-brain.js create "<title>" --dispatch|--park "<reason>" --notes "..."`; output the URL. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done`. Pause/refused Done: `linear-session.js report --status=paused`.
 - **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line. Write it when you file, not when you close.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.
 - **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log, never the "job starting" line alone. Soft cap ~8/session.
@@ -71,7 +71,7 @@ Before EVERY commit touching `src/`, `scripts/`, or config:
 6. For UI: visual verification per §5
 7. **Scoring-logic edits** — two watchlists (unit tests NOT sufficient). Inclusion: `scripts/lib/review-guards.js`, `scripts/rebuild-all-reviews.js`, `src/lib/{scoring,engine,data-core}.ts`. Score-source: `scripts/lib/{rebuild-helpers,score-extractors,score-parsers,review-normalization,score-routing}.js`. **MUST run** `node scripts/scoring-delta.js` AND `node scripts/test-temporal-override-regression.js`, paste summary (Stop hook enforces). See `memory/feedback_scoring_delta_required.md`.
 8. **Content-quality regex edits** (`scripts/lib/content-quality.js` pattern arrays) — **MUST run** `node scripts/audit-regex-patterns.js --full` (catches bare-keyword FPs unit tests miss; Stop hook enforces; also runs non-blocking in `check-corpus-drift.yml`). See `memory/feedback_content_quality_regex_fps.md`.
-**If any check fails, fix before committing.** Never push broken code.
+**If any check fails, fix before committing.**
 
 ### 13. Prompt Changes Require A/B Check (MANDATORY)
 Never rescore >100 reviews without the built-in A/B comparison. Aborts if bucket shift >5% or mean drift >5pts.
@@ -138,4 +138,5 @@ CLAUDE.md (**limit: 150 lines**) and MEMORY.md (**limit: 180 lines**) load every
 New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memory/completed-migrations.md`.
 
 ## Cloud sessions
-Cloud sessions (iOS, Mac app, claude.ai/code) have no `~/.claude/`: read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`; `node scripts/check-cloud-secrets.js` verifies secrets.
+Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
+**Owner never reviews or merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.

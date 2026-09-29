@@ -8,6 +8,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
@@ -21,9 +22,7 @@ const stats = {
 const uncalculatedReviews = [];
 
 // Process all shows
-const showDirs = fs.readdirSync(reviewTextsDir).filter(f =>
-  fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-);
+const showDirs = listShowDirs(reviewTextsDir);
 
 showDirs.forEach(showId => {
   const showDir = path.join(reviewTextsDir, showId);

@@ -169,6 +169,27 @@ Failure modes worth knowing:
   outcome after a successful PR) means the resume is dropped and a fresh
   session starts in a new worktree.
 
+## Gotcha for anything that wants Reply-All to reach this alias
+
+Verified 2026-09-15 (BRO-40 Phase 2 newsletter work). If a feature CCs or TOs
+`thomas.pryor+claude@gmail.com` on an outbound message hoping the owner's
+**Reply-All** will carry the alias into their reply automatically: it won't.
+Gmail treats a `+alias` of your own account as receive-only and deliberately
+excludes it from Reply-All's recipient list — it's "you," not a third party.
+The only mechanism that actually reaches this alias is the owner **explicitly
+addressing** a reply/forward to it (typing/selecting the address), same as
+any other recipient. Design any owner-approval-via-email flow around an
+explicit forward, not an assumed Reply-All.
+
+Separately, if such a feature CCs this alias on a message sent via a
+transactional API (Resend, etc.) rather than from the owner's own account:
+the worker's `ALLOWED_SENDERS = {GMAIL_ADDRESS}` check (line ~90) rejects any
+message not sent FROM the owner's own configured address before dispatch —
+so the outbound draft itself landing in this mailbox does NOT spawn a
+spurious Claude session (it gets claimed via the `claude-processed` label,
+then rejected at the sender check, no ack sent). Confirmed safe; no change
+needed for that half.
+
 ## Things that are NOT part of this protocol
 
 - **Thread→session resume** uses `sessions.json`, which is local per machine,

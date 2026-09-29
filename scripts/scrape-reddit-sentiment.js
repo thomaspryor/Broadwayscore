@@ -33,7 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
-const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey } = require('./lib/reddit-post-filters');
+const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
 // shows. Even after excluding such posts by title, cap how many comments any
@@ -73,6 +73,11 @@ const shardMode = shard !== null && totalShards !== null;
 const refreshStale = args.includes('--refresh-stale');
 const staleDaysArg = args.find(a => a.startsWith('--stale-days='));
 const staleDays = staleDaysArg ? parseInt(staleDaysArg.split('=')[1], 10) : 45;
+// --skip-fresh-hours=N (BRO-4215): with --shows=<ids>, drop shows whose Reddit
+// was scraped or attempted in the last N hours. The opening-night orchestrator
+// re-dispatches the same shows ~7x/day at ~10 ScrapingBee credits per request.
+const skipFreshArg = args.find(a => a.startsWith('--skip-fresh-hours='));
+const skipFreshHours = skipFreshArg ? parseFloat(skipFreshArg.split('=')[1]) : 0;
 
 // Config — subreddits per market
 const SUBREDDIT_BW = 'broadway';
@@ -347,6 +352,7 @@ async function collectShowComments(show) {
       });
     } catch (e) {
       console.error(`  Search failed in r/${subreddit}: ${e.message}`);
+      showFetchFailed = true;
       continue;
     }
 
@@ -402,15 +408,20 @@ async function collectShowComments(show) {
       comments.push(...srComments);
     } catch (e) {
       console.error(`  Comment collection failed in r/${sr}: ${e.message}`);
+      showFetchFailed = true;
     }
   }
 
   console.log(`  Collected ${comments.length} comments`);
 
-  // Filter comments (remove deleted, short, and bot messages)
+  // Filter comments (remove deleted, short, bot messages, and the Scorecard's
+  // own comments — its replies inside organic threads are the site's own
+  // coverage, not audience reaction, and must never be scored as sentiment
+  // about the show, BRO-985)
   const filtered = comments.filter(c => {
     if (!c.body || c.body.length < 15) return false;
     if (c.body === '[deleted]' || c.body === '[removed]') return false;
+    if (isOwnerComment(c)) return false;
     for (const pattern of BOT_PATTERNS) {
       if (pattern.test(c.body)) return false;
     }
@@ -425,8 +436,16 @@ async function collectShowComments(show) {
 /**
  * Process a single show
  */
+// BRO-4215 ship-check: set when a search, comment fetch, or classification
+// call FAILED for the current show (vs. genuinely finding no Reddit signal).
+// processShow returns null for both; only a clean no-data run may stamp
+// redditLastAttempted, or a partial proxy/LLM outage would mark every show
+// "fresh" and suppress retries for the whole --skip-fresh-hours window.
+let showFetchFailed = false;
+
 async function processShow(show) {
   console.log(`\nProcessing: ${show.title}`);
+  showFetchFailed = false;
 
   // 1-3. Search + collect + clean comments (each tagged with its thread title).
   const collected = await collectShowComments(show);
@@ -442,6 +461,7 @@ async function processShow(show) {
     classifications = await classifyAllComments(show.title, filtered, 150, 'gemini', 4, showContext);
   } catch (e) {
     console.error(`  Classification failed: ${e.message}`);
+    showFetchFailed = true;
     return null;
   }
 
@@ -578,6 +598,17 @@ async function main() {
       console.error(`No shows found matching: ${showsArg}`);
       process.exit(1);
     }
+    if (skipFreshHours > 0) {
+      const fresh = shows.filter(s => isRedditFresh((audienceBuzz.shows || {})[s.id], skipFreshHours));
+      if (fresh.length > 0) {
+        console.log(`Skipping ${fresh.length} show(s) with Reddit touched in the last ${skipFreshHours}h: ${fresh.map(s => s.id).join(', ')}`);
+        shows = shows.filter(s => !fresh.includes(s));
+      }
+      if (shows.length === 0) {
+        console.log('All requested shows are fresh — nothing to scrape.');
+        process.exit(0);
+      }
+    }
     console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
   } else if (refreshStale) {
     // Score-window shows: open/previews, or closed within the 3yr Reddit-
@@ -692,7 +723,9 @@ async function main() {
             console.log(`  Saved to audience-buzz.json (${successful}/${shows.length} complete)`);
           }
         }
-      } else if (refreshStale && !dryRun && !shardMode && !redditData) {
+      } else if ((refreshStale || skipFreshHours > 0) && !dryRun && !shardMode && !redditData && !showFetchFailed) {
+        // BRO-4215: also stamped under --skip-fresh-hours, or a no-data show (typical
+        // for a new opening) would never look fresh and be re-scraped every dispatch.
         // No Reddit data this run (no qualifying posts / below MIN items). Stamp an
         // attempt marker so the oldest-first --refresh-stale drain doesn't re-select
         // this no-signal show on EVERY run and stall behind it (a bounded --limit run

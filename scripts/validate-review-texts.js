@@ -415,5 +415,11 @@ function main() {
   process.exit(allErrors.length > 0 ? 1 : 0);
 }
 
-// Run
-main();
+module.exports = { validateReviewFile };
+
+// Run (guarded so tests can require() this file's exports without triggering
+// the CLI's process.exit — BRO-913: json-conflict-marker.test.mjs calls
+// validateReviewFile directly instead of re-copying its logic, CLAUDE.md §15).
+if (require.main === module) {
+  main();
+}

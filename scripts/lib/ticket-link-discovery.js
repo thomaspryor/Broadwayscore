@@ -136,13 +136,27 @@ const VENUE_SITES = [
   'thenewgroup.org',
   'lunastage.org',
   'housingworks.org',
+  'stratfordeast.com', // Theatre Royal Stratford East
+  'almeida.co.uk', // Almeida Theatre (covers ticketing.almeida.co.uk)
+  'southwarkplayhouse.co.uk',
+  'americanrepertorytheater.org', // A.R.T., Cambridge MA
+  'repertorio.nyc', // Repertorio Español
+  'borninthecity.com', // off-off-Broadway producer/ticketing site (e.g. The Gym at Judson shows)
+  'tfana.org', // Theatre for a New Audience / Polonsky Shakespeare Center (card #795)
+  'asylumnyc.com', // Asylum NYC (card #795)
 ];
 
 // SERP result paths that are listings/search hubs, never a buyable show page.
 const LISTING_PATH_FRAGMENTS = ['/search', '/category', '/discover', '/shows?', '/whats-on?'];
 
 // Resale-only marketplaces — never auto-link these.
-const RESALE_HOSTS = ['stubhub.com', 'seatgeek.com', 'vividseats.com', 'viagogo.com', 'ticketnetwork.com'];
+// gotickets.com and boxofficeticketsales.com both self-describe as resale
+// marketplaces (tickets sourced from "licensed professional sellers", not
+// sold on behalf of the venue) despite reading as generic small-venue box
+// office platforms — verified via each site's own FAQ/support pages
+// (BRO-3636 follow-up; a SERP-fallback link to gotickets.com briefly landed
+// in shows.json before this was caught).
+const RESALE_HOSTS = ['stubhub.com', 'seatgeek.com', 'vividseats.com', 'viagogo.com', 'ticketnetwork.com', 'gotickets.com', 'boxofficeticketsales.com'];
 
 /**
  * Fold diacritics + lowercase + strip punctuation. Mirrors the lesson from the

@@ -136,6 +136,20 @@ const NON_REVIEW_PATH_PATTERNS = [
   // reviews under /whats-on/ sections. The ticket-page cases are host-scoped
   // in NAMED_NON_REVIEW_URL_PATTERNS below (westendtheatre.com show pages,
   // londonboxoffice.co.uk root ticket slugs).
+  //
+  // News-announcement slugs (2026-09-25): a West Wales Chronicle
+  // "dog-man-the-musical-releases-production-photos-and-announces-new-tour-dates"
+  // post sat in dog-man-the-musical-west-end-2026 as an includable, forever-
+  // unscored "review". Measured against all 21,083 reviews.json URLs: 0 hits
+  // for each of these three shapes (bare "first-look" had 1 real review, so it
+  // is deliberately NOT here).
+  /(^|[-/])announc(es|ed|ement)([-/]|$)/i,
+  /production-photos/i,
+  /new-tour-dates/i,
+  // Photo galleries: openingnight.online/photos-becoming-hamlet-celebrates-
+  // opening-night-off-broadway/ was Becoming Hamlet's residual census "gap".
+  // 0 of 21,083 reviews.json URLs have a path segment starting "photo(s)-".
+  /(^|\/)photos?-/i,
 ];
 
 /**
@@ -176,6 +190,27 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // theater-feature section is previews/features, not reviews (Disruption
   // census counted one as a missing review, 2026-08-05).
   { host: /(^|\.)stagebuddy\.com$/, path: /^\/theater\/theater-feature\//, reason: 'feature-not-review' },
+  // MyReviewer's /DVD/ and /Blu-ray/ sections review home-video releases — for
+  // theatre, a filmed earlier production (the Globe's As You Like It DVD was
+  // ingested onto the 2026 Globe run, 2026-08-15). Never a live-run review.
+  { host: /(^|\.)myreviewer\.com$/, path: /^\/(dvd|blu-?ray|4k)\//i, reason: 'home-video-review' },
+  // The Stage's /news/ section is news; its reviews live under /reviews/.
+  // Found 2026-09-25: three live "reviews" carried /news/ URLs (serp-discovery
+  // star stubs on kiss-of-the-spider-woman-1993 and mamma-mia-2001 pointing at
+  // news of later revivals; a westendtheatre-sourced Mousetrap stub) plus a
+  // Disruption file holding an Edinburgh Fringe "travel disruption" news item.
+  { host: /(^|\.)thestage\.co\.uk$/, path: /^\/news\//, reason: 'news-article' },
+  // Census auto-ingest junk, 2026-09-25 backlog pass (each read at file level):
+  // NYTG /show/<id>-<slug> is a ticket listing ("La Traviata Tickets ... 90%") —
+  // three were LIVE scored "reviews" (la-traviata-off-broadway-2026 90,
+  // the-infinite-wrench-off-broadway-2025 82, the-house-of-the-negro-insane 49);
+  // its reviews live under /reviews/. The rest: 0 live reviews each.
+  { host: /(^|\.)newyorktheatreguide\.com$/, path: /^\/show\//, reason: 'ticketing-listing' },
+  { host: /(^|\.)gigantic\.com$/, reason: 'ticketing-reseller' },
+  { host: /(^|\.)concordtheatricals\.com$/, reason: 'licensing-listing' },
+  { host: /(^|\.)abouttheartists\.com$/, reason: 'production-database-listing' },
+  { host: /(^|\.)traverse\.co\.uk$/, path: /^\/whats-on\//, reason: 'venue-production-page' },
+  { host: /(^|\.)artsatmarblearch\.com$/, path: /^\/events\//, reason: 'venue-production-page' },
   // Seventh wave (2026-08-06 — Cats/NYSM/I'm Every Woman OWE opening audit,
   // first live exercise of #1073): ticketing/listing hosts that reached the
   // census "missing" lists — groupon deal pages and one was auto-INGESTED as a
@@ -220,6 +255,9 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // census could still report either host as a "missing review" gap for the
   // shows they were mistakenly ingested for.
   { host: /(^|\.)southbank\.london$/, reason: 'venue-production-page' },
+  // Hampstead Theatre's own /whats-on/ box-office pages (domain-filters.js
+  // VENUE_DOMAINS, 2026-09-26).
+  { host: /(^|\.)hampsteadtheatre\.com$/, reason: 'venue-production-page' },
   { host: /(^|\.)spincyclenyc\.com$/, reason: 'pr-firm-press-release' },
   // Mirrors PR_FIRM_DOMAINS' nyu.edu. Required by the write-path/discovery-path
   // parity test in non-review-url-patterns.test.mjs: without it a SERP census
@@ -262,6 +300,25 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // wrongly ingested for.
   { host: /(^|\.)schwarzmancentre\.ox\.ac\.uk$/, reason: 'venue-production-page' },
   { host: /(^|\.)culturecity\.london$/, reason: 'event-listings-page' },
+  // BRO-3374 sweep added these three to domain-filters.js's VENUE_DOMAINS
+  // without mirroring them here — the parity test in
+  // non-review-url-patterns.test.mjs caught the drift (found live during a
+  // ship-check review of an unrelated fix, BRO-3373). Whole-host, matching
+  // domain-filters.js's own scope; see that file's VENUE_DOMAINS comments for
+  // why each is a venue listing/marketing page, never a review.
+  { host: /(^|\.)stratfordeast\.com$/, reason: 'venue-production-page' },
+  { host: /(^|\.)ntlive\.com$/, reason: 'venue-production-page' },
+  { host: /(^|\.)royalcourttheatre\.com$/, reason: 'venue-production-page' },
+  // BRO-3515: mirror of domain-filters.js's REFERENCE_DOMAINS entry — see
+  // that file for why rexfeatures.com (UK stock-photo agency) is not a
+  // review source. Required by the parity test in
+  // non-review-url-patterns.test.mjs so a SERP census doesn't count it as
+  // an uncovered review gap.
+  { host: /(^|\.)rexfeatures\.com$/, reason: 'photo-agency-page' },
+  // BRO-3794 (main-red incident). Mirrors domain-filters.js's AGGREGATOR_DOMAINS
+  // entry — see that file for why southasianheritage.org.uk (South Asian
+  // Heritage Month events-calendar site) is not a review source.
+  { host: /(^|\.)southasianheritage\.org\.uk$/, reason: 'event-listing' },
 ];
 
 /**
@@ -278,6 +335,76 @@ function namedNonReviewReason(url) {
     if (p.path && !p.path.test(u.pathname)) continue;
     return p.reason;
   }
+  return null;
+}
+
+/**
+ * Listing pages scored as reviews (2026 data audit, S1-T0).
+ *
+ * URL SHAPES that are never an article, whoever discovered them: a review
+ * INDEX, an aggregator/listing site's own SHOW page, a bare homepage. Found
+ * live on the site: talkinbroadway.com/page/world/index.html (Talkin'
+ * Broadway's review index, scored on 3 shows), londontheatrehub.co.uk/shows/
+ * equus/ and /shows/heathers-the-musical/ (show pages with an "Editorial
+ * Team" byline), whatsonstage.com/shows/london-theatre/west-end-theatre/
+ * war-horse_1712421/ (WOS reviews live under /reviews/), broadwayworld.com/
+ * shows/Grangeville-334944.html (BWW reviews live under /article/).
+ *
+ * HOST-SPECIFIC on purpose — a host-agnostic /shows/ rule would eat real
+ * reviews: didtheylikeit.com/shows/<show>/<review-slug>/ and
+ * broadwaybaby.com/shows/<slug>/<id> are genuine review URLs. Same trap as
+ * the removed bare /article/ rule in NON_REVIEW_PATH_PATTERNS above.
+ *
+ * Kept separate from NAMED_NON_REVIEW_URL_PATTERNS: that list is a
+ * discovery-time reject that review-guards.js only applies at scoring time
+ * for unvetted-SERP sources (several of its entries are host-wide). Every
+ * entry here is a path-scoped listing shape that is safe to exclude at
+ * scoring time regardless of source, so review-guards.js's explainExclusion
+ * reads it unconditionally ('listingPageUrl', escape hatch
+ * listingPageUrlManualClear).
+ */
+const LISTING_PAGE_URL_PATTERNS = [
+  // Talkin' Broadway's review index pages (/page/world/index.html and any
+  // other .../index.html). Its reviews are /page/<section>/<slug>.html.
+  { host: /(^|\.)talkinbroadway\.com$/, path: /\/index\.html$/i, reason: 'review-index-page' },
+  // London Theatre Hub /shows/<slug>/ show pages ("Editorial Team" byline).
+  { host: /(^|\.)londontheatrehub\.co\.uk$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // WhatsOnStage /shows/<region>/<area>/<slug>_<id>/ show pages; reviews /reviews/.
+  { host: /(^|\.)whatsonstage\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // BWW /shows/<Title>-<id>.html show pages; reviews live under /article/.
+  // Broader than the NAMED_NON_REVIEW_URL_PATTERNS entry above (which needs a
+  // /shows/<id>/<sub-page> segment): the bare show page is a listing too.
+  { host: /(^|\.)broadwayworld\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // TheaterMania /shows/ show pages; reviews live under /news/review-…/.
+  { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
+  // Show Score catalog/show pages (its per-critic review records are captured
+  // from the aggregator page itself, never cited at these paths).
+  { host: /(^|\.)show-score\.com$/, path: /^\/(broadway-shows|off-broadway-shows|shows)\//i, reason: 'show-listing-page' },
+];
+
+/**
+ * Is this URL a listing page (see LISTING_PAGE_URL_PATTERNS) or a bare host?
+ *
+ * Bare host = empty or "/" path AND no query string. The query-string
+ * condition matters: WordPress "?p=<id>" permalinks on critics' own sites
+ * (susangranger.com/?p=10339, starwatchbyline.com/?p=15756 — real scored
+ * reviews) have a "/" path but are articles, not homepages.
+ *
+ * @param {string} url
+ * @returns {string|null} short reason label, or null (including unparsable input)
+ */
+function listingPageUrlReason(url) {
+  if (typeof url !== 'string') return null;
+  let u;
+  try { u = new URL(url); } catch { return null; }
+  const host = u.hostname.replace(/^www\./, '').toLowerCase();
+  const pathname = u.pathname || '';
+  for (const p of LISTING_PAGE_URL_PATTERNS) {
+    if (!p.host.test(host)) continue;
+    if (!p.path.test(pathname)) continue;
+    return p.reason;
+  }
+  if ((pathname === '' || pathname === '/') && !u.search) return 'bare-host';
   return null;
 }
 
@@ -406,6 +533,8 @@ module.exports = {
   NON_REVIEW_PATH_PATTERNS,
   NAMED_NON_REVIEW_URL_PATTERNS,
   namedNonReviewReason,
+  LISTING_PAGE_URL_PATTERNS,
+  listingPageUrlReason,
   registrableHost,
   hostOf,
   classifyReviewUrl,

@@ -854,6 +854,16 @@ async function enforceCloseTimeVerify(pageId, args) {
   process.exit(require('./lib/close-time-verify.js').CLOSE_REFUSED_EXIT_CODE);
 }
 
+// `update` is deliberately NOT gated the way `createCard` above is (BRO-3430
+// swept this: three launchd scripts — bsc-prune.js, bsc-reconcile.js,
+// reconcile-dead-completions.js — still call this command). The exemption is
+// intentional, not an oversight: see scripts/lib/notion-write-guard.js's
+// header for the full rationale. Short version — only a CREATE can grow the
+// divergence between the two boards; an update just corrects or closes a
+// page that already exists (all three callers above update a pre-existing
+// mirrored card's status, they never mint one), and refusing updates would
+// make notion-action-poll.js's `pages.update` mark-processed step reprocess
+// forever and leave existing open cards permanently unclosable.
 async function updateCard(args) {
   const pageId = args._positional[1];
   if (!pageId) {

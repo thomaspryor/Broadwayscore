@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `fix-unknown-critics.js — Fix Unknown Critics.
 
@@ -31,9 +32,7 @@ const dryRun = process.argv.includes('--dry-run');
 
 console.log(`=== Fix Unknown Critics ${dryRun ? '(DRY RUN)' : '(LIVE)'} ===\n`);
 
-const showDirs = fs.readdirSync(textsDir).filter(d =>
-  fs.statSync(path.join(textsDir, d)).isDirectory()
-);
+const showDirs = listShowDirs(textsDir);
 
 let fixed = 0;
 let deleted = 0;

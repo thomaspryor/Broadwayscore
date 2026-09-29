@@ -72,19 +72,24 @@ test('BRO-386: the ledger-commit step stages ONLY the ledger file (no bulk audit
   assert.match(gitAddLines[0], /autonomous-recheck-ledger\.jsonl/);
 });
 
-test('BRO-386: the bulk "Commit health check + triage data" step no longer references the ledger', () => {
-  const step = steps.find((s) => s.name === 'Commit health check + triage data');
-  assert.ok(step, 'expected the pre-existing bulk commit step to still exist');
+test('BRO-386: the trailing "Commit triage data" step no longer references the ledger', () => {
+  // BRO-3318 (2026-09-14) renamed the former "Commit health check + triage
+  // data" step to "Commit triage data" when it split alert-ledger.json/
+  // alert-digest-queue.json/alert-router-attempts.jsonl (now apiFallbackMerge
+  // -registered, BRO-2413) into their own earlier "Commit alert router state
+  // (apiFallbackMerge)" step — see that step's own header comment.
+  const step = steps.find((s) => s.name === 'Commit triage data');
+  assert.ok(step, 'expected the pre-existing trailing commit step to still exist');
   assert.doesNotMatch(step.bodyText, /git add data\/audit\/autonomous-recheck-ledger\.jsonl/,
-    'the ledger must be committed by its own dedicated step, not double-staged in the bulk commit');
+    'the ledger must be committed by its own dedicated step, not double-staged in the trailing commit');
 });
 
-test('BRO-386: the ledger-commit step runs BEFORE the bulk commit step', () => {
+test('BRO-386: the ledger-commit step runs BEFORE the trailing triage-data commit step', () => {
   const ledgerStep = steps.find((s) => s.name === 'Commit acceptance recheck ledger');
-  const bulkStep = steps.find((s) => s.name === 'Commit health check + triage data');
+  const bulkStep = steps.find((s) => s.name === 'Commit triage data');
   assert.ok(ledgerStep && bulkStep);
   assert.ok(ledgerStep.startLine < bulkStep.startLine,
-    'the isolated ledger commit must land before the bulk commit — a bulk-commit push failure must not gate whether the ledger already landed');
+    'the isolated ledger commit must land before the trailing commit — a trailing-commit push failure must not gate whether the ledger already landed');
 });
 
 test('BRO-386: the ledger-commit step runs AFTER the "Acceptance recheck" script step', () => {

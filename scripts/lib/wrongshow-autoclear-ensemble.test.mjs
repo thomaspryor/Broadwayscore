@@ -40,6 +40,7 @@ const {
   hasEnsembleConsensus,
   isTextStaleRelativeToUrlRewrite,
 } = require('./wrong-production-autoclear.js');
+const { listShowDirs } = require('./list-show-dirs');
 // Generalized to (data, reason) under #1156 — see scripts/lib/autoclear-vs-ensemble.test.mjs
 // for the wrongProduction-side coverage of the same functions.
 const hasEnsembleWrongShowConsensus = (data) => hasEnsembleConsensus(data, 'wrong_show');
@@ -64,6 +65,17 @@ test('unanimous 3/3 wrong_show ensemble verdict + UK-outlet URL on a London show
     dateMismatchOver90d: false,
   });
   assert.equal(wouldClear, false, 'a 3/3-model ensemble wrong_show verdict must outrank the UK-outlet-URL heuristic');
+});
+
+test('a UK-outlet URL whose slug names ANOTHER show is not auto-cleared (Oliver! / The Other Place)', () => {
+  const data = {
+    wrongShow: true,
+    url: 'https://www.thestage.co.uk/reviews/the-other-place-review-lyttelton-theatre-national-theatre-london-alexander-zeldin',
+  };
+  const ctx = { isLondonMarketShow: true, isUkOutletUrl: true, dateMismatchOver90d: false };
+  assert.equal(shouldAutoClearWrongShowUkUrl(data, { ...ctx, urlSlugNamesOtherShow: true }), false);
+  // unchanged behavior when the slug gives no such signal
+  assert.equal(shouldAutoClearWrongShowUkUrl(data, { ...ctx, urlSlugNamesOtherShow: false }), true);
 });
 
 test('a single model reasoning that happens to contain a time-like "N:NN" after a semicolon is not miscounted as a 2nd model (ship-check regression)', () => {
@@ -109,15 +121,8 @@ test('corpus: no review-text file has rejectionReason=wrong_show + wrongShowAuto
 
   const offenders = [];
   let files = 0;
-  for (const showId of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+  for (const showId of listShowDirs(REVIEW_TEXTS_DIR)) {
     const showDir = path.join(REVIEW_TEXTS_DIR, showId);
-    let stat;
-    try {
-      stat = fs.statSync(showDir);
-    } catch {
-      continue;
-    }
-    if (!stat.isDirectory()) continue;
     for (const file of fs.readdirSync(showDir)) {
       if (!file.endsWith('.json')) continue;
       let data;

@@ -10,7 +10,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { parseBwwGrossesRow } = require('../../scripts/lib/parse-bww-grosses-row.js');
+const { parseBwwGrossesRow, resolveBwwColumnIndices } = require('../../scripts/lib/parse-bww-grosses-row.js');
 
 // Stub splitShowTheater — the pure lib takes it as a dependency so tests don't
 // have to pull in the full BWW_THEATERS map.
@@ -147,6 +147,56 @@ test('handles dark-week / single-token attendance cell (BWW publishes "-" or bla
   assert.equal(singleRow?.attendance, 5000);
   assert.equal(singleRow?.seatsOffered, null,
     'seatsOffered must be null when BWW omits the second token');
+});
+
+// BRO-2375: assertTableSchema's expectedHeaders check only guarantees
+// 'Show'/'Gross'/'Avg. Tix'/'Attend'/'Perf'/'Cap %' are present SOMEWHERE in
+// the header row — a column insertion or reorder can still shift them off
+// the fixed cells[0..9] positions above without ever failing that check.
+// These tests lock in that positions are now resolved by header label.
+const LIVE_HEADERS = [
+  'Show', 'Gross', 'Gross/Prev week', 'Gross Diff.',
+  'Avg. Tix/Top Tix', 'Attend./Capacity', 'Perf./Prev.',
+  'Cap %/This Wk', 'Cap %/Last Wk', 'Diff. %',
+];
+
+test('resolveBwwColumnIndices resolves the live header schema to its documented positions', () => {
+  const idx = resolveBwwColumnIndices(LIVE_HEADERS);
+  assert.deepEqual(idx, {
+    showIdx: 0, grossIdx: 1, grossPrevIdx: 2, atpIdx: 4,
+    attendIdx: 5, perfIdx: 6, capIdx: 7, capPrevIdx: 8,
+  });
+});
+
+test('resolves columns by label, not position, when a column is inserted mid-table', () => {
+  // Simulates BWW inserting a "Weeks Running" column between Gross and Avg.
+  // Tix — same label set as the live schema, but every column after Gross
+  // shifts one position right. A fixed-index reader (cells[4] for ATP)
+  // would misread "Weeks Running" as the average ticket price.
+  const headers = [
+    'Show', 'Gross', 'Gross/Prev week', 'Gross Diff.', 'Weeks Running',
+    'Avg. Tix/Top Tix', 'Attend./Capacity', 'Perf./Prev.',
+    'Cap %/This Wk', 'Cap %/Last Wk', 'Diff. %',
+  ];
+  const cells = [
+    'WICKEDGERSHWIN',
+    '$900,000,000', '$895,000,000', '$5,000,000', '1,100',
+    '$150.00 $299.00', '5,500,000 5,800,000', '8',
+    '94.83%', '92.10%', '2.73%',
+  ];
+  const row = parseBwwGrossesRow(cells, splitShowTheater, headers);
+  assert.ok(row, 'expected a row, got null');
+  assert.equal(row.gross, 900000000);
+  assert.equal(row.atp, 150);
+  assert.equal(row.attendance, 5500000);
+  assert.equal(row.performances, 8);
+  assert.equal(row.capacityPct, 94.83);
+});
+
+test('without a header row, falls back to the legacy fixed layout (existing callers keep working)', () => {
+  const row = parseBwwGrossesRow(HAMILTON, splitShowTheater);
+  assert.equal(row.attendance, 10644);
+  assert.equal(row.seatsOffered, 10592);
 });
 
 test('sanity guard drops rows with implausible parses', () => {

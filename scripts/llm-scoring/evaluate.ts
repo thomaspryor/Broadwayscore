@@ -25,6 +25,8 @@ import * as path from 'path';
 import Anthropic from '@anthropic-ai/sdk';
 import { ReviewTextFile, ReviewEntry } from './types';
 import { SYSTEM_PROMPT, buildPrompt, scoreToBucket, scoreToThumb, PROMPT_VERSION, getOutletTier } from './config';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 // ========================================
 // TYPES
@@ -117,13 +119,7 @@ function loadEvaluationCandidates(): EvaluationExample[] {
     return candidates;
   }
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
-    try {
-      return fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory();
-    } catch {
-      return false;
-    }
-  });
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);

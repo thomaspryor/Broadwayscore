@@ -57,6 +57,7 @@ const RT = resolveReviewTextsDir();
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasValidScore } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 function main() {
   console.log(`=== Classify Unscored Blocked-URL Files ===`);
@@ -65,10 +66,10 @@ function main() {
   if (SHOW_FILTER) console.log(`Show filter: ${SHOW_FILTER}`);
   console.log('');
 
-  const shows = fs.readdirSync(RT).filter(d => {
-    if (d.startsWith('_') || d.startsWith('.')) return false;
+  const shows = listShowDirs(RT).filter(d => {
+    if (d.startsWith('_')) return false;
     if (SHOW_FILTER && d !== SHOW_FILTER) return false;
-    try { return fs.statSync(path.join(RT, d)).isDirectory(); } catch { return false; }
+    return true;
   });
 
   let scanned = 0;

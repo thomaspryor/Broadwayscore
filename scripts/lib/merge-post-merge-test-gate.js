@@ -595,6 +595,49 @@ function runTestGate({ cwd, changedFiles, execFn = defaultExec, makeBaselineChec
   }
 }
 
+// Pure: the options passed to acceptance-check-core.js's makeFreshCheckout()
+// for the baseline checkout, built from the ENV the caller (merge-worktree-
+// to-main.sh, "the shared land script") sets on this process.
+//
+// `repo` MUST come from here, not from makeFreshCheckout's own __dirname-
+// derived DEFAULT_REPO (BRO-3962). merge-worktree-to-main.sh invokes this
+// gate as `node "$SCRIPT_DIR/lib/merge-post-merge-test-gate.js"` — an
+// ABSOLUTE path rooted in wherever THAT script itself is checked out (a
+// session's own job worktree, since $SCRIPT_DIR is derived from the running
+// copy's own BASH_SOURCE), not $MAIN_DIR (the script's `cwd` is $MAIN_DIR,
+// but that only affects the child's process.cwd(), not which file gets
+// loaded or __dirname). require('./acceptance-check-core.js') resolves
+// relative to THAT copy, so DEFAULT_REPO there silently becomes the calling
+// session's job worktree, which can be pruned/removed by its own owning
+// session's later cleanup (or a stale-worktree janitor) while this gate's
+// baseline `git fetch` is still mid-flight against it — intermittent "fatal:
+// not a git repository". (land-branch.js's own call to this gate is NOT
+// affected: it spawns with cwd set to a throwaway worktree it created and
+// only removes in ITS OWN finally block, strictly after this call returns,
+// so that path's __dirname-derived default is already provably alive for the
+// whole call — this fix intentionally leaves it untouched.) Most other
+// makeFreshCheckout() callers in this repo avoid the trap by passing an
+// explicit `repo:` (audit-done-evidence.js, audit-close-time-verify.js,
+// reconcile-landed-but-open.js, notion-brain.js, linear-cmd-execution.js) —
+// a couple of others (audit-stale-open-premises.js,
+// autonomous-acceptance-recheck.js) also rely on the bare default, but they
+// run directly from a stable checkout rather than being loaded from a
+// worktree some OTHER process's cwd manipulation points at, so their
+// __dirname is never ephemeral the way this gate's is. MERGE_TEST_GATE_REPO_DIR
+// pins this call to the same explicit-repo convention: the STABLE checkout
+// the caller actually wants the baseline compared against. Unset falls
+// through to makeFreshCheckout's own default (repo undefined here does not
+// override its default parameter), reproducing the exact pre-fix behavior
+// for any caller that doesn't set it yet.
+function baselineCheckoutOptions(env) {
+  const e = env || {};
+  return {
+    prefix: 'merge-test-gate-baseline-',
+    sha: e.MERGE_TEST_GATE_BASELINE_SHA || null,
+    repo: e.MERGE_TEST_GATE_REPO_DIR || undefined,
+  };
+}
+
 module.exports = {
   REQUIRED_WORKFLOW_GUARDS,
   EXCLUDED_WORKFLOW_GUARDS,
@@ -609,6 +652,7 @@ module.exports = {
   selectTestFiles,
   runTestGate,
   diffFailingSets,
+  baselineCheckoutOptions,
 };
 
 if (require.main === module) {
@@ -630,10 +674,7 @@ if (require.main === module) {
   if (process.env.MERGE_TEST_GATE_SKIP_BASELINE !== '1') {
     makeBaselineCheckout = () => {
       const { makeFreshCheckout } = require('./acceptance-check-core.js');
-      return makeFreshCheckout({
-        prefix: 'merge-test-gate-baseline-',
-        sha: process.env.MERGE_TEST_GATE_BASELINE_SHA || null,
-      });
+      return makeFreshCheckout(baselineCheckoutOptions(process.env));
     };
     removeBaselineCheckout = (checkout) => {
       try {

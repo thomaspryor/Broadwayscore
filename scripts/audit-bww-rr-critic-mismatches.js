@@ -30,7 +30,10 @@ const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 
 const ROOT = path.join(__dirname, '..');
 const REGISTRY_PATH = path.join(ROOT, 'data', 'outlet-registry.json');
-const ARCHIVE_DIR = path.join(ROOT, 'data', 'aggregator-archive', 'bww-roundups');
+// Overridable so tests can point at a fixture dir instead of the real archive
+// (BRO-4157) — never set in production, only by tests/unit/audit-bww-rr-critic-mismatches.test.mjs.
+const ARCHIVE_DIR = process.env.BWW_RR_ARCHIVE_DIR_OVERRIDE
+  || path.join(ROOT, 'data', 'aggregator-archive', 'bww-roundups');
 
 function loadRegistry() {
   return JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf-8')).outlets || {};
@@ -111,7 +114,7 @@ function main() {
 
   if (!fs.existsSync(ARCHIVE_DIR)) {
     console.error(`No archive dir: ${ARCHIVE_DIR}`);
-    process.exit(1);
+    return 1;
   }
 
   let files = fs.readdirSync(ARCHIVE_DIR).filter(f => f.endsWith('.html'));
@@ -152,32 +155,41 @@ function main() {
 
   if (JSON_OUTPUT) {
     process.stdout.write(JSON.stringify({ scanned, findings }, null, 2) + '\n');
-    return;
+  } else {
+    console.log(`Scanned ${scanned} archived BWW RR pages.`);
+    console.log(`Single-author outlets monitored: ${Object.keys(singleAuthorOutlets).length}`);
+    console.log(`Mismatches found (not yet in CRITIC_CANONICAL_MAP): ${findings.filter(x => !x.alreadyInCanonMap).length}`);
+    console.log(`Mismatches already in canon map (for reference): ${findings.filter(x => x.alreadyInCanonMap).length}`);
+    console.log('');
+    if (findings.length === 0) {
+      console.log('(no candidates)');
+    } else {
+      for (const f of findings) {
+        const tag = f.alreadyInCanonMap ? '[CANON-MAP]' : '[NEW]     ';
+        console.log(`${tag}  show=${f.showId}  outlet=${f.outletId}`);
+        console.log(`             observed: "${f.observedCritic}"`);
+        console.log(`             expected: "${f.expectedCritic}"  (from outlet-registry.defaultCritic)`);
+        console.log(`             authorRaw: "${f.authorRaw}"`);
+        if (verbose) console.log(`             headline: "${f.headline}"`);
+      }
+    }
   }
 
-  console.log(`Scanned ${scanned} archived BWW RR pages.`);
-  console.log(`Single-author outlets monitored: ${Object.keys(singleAuthorOutlets).length}`);
-  console.log(`Mismatches found (not yet in CRITIC_CANONICAL_MAP): ${findings.filter(x => !x.alreadyInCanonMap).length}`);
-  console.log(`Mismatches already in canon map (for reference): ${findings.filter(x => x.alreadyInCanonMap).length}`);
-  console.log('');
-  if (findings.length === 0) {
-    console.log('(no candidates)');
-    return;
-  }
-  for (const f of findings) {
-    const tag = f.alreadyInCanonMap ? '[CANON-MAP]' : '[NEW]     ';
-    console.log(`${tag}  show=${f.showId}  outlet=${f.outletId}`);
-    console.log(`             observed: "${f.observedCritic}"`);
-    console.log(`             expected: "${f.expectedCritic}"  (from outlet-registry.defaultCritic)`);
-    console.log(`             authorRaw: "${f.authorRaw}"`);
-    if (verbose) console.log(`             headline: "${f.headline}"`);
-  }
-
-  // Exit non-zero so CI surfaces new-candidate runs as "needs action"
+  // Exit non-zero so CI surfaces new-candidate runs as "needs action". Computed
+  // once and applied to BOTH output modes — JSON_OUTPUT used to `return` before
+  // this ran, so a `--json` invocation could never actually report exit 2
+  // (BRO-4157; audit-bww-rr-attributions.yml ran the script a SECOND time in
+  // text mode just to get a real exit code, and only checked the harmless
+  // first invocation's $RC — the workflow now needs a single --json run).
   const newCount = findings.filter(x => !x.alreadyInCanonMap).length;
-  if (newCount > 0) process.exit(2);
+  return newCount > 0 ? 2 : 0;
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  // process.exitCode (not process.exit()) — a forced exit can truncate a large
+  // --json write to a piped stdout before it fully flushes; setting exitCode
+  // lets Node exit naturally once the event loop drains (Codex review catch).
+  process.exitCode = main();
+}
 
-module.exports = { extractAuthorPairs };
+module.exports = { extractAuthorPairs, main };

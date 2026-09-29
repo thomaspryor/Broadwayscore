@@ -53,28 +53,32 @@ test('readAllSnapshots: fresh sections render, everything else lands in problems
   const freshAt = new Date(NOW - 1 * 3600e3).toISOString();
   write(dir, 'health-digest-snapshot.json', { generatedAt: freshAt, errors: [], warns: [] });
   write(dir, 'daily-digest-snapshot.json', { generatedAt: new Date(NOW - 50 * 3600e3).toISOString() });
-  // reddit + backlog-drain snapshots absent on purpose
+  // reddit + provider-spend snapshots absent on purpose
 
   const { sections, problems } = readAllSnapshots({ auditDir: dir, now: NOW });
   assert.ok(sections.health);
   assert.equal(sections.dailyDigest, null);
   assert.equal(sections.redditDigest, null);
-  assert.equal(sections.backlogDrain, null);
-  // backlogDrain is optionalIfMissing (disabled-by-default launchd plist) —
-  // its absence must NOT land in problems, only reddit's genuine gap does.
+  assert.equal(sections.providerSpend, null);
+  // providerSpend is optionalIfMissing (no file until the first daily run
+  // lands it) — its absence must NOT land in problems, only reddit's genuine
+  // gap does. (This assertion used to be keyed on backlogDrain, whose
+  // registry entry was removed in BRO-3390 when its producer was retired;
+  // the INVARIANT it guards is about optionalIfMissing, not about that one
+  // snapshot, so it is re-pointed rather than deleted.)
   assert.equal(problems.length, 2);
   assert.deepEqual(problems.map((p) => p.status).sort(), ['missing', 'stale']);
-  assert.ok(!problems.some((p) => p.key === 'backlogDrain'));
+  assert.ok(!problems.some((p) => p.key === 'providerSpend'));
 });
 
 test('readAllSnapshots: an optionalIfMissing snapshot that EXISTS and goes stale still reports (producer broke, not just never-enabled)', () => {
   const dir = tmpAudit();
-  write(dir, 'backlog-drain-metric.json', { generatedAt: new Date(NOW - 50 * 3600e3).toISOString() });
+  write(dir, 'provider-spend-snapshot.json', { generatedAt: new Date(NOW - 50 * 3600e3).toISOString() });
 
   const { problems } = readAllSnapshots({ auditDir: dir, now: NOW });
-  const backlogProblem = problems.find((p) => p.key === 'backlogDrain');
-  assert.ok(backlogProblem, 'a stale (not missing) optionalIfMissing snapshot must still be reported');
-  assert.equal(backlogProblem.status, 'stale');
+  const spendProblem = problems.find((p) => p.key === 'providerSpend');
+  assert.ok(spendProblem, 'a stale (not missing) optionalIfMissing snapshot must still be reported');
+  assert.equal(spendProblem.status, 'stale');
 });
 
 test('describeProblems names every non-fresh source; null when all fresh', () => {
@@ -88,8 +92,10 @@ test('describeProblems names every non-fresh source; null when all fresh', () =>
   assert.match(note, /^didn't update overnight:/);
 });
 
-test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; backlogDrain added #654; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802)', () => {
-  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['backlogDrain', 'coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'health', 'p1RelevanceAudit', 'predispatchQueue', 'providerSpend', 'redditDigest', 'trunk']);
+test('registry covers exactly the folded digests (opening digest is standalone again since 2026-07-30; coverageVerdict added #905; trunk added #1003; p1RelevanceAudit added #1719; predispatchQueue added #1801; dispatchGuardQueue added #1802; doneEvidence added BRO-3426; backlogDrain REMOVED BRO-3390 when its producer was retired)', () => {
+  assert.deepEqual(SNAPSHOTS.map((s) => s.key).sort(), ['coverageVerdict', 'dailyDigest', 'dispatchGuardQueue', 'doneEvidence', 'health', 'p1RelevanceAudit', 'predispatchQueue', 'providerSpend', 'redditDigest', 'trunk']);
+  assert.ok(!SNAPSHOTS.some((s) => s.key === 'backlogDrain'),
+    'backlog-drain-metric.json froze on 2026-08-31 when scripts/backlog-drain.js was decommissioned; re-registering it would resume a permanent daily "stale" warning in the owner digest');
 });
 
 // The half-wired case the #1003 pre-mortem named: a SNAPSHOTS row lands, the
@@ -153,34 +159,136 @@ test('buildSubject output classifies as the morning-digest scheduled sender', ()
     now: new Date('2026-07-28T11:30:00Z'),
   });
   assert.equal(classifySubject(noisy)?.key, 'morning-digest');
-  assert.match(noisy, /⛔ site health: 2 errors, 1 warning/);
+  // 2026-09-24 rework: unknown check names are visitor-facing (fail-safe), so
+  // two unknown errors read as "visitors affected", named, never counted.
+  assert.match(noisy, /⚠️ visitors affected: a \(\+1 more\)/);
   // Never a bare count that can degrade to "0 items" (owner feedback).
   assert.doesNotMatch(quiet, /\d+ items?/);
 });
 
-// BRO-232 S4: digest truthfulness — the subject splits known/managed
-// (already tracked, day over day) from new/regressing (first sighting)
-// instead of a flat error/warning count that conflates the two.
-test('buildSubject: with autofixRows, splits known/managed vs new/regressing and preserves the urgent/streak flag', () => {
-  const autofixRows = [
-    { state: 'in-progress', wasNew: false },
-    { state: 'queued', wasNew: false },
-    { state: 'dispatched', wasNew: true },
-    { state: 'decision', wasNew: undefined }, // excluded from both buckets
-  ];
+// 2026-09-24 rework (owner: "confusing and un-actionable and annoying"): the
+// subject is plain English — site status for VISITORS plus decisions. It
+// replaces BRO-232 S4's "⛔ site health: N known/managed, M new/regressing"
+// split, which counted the automation's own machinery.
+test('buildSubject: internal-only errors read "Site OK · nothing needs you" — no jargon, no ⛔', () => {
   const s = buildSubject({
-    health: { subject: 'BSC URGENT (day 5): 2 unresolved errors' },
-    autofixRows,
-    now: new Date('2026-07-28T11:30:00Z'),
+    health: {
+      subject: 'BSC URGENT (day 35): 5 unresolved errors',
+      errors: [{ name: 'Main: red streak' }, { name: 'Push-retry deadman' }, { name: 'Autofix: throughput (dispatched/passed, daily)' }],
+      warns: [{ name: 'Stuck work: paused P0/P1 cards' }],
+    },
+    autofixRows: [{ state: 'in-progress', wasNew: false }, { state: 'queued', wasNew: true }],
+    now: new Date('2026-09-24T11:30:00Z'),
   });
-  assert.match(s, /⛔ site health: 2 known\/managed, 1 new\/regressing/);
+  assert.equal(s, 'Morning digest — Thu, Sep 24 · Site OK · nothing needs you');
+  assert.doesNotMatch(s, /known\/managed|new\/regressing|⛔|error|warning/);
   assert.equal(classifySubject(s)?.key, 'morning-digest');
 });
 
-test('buildSubject: autofixRows omitted or empty — behavior is byte-identical to the pre-BRO-232 error/warning count', () => {
-  const health = { subject: 'x', errors: ['a'], warns: [] };
-  assert.match(buildSubject({ health, now: new Date('2026-07-28T11:30:00Z') }), /1 error, 0 warnings/);
-  assert.match(buildSubject({ health, autofixRows: [], now: new Date('2026-07-28T11:30:00Z') }), /1 error, 0 warnings/);
+// Codex P1-3: a visitor WARNING is never an all-clear in the subject.
+test('buildSubject: visitor warnings read "site mostly OK · N minor visitor issues", never "Site OK"', () => {
+  const s = buildSubject({
+    health: {
+      errors: [{ name: 'Main: red streak' }],
+      warns: [{ name: 'SEO: health' }, { name: 'Sync: social-pulse per-show freshness' }, { name: 'Stuck work: paused P0/P1 cards' }],
+    },
+    autofixRows: [],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  assert.equal(s, 'Morning digest — Thu, Sep 24 · site mostly OK · 2 minor visitor issues · nothing needs you');
+  assert.doesNotMatch(s, /Site OK/);
+});
+
+// Codex P1-2: parked-in-review work must stop the subject saying "nothing needs you".
+test('buildSubject: review-queue items count toward decisions (deduped against approvals)', () => {
+  const same = { title: 'BRO-9: x', url: 'https://linear.app/x/BRO-9' };
+  const s = buildSubject({
+    health: { errors: [], warns: [] },
+    awaitingOwner: { items: [same] },
+    inReviewBacklog: { items: [same, { title: 'BRO-10: y', url: 'https://linear.app/x/BRO-10' }], moreCount: 0 },
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  assert.match(s, /Site OK · 2 decisions for you$/);
+  const reviewOnly = buildSubject({ health: { errors: [], warns: [] }, inReviewBacklog: { items: [same], moreCount: 4 }, now: new Date('2026-09-24T11:30:00Z') });
+  assert.doesNotMatch(reviewOnly, /nothing needs you/);
+  assert.match(reviewOnly, /5 decisions for you$/);
+});
+
+test('buildSubject: a visitor-facing error is named in plain English; decisions are counted', () => {
+  const s = buildSubject({
+    health: {
+      errors: [{ name: 'Main: red streak' }, { name: 'Data: reviewed shows missing from shows.json' }],
+      warns: [],
+      queued: [{ title: 'Pick a venue', decision: true }],
+    },
+    autofixRows: [{ state: 'decision' }],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  assert.equal(s, 'Morning digest — Thu, Sep 24 · ⚠️ visitors affected: Reviewed shows missing from the site · 1 decision for you');
+  assert.ok(s.length < 120);
+});
+
+test('buildSubject: health snapshot missing says so instead of claiming the site is OK', () => {
+  const s = buildSubject({ health: null, now: new Date('2026-07-28T11:30:00Z') });
+  assert.match(s, /site check missing · nothing needs you$/);
+  assert.doesNotMatch(s, /Site OK/);
+});
+
+test('buildSubject: a long plain name is clipped so the subject stays short', () => {
+  const s = buildSubject({
+    health: { errors: [{ name: 'Some brand new check with an extremely long descriptive name that goes on' }], warns: [] },
+    now: new Date('2026-07-28T11:30:00Z'),
+  });
+  assert.match(s, /visitors affected: .{1,41}…/);
+  assert.ok(s.length < 120, s);
+});
+
+// BRO-2425 (BRO-420 follow-up): a 48h+ stale "waiting on your approval" item
+// must escalate the subject line too, not just the body block — otherwise it
+// is invisible unless the owner opens the email and scrolls to that section.
+test('buildSubject: stale awaiting-owner item escalates the subject line', () => {
+  const now = new Date('2026-07-28T11:30:00Z');
+  const staleAwaitingOwner = {
+    items: [
+      { title: 'BRO-1: fresh', stale: false },
+      { title: 'BRO-2: stale', stale: true },
+    ],
+  };
+  const s = buildSubject({ health: null, awaitingOwner: staleAwaitingOwner, now });
+  assert.match(s, /⚠️ 1 approval waiting 48h\+/);
+  // Both awaiting items are decisions for the owner.
+  assert.match(s, /2 decisions for you/);
+  assert.equal(classifySubject(s)?.key, 'morning-digest');
+});
+
+test('buildSubject: fresh-only or empty awaiting-owner items do not escalate the subject', () => {
+  const now = new Date('2026-07-28T11:30:00Z');
+  const freshOnly = buildSubject({
+    health: null, awaitingOwner: { items: [{ title: 'BRO-1: fresh', stale: false }] }, now,
+  });
+  assert.doesNotMatch(freshOnly, /approval waiting/);
+  assert.match(freshOnly, /1 decision for you/);
+  const none = buildSubject({ health: null, awaitingOwner: null, now });
+  assert.doesNotMatch(none, /approval waiting/);
+  const emptyItems = buildSubject({ health: null, awaitingOwner: { items: [] }, now });
+  assert.doesNotMatch(emptyItems, /approval waiting/);
+});
+
+test('buildSubject: stale awaiting-owner suffix is PREPENDED before the site status, not a replacement', () => {
+  const now = new Date('2026-07-28T11:30:00Z');
+  const s = buildSubject({
+    health: { subject: 'BSC URGENT (day 3): 2 unresolved errors', errors: ['a', 'b'], warns: ['c'] },
+    awaitingOwner: { items: [{ title: 'BRO-2: stale', stale: true }, { title: 'BRO-3: stale', stale: true }] },
+    now,
+  });
+  assert.match(s, /⚠️ visitors affected: a \(\+1 more\)/);
+  assert.match(s, /⚠️ 2 approvals waiting 48h\+/);
+  assert.ok(s.indexOf('approvals waiting') < s.indexOf('visitors affected'));
+});
+
+test('buildSubject: needsYou items count as decisions', () => {
+  const s = buildSubject({ health: { errors: [], warns: [] }, needsYou: { items: [{ title: 'x' }], moreCount: 2 }, now: new Date('2026-07-28T11:30:00Z') });
+  assert.match(s, /Site OK · 3 decisions for you$/);
 });
 
 test('buildHtml never renders loop language; empty day reads calm, not broken', () => {
@@ -197,17 +305,97 @@ test('buildHtml never renders loop language; empty day reads calm, not broken', 
 // headline, plus a single "N issues detected — queued for automated fix
 // sessions" line (errors+warns+freshness+stuck folded together) — the system
 // fixes, the email reports.
-test('buildHtml: top verdict NAMES the failing check; issue count folds errors+warnings (Digest v3)', () => {
+// 2026-09-24 rework: the raw-name line moved under "Technical details" and
+// was renamed from "N site error(s)" to "N health-check error(s)" (most rows
+// are automation machinery, not the site); the top names visitor problems in
+// plain English instead.
+test('buildHtml: visitor error is named at the top in plain English; raw names stay in Technical details', () => {
   const html = buildHtml({
     sections: { health: { generatedAt: '2026-07-28T09:00:00Z', errors: [{ name: 'Sync: cast coverage', message: '29 empty casts' }], warns: ['w1', 'w2'], checks: [] } },
     problemsNote: "didn't update overnight: Reddit engagement (no data)",
     changesHtml: null,
     now: new Date('2026-07-28T11:30:00Z'),
   });
-  assert.match(html, /1 site error: Sync: cast coverage/);
+  assert.match(html, /Visitors may notice a problem/);
+  assert.match(html, /Some shows are missing cast lists/);
+  assert.match(html, /1 health-check error: Sync: cast coverage/);
   assert.match(html, /3 issues detected/);
   assert.match(html, /didn't update overnight: Reddit engagement/);
   assert.doesNotMatch(html, /Nothing needs your attention/);
+  // The plain-English top comes before the technical report.
+  assert.ok(html.indexOf('Visitors may notice') < html.indexOf('Technical details'));
+  assert.ok(html.indexOf('Technical details') < html.indexOf('1 health-check error'));
+});
+
+test('buildHtml: internal-only failures (the 2026-09-24 shape) read calm at the top, machinery demoted below', () => {
+  const html = buildHtml({
+    sections: { health: {
+      generatedAt: '2026-09-24T09:00:00Z', consecutiveErrorDays: 35, autoFixedCount: 1,
+      errors: [{ name: 'Main: red streak' }, { name: 'Push-retry deadman' }, { name: 'Infra: worktree GC log stale' }],
+      warns: [{ name: 'cmux socket: reachability (unmeasurable here)' }],
+      queued: [],
+    } },
+    autofixRows: [
+      { name: 'Main: red streak', state: 'in-progress' }, { name: 'Push-retry deadman', state: 'dispatched' },
+      { name: 'Infra: worktree GC log stale', state: 'queued' },
+    ],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  const top = html.slice(0, html.indexOf('Technical details'));
+  assert.match(top, /The site is working normally for visitors/);
+  assert.match(top, /Nothing needs your attention this morning/);
+  assert.match(top, /1 problem was fixed automatically overnight/);
+  // The tail depends on this machine's real autofix ledger (buildHtml reads
+  // it via localLoopDeadMessage). A 'dispatched' row is an unconfirmed
+  // launch, never counted as in progress (codex P1-1).
+  assert.match(top, /Behind the scenes: 3 maintenance items tracked(, 1 confirmed in progress right now, 1 launched but not confirmed yet\.|; automatic fixing looks stalled)/);
+  for (const banned of ['Main', 'Push-retry', 'consecutive errors', '❌', 'site error']) {
+    assert.ok(!top.includes(banned), `top block must not contain "${banned}"`);
+  }
+  // Nothing lost: the full technical report is still there below.
+  const below = html.slice(html.indexOf('Technical details'));
+  assert.match(below, /day 35 of consecutive errors/);
+  assert.match(below, /Push-retry deadman/);
+  assert.match(below, /Automation queue/);
+});
+
+test('buildHtml: owner decisions render at the TOP with their one-click links', () => {
+  const html = buildHtml({
+    sections: {
+      health: { errors: [], warns: [], queued: [{ title: 'Approve the venue change', decision: true, actionUrl: 'https://broadwayscorecard.com/api/autonomous-action?sig=x' }] },
+      awaitingOwner: { bannerText: '1 waiting', items: [{ title: 'BRO-9: approve new homepage', url: 'https://linear.app/x/BRO-9', stale: false }] },
+    },
+    autofixRows: [{ state: 'decision' }],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  const cut = html.indexOf('Technical details');
+  const top = cut === -1 ? html : html.slice(0, cut);
+  assert.match(top, /2 decisions for you/);
+  assert.match(top, /Needs your attention/);
+  assert.match(top, /Dispatch a fix/);
+  assert.match(top, /Waiting on your approval/);
+  assert.match(top, /href="https:\/\/linear\.app\/x\/BRO-9"/);
+  assert.doesNotMatch(html, /Nothing needs your attention/);
+});
+
+// Codex P1-2: the Review queue renders at the TOP (deduped), not buried.
+test('buildHtml: review-queue items render at the top, de-duplicated, and are counted', () => {
+  const same = { title: 'BRO-9: approve new homepage', url: 'https://linear.app/x/BRO-9' };
+  const html = buildHtml({
+    sections: {
+      health: { errors: [], warns: [], queued: [] },
+      awaitingOwner: { bannerText: '1 waiting', items: [same] },
+      inReviewBacklog: { bannerText: '2 parked', items: [same, { title: 'BRO-10: finished fix', url: 'https://linear.app/x/BRO-10' }], moreCount: 0 },
+    },
+    autofixRows: [],
+    now: new Date('2026-09-24T11:30:00Z'),
+  });
+  const top = html.slice(0, html.indexOf('>Technical details<') === -1 ? html.length : html.indexOf('>Technical details<'));
+  assert.match(top, /2 decisions for you/);
+  assert.match(top, /Review queue/);
+  assert.match(top, /BRO-10: finished fix/);
+  assert.equal(html.split('BRO-9: approve new homepage').length - 1, 1, 'duplicate issue listed once');
+  assert.doesNotMatch(html, /Nothing needs your attention|Nothing below needs you/);
 });
 
 // ── data/freshness-report.json consumer (task #689) — the generator existed
@@ -501,12 +689,45 @@ test('readSyncRefused: multiple tags refused -> all named, newest sorts first', 
   assert.deepEqual(summary.items.map((i) => i.title).sort(), ['digest', 'shadow']);
 });
 
-test('readSyncRefused: unrelated/garbage files ignored, never throw', () => {
+test('readSyncRefused: unrelated files ignored, never throw', () => {
+  const dir = tmpAudit();
+  write(dir, 'health-digest-snapshot.json', { generatedAt: '2026-08-19T00:00:00Z' });
+  assert.equal(readSyncRefused({ auditDir: dir }), null);
+});
+
+// BRO-3393: these used to be silently dropped, which made a TRUNCATED
+// sync-refused-digest.json read as "nobody refused" — and autofixShouldDryRun
+// would then let real Linear card filing and real headless dispatch run
+// against an untrusted checkout. They are counted now so the decision can
+// fail closed on them, and so the email still shows that SOMETHING refused.
+test('readSyncRefused: an unparseable or tagless refusal snapshot is COUNTED, not dropped', () => {
   const dir = tmpAudit();
   write(dir, 'health-digest-snapshot.json', { generatedAt: '2026-08-19T00:00:00Z' });
   write(dir, 'sync-refused-broken.json', '{not json');
   write(dir, 'sync-refused-no-tag.json', { at: '2026-08-19T00:00:00Z', reason: 'diverged' });
-  assert.equal(readSyncRefused({ auditDir: dir }), null);
+  const summary = readSyncRefused({ auditDir: dir });
+  assert.ok(summary, 'a refusal file that exists but cannot be read is still evidence of a refusal');
+  assert.equal(summary.unreadable, 2);
+  assert.equal(summary.count, 0);
+  assert.deepEqual(summary.tags, []);
+  // Named by FILENAME, not by the unreadable body — that is what lets the
+  // dry-run decision fail closed on OUR OWN corrupt snapshot without a corrupt
+  // SIBLING snapshot suppressing us forever (ship-check finding, BRO-3393).
+  assert.deepEqual(summary.unreadableTags.slice().sort(), ['broken', 'no-tag']);
+  assert.match(summary.bannerText, /unreadable sync-refusal snapshot/);
+});
+
+test('readSyncRefused: tags is uncapped decision data, unlike the maxItems-capped items view', () => {
+  const dir = tmpAudit();
+  const tags = ['shadow', 'digest', 'backlog-drain', 'predispatch-queue-audit'];
+  tags.forEach((tag, i) => write(dir, `sync-refused-${tag}.json`, {
+    tag, at: `2026-08-19T0${i}:00:00.000Z`, reason: 'diverged', behindCount: i,
+  }));
+  const summary = readSyncRefused({ auditDir: dir, maxItems: 2 });
+  assert.equal(summary.items.length, 2, 'items stays capped for rendering');
+  assert.deepEqual(summary.tags.slice().sort(), tags.slice().sort(),
+    'tags must list EVERY refusing job — autofixShouldDryRun asks "is my own tag here?", and a capped list would answer wrong');
+  assert.equal(summary.unreadable, 0);
 });
 
 test('readSyncRefused: maxItems truncates, moreCount reflects the rest', () => {

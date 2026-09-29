@@ -40,15 +40,21 @@ function getClientIp(req: NextRequest): string {
   );
 }
 
-async function forwardToFormspree(formData: FormData): Promise<void> {
+async function forwardToFormspree(formData: FormData): Promise<boolean> {
   try {
-    await fetch(FORMSPREE_ENDPOINT, {
+    const res = await fetch(FORMSPREE_ENDPOINT, {
       method: 'POST',
       body: formData,
       headers: { Accept: 'application/json' },
     });
+    if (!res.ok) {
+      console.error(`Formspree forward failed: ${res.status} ${res.statusText}`);
+      return false;
+    }
+    return true;
   } catch (err) {
-    console.error('Formspree forward failed (non-fatal):', (err as Error).message);
+    console.error('Formspree forward failed (network error):', (err as Error).message);
+    return false;
   }
 }
 
@@ -100,34 +106,32 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Forward to Formspree FIRST and unconditionally. Before this route
-    // existed the form posted straight to Formspree, and process-feedback.yml
-    // polls it for the AI bug-diagnosis pipeline. Doing the Notion write first
-    // meant a Notion outage (502) or a missing NOTION_API_KEY (503) dropped
-    // submissions that would have reached Formspree before — a regression in
-    // the path that actually has a consumer. Notion is purely additive now.
-    await forwardToFormspree(formData);
+    // Forward to Formspree FIRST — it's the real consumer (process-feedback.yml
+    // polls it for the AI bug-diagnosis pipeline), so success is gated on its
+    // actual response, not just the fetch resolving (BRO-3382).
+    const formspreeOk = await forwardToFormspree(formData);
 
+    // Notion is purely additive and best-effort: a missing key or a failed
+    // write must never fail a request, and its success never substitutes for
+    // Formspree's — the automated pipeline doesn't read Notion (BRO-3379).
     const notionKey = process.env.NOTION_API_KEY;
-    if (!notionKey) {
-      console.error('NOTION_API_KEY not configured');
-      return NextResponse.json(
-        { errors: [{ message: 'Feedback service unavailable. Please try again later.' }] },
-        { status: 503 }
-      );
+    if (notionKey) {
+      const properties = buildFeedbackNotionProperties({
+        ...fields,
+        submittedAt: new Date().toISOString(),
+      });
+      try {
+        await createNotionPage(properties, notionKey);
+      } catch (err) {
+        console.error('Notion feedback create failed (non-fatal):', (err as Error).message);
+      }
+    } else {
+      console.error('NOTION_API_KEY not configured (non-fatal)');
     }
 
-    const properties = buildFeedbackNotionProperties({
-      ...fields,
-      submittedAt: new Date().toISOString(),
-    });
-
-    try {
-      await createNotionPage(properties, notionKey);
-    } catch (err) {
-      console.error('Notion feedback create failed:', (err as Error).message);
+    if (!formspreeOk) {
       return NextResponse.json(
-        { errors: [{ message: 'Failed to record feedback. Please try again.' }] },
+        { errors: [{ message: 'Something went wrong submitting your feedback. Please try again.' }] },
         { status: 502 }
       );
     }

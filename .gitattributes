@@ -52,6 +52,9 @@ data/audit/breaker-transitions.jsonl merge=union
 # union semantics. merge=union concatenates both sides losslessly, same as
 # the other append-only ledgers above.
 data/audit/scraper-spend-ledger.jsonl merge=union
+# BRO-3873 step 5: one row per land.yml landing (append-only); land.yml commits it
+# to main right after the fast-forward, racing every other bot push.
+data/audit/landings.jsonl merge=union
 # Newline-delimited registry of unit-test files, appended to by nearly every
 # worker that adds a test (BRO-181, BRO-2319, BRO-65 all did so this week).
 # Two branches each registering a different test past a common ancestor is a
@@ -196,6 +199,7 @@ data/audit/bww-roundup-miss-ledger.jsonl merge=union
 data/audit/linear-archive-done.jsonl merge=union
 data/audit/ob-promotion-log.jsonl merge=union
 data/audit/we-promotion-log.jsonl merge=union
+data/audit/owe-promotion-log.jsonl merge=union
 # card-enrichment-log.jsonl (scripts/enrich-card-acceptance.js's
 # logEnrichmentWrite): write-only before/after audit trail, one entry per
 # enrichment write, appendFileSync only — confirmed no other script reads it
@@ -211,6 +215,57 @@ data/audit/card-enrichment-log.jsonl merge=union
 # failing on main, since a concurrent CI append to an unmerged JSONL
 # conflicts instead of unioning.
 data/audit/dmarc-report-ledger.jsonl merge=union
+
+# digest-autofix-ledger.jsonl (BRO-3868): was EXEMPT_LEDGERS-listed on
+# 2026-08-26 (BRO-2493) on the belief that attempt-memory.js's checkPark()
+# trusted file order as chronological order for its newest-to-oldest
+# consecutive-failure walk — that exemption bought ordering-safety at the
+# cost of TOTAL ROW LOSS on every sync (measured: rows written 2026-09-16
+# were gone by 2026-09-20, despite the digest dispatching every day between).
+# Re-checked against the code as it actually stands, not the 2026-08-26
+# belief about it:
+#   (a) not load-bearing on deletion: the live writer (digest-autofix.js's
+#       appendJsonlLedger) is appendFileSync-only, nothing prunes rows. There
+#       IS a second, manually-invoked writer — scripts/backfill-judged-
+#       dispatch-ts.js's --apply mode rewrites the whole file to add
+#       `judgedDispatchTs` to old rows — but it never deletes/prunes either,
+#       and it shares this exact rewrite-then-possibly-union-conflict
+#       exposure with linear-drain-parked-ledger.jsonl below (also one of
+#       its 3 targets, already merge=union since BRO-3060) — an accepted,
+#       pre-existing risk profile, not one newly introduced here. Its own
+#       reader was ALSO trusting array-position-as-chronology (backfillRows'
+#       "latest per key" walk) — fixed alongside this card, with the
+#       equivalent shuffled-order regression test in
+#       backfill-judged-dispatch-ts.test.mjs;
+#   (b) no reader depends on raw file order: checkPark() reaches this ledger
+#       through attemptOutcomesForCard(), which already sorts by `ts`
+#       (scripts/lib/attempt-memory.js:70) BEFORE walking the failure streak
+#       newest-to-oldest — that sort predates the 2026-08-26 exemption
+#       (shipped 2026-07-30) and makes post-recovery append order harmless.
+#       Proven, not asserted: attempt-memory.test.mjs shuffles the same rows
+#       into 3 different orders and asserts checkPark returns an identical
+#       verdict for all of them. A malformed-`ts` row is now explicitly
+#       skipped before the sort (same guard shape as dispatch-reconcile.js's
+#       outcomeWindowTs callers) instead of landing at an arbitrary position.
+#       The other two readers of this ledger — the "jobs actually
+#       succeeding" and "throughput" zero-dispatch alarms
+#       (autofix-effectiveness.js, autofix-canary.js) — bucket every row by
+#       its own parsed timestamp, never by array position, so they were
+#       never exposed to this disqualifier in the first place;
+#   (c) DUPLICATE IDENTITY (the condition linear-drain-parked-ledger.jsonl's
+#       entry below flags as separate from ordering-safety): union can leave
+#       the SAME row twice, and neither checkPark's streak count nor the
+#       opus-escalation priorAttempts count nor the two zero-dispatch alarms'
+#       daily counts had any dedupe of their own — a resurrected duplicate
+#       would misfire all four. Closed by adding the identical exact-line
+#       `seen`-Set dedupe linear-drain-parked.js's readLedger() already uses
+#       to every reader of this file (digest-autofix.js's readJsonlLedger/
+#       readJsonlLedgerStrict, autofix-effectiveness.js's readLedgerRows,
+#       health-check.js's readJsonlLedgerOrNull and its own inline
+#       checkAutofixEffectiveness read). Safe against true collisions:
+#       appendJsonlLedger stamps a fresh `new Date().toISOString()` on every
+#       row, so two genuinely distinct attempts never serialize identically.
+data/audit/digest-autofix-ledger.jsonl merge=union
 # remediation-log.jsonl (scripts/lib/opening-night-remediation.js):
 # readAttempts() and readGiveUps() both explicitly re-sort/re-derive by the
 # entry's own `at` timestamp instead of trusting array position — their doc
@@ -267,6 +322,43 @@ data/audit/dmarc-report-ledger.jsonl merge=union
 #       this reason. If you add a union driver to another ledger, check this
 #       third condition too — ordering safety is NOT duplicate safety.
 data/audit/linear-drain-parked-ledger.jsonl merge=union
+
+# bsc-reconcile-linear-zombie-ledger.jsonl (scripts/bsc-reconcile.js's
+# sweepLinearStartedZombies, BRO-3925): same three-condition check as
+# linear-drain-parked-ledger.jsonl above, same reader shape (attempt-memory.js
+# checkPark via scripts/bsc-reconcile.js's readLinearZombieLedger). (a) safe —
+# resurrecting a pruned/duplicate card-fail/card-pass row is stale data, not a
+# wrong computed value, and nothing here ever prunes anyway (append-only,
+# unbounded). (b) safe — attempt-memory.js's attemptOutcomesForCard explicitly
+# re-sorts by each row's own ts before walking the streak, never trusts file
+# order. (c) the third condition this repo's own union incidents keep
+# catching: readLinearZombieLedger() does exact-line dedup, same fix
+# linear-drain-parked-ledger.jsonl's readLedger() needed for the identical
+# reason (a duplicated card-fail row would otherwise turn one real failure
+# into a false 2-in-a-row park).
+data/audit/bsc-reconcile-linear-zombie-ledger.jsonl merge=union
+
+# linear-gate-bypass.jsonl (scripts/lib/linear-gate-bypass-ledger.js's
+# appendBypassRow): arrived tracked with no merge attribute on 2026-09-21
+# (BRO-3928 landing discovered it as a pre-existing red on
+# audit-ledger-merge-attrs.test.mjs, unrelated to that card's own diff).
+# Append-only (fs.appendFileSync of one already-newline-terminated line, same
+# convention as linear-drain-parked-ledger.jsonl above) and has NO consumer
+# at all today (readBypassRows is exercised only by its own test file) — so
+# neither disqualifier applies: no reader sums/aggregates duplicate keys, and
+# nothing depends on file order or de-dupes by identity.
+data/audit/linear-gate-bypass.jsonl merge=union
+
+# ci-green-rate.jsonl (scripts/ci-green-rate.js --record → appendLedger, run
+# nightly by health-check.js; committed by data-health-check.yml): arrived
+# tracked with no merge attribute on 2026-09-22 and turned main's
+# audit-ledger-merge-attrs.test.mjs red. Append-only (fs.appendFileSync of one
+# line, never pruned or rewritten). Its only reader,
+# scripts/lib/ci-green-rate.js assessTrend(), takes rows "any order", keys
+# them by UTC day of the explicit `ts` field and keeps the LATEST ts per day
+# (no summing), and walks the streak by calendar day, not file order — so
+# neither disqualifier applies and a union-duplicated line is inert.
+data/audit/ci-green-rate.jsonl merge=union
 
 # Accumulate-state (read-modify-write of a live counter/keyed-object/array) —
 # `ours` would silently discard the other side's accrued state (open alert

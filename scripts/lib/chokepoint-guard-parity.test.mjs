@@ -49,6 +49,7 @@ const WRITER_PATH = path.join(REPO_ROOT, 'scripts', 'lib', 'review-file-writer.j
 const WRITE_DECISION_GUARDS = new Set([
   'isLikelyTourReview',
   'getWrongProductionReasonForUnknownCritic',
+  'getWrongProductionReasonForBww',
   'isWrongShowUnknownLocked',
   'isRoundupUrl',
   'shouldRouteUnknownCriticToPending',

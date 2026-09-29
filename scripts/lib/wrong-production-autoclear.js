@@ -618,11 +618,15 @@ function shouldAutoClearWrongProductionUrlYear(data, { isLondonOrOffBroadway, cv
  * @param {boolean} ctx.dateMismatchOver90d
  * @returns {boolean}
  */
-function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl, dateMismatchOver90d } = {}) {
+function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl, dateMismatchOver90d, urlSlugNamesOtherShow } = {}) {
   if (data.wrongShow !== true) return false;
   if (!isLondonMarketShow) return false;
   if (!isUkOutletUrl) return false;
   if (dateMismatchOver90d) return false;
+  // "UK outlets rarely review anything but London shows" says nothing when
+  // the URL itself is another show's review (thestage.co.uk/reviews/the-
+  // other-place-review-... on Oliver!, auto-cleared into the live page).
+  if (urlSlugNamesOtherShow) return false;
   const isWrongArticle = data.contentVerification?.wrongArticle === true;
   const hasManualReason = !!data.wrongShowReason;
   if (hasEnsembleConsensus(data, 'wrong_show')) return false;
@@ -639,6 +643,21 @@ function shouldAutoClearWrongShowUkUrl(data, { isLondonMarketShow, isUkOutletUrl
  * explicit human override must always win. This strips only our own flag —
  * recognised by its note prefix or reason — never a manual/CV/cross-market flag.
  *
+ * Defense-in-depth (#1156/BRO-3328): most sibling auto-clear predicates in
+ * this file defer to hasEnsembleConsensus — a unanimous ensemble
+ * wrong_production verdict on the fetched text outranks a domain/market
+ * heuristic. This path had never been given that same guard, so a review the
+ * ensemble had already rejected on content grounds could be silently
+ * restored the moment the show gained a usable date, even though a date
+ * proves nothing about whether the text is the right production
+ * (much-ado-about-nothing-2026's london-theatre--marianka-swain.json).
+ * humanOverride is checked FIRST and still always wins, per this function's
+ * original contract above.
+ * NOTE: shouldAutoClearStaleDateGuard below has the identical shape (a date
+ * moving back in-window releases a hold) and is STILL missing this guard —
+ * tracked as a separate follow-up (BRO-3328 ship-check finding) rather than
+ * folded into this fix, since no live corpus violation exists for it today.
+ *
  * @param {object} data - the review JSON object
  * @param {object} ctx
  * @param {boolean} ctx.hasUsableDate - true if the review now has a usable date
@@ -654,7 +673,9 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
   const humanOverride = !!data.allowEarlyDate
     || !!data.wrongProductionManualClear
     || data.humanReviewedWrongProduction === true;
-  return !!hasUsableDate || humanOverride;
+  if (humanOverride) return true;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  return !!hasUsableDate;
 }
 
 /**
@@ -687,9 +708,26 @@ function shouldAutoClearDatelessRevival(data, { hasUsableDate } = {}) {
  */
 function shouldAutoClearStaleDateGuard(data, { nowInWindow } = {}) {
   if (!data || data.wrongProduction !== true) return false;
-  const note = data.wrongProductionNote || '';
-  if (!note.startsWith('Pre-opening guard:')) return false;
+  if (!isDatedGuardNote(data.wrongProductionNote)) return false;
+  // `Date guard:` flags (added BRO-4185): a scoring-model date guess must not
+  // move a flag in either direction (same carve-out as date-plausibility.js /
+  // contradicted-flag-basis.js). Pre-opening behaviour is left unchanged.
+  if (String(data.wrongProductionNote).startsWith('Date guard:') && data.dateSource === 'llm-scoring') return false;
   return nowInWindow === true;
+}
+
+/**
+ * Notes written by the two DATED guards, both computed by
+ * date-guard.evaluateDateGuard on publishDate alone:
+ *   - `Pre-opening guard:` — rebuild-all-reviews.js
+ *   - `Date guard:`        — flag-wrong-production-by-date.js
+ * The second prefix was missing (BRO-4185): a flag-wrong-production-by-date
+ * flag was never re-evaluated after its date was corrected, so the same
+ * date fix that released a `Pre-opening guard:` flag left this one stuck.
+ */
+function isDatedGuardNote(note) {
+  const n = String(note || '');
+  return n.startsWith('Pre-opening guard:') || n.startsWith('Date guard:');
 }
 
 /**
@@ -881,6 +919,50 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   return true;
 }
 
+/**
+ * Reverse direction of shouldAutoClearWrongProductionUkDualMarket: a stale
+ * "Cross-market: London outlet ..." flag on a Broadway / off-Broadway show,
+ * written before the outlet was registered as dual-market.
+ *
+ * observer.com (NY Observer: Rex Reed, David Cote) carried 182 such flags on
+ * NYC shows although `observer` is now isDualMarket, and the reverse guard no
+ * longer fires for dual outlets, so nothing ever re-checked them (BRO-4185
+ * follow-up). The same outletId also holds UK Observer reviews (Susannah
+ * Clapp, Clare Brennan) with no URL or a theguardian.com URL; those flags are
+ * genuine, so the clear requires the review's own URL to be on the outlet's
+ * registered primary domain, and that domain must not be a UK one.
+ *
+ * Two more gates came from the corpus dry run: the same review URL is often
+ * copied onto older productions of the title (Hello, Dolly! 2017 review on the
+ * 1978 and 1995 entries, with a fabricated 1978 date), so the clear also needs
+ * the publish date inside this production's own run AND the URL filed under no
+ * other show.
+ *
+ * ctx: { isNycMarketShow, outletIsDualMarket, urlOnOutletPrimaryDomain,
+ *        isUkUrl, isDateMismatch, isShowListingUrl, cvBlocksClear,
+ *        inOwnProductionWindow, urlFiledUnderOtherShow }
+ */
+function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionOverride) return false;
+  if (!ctx.isNycMarketShow) return false;
+  if (!data.url) return false;
+  const wpNote = data.wrongProductionNote || '';
+  if (!wpNote.startsWith('Cross-market: London outlet')) return false;
+  if (hasAdjudicatedNote(data)) return false;
+  if (data.wrongProductionReason) return false;
+  if (ctx.isDateMismatch) return false;
+  if (!ctx.outletIsDualMarket) return false;
+  if (!ctx.urlOnOutletPrimaryDomain || ctx.isUkUrl) return false;
+  if (ctx.cvBlocksClear) return false;
+  if (ctx.isShowListingUrl) return false;
+  if (!ctx.inOwnProductionWindow) return false;
+  if (ctx.urlFiledUnderOtherShow) return false;
+  if (hasEnsembleConsensus(data, 'wrong_production')) return false;
+  if (isTextStaleRelativeToUrlRewrite(data)) return false;
+  return true;
+}
+
 module.exports = {
   DATE_ONLY_AUTO_REASONS,
   REVIEW_LAG_GRACE_DAYS,
@@ -901,7 +983,9 @@ module.exports = {
   shouldAutoClearWrongProductionTourLeg,
   shouldAutoClearDatelessRevival,
   shouldAutoClearStaleDateGuard,
+  isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
   shouldPreserveExclusionFlagsOnUrlRecovery,
   shouldAutoClearWrongProductionUkDualMarket,
+  shouldAutoClearStaleLondonOutletCrossMarket,
 };

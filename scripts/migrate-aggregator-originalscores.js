@@ -14,13 +14,12 @@
 const fs = require('fs');
 const path = require('path');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const baseDir = path.join(__dirname, '..', 'data', 'review-texts');
 
-const shows = fs.readdirSync(baseDir).filter(d => {
-  try { return fs.statSync(path.join(baseDir, d)).isDirectory(); } catch { return false; }
-});
+const shows = listShowDirs(baseDir);
 
 let fixed = 0;
 let skipped = 0;

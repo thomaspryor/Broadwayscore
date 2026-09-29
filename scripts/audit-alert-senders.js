@@ -58,6 +58,22 @@
  *   the ambiguity guard (all assignments must agree on ONE literal) covers
  *   the realistic reassignment case, and shadowed severity idents around a
  *   sendAlert call don't exist in this corpus today.
+ * - The literal name `routeAlert` is matched through a preceding dot (BRO-2421,
+ *   so `require('./owner-alert-router.js').routeAlert(...)` isn't invisible to
+ *   the scan). This trades a theoretical false positive — an unrelated object
+ *   happening to expose its own `.routeAlert(...)` method — for closing a real
+ *   blind spot; `routeAlert` is distinctive enough in this corpus that the
+ *   collision has never been observed, and even if it occurred it would only
+ *   inflate the 'router' inventory count, not suppress a real 'direct'
+ *   sendAlert(email:true) finding in the same file (that detection is
+ *   independent). A DOTTED call assigned to a variable and inspected for
+ *   `disposition:'human'` result handling (scanHumanDispositionCaller's
+ *   assignMatch/destructureMatch/nextCallRe) is NOT yet covered by this same
+ *   dot-tolerance — those regexes still require a bare `await routeAlert(`.
+ *   No known caller hits this gap today; tracked as a follow-up rather than
+ *   fixed alongside this change, since extending it risks the exact kind of
+ *   regex-interaction bug this file's own "Known accepted limitations" are
+ *   full of.
  *
  * Second check (card #616): routeAlert()'s disposition='human' path can now
  * silently downgrade to result.action==='digest' (the page-worthy allowlist
@@ -322,16 +338,28 @@ function scanFile(absPath, relPath) {
   // Resolve any local wrapper names (injectable default param, thin
   // pass-through function) to routeAlert so calls made through them aren't
   // invisible to this whole scan (card #616 follow-up). The negative
-  // lookbehinds exclude (a) the wrapper's OWN `function alert(...)`
-  // declaration line from matching itself as a call site, and (b) a member
-  // access on an unrelated object — a wrapper named e.g. `alert` must not
-  // match `logger.alert(...)` or `window.alert(...)`, which \b alone allows
-  // since "." is a non-word char (adversarial-review find, card #616
-  // follow-up: this previously both mis-flagged a safe caller AND could
-  // prematurely end a real call's post-call scan window at the false match).
+  // lookbehind on WRAPPER names excludes a member access on an unrelated
+  // object — a wrapper named e.g. `alert` must not match `logger.alert(...)`
+  // or `window.alert(...)`, which \b alone allows since "." is a non-word
+  // char (adversarial-review find, card #616 follow-up: this previously both
+  // mis-flagged a safe caller AND could prematurely end a real call's
+  // post-call scan window at the false match).
+  //
+  // The literal name `routeAlert` does NOT get that dot exclusion (BRO-2421):
+  // it is distinctive enough that a `.routeAlert(` member access — e.g.
+  // `require('./owner-alert-router.js').routeAlert({...})`, the inline-require
+  // pattern bsc-runner.js uses to avoid a module-load-order cycle — is for all
+  // practical purposes always the real router call, never an unrelated
+  // method. Excluding dotted calls made this exact call site INVISIBLE to the
+  // scan (not counted as 'router' NOR as 'direct'), so a file could look
+  // clean in the inventory while never being verified as routed at all.
   const wrapperNames = findWrapperNames(rawLines);
+  const wrapperAlt = wrapperNames.size ? [...wrapperNames].join('|') : null;
+  const callSitePattern = wrapperAlt
+    ? `(?<!function\\s+)\\brouteAlert\\s*\\(|(?<!function\\s+)(?<!\\.)\\b(?:${wrapperAlt})\\s*\\(`
+    : `(?<!function\\s+)\\brouteAlert\\s*\\(`;
+  const callSiteRe = new RegExp(callSitePattern);
   const calleeAlt = ['routeAlert', ...wrapperNames].join('|');
-  const callSiteRe = new RegExp(`(?<!function\\s+)(?<!\\.)\\b(?:${calleeAlt})\\s*\\(`);
 
   for (let i = 0; i < lines.length; i++) {
     // Skip comment lines (this file, opening-night-sla.js, and ux-walkthrough.yml

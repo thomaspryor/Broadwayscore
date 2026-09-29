@@ -19,6 +19,7 @@ const path = require('path');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { loadReviewsWithBlog } = require('./lib/load-reviews-with-blog');
+const { isHiddenFromAppFeed } = require('./lib/markets');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -153,8 +154,11 @@ for (const review of reviews) {
   if (review.assignedScore != null) showsWithScores.add(review.showId);
 }
 
+// Flag-gated categories marked hideFromAppFeed (tour) stay out of the app feed until
+// their feature flag is on (src/config/markets.json, BRO-4211).
 const visibleShows = shows.filter(show =>
-  showsWithScores.has(show.id) || show.status !== 'closed'
+  !isHiddenFromAppFeed(show.category) &&
+  (showsWithScores.has(show.id) || show.status !== 'closed')
 );
 
 const mobileShows = visibleShows.map(show => {

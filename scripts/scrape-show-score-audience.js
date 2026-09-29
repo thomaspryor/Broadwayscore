@@ -23,11 +23,13 @@ const path = require('path');
 const https = require('https');
 const { JSDOM } = require('jsdom');
 const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
+const { isSourceFresh } = require('./lib/audience-freshness');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const { fetchPage, isChallengeOrGarbage } = require('./lib/scraper');
+const { findConflictingShowId } = require('./lib/show-score-url-map');
 const { recordSbCall } = require('./lib/provider-telemetry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -71,6 +73,11 @@ async function cleanupPlaywright() {
 const args = process.argv.slice(2);
 const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 const showsArg = args.find(a => a.startsWith('--shows='))?.split('=')[1];
+// --skip-fresh-hours=N (BRO-4215): with --shows=<ids>, drop shows whose Show
+// Score record was written in the last N hours. The opening-night orchestrator
+// re-dispatches the same shows ~7x/day (~11% of ScrapingBee credits 9/21-9/27).
+const skipFreshArg = args.find(a => a.startsWith('--skip-fresh-hours='));
+const skipFreshHours = skipFreshArg ? parseFloat(skipFreshArg.split('=')[1]) : 0;
 const limitArg = args.find(a => a.startsWith('--limit='));
 const showLimit = limitArg ? parseInt(limitArg.split('=')[1]) : null;
 const dryRun = args.includes('--dry-run');
@@ -182,7 +189,7 @@ function fetchViaScrapingBeeSingle(url) {
       try { recordSbCall({ url, fn: 'render', success, status, credits: billed }); } catch (_) {}
     };
 
-    https.get(apiUrl, { timeout: 60000 }, (res) => {
+    const req = https.get(apiUrl, { timeout: 60000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -194,8 +201,9 @@ function fetchViaScrapingBeeSingle(url) {
           reject(new Error(`ScrapingBee HTTP ${res.statusCode}: ${data.slice(0, 200)}`));
         }
       });
-    }).on('error', (err) => { _rec(false, 'error'); reject(err); })
-      .on('timeout', () => { _rec(false, 'timeout'); reject(new Error('ScrapingBee request timeout')); });
+    });
+    req.on('error', (err) => { _rec(false, 'error'); reject(err); });
+    req.on('timeout', () => { req.destroy(); _rec(false, 'timeout'); reject(new Error('ScrapingBee request timeout')); });
   });
 }
 
@@ -785,10 +793,18 @@ function getCachedUrl(showId) {
   return null;
 }
 
+// BRO-4215: set when processShow's fetch THREW for the current show, as
+// opposed to cleanly finding no usable data (404, wrong page, empty page).
+// Both return null; only a clean no-data result may stamp
+// showScoreLastAttempted, or a proxy outage would mark every show fresh and
+// suppress retries for the whole --skip-fresh-hours window.
+let showFetchFailed = false;
+
 /**
  * Process a single show (cache-only — URL must already be in show-score-urls.json)
  */
 async function processShow(show) {
+  showFetchFailed = false;
   // Multi-production guard: older productions only processed if they have their own page
   if (!isMostRecentProduction(show)) {
     const myUrl = getCachedUrl(show.id);
@@ -887,6 +903,7 @@ async function processShow(show) {
 
   } catch (error) {
     console.error(`  ERROR: ${error.message}`);
+    showFetchFailed = true;
     return null;
   }
 }
@@ -916,6 +933,9 @@ function updateAudienceBuzz(showId, showTitle, showScoreData) {
   audienceBuzz.shows[showId].sources.showScore = {
     score: showScoreData.score,
     reviewCount: showScoreData.reviewCount,
+    // BRO-4215: lets --skip-fresh-hours skip a show scraped minutes ago
+    // (same field the reddit source record already carries).
+    lastUpdated: new Date().toISOString(),
   };
 
   // Recalculate combined score with dynamic weighting
@@ -985,6 +1005,17 @@ async function main() {
         console.error(`No shows found matching: ${showsArg}`);
         process.exit(1);
       }
+      if (skipFreshHours > 0) {
+        const fresh = shows.filter(s => isSourceFresh((audienceBuzz.shows || {})[s.id], 'showScore', skipFreshHours, { attemptField: 'showScoreLastAttempted' }));
+        if (fresh.length > 0) {
+          console.log(`Skipping ${fresh.length} show(s) with Show Score updated in the last ${skipFreshHours}h: ${fresh.map(s => s.id).join(', ')}`);
+          shows = shows.filter(s => !fresh.includes(s));
+        }
+        if (shows.length === 0) {
+          console.log('All requested shows are fresh — nothing to scrape.');
+          process.exit(0);
+        }
+      }
       console.log(`Processing specific shows: ${shows.map(s => s.title).join(', ')}`);
     }
   } else if (!includeAll) {
@@ -1019,7 +1050,14 @@ async function main() {
     console.log(`\n── Listings Discovery Phase: ${uncachedBefore} uncached shows ──`);
     try {
       const { execSync } = require('child_process');
-      const result = execSync('node scripts/discover-show-score-urls-from-listings.js', {
+      // /what-else follow-up (BRO-4055): this call used to never forward
+      // --dry-run, so a "safe preview" run of THIS script still performed
+      // real writes via the child process (caught live: a --dry-run run
+      // wrote a new url to show-score-urls.json on disk). Forward it.
+      const childCmd = dryRun
+        ? 'node scripts/discover-show-score-urls-from-listings.js --dry-run'
+        : 'node scripts/discover-show-score-urls-from-listings.js';
+      const result = execSync(childCmd, {
         cwd: path.join(__dirname, '..'),
         encoding: 'utf8',
         timeout: 120000,
@@ -1061,8 +1099,18 @@ async function main() {
         urlData._discoveryAttempts[show.id] = new Date().toISOString();
 
         if (url) {
-          // Cache immediately
+          // BRO-4055: a show that just lost its mapping (a hand-removed
+          // wrong-production URL, e.g. BRO-3416) is "uncached" and lands
+          // right back in this discovery loop — without this check,
+          // slug-guessing would immediately re-match it to the same page
+          // another showId already owns, undoing the removal.
           if (!urlData.shows) urlData.shows = {};
+          const conflictId = findConflictingShowId(urlData.shows, show.id, url);
+          if (conflictId) {
+            console.log(`  [SKIP] ${url} already assigned to ${conflictId} — refusing to also assign it to ${show.id}`);
+            if (!dryRun) saveUrlCache(); // persist the attempt timestamp above
+            continue;
+          }
           urlData.shows[show.id] = url;
           if (!dryRun) saveUrlCache();
           // Update shard incrementally
@@ -1194,6 +1242,15 @@ async function main() {
         }
       } else if (previousScores[show.id] != null) {
         scoreDrops.push(show.id);
+      }
+
+      // BRO-4215: a clean scrape that produced no score (no page yet, empty page,
+      // identical-to-sibling) is stamped so --skip-fresh-hours doesn't re-fetch it
+      // on every orchestrator dispatch. Fetch errors are never stamped.
+      if (skipFreshHours > 0 && !dryRun && !shardOutput && !showFetchFailed && !(data && data.score)) {
+        audienceBuzz.shows[show.id] = audienceBuzz.shows[show.id] || { sources: {} };
+        audienceBuzz.shows[show.id].showScoreLastAttempted = new Date().toISOString();
+        saveAudienceBuzz(audienceBuzz);
       }
     } catch (e) {
       console.error(`Error processing ${show.title}:`, e.message);

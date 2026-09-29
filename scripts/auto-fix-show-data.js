@@ -24,6 +24,7 @@ const { ROLE_CANON, roleVerb, serpTextConfirms } = require('./lib/creative-team-
 const { CLAUDE_HAIKU, CLAUDE_OPUS } = require('./lib/models');
 const showsWriteGuard = require('./lib/shows-write-guard');
 const { cleanup: cleanupScraper } = require('./lib/scraper');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -38,6 +39,24 @@ const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const TODAYTIX_IDS_PATH = path.join(__dirname, '..', 'data', 'todaytix-ids.json');
 const SCRAPINGBEE_API_KEY = process.env.SCRAPINGBEE_API_KEY;
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
+// BRO-4139: fixCreativeTeam's SERP-verification steps (verifyCreativeTeamViaSerp
+// → serpQuery) accept EITHER SCRAPINGBEE_API_KEY or BRIGHTDATA_TOKEN, but the
+// gates that guard those steps used to check SCRAPINGBEE_API_KEY only — a
+// BD-only environment would silently skip creative-team fixes it could
+// actually do. Gating on this instead is a pure widening: it never turns an
+// already-skipped fix into a wrong write, since fixCreativeTeam still leaves
+// the field unset (never a confident false empty) when serpQuery itself
+// returns nothing to verify against.
+const SERP_PREFLIGHT = serpCensusPreflight(process.env, {
+  // No opt-out: this caller only skips when keyless, so a switch could
+  // only unlock a keyless run that silently finds nothing.
+  disableVar: null,
+  consequence:
+    'Creative-team IBDB/LLM fixes would be skipped entirely for every show '
+    + 'this run (the field is left unset, never written as a confident '
+    + 'empty) — a missed-fix opportunity, not a corrupted write.',
+  workflowHint: '.github/workflows/check-show-freshness.yml or backfill-historical-metadata.yml (whichever invoked this run)',
+});
 
 // Results tracking
 const results = {
@@ -528,7 +547,7 @@ async function fixCreativeTeam(show, todayTixIds) {
   // Note: lookupIBDBDates runs a production-year gate. If show.openingDate is
   // missing, the gate trips and creativeTeam comes back empty. That's by
   // design — same-title revivals can collide without a year anchor.
-  if (show.ibdbUrl && SCRAPINGBEE_API_KEY) {
+  if (show.ibdbUrl && SERP_PREFLIGHT.ok) {
     console.log(`    Fetching from IBDB...`);
     try {
       const openingYear = show.openingDate ? parseInt(show.openingDate.slice(0, 4)) : undefined;
@@ -566,7 +585,7 @@ async function fixCreativeTeam(show, todayTixIds) {
   // Two-step: LLM proposes a director, SERP verifies it exists before accepting.
   // This prevents the hallucination pattern (film directors, original-production
   // directors, actors assigned to shows they're not connected to).
-  if (!show.ibdbUrl && ANTHROPIC_API_KEY && SCRAPINGBEE_API_KEY) {
+  if (!show.ibdbUrl && ANTHROPIC_API_KEY && SERP_PREFLIGHT.ok) {
     console.log(`    Generating via SERP-verified LLM...`);
     creativeTeam = await generateCreativeTeamWithSerpVerification(show);
     if (creativeTeam && creativeTeam.length >= 1) {
@@ -645,7 +664,12 @@ async function main() {
   console.log('='.repeat(60));
   console.log(`Started: ${new Date().toISOString()}`);
   console.log(`Synopsis fetching: ${SCRAPINGBEE_API_KEY ? '✓ enabled' : '✗ disabled (no SCRAPINGBEE_API_KEY)'}`);
-  console.log(`Synopsis generation: ${ANTHROPIC_API_KEY ? '✓ enabled' : '✗ disabled (no ANTHROPIC_API_KEY)'}\n`);
+  console.log(`Synopsis generation: ${ANTHROPIC_API_KEY ? '✓ enabled' : '✗ disabled (no ANTHROPIC_API_KEY)'}`);
+  // BRO-4139: creative-team IBDB/LLM fixes route every proposed member
+  // through a SERP verification gate before writing — without a key, those
+  // steps are skipped entirely (the field is left unset, never written as a
+  // confident empty) rather than silently degrading to unverified writes.
+  console.log(`Creative-team SERP verification: ${SERP_PREFLIGHT.ok ? '✓ enabled' : '✗ disabled — ' + SERP_PREFLIGHT.reason.split('\n')[0]}\n`);
 
   const data = loadShows();
   const todayTixIds = loadTodayTixIds();

@@ -159,6 +159,9 @@ const PROVENANCE_FIELD_RE = /\b_?wrongProduction(?:Provenance|Reason|Note|Detect
 
 const PROVENANCE_WINDOW_LINES = 8;
 
+// Shared with scripts/lib/autoclear-invalidate.js (BRO-3908) — see this
+// module's exports. A behavior change here (e.g. closing the regex-literal
+// KNOWN GAP below) silently changes both lints' matching, not just this one.
 function isCommentLine(line) {
   const t = line.trim();
   return t.startsWith('//') || t.startsWith('*') || t.startsWith('/*');
@@ -268,4 +271,13 @@ module.exports = {
   findWrongProductionAssignments,
   hasNearbyProvenanceSignal,
   scanFileForViolations,
+  // Exported for scripts/lib/autoclear-invalidate.js (BRO-3908), which scans
+  // for the same class of write site but checks for a nearby
+  // invalidateWrongProductionAutoClear/invalidateWrongShowAutoClear call
+  // instead of a provenance field. Reusing these keeps both lints agreeing on
+  // what counts as a real write (skip comments/comparisons/string literals)
+  // instead of two hand-maintained copies drifting apart.
+  isCommentLine,
+  isComparisonLine,
+  isInsideStringLiteral,
 };

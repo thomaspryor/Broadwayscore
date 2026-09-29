@@ -11,6 +11,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const http = require('http');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
@@ -151,9 +152,7 @@ function cleanText(html) {
 function findStubsWithUrls() {
   const stubs = [];
 
-  const shows = fs.readdirSync(reviewTextsDir).filter(f =>
-    fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-  );
+  const shows = listShowDirs(reviewTextsDir);
 
   for (const show of shows) {
     if (showFilter && show !== showFilter) continue;

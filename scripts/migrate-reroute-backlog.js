@@ -17,7 +17,14 @@
  *   node scripts/migrate-reroute-backlog.js --verify     # post-execute checks
  *
  * Flags:
- *   --cross-market  Rescue cross-market candidates (London outlets reviewing Broadway)
+ *   --cross-market  Rescue cross-market candidates (London outlets reviewing Broadway).
+ *                   Gated by scripts/lib/cross-market-reroute-guard.js (BRO-4204
+ *                   audit S6-T2): the file needs a dual-market outlet URL AND
+ *                   review text / contentVerification naming the target's venue
+ *                   or director (or crossMarketRerouteApproved: true). Refusals
+ *                   log `cross-market-skip: <show>/<file> <reason>`. A
+ *                   cross-market move never stamps wrongProductionOverride —
+ *                   it leaves reroutedFrom / reroutedAt breadcrumbs only.
  *   --limit N       Only process first N safe candidates
  *   --show SHOW_ID  Only process a single source show
  */
@@ -26,6 +33,11 @@ const path = require('path');
 const { pickRerouteTarget, buildShowKeywordSet, findShowKeywordInText, buildMultiProdYearGuard } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+// BRO-4204 audit S6-T2: a cross-market move needs a dual-market outlet URL AND
+// the review naming the target production's venue/director (or a human
+// crossMarketRerouteApproved breadcrumb). Year proximity alone put 37 London
+// reviews on NYC shows. The guard never grants wrongProductionOverride.
+const { decideCrossMarketReroute } = require('./lib/cross-market-reroute-guard');
 
 const REPO_ROOT = '/Users/tompryor/Broadwayscore';
 const reviewTextsDir = path.join(REPO_ROOT, 'data', 'review-texts');
@@ -107,6 +119,24 @@ function buildTargetOutletCriticIndex(targetShowId) {
   return index;
 }
 
+// ─── Cross-market guard (S6-T2) ───
+// Runs after the year/keyword heuristics picked a cross-market target. Logs
+// `cross-market-skip: <show>/<file> <reason>` on refusal so a dry run shows
+// exactly why each candidate was not moved.
+function crossMarketGuardAllows(showId, file, data, targetShow) {
+  const sourceShow = showById.get(showId) || null;
+  const normTitle = targetShow && targetShow.title
+    ? targetShow.title.toLowerCase().replace(/[^a-z0-9]/g, '') : null;
+  const siblings = normTitle ? (titleGroups[normTitle] || []) : [];
+  const verdict = decideCrossMarketReroute({
+    file: data, candidateShow: targetShow, sourceShow, outletRegistry, siblings,
+  });
+  if (!verdict.allow) {
+    console.log(`cross-market-skip: ${showId}/${file} ${verdict.reason}`);
+  }
+  return verdict.allow;
+}
+
 // ─── Safety classifier (mirrors audit-reroute-backlog.js) ───
 // Returns { safe, reason, overrideTarget? }
 // overrideTarget is set when --cross-market reroutes to a WE sibling instead of
@@ -163,6 +193,9 @@ function classifyCandidate(showId, file, data, guard, decision) {
             const weKeywords = weTarget ? buildShowKeywordSet(weTarget) : new Set();
             const matched = weKeywords.size > 0 ? findShowKeywordInText(reviewText, weKeywords) : null;
             if (matched) {
+              if (!crossMarketGuardAllows(showId, file, data, weTarget)) {
+                return { safe: false, reason: 'cross_market_guard' };
+              }
               return {
                 safe: true,
                 overrideTarget: weDecision.targetShowId,
@@ -186,7 +219,12 @@ function classifyCandidate(showId, file, data, guard, decision) {
         // Keyword verify against Broadway target
         const targetKeywords = targetShow ? buildShowKeywordSet(targetShow) : new Set();
         const matched = findShowKeywordInText(reviewText, targetKeywords);
-        if (matched) return { safe: true };
+        if (matched) {
+          if (!crossMarketGuardAllows(showId, file, data, targetShow)) {
+            return { safe: false, reason: 'cross_market_guard' };
+          }
+          return { safe: true };
+        }
       }
     }
 
@@ -435,6 +473,14 @@ if (MODE === 'execute') {
       // Re-read fresh from disk
       const sourceData = JSON.parse(fs.readFileSync(sourcePath, 'utf8'));
 
+      // Cross-market pre-flight (S6-T2): re-run the guard on the fresh file
+      // even though the dry run already applied it — plans are editable JSON
+      // and the file may have changed since. Never move on a stale verdict.
+      if (CROSS_MARKET && !crossMarketGuardAllows(sourceShowId, file, sourceData, showById.get(targetShowId))) {
+        skipped++;
+        continue;
+      }
+
       // Save full before-snapshot for rollback
       const before = JSON.parse(JSON.stringify(sourceData));
 
@@ -445,7 +491,19 @@ if (MODE === 'execute') {
       const migrationLabel = CROSS_MARKET ? 'cross-market rescue 2026-04-12' : 'backlog migration 2026-04-11';
       sourceData.routedReason = `${migrationLabel}: ${entry.yearSource}=${entry.detectedYear} matches sibling ${targetShowId} (distance ${distance})`;
       sourceData.routedAt = new Date().toISOString();
-      clearWrongProductionFlags(sourceData, { source: 'migrate-reroute-backlog.js', reason: sourceData.routedReason });
+      if (CROSS_MARKET) {
+        // A cross-market move NEVER grants wrongProductionOverride (the blanket
+        // exemption that force-included the 37 misrouted London reviews). Clear
+        // the stale flag, leave reroutedFrom/reroutedAt breadcrumbs only; the
+        // target's own guards still evaluate the moved review.
+        clearWrongProductionFlags(sourceData, {
+          source: 'migrate-reroute-backlog.js', reason: sourceData.routedReason, noOverrideStamp: true,
+        });
+        sourceData.reroutedFrom = sourceShowId;
+        sourceData.reroutedAt = sourceData.routedAt;
+      } else {
+        clearWrongProductionFlags(sourceData, { source: 'migrate-reroute-backlog.js', reason: sourceData.routedReason });
+      }
 
       // Stamp allowEarlyDate for distance >= 2 to prevent the early-date guard
       // from re-flagging at the target. Distance 0-1 are close enough that
@@ -526,6 +584,11 @@ if (MODE === 'verify') {
         }
         if (d.showId !== entry.targetShowId) {
           console.error(`  WRONG SHOWID: ${entry.targetPath} has ${d.showId}, expected ${entry.targetShowId}`);
+          issues++;
+        }
+        // S6-T2: a cross-market move must never have granted the blanket override.
+        if (CROSS_MARKET && d.wrongProductionOverride === true) {
+          console.error(`  OVERRIDE STAMPED: ${entry.targetPath} carries wrongProductionOverride after a cross-market reroute`);
           issues++;
         }
       } catch (e) {

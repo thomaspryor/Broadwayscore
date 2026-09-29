@@ -44,6 +44,7 @@ const SHOWS_PATH = process.env.SHOWS_PATH
   || path.join(__dirname, '..', 'data', 'shows.json');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const USAGE = `sweep-wrongproduction-corroboration.js — find date-guard wrongProduction:true files whose in-file corroboration contradicts the flag date (card #1572).
 
 Usage:
@@ -67,10 +68,7 @@ function run() {
     : path.join(__dirname, '..', 'data', 'audit', 'wrongproduction-corroboration-sweep.json');
 
   const showMap = loadShows();
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-    const full = path.join(REVIEW_TEXTS_DIR, d);
-    return fs.statSync(full).isDirectory() && !d.startsWith('_');
-  });
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => !d.startsWith('_'));
 
   const strong = [];
   const weak = [];

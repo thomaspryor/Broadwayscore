@@ -37,6 +37,7 @@ require('./lib/load-env').loadEnv();
 const { fetchPage } = require('./lib/scraper');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -283,9 +284,7 @@ async function main() {
   }
 
   // Find all undated reviews with URLs
-  const shows = fs.readdirSync(baseDir).filter(d => {
-    try { return fs.statSync(path.join(baseDir, d)).isDirectory(); } catch { return false; }
-  });
+  const shows = listShowDirs(baseDir);
 
   const candidates = [];
   let skippedDomain = 0;

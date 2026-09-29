@@ -5,7 +5,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, isNextUtcDay,
-  aggregateLedgerByDay,
+  aggregateLedgerByDay, bbCost,
+  ledgerFreshnessHours, lastLedgerDay,
 } = require('./provider-spend-core.js');
 
 const THRESHOLDS = {
@@ -15,7 +16,7 @@ const THRESHOLDS = {
 
 const okReadings = {
   day: '2026-07-30',
-  bb: 25,
+  bb: { sessions: 25, minutes: 30 },
   bd: { serp: { cost: 0.8, reqs: 500 }, unlocker: { cost: 0.6, reqs: 400 } },
   sb: { cycleUsed: 100500, cap: 1000000 },
   sd: { cycleUsed: 210000, limit: 1000000 },
@@ -40,12 +41,29 @@ test('utcYesterday and isNextUtcDay', () => {
   assert.equal(isNextUtcDay(null, '2026-07-30'), false);
 });
 
-test('computeDayRecord: deltas vs adjacent previous day, BB priced per session', () => {
+test('computeDayRecord: deltas vs adjacent previous day, BB priced per browser-minute (amortized base + measured overage)', () => {
   const rec = computeDayRecord({ ...okReadings, prev: prevRecord });
-  assert.equal(rec.providers.browserbase.cost, 2.5);
+  assert.equal(rec.providers.browserbase.cost, 0.73); // 0.67 base + (30/60)*0.12 overage
+  assert.equal(rec.providers.browserbase.sessions, 25);
+  assert.equal(rec.providers.browserbase.minutes, 30);
   assert.equal(rec.providers.brightdata.cost, 1.4);
   assert.equal(rec.providers.scrapingbee.dayCredits, 500);
   assert.equal(rec.providers.scrapingdog.dayCredits, 10000);
+});
+
+test('bbCost: a heavy-session, low-duration day stays near the amortized baseline, not driven by session count', () => {
+  // Real-world shape (BRO-3240): 92 sessions in 19.2 minutes — session COUNT
+  // is high but real browser-time is tiny. The old per-session model would
+  // have priced this at 92 * $0.10 = $9.20; the fix must not reproduce that.
+  const { cost, costBase, costOverage } = bbCost({ sessions: 92, minutes: 19.2 });
+  assert.equal(costBase, 0.67);
+  assert.ok(costOverage < 0.05, `overage should be near-zero for 19.2 real minutes, got ${costOverage}`);
+  assert.ok(cost < 1, `total cost should stay near the flat baseline, got ${cost}`);
+});
+
+test('bbCost: a genuine multi-hour burst still crosses a real dollar figure (alarm stays reachable)', () => {
+  const { cost } = bbCost({ sessions: 80, minutes: 2000 }); // 33.3 browser-hours in one day
+  assert.equal(cost, 4.67);
 });
 
 test('computeDayRecord: counter reset = cycle renewal, day usage is the new counter', () => {
@@ -68,10 +86,10 @@ test('computeDayRecord: null reading is unknown, missing prev is baseline', () =
 });
 
 test('budgetBreaches separates overspend from unmeasured', () => {
-  const rec = computeDayRecord({ ...okReadings, bb: 80, bd: null, prev: prevRecord });
+  const rec = computeDayRecord({ ...okReadings, bb: { sessions: 80, minutes: 2000 }, bd: null, prev: prevRecord });
   const { overspend, unmeasured } = budgetBreaches(rec, THRESHOLDS);
   assert.equal(overspend.length, 1);
-  assert.match(overspend[0], /browserbase \$8 > \$4/);
+  assert.match(overspend[0], /browserbase \$4\.67 > \$4 \(80 sessions, 2000min\)/);
   assert.deepEqual(unmeasured, ['brightdata']);
 });
 
@@ -123,7 +141,7 @@ test('renderSnapshot: items are {title} objects (renderer drops bare strings)', 
     assert.equal(typeof item.title, 'string');
     assert.ok(item.title.length > 0);
   }
-  assert.match(snap.items[0].title, /2026-07-30 · Browserbase: \$2\.5/);
+  assert.match(snap.items[0].title, /2026-07-30 · Browserbase: \$0\.73/);
   assert.match(snap.bannerText, /streak 4 of 7/);
 });
 
@@ -286,4 +304,57 @@ test('aggregateLedgerByDay: category is null for providers that never set it', (
   ];
   const rows = aggregateLedgerByDay(records, '2026-09-01');
   assert.equal(rows[0].category, null);
+});
+
+// --- BRO-3349: freshness helpers moved here from check-provider-spend.js ---
+
+test('ledgerFreshnessHours: a shape-valid but UNREAL day is dropped, never propagated as NaN', () => {
+  // "2026-99-99" matches /^\d{4}-\d{2}-\d{2}$/ but is Invalid Date. The old
+  // lexical-max-then-convert order let it outrank every real day and return
+  // NaN, which callers read as "no usable data" (WARN) instead of staleness —
+  // one garbage row silenced the dead-man permanently (ship-check/Codex P1).
+  const now = new Date('2026-09-25T00:00:00Z');
+  const hours = ledgerFreshnessHours([{ day: '2026-09-19' }, { day: '2026-99-99' }], now);
+  assert.ok(Number.isFinite(hours), `expected a finite age, got ${hours}`);
+  assert.ok(Math.abs(hours - 120) < 0.01, `expected ~120h from 2026-09-19's end-of-day, got ${hours}`);
+});
+
+test('ledgerFreshnessHours: an entirely unreal ledger is Infinity (maximally stale), not NaN', () => {
+  const hours = ledgerFreshnessHours([{ day: '2026-99-99' }, { day: 'zzz' }, { day: null }], new Date());
+  assert.equal(hours, Infinity);
+});
+
+test('lastLedgerDay: reports the newest REAL day, ignoring unreal and malformed ones', () => {
+  assert.equal(lastLedgerDay([{ day: '2026-09-17' }, { day: '2026-99-99' }, { day: '2026-09-19' }]), '2026-09-19');
+  assert.equal(lastLedgerDay([{ day: '2026-99-99' }]), null);
+  assert.equal(lastLedgerDay([]), null);
+  assert.equal(lastLedgerDay(null), null);
+});
+
+test('lastLedgerDay agrees with ledgerFreshnessHours about which day is newest', () => {
+  const records = [{ day: '2026-09-17' }, { day: '2026-99-99' }, { day: '2026-09-19' }];
+  const now = new Date('2026-09-21T13:25:11.107Z');
+  const day = lastLedgerDay(records);
+  assert.equal(ledgerFreshnessHours(records, now), ledgerFreshnessHours([{ day }], now));
+});
+
+test('attributionGaps (BRO-4215): flags a provider under min on every one of the last N consecutive days', () => {
+  const { attributionGaps } = require('./provider-spend-core.js');
+  const opts = { min: 0.8, days: 2, providers: ['scrapingbee', 'scrapingdog', 'brightdata'] };
+  const series = [
+    { day: '2026-09-25', attributedPct: { scrapingbee: 0.19, scrapingdog: 0.9, brightdata: 0.5 } },
+    { day: '2026-09-26', attributedPct: { scrapingbee: 0.13, scrapingdog: 0.95, brightdata: 0.85 } },
+    { day: '2026-09-27', attributedPct: { scrapingbee: 0.17, scrapingdog: 0.4, brightdata: 0.6 } },
+  ];
+  assert.deepEqual(attributionGaps(series, opts), [{ provider: 'scrapingbee', pcts: [0.13, 0.17] }],
+    'scrapingdog/brightdata dipped for only one of the two days');
+  // A null (unmeasured) day breaks the run.
+  const withNull = [series[0], { ...series[1], attributedPct: { scrapingbee: null } }, series[2]];
+  assert.deepEqual(attributionGaps(withNull, opts), []);
+  // A calendar gap between the last two records breaks the run.
+  assert.deepEqual(attributionGaps([series[0], series[2]], opts), []);
+  // Not enough history.
+  assert.deepEqual(attributionGaps([series[2]], opts), []);
+  // Providers not listed are never flagged.
+  assert.deepEqual(attributionGaps(series, { ...opts, providers: ['browserbase'] }), []);
 });

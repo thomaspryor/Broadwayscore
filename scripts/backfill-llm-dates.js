@@ -17,6 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk').default;
 const { CLAUDE_HAIKU } = require('./lib/models');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const DRY_RUN = !process.argv.includes('--apply');
@@ -66,9 +67,7 @@ async function run() {
   const showMap = {};
   Object.values(showsData.shows).forEach(s => { showMap[s.id] = s; });
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d =>
-    fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory()
-  );
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   // Collect candidates
   const candidates = [];

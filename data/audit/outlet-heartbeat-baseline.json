@@ -1,7 +1,7 @@
 {
   "_meta": {
-    "description": "Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The \"Quality: outlet-heartbeat red flags\" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline",
-    "count": 29
+    "description": "Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The \"Quality: outlet-heartbeat red flags\" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Only rows that have actually crossed that threshold get baselined here (see BRO-2521) — a merely-red-this-week row is left off so it can still alert once triaged. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline",
+    "count": 38
   },
   "keys": [
     "ap::broadway",
@@ -10,28 +10,37 @@
     "bloomberg::broadway",
     "broadwaynews::broadway",
     "curtainup::broadway",
+    "daily-mail::off-broadway",
     "dailybeast::broadway",
     "dailybeast::off-broadway",
     "financialtimes::broadway",
+    "guardian::broadway",
     "hollywood-reporter::broadway",
     "huffpost::broadway",
+    "latimes::broadway",
     "nbcny::broadway",
     "newsday::broadway",
+    "newyorker::broadway",
     "njcom::broadway",
     "northjerseycom::broadway",
     "ny1::broadway",
+    "nydailynews::broadway",
+    "nyt-theater::broadway",
     "observer::broadway",
     "parade::broadway",
     "philadelphia-inquirer::broadway",
+    "playbill::broadway",
     "rollingstone::broadway",
-    "slate::broadway",
     "telegraph::broadway",
     "thestage::broadway",
+    "thewrap::broadway",
     "time::broadway",
-    "times-uk::broadway",
+    "timeout::off-broadway",
+    "times-uk::off-broadway",
     "usatoday::broadway",
     "village-voice::broadway",
     "vox::broadway",
+    "washpost::broadway",
     "wnyc::broadway"
   ]
 }

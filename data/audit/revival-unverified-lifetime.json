@@ -1,14 +1,13 @@
 {
-  "updatedAt": "2026-09-14T13:32:53.557Z",
-  "scanned": 2076,
-  "showsWithViolations": 42,
-  "totalViolations": 42,
+  "updatedAt": "2026-09-28T14:43:05.459Z",
+  "scanned": 2124,
+  "showsWithViolations": 43,
+  "totalViolations": 43,
   "newSinceLastRun": 0,
   "newViolationKeys": [],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
-    "titanique-2026",
     "two-strangers-bway-2025",
     "just-in-time-2025",
     "stranger-things-2024",
@@ -29,7 +28,6 @@
     "the-lion-king-west-end-2021",
     "mamma-mia-west-end-2021",
     "moulin-rouge-the-musical-west-end-2021",
-    "the-mousetrap-west-end-2021",
     "the-phantom-of-the-opera-west-end-1986",
     "as-you-like-it-globe-west-end-2026",
     "man-to-man-west-end-2026",
@@ -38,14 +36,17 @@
     "death-note-the-musical-west-end-2026",
     "a-month-in-the-country-west-end-2026",
     "the-story-west-end-2026",
-    "the-oresteia-west-end-2026",
     "paranormal-activity-2026",
+    "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
     "la-boheme-off-broadway-2026",
+    "cosi-fan-tutte-off-broadway-2026",
+    "macbeth-off-broadway-2026",
     "tosca-off-broadway-2026",
     "the-smile-of-her-off-west-end-2026",
-    "abigails-party-west-end-2026",
     "disruption-off-broadway-2026",
-    "the-real-ivanov-off-broadway-2026",
+    "darkling-off-west-end-2026",
+    "pre-existing-condition-off-broadway-2026",
+    "tru-off-west-end-2026",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
     "becoming-hamlet-off-broadway-2026"
   ],
@@ -64,15 +65,6 @@
       "title": "Schmigadoon!",
       "openingDate": "2026-04-20",
       "message": "schmigadoon-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "titanique-2026",
-      "title": "Titanique",
-      "openingDate": "2026-04-12",
-      "message": "titanique-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -258,15 +250,6 @@
       ]
     },
     {
-      "showId": "the-mousetrap-west-end-2021",
-      "title": "The Mousetrap",
-      "openingDate": "1952-11-25",
-      "message": "the-mousetrap-west-end-2021 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
       "showId": "the-phantom-of-the-opera-west-end-1986",
       "title": "The Phantom of the Opera",
       "openingDate": "1986-10-09",
@@ -288,7 +271,7 @@
       "showId": "man-to-man-west-end-2026",
       "title": "Man to Man",
       "openingDate": "2026-09-11",
-      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 33x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "man-to-man-west-end-2026 review text mentions \"revival\" 57x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -297,7 +280,7 @@
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
       "title": "Cabaret at the Kit Kat Club",
       "openingDate": "2021-12-16",
-      "message": "cabaret-at-the-kit-kat-club-west-end-2021 review text mentions \"revival\" 26x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "cabaret-at-the-kit-kat-club-west-end-2021 review text mentions \"revival\" 28x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -333,16 +316,7 @@
       "showId": "the-story-west-end-2026",
       "title": "The Story",
       "openingDate": "2026-09-03",
-      "message": "the-story-west-end-2026 review text mentions \"revival\" 21x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "the-oresteia-west-end-2026",
-      "title": "The Oresteia",
-      "openingDate": "2026-07-14",
-      "message": "the-oresteia-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-story-west-end-2026 review text mentions \"revival\" 25x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -357,10 +331,37 @@
       ]
     },
     {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "title": "Catarina and the Beauty of Killing Fascists",
+      "openingDate": "2026-09-21",
+      "message": "catarina-and-the-beauty-of-killing-fascists-west-end-2026 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
       "showId": "la-boheme-off-broadway-2026",
       "title": "La Bohème",
       "openingDate": "2026-09-25",
       "message": "la-boheme-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "cosi-fan-tutte-off-broadway-2026",
+      "title": "Così fan tutte",
+      "openingDate": "2026-09-23",
+      "message": "cosi-fan-tutte-off-broadway-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "macbeth-off-broadway-2026",
+      "title": "Macbeth",
+      "openingDate": "2026-09-22",
+      "message": "macbeth-off-broadway-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -384,15 +385,6 @@
       ]
     },
     {
-      "showId": "abigails-party-west-end-2026",
-      "title": "Abigail’s Party",
-      "openingDate": "2026-08-19",
-      "message": "abigails-party-west-end-2026 review text mentions \"revival\" 20x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
       "showId": "disruption-off-broadway-2026",
       "title": "Disruption",
       "openingDate": "2026-08-02",
@@ -402,10 +394,28 @@
       ]
     },
     {
-      "showId": "the-real-ivanov-off-broadway-2026",
-      "title": "The Real Ivanov",
-      "openingDate": "2026-08-25",
-      "message": "the-real-ivanov-off-broadway-2026 review text mentions \"revival\" 16x but isRevival is not true — verify and set isRevival if this is a revival",
+      "showId": "darkling-off-west-end-2026",
+      "title": "Darkling",
+      "openingDate": "2026-09-16",
+      "message": "darkling-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "pre-existing-condition-off-broadway-2026",
+      "title": "Pre-Existing Condition",
+      "openingDate": "2026-09-14",
+      "message": "pre-existing-condition-off-broadway-2026 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "title": "Tru",
+      "openingDate": "2026-09-27",
+      "message": "tru-off-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

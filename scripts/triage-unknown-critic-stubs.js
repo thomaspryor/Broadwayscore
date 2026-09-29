@@ -33,6 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isAggregatorUrlMismatch, hostnameOf } = require('./lib/aggregator-domains');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 function arg(name, def) {
   const hit = process.argv.find(a => a.startsWith(`--${name}=`));
@@ -144,11 +145,8 @@ function main() {
     keepForCollection: [],     // contentless husks with a plausible review URL — flagged, NOT deleted
   };
 
-  for (const show of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+  for (const show of listShowDirs(REVIEW_TEXTS_DIR)) {
     const sd = path.join(REVIEW_TEXTS_DIR, show);
-    let st;
-    try { st = fs.statSync(sd); } catch { continue; }
-    if (!st.isDirectory()) continue;
     for (const f of fs.readdirSync(sd)) {
       if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === '_blocklist.json') continue;
       let d;

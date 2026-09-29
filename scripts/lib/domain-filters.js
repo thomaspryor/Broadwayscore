@@ -21,6 +21,9 @@ const TICKET_DOMAINS = new Set([
   'seatgeek.com', 'stubhub.com', 'vividseats.com', 'broadwaybox.com',
   'goldstar.com', 'headout.com', 'rush.app', 'bwayrush.com',
   'luckyseat.com', 'broadwayroulette.com',
+  // Event/ticket listings that arrived through /submit-review on 2026-09-27
+  // (BRO-4185): an eventsfy "Get Tickets Today" page passed every guard.
+  'eventsfy.com', 'theatreaccess.nyc',
   // UK/WE ticketing + listing platforms (2026-08-02: gather saved a
   // bookitplease.com booking page as a Dog Man "review" stub under a
   // misattributed outlet).
@@ -52,6 +55,11 @@ const TICKET_DOMAINS = new Set([
   // scoring candidate held back only by having no score yet. Same shape as the
   // BRO-2712 southbankcentre finding.
   'thelondoner.com',
+  // US resellers stored as "reviews" via submit-review-form (2026-09-25):
+  // disruption-off-broadway-2026 scorebig/boxofficeticketsales event pages and
+  // the-gin-game-2026 stuborder. Content-level backstop for resellers not on
+  // this list: RESELLER_BOILERPLATE in content-quality.js.
+  'scorebig.com', 'boxofficeticketsales.com', 'stuborder.com',
   'ticketsource.co.uk', 'fromtheboxoffice.com', 'encoretickets.co.uk',
   'ticketek.co.uk', 'seetickets.com',
   // ticketline.co.uk (2026-09-01): same class as the UK sellers above and the
@@ -75,6 +83,18 @@ const TICKET_DOMAINS = new Set([
   // (a deny-list entry that matches a real review is worse than the phantom
   // gap it removes).
   'ticketluck.com', 'etickets.com',
+  // BRO-3909 (main-red incident, 31 consecutive pushes): grabyourgroupandgo.com
+  // is a Broadway/Off-Broadway GROUP ticket sales business, not a review
+  // outlet. Its "review" of The Cherry Orchard (Park Avenue Armory) is group-
+  // rate marketing copy ("Your ticket price includes our favorable group
+  // ticket pricing of $178 plus a $32 service fee ... To update attendee
+  // information for one of your events, please submit the information
+  // below."), ingested via submit-review-form under a domainless outletId
+  // derived from the host. Same class as ticketline.co.uk above — nothing had
+  // ingested this host before, so it reddened audit-outlet-registry.js
+  // --strict as a NEW unregistered outlet rather than showing up in the
+  // pre-existing baseline.
+  'grabyourgroupandgo.com',
 ]);
 
 // Aggregator/listing sites — not direct review sources
@@ -101,7 +121,10 @@ const AGGREGATOR_DOMAINS = new Set([
   // the literal URL and will block before any redirect is followed — so any
   // review we ingest whose source URL happens to be the US spelling also gets
   // silently dropped. Bucket A, Tier 2 Fix 9.
-  'lovelondonloveculture.com', 'westendtheatre.com',
+  // lovelondonloveculture.com is NOT here: it publishes its own reviews
+  // (/review-<show>/) as well as round-ups of other critics
+  // (/review-round-up-<show>/). The round-ups are blocked by path below.
+  'westendtheatre.com',
   'newyorkcitytheatre.com', 'broadwayacrossamerica.com',
   'broadwayscorecard.com', 'broadway.org.uk', 'londonsbroadwaybuzz.ca',
   'stagedoor.com', // WE aggregator — critic-reviews pages are not outlet reviews
@@ -120,6 +143,18 @@ const AGGREGATOR_DOMAINS = new Set([
   // lists what is on; it does not review it, so it belongs here rather than
   // in TICKET_DOMAINS.
   'culturecity.london',
+  // BRO-3794 (main-red incident): southasianheritage.org.uk/events/... is a
+  // South Asian Heritage Month campaign site's events calendar, aggregating
+  // OTHER venues' listings ("Organiser Actors Touring Company ... Location
+  // Bush Theatre ... Next Event ... Date Sep 18 2026"), not a critic outlet.
+  // Ingested via /submit-review for darkling-off-west-end-2026 with 0 show
+  // mentions in the text (content-quality already flagged it
+  // incompleteReason=url_content_mismatch) and reddened
+  // audit-outlet-registry.js --strict as a new unregistered outlet. Its host
+  // slipped past NON_REVIEW_HOST_PATTERNS' `/\.org$/` rule because .org.uk is
+  // a UK second-level domain, not a bare .org TLD — that regex only ever
+  // matched exact .org hosts.
+  'southasianheritage.org.uk',
 ]);
 
 // Reference sites — not reviews
@@ -127,6 +162,14 @@ const REFERENCE_DOMAINS = new Set([
   'wikipedia.org', 'wikidata.org', 'imdb.com',
   'yelp.com', 'tripadvisor.com', 'google.com', 'amazon.com',
   'iloveny.com',
+  // BRO-3515: rexfeatures.com is a UK stock-photo/wire agency. Its
+  // in-honor-of-jean-michel-basquiat-off-broadway-2026 "livefeed" URL was a
+  // Shutterstock Editorial photo caption (323 chars, no critic, no
+  // assessment), not a review — ingested as outletId `rexfeatures` and
+  // reddened audit-outlet-registry.js --strict as a new unregistered
+  // outlet. Domain-blocked rather than registered so the same photo-agency
+  // livefeed can't be re-ingested for a future opening night.
+  'rexfeatures.com',
 ]);
 
 // Venue/producer own-site listing pages — box-office "what's on" copy, never
@@ -135,6 +178,11 @@ const REFERENCE_DOMAINS = new Set([
 // ingested via /submit-review and scored as a "truncated" review).
 const VENUE_DOMAINS = new Set([
   'southbank.london',
+  // hampsteadtheatre.com/whats-on/2026/<show>/ is Hampstead Theatre's own
+  // box-office page, submitted via /submit-review for The Urmetazoan and
+  // Kimberly Akimbo (2026-09-26); its unregistered outletId turned the
+  // outlet-registry gate red. Same shape and remedy as the venues below.
+  'hampsteadtheatre.com',
   // Same venue family, different domain — southbankcentre.co.uk's own
   // /whats-on/ listing pages are the identical "Toggle caption ... Dates &
   // tickets ... Access ... Ticket Office" box-office copy (BRO-2712
@@ -158,6 +206,29 @@ const VENUE_DOMAINS = new Set([
   // other way to green the outlet-registry gate) would have put an Oxford
   // venue in the critic-outlet registry under a two-letter id.
   'schwarzmancentre.ox.ac.uk',
+  // BRO-3374: stratfordeast.com/whats-on/all-shows/<show> is Theatre Royal
+  // Stratford East's own box-office listing ("Running Time ... Content
+  // warning ... Access performances ... Members Offer"), identical shape to
+  // the southbank/schwarzmancentre hosts above. Arrived via /submit-review
+  // for bloodsport-after-helen-of-troy-off-west-end-2026, outletId
+  // `stratfordeast`, and tripped audit-outlet-registry.js --strict as a new
+  // unregistered outlet before contentVerification caught it on rebuild.
+  'stratfordeast.com',
+  // BRO-3374 what-else sweep: same shape found alongside the stratfordeast
+  // fix, both currently reddening audit-outlet-registry.js --strict as NEW
+  // unregistered outlets (neither had a rejectionReason/wrongShow flag yet,
+  // unlike a sibling royalcourttheatre--unknown.json file that ensemble-
+  // scoreability-check had already rejected as not_a_review).
+  // ntlive.com/plays/<show> is National Theatre Live's own marketing copy
+  // for its streaming service ("Join over 2,500 venues worldwide offering
+  // ... immersive experience of filmed theatre"), not a critic review.
+  'ntlive.com',
+  // royalcourttheatre.com/ and /events/<show> are the venue's own event
+  // pages ("Current tab: The show / The company / Booking information /
+  // Access / Dates & times"). Reached the corpus twice under two different
+  // outletIds (`royalcourttheatre` and the URL-mangled
+  // `httpsroyalcourttheatrecom`) via /submit-review.
+  'royalcourttheatre.com',
 ]);
 
 // Theatre PR firms AND institutional press offices — announcements, not
@@ -259,6 +330,32 @@ function isBlockedReviewUrl(url) {
     // Does NOT match /featured-review/ or /review-features-xyz/ (substring matches)
     const pathParts = lowerPath.split('/').filter(Boolean);
     if (pathParts.some(p => p === 'features' || p === 'feature' || p === 'interviews' || p === 'interview')) return true;
+    // The Stage publishes reviews only under /reviews/ and /long-reviews/.
+    // Its /news/, /opinion/ (incl. its "--review-round-up" compilations),
+    // /promoted-content/ and /review-round-ups/ pages carry sidebar star
+    // ratings from OTHER reviews, which is how a news item on a Curve revival
+    // scored 80 on kiss-of-the-spider-woman-1993 and an opinion column on AI
+    // scored 60 on proof-2026 (2026-09-26). non-review-url-patterns.js has the
+    // /news/ rule but it only applies to unvetted-SERP sources; these paths
+    // are never a review, whatever the source.
+    if (matchesDomainSet(hostname, new Set(['thestage.co.uk']))
+      && ['news', 'opinion', 'promoted-content', 'review-round-ups'].includes(pathParts[0])) return true;
+    // Love London Love Culture: its round-ups quote other critics (task #1036,
+    // the-car-man-west-end-2026). Its /review-<show>/ posts are original reviews;
+    // the whole domain used to be blocked, which dropped The Last Ship's
+    // (BRO-4185, 2026-09-27).
+    if (matchesDomainSet(hostname, new Set(['lovelondonloveculture.com']))
+      && !/\/review-(?!round-up)[^/]+\/?$/.test(lowerPath)) return true;
+    // A /whats-on/ listing is a venue box-office or ticketing page, never a
+    // review: hampsteadtheatre.com, kilntheatre.com, stratfordeast.com,
+    // almeida.co.uk, skiddle.com, afridiziak.com/whatson/ all arrived this way,
+    // mostly via /submit-review, and each new venue host turned the outlet-
+    // registry gate red until it was added to VENUE_DOMAINS one by one
+    // (2026-09-26). The shape blocks the whole class. News outlets that file
+    // real reviews under /whats-on/ (manchestereveningnews.co.uk/whats-on/
+    // theatre-news/review-..., chroniclelive, londonmumsmagazine) keep "review"
+    // in the path, so they pass.
+    if ((pathParts[0] === 'whats-on' || pathParts[0] === 'whatson') && !/review/.test(lowerPath)) return true;
     // Malformed URLs (e.g., "http://Here We Are review — ...")
     if (parsed.hostname.includes(' ') || !parsed.hostname.includes('.')) return true;
     return false;

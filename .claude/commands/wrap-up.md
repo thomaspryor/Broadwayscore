@@ -26,7 +26,7 @@ Summarize in 3-5 bullet points. Be specific — include file names, feature name
 
 ### Phase 2: What Else? (full sessions only)
 
-**Skip this phase if `/ship-check` already ran this session** — ship-check chains into `/what-else` automatically, so the discoveries are already captured.
+**Skip this phase only if `/what-else` itself already ran this session** (a real Skill invocation). `/ship-check` does NOT run it for you: it only tells you to run it next, and finish-line Gate 4 counts real invocations only (owner 2026-09-24: "Every session like this should still run what-else. We catch a lot of improvements there").
 
 **Otherwise**, run `/what-else` now to find adjacent improvements before context fades. This catches pattern reuse, cousin bugs, data quality issues, and compounding improvements that would be expensive to rediscover in a future session.
 
@@ -63,6 +63,12 @@ Check for:
    `cloud-memory/feedback_gh_cli_to_github_mcp_mapping.md` for the full
    `gh`→MCP mapping. This step is still MANDATORY on cloud; "no `gh` CLI"
    is not a reason to skip it, only a reason to use a different tool.
+
+   Also count this session's own background agents (no hand-back yet) and
+   any `send_later` / `create_trigger` check-in scheduled into THIS session
+   that has not fired or been deleted. The Stop hook enforces that part
+   (INFLIGHT): SAFE TO EXIT with any of them live is blocked, because the
+   owner reads SAFE TO EXIT as "I can close or kill this session now".
 
    **If anything is still running or queued: STOP. Do not proceed to Phase 4.**
    - Monitor in background (check every 30-60s)
@@ -302,25 +308,28 @@ The user pastes the prompt into a fresh session and it works with zero extra con
 
 **End the report with a mandatory `### Next` section** that triages EVERY Notion card created this session and every recommendation you made, each into exactly one bucket:
 - **DONE-NOW** — you did it before ending (say what happened)
-- **DISPATCHED** — you launched it via bsc-next (workspace name + task)
-- **DEFERRED** — user-decision or different-machine items ONLY, with the deferral bar + HANDOFF PROMPT (format above)
-- **BACKLOG** — one line on why it can safely wait; no user action needed
+- **DISPATCHED** — you launched it via bsc-next / linear-next (ref + exact title). Gate O makes you own its landing. If you dispatched two or more children and are closing, run `node scripts/fanout-verified.js --refs A,B --verify "<safe-form combined check>" --reason "..."` after the last one lands — Gate S refuses CLOSE ME without that ledger row (owner 2026-09-20: per-child LANDED lines are "spawn and hope").
+- **DEFERRED** — user-decision or different-machine items ONLY, with the deferral bar + HANDOFF PROMPT (format above); owner-judgment items go in a DECISION NEEDED block instead.
+- There is NO backlog bucket (owner 2026-09-20): every found item is fixed now, dispatched, or a DECISION NEEDED. finish-line Gate 3 refuses "filed as Backlog / out of scope / not fixed / worth a follow-up" endings.
 
-**Close with the SESSION STATUS block** — plain prose lines, NEVER inside a code fence (`exit-status-gate.sh` strips fences and enforces the SAFE/NOT SAFE line; the owner asked for this exact scannable shape 2026-07-20 so they don't parse walls of text):
+**Close with a plain-English message for the owner, and record the machine block separately** (owner escalation 2026-09-20, BRO-3914; `exit-status-gate.sh` reads the recorded block, never the chat, when one is fresh):
+
+1. Write the machine block to a file (scratchpad is fine), then record it as your LAST tool call: `wrapup-block --file <path>`. Lines, plain prose, never in a code fence:
 
 ──────────────────────────────────────────
 DONE        <what shipped, and how it was verified — one line>
-CONTINUING  <none | workspace/session name — what it's doing>
-NEEDS YOU   <nothing | answer the DECISION NEEDED above | paste the handoff prompt above (non-dispatchable items only)>
-SAFE TO EXIT — <one-line reason>
+CONTINUING  <none | workspace:N ("exact tab title") — what it's doing>
+NEEDS YOU   <nothing | answer the DECISION NEEDED in the chat>
+PREVENTION: <what now catches this class> ; cousins: <where you looked, what you found>   (required after code edits; NO-PREVENTION: <reason> only for a non-fix change)
+DISPATCHED: / LANDED: / OWNED BY: / EXECUTED: / NO-EXECUTE: / NO-SHIP-CHECK: lines as applicable
+THIS SESSION: KEEP OPEN | CLOSE ME | IDLE — <one-line reason>
 ──────────────────────────────────────────
 
-**A pending DECISION NEEDED always means NOT SAFE TO EXIT** — "nothing running" is not the bar, "nothing needed from the owner" is (owner rule 2026-07-20; exit-status-gate blocks SAFE TO EXIT when a decision block is present). The SAFE/NOT SAFE line is the hook-required part and must be the last content line (the closing rule is fine). Its three valid forms:
-- `SAFE TO EXIT — <what finished and how it was verified>` — only when nothing is running anywhere (no deploy, no CI, no dispatched follow-up you're responsible for watching) and every claim was verified
-- `NOT SAFE TO EXIT — CONTINUING IN <workspace/session>: <what it's doing>` — work continues elsewhere; NAME the workspace/session
-- `NOT SAFE TO EXIT — <what's still running/blocked and what happens next>`
+   The CLI rejects a block that would fail a gate and tells you why in tool output. Anything you run after recording makes it stale — re-record.
 
-If a DECISION NEEDED block exists, it must sit immediately above the SESSION STATUS block, fully restated (never "the decision I asked earlier"), using the full template: `DECISION NEEDED:` / `Why this is your call:` / `Option A — name: upside / downside` / `Option B — name: upside / downside` / `My recommendation:` / `Default:`.
+2. Then send the owner the chat message: what changed for them (1-2 sentences), `Still running:` / `Nothing is still running.`, `You need to:` / `Nothing needed from you.`, the DECISION NEEDED block if any (full template, plain words), and a closing line matching the verdict: `You can close this tab.` / `Keep this tab open.` / `Nothing is running here; keep this tab only if you want to continue <topic>.` No ids, paths, card or workspace numbers, command names or evidence lines in the chat. Quoted tab titles and one URL are fine.
+
+**A pending DECISION NEEDED always means KEEP OPEN** — "nothing running" is not the bar, "nothing needed from the owner" is (owner rule 2026-07-20). Headless jobs (`claude -p`) keep the block in their final text instead of recording it.
 
 Only say "Clean exit, no loose ends" when you are ALSO not recommending any next-session work — a "recommended next session" IS a loose end and belongs in `### Next`, triaged. Never make the user ask "what's required next?"
 

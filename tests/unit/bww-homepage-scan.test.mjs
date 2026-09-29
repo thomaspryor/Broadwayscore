@@ -335,6 +335,40 @@ describe('validateBWWRoundupUrlMatchesShow — single-word title disambiguation 
   });
 });
 
+describe('validateBWWRoundupUrlMatchesShow — hyphenated title regression (Pre-Existing Condition, 2026-09-15)', () => {
+  // Bug: normalizeTitleWords stripped hyphens WITHOUT treating them as word
+  // separators, so "Pre-Existing Condition" collapsed to one glued word
+  // "preexisting" instead of ["pre","existing","condition"]. BWW's slug splits
+  // on hyphens ("pre-existing-condition" -> pre/existing/condition), so the
+  // title only matched 1 of 2 words (50%) against the 100% two-word threshold
+  // and the real roundup URL was rejected everywhere this validator is used
+  // (homepage scan + SERP discovery) — the show's BWW Review Roundup (6
+  // critics, including Vulture and New York Theatre Guide) was never ingested.
+  const { validateBWWRoundupUrlMatchesShow } = createRequire(import.meta.url)('../../scripts/lib/bww-roundup-validator.js');
+
+  test("'Pre-Existing Condition' matches its real BWW roundup slug", () => {
+    assert.strictEqual(
+      validateBWWRoundupUrlMatchesShow(
+        'https://www.broadwayworld.com/article/Review-Roundup-PRE-EXISTING-CONDITION-Opens-at-Greenwich-House-Theater-20260914',
+        'Pre-Existing Condition'
+      ),
+      true
+    );
+  });
+
+  test("hyphenated title word does not glue into slug segments", () => {
+    // Generic case: a hyphenated compound word must split the same way the
+    // BWW slug does, not collapse into a single unmatchable token.
+    assert.strictEqual(
+      validateBWWRoundupUrlMatchesShow(
+        'https://www.broadwayworld.com/article/Review-Roundup-SPIDER-MAN-TURN-OFF-THE-DARK-Opens-on-Broadway-20260101',
+        'Spider-Man: Turn Off the Dark'
+      ),
+      true
+    );
+  });
+});
+
 describe('isCloudflareChallenge', () => {
   test('detects "Just a moment..." title (weak marker, size-gated)', () => {
     const html = '<html><head><title>Just a moment...</title></head><body>cf_chl_opt</body></html>';

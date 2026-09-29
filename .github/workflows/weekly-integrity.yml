@@ -15,6 +15,10 @@ permissions:
   contents: write
   issues: write
 
+concurrency:
+  group: weekly-integrity
+  cancel-in-progress: false
+
 jobs:
   integrity-check:
     runs-on: ubuntu-latest
@@ -264,7 +268,7 @@ jobs:
         run: |
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
-          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No drift alert state to commit"
           else
@@ -302,6 +306,14 @@ jobs:
             git commit -m "data: Update integrity history"
             bash scripts/lib/push-with-retry.sh 25 main
           fi
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: weekly-integrity
+          push-retry-args: '25 main'
 
       - name: Create issue if problems found
         if: steps.check.outputs.has_issues == 'true' || inputs.force_issue == 'true'

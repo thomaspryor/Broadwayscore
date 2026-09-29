@@ -163,6 +163,32 @@ test('classifyReviewUrl: stagebuddy REVIEW paths still pass (path-scoped, not ho
   assert.equal(classifyReviewUrl('https://stagebuddy.com/theater/reviews/disruption-review').ok, true);
 });
 
+test('classifyReviewUrl: news-announcement slugs rejected; "first-look" reviews still pass', () => {
+  assert.equal(classifyReviewUrl('https://www.westwaleschronicle.co.uk/blog/2026/07/29/dog-man-the-musical-releases-production-photos-and-announces-new-tour-dates-for-2027/').ok, false);
+  assert.equal(classifyReviewUrl('https://www.thereviewshub.com/initial-casting-announced-for-burlesque-uk-tour/').ok, false);
+  assert.equal(classifyReviewUrl('https://monstagigz.com/2026/07/14/first-look-theatre-midnight-at-the-never-get-starring-ben-platt-at-the-menier-chocolate-factory/').ok, true);
+  assert.equal(classifyReviewUrl('https://www.thereviewshub.com/burlesque-the-musical-savoy-theatre-london/').ok, true);
+  assert.equal(classifyReviewUrl('https://openingnight.online/photos-becoming-hamlet-celebrates-opening-night-off-broadway/').ok, false);
+});
+
+test('classifyReviewUrl: myreviewer home-video (DVD/Blu-ray) reviews rejected, other sections pass', () => {
+  const dvd = classifyReviewUrl('https://www.myreviewer.com/DVD/129315/As-You-Like-It-Globe-Theatre/130503/Review-by-Alan-Titherington');
+  assert.deepEqual(dvd, { ok: false, reason: 'home-video-review' });
+  assert.equal(classifyReviewUrl('https://www.myreviewer.com/Blu-ray/1/x/2/Review').ok, false);
+  assert.equal(classifyReviewUrl('https://www.myreviewer.com/Theatre/1/x/2/Review').ok, true);
+  assert.deepEqual(classifyReviewUrl('https://www.thestage.co.uk/news/mamma-mia-to-return-to-broadway-after-10-years-away'), { ok: false, reason: 'news-article' });
+  assert.equal(classifyReviewUrl('https://www.thestage.co.uk/reviews/night-city-southwark-playhouse-review').ok, true);
+  for (const u of [
+    'https://www.newyorktheatreguide.com/show/25619-la-traviata',
+    'https://www.gigantic.com/deep-heat-rivalry-tickets',
+    'https://www.concordtheatricals.com/p/99588/mrs-stern-wanders-the-prussian-state-library',
+    'https://www.abouttheartists.com/productions/208936-pre-existing-condition-at-greenwich-house-theater-2026-2027',
+    'https://www.traverse.co.uk/whats-on/mrs-stern-wanders-the-prussian-state-library',
+    'https://www.artsatmarblearch.com/events/million-dollar-quartet',
+  ]) assert.equal(classifyReviewUrl(u).ok, false, u);
+  assert.equal(classifyReviewUrl('https://www.newyorktheatreguide.com/reviews/space-dogs-off-broadway-review').ok, true);
+});
+
 test('classifyReviewUrl: BWW hub + cast/shows pages rejected, BWW article reviews pass', () => {
   assert.equal(classifyReviewUrl('https://www.broadwayworld.com/reviews/disruption').ok, false);
   assert.equal(classifyReviewUrl('https://www.broadwayworld.com/reviews/the-vessel').ok, false);
@@ -313,4 +339,37 @@ test('parity: every write-path blocked domain is also blocked on the discovery p
       + 'census will report them as uncovered review gaps — mirror them into '
       + 'NAMED_NON_REVIEW_URL_PATTERNS',
   );
+});
+
+test('The Stage non-review sections are blocked for every source; /reviews/ and /long-reviews/ are not', () => {
+  // 2026-09-26: /news/ and /opinion/ pages scored live from sidebar star ratings
+  // (kiss-of-the-spider-woman-1993 80, mamma-mia-2001 60, proof-2026 60).
+  const blocked = [
+    'https://www.thestage.co.uk/news/production-news/kiss-of-the-spider-woman-to-be-revived-at-curve-in-leicester',
+    'https://www.thestage.co.uk/opinion/people-powered-creativity-will-outlive-ai-and-this-theatre-design-is-proof-jane-wheeler',
+    'https://www.thestage.co.uk/opinion/hamilton-at-victoria-palace-theatre-london--review-round-up',
+    'https://www.thestage.co.uk/promoted-content/the-last-self-tape-explores-how-art-performance-and-loneliness-collide',
+    'https://thestage.co.uk/review-round-ups/cats-at-regents-park-open-air-theatre-review-round-up',
+  ];
+  for (const u of blocked) assert.equal(domainFilters.isBlockedReviewUrl(u), true, u);
+  assert.equal(domainFilters.isBlockedReviewUrl('https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london'), false);
+  assert.equal(domainFilters.isBlockedReviewUrl('https://www.thestage.co.uk/long-reviews/stranger-things-the-first-shadow-review-phoenix-theatre-london'), false);
+});
+
+test("Hampstead Theatre's own box-office pages are venue pages, not reviews", () => {
+  assert.equal(domainFilters.isBlockedReviewUrl('https://www.hampsteadtheatre.com/whats-on/2026/the-urmetazoan/'), true);
+});
+
+test('any /whats-on/ listing without "review" in the path is blocked; outlet reviews filed there are not', () => {
+  for (const u of [
+    'https://kilntheatre.com/whats-on/table-17/',
+    'https://www.stratfordeast.com/whats-on/all-shows/here-there-are-blueberries',
+    'https://www.skiddle.com/whats-on/London/Gillian-Lynne-Theatre/My-Neighbour-Totoro/42468204/',
+    'https://www.afridiziak.com/whatson/anansi-the-spider-regents-park-open-air-theatre/',
+  ]) assert.equal(domainFilters.isBlockedReviewUrl(u), true, u);
+  for (const u of [
+    'https://www.manchestereveningnews.co.uk/whats-on/theatre-news/review-mousetrap-opera-house-manchester-11534540',
+    'https://www.londonmumsmagazine.com/whats-on/review-holy-fool-at-park-theatre-a-powerful-story-of-art-fear-and-resistance/',
+    'https://www.afridiziak.com/reviews/darkling/',
+  ]) assert.equal(domainFilters.isBlockedReviewUrl(u), false, u);
 });

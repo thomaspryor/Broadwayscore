@@ -64,11 +64,16 @@ function detectBandFromReviewFile(data) {
   const candidates = [
     { value: data.starRating, source: 'starRating' },
     { value: data.originalRating, source: 'originalRating' },
-    { value: data.aggregatorStars, source: 'aggregatorStars' },
     // Only treat originalScore as a candidate when it's a STRING — numeric
     // originalScore is the post-extraction 0-100 value, not the raw rating.
+    // Checked BEFORE aggregatorStars: this is the outlet's own extraction
+    // (dedicated extractor, json-ld, unicode-stars, …) — aggregatorStars is
+    // a third-party relay (BRO-866: NYSR "Data" review had originalScore
+    // "5/5 stars" from unicode-stars but aggregatorStars "4/5 stars" from
+    // Show Score, and the old order let the relay win the anchoring band).
     { value: typeof data.originalScore === 'string' ? data.originalScore : null,
       source: 'originalScore' },
+    { value: data.aggregatorStars, source: 'aggregatorStars' },
   ];
 
   for (const { value } of candidates) {

@@ -74,7 +74,28 @@ function isPermanentlyFailed(entry) {
   return count >= (isStrictFailureReason(reason) ? 3 : 5);
 }
 
+/**
+ * One fresh fetch for a url_content_mismatch recorded under an older version
+ * of the content check (BRO-4185 H). Only for a file that still has no
+ * usable text and no exclusion flag, and only once per check version (the
+ * file stamp survives a lost ledger write).
+ *
+ * @param {object|null} entry - failed-fetches.json entry
+ * @param {object} data - review-text JSON
+ * @param {number} currentVersion - URL_CONTENT_CHECK_VERSION
+ */
+function shouldReopenStaleContentMismatch(entry, data, currentVersion) {
+  if (!entry || !data || entry.failureReason !== 'url_content_mismatch') return false;
+  if ((entry.checkVersion || 1) >= currentVersion) return false;
+  if (data.contentMismatchReopenedFor === currentVersion) return false;
+  if (typeof data.fullText === 'string' && data.fullText.length >= 1500) return false;
+  if (data.wrongProduction || data.wrongShow || data.isNonReview || data.duplicateOf) return false;
+  if (!data.url) return false;
+  return true;
+}
+
 module.exports = {
+  shouldReopenStaleContentMismatch,
   NON_EVIDENCE_REASONS,
   isNonEvidenceFailure,
   shouldCountFailure,

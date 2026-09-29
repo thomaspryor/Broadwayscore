@@ -32,6 +32,17 @@ on:
 permissions:
   contents: write
 
+# Daily 9 AM UTC cron (see line 7-8 above) + rare manual dispatch — no matrix,
+# no self-dispatch, so a shared group is correct; still worth an explicit
+# group per BRO-3500's sweep rather than leaving it as a silent gap.
+# (.github/workflows/CLAUDE.md's "Weekly on Mondays" description for this
+# workflow is stale/wrong — the cron here is '0 9 * * *', i.e. daily — but
+# that mismatch doesn't change the group choice.) See
+# docs/workflow-concurrency-audit.md.
+concurrency:
+  group: review-refresh
+  cancel-in-progress: false
+
 jobs:
   check-for-new-reviews:
     runs-on: ubuntu-latest

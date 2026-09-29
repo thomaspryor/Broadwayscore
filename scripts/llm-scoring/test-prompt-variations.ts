@@ -10,6 +10,8 @@ import OpenAI from 'openai';
 import { GoogleGenerativeAI } from '@google/generative-ai';
 import * as fs from 'fs';
 import * as path from 'path';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 // ========================================
 // PROMPT VARIANTS
@@ -92,9 +94,7 @@ function findTestReviews(count: number): ReviewData[] {
   const reviews: ReviewData[] = [];
 
   // Prioritize reviews with both originalScore and dtliThumb for validation
-  const shows = fs.readdirSync(reviewsDir).filter(f =>
-    fs.statSync(path.join(reviewsDir, f)).isDirectory()
-  );
+  const shows = listShowDirs(reviewsDir);
 
   for (const show of shows) {
     if (reviews.length >= count) break;

@@ -145,10 +145,18 @@ function analyzeExclusionLog(jsonlText, opts = {}) {
     const perShowOpts = { ...opts };
     delete perShowOpts.knownFilesByShow;
     if (opts.knownFilesByShow) {
+      // A ledger is present (the CLI wrapper only passes knownFilesByShow
+      // when it's non-empty) — a show missing from it means "never logged
+      // this reason before", a definitively empty known-files set, not "no
+      // data available". Getting this wrong falls back to the same-day
+      // repeat-ratio heuristic below and can misread a brand-new show's
+      // first-ever spike as stale re-logging (BRO-2379 found the same
+      // conflation in the generalized version of this categorizer, see
+      // scripts/lib/exclusion-trend.js's analyzeExclusionLog).
       const raw = opts.knownFilesByShow instanceof Map
         ? opts.knownFilesByShow.get(entry.showId)
         : opts.knownFilesByShow[entry.showId];
-      if (raw) perShowOpts.knownFiles = raw instanceof Set ? raw : new Set(raw);
+      perShowOpts.knownFiles = raw instanceof Set ? raw : new Set(raw || []);
     }
     results.push(categorizeShow(entry, perShowOpts));
   }

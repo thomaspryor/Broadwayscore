@@ -149,6 +149,34 @@ test('unit: countFixThisButtons requires an actual anchor, not bare prose contai
   assert.equal(countFixThisButtons('<a href="https://x">Fix this →</a>'), 1);
 });
 
+// 2026-09-24 owner-first rework: internal telemetry stays below "Technical
+// details", and the subject drops the known/managed jargon.
+test('real assembly path: internal telemetry renders only below Technical details', () => {
+  const health = { ...healthWith([{ name: 'Main: red streak' }, { name: 'Push-retry deadman' }]), consecutiveErrorDays: 35 };
+  const { subject, html } = composeDigestEmail({ sections: { health }, now: NOW, dispatchSecret: SECRET, dispatchConfigPath: NO_CONFIG_PATH });
+  const result = assertDigestInvariants(html, { health, subject });
+  assert.deepEqual(result.violations, []);
+  const cut = html.indexOf('>Technical details<');
+  assert.ok(cut > 0, 'technical details heading present');
+  assert.ok(html.indexOf('❌') > cut);
+  assert.ok(html.indexOf('consecutive errors') > cut);
+  assert.match(subject, /Site OK · nothing needs you$/);
+});
+
+test('regression bait: a red X or streak counter above Technical details fails the invariant', () => {
+  const bad = '<div>❌ Main (day 3 of consecutive errors)</div><div>Technical details</div>';
+  const r = assertDigestInvariants(bad, {});
+  assert.equal(r.ok, false);
+  assert.ok(r.violations.some((v) => v.includes('above Technical details')));
+  const good = '<div><div>Technical details</div>❌ Main (day 3 of consecutive errors)</div>';
+  assert.equal(assertDigestInvariants(good, {}).ok, true);
+});
+
+test('unit: known/managed jargon in the subject fails', () => {
+  const r = assertDigestInvariants('<div>x</div>', { subject: 'Morning digest — Thu · ⛔ site health: 69 known/managed, 14 new/regressing' });
+  assert.equal(r.ok, false);
+});
+
 test('unit: subject empty or too long fails', () => {
   assert.equal(assertDigestInvariants('<div>x</div>', { subject: '' }).ok, false);
   assert.equal(assertDigestInvariants('<div>x</div>', { subject: 'x'.repeat(120) }).ok, false);

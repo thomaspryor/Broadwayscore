@@ -37,6 +37,10 @@ permissions:
   contents: write
   actions: write
 
+concurrency:
+  group: scrape-bww-reviews
+  cancel-in-progress: false
+
 jobs:
   scrape:
     runs-on: ubuntu-latest

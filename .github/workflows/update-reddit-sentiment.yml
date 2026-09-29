@@ -33,6 +33,13 @@ on:
         required: false
         type: boolean
         default: false
+      skip_fresh_hours:
+        # BRO-4215: the opening-night orchestrator dispatches the same shows ~7x/day;
+        # this run was ~71% of ScrapingBee spend (9/21-9/27). Set 0 to force a re-scrape.
+        description: 'With shows: skip shows whose Reddit was scraped/attempted within this many hours (0 = never skip)'
+        required: false
+        type: string
+        default: '20'
 
 concurrency:
   # per-run group intended: prevents the orchestrator's back-to-back dispatches from
@@ -136,7 +143,10 @@ jobs:
           elif [ -n "${{ github.event.inputs.show_id }}" ]; then
             ARGS="$ARGS --show=${{ github.event.inputs.show_id }}"
           elif [ -n "${{ github.event.inputs.shows }}" ]; then
-            ARGS="$ARGS --shows=${{ github.event.inputs.shows }}"
+            SKIP_FRESH_HOURS="${{ github.event.inputs.skip_fresh_hours || '20' }}"
+            # Numeric only (free-text dispatch input); anything else falls back to 20.
+            [[ "$SKIP_FRESH_HOURS" =~ ^[0-9]+(\.[0-9]+)?$ ]] || SKIP_FRESH_HOURS=20
+            ARGS="$ARGS --shows=${{ github.event.inputs.shows }} --skip-fresh-hours=$SKIP_FRESH_HOURS"
           elif [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             # Manual/API trigger without filter: default to recently opened shows (≤14 days)
             # Prevents accidentally processing all open shows when only one is needed
@@ -231,6 +241,13 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from update-reddit-sentiment'
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-reddit-sentiment
 
       - name: Dispatch deploy
         if: always() && steps.freshness.outputs.skip != 'true'

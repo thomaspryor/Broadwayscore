@@ -61,6 +61,13 @@ function attemptOutcomesForCard(ledgerEntries, cardId) {
   const outcomes = [];
   for (const e of ledgerEntries || []) {
     if (!e || e.cardId !== cardId || !e.contentHash) continue;
+    // Guard malformed ts (BRO-3868, same posture as dispatch-reconcile.js's
+    // outcomeWindowTs callers): an entry we can't place chronologically must
+    // not enter the sort below with a NaN sort key — the sort comparator
+    // would degrade to unstable/arbitrary placement for it, which is exactly
+    // the file-order-as-chronology bug this sort exists to prevent, just
+    // reintroduced for one row instead of all of them.
+    if (!Number.isFinite(new Date(e.ts).getTime())) continue;
     if (e.event === 'card-fail' || (e.event === 'recovery' && /^fail:/.test(e.note || ''))) {
       outcomes.push({ ts: e.ts, contentHash: e.contentHash, outcome: 'fail', reason: e.note || null });
     } else if (e.event === 'card-pass' || e.event === 'auto-approve') {

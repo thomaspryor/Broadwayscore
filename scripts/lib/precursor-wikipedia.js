@@ -22,7 +22,7 @@ const PRECURSORS_DIR = path.join(__dirname, '..', '..', 'data', 'precursors');
 
 function fetchJson(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': USER_AGENT } }, (res) => {
+    const req = https.get(url, { headers: { 'User-Agent': USER_AGENT }, timeout: 15000 }, (res) => {
       if (res.statusCode === 301 || res.statusCode === 302) {
         return fetchJson(res.headers.location).then(resolve).catch(reject);
       }
@@ -35,7 +35,9 @@ function fetchJson(url) {
         try { resolve(JSON.parse(data)); }
         catch (e) { reject(new Error(`JSON parse error on ${url}: ${e.message}`)); }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

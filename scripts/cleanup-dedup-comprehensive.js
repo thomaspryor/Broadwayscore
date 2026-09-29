@@ -17,6 +17,8 @@ const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag } = require('./lib/review-guards');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -126,7 +128,7 @@ function mergeReviewData(target, source) {
 }
 
 function getShowDirs() {
-  return fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory()).sort();
+  return listShowDirs(REVIEW_TEXTS_DIR).sort();
 }
 function getReviewFiles(showId) {
   try { return fs.readdirSync(path.join(REVIEW_TEXTS_DIR, showId)).filter(f => f.endsWith('.json')).sort(); } catch(e) { return []; }
@@ -298,6 +300,7 @@ function cleanupCrossShowUrlDupes() {
       if (shouldSkipCrossShowUrlFlag(data)) continue; // same cross-show-URL class: honor CV verdict + manual-clear
       console.log(`  ${entry.showId}/${entry.file} → wrongProduction (belongs to ${bestShow})`);
       data.wrongProduction = true; data._wrongProductionReason = `URL matches ${bestShow} (year-based)`;
+      invalidateWrongProductionAutoClear(data);
       data._wrongProductionDetectedBy = 'cleanup-dedup-comprehensive';
       writeJsonFile(fp, data); totalFlagged++; stats.crossShowFlagged++;
     }

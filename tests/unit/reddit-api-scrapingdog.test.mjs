@@ -136,7 +136,7 @@ test('fetchViaScrapingDog rejects on 401 with actionable message', async () => {
   );
 });
 
-test('fetchViaScrapingDog bills the ledger on a 401 (full tier cost — mirrors scraper.js, unlike SB\'s zero-on-auth-failure)', async () => {
+test('fetchViaScrapingDog ledgers a 401 at 0 credits (SD bills only successes — sdBilledCredits, same as scraper.js)', async () => {
   const ledgerPath = path.join(os.tmpdir(), `reddit-sd-ledger-test-401-${process.pid}.jsonl`);
   try { fs.unlinkSync(ledgerPath); } catch { /* fine if absent */ }
   const savedLedgerPath = process.env.SCRAPER_SPEND_LEDGER_PATH;
@@ -149,7 +149,9 @@ test('fetchViaScrapingDog bills the ledger on a 401 (full tier cost — mirrors 
     assert.equal(rows.length, 1);
     assert.equal(rows[0].success, false);
     assert.equal(rows[0].status, 401);
-    assert.equal(rows[0].credits, 1, 'plain-tier 401 still bills 1 credit — SD served a response, unlike SB which zero-rates 401/402');
+    // BRO-4215: SD does not bill failed requests (provider-telemetry sdBilledCredits;
+    // scraper.js/url-discovery.js already ledger failures at 0 since BRO-3325).
+    assert.equal(rows[0].credits, 0, 'a failed SD request is not billed');
   } finally {
     if (savedLedgerPath) process.env.SCRAPER_SPEND_LEDGER_PATH = savedLedgerPath;
     else delete process.env.SCRAPER_SPEND_LEDGER_PATH;
@@ -275,8 +277,8 @@ test('fetchViaScrapingDog ledger rows bill 10 credits once escalated to premium/
     resetFallbackState();
     await fetchViaScrapingDog('https://old.reddit.com/r/broadway/needs-stealth.json');
     const rows = fs.readFileSync(ledgerPath, 'utf8').split('\n').filter(Boolean).map(l => JSON.parse(l));
-    // plain 400 (1cr) + premium 400 (10cr) + stealth 200 (10cr)
-    assert.deepEqual(rows.map(r => r.credits), [1, 10, 10]);
+    // plain 400 + premium 400 are unbilled failures; stealth 200 bills 10cr (BRO-4215)
+    assert.deepEqual(rows.map(r => r.credits), [0, 0, 10]);
     assert.deepEqual(rows.map(r => r.success), [false, false, true]);
   } finally {
     if (savedLedgerPath) process.env.SCRAPER_SPEND_LEDGER_PATH = savedLedgerPath;
@@ -320,9 +322,13 @@ test('fetchViaScrapingDog rejects (falls through to caller) when the daily break
 // — the same object instance reddit-api.js's own `require('https')` resolves
 // to — to simulate a response without a real network call.
 
+// Accepts both https.get(url, cb) and https.get(url, options, cb) — BRO-2383
+// added a { timeout: N } options argument to fetchViaScrapingBee's real call,
+// so the callback can land in either position depending on arity.
 function withMockedHttpsGet(statusCode, body, fn) {
   const original = https.get;
-  https.get = (_url, cb) => {
+  https.get = (_url, optionsOrCb, maybeCb) => {
+    const cb = typeof optionsOrCb === 'function' ? optionsOrCb : maybeCb;
     const res = new EventEmitter();
     res.statusCode = statusCode;
     const req = new EventEmitter();

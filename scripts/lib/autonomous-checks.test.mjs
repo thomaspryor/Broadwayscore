@@ -4,12 +4,13 @@ import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { createRequire } from 'node:module';
+import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 const checks = require('./autonomous-checks.js');
 const {
   decideChecks, cardCheckArgv, checksEnv, isUiDiff, hasSrcChange,
-  prepareCheckWorkdir, runSafeChecks, BUILD_TIMEOUT_MS, BUILD_ENV,
+  prepareCheckWorkdir, resolveInstallRoot, runSafeChecks, BUILD_TIMEOUT_MS, BUILD_ENV,
 } = checks;
 
 const never = () => false;
@@ -60,6 +61,63 @@ test('tier 3: a scripts/ diff yields colocated tests + node --check, no lint/bui
 test('tier 3: a test file is not double-run through node --check', () => {
   const out = decideChecks(['scripts/lib/foo.test.mjs'], never, { tier: 3 });
   assert.deepEqual(names(out), ['colocated-tests']);
+});
+
+// BRO-2247: same TS-resolution trap BRO-2218 fixed in isSafeCheckCommand, here
+// at the auto-derivation call site — a colocated .test.ts must be found (not
+// just .test.mjs) and routed through tsx (not plain node, which can't parse
+// TS syntax or resolve a TS module's extensionless internal imports).
+test('tier 3: a colocated .test.ts is derived and routed through tsx, not plain node', () => {
+  const exists = f => f === 'scripts/lib/foo.test.ts';
+  const out = decideChecks(['scripts/lib/foo.ts'], exists, { tier: 3 });
+  const tsxCheck = out.find(c => c.name === 'colocated-tests-tsx');
+  assert.ok(tsxCheck, 'a colocated .test.ts must be auto-derived');
+  assert.deepEqual(tsxCheck.argv, ['npx', 'tsx', '--test', 'scripts/lib/foo.test.ts']);
+  assert.equal(out.some(c => c.name === 'colocated-tests'), false,
+    'a .test.ts colocated file must never be handed to plain node --test');
+});
+
+test('tier 3: a diff mixing .test.mjs and .test.ts colocated tests runs two separate batches', () => {
+  const exists = f => f === 'scripts/lib/foo.test.mjs' || f === 'scripts/lib/bar.test.ts';
+  const out = decideChecks(['scripts/lib/foo.js', 'scripts/lib/bar.ts'], exists, { tier: 3 });
+  const byName = Object.fromEntries(out.map(c => [c.name, c]));
+  assert.deepEqual(byName['colocated-tests'].argv, ['node', '--test', 'scripts/lib/foo.test.mjs']);
+  assert.deepEqual(byName['colocated-tests-tsx'].argv, ['npx', 'tsx', '--test', 'scripts/lib/bar.test.ts']);
+});
+
+// Real-filesystem, real-execution proof (not just an argv assertion): a
+// fixture .ts source with a colocated .test.ts is found on disk by the real
+// decideChecks() and the derived check actually PASSES under tsx. The test
+// imports its sibling module via an EXTENSIONLESS path (`./foo`, not
+// `./foo.js`) — the exact case BRO-2218/BRO-2247 exist to fix. That is not
+// merely non-idiomatic; recent Node versions (22.6+) natively strip TS type
+// annotations, so a fixture that only relied on a type annotation being
+// "invalid JS" would silently pass under PLAIN `node --test` too and prove
+// nothing (caught in review — the first cut of this fixture had exactly that
+// gap on this machine's Node version). An extensionless internal import
+// fails ERR_MODULE_NOT_FOUND under plain node on every Node version — only
+// tsx's TS-aware resolver follows it — so a pass here can only mean tsx ran.
+test('a real colocated .test.ts fixture is auto-derived and actually passes under tsx (BRO-2247)', () => {
+  const gitCommonDir = execFileSync('git', ['rev-parse', '--git-common-dir'], { encoding: 'utf8' }).trim();
+  const repoRoot = path.dirname(path.resolve(gitCommonDir));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-tsx-'));
+  fs.mkdirSync(path.join(dir, 'scripts'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'scripts', 'foo.ts'), 'export const x: number = 1;\n');
+  fs.writeFileSync(path.join(dir, 'scripts', 'foo.test.ts'), [
+    "import { test } from 'node:test';",
+    "import assert from 'node:assert/strict';",
+    "import { x } from './foo';",
+    "test('trivial', () => { assert.equal(x, 1); });",
+    '',
+  ].join('\n'));
+
+  const results = runSafeChecks({
+    cwd: dir, changedFiles: ['scripts/foo.ts'], isSafeCheckCommand: () => false, tier: 3, prepareFrom: repoRoot,
+  });
+  const byName = Object.fromEntries(results.map(r => [r.name, r]));
+  assert.ok(byName['colocated-tests-tsx'], 'the real filesystem colocated .test.ts must be auto-derived');
+  assert.equal(byName['colocated-tests-tsx'].pass, true, byName['colocated-tests-tsx'].detail);
+  fs.rmSync(dir, { recursive: true, force: true });
 });
 
 test('tier 1 never gains the tier-3 checks for the same diff', () => {
@@ -178,6 +236,66 @@ test('prepareCheckWorkdir fills gaps only and never overwrites tracked files', (
   fs.rmSync(root, { recursive: true, force: true });
 });
 
+// ── resolveInstallRoot (BRO-3907) ────────────────────────────────────────────
+
+test('resolveInstallRoot: a repo with its own node_modules is returned unchanged', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-'));
+  fs.mkdirSync(path.join(root, 'node_modules'), { recursive: true });
+  assert.equal(resolveInstallRoot(root), root);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('resolveInstallRoot: a git WORKTREE with no node_modules of its own resolves to the main checkout that has one', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-wt-'));
+  const main = path.join(root, 'main');
+  const wt = path.join(root, 'wt');
+  fs.mkdirSync(main, { recursive: true });
+  fs.mkdirSync(path.join(main, 'node_modules'), { recursive: true });
+  execFileSync('git', ['init', '-q', '-b', 'main'], { cwd: main });
+  execFileSync('git', ['config', 'user.email', 'a@b.c'], { cwd: main });
+  execFileSync('git', ['config', 'user.name', 'test'], { cwd: main });
+  fs.writeFileSync(path.join(main, 'x.txt'), 'x');
+  execFileSync('git', ['add', 'x.txt'], { cwd: main });
+  execFileSync('git', ['commit', '-q', '-m', 'init'], { cwd: main });
+  execFileSync('git', ['worktree', 'add', '-q', '--detach', wt], { cwd: main });
+
+  // The worktree itself has no node_modules — resolveInstallRoot must find
+  // the main checkout's via `git rev-parse --git-common-dir`, not just give up.
+  // realpathSync on both sides: git's --path-format=absolute resolves macOS's
+  // /tmp -> /private/tmp symlink, so a literal string compare against the
+  // unresolved mkdtempSync path would spuriously fail on this platform alone.
+  assert.equal(fs.existsSync(path.join(wt, 'node_modules')), false);
+  assert.equal(fs.realpathSync(resolveInstallRoot(wt)), fs.realpathSync(main));
+
+  execFileSync('git', ['worktree', 'remove', '--force', wt], { cwd: main });
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('resolveInstallRoot: a plain non-git directory with no node_modules fails closed to the input path', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-plain-'));
+  assert.equal(resolveInstallRoot(root), root);
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
+test('resolveInstallRoot: a worktree whose MAIN checkout also lacks node_modules fails closed to the input path (never invents a phantom root)', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'install-root-nomod-'));
+  const main = path.join(root, 'main');
+  const wt = path.join(root, 'wt');
+  fs.mkdirSync(main, { recursive: true });
+  execFileSync('git', ['init', '-q', '-b', 'main'], { cwd: main });
+  execFileSync('git', ['config', 'user.email', 'a@b.c'], { cwd: main });
+  execFileSync('git', ['config', 'user.name', 'test'], { cwd: main });
+  fs.writeFileSync(path.join(main, 'x.txt'), 'x');
+  execFileSync('git', ['add', 'x.txt'], { cwd: main });
+  execFileSync('git', ['commit', '-q', '-m', 'init'], { cwd: main });
+  execFileSync('git', ['worktree', 'add', '-q', '--detach', wt], { cwd: main });
+
+  assert.equal(resolveInstallRoot(wt), wt);
+
+  execFileSync('git', ['worktree', 'remove', '--force', wt], { cwd: main });
+  fs.rmSync(root, { recursive: true, force: true });
+});
+
 // ── runner ──────────────────────────────────────────────────────────────────
 
 test('runSafeChecks runs the plan and reports pass/fail per check', () => {
@@ -223,10 +341,25 @@ test('runSafeChecks cleans up the throwaway HOME it created', () => {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-home-'));
   fs.mkdirSync(path.join(dir, 'scripts'), { recursive: true });
   fs.writeFileSync(path.join(dir, 'scripts', 'good.js'), 'const x = 1;\n');
-  const before = fs.readdirSync(os.tmpdir()).filter(n => n.startsWith('auto-checks-home-')).length;
-  runSafeChecks({ cwd: dir, changedFiles: ['scripts/good.js'], isSafeCheckCommand: () => false, tier: 3 });
-  const after = fs.readdirSync(os.tmpdir()).filter(n => n.startsWith('auto-checks-home-')).length;
-  assert.equal(after, before, 'no fake HOME left behind');
+  // Track the exact dir(s) THIS call creates instead of counting every
+  // auto-checks-home-* in the shared os.tmpdir(): other processes (parallel
+  // sessions, land.js gauntlets) create and delete same-prefixed dirs
+  // concurrently, which flipped a global count and false-blocked unrelated
+  // landings (BRO-3929).
+  const created = [];
+  const realMkdtemp = fs.mkdtempSync;
+  fs.mkdtempSync = (prefix, ...rest) => {
+    const p = realMkdtemp(prefix, ...rest);
+    if (path.basename(String(prefix)).startsWith('auto-checks-home-')) created.push(p);
+    return p;
+  };
+  try {
+    runSafeChecks({ cwd: dir, changedFiles: ['scripts/good.js'], isSafeCheckCommand: () => false, tier: 3 });
+  } finally {
+    fs.mkdtempSync = realMkdtemp;
+  }
+  assert.ok(created.length > 0, 'runSafeChecks created a throwaway HOME (spy must see it, or this test proves nothing)');
+  for (const p of created) assert.equal(fs.existsSync(p), false, `fake HOME left behind: ${p}`);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 

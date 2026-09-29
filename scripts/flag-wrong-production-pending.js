@@ -22,6 +22,8 @@
 const fs = require('fs');
 const path = require('path');
 const { getWrongProductionReasonFromUrl } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
 const PENDING_DIR = path.join(__dirname, '..', 'data', 'review-texts', '_pending');
@@ -42,9 +44,7 @@ const showList = Array.isArray(SHOWS.shows) ? SHOWS.shows : Object.values(SHOWS.
 const showMap = {};
 for (const s of showList) showMap[s.id] = s;
 
-const showDirs = fs
-  .readdirSync(PENDING_DIR)
-  .filter((d) => fs.statSync(path.join(PENDING_DIR, d)).isDirectory());
+const showDirs = listShowDirs(PENDING_DIR);
 
 let flaggedCount = 0;
 let scannedCount = 0;
@@ -92,6 +92,7 @@ for (const showId of showDirs) {
 
     if (APPLY) {
       d.wrongProduction = true;
+      invalidateWrongProductionAutoClear(d);
       d.wrongProductionNote = reason;
       d.wrongProductionFlaggedAt = new Date().toISOString();
       d.wrongProductionFlaggedBy = 'script:flag-wrong-production-pending.js';

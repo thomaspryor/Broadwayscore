@@ -26,7 +26,7 @@
  *   node scripts/query-analytics.js --start=2026-02-01 --end=2026-02-17  # Exact range
  */
 
-const { BetaAnalyticsDataClient } = require('@google-analytics/data');
+const { getGaClient } = require('./lib/ga4-client');
 const { fetchEngagedSessionsSummary } = require('./lib/ga4-engaged-sessions');
 
 // Load .env
@@ -34,16 +34,7 @@ require('./lib/load-env').loadEnv();
 
 const PROPERTY_ID = process.env.GA4_PROPERTY_ID;
 
-function getClient() {
-  if (process.env.GA_KEY_FILE) {
-    return new BetaAnalyticsDataClient({ keyFilename: process.env.GA_KEY_FILE });
-  }
-  if (process.env.GA_SERVICE_ACCOUNT_KEY) {
-    const decoded = Buffer.from(process.env.GA_SERVICE_ACCOUNT_KEY, 'base64').toString('utf8');
-    return new BetaAnalyticsDataClient({ credentials: JSON.parse(decoded) });
-  }
-  return new BetaAnalyticsDataClient();
-}
+const getClient = getGaClient;
 
 function parseArgs() {
   const args = process.argv.slice(2);

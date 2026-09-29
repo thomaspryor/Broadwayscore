@@ -9,6 +9,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, normalizePublishDate } = require('./lib/review-normalization');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const bwwDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 
@@ -226,6 +227,7 @@ for (const file of files.sort()) {
     // Fix 1: Flag reviews from wrong production
     if (isWrongProduction(review, show)) {
       review.wrongProduction = true;
+      invalidateWrongProductionAutoClear(review);
       review.wrongProductionReason = `Published ${review.publishDate}, show opens ${show.previewDate || show.openingDate} — likely earlier production`;
       wrongProdCount++;
     }

@@ -895,9 +895,34 @@ function launchCmuxSession(opts) {
 // synchronously before any `await` in its body, so this fire-and-forget call
 // is durable by the time launchCmuxSessionInner returns, even though the
 // caller (bsc-next.js) may process.exit() moments later.
-function pageAuthPreflightFailure(detail) {
+//
+// BRO-2971: `reason` ('spawn-starved'|'spawn-error' vs anything else, from
+// preflightAuth()'s auth.reason) picks between three distinct
+// conditionKeys/titles. Before this, EVERY refusal here — including a
+// spawnSync ETIMEDOUT/ENOMEM, an OS/jetsam signal kill, or a missing binary
+// that never reached the auth handshake — filed under the same "claude auth
+// preflight failed" title, so a Mac at its BRO-2789 OOM plateau or cmux's
+// terminal-runtime ceiling got misdiagnosed as a revoked credential in the
+// owner's digest.
+function pageAuthPreflightFailure(detail, reason) {
   try {
     const { routeAlert } = require('./owner-alert-router.js');
+    if (reason === 'spawn-starved' || reason === 'spawn-error') {
+      const starved = reason === 'spawn-starved';
+      routeAlert({
+        conditionKey: starved ? 'cmux-launch:spawn-starved' : 'cmux-launch:spawn-error',
+        title: starved
+          ? 'cmux launch refused — spawn resource starvation, not a revoked credential'
+          : 'cmux launch refused — binary missing or broken, not a revoked credential',
+        description: starved
+          ? `${detail} This is an OS/jetsam-level spawn failure (timeout, out-of-memory, or a signal kill), not a credential rejection — do NOT re-run \`claude auth login\`. Check for the BRO-2789 OOM plateau or prune cmux sessions (near its ~33-runtime ceiling).`
+          : `${detail} This looks like a missing or unexecutable \`claude\` binary, not a credential rejection — do NOT re-run \`claude auth login\`. Check CLAUDE_BIN / the candidate list in scripts/lib/claude-cli.js.`,
+        severity: 'error',
+        disposition: 'digest',
+        cooldownHours: 6,
+      }).catch(() => {});
+      return;
+    }
     routeAlert({
       conditionKey: 'cmux-launch:auth-preflight-failed',
       title: 'cmux launch refused — claude auth preflight failed',
@@ -1138,7 +1163,7 @@ function launchCmuxSessionInner({ title, seed, seedKey, cwd, model = 'sonnet', f
     if (shouldRefuseForAuth(auth)) {
       const reason = `claude auth preflight failed — ${auth.detail || 'no working credential'}`;
       console.error(`[cmux-launch] REFUSING launch "${title}": ${reason}`);
-      pageAuthPreflightFailure(reason);
+      pageAuthPreflightFailure(reason, auth.reason);
       return { ok: false, reason, authPreflightFailed: true, seedFile, command };
     }
   }

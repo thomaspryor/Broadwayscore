@@ -41,7 +41,7 @@ const row = (id) => JSON.stringify({ pageId: id.toLowerCase(), identifier: `BRO-
 test('a missing ledger is a no-op, not a throw', () => {
   const { dir } = newRepo();
   assert.equal(checkpointLedger(path.join(dir, 'data', 'absent.jsonl'), 'b0'), false);
-  rmSync(dir, { recursive: true, force: true });
+  rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('checkpoint commits the rows written so far', () => {
@@ -50,7 +50,7 @@ test('checkpoint commits the rows written so far', () => {
   assert.equal(checkpointLedger(ledger, 'batch 1'), true);
   assert.match(git('log', '--oneline'), /batch 1/);
   assert.match(git('show', 'HEAD:data/ledger.jsonl'), /BRO-1/);
-  rmSync(dir, { recursive: true, force: true });
+  rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('no new rows produces no empty commit', () => {
@@ -60,7 +60,7 @@ test('no new rows produces no empty commit', () => {
   const head = git('rev-parse', 'HEAD');
   assert.equal(checkpointLedger(ledger, 'batch 2'), false);
   assert.equal(git('rev-parse', 'HEAD'), head);
-  rmSync(dir, { recursive: true, force: true });
+  rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('THE INCIDENT: checkpointed rows survive a working-tree reset, loss is bounded to one batch', () => {
@@ -78,7 +78,7 @@ test('THE INCIDENT: checkpointed rows survive a working-tree reset, loss is boun
   assert.match(after, /BRO-1/, 'checkpointed row survived');
   assert.match(after, /BRO-2/, 'checkpointed row survived');
   assert.doesNotMatch(after, /BRO-3/, 'only post-checkpoint rows are lost');
-  rmSync(dir, { recursive: true, force: true });
+  rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('only the ledger is staged — never another session\'s work in progress', () => {
@@ -87,7 +87,7 @@ test('only the ledger is staged — never another session\'s work in progress', 
   appendFileSync(ledger, row('1'));
   checkpointLedger(ledger, 'batch 1');
   assert.match(git('status', '--short'), /other\.txt/, 'unrelated file must remain uncommitted');
-  rmSync(dir, { recursive: true, force: true });
+  rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('outside a git repo it reports false rather than aborting the import', () => {
@@ -95,5 +95,5 @@ test('outside a git repo it reports false rather than aborting the import', () =
   const ledger = path.join(dir, 'ledger.jsonl');
   writeFileSync(ledger, '{}\n');
   assert.equal(checkpointLedger(ledger, 'batch 1'), false);
-  rmSync(dir, { recursive: true, force: true });
+  rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });

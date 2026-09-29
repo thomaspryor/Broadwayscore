@@ -21,9 +21,9 @@
  */
 
 const path = require('path');
-const { normalizeOutlet, getOutletDisplayName, WIRE_SERVICE_OUTLETS } = require('./review-normalization');
+const { normalizeOutlet, getOutletDisplayName, WIRE_SERVICE_OUTLETS, resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { AGGREGATOR_DOMAINS } = require('./aggregator-domains');
-const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
+const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes, isBareSuffix } = require('./host-suffix-lists');
 
 let _cachedRegistry = null;
 let _cachedDomainMap = null;
@@ -68,10 +68,71 @@ function buildDomainMap() {
   return { domainToOutlet: _cachedDomainMap, ambiguous: _cachedAmbiguous };
 }
 
+// Registry lookup for a URL host, exact first, then each parent domain
+// (newspaper.dailymail.com -> dailymail.com). Exact-only lookup was the
+// Golden Boy / Daily Mail miss (issue #908, 2026-09-22): the e-edition
+// subdomain matched nothing, so ingest-review-from-url.js minted a phantom
+// provisional outlet "dailymail", the critic-registry guard then flagged
+// Patrick Marmion as misattributed, and the review never scored.
+// Walk-up stops before a blog-platform suffix (someone.medium.com is NOT the
+// registered "medium" outlet) and never reaches a bare public suffix. An
+// ambiguous hit at any level returns null — the nearest registered level is
+// the only one that speaks for the host.
+function lookupOutletForHost(host, { exactOnly = false } = {}) {
+  if (!host || typeof host !== 'string') return null;
+  const { domainToOutlet, ambiguous } = buildDomainMap();
+  const h = host.toLowerCase().replace(/^www\./, '');
+  const platform = platformSuffixOf(h);
+  const parts = h.split('.').filter(Boolean);
+  for (let i = 0; i <= parts.length - 2; i++) {
+    const candidate = parts.slice(i).join('.');
+    if (i > 0 && platform && candidate === platform) break;
+    if (i > 0 && isBareSuffix(candidate)) break;
+    if (ambiguous.has(candidate)) return null;
+    if (domainToOutlet[candidate]) {
+      const match = domainToOutlet[candidate];
+      // A partner publication hosted on a publisher's subdomain
+      // (jewishchronicle.timesofisrael.com) is NOT the publisher. Refuse the
+      // parent match when a subdomain label spells out another registered
+      // outlet's name — the caller then falls back to its no-match path.
+      if (i > 0) {
+        const names = compactOutletNames();
+        for (const label of parts.slice(0, i)) {
+          const owner = names.get(label.replace(/[^a-z0-9]/g, ''));
+          if (owner && owner !== match) return null;
+        }
+      }
+      return match;
+    }
+    if (exactOnly) return null;
+  }
+  return null;
+}
+
+// compact name ("jewishchronicle") -> outletId, from registered ids and display
+// names. Only names >= 8 chars: short generic words ("preview", "online") are
+// real subdomain labels and must not block a legitimate parent match.
+let _cachedCompactNames = null;
+function compactOutletNames() {
+  if (_cachedCompactNames) return _cachedCompactNames;
+  const seen = new Map();
+  for (const [id, o] of Object.entries(loadRegistry().outlets || {})) {
+    for (const raw of [id, o.displayName]) {
+      if (!raw) continue;
+      const c = String(raw).toLowerCase().replace(/^the[\s-]+/, '').replace(/[^a-z0-9]/g, '');
+      if (c.length < 8) continue;
+      seen.set(c, seen.has(c) && seen.get(c) !== id ? null : id);
+    }
+  }
+  _cachedCompactNames = new Map([...seen].filter(([, id]) => id));
+  return _cachedCompactNames;
+}
+
 function parseDomain(url) {
   if (!url || typeof url !== 'string') return null;
   const m = url.match(/^https?:\/\/(?:www\.)?([^/?#]+)/i);
-  return m ? m[1].toLowerCase() : null;
+  // Drop userinfo and port: "dailymail.com:443" must look up "dailymail.com".
+  return m ? m[1].toLowerCase().replace(/^[^@]*@/, '').replace(/:\d+$/, '').replace(/^www\./, '') : null;
 }
 
 function isRegisteredCanonical(id) {
@@ -94,11 +155,29 @@ function resolveCanonicalOutletId({ outletArg, url }) {
 
   let urlResolved = null;
   if (url) {
-    const domain = parseDomain(url);
-    if (domain) {
-      const { domainToOutlet, ambiguous } = buildDomainMap();
-      if (!ambiguous.has(domain) && domainToOutlet[domain]) {
-        urlResolved = domainToOutlet[domain];
+    // Path-informed edition splits (timeout.com/london vs /newyork) are a
+    // STRONGER signal than the bare-domain map below can ever give — that map
+    // only sees a hostname and marks a shared host fully "ambiguous" (BRO-4153:
+    // a timeout.com URL with operator input "timeout" was trusting the alias
+    // and silently discarding the /london path). Check this first; it returns
+    // null for undeclared collisions like telegraph.co.uk (same outlet either
+    // way — see resolveOutletFromUrlIfPathInformed) so those keep falling
+    // through to the ambiguous-domain-map behavior below, unchanged.
+    const pathResolved = resolveOutletFromUrlIfPathInformed(url);
+    if (pathResolved) {
+      urlResolved = pathResolved.outletId;
+    } else {
+      const domain = parseDomain(url);
+      if (domain) {
+        urlResolved = lookupOutletForHost(domain);
+        // A parent-domain match is weaker evidence than an exact one: a partner
+        // subdomain (jewishchronicle.timesofisrael.com) can host a DIFFERENT
+        // registered outlet. It fills in an unregistered operator input, but
+        // never overrides a registered one.
+        if (urlResolved && aliasIsRegistered && aliasResolved !== urlResolved
+            && !lookupOutletForHost(domain, { exactOnly: true })) {
+          urlResolved = null;
+        }
       }
     }
   }
@@ -240,9 +319,8 @@ function getCvStyle(outletId) {
 /**
  * resolveCvStyle(rawStyle, canonicalOutletId)
  * The registry-free decision behind getCvStyle, extracted so it is testable
- * without data/outlet-registry.json — that file is gitignored private core
- * data, so it is absent from every worktree and a registry-reading test cannot
- * run there.
+ * without reading data/outlet-registry.json at all — keeps this pure
+ * function's tests independent of the registry's current contents.
  *
  * NOT pure: it reads and mutates the module-level warn-once memo and calls
  * console.warn. Its RETURN value is a pure function of rawStyle; only the
@@ -481,6 +559,7 @@ module.exports = {
   CV_STYLES: Object.freeze([...VALID_CV_STYLES]),
   isValidCvStyle,
   provisionalOutletIdFromHost,
+  lookupOutletForHost,
   sameOutletUrlVariant,
   // exposed for tests
   _buildDomainMap: buildDomainMap,

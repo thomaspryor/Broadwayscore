@@ -121,9 +121,18 @@ try {
   PUBLIC_REPO_API_FALLBACK_MERGE_FILES = [];
 }
 
-// data/shows.json / data/reviews.json — push-with-retry.sh's NEVER_FALLBACK
-// list (fail-closed regardless of MANAGED/API_FALLBACK_SAFE membership).
-const NEVER_FALLBACK_FILES = ['data/shows.json', 'data/reviews.json'];
+// NEVER_FALLBACK (data/shows.json, data/reviews.json) now lives in
+// api-fallback-disqualifier-core.js alongside the predicate that consults it —
+// re-exported here so any existing reader of this name keeps working.
+// Requires the -core file, NOT api-fallback-disqualifier.js itself: this
+// script is on AUDIT_LINT_GENERIC_FORM_ALLOWED (scripts/lib/autonomous-
+// triage-core.js), which requires a zero-hazard transitive require graph
+// (scripts/lib/safe-form-allowlist.test.mjs) — api-fallback-disqualifier.js's
+// CLI block does a real `git diff` spawn, which pulled a hazard into this
+// script's graph every run until the predicate was split out (BRO-2531
+// session, unrelated fix picked up while landing that ticket).
+// eslint-disable-next-line global-require
+const { disqualifyingPath, NEVER_FALLBACK: NEVER_FALLBACK_FILES } = require('./api-fallback-disqualifier-core.js');
 
 /**
  * Classify one staged repo-relative file path exactly the way push-with-
@@ -140,11 +149,26 @@ const NEVER_FALLBACK_FILES = ['data/shows.json', 'data/reviews.json'];
  * the extra `!isApiFallbackMergeable` carve-out on the isManaged clause.
  */
 function classifyPushFallbackSafety(filePath) {
-  const isManaged = PUBLIC_REPO_MANAGED_FILES.some((f) => filePath.endsWith(f));
   const isApiFallbackSafe = PUBLIC_REPO_API_FALLBACK_SAFE_FILES.some((f) => filePath.endsWith(f));
   const isApiFallbackMerge = PUBLIC_REPO_API_FALLBACK_MERGE_FILES.some((f) => filePath.endsWith(f));
-  const isNeverFallback = NEVER_FALLBACK_FILES.some((p) => filePath === p || filePath.endsWith('/' + p));
-  const disqualifiesFallback = (isManaged && !isApiFallbackMerge) || isNeverFallback || (filePath.startsWith('data/audit/') && !isManaged && !isApiFallbackSafe && !isApiFallbackMerge);
+  // BRO-3663: `disqualifiesFallback` is no longer a hand-maintained mirror of
+  // the shell's `hit` expression — that expression no longer exists. It now
+  // CALLS the same module push-with-retry.sh calls, so the two cannot drift.
+  // This matters beyond tidiness: push-with-retry.stranded-commit-cascade
+  // .test.sh's PART B guard require()s this function and treats it as the real
+  // runtime predicate, which was only true while the mirror was accurate.
+  //
+  // The lists here are registry-relative (`audit/x.json`); disqualifyingPath
+  // strips a leading `data/` from each entry before matching, so they are
+  // re-prefixed to round-trip to the identical strings. Verified equivalent
+  // over all 327 registry paths plus adversarial shapes at the time of the
+  // change — this is a refactor, not a behaviour change.
+  const asEntries = (list) => list.map((f) => ({ file: `data/${f}` }));
+  const disqualifiesFallback = disqualifyingPath([filePath], {
+    MANAGED: asEntries(PUBLIC_REPO_MANAGED_FILES),
+    API_FALLBACK_SAFE: asEntries(PUBLIC_REPO_API_FALLBACK_SAFE_FILES),
+    API_FALLBACK_MERGE: asEntries(PUBLIC_REPO_API_FALLBACK_MERGE_FILES),
+  }) !== null;
   return { isApiFallbackSafe, isApiFallbackMerge, disqualifiesFallback };
 }
 

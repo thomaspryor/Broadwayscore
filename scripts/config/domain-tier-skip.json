@@ -2,19 +2,19 @@
   "amny.com": {
     "amp-variant": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "12 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "20 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "apnews.com": {
     "archive-cdx": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "5 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -28,24 +28,24 @@
   "articles.philly.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "backstage.com": {
     "direct-cookies": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "6 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -69,29 +69,29 @@
   "blogs.villagevoice.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "13 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "13 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "13 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "bloomberg.com": {
     "archive-cdx": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "direct-cookies": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "7 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -131,6 +131,13 @@
       "addedAt": "2026-07-30"
     }
   },
+  "broadwayworld.com": {
+    "playwright": {
+      "skip": true,
+      "reason": "BWW serves a Cloudflare interstitial to headless Chromium; page.goto never reaches networkidle and burns the full 30s timeout on EVERY BWW fetch before falling through to Bright Data (measured 2026-07-31 on /reviews/ and reviews.php). Already documented in bww-rr-discover.js fetchSectionPageAnchors. Skipping the tier removes 30s of dead latency from the opening-night fast path at zero yield cost.",
+      "addedAt": "2026-07-31"
+    }
+  },
   "bsonarts.com": {
     "brightdata": {
       "skip": true,
@@ -168,55 +175,60 @@
   "charlotteledger.substack.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "citycabaret.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
+    },
+    "playwright": {
+      "skip": true,
+      "reason": "4 failures, 0 successes",
+      "addedAt": "2026-09-20"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "cleveland.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "clydefitchreport.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "13 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "13 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "13 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "courant.com": {
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -230,72 +242,82 @@
   "dcmetrotheaterarts.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "13 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "13 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "didtheylikeit.com": {
     "scrapingdog": {
-      "skip": false,
-      "reason": "Scraping cost v3 S1-T2 (2026-08-03): 30-URL live parity retest = 30/30 (100%) via plain+stealth_mode escalation, despite the production ledger showing 6% success/647 calls over the prior 7d — the gap was NOT domain support, it was scraper.js not auto-retrying SD's own '400 Oops...try Stealth Mode' response before falling through to Bright Data. Fixed at the param level in fetchWithScrapingdog() (auto-escalates to stealth_mode on that exact 400 signature) rather than by flipping this flag — the ≥80%-with-param-fix branch of the approved decision bar. Superseded the stale 2026-07-31 3-URL conclusion, which correctly kept skip:false but for the wrong reason (never observed the 400 rate at scale).",
-      "addedAt": "2026-08-03"
+      "skip": true,
+      "reason": "BRO-3325 (2026-09-14): flipped by the tier-skip drift audit verdict — 3% success over 1551 Scrapingdog calls in the 7d ledger (1,208 x SD \"HTTP 404 This URL does not exist\", 272 x 400, 232 x 500 at the 20cr stealth escalation), while the Bright Data fallthrough on the same requests succeeds 99.9% (1,058 rows fallback_from=scrapingdog). Direct curl from outside returns 403 Attention Required (Cloudflare managed challenge) — SD cannot get through it any more; the 2026-08-03 30/30 plain+stealth parity retest no longer holds. Skipping SD sends DTLI straight to BD (same tier that was already doing the work) and stops ~6.8K wasted SD credits per 1.5 days plus a failed round-trip on every poller tick. Monthly recovery probe will re-test.",
+      "addedAt": "2026-09-14"
     }
   },
   "dramaqueennyc.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "6 failures, 0 successes",
       "addedAt": "2026-07-30"
+    },
+    "playwright": {
+      "skip": true,
+      "reason": "6 failures, 0 successes",
+      "addedAt": "2026-09-20"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "6 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "ew.com": {
     "amp-variant": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "33 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "direct-cookies": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "5 failures, 0 successes",
       "addedAt": "2026-07-30"
+    },
+    "scrapingbee": {
+      "skip": true,
+      "reason": "8 failures, 0 successes",
+      "addedAt": "2026-09-27"
     }
   },
   "examiner.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "forbes.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -312,9 +334,14 @@
     }
   },
   "huffingtonpost.com": {
+    "brightdata": {
+      "skip": true,
+      "reason": "4 failures, 0 successes",
+      "addedAt": "2026-09-20"
+    },
     "direct-cookies": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "7 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -331,9 +358,14 @@
     }
   },
   "inquirer.com": {
+    "playwright": {
+      "skip": true,
+      "reason": "5 failures, 0 successes",
+      "addedAt": "2026-09-20"
+    },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -354,7 +386,7 @@
   "londontheatre.co.uk": {
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -375,19 +407,19 @@
   "newnownext.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "5 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "newsday.com": {
     "amp-variant": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "25 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "archive-cdx": {
@@ -414,47 +446,64 @@
     }
   },
   "newyorker.com": {
+    "brightdata": {
+      "skip": true,
+      "reason": "4 failures, 0 successes",
+      "addedAt": "2026-09-20"
+    },
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "8 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "northjersey.com": {
+    "brightdata": {
+      "skip": true,
+      "reason": "13 failures, 0 successes",
+      "addedAt": "2026-09-20"
+    },
     "direct-cookies": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "12 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "12 failures, 0 successes",
       "addedAt": "2026-07-30"
+    }
+  },
+  "nymag.com": {
+    "playwright": {
+      "skip": true,
+      "reason": "25 failures, 0 successes",
+      "addedAt": "2026-09-20"
     }
   },
   "nystagereview.com": {
     "archive-cdx": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "6 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "nytimes.com": {
     "direct-cookies": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "52 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "ocregister.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "5 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "5 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -468,17 +517,17 @@
   "onoffbroadway.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -518,7 +567,7 @@
   "reuters.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -549,7 +598,7 @@
   "sfchronicle.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -582,12 +631,12 @@
   "startribune.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "6 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "6 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -606,12 +655,12 @@
   "talkinbroadway.com": {
     "direct-cookies": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "15 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "132 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -625,24 +674,24 @@
   "theasy.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "10 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "11 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "10 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "theater.nytimes.com": {
     "direct-cookies": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "27 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -656,26 +705,26 @@
   "theatermania.com": {
     "browserbase": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "6 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "theaternewsonline.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "45 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "theaterscene.com": {
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -711,14 +760,14 @@
     },
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "9 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "thedailybeast.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "43 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -749,19 +798,19 @@
   "theguardian.com": {
     "archive-cdx": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "23 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "archive-first": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "26 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "theoaklandpress.com": {
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -775,7 +824,7 @@
   "thestage.co.uk": {
     "direct-cookies": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "10 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -789,20 +838,32 @@
   "thewrap.com": {
     "browserbase": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "6 failures, 0 successes",
       "addedAt": "2026-07-30"
+    },
+    "playwright": {
+      "skip": true,
+      "reason": "81 failures, 0 successes",
+      "addedAt": "2026-09-20"
     }
   },
   "timesunion.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
+    }
+  },
+  "usatoday.com": {
+    "archive-cdx": {
+      "skip": true,
+      "reason": "8 failures, 0 successes",
+      "addedAt": "2026-09-20"
     }
   },
   "villagevoice.com": {
@@ -839,24 +900,29 @@
     },
     "brightdata": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "direct-cookies": {
       "skip": true,
       "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
       "addedAt": "2026-07-30"
+    },
+    "scrapingbee": {
+      "skip": true,
+      "reason": "4 failures, 0 successes",
+      "addedAt": "2026-09-20"
     }
   },
   "washingtontimes.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -870,27 +936,20 @@
   "womanaroundtown.com": {
     "archive-cdx": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "14 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "archive-first": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "14 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "wsj.com": {
     "playwright": {
       "skip": true,
-      "reason": "migrated from legacy array format (Scraping v2 Sprint 1 T10) — no per-tier failure detail retained",
+      "reason": "12 failures, 0 successes",
       "addedAt": "2026-07-30"
-    }
-  },
-  "broadwayworld.com": {
-    "playwright": {
-      "skip": true,
-      "reason": "BWW serves a Cloudflare interstitial to headless Chromium; page.goto never reaches networkidle and burns the full 30s timeout on EVERY BWW fetch before falling through to Bright Data (measured 2026-07-31 on /reviews/ and reviews.php). Already documented in bww-rr-discover.js fetchSectionPageAnchors. Skipping the tier removes 30s of dead latency from the opening-night fast path at zero yield cost.",
-      "addedAt": "2026-07-31"
     }
   }
 }

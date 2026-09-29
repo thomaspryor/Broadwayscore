@@ -17,6 +17,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const { extractScore, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 const { parseOriginalScore } = require('./lib/score-parsers');
@@ -39,9 +40,7 @@ if (outletFilter) console.log(`Filtering to outlet: ${outletFilter}`);
 console.log(`Outlets with extractors: ${TARGET_OUTLETS.size}`);
 console.log('');
 
-const showDirs = fs.readdirSync(REVIEW_DIR).filter(d =>
-  fs.statSync(path.join(REVIEW_DIR, d)).isDirectory()
-);
+const showDirs = listShowDirs(REVIEW_DIR);
 
 let processed = 0, extracted = 0, failed = 0, skipped = 0;
 const perOutlet = {};

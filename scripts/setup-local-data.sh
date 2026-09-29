@@ -10,12 +10,18 @@
 # Usage:
 #   ./scripts/setup-local-data.sh           # Setup core data only
 #   ./scripts/setup-local-data.sh --all     # Setup core data + review texts
+#   ./scripts/setup-local-data.sh --link-only  # Worktree: link data from the
+#       existing ~/broadway-scorecard-data clone and the main checkout. No
+#       network, no fetch, no `reset --hard` (other sessions may have
+#       uncommitted edits in that clone through these symlinks). BRO-4241.
 
 set -uo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 DATA_DIR="$PROJECT_DIR/data"
+LINK_ONLY=0
+[ "${1:-}" = "--link-only" ] && LINK_ONLY=1
 
 echo "=== Broadway Scorecard Local Data Setup ==="
 echo ""
@@ -36,7 +42,10 @@ git config --global merge.ours.driver true 2>/dev/null \
 # gh CLI works in a cloud session, so honoring it here means ONE token env var
 # enables both gh and this private-repo clone — no separate REVIEW_TEXTS_TOKEN needed.
 TOKEN="${REVIEW_TEXTS_TOKEN:-${GH_TOKEN:-}}"
-if [ -n "$TOKEN" ]; then
+if [ "$LINK_ONLY" = 1 ]; then
+  echo "Link-only mode: no fetch or clone."
+  AUTH_METHOD="none"
+elif [ -n "$TOKEN" ]; then
   echo "Using token (REVIEW_TEXTS_TOKEN/GH_TOKEN) for authentication..."
   AUTH_METHOD="token"
 elif command -v gh &>/dev/null; then
@@ -74,7 +83,12 @@ echo "--- Core Data (from broadway-scorecard-data) ---"
 # See memory/feedback_dual_repo_data_files.md for full context.
 CORE_DATA_DIR="$HOME/broadway-scorecard-data"
 
-if [ -d "$CORE_DATA_DIR/.git" ]; then
+if [ "$LINK_ONLY" = 1 ]; then
+  if [ ! -d "$CORE_DATA_DIR" ]; then
+    echo "ERROR: --link-only needs an existing $CORE_DATA_DIR (run this script once without flags first)."
+    exit 1
+  fi
+elif [ -d "$CORE_DATA_DIR/.git" ]; then
   echo "Updating existing core-data clone at $CORE_DATA_DIR..."
   # Retry with backoff: this clone is shared across parallel local sessions, so
   # a `git fetch`/`reset --hard` can transiently fail on lock contention
@@ -132,10 +146,19 @@ fi
 # diary-shows.json added 2026-07-14 (Notion 39d637c5, import self-heal loop) --
 # scripts/resolve-unmatched-imports.js and scripts/refresh-mezzanine-catalog.js
 # need to test against the real file locally, same as shows.json/reviews.json.
-SYMLINK_FILES=(shows.json reviews.json commercial.json diary-shows.json)
+# retired-show-ids.json + deleted-shows.json added 2026-09-28 (2026 data audit,
+# S0-T2): scripts/lib/retired-show-ids.js retireId() appends to both from a
+# local session, and a retirement that lands in a plain data/ copy (gitignored,
+# never pushed) would leave the deleted row free to come back -- the registry
+# only works when the write reaches the core-data clone, like shows.json.
+# critic-slug-aliases.json added 2026-09-28 (2026 data audit, S5-T9): the
+# retired-critic-slug → canonical map is hand-edited from a local session, and
+# an edit that lands in a plain data/ copy never reaches prebuild in CI -- the
+# redirect only exists once the entry is in the core-data clone.
+SYMLINK_FILES=(shows.json reviews.json commercial.json diary-shows.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json)
 
 # Files that should be regular copies (read-only for most purposes)
-COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json critic-consensus.json critic-registry.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json outlet-registry.json)
+COPY_FILES=(audience-buzz.json audience-reviews-lbo.json awards.json critic-consensus.json critic-registry.json grosses.json grosses-history.json mezzanine-productions-raw.json opening-night-sent.json)
 
 SYMLINK_COUNT=0
 for f in "${SYMLINK_FILES[@]}"; do
@@ -196,6 +219,16 @@ for f in .env .env.local; do
   fi
 done
 [ "$ENV_COUNT" -gt 0 ] && echo "Env files: $ENV_COUNT symlinked from main checkout"
+
+# Review texts (gitignored as a whole, so a directory link is safe): a new
+# worktree has none, which makes every review-texts script and test fail for
+# reasons unrelated to the change (BRO-4241).
+# --link-only only: with --all the copy below would write THROUGH the link into
+# the main checkout's review texts.
+if [ "$LINK_ONLY" = 1 ] && [ ! -e "$DATA_DIR/review-texts" ] && [ -d "$MAIN_REPO/data/review-texts" ] && [ "$MAIN_REPO/data" != "$DATA_DIR" ]; then
+  ln -s "$MAIN_REPO/data/review-texts" "$DATA_DIR/review-texts"
+  echo "Review texts: linked from main checkout"
+fi
 
 # Verify key files
 if [ ! -f "$DATA_DIR/shows.json" ] || [ ! -f "$DATA_DIR/reviews.json" ]; then

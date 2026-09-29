@@ -125,7 +125,7 @@ test('(a) gitignored target read via a git ref → CANNOT_OBSERVE, not a pass', 
   assert.equal(r.presence, PRESENCE.CANNOT_OBSERVE);
   assert.equal(r.reason, 'path-gitignored-here');
   assert.notEqual(r.presence, PRESENCE.ABSENT, 'a blind check must never report the bug gone');
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('(a2) a deleted/gc\'d ref → CANNOT_OBSERVE, not a real negative', () => {
@@ -135,7 +135,7 @@ test('(a2) a deleted/gc\'d ref → CANNOT_OBSERVE, not a real negative', () => {
   assert.equal(observability.reason, 'ref-missing');
   const r = observePresence({ ref: 'origin/gone-branch', filePath: 'tracked.txt', contains: 'anything', cwd: dir });
   assert.equal(r.presence, PRESENCE.CANNOT_OBSERVE);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('(a3) a gitignored target missing from the working tree → CANNOT_OBSERVE', () => {
@@ -147,7 +147,7 @@ test('(a3) a gitignored target missing from the working tree → CANNOT_OBSERVE'
   assert.equal(observability.reason, 'file-missing-gitignored');
   const r = observePresence({ filePath: 'data/shows.json', contains: 'WRONG-LINK-STILL-LIVE', cwd: dir });
   assert.equal(r.presence, PRESENCE.CANNOT_OBSERVE);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('(b) a genuinely-absent-but-observable target → a real negative (ABSENT)', () => {
@@ -158,7 +158,7 @@ test('(b) a genuinely-absent-but-observable target → a real negative (ABSENT)'
 
   const viaFs = observePresence({ filePath: 'tracked.txt', contains: 'WRONG-LINK-STILL-LIVE', cwd: dir });
   assert.equal(viaFs.presence, PRESENCE.ABSENT);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('(b2) a present string is still reported PRESENT through both readers', () => {
@@ -171,7 +171,7 @@ test('(b2) a present string is still reported PRESENT through both readers', () 
     observePresence({ filePath: 'data/shows.json', contains: /WRONG-LINK/, cwd: dir }).presence,
     PRESENCE.PRESENT
   );
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('a tracked path IS observable at a ref that has it (no over-blocking)', () => {
@@ -179,7 +179,7 @@ test('a tracked path IS observable at a ref that has it (no over-blocking)', () 
   const observability = probeGitPath({ ref: 'HEAD', filePath: 'tracked.txt', cwd: dir });
   assert.equal(observability.status, OBSERVABILITY.OBSERVABLE);
   assert.equal(absenceIsEvidence(observability), true);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 test('contains accepts a predicate function as well as string/RegExp', () => {
@@ -190,5 +190,5 @@ test('contains accepts a predicate function as well as string/RegExp', () => {
     cwd: dir,
   });
   assert.equal(r.presence, PRESENCE.PRESENT);
-  fs.rmSync(dir, { recursive: true, force: true });
+  fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });

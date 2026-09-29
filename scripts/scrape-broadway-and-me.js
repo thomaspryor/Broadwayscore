@@ -104,7 +104,7 @@ const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
 function fetchJSON(url) {
   return new Promise((resolve, reject) => {
     const u = new URL(url);
-    https.get({
+    const req = https.get({
       hostname: u.hostname,
       path: u.pathname + u.search,
       method: 'GET',
@@ -112,6 +112,7 @@ function fetchJSON(url) {
         'User-Agent': 'BroadwayScorecard/1.0 (review aggregator; +https://broadwayscorecard.com)',
         'Accept': 'application/json',
       },
+      timeout: 15000,
     }, res => {
       let buf = '';
       res.on('data', c => buf += c);
@@ -120,7 +121,9 @@ function fetchJSON(url) {
         try { resolve(JSON.parse(buf)); }
         catch (e) { reject(new Error(`JSON parse failed for ${url}: ${e.message}`)); }
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

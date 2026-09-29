@@ -16,6 +16,7 @@ import {
   ScoredReviewFile
 } from './types';
 import { getOutletTier, scoreToBucket } from './config';
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 // ========================================
 // DATA LOADING
@@ -41,13 +42,7 @@ function loadLLMScoredReviews(): ScoredReviewFile[] {
     return scored;
   }
 
-  const shows = fs.readdirSync(reviewTextsDir).filter(f => {
-    try {
-      return fs.statSync(path.join(reviewTextsDir, f)).isDirectory();
-    } catch {
-      return false;
-    }
-  });
+  const shows = listShowDirs(reviewTextsDir);
 
   for (const show of shows) {
     const showDir = path.join(reviewTextsDir, show);

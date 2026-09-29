@@ -42,7 +42,7 @@ const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 // module's own liveness guard mirrors (see planLivenessDowngrade below).
 // indexLiveTasks is task #1701's ground-truth live-marker scan (see
 // buildLiveMarkerIndex below).
-const { indexLiveTasks, TERMINAL_CARD_STATUSES, DEFAULT_IDLE_MS: LIVENESS_IDLE_MS } = require('./lib/task-reclaim.js');
+const { indexLiveTasks, TERMINAL_CARD_STATUSES, isCardArchivedOrTerminal, DEFAULT_IDLE_MS: LIVENESS_IDLE_MS } = require('./lib/task-reclaim.js');
 // cmdPush must never overwrite these with Done — Archived/Cancelled is a
 // deliberate human decision (unlike Done itself, which Done->Done is a
 // harmless idempotent re-confirm, pre-existing behavior, out of scope here).
@@ -110,6 +110,24 @@ function mapStatus(notionStatus) {
   }
 }
 
+// Task #1811 follow-up (card #794 recurring "Stuck pipeline items"): a
+// trashed Notion page's Status property stays frozen (can read "In
+// progress" forever), which mapStatus(card.status) alone can't see —
+// without this, pull/sync-drift kept re-promoting a task bsc-reconcile.js's
+// zombie-flip sweep had just reclaimed to 'pending' straight back to
+// 'in_progress' every cycle (tasks #1857/#1859 oscillated every ~6-8h for
+// days). Done keeps its existing unconditional precedence (mapStatus('Done')
+// -> 'completed' regardless of archived, matching mergeStatus's own
+// documented "Done always wins" invariant below) — only a non-Done
+// archived/terminal card gets forced into 'pending', the same bucket
+// mapStatus()'s own default case already uses for Paused/Not
+// started/unrecognised statuses.
+function mappedNotionStatus(card) {
+  const mapped = mapStatus(card.status);
+  if (mapped !== 'completed' && isCardArchivedOrTerminal(card)) return 'pending';
+  return mapped;
+}
+
 // Build the native task record for a Notion card. `pageId` is embedded in the
 // description too, so a human reading the task can trace it back even if the
 // sidecar map is lost.
@@ -137,7 +155,7 @@ function mapCardToTask(card, taskId) {
     subject: (card.name || 'Untitled card').slice(0, 200),
     description: descLines.join('\n'),
     activeForm: `Working on ${(card.name || 'card').slice(0, 60)}`,
-    status: mapStatus(card.status),
+    status: mappedNotionStatus(card),
     blocks: [],
     blockedBy: [],
   };
@@ -190,7 +208,7 @@ function mergeStatus(existingStatus, mappedStatus) {
 // is nothing to do (fetch failed, or no drift).
 function planStatusDrift(task, card) {
   if (!task || !card) return null;
-  const mapped = mapStatus(card.status);
+  const mapped = mappedNotionStatus(card);
   const merged = mergeStatus(task.status, mapped);
   if (merged === task.status) return null;
   return { newStatus: merged, cardStatus: card.status };
@@ -227,7 +245,7 @@ function planLivenessDowngrade(task, card, ctx = {}) {
     idleMs = LIVENESS_IDLE_MS,
   } = ctx;
   if (!task || task.status !== 'in_progress' || !card) return null;
-  if (mapStatus(card.status) !== 'pending') return null;
+  if (mappedNotionStatus(card) !== 'pending') return null;
 
   if (leaseAliveOf(task.id)) {
     return { newStatus: null, cardStatus: card.status, reason: "skip-live: a live claude process still holds this task's lease" };
@@ -254,16 +272,23 @@ function planLivenessDowngrade(task, card, ctx = {}) {
     return { newStatus: null, cardStatus: card.status, reason: 'skip-outcome: card already records a completed Outcome — needs a human yes/no, not an automatic downgrade' };
   }
 
-  if (TERMINAL_CARD_STATUSES.has(card.status)) {
-    // Archived/Cancelled must never become dispatchable again — mapStatus()'s
-    // default case would otherwise map them straight to 'pending' just like
-    // Paused/Not started. Close the local mirror to 'completed' instead, the
-    // same terminal treatment task-reclaim.js's parkedTaskShape gives this
-    // exact case. (cmdPush must not read this as "newly completed LOCAL
-    // work" and overwrite the card's Archived/Cancelled status with Done —
-    // see cmdPush's own syncedStatus guard, not a stamp on this entry, so a
-    // later human reopen of the card is never permanently locked out.)
-    return { newStatus: 'completed', cardStatus: card.status, reason: `liveness-checked: no live lease/tab, no Outcome, card idle and Notion says "${card.status}" — closing (terminal status, never re-dispatchable)` };
+  if (isCardArchivedOrTerminal(card)) {
+    // Archived/Cancelled/trashed must never become dispatchable again —
+    // mapStatus()'s default case would otherwise map them straight to
+    // 'pending' just like Paused/Not started (and a trashed page's Status
+    // property stays frozen, so it may never even show a recognisable
+    // terminal string — isCardArchivedOrTerminal catches that case too,
+    // task #1811 follow-up). Close the local mirror to 'completed' instead,
+    // the same terminal treatment task-reclaim.js's parkedTaskShape gives
+    // this exact case. (cmdPush must not read this as "newly completed
+    // LOCAL work" and overwrite the card's Archived/Cancelled status with
+    // Done — see cmdPush's own syncedStatus guard, not a stamp on this
+    // entry, so a later human reopen of the card is never permanently
+    // locked out.)
+    const statusLabel = card.archived && !TERMINAL_CARD_STATUSES.has(card.status)
+      ? `${card.status || 'unknown'} (archived/trashed in Notion)`
+      : card.status;
+    return { newStatus: 'completed', cardStatus: card.status, reason: `liveness-checked: no live lease/tab, no Outcome, card idle and Notion says "${statusLabel}" — closing (terminal status, never re-dispatchable)` };
   }
 
   return { newStatus: 'pending', cardStatus: card.status, reason: `liveness-checked: no live lease/tab, no Outcome, card idle and Notion says "${card.status}"` };
@@ -667,7 +692,7 @@ function cmdPull(args) {
         const blocks = (priorTask && priorTask.blocks) || existing.blocks || [];
         const blockedBy = (priorTask && priorTask.blockedBy) || existing.blockedBy || [];
         if (!dry) writeTask(dir, { ...mapped, blocks, blockedBy });
-        map[card.id] = { taskId: target.taskId, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: MIRROR_FMT };
+        map[card.id] = { taskId: target.taskId, name: card.name, syncedStatus: card.status, syncedArchived: !!card.archived, url: card.url, pushed: false, fmt: MIRROR_FMT };
         // Persist the map/hwm right after this write, not just once at the
         // end of the whole run (adversarial review finding on task #1701):
         // the ORIGINAL bug was exactly a task file landing on disk while the
@@ -684,7 +709,7 @@ function cmdPull(args) {
       const task = mapCardToTask(card, id);
       if (priorTask) { task.blocks = priorTask.blocks || []; task.blockedBy = priorTask.blockedBy || []; }
       if (!dry) writeTask(dir, task);
-      map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, url: card.url, pushed: false, fmt: MIRROR_FMT };
+      map[card.id] = { taskId: task.id, name: card.name, syncedStatus: card.status, syncedArchived: !!card.archived, url: card.url, pushed: false, fmt: MIRROR_FMT };
       created.push({ taskId: task.id, name: card.name });
       id++;
       if (!dry) { writeMap(dir, map); writeHwm(dir, id); }
@@ -699,6 +724,7 @@ function cmdPull(args) {
       const task = { ...mapped, blocks: existing.blocks || [], blockedBy: existing.blockedBy || [] };
       if (!dry) writeTask(dir, task);
       map[card.id].syncedStatus = card.status;
+      map[card.id].syncedArchived = !!card.archived;
       map[card.id].name = card.name;
       map[card.id].fmt = MIRROR_FMT;
       updated.push({ taskId, name: card.name });
@@ -768,6 +794,17 @@ function isPushEligible(entry, task) {
   return !!entry && !entry.pushed && !!task && task.status === 'completed';
 }
 
+// entry.syncedArchived (card #794 follow-up) OR a literal terminal
+// syncedStatus string — either means Notion already considers this card
+// closed/unreachable (a trashed page refuses every write regardless of
+// what its frozen Status property still says), so cmdPush must never
+// attempt markCardDone() against it. Extracted as its own predicate,
+// mirroring isPushEligible above, so it's testable without a live Notion
+// write.
+function mustNeverPushDone(entry) {
+  return !!(entry && (NEVER_OVERWRITE_WITH_DONE.has(entry.syncedStatus) || entry.syncedArchived));
+}
+
 function cmdPush(args) {
   const dir = listDir(args);
   const dry = !!args['dry-run'];
@@ -793,8 +830,17 @@ function cmdPush(args) {
       // Archived/Cancelled with Done. Checked off the entry's last-synced
       // Notion status (not a permanent stamp) so a card a human later
       // reopens naturally drops out of this guard on its next pull/sync-drift.
-      if (NEVER_OVERWRITE_WITH_DONE.has(entry.syncedStatus)) {
-        parkedTerminal.push({ taskId: entry.taskId, name: entry.name, syncedStatus: entry.syncedStatus });
+      // entry.syncedArchived (card #794 follow-up) covers the sibling case
+      // NEVER_OVERWRITE_WITH_DONE's string check can't see: a page moved to
+      // Notion's trash keeps its Status property frozen at whatever it last
+      // read (task #1811) — often still "In progress" — so
+      // planLivenessDowngrade/planPendingClosure's newer archived-driven
+      // 'completed' closures need their own signal here, or this guard
+      // would miss them and markCardDone() would attempt a write against a
+      // page that refuses every write, throwing and aborting the rest of
+      // this push batch.
+      if (mustNeverPushDone(entry)) {
+        parkedTerminal.push({ taskId: entry.taskId, name: entry.name, syncedStatus: entry.syncedArchived ? `${entry.syncedStatus} (archived/trashed)` : entry.syncedStatus });
         continue;
       }
       // pushed only when the card ACTUALLY closed — a trunk-gate refusal
@@ -802,7 +848,48 @@ function cmdPush(args) {
       // (ship-check finding: the sweep would report "marked Done" for a card
       // that is still open, and never try again).
       if (!dry) {
-        entry.pushed = markCardDone(pageId);
+        // Card #794 follow-up (adversarial review): markCardDone() re-throws
+        // on anything other than a close-time-verify refusal, and a task can
+        // reach 'completed' + push-eligible via a path this file's own
+        // mustNeverPushDone guard never sees (e.g. audit-archived-in-
+        // progress.js closing a card whose Notion page it independently
+        // discovered is archived/trashed, without touching THIS file's
+        // .notion-map.json sidecar at all) — a page that refuses every write
+        // throws there too. One card's write failure must never abort the
+        // rest of this push batch, so it's caught here the same way every
+        // other per-entry failure in this file already is (e.g. zombie-flip
+        // below), not left to propagate.
+        try {
+          entry.pushed = markCardDone(pageId);
+        } catch (e) {
+          // Code-review finding: catching the throw alone just turns a
+          // crashed batch into a SILENT INFINITE RETRY of the same doomed
+          // write every future push run (mustNeverPushDone can't see this
+          // entry is hopeless — its syncedArchived/syncedStatus are stale
+          // from before the OTHER script archived the underlying page) —
+          // the exact "stuck pipeline, never surfaced" shape card #794
+          // exists to catch, just moved one layer down instead of
+          // eliminated. Self-heal right here: re-fetch the card fresh and,
+          // if it confirms archived, stamp syncedArchived so
+          // mustNeverPushDone (not this catch block) permanently protects
+          // it starting next run — the SAME signal every other path in this
+          // file already relies on, not a new one. A failed re-fetch or a
+          // non-archived card leaves the entry retryable exactly as before
+          // (a genuine transient failure must still get another attempt).
+          try {
+            const fresh = JSON.parse(notionBrain(['get', pageId]));
+            if (fresh && fresh.archived) {
+              const freshMap = readMap(dir);
+              if (freshMap[pageId]) {
+                freshMap[pageId].syncedArchived = true;
+                freshMap[pageId].syncedStatus = fresh.status;
+                writeMap(dir, freshMap);
+              }
+            }
+          } catch { /* self-heal is best-effort; the original failure below still reports */ }
+          refused.push({ taskId: entry.taskId, name: entry.name, pageId, error: e.message });
+          continue;
+        }
         // A refused close is NOT a close: it must not be counted, printed as
         // "✓ marked Done", or returned in `done` — the operator would read a
         // still-open card as closed and never look again (second review pass:
@@ -823,10 +910,15 @@ function cmdPush(args) {
       }
       done.push({ taskId: entry.taskId, name: entry.name, pageId });
     }
-    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused by close-time verify — their own acceptance command fails on origin/main (still open, will retry)` : ''}${parkedTerminal.length ? `, ${parkedTerminal.length} skipped (Notion status is Archived/Cancelled — never overwrite with Done)` : ''}${dry ? ' (DRY RUN)' : ''}`);
+    console.error(`[sync] push: ${done.length} card(s) marked Done${skipped.length ? `, ${skipped.length} skipped (id reused)` : ''}${refused.length ? `, ${refused.length} refused/failed (still open, will retry)` : ''}${parkedTerminal.length ? `, ${parkedTerminal.length} skipped (Notion status is Archived/Cancelled — never overwrite with Done)` : ''}${dry ? ' (DRY RUN)' : ''}`);
     for (const d of done) console.error(`  ✓ ${d.name}`);
     for (const s of skipped) console.error(`  ⚠ skipped #${s.taskId} (task id no longer maps to this card): ${s.name}`);
-    for (const r of refused) console.error(`  ⛔ still open (own file failing on main): ${r.name}`);
+    // r.error present (card #794 follow-up): the write itself threw (e.g. a
+    // page that refuses every write) rather than close-time-verify cleanly
+    // refusing — different cause, different message, so the operator isn't
+    // sent to check origin/main's acceptance command for a card that was
+    // never a close-time-verify case at all.
+    for (const r of refused) console.error(r.error ? `  ⛔ card write failed (${r.error.split('\n')[0]}): ${r.name}` : `  ⛔ still open (own file failing on main): ${r.name}`);
     for (const p of parkedTerminal) console.error(`  · skipped #${p.taskId} (Notion says ${p.syncedStatus} — never overwrite with Done): ${p.name}`);
     return { listId: listId(args), done, skipped, refused, parkedTerminal, dry };
   } finally { release(); }
@@ -863,8 +955,15 @@ function cmdPush(args) {
 // is ever reported as a live problem — out of scope for this P1.
 function planPendingClosure(task, card) {
   if (!task || task.status !== 'pending' || !card) return null;
-  if (card.status !== 'Paused') return null; // Done is planStatusDrift's job
-  return { newStatus: 'completed', cardStatus: 'Paused' };
+  // Done is planStatusDrift's job (mappedNotionStatus already gives it
+  // unconditional precedence there, archived or not). Task #1811 follow-up
+  // (card #794): a trashed page's Status property may never literally flip
+  // to "Paused" — check card.archived independently too, or a pending
+  // mirror of an archived/trashed card sits 'pending' forever instead of
+  // converging to 'completed' the way the in_progress side now does via
+  // planLivenessDowngrade.
+  if (card.status !== 'Paused' && !card.archived) return null;
+  return { newStatus: 'completed', cardStatus: card.status };
 }
 
 // Task #1691: fix the DOMINANT contributor to "in_progress with no live
@@ -1072,7 +1171,12 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false, 
     let viaPausedClosure = false;
     if (!drift && task.status === 'pending') {
       drift = planPendingClosure(task, card);
-      if (drift) viaPausedClosure = true;
+      // Card #794 follow-up: planPendingClosure now also fires for an
+      // archived/trashed card (frozen non-Paused status) — restrict the
+      // name-matching pushed:true stamp below to the literal Paused case it
+      // was written for; the archived case already gets its own permanent
+      // guard via entry.syncedArchived (mustNeverPushDone), no stamp needed.
+      if (drift && card.status === 'Paused') viaPausedClosure = true;
     }
     if (!drift) { unchanged.push({ taskId: entry.taskId, name: entry.name, cardStatus: card.status }); continue; }
     fixed.push({ taskId: entry.taskId, name: entry.name, from: task.status, to: drift.newStatus, cardStatus: drift.cardStatus, reason: drift.reason });
@@ -1162,7 +1266,15 @@ function reconcileStaleMirrors(dir, { limit = DEFAULT_DRIFT_LIMIT, dry = false, 
         // below this comment's write of syncedStatus) re-evaluates fresh
         // every run instead — a reopened card's next pull/sync-drift updates
         // syncedStatus off Archived/Cancelled and the guard stops firing.
+        // Card #794 follow-up: a trashed page's syncedStatus alone can still
+        // read a non-terminal string like "In progress" (its Status property
+        // never changes), so syncedArchived is stamped independently too —
+        // otherwise cmdPush's guard below wouldn't recognise THIS closure as
+        // terminal and would attempt markCardDone() against a page that
+        // refuses every write, throwing and aborting the rest of that push
+        // batch (adversarial review finding).
         freshMap[pageId].syncedStatus = card.status;
+        freshMap[pageId].syncedArchived = !!card.archived;
         freshMap[pageId].name = card.name;
         freshMap[pageId].fmt = MIRROR_FMT;
         // Task #1778: unlike the Archived/Cancelled case just above,
@@ -1237,4 +1349,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { MIRROR_FMT, parseArgs, mapStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, resolveLiveWorkspace, reconcileStaleMirrors, selectLeastRecentlyReconciled, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, writeMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget, isPushEligible };
+module.exports = { MIRROR_FMT, parseArgs, mapStatus, mappedNotionStatus, mergeStatus, mapCardToTask, isMirrorableCard, planPull, planSelfHeal, planStatusDrift, planLivenessDowngrade, planPendingClosure, resolveLiveWorkspace, reconcileStaleMirrors, selectLeastRecentlyReconciled, NEVER_OVERWRITE_WITH_DONE, nextId, allocateFreeId, taskBelongsTo, notionMarker, writeTask, readTask, readLiveTask, readHwm, writeHwm, acquireLock, readMap, writeMap, mapPath, buildLiveMarkerIndex, resolveCreateTarget, isPushEligible, mustNeverPushDone };

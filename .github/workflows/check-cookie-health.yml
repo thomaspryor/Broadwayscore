@@ -52,6 +52,13 @@ jobs:
           # Other outlet cookies
         run: node scripts/check-cookie-health.js
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: check-cookie-health
+
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure

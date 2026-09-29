@@ -7,12 +7,10 @@ const fs = require('fs');
 const path = require('path');
 const { cleanText } = require('./lib/text-cleaning');
 const { classifyContentTier } = require('./lib/content-quality');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const dir = path.join(__dirname, '..', 'data', 'review-texts');
-const showDirs = fs.readdirSync(dir).filter(d => {
-  try { return fs.statSync(path.join(dir, d)).isDirectory(); }
-  catch (e) { return false; }
-});
+const showDirs = listShowDirs(dir);
 
 let fixed = 0;
 for (const showDir of showDirs) {

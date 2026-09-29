@@ -33,6 +33,7 @@ guardProcessExit();
 import assert from 'node:assert/strict';
 import { spawnSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import path from 'node:path';
 import {
   MAC_ONLY_LABEL,
   buildIssueQuery,
@@ -46,14 +47,18 @@ import {
   issueLabelNames,
   hasMacOnlyLabel,
   decideRouting,
+  decideDetach,
+  describeHeadlessOutcome,
+  findChildLaunchRow,
   checkTerminalStateGuard,
   buildLinearSeed,
   buildDispatchComment,
   generateCorrelationId,
   findUnresolvedDispatchComment,
   hasLiveLedgerEntry,
+  dispatchCommentIsOurFinishedLaunch,
 } from '../../scripts/lib/linear-dispatch.js';
-import { parseArgs, ledgerTaskId, main, reportDispatchOnIssue } from '../../scripts/linear-next.js';
+import { parseArgs, ledgerTaskId, envMs, main, reportDispatchOnIssue } from '../../scripts/linear-next.js';
 
 // REPO root for the subprocess regression test below — spawned from a fixed
 // cwd so scripts/linear-next.js's own require('./bsc-next.js') etc. resolve
@@ -250,6 +255,383 @@ test('decideRouting: mac-only label wins regardless of other labels present', ()
   assert.equal(decideRouting(issue, { headless: true }).mode, 'tab');
 });
 
+// ── BRO-3652: supervised headless is the DEFAULT; --tab is the opt-out ──────
+//
+// Owner escalation 2026-09-16 ("no more fire-and-forget dispatches"): a bare
+// `--id` must take the bsc-runner path (awaits the job, runs
+// detectJobLanding() at the end, writes job-done vs job-stranded), detached
+// by default so it survives the caller's shell. All of these drive the REAL
+// main() through its existing seams (runJobFn / launchCmux / appendLedgerEntry
+// / spawnDetachedDispatch / waitForSettle) — rule 15, nothing re-derived.
+
+function makeHeadlessDefaultIssue(over = {}) {
+  return {
+    id: 'issue-uuid-3652', identifier: 'BRO-3652', title: 'Headless-by-default fixture issue',
+    description: '## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+    url: 'https://linear.app/broadway-scorecard/issue/BRO-3652/headless-by-default-fixture-issue',
+    priority: 2,
+    state: { id: 'state-1', name: 'Todo', type: 'unstarted' },
+    labels: { nodes: [] }, comments: { nodes: [] },
+    ...over,
+  };
+}
+
+// The seams every launch-reaching main() call below needs so nothing touches
+// cmux, git, the real ledger, the claim dir or the live Linear API.
+function headlessDefaultDeps(over = {}) {
+  return {
+    cmuxAvailable: () => false,
+    listWorkspaces: () => [],
+    isDoneTitle: () => false,
+    claudeAliveIn: () => false,
+    terminalSurfaceAliveIn: () => false,
+    readLedgerEntries: () => [],
+    appendLedgerEntry: () => {},
+    listOpenIssuesWithDescriptions: async () => [],
+    loadNotionMirrorTasks: () => [],
+    acquireDispatchClaim: () => true,
+    releaseDispatchClaim: () => {},
+    listWorkBranchStatuses: () => [],
+    ...noopLinearDeps(),
+    ...over,
+  };
+}
+
+function captureConsole() {
+  const origLog = console.log, origError = console.error;
+  const out = [], err = [];
+  console.log = (...a) => out.push(a.map(String).join(' '));
+  console.error = (...a) => err.push(a.map(String).join(' '));
+  return { out, err, restore() { console.log = origLog; console.error = origError; } };
+}
+
+test('decideDetach: truth table — headless detaches by default, --no-detach/--tab/preview/injected deps stay attached, explicit --detach on a tab route refuses', () => {
+  // the default: bare --id on a headless route, real CLI (no injected deps)
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: undefined }), { detach: true, refusal: null });
+  // explicit --detach: same thing (kept as a no-op alias for dispatch-watchdog.js et al)
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: true }), { detach: true, refusal: null });
+  // --no-detach / --detach=false: this process stays the job's parent
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: false }), { detach: false, refusal: null });
+  // --dry-run / --print-prompt launch nothing, so there is nothing to detach
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: undefined, preview: true }), { detach: false, refusal: null });
+  // injected deps cannot cross a process boundary — stay attached unless --detach was explicit
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: undefined, depsInjected: true }), { detach: false, refusal: null });
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: true, depsInjected: true }), { detach: true, refusal: null });
+  // tab route by default (mac-only label) — takes the tab path, never the settle window
+  assert.deepEqual(decideDetach({ routingMode: 'tab', routingReason: "label 'mac-only' forces a local cmux tab", detachFlag: undefined }), { detach: false, refusal: null });
+  // tab route + explicit --detach — refused loudly, never silently something else
+  const macOnly = decideDetach({ routingMode: 'tab', routingReason: "label 'mac-only' forces a local cmux tab", detachFlag: true });
+  assert.equal(macOnly.detach, false);
+  assert.match(macOnly.refusal, /mac-only/);
+  const tabFlag = decideDetach({ routingMode: 'tab', detachFlag: true, tab: true });
+  assert.equal(tabFlag.detach, false);
+  assert.match(tabFlag.refusal, /--tab was passed/);
+  // `--detach=1` / `--detach yes` survive parseArgs as strings — still explicit
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: '1', depsInjected: true }), { detach: true, refusal: null });
+  assert.match(decideDetach({ routingMode: 'tab', detachFlag: 'yes', tab: true }).refusal, /--tab was passed/);
+  // a guard the parent can already see will refuse (kill switch / terminal state) → stay attached, refuse instantly in-process
+  assert.deepEqual(decideDetach({ routingMode: 'headless', detachFlag: undefined, refusesFast: true }), { detach: false, refusal: null });
+});
+
+test('envMs: numeric wins (0 included), empty/unset/garbage fall back to the default', () => {
+  const name = 'LINEAR_NEXT_TEST_ENVMS_3652';
+  const prev = process.env[name];
+  try {
+    delete process.env[name]; assert.equal(envMs(name, 30000), 30000);
+    process.env[name] = ''; assert.equal(envMs(name, 30000), 30000);
+    process.env[name] = 'abc'; assert.equal(envMs(name, 30000), 30000);
+    process.env[name] = '-5'; assert.equal(envMs(name, 30000), 30000);
+    process.env[name] = '0'; assert.equal(envMs(name, 30000), 0);
+    process.env[name] = '4500'; assert.equal(envMs(name, 30000), 4500);
+  } finally { if (prev === undefined) delete process.env[name]; else process.env[name] = prev; }
+});
+
+test('main(): LINEAR_NEXT_DISABLED=1 with a bare --id refuses in-process and instantly — never spawns a detached child to find out', async () => {
+  const prev = process.env.LINEAR_NEXT_DISABLED;
+  process.env.LINEAR_NEXT_DISABLED = '1';
+  let exitCode = null, spawned = 0;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const cap = captureConsole();
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+      getIssue: async () => makeHeadlessDefaultIssue(),
+      spawnDetachedDispatch: () => { spawned++; return { pid: 1 }; },
+      waitForSettle: async () => ({ alive: true, waitedMs: 30000 }),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must not be called'); },
+    })), /EXIT/);
+  } finally {
+    process.exit = origExit; cap.restore();
+    if (prev === undefined) delete process.env.LINEAR_NEXT_DISABLED; else process.env.LINEAR_NEXT_DISABLED = prev;
+  }
+  assert.equal(exitCode, 1);
+  assert.equal(spawned, 0, 'kill switch must be honoured in the parent, before any detach');
+  assert.ok(cap.err.some(l => /LINEAR_NEXT_DISABLED=1/.test(l)), cap.err.join(' | '));
+});
+
+
+test('describeHeadlessOutcome: only done is success; blocked/stopped-short/stranded/unknown all fail and are named', () => {
+  assert.equal(describeHeadlessOutcome({ ok: true, headlessOutcome: 'done' }).success, true);
+  assert.equal(describeHeadlessOutcome({ ok: true, headlessOutcome: 'done' }).label, 'DONE');
+  for (const [outcome, label] of [['stranded', 'STRANDED'], ['blocked', 'BLOCKED'], ['stopped-short', 'STOPPED SHORT']]) {
+    const v = describeHeadlessOutcome({ ok: true, headlessOutcome: outcome });
+    assert.equal(v.success, false, outcome);
+    assert.equal(v.label, label);
+    assert.match(v.detail, /ledger row/);
+  }
+  const unknown = describeHeadlessOutcome({ ok: true });
+  assert.equal(unknown.success, false);
+  assert.match(unknown.label, /UNKNOWN OUTCOME/);
+  const failed = describeHeadlessOutcome({ ok: false, stage: 'timeout' });
+  assert.equal(failed.success, false);
+  assert.equal(failed.label, 'FAILED (timeout)');
+});
+
+test('findChildLaunchRow: newest launch row for the issue at/after sinceMs; ignores other issues, other events and stale rows', () => {
+  const rows = [
+    { event: 'launch', linearId: 'BRO-1', workspaceRef: 'headless:linear:BRO-1', ts: '2026-09-16T10:00:00.000Z' },
+    { event: 'launch', linearId: 'BRO-1', workspaceRef: 'workspace:7', ts: '2026-09-16T10:05:00.000Z' },
+    { event: 'job-spawned', linearId: 'BRO-1', ts: '2026-09-16T10:06:00.000Z' },
+    { event: 'launch', linearId: 'BRO-2', workspaceRef: 'headless:linear:BRO-2', ts: '2026-09-16T10:07:00.000Z' },
+    { event: 'launch', linearId: 'BRO-1', workspaceRef: 'headless:linear:BRO-1', ts: 'garbage' },
+  ];
+  const since = Date.parse('2026-09-16T10:01:00.000Z');
+  assert.equal(findChildLaunchRow(rows, { linearId: 'BRO-1', sinceMs: since }).workspaceRef, 'workspace:7');
+  assert.equal(findChildLaunchRow(rows, { linearId: 'BRO-1', sinceMs: Date.parse('2026-09-16T11:00:00.000Z') }), null);
+  assert.equal(findChildLaunchRow(rows, { linearId: 'BRO-3', sinceMs: 0 }), null);
+  assert.equal(findChildLaunchRow([], { linearId: 'BRO-1', sinceMs: 0 }), null);
+  assert.equal(findChildLaunchRow(null, { linearId: 'BRO-1', sinceMs: 0 }), null);
+});
+
+test('main(): (a) bare --id on an unlabeled verifiable issue takes the headless path — runJobFn called, launchCmux not, ledger launch row workspaceRef headless:<id>', async () => {
+  const cap = captureConsole();
+  const ledger = [];
+  let runJobCalls = 0, cmuxCalls = 0;
+  try {
+    await main(['--id', 'BRO-3652'], headlessDefaultDeps({
+      getIssue: async () => makeHeadlessDefaultIssue(),
+      appendLedgerEntry: (e) => ledger.push(e),
+      runJobFn: async () => { runJobCalls++; return { ok: true, jobId: 'job-a', logFile: null, headlessOutcome: 'done' }; },
+      launchCmux: () => { cmuxCalls++; return { ok: true, ref: 'workspace:1' }; },
+    }));
+  } finally { cap.restore(); }
+  assert.equal(runJobCalls, 1, `runJob must be called once. stderr: ${cap.err.join(' | ')}`);
+  assert.equal(cmuxCalls, 0, 'launchCmux must NOT be called for the headless default');
+  const launch = ledger.find(e => e.event === 'launch');
+  assert.ok(launch, 'a launch ledger row must be written');
+  assert.equal(launch.workspaceRef, 'headless:linear:BRO-3652');
+  assert.ok(cap.out.some(l => /headless job job-a DONE/.test(l)), `expected DONE line, got: ${cap.out.join(' | ')}`);
+  assert.notEqual(process.exitCode, 1, 'a done job must not fail the exit code');
+});
+
+test('main(): (b) a mac-only label with a bare --id routes to a cmux tab in the PARENT — launchCmux called, runJob not, no settle window, no "refused" report', async () => {
+  const cap = captureConsole();
+  let runJobCalls = 0, cmuxCalls = 0, spawned = 0;
+  try {
+    await main(['--id', 'BRO-3652'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+      getIssue: async () => makeHeadlessDefaultIssue({ labels: { nodes: [{ name: 'mac-only' }] } }),
+      runJobFn: async () => { runJobCalls++; return { ok: true, jobId: 'x', headlessOutcome: 'done' }; },
+      launchCmux: () => { cmuxCalls++; return { ok: true, ref: 'workspace:9', adoptedLate: false }; },
+      spawnDetachedDispatch: () => { spawned++; return { pid: 1 }; },
+    }));
+  } finally { cap.restore(); }
+  assert.equal(cmuxCalls, 1, `launchCmux must be called for a mac-only card. stderr: ${cap.err.join(' | ')}`);
+  assert.equal(runJobCalls, 0);
+  // NOTE: injected deps already keep the default attached, so spawned===0 is
+  // not by itself the ordering proof — the explicit-`--detach` + mac-only
+  // block in the "detached parent" test below is (it refuses without
+  // spawning). This asserts the tab lane was taken cleanly.
+  assert.equal(spawned, 0);
+  assert.ok(!cap.err.some(l => /EXITED after|refused/i.test(l)), `must not report a refusal: ${cap.err.join(' | ')}`);
+});
+
+test('main(): (c) runJob returning {ok:true, headlessOutcome:"stranded"} prints STRANDED and sets exit code 1', async () => {
+  const cap = captureConsole();
+  try {
+    await main(['--id', 'BRO-3652'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+      getIssue: async () => makeHeadlessDefaultIssue(),
+      runJobFn: async () => ({ ok: true, jobId: 'job-c', logFile: '/tmp/job-c.log', headlessOutcome: 'stranded' }),
+      launchCmux: () => { throw new Error('launchCmux must not be called'); },
+    }));
+  } finally { cap.restore(); }
+  assert.ok(cap.out.some(l => /headless job job-c STRANDED/.test(l)), `expected STRANDED, got: ${cap.out.join(' | ')}`);
+  assert.ok(!cap.out.some(l => /job job-c DONE/.test(l)), 'must not print DONE for a stranded job');
+  assert.equal(process.exitCode, 1, 'a stranded job must fail the exit code');
+});
+
+test('main(): (c2) blocked and stopped-short also fail the exit code; done does not', async () => {
+  for (const [outcome, expectFail] of [['blocked', true], ['stopped-short', true], ['done', false]]) {
+    process.exitCode = 0;
+    const cap = captureConsole();
+    try {
+      await main(['--id', 'BRO-3652'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+        getIssue: async () => makeHeadlessDefaultIssue(),
+        runJobFn: async () => ({ ok: true, jobId: 'job-' + outcome, logFile: null, headlessOutcome: outcome }),
+      }));
+    } finally { cap.restore(); }
+    assert.equal(process.exitCode === 1, expectFail, `${outcome}: exitCode=${process.exitCode}. out: ${cap.out.join(' | ')}`);
+  }
+});
+
+test('main(): (d) --tab is the explicit opt-out — launchCmux called, runJob not', async () => {
+  const cap = captureConsole();
+  let runJobCalls = 0, cmuxCalls = 0;
+  try {
+    await main(['--id', 'BRO-3652', '--tab'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+      getIssue: async () => makeHeadlessDefaultIssue(),
+      runJobFn: async () => { runJobCalls++; return { ok: true, jobId: 'x', headlessOutcome: 'done' }; },
+      launchCmux: () => { cmuxCalls++; return { ok: true, ref: 'workspace:2', adoptedLate: false }; },
+    }));
+  } finally { cap.restore(); }
+  assert.equal(cmuxCalls, 1, `stderr: ${cap.err.join(' | ')}`);
+  assert.equal(runJobCalls, 0);
+});
+
+test('main(): --headless stays a no-op alias (same headless path as the bare default); --headless --tab still means tab', async () => {
+  for (const [argv, wantHeadless] of [[['--id', 'BRO-3652', '--headless'], true], [['--id', 'BRO-3652', '--headless', '--tab'], false]]) {
+    const cap = captureConsole();
+    let runJobCalls = 0, cmuxCalls = 0;
+    try {
+      await main(argv, headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+        getIssue: async () => makeHeadlessDefaultIssue(),
+        runJobFn: async () => { runJobCalls++; return { ok: true, jobId: 'x', headlessOutcome: 'done' }; },
+        launchCmux: () => { cmuxCalls++; return { ok: true, ref: 'workspace:3', adoptedLate: false }; },
+      }));
+    } finally { cap.restore(); }
+    assert.equal(runJobCalls, wantHeadless ? 1 : 0, argv.join(' '));
+    assert.equal(cmuxCalls, wantHeadless ? 0 : 1, argv.join(' '));
+  }
+});
+
+test('main(): a human-gated card (OWNER_DECISION_GATE) with a bare --id refuses LOUDLY with the --tab hint — never silently downgraded to a tab', async () => {
+  let exitCode = null;
+  const origExit = process.exit;
+  process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+  const cap = captureConsole();
+  let runJobCalls = 0, cmuxCalls = 0;
+  const ledger = [];
+  try {
+    await assert.rejects(() => main(['--id', 'BRO-3652'], headlessDefaultDeps({
+      getIssue: async () => makeHeadlessDefaultIssue({
+        description: 'DECISION NEEDED: the owner must decide which of two layouts ships.\n\n## Acceptance criteria\n`node --test tests/unit/some-fixture.test.mjs`',
+      }),
+      appendLedgerEntry: (e) => ledger.push(e),
+      runJobFn: async () => { runJobCalls++; return { ok: true, jobId: 'x', headlessOutcome: 'done' }; },
+      launchCmux: () => { cmuxCalls++; return { ok: true, ref: 'workspace:4' }; },
+    })), /EXIT/);
+  } finally { process.exit = origExit; cap.restore(); }
+  assert.equal(exitCode, 1);
+  assert.equal(runJobCalls, 0);
+  assert.equal(cmuxCalls, 0, 'must NOT silently fall back to a tab');
+  assert.equal(ledger.filter(e => e.event === 'launch').length, 0, 'no launch ledger row for a refused dispatch');
+  assert.ok(cap.err.some(l => /REFUSING headless dispatch of BRO-3652/.test(l)), cap.err.join(' | '));
+  assert.ok(cap.err.some(l => /OWNER_DECISION_GATE/.test(l)), cap.err.join(' | '));
+  assert.ok(cap.err.some(l => /add --tab/.test(l) && !/drop --headless/.test(l)), `hint must say "add --tab": ${cap.err.join(' | ')}`);
+  assert.ok(cap.err.some(l => /linear-next\.js --id BRO-3652 --tab/.test(l)), 'must print the exact --tab command');
+});
+
+test('main(): detached parent — child argv carries --no-detach (never re-detaches) and drops --detach; a child that exits inside the settle window is reported as a refusal', async () => {
+  // Injected deps keep the DEFAULT attached (they cannot cross a process
+  // boundary), so an explicit --detach is what drives the seam-backed
+  // detached-parent path here. The real CLI (no deps) takes it by default —
+  // decideDetach's truth-table test above pins that.
+  let childArgv = null, spawnCwd = null, scriptPath = null;
+  // alive at the end of the window AND the child's launch row appears → dispatched (lane named)
+  {
+    const cap = captureConsole();
+    let reads = 0;
+    try {
+      await main(['--id', 'BRO-3652', '--detach', '--headless', '--model', 'opus'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+        getIssue: async () => makeHeadlessDefaultIssue(),
+        runJobFn: async () => { throw new Error('the parent must never run the job itself when detaching'); },
+        launchCmux: () => { throw new Error('launchCmux must not be called'); },
+        spawnDetachedDispatch: (o) => { childArgv = o.argv; spawnCwd = o.cwd; scriptPath = o.scriptPath; return { pid: 424242 }; },
+        waitForSettle: async () => ({ alive: true, waitedMs: 1000 }),
+        // the child's launch row shows up on the second read (i.e. after the settle window)
+        readLedgerEntries: () => (++reads >= 2
+          ? [{ event: 'launch', taskId: 'linear:BRO-3652', linearId: 'BRO-3652', workspaceRef: 'headless:linear:BRO-3652', correlationId: 'abc12345', ts: new Date().toISOString() }]
+          : []),
+      }));
+    } finally { cap.restore(); }
+    assert.ok(childArgv, 'spawnDetachedDispatch must be called');
+    assert.ok(childArgv.includes('--no-detach'), `child must run attached: ${childArgv.join(' ')}`);
+    assert.ok(!childArgv.includes('--detach'), `child must not re-detach: ${childArgv.join(' ')}`);
+    assert.equal(childArgv.filter(a => a === '--no-detach').length, 1, 'never doubled');
+    assert.equal(childArgv.filter(a => a === '--headless').length, 1, '--headless pinned exactly once (version-skew guard for the canonical copy)');
+    assert.deepEqual(childArgv.slice(0, 2), ['--id', 'BRO-3652']);
+    assert.ok(childArgv.includes('--model') && childArgv.includes('opus'), 'other flags pass through');
+    assert.match(scriptPath, /scripts[\/\\]linear-next\.js$/);
+    assert.equal(spawnCwd, path.dirname(path.dirname(scriptPath)), 'child cwd is the canonical repo the script lives in');
+    assert.ok(cap.out.some(l => /dispatched BRO-3652 → headless:linear:BRO-3652 \(launch row abc12345/.test(l)), cap.out.join(' | '));
+    assert.ok(cap.out.some(l => /exit 0 here means DISPATCHED, not done/.test(l)), 'must say what exit 0 means');
+  }
+  // alive but NO launch row within the ack cap → NOT claimed as dispatched
+  {
+    const cap = captureConsole();
+    const prevAck = process.env.LINEAR_NEXT_DETACH_ACK_MS;
+    process.env.LINEAR_NEXT_DETACH_ACK_MS = '3000';
+    try {
+      await main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+        getIssue: async () => makeHeadlessDefaultIssue(),
+        spawnDetachedDispatch: () => ({ pid: 424244 }),
+        waitForSettle: async () => ({ alive: true, waitedMs: 1000 }),
+        readLedgerEntries: () => [
+          // a STALE launch row from an earlier dispatch must not count as this one's ack
+          { event: 'launch', taskId: 'linear:BRO-3652', linearId: 'BRO-3652', workspaceRef: 'headless:linear:BRO-3652', ts: '2026-09-01T00:00:00.000Z' },
+        ],
+      }));
+    } finally { cap.restore(); if (prevAck === undefined) delete process.env.LINEAR_NEXT_DETACH_ACK_MS; else process.env.LINEAR_NEXT_DETACH_ACK_MS = prevAck; }
+    assert.ok(cap.out.some(l => /NOT confirmed as dispatched/.test(l)), cap.out.join(' | '));
+    assert.ok(!cap.out.some(l => /dispatched BRO-3652 →/.test(l)), 'must not claim dispatched without a fresh launch row');
+  }
+  // gone inside the window → refusal, exit 1
+  {
+    let exitCode = null;
+    const origExit = process.exit;
+    process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+    const cap = captureConsole();
+    try {
+      await assert.rejects(() => main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+        getIssue: async () => makeHeadlessDefaultIssue(),
+        runJobFn: async () => { throw new Error('the parent must never run the job itself when detaching'); },
+        launchCmux: () => { throw new Error('launchCmux must not be called'); },
+        spawnDetachedDispatch: () => ({ pid: 424243 }),
+        waitForSettle: async () => ({ alive: false, waitedMs: 9750 }),
+      })), /EXIT/);
+    } finally { process.exit = origExit; cap.restore(); }
+    assert.equal(exitCode, 1);
+    assert.ok(cap.err.some(l => /EXITED after 9750ms — it refused or failed/.test(l)), cap.err.join(' | '));
+  }
+  // explicit --detach on a mac-only (tab-routed) card → loud refusal, nothing spawned
+  {
+    let exitCode = null, spawned = 0;
+    const origExit = process.exit;
+    process.exit = (code) => { exitCode = code; throw new Error('EXIT'); };
+    const cap = captureConsole();
+    try {
+      await assert.rejects(() => main(['--id', 'BRO-3652', '--detach'], headlessDefaultDeps({
+      appendLedgerEntry: () => {}, // scripts/lib/ledger-write-isolation.test.mjs scans for this literal key
+        getIssue: async () => makeHeadlessDefaultIssue({ labels: { nodes: [{ name: 'mac-only' }] } }),
+        launchCmux: () => { throw new Error('launchCmux must not be called after a refusal'); },
+        spawnDetachedDispatch: () => { spawned++; return { pid: 1 }; },
+      })), /EXIT/);
+    } finally { process.exit = origExit; cap.restore(); }
+    assert.equal(exitCode, 1);
+    assert.equal(spawned, 0);
+    assert.ok(cap.err.some(l => /--detach applies only to the headless path/.test(l) && /mac-only/.test(l)), cap.err.join(' | '));
+  }
+});
+
 // ── terminal-state guard (task #1517, BRO-247 incident root cause) ─────────
 
 test('checkTerminalStateGuard: refuses a completed issue, names the state', () => {
@@ -418,6 +800,114 @@ test('hasLiveLedgerEntry: ignores entries for other tasks', () => {
   assert.equal(hasLiveLedgerEntry('linear:BRO-4', entries), false);
 });
 
+// BRO-3481: a Linear issue that was dispatched HEADLESS, finished (job-done),
+// and later REOPENED could never be re-dispatched by the watchdog's own argv
+// (no --force) — the idempotency guard's "is this comment our own finished
+// launch" check (dispatchCommentIsOurFinishedLaunch) only recognized the
+// cmux-tab terminal vocabulary (terminalForLaunch's dead/vanished/
+// prune-closed/remapped, matched by workspaceRef), which a headless launch
+// never writes at all. Fixture below is shaped exactly like the BRO-3431
+// incident evidence quoted in the ticket: a 'launch' row for a headless
+// dispatch, its job-spawned/job-done pair, and the "Dispatched ..." comment
+// that same launch posted.
+test('dispatchCommentIsOurFinishedLaunch: recognizes a finished HEADLESS launch via JOB_EVENTS, not just the cmux-tab vocabulary', () => {
+  const taskId = 'linear:BRO-3431';
+  const entries = [
+    { event: 'launch', taskId, workspaceRef: 'headless:linear:BRO-3431', correlationId: '2f595adb', ts: '2026-09-15T20:34:40.000Z' },
+    { event: 'job-spawned', taskId, jobId: 'job1', ts: '2026-09-15T20:34:46.000Z' },
+    { event: 'job-done', taskId, jobId: 'job1', ts: '2026-09-15T21:07:40.000Z' },
+  ];
+  const comment = { body: 'Dispatched 2f595adb to linear:BRO-3431-mu34ri7q at 2026-09-15T21:07:44.458Z (headless)', createdAt: '2026-09-15T21:07:44.458Z' };
+  assert.equal(dispatchCommentIsOurFinishedLaunch(comment, taskId, entries), true);
+});
+
+// Codex adversarial review (BRO-3481): JOB_EVENTS are only ever written by
+// the HEADLESS runner (bsc-runner.js) — headless has no visibility into a
+// live cmux tab for the same taskId (that gap is exactly what the sibling
+// "guard parity" test above exists to narrow, not close). Without a
+// launch-mode check, an unrelated LATER headless attempt on the same task
+// that fails at provisioning (job-failed) would wrongly read as proof a
+// still-running CMUX launch is "over", dismissing a genuinely live
+// cross-machine warning.
+test('dispatchCommentIsOurFinishedLaunch: a CMUX launch is never "finished" by an unrelated headless job event for the same taskId', () => {
+  const taskId = 'linear:BRO-7001';
+  const entries = [
+    { event: 'launch', taskId, workspaceRef: 'workspace:42', correlationId: 'cc11', ts: '2026-09-15T20:00:00.000Z' },
+    { event: 'job-failed', taskId, jobId: 'j9', ts: '2026-09-15T20:10:00.000Z', stage: 'worktree-error' },
+  ];
+  const comment = { body: 'Dispatched cc11 to workspace:42 at 2026-09-15T20:00:01.000Z (cmux)', createdAt: '2026-09-15T20:00:01.000Z' };
+  assert.equal(dispatchCommentIsOurFinishedLaunch(comment, taskId, entries), false);
+});
+
+test('dispatchCommentIsOurFinishedLaunch: still false for a headless launch with no terminal job event (genuinely live)', () => {
+  const taskId = 'linear:BRO-9002';
+  const entries = [
+    { event: 'launch', taskId, workspaceRef: 'headless:linear:BRO-9002', correlationId: 'ab12cd34', ts: '2026-09-15T20:00:00.000Z' },
+    { event: 'job-spawned', taskId, jobId: 'job1', ts: '2026-09-15T20:00:05.000Z' },
+  ];
+  const comment = { body: 'Dispatched ab12cd34 to linear:BRO-9002-x at 2026-09-15T20:00:06.000Z (headless)', createdAt: '2026-09-15T20:00:06.000Z' };
+  assert.equal(dispatchCommentIsOurFinishedLaunch(comment, taskId, entries), false);
+});
+
+// End-to-end regression, real main() (BRO-3481's own acceptance criterion:
+// dispatchable by the watchdog's own argv with no hand-added --force).
+test('BRO-3481: a reopened issue with a finished headless dispatch comment is dispatchable via the watchdog\'s own argv (no --force)', () => {
+  const script = `
+    const { main } = require('./scripts/linear-next.js');
+    const taskId = 'linear:BRO-3431';
+    const issue = {
+      id: 'issue-uuid-bro-3481', identifier: 'BRO-3431',
+      title: 'Reopened after a finished headless dispatch',
+      description: '## Acceptance criteria\\n\`node --test tests/unit/some-fixture.test.mjs\`',
+      url: 'https://linear.app/broadway-scorecard/issue/BRO-3431/reopened',
+      priority: 2,
+      // Reopened: back to a non-terminal state, same as the real incident.
+      state: { id: 'todo-1', name: 'Todo', type: 'unstarted' },
+      labels: { nodes: [] },
+      comments: { nodes: [
+        { body: 'Dispatched 2f595adb to linear:BRO-3431-mu34ri7q at 2026-09-15T21:07:44.458Z (headless)', createdAt: '2026-09-15T21:07:44.458Z' },
+      ] },
+    };
+    const entries = [
+      { event: 'launch', taskId, workspaceRef: 'headless:linear:BRO-3431', correlationId: '2f595adb', ts: '2026-09-15T20:34:40.000Z' },
+      { event: 'job-spawned', taskId, jobId: 'job1', ts: '2026-09-15T20:34:46.000Z' },
+      { event: 'job-done', taskId, jobId: 'job1', ts: '2026-09-15T21:07:40.000Z' },
+    ];
+    // No --detach: that re-execs a real detached subprocess (see
+    // dispatchArgvFor's own comment on why it's required for the true
+    // watchdog dispatch) which ignores every injected dep below and hits the
+    // real Linear API/ledger — exactly like the sibling "guard parity" test
+    // above, --headless alone is enough to exercise the idempotency guard
+    // in-process against the fixture.
+    main(['--id', issue.identifier, '--headless'], {
+      getIssue: async () => issue,
+      readLedgerEntries: () => entries,
+      appendLedgerEntry: () => {},
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'job2', logFile: null, headlessOutcome: 'done' }; },
+      cmuxAvailable: () => false,
+      listWorkspaces: () => [],
+      isDoneTitle: () => false,
+      claudeAliveIn: () => false,
+      terminalSurfaceAliveIn: () => false,
+      listOpenIssuesWithDescriptions: async () => [],
+      loadNotionMirrorTasks: () => [],
+      acquireDispatchClaim: () => true,
+      releaseDispatchClaim: () => {},
+      listWorkBranchStatuses: () => [],
+      linear: {
+        createComment: async () => {},
+        getTeam: async () => ({ states: [] }),
+        getIssue: async () => issue,
+        updateIssue: async () => {},
+        TEAM_KEY: 'BRO',
+      },
+    });
+  `;
+  const res = spawnSync(process.execPath, ['-e', script], { cwd: REPO_ROOT, encoding: 'utf8', timeout: 15000 });
+  assert.match(res.stderr, /RUNJOB_WAS_CALLED/, `expected the dispatch to reach runJob, not refuse. stderr:\n${res.stderr}\nstdout:\n${res.stdout}`);
+  assert.doesNotMatch(res.stderr, /already looks dispatched/, 'must not hit the stale idempotency refusal — this is the BRO-3481 regression');
+});
+
 // ── scripts/linear-next.js's own pure helpers ───────────────────────────────
 
 test('ledgerTaskId: namespaces Linear dispatches distinctly from bare numeric Notion task ids', () => {
@@ -477,7 +967,7 @@ test('guard parity: --headless dispatch is refused (real process exit) when a li
     main(['--id', issue.identifier, '--headless'], {
       getIssue: async () => issue,
       launchCmux: () => { throw new Error('launchCmux must not be called — refusal happens before any launch attempt'); },
-      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null, headlessOutcome: 'done' }; },
       cmuxAvailable: () => true,
       listWorkspaces: () => [liveWorkspace],
       isDoneTitle: () => false,
@@ -541,7 +1031,7 @@ test('reportedOutcomeGuard wiring: --force does NOT dispatch an issue whose outs
     main(['--id', issue.identifier, '--model', 'opus', '--force'], {
       getIssue: async () => issue,
       launchCmux: () => { console.error('LAUNCHCMUX_WAS_CALLED'); return { ok: true, ref: 'workspace:36' }; },
-      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null, headlessOutcome: 'done' }; },
       cmuxAvailable: () => true,
       listWorkspaces: () => [],
       isDoneTitle: () => false,
@@ -592,7 +1082,7 @@ test('--allow-automation-parked wiring: a no-flag headless dispatch of an automa
     main(['--id', issue.identifier, '--headless'], {
       getIssue: async () => issue,
       launchCmux: () => { throw new Error('launchCmux must not be called for a headless dispatch'); },
-      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null, headlessOutcome: 'done' }; },
       cmuxAvailable: () => true,
       listWorkspaces: () => [],
       isDoneTitle: () => false,
@@ -628,7 +1118,7 @@ test('--allow-automation-parked wiring: the SAME issue dispatches once the flag 
     main(['--id', issue.identifier, '--headless', '--allow-automation-parked'], {
       getIssue: async () => issue,
       launchCmux: () => { throw new Error('launchCmux must not be called for a headless dispatch'); },
-      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null, headlessOutcome: 'done' }; },
       cmuxAvailable: () => true,
       listWorkspaces: () => [],
       isDoneTitle: () => false,
@@ -676,7 +1166,7 @@ test('--allow-automation-parked wiring: does NOT dispatch a genuinely owner-park
     main(['--id', issue.identifier, '--headless', '--allow-automation-parked'], {
       getIssue: async () => issue,
       launchCmux: () => { throw new Error('launchCmux must not be called for a headless dispatch'); },
-      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null }; },
+      runJobFn: async () => { console.error('RUNJOB_WAS_CALLED'); return { ok: true, jobId: 'j1', logFile: null, headlessOutcome: 'done' }; },
       cmuxAvailable: () => true,
       listWorkspaces: () => [],
       isDoneTitle: () => false,
@@ -859,6 +1349,7 @@ test('main(): a held dispatch claim refuses BEFORE the overlap check ever runs',
       listOpenIssuesWithDescriptions: async () => { throw new Error('overlap check must never run once the claim guard refuses'); },
       loadNotionMirrorTasks: () => { throw new Error('overlap check must never run once the claim guard refuses'); },
       launchCmux: () => { throw new Error('launchCmux must never be called once the claim guard refuses'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called once the claim guard refuses'); },
     }), /EXIT/);
   } finally {
@@ -876,7 +1367,7 @@ test('main(): --force bypasses the dispatch claim entirely (acquireDispatchClaim
   let claimCalled = false;
   let launched = false;
   try {
-    await main(['--id', 'BRO-1898', '--force'], {
+    await main(['--id', 'BRO-1898', '--force', '--tab'], {
       getIssue: async () => makeClaimTestIssue(),
       acquireDispatchClaim: () => { claimCalled = true; return false; },
       releaseDispatchClaim: () => {},
@@ -947,6 +1438,7 @@ test('main(): refuses to dispatch a completed issue', async () => {
     await assert.rejects(() => main(['--id', 'BRO-1517'], {
       getIssue: async () => makeTerminalIssue('completed', 'Done'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a terminal issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -969,6 +1461,7 @@ test('main(): refuses to dispatch a canceled issue', async () => {
     await assert.rejects(() => main(['--id', 'BRO-1517'], {
       getIssue: async () => makeTerminalIssue('canceled', 'Canceled'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a terminal issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -985,7 +1478,7 @@ test('main(): --force overrides the terminal-state refusal and proceeds to launc
   console.error = () => {};
   let launched = false;
   try {
-    await main(['--id', 'BRO-1517', '--force'], {
+    await main(['--id', 'BRO-1517', '--force', '--tab'], {
       getIssue: async () => makeTerminalIssue('completed', 'Done'),
       launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
       cmuxAvailable: () => false,
@@ -1046,6 +1539,7 @@ test('main(): refuses to dispatch a Marketing/distribution-project issue (BRO-24
     await assert.rejects(() => main(['--id', 'BRO-2488'], {
       getIssue: async () => makeMarketingIssue(),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a Marketing-project issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1063,7 +1557,7 @@ test('main(): --force overrides the marketing-project refusal and proceeds to la
   console.error = () => {};
   let launched = false;
   try {
-    await main(['--id', 'BRO-2488', '--force'], {
+    await main(['--id', 'BRO-2488', '--force', '--tab'], {
       getIssue: async () => makeMarketingIssue(),
       launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
       cmuxAvailable: () => false,
@@ -1126,6 +1620,7 @@ test('main(): refuses to dispatch a "BSC Daily:"-titled auto-filed issue (BRO-24
     await assert.rejects(() => main(['--id', 'BRO-9499'], {
       getIssue: async () => makeAutofixFiledIssue(),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for an auto-filed issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1148,6 +1643,7 @@ test('main(): the daily CANARY card is refused the same way (BRO-2499)', async (
     await assert.rejects(() => main(['--id', 'BRO-9499'], {
       getIssue: async () => makeAutofixFiledIssue('CANARY: touch data/audit/canary-2026-08-26.marker'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => {},
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1168,7 +1664,7 @@ test('main(): --allow-autofix-filed lets the owning pipeline dispatch its own is
   console.error = () => {};
   let launched = false;
   try {
-    await main(['--id', 'BRO-9499', '--allow-autofix-filed'], {
+    await main(['--id', 'BRO-9499', '--allow-autofix-filed', '--tab'], {
       getIssue: async () => makeAutofixFiledIssue(),
       launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
       cmuxAvailable: () => false,
@@ -1240,6 +1736,7 @@ test('main(): refuses to dispatch an In Progress issue (BRO-2518)', async () => 
     await assert.rejects(() => main(['--id', 'BRO-2518'], {
       getIssue: async () => makeStartedIssue('In Progress'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a started issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1262,6 +1759,7 @@ test('main(): refuses to dispatch an In Review issue too (BRO-2518)', async () =
     await assert.rejects(() => main(['--id', 'BRO-2518'], {
       getIssue: async () => makeStartedIssue('In Review'),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => {},
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],
@@ -1278,7 +1776,7 @@ test('main(): --force overrides the started-state refusal and proceeds to launch
   console.error = () => {};
   let launched = false;
   try {
-    await main(['--id', 'BRO-2518', '--force'], {
+    await main(['--id', 'BRO-2518', '--force', '--tab'], {
       getIssue: async () => makeStartedIssue('In Progress'),
       launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
       cmuxAvailable: () => false,
@@ -1324,7 +1822,7 @@ test('main(): --allow-autofix-filed still dispatches a freshly-filed (backlog) a
   console.error = () => {};
   let launched = false;
   try {
-    await main(['--id', 'BRO-9499', '--allow-autofix-filed'], {
+    await main(['--id', 'BRO-9499', '--allow-autofix-filed', '--tab'], {
       getIssue: async () => makeAutofixFiledIssue(),
       launchCmux: () => { launched = true; return { ok: true, ref: 'workspace:1', adoptedLate: false }; },
       cmuxAvailable: () => false,
@@ -1364,9 +1862,10 @@ test('main(): --allow-autofix-filed does NOT bypass the started-state guard — 
   const errors = [];
   console.error = (msg) => errors.push(msg);
   try {
-    await assert.rejects(() => main(['--id', 'BRO-9499', '--allow-autofix-filed'], {
+    await assert.rejects(() => main(['--id', 'BRO-9499', '--allow-autofix-filed', '--tab'], {
       getIssue: async () => ({ ...makeAutofixFiledIssue(), state: { id: 'state-1', name: 'In Progress', type: 'started' } }),
       launchCmux: () => { throw new Error('launchCmux must not be called'); },
+      runJobFn: async () => { throw new Error('runJob must never be called — the guard under test refused, and headless is the default lane now (BRO-3652)'); },
       appendLedgerEntry: () => { throw new Error('appendLedgerEntry must not be called for a started issue'); },
       listOpenIssuesWithDescriptions: async () => [],
       loadNotionMirrorTasks: () => [],

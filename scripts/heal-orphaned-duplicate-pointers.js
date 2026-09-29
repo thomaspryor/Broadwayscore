@@ -1,0 +1,486 @@
+#!/usr/bin/env node
+/**
+ * heal-orphaned-duplicate-pointers.js
+ *
+ * Driver for scripts/lib/orphaned-duplicate-pointer-heal.js (BRO-3250, plus
+ * the duplicateTextOf extension in BRO-3336). Walks data/review-texts, finds
+ * duplicateOf and/or duplicateTextOf pointers whose TARGET was flagged
+ * invalid (wrongShow/wrongProduction/nonReviewFlag/rejectedBy) by a
+ * downstream classifier AFTER the pointer was set, and clears the pointer so
+ * the wrongly-suppressed file re-enters isIncludableForRebuild.
+ *
+ * Same write pattern as heal-duplicate-of-direction.js / the fix() in
+ * audit-duplicate-of-url-mismatch.js: LOAD-MODIFY-SAVE the full object,
+ * stamp duplicateClearReason (the push-restore exception breadcrumb
+ * isIntentionalClear() honors), then safeWriteReview. duplicateOf clears by
+ * nulling duplicateOf/duplicateReason; duplicateTextOf clears by nulling
+ * duplicateTextOf alone (NOT `delete` — see the comment at fix()'s
+ * duplicateTextOf branch for why that matters).
+ *
+ * Surge guard: above FIX_SURGE_THRESHOLD, --fix refuses without
+ * --force-bulk — a spike could mean a classifier regression flagged a batch
+ * of siblings that were never actually invalid, and blindly re-admitting
+ * that many reviews would flood scoring. Same philosophy as
+ * audit-duplicate-of-url-mismatch.js's FIX_SURGE_THRESHOLD. Checked PER
+ * FIELD, not on the combined --field=both total — see the comment at the
+ * surge-check site for why.
+ *
+ * Usage:
+ *   node scripts/heal-orphaned-duplicate-pointers.js                # report (exit 1 if any)
+ *   node scripts/heal-orphaned-duplicate-pointers.js --dry-run       # same as report (explicit)
+ *   node scripts/heal-orphaned-duplicate-pointers.js --json          # JSON report
+ *   node scripts/heal-orphaned-duplicate-pointers.js --fix           # repair in place
+ *   node scripts/heal-orphaned-duplicate-pointers.js --fix --force-bulk  # override surge guard
+ *   node scripts/heal-orphaned-duplicate-pointers.js --show=ID --fix     # scope to one show
+ *   node scripts/heal-orphaned-duplicate-pointers.js --field=duplicateTextOf --fix  # one field only
+ *   REVIEW_TEXTS_DIR=/path node scripts/... --fix                        # target a clone
+ *
+ * Exit codes: 0 = no orphans (report) / repaired (--fix); 1 = orphans found (report) / surge refused.
+ */
+
+'use strict';
+
+const fs = require('fs');
+const path = require('path');
+const { safeWriteReview, isExcludedIgnoringDuplicate } = require('./lib/review-write-guard');
+const {
+  findOrphanedDuplicatePointers,
+  findUnjustifiedHealClears,
+  findChainPointersThrough,
+  buildHealClearReason,
+  findOrphanedDuplicateTextPointers,
+  buildDuplicateTextClearReason,
+  partitionOrphansForFix,
+  hasStaleClearBreadcrumb,
+  pickRetargetSibling,
+  pickOrphanGroupWinners,
+  pickTextTwinSibling,
+} = require('./lib/orphaned-duplicate-pointer-heal');
+const { hasHelpFlag } = require('./lib/cli-help.js');
+
+const USAGE = `heal-orphaned-duplicate-pointers.js — Retro-heals duplicateOf/duplicateTextOf pointers orphaned by a later target-invalidation (BRO-3250, BRO-3336).
+
+Usage:
+  node scripts/heal-orphaned-duplicate-pointers.js [options]
+  node scripts/heal-orphaned-duplicate-pointers.js --help, -h    print this usage and exit
+
+Options:
+  --json                machine-readable report
+  --dry-run             report only (default; accepted explicitly for scripting)
+  --fix                 repair in place
+  --force-bulk          override the surge guard (FIX_SURGE_THRESHOLD)
+  --show=ID             scope to a single show directory
+  --field=X             duplicateOf | duplicateTextOf | both (default: both; BRO-3336)
+  --revert-unjustified  retract clears THIS heal made whose target was never
+                        actually invalidated (BRO-3092); report only unless --fix
+`;
+
+const VALID_FIELDS = new Set(['duplicateOf', 'duplicateTextOf', 'both']);
+
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
+const AUDIT_PATH = path.join(__dirname, '..', 'data', 'audit', 'orphaned-duplicate-pointer-heal.json');
+const REVIEWS_PATH = process.env.REVIEWS_PATH || path.join(__dirname, '..', 'data', 'reviews.json');
+
+// showId|outletId|criticName of every entry currently published, so a group of
+// same-URL orphans keeps the byline that is already live (BRO-4192).
+function loadPublishedKeys() {
+  try {
+    const raw = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf-8'));
+    const list = Array.isArray(raw) ? raw : (raw.reviews || []);
+    return new Set(list.map(r => `${r.showId}|${r.outletId || ''}|${String(r.criticName || '').toLowerCase()}`));
+  } catch {
+    return new Set();
+  }
+}
+
+// Same non-show buckets audit-duplicate-of-url-mismatch.js excludes: neither
+// is a real show directory with a sibling namespace duplicateOf can resolve
+// against. See that script's NON_SHOW_DIRS comment for the full rationale.
+const NON_SHOW_DIRS = new Set(['_pending', '_superseded-misattributed']);
+
+// A spike past this floor signals a classifier regression (e.g.
+// classify-wrong-production.js mass-flagging siblings that were never
+// actually invalid) rather than normal one-at-a-time drift. --fix refuses
+// without --force-bulk so a human reviews before re-admitting that many
+// reviews to scoring. Mirrors audit-duplicate-of-url-mismatch.js's
+// FIX_SURGE_THRESHOLD (25); set higher here because the initial BRO-3250
+// backlog is itself ~124 files and is expected to need one --force-bulk run.
+const FIX_SURGE_THRESHOLD = 150;
+
+const args = process.argv.slice(2);
+const FIX = args.includes('--fix');
+const JSON_OUT = args.includes('--json');
+const FORCE_BULK = args.includes('--force-bulk');
+const REVERT_UNJUSTIFIED = args.includes('--revert-unjustified');
+const showArg = args.find((a) => a.startsWith('--show='));
+const SHOW_FILTER = showArg ? showArg.slice('--show='.length) : null;
+const fieldArg = args.find((a) => a.startsWith('--field='));
+const FIELD = fieldArg ? fieldArg.slice('--field='.length) : 'both';
+if (!VALID_FIELDS.has(FIELD)) {
+  console.error(`Invalid --field=${FIELD} — must be one of: duplicateOf, duplicateTextOf, both`);
+  process.exit(1);
+}
+
+function walkShowDirs(root) {
+  if (!fs.existsSync(root)) return [];
+  return fs.readdirSync(root, { withFileTypes: true })
+    .filter((e) => e.isDirectory() && !e.name.startsWith('.') && !NON_SHOW_DIRS.has(e.name))
+    .filter((e) => !SHOW_FILTER || e.name === SHOW_FILTER)
+    .map((e) => path.join(root, e.name));
+}
+
+/** Read one show directory into the {file, data} record list the pure lib takes. */
+function readShowRecords(showDir) {
+  let files;
+  try { files = fs.readdirSync(showDir).filter((f) => f.endsWith('.json') && f !== 'failed-fetches.json'); }
+  catch { return null; }
+  const records = [];
+  for (const file of files) {
+    try {
+      records.push({ file, data: JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf-8')) });
+    } catch { /* unreadable file — skip, other audits catch corrupt JSON */ }
+  }
+  return records;
+}
+
+/**
+ * Walk the corpus with one of the pure detectors.
+ * @param {(records: Array) => Array} detect
+ * @returns {Array<{showId: string, loserFile: string, targetFile: string, reason: string}>}
+ */
+function scan(detect) {
+  const results = [];
+  for (const showDir of walkShowDirs(REVIEW_TEXTS_DIR)) {
+    const showId = path.basename(showDir);
+    const records = readShowRecords(showDir);
+    if (!records) continue;
+    for (const hit of detect(records)) results.push({ showId, ...hit });
+  }
+  return results;
+}
+
+/**
+ * Find all orphaned duplicateOf and/or duplicateTextOf pointers, per FIELD
+ * (BRO-3336). Returns [{showId, loserFile, targetFile, field, reason}].
+ */
+function audit() {
+  const out = [];
+  if (FIELD === 'duplicateOf' || FIELD === 'both') {
+    out.push(...scan(findOrphanedDuplicatePointers).map((o) => ({ ...o, field: 'duplicateOf' })));
+  }
+  if (FIELD === 'duplicateTextOf' || FIELD === 'both') {
+    out.push(...scan(findOrphanedDuplicateTextPointers).map((o) => ({ ...o, field: 'duplicateTextOf' })));
+  }
+  return out;
+}
+
+/** Find clears this heal made that the corrected predicate no longer justifies (BRO-3092). */
+function auditUnjustified() {
+  return scan(findUnjustifiedHealClears);
+}
+
+/**
+ * Chains left one hop short behind a pointer this heal has ALREADY restored
+ * (a file carrying duplicateHealRetractedReason with a live duplicateOf).
+ * Scanned separately from revert()'s own in-pass flattening so the mode is
+ * idempotent: a restore that landed before chain-flattening existed still gets
+ * cleaned up on the next run, rather than silently leaving the sibling that
+ * pointed at it recoverable by rebuild-all-reviews.js.
+ */
+function auditChainsBehindRestores() {
+  return scan((records) => {
+    const out = [];
+    for (const { file, data } of records) {
+      if (!data || !data.duplicateHealRetractedReason || !data.duplicateOf) continue;
+      out.push(...findChainPointersThrough(records, file));
+    }
+    return out;
+  });
+}
+
+/**
+ * Restore the duplicateOf pointers listed by auditUnjustified(). Mirrors the
+ * write-guard's own re-mark branch: set duplicateOf/duplicateReason and null
+ * out the now-false clear breadcrumb, so the push-review-texts restore
+ * exception (isIntentionalClear) stops treating the file as intentionally
+ * un-suppressed.
+ */
+function revert(unjustified) {
+  let restored = 0;
+  let flattened = 0;
+  const day = new Date().toISOString().slice(0, 10);
+  for (const o of unjustified) {
+    const showDir = path.join(REVIEW_TEXTS_DIR, o.showId);
+    const filePath = path.join(showDir, o.loserFile);
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    data.duplicateOf = o.targetFile;
+    // The reason fix() nulled, when the breadcrumb recorded it — inventing
+    // 'url-collision-detected-at-write' over a real 'byline-explosion-collapse'
+    // or task-#1072 outlet-mismatch verdict would falsify the provenance.
+    data.duplicateReason = o.priorDuplicateReason || 'url-collision-detected-at-write';
+    data.duplicateClearReason = null;
+    data.duplicateHealRetractedReason =
+      `heal-orphaned-duplicate-pointers.js --revert-unjustified on ${day}: ${o.reason} (BRO-3092)`;
+    // force:true — this write CHOOSES its duplicateOf target deliberately, and
+    // the detector has already applied the guard's own decision predicate
+    // (shouldMarkUrlCollisionDuplicate) plus the cycle check to that exact
+    // pair. Without force, safeWriteReview's collision self-heal re-points the
+    // file at whatever same-URL sibling readdir happens to return first, which
+    // in a 3-file cluster silently overwrites the target we picked (measured on
+    // romeo-juliet-2024). We read-modify-write the complete record, so nothing
+    // force would otherwise preserve is lost.
+    safeWriteReview(filePath, data, { force: true });
+    restored++;
+
+    // The loser is a duplicate again, so anything pointing AT it is now one hop
+    // short of the canonical — and rebuild-all-reviews.js recovers through that
+    // hop instead of following it. Flatten, or the restore just swaps which
+    // byline carries the duplicate URL into reviews.json.
+    flattened += flatten(findChainPointersThrough(readShowRecords(showDir) || [], o.loserFile)
+      .map((c) => ({ showId: o.showId, ...c })));
+  }
+  return { restored, flattened };
+}
+
+/** Re-aim one-hop chain pointers at the canonical they should have pointed at. */
+function flatten(chains) {
+  let n = 0;
+  const day = new Date().toISOString().slice(0, 10);
+  for (const c of chains) {
+    const chainPath = path.join(REVIEW_TEXTS_DIR, c.showId, c.loserFile);
+    const chainData = JSON.parse(fs.readFileSync(chainPath, 'utf-8'));
+    const wasPointingAt = chainData.duplicateOf;
+    chainData.duplicateOf = c.targetFile;
+    if (chainData.duplicateTextOf === wasPointingAt) chainData.duplicateTextOf = c.targetFile;
+    chainData.duplicateClearReason = null;
+    chainData.duplicateHealRetractedReason =
+      `heal-orphaned-duplicate-pointers.js --revert-unjustified on ${day}: ${c.reason} (BRO-3092)`;
+    safeWriteReview(chainPath, chainData, { force: true }); // same reasoning as revert()
+    n++;
+  }
+  return n;
+}
+
+let retargeted = 0;
+let keptIncludedTarget = 0;
+let skippedLocked = 0;
+let keptForTextTwin = 0;
+let skippedExcludedLoser = 0;
+function fix(orphans) {
+  let cleared = 0;
+  const day = new Date().toISOString().slice(0, 10);
+  // BRO-4192: same-URL losers orphaned by one target resolve to ONE winner,
+  // chosen up front (see pickOrphanGroupWinners).
+  const described = orphans.filter(o => o.field === 'duplicateOf').map(o => {
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(REVIEW_TEXTS_DIR, o.showId, o.loserFile), 'utf-8'));
+      return { ...o, url: d.url, outletId: d.outletId, criticName: d.criticName, data: { ...d, showId: d.showId || o.showId } };
+    } catch { return o; }
+  });
+  const groupWinners = pickOrphanGroupWinners(described, loadPublishedKeys(), m => !m.data || isExcludedIgnoringDuplicate(m.data));
+  for (const o of orphans) {
+    const dir = path.join(REVIEW_TEXTS_DIR, o.showId);
+    const filePath = path.join(dir, o.loserFile);
+    const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    // BRO-4192: several writes below force past the guard, which also skips
+    // the _locked preserve. A locked file is never the heal's to change.
+    if (data._locked === true) { skippedLocked++; continue; }
+    // BRO-4192: when the loser is itself excluded by the rebuild, clearing its
+    // pointer changes nothing shipped, and the write guard re-marks it on the
+    // same write (both records invalid → historical dedup). Leave it.
+    if (o.field === 'duplicateOf' && isExcludedIgnoringDuplicate({ ...data, showId: data.showId || o.showId })) {
+      skippedExcludedLoser++;
+      continue;
+    }
+    // BRO-4192: a live pointer that ALREADY carries a clear breadcrumb (an
+    // earlier clear that was re-set) can never be cleared by a normal
+    // safeWriteReview — the protected-field restore treats an existing
+    // breadcrumb as "flag deliberately re-set over a prior clear" and puts the
+    // pointer back, and its contract says re-clearing goes through the
+    // canonical clear script with force. This is that script, and it writes
+    // the full on-disk object back (LOAD-MODIFY-SAVE), so force loses nothing.
+    const staleBreadcrumb = hasStaleClearBreadcrumb(data, o.field);
+    // BRO-4192: another sibling with the same URL may still be a legitimate
+    // canonical. Clearing would then admit a second copy of one article, so
+    // RETARGET the pointer at that sibling instead.
+    if (o.field === 'duplicateOf') {
+      // The heal's own isTargetInvalidated is narrower than the rebuild's
+      // inclusion rule: a raw wrongProduction target can still ship
+      // (all-my-sons-2019 Vulture Sara Holdren). If the rebuild INCLUDES the
+      // target, the pointer is correct — leave it.
+      let targetData = null;
+      try { targetData = JSON.parse(fs.readFileSync(path.join(dir, o.targetFile), 'utf-8')); } catch { /* missing target */ }
+      if (targetData) {
+        if (!targetData.showId) targetData.showId = o.showId;
+        if (!isExcludedIgnoringDuplicate(targetData)) { keptIncludedTarget++; continue; }
+      }
+      const siblings = fs.readdirSync(dir)
+        .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json')
+        .map(f => {
+          try {
+            const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8'));
+            if (!d.showId) d.showId = o.showId;
+            return { file: f, data: d };
+          } catch { return null; }
+        })
+        .filter(Boolean);
+      const retarget = pickRetargetSibling({ file: o.loserFile, url: data.url }, o.targetFile, siblings, isExcludedIgnoringDuplicate);
+      const textTwin = retarget ? null : pickTextTwinSibling({ file: o.loserFile, data }, o.targetFile, siblings, isExcludedIgnoringDuplicate);
+      if (textTwin) {
+        // Same article under another URL id. Clearing would ship both, and a
+        // duplicateTextOf retarget doesn't hold (the rebuild's 500-char
+        // fingerprint breaks on injected "related stories" blocks). The loser
+        // stays hidden behind its current pointer, as it is today.
+        keptForTextTwin++;
+        continue;
+      }
+      const groupWinner = o.field === 'duplicateOf' ? groupWinners.get(`${o.showId}/${o.loserFile}`) : null;
+      const target = retarget || (groupWinner && groupWinner !== o.loserFile ? groupWinner : null);
+      if (target) {
+        data.duplicateOf = target;
+        data.duplicateReason = `heal-retarget on ${day}: ${o.targetFile} was invalidated; ${target} is the valid same-URL canonical (BRO-4192)`;
+        data.duplicateClearReason = null;
+        safeWriteReview(filePath, data, { force: true });
+        retargeted++;
+        continue;
+      }
+    }
+    if (o.field === 'duplicateTextOf') {
+      data.duplicateClearReason = buildDuplicateTextClearReason(day, o.targetFile, o.reason);
+      // NULL, not delete — verified live against 1536-west-end-2026/
+      // broadwayworld--debbie-gilpin.json (BRO-3336): `delete` leaves
+      // newData.duplicateTextOf `undefined`, and safeWriteReview's merge-mode
+      // restore pass ("keep any existing field not in newData") re-merges it
+      // back from disk whenever the file already carried a duplicateClearReason
+      // from an EARLIER, unrelated clear — the shared breadcrumb field makes
+      // clearHonored() see "already set", not "newly set", so the restore
+      // silently wins (hit 15 of 122 corpus-wide orphans). Assigning null
+      // instead leaves the key present (not undefined), so the merge loop's
+      // `newData[key] === undefined` guard never matches. validate-data.js
+      // treats null the same as absent (`!= null` loose check).
+      data.duplicateTextOf = null;
+    } else {
+      data.duplicateClearReason = buildHealClearReason(day, o.targetFile, o.reason, data.duplicateReason);
+      data.duplicateOf = null;
+      data.duplicateReason = null;
+    }
+    // A group winner is written with force so the collision check can't bury
+    // it under a same-URL sibling that is still mid-heal (BRO-4192).
+    const isGroupWinner = groupWinners.get(`${o.showId}/${o.loserFile}`) === o.loserFile;
+    safeWriteReview(filePath, data, (staleBreadcrumb || isGroupWinner) ? { force: true } : undefined);
+    cleared++;
+  }
+  return cleared;
+}
+
+function main() {
+  // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
+  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
+
+  if (REVERT_UNJUSTIFIED) {
+    const unjustified = auditUnjustified();
+    const standingChains = auditChainsBehindRestores();
+    if (unjustified.length === 0 && standingChains.length === 0) {
+      console.log(JSON_OUT
+        ? JSON.stringify({ mode: 'revert-unjustified', count: 0, unjustified: [], chains: [] }, null, 2)
+        : 'OK: no unjustified heal clears found');
+      process.exit(0);
+    }
+    if (FIX && unjustified.length === 0) {
+      // Nothing new to restore, but earlier restores left chains one hop short.
+      const n = flatten(standingChains);
+      console.log(JSON_OUT
+        ? JSON.stringify({ mode: 'revert-unjustified', count: 0, restored: 0, flattened: n, chains: standingChains }, null, 2)
+        : `Restored 0 duplicateOf pointer(s); flattened ${n} chain pointer(s) behind earlier restores.`);
+      process.exit(0);
+    }
+    if (unjustified.length === 0) {
+      console.log(JSON_OUT
+        ? JSON.stringify({ mode: 'revert-unjustified', count: 0, unjustified: [], chains: standingChains }, null, 2)
+        : `Found ${standingChains.length} chain pointer(s) left one hop short behind an earlier restore.\n\nRun with --fix to re-aim them at the canonical.`);
+      process.exit(1);
+    }
+    if (!FIX) {
+      // Report-only: --json prints the machine-readable form, exit 1 = work pending.
+      if (JSON_OUT) {
+        console.log(JSON.stringify({ mode: 'revert-unjustified', count: unjustified.length, unjustified }, null, 2));
+      } else {
+        console.log(`Found ${unjustified.length} unjustified heal clear(s):\n`);
+        for (const o of unjustified) {
+          console.log(`  ${o.showId}`);
+          console.log(`    ${o.loserFile}  cleared duplicateOf → ${o.targetFile} (target is NOT invalidated; URLs still match)`);
+        }
+        console.log('\nRun with --fix to restore these pointers.');
+      }
+      process.exit(1);
+    }
+    // Same reasoning as the --fix surge guard below: a spike in retractions
+    // would mean the invalidation predicate itself moved, and re-suppressing
+    // that many reviews at once deserves a human look first.
+    if (unjustified.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
+      console.log(`Refusing to restore ${unjustified.length} pointer(s) — above FIX_SURGE_THRESHOLD (${FIX_SURGE_THRESHOLD}).`);
+      console.log('Review the list with --revert-unjustified (no --fix), then re-run with --force-bulk to proceed.');
+      process.exit(1);
+    }
+    const { restored, flattened } = revert(unjustified);
+    if (JSON_OUT) {
+      console.log(JSON.stringify({ mode: 'revert-unjustified', count: unjustified.length, restored, flattened, unjustified }, null, 2));
+    } else {
+      console.log(`Restored ${restored} duplicateOf pointer(s); flattened ${flattened} chain pointer(s) behind them.`);
+      console.log('Re-run the rebuild so the re-suppressed duplicates drop back out of reviews.json.');
+    }
+    process.exit(0);
+  }
+
+  const orphans = audit();
+  if (JSON_OUT) {
+    console.log(JSON.stringify({ count: orphans.length, orphans }, null, 2));
+    process.exit(orphans.length === 0 ? 0 : (FIX ? 0 : 1));
+  }
+  if (orphans.length === 0) {
+    console.log('OK: no orphaned duplicateOf/duplicateTextOf pointers found');
+    process.exit(0);
+  }
+  console.log(`Found ${orphans.length} orphaned pointer(s):\n`);
+  for (const o of orphans) {
+    console.log(`  ${o.showId}`);
+    console.log(`    ${o.loserFile}  ${o.field} → ${o.targetFile} (now invalid)`);
+  }
+  if (FIX) {
+    // Surge-checked PER FIELD, not on the combined total (partitionOrphansForFix,
+    // unit-tested in orphaned-duplicate-pointer-heal.test.mjs) — BRO-3336:
+    // --field=both runs both detectors independently, and their steady-state
+    // backlogs don't move together. Gating on the sum would make the threshold
+    // trip purely as a function of how many fields happen to be selected, and
+    // would silently regress duplicateOf's existing auto-heal the moment a
+    // separate duplicateTextOf backlog pushed the combined count over.
+    const { fixable, surgingFields } = partitionOrphansForFix(orphans, FIX_SURGE_THRESHOLD, FORCE_BULK);
+    if (surgingFields.length > 0) {
+      for (const { field, count } of surgingFields) {
+        console.log(`\nRefusing to auto-clear ${count} ${field} pointer(s) — above FIX_SURGE_THRESHOLD (${FIX_SURGE_THRESHOLD}).`);
+      }
+      console.log('This many at once could mean a classifier regression, not normal drift. Review the list above, then re-run with --force-bulk to proceed.');
+      if (fixable.length === 0) process.exit(1);
+      console.log(`\nProceeding with the ${fixable.length} pointer(s) in field(s) under the threshold.`);
+    }
+    const cleared = fix(fixable);
+    try {
+      fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
+      fs.writeFileSync(AUDIT_PATH, JSON.stringify({
+        generated: new Date().toISOString(),
+        note: 'Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).',
+        count: fixable.length,
+        orphans: fixable,
+      }, null, 2) + '\n');
+    } catch (e) { console.warn(`[heal-orphaned-duplicate-pointers] could not write audit report: ${e.message}`); }
+    console.log(`\nCleared ${cleared} orphaned pointer(s); retargeted ${retargeted} to a valid same-URL canonical; kept ${keptForTextTwin} with a same-body twin under another URL; ${keptIncludedTarget} whose target the rebuild still includes; skipped ${skippedLocked} locked and ${skippedExcludedLoser} whose own record the rebuild excludes (BRO-4192).`);
+    console.log('Re-run the rebuild to pick up the re-admitted reviews.');
+    process.exit(0);
+  }
+  console.log('\nRun with --fix to repair.');
+  process.exit(1);
+}
+
+if (require.main === module) main();
+
+module.exports = { audit, auditUnjustified, fix, revert, walkShowDirs, FIX_SURGE_THRESHOLD };

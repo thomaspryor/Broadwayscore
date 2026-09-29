@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
@@ -60,9 +61,7 @@ const outletDomains = {
 function findReviewsNeedingUrls() {
   const reviews = [];
 
-  const shows = fs.readdirSync(reviewTextsDir).filter(f =>
-    fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-  );
+  const shows = listShowDirs(reviewTextsDir);
 
   for (const show of shows) {
     if (showFilter && show !== showFilter) continue;

@@ -1,7 +1,7 @@
 name: Commercial Friday Refresh
 
 # Mid-week refresh so the Sunday newsletter has fresh recoupment data.
-# Sunday cron (commercial-weekly.yml) runs the heavy batch + deep-research pass.
+# Saturday cron (commercial-weekly.yml, 18:00 UTC) runs the heavy batch + deep-research pass.
 # This Friday run is lightweight: just the recoupment-announcement scraper,
 # which catches "X recouped" trade-press announcements that drop Mon-Fri.
 
@@ -27,7 +27,19 @@ concurrency:
 jobs:
   recoupment-scan:
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    # BRO-2303: was 45. The scan step's unbounded per-show loop was overrunning
+    # 45min weekly (run 34658940127: 43min inside "Scan for recoupment
+    # announcements" alone), and a timeout-killed job reports `cancelled` —
+    # notify-failure's `if: failure()` never fires, so it went stale 3+ weeks
+    # undetected (same class as BRO-2285). Now bounded by --time-budget-min on
+    # both the scan and reconcile steps; 60min sizing: ~2min setup + 20min scan
+    # budget + ~1min auto-apply + 12min reconcile budget + ~3min strict
+    # gate/contamination/model-refresh/deletion-guard + up to 10min
+    # PUSH_DEADLINE_SEC on commit + ~3min push-core-data + deploy dispatch =
+    # ~51min worst case, leaving a ~9min cushion (same margin BRO-2285's
+    # second-opinion review settled on for commercial-weekly.yml's
+    # batch-research job).
+    timeout-minutes: 60
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -62,6 +74,7 @@ jobs:
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="$ARGS --dry-run"
           fi
+          ARGS="$ARGS --time-budget-min=20"
           echo "Running: node scripts/scrape-recoupment-announcements.js $ARGS"
           node scripts/scrape-recoupment-announcements.js $ARGS
 
@@ -101,7 +114,7 @@ jobs:
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           if [ -f data/commercial-pending-review.json ]; then
-            node scripts/reconcile-recoupment-claims.js
+            node scripts/reconcile-recoupment-claims.js --time-budget-min=12
           fi
 
       - name: Commercial data strict gate (required)

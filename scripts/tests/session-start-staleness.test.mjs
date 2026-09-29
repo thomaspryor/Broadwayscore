@@ -95,7 +95,7 @@ test('runCodeCheckoutStalenessCheck: reports a non-zero behind count when HEAD i
     assert.equal(behind, 2, 'clone HEAD is exactly 2 commits behind the pushed origin/main');
     assert.match(message, /STALE CODE CHECKOUT/);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -116,7 +116,7 @@ test('runCodeCheckoutStalenessCheck: goes to zero-behind once HEAD is brought cu
     assert.equal(ahead, 0);
     assert.equal(message, null);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -133,7 +133,7 @@ test('runCodeCheckoutStalenessCheck: diverged when the clone has local commits A
     assert.equal(ahead, 1);
     assert.match(message, /DIVERGED/);
   } finally {
-    fs.rmSync(root, { recursive: true, force: true });
+    fs.rmSync(root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -154,3 +154,186 @@ test('session-start.sh (global ~/.claude copy) carries the same wiring — local
   assert.match(hookSrc, /runCodeCheckoutStalenessCheck/);
   assert.match(hookSrc, /\.claude\/worktrees\//);
 });
+
+// ── BRO-4229: cloud auto-sync (fast-forward only) ───────────────────────────
+// Real scratch repos, real git. Every refusal must leave HEAD and the tree
+// exactly as they were.
+
+const {
+  trySyncCodeCheckout,
+  formatCodeCheckoutSyncMessage,
+  registeredHookScripts,
+} = require('../lib/code-checkout-staleness.js');
+
+function withTrio(fn) {
+  const trio = makeScratchRepoTrio();
+  try { return fn(trio); } finally { fs.rmSync(trio.root, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); }
+}
+function staleThenSync(cloneDir, env = {}) {
+  const r = runCodeCheckoutStalenessCheck({ repoDir: cloneDir });
+  return trySyncCodeCheckout({ repoDir: cloneDir, behind: r.behind, ahead: r.ahead, env });
+}
+function commitIn(dir, file, content, msg) {
+  fs.mkdirSync(path.dirname(path.join(dir, file)), { recursive: true });
+  fs.writeFileSync(path.join(dir, file), content);
+  git(dir, ['add', '-A']);
+  git(dir, ['commit', '-q', '-m', msg]);
+}
+
+test('trySyncCodeCheckout: behind-only fast-forwards to origin/main and says how to undo', () => withTrio(({ seedDir, cloneDir }) => {
+  const before = git(cloneDir, ['rev-parse', 'HEAD']);
+  pushMoreCommits(seedDir, 3);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, true, s.reason);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), git(cloneDir, ['rev-parse', 'origin/main']));
+  assert.equal(s.from, before);
+  const msg = formatCodeCheckoutSyncMessage(s, cloneDir);
+  assert.match(msg, /CODE CHECKOUT SYNCED: fast-forwarded .* by 3 commit\(s\)/);
+  assert.match(msg, new RegExp(`reset --keep ${before.slice(0, 11)}`));
+}));
+
+test('trySyncCodeCheckout: diverged (local commits) is left alone — fast-forward only', () => withTrio(({ seedDir, cloneDir }) => {
+  pushMoreCommits(seedDir, 1);
+  commitIn(cloneDir, 'local.txt', 'local', 'local work');
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /fast-forward only/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('trySyncCodeCheckout: uncommitted tracked change refuses and the edit survives', () => withTrio(({ seedDir, cloneDir }) => {
+  pushMoreCommits(seedDir, 1);
+  fs.writeFileSync(path.join(cloneDir, 'a.txt'), 'edited');
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /uncommitted changes/);
+  assert.equal(fs.readFileSync(path.join(cloneDir, 'a.txt'), 'utf8'), 'edited');
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('trySyncCodeCheckout: an untracked file the fast-forward would overwrite makes git refuse; nothing changes', () => withTrio(({ seedDir, cloneDir }) => {
+  pushMoreCommits(seedDir, 1); // adds extra-0.txt upstream
+  fs.writeFileSync(path.join(cloneDir, 'extra-0.txt'), 'mine');
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /fast-forward refused/);
+  assert.equal(fs.readFileSync(path.join(cloneDir, 'extra-0.txt'), 'utf8'), 'mine');
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('trySyncCodeCheckout: an operation in progress (MERGE_HEAD) refuses', () => withTrio(({ seedDir, cloneDir }) => {
+  pushMoreCommits(seedDir, 1);
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  fs.writeFileSync(path.join(cloneDir, '.git', 'MERGE_HEAD'), `${head}\n`);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /MERGE_HEAD in progress/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('trySyncCodeCheckout: refuses when origin/main deletes a hook script this session has registered', () => withTrio(({ seedDir, cloneDir }) => {
+  const settings = JSON.stringify({ hooks: { Stop: [{ hooks: [{ type: 'command', command: 'bash "$R/.claude/hooks/gone.sh"' }] }] } });
+  commitIn(seedDir, '.claude/settings.json', settings, 'register gone.sh');
+  commitIn(seedDir, '.claude/hooks/gone.sh', 'exit 0\n', 'add gone.sh');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['pull', '-q', '--ff-only', 'origin', 'main']);
+  git(seedDir, ['rm', '-q', '.claude/hooks/gone.sh']);
+  git(seedDir, ['commit', '-q', '-m', 'retire gone.sh']);
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /removes registered hook script\(s\): \.claude\/hooks\/gone\.sh/);
+  assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+}));
+
+test('trySyncCodeCheckout: CODE_SYNC_DISABLED=1 is a kill switch', () => withTrio(({ seedDir, cloneDir }) => {
+  pushMoreCommits(seedDir, 1);
+  const s = staleThenSync(cloneDir, { CODE_SYNC_DISABLED: '1' });
+  assert.equal(s.synced, false);
+  assert.match(s.reason, /disabled/);
+}));
+
+test('trySyncCodeCheckout: a changed CLAUDE.md / settings.json is called out for re-read / new session', () => withTrio(({ seedDir, cloneDir }) => {
+  commitIn(seedDir, 'CLAUDE.md', 'new rules', 'rules');
+  commitIn(seedDir, '.claude/settings.json', '{}', 'settings');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  const s = staleThenSync(cloneDir);
+  assert.equal(s.synced, true, s.reason);
+  assert.deepEqual(s.changedWatched, ['CLAUDE.md', '.claude/settings.json']);
+  const msg = formatCodeCheckoutSyncMessage(s, cloneDir);
+  assert.match(msg, /CLAUDE\.md\. Re-read them now/);
+  assert.match(msg, /new hook wiring only takes effect in a new session/);
+}));
+
+test('trySyncCodeCheckout: works from a shallow clone (cloud clones are shallow)', () => withTrio(({ root, originDir, seedDir }) => {
+  pushMoreCommits(seedDir, 4);
+  const shallowDir = path.join(root, 'shallow');
+  execFileSync('git', ['clone', '-q', '--depth', '1', `file://${originDir}`, shallowDir]);
+  assert.equal(git(shallowDir, ['rev-parse', '--is-shallow-repository']), 'true');
+  commitIn(seedDir, 'late-0.txt', '0', 'late 0');
+  commitIn(seedDir, 'late-1.txt', '1', 'late 1');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  const s = staleThenSync(shallowDir);
+  assert.equal(s.synced, true, s.reason);
+  assert.equal(git(shallowDir, ['rev-parse', 'HEAD']), git(shallowDir, ['rev-parse', 'origin/main']));
+}));
+
+test('registeredHookScripts: pulls every .claude/hooks/*.sh out of settings.json text', () => {
+  const real = fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8');
+  const hooks = registeredHookScripts(real);
+  assert.ok(hooks.includes('.claude/hooks/verify-edits.sh'));
+  assert.ok(hooks.includes('.claude/hooks/session-start.sh'));
+  for (const h of hooks) assert.ok(fs.existsSync(path.join(REPO_ROOT, h)), `${h} registered but missing`);
+});
+
+test('session-start.sh: end-to-end in a cloud-like env, a resumed stale checkout is fast-forwarded', () => withTrio(({ seedDir, cloneDir }) => {
+  // The real hook + real lib, committed into the scratch repo so the hook's
+  // `-f $CODE_DIR/scripts/lib/...` gate finds it at CLAUDE_PROJECT_DIR.
+  commitIn(seedDir, 'scripts/lib/code-checkout-staleness.js',
+    fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'lib', 'code-checkout-staleness.js'), 'utf8'), 'lib');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['pull', '-q', '--ff-only', 'origin', 'main']);
+  pushMoreCommits(seedDir, 2);
+  const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4229-home-'));
+  try {
+    const out = execFileSync('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
+      cwd: cloneDir, input: '{"source":"resume"}', encoding: 'utf8', timeout: 120000,
+      env: { ...process.env, HOME: fakeHome, CLAUDE_CODE_REMOTE: 'true', CLAUDE_PROJECT_DIR: cloneDir, CODE_SYNC_DISABLED: '' },
+      stdio: ['pipe', 'pipe', 'ignore'],
+    });
+    assert.match(out, /CODE CHECKOUT SYNCED: fast-forwarded .* by 2 commit\(s\)/);
+    assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), git(cloneDir, ['rev-parse', 'origin/main']));
+  } finally {
+    fs.rmSync(fakeHome, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+}));
+
+test('session-start.sh: without CLAUDE_CODE_REMOTE (Mac-like) it only warns and never moves HEAD', () => withTrio(({ seedDir, cloneDir }) => {
+  commitIn(seedDir, 'scripts/lib/code-checkout-staleness.js',
+    fs.readFileSync(path.join(REPO_ROOT, 'scripts', 'lib', 'code-checkout-staleness.js'), 'utf8'), 'lib');
+  git(seedDir, ['push', '-q', 'origin', 'main']);
+  git(cloneDir, ['pull', '-q', '--ff-only', 'origin', 'main']);
+  pushMoreCommits(seedDir, 2);
+  const head = git(cloneDir, ['rev-parse', 'HEAD']);
+  const fakeHome = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4229-home-'));
+  try {
+    const env = { ...process.env, HOME: fakeHome };
+    delete env.CLAUDE_CODE_REMOTE;
+    delete env.CLAUDE_PROJECT_DIR;
+    const out = execFileSync('bash', [path.join(REPO_ROOT, '.claude', 'hooks', 'session-start.sh')], {
+      cwd: cloneDir, input: '{"source":"resume"}', encoding: 'utf8', timeout: 120000, env, stdio: ['pipe', 'pipe', 'ignore'],
+    });
+    assert.match(out, /STALE CODE CHECKOUT/);
+    assert.doesNotMatch(out, /SYNCED/);
+    assert.equal(git(cloneDir, ['rev-parse', 'HEAD']), head);
+  } finally {
+    fs.rmSync(fakeHome, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+}));
+
+// BRO-4234's printed owner banner was replaced by the installed global
+// instructions (BRO-4237): see scripts/tests/global-instructions.test.mjs.

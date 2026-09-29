@@ -68,12 +68,13 @@ const { classifyContentTier } = require('./lib/content-quality');
 const { isNotBroadway } = require('./lib/content-filters');
 const { shouldTakeUrlOwnership } = require('./lib/url-cross-production');
 const { hasOnlyForwardTenseTourMention } = require('./lib/excerpt-validation');
-const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
+const { isLikelyTourReview, urlLooksLikeReview, urlOrTitleLooksLikeReview, isWrongShowUnknownLocked, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, shouldRouteUnknownCriticToPending, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, isRoundupUrl, isRoundupPageAsReview, isVerifiedDiscoverySource } = require('./lib/review-guards');
 const { isWithinPriorRun, hasDeclaredPriorRuns, isWithinTourLeg, hasDeclaredTourLegs } = require('./lib/wrong-production-autoclear');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { isBroadwayUrl } = require('./lib/venue-classification');
 const { isAggregatorUrlMismatch, isAggregatorReviewSource, shouldSkipAggregatorUrlWrite, shouldRefuseAggregatorOutletRefinement } = require('./lib/aggregator-domains');
-const { classifyMarketRouting, buildSiblingIndex } = require('./lib/market-routing');
+const { classifyMarketRouting, buildSiblingIndex, tourDecision } = require('./lib/market-routing');
+const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
@@ -82,10 +83,15 @@ const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger')
 const { discoverCorrectUrl, serpQuery, OUTLET_DOMAINS } = require('./lib/url-discovery');
 const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { isSerpUrlWrongProductionForOpeningNight, computeSerpShare, exceedsOpeningNightSerpBudget, parseGatherReviewsFlags } = require('./lib/opening-night-discovery');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { detectCrossShowUrlMismatch, getShowSlugIndex } = require('./lib/cross-show-url');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const { checkReviewTextsPreflight } = require('./lib/review-texts-preflight');
+const { isRunningInCI } = require('./lib/regression-guard');
 // firstSeenAt stamp + review-first-seen emit are centralized in review-file-writer
 // (S2-T4) so this direct-write path and the shared writer behave identically.
 const { stampFirstSeen, emitReviewFirstSeen } = require('./lib/review-file-writer');
+const { namedNonReviewReason } = require('./lib/non-review-url-patterns');
 const {
   llmFallbackExtract,
   hasStructuralMarkers,
@@ -96,7 +102,7 @@ const {
 const { shouldRetryUrlDiscovery, recordSerpAttempt } = require('./lib/review-guards');
 const { computeReplacementPreserve, AGGREGATOR_FIELDS } = require('./lib/wrongprod-replacement-preserve');
 const { applyUrlChangeInvariant } = require('./lib/url-change-invariant');
-const { safeWriteReview, preserveFlaggedFields } = require('./lib/review-write-guard');
+const { safeWriteReview, preserveFlaggedFields, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 /**
  * Write a BWW/LBO aggregator-excerpt stub to disk.
@@ -117,8 +123,12 @@ function saveAggregatorStub(filePath, stub) {
 }
 const { domainMatchesExpected, fetchPage, verifyFetchedUrl } = require('./lib/scraper');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { titleWordsMatchWithConfidence, validateRoundupPageTitle } = require('./lib/show-matching');
+const { titleWordsMatchWithConfidence, buildSiblingCategoriesFromShows, pageTitleConfirmsShow } = require('./lib/show-matching');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
+const {
+  isBroadwayLocalRegion, isWestEndLocalRegion, UK_SERP_REGIONS, US_SERP_REGIONS,
+} = require('./lib/outlet-region-map');
 const { detectIngestCollision } = require('./lib/manual-review-fields');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
@@ -126,6 +136,7 @@ const { isLondonMarket } = require('./lib/venue-classification');
 const { parseDate, parseHistoricalDate } = require('./lib/date-utils');
 const { getFoundOutletIds } = require('./lib/found-outlet-ids');
 const { logExclusion } = require('./lib/exclusion-logger');
+const { shouldLogRejection, shouldStampPreviewPlaceholder } = require('./lib/gather-review-stats');
 const { searchOutletSites, selectApplicableSiteSearchOutlets, SITE_SEARCH_ENDPOINTS } = require('./lib/site-search-discovery');
 let chromium, playwright;
 try {
@@ -238,6 +249,25 @@ function getSiblingIndex() {
   }
   return _siblingIndexCache;
 }
+// Lazy-loaded showId -> sibling categories index for checkArchiveCategory()'s
+// cross-market-sibling check (BRO-3610) — mirrors the identical
+// siblingCategoriesByShowId() memoization pattern already used by
+// scrape-bww-reviews.js / scrape-dtli.js / scrape-playbill-verdict.js /
+// scrape-nyc-theatre-roundups.js / scrape-london-box-office-roundups.js
+// (BRO-2565), so gather-reviews.js's own archive-read call sites apply the
+// same category-aware guard those scrapers apply at write time.
+let _siblingCategoriesByShowIdCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesByShowIdCache) return _siblingCategoriesByShowIdCache;
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    const shows = showsData.shows || showsData;
+    _siblingCategoriesByShowIdCache = buildSiblingCategoriesFromShows(shows);
+  } catch {
+    _siblingCategoriesByShowIdCache = {};
+  }
+  return _siblingCategoriesByShowIdCache;
+}
 function getSkipCrossShowDupeIds() {
   if (_skipCrossShowDupeIds) return _skipCrossShowDupeIds;
   try {
@@ -252,9 +282,7 @@ function getGlobalUrlIndex() {
   _globalUrlIndex = new Map();
   const skipIds = getSkipCrossShowDupeIds();
   try {
-    const dirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
-    });
+    const dirs = listShowDirs(REVIEW_TEXTS_DIR);
     for (const d of dirs) {
       if (skipIds.has(d)) continue; // _skipCrossShowDupe: excluded from global URL index
       const showDir = path.join(REVIEW_TEXTS_DIR, d);
@@ -383,8 +411,12 @@ function loadOutlets(opts = {}) {
   // tier 3 to US-marked outlets keeps the per-show SERP count from 20× to
   // ~50% larger than the legacy critic-outlets.json list (42 → 63) while
   // gaining the registry's broader US tier-1/2 coverage.
-  const UK_REGIONS = new Set(['london', 'uk']);
-  const US_REGIONS = new Set(['us', 'chicago', 'los-angeles', 'philadelphia', 'boston', 'san-francisco', 'dual']);
+  // Sourced from lib/outlet-region-map.js so this discovery whitelist and the
+  // roundup-locality predicates cannot drift apart again — they are different
+  // questions (see that file), but both must be edited in one place. Hand-rolled
+  // copies of this exact map are what BRO-3247 was.
+  const UK_REGIONS = UK_SERP_REGIONS;
+  const US_REGIONS = US_SERP_REGIONS;
   // (The TIER3_US_WHITELIST parity bridge from the original ship-check fix
   // was removed once the 8 tier-3 US outlets — cititour, frontmezzjunkies,
   // culturesauce, nbcnews, forward, one-minute-critic, stageandcinema,
@@ -1035,7 +1067,7 @@ async function searchShowScore(show) {
     console.log('    Curated URL failed, falling back to slug variations...');
   }
 
-  const year = new Date(show.openingDate).getFullYear();
+  const year = productionYear(show);
   const titleSlug = slugify(show.title);
   const titleNoColonSlug = slugify(show.title.replace(/:/g, ''));
   const isOffBroadway = show.category === 'off-broadway';
@@ -1108,8 +1140,34 @@ async function searchShowScore(show) {
   }
 
   // Try Playwright first if available (to get ALL reviews via carousel scrolling)
+  // Drop any guessed slug whose URL another show already OWNS in the curated
+  // map (BRO-3416). Show Score keeps one page per title — the current or most
+  // recent production — so a same-title sibling's guessed slug collapses onto
+  // the other production's page and ingests its notices under this show's id.
+  // she-loves-me-1994 accumulated the entire 2016 Roundabout revival that way:
+  // the bare `she-loves-me` variation below resolves to she-loves-me-2016's
+  // curated page, and nothing downstream rejects it (the venue check at
+  // :1192 only logs [VENUE WARN], and openingDate/closingDate are passed in
+  // but never used to reject). Mirrors the "already cached for another show"
+  // skip in scrape-show-score-audience.js:550 and the same guard in
+  // merge-show-score-shards.js. The curated branch above is untouched — an
+  // explicit entry for THIS show still wins.
+  const ownedByOtherShow = new Set(
+    Object.entries(urlMap)
+      .filter(([id, u]) => id !== show.id && typeof u === 'string' && u)
+      .map(([, u]) => u.toLowerCase().replace(/\/+$/, ''))
+  );
+  const candidateSlugs = [...new Set(variations)].filter((slug) => {
+    const url = `${showScoreBase}/${slug}`.toLowerCase().replace(/\/+$/, '');
+    if (ownedByOtherShow.has(url)) {
+      console.log(`    Skip: ${showScoreBase}/${slug} (curated page of another production)`);
+      return false;
+    }
+    return true;
+  });
+
   if (chromium) {
-    for (const slug of [...new Set(variations)]) {
+    for (const slug of candidateSlugs) {
       const url = `${showScoreBase}/${slug}`;
       const result = await scrapeShowScoreWithPlaywright(url, { isOffBroadway, expectedVenue: show.venue, showId: show.id, openingDate: show.openingDate, closingDate: show.closingDate });
       if (result) {
@@ -1120,7 +1178,7 @@ async function searchShowScore(show) {
     }
   } else {
     // Fall back to HTTP scraping if Playwright not available
-    for (const slug of [...new Set(variations)]) {
+    for (const slug of candidateSlugs) {
       const url = `${showScoreBase}/${slug}`;
       const result = await searchAggregator('ShowScore', url);
 
@@ -2018,7 +2076,13 @@ async function searchBWWRoundup(show, year, options = {}) {
       // Validate cached archive matches show — Stuart King 2026-04-25.
       // Pre-validation gates left poisoned BWW archives in cache (142 detected
       // in initial audit). Quarantine instead of silently extracting.
-      const v = validateRoundupPageTitle(html, show.title || showId);
+      // checkArchiveCategory (BRO-3610) — bare validateRoundupPageTitle had no
+      // category/siblingCategories, so it couldn't catch a regional show's
+      // archive being poisoned by its own later Broadway transfer's page
+      // (the exact class scrape-bww-reviews.js's OWN write/read paths were
+      // fixed for by BRO-2547/2549; this reader shared the same cache file
+      // without the same check).
+      const v = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
       if (!v.ok) {
         console.log(`    ✗ BWW archive page-title mismatch (${v.reason}) — quarantining`);
         try { fs.renameSync(archivePath, archivePath + '.mismatch'); } catch (e) {}
@@ -2072,7 +2136,7 @@ async function searchBWWRoundup(show, year, options = {}) {
   // SERP finds the actual URL regardless of BWW's slug choice. Run BEFORE URL guessing.
   try {
     const titleForSearch = show.title.replace(/'/g, '');
-    const marketKeyword = isLondonMarket(show.category) ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : 'broadway';
+    const marketKeyword = isLondonMarket(show.category) ? 'west end' : (show.category === 'off-broadway') ? 'off-broadway' : (show.category === 'tour') ? 'national tour' : 'broadway';
     const searchQuery = `site:broadwayworld.com/article "Review Roundup" "${titleForSearch}" ${marketKeyword} ${year}`;
     console.log(`    Searching Google for BWW roundup...`);
     const serpResults = await serpQuery(searchQuery, { nbResults: 5 });
@@ -2228,6 +2292,86 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   // only 2 review files) as the canonical repro.
   const method1UnknownCountByOutlet = new Map();
 
+  // Shared per-outlet anchor-URL queue, consumed by BOTH Method 1's and Method
+  // 2's URL-population passes below. Each pass used to build and consume its
+  // OWN independent queue from the same anchor scan, restarting at index 0 —
+  // so when Method 1 assigned a multi-critic outlet's only anchor to critic
+  // A, Method 2's later pass (unaware A had already consumed it) handed that
+  // SAME url to critic B too. Real-world repro (BRO-923): NYSR's Frank Scheck
+  // and David Finkle both landed on Scheck's URL, and rebuild's URL-fingerprint
+  // dedup silently dropped Finkle's review. Sharing one queue/index across
+  // both passes means each href on the page is consumable exactly once,
+  // however many extraction passes run.
+  let sharedUrlsByOutlet = null;
+  let sharedUrlIdxByOutlet = null;
+  function getSharedUrlQueues() {
+    if (sharedUrlsByOutlet) return { urlsByOutlet: sharedUrlsByOutlet, urlIdxByOutlet: sharedUrlIdxByOutlet };
+    sharedUrlsByOutlet = {};
+    sharedUrlIdxByOutlet = {};
+    const anchorRe = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
+    let aMatch;
+    while ((aMatch = anchorRe.exec(html)) !== null) {
+      const href = aMatch[1];
+      const text = aMatch[2].replace(/:$/, '').trim();
+      if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
+      const oid = normalizeOutlet(text);
+      if (!oid) continue;
+      if (!sharedUrlsByOutlet[oid]) sharedUrlsByOutlet[oid] = [];
+      if (!sharedUrlsByOutlet[oid].includes(href)) sharedUrlsByOutlet[oid].push(href);
+    }
+    return { urlsByOutlet: sharedUrlsByOutlet, urlIdxByOutlet: sharedUrlIdxByOutlet };
+  }
+
+  // Assign `review` the next unconsumed queue slot for its outlet, skipping
+  // over (not stopping at) any consecutive candidates that fail validation —
+  // mirrors the retry-until-valid pattern outlet-domain-supplement.js already
+  // uses. Ship-check adversarial finding on the shared-queue fix above: the
+  // original per-pass loops advanced the index past a REJECTED candidate
+  // without trying the next one, so once both passes shared one index, a
+  // rejected candidate for critic A could silently donate critic B's real URL
+  // to A (B then gets null) instead of A just trying the next candidate.
+  function assignUrlFromSharedQueue(review) {
+    getSharedUrlQueues();
+    const queue = sharedUrlsByOutlet[review.outletId];
+    if (!queue || queue.length === 0) return { assigned: false, rejected: 0 };
+    let idx = sharedUrlIdxByOutlet[review.outletId] || 0;
+    let rejected = 0;
+    while (idx < queue.length) {
+      const candidateUrl = queue[idx];
+      idx++;
+      // BWW Review Roundup is manually curated by BWW editors — trust the
+      // outlet→URL mapping. The cross-show URL slug guard at line 2357
+      // (detectCrossShowUrlMismatch in createReviewFile) catches genuine
+      // misattributions downstream. Without trusting BWW curation, we lost
+      // legitimate creative-titled URLs on opening night (Theater Pizzazz
+      // Ron Fassler "hes-back-but-has-willy-loman-ever-left-us" had no
+      // "death-of-a-salesman" in the slug). DoaS Apr 9-10 #6.
+      if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
+        rejected++;
+        console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
+        continue;
+      }
+      // Guard: reject URLs that contain a DIFFERENT show's slug. BWW roundup
+      // HTML sometimes has links to multiple shows (e.g., same critic reviewed
+      // both Becky Shaw and Monte Cristo — roundup page has both URLs, wrong
+      // one gets assigned). detectCrossShowUrlMismatch already runs downstream
+      // at createReviewFile, but catching it here prevents creating the file
+      // at all and avoids wasting text-collection resources.
+      const crossShowMatch = detectCrossShowUrlMismatch(showId, candidateUrl);
+      if (crossShowMatch) {
+        rejected++;
+        console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch.matchedTitle}" not "${crossShowMatch.showTitle}" — ${candidateUrl.substring(0, 80)}`);
+        logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: candidateUrl, outletId: review.outletId, matchedTitle: crossShowMatch.matchedTitle } });
+        continue;
+      }
+      review.url = candidateUrl;
+      sharedUrlIdxByOutlet[review.outletId] = idx;
+      return { assigned: true, rejected };
+    }
+    sharedUrlIdxByOutlet[review.outletId] = idx;
+    return { assigned: false, rejected };
+  }
+
   // Method 1: Extract from JSON-LD entries (newer BWW articles)
   // Newer articles use LiveBlogPosting with liveBlogUpdate[] containing BlogPosting entries
   // Older articles use standalone BlogPosting entries
@@ -2312,6 +2456,41 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
           }
         }
 
+        // posting.author sometimes carries just the critic's bare name with no
+        // "Outlet - Critic"/"Critic, Outlet"/"Outlet: Critic" delimiter (e.g.
+        // author.name = "Jon Sobel"). Every branch above falls through to
+        // `outletRaw = authorName` in that case, minting a phantom outlet from
+        // the critic's own name ("jon-sobel") while criticName stays null —
+        // creating a permanent duplicate alongside the real outlet-attributed
+        // record a later run (or Method 2/3 below) writes for the same critic
+        // (Safe House / BRO-3247, 2026-09-14: 4 shows-up-twice pairs, e.g.
+        // outletId="jon-sobel" criticName=null next to outletId="blogcritics"
+        // criticName="Jon Sobel" — same review, double-counted in the score).
+        // Prefer the headline's "Outlet - Title" outlet when outletRaw isn't a
+        // registered outlet, and demote the bare author name to criticName.
+        //
+        // The demotion is shape-gated (/second-opinion, same day): `!criticName
+        // && !isRegisteredOutlet(outletRaw)` is also true for the comma and
+        // colon branches above when NEITHER side is a registered outlet — they
+        // fall through to `outletRaw = authorName` with the delimiter intact.
+        // Demoting those wholesale wrote junk critic names
+        // ("Mandell, Some Unregistered Blog") that dedup against nothing,
+        // recreating the very duplicate-pair shape this block exists to kill.
+        // Only a person-name-shaped string becomes a criticName; anything else
+        // still takes the headline outlet but stays criticName=null, which
+        // routes it into the per-outlet unknown-slot path Method 2 upgrades
+        // from articleBody.
+        if (outletRaw && !criticName && !isRegisteredOutlet(outletRaw) &&
+            posting.headline && posting.headline.includes(' - ')) {
+          const headlineOutlet = posting.headline.split(' - ')[0].trim();
+          if (headlineOutlet.split(/\s+/).length <= 5 && isRegisteredOutlet(headlineOutlet)) {
+            const looksLikePersonName = !/[,:;|/]/.test(outletRaw) &&
+              outletRaw.split(/\s+/).length <= 4;
+            criticName = looksLikePersonName ? outletRaw : null;
+            outletRaw = headlineOutlet;
+          }
+        }
+
         if (!outletRaw) continue;
 
         const outletId = normalizeOutlet(outletRaw);
@@ -2392,57 +2571,17 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     // multiple times in anchor order. Use a per-outlet queue so each review
     // slot gets a DIFFERENT URL. Previous first-URL-wins behavior (fixed
     // 2026-04-19) caused all NYSR reviews for Fallen Angels to share the
-    // first NYSR URL found in the roundup.
-    const urlsByOutlet = {};
-    const anchorRe = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
-    let aMatch;
-    while ((aMatch = anchorRe.exec(html)) !== null) {
-      const href = aMatch[1];
-      const text = aMatch[2].replace(/:$/, '').trim();
-      if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
-      const oid = normalizeOutlet(text);
-      if (!oid) continue;
-      if (!urlsByOutlet[oid]) urlsByOutlet[oid] = [];
-      if (!urlsByOutlet[oid].includes(href)) urlsByOutlet[oid].push(href);
-    }
-    const urlIdxByOutlet = {};
+    // first NYSR URL found in the roundup. Queue is shared with Method 2's
+    // post-pass below (getSharedUrlQueues/assignUrlFromSharedQueue) so a href
+    // consumed here can't be handed out again there (BRO-923).
+    getSharedUrlQueues();
     let urlsPopulated = 0;
     let urlsRejected = 0;
     for (const review of reviews) {
       if (!review.url && review.outletId) {
-        const queue = urlsByOutlet[review.outletId];
-        if (!queue || queue.length === 0) continue;
-        const idx = urlIdxByOutlet[review.outletId] || 0;
-        if (idx >= queue.length) continue;
-        urlIdxByOutlet[review.outletId] = idx + 1;
-        const candidateUrl = queue[idx];
-        // BWW Review Roundup is manually curated by BWW editors — trust the
-        // outlet→URL mapping. The cross-show URL slug guard at line 2357
-        // (detectCrossShowUrlMismatch in createReviewFile) catches genuine
-        // misattributions downstream. Without trusting BWW curation, we lost
-        // legitimate creative-titled URLs on opening night (Theater Pizzazz
-        // Ron Fassler "hes-back-but-has-willy-loman-ever-left-us" had no
-        // "death-of-a-salesman" in the slug). DoaS Apr 9-10 #6.
-        if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
-          urlsRejected++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
-          continue;
-        }
-        // Guard: reject URLs that contain a DIFFERENT show's slug. BWW roundup
-        // HTML sometimes has links to multiple shows (e.g., same critic reviewed
-        // both Becky Shaw and Monte Cristo — roundup page has both URLs, wrong
-        // one gets assigned). detectCrossShowUrlMismatch already runs downstream
-        // at createReviewFile, but catching it here prevents creating the file
-        // at all and avoids wasting text-collection resources.
-        const crossShowMatch = detectCrossShowUrlMismatch(showId, candidateUrl);
-        if (crossShowMatch) {
-          urlsRejected++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch.matchedTitle}" not "${crossShowMatch.showTitle}" — ${candidateUrl.substring(0, 80)}`);
-          logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: candidateUrl, outletId: review.outletId, matchedTitle: crossShowMatch.matchedTitle } });
-          continue;
-        }
-        review.url = candidateUrl;
-        urlsPopulated++;
+        const result = assignUrlFromSharedQueue(review);
+        urlsRejected += result.rejected;
+        if (result.assigned) urlsPopulated++;
       }
     }
     if (urlsPopulated > 0) {
@@ -2569,47 +2708,18 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
   if (reviews.length > 0) {
     // Extract source URLs from HTML anchor tags
     // Pattern: <p>Critic, <a href="SOURCE_URL">Outlet:</a> excerpt</p>
-    // Same per-outlet queue as Method 1 post-pass — see comment above.
-    const urlsByOutlet2 = {};
-    const anchorRe2 = /<a\s[^>]*href="(https?:\/\/[^"]+)"[^>]*>([^<]+)<\/a>/gi;
-    let aMatch2;
-    while ((aMatch2 = anchorRe2.exec(html)) !== null) {
-      const href = aMatch2[1];
-      const text = aMatch2[2].replace(/:$/, '').trim();
-      if (href.includes('broadwayworld.com') || text.length < 3 || text.length > 60) continue;
-      const oid = normalizeOutlet(text);
-      if (!oid) continue;
-      if (!urlsByOutlet2[oid]) urlsByOutlet2[oid] = [];
-      if (!urlsByOutlet2[oid].includes(href)) urlsByOutlet2[oid].push(href);
-    }
-    const urlIdxByOutlet2 = {};
+    // Same shared per-outlet queue Method 1 draws from (getSharedUrlQueues/
+    // assignUrlFromSharedQueue) — NOT a fresh rebuild. Rebuilding here from
+    // scratch used to reset each outlet's index to 0, so this pass could hand
+    // out a href Method 1 had already assigned to a different critic (BRO-923).
+    const { urlsByOutlet: urlsByOutlet2 } = getSharedUrlQueues();
     let urlsPopulated2 = 0;
     let urlsRejected2 = 0;
     for (const review of reviews) {
       if (!review.url && review.outletId) {
-        const queue = urlsByOutlet2[review.outletId];
-        if (!queue || queue.length === 0) continue;
-        const idx = urlIdxByOutlet2[review.outletId] || 0;
-        if (idx >= queue.length) continue;
-        urlIdxByOutlet2[review.outletId] = idx + 1;
-        const candidateUrl = queue[idx];
-        // Same trustedSource bypass as Method 1 — BWW Roundup curation is trusted,
-        // detectCrossShowUrlMismatch (line 2357) catches misattributions downstream.
-        if (showTitle && !urlOrTitleLooksLikeReview(candidateUrl, showTitle, null, { trustedSource: true })) {
-          urlsRejected2++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: non-article URL — ${candidateUrl.substring(0, 80)}`);
-          continue;
-        }
-        // Same cross-show guard as Method 1 — catch wrong-show URLs before file creation
-        const crossShowMatch2 = detectCrossShowUrlMismatch(showId, candidateUrl);
-        if (crossShowMatch2) {
-          urlsRejected2++;
-          console.log(`    ✗ Rejected URL for ${review.outletId}: URL matches "${crossShowMatch2.matchedTitle}" not "${crossShowMatch2.showTitle}" — ${candidateUrl.substring(0, 80)}`);
-          logExclusion({ script: 'gather-reviews', showId, file: '-', reason: 'skippedCrossShowUrl', details: { url: candidateUrl, outletId: review.outletId, matchedTitle: crossShowMatch2.matchedTitle, method: 2 } });
-          continue;
-        }
-        review.url = candidateUrl;
-        urlsPopulated2++;
+        const result = assignUrlFromSharedQueue(review);
+        urlsRejected2 += result.rejected;
+        if (result.assigned) urlsPopulated2++;
       }
     }
     if (urlsPopulated2 > 0) {
@@ -2709,30 +2819,48 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
   // lib/outlet-region-map.js single source of truth (BRO-254 follow-up: this used
   // to re-derive its own id->region map inline, the exact duplication shape that
   // let cross-market-guard.js's copy ship with a missed-alias-lowercasing bug once).
-  const { outletRegionMap: __outletRegionMap } = require('./lib/outlet-region-map').buildOutletMaps({ outlets: outletRegistry });
+  const { outletRegionMap: __outletRegionMap, dualMarket: __dualMarket } = require('./lib/outlet-region-map').buildOutletMaps({ outlets: outletRegistry });
+  // Region locality is decided by lib/outlet-region-map.js (isBroadwayLocalRegion /
+  // isWestEndLocalRegion) — NOT by a list maintained here. This call site is the
+  // reason that helper exists: it hand-rolled its own US allowlist, which drifted
+  // out of sync with the registry twice in 24h and dropped real reviews from BWW
+  // roundups (BRO-3247 — Front Mezz Junkies, then region:'dual' outlets). See the
+  // long comment on UK_REGIONS in outlet-region-map.js before changing this.
+  //
+  // isDualMarket is a SEPARATE signal from region:'dual' — an outlet can have a
+  // single primary region (e.g. The Guardian: region:'london') AND isDualMarket:
+  // true to flag that it also legitimately covers the other market. Before this
+  // fix, only `region` was consulted here, so isDualMarket outlets whose primary
+  // region wasn't already 'dual' were still filtered out as non-local — the same
+  // bug class as cross-market-guard.js's classifyReverseCrossMarket, which treats
+  // isDualMarket as an unconditional "skip, legit by definition" (see that file).
+  // Confirmed live 2026-09-15: The Guardian's real NYC review of a Pre-Existing
+  // Condition BWW roundup was stripped as "non-NYC" despite isDualMarket:true.
   const NON_LOCAL_OUTLET_IDS = new Set();
   for (const [key, region] of Object.entries(__outletRegionMap)) {
+    if (__dualMarket.has(key)) continue;
     const isLocal = isWestEnd
-      ? (region === 'london' || region === 'national-uk' || region === 'national')
-      : (region === 'nyc' || region === 'national');
+      ? isWestEndLocalRegion(region)
+      : isBroadwayLocalRegion(region);
     if (!isLocal) NON_LOCAL_OUTLET_IDS.add(key);
   }
 
   function isNonLocalOutlet(outletId) {
+    if (__dualMarket.has(outletId)) return false;
     if (NON_LOCAL_OUTLET_IDS.has(outletId)) return true;
     if (isWestEnd) {
       // For WE: flag outlets that are clearly US-only
       // But don't flag unknown outlets — they might be London indie outlets not in registry
       const entry = outletRegistry[outletId];
       if (!entry) return false;
-      if (entry.region && entry.region !== 'london' && entry.region !== 'national-uk' && entry.region !== 'national') return true;
+      if (entry.region && !isWestEndLocalRegion(entry.region)) return true;
       return false;
     } else {
       // For Broadway: flag outlets with .co.uk domains, "-uk" suffix, "london" in name
       if (outletId.endsWith('-uk') || outletId.includes('london')) return true;
       const entry = outletRegistry[outletId];
       if (!entry) return false;
-      if (entry.region && entry.region !== 'nyc' && entry.region !== 'national') return true;
+      if (entry.region && !isBroadwayLocalRegion(entry.region)) return true;
       if (entry.domain && entry.domain.endsWith('.co.uk')) return true;
       return false;
     }
@@ -2790,6 +2918,21 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
 }
 
 /**
+ * Production year for search queries / URL guesses. `new Date(null)` is
+ * 1970, so an open show with no openingDate searched for "... review 1970"
+ * (same null-date bug class as validateBWWRoundupYear). Falls back to the
+ * first performance, then the catalog id's year, then this year.
+ */
+function productionYear(show) {
+  for (const d of [show && show.openingDate, show && show.previewsStartDate]) {
+    const y = d ? new Date(d).getFullYear() : NaN;
+    if (Number.isFinite(y) && y > 1900) return y;
+  }
+  const m = String((show && show.id) || '').match(/-(\d{4})$/);
+  return m ? parseInt(m[1], 10) : new Date().getFullYear();
+}
+
+/**
  * Validate BWW roundup publish year against show's opening date.
  * Catches wrong-year roundups where BWW's fuzzy routing serves an older production's
  * roundup (e.g., The Other Place 2013 roundup served for a 2026 show).
@@ -2797,10 +2940,30 @@ function validateBWWRoundupGeography(reviews, html, showId, isWestEnd = false) {
  * Extracts datePublished from JSON-LD or URL year and rejects if too old.
  * @returns {Array} reviews (empty if roundup is wrong year, unchanged otherwise)
  */
-function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl) {
+// opts.openEnded: the show has no recorded openingDate, so showOpeningDate is
+// its first preview (or id year). Press night can land many months after the
+// first preview (repertory: mas-sabe-el-saulo-por-viejo, previews 2025-12-19),
+// so the "published after opening" limit widens from 6 to 18 months, the same
+// width as the before-opening limit. A much later production of the title
+// (stale stuck-in-previews entry) is still rejected.
+function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl, opts = {}) {
   if (reviews.length === 0) return reviews;
 
-  const showDate = new Date(showOpeningDate);
+  // null/'' must short-circuit BEFORE new Date(): new Date(null) is 1970-01-01,
+  // a VALID date, so the NaN guard below never fired and every roundup for a
+  // null-openingDate show was rejected as "~670 months after opening". That
+  // silently discarded the BWW roundup for every show stuck in previews
+  // (our-sinatra 2026-09-27), so Check 2d never got the review signal it
+  // needs to flip the show open. Callers pass previewsStartDate as fallback;
+  // a show with NO dates (announced) anchors on its id's production year so
+  // an older production's roundup is still rejected.
+  let anchor = showOpeningDate;
+  if (!anchor) {
+    const y = String(showId || '').match(/-(\d{4})$/);
+    if (!y) return reviews;
+    anchor = `${y[1]}-07-01`;
+  }
+  const showDate = new Date(anchor);
   if (isNaN(showDate.getTime())) return reviews; // can't validate without valid date
 
   // 1. Extract datePublished from JSON-LD (most reliable)
@@ -2847,7 +3010,8 @@ function validateBWWRoundupYear(reviews, html, showOpeningDate, showId, bwwUrl) 
 
   // Also reject if roundup was published more than 6 months AFTER opening
   // (unlikely to be a legitimate roundup — might be a revival or re-run)
-  if (monthsDiff < -6) {
+  const maxMonthsAfter = opts.openEnded ? 18 : 6;
+  if (monthsDiff < -maxMonthsAfter) {
     console.log(`    ⚠ REJECTING BWW roundup: published ${roundupDate.toISOString().slice(0, 10)} but show opened ${showOpeningDate} (roundup is ${-monthsDiff} months after opening)`);
     return [];
   }
@@ -2958,6 +3122,23 @@ function createReviewFile(showId, reviewData, options = {}) {
     return 'suspiciousOutlet';
   }
 
+  // NAMED NON-REVIEW URL GUARD (BRO-4101): this function is gather-reviews.js's
+  // OWN write chokepoint — a separate implementation from review-file-writer.js's
+  // createOrMergeReviewFile (which carries the same check), NOT a caller of it.
+  // discoverCorrectUrl()/validateSerpCandidate() already reject a named-pattern
+  // URL before searchForReviewViaSERP() ever returns one, but this is the last
+  // stop before disk for every OTHER path that reaches createReviewFile with a
+  // pre-populated url (merges, RSS items, historical backfills) — belt-and-
+  // suspenders for the same contamination class as the-last-ship-west-end-2026's
+  // londontheatre.co.uk/show/47207 ticket page.
+  if (reviewData.url) {
+    const namedReason = namedNonReviewReason(reviewData.url);
+    if (namedReason) {
+      console.log(`    ✗ Skipping ${filename}: named non-review URL (${namedReason}): ${reviewData.url}`);
+      return 'namedNonReviewUrl';
+    }
+  }
+
   // NON-BROADWAY GUARD: Reject tours, off-Broadway, film/TV, streaming, West End
   // For off-broadway shows, allow off-broadway content through
   const outletText = reviewData.outlet || reviewData.outletId || '';
@@ -2972,7 +3153,8 @@ function createReviewFile(showId, reviewData, options = {}) {
   const fromPostOpening = options.fromPostOpening || false;
   // mergeOpts is finalized after _showMeta is loaded (see below); initialized as empty
   let mergeOpts = fromPostOpening ? { fromPostOpening: true } : {};
-  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd, allowOpera, allowRegional })) {
+  const allowTour = (getShowData(showId) || {}).category === 'tour';
+  if (isNotBroadway(outletText, { allowOffBroadway, allowWestEnd, allowOpera, allowRegional, allowTour })) {
     console.log(`    ✗ Skipping ${filename}: non-Broadway outlet "${outletText}"`);
     return 'nonBroadway';
   }
@@ -3044,6 +3226,18 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // TOUR/REGIONAL GUARD: Reject regional BWW and local paper tour reviews
   if (isLikelyTourReview(reviewData.url, showId)) {
+    // Tour-stop review of a title with a national tour on file: file it on the
+    // tour (BRO-4262). No tour window match = skip as before.
+    const visited = options._marketVisited instanceof Set ? options._marketVisited : new Set();
+    const tour = tourDecision(showId, getSiblingIndex().get(showId), {
+      url: reviewData.url, publishDate: reviewData.publishDate, dateSource: reviewData.dateSource,
+    });
+    if (tour && !visited.has(tour.targetShowId)) {
+      visited.add(showId);
+      console.log(`    ⤳ Rerouting ${filename}: ${showId} → ${tour.targetShowId} (${tour.reason})`);
+      _recordMarketMisroute({ fromShowId: showId, toShowId: tour.targetShowId, file: filename, url: reviewData.url, publishDate: reviewData.publishDate, reason: tour.reason });
+      return createReviewFile(tour.targetShowId, reviewData, { ...options, _marketVisited: visited });
+    }
     console.log(`    ✗ Skipping ${filename}: tour/regional review (${reviewData.url?.substring(0, 60)})`);
     return 'tourReview';
   }
@@ -3063,6 +3257,7 @@ function createReviewFile(showId, reviewData, options = {}) {
         url: reviewData.url,
         outletId: reviewData.outletId || normalizedOutletId,
         publishDate: reviewData.publishDate,
+        dateSource: reviewData.dateSource,
         category: showCategory,
         allowCrossMarket: options.allowCrossMarket === true,
         visited,
@@ -3265,6 +3460,7 @@ function createReviewFile(showId, reviewData, options = {}) {
               return 'crossShow';
             }
             existingData.wrongProduction = true;
+            invalidateWrongProductionAutoClear(existingData);
             existingData.wrongProductionNote = `Same URL correctly belongs in ${showId}`;
             fs.writeFileSync(existingPath, JSON.stringify(existingData, null, 2) + '\n');
             console.log(`    ⟳ Flagged ${existing.showId}/${existing.file} as wrongProduction — URL belongs in ${showId}`);
@@ -3755,6 +3951,7 @@ function createReviewFile(showId, reviewData, options = {}) {
             console.log(`    ⚠️  WARNING: Review published ${Math.round(daysBefore)} days before show's earliest date (${earliest}).`);
             console.log(`       Likely from a prior production. Flagging as wrongProduction.`);
             review.wrongProduction = true;
+            invalidateWrongProductionAutoClear(review);
             review.wrongProductionNote = `Auto-flagged: published ${Math.round(daysBefore)} days before show earliest date ${earliest}`;
           }
         }
@@ -3774,7 +3971,45 @@ function createReviewFile(showId, reviewData, options = {}) {
       if (reason) {
         console.log(`    ⚠️  ${reason}`);
         review.wrongProduction = true;
+        invalidateWrongProductionAutoClear(review);
         review.wrongProductionNote = reason;
+      }
+    } catch (e) {}
+  }
+
+  // BWW Review Roundup cross-production guard (BRO-916): unlike the
+  // Unknown-critic check above, this fires regardless of criticName. BWW RR
+  // contamination happens on the aggregator PAGE (extractBWWRoundupReviews
+  // mis-attributing an anchor/JSON-LD entry), not in how a critic bylines
+  // their own writing, so the named-critic benefit-of-the-doubt above doesn't
+  // apply to this source. Only wrongProductionNote is set (not
+  // wrongProductionReason) — the note's "Auto-flagged:" prefix is required
+  // for wrong-production-autoclear.js's DATE_GUARD_PREFIXES match; a custom
+  // wrongProductionReason value would make the flag permanently un-auto-
+  // clearable even after a legitimate priorRuns entry is declared (task #1678).
+  //
+  // Scope note (ship-check adversarial review): like the Unknown-critic check
+  // above, this only runs on the NEW-FILE creation path — the merge/replace
+  // branches earlier in this function (existing outlet+critic match) return
+  // before `review` is even constructed, so a bad BWW RR URL that happens to
+  // match an ALREADY-EXISTING file for that outlet+critic slot merges without
+  // this check ever running. That gap predates this guard (it equally affects
+  // getWrongProductionReasonForUnknownCritic above) and reordering the merge
+  // decision tree ahead of the date guards is a much larger, separate change
+  // than BRO-916's scope — not addressed here. Also deliberately NOT gated on
+  // review.publishDate: BWW RR's publishDate (when present) is the ROUNDUP
+  // PAGE's own JSON-LD datePublished stamped onto every extracted entry
+  // (Method 2 supplement, ~line 2536), not a per-review verified date — an
+  // in-window page date does not prove any individual review's own URL is
+  // from the current run, which is exactly the gap this guard closes.
+  if (!review.wrongProduction && _showMeta) {
+    try {
+      const reason = getWrongProductionReasonForBww(review, _showMeta);
+      if (reason) {
+        console.log(`    ⚠️  ${reason} (BWW RR cross-production)`);
+        review.wrongProduction = true;
+        invalidateWrongProductionAutoClear(review);
+        review.wrongProductionNote = `${reason} (BWW RR cross-production)`;
       }
     } catch (e) {}
   }
@@ -3819,15 +4054,26 @@ function createReviewFile(showId, reviewData, options = {}) {
 
   // Mark file as a preview-period placeholder when the show hasn't opened yet.
   // mergeReviews() respects this flag: post-opening discoveries replace the file
-  // wholesale rather than merging into stale preview data.
+  // wholesale rather than merging into stale preview data. As of BRO-931 #3,
+  // review-guards.js's explainExclusion() also excludes placeholder-stamped
+  // files from rebuild — which makes a WRONG stamp actively harmful (a real
+  // post-opening review silently vanishes) instead of merely cosmetic.
   // _showMeta is already loaded above — no second disk read needed.
-  if (_showMeta) {
-    const isPreviewsStatus = _showMeta.status === 'previews';
-    const hasNotOpenedYet = _showMeta.openingDate
-      && new Date(_showMeta.openingDate) > new Date();
-    if (isPreviewsStatus || hasNotOpenedYet) {
-      review.isPreviewPlaceholder = true;
-    }
+  //
+  // Two self-heals against shows.json status lag (update-show-status.yml runs
+  // once daily; a show can sit at status:'previews' for hours after it has
+  // genuinely opened — adversarial ship-check finding, task #931 follow-up):
+  //   1. options.fromPostOpening: true is an explicit caller assertion — the
+  //      opening-night poller always passes it (opening-night-poller.js's own
+  //      dispatch filter already restricts targets to open/effectively-open
+  //      shows), so trust it over a possibly-stale status field.
+  //   2. hasOpenedByDate: even without that signal, a status still reading
+  //      'previews' must not override an openingDate that has already
+  //      passed — mirrors the "Auto-detect post-opening context" block a few
+  //      dozen lines below, which already treats openingDate <= now as an
+  //      override for exactly this same staleness.
+  if (shouldStampPreviewPlaceholder(_showMeta, options)) {
+    review.isPreviewPlaceholder = true;
   }
 
   // Pattern Card #4: route --unknown.json files with a URL to _pending/ instead of
@@ -3939,7 +4185,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     console.log(`[PRIOR-RUN] ${showId}: in previews but declares priorRuns/tourLegs — discovering reviews from the earlier run/tour stop`);
   }
 
-  const year = new Date(show.openingDate).getFullYear();
+  const year = productionYear(show);
   console.log(`Title: ${show.title}`);
   console.log(`Year: ${year}`);
   console.log(`Status: ${show.status}`);
@@ -3980,8 +4226,16 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
   let dtliResult = await searchDTLI(show);
   if (dtliResult && dtliResult.html) {
     const dtliValidation = await validatePageMatchesShow(dtliResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null });
-    if (!dtliValidation.valid) {
-      console.log(`    ✗ DTLI page doesn't match "${show.title}": ${dtliValidation.reason}`);
+    // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow
+    // (not instead of it) — year/LLM checks catch a same-title stale revival
+    // that the category-aware check alone can't see, while checkArchiveCategory
+    // catches the cross-market-sibling case (a regional show's page vs. its
+    // later Broadway transfer) that year/LLM checks alone can't see. Replacing
+    // instead of adding was flagged in BRO-2565's own review (Codex) as a
+    // regression — same mistake, do not repeat it here.
+    const dtliCatCheck = checkArchiveCategory(dtliResult.html, show, siblingCategoriesByShowId()[showId]);
+    if (!dtliValidation.valid || !dtliCatCheck.ok) {
+      console.log(`    ✗ DTLI page doesn't match "${show.title}": ${!dtliValidation.valid ? dtliValidation.reason : dtliCatCheck.reason}`);
       dtliResult = null;
     }
   }
@@ -4023,8 +4277,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     // keeps the deterministic year-mismatch + short-title-partial-match
     // guards, drops only the flaky LLM step.
     const ssValidation = await validatePageMatchesShow(showScoreResult.html, show.title, { openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null, pageType: 'audience-aggregator', skipLlm: true });
-    if (!ssValidation.valid) {
-      console.log(`    ✗ ShowScore page doesn't match "${show.title}": ${ssValidation.reason}`);
+    // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow —
+    // see the DTLI site above for why both must pass (BRO-2565 review caught
+    // "replace instead of add" as a regression).
+    const ssCatCheck = checkArchiveCategory(showScoreResult.html, show, siblingCategoriesByShowId()[showId]);
+    if (!ssValidation.valid || !ssCatCheck.ok) {
+      console.log(`    ✗ ShowScore page doesn't match "${show.title}": ${!ssValidation.valid ? ssValidation.reason : ssCatCheck.reason}`);
       showScoreResult = null;
     }
   }
@@ -4180,8 +4438,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       openingYear: show.openingDate ? new Date(show.openingDate).getFullYear() : null,
       pageUrl: bwwResult.url,
     });
-    if (!validation.valid) {
-      console.log(`    ✗ BWW roundup page doesn't match "${show.title}": ${validation.reason}`);
+    // checkArchiveCategory (BRO-3610), run ALONGSIDE validatePageMatchesShow —
+    // see the DTLI site above for why both must pass (BRO-2565 review caught
+    // "replace instead of add" as a regression).
+    const bwwCatCheck = checkArchiveCategory(bwwResult.html, show, siblingCategoriesByShowId()[showId]);
+    if (!validation.valid || !bwwCatCheck.ok) {
+      console.log(`    ✗ BWW roundup page doesn't match "${show.title}": ${!validation.valid ? validation.reason : bwwCatCheck.reason}`);
       bwwResult = null;
     }
   }
@@ -4204,9 +4466,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     const venueMarkersDisqualify = !isRegional &&
         (/\bat the kennedy center\b/.test(roundupTitle) ||
          /\bat the (ahmanson|old globe|la jolla|goodman|steppenwolf|arena stage)\b/.test(roundupTitle));
-    if (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional }) ||
+    // A national tour takes only its own tour roundups; a Broadway show never does (BRO-4262).
+    const isTourShow = show.category === 'tour';
+    const tourRoundup = isNationalTourRoundupSlug((bwwResult.url || '').split('/article/')[1] || '');
+    if (isTourShow ? !tourRoundup : (isNotBroadway(roundupTitle, { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: isRegional }) ||
         /\bon tour\b/.test(roundupTitle) || /\bnational tour\b/.test(roundupTitle) ||
-        venueMarkersDisqualify) {
+        venueMarkersDisqualify)) {
       console.log(`    ✗ Skipping non-Broadway roundup: ${bwwResult.url}`);
     } else {
       let bwwReviews = extractBWWRoundupReviews(bwwResult.html, showId, bwwResult.url, show.title);
@@ -4233,7 +4498,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Validate geographic accuracy — filter non-local outlets, reject if majority are wrong
       bwwReviews = validateBWWRoundupGeography(bwwReviews, bwwResult.html, showId, isWestEnd);
       // Validate publish year — reject roundups from older productions of the same title
-      bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate, showId, bwwResult.url);
+      bwwReviews = validateBWWRoundupYear(bwwReviews, bwwResult.html, show.openingDate || show.previewsStartDate, showId, bwwResult.url, { openEnded: !show.openingDate });
       health.bww.extracted = bwwReviews.length;
       foundReviews.push(...bwwReviews);
       // Archive the page
@@ -4279,7 +4544,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // wrote roundup HTML for the wrong show under {showId}.html, then this
       // block read it and filed reviews against the wrong show.
       // (Stuart King mis-attribution incident, 2026-04-25.)
-      const validation = validateRoundupPageTitle(lboHtml, show.title || showId);
+      // checkArchiveCategory (BRO-3610) — bare validateRoundupPageTitle had no
+      // category/siblingCategories, so a same-title cross-market sibling
+      // (e.g. a regional premiere vs. its West End transfer) slipped through.
+      const validation = checkArchiveCategory(lboHtml, show, siblingCategoriesByShowId()[showId]);
       if (!validation.ok) {
         console.log(`    ✗ LBO archive page-title mismatch (${validation.reason}): "${(validation.pageTitle || '').substring(0, 60)}" — quarantining`);
         try { fs.renameSync(lboArchivePath, lboArchivePath + '.mismatch'); } catch (e) {}
@@ -4348,7 +4616,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(trArchive)) {
       try {
         const html = fs.readFileSync(trArchive, 'utf8');
-        const trVal = validateRoundupPageTitle(html, show.title || showId);
+        // checkArchiveCategory (BRO-3610) — bare validateRoundupPageTitle had
+        // no category/siblingCategories, so a same-title cross-market sibling
+        // slipped through.
+        const trVal = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
         if (!trVal.ok) {
           console.log(`    ✗ TR archive page-title mismatch (${trVal.reason}) — quarantining`);
           try { fs.renameSync(trArchive, trArchive + '.mismatch'); } catch (e) {}
@@ -4377,6 +4648,38 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(sdArchive)) {
       try {
         const data = JSON.parse(fs.readFileSync(sdArchive, 'utf8'));
+        // BRO-3610: this read previously had ZERO validation — straight from
+        // disk to extraction, unlike every other aggregator in this block.
+        // Two checks, neither sufficient alone but each catching a different
+        // failure mode a restore/manual-copy/stale-write could produce:
+        //   1. ourShowId must match the showId this file is keyed under —
+        //      scrape-stagedoor-critics.js always writes it (line ~502), so a
+        //      file that arrived some other way under the wrong showId is
+        //      caught here regardless of its title.
+        //   2. data.title must word-match show.title (pageTitleConfirmsShow,
+        //      the same predicate validate-archive-productions.js uses for
+        //      title-only comparisons — no full HTML page exists here to run
+        //      checkArchiveCategory's cross-market-sibling check against, and
+        //      that check is scoped to category==='regional' anyway, which
+        //      this WE-only branch never is). A missing/empty title fails
+        //      CLOSED (quarantined), not open — an untitled archive is exactly
+        //      as unverifiable as a mismatched one.
+        //   CAVEAT: for 2 of scrape-stagedoor-critics.js's 3 write paths
+        //   (the "known missing shows" fast path and the SERP-discovery
+        //   path — lines ~214 and ~439), `title` is stamped from OUR OWN
+        //   show.title, not read off the fetched Stagedoor page, so check 2
+        //   passes by construction there and only check 1 does real work.
+        //   Only the listing-scan path's title is independently scraped.
+        //   Tracked as a write-side follow-up (BRO-3610 review) — the writer
+        //   would need to persist a genuinely page-scraped signal on all 3
+        //   paths for this read-time guard to fully close the gap.
+        const sdIdentityMismatch = (data.ourShowId && data.ourShowId !== showId)
+          || !pageTitleConfirmsShow(data.title || '', show.title);
+        if (sdIdentityMismatch) {
+          console.log(`    ✗ SD archive identity mismatch (title "${data.title}" vs "${show.title}"${data.ourShowId ? `, ourShowId "${data.ourShowId}" vs "${showId}"` : ''}) — quarantining`);
+          try { fs.renameSync(sdArchive, sdArchive + '.mismatch'); } catch (e) {}
+          throw new Error('quarantined');
+        }
         const sdReviews = data.criticReviews || [];
         if (sdReviews.length > 0) {
           console.log(`    ✓ SD:  ${sdReviews.length} reviews from archive`);
@@ -4400,7 +4703,10 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
     if (fs.existsSync(tsArchive)) {
       try {
         const html = fs.readFileSync(tsArchive, 'utf8');
-        const tsVal = validateRoundupPageTitle(html, show.title || showId);
+        // checkArchiveCategory (BRO-3610) — bare validateRoundupPageTitle had
+        // no category/siblingCategories, so a same-title cross-market sibling
+        // slipped through.
+        const tsVal = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
         if (!tsVal.ok) {
           console.log(`    ✗ TS archive page-title mismatch (${tsVal.reason}) — quarantining`);
           try { fs.renameSync(tsArchive, tsArchive + '.mismatch'); } catch (e) {}
@@ -4468,18 +4774,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         if (posts && Array.isArray(posts)) {
           for (const post of posts.slice(0, 3)) {
             const wpTitle = (post.title?.rendered || '').replace(/&#8217;/g, "'").replace(/&#8211;/g, '\u2013').replace(/&amp;/g, '&').replace(/<[^>]+>/g, '');
-            // Validate the WP post title actually matches our show.
-            // Old check used first 8 chars which was too loose (e.g. "op" matched American Psycho for Op Mincemeat).
-            // New check: normalize both titles and require significant word overlap.
-            const normalizeForMatch = (t) => t.toLowerCase().replace(/[^a-z0-9\s]/g, '').replace(/\s+/g, ' ').trim();
-            const wpNorm = normalizeForMatch(wpTitle);
-            const showNorm = normalizeForMatch(searchTitle);
-            const showWords = showNorm.split(' ').filter(w => w.length > 2);
-            const matchedWords = showWords.filter(w => wpNorm.includes(w));
-            // Require at least 60% of significant words to match, minimum 2 words (or all if title is 1-2 words)
-            const minMatch = showWords.length <= 2 ? showWords.length : Math.ceil(showWords.length * 0.6);
-            if (matchedWords.length < minMatch) {
-              console.log(`    ✗ WET title mismatch: "${wpTitle.slice(0, 60)}" doesn't match "${searchTitle}" (${matchedWords.length}/${showWords.length} words)`);
+            // Validate the WP post title actually matches our show. Shared with
+            // the opening-night poller (wet-roundup-discover.js): whole-word,
+            // phrase-required for short titles. The old inline substring check
+            // matched "Man to Man" to the Fences roundup via "performance".
+            const { wetPostTitleMatchesShow } = require('./lib/wet-roundup-discover');
+            if (!wetPostTitleMatchesShow(wpTitle, searchTitle)) {
+              console.log(`    ✗ WET title mismatch: "${wpTitle.slice(0, 60)}" doesn't match "${searchTitle}"`);
               continue;
             }
 
@@ -5167,8 +5468,25 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       if (result === true) {
         created++;
         reviewFilesTouched++;
-      } else if (typeof result === 'string' && health.rejections[result] !== undefined) {
-        health.rejections[result]++;
+      } else if (shouldLogRejection(result)) {
+        if (health.rejections[result] !== undefined) {
+          health.rejections[result]++;
+        }
+        // Always log regardless of enum membership — see gather-review-stats.js
+        // doc comment (BRO-931 #1): a skip reason missing from the hardcoded
+        // health.rejections enum must not go uncounted AND unlogged.
+        logExclusion({
+          script: 'gather-reviews',
+          showId,
+          file: generateReviewFilename(review.outletId || review.outlet, review.criticName),
+          reason: result,
+          // This review was REJECTED by createReviewFile() — the payload
+          // records what was actually seen so the skip can be diagnosed, it is not a
+          // row-ingest identity. resolveArchiveRowOutletId() takes archive-row shape,
+          // and canonicalizing a rejected row's id would make the audit trail lie.
+          // audit-only: rejected-review telemetry, not a row-ingest identity
+          details: { url: review.url, outletId: review.outletId || review.outlet, criticName: review.criticName, publishDate: review.publishDate },
+        });
       }
     }
   }
@@ -5238,7 +5556,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       // Create stub file for unmatched BWW excerpts
       if (!matched) {
         // Non-Broadway guard for BWW stubs (tours, off-Broadway, film/TV)
-        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: show.category === 'regional' })) {
+        if (isNotBroadway(bwwReview.outlet || bwwReview.outletId || '', { allowOffBroadway: isOffBroadway, allowWestEnd: isWestEnd, allowOpera: show.type === 'opera', allowRegional: show.category === 'regional', allowTour: show.category === 'tour' })) {
           console.log(`    [BWW skip] Non-Broadway outlet: ${bwwReview.outlet}`);
           continue;
         }
@@ -5412,14 +5730,31 @@ async function rebuildReviewsJson() {
 
   // Use the existing rebuild script if available
   const rebuildScript = path.join(__dirname, 'rebuild-all-reviews.js');
-  if (fs.existsSync(rebuildScript)) {
-    const { execSync } = require('child_process');
-    try {
-      execSync(`node "${rebuildScript}"`, { stdio: 'inherit' });
-      console.log('✓ reviews.json rebuilt');
-    } catch (e) {
-      console.log('⚠️  Failed to rebuild reviews.json:', e.message);
+  if (!fs.existsSync(rebuildScript)) return;
+
+  // BRO-2276: a cloud-bootstrapped worktree (or any checkout where
+  // data/review-texts wasn't fully cloned) can trigger this local rebuild
+  // against a stub/partial directory, folding a near-empty dataset into the
+  // real, symlinked reviews.json. rebuild-all-reviews.js's own regression
+  // guard is a second line of defense, but refusing to even spawn it here
+  // avoids the subprocess touching disk at all. CI always checks out the
+  // full review-texts clone fresh, so this preflight is local-only.
+  if (!isRunningInCI()) {
+    const reviewTextsDir = path.join(__dirname, '..', 'data', 'review-texts');
+    const preflight = checkReviewTextsPreflight(reviewTextsDir);
+    if (!preflight.ok) {
+      console.log(`⚠️  Skipping local rebuild — ${preflight.reason}`);
+      console.log(`   Fix: ./scripts/setup-local-data.sh --all (re-clone the full review-texts checkout)`);
+      return;
     }
+  }
+
+  const { execSync } = require('child_process');
+  try {
+    execSync(`node "${rebuildScript}"`, { stdio: 'inherit' });
+    console.log('✓ reviews.json rebuilt');
+  } catch (e) {
+    console.log('⚠️  Failed to rebuild reviews.json:', e.message);
   }
 }
 
@@ -5430,6 +5765,16 @@ async function main() {
   const args = process.argv.slice(2);
 
   const flags = parseGatherReviewsFlags(args);
+  // Multi-show batches (opening-night dispatch) were hitting the 55-min GHA
+  // job timeout mid-script — a SIGKILL that skips the if: always() push
+  // steps and discards every review this run found (BRO-3388). A wall-clock
+  // budget lets the loop below stop starting NEW shows and exit 0 cleanly
+  // instead, so the workflow's push steps actually run. Only the
+  // start-a-new-show decision is gated — a show already in flight always
+  // finishes; an unlucky very slow single show can still exceed the budget
+  // (same residual risk accepted elsewhere in this repo, e.g.
+  // audit-opening-dates.js's 5-min margin).
+  const timeBudget = createRunBudget(parseTimeBudgetMin(args));
   if (!flags.showIds) {
     console.log('Usage: node scripts/gather-reviews.js --shows=show-id-1,show-id-2');
     console.log('Example: node scripts/gather-reviews.js --shows=all-out-2025');
@@ -5487,7 +5832,13 @@ async function main() {
 
   const results = [];
 
-  for (const showId of showIds) {
+  for (let i = 0; i < showIds.length; i++) {
+    if (timeBudget.exceeded()) {
+      const remaining = showIds.slice(i);
+      console.log(`\n⏱ Time budget (${timeBudget.minutes}min) exceeded after ${timeBudget.elapsedMin()}min — deferring ${remaining.length} show(s) to next run: ${remaining.join(', ')}`);
+      break;
+    }
+    const showId = showIds[i];
     let result;
     try {
       result = await gatherReviewsForShow(showId, aggregatorsOnly, { validateUrls, historical, openingNight });
@@ -5640,6 +5991,7 @@ module.exports = {
   extractBWWRoundupReviews,
   sanitizeBwwJsonLd,
   validateBWWRoundupYear,
+  productionYear,
   validateBWWRoundupGeography,
   createReviewFile,
   gatherReviewsForShow,

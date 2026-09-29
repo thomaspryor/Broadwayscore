@@ -9,6 +9,7 @@ try { require('dotenv').config(); } catch(e) {}
 const fs = require('fs');
 const path = require('path');
 const { CLAUDE_OPUS } = require('../lib/models');
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 const TRANSCRIPTS_DIR = path.join(__dirname, '../../data/video-reviews-transcripts');
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
@@ -78,10 +79,10 @@ async function main() {
   const creatorMap = Object.fromEntries(creators.map(c => [c.id, c]));
 
   // Skip pipeline buckets (raw/, classified/) — they contain unsorted transcripts
-  // that aren't associated with a real show yet.
-  const EXCLUDE = new Set(['.DS_Store', 'raw', 'classified']);
-  const showDirs = fs.readdirSync(TRANSCRIPTS_DIR).filter(d =>
-    !EXCLUDE.has(d) && fs.statSync(path.join(TRANSCRIPTS_DIR, d)).isDirectory());
+  // that aren't associated with a real show yet. (listShowDirs already skips
+  // dotfiles like .DS_Store, so only the pipeline buckets need excluding here.)
+  const EXCLUDE = new Set(['raw', 'classified']);
+  const showDirs = listShowDirs(TRANSCRIPTS_DIR).filter(d => !EXCLUDE.has(d));
 
   for (const showId of showDirs) {
     if (showFilter && showId !== showFilter) continue;

@@ -19,6 +19,7 @@ const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 
 const USAGE = `fix-wrong-reviews.js — Flag wrong-production/wrong-show reviews and fix outlet misattributions.
 
@@ -153,6 +154,7 @@ for (const entry of manifest) {
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
       if (!data.wrongProduction) {
         data.wrongProduction = true;
+        invalidateWrongProductionAutoClear(data);
         data.wrongProductionReason = entry.reason;
         data.wrongProductionProvenance = 'manual';
         fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
@@ -226,6 +228,7 @@ for (const entry of manifest) {
   switch (entry.action) {
     case 'flagWrongProd':
       data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(data);
       data.wrongProductionReason = entry.reason;
       data.wrongProductionProvenance = 'manual';
       flagged++;
@@ -234,6 +237,7 @@ for (const entry of manifest) {
 
     case 'flagWrongShow':
       data.wrongShow = true;
+      invalidateWrongShowAutoClear(data);
       flagged++;
       console.log(`✓ flagWrongShow ${entry.showId}/${entry.file} | ${entry.reason}`);
       break;

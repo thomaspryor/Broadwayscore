@@ -12,6 +12,7 @@
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = `pre-deploy-check.js — Pre-deploy data integrity check that runs before every Vercel build.
@@ -63,18 +64,40 @@ try {
 
   const today = new Date().toISOString().slice(0, 10);
   let statusIssues = 0;
+  let statusDateHealed = 0;
 
+  // BRO-4099: a show marked "closed" whose closing date hasn't passed (the
+  // exact bug that caused Spelling Bee to disappear) used to hard-fail(),
+  // which aborts EVERY deploy over one bad row — slam-frank-off-broadway-2026
+  // sat closed with a stale future closingDate for 12+ hours on 2026-09-23
+  // and blocked opening-night reviews for The Last Ship and Cosi fan tutte
+  // from ever reaching prod. Self-heal like the other per-show fixers below
+  // (orphan images, venue/category, synopsis): the writer is now fixed
+  // upstream (update-show-status.js no longer creates this contradiction),
+  // so this is a backstop for whatever writer slips one through next. The
+  // true closing date is unknown once we're here — same trade-off
+  // update-show-status.js's own stale-open auto-close already makes — so
+  // clear it rather than guess a date. Respect humanCorrectedClosingDate:
+  // a human-locked future date on a closed show is a genuine data conflict
+  // that needs a human, but still shouldn't block every OTHER show's deploy.
   for (const show of shows) {
-    // A show marked "closed" whose closing date hasn't passed = something is wrong.
-    // This is the exact bug that caused Spelling Bee to disappear.
     if (show.status === 'closed' && show.closingDate && show.closingDate > today) {
-      fail(`"${show.title}" (${show.id}) is marked closed but closingDate ${show.closingDate} is in the future`);
-      statusIssues++;
+      if (canWriteClosingDate(show)) {
+        const staleDate = show.closingDate;
+        writeClosingDate(show, null, `pre-deploy-check self-heal: cleared stale future closingDate on closed show (was ${staleDate})`, { todayStr: today });
+        console.log(`   Self-healed "${show.title}" (${show.id}): cleared future closingDate ${staleDate} on closed show`);
+        statusDateHealed++;
+      } else {
+        console.log(`⚠️  "${show.title}" (${show.id}) is marked closed but closingDate ${show.closingDate} is in the future (humanCorrectedClosingDate=true — needs manual review, not auto-healing; deploy proceeds)`);
+        statusIssues++;
+      }
     }
   }
 
-  if (statusIssues === 0) {
+  if (statusIssues === 0 && statusDateHealed === 0) {
     ok(`Show status/date integrity: ${showCount} shows checked, no contradictions`);
+  } else if (statusDateHealed > 0) {
+    ok(`Auto-healed ${statusDateHealed} show(s) with a status=closed/future-closingDate contradiction`);
   }
 
   // Absolute floor (catastrophic data loss)
@@ -222,7 +245,7 @@ try {
   if (refusalStripped > 0) ok(`Auto-stripped ${refusalStripped} bad synopsis(es)`);
 
   // Write shows.json if any fixes were applied
-  if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0 || toRemove.size > 0 || refusalStripped > 0) {
+  if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0 || toRemove.size > 0 || refusalStripped > 0 || statusDateHealed > 0) {
     saveShows(showsData);
   }
 

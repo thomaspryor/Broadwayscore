@@ -8,15 +8,14 @@ const { GoogleGenerativeAI } = require('@google/generative-ai');
 const { CLAUDE_SONNET, GPT4O, GEMINI_FLASH } = require('./lib/models');
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Load a few reviews with full text
 const reviewsDir = 'data/review-texts';
 const testReviews = [];
 
 // Find 5 reviews with full text
-const shows = fs.readdirSync(reviewsDir).filter(f =>
-  fs.statSync(path.join(reviewsDir, f)).isDirectory()
-);
+const shows = listShowDirs(reviewsDir);
 
 outer:
 for (const show of shows) {

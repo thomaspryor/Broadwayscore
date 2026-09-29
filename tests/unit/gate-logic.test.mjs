@@ -13,7 +13,6 @@ const SRC_DIR = join(dirname(fileURLToPath(import.meta.url)), '../../src');
 
 const {
   shouldSuppressPassiveGate, hasSeenEnoughPages,
-  getColdStartArm, coldStartCheckApplies, COLD_START_FLAG,
   getMobileGateParams, buildGateAbVariant, MOBILE_GATE_FLAG,
 } = await import('../../src/lib/gate-logic.ts');
 const { emailCaptureConfig } = await import('../../src/config/email-capture.ts');
@@ -98,66 +97,29 @@ test('config: minPageViewsForPassiveGate present and sane in the active preset',
     'passive gates must wait for at least a second page view this session');
 });
 
-// ─── gate-cold-start A/B (LIVE EXPERIMENT since 2026-07-21) ─────────────────
+// ─── gate-cold-start page-minimum (concluded A/B, permanent default since 2026-09-15) ───
 
-test('cold-start A/B: arm mapping follows the fallback-exclusion convention', () => {
-  assert.equal(getColdStartArm('cold-start'), 'cold-start');
-  assert.equal(getColdStartArm('control'), 'control');
-  // Unresolved / blocked / typo'd flag values must NEVER be silently merged
-  // into a real arm — they get control BEHAVIOR but the excluded 'fallback' label.
-  assert.equal(getColdStartArm(null), 'fallback', 'flag never resolved → fallback');
-  assert.equal(getColdStartArm(undefined), 'fallback', 'poll still in flight → fallback');
-  assert.equal(getColdStartArm(true), 'fallback', 'boolean flag (misconfigured) → fallback');
-  assert.equal(getColdStartArm('some-typo'), 'fallback', 'unknown variant → fallback');
-  assert.equal(COLD_START_FLAG, 'gate-cold-start');
-});
-
-test('cold-start A/B: page-minimum applies ONLY to the treatment arm', () => {
-  assert.equal(coldStartCheckApplies('cold-start'), true);
-  assert.equal(coldStartCheckApplies('control'), false, 'control must reproduce pre-2026-07-20 behavior');
-  assert.equal(coldStartCheckApplies('fallback'), false, 'fallback gets control behavior');
-});
-
-test('EXPERIMENT LOCK: gate config values are frozen while gate-cold-start runs', () => {
-  // ⚠️ If this test failed on your change: a LIVE A/B experiment
-  // ('gate-cold-start', started 2026-07-21) depends on these exact values.
-  // Changing them mid-experiment silently invalidates the arms and wastes
-  // weeks of data — the previous experiment (mobile-gate-timing) died because
-  // nothing protected its launch conditions. Read
-  // docs/experiments/gate-cold-start.md; conclude or formally amend the
-  // experiment there FIRST, then update this lock in the same commit.
-  assert.equal(emailCaptureConfig.minPageViewsForPassiveGate, 2,
-    'LOCKED: treatment-arm page minimum (see docs/experiments/gate-cold-start.md)');
-  assert.equal(emailCaptureConfig.passiveGateCooldownDays, 14,
-    'LOCKED: shared cooldown — changing it shifts BOTH arms mid-experiment');
-  assert.equal(emailCaptureConfig.exitIntent.enabled, true,
-    'LOCKED: disabling exit_intent mid-experiment removes the largest trigger from both arms');
-  // Amended BRO-1959, 2026-08-21: gate-cold-start cleared its pre-registered
-  // 28-day minimum runtime on 2026-08-18 with clean guardrails (see
-  // docs/experiments/gate-cold-start.md "Amendments"). exitIntent's dwell
-  // floor is shared across both arms, so raising it doesn't advantage either
-  // arm — it just changes the lock value going forward.
-  assert.equal(emailCaptureConfig.exitIntent.minTimeOnPageSec, 30,
-    'LOCKED: shared exit-intent dwell gate — raised 5->30 post-readout, see docs/experiments/gate-cold-start.md');
-  assert.equal(emailCaptureConfig.mobileScrollGate.enabled, true,
-    'LOCKED: disabling the scroll gate mid-experiment removes the mobile trigger from both arms');
-});
-
-test('EXPERIMENT LOCK: gate-cold-start client wiring intact + no PostHog identity calls in src/', () => {
-  // Source-level invariants the config lock can't see (2026-07-21 adversarial
-  // review): (1) the arm must still gate the page-minimum and be stamped on
-  // events — removing either silently un-blinds the experiment; (2) a
-  // posthog.identify()/alias()/reset() call added anywhere in src/ can flip a
-  // visitor's flag assignment mid-session, corrupting arm stickiness. If this
-  // test blocked you, read docs/experiments/gate-cold-start.md first.
+test('wiring: triggerGate applies the page-view minimum unconditionally (post gate-cold-start conclusion)', () => {
+  // gate-cold-start ran 2026-07-21 to 2026-09-15 as a 50/50 A/B (page-minimum
+  // vs no minimum); concluded in favor of applying the minimum to ALL
+  // traffic — see docs/experiments/gate-cold-start.md "Conclusion". This
+  // string-match follows the same wiring-check convention as the mobile-timing
+  // tests below (no React test harness in this repo yet); it exists so a
+  // future edit can't silently reintroduce arm branching without a test
+  // noticing the removed call.
   const ctx = readFileSync(join(SRC_DIR, 'contexts/ProGateContext.tsx'), 'utf8');
-  assert.ok(ctx.includes('coldStartCheckApplies(coldStartArm)'),
-    'LOCKED: triggerGate must gate the page-minimum on the experiment arm');
-  assert.ok(ctx.includes('ab_cold_start: coldStartArm'),
-    'LOCKED: triggerGate must stamp the arm on gate events for the analyzer');
-  assert.ok(ctx.includes('COLD_START_FLAG'),
-    'LOCKED: the flag poll must remain wired');
+  assert.ok(ctx.includes('hasSeenEnoughPages(sessionPageViewsRef.current, emailCaptureConfig.minPageViewsForPassiveGate)'),
+    'triggerGate must still gate passive triggers on the page-view minimum');
+  assert.ok(!/coldStartCheckApplies|getColdStartArm|COLD_START_FLAG|ab_cold_start/.test(ctx),
+    'gate-cold-start arm-branching was concluded 2026-09-15 and must not be reintroduced — see docs/experiments/gate-cold-start.md');
+});
 
+test('no PostHog identity calls in src/ (protects sticky bucketing for live experiments)', () => {
+  // A posthog.identify()/alias()/reset() call anywhere in src/ can flip a
+  // visitor's flag assignment mid-session, corrupting arm stickiness for
+  // whichever experiment is live at the time (mobile-gate-timing,
+  // ticket-single-button, ticket-primary-platform, or any future one) — a
+  // general invariant, not specific to any one experiment.
   const offenders = [];
   const walk = (dir) => {
     for (const name of readdirSync(dir)) {
@@ -175,5 +137,5 @@ test('EXPERIMENT LOCK: gate-cold-start client wiring intact + no PostHog identit
   };
   walk(SRC_DIR);
   assert.deepEqual(offenders, [],
-    `LOCKED: posthog.identify/alias/reset calls change distinct_id and can flip a visitor's gate-cold-start arm mid-session. Found in: ${offenders.join(', ')}`);
+    `posthog.identify/alias/reset calls change distinct_id and can flip a visitor's live-experiment arm mid-session. Found in: ${offenders.join(', ')}`);
 });

@@ -9,6 +9,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Replicate isScoreable from scripts/llm-scoring/is-scoreable.ts
 const EXCERPT_FIELDS = ['bwwExcerpt', 'dtliExcerpt', 'showScoreExcerpt', 'nycTheatreExcerpt', 'playbillVerdictExcerpt'];
@@ -55,9 +56,7 @@ function main() {
   const reasonCounts = {};
   const withoutReasonCount = { total: 0, examples: [] };
 
-  const showDirs = fs.readdirSync(dir).filter(d => {
-    try { return fs.statSync(path.join(dir, d)).isDirectory(); } catch { return false; }
-  }).slice(0, 50);
+  const showDirs = listShowDirs(dir).slice(0, 50);
 
   for (const showDir of showDirs) {
     const fullDir = path.join(dir, showDir);

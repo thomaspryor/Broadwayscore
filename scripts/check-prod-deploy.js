@@ -30,8 +30,9 @@
  *
  * Requires: VERCEL_TOKEN in the environment (already used by check-secrets-health).
  *
- * MACHINE CONTRACT (2026-07-19): `--json` output is parsed by
- * scripts/lib/should-deploy-gate.js (deploy-gate baseline: deployedSha, ageSec)
+ * MACHINE CONTRACT (2026-07-19, extended 2026-09-16 BRO-3149): `--json` output
+ * is parsed by scripts/lib/should-deploy-gate.js (deploy-gate baseline:
+ * deployedSha, ageSec, reviewsBlobSha, showsBlobSha)
  * and scripts/health-check.js checkDeployFreshness(). Do NOT print anything
  * else to stdout in --json mode and do NOT rename those two fields — a silent
  * parse failure makes the deploy gate fail open (deploys every cron tick,
@@ -80,6 +81,13 @@ async function latestProdDeploy() {
   }
   return {
     sha: (dep.meta && dep.meta.githubCommitSha) || null,
+    // BRO-3149: git blob SHAs of data/reviews.json + data/shows.json as of
+    // THIS deployment's build, stamped by the Deploy step (`vercel deploy
+    // --meta reviewsBlobSha=... --meta showsBlobSha=...`) — lets
+    // should-deploy-gate.js detect core-data-only changes that never touch
+    // this repo's git tree.
+    reviewsBlobSha: (dep.meta && dep.meta.reviewsBlobSha) || null,
+    showsBlobSha: (dep.meta && dep.meta.showsBlobSha) || null,
     url: dep.url,
     createdMs: dep.created,
     ageSec: Math.round((Date.now() - dep.created) / 1000),
@@ -118,7 +126,7 @@ async function main() {
     const done = wait == null || live || Date.now() >= deadline;
     if (done) {
       if (json) {
-        console.log(JSON.stringify({ deployedSha: dep.sha, url: dep.url, ageSec: dep.ageSec, target: commit, live }, null, 2));
+        console.log(JSON.stringify({ deployedSha: dep.sha, reviewsBlobSha: dep.reviewsBlobSha, showsBlobSha: dep.showsBlobSha, url: dep.url, ageSec: dep.ageSec, target: commit, live }, null, 2));
       } else {
         const shortDeployed = dep.sha ? dep.sha.slice(0, 10) : '(unknown)';
         console.log(`Production READY deployment: ${shortDeployed}  (age ${fmtAge(dep.ageSec)})  https://${dep.url}`);

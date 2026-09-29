@@ -48,6 +48,7 @@ try {
 }
 
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 // ========================================
 // CLI ARGS
@@ -163,10 +164,7 @@ function selectSample(targetN: number, daysWindow: number): SampleReview[] {
   const cutoff = new Date(Date.now() - daysWindow * 86400_000);
 
   const eligible: SampleReview[] = [];
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(f => {
-    if (f.startsWith('_') || f.startsWith('.')) return false;
-    return fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory();
-  });
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(f => !f.startsWith('_'));
 
   for (const showDir of showDirs) {
     const dirPath = path.join(REVIEW_TEXTS_DIR, showDir);

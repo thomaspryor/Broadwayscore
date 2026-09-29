@@ -57,6 +57,15 @@ const REASON_DIVERGED_UNION_LEDGER = 'diverged-union-ledger';
 const ACTION_REFUSE = 'refuse';
 const ACTION_UNION_RECOVER = 'union-recover';
 const ACTION_COMMIT_AND_REBASE = 'commit-and-rebase';
+// BRO-3393. A RECOVERY label, same contract as the two above: never written
+// to a refusal snapshot. Deliberately named for the operation it performs
+// (a 3-way merge of origin/main), not "rebase-only": a rebase here would
+// rewrite arbitrary local commits, including an unpushed session merge
+// commit, which is the class of loss global CLAUDE.md records for
+// 2026-07-26. A merge never rewrites local history and, unlike ff-only, DOES
+// invoke .gitattributes merge drivers.
+const ACTION_MERGE_ORIGIN = 'merge-origin';
+const REASON_DIVERGED_CLEAN_TREE = 'diverged-clean-tree';
 
 function toList(v) {
   if (!Array.isArray(v)) return [];
@@ -96,6 +105,7 @@ function ffBlockingPaths({ dirtyPaths = [], originChangedPaths = [] } = {}) {
  *
  * @param {string[]} blockingPaths   output of ffBlockingPaths()
  * @param {number}   aheadCount      `git rev-list --count origin/main..HEAD`
+ * @param {number}   behindCount     `git rev-list --count HEAD..origin/main`
  * @param {string[]} unionMergePaths blocking paths that are BOTH tracked and
  *                                   declared `merge=union` in .gitattributes.
  *                                   Untracked paths must never appear here:
@@ -104,7 +114,7 @@ function ffBlockingPaths({ dirtyPaths = [], originChangedPaths = [] } = {}) {
  *                                   recovery stage has nothing to roll back to.
  * @returns {{action: string, reason: string, blockingPaths: string[], unionPaths: string[]}}
  */
-function classifyBlock({ blockingPaths = [], aheadCount = 0, unionMergePaths = [] } = {}) {
+function classifyBlock({ blockingPaths = [], aheadCount = 0, behindCount = 0, unionMergePaths = [] } = {}) {
   const blocking = toList(blockingPaths);
   const unionSet = new Set(toList(unionMergePaths).filter((p) => blocking.includes(p)));
   const unionPaths = blocking.filter((p) => unionSet.has(p));
@@ -131,6 +141,28 @@ function classifyBlock({ blockingPaths = [], aheadCount = 0, unionMergePaths = [
   if (Number(aheadCount) > 0) {
     if (blocking.length && unionPaths.length === blocking.length) {
       return { ...base, action: ACTION_COMMIT_AND_REBASE, reason: REASON_DIVERGED_UNION_LEDGER };
+    }
+    // Ahead, behind, and NOTHING dirty that origin also moves (BRO-3393).
+    // This used to be the terminal case - "no file to blame and no union to
+    // attempt, genuine unresolvable divergence" - and it is the exact
+    // opposite: it is the most resolvable state this function ever sees.
+    // Nothing is in the way; a plain 3-way merge of origin/main lands it.
+    //
+    // It is also the state BRO-3212's own commit-and-rebase recovery LEAVES
+    // BEHIND when its rebase fails: that branch commits the ledgers, aborts
+    // the rebase, and says "ledger commit preserved locally for the next run
+    // to carry forward" - but no mechanism to carry it forward existed, so
+    // the checkout refused forever after. Verified on this machine:
+    // 2026-09-14 18:30:03 ledger commit, 18:30:04 rebase abort, and every
+    // sync-gated launchd job refused for the next 17.5 hours, including the
+    // 07:30 morning digest.
+    //
+    // behindCount > 0 is required, not cosmetic: the no-blocker branch below
+    // also catches a fetch/ref problem (origin/main unreadable or unmoved),
+    // and merging in that state would be acting on a ref we have no reason
+    // to trust (second-opinion finding, BRO-3393).
+    if (!blocking.length && Number(behindCount) > 0) {
+      return { ...base, action: ACTION_MERGE_ORIGIN, reason: REASON_DIVERGED_CLEAN_TREE };
     }
     return { ...base, action: ACTION_REFUSE, reason: REASON_DIVERGED };
   }
@@ -245,10 +277,12 @@ module.exports = {
   ACTION_REFUSE,
   ACTION_UNION_RECOVER,
   ACTION_COMMIT_AND_REBASE,
+  ACTION_MERGE_ORIGIN,
   REASON_DIVERGED,
   REASON_OUTSIDE_AUDIT,
   REASON_JSONL_LEDGER,
   REASON_UNRESOLVED,
   REASON_UNION_LEDGER,
   REASON_DIVERGED_UNION_LEDGER,
+  REASON_DIVERGED_CLEAN_TREE,
 };

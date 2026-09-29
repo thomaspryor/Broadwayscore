@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { getShowBySlug, getHotShowSlugs } from '@/lib/data-core';
+import { isCategoryEnabled } from '@/lib/markets';
 import { getScoreTier } from '@/components/show-cards';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
@@ -43,8 +44,8 @@ const TIER_STYLE: Record<string, { bg: string; text: string; glow: string }> = {
 export default async function OGImage({ params }: { params: { slug: string } }) {
   const show = getShowBySlug(params.slug);
 
-  // Fall back to homepage OG if no show / no image
-  if (!show) {
+  // Fall back to homepage OG if no show / no image / flag-gated category
+  if (!show || !isCategoryEnabled(show.category)) {
     return fallbackImage();
   }
 

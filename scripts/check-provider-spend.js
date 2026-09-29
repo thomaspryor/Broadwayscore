@@ -24,10 +24,12 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help');
 const {
-  fetchBdZoneCostDay, fetchBbSessionCountForDay, fetchSbUsage, fetchSdAccount,
+  fetchBdZoneCostDay, fetchBbUsageForDay, fetchSbUsage, fetchSdAccount,
 } = require('./lib/provider-billing');
 const {
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot, utcYesterday, aggregateLedgerByDay,
+  ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
+  attributionGaps,
 } = require('./lib/provider-spend-core');
 const {
   countCallsByProvider, topCallers, creditsByProvider, topCallersByCredits,
@@ -38,6 +40,15 @@ const REPO = path.join(__dirname, '..');
 const LEDGER = path.join(REPO, 'data', 'audit', 'provider-spend-daily.jsonl');
 const SNAPSHOT = path.join(REPO, 'data', 'audit', 'provider-spend-snapshot.json');
 const THRESHOLDS_PATH = path.join(REPO, 'scripts', 'config', 'provider-spend-thresholds.json');
+// BRO-3349: these four moved to lib/provider-spend-core.js (imported above)
+// so scripts/health-check.js's "Data quality: provider spend ledger" row can
+// share the SAME freshness predicate instead of re-deriving it. They are
+// re-exported below unchanged, so every existing caller/test of this script's
+// module surface keeps working. Why the move rather than health-check.js
+// requiring this file directly: this file is a CLI with top-level side
+// effects (hasHelpFlag/process.exit, argv-derived DAY), and provider-spend-
+// core.js is the file whose own docstring already claims ownership of "pure
+// decision functions" for this subsystem.
 // S0-T6: durable daily rollup of the per-call ledger. The raw ledger
 // (CALL_LEDGER_PATH, provider-telemetry.js) rotates at MAX_LEDGER_LINES —
 // under a day at unthrottled Scrapingdog volume — so it cannot answer a
@@ -112,9 +123,26 @@ async function main() {
   const ledger = readLedger();
   const prev = [...ledger].reverse().find((r) => r.day < DAY) || null;
 
+  // BRO-3227: check the ledger AS COMMITTED (before this run adds anything)
+  // — this run's own write always looks fresh by construction, so freshness/
+  // continuity only means something measured against what survived to disk.
+  const now = new Date();
+  const freshnessHours = ledgerFreshnessHours(ledger, now);
+  const missingDays = missingLedgerDays(ledger, now, CONTINUITY_WINDOW_DAYS);
+  const ledgerUnhealthy = freshnessHours > STALE_HOURS_THRESHOLD || missingDays.length > 0;
+  if (ledgerUnhealthy) {
+    const parts = [];
+    if (freshnessHours > STALE_HOURS_THRESHOLD) {
+      const ageText = Number.isFinite(freshnessHours) ? `${freshnessHours.toFixed(1)}h` : 'no entries ever recorded';
+      parts.push(`most recent entry was ${ageText} old before this run (> ${STALE_HOURS_THRESHOLD}h threshold)`);
+    }
+    if (missingDays.length) parts.push(`missing day(s) in the trailing ${CONTINUITY_WINDOW_DAYS}: ${missingDays.join(', ')}`);
+    console.error(`::error::provider-spend-daily.jsonl is stale/discontinuous — ${parts.join('; ')}. Continuing so today's (${DAY}) entry can still land.`);
+  }
+
   const zone = process.env.BRIGHTDATA_ZONE || 'web_unlocker2';
-  const [bbSessions, bdSerp, bdUnlocker, sb, sd] = await Promise.all([
-    fetchBbSessionCountForDay(process.env.BROWSERBASE_API_KEY, process.env.BROWSERBASE_PROJECT_ID, DAY),
+  const [bbUsage, bdSerp, bdUnlocker, sb, sd] = await Promise.all([
+    fetchBbUsageForDay(process.env.BROWSERBASE_API_KEY, process.env.BROWSERBASE_PROJECT_ID, DAY),
     fetchBdZoneCostDay('serp_api1', DAY, process.env.BRIGHTDATA_TOKEN),
     fetchBdZoneCostDay(zone, DAY, process.env.BRIGHTDATA_TOKEN),
     fetchSbUsage(process.env.SCRAPINGBEE_API_KEY),
@@ -123,7 +151,7 @@ async function main() {
 
   const record = computeDayRecord({
     day: DAY,
-    bb: bbSessions,
+    bb: bbUsage,
     bd: bdSerp == null || bdUnlocker == null ? null : { serp: bdSerp, unlocker: bdUnlocker },
     sb,
     sd,
@@ -178,6 +206,18 @@ async function main() {
     console.log(`  ${row.provider} ${row.credits}cr / ${row.calls} calls — ${row.script} (${row.fn}, workflow=${row.workflow || 'none'})`);
   }
 
+  // BRO-4215: computed before the dry-run return so --dry-run shows them.
+  const attributionAlertProviders = thresholds.attributionAlertProviders || ['scrapingbee', 'scrapingdog', 'brightdata'];
+  const attributionAlertMin = thresholds.attributionAlertMin ?? 0.8;
+  const gaps = attributionGaps(series, {
+    min: attributionAlertMin,
+    days: thresholds.attributionAlertDays ?? 2,
+    providers: attributionAlertProviders,
+  });
+  for (const gap of gaps) {
+    console.log(`[provider-spend] ${DAY}: attribution gap — ${gap.provider} ${gap.pcts.map((p) => `${Math.round(p * 100)}%`).join(', ')} (< ${Math.round(attributionAlertMin * 100)}%)`);
+  }
+
   if (DRY_RUN) {
     console.log('[provider-spend] --dry-run: no writes, no alerts');
     return;
@@ -221,9 +261,82 @@ async function main() {
       } : {}),
     });
   }
+
+  // BRO-4215: a SUSTAINED attribution gap is its own actionable condition.
+  // Until now a low attributedPct only added a digest line; ScrapingBee sat at
+  // 12-23% for weeks (Reddit Sentiment + Show Score rows discarded at runner
+  // exit) and the same gap would have alerted on 29 days back to 2026-08-02.
+  // disposition 'auto' files a card and dispatches a fix session, so a gap is
+  // worked instead of observed. One conditionKey per provider. Wrapped so a
+  // router failure here can never skip the stale-ledger alert below.
+  try {
+  for (const gap of gaps) {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    const pctText = gap.pcts.map((p) => `${Math.round(p * 100)}%`).join(', ');
+    const top = (attribution[gap.provider]?.top || []).map((t) => `${t.script} ${t.amount}`).join('; ');
+    await routeAlert({
+      conditionKey: `provider-spend:attribution-gap:${gap.provider}`,
+      title: `Untracked ${gap.provider} spend: ledger explains only ${pctText} of billed`,
+      description: `data/audit/provider-spend-daily.jsonl attributedPct.${gap.provider} was below ${Math.round(attributionAlertMin * 100)}% on each of the last ${gap.pcts.length} days (${pctText}), so most of this provider's billed spend comes from callers whose rows never reach data/audit/scraper-spend-ledger.jsonl. Top logged callers today: ${top || 'none'}.`,
+      hint: 'Method that found BRO-4215: (1) collect the provider balance readings CI logs print (ScrapingBee: "[SB Credits] N remaining" from scraper.js checkScrapingBeeCredits) across job logs for one day; (2) per interval, compare billed delta vs ledger rows in that window; (3) list workflow runs active in high-gap intervals and absent in matched ones; (4) grep those job logs for "[SB Call]"/"[SD Call]" lines to confirm. Usual causes: a job that writes telemetry but never commits the ledger (bash scripts/lint-workflow-guards.sh ledger-coverage), a script calling the provider with no record*Call (node --test scripts/lib/sb-call-telemetry-coverage.test.mjs), or runs in progress when the day closed.',
+      severity: 'error',
+      disposition: 'auto',
+      cooldownHours: 72,
+      cardAction: 'Investigate',
+      // Machine-checkable finish line (SAFE_CHECK_FORMS in autonomous-triage-core.js),
+      // so the parked-card drain can dispatch it and the Done gate can close it.
+      verify: { line: `VERIFY: node scripts/check-attribution-gap-clear.js --provider=${gap.provider}` },
+    });
+  }
+  // Gap closed today: resolve the condition so a later regression files a fresh
+  // card immediately instead of waiting out the 72h cooldown.
+  {
+    const gapProviders = new Set(gaps.map((g) => g.provider));
+    const { resolveCondition } = require('./lib/owner-alert-router');
+    for (const provider of attributionAlertProviders) {
+      const pct = (record.attributedPct || {})[provider];
+      if (!gapProviders.has(provider) && typeof pct === 'number' && pct >= attributionAlertMin) {
+        resolveCondition(`provider-spend:attribution-gap:${provider}`, { reason: `attributedPct ${Math.round(pct * 100)}% on ${DAY}` });
+      }
+    }
+  }
+  } catch (err) {
+    console.log(`::warning::attribution-gap alerting failed: ${err.message}`);
+  }
+
+  // BRO-3227: fires independently of the overspend/unmeasured breach above —
+  // a stale/discontinuous ledger is a "the truth layer itself is broken"
+  // condition, not a spend condition, so it gets its own conditionKey and
+  // survives even on a day with no budget breach at all. Routed AFTER this
+  // run's own write lands, so a real fix (today's entry landing) is on
+  // record even if this alert is what someone acts on.
+  if (ledgerUnhealthy) {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    const parts = [];
+    if (freshnessHours > STALE_HOURS_THRESHOLD) {
+      const ageText = Number.isFinite(freshnessHours) ? `${freshnessHours.toFixed(1)}h` : 'no entries ever recorded';
+      parts.push(`most recent entry was ${ageText} old before this run`);
+    }
+    if (missingDays.length) parts.push(`missing day(s): ${missingDays.join(', ')}`);
+    await routeAlert({
+      conditionKey: 'provider-spend:stale-ledger',
+      title: 'Provider spend ledger is stale or discontinuous',
+      description: `Before today's (${DAY}) write: ${parts.join('; ')}. See data/audit/provider-spend-daily.jsonl.`,
+      hint: 'Check whether check-provider-spend.js ran on the missing day(s), and whether its write survived a later push-with-retry.sh hard-reset (BRO-3317 class bug) — that class silently discarded 11 days of this same ledger once already.',
+      severity: 'warn',
+      disposition: 'digest',
+      cooldownHours: 20,
+    });
+  }
 }
 
-main().catch((err) => {
-  console.error(`::error::check-provider-spend crashed: ${err && err.message}`);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(`::error::check-provider-spend crashed: ${err && err.message}`);
+    process.exit(1);
+  });
+}
+
+module.exports = {
+  ledgerFreshnessHours, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
+};

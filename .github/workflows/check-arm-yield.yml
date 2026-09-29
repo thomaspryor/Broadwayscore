@@ -97,12 +97,16 @@ jobs:
       # alert-digest-queue.json the queued digest lines. Both MUST be committed
       # in the same job or the dedup is dead in CI and every dead arm re-alerts
       # daily (card #394's class, re-litigated in #618's lint guard).
+      # alert-router-attempts.jsonl (BRO-3671/BRO-3662): logDispatchAttempt()
+      # rewrites this TRACKED file on every dispatch attempt; unstaged, it
+      # makes a rebase refuse pre-flight and forces the clobber-prone merge
+      # path in push-with-retry.sh.
       - name: Commit ledger + alert state
         if: ${{ always() && !inputs.dry_run }}
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          for f in data/audit/arm-yield-ledger.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json; do
+          for f in data/audit/arm-yield-ledger.jsonl data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

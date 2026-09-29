@@ -23,6 +23,7 @@ const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
 const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
+const { isCategoryEnabled } = require('./lib/markets');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
 const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -390,6 +391,12 @@ for (const review of reviews) {
   reviewsByShow[review.showId].push(review);
 }
 
+// Exact-string set of CANONICAL display names — the spelling
+// scripts/lib/critic-display-name.js displayCriticName() emits into
+// reviews.json (S7-T2), which is why no typo/alias map is needed here and
+// why every entry must be a fixed point of that helper
+// (tests/unit/rebuild-display-critic-name-call-site.test.mjs checks it).
+// Mirrors src/lib/engine.ts and scripts/lib/compute-critic-score.js.
 const TOP_CRITICS = new Set([
   'Jesse Green', 'Ben Brantley', 'Charles Isherwood', 'David Rooney',
   'Hilton Als', 'Helen Shaw', 'Peter Marks', 'Elisabeth Vincentelli',
@@ -413,13 +420,18 @@ function getOutletDisplayName(outletId, fallback) {
 // GENERATE PER-SHOW DETAIL FILES
 // ===========================================
 
-// Use the same visibility filter as generate-mobile-data.js
+// Same score/status filter as generate-mobile-data.js, but gated on the WEBSITE
+// category gate: these per-show files also back web surfaces (shared lists,
+// My Shows, getCriticScore), so a launched category (tour, BRO-4211) needs them.
+// The app only reaches a show through mobile-shows.json, which still withholds
+// tours (isHiddenFromAppFeed there), so this does not put tours in the app.
 const showsWithScores = new Set();
 for (const review of reviews) {
   if (review.assignedScore != null) showsWithScores.add(review.showId);
 }
 let visibleShows = shows.filter(show =>
-  showsWithScores.has(show.id) || show.status !== 'closed'
+  isCategoryEnabled(show.category) &&
+  (showsWithScores.has(show.id) || show.status !== 'closed')
 );
 if (SHOW_ARG) {
   visibleShows = shows.filter((show) => show.id === SHOW_ARG);
@@ -517,7 +529,7 @@ for (const show of visibleShows) {
       const tier = isTopCritic ? 1 : getOutletTier(r.outletId);
 
       const entry = {
-        cn: r.criticName || null,           // criticName
+        cn: r.criticName || null,           // criticName — emitted unchanged: reviews.json already carries the display name or null (S7-T2)
         o: getOutletDisplayName(r.outletId, r.outlet), // outlet display name
         s: r.assignedScore,                 // score (0-100)
         b: r.bucket,                        // bucket (Positive/Mixed/Negative)

@@ -661,6 +661,25 @@ async function main() {
         'Authorization': `Bearer ${RESEND_API_KEY}`,
       });
       console.log(`Preview sent to ${SEND_TO}`);
+
+      // BRO-886: record the tracker write IMMEDIATELY after the send succeeds,
+      // not at the end of main() after the whole draft/preview branch — a
+      // cancelled run in between previously left no record that this preview
+      // had already gone out, so the next run's checkPreviewDedup saw nothing
+      // and could re-send it. The key still carries a UTC-date suffix for
+      // debugging/history, but the READER (checkPreviewDedup) scans the whole
+      // `preview:{broadcastKey}:*` prefix and picks the most recent by
+      // `sentAt` — see scripts/lib/preview-dedup.js.
+      const previewTimestamp = new Date().toISOString();
+      const previewKey = `preview:${broadcastKey}:${previewTimestamp.slice(0, 10)}`;
+      sentData.shows[previewKey] = { sentAt: previewTimestamp, previewTo: SEND_TO, reviewCount: currentReviewCount };
+      saveSentData(sentData);
+      // Sync to origin/main so a concurrent workflow run can see the write.
+      // Without this, local CLI previews are invisible to CI and cause duplicate sends
+      // (2026-04-11 incident: 02:09 UTC local preview never reached origin, 12:21 UTC
+      // workflow re-sent because its origin/main checkout had no record of the CLI run).
+      // No-ops when running under GitHub Actions — the workflow commits separately.
+      syncTrackerToOrigin(sentData);
     } catch (err) {
       console.error(`ERROR sending preview: ${err.message}`);
       // Best-effort release before bailing.
@@ -736,7 +755,31 @@ async function main() {
       console.log(`  Draft created: ${draftId}`);
       console.log(`  Review at: ${draftUrl}`);
 
-      // Notify owner via Resend transactional (direct link to the exact draft)
+      // BRO-886: record the tracker write IMMEDIATELY — before the owner
+      // notification email below — so a cancelled run (process killed, GHA run
+      // cancelled) between "Resend draft created" and "tracker updated" can no
+      // longer lose track of a draft that already exists. Previously this write
+      // happened AFTER the notification email, so a cancellation during that
+      // (slower, non-essential) network call left the draft live in Resend with
+      // no local/origin record of it — the next run would see the show as still
+      // pending and create a SECOND draft for the same show. Mark as complete
+      // from code's perspective — owner sends manually from Resend. Also tracks
+      // draftStatus so reconcile-broadcast-state.js can round-trip the Resend API
+      // and detect cancelled/deleted drafts. completed:true stays for
+      // backwards-compat; shouldRequeueShow() gates the re-entry path.
+      recordDraftCompletion(sentData, broadcastKey, showsForEmail, {
+        draftId,
+        draftUrl,
+        method: 'resend-draft',
+        reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
+      });
+
+      // Notify owner via Resend transactional (direct link to the exact draft).
+      // Best-effort: the draft already exists and is already tracked above, so a
+      // notification failure must never be reported as "draft creation failed"
+      // (that used to route through the catch block below and fire the
+      // draft-creation-failed alert even though the draft was created fine) —
+      // log and continue instead.
       const OWNER_EMAIL = process.env.OWNER_EMAIL;
       if (OWNER_EMAIL && RESEND_API_KEY) {
         const marketDisplay = isLondonMarket(MARKET) ? 'West End' : 'Broadway';
@@ -750,29 +793,37 @@ async function main() {
 <p><a href="${draftUrl}" style="background:#0066cc;color:#fff;padding:12px 24px;border-radius:4px;text-decoration:none;display:inline-block;font-weight:bold;">Review &amp; Send Draft in Resend →</a></p>
 <p style="color:#888;font-size:12px;margin-top:16px;">Direct link: ${draftUrl}</p>`;
 
-        await postJSON('https://api.resend.com/emails', {
-          from: `${SITE_NAME} <${FROM_EMAIL}>`,
-          to: [OWNER_EMAIL],
-          subject: `[Action Required] ${marketDisplay} draft ready — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
-          html: notificationHtml,
-        }, { 'Authorization': `Bearer ${RESEND_API_KEY}` });
+        try {
+          await postJSON('https://api.resend.com/emails', {
+            from: `${SITE_NAME} <${FROM_EMAIL}>`,
+            to: [OWNER_EMAIL],
+            subject: `[Action Required] ${marketDisplay} draft ready — ${showsForEmail.map(s => s.showTitle).join(', ')}`,
+            html: notificationHtml,
+          }, { 'Authorization': `Bearer ${RESEND_API_KEY}` });
 
-        console.log(`  Owner notified at ${OWNER_EMAIL.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
+          console.log(`  Owner notified at ${OWNER_EMAIL.replace(/(.{2}).*(@.*)/, '$1***$2')}`);
+        } catch (notifyErr) {
+          // BRO-886: previously an error here fell into the OUTER catch, which
+          // mislabeled it as "draft creation failed" but did at least alert
+          // the owner and exit non-zero. Now that the draft is tracked before
+          // this call, a silent console.error alone would mean the owner never
+          // learns a draft is sitting in Resend waiting for them — route a
+          // correctly-labeled alert instead so visibility isn't lost along
+          // with the (inaccurate) failure signal.
+          console.error(`  WARNING: owner notification failed: ${notifyErr.message} (draft ${draftId} was still created and tracked — not a draft-creation failure)`);
+          await routeAlert({
+            conditionKey: `broadcast:owner-notification-failed:${MARKET}`,
+            title: 'Opening Night Draft Ready — Owner Notification Failed',
+            description: `Draft ${draftId} was created and tracked, but the owner-notification email failed: ${notifyErr.message}. Draft URL: ${draftUrl}`,
+            severity: 'warning',
+            disposition: 'human',
+            cooldownHours: 24,
+          });
+        }
       } else {
         console.log(`  Warning: OWNER_EMAIL or RESEND_API_KEY not set — owner not notified by email`);
         console.log(`  Draft URL: ${draftUrl}`);
       }
-
-      // Mark as complete from code's perspective — owner sends manually from Resend.
-      // NEW 2026-04-22: also track draftStatus so reconcile-broadcast-state.js can
-      // round-trip the Resend API and detect cancelled/deleted drafts. completed:true
-      // stays for backwards-compat; shouldRequeueShow() gates the re-entry path.
-      recordDraftCompletion(sentData, broadcastKey, showsForEmail, {
-        draftId,
-        draftUrl,
-        method: 'resend-draft',
-        reviewCount: showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0),
-      });
 
       console.log(`\nDraft ready — log into Resend to send: ${draftUrl}`);
 
@@ -800,29 +851,9 @@ async function main() {
       process.exit(1);
     }
   }
-
-  // Track preview send.
-  //
-  // The key still carries a UTC-date suffix for debugging/history, but the READER
-  // (checkPreviewDedup) scans the whole `preview:{broadcastKey}:*` prefix and picks
-  // the most recent by `sentAt`. The suffix is no longer load-bearing for dedup —
-  // rolling time windows are. See scripts/lib/preview-dedup.js for the full story.
-  if (SEND_TO) {
-    const previewTimestamp = new Date().toISOString();
-    const previewKey = `preview:${broadcastKey}:${previewTimestamp.slice(0, 10)}`;
-    const previewReviewCount = showsForEmail.reduce((sum, s) => sum + s.reviewCount, 0);
-    sentData.shows[previewKey] = { sentAt: previewTimestamp, previewTo: SEND_TO, reviewCount: previewReviewCount };
-    saveSentData(sentData);
-
-    // Sync to origin/main so a concurrent workflow run can see the write.
-    // Without this, local CLI previews are invisible to CI and cause duplicate sends
-    // (2026-04-11 incident: 02:09 UTC local preview never reached origin, 12:21 UTC
-    // workflow re-sent because its origin/main checkout had no record of the CLI run).
-    // No-ops when running under GitHub Actions — the workflow commits separately.
-    syncTrackerToOrigin(sentData);
-
-    console.log(`\nPreview sent to ${SEND_TO}`);
-  }
+  // Note: the preview-send tracker write (previewKey / saveSentData /
+  // syncTrackerToOrigin) now happens inline in the SEND_TO branch above,
+  // immediately after the send succeeds — see the BRO-886 comment there.
 }
 
 // Exported for unit testing. Only run main() when invoked as a CLI.

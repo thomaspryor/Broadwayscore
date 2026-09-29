@@ -80,11 +80,13 @@ const SAFE_FORM_EXAMPLES =
 
 // A command can pass safe-form and STILL be useless: `node --test
 // tests/unit/nope.test.mjs` is a perfectly valid shape naming a file that does
-// not exist. Node exits 1 there ("Could not find ..."), and
-// acceptance-check-core.js's runVerify() reports that as status 'fail' — so a
-// card armed this way reports FAILING forever once it is marked Done, not
-// silently passing. Crown v50 had to hand-correct two such commands, and a
-// permanently-red recheck trains everyone to ignore the recheck.
+// not exist. Node exits 1 there ("Could not find ..."). BRO-3446:
+// acceptance-check-core.js's runVerify() now reports that as status
+// 'unverifiable' (not 'fail' — a missing path is not evidence the work broke),
+// so a card armed this way is silently useless forever once marked Done
+// rather than falsely red forever — still worth catching HERE, at filing
+// time, because a card that can never self-verify is exactly as unhelpful as
+// one that always fails. Crown v50 had to hand-correct two such commands.
 //
 // BUT "the path does not exist" is NOT by itself a defect, and this must not
 // re-litigate that. autonomous-triage-core.js's NEW-ARTIFACT ALLOWANCE
@@ -163,9 +165,10 @@ function armingWarning(notesStr, deps = {}) {
       `  ${bad.reason}\n\n` +
       'The command is a valid safe form, so the shape check passes and the card LOOKS armed.\n' +
       'It is not. `node --test <bad path>` prints "Could not find ..." and exits 1, which\n' +
-      "acceptance-check-core.js's runVerify() reports as 'fail' — so once this card is marked\n" +
-      'Done its nightly recheck goes red forever, for a reason that has nothing to do with the\n' +
-      'work. A permanently-red recheck is how a real regression gets ignored.\n\n' +
+      "acceptance-check-core.js's runVerify() reports as 'unverifiable' — so once this card is\n" +
+      'marked Done its nightly recheck can never actually verify it, for a reason that has\n' +
+      'nothing to do with the work. A card that never verifies is as useless as one that never\n' +
+      'passes.\n\n' +
       'Naming a test file this card WILL CREATE is correct and does NOT trigger this warning —\n' +
       'the parent directory just has to exist. This fires only when the directory itself is\n' +
       'fabricated, or when the path names a directory rather than a file.\n\n' +

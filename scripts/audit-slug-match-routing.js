@@ -30,6 +30,7 @@ const {
   cleanSlugForMatcher, _showDistinctiveTokens, _tokenAppearsInSlug,
 } = require('./lib/show-matching');
 const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // This script's own local resolver (pre-task #1749) tried the legacy
 // $HOME/broadway-review-texts clone BEFORE data/review-texts — backwards from
@@ -98,12 +99,8 @@ function main() {
   const shows = loadShows();
   const showById = new Map(shows.map(s => [s.id, s]));
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(d => !d.startsWith('.') && !d.startsWith('_'))
-    .filter(d => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); }
-      catch { return false; }
-    });
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR)
+    .filter(d => !d.startsWith('.') && !d.startsWith('_'));
 
   console.log(`Scanning ${showDirs.length} show directories in ${REVIEW_TEXTS_DIR}...`);
 

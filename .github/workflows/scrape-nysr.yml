@@ -9,6 +9,10 @@ on:
 permissions:
   contents: write
 
+concurrency:
+  group: scrape-nysr
+  cancel-in-progress: false
+
 jobs:
   scrape-nysr:
     runs-on: ubuntu-latest

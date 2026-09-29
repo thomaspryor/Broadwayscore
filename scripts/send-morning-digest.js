@@ -54,7 +54,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
   break;
 }
 
-const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused } = require('./lib/digest-snapshots.js');
+const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused, SYNC_REFUSED_READ_FAILED } = require('./lib/digest-snapshots.js');
 const { renderTrunkDigestLine } = require('./lib/trunk-status.js');
 const {
   esc,
@@ -63,12 +63,19 @@ const {
   renderRedditDigestBlock,
   renderNamedDigestBlock,
   autofixLoopDeadMessage,
+  renderNeedsAttentionBlock,
+  buildOwnerView,
+  visitorProblemNames,
+  renderOwnerTopBlock,
+  renderTechnicalDetailsHeading,
 } = require('./lib/autonomous-email-render.js');
 const { assessAutofixEffectiveness, readLedgerRows } = require('./lib/autofix-effectiveness.js');
+const { assessThroughputRow, throughputDeathMessage } = require('./lib/autofix-canary.js');
 const { assessCyrusRelay } = require('./lib/cyrus-relay-health.js');
 const { assessRunnerHealth } = require('./lib/cyrus-runner-health.js');
 const { assessSupervisorStatus } = require('./lib/pr-supervisor-core.js');
 const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-ratio.js');
+const { doneRatePerDay, fetchUnarmedUrgentHighCount, formatDrainThroughputLine, isHeartbeatFresh } = require('./lib/linear-drain-throughput.js');
 
 // Task #1220/BRO-230 (ship-check adversarial finding): health.errors can
 // NEVER carry the "Autofix: jobs actually succeeding" row in the normal case
@@ -79,7 +86,8 @@ const { fetchInflowCounts, assessInflowRatio } = require('./lib/backlog-inflow-r
 // that writes the ledger) — read it directly here instead of trusting the
 // CI-produced health.errors to ever carry the dead-loop signal.
 const DIGEST_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'digest-autofix-ledger.jsonl');
-function localLoopDeadMessage() {
+const BACKLOG_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'backlog-drain-ledger.jsonl');
+function localLoopDeadMessage({ pendingIssues = 0 } = {}) {
   let rows;
   try {
     rows = readLedgerRows(DIGEST_LEDGER_PATH);
@@ -89,7 +97,39 @@ function localLoopDeadMessage() {
   }
   if (rows === null) return null; // ledger absent on this machine this run — unknown, not dead
   const r = assessAutofixEffectiveness(rows);
-  return r.status === 'error' ? r.message : null;
+  if (r.status === 'error') return r.message;
+
+  // BRO-3321. assessAutofixEffectiveness can only speak about dispatches that
+  // HAPPENED — its window counts outcomes and launches. A loop that stopped
+  // dispatching altogether produces neither, and reads as "not enough to
+  // judge", i.e. silence. That is not hypothetical: this ledger has a
+  // 2026-08-15..2026-09-13 hole with zero rows of any kind, a month in which
+  // nothing alarmed at all. Quieting the false DEAD banner without covering
+  // that hole would have traded a noisy wrong alarm for a quiet missing one.
+  //
+  // assessThroughputRow already detects it (ZERO_DISPATCH_ERROR_DAYS), but it
+  // is only wired into health-check.js, which runs in GitHub Actions where
+  // BOTH of these ledgers are per-machine and absent — so there it can only
+  // ever say 'warn'. Same reasoning as the block above: this sender runs on
+  // the machine that WRITES them, so it is the only place the row can be real.
+  //
+  // Scoped to the zero-DISPATCH arm deliberately. The zero-PASS arm is the
+  // same question assessAutofixEffectiveness already answers above, and
+  // surfacing both would double-fire one condition as two banners.
+  // readLedgerRows, not a fourth reader: same null-means-absent contract
+  // assessThroughputRow requires (null is "unreadable here", [] is "genuinely
+  // empty" — it must never score a missing ledger as healthy).
+  let backlogRows = null;
+  try {
+    backlogRows = readLedgerRows(BACKLOG_LEDGER_PATH);
+  } catch (err) {
+    console.error(`[digest] WARN could not read backlog-drain ledger: ${String(err.message).slice(0, 120)}`);
+  }
+  // The decision itself lives in autofix-canary.js as a pure function so it is
+  // unit-testable — it gates a red banner in the owner's inbox, and this file
+  // reads disk and sends mail, so nothing here can be tested directly.
+  const t = assessThroughputRow({ digestLedgerEntries: rows, backlogLedgerEntries: backlogRows });
+  return throughputDeathMessage(t, { pendingIssues });
 }
 
 // Cyrus relay health. Same reasoning as the ledger above: the status file is
@@ -300,68 +340,127 @@ function httpsJson(method, url, headers, body) {
 // thing, so the email body is unaffected. Extracted (CLAUDE.md rule 15) so
 // this safety property has a real regression test instead of living only as
 // an inline `||`.
-function autofixShouldDryRun({ dryRun = false, syncRefused = null } = {}) {
-  return !!dryRun || !!syncRefused;
+//
+// BRO-3393: this used to be `!!dryRun || !!syncRefused`, and that single `||`
+// cost the owner ~29 days of auto-fix. `readSyncRefused()` globs
+// data/audit/sync-refused-*.json across EVERY launchd tag, while
+// sync-audit-checkout.sh's clear_refused_snapshot() removes only its OWN
+// tag's file. So one chronically-failing sibling job (linear-drain-parked,
+// predispatch-queue-audit) left a snapshot on disk indefinitely and forced
+// the digest into dry-run every morning - no cards filed, no dispatches -
+// even on mornings the digest's own gate fast-forwarded cleanly. The ledger
+// shows the damage: 6 auto-dispatch rows in 31 days, on 2 days.
+//
+// The property task #1818 actually wanted is "is THIS checkout trustworthy
+// right now". Only the digest's OWN tag answers that, and it answers it
+// well: the plist runs `SYNC_TAG=digest bash sync-audit-checkout.sh`
+// seconds before this process starts, so sync-refused-digest.json is either
+// freshly written or freshly deleted. A sibling's snapshot from 22:30 last
+// night is strictly worse evidence about the tree this process is reading.
+// Sibling refusals still render in the email (renderNamedDigestBlock below)
+// - they are real alerts, they just must not disable auto-fix.
+//
+// ownTag is a CONSTANT, deliberately NOT process.env.SYNC_TAG (ship-check
+// finding, BRO-3393). Reading it from the environment would make the answer
+// to "is THIS checkout trustworthy" settable by anything that can set an env
+// var - a manual invocation, a wrapper script, an inherited shell, the repo's
+// own .env loader. `SYNC_TAG=shadow node scripts/send-morning-digest.js`
+// would then ignore a real, live digest refusal and dispatch anyway. The
+// no-drift property the plist gives us is preserved where it costs nothing:
+// a test pins that the plist's exported SYNC_TAG equals this constant, so the
+// two can never disagree without CI saying so.
+const DIGEST_SYNC_TAG = 'digest';
+
+// Fails CLOSED on ambiguity, which is the whole safety property:
+//   * our tag among `unreadableTags` - a refusal snapshot named for US exists
+//     but could not be parsed. It may say we refused. Dry-run.
+//   * no `tags` array - a caller (or an older snapshot reader) that cannot say
+//     whose refusal it is at all. Dry-run.
+// It deliberately does NOT fail closed on a SIBLING's unreadable snapshot:
+// only the owning job ever clears its own file, so one corrupt sibling file
+// would otherwise suppress the digest's auto-fix forever - the exact bug this
+// function is being changed to fix.
+function autofixShouldDryRun({ dryRun = false, syncRefused = null, ownTag = DIGEST_SYNC_TAG } = {}) {
+  if (dryRun) return true;
+  if (!syncRefused) return false;
+  const mine = (t) => String(t) === String(ownTag);
+  if (Array.isArray(syncRefused.unreadableTags) && syncRefused.unreadableTags.some(mine)) return true;
+  if (!Array.isArray(syncRefused.tags)) return true;
+  return syncRefused.tags.some(mine);
 }
 
 // Subject contract: MUST match SCHEDULED_SENDERS['morning-digest'].pattern in
 // scripts/lib/scheduled-email-count-rules.js — the one-email-per-day monitor
 // classifies by this prefix, and the parity test in digest-snapshots.test.mjs
-// enforces it. Never a count ("0 items" reads as broken, owner feedback
-// 2026-07-27); the site-health escalation suffix is the only variable part.
-function buildSubject({ health = null, autofixRows = null, now = new Date() } = {}) {
+// enforces it. Never a count of "items" ("0 items" reads as broken, owner
+// feedback 2026-07-27).
+//
+// 2026-09-24 rework (owner: "confusing and un-actionable and annoying"): the
+// subject answers the owner's two questions in plain English, and nothing
+// else. "Site OK" / "⚠️ visitors affected: <name>" comes ONLY from
+// visitor-facing health rows (lib/digest-audience.js; unknown checks count as
+// visitor-facing), then "N decisions for you" / "nothing needs you". The old
+// "⛔ site health: 69 known/managed, 14 new/regressing" suffix counted the
+// automation's own machinery (CI, dispatch, cmux ...) the owner can neither
+// see nor act on; those counts now live in the email's Technical details.
+const SUBJECT_NAME_MAX = 42;
+function buildSubject({ health = null, autofixRows = null, awaitingOwner = null, needsYou = null, inReviewBacklog = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'short', month: 'short', day: 'numeric',
   }).format(now);
-  // The urgent/⛔ escalation flag is driven by health-check.js's own
-  // consecutiveErrorDays streak logic ("BSC URGENT (day N): ..." in
-  // health.subject) — unchanged by the split below, so the streak counter's
-  // identity (what makes the subject scream vs stay calm) is preserved.
-  const urgent = health && /URGENT/.test(health.subject || '');
-  let suffix = '';
-  if (Array.isArray(autofixRows) && autofixRows.length) {
-    // Digest truthfulness (BRO-232 S4): a flat error/warning count conflates
-    // "we've seen this every morning and it's tracked/dispatched" with
-    // "brand-new this run" — the exact conflation the owner flagged. `wasNew`
-    // (set by digest-autofix.js's planAutofix/runAutofix) is the real signal:
-    // false = already covered by a card/dispatch (or explicitly acknowledged),
-    // true = first sighting of this row's family. Decision rows are excluded
-    // from both buckets — they're a genuine judgment call, not a fix status,
-    // and already render in their own "Needs your decision" section.
-    const known = autofixRows.filter(r => r && !r.wasNew && r.state !== 'decision').length;
-    const regressing = autofixRows.filter(r => r && r.wasNew && r.state !== 'decision').length;
-    if (known || regressing) {
-      suffix = ` · ${urgent ? '⛔' : '⚠️'} site health: ${known} known/managed, ${regressing} new/regressing`;
-    }
+  const view = buildOwnerView({ health, autofixRows, needsYou, awaitingOwner, inReviewBacklog });
+  let site;
+  if (view.siteState === 'affected') {
+    const names = visitorProblemNames(view);
+    const first = names[0] || 'site problem';
+    const clipped = first.length > SUBJECT_NAME_MAX ? `${first.slice(0, SUBJECT_NAME_MAX - 1).trimEnd()}…` : first;
+    site = `⚠️ visitors affected: ${clipped}${names.length > 1 ? ` (+${names.length - 1} more)` : ''}`;
+  } else if (view.siteState === 'minor') {
+    // Visitor warnings are never an all-clear (some hide content from
+    // visitors), but they are not an outage either.
+    const n = view.visitorItems.length;
+    site = `site mostly OK · ${n} minor visitor issue${n === 1 ? '' : 's'}`;
+  } else if (view.siteState === 'ok') {
+    site = 'Site OK';
   } else {
-    // Fallback (autofixRows unavailable — e.g. autofix failed before compose,
-    // see main()'s WARN autofix failed branch): byte-identical to pre-BRO-232
-    // behavior.
-    const errs = health ? (health.errors?.length || 0) : 0;
-    const warns = health ? (health.warns?.length || 0) : 0;
-    if (errs || warns) {
-      suffix = ` · ${urgent ? '⛔' : '⚠️'} site health: ${errs} error${errs === 1 ? '' : 's'}, ${warns} warning${warns === 1 ? '' : 's'}`;
-    }
+    site = 'site check missing';
   }
-  return `Morning digest — ${dateLabel}${suffix}`;
+  const ask = view.decisions ? `${view.decisions} decision${view.decisions === 1 ? '' : 's'} for you` : 'nothing needs you';
+  // BRO-2425 (BRO-420 follow-up): a 48h+ stale awaiting-owner item is
+  // PREPENDED, not appended — mobile/notification previews truncate long
+  // subjects, and this is the owner-actionable part that must not be cut off.
+  const stale = view.staleApprovals
+    ? ` · ⚠️ ${view.staleApprovals} approval${view.staleApprovals === 1 ? '' : 's'} waiting 48h+`
+    : '';
+  return `Morning digest — ${dateLabel}${stale} · ${site} · ${ask}`;
 }
 
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
+  // 2026-09-24 rework: the email is two layers. `head` is the owner-first
+  // top (site status for visitors, decisions, what the automation did, one
+  // "Behind the scenes" line; see renderOwnerTopBlock). `parts` below is the
+  // full technical report, unchanged in content, rendered under a "Technical
+  // details" heading so nothing is lost for debugging. Internal-machinery
+  // alarms (trunk red, dead loop, PR supervisor, Cyrus, runners, watchdog)
+  // all live in `parts` now: the owner can neither see nor act on them.
+  const head = [];
+  head.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
+  head.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
   const parts = [];
-  parts.push(`<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;max-width:560px;margin:0 auto;padding:18px 14px;color:#111;">`);
-  parts.push(`<p style="font-size:15px;font-weight:700;margin:0 0 12px;">Morning digest · ${esc(dateLabel)}</p>`);
 
   // Trunk status (task #1003) — a standing line, always rendered when the
   // snapshot exists, so aggregate CI redness can never again sit unnoticed
   // for days (2026-08-04: red on ~96% of main runs, four separate causes).
-  // Past 24h red it takes the HEADLINE slot, above the site-health verdict:
-  // at that point it is the most important thing in the email.
+  // Past 24h red it takes the headline slot of the TECHNICAL report (the
+  // 2026-09-24 rework moved it out of the owner-first top: CI red does not
+  // by itself affect visitors; "Deploy: production freshness" does, and that
+  // row is classified visitor-facing).
   const trunkLine = (() => {
     try { return renderTrunkDigestLine(sections.trunk); }
     catch { return null; }
@@ -401,11 +500,39 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // Local ledger read is authoritative (this machine IS the dispatch host);
   // fall back to scanning health.errors only for the hypothetical case that
   // check ever runs somewhere the ledger is actually visible.
-  const loopDeadMsg = localLoopDeadMessage() || autofixLoopDeadMessage(sections.health);
+  const loopDeadMsg = localLoopDeadMessage({ pendingIssues: fixing }) || autofixLoopDeadMessage(sections.health);
+  // Owner-first top block (2026-09-24 rework). Decisions render here, at the
+  // top, with their one-click action links intact (owner mandate
+  // 2026-08-02); everything else follows under "Technical details".
+  const view = buildOwnerView({
+    health: sections.health, autofixRows, needsYou: sections.needsYou, awaitingOwner: sections.awaitingOwner,
+    inReviewBacklog: sections.inReviewBacklog, loopDead: !!loopDeadMsg,
+  });
+  // Without autofix rows the fallback count also folds freshness/stuck in,
+  // exactly like the technical "issues detected" line below.
+  if (!Array.isArray(autofixRows)) view.tracked = fixing;
+  const decisionBlocksHtml = [
+    renderNeedsAttentionBlock(view.decisionQueued),
+    // "Needs You" tab triage (card #870) — the owner's own pending decisions.
+    sections.needsYou ? renderNamedDigestBlock('Needs your decision', sections.needsYou) : '',
+    // Waiting on your approval (BRO-282) — Linear issues carrying the
+    // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
+    // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
+    // above (session-scoped cmux state, dies with the tab): this is
+    // issue-scoped and survives the originating session closing.
+    sections.awaitingOwner ? renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner) : '',
+    // Parked in review (BRO-3376) — finished work waiting on the owner with
+    // no opt-in marker; de-duplicated against awaitingOwner in buildOwnerView.
+    view.reviewQueue ? renderNamedDigestBlock('Review queue', view.reviewQueue) : '',
+  ].filter(Boolean).join('\n');
+  head.push(renderOwnerTopBlock(view, { decisionBlocksHtml, overnightLine }));
+
+  // Technical report starts here. The raw error names stay (debugging), but
+  // are no longer called "site errors": most are the automation's own
+  // machinery, and the visitor-facing ones are already named in plain
+  // English at the top.
   if (errs) {
-    parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} site error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
-  } else {
-    parts.push(`<p style="font-size:13px;font-weight:700;color:#15803d;margin:0 0 6px;">Nothing needs your attention this morning.</p>`);
+    parts.push(`<p style="font-size:13px;font-weight:700;color:#b45309;margin:0 0 6px;">${esc(`${errs} health-check error${errs === 1 ? '' : 's'}: ${errNames.slice(0, 3).join('; ')}${errNames.length > 3 ? ` (+${errNames.length - 3} more)` : ''}`)}</p>`);
   }
   if (loopDeadMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(fixing)} issue${fixing === 1 ? '' : 's'} detected, but the auto-fix loop looks DEAD — don't count on these getting fixed automatically. ${esc(loopDeadMsg)}</p>`);
@@ -440,7 +567,12 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // changed, then scores/Reddit. The opening-night radar left this email
   // 2026-07-30 — it's a standalone daily send again (send-opening-digest.js).
   const blocks = [];
-  if (sections.health) blocks.push(renderHealthDigestBlock(sections.health, autofixRows, loopDeadMsg));
+  // omitQueued: owner decisions already rendered at the top. Any non-decision
+  // queued rows (only when autofix failed before compose) stay here.
+  if (sections.health) {
+    blocks.push(renderHealthDigestBlock(sections.health, autofixRows, loopDeadMsg, { omitQueued: true })
+      + renderNeedsAttentionBlock(view.otherQueued));
+  }
   // Data freshness (task #689) — high-severity data gaps (missing poster,
   // missing tickets on open shows) that used to be computed daily and thrown
   // away. Same {generatedAt, bannerText, items, moreCount} shape as
@@ -478,13 +610,23 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
     const prefix = inflow.status === 'error' || inflow.status === 'watch' ? '⚠️ ' : '';
     blocks.push(`<p style="font-size:12px;color:${colour};margin:0 0 12px;">${prefix}${esc(inflow.message)}</p>`);
   }
-  if (sections.needsYou) blocks.push(renderNamedDigestBlock('Needs your decision', sections.needsYou));
-  // Waiting on your approval (BRO-282) — Linear issues carrying the
-  // 'awaiting-owner' label (work finished, blocked on a plain-language yes,
-  // e.g. the /visual-qa pre-push gate). Distinct from "Needs your decision"
-  // above (session-scoped cmux state, dies with the tab): this is
-  // issue-scoped and survives the originating session closing.
-  if (sections.awaitingOwner) blocks.push(renderNamedDigestBlock('Waiting on your approval', sections.awaitingOwner));
+  // Linear drain throughput (BRO-3923 R6) — a STANDING line next to the
+  // inflow row above, same reasoning: Done/day, watchdog-eligible queue
+  // depth, and unarmed Urgent/High count are exactly the numbers that would
+  // have caught "the drain hasn't moved in weeks" before it took a hand
+  // audit (31 mis-filed trackers) to notice.
+  if (drainThroughputLine) {
+    blocks.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(drainThroughputLine)}</p>`);
+  }
+  // "Needs your decision", "Waiting on your approval" and "Review queue"
+  // moved to the owner-first top block (2026-09-24 rework) — see
+  // decisionBlocksHtml above. The Review queue (BRO-282's residual half,
+  // BRO-3376) is Linear issues in the `In Review` state, which is where
+  // linear-dispatch.js's seed prompt tells every finished session to park.
+  // It needs no opt-in, which is why it is the block that would have caught
+  // the actual leak: 120 finished items, 100 of them 14+ days old, were
+  // sitting unread on 2026-09-15 — including BRO-282 itself, for 28 days.
+  // It must therefore count toward the subject's "N decisions for you".
   if (sections.providerSpend) blocks.push(renderNamedDigestBlock('Scraping spend', sections.providerSpend));
   // Coverage Verdict (task #905) — same {generatedAt, bannerText, items,
   // moreCount} shape, no new render code.
@@ -506,6 +648,14 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // new render code. Same producer/plist as predispatchQueue, so it also
   // appears every morning.
   if (sections.dispatchGuardQueue) blocks.push(renderNamedDigestBlock('Dispatch guard queue backlog', sections.dispatchGuardQueue));
+  // Done-evidence audit (BRO-3426) — scripts/audit-done-evidence.js re-proves
+  // every Done(14d)/In Review/In Progress card's OWN claimed evidence against
+  // a fresh origin/main and names what no longer holds. Same {generatedAt,
+  // bannerText, items, moreCount} shape, no new render code. Placed after the
+  // dispatch/queue blocks because it is about the board's own honesty rather
+  // than about work waiting to start. SHADOW MODE: the producer never changes
+  // a Linear state, so every row here is a report, not an action already taken.
+  if (sections.doneEvidence) blocks.push(renderNamedDigestBlock('Done-evidence audit', sections.doneEvidence));
   // launchd blocked git syncs (task #1563) — same {generatedAt, bannerText,
   // items, moreCount} shape, no new render code. Only appears when a job's
   // sync actually got blocked (see readSyncRefused's header — not every
@@ -513,18 +663,23 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   // here) — silent on a normal morning, unlike the always-on blocks above.
   if (sections.syncRefused) blocks.push(renderNamedDigestBlock('Launchd sync blocked (stale checkout)', sections.syncRefused));
   // Digest v3 (owner mandate 2026-08-02): the old "What changed" block —
-  // commit messages, slugs, counters — is gone. One plain sentence remains.
-  if (overnightLine) blocks.push(`<div style="font-size:12px;color:#666;margin:0 0 14px;">${overnightLine}</div>`);
+  // commit messages, slugs, counters — is gone. One plain sentence remains,
+  // and since the 2026-09-24 rework it sits in the owner-first top block
+  // ("what the automation did"), not down here.
 
   if (blocks.length) {
     parts.push(blocks.join('\n'));
-  } else {
-    parts.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">All quiet — no overnight changes to report.</p>`);
+  } else if (!overnightLine) {
+    head.push(`<p style="font-size:13px;color:#666;margin:0 0 12px;">All quiet — no overnight changes to report.</p>`);
+  }
+  if (parts.length) {
+    head.push(renderTechnicalDetailsHeading());
+    head.push(...parts);
   }
 
-  parts.push(`<p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`);
-  parts.push(`</div>`);
-  return parts.join('\n');
+  head.push(`<p style="color:#999;font-size:11px;margin-top:16px;text-align:center;">Broadway Scorecard morning digest</p>`);
+  head.push(`</div>`);
+  return head.join('\n');
 }
 
 // Composes the subject+html the SAME way the real send does: attach Fix-this
@@ -535,7 +690,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -566,8 +721,8 @@ function composeDigestEmail({
     }
   }
 
-  const subject = buildSubject({ health: sections.health, autofixRows, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, now });
+  const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, now });
   return { subject, html };
 }
 
@@ -636,6 +791,41 @@ async function main() {
     console.error(`[digest] WARN could not read local digest-invariant-fail ledger: ${String(err.message).slice(0, 120)}`);
   }
 
+  // BRO-467 follow-up: same cross-machine gap as the two folds above, for
+  // health-check.js's "Autofix: daily canary" row. That CI row's own header
+  // comment ("Tomorrow's health-check reads the ledger this writes" —
+  // scripts/send-morning-digest.js:1132-1136 below) assumed data-health-
+  // check.yml could see data/audit/autofix-canary-ledger.jsonl — it's
+  // gitignored/Mac-local, so that assumption never held and the CI row could
+  // only ever read 'warn' ("cannot measure here"), never the confirmed
+  // 'error' a genuine end-to-end pipeline break produces. checkAutofixCanary
+  // is now CI-skipped entirely (BRO-467) rather than emitting that
+  // permanently-uninformative warn, so this local, live-data fold is what
+  // keeps a REAL canary failure from going silent — same as task #1648 did
+  // for the invariant-fail row just above.
+  try {
+    const { assessCanaryRow } = require('./lib/autofix-canary.js');
+    const dispatchLedger = require('./lib/dispatch-ledger.js');
+    const canaryLedgerPath = path.join(REPO, 'data', 'audit', 'autofix-canary-ledger.jsonl');
+    let canaryLedgerEntries = null;
+    if (fs.existsSync(canaryLedgerPath)) {
+      canaryLedgerEntries = fs.readFileSync(canaryLedgerPath, 'utf8').split('\n')
+        .map((l) => l.trim()).filter(Boolean)
+        .map((l) => { try { return JSON.parse(l); } catch { return null; } })
+        .filter(Boolean);
+    }
+    let dispatchLedgerEntries = [];
+    try { dispatchLedgerEntries = dispatchLedger.readEntries(); } catch { /* stage folding degrades to card-filed-only, same as checkAutofixCanary */ }
+    const row = assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries });
+    if (row.status === 'error') {
+      if (!sections.health) sections.health = {};
+      if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
+      sections.health.errors.push({ name: row.name, message: row.message, hint: row.hint });
+    }
+  } catch (err) {
+    console.error(`[digest] WARN could not read local autofix-canary ledger: ${String(err.message).slice(0, 120)}`);
+  }
+
   // Data freshness (task #689) — separate file/dir from the SNAPSHOTS fold
   // above, read directly. Fail-soft: a broken read degrades to one missing
   // section, never blocks the send (same rule as every other section here).
@@ -678,7 +868,14 @@ async function main() {
   try {
     sections.syncRefused = readSyncRefused();
   } catch (err) {
-    console.error(`[digest] WARN sync-refused snapshot read failed: ${String(err.message).slice(0, 120)}`);
+    // Fail CLOSED (ship-check finding, BRO-3393). This catch used to leave
+    // sections.syncRefused undefined, which autofixShouldDryRun reads as
+    // "nobody refused" — so a thrown read, the single most ambiguous state
+    // there is, was the one path that let real card filing and real headless
+    // dispatch run without ANY freshness evidence. The sentinel's `tags: null`
+    // is what makes the guard hold.
+    console.error(`[digest] WARN sync-refused snapshot read failed — holding auto-fix in dry-run: ${String(err.message).slice(0, 120)}`);
+    sections.syncRefused = SYNC_REFUSED_READ_FAILED;
   }
 
   const autofixDryRun = autofixShouldDryRun({ dryRun, syncRefused: sections.syncRefused });
@@ -705,11 +902,18 @@ async function main() {
   // by minutes; ship-check finding, BRO-282). The race is local to this call
   // site, not a change to listOpenIssues()'s shared retry defaults, which
   // other callers (linear-next.js --list) still want in full.
+  // Hoisted out of the try below so the "Parked in review" block can reuse
+  // this exact fetch instead of making a second identical round trip —
+  // buildOpenIssuesQuery() already returns state/priority/updatedAt/url, every
+  // field in-review-backlog.js needs. Stays null if the fetch failed, and that
+  // block then omits itself, same fail-soft contract as every other section.
+  let openIssues = null;
   try {
     const linear = require('./lib/linear-client.js');
     const { buildAwaitingOwnerSection, isAwaitingOwner, enrichWithComments } = require('./lib/owner-approval-channel.js');
     const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
     const issues = await Promise.race([linear.listOpenIssues(), timeout(15_000)]);
+    openIssues = issues;
     const awaiting = (issues || []).filter(isAwaitingOwner);
     // BRO-420: "waiting since" is derived from linear-attach-approval.js's
     // summary comment, not issue.updatedAt (see owner-approval-channel.js's
@@ -738,6 +942,81 @@ async function main() {
     console.error(`[digest] WARN awaiting-owner section failed: ${String(err.message).slice(0, 120)}`);
   }
 
+  // Parked in review (BRO-3376) — the passive half of BRO-282. See
+  // scripts/lib/in-review-backlog.js's header for why this is a separate
+  // block from the awaiting-owner one above rather than folded into it.
+  // Pure shaping over the fetch already made above; fail-soft like every
+  // other section, and it omits itself entirely when nothing has been
+  // sitting past the idle threshold.
+  try {
+    if (openIssues && openIssues.length) {
+      const { buildInReviewSection } = require('./lib/in-review-backlog.js');
+      const section = buildInReviewSection(openIssues);
+      if (section) sections.inReviewBacklog = section;
+    }
+  } catch (err) {
+    console.error(`[digest] WARN in-review backlog section failed: ${String(err.message).slice(0, 120)}`);
+  }
+
+  // Board targeting (BRO-3423) — is the fleet's always-on automation actually
+  // dispatching off the LIVE board, or off one we declared retired?
+  //
+  // WHY THIS IS FOLDED INTO sections.health.errors RATHER THAN GIVEN ITS OWN
+  // DIGEST BLOCK. The failure it catches ran for two weeks unnoticed: the
+  // crowned dispatch watchdog spent its entire day budget re-dispatching
+  // retired-board Notion ids while 122 of 137 armed Linear issues had never
+  // been touched. A quiet line in a block of its own would have reproduced
+  // that exactly — `backlogDrain` is registered bannerOnly + optionalIfMissing
+  // and its producer has been dead since 2026-08-31 without anyone noticing.
+  // sections.health.errors is the one field the subject line and top verdict
+  // both read, so a mis-targeted fleet is loud on the first morning.
+  //
+  // For the same reason there is no launchd plist and no snapshot file: a
+  // separate Mac-local producer is one more thing that can die silently. The
+  // digest reads the ledgers itself, here, at send time.
+  //
+  // Fail-soft like every other section — but note that "could not read the
+  // ledger" comes back as status 'error' (blind), NOT as a pass. A check that
+  // reports healthy because it cannot see its evidence is the exact failure
+  // this card is about.
+  try {
+    const { readDispatchLedgers, fetchLiveBoardArmed } = require('./lib/board-targeting-sources.js');
+    const { auditWriterBoards, auditLiveBoardCoverage, summarizeBoardTargeting } = require('./lib/board-targeting-audit.js');
+    // `Date.now()` inline, NOT the `now` binding — that const is declared ~100
+    // lines below this block (see the TDZ note in the inflow block above).
+    const auditNow = Date.now();
+    const { rows, everTouchedIds, blind, primaryLedger, primaryLastRowTs, problems } = readDispatchLedgers({});
+    const writerAudit = auditWriterBoards({ rows, now: auditNow });
+    const live = await fetchLiveBoardArmed({});
+    const coverage = auditLiveBoardCoverage({
+      eligibleIds: live.eligibleIds,
+      everTouchedIds,
+      ok: live.ok,
+      reason: live.reason,
+      // The eligible set comes from the dispatcher's OWN eligibility rules, so
+      // a bug that collapsed it would shrink the denominator and silently
+      // exonerate the fleet. openIssues is already fetched above; carrying the
+      // raw count alongside makes that collapse a visible number.
+      openIssueCount: openIssues ? openIssues.length : null,
+    });
+    const row = summarizeBoardTargeting({ writerAudit, coverage, now: auditNow, blind, primaryLedger, primaryLastRowTs });
+    // An unreadable SECONDARY ledger shrinks everTouchedIds, which inflates the
+    // coverage arm's never-touched count and can manufacture a false FAIL. Say
+    // so in the row rather than letting it read as a clean measurement
+    // (ship-check finding).
+    if (problems.length && row.status === 'error') {
+      row.message += ` (note: ${problems.join('; ')})`;
+    }
+    if (row.status === 'error') {
+      if (!sections.health) sections.health = {};
+      if (!Array.isArray(sections.health.errors)) sections.health.errors = [];
+      sections.health.errors.push({ name: row.name, message: row.message, hint: row.hint });
+    }
+    console.log(`[digest] board-targeting: ${row.status} — ${row.message}`);
+  } catch (err) {
+    console.error(`[digest] WARN board-targeting check failed: ${String(err.message).slice(0, 120)}`);
+  }
+
   // Backlog inflow ratio (BRO-3017, owner decision 2026-09-08 "B then A").
   // Live fetch, fail-soft, raced against a 20s timeout — the same shape as the
   // awaiting-owner section above and for the same reason: a degraded Linear
@@ -745,6 +1024,11 @@ async function main() {
   // because this walks four paginated counts, not one list; both are wrapped
   // locally rather than by changing listOpenIssues()'s shared retry defaults.
   let inflow = null;
+  // Captured alongside `inflow` (BRO-3923 R6) so the drain-throughput block
+  // just below can re-derive "Done/day" from the SAME completed/windowDays
+  // pair rather than issuing a second live completedAt query for a number
+  // this fetch already has.
+  let inflowCounts = null;
   try {
     const { graphql } = require('./lib/linear-client.js');
     const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
@@ -755,6 +1039,7 @@ async function main() {
     // consumer of the Notion read-only flip report success while dead.
     const counts = await Promise.race([fetchInflowCounts({ graphql, now: new Date() }), timeout(20_000)]);
     inflow = assessInflowRatio(counts);
+    inflowCounts = counts;
   } catch (err) {
     const why = String(err.message).slice(0, 120);
     console.error(`[digest] WARN backlog inflow ratio failed: ${why}`);
@@ -768,6 +1053,73 @@ async function main() {
       ratio: null,
       message: `Backlog inflow: could not be measured this morning (${why}). This row is not "no news" — nobody is watching the create-to-close rate until it comes back.`,
     };
+  }
+
+  // Linear drain throughput (BRO-3923 R6): "Done/day" is re-derived from
+  // inflowCounts above (no extra query — see linear-drain-throughput.js's
+  // header for why job-done/Notion-mirror sources were rejected). The
+  // watchdog's own eligible-queue count is read from its heartbeat file (the
+  // live 👑 OWNER watchdog tab already computes it every ~90s), and the
+  // unarmed Urgent/High count is the one NEW live query this block adds.
+  // Fail-soft, same shape as inflow above — a degraded read must not block
+  // the 7:30am send, and must not silently drop the line either.
+  let drainThroughputLine = null;
+  try {
+    const { graphql } = require('./lib/linear-client.js');
+    const timeout = (ms) => new Promise((_, reject) => setTimeout(() => reject(new Error(`timed out after ${ms}ms`)), ms));
+    const unarmed = await Promise.race([fetchUnarmedUrgentHighCount({ graphql }), timeout(20_000)]);
+
+    let eligible = null;
+    let eligibleOk = false;
+    try {
+      const { HEARTBEAT_PATH } = require('./dispatch-watchdog.js');
+      const hb = JSON.parse(fs.readFileSync(HEARTBEAT_PATH, 'utf8'));
+      if (hb && hb.linearSource && hb.linearSource.ok && isHeartbeatFresh(hb.ts) && Number.isFinite(hb.linearSource.eligible)) {
+        eligible = hb.linearSource.eligible;
+        eligibleOk = true;
+      }
+    } catch { /* heartbeat missing/stale/unreadable — renders as n/a below, not a thrown error */ }
+
+    const donePerDay = inflowCounts
+      ? doneRatePerDay(inflowCounts.completed, inflowCounts.windowDays, {
+          // A truncated `completed` count is a FLOOR (backlog-inflow-ratio.js's
+          // fetchInflowCounts), not the real number — must render n/a, not an
+          // understated rate presented as exact (ship-check/Codex finding).
+          truncated: Array.isArray(inflowCounts.truncatedCounts) && inflowCounts.truncatedCounts.includes('completed'),
+        })
+      : null;
+    drainThroughputLine = formatDrainThroughputLine({
+      donePerDay,
+      windowDays: inflowCounts ? inflowCounts.windowDays : null,
+      eligible,
+      eligibleOk,
+      unarmedCount: unarmed.ok ? unarmed.count : null,
+    });
+    console.log(`[digest] ${drainThroughputLine}`);
+
+    // BRO-4135: persist the one number this block already computed daily so
+    // scripts/check-linear-drain-throughput.js (the RECHECK command on
+    // BRO-3913) can read it instead of issuing its OWN live Linear query —
+    // linear-drain-throughput.js's own header explicitly rejected a second
+    // live source for this exact number ("reusing that avoids a THIRD live
+    // Linear query for a number that process already computes"). Per-machine
+    // only (this script is launchd-scheduled, not CI — see
+    // com.broadwayscore.morning-digest.plist) — gitignored, same convention
+    // as the dispatch-watchdog heartbeat and predispatch-queue-audit
+    // snapshot files.
+    try {
+      fs.mkdirSync(path.join(REPO, 'data', 'audit'), { recursive: true });
+      fs.writeFileSync(
+        path.join(REPO, 'data', 'audit', 'linear-drain-throughput-snapshot.json'),
+        JSON.stringify({ computedAt: new Date().toISOString(), donePerDay, windowDays: inflowCounts ? inflowCounts.windowDays : null }, null, 2) + '\n',
+      );
+    } catch (snapshotErr) {
+      console.error(`[digest] WARN could not write linear-drain-throughput-snapshot.json (non-fatal): ${snapshotErr.message}`);
+    }
+  } catch (err) {
+    const why = String(err.message).slice(0, 120);
+    console.error(`[digest] WARN linear drain throughput failed: ${why}`);
+    drainThroughputLine = `Linear drain: could not be measured this morning (${why}).`;
   }
 
   const problemsNote = describeProblems(problems);
@@ -817,7 +1169,22 @@ async function main() {
     // filtered OUT of that array so renderHealthDigestBlock's "Needs your
     // attention" card only ever shows genuine judgment calls.
     const queuedForAutofix = Array.isArray(sections.health?.queued) ? sections.health.queued : [];
-    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m) });
+    // BRO-3438 (owner-approved 2026-09-15, "A then B"): how many auto-fix
+    // sessions this ONE dispatcher may have alive at once. It overrides
+    // backlog-drain.js's shared DEFAULT_CONCURRENCY_CAP (2) for the digest path
+    // only — raising that shared default would have moved every other drain's
+    // ceiling too. The digest's real daily throughput is
+    // min(DISPATCH_CAP, this - jobs still alive), so before this it was 2/day
+    // (logged as "2 being worked" every morning) and it is now 3/day.
+    //
+    // Why 3 and not the 8 the card's title proposed: disk is NOT the binding
+    // constraint (30 GiB free vs ~940 MB per job worktree), memory is. Measured
+    // 2026-09-20 on the Mac Studio: swap 12.6 GB used of 14.3 GB (1.7 GB free),
+    // load average 14. The other live dispatcher (linear-drain-parked, 2) shares
+    // that machine, so 3 here means at most 5 concurrent headless sessions.
+    // Raise it further only against a fresh `sysctl vm.swapusage` reading.
+    const DIGEST_CONCURRENCY_CAP = 3;
+    autofixRows = runAutofix({ plan: planAutofix({ health: sections.health, extraIssues, tasks, queued: queuedForAutofix }), dryRun: autofixDryRun, log: (m) => console.log(m), concurrencyCap: DIGEST_CONCURRENCY_CAP });
     // Liveness gate (task #940, owner screenshots 2026-08-03): the digest
     // once claimed "a fix session is working on it now" for 4 issues whose
     // sessions had died hours earlier — 'in-progress' state comes purely
@@ -884,7 +1251,7 @@ async function main() {
   } catch { /* optional */ }
 
   const now = new Date();
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, now });
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn
@@ -993,4 +1360,4 @@ if (require.main === module) {
   main().catch((err) => { console.error(`[digest] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun, localDispatchWatchdogLeakMessage };
+module.exports = { buildSubject, buildHtml, parseArgs, composeDigestEmail, autofixShouldDryRun, DIGEST_SYNC_TAG, localDispatchWatchdogLeakMessage };

@@ -1,7 +1,7 @@
 {
   "system": "main",
-  "status": "pass",
-  "lastChecked": "2026-09-05T02:22:00.874Z",
+  "status": "warn",
+  "lastChecked": "2026-09-28T14:32:26.967Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -10,6 +10,11 @@
       "name": "Main: red streak",
       "status": "pass",
       "message": "Last run green"
+    },
+    {
+      "name": "Main: green rate",
+      "status": "warn",
+      "message": "rate 35.1% (green 40 / red 74, 114 runs, 34 hung (cancelled >= 10 min, counted red)), 7d trend from 18.1%, day 0 of 14 at ≥80% → FAIL"
     }
   ]
 }

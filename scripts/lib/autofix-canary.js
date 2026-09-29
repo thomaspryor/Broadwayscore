@@ -49,6 +49,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 const dispatchLedger = require('./dispatch-ledger.js');
 const dispatchReconcile = require('./dispatch-reconcile.js');
+const { outcomeWindowTs } = dispatchReconcile;
 // syncTasks no longer imported: Linear filings need no task-mirror sync
 // (BRO-286) — the identifier fileCard returns is directly dispatchable.
 const { fileCard, dispatchDetached } = require('./digest-autofix.js');
@@ -57,10 +58,12 @@ const { repoDepthArgs } = require('./shallow-fetch-args.js');
 const REPO = path.join(__dirname, '..', '..');
 const CANARY_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'autofix-canary-ledger.jsonl');
 const CANARY_TITLE_PREFIX = 'CANARY: touch';
-// Same bound digest-autofix.js uses for its own orphan detection (see
-// ORPHAN_TIMEOUT_H there) — a dispatch whose job-spawned event never arrives
-// within this window is treated as refused, not "still running".
-const ORPHAN_TIMEOUT_H = 3;
+// A dispatch whose job-spawned event never arrives within this window is
+// treated as refused, not "still running". Imported rather than redeclared
+// (BRO-3321): this was the FOURTH independent `= 3` in the codebase, alongside
+// the three reconcilers, all of which hand it straight back to
+// dispatch-reconcile.classifyDispatches as `orphanTimeoutH`.
+const { ORPHAN_TIMEOUT_H } = dispatchReconcile;
 const ZERO_DISPATCH_ERROR_DAYS = 2;
 const ZERO_PASS_ERROR_DAYS = 3;
 const THROUGHPUT_WINDOW_DAYS = 7;
@@ -141,7 +144,15 @@ function foldCanaryStage({ dateStr, canaryLedgerEntries, dispatchLedgerEntries, 
     return { stage: 'job-done', taskId: filed.taskId, jobId: job.jobId };
   }
   if (job.event === dispatchLedger.JOB_EVENTS.FAILED || job.event === dispatchLedger.JOB_EVENTS.ORPHANED
-    || job.event === dispatchLedger.JOB_EVENTS.ABANDONED) {
+    || job.event === dispatchLedger.JOB_EVENTS.ABANDONED
+    // BRO-3442: a canary job that ended BLOCKED/STOPPED_SHORT/STRANDED is
+    // just as terminally-not-done as FAILED/ORPHANED/ABANDONED — without
+    // these, it fell through to the 'dispatched' (still-running) stage
+    // below, which is wrong for a check that only ever looks at YESTERDAY's
+    // canary (it should have reached a real terminal state long ago).
+    || job.event === dispatchLedger.JOB_EVENTS.BLOCKED
+    || job.event === dispatchLedger.JOB_EVENTS.STOPPED_SHORT
+    || job.event === dispatchLedger.JOB_EVENTS.STRANDED) {
     return { stage: 'job-failed', taskId: filed.taskId, jobId: job.jobId };
   }
   return { stage: 'dispatched', taskId: filed.taskId, jobId: job.jobId };
@@ -214,14 +225,42 @@ function dailyCounts(entries, dispatchEvent, windowDays, now) {
   }
   const dispatched = Object.fromEntries(days.map((d) => [d, 0]));
   const passed = Object.fromEntries(days.map((d) => [d, 0]));
+  // Rows skipped because their timestamp will not parse. Counted, not dropped:
+  // this reader covers BOTH ledgers, and only the digest one has a check
+  // (assessAutofixEffectiveness's `undated`) that would otherwise name the
+  // writer bug. A malformed row in backlog-drain-ledger.jsonl would be
+  // invisible here while still starving zeroDispatchStreak toward a false DEAD
+  // banner — silence causing the exact alarm this whole change set exists to
+  // stop being wrong about.
+  let unreadable = 0;
   for (const e of Array.isArray(entries) ? entries : []) {
-    if (!e || !e.ts) continue;
-    const day = canaryDateStr(e.ts);
+    if (!e) continue;
+    // BRO-3321: a card-pass belongs to the day its dispatch RAN, not the day
+    // reconciliation got around to writing it down — otherwise a late
+    // reconciliation credits the pass to the wrong day (and a month-late one,
+    // as happened on 2026-09-14, to a day a month away). Dispatch rows keep
+    // using their own ts, because for a dispatch the write IS the event.
+    const ts = e.event === dispatchEvent ? e.ts : outcomeWindowTs(e);
+    if (!ts) continue;
+    // A truthy-but-unparseable ts used to reach canaryDateStr, which does
+    // `new Date(ts).toISOString()` and throws RangeError: Invalid time value.
+    // Nothing up the stack caught it, and since BRO-3321 wired this row into
+    // send-morning-digest.js's localLoopDeadMessage, that throw would escape
+    // buildHtml and the owner's morning digest would simply never send —
+    // turning one malformed ledger row into a silent daily outage.
+    //
+    // The ledger explicitly models this row shape existing: autofix-
+    // effectiveness.js's undatedNote calls it out as "unreadable timestamps —
+    // writer bug, investigate separately" and counts such rows rather than
+    // dropping or dying on them. Same posture here: skip the row, keep the
+    // report, let the writer bug be found by the check that names it.
+    if (!Number.isFinite(Date.parse(ts))) { unreadable++; continue; }
+    const day = canaryDateStr(ts);
     if (!(day in dispatched)) continue;
     if (e.event === dispatchEvent) dispatched[day]++;
     else if (e.event === 'card-pass') passed[day]++;
   }
-  return { days, dispatched, passed };
+  return { days, dispatched, passed, unreadable };
 }
 
 /**
@@ -246,6 +285,10 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
 
   const digestDaily = dailyCounts(digestNull ? [] : digestLedgerEntries, 'auto-dispatch', windowDays, now);
   const backlogDaily = dailyCounts(backlogNull ? [] : backlogLedgerEntries, 'drain-dispatch', windowDays, now);
+  // Surfaced on every verdict below, including the DEAD ones: a streak built
+  // out of rows this reader silently threw away is not a measurement.
+  const unreadable = digestDaily.unreadable + backlogDaily.unreadable;
+  const unreadableNote = unreadable ? ` (${unreadable} ledger row(s) skipped — unparseable timestamp, writer bug)` : '';
 
   const days = digestDaily.days;
   const dispatchedTotal = days.map((d) => digestDaily.dispatched[d] + backlogDaily.dispatched[d]);
@@ -253,8 +296,25 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
 
   let zeroDispatchStreak = 0;
   for (let i = dispatchedTotal.length - 1; i >= 0 && dispatchedTotal[i] === 0; i--) zeroDispatchStreak++;
+  // Skip the trailing day. Now that a pass is credited to its DISPATCH day
+  // (BRO-3321), today's bucket is zero by construction on every run —
+  // reconciliation for today's dispatches has not happened yet, and won't
+  // until the next digest. Counting it would add a permanent +1 to this
+  // streak, quietly turning ZERO_PASS_ERROR_DAYS = 3 into an effective 2.
+  // Dropping the day costs no detection latency: the alarm still fires at the
+  // same wall-clock moment, because the day that made the streak real is
+  // yesterday either way. The constant keeps meaning what it says.
   let zeroPassStreak = 0;
-  for (let i = passedTotal.length - 1; i >= 0 && passedTotal[i] === 0; i--) zeroPassStreak++;
+  if (passedTotal[passedTotal.length - 1] === 0) {
+    // Today contributed nothing, so start from yesterday — today's zero is
+    // UNOBSERVED, not measured. Counting it would add a permanent +1 to this
+    // streak and quietly turn ZERO_PASS_ERROR_DAYS = 3 into an effective 2.
+    for (let i = passedTotal.length - 2; i >= 0 && passedTotal[i] === 0; i--) zeroPassStreak++;
+  }
+  // else: a pass landed today, so there is no streak at all — the loop is
+  // demonstrably landing work and nothing about the preceding days changes
+  // that. (Dropping the trailing day unconditionally would have thrown this
+  // proof away and alarmed on a loop that had just succeeded.)
 
   const partialNote = digestNull ? ' (digest-autofix ledger unreadable here — backlog-drain only)'
     : backlogNull ? ' (backlog-drain ledger unreadable here — digest-autofix only)' : '';
@@ -263,14 +323,14 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
     return {
       name,
       status: 'error',
-      message: `Autofix throughput DEAD: 0 dispatches on each of the last ${zeroDispatchStreak} day(s)${partialNote} — this is the exact 8/5-8/9 starvation shape (task #1184).`,
+      message: `Autofix throughput DEAD: 0 dispatches on each of the last ${zeroDispatchStreak} day(s)${partialNote}${unreadableNote} — this is the exact 8/5-8/9 starvation shape (task #1184).`,
     };
   }
   if (zeroPassStreak >= ZERO_PASS_ERROR_DAYS) {
     return {
       name,
       status: 'error',
-      message: `Autofix throughput DEAD: 0 passes on each of the last ${zeroPassStreak} day(s)${partialNote} — dispatches are launching but nothing is landing.`,
+      message: `Autofix throughput DEAD: 0 passes on each of the last ${zeroPassStreak} day(s)${partialNote}${unreadableNote} — dispatches are launching but nothing is landing.`,
     };
   }
 
@@ -285,14 +345,41 @@ function assessThroughputRow({ digestLedgerEntries, backlogLedgerEntries, now = 
     return {
       name,
       status: 'warn',
-      message: `Autofix throughput partially measurable over the last ${windowDays}d${partialNote}: ${dSum} dispatched, ${pSum} passed from the readable source — the unreadable source could be starved without this row catching it.`,
+      message: `Autofix throughput partially measurable over the last ${windowDays}d${partialNote}${unreadableNote}: ${dSum} dispatched, ${pSum} passed from the readable source — the unreadable source could be starved without this row catching it.`,
     };
   }
   return {
     name,
     status: 'pass',
-    message: `Autofix throughput over the last ${windowDays}d: ${dSum} dispatched, ${pSum} passed (net ${dSum - pSum}).`,
+    message: `Autofix throughput over the last ${windowDays}d: ${dSum} dispatched, ${pSum} passed (net ${dSum - pSum})${unreadableNote}.`,
   };
+}
+
+/**
+ * Should the digest tell the owner the loop has stopped DISPATCHING?
+ *
+ * Extracted as a pure function (BRO-3321 follow-up) because it was a bare
+ * conditional inside send-morning-digest.js, which reads files and sends mail
+ * and so could not be unit tested — and it decides whether the owner gets a
+ * red "DEAD" banner, which is exactly the class of decision that has cried
+ * wolf before.
+ *
+ * Two guards, both load-bearing:
+ *   - `pendingIssues`: zero dispatches with an EMPTY queue is a healthy fleet
+ *     with nothing to fix. ZERO_DISPATCH_ERROR_DAYS is 2, so without this,
+ *     two quiet days would email "Autofix throughput DEAD".
+ *   - the zero-DISPATCH arm only: the zero-PASS arm asks the same question
+ *     assessAutofixEffectiveness already answers, and surfacing both would
+ *     render one condition as two banners.
+ *
+ * @param {{status:string, message:string}|null} row - assessThroughputRow's result
+ * @param {{pendingIssues?: number}} opts
+ * @returns {string|null} the message to surface, or null to stay quiet
+ */
+function throughputDeathMessage(row, { pendingIssues = 0 } = {}) {
+  if (!pendingIssues) return null;
+  if (!row || row.status !== 'error' || typeof row.message !== 'string') return null;
+  return /0 dispatches/.test(row.message) ? row.message : null;
 }
 
 function appendJsonlLedger(p, entry) {
@@ -532,6 +619,7 @@ function runAutofixCanary({ dryRun = false, log = () => {}, now = new Date(), lo
 }
 
 module.exports = {
+  throughputDeathMessage,
   CANARY_LEDGER_PATH,
   CANARY_TITLE_PREFIX,
   ZERO_DISPATCH_ERROR_DAYS,

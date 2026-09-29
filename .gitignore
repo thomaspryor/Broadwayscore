@@ -45,6 +45,9 @@ next-env.d.ts
 
 # Review texts (copyrighted full-text reviews — stored in private repo thomaspryor/broadway-review-texts)
 data/review-texts/
+# BRO-4241: setup-local-data.sh --link-only makes data/review-texts a symlink in
+# worktrees; a trailing-slash pattern only matches directories, so ignore the link too.
+/data/review-texts
 
 # Aggregator archive (copyrighted scraped HTML — stored in private repo thomaspryor/broadway-review-texts)
 data/aggregator-archive/
@@ -96,6 +99,7 @@ data/opening-night-monitor/monitor.lock/
 # local fs — untracked from here on (#568 follow-up).
 data/opening-night-monitor/heartbeat.json
 data/opening-night-monitor/night-state-*.json
+data/opening-night-monitor/auth-starved-*.json
 data/opening-night-monitor/session-state-*.json
 data/opening-night-monitor/*.log
 data/opening-night-monitor/*.err
@@ -205,7 +209,17 @@ data/commercial.json
 data/audience-buzz.json
 data/critic-consensus.json
 data/critic-registry.json
-data/outlet-registry.json
+# Retired show-id registry + archive of the deleted rows (2026 data audit,
+# S0-T2). Written by scripts/lib/retired-show-ids.js; the archive holds full
+# shows.json rows, so both are core data (§11) — same repo as shows.json,
+# synced by push-core-data's CORE_FILES, never committed here.
+data/retired-show-ids.json
+data/deleted-shows.json
+# Critic-slug alias registry (2026 data audit, S5-T9): {"<old-slug>":
+# "<canonical-slug>"}, read by scripts/lib/critic-slug-aliases.js at prebuild.
+# Core data (§11) — same repo as shows.json, synced by push-core-data's
+# CORE_FILES, never committed here. Template: tests/fixtures/critic-slug-aliases.seed.json.
+data/critic-slug-aliases.json
 
 # Theatr rotated refresh token (written by scrape-theatr-audience.js) — a live
 # credential that must never be committed. The BroadwayScorecard/ line below
@@ -274,6 +288,11 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # literally `test -f docs/health-check-triage-2026-07-24.md`, so it has to be
 # committed rather than scratch/local like the rest of /docs/.
 !/docs/health-check-triage-2026-07-24.md
+# BRO-4207's opening-night ingestion review — the design that BRO-4210 (the
+# opening-night lane epic) and BRO-4208/BRO-4209 point at, so the sessions
+# that pick those cards up can find it in the repo, not in one cloud sandbox's
+# scratch copy (same durable-path rule as the two entries above).
+!/docs/opening-night-autonomy-review-2026-09-28.md
 # BRO-128's Les Mis Arena Concert Reddit post draft — acceptance criteria is
 # literally `test -f docs/reddit-les-mis-arena-concert.md`, so it has to be
 # committed rather than scratch/local like the rest of /docs/.
@@ -309,6 +328,47 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # criteria is literally `test -f docs/GA4_Engaged_Sessions_Report.md`, so it
 # has to be committed rather than scratch/local like the rest of /docs/.
 !/docs/GA4_Engaged_Sessions_Report.md
+# BRO-837: Will & Rach (The Theater Lovers) partnership tracking — contact
+# info, audience size, and meetup status. Acceptance criteria is literally
+# `test -f docs/partnerships.md`, so it has to be committed rather than
+# scratch/local like the rest of /docs/.
+!/docs/partnerships.md
+# BRO-864: Titanique opening-night post-mortem — acceptance criteria is
+# literally `test -f docs/titanique-opening-night-postmortem.md`, so it has
+# to be committed rather than scratch/local like the rest of /docs/.
+!/docs/titanique-opening-night-postmortem.md
+# BRO-860: Opening Night Express manual-workarounds playbook. Acceptance
+# criteria is literally `test -f docs/opening-night-express.md`, so it has to
+# be committed rather than scratch/local like the rest of /docs/.
+!/docs/opening-night-express.md
+# BRO-917: cross-repo workflow dependency graph. Acceptance criteria is
+# literally `test -f docs/workflow-dependency-graph.md`, so it has to be
+# committed rather than scratch/local like the rest of /docs/.
+!/docs/workflow-dependency-graph.md
+# BRO-3500: concurrency-group audit for the 22 review-texts-writing workflows
+# that had none. Acceptance criteria is literally
+# `test -f docs/workflow-concurrency-audit.md`, so it has to be committed
+# rather than scratch/local like the rest of /docs/.
+!/docs/workflow-concurrency-audit.md
+# BRO-2721: ScrapingBee credit-usage triage record. Acceptance criteria is
+# literally `test -f docs/scraping-bee-usage.md`, so it has to be committed
+# rather than scratch/local like the rest of /docs/.
+!/docs/scraping-bee-usage.md
+# BRO-4204 (2026 data audit, S4-T14): the show inclusion policy the discovery
+# gates enforce. Referenced by code comments in scripts/discover-new-shows.js,
+# scripts/lib/venue-classification.js and scripts/validate-data.js, so it has
+# to be committed rather than scratch/local like the rest of /docs/.
+!/docs/show-inclusion-policy.md
+# BRO-4204 (2026 data audit, S5-T4 / S7-T9): two audit records other
+# sessions act on — the per-id root-cause table behind the id-year-drift
+# WARN (the S8-T1 rename worklist) and the Show-Score 8-tile reproduction
+# that fetch-aggregator-pages.ts's header points at. /docs/* excludes the
+# docs/audit DIRECTORY, so it is re-included, its other contents re-excluded,
+# and only these two files negated (the /docs/experiments/ pattern above).
+!/docs/audit/
+/docs/audit/*
+!/docs/audit/id-year-drift-2026.md
+!/docs/audit/show-score-8-tile-note.md
 /memory/
 /data/deep-research/
 /data/theater-research/
@@ -345,9 +405,15 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # Structural #1 — daily exclusion logs (may contain URLs, not committed)
 /data/audit/exclusions-*.jsonl
 /data/audit/exclusion-summary-yesterday.json
+# BRO-925: per-show grouping of the same exclusion events above (may contain
+# URLs, not committed — same reasoning as exclusions-*.jsonl)
+/data/audit/rebuild-exclusions-*.json
 # BRO-75: cross-day seen-files ledger for wrong-production-exclusion-analysis.js
 # — local-only ad-hoc investigation state, same reasoning as exclusions-*.jsonl
 /data/audit/wrongproduction-seen-files.json
+# BRO-2379: generalized cross-day ledger (all exclusion reasons, not just
+# skippedWrongProduction) for scripts/lib/exclusion-trend.js.
+/data/audit/exclusion-seen-files.json
 # BRO-176: exclusion-rule-census.js snapshot — regenerated every run from the
 # review-texts corpus, same reasoning as the ledger above.
 /data/audit/exclusion-rule-census.json
@@ -421,6 +487,10 @@ tmp/
 # run on this Mac via launchd).
 /data/audit/predispatch-queue-audit-snapshot.json
 /data/audit/predispatch-queue-audit-history.json
+# BRO-4135: linear-drain-throughput-snapshot.json — same reasoning, producer
+# send-morning-digest.js + consumer scripts/check-linear-drain-throughput.js
+# both run on this Mac (the digest is launchd-scheduled, not CI).
+/data/audit/linear-drain-throughput-snapshot.json
 # sync-audit-checkout.sh refusal snapshots (task #1563) — Mac-local, one per
 # SYNC_TAG (shadow/digest/backlog-drain/predispatch-queue-audit). Producer:
 # scripts/lib/sync-audit-checkout.sh's refuse-loud path. Consumer:
@@ -459,3 +529,6 @@ data/audit/autonomous-ui/
 # jobs on scratch files that were never meant to be committed in the first place.
 /scratchpad_a.txt
 /census_tmp_script*.js
+
+# analyze-traffic-sources.js local output (CI uploads it as an artifact)
+traffic-analysis/

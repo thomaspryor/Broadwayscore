@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-08-16",
+  "generatedAt": "2026-09-14",
   "hits": [
     {
       "file": "scripts/audit-opening-night-coverage.js",
@@ -28,10 +28,6 @@
     {
       "file": "scripts/check-opening-night-readiness.js",
       "snippet": "} else if (show.category === 'broadway' || show.category === 'west-end') {"
-    },
-    {
-      "file": "scripts/check-opening-night-scored.js",
-      "snippet": "&& (s.category === 'broadway' || s.category === 'west-end'),"
     },
     {
       "file": "scripts/count-pool.ts",
@@ -103,10 +99,6 @@
     },
     {
       "file": "scripts/newsletter/generate.mjs",
-      "snippet": "shows.forEach(s => { if (s.status === 'open' && s.category === 'broadway' && !isOperaShow(s) && s.slug) slugToShow.set(s.slug, s); });"
-    },
-    {
-      "file": "scripts/newsletter/generate.mjs",
       "snippet": "s.category === 'broadway'"
     },
     {
@@ -116,10 +108,6 @@
     {
       "file": "scripts/newsletter/generate.mjs",
       "snippet": "const show = shows.find(s => s.slug === slug && s.category === 'broadway');"
-    },
-    {
-      "file": "scripts/validate-data.js",
-      "snippet": "const broadwayOpen = shows.filter(s => s.status === 'open' && (!s.category || s.category === 'broadway'));"
     }
   ]
 }

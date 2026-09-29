@@ -177,6 +177,14 @@ jobs:
 
           bash scripts/lib/push-with-retry.sh 5 main
 
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: update-social-pulse
+          push-retry-args: '5 main'
+
       - name: Weekly smoke test — verify known-high-volume shows have data
         if: inputs.dry_run != 'true' && inputs.show == ''
         run: |

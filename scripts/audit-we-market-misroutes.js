@@ -27,6 +27,8 @@
  *   node scripts/audit-we-market-misroutes.js --execute       # actually move files
  *   node scripts/audit-we-market-misroutes.js --show=ID       # limit to one show
  *   node scripts/audit-we-market-misroutes.js --limit=N       # cap move count
+ *
+ * Tour moves (BRO-4211) live in scripts/sweep-tour-reviews.js.
  */
 
 const fs = require('fs');

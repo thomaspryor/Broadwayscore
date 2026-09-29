@@ -57,6 +57,8 @@ const path = require('path');
 
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { resolveCanonicalOutletId } = require('./lib/outlet-canonicalize');
+const { findExistingReviewFile, normalizeCritic } = require('./lib/review-normalization');
+const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const {
   recoverFromText,
@@ -263,7 +265,44 @@ const input = {
   fields,
 };
 
+// BRO-3790 pre-write snapshot — same identity createOrMergeReviewFile will
+// merge into, read BEFORE the write so the post-write verification below can
+// tell "the correction didn't land" apart from "the file was already fine".
+const preExisting = findExistingReviewFile(showDir, outletId, criticName, url);
+
 const result = createOrMergeReviewFile(showId, input, { dryRun });
+
+// BRO-3790: createOrMergeReviewFile's merge-into-existing path only fills
+// BLANK fields (review-file-writer.js _mergeIntoExisting) — a merge onto a
+// file whose url/criticName/fullText is already non-blank silently keeps the
+// old value while this "break-glass" operator tool still prints "✅ Updated".
+// An operator using this script is explicitly correcting bad data, so a
+// silent no-op here is the worst possible failure mode. Same verification as
+// ingest-review-from-url.js: url and criticName (always intended — both are
+// operator-supplied, criticName via normalizeCritic so a case/whitespace
+// difference on the same critic never false-flags) plus fullText (only when
+// the pre-existing content was actually bad — mirroring maybeUpgradeUrl's own
+// badContent gate — so re-pasting the SAME already-correct text isn't a false
+// positive).
+if (result.action !== 'new' && result.filepath && !dryRun) {
+  const intended = {};
+  if (url) intended.url = url;
+  if (fullText && isPreExistingContentBad(preExisting)) intended.fullText = fullText;
+  let landed;
+  try {
+    landed = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+  } catch (e) {
+    console.error(`\n❌ Could not re-read ${result.filepath} to verify the write landed: ${e.message}`);
+    process.exit(1);
+  }
+  intended.criticName = normalizeCritic(criticName);
+  landed = { ...landed, criticName: normalizeCritic(landed.criticName) };
+  const staleFields = findStaleMergeFields(intended, landed);
+  if (staleFields.length > 0) {
+    console.error(`\n❌ Stale merge: ${staleFields.join(', ')} still hold a pre-existing value at ${result.filepath} that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed.`);
+    process.exit(1);
+  }
+}
 
 if (result.action === 'new') {
   console.log(`✅ Created: ${result.filepath}`);

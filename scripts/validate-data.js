@@ -13,13 +13,28 @@
  * 5. Logical consistency (status vs dates)
  * 6. Catastrophic change detection
  *
- * Usage: node scripts/validate-data.js [--strict]
+ * Usage: node scripts/validate-data.js [--strict] [--dry-run]
  * Exit codes: 0 = OK, 1 = Errors found
  */
 
 const fs = require('fs');
 const path = require('path');
+const { tourImageProblems } = require('./lib/tour-family');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
+const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
+const { checkIdYearDrift } = require('./lib/id-year-drift');
+
+// --dry-run (Sprint 0 / S0-T1): run every check, print every verdict, exit with
+// the same code — but never touch disk. Three write paths honour it: the
+// push-refusal sentinel (below), the shows.json write guard (its dryRun
+// option swallows the four auto-fix saveShows() sites), and writeAuditArtifact
+// (the tracked data/audit/ files). Parsed and declared up here, ahead of the
+// sentinel functions, because the uncaughtException handler can reach them
+// before the rest of the module has evaluated — everything the summary needs
+// must already exist at that point (no TDZ on a crash path).
+const DRY_RUN = process.argv.includes('--dry-run');
+const dryRunLedger = { showsWrites: null, artifactWrites: [] };
+let dryRunSummaryPrinted = false;
 
 // Canonical "would rebuild include this review-text file?" predicate, shared
 // with scripts/check-review-count-drift.js so both stay in sync. isIncludable
@@ -29,6 +44,8 @@ const { isIncludableForRebuild, hasValidScore } = require('./lib/review-guards')
 
 // Canonical valid-tier list — propagates when TIER_WEIGHTS changes.
 const { VALID_TIERS } = require('./lib/outlet-tiers');
+const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
+const { urlFragmentReason } = require('./lib/url-fragment-title');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 // Same critic-identity function the rebuild's manual-entry merge uses — a gate
 // that normalizes differently from the writer cannot catch the writer's dupes.
@@ -40,7 +57,7 @@ const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, sus
 
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
-const { isBroadwayCategory } = require('./lib/venue-classification');
+const { isBroadwayCategory, isMisCategorisedNonNycRow, isUnreviewedNonTheatreRow } = require('./lib/venue-classification');
 const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib/cross-market-guard');
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -64,6 +81,10 @@ const PUSH_REFUSAL_SENTINEL = path.join(
   '.skip-push-core-data'
 );
 function writePushRefusalSentinel(reason) {
+  if (DRY_RUN) {
+    info(`DRY RUN: would write push-refusal sentinel ${PUSH_REFUSAL_SENTINEL} (reason: ${reason}) — suppressed`);
+    return;
+  }
   try {
     fs.writeFileSync(PUSH_REFUSAL_SENTINEL,
       `validate-data.js refused push at ${new Date().toISOString()}\nreason: ${reason}\n`);
@@ -74,7 +95,12 @@ function writePushRefusalSentinel(reason) {
 }
 function clearPushRefusalSentinel() {
   try {
-    if (fs.existsSync(PUSH_REFUSAL_SENTINEL)) fs.unlinkSync(PUSH_REFUSAL_SENTINEL);
+    if (!fs.existsSync(PUSH_REFUSAL_SENTINEL)) return;
+    if (DRY_RUN) {
+      info(`DRY RUN: would clear stale push-refusal sentinel ${PUSH_REFUSAL_SENTINEL} — suppressed`);
+      return;
+    }
+    fs.unlinkSync(PUSH_REFUSAL_SENTINEL);
   } catch (_) { /* non-fatal */ }
 }
 // Single exit-with-error path so every error site reaches the sentinel — not just the
@@ -82,6 +108,7 @@ function clearPushRefusalSentinel() {
 // the sentinel (missing shows.json + parse error). Route them through this.
 function exitWithError(reason) {
   writePushRefusalSentinel(reason);
+  printDryRunSummary();
   process.exit(1);
 }
 // Also catch unexpected crashes — uncaughtException doesn't fire on process.exit, but it
@@ -90,8 +117,33 @@ function exitWithError(reason) {
 process.on('uncaughtException', (err) => {
   writePushRefusalSentinel(`uncaughtException: ${err.message}`);
   console.error(err);
+  printDryRunSummary();
   process.exit(1);
 });
+
+// --dry-run exit summary. Reached from every exit path (success, exitWithError,
+// uncaughtException) and prints at most once. Reads the ledgers off
+// `dryRunLedger` (declared at the top of the module) so it is safe to call
+// even when a crash happens before the write guard below is constructed.
+function printDryRunSummary() {
+  if (!DRY_RUN || dryRunSummaryPrinted) return;
+  dryRunSummaryPrinted = true;
+  const showsWrites = dryRunLedger.showsWrites || [];
+  const artifactWrites = dryRunLedger.artifactWrites;
+  console.log('');
+  console.log(`DRY RUN: ${showsWrites.length} shows.json writes suppressed`);
+  showsWrites.forEach((w, i) => {
+    const payload = w.showCount != null ? ` — ${w.showCount} shows in payload` : '';
+    console.log(`   ${i + 1}. ${w.reason || 'saveShows() (no reason given)'}${payload}`);
+  });
+  console.log(`DRY RUN: ${artifactWrites.length} audit artifact writes suppressed`);
+  artifactWrites.forEach((a, i) => console.log(`   ${i + 1}. ${a.label} → ${a.file} (${a.bytes} bytes)`));
+}
+// Verb for the auto-fix result lines: in a dry run the in-memory fix still
+// happened (later checks see the corrected value) but nothing reached disk.
+function autoFixVerb() {
+  return DRY_RUN ? 'Would auto-fix (dry run)' : 'Auto-fixed';
+}
 
 // Stuck-vs-fresh classification for pending-score gap records.
 // Extracted + unit-tested in tests/unit/pending-gap-classification.test.mjs.
@@ -107,6 +159,18 @@ const USAGE = `validate-data.js — Comprehensive data validation for Broadway S
 Usage:
   node scripts/validate-data.js [options]
   node scripts/validate-data.js --help, -h    print this usage and exit
+
+Options:
+  --dry-run   Run every check and exit with the same code, but write nothing:
+              shows.json auto-fixes (stale status, slugs, venue/category,
+              theaterAddress), the tracked data/audit/ artifacts and the
+              push-refusal sentinel are all suppressed. Each suppressed write
+              is logged where it would have happened and summarised at exit as
+              "DRY RUN: N shows.json writes suppressed" (0 when none).
+  --strict    Label the run STRICT in the header. Accepted for CI/workflow
+              compatibility; no check currently changes severity under it.
+
+Exit codes: 0 = OK, 1 = errors found (unchanged by --dry-run).
 `;
 
 // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -149,7 +213,12 @@ if (process.env.VALIDATE_DATA_SHOWS_JSON) {
   console.warn(warning);
   console.error(warning);
 }
-const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_FILE);
+// Every shows.json write in this file goes through this guard, so --dry-run
+// is enforced at the seam rather than at each of the four auto-fix sites:
+// under dryRun, saveShows() records the intended write and returns.
+const showsGuard = createShowsWriteGuard(SHOWS_FILE, { dryRun: DRY_RUN });
+const { loadShows, saveShows } = showsGuard;
+dryRunLedger.showsWrites = showsGuard.suppressedWrites;
 
 // FIXTURE RUNS MUST NOT WRITE TRACKED AUDIT ARTIFACTS.
 //
@@ -172,6 +241,15 @@ const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_FILE);
 // validate-data.js under the same override since long before this.
 const FIXTURE_MODE = !!process.env.VALIDATE_DATA_SHOWS_JSON;
 function writeAuditArtifact(file, contents, label) {
+  if (DRY_RUN) {
+    // Checked ahead of FIXTURE_MODE so a dry run always reports what it
+    // would have written, even under the fixture override.
+    const bytes = Buffer.byteLength(contents);
+    const rel = path.relative(path.join(__dirname, '..'), file);
+    dryRunLedger.artifactWrites.push({ label, file: rel, bytes });
+    info(`DRY RUN: would write ${label} → ${rel} (${bytes} bytes) — suppressed`);
+    return false;
+  }
   if (FIXTURE_MODE) {
     info(`Skipping ${label} write — VALIDATE_DATA_SHOWS_JSON override active, so this run's corpus is a fixture and would corrupt the tracked file.`);
     return false;
@@ -294,6 +372,38 @@ function validateNoDuplicates(shows) {
     if (transferIssues === 0) ok('All transfer pairs (transferOf/transferredTo) reciprocal');
   }
 
+  // National tours (category:'tour', BRO-4211): each tour names the Broadway
+  // production it tours via tourOf. The Broadway side derives its tours from
+  // these links, so a dangling or wrong-market tourOf hides the tour entirely.
+  {
+    const byId = new Map(shows.map(s => [s.id, s]));
+    let tourIssues = 0;
+    for (const s of shows) {
+      if (s.category !== 'tour' && s.tourOf === undefined) continue;
+      if (s.category !== 'tour') {
+        error(`Show "${s.id}" has tourOf but is category "${s.category}" — only category:'tour' shows carry tourOf`);
+        tourIssues++;
+        continue;
+      }
+      const target = s.tourOf ? byId.get(s.tourOf) : null;
+      if (!s.tourOf) {
+        error(`Tour "${s.id}" is missing tourOf (the Broadway production it tours)`);
+        tourIssues++;
+      } else if (!target) {
+        error(`Tour "${s.id}" tourOf "${s.tourOf}" does not reference an existing show`);
+        tourIssues++;
+      } else if (target.category !== 'broadway') {
+        error(`Tour "${s.id}" tourOf "${s.tourOf}" must point at a category:'broadway' show (got "${target.category}")`);
+        tourIssues++;
+      }
+      for (const problem of tourImageProblems(s, shows)) {
+        error(`Tour "${s.id}" image: ${problem}`);
+        tourIssues++;
+      }
+    }
+    if (tourIssues === 0) ok('All tours (category:tour) link to a Broadway production and use their own or its art');
+  }
+
   // Check duplicate ibdbUrl — each IBDB production maps to exactly one show entry.
   // Two shows sharing an ibdbUrl means a revival was cloned from the original
   // production's IBDB page and silently inherited its opening/preview dates (and
@@ -373,6 +483,33 @@ function validateNoDuplicates(shows) {
 }
 
 // ===========================================
+// RETIRED SHOW IDS (Sprint 0 / S0-T5)
+// ===========================================
+// A show id that was deliberately retired (data/retired-show-ids.json in the
+// core-data repo, read via scripts/lib/retired-show-ids.js) must not quietly
+// come back through discovery or reconcile. Warn, not error: the registry is
+// the guard's source of truth and a resurrection needs a human, not a red
+// trunk. Decision logic lives in scripts/lib/validate-retired-ids.js (§15);
+// a missing registry module or file is an empty list, never a failure.
+
+function validateRetiredIds(shows) {
+  info('Checking for retired show ids...');
+  const { retired, error: loadError } = loadRetiredIdsSafe();
+  if (loadError) warn(`Retired-id registry could not be loaded (${loadError}) — treating as empty`);
+  checkRetiredIds(shows, retired, { warn, ok });
+}
+
+// BRO-4204 S5-T4: a non-closed show whose id year matches neither its opening
+// year nor its previews year (evita-2026 opening 2027-03-25, wanted-2022
+// opening 2026-11-08). WARN only — the id is a live URL; renaming it is
+// S8-T1's tooled job (rename-show-id.js + redirects), never an auto-fix here.
+// Decision logic: scripts/lib/id-year-drift.js (unit-tested with real rows).
+function validateIdYearDrift(shows) {
+  info('Checking id year against opening/previews dates...');
+  checkIdYearDrift(shows, { warn, ok });
+}
+
+// ===========================================
 // FIELD VALIDATION
 // ===========================================
 
@@ -400,10 +537,82 @@ function validateRequiredFields(shows) {
   }
 }
 
+/**
+ * BRO-3863 / BRO-3920 — stored show titles must not carry scrape artifacts.
+ *
+ * Two classes, both produced by taking a source site's DISPLAY string as the
+ * title: a venue/producing company appended as a disambiguator ("The Cherry
+ * Orchard (Park Avenue Armory)"), and a heading captured shouted rather than
+ * from the source's structured metadata ("AMERICA, WHO HURT YOU?").
+ *
+ * The gate asks the SAME function the ingestion path and the sweep script
+ * ask — normalizeShowTitle() — so "what validate-data rejects" and "what the
+ * fixer produces" cannot drift apart.
+ *
+ * Venue-suffix strips are auto-fixable (deterministic — a matched venue name
+ * is removed), so those error with an exact expected title and a one-command
+ * fix. Shouted casing is NOT auto-fixable as of BRO-3920 — algorithmic
+ * title-casing already shipped wrong titles ("JUST FOR US" -> "Just for
+ * US"), so title-display-case.js is detection-only now. A shouted title
+ * still ERRORS (this is real, user-visible wrong casing, not something to
+ * warn-and-ignore forever), but the fix it names is a human re-deriving the
+ * true title from the source's structured metadata (JSON-LD `name` /
+ * `og:title`), not a command that guesses for them.
+ */
+function validateShowTitles(shows) {
+  info('Checking show titles for scrape artifacts (URL fragment / venue suffix / ALL-CAPS)...');
+  const venueVocabulary = buildVenueVocabulary(shows);
+  let bad = 0;
+
+  for (const show of shows) {
+    // BRO-3915: a title that is a URL fragment is a PHANTOM SHOW, not a
+    // mis-cased one — normalising it would only produce a tidier phantom. It
+    // gets a slug, a browse card, an images directory and a slot in every
+    // coverage denominator, and with a null openingDate it is invisible to
+    // the date-windowed checks that would otherwise catch it. Check first and
+    // skip the case machinery entirely.
+    const fragmentReason = urlFragmentReason(show.title);
+    if (fragmentReason) {
+      bad++;
+      error(`Show "${show.title}" (${show.id}) has a URL fragment as its title — it ${fragmentReason}. This is a phantom row minted by a listing scraper that followed a tab/pagination control and treated the link's query string as a production (tabdates-off-west-end-2026, Hampstead Theatre). DELETE the row (write via scripts/lib/shows-write-guard.js, not a bare edit) and fix the discovery path that created it so it rejects non-production links.`);
+      continue;
+    }
+
+    const result = normalizeShowTitle(show, { venueVocabulary });
+
+    if (result.manualReview) {
+      bad++;
+      error(`Show "${show.title}" (${show.id}) looks shouted (scrape/source artifact, not real stylisation). Look up the source's structured metadata (JSON-LD "name" or og:title — never a rendered heading) and correct the stored title (write via scripts/lib/shows-write-guard.js, not a bare edit). If the ALL-CAPS is genuinely the show's branding, add the id to KEEP_SHOUTED_IDS in scripts/lib/title-display-case.js instead.`);
+      continue;
+    }
+
+    if (!result.changed) continue;
+    bad++;
+    const how = result.steps.map(st => st.kind).join(' + ');
+    error(`Show "${show.title}" (${show.id}) has a scrape artifact in its title (${how}). Expected: "${result.title}". Fix with: node scripts/fix-show-titles.js --apply. If the current title is genuinely correct, widen the exemptions in scripts/lib/title-venue-suffix.js for the parenthetical case.`);
+  }
+
+  // titleCaseNormalizedAt/From were written by fix-shouted-titles.js, deleted
+  // under BRO-3920 when the algorithmic title-caser was retired (BRO-4157).
+  // Nothing reads them; the current provenance record for a title change is
+  // titleNormalizedFrom/titleNormalizedAt (see fix-show-titles.js). If this
+  // fires, something reintroduced the retired fields — strip them again
+  // rather than reviving the deleted writer.
+  for (const show of shows) {
+    if (show.titleCaseNormalizedAt || show.titleCaseNormalizedFrom) {
+      bad++;
+      error(`Show "${show.title}" (${show.id}) has titleCaseNormalizedAt/From — these fields have no reader and their writer was deleted under BRO-3920. Strip them (write via scripts/lib/shows-write-guard.js).`);
+    }
+  }
+
+  if (bad === 0) ok('No scrape artifacts in show titles');
+}
+
 function validateStatus(shows) {
   info('Checking status values...');
   const validStatuses = ['open', 'closed', 'previews', 'upcoming', 'announced'];
-  const validCategories = ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional'];
+  // Single source: src/config/markets.json (BRO-4211).
+  const validCategories = require('./lib/markets').VALID_CATEGORIES;
   let invalid = 0;
 
   for (const show of shows) {
@@ -444,6 +653,28 @@ function validateStatus(shows) {
       // pages), and they're a leading indicator of a discover-historical-shows.js
       // regression.
       error(`Closed show "${show.title}" (${show.id}) missing category — historical insert path regressed; check scripts/discover-historical-shows.js + lib/classify-show.js wiring.`);
+      invalid++;
+    }
+    // A Broadway/Off-Broadway row whose VENUE name says it is in another state
+    // (BRO-3211). Both are New York City designations, so this is always a
+    // mis-categorisation — and an expensive one, because build-ob-venues.js
+    // derives the Off-Broadway venue allowlist FROM these rows and
+    // isKnownOffBroadwayVenue() then admits future TodayTix rows at that venue,
+    // so one bad row teaches the classifier a touring house and mints more.
+    // State Theatre New Jersey rode that loop to three bogus rows before anyone
+    // noticed. discover-new-shows.js and promote-ob-venue-candidates.js reject
+    // the confirmed venues by name; this catches the ones they do not know
+    // about, and any row a human or a future importer writes directly.
+    // isNonNycLocale's matching rationale (structural, not city keywords) and
+    // its measured false-positive rate live with the predicate.
+    // The decision itself lives in scripts/lib/venue-classification.js as
+    // isMisCategorisedNonNycRow() — extracted so the colocated test can
+    // require the REAL function instead of re-implementing it (CLAUDE.md rule
+    // 15). BRO-3211 shipped this check as a raw `category === 'broadway'`
+    // literal, which reddened main on the very next run against
+    // audit-broadway-category-predicate.js --strict.
+    if (isMisCategorisedNonNycRow(show)) {
+      error(`Show "${show.title}" (${show.id}) has category="${show.category ?? 'null (treated as broadway)'}" but venue "${show.venue}" is outside New York — Broadway and Off-Broadway are NYC designations, so this is a mis-categorised touring/regional date. Remove the row or recategorise it (category="regional"), and fix the creator: if it came from TodayTix, add the venue to NON_NYC_VENUE_RE in scripts/lib/venue-classification.js so discovery stops re-minting it.`);
       invalid++;
     }
     if (['open', 'previews', 'upcoming', 'closed', 'announced'].includes(show.status) && show.category && !show.market) {
@@ -503,7 +734,13 @@ function validateDates(shows) {
 
     // Logic checks
     if (show.status === 'closed' && show.closingDate && show.closingDate > today) {
-      error(`Show "${show.title}" marked closed but closingDate is future: ${show.closingDate}`);
+      // Show id in parens (not just the title) so validation-setdiff.js's
+      // per-show attribution (task #1439) can hold back just this show
+      // instead of falling back to blocking the whole discovery batch
+      // (BRO-4099 — this exact error was unattributable and, worse, the
+      // update-show-status.yml pre-validate snapshot ran AFTER the writer
+      // that introduces it, so it read as "pre-existing" every time).
+      error(`Show "${show.title}" (${show.id}) marked closed but closingDate is future: ${show.closingDate}`);
       issues++;
     }
 
@@ -665,8 +902,8 @@ function validateDates(shows) {
       const match = showsData.shows.find(s => s.id === show.id);
       if (match) match.status = show.status;
     }
-    saveShows(showsData);
-    ok(`Auto-fixed ${staleStatusFixes} stale previews → open`);
+    saveShows(showsData, { reason: 'validateDates (stale previews/upcoming → open)' });
+    ok(`${autoFixVerb()} ${staleStatusFixes} stale previews → open`);
   }
 
   if (issues === 0 && staleStatusFixes === 0) {
@@ -725,7 +962,7 @@ function validateSlugs(shows) {
   }
 
   if (autoFixed > 0) {
-    warn(`Auto-fixed ${autoFixed} invalid slug(s) — saving corrected shows.json`);
+    warn(`${autoFixVerb()} ${autoFixed} invalid slug(s) — ${DRY_RUN ? 'shows.json write suppressed' : 'saving corrected shows.json'}`);
     // shows.json is { shows: [...] } — read the wrapper and index into .shows.
     // (Previously did JSON.parse(...).find(), treating the wrapper object as a
     // bare array → TypeError if this ever fired; and matched by non-unique
@@ -738,7 +975,7 @@ function validateSlugs(shows) {
         match.id = fix.id;
       }
     }
-    saveShows(showsData);
+    saveShows(showsData, { reason: 'validateSlugs (URL-safe slug/id fixes)' });
   }
 
   if (autoFixed === 0) {
@@ -877,8 +1114,8 @@ function validateVenueCategory(shows) {
       const match = showsData.shows.find(s => s.id === show.id);
       if (match) match.category = show.category;
     }
-    saveShows(showsData);
-    ok(`Auto-fixed ${autoFixed} venue/category mismatches`);
+    saveShows(showsData, { reason: 'validateVenueCategory (London venue/category fixes)' });
+    ok(`${autoFixVerb()} ${autoFixed} venue/category mismatches`);
   } else {
     ok('All London show venues match their category');
   }
@@ -1114,9 +1351,9 @@ function validateTheaterAddress(shows) {
         match.theaterAddress = show.theaterAddress;
       }
     }
-    saveShows(showsData);
+    saveShows(showsData, { reason: 'validateTheaterAddress (canonical theaterAddress fixes)' });
     mismatchExamples.forEach(m => info('  ' + m));
-    ok(`Auto-fixed ${mismatches} theaterAddress/venue mismatches from registry`);
+    ok(`${autoFixVerb()} ${mismatches} theaterAddress/venue mismatches from registry`);
   } else {
     ok('All Broadway theaterAddress fields match venue registry');
   }
@@ -1578,6 +1815,7 @@ function validateCreativeTeamCompleteness(shows) {
     'everyday-rapture-2010',
     'buena-vista-social-club-2025',  // Cuban catalog music, no single songwriter
     'titanique-2026',                // Céline Dion catalog parody
+    'mystic-pizza-regional-2025',    // '80s/'90s pop catalog jukebox score, no single lyricist
     // Instrumental / dance shows (no singing = no lyrics)
     'swan-lake-1998',
     'oba-oba-1988', 'oba-oba-93-1992',
@@ -1771,7 +2009,11 @@ function validateSchedulesJson(shows) {
   }
 
   // Shows that should have multi-week data: Broadway, open-status only (bwayrush is Broadway-only).
-  const broadwayOpen = shows.filter(s => s.status === 'open' && (!s.category || s.category === 'broadway'));
+  // Canonical predicate, not an inlined `!s.category || s.category === 'broadway'`
+  // — this file imports isBroadwayCategory and this was the last raw copy in it
+  // (ship-check finding on the BRO-3211 follow-up; clears validate-data.js from
+  // audit-broadway-category-predicate.js's frozen baseline entirely).
+  const broadwayOpen = shows.filter(s => s.status === 'open' && isBroadwayCategory(s));
   const openIds = new Set(broadwayOpen.map(s => s.id));
 
   let multiWeek = 0;
@@ -1980,7 +2222,14 @@ function validateReviewsJson() {
       const unknownOutlets = {};
       for (const r of reviews) {
         if (!r.outletId) continue;
-        if (!outlets[r.outletId]) {
+        // Resolve through normalizeOutlet() first (BRO-1343) — an outletId that's
+        // been folded into another outlet's `aliases` array (registry merge, not
+        // deletion) has no literal top-level key anymore but still resolves to a
+        // real, domained entry via the same alias map rebuild-all-reviews.js uses
+        // before every registry lookup. A raw `outlets[r.outletId]` check would
+        // otherwise mislabel every merged-away id as "unknown" forever.
+        const canonical = normalizeOutlet ? normalizeOutlet(r.outletId) : r.outletId;
+        if (!outlets[r.outletId] && !outlets[canonical]) {
           if (!unknownOutlets[r.outletId]) unknownOutlets[r.outletId] = 0;
           unknownOutlets[r.outletId]++;
         }
@@ -2796,7 +3045,35 @@ function validateP0ScoreCoverage() {
  * Scans review-text source files for regional BWW URLs and local paper tour indicators
  * that don't have wrongProduction set. Warns if >30% of a show's reviews are regional.
  */
-function validateTourReviewContamination() {
+/**
+ * Tour reviews still sitting on a Broadway show that has a tour entry
+ * (BRO-4211). scripts/sweep-tour-reviews.js moves them and is run by hand when
+ * a tour entry is added, so a forgotten run would leave them stranded silently
+ * (excluded from Broadway, missing from the tour). Warning only.
+ */
+function validateTourSweepPending(shows = []) {
+  const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
+  if (!fs.existsSync(reviewTextsDir)) return;
+  const { planTourSweep, decideTourSweep } = require('./lib/tour-backfill');
+  const listFiles = (showId) => {
+    const dir = path.join(reviewTextsDir, showId);
+    if (!fs.existsSync(dir)) return [];
+    return fs.readdirSync(dir).filter(x => x.endsWith('.json')).map(file => {
+      try { return { file, data: JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')) }; } catch { return { file, data: null }; }
+    });
+  };
+  let pending = 0;
+  for (const plan of planTourSweep(shows || [])) {
+    const n = decideTourSweep(plan, listFiles).filter(r => r.key === 'tour-review').length;
+    if (n > 0) {
+      pending += n;
+      warn(`Tour sweep pending: ${n} tour review(s) on ${plan.fromIds.join('/')} belong to "${plan.tourId}". Run: node scripts/sweep-tour-reviews.js --tour=${plan.tourId} (dry-run, then --execute)`);
+    }
+  }
+  if (pending === 0) ok('No tour reviews waiting to move to a tour entry');
+}
+
+function validateTourReviewContamination(shows = []) {
   info('Checking for unflagged tour/regional review contamination...');
 
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
@@ -2813,10 +3090,10 @@ function validateTourReviewContamination() {
     return;
   }
 
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
-    try { return fs.statSync(path.join(reviewTextsDir, d)).isDirectory() && !d.startsWith('.'); }
-    catch { return false; }
-  });
+  // A national-tour entry's reviews ARE tour reviews (BRO-4211), so its
+  // folder is not contaminated by them. Same exemption as rebuild-all-reviews.
+  const tourIds = new Set((shows || []).filter(s => s && s.category === 'tour').map(s => s.id));
+  const showDirs = listShowDirs(reviewTextsDir).filter(d => !tourIds.has(d));
 
   let totalUnflagged = 0;
   const contaminated = [];
@@ -2870,10 +3147,7 @@ function validateAggregatorScoreContamination() {
 
   const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
-    try { return fs.statSync(path.join(reviewTextsDir, d)).isDirectory() && !d.startsWith('.') && d !== 'aggregator-archive'; }
-    catch { return false; }
-  });
+  const showDirs = listShowDirs(reviewTextsDir).filter(d => d !== 'aggregator-archive');
 
   let contaminated = 0;
   const examples = [];
@@ -2913,10 +3187,7 @@ function validateCrossMarketSourceFiles() {
   // Use shared patterns from venue-classification.js (single source of truth)
   const { isBroadwayUrl } = require('./lib/venue-classification');
 
-  const showDirs = fs.readdirSync(reviewTextsDir).filter(d => {
-    try { return d.includes('west-end') && fs.statSync(path.join(reviewTextsDir, d)).isDirectory(); }
-    catch { return false; }
-  });
+  const showDirs = listShowDirs(reviewTextsDir).filter(d => d.includes('west-end'));
 
   const problems = [];
 
@@ -4649,9 +4920,7 @@ function validateAggregatorArchives(shows) {
     return;
   }
 
-  const dirs = fs.readdirSync(archiveDir).filter(d =>
-    fs.statSync(path.join(archiveDir, d)).isDirectory()
-  );
+  const dirs = listShowDirs(archiveDir);
 
   if (dirs.length === 0) {
     error('data/aggregator-archive/ has zero subdirectories');
@@ -4934,8 +5203,8 @@ function validateCrossMarketContamination() {
   // is currently rare — only The Arts Desk — so this is the cheap moment to watch it).
   try {
     const accumFile = path.join(DATA_DIR, 'audit', 'london-only-nyc-accumulation.json');
-    const auditDir = path.dirname(accumFile);
-    if (!fs.existsSync(auditDir)) fs.mkdirSync(auditDir, { recursive: true });
+    // (writeAuditArtifact creates data/audit/ itself — and skips it under
+    // --dry-run / fixture mode — so no mkdir here.)
     const payload = {
       generatedBy: 'scripts/validate-data.js reverse cross-market guard',
       description: 'London-region, non-isDualMarket outlets carrying NYC reviews. Tier 3/untiered Broadway hits are advisory isDualMarket candidates; Tier 1/2 Broadway hits are CI errors; off-Broadway hits are tolerated warnings.',
@@ -4998,6 +5267,32 @@ function validateNonTheaterContent(shows) {
   }
   if (flagged === 0) ok('No suspicious non-theater content detected');
   else console.log(`  ⚠️  ${flagged} show(s) flagged for review`);
+
+  // Non-theatre VENUE rows (2026 data audit, BRO-4204 S4-T8). Owner rule D3:
+  // a row at a stadium / arena / concert hall / cabaret room stays only if it
+  // has a review, is opera, or sits in a SOLT/Broadway house; everything else
+  // is a concert, a sports fixture or a cabaret night that reached shows.json
+  // before discovery learned to refuse it (isNonTheaterContent gate 3). WARN,
+  // not error: the decision (scripts/lib/venue-classification.js
+  // isUnreviewedNonTheatreRow) is deliberately conservative, and the reviewed
+  // and opera rows it exempts are kept on purpose. The rule itself is written
+  // up in docs/show-inclusion-policy.md.
+  console.log('--- Non-Theatre Venue Check ---');
+  const reviewedShowIds = new Set();
+  try {
+    const reviewsData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'reviews.json'), 'utf8'));
+    for (const r of (reviewsData.reviews || reviewsData)) if (r.showId) reviewedShowIds.add(r.showId);
+  } catch (e) {
+    info(`reviews.json unreadable (${e.message}) — non-theatre venue check treats every row as unreviewed`);
+  }
+  let venueFlagged = 0;
+  for (const show of shows) {
+    if (!isUnreviewedNonTheatreRow(show, reviewedShowIds.has(show.id))) continue;
+    warn(`Non-theatre venue with no reviews: "${show.title}" (${show.id}) at "${show.venue}" [${show.category || 'no category'}${show.type ? `, ${show.type}` : ''}] — not opera and not a SOLT/Broadway house; remove the row or leave it if a review is expected (docs/show-inclusion-policy.md)`);
+    venueFlagged++;
+  }
+  if (venueFlagged === 0) ok('No unreviewed rows at non-theatre venues');
+  else console.log(`  ⚠️  ${venueFlagged} unreviewed row(s) at stadium/arena/concert-hall/cabaret venues`);
 }
 
 // Lint guard: detect hardcoded outlet ID lists in scripts that should use outlet-registry.json
@@ -5051,7 +5346,7 @@ function runValidation() {
   console.log('='.repeat(60));
   console.log('BROADWAY SCORECARD DATA VALIDATION');
   console.log('='.repeat(60));
-  console.log(`Mode: ${strictMode ? 'STRICT' : 'STANDARD'}`);
+  console.log(`Mode: ${strictMode ? 'STRICT' : 'STANDARD'}${DRY_RUN ? ' (DRY RUN — no writes)' : ''}`);
   console.log('');
 
   // Check shows.json exists and is valid JSON
@@ -5074,12 +5369,15 @@ function runValidation() {
 
   // Run all validations
   validateNoDuplicates(shows);
+  validateRetiredIds(shows);
   console.log('');
   validateRequiredFields(shows);
+  validateShowTitles(shows);
   console.log('');
   validateStatus(shows);
   validateShowTypes(shows);
   validateDates(shows);
+  validateIdYearDrift(shows);
   validateTourLegs(shows);
   validateSlugs(shows);
   validateImageUrls(shows);
@@ -5163,7 +5461,9 @@ function runValidation() {
   console.log('');
   validateLotteryRushData(shows);
   console.log('');
-  validateTourReviewContamination();
+  validateTourReviewContamination(shows);
+  console.log('');
+  validateTourSweepPending(shows);
   console.log('');
   validateCrossMarketSourceFiles();
   console.log('');
@@ -5229,6 +5529,7 @@ function runValidation() {
   // push-core-data isn't blocked on data that's now valid.
   clearPushRefusalSentinel();
 
+  printDryRunSummary();
   process.exit(0);
 }
 

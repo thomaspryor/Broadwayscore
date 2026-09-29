@@ -15,6 +15,7 @@ const fs = require('fs');
 const path = require('path');
 const { setExtractedScore } = require('./lib/score-routing');
 const { LETTER_GRADES: LETTER_TO_SCORE } = require('./lib/score-conversion-rules');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
 
@@ -116,9 +117,7 @@ const stats = {
 const stillUnscored = [];
 
 // Process all shows
-const showDirs = fs.readdirSync(reviewTextsDir).filter(f =>
-  fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-);
+const showDirs = listShowDirs(reviewTextsDir);
 
 console.log('=== SCORING ALL UNSCORED REVIEWS ===\n');
 

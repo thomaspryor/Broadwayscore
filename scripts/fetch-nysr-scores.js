@@ -9,6 +9,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { setExtractedScore } = require('./lib/score-routing');
 
 const REVIEW_DIR = 'data/review-texts';
@@ -115,9 +116,7 @@ async function main() {
 
   // Find all NYSR reviews with removed scores
   const toFetch = [];
-  const shows = fs.readdirSync(REVIEW_DIR).filter(f =>
-    fs.statSync(path.join(REVIEW_DIR, f)).isDirectory()
-  );
+  const shows = listShowDirs(REVIEW_DIR);
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_DIR, show);

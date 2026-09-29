@@ -10,6 +10,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewsFile = path.join(__dirname, '../data/reviews.json');
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -24,9 +25,7 @@ const reviews = reviewsData.reviews || reviewsData;
 
 // Build a map of existing review-text files
 const existingFiles = new Set();
-const showDirs = fs.readdirSync(reviewTextsDir).filter(f =>
-  fs.statSync(path.join(reviewTextsDir, f)).isDirectory()
-);
+const showDirs = listShowDirs(reviewTextsDir);
 
 for (const showDir of showDirs) {
   const files = fs.readdirSync(path.join(reviewTextsDir, showDir))

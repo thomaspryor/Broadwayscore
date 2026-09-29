@@ -18,13 +18,19 @@ import { getShowGrosses } from './data-grosses';
 import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
 import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
-import { featureFlags } from '@/config/feature-flags';
+import { isCategoryEnabled } from './markets';
 import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
 import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
+import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
+import { stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
+import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
 // Import raw data (loaded at build time for static generation)
 import showsData from '../../data/shows.json';
+// Retired-slug map (prebuild: scripts/build-slug-redirects.js) — the theatre
+// lookups below fall back through it, exactly like data-reviews.ts getCriticBySlug()
+import slugRedirectsData from '../../data/slug-redirects-compact.json';
 import reviewsData from '../../data/reviews.json';
 import audienceData from '../../data/audience.json';
 import buzzData from '../../data/buzz.json';
@@ -153,15 +159,11 @@ export function getBroadwayShows(): ComputedShow[] {
   return getAllShows().filter(isBroadwayShow);
 }
 
-/**
- * IDs to exclude from London listings — non-theatre experiences that crept into
- * the data set (e.g. ABBA Voyage is a hologram concert at a purpose-built arena,
- * not theatre). These shows still exist as detail pages but are filtered out of
- * the West End / Off-West End hubs and OG data.
- */
-const HIDDEN_LONDON_IDS = new Set<string>([
-  'abba-voyage-off-west-end-2026',
-]);
+// IDs to exclude from London listings (ABBA Voyage: a hologram concert, not
+// theatre) — HIDDEN_LONDON_IDS, imported above from
+// scripts/lib/page-name-sources.js so the venue-redirect emitter
+// (scripts/build-slug-redirects.js) sees the same London show set as the
+// /west-end/theater venue index below.
 
 /**
  * Get all London shows for the West End hub (West End + Off-West End).
@@ -198,6 +200,30 @@ export function getOffBroadwayShows(): ComputedShow[] {
  */
 export function getRegionalShows(): ComputedShow[] {
   return getAllShows().filter(show => show.category === 'regional');
+}
+
+/** North American national tours (category 'tour', BRO-4211). */
+export function getTourShows(): ComputedShow[] {
+  return getAllShows().filter(show => show.category === 'tour');
+}
+
+/**
+ * National tours of a Broadway production, for its "On tour" line. A tour's
+ * tourOf names one Broadway run, but every Broadway production of the same
+ * title gets the line (Beetlejuice tours from beetlejuice-2019, and the 2022
+ * and 2025 returns are the pages people land on). Empty while the tour flag
+ * is off, so a flag-off build never links to a 404.
+ */
+export function getToursOf(show: Pick<ComputedShow, 'id' | 'title' | 'category'>): ComputedShow[] {
+  if (!isCategoryEnabled('tour')) return [];
+  if (show.category && show.category !== 'broadway') return [];
+  const title = show.title.trim().toLowerCase();
+  return getAllShows().filter(t => {
+    if (t.category !== 'tour' || !t.tourOf) return false;
+    if (t.tourOf === show.id) return true;
+    const parent = getShowById(t.tourOf);
+    return !!parent && parent.title.trim().toLowerCase() === title;
+  });
 }
 
 /**
@@ -369,10 +395,37 @@ export function getCurrentShows(): ComputedShow[] {
 }
 
 /**
- * Get a single show by slug
+ * Raw-row lookup by a slug that is NOT the row's current slug: its `id`
+ * (year-suffixed where the slug is year-less, e.g. hamilton-west-end-2021 →
+ * hamilton-west-end) or any entry of its `aliases[]` (the old ids and slugs a
+ * row kept when duplicate entries were merged — full ids and year-less slugs
+ * both). An id match wins over an alias match. Exact `slug` matches are the
+ * caller's job and take precedence. Pure; exported for tests (2026 data audit,
+ * S5-T7). scripts/build-slug-redirects.js applies the same two rules when it
+ * emits the /show/* redirect map.
+ */
+export function findShowByIdOrAlias<T extends { id: string; slug: string; aliases?: string[] }>(
+  rows: readonly T[],
+  slug: string
+): T | undefined {
+  if (!slug) return undefined;
+  return (
+    rows.find(row => row.id === slug) ??
+    rows.find(row => Array.isArray(row.aliases) && row.aliases.includes(slug))
+  );
+}
+
+/**
+ * Get a single show by slug. Falls back to the show's id or a merged row's
+ * old id/slug (`aliases`), mirroring what src/middleware.ts redirects for
+ * /show/* — routes with no middleware (api/badge, embed, opengraph-image)
+ * rely on this to resolve the same URLs.
  */
 export function getShowBySlug(slug: string): ComputedShow | undefined {
-  return getAllShows().find(show => show.slug === slug);
+  const exact = getAllShows().find(show => show.slug === slug);
+  if (exact) return exact;
+  const raw = findShowByIdOrAlias(shows, slug);
+  return raw ? getShowById(raw.id) : undefined;
 }
 
 /**
@@ -386,14 +439,14 @@ export function getShowById(id: string): ComputedShow | undefined {
  * Get all show slugs (for static generation)
  */
 /**
- * Regional (non-NYC US) shows are hidden from EVERY pre-rendered/indexed surface
- * (detail page static params, OG, sitemap, search index) until the `regional`
- * feature flag is on. They are a distinct category, so listing getters already
- * exclude them; this gate covers the build-time slug sets so a flag-off push can
- * never publish an orphaned, Google-indexed regional page.
+ * Flag-gated categories (regional, tour — see src/config/markets.json) are hidden
+ * from EVERY pre-rendered/indexed surface (detail page static params, OG, sitemap,
+ * search index) until their feature flag is on. They are distinct categories, so
+ * listing getters already exclude them; this gate covers the build-time slug sets
+ * so a flag-off push can never publish an orphaned, Google-indexed page.
  */
 function regionalSlugAllowed(show: any): boolean {
-  return featureFlags.regional || show.category !== 'regional';
+  return isCategoryEnabled(show.category);
 }
 
 export function getAllShowSlugs(): string[] {
@@ -599,11 +652,15 @@ export function getUpcomingShows(): ComputedShow[] {
 // Director Queries
 // ============================================
 
+/**
+ * URL slug for a person or place name — critics, outlets, directors,
+ * theaters, actors, creative team. ONE rule, shared with the JS side
+ * (scripts/lib/url-slug.js): diacritics fold before slugifying, so
+ * "José Solís" → `jose-solis` and "Nilgün Yusuf" → `nilgun-yusuf` (2026 data
+ * audit, S7-T3; the pre-fold slugs 301 via data/critic-slug-aliases.json).
+ */
 export function slugify(name: string): string {
-  return name
-    .toLowerCase()
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/(^-|-$)/g, '');
+  return urlSlugify(name);
 }
 
 /**
@@ -737,11 +794,33 @@ export function getAllTheaters(): Theater[] {
   return _theatersCache;
 }
 
+const nameRedirectMap: SlugRedirectMap = slugRedirectsData as Record<string, string>;
+
+/**
+ * Exact slug first; otherwise a retired (pre-S7-T3, unfolded) slug resolves
+ * to the live page through the compact redirect map. Requests normally
+ * never get here — src/middleware.ts 301s first — but any caller holding an
+ * old slug (or a runtime without the middleware) still finds the page.
+ */
+function findTheaterBySlug(
+  theaters: Theater[],
+  family: 'theater' | 'westEndTheater' | 'offBroadwayTheater',
+  slug: string,
+  redirects: SlugRedirectMap
+): Theater | undefined {
+  const exact = theaters.find(t => t.slug === slug);
+  if (exact) return exact;
+  const live = resolveNameRedirect(redirects, family, slug);
+  return live ? theaters.find(t => t.slug === live) : undefined;
+}
+
 /**
  * Get a single theater by slug
+ * @param redirects the compact redirect map — tests only; production callers
+ *   always resolve through the tracked data/slug-redirects-compact.json.
  */
-export function getTheaterBySlug(slug: string): Theater | undefined {
-  return getAllTheaters().find(t => t.slug === slug);
+export function getTheaterBySlug(slug: string, redirects: SlugRedirectMap = nameRedirectMap): Theater | undefined {
+  return findTheaterBySlug(getAllTheaters(), 'theater', slug, redirects);
 }
 
 /**
@@ -760,14 +839,6 @@ export function getAllTheaterSlugs(): string[] {
  * `allShows`, and `showCount` is left undefined and the UI renders "—".
  * Enrichment (Wikipedia/IBDB/curated tips) tracked as follow-up.
  */
-// Placeholder venue strings that should never generate their own venue page
-// (announced shows sometimes list "TBA" as the venue).
-const STUB_THEATER_PLACEHOLDER_VENUES = new Set(['TBA', 'TBD', 'tba', 'tbd', 'Unknown', 'unknown']);
-
-function normalizeVenueName(venue: string): string {
-  return venue.trim().replace(/\s+/g, ' ');
-}
-
 /**
  * Shared venue-index builder for markets with no curated theaterMetaData
  * (West End, off-Broadway) — every field beyond name/address/shows stays
@@ -778,14 +849,18 @@ function normalizeVenueName(venue: string): string {
  * strings (casing, stray whitespace: "SoHo Playhouse" vs "Soho Playhouse")
  * would otherwise slugify to the same URL and silently strand one variant's
  * shows behind an unreachable page (found in review before this shipped).
+ *
+ * The page name rule (trim, collapse whitespace, drop "_"-prefixed internals
+ * and TBA/TBD/Unknown placeholders) is scripts/lib/page-name-sources.js
+ * stubTheaterName(), shared with scripts/build-slug-redirects.js so the
+ * retired-slug redirects replay exactly the names that get pages.
  */
 function buildStubTheaterIndex(shows: ComputedShow[]): Theater[] {
   const theaterMap = new Map<string, { name: string; shows: ComputedShow[]; address?: string }>();
 
   for (const show of shows) {
-    if (!show.venue) continue;
-    const name = normalizeVenueName(show.venue);
-    if (!name || name.startsWith('_') || STUB_THEATER_PLACEHOLDER_VENUES.has(name)) continue;
+    const name = stubTheaterName(show.venue);
+    if (!name) continue;
     const slug = slugify(name);
     if (!slug) continue;
     const existing = theaterMap.get(slug) || { name, shows: [], address: show.theaterAddress };
@@ -829,10 +904,10 @@ export function getAllLondonTheaters(): Theater[] {
 }
 
 /**
- * Get a single London venue by slug
+ * Get a single London venue by slug (retired pre-fold slugs resolve too — see findTheaterBySlug)
  */
-export function getLondonTheaterBySlug(slug: string): Theater | undefined {
-  return getAllLondonTheaters().find(t => t.slug === slug);
+export function getLondonTheaterBySlug(slug: string, redirects: SlugRedirectMap = nameRedirectMap): Theater | undefined {
+  return findTheaterBySlug(getAllLondonTheaters(), 'westEndTheater', slug, redirects);
 }
 
 /**
@@ -850,10 +925,10 @@ export function getAllOffBroadwayTheaters(): Theater[] {
 }
 
 /**
- * Get a single off-Broadway venue by slug
+ * Get a single off-Broadway venue by slug (retired pre-fold slugs resolve too — see findTheaterBySlug)
  */
-export function getOffBroadwayTheaterBySlug(slug: string): Theater | undefined {
-  return getAllOffBroadwayTheaters().find(t => t.slug === slug);
+export function getOffBroadwayTheaterBySlug(slug: string, redirects: SlugRedirectMap = nameRedirectMap): Theater | undefined {
+  return findTheaterBySlug(getAllOffBroadwayTheaters(), 'offBroadwayTheater', slug, redirects);
 }
 
 /**
@@ -1086,6 +1161,7 @@ export function getBrowseList(slug: string): BrowseList | undefined {
     : config.source === 'off-broadway' ? getOffBroadwayShows()
     : config.source === 'off-west-end' ? getOffWestEndShows()
     : config.source === 'regional' ? getRegionalShows()
+    : config.source === 'tour' ? getTourShows()
     : getBroadwayShows();
 
   // Context for data-dependent filters and custom sorts
@@ -1167,9 +1243,11 @@ export function getAllBrowseSlugs(): string[] {
   // + sitemap both enumerate through here) — their card links point at
   // /show/ pages that regionalSlugAllowed excludes, i.e. 404s. Mirrors the
   // regional gating on detail params/search/sitemap above (ship-check P1).
-  return getBrowseSlugsFromConfig().filter(slug =>
-    featureFlags.regional || BROWSE_PAGES[slug]?.source !== 'regional'
-  );
+  // Every flag-gated category (regional, tour) goes through markets.json.
+  return getBrowseSlugsFromConfig().filter(slug => {
+    const source = BROWSE_PAGES[slug]?.source;
+    return !source || isCategoryEnabled(source);
+  });
 }
 
 /**
@@ -1252,9 +1330,11 @@ export function getOtherProductions(show: ComputedShow): ComputedShow[] {
   const baseTitle = normalize(show.title);
   // 'regional' last (4): when a regional tryout later transfers to Broadway, the
   // Broadway production (0) leads the cross-production list and the tryout trails it.
-  const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-west-end': 2, 'off-broadway': 3, regional: 4 };
+  const marketOrder: Record<string, number> = { broadway: 0, 'west-end': 1, 'off-west-end': 2, 'off-broadway': 3, regional: 4, tour: 5 };
+  // Flag-gated categories are skipped while their flag is off: their detail pages
+  // aren't built, so a card here would be a dead link (BRO-4211 flag-off build).
   return getAllShows()
-    .filter(s => s.id !== show.id && normalize(s.title) === baseTitle)
+    .filter(s => s.id !== show.id && normalize(s.title) === baseTitle && isCategoryEnabled(s.category))
     .sort((a, b) => {
       const catA = marketOrder[(a.category || 'broadway')] ?? 3;
       const catB = marketOrder[(b.category || 'broadway')] ?? 3;

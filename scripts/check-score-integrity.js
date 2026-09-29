@@ -13,6 +13,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTPUT_PATH = path.join(__dirname, '..', 'data', 'audit', 'score-integrity.json');
@@ -52,10 +53,7 @@ const issues = {
 
 let totalFiles = 0;
 
-const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-  try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); }
-  catch { return false; }
-});
+const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
 for (const show of shows) {
   const showDir = path.join(REVIEW_TEXTS_DIR, show);

@@ -90,6 +90,65 @@ function statusLine(text) {
   return /<[^>]*>/.test(line) ? '' : line;
 }
 
+// BRO-3914 (2026-09-20): interactive sessions no longer put the machine
+// block in the chat message — they record it with `wrapup-block --file`,
+// whose tool_result carries the block between these sentinels. Scan the
+// tail backwards for the LAST such result so a finished session's verdict
+// is still recoverable after its plain-English final message.
+const RECORD_START = 'WRAPUP-BLOCK RECORDED v1';
+const RECORD_END = 'WRAPUP-BLOCK END';
+function recordedBlock(entries) {
+  // Same freshness rule as ~/.claude/hooks/lib/wrapup_block.py: walking
+  // newest -> oldest, the first main-chain event must be the wrapup-block
+  // call itself. A later tool call or a later real owner message means the
+  // record is stale (adversarial review 2026-09-20: the dashboard must not
+  // resurrect a CLOSE ME from three turns ago).
+  const results = new Map();
+  for (let i = entries.length - 1; i >= 0; i--) {
+    const e = entries[i];
+    if (!e || e.isSidechain) continue;
+    const c = e.message && e.message.content;
+    if (e.type === 'user') {
+      let ownerText = typeof c === 'string' ? c : '';
+      if (Array.isArray(c)) {
+        for (const it of c) {
+          if (!it) continue;
+          if (it.type === 'tool_result') {
+            const txt = typeof it.content === 'string' ? it.content
+              : Array.isArray(it.content) ? it.content.map(x => (x && x.text) || '').join('\n') : '';
+            results.set(it.tool_use_id, { error: !!it.is_error, txt });
+          } else if (it.type === 'text') ownerText += (it.text || '');
+        }
+      }
+      const t = ownerText.trim();
+      if (t && !e.isMeta && !t.startsWith('<') && !t.startsWith('[Request interrupted')) return '';
+      // A background agent finishing after the record is news the block
+      // cannot reflect — same rule as wrapup_block.py.
+      if (t.startsWith('<task-notification>')) return '';
+      continue;
+    }
+    if (e.type !== 'assistant' || !Array.isArray(c)) continue;
+    for (let j = c.length - 1; j >= 0; j--) {
+      const it = c[j];
+      if (!it || it.type !== 'tool_use') continue;
+      const cmd = String((it.input && it.input.command) || '');
+      if (it.name !== 'Bash' || !/(^|[\s/;&|])wrapup-block(\.js)?(\s|$)/.test(cmd)) return '';
+      const r = results.get(it.id);
+      if (!r || r.error) return '';
+      const a = r.txt.indexOf(RECORD_START);
+      if (a < 0 || r.txt.slice(0, a).trim()) return '';
+      const b = r.txt.indexOf(RECORD_END, a);
+      return b < 0 ? '' : r.txt.slice(a + RECORD_START.length, b).trim();
+    }
+  }
+  return '';
+}
+
+// Verdict line from the final chat text, else from the last recorded block.
+function sessionStatus(entries) {
+  return statusLine(finalAssistantText(entries)) || statusLine(recordedBlock(entries));
+}
+
 // One-glance verdict for an open workspace. Inputs are booleans bsc-status
 // derives from cmux (isDoneTitle / claudeAliveIn) — kept pure so the
 // decision table is testable. Mirrors bsc-prune's closability rule: ✅ AND
@@ -107,4 +166,5 @@ function workspaceVerdict({ done, alive }) {
 module.exports = {
   parseJsonLines, messageText, firstUserMessage, sessionLabel,
   finalAssistantEntry, finalAssistantText, statusLine, workspaceVerdict,
+  recordedBlock, sessionStatus,
 };

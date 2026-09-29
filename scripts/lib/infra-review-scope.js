@@ -272,6 +272,127 @@ const PATCH_COMMANDS = new Set(['patch']);
 // `> path` / `>> path`, including `2> path`. Deliberately not `<`.
 const REDIRECT_RE = /(?:^|\s)\d*>>?\s*["']?([^\s"'<>;&|]+)/g;
 
+// Neutralise '>' characters that live INSIDE a single/double-quoted span, and
+// blank out text that lives inside an UNQUOTED shell '#' comment, so
+// REDIRECT_RE (which is quote-blind and comment-blind — it runs as a raw
+// regex scan, not through tokenize()) can never mistake a literal '>' inside
+// a string or a comment for a real shell redirect operator, and so
+// tokenize()'s WRITE_COMMANDS scan (sed -i, cp, mv, tee, …) can never read a
+// word from comment text as a real operand.
+//
+// BRO-4070 covered the quoted case: a read-only `echo "… > path"` diagnostic
+// was BLOCKED because the quoted '>' was read as a redirect. BRO-4073 is the
+// sibling gap that fix deliberately left open (kept narrow per that session's
+// second-opinion review): a read-only `git log … # mentions > path in a
+// comment` diagnostic is ALSO blocked, because comment text was never masked
+// at all. Both live in the same state machine because comment detection
+// needs the same quote-tracking redirect-masking already has — a '#' inside
+// a quoted string is not a comment start, so a second, quote-blind regex
+// pass for comments would misfire on `echo "# not a comment"`.
+//
+// '>' handling: only the operator character itself is replaced (with a
+// space) when INSIDE quotes — everything else, including a legitimately
+// QUOTED redirect TARGET (`> "scripts/lib/foo.js"`, whose '>' sits outside
+// the quotes), is left untouched, so a real redirect is still detected
+// exactly as before. '>' outside quotes and outside a comment is never
+// touched — it is a real candidate operator for REDIRECT_RE to find.
+//
+// '#' handling: once outside any quote, a '#' is a comment start ONLY at a
+// shell word boundary — start-of-string, or immediately after whitespace or
+// one of `;|&\n(` — mirroring real bash's rule that '#' starts a comment
+// only as the first character of a word. This deliberately excludes
+// parameter expansion (`${x#prefix}`, `${#arr[@]}` — '#' preceded by a var
+// name or '{', never a word boundary) and URL fragments in an unquoted arg
+// (`http://x#foo` — '#' is mid-word). Once a comment starts, everything up
+// to (not including) the next newline is blanked — comments end at the
+// newline in real bash, so a later line's real command must still be seen.
+// Blanking with spaces rather than deleting keeps every other character's
+// position stable, which is what lets the caller line this output up 1:1
+// with the unmasked segment array by index.
+//
+// Outside quotes, a backslash escapes the immediately following character —
+// `foo\ #literal` is ONE word ("foo #literal"), so the '#' is mid-word, not
+// a comment start, and a real redirect later in that same command must still
+// be seen (Codex adversarial review, BRO-4073: an escaped space before '#'
+// was misread as a real word boundary, blanking a genuine `> real/target.js`
+// that followed — a false NEGATIVE, the dangerous direction for a gate whose
+// job is "ask for review", never "silently miss a write"). Escaping inside
+// quotes has different, quote-specific rules (single quotes: none at all;
+// double quotes: only `$ \` " \ <newline>`) that the existing quote-tracking
+// here has never modeled — matching that pre-existing, accepted level of
+// fidelity, this only tracks escaping OUTSIDE quotes, where '#' is the sole
+// thing being escape-checked.
+//
+// Runs on the WHOLE (unsplit) command, mirroring stripHeredocBodies's own
+// placement (both run before shellSegments()) — NOT per-segment. shellSegments
+// is already documented as quote-blind at the split boundary (a `;` inside a
+// quoted string over-splits); resolving quote/comment state before that
+// split, not after, is what stops a semicolon-quoted fake redirect (`echo
+// "run this; then > path"`) or a comment spanning a `;`-split point from
+// landing its `>` or comment text in a different segment than the quote/
+// comment-start that should have masked it.
+//
+// A `;|&\n` that lives INSIDE a comment is blanked along with the rest of the
+// comment (real bash: nothing inside a comment is a separator, so `echo ok #
+// note; > path` is ONE real command, not two) — which means shellSegments()
+// run on this function's output can produce a DIFFERENT segment count than
+// shellSegments() run on the raw command. Callers must derive ALL of their
+// segments from this function's output alone and never zip them by index
+// against a separately-computed raw-command segment array (Codex adversarial
+// review, BRO-4073 round 2: an earlier revision of bashWriteTargets did
+// exactly that zip, with a `?? rawSegment` fallback for the count mismatch —
+// so `echo ok # note; > scripts/lib/file-lock.js` masked to ONE segment,
+// the raw command still split into TWO, and the second loop iteration fell
+// back to the raw, unmasked segment for its REDIRECT_RE scan, resurrecting
+// the exact bug this function exists to close, one layer down). See
+// bashWriteTargets and bashPatchSources below — both segment the MASKED
+// command only, precisely to keep this a non-issue rather than a fragile
+// invariant to maintain.
+function maskQuotedRedirectOperatorsAndComments(command) {
+  const str = String(command);
+  let out = '';
+  let quote = null;
+  let atWordStart = true;
+  let escapeNext = false;
+  for (let i = 0; i < str.length; i++) {
+    const ch = str[i];
+    if (quote) {
+      if (ch === quote) quote = null;
+      out += ch === '>' ? ' ' : ch;
+      atWordStart = false;
+      continue;
+    }
+    if (escapeNext) {
+      out += ch;
+      atWordStart = false;
+      escapeNext = false;
+      continue;
+    }
+    if (ch === '\\') {
+      out += ch;
+      atWordStart = false;
+      escapeNext = true;
+      continue;
+    }
+    if (ch === '#' && atWordStart) {
+      while (i < str.length && str[i] !== '\n') { out += ' '; i++; }
+      i--; // step back so the for-loop's i++ lands on the newline (or end)
+      atWordStart = false;
+      continue;
+    }
+    if (ch === '"' || ch === "'") {
+      quote = ch;
+      out += ch;
+      atWordStart = false;
+      continue;
+    }
+    out += ch;
+    atWordStart = ch === ' ' || ch === '\t' || ch === '\n'
+      || ch === ';' || ch === '|' || ch === '&' || ch === '(';
+  }
+  return out;
+}
+
 // Split a command line into rough segments so `printf x | tee f && sed -i … g`
 // is seen as three commands. Quote-blind by design: a `|` inside a quoted
 // string over-splits, which can only ever produce an extra candidate path, and
@@ -376,6 +497,48 @@ const KNOWN_GAPS = [
   // infra-post-write-audit.sh reads the real post-Bash git diff every call
   // (not just at merge/push), independent of which shell command produced it.
   'an unrecognised command prefix (sudo, strace, a future coreutil) ahead of a write command',
+  // Codex adversarial review, BRO-4073: stripHeredocBodies() runs BEFORE
+  // maskQuotedRedirectOperatorsAndComments(), and is itself comment-blind —
+  // it has no notion that a `<<TAG` sequence living inside a `#` comment
+  // (`echo ok # <<EOF`) is just commentary, not a real heredoc opener. It
+  // still consumes every following line as fake "body" until a line
+  // matching the tag turns up (or the command ends), which can silently
+  // swallow a genuine write on a later line. Pre-existing: stripHeredocBodies
+  // was exactly as comment-blind before BRO-4073 added any comment handling
+  // at all — this ticket did not introduce the gap, just gained the context
+  // to name it. Not chased here: reordering the two passes (or making
+  // stripHeredocBodies comment-aware) is a bigger restructuring of an
+  // already-hardened, separately-tested function (task #1557) than this
+  // ticket's scope, and the false-negative direction this produces is
+  // backstopped the same way as every other gap in this list —
+  // infra-post-write-audit.sh reads the real post-Bash git diff every call.
+  'a `<<TAG` heredoc-opener sequence living inside a `#` comment is still read as a real heredoc opener, and can swallow a genuine write on a later line',
+  // Adversarial review (BRO-4073 round 3), confirmed PRE-EXISTING against the
+  // BRO-4070 baseline (identical on both sides of BRO-4073 — reproduced
+  // against the pre-BRO-4073 commit directly, not introduced by the comment
+  // fix). maskQuotedRedirectOperatorsAndComments' quote branch has never
+  // tracked escaping AT ALL inside an open quote — real double-quote rules
+  // escape only `$ \` " \ <newline>`, real single-quote rules escape
+  // nothing — so a backslash-escaped `"` inside a double-quoted string
+  // (`"foo\"bar" > real.js`) is misread as the quote's own closing
+  // delimiter, the following `"` wrongly opens a new (unterminated) fake
+  // quote, and a real redirect later in the same command is silently lost
+  // inside it. Same exposure in bashPatchSources. Not chased here: correct
+  // handling needs quote-TYPE-aware escaping (double-quote and single-quote
+  // rules differ), a materially bigger change than this ticket's comment
+  // fix, for a case whose failure direction (a write is missed, never a
+  // false block) is backstopped the same as every other gap in this list.
+  'a backslash-escaped quote character living INSIDE an already-open quoted string is misread as that quote\'s closing delimiter, which can silently swallow a real write later in the command',
+  // Same session, same root cause (shellSegments() has always been
+  // quote-blind AND escape-blind at the `;|&\n` split boundary — documented
+  // above this function, pre-existing, unrelated to the round-2 escape
+  // tracking this ticket added for `#`-detection specifically, which is
+  // local to maskQuotedRedirectOperatorsAndComments and never claimed to
+  // extend to shellSegments' own splitting). An escaped separator outside
+  // any quote (`echo hi > foo\;bar.js`, a single real filename containing a
+  // literal `;`) still gets raw-split by shellSegments into two pieces,
+  // corrupting the resolved target rather than merely misclassifying it.
+  'an escaped `;`, `|`, or `&` outside quotes is still split on by shellSegments() as if it were a real statement separator, corrupting (not just misclassifying) the resolved target',
 ];
 
 // ── path normalisation ───────────────────────────────────────────────────────
@@ -542,6 +705,21 @@ function unwrapCommandPrefix(tokens) {
 function bashWriteTargets(command) {
   if (!command) return [];
   command = stripHeredocBodies(command);
+  // Segment the MASKED (quote/comment-safe) command ONLY — never zip it
+  // against a separately-computed raw-command segment array by index. A
+  // comment can contain a `;|&\n` that the raw command would split on but
+  // the masked command does not (the comment swallows it, same as real
+  // bash), so the two would NOT reliably line up 1:1 — see the "Callers
+  // must derive ALL of their segments from this function's output alone"
+  // note on maskQuotedRedirectOperatorsAndComments above (BRO-4073 round 2,
+  // Codex adversarial review: an earlier revision here zipped raw/masked
+  // segments by index with a `?? rawSegment` fallback for the count
+  // mismatch, which resurrected the exact bug this function exists to
+  // close). tokenize() reads the same masked segment REDIRECT_RE does: a
+  // trailing `# also see scripts/lib/other.js` comment must not shift a
+  // `sed -i … real.js` target, or inflate a `tee`/patch operand list, the
+  // same way it must not fake a REDIRECT_RE match.
+  const maskedSegments = shellSegments(maskQuotedRedirectOperatorsAndComments(command));
   const out = new Set();
   const add = (t) => {
     const v = (t || '').trim();
@@ -550,12 +728,12 @@ function bashWriteTargets(command) {
     out.add(v);
   };
 
-  for (const segment of shellSegments(command)) {
+  for (const maskedSegment of maskedSegments) {
     REDIRECT_RE.lastIndex = 0;
     let m;
-    while ((m = REDIRECT_RE.exec(segment)) !== null) add(m[1]);
+    while ((m = REDIRECT_RE.exec(maskedSegment)) !== null) add(m[1]);
 
-    const tokens = tokenize(segment);
+    const tokens = tokenize(maskedSegment);
     if (!tokens.length) continue;
     const resolved = unwrapCommandPrefix(tokens);
     if (!resolved.length) continue;
@@ -591,7 +769,10 @@ function bashPatchSources(command) {
   if (!command) return [];
   command = stripHeredocBodies(command);
   const out = new Set();
-  for (const segment of shellSegments(command)) {
+  // Same masked-segment input as bashWriteTargets (BRO-4073) — a trailing
+  // `# see scripts/lib/other.js` comment must not read as an extra patch
+  // operand, the same class of gap the REDIRECT_RE fix closes.
+  for (const segment of shellSegments(maskQuotedRedirectOperatorsAndComments(command))) {
     const tokens = tokenize(segment);
     if (!tokens.length) continue;
     const head = tokens[0].value.replace(/^.*\//, '');
@@ -715,25 +896,55 @@ function evaluateInfraReviewGate({
 
 /**
  * The freshest usable plan-phase verdict for this session, or null.
- * A 'fail' verdict does NOT unlock the gate — the reviewer wins by default.
- * Overturning a fail is an owner call, recorded as a verdict with
- * reviewer='owner-override' (the devil's-advocate reviewer's answer to open
- * question 3: without this, "reviewer said no" becomes the self-classification
- * dodge one level up).
+ *
+ * Tracks the SINGLE freshest phase:'plan' verdict for the session regardless
+ * of result, and only returns it if that freshest verdict is a pass. Before
+ * BRO-2310 this looked only at result==='pass' entries and ignored fails
+ * outright — so a pass recorded before a later fail kept covering edits for
+ * the rest of the TTL window, and the fail never re-blocked anything (an
+ * adversarial /ship-check review of the initial BRO-2310 fix caught this: the
+ * write-time guard below only stops a NEW pass from silently overturning a
+ * fail, it does nothing about an OLD pass that already existed). Tracking the
+ * single latest verdict — not the latest pass — closes that: the moment a
+ * fail is recorded, it becomes the freshest verdict and the gate re-blocks,
+ * exactly as the "reviewer wins by default" comment always claimed.
+ *
+ * This does NOT itself require an owner call to move past that fail: a later,
+ * genuinely fresher pass again becomes the freshest verdict and unlocks the
+ * gate. findFreshPlanVerdict still has no way to tell "a genuinely revised
+ * plan, re-reviewed" from "the same plan, reviewed again until it passed"
+ * (task #1079's open question 3, still unresolved — a future plan-content
+ * hash could resolve it). Hard-blocking here on any fail was tried in the
+ * BRO-2310 design pass and rejected: it would wedge the legitimate "fail on
+ * v1, revise the plan, pass on v2" flow this gate exists to support.
+ *
+ * The accountability property lives one layer up instead, at WRITE time:
+ * recordPlanVerdict() (review-gate.mjs) refuses to record a pass whose
+ * session's own most recent plan verdict was a fail unless the call carries
+ * --note explaining what changed, or --reviewer=owner-override. Either way
+ * the write succeeds and later unlocks the gate here — the point is a visible
+ * paper trail, not a wedge. computeInfraReviewDigest() (infra-review-digest.js)
+ * surfaces every such fail→pass transition (via the overturnsFail flag
+ * recordPlanVerdict stamps on the entry) so the pattern is observable in the
+ * daily digest even when it is permitted (BRO-2310, option 2 of that card).
  */
 function findFreshPlanVerdict({ verdicts = [], sessionId = null, now = 0 }) {
   let best = null;
   for (const v of verdicts) {
     if (!v || v.phase !== 'plan') continue;
-    if (v.result !== 'pass') continue;
     if (sessionId && v.sessionId && v.sessionId !== sessionId) continue;
     if (!v.sessionId) continue; // an unattributed verdict can't cover a session
     const ts = Date.parse(v.ts || '');
     if (!Number.isFinite(ts)) continue;
     if (now && now - ts > VERDICT_TTL_MS) continue;
-    if (!best || ts > Date.parse(best.ts)) best = v;
+    // >= not >: millisecond-precision timestamps can tie (e.g. a fail and the
+    // owner-override pass that overturns it, recorded moments apart in the
+    // same script run). On a tie, prefer the entry that appears LATER in the
+    // ledger — an append-only file, so later-in-array is later-in-time even
+    // when the ts field itself can't distinguish them.
+    if (!best || ts >= Date.parse(best.ts)) best = v;
   }
-  return best;
+  return best && best.result === 'pass' ? best : null;
 }
 
 module.exports = {
@@ -751,6 +962,7 @@ module.exports = {
   shellSegments,
   tokenize,
   stripHeredocBodies,
+  maskQuotedRedirectOperatorsAndComments,
   // Same sharing rationale, same two callers (BRO-2450): review-gate.mjs's
   // merge gate had this exact wrapper list first (BRO-2436); bashWriteTargets
   // needed it too, so this is the one definition both read instead of two

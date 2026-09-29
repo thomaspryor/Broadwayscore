@@ -41,6 +41,7 @@
 const fs = require('fs');
 const path = require('path');
 const { splitMultiShowArticle, loadShows } = require('./lib/multi-show-splitter');
+const { listShowDirs: listShowDirsSafe } = require('./lib/list-show-dirs');
 
 // ============================================================================
 // CLI
@@ -205,14 +206,7 @@ function main() {
 // ============================================================================
 
 function listShowDirs() {
-  return fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-    if (d.startsWith('_')) return false; // _pending etc.
-    try {
-      return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory();
-    } catch {
-      return false;
-    }
-  });
+  return listShowDirsSafe(REVIEW_TEXTS_DIR).filter(d => !d.startsWith('_')); // _pending etc.
 }
 
 function rewriteParent(data, ownSection, childShowIds) {

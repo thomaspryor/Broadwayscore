@@ -13,7 +13,10 @@
 
 const path = require('path');
 const { foldDiacritics } = require('./title-match');
-const { isPlaceholderVenue } = require('../audit-placeholder-venues');
+// Single home of the placeholder predicate (S4-T7): the census CLI, this
+// write-time guard and the source lint all require() this same module.
+const { isPlaceholderVenue } = require('./placeholder-venue');
+const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./broadway-theaters');
 const venueList = require(path.join(__dirname, '../../data/west-end-venues.json'));
 const obVenueList = require(path.join(__dirname, '../../data/off-broadway-venues.json'));
 
@@ -47,6 +50,78 @@ function isWestEndVenue(venue) {
   return WEST_END_VENUES.has(normalizeVenueName(venue));
 }
 
+// Theatres OUTSIDE New York that TodayTix nonetheless lists in its NYC feed
+// (location=1) — and, worse, tags "Off Broadway". They are touring houses
+// playing 2-3 day road dates of shows that are not New York productions at all.
+//
+// This needs its own denylist rather than "absent from OFF_BROADWAY_VENUES"
+// because the OB allowlist is DERIVED from category='off-broadway' rows in
+// shows.json and then FEEDS isKnownOffBroadwayVenue(). One mis-categorised road
+// date therefore teaches the allowlist a touring venue permanently, and every
+// later engagement there is minted as an Off-Broadway production, which
+// re-feeds the list. State Theatre New Jersey (New Brunswick, NJ) rode that
+// loop to three bogus rows — The Music Man, Spamalot and Beetlejuice (BRO-3211).
+//
+// Checked BEFORE the subcategory tag, because the tag is exactly what is wrong:
+// TodayTix returns subcategories ["Comedy","Off Broadway"] for Beetlejuice at
+// State Theatre New Jersey (verified against the live API, 2026-09-14), so a
+// venue-allowlist fix alone would not have stopped the row coming straight back.
+// Substring regex, NOT an exact Set — the same choice (and for the same reason)
+// as SPECIAL_ENGAGEMENT_VENUE_RE below. An exact Set.has(normalizeVenueName(v))
+// was tried first and is one keystroke from useless here: normalizeVenueName
+// only strips a TRAILING parenthetical, a TRAILING "theatre"/"theater" and a
+// LEADING "the", so every one of these real-world shapes slipped past it --
+//   "State Theater New Jersey"               (American spelling; mid-string, so not stripped)
+//   "State Theatre, New Jersey"              (comma)
+//   "State Theatre New Jersey - New Brunswick"  (locality suffix)
+// -- and a single miss is not cosmetic: the row is admitted, written as
+// category='off-broadway', and build-ob-venues.js then re-learns the venue into
+// the allowlist, restarting the very loop this is here to break. \W+ separators
+// absorb the punctuation variants and theat(?:er|re) absorbs the spelling.
+const NON_NYC_VENUE_RE = /state\W+theat(?:er|re)\W+(?:new\W+jersey|nj\b)/i;
+
+// Structural "this venue is plainly not in New York" detection, for catching
+// touring/regional houses NON_NYC_VENUE_RE does not yet name by hand.
+//
+// Deliberately NOT a list of city keywords: that was tried and false-positived
+// on real New York houses -- "Virginia Theatre" (Broadway, in the corpus today)
+// trips /virginia/, the Ohio Theatre on Wooster St trips /ohio/, and anything
+// on Houston St trips /houston/. Every genuine regional row in the corpus
+// instead carries an explicit ", <city>, <ST>" suffix ("Goodman Theatre,
+// Chicago, IL"), a shape a New York venue name never takes. The spelled-out
+// state list is the no-comma fallback ("State Theatre New Jersey") and omits
+// single-word state names that double as NY venue names -- Virginia, Ohio,
+// Georgia, Washington -- for the same false-positive reason.
+//
+// Measured when introduced (BRO-3211): 0 hits across every broadway/
+// off-broadway row, 26 of 29 regional rows correctly detected.
+const NON_NYC_LOCALE_SUFFIX_RE = /,\s*[^,]+,\s*(?:d\.?c\.?|[a-z]{2})\.?$/i;
+const SPELLED_OUT_US_STATE_RE = /\b(?:new jersey|rhode island|new hampshire|north carolina|south carolina|west virginia|connecticut|massachusetts|pennsylvania|illinois|minnesota|wisconsin|michigan|maryland|delaware|kentucky|tennessee|nebraska|oklahoma|arkansas|missouri|colorado|arizona|nevada|oregon|kansas|iowa|utah|idaho|montana|wyoming|alabama|alaska|hawaii|louisiana|mississippi|indiana)\b/i;
+
+/**
+ * True when a venue NAME itself says it is outside New York — either a
+ * ", <city>, <ST>" suffix or a spelled-out non-NY state. Broader and more
+ * speculative than isNonNycVenue(): use this for validation and CI guards
+ * (catch the unknown next offender), and isNonNycVenue() for ingest decisions
+ * (reject the ones we have confirmed). Accepts a string or a `{ name }` object.
+ */
+function isNonNycLocale(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name) return false;
+  return NON_NYC_LOCALE_SUFFIX_RE.test(name) || SPELLED_OUT_US_STATE_RE.test(name);
+}
+
+/**
+ * True when a venue is a known non-New-York house. Such a venue can never be
+ * Broadway or Off-Broadway no matter how TodayTix tags it. Accepts a string
+ * venue name or a TodayTix-shape `{ name }` object.
+ */
+function isNonNycVenue(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name) return false;
+  return NON_NYC_VENUE_RE.test(name);
+}
+
 /**
  * True when a venue name matches a theatre we already classify as
  * Off-Broadway. Lets discovery rescue OB shows that TodayTix lists without
@@ -75,6 +150,134 @@ const SPECIAL_ENGAGEMENT_VENUE_RE = /radio city music hall|park avenue armory|ca
 function isSpecialEngagementVenue(venue) {
   if (!venue || venue === 'TBA') return false;
   return SPECIAL_ENGAGEMENT_VENUE_RE.test(venue);
+}
+
+// ── Non-theatre venues (2026 data audit, BRO-4204 S4-T6) ─────────────────────
+//
+// Stadiums, arenas, concert halls, cabaret rooms and one-off attraction sites
+// in both markets. A listing at one of these is a concert, a sports fixture, a
+// fairground ride or a cabaret night — not a staged production — unless
+// something else vouches for it: TodayTix tagging it Plays/Musicals (NYC path
+// only), or a registered outlet reviewing it (the aggregator promoters, which
+// do not consult this regex — see docs/show-inclusion-policy.md).
+//
+// Every named venue below is either a real row from the audit's non-theatre
+// accounting (Joe's Pub, 54 Below, Carnegie Hall, Radio City Music Hall,
+// Bowery Ballroom, Twickenham Stadium, Eventim Apollo, Royal Albert Hall,
+// Royal Festival Hall / Queen Elizabeth Hall, Alexandra Palace, King's Place,
+// Battersea Power Station) or an obvious sibling TodayTix lists in the same
+// feeds. Substring regex, not a normalized Set, for the same reason as
+// NON_NYC_VENUE_RE: the strings carry suffixes ("Stern Auditorium / Perelman
+// Stage at Carnegie Hall", "Joe's Pub at The Public Theatre").
+//
+// Deliberately NOT matched (each one is a theatre that a looser token hits):
+//   - bare "park": Park Theatre (20 Off-West End rows), Regent's Park Open Air
+//     Theatre, Park Avenue Armory. Festival/one-night park bookings fall to
+//     the one-night gate instead.
+//   - bare "wembley": Troubadour Wembley Park Theatre (Starlight Express).
+//   - bare "apollo": Apollo Theatre / Apollo Victoria are West End houses.
+//   - "Barbican Centre" / "Barbican Theatre": only Barbican Hall (the concert
+//     hall) matches.
+//   - "Alexandra Palace Theatre": the restored Victorian theatre inside Ally
+//     Pally stages plays and pantos; the bare site name is the concert venue.
+//   - "Arena Stage" (Washington DC regional theatre) despite the arena token.
+//   - "Shoreditch Town Hall" (an arts venue that stages theatre): only NYC's
+//     "The Town Hall" matches.
+//   - "Wilton's Music Hall" (an Off-West End theatre): Radio City Music Hall
+//     and Music Hall of Williamsburg still match.
+const NON_THEATRE_VENUE_RE = new RegExp([
+  // NYC concert halls, arenas, stadiums
+  'carnegie hall', 'radio city music hall', 'madison square garden', 'barclays center',
+  'beacon theat(?:re|er)', '(?:^|\\bthe\\s+)town hall\\b',
+  // NYC cabaret rooms and jazz clubs
+  '\\b54 below\\b', "feinstein['’]?s", "joe['’]?s pub", '\\bbirdland\\b', 'caf[eé] carlyle',
+  'bowery ballroom', 'hammerstein ballroom', 'blue note', 'village vanguard', "dizzy['’]?s club",
+  'green room 42', "don['’]?t tell mama", 'comedy cellar',
+  // London stadiums and arenas
+  'twickenham (?:stadium|stoop)', 'wembley (?:stadium|arena)', 'ovo arena', '\\bthe o2\\b',
+  '\\bo2 (?:arena|academy|shepherd)', 'alexandra palace(?!\\s+theat)', 'crystal palace',
+  // London concert halls
+  'royal albert hall', 'barbican hall', 'royal festival hall', 'queen elizabeth hall', 'purcell room',
+  'southbank centre', 'cadogan hall', 'union chapel', 'eventim apollo', 'hammersmith apollo',
+  "king['’]?s place",
+  // London cabaret rooms and jazz clubs
+  "ronnie scott['’]?s", 'crazy coqs', 'pizza express (?:live|jazz)', 'jazz caf[eé]',
+  // London one-off attraction sites (fairground rides, park festivals)
+  'battersea power station', '\\bhyde park\\b',
+  // Generic tokens (both markets)
+  '\\bstadium\\b', '\\barena\\b(?!\\s+stage\\b)', '\\bconcert hall\\b',
+  "(?<!wilton['’]s\\s)\\bmusic hall\\b", '\\bjazz club\\b', '\\bcabaret\\b', '\\bcomedy club\\b',
+  '\\bracecourse\\b',
+].join('|'), 'i');
+
+/**
+ * True when a venue is a stadium, arena, concert hall, cabaret room or
+ * attraction site (NON_THEATRE_VENUE_RE). Accepts a string or a TodayTix-shape
+ * `{ name }` object. Not a market decision on its own: discovery's
+ * isNonTheaterContent() applies the Plays/Musicals override for NYC and
+ * rejects outright for London; validate-data.js pairs it with the review /
+ * opera / theatre-house exemptions via isUnreviewedNonTheatreRow().
+ */
+function isNonTheatreVenue(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name || name === 'TBA') return false;
+  return NON_THEATRE_VENUE_RE.test(name);
+}
+
+// Greater London receiving houses whose listings are UK tour stops, not London
+// productions (audit bucket "Tour stops at receiving houses": I'm Every Woman,
+// Noughts and Crosses and Jack and the Beanstalk at Hackney Empire; The Karate
+// Kid, Dear England and The Choir of Man at New Wimbledon Theatre). None is a
+// SOLT house, so isOffWestEndVenue() files them as off-west-end. The London
+// discovery paths reject these outright; a production critics review there
+// (the Hackney panto, say) still arrives through the aggregator promoters.
+const LONDON_RECEIVING_HOUSE_RE = /hackney empire|new wimbledon theat(?:re|er)|richmond theat(?:re|er)|churchill theat(?:re|er)|fairfield halls|new victoria theat(?:re|er)/i;
+
+function isLondonReceivingHouse(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name || name === 'TBA') return false;
+  return LONDON_RECEIVING_HOUSE_RE.test(name);
+}
+
+const BROADWAY_HOUSE_NAMES = new Set();
+for (const t of Object.values(BROADWAY_THEATERS)) {
+  if (t.canonical) BROADWAY_HOUSE_NAMES.add(normalizeBroadwayVenue(t.canonical));
+  for (const alias of t.aliases || []) BROADWAY_HOUSE_NAMES.add(normalizeBroadwayVenue(alias));
+}
+
+/**
+ * True when a venue is a SOLT West End house or one of the official Broadway
+ * houses — the two lists we hold that are theatres by definition. Exact match
+ * on the normalized name (not findTheater()'s partial match, which lets
+ * "Broadway Comedy Club" pass as the Broadway Theatre). The Off-Broadway
+ * allowlist is deliberately NOT consulted: it is derived from
+ * category='off-broadway' rows and already carries Joe's Pub, 54 Below and
+ * Carnegie Hall, which is the contamination this audit is cleaning up.
+ */
+function isTheatreHouse(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name || name === 'TBA') return false;
+  return isWestEndVenue(name) || BROADWAY_HOUSE_NAMES.has(normalizeBroadwayVenue(name));
+}
+
+/**
+ * validate-data.js decision for the S4-T8 warning (owner rule D3, 2026 audit):
+ * a row at a non-theatre venue is suspect unless it has a review, is opera, or
+ * sits in a theatre house. WARN, not error — the reviewed/opera rows are kept
+ * on purpose and discovery now refuses new ones at ingest, so this is the
+ * backstop for rows that were already in the file or came from a manual add.
+ * Extracted here (CLAUDE.md §15) so the colocated test requires the real
+ * decision instead of re-implementing it.
+ *
+ * @param {object} show        a shows.json row
+ * @param {boolean} hasReviews whether reviews.json has at least one row for show.id
+ */
+function isUnreviewedNonTheatreRow(show, hasReviews) {
+  if (!show || !show.venue) return false;
+  if (hasReviews) return false;
+  if (show.type === 'opera') return false;
+  if (!isNonTheatreVenue(show.venue)) return false;
+  return !isTheatreHouse(show.venue);
 }
 
 /**
@@ -132,6 +335,38 @@ function isBroadwayCategory(show) {
 /** Off-Broadway category predicate. */
 function isOffBroadwayCategory(show) {
   return !!show && show.category === 'off-broadway';
+}
+
+/**
+ * "This row claims a NYC-only category but sits at a venue outside New York."
+ *
+ * Broadway and Off-Broadway are both New York City designations, so a row
+ * carrying either category at a non-NYC venue is always a mis-categorised
+ * touring/regional date — and an expensive one: build-ob-venues.js derives the
+ * Off-Broadway venue allowlist FROM these rows, and isKnownOffBroadwayVenue()
+ * then admits future TodayTix rows at that venue, so one bad row teaches the
+ * classifier a touring house and mints more. State Theatre New Jersey rode
+ * that loop to three bogus rows before anyone noticed (BRO-3211).
+ *
+ * Extracted here rather than left inline in validate-data.js (CLAUDE.md rule
+ * 15, and a ship-check finding on the BRO-3211 follow-up): the caller is a
+ * validator, so the only way to test the COMBINED category+venue decision was
+ * to re-implement it in the test — which is precisely how the raw-literal form
+ * this replaces came to diverge in the first place. Both validate-data.js and
+ * the colocated test now require THIS function, so a change to the decision
+ * cannot pass the test by construction.
+ *
+ * Note the null-category asymmetry, which is deliberate: isBroadwayCategory()
+ * treats an absent category as Broadway (see its own comment), so this fires
+ * on a null-category row at a touring house too. validate-data.js separately
+ * hard-fails any null category on a live status, so in practice the only row
+ * this uniquely catches is one with a null category AND an invalid/missing
+ * status — narrow, but the safer direction for a guard whose whole purpose is
+ * catching rows a writer should never have created.
+ */
+function isMisCategorisedNonNycRow(show) {
+  if (!show || !show.venue) return false;
+  return (isBroadwayCategory(show) || isOffBroadwayCategory(show)) && isNonNycLocale(show.venue);
 }
 
 /**
@@ -283,4 +518,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, NON_THEATRE_VENUE_RE, isNonTheatreVenue, LONDON_RECEIVING_HOUSE_RE, isLondonReceivingHouse, isTheatreHouse, isUnreviewedNonTheatreRow, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, isMisCategorisedNonNycRow, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };

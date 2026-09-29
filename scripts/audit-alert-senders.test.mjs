@@ -430,6 +430,39 @@ test('scanFile resolves calls through an injectable-for-tests default parameter 
   assert.strictEqual(findings.filter(f => f.kind === 'human-caller-ignores-digest').length, 1);
 });
 
+test('scanFile recognizes an inline require().routeAlert() call (BRO-2421)', () => {
+  // Real pattern: scripts/lib/bsc-runner.js calls
+  // require('./owner-alert-router.js').routeAlert({...}) to avoid a
+  // module-load-order cycle. The dot before `routeAlert` used to fall under
+  // the same negative-lookbehind exclusion built for generic wrapper names
+  // (guarding against e.g. `logger.alert(...)` false-matching a wrapper named
+  // `alert`), which made this call site invisible to the whole scan — not
+  // counted as 'router' NOR as 'direct'. A file using this call shape looked
+  // clean in the inventory while never actually being verified as routed.
+  const findings = scanFixture('scripts/dotted-router-call.js', [
+    "require('./owner-alert-router.js').routeAlert({",
+    "  disposition: 'digest',",
+    '});',
+  ].join('\n'));
+  assert.strictEqual(findings.length, 1);
+  assert.strictEqual(findings[0].classification, 'router');
+  assert.strictEqual(findings[0].disposition, 'digest');
+});
+
+test('scanFile still excludes a dotted call on a resolved WRAPPER name (guard preserved)', () => {
+  // A wrapper name is arbitrary and can collide with an unrelated method
+  // (logger.alert(...), window.alert(...)) — unlike the literal `routeAlert`
+  // name, that ambiguity means a dotted wrapper call must stay excluded.
+  const findings = scanFixture('scripts/wrapper-dotted-false-positive.js', [
+    'async function alert(opts) {',
+    '  return await routeAlert(opts);',
+    '}',
+    "logger.alert('unrelated log line');",
+  ].join('\n'));
+  const dottedFalsePositive = findings.filter(f => f.line === 4);
+  assert.strictEqual(dottedFalsePositive.length, 0);
+});
+
 test('buildHumanDigestCounts counts only human-caller-ignores-digest findings, per file', () => {
   const counts = buildHumanDigestCounts([
     { file: 'scripts/a.js', kind: 'human-caller-ignores-digest' },

@@ -28,7 +28,9 @@
  *
  * Output:
  *   - data/audit/opening-date-discrepancies.json
- *   - Notion card per run (dedup against open card with same prefix)
+ *   - Linear issue per run (dedup against open issue with same prefix, filed
+ *     via scripts/linear-brain.js — the Linear creation chokepoint, CLAUDE.md
+ *     §6, task #1310)
  *
  * Usage:
  *   node scripts/audit-opening-dates.js [--dry-run] [--shows=id1,id2] [--time-budget-min=N]
@@ -77,29 +79,30 @@ function isWithinWindow(dateStr, today, days) {
   return diff <= days;
 }
 
-async function notifyNotion(flagged, todayStr) {
+async function notifyLinear(flagged, todayStr) {
   if (flagged.length === 0) return;
-  if (!process.env.NOTION_API_KEY) {
-    console.log('NOTION_API_KEY not set — skipping Notion card creation');
-    return;
+  if (!process.env.LINEAR_API_KEY) {
+    // A missing secret here is exactly the failure mode this fix (BRO-3430)
+    // exists to close: real findings exist (flagged.length > 0 above) and
+    // nobody would be told. Fail the job instead of silently no-oping —
+    // the old NOTION_API_KEY check made this same mistake.
+    throw new Error('notifyLinear: LINEAR_API_KEY not set — cannot file the audit finding, refusing to silently drop it');
   }
   const { spawnSync } = require('child_process');
-  const brain = path.join(__dirname, 'notion-brain.js');
+  const brain = path.join(__dirname, 'linear-brain.js');
 
-  // Dedup: skip create if a prior opening-date audit card exists in ANY
-  // non-Done state (In progress / Paused / Not started). Same rationale as
-  // audit-closing-dates.js — narrow "In progress" check missed Paused cards.
-  const dedupStatuses = ['In progress', 'Paused', 'Not started'];
-  let dedupHit = false;
-  for (const status of dedupStatuses) {
-    const search = spawnSync('node', [brain, 'search', '--text=Opening-date audit', `--status=${status}`], { encoding: 'utf8' });
-    if (search.status === 0 && /Opening-date audit/.test(search.stdout || '')) {
-      dedupHit = true;
-      console.log(`Notion: existing ${status} opening-audit card found — skipping create (dedup)`);
-      break;
-    }
+  // Dedup: skip create if a prior opening-date audit issue is already OPEN.
+  // linear-brain.js's `find` searches title+body over open (non-completed,
+  // non-canceled) issues only — the same "not Done" scope the old
+  // multi-status Notion search covered with three separate calls.
+  const dedup = spawnSync('node', [brain, 'find', 'Opening-date audit'], { encoding: 'utf8', timeout: 60_000 });
+  if (dedup.status !== 0) {
+    throw new Error(`notifyLinear: dedup search failed (exit ${dedup.status}): ${(dedup.stderr || dedup.stdout || '').slice(0, 500)}`);
   }
-  if (dedupHit) return;
+  if (dedup.stdout && dedup.stdout.trim() !== 'null') {
+    console.log('Linear: existing open opening-audit issue found — skipping create (dedup)');
+    return;
+  }
 
   const title = `Opening-date audit: ${flagged.length} show${flagged.length > 1 ? 's' : ''} need review (${todayStr})`;
   const rows = flagged.map(f => {
@@ -135,19 +138,20 @@ async function notifyNotion(flagged, todayStr) {
 
   const create = spawnSync('node', [
     brain, 'create', title,
-    '--priority', 'P1 Next',
-    '--category', 'Data',
-    '--type', 'Bug',
-    '--tags', 'opening-night,audit,data-quality',
+    '--priority', '2',
     '--notes', notes,
-  ], { encoding: 'utf8' });
+    '--park', 'Daily opening-date audit finding — suggestion-only, needs human verification against press sources before any shows.json edit',
+  ], { encoding: 'utf8', timeout: 60_000 });
 
-  if (create.status === 0) {
-    const match = (create.stderr || '').match(/__NOTION_CARD_ID__=([a-f0-9-]+)/);
-    console.log(`Notion: created card ${match ? match[1] : '(unknown id)'}`);
-  } else {
-    console.warn('Notion: create failed:', (create.stderr || create.stdout || '').slice(0, 500));
+  // This assertion IS the fix (BRO-3430): a refused/failed create used to be
+  // logged as a warning and swallowed, so the audit ran, found real drift,
+  // and the job still went green with nobody ever seeing the finding. A
+  // create failure must fail this job, not pass silently.
+  if (create.status !== 0) {
+    throw new Error(`notifyLinear: create failed (exit ${create.status}): ${(create.stderr || create.stdout || '').slice(0, 500)}`);
   }
+  const match = (create.stderr || '').match(/__BOARD_CARD_ID__=([A-Z]+-\d+)/);
+  console.log(`Linear: created issue ${match ? match[1] : '(unknown id)'}`);
 }
 
 async function main() {
@@ -248,7 +252,7 @@ async function main() {
   for (const m of matches) console.log(`  MATCH ${m.id}: ${m.fieldType}=${m.stored} agrees with press`);
   for (const f of flagged) console.log(`  FLAG  ${f.id}: stored ${f.fieldType}=${f.stored} vs press ${f.discovered.date} (${f.discovered.sources.length} source${f.discovered.sources.length > 1 ? 's' : ''})`);
 
-  if (flagged.length > 0) await notifyNotion(flagged, TODAY);
+  if (flagged.length > 0) await notifyLinear(flagged, TODAY);
 
   await cleanup();
   process.exit(0);

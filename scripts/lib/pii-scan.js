@@ -167,6 +167,65 @@ function maskEmail(value) {
   return `${maskedLocal}@${domain}`;
 }
 
+/**
+ * Replace every REAL (non-placeholder) email-shaped substring in `value` with
+ * a `redacted@<domain>` placeholder — an already-redacted placeholder
+ * (gho_REDACTED@github.com) is left alone, same judgment call as the scan
+ * side. Write-side counterpart to the scan functions below: a caller that
+ * persists free text into a data/audit/** file committed to the PUBLIC repo
+ * should redact BEFORE writing, not rely on this lint to catch it after the
+ * fact (BRO-3866 — enrich-card-acceptance.js's logEnrichmentWrite copied
+ * card.notes/newNotes into data/audit/card-enrichment-log.jsonl verbatim,
+ * and a forwarded-email escalation card's quoted "To: <owner@…>" header rode
+ * straight into the committed log).
+ *
+ * Deliberately NOT maskEmail (first+last local char kept, e.g.
+ * "t***********r@gmail.com") — that format survives a re-scan: EMAIL_RE's
+ * local-part class excludes '*', so the match collapses to the single real
+ * character still sitting next to '@' ("r@gmail.com"), which is itself a
+ * syntactically valid email and re-trips this exact lint (found live: the
+ * first version of this fix left card-enrichment-log.jsonl's redacted rows
+ * still failing lint-committed-pii.js). A bare "redacted" local part instead
+ * satisfies REDACTED_LOCAL_RE, so a re-scan recognizes it as the placeholder
+ * it is — the same mechanism gho_REDACTED@github.com already relies on.
+ *
+ * NOT a global-regex `.replace()` over the whole string (adversarial review,
+ * BRO-3866 ship-check: that first version hung 217s on a 100k-char string
+ * with no '@' at all). EMAIL_RE's domain class `[A-Za-z0-9.-]+\.[A-Za-z]{2,}`
+ * is the SAME catastrophic-backtracking pattern judgeAt()'s own comment
+ * documents ("backtracks catastrophically on long punctuation runs") — a
+ * single bounded `.exec()` that returns on the first EARLY match (firstRealEmail's
+ * fast path) never pays that cost, but `.replace(..., 'g')` must keep
+ * searching all the way to the end of the string for every subsequent match,
+ * walking the regex engine straight into the unbounded tail. Reuses the same
+ * per-'@' bounded-window judgeAt() the scan side already relies on for
+ * exactly this reason — `indexOf('@')` skips every non-'@' stretch for free
+ * (no '@' in the string at all — the worst case above — terminates in one
+ * indexOf call), and each candidate is judged in a window capped at
+ * MAX_LOCAL_PART + MAX_DOMAIN_PART chars, never the whole string.
+ */
+function redactEmails(value) {
+  const s = String(value || '');
+  let out = '';
+  let cursor = 0;
+  let at = s.indexOf('@');
+  while (at !== -1) {
+    const verdict = judgeAt(s, at, MAX_DOMAIN_PART);
+    if (verdict && verdict !== 'placeholder') {
+      const atInMatch = verdict.indexOf('@');
+      const start = at - atInMatch;
+      if (start >= cursor) {
+        out += s.slice(cursor, start) + `redacted@${verdict.slice(atInMatch + 1)}`;
+        cursor = start + verdict.length;
+        at = s.indexOf('@', cursor);
+        continue;
+      }
+    }
+    at = s.indexOf('@', at + 1);
+  }
+  return out + s.slice(cursor);
+}
+
 function formatPath(pathSegs) {
   return pathSegs.reduce(
     (acc, seg) => (typeof seg === 'number' ? `${acc}[${seg}]` : acc ? `${acc}.${seg}` : String(seg)),
@@ -247,4 +306,4 @@ function scanJsonlValue(text) {
   return findings;
 }
 
-module.exports = { EMAIL_RE, maskEmail, formatPath, scanJsonValue, scanJsonlValue, isRedactedPlaceholder, firstRealEmail };
+module.exports = { EMAIL_RE, maskEmail, redactEmails, formatPath, scanJsonValue, scanJsonlValue, isRedactedPlaceholder, firstRealEmail };

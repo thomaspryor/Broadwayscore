@@ -147,6 +147,35 @@ test('a fail-result plan verdict does not count as coverage', () => {
   assert.equal(row.coveredByVerdict, 0);
 });
 
+// BRO-2310: recordPlanVerdict() stamps overturnsFail:true on a pass that
+// followed this session's own most recent fail. That is the write-time half
+// of the fix; this is the visibility half — the digest must surface the count
+// so a fail-then-pass pattern is observable even though it is permitted.
+test('BRO-2310: fail-then-pass transitions are counted from the overturnsFail tag', () => {
+  const planVerdicts = [
+    planVerdict({ reviewer: 'plan-review' }),
+    planVerdict({ reviewer: 'second-opinion', overturnsFail: true, note: 'revised after the fail' }),
+    planVerdict({ reviewer: 'owner-override', overturnsFail: true }),
+  ];
+  const row = computeInfraReviewDigest({ gateEvents: [], planVerdicts, now: NOW });
+  assert.equal(row.coveredByVerdict, 3);
+  assert.equal(row.failThenPassTransitions, 2);
+  assert.match(row.message, /2 fail.{1,3}pass transition/);
+});
+
+test('BRO-2310: no overturnsFail tags means zero transitions, and the message omits the clause', () => {
+  const planVerdicts = [planVerdict(), planVerdict({ reviewer: 'second-opinion' })];
+  const row = computeInfraReviewDigest({ gateEvents: [], planVerdicts, now: NOW });
+  assert.equal(row.failThenPassTransitions, 0);
+  assert.doesNotMatch(row.message, /fail.{1,3}pass transition/);
+});
+
+test('BRO-2310: an overturnsFail pass outside the trailing window is not counted', () => {
+  const planVerdicts = [planVerdict({ ts: daysAgo(30), overturnsFail: true })];
+  const row = computeInfraReviewDigest({ gateEvents: [], planVerdicts, now: NOW });
+  assert.equal(row.failThenPassTransitions, 0);
+});
+
 // Coupling check: the bypassed/failOpened regexes in infra-review-digest.js
 // hardcode prefixes of infra-review-scope.js's `reason` strings rather than
 // importing them. This test generates REAL verdicts via the actual

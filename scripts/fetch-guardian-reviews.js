@@ -32,9 +32,11 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { setExtractedScore } = require('./lib/score-routing');
 const { isArticleOutsideProductionWindow } = require('./lib/date-guard');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 // Lazy show lookup so the Guardian fetcher can reject a prior-production article
 // the API returns for a revival's stale slug (see updateReviewFile date guard).
@@ -119,7 +121,7 @@ async function fetchArticleFromAPI(articleId) {
       console.log(`    API URL: ${url.replace(CONFIG.apiKey, 'API_KEY')}`);
     }
 
-    https.get(url, (res) => {
+    const req = https.get(url, { timeout: 15000 }, (res) => {
       let data = '';
 
       res.on('data', chunk => data += chunk);
@@ -165,9 +167,11 @@ async function fetchArticleFromAPI(articleId) {
           reject(new Error(`JSON parse error: ${e.message}`));
         }
       });
-    }).on('error', (e) => {
+    });
+    req.on('error', (e) => {
       reject(new Error(`HTTP error: ${e.message}`));
     });
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
@@ -213,8 +217,7 @@ function findGuardianReviews() {
     return reviews;
   }
 
-  const shows = fs.readdirSync(CONFIG.reviewTextsDir)
-    .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
+  const shows = listShowDirs(CONFIG.reviewTextsDir);
 
   for (const showId of shows) {
     // Filter by shows if specified
@@ -298,6 +301,7 @@ function updateReviewFile(review, apiResult) {
     isArticleOutsideProductionWindow(show, apiResult.webPublicationDate)
   ) {
     data.wrongProduction = true;
+    invalidateWrongProductionAutoClear(data);
     data.wrongProductionReason = 'guardian-api-stale-slug';
     data.wrongProductionNote =
       `Guardian API returned an article published ${apiResult.webPublicationDate} — outside this production's window. ` +

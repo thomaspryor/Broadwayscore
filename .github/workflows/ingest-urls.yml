@@ -76,12 +76,18 @@ jobs:
           node-version: '20'
 
       - name: Write URL file
+        env:
+          INPUT_URLS: ${{ inputs.urls }}
         run: |
           # Write URLs to file — GitHub Actions preserves newlines in string inputs
           # when dispatched via API/CLI. The UI textarea may collapse them to spaces,
-          # so we also split on spaces as a fallback for single-line input.
-          INPUT_URLS="${{ inputs.urls }}"
-          echo "$INPUT_URLS" | tr ' ' '\n' | sed 's/^[[:space:]]*//' | grep -v '^\s*$' > /tmp/ingest-urls.txt
+          # so a line is split before each further http(s):// token. Splitting on
+          # every space (the old `tr ' ' '\n'`) broke the documented "URL outlet-id"
+          # form into two lines that both failed as unknown outlets (BRO-4185).
+          # Comment lines are left whole so a commented-out URL stays commented.
+          printf '%s\n' "$INPUT_URLS" \
+            | sed -E '/^[[:space:]]*#/!s/[[:space:]]+(https?:\/\/)/\n\1/gI' \
+            | sed 's/^[[:space:]]*//' | grep -v '^\s*$' > /tmp/ingest-urls.txt
           echo "URLs to ingest:"
           cat /tmp/ingest-urls.txt
           echo "---"

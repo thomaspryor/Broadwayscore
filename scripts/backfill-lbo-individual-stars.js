@@ -60,7 +60,7 @@ function selectCandidate(existing, incoming) {
 
 function fetchHtml(url) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' } }, res => {
+    const req = https.get(url, { headers: { 'User-Agent': 'Mozilla/5.0' }, timeout: 15000 }, res => {
       if (res.statusCode === 301 || res.statusCode === 302) {
         return fetchHtml(res.headers.location).then(resolve).catch(reject);
       }
@@ -68,7 +68,9 @@ function fetchHtml(url) {
       let data = '';
       res.on('data', c => data += c);
       res.on('end', () => resolve(data));
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 

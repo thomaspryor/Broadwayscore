@@ -28,6 +28,12 @@ import os from 'node:os';
 import path from 'node:path';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+
+// newsletter-regen-guard.js is CommonJS; this is an ESM test file.
+const { sourceSpawnsGenerator } = createRequire(import.meta.url)(
+  '../lib/newsletter-regen-guard.js',
+);
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const repoRoot = path.resolve(__dirname, '..', '..');
@@ -97,9 +103,13 @@ test('every newsletter test that spawns the generator redirects its state file',
   for (const f of fs.readdirSync(dir)) {
     if (!/\.test\.mjs$/.test(f)) continue;
     const src = fs.readFileSync(path.join(dir, f), 'utf8');
-    // Only files that actually launch the generator — the argv literal, the
-    // same shape scripts/lib/newsletter-regen-guard.js keys on.
-    if (!/['"`][^'"`]*generate\.mjs['"`]/.test(src)) continue;
+    // Only files that actually launch the generator. This now CALLS the shared
+    // detector in scripts/lib/newsletter-regen-guard.js rather than approximating
+    // it: the previous /['"`][^'"`]*generate\.mjs['"`]/ substring regex treated an
+    // apostrophe as a quote, so an ordinary comment reading
+    // `<td>'s text-align:center (generate.mjs's scoreCol)` matched, and this guard
+    // reddened main for the whole fleet (BRO-3559, P0, 2026-09-16).
+    if (!sourceSpawnsGenerator(src)) continue;
     scanned++;
     if (!src.includes('NEWSLETTER_STATE_PATH')) offenders.push(f);
   }

@@ -14,7 +14,10 @@ arm)?
   (`src/lib/gate-logic.ts`)
 - **Registry entry**: `scripts/lib/flag-registry.js` (`REGISTERED_FLAGS`)
 - **Experiment start**: 2026-07-21 — do not backdate when reading results
-- **Canonical readout**: `node scripts/analyze-gate-cold-start.js`
+- **Canonical readout**: `node scripts/analyze-gate-cold-start.js` — DELETED
+  at teardown (see "Conclusion" below); retrieve via `git show
+  <pre-teardown-sha>:scripts/analyze-gate-cold-start.js` if the historical
+  methodology needs re-checking.
 - **Weekly automated monitor**: `scripts/monitor-gate-cold-start.js`
   (guardrails only — never judges the primary; see `monitor-gate-ab.yml`)
 - **Weekly flag-parity guardrail**: `scripts/monitor-flag-parity.js` (card
@@ -165,3 +168,85 @@ Pure, testable, and the actual source of truth for the numbers above:
     via `scripts/lib/`'s own test glob, not the `tests/unit-test-manifest.txt`
     path) and has been corrected — the new BRO-2952 cases were merged into
     the existing file instead.
+
+## Conclusion (2026-09-15)
+
+**Decision: roll the treatment arm's 2-page-view minimum out to 100% of
+traffic, permanently.** No more arm split — `minPageViewsForPassiveGate`
+now applies to every visitor for every passive trigger (exit_intent,
+scroll_depth, return_visitor). Tracked in Linear BRO-3422.
+
+**Why now:** the experiment cleared its pre-registered 28-day minimum
+runtime on 2026-08-18 and sat unconcluded for another 4 weeks (the
+2026-08-26 "extend and recheck in 3-4 weeks" amendment above repeated the
+same underpowered-wait mistake this conclusion corrects — see the
+power-calculation note below).
+
+**The numbers this decision rests on** (56 days in, cumulative, from
+`data/audit/gate-cold-start-monitor-state.json` as of 2026-09-14):
+- **Primary ITT metric (captures/exposed, per this doc's own "Metrics"
+  section above):** control 0.142% (15/10,593), cold-start 0.103%
+  (11/10,705) — cold-start is directionally BEHIND on its own pre-registered
+  primary, not ahead. n=15 vs n=11 is not a statistically meaningful
+  difference either way.
+- **Power check (corrected — on the actual primary metric, captures/exposed,
+  not a captures/shown proxy that an earlier draft of this note used by
+  mistake):** the exposed populations are ~equal size (control and
+  cold-start each get ~190/day, since the flag splits ALL traffic 50/50
+  before either arm's gate logic even runs) but the rate gap is tiny
+  (0.142% vs 0.103%, a 0.039-point difference). Detecting that at 80% power
+  needs ~126,000 exposed/arm — roughly **666 days (~1.8 years)** at
+  current traffic. This is even less reachable than a captures/shown-based
+  calc would suggest; waiting longer was never going to resolve this on the
+  declared primary metric, by a wide margin.
+- **What actually justifies the decision:** absolute weekly count of UNIQUE
+  PEOPLE who dismissed the modal at least once (not raw dismissal events —
+  the underlying analyzer deduped per-person before counting:
+  "People counts, not event counts" per its own comment). Cumulative:
+  control ≈200 unique dismissers/wk (1,598/55.77 days), cold-start ≈102/wk
+  (811/55.77 days) — roughly HALF as many distinct people got interrupted,
+  for a capture count that is a statistical wash. This does NOT prove total
+  raw interruption *events* fell by the same ratio (a person can dismiss,
+  wait out the 14-day cooldown, and be re-shown — that repeat-event rate
+  isn't captured here), but distinct-people-interrupted is itself a
+  reasonable proxy for the thing the original 2026-07-20 motivation cared
+  about (60-66% dismissal, zero conversion gain from two prior fixes).
+- **Open, unresolved caveat:** per-shown dismissal rate is WORSE for
+  cold-start (77.0% vs control's 60.9%) — the visitors who do still get
+  shown the modal in the cold-start arm dismiss it more often, not less.
+  This could be a trigger-mix composition effect (the page-view filter
+  changes which of exit_intent/scroll_depth/return_visitor make up the
+  "shown" population, and those triggers may carry different baseline
+  dismiss rates) rather than a true per-visitor regression, but this was not
+  investigated further with a trigger-stratified breakdown before
+  concluding — flagged here for anyone revisiting this decision, not treated
+  as blocking. **Record this decision honestly:** "substantially fewer
+  interruptions, uncertain signup cost, accepted as a product preference" —
+  not "cold-start converts better" or "guardrails passed, therefore
+  proven safe." Neither of those two framings survived review.
+
+**What changed in code:** `getColdStartArm`/`coldStartCheckApplies`/
+`COLD_START_FLAG` deleted from `src/lib/gate-logic.ts`; the flag-poll and
+arm-conditional branch removed from `src/contexts/ProGateContext.tsx`
+(`hasSeenEnoughPages` now gates unconditionally); the `gate-cold-start`
+entry removed from `scripts/lib/flag-registry.js`; the monitor/analyzer/
+diagnostic scripts and their tests deleted
+(`monitor-gate-cold-start.js`, `analyze-gate-cold-start.js`,
+`diagnose-gate-cold-start-join.js`, `gate-cold-start-rules.js` + test,
+`diagnose-gate-cold-start-join.yml`); `monitor-gate-ab.yml`'s gate-cold-start
+step removed. The PostHog flag itself (id 772232) was archived (`active:
+false`, not deleted, for reproducibility) via `.github/workflows/manual-
+posthog-flag-archive.yml` — built and dispatched by the BRO-3459 follow-up
+(2026-09-15, run 35027111711, succeeded) after no session at teardown time
+had `POSTHOG_PERSONAL_API_KEY` available locally to do it directly. This
+document is kept in place as the reproducibility record.
+
+**Rollback:** flipping the PostHog flag does NOTHING now — enforcement is
+unconditional in code, not flag-gated. Reverting to pre-teardown (arm-split)
+behavior requires a code change (restore `getColdStartArm`/
+`coldStartCheckApplies`/`COLD_START_FLAG` from git history, e.g. `git show
+<pre-teardown-sha>:src/lib/gate-logic.ts`) plus a normal deploy via
+`.github/workflows/vercel-deploy.yml`. Reverting to pre-2026-07-20 (no
+minimum at all, for everyone) just means deleting the unconditional
+`hasSeenEnoughPages` guard in `ProGateContext.triggerGate` — no flag
+involved either way.

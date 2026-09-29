@@ -5,6 +5,12 @@
 import type { ActorProfile, ActorShowEntry } from './data-types';
 import { getBroadwayShows, slugify } from './data-core';
 import { getAudienceBuzz } from './data-audience';
+import { actorIdentitiesInPageOrder } from '../../scripts/lib/page-name-sources';
+import { assignUniqueSlugs } from '../../scripts/lib/url-slug';
+import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
+// Retired-slug map (prebuild: scripts/build-slug-redirects.js) — getActorBySlug
+// falls back through it, exactly like data-reviews.ts getCriticBySlug()
+import slugRedirectsData from '../../data/slug-redirects-compact.json';
 // Static manifest: data/cast-manifest.json is built by
 // scripts/build-cast-manifest.js in prebuild. It collapses ~2400 per-show
 // cast files (~300MB) into a single static-required JSON so Vercel's NFT
@@ -139,6 +145,16 @@ function buildAllProfiles() {
 
   const actorImages = actorImagesData as Record<string, { name: string; imageUrl: string; source: string }>;
 
+  // Slugs, with collision numbering, from the ONE shared rule: the identities
+  // in page order (scripts/lib/page-name-sources.js actorIdentitiesInPageOrder
+  // — the same walk as the loop above: same skips, same "most recent current
+  // spelling" name) through assignUniqueSlugs (scripts/lib/url-slug.js).
+  // scripts/build-slug-redirects.js replays exactly this over the cast
+  // manifest to derive the retired pre-fold /cast slugs (S7-T3 follow-up).
+  const identities = actorIdentitiesInPageOrder(allEntries, new Set(showMap.keys()));
+  const slugById = new Map<string, string>();
+  assignUniqueSlugs(identities.map(a => a.name)).forEach((slug, i) => slugById.set(identities[i].ibdbPersonId, slug));
+
   // Build profiles from accumulated data
   for (const [, data] of Array.from(actorMap.entries())) {
     const shows: ActorShowEntry[] = [];
@@ -175,13 +191,8 @@ function buildAllProfiles() {
       lowScore = { score: Math.round(lowest.score!), showTitle: lowest.title };
     }
 
-    // Slug with collision handling
-    let slug = slugify(data.name);
-    if (slugMap.has(slug)) {
-      let counter = 2;
-      while (slugMap.has(`${slug}-${counter}`)) counter++;
-      slug = `${slug}-${counter}`;
-    }
+    // Slug with collision handling (assigned above from the shared rule)
+    const slug = slugById.get(data.ibdbPersonId) ?? slugify(data.name);
 
     const profile: ActorProfile = {
       name: data.name,
@@ -212,9 +223,21 @@ function buildAllProfiles() {
 // Public API
 // ============================================
 
-export function getActorBySlug(slug: string): ActorProfile | undefined {
+const nameRedirectMap: SlugRedirectMap = slugRedirectsData as Record<string, string>;
+
+/**
+ * @param redirects the compact redirect map — tests only; production callers
+ *   always resolve through the tracked data/slug-redirects-compact.json.
+ */
+export function getActorBySlug(slug: string, redirects: SlugRedirectMap = nameRedirectMap): ActorProfile | undefined {
   ensureBuilt();
-  return slugMap.get(slug);
+  const exact = slugMap.get(slug);
+  if (exact) return exact;
+  // Retired (pre-S7-T3, unfolded) slug → the live profile. Requests normally
+  // never get here — src/middleware.ts 301s first — but any caller holding an
+  // old slug (or a runtime without the middleware) still finds the page.
+  const live = resolveNameRedirect(redirects, 'cast', slug);
+  return live ? slugMap.get(live) : undefined;
 }
 
 export function getAllActorSlugs(): string[] {

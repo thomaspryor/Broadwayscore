@@ -1051,3 +1051,90 @@ Two lessons:
    So: when rebuild-fast is failing, DO NOT conclude "the review cannot land." Check
    `git log origin/main -- reviews.json` for a poller inline-rebuild commit before escalating,
    and re-check it every pass — the escalation may already have self-resolved.
+
+## Gate: outlet has a score-extractor but NO article-extractor PATTERNS entry (2026-09-14, BRO-3368)
+**Symptom:** `ingest-review-from-url.js` fetches HTTP 200, exits without error, and writes a
+review-texts file whose body is a few hundred chars of site furniture (ad copy, newsletter
+promo). `contentTier` lands `truncated`/`stub`, so the review is silently non-scoreable —
+it looks like a bad fetch, but the fetch was fine.
+**Case:** Radio Times / Olivia Garrett on bloodsport-after-helen-of-troy-off-west-end-2026.
+`scripts/lib/score-extractors.js` HAS radiotimes handlers (`radiotimes-page-json`,
+`radiotimes-svg-stars`) — that presence is a false reassurance: the two extractors are
+independent. Body extraction fell through to a generic container → 392 chars.
+**Diagnostic:** char-count the extracted body before trusting a 200. Under ~1000 chars for a
+national outlet's review = extractor gap, not a paywall.
+**Fix tonight:** hand-extract the body from the fetched HTML, ingest via
+`ingest-manual-review.js` (it auto-detects the star rating → `humanReviewScore` LOCKED).
+**Systemic fix:** add the outlet's PATTERNS entry + a golden fixture test.
+**Check before assuming coverage:** `grep -n '<domain>' scripts/lib/article-extractor.js` —
+a hit in `score-extractors.js` proves nothing about the body path.
+
+## Gate: `flagged-filename-collision` in ingest-review-from-url.js (observed 2026-09-16, golden-boy-off-west-end-2026)
+`ingest-review-from-url.js` refuses to write when the target filename already holds a flagged/rejected record
+(`wrongProduction` / `duplicateOf` / `rejectionReason`) AND the incoming critic is unresolved:
+`⛔ Refusing write: ... a human/override flow must clear it first` → `⚠️ Skipped: flagged-filename-collision` (exit 0).
+Exit code is 0, so a scripted recovery looks like it succeeded. Direct-URL ingest is normally the bypass for a bad
+flag — here it is itself blocked by the flag. On opening night, clear the flag (all 8 protection fields) FIRST,
+then ingest. Check for `Skipped:` in the output, never just the exit code.
+
+## Anti-gate: raw-HTML title/rating match is NOT evidence a review published (same night)
+Time Out London reuses one evergreen URL (`/london/theatre/<slug>`) for the listing and later the review.
+At 05:55Z the page returned 156KB whose `<title>` was the show headline and whose body contained two `4/5`
+substrings — both consistent with a published 4-star review. Extraction returned 2,251 chars of pure
+preview/listing copy (cast announcement, ticket times); the `4/5` hits were sidebar/related-content ratings.
+Only EXTRACTED BODY PROSE counts as census evidence. A title match plus a stars regex on raw HTML will
+manufacture a phantom gap and burn a pass. Cross-ref: feedback_inplace_url_update_preserves_stale_state.md
+(the converse case — that one is real, this one is its false-positive twin).
+
+## Gate: cross-domain title contamination — single common token pulls FILM reviews into a theatre show (observed 2026-09-17, america-who-hurt-you-off-broadway-2026)
+Discovery matched the Marvel film *Captain America: Brave New World* to the Off-Broadway show
+"America, Who Hurt You?" — apparently on the token `America` plus the word `review`, with no outlet-section
+or domain guard. Two film reviews landed in `data/review-texts/_pending/america-who-hurt-you-off-broadway-2026/`:
+`nypost--7a33502.json` → nypost.com/2025/02/12/entertainment/captain-america-brave-new-world-review-...
+`thewrap--747cb373.json` → thewrap.com/captain-america-brave-new-world-review/
+Both `publishDate: null`, `contentTier: stub`, `fullText` length 0.
+
+**Why it is dangerous rather than merely noisy:** harm is contained only because they are 0-byte stubs stranded
+in `_pending` (invisible to rebuild). `replay-pending-bylines.js` would surface them into the show. The
+opening-night monitor's own attempt-19 notes had flagged the NY Post file as "the highest-value single item"
+to drain — draining it would have injected a Marvel film review into a theatre show's score.
+
+**Recurs for:** any show whose title contains a common proper noun (America, Chicago, Company, Hamilton, Wicked).
+**Systemic fix:** require title match beyond one high-frequency token; add a film/TV section-domain guard
+(`nypost.com/*/entertainment/*`, `thewrap.com`) unless registered as a theatre outlet in `data/outlet-registry.json`.
+**Card:** BRO-3711.
+**Monitor lesson:** a `_pending` file is NOT presumptively a recoverable review. Read its url + publishDate
+before drafting a drain — every `_pending` file across all 5 shows this night was prior-run or out-of-scope
+(attempt 20A), and the drain would have been net-negative in every case.
+
+## Gate: outlet index pages lag publication by hours (BRO-3998, 2026-09-21 Catarina)
+Ten outlet-index probes (Guardian/Times/Standard/WhatsOnStage/... section pages) all returned byte-count-proven clean negatives while Telegraph and LondonTheatre1 reviews had already been live ~2h. Google News RSS found both instantly.
+**Strongest datapoint (pass 31, 06:45Z):** `timeout.com/london/theatre` returned HTTP 200 / 230,649 B with ZERO `catarina` hits while Time Out's own review of that show had been live AND scored at 89 for ~7 hours. The blind spot is not a short publication lag — an outlet's section index can omit its own already-published review most of a day later. A clean index is never evidence of non-publication, at any elapsed time.
+
+**How to apply:** on opening night, census via `https://news.google.com/rss/search?q="<title>"+review&hl=en-GB&gl=GB&ceid=GB:en` (plain curl + full Chrome UA, no scraper spend) BEFORE trusting any index-page negative. An index probe returning nothing is not evidence of non-publication.
+
+## Gate: promoted-out-of-_pending files with empty body are never retried (BRO-3999, 2026-09-21 Catarina)
+`replay-pending-bylines.js` resolved the Telegraph byline and promoted the file out of `_pending/`, but left `fullText=null` / `contentTier=stub` / `contentTierReason='No text content'` — a state `reviews.json` can never admit, and nothing retries it. `triage-review-gap.js` correctly said `ingested-but-excluded`. A cookie-plain fetch (`ingest-review-from-url.js --outlet=telegraph`, cookies already on disk) got the text first try, zero BD/SB spend.
+**How to apply:** when an outlet shows `ingested-but-excluded` with `noTextOrScoreSignal`, check for a promoted stub with a null body before anything else — re-ingest by URL, don't chase discovery. Bare telegraph.co.uk URLs need `--outlet=telegraph` (ambiguous vs sunday-telegraph).
+
+## Gotcha: add/add rebase carries stub metadata onto a complete file (2026-09-21 Catarina)
+When the pipeline and a monitor both create the same review-texts file, git reports add/add. Union-merging origin's non-null fields carries `pendingReason=no-byline`, `contentTierReason='No text content'`, `isFullReview=false` onto the now-complete file and keeps it excluded. Re-assert those three from the ingested copy after any such merge.
+
+## Gate: aggregator headline/slug title-match is exact — an outlet's own typo makes the review invisible (2026-09-22, BRO-4001)
+BroadwayWorld UK published its review of `catarina-and-the-beauty-of-killing-fascists-west-end-2026` (09:14:03Z) with the title misspelled **CATERINA** in both the headline and the URL slug. Discovery never found it; `triage-review-gap.js` returned `true-missed-discovery` (0 review-texts files, reviews.json false on local AND origin/main, absent from prod, no `unverifiedOriginChecks`). The opening-night monitor ingested it by hand ~51 min after publication. Google News had still not indexed the article 1h+ later, so the SERP channel would not have rescued it either — a single-character outlet typo silently removed a T2 review from the night.
+
+**Detection:** a census outlet with a published review and NO event in `data/audit/stage-latency.jsonl`, where the outlet's own headline differs from shows.json by a small edit distance.
+**Fix direction:** normalized fuzzy match (edit distance / token-set) with a tight threshold on the BWW discovery title-match and its slug-derived match, extracted to `scripts/lib/` and covered by a require()-based fixture per CLAUDE.md rule 15.
+**Adjacent bug, same ingest:** `ingest-review-from-url.js` extracted `criticName` for this BWW article as the raw author URL `https://www.broadwayworld.com/author/Gary-Naylor` instead of `Gary Naylor` — the BWW author extractor must de-slugify the last path segment.
+
+- **Wrong-production cast via web-search backfill (2026-09-23, macbeth-off-broadway-2026):** "Backfill cast via web search" attached broadway.com/shows/macbeth-2022/cast (Daniel Craig play) to the Met's 2026 Verdi opera. Check prod `ca` for opera/revival titles on opening night; check `sourceUrl` year slug in data/cast/<id>.json. Workaround: delete the cast file. Systemic fix carded (Linear, parked P2).
+
+- **Deploy blocked by unrelated show row (2026-09-24, The Last Ship WE opening):** pre-deploy integrity check in vercel-deploy.yml aborts the WHOLE deploy on one critical issue (slam-frank-off-broadway-2026 status=closed + future closingDate). Every opening-night review sat in reviews.json but prod JSON showed 0. Check: failed "Deploy to Vercel" runs → `gh run view <id> --log-failed`. Data fix in broadway-scorecard-data shows.json; systemic fix BRO-4099. Also: triage-review-gap.js keys on outlet not production, so a same-outlet wrong-production file masks a real miss (WOS Northern Stage 2018).
+
+- **Listing page scored as review (2026-09-24, the-last-ship WE, BRO-4101):** serp-discovery ingested londontheatre.co.uk/show/47207 (synopsis + booking copy + audience comments, criticName Unknown) → llm 82, live on prod. `NAMED_NON_REVIEW_URL_PATTERNS` in non-review-url-patterns.js already listed it but only the S5 probe consults that list, not ingest. Monitor check: any live row with criticName Unknown + null publishDate → open the URL.
+
+- **Scorer text-quality bare-keyword FP (2026-09-24, The Holes/Vulture, BRO-4124):** `content-quality.js` `/paywall/i` matched prose ("the paywalling of everything") → `assessTextQuality` garbage/high → `selectScorableText` null → `unscoredSkipReason=no_scorable_text`. Scoring run logs "Unscored files: 0" and the review silently never scores. Diagnose: `unscoredSkipReason()` from scripts/lib/scoring-queue-counts.js, then `selectScorableText(d,{onFullTextRejected:console.log})`.
+
+- **triage-review-gap outletId slug mismatch (2026-09-24, Last Ship):** `--outlet="Beyond the Curtain"` slugs to beyond-the-curtain but real outletId is beyondthecurtain → false `true-missed-discovery` on an already-scored review. Pass the actual outletId (`ls data/review-texts/<show>/`) until the tool resolves via outlet-registry. Linear card filed pass 34.
+
+- **Roundup-URL swap wipes scored paywall stub (2026-09-24, The Last Ship / The Stage, BRO-4128):** opening-night SERP discovery ran maybeUpgradeUrl on a score-only paywall stub (no fullText → badContent) and swapped in the outlet's own `/review-round-ups/` URL; the URL-change invariant cleared originalScore and the inclusion gate then set isRoundupArticle, so a live review silently vanished from prod ~1h later. Check: a live review disappearing between passes → look at `urlCorrectedFrom`/`_urlChangedClear` in the file. Workaround: restore prior version from git + `urlVerified: true`.

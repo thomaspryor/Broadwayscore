@@ -32,8 +32,10 @@
  *     [--dry-run]
  *
  * Exit codes: 0 on success or skip (review already exists, no-op merge),
- * 1 on hard failure (fetch error, extraction empty, collision-blocked, or
- * the write-guard silently refusing/redirecting an update — BRO-3182).
+ * 1 on hard failure (fetch error, extraction empty, collision-blocked, the
+ * write-guard silently refusing/redirecting an update — BRO-3182 — or a
+ * merge-into-existing that reported "Updated" without actually landing the
+ * intended url/fullText/criticName — BRO-3790).
  */
 
 'use strict';
@@ -42,13 +44,26 @@ const fs = require('fs');
 const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
+const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
-const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
-const { getOutletDisplayName, findExistingReviewFile } = require('./lib/review-normalization');
+const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
+// classifyReviewUrl reasons that never occur on a scored review in the corpus
+// (checked 2026-09-28); see the refusal below.
+const INGEST_REFUSED_URL_REASONS = new Set([
+  'ticketing-reseller', 'ticketing-listing', 'venue-production-page',
+  'production-database-listing', 'access-listings-page', 'talent-agency-credit-page',
+  'institutional-press-release', 'pr-firm-press-release', 'ugc-platform',
+]);
+const { stripTrailingJunk } = require('./lib/text-cleaning');
+const { resolveCanonicalOutletId, _parseDomain, _buildDomainMap, provisionalOutletIdFromHost, lookupOutletForHost } = require('./lib/outlet-canonicalize');
+const { getOutletDisplayName, findExistingReviewFile, normalizeCritic, resolveOutletFromUrlIfPathInformed } = require('./lib/review-normalization');
 const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/review-file-writer');
+const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isStalePublishDate } = require('./lib/stale-publish-date');
+const { extractByline } = require('./lib/byline-extraction');
+const { pageMentionsShowTitle } = require('./lib/submission-show-match');
 
 const args = process.argv.slice(2);
 function getArg(name) {
@@ -65,6 +80,12 @@ const outletArg = getArg('outlet');
 const criticArg = getArg('critic');
 const publishDateArg = getArg('publish-date');
 const dryRun = hasFlag('dry-run');
+// --data-dir: override the review-texts root, same flag block-review.js already
+// exposes ("Override data/review-texts root (for tests)"). Flows to BOTH the
+// blocklist lookup below and the writer, so a test can exercise the real script
+// against a temp corpus instead of the live one.
+const reviewTextsDir = getArg('data-dir')
+  || path.join(__dirname, '..', 'data', 'review-texts');
 const forceClearStale = hasFlag('force-clear-stale-flag');
 // Provisional onboarding: use --outlet verbatim as a slug WITHOUT fuzzy alias
 // resolution. For aggregator-cited outlets not yet in the registry (the ctvoice /
@@ -79,7 +100,7 @@ const forceClearStale = hasFlag('force-clear-stale-flag');
 let provisional = hasFlag('provisional');
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH]');
   process.exit(1);
 }
 
@@ -89,51 +110,6 @@ const show = showsData.shows.find((s) => s.id === showId);
 if (!show) {
   console.error(`Show not found: ${showId}`);
   process.exit(1);
-}
-
-function decodeEntities(s) {
-  return (s || '')
-    .replace(/&#(\d+);/g, (_, n) => String.fromCharCode(parseInt(n, 10)))
-    .replace(/&amp;/g, '&')
-    .replace(/&quot;|&ldquo;|&rdquo;/g, '"')
-    .replace(/&apos;|&lsquo;|&rsquo;/g, "'")
-    .replace(/&nbsp;/g, ' ');
-}
-
-function extractByline(html) {
-  if (!html) return null;
-  const candidates = [
-    // OpenGraph / standard meta tags — most authoritative when present.
-    /<meta[^>]+property=["']article:author["'][^>]+content=["']([^"']+)["']/i,
-    /<meta[^>]+name=["']author["'][^>]+content=["']([^"']+)["']/i,
-    // class="author-name" / "author" / "byline" — common WordPress / blog patterns.
-    // Run BEFORE rel="author" because Jetpack's "View all posts by X" link in the
-    // footer also has rel="author" and pollutes the value.
-    /<[a-z]+[^>]+class=["'][^"']*author-name[^"']*["'][^>]*>([^<]+)</i,
-    /<span[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+)<\/span>/i,
-    /<p[^>]+class=["'][^"']*byline[^"']*["'][^>]*>(?:By\s+)?([^<]+)<\/p>/i,
-    // Inline "By Name" prose near top of article — FMJ-style "By Ross" right
-    // after the headline. Capture follows the literal "By " token.
-    />By\s+([A-Z][A-Za-z][A-Za-z .'-]{1,38})(?=\s+(?:[A-Z]|<|—))/,
-    // <a rel="author"> — last because of the Jetpack footer issue above.
-    /<a[^>]+rel=["']author["'][^>]*>([^<]+)<\/a>/i,
-  ];
-  for (const re of candidates) {
-    const m = html.match(re);
-    if (m && m[1]) {
-      let name = decodeEntities(m[1]).trim();
-      // Strip Jetpack-style "View all posts by X" prefix that leaks through
-      // some <a rel=author> matches.
-      name = name.replace(/^view\s+all\s+posts\s+by\s+/i, '');
-      if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
-      // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
-      if (/^[a-z][a-z\s.'-]*$/.test(name)) {
-        name = name.split(/\s+/).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
-      }
-      return name;
-    }
-  }
-  return null;
 }
 
 (async () => {
@@ -151,6 +127,38 @@ function extractByline(html) {
   // the submitter; refusing at ingest is the cheaper, earlier stop.
   if (isBlockedReviewUrl(url)) {
     console.error(`Refusing to ingest — ${url} matches a known non-review domain (ticket/listing/social/reference/venue/PR-firm). See scripts/lib/domain-filters.js.`);
+    process.exit(1);
+  }
+
+  // Listing / ticketing / venue pages the shared URL classifier recognizes
+  // (BRO-4185 G: ~100 such files were written through /submit-review and the
+  // census, e.g. tickpick, ents24, lovetheatre, westend.com/shows). Only these
+  // reasons refuse: the classifier's broader candidate-filter reasons
+  // (non-review-host, aggregator-internal-nav) also match 300+ scored real
+  // reviews (WNYC, 4Columns, BroadwayWorld review articles), so they stay out.
+  {
+    const verdict = classifyReviewUrl(url);
+    if (!verdict.ok && INGEST_REFUSED_URL_REASONS.has(verdict.reason)) {
+      console.error(`Refusing to ingest — ${url} is a ${verdict.reason} page, not a review (scripts/lib/non-review-url-patterns.js classifyReviewUrl).`);
+      process.exit(1);
+    }
+  }
+
+  // Per-show blocklist — honor _blocklist.json, the sidecar whose WHOLE PURPOSE
+  // is making an operator's deletion stick (scripts/lib/poller-blocklist.js).
+  // gather-reviews.js has honored it since the Rocky Horror 2026-04-23 incident,
+  // but THIS path never did — and this is the path audit-aggregator-gap's
+  // auto-recovery drives (audit-t1-silent-gaps.js recoverFromOwnUrl execs this
+  // script) as well as the public /submit-review form. BRO-3247: a
+  // wrong-production Lighting & Sound America review of a DIFFERENT "Safe House"
+  // (the 2025 Enda Walsh production at St. Ann's Warehouse) was deleted from
+  // safe-house-off-broadway-2026 on 2026-09-14 and re-ingested here within
+  // hours, twice, because deleting a file leaves nothing behind that this
+  // entry point consults. Refuse before fetching so a blocked URL also stops
+  // burning scraper credit on every audit cycle.
+  const _blocked = findBlockedEntry(loadBlocklist(path.join(reviewTextsDir, showId)), url);
+  if (_blocked) {
+    console.error(`Refusing to ingest — ${url} is blocklisted for ${showId}: ${_blocked.reason || 'no reason recorded'}. See ${path.join(reviewTextsDir, showId, '_blocklist.json')} (scripts/block-review.js manages it).`);
     process.exit(1);
   }
 
@@ -196,10 +204,17 @@ function extractByline(html) {
     // No --outlet supplied — derive from URL domain via the registry's
     // domain map. This is the common path for /submit-review where the
     // user provided a free-form outlet name we don't pass through.
+    // Path-informed edition splits (timeout.com/london vs /newyork) first:
+    // the domain map below can only ever call a shared host "ambiguous" and
+    // bail, which used to mean a bare timeout.com submission with no
+    // --outlet needlessly refused instead of resolving by path (BRO-4153).
+    const pathResolved = resolveOutletFromUrlIfPathInformed(url);
     const domain = _parseDomain(url);
-    const { domainToOutlet, ambiguous } = _buildDomainMap();
-    if (domain && !ambiguous.has(domain) && domainToOutlet[domain]) {
-      outletId = domainToOutlet[domain];
+    const { ambiguous } = _buildDomainMap();
+    // Parent-domain aware: newspaper.dailymail.com -> daily-mail (issue #908).
+    const registeredOutlet = pathResolved ? pathResolved.outletId : (domain ? lookupOutletForHost(domain) : null);
+    if (registeredOutlet) {
+      outletId = registeredOutlet;
       outletName = getOutletDisplayName(outletId) || outletId;
     } else if (!ambiguous.has(domain)) {
       // Unregistered domain — derive a provisional outlet instead of bailing.
@@ -235,7 +250,15 @@ function extractByline(html) {
     }
   }
 
-  const text = extractArticleTextFromUrl(html, url, criticArg);
+  // stripTrailingJunk (newsletter promos, login prompts, site footers) runs
+  // in every other collection/recovery path (collect-review-texts.js,
+  // recover-serp-text.js, recover-wayback-reviews.js, recover-wsj-*.js) but
+  // was missing here — this is the one entry point the public /submit-review
+  // form and the >24h stuck-review backstop (audit-t1-silent-gaps.js
+  // recoverFromOwnUrl) both drive, so site chrome landed unstripped in
+  // fullText and fed straight into the LLM scoring prompt (BRO-2605 ship-check
+  // finding).
+  const text = stripTrailingJunk(extractArticleTextFromUrl(html, url, criticArg));
   // Star-rating fallback: UK star outlets (The Stage, Telegraph, Times, …)
   // serve recent articles as a registration wall with the review body absent
   // from server HTML — but the page's own StarRating block is still present.
@@ -254,8 +277,7 @@ function extractByline(html) {
     // accepting a score-only ingest — this path is reachable from the public
     // /submit-review form and automated SERP ingest.
     if (recoveredScore) {
-      const norm = (s) => (s || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
-      if (!norm(html).includes(norm(show.title))) {
+      if (!pageMentionsShowTitle(html, show.title)) {
         console.error(`Score-only fallback refused: show title "${show.title}" not found in page HTML — cannot verify this is the right show without body text.`);
         process.exit(1);
       }
@@ -270,14 +292,20 @@ function extractByline(html) {
 
   // For LSA, prefer the in-body "--Name" sign-off over the publisher meta tag.
   const lsaCritic = hasBody && /lightingandsoundamerica\.com/i.test(url) ? extractLsaByline(text) : null;
-  const critic = criticArg || lsaCritic || extractByline(html) || 'Unknown';
+  // The Stage's walled page has no generic byline/date metadata, but its own
+  // markup carries byline, date and standfirst above the registration wall
+  // (walled-page-meta.js). Without this, Stage submissions landed as
+  // 'Unknown' with no date or quote (Deep Heat Rivalry, 2026-09-23).
+  const { extractTheStageArticleMeta, isTheStageUrl } = require('./lib/walled-page-meta');
+  const stageMeta = isTheStageUrl(url) ? extractTheStageArticleMeta(html) : null;
+  const critic = criticArg || lsaCritic || extractByline(html) || (stageMeta && stageMeta.criticName) || 'Unknown';
 
   // Page-date extraction: when --publish-date wasn't supplied, pull it from
   // standard CMS metadata (article:published_time / JSON-LD / <time>). Without
   // this the review lands with publishDate:undefined, which fails-open through
   // the anticipatory-pre-opening gate and weakens temporal wrong-production
   // detection. (1minutecritic HR + Maids incident, 2026-05-28.)
-  const publishDate = publishDateArg || extractPublishDate(html, url) || null;
+  const publishDate = publishDateArg || extractPublishDate(html, url) || (stageMeta && stageMeta.publishDate) || null;
   if (!publishDateArg && publishDate) {
     console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
   }
@@ -295,7 +323,9 @@ function extractByline(html) {
   // file at the same outletId+criticName slug is the failure that bit issue
   // #309 (April 4 preview blocked May 1 review). Surface it here rather than
   // silently merging the new URL into the wrongProduction file.
-  const showDir = path.join(__dirname, '..', 'data', 'review-texts', showId);
+  // Honors --data-dir like every other corpus access in this script, so a test
+  // run against a temp corpus cannot force-write live review metadata.
+  const showDir = path.join(reviewTextsDir, showId);
 
   const collision = detectIngestCollision({
     showDir,
@@ -337,26 +367,28 @@ function extractByline(html) {
   //     successful re-scrape could never actually fix this on its own.
   //   - no fresh date was recovered: clear the stale value rather than leave
   //     a provably-wrong date in place for a human to rediscover the gap.
-  {
-    const existing = findExistingReviewFile(showDir, outletId, critic, url);
-    if (
-      existing &&
-      existing.data.publishDate &&
-      !existing.data.allowEarlyDate &&
-      isStalePublishDate({ existingPublishDate: existing.data.publishDate, show })
-    ) {
-      const correctedValue = publishDate || null;
-      console.warn(`  ⚠️  Existing publishDate "${existing.data.publishDate}" fails the date guard for this show's window — ${correctedValue ? `correcting to "${correctedValue}"` : 'clearing (no fresh date recovered)'}`);
-      if (!dryRun) {
-        const updated = {
-          ...existing.data,
-          publishDate: correctedValue,
-          previousPublishDate: existing.data.publishDate,
-          stalePublishDateClearedAt: new Date().toISOString(),
-          stalePublishDateClearedBy: 'ingest-review-from-url.js',
-        };
-        safeWriteReview(existing.path, updated, { force: true });
-      }
+  // Shared with the post-write stale-merge verification below (BRO-3790) —
+  // one lookup, same identity, same file: this is the pre-write snapshot of
+  // whatever createOrMergeReviewFile is about to merge into (or null, if
+  // this ingest will create a new file).
+  const preExisting = findExistingReviewFile(showDir, outletId, critic, url);
+  if (
+    preExisting &&
+    preExisting.data.publishDate &&
+    !preExisting.data.allowEarlyDate &&
+    isStalePublishDate({ existingPublishDate: preExisting.data.publishDate, show })
+  ) {
+    const correctedValue = publishDate || null;
+    console.warn(`  ⚠️  Existing publishDate "${preExisting.data.publishDate}" fails the date guard for this show's window — ${correctedValue ? `correcting to "${correctedValue}"` : 'clearing (no fresh date recovered)'}`);
+    if (!dryRun) {
+      const updated = {
+        ...preExisting.data,
+        publishDate: correctedValue,
+        previousPublishDate: preExisting.data.publishDate,
+        stalePublishDateClearedAt: new Date().toISOString(),
+        stalePublishDateClearedBy: 'ingest-review-from-url.js',
+      };
+      safeWriteReview(preExisting.path, updated, { force: true });
     }
   }
 
@@ -376,6 +408,9 @@ function extractByline(html) {
     publishDate: publishDate,
     operatorTrust: false,
   });
+  if (stageMeta && stageMeta.standfirst && stageMeta.standfirst.length >= 25) {
+    fields.outletStandfirst = stageMeta.standfirst;
+  }
   if (recoveredScore) {
     // Route through setExtractedScore, never hand-set originalScore: an
     // extractor whose source is an aggregator tag (e.g. lbo-css-stars) must
@@ -399,7 +434,61 @@ function extractByline(html) {
     url,
     source: 'submit-review-form',
     fields,
-  }, { dryRun });
+  }, { dryRun, reviewTextsDir });
+
+  // BRO-3790: createOrMergeReviewFile's merge-into-existing path only fills
+  // BLANK fields (review-file-writer.js _mergeIntoExisting) — a merge onto a
+  // file whose url/criticName/fullText is already non-blank silently keeps
+  // the old value, whether the writer reports 'updated' (something else
+  // changed, e.g. sources[]) or 'skipped: no-changes' (nothing did) — both
+  // exit 0 today with no signal that the intended correction never landed.
+  // Verify it, whenever a file was touched/matched and the write wasn't
+  // already refused by a guard (that already exits 1 below on its own, more
+  // specific, terms).
+  //
+  //   - url: always checked. It's an exact-identity field with no extraction
+  //     non-determinism risk, and the writer's own maybeUpgradeUrl already
+  //     refuses to swap it onto a file with good content BY DESIGN — the
+  //     same "needs a human" situation audit-show-review-gap.js's
+  //     STALE-SLUG comment documents — so flagging that refusal here is
+  //     correct, not a false positive.
+  //   - fullText: only checked when the file actually needed fixing BEFORE
+  //     this write (preBadContent, mirroring maybeUpgradeUrl's own
+  //     badContent gate exactly). A fresh re-extraction of an
+  //     ALREADY-complete file can differ in incidental ways (site chrome,
+  //     rotating ad copy) without the stored body being wrong — that's a
+  //     legitimate preserved value, not staleness, and flagging it would be
+  //     a false positive with nothing to correct.
+  //   - criticName: only checked when the caller passed --critic explicitly
+  //     (an auto-extracted byline is best-effort, not an assertion the
+  //     caller is making), compared via normalizeCritic so a case/whitespace
+  //     difference on the SAME critic never false-flags. criticName is
+  //     never merged by the writer at all — it's an identity key, not a
+  //     mergeable field (review-file-writer.js never assigns
+  //     existing.criticName on merge) — so this explicit-ask path is the
+  //     only way a stale byline can ever be caught.
+  if (result.action !== 'new' && result.filepath && !dryRun
+      && !(result.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(result.reason))) {
+    const preBadContent = isPreExistingContentBad(preExisting);
+    const intended = { url };
+    if (hasBody && preBadContent) intended.fullText = text;
+    let landed;
+    try {
+      landed = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+    } catch (e) {
+      console.error(`\n❌ Could not re-read ${result.filepath} to verify the write landed: ${e.message}`);
+      process.exit(1);
+    }
+    if (criticArg) {
+      intended.criticName = normalizeCritic(criticArg);
+      landed = { ...landed, criticName: normalizeCritic(landed.criticName) };
+    }
+    const staleFields = findStaleMergeFields(intended, landed);
+    if (staleFields.length > 0) {
+      console.error(`\n❌ Stale merge: ${staleFields.join(', ')} still hold a pre-existing value at ${result.filepath} that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed.`);
+      process.exit(1);
+    }
+  }
 
   if (result.action === 'new') {
     console.log(`✅ Created: ${result.filepath}`);

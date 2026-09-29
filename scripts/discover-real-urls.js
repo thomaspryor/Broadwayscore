@@ -8,6 +8,7 @@ const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
 const { cleanSearchTitle } = require('./lib/title-normalization');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { updateFileUrlWithInvariant } = require('./lib/url-change-invariant');
 
 // Outlet search URL patterns
@@ -37,8 +38,7 @@ function findReviewsNeedingUrls() {
 
   if (!fs.existsSync(CONFIG.reviewTextsDir)) return reviewsByShow;
 
-  const shows = fs.readdirSync(CONFIG.reviewTextsDir)
-    .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
+  const shows = listShowDirs(CONFIG.reviewTextsDir);
 
   for (const showId of shows) {
     const showDir = path.join(CONFIG.reviewTextsDir, showId);

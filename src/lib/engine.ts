@@ -56,6 +56,15 @@ export interface CreativeMember {
   role: string;         // Director, Book, Music, Lyrics, Choreographer, etc.
 }
 
+// Earlier run of the same artistic production (returning transfer, revival
+// of a limited run, etc). Re-includes that run's reviews on the current
+// show page — see scripts/lib/wrong-production-autoclear.js findMatchingPriorRun.
+export interface PriorRun {
+  openingDate: string;
+  closingDate?: string;
+  venue?: string;
+}
+
 export interface RawShow {
   id: string;
   title: string;
@@ -93,10 +102,18 @@ export interface RawShow {
   // stop per city). Set on each per-venue leg; points at the aggregate show
   // that rolls up all legs' reviews into one combined score.
   tourParent?: string | null;
+  // National tour (category 'tour', BRO-4211): id of the Broadway production it tours.
+  tourOf?: string | null;
   // Homepage curation overrides (off-Broadway shows surfaced on the Broadway grid).
   // See src/lib/homepage-notability.ts. Editorial escape hatches over the auto rule.
   homepageInclude?: boolean;           // force onto homepage grid (e.g. star-driven previews)
   homepageExclude?: boolean;           // veto from homepage grid
+  priorRuns?: PriorRun[];
+  // Old ids/slugs this row absorbed when duplicate entries were merged (full
+  // ids and year-less slugs). scripts/build-slug-redirects.js turns them into
+  // /show/* 301s; data-core.ts getShowBySlug() resolves them for the routes
+  // the middleware does not cover (S5-T7).
+  aliases?: string[];
 }
 
 export interface RawReview {
@@ -245,6 +262,7 @@ export interface ComputedShow {
   transferOf?: string | null;
   transferredTo?: string | null;
   tourParent?: string | null;
+  tourOf?: string | null;
   // Homepage curation overrides (see RawShow above / homepage-notability.ts)
   homepageInclude?: boolean;
   homepageExclude?: boolean;
@@ -265,6 +283,7 @@ export interface ComputedShow {
   cov?: { state: string; liveCount: number; candidateCount: number; computedAt: string | null };
   scorePublicSince?: string | null;
   coverageAcked?: boolean;
+  priorRuns?: PriorRun[];
 }
 
 /**
@@ -798,8 +817,10 @@ export function computeShowData(
     transferOf: show.transferOf,
     transferredTo: show.transferredTo,
     tourParent: show.tourParent,
+    tourOf: show.tourOf,
     homepageInclude: show.homepageInclude,
     homepageExclude: show.homepageExclude,
+    priorRuns: show.priorRuns,
     // Scores
     criticScore,
     audienceScore: null,

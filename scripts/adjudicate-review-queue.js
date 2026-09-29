@@ -19,7 +19,7 @@ import Anthropic from '@anthropic-ai/sdk';
 
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { isLondonMarket } = require('./lib/venue-classification');
+const { adjudicationExpectation } = require('./lib/adjudication-expectation');
 const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prompt');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { ADJUDICATED_NOTE_PREFIX } = require('./lib/wrong-production-autoclear');
@@ -298,15 +298,7 @@ async function main() {
 
       try {
         const showCategory = showCategoryMap[review.showId] || 'broadway';
-        const expectedType = showCategory === 'off-broadway' ? 'Off-Broadway'
-          : showCategory === 'west-end' ? 'West End'
-          : showCategory === 'off-west-end' ? 'Off-West End'
-          : 'Broadway';
-        const wrongTypes = showCategory === 'off-broadway'
-          ? 'national tour, regional theater, film/TV adaptation, streaming special, or a BROADWAY (not Off-Broadway) production'
-          : isLondonMarket(showCategory)
-          ? 'national tour, regional theater, film/TV adaptation, streaming special, or a Broadway/Off-Broadway (not West End) production'
-          : 'national tour, regional theater, pre-Broadway tryout, film/TV adaptation, streaming special';
+        const { expectedType, wrongTypes, contextNote } = adjudicationExpectation(showCategory);
         const contaminationPrompt = `You are a theater review classifier. Determine if this review is about a **${expectedType}** production or a NON-${expectedType.toUpperCase()} production (${wrongTypes}).
 
 **Show:** ${sourceData.showId}
@@ -317,7 +309,7 @@ async function main() {
 **Review text (first 1500 chars):**
 ${text.slice(0, 1500)}
 
-A FORWARD-LOOKING mention of a future tour ("before it embarks on a national tour", "which will then transfer to...", "ahead of its upcoming tour") is NOT evidence this review is ABOUT a tour production — it is background context in a review of the CURRENT ${expectedType} run. Only mark "wrong-market" when the review's own opinion-bearing content (the critic's actual assessment) is evaluating a performance the critic attended at a different venue/production — not when it merely name-checks a later tour in passing.
+${contextNote}
 
 Respond with ONLY this JSON (no markdown fences):
 {

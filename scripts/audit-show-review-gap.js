@@ -51,7 +51,7 @@ const cheerio = require('cheerio');
 const { execSync, execFileSync } = require('child_process');
 
 const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
-const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle, isUrlYearInPriorRun } = require('./lib/url-discovery');
+const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle } = require('./lib/url-discovery');
 const { buildCensusPlan, isCensusPassComplete, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
 const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
 const {
@@ -59,8 +59,9 @@ const {
   sameOutletUrlVariant,
   _buildDomainMap,
 } = require('./lib/outlet-canonicalize');
+const { describeUnresolvedProvisionalOutlet } = require('./lib/aggregator-domains');
 const { isIncludableForRebuild } = require('./lib/review-guards');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { execErrorDetail } = require('./lib/exec-error-detail');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -105,6 +106,7 @@ const {
   FLAGGED_RECOVERY_CAP,
   isEmptyBodyFile,
   isRecoverableFlaggedFile,
+  hostFallbackVouchers,
   isRecoverableUncitedStub,
   STAR_SOURCE_BY_REFERENCE,
   decideEmptyBodyRecovery,
@@ -163,6 +165,16 @@ const FRESHNESS_HOURS = parseInt(args.find(a => a.startsWith('--freshness-hours=
 const CHECKPOINT_PATH = path.join(ROOT, 'data', 'audit', 'gap-audit-checkpoint.json');
 // WE completeness gate (2026-07-10): reference rows from WE roundup aggregators.
 const { getWeReferenceRows, isWeShow, inOpeningWindow, missingSetHash } = require('./lib/gap-reference-sources');
+// The one predicate for "citation from an earlier production of this title".
+// Every count a human reads goes through it — see that module's docstring for
+// why five scattered `!m.priorRun` filters were not enough.
+const {
+  isPriorProductionCitation,
+  currentRunOnly,
+  currentRunCount,
+  splitGapCounts,
+} = require('./lib/prior-production-citations');
+const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 const { recordGateObservation, evaluateProving, emptyTracker, aggregatorAccuracy, lowTrustSources } = require('./lib/we-gate-proving');
 const WE_PROVING_PATH = path.join(ROOT, 'data', 'audit', 'we-gate-proving.json');
 function loadWeProving() {
@@ -175,7 +187,7 @@ const { normalizeOutlet: normalizeOutletId } = require('./lib/review-normalizati
 // Production-identity + ingest-eligibility policy (2026-07-11): Broadway-path
 // aggregator articles are date-gated against the show's opening window, and
 // prior-run URLs are ingest-blocked on EVERY path (see lib/gap-ingest-policy.js).
-const { articleRunIdentity, ingestBlockReason } = require('./lib/gap-ingest-policy');
+const { articleRunIdentity, ingestBlockReason, isUrlYearOutOfWindow } = require('./lib/gap-ingest-policy');
 const { classifyIngestSkip, describeSkip } = require('./lib/ingest-skip-classify');
 // WE reference schema version — bump to invalidate WE checkpoint entries (59 shows
 // recorded gaps:0 from vacuous Broadway-only-reference runs and closed-clean shows
@@ -207,7 +219,7 @@ function writeJsonAtomic(filePath, obj) {
 // Whoopi Monologues' missing NYT review sat 3 days behind the backlog).
 const { freshnessMsFor, compareAuditPriority, checkpointTs } = require('./lib/gap-audit-freshness');
 // Per-show merge for the audit file (#893) + the S0 blast-radius guard.
-const { mergeGapAudit, countsFor, riskStateMap, isRiskyGapChange, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
+const { mergeGapAudit, countsFor, riskStateMap, isRiskyGapChange, confirmQuarantinedStates, partitionAuditedResults, withFileLock } = require('./lib/gap-audit-merge');
 // Merge-aware checkpoint read-modify-write (#923 — the #893 race class, one
 // file over). saveCheckpoint(wholeObject) used to write the ENTIRE in-memory
 // checkpoint from inside the per-show loop, unlocked on two of its three call
@@ -333,12 +345,7 @@ function getKnownDomainMap() {
 let _showScoreUrlMap = null;
 function getShowScoreUrlMap() {
   if (_showScoreUrlMap) return _showScoreUrlMap;
-  try {
-    const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'show-score-urls.json'), 'utf8'));
-    _showScoreUrlMap = raw.shows || raw || {};
-  } catch {
-    _showScoreUrlMap = {};
-  }
+  _showScoreUrlMap = require('./lib/show-score-discover').loadShowScoreUrlMap(ROOT);
   return _showScoreUrlMap;
 }
 
@@ -494,16 +501,10 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
   // year in its path is cheap, reliable evidence — if that year predates this
   // production's window (and no priorRuns claim it), it is a different
   // production and does not belong in this show's gap list.
-  // Same delimiter set as isUrlYearInPriorRun (the readmission below) — if the
-  // two regexes disagree, a dash-form URL trips the guard while being invisible
-  // to the priorRuns escape hatch, dropping a declared prior run's reviews.
-  const urlYear = (String(u).match(/[/-]((?:19|20)\d{2})(?:[/-]|$)/) || [])[1];
-  if (urlYear && !isUrlYearInPriorRun(u, show.priorRuns)) {
-    const starts = [show.previewsStartDate, show.openingDate]
-      .map(d => (d ? new Date(d).getUTCFullYear() : NaN))
-      .filter(Number.isFinite);
-    if (starts.length && parseInt(urlYear, 10) < Math.min(...starts)) return null;
-  }
+  // isUrlYearOutOfWindow (lib/gap-ingest-policy.js) is the single copy of this
+  // check — a second, drifted copy is how a dash-form URL trips one guard
+  // while staying invisible to the priorRuns escape hatch in the other.
+  if (isUrlYearOutOfWindow(u, show)) return null;
   // Weak-specificity gate (ship-check 2026-07-24): isGenericShowTitle's raw
   // word-count test misses titles that are 2+ words on paper but reduce to a
   // SINGLE significant token once titleTokens() strips stopwords/short words
@@ -728,6 +729,16 @@ async function auditShow(show, opts = {}) {
   // story.asp?ID=… with no title in the path, which title-matching rejected, so
   // L&SA was systematically missed across shows, 2026-06-06). isReviewUrl still
   // strips ticketing/maps/form links.
+  //
+  // Production identity (BRO-1412): Show Score keeps ONE page per title (the
+  // current or most recent production), with no roundup article to date via
+  // articleRunIdentity — it links straight to each outlet's own review. A
+  // revival's page can still surface a prior production's review (e.g. an
+  // outlet's own old notice still linked from the show's page). Fall back to
+  // the URL-embedded-year signal (same one the SERP census applies) so a
+  // stale-year Show Score URL is tagged priorRun and permanently ingest-
+  // blocked rather than silently treated as current-run.
+  const ssPriorRunUrls = new Set();
   try {
     const { showScoreUrlForShow, fetchAllShowScoreReviewUrls } = require('./lib/show-score-discover');
     const ssUrl = showScoreUrlForShow(show, getShowScoreUrlMap());
@@ -737,7 +748,10 @@ async function auditShow(show, opts = {}) {
         return (typeof r === 'string') ? r : ((r && (r.content || r.html || r.body)) || '');
       };
       for (const u of await fetchAllShowScoreReviewUrls(ssUrl, fetchHtml)) {
-        if (isReviewUrl(u)) aggUrls.add(normalizeReviewUrl(u));
+        if (!isReviewUrl(u)) continue;
+        const norm = normalizeReviewUrl(u);
+        aggUrls.add(norm);
+        if (isUrlYearOutOfWindow(norm, show)) ssPriorRunUrls.add(norm);
       }
     }
   } catch (e) {
@@ -964,7 +978,10 @@ async function auditShow(show, opts = {}) {
     const exactMatches = dirFilesAll.filter(d => d.url && normalizeReviewUrl(d.url) === aggNorm);
     const dirFiles = exactMatches.length > 0
       ? exactMatches
-      : dirFilesAll.filter(d => !d.url || classifyReviewUrl(d.url).ok);
+      : hostFallbackVouchers(
+        dirFilesAll.filter(d => !d.url || classifyReviewUrl(d.url).ok),
+        d => isCoveredFile(d, show),
+      );
     if (dirFiles.length === 0) {
       // Before calling it missing: is this the SAME outlet's review we already
       // hold, published on another host that outlet has registered? The Pass
@@ -1033,7 +1050,7 @@ async function auditShow(show, opts = {}) {
   // WE_GAP_INGEST=1 (absent = report-only — the SAFE default; a dropped env line
   // must fail closed), and prior-run roundup URLs are PERMANENTLY report-only
   // (auto-ingesting a prior production's URLs is the WET mass-ingestion class).
-  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || serpCensusUrls.size > 0) {
+  if (weRefUrls.size > 0 || bwPriorRunUrls.size > 0 || serpCensusUrls.size > 0 || ssPriorRunUrls.size > 0) {
     for (const m of [...result.missing, ...result.flaggedMisses]) {
       if (weRefUrls.has(m.url)) {
         m.weRef = true;
@@ -1048,6 +1065,16 @@ async function auditShow(show, opts = {}) {
       // Broadway-path production identity: cited only by a prior production's
       // dated aggregator article → permanently report-only (TKAM 2018 class).
       if (bwPriorRunUrls.has(m.url)) { m.priorRun = true; m.priorRunSource = 'aggregator-article-date'; }
+      // Show Score production identity (BRO-1412): URL's own embedded year
+      // predates this production's window → permanently report-only. Don't
+      // clobber priorRunSource if the (stronger, HTML-dated) article check
+      // above already attributed this URL — attribution is audit-trail only,
+      // ingestBlockReason reads the boolean, but the article date is the
+      // higher-confidence signal and should win when both apply.
+      if (ssPriorRunUrls.has(m.url)) {
+        m.priorRun = true;
+        if (!m.priorRunSource) m.priorRunSource = 'show-score-url-year';
+      }
       // SERP census provenance (report/debug only — ingest eligibility for
       // these follows the same rules as any other missing URL: blocked on WE
       // shows until WE_GAP_INGEST=1, per gap-ingest-policy.js).
@@ -1120,7 +1147,7 @@ async function auditShow(show, opts = {}) {
   // CURRENT-RUN rows only; prior-run rows are permanently ingest-blocked and prove
   // nothing about ingest safety.
   if (result.weReference && weRefData) {
-    const currentRunRows = weRefData.rows.filter(r => !r.priorRun);
+    const currentRunRows = currentRunOnly(weRefData.rows);
     const missingUrls = new Set(result.missing.map(m => m.url));
     const flaggedUrls = new Set(result.flaggedMisses.map(m => m.url));
     let coveredUrlRows = 0;
@@ -1220,8 +1247,12 @@ function ingestMissingUrl(showId, url, knownOutletId) {
     // New York Notebook class). The host is still recorded in
     // unknown-aggregator-outlets.json so it can be promoted to a real registry
     // entry; --provisional skips fuzzy alias resolution so the slug is written as-is.
-    const provId = provisionalOutletIdFromHost(hostOf(url));
-    if (!provId) return { ok: false, reason: 'unknown-outlet-no-host', provisional: true };
+    const provHost = hostOf(url);
+    const provId = provisionalOutletIdFromHost(provHost);
+    // BRO-4155 — "show-score ingest logs unknown-outlet-no-host": see
+    // describeUnresolvedProvisionalOutlet for why a single reason string
+    // collapsed two very different failures into one misleading message.
+    if (!provId) return { ok: false, reason: describeUnresolvedProvisionalOutlet(provHost), provisional: true };
     args.push(`--outlet=${provId}`, '--provisional');
     provisional = true;
   }
@@ -1349,6 +1380,21 @@ function ingestMissingUrl(showId, url, knownOutletId) {
 //   printed it inside `if (residualShows.length > 0)`, so a run whose ONLY
 //   problem was a brand-new skip reason stayed completely silent — the exact
 //   bug this module exists to kill, reproduced inside its own reporting.
+// Same "uncollected" definition pre-send-check.mjs already gates on (current-
+// run missing + citedNoUrl; flaggedMisses excluded as collected-but-excluded,
+// often permanently and correctly so) — MINUS whatever this same run's
+// --ingest-missing pass just successfully filled. Without the subtraction, a
+// show whose gap this run's own ingest just closed would still be reported as
+// gapped by anything computed before the ingest step ran (ship-check finding,
+// BRO-3928: the first draft of the opening-window digest below snapshotted
+// this BEFORE ingestion).
+function currentRunUncollected(r) {
+  const ingestedOk = new Set((r.ingestResults || []).filter(x => x.ok).map(x => x.url));
+  const missing = currentRunOnly(r.missing).filter(m => !ingestedOk.has(m.url)).length;
+  const citedNoUrl = currentRunCount(r.citedNoUrl);
+  return missing + citedNoUrl;
+}
+
 function computeResidualCounts(r, ingestMissing) {
   const failedIngest = (r.ingestResults || []).filter(x => !x.ok && !x.noop).length;
   const noopIngest = (r.ingestResults || []).filter(x => x.noop).length;
@@ -1356,9 +1402,9 @@ function computeResidualCounts(r, ingestMissing) {
   const expectedIngest = (r.ingestResults || []).filter(x => x.expected).length;
   const unclassifiedIngest = (r.ingestResults || []).filter(x => x.unclassified).length;
   const capped = (r.ingestSkippedByCap || []).length;
-  const uningested = ingestMissing ? 0 : (r.missing || []).filter(m => !m.priorRun).length;
+  const uningested = ingestMissing ? 0 : currentRunCount(r.missing);
   const recovered = (r.recoveryResults || []).filter(x => x.recovered && !x.uncited).length;
-  const flaggedOut = Math.max(0, (r.flaggedMisses || []).filter(m => !m.priorRun).length - recovered);
+  const flaggedOut = Math.max(0, currentRunCount(r.flaggedMisses) - recovered);
   const residual = failedIngest + capped + uningested + flaggedOut + conflictIngest + unclassifiedIngest;
   return { residual, failedIngest, noopIngest, conflictIngest, expectedIngest, unclassifiedIngest, capped, uningested, flaggedOut, recovered };
 }
@@ -1472,6 +1518,7 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null) {
     // into Tender's Times slot).
     if (recovered && filledDateOutsideWindow(after.publishDate, openingDate)) {
       after.wrongProduction = true;
+      invalidateWrongProductionAutoClear(after);
       after.wrongProductionNote = `auto-flag: filled text dated ${after.publishDate}, outside the production window around opening ${openingDate} (post-fill recovery guard)`;
       safeWriteReview(fp, after, { force: true });
       recovered = false;
@@ -1534,6 +1581,21 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null) {
 // actions off the module-level parse, not the passed argv.
 async function main(argv = process.argv.slice(2)) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+
+  // Precondition, checked ONCE before any show is audited: can the SERP census
+  // actually run? Without a key, url-discovery's serpSearch early-returns null
+  // and every show gets written with a 0-live/0-candidate verdict plus a fresh
+  // zero-gap checkpoint entry that newsletter-preflight reads as VERIFIED
+  // COMPLETE — while page fetches keep succeeding, so nothing looks wrong.
+  // Checked here rather than thrown at the call site because serpSearch's
+  // callers catch and continue by design (one failed query must not kill a
+  // 26-show run), so a throw there would be swallowed and rerouted.
+  const preflight = serpCensusPreflight(process.env);
+  if (!preflight.ok) {
+    console.error(`::error::gap audit preflight failed — ${preflight.reason}`);
+    process.exit(1);
+  }
+
   const allShows = loadShows();
   let targets;
   if (showFilter) {
@@ -1606,7 +1668,17 @@ async function main(argv = process.argv.slice(2)) {
       const prevCensusAt = checkpoint[s.id] && checkpoint[s.id].serpCensusAt;
       checkpoint[s.id] = {
         at: new Date().toISOString(),
-        gaps: r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length,
+        // CURRENT-RUN gap total. This was the raw sum of all three lists, so
+        // every revival carried a permanently non-zero `gaps` — and
+        // gap-audit-freshness.js grants its 365-day re-audit skip ONLY to a
+        // closed show with `gaps === 0`. A closed revival could therefore
+        // never earn the skip: it stayed in the hourly rotation forever,
+        // spending scraper credit re-confirming 2012 citations while shows
+        // that genuinely owed reviews queued behind it in the same rotation.
+        gaps: splitGapCounts(r).total,
+        // Report-only companion, so the subtraction is visible in the file
+        // rather than the gap looking like it silently vanished.
+        priorProductionGaps: splitGapCounts(r).priorProduction.total,
         // uncollected: CURRENT-run reviews we literally do not have on disk
         // (aggregator lists a URL we never fetched, or cites an outlet with no
         // URL). Consumed by the newsletter pre-send gate (task #823), which
@@ -1615,8 +1687,7 @@ async function main(argv = process.argv.slice(2)) {
         // or priorRun rows (prior-production URLs kept report-only in the
         // audit — the TKAM class, where a WE revival "missed" 77 URLs from the
         // 2018 Broadway run; same filter the WE completeness alert applies).
-        uncollected: r.missing.filter(m => !m.priorRun).length
-          + r.citedNoUrl.filter(c => !c.priorRun).length,
+        uncollected: currentRunCount(r.missing) + currentRunCount(r.citedNoUrl),
         ...(isWeShow(s) ? { refVersion: WE_REF_VERSION } : {}),
         ...(checkpoint[s.id] && checkpoint[s.id].weAlert ? { weAlert: checkpoint[s.id].weAlert } : {}),
         // Cooldown stamps ONLY on a fully-successful census (every query
@@ -1655,7 +1726,7 @@ async function main(argv = process.argv.slice(2)) {
       // Prior-run-only sets are UNFIXABLE rows (report-only forever) — alert once
       // on set-change, never daily re-ping, or a returning production emails every
       // day of the 21-day window (ship-check P1 2026-07-10).
-      const allPriorRun = [...weMissing, ...r.citedNoUrl].every(x => x.priorRun);
+      const allPriorRun = [...weMissing, ...r.citedNoUrl].every(isPriorProductionCitation);
       // Manual runs (no --checkpoint) have no dedup state — the operator is
       // watching stdout; log instead of emailing on every invocation.
       if (useCheckpoint && (hash !== prevAlert.hash || (rePingDue && !allPriorRun))) {
@@ -1704,11 +1775,10 @@ async function main(argv = process.argv.slice(2)) {
     // so a common-title show doesn't read as a disaster. Cats (Regent's Park
     // 2026) printed "114 gap" when every one of those was a correctly-blocked
     // Jellicle Ball / 2019 movie / 2016 Broadway-revival URL (2026-08-06).
-    const nPriorGap = r.missing.filter(m => m.priorRun).length
-      + r.flaggedMisses.filter(m => m.priorRun).length
-      + r.citedNoUrl.filter(c => c.priorRun).length;
+    const nPriorGap = splitGapCounts(r).priorProduction.total;
     const gapTotal = r.missing.length + r.flaggedMisses.length + r.citedNoUrl.length - nPriorGap;
-    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${r.missing.filter(m => !m.priorRun).length} flagged=${r.flaggedMisses.filter(m => !m.priorRun).length} citedNoUrl=${r.citedNoUrl.filter(c => !c.priorRun).length}${nPriorGap ? ` | +${nPriorGap} prior-run blocked, not counted` : ''})`;
+    const gapSplit = splitGapCounts(r);
+    const summary = `  ${r.inReviewsJson}/${r.aggregatorListedUrls.length || '?'} reviews | ${gapTotal} gap (missing=${gapSplit.missing} flagged=${gapSplit.flaggedMisses} citedNoUrl=${gapSplit.citedNoUrl}${nPriorGap ? ` | +${nPriorGap} prior-run blocked, not counted` : ''})`;
     if (verbose || gapTotal > 0) console.log(`${r.showId}${verbose ? '' : ': ' + r.title}\n${summary}`);
     if (verbose && r.missing.length > 0) {
       for (const m of r.missing) console.log(`    ❌ ${m.url}`);
@@ -1762,7 +1832,7 @@ async function main(argv = process.argv.slice(2)) {
       const eligibleMissing = r.missing.filter(m => !blockedPred(m));
       if (weBlocked.length > 0) {
         r.weIngestBlocked = weBlocked.map(m => ({ url: m.url, host: m.host, priorRun: !!m.priorRun, reason: ingestBlockReason(m, { showIsWe, weGateOn, lowTrustSources: lowTrust, serpCensusGateOn }) }));
-        const nPrior = weBlocked.filter(m => m.priorRun).length;
+        const nPrior = weBlocked.filter(isPriorProductionCitation).length;
         console.log(`  ⛔ ${weBlocked.length} URL(s) not ingested (${nPrior} prior-production — permanently report-only${nPrior < weBlocked.length ? `; ${weBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
       }
       const ingestable = eligibleMissing.slice(0, INGEST_PER_SHOW_CAP);
@@ -1833,7 +1903,7 @@ async function main(argv = process.argv.slice(2)) {
       const recBlockedPred = (m) => ingestBlockReason(m, { showIsWe: isWeShow(s), weGateOn: weRecGateOn, lowTrustSources: lowTrust, serpCensusGateOn: serpCensusRecGateOn }) !== null;
       const weRecBlocked = r.flaggedMisses.filter(m => m.recoverable && recBlockedPred(m));
       if (weRecBlocked.length > 0) {
-        const nPrior = weRecBlocked.filter(m => m.priorRun).length;
+        const nPrior = weRecBlocked.filter(isPriorProductionCitation).length;
         console.log(`  ⛔ ${weRecBlocked.length} recoverable(s) not recovered (${nPrior} prior-production — permanently report-only${nPrior < weRecBlocked.length ? `; ${weRecBlocked.length - nPrior} WE_GAP_INGEST unset — report-only mode` : ''})`);
       }
       const recoverables = r.flaggedMisses.filter(m => m.recoverable && !recBlockedPred(m));
@@ -2087,6 +2157,7 @@ async function main(argv = process.argv.slice(2)) {
   }
   const audit = mergeGapAudit(prevAudit, runAudit);
   const mergedResults = audit.results;
+  const nextRiskAll = riskStateMap(mergedResults);
 
   // Blast-radius guard (plan S0): a run that flips >5% of shows' coverage state
   // is far more likely to be a broken input (dead SERP provider, empty census,
@@ -2117,11 +2188,14 @@ async function main(argv = process.argv.slice(2)) {
       // failure this guard exists to catch). riskStateMap/isRiskyGapChange
       // (gap-audit-merge.js) compare liveCount/candidateCount instead of the
       // verdict word — see their doc comments for the full rationale.
-      return blastRadiusCheck(
-        only(riskStateMap(prevAudit && prevAudit.results)),
-        only(riskStateMap(mergedResults)),
-        { label: 'review-gap', isRiskyChange: isRiskyGapChange }
-      );
+      // BRO-4185: a quarantined show whose re-audit reproduces its
+      // quarantined state is a deterministic rule change, not a broken input
+      // — accept it as baseline (see confirmQuarantinedStates).
+      const nextRisk = only(nextRiskAll);
+      const { prevStates, confirmed } = confirmQuarantinedStates(
+        only(riskStateMap(prevAudit && prevAudit.results)), nextRisk, prevAudit && prevAudit.results);
+      if (confirmed.length) console.log(`  ✓ ${confirmed.length} quarantined show(s) reproduced their quarantined state — accepted as baseline: ${confirmed.slice(0, 20).join(', ')}`);
+      return blastRadiusCheck(prevStates, nextRisk, { label: 'review-gap', isRiskyChange: isRiskyGapChange });
     })();
 
   // Roll up unknown outlet hosts: hosts that aggregator articles linked to
@@ -2179,6 +2253,18 @@ async function main(argv = process.argv.slice(2)) {
   const quarantined = canPartialWrite
     ? mergeGapAudit(prevAudit, { ...runAudit, results: safeResults }, { protectedIds: new Set(riskyResults.map(r => r.showId)) })
     : null;
+  // Stamp the state each quarantined show was held at, so the next run can
+  // tell a reproduced state (accept) from a transient one (keep holding).
+  if (quarantined) {
+    const at = new Date().toISOString();
+    const riskyIds = new Set(riskyResults.map(r => r.showId));
+    for (const row of quarantined.results) {
+      if (!row || !riskyIds.has(row.showId)) continue;
+      const ns = nextRiskAll[row.showId];
+      const same = row.quarantine && row.quarantine.nextState === ns;
+      row.quarantine = { nextState: ns, since: same ? row.quarantine.since : at, lastAt: at };
+    }
+  }
 
   if (!dryRun && (blast.ok || canPartialWrite)) {
     const toWrite = blast.ok ? audit : quarantined;
@@ -2270,9 +2356,65 @@ async function main(argv = process.argv.slice(2)) {
   // matches the file a reader would open to debug the discrepancy.
   const reportedAudit = (partial && quarantined) ? quarantined : audit;
   const reportedResults = reportedAudit.results;
-  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.totalMissing} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets`);
+  console.log(`Summary: ${reportedAudit.counts.withGap}/${reportedResults.length} shows on file with gaps (${results.length} audited this run) | ${reportedAudit.counts.missingCurrentRun} URLs not in dir | ${reportedAudit.counts.totalFlaggedMisses} URLs in dir but flagged out (${reportedAudit.counts.totalRecoverable} recoverable, ${reportedAudit.counts.totalRecovered} self-healed) | ${outletsWritten.length} unknown outlets${reportedAudit.counts.priorProductionCitations ? ` | +${reportedAudit.counts.priorProductionCitations} prior-production citation(s) on file, permanently report-only, NOT counted above` : ''}`);
   if (useCheckpoint) {
     console.log(`Checkpoint: ${results.length} shows audited this run${budgetHit ? ' (time-budget partial — remaining shows resume next run)' : ' (full eligible set complete)'}. State: ${CHECKPOINT_PATH}`);
+  }
+
+  // BRO-3928 item 3: --fail-on-gap exists but nothing wires its signal to a
+  // human — it only reddens this hourly CI job's own log, which "nobody
+  // reads" (the ticket's framing). Queue ONE routeAlert(disposition:'digest')
+  // line per opening-window show with a genuine current-run gap, same pattern
+  // as the T1 scoreboard in audit-opening-night-coverage.js, so a real gap on
+  // a show readers will see this week reaches the daily digest.
+  //   - Reads from `reportedResults` (the blast-radius-accepted, ACTUALLY
+  //     PERSISTED data), not the raw per-run `results` — a quarantined show's
+  //     unvetted fresh numbers must never reach the owner (ship-check/Codex
+  //     finding: queuing before the blast-radius decision could advertise a
+  //     result the write path itself judged untrustworthy).
+  //   - `currentRunUncollected` nets out this run's own successful ingests, so
+  //     a gap this same run just closed isn't reported as still open.
+  //   - Per-show conditionKey (not one combined key for the whole run): the
+  //     checkpoint's time budget means a hurried run only touches a handful
+  //     of shows, and one combined key's cooldown would suppress a genuinely
+  //     NEW gap on a different show found in a later run for up to
+  //     cooldownHours (Codex finding).
+  //   - Skipped entirely on --dry-run — a dry run must never have the one
+  //     real side effect (queuing owner-facing content) that isn't gated on
+  //     `!dryRun` everywhere else in this file.
+  //   - Gated on --checkpoint, matching this file's existing convention (see
+  //     the WE completeness alert above): a manual `--show=X` debugging run
+  //     has no dedup state and the operator is watching stdout, not the
+  //     digest — it must not queue a real alert every invocation.
+  if (!dryRun && useCheckpoint) {
+    try {
+      const { routeAlert, removeDigestLines } = require('./lib/owner-alert-router');
+      for (const r of reportedResults) {
+        if (!r || !r.showId || !inOpeningWindow({ openingDate: r.openingDate })) continue;
+        const conditionKey = `review-gap:opening-window:${r.showId}`;
+        const uncollected = currentRunUncollected(r);
+        if (uncollected <= 0) {
+          // Queue-only cleanup (never resolveCondition/ledger — a resolved
+          // ledger condition would reset the OTHER show's cooldown clock is
+          // not a risk here since keys are per-show, but resolving on every
+          // quiet run is still the known anti-pattern documented at
+          // audit-opening-night-coverage.js's "No resolveCondition() call"
+          // comment; removeDigestLines only trims the not-yet-sent queue).
+          removeDigestLines(conditionKey);
+          continue;
+        }
+        await routeAlert({
+          conditionKey,
+          title: `Review gap — "${r.title || r.showId}" missing ${uncollected} cited review(s)`,
+          description: `${r.title || r.showId} (${r.showId}): ${uncollected} review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=${r.showId} --checkpoint --ingest-missing`,
+          severity: 'warning',
+          disposition: 'digest',
+          cooldownHours: 20,
+        }).catch((e) => console.error(`::error::opening-window gap digest queue failed for ${r.showId}: ${(e.message || '').slice(0, 120)}`));
+      }
+    } catch (e) {
+      console.error(`::error::opening-window gap digest routing failed: ${(e.message || '').slice(0, 120)}`);
+    }
   }
   if (verbose && outletsWritten.length > 0) {
     console.log('\nUnknown outlets (not in outlet-registry.json):');
@@ -2413,4 +2555,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, computeResidualCounts, main, USAGE };
+module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, computeResidualCounts, currentRunUncollected, main, USAGE };

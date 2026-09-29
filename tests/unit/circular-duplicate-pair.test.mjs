@@ -24,6 +24,7 @@ const require = createRequire(import.meta.url);
 const { safeWriteReview, wouldFormDuplicateCycle } = require('../../scripts/lib/review-write-guard.js');
 const {
   chooseCanonical, chooseCanonicalForRebuild, isUnknownByline, levenshtein, isScoreable,
+  isTruncatedPreviewOf,
 } = require('../../scripts/fix-circular-duplicate-pairs.js');
 
 const body = (n) => 'x'.repeat(n);
@@ -185,6 +186,75 @@ test('near-misspelling: richer-scored correct spelling wins', () => {
   );
   assert.equal(c.canonical, 'deadline--greg-evans.json');
   assert.match(c.reason, /misspelling/);
+});
+
+// ---------------------------------------------------------------------------
+// Text quality (BRO-3570) — a paywall/truncated-preview capture must not win
+// on score richness or age just because it happens to carry its own score.
+// ---------------------------------------------------------------------------
+test('isTruncatedPreviewOf: true when a shared 60+ char, word-diverse chunk ends in an ellipsis and the other text continues past it', () => {
+  const shared = 'the best thing about this otherwise dreadful and overproduced musical experience full of screeching vocals and baffling staging choices that made the audience visibly uncomfortable throughout';
+  const short = `Some review preamble chrome. ${shared}...`;
+  const long = `Different preamble entirely. ${shared} closely followed by a much better second act that redeems the show.`;
+  assert.equal(isTruncatedPreviewOf(short, long), true);
+  assert.equal(isTruncatedPreviewOf(long, short), false);
+});
+test('isTruncatedPreviewOf: false when the shared chunk is long but word-repetitive (nav chrome), even if it technically matches', () => {
+  const repetitive = 'Most Popular Videos Most Popular Videos Most Popular Videos Most Popular Videos';
+  const short = `${repetitive}...`;
+  const long = `${repetitive} and then some more unrelated navigation chrome continues here.`;
+  assert.equal(isTruncatedPreviewOf(short, long), false);
+});
+test('isTruncatedPreviewOf: false for two independently-written reviews (no shared verbatim run)', () => {
+  const a = 'A completely unrelated review of a completely different production, ending here...';
+  const b = 'Another unrelated review with entirely different prose and no overlap whatsoever.';
+  assert.equal(isTruncatedPreviewOf(a, b), false);
+  assert.equal(isTruncatedPreviewOf(b, a), false);
+});
+
+test('isTruncatedPreviewOf / chooseCanonical: a MUTUAL match (both sides independently quote the same passage and both continue past their own ellipsis) is inconclusive and falls through to age, not an arbitrary demotion (Codex adversarial review, 2026-09-16)', () => {
+  const shared = 'as the character famously declares in the climactic scene, to be or not to be that is the question whether tis nobler in the mind to suffer';
+  const aText = `${shared}... and here A also continues on with plenty more real prose after its own ellipsis, forty-plus chars easily.`;
+  const bText = `${shared}... and here B also continues on with plenty more real prose after its own ellipsis, forty-plus chars easily.`;
+  assert.equal(isTruncatedPreviewOf(aText, bText), true);
+  assert.equal(isTruncatedPreviewOf(bText, aText), true);
+  const c = chooseCanonical(
+    'outlet--a.json', { url: 'u', criticName: 'Critic A', assignedScore: 70, publishDate: '2020-01-01', fullText: aText },
+    'outlet--b.json', { url: 'u', criticName: 'Critic B', assignedScore: 70, publishDate: '2020-01-02', fullText: bText },
+  );
+  assert.equal(c.canonical, 'outlet--a.json');
+  assert.match(c.reason, /age/);
+});
+
+test('chooseCanonical: king-kong-2018 shape — a truncated paywall preview under a misattributed byline loses to the fuller real review, even with an OLDER publishDate and equal score richness', () => {
+  const shared = 'Have you been waiting for an Australian musical version of King Kong turned into a backstage musical full of New Age uplift? The show of your wildest dreams has come to Broadway, and it is the best thing about this otherwise misbegotten production';
+  const c = chooseCanonical(
+    'wsj--misattributed-critic.json', {
+      url: 'u',
+      criticName: 'Misattributed Critic',
+      llmScore: { band: 'pan' },
+      publishDate: '2018-11-01', // OLDER — would win the AGE tiebreak pre-fix
+      fullText: `BROWSER UPDATE chrome. ${shared}...`,
+    },
+    'wsj--real-critic.json', {
+      url: 'u',
+      criticName: 'Real Critic',
+      llmScore: { band: 'pan' },
+      publishDate: '2018-11-08',
+      fullText: `${shared}, closely followed by a game cast that can't save Jack Thorne's stupefyingly banal book.`,
+    },
+  );
+  assert.equal(c.canonical, 'wsj--real-critic.json');
+  assert.match(c.reason, /text quality/);
+});
+
+test('chooseCanonical: empty fullText loses to a non-empty sibling even when byline/score/age would otherwise tie', () => {
+  const c = chooseCanonical(
+    'outlet--critic-a.json', { url: 'u', criticName: 'Critic A', assignedScore: 70, publishDate: '2020-01-01', fullText: '' },
+    'outlet--critic-b.json', { url: 'u', criticName: 'Critic B', assignedScore: 70, publishDate: '2020-01-01', fullText: 'A real, substantive review body goes here.' },
+  );
+  assert.equal(c.canonical, 'outlet--critic-b.json');
+  assert.match(c.reason, /text quality/);
 });
 
 test('score richness breaks a two-distinct-critics tie', () => {

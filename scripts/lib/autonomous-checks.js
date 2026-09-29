@@ -142,14 +142,29 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
     checks.push({ name, argv, ...extra });
   };
 
+  // BRO-2247: a colocated `.test.ts` needs `npx tsx --test`, not plain `node
+  // --test` — same TS-resolution trap BRO-2218 fixed in isSafeCheckCommand,
+  // here at the auto-derivation call site instead. Plain node's ESM resolver
+  // isn't TS-aware, so it can neither run a `.test.ts` file's own TS syntax
+  // nor resolve a `.ts` module's extensionless internal imports. Two separate
+  // batches (mirrors test.yml's own unit-test-manifest.txt vs
+  // unit-test-manifest-tsx.txt split) so a diff mixing `.test.mjs` and
+  // `.test.ts` colocated tests runs each under the loader that understands it.
   const testFiles = new Set();
+  const tsxTestFiles = new Set();
   for (const f of files) {
     if (/\.test\.mjs$/.test(f)) { testFiles.add(f); continue; }
+    if (/\.test\.ts$/.test(f)) { tsxTestFiles.add(f); continue; }
     // Colocated test convention: scripts/lib/x.js → scripts/lib/x.test.mjs
-    const colocated = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.mjs');
-    if (colocated !== f && existsFn(colocated)) testFiles.add(colocated);
+    // (or scripts/lib/x.ts → scripts/lib/x.test.ts, checked first — a .ts
+    // source is exactly the case whose colocated test needs tsx to run).
+    const colocatedTs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.ts');
+    const colocatedMjs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.mjs');
+    if (colocatedTs !== f && existsFn(colocatedTs)) tsxTestFiles.add(colocatedTs);
+    else if (colocatedMjs !== f && existsFn(colocatedMjs)) testFiles.add(colocatedMjs);
   }
   if (testFiles.size) add('colocated-tests', ['node', '--test', ...[...testFiles].sort()]);
+  if (tsxTestFiles.size) add('colocated-tests-tsx', ['npx', 'tsx', '--test', ...[...tsxTestFiles].sort()]);
 
   // Syntax floor for tier-3 script edits: most scripts/ files have no
   // colocated test, and "it parses" is the cheapest true statement we can
@@ -173,16 +188,99 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   return checks;
 }
 
+// BRO-2208: a naive `cmd.split(/\s+/)` mis-tokenizes any quoted value
+// containing whitespace — `gh run list --workflow="Deploy to Vercel"` split
+// this way becomes FIVE broken argv entries (`--workflow="Deploy`, `to`,
+// `Vercel"`, …), which `gh` then receives as literal, nonsensical positional
+// args. This is a correctness bug, not a shell-injection one — argv is
+// exec'd via execFileSync (no shell), so nothing here is ever re-interpreted
+// — but a card author's well-formed, quoted acceptance command must still
+// actually run as written. Minimal shlex-style tokenizer: single/double
+// quotes group a run of characters (including spaces) into one token and are
+// stripped from the output; no backslash-escape handling, no nesting — the
+// repo's own card-authored commands never need more than that.
+function tokenizeCheckCommand(cmd) {
+  const s = String(cmd || '');
+  const tokens = [];
+  let i = 0;
+  while (i < s.length) {
+    while (i < s.length && /\s/.test(s[i])) i++;
+    if (i >= s.length) break;
+    let token = '';
+    while (i < s.length && !/\s/.test(s[i])) {
+      const ch = s[i];
+      if (ch === '"' || ch === "'") {
+        const quote = ch;
+        i++;
+        while (i < s.length && s[i] !== quote) { token += s[i]; i++; }
+        if (i < s.length) i++; // skip closing quote
+      } else {
+        token += ch;
+        i++;
+      }
+    }
+    tokens.push(token);
+  }
+  return tokens;
+}
+
 // The card's own checkableDone command, revalidated at EXECUTION time (the
 // queue file is not trusted either) and split into argv for shell-free exec.
 function cardCheckArgv(checkableDone, isSafeCheckCommand) {
   const cmd = String(checkableDone || '').trim();
   if (!cmd) return null;
   if (!isSafeCheckCommand(cmd)) return null;
-  return cmd.split(/\s+/);
+  return tokenizeCheckCommand(cmd);
 }
 
 // ── Workdir preparation ─────────────────────────────────────────────────────
+
+// BRO-3907 (found while landing an unrelated fix, not this ticket's own
+// change): a `repo` that is itself a git WORKTREE nested under the main
+// checkout (e.g. .claude/worktrees/<branch>/, the layout CLAUDE.md's
+// worktree-first rule mandates for every code edit) has no literal
+// `node_modules` of its own — Node's own module resolution finds the main
+// checkout's node_modules by walking up parent directories, which works fine
+// for that worktree directly, but NOT for a caller that later symlinks
+// `<repo>/node_modules` into a THIRD, unrelated location (land-branch.js's
+// disposable /tmp check worktree): fs.existsSync(path.join(repo,
+// 'node_modules')) is false, prepareCheckWorkdir's link() silently no-ops,
+// and the check worktree ends up with no node_modules reachable by ANY
+// ancestor walk (it lives under /tmp, nowhere near the main checkout) —
+// surfaced as `Cannot find module 'jsdom'` (and cascading false positives in
+// unrelated tests whose own scan loop aborts on that same uncaught
+// MODULE_NOT_FOUND) inside land.js's merged-tree-tests gate, deterministically,
+// on every land attempt from a worktree, regardless of what the branch
+// actually changed.
+//
+// scripts/lib/acceptance-check-core.js already solved this for its own
+// caller (a from-scratch checkout, same worktree-vs-main-repo shape) via
+// `git rev-parse --git-common-dir`: a worktree's common dir is always
+// `<main-repo>/.git`, so its dirname is the main repo root regardless of how
+// deeply the worktree is nested or named. Promoted here (not left duplicated
+// — CLAUDE.md rule 15) so land-branch.js's callers get the same fix instead
+// of a second, harder-to-find copy of the same one-liner.
+// Matches acceptance-check-core.js's own GIT_TIMEOUT_MS ("generous enough
+// for a cold fetch on a large repo") — this call isn't a fetch, but it can
+// still stall behind lock contention or a cold FS cache under this repo's
+// heavy parallel-worktree usage, and a too-short timeout here fails closed to
+// `repo` (the node_modules-less worktree), silently reintroducing the exact
+// bug this function exists to fix. Named separately rather than importing
+// acceptance-check-core.js's constant: that file is a leaf CALLER of this
+// one (require()s it via land-branch.js's chain), so importing back would
+// create a cycle.
+const GIT_COMMON_DIR_TIMEOUT_MS = 120000;
+
+function resolveInstallRoot(repo) {
+  if (fs.existsSync(path.join(repo, 'node_modules'))) return repo;
+  try {
+    const common = execFileSync('git', ['rev-parse', '--path-format=absolute', '--git-common-dir'],
+      { cwd: repo, encoding: 'utf8', timeout: GIT_COMMON_DIR_TIMEOUT_MS }).trim();
+    const mainRoot = path.dirname(common);
+    if (mainRoot && fs.existsSync(path.join(mainRoot, 'node_modules'))) return mainRoot;
+  } catch { /* not a worktree, or old git — fall through */ }
+  return repo;
+}
 
 // A fresh `git worktree add` has NO node_modules and none of the gitignored
 // core-data symlinks (data/shows.json et al are symlinks into the private
@@ -193,6 +291,17 @@ function cardCheckArgv(checkableDone, isSafeCheckCommand) {
 // Fills GAPS ONLY: a path that already exists in the workdir (i.e. is tracked
 // in git) is never touched, so this can't shadow the implementer's own work.
 // Everything it links is gitignored, so nothing it creates can reach a diff.
+//
+// `repoRoot` is run through resolveInstallRoot() HERE, once, for the
+// node_modules link only — every caller (land-branch.js's two call sites,
+// runSafeChecks' own prepareFrom below, and any future one) gets the fix
+// for free instead of each having to remember to resolve first (BRO-3907
+// ship-check finding: two call sites had already drifted — one resolved,
+// one didn't — after the fix first landed with the resolution done at each
+// call site instead of here). Core data is NOT run through it: a worktree's
+// own gitignored data/*.json (populated by setup-local-data.sh) is the
+// fresher copy for that worktree's own session, and should never be
+// silently swapped for the main checkout's.
 function prepareCheckWorkdir(workdir, repoRoot) {
   const linked = [];
   const link = (from, to) => {
@@ -207,7 +316,7 @@ function prepareCheckWorkdir(workdir, repoRoot) {
   // node_modules stays a symlink: 1.3GB is not copyable per card, and it is
   // already writable by anything running as this user in the main checkout,
   // so the symlink adds no blast radius.
-  link(path.join(repoRoot, 'node_modules'), path.join(workdir, 'node_modules'));
+  link(path.join(resolveInstallRoot(repoRoot), 'node_modules'), path.join(workdir, 'node_modules'));
 
   // Core data is COPIED, not linked. data/shows.json et al are symlinks into
   // the owner's PRIVATE data repo; linking them would hand implementer-written
@@ -321,8 +430,10 @@ module.exports = {
   tierOf,
   decideChecks,
   cardCheckArgv,
+  tokenizeCheckCommand,
   isUiDiff,
   hasSrcChange,
+  resolveInstallRoot,
   prepareCheckWorkdir,
   runSafeChecks,
 };

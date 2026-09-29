@@ -23,6 +23,17 @@
  *   node scripts/scrape-recoupment-announcements.js --shows=giant,ragtime
  *   node scripts/scrape-recoupment-announcements.js --dry-run        # print only
  *   node scripts/scrape-recoupment-announcements.js --window-days=14
+ *   node scripts/scrape-recoupment-announcements.js --time-budget-min=20
+ *
+ * --time-budget-min=N: wall-clock budget in minutes (0 = unlimited, default).
+ * BRO-2303: the per-show loop (up to 5 SERP queries + up to 4 fetchPage+LLM
+ * classifications each) has no per-show cap and was overrunning
+ * commercial-friday.yml's job timeout weekly (run 34658940127 etc. — 43min
+ * inside this step alone, killed by the 45min job timeout). A timeout-killed
+ * job reports `cancelled`, not `failure`, so notify-failure's `if: failure()`
+ * never fires and the staleness went undetected for weeks (same class as
+ * BRO-2285's batch-commercial-research.js fix). Findings are only written
+ * after the loop, so breaking early loses nothing already scanned.
  */
 
 const fs = require('fs');
@@ -32,6 +43,7 @@ const { serpQuery } = require('./lib/url-discovery');
 const { fetchPage } = require('./lib/scraper');
 const { classifyArticle } = require('./lib/recoupment-classify');
 const { isCommercialScope } = require('./lib/commercial-scope');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 
 // Worktrees don't ship the gitignored data files (shows.json, commercial.json
 // live in the private repo and are only symlinked in the main checkout). Fall
@@ -62,6 +74,17 @@ const DRY_RUN = flags['dry-run'] === true;
 const WINDOW_DAYS = parseInt(flags['window-days'], 10) || 30;
 const TARGETED = flags['shows'] ? flags['shows'].split(',').map(s => s.trim()).filter(Boolean) : null;
 const MAX_RESULTS_PER_QUERY = 8;
+const TIME_BUDGET_MIN = parseTimeBudgetMin(args);
+const timeBudget = createRunBudget(TIME_BUDGET_MIN);
+// Conservative per-show worst case: 5 SERP queries (~1-3s each + 1200ms
+// throttle) + up to 4 fetchPage() @25s timeout + LLM classification calls —
+// none of which have a combined per-show timeout, so a single show can run
+// 2+ minutes. Mirrors batch-commercial-research.js's MIN_REMAINING_MS_TO_START
+// guard (BRO-2285/BRO-2303 same root-cause class): don't start a show
+// unlikely to finish before the budget. Smaller than that script's 5min
+// because this per-show cost ceiling is lower (no SEC EDGAR, no Claude
+// analysis pass).
+const MIN_REMAINING_MS_TO_START = 2 * 60_000;
 
 // Outlets we trust for recoupment announcements (preferred sources). Shared with
 // apply-commercial-pending.js so the auto-apply gate uses the same whitelist.
@@ -291,11 +314,18 @@ async function main() {
   const commercial = loadJSON(COMMERCIAL_PATH);
   const candidates = pickCandidates(allShows, commercial);
 
-  log(`Recoupment scraper — ${candidates.length} shows in scope (window=${WINDOW_DAYS}d, dry-run=${DRY_RUN})`);
+  log(`Recoupment scraper — ${candidates.length} shows in scope (window=${WINDOW_DAYS}d, dry-run=${DRY_RUN}, time-budget-min=${TIME_BUDGET_MIN || 'unlimited'})`);
   log('');
 
   const allFindings = [];
+  let attempted = 0;
   for (const show of candidates) {
+    if (timeBudget.enabled && timeBudget.remainingMs() < MIN_REMAINING_MS_TO_START) {
+      const remaining = candidates.length - attempted;
+      log(`\n⏱ Time budget (${TIME_BUDGET_MIN} min) reached after ${timeBudget.elapsedMin()} min — stopping cleanly. ${remaining} show(s) deferred to next run.`);
+      break;
+    }
+    attempted++;
     try {
       const findings = await processShow(show);
       allFindings.push({ show, findings });
@@ -307,7 +337,7 @@ async function main() {
   const promotable = summarize(allFindings);
 
   log(`\n========== SUMMARY ==========`);
-  log(`Shows scanned: ${candidates.length}`);
+  log(`Shows scanned: ${attempted}${attempted < candidates.length ? ` of ${candidates.length}` : ''}`);
   log(`Promotable recoupment findings: ${promotable.length}`);
   for (const p of promotable) {
     log(`  ✅ ${p.show.slug}: ${p.finding.verdict.recoupedDate || 'date?'} (${p.finding.host})`);

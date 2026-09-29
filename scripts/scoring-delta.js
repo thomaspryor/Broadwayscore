@@ -56,8 +56,25 @@ const { parseDate } = require('./lib/date-utils');
 const { buildOutletRegionMap } = require('./lib/cross-market-guard');
 const { normalizeOutlet: normalizeOutletCanonical } = require('./lib/review-normalization');
 const { isEvergreenListingUrl } = require('./lib/cross-production-guards');
+// Working-tree copy: pure classification helper (ingest-time gate), not on
+// either watchlist — same rationale as isLondonMarket/isUkOutletUrl above.
+// Only shouldAutoClearAnticipatoryGrace itself (sandboxed per-side via
+// __priorRunLib) is the thing under test; this just feeds its ctx.
+const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
+// Working-tree copy: pure classification helper reading only show.category/
+// openingDate/id (all on the summary object) — same rationale as
+// isLondonMarket above. Gates the dateless-revival/stale-date-guard/
+// anticipatory-grace/priorRun/tourLeg replays below (BRO-3338), mirroring
+// rebuild-all-reviews.js:1356-1359's `if (!showEarliest) continue; if
+// (showLongRunWE.has(sid)) continue;` — that whole guard-auto-clear loop
+// never runs for a show with no earliestDate or a pre-2015 West End long
+// runner, so a stale flag on one of those shows' files must stay untouched
+// here too (ship-check adversarial finding, BRO-3338: without this gate the
+// replay could clear a flag rebuild would never even evaluate).
+const { isLongRunningProduction } = require('./lib/long-runner-registry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `scoring-delta.js — mandatory local verification for scoring/exclusion logic changes.
 
@@ -157,6 +174,10 @@ const INCLUSION_FILES = [
   // actually added, so the Check-2 generic-idWords bug (2 wrong-show recoveries,
   // task #914 live incident) shipped without tripping this gate.
   'scripts/lib/content-quality.js',
+  // Shared show-title variant matcher (2026-09-24) consumed by content-quality.js
+  // validateShowMentioned/validateContentMentionsShow and by rebuild-all-reviews.js's
+  // showNotMentioned auto-clear — an inclusion decision, same shape as above.
+  'scripts/lib/show-title-variants.js',
   // Historical miss (2026-08-14): rebuild-all-reviews.js consumes
   // shouldWithholdStaleExclusionFlag from here at ten producer sites to decide
   // whether a guard may write an exclusion flag at all — an inclusion decision
@@ -184,6 +205,14 @@ const INCLUSION_FILES = [
   // watched, but the caller wasn't, so a change to WHEN/WHETHER those checks
   // fire (not what they return) would have run this gate to "nothing to check".
   'scripts/lib/review-write-guard.js',
+  // Fifth of this exact shape (BRO-3338, ship-check finding): the
+  // shouldAutoClearAnticipatoryGrace replay this diff adds calls
+  // isAnticipatoryPreviewPost from here to recompute its stillRejected ctx —
+  // a change to its grace-period constants (e.g.
+  // OFF_BROADWAY_GRACE_DAYS_BEFORE_OPENING) changes real inclusion decisions
+  // at both ingest time (collect-review-texts.js) and via this auto-clear,
+  // but was not watched, so this gate would report "nothing to check".
+  'scripts/lib/content-filters.js',
 ];
 
 // Phase B — score-source files. Changes here can keep a review included but
@@ -207,6 +236,21 @@ const FLAG_FIELDS = new Set([
   'rejectedAt', 'incompleteReason', 'duplicateOf', 'assignedScore',
   'wrongProductionManualClear', 'humanReviewedWrongProduction',
   'wrongProductionOverride', 'allowCrossMarket', 'allowEarlyDate',
+  // BRO-3338 (ship-check finding): load-bearing for the 6 new auto-clear
+  // predicates' outer gates (DatelessRevival/StaleDateGuard match on
+  // wrongProductionNote prefixes; AnticipatoryGrace/UrlYear match on
+  // wrongProductionReason / wrongProductionNote content) — an audit sweep
+  // that clears one WITHOUT touching wrongProduction itself would otherwise
+  // escape Guard 1b's data-flag-change detection.
+  'wrongProductionReason', 'wrongProductionNote',
+  // BRO-3862 (Codex adversarial review): decideInclusion's new isNonReview
+  // branch checks nonReviewFlag/nonReviewContent directly, and its demotion
+  // carve-out (isNonReviewDemotedByFreshCV) reads contentVerification +
+  // classifiedAt/textFetchedAt to judge freshness. Without these, a sweep
+  // that flips ONLY one of them (isNonReview itself unchanged) would escape
+  // detection the same way wrongProductionReason/-Note did above.
+  'nonReviewFlag', 'nonReviewContent', 'contentVerification',
+  'classifiedAt', 'textFetchedAt', 'isNonReviewReason',
 ]);
 
 // Detect flag-field changes in data/review-texts/ (a separate git repo from
@@ -683,6 +727,41 @@ function loadWorkingTreeScoring() {
 // ─── Decision replay ─────────────────────────────────────────────────────────
 
 /**
+ * Resolves a review's effective date for the dateless-revival/stale-date-guard/
+ * anticipatory-grace replays below (BRO-3338). Deliberately parseDate(publishDate)
+ * ONLY — no URL-date fallback, unlike rebuild-all-reviews.js:1380-1387's
+ * reviewDate. Two reasons, both found in ship-check's adversarial review:
+ *   1. extractDateFromUrl lives in rebuild-helpers.js, which is NOT sandboxed
+ *      per-side (only date-guard.js/wrong-production-autoclear.js/
+ *      failed-fetch-policy.js/cross-market-guard.js are, in
+ *      loadBaselineGuards/loadWorkingTreeGuards below) — a URL-fallback-using
+ *      version would silently use the SAME working-tree extractDateFromUrl on
+ *      both replay sides, so a change to extractDateFromUrl itself could
+ *      never show up as a delta here, and Phase B's SCORE_VALUE_FILES replay
+ *      doesn't exercise extractDateFromUrl's date output either (it only
+ *      compares getBestScore's score/source) — a real, silent blind spot.
+ *   2. Guard 3 below (the inline pre-window/date-guard check, ~line 940) only
+ *      fires when `review.publishDate` itself is truthy — it does NOT use
+ *      this resolved date. A URL-fallback-derived hasUsableDate could clear a
+ *      dateless-revival hold here while Guard 3 stays silent (no publishDate
+ *      to gate on), reporting a review as included when rebuild's own
+ *      dated-guard fall-through (rebuild-all-reviews.js:1577-1604, which DOES
+ *      use the URL-resolved reviewDate) would immediately re-exclude it —
+ *      a phantom inclusion.
+ * Matches this file's EXISTING precedent for date-based ctx (the
+ * wrongShowUkUrl/UkDualMarket dateMismatchOver90d/isDateMismatch calcs above
+ * already use parseDate(review.publishDate) only, no URL fallback).
+ *
+ * @param {object} review
+ * @returns {Date|null}
+ */
+function resolveReviewDate(review) {
+  if (!review.publishDate) return null;
+  const d = parseDate(review.publishDate);
+  return (d && !isNaN(d.getTime())) ? d : null;
+}
+
+/**
  * Replays the inclusion decision for a single review under a given guards
  * module. Returns `{included, reason}`.
  *
@@ -691,6 +770,44 @@ function loadWorkingTreeScoring() {
  * This is a subset of rebuild-all-reviews.js's full decision chain, but
  * captures the path that the Giant/temporal incident flowed through.
  */
+// Every show a review URL is filed under (flagged files included), keyed the
+// same way as rebuild-all-reviews.js's urlShowIdsAll / normalizeUrlForDedup.
+// Corpus-level data, identical on both replay sides; built once per guards
+// module so a canonicalizeUrlForDedup change is still modelled per side.
+const _urlShowIdsAllCache = new WeakMap();
+function urlKeyForCrossShowIndex(url, guards) {
+  if (!url || typeof guards.canonicalizeUrlForDedup !== 'function') return null;
+  const canon = guards.canonicalizeUrlForDedup(url);
+  if (!canon) return null;
+  return canon.replace(/^https?:\/\//, '').replace(/^www\./, '');
+}
+function getUrlShowIdsAll(guards) {
+  if (_urlShowIdsAllCache.has(guards)) return _urlShowIdsAllCache.get(guards);
+  const index = new Map();
+  let skipIds = new Set();
+  try {
+    const showsRaw = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
+    skipIds = new Set((showsRaw.shows || showsRaw).filter(s => s && s._skipCrossShowDupe).map(s => s.id));
+  } catch {}
+  try {
+    for (const sid of listShowDirs(REVIEW_TEXTS_DIR)) {
+      if (skipIds.has(sid)) continue;
+      const sDir = path.join(REVIEW_TEXTS_DIR, sid);
+      for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json'))) {
+        try {
+          const d = JSON.parse(fs.readFileSync(path.join(sDir, f), 'utf8'));
+          const key = urlKeyForCrossShowIndex(d.url, guards);
+          if (!key) continue;
+          if (!index.has(key)) index.set(key, new Set());
+          index.get(key).add(sid);
+        } catch {}
+      }
+    }
+  } catch {}
+  _urlShowIdsAllCache.set(guards, index);
+  return index;
+}
+
 function decideInclusion(review, show, guards) {
   // 1. Already-flagged top-level exclusions. A static wrongShow/wrongProduction
   // flag on disk does NOT mean rebuild-all-reviews.js excludes the review — the
@@ -701,11 +818,23 @@ function decideInclusion(review, show, guards) {
   // predicate change flips this decision exactly like it flips the rebuild's
   // (task #1163 — this replay previously modeled the flags as static/identical
   // on both sides, so it could never surface a regression in the auto-clear logic
-  // itself). NOTE: this covers the 4 named predicates in wrong-production-autoclear.js
-  // keyed purely off the review + show (including shouldAutoClearWrongProductionUkDualMarket,
-  // task #1190 — extracted from rebuild-all-reviews.js:2464-2534 by task #1189 but left
-  // out of this replay until now) — it does NOT cover the priorRuns/tourLegs/URL-year
-  // variants (need per-file provenance not modeled here).
+  // itself). BRO-3338: replays ALL 10 shouldAutoClear* predicates
+  // wrong-production-autoclear.js exports and rebuild-all-reviews.js actually
+  // calls (shouldAutoClearWrongShow, shouldAutoClearWrongShowUkUrl,
+  // shouldAutoClearWrongProduction, shouldAutoClearWrongProductionUkDualMarket,
+  // shouldAutoClearWrongProductionPriorRun, shouldAutoClearWrongProductionTourLeg,
+  // shouldAutoClearDatelessRevival, shouldAutoClearStaleDateGuard,
+  // shouldAutoClearAnticipatoryGrace, shouldAutoClearWrongProductionUrlYear).
+  // scripts/scoring-delta-autoclear-coverage.test.mjs's drift-guard test fails
+  // if an 11th predicate is added to rebuild-all-reviews.js without a matching
+  // branch here (or an explicit ALLOWED_UNREPLAYED entry with a reason).
+  // Invariant every branch below relies on for correctness regardless of the
+  // order they run in: every one of these predicates either leaves
+  // wrongProductionCleared/wrongShowCleared untouched or fully clears it —
+  // none of them does a partial mutation without clearing — so OR-ing their
+  // results together is order-independent. A hypothetical 11th predicate that
+  // broke that invariant (partial-mutation-without-clear) would need this
+  // reasoning revisited.
   const autoClear = guards.__priorRunLib || {};
 
   let wrongShowCleared = false;
@@ -732,8 +861,109 @@ function decideInclusion(review, show, guards) {
   }
 
   let wrongProductionCleared = false;
+
+  // PriorRun/TourLeg/DatelessRevival/StaleDateGuard/AnticipatoryGrace
+  // (BRO-3338) all live inside rebuild-all-reviews.js's ONE pre-opening-guard
+  // loop (rebuild-all-reviews.js:1354-1533), which itself is skipped entirely
+  // for a show with no earliestDate or a pre-2015 West End long runner
+  // (rebuild-all-reviews.js:1355-1359: `if (!showEarliest) continue; if
+  // (showLongRunWE.has(sid)) continue;`). Gate all 5 replays the same way —
+  // ship-check's adversarial review found that without this, the replay
+  // could clear a stale flag on one of those shows' files that rebuild would
+  // never even evaluate (the flag can only exist there from before the show
+  // was reclassified, e.g. a retroactive long-runner correction).
+  const inPreOpeningGuardLoop = !!show?.earliestDate && !isLongRunningProduction(show);
+
+  if (inPreOpeningGuardLoop) {
+    // PriorRun/TourLeg auto-clear — mirrors rebuild-all-reviews.js:1418's exact
+    // call shape. Cheapest of the BRO-3338 additions: both predicates take
+    // (data, show) with no ctx object, reading only show.priorRuns/show.tourLegs
+    // — both already on the show summary main() builds. (Previously left out
+    // under a stale "needs per-file provenance not modeled here" comment that
+    // no longer applied once the summary carried priorRuns/tourLegs.)
+    if (review.wrongProduction === true) {
+      const priorRunClear = typeof autoClear.shouldAutoClearWrongProductionPriorRun === 'function'
+        && autoClear.shouldAutoClearWrongProductionPriorRun(review, show);
+      const tourLegClear = typeof autoClear.shouldAutoClearWrongProductionTourLeg === 'function'
+        && autoClear.shouldAutoClearWrongProductionTourLeg(review, show);
+      if (priorRunClear || tourLegClear) wrongProductionCleared = true;
+    }
+
+    // Dateless-revival auto-clear — mirrors rebuild-all-reviews.js:1393's
+    // hasUsableDate ctx (parseDate(publishDate) only — see resolveReviewDate's
+    // docstring for why the URL-date fallback is deliberately NOT replayed).
+    if (!wrongProductionCleared && review.wrongProduction === true
+        && typeof autoClear.shouldAutoClearDatelessRevival === 'function') {
+      const reviewDate = resolveReviewDate(review);
+      wrongProductionCleared = autoClear.shouldAutoClearDatelessRevival(review, { hasUsableDate: !!reviewDate });
+    }
+
+    // Stale dated pre-opening guard auto-clear — mirrors rebuild-all-reviews.js:
+    // 1461-1464's outer gate (own-flag note prefix + no manual/human override)
+    // and 1463's evaluateDateGuard(...).flag === false ctx.
+    if (!wrongProductionCleared && review.wrongProduction === true
+        && String(review.wrongProductionNote || '').startsWith('Pre-opening guard:')
+        && !review.wrongProductionManualClear
+        && review.humanReviewedWrongProduction !== false
+        && !review.allowEarlyDate
+        && typeof autoClear.shouldAutoClearStaleDateGuard === 'function'
+        && typeof guards.__dateGuard?.evaluateDateGuard === 'function') {
+      const reviewDate = resolveReviewDate(review);
+      if (reviewDate) {
+        const dgDecision = guards.__dateGuard.evaluateDateGuard({ pubDate: reviewDate, show, outletId: review.outletId });
+        wrongProductionCleared = autoClear.shouldAutoClearStaleDateGuard(review, { nowInWindow: dgDecision.flag === false });
+      }
+    }
+
+    // Stale anticipatory-gate auto-clear (BRO-39) — mirrors rebuild-all-reviews.js:
+    // 1508-1531's outer gate (own reason + no manual/human override + resolvable
+    // openingDate) and its isAnticipatoryPreviewPost(...).rejected recheck ctx.
+    if (!wrongProductionCleared && review.wrongProduction === true
+        && review.wrongProductionReason === 'anticipatory_pre_opening_post'
+        && !review.wrongProductionManualClear
+        && review.humanReviewedWrongProduction !== false
+        && !review.allowEarlyDate
+        && show?.openingDate
+        && typeof autoClear.shouldAutoClearAnticipatoryGrace === 'function') {
+      const reviewDate = resolveReviewDate(review);
+      if (reviewDate) {
+        const stillRejected = isAnticipatoryPreviewPost(
+          reviewDate.toISOString().slice(0, 10),
+          new Date(show.openingDate).toISOString().slice(0, 10),
+          review.outletId,
+          {
+            category: show?.category,
+            humanReviewedEarlyPublish: review.humanReviewedEarlyPublish === true,
+          }
+        ).rejected;
+        wrongProductionCleared = autoClear.shouldAutoClearAnticipatoryGrace(review, { stillRejected });
+      }
+    }
+  }
+
+  // URL-year auto-clear (WE/OB false positives) — mirrors rebuild-all-reviews.js:
+  // 2615-2621's outer gate and reuses the SAME cvBlocksClear/isShowListingUrl
+  // ctx computation as the UK-dual-market block below (identical shared
+  // helpers, cvBlocksUkWrongProductionAutoClear + the whatsonstage/broadwayworld
+  // listing-page regex + isEvergreenListingUrl).
+  if (!wrongProductionCleared && review.wrongProduction === true
+      && review.wrongProductionNote && review.wrongProductionNote.includes('URL contains year')
+      && (isLondonMarket(show?.category) || show?.category === 'off-broadway')
+      && typeof autoClear.shouldAutoClearWrongProductionUrlYear === 'function') {
+    const cvBlocksClear = typeof guards.cvBlocksUkWrongProductionAutoClear === 'function'
+      ? guards.cvBlocksUkWrongProductionAutoClear(review.contentVerification)
+      : false;
+    const isShowListingUrl = !!review.url && (/(?:whatsonstage|broadwayworld)\.com\/shows?\//i.test(review.url)
+      || isEvergreenListingUrl(review.url));
+    wrongProductionCleared = autoClear.shouldAutoClearWrongProductionUrlYear(review, {
+      isLondonOrOffBroadway: isLondonMarket(show?.category) || show?.category === 'off-broadway',
+      cvBlocksClear,
+      isShowListingUrl,
+    });
+  }
+
   if (review.wrongProduction === true && typeof autoClear.shouldAutoClearWrongProduction === 'function') {
-    wrongProductionCleared = autoClear.shouldAutoClearWrongProduction(review);
+    wrongProductionCleared = wrongProductionCleared || autoClear.shouldAutoClearWrongProduction(review);
   }
   // UK/dual-market auto-clear (task #1190) — mirrors rebuild-all-reviews.js:2608-2687's
   // ctx computation exactly, including its outer short-circuit (isStructuralFlag ||
@@ -799,8 +1029,61 @@ function decideInclusion(review, show, guards) {
     }
   }
 
-  if (review.wrongShow === true && !wrongShowCleared) return { included: false, reason: 'wrongShow' };
-  if (review.wrongProduction === true && !wrongProductionCleared) return { included: false, reason: 'wrongProduction' };
+  // Stale "Cross-market: London outlet" flag on a Broadway/off-Broadway show
+  // (BRO-4185 E) — mirrors rebuild-all-reviews.js's reverse self-heal block,
+  // including its registry-domain, own-window and filed-under-other-show ctx.
+  if (!wrongProductionCleared && review.wrongProduction === true && !review.wrongProductionOverride
+      && review.url && ['broadway', 'off-broadway'].includes(show?.category || 'broadway')
+      && (review.wrongProductionNote || '').startsWith('Cross-market: London outlet')
+      && typeof autoClear.shouldAutoClearStaleLondonOutletCrossMarket === 'function') {
+    try {
+      const revRawOutlet = (review.outletId || review.outlet || '').toLowerCase();
+      const revCanonical = normalizeOutletCanonical(revRawOutlet);
+      const revInfo = (outletRegistry.outlets || {})[revCanonical] || {};
+      const revHost = (new URL(review.url).hostname || '').toLowerCase().replace(/^www\./, '');
+      const revPrimary = String(revInfo.domain || '').toLowerCase().replace(/^www\./, '');
+      let revDateMismatch = false;
+      const showStart = show ? earliestShowDate(show) : null;
+      if (review.publishDate && showStart) {
+        const rd = parseDate(review.publishDate);
+        const preWindowDays = guards.__dateGuard?.PRE_WINDOW_DAYS ?? 60;
+        if (rd && !isNaN(rd.getTime()) && (new Date(showStart).getTime() - rd.getTime()) > preWindowDays * 86400000) revDateMismatch = true;
+      }
+      const urlKey = urlKeyForCrossShowIndex(review.url, guards);
+      wrongProductionCleared = autoClear.shouldAutoClearStaleLondonOutletCrossMarket(review, {
+        isNycMarketShow: true,
+        outletIsDualMarket: DUAL_MARKET_OUTLETS.has(revCanonical) || DUAL_MARKET_OUTLETS.has(revRawOutlet),
+        urlOnOutletPrimaryDomain: !!revPrimary && (revHost === revPrimary || revHost.endsWith('.' + revPrimary)),
+        isUkUrl: isUkOutletUrl(review.url) || /\.(co|org)\.uk$/.test(revHost),
+        isDateMismatch: revDateMismatch,
+        isShowListingUrl: isEvergreenListingUrl(review.url),
+        cvBlocksClear: typeof guards.cvBlocksUkWrongProductionAutoClear === 'function'
+          ? guards.cvBlocksUkWrongProductionAutoClear(review.contentVerification)
+          : false,
+        inOwnProductionWindow: typeof guards.isReviewWithinOwnProductionWindow === 'function'
+          ? guards.isReviewWithinOwnProductionWindow(show, review.publishDate)
+          : false,
+        urlFiledUnderOtherShow: !!urlKey && (getUrlShowIdsAll(guards).get(urlKey) || new Set()).size > 1,
+      });
+    } catch {}
+  }
+
+  // In-window + slug-match veto (audit S6-T4, BRO-4204): mirrors review-guards.js
+  // explainExclusion and rebuild-all-reviews.js's inline wrongProduction /
+  // wrongShow gates — a CV/classifier-sourced flag on a review whose URL slug
+  // names the show, published inside the production's own run window, is a
+  // low-confidence flag (not excluded). Optional-typed: the baseline may
+  // predate cvFlagVetoedInWindow, in which case the baseline side keeps
+  // excluding and a veto-driven inclusion shows up as a flip here.
+  const inWindowVetoed = (kind) => {
+    if (typeof guards.cvFlagVetoedInWindow !== 'function') return false;
+    const k = urlKeyForCrossShowIndex(review.url, guards);
+    return guards.cvFlagVetoedInWindow(review, show, kind, {
+      urlFiledUnderOtherShow: !!k && (getUrlShowIdsAll(guards).get(k) || new Set()).size > 1,
+    });
+  };
+  if (review.wrongShow === true && !wrongShowCleared && !inWindowVetoed('wrongShow')) return { included: false, reason: 'wrongShow' };
+  if (review.wrongProduction === true && !wrongProductionCleared && !inWindowVetoed('wrongProduction')) return { included: false, reason: 'wrongProduction' };
   // Flat/unconditional, matching isIncludableForRebuild (review-guards.js) and
   // rebuild-all-reviews.js:3305 — no auto-clear path exists for this field
   // (unlike wrongShow/wrongProduction above). crossOutletVerified/
@@ -818,6 +1101,22 @@ function decideInclusion(review, show, guards) {
     if (!isStale) return { included: false, reason: 'isRoundupArticle' };
   }
   if (review.incompleteReason === 'wrong_content') return { included: false, reason: 'incompleteReason:wrong_content' };
+  // Mirror rebuild-all-reviews.js:3570 — the ACTUAL scoring-corpus enforcement
+  // for isNonReview (it does not delegate to isIncludableForRebuild, so it has
+  // to be replayed here explicitly too). BRO-3862: this branch was missing
+  // entirely, so every isNonReview-clear sweep (audit-exclusion-flags.js,
+  // audit-nonreview-slug-coverage.js hand-clears) replayed as "0 flips" —
+  // the exact class of change §12.7 requires this gate to catch.
+  // isNonReviewDemotedByFreshCV (called below) reads review.classifiedAt and
+  // review.isNonReviewReason to judge staleness — both are FLAG_FIELDS entries
+  // that are load-bearing for THIS branch even though they're consumed inside
+  // the delegated predicate rather than textually present here.
+  const isNonReviewDemoted = typeof guards.isNonReviewDemotedByFreshCV === 'function'
+    ? guards.isNonReviewDemotedByFreshCV(review)
+    : false;
+  if ((review.isNonReview === true && !isNonReviewDemoted) || review.nonReviewFlag === true || review.nonReviewContent === true) {
+    return { included: false, reason: 'isNonReview' };
+  }
   if (review.contentTier === 'invalid') {
     // Mirror review-guards.js:3507-3514: a contentTier of 'invalid' set BECAUSE of
     // wrongProduction is stale once that flag clears, so production falls through
@@ -1084,11 +1383,45 @@ function main() {
         // in this list even though decideInclusion now calls it, which would have
         // reopened the exact #1163 blind spot this comparison block exists to close.
         && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '')
+        // BRO-3338: the 6 predicates decideInclusion's inPreOpeningGuardLoop
+        // block + URL-year block now replay. Skipping any one of these here
+        // is EXACTLY the #1163/#1190 blind spot documented above, one level
+        // further out — BRO-3328 needs to edit shouldAutoClearDatelessRevival
+        // specifically, and without this line a session doing ONLY that edit
+        // would see every OTHER compared function still byte-identical,
+        // guardsIdentical would stay true, and Phase A would report
+        // "decisions identical — skipping inclusion replay" despite the edit
+        // (ship-check adversarial finding).
+        && (baseline.__priorRunLib?.shouldAutoClearWrongProductionPriorRun?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionPriorRun?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearWrongProductionTourLeg?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionTourLeg?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearDatelessRevival?.toString() || '') === (working.__priorRunLib?.shouldAutoClearDatelessRevival?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '') === (working.__priorRunLib?.shouldAutoClearStaleDateGuard?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '') === (working.__priorRunLib?.shouldAutoClearAnticipatoryGrace?.toString() || '')
+        && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUrlYear?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUrlYear?.toString() || '')
+        // BRO-4185 E: stale London-outlet cross-market self-heal + the own-window
+        // helper that feeds its ctx.
+        && (baseline.__priorRunLib?.shouldAutoClearStaleLondonOutletCrossMarket?.toString() || '') === (working.__priorRunLib?.shouldAutoClearStaleLondonOutletCrossMarket?.toString() || '')
+        && (baseline.isReviewWithinOwnProductionWindow?.toString() || '') === (working.isReviewWithinOwnProductionWindow?.toString() || '')
+        // evaluateDateGuard feeds shouldAutoClearStaleDateGuard's nowInWindow
+        // ctx — same "the ctx-computing helper is as load-bearing as the
+        // predicate it feeds" rationale as outletIsUkSideSelfHealRegion below.
+        && (baseline.__dateGuard?.evaluateDateGuard?.toString() || '') === (working.__dateGuard?.evaluateDateGuard?.toString() || '')
         // The ctx feeding that predicate is computed by this helper, so a change
         // to it changes inclusion just as much as a change to the predicate.
         && (baseline.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '') === (working.__crossMarketLib?.outletIsUkSideSelfHealRegion?.toString() || '')
         && String([...(baseline.__crossMarketLib?.UK_SELF_HEAL_REGIONS || [])].sort()) === String([...(working.__crossMarketLib?.UK_SELF_HEAL_REGIONS || [])].sort())
         && (baseline.cvBlocksUkWrongProductionAutoClear?.toString() || '') === (working.cvBlocksUkWrongProductionAutoClear?.toString() || '')
+        // BRO-3862: decideInclusion's isNonReview branch (added alongside this
+        // comparison — it was missing entirely before) calls this to demote a
+        // stale flag. Same blind-spot class as every other entry in this list:
+        // an edit to ONLY this predicate must not leave guardsIdentical true.
+        && (baseline.isNonReviewDemotedByFreshCV?.toString() || '') === (working.isNonReviewDemotedByFreshCV?.toString() || '')
+        // isNonReviewDemotedByFreshCV's own CV-promoted branch delegates to
+        // this (review-guards.js:1855) rather than inlining the check — same
+        // "toString() of the caller doesn't capture an edit inside a function
+        // it calls" gap as isWithinTourLeg above (Codex adversarial review,
+        // BRO-3862).
+        && (baseline.hasHighConfidenceLlmScore?.toString() || '') === (working.hasHighConfidenceLlmScore?.toString() || '')
         // Canonical inclusion predicate + pre-opening gate. isIncludableForRebuild
         // was NOT in this list before 2026-07-21, so edits to the canonical
         // predicate silently skipped Phase A ("decisions identical") — the
@@ -1197,11 +1530,27 @@ function main() {
       id: s.id,
       openingDate: s.openingDate || null,
       previewsStartDate: s.previewsStartDate || null,
+      // previewDate/market/closingDate (BRO-3338): needed for
+      // guards.__dateGuard.evaluateDateGuard's own internal earliestShowDate()
+      // call (reads previewDate/previewsStartDate/openingDate) and its
+      // window logic (reads category/market/closingDate for the UK-trusted-
+      // outlet grace extension and the post-closing window) — the
+      // shouldAutoClearStaleDateGuard replay below needs a faithful evaluateDateGuard
+      // result, not just this summary's own precomputed earliestDate. Purely
+      // additive: no other guard call in this file reads these 3 fields.
+      previewDate: s.previewDate || null,
+      market: s.market || null,
+      closingDate: s.closingDate || null,
       earliestDate,
       category: s.category || 'broadway',
       status: s.status || 'open',
       priorRuns: s.priorRuns || null,
       tourLegs: s.tourLegs || null,
+      // title + creativeTeam (audit S6-T4, BRO-4204): read by the
+      // cvFlagVetoedInWindow replay in decideInclusion — the URL-slug ⇔ title
+      // match and the named-different-director strong-signal bypass.
+      title: s.title || null,
+      creativeTeam: s.creativeTeam || null,
     });
   }
 
@@ -1212,11 +1561,7 @@ function main() {
     process.exit(1);
   }
 
-  let showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(d => !d.startsWith('.'))
-    .filter(d => {
-      try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
-    });
+  let showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   if (SAMPLE_LIMIT) showDirs = showDirs.slice(0, SAMPLE_LIMIT);
 

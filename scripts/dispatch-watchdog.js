@@ -45,6 +45,7 @@ const path = require('path');
 const { spawn, spawnSync } = require('child_process');
 const core = require('./lib/dispatch-watchdog-core.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
+const { findUnlandedJobDoneEntries } = require('./lib/headless-unlanded-detection.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { classifyCmuxError } = require('./lib/cmux-socket-auth.js');
 const { hasAutoDispatchMarker } = require('./lib/prune-closeable.js');
@@ -62,12 +63,26 @@ const LOCK_DIR = path.join(STATE_DIR, 'dispatch-watchdog.lock');
 const OFF_FILE = path.join(STATE_DIR, 'dispatch-watchdog-off');
 const NO_DISPATCH_FILE = path.join(STATE_DIR, 'dispatch-watchdog-no-dispatch');
 const RECHECK_LEDGER = path.join(REPO, 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
+// BRO-3924 (R3): BRO-3551's own report — same canonical-REPO reasoning as
+// RECHECK_LEDGER above (this file runs from worktrees but always reads the
+// canonical repo's audit data).
+const OPEN_BACKLOG_SWEEP_REPORT_PATH = path.join(REPO, 'data', 'audit', 'open-backlog-acceptance-sweep.json');
 
 const DASHBOARD_INTERVAL_MS = 90 * 1000;
 const HEARTBEAT_STALE_MS = 10 * 60 * 1000;      // ensure-tab resurrection bar
 const HEALTH_STALE_MS = 30 * 60 * 1000;         // launchd paging bar
 const DISPATCH_TIMEOUT_MS = 15 * 60 * 1000;     // bsc-next slow-boot worst case + margin
 const RECHECK_WINDOW_MS = 48 * 3600 * 1000;
+// BRO-3424: how far back findUnlandedJobDoneEntries re-checks job-done
+// ancestry each sweep. Unbounded would re-walk every job-done the ledger has
+// ever recorded (most worktrees long gone — a fast existsSync-false, but
+// still O(all-time jobs) per 90s sweep). This is a visibility window only —
+// this signal drives no auto-redispatch (see planSweep's own comment), so it
+// has no REDISPATCH_REARM_MS-style self-heal to line up with. The real
+// backstop for anything older is gc-merged-worktrees.sh's independent
+// stale_unmerged digest (it reports, never deletes, an unmerged worktree); a
+// week just keeps this sweep's own git-subprocess cost bounded.
+const UNLANDED_CHECK_WINDOW_MS = 7 * 24 * 3600 * 1000;
 
 const USAGE = `dispatch-watchdog.js — durable owner of dispatched-work outcomes
 
@@ -212,14 +227,154 @@ function recentRecheckFailures(now) {
   return out;
 }
 
+// Codex adversarial review (BRO-3924): without an age check, a report that
+// stops being regenerated (BRO-3551's own cron disabled, erroring, or just
+// never scheduled) would suppress a card as "already-passes" FOREVER off one
+// stale verdict — including past the point where main regresses and the
+// card's acceptance command no longer actually passes. Same window
+// RECHECK_WINDOW_MS already uses for recheckFailures below, so both
+// consumers of "how stale is too stale for an acceptance verdict" agree.
+const OPEN_BACKLOG_SWEEP_MAX_AGE_MS = RECHECK_WINDOW_MS;
+
+// BRO-3924 (R3): the watchdog consumes BRO-3551's own report as an
+// ineligible reason — it NEVER runs runVerify itself inside the 90s sweep.
+// Fail-soft (same doctrine as recentRecheckFailures above): a missing or
+// corrupt report degrades to "no already-passing cards known", never blocks
+// a sweep.
+function loadAlreadyPassesReport(now = Date.now(), reportPath = OPEN_BACKLOG_SWEEP_REPORT_PATH) {
+  try {
+    const raw = JSON.parse(fs.readFileSync(reportPath, 'utf8'));
+    const generatedMs = Date.parse(raw.generatedAt || '');
+    if (!Number.isFinite(generatedMs) || now - generatedMs > OPEN_BACKLOG_SWEEP_MAX_AGE_MS) {
+      return { alreadyDone: [], checkoutSha: null };
+    }
+    const alreadyDone = Array.isArray(raw.alreadyDone) ? raw.alreadyDone : [];
+    return { alreadyDone, checkoutSha: raw.checkoutSha || null };
+  } catch {
+    return { alreadyDone: [], checkoutSha: null };
+  }
+}
+
+// ── Linear as a second task source (BRO-3390) ──────────────────────────────
+//
+// loadTasksUnioned() reads ONLY ~/.claude/tasks/<list>/<digits>.json — the
+// Notion mirror, frozen at task id 1285 since 2026-08-20. Measured 2026-09-15:
+// all 180 watchdog-redispatch rows since 2026-09-01 carry Notion ids and none
+// carry a linear: id, while 684 armed Linear issues sat with no continuous
+// drain at all. This is the seam that fixes that.
+//
+// The fetch is ASYNC but buildPlan() is SYNC and called from four places
+// (sweepOnce, the dashboard loop, the flow-health check, --status), two of
+// them inside sync contexts. Rather than ripple async through all four, the
+// fetch refreshes a module-level cache and buildPlan reads it synchronously.
+// Fail-safe in both directions: a Linear outage leaves the cache untouched and
+// the Notion-sourced half of the sweep keeps working, and a cache older than
+// LINEAR_CACHE_TTL_MS is dropped rather than dispatched from, so a long outage
+// degrades to "no Linear work" instead of to stale work. A mildly stale entry
+// is safe anyway — linear-next.js re-checks state at dispatch time and refuses
+// anything that has since started or closed.
+const LINEAR_CACHE_TTL_MS = 10 * 60 * 1000;
+let linearTaskCache = { tasks: new Map(), started: new Map(), ts: 0, ok: false, reason: 'not-fetched', scanned: 0, alreadyPasses: [] };
+
+async function refreshLinearTasks() {
+  // BRO-3924 (R3): loaded independently of the Linear fetch below (it's a
+  // local file, not a network call) so a Linear outage never hides an
+  // already-known-passing card, and injected into fetchLinearWatchdogTasks
+  // as opts.alreadyPassesIds — the pure source module never touches the
+  // filesystem itself.
+  const report = loadAlreadyPassesReport();
+  const alreadyPassesIds = new Set(report.alreadyDone.map(r => r.id));
+  try {
+    const source = require('./lib/linear-watchdog-source.js');
+    const client = require('./lib/linear-client.js');
+    const res = await source.fetchLinearWatchdogTasks(client, { alreadyPassesIds });
+    if (res.ok) {
+      linearTaskCache = {
+        tasks: res.tasks, started: res.started || new Map(),
+        ts: Date.now(), ok: true, reason: null, scanned: res.scanned,
+        alreadyPasses: report.alreadyDone,
+      };
+    } else {
+      // Keep the previous cache (if still fresh) rather than blanking the
+      // queue on one bad fetch; record why for the narrative.
+      linearTaskCache = { ...linearTaskCache, ok: false, reason: res.reason, alreadyPasses: report.alreadyDone };
+      console.error(`[watchdog] Linear source unavailable (${res.reason}) — Notion-sourced sweep continues`);
+    }
+  } catch (e) {
+    linearTaskCache = { ...linearTaskCache, ok: false, reason: `linear-source-error: ${e.message}`, alreadyPasses: report.alreadyDone };
+    console.error(`[watchdog] Linear source error (${e.message}) — Notion-sourced sweep continues`);
+  }
+  return linearTaskCache;
+}
+
+// BRO-3390: the write-back leak, computed from the SAME scan the queue came
+// from (no extra API call). Surfaced rather than acted on: moving someone
+// else's card is not this process's job, and BRO-3376 owns triaging the
+// existing pile. What this ends is the SILENCE.
+function linearWriteBackLeak(now = Date.now()) {
+  try {
+    if (!linearTaskCache.ts || now - linearTaskCache.ts > LINEAR_CACHE_TTL_MS) return [];
+    const source = require('./lib/linear-watchdog-source.js');
+    return source.detectWriteBackLeak(readLedgerCached(), linearTaskCache.started, now);
+  } catch { return []; }
+}
+
+function linearTasksForPlan(now = Date.now()) {
+  if (!linearTaskCache.ts) return new Map();
+  if (now - linearTaskCache.ts > LINEAR_CACHE_TTL_MS) return new Map();
+  return linearTaskCache.tasks;
+}
+
+// BRO-3924 (R3): same staleness rule as linearTasksForPlan — a long Linear
+// outage degrades to "no already-passing cards known" rather than narrating
+// stale ones.
+function linearAlreadyPassesForPlan(now = Date.now()) {
+  if (!linearTaskCache.ts) return [];
+  if (now - linearTaskCache.ts > LINEAR_CACHE_TTL_MS) return [];
+  return linearTaskCache.alreadyPasses || [];
+}
+
+// BRO-3424 (ship-check catch, Codex): fetchLinearWatchdogTasks() deliberately
+// keeps 'started' (In Progress / In Review) issues OUT of linearTaskCache.tasks
+// — isWatchdogEligible() excludes them so they're never re-queued — but that
+// means a started Linear card has NO entry at all in the `tasks` map planSweep
+// reads. unlandedDone's gate is `isTaskOpen(tasks.get(id))`, so for exactly
+// the case this whole card exists to catch (a headless job whose Linear card
+// is still "In Progress" because the worker never merged and reported Done),
+// tasks.get(id) was undefined and the finding was silently dropped — the
+// PRIMARY real-world case (BRO-3388 in the card's own incident writeup) would
+// never have surfaced. Mapped with status 'in_progress' (isTaskOpen's other
+// accepted value) so unlandedDone sees it as open; p01Queue is unaffected
+// (it only re-queues status 'pending').
+function linearStartedTasksForPlan(now = Date.now()) {
+  if (!linearTaskCache.ts || now - linearTaskCache.ts > LINEAR_CACHE_TTL_MS) return new Map();
+  const source = require('./lib/linear-watchdog-source.js');
+  const out = new Map();
+  for (const [id, meta] of linearTaskCache.started || new Map()) {
+    const task = source.mapStartedToTask(id, meta);
+    if (task) out.set(id, task);
+  }
+  return out;
+}
+
 function buildPlan(now) {
   const entries = readLedgerCached();
   const tasks = loadTasksUnioned();
+  // Union, never mutate the loader's own map semantics: Linear ids are
+  // "linear:BRO-N" and Notion ids are bare digits, so the two namespaces
+  // cannot collide and neither can shadow the other.
+  for (const [id, task] of linearStartedTasksForPlan(now)) tasks.set(id, task);
+  for (const [id, task] of linearTasksForPlan(now)) tasks.set(id, task);
   return core.planSweep(entries, tasks, {
     now,
     liveTitles: liveTitleMap(),
     recheckFailures: recentRecheckFailures(now),
+    alreadyPasses: linearAlreadyPassesForPlan(now),
     dispatchEnabled: dispatchEnabled(),
+    unlandedJobDone: findUnlandedJobDoneEntries(entries, {
+      sinceMs: now - UNLANDED_CHECK_WINDOW_MS,
+      mainRepoCwd: require('./lib/bsc-runner.js').REPO,
+    }),
   });
 }
 
@@ -236,12 +391,76 @@ function pageOwner({ conditionKey, title, description, severity = 'error', coold
 // launch legitimately takes minutes (slow-boot verify), and a silent
 // heartbeat that long would let a concurrent --ensure-tab call a healthy
 // dashboard dead (plan-review P0).
+// Which dispatcher owns this taskId (BRO-3390). Same fork digest-autofix.js
+// already makes at its own spawn site — matched on the id namespace, never on
+// subject text.
+//
+// The Linear lane is dispatched --headless deliberately, and this is the one
+// place the two lanes genuinely differ:
+//   - headless needs no cmux terminal runtime, so the LAUNCH itself sidesteps
+//     BRO-2709 (cmux at its runtime ceiling, where auto-dispatch fails
+//     SILENTLY at launch). NOTE the limit of that claim, found by ship-check:
+//     planSweep's holds are still global, so `cmux unobservable`, the
+//     global auto-tab ceiling, a launcher outage or a launcher leak all stop
+//     this lane too even though none of them can affect a headless child.
+//     Headless is therefore more RELIABLE once launched, but it is not yet
+//     ISOLATED from cmux's health. Tracked in BRO-3404;
+//   - measured on data/audit/dispatch-ledger.jsonl since 2026-08-16, the
+//     headless lane reaches job-done 83.0% of the time (460 jobs, 17.0%
+//     trouble) against 30.5% dead/vanished for the cmux workspace lane
+//     (462 launches). Raising concurrency onto the worse lane would have
+//     spent the increase on launches that never run.
+// The Notion lane keeps its existing cmux behaviour untouched — this change
+// adds a lane, it does not re-point the old one.
+// BRO-3423 (/what-else cousin sweep): this was a FOURTH private copy of the
+// live-board id shape, in the very file whose mis-targeting the card was filed
+// over. It happened to be byte-identical to the shared one, so there was no
+// live bug — but two of the other three copies HAD already drifted apart
+// (digest-autofix.js rejected team keys containing a digit while
+// linear-watchdog-source.js accepted them), which is how a fleet ends up with
+// two different answers to "is this the live board?". Declared once, in
+// scripts/lib/task-id-namespace.js, alongside which board is live and which is
+// retired.
+const { LINEAR_TASK_ID_RE } = require('./lib/task-id-namespace.js');
+
+function dispatchArgvFor(taskId) {
+  const m = LINEAR_TASK_ID_RE.exec(String(taskId));
+  // --detach is NOT optional here (ship-check P0). `--headless` alone AWAITS
+  // runJob for the job's entire life, and runBscNext SIGKILLs the process
+  // group at DISPATCH_TIMEOUT_MS = 15 minutes. Measured on the real ledger:
+  // median headless job 21.9 min, and 277 of 424 (65.3%) run past 15 minutes —
+  // so two out of every three paid jobs would have been killed mid-flight,
+  // money spent and work discarded, with no terminal row written. That would
+  // have FED the very write-back leak this change surfaces. With --detach,
+  // linear-next re-execs in its own session and returns immediately, which is
+  // exactly what digest-autofix.js's own spawn site does.
+  // BRO-3652: detach is now linear-next's DEFAULT on the headless lane, and
+  // `--headless` is a no-op alias for that default. `--detach` is deliberately
+  // NOT passed any more: an EXPLICIT --detach on a card that routes to a tab
+  // ('mac-only' label) is refused loudly by decideDetach, whereas the default
+  // simply takes the tab path in-process — this lane has no mac-only filter
+  // upstream, so the explicit flag would have parked every such card as
+  // "redispatch never produced a launch" (ship-check finding).
+  if (m) return [path.join(REPO, 'scripts', 'linear-next.js'), '--id', m[1], '--headless'];
+  return [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)];
+}
+
+// BRO-3429: the owner-facing re-arm command in a park page must match the
+// lane the task actually dispatches through — sharing LINEAR_TASK_ID_RE with
+// dispatchArgvFor keeps that guaranteed rather than hand-copied.
+function reArmHintFor(taskId) {
+  const m = LINEAR_TASK_ID_RE.exec(String(taskId));
+  return m
+    ? `node scripts/linear-next.js --id ${m[1]} --force`
+    : `node scripts/bsc-next.js --id ${taskId} --force`;
+}
+
 function runBscNext(taskId, { onTick } = {}) {
   return new Promise(resolve => {
     // detached: bsc-next spawns its own helpers (cmux calls, sleep loops) —
     // a timeout must kill the whole PROCESS GROUP, or the node child dies
     // while its wrapper keeps launching unjournaled (ship-check P1).
-    const child = spawn('node', [path.join(REPO, 'scripts', 'bsc-next.js'), '--id', String(taskId)], {
+    const child = spawn('node', dispatchArgvFor(taskId), {
       cwd: REPO, stdio: ['ignore', 'pipe', 'pipe'], detached: true,
     });
     let out = '';
@@ -292,6 +511,62 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
     results.parked.push(item.taskId);
   }
 
+  // BRO-3442: a headless job that ended `THIS SESSION: CLOSE ME|IDLE —
+  // BLOCKED: <reason>` did its job correctly — it hit something only the
+  // owner can resolve and said so, instead of silently stopping short
+  // (BRO-3424) or reading as job-done (BRO-3388). Park it (never
+  // auto-retried — see JOB_EVENTS.BLOCKED's own comment for why this must
+  // not burn a dead-attempt strike) and, for a Linear-backed task, post the
+  // reason as a comment on the card itself — a safety net for when the
+  // job's own self-report (the same `linear-session.js report --status=
+  // blocked` call its prompt already tells it to make before ending on
+  // BLOCKED:) didn't happen, e.g. it crashed or the call itself failed.
+  // In-process require (not a spawned child) — linear-session.js's cmdReport
+  // is a plain async function with no CLI-only side effect for
+  // --status=blocked (process.exit(5) only fires on the done-gate refusal
+  // path, gated on status==='done').
+  for (const item of plan.jobBlocked) {
+    const linearMatch = /^linear:(.+)$/.exec(item.taskId);
+    if (linearMatch) {
+      try {
+        const { cmdReport } = require('./linear-session.js');
+        await cmdReport({
+          issue: linearMatch[1],
+          status: 'blocked',
+          summary: `Watchdog safety net: headless job ${item.jobId} ended THIS SESSION: CLOSE ME|IDLE — BLOCKED: ${item.reason || 'no reason given'}. Not retried automatically — resolve the blocker, then re-dispatch (node scripts/linear-next.js --id ${linearMatch[1]} --force once fixed).`,
+        }, {});
+      } catch (e) {
+        console.error(`[watchdog] failed to post BLOCKED reason to Linear ${item.taskId}: ${e.message}`);
+      }
+    }
+    dispatchLedger.appendEntry({
+      event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject,
+      reason: `headless job ${item.jobId} blocked: ${item.reason || 'no reason given'}`,
+    });
+    results.parked.push(item.taskId);
+  }
+
+  // BRO-3429: a claim that never produced a launch was previously invisible —
+  // it just sat in the dashboard's "awaiting claim" label and quietly
+  // re-armed itself after 24h, forever, with no ledger park and no page. Live
+  // evidence: 84 redispatches / 0 launches / 0 parks over 7 days for stuck
+  // pre-freeze Notion cards. planSweep() already suppresses this list during
+  // a proven fleet-wide launcher outage (see noLaunchPark's own comment in
+  // dispatch-watchdog-core.js) so this loop never misattributes a systemic
+  // cmux failure to individually-fine cards.
+  for (const item of plan.noLaunchPark) {
+    dispatchLedger.appendEntry({
+      event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject,
+      reason: `claimed at ${item.claimedAt} but produced no launch — retries exhausted`,
+    });
+    pageOwner({
+      conditionKey: `watchdog-park:${item.taskId}`,
+      title: `Watchdog parked #${item.taskId} — redispatch never produced a launch`,
+      description: `Watchdog: card "${item.subject}" was claimed for redispatch at ${item.claimedAt} but never produced a 'launch' event. It will NOT be retried automatically — check why (node scripts/predispatch-check.js --id ${item.taskId}), then re-arm with ${reArmHintFor(item.taskId)} once fixed.`,
+    });
+    results.parked.push(item.taskId);
+  }
+
   for (const item of plan.toDispatch) {
     // Claim BEFORE the spawn: the day budget must survive a crash mid-dispatch
     // (plan-review: a durable claimed attempt precedes every dispatch).
@@ -300,8 +575,28 @@ async function executeSweep(plan, { dryRun = false, heartbeat = true } = {}) {
     const r = await runBscNext(item.taskId, { onTick: () => hb({ busy: `dispatching #${item.taskId}` }) });
     if (r.code === 0) results.dispatched.push(item.taskId);
     else {
-      results.failed.push(item.taskId);
       console.error(`[watchdog] bsc-next --id ${item.taskId} exited ${r.code}: ${r.out.split('\n').slice(-3).join(' / ')}`);
+      const structuralReason = core.structuralGuardRefusal(r.out);
+      if (structuralReason) {
+        // BRO-3481: this class of refusal is deterministic — the child's own
+        // dispatch guard will refuse identically on every retry, so letting
+        // the normal retry loop rediscover it burns a REDISPATCH claim each
+        // time before noLaunchPark's generic "produced no launch" message
+        // eventually fires several sweeps later. Park now, naming the
+        // guard's own reason, instead of waiting for retries to exhaust.
+        dispatchLedger.appendEntry({
+          event: core.WATCHDOG_EVENTS.PARK, taskId: item.taskId, subject: item.subject,
+          reason: `dispatch guard refuses structurally: ${structuralReason}`,
+        });
+        pageOwner({
+          conditionKey: `watchdog-park:${item.taskId}`,
+          title: `Watchdog parked #${item.taskId} — dispatch guard refuses by construction`,
+          description: `Watchdog: card "${item.subject}" cannot be redispatched by the watchdog's own argv — its dispatcher refuses: "${structuralReason}". This will NOT clear on retry. Re-arm with ${reArmHintFor(item.taskId)} once you've confirmed it's safe (or fix the underlying cause).`,
+        });
+        results.parked.push(item.taskId);
+      } else {
+        results.failed.push(item.taskId);
+      }
     }
     hb({});
   }
@@ -334,13 +629,37 @@ function summarize(plan) {
     inFlight: plan.inFlight.length,
     needsYou: plan.needsYou,
     p01Queued: plan.p01Queue.length,
+    // BRO-3390: the write-back leak in the same machine-readable surface as
+    // everything else, so "it fails loudly" is true for --status --json and
+    // the heartbeat, not just for the crowned tab's narrative.
+    writeBackLeak: linearWriteBackLeak().length,
+    linearSource: { ok: linearTaskCache.ok, reason: linearTaskCache.reason, eligible: linearTaskCache.tasks.size },
     // #1564: suppressed cards are subtracted from p01Queued, so without this
     // the heartbeat and --status --json show a backlog that silently shrank.
     // Every machine-readable surface must carry the population the filter
     // removed, or the "not silent" claim only holds for the crowned tab.
     awaitingClaim: plan.awaitingClaim.map(a => a.taskId),
+    // BRO-3429: the cards this sweep is actually parking (or already parked
+    // on a prior tick) — omitting this from --status --json would leave the
+    // exact escalation this ticket added invisible to anything reading the
+    // machine-readable surface instead of the narrative (codex review catch).
+    noLaunchPark: plan.noLaunchPark.map(p => p.taskId),
+    // BRO-3924 (R3): same "not silent" doctrine as awaitingClaim/noLaunchPark
+    // above — a card excluded from the queue for already passing must be
+    // visible on the machine-readable surface too, not just the narrative.
+    alreadyPasses: plan.alreadyPasses.map(a => a.id),
+    parkedTotal: plan.parkedTotal,
     dispatchedToday: plan.budgets.usedToday,
     holds: plan.budgets.holds,
+    // BRO-3924 (R5): spend circuit-breaker status, so --status --json and the
+    // heartbeat both show whether dispatch is (or is about to be) held on
+    // money, not just claim-count caps.
+    spend: {
+      halt: plan.budgets.spend.halt,
+      spentUSD: plan.budgets.spend.spentUSD,
+      reservedUSD: plan.budgets.spend.reservedUSD,
+      thresholdUSD: plan.budgets.spend.thresholdUSD,
+    },
     // BRO-2462: `holds` mixes policy pauses with failure-detection signals
     // (see dispatch-watchdog-core.js) — surfaced separately so `--status
     // --json` lets a human see directly whether health()'s tab-count/
@@ -467,10 +786,30 @@ function ensureTab() {
 
 // ── modes ──────────────────────────────────────────────────────────────────
 
+// BRO-3390: render the write-back leak under the narrative. Capped at 8 lines
+// — this is a nudge on a dashboard, not the triage list (BRO-3376 owns that).
+function renderWriteBackLeak(now = Date.now()) {
+  const leak = linearWriteBackLeak(now);
+  if (!leak.length) return '';
+  const lines = [
+    '',
+    `WRITE-BACK LEAK: ${leak.length} card(s) finished (job-done) but never left their started state:`,
+  ];
+  for (const l of leak.slice(0, 8)) {
+    lines.push(`  • ${l.identifier} "${String(l.title).slice(0, 56)}" — done ${l.ageHours}h ago, still ${l.stateName}`);
+  }
+  if (leak.length > 8) lines.push(`  …and ${leak.length - 8} more`);
+  lines.push('  close one: node scripts/linear-brain.js update <BRO-N> --state Done   (needs PR-EVIDENCE or a VERIFY: line)');
+  return lines.join('\n');
+}
+
 async function sweepOnce({ dryRun }) {
+  await refreshLinearTasks();          // BRO-3390: Linear is a task source now
   const now = Date.now();
   const plan = buildPlan(now);
   console.log(core.renderNarrative(plan));
+  const leakText = renderWriteBackLeak(now);
+  if (leakText) console.log(leakText);
   if (dryRun) { console.log('\n(dry-run: no actions taken, no heartbeat written)'); return 0; }
   if (!acquireLock()) { console.log('watchdog: lock held by another process — skipping actions'); return 0; }
   try {
@@ -487,6 +826,10 @@ async function dashboardLoop() {
   process.on('SIGTERM', () => { releaseLock(); process.exit(0); });
   process.on('SIGINT', () => { releaseLock(); process.exit(0); });
   for (;;) {
+    // BRO-3390: refresh the Linear source before each sweep. Awaited inside
+    // the try so a Linear failure takes the same guarded path as a plan-build
+    // failure and can never kill the loop.
+    await refreshLinearTasks();
     const now = Date.now();
     let plan;
     try {
@@ -503,6 +846,8 @@ async function dashboardLoop() {
         writeHeartbeat({ mode: 'dashboard', ...summarize(plan) });
         console.clear();
         console.log(core.renderNarrative(plan));
+        const leakText = renderWriteBackLeak(now);
+        if (leakText) console.log(leakText);
         // Rename own tab (freshness cue lives in the title). The tab is
         // located by TITLE in the current listing, never by the stored ref
         // alone (ship-check P0: cmux recycles refs across restarts — a
@@ -565,20 +910,76 @@ function pageIfKillSwitchStale(filePath, { conditionKey, label, clearHint, now =
 // and "ledger unreadable" into the same signal, losing the -1 fail-safe
 // sentinel isDispatchFlowDead relies on to tell "confirmed dead" from
 // "cannot prove dead".
-function launchesInFlowWindow(now) {
+// One raw read of the ledger for the flow check, or null if it cannot be
+// read. Both flow counters (launches, and since 2026-09-21 claims) derive
+// from this single parse so they can never disagree about whether the
+// ledger was readable — a -1 "cannot prove dead" on one and a real count on
+// the other would let the check page on half a picture (second-opinion
+// warning on the claims-path change).
+// health()'s bound on the Linear fetch, and how long a timed-out tick lingers
+// so an alert fired that tick can still deliver before the forced exit.
+// Env override exists so the timeout path can be exercised for real.
+const LINEAR_HEALTH_TIMEOUT_MS = Number(process.env.WATCHDOG_HEALTH_LINEAR_TIMEOUT_MS) || 120 * 1000;
+const HEALTH_ALERT_GRACE_MS = 60 * 1000;
+
+function readFlowLedgerEntries() {
   let raw;
   try { raw = fs.readFileSync(dispatchLedger.LEDGER_PATH, 'utf8'); }
-  catch { return -1; }
+  catch { return null; }
   const entries = [];
   for (const line of raw.split('\n')) {
     const t = line.trim();
     if (!t) continue;
     try { entries.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
   }
+  return entries;
+}
+
+function launchesInFlowWindow(now, entries) {
+  if (!entries) return -1;
   return dispatchLedger.countRecentLaunches(entries, { now, windowMs: flowHealth.FLOW_WINDOW_MS });
 }
 
-function health() {
+// BRO-3922: every line health() prints lands in ~/Library/Logs/
+// dispatch-watchdog-health.log via launchd, and NONE of them carried a
+// timestamp. Measured 2026-09-21 on a 4,190-line log: 3,479 "healthy" ticks,
+// 374 "STALE — owner paged", 285 "disabled by kill switch — health check
+// skipped" — and no way to date any of them. The dispatch loop was down for
+// the whole of 17-18 Sep (ZERO watchdog-* rows in data/audit/dispatch-ledger
+// .jsonl on both days while prune kept running, 312 and 268 rows), and which
+// of those two blind paths covered it could NOT be determined afterwards from
+// this log. A 15-minute launchd tick with no timestamp can describe an outage
+// but never place one. Nothing parses this file (grepped scripts/ and
+// ~/.claude/hooks/: zero readers) and the plist points StandardOutPath and
+// StandardErrorPath at the same file, so prefixing is free and stream-safe.
+function hlog(msg, stream = 'log') {
+  console[stream](`[${new Date().toISOString()}] ${msg}`);
+}
+
+// 2026-09-21: watchdog-redispatch claims in the (6h) claims window — the
+// sweep taking on NEW work, as opposed to `launch` rows, which retries and
+// re-launches of existing jobs keep producing through a stall. Reuses
+// core.watchdogClaimsInWindow (the hourly-pacing counter) rather than a
+// second counter, with excludeFuture:true — a future-dated row must never
+// read as "claimed recently" here or a real stall never pages. Pacing keeps
+// the opposite (over-count => spend less) default; see that function's note.
+function claimsInClaimWindow(now, entries) {
+  if (!entries) return -1;
+  return core.watchdogClaimsInWindow(entries, now, flowHealth.CLAIM_WINDOW_MS, { excludeFuture: true }).length;
+}
+
+// async since 2026-09-21: the flow check must `await refreshLinearTasks()`
+// before building its plan. --health runs as a FRESH launchd process every
+// 900s, so linearTaskCache starts at {ts: 0} and linearTasksForPlan() returns
+// an empty Map unless something in THIS process fetched Linear first. Only
+// the dashboard loop and --status ever did; health() never did, so from the
+// moment BRO-3878 filtered the frozen Notion mirror out of p01Queue, the
+// launchd health check's queue depth was structurally 0 on every tick — the
+// health log shows queueDepth=0 for every reading after that landed while the
+// sweep was claiming Linear cards 2-6 times per 45 min. A stall detector that
+// cannot see the queue cannot detect a stall (second-opinion correctness
+// blocker 1 on the claims-path change). main() already unwraps the promise.
+async function health() {
   if (watchdogOff()) {
     // Deliberate disable is not an outage — paging on it would train the
     // owner to ignore the pager (ship-check P0). But a disable left engaged
@@ -591,10 +992,10 @@ function health() {
       clearHint: `rm ${OFF_FILE}`,
     });
     if (stale) {
-      console.log(`watchdog: disabled by kill switch — STALE (${Math.round(ageMs / 3600000)}h), owner paged`);
+      hlog(`watchdog: disabled by kill switch — STALE (${Math.round(ageMs / 3600000)}h), owner paged`);
       return 1;
     }
-    console.log('watchdog: disabled by kill switch — health check skipped');
+    hlog('watchdog: disabled by kill switch — health check skipped');
     return 0;
   }
   const age = heartbeatAgeMs();
@@ -611,11 +1012,24 @@ function health() {
     // visible marker for "the flow check actually ran" vs. "it silently
     // skipped (cmux unobservable)", ~/Library/Logs/dispatch-watchdog-health.log
     // can't prove which one happened on a given tick.
-    let flowSuffix = ' (flow check skipped: cmux unobservable)';
+    let flowSuffix = ' (flow check skipped)';
     try {
       const now = Date.now();
-      const liveAutoWorkspaces = cmuxws.listWorkspaces().filter(w => hasAutoDispatchMarker(w.title)).length;
-      const launchesLast45m = launchesInFlowWindow(now);
+      // Ship-check 2026-09-22 (Codex P1): cmux being unreachable from launchd
+      // (a routine state — dozens of "flow check skipped" lines in the health
+      // log) used to skip the WHOLE check. Only the tab-count terms need cmux;
+      // the claims path reads the ledger + Linear. null = unobservable, which
+      // isDispatchFlowDead treats as "cannot prove" for the tab/launch paths
+      // while still evaluating the claims path.
+      let liveAutoWorkspaces = null;
+      try {
+        liveAutoWorkspaces = cmuxws.listWorkspaces().filter(w => hasAutoDispatchMarker(w.title)).length;
+      } catch (e) {
+        hlog(`[watchdog] tab-count terms skipped (cmux unobservable): ${e.message}`, 'error');
+      }
+      const flowEntries = readFlowLedgerEntries();           // one read feeds both counters
+      const launchesLast45m = launchesInFlowWindow(now, flowEntries);
+      const claimsLastWindow = claimsInClaimWindow(now, flowEntries);
       // BRO-409: only trust a real queue depth when dispatch is actually
       // enabled AND no other legitimate hold explains zero launches — a
       // deliberate dispatch pause (NO_DISPATCH_FILE), or the watchdog's own
@@ -646,31 +1060,83 @@ function health() {
       // unconditional tab-count behavior (paging), not toward silently
       // suppressing it; an unknown state must never look like a known pause.
       let eligibleQueueDepth = -1;
+      let dispatchableDepth = -1;
+      let linearNote = '';
       const dispatchEnabledNow = dispatchEnabled();
       let dispatchPaused = !dispatchEnabledNow;
       if (dispatchEnabledNow) {
         try {
+          // 2026-09-21: fetch Linear FIRST — see the note on health() above.
+          // Without this, a fresh launchd process plans against an empty
+          // task map and every depth below is 0 by construction.
+          // Bounded at 120s so a slow Linear (worst case ~6.5 min/page x 30
+          // pages of retries) cannot hold this tick's decision hostage. The
+          // race does NOT cancel the fetch — the process lives until it
+          // settles — but on timeout linearTaskCache.ok is still false in this
+          // fresh process, so both depths stay -1 ("cannot prove"). Never
+          // "fix" the lingering fetch with process.exit(): pageOwner does not
+          // await routeAlert, so an early exit would drop a page.
+          let linearTimer;
+          const timedOut = await Promise.race([
+            refreshLinearTasks().then(() => false),
+            new Promise((resolve) => { linearTimer = setTimeout(() => resolve(true), LINEAR_HEALTH_TIMEOUT_MS); }),
+          ]);
+          clearTimeout(linearTimer);
+          if (timedOut) {
+            linearNote = ', linear=timeout';
+            // The race does not cancel the fetch; left alone the process
+            // lives until it settles (retries can run for hours) and launchd
+            // skips every tick meanwhile — heartbeat-stale pages included
+            // (Codex P1). Exit once any page this tick fired has had
+            // HEALTH_ALERT_GRACE_MS to deliver (pageOwner does not await
+            // routeAlert, so exiting immediately would drop it). unref: never
+            // delays a process that would otherwise exit on its own.
+            setTimeout(() => process.exit(), HEALTH_ALERT_GRACE_MS).unref();
+          } else if (!linearTaskCache.ok) {
+            linearNote = `, linear=unavailable (${linearTaskCache.reason})`;
+          }
           const plan = buildPlan(now);
           dispatchPaused = plan.budgets.pausedByPolicy;
-          if (plan.budgets.holds.length === 0) eligibleQueueDepth = plan.p01Queue.length;
-        } catch (e) { console.error(`[watchdog] queue-depth check skipped (${e.message})`); }
+          // Two depths, two paths (ship-check 2026-09-22 split them):
+          //  - eligibleQueueDepth feeds the legacy deep-queue path exactly as
+          //    before (p01Queue, trusted only with no holds at all). It must
+          //    stay p01Queue-sized: toDispatch is capped at the per-sweep
+          //    budget and could never exceed STALL_QUEUE_DEPTH_THRESHOLD.
+          //  - dispatchableDepth feeds the claims path: core.stallDetectionDepth
+          //    — toDispatch (holds, budget, lane filter and every p01Queue
+          //    exclusion applied; 0 under every genuine policy pause), except
+          //    under a FAILURE hold (claim outage, or a concurrency cap held by
+          //    slots older than the claims window), where it reports the stuck
+          //    claims + lane-eligible work so the wedge cannot silence its own
+          //    detector. See that function's note.
+          // The old single depth stayed -1 under ANY hold, cmux-only included,
+          // and so blinded both paths for the whole 76.4h stall of 16-19 Sep.
+          // A failed Linear fetch keeps -1 on both: an unknown board must never
+          // read as "nothing to do" (exactly how the previous version lied).
+          if (linearTaskCache.ok) {
+            if (plan.budgets.holds.length === 0) eligibleQueueDepth = plan.p01Queue.length;
+            dispatchableDepth = core.stallDetectionDepth(plan, { now, staleSlotMs: flowHealth.CLAIM_WINDOW_MS });
+          }
+        } catch (e) { hlog(`[watchdog] queue-depth check skipped (${e.message})`, 'error'); }
       }
-      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth, dispatchPaused })) {
+      const claimWindowH = Math.round(flowHealth.CLAIM_WINDOW_MS / 3600000);
+      if (flowHealth.isDispatchFlowDead({ liveAutoWorkspaces, launchesLast45m, eligibleQueueDepth, dispatchPaused, claimsLastWindow, dispatchableDepth })) {
         pageOwner({
           conditionKey: 'dispatch-flow-dead',
           title: 'Dispatch flow is DEAD — heartbeat is fine but nothing is being dispatched',
-          description: `Only ${liveAutoWorkspaces} live 🤖 auto-dispatch workspace(s) and ${launchesLast45m} ledger launch(es) in the last ${Math.round(flowHealth.FLOW_WINDOW_MS / 60000)} min (eligible P0/P1 queue depth: ${eligibleQueueDepth}). The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and bsc-next.js for a stuck sweep.`,
+          description: `${claimsLastWindow} new-work claim(s) in the last ${claimWindowH}h with ${dispatchableDepth} card(s) the sweep would dispatch right now (eligible P0/P1 queue depth: ${eligibleQueueDepth}); ${liveAutoWorkspaces} live 🤖 auto-dispatch workspace(s) and ${launchesLast45m} ledger launch(es) in the last ${Math.round(flowHealth.FLOW_WINDOW_MS / 60000)} min. The watchdog heartbeat looks healthy, but dispatch itself has stalled — check the 👑 OWNER watchdog tab and linear-next.js/bsc-next.js for a stuck sweep. (Claims are the sweep taking on NEW work; launches alone kept flowing from retries through the 76.4h stall of 16-19 Sep 2026.)`,
           severity: 'error',
           cooldownHours: 24,
         });
-        console.log(`watchdog: heartbeat healthy but dispatch flow DEAD (live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth}) — owner paged`);
+        hlog(`watchdog: heartbeat healthy but dispatch flow DEAD (claims${claimWindowH}h=${claimsLastWindow}, dispatchable=${dispatchableDepth}, queueDepth=${eligibleQueueDepth}, live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}) — owner paged`);
         return 1;
       }
-      flowSuffix = ` (flow: live=${liveAutoWorkspaces}, launches45m=${launchesLast45m}, queueDepth=${eligibleQueueDepth})`;
+      flowSuffix = ` (flow: claims${claimWindowH}h=${claimsLastWindow}, dispatchable=${dispatchableDepth}, queueDepth=${eligibleQueueDepth}, live=${liveAutoWorkspaces === null ? 'unobservable' : liveAutoWorkspaces}, launches45m=${launchesLast45m}${linearNote})`;
     } catch (e) {
-      console.error(`[watchdog] flow-dead check skipped (cmux unobservable): ${e.message}`);
+      flowSuffix = ' (flow check skipped: error)';
+      hlog(`[watchdog] flow-dead check skipped: ${e.message}`, 'error');
     }
-    console.log(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old${flowSuffix}`);
+    hlog(`watchdog healthy — heartbeat ${Math.round(age / 60000)} min old${flowSuffix}`);
     return 0;
   }
   pageOwner({
@@ -683,7 +1149,7 @@ function health() {
   // Best-effort: works when the launchd→cmux ACL allows it (post-restart
   // password mode); harmless "cmux unobservable" otherwise.
   try { ensureTab(); } catch { /* ACL rejection expected pre-restart */ }
-  console.log('watchdog STALE — owner paged via alert router');
+  hlog('watchdog STALE — owner paged via alert router');
   return 1;
 }
 
@@ -699,6 +1165,10 @@ async function main() {
   if (argv.includes('--dashboard')) return dashboardLoop();
   if (argv.includes('--health')) return health();
   if (argv.includes('--status')) {
+    // Refresh before reporting: --status is the owner's read-only view, and a
+    // status that silently omitted the Linear half of the queue would be the
+    // same blind spot BRO-3390 exists to close.
+    await refreshLinearTasks();
     const plan = buildPlan(Date.now());
     if (argv.includes('--json')) console.log(JSON.stringify({ ...summarize(plan), heartbeatAgeMs: heartbeatAgeMs(), tab: readJson(TAB_STATE_PATH) }, null, 2));
     else console.log(core.renderNarrative(plan));
@@ -715,4 +1185,14 @@ if (require.main === module) {
 module.exports = {
   main, ensureTab, findWatchdogTab, recentRecheckFailures, HEARTBEAT_PATH, TAB_STATE_PATH,
   pageIfKillSwitchStale,
+  // BRO-3390: exported so the lane fork is tested against the REAL function
+  // rather than a copy of its regex (CLAUDE.md rule 15). LINEAR_CACHE_TTL_MS
+  // and linearTasksForPlan go with it so the cache's staleness contract is
+  // testable without a network call.
+  dispatchArgvFor, linearTasksForPlan, linearStartedTasksForPlan, LINEAR_CACHE_TTL_MS,
+  // BRO-3429: same rationale — tested against the real function, not a copy.
+  reArmHintFor,
+  // BRO-3924 (R3): exported (with an injectable path param) so the staleness
+  // check is tested against the real function, not a copy.
+  loadAlreadyPassesReport, OPEN_BACKLOG_SWEEP_REPORT_PATH, OPEN_BACKLOG_SWEEP_MAX_AGE_MS,
 };

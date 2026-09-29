@@ -6,6 +6,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 const TRANSCRIPTS_DIR = path.join(__dirname, '../../data/video-reviews-transcripts');
 const CREATORS_PATH = path.join(__dirname, '../../data/video-creators.json');
@@ -28,8 +29,7 @@ function main() {
     }
   };
 
-  const showDirs = fs.readdirSync(TRANSCRIPTS_DIR).filter(d =>
-    d !== '.DS_Store' && d !== 'raw' && d !== 'classified' && fs.statSync(path.join(TRANSCRIPTS_DIR, d)).isDirectory());
+  const showDirs = listShowDirs(TRANSCRIPTS_DIR).filter(d => d !== 'raw' && d !== 'classified');
 
   for (const showId of showDirs) {
     const showDir = path.join(TRANSCRIPTS_DIR, showId);

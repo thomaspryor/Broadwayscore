@@ -146,6 +146,28 @@
  *     A `secrets.X != ''` PRESENCE TEST is deliberately not a violation — it
  *     decides whether to skip and never passes the value to a process.
  *
+ * (n) AUDIT-DIR-GLOB (advisory, BRO-3990): a `git add`/`git-add-existing.sh`
+ *     line staging a `data/audit/` pathspec with no FIXED basename — either a
+ *     bare directory (`git add data/audit/`, `git add
+ *     data/audit/pipeline-health/`) or a wildcard basename (`git add
+ *     data/audit/*.json`) — rather than an explicit file list. Detector is
+ *     the pure findBareAuditDirectoryGlobs() in scripts/lib/audit-workflow-
+ *     hygiene-rules.js. scripts/lib/api-fallback-writer-drift.js's static
+ *     scanner matches apiFallbackSafe registry claims against the LITERAL
+ *     basename string after `git add` on the same command — neither a
+ *     directory pathspec nor a `*`-glob ever contains that literal string, so
+ *     a NEW single-writer data/audit/*.json file swept up by one of these is
+ *     invisible to the scanner in both directions. That silent gap is exactly
+ *     what BRO-2722 found in llm-ensemble-score.yml (progress-watch-
+ *     state.json staged via the bare-directory shape, never registered,
+ *     poisoning push-with-retry.sh's Git Data API fallback on every scheduled
+ *     run). ADVISORY ONLY — printed, never counted toward the blocking
+ *     `total` — since both idioms are already used intentionally across ~30
+ *     workflows combined and retroactively failing all of them would need a
+ *     blanket exemption pass for a risk that's real but not urgent per-file;
+ *     see findBareAuditDirectoryGlobs's
+ *     own doc comment for the full reasoning.
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
@@ -157,6 +179,8 @@
  *   # hygiene-push-timeout-ok: <reason>    — skip short-push-timeout check for this workflow
  *   # hygiene-quote-apostrophe-ok: <reason> — skip single-quote-apostrophe check for this workflow
  *   # paid-provider-ok: <reason>          — skip paid-provider-on-push check for this workflow
+ *   # hygiene-cache-runid-ok: <reason>    — skip run-id-keyed actions/cache check for this file
+ *   # hygiene-audit-glob-ok: <reason>     — skip bare-audit-dir-glob check for this workflow
  *
  * No external deps. Parsed with plain regex, consistent with
  * audit-workflow-concurrency.js and audit-cron-health-coverage.js.
@@ -174,11 +198,119 @@ const {
   findDeadCommitSteps,
   findPipefailDeadExitCodeEcho,
   extractSingleQuotedEvalBodies,
+  findBareAuditDirectoryGlobs,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
 
 const WORKFLOW_DIR = path.join(__dirname, '..', '.github', 'workflows');
+// Rule (m) also audits composite actions. The bug that motivated it
+// (BRO-3887) lived in .github/actions/checkout-core-data/action.yml, which a
+// workflows-only scan would never have seen.
+const ACTIONS_DIR = path.join(__dirname, '..', '.github', 'actions');
+
+/**
+ * Rule (m): an actions/cache key containing `github.run_id` (BRO-3887).
+ *
+ * A run-id-keyed cache never dedupes — every job of every run mints a new
+ * entry. .github/actions/checkout-core-data did exactly this across 284
+ * invocations in 191 workflow files, saving a 3.4 GiB clone each time. The repo
+ * hit 28.06 GiB against GitHub's 10 GiB per-repo limit, so LRU eviction cleared
+ * the whole namespace roughly hourly. The visible damage was scraper spend, not
+ * build time: the 22 KB SERP cache (scripts/lib/serp-cache.js) never survived
+ * between runs, so gather-reviews.js re-paid for the same SERP queries 8x a day
+ * and went from 360 to 9,178 credits/day on flat dispatch volume.
+ *
+ * Pure and exported so tests/unit can assert against the real matcher.
+ * Returns [{ line, key, message }]. Deliberately narrow: only `key:` lines
+ * (never `restore-keys:`, where a run-id prefix is meaningless) belonging to an
+ * actions/cache step. A deliberate per-run cache (vercel-deploy.yml keys one
+ * per deploy on purpose) exempts itself with `# hygiene-cache-runid-ok:`.
+ */
+function findRunIdKeyedCaches(raw) {
+  const lines = raw.split('\n');
+  const hits = [];
+
+  // Exemption is SCOPED to a step, not the whole file (ship-check finding): a
+  // single file-level comment used to exempt every cache in the file, so a
+  // future 3.4 GiB cache added to gather-reviews.yml — which legitimately has
+  // two tiny run-id caches — would have shipped silently. The marker must sit
+  // inside the step, or in the comment block immediately above it.
+  const EXEMPT = 'hygiene-cache-runid-ok:';
+
+  const indentOf = (l) => (l.match(/^(\s*)/) || ['', ''])[1].length;
+  const isComment = (l) => /^\s*#/.test(l);
+  const isBlank = (l) => /^\s*$/.test(l);
+
+  // Does a `- ` step starting at `i` carry the exemption, either in its own body
+  // or in the contiguous comment block directly above it?
+  function stepIsExempt(i, stepIndent, bodyEnd) {
+    for (let j = i; j < bodyEnd; j++) if (lines[j].includes(EXEMPT)) return true;
+    for (let j = i - 1; j >= 0; j--) {
+      if (isBlank(lines[j])) continue;
+      if (!isComment(lines[j])) break;
+      if (lines[j].includes(EXEMPT)) return true;
+    }
+    return false;
+  }
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (isComment(line)) continue;
+    const item = line.match(/^(\s*)-\s/);
+    if (!item) continue;
+    const stepIndent = item[1].length;
+
+    // Find where this step's body ends: the next `- ` at the same-or-lower
+    // indent, or the next non-comment line at a strictly lower indent (a
+    // dedented map key ends the list). This also fixes the false positive where
+    // a later bare `key:` outside the step was still attributed to it.
+    let bodyEnd = lines.length;
+    for (let j = i + 1; j < lines.length; j++) {
+      if (isBlank(lines[j]) || isComment(lines[j])) continue;
+      const ind = indentOf(lines[j]);
+      const isItem = /^\s*-\s/.test(lines[j]);
+      if ((isItem && ind <= stepIndent) || ind < stepIndent) { bodyEnd = j; break; }
+    }
+
+    const body = lines.slice(i, bodyEnd);
+    // Quotes are optional around `uses:` (ship-check finding).
+    const usesCache = body.some((l) =>
+      /^\s*-?\s*uses:\s*['"]?actions\/cache(\/(restore|save))?@/.test(l),
+    );
+    if (!usesCache) continue;
+    if (stepIsExempt(i, stepIndent, bodyEnd)) continue;
+
+    for (let k = 0; k < body.length; k++) {
+      const m = body[k].match(/^(\s*)key:\s*(.*)$/);
+      if (!m) continue;
+      let value = m[2].trim();
+      // Block scalars (`key: >-`, `|`, `>`, `|-`) put the value on the FOLLOWING
+      // more-indented lines. Matching only the `key:` line captured the literal
+      // ">-" and returned zero hits — a one-line bypass of this entire guard
+      // (ship-check finding, confirmed by mutation).
+      if (/^[|>][-+]?\d*$/.test(value)) {
+        const keyIndent = m[1].length;
+        const parts = [];
+        for (let n = k + 1; n < body.length; n++) {
+          if (isBlank(body[n])) { parts.push(''); continue; }
+          if (indentOf(body[n]) <= keyIndent) break;
+          parts.push(body[n].trim());
+        }
+        value = parts.join(' ').trim();
+      }
+      if (/github\.run_id/.test(value)) {
+        const lineNo = i + k + 1;
+        hits.push({
+          line: lineNo,
+          key: value,
+          message: `line ${lineNo}: actions/cache key is run-id-scoped (${value}) — a new entry every job of every run`,
+        });
+      }
+    }
+  }
+  return hits;
+}
 const REPO = 'thomaspryor/Broadwayscore';
 const NEVER_RUN_MIN_AGE_DAYS = 30;
 const NEVER_RUN_SNAPSHOT_PATH = path.join(__dirname, '..', 'data', 'audit', 'workflow-run-coverage.json');
@@ -257,6 +389,26 @@ function findUnescapedApostrophesInSingleQuotedEval(raw) {
 const DEFAULT_PUSH_DEADLINE_SEC = 240; // push-with-retry.sh's own PUSH_DEADLINE_SEC default
 
 /**
+ * The last step of a job has no next sibling step to bound its body slice —
+ * `lines.length` was used instead, which bleeds the NEXT job's preamble
+ * (its `needs:`/`if:`/`runs-on:`/`timeout-minutes:` job-level keys, which sit
+ * between that job's own header and its first `- name:` step) into the
+ * PRECEDING job's last step. That falsely attributed an unrelated job's
+ * `timeout-minutes:` to a push-with-retry.sh step in a different job
+ * entirely (BRO-3389 ship-check finding — caught a real false positive on
+ * update-show-status.yml's catchup-zero-review-shows job). Job keys sit at
+ * 2-space indent (`  job-name:`), one level shallower than a step's 6-space
+ * `      - name:`, so the first such line at or after a step's start caps
+ * the slice.
+ */
+function capEndAtNextJobBoundary(lines, startLine, endLine) {
+  for (let i = startLine + 1; i < endLine; i++) {
+    if (/^ {2}\S.*:\s*$/.test(lines[i]) || /^ {2}\S.*:\s+\S/.test(lines[i])) return i;
+  }
+  return endLine;
+}
+
+/**
  * Rule (i): a step whose `run:` block calls push-with-retry.sh but declares
  * `timeout-minutes:` at or below the script's own internal push deadline —
  * zero buffer for the step to be killed BEFORE the script's own graceful
@@ -278,7 +430,8 @@ function findShortPushTimeoutSteps(raw) {
 
   for (let idx = 0; idx < stepStarts.length; idx++) {
     const { name, startLine } = stepStarts[idx];
-    const endLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const rawEndLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const endLine = capEndAtNextJobBoundary(lines, startLine, rawEndLine);
     const bodyLines = lines.slice(startLine, endLine);
     const bodyText = bodyLines.join('\n');
 
@@ -339,7 +492,8 @@ function findShortBatchPollTimeoutSteps(raw) {
 
   for (let idx = 0; idx < stepStarts.length; idx++) {
     const { name, startLine } = stepStarts[idx];
-    const endLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const rawEndLine = idx + 1 < stepStarts.length ? stepStarts[idx + 1].startLine : lines.length;
+    const endLine = capEndAtNextJobBoundary(lines, startLine, rawEndLine);
     const bodyLines = lines.slice(startLine, endLine).filter((l) => !l.trimStart().startsWith('#'));
     const bodyText = bodyLines.join('\n');
 
@@ -531,7 +685,26 @@ async function main() {
     shortBatchPollTimeout: [],
     quoteApostrophe: [],
     paidProviderOnPush: [],
+    runIdKeyedCache: [],
   };
+
+  // ── Rule (m): run-id-keyed actions/cache, across workflows AND composite
+  // actions (BRO-3887 lived in an action, which a workflows-only scan misses).
+  {
+    const targets = files.map((f) => ({ label: f, full: path.join(WORKFLOW_DIR, f) }));
+    if (fs.existsSync(ACTIONS_DIR)) {
+      for (const dir of fs.readdirSync(ACTIONS_DIR)) {
+        for (const base of ['action.yml', 'action.yaml']) {
+          const full = path.join(ACTIONS_DIR, dir, base);
+          if (fs.existsSync(full)) targets.push({ label: `actions/${dir}/${base}`, full });
+        }
+      }
+    }
+    for (const { label, full } of targets) {
+      const hits = findRunIdKeyedCaches(fs.readFileSync(full, 'utf8'));
+      if (hits.length) violations.runIdKeyedCache.push({ file: label, hits });
+    }
+  }
 
   // Degrade rule (g) alone on a format change in push-core-data/action.yml
   // (e.g. CORE_FILES switched to single quotes or split across lines) —
@@ -543,6 +716,10 @@ async function main() {
   } catch (err) {
     console.log(`ℹ️  Rule (g) core-data-push check skipped: ${err.message}`);
   }
+
+  // Rule (n) is advisory — collected separately from `violations` so it never
+  // feeds the blocking `total` below (see its doc comment for why).
+  const bareAuditGlobFindings = [];
 
   for (const file of files) {
     const raw = fs.readFileSync(path.join(WORKFLOW_DIR, file), 'utf8');
@@ -632,6 +809,14 @@ async function main() {
       }
     }
 
+    // ── Rule (n): bare `data/audit/` directory glob in git add (advisory) ─────
+    if (!raw.includes('hygiene-audit-glob-ok:')) {
+      const hits = findBareAuditDirectoryGlobs(raw);
+      if (hits.length > 0) {
+        bareAuditGlobFindings.push({ file, hits });
+      }
+    }
+
     // Rule (l): no paid-provider spend in a push-triggered workflow (BRO-2984).
     // Honors its own `# paid-provider-ok:` marker internally (scanWorkflow
     // returns zero violations when present), so no extra guard is needed here.
@@ -665,6 +850,18 @@ async function main() {
     }
   }
 
+  // ── Rule (n): no-fixed-basename data/audit/ pathspecs (advisory — never counts toward `total`) ─
+  if (bareAuditGlobFindings.length > 0) {
+    const glob = bareAuditGlobFindings.reduce((n, { hits }) => n + hits.length, 0);
+    console.log(
+      `ℹ️  data/audit/ pathspecs with no fixed basename (bare directory or *-glob): ${glob} line(s) across ${bareAuditGlobFindings.length} workflow(s) — invisible to scripts/lib/api-fallback-writer-drift.js's static scanner (BRO-2722/BRO-3990 bug class). See rule (n) doc comment.`,
+    );
+    for (const { file, hits } of bareAuditGlobFindings) {
+      console.log(`   • ${file}`);
+      for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
+    }
+  }
+
   const total =
     violations.notifyFailure.length +
     violations.playwright.length +
@@ -676,7 +873,13 @@ async function main() {
     violations.shortPushTimeout.length +
     violations.shortBatchPollTimeout.length +
     violations.quoteApostrophe.length +
-    violations.paidProviderOnPush.length;
+    violations.paidProviderOnPush.length +
+    // Rule (m) MUST be summed here or the whole guard is decorative: the report
+    // block below would print and then `total === 0` would still return 0.
+    // Caught by ship-check — the rule shipped unwired and passed its own tests,
+    // because the tests called findRunIdKeyedCaches directly and never asserted
+    // the CLI's exit code.
+    violations.runIdKeyedCache.length;
 
   if (total === 0) {
     console.log(`✅ Workflow hygiene guard passed (${files.length} workflows checked).`);
@@ -875,6 +1078,23 @@ async function main() {
     console.error('Exempt (legitimate): add  # paid-provider-ok: <reason>  anywhere in the file.\n');
   }
 
+  if (violations.runIdKeyedCache.length) {
+    console.error('── (m) actions/cache key scoped to github.run_id ───');
+    console.error('A run-id-keyed cache never dedupes: every job of every run mints a new entry.');
+    console.error('BRO-3887: .github/actions/checkout-core-data saved a 3.4 GiB clone this way on');
+    console.error('284 invocations across 191 workflows. The repo reached 28.06 GiB against');
+    console.error("GitHub's 10 GiB limit, so LRU eviction wiped the whole cache namespace hourly —");
+    console.error('including the 22 KB SERP cache, which took gather-reviews.js from 360 to 9,178');
+    console.error('scraper credits/day on flat dispatch volume.\n');
+    for (const { file, hits } of violations.runIdKeyedCache) {
+      console.error(`  • ${file}`);
+      for (const h of hits) console.error(`      ${h.message}`);
+    }
+    console.error('\nFix: key on content (hashFiles) or drop the cache if it does not pay for itself');
+    console.error('— measure the restore+save step durations against a cold build before keeping it.');
+    console.error('Exempt (legitimate): add  # hygiene-cache-runid-ok: <reason>  anywhere in the file.\n');
+  }
+
   process.exit(1);
 }
 
@@ -893,6 +1113,7 @@ module.exports = {
   BATCH_MODE_POLL_MINUTES,
   INLINE_POLL_MINUTES,
   findUnescapedApostrophesInSingleQuotedEval,
+  findRunIdKeyedCaches,
 };
 
 if (require.main === module) {

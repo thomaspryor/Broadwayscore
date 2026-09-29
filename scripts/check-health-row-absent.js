@@ -116,12 +116,28 @@ async function main(argv) {
     return 3;
   }
 
-  // Compare on the same 120-char bound digest-autofix encodes with, so long
-  // row names stay verifiable instead of silently never-matching.
-  const LIMIT = 120;
-  const target = row.slice(0, LIMIT);
-  const present = [...(snap.errors || []), ...(snap.warns || [])]
-    .some(r => r && String(r.name || '').trim().slice(0, LIMIT) === target);
+  // Compare on the same bound the ENCODER used, imported rather than
+  // re-declared (BRO-3881): this file used to carry its own `const LIMIT = 120`
+  // beside digest-autofix.js's private copy of the same number, and nothing
+  // would have caught the two drifting apart — a long row name would simply
+  // stop matching, forever, silently. rowMatchKey also clamps the name so the
+  // encoded token stays inside SAFE_CHECK_FORMS' 200-character cap.
+  const { rowMatchKey } = require('./lib/health-row-check-cmd.js');
+  const target = rowMatchKey(row);
+  // BRO-3427 ship-check finding: every "<condition> on <show>" row (the
+  // entire population digest-autofix's per-show cards are filed from — see
+  // scripts/lib/opening-night-remediation.js's kind:'alert' branch, which
+  // routes through owner-alert-router.js's routeAlert/queueDigestLine) lands
+  // in snap.queued, NOT snap.errors/snap.warns (scripts/health-check.js's
+  // snapshot writer keeps them in a separate `queued` key). Before this fix,
+  // this check only ever read errors/warns, so the auto-armed verify command
+  // on EVERY such card silently reported "PASS: absent" regardless of
+  // whether the underlying issue was fixed — confirmed by reproduction, not
+  // inferred. Queued rows carry `title`, not `name` (owner-alert-router's own
+  // shape — see queueDigestLine/normalizeQueuedRows in digest-autofix.js).
+  const queuedAsRows = Array.isArray(snap.queued) ? snap.queued : [];
+  const present = [...(snap.errors || []), ...(snap.warns || []), ...queuedAsRows]
+    .some(r => r && rowMatchKey(String(r.name || r.title || '')) === target);
   if (present) {
     console.error(`[check-health-row-absent] FAIL: "${row}" still listed in the ${snap.generatedAt} health snapshot`);
     return 1;

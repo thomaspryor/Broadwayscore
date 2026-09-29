@@ -126,8 +126,9 @@ jobs:
       #   Keeping it here keeps the audit fresh for the enrichment workflow.
       # - backfill-unknown-outlets: local-only, no network, ~5s
       # - cleanup-phantom-outlets, strip-stale-single-model-scores,
-      #   detect-syndicated-duplicates, apply-audit-flags: utility steps,
-      #   each <30s, shape data the rebuild reads.
+      #   detect-syndicated-duplicates, apply-audit-flags,
+      #   heal-orphaned-duplicate-pointers: utility steps, each <30s, shape
+      #   data the rebuild reads.
 
       - name: Flag wrong-production reviews by date window
         if: inputs.skip_enrichment != 'true'
@@ -175,6 +176,32 @@ jobs:
         run: node scripts/audit-duplicate-of-url-mismatch.js --fix 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
+      # Self-heal duplicateOf pointers whose TARGET was flagged invalid
+      # (wrongShow/wrongProduction/nonReviewFlag/rejectedBy) by a downstream
+      # classifier AFTER the pointer was set (BRO-3250). Different from the
+      # sweep above: the URL here still matches — the pointer was correct
+      # when set — but nothing re-evaluates it once the target is
+      # reclassified, so a genuinely valid review stays silently excluded
+      # (moulin-rouge-2019 WSJ Terry Teachout, confirmed missing).
+      - name: Sweep orphaned duplicateOf pointers (stale target invalidation)
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/heal-orphaned-duplicate-pointers.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
+      # BRO-2409: the TWO steps immediately above are independent self-heals
+      # that can each clear one half of an A<->B same-URL duplicateOf/
+      # duplicateTextOf pair with no knowledge of the other — leaving a
+      # cluster with ZERO duplicate pointer on either side, invisible to
+      # every OTHER dedup mechanism (they all require an existing pointer to
+      # find a pair), so both members silently double-score. Running this
+      # sweep immediately after both closes the race at its source, in the
+      # same run that creates it, rather than waiting for a separate cron to
+      # notice hours later. Confirmed live on 22 real same-URL clusters.
+      - name: Sweep fully-unsuppressed same-URL clusters (post cycle-clear)
+        if: inputs.skip_enrichment != 'true'
+        run: node scripts/fix-unflagged-same-url-clusters.js --fix 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+
       # Coerce URL-shaped critic names (scraper grabbed the byline link href) to
       # a clean personal name or Unknown. Save-time guard lives in
       # review-file-writer.js; this sweeps files that predate it / bypassed it.
@@ -189,6 +216,19 @@ jobs:
       - name: Sweep display-field artifacts (html-entity + json-ld)
         if: inputs.skip_enrichment != 'true'
         run: node scripts/gc-display-field-artifacts.js --fix
+        continue-on-error: true
+
+      # National tours (BRO-4262): intake files tour-stop reviews on the tour
+      # directly; this mops up any that still land on the Broadway show. It
+      # holds (moves nothing, ::warning::) past 20 moves or 10% of a Broadway
+      # folder. push-review-texts ships the moves. Kill switch: repo variable
+      # TOUR_SWEEP=off (or =report to only log).
+      - name: Sweep national-tour reviews to their tour entries
+        # lint-allow-swallow: best-effort mop-up; a failure must not block the rebuild, holds print ::warning:: and land in data/audit/tour-sweep.json; digest surfacing is BRO-4262 follow-up
+        if: inputs.skip_enrichment != 'true'
+        env:
+          TOUR_SWEEP: ${{ vars.TOUR_SWEEP }}
+        run: node scripts/sweep-tour-reviews.js --auto 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true
 
       - name: Rebuild reviews.json
@@ -532,6 +572,18 @@ jobs:
           # aggregate here. The 4 LLM enrichment scripts moved to enrich-reviews.yml
           # in 2026-04-30 (Notion 351637c5-416f-8177); their counts now aggregate
           # in that workflow's separate run.
+          #
+          # BRO-4157 triage note: none of those tee'd steps (here or in
+          # enrich-reviews.yml/rebuild-fast.yml) need an explicit `set -o
+          # pipefail` — every one carries `continue-on-error: true`, so the
+          # step's own exit code (pipefail-corrected or not) never gates job
+          # success. This is a real, pre-existing gap, not one pipefail can
+          # close: a script that crashes BEFORE it logs its own
+          # [LOCKED-SKIP-COUNT] line contributes nothing here, so the
+          # aggregation below only catches an abnormal skip RATIO in scripts
+          # that ran to completion — not a step that died mid-run (confirmed
+          # via Codex adversarial review, which caught an earlier draft of
+          # this comment overclaiming crash coverage).
           #
           # Synthetic-test override: set LOCKED_SKIP_TEST_LOG_OVERRIDE in the env
           # to a path with hand-crafted [LOCKED-SKIP-COUNT] lines for dry-run

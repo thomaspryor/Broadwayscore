@@ -262,4 +262,66 @@ function classifyDispatches({
   return decisions;
 }
 
-module.exports = { findMyJob, isDispatchResolved, classifyDispatches, DECISION_KINDS };
+// How long a dispatch gets to produce a spawn before reconciliation calls it an
+// orphan. Hoisted here (BRO-3321) because all three reconcilers were declaring
+// their own `const ORPHAN_TIMEOUT_H = 3` — digest-autofix.js, backlog-drain.js,
+// linear-drain-parked.js — while all three then passed it straight back into
+// this module's classifyDispatches as `orphanTimeoutH`. Three independent
+// copies of one number that has to agree is a drift class waiting to happen;
+// the owner of the timing is the module that acts on it.
+const ORPHAN_TIMEOUT_H = 3;
+
+/**
+ * WHEN is an outcome row ABOUT? Not when it was written.
+ *
+ * Every ledger writer in this family stamps `ts` at append time
+ * (`{ ts: new Date().toISOString(), ...entry }` — scripts/lib/digest-autofix.js,
+ * scripts/backlog-drain.js, scripts/linear-drain-parked.js). For an
+ * 'auto-dispatch'/'drain-dispatch' breadcrumb that is correct: the write IS the
+ * event. For a 'card-pass'/'card-fail' it is not — those are written by a
+ * RECONCILIATION pass that can run arbitrarily long after the dispatch it
+ * judges, so `ts` records when we got around to looking, not when the work
+ * happened.
+ *
+ * That gap is not hypothetical. On 2026-09-14 the morning digest reconciled
+ * three dispatches from 2026-08-14 — thirty-one days stale, because the digest
+ * itself had not run in between — and stamped all three card-fails with the
+ * reconciliation time. assessAutofixEffectiveness's trailing-7d window read
+ * them as three fresh failures and emailed the owner "Auto-fix loop is DEAD:
+ * 0 of 3 job(s) succeeded in the last 7d" while, in the same pass, three
+ * genuinely new dispatches (BRO-352/471/472) spawned and reached job-done
+ * inside the hour. A dead-loop alarm that a month-old backlog can trigger, and
+ * that a live healthy loop cannot silence, is worse than no alarm: it taught
+ * the owner to distrust the one row built to tell him the fleet had stopped
+ * fixing things.
+ *
+ * So outcome rows now carry `judgedDispatchTs` (the judged dispatch's own ts)
+ * and windowing consumers age them by THAT. `ts` stays honest about when the
+ * row was written. Falls back to `ts` for rows written before this field
+ * existed — dating those by write time is exactly as wrong as it was, but no
+ * worse, and they age out of every window on their own.
+ *
+ * DO NOT reach for this in three places that deliberately want WRITE time:
+ *   1. isDispatchResolved (below). Resolution asks "has an outcome been
+ *      RECORDED at or after this dispatch" — ordering by anything but write
+ *      time reopens postmortems 1-2 in this file's header (BRO-2506/2434/2508),
+ *      where a dispatch could be resolved by an outcome that predated it.
+ *   2. scripts/lib/attempt-memory.js:65-70. checkPark sorts outcomes by `ts`
+ *      and compares them against an owner's manual override timestamp. An
+ *      override at time T must supersede everything RECORDED before T,
+ *      whenever the underlying dispatch happened — dispatch time would let a
+ *      stale outcome survive an override that was meant to clear it.
+ *   3. scripts/lib/backlog-drain.js:141 computeSpendCircuitBreaker. Spend is
+ *      CONFIRMED at reconcile time, and its window is only 24h. Measured on the
+ *      real ledger (n=55): median dispatch->outcome lag 4h, max 140h, 2 rows
+ *      past 24h. Aged by dispatch time those two rows' cost falls out of the
+ *      window entirely and the breaker never sees the money — a breaker that
+ *      under-counts fails OPEN, which is the one direction a spend guard must
+ *      never fail.
+ */
+function outcomeWindowTs(row) {
+  if (!row) return undefined;
+  return row.judgedDispatchTs || row.ts;
+}
+
+module.exports = { findMyJob, isDispatchResolved, classifyDispatches, DECISION_KINDS, outcomeWindowTs, ORPHAN_TIMEOUT_H };

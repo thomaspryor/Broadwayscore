@@ -170,7 +170,10 @@ function invokesPushWithRetry(lines) {
 // ledger) — its call isn't inline text in this job's YAML, so findAllPush-
 // RetrySteps() structurally can't see it either way; it stays folded into the
 // fixed baseline like every other pre-existing step.
-const BASELINE_PUSH_STEP_NAMES = ['Record pipeline success'];
+// BRO-3425: "Record pipeline success" moved to test-summary; its push slot is
+// now taken by "Commit data-audit digest line" (same push-with-retry.sh call
+// shape, runs only when the job fails), so the measured baseline still holds.
+const BASELINE_PUSH_STEP_NAMES = ['Commit data-audit digest line'];
 
 function findAllPushRetrySteps(jobLines) {
   const starts = findStepStarts(jobLines);
@@ -327,7 +330,7 @@ const DATA_VALIDATION_FIXED_COST_SEC = 569 + 366;
 // structurally cannot see it — it is counted explicitly here rather than
 // silently omitted, which is what made the 25 look survivable.
 const DATA_VALIDATION_PUSH_STEP_NAMES = [
-  'Record pipeline success',
+  'Commit data-audit digest line',
   'Commit scraper-spend ledger',
 ];
 

@@ -13,6 +13,8 @@ import * as fs from 'fs';
 import * as path from 'path';
 import { ThumbsDistribution, AggregatorValidation, ReviewEntry, ScoredReviewFile } from './types';
 import { scoreToThumb } from './config';
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 // ========================================
 // DATA LOADING
@@ -38,13 +40,7 @@ function loadLLMScoredReviews(): ScoredReviewFile[] {
     return scored;
   }
 
-  const shows = fs.readdirSync(reviewTextsDir).filter(f => {
-    try {
-      return fs.statSync(path.join(reviewTextsDir, f)).isDirectory();
-    } catch {
-      return false;
-    }
-  });
+  const shows = listShowDirs(reviewTextsDir);
 
   for (const show of shows) {
     const showDir = path.join(reviewTextsDir, show);

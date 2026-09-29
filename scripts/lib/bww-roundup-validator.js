@@ -57,12 +57,16 @@ const TITLE_STOP_WORDS = new Set(['the', 'and', 'for', 'from', 'with', 'that', '
 // SERP prefilter applied in url-discovery.js (Schmigadoon 2026 Bug #8).
 
 /**
- * Normalize a show title into matchable words: lowercase, strip punctuation, remove stop words.
+ * Normalize a show title into matchable words: lowercase, split on hyphens (BWW slugs
+ * split on hyphens too — "Pre-Existing Condition" must become ["pre","existing",
+ * "condition"] to match slug segments ["pre","existing","condition",...], not collapse
+ * into "preexisting"), strip remaining punctuation, remove stop words.
  * Mirrors the logic in findBWWRoundupLinkOnHomepage (gather-reviews.js).
  */
 function normalizeTitleWords(title) {
   return foldDiacritics(title)
     .toLowerCase()
+    .replace(/[-_]/g, ' ')
     .replace(/[^a-z0-9\s]/g, '')
     .split(/\s+/)
     .filter(w => w.length > 0 && !TITLE_STOP_WORDS.has(w));
@@ -237,6 +241,16 @@ function validateBWWRoundupUrlMatchesShow(url, showTitle, showCategory) {
   // Beaches 2026-04-22: 0 of 22 opening-night reviews passed before this fallback.
   const shortTitle = shortTitleCandidate(showTitle);
   if (shortTitle && titleWordsPassSlugCheck(shortTitle, slugSegments, slugSegmentsArray)) return true;
+
+  // Colon-subtitled shows ("Our Sinatra: A Musical Celebration" → "Our
+  // Sinatra"): BWW slugs drop the subtitle the same way. The whole roundup
+  // was rejected on 2026-09-27 for exactly this. Head must be >=2 content
+  // words so a bare "Hamlet: ..." can't match any Hamlet roundup.
+  const colonIdx = showTitle.indexOf(':');
+  if (colonIdx > 0) {
+    const head = showTitle.slice(0, colonIdx).trim();
+    if (normalizeTitleWords(head).length >= 2 && titleWordsPassSlugCheck(head, slugSegments, slugSegmentsArray)) return true;
+  }
 
   return false;
 }

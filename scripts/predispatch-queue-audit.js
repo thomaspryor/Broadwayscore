@@ -177,7 +177,7 @@ function runGuard(name, fn, taskId) {
   }
 }
 
-function main() {
+async function main() {
   if (hasHelpFlag(process.argv.slice(2))) {
     process.stdout.write(USAGE);
     process.exit(0);
@@ -261,8 +261,31 @@ function main() {
     });
   }
 
+  // BRO-3431: the local task mirror above is the FROZEN Notion board (source
+  // of the "135 queued cards" undercount — the real backlog lives in Linear).
+  // Union in the Linear-sourced classifications the same way
+  // dispatch-watchdog.js unions Linear tasks into its own sweep: never throw,
+  // never let a Linear outage take down the Notion-sourced half of this tally.
+  let linearClassifications = [];
+  try {
+    const { fetchLinearBacklogClassifications } = require('./lib/linear-predispatch-audit.js');
+    const linearClient = require('./lib/linear-client.js');
+    const res = await fetchLinearBacklogClassifications(linearClient, {});
+    if (res.ok) {
+      linearClassifications = res.classifications;
+      console.log(`[predispatch-queue-audit] Linear scan: ${res.scanned} issue(s) scanned, ${linearClassifications.length} counted toward the backlog tally`);
+    } else {
+      console.error(`[predispatch-queue-audit] Linear source unavailable (${res.reason}) — banner reflects the Notion mirror only this run`);
+    }
+  } catch (err) {
+    console.error(`[predispatch-queue-audit] Linear source error (${String(err.message).slice(0, 160)}) — banner reflects the Notion mirror only this run`);
+  }
+
   const history = loadHistory(HISTORY_FILE);
-  const snapshot = buildQueueAuditSnapshot({ classifications, history, now, skippedNoUuid, fetchErrors });
+  const snapshot = buildQueueAuditSnapshot({
+    classifications: [...classifications, ...linearClassifications],
+    history, now, skippedNoUuid, fetchErrors,
+  });
   console.log(`predispatch-queue-audit: ${snapshot.bannerText}`);
 
   const guardHistory = loadHistory(GUARD_HISTORY_FILE);
@@ -293,7 +316,12 @@ function writeFileAtomic(filePath, contents) {
   fs.renameSync(tmp, filePath);
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch((err) => {
+    console.error(`[predispatch-queue-audit] FATAL: ${err && err.stack ? err.stack : err}`);
+    process.exit(1);
+  });
+}
 
 module.exports = {
   loadQueuedTasks, fetchCard, loadHistory, TASKS_DIR, SNAPSHOT_FILE, HISTORY_FILE,

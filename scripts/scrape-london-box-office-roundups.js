@@ -26,7 +26,8 @@ const path = require('path');
 const https = require('https');
 const { serpQuery } = require('./lib/url-discovery');
 const cheerio = require('cheerio');
-const { matchTitleToShow, matchSlugToShow, loadShows, titleWordsMatch, validateRoundupPageTitle } = require('./lib/show-matching');
+const { matchTitleToShow, matchSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
@@ -42,6 +43,16 @@ const archiveDir = path.join(__dirname, '../data/aggregator-archive/lbo-roundups
 const SCRAPINGBEE_KEY = process.env.SCRAPINGBEE_API_KEY;
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCE = process.argv.includes('--force');
+
+// Memoized showId -> same-title-sibling categories index (BRO-2565, mirroring
+// scrape-bww-reviews.js's siblingCategoriesByShowId()) — feeds
+// checkArchiveCategory()'s cross-market-sibling check below.
+let _siblingCategoriesCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesCache) return _siblingCategoriesCache;
+  _siblingCategoriesCache = buildSiblingCategoriesFromShows(loadShows());
+  return _siblingCategoriesCache;
+}
 
 // Stats
 const stats = {
@@ -829,15 +840,24 @@ async function scrapeLBORoundups() {
       }
     }
 
-    // Validate: page title should mention the show we matched to.
+    // Validate: page title should mention the show we matched to, AND (BRO-2565)
+    // carry the category-aware cross-market-sibling check + punctuation-mismatch
+    // rescue BRO-2547/2549 established for BWW — the same predicate used at both
+    // read time and write time here, since this loop's cache-hit branch above
+    // falls into this same check before the html is trusted.
     // Run BEFORE writing the archive so we don't poison the cache that
     // gather-reviews.js and opening-night-poller.js read later.
     // (Stuart King mis-attribution incident, 2026-04-25.)
-    const validation = validateRoundupPageTitle(html, show.title);
+    const validation = checkArchiveCategory(html, show, siblingCategoriesByShowId()[showId]);
     if (!validation.ok) {
       console.log(`  [SKIP] ${validation.reason}: page title "${(validation.pageTitle || '').substring(0, 60)}" doesn't match show "${show.title}"`);
       stats.skippedMismatch = (stats.skippedMismatch || 0) + 1;
-      // Do NOT write the archive — it would mislead other readers.
+      // A cache-hit that now fails re-validation is purged so it doesn't sit
+      // poisoned for up to 14 more days (BRO-2549's read-path pattern) — a
+      // fresh fetch was never written to disk in the first place (guard runs
+      // before the write below). Gated on !DRY_RUN like every other write in
+      // this script — a diagnostic dry-run must not delete real archives.
+      if (archiveFresh && !DRY_RUN) fs.unlinkSync(archivePath);
       continue;
     }
 

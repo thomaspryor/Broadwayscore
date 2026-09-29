@@ -388,9 +388,9 @@ jobs:
           # (see memory/feedback_silent_workflow_failures.md — never swallow dispatch
           # errors with `|| true`).
           #
-          # Each target audience-scraper workflow now uses per-run concurrency groups
-          # so back-to-back dispatches (especially the Broadway.com per-show loop) no
-          # longer lose middle dispatches to GitHub's 1-pending-queue limit.
+          # Each target audience-scraper workflow uses per-run concurrency groups
+          # so back-to-back dispatches don't lose middle ones to GitHub's
+          # 1-pending-queue limit. (Broadway.com is one batched dispatch since BRO-4242.)
           SHOWS="${{ steps.find.outputs.shows }}"
           MARKET="${{ steps.market.outputs.market }}"
           echo "Dispatching audience scrapers for: $SHOWS (market: ${MARKET:-all})"
@@ -420,11 +420,10 @@ jobs:
 
           if [ "$MARKET" != "west-end" ]; then
             # Broadway audience scrapers (also dispatched when market is empty = all markets)
-            IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
-            for SHOW_ID in "${SHOW_ARRAY[@]}"; do
-              echo "  → Dispatching Broadway.com scraper for $SHOW_ID"
-              dispatch "update-broadway-com[$SHOW_ID]" update-broadway-com.yml -f show="$SHOW_ID"
-            done
+            # BRO-4242: one batched run, not one workflow run per show (was 35
+            # dispatches per tick, ~100 full job setups/day for one show each).
+            echo "  → Dispatching Broadway.com scraper for: $SHOWS"
+            dispatch "update-broadway-com" update-broadway-com.yml -f shows="$SHOWS"
 
             echo "  → Dispatching Mezzanine for: $SHOWS"
             dispatch "update-mezzanine" update-mezzanine.yml -f shows="$SHOWS"
@@ -752,8 +751,56 @@ jobs:
           fi
           node scripts/opening-night-sla-dispatch.js /tmp/checklist.json
 
+      # BRO-3671: opening-night-checklist.js requires routeAlert and passes it
+      # into executeRemediations() (dependency injection, not a direct call in
+      # this file), and opening-night-sla-dispatch.js reaches the router via
+      # opening-night-sla.js — this job had NO commit step for any of these
+      # files anywhere in its 700+ lines, so the cooldown ledger, queued
+      # digest lines (opening-night-remediation.js uses disposition:'digest'),
+      # and the dispatch-attempts log never persisted across runs. Mirrors
+      # opening-night-checklist.yml's own "Commit shared audit telemetry" step.
+      - name: Commit alert state
+        if: always() && steps.find.outputs.has_shows == 'true'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No alert-state changes to commit."
+          else
+            git commit -m "chore: opening-night-orchestrator alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          fi
+
+      # BRO-3707: opening-night-express.yml deliberately `gh run cancel`s any
+      # in-progress orchestrator run before taking over (its "Cancel competing
+      # orchestrator/poller runs" step), then sets ORCHESTRATOR_PAUSED — an
+      # expected, routine cancellation, not a hang. Without this check, adding
+      # cancelled() to Notify below would page "Orchestrator Failed" on every
+      # Express takeover. If the lease is set, this cancellation is very
+      # likely that takeover, not a genuine job-timeout; skip the alert.
+      - name: Check for Express preemption
+        id: check_preemption
+        if: cancelled()
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: |
+          PAUSED=$(gh api "repos/${{ github.repository }}/actions/variables/ORCHESTRATOR_PAUSED" --jq '.value' 2>/dev/null) || PAUSED=""
+          if [ -n "$PAUSED" ]; then
+            echo "preempted=true" >> "$GITHUB_OUTPUT"
+            echo "::notice::ORCHESTRATOR_PAUSED=$PAUSED — treating this cancellation as an Express takeover, not a hang. Skipping alert."
+          else
+            echo "preempted=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Notify on failure
-        if: failure()
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 360 reports
+        # conclusion "cancelled", not "failure" — a bare failure() here would
+        # silently drop this critical alert. Guarded against the Express-
+        # takeover false positive by check_preemption above.
+        if: failure() || (cancelled() && steps.check_preemption.outputs.preempted != 'true')
         uses: ./.github/actions/notify-failure
         with:
           title: 'Opening Night Orchestrator Failed'

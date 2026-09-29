@@ -165,6 +165,38 @@ test('a human-vouched review is pinned as canonical even against a longer junk s
   assert.equal(r.canonical, 'nyt--real.json'); // human score outranks length
 });
 
+test('BRO-2409: an outlet-name-as-byline placeholder loses the byline tiebreak to a real critic (card #1907 shape, generalized to 5+ cluster)', () => {
+  // Both bodies otherwise tie exactly (same length, same tier, same
+  // includable/star signals) — everything hinges on the byline tiebreak.
+  // >= 1500 chars so isCandidate() (a genuine-review-body floor) admits both.
+  const body = 'A full-length real review of the production, running at the theatre. '.repeat(30);
+  const files = [
+    { file: 'times-uk--the-times.json', contentTier: 'complete', fullTextLen: body.length,
+      fullTextHead: body, wrongProduction: false, wrongShow: false,
+      criticName: 'The Times', outlet: 'The Times (UK)' },
+    { file: 'times-uk--clive-davis.json', contentTier: 'complete', fullTextLen: body.length,
+      fullTextHead: body, wrongProduction: false, wrongShow: false,
+      criticName: 'Clive Davis', outlet: 'The Times (UK)' },
+  ];
+  const r = decideClusterAction(files, { hardReject: false });
+  assert.equal(r.action, 'recover');
+  assert.equal(r.canonical, 'times-uk--clive-davis.json');
+});
+
+test('BRO-2409: an empty/Unknown byline still ranks weak even though isPlaceholderRecord alone would not flag it', () => {
+  const body = 'A full-length real review of the production, running at the theatre. '.repeat(30);
+  const files = [
+    { file: 'times-uk--unknown.json', contentTier: 'complete', fullTextLen: body.length,
+      fullTextHead: body, wrongProduction: false, wrongShow: false,
+      criticName: 'Unknown', outlet: 'The Times (UK)' },
+    { file: 'times-uk--clive-davis.json', contentTier: 'complete', fullTextLen: body.length,
+      fullTextHead: body, wrongProduction: false, wrongShow: false,
+      criticName: 'Clive Davis', outlet: 'The Times (UK)' },
+  ];
+  const r = decideClusterAction(files, { hardReject: false });
+  assert.equal(r.canonical, 'times-uk--clive-davis.json');
+});
+
 test('empty input → skip, never throws', () => {
   assert.deepEqual(decideClusterAction([], {}), { action: 'skip', reason: 'no-recoverable-review', canonical: null });
   assert.deepEqual(decideClusterAction(null, {}), { action: 'skip', reason: 'no-recoverable-review', canonical: null });

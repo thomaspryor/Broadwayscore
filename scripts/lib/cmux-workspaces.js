@@ -179,6 +179,16 @@ function isDoneTitle(title) {
   return String(title).trim().slice(0, 4).includes('✅');
 }
 
+// Strips a leading run of non-letter/non-digit characters — cmux's activity
+// glyphs/spinners (⠂/⠐/✳) and status markers (✅/🤖) — same convention as
+// crown-duplicate-detector.js's titleFamilyKey and dispatch-ledger.js's
+// titleMatchesSubject prefix-stripping. Used by sendToWorkspace's
+// expectedTitle check (BRO-4140) so routine glyph churn between resolving a
+// ref and sending to it doesn't read as a wrong-tab mismatch.
+function stripLeadingGlyphs(title) {
+  return String(title || '').trim().replace(/^[^\p{L}\p{N}]+/u, '').trim();
+}
+
 // `cmux top --workspace X --processes --format tsv` emits one row per node;
 // a live Claude Code session appears as a tag row whose columns are
 // cpu\trss\tproc\ttype\tid\tparent\tstatus. Column-exact match — a substring
@@ -247,6 +257,56 @@ function parseWorkspacesWithFailures(text) {
   return { workspaces, rawLineCount, parseFailures: Math.max(0, rawLineCount - workspaces.length) };
 }
 
+// A valid workspace ref is cmux's `workspace:<N>` list form — the ONLY form
+// ever actually passed to `--workspace` anywhere in this codebase (matches
+// dispatch-ledger.js's own established WORKSPACE_REF_RE). BRO-4140: a
+// caller-supplied BARE NUMBER (`'13'`) is NOT that — it looks like a
+// `workspace:N` ref with the prefix dropped, but cmux's CLI resolves a bare
+// number as a list INDEX into the CURRENT listing, not a workspace id.
+// Indices shift as workspaces open/close/renumber, so "13" silently resolves
+// to whatever tab currently sits at position 13 — a DIFFERENT, unrelated
+// workspace from the one the caller meant. This is exactly how a live
+// incident misdelivered a crown handoff: sendToWorkspace('13', ...) typed
+// into the wrong tab, and the sender's own follow-up check
+// (claudeMidTurnIn('13')) resolved to that SAME wrong tab and "confirmed" a
+// delivery that never happened.
+//
+// Silently prefixing a bare number with "workspace:" was considered and
+// rejected: the caller may genuinely have meant the list index (some
+// external tooling reports 1-based positions), and guessing wrong would
+// silently repeat this exact bug one layer down. Refuse instead — every real
+// call site in this codebase already gets its ref from a `listWorkspaces()`
+// row (`w.ref`), never from a bare index, so nothing legitimate is broken by
+// requiring the explicit form.
+//
+// listWorkspacesWithCwd() also carries a permanent per-workspace UUID
+// (`w.id`), but accepting that here was tried and DROPPED (adversarial
+// review, BRO-4140): nothing in this codebase has ever verified that cmux's
+// CLI actually accepts a raw UUID as a `--workspace` value, and accepting an
+// unverified second ref FORMAT here — while every real lookup (sendToWorkspace's
+// title check included) only ever indexes listWorkspaces() by the `workspace:N`
+// `ref` field — would let a syntactically-"valid" UUID sail past this guard
+// and then fail (or worse, mismatch) downstream instead of here. Scope this
+// fix to the one ref shape this codebase has ever actually used.
+const WORKSPACE_REF_RE = /^workspace:\d+$/;
+
+function isValidWorkspaceRef(ref) {
+  const s = typeof ref === 'string' ? ref : String(ref ?? '');
+  return WORKSPACE_REF_RE.test(s);
+}
+
+// Throws SYNCHRONOUSLY, before any socket call — every caller in this file
+// that also has a fail-safe try/catch around its `run()` call (claudeMidTurnIn,
+// claudeAliveIn, terminalSurfaceAliveIn, terminalSurfaceConfirmedMissing)
+// validates BEFORE entering that try, specifically so this error propagates
+// as a real crash instead of being silently swallowed into "true"/"alive" by
+// those catches — an invalid ref must never be indistinguishable from a
+// transient cmux error.
+function assertValidWorkspaceRef(ref) {
+  if (isValidWorkspaceRef(ref)) return ref;
+  throw new Error(`cmux-workspaces: invalid workspace ref ${JSON.stringify(ref)} — expected "workspace:<N>", got a bare/malformed value. cmux resolves a bare number as a list INDEX (not a workspace id), which silently targets the wrong tab (BRO-4140). Resolve the real ref via listWorkspaces() first.`);
+}
+
 // ── socket wrappers ─────────────────────────────────────────────────────────
 
 // `runFn` is a test-only seam (same idiom as run()'s own execFn injection)
@@ -294,6 +354,7 @@ function listWorkspacesWithCwd() {
 }
 
 function closeWorkspace(ref) {
+  assertValidWorkspaceRef(ref);
   run(['close-workspace', '--workspace', ref]);
 }
 
@@ -304,9 +365,47 @@ function closeWorkspace(ref) {
 // cmux treats a newline (and the literal two-character sequence "\n") as
 // Enter, so an unflattened message submits itself half-typed. Callers use
 // dispatch-card-drift.formatAmendMessage, which flattens.
-function sendToWorkspace(ref, text) {
-  run(['send', '--workspace', ref, '--', String(text)]);
-  run(['send-key', '--workspace', ref, 'Enter']);
+//
+// BRO-4140: `opts.expectedTitle`, when passed, is checked against the
+// resolved workspace's CURRENT title (via a fresh listWorkspaces() call)
+// BEFORE anything is typed — the misdelivery incident this guards against
+// had the wrong ref resolve to a real, live, unrelated tab, so "the send
+// succeeded" alone proves nothing about WHICH tab received it. Checking
+// title identity first (refuse-before-type) is safer than a post-send check
+// alone: it refuses BEFORE typing whenever the mismatch is visible up front.
+// It is NOT a perfect, atomic guarantee — cmux gives no single "send iff
+// still this title" primitive, so a title change or a ref recycle landing in
+// the gap between this check and the `send`/`send-key` calls below is a
+// known, accepted residual risk (adversarial review, BRO-4140), same as
+// bsc-next.js's runAmend()/occupantStillThisTask, which has carried the
+// identical race for the same reason since card #503. This still closes the
+// incident that prompted it: a hand-typed BARE-NUMBER ref that resolves to a
+// completely unrelated tab is caught here, every time, before anything types.
+// Crown/handoff senders — the exact call shape that misdelivered — should
+// always pass the title they resolved the ref from.
+//
+// The comparison strips each side's leading activity-glyph/spinner run
+// (cmux's list-workspaces text form prepends these — see isDoneTitle above)
+// before comparing: a spinner frame or ✅/🤖 marker change between resolving
+// the ref and calling this function is routine drift, not evidence of a
+// wrong tab, and treating it as a mismatch would make this guard misfire on
+// the common case instead of the rare one it exists to catch.
+function sendToWorkspace(ref, text, opts = {}) {
+  assertValidWorkspaceRef(ref);
+  // runFn/listWorkspacesFn are test-only seams (same idiom as listWorkspaces's
+  // own runFn above) — real callers get the module's real run()/listWorkspaces().
+  const { expectedTitle, listWorkspacesFn = listWorkspaces, runFn = run } = opts;
+  if (expectedTitle != null) {
+    const current = listWorkspacesFn().find(w => w.ref === ref);
+    if (!current) {
+      throw new Error(`sendToWorkspace: refusing to send — ${ref} was not found in the current workspace listing (it may have closed or been renumbered). Re-resolve the ref before sending.`);
+    }
+    if (stripLeadingGlyphs(current.title) !== stripLeadingGlyphs(expectedTitle)) {
+      throw new Error(`sendToWorkspace: refusing to send — ${ref}'s current title (${JSON.stringify(current.title)}) does not match the expected title (${JSON.stringify(expectedTitle)}). This is the wrong-tab misdelivery shape from BRO-4140; re-resolve the ref and retry.`);
+    }
+  }
+  runFn(['send', '--workspace', ref, '--', String(text)]);
+  runFn(['send-key', '--workspace', ref, 'Enter']);
 }
 
 // SAFE variant for the close-decision path (card #709 ship-check catch).
@@ -321,6 +420,7 @@ function sendToWorkspace(ref, text) {
 // uncertainty. Fails safe to TRUE (mid-turn/busy) instead — uncertainty
 // must never look like idle.
 function claudeMidTurnIn(ref) {
+  assertValidWorkspaceRef(ref);
   try {
     return hasRunningClaude(run(['top', '--workspace', ref, '--processes', '--format', 'tsv']));
   } catch {
@@ -329,6 +429,7 @@ function claudeMidTurnIn(ref) {
 }
 
 function claudeAliveIn(ref) {
+  assertValidWorkspaceRef(ref);
   try {
     return hasLiveClaude(run(['top', '--workspace', ref, '--processes', '--format', 'tsv']));
   } catch {
@@ -423,6 +524,7 @@ function isNotFoundError(message) {
 }
 
 function terminalSurfaceAliveIn(ref) {
+  assertValidWorkspaceRef(ref);
   try {
     return hasClaudeChrome(run(['read-screen', '--workspace', ref]));
   } catch (e) {
@@ -451,6 +553,7 @@ function terminalSurfaceAliveIn(ref) {
 // no chrome yet, or a different/transient error) is "not confirmed missing"
 // — the correct fail-open direction for gating a success report.
 function terminalSurfaceConfirmedMissing(ref) {
+  assertValidWorkspaceRef(ref);
   try {
     run(['read-screen', '--workspace', ref]);
     return false;
@@ -475,6 +578,19 @@ function terminalSurfaceConfirmedMissing(ref) {
 // registry said dead but the surface registry said alive — direct evidence
 // the underlying cmux registry desync is happening in production right now,
 // not just a theoretical risk this function guards against.
+// BRO-4140: deliberately does NOT call assertValidWorkspaceRef itself — its
+// own try/catch below already absorbs whatever aliveFn(ref) throws (including
+// a validation error from a real claudeAliveIn), which matches this
+// function's documented, pre-existing "any error = fail safe" contract. That
+// matters for computeClaudeAlive(), whose meta.workspaceRef can legitimately
+// be a non-cmux value (dispatch-ledger.js's `headless:<taskId>` convention
+// for headless launches) — making THIS function throw on that shape would be
+// a new, uncaught failure mode for a caller this fix's incident never
+// touched (the incident was a DIRECT sendToWorkspace/claudeMidTurnIn call
+// with a hand-typed ref, not a checkLiveness sweep). claudeAliveIn/
+// claudeMidTurnIn/sendToWorkspace etc. still validate and throw on their own
+// — that's what actually closes the incident; this function's contract is
+// unchanged.
 function checkLiveness(ref, aliveFn, surfaceAliveFn) {
   let primaryAlive = true;
   try { primaryAlive = aliveFn(ref); } catch { primaryAlive = true; }
@@ -596,7 +712,7 @@ function pruneDone(opts = {}) {
 module.exports = {
   CMUX, cmuxAvailable, run, _resetRunWarnings,
   parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, isDoneTitle, hasRunningClaude, hasLiveClaude,
-  hasClaudeChrome, isNotFoundError,
+  hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef,
   listWorkspaces, listWorkspacesWithCwd, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,
   terminalSurfaceAliveIn, terminalSurfaceConfirmedMissing, checkLiveness, computeClaudeAlive, pruneDone,
 };

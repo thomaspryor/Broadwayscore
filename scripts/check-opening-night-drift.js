@@ -26,7 +26,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { countLocalIncluded, countAggregate, fetchLiveRc, countLocalPerShowJson, computeDrift, isLiveRcMissingField } = require('./lib/review-count-probe');
+const { countLocalIncluded, countAggregate, fetchLiveRc, countLocalPerShowJson, computeDrift, isLiveRcMissingField, makeFingerprint, shouldAlert, updateState } = require('./lib/review-count-probe');
 
 // ── Args ─────────────────────────────────────────────────────────────────────
 
@@ -49,11 +49,6 @@ const REVIEW_TEXTS    = flags['review-texts-root'] || path.join('data', 'review-
 const PER_SHOW_JSON   = flags['per-show-json-root'] || path.join('public', 'data', 'shows');
 const REVIEWS_JSON    = path.join('data', 'reviews.json');
 const SHOWS_JSON      = path.join('data', 'shows.json');
-
-// Cooldown: re-alert only after 6h if fingerprint unchanged
-const SAME_FP_COOLDOWN_MS  = 6 * 60 * 60 * 1000;
-// Grace window: only alert if same fingerprint on 2+ consecutive runs
-const GRACE_CONSECUTIVE    = 2;
 
 // ── Load data ────────────────────────────────────────────────────────────────
 
@@ -121,10 +116,9 @@ function getTargetShows() {
 }
 
 // ── Fingerprint logic ─────────────────────────────────────────────────────────
-
-function makeFingerprint(local, agg, localJson, live) {
-  return `${local}:${agg}:${localJson ?? 'null'}:${live ?? 'null'}`;
-}
+// makeFingerprint (BRO-931 #4) lives in ./lib/review-count-probe — see its
+// doc comment for why the fingerprint is keyed on `live` alone rather than
+// all four stage counts.
 
 /**
  * Returns the age in minutes of public/data/shows/{showId}.json, or null if
@@ -142,51 +136,8 @@ function perShowJsonAgeMinutes(showId) {
   }
 }
 
-/**
- * Returns true if we should fire an alert for this show given the current
- * fingerprint and state entry.
- *
- * Alert fires when:
- *   - New fingerprint (drift just appeared or changed)
- *   - Same fingerprint AND >6h since last alert AND observed 2+ consecutive runs
- */
-function shouldAlert(showId, fingerprint, drift, state) {
-  if (drift <= THRESHOLD) return false;
-
-  const entry = state[showId];
-  if (!entry || entry.fingerprint !== fingerprint) {
-    // New or changed fingerprint — start grace window
-    return false; // Wait for next run to confirm
-  }
-
-  // Same fingerprint as previous run
-  const consecutiveCount = (entry.consecutiveCount || 1) + 1;
-  if (consecutiveCount < GRACE_CONSECUTIVE) return false;
-
-  const now = Date.now();
-  if (!entry.lastAlertTs) return true;
-  return (now - entry.lastAlertTs) >= SAME_FP_COOLDOWN_MS;
-}
-
-function updateState(state, showId, fingerprint, didAlert) {
-  const entry = state[showId];
-  const now = Date.now();
-
-  if (!entry || entry.fingerprint !== fingerprint) {
-    state[showId] = {
-      fingerprint,
-      firstSeen: now,
-      consecutiveCount: 1,
-      lastAlertTs: didAlert ? now : null,
-    };
-  } else {
-    state[showId] = {
-      ...entry,
-      consecutiveCount: (entry.consecutiveCount || 1) + 1,
-      lastAlertTs: didAlert ? now : entry.lastAlertTs,
-    };
-  }
-}
+// shouldAlert / updateState (BRO-931 #4) live in ./lib/review-count-probe —
+// see shouldAlert's doc comment there for the aboveThreshold grace-window fix.
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
@@ -235,7 +186,7 @@ async function main() {
     const liveRcMissing = isLiveRcMissingField(live) && localJson != null && localJson.rc != null;
     const effectiveDrift = liveRcMissing ? Math.max(drift.drift, THRESHOLD + 1) : drift.drift;
 
-    const fingerprint = makeFingerprint(local.included, agg, localJsonCount, liveRcMissing ? 'rc-missing' : live.rc);
+    const fingerprint = makeFingerprint(liveRcMissing ? 'rc-missing' : live.rc);
 
     // Check allowlist before shouldAlert so suppressed shows don't consume grace slots
     const allowEntry = allowlist[showId];
@@ -251,8 +202,9 @@ async function main() {
     const ageMin = perShowJsonAgeMinutes(showId);
     const inGrace = only34Drift && ageMin != null && ageMin < GRACE_MINUTES;
 
-    const alert = (suppressed || inGrace) ? false : shouldAlert(showId, fingerprint, effectiveDrift, state);
-    updateState(state, showId, fingerprint, alert);
+    const aboveThreshold = effectiveDrift > THRESHOLD;
+    const alert = (suppressed || inGrace) ? false : shouldAlert(showId, fingerprint, effectiveDrift, THRESHOLD, state);
+    updateState(state, showId, fingerprint, alert, aboveThreshold);
 
     if (alert) anyAlert = true;
 

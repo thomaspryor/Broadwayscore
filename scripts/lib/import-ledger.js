@@ -189,6 +189,78 @@ function unaccountedPageIds(sourcePageIds, rows) {
 }
 
 /**
+ * The opposite-direction check (BRO-2384): which already-imported Linear
+ * issues now duplicate a Notion page that has since gone Done?
+ *
+ * linear-import.js's --reconcile pass classifies each LIVE local-mirror task
+ * against the Notion snapshot and retires the ones whose page reads Done. But
+ * a completed task is archived out of the local mirror (task-store-archive.js)
+ * almost immediately — often the same day it completes — so it stops
+ * appearing in that classification pass forever. If the page went Done
+ * *after* the issue was imported but the mirror task had already archived
+ * away by the next --reconcile run, the issue is permanently invisible to
+ * that pass: re-running --refresh-snapshot + --reconcile --apply any number
+ * of times never retires it. That is exactly how BRO-111 (imported
+ * 2026-08-12 while its source card, Notion page 3a9637c5-..., still read "Not
+ * started"; the card finished and archived out of the mirror later the same
+ * day) sat open for weeks until a session was dispatched onto it directly and
+ * redid already-shipped work.
+ *
+ * The ledger survives archival — it is keyed on Notion pageId, not local
+ * mirror task id, and rows are never deleted — so it can still name the
+ * Linear issue for a page the mirror-driven pass can no longer see. This is
+ * the anti-join over that surviving record: last row per pageId (same
+ * semantics as indexByPageId), a real Linear issue attached (linearId), and
+ * not already marked retired by an earlier reconcile pass.
+ *
+ * Pure: `doneIds` is the caller's already-loaded Notion snapshot Set (or any
+ * Set-like with `.has`). No I/O here — the caller does the ledger read and
+ * the eventual Linear mutation.
+ *
+ * `liveNotionIds` (Codex ship-check finding, BRO-2384) excludes any page
+ * whose task is STILL present in the live local mirror — that page is
+ * already the mirror-driven reconcile pass's job (linear-import.js's own
+ * `r.notCurated`), and without this exclusion a page that is BOTH still-live
+ * AND already in the ledger gets retired and logged twice in the same run.
+ */
+function findStaleDuplicates(rows, doneIds, liveNotionIds = new Set()) {
+  const out = [];
+  for (const row of indexByPageId(rows).values()) {
+    if (!row.linearId) continue;
+    if (row.retiredReason) continue;
+    if (!doneIds.has(row.pageId)) continue;
+    if (liveNotionIds.has(row.pageId)) continue;
+    out.push(row);
+  }
+  return out;
+}
+
+/**
+ * Is it safe to overwrite `mapping[taskId]` with a retirement/revival for
+ * `row` (the ledger row driving the write)? (Codex ship-check finding,
+ * BRO-2384.)
+ *
+ * Local mirror task ids get reused/renumbered on resync (BRO-2468) — a
+ * ledger row's `taskId` can be stale, now belonging to a DIFFERENT,
+ * currently-open task. Writing `mapping[taskId]` unconditionally on a bare
+ * id match would overwrite that unrelated task's mapping entry with this
+ * row's linearId/retiredReason, corrupting it (and, via the revive path,
+ * exposing an issue the owner never retired to being wrongly "revived").
+ *
+ * Safe when there is no existing entry for this taskId yet, OR the existing
+ * entry already names THIS SAME Linear issue (linearId agrees) — i.e. the
+ * mapping row really is about the same piece of work the ledger row is.
+ *
+ * Pure: takes the already-looked-up `existingEntry` (or null/undefined), not
+ * the whole mapping object or a taskId to look up — the caller does the read.
+ */
+function mapWriteAllowed(existingEntry, row) {
+  if (!existingEntry) return true;
+  if (!existingEntry.linearId) return true;
+  return existingEntry.linearId === row.linearId;
+}
+
+/**
  * checkpointLedger(ledgerPath, label) — commit the ledger where it lies, now.
  *
  * Why this exists (incident 2026-08-20, S3-T7c): the ledger is the ONLY record
@@ -246,4 +318,6 @@ module.exports = {
   appendRow,
   migrateLegacy,
   unaccountedPageIds,
+  findStaleDuplicates,
+  mapWriteAllowed,
 };

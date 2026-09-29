@@ -18,8 +18,11 @@
  *
  * No hardcoded IDs - works for any show!
  *
- * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing]
+ * Usage: node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only] [--bad-images] [--dry-run] [--audit-existing] [--force-google]
  */
+
+const { isTourShow, applyTourInheritance } = require('./lib/tour-family');
+require('./lib/load-env').loadEnv();
 
 const https = require('https');
 const fs = require('fs');
@@ -35,6 +38,7 @@ const { resolveMarketSlug } = require('./lib/verify-image');
 const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { findNewerSameTitleProduction } = require('./lib/canon-poster-art');
+const { buildRetryCandidateImages } = require('./lib/google-image-retry-candidate.js');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
 
@@ -45,7 +49,8 @@ const USAGE = `fetch-show-images-auto.js — discover + fetch show images (Today
 Usage:
   node scripts/fetch-show-images-auto.js [--show=show-id] [--missing|--missing-only]
     [--bad-images] [--dry-run] [--audit-existing] [--concurrency=N] [--no-verify]
-    [--flagged] [--max-runtime=MIN]
+    [--flagged] [--max-runtime=MIN] [--force-google]
+    --force-google  ignore the per-show Google Images backoff (data/audit/image-search-attempts.json)
   node scripts/fetch-show-images-auto.js --help, -h   print this usage and exit — no fetches/writes
 `;
 
@@ -68,6 +73,13 @@ const BRIGHTDATA_TOKEN = process.env.BRIGHTDATA_TOKEN;
 
 // Module-level dry-run state (set in main)
 let dryRunMode = false;
+// BRO-4243: per-show backoff for the paid Google Images tier (25 SB credits
+// per search, 2 per show). --force-google bypasses it for a manual retry.
+const {
+  shouldSkipGoogleImages, recordGoogleImagesAttempt, loadImageSearchAttempts, saveImageSearchAttempts,
+} = require('./lib/image-search-backoff');
+let googleAttempts = null; // lazily loaded map; persisted after each attempt (not in dry-run)
+let forceGoogle = false;
 let dryRunResults = [];
 
 // Module-level shows data (loaded in main, referenced by processOneShow guard)
@@ -814,19 +826,15 @@ async function fetchFromIBDB(show) {
 // Fetch show poster from ShowScore (show-score.com)
 // ShowScore hosts poster images on CloudFront. We scrape the OG image or poster from the page.
 async function fetchFromShowScore(show) {
-  const category = show.category || 'broadway';
-  const ssCategory = category === 'off-broadway' ? 'off-broadway-shows'
-    : category === 'west-end' ? 'london-shows'
-    : 'broadway-shows';
-
-  // ShowScore slugs: lowercase, hyphens, no special chars
-  const slug = show.title.toLowerCase()
-    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    .replace(/['']/g, '').replace(/&/g, 'and')
-    .replace(/[^a-z0-9\s-]/g, '').replace(/\s+/g, '-').replace(/-+/g, '-')
-    .replace(/^-|-$/g, '');
-
-  const ssUrl = `https://www.show-score.com/${ssCategory}/${slug}`;
+  // Same resolver the gap audit uses (lib/show-score-discover.js): curated
+  // entries first (incl. London pages under /uk/london/), constructed urls for
+  // NYC categories only, and never a constructed url another show already owns
+  // (a same-title revival's page). The old inline slug sent off-west-end and
+  // regional shows to the NYC production's page, and west-end to a
+  // non-existent /london-shows/ path.
+  const { showScoreUrlForShow, loadShowScoreUrlMap } = require('./lib/show-score-discover');
+  const ssUrl = showScoreUrlForShow(show, loadShowScoreUrlMap(path.join(__dirname, '..')));
+  if (!ssUrl) return null;
   console.log(`   Trying ShowScore: ${ssUrl}`);
 
   try {
@@ -907,7 +915,7 @@ function fetchTodayTixApiPage(offset = 0, limit = 100, location = 1) {
   return new Promise((resolve, reject) => {
     const url = `https://api.todaytix.com/api/v2/shows?location=${location}&limit=${limit}&offset=${offset}`;
 
-    https.get(url, (response) => {
+    const req = https.get(url, { timeout: 15000 }, (response) => {
       if (response.statusCode !== 200) {
         reject(new Error(`TodayTix API HTTP ${response.statusCode}`));
         return;
@@ -923,7 +931,9 @@ function fetchTodayTixApiPage(offset = 0, limit = 100, location = 1) {
         }
       });
       response.on('error', reject);
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
@@ -1278,7 +1288,9 @@ function savePlaybillUrls(data) {
 let playbillUrlCache = null;
 
 function slugify(str) {
-  return str.toLowerCase()
+  // Fold diacritics first: "Les Misérables" must slug to les-miserables, not
+  // shred at the accent (tests/unit/sibling-matchers-diacritics.test.mjs).
+  return require('./lib/title-match').foldDiacritics(str).toLowerCase()
     .replace(/['']/g, '')
     .replace(/[^a-z0-9]+/g, '-')
     .replace(/^-+|-+$/g, '');
@@ -1657,6 +1669,15 @@ function filterGoogleCandidates(results, maxCount = 10) {
     .slice(0, maxCount);
 }
 
+// Record one Google Images tier outcome for the BRO-4243 backoff and persist it
+// immediately (runs can time out at --max-runtime). No writes in dry-run.
+function noteGoogleAttempt(showId, success) {
+  if (dryRunMode) return;
+  if (googleAttempts === null) googleAttempts = loadImageSearchAttempts();
+  googleAttempts = recordGoogleImagesAttempt(googleAttempts, showId, success);
+  try { saveImageSearchAttempts(googleAttempts); } catch (e) { console.warn(`   ⚠ could not save image-search-attempts.json: ${e.message}`); }
+}
+
 async function fetchFromGoogleImages(show) {
   const year = show.openingDate ? show.openingDate.substring(0, 4) : '';
   const safeTitle = show.title.replace(/"/g, '');
@@ -1676,6 +1697,8 @@ async function fetchFromGoogleImages(show) {
   let posterBuffer = null;
   let squareCandidates = [];
   let posterCandidates = [];
+  let squareErrored = false;
+  let posterErrored = false;
 
   // ============================================================
   // SEARCH 1: Square images (for homepage thumbnail cards)
@@ -1726,6 +1749,7 @@ async function fetchFromGoogleImages(show) {
     }
   } catch (err) {
     console.log(`   ⚠ Square search failed: ${err.message}`);
+    squareErrored = true;
   }
 
   await sleep(1500);
@@ -1775,6 +1799,7 @@ async function fetchFromGoogleImages(show) {
     }
   } catch (err) {
     console.log(`   ⚠ Poster search failed: ${err.message}`);
+    posterErrored = true;
   }
 
   // ============================================================
@@ -1782,6 +1807,9 @@ async function fetchFromGoogleImages(show) {
   // ============================================================
   if (!thumbnailBuffer && !posterBuffer) {
     console.log(`   ✗ No usable images found`);
+    // BRO-4243: both searches THREW (provider outage/exhaustion) — not evidence
+    // the show has no findable art, so the caller must not back it off.
+    if (squareErrored && posterErrored) return { searchErrored: true };
     return null;
   }
 
@@ -1828,7 +1856,15 @@ async function fetchFromGoogleImages(show) {
 // Try next Google Images candidate after rejection
 // Re-uses the remaining candidates from the initial search
 // Handles both ScrapingBee (base64) and Bright Data (direct URL) results
-async function tryNextGoogleCandidate(show, remainingCandidates) {
+//
+// previousPoster: the poster path (if any) fetchFromGoogleImages already wrote
+// to disk before its thumbnail candidate got rejected. The poster search is
+// independent of which square/thumbnail candidate wins verification, so a
+// retry here must NOT null it out — that orphaned a real poster.jpg on disk
+// while shows.json kept images.poster: null forever (card #795: gimme-a-sign,
+// el-quijote both stuck "missing_poster" with a valid poster file already
+// sitting unreferenced in public/images/shows/).
+async function tryNextGoogleCandidate(show, remainingCandidates, previousPoster = null) {
   for (const result of remainingCandidates) {
     try {
       const buffer = await extractImageBuffer(result);
@@ -1845,9 +1881,7 @@ async function tryNextGoogleCandidate(show, remainingCandidates) {
 
       const nextRemaining = remainingCandidates.slice(remainingCandidates.indexOf(result) + 1);
       return {
-        thumbnail: `/images/shows/${show.id}/thumbnail.jpg`,
-        poster: null,
-        hero: null,
+        ...buildRetryCandidateImages({ showId: show.id, previousPoster }),
         _verifyBuffer: buffer,
         _remainingCandidates: nextRemaining,
       };
@@ -2193,25 +2227,42 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   // Step 4 (NEW): Google Images search for promotional art
   // Broad coverage — finds thumbnail art that structured sources miss
   // Loops through multiple candidates if verification rejects the first one
-  let googleImages = await fetchFromGoogleImages(show);
+  if (googleAttempts === null) googleAttempts = loadImageSearchAttempts();
+  const googleGate = forceGoogle ? { skip: false } : shouldSkipGoogleImages(googleAttempts[show.id], Date.now(), show);
+  let googleAccepted = false;
+  let googleImages = null;
+  let googleErrored = false;
+  if (googleGate.skip) {
+    console.log(`   ⏭ Google Images skipped: ${googleAttempts[show.id].failures} recent failure(s), retry after ${googleGate.retryAt} (BRO-4243; --force-google to override)`);
+  } else {
+    googleImages = await fetchFromGoogleImages(show);
+    if (googleImages && googleImages.searchErrored) { googleErrored = true; googleImages = null; }
+  }
   while (googleImages && googleImages.thumbnail) {
-    // Save remaining candidates before verifyAndCollect deletes them
+    // Save remaining candidates, and any already-saved poster, before
+    // verifyAndCollect/the rejection path below can lose them. The poster
+    // search is independent of the thumbnail candidate being verified here,
+    // so a rejected thumbnail must not cost us a poster already on disk.
     const remaining = googleImages._remainingCandidates || [];
+    const previousPoster = googleImages.poster || null;
     const candidate = await verifyAndCollect(googleImages, show, 'Google Images', verifyCtx);
     if (candidate) {
       candidates.push(candidate);
+      googleAccepted = true;
       if (candidate.verifyResult?.imageType === 'promotional_art' &&
           candidate.verifyResult?.confidence === 'high') {
         console.log(`   ★ Promotional art found at high confidence — using this`);
+        noteGoogleAttempt(show.id, true);
         return candidate.images;
       }
-      if (!verifyCtx) return candidate.images;
+      if (!verifyCtx) { noteGoogleAttempt(show.id, true); return candidate.images; }
       break;  // Accepted — stop trying more candidates
     }
     // Rejected — try next candidate from the same search results
     if (remaining.length === 0) break;
-    googleImages = await tryNextGoogleCandidate(show, remaining);
+    googleImages = await tryNextGoogleCandidate(show, remaining, previousPoster);
   }
+  if (!googleGate.skip && !googleErrored) noteGoogleAttempt(show.id, googleAccepted);
 
   // Step 5 (was Step 4): Playbill fallback (landscape OG image only)
   // NEEDS VERIFICATION — last resort
@@ -2536,6 +2587,9 @@ async function main() {
     ? new Set(showFilter.split(',').map(s => s.trim()).filter(Boolean))
     : null;
   const onlyMissing = args.includes('--missing') || args.includes('--missing-only');
+  // Targeted runs (--show=, incl. the bounded audit-imageless self-heal
+  // dispatches) always search: the backoff is for the recurring --missing sweep.
+  forceGoogle = args.includes('--force-google') || !!showFilter;
   const badImagesOnly = args.includes('--bad-images');
   const concurrency = parseInt(args.find(a => a.startsWith('--concurrency='))?.split('=')[1] || '5', 10);
   // Verification is ON by default — use --no-verify to skip (faster but less safe)
@@ -2713,6 +2767,7 @@ async function main() {
     // Include all statuses — hero gaps exist across all eras
     shows = showsData.shows;
     shows = shows.filter(s => {
+      if (isTourShow(s)) return false; // tours inherit the parent's art (BRO-4262)
       if (!s.images) return false;
       const hasThumbOrPoster = s.images.thumbnail || s.images.poster;
       const hasHero = s.images.hero;
@@ -2800,6 +2855,22 @@ async function main() {
       dryRunResults = [];
       fs.mkdirSync(DRY_RUN_DIR, { recursive: true });
       console.log(`\nAuto-enabled DRY-RUN mode for safety (use --dry-run explicitly to suppress this message)`);
+    }
+  }
+
+  // National tours never title-search: TodayTix/SERP match on title and hand a
+  // tour its Broadway or West End art. They take the parent's archived art
+  // instead (BRO-4262).
+  const tourCount = shows.filter(isTourShow).length;
+  if (tourCount) {
+    shows = shows.filter(s => !isTourShow(s));
+    console.log(`Skipping ${tourCount} national tour(s): they inherit their Broadway parent's art`);
+  }
+  if (!dryRunMode) {
+    const inherited = applyTourInheritance(showsData.shows);
+    if (inherited.length) {
+      console.log(`Tours given their parent's art/synopsis: ${inherited.join(', ')}`);
+      saveShows(showsData);
     }
   }
 

@@ -147,6 +147,7 @@ REFSPECS=$(printf '%s' "$command" | awk '
     if(in_push && raw ~ /^[;&|]+$/) exit         # && ; || — push cmd ended
     tok=raw
     gsub(/^[;&|(]+/, "", tok)
+    gsub(/["\047]/, "", tok)                      # "HEAD:main" -> HEAD:main (BRO-4238)
     if(tok=="push" && !in_push) { in_push=1; continue }
     if(!in_push) continue
     if(skipnext) { skipnext=0; continue }
@@ -160,6 +161,14 @@ REFSPECS=$(printf '%s' "$command" | awk '
 
 CANDIDATES=""
 CUR_BRANCH=$(git -C "$EVAL_ROOT" branch --show-current 2>/dev/null)
+# `bash scripts/lib/push-with-retry.sh [N] [branch]` has no `push` token for
+# the awk above; its destination is its 2nd positional arg (default main),
+# a HEAD->main push regardless of CUR_BRANCH (ported from the Mac master).
+if [ -z "$REFSPECS" ] && printf '%s' "$command" | grep -qE 'push-with-retry\.sh'; then
+  _PWR_DST=$(printf '%s' "$command" | sed -nE 's/.*push-with-retry\.sh[[:space:]]+[0-9]+[[:space:]]+([^[:space:];&|)]+).*/\1/p' | head -1)
+  [ -z "$_PWR_DST" ] && _PWR_DST="main"
+  case "$_PWR_DST" in main|refs/heads/main) REFSPECS="HEAD:main" ;; esac
+fi
 if [ -z "$REFSPECS" ]; then
   # Bare `git push` / wrapper script / gh pr merge: destination is the current
   # branch's upstream. Only gate when that's main.
@@ -174,7 +183,7 @@ else
       *)   src="$spec";       dst="$spec" ;;
     esac
     [ -z "$src" ] && continue           # `:branch` deletion — pushes nothing
-    case "${dst##*/}" in main) ;; *) continue ;; esac
+    case "$dst" in main|refs/heads/main) ;; *) continue ;; esac   # exact: not land/main (BRO-4238)
     if [ "$src" != "HEAD" ] && ! git -C "$EVAL_ROOT" rev-parse --verify --quiet "$src^{commit}" >/dev/null 2>&1; then
       src="HEAD"                        # unresolvable src — gate conservatively on HEAD
     fi
@@ -183,6 +192,26 @@ else
 $REFSPECS
 EOF
   [ -z "${CANDIDATES// /}" ] && exit 0  # explicit refspecs, none bound for main
+fi
+
+# ── Cloud sessions do not push main (BRO-4238; port of the Mac BRO-3425 block)
+# Reaching here means a push whose destination is main. Sessions land via
+# `git push origin HEAD:refs/heads/land/<name>` (land.yml re-runs the gates on
+# the rebased tree and fast-forwards main); a direct push skips those gates,
+# reviewed or not. This repo only: other repos' routines push their own main.
+# Only an EXECUTED push at a command boundary counts (quoted strings stripped
+# first), so `grep "git push origin main" file` passes. `gh pr merge` is caught
+# only when the checkout is on main (like the Mac master); `bash -c "..."`
+# pushes are not seen (push-ingress). Overrides: LAND_ENFORCE_OFF=1 (prefix
+# or env); REVIEW_GATE_DISABLE=1 skips this whole hook, block included.
+_DPA_REMOTE=$(git -C "$EVAL_ROOT" remote get-url origin 2>/dev/null | tr '[:upper:]' '[:lower:]')
+_DPA_STRIPPED=$(printf '%s' "$command" | sed -E "s/\"[^\"]*\"//g; s/'[^']*'//g")
+if printf '%s' "$_DPA_REMOTE" | grep -qE 'thomaspryor/broadwayscore(\.git)?/?$' \
+   && [ "${LAND_ENFORCE_OFF:-0}" != "1" ] \
+   && ! printf '%s' "$command" | grep -qE '(^|[[:space:];&|(])LAND_ENFORCE_OFF=1([[:space:]]|;|$)' \
+   && printf '%s' "$_DPA_STRIPPED" | grep -qE '(^|[;&|(][[:space:]]*|&&[[:space:]]*|\|\|[[:space:]]*)([A-Z_][A-Z0-9_]*=[^[:space:]]*[[:space:]]+)*(env[[:space:]]+([A-Z_][A-Z0-9_]*=[^[:space:]]*[[:space:]]+)*)?((command|time|exec)[[:space:]]+)*(git([[:space:]]+(-[Cc][[:space:]]+[^[:space:]]+|--?[^[:space:]]+))*[[:space:]]+push|(bash[[:space:]]+)?[^[:space:]]*push-with-retry\.sh|gh[[:space:]]+pr[[:space:]]+merge)'; then
+  echo "🛑 BLOCKED: sessions never push main directly (BRO-4238). Land it instead: git push origin HEAD:refs/heads/land/<name>, then follow the Land run (CLOUD.md § Landing); land.yml runs the gates on the rebased tree and fast-forwards main. Data-only changes land the same way. Emergency override only: LAND_ENFORCE_OFF=1 git push …" >&2
+  exit 2
 fi
 
 # Compound-command candidates (round 3 P0-1): the pushed state may not exist as

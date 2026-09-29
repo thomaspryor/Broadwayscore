@@ -16,7 +16,7 @@ beforeEach(() => {
   tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'review-guard-'));
 });
 afterEach(() => {
-  fs.rmSync(tmpDir, { recursive: true, force: true });
+  fs.rmSync(tmpDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
 });
 
 describe('safeWriteReview', () => {
@@ -180,7 +180,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, 'nytimes--jesse-green.json');
       assert.equal(written.duplicateReason, 'url-collision-detected-at-write');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -197,7 +197,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const written = JSON.parse(fs.readFileSync(newPath, 'utf8'));
       assert.equal(written.duplicateOf, undefined);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -225,7 +225,44 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateReason, null);
       assert.match(written.duplicateClearReason || '', /URL .* no longer matches sibling/);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+
+  test('BRO-2409: does NOT self-heal a stale duplicateOf when the sibling URL differs only by query string', () => {
+    // Two fetches of the SAME article commonly differ by an outlet's own
+    // share/recirculation param (here: NYT's ?_r=1&, the exact winslow-boy-2013
+    // live-corpus shape). Before BRO-2409 this self-heal used bare
+    // normalizeUrl(), which does not enumerate every outlet's tracking params,
+    // so it wrongly saw a "mismatch" and cleared a still-correct duplicateOf —
+    // one of the two independent repairs that could each clear one half of an
+    // A<->B pair, leaving BOTH members unsuppressed.
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'query-string-noise-'));
+    try {
+      fs.writeFileSync(path.join(dir, 'nytimes--charles-isherwood.json'), JSON.stringify({
+        url: 'https://www.nytimes.com/2013/10/18/theater/reviews/the-winslow-boy-is-revived.html',
+        criticName: 'Charles Isherwood',
+      }, null, 2));
+
+      const ourPath = path.join(dir, 'nytimes--ben-brantley.json');
+      safeWriteReview(ourPath, {
+        url: 'https://www.nytimes.com/2013/10/18/theater/reviews/the-winslow-boy-is-revived.html?_r=1&',
+        criticName: 'Ben Brantley',
+        duplicateOf: 'nytimes--charles-isherwood.json',
+        duplicateReason: 'byline-explosion-collapse',
+      });
+
+      const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
+      // duplicateOf survives — the self-heal above must not see these as
+      // mismatched and null it out. (The write-time URL-collision detector
+      // separately re-confirms the collision from scratch and re-stamps its
+      // own standard reason — a harmless, expected side effect of the two
+      // URLs now correctly comparing equal — so duplicateReason isn't
+      // asserted verbatim here.)
+      assert.equal(written.duplicateOf, 'nytimes--charles-isherwood.json');
+      assert.equal(written.duplicateClearReason, null);
+    } finally {
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -251,7 +288,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateReason, null);
       assert.match(written.duplicateClearReason || '', /sibling .* no longer exists/);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -272,7 +309,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, 'a.json');
       assert.equal(written.duplicateReason, 'url-collision-detected-at-write');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -302,7 +339,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       // stays pointed at the sibling instead of being wrongly self-healed away.
       assert.equal(written.duplicateOf, 'nytimes--jesse-green.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -323,7 +360,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, undefined);
       assert.equal(written._duplicateOfCleared, 'auto:2026-04-12 different critics');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -347,7 +384,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, 'christopher-bonanos.json');
       assert.equal('_duplicateOfCleared' in written, false);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -373,7 +410,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       assert.equal(written.duplicateOf, 'nysr--bernardo.json');
       assert.equal(written.duplicateReason, 'url-collision-detected-at-write');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -395,7 +432,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const written = JSON.parse(fs.readFileSync(ourPath, 'utf8'));
       assert.equal(written.duplicateOf, undefined);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -406,7 +443,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const result = checkUrlCollision(path.join(dir, 'b.json'), { url: 'https://example.com/b' });
       assert.equal(result, null);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -417,7 +454,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const result = checkUrlCollision(path.join(dir, 'b.json'), { url: 'https://example.com/same' });
       assert.equal(result, 'a.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -432,7 +469,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       });
       assert.equal(result, 'nytimes--helen-shaw.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -443,7 +480,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const result = checkUrlCollision(path.join(dir, 'b.json'), { url: 'https://example.com/article' });
       assert.equal(result, 'a.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -453,7 +490,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       const result = checkUrlCollision(path.join(dir, 'b.json'), { url: { nested: 'object' } });
       assert.equal(result, null);
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -473,7 +510,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       });
       assert.equal(result, 'metro-uk--brooke-ivey-johnson.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -488,7 +525,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       });
       assert.equal(result, 'a.json');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 
@@ -505,7 +542,7 @@ describe('checkUrlCollision (Card #4 wire-up)', () => {
       });
       assert.equal(result, null, 'mid-path /amp/ should not collide with canonical');
     } finally {
-      fs.rmSync(dir, { recursive: true, force: true });
+      fs.rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
     }
   });
 });
@@ -1232,7 +1269,7 @@ describe('protectStagedDeletions (BRO-2559)', () => {
     git(['config', 'user.name', 'Test']);
   });
   afterEach(() => {
-    fs.rmSync(repoDir, { recursive: true, force: true });
+    fs.rmSync(repoDir, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   });
 
   test('reverses a staged deletion of a file that carries a real protected field at HEAD', () => {

@@ -11,6 +11,7 @@ import { chromium } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
 const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
+const { resolveIbdbTitleIndices } = require('./lib/ibdb-table-columns');
 
 const IBDB_STATS_URL = 'https://www.ibdb.com/statistics/';
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
@@ -18,7 +19,10 @@ const GROSSES_PATH = path.join(__dirname, '../data/grosses.json');
 // Loose floor matching the existing per-row `cells.length >= 2` filter below —
 // this only guards against the page dropping HTML tables entirely (e.g. a
 // switch to a JS grid), not column-count drift within a still-present table
-// (task #1331).
+// (task #1331). Column-position drift within a present table is handled by
+// resolveIbdbTitleIndices below (BRO-2375) — gross/performances/attendance
+// were already content-sniffed rather than position-read, so only the title
+// column (previously always cells[0]) needed a label-based fix.
 const TABLE_SCHEMA = { minCells: 2 };
 
 interface ShowData {
@@ -128,6 +132,12 @@ async function scrapeIBDB(): Promise<void> {
       throw err;
     }
 
+    // Resolve each table's title column from its own header row (BRO-2375)
+    // instead of assuming cells[0] — page.evaluate serializes its callback
+    // to run in-page, so indices are resolved here in Node and passed in as
+    // a plain-data argument.
+    const titleIndices = resolveIbdbTitleIndices(headerRows);
+
     // Map to store all-time stats by normalized show title
     const allTimeStats = new Map<string, {
       gross: number | null;
@@ -136,7 +146,7 @@ async function scrapeIBDB(): Promise<void> {
     }>();
 
     // Try to extract from any available tables
-    const tableData = await page.evaluate(() => {
+    const tableData = await page.evaluate((titleIndices: number[]) => {
       const tables = document.querySelectorAll('table');
       const results: Array<{
         title: string;
@@ -145,13 +155,15 @@ async function scrapeIBDB(): Promise<void> {
         attendance: string;
       }> = [];
 
-      tables.forEach((table) => {
+      tables.forEach((table, tableIdx) => {
+        const titleIdx = titleIndices[tableIdx] ?? 0;
         const rows = table.querySelectorAll('tbody tr');
         rows.forEach((row) => {
           const cells = row.querySelectorAll('td');
           if (cells.length >= 2) {
             // Try to identify what type of data this is
-            const firstCell = cells[0]?.textContent?.trim() || '';
+            const titleCell = cells[titleIdx] || cells[0];
+            const firstCell = titleCell?.textContent?.trim() || '';
             const values = Array.from(cells).map(c => c.textContent?.trim() || '');
 
             results.push({
@@ -165,7 +177,7 @@ async function scrapeIBDB(): Promise<void> {
       });
 
       return results;
-    });
+    }, titleIndices);
 
     console.log(`Found ${tableData.length} entries in IBDB tables`);
 

@@ -156,7 +156,7 @@ test('REST path: single-file push succeeds, sends a correctly-shaped request, an
     assert.equal(req.entries[0].mode, '100644');
     assert.ok(req.expectedTreeSha, 'a locally-built expectedTreeSha is sent for server-side verification');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -187,7 +187,7 @@ test('REST path: a race response retries WITHOUT re-uploading the already-cached
     assert.equal(blobCalls.length, 1, 'blob upload happens ONCE, not once per retry attempt (P0-1)');
     assert.equal(pushCalls.length, 2, 'attempt-push is called once per retry, unlike blob upload');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -214,7 +214,7 @@ test('REST path: executable mode (100755) is preserved in the tree entry', () =>
     const req = calls.find((c) => c.mode === 'attempt-push').req;
     assert.equal(req.entries[0].mode, '100755');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -242,7 +242,7 @@ test('REST path: a delete is sent with sha:null', () => {
     const blobCalls = calls.filter((c) => c.mode === 'create-blob');
     assert.equal(blobCalls.length, 0, 'a pure delete never uploads a blob');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -267,7 +267,7 @@ test('REST path: a fatal outcome exits non-zero without exhausting all retries',
     const pushCalls = calls.filter((c) => c.mode === 'attempt-push');
     assert.equal(pushCalls.length, 1, 'a fatal outcome must not burn the remaining retry budget');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -310,7 +310,7 @@ test('REST path: an apiFallbackMerge path uploads a FRESH blob for the actually-
     assert.equal(req.entries[0].path, 'data/audit/alert-router-attempts.jsonl');
     assert.ok(req.entries[0].sha, 'merge path entry carries the freshly-uploaded blob sha');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -341,7 +341,7 @@ test('REST path: a throttled outcome backs off and retries (does not burn the wh
     const pushCalls = calls.filter((c) => c.mode === 'attempt-push');
     assert.equal(pushCalls.length, 2, 'a throttled outcome retries rather than aborting');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -372,6 +372,6 @@ test('REST path: opted in but no token/slug resolves falls back to the git-push 
     assert.match(stdout, /^[0-9a-f]{40}$/, 'lands via the real git-push path, not the stub');
     assert.equal(calls.length, 0, 'the REST module is never invoked when the opt-in preconditions are not met');
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

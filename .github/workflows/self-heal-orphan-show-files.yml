@@ -1,0 +1,141 @@
+name: Self-Heal Orphan Slim Show Files
+
+# BRO-3507 (follow-on to BRO-3425): drains the "Audit orphan slim show files"
+# gate in test.yml's data-validation job (~scripts/audit-orphan-show-ids.js
+# bare, no flags) DAILY instead of waiting for a human to notice it's red and
+# run --fix by hand. BRO-3425 measured main red on 143 of 150 runs over 8
+# days; a gate with no scheduled heal sits red between whoever last noticed
+# it and whoever notices next. Report/fix/push/notify shape matches
+# .github/workflows/fix-circular-duplicate-pairs.yml.
+#
+# Deletion goes through scripts/apply-orphan-grace-period.js, NOT
+# `audit-orphan-show-ids.js --fix` directly, for two reasons found in an
+# adversarial pre-ship review of this workflow:
+#   1. audit-orphan-show-ids.js's exit code reflects the orphan count
+#      CAPTURED BEFORE its own --fix deletion runs, so it exits 1 even after
+#      a fully successful fix. A step naively trusting that exit code would
+#      report failure (and skip the commit below) on every single run that
+#      found anything to fix.
+#   2. Instant deletion is unsafe: public/data/shows/*.json (public repo) and
+#      data/shows.json (private core-data repo) are checked out
+#      independently here, so a rename/consolidation mid-flight can make a
+#      show that's about to be legitimately re-added look identically
+#      orphaned to one that's been dead for months. apply-orphan-grace-period.js
+#      only deletes an id once it's looked orphaned for 24h straight (see
+#      scripts/lib/orphan-grace-period.js) — long enough for any in-flight
+#      rename to resolve on its own.
+#
+# It still only ever touches slim files under public/data/shows/ — it never
+# writes or regenerates a show's content, so this can't reintroduce the
+# "regenerate public JSONs from core-data" hazard documented in
+# .github/workflows/CLAUDE.md's "Public Show JSON Safety" section.
+# audience-buzz.json / show-score.json orphan keys stay report-only (require
+# a manual rename, per the underlying audit's own output) — this workflow
+# does not touch them.
+
+on:
+  schedule:
+    # Daily at 3:15 AM UTC — off-peak, no collision with the hourly/half-
+    # hourly data pollers or the other daily self-heals (fix-circular-
+    # duplicate-pairs.yml at 11:40, clear-stale-duplicate-of.yml at 11:30).
+    - cron: '15 3 * * *'
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Report only, no fix'
+        required: false
+        default: 'false'
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: self-heal-orphan-show-files
+  cancel-in-progress: false
+
+jobs:
+  self-heal:
+    name: Self-heal orphan slim show files
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          ref: main
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      # shows.json (private core-data) is the ground truth this audit diffs
+      # public/data/shows/*.json against — without it every slim file looks
+      # orphaned (the script's own MIN_PLAUSIBLE_SHOWS floor refuses to run
+      # rather than let that happen, but a real checkout avoids tripping it).
+      - name: Checkout core data
+        uses: ./.github/actions/checkout-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+
+      - uses: ./.github/actions/setup-node
+        with:
+          configure-git: 'true'
+
+      - name: Run audit (report)
+        id: audit
+        run: |
+          set +e
+          node scripts/audit-orphan-show-ids.js --json > /tmp/orphan-audit.json 2>/tmp/orphan-audit.err
+          STATUS=$?
+          cat /tmp/orphan-audit.json /tmp/orphan-audit.err
+          # A safety refusal (e.g. MIN_PLAUSIBLE_SHOWS floor) or a crash prints
+          # a stack trace, not JSON — that must be a loud failure, not silently
+          # read as "count=0, nothing to do" (an earlier draft of this step did
+          # exactly that and would have hidden a real corpus problem forever).
+          COUNT=$(node -e "console.log(JSON.parse(require('fs').readFileSync('/tmp/orphan-audit.json','utf8')).orphans.slimShowFiles.length)" 2>/dev/null)
+          if [ -z "$COUNT" ]; then
+            echo "::error::audit-orphan-show-ids.js --json produced unparseable output (exit $STATUS) — likely a safety refusal or crash, not zero orphans. See output above."
+            exit 1
+          fi
+          echo "count=$COUNT" >> "$GITHUB_OUTPUT"
+
+      - name: Delete orphans past the 24h grace period
+        if: steps.audit.outputs.count != '0' && inputs.dry_run != 'true'
+        run: node scripts/apply-orphan-grace-period.js /tmp/orphan-audit.json
+
+      - name: Commit + push
+        if: inputs.dry_run != 'true'
+        run: |
+          # Commit even when nothing was DELETED this run: the grace-period
+          # state file (first-seen timestamps) still needs to persist so an
+          # id that just crossed 24h isn't forgotten and an id that resolved
+          # gets pruned — see scripts/lib/orphan-grace-period.js.
+          git add -u public/data/shows/
+          git add data/audit/orphan-show-ids-grace.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "Nothing to commit"
+            exit 0
+          fi
+          git commit -m "chore: self-heal orphan slim show file(s) past grace period [orphan-show-heal]"
+          bash scripts/lib/push-with-retry.sh
+
+      - name: Summary
+        run: |
+          {
+            echo "## Orphan Slim Show File Sweep"
+            echo ""
+            echo "**Orphan slim files detected:** ${{ steps.audit.outputs.count }}"
+            if [ "${{ inputs.dry_run }}" = "true" ]; then
+              echo "**Mode:** dry-run (no commit)"
+            elif [ "${{ steps.audit.outputs.count }}" = "0" ]; then
+              echo "**Mode:** no fix needed"
+            else
+              echo "**Mode:** deleted anything past its 24h grace period + pushed"
+            fi
+          } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Self-Heal Orphan Slim Show Files Failed'
+          severity: 'warning'

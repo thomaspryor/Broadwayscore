@@ -27,6 +27,21 @@
  * (`daysAgoISO(1)`), not by widening the assertion.
  */
 
+/**
+ * The real system clock, immune to already running inside a process this
+ * same preload has shimmed (BRO-1987 — tests/unit/time-bomb-detector.test.mjs
+ * spawns further clock-shifted children to test THIS mechanism, and reading
+ * plain Date.now() there double-applied whatever shift was already active in
+ * the outer process to every date it computed for its own children). Export
+ * this instead of re-deriving it locally — any other meta-test that needs to
+ * know "what time is it really" while this preload may already be active
+ * would otherwise be one Date.now() away from the identical bug.
+ */
+export function realNowMs() {
+  const inheritedShiftDays = Number(process.env.BSC_CLOCK_SHIFT_DAYS || 0);
+  return Date.now() - inheritedShiftDays * 86400000;
+}
+
 const SHIFT_DAYS = Number(process.env.BSC_CLOCK_SHIFT_DAYS || 0);
 
 if (Number.isFinite(SHIFT_DAYS) && SHIFT_DAYS !== 0) {

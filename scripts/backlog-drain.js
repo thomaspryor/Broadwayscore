@@ -126,7 +126,10 @@ function skipCacheFresh(entry, nowMs, ttlMs = HUMAN_GATED_CACHE_TTL_MS) {
 // slot and never reaching attempt-memory. 3h is generous: even the largest
 // (M) envelope's wall-clock cap is 120min; this only fires for a spawn that
 // never even started.
-const ORPHAN_TIMEOUT_H = 3;
+// Single source of truth: scripts/lib/dispatch-reconcile.js, the module this
+// value is handed straight back to as classifyDispatches' `orphanTimeoutH`.
+// All three reconcilers used to declare their own `= 3` (BRO-3321).
+const ORPHAN_TIMEOUT_H = dispatchReconcile.ORPHAN_TIMEOUT_H;
 
 const USAGE = `backlog-drain.js — rate-limited whole-pool drain dispatcher (task #654).
 
@@ -354,7 +357,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
   for (const { dispatch: d, cardId: taskId, job, kind } of decisions) {
     if (kind === dispatchReconcile.DECISION_KINDS.ORPHAN) {
       newEntries.push({
-        event: 'card-fail', cardId: taskId, contentHash: d.contentHash, usd: 0,
+        event: 'card-fail', cardId: taskId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: 0,
         note: `spawn never observed within ${ORPHAN_TIMEOUT_H}h of dispatch (likely refused: runner disabled, live cmux duplicate, or lease already held)`,
       });
       continue;
@@ -364,7 +367,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
       // the orphan bound: the resume child died before spawning, and the
       // attempt scores as a fail.
       newEntries.push({
-        event: 'card-fail', cardId: taskId, contentHash: d.contentHash, usd: Number(job.costUSD) || 0,
+        event: 'card-fail', cardId: taskId, contentHash: d.contentHash, judgedDispatchTs: d.ts, usd: Number(job.costUSD) || 0,
         note: `resume recorded (job ${job.jobId}) but no successor session spawned within ${ORPHAN_TIMEOUT_H}h`,
       });
       continue;
@@ -423,7 +426,7 @@ function reconcileOutcomes(drainLedgerEntries, tasksById, dispatchLedgerEntries,
     newEntries.push({
       event: outcome,
       cardId: taskId,
-      contentHash: d.contentHash,
+      contentHash: d.contentHash, judgedDispatchTs: d.ts,
       usd: Number(job.costUSD) || 0,
       note: notes[outcome],
       strandedCommits: stranded || undefined,

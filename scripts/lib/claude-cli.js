@@ -214,32 +214,118 @@ function strippedEnv(extra = {}) {
 // callers that only check exit code + JSON-parseability treat it as a real,
 // successful run. Probe the actual auth shape BEFORE spawning the real session
 // so a doomed pass never silently "succeeds" with a login prompt as its output.
+// BRO-2971: authPing() used to funnel EVERY failure shape into the same
+// generic {ok:false, detail} — a spawn that never even reached the auth
+// handshake (OS/jetsam killed it, or the kernel starved it before it could
+// run) read identically to a clean run that told us "Not logged in". The
+// on-call alert built on top (claude-auth-health.js) then paged with an
+// auth-revocation framing ("run `claude auth login`") for a problem that
+// re-running `claude setup-token` cannot fix — the box needs memory freed or
+// cmux sessions pruned (BRO-2789's OOM plateau / cmux's 33-runtime ceiling),
+// not a re-login. `reason` below is what lets a caller route the two
+// differently; SPAWN_STARVED never gets replaced with 'auth-rejected' just
+// because the wording of a future error message changes, since it keys off
+// the structural shape (r.error / signal / signal-derived exit code), not a
+// string grep.
+const SPAWN_STARVATION_ERROR_CODES = new Set(['ETIMEDOUT', 'ENOMEM', 'EAGAIN']);
+// SIGTERM/SIGKILL are the two signals an OS/jetsam resource kill or a
+// wall-clock timeout kill (this file's own runClaudeCli included) actually
+// sends. Deliberately NOT "any signal": a crash (SIGSEGV/SIGABRT/SIGILL) is a
+// real defect in the binary, not resource starvation, and misclassifying it
+// as starvation would send on-call to free memory for a crash bug (ship-check
+// / adversarial review finding, BRO-2971).
+const SPAWN_STARVATION_SIGNALS = new Set(['SIGTERM', 'SIGKILL']);
+// Shell exit-code convention for "killed by signal N" is 128+N — 137=SIGKILL,
+// 143=SIGTERM. Checked alongside r.signal because a wrapper script that traps
+// the signal and re-exits with this convention loses spawnSync's own `signal`
+// field.
+const SIGNAL_EXIT_CODES = new Set([137, 143]);
+const AUTH_PING_REASONS = Object.freeze({
+  OK: 'ok',
+  SPAWN_STARVED: 'spawn-starved',
+  SPAWN_ERROR: 'spawn-error',
+  AUTH_REJECTED: 'auth-rejected',
+});
+
+/**
+ * Classify a failed authPing() spawnSync result: did the process never even
+ * reach the auth handshake (spawn-level resource starvation, or some other
+ * spawn error like a missing binary), or did it run cleanly and the CLI
+ * itself said no (a real auth rejection)? Exported for tests (CLAUDE.md rule
+ * 15) — never re-derive this classification elsewhere.
+ * @param {{error?: Error, status?: number|null, signal?: string|null}} r
+ * @returns {'spawn-starved'|'spawn-error'|'auth-rejected'}
+ */
+function classifyAuthPingFailure(r) {
+  if (r.error) {
+    const code = r.error.code || '';
+    return SPAWN_STARVATION_ERROR_CODES.has(code) ? AUTH_PING_REASONS.SPAWN_STARVED : AUTH_PING_REASONS.SPAWN_ERROR;
+  }
+  if (r.signal) return SPAWN_STARVATION_SIGNALS.has(r.signal) ? AUTH_PING_REASONS.SPAWN_STARVED : AUTH_PING_REASONS.SPAWN_ERROR;
+  if (SIGNAL_EXIT_CODES.has(r.status)) return AUTH_PING_REASONS.SPAWN_STARVED;
+  return AUTH_PING_REASONS.AUTH_REJECTED;
+}
+
+// Pure priority merge for preflightAuth's two authPing() reasons, extracted
+// (CLAUDE.md rule 15) so the ordering is unit-testable without spawning a
+// real `claude` process for both probes. 'auth-rejected' only wins when
+// NEITHER probe result was a spawn-level failure — a caller alerting on this
+// must not tell on-call to re-login when the actual lever is freeing memory /
+// pruning cmux sessions (spawn-starved) or fixing a missing/misconfigured
+// binary (spawn-error). Adversarial review (BRO-2971) caught an earlier
+// version of this collapsing spawn-error into auth-rejected, which silently
+// dropped the distinction the moment it crossed this boundary.
+function worseAuthPingReason(a, b) {
+  if (a === AUTH_PING_REASONS.SPAWN_STARVED || b === AUTH_PING_REASONS.SPAWN_STARVED) return AUTH_PING_REASONS.SPAWN_STARVED;
+  if (a === AUTH_PING_REASONS.SPAWN_ERROR || b === AUTH_PING_REASONS.SPAWN_ERROR) return AUTH_PING_REASONS.SPAWN_ERROR;
+  return AUTH_PING_REASONS.AUTH_REJECTED;
+}
+
+const AUTH_PING_SETTINGS = JSON.stringify({ disableAllHooks: true });
+
+// Pure — exported so the test pins the hooks-off flag (BRO-4141).
+function authPingArgs() {
+  return ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json', '--settings', AUTH_PING_SETTINGS];
+}
+
 function authPing(extraEnv) {
   // Same effective-env-before-resolve fix as runClaudeCli (task #1780): probe
   // the SAME binary the real spawn would use, including any CLAUDE_BIN pin
   // passed via extraEnv — resolving against bare process.env would silently
   // ping a different binary than the one the pass actually runs.
   const pingEnv = { ...process.env, ...resolveAuthEnv(), ...extraEnv };
-  const r = spawnSync(resolveClaudeBin(pingEnv), ['-p', 'Reply with exactly: pong', '--model', 'sonnet', '--output-format', 'json'],
+  // disableAllHooks (BRO-4141): the ping tests credentials only. With hooks on,
+  // the global Stop hook's `claude-sync push` (a ~200s hook test suite) ran
+  // after the pong, so the process outlived the 120s timeout and the
+  // opening-night monitor emailed "auth preflight failed" with working auth.
+  const r = spawnSync(resolveClaudeBin(pingEnv), authPingArgs(),
     // resolveAuthEnv() sits above process.env for the same reason as in
     // strippedEnv: under launchd the keys are absent, and the probe has to
     // exercise the SAME credentials the real spawn will get or it proves
     // nothing. extraEnv still wins so probe 1 can force the no-API-key shape.
     { encoding: 'utf8', timeout: 120000, env: pingEnv });
-  // A spawn error (e.g. ENOENT) sets r.error and leaves status/stdout/stderr
-  // null — falling through to `exit ${r.status}` would print the
-  // uninformative "exit null" for exactly the failure this module exists to
-  // make legible (task #1768).
-  if (r.error) return { ok: false, detail: String(r.error.message || r.error).slice(0, 300) };
-  if (r.status !== 0) return { ok: false, detail: (r.stderr || r.stdout || `exit ${r.status}`).slice(0, 300) };
+  // A spawn error (e.g. ENOENT, ETIMEDOUT) sets r.error and leaves
+  // status/stdout/stderr null — falling through to `exit ${r.status}` would
+  // print the uninformative "exit null" for exactly the failure this module
+  // exists to make legible (task #1768).
+  if (r.error) {
+    return { ok: false, reason: classifyAuthPingFailure(r), detail: String(r.error.message || r.error).slice(0, 300) };
+  }
+  if (r.status !== 0) {
+    return {
+      ok: false,
+      reason: classifyAuthPingFailure(r),
+      detail: (r.stderr || r.stdout || `exit ${r.status}${r.signal ? ` signal=${r.signal}` : ''}`).slice(0, 300),
+    };
+  }
   // Positive validation, never a grep for the error string (it may get reworded):
   // require the envelope to actually contain the pong.
   try {
     const body = JSON.parse(r.stdout);
-    if (body.is_error === false && /pong/i.test(String(body.result || ''))) return { ok: true };
-    return { ok: false, detail: `ping returned no pong: ${String(body.result || r.stdout).slice(0, 200)}` };
+    if (body.is_error === false && /pong/i.test(String(body.result || ''))) return { ok: true, reason: AUTH_PING_REASONS.OK };
+    return { ok: false, reason: AUTH_PING_REASONS.AUTH_REJECTED, detail: `ping returned no pong: ${String(body.result || r.stdout).slice(0, 200)}` };
   } catch {
-    return { ok: false, detail: `unparseable ping output: ${String(r.stdout || r.stderr).slice(0, 200)}` };
+    return { ok: false, reason: AUTH_PING_REASONS.AUTH_REJECTED, detail: `unparseable ping output: ${String(r.stdout || r.stderr).slice(0, 200)}` };
   }
 }
 
@@ -257,7 +343,12 @@ function resolvePassAuth({ storedLoginOk, apiKeyPresent, apiKeyPingOk }) {
  * @param {object} [opts]
  * @param {boolean} [opts.allowApiKeyFallback=true] set false to require OAuth only
  * @param {(msg:string)=>void} [opts.log] optional logger for the fallback notice
- * @returns {{ok:boolean, mode:'oauth'|'api-key'|'fail', detail?:string}}
+ * @returns {{ok:boolean, mode:'oauth'|'api-key'|'fail', detail?:string, reason?:string, storedReason?:string}}
+ *   `reason` (only on ok:false) is 'spawn-starved'|'spawn-error'|'auth-rejected'
+ *   (BRO-2971) — see classifyAuthPingFailure. `storedReason` (only on
+ *   mode:'api-key') carries the stored-login probe's own reason through even
+ *   on a successful fallback, so a caller can tell a real revoked stored
+ *   login apart from a transient spawn-starved blip that happened to recover.
  */
 function preflightAuth({ allowApiKeyFallback = true, log = () => {} } = {}) {
   // Probe 1: the real pass shape — API key cleared, stored login only.
@@ -278,13 +369,26 @@ function preflightAuth({ allowApiKeyFallback = true, log = () => {} } = {}) {
   const apiKeyPresent = allowApiKeyFallback
     && Boolean(process.env.ANTHROPIC_API_KEY || resolveAuthEnv().ANTHROPIC_API_KEY);
   // Probe 2: only if a key exists — can the key path carry the pass?
-  const keyed = apiKeyPresent ? authPing({}) : { ok: false, detail: allowApiKeyFallback ? 'no ANTHROPIC_API_KEY in env' : 'API fallback disabled' };
+  const keyed = apiKeyPresent
+    ? authPing({})
+    : { ok: false, reason: AUTH_PING_REASONS.AUTH_REJECTED, detail: allowApiKeyFallback ? 'no ANTHROPIC_API_KEY in env' : 'API fallback disabled' };
   const decision = resolvePassAuth({ storedLoginOk: false, apiKeyPresent, apiKeyPingOk: keyed.ok });
   if (decision.mode === 'api-key') {
     log(`preflight: stored login unreachable (${stored.detail.slice(0, 120)}) — falling back to ANTHROPIC_API_KEY (pay-per-token). Run \`claude setup-token\` + add CLAUDE_CODE_OAUTH_TOKEN to restore subscription billing.`);
-    return { ok: true, mode: 'api-key', envForMode: {}, storedDetail: stored.detail };
+    // storedReason (BRO-2971, adversarial-review finding): the stored-login
+    // probe's classification survives even on a SUCCESSFUL fallback. Without
+    // it, a transient spawn-starved blip on the stored-login probe (not an
+    // actual revoked credential) still produced the billing-fallback alert's
+    // "stored OAuth login failed" framing and its `claude auth logout/login`
+    // repair hint — telling on-call to re-authenticate for a hiccup that
+    // needed no action at all.
+    return { ok: true, mode: 'api-key', envForMode: {}, storedDetail: stored.detail, storedReason: stored.reason };
   }
-  return { ok: false, mode: 'fail', envForMode: {}, detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
+  const reason = worseAuthPingReason(stored.reason, keyed.reason);
+  // storedReason (BRO-4141): the stored-login probe is the primary credential,
+  // so a caller deciding "revoked vs machine busy" should key off it — the
+  // merged `reason` prefers spawn-starved if EITHER probe timed out.
+  return { ok: false, mode: 'fail', envForMode: {}, reason, storedReason: stored.reason, detail: `stored-login: ${stored.detail} | api-key: ${keyed.detail}` };
 }
 
 function parseEnvelope(raw) {
@@ -349,11 +453,29 @@ function parseStreamLine(line) {
 
 // Running usage totals across assistant events — the only cost signal that
 // survives a kill (the authoritative result-event totals never arrive).
+// Preserves the nested cache_creation.{ephemeral_1h,ephemeral_5m}_input_tokens
+// breakdown (BRO-3100) alongside the flat cache_creation_input_tokens sum, so
+// estimateCostUSD can price the two cache-write durations separately.
 function addUsage(total, usage) {
+  // NOTE: cache_creation is deliberately NOT seeded here. estimateCostUSD
+  // treats "usage.cache_creation is an object with a numeric ephemeral key"
+  // as "the nested breakdown is present" — a pre-seeded all-zero object would
+  // satisfy that check and silently zero out cache-write cost via 2*0+1.25*0
+  // instead of falling back to the flat cache_creation_input_tokens*1.25 on
+  // sessions whose events never carry the nested field (verified live: this
+  // exact bug shipped in the first BRO-3100 commit and priced $500K flat
+  // cache-creation tokens at $0.0015 instead of $9.38). Only add the key once
+  // a real usage event supplies it, below.
   const t = total || { input_tokens: 0, output_tokens: 0, cache_creation_input_tokens: 0, cache_read_input_tokens: 0 };
   if (!usage) return t;
   for (const k of ['input_tokens', 'output_tokens', 'cache_creation_input_tokens', 'cache_read_input_tokens']) {
     if (typeof usage[k] === 'number') t[k] += usage[k];
+  }
+  if (usage.cache_creation && typeof usage.cache_creation === 'object') {
+    if (!t.cache_creation) t.cache_creation = { ephemeral_1h_input_tokens: 0, ephemeral_5m_input_tokens: 0 };
+    for (const k of ['ephemeral_1h_input_tokens', 'ephemeral_5m_input_tokens']) {
+      if (typeof usage.cache_creation[k] === 'number') t.cache_creation[k] += usage.cache_creation[k];
+    }
   }
   return t;
 }
@@ -369,11 +491,24 @@ const APPROX_MODEL_RATES_PER_MTOK = Object.freeze({
   haiku: { in: 1, out: 5 },
 });
 
+// Cache-write multipliers by TTL: 1h writes bill at 2x base input, 5m writes
+// at 1.25x. Real transcripts carry the split in usage.cache_creation and the
+// 1h tokens dominate (measured 599:1 vs 5m in one transcript) — pricing them
+// at the flat 1.25x understated cache-write cost ~38% (BRO-3100). Fall back
+// to the flat cache_creation_input_tokens*1.25 when the nested breakdown is
+// absent (older transcripts / envelopes that don't carry it).
 function estimateCostUSD(usage, model) {
   if (!usage) return null;
   const key = Object.keys(APPROX_MODEL_RATES_PER_MTOK).find(k => String(model || '').includes(k)) || 'sonnet';
   const r = APPROX_MODEL_RATES_PER_MTOK[key];
-  const inTok = (usage.input_tokens || 0) + 1.25 * (usage.cache_creation_input_tokens || 0) + 0.1 * (usage.cache_read_input_tokens || 0);
+  const cc = usage.cache_creation;
+  const ephemeral1h = cc && typeof cc.ephemeral_1h_input_tokens === 'number' ? cc.ephemeral_1h_input_tokens : null;
+  const ephemeral5m = cc && typeof cc.ephemeral_5m_input_tokens === 'number' ? cc.ephemeral_5m_input_tokens : null;
+  const hasSplit = cc && typeof cc === 'object' && (ephemeral1h !== null || ephemeral5m !== null);
+  const cacheWriteTok = hasSplit
+    ? 2 * (ephemeral1h || 0) + 1.25 * (ephemeral5m || 0)
+    : 1.25 * (usage.cache_creation_input_tokens || 0);
+  const inTok = (usage.input_tokens || 0) + cacheWriteTok + 0.1 * (usage.cache_read_input_tokens || 0);
   const usd = (inTok * r.in + (usage.output_tokens || 0) * r.out) / 1e6;
   return Math.round(usd * 10000) / 10000;
 }
@@ -623,7 +758,8 @@ function runClaudeCli(opts) {
 
 module.exports = {
   runClaudeCli, parseEnvelope, strippedEnv, STAGES, FORBIDDEN_MODEL_RE,
-  authPing, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
+  authPing, authPingArgs, AUTH_PING_SETTINGS, resolvePassAuth, preflightAuth, resolveAuthEnv, AUTH_KEYS,
+  classifyAuthPingFailure, AUTH_PING_REASONS, worseAuthPingReason,
   parseStreamLine, addUsage, estimateCostUSD, APPROX_MODEL_RATES_PER_MTOK,
   resolveClaudeBin, pathWithClaudeBinDir,
 };

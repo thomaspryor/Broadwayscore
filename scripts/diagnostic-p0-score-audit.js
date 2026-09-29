@@ -14,6 +14,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 
@@ -98,10 +99,7 @@ allReviews.forEach(r => {
 });
 
 // Scan all West End show directories
-const shows = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-  try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory() && d.includes('west-end'); }
-  catch (e) { return false; }
-});
+const shows = listShowDirs(REVIEW_TEXTS_DIR).filter(d => d.includes('west-end'));
 
 const issues = [];
 const showImpact = {};

@@ -34,7 +34,7 @@
 const fs = require('fs');
 const path = require('path');
 const https = require('https');
-const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
+const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { CLAUDE_HAIKU, CLAUDE_OPUS, GEMINI_FLASH } = require('./lib/models');
 const { mergeWriteCheckpoint, deleteCheckpointIfCaughtUp } = require('./lib/classify-checkpoint');
 const { isSameTitleDifferentYearFalsePositive, hasStrongDifferentShowSignal, hasNamedDifferentDirectorSignal } = require('./lib/review-guards');
@@ -125,7 +125,8 @@ function callGemini(systemPrompt, userPrompt) {
   return new Promise((resolve, reject) => {
     const req = https.request(url, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' }
+      headers: { 'Content-Type': 'application/json' },
+      timeout: 60000,
     }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -143,6 +144,7 @@ function callGemini(systemPrompt, userPrompt) {
       });
     });
     req.on('error', reject);
+    req.on('timeout', () => { req.destroy(new Error('Gemini API request timed out after 60s')); }); // BRO-3838
     req.write(body);
     req.end();
   });
@@ -170,7 +172,8 @@ function callOpus(systemPrompt, userPrompt) {
         'Content-Type': 'application/json',
         'x-api-key': apiKey,
         'anthropic-version': '2023-06-01',
-      }
+      },
+      timeout: 60000,
     }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
@@ -188,6 +191,7 @@ function callOpus(systemPrompt, userPrompt) {
       });
     });
     req.on('error', reject);
+    req.on('timeout', () => { req.destroy(new Error('Opus API request timed out after 60s')); }); // BRO-3838
     req.write(body);
     req.end();
   });
@@ -256,6 +260,7 @@ KEY INDICATORS THE REVIEW IS ABOUT A DIFFERENT PRODUCTION:
 
 IMPORTANT NUANCES:
 - Long-running shows (Lion King, Wicked, Phantom, Chicago 1996 revival) have continuous runs spanning decades. A review from 2015 of Lion King is still about the 1997 production — it never closed. Only classify as wrong if the review is clearly about a touring or regional production.
+- If the prompt says the filed production is a NATIONAL TOUR, a review of any stop on that tour (any city, any theater) matches it. Do not mark it wrong for being a touring production.
 - The word "masks" in Lion King reviews refers to the COSTUMES (part of Julie Taymor's design), not COVID masks.
 - "Hamilton" mentioned in passing is a common cultural comparison, NOT evidence of wrong production.
 - "twitter" or "social media" in boilerplate (share buttons, bios) is NOT evidence.
@@ -608,6 +613,7 @@ async function main() {
         if (fs.existsSync(targetPath)) {
           // Duplicate at target — flag source as wrongProduction
           reviewData.wrongProduction = true;
+          invalidateWrongProductionAutoClear(reviewData);
           reviewData.wrongProductionProvenance = 'content';
           reviewData.llmClassified = 'wrongProduction';
           reviewData.llmConfidence = result.confidence;
@@ -638,6 +644,7 @@ async function main() {
       } else {
         // No target — flag as wrongProduction
         reviewData.wrongProduction = true;
+        invalidateWrongProductionAutoClear(reviewData);
         reviewData.wrongProductionProvenance = 'content';
         reviewData.llmClassified = 'wrongProduction';
         reviewData.llmConfidence = result.confidence;

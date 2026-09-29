@@ -115,6 +115,14 @@ const CONFLICT_REASONS = [
   // Broadway show, or vice versa) — same "inspect the quarantine" shape as
   // date_implausible.
   'cross_market_contamination',
+  // BRO-2559: safeWriteReview() quarantined the write to `_pending/` because
+  // a sibling in the same show directory recorded (via _urlChangedClear) that
+  // this EXACT url was previously excluded (wrongProduction/wrongShow/
+  // wrongAttribution/wrongFullText) before that sibling's own url moved away
+  // from it — the recreate-drops-a-flag shape a scraper hits when it
+  // rediscovers a stale/legacy url a byline-correction had already moved past.
+  // Same "inspect the quarantine" shape as date_implausible.
+  'recreated_previously_excluded_url',
   // BRO-3182: generic fallback when safeWriteReview() returned `wrote:
   // false` without a specific `skipped` reason attached. Should be rare in
   // practice (safeWriteReview's own refusal paths all set `skipped`); kept
@@ -148,6 +156,16 @@ const EXPECTED_REJECTION_REASONS = [
   // review of this production — the refusal is correct and permanent, same
   // footing as cross-market.
   'tour-review',
+  // BRO-4101: the URL structurally matches a NAMED_NON_REVIEW_URL_PATTERNS
+  // entry (non-review-url-patterns.js) — a ticketing/venue-production/
+  // event-listing page on a host that may ALSO publish real reviews under a
+  // different path (e.g. londontheatre.co.uk/show/NNNN is a ticket page;
+  // /reviews/ on the same host is not). This specific URL shape never was a
+  // review to begin with, so the refusal is correct and permanent — same
+  // footing as tour-review/cross-market. Stays visible per-occurrence: a
+  // caller producing these in bulk means an upstream SERP-discovery query is
+  // surfacing junk it should be filtering before ever reaching ingest.
+  'named-non-review-url',
   // The byline is a CREATIVE TEAM member of this same show
   // (review-file-writer.js Guard F2, BRO-2915) — a mis-parsed roundup row, not
   // a review. validate-data.js ERRORS on the same shape, so writing it would
@@ -259,6 +277,9 @@ function describeSkip(showId, url, { reason, detail }) {
   if (reason === 'tour-review') {
     return `${showId}: ${url} looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js.`;
   }
+  if (reason === 'named-non-review-url') {
+    return `${showId}: ${url} was refused because its URL structurally matches a known non-review page shape${detail ? ` (${detail})` : ''} (ticketing/venue-production/event-listing) — refused by the named-non-review-url guard. Expected rejection; if this host genuinely publishes reviews at a different path, that path is unaffected — only this exact URL shape is blocked. If this pattern is now wrong (the host changed what it publishes there), fix the entry in scripts/lib/non-review-url-patterns.js.`;
+  }
   if (reason === 'credited-person-as-critic') {
     return `${showId}: ${url} was refused because its byline is a creative team member of this same show${detail ? ` (${detail})` : ''} — the mis-parsed-roundup-row shape validate-data.js errors on. Expected rejection; if this person genuinely reviewed the show, ingest it with scripts/ingest-manual-review.js (operator entries are exempt). If the name is wrong on the SHOW side instead, fix that credit in shows.json.`;
   }
@@ -281,6 +302,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'cross_market_contamination') {
     return `${showId}: ${url} was quarantined to _pending/ as suspected cross-market contamination (West End review on a Broadway show, or vice versa). Inspect the quarantined file and confirm the outlet's market before re-ingesting.`;
+  }
+  if (reason === 'recreated_previously_excluded_url') {
+    return `${showId}: ${url} was quarantined to _pending/ — a sibling file in this show's directory recorded that this exact url was previously excluded (wrongProduction/wrongShow/wrongAttribution) before it moved on to a different url. Inspect the quarantined file and the sibling's _urlChangedClear breadcrumb before deciding whether to re-ingest.`;
   }
   if (reason === 'write-guard-refused') {
     return `${showId}: ${url} was refused by the write-guard with no specific reason attached — check this run's log for the safeWriteReview warning that explains why, then decide whether to re-ingest.`;

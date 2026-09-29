@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 'use strict';
+// venue-write-guard-ok: the log/rejection/summary objects and the dedup pool copy candidate or existing-row venues for reporting only; the one shows.json write goes through buildWestEndAggregatorShowEntry + the shows write guard, unchanged by S4-T9/T10.
 /**
  * West End aggregator-roundup auto-promotion backstop (task #1466 — the WE
  * analogue of promote-ob-venue-candidates.js's off-broadway aggregator path).
@@ -51,6 +52,14 @@ const {
 } = require('./lib/we-listing-discover');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
+const {
+  loadRejectedCandidates,
+  priorRejection,
+  recordRejection,
+  writeRejectedCandidates,
+  REJECTED_FILE,
+} = require('./lib/we-rejected-candidates');
 
 const USAGE = `promote-we-aggregator-candidates.js — West End aggregator-roundup auto-promotion backstop.
 
@@ -80,11 +89,16 @@ const DAY_MS = 24 * 60 * 60 * 1000;
 // very first run). Raise deliberately once the backlog is triaged down.
 const MAX_PROMOTE_PER_RUN = 20;
 
-function writeLastPromotionFile(promoted) {
+// `rejected` (BRO-4204 S4-T9/T10): the candidates THIS run rejected and
+// remembered in data/audit/we-rejected-candidates.json, so the workflow's
+// job-summary step can list them next to the promoted ids without parsing
+// the jsonl log. Additive — the CI image-dispatch step reads only `.promoted`.
+function writeLastPromotionFile(promoted, rejected = []) {
   const fs = require('fs');
   const out = {
     generatedAt: new Date().toISOString(),
     promoted: promoted.map(p => ({ id: p.entry.id, source: p.candidate.source, sourceUrl: p.candidate.sourceUrl || null })),
+    rejected: rejected.map(r => ({ title: r.title, venue: r.venue, source: r.source, sourceUrl: r.sourceUrl || null, kind: r.kind, reason: r.reason })),
   };
   const tmp = LAST_PROMOTION_FILE + '.tmp.' + process.pid;
   fs.mkdirSync(path.dirname(LAST_PROMOTION_FILE), { recursive: true });
@@ -112,29 +126,34 @@ function logEntry(entry) {
 function decideWestEndAggregatorPromotion(candidate, options = {}) {
   const { isKnownVenue = (v) => WEST_END_VENUES.has(normalizeVenueName(v)) } = options;
 
+  // `persistent` (BRO-4204 S4-T9): is this refusal a property of the
+  // candidate itself (same answer next run — worth remembering in
+  // we-rejected-candidates.json so the next run skips it before spending a
+  // fetch) or of THIS run's fetches (a null WET venue or a missing LBO date
+  // usually means the page fetch failed; retry tomorrow, never remember)?
   if (!candidate || candidate.category !== 'west-end') {
-    return { confirmed: false, reason: 'not a west-end candidate' };
+    return { confirmed: false, persistent: true, reason: 'not a west-end candidate' };
   }
   if (!candidate.venue) {
-    return { confirmed: false, reason: 'null venue' };
+    return { confirmed: false, persistent: false, reason: 'null venue' };
   }
   let venueKnown;
   try { venueKnown = isKnownVenue(candidate.venue); } catch { venueKnown = false; }
   if (!venueKnown) {
-    return { confirmed: false, reason: `venue "${candidate.venue}" is not a canonical West End venue — refusing to auto-promote (no curated Off-West-End directory exists to fall back on)` };
+    return { confirmed: false, persistent: true, reason: `venue "${candidate.venue}" is not a canonical West End venue — refusing to auto-promote (no curated Off-West-End directory exists to fall back on)` };
   }
 
   const published = candidate.articlePublishedAt ? new Date(candidate.articlePublishedAt) : null;
   const discovered = candidate.discoveredAt ? new Date(candidate.discoveredAt) : null;
   if (!published || Number.isNaN(published.getTime()) || !discovered || Number.isNaN(discovered.getTime())) {
-    return { confirmed: false, reason: 'missing or unparseable articlePublishedAt/discoveredAt' };
+    return { confirmed: false, persistent: false, reason: 'missing or unparseable articlePublishedAt/discoveredAt' };
   }
   if (discovered.getTime() < published.getTime() - DAY_MS) {
-    return { confirmed: false, reason: `date mismatch: discoveredAt (${candidate.discoveredAt}) precedes articlePublishedAt (${candidate.articlePublishedAt})` };
+    return { confirmed: false, persistent: true, reason: `date mismatch: discoveredAt (${candidate.discoveredAt}) precedes articlePublishedAt (${candidate.articlePublishedAt})` };
   }
   const stalenessDays = (discovered.getTime() - published.getTime()) / DAY_MS;
   if (stalenessDays > WE_AGGREGATOR_MAX_STALENESS_DAYS) {
-    return { confirmed: false, reason: `articlePublishedAt is ${Math.round(stalenessDays)}d stale relative to discoveredAt — refusing to auto-promote as currently open` };
+    return { confirmed: false, persistent: true, reason: `articlePublishedAt is ${Math.round(stalenessDays)}d stale relative to discoveredAt — refusing to auto-promote as currently open` };
   }
 
   return { confirmed: true, reason: `aggregator listing (${candidate.source}) + canonical West End venue "${candidate.venue}" + compatible dates`, source: 'aggregator-roundup' };
@@ -161,7 +180,7 @@ function decideWestEndAggregatorPromotion(candidate, options = {}) {
 // later regardless of how a show was added.
 const WE_AGGREGATOR_OPEN_MAX_AGE_DAYS = 120;
 
-function buildWestEndAggregatorShowEntry(candidate) {
+function buildWestEndAggregatorShowEntry(candidate, venueVocabulary) {
   const dm = String(candidate.articlePublishedAt || '').match(/^(\d{4})-(\d{2})-(\d{2})/);
   const year = dm ? Number(dm[1]) : new Date().getFullYear();
   const openingDate = dm ? `${dm[1]}-${dm[2]}-${dm[3]}` : null;
@@ -171,12 +190,20 @@ function buildWestEndAggregatorShowEntry(candidate) {
   // have round-tripped through another WE discovery path already carrying the
   // suffix); without this guard it doubles, producing IDs like
   // `beetlejuice-the-musical-west-end-west-end-2026` (BRO-3237).
-  const slugBase = (candidate.slug || foldDiacritics(candidate.title).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+  // BRO-3863 — normalise BEFORE the slug/id are derived from the title.
+  // Aggregator listings disambiguate same-title productions by appending the
+  // venue ("The Cherry Orchard (Park Avenue Armory)"); taken verbatim, that
+  // suffix reaches the reader AND the row's slug and id. Same canonical
+  // normaliser the validate-data.js gate and fix-show-titles.js use, so a row
+  // written here can never fail the gate that guards it.
+  const normalizedTitle = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }, { venueVocabulary }).title;
+
+  const slugBase = (candidate.slug || foldDiacritics(normalizedTitle).toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
   const slug = withMarketSuffix(slugBase, 'west-end');
   const id = `${slug}-${year}`;
   return {
     id,
-    title: candidate.title,
+    title: normalizedTitle,
     slug,
     // Write-time placeholder/neighbourhood-blob guard (S0-T3, card #994) —
     // cousin of BRO-160's buildShowEntry fix (card #1921). Returns null on a
@@ -190,7 +217,15 @@ function buildWestEndAggregatorShowEntry(candidate) {
     status: ageDays > WE_AGGREGATOR_OPEN_MAX_AGE_DAYS ? 'closed' : 'open',
     category: 'west-end',
     market: 'west-end',
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : null,
+    // 'play' (not null) when the title doesn't say "musical" — status is
+    // 'open' here (a roundup already exists), and validate-market-
+    // expansion.js's required-fields check only exempts type when
+    // status==='announced'. A null type on a status='open' show fails CI
+    // (BRO-3716: main red for 19.8h+ on exactly this). 'play' is also the
+    // correct guess in the overwhelming majority of cases — plays outnumber
+    // musicals ~2:1 in shows.json, and this heuristic already only fires
+    // when "musical" is absent from the title.
+    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
     discoverySource: `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — WET/LBO reviews auto-ingest via the existing per-show
@@ -264,14 +299,184 @@ async function collectCandidates(opts) {
   return out;
 }
 
-async function main() {
-  if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const args = process.argv.slice(2);
+/**
+ * Per-candidate evaluation loop — extracted from main() (BRO-4204 S4-T9,
+ * CLAUDE.md §15) so the two batch-safety properties it now carries are
+ * testable against the real code:
+ *
+ *   1. A candidate remembered in data/audit/we-rejected-candidates.json
+ *      (see lib/we-rejected-candidates.js) is skipped BEFORE it costs an LBO
+ *      date fetch, so known-bad candidates can no longer eat the --limit
+ *      budget every run and defer the genuinely new ones forever.
+ *   2. Each candidate is evaluated inside its own try/catch. A throw is
+ *      recorded as a `candidate-error` rejection and the loop CONTINUES —
+ *      previously it unwound main() with nothing written and every other
+ *      candidate in the batch lost with it.
+ *
+ * Only refusals that are properties of the candidate itself are remembered
+ * (decideWestEndAggregatorPromotion's `persistent` flag, a shouted title, a
+ * sanitize-rejected venue, an id collision, a throw). A null WET venue or a
+ * missing LBO date usually means THIS run's page fetch failed — those retry
+ * next run and are never persisted. Pass no `rejectedStore` to disable the
+ * memory (the loop still never aborts on a throw).
+ *
+ * @param {Array<object>} candidates from collectCandidates()
+ * @param {object} ctx
+ * @param {Array<{id,title,venue,category}>} ctx.existingCandidates London-pool rows (mutated: promotions are appended)
+ * @param {Set<string>} ctx.existingIds (mutated: promoted ids are added)
+ * @param {object} ctx.venueVocabulary from buildVenueVocabulary()
+ * @param {number} ctx.limit LBO date-fetch cap this run
+ * @param {{exceeded(): boolean, minutes: number}} [ctx.timeBudget]
+ * @param {Function} [ctx.log]
+ * @param {object} [ctx.rejectedStore] from loadRejectedCandidates()
+ * @param {Function} [ctx.fetchLboArticleDate] injectable for tests / offline runs
+ * @param {Function} [ctx.fetchPage] passed through to the date fetch
+ * @param {Function} [ctx.logEntry] injectable audit-log sink
+ * @param {Function} [ctx.now] clock, for TTL tests
+ * @returns {Promise<{promoted: Array, skipped: Array, rejectedThisRun: Array}>}
+ */
+async function evaluateCandidates(candidates, ctx) {
+  const {
+    existingCandidates,
+    existingIds,
+    venueVocabulary,
+    limit,
+    timeBudget = null,
+    log = () => {},
+    rejectedStore = null,
+    fetchLboArticleDate: fetchDate = fetchLboArticleDate,
+    fetchPage = undefined,
+    logEntry: logEntryFn = logEntry,
+    now = () => new Date(),
+  } = ctx;
+  const promoted = [];
+  const skipped = [];
+  const rejectedThisRun = [];
+  let lboDateFetches = 0;
+
+  const reject = (c, kind, reason, extra = {}) => {
+    skipped.push({ candidate: c, reason });
+    logEntryFn({ kind, title: c.title, venue: c.venue, source: c.source, reason, ...extra });
+    if (rejectedStore) {
+      recordRejection(rejectedStore, c, { kind, reason }, now());
+      rejectedThisRun.push({ title: c.title, venue: c.venue, source: c.source, sourceUrl: c.sourceUrl || null, kind, reason });
+    }
+  };
+
+  for (const c of candidates) {
+    if (timeBudget && timeBudget.exceeded()) {
+      log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — remaining candidates deferred to next run.`);
+      break;
+    }
+    try {
+      const existingMatch = findExistingMatch(c, existingCandidates);
+      if (existingMatch) {
+        skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });
+        logEntryFn({ kind: 'skip-duplicate', title: c.title, venue: c.venue, source: c.source, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
+        continue;
+      }
+
+      // Remembered rejection — checked AFTER dedup (a row that has since
+      // been added by hand should log as the duplicate it now is) and BEFORE
+      // the LBO date fetch (the whole point: no budget spent on it).
+      const prior = rejectedStore ? priorRejection(rejectedStore, c, now()) : null;
+      if (prior) {
+        skipped.push({ candidate: c, reason: `previously rejected ${String(prior.lastSeen).slice(0, 10)} (${prior.kind}: ${prior.reason}) — held until ${String(prior.expiresAt).slice(0, 10)}` });
+        logEntryFn({ kind: 'skip-prior-rejection', title: c.title, venue: c.venue, source: c.source, priorKind: prior.kind, firstSeen: prior.firstSeen, expiresAt: prior.expiresAt });
+        continue;
+      }
+
+      // LBO candidates only get a real articlePublishedAt here, AFTER dedup —
+      // an already-known show never costs a live fetch. Bounded like WET's
+      // per-post venue fetch (see collectCandidates) so a large new-listing
+      // run can't spend unbounded fetches.
+      if (c.source === 'lbo-sitemap' && !c.articlePublishedAt) {
+        if (lboDateFetches >= limit) {
+          skipped.push({ candidate: c, reason: `deferred: --limit=${limit} LBO date fetches reached this run` });
+          logEntryFn({ kind: 'skip-limit', title: c.title, venue: c.venue, source: c.source });
+          continue;
+        }
+        lboDateFetches++;
+        const { articlePublishedAt } = await fetchDate(c.sourceUrl, { log, fetchPage });
+        c.articlePublishedAt = articlePublishedAt;
+      }
+
+      const r = decideWestEndAggregatorPromotion(c);
+      if (!r.confirmed) {
+        if (r.persistent) {
+          reject(c, 'skip-unconfirmed', r.reason);
+        } else {
+          skipped.push({ candidate: c, reason: r.reason });
+          logEntryFn({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, source: c.source, reason: r.reason });
+        }
+        continue;
+      }
+
+      // BRO-3920 — a shouted title is detection-only now (no more guessed
+      // casing), so it must be held here rather than written: buildShowEntry
+      // below writes candidate.title through unchanged, and validate-data.js's
+      // gate would only catch it AFTER this run already committed it, failing
+      // CI for the whole batch instead of holding the one bad candidate.
+      const titleCheck = normalizeShowTitle({ title: c.title, venue: c.venue }, { venueVocabulary });
+      if (titleCheck.manualReview) {
+        reject(c, 'skip-shouted-title', 'shouted title — needs a human to check the source\'s structured metadata (scripts/lib/title-display-case.js)');
+        continue;
+      }
+
+      const entry = buildWestEndAggregatorShowEntry(c, venueVocabulary);
+      // sanitizeVenueForWrite (S0-T3, card #994) returns null for a
+      // placeholder/neighbourhood-blob venue — refuse to write a garbage venue
+      // string rather than silently promoting it (card #1921, cousin of
+      // BRO-160). decideWestEndAggregatorPromotion already checked
+      // c.venue against the canonical WEST_END_VENUES list above, so this
+      // should be unreachable in practice — kept as defense in depth, same
+      // pattern as the OB script's identical guard.
+      if (!entry.venue) {
+        reject(c, 'skip-invalid-venue', `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)`);
+        continue;
+      }
+      if (existingIds.has(entry.id)) {
+        reject(c, 'skip-id-collision', `id ${entry.id} already exists`, { id: entry.id });
+        continue;
+      }
+      promoted.push({ candidate: c, entry, confirmationReason: r.reason });
+      existingIds.add(entry.id);
+      existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue, category: entry.category });
+      // NOT logged here — deferred until after the MAX_PROMOTE_PER_RUN check
+      // in main(). Logging eagerly (as an earlier version of this script did)
+      // wrote kind:'promote' lines for candidates that were then aborted with
+      // NOTHING written to shows.json, leaving the audit log claiming
+      // promotions that never happened (adversarial ship-check review,
+      // 2026-08-14). See the abort branch's own logEntry call.
+    } catch (e) {
+      const msg = e && e.message ? e.message : String(e);
+      reject(c, 'candidate-error', `threw during evaluation: ${msg}`);
+      log(`  ::warning::candidate "${c.title}" (${c.venue || 'no venue'}) threw — recorded as rejected, batch continues: ${msg}`);
+    }
+  }
+
+  return { promoted, skipped, rejectedThisRun };
+}
+
+/**
+ * @param {string[]} [argv] CLI args (default process.argv)
+ * @param {object} [io] injectable I/O for tests and offline runs:
+ *   fetchPage / fetchJSON are passed through to lib/we-listing-discover.js's
+ *   listing + per-page fetchers; log replaces console.log; logEntry replaces
+ *   the jsonl audit-log append (a sandbox dry-run must not touch data/).
+ * @returns {Promise<{promoted: Array, skipped: Array, rejectedThisRun: Array}|undefined>}
+ */
+async function main(argv = process.argv.slice(2), io = {}) {
+  if (hasHelpFlag(argv)) { console.log(USAGE); return; }
+  const args = argv;
   const dryRun = args.includes('--dry-run');
   const emailAlerts = args.includes('--email');
   const limit = parseInt((args.find(a => a.startsWith('--limit=')) || '').split('=')[1] || '15', 10);
-  const log = (...a) => console.log(...a);
+  const log = io.log || ((...a) => console.log(...a));
   const timeBudget = createRunBudget(parseTimeBudgetMin(args));
+  const fetchOpts = {};
+  if (io.fetchPage) fetchOpts.fetchPage = io.fetchPage;
+  if (io.fetchJSON) fetchOpts.fetchJSON = io.fetchJSON;
 
   // Reset up front (mirrors promote-ob-venue-candidates.js) so a crash
   // mid-run can never leave a stale file claiming a prior run's promotions
@@ -287,83 +492,47 @@ async function main() {
     process.exit(1);
   }
   const existingIds = new Set(showsData.shows.map(s => s.id));
+
+  // BRO-3863 — the gate (validate-data.js) builds the corpus venue vocabulary
+  // and this writer must too, or the two disagree: a "(Bridge)" suffix would
+  // survive promotion here and then fail validation because some OTHER show's
+  // venue is "Bridge". Writer/gate equivalence is the point of routing both
+  // through normalizeShowTitle (adversarial review finding).
+  const venueVocabulary = buildVenueVocabulary(showsData.shows);
+  // `category` is carried so findExistingMatch's London-pool title fallback
+  // (lib/candidate-dedup.js, BRO-4204 S4-T9) can apply — without it a venue-
+  // string mismatch ("noel coward" vs "Noël Coward Theatre") minted a
+  // same-title duplicate that validate-data then refused, batch and all.
   const existingCandidates = showsData.shows
     .filter(s => s.category === 'west-end' || s.category === 'off-west-end')
-    .map(s => ({ id: s.id, title: s.title, venue: s.venue }));
+    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category }));
 
-  const candidates = await collectCandidates({ log, limit, timeBudget });
+  // Remembered rejections (lib/we-rejected-candidates.js). Read in dry-run
+  // too so a dry-run reports what a real run would do; written only below,
+  // and only on a real run.
+  const rejectedStore = loadRejectedCandidates(REJECTED_FILE, { warn: (m) => log(`::warning::${m}`) });
+  const priorCount = Object.keys(rejectedStore.rejected).length;
+  if (priorCount > 0) log(`Loaded ${priorCount} remembered rejection(s) from ${path.relative(process.cwd(), REJECTED_FILE)}.`);
+
+  const candidates = await collectCandidates({ log, limit, timeBudget, ...fetchOpts });
   log('');
   log(`Collected ${candidates.length} raw candidate(s) from WE aggregator listings.`);
 
-  const promoted = [];
-  const skipped = [];
-  let lboDateFetches = 0;
-
-  for (const c of candidates) {
-    if (timeBudget.exceeded()) {
-      log(`\n⏱ Time budget (${timeBudget.minutes} min) reached — remaining candidates deferred to next run.`);
-      break;
-    }
-    const existingMatch = findExistingMatch(c, existingCandidates);
-    if (existingMatch) {
-      skipped.push({ candidate: c, reason: `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})` });
-      logEntry({ kind: 'skip-duplicate', title: c.title, venue: c.venue, source: c.source, matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
-      continue;
-    }
-
-    // LBO candidates only get a real articlePublishedAt here, AFTER dedup —
-    // an already-known show never costs a live fetch. Bounded like WET's
-    // per-post venue fetch (see collectCandidates) so a large new-listing
-    // run can't spend unbounded fetches.
-    if (c.source === 'lbo-sitemap' && !c.articlePublishedAt) {
-      if (lboDateFetches >= limit) {
-        skipped.push({ candidate: c, reason: `deferred: --limit=${limit} LBO date fetches reached this run` });
-        logEntry({ kind: 'skip-limit', title: c.title, venue: c.venue, source: c.source });
-        continue;
-      }
-      lboDateFetches++;
-      const { articlePublishedAt } = await fetchLboArticleDate(c.sourceUrl, { log });
-      c.articlePublishedAt = articlePublishedAt;
-    }
-
-    const r = decideWestEndAggregatorPromotion(c);
-    if (!r.confirmed) {
-      skipped.push({ candidate: c, reason: r.reason });
-      logEntry({ kind: 'skip-unconfirmed', title: c.title, venue: c.venue, source: c.source, reason: r.reason });
-      continue;
-    }
-
-    const entry = buildWestEndAggregatorShowEntry(c);
-    // sanitizeVenueForWrite (S0-T3, card #994) returns null for a
-    // placeholder/neighbourhood-blob venue — refuse to write a garbage venue
-    // string rather than silently promoting it (card #1921, cousin of
-    // BRO-160). decideWestEndAggregatorPromotion already checked
-    // c.venue against the canonical WEST_END_VENUES list above, so this
-    // should be unreachable in practice — kept as defense in depth, same
-    // pattern as the OB script's identical guard.
-    if (!entry.venue) {
-      skipped.push({ candidate: c, reason: `venue "${c.venue}" failed sanitizeVenueForWrite (placeholder/neighbourhood blob)` });
-      logEntry({ kind: 'skip-invalid-venue', title: c.title, venue: c.venue, source: c.source });
-      continue;
-    }
-    if (existingIds.has(entry.id)) {
-      skipped.push({ candidate: c, reason: `id ${entry.id} already exists` });
-      logEntry({ kind: 'skip-id-collision', title: c.title, venue: c.venue, id: entry.id });
-      continue;
-    }
-    promoted.push({ candidate: c, entry, confirmationReason: r.reason });
-    existingIds.add(entry.id);
-    existingCandidates.push({ id: entry.id, title: entry.title, venue: entry.venue });
-    // NOT logged here — deferred until after the MAX_PROMOTE_PER_RUN check
-    // below. Logging eagerly (as an earlier version of this script did)
-    // wrote kind:'promote' lines for candidates that were then aborted with
-    // NOTHING written to shows.json, leaving the audit log claiming
-    // promotions that never happened (adversarial ship-check review,
-    // 2026-08-14). See the abort branch's own logEntry call.
-  }
+  const { promoted, skipped, rejectedThisRun } = await evaluateCandidates(candidates, {
+    existingCandidates,
+    existingIds,
+    venueVocabulary,
+    limit,
+    timeBudget,
+    log,
+    rejectedStore,
+    fetchPage: io.fetchPage,
+    ...(io.logEntry ? { logEntry: io.logEntry } : {}),
+  });
+  const result = { promoted, skipped, rejectedThisRun };
 
   log('');
-  log(`Promotion summary: ${promoted.length} promote / ${skipped.length} skip (of ${candidates.length} candidates).`);
+  log(`Promotion summary: ${promoted.length} promote / ${skipped.length} skip (of ${candidates.length} candidates; ${rejectedThisRun.length} rejection(s) remembered for next run).`);
   if (promoted.length > 0) {
     log('Promoting:');
     for (const p of promoted) log(`  + [${p.candidate.source}] ${p.entry.id} (${p.confirmationReason})`);
@@ -377,12 +546,19 @@ async function main() {
   if (dryRun) {
     log('');
     log('(dry-run: no writes)');
-    return;
+    return result;
   }
 
+  // Persist remembered rejections regardless of whether anything promotes —
+  // they are what keeps tomorrow's fetch budget for genuinely new candidates.
+  // Written BEFORE the over-cap abort below for the same reason.
+  const remembered = writeRejectedCandidates(rejectedStore);
+  log(`Wrote ${remembered} remembered rejection(s) to ${path.relative(process.cwd(), REJECTED_FILE)}.`);
+
   if (promoted.length === 0) {
+    writeLastPromotionFile([], rejectedThisRun);
     log('Nothing to promote; shows.json unchanged.');
-    return;
+    return result;
   }
 
   // Stability guard (mirrors extract-aggregator-candidates.js's MAX_ACCEPT):
@@ -421,7 +597,7 @@ async function main() {
   // Record promotions ONLY after the shows.json write landed — written
   // before, a shrink-gate abort would leave a file claiming promotions that
   // never happened, and the CI step would dispatch image fetch for ghosts.
-  writeLastPromotionFile(promoted);
+  writeLastPromotionFile(promoted, rejectedThisRun);
 
   if (emailAlerts) {
     const { routeAlert } = require('./lib/owner-alert-router');
@@ -444,6 +620,7 @@ async function main() {
       }
     }
   }
+  return result;
 }
 
 if (require.main === module) {
@@ -463,4 +640,11 @@ if (require.main === module) {
   });
 }
 
-module.exports = { decideWestEndAggregatorPromotion, buildWestEndAggregatorShowEntry, collectCandidates };
+module.exports = {
+  decideWestEndAggregatorPromotion,
+  buildWestEndAggregatorShowEntry,
+  collectCandidates,
+  evaluateCandidates,
+  main,
+  MAX_PROMOTE_PER_RUN,
+};

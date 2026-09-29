@@ -23,6 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const OUTLET_REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
@@ -138,9 +139,7 @@ function scanReviewTexts() {
   // Per-outlet stats (flat across all segments)
   const byOutlet = {};
 
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d =>
-    fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory()
-  );
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const showDir of showDirs) {
     const showPath = path.join(REVIEW_TEXTS_DIR, showDir);

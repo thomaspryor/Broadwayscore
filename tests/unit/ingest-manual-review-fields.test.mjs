@@ -127,6 +127,7 @@ const OVERRIDE_FIELDS = [
   'humanReviewedWrongProduction', 'humanReviewedWrongArticle',
   'allowEarlyDate', 'allowLateDate', 'allowCrossMarket',
   'allowTourSignal', 'allowFilmSignal', 'contentVerification',
+  'rejectionReason', 'wrongShowReason', 'isNonReviewReason', 'contentVerificationPromoted',
 ];
 
 test('operatorTrust defaults to true (genuine manual path keeps full override set)', () => {
@@ -161,4 +162,27 @@ test('operatorTrust:false still records the real review payload', () => {
   assert.ok(fields.fullText, 'fullText preserved');
   assert.ok(fields.textFetchedAt, 'textFetchedAt preserved');
   assert.equal(fields.publishDate, '2024-05-01', 'publishDate preserved');
+});
+
+// America, Who Hurt You? NYSR (2026-09-22): an LLM verifier called a 700-char
+// truncation a "preview", stamping rejectionReason='not_a_review' + a stale CV
+// block. The operator re-ingest cleared the booleans but explainExclusion still
+// returned 'rejectionReason', so the vouched-for review stayed off the site.
+test('operator ingest neutralizes a stale not-a-review verdict end to end', () => {
+  const { explainExclusion } = require('../../scripts/lib/review-guards.js');
+  const stale = {
+    showId: 'x-2026', outletId: 'nysr', criticName: 'Michael Sommers',
+    url: 'https://nystagereview.com/2026/09/17/x/',
+    contentTier: 'invalid', wrongShow: true, isNonReview: true,
+    rejectionReason: 'not_a_review',
+    wrongShowReason: 'CV-promoted: preview article',
+    isNonReviewReason: 'CV-promoted (not a review): preview article',
+    contentVerificationPromoted: 'rebuild: promoted from contentVerification',
+    contentVerification: { isValid: false, articleType: 'preview', issues: ['preview'] },
+  };
+  const fields = buildManualReviewFields({ humanScore: 60, fullText: 'z'.repeat(4000), publishDate: '2026-09-17' });
+  assert.equal(fields.rejectionReason, null);
+  assert.equal(fields.contentVerification.isValid, true);
+  const merged = { ...stale, ...fields };
+  assert.equal(explainExclusion(merged, { id: 'x-2026', openingDate: '2026-09-17' }, null), null);
 });

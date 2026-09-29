@@ -40,7 +40,7 @@ const ABBREV_EXPANSIONS = [
 ];
 
 /**
- * Canonical diacritic fold: NFD-decompose, then drop combining marks.
+ * Canonical diacritic fold: decompose, then drop combining marks.
  * "Les Misérables" → "Les Miserables", "Último" → "Ultimo", "Dvořák" → "Dvorak".
  *
  * Why this is a shared export rather than a one-liner each caller re-types:
@@ -51,16 +51,17 @@ const ABBREV_EXPANSIONS = [
  * was suppressed as url_content_mismatch because content-quality.js was the one
  * matcher not folding. Eight siblings had the same latent hole (task #648).
  *
- * NOTE: NFD only handles composable diacritics. Non-decomposing letters (ø, ł,
- * æ, ß, đ) pass through unchanged — no show title in the corpus uses one, and
- * transliterating them would be a real behavior change rather than a fold.
- *
- * @param {string} s
- * @returns {string}
+ * The implementation lives in scripts/lib/url-slug.js since the 2026 data
+ * audit (S7-T3): the site's URL slugs (src/lib/data-core.ts) fold through the
+ * same function, so a title matcher and a critic page can never disagree on
+ * what an accent folds to. That rule is NFKD (a superset of the NFD this
+ * used to do: it also maps ligatures and full-width letters to ASCII; every
+ * shows.json title and reviews.json byline folds identically under both).
+ * Non-decomposing letters (ø, ł, æ, ß, đ) still pass through unchanged — no
+ * show title in the corpus uses one, and transliterating them would be a
+ * real behavior change rather than a fold.
  */
-function foldDiacritics(s) {
-  return String(s ?? '').normalize('NFD').replace(/[̀-ͯ]/g, '');
-}
+const { foldDiacritics } = require('./url-slug');
 
 function normalizeTitle(s) {
   if (!s) return '';
@@ -173,14 +174,23 @@ const VENUE_ALIASES = [
   },
   {
     canonical: 'second stage hayes',
-    matches: [/hayes\s*theater/i, /second\s*stage.*hayes/i],
+    // theat(?:er|re), not a hardcoded spelling (BRO-2255 what-else sweep):
+    // Playbill prints "Hayes Theatre", shows.json holds "Helen Hayes
+    // Theater" — the American-only /theater/ regex matched shows.json's side
+    // and missed Playbill's, so aliasCanonical returned a real hit on one
+    // side and null on the other. venuesMatch's early return
+    // (`aliasA !== null && aliasA === aliasB`) then hard-FALSEd on a
+    // same-venue pair instead of falling through to normalizeVenueName's
+    // spelling-insensitive comparison, which would have matched them.
+    matches: [/hayes\s*theat(?:er|re)/i, /second\s*stage.*hayes/i],
   },
   // Atlantic Theater Company — two stages. The lookahead must tolerate words
   // between "Theater" and "Stage 2" ("Atlantic Theater Company Stage 2")
   // or company-form Stage 2 listings collapse onto the mainstage alias.
   {
     canonical: 'atlantic theater',
-    matches: [/atlantic\s*theater(?!.*stage\s*2)/i, /linda\s*gross/i],
+    // Same asymmetric-spelling gap as second-stage-hayes above.
+    matches: [/atlantic\s*theat(?:er|re)(?!.*stage\s*2)/i, /linda\s*gross/i],
   },
   {
     canonical: 'atlantic stage 2',
@@ -189,12 +199,15 @@ const VENUE_ALIASES = [
   // MCC at 511 W 52nd St — multiple sub-stages
   {
     canonical: 'mcc theater',
-    matches: [/mcc\s*theater/i, /newman\s*mills/i, /susan.*frankel/i, /robert\s*w\.?\s*wilson\s*mcc/i],
+    // Same asymmetric-spelling gap as second-stage-hayes above.
+    matches: [/mcc\s*theat(?:er|re)/i, /newman\s*mills/i, /susan.*frankel/i, /robert\s*w\.?\s*wilson\s*mcc/i],
   },
   // Other major OB venues — canonical alias = lowercase venue name
   {
     canonical: 'vineyard theatre',
-    matches: [/vineyard\s*theatre/i],
+    // Same asymmetric-spelling gap as second-stage-hayes above, mirrored:
+    // this one was British-spelling-only and missed an American-spelled side.
+    matches: [/vineyard\s*theat(?:er|re)/i],
   },
   {
     canonical: 'soho rep',

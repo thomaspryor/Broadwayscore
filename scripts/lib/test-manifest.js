@@ -90,6 +90,27 @@ function validateManifest(manifestPath, repoRoot) {
     }
   }
 
+  // Duplicates were invisible here until 2026-09-15, and that gap is what let
+  // one reach main: 178c0ccb02c (BRO-3426) APPENDED
+  // tests/unit/done-evidence-audit.test.mjs while the same entry already sat in
+  // its correct sorted position, so the file carried it twice. Only the
+  // sortedness check above fired — and the sort auto-fix would have "healed"
+  // that red by parking the two copies adjacent to each other, silently
+  // registering the test twice and leaving nothing to report. A duplicate is
+  // never intentional in a test manifest: the runner would execute that file
+  // twice, inflating the TAP count and any per-file timing.
+  const seen = new Set();
+  const duplicates = [];
+  for (const entry of entries) {
+    if (seen.has(entry) && !duplicates.includes(entry)) duplicates.push(entry);
+    seen.add(entry);
+  }
+  if (duplicates.length > 0) {
+    errors.push(
+      `manifest lists the same test file more than once (remove the extra line(s)): ${duplicates.join(', ')}`
+    );
+  }
+
   for (const entry of entries) {
     const fullPath = path.join(repoRoot, entry);
     if (!fs.existsSync(fullPath)) {
@@ -110,9 +131,15 @@ function validateManifest(manifestPath, repoRoot) {
 // than anyone could hand-fix it. scripts/hooks/pre-commit calls this before
 // every commit that touches a manifest so the unsorted state never reaches
 // CI, let alone main.
+// Also DEDUPES (2026-09-15). Sorting alone would have turned the
+// done-evidence-audit duplicate into a permanently-green double registration
+// (see validateManifest's note): the two copies sort adjacent, the sortedness
+// check then passes, and the auto-fix would have laundered the defect instead of
+// surfacing it. Dropping the extra copy is always the intended outcome here, so
+// the auto-fix half of the check heals it rather than cementing it.
 function sortManifestFile(manifestPath) {
   const entries = readManifest(manifestPath);
-  const sorted = [...entries].sort();
+  const sorted = [...new Set(entries)].sort();
   const isSorted = entries.length === sorted.length && entries.every((e, i) => e === sorted[i]);
   if (isSorted) return false;
   fs.writeFileSync(manifestPath, sorted.join('\n') + '\n');

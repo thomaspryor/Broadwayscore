@@ -40,7 +40,8 @@ function inWindow(ts, now, windowMs) {
  * @returns {{name:string, status:'pass'|'warn', message:string, hint?:string,
  *            gatedEdits:number, critical:number, shared:number, blocked:number,
  *            bypassed:number, failOpened:number, coveredByVerdict:number,
- *            byReviewer:Object<string,number>, restructureEscalations:number}}
+ *            byReviewer:Object<string,number>, restructureEscalations:number,
+ *            failThenPassTransitions:number}}
  */
 function computeInfraReviewDigest({
   gateEvents = [],
@@ -75,6 +76,14 @@ function computeInfraReviewDigest({
   // asked and dismissed," which is the exact failure this card exists to fix).
   const restructureEscalations = verdicts.filter((v) => /^restructure-flag:/.test(v.note || '')).length;
 
+  // BRO-2310: recordPlanVerdict() (review-gate.mjs) stamps overturnsFail:true
+  // on a pass that follows this session's own most recent fail — the "reviewer
+  // wins by default" property is enforced at write time, not by blocking the
+  // gate itself (that would wedge the legitimate fail→revise→pass flow). This
+  // count is the compensating visibility: the dodge is permitted, but not silent.
+  const failThenPass = verdicts.filter((v) => v.overturnsFail);
+  const failThenPassTransitions = failThenPass.length;
+
   // The incentive-failure signal the /plan-review reviewers predicted before
   // the gate shipped: if sessions are bypassing more than they are actually
   // reviewing, the policy is being routed around, not followed.
@@ -90,6 +99,7 @@ function computeInfraReviewDigest({
     : `${events.length} shared-infra edit(s) gated (${critical.length} critical, ${shared.length} shared) — `
       + `${blocked.length} blocked, ${bypassed.length} bypassed, ${failOpened.length} failed open on the repeat-block valve; `
       + `${coveredByVerdict} real pre-implementation review(s) recorded`
+      + (failThenPassTransitions > 0 ? `, ${failThenPassTransitions} fail→pass transition(s) (session re-reviewed after a fail)` : '')
       + (bypassExceedsReviews ? ' — BYPASSES EXCEED REAL REVIEWS' : '');
 
   return {
@@ -108,6 +118,7 @@ function computeInfraReviewDigest({
     coveredByVerdict,
     byReviewer,
     restructureEscalations,
+    failThenPassTransitions,
   };
 }
 

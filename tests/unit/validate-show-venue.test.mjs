@@ -17,7 +17,7 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..', '..');
 const require = createRequire(import.meta.url);
 const {
-  isProvisional, shortTitleSlug, scorePlaybillUrl,
+  isProvisional, isExemptFromPlaybillCheck, shortTitleSlug, scorePlaybillUrl,
   parseTitleVenueYear, parseFactDates, urlYear, daysBetween, compareShow,
 } = require('../../scripts/validate-show-venue.js');
 
@@ -182,6 +182,30 @@ test('compareShow agrees — no isRevival mismatch when shows.json already match
 test('isProvisional flags manual-user-request entries like Bronco Billy for validation', () => {
   assert.equal(isProvisional({ discoverySource: 'manual-user-request', provisional: true }), true);
   assert.equal(isProvisional({ discoverySource: 'todaytix-sync', provisional: false }), false);
+});
+
+// BRO-2255: --all reuses isExemptFromPlaybillCheck so a corpus-wide sweep
+// doesn't re-litigate the same known false-positive classes isProvisional
+// already carves out — same predicate, same fixtures, just asserted directly
+// rather than only through isProvisional's return value.
+test('isExemptFromPlaybillCheck exempts roundup-promoted regional shows', () => {
+  const show = { category: 'regional', discoverySource: 'aggregator-roundup-showscore' };
+  assert.equal(isExemptFromPlaybillCheck(show), true);
+  assert.equal(isProvisional({ ...show, provisional: true }), false, 'the exemption overrides provisional:true too');
+});
+
+test('isExemptFromPlaybillCheck exempts a verified no-Playbill-page show with a substantive statusBackfillSource', () => {
+  const show = { noPlaybillProductionPage: true, statusBackfillSource: 'x'.repeat(51) };
+  assert.equal(isExemptFromPlaybillCheck(show), true);
+});
+
+test('isExemptFromPlaybillCheck does NOT exempt noPlaybillProductionPage without a substantive statusBackfillSource (no silent bypass)', () => {
+  const show = { noPlaybillProductionPage: true, statusBackfillSource: 'too short' };
+  assert.equal(isExemptFromPlaybillCheck(show), false);
+});
+
+test('isExemptFromPlaybillCheck is false for an ordinary show', () => {
+  assert.equal(isExemptFromPlaybillCheck({ category: 'broadway', discoverySource: 'todaytix-sync' }), false);
 });
 
 test('scorePlaybillUrl rejects a legacy URL whose venue is in another market (BRO-2821)', () => {
@@ -725,4 +749,47 @@ test('every market keyword classifies to a market, in both bare and off- form', 
     }
   }
   assert.equal(classifyMarketTail('').market, null, 'an empty tail names no market');
+});
+
+// ---------------------------------------------------------------------------
+// National tours (BRO-4211). A tour entry has venue "North American Tour" and
+// is the same title as its Broadway parent, so the scorer must take only the
+// tour's own Playbill page and never the Broadway, London or regional one.
+const tourShow = {
+  id: 'beetlejuice-tour-2022', title: 'Beetlejuice', venue: 'North American Tour', category: 'tour',
+};
+
+test('isExemptFromPlaybillCheck exempts roundup-promoted tours, not other tours', () => {
+  assert.equal(isExemptFromPlaybillCheck({ ...tourShow, discoverySource: 'aggregator-roundup:bww-tour-roundup' }), true);
+  assert.equal(isExemptFromPlaybillCheck({ ...tourShow, discoverySource: 'manual-user-request' }), false);
+});
+
+test('scorePlaybillUrl: a tour show accepts its tour page', () => {
+  const s = scorePlaybillUrl('https://playbill.com/production/beetlejuice-tour-2022', tourShow);
+  assert.ok(s !== null && s > 0, `expected a positive score, got ${s}`);
+});
+
+test('scorePlaybillUrl: a tour show refuses Broadway, London, regional and legacy pages of the same title', () => {
+  for (const url of [
+    'https://playbill.com/production/beetlejuice-broadway-winter-garden-theatre-2019',
+    'https://playbill.com/production/beetlejuice-london-prince-edward-theatre-2025',
+    'https://playbill.com/production/beetlejuice-regional-some-playhouse-2024',
+    'https://playbill.com/production/beetlejuice-off-broadway-some-theatre-2018',
+  ]) {
+    assert.equal(scorePlaybillUrl(url, tourShow), null, url);
+  }
+});
+
+test('scorePlaybillUrl: non-tour shows still refuse a tour page', () => {
+  const bway = { id: 'beetlejuice-2019', title: 'Beetlejuice', venue: 'Winter Garden Theatre', category: 'broadway' };
+  assert.equal(scorePlaybillUrl('https://playbill.com/production/beetlejuice-tour-2022', bway), null);
+});
+
+test('compareShow skips the venue for a tour but still checks the year', () => {
+  const parsed = { titleParse: { venue: 'Kennedy Center Opera House', year: 2022 }, dates: {}, tagLine: null };
+  const ok = compareShow(tourShow, parsed, 'https://playbill.com/production/beetlejuice-tour-2022');
+  assert.deepEqual(ok.mismatches, []);
+  const wrongYear = compareShow(tourShow, { ...parsed, titleParse: { venue: 'X', year: 2019 } },
+    'https://playbill.com/production/beetlejuice-tour-2019');
+  assert.deepEqual(wrongYear.mismatches.map(m => m.field), ['opening-year']);
 });

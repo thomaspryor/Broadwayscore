@@ -32,6 +32,7 @@ const {
 } = require('./lib/wikipedia-synopsis-match');
 const { cleanSearchTitle } = require('./lib/title-normalization');
 const { isValidSynopsis, classifyBadSynopsis } = require('./lib/synopsis-validation');
+const { isTourShow } = require('./lib/tour-family');
 const { verifyProductionMatch } = require('./lib/synopsis-production-match');
 const { CLAUDE_OPUS } = require('./lib/models');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -112,7 +113,7 @@ function callClaudeAPI(prompt, maxTokens, model = CLAUDE_OPUS) {
  */
 function fetchJson(url, attempt = 1) {
   return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': USER_AGENT } }, (res) => {
+    const req = https.get(url, { headers: { 'User-Agent': USER_AGENT }, timeout: 15000 }, (res) => {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
@@ -143,7 +144,9 @@ function fetchJson(url, attempt = 1) {
         if (parsed.error) { reject(new Error(`MediaWiki API error: ${parsed.error.info || parsed.error.code || JSON.stringify(parsed.error).slice(0, 150)}`)); return; }
         resolve(parsed);
       });
-    }).on('error', reject);
+    });
+    req.on('error', reject);
+    req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
 }
 
@@ -206,7 +209,9 @@ async function main() {
   // production-history placeholder, stale future-tense, or otherwise invalid).
   // Previously only empty synopses were re-enriched, so placeholders written
   // pre-opening sat live forever (1536 incident, 2026-06-21).
-  let targets = shows.filter(s => classifyBadSynopsis(s).bad);
+  // National tours take their Broadway parent's synopsis (same story); a
+  // Wikipedia title search found the wrong article for them (BRO-4262).
+  let targets = shows.filter(s => !isTourShow(s) && classifyBadSynopsis(s).bad);
 
   if (ONLY_SHOW) {
     targets = targets.filter(s => s.id === ONLY_SHOW);

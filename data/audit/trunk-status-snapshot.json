@@ -1,67 +1,22 @@
 {
-  "generatedAt": "2026-09-14T13:34:57.617Z",
+  "generatedAt": "2026-09-28T14:43:12.359Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "0609cd5da113e5cae364af4011e440524244c270",
-  "state": "RED",
-  "consecutiveFailures": 3,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "3bc879ce5cef2c34602c75433f8ecb71b1675a06",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 22,
+  "greenSince": "2026-09-27T22:50:01Z",
+  "greenForHours": 15.886488611111112,
   "greenDurationIsFloor": false,
-  "redSince": "2026-09-06T09:08:07Z",
-  "redForHours": 196.44739361111112,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-05T16:09:42Z",
-  "latestFailedRunId": "34024962161",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34024962161",
-  "decidedRuns": 96,
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Run data validation",
-        "Run self-contradictory-clear drain acceptance test (needs review-texts)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/audit-duplicate-shows.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/audit-self-contradictory-clear-drained.test.mjs",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 1 - no zero-score-impact self-contradictory-clear remains undrained (BRO-185)"
-    },
-    {
-      "path": "scripts/audit-contradicted-flag-basis.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/lib/push-via-git-api.sh",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-"
-    },
-    {
-      "path": "scripts/audit-aggregator-url-latent.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]push-with-retry: the Git Data API fallback (default-on) did NOT run this attempt — either PUSH_API_FALLBACK_DISABLE=1 was set, this is the broadway-review-texts repo (excluded — no protected-"
-    }
-  ],
-  "topFailingJob": "Data Validation"
+  "lastSuccessAt": "2026-09-28T13:39:20Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 64,
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }

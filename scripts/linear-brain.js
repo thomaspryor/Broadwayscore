@@ -25,7 +25,11 @@ const { createLinearIssue } = require('./lib/linear-issue-create');
 const { hasHelpFlag } = require('./lib/cli-help');
 const linearClient = require('./lib/linear-client');
 const { checkLinearDoneTransition } = require('./lib/linear-done-gate');
+const { makeVerifyEvidence } = require('./lib/done-evidence-verify');
+const { makeVerifyCmdEvidence } = require('./lib/linear-cmd-execution');
+const { appendBypassRow, bypassCommentLine } = require('./lib/linear-gate-bypass-ledger');
 const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
+const { TERMINAL_STATE_TYPES, newestComments } = require('./lib/linear-staleness-check');
 
 const USAGE = `linear-brain.js — file a Linear issue through the one creation chokepoint.
 
@@ -34,7 +38,7 @@ Usage:
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
-    [--force "<reason ≥10 chars>"] [--duplicate-of <BRO-N>]
+    [--force "<reason ≥10 chars>"] [--duplicate-of <BRO-N>] [--cancel-reason "<reason ≥20 chars>"]
 
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
@@ -66,6 +70,12 @@ Usage:
           --duplicate-of is passed without a duplicate-type --state, rather
           than ignoring it. Kill switch: LINEAR_DUPLICATE_GATE_DISABLED=1
           (BRO-343).
+          Moving into a CANCELED-type state is REFUSED (exit 7) unless
+          --cancel-reason "<reason ≥20 chars>" is given — a card refused a
+          Done close can otherwise leave the open board via Cancel with zero
+          evidence ever checked. Kill switch: LINEAR_CANCEL_GATE_DISABLED=1
+          (BRO-3435). Every --force / *_GATE_DISABLED=1 bypass of the Done
+          gate is logged to data/audit/linear-gate-bypass.jsonl.
 `;
 
 function parseArgs(argv) {
@@ -251,6 +261,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       DUPLICATE_STATE_TYPE,
       checkLinearDuplicateTransition,
     } = require('./lib/linear-duplicate-gate');
+    const {
+      CANCELED_STATE_TYPE,
+      checkLinearCancelTransition,
+    } = require('./lib/linear-cancel-gate');
     try {
       const issue = await getIssueFn(identifier);
       if (!issue) {
@@ -287,6 +301,21 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         process.exit(1);
       }
 
+      // Same shape as --duplicate-of above (ship-check finding, 2026-09-21):
+      // without this, `update BRO-1 --state Done --cancel-reason "..."` would
+      // exit 0 having silently discarded the flag, matching the exact
+      // adversarial-review failure --duplicate-of was already fixed for.
+      if (args['cancel-reason'] !== undefined && (!target || target.type !== CANCELED_STATE_TYPE)) {
+        console.error(
+          `❌ --cancel-reason only applies to a move into a canceled-type state.\n` +
+            (target
+              ? `   --state "${target.name}" is a ${target.type}-type state, so the flag would do nothing.`
+              : `   No --state was given, so the flag would do nothing.`) +
+            `\n   Drop --cancel-reason, or pass the team's canceled state via --state.`
+        );
+        process.exit(1);
+      }
+
       // BRO-457: refuse a move into a completed-type state unless the issue
       // carries one of done-semantics-gate.js's two accepted evidence shapes.
       // Resolved (not written) so far — same "costs nothing on refusal" shape
@@ -299,6 +328,29 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         if (args.force && !bypassReason) {
           console.error('⚠️  --force ignored by done-semantics gate: the reason must be a string of ≥10 characters.');
         }
+        // BRO-3435: record every bypass, whether or not the gate would have
+        // refused anyway — the open question this exists to answer
+        // ("is --force the ROUTINE path for a whole class of work, e.g.
+        // data-repo closes the gate's own ancestry check can never verify?")
+        // needs USE counted, not just refusals dodged. Best-effort: a ledger
+        // write must never block or fail a real state transition.
+        const envDisabled = !bypassReason && process.env.LINEAR_DONE_GATE_DISABLED === '1';
+        if (bypassReason || envDisabled) {
+          try {
+            (deps.appendBypassRow || appendBypassRow)({
+              identifier: issue.identifier,
+              gate: 'done',
+              mechanism: bypassReason ? 'force' : 'env-disabled',
+              reason: bypassReason,
+              targetState: target.name,
+            });
+          } catch { /* diagnostic only — never block the transition */ }
+          // BRO-4241: record the bypass on the issue too. The comment posts
+          // before the state move (see ORDER MATTERS below), and in cloud
+          // sessions it is the only record (the ledger file is skipped there).
+          const line = bypassCommentLine({ mechanism: bypassReason ? 'force' : 'env-disabled', reason: bypassReason, targetState: target.name });
+          args.comment = args.comment !== undefined ? `${args.comment}\n\n${line}` : line;
+        }
         if (!bypassReason && process.env.LINEAR_DONE_GATE_DISABLED !== '1') {
           const commentText = typeof args.comment === 'string' ? args.comment : '';
           // getIssue()'s query already fetches comments(first: 20) — reuse
@@ -310,12 +362,24 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           // createdAt, and Linear's comments connection is not
           // createdAt-ascending by default (see that helper's own header).
           const existingComments = sortedCommentBodies(issue);
+          // Real verifier by default (git ancestry / gh merge commit); tests
+          // inject a stub through deps so no unit test ever shells out.
+          const verifyEvidence = deps.verifyEvidence
+            || makeVerifyEvidence({ cwd: process.cwd(), issueIdentifier: issue.identifier, log: (m) => console.error(m) });
+          // BRO-3885: actually RUNS a recorded VERIFY command against a fresh
+          // origin/main checkout — see linear-cmd-execution.js's header for
+          // why a shape-only check (evaluateVerifiability) let BRO-3471 close
+          // Done twice on a command naming a file that never existed.
+          const verifyCmdEvidence = deps.verifyCmdEvidence || makeVerifyCmdEvidence({ log: (m) => console.error(m) });
           const gate = checkLinearDoneTransition({
             targetStateType: target.type,
             description: issue.description || '',
             commentText,
             existingComments,
+            verifyEvidence,
+            verifyCmdEvidence,
           });
+          if (gate.warning) console.error(`⚠️  ${gate.warning}`);
           if (gate.gated && !gate.allowed) {
             console.error(`\n❌ REFUSED (${gate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
             console.error(gate.reason);
@@ -404,6 +468,81 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         } else {
           duplicateTwin = dupGate.existingTarget;
         }
+      }
+
+      // BRO-3435: a card refused a Done close by the completed-type gate
+      // above could otherwise leave the open board via Cancel with zero
+      // evidence ever checked — same practical outcome (off the board), and
+      // audit-done-evidence.js's nightly sweep only re-verifies Done cards,
+      // so a Canceled one is invisible to it too. Require a reason instead;
+      // see linear-cancel-gate.js's header for the full rationale and why
+      // this is deliberately narrower than the done-gate (no server-side
+      // precondition to mirror, so no partial-write ordering hazard).
+      if (isRealTransition && target.type === CANCELED_STATE_TYPE) {
+        const cancelGate = checkLinearCancelTransition({
+          targetStateType: target.type,
+          cancelReason: args['cancel-reason'],
+        });
+        const cancelGateDisabled = process.env.LINEAR_CANCEL_GATE_DISABLED === '1';
+        if (!cancelGate.allowed && cancelGateDisabled) {
+          console.error(`⚠️  LINEAR_CANCEL_GATE_DISABLED=1 — proceeding past ${cancelGate.verdict}.`);
+          try {
+            (deps.appendBypassRow || appendBypassRow)({
+              identifier: issue.identifier,
+              gate: 'cancel',
+              mechanism: 'env-disabled',
+              targetState: target.name,
+            });
+          } catch { /* diagnostic only — never block the transition */ }
+        }
+        if (!cancelGate.allowed && !cancelGateDisabled) {
+          console.error(`\n❌ REFUSED (${cancelGate.verdict}) — ${issue.identifier} not moved to ${target.name}\n`);
+          console.error(cancelGate.reason);
+          console.error(
+            `\n  node scripts/linear-brain.js update ${issue.identifier} ` +
+              `--state ${target.name} --cancel-reason "<at least 20 characters>" ` +
+              `(or set LINEAR_CANCEL_GATE_DISABLED=1 for automation that must not block)\n`
+          );
+          process.exit(7);
+        }
+        // Ship-check finding, 2026-09-21 (both reviewers independently, and
+        // correctly): a PASSING gate here recorded the reason in `cancelGate`
+        // and then discarded it — nothing wrote it to the card, the ledger,
+        // or the success JSON. The operator typed 20 mandatory characters
+        // that lived only in shell history, so the audit trail this gate
+        // exists to create didn't exist. Reuses the EXISTING comment-then-
+        // state write path below rather than adding a second write call
+        // (Codex's own suggested fix) — folded into any --comment the caller
+        // already gave rather than replacing it, so neither is lost.
+        if (cancelGate.gated && cancelGate.allowed) {
+          const reasonLine = `Canceled: ${cancelGate.reason}`;
+          args.comment = args.comment !== undefined ? `${args.comment}\n\n${reasonLine}` : reasonLine;
+        }
+      }
+
+      // BRO-3869 cousin: `linear-session.js claim` warns automatically when
+      // reopening a Done/Canceled issue (the exact shape of the incident that
+      // filed BRO-3869 — a sibling session concluded+shipped a card while
+      // this session was still investigating it), but `update --state` is
+      // this repo's OTHER, more general path that can move an issue OUT of a
+      // terminal state, and had no equivalent warning. Fires whenever this
+      // call is a real transition (isRealTransition, computed above) FROM a
+      // terminal type TO a non-terminal one — never blocks, matches the
+      // done-gate's own "warn, then still allow the write" precedent above.
+      if (isRealTransition && TERMINAL_STATE_TYPES.has(issue.state && issue.state.type) && !TERMINAL_STATE_TYPES.has(target.type)) {
+        console.error(`\n⚠️  ${issue.identifier} was "${issue.state.name}" (a concluded state) — you're reopening it.`);
+        console.error('   Read why it was concluded before proceeding:');
+        const recent = newestComments(issue, 3);
+        if (recent.length > 0) {
+          for (const c of recent) {
+            const author = (c.user && c.user.name) || 'unknown';
+            const snippet = String(c.body || '').replace(/\s+/g, ' ').slice(0, 200);
+            console.error(`   [${c.createdAt}] ${author}: ${snippet}${snippet.length === 200 ? '…' : ''}`);
+          }
+        } else if (issue.url) {
+          console.error(`   (no comments fetched — read ${issue.url} directly)`);
+        }
+        console.error('');
       }
 
       // ORDER MATTERS, and the first version had it backwards. It moved the

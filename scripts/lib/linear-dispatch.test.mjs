@@ -831,6 +831,28 @@ test('BRO-3045: a headless job-spawned latest attempt is unaffected', () => {
   assert.equal(hasLiveLedgerEntry('linear:BRO-7', entries), true);
 });
 
+// BRO-4075 (Codex + QA-subagent adversarial review catch on the sibling
+// dispatch-ledger.js fix): a landed-acked row proving a stopped-short job
+// actually landed must NOT make hasLiveLedgerEntry read the task as "live"
+// forever — a first version of that fix widened isAttemptEvent to include
+// LANDED_ACKED, which made it become "latest attempt" here too, and since
+// landed-acked rows carry no workspaceRef, terminalForLaunch couldn't
+// rescue it (dispatch-ledger.js:594's very first line: no workspaceRef ->
+// null). That misread 28 real production ledger rows as "live", causing
+// linear-next.js to wrongly refuse a legitimate future re-dispatch on an
+// already-finished, already-verified task. The actual fix (a jobId-scoped
+// override inside resolveDeadAttempt, not a change to isAttemptEvent) never
+// changes what latestAttemptForTask returns, so this must still read false.
+test('BRO-4075: a landed-acked row after job-stopped-short does not make hasLiveLedgerEntry read the task as live', () => {
+  const entries = [
+    { event: 'launch', taskId: 'linear:BRO-4065', workspaceRef: 'headless:linear:BRO-4065', ts: '2026-09-23T06:00:00.000Z' },
+    { event: 'job-spawned', taskId: 'linear:BRO-4065', jobId: 'j4065', ts: '2026-09-23T06:01:00.000Z' },
+    { event: 'job-stopped-short', taskId: 'linear:BRO-4065', jobId: 'j4065', ts: '2026-09-23T06:11:07.000Z' },
+    { event: 'landed-acked', taskId: 'linear:BRO-4065', jobId: 'j4065', sha: 'ff10e4de1a6', ts: '2026-09-23T06:15:41.000Z' },
+  ];
+  assert.equal(hasLiveLedgerEntry('linear:BRO-4065', entries), false, 'a landed-acked, verified-finished task must never read as live');
+});
+
 // ── the comment half, which is load-bearing ──────────────────────────────────
 //
 // reportDispatchOnIssue posts a "Dispatched ..." comment on EVERY dispatch and

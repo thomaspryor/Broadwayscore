@@ -96,6 +96,25 @@ test('planClaim: Done/Canceled issue -> activate (reopen), not refused', () => {
   assert.equal(plan.stateId, 'progress-1');
 });
 
+test('planClaim: reopening a Done/Canceled issue flags reopenedFromTerminal + previousStateName (BRO-3869 — the automatic half of the concurrent-work fix)', () => {
+  const done = { id: 'issue-4', state: { name: 'Done', type: 'completed' } };
+  const donePlan = planClaim({ issue: done, states: STATES });
+  assert.equal(donePlan.reopenedFromTerminal, true);
+  assert.equal(donePlan.previousStateName, 'Done');
+
+  const canceled = { id: 'issue-5', state: { name: 'Canceled', type: 'canceled' } };
+  const canceledPlan = planClaim({ issue: canceled, states: STATES });
+  assert.equal(canceledPlan.reopenedFromTerminal, true);
+  assert.equal(canceledPlan.previousStateName, 'Canceled');
+});
+
+test('planClaim: reopening a routine Todo/Backlog issue does NOT flag reopenedFromTerminal', () => {
+  const issue = { id: 'issue-2', state: { name: 'Todo', type: 'unstarted' } };
+  const plan = planClaim({ issue, states: STATES });
+  assert.equal(plan.reopenedFromTerminal, false);
+  assert.equal(plan.previousStateName, null);
+});
+
 test('planClaim: falls back to type "started" when no state is literally named "In Progress"', () => {
   const renamed = STATES.map((s) => (s.name === 'In Progress' ? { ...s, name: 'Doing' } : s));
   const plan = planClaim({ issue: null, states: renamed, requestedTitle: 'x' });

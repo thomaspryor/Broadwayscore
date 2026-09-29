@@ -102,6 +102,15 @@ const DRY_RUN = flags['dry-run'] === true;
 const SINGLE_SHOW = flags['show'] || null;
 const MAX_VERIFY_CALLS = parseInt(flags['max-verify'], 10) || 27; // bounded by pending-queue size
 const timeBudget = createRunBudget(parseTimeBudgetMin(args));
+// BRO-2303: mirrors scrape-recoupment-announcements.js's guard (same
+// per-entry cost shape — verifyClaim() does up to 4 SERP queries + up to 4
+// fetchPage() @25s timeout + LLM classification calls, none bounded by a
+// combined per-entry timeout). A bare `exceeded()` check (checked only
+// between entries) lets an entry starting just under the budget overrun it
+// by minutes — this eroded the worst-case cushion math in both callers
+// (commercial-friday.yml's 12min slice and commercial-weekly.yml's 25min
+// slice) documented at their call sites.
+const MIN_REMAINING_MS_TO_START = 2 * 60_000;
 
 function log(...a) { console.log(...a); }
 function loadJSON(p, fallback) {
@@ -244,7 +253,7 @@ async function main() {
   const touchedSlugsThisRun = new Set();
 
   for (let entryIdx = 0; entryIdx < entries.length; entryIdx++) {
-    if (timeBudget.exceeded()) {
+    if (timeBudget.enabled && timeBudget.remainingMs() < MIN_REMAINING_MS_TO_START) {
       log(`⏱ Time budget (${timeBudget.minutes} min) reached — ${entries.length - entryIdx} entries deferred to next run.`);
       break;
     }

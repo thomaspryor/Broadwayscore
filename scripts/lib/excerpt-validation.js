@@ -2,6 +2,8 @@
  * Excerpt Validation Module
  *
  * Layer 3: Cross-show excerpt validation (detects excerpts mentioning wrong shows)
+ * Layer 3b: Former-cast mention detection (priorRuns reviews naming a
+ *           since-departed cast member)
  * Layer 4: Tour review excerpt detection (detects touring production language)
  *
  * Designed for use in rebuild-all-reviews.js selectBestExcerpt() pipeline.
@@ -11,6 +13,7 @@
 
 const path = require('path');
 const fs = require('fs');
+const { isWithinPriorRun } = require('./wrong-production-autoclear');
 
 // --- Layer 3: Cross-Show Validation ---
 
@@ -128,6 +131,318 @@ function excerptMentionsWrongShow(excerpt, currentShowId, currentShowTitle) {
   return { isWrongShow: false };
 }
 
+// --- Layer 3b: Former-Cast Mention Detection ---
+//
+// A returning production (show.priorRuns) re-includes reviews from an
+// earlier run of the same show. Those reviews' pull-quotes were written
+// about THAT run's cast and can name a since-departed lead (BRO-1397: To
+// Kill a Mockingbird WE 2026 re-includes its 2022 Gielgud run, whose Times
+// review reads "Rafe Spall is stunning" — Spall isn't in the 2026 cast).
+//
+// Detection requires POSITIVE evidence, not just "any unrecognized name":
+// a name candidate only counts as a former-cast mention when it sits near
+// one of the CURRENT show's own character/role names (Atticus, Mayella,
+// Judge Taylor...) in the review's own text — the way critics actually
+// write about casting ("Rafe Spall inheriting ... role as Atticus Finch",
+// "a terrified Mayella (Poppy Lee Friar)"). A plain "unrecognized name"
+// net over-fires on the author ("Harper Lee's 1960 novel", "the Harper Lee
+// estate"), other adaptations name-dropped for comparison ("The Social
+// Network"), and outlet/venue text — none of those sit next to a role name.
+//
+// Detection is file-local (scoped to the one review's own text fields, not
+// the show's whole corpus): a corpus-wide "mentioned only in prior-run-era
+// reviews" scan sounds appealing but aggregator excerpt fields on this
+// corpus are already known to carry stale cross-era text (WET/Stagedoor
+// excerpts scraped from an old archive page onto a new review, see
+// memory/feedback_wet_venue_page_wrong_show_ingestion.md) — bucketing by
+// publishDate alone would let a contaminated "current-era" field cancel out
+// a real former-cast name. Restricting the scan to one file's own fields
+// avoids that cross-file poisoning.
+
+// Two-or-three consecutive Title-Case words — a broad "this looks like a
+// person's name" net, deliberately unanchored to any specific name so it
+// generalizes to any show that declares priorRuns.
+const NAME_CANDIDATE_RE = /\b[A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){1,2}\b/g;
+
+// Candidates ending in one of these words are venues/outlets/institutions,
+// not people — "Gielgud Theatre", "New York Times" — even though they match
+// the Title-Case pattern.
+const INSTITUTIONAL_SUFFIX_RE = /(theatre|theater|company|square|street|avenue|award|awards|festival|society|museum|centre|center|studio|productions?|times|guardian|post|herald|journal|tribune|magazine)$/i;
+
+// Whole-phrase market/geography boilerplate that recurs constantly in
+// review prose regardless of suffix ("West End", "Off Broadway") — caught
+// live on allegra-west-end-2026 (readaboutstuff--unknown.json, 2026-07-10):
+// "Peter Quilter's hit West End transfer" got its own "West End" tokenized
+// into a false former-cast match once "end" collided with unrelated prose
+// near the role name elsewhere in the file.
+const MARKET_PHRASE_RE = /^(west end|off broadway|off west end|new york|east end|south bank|the fringe)$/i;
+
+// A candidate starting with a common function word is a title/phrase
+// fragment ("The Social Network", "A Few Good Men" — comparison titles
+// critics drop in passing), not a person's name.
+const LEADING_STOPWORD_RE = /^(the|a|an|and|or|but|of|in|on|at|to|for|with|from|by|as|is|was|are|were|has|have|had|this|that|these|those|its|so|if|when|while|where|what|who|which|how|why|there|here|now|then|yet|not|no)$/i;
+
+// A name immediately followed by "'s novel"/"estate"/etc (with up to a few
+// adjectives in between — "'s beloved book", "'s celebrated 1960 novel") is
+// the literary source's author (Harper Lee, Arthur Miller...) — a valid
+// reference in any era's review, so role-name proximity alone isn't enough
+// to treat it as a departed cast member.
+const LITERARY_SOURCE_SUFFIX_RE = /^\s*['’]?s?\s*(?:\d{4}\s+)?(?:[a-z]+\s+){0,3}(?:novel|book|memoir|play|story|autobiography|screenplay|source material|estate)\b/i;
+const LITERARY_SOURCE_SUFFIX_WINDOW = 40;
+
+// Fields that can carry review prose worth scanning for name candidates —
+// mirrors the source list selectBestExcerpt() itself pulls quotes from.
+const NAME_SCAN_FIELDS = [
+  'fullText', 'westEndTheatreExcerpt', 'stagedoorExcerpt', 'dtliExcerpt',
+  'bwwExcerpt', 'showScoreExcerpt', 'theatreReviewsExcerpt', 'nycTheatreExcerpt',
+  'lboRoundupExcerpt', 'llmPullQuote',
+];
+
+// How close a current-show role name must sit to a name candidate (either
+// side) to count as "this text is describing who plays that role" rather
+// than an unrelated nearby mention.
+const ROLE_PROXIMITY_WINDOW = 60;
+
+function nameTokens(str) {
+  if (!str) return [];
+  return str
+    .replace(/[^\p{L}\s'-]/gu, ' ')
+    .split(/\s+/)
+    .map(t => t.trim().toLowerCase())
+    .filter(t => t.length >= 3);
+}
+
+/**
+ * Extract "this looks like a person's name" candidates (with match index)
+ * from text, dropping institutional matches (venues, outlets) and leading
+ * function-word fragments ("The Social Network").
+ *
+ * @param {string} text
+ * @returns {Array<{ name: string, index: number }>}
+ */
+function extractPersonNameCandidates(text) {
+  if (!text) return [];
+  const out = [];
+  for (const m of text.matchAll(NAME_CANDIDATE_RE)) {
+    let candidate = m[0];
+    let index = m.index;
+    let words = candidate.split(/\s+/);
+    if (LEADING_STOPWORD_RE.test(words[0])) {
+      // The regex is greedy and non-overlapping: "The Rafe Spall" matches as
+      // ONE 3-word candidate, so rejecting it outright would lose "Rafe
+      // Spall" entirely (the next matchAll() iteration resumes AFTER this
+      // match, it never re-tries the tail). Retry on the remainder instead
+      // of just dropping it.
+      if (words.length < 3) continue;
+      const restOffset = candidate.indexOf(words[1]);
+      candidate = words.slice(1).join(' ');
+      index = m.index + restOffset;
+      words = candidate.split(/\s+/);
+      if (LEADING_STOPWORD_RE.test(words[0])) continue;
+    }
+    // A stopword ANYWHERE in the final candidate (not just leading) means
+    // it isn't a name — e.g. scraped ad-chrome "Advertisement" immediately
+    // followed by a capitalized sentence starter ("Advertisement The sound
+    // design...") matches the 2-word pattern with no leading stopword to
+    // catch it (illinoise-2024/slantmagazine, corpus sweep). A genuine
+    // name never contains a bare "the"/"was"/"has".
+    if (words.some(w => LEADING_STOPWORD_RE.test(w))) continue;
+    if (INSTITUTIONAL_SUFFIX_RE.test(words[words.length - 1])) continue;
+    if (MARKET_PHRASE_RE.test(candidate)) continue;
+    const afterMatch = text.slice(index + candidate.length, index + candidate.length + LITERARY_SOURCE_SUFFIX_WINDOW);
+    if (LITERARY_SOURCE_SUFFIX_RE.test(afterMatch)) continue;
+    out.push({ name: candidate, index });
+  }
+  return out;
+}
+
+/**
+ * Tokens that must never be treated as a former-cast mention: the current
+ * cast (name + role, so character names like "Bob Ewell" aren't mistaken for
+ * a departed actor), the creative team (director/writer persist across
+ * runs), and the show/venue identity.
+ *
+ * @param {object} show
+ * @returns {Set<string>}
+ */
+function buildSafeNameTokens(show) {
+  const safe = new Set();
+  const add = (s) => nameTokens(s).forEach(t => safe.add(t));
+  (show.cast || []).forEach(c => { add(c && c.name); add(c && c.role); });
+  (show.creativeTeam || []).forEach(c => add(c && c.name));
+  add(show.title);
+  add(show.venue);
+  (show.priorRuns || []).forEach(r => add(r && r.venue));
+  return safe;
+}
+
+/**
+ * Role/character-name tokens for the show's CURRENT cast (e.g. "atticus",
+ * "finch", "mayella", "judge", "taylor"). Presence of one of these near a
+ * name candidate is the positive signal that the candidate is being
+ * described as playing that role — see module-level comment.
+ *
+ * @param {object} show
+ * @returns {Set<string>}
+ */
+function buildRoleTerms(show) {
+  const terms = new Set();
+  (show.cast || []).forEach(c => {
+    if (!c || !c.role) return;
+    c.role.split(/[/,]/).forEach(part => nameTokens(part).forEach(t => terms.add(t)));
+  });
+  return terms;
+}
+
+// "Directed by NAME" / "Written by NAME" / "Developed & Directed by: NAME" /
+// "NAME's production/staging/direction/adaptation" — creative-team credits
+// inferred from prose when show.creativeTeam data is incomplete (common for
+// fringe/regional shows). Caught live sweeping all 34 priorRuns shows:
+// the-enormous-crocodile-west-end-2026 (creativeTeam: []) credits its
+// director two different ways across two review files — "Developed &
+// Directed by: Emily Lim" in one, "Emily Lim's production delivers..." in
+// another — both need to resolve to the same safe name. Whoever
+// created/directed a production typically stays on for a returning run,
+// the same reasoning as the explicit show.creativeTeam exclusion in
+// buildSafeNameTokens.
+const CREATIVE_ROLE_PHRASE_RE = /\b(?:directed|written|created|developed|choreographed|composed|designed|adapted)\s+(?:(?:&|and)\s+\w+\s+)?by:?\s+([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})|\b([A-Z][A-Za-z'-]+(?:\s+[A-Z][A-Za-z'-]+){0,2})['’]s\s+(?:production|staging|direction|adaptation)\b/gi;
+
+/**
+ * Names inferred from "directed by X" style credit lines in a review's own
+ * text — a file-local safelist augmentation for creative-team members the
+ * structured show.creativeTeam data is missing.
+ *
+ * @param {string} text
+ * @returns {Set<string>} name tokens
+ */
+function extractCreativeRolePhraseNames(text) {
+  const names = new Set();
+  if (!text) return names;
+  for (const m of text.matchAll(CREATIVE_ROLE_PHRASE_RE)) {
+    nameTokens(m[1] || m[2]).forEach(t => names.add(t));
+  }
+  return names;
+}
+
+/**
+ * True when a role term appears within ROLE_PROXIMITY_WINDOW chars either
+ * side of a candidate's position in its source text.
+ */
+function hasNearbyRoleTerm(text, candidateName, candidateIndex, roleTerms) {
+  if (roleTerms.size === 0) return false;
+  const start = Math.max(0, candidateIndex - ROLE_PROXIMITY_WINDOW);
+  const end = Math.min(text.length, candidateIndex + candidateName.length + ROLE_PROXIMITY_WINDOW);
+  const window = text.slice(start, end).toLowerCase();
+  for (const term of roleTerms) {
+    if (new RegExp(`\\b${term}\\b`).test(window)) return true;
+  }
+  return false;
+}
+
+/**
+ * Collect name-candidate tokens from a single review file's own text fields
+ * that (a) don't match the show's current cast/creative-team/venue/title and
+ * (b) sit near one of the current show's role names somewhere in the file —
+ * positive evidence the file is describing who plays that role. These are
+ * the tokens (first name, surname, or both) a former-cast guard treats as
+ * "this review's own evidence of who is no longer in the show" — reused
+ * both for a bare-surname mention ("Spall handles...") and a full-name one
+ * ("Rafe Spall is stunning").
+ *
+ * @param {object} data - review-text JSON for one review
+ * @param {Set<string>} safeTokens
+ * @param {Set<string>} roleTerms
+ * @returns {Set<string>}
+ */
+function collectFormerCastTokens(data, safeTokens, roleTerms) {
+  const former = new Set();
+  const texts = NAME_SCAN_FIELDS.map(f => data && data[f]).filter(t => typeof t === 'string' && t);
+  if (data && data.llmScore) {
+    if (data.llmScore.keyQuote) texts.push(data.llmScore.keyQuote);
+    (data.llmScore.keyPhrases || []).forEach(p => { if (p && p.quote) texts.push(p.quote); });
+  }
+
+  // File-local safelist augmentation: "directed by X" credits caught in
+  // THIS review's own text, on top of the show-level safeTokens.
+  const fileSafeTokens = new Set(safeTokens);
+  for (const text of texts) {
+    for (const t of extractCreativeRolePhraseNames(text)) fileSafeTokens.add(t);
+  }
+
+  for (const text of texts) {
+    for (const { name: candidate, index } of extractPersonNameCandidates(text)) {
+      const tokens = nameTokens(candidate);
+      if (tokens.length === 0) continue;
+      // If ANY token of the candidate matches a safe name, treat the whole
+      // candidate as a mention of that safe person (e.g. "Bartlett Sher"),
+      // not a former-cast member.
+      if (tokens.some(t => fileSafeTokens.has(t))) continue;
+      if (!hasNearbyRoleTerm(text, candidate, index, roleTerms)) continue;
+      // A 2-word candidate ("Rafe Spall") decomposes into both individual
+      // tokens so a later bare-surname mention ("Spall handles...") still
+      // matches. A 3-word candidate ("Poppy Lee Friar") is kept as one
+      // atomic phrase instead — splitting it would add "lee" on its own,
+      // which collides with unrelated words (e.g. the author "Harper
+      // Lee") anywhere else in the file. The tradeoff: a later bare
+      // mention of just the middle/last word of a 3-word name won't
+      // match, which is an acceptable miss next to that false-positive.
+      if (tokens.length <= 2) {
+        tokens.forEach(t => former.add(t));
+      } else {
+        former.add(tokens.join(' '));
+      }
+    }
+  }
+  return former;
+}
+
+/**
+ * Decide whether an excerpt candidate names someone from a returning
+ * production's PRIOR run who isn't in the current cast — a former lead's
+ * pull-quote surviving onto the current show page (BRO-1397).
+ *
+ * Only applies when the show declares priorRuns AND the review's own
+ * publishDate falls inside one of those windows; every other review is
+ * unaffected regardless of who it mentions.
+ *
+ * @param {string} excerpt - the candidate excerpt being validated
+ * @param {object} context
+ * @param {object} context.show - the show record (cast, creativeTeam, priorRuns, title, venue)
+ * @param {string|Date} context.reviewDate - the review's publishDate
+ * @param {object} context.reviewData - the full review-text JSON (for cross-field evidence)
+ * @returns {{ mentionsFormerCast: boolean, name?: string }}
+ */
+function excerptMentionsFormerCast(excerpt, context) {
+  if (!excerpt || !context || !context.show) return { mentionsFormerCast: false };
+  const { show, reviewDate, reviewData } = context;
+  if (!Array.isArray(show.priorRuns) || show.priorRuns.length === 0) {
+    return { mentionsFormerCast: false };
+  }
+  if (!isWithinPriorRun(reviewDate, show.priorRuns)) return { mentionsFormerCast: false };
+
+  const safeTokens = buildSafeNameTokens(show);
+  const roleTerms = buildRoleTerms(show);
+  const formerTokens = collectFormerCastTokens(reviewData || {}, safeTokens, roleTerms);
+  if (formerTokens.size === 0) return { mentionsFormerCast: false };
+
+  const excerptLower = excerpt.toLowerCase();
+  // Use the same tokenizer that built formerTokens (nameTokens keeps a
+  // hyphenated surname as one token, e.g. "lloyd-webber") — a regex ad hoc
+  // to this call site previously split on hyphens, so a hyphenated former
+  // cast member's surname alone (common in UK/West End casts) could never
+  // match here even though it was correctly collected above.
+  const excerptWords = nameTokens(excerpt);
+  for (const entry of formerTokens) {
+    if (entry.includes(' ')) {
+      // Multi-word phrase (3-word candidate, kept atomic) — substring match.
+      if (excerptLower.includes(entry)) return { mentionsFormerCast: true, name: entry };
+    } else if (excerptWords.includes(entry)) {
+      return { mentionsFormerCast: true, name: entry };
+    }
+  }
+  return { mentionsFormerCast: false };
+}
+
 // --- Layer 4: Tour Review Detection ---
 
 const TOUR_EXCERPT_PATTERNS = [
@@ -145,12 +460,15 @@ const TOUR_EXCERPT_PATTERNS = [
 const TOUR_VENUE_PATTERNS = [
   /\bPantages\b/,
   /\bOrpheum\b/,
-  /\bFox Theatre\b/,
+  /(?<!Red )\bFox Theatre\b/, // "Red Fox Theatre" is an Irish company (Catch of the Day)
   /\bFabulous Fox\b/,
   /\bAhmanson\b/,
   /\bCIBC Theatre\b/,
   /\bCadillac Palace\b/,
-  /\bKennedy Center\b/,
+  // Kennedy Center removed (BRO-4185 follow-up): all 14 matches in the corpus
+  // were real Broadway reviews mentioning a Kennedy Center Honor or the
+  // pre-Broadway run that transferred. Tryout-dated reviews are caught by the
+  // date guard, and a touring stop there says "national tour" anyway.
   /\bBoston Opera House\b/,
   /\bBuell Theatre\b/,
   /\bSegerstrom\b/,
@@ -175,6 +493,12 @@ const TOUR_FORWARD_TENSE_PATTERNS = [
   // Bare participle/gerund adjacent to tour — no helper verb required. Catches
   // "tour planned for 2027", "tour launching next spring", "tour announced today".
   /\btour\s+(?:planned|announced|scheduled|slated|launching|booked|upcoming|expected)\b/i,
+  // UK run-then-tour phrasing: "currently performing in London before embarking
+  // on a national tour", "until 29 August and then on tour", "before it heads on
+  // tour" (BRO-4185 follow-up: 8 London reviews excluded by these).
+  /\bbefore\s+(?:it\s+|they\s+)?(?:embark(?:s|ing)?|head(?:s|ing)?(?:\s+out)?|go(?:es|ing)?(?:\s+out)?|set(?:s|ting)?\s+off)\s+on\s+(?:a\s+|its\s+)?(?:national\s+|uk\s+|us\s+)?tour\b/i,
+  /\b(?:and\s+)?then\s+on\s+(?:a\s+)?(?:national\s+|uk\s+)?tour\b/i,
+  /\bembark(?:s|ing)?\s+on\s+(?:a\s+)?(?:national\s+|uk\s+|us\s+)?tour\s+(?:in|next|later|this)\b/i,
 ];
 
 // Past-tense / in-progress markers — confirm this IS a tour review
@@ -251,34 +575,97 @@ function tourMatchIsAboutDifferentShow(excerpt, matchIndex, currentShowId, curre
   return null;
 }
 
+// Words right before a tour phrase that make it history, not the production
+// under review: "Fresh off a national tour", "following a national tour",
+// "after bolting off on tour", "previous versions had ... a national tour".
+const TOUR_HISTORY_PREFIX = /(?:fresh\s+off|following|after(?:\s+\w+){0,3}|bolting\s+off\s+on|previous(?:ly)?(?:\s+\w+){0,4})\s+(?:a\s+|its\s+|the\s+)?(?:first\s+)?$/i;
+const TOUR_HISTORY_WINDOW_CHARS = 70;
+const TOUR_YEAR_WINDOW_CHARS = 40;
+// A tour happening now. When present, an earlier year nearby is the show's
+// history ("opened on Broadway in 1975 ... now on its national tour"), not a
+// sign that the tour mention itself is history. Life of Pi / The Wiz /
+// Beetlejuice tour reviews all name an original year.
+const TOUR_PRESENT_PATTERNS = [
+  /\b(?:currently|now)\s+(?:on|touring|playing)\b/i,
+  /\bthis\s+(?:national\s+|north\s+american\s+|uk\s+|us\s+)?tour\b/i,
+  /\b(?:on|during)\s+its\s+(?:national\s+|north\s+american\s+|uk\s+)?tour\b/i,
+  /\btour\s+(?:is\s+(?:now|currently|in)|stops?|has\s+arrived|arrives|plays|opened)\b/i,
+  /\bthe\s+(?:first\s+)?(?:national|north\s+american)\s+tour\s+of\b/i,
+];
+
+/**
+ * One context object for every caller, so the collector and the rebuild give
+ * the same verdict (BRO-4185 follow-up: the collector called with none).
+ * @param {{id?: string, title?: string, venue?: string, theater?: string,
+ *          openingDate?: string, previewsStartDate?: string}|null} show
+ */
+function tourContextForShow(show) {
+  if (!show) return undefined;
+  const date = show.openingDate || show.previewsStartDate || '';
+  const year = parseInt(String(date).slice(0, 4), 10);
+  return {
+    currentShowId: show.id,
+    currentShowTitle: show.title,
+    currentShowVenue: show.venue || show.theater || null,
+    currentShowYear: Number.isFinite(year) ? year : null,
+  };
+}
+
+// A match is not a tour signal when it describes something else: the show's
+// own venue, an earlier year's production, a company name, or history.
+function tourMatchIsDiscounted(excerpt, index, matchText, context, isVenue) {
+  const before = excerpt.slice(Math.max(0, index - TOUR_HISTORY_WINDOW_CHARS), index);
+  const after = excerpt.slice(index + matchText.length, index + matchText.length + TOUR_HISTORY_WINDOW_CHARS);
+  if (context && context.currentShowYear && !TOUR_PRESENT_PATTERNS.some(p => p.test(excerpt))) {
+    const near = `${before.slice(-TOUR_YEAR_WINDOW_CHARS)} ${after.slice(0, TOUR_YEAR_WINDOW_CHARS)}`;
+    const years = near.match(/\b(19|20)\d{2}\b/g) || [];
+    if (years.some(y => Number(y) < context.currentShowYear)) return 'earlier-year';
+  }
+  if (isVenue) {
+    const venue = context && context.currentShowVenue ? String(context.currentShowVenue).toLowerCase() : '';
+    const word = matchText.toLowerCase().replace(/\s+theat(?:re|er)$/, '');
+    if (venue && venue.includes(word)) return 'own-venue';
+    return null;
+  }
+  if (/touring company/i.test(matchText)) {
+    if (/Touring Company/.test(matchText)) return 'company-name';
+    const prev = (before.match(/([A-Z][\w'-]+)\s+$/) || [])[1];
+    if ((prev && !/^(?:The|A|An|This|That|Its|Their|His|Her|Our)$/.test(prev)) || /^\s+[A-Z]/.test(after)) return 'company-name';
+  }
+  if (TOUR_HISTORY_PREFIX.test(before)) return 'history';
+  return null;
+}
+
 /**
  * Check if an excerpt appears to be from a touring production review.
  *
  * @param {string} excerpt - The excerpt text
- * @param {{currentShowId?: string, currentShowTitle?: string}} [context] - when
- *   provided, a tour-pattern match immediately preceded by a DIFFERENT known
- *   show's title is treated as a comparison lede, not tour contamination.
- * @returns {{ isTourReview: boolean, signal?: string, forwardTenseOnly?: boolean, otherShowComparison?: boolean }}
+ * @param {{currentShowId?: string, currentShowTitle?: string,
+ *          currentShowVenue?: string, currentShowYear?: number}} [context] -
+ *   build it with tourContextForShow(show). With it, a match immediately
+ *   preceded by a DIFFERENT known show's title is a comparison lede, and a
+ *   match at the show's own venue or next to an earlier year is not tour
+ *   contamination.
+ * @returns {{ isTourReview: boolean, signal?: string, forwardTenseOnly?: boolean, otherShowComparison?: boolean, discounted?: string }}
  */
 function isTourReviewExcerpt(excerpt, context) {
   if (!excerpt) return { isTourReview: false };
 
-  // Venue patterns are unambiguous — check first (forward-tense carve-out does NOT apply)
+  // Venue patterns: forward-tense carve-out does NOT apply, but own-venue and
+  // earlier-year mentions are not a tour (11 to Midnight is AT the Orpheum;
+  // "moving to the Orpheum Theater ... that summer" of 1982).
+  let discounted = null;
   for (const pattern of TOUR_VENUE_PATTERNS) {
-    if (pattern.test(excerpt)) {
-      return { isTourReview: true, signal: `venue: ${pattern.source}` };
+    const re = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
+    let m;
+    while ((m = re.exec(excerpt))) {
+      const why = tourMatchIsDiscounted(excerpt, m.index, m[0], context, true);
+      if (!why) return { isTourReview: true, signal: `venue: ${pattern.source}` };
+      discounted = discounted || why;
     }
   }
 
   // Tour keyword patterns — skip when only forward-tense context is present.
-  // Checks the FIRST match per pattern only (mirrors the pre-existing
-  // .find()-based behavior): a comparison lede that opens the excerpt is by
-  // far the common case this excerpt corpus produces, and scanning every
-  // subsequent match against the (necessarily incomplete) known-show-title
-  // catalog trades a real fix — the-comedy-about-spies-west-end-2026's lede
-  // also names "Fawlty Towers", which is not itself a cataloged show — for a
-  // narrower theoretical gain (a genuine self-description coexisting with an
-  // unrelated comparison later in the same excerpt).
   for (const pattern of TOUR_EXCERPT_PATTERNS) {
     const m = pattern.exec(excerpt);
     if (!m) continue;
@@ -291,10 +678,17 @@ function isTourReviewExcerpt(excerpt, context) {
         return { isTourReview: false, otherShowComparison: true, signal: pattern.source, mentionedTitle: other.title };
       }
     }
-    return { isTourReview: true, signal: pattern.source };
+    const re = new RegExp(pattern.source, pattern.flags.includes('g') ? pattern.flags : pattern.flags + 'g');
+    let mm; let live = false;
+    while ((mm = re.exec(excerpt))) {
+      const why = tourMatchIsDiscounted(excerpt, mm.index, mm[0], context, false);
+      if (!why) { live = true; break; }
+      discounted = discounted || why;
+    }
+    if (live) return { isTourReview: true, signal: pattern.source };
   }
 
-  return { isTourReview: false };
+  return discounted ? { isTourReview: false, discounted } : { isTourReview: false };
 }
 
 // --- Film/TV Review Detection ---
@@ -368,7 +762,13 @@ function resetCache() {
 module.exports = {
   excerptMentionsWrongShow,
   isTourReviewExcerpt,
+  tourContextForShow,
   isFilmTvReview,
+  excerptMentionsFormerCast,
+  buildSafeNameTokens,
+  buildRoleTerms,
+  collectFormerCastTokens,
+  extractPersonNameCandidates,
   hasOnlyForwardTenseTourMention,
   getMatchableTitles,
   resetCache,

@@ -3,13 +3,17 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { Suspense } from 'react';
 import dynamic from 'next/dynamic';
-import { getShowBySlug, getShowById, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getTourStops } from '@/lib/data-core';
+import { isCategoryEnabled } from '@/lib/markets';
+import { getShowBySlug, getShowById, getRecentShowSlugs, getShowLastUpdated, slugify, getRelatedShowsOpen, getRelatedShowsClosed, getOtherProductions, getTheaterBySlug, getOffBroadwayTheaterBySlug, getOperaTitleSlug, getTourStops, getToursOf } from '@/lib/data-core';
+import { getTourReviewYears } from '@/lib/tour-display';
 import { getShowGrosses, getGrossesWeekEnding } from '@/lib/data-grosses';
 import { getBoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import { getShowAwards } from '@/lib/data-awards';
 import { getTonyNamesByCategory } from '@/lib/data-tony-noms';
 import { getAudienceBuzz, getShowScoreUrl, getAudienceGrade, getTotalAudienceReviews, hasEnoughAudienceReviews, getAudiencePlatformUrl } from '@/lib/data-audience';
 import { getCriticConsensus } from '@/lib/data-consensus';
+import { getCriticsTakeDisplayMode } from '../../../../scripts/lib/critics-take-display';
+import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowSchedule, getScheduleCurrentMonday, getShowShowtimeIds } from '@/lib/data-showtimes';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
@@ -41,6 +45,7 @@ import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as forma
 import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
+import { getTicketCtaNote } from '@/lib/ticket-cta-note';
 import { getComparisonsForShow } from '@/config/comparisons';
 import { serializeShowForClient } from '@/lib/serialize-show';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
@@ -81,7 +86,8 @@ export function generateStaticParams() {
 
 export function generateMetadata({ params }: { params: { slug: string } }): Metadata {
   const show = getShowBySlug(params.slug);
-  if (!show) return { title: 'Show Not Found' };
+  // Flag-gated categories (tour, regional) 404 at request time too, not just at prebuild.
+  if (!show || !isCategoryEnabled(show.category)) return { title: 'Show Not Found' };
 
   const score = show.criticScore?.score;
   const roundedScore = score ? Math.round(score) : null;
@@ -106,11 +112,14 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const isOffWestEndMeta = show.category === 'off-west-end';
   const isOffBroadwayMeta = show.category === 'off-broadway';
   const isRegionalMeta = show.category === 'regional';
+  const isTourMeta = show.category === 'tour';
+  // A tour shares its Broadway parent's title; the <title>/OG name must tell them apart.
+  const seoTitle = isTourMeta ? `${show.title} National Tour` : show.title;
   const isOperaMeta = isOperaShow(show);
   // Regional shows roll up under the Broadway Scorecard brand (site name), but must NOT be
   // labelled "on Broadway" — use a neutral, honest market label in titles/meta.
   const siteName = isOperaMeta ? 'Opera Scorecard' : isOffWestEndMeta ? 'Off-West End Scorecard' : isLondonMeta ? 'West End Scorecard' : isOffBroadwayMeta ? 'Off-Broadway Scorecard' : 'Broadway Scorecard';
-  const marketLabel = isOperaMeta ? 'at the Met' : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : isRegionalMeta ? 'in a regional production' : 'on Broadway';
+  const marketLabel = isOperaMeta ? 'at the Met' : isOffWestEndMeta ? 'Off-West End' : isLondonMeta ? 'in the West End' : isOffBroadwayMeta ? 'Off-Broadway' : isRegionalMeta ? 'in a regional production' : isTourMeta ? 'on its national tour' : 'on Broadway';
   const statusLabel = show.status === 'open' ? 'Now Playing' : show.status === 'previews' ? 'In Previews' : show.status === 'upcoming' ? 'Upcoming' : '';
 
   // Sentiment label maps tier → SEO-friendly phrase used in title + description.
@@ -144,14 +153,16 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   const OG_POSITIVE_TIERS = new Set(['Critical Gold', 'Recommended']);
   const ogShowsSentiment = !!(tier && roundedScore && sentimentLabel && OG_POSITIVE_TIERS.has(tier.label));
   const ogTitle = ogShowsSentiment
-    ? `${show.title} — ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
-    : `${show.title} - ${siteName}`;
+    ? `${seoTitle} — ${sentimentLabel} (${roundedScore}/100) | ${siteName}`
+    : `${seoTitle} - ${siteName}`;
   const twitterTitle = ogShowsSentiment
-    ? `${show.title} — ${sentimentLabel} (${roundedScore}/100)`
-    : `${show.title} - CriticScore ${(!isTBD && roundedScore) ? `${roundedScore}/100` : 'TBD'}`;
+    ? `${seoTitle} — ${sentimentLabel} (${roundedScore}/100)`
+    : `${seoTitle} - CriticScore ${(!isTBD && roundedScore) ? `${roundedScore}/100` : 'TBD'}`;
 
   // Sentiment-aware description: lead with verdict, not database dump
-  const statusPart = statusLabel ? ` ${statusLabel} at ${show.venue}.` : '';
+  // "Now Playing at North American Tour." reads wrong; a tour has no single house.
+  const venuePhrase = (label: string) => (isTourMeta ? ` ${label} on tour.` : ` ${label} at ${show.venue}.`);
+  const statusPart = statusLabel ? venuePhrase(statusLabel) : '';
   const synopsisPart = synopsisSnippet ? ` ${synopsisSnippet}` : '';
   const SENTIMENT_PHRASES: Record<string, string> = {
     'Critical Gold': `Critics rave about ${show.title} — ${roundedScore}/100 from ${reviewCount} reviews.`,
@@ -162,7 +173,7 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   };
   const description = (score && roundedScore && tier
     ? `${SENTIMENT_PHRASES[tier.label] ?? `${show.title} ${marketLabel} scores ${roundedScore}/100 from ${reviewCount} critic reviews.`}${statusPart}${synopsisPart}`
-    : `Read ${reviewCount > 0 ? reviewCount : ''} critic reviews for ${show.title} ${marketLabel}.${statusLabel ? ` ${statusLabel} at ${show.venue}.` : ''} ${synopsisSnippet}`
+    : `Read ${reviewCount > 0 ? reviewCount : ''} critic reviews for ${show.title} ${marketLabel}.${statusLabel ? venuePhrase(statusLabel) : ''} ${synopsisSnippet}`
   ).trim();
   const truncatedDescription = description.length > 160
     ? description.slice(0, 157).replace(/\s\S*$/, '...')
@@ -178,8 +189,8 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return {
     title: {
       absolute: roundedScore && titleSentimentWord
-        ? `${show.title} Reviews — ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
-        : `${show.title} Reviews ${marketLabel} — ${siteName}`,
+        ? `${seoTitle} Reviews — ${titleSentimentWord} ${roundedScore}/100 | ${siteName}`
+        : `${seoTitle} Reviews ${marketLabel} — ${siteName}`,
     },
     description: truncatedDescription,
     alternates: {
@@ -228,7 +239,7 @@ function getSentimentLabel(score: number, category?: string): { label: string; c
 export default async function ShowPage({ params }: { params: { slug: string } }) {
   const show = getShowBySlug(params.slug);
 
-  if (!show) {
+  if (!show || !isCategoryEnabled(show.category)) {
     notFound();
   }
 
@@ -246,10 +257,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const isOffWestEnd = show.category === 'off-west-end';
   const isOffBroadway = show.category === 'off-broadway';
   const isRegional = show.category === 'regional';
+  const isTour = show.category === 'tour';
   const isOpera = isOperaShow(show);
 
-  // Theater scorecard lookup (Broadway only) — regional/off-broadway venues aren't Broadway houses
-  const theater = !isWestEnd && !isOffBroadway && !isRegional && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
+  // Theater scorecard lookup (Broadway only) — regional/off-broadway/tour venues aren't Broadway houses
+  const theater = !isWestEnd && !isOffBroadway && !isRegional && !isTour && show.venue ? getTheaterBySlug(slugify(show.venue)) : undefined;
   // Off-Broadway venue page lookup — undefined if the venue string didn't resolve
   // (freeform data entry, unlike the curated Broadway/West End venue lists), in
   // which case the venue name renders as plain text rather than a dead link.
@@ -268,8 +280,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
       ])
     : generateBreadcrumbSchema(browseSlug ? [
         breadcrumbHome,
-        { name: showFormatPlural(show.type), url: `${BASE_URL}/browse/${browseSlug}` },
-        { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
+        { name: isTour ? 'Tours' : showFormatPlural(show.type), url: `${BASE_URL}/browse/${browseSlug}` },
+        { name: isTour ? `${show.title} (Tour)` : show.title, url: `${BASE_URL}/show/${show.slug}` },
       ] : [
         breadcrumbHome,
         { name: show.title, url: `${BASE_URL}/show/${show.slug}` },
@@ -426,8 +438,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           { label: show.title },
         ] : browseSlug ? [
           { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
-          { label: showFormatPlural(show.type), href: `/browse/${browseSlug}` },
-          { label: show.title },
+          { label: isTour ? 'Tours' : showFormatPlural(show.type), href: `/browse/${browseSlug}` },
+          { label: isTour ? `${show.title} (Tour)` : show.title },
         ] : [
           { label: 'Home', href: isWestEnd ? '/west-end' : isOffBroadway ? '/off-broadway' : '/' },
           { label: show.title },
@@ -473,7 +485,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                     show.images?.thumbnail ? getOptimizedImageUrl(show.images.thumbnail, 'poster') : null,
                     show.images?.hero ? getOptimizedImageUrl(show.images.hero, 'poster') : null,
                   ]}
-                  alt={`${show.title} ${isOpera ? 'Met Opera' : isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'Regional' : 'Broadway'} ${show.type} poster`}
+                  alt={`${show.title} ${isOpera ? 'Met Opera' : isWestEnd ? 'West End' : isOffBroadway ? 'Off-Broadway' : isRegional ? 'Regional' : isTour ? 'National Tour' : 'Broadway'} ${show.type} poster`}
                   width={176}
                   height={264}
                   decoding="async"
@@ -491,7 +503,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               {/* Compact pill labels under poster — mobile only */}
               <div className="flex sm:hidden flex-wrap justify-center gap-x-1.5 gap-y-0.5 text-[9px] font-semibold uppercase tracking-wide leading-none" data-testid="show-pills-poster">
                 {show.category && show.category !== 'broadway' && !isOpera && (
-                  <span className={show.category === 'west-end' ? 'text-teal-400' : show.category === 'off-west-end' ? 'text-violet-400' : show.category === 'regional' ? 'text-emerald-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : show.category === 'regional' ? 'Regional' : 'Off-Bway'}</span>
+                  <span className={show.category === 'west-end' ? 'text-teal-400' : show.category === 'off-west-end' ? 'text-violet-400' : show.category === 'regional' ? 'text-emerald-400' : show.category === 'tour' ? 'text-sky-400' : 'text-indigo-400'}>{show.category === 'west-end' ? 'West End' : show.category === 'off-west-end' ? 'Off-West End' : show.category === 'regional' ? 'Regional' : show.category === 'tour' ? 'Tour' : 'Off-Bway'}</span>
                 )}
                 <span className={isOpera ? 'text-indigo-400' : showFormatTextClass(show.type)}>{isOpera ? 'Opera' : showFormatTitle(show.type)}</span>
                 <span className={show.isRevival ? 'text-gray-400' : 'text-amber-400'}>{show.isRevival ? 'Revival' : 'Original'}</span>
@@ -516,6 +528,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               <h1 className="text-xl sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight leading-tight mb-2">
                 {show.title}
               </h1>
+              {/* A tour shares its Broadway parent's title and poster; say which one this is. */}
+              {isTour && (
+                <p className="-mt-1 mb-2 text-sm sm:text-base font-semibold text-sky-300" data-testid="tour-subtitle">National Tour</p>
+              )}
 
               {/* No separate verdict sentence here — SXO fix 2026-07-19 tried one and it
                   duplicated the score box below (same 91/100, same review count, same
@@ -642,7 +658,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   <Link href={`/west-end/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
                 ) : isOffBroadway && offBroadwayTheater ? (
                   <Link href={`/off-broadway/theater/${offBroadwayTheater.slug}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
-                ) : isOffBroadway || isRegional ? (
+                ) : isOffBroadway || isRegional || isTour ? (
                   <span className="text-gray-300">{show.venue}</span>
                 ) : (
                   <Link href={`/theater/${slugify(show.venue)}`} className="text-gray-300 hover:text-brand transition-colors">{show.venue}</Link>
@@ -663,7 +679,68 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                     <span key={i}> <span className="text-gray-500">·</span> {seg.emphasize ? <span className="text-amber-400">{seg.text}</span> : seg.text}</span>
                   ));
                 })()}
+                {isTour && !show.openingDate && (() => {
+                  // Only while the tour's own dates are unknown; the date line covers it otherwise.
+                  const years = getTourReviewYears(show.criticScore?.reviews);
+                  return years ? <span> <span className="text-gray-500">·</span> reviewed {years}</span> : null;
+                })()}
               </p>
+
+              {/* National tour (BRO-4211): scored apart from the Broadway run it tours. */}
+              {isTour && (() => {
+                const parent = show.tourOf ? getShowById(show.tourOf) : null;
+                return (
+                  <p className="text-xs sm:text-sm mb-1 leading-relaxed text-sky-300/90" data-testid="tour-trust-line">
+                    <span className="text-gray-400">
+                      Reviewed by critics in each city on the tour, scored separately from Broadway.
+                      {parent && (
+                        <>
+                          {' '}
+                          <Link href={`/show/${parent.slug}`} className="text-sky-300 underline decoration-sky-300/40 underline-offset-2 hover:text-sky-200" data-testid="tour-of-link">
+                            See the Broadway production →
+                          </Link>
+                        </>
+                      )}
+                    </span>
+                  </p>
+                );
+              })()}
+
+              {/* Broadway side: its national tour(s). Empty while the tour flag is off. */}
+              {!isTour && (() => {
+                const tours = getToursOf(show);
+                if (tours.length === 0) return null;
+                return (
+                  <p className="text-xs sm:text-sm mb-1 leading-relaxed text-sky-300/90" data-testid="on-tour-line">
+                    {/* "On tour" only while one is running; a finished tour is "National tour". */}
+                    <span className="font-semibold">{tours.some(t => t.status === 'open' || t.status === 'previews') ? 'On tour' : 'National tour'}</span>
+                    <span className="text-gray-400">
+                      {(() => {
+                        // Same TBD gate as the tryout line: never show a score the tour's own page hides.
+                        const t = tours.length === 1 ? tours[0] : null;
+                        const tCount = t?.criticScore?.reviewCount || 0;
+                        const tT12 = (t?.criticScore?.tier1Count || 0) + (t?.criticScore?.tier2Count || 0);
+                        const tourHidden = !t || applyCoverageFloor(
+                          !hasEnoughReviews(tCount, t.category, tT12, false) || t.status === 'previews' || t.status === 'upcoming',
+                          { scorePublicSince: t.scorePublicSince, coverageState: t.cov?.state, coverageAcked: t.coverageAcked },
+                        );
+                        const tourScore = (!tourHidden && t?.criticScore?.score) ? Math.round(t.criticScore.score) : null;
+                        return tourScore
+                          ? <>{' '}— critics {t?.status === 'open' || t?.status === 'previews' ? 'score' : 'scored'} the tour <span className="text-sky-300 font-semibold">{tourScore}/100</span>.{' '}</>
+                          : <>{' '}— the national tour has its own critic score.{' '}</>;
+                      })()}
+                      {tours.map((tour, i) => (
+                        <span key={tour.id}>
+                          <Link href={`/show/${tour.slug}`} className="text-sky-300 underline decoration-sky-300/40 underline-offset-2 hover:text-sky-200" data-testid="on-tour-link">
+                            {tours.length > 1 ? `See the ${(tour.openingDate || tour.id.match(/(\d{4})$/)?.[1] || '').slice(0, 4)} tour →` : 'See the tour →'}
+                          </Link>
+                          {i < tours.length - 1 ? ' ' : ''}
+                        </span>
+                      ))}
+                    </span>
+                  </p>
+                );
+              })()}
 
               {/* Regional trust line — keyed on category (renders even if the market flag is off,
                   since the detail page is reachable directly). Explains why a non-Broadway show
@@ -797,16 +874,32 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           {/* Critics' Take — inline below the score row, no border/card chrome.
               Matches the redesign hero treatment so the consensus reads as a
               continuous block with whatever sits above it. */}
-          {consensus && show.criticScore ? (
-            <div className="mt-3">
-              <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">Critics&apos; Take</p>
-              <p className="text-gray-300 text-sm leading-relaxed">{consensus.text}</p>
-            </div>
-          ) : show.synopsis ? (
-            <p className="text-gray-400 text-sm leading-relaxed mt-3">
-              {show.synopsis}
-            </p>
-          ) : null}
+          {(() => {
+            const mode = getCriticsTakeDisplayMode(!!consensus, !!show.criticScore, reviewCount, !!show.synopsis);
+            if (mode === 'consensus') {
+              return (
+                <div className="mt-3">
+                  <p className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-500 mb-1.5">Critics&apos; Take</p>
+                  <p className="text-gray-300 text-sm leading-relaxed">{consensus!.text}</p>
+                </div>
+              );
+            }
+            if (mode === 'coming-soon') {
+              return (
+                <p className="text-gray-500 text-sm leading-relaxed mt-3 italic">
+                  Critics&apos; Take coming soon.
+                </p>
+              );
+            }
+            if (mode === 'synopsis') {
+              return (
+                <p className="text-gray-400 text-sm leading-relaxed mt-3">
+                  {show.synopsis}
+                </p>
+              );
+            }
+            return null;
+          })()}
 
           {/* Links row: Tickets, Official Site, Trailer, Lottery/Rush + Watchlist */}
           <div className="flex items-center gap-2 mt-4 flex-nowrap">
@@ -829,14 +922,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               {/* Closed/not-yet-on-sale shows: replace the vanished CTA with an
                   explicit note instead of leaving a silent gap where the ticket
                   button used to be — users hunting for a "Get Tickets" button
-                  rage-clicked the empty space (CLAUDE.md card #228). Checks raw
-                  show.ticketLinks, not the platform-filtered sortedTicketLinks,
-                  so a show whose only link is a HIDDEN_PLATFORMS entry (e.g.
-                  Telecharge) still gets the closed note. */}
-              {show.status === 'closed' && (show.ticketLinks?.length ?? 0) > 0 && (
+                  rage-clicked the empty space (CLAUDE.md card #228, task #90).
+                  See getTicketCtaNote for why 'closed' checks status alone. */}
+              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
                 <p className="w-full text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
               )}
-              {show.status === 'announced' && !sortedTicketLinks.some(l => l.priceFrom != null) && (show.ticketLinks?.length ?? 0) > 0 && (
+              {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
                 <p className="w-full text-xs text-gray-500">Tickets not yet on sale — check back closer to opening.</p>
               )}
 
@@ -950,6 +1041,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               ...r,
               outletSlug: getOutletSlugById(r.outletId) || undefined,
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
+              priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
             }))} initialCount={5} category={show.category} />
 
             {/* Subtle in-card methodology link — explains how CriticScore is
@@ -1057,6 +1149,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           isOffWestEnd={isOffWestEnd}
           isOpera={isOpera}
           isRegional={isRegional}
+          isTour={isTour}
           isCuratedHistoricalShow={isCuratedHistoricalShow}
           lastUpdated={lastUpdated}
           score={score}

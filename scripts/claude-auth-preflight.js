@@ -74,6 +74,18 @@ function formatPreflightResult(auth) {
     };
   }
   const detail = (auth && auth.detail) || 'no working credential';
+  // BRO-2971: auth.reason === 'spawn-starved' means the probe never reached
+  // the auth handshake (spawnSync ETIMEDOUT/ENOMEM, or an OS/jetsam signal
+  // kill) — printing the auth REPAIR_STEPS there tells whoever reads the
+  // launchd log to re-login for a problem that fix cannot touch.
+  if (auth && auth.reason === 'spawn-starved') {
+    return {
+      exitCode: 1,
+      stderrMessage: `[claude-auth-preflight] REFUSING: claude spawn failed from resource starvation, not a revoked credential — ${detail}\n`
+        + `[claude-auth-preflight] This is an OS/jetsam-level spawn failure (timeout, out-of-memory, or a signal kill). Do NOT run \`claude auth login\`. Free memory (check for the BRO-2789 OOM plateau) or prune cmux sessions.`,
+      stdoutLine: null,
+    };
+  }
   return {
     exitCode: 1,
     stderrMessage: `[claude-auth-preflight] REFUSING: claude cannot authenticate — ${detail}\n`

@@ -19,6 +19,16 @@ import fs from 'fs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 import { isBlockedReviewUrl } from './lib/domain-filters.js';
+import outletCanonicalize from './lib/outlet-canonicalize.js';
+import reviewNormalization from './lib/review-normalization.js';
+
+import reviewGuards from './lib/review-guards.js';
+import submissionShowMatch from './lib/submission-show-match.js';
+
+const { lookupOutletForHost } = outletCanonicalize;
+const { resolveOutletFromUrlIfPathInformed } = reviewNormalization;
+const { canonicalizeUrlForDedup } = reviewGuards;
+const { findMatchingShows: findMatchingShowsIn } = submissionShowMatch;
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -26,12 +36,67 @@ const __dirname = path.dirname(__filename);
 // Load data files
 const showsPath = path.join(__dirname, '../data/shows.json');
 const reviewsPath = path.join(__dirname, '../data/reviews.json');
-const reviewTextsPath = path.join(__dirname, '../data/review-texts');
+const outletRegistryPath = path.join(__dirname, '../data/outlet-registry.json');
+const criticRegistryPath = path.join(__dirname, '../data/critic-registry.json');
 
 const showsData = JSON.parse(fs.readFileSync(showsPath, 'utf-8'));
 const shows = showsData.shows || showsData; // Handle both formats
 const reviewsData = JSON.parse(fs.readFileSync(reviewsPath, 'utf-8'));
 const reviews = reviewsData.reviews || reviewsData; // Handle both formats
+
+// Host -> registered outlet, exact or parent domain (newspaper.dailymail.com
+// -> daily-mail). Delegates to the same lookupOutletForHost the ingest step
+// uses (scripts/ingest-review-from-url.js), so validation and ingest can never
+// disagree about which outlet a URL belongs to.
+function findMatchingOutletByDomain(url) {
+  let outletId;
+  try {
+    // Path-informed edition splits (timeout.com/london vs /newyork) first —
+    // lookupOutletForHost only ever sees a bare hostname and would otherwise
+    // report a shared host as unresolvable (BRO-4153).
+    const pathResolved = resolveOutletFromUrlIfPathInformed(url);
+    outletId = pathResolved ? pathResolved.outletId : lookupOutletForHost(new URL(url).hostname);
+  } catch {
+    return null;
+  }
+  if (!outletId) return null;
+  try {
+    const registryData = JSON.parse(fs.readFileSync(outletRegistryPath, 'utf-8'));
+    const o = (registryData.outlets || registryData)[outletId] || {};
+    return { id: outletId, displayName: o.displayName || outletId, tier: o.tier };
+  } catch {
+    return { id: outletId, displayName: outletId, tier: undefined };
+  }
+}
+
+// Loaded once at module load — critic id/displayName -> registry entry
+// (knownOutlets, totalReviews, etc.), used to corroborate a submitter-
+// provided critic name against an outlet match.
+const CRITIC_REGISTRY = (() => {
+  try {
+    const data = JSON.parse(fs.readFileSync(criticRegistryPath, 'utf-8'));
+    return data.critics || data;
+  } catch (err) {
+    console.error('Could not load critic-registry.json for critic matching (non-fatal):', err.message);
+    return {};
+  }
+})();
+
+/**
+ * Find a registered critic matching a submitter-provided name — exact match
+ * on the registry id (slug) or displayName, case-insensitive.
+ */
+function findMatchingCritic(criticName) {
+  if (!criticName) return null;
+  const normalized = criticName.toLowerCase().trim();
+  const slug = normalized.replace(/\s+/g, '-');
+  for (const [id, c] of Object.entries(CRITIC_REGISTRY)) {
+    if (id.toLowerCase() === slug || (c.displayName || '').toLowerCase() === normalized) {
+      return { id, ...c };
+    }
+  }
+  return null;
+}
 
 // Initialize Anthropic client
 const anthropic = new Anthropic({
@@ -81,63 +146,75 @@ function parseIssueBody(issueBody) {
 function checkDuplicateReview(url, showId) {
   // Check reviews.json
   for (const review of reviews) {
-    if (review.url && review.url.toLowerCase() === url.toLowerCase()) {
+    // canonicalizeUrlForDedup: utm params / param order / fragments must not let
+    // a listed review through as "new".
+    if (review.url && canonicalizeUrlForDedup(review.url) === canonicalizeUrlForDedup(url)) {
       return { isDuplicate: true, location: 'reviews.json', showId: review.showId };
     }
   }
 
-  // Check review-texts directory if showId is provided
-  if (showId && fs.existsSync(path.join(reviewTextsPath, showId))) {
-    const files = fs.readdirSync(path.join(reviewTextsPath, showId));
-
-    for (const file of files) {
-      if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
-
-      const reviewData = JSON.parse(
-        fs.readFileSync(path.join(reviewTextsPath, showId, file), 'utf-8')
-      );
-
-      if (reviewData.url && reviewData.url.toLowerCase() === url.toLowerCase()) {
-        return { isDuplicate: true, location: `review-texts/${showId}/${file}`, showId };
-      }
-    }
-  }
+  // Only reviews.json (what the site shows) counts as "already in our
+  // database". A review-texts file that the rebuild EXCLUDES is not on the
+  // site; rejecting a resubmission because of it made a hidden review
+  // impossible to retry (Golden Boy / Daily Mail, issue #908). Approving lets
+  // ingest merge into the existing file and check-submission-landed.js report
+  // whether it reached the site this time.
 
   return { isDuplicate: false };
 }
 
 /**
- * Find matching show in database
+ * Find ALL shows in the database matching a title — a title can span multiple
+ * productions (different markets, different eras, e.g. two "Golden Boy"
+ * entries), so callers need every candidate rather than an arbitrary first hit.
+ */
+function findMatchingShows(showName) {
+  return findMatchingShowsIn(showName, shows);
+}
+
+/**
+ * Find matching show in database (first candidate — see findMatchingShows
+ * for the full list used to disambiguate duplicate titles).
  */
 function findMatchingShow(showName) {
-  if (!showName) return null;
-
-  const normalizedInput = showName.toLowerCase().trim();
-
-  // Exact title match
-  let match = shows.find(s => s.title.toLowerCase() === normalizedInput);
-  if (match) return match;
-
-  // Check if input matches slug
-  match = shows.find(s => s.id === normalizedInput || s.slug === normalizedInput);
-  if (match) return match;
-
-  // Partial match
-  match = shows.find(s =>
-    s.title.toLowerCase().includes(normalizedInput) ||
-    normalizedInput.includes(s.title.toLowerCase())
-  );
-
-  return match;
+  return findMatchingShows(showName)[0] || null;
 }
 
 /**
  * Use Claude API to validate the submission
  */
-async function validateWithClaude(submissionData) {
+async function validateWithClaude(submissionData, matchedShowCandidates = [], matchedOutlet = null, matchedCritic = null) {
   const showsList = shows.map(s => `- ${s.title} (${s.id})`).join('\n');
 
   const today = new Date().toISOString().split('T')[0];
+  // BRO: a deterministic title lookup already ran before this call. Surface
+  // its result explicitly rather than relying on the model to re-find the
+  // same entry unaided inside the full show list below — issue #908 (Golden
+  // Boy / Daily Mail) rejected a review as "no current production in our
+  // database" even though golden-boy-off-west-end-2026 was present verbatim
+  // in showsList; the model just didn't spot its own evidence. A named
+  // candidate line removes that burden.
+  const candidateNote = matchedShowCandidates.length
+    ? `\nDETERMINISTIC TITLE MATCH: the submitter's show name ("${submissionData.showName}") exactly matches ${matchedShowCandidates.length} entr${matchedShowCandidates.length > 1 ? 'ies' : 'y'} already in our database — these ARE present in OUR DATABASE SHOWS below, do not conclude the show is missing just because you don't independently re-spot it there:\n${matchedShowCandidates.map(s => `  - ${s.title} (${s.id}) — category=${s.category || 'unknown'}, status=${s.status || 'unknown'}, opened=${s.openingDate || 'unknown'}`).join('\n')}\nUse the review URL and any other submitted details to decide which (if any) of these candidates is the actual production being reviewed. If exactly one candidate's market/era plausibly matches the URL, prefer it over declaring the show unmatched.\n`
+    : '';
+  // Same problem, one layer down: after the title-match fix above, issue #908
+  // was STILL rejected — this time because the URL's host (a Daily Mail
+  // digital-edition subdomain the model didn't recognize) read as "suspicious"
+  // next to a tabloid-style headline, despite matching our own outlet
+  // registry's registered domain alias for Daily Mail. Give the same explicit
+  // treatment to outlet-domain matches as to show matches: a registry hit
+  // means the host family is a known, tracked outlet, not a judgment call.
+  const outletNote = matchedOutlet
+    ? `\nDETERMINISTIC OUTLET DOMAIN MATCH: the review URL's host resolves to a domain family we already track as a registered outlet: ${matchedOutlet.displayName} (outletId "${matchedOutlet.id}", tier ${matchedOutlet.tier ?? 'unknown'}). This match is against our outlet registry's domain + domainAliases, so treat the outlet itself as legitimate and known — an unfamiliar subdomain (e.g. a paper's digital-edition or e-paper subdomain) is NOT evidence against legitimacy. Focus isReview/isLegitimateOutlet on whether the URL path and any user-provided critic name plausibly describe a review, not on whether you personally recognize this exact subdomain shape.\n`
+    : '';
+  // Third leg of the same pattern: a submitter-provided critic name that
+  // matches a REAL critic already on record for the matched outlet is strong,
+  // hard-to-fake corroboration that this is a genuine review, not tabloid/
+  // celebrity content wearing a theatre-section URL path.
+  const criticNote = (matchedCritic && matchedOutlet && (matchedCritic.knownOutlets || []).includes(matchedOutlet.id))
+    ? `\nDETERMINISTIC CRITIC MATCH: "${submissionData.criticName}" is a known critic in our database with ${matchedCritic.totalReviews || 'multiple'} prior review(s) already on record for ${matchedOutlet.displayName}. This corroborates both the outlet match above and that this is a genuine critic review, not a non-review article.\n`
+    : '';
+
   const prompt = `You are validating a theater review submission for Broadway Scorecard. We cover all professional theater in New York City (Broadway AND Off-Broadway) and London (West End AND Off-West-End). Analyze the following submission and determine if it's valid.
 
 TODAY'S DATE: ${today} — use this when evaluating publication dates in URLs or metadata. Review URLs with dates in 2025 or 2026 are expected and valid.
@@ -148,7 +225,7 @@ ${submissionData.showName ? `- Show Name (user provided): ${submissionData.showN
 ${submissionData.outletName ? `- Outlet Name (user provided): ${submissionData.outletName}` : ''}
 ${submissionData.criticName ? `- Critic Name (user provided): ${submissionData.criticName}` : ''}
 ${submissionData.additionalNotes ? `- Additional Notes: ${submissionData.additionalNotes}` : ''}
-
+${candidateNote}${outletNote}${criticNote}
 OUR DATABASE SHOWS:
 ${showsList}
 
@@ -254,43 +331,57 @@ async function validateSubmission(issueBody) {
     };
   }
 
-  // Check if user-provided show name matches our database
-  let matchedShow = null;
+  // Check if user-provided show name matches our database. A title can match
+  // multiple productions (different markets/eras), so keep every candidate —
+  // not just the first — for the LLM prompt and duplicate check below.
+  let matchedShowCandidates = [];
   if (submissionData.showName) {
-    matchedShow = findMatchingShow(submissionData.showName);
-    if (matchedShow) {
-      console.log(`Matched show: ${matchedShow.title} (${matchedShow.id})`);
+    matchedShowCandidates = findMatchingShows(submissionData.showName);
+    if (matchedShowCandidates.length) {
+      console.log(`Matched show candidates: ${matchedShowCandidates.map(s => `${s.title} (${s.id})`).join(', ')}`);
 
-      // Re-check duplicate with specific show ID
-      const showDuplicateCheck = checkDuplicateReview(submissionData.reviewUrl, matchedShow.id);
-      if (showDuplicateCheck.isDuplicate) {
-        return {
-          isValid: false,
-          error: `This review is already in our database at ${showDuplicateCheck.location}`,
-          recommendation: 'reject',
-          isDuplicate: true,
-          existingLocation: showDuplicateCheck.location
-        };
+      // Re-check duplicate against every candidate show ID
+      for (const candidate of matchedShowCandidates) {
+        const showDuplicateCheck = checkDuplicateReview(submissionData.reviewUrl, candidate.id);
+        if (showDuplicateCheck.isDuplicate) {
+          return {
+            isValid: false,
+            error: `This review is already in our database at ${showDuplicateCheck.location}`,
+            recommendation: 'reject',
+            isDuplicate: true,
+            existingLocation: showDuplicateCheck.location
+          };
+        }
       }
     }
+  }
+  const matchedShow = matchedShowCandidates[0] || null;
+  const matchedOutlet = findMatchingOutletByDomain(submissionData.reviewUrl);
+  if (matchedOutlet) {
+    console.log(`Matched outlet by domain: ${matchedOutlet.displayName} (${matchedOutlet.id})`);
+  }
+  const matchedCritic = findMatchingCritic(submissionData.criticName);
+  if (matchedCritic) {
+    console.log(`Matched critic: ${matchedCritic.displayName || matchedCritic.id} (knownOutlets: ${(matchedCritic.knownOutlets || []).join(', ')})`);
   }
 
   // Use Claude API for intelligent validation
   console.log('Validating with Claude API...');
-  const claudeValidation = await validateWithClaude(submissionData);
+  const claudeValidation = await validateWithClaude(submissionData, matchedShowCandidates, matchedOutlet, matchedCritic);
 
   console.log('Claude validation result:', JSON.stringify(claudeValidation, null, 2));
 
   // Guard: an 'approve' recommendation must resolve to a real database show id,
   // otherwise the downstream scrape job (which gates on approve and needs a
   // showId to ingest) fails AFTER the submitter already got an approval email.
-  // Fall back to the deterministic title match; if neither resolves, downgrade
-  // to manual review rather than approving a review we can't attach.
+  // Fall back to the deterministic title match ONLY when it's unambiguous
+  // (exactly one candidate) — multiple same-title candidates (e.g. two
+  // "Golden Boy" productions) must not be silently guessed.
   if (claudeValidation.recommendation === 'approve') {
     const llmShowId = claudeValidation.extractedData?.showId;
     const resolvedId =
       (llmShowId && shows.some(s => s.id === llmShowId) && llmShowId) ||
-      matchedShow?.id ||
+      (matchedShowCandidates.length === 1 ? matchedShowCandidates[0].id : null) ||
       null;
     if (resolvedId) {
       if (claudeValidation.extractedData) {

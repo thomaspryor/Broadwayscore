@@ -50,4 +50,15 @@ function summarizeFailureStreak(attempts, now = Date.now()) {
   return { consecutiveFailures, streakHours, forHowLong };
 }
 
-module.exports = { summarizeFailureStreak };
+// BRO-4141: the deadman used to page the owner on ONE failed attempt (the
+// 2026-09-22 email read "failing for 5h (1 consecutive)"); 7 such pages in 6
+// days, most of which healed on the next attempt. Page only once the
+// automated fixers have been dead for a day across several attempts —
+// shorter streaks go to the morning digest under a separate condition key.
+const DEADMAN_PAGE_MIN_HOURS = 24;
+const DEADMAN_PAGE_MIN_FAILURES = 3;
+function deadmanShouldPage({ consecutiveFailures, streakHours }) {
+  return consecutiveFailures >= DEADMAN_PAGE_MIN_FAILURES && streakHours >= DEADMAN_PAGE_MIN_HOURS;
+}
+
+module.exports = { summarizeFailureStreak, deadmanShouldPage, DEADMAN_PAGE_MIN_HOURS, DEADMAN_PAGE_MIN_FAILURES };

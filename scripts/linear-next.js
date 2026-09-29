@@ -44,35 +44,40 @@
  * on the Linear board itself, not just in a local ledger file.
  *
  * Usage:
- *   node scripts/linear-next.js --id BRO-123                 launch a cmux tab (default)
- *   node scripts/linear-next.js --id BRO-123 --headless      run as a supervised background job (bsc-runner);
- *                                                            THIS process stays the job's parent for its whole run
- *   node scripts/linear-next.js --id BRO-123 --headless --detach
- *                                                            same, but re-exec in its own session and return at once —
+ *   node scripts/linear-next.js --id BRO-123                 DEFAULT (BRO-3652): supervised headless job (bsc-runner
+ *                                                            awaits it, classifies job-done vs job-stranded at the end),
+ *                                                            re-exec'd in its own session so it survives this shell —
  *                                                            no caller-side signal can reach the job (BRO-3053)
- *   node scripts/linear-next.js --id BRO-123 --tab           force a cmux tab (overrides --headless)
+ *   node scripts/linear-next.js --id BRO-123 --no-detach     same job, but THIS process stays its parent for the whole run
+ *   node scripts/linear-next.js --id BRO-123 --tab           opt OUT of headless: launch a local cmux tab instead
+ *   node scripts/linear-next.js --id BRO-123 --headless      accepted no-op alias for the default (kept for old callers)
+ *   node scripts/linear-next.js --id BRO-123 --detach        accepted no-op alias for the default (kept for old callers)
  *   node scripts/linear-next.js --list                       open BRO issues, priority-sorted
  *   node scripts/linear-next.js --id BRO-123 --model opus    override the resolved model
  *   node scripts/linear-next.js --id BRO-123 --force         bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
  *   node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"
  *                                                            the ONE guard --force does not cover (BRO-2543)
  *   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
- *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
+ *   node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch headless even when the issue needs a human to finish it
+ *                                                            (the default refuses such a card loudly and points at --tab)
  *   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue the digest-autofix/canary pipeline filed (that pipeline passes this itself; BRO-2499)
  *   node scripts/linear-next.js --id BRO-123 --allow-automation-parked  waive PARKED_SENTINEL only (not the wider --force set) for an issue an automation pipeline parked itself, pending its own drain (BRO-3060; those pipelines pass this at their own call sites)
  *   node scripts/linear-next.js --id BRO-123 --dry-run       print the seed prompt, launch nothing
  *   node scripts/linear-next.js --help, -h                   show this message, do nothing else
  *
  * Kill switch: LINEAR_NEXT_DISABLED=1 refuses ALL dispatch (both cmux-tab
- * and --headless — this whole dispatcher is new, so this is stricter than
+ * and headless — this whole dispatcher is new, so this is stricter than
  * BSC_RUNNER_DISABLED, which only ever killed the headless half of
  * bsc-next.js). --list and --dry-run still work under the kill switch — it
  * blocks LAUNCHING, not reading.
  *
  * Machine-bound routing (v1): an issue labeled 'mac-only' always gets a local
- * cmux tab, whatever --headless/--tab flag was passed — see
- * scripts/lib/linear-dispatch.js's decideRouting(). No Cyrus/queue routing
- * yet (--decide is explicitly out of scope for #1303).
+ * cmux tab, whatever --tab/--headless flag was passed (and whatever the
+ * headless default says) — see scripts/lib/linear-dispatch.js's
+ * decideRouting(). The PARENT process resolves that routing before it
+ * detaches, so a mac-only card never enters the detached settle window
+ * (BRO-3652). No Cyrus/queue routing yet (--decide is explicitly out of
+ * scope for #1303).
  */
 
 'use strict';
@@ -99,6 +104,7 @@ const {
   evaluateVerifiability, classifyHeadlessDispatchability, HEADLESS_BLOCKERS, isAutomationParked,
   exactTitleOverlapGuard, sessionTrackingCloneGuard, dispatchClaimGuard,
   workBranchCollisionGuard, resolvePathCheck, pathVerifiabilityGuard, resolveCanonicalRepoRoot,
+  resolveVacuousCheck, vacuousCheckGuard,
 } = require('./lib/dispatch-guards.js');
 const { findOverlappingCards } = require('./lib/dispatch-overlap-check.js');
 // Cross-session work-branch collision guard (BRO-278, port of card #1281's
@@ -167,19 +173,19 @@ const DISPATCH_CLAIM_STALE_MS = 8 * 60 * 1000;
 const USAGE = `linear-next — fetch a Linear issue and dispatch a Claude Code worker on it.
 
 Usage:
-  node scripts/linear-next.js --id BRO-123                 launch a cmux tab (default)
-  node scripts/linear-next.js --id BRO-123 --headless       run as a supervised background job (bsc-runner);
-                                                            THIS process is the job's parent for its whole run, so
-                                                            do NOT wrap it in \`timeout\` and do not close the shell
-  node scripts/linear-next.js --id BRO-123 --headless --detach
-                                                            same, but re-exec in its own session and return at once —
-                                                            no caller-side signal can reach the job (BRO-3053)
-  node scripts/linear-next.js --id BRO-123 --tab            force a cmux tab (overrides --headless)
+  node scripts/linear-next.js --id BRO-123                 DEFAULT: supervised headless job (bsc-runner awaits it and
+                                                            classifies job-done vs job-stranded at the end), re-exec'd
+                                                            in its own session so it survives this shell (BRO-3652)
+  node scripts/linear-next.js --id BRO-123 --no-detach      same job, but THIS process stays its parent for the whole
+                                                            run — do NOT wrap it in \`timeout\` and do not close the shell
+  node scripts/linear-next.js --id BRO-123 --tab            opt out of headless: launch a local cmux tab instead
+  node scripts/linear-next.js --id BRO-123 --headless       no-op alias for the default (kept for older callers)
   node scripts/linear-next.js --list                        list open BRO issues, priority-sorted
   node scripts/linear-next.js --id BRO-123 --model opus     override the resolved model
   node scripts/linear-next.js --id BRO-123 --force          bypass duplicate/dead-dispatch/parked/idempotency/terminal-state guards
   node scripts/linear-next.js --id BRO-123 --allow-unverifiable  dispatch with no runnable "## Acceptance criteria" command
-  node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch --headless even when the issue needs a human to finish it
+  node scripts/linear-next.js --id BRO-123 --allow-human-gated   dispatch headless even when the issue needs a human to finish it
+                                                            (the default refuses such a card loudly and points at --tab)
   node scripts/linear-next.js --id BRO-123 --allow-autofix-filed  dispatch an issue digest-autofix/canary filed (that pipeline passes this itself; BRO-2499)
   node scripts/linear-next.js --id BRO-123 --allow-automation-parked  waive PARKED_SENTINEL only for an issue an automation pipeline parked itself, pending its own drain (BRO-3060; those pipelines pass this at their own call sites)
   node scripts/linear-next.js --id BRO-123 --allow-reported-work "<reason>"  re-dispatch even though this issue's outstanding dispatch already reported done/in-review (--force does NOT cover this; BRO-2543)
@@ -188,7 +194,7 @@ Usage:
 
 Kill switch: LINEAR_NEXT_DISABLED=1 refuses ALL dispatch (--list/--dry-run
 still work). Machine-bound routing: an issue tagged 'mac-only' always forces
-a local cmux tab, overriding --headless. No --decide / Cyrus routing yet.
+a local cmux tab, overriding the headless default. No --decide / Cyrus routing yet.
 `;
 
 // Every downstream read of a boolean-switch flag (--force, --headless,
@@ -230,6 +236,15 @@ function parseArgs(argv) {
 }
 
 function ledgerTaskId(identifier) { return `linear:${identifier}`; }
+
+// Millisecond env knob: an explicit numeric value (0 included — "skip the
+// watch") wins; empty/unset/non-numeric means the default.
+function envMs(name, dflt) {
+  const raw = process.env[name];
+  if (raw === undefined || String(raw).trim() === '') return dflt;
+  const n = Number(raw);
+  return Number.isFinite(n) && n >= 0 ? n : dflt;
+}
 
 // Last N lines of a detached child's log, for the --detach settle window's
 // refusal report. Best-effort: a missing/unreadable log must never turn a
@@ -421,6 +436,12 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // test path was calling the real getTeam/getIssue/createComment/
     // updateIssue with no override before this was added).
     linear: reportLinearFn = linear,
+    // BRO-3652: the detached-parent path's two I/O primitives, injectable so
+    // tests/unit/linear-next.test.mjs can prove the child argv and the
+    // settle-window verdict without spawning a real process. Real
+    // implementations by default (lazily required, same as before).
+    spawnDetachedDispatch: spawnDetachedFn = null,
+    waitForSettle: waitForSettleFn = null,
   } = deps;
 
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
@@ -444,88 +465,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     process.exit(1);
   }
 
-  // BRO-3053: --detach re-execs this CLI in its OWN session and returns
-  // immediately, so no signal on the caller's side can ever reach the job.
-  //
-  // The plain `--headless` path awaits runJob() for the job's whole life
-  // (see :885), which makes THIS process the parent of the entire job tree.
-  // On 2026-09-08 an operator wrapped six dispatches in `timeout 110 … | tail`;
-  // `timeout` SIGTERMed this process, node's default disposition exited
-  // instantly, claude-cli.js's close handler never ran, and six jobs died
-  // mid-thought with no exit marker and no terminal ledger row — while the
-  // `| tail` reported exit 0. Detaching makes that class impossible rather
-  // than merely observable. Full write-up in scripts/lib/spawn-detached-dispatch.js.
-  //
-  // Placed BEFORE the Linear fetch on purpose: this process must take no
-  // side effect the child will repeat (no lease, no dispatch claim, no
-  // ledger row, not even an API call).
-  if (args.detach) {
-    // --detach only means anything on the headless path. A cmux-tab launch
-    // already returns promptly and has no long-lived supervisor to protect,
-    // so detaching one would just hide its output for no benefit. Refuse
-    // loudly rather than silently doing something different from what was asked.
-    if (!args.headless || args.tab) {
-      console.error('[linear-next] --detach applies only to --headless (a cmux-tab launch already returns immediately and has no supervisor to protect).');
-      process.exit(1);
-    }
-    const { spawnDetachedDispatch, stripFlag, waitForSettle } = require('./lib/spawn-detached-dispatch.js');
-    const idForLog = identifier.replace(/[^A-Z0-9-]/g, '');
-    // Log OUTSIDE the repo, beside the job logs. data/audit/ is committed by
-    // several workflows (`git add data/audit/` in adjudicate-review-queue.yml
-    // and backfill-aggregators.yml) and headless-logs/ is not gitignored, so
-    // a per-dispatch Date.now() file there would be committed forever and
-    // nothing sweeps the directory (ship-check finding).
-    const logFile = path.join(os.homedir(), 'Library', 'Logs', 'bsc-jobs', `detached-linear-next-${idForLog}-${Date.now()}.log`);
-    // REPO, not __dirname. This CLI is routinely run from a worktree, and the
-    // dispatcher must be the one canonical copy — the same doctrine the REPO
-    // constant already exists for (see its own comment). Re-execing the
-    // worktree's possibly half-edited copy is exactly what that rule forbids.
-    const { pid } = spawnDetachedDispatch({
-      scriptPath: path.join(REPO, 'scripts', 'linear-next.js'),
-      argv: stripFlag(argv, 'detach'),
-      logFile,
-      cwd: REPO,
-      label: 'linear-next',
-    });
-    // SETTLE WINDOW — ship-check finding, and the sharpest one against this
-    // change. Detaching before the Linear fetch means the PARENT validates
-    // nothing, so every loud refusal this CLI is built to give (unknown
-    // --id, issue not found, parked sentinel, human-gate, verify gate,
-    // LINEAR_NEXT_DISABLED, terminal state, lease already held) would move
-    // into a detached child's log file that nobody is watching. That trades
-    // one silent failure for another, which is the whole bug class this
-    // change exists to close.
-    //
-    // Every one of those refusals exits within a couple of seconds; a real
-    // dispatch stays alive for the job's whole run. So: watch the child from
-    // OUTSIDE (kill(pid,0) — we are not its parent and cannot wait() on it)
-    // for a short window. Still alive at the end = dispatched. Gone = it
-    // refused, so print its log and exit non-zero, exactly as the attached
-    // path would have.
-    // 30s, not a guess: a real refusal on this machine takes ~10.3s measured
-    // end to end (`time node scripts/linear-next.js --id BRO-2694 --headless`
-    // → 10.285s), because the refusal path does the Linear fetch AND
-    // runOverlapCheck's branch scan before it can say no. A 6s window was
-    // tried first and reported a refusing dispatch as "running", which is the
-    // very failure this window exists to prevent. 30s is ~3x the measured
-    // worst case and trivial beside a 30-minute job. Set
-    // LINEAR_NEXT_DETACH_SETTLE_MS=0 to skip the watch in automation that
-    // reads the ledger instead.
-    const settleMs = Number(process.env.LINEAR_NEXT_DETACH_SETTLE_MS ?? 30000);
-    const settled = await waitForSettle(pid, settleMs);
-    if (!settled.alive) {
-      console.error(`[linear-next] the detached dispatcher for ${idForLog} EXITED after ${settled.waitedMs}ms — it refused or failed. Its output:`);
-      console.error(readLogTail(logFile, 40));
-      console.error(`[linear-next] full log: ${logFile}`);
-      process.exit(1);
-    }
-    console.log(`[linear-next] detached dispatcher running (pid ${pid}) — this process is NOT the job's parent.`);
-    console.log(`[linear-next] dispatcher output: ${logFile}`);
-    console.log('[linear-next] the job survives this shell; watch the ledger, not this process.');
-    return;
-  }
-
-  // (--id presence and shape were validated above, before the --detach branch.)
+  // BRO-3652: `--no-detach` is the spelled-out form of `--detach=false` —
+  // parseArgs sees it as its own boolean key, so fold it into args.detach
+  // here and every read below has exactly one flag to consult.
+  if (args['no-detach']) args.detach = false;
 
   let issue;
   try {
@@ -548,15 +491,188 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // re-implementing the same 3 resolution layers for Linear.
   const model = resolveModel({ explicitFlag: explicitModel, task: { description: issue.description }, card: null, notionId: null });
   const project = projectOf({ tags: ld.issueLabelNames(issue).join(','), category: null, subject: issue.title });
-  // --tab always wins over --headless (explicit local override), matching
-  // the flag-precedence CLAUDE.md rule 5's "caller states intent explicitly"
-  // convention elsewhere in this codebase.
-  const wantsHeadless = !!args.headless && !args.tab;
+  // BRO-3652 (owner escalation 2026-09-16, "no more fire-and-forget
+  // dispatches"): the supervised headless path is the DEFAULT. bsc-runner
+  // awaits the job, runs detectJobLanding() at job end and writes job-done vs
+  // job-stranded — the only lane that can tell an operator whether the work
+  // actually landed. `--tab` is the explicit opt-out; `--headless` is kept as
+  // a no-op alias so every existing caller (dispatch-watchdog.js,
+  // linear-drain-parked.js, docs) keeps working unchanged. --tab always wins
+  // over --headless (explicit local override), matching the flag-precedence
+  // CLAUDE.md rule 5's "caller states intent explicitly" convention elsewhere
+  // in this codebase. Machine-bound routing (a 'mac-only' label) still wins
+  // over both inside decideRouting.
+  const wantsHeadless = !args.tab;
   const routing = ld.decideRouting(issue, { headless: wantsHeadless });
   const seed = ld.buildLinearSeed({
     identifier: issue.identifier, title: issue.title, description: issue.description,
     url: issue.url, model, project, mode: routing.mode,
   });
+
+  // BRO-3053: detaching re-execs this CLI in its OWN session and returns
+  // immediately, so no signal on the caller's side can ever reach the job.
+  //
+  // The attached headless path awaits runJob() for the job's whole life
+  // (see the `routing.mode === 'headless'` branch below), which makes THIS
+  // process the parent of the entire job tree. On 2026-09-08 an operator
+  // wrapped six dispatches in `timeout 110 … | tail`; `timeout` SIGTERMed
+  // this process, node's default disposition exited instantly,
+  // claude-cli.js's close handler never ran, and six jobs died mid-thought
+  // with no exit marker and no terminal ledger row — while the `| tail`
+  // reported exit 0. Detaching makes that class impossible rather than
+  // merely observable. Full write-up in scripts/lib/spawn-detached-dispatch.js.
+  //
+  // BRO-3652: detach is now the DEFAULT on the headless path (so a bare
+  // `--id` dispatch survives the caller's shell); `--no-detach` keeps this
+  // process as the job's parent for callers that want that.
+  //
+  // Placed AFTER the read-only Linear fetch and decideRouting() but BEFORE
+  // every side effect (no lease, no dispatch claim, no ledger row, no
+  // mutation). The ordering matters (BRO-3652 review blocker, "settle-window
+  // inversion"): with headless the default, a mac-only card routes to a cmux
+  // tab — and a tab launch returns fast after launching. Had the parent
+  // detached FIRST, its child would have launched the tab and exited inside
+  // the settle window, and the parent would have misreported a successful
+  // tab launch as "refused". So the PARENT resolves the routing and only
+  // detaches a genuinely headless dispatch; a tab-routed card takes the tab
+  // path in this process and never enters the settle window. The child
+  // re-fetches the issue (one extra read-only GET) — cheap, and it must
+  // re-run every guard against a fresh read anyway.
+  //
+  // Injected deps (tests) cannot cross a process boundary — a detached child
+  // ignores every stubbed seam and hits the real ledger/API — so a main()
+  // call that injects ANY dep stays attached (decideDetach's depsInjected).
+  // No production caller injects deps: the CLI entry below calls main() bare.
+  const detachDecision = ld.decideDetach({
+    routingMode: routing.mode, routingReason: routing.reason,
+    detachFlag: args.detach, tab: !!args.tab,
+    preview: !!(args['dry-run'] || args['print-prompt']),
+    depsInjected: Object.keys(deps).length > 0,
+    // Two guards the parent can already evaluate read-only (kill switch,
+    // terminal state — both pure over env/the fetched issue) refuse
+    // instantly in-process instead of after a settle wait on a child that
+    // was always going to say no. The in-process path below still owns the
+    // actual refusal text; this only decides not to detach first.
+    refusesFast: process.env.LINEAR_NEXT_DISABLED === '1' || (!args.force && !!ld.checkTerminalStateGuard(issue)),
+  });
+  if (detachDecision.refusal) {
+    console.error(`[linear-next] ${detachDecision.refusal}`);
+    process.exit(1);
+  }
+  if (detachDecision.detach) {
+    const sdd = require('./lib/spawn-detached-dispatch.js');
+    const { stripFlag } = sdd;
+    const spawnDetachedDispatch = spawnDetachedFn || sdd.spawnDetachedDispatch;
+    const waitForSettle = waitForSettleFn || sdd.waitForSettle;
+    const idForLog = identifier.replace(/[^A-Z0-9-]/g, '');
+    // Log OUTSIDE the repo, beside the job logs. data/audit/ is committed by
+    // several workflows (`git add data/audit/` in adjudicate-review-queue.yml
+    // and backfill-aggregators.yml) and headless-logs/ is not gitignored, so
+    // a per-dispatch Date.now() file there would be committed forever and
+    // nothing sweeps the directory (ship-check finding).
+    const logFile = path.join(os.homedir(), 'Library', 'Logs', 'bsc-jobs', `detached-linear-next-${idForLog}-${Date.now()}.log`);
+    // REPO, not __dirname. This CLI is routinely run from a worktree, and the
+    // dispatcher must be the one canonical copy — the same doctrine the REPO
+    // constant already exists for (see its own comment). Re-execing the
+    // worktree's possibly half-edited copy is exactly what that rule forbids.
+    // The child MUST run attached: with detach now the default (BRO-3652),
+    // stripping `--detach` alone would make the child detach a grandchild,
+    // and so on. `--no-detach` is appended explicitly (and `--no-detach`
+    // stripped first so it is never doubled). `--headless` is appended too
+    // (Codex review, version skew): the re-exec targets the CANONICAL
+    // checkout, which may still be — or be rolled back to — the pre-3652
+    // copy whose default is a tab and which does not know `--no-detach`.
+    // That copy honours `--headless` (attached, no --detach), so the child
+    // lands on the same lane either way.
+    const childArgv = [...stripFlag(stripFlag(stripFlag(argv, 'detach'), 'no-detach'), 'headless'), '--headless', '--no-detach'];
+    const { pid } = spawnDetachedDispatch({
+      scriptPath: path.join(REPO, 'scripts', 'linear-next.js'),
+      argv: childArgv,
+      logFile,
+      cwd: REPO,
+      label: 'linear-next',
+    });
+    // SETTLE WINDOW — ship-check finding, and the sharpest one against this
+    // change. Detaching before the guards means the PARENT validates only
+    // the id, the fetch and the routing, so every other loud refusal this
+    // CLI is built to give (parked sentinel, human-gate, verify gate,
+    // LINEAR_NEXT_DISABLED, terminal state, lease already held) would move
+    // into a detached child's log file that nobody is watching. That trades
+    // one silent failure for another, which is the whole bug class this
+    // change exists to close.
+    //
+    // Every one of those refusals exits within a couple of seconds; a real
+    // dispatch stays alive for the job's whole run. So: watch the child from
+    // OUTSIDE (kill(pid,0) — we are not its parent and cannot wait() on it)
+    // for a short window. Still alive at the end = dispatched. Gone = it
+    // refused, so print its log and exit non-zero, exactly as the attached
+    // path would have.
+    // 30s, not a guess: a real refusal on this machine takes ~10.3s measured
+    // end to end (`time node scripts/linear-next.js --id BRO-2694 --headless`
+    // → 10.285s), because the refusal path does the Linear fetch AND
+    // runOverlapCheck's branch scan before it can say no. A 6s window was
+    // tried first and reported a refusing dispatch as "running", which is the
+    // very failure this window exists to prevent. 30s is ~3x the measured
+    // worst case and trivial beside a 30-minute job. Set
+    // LINEAR_NEXT_DETACH_SETTLE_MS=0 to skip the watch in automation that
+    // reads the ledger instead.
+    // Non-numeric or empty env values fall back to the default rather than
+    // becoming NaN/0, which waitForSettle reads as "skip the watch" and would
+    // silently disable the refusal report (ship-check finding).
+    const settleMs = envMs('LINEAR_NEXT_DETACH_SETTLE_MS', 30000);
+    const settled = await waitForSettle(pid, settleMs);
+    if (!settled.alive) {
+      console.error(`[linear-next] the detached dispatcher for ${idForLog} EXITED after ${settled.waitedMs}ms — it refused or failed. Its output:`);
+      console.error(readLogTail(logFile, 40));
+      console.error(`[linear-next] full log: ${logFile}`);
+      process.exit(1);
+    }
+    // LAUNCH ACK (Codex review on BRO-3652, two findings closed at once):
+    // "still alive at the end of the window" was the only evidence of a
+    // dispatch, but (1) linear-client.js allows 30s per attempt plus retries
+    // on the child's re-fetch, so a slow fetch followed by a refusal outlives
+    // the window and would have been reported as dispatched; and (2) a card
+    // that gains 'mac-only' between the parent's fetch and the child's
+    // launches a tab and exits fast, which the liveness check alone would
+    // have called a refusal. The child writes its `launch` ledger row (with
+    // linearId) BEFORE it spawns anything on either lane, so that row is the
+    // real acknowledgement: keep watching past the settle window until the
+    // row appears (dispatched — report its lane), the child exits (refused),
+    // or the ack cap passes (alive but unconfirmed — say so, never claim
+    // "dispatched"). LINEAR_NEXT_DETACH_ACK_MS caps the extra wait (default
+    // 120s); 0 disables the ack watch and keeps the liveness-only verdict.
+    const spawnedAt = Date.now();
+    const ackMs = envMs('LINEAR_NEXT_DETACH_ACK_MS', 120000);
+    const findLaunchRow = () => {
+      let rows = [];
+      try { rows = readLedgerEntriesFn(); } catch { rows = []; }
+      return ld.findChildLaunchRow(rows, { linearId: identifier, sinceMs: spawnedAt - 1000 });
+    };
+    let launchRow = findLaunchRow();
+    let ackWaited = 0;
+    while (!launchRow && ackMs > 0 && ackWaited < ackMs) {
+      const tick = await waitForSettle(pid, 1000);
+      ackWaited += tick.waitedMs || 1000;
+      if (!tick.alive) {
+        console.error(`[linear-next] the detached dispatcher for ${idForLog} EXITED after ${settled.waitedMs + ackWaited}ms without writing a launch row — it refused or failed. Its output:`);
+        console.error(readLogTail(logFile, 40));
+        console.error(`[linear-next] full log: ${logFile}`);
+        process.exit(1);
+      }
+      launchRow = findLaunchRow();
+    }
+    if (launchRow) {
+      console.log(`[linear-next] dispatched ${identifier} → ${launchRow.workspaceRef || '(no workspaceRef)'} (launch row ${launchRow.correlationId || 'n/a'} at ${launchRow.ts}); the detached dispatcher (pid ${pid}) is NOT this process's child.`);
+    } else {
+      console.log(`[linear-next] WARNING: detached dispatcher (pid ${pid}) is still alive after ${settled.waitedMs + ackWaited}ms but has NOT written a launch ledger row yet — NOT confirmed as dispatched. Check the ledger for linearId ${identifier} before relying on it.`);
+    }
+    console.log(`[linear-next] dispatcher output: ${logFile}`);
+    console.log('[linear-next] exit 0 here means DISPATCHED, not done — the job\'s own verdict (job-done / job-stranded / job-blocked) lands in the ledger and in that log; watch those, not this process.');
+    return;
+  }
+
+  // (--id, the issue fetch and the routing were all resolved above, before
+  // the detach branch — see the BRO-3652 ordering note there.)
 
   // Cross-task/cross-system overlap check (task #1696, the #917/#1672 class
   // extended to the Linear side): findLiveWorkspaceForTask further below only
@@ -792,6 +908,24 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const pathErr = pathVerifiabilityGuard(pseudoTask, pathCheck, args);
   if (pathErr) { console.error(`[linear-next] ${pathErr}`); process.exit(1); }
 
+  // Vacuous-check guard (BRO-3394): opposite-polarity twin of the phantom-path
+  // guard just above — see dispatch-guards.js's vacuousCheckGuard header for
+  // the full rationale (BRO-3378 closed this for the enricher's own drafts
+  // only; every other path a Linear issue's description arrives by never got
+  // the check). Same skipPathCheck gating as the phantom-path guard above,
+  // for the identical reason, PLUS --allow-vacuous-check (unlike
+  // skipPathCheck's own fs-only I/O, this guard's I/O is a live `git fetch` —
+  // a caller who already decided to bypass the verdict shouldn't pay for it;
+  // adversarial review, Codex, BRO-3394). `log` surfaces a fetch failure
+  // instead of letting the guard disable itself silently on a network blip.
+  const skipVacuousCheck = skipPathCheck || args['allow-vacuous-check'];
+  const vacuousCheck = skipVacuousCheck ? null : resolveVacuousCheck(gate, {
+    repo: resolveCanonicalRepoRoot(REPO, __dirname),
+    log: (msg) => console.error(`[linear-next] ${msg}`),
+  });
+  const vacuousErr = vacuousCheckGuard(pseudoTask, vacuousCheck, args);
+  if (vacuousErr) { console.error(`[linear-next] ${vacuousErr}`); process.exit(1); }
+
   // Idempotency (task #1303 plan review item 4) — two independent "this
   // already looks dispatched" signals, checked before any launch attempt.
   // See linear-dispatch.js's findUnresolvedDispatchComment/hasLiveLedgerEntry
@@ -976,9 +1110,15 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     const blocking = hg.blockers.filter((b) => b.code !== HEADLESS_BLOCKERS.NO_VERIFY_CMD
       && !(b.code === HEADLESS_BLOCKERS.PARKED_SENTINEL && (args.force || automationParked)));
     if (!hg.dispatchable && blocking.length) {
+      // BRO-3652: headless is the default now, so this refusal is what a bare
+      // `--id` dispatch of a human-gated card hits. It stays LOUD (exit 1 in
+      // the attached path; surfaced through the settle window in the detached
+      // one) and never silently downgrades to a tab — the owner has to say
+      // `--tab` themselves, because a tab is only right when they are present.
       console.error(`[linear-next] REFUSING headless dispatch of ${identifier}: an unattended session cannot finish this issue.`);
       for (const b of hg.blockers) console.error(`    ${b.code}: ${b.detail}`);
-      console.error(`  Dispatch it to a cmux tab instead (drop --headless), where the owner is present to clear the gate,`);
+      console.error(`  Dispatch it to a cmux tab instead (add --tab), where the owner is present to clear the gate:`);
+      console.error(`    node scripts/linear-next.js --id ${identifier} --tab`);
       console.error(`  or re-run with --allow-human-gated if you know the gate does not apply,`);
       console.error(`  or --allow-automation-parked if the sentinel was filed by automation, not an owner.`);
       process.exit(1);
@@ -1013,6 +1153,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
         // guard's own refusal message promises this is "recorded in the
         // ledger" (ship-check finding: it wasn't, until this field existed).
         allowPhantomPath: args['allow-phantom-path'] || null,
+        // BRO-3394: journals a vacuous-check override the same way — same
+        // "recorded in the ledger" promise the refusal message makes.
+        allowVacuousCheck: args['allow-vacuous-check'] || null,
         // BRO-2499: the autofix-pipeline bypass is journaled the same way
         // --allow-unverifiable is, so a dispatch that only happened because
         // the guard was waived is auditable in the ledger rather than
@@ -1051,9 +1194,19 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     // and the dispatch claim must release immediately in that case rather
     // than sit held for the full staleMs window blocking a legitimate retry.
     dispatchConfirmed = true;
-    console.log(`[linear-next] headless job ${res.jobId} ${res.ok ? 'DONE' : `FAILED (${res.stage})`}`);
+    // BRO-3652 (review blocker): res.ok only means the claude process exited
+    // cleanly. bsc-runner classifies HOW the session ended into
+    // res.headlessOutcome ∈ {done, blocked, stopped-short, stranded} and
+    // writes the matching job-* ledger row — printing "DONE" for all four and
+    // exiting 0 was the fire-and-forget this card exists to end. Name the
+    // outcome and fail the exit code for anything but 'done', so a caller
+    // (or a `&&` chain) cannot mistake a stranded or blocked job for a
+    // finished one.
+    const verdict = ld.describeHeadlessOutcome(res);
+    console.log(`[linear-next] headless job ${res.jobId} ${verdict.label}${verdict.detail ? ` — ${verdict.detail}` : ''}`);
     if (res.logFile) console.log(`  log: ${res.logFile}`);
     if (!res.ok) { process.exitCode = 1; return; }
+    if (!verdict.success) process.exitCode = 1;
     // Issue-side write happens AFTER the durable ledger write above, per the
     // header's crash-safety ordering — a crash between them leaves the
     // ledger (not the issue thread) as the authoritative "this was
@@ -1085,7 +1238,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     console.error(`[linear-next] LAUNCH REFUSED — ${res.reason}`);
     console.error(`  Nothing was created for ${identifier}. Past this ceiling cmux opens the workspace and accepts the`);
     console.error('  command but never attaches a terminal, so the command can never run there.');
-    console.error(`    node scripts/linear-next.js --id ${identifier} --headless   # needs no cmux terminal (0 dead in 158 launches)`);
+    console.error(`    node scripts/linear-next.js --id ${identifier}   # drop --tab: headless is the default and needs no cmux terminal (0 dead in 158 launches)`);
     console.error('    node scripts/bsc-prune.js                                    # owner-run: close finished tabs to free a runtime');
     try {
       appendLedgerEntryFn({
@@ -1132,6 +1285,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       allowUnverifiable: (!gate.cmd && args['allow-unverifiable']) || null,
       // BRO-2569 — see the headless launch entry above for why this is journaled.
       allowPhantomPath: args['allow-phantom-path'] || null,
+      // BRO-3394 — see the headless launch entry above for why this is journaled.
+      allowVacuousCheck: args['allow-vacuous-check'] || null,
       // BRO-2499 — see the headless launch entry above for why the
       // autofix-pipeline bypass is journaled.
       allowAutofixFiled: args['allow-autofix-filed'] || null,
@@ -1157,7 +1312,7 @@ if (require.main === module) {
 }
 
 module.exports = {
-  parseArgs, ledgerTaskId, runList, main, USAGE,
+  parseArgs, ledgerTaskId, envMs, runList, main, USAGE,
   // Task #1696: pure overlap-guard wiring, exported for
   // scripts/tests/linear-next-overlap-guards.test.mjs (CLAUDE.md rule 15 —
   // the test require()s these real functions rather than restating them).

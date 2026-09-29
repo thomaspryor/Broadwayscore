@@ -18,6 +18,8 @@ const fs = require('fs');
 const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const USAGE = `fix-timeout-we-attribution.js — Fix Time Out outlet attribution in West End directories.
 
@@ -31,8 +33,8 @@ if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); process.exit(0); }
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const dryRun = process.argv.includes('--dry-run');
 
-const dirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-  .filter(d => (d.includes('west-end') || d.includes('off-west-end')) && fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
+const dirs = listShowDirs(REVIEW_TEXTS_DIR)
+  .filter(d => d.includes('west-end') || d.includes('off-west-end'));
 
 let renamed = 0, flagged = 0, skipped = 0, ambiguous = 0;
 
@@ -84,6 +86,7 @@ for (const dir of dirs) {
     } else if (url.includes('timeout.com/newyork') || url.includes('newyork.timeout.com') || url.includes('timeout.com/us')) {
       // NYC URL → this is a Broadway review
       data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(data);
       data.wrongProductionNote = 'Time Out New York review filed in West End directory';
       if (!dryRun) fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
       console.log(`${dryRun ? '[DRY] ' : ''}FLAGGED: ${dir}/${file} (NYC URL)`);
@@ -92,6 +95,7 @@ for (const dir of dirs) {
     } else if (url.includes('timeout.com/melbourne') || url.includes('timeout.com/sydney')) {
       // Australia → wrong market
       data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(data);
       data.wrongProductionNote = 'Time Out Australia review filed in West End directory';
       if (!dryRun) fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
       console.log(`${dryRun ? '[DRY] ' : ''}FLAGGED: ${dir}/${file} (AU URL)`);

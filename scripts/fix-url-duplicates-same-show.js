@@ -19,6 +19,7 @@ const fs = require('fs');
 const path = require('path');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const USAGE = `fix-url-duplicates-same-show.js — Fix URL duplicates within the same show.
 
@@ -177,8 +178,7 @@ function main() {
     errors: []
   };
 
-  const shows = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(f => fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory());
+  const shows = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);

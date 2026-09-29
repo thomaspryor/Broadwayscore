@@ -47,10 +47,22 @@
  *      collapsed; byline-first → 21 regressions.
  *   When both-or-neither member would be live, fall back to chooseCanonical:
  *   1. BYLINE — a named human beats "unknown"/staff/outlet-name/empty, and a
- *      correctly-spelled byline beats a near-misspelling sibling (Levenshtein ≤ 2).
- *   2. SCORE RICHNESS — more score signals (llm/assigned/human/…) wins.
- *   3. AGE — older publishDate wins.
- *   4. Filename — deterministic final tiebreak.
+ *      correctly-spelled byline beats a near-misspelling sibling (Levenshtein ≤ 2),
+ *      then byline ATTESTATION — is the name actually printed in its own text.
+ *   2. TEXT QUALITY (BRO-3570) — empty fullText loses to a non-empty sibling;
+ *      a fullText that visibly cuts off ("...") right where a decent-length
+ *      chunk it shares VERBATIM with the sibling ends, while the sibling
+ *      continues past that point, is a truncated preview of the sibling's
+ *      fuller capture and loses. Ranked above score richness/age for the same
+ *      reason attestation is: those measure how much PROCESSING a record
+ *      received, not whether it is a complete, real capture — a paywall
+ *      preview can carry its own (wrong) score. king-kong-2018's WSJ pair had
+ *      a misattributed byline on a soft-paywall preview that beat the real,
+ *      fuller review purely on the AGE tiebreak because byline/score both
+ *      tied and nothing checked whether either side was actually complete.
+ *   3. SCORE RICHNESS — more score signals (llm/assigned/human/…) wins.
+ *   4. AGE — older publishDate wins.
+ *   5. Filename — deterministic final tiebreak.
  *
  * NOTE: the rebuild already has circular-duplicate recovery (review-guards.js
  * BUG F, 2026-05-27) that surfaces one side of MOST pairs — so the true corpus
@@ -83,6 +95,7 @@ const { parseDate } = require('./lib/date-utils');
 const { classifyClassAContamination, buildSiblingOpeningsMap } = require('./lib/cross-market-contamination');
 const { isPlaceholderRecord } = require('./lib/placeholder-byline');
 const { loadOutletRegistry } = require('./lib/review-normalization');
+const { foldDiacritics } = require('./lib/title-match');
 
 /**
  * outlet-registry.json's outlets[outletId].defaultCritic, or null. Some solo
@@ -99,6 +112,7 @@ function _defaultCriticFor(outletId) {
 }
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { isBylineAttestedInText, normalizeForAttestation } = require('./lib/byline-attestation');
 
 const USAGE = `fix-circular-duplicate-pairs.js — Repairs the circular-duplicateOf class: fileA.duplicateOf=fileB AND.
 
@@ -175,6 +189,64 @@ function levenshtein(a, b) {
     prev = cur;
   }
   return prev[n];
+}
+
+/**
+ * True when `text` visibly cuts off mid-capture ("..."/"…") right after a
+ * decent-length chunk that also appears VERBATIM inside `otherText`, with
+ * `otherText` continuing past that same point — i.e. `text` is a truncated
+ * preview of the same article `otherText` captured more completely (BRO-3570:
+ * WSJ's soft-paywall preview truncates the review mid-sentence while a fuller
+ * capture at the same URL continues past the exact cutoff).
+ *
+ * Deliberately narrow, PURE text comparison — no keyword/outlet matching, so
+ * it never touches the general-purpose paywall/garbage classifiers in
+ * content-quality.js (those flagged real, complete WSJ captures as garbage in
+ * testing here, because WSJ's browser-update/nav chrome is identical on real
+ * and truncated captures alike — the chrome doesn't distinguish them, only
+ * completeness of the ARTICLE does). A verbatim 60+ char run immediately
+ * before a real cutoff, with enough distinct words to rule out a repeated
+ * nav-chrome fragment ("Most Popular Videos" blocks repeat 2-3 short phrases
+ * over and over — see king-kong-2018/wsj--charles-isherwood.json), is strong,
+ * low-false-positive evidence: two independently-written reviews at the same
+ * URL essentially never share a run this long and this varied, so this only
+ * fires on two captures of the SAME article.
+ *
+ * Residual false-positive risk this does NOT fully close (Codex adversarial
+ * review, 2026-09-16): two captures could each independently quote the same
+ * long dialogue/pull-quote ending in an ellipsis with real continuation on
+ * both sides. The caller (chooseCanonical) is what makes that safe — it only
+ * demotes when EXACTLY ONE direction trips this function, so a mutual match
+ * is inconclusive and falls through rather than always demoting one side.
+ */
+function isTruncatedPreviewOf(text, otherText) {
+  const norm = (s) => (s || '').replace(/\s+/g, ' ').trim();
+  const t = norm(text);
+  const other = norm(otherText);
+  if (!t || !other) return false;
+  const MIN_CHUNK = 60;
+  const MAX_CHUNK = 500;
+  const MIN_DISTINCT_WORDS = 8;
+  const distinctWordCount = (s) => new Set(
+    foldDiacritics(s.toLowerCase()).replace(/[^a-z0-9 ]/g, ' ').split(/\s+/).filter((w) => w.length > 3),
+  ).size;
+  const cutoffRe = /\.{2,}|…+/g;
+  let m;
+  while ((m = cutoffRe.exec(t))) {
+    // Shrink the window from the front (anchored at the cutoff) until it
+    // matches — a fixed-size window would fail whenever the preamble before
+    // the shared review text is a different length than in `otherText` (a
+    // different chrome/masthead/photo-caption block precedes the same
+    // article on each capture).
+    for (let len = Math.min(MAX_CHUNK, m.index); len >= MIN_CHUNK; len -= 20) {
+      const chunk = t.slice(m.index - len, m.index).trim();
+      if (chunk.length < MIN_CHUNK) continue;
+      if (distinctWordCount(chunk) < MIN_DISTINCT_WORDS) continue;
+      const idx = other.indexOf(chunk);
+      if (idx !== -1 && (other.length - (idx + chunk.length)) > 40) return true;
+    }
+  }
+  return false;
 }
 
 /** Count the distinct score signals present on a review record. */
@@ -263,6 +335,77 @@ function chooseCanonical(aName, aData, bName, bData) {
     }
   }
 
+  // 2c. Byline attestation — is the name actually printed as a byline?
+  // Two genuinely-different named bylines on ONE url means at least one was
+  // invented by a scraper, and the article itself says which. Ranked above
+  // score richness and age because those measure how much PROCESSING a record
+  // received, not whether its byline is real: on Safe House the phantom
+  // "Scott Bennett" record was scored just as richly as the true "Victor Gluck"
+  // one, so everything below tied and filename order crowned the phantom
+  // (BRO-3247).
+  //
+  // TWO CONDITIONS, deliberately asymmetric — the loser here gets duplicateOf
+  // written on it by dedupe-same-url-bylines.js and DISAPPEARS from the site,
+  // so the bar to demote is higher than the bar to promote:
+  //   WIN:  the winner's byline is printed in its OWN text.
+  //   LOSE: the loser's byline appears in NEITHER text, not even as a bare
+  //         mention.
+  // The second condition is what makes a truncated real review safe (Codex
+  // adversarial review, 2026-09-15). Extraction regularly drops the header of
+  // one copy while the sibling keeps the full article — dedupe accepts such
+  // truncated subsets as cohesive (dedupe-same-url-bylines.js:188). Without it,
+  // a real critic whose own copy lost its byline line would be demoted in
+  // favour of a site-wide editor credit ("by <Editor>, Editor-in-Chief") that
+  // theaterscene.net and others print on pages someone else wrote. Requiring
+  // the loser to be absent from BOTH texts means a byline that is real — and
+  // therefore printed in the fuller copy — can never be suppressed this way.
+  // Absent from both copies of the same article is the only state that
+  // actually evidences invention.
+  const _aText = (aData && aData.fullText) || '';
+  const _bText = (bData && bData.fullText) || '';
+  const _bothTexts = `${_aText}\n${_bText}`;
+  // Promotion evidence: judged per-file. A shared blob would let one file's
+  // editor credit attest the OTHER file's invented byline, and would make the
+  // pairwise fold order-dependent for 3+ member groups.
+  const aAttested = isBylineAttestedInText(aData && aData.criticName, _aText);
+  const bAttested = isBylineAttestedInText(bData && bData.criticName, _bText);
+  // Demotion evidence: a plain mention anywhere in either copy is enough to
+  // spare a record, so this uses raw containment, NOT the byline-marker test.
+  const aNameSeen = _nameAppearsAnywhere(aData && aData.criticName, _bothTexts);
+  const bNameSeen = _nameAppearsAnywhere(bData && bData.criticName, _bothTexts);
+  if (aAttested && !bAttested && !bNameSeen) {
+    return pick(aName, bName, 'byline: only this byline is printed in the article text');
+  }
+  if (bAttested && !aAttested && !aNameSeen) {
+    return pick(bName, aName, 'byline: only this byline is printed in the article text');
+  }
+
+  // 2d. Text quality (BRO-3570) — empty fullText loses outright, and a
+  // record that visibly cuts off exactly where the sibling's fuller capture
+  // continues is a truncated preview and loses too. Ranked above score
+  // richness/age: see module header for why (paywall previews carry their
+  // own score, so a richness/age-first check would never reach this rule).
+  const aEmpty = !_aText;
+  const bEmpty = !_bText;
+  if (aEmpty && !bEmpty) return pick(bName, aName, 'text quality: this member has no fullText');
+  if (bEmpty && !aEmpty) return pick(aName, bName, 'text quality: this member has no fullText');
+  // Deliberately ASYMMETRIC, same shape as the byline-attestation check above:
+  // a shared quoted line (dialogue, a review-of-record's pull-quote, a wire
+  // lede) can independently end in "..." with real continuation on BOTH
+  // sides, so isTruncatedPreviewOf can return true in both directions (Codex
+  // adversarial review, 2026-09-16). Only demoting when EXACTLY ONE side
+  // trips it means a mutual/ambiguous match is inconclusive and falls
+  // through, instead of always demoting whichever side happens to be
+  // checked first.
+  const aIsPreview = isTruncatedPreviewOf(_aText, _bText);
+  const bIsPreview = isTruncatedPreviewOf(_bText, _aText);
+  if (aIsPreview && !bIsPreview) {
+    return pick(bName, aName, 'text quality: this member is a truncated preview of the sibling capture');
+  }
+  if (bIsPreview && !aIsPreview) {
+    return pick(aName, bName, 'text quality: this member is a truncated preview of the sibling capture');
+  }
+
   // 3. Score richness.
   const aRich = scoreSignals(aData).length, bRich = scoreSignals(bData).length;
   if (aRich !== bRich) {
@@ -283,6 +426,23 @@ function chooseCanonical(aName, aData, bName, bData) {
   return aName < bName
     ? pick(aName, bName, 'tiebreak: filename order')
     : pick(bName, aName, 'tiebreak: filename order');
+}
+
+/**
+ * Loose containment used ONLY as a reprieve: does this name appear anywhere in
+ * the supplied text at all? Token-boundary aware (so "John Mackin" does not
+ * match inside "Joshua John Mackin") but, unlike isBylineAttestedInText, it
+ * does NOT require a byline marker — any mention is enough to spare a record
+ * from attestation-based demotion. Single-token names always count as seen,
+ * which keeps them out of the demotion path entirely.
+ */
+function _nameAppearsAnywhere(criticName, text) {
+  const n = normalizeForAttestation(criticName);
+  if (!n) return true;                       // unknown -> never demote on this basis
+  if (n.split(' ').length < 2) return true;  // single token -> too weak either way
+  const body = normalizeForAttestation(text);
+  if (!body) return true;
+  return ` ${body} `.includes(` ${n} `);
 }
 
 function pick(canonical, loser, reason) {
@@ -326,7 +486,7 @@ function _showById(showId) {
 let _siblingOpeningsCache; // undefined = not built; Map once attempted
 function _siblingOpenings(showId) {
   if (_siblingOpeningsCache === undefined) {
-    _showById(' ensure-loaded'); // force _showByIdCache population
+    _showById('\0ensure-loaded'); // force _showByIdCache population
     _siblingOpeningsCache = buildSiblingOpeningsMap([..._showByIdCache.values()], parseDate);
   }
   return _siblingOpeningsCache.get(showId) || [];
@@ -588,6 +748,6 @@ if (require.main === module) main();
 
 module.exports = {
   bylineSlug, outletSlug, isUnknownByline, levenshtein, scoreSignals,
-  isScoreable, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
-  isClassAContaminated, audit, fix,
+  isScoreable, isTruncatedPreviewOf, chooseCanonical, chooseCanonicalForRebuild, wouldBeIncludableIfCleared,
+  isClassAContaminated, audit, fix, showsDataAvailable,
 };

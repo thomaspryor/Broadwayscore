@@ -64,6 +64,16 @@ const PATTERN_FAMILIES = [
   // PageAnywhere). Phrases never appear in real review prose or footers, so raw
   // corpus hits among scored-tier reviews are 0. Registered for FP-gate coverage.
   'STRONG_ERROR_PAGE_PATTERNS',
+  // Parked-domain / domain-for-sale sales pages that replaced a dead outlet
+  // (BRO-3862). Scanned position-independently via detectStrongChromeDumpAnywhere,
+  // so they inherit that function's "text lacks substantial review content" gate.
+  // Full-corpus check 2026-09-20: 33 hits, 0 among scored reviews.
+  'PARKED_DOMAIN_PATTERNS',
+  // Whole-body WSJ archive-interstitial truncation signature (BRO-3572):
+  // ellipsis immediately followed by "Most Popular Videos/Articles" nav rail.
+  // Never occurs in real review prose/footers — verified 0 FPs against the
+  // full corpus (18/43,886 files matched, all confirmed genuine truncation).
+  'STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS',
   // Position-independent chrome-dump markers (gated at runtime on no-review +
   // non-trailing). Raw corpus hits are ~0; the gate trips only if a scraper
   // regression starts emitting these as bulk chrome. See content-quality.js
@@ -89,6 +99,12 @@ const PATTERN_FAMILIES = [
 // a threshold, ALSO add an entry there so the next regression triage gets
 // the date/commit/reasoning auto-surfaced in the audit failure message.
 const PATTERN_ALLOWLIST = {
+  // Parked-domain sales pages (BRO-3862). theaternewsonline.com lapsed and a
+  // squatter now serves a "domain for sale" page, which our archive fetches
+  // captured under 20+ different shows. Every hit IS the target class — a high
+  // count here is the intended signal, not FP drift. Sized to baseline + 30%.
+  'PARKED_DOMAIN_PATTERNS::0': 33, // /the domain name X is for sale/i — raw 25
+  'PARKED_DOMAIN_PATTERNS::4': 33, // /get a price in less than 24 hours/i — raw 25
   // Ad-blocker: Playbill's "disable your ad blocker" support-request overlay
   // bleeds into scraped text verbatim across many Playbill reviews.
   // 2026-08-15 calibration: raw 11. Sized to baseline + 30%.
@@ -119,6 +135,13 @@ const PATTERN_ALLOWLIST = {
   // in a substantial real review (gate blocks it) or in trailing junk. Sized to
   // the observed full-corpus raw count + 30% headroom, same convention as the
   // source families.
+  // BRO-3572: WSJ archive-interstitial truncation. Each match is a real
+  // positive — the review was genuinely cut off at the syndication
+  // interstitial (this pattern exists specifically to catch and exclude
+  // these). No FP risk: verified 0 false positives across the full corpus.
+  // Sized to raw + 25% headroom; see PATTERN_CALIBRATION for why a future
+  // bump needs per-hit verification, not blanket tolerance.
+  'STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS::0': 20, // raw 16
   'STRONG_CHROME_DUMP_PATTERNS::6': 60,  // /^privacy\s+policy/im — raw 43
   'STRONG_CHROME_DUMP_PATTERNS::7': 20,  // /^terms\s+(of\s+)?(use|service)/im — raw 14
   'STRONG_CHROME_DUMP_PATTERNS::8': 130, // /legitimate\s+interest/i — raw 101
@@ -187,6 +210,48 @@ const PATTERN_ALLOWLIST = {
 //                           //   for if the threshold trips again
 //   }
 const PATTERN_CALIBRATION = {
+  'PARKED_DOMAIN_PATTERNS::0': {
+    commit: 'pending',
+    date: '2026-09-20',
+    rawHits: 25,
+    headroom: 1.32,
+    note: 'BRO-3862: all 25 hits are the theaternewsonline.com parking page '
+        + '("Excellent 4.6 out of 5 Trustpilot / The domain name '
+        + 'theaternewsonline.com is for sale! / Premium Verified Domain"), '
+        + 'captured under 20+ different shows by archive fetches after the '
+        + 'outlet\'s domain lapsed. This pattern exists specifically to catch '
+        + 'them, so the count is the intended signal. Verified against the '
+        + 'full 44,179-file corpus 2026-09-20: 0 hits carry a score, 0 land on '
+        + 'real review prose. Patterns bind "domain" to a sale/parking phrase, '
+        + 'so criticism about "the public domain" cannot match.',
+  },
+  'PARKED_DOMAIN_PATTERNS::4': {
+    commit: 'pending',
+    date: '2026-09-20',
+    rawHits: 25,
+    headroom: 1.32,
+    note: 'BRO-3862: same 25 theaternewsonline.com parking pages as ::0 — this '
+        + 'is the call-to-action line immediately after the for-sale line, so '
+        + 'the two patterns co-fire by construction on the same files.',
+  },
+  'STRONG_WSJ_ARCHIVE_TRUNCATION_PATTERNS::0': {
+    commit: 'pending',
+    date: '2026-09-16',
+    rawHits: 16,
+    headroom: 1.25,
+    note: 'BRO-3572: all 16 hits are genuine WSJ archive-interstitial '
+        + 'truncations (ellipsis immediately into "Most Popular '
+        + 'Videos/Articles" nav rail) — this pattern exists specifically to '
+        + 'catch and exclude them, so a high hit count here is the intended '
+        + 'signal, not FP drift. Verified against the full ~43,886-file '
+        + 'corpus with zero false positives (the one non-WSJ "Most Popular '
+        + 'Articles" hit, an Exeunt Magazine sidebar with no ellipsis '
+        + 'adjacency, correctly does not match). Next bump: only if WSJ '
+        + 'changes its archive-reprint template and a genuinely new batch '
+        + 'of truncated captures appears — verify each new hit individually '
+        + 'before raising, since unlike other families here, a new hit '
+        + 'means a new bug to fix in the data, not chrome to tolerate.',
+  },
   'NAVIGATION_PATTERNS::1': {
     commit: '5eab60d60c',
     date: '2026-04-28',

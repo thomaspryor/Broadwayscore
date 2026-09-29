@@ -13,6 +13,7 @@
 const fs = require('fs');
 const path = require('path');
 const { buildShowsWithScores } = require('./lib/search-shows-scores');
+const { isCategoryEnabled } = require('./lib/markets');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -37,16 +38,14 @@ const reviews = reviewsData.reviews;
 // always runs immediately before this script in prebuild.sh.
 const showsWithScores = buildShowsWithScores(reviews, shows, path.join(outputDir, 'shows'));
 
-// Regional (non-NYC US) shows are hidden from the search index until the `regional`
-// feature flag is enabled — mirrors data-core regionalSlugAllowed() so search,
-// detail page, sitemap, and OG all light up together (never an orphaned indexed page).
-const regionalEnabled = (process.env.NEXT_PUBLIC_FEATURES || '')
-  .split(',').map(s => s.trim()).includes('regional');
+// Flag-gated categories (regional, tour) are hidden from the search index until their
+// feature flag is enabled — mirrors data-core regionalSlugAllowed() so search, detail
+// page, sitemap, and OG all light up together (never an orphaned indexed page).
 
 // Filter out unscored closed shows (historical shows without reviews)
 // These are hidden in HeaderSearch anyway — no point shipping them to every user
 const visibleShows = shows.filter(show =>
-  (regionalEnabled || show.category !== 'regional') &&
+  isCategoryEnabled(show.category) &&
   (showsWithScores.has(show.id) || show.status !== 'closed')
 );
 

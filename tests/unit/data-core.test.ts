@@ -22,6 +22,7 @@ import {
   getWestEndShows,
   getOffWestEndShows,
   getOffBroadwayShows,
+  getToursOf,
   getAllLondonShows,
   getMarketStats,
   getShowsByStatus,
@@ -70,8 +71,10 @@ describe('slugify', () => {
     assert.strictEqual(slugify('John   O\'Brien'), 'john-o-brien');
   });
 
-  test('handles accented/special characters by removing them', () => {
-    assert.strictEqual(slugify('José Rivera'), 'jos-rivera');
+  test('folds accented characters to ASCII (S7-T3: the shared scripts/lib/url-slug.js rule) and hyphenates the rest', () => {
+    assert.strictEqual(slugify('José Rivera'), 'jose-rivera');
+    assert.strictEqual(slugify('Noël Coward'), 'noel-coward');
+    assert.strictEqual(slugify('Søren & Co.'), 's-ren-co', 'a letter that does not decompose still falls to the hyphen rule');
   });
 
   test('handles empty string', () => {
@@ -187,6 +190,13 @@ describe('getOffBroadwayShows', () => {
   });
 });
 
+describe('national tours (launched in code, BRO-4211)', () => {
+  test('getToursOf links the Broadway page to its tour', () => {
+    const ids = getToursOf({ id: 'beetlejuice-2019', title: 'Beetlejuice', category: 'broadway' }).map(t => t.id);
+    assert.ok(ids.includes('beetlejuice-tour-2022'), `expected beetlejuice-tour-2022, got ${JSON.stringify(ids)}`);
+  });
+});
+
 describe('market partitioning', () => {
   test('broadway + west-end + off-west-end + off-broadway covers all shows (modulo hidden)', () => {
     // The market filters are expected to partition all shows EXCEPT
@@ -209,6 +219,8 @@ describe('market partitioning', () => {
     for (const s of getWestEndShows()) partitioned.add(s.id);
     for (const s of getOffWestEndShows()) partitioned.add(s.id);
     for (const s of getOffBroadwayShows()) partitioned.add(s.id);
+    // National tours (BRO-4211) are their own flag-gated partition.
+    for (const s of allShows.filter(x => x.category === 'tour')) partitioned.add(s.id);
     const missing = Array.from(allIds).filter(id => !partitioned.has(id));
     // Known hidden IDs the public hubs deliberately exclude.
     const HIDDEN = new Set(['abba-voyage-off-west-end-2026']);

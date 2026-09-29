@@ -12,7 +12,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { resolveCanonicalOutletId, _buildDomainMap } = require('../../scripts/lib/outlet-canonicalize.js');
+const { resolveCanonicalOutletId, _buildDomainMap, lookupOutletForHost } = require('../../scripts/lib/outlet-canonicalize.js');
 
 describe('resolveCanonicalOutletId — 2026-04-23 Rocky Horror drift fixtures', () => {
   test('davidcote-substack + davidcote1.substack.com → cote-notices (URL wins)', () => {
@@ -93,17 +93,40 @@ describe('resolveCanonicalOutletId — edge cases', () => {
     assert.throws(() => resolveCanonicalOutletId({ url: null }));
   });
 
-  test('ambiguous domain (timeout.com hosts timeout-ny AND timeout-london) falls through to alias', () => {
-    // timeout.com is an AMBIGUOUS_DOMAINS fixture — multiple outlets share it.
-    // URL can't disambiguate; input string must.
+  test('BRO-4153: timeout.com (hosts timeout AND timeout-london) now resolves by URL PATH, not alias', () => {
+    // timeout.com is a DECLARED path-split edition domain (timeout vs
+    // timeout-london — see outlet-registry-domain-collisions.js's
+    // EDITION_PAIRS): unlike a genuinely undecidable collision, the path
+    // itself IS positive evidence (BRO-4153's resolveOutletFromUrlIfPathInformed),
+    // so the URL now wins over a generic operator input rather than falling
+    // through to alias resolution. A /newyork path resolves to "timeout".
     const r = resolveCanonicalOutletId({
       outletArg: 'timeout',
       url: 'https://www.timeout.com/newyork/theater/rocky-horror-review',
     });
-    // Should fall through to alias resolution (timeout → some canonical), not
-    // pick one of the shared canonicals from URL.
+    assert.strictEqual(r.source, 'url');
+    assert.strictEqual(r.outletId, 'timeout');
+  });
+
+  test('BRO-4153: a /london path on timeout.com overrides a generic "timeout" operator input', () => {
+    const r = resolveCanonicalOutletId({
+      outletArg: 'timeout',
+      url: 'https://www.timeout.com/london/theatre/rocky-horror-review',
+    });
+    assert.strictEqual(r.source, 'url');
+    assert.strictEqual(r.outletId, 'timeout-london');
+    assert.match(r.warning || '', /drift detected/);
+  });
+
+  test('an undeclared collision (no path signal) still falls through to alias, unlike timeout.com', () => {
+    // Contrast case: telegraph.co.uk (telegraph/sunday-telegraph) has no path
+    // split — the URL truly cannot disambiguate, so operator input still wins.
+    const r = resolveCanonicalOutletId({
+      outletArg: 'sunday-telegraph',
+      url: 'https://www.telegraph.co.uk/theatre/2026/09/24/some-review/',
+    });
     assert.notStrictEqual(r.source, 'url');
-    assert.ok(r.outletId, 'resolves to some canonical via alias');
+    assert.strictEqual(r.outletId, 'sunday-telegraph');
   });
 });
 
@@ -222,5 +245,44 @@ describe('_buildDomainMap — same-brand-word-across-TLDs class (task #1254 / BR
       assert.strictEqual(rb.outletId, bId);
       assert.strictEqual(rb.source, 'url');
     }
+  });
+});
+
+// Issue #908 (Golden Boy, 2026-09-22): newspaper.dailymail.com is a subdomain of
+// the registered alias dailymail.com. Exact-only lookup minted a phantom
+// provisional outlet "dailymail", which tripped the critic misattribution guard
+// and kept a real Daily Mail review off the site.
+describe('lookupOutletForHost — parent-domain resolution (issue #908)', () => {
+  test('subdomain of a registered alias resolves to that outlet', () => {
+    assert.strictEqual(lookupOutletForHost('newspaper.dailymail.com'), 'daily-mail');
+    assert.strictEqual(lookupOutletForHost('www.mailplus.co.uk'), 'daily-mail');
+    assert.strictEqual(lookupOutletForHost('artsbeat.blogs.nytimes.com'), 'nytimes');
+  });
+
+  test('exactOnly refuses a parent-domain match', () => {
+    assert.strictEqual(lookupOutletForHost('newspaper.dailymail.com', { exactOnly: true }), null);
+    assert.strictEqual(lookupOutletForHost('dailymail.com', { exactOnly: true }), 'daily-mail');
+  });
+
+  test('never walks onto a blog platform or a bare public suffix', () => {
+    assert.strictEqual(lookupOutletForHost('someone.medium.com'), null, 'a medium.com blog is not the "medium" outlet');
+    assert.strictEqual(lookupOutletForHost('theater.jerryportwood.substack.com'), null);
+    assert.strictEqual(lookupOutletForHost('unregistered.co.uk'), null);
+  });
+
+  test('ingest path: unregistered operator input + subdomain URL resolves to the registered outlet', () => {
+    const r = resolveCanonicalOutletId({ outletArg: 'dailymail', url: 'https://newspaper.dailymail.com/edition/showbiz/theatre/472292/x' });
+    assert.strictEqual(r.outletId, 'daily-mail');
+  });
+
+  test('a parent-domain match never overrides a registered operator outlet', () => {
+    const r = resolveCanonicalOutletId({ outletArg: 'the-jewish-chronicle', url: 'https://jewishchronicle.timesofisrael.com/x' });
+    assert.notStrictEqual(r.outletId, 'the-times-of-israel');
+  });
+
+  test('a partner publication on a publisher subdomain is not the publisher', () => {
+    assert.strictEqual(lookupOutletForHost('jewishchronicle.timesofisrael.com'), null);
+    assert.strictEqual(lookupOutletForHost('blogs.timesofisrael.com'), 'the-times-of-israel');
+    assert.strictEqual(lookupOutletForHost('preview.ew.com'), 'ew', 'short generic labels never block');
   });
 });

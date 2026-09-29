@@ -8,6 +8,8 @@
  * Key behaviors:
  * - Diff-based: only updates sections that changed meaningfully
  * - Accessibility: always injected from verified metadata, never from LLM
+ * - Seating sections: hand-curated data preserved across merges (the LLM
+ *   draft never produces this field — see scripts/lib/theater-tips-merge.js)
  * - Cross-theater dedup: warns if restaurants appear in >50% of theaters
  *
  * Input:  data/theater-tips-draft.json (from generate-theater-tips.js)
@@ -19,6 +21,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { buildMergedStructuredTips } = require('./lib/theater-tips-merge');
 
 const DRAFT_FILE = path.join(__dirname, '..', 'data', 'theater-tips-draft.json');
 const METADATA_FILE = path.join(__dirname, '..', 'data', 'theater-metadata.json');
@@ -29,19 +32,6 @@ function sectionsEqual(a, b) {
   if (!a && !b) return true;
   if (!a || !b) return false;
   return JSON.stringify(a) === JSON.stringify(b);
-}
-
-function buildAccessibilityText(accessibility) {
-  if (!accessibility) return null;
-  // Use the verified notes field directly if available
-  if (accessibility.notes) return accessibility.notes;
-  // Build from structured fields
-  const parts = [];
-  if (accessibility.wheelchair) parts.push('Wheelchair accessible');
-  if (accessibility.elevator) parts.push('elevator available');
-  if (accessibility.hearingLoop) parts.push('hearing loop available');
-  if (accessibility.assistiveListening) parts.push('assistive listening devices available');
-  return parts.length > 0 ? parts.join('. ').replace(/\.\./g, '.') + '.' : null;
 }
 
 function main() {
@@ -86,75 +76,11 @@ function main() {
       continue;
     }
 
-    // Build the structuredTips object matching our TypeScript interface
-    const structuredTips = {
-      lastUpdated: tips.lastUpdated || new Date().toISOString(),
-    };
-
-    // Seating (without accessibility — injected below from verified data)
-    if (tips.seating) {
-      structuredTips.seating = {};
-      if (tips.seating.bestSeats) structuredTips.seating.bestSeats = tips.seating.bestSeats;
-      if (tips.seating.avoidSeats) structuredTips.seating.avoidSeats = tips.seating.avoidSeats;
-      // Never copy LLM accessibility — always from verified data
-      if (Object.keys(structuredTips.seating).length === 0) delete structuredTips.seating;
-    }
-
-    // Inject verified accessibility from metadata
-    const verifiedAccessibility = metadata[name].accessibility;
-    if (verifiedAccessibility?.verified) {
-      const accessText = buildAccessibilityText(verifiedAccessibility);
-      if (accessText) {
-        if (!structuredTips.seating) structuredTips.seating = {};
-        structuredTips.seating.accessibility = accessText;
-        accessibilityInjected++;
-      }
-    }
-
-    // Parking
-    if (tips.parking) {
-      structuredTips.parking = {};
-      if (tips.parking.nearestGarages?.length > 0) {
-        structuredTips.parking.nearestGarages = tips.parking.nearestGarages.map(g => ({
-          name: g.name,
-          ...(g.walkMinutes != null ? { walkMinutes: g.walkMinutes } : {}),
-          ...(g.notes ? { notes: g.notes } : {}),
-        }));
-      }
-      if (tips.parking.streetParking) structuredTips.parking.streetParking = tips.parking.streetParking;
-      if (tips.parking.tip) structuredTips.parking.tip = tips.parking.tip;
-      if (Object.keys(structuredTips.parking).length === 0) delete structuredTips.parking;
-    }
-
-    // Dining
-    if (tips.dining) {
-      structuredTips.dining = {};
-      for (const category of ['preShow', 'postShow', 'quickBite']) {
-        if (tips.dining[category]?.length > 0) {
-          structuredTips.dining[category] = tips.dining[category].map(r => {
-            // Track frequency
-            restaurantCounts[r.name] = (restaurantCounts[r.name] || 0) + 1;
-            return {
-              name: r.name,
-              ...(r.cuisine ? { cuisine: r.cuisine } : {}),
-              ...(r.walkMinutes != null ? { walkMinutes: r.walkMinutes } : {}),
-              ...(r.priceRange ? { priceRange: r.priceRange } : {}),
-              ...(r.notes ? { notes: r.notes } : {}),
-            };
-          });
-        }
-      }
-      if (Object.keys(structuredTips.dining).length === 0) delete structuredTips.dining;
-    }
-
-    // Logistics
-    if (tips.logistics) {
-      structuredTips.logistics = {};
-      if (tips.logistics.entrance) structuredTips.logistics.entrance = tips.logistics.entrance;
-      if (tips.logistics.nearestSubway) structuredTips.logistics.nearestSubway = tips.logistics.nearestSubway;
-      if (tips.logistics.exitStrategy) structuredTips.logistics.exitStrategy = tips.logistics.exitStrategy;
-      if (tips.logistics.restrooms) structuredTips.logistics.restrooms = tips.logistics.restrooms;
-      if (Object.keys(structuredTips.logistics).length === 0) delete structuredTips.logistics;
+    const built = buildMergedStructuredTips(tips, metadata[name]);
+    const structuredTips = built.structuredTips;
+    if (built.accessibilityInjected) accessibilityInjected++;
+    for (const rname of built.restaurantNames) {
+      restaurantCounts[rname] = (restaurantCounts[rname] || 0) + 1;
     }
 
     // Validate: at least one section populated

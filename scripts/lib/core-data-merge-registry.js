@@ -135,7 +135,21 @@ const CORE_DATA_MERGE_REGISTRY = [
     // steps that only ever reach this file through the case-arm path.
     optInReconcile: false,
   },
-  { file: 'audit/bww-roundup-miss-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeBwwRoundupLedger, format: 'jsonl' },
+  // BRO-3071 (2026-09-14): apiFallbackMerge added — already 'active' with a
+  // real per-(ts,showId) union merge (mergeBwwRoundupLedger, task #698;
+  // genuinely multi-writer since opening-night-poller.yml's concurrency
+  // group is per-show_id, so concurrent shows' runs append to this shared
+  // ledger in parallel) used today by the LOCAL PUSH_RECONCILE_MERGED_JSON
+  // path — but missing this flag disqualified push-with-retry.sh's Git Data
+  // API fallback for opening-night-poller.yml's "Commit poller backoff
+  // state" step (same shape as commercial-pending-review.json/BRO-2795,
+  // census-recall-trend.jsonl/BRO-2296, and coverage-adversarial-probe-
+  // trend.jsonl above). Same merge fn opts into both paths, no new
+  // reconciliation logic needed. (audit/serp-burst-ledger.json and
+  // audit/serp-session-ledger.json, staged in the same step, remain
+  // genuinely unregistered — see the "NOT added, deliberately" block above —
+  // so this alone does not yet make that whole step fallback-eligible.)
+  { file: 'audit/bww-roundup-miss-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeBwwRoundupLedger, format: 'jsonl', apiFallbackMerge: true },
   {
     file: 'audit/express-retry-queue.json',
     surface: 'public-repo',
@@ -211,18 +225,39 @@ const CORE_DATA_MERGE_REGISTRY = [
   // means also moving the step back to the end of the job. This is not left
   // to memory: scripts/lib/push-with-retry.stranded-commit-cascade.test.sh
   // PART B asserts the general property (every push-with-retry.sh-calling
-  // step in that job git-adds only apiFallbackSafe paths UNLESS it is the
-  // last such step), so a flag-only rollback fails CI loudly instead of
-  // quietly
-  // regressing the workflow.
+  // step in that job stages only FALLBACK-ELIGIBLE paths — apiFallbackSafe
+  // OR apiFallbackMerge, and never one the runtime disqualifier still vetoes
+  // — UNLESS it is the last such step), so a flag-only rollback fails CI
+  // loudly instead of quietly regressing the workflow.
+  // BRO-3348 widened that from apiFallbackSafe-only: this sentence used to
+  // say "only apiFallbackSafe", which had silently stopped matching the
+  // runtime disqualifier when BRO-2413 taught it to accept apiFallbackMerge.
   {
     file: 'audit/health-digest-snapshot.json',
     surface: 'public-repo',
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
-    verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml (its "Commit digest snapshot" step) writes it; that workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race.',
+    verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml writes it (as of BRO-2529, 2026-09-16: its "Commit digest + coverage snapshots (apiFallbackSafe)" step); that workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race.',
     note: 'the file scripts/autonomous-email.js:HEALTH_DIGEST_PATH reads to build the owner\'s daily digest email — the file whose lost push caused this task\'s originating incident (run 32559247279)',
+  },
+  {
+    file: 'audit/ci-green-rate.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-20: grepped every .github/workflows/*.yml for the literal filename — only data-health-check.yml stages it (its "Commit digest + coverage snapshots (apiFallbackSafe)" step, the SAME step as health-digest-snapshot.json above); the only writer is scripts/ci-green-rate.js --record, spawned solely by scripts/health-check.js checkCiGreenRate() when isCI, i.e. inside that one workflow, which declares concurrency: {group: data-health-check, cancel-in-progress: false}. Append-only JSONL, one row per nightly run.',
+    note: 'the nightly CI green-rate reading (the machine PASS/FAIL on "is main green" — the only thing allowed to say so); health-check.js\'s "Main: green rate" row reads it back for the "7d trend from Y%, day D of 14" line. Registered the day it was added, because staging it unregistered in the apiFallbackSafe step disqualified that step\'s Git Data API fallback (audit-push-retry-budgets advisory, run 35531905889).',
+  },
+  {
+    file: 'audit/open-backlog-acceptance-sweep.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-25: grepped .github/ and scripts/ for the literal filename — the only writer is scripts/sweep-open-backlog-acceptance.js, invoked only by data-health-check.yml ("Commit open backlog acceptance sweep" step, BRO-4135); scripts/dispatch-watchdog.js and scripts/lib/linear-watchdog-source.js only READ it. That workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}.',
+    note: 'nightly open-backlog acceptance sweep report (BRO-4135). Its commit step is not the last push-with-retry step, so staging it unregistered failed push-with-retry.stranded-commit-cascade.test.sh Part B and turned main red (test.yml run 36083765218, BRO-4149).',
   },
   {
     file: 'audit/imageless-scored-shows.json',
@@ -232,6 +267,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'audit-imageless-scored-shows',
     verifiedBy: '2026-08-22: grepped every .github/workflows/*.yml and scripts/*.js for the literal filename — only scripts/audit-imageless-scored-shows.js writes it, invoked only by audit-imageless-scored-shows.yml\'s "Commit audit ledger" step; that workflow now declares concurrency: {group: audit-imageless-scored-shows, cancel-in-progress: false} (added alongside this entry — it had none before) so its own cron and a manual workflow_dispatch queue instead of racing each other into the fallback.',
     note: 'card #1456 self-heal ledger (cooldown/escalation state for scored shows missing images) — its commit step was losing the local fetch+rebase+push race under main-branch churn on ~20 of its last 25 runs (confirmed via run history) before this fix',
+  },
+  {
+    file: 'audit/progress-watch-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'scoring-reviews',
+    verifiedBy: '2026-09-21 (BRO-2722): grepped every .github/workflows/*.yml and scripts/*.js for the literal filename — only scripts/check-progress-stalls.js writes it, invoked only by llm-ensemble-score.yml\'s "Snapshot progress-watch state" step, gated on github.event_name == \'schedule\' (never set by a workflow_dispatch input, so its concurrency group is always the bare default, never the -{rescore_reason} suffixed variant). That workflow declares concurrency: {group: scoring-reviews[-reason], cancel-in-progress: false}, and every writer invocation lands in the unsuffixed \'scoring-reviews\' group specifically, so overlapping scheduled runs queue instead of racing.',
+    note: 'liveness snapshot read by health-check.js\'s progressWatchResults() — was staged unregistered via git-add-existing.sh\'s broad `data/audit/` glob in the "Check for changes" step on every scheduled run, disqualifying that run\'s "Commit and push changes" step from the Git Data API fallback and forcing it onto the slow fetch+rebase+push path (root cause of the BRO-2722 repeat-failure alert — run 34818414035, 2026-09-14, "Commit and push changes" exhausted all 5 retry attempts under main-branch push contention with the fallback disqualified).',
   },
   // 2026-08-23 follow-up (same originating incident, run 32625283171): the
   // apiFallbackSafe fix above only isolated health-digest-snapshot.json —
@@ -300,6 +344,22 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-09-08 (BRO-3008 S0-T6): same writer/workflow/concurrency-group as its two siblings above (check-provider-spend.js, data-health-check.yml git-add block) — never rotated, appended once/day with idempotent day-replace.',
+  },
+  {
+    file: 'audit/notion-schedule-coupling.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    // BRO-3431 reopen: without this entry, staging this file alongside its
+    // siblings in "Commit health check audit snapshots (apiFallbackSafe)"
+    // would leave it unregistered — push-with-retry.sh's disqualifier check
+    // refuses the Git Data API fallback for the WHOLE outgoing diff when any
+    // staged data/audit/ path lacks apiFallbackSafe/apiFallbackMerge
+    // registration, so an unregistered new file degrades the fallback
+    // protection for every OTHER file in that same commit step, not just its
+    // own (adversarial Codex review caught this before it shipped).
+    verifiedBy: '2026-09-15: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
   // NOT registered: audit/digest-history.json. findWritingWorkflows()'s regex
   // match on data-health-check.yml's `git add data/audit/digest-history.json`
@@ -417,6 +477,35 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'data-health-check',
     verifiedBy: '2026-08-31 (BRO-2588): grepped every .github/workflows/*.yml AND all of scripts/ for the literal filename. Sole WRITER: scripts/autonomous-acceptance-recheck.js (appends through scripts/lib/autonomous-ledger.js:48 fs.appendFileSync), invoked only by data-health-check.yml\'s "Acceptance recheck (shadow mode)" step; data-health-check.yml is also the only workflow that git-adds the path. Every other reference is a READER or a non-writing mention: scripts/autonomous-email.js:435 (ledger.readEntries) and scripts/dispatch-watchdog.js:195 (fs.readFileSync) read it; scripts/freeze-ledgers.js:86 only names it inside a freeze record; scripts/lib/audit-ledger-merge-attrs.js:150 does not write it either, but it is NOT a throwaway mention: it deliberately EXCLUDES this file from the union-merge .gitattributes because autonomous-acceptance-recheck.js:199 enforcementState() reads rechecks[0].ts as the OLDEST recheck (trusting file order as chronological) and counts rechecks.length with no dedup key, and both feed shouldExitShadow() (scripts/lib/autonomous-recheck-core.js:294), which arms automatic card reopening. That workflow declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs of it queue rather than race. RESIDUAL RISK, accepted knowingly and NOT eliminated by this entry: apiFallbackSafe routes this path through scripts/lib/push-via-git-api.sh, whose semantics are ours-wins-outright (see its header, line ~41 \u2014 our version replaces whatever the current remote tip has for that path). The concurrency group serializes CI against CI, but NOT CI against a local run: if the owner runs `node scripts/autonomous-acceptance-recheck.js` on their own machine and pushes appended rows, the next CI run\'s Git Data API fallback can overwrite that path with its checkout-time copy plus its own rows, silently dropping the locally-appended ones and shifting both rechecks[0] and rechecks.length \u2014 the exact two inputs the merge-attrs exclusion above protects. This is the same order/count hazard, reached by a different route, so registering the file apiFallbackSafe trades a push-reliability win for a narrow CI-vs-local clobber window; it is safe only for the CI-only write pattern that is in place today.',
     note: 'shadow-mode RECHECK-AFTER verdict ledger written by scripts/autonomous-acceptance-recheck.js — append-only JSONL, one line per recheck run',
+  },
+  // BRO-3426 (2026-09-15): registering these two is NOT merely about making
+  // their own push fast — it is about not BREAKING the steps after them.
+  // push-with-retry.sh:2312 disqualifies the Git Data API fallback when the
+  // outgoing diff contains ANY data/audit/ path that is not registered here,
+  // and a continue-on-error commit step that fails to push leaves its commit
+  // on local HEAD, where every LATER step's SCRIPT_ENTRY_HEAD diff picks it
+  // up. That is exactly the poisoning BRO-2588 documents for
+  // audit/autonomous-recheck-ledger.jsonl above — so shipping these two
+  // unregistered would have silently forced every subsequent commit+push step
+  // in data-health-check.yml onto the slow local rebase path. Caught by a
+  // Codex adversarial review before it shipped, not after.
+  {
+    file: 'audit/done-evidence-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-15 (BRO-3426): grepped every .github/workflows/*.yml, all of scripts/ and all of tests/ for the literal filename. Sole WRITER: scripts/audit-done-evidence.js:68 (writeJson, tmp-file + rename), invoked only by data-health-check.yml\'s "Done-evidence audit (shadow mode)" step; that same workflow is also the only one that git-adds the path (its "Commit done-evidence audit" step). There are NO readers of this file anywhere — the digest reads the SEPARATE snapshot file below, not this one; the only other references are the script\'s own USAGE text and a comment in scripts/lib/done-evidence-audit.js explaining why sandbox paths are scrubbed (precisely so this nightly-committed file does not diff on a random temp dir). data-health-check.yml declares concurrency: {group: data-health-check, cancel-in-progress: false}, so overlapping runs queue rather than race. Full-overwrite snapshot, never append-only: each run rewrites the whole document, so the ours-wins-outright semantics of push-via-git-api.sh cannot drop accumulated history the way it could for an append-only ledger. RESIDUAL RISK, same class knowingly accepted for audit/stale-announced-shows.json and audit/autonomous-recheck-ledger.jsonl above: the CLI writer can also be run locally by a human, and the concurrency group serializes CI against CI but not CI against a local run. Accepted on the same grounds — this is disposable telemetry regenerated in full by the next nightly run, not state that can lose history.',
+    note: 'full shadow-mode verdict report written by scripts/audit-done-evidence.js — one entry per Done(14d)/In Review/In Progress card, rewritten whole each run',
+  },
+  {
+    file: 'audit/done-evidence-digest-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-15 (BRO-3426): same writer (scripts/audit-done-evidence.js:69), same invoking step and same `git add` line as audit/done-evidence-audit.json above — both files are written by the same run and staged together. One READER: scripts/lib/digest-snapshots.js:128 registers it as the `doneEvidence` SNAPSHOTS row, which scripts/send-morning-digest.js renders; reading never conflicts with the API fallback\'s ours-wins semantics. Same full-overwrite (not append-only) shape and the same residual local-vs-CI clobber risk accepted for the same reason.',
+    note: 'the {generatedAt, bannerText, items, moreCount} view model send-morning-digest.js renders as the "Done-evidence audit" block',
   },
   // BRO-2699 (2026-09-07): outlet-registry-baseline-maintenance.yml's daily
   // cron exists specifically to keep these two baseline files current so
@@ -691,6 +780,818 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'commercial-data-write',
     verifiedBy: '2026-09-12 (BRO-2285 what-else follow-up), corrected 2026-09-12 after a follow-up codex review caught the invocation count wrong the first pass: findWritingWorkflows() against real .github/workflows/*.yml — 2 CI WORKFLOWS write this path (commercial-weekly.yml, update-commercial.yml), both declaring concurrency: {group: commercial-data-write, cancel-in-progress: false} — same multi-writer-but-shared-group escape hatch as recoupment-calibration-anchors.json above. Within commercial-weekly.yml specifically there are 3 sequential steps in the SAME auto-apply job invoking `node scripts/audit-commercial-data.js` (flagless, `--strict`, `--write-history`) plus update-commercial.yml\'s flagless call — 4 invocations total, not 2, but all 4 reach the same unconditional `fs.writeFileSync(OUTPUT_FILE, ...)` (scripts/audit-commercial-data.js:1184) and the 3 same-job steps cannot race each other (sequential, not parallel), so the workflow-level single-group claim still holds. RESIDUAL RISK (same class as the two entries above): the CLI writer can also be run locally. Accepted on the same grounds — OUTPUT_FILE is a full snapshot regenerated fresh from commercial.json\'s current state on every invocation, not appended/accumulated state.',
   },
+  // BRO-3071 (2026-09-14, BRO-345 what-else sweep follow-up): the ~78 files
+  // BRO-345's own comment above parked as "lower urgency, tracked as a
+  // follow-up card". Re-running auditWorkflowText() found 60 remaining
+  // disqualifying steps (others already closed by BRO-2699/2296/2435/2670/
+  // 2795/2285/447 above) covering 85 files across 35 workflows, every one
+  // independently verified single-writer via findWritingWorkflows() where its
+  // static `git add`/`git-add-existing.sh` regex resolves the call site, or by
+  // hand where it doesn't (the documented loop-staged-path idiom — `for f in
+  // a b c; do git add "$f"; done` — used by ~9 of these workflows; see
+  // audit-push-retry-budgets.js's own extractLoopStagedPaths for the same gap
+  // in that sibling tool). Seven workflows below (check-cron-health.yml,
+  // collection-coverage-report.yml, audit-creative-team.yml, audit-review-
+  // quality.yml, audit-aggregator-coverage.yml) had NO concurrency group at
+  // all before this change — added alongside their entries, same remediation
+  // as BRO-2699/BRO-2670. audit-aggregator-coverage.yml's and update-deploy-
+  // watermark.yml's commit steps also got split into two push-with-retry.sh
+  // calls each (same BRO-2435 pattern) so the newly-safe file in each bundle
+  // (possible-venue-transfers.json / deploy-watermark.json) isn't defeated by
+  // its still-multi-writer bundlemate (aggregator-coverage.json / stage-
+  // latency.jsonl — see the "NOT added, deliberately: genuinely multi-writer"
+  // block further below). NOT covered here, deliberately: audit/mezzanine-
+  // coverage.json (update-mezzanine.yml uses a per-run_id concurrency group
+  // BY DESIGN — see that workflow's own comment; a real serializing group
+  // would reintroduce the Cats 2026-04-07 dropped-dispatch incident, so this
+  // file stays genuinely concurrent and unregistered) and audit/serp-burst-
+  // ledger.json + audit/serp-session-ledger.json (opening-night-poller.yml's
+  // concurrency group is scoped per-show/market, not global, and the file
+  // itself is a single GLOBAL ledger — scripts/opening-night-poller.js's own
+  // header comment already documents this as an accepted, bounded race
+  // between concurrently-polling shows, not something this registry's
+  // per-workflow-group bar can truthfully claim safe).
+  {
+    file: 'audit/broadway-source-coverage-gaps.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/broadway-source-coverage-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/discovery-source-coverage.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/ob-venue-counts.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    // BRO-4204 S4-T11/T12: two producers since the Off-West End promoter
+    // landed — discover-new-shows.js stages (update-show-status.yml) and
+    // scripts/promote-owe-venue-candidates.js prunes (promote-owe-venue-
+    // candidates.yml). Both workflows sit in the SAME `shows-json-writer`
+    // concurrency group (cancel-in-progress: false), so the two commits are
+    // mutually exclusive — the grosses.json shape checkEntry() accepts, not
+    // a true single writer. Same-host protection is lib/owe-venue-
+    // staging.js's updateStaging (withFileLock).
+    file: 'audit/owe-venue-candidates.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 2 writers (update-show-status.yml "Commit and push changes"; promote-owe-venue-candidates.yml "Commit OWE promotion audit log + pruned staging" via git-add-existing.sh), BOTH group shows-json-writer (cancel-in-progress: false) — mutually exclusive, no real race. Previously 2026-09-14 (BRO-3071): 1 writer (update-show-status.yml).',
+  },
+  {
+    // BRO-4204 S4-T12: the OWE promoter's state file (what this run
+    // promoted / dropped) — same shape as audit/we-last-promotion-ids.json;
+    // read by promote-owe-venue-candidates.yml's job-summary step, written
+    // only by a non-dry-run scripts/promote-owe-venue-candidates.js run.
+    file: 'audit/owe-last-promotion-ids.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 1 writer (promote-owe-venue-candidates.yml, git-add-existing.sh in its "Commit OWE promotion audit log + pruned staging" step), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    // BRO-4204 S4-T12: the OWE promoter's append-only jsonl audit log —
+    // same shape and single-writer story as audit/we-promotion-log.jsonl.
+    file: 'audit/owe-promotion-log.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 1 writer (promote-owe-venue-candidates.yml, git-add-existing.sh in its "Commit OWE promotion audit log + pruned staging" step), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/playbill-broadway-last-success.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/date-enrichment-corrections.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (enrich-off-broadway-dates.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/enrich-off-broadway-dates-aborted.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (enrich-off-broadway-dates.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/ob-closing-candidates.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (detect-ob-closings.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/ob-todaytix-missing-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (detect-ob-closings.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/same-title-confusion.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-cross-production-weekly.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/slug-misroute-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-cross-production-weekly.yml), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/bundle-size-baseline.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'check-performance-${{ github.ref }}',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (check-performance.yml), group check-performance-${{ github.ref }}.',
+  },
+  {
+    file: 'audit/bundle-size-history.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'check-performance-${{ github.ref }}',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (check-performance.yml), group check-performance-${{ github.ref }}.',
+  },
+  {
+    file: 'audit/bww-roundup-unmatched.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'scrape-new-aggregators',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (scrape-new-aggregators.yml), group scrape-new-aggregators (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/playbill-verdict-sitemap-seen.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'scrape-new-aggregators',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (scrape-new-aggregators.yml), group scrape-new-aggregators (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/playbill-verdict-unmatched.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'scrape-new-aggregators',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (scrape-new-aggregators.yml), group scrape-new-aggregators (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/cast-changes-diff.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'update-cast-changes',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-cast-changes.yml), group update-cast-changes (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/daily-digest-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'daily-digest',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (daily-digest.yml), group daily-digest (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/daily-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'daily-digest',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (daily-digest.yml), group daily-digest (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/dmarc-report-ledger.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'finance-ingest',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (finance-ingest.yml), group finance-ingest (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/dmarc-summary.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'finance-ingest',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (finance-ingest.yml), group finance-ingest (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/flag-parity-monitor-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'check-flag-parity',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (check-flag-parity.yml), group check-flag-parity (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/needs-human-review.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'rebuild-reviews',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (scoring-audit.yml), group rebuild-reviews (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/rebuild-score-drift.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'rebuild-reviews',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (scoring-audit.yml), group rebuild-reviews (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/scoring-audit-history.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'rebuild-reviews',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (scoring-audit.yml), group rebuild-reviews (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/scoring-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'rebuild-reviews',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (scoring-audit.yml), group rebuild-reviews (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/scoring-audit.md',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'rebuild-reviews',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (scoring-audit.yml), group rebuild-reviews (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/alert-sender-inventory.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'monitor-scheduled-email-count',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-scheduled-email-count.yml), group monitor-scheduled-email-count (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/brand-mentions.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'brand-mention-monitor',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (brand-mention-monitor.yml), group brand-mention-monitor (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/opening-night-express-completed.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'broadcast-send',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (opening-night-broadcast.yml), group broadcast-send (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/processed-review-submissions.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'process-review-formspree',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (process-review-formspree.yml), group process-review-formspree (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/reddit-digest-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'reddit-engagement-digest',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (reddit-engagement-digest.yml), group reddit-engagement-digest (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/regional-serp-discovery.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'discover-regional-serp-reviews',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (discover-regional-serp-reviews.yml), group discover-regional-serp-reviews (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/remediation-log.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'opening-night-checklist',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (opening-night-checklist.yml), group opening-night-checklist (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/reverse-discovery-candidates.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-reverse-discovery',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-reverse-discovery.yml), group audit-reverse-discovery (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/reverse-discovery-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-reverse-discovery',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-reverse-discovery.yml), group audit-reverse-discovery (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/review-evidence.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-reverse-discovery',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-reverse-discovery.yml), group audit-reverse-discovery (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/show-score-extraction-gaps.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'refresh-show-score-opening-night',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (refresh-show-score-opening-night.yml), group refresh-show-score-opening-night (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/venue-date-mismatches.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-provisional-venues',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-provisional-venues.yml), group audit-provisional-venues (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/video-review-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-video-reviews',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-video-reviews.yml), group audit-video-reviews (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/we-last-promotion-ids.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'promote-we-aggregator',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (promote-we-aggregator.yml), group promote-we-aggregator (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/we-promotion-log.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'promote-we-aggregator',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (promote-we-aggregator.yml), group promote-we-aggregator (cancel-in-progress: false).',
+  },
+  {
+    // BRO-4204 S4-T9: remembered-rejection store (lib/we-rejected-candidates.js)
+    // written only by a non-dry-run promote-we-aggregator-candidates.js run and
+    // committed by the same "Commit WE promotion audit log" step as the two
+    // entries above. Registered so that step's Git Data API fallback stays
+    // available (push-with-retry.sh disqualifies a diff touching an
+    // unregistered path — the BRO-2722 progress-watch-state failure class).
+    file: 'audit/we-rejected-candidates.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'promote-we-aggregator',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T9): same findWritingWorkflows()-class check as the two promote-we-aggregator entries above — 1 writer (promote-we-aggregator.yml, git-add-existing.sh in its "Commit WE promotion audit log" step), group promote-we-aggregator (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/affiliate-link-probe.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (weekly-affiliate-report.yml), group data-health-check (cancel-in-progress: false).',
+    note: 'job-level group on the link-integrity job (shared with data-health-check.yml by design, see that job\'s own comment) — not a workflow-level group, verified by direct read',
+  },
+  {
+    file: 'audit/deploy-watermark.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'deploy-watermark-update',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-deploy-watermark.yml), group deploy-watermark-update.',
+    note: 'job-level group on the update-watermark job',
+  },
+  {
+    file: 'audit/theatr-coverage.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'theatr',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-theatr.yml), group theatr (cancel-in-progress: false).',
+    note: 'shared with rotate-theatr-token.yml by design (token-rotation mutual exclusion) — that workflow does not write this file, verified by grep',
+  },
+  {
+    file: 'audit/coverage-adversarial-probe.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'coverage-adversarial-probe',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (coverage-adversarial-probe.yml), group coverage-adversarial-probe (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/coverage-adversarial-probe-status.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'coverage-adversarial-probe',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (coverage-adversarial-probe.yml), group coverage-adversarial-probe (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/show-review-gap.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/unknown-aggregator-outlets.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/gap-audit-checkpoint.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/we-gate-proving.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/t1-silent-gaps.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/t1-silent-gap-alerts.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/t1-coverage-ledger.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/t1-coverage-digest-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/t1-coverage-signals.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/t1-coverage-stats.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/t1-coverage-ack.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/t1-outlet-breaker.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/deployed-coverage-diff.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/t1-recovery-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/autoclear-shadow.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/autoclear-shadow-report.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/coverage-digest-snapshot.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/uncollected-live-reviews.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-gap',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-gap.yml), group audit-aggregator-gap (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/critic-coverage-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-critic-coverage',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-critic-coverage.yml), group audit-critic-coverage (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/critic-coverage-buckets.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-critic-coverage',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-critic-coverage.yml), group audit-critic-coverage (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/critic-coverage-cooldown.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-critic-coverage',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-critic-coverage.yml), group audit-critic-coverage (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/outlet-heartbeat.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-critic-coverage',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-critic-coverage.yml), group audit-critic-coverage (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/outlet-heartbeat-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-critic-coverage',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-critic-coverage.yml), group audit-critic-coverage (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/cron-health-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'check-cron-health',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (check-cron-health.yml), group check-cron-health.',
+    note: 'concurrency group ADDED to this workflow by this change (previously had none)',
+  },
+  {
+    file: 'audit/email-gate-funnel-monitor-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'monitor-gate-ab',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/gate-cold-start-monitor-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    // false, not true: the writer-drift guard (scripts/lib/api-fallback-writer-drift.test.mjs)
+    // re-verifies every apiFallbackSafe:true entry against the live workflows and
+    // rightly found no writer once BRO-3422 (6817ae16c07) removed it — main went red
+    // on 2026-09-15. A frozen file has no writer to be safe for.
+    apiFallbackSafe: false,
+    concurrencyGroup: 'monitor-gate-ab',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false). SUPERSEDED 2026-09-15: writer removed, see note.',
+    note: 'FROZEN as of 2026-09-15: the gate-cold-start A/B concluded and monitor-gate-ab.yml no longer writes this file (its write step was removed) — kept in the repo as the historical readout, not actively single-written anymore despite the status above.',
+  },
+  {
+    file: 'audit/ticket-ab-monitor-state.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    // false, not true: same pattern as the gate-cold-start-monitor-state.json
+    // entry above — the writer-drift guard re-verifies every apiFallbackSafe:
+    // true entry against the live workflows and rightly found no writer once
+    // BRO-3456 (912f84e7d43) concluded the ticket-single-button A/B and
+    // removed its monitor-gate-ab.yml write step. main went red on
+    // 2026-09-16. A frozen file has no writer to be safe for.
+    apiFallbackSafe: false,
+    concurrencyGroup: 'monitor-gate-ab',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (monitor-gate-ab.yml), group monitor-gate-ab (cancel-in-progress: false). SUPERSEDED 2026-09-16: writer removed, see note.',
+    note: 'FROZEN as of 2026-09-16: the ticket-single-button A/B concluded (BRO-3456, card #392) and monitor-gate-ab.yml no longer writes this file (its write step was removed) — kept in the repo as the historical readout, not actively single-written anymore despite the status above.',
+  },
+  {
+    file: 'audit/follow-send-checkpoint.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'send-follow-notifications',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (send-follow-notifications.yml), group send-follow-notifications (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/show-changes-digest.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'send-follow-notifications',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (send-follow-notifications.yml), group send-follow-notifications (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/social-tier-transitions.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'send-follow-notifications',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (send-follow-notifications.yml), group send-follow-notifications (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/arm-yield-ledger.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'check-arm-yield',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (check-arm-yield.yml), group check-arm-yield (cancel-in-progress: false).',
+  },
+  {
+    file: 'audit/collection-coverage.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'collection-coverage-report',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (collection-coverage-report.yml), group collection-coverage-report.',
+    note: 'concurrency group ADDED to this workflow by this change (previously had none)',
+  },
+  {
+    file: 'audit/collection-coverage-history.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'collection-coverage-report',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (collection-coverage-report.yml), group collection-coverage-report.',
+    note: 'concurrency group ADDED to this workflow by this change (previously had none)',
+  },
+  {
+    file: 'audit/creative-team-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-creative-team',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-creative-team.yml), group audit-creative-team.',
+    note: 'concurrency group ADDED to this workflow by this change (previously had none)',
+  },
+  {
+    file: 'audit/cross-outlet-duplicates.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-review-quality',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-review-quality.yml), group audit-review-quality.',
+    note: 'concurrency group ADDED to this workflow by this change (previously had none)',
+  },
+  {
+    file: 'audit/non-review-audit.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-review-quality',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-review-quality.yml), group audit-review-quality.',
+    note: 'concurrency group ADDED to this workflow by this change (previously had none)',
+  },
+  {
+    file: 'audit/possible-venue-transfers.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'audit-aggregator-coverage',
+    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (audit-aggregator-coverage.yml), group audit-aggregator-coverage.',
+    note: 'concurrency group ADDED to this workflow by this change (previously had none); commit step also split so this file\'s own push-with-retry.sh call no longer bundles the still-multi-writer aggregator-coverage.json',
+  },
+
+  // NOT added, deliberately (BRO-3071 what-else sweep, 2026-09-14): genuinely
+  // multi-writer with DIFFERENT concurrency groups per writer — the
+  // checkEntry()/concurrencyGroup escape hatch this file documents only
+  // covers writers that share ONE group (the grosses.json shape); none of
+  // these six do. Each would need a real per-key merge function (the
+  // apiFallbackMerge pattern — see audit/guard-escalation-state.json above
+  // for the precedent) before it could safely bypass push-with-retry.sh's
+  // "ours wins outright" fallback. Out of scope for this sweep (which only
+  // fixed already-single-writer files); tracked as a follow-up rather than
+  // rushed:
+  //   data/audit/aggregator-coverage.json — audit-aggregator-coverage.yml
+  //     (daily cron, no group) + close-coverage-gaps.yml (no cron trigger
+  //     found, no group). Lower urgency (daily/on-demand).
+  //   data/audit/indexing-api-usage.json — 3 writers, 3 DIFFERENT groups
+  //     (check-seo-health.yml: seo-health, weekly; opening-night-
+  //     broadcast.yml: broadcast-send, daily; update-show-status.yml:
+  //     shows-json-writer, daily).
+  //   data/audit/last-promotion-ids.json, data/audit/ob-promotion-log.jsonl
+  //     — add-requested-show.yml (workflow_dispatch only, dedicated group
+  //     but a DIFFERENT one — see that workflow's own comment on why it's
+  //     not shared with scrape-new-aggregators.yml) + scrape-new-
+  //     aggregators.yml (daily cron, group scrape-new-aggregators).
+  //   data/audit/ob-aggregator-rejections.json — audit-cross-production-
+  //     weekly.yml (weekly, group shows-json-writer) + scrape-new-
+  //     aggregators.yml (daily, group scrape-new-aggregators) — different
+  //     groups.
+  //   data/audit/stage-latency.jsonl — opening-night-checklist.yml (hourly,
+  //     group opening-night-checklist) + update-deploy-watermark.yml (fires
+  //     on every production deploy, group deploy-watermark-update) —
+  //     different groups, and the highest-cadence of the six (bursty
+  //     deploys can fire several times/day). Bundled with audit/deploy-
+  //     watermark.json (now apiFallbackSafe, see above) in the same commit
+  //     step; the step was split so deploy-watermark.json's own push isn't
+  //     defeated by this file staying on the slow path.
   // NOT added, deliberately: data/audit/opening-night-latency-YYYY-MM-DD.json
   // — filename is date-stamped, and BOTH places that check apiFallbackSafe
   // membership (push-with-retry.sh's inline disqualifier and audit-push-
@@ -774,7 +1675,7 @@ const CORE_DATA_MERGE_REGISTRY = [
     newline: true,
     apiFallbackMerge: true,
     optInReconcile: false, // see audit/alert-ledger.json's comment above
-    verifiedBy: '2026-09-11 (BRO-447): 3 independent writers, each owning its own top-level guard-id key (check-corpus-drift.js: corpus-drift-audit-crash, check-rebuild-staleness.js: stale-checkout-staleness, check-vercel-build-guard.js: vercel-build-guard-restore-failed), invoked from 3 workflows with 3 DIFFERENT concurrency groups (check-corpus-drift, rebuild-reviews, vercel-build-guard) — genuinely cross-workflow racy, not a single-group queue. Real per-key union merge (keeps the fresher lastBlockedAt/lastClearedAt on a same-key collision, not expected today but not structurally prevented). Was entirely unregistered before this — the whole check-corpus-drift.yml commit (also touching this path) was disqualified from the Git Data API fallback and left on the slow fetch+rebase+push loop, which was losing races 3x/24h. See scripts/lib/merge-guard-escalation-state.js.',
+    verifiedBy: '2026-09-11 (BRO-447): 3 independent writers, each owning its own top-level guard-id key (check-corpus-drift.js: corpus-drift-audit-crash, check-rebuild-staleness.js: stale-checkout-staleness, check-vercel-build-guard.js: vercel-build-guard-restore-failed), invoked from 3 workflows with 3 DIFFERENT concurrency groups (check-corpus-drift, rebuild-reviews, vercel-build-guard) — genuinely cross-workflow racy, not a single-group queue. Real per-key union merge (keeps the fresher lastBlockedAt/lastClearedAt on a same-key collision, not expected today but not structurally prevented). Was entirely unregistered before this — the whole check-corpus-drift.yml commit (also touching this path) was disqualified from the Git Data API fallback and left on the slow fetch+rebase+push loop, which was losing races 3x/24h. See scripts/lib/merge-guard-escalation-state.js. UPDATE 2026-09-16 (BRO-2423): 3 more independent writers, same one-key-per-guard shape, no registry change needed (the merge fn is generic over top-level keys) — check-scoring-queue-guard.js: scoring-queue-scan-failed, run-ensemble-scoring-guard.js: ensemble-scoring-pipeline-crashed (both llm-ensemble-score.yml, concurrency group scoring-reviews[-reason]), check-review-count-drift-guard.js: review-count-drift-strict-breach (check-review-count-drift.yml, concurrency group check-review-count-drift) — now 6 total.',
   },
   {
     file: 'audit/breaker-transitions.jsonl',
@@ -833,7 +1734,18 @@ const CORE_DATA_MERGE_REGISTRY = [
   { file: 'audit/scraper-spend-ledger.jsonl', surface: 'public-repo', status: 'active', merge: mergeScraperSpendLedger, format: 'jsonl', apiFallbackMerge: true },
   { file: 'audit/owner-email-log.jsonl', surface: 'public-repo', status: 'active', merge: mergeOwnerEmailLog, format: 'jsonl' },
   { file: 'audit/census-recall-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCensusRecallTrend, format: 'jsonl', apiFallbackMerge: true },
-  { file: 'audit/coverage-adversarial-probe-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCoverageAdversarialProbeTrend, format: 'jsonl' },
+  // BRO-3071 (2026-09-14): apiFallbackMerge added — already 'active' with a
+  // real per-date union merge (mergeCoverageAdversarialProbeTrend, task #903)
+  // used today by the LOCAL PUSH_RECONCILE_MERGED_JSON path (coverage-
+  // adversarial-probe.yml sets it), but missing this flag disqualified
+  // push-with-retry.sh's Git Data API fallback for the WHOLE "Commit probe
+  // report + trend ledger" commit (same shape as commercial-pending-
+  // review.json/BRO-2795 and census-recall-trend.jsonl/BRO-2296 above),
+  // defeating the two newly-registered apiFallbackSafe files it's bundled
+  // with (audit/coverage-adversarial-probe.json, audit/coverage-adversarial-
+  // probe-status.json). Same merge fn opts into both paths, no new
+  // reconciliation logic needed.
+  { file: 'audit/coverage-adversarial-probe-trend.jsonl', surface: 'public-repo', status: 'active', merge: mergeCoverageAdversarialProbeTrend, format: 'jsonl', apiFallbackMerge: true },
   {
     file: 'awards.json',
     surface: 'public-repo',
@@ -857,6 +1769,12 @@ const CORE_DATA_MERGE_REGISTRY = [
     // fires when git actually reports a conflict, and a nearby non-
     // overlapping hunk can rebase clean while still discarding one side's
     // edit.
+  },
+  {
+    file: 'outlet-registry.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    note: 'BRO-1084: moved from private-core-data to public-repo — the private copy was routinely stale because the only real writer is a human running scripts/audit-outlet-registry.js --update/--auto locally (CI only ever runs --json/--update-baseline/--strict, never the write branch), and every new outlet addition depended on a manual gh api PUT to the private repo before the next checkout-core-data run silently overwrote it. No CI workflow writes this file, so there is no concurrency group to declare.',
   },
 
   // ── private-core-data surface (push-core-data/action.yml, CORE_FILES) ────
@@ -917,11 +1835,24 @@ const CORE_DATA_MERGE_REGISTRY = [
   },
   { file: 'grosses.json', surface: 'private-core-data', status: 'single-writer', note: 'both writers (scrape-alltime-grosses, weekly-grosses) share concurrency group data-grosses-writers — mutually exclusive, no real race' },
   { file: 'critic-consensus.json', surface: 'private-core-data', status: 'single-writer', note: 'only update-critic-consensus.yml writes it' },
-  { file: 'outlet-registry.json', surface: 'private-core-data', status: 'single-writer', note: 'CI never actually reaches the write branch of audit-outlet-registry.js (needs --auto/interactive confirm; CI only runs --json/--update-baseline/--strict)' },
   { file: 'audience-reviews-lbo.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, update-lbo.yml' },
   { file: 'followers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers-westend.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
+  // 2026 data audit (S0-T2/S0-T4): the retired-id registry and its archive of
+  // deleted shows.json rows. Both are append-only arrays written only by
+  // retireId() in scripts/lib/retired-show-ids.js, which today runs from a
+  // human session against the core-data repo (Sprint 0 ramp, Sprint 2 batch
+  // tool) — no workflow writes either yet. Promote to 'active' with a keyed
+  // union merge (by id / by archived row id) BEFORE the first CI writer lands.
+  { file: 'retired-show-ids.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js from human sessions; no workflow writer yet (2026 data audit S0-T2)' },
+  { file: 'deleted-shows.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js (archive of deleted rows beside retired-show-ids.json); no workflow writer yet (2026 data audit S0-T2)' },
+  // 2026 data audit (S5-T9): retired critic slug → canonical slug, a flat
+  // {old: canonical} object read by scripts/lib/critic-slug-aliases.js at
+  // prebuild (scripts/build-slug-redirects.js). Hand-edited from human
+  // sessions only; S7-T3 (diacritic fold) may add a script writer — promote
+  // to 'active' with a keyed union merge before any CI writer lands.
+  { file: 'critic-slug-aliases.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, human sessions editing the core-data repo; read-only for scripts/lib/critic-slug-aliases.js; no workflow writer yet (2026 data audit S5-T9)' },
 ];
 
 /**

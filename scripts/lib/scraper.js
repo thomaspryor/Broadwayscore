@@ -35,6 +35,7 @@ const {
 const { fetchWithCookiesPlain } = require('./fetch-plain');
 const { readEnvKeys } = require('./load-env');
 const { recordBdCall, recordSbCall, recordSdCall } = require('./bd-telemetry');
+const { sdBilledCredits } = require('./provider-telemetry');
 const { shouldSkipScrapingdogAtRuntime, isSdQuotaHttpStatus } = require('./scrapingdog-ack');
 const { consultBrightData, getBrightDataRunStats } = require('./brightdata-caps');
 const { consultScrapingdog, getScrapingdogCapStats } = require('./scrapingdog-caps');
@@ -132,7 +133,10 @@ function _isChallengeOrGarbage(content) {
     content.includes('cf_chl_opt') ||
     content.includes('challenge-platform') ||
     content.includes('Enable JavaScript and cookies to continue') ||
-    content.includes('Attention Required!')
+    content.includes('Attention Required!') ||
+    // Anubis proof-of-work bot wall — a 200 whose body is only the interstitial.
+    content.includes('Protected by Anubis') ||
+    content.includes('anubis_challenge')
   );
 }
 
@@ -165,12 +169,24 @@ function domainMatchesExpected(expectedDomain, actualDomain) {
   // Known alias from DOMAIN_ALIAS_GROUPS (e.g., vulture.com → nymag.com)
   const aliases = DOMAIN_ALIASES.get(expectedDomain);
   if (aliases && aliases.has(actualDomain)) return true;
-  // Registry domain aliases (e.g., oneminutecritic.com ↔ 1minutecritic.com)
+  // Registry domain aliases (e.g., oneminutecritic.com ↔ 1minutecritic.com).
+  // Subdomain-aware on the alias itself: an outlet's real content can live on
+  // a subdomain of a registered alias (Daily Mail's e-edition publishes at
+  // newspaper.dailymail.com, a subdomain of the registered alias
+  // dailymail.com, not dailymail.com itself) — a bare Set.has() only matched
+  // the literal alias string, so those hosts were silently dropped by every
+  // caller of this gate (SERP host validation, URL-mismatch verification).
+  // Found via issue #908; validate-review-submission.js's parallel
+  // findMatchingOutletByDomain() already does this suffix check.
   if (_registryDomainAliases) {
     const regAliases = _registryDomainAliases[expectedDomain];
-    if (regAliases && regAliases.has(actualDomain)) return true;
+    if (regAliases && [...regAliases].some(a => actualDomain === a || actualDomain.endsWith('.' + a))) {
+      return true;
+    }
     const regAliases2 = _registryDomainAliases[actualDomain];
-    if (regAliases2 && regAliases2.has(expectedDomain)) return true;
+    if (regAliases2 && [...regAliases2].some(a => expectedDomain === a || expectedDomain.endsWith('.' + a))) {
+      return true;
+    }
   }
   return false;
 }
@@ -302,6 +318,10 @@ function _checkScrapingdogQuotaOnce() {
         req.on('timeout', () => { req.destroy(); reject(new Error('timeout')); });
       });
       const acct = JSON.parse(body);
+      // BRO-4215: timestamped balance reading in every CI log (mirrors "[SB Credits]").
+      // Sampling these across job logs vs ledger rows per interval is how an
+      // attribution gap gets traced to the workflow causing it.
+      if (Number.isFinite(acct.requestUsed)) console.log(`[SD Credits] ${acct.requestUsed} used of ${acct.requestLimit}`);
       const { skip, logLine } = shouldSkipScrapingdogAtRuntime(acct);
       if (logLine) console.warn(`  ⚠️  ${logLine}`);
       if (skip) {
@@ -620,7 +640,10 @@ async function fetchWithScrapingdog(url, options = {}) {
   }
 
   const hostname = (() => { try { return new URL(url).hostname.replace(/^www\./, ''); } catch { return 'unknown'; } })();
-  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: creditCost * attemptsMade, fallbackFrom: options.fallbackFrom || null });
+  // SD bills only successful requests (A0 billing probe — see sdBilledCredits
+  // in provider-telemetry.js); booking creditCost here overstated SD spend in
+  // the ledger by ~9,900 credits/7d (BRO-3325 what-else, 2026-09-15).
+  recordSdCall({ host: hostname, fn: sdMode, success: false, status: lastError.message?.slice(0, 80) || 'error', credits: sdBilledCredits(false, creditCost * attemptsMade), fallbackFrom: options.fallbackFrom || null });
   console.error(`⚠️  Scrapingdog failed (dynamic=${renderJs}${premium ? ', premium' : ''}${stealthMode ? ', stealth_mode' : ''}, domain=${hostname}): ${lastError.message}`);
 
   // Auto-escalate to stealth_mode on SD's own "try stealth_mode=true" 400

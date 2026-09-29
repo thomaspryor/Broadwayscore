@@ -14,14 +14,17 @@ import * as path from 'path';
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
 const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
+const { resolveGrossesHistoryColumns } = require('./lib/grosses-history-columns');
 
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
 const PLAYBILL_URL = 'https://playbill.com/grosses';
 
 // Verified live 2026-08-12: <thead><th> = Show / This Week Gross / Diff $ /
-// Avg Ticket / Seats Sold / Perfs / % Cap / Diff % cap. Rows below read
-// cells[0], [1], [3], [4], [5], [6] (task #1331 — same column-drift class as #118).
+// Avg Ticket / Seats Sold / Perfs / % Cap / Diff % cap. Row extraction below
+// resolves these columns by label via resolveGrossesHistoryColumns (BRO-2375
+// — same column-drift class as #118) rather than assuming cells[0]/[1]/[3]/
+// [4]/[5]/[6] stay put if Playbill inserts or reorders a column.
 const TABLE_SCHEMA = { minCells: 7, expectedHeaders: ['Show', 'This Week Gross', 'Avg Ticket', 'Seats Sold', 'Perfs', '% Cap'] };
 
 interface HistoryEntry {
@@ -217,39 +220,46 @@ async function backfillHistory(): Promise<void> {
             throw err;
           }
 
+          // Resolve column positions from the header row (BRO-2375) before
+          // extracting rows — $$eval serializes its callback to run in-page,
+          // so it can't close over the Node-side findColumnIndex import;
+          // indices are resolved here and passed in as a plain-data arg.
+          const columnIdx = resolveGrossesHistoryColumns(headerCells);
+
           // Extract data from the table
-          const rowData = await page.$$eval('table tbody tr', (rows) => {
+          const rowData = await page.$$eval('table tbody tr', (rows, idx) => {
             return rows.map(row => {
               const cells = row.querySelectorAll('td');
-              if (cells.length < 7) return null;
+              const maxIdx = Math.max(idx.showIdx, idx.grossIdx, idx.atpIdx, idx.seatsIdx, idx.perfsIdx, idx.capIdx);
+              if (cells.length <= maxIdx) return null;
 
-              // Cell 0: Show name + theater
-              const showCell = cells[0];
+              // Show name + theater
+              const showCell = cells[idx.showIdx];
               const showLink = showCell?.querySelector('a');
               const showName = showLink?.textContent?.trim() || '';
 
-              // Cell 1: This Week Gross + Potential Gross
-              const grossText = cells[1]?.textContent?.trim() || '';
+              // This Week Gross + Potential Gross
+              const grossText = cells[idx.grossIdx]?.textContent?.trim() || '';
               const gross = grossText.split('\n')[0]?.trim() || '';
 
-              // Cell 3: Avg Ticket + Top Ticket
-              const atpText = cells[3]?.textContent?.trim() || '';
+              // Avg Ticket + Top Ticket
+              const atpText = cells[idx.atpIdx]?.textContent?.trim() || '';
               const atp = atpText.split('\n')[0]?.replace(/\s+/g, ' ')?.trim()?.split(' ')[0] || '';
 
-              // Cell 4: Seats Sold + Seats in Theatre
-              const seatsText = cells[4]?.textContent?.trim() || '';
+              // Seats Sold + Seats in Theatre
+              const seatsText = cells[idx.seatsIdx]?.textContent?.trim() || '';
               const seatsSold = seatsText.split('\n')[0]?.replace(/\s+/g, '')?.trim() || '';
 
-              // Cell 5: Perfs + Previews
-              const perfsText = cells[5]?.textContent?.trim() || '';
+              // Perfs + Previews
+              const perfsText = cells[idx.perfsIdx]?.textContent?.trim() || '';
               const perfs = perfsText.split('\n')[0]?.replace(/\s+/g, '')?.trim() || '';
 
-              // Cell 6: % Cap
-              const capText = cells[6]?.textContent?.trim() || '';
+              // % Cap
+              const capText = cells[idx.capIdx]?.textContent?.trim() || '';
 
               return { showName, gross, atp, seatsSold, perfs, capText };
             }).filter(Boolean);
-          });
+          }, columnIdx);
 
           const weekSnapshot: Record<string, HistoryEntry> = {};
           let matched = 0;

@@ -51,3 +51,36 @@ test('is a no-op when gate is off, even with a zero count', () => {
   assert.doesNotThrow(() => assertCorpusScanned(0, {}));
   assert.doesNotThrow(() => assertCorpusScanned(0));
 });
+
+// BRO-2283: a missing/unreadable corpus ROOT is a different failure from a
+// filtered scan finding nothing, and must throw even in report mode (no
+// --gate) — otherwise a session whose worktree lacks the private review-texts
+// checkout gets a silent "0 scanned, 0 found" that reads as a clean sweep.
+test('corpusRootMissing throws even when gate is off', () => {
+  assert.throws(
+    () => assertCorpusScanned(0, { gate: false, corpusRootMissing: true }),
+    CorpusNotScannedError,
+  );
+  assert.throws(
+    () => assertCorpusScanned(0, { corpusRootMissing: true }),
+    CorpusNotScannedError,
+  );
+});
+
+test('corpusRootMissing error explains the checkout is missing, not just empty', () => {
+  assert.throws(
+    () => assertCorpusScanned(0, { corpusRootMissing: true, label: 'data/review-texts' }),
+    (err) => {
+      assert.ok(err instanceof CorpusNotScannedError);
+      assert.match(err.message, /does not exist or is unreadable/);
+      assert.match(err.message, /data\/review-texts/);
+      return true;
+    },
+  );
+});
+
+test('corpusRootMissing is ignored when false, even with gate on and zero scanned needing the normal path', () => {
+  // Sanity: corpusRootMissing:false with a positive count is still a no-op —
+  // the new param must not change the established gate/scanned contract.
+  assert.doesNotThrow(() => assertCorpusScanned(5, { gate: true, corpusRootMissing: false }));
+});

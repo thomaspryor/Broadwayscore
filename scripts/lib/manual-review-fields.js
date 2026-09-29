@@ -118,7 +118,25 @@ function buildManualReviewFields(opts = {}) {
     fields.allowCrossMarket = true;
     fields.allowTourSignal = true;
     fields.allowFilmSignal = true;
+    // Neutralize the stale verdict that got the file excluded in the first
+    // place. Clearing only the booleans left rejectionReason='not_a_review' +
+    // wrongShowReason + the old CV block in place, and explainExclusion still
+    // excluded the review (America, Who Hurt You? NYSR, 2026-09-22: an LLM
+    // verifier judged a 700-char truncation a "preview"; the operator-vouched
+    // re-ingest stayed hidden). Same recipe as
+    // memory/feedback_manual_review_protection_fields.md.
+    fields.rejectionReason = null;
+    // wrongShowReason is write-guard protected: when the file already carries
+    // wrongShowManualClear the guard keeps the old text. Harmless for
+    // inclusion (review-guards only re-promotes it via contentVerificationPromoted,
+    // nulled here), so it is not added to protectedFields below.
+    fields.wrongShowReason = null;
+    fields.isNonReviewReason = null;
+    fields.contentVerificationPromoted = null;
     fields.contentVerification = {
+      isValid: true,
+      confidence: 'manual',
+      verifiedBy: 'manual-ingest',
       wrongProduction: false,
       wrongArticle: false,
     };
@@ -150,6 +168,9 @@ function buildManualReviewFields(opts = {}) {
       'allowTourSignal',
       'allowFilmSignal',
       'contentVerification',
+      'rejectionReason',
+      'isNonReviewReason',
+      'contentVerificationPromoted',
       'fullText',
       'textFetchedAt',
       'originalScore',

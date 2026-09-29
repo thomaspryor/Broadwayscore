@@ -1,4 +1,3 @@
-# hygiene-push-ok: uses custom inline retry loop (git pull --rebase and git push break pattern)
 # Regenerate domain-specific tier ordering and skip configs from fetchAttempts data.
 # Runs weekly after collection runs have accumulated new data.
 name: Regenerate Tier Configs
@@ -27,6 +26,17 @@ on:
 
 permissions:
   contents: write
+
+# BRO-3334: scripts/config/domain-tier-order.json and domain-tier-skip.json
+# are also hand-edited and pushed directly to main outside this workflow (they
+# are deliberately excluded from the "PR required for code paths" ruleset —
+# see branch-ruleset-paths.js's own docstring, which names this exact
+# workflow) — narrows the window for this workflow's own cron+workflow_dispatch
+# runs to race each other over the same commit, on top of the push-with-
+# retry.sh's own rebase-based conflict handling for a concurrent direct push.
+concurrency:
+  group: regenerate-tier-configs
+  cancel-in-progress: false
 
 jobs:
   regenerate:
@@ -67,6 +77,27 @@ jobs:
 
       - name: Commit and push
         if: inputs.dry_run != 'true'
+        env:
+          # BRO-3334: the inline `git pull --rebase && git push` retry loop
+          # below hit this job's 15-min timeout ("cancelled") 4 consecutive
+          # Sundays — it had no per-operation timeout at all, so a stalled
+          # git transport could burn the FULL 15-min job budget in silence.
+          # push-with-retry.sh's GIT_NET_TIMEOUT_SEC hard-caps every fetch/push
+          # op regardless of the REST fallback, so this alone fixes the hang.
+          # Deliberately NOT setting PUSH_API_REST_REF_UPDATE here (unlike
+          # data-health-check.yml's apiFallbackSafe steps): these two config
+          # files are hand-edited and pushed directly to main outside this
+          # workflow (see the concurrency: block's comment above) and are not
+          # apiFallbackMerge-registered, so the REST fallback's "ours wins"
+          # whole-file overlay could silently clobber a concurrent hand-edit
+          # with this run's stale pre-checkout content — exactly the class of
+          # silent data loss this ticket exists to fix, via a different path.
+          # Job's own timeout-minutes: 15 (900s) budget is much tighter than
+          # data-health-check.yml's 180-min job, so PUSH_DEADLINE_SEC is sized
+          # well under that ceiling — leaves headroom for checkout/setup/
+          # regenerate ahead of this step.
+          PUSH_DEADLINE_SEC: '600'
+          GIT_NET_TIMEOUT_SEC: '30'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -77,9 +108,7 @@ jobs:
             DOMAINS_ORDER=$(node -e "console.log(Object.keys(require('./scripts/config/domain-tier-order.json')).length)")
             DOMAINS_SKIP=$(node -e "const s=require('./scripts/config/domain-tier-skip.json'); console.log(Object.keys(s).length + ' domains, ' + Object.values(s).reduce((a,b)=>a+(Array.isArray(b)?b.length:Object.keys(b).length),0) + ' skips')")
             git commit -m "chore: Regenerate tier configs (ordering: ${DOMAINS_ORDER} domains, skip: ${DOMAINS_SKIP})"
-            for i in 1 2 3 4 5; do
-              git pull --rebase && git push && break || sleep $((i * 5))
-            done
+            bash scripts/lib/push-with-retry.sh 10 main
           fi
 
       - name: Notify on failure

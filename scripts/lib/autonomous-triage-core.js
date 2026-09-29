@@ -141,6 +141,48 @@ const AUDIT_LINT_GENERIC_FORM_ALLOWED = new Set([
   'lint-wrongproduction-provenance.js',
 ]);
 
+// Task #1827 (widened BRO-4151): individually-vetted `bash
+// scripts/lib/<name>.test.sh` bash-integration tests — NOT a blanket rule for
+// every *.test.sh in the repo. A directory-wide pattern would admit any
+// future .test.sh sight unseen; some of this repo's existing suites, e.g.
+// push-with-retry.deadline.test.sh:73, deliberately invoke `git remote add
+// origin "ext::sh -c '…'"` as a legitimate self-contained sandbox technique —
+// safe in THAT file because it never leaves its own `mktemp -d` sandbox, but
+// nothing about the .test.sh naming convention itself guarantees the next
+// file stays that disciplined. Same allowlist-of-individually-vetted-names
+// principle as AUDIT_LINT_GENERIC_FORM_ALLOWED above.
+const BASH_INTEGRATION_TEST_SH_ALLOWED = new Set([
+  // Confirmed (task #1827): all I/O happens inside its own `mktemp -d`
+  // sandbox with a `trap rm -rf … EXIT` cleanup, no writes to the real repo
+  // tree.
+  'sync-audit-checkout.test.sh',
+  // BRO-4151: same standard, confirmed the same way — `TMP=$(mktemp -d)` /
+  // `trap 'rm -rf "$TMP"' EXIT` at the top; reads REPO_ROOT paths
+  // (push-with-retry.sh, data-health-check.yml) but never writes there. This
+  // is what lets a "Unit Tests" red-first card for this exact step arm
+  // instead of degrading to owner-judgment (BRO-4149 — the step's own `run:`
+  // command was resolvable but previously unrecognized as safe-form).
+  'push-with-retry.stranded-commit-cascade.test.sh',
+]);
+
+// BRO-2208: `check-workflow-run-status.js` value fragment — a quoted (single
+// OR double) run of characters, or a bare token with no whitespace. Needed
+// because a workflow's display name ("Deploy to Vercel") contains spaces and
+// must be quoted; the SAFE_CHECK_FORMS regex below matches the raw command
+// string (quotes and all), while cardCheckArgv's tokenizeCheckCommand
+// (autonomous-checks.js) separately dequotes it into argv at execution time —
+// the two must agree on what counts as one value, which is why this fragment
+// exists as a single source instead of being hand-duplicated into the regex.
+// Deliberately excludes backslash from every alternative: the tokenizer has
+// NO escape-sequence handling (by design — see its own header comment), so a
+// value needing one is rejected here rather than silently mis-tokenized
+// downstream (ship-check/Codex finding). Also excludes the OTHER quote
+// character from the bare alternative — `[^\s]+` alone would happily match
+// an unterminated `"Deploy` as a "bare" token when the quoted alternative
+// fails to find a closing quote, which both accepts a malformed command AND
+// tokenizes it differently than the regex shape implies (same finding).
+const GH_VALUE_RE = `(?:"[^"\\\\]*"|'[^'\\\\]*'|[^\\s'"\\\\]+)`;
+
 const SAFE_CHECK_FORMS = [
   // .test.mjs/.test.js run via plain `node --test`. A file that imports a TS
   // module via the `@/` path alias (e.g. `@/lib/gate-logic`), or a plain TS
@@ -193,6 +235,10 @@ const SAFE_CHECK_FORMS = [
   // strict YYYY-MM-DD token (no shell metachars, no path segments), so this
   // cannot reference or mutate anything outside data/audit/canary-*.marker.
   { re: /^node scripts\/check-canary-marker\.js --date=(\d{4}-\d{2}-\d{2})$/ },
+  // BRO-4215: acceptance for check-provider-spend.js's attribution-gap cards —
+  // read-only check of the latest provider-spend-daily.jsonl row; --provider
+  // is locked to the three known names (no path, no shell metachars).
+  { re: /^node scripts\/check-attribution-gap-clear\.js --provider=(scrapingbee|scrapingdog|brightdata)$/ },
   // Task #1713: this repo's own standard validation entry points were
   // excluded from every form above, so a card author who correctly named
   // `node scripts/validate-data.js` as the acceptance check got REFUSED
@@ -213,6 +259,12 @@ const SAFE_CHECK_FORMS = [
   // silently admit any FUTURE script sharing the naming convention without
   // the same review.
   { re: /^node scripts\/validate-data\.js( --strict)?$/ },
+  // BRO-3907: run-unit-tests.js is the local equivalent of CI's "Unit Tests"
+  // job (spawns `node --test`/`npx tsx --test` over the same two committed
+  // manifests CI reads) — no fs writes of its own, only spawnSync calls (see
+  // its own header). Bare only: it takes no flags at all, so there is nothing
+  // to widen.
+  { re: /^node scripts\/run-unit-tests\.js$/ },
   // Bare only — no --base= capture. scoring-delta.js interpolates --base
   // straight into `execSync(`git show ${BASE_REF}:...`)` (shell string
   // concatenation, not execFile array-args), so accepting an LLM- or
@@ -244,6 +296,19 @@ const SAFE_CHECK_FORMS = [
   // shape is equally safe; kept bare-only for consistency with the audit-*.js
   // convention above rather than because a flag would be unsafe.
   { re: /^node scripts\/lib\/check-sb-credits\.js$/ },
+  // BRO-4151: lint-committed-pii.js's only child_process call is a read-only
+  // `git ls-files` (listTrackedAuditFiles()) — no git mutation, no other
+  // spawn, no fs writes anywhere in the file (confirmed by reading it whole).
+  // It cannot go through the generic audit-/lint- allowlist below: that
+  // form's own scanner (scripts/audit-safe-form-allowlist.js) hard-refuses
+  // ANY spawn, read-only or not ("a write primitive we cannot statically
+  // bound" — SPAWN_RE), so this gets its own individually-vetted entry
+  // instead, same treatment as check-sb-credits.js above. Bare only — the
+  // script takes no flags. Without this entry, test.yml's "Audit — no
+  // submitter PII in committed data/audit files" step (Lint Workflows job)
+  // resolves to its own `run:` command but fails safe-form validation and
+  // degrades straight to owner-judgment — the BRO-4147 red-first skip.
+  { re: /^node scripts\/lint-committed-pii\.js$/ },
   // Task #1827: generic flag-SHAPE rule for individually-vetted audit/lint
   // scripts — NOT a blanket trust of the audit-/lint- naming convention (see
   // AUDIT_LINT_GENERIC_FORM_ALLOWED's comment above for why that was tried
@@ -276,12 +341,64 @@ const SAFE_CHECK_FORMS = [
   // repo, but nothing about the .test.sh naming convention itself guarantees
   // the next one stays that disciplined). Same allowlist-of-individually-
   // vetted-paths principle as AUDIT_LINT_GENERIC_FORM_ALLOWED above — exact
-  // relative path, not a basename or directory pattern. Only entry today:
-  // scripts/lib/sync-audit-checkout.test.sh, confirmed to do all its I/O
-  // inside a `mktemp -d` sandbox with a `trap rm -rf … EXIT` cleanup, no
-  // writes to the real repo tree. Adding another .test.sh here needs the
-  // same read-the-whole-file verification first.
-  { re: /^bash (scripts\/lib\/sync-audit-checkout\.test\.sh)$/, pathsGroup: 1, pathPrefix: ['scripts/'] },
+  // relative path, not a basename or directory pattern — enforced here by
+  // restricting the regex to direct children of scripts/lib/ (no
+  // subdirectories, no traversal), so a basename match against the allowlist
+  // below is also an exact-relative-path match. Adding another .test.sh here
+  // needs the same read-the-whole-file verification first.
+  {
+    re: /^bash (scripts\/lib\/[A-Za-z0-9_.-]+\.test\.sh)$/,
+    pathsGroup: 1,
+    pathPrefix: ['scripts/lib/'],
+    allowBasenames: BASH_INTEGRATION_TEST_SH_ALLOWED,
+  },
+  // BRO-2208: `node scripts/check-workflow-run-status.js` — a wrapper
+  // around `gh run list`, NOT a bare `gh run list [flags]` form (an earlier
+  // version of this fix offered that directly; ship-check/Codex caught that
+  // `gh run list` exits 0 whenever it can reach the API regardless of what
+  // the listed runs' conclusions actually are — `--json`/`--jq` only reshape
+  // its stdout, they never touch its exit code — so a bare-form card would
+  // rubber-stamp unconditionally, the exact vacuous-check failure mode
+  // classifyVacuousCheck already guards against elsewhere in this file's
+  // family). The wrapper script asserts the fetched conclusion itself and
+  // exits non-zero on any mismatch, so THIS shape's exit code is a real
+  // pass/fail signal — see the script's own header for the full reasoning.
+  {
+    re: new RegExp(
+      `^node scripts/check-workflow-run-status\\.js --workflow=${GH_VALUE_RE}`
+      + `(?: --branch=${GH_VALUE_RE})? --expect=${GH_VALUE_RE}(?: --branch=${GH_VALUE_RE})?$`,
+    ),
+  },
+  // BRO-2208: extract-show-score-reviews.js normally overwrites
+  // data/show-score.json + data/audit/show-score-extraction-gaps.json on
+  // every run (deliberately excluded from task #1713's widening for exactly
+  // that reason). --check (added alongside this form) runs the identical
+  // extraction pass read-only — skips both writes — so it is now safe for
+  // unattended re-verification the same way the audit-*.js bare forms above
+  // are. Required, not optional: bare `node scripts/extract-show-score-reviews.js`
+  // still mutates and must stay refused.
+  { re: /^node scripts\/extract-show-score-reviews\.js --check$/ },
+  // ci-green-rate (2026-09-20): the machine verdict on "is main green" — the
+  // only thing allowed to say so (~45 sessions each claimed it fixed after a
+  // handful of green runs). Read-only in every admitted shape: the ONLY
+  // write in the file is behind `--record` (appends the nightly reading to
+  // data/audit/ci-green-rate.jsonl for health-check.js), which this form
+  // does not admit — same pattern as audit-cv-flag-contradiction.js's
+  // excluded --update-baseline above. Network is a one-shot, page-capped
+  // `gh api` GET (no polling), which is exactly why it cannot ride the
+  // generic audit-/lint- basename form (its transitive scanner refuses any
+  // spawn). Flag shape is fixed, and NARROWER
+  // than the CLI's own parseCliArgs ranges on purpose: a card's text is
+  // untrusted, and `--min 0` or `--days 1` would let it choose a vacuous
+  // threshold or window and collect a PASS (Codex ship-check finding). So
+  // the unattended form admits only --days 7-365 (7-9, 10-99, 100-399; the
+  // CLI rejects >365 with exit 2), --min 50-100, and a literal --json — no
+  // free-form values. Exit 0 ONLY on PASS (rate >= --min AND >= 10 scored
+  // runs AND no cancel storm AND a complete window), 1 on FAIL, 2 on fetch
+  // error, and an empty window is a FAIL, so the exit code is a real
+  // pass/fail signal, never vacuous (contrast the bare `gh run list` shape
+  // refused above).
+  { re: /^node scripts\/ci-green-rate\.js(?: --days (?:[7-9]|[1-9]\d|[1-3]\d\d))?(?: --min (?:100|[5-9]\d))?(?: --json)?$/ },
 ];
 
 // Belt-and-braces mutation gate (plan-review pre-mortem root cause): the
@@ -393,7 +510,7 @@ function isSafeCheckCommand(cmd) {
   return explainUnsafeCheckCommand(cmd).ok;
 }
 
-const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js/*.test.ts files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module — via the `@/` alias, or a plain relative TS import whose own internal imports are extensionless; use a `.test.ts` file extension when the test itself is TypeScript), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), `node scripts/lib/check-sb-credits.js`, `node scripts/audit-review-contamination.js [--strict]`, `node scripts/lint-resend-calls.js`, `node scripts/audit-worktree-unpushed.js` (with at most ONE optional flag from --strict/--gate/--json/--dry-run/--window=N/--max=N — no OTHER audit-*.js/lint-*.js script is accepted this way; most of this repo\'s audit scripts write shared repo state on every run), or `bash scripts/lib/sync-audit-checkout.test.sh`';
+const SAFE_CHECK_DESCRIPTION = '`node --test <*.test.mjs/*.test.js files under tests/, scripts/, or src/>`, `npx tsx --test <*.test.mjs/*.test.js/*.test.ts files under tests/, scripts/, or src/>` (use this instead of `node --test` when the file imports a TS module — via the `@/` alias, or a plain relative TS import whose own internal imports are extensionless; use a `.test.ts` file extension when the test itself is TypeScript), `npx tsc --noEmit`, `npx next lint`, `test -f <docs|memory|tests|src|scripts path>`, `node scripts/check-health-row-absent.js --row-b64 <base64url row name> [--live]` (health-digest rows only; --live verifies same-day instead of against yesterday\'s snapshot), `node scripts/check-coverage-probe-clean.js` (Coverage Verdict S5 acceptance), `node scripts/check-canary-marker.js --date=YYYY-MM-DD` (Digest-autofix S6 canary acceptance), `node scripts/validate-data.js [--strict]`, `node scripts/run-unit-tests.js` (bare only — local equivalent of the CI "Unit Tests" job), `node scripts/scoring-delta.js` (bare only), `node scripts/test-temporal-override-regression.js`, `node scripts/audit-stale-flag-after-url-correction.js [--gate] [--max=N] [--json]`, `node scripts/audit-help-flag-safety.js`, `node scripts/audit-workflow-hygiene.js`, `node scripts/audit-aggregator-archive-integrity.js [--strict]`, `node scripts/audit-sibling-title-misroute.js` (bare only), `node scripts/audit-orphan-tests.js`, `node scripts/audit-cv-flag-contradiction.js [--window=N] [--strict]` (never --update-baseline), `node scripts/fix-shared-ibdb-urls.js --dry-run` (--dry-run required), `node scripts/lib/check-sb-credits.js`, `node scripts/audit-review-contamination.js [--strict]`, `node scripts/lint-resend-calls.js`, `node scripts/audit-worktree-unpushed.js` (with at most ONE optional flag from --strict/--gate/--json/--dry-run/--window=N/--max=N — no OTHER audit-*.js/lint-*.js script is accepted this way; most of this repo\'s audit scripts write shared repo state on every run), `node scripts/lint-committed-pii.js`, `bash scripts/lib/<name>.test.sh` (only the individually-vetted names sync-audit-checkout.test.sh and push-with-retry.stranded-commit-cascade.test.sh — not every *.test.sh in the repo), `node scripts/check-workflow-run-status.js --workflow=NAME --expect=CONCLUSION [--branch=NAME]` (asserts the most recent matching gh run\'s conclusion — NOT a bare `gh run list`, which is not a real pass/fail check; quote any value containing spaces, no backslashes), `node scripts/extract-show-score-reviews.js --check` (read-only — --check required, bare form still mutates), or `node scripts/ci-green-rate.js [--days 7-365] [--min 50-100] [--json]` (machine PASS/FAIL verdict on main\'s Test Suite green rate — read-only, one gh api GET; narrower ranges than the CLI itself accepts, so a card cannot pick a vacuous window or threshold)';
 
 // isSafeCheckCommand only validates SHAPE (prompt-injection gate) — it never
 // checks the path is real, so an LLM that invents a plausible-but-wrong test
@@ -847,6 +964,14 @@ module.exports = {
   // DO write under other flags, and auditing those against a zero-write
   // standard they were never held to would produce permanent false failures).
   AUDIT_LINT_GENERIC_FORM_ALLOWED,
+  // Exported for the same reason as AUDIT_LINT_GENERIC_FORM_ALLOWED above —
+  // a test asserting "the bash form accepts exactly these names" should read
+  // the real constant, not hand-duplicate it.
+  BASH_INTEGRATION_TEST_SH_ALLOWED,
+  // scripts/enrich-card-acceptance.js:93 destructures this for its re-prompt
+  // ("The complete list of accepted forms is: …"); it was never exported, so
+  // that prompt said "undefined" (found by the 2026-09-20 ci-green-rate review).
+  SAFE_CHECK_DESCRIPTION,
   isSafeCheckCommand,
   explainUnsafeCheckCommand,
   extractCheckPaths,

@@ -30,6 +30,15 @@ permissions:
   contents: write
   actions: write
 
+# Shared group across the whole workflow run (not per-job): the 4 jobs
+# (discover-dtli-slugs -> fetch-dtli / fetch-show-score -> extract-and-rebuild)
+# are a sequential/fan-in DAG via needs:, not a parallel matrix, so a
+# top-level group only ever queues a second full workflow invocation behind
+# the first — it doesn't affect the internal job graph.
+concurrency:
+  group: scrape-dtli-show-score
+  cancel-in-progress: false
+
 jobs:
   discover-dtli-slugs:
     if: ${{ github.event_name == 'schedule' || inputs.aggregator == 'all' || inputs.aggregator == 'dtli' }}

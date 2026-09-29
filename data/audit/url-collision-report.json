@@ -1,66 +1,12 @@
 {
-  "generatedAt": "2026-09-14T00:49:06.565Z",
+  "generatedAt": "2026-09-28T20:11:06.671Z",
   "summary": {
-    "total": 9,
-    "high": 4,
-    "medium": 4,
-    "low": 1
+    "total": 7,
+    "high": 2,
+    "medium": 3,
+    "low": 2
   },
   "collisions": [
-    {
-      "url": "https://www.theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514/",
-      "normalizedUrl": "https://theatermania.com/news/review-cats-the-jellicle-ball-is-the-most-fun-ive-ever-had-at-an-andrew-lloyd-webber-musical_1743514",
-      "candidates": [
-        {
-          "showId": "cats-the-jellicle-ball-2026",
-          "file": "theatermania--zachary-stewart.json",
-          "publishDate": "2026-04-08",
-          "openingDate": "2026-04-07",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatermania"
-        },
-        {
-          "showId": "cats-the-jellicle-ball-off-broadway-2024",
-          "file": "theatermania--zachary-stewart.json",
-          "publishDate": "June 20th, 2024",
-          "openingDate": "2024-06-10",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "theatermania"
-        }
-      ],
-      "suggestedWinner": "cats-the-jellicle-ball-2026",
-      "reason": "publishDate 2026-04-08 is 1 days from cats-the-jellicle-ball-2026 but also 10 days from cats-the-jellicle-ball-off-broadway-2024",
-      "confidence": "medium"
-    },
-    {
-      "url": "https://www.thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rachel-zegler-jamie-lloyd-james-olivas-diego-andres-rodriguez",
-      "normalizedUrl": "https://thestage.co.uk/long-reviews/evita-review-london-palladium-2025-rachel-zegler-jamie-lloyd-james-olivas-diego-andres-rodriguez",
-      "candidates": [
-        {
-          "showId": "evita-2026",
-          "file": "thestage--sam-marlowe.json",
-          "publishDate": null,
-          "openingDate": "2027-03-25",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "thestage"
-        },
-        {
-          "showId": "evita-west-end-2025",
-          "file": "thestage--sam-marlowe.json",
-          "publishDate": "2025-07-02",
-          "openingDate": "2025-07-01",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "thestage"
-        }
-      ],
-      "suggestedWinner": "evita-west-end-2025",
-      "reason": "publishDate 2025-07-02 is 1 days from evita-west-end-2025 opening (2025-07-01)",
-      "confidence": "high"
-    },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
       "normalizedUrl": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
@@ -116,6 +62,33 @@
       "confidence": "medium"
     },
     {
+      "url": "https://newyorktheater.me/2026/02/05/hans-litten-the-jew-who-cross-examined-hitler-review/",
+      "normalizedUrl": "https://newyorktheater.me/2026/02/05/hans-litten-the-jew-who-cross-examined-hitler-review",
+      "candidates": [
+        {
+          "showId": "hans-litten-the-jew-who-crossexamined-hitler-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "February 5th, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "nyt-theater"
+        },
+        {
+          "showId": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "February 5, 2026",
+          "openingDate": "2026-01-30",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nyt-theater"
+        }
+      ],
+      "suggestedWinner": "hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026",
+      "reason": "publishDate February 5, 2026 is 6 days from hans-litten-the-jew-who-crossexamined-hitler-off-broadway-2026 opening (2026-01-30)",
+      "confidence": "high"
+    },
+    {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
       "normalizedUrl": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road",
       "candidates": [
@@ -143,67 +116,31 @@
       "confidence": "low"
     },
     {
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531/",
-      "normalizedUrl": "https://hollywoodreporter.com/lifestyle/arts/little-bear-ridge-road-review-laurie-metcalf-broadway-1236414531",
+      "url": "https://newyorktheater.me/2025/10/14/masquerade-review/",
+      "normalizedUrl": "https://newyorktheater.me/2025/10/14/masquerade-review",
       "candidates": [
         {
-          "showId": "little-bear-ridge-road-2025",
-          "file": "hollywood-reporter--david-rooney.json",
-          "publishDate": "2025-10-31",
-          "openingDate": "2025-10-30",
+          "showId": "masquerade-2025",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "October 14th, 2025",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "nyt-theater"
+        },
+        {
+          "showId": "masquerade-off-broadway-2025",
+          "file": "nyt-theater--unknown.json",
+          "publishDate": "2026-05-27",
+          "openingDate": "2025-09-29",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "hollywood-reporter"
-        },
-        {
-          "showId": "little-bear-ridge-road-regional-2024",
-          "file": "hollywood-reporter--unknown.json",
-          "publishDate": null,
-          "openingDate": "2024-06-24",
-          "hasScore": false,
-          "hasFullText": false,
-          "outletId": "hollywood-reporter"
+          "outletId": "nyt-theater"
         }
       ],
-      "suggestedWinner": "little-bear-ridge-road-2025",
-      "reason": "publishDate 2025-10-31 is 1 days from little-bear-ridge-road-2025 opening (2025-10-30)",
-      "confidence": "high"
-    },
-    {
-      "url": "https://nystagereview.com/2026/08/25/paranormal-activity-cheap-but-potent-thrills/",
-      "normalizedUrl": "https://nystagereview.com/2026/08/25/paranormal-activity-cheap-but-potent-thrills",
-      "candidates": [
-        {
-          "showId": "paranormal-activity-2026",
-          "file": "nysr--frank-scheck.json",
-          "publishDate": "2026-08-25T20:51:56-04:00",
-          "openingDate": "2026-08-25",
-          "hasScore": true,
-          "hasFullText": true,
-          "outletId": "nysr"
-        },
-        {
-          "showId": "paranormal-activity-2026",
-          "file": "nysr--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-08-25",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nysr"
-        },
-        {
-          "showId": "paranormal-activity-boston-regional-2026",
-          "file": "nysr--unknown.json",
-          "publishDate": null,
-          "openingDate": "2026-07-15",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nysr"
-        }
-      ],
-      "suggestedWinner": "paranormal-activity-2026",
-      "reason": "publishDate 2026-08-25T20:51:56-04:00 is 0 days from paranormal-activity-2026 opening (2026-08-25)",
-      "confidence": "high"
+      "suggestedWinner": "masquerade-off-broadway-2025",
+      "reason": "publishDate 2026-05-27 is 240+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
@@ -233,39 +170,30 @@
       "confidence": "medium"
     },
     {
-      "url": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting/",
-      "normalizedUrl": "https://nystagereview.com/2025/11/20/two-strangers-carry-a-cake-across-new-york-charming-musical-rom-com-isnt-heavy-lifting",
+      "url": "https://newyorktheater.me/2026/02/24/the-reservoir-review/",
+      "normalizedUrl": "https://newyorktheater.me/2026/02/24/the-reservoir-review",
       "candidates": [
         {
-          "showId": "two-strangers-bway-2025",
-          "file": "nysr--frank-scheck.json",
-          "publishDate": "November 20, 2025",
-          "openingDate": "2025-11-20",
+          "showId": "the-reservoir-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "February 24th, 2026",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "nyt-theater"
+        },
+        {
+          "showId": "the-reservoir-off-broadway-2026",
+          "file": "nyt-theater--jonathan-mandell.json",
+          "publishDate": "February 24, 2026",
+          "openingDate": "2026-02-05",
           "hasScore": true,
           "hasFullText": true,
-          "outletId": "nysr"
-        },
-        {
-          "showId": "two-strangers-bway-2025",
-          "file": "nysr--unknown.json",
-          "publishDate": null,
-          "openingDate": "2025-11-20",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nysr"
-        },
-        {
-          "showId": "two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
-          "file": "nysr--unknown.json",
-          "publishDate": null,
-          "openingDate": "2025-06-02",
-          "hasScore": true,
-          "hasFullText": false,
-          "outletId": "nysr"
+          "outletId": "nyt-theater"
         }
       ],
-      "suggestedWinner": "two-strangers-bway-2025",
-      "reason": "publishDate November 20, 2025 is 0 days from two-strangers-bway-2025 opening (2025-11-20)",
+      "suggestedWinner": "the-reservoir-off-broadway-2026",
+      "reason": "publishDate February 24, 2026 is 19 days from the-reservoir-off-broadway-2026 opening (2026-02-05)",
       "confidence": "high"
     }
   ]

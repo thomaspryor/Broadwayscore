@@ -49,11 +49,14 @@ const { serpNegativeCacheTtlMs } = require('./lib/serp-negative-cache-policy');
 const { validatePageMatchesShow } = require('./lib/page-validator');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { llmFallbackExtractIfNeeded } = require('./lib/llm-extractor');
-const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeUrl: normalizeUrlCanonical, generateReviewFilename } = require('./lib/review-normalization');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
+const { logExclusion } = require('./lib/exclusion-logger');
+const { shouldLogRejection } = require('./lib/gather-review-stats');
 const { extractReviewsFromLBO } = require('./scrape-london-box-office-roundups');
 const { extractReviews: extractTheatreReviews } = require('./scrape-theatre-reviews');
-const { matchTitleToShow } = require('./lib/show-matching');
+const { matchTitleToShow, buildSiblingCategoriesFromShows, pageTitleConfirmsShow } = require('./lib/show-matching');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { fetchPage } = require('./lib/scraper');
 const { discoverLboRoundupHtml } = require('./lib/lbo-roundup-discover');
 const { discoverTrRoundupHtml } = require('./lib/tr-roundup-discover');
@@ -71,6 +74,7 @@ const {
 const { routeAlert } = require('./lib/owner-alert-router');
 const { maybeAlertSerpBurstTripwire } = require('./lib/serp-burst-tripwire');
 const { getFoundOutletIds, isInDiscoveryUnblockWindow } = require('./lib/found-outlet-ids');
+const { DEFAULT_GIVEUP_THRESHOLD, isOutletGivenUp, updateOutletMisses } = require('./lib/js-outlet-giveup');
 
 // Paths
 const DATA_DIR = path.join(__dirname, '..', 'data');
@@ -81,6 +85,25 @@ const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const BACKOFF_DIR = path.join(DATA_DIR, 'audit', 'poller-backoff');
 const SERP_BURST_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-burst-ledger.json');
 const SERP_SESSION_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-session-ledger.json');
+
+// Lazy-loaded showId -> sibling categories index for checkArchiveCategory()'s
+// cross-market-sibling check (BRO-3616) — mirrors the identical
+// siblingCategoriesByShowId() memoization pattern gather-reviews.js added for
+// its own archive-read call sites (BRO-3610), which itself mirrors the 5
+// scraper scripts (BRO-2565), so opening-night-poller.js's own archive-read
+// call sites apply the same category-aware guard.
+let _siblingCategoriesByShowIdCache = null;
+function siblingCategoriesByShowId() {
+  if (_siblingCategoriesByShowIdCache) return _siblingCategoriesByShowIdCache;
+  try {
+    const showsData = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    const shows = showsData.shows || showsData;
+    _siblingCategoriesByShowIdCache = buildSiblingCategoriesFromShows(shows);
+  } catch {
+    _siblingCategoriesByShowIdCache = {};
+  }
+  return _siblingCategoriesByShowIdCache;
+}
 
 /**
  * Balusters postmortem CLASS 7 — exponential backoff for no-op polls.
@@ -95,9 +118,13 @@ const SERP_SESSION_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-session-ledg
  */
 function loadBackoffState(showId) {
   const p = path.join(BACKOFF_DIR, `${showId}.json`);
-  if (!fs.existsSync(p)) return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0 };
-  try { return JSON.parse(fs.readFileSync(p, 'utf8')); }
-  catch { return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0 }; }
+  if (!fs.existsSync(p)) return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0, jsOutletMisses: {} };
+  try {
+    const state = JSON.parse(fs.readFileSync(p, 'utf8'));
+    state.jsOutletMisses = state.jsOutletMisses || {};
+    return state;
+  }
+  catch { return { consecutiveNoOp: 0, lastNewReviewAt: null, nextRunAfter: 0, jsOutletMisses: {} }; }
 }
 
 function saveBackoffState(showId, state) {
@@ -501,7 +528,16 @@ async function runAggregators(show) {
         const validation = await validatePageMatchesShow(dtli.html, show.title, {
           openingYear: year,
         });
-        if (validation.valid) {
+        // checkArchiveCategory (BRO-3616), run ALONGSIDE validatePageMatchesShow
+        // (not instead of it) — mirrors gather-reviews.js's own DTLI site
+        // (BRO-3610). year/LLM checks catch a same-title stale revival that
+        // the category-aware check alone can't see; checkArchiveCategory
+        // catches the cross-market-sibling case (a regional show vs. its
+        // later Broadway transfer) that year/LLM checks alone can't see.
+        // Replacing instead of adding was flagged in BRO-2565's own review
+        // (Codex) as a regression — do not repeat it here.
+        const dtliCatCheck = checkArchiveCategory(dtli.html, show, siblingCategoriesByShowId()[show.id]);
+        if (validation.valid && dtliCatCheck.ok) {
           let reviews = extractDTLIReviews(dtli.html, show.id, dtli.url, show.title);
           reviews = await llmFallbackExtractIfNeeded(dtli.html, reviews, {
             aggregator: 'dtli', showTitle: show.title, showId: show.id,
@@ -509,7 +545,7 @@ async function runAggregators(show) {
           console.log(`  DTLI: ${reviews.length} reviews found`);
           results.push(...reviews);
         } else {
-          console.log(`  DTLI: page mismatch — ${validation.reason}`);
+          console.log(`  DTLI: page mismatch — ${!validation.valid ? validation.reason : dtliCatCheck.reason}`);
         }
       } else {
         console.log('  DTLI: not found');
@@ -535,7 +571,11 @@ async function runAggregators(show) {
         pageType: 'audience-aggregator',
         skipLlm: true,
       });
-      if (validation.valid) {
+      // checkArchiveCategory (BRO-3616), run ALONGSIDE validatePageMatchesShow —
+      // see the DTLI site above for why both must pass (mirrors
+      // gather-reviews.js's own Show Score site, BRO-3610).
+      const ssCatCheck = checkArchiveCategory(ss.html, show, siblingCategoriesByShowId()[show.id]);
+      if (validation.valid && ssCatCheck.ok) {
         // Playwright-extracted reviews take priority
         if (ss.reviews && ss.reviews.length > 0) {
           console.log(`  Show Score: ${ss.reviews.length} reviews (Playwright): ${ss.reviews.map(r => r.outlet || 'unknown').join(', ')}`);
@@ -557,7 +597,7 @@ async function runAggregators(show) {
           results.push(...reviews);
         }
       } else {
-        console.log(`  Show Score: page mismatch — ${validation.reason}`);
+        console.log(`  Show Score: page mismatch — ${!validation.valid ? validation.reason : ssCatCheck.reason}`);
       }
     } else {
       console.log('  Show Score: not found');
@@ -661,7 +701,9 @@ async function runAggregators(show) {
           aggregator: 'bww', showTitle: show.title, showId: show.id,
         });
         // Validate roundup year — reject if from older production (e.g., OB roundup for Broadway show)
-        reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate, show.id, bww.url);
+        // previewsStartDate fallback: stuck-previews shows (null openingDate) are
+        // exactly the ones this backstop polls for.
+        reviews = validateBWWRoundupYear(reviews, bww.html, show.openingDate || show.previewsStartDate, show.id, bww.url, { openEnded: !show.openingDate });
         console.log(`  BWW RR: ${reviews.length} reviews found`);
         results.push(...reviews);
         // Persist only now: fetched, extracted, AND year-validated as this
@@ -852,25 +894,37 @@ async function runAggregators(show) {
       console.log('  Checking theatre.reviews...');
       const tr = await discoverTrRoundupHtml(show);
       if (tr) {
-        // Cache to archive for future runs
-        const archivePath = path.join(DATA_DIR, 'aggregator-archive', 'theatre-reviews', `${show.id}.html`);
-        if (!fs.existsSync(path.dirname(archivePath))) fs.mkdirSync(path.dirname(archivePath), { recursive: true });
-        fs.writeFileSync(archivePath, tr.html);
+        // checkArchiveCategory (BRO-3616) — discoverTrRoundupHtml's own
+        // verifyAggregatorUrl gate validates the candidate URL, but this
+        // freshly-discovered HTML was previously written straight to the
+        // shared archive cache (read back later by gather-reviews.js's own
+        // guarded TR site, BRO-3610) with ZERO category/cross-market-sibling
+        // check of its own — a regional show's page vs. its later Broadway
+        // transfer could still poison the write.
+        const trCatCheck = checkArchiveCategory(tr.html, show, siblingCategoriesByShowId()[show.id]);
+        if (!trCatCheck.ok) {
+          console.log(`  theatre.reviews: page mismatch (${trCatCheck.reason}) — not archiving`);
+        } else {
+          // Cache to archive for future runs
+          const archivePath = path.join(DATA_DIR, 'aggregator-archive', 'theatre-reviews', `${show.id}.html`);
+          if (!fs.existsSync(path.dirname(archivePath))) fs.mkdirSync(path.dirname(archivePath), { recursive: true });
+          fs.writeFileSync(archivePath, tr.html);
 
-        const trReviews = extractTheatreReviews(tr.html, show.id);
-        console.log(`  theatre.reviews: ${trReviews.length} reviews found`);
-        for (const r of trReviews) {
-          results.push({
-            showId: show.id,
-            outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, cachedOutletId: r.outletId }),
-            outlet: r.outlet || 'Unknown',
-            criticName: r.critic || 'Unknown',
-            url: r.url || '',
-            excerpt: r.excerpt || '',
-            // TR rates shows independently — don't use as outlet's score
-            theatreReviewsStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
-            source: 'theatre-reviews',
-          });
+          const trReviews = extractTheatreReviews(tr.html, show.id);
+          console.log(`  theatre.reviews: ${trReviews.length} reviews found`);
+          for (const r of trReviews) {
+            results.push({
+              showId: show.id,
+              outletId: resolveArchiveRowOutletId({ url: r.url, outletLabel: r.outlet, cachedOutletId: r.outletId }),
+              outlet: r.outlet || 'Unknown',
+              criticName: r.critic || 'Unknown',
+              url: r.url || '',
+              excerpt: r.excerpt || '',
+              // TR rates shows independently — don't use as outlet's score
+              theatreReviewsStars: r.stars ? `${r.stars}/${r.starsOutOf || 5}` : undefined,
+              source: 'theatre-reviews',
+            });
+          }
         }
       } else {
         console.log('  theatre.reviews: no roundup found');
@@ -887,6 +941,28 @@ async function runAggregators(show) {
       const sdArchivePath = path.join(DATA_DIR, 'aggregator-archive', 'stagedoor', `${show.id}.json`);
       if (fs.existsSync(sdArchivePath)) {
         const sdData = JSON.parse(fs.readFileSync(sdArchivePath, 'utf8'));
+        // BRO-3616: this read previously had ZERO validation — mirrors the
+        // identical gap gather-reviews.js's own Stagedoor read had before
+        // BRO-3610. Same two-check design (neither sufficient alone):
+        //   1. ourShowId must match the showId this file is keyed under —
+        //      scrape-stagedoor-critics.js always writes it, so a file that
+        //      arrived some other way under the wrong showId is caught here
+        //      regardless of its title.
+        //   2. sdData.title must word-match show.title (pageTitleConfirmsShow)
+        //      — a missing/empty title fails CLOSED (quarantined), not open.
+        // CAVEAT (inherited from gather-reviews.js's BRO-3610 review): for 2 of
+        // scrape-stagedoor-critics.js's 3 write paths, title/ourShowId are
+        // stamped from OUR OWN show record, not independently verified against
+        // the fetched page — so a wrong-production file matched to the wrong
+        // show at WRITE time can still pass both checks here. Tracked as a
+        // write-side follow-up, not fixed by this read-time guard.
+        const sdIdentityMismatch = (sdData.ourShowId && sdData.ourShowId !== show.id)
+          || !pageTitleConfirmsShow(sdData.title || '', show.title);
+        if (sdIdentityMismatch) {
+          console.log(`  Stagedoor: archive identity mismatch (title "${sdData.title}" vs "${show.title}"${sdData.ourShowId ? `, ourShowId "${sdData.ourShowId}" vs "${show.id}"` : ''}) — quarantining`);
+          try { fs.renameSync(sdArchivePath, sdArchivePath + '.mismatch'); } catch {}
+          throw new Error('quarantined');
+        }
         const sdReviews = sdData.criticReviews || [];
         console.log(`  Stagedoor: ${sdReviews.length} reviews from archive`);
         for (const r of sdReviews) {
@@ -922,7 +998,15 @@ async function runAggregators(show) {
         const { rows: wetReviews, post } = wet;
         console.log(`  WestEndTheatre: ${wetReviews.length} ratings found`);
 
-        // Archive
+        // Archive (BRO-3616 checked: this is a write-only metadata marker —
+        // ourShowId/wpPostId/fetchedAt only, no HTML/review content — and
+        // nothing in the repo reads it back for extraction (confirmed via
+        // grep for its path; scrape-westendtheatre-roundups.js writes its own
+        // separate raw-API archive). The reviews pushed to `results` below
+        // come from `wetReviews`, already per-post title-matched against
+        // `show` inside discoverWetRoundupRows (≥60%-of-words check) in the
+        // same call above — no additional checkArchiveCategory guard needed
+        // here since there's no untrusted cached content being trusted.
         const wetArchiveDir = path.join(DATA_DIR, 'aggregator-archive', 'westendtheatre');
         if (!fs.existsSync(wetArchiveDir)) fs.mkdirSync(wetArchiveDir, { recursive: true });
         fs.writeFileSync(path.join(wetArchiveDir, `${show.id}.json`),
@@ -981,8 +1065,20 @@ async function runAggregators(show) {
 
       // Try archive first
       if (fs.existsSync(tsArchivePath)) {
-        tsHtml = fs.readFileSync(tsArchivePath, 'utf8');
-        console.log('  The Stage: found archive');
+        const candidateHtml = fs.readFileSync(tsArchivePath, 'utf8');
+        // checkArchiveCategory (BRO-3616) — this archive-read branch previously
+        // had ZERO validation before extraction, unlike gather-reviews.js's own
+        // guarded TS site (BRO-3610) reading the SAME cache file. Quarantine
+        // and fall through to the live-fetch path below (gated on `!tsHtml`)
+        // instead of aborting the block, since that recovery path exists here.
+        const tsCatCheck = checkArchiveCategory(candidateHtml, show, siblingCategoriesByShowId()[show.id]);
+        if (tsCatCheck.ok) {
+          tsHtml = candidateHtml;
+          console.log('  The Stage: found archive');
+        } else {
+          console.log(`  The Stage: archive page-title mismatch (${tsCatCheck.reason}) — quarantining`);
+          try { fs.renameSync(tsArchivePath, tsArchivePath + '.mismatch'); } catch {}
+        }
       }
 
       // Live fetch via BrowserBase if no archive and cookies are present
@@ -1076,13 +1172,25 @@ async function runAggregators(show) {
               // Real roundups have star ratings (★ or *) in the content
               const hasStars = tsHtml && (tsHtml.includes('★') || /\*{2,5}/.test(tsHtml));
               const hasPaywall = tsHtml && (tsHtml.includes('create a free account') || tsHtml.includes('Subscribe to continue'));
+              // checkArchiveCategory (BRO-3616) — content-shape checks alone
+              // (stars/paywall/length) don't verify IDENTITY: roundupUrl above
+              // was picked by matchTitleToShow's title-only matching against
+              // the listing page, the same matching class that let the
+              // Stuart King cross-market-sibling page through originally. Add
+              // this check alongside the content-shape checks (not instead of
+              // them) so a live-fetch can't immediately re-poison the same
+              // file the archive-read branch above just quarantined.
+              const tsLiveCatCheck = tsHtml ? checkArchiveCategory(tsHtml, show, siblingCategoriesByShowId()[show.id]) : { ok: false, reason: 'no-html' };
 
-              if (tsHtml && hasStars && !hasPaywall && tsHtml.length > 2000) {
+              if (tsHtml && hasStars && !hasPaywall && tsHtml.length > 2000 && tsLiveCatCheck.ok) {
                 if (!fs.existsSync(tsArchiveDir)) fs.mkdirSync(tsArchiveDir, { recursive: true });
                 fs.writeFileSync(tsArchivePath, tsHtml);
                 console.log('  The Stage: live fetch successful, archived');
               } else if (hasPaywall) {
                 console.log('  The Stage: page is paywalled (login may have failed), skipping archive');
+                tsHtml = null;
+              } else if (tsHtml && hasStars && tsHtml.length > 2000 && !tsLiveCatCheck.ok) {
+                console.log(`  The Stage: live-fetched page mismatch (${tsLiveCatCheck.reason}) — skipping archive`);
                 tsHtml = null;
               } else {
                 console.log(`  The Stage: content looks incomplete (stars=${!!hasStars}, len=${tsHtml?.length || 0}), skipping archive`);
@@ -1394,8 +1502,26 @@ function processDiscoveredReviews(showId, reviews, knownUrls, options = {}) {
     if (result === true) {
       created++;
       knownUrls.add(review.url);
-    } else if (typeof result === 'string') {
+    } else if (shouldLogRejection(result)) {
       rejected++;
+      // BRO-931 #1 follow-up (adversarial ship-check finding): this caller's
+      // createReviewFile rejections only ever fed a blind `rejected++` total
+      // with no per-reason breakdown — the exact "silent failure" pattern the
+      // gather-reviews.js caller was fixed for, just a second, uncovered call
+      // site of the same function. Routes through the same shared audit
+      // trail rebuild-all-reviews.js and gather-reviews.js already use.
+      logExclusion({
+        script: 'opening-night-poller',
+        showId,
+        file: generateReviewFilename(review.outletId || review.outlet, review.criticName),
+        reason: result,
+        // This review was REJECTED by createReviewFile() — the payload
+        // records what was actually seen so the skip can be diagnosed, it is not a
+        // row-ingest identity. resolveArchiveRowOutletId() takes archive-row shape,
+        // and canonicalizing a rejected row's id would make the audit trail lie.
+        // audit-only: rejected-review telemetry, not a row-ingest identity
+        details: { url: review.url, outletId: review.outletId || review.outlet, criticName: review.criticName, publishDate: review.publishDate },
+      });
     } else {
       skipped++; // Already exists
     }
@@ -1504,13 +1630,35 @@ async function pollCycle() {
 
   // JS-rendered site-search: only for outlets still missing after parallel phase.
   // Prevents burning SB credits on outlets aggregators/RSS already found.
+  // BRO-2941: also suppresses outlets that have been attempted-and-missing
+  // DEFAULT_GIVEUP_THRESHOLD ticks in a row for THIS show — a market-agnostic
+  // outlet (vulture, THR, deadline, timeout, ew, telegraph-search) that will
+  // never cover a given show (e.g. THR on an Off-Broadway transfer) would
+  // otherwise re-render at 5 SB credits on every single poll tick forever.
+  //
+  // Two carve-outs (ship-check/Codex review) keep this from misfiring:
+  //   - Aggressive opening window: misses still ACCUMULATE (so suppression can
+  //     kick in promptly once the window ends), but the SKIP filter itself is
+  //     bypassed — same rationale as the show-level backoff carve-out above,
+  //     T2/T3 reviews routinely land on day 2-3 of the window and a give-up
+  //     mid-window would drop exactly the outlets this window exists to catch.
+  //   - No SCRAPINGBEE_API_KEY: searchOutletSites sets skipJs and never
+  //     actually renders anything, so "not found" isn't evidence of anything —
+  //     counting it would exhaust every outlet's budget with zero real attempts.
   let jsSiteSearchResults = [];
+  let jsOutletMisses = { ...(backoff.jsOutletMisses || {}) };
   if (!SKIP_SITE_SEARCH) {
     const foundAfterParallel = getFoundOutletIds(SHOW_ID, { show, market });
     for (const r of [...aggResults, ...rssResults, ...ssrSiteSearchResults]) {
       if (r.outletId) foundAfterParallel.add(r.outletId.toLowerCase());
     }
-    const missingJsIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
+    // A find via ANY channel clears stale misses — otherwise an outlet found
+    // here, later rejected as wrongProduction/not-a-review and reopened by
+    // getFoundOutletIds, would inherit a give-up count from before it was ever
+    // actually found and get re-suppressed with no fresh attempts.
+    for (const id of foundAfterParallel) delete jsOutletMisses[id];
+
+    const allJsIds = Object.keys(SITE_SEARCH_ENDPOINTS).filter(id => {
       const ep = SITE_SEARCH_ENDPOINTS[id];
       // Missing-check keyed on the EFFECTIVE outlet id: a sibling entry
       // ('telegraph-search' → 'telegraph') must not re-fire a paid JS render
@@ -1521,8 +1669,26 @@ async function pollCycle() {
         && (!ep.applies || ep.applies(show))
         && !foundAfterParallel.has(effectiveId);
     });
+    const inOpeningWindow = isInOpeningWindow(show);
+    const givenUpIds = allJsIds.filter(id => {
+      const ep = SITE_SEARCH_ENDPOINTS[id];
+      const effectiveId = (ep.outletIdOverride || id).toLowerCase();
+      return isOutletGivenUp(jsOutletMisses, effectiveId);
+    });
+    const skipGivenUp = !FORCE_SERP && !inOpeningWindow;
+    const missingJsIds = skipGivenUp ? allJsIds.filter(id => !givenUpIds.includes(id)) : allJsIds;
+    if (skipGivenUp && givenUpIds.length > 0) {
+      console.log(`  [JS outlet give-up] skipping ${givenUpIds.length} outlet(s) with ${DEFAULT_GIVEUP_THRESHOLD}+ consecutive misses: ${givenUpIds.join(', ')} (pass --force-serp to retry)`);
+    } else if (!skipGivenUp && givenUpIds.length > 0) {
+      console.log(`  [JS outlet give-up] ${givenUpIds.length} outlet(s) past the miss threshold but still attempted (${FORCE_SERP ? '--force-serp' : 'inside opening window'}): ${givenUpIds.join(', ')}`);
+    }
     if (missingJsIds.length > 0) {
       jsSiteSearchResults = await runSiteSearch(show.title, missingJsIds, knownUrls, market, show.openingDate || null, show);
+      if (process.env.SCRAPINGBEE_API_KEY) {
+        const foundEffectiveIds = new Set(jsSiteSearchResults.filter(r => r.outletId).map(r => r.outletId.toLowerCase()));
+        const attemptedEffectiveIds = missingJsIds.map(id => (SITE_SEARCH_ENDPOINTS[id].outletIdOverride || id).toLowerCase());
+        jsOutletMisses = updateOutletMisses(jsOutletMisses, attemptedEffectiveIds, foundEffectiveIds);
+      }
     }
   }
 
@@ -1821,6 +1987,7 @@ async function pollCycle() {
       lastNewReviewAt: created > 0 ? new Date().toISOString() : backoff.lastNewReviewAt || null,
       lastRunAt: new Date().toISOString(),
       nextRunAfter: 0,
+      jsOutletMisses,
     };
     nextBackoff.nextRunAfter = Date.now() + computeNextBackoffDelayMs(nextBackoff.consecutiveNoOp);
     saveBackoffState(SHOW_ID, nextBackoff);

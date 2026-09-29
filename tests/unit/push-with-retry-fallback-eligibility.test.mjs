@@ -118,7 +118,7 @@ test('task #1847: fallback is attempted by default with no PUSH_VIA_API_FALLBACK
     assert.match(stdout, /trying the Git Data API fallback/,
       `expected the fallback to be attempted by default (no opt-in env var set). Output:\n${stdout}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -138,7 +138,7 @@ test('task #1847: PUSH_API_FALLBACK_DISABLE=1 still disables the fallback under 
     assert.match(stdout, /the Git Data API fallback \(default-on\) did NOT run this attempt/,
       `expected the discoverability pointer to explain why. Output:\n${stdout}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -168,7 +168,7 @@ test('task #1847: the broadway-review-texts repo is excluded from the fallback (
     assert.match(stdout, /this is the broadway-review-texts repo \(excluded/,
       `expected the discoverability pointer to name the review-texts exclusion. Output:\n${stdout}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -186,7 +186,7 @@ test('task #1847: a MANAGED-file diff (e.g. data/commercial.json) still disquali
     assert.match(stdout, /skipping Git Data API fallback — our outgoing diff touches a union-merge-MANAGED file/,
       `expected the MANAGED-file disqualifier to still fire. Output:\n${stdout}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -210,7 +210,7 @@ test('BRO-2413: a diff touching an apiFallbackMerge file (data/audit/alert-route
     assert.match(stdout, /trying the Git Data API fallback/,
       `expected the fallback to actually be attempted for this path. Output:\n${stdout}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });
 
@@ -258,6 +258,6 @@ test('task #1847: missing reconcile-merged-json.js FAILS CLOSED (disqualifies) i
     assert.match(stdout, /skipping Git Data API fallback — cannot run the MANAGED\/audit\/shows\.json\/reviews\.json disqualifier check/,
       `expected a missing disqualifier-check prerequisite to fail CLOSED (disqualify), not silently proceed. Output:\n${stdout}`);
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
   }
 });

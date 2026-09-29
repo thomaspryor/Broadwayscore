@@ -40,28 +40,115 @@ function shouldSkipScoredReview(data, reviewFilterSize = 0) {
  * highest numeric suffix (e.g. "giant-2" over "giant") — the suffix indicates
  * production order. This prevents old bare slugs from blocking the correct revival slug.
  *
+ * Year rule (BRO-4204 S7-T9, 2026 data audit): a candidate whose review items
+ * ALL predate the show's year is a different production's page and is
+ * rejected outright, whatever its suffix. The audit found
+ * every-brilliant-thing-2026 mapped to the 2014 page (3 reviews, 2014) while
+ * `every-brilliant-thing-2`, 17 reviews from 2026, sat unmapped;
+ * hamlet-2026 → `hamlet-broadway` (5 reviews, all 2008); death-of-a-salesman-2026
+ * → the 2012 page. The suffix preference alone cannot see that: DTLI's
+ * suffixes are creation order, not year, and a bare slug is often the CURRENT
+ * production. The caller probes each candidate page and passes the years it
+ * found (extractDtliReviewYears); a candidate with no probe result, or an
+ * empty page (no reviews yet — a pre-opening page), is NOT rejected: absence
+ * of evidence is not a wrong year.
+ *
  * @param {string} showId - Our show ID (e.g. "giant-2026", "hamilton")
  * @param {string[]} slugs - Candidate DTLI slug strings (e.g. ["giant", "giant-2"])
- * @returns {string} The best slug
+ * @param {object} [opts]
+ * @param {Record<string, number[]>|Map<string, number[]>} [opts.reviewYearsBySlug] -
+ *   review-item years per probed candidate slug
+ * @param {number|string|null} [opts.showYear] - the production's year (opening
+ *   year preferred; defaults to the id's trailing year)
+ * @returns {string|null} The best slug, or null when every candidate is rejected
  */
-function pickBestDtliSlug(showId, slugs) {
+function pickBestDtliSlug(showId, slugs, opts = {}) {
   if (!slugs || slugs.length === 0) return null;
-  let best = slugs[0];
-  if (slugs.length > 1) {
-    const showYearMatch = showId.match(/-(\d{4})$/);
-    const showYear = showYearMatch ? parseInt(showYearMatch[1]) : null;
-    if (showYear) {
-      const withSuffix = slugs.filter(s => /-\d+$/.test(s));
-      if (withSuffix.length > 0) {
-        best = withSuffix.sort((a, b) => {
-          const nA = parseInt((a.match(/-(\d+)$/) || [0, 0])[1]);
-          const nB = parseInt((b.match(/-(\d+)$/) || [0, 0])[1]);
-          return nB - nA;
-        })[0];
-      }
+  const showYearMatch = String(showId || '').match(/-(\d{4})$/);
+  const idYear = showYearMatch ? parseInt(showYearMatch[1], 10) : null;
+  const showYear = opts.showYear != null && String(opts.showYear).match(/^\d{4}$/)
+    ? parseInt(String(opts.showYear), 10)
+    : idYear;
+
+  // Year rule: drop every candidate whose probed review years all predate the show.
+  const yearsFor = (slug) => {
+    const src = opts.reviewYearsBySlug;
+    if (!src) return null;
+    const v = src instanceof Map ? src.get(slug) : src[slug];
+    return Array.isArray(v) ? v : null;
+  };
+  const candidates = showYear
+    ? slugs.filter((s) => !dtliSlugPredatesShow(yearsFor(s), showYear))
+    : slugs.slice();
+  if (candidates.length === 0) return null;
+
+  let best = candidates[0];
+  if (candidates.length > 1 && idYear) {
+    const withSuffix = candidates.filter(s => /-\d+$/.test(s));
+    if (withSuffix.length > 0) {
+      best = withSuffix.sort((a, b) => {
+        const nA = parseInt((a.match(/-(\d+)$/) || [0, 0])[1]);
+        const nB = parseInt((b.match(/-(\d+)$/) || [0, 0])[1]);
+        return nB - nA;
+      })[0];
     }
   }
   return best;
+}
+
+/**
+ * The year rule itself: true when the page carries at least one dated review
+ * item and EVERY one of them is from before `showYear`. An undated or empty
+ * page never predates anything (see pickBestDtliSlug).
+ *
+ * @param {number[]|null|undefined} reviewYears
+ * @param {number|string} showYear
+ */
+function dtliSlugPredatesShow(reviewYears, showYear) {
+  const y = parseInt(String(showYear), 10);
+  if (!Number.isFinite(y)) return false;
+  if (!Array.isArray(reviewYears)) return false;
+  const years = reviewYears.map((v) => parseInt(String(v), 10)).filter((v) => Number.isFinite(v) && v >= 1990 && v <= 2100);
+  if (years.length === 0) return false;
+  return years.every((v) => v < y);
+}
+
+/**
+ * Years of the review items on a DTLI show page. DTLI renders each notice in
+ * a `review-item` / `poster-review-item` block with the date in
+ * `<div class="review-item-date">December 14, 2014</div>` (same block
+ * gather-reviews.js's extractDTLIReviews reads). Only the date element is
+ * read — the page's own header, sidebar and "more shows" tiles carry other
+ * years and must not count.
+ *
+ * @param {string} html
+ * @returns {number[]} one entry per dated review item, in page order
+ */
+function extractDtliReviewYears(html) {
+  if (!html || typeof html !== 'string') return [];
+  const years = [];
+  const re = /class="review-item-date"[^>]*>([^<]*)/gi;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    const y = (m[1].match(/\b(19|20)\d{2}\b/) || [])[0];
+    if (y) years.push(parseInt(y, 10));
+  }
+  return years;
+}
+
+/**
+ * The year a DTLI candidate has to reach for a show: opening year, else
+ * previews year, else the id's trailing year, else null (no rule applies —
+ * an un-yeared id like `hamilton` is the current production by convention).
+ */
+function dtliShowYear(show) {
+  if (!show) return null;
+  for (const d of [show.openingDate, show.previewsStartDate]) {
+    const m = typeof d === 'string' ? d.match(/^(\d{4})-\d{2}-\d{2}/) : null;
+    if (m) return parseInt(m[1], 10);
+  }
+  const idMatch = String(show.id || '').match(/-(\d{4})$/);
+  return idMatch ? parseInt(idMatch[1], 10) : null;
 }
 
 /**
@@ -203,10 +290,33 @@ function hasNamedDifferentDirectorSignal(cvIssues, cvReasoning, show, fullText) 
 function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, publishDate, cvContext) {
   let resultWpConfidence = wpConfidence;
   let resultFilmTvFlag = filmTvFlag;
+  // wrongShow (CV wrongArticle + wrongProduction → the rebuild's wrongShow
+  // family, or a classifier verdict) shares the single CV confidence field.
+  // Audit S6-T4 (BRO-4204): the in-window veto below covers it too.
+  const wsFlag = !!(cvContext && cvContext.wrongShow);
+  let resultWsConfidence = wpConfidence;
 
   const strongDifferent =
     !!(cvContext && hasStrongDifferentShowSignal(cvContext.issues, cvContext.reasoning)) ||
     !!(cvContext && hasNamedDifferentDirectorSignal(cvContext.issues, cvContext.reasoning, cvContext.show, cvContext.fullText));
+
+  // In-window + slug-match veto (audit S6-T4, BRO-4204). The 30-day rule
+  // below is the opening-week safety net; this is the run-long one: a review
+  // whose URL slug names the show, published inside the production's own run
+  // window (previews − 14d … closing + 14d, or opening ± 30d when the show
+  // has no closingDate), is about THIS production whatever the outlet's tier
+  // — tier gating stays out of the guard layer. The 2026-09 audit sample:
+  // 8 of 12 hidden T1/T2 reviews were exactly this shape. The strong-signal
+  // bypass (Schmigadoon EBT markers, Hamlet FRC named director) still wins:
+  // a slug match says which title, not which staging of it.
+  let inWindowSlugMatch = false;
+  if (!strongDifferent && cvContext && cvContext.show && cvContext.url && publishDate) {
+    inWindowSlugMatch = isInWindowSlugMatchedReview({ url: cvContext.url, publishDate }, cvContext.show);
+    if (inWindowSlugMatch) {
+      if (wpFlag) resultWpConfidence = 'low';
+      if (wsFlag) resultWsConfidence = 'low';
+    }
+  }
 
   if (!strongDifferent && openingDate && publishDate) {
     // BRO-2835: these were `new Date(...)`, which returns Invalid Date for an
@@ -228,6 +338,7 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
       const daysDiff = Math.abs((publish.getTime() - opening.getTime()) / 86400000);
       if (daysDiff <= 30) {
         if (wpFlag) resultWpConfidence = 'low';
+        if (wsFlag) resultWsConfidence = 'low';
         if (filmTvFlag) resultFilmTvFlag = false;
       }
     }
@@ -235,8 +346,10 @@ function applyTemporalOverrides(wpFlag, filmTvFlag, wpConfidence, openingDate, p
 
   return {
     wpConfidence: resultWpConfidence,
+    wsConfidence: resultWsConfidence,
     filmTvFlag: resultFilmTvFlag,
     bypassedForStrongSignal: strongDifferent,
+    inWindowSlugMatch,
   };
 }
 
@@ -287,6 +400,236 @@ function isReviewWithinOwnProductionWindow(show, publishDate, opts = {}) {
   const lowerBound = startMs - leadDays * 86400000;
   const upperBound = upperMs + lagDays * 86400000;
   return publishMs >= lowerBound && publishMs <= upperBound;
+}
+
+// ---------------------------------------------------------------------------
+// In-window + slug-match veto for CV/classifier wrongProduction / wrongShow
+// flags (2026 data audit S6-T4, BRO-4204)
+// ---------------------------------------------------------------------------
+//
+// The audit sampled 12 hidden tier-1/2 reviews: 8 were in-window reviews
+// whose URL slug named the show, flagged wrongProduction or wrongShow by the
+// contentVerification pass (rebuild 'CV-promoted: …' promotions) or the
+// classify-wrong-production / classify-wrong-show LLM scripts, which read
+// truncated or context-heavy text and mistook a real review for a preview,
+// a feature, or another staging. Neither the classifier nor the rebuild's
+// promotion chain had a "published inside its own run, slug names the
+// show" veto — applyTemporalOverrides only knew opening ± 30 days.
+//
+// Wiring (all four sit on the same helper so they cannot drift):
+//   • applyTemporalOverrides (CV time, content-verifier.js): confidence → low
+//   • explainExclusion's wrongProduction / wrongShow branches (guard layer)
+//   • rebuild-all-reviews.js's inline wrongProduction / wrongShow gates
+//   • scoring-delta.js decideInclusion (the §12.7 replay)
+//
+// Scope — deliberately narrow. Only flags whose provenance IS a CV /
+// classifier verdict are vetoed (isCvSourcedWrongProduction /
+// isCvSourcedWrongShow). Date-gate flags (ingest-anticipatory-gate, the
+// pre-window date guard, cross-show URL dedup), cross-market region flags
+// (wrongProductionNote), ensemble rejections (rejectionReason), human
+// confirmations (humanReviewedWrongProduction: true) and manual reasons
+// (hamlet-off-broadway-2026's 54 backfilled reasons) are untouched. The
+// strong-signal bypass — Schmigadoon EBT markers, Hamlet FRC named-director
+// — also wins here: a slug match says which title, not which staging. And a
+// file whose CURRENT CV verdict still affirms the flag at high confidence
+// keeps it (currentCvVerdictStands — see its docstring for the corpus
+// evidence: the guard layer's vetoable population is the STALE flags, whose
+// CV was later re-verified false but never cleared on disk).
+// Measured 2026-09-28 with the real predicate over all 18,227 flagged files:
+// 510 CV/classifier flags are in-window + slug-matched; after the
+// current-verdict carve-out and the wrong-content / invalid-tier parity
+// refusal below, every remaining candidate is either already cleared (the
+// venue-rename stale class — Roundabout's American Airlines → Todd Haimes,
+// Cort → James Earl Jones, Brooks Atkinson → Lena Horne — carries
+// wrongProductionOverride from reverify-era-venue-wrongprod, 2026-07-20) or
+// still held by another rule, so the live corpus does not move. The rule's
+// value is the CV-time downgrade for new verdicts and prevention for the
+// next un-stamped promotion (scoring-delta: 0 flips; §12.7 corpus scan in
+// the BRO-4204 S6 report).
+
+/** Lead before previews (or opening when there are no previews). */
+const IN_WINDOW_VETO_LEAD_DAYS = 14;
+/** Lag after closing (or after opening when closing is the later date). */
+const IN_WINDOW_VETO_LAG_DAYS = 14;
+/** Symmetric window around opening for a show with no closingDate. */
+const IN_WINDOW_VETO_NO_CLOSING_DAYS = 30;
+
+const CV_PROMOTED_WRONG_PRODUCTION_REASON_RE = /^CV-promoted\b/;
+const CV_OR_CLASSIFIER_WRONG_SHOW_REASON_RE = /^(?:CV-promoted\b|LLM\b)/;
+
+function _stripApostrophes(s) {
+  return String(s || '').replace(/[‘’']/g, '');
+}
+
+/**
+ * Does the URL's path slug name the show? Two or more distinctive title
+ * tokens (same tokenizer as isLikelyStaleWrongShow) must appear in the slug;
+ * a title with at most one distinctive token ("Data", "Job", "The Pass",
+ * "Oh, Mary!") must appear whole — articles included — as a contiguous run
+ * of slug words, so "celebrity-sex-pass-review" does not match The Pass.
+ * Apostrophes are dropped on both sides ("Abigail's Party" ⇔ abigails-party).
+ */
+function urlSlugMatchesShowTitle(url, title) {
+  if (!url || !title) return false;
+  let pathname;
+  try { pathname = new URL(String(url)).pathname; } catch { return false; }
+  const slugText = _stripApostrophes(pathname.replace(/\.[a-z0-9]+$/i, '')).toLowerCase();
+  const cleanTitle = _stripApostrophes(title);
+  const titleTokens = _wrongShowTitleTokens(cleanTitle);
+  if (titleTokens.length >= 2) {
+    const urlTokens = new Set(_wrongShowTitleTokens(slugText));
+    let overlap = 0;
+    for (const t of titleTokens) if (urlTokens.has(t)) overlap++;
+    return overlap >= 2;
+  }
+  const phrase = cleanTitle.toLowerCase().replace(/[^a-z0-9]+/g, ' ').trim();
+  if (!phrase) return false;
+  const slugWords = ' ' + slugText.replace(/[^a-z0-9]+/g, ' ').trim() + ' ';
+  return slugWords.includes(' ' + phrase + ' ');
+}
+
+/**
+ * The veto's production window: previews − 14d … closing + 14d (via
+ * isReviewWithinOwnProductionWindow, which takes the later of opening /
+ * closing as the upper anchor), or opening ± 30d for a show with no
+ * closingDate. Same date parsers as applyTemporalOverrides (ordinal
+ * publishDates, pre-1970 openings).
+ */
+function isWithinInWindowVetoWindow(show, publishDate) {
+  if (!show || !publishDate) return false;
+  const { parseDate: pd, parseHistoricalDate: phd } = require('./date-utils');
+  const publish = publishDate instanceof Date ? publishDate : (pd(publishDate) || phd(publishDate));
+  if (!publish || isNaN(publish.getTime())) return false;
+  if (show.closingDate) {
+    return isReviewWithinOwnProductionWindow(show, publish, {
+      leadDays: IN_WINDOW_VETO_LEAD_DAYS, lagDays: IN_WINDOW_VETO_LAG_DAYS,
+    });
+  }
+  if (!show.openingDate) return false;
+  return isReviewWithinOwnProductionWindow({ openingDate: show.openingDate }, publish, {
+    leadDays: IN_WINDOW_VETO_NO_CLOSING_DAYS, lagDays: IN_WINDOW_VETO_NO_CLOSING_DAYS,
+  });
+}
+
+/**
+ * The pure date + slug test: URL slug names the show AND publishDate is
+ * inside the veto window. No provenance or strong-signal logic — callers
+ * that hold a CV verdict layer that on (cvFlagVetoedInWindow below;
+ * applyTemporalOverrides has already computed strongDifferent).
+ */
+function isInWindowSlugMatchedReview(data, show) {
+  if (!data || !show || !data.url || !data.publishDate || !show.title) return false;
+  if (!urlSlugMatchesShowTitle(data.url, show.title)) return false;
+  return isWithinInWindowVetoWindow(show, data.publishDate);
+}
+
+/**
+ * wrongProduction whose provenance is a CV promotion ('CV-promoted: …' —
+ * NOT 'CV-low-but-strong-signal', that path is the strong-signal bypass) or
+ * classify-wrong-production.js (llmClassified). A wrongProductionNote or
+ * wrongProductionDetectedBy means a date / cross-market / cross-show-URL /
+ * ingest gate set the flag; rejectionReason means the scoring ensemble did.
+ */
+function isCvSourcedWrongProduction(data) {
+  if (!data || data.wrongProduction !== true) return false;
+  if (data.wrongProductionNote || data.wrongProductionDetectedBy) return false;
+  if (data.humanReviewedWrongProduction === true) return false;
+  if (data.rejectionReason) return false;
+  return CV_PROMOTED_WRONG_PRODUCTION_REASON_RE.test(String(data.wrongProductionReason || ''))
+    || data.llmClassified === 'wrongProduction';
+}
+
+/**
+ * wrongShow whose provenance is a CV promotion ('CV-promoted: …',
+ * 'CV-promoted (film/TV): …') or classify-wrong-show.js ('LLM: …',
+ * 'LLM (medium): …'). Same exclusions as the wrongProduction sibling.
+ */
+function isCvSourcedWrongShow(data) {
+  if (!data || data.wrongShow !== true) return false;
+  if (data.wrongShowNote) return false;
+  if (data.humanReviewedWrongShow === true) return false;
+  if (data.rejectionReason) return false;
+  return CV_OR_CLASSIFIER_WRONG_SHOW_REASON_RE.test(String(data.wrongShowReason || ''));
+}
+
+/** The strong-signal bypass, read off the file's own CV verdict. */
+function hasStrongDifferentProductionSignal(data, show) {
+  const cv = data && data.contentVerification;
+  if (!cv) return false;
+  return hasStrongDifferentShowSignal(cv.issues, cv.reasoning)
+    || hasNamedDifferentDirectorSignal(cv.issues, cv.reasoning, show, data.fullText);
+}
+
+/**
+ * Should a CV/classifier-sourced wrongProduction / wrongShow flag be treated
+ * as low-confidence (i.e. NOT exclude the review)?
+ *
+ * @param {object} data - review-texts file contents
+ * @param {object} show - shows.json entry (title + dates; creativeTeam for the named-director bypass)
+ * @param {'wrongProduction'|'wrongShow'} kind
+ * @param {{ urlFiledUnderOtherShow?: boolean }} [ctx] - callers with the
+ *   rebuild's urlShowIdsAll index pass true when the same URL is also filed
+ *   under another production: releasing this copy would double-count it
+ *   with the copy the cross-show URL dedup already kept. explainExclusion has
+ *   no index and passes nothing (a documented over-count, same class as its
+ *   other context-free limitations).
+ * @returns {boolean}
+ */
+function cvFlagVetoedInWindow(data, show, kind, ctx = {}) {
+  if (!data || !show) return false;
+  const sourced = kind === 'wrongShow' ? isCvSourcedWrongShow(data) : isCvSourcedWrongProduction(data);
+  if (!sourced) return false;
+  if (ctx && ctx.urlFiledUnderOtherShow === true) return false;
+  // The collector's / promotion's wrong-content stamps are lifted only by a
+  // real clear (explainExclusion's wrongContentFlagsUncleared and
+  // contentTierInvalid rules read the clear breadcrumbs, never this veto),
+  // and rebuild-all-reviews.js's inline loop has no gate of its own for
+  // either field — so a veto that released such a file would put it into
+  // reviews.json while every guard-layer caller still reports it excluded.
+  // Treating the flag as low-confidence is not a clear; parity wins.
+  if (data.incompleteReason === 'wrong_content' || data.contentTier === 'invalid') return false;
+  if (hasStrongDifferentProductionSignal(data, show)) return false;
+  if (currentCvVerdictStands(data, kind)) return false;
+  return isInWindowSlugMatchedReview(data, show);
+}
+
+/**
+ * The file's CURRENT contentVerification verdict affirms this same flag at
+ * high confidence — the flag is fresh, not stale, and the guard layer does
+ * not second-guess it.
+ *
+ * Why this carve-out exists (corpus scan 2026-09-28, the real predicate over
+ * all 18,227 flagged files): 510 CV/classifier flags are in-window +
+ * slug-matched; the 37 with no other exclusion split into two classes.
+ * 23 are STALE — a later CV pass flipped wrongProduction back to false
+ * ("legitimate Broadway review at the American Airlines Theatre, the
+ * correct pre-2023 name": the Roundabout / Cort / Brooks Atkinson venue
+ * renames); those already carry wrongProductionOverride from
+ * reverify-era-venue-wrongprod (2026-07-20) and are included today. 14
+ * still carry a high-confidence cv.wrongProduction naming another staging (Steppenwolf,
+ * Atlanta's Alliance, Pasadena Playhouse, Arena Stage, the National
+ * Theatre…) — and their publishDates sit on opening night / opening + 1,
+ * i.e. the aggregator's stamped date, so "inside the run window" says
+ * nothing about them; about half are real wrong-production reviews
+ * (tuck-everlasting-2016/variety is the 2015 Atlanta review, this-is-our-
+ * youth-2014/timeout is the Chicago page). A veto that released them would
+ * put pans of other productions into live scores. Those verdicts were
+ * written by bulk re-verification, outside applyTemporalOverrides — the
+ * CV-time path keeps downgrading (it runs before the verdict is stored,
+ * exactly like the 30-day opening-week rule it extends).
+ *
+ * For wrongShow the CV shape behind the flag is wrongArticle (and/or
+ * wrongProduction); a high-confidence wrongArticle that no human has
+ * cleared is explainExclusion's own cvWrongArticleHighConfidence rule, so
+ * releasing the wrongShow flag under it would only move the exclusion, and
+ * the rebuild's inline loop (which has no such rule) would diverge.
+ */
+function currentCvVerdictStands(data, kind) {
+  const cv = data && data.contentVerification;
+  if (!cv || cv.confidence !== 'high') return false;
+  if (cv.wrongProduction === true) return true;
+  if (kind === 'wrongShow' && cv.wrongArticle === true && !cvWrongArticleManuallyCleared(data)) return true;
+  return false;
 }
 
 /**
@@ -584,26 +927,15 @@ function urlYearFromPath(url) {
   return Number.isFinite(year) ? year : null;
 }
 
-function getWrongProductionReasonFromUrl(url, show) {
-  if (!url || typeof url !== 'string') return null;
-  if (!show) return null;
-  const earliest = show.previewsStartDate || show.openingDate;
-  if (!earliest) return null;
-
-  // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
-  // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
-  const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
-  if (!m) return null;
-
-  const year = m[1];
-  const rawMonth = m[2].toLowerCase();
-  const month = /^\d{2}$/.test(rawMonth) ? rawMonth : URL_MONTH_NAMES[rawMonth];
-  if (!month) return null;
-
-  const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
-  const urlDate = new Date(`${year}-${month}-${dayPart}`);
-  if (isNaN(urlDate.getTime())) return null;
-
+/**
+ * Shared window decision, given an already-parsed review date (from wherever
+ * the caller extracted it). Split out of getWrongProductionReasonFromUrl so
+ * getWrongProductionReasonForBww's BWW-trailing-date fallback (below)
+ * can reuse the exact same priorRuns/tourLegs exemption + post-close +
+ * lead-window logic instead of re-deriving it — a second copy of this window
+ * math would be the same drift risk flagged in urlYearFromPath's own comment.
+ */
+function reasonFromParsedUrlDate(urlDate, urlDateStr, show) {
   // Prior-run exemption (ALL markets): a review dated within a declared prior
   // run is legitimate coverage of an earlier staging, not a wrong-production
   // cross-attribution. Off-broadway shows in particular carry same-season
@@ -618,11 +950,11 @@ function getWrongProductionReasonFromUrl(url, show) {
   // production, not a different one.
   if (isWithinTourLeg(urlDate, show.tourLegs)) return null;
 
+  const earliest = show.previewsStartDate || show.openingDate;
   const earliestDate = new Date(earliest);
   if (isNaN(earliestDate.getTime())) return null;
 
   const daysBefore = Math.round((earliestDate - urlDate) / 86400000);
-  const urlDateStr = urlDate.toISOString().slice(0, 10);
 
   // Post-closing check first: an article dated after close is a later production/tour,
   // independent of whether it's also before the previews of this production's ID.
@@ -652,6 +984,54 @@ function getWrongProductionReasonFromUrl(url, show) {
   return null;
 }
 
+function getWrongProductionReasonFromUrl(url, show) {
+  if (!url || typeof url !== 'string') return null;
+  if (!show) return null;
+  const earliest = show.previewsStartDate || show.openingDate;
+  if (!earliest) return null;
+
+  // Numeric month: /YYYY/MM/ or /YYYY/MM/DD/
+  // Word month: /YYYY/monthname/ or /YYYY/monthname/DD/ (Guardian pattern)
+  const m = url.match(/\/(20\d{2})\/([a-z]{3,4}|\d{2})(?:\/(\d{1,2}))?\//i);
+  if (!m) return null;
+
+  const year = m[1];
+  const rawMonth = m[2].toLowerCase();
+  const month = /^\d{2}$/.test(rawMonth) ? rawMonth : URL_MONTH_NAMES[rawMonth];
+  if (!month) return null;
+
+  const dayPart = m[3] ? String(m[3]).padStart(2, '0') : '15';
+  const urlDate = new Date(`${year}-${month}-${dayPart}`);
+  if (isNaN(urlDate.getTime())) return null;
+
+  return reasonFromParsedUrlDate(urlDate, urlDate.toISOString().slice(0, 10), show);
+}
+
+/**
+ * BroadwayWorld's own article URLs encode the publish date as a trailing
+ * `-YYYYMMDD` slug suffix with no path-segment slashes around the date, e.g.
+ * `.../article/BWW-Review-Some-Show-20190915` — a shape
+ * getWrongProductionReasonFromUrl's slash-delimited regex never matches.
+ * Reuses the same YYYYMMDD pattern already proven against real BWW URLs by
+ * scripts/lib/page-validator.js's extractYearFromUrl. Deliberately NOT folded
+ * into getWrongProductionReasonFromUrl itself (used by many other unrelated
+ * callers, e.g. getWrongProductionReasonForUnknownCritic on arbitrary SERP
+ * URLs) — a bare trailing 8-digit number is common on non-BWW URLs for
+ * reasons that aren't a date (WordPress post IDs, etc.), so this fallback
+ * only fires for getWrongProductionReasonForBww, scoped to
+ * broadwayworld.com URLs specifically.
+ */
+function bwwTrailingDateFromUrl(url) {
+  const m = url.match(/-(\d{4})(\d{2})(\d{2})\d{0,2}(?:[/?#]|$)/);
+  if (!m) return null;
+  const year = parseInt(m[1], 10);
+  const month = parseInt(m[2], 10);
+  const day = parseInt(m[3], 10);
+  if (year < 1990 || year > 2100 || month < 1 || month > 12 || day < 1 || day > 31) return null;
+  const d = new Date(`${m[1]}-${m[2]}-${m[3]}`);
+  return isNaN(d.getTime()) ? null : d;
+}
+
 /**
  * Wrapper around getWrongProductionReasonFromUrl that only fires when the review
  * has NO named critic (Unknown / Staff / empty). Used at ingest time in
@@ -671,12 +1051,76 @@ function getWrongProductionReasonFromUrl(url, show) {
  * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string }} show
  * @returns {string|null}
  */
+/**
+ * True when a critic name is empty/Unknown/Staff — the "no benefit of the
+ * doubt" bucket getWrongProductionReasonForUnknownCritic below gates on.
+ * Extracted so a post-hoc audit calling the raw getWrongProductionReasonFromUrl
+ * directly (no critic-name gating applied) can flag which of its own results
+ * carry a NAMED critic — the higher false-positive-risk class this same
+ * criticIsUnknown check exists to protect against here.
+ *
+ * @param {string|null|undefined} criticName
+ * @returns {boolean}
+ */
+function isCriticUnknown(criticName) {
+  const norm = String(criticName || '').trim().toLowerCase();
+  return !norm || norm === 'unknown' || norm === 'staff';
+}
+
 function getWrongProductionReasonForUnknownCritic(review, show) {
   if (!review) return null;
-  const norm = String(review.criticName || '').trim().toLowerCase();
-  const criticIsUnknown = !norm || norm === 'unknown' || norm === 'staff';
-  if (!criticIsUnknown) return null;
+  if (!isCriticUnknown(review.criticName)) return null;
   return getWrongProductionReasonFromUrl(review.url, show);
+}
+
+/**
+ * Wrapper around getWrongProductionReasonFromUrl that fires for BWW-sourced
+ * entries regardless of critic name (BRO-916, extended to a second source by
+ * BRO-3502).
+ *
+ * getWrongProductionReasonForUnknownCritic above deliberately only fires on
+ * Unknown/Staff bylines because its false-positive risk is organic pre-transfer
+ * journalism by a named critic (benefit of the doubt applies). BWW-sourced
+ * ingestion is a different risk shape: both extractBWWRoundupReviews
+ * (gather-reviews.js, source 'bww-roundup') and scrape-bww-reviews.js's own
+ * roundup + dedicated /reviews/ page extraction (also 'bww-roundup', and
+ * 'bww-reviews' respectively) pull reviews from a BWW-assembled PAGE by
+ * anchor position/JSON-LD/DOM block, so contamination happens in how BWW
+ * assembled the page, not in how the critic bylined their own writing — a
+ * real, named critic's real West End review can still land on the wrong
+ * show's Broadway page. Incident: Alexander Cohen's London "The Fear of 13"
+ * review (byline "BroadwayWorld", i.e. BWW's own UK edition — not a distinct
+ * outlet the geography filter in validateBWWRoundupGeography would catch)
+ * was pulled into the Broadway show's roundup page and shipped with no
+ * wrongProduction flag until manual cleanup. BRO-3502: scripts/scrape-bww-
+ * reviews.js's dedicated /reviews/{slug} page extraction (source
+ * 'bww-reviews') has the identical page-assembly risk shape and reaches the
+ * same write chokepoint (review-file-writer.js's createOrMergeReviewFile)
+ * that never got the BRO-916 fix — see the corpus-scan note at that call
+ * site.
+ *
+ * Tries the general slash-dated URL check first (external outlet URLs, e.g.
+ * a linked NYT/Guardian/Variety article), then falls back to BWW's own
+ * trailing-YYYYMMDD URL convention (bwwTrailingDateFromUrl) when the review's
+ * URL is itself a broadwayworld.com link — the exact shape of a BWW-own-byline
+ * entry like the Alexander Cohen incident.
+ *
+ * @param {{ url?: string|null, source?: string|null }} review
+ * @param {{ previewsStartDate?: string, openingDate?: string, closingDate?: string, category?: string, priorRuns?: any, tourLegs?: any }} show
+ * @returns {string|null}
+ */
+function getWrongProductionReasonForBww(review, show) {
+  if (!review || !show) return null;
+  if (review.source !== 'bww-roundup' && review.source !== 'bww-reviews') return null;
+  const url = review.url;
+  const primary = getWrongProductionReasonFromUrl(url, show);
+  if (primary) return primary;
+  if (!url || !/broadwayworld\.com/i.test(url)) return null;
+  const earliest = show.previewsStartDate || show.openingDate;
+  if (!earliest) return null;
+  const urlDate = bwwTrailingDateFromUrl(url);
+  if (!urlDate) return null;
+  return reasonFromParsedUrlDate(urlDate, urlDate.toISOString().slice(0, 10), show);
 }
 
 /**
@@ -698,11 +1142,28 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
   // accented Ú leaving a meaningless fragment) and downstream slug matching
   // fails silently. Same bug class as operaTitleWords in site-search-discovery.js
   // (fixed 2026-05-17); applies to every non-opera SERP/site-search caller.
+  //
+  // Hyphens are KEPT inside a word (not stripped, not turned into a space) —
+  // deliberately, so word count/match-ratio math below is unaffected. This
+  // function doubles as an article-title prose matcher (urlOrTitleLooksLikeReview
+  // calls urlLooksLikeReview(articleTitle, showTitle), treating prose as if it
+  // were a "URL"), where splitting "Night-Time" into two separate words would
+  // inflate titleWords.length and silently raise the match-ratio threshold —
+  // confirmed: doing that broke the existing "Curious Incident ... Night-Time"
+  // long-title test. Keeping the hyphen IN the word instead needs no such
+  // split: wordMatch() below already treats '-' as a boundary character, so
+  // "pre-existing" matches literally inside a hyphen-delimited URL slug like
+  // ".../pre-existing-condition-review..." as one bounded token. Before this
+  // fix, the hyphen was stripped entirely ("pre-existing" -> "preexisting"),
+  // which could never match either a split URL segment or the raw slug text —
+  // confirmed live 2026-09-15: the New York Theatre Guide review of
+  // "Pre-Existing Condition" was rejected here ("URL slug doesn't match") even
+  // though the SERP result was the correct, real review URL.
   const titleWords = showTitle
     .toLowerCase()
     .normalize('NFD')
     .replace(/\p{Diacritic}/gu, '')
-    .replace(/[^a-z0-9\s]/g, '')
+    .replace(/[^a-z0-9\s-]/g, '')
     .split(/\s+/)
     .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
 
@@ -716,9 +1177,16 @@ function urlTitleWordsPass(lowerUrl, showTitle) {
     return matchCountTB >= minMatchTB;
   }
 
+  // Boundary chars: whitespace/slug punctuation plus prose punctuation
+  // (comma/colon/etc.) — this function doubles as a prose title matcher
+  // (see the block comment above), and a headline like "'Dad, Don't Read
+  // This' Review:" puts a comma directly after "Dad" with no space before
+  // the quote. Without comma/colon in the boundary set, that word-boundary
+  // regex never matches "dad" and a correct SERP candidate gets silently
+  // dropped. [BRO-1351]
   const wordMatch = (haystack, word) => {
     const escaped = word.replace(/[.*+?${}()|[\]\\]/g, '\\$&');
-    return new RegExp('(?:^|[\\s\\-/.\'"_])' + escaped + '(?:$|[\\s\\-/.\'"_\\d])', 'i').test(haystack);
+    return new RegExp('(?:^|[\\s\\-/.,:;!?\'"_])' + escaped + '(?:$|[\\s\\-/.,:;!?\'"_\\d])', 'i').test(haystack);
   };
   const matchCount = titleWords.filter(w => wordMatch(lowerUrl, w)).length;
   const minMatch = titleWords.length <= 3 ? titleWords.length : Math.ceil(titleWords.length * 0.5);
@@ -752,7 +1220,7 @@ function urlLooksLikeReview(url, showTitle) {
       .toLowerCase()
       .normalize('NFD')
       .replace(/\p{Diacritic}/gu, '')
-      .replace(/[^a-z0-9\s]/g, '')
+      .replace(/[^a-z0-9\s-]/g, '')
       .split(/\s+/)
       .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
     if (shortMeaningfulWords.length > 0 && urlTitleWordsPass(lower, shortTitle)) return true;
@@ -854,6 +1322,10 @@ function isLikelyTourReview(url, showId) {
   // here (missing a genuine multi-city tour contamination on a regional show)
   // is a much rarer, lower-stakes failure than the false positive this fixes.
   const isRegional = /-regional-/.test(showId);
+  // National tours (category 'tour', id `{title}-tour-{year}`, BRO-4211/4262):
+  // tour-stop coverage from US city BWW pages and local papers IS the tour's
+  // own review corpus. A UK/West End page is still a different production.
+  const isTour = /-tour-\d{4}$/.test(showId);
 
   // Regional BWW (city-specific subdirectories)
   const bwwMatch = lower.match(/broadwayworld\.com\/([a-z-]+)\/article\//);
@@ -868,6 +1340,9 @@ function isLikelyTourReview(url, showId) {
     const nonRegional = ['article', 'off-broadway', 'off-off-broadway', 'reviews', 'board', 'columns', 'people', 'video', 'shows', 'bwwopera', 'bwwdance', 'bwwtv'];
     if (nonRegional.includes(city)) { /* not regional, fall through */ }
     else if (isRegional) { /* regional show's own city page — legitimate, fall through */ }
+    else if (isTour) {
+      if (['westend', 'london', 'uk-regional'].includes(city)) return true;
+    }
     else if (isWestEnd || isOffBroadway) {
       // For WE/OB shows: BWW westend and london are legitimate, US cities are not
       const ukCities = ['westend', 'london', 'uk-regional'];
@@ -879,7 +1354,7 @@ function isLikelyTourReview(url, showId) {
   }
 
   // Local paper tour indicators (Broadway shows only)
-  if (!isWestEnd && !isOffBroadway && !isRegional) {
+  if (!isWestEnd && !isOffBroadway && !isRegional && !isTour) {
     const tourPatterns = [
       /star-telegram\.com.*fort-worth/i,
       /houstonchronicle\.com/i,
@@ -1126,6 +1601,18 @@ function isLikelyStaleRoundupFlag(data) {
  * file with no current score and no path back into reviews.json. Discovered
  * during the wrongShow stale-flag audit (Notion 34e637c5-416f-8121).
  */
+/**
+ * A human has read the article and overruled a contentVerification
+ * wrongArticle verdict. Mirrors review-write-guard.js's _wrongArticleCleared
+ * (wrongArticleManualClear: true, or the explicit humanReviewedWrongArticle:
+ * false assertion); both fields are PROTECTED there, so CI restores cannot
+ * drop the clear. Audit S3-T3 (BRO-4204).
+ */
+function cvWrongArticleManuallyCleared(data) {
+  if (!data) return false;
+  return data.wrongArticleManualClear === true || data.humanReviewedWrongArticle === false;
+}
+
 function wrongShowCleared(data) {
   if (!data) return false;
   // Note: isCombinedReview alone is NOT sufficient. It's set whenever a URL
@@ -3156,6 +3643,35 @@ function buildMultiProdYearGuard(shows) {
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
 
+  // BRO-931 #3 — preview-period scraping poisons opening night dedup.
+  // isPreviewPlaceholder is stamped by gather-reviews.js (while show.status is
+  // 'previews' or openingDate is future) and by opening-night-poller.js's
+  // pre-wipe pass, but until this check existed nothing in the rebuild
+  // INCLUSION gate ever read it — mergeReviews()/the URL-rediscovery bypass
+  // consumed it, but a placeholder that happens to carry an aggregator signal
+  // (ShowScore/DTLI/BWW rating picked up during previews) passed the generic
+  // hasText/hasAggregatorSignal check below and could ship into reviews.json
+  // permanently unless a post-opening write happened to land on the exact
+  // same outlet+critic dedupKey. As of this fix, is-scoreable.ts (which
+  // delegates to isIncludableForRebuild) also stops scoring these files going
+  // forward — a deliberate, desirable side effect, not an accident.
+  // Escape hatch mirrors the wpCleared pattern used by every other
+  // categorical "content is wrong" check in this function (see wrongProduction
+  // below) rather than inventing a new field: a human who has verified a
+  // preview-period file is genuinely correct content, or an ensemble score
+  // that already landed on it (legacy files scored before this fix shipped —
+  // see clear-failure-flags.js's isPreviewPlaceholder rule for the auto-clear
+  // going forward), both override the placeholder flag.
+  if (data.isPreviewPlaceholder === true) {
+    const placeholderCleared =
+      data.wrongProductionManualClear === true ||
+      data.wrongProductionOverride === true ||
+      data.humanReviewedWrongProduction === false ||
+      data.humanReviewScore != null ||
+      !!(data.llmScore && data.llmScore.score != null);
+    if (!placeholderCleared) return 'previewPlaceholder';
+  }
+
   // Freshness-bounded auto-clear check, shared by the 3 wpCleared sites below.
   // review-write-guard.js's own use of this stamp (isFreshWrongProductionAutoClear)
   // is deliberately freshness-gated: a years-old stamp on a file that was
@@ -3209,13 +3725,19 @@ function explainExclusion(data, show, filePath) {
   // was missed by both task #1017 fix commits (e8f88878b24, aa65ba15880),
   // which only touched the 3 downstream gates below. A file with a fresh
   // auto-clear stamp never reached those — it was excluded right here.)
+  //
+  // In-window + slug-match veto (audit S6-T4, BRO-4204): a CV/classifier-
+  // sourced flag on a review whose URL slug names the show, published inside
+  // the production's own run window, is a low-confidence flag — it does not
+  // exclude. Mirrored by rebuild-all-reviews.js's inline gate and
+  // scoring-delta.js; see cvFlagVetoedInWindow for the provenance scope.
   if (data.wrongProduction === true) {
     const cleared =
       data.wrongProductionManualClear === true ||
       data.wrongProductionOverride === true ||
       data.humanReviewedWrongProduction === false ||
       isFreshWpAutoCleared(data);
-    if (!cleared) return 'wrongProduction';
+    if (!cleared && !cvFlagVetoedInWindow(data, show, 'wrongProduction')) return 'wrongProduction';
   }
 
   // wrongShow — manual clears via wrongShowCleared() (5-flag check, single
@@ -3229,8 +3751,12 @@ function explainExclusion(data, show, filePath) {
   // set but the data + URL signals strongly indicate a real review of THIS
   // show, isLikelyStaleWrongShow defers to the rebuild. Conservative — see
   // helper docstring for the full filter chain.
+  //
+  // In-window + slug-match veto (audit S6-T4): same rule as the
+  // wrongProduction branch above, for CV-promoted / classifier wrongShow.
   if (data.wrongShow === true) {
-    if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)) return 'wrongShow';
+    if (!wrongShowCleared(data) && !isLikelyStaleWrongShow(data, show)
+        && !cvFlagVetoedInWindow(data, show, 'wrongShow')) return 'wrongShow';
   }
   if (data.wrongAttribution === true) return 'wrongAttribution';
   // outletDomainUnvalidated (task #1926, paranormal-activity-2026 incident):
@@ -3368,6 +3894,62 @@ function explainExclusion(data, show, filePath) {
   // (2026-07-09, Notion 39a637c5-416f-813a). Canonical-guard rule:
   // memory/feedback_includability_predicates_must_be_canonical.md.
   if (data.url && require('./domain-filters').isBlockedReviewUrl(data.url)) return 'blockedReviewUrl';
+  // Listing pages scored as reviews (2026 data audit, S1-T0). Host-scoped URL
+  // shapes that are never an article, found live: a review INDEX
+  // (talkinbroadway.com/page/world/index.html, scored on 3 shows), an
+  // aggregator's SHOW page (londontheatrehub.co.uk/shows/equus/,
+  // whatsonstage.com/shows/.../war-horse_1712421/, broadwayworld.com/shows/
+  // Grangeville-334944.html — their reviews live under /reviews/ and
+  // /article/), and a bare homepage. Host-specific by design (didtheylikeit.com
+  // /shows/<show>/<review>/ and broadwaybaby.com/shows/<slug>/<id> are real
+  // reviews) — see LISTING_PAGE_URL_PATTERNS. Unlike namedNonReviewUrl below
+  // this is NOT source-scoped: a listing page is a listing page whoever found
+  // it. Escape hatch (mirrors namedNonReviewUrlManualClear; PROTECTED in
+  // review-write-guard.js): a human who verifies the file's text IS a real
+  // review despite the listing-shaped URL sets listingPageUrlManualClear: true
+  // — though re-pointing url at the actual article is the better fix.
+  if (
+    typeof data.url === 'string' && data.listingPageUrlManualClear !== true &&
+    require('./non-review-url-patterns').listingPageUrlReason(data.url)
+  ) return 'listingPageUrl';
+  // Named non-review URL patterns (BRO-4101), scoped to unvetted-SERP-sourced
+  // records only (isUnvettedSerpSource — the canonical SUSPECT_SOURCES set
+  // also used by audit-corpus-contamination.js's wrong-production audit).
+  // non-review-url-patterns.js's NAMED_NON_REVIEW_URL_PATTERNS was curated
+  // purely as a DISCOVERY-time reject (skipping a candidate that was never
+  // fetched costs nothing) — several entries are host-wide (e.g.
+  // newyorkcitytheatre.com) rather than path-scoped, which is NOT safe as an
+  // unconditional SCORING-time exclusion: burn-this-2019's new-york-city-
+  // theatre--nicola-quinn.json (source: show-score-playwright, a real named
+  // critic, contentTier: complete, scored 93) legitimately carries a citation
+  // URL on that host and would be silently dropped by an unscoped check
+  // (verified against the full corpus before landing this). Scoping to
+  // isUnvettedSerpSource targets exactly the bug's shape — a raw SERP hit on
+  // a named ticketing/listing host with no aggregator/human vetting, the same
+  // class as the-last-ship-west-end-2026's londontheatre.co.uk/show/47207
+  // ticket page (source: serp-discovery, Unknown critic, LLM-scored 82,
+  // shipped live) — while leaving aggregator/submission-sourced content
+  // alone. review-file-writer.js's own named-non-review-url guard (added
+  // alongside this one, identically scoped for the identical reason: an
+  // unscoped ingest-time version would permanently refuse any future
+  // re-merge/refresh write to a file like the burn-this-2019 one above)
+  // only ever blocks a WRITE going forward — it never re-evaluates
+  // already-scored content on disk, so this rule is the one that needs the
+  // narrow scope to avoid a retroactive regression.
+  //
+  // namedNonReviewUrlManualClear escape hatch (ship-check adversarial
+  // review): unlike isNonReview/wrongProduction, this rule has no boolean
+  // flag a human can just flip to false — it's a live URL-pattern + source
+  // check recomputed every rebuild. Without an override field, a human who
+  // verifies a specific unvetted-SERP file IS a genuine review despite
+  // matching a named pattern has no way to keep it scored short of lying
+  // about the URL or source. Same direct-check pattern as
+  // wrongProductionManualClear elsewhere in this file.
+  if (
+    data.url && data.namedNonReviewUrlManualClear !== true &&
+    require('./unvetted-serp-sources').isUnvettedSerpSource(data.source) &&
+    require('./non-review-url-patterns').namedNonReviewReason(data.url)
+  ) return 'namedNonReviewUrl';
   if (
     (data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
     data.isNotReview === true ||
@@ -3424,10 +4006,10 @@ function explainExclusion(data, show, filePath) {
     data.textFetchedAt > (process.env.CONTAMINATION_AUDIT_CUTOFF || '2026-02-13T00:00:00Z') &&
     !data.rejectedBy
   ) {
-    const { isTourReviewExcerpt, isFilmTvReview } = require('./excerpt-validation');
+    const { isTourReviewExcerpt, tourContextForShow, isFilmTvReview } = require('./excerpt-validation');
     const introText = data.fullText.slice(0, 600);
     if (!data.allowTourSignal && show?.status !== 'tour-stop' && show?.type !== 'special') {
-      const tourCheck = isTourReviewExcerpt(introText, { currentShowId: show?.id, currentShowTitle: show?.title });
+      const tourCheck = isTourReviewExcerpt(introText, tourContextForShow(show));
       if (tourCheck.isTourReview) return 'tourContaminationInText';
     }
     if (!data.allowFilmSignal) {
@@ -3453,9 +4035,16 @@ function explainExclusion(data, show, filePath) {
   // 34f637c5-416f-810d) lose the override on delegation. Adding it here keeps both
   // predicates symmetric and preserves the registry-aware behavior.
   if (data.suspectedMisattribution === true && !isLikelyStaleSuspectedMisattribution(data, getCriticRegistry())) return 'suspectedMisattribution';
+  // Human hatch (BRO-4204 audit S3-T3): the CV pass reads truncated or
+  // context-heavy text and calls a real in-window review a "preview" or
+  // "feature" (NYSR / newyorktheater.me reviews open with background
+  // paragraphs). The same protected breadcrumb family that clears
+  // wrongAttribution/wrongFullText (review-write-guard.js _wrongArticleCleared)
+  // says a human read the article and it IS this show's review.
   if (
     data.contentVerification?.wrongArticle === true &&
-    data.contentVerification?.confidence === 'high'
+    data.contentVerification?.confidence === 'high' &&
+    !cvWrongArticleManuallyCleared(data)
   ) return 'cvWrongArticleHighConfidence';
 
   // Garbage text or non-review content flagged by collection pipeline or LLM ensemble.
@@ -3478,7 +4067,10 @@ function explainExclusion(data, show, filePath) {
     // Wayback snapshot of a Times subscription-lapsed page (correctly not_a_review), but
     // bwwExcerpt held a real review quote and aggregatorStars held Show-Score's 4/5.
     // Scoped to 'not_a_review' only — 'garbage_text' is a stronger, collector-time signal.
-    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return 'rejectionReason';
+    // hasStructuralStarScore (below) is the one exception that DOES cover 'garbage_text' —
+    // it isn't reading the rejected prose, it's reading page markup, so the reason the
+    // prose was rejected doesn't matter.
+    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data)) return 'rejectionReason';
   }
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return 'rejectedByMultipleModels';
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
@@ -3513,7 +4105,9 @@ function explainExclusion(data, show, filePath) {
     // Exception 4: matches the rejectionReason exception above (line ~2650) — an
     // independent aggregator excerpt + star rating clears the rejectedAt gate too, for
     // the same reason: the rejection was about the fullText fetch, not this content.
-    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data)) return 'rejectedAt';
+    // Exception 5: matches hasStructuralStarScore above — a markup-based star score
+    // never read the rejected prose, so it clears the rejectedAt gate too.
+    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data)) return 'rejectedAt';
   }
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
@@ -4019,19 +4613,31 @@ function isRejectedNonReview(data) {
     (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
     require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
   if (isJsonLdStarNotAReview) return false;
-  // Same exception as isIncludableForRebuild's not_a_review carve-out — keeps this
-  // predicate in lock-step with the rebuild gate (see hasIndependentExcerptScore).
-  if (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data)) return false;
-  if (NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
+  // Same exceptions as isIncludableForRebuild's not_a_review/structural-star-score
+  // carve-outs (BRO-2282, BRO-2495) — an independent excerpt+thumb/star score or a
+  // markup-based star score never read the rejected prose, so rejectionReason alone
+  // doesn't make this a non-review. Deliberately scoped to JUST the rejectionReason
+  // check below, not an early return for the whole function: neither exception
+  // overrides explainExclusion's separate cvWrongArticleHighConfidence gate — a
+  // file can carry BOTH a garbage_text/not_a_review rejectionReason AND a
+  // high-confidence contentVerification.wrongArticle verdict from a different
+  // pipeline stage, and the latter must still mark it non-retrieved (ship-check
+  // finding, ties isRejectedNonReview back to explainExclusion's real scope
+  // instead of over-widening this predicate).
+  const rejectionReasonCleared = hasStructuralStarScore(data) ||
+    (data.rejectionReason === 'not_a_review' && hasIndependentExcerptScore(data));
+  if (!rejectionReasonCleared && NON_REVIEW_REJECTION_REASONS.has(data.rejectionReason)) return true;
   const cv = data.contentVerification;
   // wrongArticle gated on high confidence to match isIncludableForRebuild's
   // exact exclusion (line ~2588): a medium/low-confidence CV false-positive on a
   // real T1/T2 review must NOT reopen discovery / mark it non-retrieved.
-  if (cv && cv.wrongArticle === true && cv.confidence === 'high') return true;
+  if (cv && cv.wrongArticle === true && cv.confidence === 'high' && !cvWrongArticleManuallyCleared(data)) return true;
   // articleType is a distinct classification signal (rebuild doesn't gate on it);
   // an interview/feature/preview/news classification is a non-review regardless
   // of the wrongArticle-boolean confidence.
-  if (cv && NON_REVIEW_CV_ARTICLE_TYPES.has(cv.articleType)) return true;
+  // ...unless a human read the article and cleared the CV verdict (same hatch
+  // as the wrongArticle line above): the articleType came from the same pass.
+  if (cv && NON_REVIEW_CV_ARTICLE_TYPES.has(cv.articleType) && !cvWrongArticleManuallyCleared(data)) return true;
   // contentTier 'invalid' with no manual clear (the wrongShowCleared escape above
   // already returned for the human-cleared case) → garbage / unusable page.
   if (data.contentTier === 'invalid') return true;
@@ -4073,6 +4679,70 @@ const JUNK_EXCERPT_PATTERNS = [
   /not every review published by/i,
 ];
 
+// Score sources read directly from page markup (image filenames, CSS/SVG
+// classes, widget JSON) rather than scanned from the article prose — see
+// extractUKStarRating and friends in score-extractors.js. A false
+// not_a_review/garbage_text verdict on the PROSE (e.g. cookie-consent
+// boilerplate prepended to a real review — BRO-2282, John Proctor Is the
+// Villain WE, whatsonstage--sarah-crompton.json: the LLM ensemble saw the
+// consent banner and called it garbage_text, but wos-star-images had
+// already read 5/5 stars off the page's star-rating <img> tags, untouched
+// by that banner) does not taint these — the extractor never looked at the
+// rejected prose at all.
+// Deliberately narrower than OUTLET_VERIFIED_SOURCES in score-extractors.js:
+// excludes prose-scanned extractors (unicode-stars, text-pattern, css-stars,
+// word-stars, star-class, numeric-stars, omc-alt-text — which falls back to
+// matching against the plain-text body, not just markup) whose input IS the
+// same text the ensemble judged not-a-review/garbage, so a false rejection
+// could plausibly taint them too. Also excludes json-ld — that already has
+// its own, outlet-gated exception (isJsonLdStarNotAReview below); duplicating
+// it here without the KNOWN_STAR_OUTLETS check would weaken it.
+const STRUCTURAL_STAR_SOURCES = new Set([
+  'wos-star-images', 'stage-star-svg', 'telegraph-svg-stars',
+  'dailymail-rating-img', 'guardian-star-svg', 'bww-star-image',
+  'theatre-weekly-star-image', 'radiotimes-svg-stars', 'radiotimes-page-json',
+  'afridiziak-star-image', 'timeout-svg-stars',
+]);
+
+/**
+ * True when a review-text file's score came from page markup independent of
+ * the article prose the ensemble rejected — used by the not_a_review /
+ * garbage_text rejectionReason exception below. See STRUCTURAL_STAR_SOURCES
+ * for why this is narrower than "any outlet-verified source." Scoped to
+ * these two reasons only (not e.g. wrong_show / wrong_production, which are
+ * content-correctness verdicts a markup-based star score can't vouch for).
+ */
+function hasStructuralStarScore(data) {
+  if (!data) return false;
+  if (data.rejectionReason !== 'not_a_review' && data.rejectionReason !== 'garbage_text') return false;
+  if (data.wrongProduction === true || data.wrongShow === true) return false;
+  // A later pipeline pass (fix-p0-score-corruption.js) can determine the
+  // extracted score was wrong (extraction-no-evidence, aggregator-score-in-
+  // p0-slot, ...) and stamp originalScoreCleared=true without touching
+  // rejectionReason/scoreSource — same check hasValidScore's hasOrig makes
+  // (line ~4330). Without this, a since-invalidated extraction would still
+  // pass here.
+  if (data.originalScoreCleared === true) return false;
+  const source = data.scoreSource || data.originalScoreSource;
+  if (!STRUCTURAL_STAR_SOURCES.has(source)) return false;
+  return typeof data.originalScoreNormalized === 'number'
+    && data.originalScoreNormalized >= 1 && data.originalScoreNormalized <= 100;
+}
+
+/**
+ * True when a thumb verdict field (dtliThumb / bwwThumb) is a definite
+ * up-or-down call. Excludes 'Meh'/'Flat' (neutral — not independent evidence
+ * of a specific score direction) and normalizes the case each source writes:
+ * llm-extractor.js's DTLI branch stamps dtliThumb upper-case
+ * ('UP'/'DOWN'/'MEH'), its BWW branch stamps bwwThumb title-case
+ * ('Up'/'Down'/'Meh').
+ */
+function isDefiniteThumb(thumb) {
+  if (typeof thumb !== 'string') return false;
+  const upper = thumb.toUpperCase();
+  return upper === 'UP' || upper === 'DOWN';
+}
+
 /**
  * True when a review-text file has an aggregator excerpt substantial and
  * clean enough to stand on its own as the scoring source, independent of a
@@ -4085,11 +4755,26 @@ const JUNK_EXCERPT_PATTERNS = [
  *   - an aggregator excerpt field with 150+ chars of non-junk text (excludes
  *     photo captions, aggregator disclaimer boilerplate — see
  *     JUNK_EXCERPT_PATTERNS)
- *   - aggregatorStars that actually parses to a rating (excludes "N/A" and
- *     other unparseable strings masquerading as a score)
+ *   - EITHER aggregatorStars that actually parses to a rating (excludes "N/A"
+ *     and other unparseable strings masquerading as a score) OR a definite
+ *     dtliThumb/bwwThumb verdict (Up/Down — see isDefiniteThumb). Added
+ *     2026-09 (BRO-2495): a THUMB-only score (dtliThumb=Up, scoreSource=thumb)
+ *     is exactly as independent of the article body as aggregatorStars is —
+ *     the verdict is read off the aggregator's own page, not the paywalled
+ *     fullText the ensemble rejected. Before this, every THUMB-scored review
+ *     of a paywalled T1 outlet (NYT, WSJ, New Yorker, The Times) was one
+ *     ensemble re-run away from silently losing its score: the NYT review of
+ *     Paranormal Activity (opening night 2026-08-26) was stamped
+ *     not_a_review purely because its stored body was a bot-detection
+ *     paywall stub, even though it was correctly THUMB-scored from DTLI.
  *   - no wrongProduction / wrongShow flag, unconditionally (this narrow path
  *     does not defer to the manual-clear machinery the other gates use — if
  *     either flag is set, the file stays excluded here regardless)
+ *
+ * Still scoped to rejectionReason === 'not_a_review' only (unchanged) —
+ * 'garbage_text' is a stronger, collector-time signal per the caller's own
+ * scoping comment (see isIncludableForRebuild above); a THUMB verdict + clean
+ * excerpt doesn't override that.
  *
  * Corpus parity check (all 41,455 review-text files, task #734 ship-check
  * 2026-08-01): the earlier version of this exception (excerpt presence +
@@ -4104,6 +4789,7 @@ function hasIndependentExcerptScore(data) {
   const excerpt = bestAggregatorExcerptText(data);
   if (!excerpt || excerpt.trim().length < 150) return false;
   if (JUNK_EXCERPT_PATTERNS.some(p => p.test(excerpt))) return false;
+  if (isDefiniteThumb(data.dtliThumb) || isDefiniteThumb(data.bwwThumb)) return true;
   if (data.aggregatorStars == null) return false;
   const { parseOriginalScore } = require('./score-parsers');
   return parseOriginalScore(String(data.aggregatorStars)) != null;
@@ -4214,8 +4900,22 @@ module.exports = {
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
   pickBestDtliSlug,
+  dtliSlugPredatesShow,
+  extractDtliReviewYears,
+  dtliShowYear,
   applyTemporalOverrides,
   isReviewWithinOwnProductionWindow,
+  // In-window + slug-match veto (audit S6-T4)
+  IN_WINDOW_VETO_LEAD_DAYS,
+  IN_WINDOW_VETO_LAG_DAYS,
+  IN_WINDOW_VETO_NO_CLOSING_DAYS,
+  urlSlugMatchesShowTitle,
+  isWithinInWindowVetoWindow,
+  isInWindowSlugMatchedReview,
+  isCvSourcedWrongProduction,
+  isCvSourcedWrongShow,
+  currentCvVerdictStands,
+  cvFlagVetoedInWindow,
   isSameTitleDifferentYearFalsePositive,
   isPrematureReviewForUnopenedShow,
   PRE_OPENING_LEAD_DAYS,
@@ -4229,6 +4929,8 @@ module.exports = {
   STRONG_DIFFERENT_SHOW_MARKERS,
   getWrongProductionReasonFromUrl,
   getWrongProductionReasonForUnknownCritic,
+  isCriticUnknown,
+  getWrongProductionReasonForBww,
   urlYearFromPath,
   urlLooksLikeReview,
   isSluglessReviewUrl,
@@ -4242,6 +4944,7 @@ module.exports = {
   isStaleCvPromotedWrongShow,
   computeCvIsStale,
   isNonReviewDemotedByFreshCV,
+  cvWrongArticleManuallyCleared,
   wrongShowCleared,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
@@ -4274,6 +4977,10 @@ module.exports = {
   isIncludableForRebuild,
   explainExclusion,
   duplicateOfInheritedFlag,
+  hasStructuralStarScore,
+  hasIndependentExcerptScore,
+  isDefiniteThumb,
+  STRUCTURAL_STAR_SOURCES,
   isRejectedNonReview,
   isRetrieved,
   blocksRediscovery,

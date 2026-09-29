@@ -111,7 +111,16 @@ function mergeManualEntries(reviews, manualEntries, normalizeUrl) {
 
     if (twin && twin.review.assignedScore) {
       const idx = reviews.indexOf(twin.review);
-      if (idx >= 0) reviews[idx] = manual;
+      // BRO-4192: designation (e.g. NYT Critics_Pick) is pipeline-derived from
+      // the twin's canonical outlet URL on every rebuild; manual-review-direct
+      // never sets it (0 of 119 manual entries carried one). Take the twin's
+      // current value so a manual score never hides the badge — gun-and-powder
+      // Paper Mill's NYT pick sat under a papermill.org PDF URL — and never
+      // keeps a stale one the twin has since lost.
+      const merged = { ...manual };
+      if (twin.review.designation) merged.designation = twin.review.designation;
+      else delete merged.designation;
+      if (idx >= 0) reviews[idx] = merged;
       preserved++;
       if (twin.matchedBy.startsWith('url')) matchedByUrl++;
       if (twin.matchedBy === 'url-cross-outlet') matchedCrossOutlet++;

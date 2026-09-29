@@ -56,31 +56,76 @@ function makeTmpDir(label) {
   return fs.mkdtempSync(path.join(os.tmpdir(), `verify-edits-cloud-gates-${label}-`));
 }
 
-function toolUse(name, input) {
-  return { type: 'tool_use', name, id: `tu-${randomUUID()}`, input };
+// `result` is the tool_result text the hook will see for this call (default
+// 'ok'). The card-first and close-out gates key on the CLI's own success
+// output, so those fixtures need a realistic result, not a placeholder.
+function toolUse(name, input, result = 'ok') {
+  return { type: 'tool_use', name, id: `tu-${randomUUID()}`, input, _result: result };
 }
+
+// What `linear-brain.js create` really prints: stdout JSON + stderr marker.
+const CARD_CREATE = toolUse(
+  'Bash',
+  { command: 'node scripts/linear-brain.js create "Fix the thing" --dispatch --notes "## Acceptance criteria\\n`npx tsc --noEmit`"' },
+  '{\n  "identifier": "BRO-9001",\n  "url": "https://linear.app/x/issue/BRO-9001"\n}\n__BOARD_CARD_ID__=BRO-9001\nISSUE-FILED: BRO-9001',
+);
 
 // Builds a transcript with an arbitrary sequence of assistant tool_use calls,
 // each in its own assistant turn (mirrors real transcripts, where tool calls
-// and their results interleave turn-by-turn).
-function writeTranscript(dir, toolCalls) {
+// and their results interleave turn-by-turn). Every fixture files a Linear
+// card first (CLAUDE.md §6) unless `card: false` — so the card-first gate
+// stays out of the way of tests about the other gates.
+function notice(text) {
+  return { _notice: text };
+}
+
+function attachmentNotice(text) {
+  return { _attachment: text };
+}
+
+function writeTranscript(dir, toolCalls, { card = true, userText = 'please do the work' } = {}) {
   const p = path.join(dir, 'transcript.jsonl');
   const lines = [
-    JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: 'please do the work' }] } }),
+    JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: userText }] } }),
   ];
-  for (const call of toolCalls) {
+  for (const { _result, _notice, _attachment, ...call } of card ? [CARD_CREATE, ...toolCalls] : toolCalls) {
+    if (typeof _attachment === 'string') {
+      // Mid-turn delivery of the same notices: an `attachment` record with
+      // type 'queued_command' and the notice in `prompt` (real shape seen
+      // 2026-09-28 for four finished agents that had NO user record at all).
+      lines.push(JSON.stringify({ type: 'attachment', attachment: { type: 'queued_command', commandMode: 'task-notification', prompt: _attachment } }));
+      continue;
+    }
+    if (typeof _notice === 'string') {
+      // A harness notice (<task-notification>, <agent-message> hand-back,
+      // queued-Routine notice) — and the owner's own typed prompt — is a user
+      // record whose content is a plain STRING, not a list. The hook's parser
+      // only reads list content for user_text, so a list-shaped fixture here
+      // would pass in the harness and fail in production (/second-opinion
+      // finding on the in-flight gate, 2026-09-28).
+      lines.push(JSON.stringify({ type: 'user', message: { role: 'user', content: _notice } }));
+      continue;
+    }
     lines.push(JSON.stringify({
       type: 'assistant',
       message: { role: 'assistant', content: [call] },
     }));
     lines.push(JSON.stringify({
       type: 'user',
-      message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: call.id, content: 'ok' }] },
+      message: { role: 'user', content: [{ type: 'tool_result', tool_use_id: call.id, content: _result ?? 'ok' }] },
     }));
   }
   fs.writeFileSync(p, lines.join('\n') + '\n');
   return p;
 }
+
+// The board gates (NOCARD/NOWRAPUP) call `node scripts/linear-brain.js --probe`
+// under $CLAUDE_PROJECT_DIR before blocking, and fail open unless it exits 0.
+// A stub repo root keeps the tests offline and deterministic; STUB_PROBE_EXIT
+// picks the verdict (0 healthy / 3 erroring / 4 unreachable).
+const STUB_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-stubroot-'));
+fs.mkdirSync(path.join(STUB_ROOT, 'scripts'));
+fs.writeFileSync(path.join(STUB_ROOT, 'scripts', 'linear-brain.js'), 'process.exit(Number(process.env.STUB_PROBE_EXIT || 0));\n');
 
 function runHook(transcriptPath, lastAssistantMessage, env = {}) {
   const stdin = JSON.stringify({
@@ -96,7 +141,7 @@ function runHook(transcriptPath, lastAssistantMessage, env = {}) {
     const r = spawnSync('bash', [REPO_HOOK], {
       input: stdin,
       encoding: 'utf8',
-      env: { ...process.env, ...env, HOME: fakeHomeDir },
+      env: { ...process.env, CLAUDE_PROJECT_DIR: STUB_ROOT, BOARD_GATE_DISABLED: '0', ...env, HOME: fakeHomeDir },
       timeout: HOOK_TIMEOUT_MS,
       killSignal: 'SIGKILL',
     });
@@ -485,7 +530,7 @@ test('regression: PR gate strips fenced quotes too — a quoted example blocker 
   ].join('\n');
   const r = runHook(transcript, msg);
   assertBlocked(r, 'a blocker phrase inside a fenced quote must not satisfy the PR follow-through gate');
-  assert.match(r.stderr, /merge it yourself/i, `expected the PR-follow-through gate's own message (not a different gate's), got: ${r.stderr.slice(0, 300)}`);
+  assert.match(r.stderr, /land it yourself/i, `expected the PR-follow-through gate's own message (not a different gate's), got: ${r.stderr.slice(0, 300)}`);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
@@ -597,7 +642,7 @@ test('PR opened via MCP, never merged, no stated blocker → BLOCKED (PRUNMERGED
   const transcript = writeTranscript(dir, [CREATE_PR]);
   const r = runHook(transcript, "Opened PR #42.\n\nSAFE TO EXIT — PR open, nothing else pending.");
   assertBlocked(r, 'PR opened, never merged, no blocker stated');
-  assert.match(r.stderr, /merge it yourself/i, `expected the merge-it-yourself reminder, got: ${r.stderr.slice(0, 300)}`);
+  assert.match(r.stderr, /land it yourself/i, `expected the land-it-yourself reminder, got: ${r.stderr.slice(0, 300)}`);
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
@@ -645,6 +690,79 @@ test('PR follow-through kill switch: PR_FOLLOWTHROUGH_GATE_DISABLE=1 allows an u
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+// ─────────── owner never merges: OWNERMERGE / land/** (2026-09-27) ────────────
+
+const LAND_PUSH = toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/fix-x' });
+const LAND_CREATE_BRANCH = toolUse('mcp__github__create_branch', { owner: 'thomaspryor', repo: 'Broadwayscore', branch: 'land/fix-x' });
+const LAND_RUN_CHECK = toolUse('mcp__github__actions_list', { method: 'list_workflow_runs', owner: 'thomaspryor', repo: 'Broadwayscore', resource_id: 'land.yml' });
+const LINEAR_CLOSEOUT_DONE = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-4187 --state Done --comment "landed"' });
+
+test('OWNERMERGE: "waiting on your merge" blocks even with NOT SAFE TO EXIT', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ownermerge-block');
+  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const r = runHook(transcript, "PR #42 is green.\n\nNOT SAFE TO EXIT — PR #42 green, waiting on your merge.");
+  assertBlocked(r, 'asking the owner to merge must block');
+  assert.match(r.stderr, /owner never merges/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OWNERMERGE false-positive guard: describing or quoting the rule is not a merge ask', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ownermerge-describe');
+  const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:refs/heads/land/x' }), toolUse('mcp__github__actions_get', { method: 'get_workflow_run' }), toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-1 --state Done' })]);
+  const r = runHook(transcript, 'Landed. Sessions never ask the owner to merge, and the Stop hook now blocks "waiting on your merge" and `ready to merge`.\n\nSAFE TO EXIT — landed and verified.');
+  assertAllowed(r, 'a description or quotation of the rule must not trip OWNERMERGE');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OWNERMERGE false-positive guard: a real owner decision ("waiting on your decision") is allowed', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ownermerge-decision');
+  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const r = runHook(transcript, "DECISION NEEDED: pricing tier for /biz.\n\nNOT SAFE TO EXIT — waiting on your decision on pricing.");
+  assertAllowed(r, 'owner decisions are not merge asks');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('OWNERMERGE false-positive guard: "merge conflict" is a stated blocker, not a merge ask', skipNoRepoHook, () => {
+  const dir = makeTmpDir('ownermerge-conflict');
+  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const r = runHook(transcript, "Resolving it now.\n\nNOT SAFE TO EXIT — merge conflict on PR #42.");
+  assertAllowed(r, 'merge conflict must stay a legitimate blocker');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('land/** push + checked Land run + Linear close-out → SAFE TO EXIT allowed (PR gate satisfied)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('land-allow');
+  const transcript = writeTranscript(dir, [CREATE_PR, LAND_PUSH, LAND_RUN_CHECK, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, "Landed via land.yml; main fast-forwarded.\n\nSAFE TO EXIT — landed and verified.");
+  assertAllowed(r, 'a landed branch satisfies the PR gate, and Linear close-out satisfies wrap-up');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('MCP create_branch land/** counts as landing follow-through', skipNoRepoHook, () => {
+  const dir = makeTmpDir('land-mcp');
+  const transcript = writeTranscript(dir, [CREATE_PR, LAND_CREATE_BRANCH, LAND_RUN_CHECK, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, "Landed.\n\nSAFE TO EXIT — landed via MCP land branch.");
+  assertAllowed(r, 'MCP land/** branch is the cloud fallback');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('LANDUNCHECKED: land/** push then SAFE TO EXIT without checking the run → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('land-unchecked');
+  const transcript = writeTranscript(dir, [CREATE_PR, LAND_PUSH, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, "Pushed to land.\n\nSAFE TO EXIT — pushed.");
+  assertBlocked(r, 'push to land/** is not proof it landed');
+  assert.match(r.stderr, /Land run/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('land/** match is anchored: a branch named foo-land/x is not a landing', skipNoRepoHook, () => {
+  const dir = makeTmpDir('land-anchor');
+  const transcript = writeTranscript(dir, [CREATE_PR, toolUse('Bash', { command: 'git push origin HEAD:foo-land/x' }), NOTION_CLOSEOUT_DONE]);
+  const r = runHook(transcript, "Pushed.\n\nSAFE TO EXIT — pushed.");
+  assertBlocked(r, 'foo-land/ is not land/**, PR still unlanded');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 // ─────────────────────────── regression: existing gates untouched ─────────
 
 test('regression: existing UNVERIFIED gate still blocks an unrun code edit when neither new gate applies', skipNoRepoHook, () => {
@@ -670,5 +788,562 @@ test('regression: a fully clean session, standalone check (edit + verify + push 
   ]);
   const r = runHook(transcript, 'Fixed, verified, pushed.\n\nSAFE TO EXIT — verified with tsc, pushed to branch.');
   assertAllowed(r, 'a fully clean, fully reported session must pass all gates');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─────────── review-parking + bare NOT SAFE TO EXIT (2026-09-28) ────────────
+// Session 01Fn6CXk held PR #947 for ~11h ending every turn on "NOT SAFE TO
+// EXIT — PR still open and unreviewed". OWNERMERGE only knew merge-asks, and
+// PRUNMERGED accepted the bare NOT SAFE TO EXIT line the status gate requires
+// on every such turn — so nothing ever fired.
+
+function runOnPr(label, msg, env = {}) {
+  const dir = makeTmpDir(label);
+  const transcript = writeTranscript(dir, [CREATE_PR]);
+  const r = runHook(transcript, msg, env);
+  fs.rmSync(dir, { recursive: true, force: true });
+  return r;
+}
+
+test('INCIDENT REPLAY: "NOT SAFE TO EXIT — PR still open and unreviewed" → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('review-incident', 'Still open, still draft, no new activity.\n\nNOT SAFE TO EXIT — PR #947 still open and unreviewed; next silent check-in at 00:13 UTC.');
+  assertBlocked(r, 'parking a PR as "unreviewed" is a review ask');
+  assert.match(r.stderr, /never merges or reviews/i, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('review ask: "ready for your review" → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('review-ready-for-your', 'NEEDS YOU — PR #947 is ready for your review.\n\nNOT SAFE TO EXIT — CI still running on PR #947.');
+  assertBlocked(r, 'asking the owner to review must block even with a real blocker alongside');
+});
+
+test('review ask: "waiting on reviewers" → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('review-waiting-reviewers', 'Everything is green.\n\nNOT SAFE TO EXIT — waiting on reviewers for PR #42.');
+  assertBlocked(r, '"waiting on reviewers" is a review ask');
+  assert.match(r.stderr, /never merges or reviews/i, `OWNERMERGE must be the gate that fired, got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('bare NOT SAFE TO EXIT is no longer a stated blocker → BLOCKED (PRUNMERGED)', skipNoRepoHook, () => {
+  const r = runOnPr('bare-notsafe', 'Opened PR #42.\n\nNOT SAFE TO EXIT — PR #42 open.');
+  assertBlocked(r, 'the status line alone must not satisfy the PR gate');
+  assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('"draft pending" is no longer a stated blocker → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('draft-pending', 'Opened PR #42 as a draft pending follow-up.\n\nNOT SAFE TO EXIT — draft pending.');
+  assertBlocked(r, 'a draft is not a blocker');
+  assert.match(r.stderr, /land it yourself/i, `PRUNMERGED must be the gate that fired, got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('CI still running is a legitimate blocker → ALLOWED', skipNoRepoHook, () => {
+  const r = runOnPr('ci-running', 'Opened PR #42; test.yml started 1 min ago.\n\nNOT SAFE TO EXIT — CI still running on PR #42, check-in scheduled.');
+  assertAllowed(r, 'waiting on a running CI run is legitimate');
+});
+
+test('explicit PR-BLOCKER line with a specific reason → ALLOWED', skipNoRepoHook, () => {
+  const r = runOnPr('pr-blocker', 'Land refused it.\nPR-BLOCKER: land.yml refused: tsc error in src/lib/scoring.ts:42\n\nNOT SAFE TO EXIT — fixing the tsc error next.');
+  assertAllowed(r, 'a specific PR-BLOCKER reason must pass');
+});
+
+test('PR-BLOCKER with a throwaway reason (<10 chars) → BLOCKED', skipNoRepoHook, () => {
+  const r = runOnPr('pr-blocker-short', 'PR-BLOCKER: wip\n\nNOT SAFE TO EXIT — later.');
+  assertBlocked(r, 'a token with no real reason must not satisfy the gate');
+  assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('describing the rule in backticks is not a review ask → ALLOWED', skipNoRepoHook, () => {
+  const r = runOnPr('review-quoted', 'The gate now blocks `waiting on review` and `unreviewed`.\n\nNOT SAFE TO EXIT — CI still running on PR #42.');
+  assertAllowed(r, 'quoted/backticked phrases are dropped before the OWNERMERGE scan');
+});
+
+// ─────────────────────────── card-first gate (NOCARD) ───────────────────────
+// CLAUDE.md §6: the session files or claims its Linear card first. Session
+// 01Fn6CXk edited, pushed and merged a PR without one; the SessionStart banner
+// still said notion-brain.js.
+
+function runCard(label, calls, msg, { env = {}, userText } = {}) {
+  const dir = makeTmpDir(label);
+  const transcript = writeTranscript(dir, calls, { card: false, ...(userText ? { userText } : {}) });
+  const r = runHook(transcript, msg, env);
+  fs.rmSync(dir, { recursive: true, force: true });
+  return r;
+}
+const NOT_SAFE = 'Pushed.\n\nNOT SAFE TO EXIT — deploy still running.';
+
+test('NOCARD: real work (push) with no Linear card → BLOCKED', skipNoRepoHook, () => {
+  const r = runCard('nocard-block', [GIT_PUSH], NOT_SAFE);
+  assertBlocked(r, 'work without a card must block');
+  assert.match(r.stderr, /Linear card/i, `got: ${r.stderr.slice(0, 300)}`);
+  assert.doesNotMatch(r.stderr, /notion-brain\.js create/, 'must not send sessions to the retired Notion CLI');
+});
+
+test('NOCARD: a code edit alone also needs a card → BLOCKED', skipNoRepoHook, () => {
+  const r = runCard('nocard-edit', [QUALIFYING_EDIT, toolUse('Bash', { command: 'npx tsc --noEmit' })], 'Edited and type-checked.\n\nNOT SAFE TO EXIT — not pushed yet.');
+  assertBlocked(r, 'editing code is work; the card comes first');
+});
+
+test('NOCARD: linear-brain create with its real output → ALLOWED', skipNoRepoHook, () => {
+  const r = runCard('nocard-create', [CARD_CREATE, GIT_PUSH], NOT_SAFE);
+  assertAllowed(r, 'a created card satisfies the gate');
+});
+
+test('NOCARD: create piped through 2>/dev/null (stdout JSON only) → ALLOWED', skipNoRepoHook, () => {
+  const create = toolUse('Bash', { command: 'node scripts/linear-brain.js create "x" --dispatch --notes "y" 2>/dev/null' }, '{\n  "identifier": "BRO-9002",\n  "url": "https://linear.app/x"\n}');
+  const r = runCard('nocard-create-stdout', [create, GIT_PUSH], NOT_SAFE);
+  assertAllowed(r, 'the stdout identifier alone proves the create succeeded');
+});
+
+test('NOCARD: linear-session claim of an existing issue → ALLOWED', skipNoRepoHook, () => {
+  const claim = toolUse('Bash', { command: 'node scripts/linear-session.js claim --issue=BRO-4201' }, '__LINEAR_ISSUE_ID__=abd2a457-d618-464b-8143-ce2ac3955110\n{"identifier":"BRO-4201","action":"claimed"}');
+  const r = runCard('nocard-claim', [claim, GIT_PUSH], NOT_SAFE);
+  assertAllowed(r, 'claiming an existing issue satisfies the gate');
+});
+
+test('NOCARD: a create that FAILED (no marker in its result) → BLOCKED', skipNoRepoHook, () => {
+  const failed = toolUse('Bash', { command: 'node scripts/linear-brain.js create "x" --notes "y"' }, '❌ Card creation must decide: pass --dispatch to work it now, or --park "<reason>".');
+  const r = runCard('nocard-create-failed', [failed, GIT_PUSH], NOT_SAFE);
+  assertBlocked(r, 'a rejected create is not a card');
+});
+
+test('NOCARD spoof guard: grepping the marker out of source does not count → BLOCKED', skipNoRepoHook, () => {
+  const grep = toolUse('Bash', { command: 'grep -n "__BOARD_CARD_ID__" scripts/linear-brain.js' }, "646:  console.error(`__BOARD_CARD_ID__=BRO-1`);");
+  const r = runCard('nocard-spoof', [grep, GIT_PUSH], NOT_SAFE);
+  assertBlocked(r, 'the marker must come from a real create/claim result, not any tool output');
+});
+
+test('NOCARD: a BRO-N merely mentioned in user text (e.g. an injected banner) is not a card → BLOCKED, and the message says to claim it', skipNoRepoHook, () => {
+  const r = runCard('nocard-mention', [GIT_PUSH], NOT_SAFE, { userText: 'STALE CODE CHECKOUT: a checkout once read a landed commit as reverted (BRO-2663). Work BRO-4201.' });
+  assertBlocked(r, 'injected context citing an issue must not satisfy the gate');
+  assert.match(r.stderr, /linear-session\.js claim --issue=BRO-N/, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('NOCARD bypass: NO-CARD with a real reason → ALLOWED; a throwaway one → BLOCKED', skipNoRepoHook, () => {
+  assertAllowed(runCard('nocard-bypass', [GIT_PUSH], 'Pushed a typo fix.\nNO-CARD: one-character typo in a comment\n\nNOT SAFE TO EXIT — deploy running.'), 'NO-CARD with a reason');
+  assertBlocked(runCard('nocard-bypass-short', [GIT_PUSH], 'Pushed.\nNO-CARD: typo\n\nNOT SAFE TO EXIT — deploy running.'), 'NO-CARD needs 10+ chars');
+});
+
+test('NOCARD fails open when Linear is unreachable (probe exit 4) or erroring (exit 3)', skipNoRepoHook, () => {
+  const r4 = runCard('nocard-unreachable', [GIT_PUSH], NOT_SAFE, { env: { STUB_PROBE_EXIT: '4' } });
+  assertAllowed(r4, 'Linear down → continue untracked (CLAUDE.md §6)');
+  assert.match(r4.stderr, /unreachable or erroring/i, 'must warn, not stay silent');
+  assertAllowed(runCard('nocard-erroring', [GIT_PUSH], NOT_SAFE, { env: { STUB_PROBE_EXIT: '3' } }), 'erroring (e.g. no LINEAR_API_KEY) also fails open');
+});
+
+test('NOCARD honours the board-gate escape hatch and its own kill switch', skipNoRepoHook, () => {
+  assertAllowed(runCard('nocard-hatch', [GIT_PUSH], NOT_SAFE, { env: { BOARD_GATE_DISABLED: '1' } }), 'BOARD_GATE_DISABLED=1');
+  assertAllowed(runCard('nocard-kill', [GIT_PUSH], NOT_SAFE, { env: { CARD_GATE_DISABLE: '1' } }), 'CARD_GATE_DISABLE=1');
+});
+
+test('NOCARD false-positive guard: a read-only turn needs no card → ALLOWED', skipNoRepoHook, () => {
+  const r = runCard('nocard-readonly', [toolUse('Read', { file_path: 'src/lib/scoring.ts' })], 'scoring.ts:42 applies the tier weight.');
+  assertAllowed(r, 'answering a question is not work');
+});
+
+// ─────────────────── wrap-up close-out on Linear (2026-09-28) ───────────────
+
+test('NOWRAPUP: a linear-brain Done that the done-gate REFUSED is not a close-out → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-linear-refused');
+  const refused = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9001 --state Done' }, '\n❌ REFUSED — BRO-9001 has no done-evidence (PR-EVIDENCE line or Acceptance criteria).\nExit code 5');
+  const transcript = writeTranscript(dir, [GIT_PUSH, refused]);
+  const r = runHook(transcript, 'Pushed and closed the card.\n\nSAFE TO EXIT — done.');
+  assertBlocked(r, 'the card is still open after a refused update');
+  assert.match(r.stderr, /Linear card was never closed out/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('NOWRAPUP: linear-session report --status=done (claimed issue) → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-linear-report');
+  const report = toolUse('Bash', { command: 'node scripts/linear-session.js report --issue=BRO-4201 --status=done --summary="shipped"' }, '__LINEAR_ISSUE_ID__=abc12345-0000\n{"identifier":"BRO-4201","status":"done","stateName":"Done","doneGateRefused":false}');
+  const transcript = writeTranscript(dir, [GIT_PUSH, report]);
+  const r = runHook(transcript, 'Pushed and reported.\n\nSAFE TO EXIT — reported done.');
+  assertAllowed(r, 'report is the close-out verb for a claimed issue');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('NOWRAPUP: linear-session report whose done-gate refused → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-linear-report-refused');
+  const report = toolUse('Bash', { command: 'node scripts/linear-session.js report --issue=BRO-4201 --status=done --summary="shipped"' }, '{"identifier":"BRO-4201","status":"done","stateName":"In Progress","doneGateRefused":true}\n❌ REFUSED (no-evidence)');
+  const transcript = writeTranscript(dir, [GIT_PUSH, report]);
+  const r = runHook(transcript, 'Pushed and reported.\n\nSAFE TO EXIT — reported done.');
+  assertBlocked(r, 'a refused report leaves the card open');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('NOWRAPUP fails open when Linear is unreachable', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-linear-down');
+  const transcript = writeTranscript(dir, [GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.', { STUB_PROBE_EXIT: '4' });
+  assertAllowed(r, 'a session cannot close out on a board it cannot reach');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─────────── ship-check findings (2026-09-28): fall-through + phrasing ───────
+// A stood-down board gate (Linear down / escape hatch) must fall through to
+// every later gate, not exit the hook. The first draft exited from bash and
+// skipped UNVERIFIED/scoring/PR gates — Linear down replayed the incident.
+
+test('P0 regression: NOCARD standing down (Linear unreachable) still runs the UNVERIFIED gate → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('nocard-fallthrough');
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT], { card: false });
+  const r = runHook(transcript, 'Edited scoring.ts.\n\nNOT SAFE TO EXIT — not verified yet.', { STUB_PROBE_EXIT: '4' });
+  assertBlocked(r, 'a stood-down card gate must not wave through an unverified edit');
+  assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('P0 regression: NOWRAPUP standing down (Linear unreachable) still runs the UNVERIFIED gate → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('nowrapup-fallthrough');
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, GIT_PUSH]);
+  const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.', { STUB_PROBE_EXIT: '4' });
+  assertBlocked(r, 'a stood-down close-out gate must not wave through an unverified edit');
+  assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('P0 regression: escape hatch on, no card, PR parked → the PR gate still fires', skipNoRepoHook, () => {
+  const dir = makeTmpDir('hatch-pr');
+  const transcript = writeTranscript(dir, [CREATE_PR], { card: false });
+  const r = runHook(transcript, 'Opened PR #42.\n\nNOT SAFE TO EXIT — PR open.', { BOARD_GATE_DISABLED: '1' });
+  assertBlocked(r, 'the board escape hatch must not disable the PR gate');
+  assert.match(r.stderr, /land it yourself/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('ordering: no card AND a parked PR → the PR gate fires first', skipNoRepoHook, () => {
+  const dir = makeTmpDir('order-pr-first');
+  const transcript = writeTranscript(dir, [CREATE_PR], { card: false });
+  const r = runHook(transcript, 'NOT SAFE TO EXIT — PR #947 still open and unreviewed.');
+  assertBlocked(r, 'parked PR without a card');
+  assert.match(r.stderr, /never merges or reviews/i, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+for (const [label, msg] of [
+  ['blocked-owners-review', "Everything's green.\n\nNOT SAFE TO EXIT — blocked on the owner's review of PR #947."],
+  ['blocked-signoff', 'Green.\n\nNOT SAFE TO EXIT — blocked on your sign-off.'],
+  ['checks-pending-approval', 'NOT SAFE TO EXIT — checks pending your approval.'],
+  ['please-review', 'Please review PR #947 when you can; CI still running.\n\nNOT SAFE TO EXIT — CI still running.'],
+  ['pr-blocker-owner', 'PR-BLOCKER: waiting for the owner to look at it\n\nNOT SAFE TO EXIT — see blocker.'],
+]) {
+  test(`false-pass closed: "${msg.split('\n').pop().slice(0, 60)}" → BLOCKED`, skipNoRepoHook, () => {
+    const r = runOnPr(`fp-${label}`, msg);
+    assertBlocked(r, 'a review ask in any wording must block');
+  });
+}
+
+for (const [label, msg] of [
+  ['waiting-for-ci', 'Opened PR #42.\n\nNOT SAFE TO EXIT — waiting for CI on PR #42.'],
+  ['ci-apostrophe', "NOT SAFE TO EXIT — CI's still running on PR #42."],
+  ['ci-currently', 'NOT SAFE TO EXIT — CI is currently running.'],
+  ['testyml-running', 'NOT SAFE TO EXIT — test.yml is running.'],
+  ['land-run-running', 'NOT SAFE TO EXIT — Land run still running.'],
+  ['ci-failed', 'CI failed on PR #42 (tsc). Fixing.\n\nNOT SAFE TO EXIT — fixing CI.'],
+  ['merge-conflicts', 'NOT SAFE TO EXIT — merge conflicts with main on PR #42.'],
+  ['bold-decision', '**DECISION NEEDED:** pricing tier for /biz.\n\nNOT SAFE TO EXIT — answer the decision.'],
+  ['bullet-pr-blocker', '- PR-BLOCKER: land.yml refused: tsc error in src/lib/scoring.ts\n\nNOT SAFE TO EXIT — fixing.'],
+]) {
+  test(`false-block closed: "${msg.split('\n').pop().slice(0, 60)}" → ALLOWED`, skipNoRepoHook, () => {
+    const r = runOnPr(`fb-${label}`, msg);
+    assertAllowed(r, 'a legitimate technical wait must pass');
+  });
+}
+
+for (const [label, msg] of [
+  ['without-waiting', 'Landed via land/fix-x without waiting for review.\n\nSAFE TO EXIT — landed and verified.'],
+  ['no-need', 'Landed; no need for your review.\n\nSAFE TO EXIT — landed and verified.'],
+  ['doesnt-need', "Landed. This doesn't need a review.\n\nSAFE TO EXIT — landed and verified."],
+]) {
+  test(`negated review wording after a land is not an ask (${label}) → ALLOWED`, skipNoRepoHook, () => {
+    const dir = makeTmpDir(`neg-${label}`);
+    const transcript = writeTranscript(dir, [CREATE_PR, LAND_PUSH, LAND_RUN_CHECK, LINEAR_CLOSEOUT_DONE]);
+    const r = runHook(transcript, msg);
+    assertAllowed(r, 'describing that no review is needed must not trip OWNERMERGE');
+    fs.rmSync(dir, { recursive: true, force: true });
+  });
+}
+
+test('NOCARD: a scratch analysis script in /tmp is not repo work → ALLOWED without a card', skipNoRepoHook, () => {
+  const r = runCard('nocard-scratch', [
+    toolUse('Write', { file_path: '/tmp/claude-0/x/scratchpad/analyze.py', content: 'print(1)' }),
+    toolUse('Bash', { command: 'python3 /tmp/claude-0/x/scratchpad/analyze.py' }),
+  ], 'The answer is 1.\n\nNOT SAFE TO EXIT — just answered a question.');
+  assertAllowed(r, 'throwaway scripts outside the repo need no card');
+});
+
+test('NOCARD: create output truncated by `| tail -3` still counts (BRO id survives) → ALLOWED', skipNoRepoHook, () => {
+  const create = toolUse('Bash', { command: 'node scripts/linear-brain.js create "x" --dispatch --notes "y" 2>&1 | tail -3' }, 'ISSUE-FILED: BRO-9005 ("x") — state=Todo\n\n⚠️  ACCEPTANCE CRITERIA DO NOT ARM — this card cannot be closed as filed.');
+  assertAllowed(runCard('nocard-tail', [create, GIT_PUSH], NOT_SAFE), 'the BRO id in the create result is enough');
+});
+
+test('NOCARD: create piped to `jq -r .identifier` (bare BRO-N) → ALLOWED', skipNoRepoHook, () => {
+  const create = toolUse('Bash', { command: 'node scripts/linear-brain.js create "x" --dispatch --notes "y" 2>/dev/null | jq -r .identifier' }, 'BRO-9006');
+  assertAllowed(runCard('nocard-jq', [create, GIT_PUSH], NOT_SAFE), 'a bare identifier from the create command counts');
+});
+
+test('NOWRAPUP: ECONNREFUSED in a retried-but-successful close-out is not a refusal → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-econnrefused');
+  const closeout = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9001 --state Done --comment "PR-EVIDENCE: merged deployed checked (x)"' }, '⏳ Linear HTTP retry 1 (ECONNREFUSED)\n{"identifier":"BRO-9001","state":"Done"}\nISSUE-UPDATED: BRO-9001 — state=Done — commented');
+  const transcript = writeTranscript(dir, [GIT_PUSH, closeout]);
+  const r = runHook(transcript, 'Pushed and closed.\n\nSAFE TO EXIT — card Done.');
+  assertAllowed(r, 'REFUSED must be word-anchored');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// Linear has no "Paused" state: linear-brain rejects `--state Paused` with ❌,
+// and a pause is `--state Backlog` (what `report --status=paused` sets).
+test('NOWRAPUP: linear-brain --state Backlog is a close-out → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-backlog');
+  const closeout = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9007 --state Backlog --comment "parked"' }, 'ISSUE-UPDATED: BRO-9007 — state=Backlog — commented');
+  const transcript = writeTranscript(dir, [GIT_PUSH, closeout]);
+  const r = runHook(transcript, 'Pushed and parked.\n\nSAFE TO EXIT — card parked.');
+  assertAllowed(r, 'Backlog is how Linear spells a pause');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('NOWRAPUP: linear-brain --state Paused (rejected by Linear) is not a close-out → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('wrapup-paused-rejected');
+  const closeout = toolUse('Bash', { command: 'node scripts/linear-brain.js update BRO-9008 --state Paused' }, '❌ unknown state "Paused". Valid states: In Review, Canceled, Todo, Backlog, Duplicate, Done, In Progress');
+  const transcript = writeTranscript(dir, [GIT_PUSH, closeout]);
+  const r = runHook(transcript, 'Pushed and paused.\n\nSAFE TO EXIT — card paused.');
+  assertBlocked(r, 'a rejected state change left the card open');
+  assert.match(r.stderr, /status=paused/, `got: ${r.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ─── In-flight-work gate (INFLIGHT, 2026-09-28) ─────────────────────────────
+// Owner evidence: a session with ten background agents, a Land run and two
+// scheduled check-ins in flight closed a turn on "SAFE TO EXIT"; the owner
+// reads that line as "kill this session now". These fixtures mirror the real
+// transcript shapes: agentId in the Agent tool_result, trigger ids in the
+// send_later / create_trigger tool_result JSON, and completions as
+// STRING-content user records (see notice()).
+const AGENT_ID = 'a0ef4eb5c89b9f21b';
+const AGENT_BG = toolUse('Agent', { description: 'S4 agent A', prompt: 'do the thing', run_in_background: true },
+  `Async agent launched successfully.\nagentId: ${AGENT_ID} (internal ID - do not mention to user.)\nThe agent is working in the background.`);
+const AGENT_FG = toolUse('Agent', { description: 'quick lookup', prompt: 'look' }, 'Here is the answer: 42.');
+const AGENT_DONE = notice(`<task-notification>\n<task-id>${AGENT_ID}</task-id>\n<tool-use-id>toolu_x</tool-use-id>\n<status>completed</status>\n<summary>Agent "S4 agent A" finished</summary>\n</task-notification>`);
+const AGENT_FAILED = notice(`<task-notification>\n<task-id>${AGENT_ID}</task-id>\n<status>failed</status>\n<summary>Agent "S4 agent A" failed</summary>\n</task-notification>`);
+const AGENT_HANDBACK = notice(`Another Claude session sent a message:\n<agent-message from="${AGENT_ID}">\n[Subagent hand-back] The report follows:\n  done, nothing edited\n</agent-message>`);
+const AGENT_RESUME = toolUse('SendMessage', { to: AGENT_ID, summary: 'one more thing', message: 'also check X' }, 'Message sent.');
+const AGENT_STOP = toolUse('TaskStop', { task_id: AGENT_ID }, 'Stopped.');
+const FAR = '2099-01-01T12:00:00Z';
+const PAST = '2001-01-01T12:00:00Z';
+const SEND_LATER_FUTURE = toolUse('mcp__Claude_Code_Remote__send_later', { delay_minutes: 60, message: 'Land check-in: re-check run 123' },
+  `{"fire_at":"${FAR}","now":"2026-09-28T20:08:23Z","trigger_id":"trig_01FUTURE"}`);
+const SEND_LATER_FIRED = toolUse('mcp__Claude_Code_Remote__send_later', { delay_minutes: 1, message: 'Land check-in: re-check run 123' },
+  `{"fire_at":"${PAST}","now":"2001-01-01T11:59:00Z","trigger_id":"trig_01PAST"}`);
+const SEND_LATER_FAILED = toolUse('mcp__Claude_Code_Remote__send_later', { delay_minutes: 60, message: 'x' }, 'Error: rate limited');
+const DELETE_FUTURE = toolUse('mcp__Claude_Code_Remote__delete_trigger', { trigger_id: 'trig_01FUTURE' }, '{"trigger":{"id":"trig_01FUTURE","name":"Land check-in"}}');
+const CRON_SELF = toolUse('mcp__Claude_Code_Remote__create_trigger', { name: 'hourly poll', prompt: 'poll CI', cron_expression: '0 * * * *', initiation: 'own_followup' },
+  '{"trigger":{"id":"trig_01CRON","name":"hourly poll","cron_expression":"0 * * * *","enabled":true,"persist_session":true}}');
+const CRON_DISABLE = toolUse('mcp__Claude_Code_Remote__update_trigger', { trigger_id: 'trig_01CRON', enabled: false }, '{"trigger":{"id":"trig_01CRON","enabled":false}}');
+const CRON_OTHER_SESSION = toolUse('mcp__Claude_Code_Remote__create_trigger', { name: 'nightly', prompt: 'run', cron_expression: '0 3 * * *', create_new_session_on_fire: true, initiation: 'human_request' },
+  '{"trigger":{"id":"trig_01FRESH","name":"nightly","cron_expression":"0 3 * * *","enabled":true}}');
+const ONESHOT_PUSHED = toolUse('mcp__Claude_Code_Remote__update_trigger', { trigger_id: 'trig_01PAST', run_once_at: FAR }, '{"trigger":{"id":"trig_01PAST","run_once_at":"' + FAR + '"}}');
+const SAFE_MSG = 'All done.\n\nSAFE TO EXIT — nothing outstanding.';
+const NOT_SAFE_MSG = 'Agents still running.\n\nNOT SAFE TO EXIT — one background agent still working; it hands back when done.';
+
+function assertInflight(r, message) {
+  assertBlocked(r, message);
+  assert.match(r.stderr, /in flight/i, `expected the INFLIGHT message, got: ${r.stderr.slice(0, 400)}`);
+}
+
+test('INFLIGHT: background Agent launched, no completion notice, SAFE TO EXIT → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent');
+  const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, SAFE_MSG);
+  assertInflight(r, 'a live background agent dies with the session');
+  assert.match(r.stderr, new RegExp(AGENT_ID), 'the block names the live agent id');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: same transcript with NOT SAFE TO EXIT → ALLOWED (the honest line while work is in flight)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-notsafe');
+  const transcript = writeTranscript(dir, [AGENT_BG]);
+  assertAllowed(runHook(transcript, NOT_SAFE_MSG), 'NOT SAFE TO EXIT is what the gate asks for');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: agent completion arrives as a STRING-content <task-notification> → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-done');
+  const transcript = writeTranscript(dir, [AGENT_BG, AGENT_DONE, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a completed agent is not in flight');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: completion delivered mid-turn as an `attachment` record (queued_command prompt), no user record → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-attachment');
+  const done = attachmentNotice(`<task-notification>\n<task-id>${AGENT_ID}</task-id>\n<status>completed</status>\n<summary>Agent "S4 agent A" finished</summary>\n</task-notification>`);
+  assertAllowed(runHook(writeTranscript(dir, [AGENT_BG, done, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'mid-turn delivery shape must count');
+  const handback = attachmentNotice(`<agent-message from="${AGENT_ID}">\n[Subagent hand-back] report\n</agent-message>`);
+  assertAllowed(runHook(writeTranscript(dir, [AGENT_BG, handback, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'mid-turn hand-back shape must count');
+  const unrelated = attachmentNotice('<task-notification>\n<task-id>someone-else</task-id>\n<status>completed</status>\n</task-notification>');
+  assertInflight(runHook(writeTranscript(dir, [AGENT_BG, unrelated, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a notice for a different id does not complete this agent');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: <status>failed</status> notice also completes the agent → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-failed');
+  const transcript = writeTranscript(dir, [AGENT_BG, AGENT_FAILED, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a failed agent is finished, not live');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: <agent-message from=…> hand-back completes the agent → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-handback');
+  const transcript = writeTranscript(dir, [AGENT_BG, AGENT_HANDBACK, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'the hand-back is the completion');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: TaskStop on the agent completes it → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-stop');
+  const transcript = writeTranscript(dir, [AGENT_BG, AGENT_STOP, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a stopped agent is not live');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: SendMessage to a finished agent resumes it — live again until its next completion → BLOCKED, then ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-resume');
+  const blocked = writeTranscript(dir, [AGENT_BG, AGENT_DONE, AGENT_RESUME, LINEAR_CLOSEOUT_DONE]);
+  assertInflight(runHook(blocked, SAFE_MSG), 'a resumed agent is in flight again');
+  const allowed = writeTranscript(dir, [AGENT_BG, AGENT_DONE, AGENT_RESUME, AGENT_HANDBACK, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(allowed, SAFE_MSG), 'its second hand-back completes it');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT false-positive guard: a foreground Agent (report returned inline, no agentId) is never in flight', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-agent-fg');
+  const transcript = writeTranscript(dir, [AGENT_FG, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'foreground agents finish before the tool returns');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT false-positive guard: a background Bash command is deliberately NOT tracked', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-bash-bg');
+  const bg = toolUse('Bash', { command: 'sleep 999', run_in_background: true, description: 'wait' },
+    'Command running in background with ID: b1e9y745t. Output is being written to: /tmp/x.output.');
+  const transcript = writeTranscript(dir, [bg, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'two of four background commands in a real transcript finished with no notice');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: self-bound send_later still ahead of now, never deleted, SAFE TO EXIT → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater');
+  const transcript = writeTranscript(dir, [SEND_LATER_FUTURE, LINEAR_CLOSEOUT_DONE]);
+  const r = runHook(transcript, SAFE_MSG);
+  assertInflight(r, 'a check-in scheduled into this session dies with it');
+  assert.match(r.stderr, /trig_01FUTURE/, 'the block names the trigger id');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: send_later deleted via delete_trigger → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater-deleted');
+  const transcript = writeTranscript(dir, [SEND_LATER_FUTURE, DELETE_FUTURE, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a deleted trigger is not in flight');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: send_later whose fire_at is already past has fired → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater-fired');
+  const transcript = writeTranscript(dir, [SEND_LATER_FIRED, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'the firing never echoes the id; time is the signal');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: update_trigger pushing a fired one-shot\'s run_once_at into the future re-arms it → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater-pushed');
+  const transcript = writeTranscript(dir, [SEND_LATER_FIRED, ONESHOT_PUSHED, LINEAR_CLOSEOUT_DONE]);
+  assertInflight(runHook(transcript, SAFE_MSG), 'the re-armed one-shot is live again');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: a failed send_later call (no trigger id in its result) schedules nothing → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-sendlater-failed');
+  const transcript = writeTranscript(dir, [SEND_LATER_FAILED, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'nothing was scheduled');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: self-bound cron Routine (create_trigger result shape {"trigger":{"id"}}) never deleted → BLOCKED; disabled via update_trigger → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-cron');
+  assertInflight(runHook(writeTranscript(dir, [CRON_SELF, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'a recurring wake-up into this session is live until deleted');
+  assertAllowed(runHook(writeTranscript(dir, [CRON_SELF, CRON_DISABLE, LINEAR_CLOSEOUT_DONE]), SAFE_MSG), 'enabled:false ends it');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT false-positive guard: a Routine that fires into a fresh or other session is not this session\'s to keep alive', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-cron-other');
+  const other = toolUse('mcp__Claude_Code_Remote__create_trigger', { name: 'wake sibling', prompt: 'go', run_once_at: FAR, persistent_session_id: 'session_01XYZ', initiation: 'own_followup' },
+    '{"trigger":{"id":"trig_01SIBLING","run_once_at":"' + FAR + '"}}');
+  const transcript = writeTranscript(dir, [CRON_OTHER_SESSION, other, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'create_new_session_on_fire / persistent_session_id Routines survive this session');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT precedence: it blocks before the wrap-up gate, and NOT SAFE TO EXIT with a live agent needs no close-out', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-precedence');
+  // Work done, no Linear close-out, live agent: the message must be INFLIGHT
+  // (what to fix first), not NOWRAPUP.
+  const r = runHook(writeTranscript(dir, [GIT_PUSH, AGENT_BG]), SAFE_MSG);
+  assertInflight(r, 'in-flight work is reported before the missing close-out');
+  assert.doesNotMatch(r.stderr, /Linear card was never closed out/, 'one block per turn: INFLIGHT, not NOWRAPUP');
+  assertAllowed(runHook(writeTranscript(dir, [GIT_PUSH, AGENT_BG]), NOT_SAFE_MSG), 'the honest line passes every gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT: independent of SESSION_STATUS_GATE_DISABLE (own last-line parse, no shared locals)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-independent');
+  const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
+  assertInflight(runHook(transcript, SAFE_MSG, { SESSION_STATUS_GATE_DISABLE: '1' }), 'disabling the status-line gate must not disable this one');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT bypass: NO-VERIFY: allows SAFE TO EXIT with a live agent', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-noverify');
+  const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, 'NO-VERIFY: owner asked to end now, agent is throwaway.\n\nSAFE TO EXIT — per owner.'), 'explicit bypass');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT kill switch: INFLIGHT_GATE_DISABLE=1', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-killswitch');
+  const transcript = writeTranscript(dir, [AGENT_BG, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG, { INFLIGHT_GATE_DISABLE: '1' }), 'kill switch');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('INFLIGHT false-positive guard: a fenced example containing "SAFE TO EXIT" is not a claim; the real last line is NOT SAFE', skipNoRepoHook, () => {
+  const dir = makeTmpDir('inflight-fenced');
+  const transcript = writeTranscript(dir, [AGENT_BG]);
+  assertAllowed(runHook(transcript, 'Example line:\n```\nSAFE TO EXIT — example\n```\n\nNOT SAFE TO EXIT — agent still running.'), 'fenced text is stripped');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('regression: existing user_text consumers unchanged — a STRING-content owner prompt does not become user_text (NO-VERIFY turn boundary untouched)', skipNoRepoHook, () => {
+  // The parser now emits string-content user records as 'user_notice', a kind
+  // only the in-flight gate reads. A string prompt between an edit and its
+  // verification must not change any other gate's outcome vs. before.
+  const dir = makeTmpDir('inflight-user-notice-isolated');
+  const transcript = writeTranscript(dir, [GIT_PUSH, notice('owner typed something'), LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, SAFE_MSG), 'a plain string user record is inert for every other gate');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// BRO-4238: github-main-guard.sh refuses Broadwayscore PR merges. A refused
+// merge attempt must not count as "the PR was merged" and switch off the
+// follow-through gate.
+test('PR gate: a merge attempt the hook BLOCKED does not count as merged → BLOCKED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('blocked-merge');
+  const blockedMerge = toolUse('mcp__github__merge_pull_request', { owner: 'thomaspryor', repo: 'Broadwayscore', pullNumber: 1 },
+    'PreToolUse:mcp__github__merge_pull_request hook error: 🛑 BLOCKED: PRs in thomaspryor/Broadwayscore are never merged directly (BRO-4238)');
+  const transcript = writeTranscript(dir, [CREATE_PR, blockedMerge, LINEAR_CLOSEOUT_DONE]);
+  assertBlocked(runHook(transcript, 'Merged PR #1.\n\nSAFE TO EXIT — merged.'), 'a blocked merge left the PR open');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('PR gate: a merge that went through still counts (unchanged) → ALLOWED', skipNoRepoHook, () => {
+  const dir = makeTmpDir('real-merge');
+  const transcript = writeTranscript(dir, [CREATE_PR, MERGE_PR, LINEAR_CLOSEOUT_DONE]);
+  assertAllowed(runHook(transcript, 'Merged PR #1.\n\nSAFE TO EXIT — merged.'), 'a real merge closes the PR out');
   fs.rmSync(dir, { recursive: true, force: true });
 });

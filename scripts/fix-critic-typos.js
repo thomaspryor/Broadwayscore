@@ -15,6 +15,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const DATA_ROOT = process.argv.find(a => a.startsWith('--data-dir='))
   ? process.argv.find(a => a.startsWith('--data-dir=')).replace('--data-dir=', '')
@@ -80,9 +81,7 @@ function levenshtein(a, b) {
 // Build global critic frequency map for tiebreaking
 function buildCriticFrequency() {
   const freq = {};
-  const showDirs = fs.readdirSync(DIR).filter(d =>
-    fs.statSync(path.join(DIR, d)).isDirectory()
-  );
+  const showDirs = listShowDirs(DIR);
   for (const showId of showDirs) {
     const showDir = path.join(DIR, showId);
     const files = fs.readdirSync(showDir).filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
@@ -127,9 +126,7 @@ function main() {
   console.log('Building critic frequency map...');
   const freq = buildCriticFrequency();
 
-  const showDirs = fs.readdirSync(DIR).filter(d =>
-    fs.statSync(path.join(DIR, d)).isDirectory()
-  );
+  const showDirs = listShowDirs(DIR);
 
   let fixed = 0;
   let skipped = 0;

@@ -18,6 +18,7 @@
 const fs = require('fs');
 const path = require('path');
 const { buildDailyDigestHtml } = require('./lib/email-templates');
+const { computeExclusionTrend } = require('./lib/exclusion-trend');
 
 const MOBILE_DATA = path.join(__dirname, '..', 'public', 'data', 'mobile-shows.json');
 const SNAPSHOT_FILE = path.join(__dirname, '..', 'data', 'audit', 'daily-snapshot.json');
@@ -26,79 +27,16 @@ const DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'daily-digest-snapshot.json');
 const DIGEST_ITEM_CAP = 8;
 const DRY_RUN = process.argv.includes('--dry-run');
 
-/**
- * Balusters postmortem follow-through: aggregate exclusion-logger JSONL entries
- * from today + last 7 days (baseline) and surface:
- *   - today's top N reasons (by count)
- *   - reasons >2σ above the 7-day mean (spike detection)
- *   - reasons first seen within 7 days (novel — investigate)
- *
- * The Cote Notices regex bug went undetected for weeks because no aggregation
- * existed. Daily digest surfaces these patterns before they hit opening night.
- */
-function computeExclusionTrend(now) {
-  const todayKey = new Date(now).toISOString().slice(0, 10);
-  const days = [];
-  for (let i = 0; i < 8; i++) {
-    days.push(new Date(now.getTime() - i * 86400000).toISOString().slice(0, 10));
-  }
-
-  const perDay = new Map(); // day → Map<reason, count>
-  const firstSeen = new Map(); // reason → day
-
-  for (const day of days) {
-    const p = path.join(AUDIT_DIR, `exclusions-${day}.jsonl`);
-    if (!fs.existsSync(p)) continue;
-    let content;
-    try { content = fs.readFileSync(p, 'utf8'); } catch { continue; }
-    const dayCounts = new Map();
-    for (const line of content.split('\n')) {
-      if (!line.trim()) continue;
-      let rec;
-      try { rec = JSON.parse(line); } catch { continue; }
-      const reason = rec.reason || 'unknown';
-      dayCounts.set(reason, (dayCounts.get(reason) || 0) + 1);
-      if (!firstSeen.has(reason) || day < firstSeen.get(reason)) {
-        firstSeen.set(reason, day);
-      }
-    }
-    perDay.set(day, dayCounts);
-  }
-
-  const today = perDay.get(todayKey) || new Map();
-  const pastDays = days.slice(1).filter(d => perDay.has(d));
-  const allReasons = new Set([...today.keys(), ...pastDays.flatMap(d => [...perDay.get(d).keys()])]);
-
-  const trend = [];
-  for (const reason of allReasons) {
-    const todayCount = today.get(reason) || 0;
-    const pastCounts = pastDays.map(d => (perDay.get(d) || new Map()).get(reason) || 0);
-    const mean = pastCounts.length ? pastCounts.reduce((a, b) => a + b, 0) / pastCounts.length : 0;
-    const variance = pastCounts.length
-      ? pastCounts.reduce((a, b) => a + (b - mean) ** 2, 0) / pastCounts.length
-      : 0;
-    const stdev = Math.sqrt(variance);
-    const threshold = mean + 2 * stdev;
-    const spike = todayCount > threshold && todayCount >= 5;
-    const novel = firstSeen.get(reason) >= days[6]; // first seen within last 7 days
-    trend.push({
-      reason,
-      todayCount,
-      mean: Math.round(mean * 10) / 10,
-      stdev: Math.round(stdev * 10) / 10,
-      threshold: Math.round(threshold * 10) / 10,
-      spike,
-      novel,
-      firstSeen: firstSeen.get(reason),
-    });
-  }
-
-  const spikes = trend.filter(t => t.spike).sort((a, b) => b.todayCount - a.todayCount);
-  const novelReasons = trend.filter(t => t.novel && t.todayCount > 0).sort((a, b) => b.todayCount - a.todayCount);
-  const topToday = trend.filter(t => t.todayCount > 0).sort((a, b) => b.todayCount - a.todayCount).slice(0, 10);
-
-  return { spikes, novelReasons, topToday, todayTotal: [...today.values()].reduce((a, b) => a + b, 0) };
-}
+// Balusters postmortem follow-through: aggregate exclusion-logger JSONL
+// entries from today + last 7 days (baseline) and surface today's top
+// reasons, spikes (>2σ above the 7-day mean), and novel reasons (first seen
+// within 7 days). The Cote Notices regex bug went undetected for weeks
+// because no aggregation existed.
+//
+// BRO-2379: the spike/novel detection is cross-checked against the
+// generalized sticky-flag repeat-vs-new categorization (BRO-75's
+// wrong-production-exclusion-analysis.js, generalized to every reason) —
+// see scripts/lib/exclusion-trend.js for the full mechanism and rationale.
 
 function loadSnapshot() {
   try {
@@ -276,7 +214,7 @@ async function main() {
   // Compute exclusion trend (independent of show-snapshot changes).
   // Emits a summary even if no show-level changes occurred — silent-drop trends
   // still need to surface.
-  const exclusionTrend = computeExclusionTrend(new Date());
+  const exclusionTrend = computeExclusionTrend(new Date(), { auditDir: AUDIT_DIR, persistLedger: !DRY_RUN });
 
   // First run — save snapshot, write an empty digest snapshot (no prior data
   // to diff against yet). DRY_RUN never touches the real digest snapshot —
@@ -350,4 +288,10 @@ async function main() {
   console.log('Snapshot updated.');
 }
 
-main().catch(err => { console.error(err); process.exit(1); });
+if (require.main === module) {
+  main().catch(err => { console.error(err); process.exit(1); });
+}
+
+module.exports = {
+  computeExclusionTrend, buildSnapshot, diffSnapshots, hasChanges, buildDigestItems,
+};

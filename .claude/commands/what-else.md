@@ -99,7 +99,34 @@ Sort sparks into tiers with effort estimates:
 
 ### Phase 5: Create Notion cards (MANDATORY — do not ask, just do it)
 
-For EVERY spark in **Roadmap** and **Start now in parallel session** tiers, create a Notion card in the BWSC Roadmap (data source: collection://fa7b3ff2-c073-4097-b54c-0a78e56e06b6):
+**FILE ONLY WHAT THIS SESSION CANNOT FINISH (owner mandate 2026-09-08).** The
+previous version of this step said "For EVERY spark ... create a card. Do not
+ask permission." That instruction was measured as a live contributor to the
+backlog it was meant to feed: on 2026-09-08 the BRO board held 1,107 open
+issues at 3.1 filed per 1 closed, and of 361 created in seven days only 40
+(11%) carried any automated-filer marker — the other 89% were session-authored
+discovery, including one titled verbatim "Register remaining single-writer
+data/audit/ files as apiFallbackSafe (BRO-345 what-else sweep)". Every session
+that ended properly was required to file, so the session-close ritual was
+manufacturing the backlog.
+
+So, per spark, in this order:
+
+1. **Can you fix it now, in this session?** Then fix it. A spark you can close
+   in ten minutes is worth more fixed than filed. This is the default.
+2. **Is it already covered** by an open issue or the roadmap you just read?
+   Then say so and file nothing.
+3. **Only if neither holds**, file it — and the notes MUST name why it needs
+   its own session (a decision you cannot make, access you lack, or work that
+   would exceed this session). "It's a good idea" is not a reason to file.
+
+Batch related sparks into ONE issue rather than one per spark; four findings of
+the same class are one piece of work, not four.
+
+For each spark that survives all three tests, create a **Linear** issue via
+`node scripts/linear-brain.js create` (Notion has been read-only since
+2026-08-30 and its create exits 6 — the Notion instructions below are retained
+only for the field shapes, not the destination):
 - **Name:** the spark title
 - **Status:** "Not started"
 - **Priority:** P1 Next for parallel/urgent, P2 Later for roadmap items
@@ -115,7 +142,11 @@ For EVERY spark in **Roadmap** and **Start now in parallel session** tiers, crea
   ```
   Self-check: "Could a fresh session act on this in under 2 minutes?"
 
-Do not ask permission. Do not suggest. Create the cards, then report what you created.
+Do not ask permission for the sparks that passed the three tests above — file
+those and report them. But "do not ask permission" is not "file everything":
+the three tests come first, and a session that fixes four sparks and files none
+has done the better job. Report what you fixed AND what you deliberately did
+not file, so the restraint is visible rather than looking like an omission.
 
 ### Phase 5.5: Auto-dispatch every P0/P1 card you just created (MANDATORY — owner rule 2026-07-24)
 

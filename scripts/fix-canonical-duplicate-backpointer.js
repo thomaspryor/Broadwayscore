@@ -36,6 +36,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const {
   planCanonicalPointerClear,
   applyCanonicalPointerClear,
@@ -90,9 +91,9 @@ if (showFilter) {
   }
 }
 
-const shows = (showFilter ? [showFilter] : fs.readdirSync(RT)).filter((d) => {
+const shows = (showFilter ? [showFilter] : listShowDirs(RT)).filter((d) => {
   if (d.startsWith('.') || d.startsWith('_')) return false;
-  try { return fs.statSync(path.join(RT, d)).isDirectory(); } catch { return false; }
+  return true;
 });
 
 // A full-corpus run over an empty/near-empty tree is the same failure wearing a

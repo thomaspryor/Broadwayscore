@@ -27,6 +27,7 @@ const path = require('path');
 const { titleMatchesShow, urlSlugMatchesShow } = require('./lib/rss-discovery');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const ROOT = path.join(__dirname, '..');
 const PENDING_DIR = path.join(ROOT, 'data', 'review-texts', '_pending');
@@ -63,9 +64,8 @@ function main() {
   const titleById = new Map(shows.map(s => [s.id, s.title]));
 
   let scanned = 0, tagged = 0, alreadyTagged = 0, kept = 0;
-  const showDirs = fs.readdirSync(PENDING_DIR)
-    .filter(d => !d.startsWith('.') && (!showArg || d === showArg))
-    .filter(d => { try { return fs.statSync(path.join(PENDING_DIR, d)).isDirectory(); } catch { return false; } });
+  const showDirs = listShowDirs(PENDING_DIR)
+    .filter(d => !showArg || d === showArg);
 
   for (const showId of showDirs) {
     const showTitle = titleById.get(showId);

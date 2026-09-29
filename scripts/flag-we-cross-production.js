@@ -9,6 +9,8 @@
 const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 
@@ -41,8 +43,8 @@ let flagged = 0;
 let skippedAlready = 0;
 let skippedLegit = 0;
 
-const dirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-  .filter(d => (d.includes('west-end') || d.includes('off-west-end')) && fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
+const dirs = listShowDirs(REVIEW_TEXTS_DIR)
+  .filter(d => d.includes('west-end') || d.includes('off-west-end'));
 
 for (const dir of dirs) {
   const dirPath = path.join(REVIEW_TEXTS_DIR, dir);
@@ -102,6 +104,7 @@ for (const dir of dirs) {
 
       // Flag it
       data.wrongProduction = true;
+      invalidateWrongProductionAutoClear(data);
       data.wrongProductionNote = 'US-only outlet review filed in West End directory — Broadway production review';
 
       if (!dryRun) {

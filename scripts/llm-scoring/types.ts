@@ -544,6 +544,21 @@ export interface PipelineRunSummary {
     total: number;
   };
 
+  /**
+   * Estimated USD cost for this run, from cost.ts's costBreakdown()/the
+   * single-scorer inline estimate (BRO-3381) — same figure the end-of-run
+   * "Estimated cost: $X" console line already printed and threw away.
+   */
+  costUsd?: number;
+
+  /**
+   * GitHub Actions run id (process.env.GITHUB_RUN_ID) this summary belongs
+   * to, or null outside CI. Lets a scheduled workflow's multiple index.ts
+   * invocations (main pass + drain) have their costUsd summed per run for
+   * the cost-breach alarm (BRO-3381) — see scripts/lib/llm-scoring-cost-recording.js.
+   */
+  runId?: string | null;
+
   /** Calibration stats if calibration was run */
   calibration?: CalibrationStats;
 

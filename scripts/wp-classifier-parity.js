@@ -76,6 +76,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // ---------- CLI ----------
 const args = process.argv.slice(2);
@@ -104,14 +105,7 @@ function buildP3Cohort() {
     console.error(`Missing review-texts directory: ${REVIEW_TEXTS_DIR}`);
     process.exit(1);
   }
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
-    if (d.startsWith('_')) return false;
-    try {
-      return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory();
-    } catch (e) {
-      return false;
-    }
-  });
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => !d.startsWith('_'));
 
   const cohort = [];
   for (const showId of showDirs) {

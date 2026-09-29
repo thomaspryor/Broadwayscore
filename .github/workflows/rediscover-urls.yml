@@ -36,6 +36,10 @@ on:
   schedule:
     - cron: '0 1 * * 0'  # Weekly Sunday 1 AM UTC
 
+concurrency:
+  group: rediscover-urls
+  cancel-in-progress: false
+
 jobs:
   rediscover:
     runs-on: ubuntu-latest

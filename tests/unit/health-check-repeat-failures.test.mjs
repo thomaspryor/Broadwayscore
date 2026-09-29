@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -84,6 +84,54 @@ test('playbook routes repeat-failure checks to fix-now (actionable, not low)', (
   const entry = getPlaybookEntry('Workflow repeat-failure: update-lottery-rush.yml');
   assert.ok(entry, 'expected a playbook entry to match');
   assert.equal(entry.urgency, 'fix-now');
+});
+
+// BRO-2742: the static playbook's fix-now urgency ignored r.selfHealed, so an
+// already-resolved repeat-failure streak still filed an alarming Linear card.
+test('effectiveUrgencyLevel: selfHealed result downgrades to low regardless of playbook urgency', () => {
+  assert.equal(effectiveUrgencyLevel('fix-now', { selfHealed: true }), 'low');
+  assert.equal(effectiveUrgencyLevel('this-week', { selfHealed: true }), 'low');
+});
+
+test('effectiveUrgencyLevel: non-selfHealed or unrelated results pass urgency through unchanged', () => {
+  assert.equal(effectiveUrgencyLevel('fix-now', { selfHealed: false }), 'fix-now');
+  assert.equal(effectiveUrgencyLevel('fix-now', {}), 'fix-now');
+  assert.equal(effectiveUrgencyLevel('low', { selfHealed: true }), 'low');
+});
+
+test('effectiveUrgencyLevel: tolerates a null/undefined result', () => {
+  assert.equal(effectiveUrgencyLevel('fix-now', null), 'fix-now');
+  assert.equal(effectiveUrgencyLevel('fix-now', undefined), 'fix-now');
+});
+
+// BRO-2742 follow-up: getDigestSubject/updateErrorFingerprint/the status
+// banner each reimplemented the same "is this actionable" filter inline from
+// the static playbook alone — none of them knew about selfHealed either, so
+// even after downgrading the card-filing urgency a selfHealed repeat-failure
+// could still drive "BSC Daily: N warnings need attention" in the subject
+// while the digest body said "no action needed". They now share
+// isActionableResult(), which is selfHealed-aware.
+// Codex adversarial review (ship-check) caught a real regression here: the
+// three inline predicates this replaced treated "no playbook entry at all"
+// as actionable (`!entry || ...`), but an early isActionableResult() draft
+// defaulted a missing entry's urgency to 'low', silently dropping any check
+// with no AUTO_FIX_PLAYBOOK match from the subject/fingerprint/banner.
+test('getDigestSubject: a warning with no playbook entry still counts (no silent drop)', () => {
+  const results = [{ name: 'Some brand-new check with no playbook match', status: 'warn', message: 'uh oh' }];
+  const subject = getDigestSubject(results, { consecutiveErrorDays: 0 }, {});
+  assert.match(subject, /1 warning/);
+  assert.doesNotMatch(subject, /All clear/);
+});
+
+test('getDigestSubject: a selfHealed repeat-failure warning does not trigger "warnings need attention"', () => {
+  const results = repeatFailureResults({
+    skipped: false,
+    repeatFailures: [{ name: 'opening-night-broadcast.yml', count: 4, latestUrl: 'https://x/4', selfHealed: true }],
+  });
+  assert.equal(results[0].status, 'warn');
+  const subject = getDigestSubject(results, { consecutiveErrorDays: 0 }, {});
+  assert.match(subject, /All clear/);
+  assert.doesNotMatch(subject, /warning/);
 });
 
 test('getDigestSubject: a promoted repeat-failure error names the workflow (not "All clear")', () => {

@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
     inputs:
       issue_number:
-        description: 'Issue number to execute the approved fix for'
+        description: 'GitHub issue number, or a Linear id (bro-N) for a session-authored plan in data/pending-fixes/'
         required: true
         type: string
       plan_id:
@@ -22,8 +22,11 @@ permissions:
   contents: write
   issues: write
 
+# Per-issue group, matching auto-fix-feedback-bug.yml's key exactly (BRO-3500
+# what-else follow-up) — see that file's comment for why a shared group was
+# wrong. workflow_dispatch-only here so inputs.issue_number is always set.
 concurrency:
-  group: auto-fix-feedback-bug
+  group: auto-fix-feedback-bug-${{ inputs.issue_number }}
   cancel-in-progress: false
 
 jobs:
@@ -110,6 +113,7 @@ jobs:
         uses: actions/github-script@v7
         env:
           FIX_RESULT: ${{ steps.exec.outputs.result }}
+          FIX_FAILED: ${{ steps.exec.outputs.failed }}
           FIX_ISSUE_NUMBER: ${{ inputs.issue_number }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
@@ -117,6 +121,15 @@ jobs:
             const result = process.env.FIX_RESULT || 'error';
             const rawIssue = process.env.FIX_ISSUE_NUMBER || '';
             const issueNumber = parseInt(rawIssue);
+            // BRO-4216: session-authored plans are keyed by a Linear id
+            // (e.g. bro-4202), not a GitHub issue. Nothing to comment on.
+            if (!/^\d/.test(rawIssue)) {
+              core.info(`Plan ${rawIssue} is not a GitHub issue; result=${result}`);
+              const refused = parseInt(process.env.FIX_FAILED || '0') || 0;
+              if (result !== 'fixed' && result !== 'already-applied') core.setFailed(`Plan ${rawIssue}: ${result}`);
+              else if (refused > 0) core.setFailed(`Plan ${rawIssue}: ${refused} action(s) refused; see the Execute step log`);
+              return;
+            }
             const isSystematic = rawIssue.includes('-systematic');
 
             if (result === 'fixed') {

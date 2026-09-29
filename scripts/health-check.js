@@ -31,17 +31,18 @@
 const fs = require('fs');
 const path = require('path');
 const crypto = require('crypto');
-const { execSync } = require('child_process');
+const { execSync, execFileSync } = require('child_process');
 const { getTodayJsonlPath } = require('./lib/exclusion-logger');
 const { computeCommercialModelDriftStatus } = require('./lib/commercial-model-drift');
 const { routeAlert, readDispatchAttempts, peekDigestQueue, clearDigestQueue } = require('./lib/owner-alert-router.js');
-const { summarizeFailureStreak } = require('./lib/alert-dispatch-streak.js');
+const { summarizeFailureStreak, deadmanShouldPage } = require('./lib/alert-dispatch-streak.js');
 const { readOwnerEmailLog } = require('./lib/discord-notify.js');
 const { SCRAPINGBEE_ACKNOWLEDGED_EXHAUSTION, isScrapingBeeExhaustionAcknowledged } = require('./lib/scrapingbee-ack');
 const { evaluateScrapingdogCredits } = require('./lib/scrapingdog-ack');
 const { cachedShell, cachedFetch, hasLowHeadroom } = require('./lib/gh-api-cache.js');
 const { fetchGitHubJSON } = require('./lib/gh-api-client.js');
 const { assessAutofixEffectiveness, CHECK_NAME: AUTOFIX_EFFECTIVENESS_CHECK_NAME } = require('./lib/autofix-effectiveness');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { isBroadwayCategory } = require('./lib/venue-classification');
 const { assessMainRedStreak } = require('./lib/main-red-streak.js');
 
@@ -165,6 +166,14 @@ function generateApproveUrl(workflowFile, alertTitle) {
 }
 // Critical workflow failures still alert via notify-failure composite action.
 
+// BRO-3349: the ONE definition of "is the provider-spend ledger stale?" —
+// shared with its producer (scripts/check-provider-spend.js, which
+// re-exports these). Imported from provider-spend-core.js rather than from
+// the CLI: the CLI has top-level side effects (hasHelpFlag/process.exit,
+// argv-derived DAY) that would fire on require. provider-spend-core.js does
+// pull in provider-telemetry/browserbase-caps, but neither does I/O, reads
+// env, or cycles at require time (verified, ship-check/Codex).
+const { ledgerFreshnessHours, lastLedgerDay, STALE_HOURS_THRESHOLD: PROVIDER_SPEND_STALE_HOURS } = require('./lib/provider-spend-core');
 const DATA_DIR = path.join(__dirname, '..', 'data');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const PIPELINE_DIR = path.join(AUDIT_DIR, 'pipeline-health');
@@ -297,6 +306,12 @@ const AUTO_FIX_PLAYBOOK = [
   { match: /^Revenue: affiliate health$/, urgency: 'fix-now',
     humanAction: 'The affiliate ticket-revenue monitor flagged a problem (or the monitor itself stopped running). Open Claude Code and say: "Run check-affiliate-health.js --dry-run and investigate the failing layer — the check output names it (site clicks, Impact handoff, conversions, or payouts)."' },
 
+  // Provider spend ledger dead-man (BRO-3317). fix-now: the whole reason this
+  // check exists is that the ledger froze for 11 days with nothing paging —
+  // a repeat needs to surface the same day, not sit in a weekly bucket.
+  { match: /^Data quality: provider spend ledger$/, urgency: 'fix-now',
+    humanAction: 'The provider spend ledger (data/audit/provider-spend-daily.jsonl) has not been updated in >48h. Open Claude Code and say: "Check the \'Commit provider spend ledger (apiFallbackSafe)\' and \'Provider spend reconciliation\' steps in data-health-check.yml — confirm the write in the reconciliation step is actually reaching a committed push, not being wiped by an earlier commit step\'s push-with-retry.sh fallback."' },
+
   // Cookies — requires human action on Mac. Urgency escalates with proximity.
   { match: /^Cookies:/, urgency: 'fix-now',
     humanAction: 'A paywall cookie needs refreshing. On your Mac, open Claude Code and say: "Refresh the expired paywall cookies — check which ones need updating."',
@@ -409,10 +424,29 @@ async function tryAutoFix(checkResult) {
 
 // --- Helpers ---
 
-function hoursAgo(dateStr) {
-  const d = new Date(dateStr);
+// BRO-3349 (prevent-class): a BARE "YYYY-MM-DD" is a whole UTC day, not the
+// instant of its midnight. `new Date('2026-09-20')` is that day's START, so
+// treating it as a write timestamp inflates every reported age by up to 24h —
+// which is exactly how "Data quality: provider spend ledger" spent five days
+// reporting a perfectly fresh ledger as ">48h stale". Two live FRESHNESS_CHECKS
+// fields are day-shaped today (data/cast-changes.json's `lastUpdated`, warn at
+// 72h with a Wed+Sat writer — a Saturday write read 83h on Tuesday against a
+// true 59h; and data/commercial.json's `_meta.lastUpdated`), and nothing stops
+// a future producer from emitting another. Anchoring on the day's END is the
+// only reading that cannot over-report: a file written at ANY point during day
+// D is at most as old as D's end. Full timestamps are untouched — they do not
+// match the bare-day shape. Covered by scripts/tests/health-check-hours-ago.test.mjs.
+const BARE_DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+function hoursAgo(dateStr, now = Date.now()) {
+  // `new Date(null)` is epoch 0, i.e. a FINITE ~497,000h — a plausible-looking
+  // number rather than the Infinity every caller's "no usable value" branch
+  // expects. Numeric epoch inputs stay supported (some snapshots store
+  // `timestamp` as a number); only null is special-cased.
+  if (dateStr === null) return Infinity;
+  const d = new Date(BARE_DAY_RE.test(dateStr) ? `${dateStr}T23:59:59.999Z` : dateStr);
   if (isNaN(d.getTime())) return Infinity;
-  return (Date.now() - d.getTime()) / (1000 * 60 * 60);
+  return (now - d.getTime()) / (1000 * 60 * 60);
 }
 
 function formatAge(hours) {
@@ -624,9 +658,7 @@ function checkSync() {
     const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
     let fileCount = 0;
     if (fs.existsSync(reviewTextsDir)) {
-      const showDirs = fs.readdirSync(reviewTextsDir).filter(d =>
-        fs.statSync(path.join(reviewTextsDir, d)).isDirectory()
-      );
+      const showDirs = listShowDirs(reviewTextsDir);
       for (const dir of showDirs) {
         const files = fs.readdirSync(path.join(reviewTextsDir, dir))
           .filter(f => f.endsWith('.json') && f !== 'failed-fetches.json');
@@ -1065,6 +1097,71 @@ function checkBatchState() {
 
 // --- Category D: Content Quality ---
 
+/**
+ * providerSpendLedgerResult — decision for the "Data quality: provider spend
+ * ledger" row. `raw` is the literal text of data/audit/provider-spend-daily.jsonl
+ * (null when the file is absent/unreadable).
+ *
+ * Reads the ledger's own last `day` field rather than provider-spend-
+ * snapshot.json's generatedAt: the two files are staged by separate `git add`
+ * lines in the same commit step (adversarial review finding, 2026-09-14), so
+ * if the ledger's `git add` ever silently no-ops while the snapshot's
+ * succeeds, a generatedAt-based check would report healthy while the ledger —
+ * the thing BRO-3317's acceptance criteria literally names — stayed frozen.
+ *
+ * BRO-3349: this row used to compare `Date.now() - new Date(lastDay)`, i.e.
+ * measure from the START of the recorded day. That adds a phantom ~24h on
+ * top of the ~24h that check-provider-spend.js's `day` is ALREADY behind
+ * (its default DAY is utcYesterday() — the last COMPLETE day), and the row
+ * is evaluated BEFORE "Provider spend reconciliation" runs later in the same
+ * data-health-check.yml job, so the freshest `day` it can ever see is two
+ * calendar days back. Healthy runs therefore measured 48h + hours-into-day
+ * and tripped the >48h bar EVERY single-run day: the committed digest
+ * snapshots show error on 2026-09-17/18/19/20/21 and pass only on 09-20's
+ * second same-day run. Measuring from the END of the recorded day —
+ * ledgerFreshnessHours(), the producer's own already-tested predicate — puts
+ * a healthy run at 24-37h and a genuinely skipped reconciliation at 48h+,
+ * which is the bar this check was always meant to enforce.
+ *
+ * Canonical-predicate rule (memory: feedback_includability_predicates_must_be_
+ * canonical): import the producer's function, never restate its math here.
+ * @param {string|null} raw
+ * @param {Date} [now] injectable clock (tests) — never stubbed globally
+ * @returns {{name: string, status: string, message: string, hint?: string}}
+ */
+function providerSpendLedgerResult(raw, now = new Date()) {
+  const name = 'Data quality: provider spend ledger';
+  const hint = 'node scripts/check-provider-spend.js';
+  if (raw == null) {
+    return { name, status: 'warn', message: 'No provider-spend ledger yet (cron not yet run)', hint };
+  }
+  // Corrupt-line-tolerant, same as check-provider-spend.js's own readLedger():
+  // a bad row loses one day, never the whole check.
+  const records = [];
+  for (const line of raw.split('\n')) {
+    if (!line) continue;
+    try { records.push(JSON.parse(line)); } catch { /* skip corrupt line */ }
+  }
+  const age = ledgerFreshnessHours(records, now);
+  if (!Number.isFinite(age)) {
+    return { name, status: 'warn', message: 'Provider-spend ledger has no parseable rows', hint };
+  }
+  const lastDay = lastLedgerDay(records);
+  if (age > PROVIDER_SPEND_STALE_HOURS) {
+    return {
+      name,
+      status: 'error',
+      message: `Provider spend ledger's newest entry (day=${lastDay}) is ${formatAge(age)} past its end-of-day (>${PROVIDER_SPEND_STALE_HOURS}h) — the daily reconciliation itself has stopped landing`,
+      hint: 'Check the "Commit provider spend ledger (apiFallbackSafe)" step in data-health-check.yml — a push that reports success can still silently drop this file if an earlier commit step in the same job hard-resets the working tree first.',
+    };
+  }
+  // A day still in progress (a manual `--day=<today>` run) has not ENDED yet,
+  // so `age` is negative — "-12h past its end-of-day" is nonsense in the owner's
+  // digest even though the pass verdict is right (ship-check P2).
+  const ageText = age < 0 ? 'not yet ended' : `${formatAge(age)} past its end-of-day`;
+  return { name, status: 'pass', message: `Newest entry (day=${lastDay}) ${ageText}` };
+}
+
 function checkQuality() {
   return [
     // Star-vs-score contradiction detector (card #396, Birthright 2026-07-24).
@@ -1364,6 +1461,18 @@ function checkQuality() {
         return { name: 'Revenue: affiliate health', status: 'warn', message: `${warns.length} anomaly: ${warns.map(c => c.label).join(', ')}${shadowTag}`, hint: warns[0].reason };
       }
       return { name: 'Revenue: affiliate health', status: 'pass', message: `${checks.length} checks healthy (${formatAge(age)} ago)${shadowTag}` };
+    }),
+
+    // Provider spend ledger dead-man (BRO-3317). The decision lives in
+    // providerSpendLedgerResult() above (exported + unit-tested, CLAUDE.md
+    // §15) so this row's freshness math cannot drift from the producer's
+    // again — see that function's docstring for the BRO-3349 false-positive
+    // this shape fixed.
+    runCheck('Data quality: provider spend ledger', () => {
+      const ledgerFile = path.join(AUDIT_DIR, 'provider-spend-daily.jsonl');
+      let raw = null;
+      try { raw = fs.readFileSync(ledgerFile, 'utf8'); } catch { /* absent/unreadable -> null */ }
+      return providerSpendLedgerResult(raw);
     }),
 
     // Cross-outlet attribution drift (card #1550, Notion 3bd637c5-416f-81b0):
@@ -1838,37 +1947,12 @@ function checkOutletHealth() {
     // Same "known backlog vs genuinely new" split as "Quality: star-vs-score
     // mismatch" above: alert only on rows NOT in the committed baseline
     // (data/audit/outlet-heartbeat-baseline.json, card #643).
+    // Logic extracted to lib/outlet-heartbeat-monitor-core.js (BRO-2521) so
+    // it's also runnable standalone via scripts/outlet-heartbeat-monitor.js
+    // without duplicating the staleness/actionable-rows logic here.
     runCheck('Quality: outlet-heartbeat red flags', () => {
-      const heartbeatFile = path.join(AUDIT_DIR, 'outlet-heartbeat.json');
-      if (!fs.existsSync(heartbeatFile)) {
-        return { name: 'Quality: outlet-heartbeat red flags', status: 'warn', message: 'No outlet-heartbeat.json (audit-critic-coverage.yml may not have run)', hint: 'Trigger the "Audit Critic Coverage" workflow' };
-      }
-      const data = readJSON(heartbeatFile);
-      const age = data?.generatedAt ? hoursAgo(data.generatedAt) : Infinity;
-      // Weekly cron; 8 days means it's missed a week's run.
-      if (age > 192) {
-        return { name: 'Quality: outlet-heartbeat red flags', status: 'warn', message: `Heartbeat monitor last ran ${formatAge(age)} ago (>8d)`, hint: 'audit-critic-coverage.yml may be stale/disabled' };
-      }
-      const rows = Array.isArray(data?.rows) ? data.rows : [];
-      const stateFile = path.join(AUDIT_DIR, 'outlet-heartbeat-state.json');
-      const state = fs.existsSync(stateFile) ? readJSON(stateFile) : {};
-      let baselineKeys = new Set();
-      try {
-        const b = readJSON(path.join(AUDIT_DIR, 'outlet-heartbeat-baseline.json'));
-        if (b && Array.isArray(b.keys)) baselineKeys = new Set(b.keys);
-      } catch { /* no baseline yet — everything is "new" */ }
-      const { getActionableOutletRows } = require('./lib/outlet-heartbeat-state');
-      const { actionable, baselinedCount } = getActionableOutletRows(rows, state, baselineKeys);
-      if (actionable.length === 0) {
-        return { name: 'Quality: outlet-heartbeat red flags', status: 'pass', message: `${rows.length} outlet×market rows checked, none NEW silent 2+ consecutive weeks (${baselinedCount} known/baselined, ${formatAge(age)} ago)` };
-      }
-      const worst = actionable[0];
-      return {
-        name: 'Quality: outlet-heartbeat red flags',
-        status: 'warn',
-        message: `${actionable.length} NEW T1/T2 outlet×market row(s) silent 2+ consecutive weekly checks (worst: ${worst.outletId}/${worst.market}, ${worst.silentDays}d silent vs ${worst.thresholdDays}d threshold; ${baselinedCount} known/baselined)`,
-        hint: 'Run `node scripts/monitor-outlet-recency.js` — check whether the outlet stopped reviewing or an extractor broke (card #582 class). `--write-baseline` acks the ENTIRE current red backlog at once (not just the worst offender) — only run it once every currently-red outlet has been triaged.',
-      };
+      const { evaluateOutletHeartbeat } = require('./lib/outlet-heartbeat-monitor-core');
+      return evaluateOutletHeartbeat({ auditDir: AUDIT_DIR });
     }),
   ];
 }
@@ -2289,7 +2373,8 @@ async function checkAlertRouterDeadman(isCI) {
   // on "7 days of failures" — but the alert title said "for 7 days"
   // unconditionally, so on 2026-08-31 it reported a 7-day outage for a breakage
   // ~12h old and sent triage looking through the wrong window.
-  const { consecutiveFailures, forHowLong } = summarizeFailureStreak(attempts);
+  const { consecutiveFailures, streakHours, forHowLong } = summarizeFailureStreak(attempts);
+  const pageOwner = deadmanShouldPage({ consecutiveFailures, streakHours });
 
   // Self-page via disposition='human' directly from here — that path calls
   // sendAlert() (Resend) and never shells out to notion-brain.js, so it
@@ -2299,14 +2384,17 @@ async function checkAlertRouterDeadman(isCI) {
   // isCI-gated: never page from a local/dev run (see function header comment).
   if (isCI) {
     try {
+      // BRO-4141: a short streak is a blip that usually heals on the next
+      // attempt — digest it under its own key so it never touches the page
+      // key's cooldown; page only once deadmanShouldPage() says it persisted.
       await routeAlert({
-        conditionKey: 'alert-router:deadman',
+        conditionKey: pageOwner ? 'alert-router:deadman' : 'alert-router:deadman-early',
         // conditionKey (not the title) is what the ledger dedups on, so making
         // this title dynamic does not re-page or break the existing cooldown.
         title: `Alert Router: auto-dispatch silently failing for ${forHowLong} (${consecutiveFailures} consecutive)`,
         description: message,
-        severity: 'critical',
-        disposition: 'human',
+        severity: pageOwner ? 'critical' : 'warning',
+        disposition: pageOwner ? 'human' : 'digest',
         cooldownHours: 24,
       });
     } catch (err) {
@@ -2421,23 +2509,32 @@ async function checkMainRedStreak(isCI) {
     // Actionable, not just "main is red" — the alarm string already names
     // the failing job and the FIRST red commit (CLAUDE.md: alerts must be
     // ACTION-only). File through the alert router rather than a new email
-    // path (task #1748's suggested approach) — 'auto' because diagnosing a
-    // failing test is machine-investigable, same tier as Cron failed:/etc.
+    // path (task #1748's suggested approach).
     //
     // conditionKey is deliberately the SAME 'test-yml:main-streak' key
-    // test.yml's own "Detect consecutive main test failures" step uses
-    // (.github/workflows/test.yml) — not a new one keyed on firstRedSha.
-    // Sharing it means both detectors track ONE incident: routeAlert's
-    // findLinearDuplicate + ledger cooldown (scripts/lib/owner-alert-
-    // router.js) refuse to double-file a tracked issue that's already open,
-    // whichever mechanism opened it. This check exists specifically as a
-    // BACKSTOP for that push-triggered mechanism (it depends on a push
-    // landing on main and on its `needs:` list covering every job that can
-    // fail — task #1690 was exactly that gap) — reusing its key means this
-    // check still closes the loop even when the other one is the one that
-    // missed. A shorter cooldownHours here (vs its 7-day default) makes this
-    // the higher-cadence "is this still open" nag between health-check.js
-    // runs, which happen far more often than pushes to main.
+    // test.yml's own "Detect consecutive main test failures" step has always
+    // used (.github/workflows/test.yml) — not a new one keyed on
+    // firstRedSha — so test.yml's "Resolve alert — main test.yml green
+    // again" step (which resolves this key on every green run) keeps
+    // closing this one too. disposition:'human' (BRO-3865, changed from
+    // 'auto'): test.yml's push-triggered dispatch now files a PER-SIGNATURE
+    // 'auto' card per distinct failing job/step/test
+    // (scripts/route-main-streak-signatures.js, conditionKey
+    // 'test-yml:red:<job>:<hash>') instead of one shared 'auto' card under
+    // THIS key — so this aggregate condition is no longer "diagnose one
+    // failing test", it's "nobody's per-signature card is stemming a
+    // long-running red trunk", the same severity class as the
+    // 'test-yml:main-streak-escalation' human page below. 'test-yml:main-
+    // streak' was REMOVED from scripts/lib/page-worthy-alerts.js's
+    // allowlist 2026-09-23 (owner email-noise complaint), so this 'human'
+    // disposition is downgraded to the digest by the router — a red trunk is
+    // for the automated fixers, not an owner page. cooldownHours matches the escalation tier's 24h (NOT the old
+    // 6h — under 'auto' this key only ever paged once, since
+    // findLinearDuplicate's tracker dedupe made every later hit
+    // action:'silent' with no email at all; under 'human' there is no such
+    // tracker dedupe, only this cooldown, so 6h here would have turned a
+    // condition that can stay open for weeks into an email every 6h —
+    // caught in second-opinion review before this shipped).
     if (isCI) {
       try {
         await routeAlert({
@@ -2446,10 +2543,10 @@ async function checkMainRedStreak(isCI) {
           description: assessment.alarm,
           hint: `git log ${assessment.firstRedSha} — start from the first red commit, not the latest push.`,
           severity: 'error',
-          disposition: 'auto',
+          disposition: 'human',
           cardAction: 'Fix',
           fields: [{ name: 'First red commit', value: assessment.firstRedSha || 'unknown' }],
-          cooldownHours: 6,
+          cooldownHours: 24,
         });
       } catch (err) {
         console.error(`[Main red streak] routeAlert failed: ${err.message}`);
@@ -2460,6 +2557,53 @@ async function checkMainRedStreak(isCI) {
   } catch (err) {
     return [{ name: NAME, status: 'warn', message: `gh CLI failed: ${err.message.substring(0, 80)}` }];
   }
+}
+
+// --- Main: green rate (2026-09-20) ---
+//
+// Companion to checkMainRedStreak above. That row asks "how long has main
+// been red RIGHT NOW" and alarms; this one asks "over the last 7 days, what
+// fraction of completed push runs on main were green" — the measurement that
+// ends the "main is fixed now" claims (~45 sessions have made one after a
+// handful of green runs; the owner trusts none of them). The number, not a
+// session, is the only thing allowed to say it.
+//
+// It shells out to scripts/ci-green-rate.js — the same CLI cards use as a
+// safe-form acceptance command — so there is exactly ONE fetch, ONE set of
+// guards (sample floor, cancel storm, truncated window, rerun collapse) and
+// ONE verdict string, here and everywhere else. In CI it passes --record so
+// the nightly reading lands in data/audit/ci-green-rate.jsonl (committed by
+// data-health-check.yml's snapshot step) and the row can show "7d trend
+// from Y%, day D of 14 at ≥80%". Exit 1 from the CLI is a legitimate FAIL
+// reading, not an error; exit 2 (gh failure / no repo) is a warn row that
+// says so. Never a second alert: the actionable alarm is the red-streak row.
+function checkCiGreenRate(isCI, deps = {}) {
+  const NAME = 'Main: green rate';
+  if (!process.env.GH_TOKEN && !process.env.GITHUB_TOKEN) {
+    return [{ name: NAME, status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
+  }
+  if (hasLowHeadroom()) {
+    return [{ name: NAME, status: 'warn', message: 'Skipped — low rate-limit headroom (up to 4 GETs for a 7d window)' }];
+  }
+  const exec = deps.exec || execFileSync;
+  const { healthRow } = require('./lib/ci-green-rate.js');
+  const args = [path.join(__dirname, 'ci-green-rate.js'), '--days', '7', '--json', ...(isCI ? ['--record'] : [])];
+  let stdout = '';
+  try {
+    stdout = exec('node', args, { encoding: 'utf8', timeout: 120000, stdio: ['ignore', 'pipe', 'pipe'] });
+  } catch (err) {
+    if (err && err.status === 1 && err.stdout) {
+      stdout = String(err.stdout); // FAIL verdict — still a reading
+    } else {
+      const detail = String((err && (err.stderr || err.message)) || '').trim().split('\n')[0].slice(0, 120);
+      return [{ name: NAME, status: 'warn', message: `ci-green-rate.js failed (exit ${err && err.status != null ? err.status : '?'}) — no reading: ${detail}` }];
+    }
+  }
+  let result;
+  try { result = JSON.parse(stdout); } catch {
+    return [{ name: NAME, status: 'warn', message: `ci-green-rate.js printed unparseable output — no reading: ${stdout.trim().slice(0, 120)}` }];
+  }
+  return [healthRow(result, NAME)];
 }
 
 // --- Auto-fix effectiveness (2026-08-10 incident) ---
@@ -2502,9 +2646,16 @@ function checkAutofixEffectiveness() {
   }
 
   const rows = [];
+  // Exact-line dedupe (BRO-3868): this ledger is tracked and merge=union, so
+  // a sync's union recovery can leave the SAME row twice — same rationale as
+  // autofix-effectiveness.js's readLedgerRows dedupe.
+  const seen = new Set();
   for (const line of raw.split('\n')) {
-    if (!line.trim()) continue;
-    try { rows.push(JSON.parse(line)); } catch { /* skip unparseable line */ }
+    const t = line.trim();
+    if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
+    try { rows.push(JSON.parse(t)); } catch { /* skip unparseable line */ }
   }
 
   // No dispatchCount option: launches now come from this ledger's own
@@ -2545,15 +2696,51 @@ function readJsonlLedgerOrNull(absPath) {
   let raw;
   try { raw = fs.readFileSync(absPath, 'utf8'); } catch { return null; }
   const out = [];
+  // Exact-line dedupe (BRO-3868): digest-autofix-ledger.jsonl is tracked and
+  // merge=union, so a sync's union recovery can leave the SAME row twice,
+  // and this function's callers (assessThroughputRow) have no dedupe of
+  // their own. A no-op for this function's other callers, whose ledgers are
+  // gitignored/untracked and never git-merged.
+  const seen = new Set();
   for (const line of raw.split('\n')) {
     const t = line.trim();
     if (!t) continue;
+    if (seen.has(t)) continue;
+    seen.add(t);
     try { out.push(JSON.parse(t)); } catch { /* skip corrupt line */ }
   }
   return out;
 }
 
-function checkAutofixCanary() {
+// BRO-467 root cause: both rows below need data that is structurally,
+// permanently unavailable to a GitHub-hosted CI runner, not just "absent
+// this run" — autofix-canary-ledger.jsonl and backlog-drain-ledger.jsonl are
+// gitignored/Mac-local (never checked out in CI, ever), and
+// digest-autofix-ledger.jsonl, while tracked, only reaches origin
+// OPPORTUNISTICALLY (scripts/lib/sync-audit-checkout.sh's own header: "the
+// next time ANY worktree session runs merge-worktree-to-main.sh... an
+// acceptable, self-limiting wait" — there is no scheduled pusher), so its
+// committed content can lag live Mac state by an UNBOUNDED number of days.
+// assessThroughputRow's zero-dispatch/zero-pass streaks
+// (ZERO_DISPATCH_ERROR_DAYS=2, ZERO_PASS_ERROR_DAYS=3) assume the ledger
+// reflects "today" — an assumption CI can never satisfy. Reproduced
+// 2026-09-24: CI's committed snapshot (last digest-autofix-ledger.jsonl
+// commit 5 days old, backlog-drain always null) reported "0 dispatches on
+// each of the last 5 day(s)" while the SAME check run against live Mac data
+// showed real dispatch activity on every one of those days. The row's own
+// design (task #1221) refuses to ever report 'pass' while backlogLedger is
+// null (partial blindness must never look healthy) — combined with CI's
+// permanent blindness to that ledger, that means this row can NEVER read
+// 'pass' from CI, only perpetual 'warn'/'error' regardless of true fleet
+// health. planAutofix files a card for 'warn' rows too (not error-only), so
+// left as-is this becomes an unfalsifiable, permanently-recurring false
+// alarm every time nobody happens to merge-to-main for 2+ days — exactly
+// what filed BRO-467. Both signals are only ever trustworthy computed live
+// on the Mac (send-morning-digest.js's own read of these same files, with
+// both ledgers real-time) — CI simply has no honest answer to give, so it
+// gives none rather than a false one.
+function checkAutofixCanary(isCI) {
+  if (isCI) return [];
   const { assessCanaryRow } = require('./lib/autofix-canary.js');
   const dispatchLedger = require('./lib/dispatch-ledger.js');
   const canaryLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'autofix-canary-ledger.jsonl'));
@@ -2562,7 +2749,8 @@ function checkAutofixCanary() {
   return [assessCanaryRow({ canaryLedgerEntries, dispatchLedgerEntries })];
 }
 
-function checkAutofixThroughput() {
+function checkAutofixThroughput(isCI) {
+  if (isCI) return [];
   const { assessThroughputRow } = require('./lib/autofix-canary.js');
   const digestLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'digest-autofix-ledger.jsonl'));
   const backlogLedgerEntries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'backlog-drain-ledger.jsonl'));
@@ -2578,10 +2766,84 @@ function checkAutofixThroughput() {
 // future violation surfaces as a health.errors row instead of hiding behind
 // a launchd stderr log nobody tails. Same null-means-absent contract as the
 // push-retry/autofix-canary ledgers above.
-function checkDigestInvariantFail() {
+//
+// BRO-467 sibling fix: data/audit/digest-invariant-fail-ledger.jsonl is
+// gitignored/Mac-local (same as the autofix-canary/backlog-drain ledgers
+// above) and therefore ALWAYS reads null in CI — assessDigestInvariantFailRow
+// then ALWAYS returns the identical static 'warn' ("cannot measure from this
+// environment"), every run, forever. Task #1648's own fix already added the
+// real, live-data fold into send-morning-digest.js's sections.health.errors
+// (see that file, right after the autofix-canary fold this same card added)
+// specifically so a genuine violation is never silently missed — this CI row
+// was never the mechanism that achieves that; it can't be, structurally.
+// Left in place it did exactly what BRO-467's throughput row did: filed and
+// re-files BRO-3370 ("BSC Daily: Digest: content-invariant check") off a
+// message that can never say anything else. Skip here for the same reason.
+function checkDigestInvariantFail(isCI) {
+  if (isCI) return [];
   const { assessDigestInvariantFailRow } = require('./lib/digest-invariant-fail-monitor.js');
   const entries = readJsonlLedgerOrNull(path.join(AUDIT_DIR, 'digest-invariant-fail-ledger.jsonl'));
   return [assessDigestInvariantFailRow(entries)];
+}
+
+// --- Stuck pipeline items (card #794) ---
+//
+// scripts/send-morning-digest.js has computed this exact signal for months
+// (overnight-digest.js's gatherDigest()/stuckSignals()) and auto-files a
+// "Stuck pipeline items" card whenever it's non-empty — but the row only
+// ever existed inside the digest's own extraIssues list, never in
+// computeCoreHealthResults()/HEALTH_DIGEST_SNAPSHOT_FILE. That meant every
+// auto-filed card's safe-form verify command
+// (check-health-row-absent.js, reading this function's output) could never
+// find the row present in the first place, so it reported the row "absent"
+// (fixed) unconditionally — a permanent false pass regardless of whether
+// anything was actually stuck. This makes the same signal a first-class row
+// here so the row can genuinely go from warn to pass and back.
+//
+// Fidelity note: gatherDigest()'s worktree/cmux/reconcile-report sources
+// only exist on the owner's Mac (reconcile-report.jsonl is gitignored,
+// .claude/worktrees/ and the cmux binary aren't present in CI's ephemeral
+// checkout) — those sections fail soft to "nothing found" there by design.
+// A CI run of this check can therefore only ever see the git-history and
+// tracked-file signals (review-count drop, rebuild-regression.json); the
+// worktree/cmux/headless-job signals are only visible when this runs
+// locally, same as the digest itself.
+function checkStuckPipelineItems() {
+  const { gatherDigest, stuckSignals } = require('./lib/overnight-digest.js');
+  const repo = path.join(__dirname, '..');
+  let digest;
+  try {
+    // skipFetch: this runs inside health-row-probe.js's supposed-to-be
+    // side-effect-free --live probe (rerun on EVERY card's acceptance check,
+    // not just this row's) — a real `git fetch` there would mutate
+    // FETCH_HEAD/remote-tracking refs on disk, which the probe's fs-write
+    // monkey-patch can't catch since it's a child process, not a Node fs
+    // call (adversarial ship-check finding). send-morning-digest.js's real
+    // run is unaffected — it doesn't pass this option.
+    digest = gatherDigest({ repo, skipFetch: true });
+  } catch (err) {
+    return [{ name: 'Stuck pipeline items', status: 'warn', message: `Could not gather the overnight digest to check for stuck signals (${String(err.message).slice(0, 120)})` }];
+  }
+  const signals = stuckSignals(digest);
+  if (signals.length) {
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `${signals.length} pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. ${signals.join(' | ')}`.slice(0, 500),
+    }];
+  }
+  if (digest.errors.length) {
+    // "No signals found" and "collection itself partially failed" are NOT
+    // the same claim — collapsing them the way this row never existing at
+    // all collapsed every state to "fixed" is the exact false-pass class
+    // this row exists to end (adversarial ship-check finding).
+    return [{
+      name: 'Stuck pipeline items',
+      status: 'warn',
+      message: `Overnight digest gathered partially (${digest.errors.length} source(s) failed) — cannot confirm clean: ${digest.errors.join('; ')}`.slice(0, 500),
+    }];
+  }
+  return [{ name: 'Stuck pipeline items', status: 'pass', message: 'No pipeline signals flagged possibly-stuck by the overnight digest.' }];
 }
 
 // --- Push-retry deadman (task #394) ---
@@ -3425,6 +3687,40 @@ function isRepeatFailureSelfHealed(conclusionsNewestFirst) {
   return leadingGreens >= 2;
 }
 
+// A self-healed repeat-failure streak (result.selfHealed, set from
+// isRepeatFailureSelfHealed() above) is not actionable — 2+ consecutive
+// green runs since the last failure mean the condition already resolved
+// itself. Without this override, the digest's urgency bucketing used only
+// the static AUTO_FIX_PLAYBOOK entry (hardcoded 'fix-now' for every
+// "Workflow repeat-failure:" check) regardless of selfHealed — only
+// `status`/`message` were selfHealed-aware — so a provably-ended streak
+// still filed a Linear card at fix-now urgency with the generic "likely
+// broken, not a transient blip" hint (BRO-2742). Pure (no IO) — unit-tested
+// in tests/unit/health-check-repeat-failures.test.mjs.
+function effectiveUrgencyLevel(urgencyLevel, result) {
+  if (result && result.selfHealed) return 'low';
+  return urgencyLevel;
+}
+
+// Shared "is this result actionable (not low-urgency)" predicate — the exact
+// filter getDigestSubject(), updateErrorFingerprint(), and the overall status
+// banner each reimplemented inline from the static playbook alone. Routing
+// them all through effectiveUrgencyLevel() keeps the subject line, the
+// day-streak fingerprint, and the status banner consistent with the card-
+// filing logic in sendEmailDigest: a selfHealed repeat-failure must not
+// count toward "N warnings need attention" in one place while the digest
+// body calls it "monitoring itself, no action needed" in another.
+function isActionableResult(r) {
+  const entry = getPlaybookEntry(r.name);
+  // No playbook entry at all → actionable by default (matches the three
+  // inline predicates this replaced: `!entry || entry.urgency !== 'low'`).
+  // Only checks WITH an entry get run through effectiveUrgencyLevel, so a
+  // selfHealed result can only be downgraded when something already opted
+  // it into a static urgency in the first place.
+  if (!entry) return true;
+  return effectiveUrgencyLevel(entry.urgency, r) !== 'low';
+}
+
 function repeatFailureResults(workflowSummary) {
   if (!workflowSummary || workflowSummary.skipped) return [];
   const repeats = workflowSummary.repeatFailures || [];
@@ -3439,6 +3735,11 @@ function repeatFailureResults(workflowSummary) {
         ? ' — 2+ consecutive green runs since; likely self-healed, failures will age out of the window.'
         : ' — likely broken, not transient.'),
     hint: 'Open the latest run from the Repeat Workflow Failures section of the digest and fix the root cause.',
+    // BRO-2742: must be carried through — effectiveUrgencyLevel()/
+    // isActionableResult() key off this to keep urgency, subject line, and
+    // card-filing consistent with the selfHealed-aware status/message above.
+    // Without it, a self-healed streak still filed a fix-now Linear card.
+    selfHealed: !!r.selfHealed,
   }));
 }
 
@@ -3623,6 +3924,98 @@ function obClosingBacklogResults(report, now = new Date()) {
   }];
 }
 
+/**
+ * National-tour automation (BRO-4262): what the unattended tour writers did or
+ * could not do, from their own audit files. Pure: takes the parsed reports.
+ * - a held sweep (it refused to move a flood of reviews) is an error: intake or
+ *   a rule broke and tour reviews are stuck on a Broadway page;
+ * - a date problem (schedule page unreadable, stored launch disagrees) is a warn;
+ * - tours created automatically are reported so the owner sees them land.
+ */
+// How long each tour job may go without leaving a report before the digest
+// says it has stopped: the sweep and date jobs run daily, auto-create weekly.
+const TOUR_JOB_MAX_AGE_HOURS = { sweep: 36, dates: 36, autocreate: 9 * 24 };
+// Before this, a missing report just means the job hasn't had its first run.
+const TOUR_JOBS_EXPECTED_FROM = '2026-10-06';
+
+function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date()) {
+  const out = [];
+  const jobs = [
+    ['sweep', sweep, 'daily tour review mover (rebuild-reviews.yml)'],
+    ['dates', dates, 'daily tour dates check (update-show-status.yml)'],
+    ['autocreate', autocreate, 'weekly new-tour check (scrape-new-aggregators.yml, BWW landing job)'],
+  ];
+  const quiet = [];
+  for (const [key, report, label] of jobs) {
+    const at = report && report.generatedAt ? new Date(report.generatedAt) : null;
+    if (!at || Number.isNaN(at.getTime())) {
+      if (now.toISOString().slice(0, 10) >= TOUR_JOBS_EXPECTED_FROM) quiet.push(`${label}: no report yet`);
+    } else {
+      const hours = (now - at) / 3600000;
+      if (hours > TOUR_JOB_MAX_AGE_HOURS[key]) quiet.push(`${label}: last report ${Math.round(hours / 24)} day(s) ago`);
+    }
+  }
+  if (quiet.length) {
+    out.push({
+      name: 'Data: tour automation stopped reporting',
+      status: 'warn',
+      message: `A national-tour job has not run on schedule: ${quiet.join('; ')}.`,
+      hint: 'Check that workflow\'s recent runs; the step may be failing or the kill switch (TOUR_SWEEP / TOUR_DATES_MODE / TOUR_AUTOCREATE) set to off.',
+    });
+  }
+  const held = (sweep && sweep.held) || [];
+  if (held.length) {
+    out.push({
+      name: 'Data: tour review sweep held',
+      status: 'error',
+      message: `The daily tour sweep refused to move reviews for ${held.join(', ')}: more than it should ever need to, so nothing was moved.`,
+      hint: `Look at: node scripts/sweep-tour-reviews.js --tour=${held[0]} (dry run). If the moves are right, run it with --execute.`,
+    });
+  }
+  const problems = ((dates && dates.tours) || []).filter(t => t.problem);
+  if (problems.length) {
+    out.push({
+      name: 'Data: tour dates need a look',
+      status: 'warn',
+      message: `${problems.length} tour(s) could not be dated automatically: ${problems.map(p => `${p.id} (${p.problem})`).join('; ')}`,
+      hint: 'See data/audit/tour-dates.json. A page that parses to nothing usually means Tours To You changed layout or the slug differs (set tourScheduleSlug on the entry).',
+    });
+  }
+  const created = (autocreate && autocreate.created) || [];
+  if (created.length) {
+    out.push({
+      name: 'Data: national tours added automatically',
+      status: 'warn',
+      message: `Added ${created.join(', ')} from BroadwayWorld tour roundups (dates from Tours To You + Wikipedia).`,
+      hint: 'Nothing to do unless one is wrong; see data/audit/tour-autocreate.json.',
+    });
+  }
+  return out;
+}
+
+function checkTourAutomation() {
+  const read = (f) => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit', f), 'utf8')); } catch { return null; } };
+  return tourAutomationResults({ sweep: read('tour-sweep.json'), dates: read('tour-dates.json'), autocreate: read('tour-autocreate.json') });
+}
+
+// Reads data/audit/ob-closing-candidates.json off disk and surfaces it via
+// obClosingBacklogResults. Pure local-file read — unlike feedbackBacklogResults
+// (needs a live GitHub API call via getOpenFeedbackReviewIssues), this has no
+// CI-only dependency, so it belongs in computeCoreHealthResults rather than
+// gated behind `if (isCI)` in main(): that gate meant a card targeting this
+// row could never confirm its own fix same-day, because
+// scripts/lib/health-row-probe.js's live re-check only re-runs
+// computeCoreHealthResults (task #799 — moved here so the live probe can see
+// it, same file main() and the probe already share for exactly this reason).
+function checkObClosingBacklog() {
+  try {
+    const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
+    return obClosingBacklogResults(obReport);
+  } catch {
+    return []; // report absent (detector not yet run) — nothing to surface
+  }
+}
+
 // Daily-digest surfacing for reverse-discovery missing-show candidates
 // (data/audit/reverse-discovery-candidates.json, written daily by
 // audit-reverse-discovery.yml). This is the detector's ONLY human-facing
@@ -3714,8 +4107,36 @@ function worktreeGcFreshnessResults(lastLineTimestamp, nowMs) {
     name: 'Infra: worktree GC log stale',
     status: stale.severity,
     message: `worktree-gc.log has no line in the last ${stale.hoursStale.toFixed(1)}h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing.`,
-    hint: 'launchctl print gui/501/com.broadwayscore.worktree-gc — check "last exit code" and whether runs have advanced; run scripts/gc-merged-worktrees.sh manually if stuck. BRO-2608.',
+    hint: 'BRO-3635: a stopped StartInterval timer does not show up in `launchctl print` (job stays "loaded", last exit code 0) and running the script by hand only refreshes the log without fixing the schedule — reload the agent instead: launchctl bootout gui/$(id -u)/com.broadwayscore.worktree-gc 2>/dev/null; launchctl bootstrap gui/$(id -u) ~/Library/LaunchAgents/com.broadwayscore.worktree-gc.plist; launchctl kickstart -k gui/$(id -u)/com.broadwayscore.worktree-gc. Plist tracked at scripts/launchd/com.broadwayscore.worktree-gc.plist. BRO-2608.',
   }];
+}
+
+// Digest surfacing for data/audit/notion-schedule-coupling.json (BRO-3431
+// reopen prevention requirement) — written by data-health-check.yml's
+// "Notion-schedule-coupling audit (shadow mode)" step. Report-only, same
+// non-blocking contract as every sibling shadow-mode sweep this function's
+// neighbors surface: a finding here is a candidate for a human to look at
+// (see the script's own NOTION_COUPLING_ALLOWLIST), not an accusation, and
+// this check is what makes "is the Linear migration actually done" a
+// digest line instead of a raw JSON file nobody reads.
+function notionScheduleCouplingResults(snap) {
+  const name = 'Infra: notion-schedule-coupling audit';
+  if (!snap) {
+    return [{ name, status: 'warn', message: 'No notion-schedule-coupling snapshot yet (cron not yet run)', hint: 'node scripts/audit-notion-schedule-coupling.js' }];
+  }
+  const age = snap.generatedAt ? hoursAgo(snap.generatedAt) : Infinity;
+  if (age > 48) {
+    return [{ name, status: 'error', message: `notion-schedule-coupling snapshot is ${formatAge(age)} old (>48h) — the daily sweep itself has stopped running`, hint: 'Check the "Notion-schedule-coupling audit (shadow mode)" step in data-health-check.yml' }];
+  }
+  const workflowFailed = snap.workflowHalf && snap.workflowHalf.ok === false;
+  if (workflowFailed) {
+    return [{ name, status: 'error', message: `Workflow-schedule scan itself failed: ${snap.workflowHalf.reason}`, hint: 'node scripts/audit-notion-schedule-coupling.js — investigate the scan failure, not just the finding count' }];
+  }
+  const total = snap.totalFindings || 0;
+  if (total > 0) {
+    return [{ name, status: 'warn', message: `${total} live schedule(s) still reference the frozen Notion mirror (${formatAge(age)} ago)`, hint: 'node scripts/audit-notion-schedule-coupling.js --dry-run to see which; port to Linear or add to NOTION_COUPLING_ALLOWLIST if intentional' }];
+  }
+  return [{ name, status: 'pass', message: `No live schedules coupled to the frozen Notion mirror (${formatAge(age)} ago)` }];
 }
 
 // Daily-digest surfacing for uncollected-live-review strands (data/audit/
@@ -3944,12 +4365,8 @@ function getDigestSubject(results, history, autoFixResults) {
   const fixMap = autoFixResults || {};
 
   // Only count items that are NOT auto-fixed AND are actionable (not LOW priority)
-  const isActionable = (r) => {
-    const entry = getPlaybookEntry(r.name);
-    return !entry || entry.urgency !== 'low';
-  };
-  const unfixedErrors = errors.filter(r => !fixMap[r.name]?.fixed && isActionable(r));
-  const unfixedWarns = warns.filter(r => !fixMap[r.name]?.fixed && isActionable(r));
+  const unfixedErrors = errors.filter(r => !fixMap[r.name]?.fixed && isActionableResult(r));
+  const unfixedWarns = warns.filter(r => !fixMap[r.name]?.fixed && isActionableResult(r));
   const autoFixedCount = Object.values(fixMap).filter(f => f.fixed).length;
 
   const days = history.consecutiveErrorDays || 0;
@@ -3988,11 +4405,7 @@ function getDigestSubject(results, history, autoFixResults) {
 // filter getDigestSubject applies (auto-fixed and low-urgency excluded).
 function updateErrorFingerprint(history, results, autoFixResults) {
   const fixMap = autoFixResults || {};
-  const isActionable = (r) => {
-    const entry = getPlaybookEntry(r.name);
-    return !entry || entry.urgency !== 'low';
-  };
-  const unfixedErrors = results.filter(r => r.status === 'error' && !fixMap[r.name]?.fixed && isActionable(r));
+  const unfixedErrors = results.filter(r => r.status === 'error' && !fixMap[r.name]?.fixed && isActionableResult(r));
   history.lastErrorFingerprint = unfixedErrors.length ? errorSetFingerprint(unfixedErrors) : '';
   return history;
 }
@@ -4260,6 +4673,8 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
             }
           }
         } catch {}
+
+        urgencyLevel = effectiveUrgencyLevel(urgencyLevel, r);
 
         if (urgencyLevel === 'low') {
           lowCount.count++;
@@ -4534,17 +4949,14 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
     console.log(`[Owner Email Volume] Skipped — ${e.message}`);
   }
 
-  // Overall status banner. Same isActionable filter getDigestSubject() uses
-  // (ship-check finding, card #364): without it, the merged email's subject
-  // line ("BSC Daily: All clear") could contradict its own site-health block
-  // ("2 errors, 1 warning") whenever the only unfixed items are low-urgency
-  // playbook entries — exactly the noise the owner asked this merge to kill.
-  const isActionableForSnapshot = (r) => {
-    const entry = getPlaybookEntry(r.name);
-    return !entry || entry.urgency !== 'low';
-  };
-  const unfixedErrors = errors.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableForSnapshot(r));
-  const unfixedWarns = warns.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableForSnapshot(r));
+  // Overall status banner. Same isActionableResult filter getDigestSubject()
+  // uses (ship-check finding, card #364): without it, the merged email's
+  // subject line ("BSC Daily: All clear") could contradict its own site-health
+  // block ("2 errors, 1 warning") whenever the only unfixed items are
+  // low-urgency playbook entries — exactly the noise the owner asked this
+  // merge to kill.
+  const unfixedErrors = errors.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableResult(r));
+  const unfixedWarns = warns.filter(r => !autoFixResults?.[r.name]?.fixed && isActionableResult(r));
   const overallStatus = unfixedErrors.length > 0 ? 'error' : unfixedWarns.length > 0 ? 'warn' : 'pass';
   const bannerColor = getStatusColor(overallStatus);
   const bannerText = errors.length > 0
@@ -4757,6 +5169,8 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkPipelines(),
     ...checkBatchState(),
     ...checkQuality(),
+    ...checkObClosingBacklog(),
+    ...checkTourAutomation(),
     ...checkOutletHealth(),
     ...checkCommercialModelDrift(),
     ...checkCookieExpiration(),
@@ -4764,6 +5178,7 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkSEO(),
     ...checkCronHealth(),
     ...(await checkMainRedStreak(isCI)),
+    ...checkCiGreenRate(isCI),
     ...checkSecretsHealth(),
     ...checkAPICredits(),
     ...checkDeployFreshness(),
@@ -4775,9 +5190,10 @@ async function computeCoreHealthResults(isCI, { dryRun = false } = {}) {
     ...checkDispatchHealth(),
     ...(await checkCmuxReachability()),
     ...checkAutofixEffectiveness(),
-    ...checkAutofixCanary(),
-    ...checkAutofixThroughput(),
-    ...checkDigestInvariantFail(),
+    ...checkAutofixCanary(isCI),
+    ...checkAutofixThroughput(isCI),
+    ...checkDigestInvariantFail(isCI),
+    ...checkStuckPipelineItems(),
   ];
 }
 
@@ -4815,11 +5231,6 @@ async function main() {
       console.log(`[Feedback issues] ${feedbackSummary.issues.length} open needs-manual-review issue(s)`);
     }
     allResults.push(...feedbackBacklogResults(feedbackSummary));
-
-    try {
-      const obReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/ob-closing-candidates.json'), 'utf8'));
-      allResults.push(...obClosingBacklogResults(obReport));
-    } catch { /* report absent (detector not yet run) — nothing to surface */ }
 
     // Never-run workflow coverage (task #737): computed HERE, not read from a
     // file lint-workflows wrote — that CI job checks out code but has no
@@ -4882,6 +5293,13 @@ async function main() {
       const logText = fs.readFileSync(path.join(__dirname, '../data/audit/worktree-gc.log'), 'utf8');
       allResults.push(...worktreeGcFreshnessResults(lastTimestampFromLog(logText), Date.now()));
     } catch { /* log absent — nothing to surface */ }
+
+    try {
+      const couplingSnap = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/notion-schedule-coupling.json'), 'utf8'));
+      allResults.push(...notionScheduleCouplingResults(couplingSnap));
+    } catch {
+      allResults.push(...notionScheduleCouplingResults(null));
+    }
 
     try {
       const rdReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/reverse-discovery-candidates.json'), 'utf8'));
@@ -5024,4 +5442,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, computeCoreHealthResults, checkQuality };
+module.exports = { providerSpendLedgerResult, hoursAgo, ghRunsQuery, sortRunsNewestFirst, firstRunCreatedAt, runCacheKey, RUN_CACHE_VERSION, diskSpaceResults, readDiskSpace, buildObCandidatesHtml, censusRecallResult, coverageProbeResult, getWorkflowRunSummary, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, tourAutomationResults, neverRunWorkflowResults, silentGapBacklogResults, uncollectedStrandResults, reverseDiscoveryBacklogResults, reverseDiscoveryFreshnessResults, worktreeGcFreshnessResults, notionScheduleCouplingResults, cardVerifiabilityBacklogResults, progressWatchResults, bwwRoundupMissBacklogResults, pushFallbackUsageResults, getDigestSubject, getPlaybookEntry, errorSetFingerprint, isEscalationDay, updateErrorFingerprint, sendEmailDigest, HEALTH_DIGEST_SNAPSHOT_FILE, batchStateResult, checkBatchState, checkStuckWork, checkMainRedStreak, checkCiGreenRate, computeCoreHealthResults, checkQuality, checkStuckPipelineItems, checkAutofixCanary, checkAutofixThroughput, checkDigestInvariantFail, checkAlertRouterDeadman };

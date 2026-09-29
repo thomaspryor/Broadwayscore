@@ -35,14 +35,15 @@ const {
 } = require('./review-normalization');
 const { findSiblingUrlOwner } = require('./review-url-collision');
 const { validateUrlDomain } = require('./url-discovery');
-const { safeWriteReview } = require('./review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
-const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, isWrongShowUnknownLocked } = require('./review-guards');
+const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
 const { isStaleScoreInput, markRescoreNeeded } = require('./rescore-flagging');
+const { isHumanClearedWrongProduction: _isHumanClearedWrongProduction, neutralizeStaleFlagsOnBodyReplacement } = require('./stale-flag-neutralization');
 const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
-const { classifyMarketRouting, buildSiblingIndex } = require('./market-routing');
+const { classifyMarketRouting, buildSiblingIndex, tourDecision } = require('./market-routing');
 const { sanitizeCriticName } = require('./byline-normalization');
 const { evaluateCreditedPersonAsCritic } = require('./creative-as-critic');
 
@@ -225,7 +226,7 @@ function _getShowTitle(showId) {
   return _showTitleCache[showId] || null;
 }
 
-// ─── Lazy-loaded full show object map for Guard J (unknown-critic wrongProduction) ───
+// ─── Lazy-loaded full show object map for Guard J/K (wrongProduction URL-date checks) ───
 let _showByIdCache = null;
 function _getShowById(showId) {
   if (!_showByIdCache) {
@@ -240,6 +241,28 @@ function _getShowById(showId) {
     }
   }
   return _showByIdCache[showId] || null;
+}
+
+/**
+ * Shared existing-file lookup for the wrongProduction human-clear check
+ * (isHumanClearedWrongProduction, imported from stale-flag-neutralization.js)
+ * — one read, reused by every URL-date guard instead of each guard hand-
+ * rolling its own findExistingReviewFile call. `criticNameOrNull` is passed
+ * through as-is (callers decide their own Unknown/Staff-to-null translation).
+ * Guards J and K both pass `criticName !== 'Unknown' ? criticName : null` —
+ * the SAME expression as the real merge-target lookup below (~line 936) — so
+ * the clearance they read belongs to the file the write actually lands on.
+ * Do NOT "simplify" either back to a bare `null`: that regresses BRO-3502's
+ * criticName-identity fix (regression test: review-file-writer-bww-reviews-
+ * guard.test.mjs, "criticName-identity fix"). Guard A passes raw
+ * `input.criticName` instead only because it runs before `criticName` is
+ * sanitized (line 738); the two differ solely for URL-shaped bylines.
+ * @returns {object|null} the existing file's parsed data, or null if none
+ */
+function _lookupExistingWrongProductionData(reviewTextsDir, showId, outletId, criticNameOrNull, url) {
+  const showDir = path.join(reviewTextsDir, showId);
+  const existing = findExistingReviewFile(showDir, outletId, criticNameOrNull, url);
+  return existing && existing.data;
 }
 
 /**
@@ -405,6 +428,41 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     return { action: 'skipped', reason: 'suspicious-outlet-id' };
   }
 
+  // --- Guard: named non-review URL pattern (BRO-4101) ---
+  // non-review-url-patterns.js's NAMED_NON_REVIEW_URL_PATTERNS (ticketing/
+  // venue/event-listing host+path pairs, e.g. londontheatre.co.uk/show/NNNN)
+  // was already consulted by the S5 coverage probe's classifyNonReviewUrl()
+  // and audit-show-review-gap.js's discovery-time isReviewUrl() — but NOT by
+  // this shared write chokepoint, so SERP discovery could still ingest and
+  // score one of these pages as a "review". Confirmed live: the-last-ship-
+  // west-end-2026's londontheatre.co.uk/show/47207-the-last-ship (a ticketing
+  // page — synopsis + "Book tickets" copy + anonymous audience comments, no
+  // critic byline) was ingested via serp-discovery, LLM-scored 82, and shipped
+  // to prod before a human caught it. Checked before the aggregator-URL guard
+  // below since a named non-review host is never a review regardless of what
+  // outlet name/domain it happens to share.
+  //
+  // Scoped to isUnvettedSerpSource(input.source) — the SAME scope as
+  // review-guards.js's namedNonReviewUrl rebuild-time rule, for the SAME
+  // reason (ship-check adversarial review, ×2 independent reviewers): this
+  // guard runs before the merge-vs-create fork below, so an UNSCOPED version
+  // would silently refuse forever any future re-merge/refresh write to a
+  // file like burn-this-2019/new-york-city-theatre--nicola-quinn.json — a
+  // real, scored, contentTier:complete review (source: show-score-playwright)
+  // whose citation URL happens to sit on a host-wide named pattern
+  // (newyorkcitytheatre.com). Every OTHER source this function serves
+  // (aggregator scrapers, submit-review-form) already carries its own
+  // vetting elsewhere in this file (or, for submissions, in
+  // validate-review-submission.js's LLM gate) — this guard's job is
+  // specifically to close the gap SERP discovery had.
+  if (input.url && require('./unvetted-serp-sources').isUnvettedSerpSource(input.source)) {
+    const namedReason = require('./non-review-url-patterns').namedNonReviewReason(input.url);
+    if (namedReason) {
+      console.warn(`  ⛔ Skipping named non-review URL: ${input.url} (${namedReason})`);
+      return { action: 'skipped', reason: `named-non-review-url: ${namedReason}` };
+    }
+  }
+
   // --- Guard: aggregator URL on a real outlet (2026-08-09) ---
   // An aggregator-domain URL (theatre.reviews, show-score.com, stagedoor.com, …)
   // is a ROUNDUP page citing other outlets — not `outletId`'s own review. A file
@@ -458,6 +516,19 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // (a Dallas tour-stop review under a Broadway show entry), zero remaining
   // false positives.
   if (isLikelyTourReview(input.url, showId)) {
+    // A tour-stop review of a title with a national tour on file goes to that
+    // tour instead of being dropped (BRO-4262). No tour window match = skip as before.
+    const visited = _rerouteVisited || new Set();
+    const tour = tourDecision(showId, _getSiblingIndex().get(showId), {
+      url: input.url,
+      publishDate: input.publishDate || input.fields?.publishDate,
+      dateSource: input.dateSource || input.fields?.dateSource,
+    });
+    if (tour && !visited.has(tour.targetShowId)) {
+      visited.add(showId);
+      console.warn(`  ⤳ Tour reroute: ${showId} → ${tour.targetShowId} (${tour.reason})`);
+      return createOrMergeReviewFile(tour.targetShowId, input, { ...options, _rerouteVisited: visited });
+    }
     console.warn(`  ⚠️  Skipping tour/regional review: ${input.url} for ${showId}`);
     return { action: 'skipped', reason: 'tour-review' };
   }
@@ -554,6 +625,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       url: input.url,
       outletId,
       publishDate: pubDateStr,
+      dateSource: input.dateSource || input.fields?.dateSource,
       category: showCategory,
       allowCrossMarket: fields.allowCrossMarket === true,
       visited,
@@ -578,27 +650,13 @@ function createOrMergeReviewFile(showId, input, options = {}) {
         // _mergeIntoExisting() uses `!existing[key]` to gate writes — and
         // `!false === true`, so stamping here would CLOBBER a human's
         // explicit `wrongProduction: false` (the inverse of the bug we're
-        // fixing). Same for the manual-clear / override flags. Three signals
-        // count as "human decision in place":
-        //   • humanReviewedWrongProduction === false  (manual review verified RIGHT production)
-        //   • wrongProductionManualClear === true      (manual clear)
-        //   • wrongProduction === false                (explicitly cleared, not just absent)
-        // Look up the existing file via the same path the merge step uses so
-        // we don't add a redundant read.
-        const showDirForCheck = path.join(reviewTextsDir, showId);
-        const existingForCheck = findExistingReviewFile(
-          showDirForCheck,
-          outletId,
+        // fixing). See _isHumanClearedWrongProduction's doc for the 4 signals.
+        const existingData = _lookupExistingWrongProductionData(
+          reviewTextsDir, showId, outletId,
           (input.criticName && input.criticName !== 'Unknown') ? input.criticName : null,
           input.url
         );
-        const existingData = existingForCheck && existingForCheck.data;
-        const humanCleared = existingData && (
-          existingData.humanReviewedWrongProduction === false ||
-          existingData.wrongProductionManualClear === true ||
-          existingData.wrongProductionOverride === true ||
-          existingData.wrongProduction === false
-        );
+        const humanCleared = _isHumanClearedWrongProduction(existingData);
         if (humanCleared) {
           console.warn(`  ⏭️  Skipping wrongProduction stamp for ${showId}/${outletId}: human override in place`);
         } else {
@@ -802,21 +860,103 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       // Same human-clear guard as the classifyMarketRouting flag stamp above —
       // `!existing.wrongProduction` in the merge loop is `true` for an explicit
       // `wrongProduction: false`, so stamping here unconditionally would clobber
-      // a verified-correct human decision.
-      const showDirForWpCheck = path.join(reviewTextsDir, showId);
-      const existingForWpCheck = findExistingReviewFile(showDirForWpCheck, outletId, null, input.url);
-      const existingWpData = existingForWpCheck && existingForWpCheck.data;
-      const humanClearedWp = existingWpData && (
-        existingWpData.humanReviewedWrongProduction === false ||
-        existingWpData.wrongProductionManualClear === true ||
-        existingWpData.wrongProduction === false
+      // a verified-correct human decision. Uses the SAME criticName resolution
+      // as the real merge-target lookup below (`criticName !== 'Unknown' ? ... : null`)
+      // — passing a bare `null` here would risk checking a different file's
+      // clearance than the one the merge step actually writes to, for the rare
+      // case this guard fires on a non-Unknown/Staff byline it wasn't gated on.
+      const existingWpData = _lookupExistingWrongProductionData(
+        reviewTextsDir, showId, outletId, criticName !== 'Unknown' ? criticName : null, input.url
       );
+      const humanClearedWp = _isHumanClearedWrongProduction(existingWpData);
       if (humanClearedWp) {
         console.warn(`  ⏭️  Skipping unknown-critic wrongProduction stamp for ${showId}/${outletId}: human override in place`);
       } else {
         fields.wrongProduction = true;
         fields.wrongProductionReason = wpReason;
         console.warn(`  ⚠️  ${wpReason} (${showId}/${outletId})`);
+      }
+    }
+  }
+
+  // --- Guard K: BWW cross-production wrongProduction via URL date (BRO-3502) ---
+  // Extends BRO-916 (originally only wired into gather-reviews.js's own
+  // createReviewFile) to this shared write chokepoint. Two BWW-sourced review
+  // shapes reach createOrMergeReviewFile today with zero URL-date protection
+  // beyond Guard J's Unknown/Staff-only check above:
+  //   • source: 'bww-roundup'  — scrape-bww-reviews.js's own roundup-page
+  //     extraction (extractBwwRoundupData, saveReview()), a SEPARATE producer
+  //     of 'bww-roundup' entries from gather-reviews.js's extractBWWRoundupReviews
+  //     (which already gets the BRO-916 guard, but only at its own inline
+  //     write call — never at this chokepoint).
+  //   • source: 'bww-reviews'  — scrape-bww-reviews.js's dedicated /reviews/
+  //     {slug} page extraction (extractBwwReviewsPageData), which never had
+  //     any BWW-specific date guard at all.
+  // Both are BWW-assembled PAGES (roundup anchor/JSON-LD parsing, or the
+  // per-show /reviews/ page's div.one-feed blocks) — the same page-assembly
+  // contamination risk BRO-916's incident (Alexander Cohen / "The Fear of
+  // 13") documented, independent of whether the byline is BWW's own or a
+  // real named critic. getWrongProductionReasonForBww (review-guards.js)
+  // self-gates on review.source, so it is safe to call unconditionally here.
+  // Mirrors gather-reviews.js:3895-3904's field-write pattern exactly: sets
+  // ONLY wrongProductionNote (never wrongProductionReason), so a later
+  // priorRuns declaration can still auto-clear it via wrong-production-
+  // autoclear.js's DATE_GUARD_PREFIXES match on the "Auto-flagged:" prefix.
+  //
+  // Corpus-scanned against the full data/review-texts corpus (BRO-3502,
+  // 2026-09-15): of 7,063 existing bww-roundup/bww-reviews files, 4 hit this
+  // predicate (3,803 after excluding files already wrongProduction:true).
+  // Spot-checked all 4: 2 were confirmed LIVE contamination this guard's
+  // predicate correctly identifies but — being write-time-only — cannot
+  // retroactively fix on its own: a Guardian/Lyn Gardner "Jesus Christ
+  // Superstar" review dated 84 days after the 2012 Broadway production
+  // closed (a different, later production/tour, scored as if it were this
+  // one) and a "Life of Pi" review dated 573 days after the 2023 Broadway
+  // closing (the touring production, same contamination shape) — both
+  // remediated by a one-off stamp in the same BRO-3502 pass, matching this
+  // guard's exact field-write pattern. The other 2 hits are already excluded
+  // from scoring by unrelated content-quality flags (contentTier: invalid /
+  // nonReviewType: preview, contentVerification.wrongArticle: true) before
+  // this guard ever runs, so
+  // stamping wrongProduction on them is additive, not newly harmful — same
+  // "hoist introduces no new false-positive class" bar Guard J's own comment
+  // above documents for task #1150 (42,251-file scan, 2 hits, 1 legit).
+  //
+  // Known limitation shared with Guard J above (not new to this guard): this
+  // check runs on `input.url` — the INCOMING candidate URL — before the
+  // create-vs-merge fork below decides whether that candidate is even
+  // accepted (maybeUpgradeUrl, in _mergeIntoExisting) or rejected in favor of
+  // an existing file's already-correct URL. A rejected candidate can still
+  // leave its wrongProduction stamp behind on the existing (correct) file.
+  // Pre-existing architectural shape of this chokepoint, not something
+  // BRO-3502 restructures (Codex adversarial review flagged this; fixing it
+  // needs reordering guards around the merge decision for both Guard J and K
+  // together, out of this fix's scope).
+  if (!fields.wrongProduction) {
+    const bwwReason = getWrongProductionReasonForBww(
+      { url: input.url, source: input.source },
+      _getShowById(showId),
+    );
+    if (bwwReason) {
+      // Same criticName resolution as the real merge-target lookup below
+      // (the `findExistingReviewFile` call that feeds _mergeIntoExisting,
+      // `criticName !== 'Unknown' ? criticName : null`) — unlike
+      // Guard J above, Guard K commonly fires with a REAL named critic (a
+      // roundup/reviews page entry with a genuine byline), so a bare `null`
+      // here could find a different existing file than the one this write
+      // will actually merge into (e.g. a second critic at the same outlet),
+      // missing that file's human-clear breadcrumb (Codex adversarial review,
+      // BRO-3502 ship-check).
+      const existingBwwData = _lookupExistingWrongProductionData(
+        reviewTextsDir, showId, outletId, criticName !== 'Unknown' ? criticName : null, input.url
+      );
+      const humanClearedBww = _isHumanClearedWrongProduction(existingBwwData);
+      if (humanClearedBww) {
+        console.warn(`  ⏭️  Skipping BWW cross-production stamp for ${showId}/${outletId}: human override in place`);
+      } else {
+        fields.wrongProduction = true;
+        fields.wrongProductionNote = `${bwwReason} (BWW cross-production)`;
+        console.warn(`  ⚠️  ${bwwReason} (BWW cross-production) (${showId}/${outletId})`);
       }
     }
   }
@@ -955,6 +1095,17 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     sources: [input.source],
     ...fields,
   };
+  // BRO-3908 (Codex adversarial ship-check finding): `fields` is caller-owned
+  // and can echo back a stale wrongProductionAutoCleared breadcrumb (e.g. an
+  // import/replay payload) alongside the wrongProduction:true classifyMarketRouting/
+  // Guard J/Guard K can set on it (see the merge-path comment below) — this
+  // brand-new-file create path spreads `fields` directly into `newReview` and
+  // never goes through _mergeIntoExisting's deferred invalidate, so it never
+  // got the fix either. A NEW file can carry the exact self-contradictory
+  // shape just as easily as a merged one.
+  if (newReview.wrongProduction === true) {
+    invalidateWrongProductionAutoClear(newReview);
+  }
 
   // Apply misattribution flag to new files only (not merges — see Guard G note)
   if (_misattributionDetected) {
@@ -1013,10 +1164,28 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
   let changed = false;
+  // Full snapshot BEFORE any merge mutation runs (BRO-4130). Handed to
+  // maybeUpgradeUrl below as opts.preMergeSnapshot so applyUrlChangeInvariant
+  // judges staleness against the true on-disk state, not a copy taken after
+  // the field-merge loop already blended this write's own incoming fields
+  // into `existing` — see maybeUpgradeUrl's opts.preMergeSnapshot doc.
+  const preMergeSnapshot = { ...existing };
   // Snapshot the body BEFORE the field merge so the reclassify step below can
   // tell "this merge just filled/replaced the text" apart from an unrelated
   // metadata merge.
   const fullTextBefore = existing.fullText || '';
+
+  // Snapshot the score BEFORE the field merge too (BRO-4128 ship-check/Codex
+  // finding): the merge loop below can plant fields.originalScore/
+  // aggregatorStars onto `existing` when the file was previously unscored,
+  // and that happens BEFORE maybeUpgradeUrl runs below. Without this
+  // snapshot, maybeUpgradeUrl's score-loss guard would see its own incoming
+  // score and refuse to also apply the incoming url — stranding a
+  // freshly-discovered score on the file's OLD, still-bad url.
+  const scoreBeforeMerge = {
+    originalScore: existing.originalScore,
+    aggregatorStars: existing.aggregatorStars,
+  };
 
   // Clear a stored JSON-LD pullQuote/excerpt BEFORE the field merge. The merge
   // below only copies an incoming field when `!existing[key]`; a JSON-LD blob is
@@ -1066,6 +1235,26 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // Default field merge: set scraper-specific fields if existing value is falsy.
   // Exception: skip isRoundupArticle if it was manually cleared — !false would otherwise
   // re-flag the file even though a human explicitly cleared it.
+  //
+  // BRO-3895: this loop is the ONLY place fields.wrongProduction (stamped by
+  // classifyMarketRouting's accept-with-flag branch, Guard J, and Guard K
+  // above — none of which call invalidateWrongProductionAutoClear themselves,
+  // unlike every other wrongProduction writer per that function's docstring)
+  // actually lands on `existing`. Without an invalidate call, a re-flag onto a
+  // file still carrying a stale wrongProductionAutoCleared breadcrumb from an
+  // earlier clear produces wrongProduction:true sitting beside its own
+  // retraction breadcrumb — the exact self-contradictory-clear shape
+  // audit-self-contradictory-clear-drained.test.mjs gates on (caught live on
+  // much-ado-about-nothing-globe-off-west-end-2026/broadwayworld--aliya-al-
+  // hassan.json). Tracked via a flag and invalidated ONCE after the loop,
+  // not inline: `fields` is `input.fields` (a caller-owned object, mutated
+  // in place by the guards above) — inline invalidation deletes
+  // existing.wrongProductionAutoCleared mid-loop, and a LATER key in that
+  // same object (e.g. a replay/import payload that also echoes back
+  // wrongProductionAutoCleared) would immediately re-add it via this same
+  // `!existing[key]` branch before the loop finishes (ship-check/Codex
+  // adversarial finding).
+  let wrongProductionNewlyFlagged = false;
   for (const [key, val] of Object.entries(fields)) {
     if (key === 'isRoundupArticle' && shouldSkipRoundupAudit(existing)) continue;
     if (HUMAN_PROTECTED.has(key)) {
@@ -1081,7 +1270,11 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     if (val != null && !existing[key]) {
       existing[key] = val;
       changed = true;
+      if (key === 'wrongProduction' && val === true) wrongProductionNewlyFlagged = true;
     }
+  }
+  if (wrongProductionNewlyFlagged) {
+    invalidateWrongProductionAutoClear(existing);
   }
 
   // wrongShow-unknown URL lock (task #1150, 2026-08-09; DoaS Apr 9-10 #13). When
@@ -1115,6 +1308,11 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     // instead — the swap would duplicate the URL and wipe this file.
     showDir: path.dirname(filepath),
     selfFilename: path.basename(filepath),
+    // BRO-4128: pre-merge score snapshot — see maybeUpgradeUrl's docstring.
+    preMergeScore: scoreBeforeMerge,
+    // BRO-4130: full pre-merge snapshot, used as applyUrlChangeInvariant's
+    // "before" — see maybeUpgradeUrl's opts.preMergeSnapshot docstring.
+    preMergeSnapshot,
   })) {
     changed = true;
   }
@@ -1190,6 +1388,16 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // locks (manualContentTier) always win; stale incompleteness metadata is
   // dropped only when the fresh body actually classifies as usable.
   if (existing.fullText && existing.fullText !== fullTextBefore && !existing.manualContentTier) {
+    // BRO-1431: neutralize stale exclusion state BEFORE reclassifying content
+    // tier below — classifyContentTier()'s T5/invalid check
+    // (isEffectivelyWrongProductionOrShow) reads wrongProduction/
+    // wrongProductionAutoCleared directly, so clearing the flag AFTER
+    // classification would classify against the stale flag and stay
+    // 'invalid' for one extra merge. See stale-flag-neutralization.js for
+    // the full reasoning and the guardrails against over-clearing.
+    const neutralized = neutralizeStaleFlagsOnBodyReplacement(existing, fullTextBefore);
+    if (neutralized.length > 0) changed = true;
+
     const tierResult = classifyContentTier(existing);
     const newTier = tierResult && tierResult.contentTier;
     if (newTier && newTier !== existing.contentTier) {

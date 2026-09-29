@@ -43,6 +43,7 @@
  */
 
 const { WEST_END_VENUES } = require('./venue-classification');
+const { foldDiacritics } = require('./title-match');
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd, hasJsonLdType } = require('./jsonld');
@@ -73,7 +74,52 @@ const WE_SLUG_MIN_LENGTH = 5;
 // only; a genuine West End Playhouse/Cambridge Theatre roundup still reaches
 // promotion via the WET-listing path, which validates venue from prose via
 // venueFromWetDescription, not a slug substring.
-const WE_SLUG_GENERIC_EXCLUDE = new Set(['playhouse', 'cambridge']);
+//
+// "lyric" joined the exclusion list after BRO-3716: the bare word matches
+// WEST_END_VENUES' "Lyric" (Shaftesbury Avenue) but also matches inside
+// "an-ideal-husband-lyric-hammersmith-review2" — Lyric Hammersmith is a
+// real, distinct, NON-West-End venue. The false match minted a second,
+// garbage-titled show ("An Ideal Husband Hammersmith Review2") duplicating
+// the correctly-entered an-ideal-husband-west-end-2026.
+//
+// BRO-3787: systematic audit of every remaining short (<=8 char slug)
+// WEST_END_VENUES entry for the same collision class. Two more real,
+// currently-operating NON-West-End venues share a bare name closely enough
+// (and with a low enough cost of blanket exclusion — see evidence below)
+// to join the Set outright, same treatment as playhouse/cambridge/lyric:
+//   - "coliseum": Oldham Coliseum Theatre, a long-running Greater
+//     Manchester repertory theatre — distinct from the West End's London
+//     Coliseum. Cost of exclusion is near-zero: every genuine West End
+//     Coliseum slug observed in this repo's audit data (giselle-london-
+//     coliseum-review, kinky-boots-london-coliseum-review, now-you-see-me-
+//     live-london-coliseum-review) already says "london coliseum," which
+//     has its own longer, separate WEST_END_VENUES entry unaffected by
+//     this exclusion — bare "coliseum" was never carrying real signal.
+//   - "queen's" (slug "queens"): Queen's Theatre, Hornchurch — a real,
+//     currently-operating regional producing theatre in East London/South
+//     Essex. Cost of exclusion is zero going forward: the West End's own
+//     "Queen's" was renamed Sondheim Theatre in 2019, so any NEW LBO/WET
+//     slug for that building uses "sondheim," not "queens" — Hornchurch is
+//     now the only real-world referent a "queens" slug can mean.
+// The other 6 short entries flagged by this audit (apollo, garrick,
+// lyceum, old vic, phoenix, savoy) are each ALSO major, currently-active
+// West End venues with real, already-observed bare-slug matches in this
+// repo's audit data (e.g. apollo-theatre-review, garrick-theatre-review,
+// old-vic with no "the-" prefix) — ship-check adversarial review (BRO-3787)
+// caught that blanket-excluding them the same way would silently break
+// live discovery for the genuine West End venue, not just the false
+// positive. Those 6 get the narrower, palace/national-style treatment
+// below (WE_SLUG_FALSE_POSITIVE_RE) instead: reject only the specific
+// colliding compound, leave the bare West End match intact.
+// Checked and found to have NO practical non-West-End collision at all
+// (left matchable, no exclusion needed): adelphi, aldwych, dominion,
+// dorfman, duchess, fortune, gielgud, novello, olivier, sondheim, wyndhams/
+// wyndham's. "fortune" was missed by the first pass of this audit (only 22
+// of the 23 remaining short entries were checked) — the only non-West-End
+// "Fortune Theatre" is in Dunedin, New Zealand, which closed in 2018 and is
+// not a source this matcher ever sees slugs from (LBO/WET are UK-only), so
+// it carries no real collision risk.
+const WE_SLUG_GENERIC_EXCLUDE = new Set(['playhouse', 'cambridge', 'lyric', 'coliseum', 'queens']);
 const VENUE_SLUG_ENTRIES = [...WEST_END_VENUES]
   .map(v => ({ venue: v, slug: v.replace(/[.']/g, '').replace(/\s+/g, '-') }))
   .filter(e => e.slug.length >= WE_SLUG_MIN_LENGTH && !WE_SLUG_GENERIC_EXCLUDE.has(e.slug))
@@ -82,12 +128,66 @@ const VENUE_SLUG_ENTRIES = [...WEST_END_VENUES]
 /** Generic tokens that trail/lead a venue mention in a slug but aren't part
  *  of any canonical venue string here (WEST_END_VENUES entries are bare
  *  names, e.g. "soho place", not "soho place theatre"). Stripped from the
- *  title remainder after venue extraction so they don't leak into the title. */
+ *  title remainder after venue extraction so they don't leak into the title.
+ *
+ *  BRO-4204 S4-T9: also strips the roundup-article tokens LBO's CMS puts on
+ *  EITHER side of the venue ("review-roundup-<title>-<venue>",
+ *  "<title>-<venue>-review2", "<title>-review-round-up-<venue>",
+ *  "<title>-review-<venue>") and the venue-noise words that survive venue
+ *  removal ("<title>-at-the-<venue>", "<title>-<venue>-london"). Until this
+ *  lived HERE, only fetchLboRecentRoundups pre-stripped a leading "review-"
+ *  and a trailing "-review\d*", so the matcher itself resolved
+ *  "dracula-noel-coward-review2" to "Dracula Review2" and a mid-slug
+ *  "nine-night-review-trafalgar" to "Nine Night Review" (both live in
+ *  data/audit/we-promotion-log.jsonl). A garbage title never dedups against
+ *  the real row, mints a duplicate, and validate-data then refuses the WHOLE
+ *  batch. Runs to a fixed point because the tokens nest ("...-at-the-<venue>-
+ *  review" only exposes "-at-the" once "-review" is gone).
+ *
+ *  Trailing-only for london/west-end/at/the: a title can START with them
+ *  ("London Road", "The Story", "At Home") but, once the venue is removed,
+ *  never ends with them as a slug fragment. */
+const ROUNDUP_PREFIX_RE = /^(?:reviews?-)?round-?ups?-|^reviews?-/;
+const ROUNDUP_SUFFIX_RE = /-reviews?(?:-round-?ups?)?\d*$|-round-?ups?$/;
+const LEADING_VENUE_NOISE_RE = /^(?:theatre|theater)-/;
+const TRAILING_VENUE_NOISE_RE = /-(?:theatre|theater|london|west-end|at|the)$/;
+const MAX_STRIP_PASSES = 6;
 function stripGenericVenueWords(remainder) {
+  let out = String(remainder || '');
+  for (let i = 0; i < MAX_STRIP_PASSES; i++) {
+    const next = out
+      .replace(ROUNDUP_PREFIX_RE, '')
+      .replace(ROUNDUP_SUFFIX_RE, '')
+      .replace(LEADING_VENUE_NOISE_RE, '')
+      .replace(TRAILING_VENUE_NOISE_RE, '')
+      .replace(/-{2,}/g, '-')
+      .replace(/^-+|-+$/g, '');
+    if (next === out) break;
+    out = next;
+  }
+  return out;
+}
+
+// National Theatre South Bank names its three auditoria inside LBO's slug
+// alongside "national-theatre", in either order — "the-story-OLIVIER-
+// national-theatre-review" and "pride-national-theatre-DORFMAN-review" are
+// both real, live-observed slugs (BRO-3716). Neither auditorium word is part
+// of the show's title; left in the remainder, they produced "The Story
+// Olivier" and "Pride Theatre Dorfman" — garbage titles that minted a
+// second, duplicate show entry alongside the already-correct
+// the-story-west-end-2026 / pride-west-end-2026. Scoped to venue === 'national'
+// only, so an unrelated title that happens to contain one of these words
+// elsewhere is never touched.
+// "theatre"/"theater" is included here too — stripGenericVenueWords only
+// catches it at the very start/end of the remainder, but removing an
+// auditorium token from the middle of "pride-theatre-dorfman" leaves
+// "theatre" stranded ("pride-theatre") rather than at an edge.
+const NATIONAL_AUDITORIUM_TOKENS = new Set(['olivier', 'lyttelton', 'dorfman', 'theatre', 'theater']);
+function stripNationalAuditorium(remainder) {
   return remainder
-    .replace(/^(theatre|theater)-/, '')
-    .replace(/-(theatre|theater)$/, '')
-    .replace(/^-+|-+$/g, '');
+    .split('-')
+    .filter((token) => !NATIONAL_AUDITORIUM_TOKENS.has(token))
+    .join('-');
 }
 
 // Known non-West-End venues whose NAME happens to end in a canonical West
@@ -106,7 +206,28 @@ function stripGenericVenueWords(remainder) {
 // west-end show) — but other companies also use "National" in their name and
 // are NOT South Bank / West End: National Theatre Wales, National Theatre of
 // Scotland, Welsh National Opera. Adversarial ship-check review (2026-08-14).
-const WE_SLUG_FALSE_POSITIVE_RE = /(^|-)(the-)?other-palace(-|$)|(^|-)alexandra-palace(-|$)|(^|-)(welsh-)?national-theatre-wales(-|$)|(^|-)national-theatre-scotland(-|$)|(^|-)welsh-national-opera(-|$)/;
+//
+// BRO-3787: same "bare venue name stays matchable, only the specific
+// colliding compound is rejected" treatment for 6 more short WEST_END_VENUES
+// entries, each a major currently-active West End venue with real,
+// already-observed bare-slug matches in this repo's audit data — so, unlike
+// coliseum/queens above, blanket Set-exclusion would have cost real signal:
+//   - apollo: O2 Apollo Manchester ("o2-apollo"/"apollo-manchester").
+//   - garrick: Lichfield Garrick Theatre ("lichfield-garrick") — the exact
+//     "real-venue's-name-as-a-compound-word" pattern lyric/Lyric Hammersmith
+//     hit in BRO-3716.
+//   - lyceum: Royal Lyceum Theatre, Edinburgh ("royal-lyceum"/
+//     "lyceum-edinburgh").
+//   - old vic: Bristol Old Vic ("bristol-old-vic"). Genuine West End Old Vic
+//     slugs observed in this repo's audit data (arcadia-old-vic-review,
+//     review-a-christmas-carol-old-vic) use bare "old-vic" with no "the-"
+//     prefix, so excluding "old-vic" from VENUE_SLUG_ENTRIES entirely (as
+//     first attempted) would have broken real discovery — this scoped
+//     rejection preserves it.
+//   - phoenix: Exeter Phoenix ("exeter-phoenix").
+//   - savoy: Savoy Theatre, Monmouth ("savoy-theatre-monmouth"/
+//     "monmouth-savoy").
+const WE_SLUG_FALSE_POSITIVE_RE = /(^|-)(the-)?other-palace(-|$)|(^|-)alexandra-palace(-|$)|(^|-)(welsh-)?national-theatre-wales(-|$)|(^|-)national-theatre-scotland(-|$)|(^|-)welsh-national-opera(-|$)|(^|-)o2-apollo(-|$)|(^|-)apollo-manchester(-|$)|(^|-)manchester-apollo(-|$)|(^|-)lichfield-garrick(-|$)|(^|-)royal-lyceum(-|$)|(^|-)lyceum-edinburgh(-|$)|(^|-)edinburgh-lyceum(-|$)|(^|-)bristol-old-vic(-|$)|(^|-)old-vic-bristol(-|$)|(^|-)exeter-phoenix(-|$)|(^|-)savoy(-theatre)?-monmouth(-|$)|(^|-)monmouth(-theatre)?-savoy(-|$)/;
 
 /**
  * Extracts a WET-listing post's show title from its rendered title, e.g.
@@ -229,12 +350,23 @@ async function fetchLboArticleDate(url, opts = {}) {
 
 /**
  * Does `slug` (a news-sitemap.xml path segment) contain a canonical West End
- * venue name? Returns { venue, remainder } — remainder is the slug with the
- * matched venue substring (and adjoining hyphens) removed, for title
- * extraction — or null if no canonical venue matches.
+ * venue name? Returns { venue, remainder, title } — remainder is the slug
+ * with the matched venue substring (and adjoining hyphens), the roundup
+ * tokens and the venue-noise words removed (see stripGenericVenueWords);
+ * title is slugToTitle(remainder) — or null if no canonical venue matches.
+ * The slug is diacritic-folded first (title-match.js foldDiacritics) so an
+ * accented CMS slug still finds its ASCII WEST_END_VENUES entry, and any
+ * non-slug character becomes a separator: LBO's sitemap carries 69 hand-
+ * typed slugs like "Review:-HAMLET-at-the-National-Theatre" (live, 2026-09-
+ * 28), where the colon glued to "review" defeated the prefix strip and the
+ * title came out as "Review: Hamlet".
  */
 function matchWestEndVenueFromSlug(slug) {
   if (!slug) return null;
+  slug = foldDiacritics(slug).toLowerCase()
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/-{2,}/g, '-')
+    .replace(/^-+|-+$/g, '');
   if (WE_SLUG_FALSE_POSITIVE_RE.test(slug)) return null;
   for (const { venue, slug: venueSlug } of VENUE_SLUG_ENTRIES) {
     const idx = slug.indexOf(venueSlug);
@@ -245,10 +377,13 @@ function matchWestEndVenueFromSlug(slug) {
     const afterIdx = idx + venueSlug.length;
     const after = afterIdx === slug.length || slug[afterIdx] === '-';
     if (!before || !after) continue;
-    const remainder = stripGenericVenueWords(
+    let remainder = stripGenericVenueWords(
       (slug.slice(0, idx) + slug.slice(afterIdx)).replace(/^-+|-+$/g, '').replace(/-{2,}/g, '-')
     );
-    return { venue, remainder };
+    // Auditorium strip can expose a fresh edge token ("pride-theatre-dorfman-
+    // review" -> "pride-review" -> "pride"), so re-run the edge strip after it.
+    if (venue === 'national') remainder = stripGenericVenueWords(stripNationalAuditorium(remainder));
+    return { venue, remainder, title: remainder ? slugToTitle(remainder) : '' };
   }
   return null;
 }
@@ -263,9 +398,6 @@ function slugToTitle(slug) {
     .map((w, i) => (i > 0 && TITLE_CASE_LOWERCASE.has(w)) ? w : w[0].toUpperCase() + w.slice(1))
     .join(' ');
 }
-
-const LBO_PREFIX_STRIP = /^(review-roundup-|review-round-up-|review-)/;
-const LBO_SUFFIX_STRIP = /(-reviews|-review)$/;
 
 /**
  * Fetch LBO's news-sitemap.xml and extract {title, venue} review-roundup
@@ -297,13 +429,18 @@ async function fetchLboRecentRoundups(opts = {}) {
     const rawSlug = slugMatch ? slugMatch[1] : null;
     if (!rawSlug || !/review/i.test(rawSlug)) continue;
 
-    const stripped = rawSlug.replace(LBO_PREFIX_STRIP, '').replace(LBO_SUFFIX_STRIP, '');
-    const venueMatch = matchWestEndVenueFromSlug(stripped);
+    // Roundup prefix/suffix stripping ("review-roundup-", "-review2",
+    // "-review-round-up", ...) lives inside matchWestEndVenueFromSlug now
+    // (BRO-4204 S4-T9) — one code path for every caller, so a slug the
+    // matcher resolves in a test resolves identically here. LBO's CMS appends
+    // a bare digit (no hyphen) to a reposted duplicate's slug ("...-review2",
+    // BRO-3716) — covered by the matcher's `\d*`.
+    const venueMatch = matchWestEndVenueFromSlug(rawSlug);
     if (!venueMatch || !venueMatch.remainder) continue;
 
     const lastmodM = block[1].match(/<lastmod>([^<]+)<\/lastmod>/);
     out.push({
-      title: slugToTitle(venueMatch.remainder),
+      title: venueMatch.title,
       venue: venueMatch.venue,
       sourceUrl: loc,
       // NOT a publish date — sitemap <lastmod> tracks whenever the CMS last

@@ -24,6 +24,9 @@ const {
   isQuotingRoundupHostUrl,
   isIncludableForRebuild: _isIncludable,
   cvBlocksUkWrongProductionAutoClear,
+  hasIndependentExcerptScore,
+  isDefiniteThumb,
+  isRejectedNonReview,
 } = require('../../scripts/lib/review-guards.js');
 
 // Freshness stamps MUST be relative to run time, never a hardcoded literal.
@@ -958,6 +961,142 @@ describe('isRoundupUrl — Playbill read-the-reviews-of slug (audit 2026-08-02)'
       isRoundupPageAsReview({ url: 'https://playbill.com/article/read-the-reviews-of-glengarry-glen-ross-starring-kieran-culkin', outletId: 'nytimes' }),
       false
     );
+  });
+});
+
+describe('isDefiniteThumb', () => {
+  test('uppercase UP/DOWN (dtliThumb format) → true', () => {
+    assert.strictEqual(isDefiniteThumb('UP'), true);
+    assert.strictEqual(isDefiniteThumb('DOWN'), true);
+  });
+
+  test('title-case Up/Down (bwwThumb format) → true', () => {
+    assert.strictEqual(isDefiniteThumb('Up'), true);
+    assert.strictEqual(isDefiniteThumb('Down'), true);
+  });
+
+  test('Meh/Flat (neutral) → false', () => {
+    assert.strictEqual(isDefiniteThumb('Meh'), false);
+    assert.strictEqual(isDefiniteThumb('MEH'), false);
+    assert.strictEqual(isDefiniteThumb('Flat'), false);
+  });
+
+  test('null/undefined/non-string → false', () => {
+    assert.strictEqual(isDefiniteThumb(null), false);
+    assert.strictEqual(isDefiniteThumb(undefined), false);
+    assert.strictEqual(isDefiniteThumb(1), false);
+  });
+});
+
+describe('hasIndependentExcerptScore — THUMB carve-out (BRO-2495)', () => {
+  // Paranormal Activity opening-night incident (2026-08-26): NYT review was
+  // correctly THUMB-scored (dtliThumb=Up) from DTLI's own page, but the
+  // ensemble rejected it as not_a_review because the stored fullText was an
+  // NYT bot-detection paywall stub. hasIndependentExcerptScore didn't
+  // recognize THUMB verdicts as independent of the article body — only
+  // aggregatorStars — so the file lost its score until a human caught it.
+  const goodExcerpt = 'x'.repeat(200); // 150+ chars, no JUNK_EXCERPT_PATTERNS match
+
+  test('not_a_review + dtliThumb=Up + substantial clean excerpt → true (Paranormal Activity fixture)', () => {
+    const data = {
+      rejectionReason: 'not_a_review',
+      dtliThumb: 'Up',
+      dtliExcerpt: goodExcerpt,
+    };
+    assert.strictEqual(hasIndependentExcerptScore(data), true);
+  });
+
+  test('not_a_review + bwwThumb=Down + substantial clean excerpt → true', () => {
+    const data = {
+      rejectionReason: 'not_a_review',
+      bwwThumb: 'Down',
+      bwwExcerpt: goodExcerpt,
+    };
+    assert.strictEqual(hasIndependentExcerptScore(data), true);
+  });
+
+  test('not_a_review + dtliThumb=Meh (neutral) + excerpt, no aggregatorStars → false', () => {
+    const data = {
+      rejectionReason: 'not_a_review',
+      dtliThumb: 'Meh',
+      dtliExcerpt: goodExcerpt,
+    };
+    assert.strictEqual(hasIndependentExcerptScore(data), false);
+  });
+
+  test('not_a_review + dtliThumb=Up but excerpt under 150 chars → false (excerpt requirement still enforced)', () => {
+    const data = {
+      rejectionReason: 'not_a_review',
+      dtliThumb: 'Up',
+      dtliExcerpt: 'too short',
+    };
+    assert.strictEqual(hasIndependentExcerptScore(data), false);
+  });
+
+  test('not_a_review + dtliThumb=Up + wrongProduction:true → false (unconditional exclusion still applies)', () => {
+    const data = {
+      rejectionReason: 'not_a_review',
+      dtliThumb: 'Up',
+      dtliExcerpt: goodExcerpt,
+      wrongProduction: true,
+    };
+    assert.strictEqual(hasIndependentExcerptScore(data), false);
+  });
+
+  test('garbage_text + dtliThumb=Up + excerpt → false (still scoped to not_a_review only)', () => {
+    const data = {
+      rejectionReason: 'garbage_text',
+      dtliThumb: 'Up',
+      dtliExcerpt: goodExcerpt,
+    };
+    assert.strictEqual(hasIndependentExcerptScore(data), false);
+  });
+
+  test('not_a_review + aggregatorStars (pre-existing path) still works unchanged', () => {
+    const data = {
+      rejectionReason: 'not_a_review',
+      aggregatorStars: '4/5',
+      bwwExcerpt: goodExcerpt,
+    };
+    assert.strictEqual(hasIndependentExcerptScore(data), true);
+  });
+});
+
+describe('isRejectedNonReview — thumb carve-out does not override a high-confidence wrongArticle CV (ship-check finding, BRO-2495)', () => {
+  const goodExcerpt = 'x'.repeat(200);
+
+  test('not_a_review + definite thumb + excerpt, no CV → not a rejected non-review (retrieved)', () => {
+    const data = {
+      rejectionReason: 'not_a_review',
+      dtliThumb: 'Up',
+      dtliExcerpt: goodExcerpt,
+    };
+    assert.strictEqual(isRejectedNonReview(data), false);
+  });
+
+  test('not_a_review + definite thumb + excerpt BUT high-confidence CV wrongArticle → still a rejected non-review', () => {
+    // A file can carry a thumb-derived score from the aggregator's page AND
+    // separately have its OWN scraped content independently verified (by a
+    // different pipeline stage) as an interview/preview/wrong article. The
+    // thumb carve-out must not silently override that independent verdict —
+    // same reasoning already applied to hasStructuralStarScore above it.
+    const data = {
+      rejectionReason: 'not_a_review',
+      dtliThumb: 'Up',
+      dtliExcerpt: goodExcerpt,
+      contentVerification: { wrongArticle: true, confidence: 'high' },
+    };
+    assert.strictEqual(isRejectedNonReview(data), true);
+  });
+
+  test('not_a_review + definite thumb + excerpt BUT low-confidence CV wrongArticle → thumb carve-out still applies', () => {
+    const data = {
+      rejectionReason: 'not_a_review',
+      dtliThumb: 'Up',
+      dtliExcerpt: goodExcerpt,
+      contentVerification: { wrongArticle: true, confidence: 'low' },
+    };
+    assert.strictEqual(isRejectedNonReview(data), false);
   });
 });
 

@@ -18,16 +18,32 @@
 'use strict';
 
 class CorpusNotScannedError extends Error {
-  constructor(label) {
+  constructor(label, { rootMissing = false } = {}) {
     super(
-      `scanned 0 review files — ${label} is missing or empty. ` +
-        'The gate cannot pass vacuously; check out the review-texts private repo first.'
+      rootMissing
+        ? `${label} does not exist or is unreadable — the review-texts private repo is not checked out here. ` +
+          'A report-mode run would otherwise print "0 scanned, 0 found" and read as a clean bill of health; ' +
+          'run scripts/setup-local-data.sh --all (or check out the private repo) first.'
+        : `scanned 0 review files — ${label} is missing or empty. ` +
+          'The gate cannot pass vacuously; check out the review-texts private repo first.'
     );
     this.name = 'CorpusNotScannedError';
   }
 }
 
-function assertCorpusScanned(scanned, { gate, label = 'data/review-texts' } = {}) {
+// `corpusRootMissing` is distinct from `scanned === 0` and, unlike the
+// `gate`-gated check below, throws unconditionally (even in a plain report
+// run with no --gate). The two failure modes look identical to a caller that
+// only counts files scanned, but they are not: a filtered run (--show=ID for
+// a show with no reviews yet) can legitimately scan 0 files while the corpus
+// itself is fine, and gating that in report mode would be a false alarm on
+// every unopened show. A missing/unreadable corpus ROOT has no legitimate
+// reading — it always means the private repo checkout isn't there — so BRO-2283
+// makes that case fail loud regardless of --gate: it is the exact shape of the
+// vacuous pass this file exists to prevent, and until now only tripped when a
+// caller happened to pass --gate.
+function assertCorpusScanned(scanned, { gate, label = 'data/review-texts', corpusRootMissing = false } = {}) {
+  if (corpusRootMissing) throw new CorpusNotScannedError(label, { rootMissing: true });
   if (!gate) return;
   if (scanned > 0) return;
   throw new CorpusNotScannedError(label);

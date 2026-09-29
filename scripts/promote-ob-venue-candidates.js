@@ -37,12 +37,13 @@
 const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
-const { isCandidateConfirmed, decideCriticListingPromotion } = require('./lib/ob-cross-validation');
-const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
+const { isCandidateConfirmed, decideCriticListingPromotion, preferCorroboratingTitle } = require('./lib/ob-cross-validation');
+const { isKnownOffBroadwayVenue, isNonNycVenue, OFF_BROADWAY_VENUES, isWestEndVenue, sanitizeVenueForWrite, marketForCategory } = require('./lib/venue-classification');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { scrapePlaybillOBData } = require('./lib/playbill-ob-schedule');
 const { withMarketSuffix } = require('./lib/market-slug');
 const { scrapeLortel } = require('./enrich-off-broadway-dates');
+const { recordParseResult } = require('./lib/source-last-success');
 const { feederVenueCity } = require('./lib/aggregator-candidate-extract');
 const { decideReviewThresholdPromotion } = require('./lib/review-threshold');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -274,7 +275,29 @@ function decideOffBroadwayAggregatorPromotion(candidate, options = {}) {
     venueDirectoryAvailable = () => OFF_BROADWAY_VENUES.size > 0,
   } = options;
 
-  if (!candidate || candidate.category !== 'off-broadway') {
+  // Null guard first: every gate below dereferences `candidate`, so it has to
+  // precede them all. The BRO-3211 non-NYC check was inserted above this and
+  // read `candidate.venue`, turning `decideOffBroadwayAggregatorPromotion(null)`
+  // — a documented, tested contract — into a TypeError instead of a refusal,
+  // and leaving main red.
+  if (!candidate) {
+    return { confirmed: false, reason: 'not an off-broadway candidate' };
+  }
+
+  // Non-NYC touring house: refuse unconditionally (BRO-3211). Every other
+  // rejection below is an "unless --admin-force" judgement call, because a
+  // human can legitimately know better about a new or unlisted NYC venue.
+  // This one is not: Off-Broadway is a New York City designation, so a venue
+  // in another state is never a genuine Off-Broadway house and there is
+  // nothing for an operator to override. Placed ahead of the admin escape
+  // hatches on purpose — the loop this guards (a mis-categorised row teaching
+  // build-ob-venues.js a touring venue, which then admits more rows) is
+  // exactly as damaging when a human starts it with a flag.
+  if (isNonNycVenue(candidate.venue)) {
+    return { confirmed: false, reason: `venue "${candidate.venue}" is a non-NYC touring house — Off-Broadway is a New York City designation, so this cannot be promoted (not overridable with --admin-force)` };
+  }
+
+  if (candidate.category !== 'off-broadway') {
     return { confirmed: false, reason: 'not an off-broadway candidate' };
   }
   if (!AGGREGATOR_ROUNDUP_SOURCES.has(candidate.source)) {
@@ -382,7 +405,12 @@ function buildOffBroadwayAggregatorShowEntry(candidate) {
     status: 'open',
     category: 'off-broadway',
     market: 'broadway',
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : null,
+    // 'play' (not null) when the title doesn't say "musical" — status is
+    // 'open' here, and validate-market-expansion.js's required-fields check
+    // only exempts type when status==='announced'. A null type on a
+    // status='open' show fails CI (BRO-3716 was this exact bug, hit first
+    // via the west-end sibling of this function).
+    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
     discoverySource: `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
@@ -435,7 +463,11 @@ function buildRegionalShowEntry(candidate) {
     category: 'regional',
     market: 'regional',
     tags: ['regional'],
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : null,
+    // Same 'play'-not-null default as the west-end/off-broadway builders
+    // above (BRO-3716) — regional isn't in validate-market-expansion.js's
+    // gated markets today, but there's no reason to leave a known-bad
+    // pattern in a third copy of it.
+    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
     discoverySource: `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
@@ -510,6 +542,11 @@ async function main() {
     } catch (e) {
       console.warn(`  Lortel scrape failed (${e.message}); proceeding with Playbill only.`);
     }
+    // S4-T5 (2026 data audit, BRO-4204): data/audit/lortel-last-success.json.
+    // A failed fetch and an empty parse both count as empty — the page has
+    // been a 404 since 2026-07-22, and three empties in a row now log the
+    // soft-404 warning instead of "Lortel: 0 entries." scrolling past unread.
+    recordParseResult('lortel', lortelEntries.length);
   }
 
   const promoted = [];
@@ -584,6 +621,18 @@ async function main() {
     } else {
       const r = isCandidateConfirmed(c, { playbillEntries, lortelEntries });
       confirmed = r.confirmed; reason = r.reason; source = r.source;
+      // BRO-3920: the venue's own page is a scrape-artifact risk (rendered
+      // heading, CSS caps, inconsistent CMS input — Signature Theatre's own
+      // WordPress data is shouted at every tier, not just on render). Prefer
+      // the corroborating Playbill/Lortel entry's title when it disagrees on
+      // casing and looks more trustworthy (see preferCorroboratingTitle).
+      if (confirmed && r.matchedTitle) {
+        const pick = preferCorroboratingTitle(c.title, r.matchedTitle);
+        if (pick.swapped) {
+          logEntry({ kind: 'title-source-preferred', title: pick.title, venue: c.venue, from: c.title, source });
+          c.title = pick.title;
+        }
+      }
     }
 
     if (!confirmed) {

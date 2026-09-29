@@ -18,6 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { shouldSkipWrongProductionAudit, shouldSkipRoundupAudit } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -274,6 +275,7 @@ function fixCats() {
         console.log(`  ${DRY_RUN ? 'WOULD FLAG' : 'FLAGGING'}: cats-the-jellicle-ball-2026/${file}`);
         if (APPLY) {
           data.wrongProduction = true;
+          invalidateWrongProductionAutoClear(data);
           data.wrongProductionNote = 'Off-Broadway run at Perelman Performing Arts Center, June 2024';
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
         }

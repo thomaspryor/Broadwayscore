@@ -21,6 +21,7 @@
 
 const { normalizeTitle, titleTokens, jaccard } = require('./title-match');
 const { isKnownOffBroadwayVenue, OFF_BROADWAY_VENUES } = require('./venue-classification');
+const { isShoutedTitle, isExemptFromTitleCase } = require('./title-display-case');
 
 const JACCARD_FUZZY_MATCH_THRESHOLD = 0.6;
 
@@ -32,7 +33,12 @@ const JACCARD_FUZZY_MATCH_THRESHOLD = 0.6;
  * @param {Object} options
  * @param {number} options.windowHours - reserved for future cadence checks
  *   (right now the gate is "title appears at all", not "within last Nh")
- * @returns {{ confirmed: boolean, source: string|null, reason: string }}
+ * @returns {{ confirmed: boolean, source: string|null, reason: string, matchedTitle?: string }}
+ *   matchedTitle (BRO-3920) is the corroborating Playbill/Lortel entry's own
+ *   title string, surfaced so the caller can prefer it over a venue-page
+ *   heading that turns out to be shouted — Playbill/Lortel are curated
+ *   editorial listings, not a rendered DOM heading, so they're the better
+ *   casing source when they agree the show is the same one.
  */
 function isCandidateConfirmed(candidate, sources, options = {}) {
   if (!candidate || !candidate.title) {
@@ -51,12 +57,12 @@ function isCandidateConfirmed(candidate, sources, options = {}) {
   // Pass 1: exact normalized match (cheap, catches most cases)
   for (const e of playbill) {
     if (e && e.title && normalizeTitle(e.title) === want) {
-      return { confirmed: true, source: 'playbill', reason: `matched playbill entry "${e.title}" (exact)` };
+      return { confirmed: true, source: 'playbill', reason: `matched playbill entry "${e.title}" (exact)`, matchedTitle: e.title };
     }
   }
   for (const e of lortel) {
     if (e && e.title && normalizeTitle(e.title) === want) {
-      return { confirmed: true, source: 'lortel', reason: `matched lortel entry "${e.title}" (exact)` };
+      return { confirmed: true, source: 'lortel', reason: `matched lortel entry "${e.title}" (exact)`, matchedTitle: e.title };
     }
   }
 
@@ -64,6 +70,15 @@ function isCandidateConfirmed(candidate, sources, options = {}) {
   // like "Girls Chance Music" matching Playbill's "||: GIRLS :||: CHANCE :||: MUSIC :||"
   // (the `|` chars aren't separators in normalizeTitle so the strings differ
   // after normalization, but the token sets agree).
+  //
+  // Deliberately NO matchedTitle on a fuzzy match (BRO-3920 adversarial
+  // review finding): 0.6 jaccard is similar-enough-to-corroborate-existence,
+  // not similar-enough-to-safely-RENAME. "LOVE LOSS HOPE LAUGHTER" and
+  // "Love Loss Hope" both pass 0.6 but are different shows; swapping the
+  // candidate's title to the matched entry's on fuzzy evidence risks
+  // attaching a different show's name to this candidate's venue/source URL.
+  // Only an exact normalized match (Pass 1) is safe to treat as "same title,
+  // different casing".
   if (wantTokens.size > 0) {
     for (const e of playbill) {
       if (!e || !e.title) continue;
@@ -208,7 +223,42 @@ function decideCriticListingPromotion(candidate, options = {}) {
   };
 }
 
+/**
+ * BRO-3920 — decide whether to keep a confirmed candidate's own (venue-page)
+ * title or swap in the corroborating Playbill/Lortel entry's title instead.
+ *
+ * Pulled out of the promotion loop as its own pure function per CLAUDE.md
+ * §15 (extract decision logic, don't inline-and-hope) — this is the piece
+ * that actually decides a stored title, so it needs its own test coverage
+ * independent of the loop that calls it.
+ *
+ * Only swaps when the venue-page title is shouted AND the corroborating
+ * title is not — never when both agree (nothing to fix) and never when both
+ * are shouted (no evidence either is more correct; stays flagged by
+ * validate-data.js's isShoutedTitle gate instead of guessing). Also never
+ * swaps a title that's already a verified exemption (KEEP_SHOUTED_IDS/
+ * TITLES) — that ALL-CAPS was already checked against the source and
+ * confirmed correct, so a corroborating listing's own (possibly wrong)
+ * casing must not silently override it.
+ *
+ * @param {string} candidateTitle - the venue-page-scraped title
+ * @param {string|undefined} matchedTitle - isCandidateConfirmed()'s matchedTitle
+ * @returns {{title: string, swapped: boolean}}
+ */
+function preferCorroboratingTitle(candidateTitle, matchedTitle) {
+  if (
+    matchedTitle
+    && isShoutedTitle(candidateTitle)
+    && !isShoutedTitle(matchedTitle)
+    && !isExemptFromTitleCase(undefined, candidateTitle)
+  ) {
+    return { title: matchedTitle, swapped: true };
+  }
+  return { title: candidateTitle, swapped: false };
+}
+
 module.exports = {
   isCandidateConfirmed,
   decideCriticListingPromotion,
+  preferCorroboratingTitle,
 };

@@ -30,11 +30,12 @@ const path = require('path');
 const https = require('https');
 const cheerio = require('cheerio');
 const { serpQuery } = require('./lib/url-discovery');
+const { shouldSkipPreviewsShow } = require('./lib/opening-signal');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesByTitle } = require('./lib/show-matching');
+const { matchTitleToShow, matchBwwRoundupSlugToShow, loadShows, titleWordsMatch, buildSiblingCategoriesFromShows } = require('./lib/show-matching');
 const { pruneUnmatchedAudit, collisionSlugSet, obRegionalShows } = require('./lib/aggregator-candidate-extract');
 const { validatePageMatchesShow } = require('./lib/page-validator');
-const { readCachedArchiveIfValid, checkArchiveCategory } = require('./lib/bww-archive-category-guard');
+const { readCachedArchiveIfValid, checkArchiveCategory } = require('./lib/archive-cache-guard');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, findExistingReviewFile, isJunkOutlet, maybeUpgradeUrl } = require('./lib/review-normalization');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { classifyContentTier } = require('./lib/content-quality');
@@ -50,6 +51,8 @@ const { isClosedShowEligibleForBatchDiscovery } = require('./lib/discovery-eligi
 // Shared JSON-LD reader — handles schema.org @graph, which a hand-rolled
 // `Array.isArray(x) ? x : [x]` silently misses (scripts/lib/jsonld.js).
 const { parseJsonLd } = require('./lib/jsonld');
+const { isNationalTourRoundupSlug, tourCandidateFor, recordTourCandidates } = require('./lib/tour-roundup-candidate');
+const { runningTourFor } = require('./lib/tour-family');
 
 // Paths
 const reviewTextsDir = path.join(__dirname, '../data/review-texts');
@@ -63,11 +66,7 @@ const showsPath = path.join(__dirname, '../data/shows.json');
 let _siblingCategoriesCache = null;
 function siblingCategoriesByShowId() {
   if (_siblingCategoriesCache) return _siblingCategoriesCache;
-  const showById = {};
-  for (const s of loadShows()) {
-    if (s && s.id) showById[s.id] = s;
-  }
-  _siblingCategoriesCache = buildSiblingCategoriesByTitle(showById);
+  _siblingCategoriesCache = buildSiblingCategoriesFromShows(loadShows());
   return _siblingCategoriesCache;
 }
 
@@ -684,6 +683,12 @@ async function discoverBwwRoundup(show, showId, options = {}) {
   const validRoundupUrls = roundupUrls.filter(url => {
     const urlSlug = (url.split('/article/')[1] || '').replace(/-/g, ' ').toLowerCase();
     if (!titleWordsMatch(searchTitle, urlSlug)) return false;
+    // A national tour takes only its own tour roundups (BRO-4262).
+    if (show.category === 'tour') {
+      if (isNationalTourRoundupSlug(url.split('/article/')[1] || '')) return true;
+      console.log(`  [SKIP] roundup: not a national-tour roundup for a tour entry: ${url.split('/article/')[1] || url}`);
+      return false;
+    }
     // General non-Broadway check (tours, streaming, off-Broadway, etc.)
     // For off-Broadway shows, allow off-Broadway content through
     if (isNotBroadway(urlSlug, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: isOpera, allowRegional: show.category === 'regional' })) {
@@ -1145,8 +1150,14 @@ function saveReview(showId, reviewData, options = {}) {
 // ---------------------------------------------------------------------------
 
 async function processShow(show, showId, options = {}) {
-  // Skip shows in previews — they haven't opened yet, any scraped reviews are wrong-production
-  if (show.status === 'previews') {
+  // Skip shows in previews — they haven't opened yet, any scraped reviews are
+  // wrong-production. EXCEPT a landing-page roundup (forceRoundupUrl: a
+  // current BWW article, matched high-confidence) for a show whose previews
+  // status is stale (null/past openingDate) — see shouldSkipPreviewsShow.
+  const skipPreviews = options.forceRoundupUrl
+    ? shouldSkipPreviewsShow(show, new Date().toISOString().slice(0, 10))
+    : show.status === 'previews';
+  if (skipPreviews) {
     console.log(`  [SKIP] ${showId}: Show is in previews (opens ${show.openingDate})`);
     return { reviews: [], roundup: [] };
   }
@@ -1249,7 +1260,7 @@ async function processShow(show, showId, options = {}) {
       console.log(`    Extracted ${reviews.length} reviews from roundup (${format} format)${averageRating ? ` (avg: ${averageRating}%)` : ''}`);
 
       for (const review of reviews) {
-        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: show.type === 'opera', allowRegional: show.category === 'regional' })) {
+        if (review.outlet && isNotBroadway(review.outlet, { allowOffBroadway: show.category === 'off-broadway', allowWestEnd: isLondonMarket(show.category), allowOpera: show.type === 'opera', allowRegional: show.category === 'regional', allowTour: show.category === 'tour' })) {
           stats.skippedGuards++;
           continue;
         }
@@ -1343,15 +1354,43 @@ async function landingDiscoverMode(shows, options = {}) {
 
   const matched = [];
   const unmatched = [];
+  const tourCandidates = [];
   for (const url of roundupUrls) {
     const slug = (url.split('/article/')[1] || '').replace(/[?#].*$/, '');
     const match = matchBwwRoundupSlugToShow(slug, shows);
+    // A national-tour roundup matches the Broadway show by title, and
+    // processShow's category guard would drop it after fetching. Suggest the
+    // tour to the owner instead when it isn't tracked yet (BRO-4211).
+    // Broadway matches only: a roundup matching a tour entry directly keeps the normal path.
+    if (match && (match.show.category || 'broadway') === 'broadway' && isNationalTourRoundupSlug(slug)) {
+      const cand = tourCandidateFor(slug, match.show, shows);
+      console.log(`  [TOUR]  ${match.show.id} ← ${slug.slice(0, 70)}${cand ? ' (suggesting a tour entry)' : ' (tour already tracked)'}`);
+      // Recorded here; scripts/route-tour-candidates.js turns the file into owner
+      // digest suggestions (only the landing job runs it and commits the alert files).
+      if (cand && !options.dryRun) tourCandidates.push({ ...cand, url, slug });
+      // Tour already tracked: send the roundup to the running tour (BRO-4262).
+      const target = cand ? null : runningTourFor(match.show, shows);
+      if (target) {
+        matched.push({ url, showId: target, slug });
+        console.log(`  [MATCH] ${target} ← ${slug.slice(0, 70)} (tour)`);
+      }
+      continue;
+    }
     if (match) {
       matched.push({ url, showId: match.show.id, slug });
       console.log(`  [MATCH] ${match.show.id} ← ${slug.slice(0, 70)}`);
     } else {
       unmatched.push({ url, slug });
       console.log(`  [MISS]  ${slug.slice(0, 70)}`);
+    }
+  }
+
+  if (tourCandidates.length) {
+    try {
+      const n = recordTourCandidates(path.join(__dirname, '../data/audit/tour-roundup-candidates.json'), tourCandidates);
+      console.log(`\nRecorded ${tourCandidates.length} national-tour candidate(s) (${n} tracked) for route-tour-candidates.js`);
+    } catch (e) {
+      console.log(`  [WARN] Could not record tour candidates: ${e.message}`);
     }
   }
 

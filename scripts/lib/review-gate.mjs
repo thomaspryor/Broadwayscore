@@ -585,6 +585,45 @@ export function recordPlanVerdict({
   // committed yet, and refusing to record there would make the gate
   // unsatisfiable exactly when it fires most (first edit of a new session).
   if (!sessionId) return { recorded: false, reason: '--session-id is required for a plan verdict' };
+
+  // BRO-2310: findFreshPlanVerdict (infra-review-scope.js) only ever looks at
+  // the freshest PASS for a session — a fail is invisible to it, not sticky.
+  // Left alone that is the self-classification dodge task #1079 named as an
+  // open question: a session that earns a fail just re-reviews itself and
+  // records its own pass, and nothing checks who did the overturning. This is
+  // the accountability half of the fix: a pass that follows THIS session's
+  // own most recent plan verdict being a fail must say what changed (--note)
+  // or be an explicit owner call (--reviewer=owner-override). It still
+  // UNLOCKS the gate either way once recorded — the point is a visible paper
+  // trail, not a wedge on the legitimate "fail on v1, revise, pass on v2"
+  // flow. computeInfraReviewDigest() (infra-review-digest.js) surfaces every
+  // such transition via the overturnsFail tag below, so the pattern is
+  // observable even when permitted.
+  let overturnsFail = false;
+  if (result === 'pass') {
+    // Same "skip unparseable timestamps, keep the latest" shape as
+    // findFreshPlanVerdict (infra-review-scope.js) — a raw .sort() on
+    // Date.parse() would let one corrupt `ts` field scramble the ordering
+    // instead of just dropping out. >= not >: millisecond-precision ts can
+    // tie between two verdicts recorded moments apart; on a tie, prefer the
+    // one that appears later in the (append-only) ledger.
+    let last = null;
+    for (const v of readLedger(ledgerRoot)) {
+      if (!v || v.phase !== 'plan' || v.sessionId !== sessionId) continue;
+      const ts = Date.parse(v.ts || '');
+      if (!Number.isFinite(ts)) continue;
+      if (!last || ts >= Date.parse(last.ts)) last = v;
+    }
+    overturnsFail = !!(last && last.result === 'fail');
+    if (overturnsFail && reviewer !== 'owner-override' && !note.trim()) {
+      return {
+        recorded: false,
+        reason: 'the last plan verdict for this session was a fail — record the pass with '
+          + '--note="<what changed since the fail>", or --reviewer=owner-override to overturn it without one',
+      };
+    }
+  }
+
   const entry = {
     ts: new Date().toISOString(),
     phase: 'plan',
@@ -593,6 +632,7 @@ export function recordPlanVerdict({
     sessionId,
     ...(scope.length ? { scope } : {}),
     ...(note ? { note } : {}),
+    ...(overturnsFail ? { overturnsFail: true } : {}),
   };
   const p = join(ledgerRoot, LEDGER_REL_PATH);
   mkdirSync(dirname(p), { recursive: true });

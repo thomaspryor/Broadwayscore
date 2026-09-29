@@ -9,7 +9,11 @@
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
+import { createRequire } from 'module';
 import { quickDateCheck, verifyProduction, getShowData } from './lib/production-verifier.js';
+
+const require = createRequire(import.meta.url);
+const { extractBWWRoundupReviews } = require('./gather-reviews.js');
 
 const SHOW_ID = 'the-boy-at-the-back-of-the-class-west-end-2026';
 
@@ -83,4 +87,132 @@ test('verifyProduction does not reject a London venue mention for a West End sho
   });
   assert.equal(result.shouldReject, false);
   assert.ok(result.issues.some((i) => i.type === 'london_venue'));
+});
+
+// BRO-923: NYSR (New York Stage Review) publishes 2 critics per major opening
+// (typically Frank Scheck + David Finkle). When one critic's review is
+// extracted via Method 1 (JSON-LD BlogPosting) and the other only surfaces in
+// Method 2's articleBody-text supplement, each URL-population pass used to
+// rebuild its own per-outlet anchor queue from scratch — so Method 2's pass
+// handed the SECOND critic the SAME href Method 1 had already assigned the
+// FIRST. Both review files landed with byte-identical URLs, and rebuild's
+// URL-fingerprint dedup silently dropped one critic's review every opening
+// night. Fixed by sharing one queue/index across both passes.
+test('BRO-923: NYSR 2-critics-1-URL — Method 1 and Method 2 critics get distinct URLs', () => {
+  const scheckUrl = 'https://nystagereview.com/2026/04/15/the-fear-of-13-prison-drama-feels-like-a-long-stretch/';
+  const finkleUrl = 'https://nystagereview.com/2026/04/15/the-fear-of-13-adrien-brody-acquits-himself-as-death-row-convict/';
+
+  const html = `<html><body>
+<script type="application/ld+json">
+{
+  "@type": "LiveBlogPosting",
+  "articleBody": "Let's see what the critics had to say... David Finkle, New York Stage Review: Finkle praises the show's daring commitment to its bleak subject matter.",
+  "liveBlogUpdate": [
+    { "@type": "BlogPosting", "author": { "name": "New York Stage Review - Frank Scheck" }, "articleBody": "Scheck says the show feels like a long stretch behind bars." }
+  ]
+}
+</script>
+<p>Frank Scheck, <a href="${scheckUrl}">New York Stage Review:</a> Scheck says the show feels like a long stretch behind bars.</p>
+<p>David Finkle, <a href="${finkleUrl}">New York Stage Review:</a> Finkle praises the show's daring commitment to its bleak subject matter.</p>
+</body></html>`;
+
+  const reviews = extractBWWRoundupReviews(
+    html,
+    'the-fear-of-13-2026',
+    'https://www.broadwayworld.com/article/test',
+    'The Fear of 13'
+  );
+
+  const nysrs = reviews.filter((r) => r.outletId === 'nysr');
+  assert.strictEqual(nysrs.length, 2, `expected 2 NYSR entries, got ${nysrs.length}`);
+
+  const scheck = nysrs.find((r) => r.criticName === 'Frank Scheck');
+  const finkle = nysrs.find((r) => r.criticName === 'David Finkle');
+  assert.ok(scheck, 'expected a Frank Scheck NYSR entry');
+  assert.ok(finkle, 'expected a David Finkle NYSR entry');
+
+  assert.strictEqual(scheck.url, scheckUrl);
+  assert.strictEqual(finkle.url, finkleUrl);
+  assert.notStrictEqual(scheck.url, finkle.url,
+    'Scheck and Finkle must not share a URL — that is the exact BRO-923 dedup-collapse bug');
+});
+
+test('BRO-923: NYSR — only one anchor exists, second critic gets url:null (not a duplicate)', () => {
+  // BWW roundup page sometimes only links ONE of the two critics' articles.
+  // The second critic must fall back to null (recoverable later via SERP/site
+  // search) rather than silently inheriting the first critic's URL.
+  const scheckUrl = 'https://nystagereview.com/2026/04/15/the-fear-of-13-prison-drama-feels-like-a-long-stretch/';
+
+  const html = `<html><body>
+<script type="application/ld+json">
+{
+  "@type": "LiveBlogPosting",
+  "articleBody": "Let's see what the critics had to say... David Finkle, New York Stage Review: Finkle praises the show's daring commitment to its bleak subject matter.",
+  "liveBlogUpdate": [
+    { "@type": "BlogPosting", "author": { "name": "New York Stage Review - Frank Scheck" }, "articleBody": "Scheck says the show feels like a long stretch behind bars." }
+  ]
+}
+</script>
+<p>Frank Scheck, <a href="${scheckUrl}">New York Stage Review:</a> Scheck says the show feels like a long stretch behind bars.</p>
+</body></html>`;
+
+  const reviews = extractBWWRoundupReviews(
+    html,
+    'the-fear-of-13-2026',
+    'https://www.broadwayworld.com/article/test',
+    'The Fear of 13'
+  );
+
+  const nysrs = reviews.filter((r) => r.outletId === 'nysr');
+  const scheck = nysrs.find((r) => r.criticName === 'Frank Scheck');
+  const finkle = nysrs.find((r) => r.criticName === 'David Finkle');
+  assert.ok(scheck, 'expected a Frank Scheck NYSR entry');
+  assert.ok(finkle, 'expected a David Finkle NYSR entry');
+
+  assert.strictEqual(scheck.url, scheckUrl);
+  assert.strictEqual(finkle.url, null,
+    'with only one anchor on the page, the second critic must get null, not a copy of the first critic\'s URL');
+});
+
+test('BRO-923: a rejected candidate does not donate the next critic\'s URL to the current one', () => {
+  // Ship-check adversarial finding on the shared-queue fix: advancing the
+  // shared index past a REJECTED candidate without retrying the next one
+  // would let critic A silently consume critic B's real URL when A's own
+  // first candidate fails validation (here, a /tag/ listing page BWW
+  // sometimes links by mistake). The fix retries within the same outlet's
+  // queue until it finds a valid candidate or runs out.
+  const finkleUrl = 'https://nystagereview.com/2026/04/15/the-fear-of-13-adrien-brody-acquits-himself-as-death-row-convict/';
+
+  const html = `<html><body>
+<script type="application/ld+json">
+{
+  "@type": "LiveBlogPosting",
+  "articleBody": "Let's see what the critics had to say... David Finkle, New York Stage Review: Finkle praises the show's daring commitment to its bleak subject matter.",
+  "liveBlogUpdate": [
+    { "@type": "BlogPosting", "author": { "name": "New York Stage Review - Frank Scheck" }, "articleBody": "Scheck says the show feels like a long stretch behind bars." }
+  ]
+}
+</script>
+<p>Frank Scheck, <a href="https://nystagereview.com/tag/the-fear-of-13/">New York Stage Review:</a> Scheck says the show feels like a long stretch behind bars.</p>
+<p>David Finkle, <a href="${finkleUrl}">New York Stage Review:</a> Finkle praises the show's daring commitment to its bleak subject matter.</p>
+</body></html>`;
+
+  const reviews = extractBWWRoundupReviews(
+    html,
+    'the-fear-of-13-2026',
+    'https://www.broadwayworld.com/article/test',
+    'The Fear of 13'
+  );
+
+  const nysrs = reviews.filter((r) => r.outletId === 'nysr');
+  const scheck = nysrs.find((r) => r.criticName === 'Frank Scheck');
+  const finkle = nysrs.find((r) => r.criticName === 'David Finkle');
+  assert.ok(scheck, 'expected a Frank Scheck NYSR entry');
+  assert.ok(finkle, 'expected a David Finkle NYSR entry');
+
+  // Scheck's own candidate (the /tag/ page) is rejected, so he should retry
+  // the next candidate in the queue rather than stealing Finkle's real URL.
+  assert.strictEqual(scheck.url, finkleUrl);
+  assert.strictEqual(finkle.url, null,
+    'the queue is exhausted after Scheck retries into it — Finkle stays null, not duplicated');
 });

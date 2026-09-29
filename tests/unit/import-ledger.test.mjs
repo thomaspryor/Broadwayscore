@@ -89,6 +89,98 @@ test('the anti-join names exactly the pages with no ledger row', () => {
   assert.deepEqual(ledger.unaccountedPageIds(['page-1', 'page-2'], rows.slice(1)), ['page-1']);
 });
 
+// BRO-2384: the real incident. A Notion card (3a9637c5-..., the #483
+// maybeUpgradeUrl stale-flag bug) was mirrored into Linear as BRO-111 while
+// it still read "Not started". Later that same day it was root-caused,
+// fixed, and auto-closed to Notion Status "Done" — but its LOCAL mirror task
+// had already archived out of ~/.claude/tasks/broadwayscore by the time
+// anyone next ran `linear-import.js --reconcile`, so the mirror-driven
+// reconcile pass (classifyTask/reconcile in scripts/linear-import.js) could
+// no longer see it at all: BRO-111 sat open as a duplicate for weeks until a
+// session was dispatched onto it directly and redid already-shipped work.
+// findStaleDuplicates() is the fix — it reads the ledger (which survives
+// archival) instead of the live mirror.
+test('findStaleDuplicates: names a ledger-only issue whose page went Done after its mirror task archived away (BRO-111)', () => {
+  const rows = [
+    ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111', title: 'P1: URL-change invariant gap' }),
+  ];
+  const doneIds = new Set(['page-483']);
+  const stale = ledger.findStaleDuplicates(rows, doneIds);
+  assert.equal(stale.length, 1);
+  assert.equal(stale[0].identifier, 'BRO-111');
+  assert.equal(stale[0].pageId, 'page-483');
+});
+
+test('findStaleDuplicates: a page still open (not in doneIds) is not flagged', () => {
+  const rows = [ledger.makeRow({ pageId: 'page-1', taskId: '1', linearId: 'l1', identifier: 'BRO-1' })];
+  assert.deepEqual(ledger.findStaleDuplicates(rows, new Set()), []);
+});
+
+test('findStaleDuplicates: a row already marked retired is not re-flagged (idempotent across repeated reconcile runs)', () => {
+  const rows = [
+    ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111', retiredReason: 'notion_done' }),
+  ];
+  assert.deepEqual(ledger.findStaleDuplicates(rows, new Set(['page-483'])), []);
+});
+
+test('findStaleDuplicates: a later un-retired row supersedes an earlier retired one for the same pageId', () => {
+  const rows = [
+    ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111', retiredReason: 'notion_done' }),
+    ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111' }), // owner reopened it — revive path's job, not this one's
+  ];
+  const stale = ledger.findStaleDuplicates(rows, new Set(['page-483']));
+  assert.equal(stale.length, 1, 'the last row (un-retired) governs, same last-row-wins semantics as indexByPageId');
+});
+
+test('findStaleDuplicates: a row with no linearId (unresolved legacy row) is never flagged — nothing to retire', () => {
+  const rows = [ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: null, identifier: null })];
+  assert.deepEqual(ledger.findStaleDuplicates(rows, new Set(['page-483'])), []);
+});
+
+// Codex ship-check finding on the first cut of this fix: without the
+// liveNotionIds exclusion, a page whose task is STILL in the live mirror gets
+// retired by BOTH linear-import.js's mirror-driven pass (r.notCurated) AND
+// this ledger-driven pass in the same run — doubling the Linear API calls and
+// the mutation-log/ledger trail for no reason.
+test('findStaleDuplicates: a page whose task is still live in the mirror is excluded — that is the mirror-driven pass\'s job', () => {
+  const rows = [ledger.makeRow({ pageId: 'page-1', taskId: '1', linearId: 'l1', identifier: 'BRO-1' })];
+  const doneIds = new Set(['page-1']);
+  assert.equal(ledger.findStaleDuplicates(rows, doneIds).length, 1, 'sanity: flagged with no live set');
+  assert.deepEqual(ledger.findStaleDuplicates(rows, doneIds, new Set(['page-1'])), [], 'excluded once page-1 is live');
+});
+
+test('findStaleDuplicates: liveNotionIds only excludes pages it actually names — an unrelated live page does not suppress this one', () => {
+  const rows = [ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111' })];
+  const stale = ledger.findStaleDuplicates(rows, new Set(['page-483']), new Set(['page-999']));
+  assert.equal(stale.length, 1);
+});
+
+// mapWriteAllowed: task ids get reused/renumbered on mirror resync (BRO-2468)
+// — a stale ledger row's taskId can now belong to a different, currently-open
+// task. Writing mapping[taskId] unconditionally would overwrite that
+// unrelated task's row with this ledger row's linearId, corrupting it.
+test('mapWriteAllowed: true when there is no existing mapping entry for the taskId', () => {
+  assert.equal(ledger.mapWriteAllowed(null, ledger.makeRow({ pageId: 'p', linearId: 'l1' })), true);
+  assert.equal(ledger.mapWriteAllowed(undefined, ledger.makeRow({ pageId: 'p', linearId: 'l1' })), true);
+});
+
+test('mapWriteAllowed: true when the existing entry has no linearId yet (nothing to disagree with)', () => {
+  assert.equal(ledger.mapWriteAllowed({ title: 'x' }, ledger.makeRow({ pageId: 'p', linearId: 'l1' })), true);
+});
+
+test('mapWriteAllowed: true when the existing entry already names the SAME Linear issue', () => {
+  assert.equal(ledger.mapWriteAllowed({ linearId: 'l1' }, ledger.makeRow({ pageId: 'p', linearId: 'l1' })), true);
+});
+
+test('mapWriteAllowed: false when the existing entry names a DIFFERENT Linear issue — the reused-taskId corruption case', () => {
+  // The reused-taskId shape: taskId 900 used to belong to the row's page, but
+  // the mirror renumbered and taskId 900 now names a different, unrelated,
+  // currently-open task whose mapping already points at its own real issue.
+  const existingEntry = { linearId: 'linear-UNRELATED', identifier: 'BRO-999' };
+  const row = ledger.makeRow({ pageId: 'page-483', taskId: '900', linearId: 'linear-111', identifier: 'BRO-111' });
+  assert.equal(ledger.mapWriteAllowed(existingEntry, row), false);
+});
+
 test('two concurrent writers both land — no last-writer-wins', async () => {
   // The real scenario: a multi-hour import appending while another process
   // writes the same ledger. The old whole-file rewrite lost entries here and

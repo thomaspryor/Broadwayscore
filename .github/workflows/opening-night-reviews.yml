@@ -233,10 +233,19 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           GATHER_SHOWS="${{ steps.guard.outputs.needed_full }}"
-          echo "Triggering FULL gather-reviews (SERP) for: $GATHER_SHOWS"
+          # BRO-3388: 4+ shows in one sequential batch reliably blew the
+          # gather job's 40-min script budget. Splitting across 2 parallel
+          # matrix jobs halves the shows-per-job so each is more likely to
+          # finish within budget instead of deferring shows to the next tick.
+          IFS=',' read -ra GATHER_SHOWS_ARR <<< "$GATHER_SHOWS"
+          JOBS=1
+          if [ "${#GATHER_SHOWS_ARR[@]}" -ge 4 ]; then
+            JOBS=2
+          fi
+          echo "Triggering FULL gather-reviews (SERP) for: $GATHER_SHOWS (parallel_jobs=$JOBS)"
           gh workflow run gather-reviews.yml \
             -f shows="$GATHER_SHOWS" \
-            -f parallel_jobs=1 \
+            -f parallel_jobs=$JOBS \
             -f max_tier=3 \
             -f aggregators_only=false \
             -f validate_urls=true \
@@ -252,10 +261,16 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           GATHER_SHOWS="${{ steps.guard.outputs.needed_agg }}"
-          echo "Triggering aggregators-only gather-reviews for: $GATHER_SHOWS"
+          # BRO-3388: see FULL-gather step above for rationale.
+          IFS=',' read -ra GATHER_SHOWS_ARR <<< "$GATHER_SHOWS"
+          JOBS=1
+          if [ "${#GATHER_SHOWS_ARR[@]}" -ge 4 ]; then
+            JOBS=2
+          fi
+          echo "Triggering aggregators-only gather-reviews for: $GATHER_SHOWS (parallel_jobs=$JOBS)"
           gh workflow run gather-reviews.yml \
             -f shows="$GATHER_SHOWS" \
-            -f parallel_jobs=1 \
+            -f parallel_jobs=$JOBS \
             -f max_tier=3 \
             -f aggregators_only=true \
             -f validate_urls=true \
@@ -276,7 +291,10 @@ jobs:
                 workflow_id: 'update-reddit-sentiment.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.find.outputs.shows }}'
+                  shows: '${{ steps.find.outputs.shows }}',
+                  // Opening night is the one moment Reddit moves fast — bypass the
+                  // 20h freshness skip the orchestrator's repeat dispatches use (BRO-4215).
+                  skip_fresh_hours: '0'
                 }
               });
               console.log('Triggered Reddit sentiment for: ${{ steps.find.outputs.shows }}');
@@ -351,6 +369,17 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
+          # alert-ledger.json / alert-digest-queue.json / alert-router-
+          # attempts.jsonl (BRO-3671): audit-opening-night-coverage.js's
+          # --alert flag calls routeAlert(disposition:'digest') at :689 — its
+          # cooldown ledger, queued digest line, and logDispatchAttempt()'s
+          # rewritten-every-attempt tracked file all only exist on this job's
+          # ephemeral runner disk otherwise (BRO-3662: unstaged, the attempts
+          # file makes a rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh).
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else

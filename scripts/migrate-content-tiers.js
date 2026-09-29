@@ -20,6 +20,7 @@
 const fs = require('fs');
 const path = require('path');
 const { classifyContentTier, countWords } = require('./lib/content-quality');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = 'data/review-texts';
 
@@ -30,8 +31,7 @@ const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
 
 function loadAllReviews() {
   const reviews = [];
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR)
-    .filter(f => fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory());
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const showId of showDirs) {
     if (showFilter && showId !== showFilter) continue;

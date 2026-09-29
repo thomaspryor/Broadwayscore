@@ -31,6 +31,7 @@
 const fs = require('fs');
 const path = require('path');
 const { buildCadenceReport } = require('./lib/outlet-cadence');
+const { getActionableOutletRows } = require('./lib/outlet-heartbeat-state');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 
@@ -86,17 +87,27 @@ function main() {
   const flagged = getFlaggedOutlets(reviews, outlets, showCategoryById);
 
   if (writeBaseline) {
+    // Only baseline rows that have actually crossed the digest's own
+    // redStreak>=2 threshold (scripts/lib/outlet-heartbeat-state.js) — not
+    // every row this LIVE recompute currently sees as 'red'. A row on its
+    // first red week hasn't alerted yet; baselining it here would suppress
+    // its first real alert before it's ever triaged (BRO-2521 what-else:
+    // caught thewrap::off-broadway, redStreak=1, getting pre-baselined by
+    // the old unconditional `flagged.map(...)`).
+    const stateFile = resolveDataFile('data/audit/outlet-heartbeat-state.json');
+    const state = fs.existsSync(stateFile) ? JSON.parse(fs.readFileSync(stateFile, 'utf8')) : {};
+    const { actionable } = getActionableOutletRows(flagged, state, new Set());
     const p = baselinePath();
     const payload = {
       _meta: {
-        description: 'Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The "Quality: outlet-heartbeat red flags" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline',
-        count: flagged.length,
+        description: 'Known/acknowledged outlet×market pairs already silent beyond cadence (card #643). The "Quality: outlet-heartbeat red flags" digest check (scripts/health-check.js) alerts only on pairs NOT listed here once they cross the redStreak>=2 threshold. Only rows that have actually crossed that threshold get baselined here (see BRO-2521) — a merely-red-this-week row is left off so it can still alert once triaged. Regenerate after triaging with: node scripts/monitor-outlet-recency.js --write-baseline',
+        count: actionable.length,
       },
-      keys: flagged.map((r) => `${r.outletId}::${r.market}`).sort(),
+      keys: actionable.map((r) => `${r.outletId}::${r.market}`).sort(),
     };
     fs.mkdirSync(path.dirname(p), { recursive: true });
     fs.writeFileSync(p, JSON.stringify(payload, null, 2) + '\n');
-    console.error(`Wrote baseline: ${flagged.length} known silent outlet×market pair(s) → ${p}`);
+    console.error(`Wrote baseline: ${actionable.length} known silent outlet×market pair(s) (redStreak>=2) → ${p}`);
     process.exit(0);
   }
 

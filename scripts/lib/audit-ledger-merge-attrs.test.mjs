@@ -66,6 +66,18 @@ test('EXEMPT_LEDGERS entries are well-formed', () => {
   }
 });
 
+// BRO-3868 what-else sweep: scraper-spend-daily-agg.jsonl was listed TWICE
+// (BRO-3202 and BRO-3092, added independently the same day) — harmless to
+// isExemptLedgerPath's Set-backed lookup, but dead documentation weight and a
+// sign two sessions duplicated each other's checked work. Nothing else here
+// would have caught it: "well-formed" only checks each entry in isolation.
+test('EXEMPT_LEDGERS has no duplicate file entries', () => {
+  const files = EXEMPT_LEDGERS.map((e) => e.file);
+  const seen = new Set();
+  const dupes = files.filter((f) => (seen.has(f) ? true : (seen.add(f), false)));
+  assert.deepEqual(dupes, [], `duplicate EXEMPT_LEDGERS entry(ies): ${JSON.stringify(dupes)}`);
+});
+
 test('REGRESSION: every real tracked data/audit/*.jsonl ledger is either merge=union or a documented exemption', () => {
   const tracked = git(['ls-files', 'data/audit'])
     .split('\n')

@@ -39,9 +39,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { parseDate } = require('./lib/date-utils');
 const { extractDateFromUrl } = require('./lib/rebuild-helpers');
-const { safeWriteReview } = require('./lib/review-write-guard');
+const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
 
@@ -95,8 +96,7 @@ function bestDate(data) {
 
 function run() {
   const showMap = loadShows();
-  const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d =>
-    fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory());
+  const showDirs = listShowDirs(REVIEW_TEXTS_DIR);
 
   let flagged = 0, hardened = 0, skippedFlagged = 0, skippedOperator = 0, skippedNoDate = 0, skippedInWindow = 0, skippedPriorRun = 0, noShow = 0, noWindow = 0;
   const details = [];
@@ -153,6 +153,7 @@ function run() {
 
       if (!DRY_RUN) {
         data.wrongProduction = true;
+        invalidateWrongProductionAutoClear(data);
         data.wrongProductionReason = 'audit-2026-06-21-prior-production-contamination';
         // Preserve an existing note (e.g. a date-guard / CV note); only add ours when absent.
         if (!data.wrongProductionNote) {

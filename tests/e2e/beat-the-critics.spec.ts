@@ -61,8 +61,7 @@ async function startPicking(page: Page) {
 
 /** Select the first nominee button in the picking screen. */
 async function pickFirstNominee(page: Page) {
-  // Nominee cards are buttons inside the nominee list — exclude nav/header buttons
-  const nomineeButtons = page.locator('.flex.flex-col.gap-2\\.5 button, [class*="flex-col"][class*="gap"] button').filter({ hasNotText: /Lock In|Back|Keep Going/i });
+  const nomineeButtons = page.getByTestId('nominee-button');
   await nomineeButtons.first().waitFor({ state: 'visible', timeout: 10000 });
   await nomineeButtons.first().click();
 }
@@ -180,7 +179,7 @@ test.describe('picking flow — Tier 1 (The Big Four)', () => {
     await gotoLanding(page);
     await startPicking(page);
 
-    const nomineeButtons = page.locator('.flex.flex-col.gap-2\\.5 button').filter({ hasNotText: /Lock In|Back/i });
+    const nomineeButtons = page.getByTestId('nominee-button');
     const first = nomineeButtons.first();
     await first.waitFor({ state: 'visible', timeout: 10000 });
     await first.click();
@@ -264,7 +263,7 @@ test.describe('picks persist across reload', () => {
     await startPicking(page);
 
     // Pick the first nominee and record its text
-    const nomineeButtons = page.locator('.flex.flex-col.gap-2\\.5 button').filter({ hasNotText: /Lock In|Back/i });
+    const nomineeButtons = page.getByTestId('nominee-button');
     await nomineeButtons.first().waitFor({ state: 'visible', timeout: 10000 });
     const pickedTitle = await nomineeButtons.first().locator('.text-\\[15px\\]').textContent();
 
@@ -365,7 +364,7 @@ test.describe('results ballot', () => {
     await expect(page.getByText('My Tony Picks')).toBeVisible();
 
     // At least one pick row is rendered
-    const pickRows = page.locator('.flex.items-center.justify-between.py-1\\.5');
+    const pickRows = page.getByTestId('ballot-pick-row');
     await expect(pickRows.first()).toBeVisible({ timeout: 10000 });
 
     const visibleText = await page.locator('body').innerText();

@@ -23,6 +23,7 @@
 const fs = require('fs');
 const path = require('path');
 const cq = require('./lib/content-quality.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 function parseArgs(argv) {
   const args = { apply: false, sample: null };
@@ -54,9 +55,7 @@ function findDir() {
 function main() {
   const args = parseArgs(process.argv);
   const dir = findDir();
-  const showDirs = fs.readdirSync(dir).filter(d => {
-    try { return fs.statSync(path.join(dir, d)).isDirectory() && d !== '_pending'; } catch { return false; }
-  });
+  const showDirs = listShowDirs(dir).filter(d => d !== '_pending');
 
   const pool = args.sample ? showDirs.slice(-args.sample) : showDirs;
   const stats = {

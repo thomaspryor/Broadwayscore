@@ -19,7 +19,7 @@ import assert from 'node:assert';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { urlOrTitleLooksLikeReview } = require('../../scripts/lib/review-guards.js');
+const { urlOrTitleLooksLikeReview, urlLooksLikeReview } = require('../../scripts/lib/review-guards.js');
 
 describe('urlOrTitleLooksLikeReview', () => {
   test('plain slug match → true (delegates to urlLooksLikeReview)', () => {
@@ -130,6 +130,36 @@ describe('urlOrTitleLooksLikeReview', () => {
         'https://example.com/tag/death-of-a-salesman/',
         'Death of a Salesman',
         'Death of a Salesman tag page'
+      ),
+      false
+    );
+  });
+});
+
+describe('urlLooksLikeReview — hyphenated title regression (Pre-Existing Condition, 2026-09-15)', () => {
+  // Bug: urlTitleWordsPass stripped hyphens entirely ("pre-existing" ->
+  // "preexisting"), so a hyphenated title word could never match either a
+  // hyphen-split URL segment or the raw slug substring. Fix keeps the hyphen
+  // IN the word (not stripped, not turned into a space) so wordMatch's
+  // existing hyphen-tolerant boundary regex matches it as one literal
+  // substring — without changing titleWords.length, which would silently
+  // raise the match-ratio threshold for prose article-title matching (see
+  // the "Night-Time" long-title test above).
+  test("real SERP URL for 'Pre-Existing Condition' passes the slug guard", () => {
+    assert.strictEqual(
+      urlLooksLikeReview(
+        'https://www.newyorktheatreguide.com/reviews/pre-existing-condition-off-broadway-review-lupita-nyongo',
+        'Pre-Existing Condition'
+      ),
+      true
+    );
+  });
+
+  test("a hyphenated title word still requires a real match — unrelated URL fails", () => {
+    assert.strictEqual(
+      urlLooksLikeReview(
+        'https://example.com/some-other-play-review',
+        'Pre-Existing Condition'
       ),
       false
     );

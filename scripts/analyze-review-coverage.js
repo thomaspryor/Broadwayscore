@@ -1,8 +1,9 @@
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const reviewsDir = 'data/review-texts';
-const shows = fs.readdirSync(reviewsDir).filter(f => fs.statSync(path.join(reviewsDir, f)).isDirectory());
+const shows = listShowDirs(reviewsDir);
 
 let stats = {
   total: 0,

@@ -7,6 +7,7 @@
 const { chromium } = require('playwright');
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Configuration
 const CONFIG = {
@@ -61,8 +62,7 @@ function findGoodOutletReviews() {
 
   if (!fs.existsSync(CONFIG.reviewTextsDir)) return reviews;
 
-  const shows = fs.readdirSync(CONFIG.reviewTextsDir)
-    .filter(f => fs.statSync(path.join(CONFIG.reviewTextsDir, f)).isDirectory());
+  const shows = listShowDirs(CONFIG.reviewTextsDir);
 
   for (const showId of shows) {
     const showDir = path.join(CONFIG.reviewTextsDir, showId);

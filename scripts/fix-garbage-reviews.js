@@ -23,6 +23,7 @@ const path = require('path');
 // Import content quality module
 const { assessTextQuality } = require('./lib/content-quality.js');
 const { resolveShowIdentity } = require('./lib/show-identity');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '../data/review-texts');
 const REPORT_PATH = path.join(__dirname, '../data/garbage-reviews-report.json');
@@ -89,9 +90,7 @@ function getAllReviewFiles() {
 
   const shows = filterShowId
     ? [filterShowId]
-    : fs.readdirSync(REVIEW_TEXTS_DIR).filter(f =>
-        fs.statSync(path.join(REVIEW_TEXTS_DIR, f)).isDirectory()
-      );
+    : listShowDirs(REVIEW_TEXTS_DIR);
 
   for (const show of shows) {
     const showDir = path.join(REVIEW_TEXTS_DIR, show);

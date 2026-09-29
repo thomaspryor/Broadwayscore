@@ -11,6 +11,21 @@
  * The 2026-05-26 incident saw this pattern silently accumulate hundreds of
  * dangling references across two cleanup waves.
  *
+ * The same dangling-reference shape exists for `crossOutletDuplicate` +
+ * `crossOutletPrimaryFile` (written by detect-cross-outlet-duplicates.js —
+ * it flags the SECONDARY file of a cross-outlet content match as excluded,
+ * pointing at the primary via `crossOutletPrimaryFile: "<showId>/<file>"`).
+ * If the primary is later deleted as an outlet-merge tombstone, the
+ * secondary is left permanently excluded (explainExclusion returns
+ * 'crossOutletDuplicate' unconditionally on the flag — see review-guards.js)
+ * with no path back, even after the actual duplicate is gone. Confirmed on
+ * the-producers-west-end-2025: timeout-london--andrzej-lukowski.json's real,
+ * scoreable 74-scored review was excluded because its crossOutletPrimaryFile
+ * (timeout--andrzej-lukowski.json) had been deleted months earlier — the
+ * duplicateOf/duplicateTextOf cascade-clear on this same file ran (BRO-3864),
+ * but crossOutletDuplicate was untouched because this function didn't check
+ * it yet.
+ *
  * This helper makes the deletion + cascade-clear atomic at the source:
  *   1. Read every other .json file in the same directory.
  *   2. For each whose `duplicateOf` points at the file we're about to
@@ -78,18 +93,43 @@ function cascadeClearDuplicateRefs(dirPath, deletedFilename, opts = {}) {
     // card 39c637c5, 2026-07-13). Delete the field rather than nulling it —
     // validate-data flags `null` as "should be string, got object".
     const dupTextOfDangling = data.duplicateTextOf === deletedFilename;
-    if (!dupOfDangling && !dupTextOfDangling) continue;
+    // crossOutletPrimaryFile is stored as "<showId>/<file>", not a bare
+    // filename like duplicateOf/duplicateTextOf — compare basenames.
+    const crossOutletDangling = data.crossOutletDuplicate === true &&
+      typeof data.crossOutletPrimaryFile === 'string' &&
+      path.basename(data.crossOutletPrimaryFile) === deletedFilename;
+    if (!dupOfDangling && !dupTextOfDangling && !crossOutletDangling) continue;
 
-    data.duplicateClearReason = `cascade-cleared: sibling ${deletedFilename} was deleted`;
+    // duplicateClearReason is a shared breadcrumb read elsewhere (review-write-
+    // guard.js's CLEAR_BREADCRUMBS.duplicateOf/duplicateTextOf/duplicateReason)
+    // as proof that THIS file's duplicateOf/duplicateTextOf clearing was
+    // intentional, so a rebase-time restore doesn't resurrect a stale pointer.
+    // Stamping it for a crossOutletDuplicate-only clear (no dup/dupText
+    // involved) would plant that same proof on a file whose duplicateOf may
+    // still be a real, untouched value — a later, unrelated event that empties
+    // it would then be wrongly treated as an intentional clear. So this only
+    // fires when a duplicateOf/duplicateTextOf pointer is actually dangling
+    // here; crossOutletDuplicate gets its own dedicated breadcrumb below.
+    if (dupOfDangling || dupTextOfDangling) {
+      data.duplicateClearReason = `cascade-cleared: sibling ${deletedFilename} was deleted`;
+    }
     if (dupOfDangling) {
       data.duplicateOf = null;
       data.duplicateReason = null;
     }
     if (dupTextOfDangling) delete data.duplicateTextOf;
+    if (crossOutletDangling) {
+      data.crossOutletClearReason = `cascade-cleared: sibling ${deletedFilename} was deleted`;
+      data.crossOutletDuplicate = false;
+      delete data.crossOutletPrimaryFile;
+      delete data.crossOutletSimilarity;
+      delete data.crossOutletMethod;
+      delete data.crossOutletFlaggedAt;
+    }
     try {
       writeFile(siblingPath, data);
       cleared.push(entry);
-      const fields = [dupOfDangling && 'duplicateOf', dupTextOfDangling && 'duplicateTextOf'].filter(Boolean).join('+');
+      const fields = [dupOfDangling && 'duplicateOf', dupTextOfDangling && 'duplicateTextOf', crossOutletDangling && 'crossOutletDuplicate'].filter(Boolean).join('+');
       log(`[cascade-clear] cleared ${fields} in ${entry} (was pointing at deleted ${deletedFilename})`);
     } catch {
       // best-effort — a write failure during the cleanup phase shouldn't

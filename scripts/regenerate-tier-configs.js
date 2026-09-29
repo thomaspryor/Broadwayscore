@@ -15,6 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { buildSkipConfig } = require('./lib/domain-tier-skip');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 // Parse args
 const args = process.argv.slice(2);
@@ -62,10 +63,7 @@ let filesWithAttempts = 0;
 
 console.log(`Scanning ${BASE}...`);
 
-const showDirs = fs.readdirSync(BASE).filter(d => {
-  try { return fs.statSync(path.join(BASE, d)).isDirectory() && d !== '.git'; }
-  catch { return false; }
-});
+const showDirs = listShowDirs(BASE);
 
 for (const showDir of showDirs) {
   const showPath = path.join(BASE, showDir);

@@ -22,6 +22,7 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview, shouldSkipLockedEnrichment } = require('./lib/review-write-guard');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 let lockedSkipCount = 0;
 
@@ -347,9 +348,9 @@ console.log(`Unknown-critic outlet-pair matches: ${unknownPairsFlagged}`);
 // --- AP content scan (catches misattributed AP wire stories) ---
 console.log('\n--- AP Content Scan ---');
 let apFlagged = 0;
-const showDirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+const showDirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
   if (SHOW_FILTER && d !== SHOW_FILTER) return false;
-  return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory();
+  return true;
 });
 
 for (const showId of showDirs) {

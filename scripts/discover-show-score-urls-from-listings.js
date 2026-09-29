@@ -28,6 +28,7 @@ const path = require('path');
 const https = require('https');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { venuesMatch } = require('./lib/deduplication');
+const { findConflictingShowId } = require('./lib/show-score-url-map');
 
 const DATA_DIR = path.join(__dirname, '../data');
 const URLS_PATH = path.join(DATA_DIR, 'show-score-urls.json');
@@ -575,6 +576,28 @@ async function main() {
   processListings(obListings, 'off-broadway', 'Off-Broadway');
   processListings(weListings, 'west-end', 'West End');
 
+  // BRO-4055: resolve the write-time conflict guard ONCE, before the
+  // summary is printed — matched-time newDiscoveries/urlConflict counts a
+  // show as "new" whether or not the guard below actually accepts it, and
+  // a dry run that skips the guard entirely previews a write that would
+  // partly be rejected for real. Both branches (write and dry-run) now use
+  // the same toWrite/rejected split, and the summary counts what will
+  // actually land.
+  const toWrite = [];
+  const rejected = [];
+  for (const d of discoveries) {
+    // findConflictingShowId for why this must be checked here, not just at
+    // match time — see lib/show-score-url-map.js.
+    const conflictId = findConflictingShowId(urlData.shows, d.showId, d.url);
+    if (conflictId) {
+      rejected.push({ ...d, conflictId });
+    } else {
+      toWrite.push(d);
+    }
+  }
+  urlConflict += rejected.length;
+  newDiscoveries = toWrite.length;
+
   // ── Summary ──
   console.log('═══════════════════════════════════════');
   console.log(`New discoveries:  ${newDiscoveries}`);
@@ -584,16 +607,13 @@ async function main() {
   console.log(`Date rejected:    ${dateRejected}`);
   console.log('═══════════════════════════════════════\n');
 
+  for (const d of rejected) {
+    console.log(`  [DUPLICATE URL] ${d.url} already assigned to ${d.conflictId}, skipping ${d.showId}`);
+  }
+
   // ── Write URL results ──
   if (newDiscoveries > 0 && !dryRun) {
-    for (const d of discoveries) {
-      // Check for duplicate URL: another show already has this URL
-      const existingOwner = Object.entries(urlData.shows).find(([id, url]) => url === d.url && id !== d.showId);
-      if (existingOwner) {
-        console.log(`  [DUPLICATE URL] ${d.url} already assigned to ${existingOwner[0]}, skipping ${d.showId}`);
-        urlConflict++;
-        continue;
-      }
+    for (const d of toWrite) {
       urlData.shows[d.showId] = d.url;
     }
     urlData._meta = urlData._meta || {};
@@ -603,7 +623,7 @@ async function main() {
     console.log(`Wrote ${newDiscoveries} new URLs to show-score-urls.json`);
   } else if (newDiscoveries > 0 && dryRun) {
     console.log('[DRY RUN] Would write:');
-    for (const d of discoveries) {
+    for (const d of toWrite) {
       console.log(`  ${d.showId}: ${d.url}`);
     }
   } else {

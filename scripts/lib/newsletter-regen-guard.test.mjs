@@ -301,3 +301,39 @@ test('a property named like a keyword does not turn division into a regex', () =
   const src = 'const s = `${obj.return / "/" , execFileSync(\'node\', [\'generate.mjs\'], {env:process.env})}`;';
   assert.equal(findUnpinnedGenerateSpawns(src, 'fixture.mjs').length, 1);
 });
+
+// --- sourceSpawnsGenerator: the "does this file spawn the generator at all?"
+// question, extracted so scripts/newsletter/featured-state-persist-order.test.mjs
+// stops approximating it with a substring regex.
+//
+// That regex was /['"`][^'"`]*generate\.mjs['"`]/, which treated an APOSTROPHE as
+// an opening quote. An ordinary comment reading `<td>'s text-align (generate.mjs's
+// scoreCol)` matched it, so the guard reported a file that spawns nothing and
+// reddened main for the whole fleet (BRO-3559, P0, 2026-09-16). It was ALSO
+// blind to the shell-string spawn form, so it would have missed a real offender.
+const { sourceSpawnsGenerator } = require_('./newsletter-regen-guard.js');
+
+test('sourceSpawnsGenerator ignores an apostrophe-bearing comment (BRO-3559 false positive)', () => {
+  const src = "// parent <td>'s text-align:center (generate.mjs's scoreCol) and\nconst x = 1;";
+  assert.equal(sourceSpawnsGenerator(src), false);
+});
+
+test('sourceSpawnsGenerator ignores prose that merely names the generator', () => {
+  assert.equal(sourceSpawnsGenerator('// see scripts/newsletter/generate.mjs\nconst y = 2;'), false);
+});
+
+test('sourceSpawnsGenerator catches the shell-string spawn the old regex missed', () => {
+  assert.equal(sourceSpawnsGenerator('execSync(`node scripts/newsletter/generate.mjs ${week}`);'), true);
+});
+
+test('sourceSpawnsGenerator catches the argv-array spawn', () => {
+  assert.equal(
+    sourceSpawnsGenerator("execFileSync('node', [path.join(dir, 'generate.mjs'), week]);"),
+    true,
+  );
+});
+
+test('sourceSpawnsGenerator ignores a spawn that only appears inside a string literal', () => {
+  const src = "const doc = `execFileSync('node', ['generate.mjs'])`;";
+  assert.equal(sourceSpawnsGenerator(src), false);
+});

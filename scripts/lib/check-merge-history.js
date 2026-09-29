@@ -26,8 +26,26 @@
 
 const { execFileSync } = require('child_process');
 
+// BRO-3320 sibling. ensureFullHistory() below runs `git fetch --unshallow`,
+// and this wrapper carried NO timeout — an unbounded hang if it ever fired.
+// It is dormant today only because its one caller (autonomous-merge.js:71 via
+// autonomous-merge.yml) checks out with fetch-depth: 0, so the shallow branch
+// never runs. That is one workflow edit away from being an unkillable job.
+//
+// Bounded, NOT skipped-in-CI like scripts/lib/landing-verify.js's copy: this
+// module scans merge history for oscillation and a truncated graph would give
+// it a silently WRONG answer rather than the honest "can't tell" landing-verify
+// returns. So the right posture here is "fail loudly after a bound", which is
+// what countPriorMergesInHistory's still-shallow check already does with it.
+const GIT_NET_TIMEOUT_SEC = Number(process.env.GIT_NET_TIMEOUT_SEC || 90);
+
 function runGit(args, cwd) {
-  return execFileSync('git', args, { cwd, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
+  return execFileSync('git', args, {
+    cwd,
+    encoding: 'utf8',
+    stdio: ['ignore', 'pipe', 'pipe'],
+    timeout: GIT_NET_TIMEOUT_SEC * 1000,
+  });
 }
 
 /** True if `cwd`'s clone is shallow (a `.git/shallow` boundary exists). */

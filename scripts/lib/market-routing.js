@@ -19,11 +19,18 @@
  *      reject (no plausible target).
  *   5. Accept.
  *
+ * National tours (BRO-4262) sit outside rules 2-3 and the same-title branch:
+ * they share the Broadway title and the 'nyc' market pool, so date proximity
+ * alone would swap reviews between a Broadway run and its tour. A tour gets a
+ * review only through the tour branch (tourDecision): a Broadway target, a URL
+ * the tour guard reads as a tour stop, and a tour whose window covers the date.
+ *
  * Pure: no filesystem I/O. Callers pass in shows list (or sibling index).
  */
 
 const { parseDate } = require('./date-utils');
-const { pickRerouteTarget, urlYearFromPath } = require('./review-guards');
+const { pickRerouteTarget, urlYearFromPath, isLikelyTourReview } = require('./review-guards');
+const { pickTourForDate } = require('./tour-family');
 const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
 const { VENUE_STOPWORDS } = require('./production-match-gate');
 
@@ -219,6 +226,24 @@ function collectSameTitleSignals(candidate, ctx) {
 }
 
 /**
+ * Tour branch (BRO-4262). Only a Broadway target can hand a review to a tour,
+ * and only on positive evidence: the URL is one the tour guard reads as a tour
+ * stop (a regional BWW city page or a known tour-stop paper). The tour is
+ * picked by date window (tour-family.js); no single matching tour = no reroute,
+ * and the caller's tour guard then rejects the write as before.
+ * @returns {{action:'reroute', targetShowId, reason}|null}
+ */
+function tourDecision(showId, sibData, { url, publishDate, dateSource }) {
+  if (!sibData || (sibData.category || 'broadway') !== 'broadway') return null;
+  const tours = (sibData.siblings || []).filter(s => s.category === 'tour');
+  if (tours.length === 0) return null;
+  if (!isLikelyTourReview(url, showId)) return null;
+  const pick = pickTourForDate(tours, { publishDate, dateSource });
+  if (!pick.tourId) return null;
+  return { action: 'reroute', targetShowId: pick.tourId, reason: `tour-stop review: ${pick.reason}` };
+}
+
+/**
  * Classify the market routing for a prospective write.
  *
  * @param {object} args
@@ -226,6 +251,7 @@ function collectSameTitleSignals(candidate, ctx) {
  * @param {string} [args.url]
  * @param {string} [args.outletId]
  * @param {string|Date} [args.publishDate]
+ * @param {string} [args.dateSource] — 'url' when publishDate was read off the URL (not trusted for tour windows)
  * @param {string} [args.category] — current show's category (west-end/off-west-end/etc.)
  * @param {boolean} [args.allowCrossMarket=false]
  * @param {Set<string>} [args.visited] — already-visited show IDs (prevent cycles)
@@ -238,6 +264,7 @@ function classifyMarketRouting(args) {
     url,
     outletId,
     publishDate,
+    dateSource,
     category,
     allowCrossMarket = false,
     visited,
@@ -251,8 +278,18 @@ function classifyMarketRouting(args) {
   const visitedSet = visited || new Set();
   visitedSet.add(showId);
 
+  const rawSibData = siblingIndex && siblingIndex.get(showId);
+
+  // --- Tour branch (BRO-4262) ---
+  const tourReroute = tourDecision(showId, rawSibData, { url, publishDate, dateSource });
+  if (tourReroute && !visitedSet.has(tourReroute.targetShowId)) return tourReroute;
+
+  // Every other rule works on non-tour siblings only, and never runs FOR a tour:
+  // a tour and its Broadway run share title and market pool by design.
+  const sibData = rawSibData && rawSibData.category === 'tour' ? null
+    : rawSibData && { ...rawSibData, siblings: rawSibData.siblings.filter(s => s.category !== 'tour') };
+
   // --- Sibling date/year reroute (Guard A) ---
-  const sibData = siblingIndex && siblingIndex.get(showId);
   if (sibData && sibData.siblings.length) {
     const pubStr = typeof publishDate === 'string' ? publishDate : null;
     const reviewDate = parseDate(pubStr);
@@ -400,6 +437,7 @@ function classifyMarketRouting(args) {
 
 module.exports = {
   classifyMarketRouting,
+  tourDecision,
   buildSiblingIndex,
   normalizeTitle,
   collectSameTitleSignals,

@@ -101,6 +101,10 @@ export function CategoryBadge({ category, isOpera = false }: { category?: string
       label: 'REGIONAL',
       colorClass: 'bg-emerald-500/15 text-emerald-400 border border-emerald-500/30',
     },
+    'tour': {
+      label: 'TOUR',
+      colorClass: 'bg-sky-500/15 text-sky-400 border border-sky-500/30',
+    },
   };
 
   const cfg = config[category];

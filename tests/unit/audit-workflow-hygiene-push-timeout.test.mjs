@@ -135,4 +135,47 @@ describe('findShortPushTimeoutSteps', () => {
     assert.strictEqual(violations.length, 1);
     assert.strictEqual(violations[0].name, 'Commit A');
   });
+
+  // BRO-3389 ship-check finding: the last step of a job has no next sibling
+  // step within that job to bound its body slice against — the NEXT job's
+  // preamble (needs:/runs-on:/timeout-minutes: before its first `- name:`
+  // step) used to bleed into the PRECEDING job's last step, falsely
+  // attributing an unrelated job's timeout-minutes to a push step in a
+  // different job entirely.
+  test('a push step with NO explicit timeout, as the LAST step of a job, is not flagged using the NEXT job\'s timeout-minutes', () => {
+    const raw = `
+jobs:
+  job-a:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Commit
+        run: bash scripts/lib/push-with-retry.sh
+
+  job-b:
+    needs: job-a
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Do something
+        run: echo hi
+`;
+    const violations = findShortPushTimeoutSteps(raw);
+    assert.deepStrictEqual(violations, []);
+  });
+
+  test('a push step that IS the last step of the whole file is still checked against its OWN timeout-minutes', () => {
+    const raw = `
+jobs:
+  job-a:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Commit
+        timeout-minutes: 2
+        run: bash scripts/lib/push-with-retry.sh
+`;
+    const violations = findShortPushTimeoutSteps(raw);
+    assert.strictEqual(violations.length, 1);
+    assert.strictEqual(violations[0].name, 'Commit');
+  });
 });

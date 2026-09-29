@@ -1,25 +1,15 @@
 {
   "system": "autofix",
-  "status": "error",
-  "lastChecked": "2026-09-05T02:22:00.875Z",
+  "status": "pass",
+  "lastChecked": "2026-09-28T14:32:26.970Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
-  "escalationState": "monitoring",
+  "escalationState": "resolved",
   "details": [
     {
       "name": "Autofix: jobs actually succeeding",
       "status": "pass",
       "message": "Only 0 auto-fix outcome(s) in the last 7d from 0 launch(es) (need 3 to judge)"
-    },
-    {
-      "name": "Autofix: daily canary (dispatch pipeline proof)",
-      "status": "warn",
-      "message": "Cannot measure the autofix canary from this environment — data/audit/autofix-canary-ledger.jsonl is gitignored/per-machine and absent here."
-    },
-    {
-      "name": "Autofix: throughput (dispatched/passed, daily)",
-      "status": "error",
-      "message": "Autofix throughput DEAD: 0 dispatches on each of the last 7 day(s) (backlog-drain ledger unreadable here — digest-autofix only) — this is the exact 8/5-8/9 starvation shape (task #1184)."
     }
   ]
 }

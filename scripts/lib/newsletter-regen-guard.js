@@ -399,4 +399,47 @@ function findUnpinnedGenerateSpawns(rawSource, filename = '<source>') {
   return violations;
 }
 
-module.exports = { findUnpinnedGenerateSpawns, GENERATOR_BASENAME, SPAWN_FNS };
+/**
+ * Does this source ACTUALLY spawn the generator (as opposed to merely
+ * mentioning it in prose)? Shares the comment-stripping and call-site parsing
+ * that findUnpinnedGenerateSpawns() above already does, so the two "is this a
+ * generator spawn?" questions in this repo can never drift apart.
+ *
+ * Extracted for scripts/newsletter/featured-state-persist-order.test.mjs, whose
+ * own comment claimed it keyed on "the same shape scripts/lib/
+ * newsletter-regen-guard.js keys on" but actually used a bare
+ * /['"`][^'"`]*generate\.mjs['"`]/ substring regex. That regex matched an
+ * APOSTROPHE pair inside an ordinary comment — `<td>'s text-align (generate.mjs'`
+ * — and reddened main for the whole fleet (BRO-3559, P0, 2026-09-16). Rewording
+ * the offending comment fixed that one instance; routing the check through this
+ * helper fixes the class.
+ *
+ * @param {string} rawSource file contents
+ * @returns {boolean} true only for a real spawn call site
+ */
+function sourceSpawnsGenerator(rawSource) {
+  if (typeof rawSource !== 'string' || !rawSource) return false;
+  const { code: sourceText, stringSpans: spans } = stripComments(rawSource);
+
+  for (const fn of SPAWN_FNS) {
+    const callRe = new RegExp(`\\b${fn}\\s*\\(`, 'g');
+    let m;
+    while ((m = callRe.exec(sourceText)) !== null) {
+      // Same carve-out as findUnpinnedGenerateSpawns: a spawn that only appears
+      // INSIDE a string is a doc snippet or fixture, not a call site.
+      if (spans.some(([s, e]) => m.index > s && m.index < e)) continue;
+      const openIdx = m.index + m[0].length - 1;
+      const closeIdx = matchBracket(sourceText, openIdx);
+      if (closeIdx === -1) continue;
+      if (runsGenerator(sourceText, sourceText.slice(openIdx, closeIdx + 1))) return true;
+    }
+  }
+  return false;
+}
+
+module.exports = {
+  findUnpinnedGenerateSpawns,
+  sourceSpawnsGenerator,
+  GENERATOR_BASENAME,
+  SPAWN_FNS,
+};

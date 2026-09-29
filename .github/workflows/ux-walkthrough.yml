@@ -138,7 +138,11 @@ jobs:
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          for f in data/audit/alert-ledger.json data/audit/alert-digest-queue.json; do
+          # alert-router-attempts.jsonl (BRO-3662): logDispatchAttempt() rewrites
+          # this TRACKED file on every dispatch attempt; left unstaged it makes
+          # every later rebase refuse pre-flight and forces the clobber-prone
+          # merge path in push-with-retry.sh.
+          for f in data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

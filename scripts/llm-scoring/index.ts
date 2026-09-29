@@ -75,7 +75,9 @@ import { ReviewTextFile, ScoringPipelineOptions, PipelineRunSummary } from './ty
 
 // Import content quality module for garbage detection
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { assessTextQuality, detectGarbageFromReasoning } = require('../lib/content-quality.js');
+const { assessTextQuality, detectGarbageFromReasoning, hasBotStubTruncationSignal } = require('../lib/content-quality.js');
+const { getBestTextForScoring } = require('../lib/text-quality');
+const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('../lib/review-write-guard');
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 // Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
 // so "would this review be scoreable?" has exactly one answer — see task #652.
@@ -884,27 +886,13 @@ function recordManualClearFallbackFailure(filePath: string, fileData: any, reaso
 }
 
 /**
- * Save run summary
+ * Save run summary. Returns the updated run log (including this summary) so
+ * callers can check cumulative cost without re-reading the file — see
+ * scripts/lib/llm-scoring-cost-recording.js (BRO-3381).
  */
-function saveRunSummary(summary: PipelineRunSummary): void {
-  let runs: PipelineRunSummary[] = [];
-
-  if (fs.existsSync(RUNS_LOG_PATH)) {
-    try {
-      runs = JSON.parse(fs.readFileSync(RUNS_LOG_PATH, 'utf-8'));
-    } catch {
-      runs = [];
-    }
-  }
-
-  runs.push(summary);
-
-  // Keep only last 100 runs
-  if (runs.length > 100) {
-    runs = runs.slice(-100);
-  }
-
-  fs.writeFileSync(RUNS_LOG_PATH, JSON.stringify(runs, null, 2) + '\n');
+function saveRunSummary(summary: PipelineRunSummary): PipelineRunSummary[] {
+  const { appendRunSummary } = require('../lib/llm-scoring-cost-recording');
+  return appendRunSummary(summary, { runsLogPath: RUNS_LOG_PATH });
 }
 
 // ========================================
@@ -1414,6 +1402,49 @@ async function main(): Promise<void> {
       if (!options.dryRun) {
         const fileData = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
 
+        // Truncation is not evidence of "not a review" — skip the stamp entirely
+        // when the TEXT THE ENSEMBLE ACTUALLY SCORED shows a known bot-detection/
+        // paywall stub signal. BRO-2495 (2026-08-26): the NYT review of Paranormal
+        // Activity was correctly THUMB-scored (dtliThumb=Up) from DTLI's own page,
+        // never depending on the paywalled fullText — but an ensemble re-run saw
+        // the NYT bot-detection stub sitting in fullText and rejected the file as
+        // not_a_review anyway, silently dropping the highest-weight T1 review on
+        // opening night. Covers both not_a_review and garbage_text (the BRO-79
+        // audit found the same stub/truncation artifact gets classified as either
+        // one depending on which model spoke first — see
+        // scripts/audit-bro79-ensemble-rejections.js).
+        //
+        // Gated on getBestTextForScoring(reviewFile).type === 'fullText' (ship-check
+        // finding): hasBotStubTruncationSignal only inspects fullText/its cached
+        // classification, but getBestTextForScoring can select an aggregator
+        // EXCERPT instead (e.g. a truncated fullText with no verdict language vs an
+        // excerpt that has one — text-quality.js:505-520). Without this gate, a
+        // model correctly rejecting a genuinely non-review excerpt would have its
+        // verdict discarded just because the file's UNRELATED, unused fullText
+        // happens to carry a wall signal.
+        //
+        // Deliberately does NOT run the Haiku fallback scorer (unlike the
+        // manuallyCleared branch below): the point is "a wall is not content
+        // evidence," not "a human confirmed this needs a rescue score" —
+        // scoring stub/paywall text would risk fabricating a score. And
+        // deliberately does NOT leave the file to be silently retried forever:
+        // stampTerminalScoringFailure/isBlockedFromRescore (the same
+        // self-healing fingerprint the deterministic text-gate path already
+        // uses — see maybeStampBlockedRescore above) skip re-selecting this
+        // file for a full ensemble re-run until fullText actually changes.
+        const scoredTextType = getBestTextForScoring(reviewFile).type;
+        if (
+          (rejection === 'not_a_review' || rejection === 'garbage_text') &&
+          scoredTextType === 'fullText' &&
+          hasBotStubTruncationSignal(fileData)
+        ) {
+          console.log(`SKIP-REJECT (${rejection} on known bot-stub/paywall truncation): ${rejectionReasoning?.substring(0, 80) || ''}`);
+          stampTerminalScoringFailure(fileData, `bot_stub_truncation:${rejection}`);
+          saveReviewFile(filePath, fileData);
+          skipped++;
+          return true;
+        }
+
         // Skip rejection write if a human has manually cleared wrongProduction.
         // Discovered 2026-04-22 (Notion 34b637c5-416f-81ff-a6d6-d453e7ed537c):
         // the ensemble rejected 4 audit B-class false-positive clears because the
@@ -1529,9 +1560,11 @@ async function main(): Promise<void> {
             console.log(` (combined review — skipping wrongShow flag write)`);
           } else {
             fileData.wrongShow = true;
+            invalidateWrongShowAutoClear(fileData);
           }
         } else if (rejection === 'wrong_production' && !isOffBroadway) {
           fileData.wrongProduction = true;
+          invalidateWrongProductionAutoClear(fileData);
           fileData.wrongProductionProvenance = 'content';
         } else if (rejection === 'wrong_production' && isOffBroadway) {
           console.log(` (OB exempt — skipping wrongProduction flag)`);
@@ -2337,6 +2370,10 @@ async function main(): Promise<void> {
   console.log(`Suspicious warnings: ${suspiciousWarnings}`);
   console.log(`Errors: ${errors}`);
 
+  // Estimated USD cost for this run — set in either branch below, persisted
+  // onto the run summary and checked against the cost-breach alarm (BRO-3381).
+  let costUsd = 0;
+
   // Handle both single and ensemble scorer token usage
   if ('claude' in tokenUsage) {
     // Ensemble scorer
@@ -2373,6 +2410,7 @@ async function main(): Promise<void> {
     // legs, so the printed figure is what the vendors actually bill for a
     // --batch run rather than the sync-rate equivalent.
     console.log(`Estimated cost${batchMode ? ' (batch-discounted)' : ''}: $${breakdown.total.toFixed(4)} (${costParts.join(', ')})`);
+    costUsd = breakdown.total;
   } else {
     // Single scorer
     const singleUsage = tokenUsage as { input: number; output: number; total: number };
@@ -2384,6 +2422,7 @@ async function main(): Promise<void> {
     const estimatedCost = (singleUsage.input / 1_000_000) * inputCostPer1M +
                           (singleUsage.output / 1_000_000) * outputCostPer1M;
     console.log(`Estimated cost: $${estimatedCost.toFixed(4)}`);
+    costUsd = estimatedCost;
   }
 
   // Save run summary
@@ -2405,6 +2444,8 @@ async function main(): Promise<void> {
       skipped: allFiles.length - validFiles.length,
       errors,
       tokensUsed: normalizedTokenUsage,
+      costUsd,
+      runId: process.env.GITHUB_RUN_ID || null,
       errorDetails
     };
 
@@ -2418,8 +2459,50 @@ async function main(): Promise<void> {
       summary.validation = runValidation(options.verbose);
     }
 
-    saveRunSummary(summary);
+    const runsAfterSave = saveRunSummary(summary);
     console.log(`\nRun summary saved to: ${RUNS_LOG_PATH}`);
+
+    // BRO-3381 — alarm (never abort) when this GitHub Actions run's
+    // cumulative LLM scoring spend crosses the configured line. Summed by
+    // runId, not just this process's costUsd, because a scheduled workflow
+    // invokes index.ts more than once (main pass + drain) under the same
+    // run id. No runId (local/manual run) means nothing to correlate
+    // against, so skip rather than alarm on an ungrounded number.
+    if (summary.runId) {
+      try {
+        const { loadCostThresholdUsd, checkCostBreach, COST_BREACH_CONDITION_KEY } = require('../lib/llm-scoring-cost-recording');
+        const thresholdUsd = loadCostThresholdUsd();
+        // ship-check catch: loadCostThresholdUsd() collapses "file missing",
+        // "malformed JSON", and "llmScoringRunUsd key renamed/removed" into a
+        // silent null — without this warning a future thresholds.json
+        // refactor would kill the alarm with zero visible signal in CI logs.
+        if (typeof thresholdUsd !== 'number' || !Number.isFinite(thresholdUsd)) {
+          console.warn(`[llm-scoring] cost-breach threshold unavailable (scripts/config/provider-spend-thresholds.json missing or missing llmScoringRunUsd) — cost alarm is a no-op this run`);
+        }
+        const breach = checkCostBreach(runsAfterSave, { runId: summary.runId, thresholdUsd });
+        if (breach?.breached) {
+          const { routeAlert } = require('../lib/owner-alert-router');
+          await routeAlert({
+            conditionKey: breach.conditionKey,
+            title: 'LLM scoring spend over budget',
+            description: `GitHub run ${summary.runId}: cumulative LLM scoring cost $${breach.totalUsd.toFixed(2)} exceeds the $${breach.thresholdUsd.toFixed(2)} alarm line (scripts/config/provider-spend-thresholds.json's llmScoringRunUsd). Cost basis: cost.ts's costBreakdown() applied to Claude/OpenAI/Gemini token usage across this run's index.ts AND comparative-rescore.ts invocations (BRO-3392). This is an alarm, not an enforcement cap — see BRO-3381 for why a --max-cost default was rejected.`,
+            hint: 'Check data/llm-scoring-runs.json entries for this runId to see which invocation (main pass, drain, or comparative-rescore) drove the spend.',
+            severity: 'warning',
+            disposition: 'digest',
+            cooldownHours: 20,
+            fields: [
+              { name: 'GitHub run', value: String(summary.runId) },
+              { name: 'Cost', value: `$${breach.totalUsd.toFixed(2)}` },
+              { name: 'Threshold', value: `$${breach.thresholdUsd.toFixed(2)}` },
+            ],
+          });
+          console.log(`\n⚠️  LLM scoring cost breach: $${breach.totalUsd.toFixed(2)} > $${breach.thresholdUsd.toFixed(2)} (routed via ${COST_BREACH_CONDITION_KEY})`);
+        }
+      } catch (err: any) {
+        // Alarm plumbing must never abort a scoring run.
+        console.error(`[llm-scoring] cost-breach check failed (non-fatal): ${err.message}`);
+      }
+    }
 
     // Save garbage skips if any
     if (garbageSkips.length > 0) {

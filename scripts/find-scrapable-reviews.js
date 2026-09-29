@@ -6,11 +6,10 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 
 const textsDir = path.join(__dirname, '../data/review-texts');
-const shows = fs.readdirSync(textsDir).filter(d =>
-  fs.statSync(path.join(textsDir, d)).isDirectory()
-);
+const shows = listShowDirs(textsDir);
 
 let totalFiles = 0;
 let withUrl = 0;

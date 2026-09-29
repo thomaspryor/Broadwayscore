@@ -108,7 +108,7 @@ function twoLargeIndependentlyReviewedBranches(repo) {
 
 test('ACCEPTANCE (BRO-143): a main containing two merged branches, each with its own recorded pass verdict, pushes WITHOUT a bypass', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   const { v901, v902 } = twoLargeIndependentlyReviewedBranches(repo);
   assert.equal(v901.recorded, true);
   assert.equal(v902.recorded, true);
@@ -122,7 +122,7 @@ test('ACCEPTANCE (BRO-143): a main containing two merged branches, each with its
 
 test('ACCEPTANCE (BRO-143): an unreviewed commit merged into main still BLOCKS the push, even sitting on top of a reviewed one', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 
   git(repo, 'checkout', '-q', '-b', 'worktree-901', 'refs/remotes/origin/main');
   commitLines(repo, 'scripts/s901.js', GATE_LINE_BUDGET * 5, 'session901 work');
@@ -143,7 +143,7 @@ test('ACCEPTANCE (BRO-143): an unreviewed commit merged into main still BLOCKS t
 
 test('ACCEPTANCE (BRO-143): the merge gate independently verifies each branch at merge time, so an unreviewed branch can never hide under a later reviewed one', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
 
   git(repo, 'checkout', '-q', '-b', 'worktree-901', 'refs/remotes/origin/main');
   commitLines(repo, 'scripts/s901.js', GATE_LINE_BUDGET * 5, 'session901 work — never ship-checked');
@@ -158,7 +158,7 @@ test('ACCEPTANCE (BRO-143): the merge gate independently verifies each branch at
 
 test('node scripts/lib/review-gate.mjs --query=record behaviour unchanged for the single-branch path (BRO-143 acceptance criterion 3)', (t) => {
   const repo = makeRepo();
-  t.after(() => rmSync(repo, { recursive: true, force: true }));
+  t.after(() => rmSync(repo, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
   git(repo, 'checkout', '-q', '-b', 'solo-branch', 'refs/remotes/origin/main');
   commitLines(repo, 'scripts/solo.js', GATE_LINE_BUDGET * 3, 'solo session work');
   const rec = recordVerdict({ repoRoot: repo, reviewer: 'ship-check', result: 'pass' });

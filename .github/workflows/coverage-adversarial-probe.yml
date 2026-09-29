@@ -115,6 +115,9 @@ jobs:
           PROBE_DAYS: ${{ inputs.days || '45' }}
           PROBE_NO_TREND: ${{ inputs.no_trend && 'true' || '' }}
         run: |
+          # pipefail: without it the step takes tee's exit code, so a refused
+          # (keyless) or crashed probe still shows green (BRO-4139 review).
+          set -o pipefail
           TREND_FLAG="--trend"
           if [ -n "$PROBE_NO_TREND" ]; then TREND_FLAG=""; fi
           node scripts/coverage-adversarial-probe.js \
@@ -130,6 +133,13 @@ jobs:
           # Same read-modify-write race as census-recall-trend.jsonl (task
           # #784's class) — opts into the post-rebase union re-merge.
           PUSH_RECONCILE_MERGED_JSON: '1'
+          # Same budget fix as audit-census-recall.yml (BRO-2296): at the 240s
+          # default only ~2 of the 90s-capped pushes fit, so the default Git
+          # Data API fallback trigger (3 attempts) was unreachable — 2026-08-31
+          # and 09-07 runs lost that week's measurement. 420s funds 3; trigger
+          # the fallback at 2 (BRO-4185).
+          PUSH_DEADLINE_SEC: '420'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '2'
         run: |
           for f in data/audit/coverage-adversarial-probe.json \
                    data/audit/coverage-adversarial-probe-trend.jsonl \

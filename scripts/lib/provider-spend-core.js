@@ -20,7 +20,29 @@ const { resolveMaxSessionsPerDay } = require('./browserbase-caps');
 // aggregate's grouping key — see HOST_DIMENSION_PROVIDERS's own docstring.
 const { HOST_DIMENSION_PROVIDERS } = require('./provider-telemetry');
 
-const BB_COST_PER_SESSION = 0.10;
+// BRO-3240: BB_COST_PER_SESSION priced Browserbase per SESSION CREATED, but
+// Browserbase bills browser-HOURS against a monthly plan, not sessions — real
+// sessions are tiny (~0.06-0.2 min each), so the per-session model overstated
+// cost ~10x ($6-9/day modeled vs $19.65-27.74/mo actual invoice total) and
+// fired the browserbaseDailyUsd digest alarm on phantom spend nearly every
+// day. Rates below sourced live from browserbase.com/pricing (Developer plan,
+// checked 2026-09-14) and cross-checked against the account's real invoice
+// base lines (Sept $19.65, Aug/Jul $20.00 — matches BB_BASE_MONTHLY_USD).
+//
+// Deliberately NOT quota-gated (no "first 100 browser-hours/mo are free"
+// logic): that would require knowing Browserbase's actual billing-cycle
+// reset date, and the account's only cumulative usage counter
+// (GET /v1/projects/{id}/usage's browserMinutes) is documented
+// lifetime-cumulative by health-check.js's own Browserbase check — it never
+// resets, so a monthly quota boundary can't be derived from it without an
+// unverified assumption. Charging the overage rate on ALL measured minutes
+// (never gating out an included allowance) means this model can only ever
+// OVER-state cost relative to a quota-aware one — the safe direction for an
+// overspend alarm to be wrong in, unlike under-stating it (plan-review
+// consensus, BRO-3240).
+const BB_BASE_MONTHLY_USD = 20;
+const BB_BASE_AMORTIZED_DAYS = 30;
+const BB_OVERAGE_PER_BROWSER_HOUR_USD = 0.12;
 
 /** "YYYY-MM-DD" for the UTC day before `now`. The reconciliation target is
  * always a COMPLETE day — recording the in-progress day would freeze a
@@ -33,6 +55,28 @@ function utcYesterday(now = new Date()) {
 function isNextUtcDay(prevDay, day) {
   if (!prevDay || !day) return false;
   return new Date(`${day}T00:00:00Z`) - new Date(`${prevDay}T00:00:00Z`) === 86400000;
+}
+
+/**
+ * Pure Browserbase pricing function, factored out of computeDayRecord so the
+ * $ math is independently testable with plain numbers (plan-review finding,
+ * BRO-3240) rather than only reachable through the full day-record shape.
+ * costBase/costOverage are exposed alongside the summed `cost` so a reader of
+ * the ledger/digest can tell a flat subscription day apart from a real
+ * overage day, instead of one blended number that reads as "usage-driven"
+ * even on a zero-session day.
+ * @param {{sessions:number, minutes:number}} bb
+ */
+function bbCost(bb) {
+  const costBase = +(BB_BASE_MONTHLY_USD / BB_BASE_AMORTIZED_DAYS).toFixed(2);
+  const costOverage = +((bb.minutes / 60) * BB_OVERAGE_PER_BROWSER_HOUR_USD).toFixed(2);
+  return {
+    sessions: bb.sessions,
+    minutes: +bb.minutes.toFixed(2),
+    costBase,
+    costOverage,
+    cost: +(costBase + costOverage).toFixed(2),
+  };
 }
 
 /**
@@ -52,9 +96,9 @@ function computeDayRecord({ day, bb, bd, sb, sd, prev }) {
   const prevAdjacent = prev && isNextUtcDay(prev.day, day) ? prev : null;
   const rec = { day, providers: {} };
 
-  rec.providers.browserbase = bb == null
+  rec.providers.browserbase = bb == null || typeof bb.minutes !== 'number'
     ? { status: 'unknown' }
-    : { status: 'ok', sessions: bb, cost: +(bb * BB_COST_PER_SESSION).toFixed(2) };
+    : { status: 'ok', ...bbCost(bb) };
 
   if (bd == null || bd.serp == null || bd.unlocker == null) {
     rec.providers.brightdata = { status: 'unknown' };
@@ -99,7 +143,7 @@ function budgetBreaches(record, thresholds) {
 
   if (p.browserbase?.status === 'ok') {
     if (thresholds.browserbaseDailyUsd != null && p.browserbase.cost > thresholds.browserbaseDailyUsd) {
-      overspend.push(`browserbase $${p.browserbase.cost} > $${thresholds.browserbaseDailyUsd} (${p.browserbase.sessions} sessions)`);
+      overspend.push(`browserbase $${p.browserbase.cost} > $${thresholds.browserbaseDailyUsd} (${p.browserbase.sessions} sessions, ${p.browserbase.minutes}min)`);
     }
   } else unmeasured.push('browserbase');
 
@@ -157,7 +201,7 @@ function renderSnapshot({
   const items = [];
   const fmt = (e, money, extra) => (e.status === 'ok' ? `${money}${extra || ''}` : e.status);
 
-  items.push({ title: `${record.day} · Browserbase: ${fmt(p.browserbase, `$${p.browserbase.cost ?? '?'}`, ` (${p.browserbase.sessions} sessions)`)}` });
+  items.push({ title: `${record.day} · Browserbase: ${fmt(p.browserbase, `$${p.browserbase.cost ?? '?'}`, ` (${p.browserbase.sessions} sessions, ${p.browserbase.minutes}min)`)}` });
 
   // Cap-exhausted line (Scraping v2 T13). Spend alone can't answer "did the
   // ceiling actually BITE?" — and that is the question the step-down
@@ -291,7 +335,134 @@ function aggregateLedgerByDay(ledgerRecords, day) {
     || a.script.localeCompare(b.script));
 }
 
+// BRO-3227 (moved here from check-provider-spend.js by BRO-3349): the
+// ledger going stale/discontinuous is not itself a spend breach
+// (budgetBreaches/computeStreak below only see whatever record THIS run
+// produces) — it's a "did prior runs' writes
+// actually land?" question, which is exactly what BRO-3317 found silently
+// broken for 11 days (a `push-with-retry.sh` hard-reset fallback discarded
+// this script's own write, and nothing noticed because the script itself
+// kept exiting 0 daily). These thresholds gate a loud, independent check of
+// the ledger AS COMMITTED, read before this run contributes anything.
+const STALE_HOURS_THRESHOLD = 48;
+const CONTINUITY_WINDOW_DAYS = 7;
+
+// "YYYY-MM-DD" only — guards both functions below against a corrupt/
+// hand-edited record (e.g. {day: "zzz"} or {day: null}) silently producing
+// Invalid Date/NaN math instead of being treated as absent (ship-check
+// finding, BRO-3227).
+const VALID_DAY_RE = /^\d{4}-\d{2}-\d{2}$/;
+
+/**
+ * Epoch ms for the END (23:59:59.999 UTC) of a "YYYY-MM-DD" day, or NaN if
+ * `day` is not a real calendar date.
+ *
+ * BRO-3349 (ship-check/Codex P1): VALID_DAY_RE alone is NOT enough. It is a
+ * SHAPE check, and shapes like "2026-99-99" pass it while `new Date()` yields
+ * Invalid Date. Because the old code picked the lexical max of shape-valid
+ * days FIRST and converted second, a single such row outranked every real day
+ * and made ledgerFreshnessHours() return NaN — which every caller treats as
+ * "no usable data" (a WARN), not as staleness. One garbage row therefore
+ * downgraded this dead-man from ERROR to a permanent WARN even with months of
+ * real rows present and the reconciliation long dead. Validate the instant,
+ * not the shape, and let a bad row lose ONE day rather than the whole check
+ * (the same rule readLedger() already applies to unparseable JSON lines).
+ * @param {string} day
+ * @returns {number}
+ */
+function dayEndMs(day) {
+  if (!VALID_DAY_RE.test(day)) return NaN;
+  return new Date(`${day}T23:59:59.999Z`).getTime();
+}
+
+/**
+ * Hours between `now` and the end (23:59:59.999 UTC) of the ledger's most
+ * recent REAL recorded day. Infinity for an empty (or entirely malformed)
+ * ledger — no usable data is maximally stale, never "fresh by default".
+ * Never NaN: an unreal day is dropped, not propagated.
+ * @param {Array<{day: string}>} records
+ * @param {Date} [now]
+ * @returns {number}
+ */
+function ledgerFreshnessHours(records, now = new Date()) {
+  const ends = (records || []).filter(Boolean).map((r) => dayEndMs(r.day)).filter((ms) => Number.isFinite(ms));
+  if (!ends.length) return Infinity;
+  return (now.getTime() - Math.max(...ends)) / 3600000;
+}
+
+/**
+ * The ledger's most recent REAL recorded day ("YYYY-MM-DD"), or null. Shares
+ * dayEndMs()'s validity rule so a row's reported `day` can never disagree with
+ * the age computed for it.
+ * @param {Array<{day: string}>} records
+ * @returns {string|null}
+ */
+function lastLedgerDay(records) {
+  let best = null;
+  let bestMs = -Infinity;
+  for (const r of (records || []).filter(Boolean)) {
+    const ms = dayEndMs(r.day);
+    if (Number.isFinite(ms) && ms > bestMs) { bestMs = ms; best = r.day; }
+  }
+  return best;
+}
+
+/**
+ * UTC calendar days ("YYYY-MM-DD"), ascending, in the trailing `days`-day
+ * window that have no record. The window ends TWO days before `now`, not
+ * one: "yesterday" relative to `now` is DAY (utcYesterday(now), the day
+ * THIS run's own reconciliation is about to write) — checking for it in the
+ * pre-write ledger would report it missing on every single healthy run,
+ * since nothing has written it yet at check time (ship-check/Codex P1
+ * finding, BRO-3227 — confirmed live: a --dry-run against the real ledger
+ * flagged the just-not-yet-written day as "missing" before this fix). The
+ * window this function validates is the `days` complete days a healthy
+ * ledger should ALREADY contain from prior runs, not the day in flight.
+ * @param {Array<{day: string}>} records
+ * @param {Date} [now]
+ * @param {number} [days]
+ * @returns {string[]}
+ */
+function missingLedgerDays(records, now = new Date(), days = CONTINUITY_WINDOW_DAYS) {
+  const present = new Set((records || []).filter(Boolean).map((r) => r.day).filter((d) => VALID_DAY_RE.test(d)));
+  const missing = [];
+  for (let i = 2; i <= days + 1; i++) {
+    const d = new Date(now.getTime() - i * 86400000).toISOString().slice(0, 10);
+    if (!present.has(d)) missing.push(d);
+  }
+  return missing.sort();
+}
+
+/**
+ * BRO-4215: providers whose ledger explained less than `min` of their billed
+ * spend on EACH of the last `days` consecutive recorded days. ScrapingBee sat
+ * at 12-23% attributed for weeks with only a digest line to show for it
+ * (~70% of its credits were Reddit Sentiment rows discarded at runner exit);
+ * this turns a sustained gap into an actionable alert instead of a number
+ * someone has to notice. A null pct (billing API down / provider idle) breaks
+ * the run: an unmeasured day proves nothing either way.
+ * @param {Array<{day:string, attributedPct?:Object}>} series day-ascending
+ * @returns {Array<{provider:string, pcts:number[]}>}
+ */
+function attributionGaps(series, { min = 0.8, days = 2, providers = [] } = {}) {
+  const sorted = [...(series || [])].sort((a, b) => (a.day < b.day ? -1 : a.day > b.day ? 1 : 0));
+  const recent = sorted.slice(-days);
+  if (recent.length < days) return [];
+  for (let i = 1; i < recent.length; i++) {
+    if (!isNextUtcDay(recent[i - 1].day, recent[i].day)) return [];
+  }
+  const gaps = [];
+  for (const provider of providers) {
+    const pcts = recent.map((r) => (r.attributedPct || {})[provider]);
+    if (pcts.every((p) => typeof p === 'number' && p < min)) gaps.push({ provider, pcts });
+  }
+  return gaps;
+}
+
 module.exports = {
+  attributionGaps,
   computeDayRecord, budgetBreaches, computeStreak, renderSnapshot,
-  utcYesterday, isNextUtcDay, aggregateLedgerByDay, BB_COST_PER_SESSION,
+  utcYesterday, isNextUtcDay, aggregateLedgerByDay, bbCost,
+  BB_BASE_MONTHLY_USD, BB_BASE_AMORTIZED_DAYS, BB_OVERAGE_PER_BROWSER_HOUR_USD,
+  ledgerFreshnessHours, lastLedgerDay, missingLedgerDays, STALE_HOURS_THRESHOLD, CONTINUITY_WINDOW_DAYS,
 };

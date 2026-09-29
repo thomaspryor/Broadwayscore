@@ -39,6 +39,8 @@ const path = require('path');
 const { detectCrossShowUrlMismatch } = require('./lib/cross-show-url');
 const { isRejectedNonReview } = require('./lib/review-guards');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
+const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_PATH = path.join(__dirname, '..', 'data', 'shows.json');
@@ -80,9 +82,9 @@ function main() {
     process.exit(2);
   }
   const showsPath = fs.existsSync(SHOWS_PATH) ? SHOWS_PATH : undefined;
-  const dirs = fs.readdirSync(REVIEW_TEXTS_DIR).filter(d => {
+  const dirs = listShowDirs(REVIEW_TEXTS_DIR).filter(d => {
     if (d === '_pending') return false;
-    try { return fs.statSync(path.join(REVIEW_TEXTS_DIR, d)).isDirectory(); } catch { return false; }
+    return true;
   });
 
   let scanned = 0;
@@ -113,6 +115,7 @@ function main() {
       try {
         const d = JSON.parse(fs.readFileSync(h.filePath, 'utf8'));
         d.wrongShow = true;
+        invalidateWrongShowAutoClear(d);
         d.isValid = false;
         d.rejectionReason = 'wrong_show';
         d.wrongShowReason = `URL slug names "${h.matchedTitle}" (${h.matchedShowId}), not this show — cross-show URL audit`;

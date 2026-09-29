@@ -68,13 +68,14 @@ import { getBroadwayDuration } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 
-/** Inlined to avoid pulling @/lib/data-core (server-only JSON imports) into the
- *  client bundle. Matches the data-core slugify exactly. */
-function slugify(str: string): string {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
+// The same slugify @/lib/data-core re-exports, imported from its pure home so
+// this client bundle never pulls data-core's server-only JSON imports (and
+// can never drift from the theater page's own slug — S7-T3 added the
+// diacritic fold in one place for both).
+import { slugify } from '../../../scripts/lib/url-slug';
 import type { AudienceGrade } from '@/components/show-cards';
 import type { TicketLinkData } from '@/lib/ticket-utils';
+import { getTicketCtaNote } from '@/lib/ticket-cta-note';
 import type { UserReview, PendingAction } from '@/types/user';
 import type { ShowRanks } from '@/lib/data-show-ranks';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
@@ -380,7 +381,8 @@ function Inner({
 
   const venueLink = isWestEnd
     ? `/west-end/theater/${slugify(show.venue)}`
-    : isOffBroadway
+    // Regional and tour venues have no /theater page ("North American Tour" is not a house).
+    : isOffBroadway || show.category === 'regional' || show.category === 'tour'
       ? null
       : `/theater/${slugify(show.venue)}`;
 
@@ -700,7 +702,10 @@ function Inner({
           on mobile it pushed content too far down. Desktop keeps it next
           to the Get Tickets CTA where there's horizontal room. Full info
           for both viewports lives in the Discount Tickets card below. */}
-      {!isClosed && sortedTicketLinks.length > 0 && (
+      {/* BRO-166: also mount when the only thing we have is an officialUrl —
+          TicketButtonsAB itself now renders that as the primary CTA, but
+          only if it gets the chance to run at all. */}
+      {!isClosed && (sortedTicketLinks.length > 0 || Boolean(show.officialUrl)) && (
         <TicketButtonsAB
           showName={show.title}
           showId={show.id}
@@ -741,13 +746,12 @@ function Inner({
       {/* Closed/not-yet-on-sale shows: replace the vanished CTA with an explicit
           note instead of leaving a silent gap where the ticket button used to be —
           users hunting for a "Get Tickets" button rage-clicked the empty space
-          (CLAUDE.md card #228). Checks raw show.ticketLinks, not the
-          platform-filtered sortedTicketLinks, so a show whose only link is a
-          HIDDEN_PLATFORMS entry (e.g. Telecharge) still gets the closed note. */}
-      {isClosed && (show.ticketLinks?.length ?? 0) > 0 && (
+          (CLAUDE.md card #228, task #90). See getTicketCtaNote for why 'closed'
+          checks status alone. */}
+      {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
         <p className="text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
       )}
-      {!isClosed && show.status === 'announced' && !sortedTicketLinks.some(l => l.priceFrom != null) && (show.ticketLinks?.length ?? 0) > 0 && (
+      {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
         <p className="text-xs text-gray-500">Tickets not yet on sale — check back closer to opening.</p>
       )}
       </div>{/* /action cluster */}

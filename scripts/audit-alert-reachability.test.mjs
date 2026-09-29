@@ -159,8 +159,12 @@ test('isPageWorthyLiteralPrefix matches a known PAGE_WORTHY_CONDITION_KEYS exact
 });
 
 test('isPageWorthyLiteralPrefix is false for an unrelated key', () => {
-  assert.equal(isPageWorthyLiteralPrefix('test-yml:main-streak-escalation'), false);
+  assert.equal(isPageWorthyLiteralPrefix('t1-coverage:scoreboard'), false);
   assert.equal(isPageWorthyLiteralPrefix('cron-health-chronic:'), false);
+});
+
+test('test-yml:main-streak-escalation no longer pages the owner (BRO-4141: red trunk goes to the digest)', () => {
+  assert.equal(isPageWorthyLiteralPrefix('test-yml:main-streak-escalation'), false);
 });
 
 // --- findUnreachableAlerts: the 3 acceptance-criteria fixture cases ----------
@@ -200,9 +204,9 @@ test('(c) a non-page-worthy alert after a hard-fail gate is not flagged (digest-
     '      - name: Some gate',
     '        run: |',
     '          node -e "process.exit(1)"',
-    '      - name: Streak escalation',
+    '      - name: Coverage scoreboard',
     '        run: |',
-    "          node -e \"routeAlert({ conditionKey: 'test-yml:main-streak-escalation', disposition: 'human' })\"",
+    "          node -e \"routeAlert({ conditionKey: 't1-coverage:scoreboard', disposition: 'human' })\"",
   ].join('\n'));
   const findings = findUnreachableAlerts(getJobBlocks(raw));
   assert.deepEqual(findings, []);

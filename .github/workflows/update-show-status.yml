@@ -55,9 +55,10 @@ jobs:
     #      ~17-25 min per run for the full all-branches/tags fetch.
     # 130 gives real headroom over the corrected worst case: checkout + misc
     # setup ~40 min + discovery 45 min (hard step cap, see timeout-minutes on
-    # "Discover new shows" below) + enrichment ~10 min + StubHub 5 min (hard
-    # step cap) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200 below) +
-    # setup-node/misc ~5 min ≈ 100-110 min, ~20-30 min margin to 130.
+    # "Discover new shows" below) + enrichment ~18 min (incl. BRO-166's
+    # "OB discovery S7" step, 8 min hard cap, continue-on-error) + StubHub
+    # 5 min (hard step cap) + push retries up to 20 min (PUSH_DEADLINE_SEC=1200
+    # below) + setup-node/misc ~5 min ≈ 108-118 min, ~12-22 min margin to 130.
     timeout-minutes: 130
     outputs:
       new_shows_count: ${{ steps.discover.outputs.new_shows_count }}
@@ -143,6 +144,40 @@ jobs:
           fi
           node scripts/update-show-status.js $SS_FLAG
 
+      # BRO-3428: the previews->open transition the step above just applied is
+      # exactly what leaves a show status=open while its tags array still
+      # carries 'upcoming' from before it opened. stale-upcoming-tag.check.js
+      # (opening-night-checklist.js, ±2-day window only) detects this daily and
+      # prints the remediation command, but nothing had ever run it — 36 shows
+      # had accumulated with the stale tag (some well outside that ±2-day
+      # window, since the digest only surfaces the windowed subset) before this
+      # step was added, cleared by hand once (data: Drop stale 'upcoming' tag
+      # from 36 open shows). Running the bulk (unwindowed) form here, right
+      # after the transition that causes it, bounds recurrence to at most ~48h
+      # instead of accumulating indefinitely — not <24h: "Validate data" later
+      # in this same job (line ~373) can ALSO flip previews->open on its own
+      # (validate-data.js's own stale-status auto-fix), after this step has
+      # already run, so a tag created that way waits for tomorrow's run of
+      # THIS step rather than being caught same-run (Codex adversarial review,
+      # BRO-3428). Deliberately not reordered to run later and catch that case
+      # same-run: that would put this step's own write past every validation
+      # step in the job, so a hypothetical bug here would ship completely
+      # unvalidated. Early placement — same spot as "Self-heal shared
+      # ibdbUrls" below — keeps it inside that day's validate-data.js coverage
+      # at the cost of the extra day on that one edge case. Supersedes the
+      # kind:'alert'-only decision recorded on that check's own remediation
+      # stanza (owner review gate, rule 18, task #1132) — that decision
+      # predates this cost evidence (BRO-3427: 14 stale-tag rows were 16% of
+      # the daily digest's card queue, ~$84/day in auto-dispatched sessions to
+      # do what this no-op-when-clean step now does for free). continue-on-
+      # error: true — a lock/read hiccup on this purely cosmetic tag cleanup
+      # must not fail the whole daily status-update job, matching "Regenerate
+      # Off-Broadway venue allowlist" below (same idempotent-fixer shape:
+      # no-op when nothing to fix).
+      - name: Fix stale upcoming tags
+        continue-on-error: true
+        run: node scripts/fix-stale-upcoming-tags.js --apply
+
       # Self-heal shared ibdbUrls BEFORE validation. A revival stub that
       # inherited the original production's ibdbUrl hard-fails validate-data
       # ("Shared ibdbUrl ... null the stale url on the revival entry") and
@@ -211,7 +246,12 @@ jobs:
       # Playbill's announced Broadway schedule against shows.json and alerts
       # on anything Playbill has that discovery above didn't add. Alert-only
       # (never writes shows.json); continue-on-error so a scraper hiccup here
-      # never blocks the rest of the pipeline.
+      # never blocks the rest of the pipeline. S4-T2 (BRO-4204): when the
+      # Playbill parser has ROTTED (0 entries for >24h) the script now exits 1,
+      # leaves the gaps file untouched and records `guard.blind: true` in
+      # data/audit/broadway-source-coverage-state.json — continue-on-error is
+      # deliberately KEPT so status flips still run; the verdict is applied by
+      # the separate discovery-source-blind job below (S4-T3).
       - name: Check Broadway source coverage
         continue-on-error: true
         env:
@@ -284,13 +324,34 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
 
+      # BRO-166: shows the step above still couldn't attach an affiliate-able
+      # ticketLinks entry to (no TodayTix/venue-site match) get an Official
+      # Site fallback instead — SERP-discovered dedicated site, or the show's
+      # own OB venue homepage — so they never dead-end with no buy button.
+      - name: OB discovery S7 — Official Site fallback for shows with no buy button
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/ob-discovery-ticket-links.js --limit=15 --time-budget-min=6
+        continue-on-error: true
+        timeout-minutes: 8
+
+      # S4-T13 (BRO-4204): enrich-wikipedia-synopsis.js verifies every
+      # candidate article with Claude before writing and logs "Verifier
+      # (ANTHROPIC_API_KEY): DISABLED — nothing will be written" without the
+      # key — both steps below ran that way since 2026-02-23, so the synopsis
+      # refresh was a silent no-op on every run.
       - name: Enrich shows with Wikipedia synopses (Broadway/OB)
         if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: node scripts/enrich-wikipedia-synopsis.js --limit=20
         continue-on-error: true
 
       - name: Enrich shows with Wikipedia synopses (West End + Off-West End)
         if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
         run: |
           node scripts/enrich-wikipedia-synopsis.js --category=west-end --limit=10
           node scripts/enrich-wikipedia-synopsis.js --category=off-west-end --limit=10
@@ -300,6 +361,23 @@ jobs:
         if: ${{ inputs.skip_discovery != 'true' }}
         run: node scripts/enrich-wikipedia-runtimes.js --limit=20
         continue-on-error: true
+
+      # National tours (BRO-4262): launch/closing dates from Tours To You,
+      # confirmed by Wikipedia; a close needs a positive signal, never an
+      # empty listing. Also gives tours their Broadway parent's art/synopsis.
+      # Report-only until 2026-10-06 unless the TOUR_DATES_MODE repo variable
+      # says otherwise (off|report|write). Status flips stay date-driven.
+      - name: Enrich national tours (dates, parent art)
+        # lint-allow-swallow: best-effort enrichment; a failure must not block status updates, problems land in data/audit/tour-dates.json; digest surfacing is BRO-4262 follow-up
+        if: ${{ inputs.skip_discovery != 'true' }}
+        env:
+          TOUR_DATES_MODE: ${{ vars.TOUR_DATES_MODE }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+        run: node scripts/enrich-tour-dates.js --write --time-budget-min=6
+        continue-on-error: true
+        timeout-minutes: 8
 
       # Second self-heal pass: discovery + IBDB enrichment above can attach an
       # original production's ibdbUrl to a freshly discovered revival stub —
@@ -626,7 +704,21 @@ jobs:
           # sustained source blindness would still be treated as one-run
           # noise every time a fresh runner checks out a stale committed copy.
           git add data/audit/discovery-source-coverage.json 2>/dev/null || true
+          # Reconciliation before/after audit trail (BRO-2072) - this is the
+          # ONLY step that runs discover-new-shows.js, so without this line
+          # every applied/held reconciliation patch audit record is
+          # silently discarded at job end (same gap shape as the
+          # discovery-source-coverage.json fix above, ship-check finding).
+          git add data/audit/discovery-reconciliation-log.json 2>/dev/null || true
           git add data/audit/playbill-broadway-last-success.json 2>/dev/null || true
+          # S4-T4/T5 (2026 data audit): per-source last-success markers and the
+          # Theatremonkey show-page venue cache — without these three the cache
+          # never fills across runs and the empty-parse streaks never accumulate.
+          git add data/audit/olt-last-success.json 2>/dev/null || true
+          git add data/audit/theatremonkey-last-success.json 2>/dev/null || true
+          git add data/audit/theatremonkey-venue-cache.json 2>/dev/null || true
+          # enrich-tour-dates.js report (BRO-4262); health-check.js reads it for the digest.
+          git add data/audit/tour-dates.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-gaps.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-state.json 2>/dev/null || true
           # OB + OWE venue-page staging (BRO-182 adversarial review, 2026-08-26):
@@ -871,6 +963,48 @@ jobs:
 
           echo "Triggering deploy..."
           gh workflow run vercel-deploy.yml || echo "Deploy dispatch failed — will deploy on next schedule"
+
+  # S4-T3 (2026 data audit, BRO-4204): the workflow RUN turns red when a
+  # discovery source is blind. Two signals were already WRITTEN every run but
+  # nothing ever read them — playbillBroadway sat at a 24-run zero streak (olt
+  # and theatremonkey at 23) with every run green:
+  #   * data/audit/discovery-source-coverage.json — zeroStreak >= 3 on
+  #     playbillBroadway / olt / theatremonkey (the same threshold
+  #     scripts/lib/discovery-source-coverage.js alerts at);
+  #   * data/audit/broadway-source-coverage-state.json `guard.blind` — written
+  #     by update-shows' "Check Broadway source coverage" step when the
+  #     Playbill parser has rotted (S4-T2).
+  # Its OWN job, not a final step of update-shows (owner decision 2026-09-28):
+  # create-issue, trigger-data-agent, catchup-zero-review-shows and
+  # check-opening-night-readiness all gate on update-shows SUCCEEDING, so a
+  # failing step there would have silently switched off review collection for
+  # every new/opened show for as long as a source stayed blind. Here only this
+  # job fails: the run is red, update-shows stays green, every downstream job
+  # runs exactly as before, and alert-on-failure (needs: update-shows,
+  # if: failure()) is untouched. Nothing may list this job in `needs:` —
+  # tests/unit/check-discovery-source-blind.test.mjs pins that.
+  # `ref: main` (same as catchup-zero-review-shows) so the verdict reads the
+  # streaks update-shows just committed rather than the trigger commit's copy.
+  # Both files are tracked in this repo, so no core-data checkout; the script
+  # has no npm dependencies, so no install. Read-only — never writes data/audit/.
+  discovery-source-blind:
+    needs: update-shows
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 3
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+        with:
+          ref: main
+
+      - name: Setup Node
+        uses: actions/setup-node@v5
+        with:
+          node-version: "20"
+
+      - name: Fail if a discovery source is blind
+        run: node scripts/check-discovery-source-blind.js
 
   create-issue:
     needs: update-shows
@@ -1124,7 +1258,9 @@ jobs:
                 workflow_id: 'update-reddit-sentiment.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                  shows: '${{ steps.filter.outputs.opened_shows }}',
+                  // Just opened — bypass the 20h freshness skip (BRO-4215).
+                  skip_fresh_hours: '0'
                 }
               });
               console.log('Triggered Reddit sentiment workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
@@ -1187,7 +1323,9 @@ jobs:
                 workflow_id: 'update-show-score.yml',
                 ref: 'main',
                 inputs: {
-                  shows: '${{ steps.filter.outputs.opened_shows }}'
+                  shows: '${{ steps.filter.outputs.opened_shows }}',
+                  // Just opened — bypass the 20h freshness skip (BRO-4215).
+                  skip_fresh_hours: '0'
                 }
               });
               console.log('Triggered Show Score workflow for opened shows: ${{ steps.filter.outputs.opened_shows }}');
@@ -1661,40 +1799,64 @@ jobs:
       - name: Find open shows with zero reviews
         id: find-gaps
         run: |
-          GAPS=$(node -e "
-            const shows = require('./data/shows.json').shows;
-            const reviews = require('./data/reviews.json').reviews;
-            const rc = {};
-            for (const r of reviews) rc[r.showId] = (rc[r.showId] || 0) + 1;
-
-            // Open shows with 0 reviews that opened 3+ days ago (give initial pipeline time)
-            const cutoff = new Date(Date.now() - 3 * 86400000).toISOString().slice(0, 10);
-            const gaps = shows.filter(s =>
-              s.status === 'open' &&
-              !rc[s.id] &&
-              s.openingDate && s.openingDate <= cutoff
-            );
-
-            // Limit to 10 per day to avoid overloading
-            const batch = gaps.slice(0, 10).map(s => s.id);
-            console.log(batch.join(','));
-          ")
-
-          echo "gap_shows=$GAPS" >> $GITHUB_OUTPUT
-          if [ -n "$GAPS" ]; then
-            COUNT=$(echo "$GAPS" | tr ',' '\n' | wc -l | tr -d ' ')
-            echo "Found $COUNT open shows with 0 reviews needing collection"
-          else
-            echo "No zero-review gap shows found"
-          fi
+          # Selection logic lives in scripts/lib/zero-review-catchup.js
+          # (BRO-3389 — the previous inline node -e had no age bound and no
+          # attempt memory, so it re-dispatched the same handful of long-open
+          # zero-review shows every day forever). Selection ONLY — writes
+          # gap_shows straight to $GITHUB_OUTPUT itself (never via "the last
+          # stdout line": command substitution strips trailing blank lines,
+          # which promoted a diagnostic sentence into the id list when the
+          # batch was empty — ship-check finding).
+          node scripts/find-zero-review-catchup-gaps.js
 
       - name: Dispatch gather-reviews for gap shows
+        id: dispatch-gaps
         if: steps.find-gaps.outputs.gap_shows != ''
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          echo "Dispatching gather-reviews for: ${{ steps.find-gaps.outputs.gap_shows }}"
-          gh workflow run gather-reviews.yml -f shows="${{ steps.find-gaps.outputs.gap_shows }}" || echo "Dispatch failed"
+          GAPS="${{ steps.find-gaps.outputs.gap_shows }}"
+          # Drop shows already covered by an in-flight gather-reviews run
+          # (scripts/lib/gather-idempotency.js, ship-check finding: this job
+          # used to dispatch its whole batch unconditionally, so a show whose
+          # first attempt was still running could get a second overlapping
+          # dispatch).
+          NEEDING=$(node scripts/filter-active-gather-shows.js "$GAPS")
+          if [ -z "$NEEDING" ]; then
+            echo "All of [$GAPS] already covered by an active gather-reviews run — skipping dispatch"
+            echo "dispatched=true" >> $GITHUB_OUTPUT
+          else
+            echo "Dispatching gather-reviews for: $NEEDING"
+            if gh workflow run gather-reviews.yml -f shows="$NEEDING"; then
+              echo "dispatched=true" >> $GITHUB_OUTPUT
+            else
+              echo "::warning::gather-reviews dispatch failed — NOT recording a catch-up attempt for this batch (retried tomorrow, doesn't count against the give-up budget)"
+              echo "dispatched=false" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      # Attempt is recorded only after a CONFIRMED successful dispatch (BRO-3389
+      # ship-check finding) — recording it unconditionally, as the first cut of
+      # this fix did, would burn the give-up budget on transient gh-cli/API
+      # failures that never actually attempted collection.
+      - name: Record zero-review catch-up attempt
+        if: steps.find-gaps.outputs.gap_shows != '' && steps.dispatch-gaps.outputs.dispatched == 'true'
+        run: node scripts/record-zero-review-catchup-attempt.js "${{ steps.find-gaps.outputs.gap_shows }}"
+
+      - name: Commit zero-review catch-up attempt memory
+        if: always()
+        run: |
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/zero-review-catchup-attempts.json 2>/dev/null || true
+          if git diff --cached --quiet; then
+            echo "No attempt-memory changes to commit"
+          else
+            git commit -m "audit: zero-review catch-up attempt memory
+
+          Co-Authored-By: github-actions[bot] <github-actions[bot]@users.noreply.github.com>"
+            bash scripts/lib/push-with-retry.sh
+          fi
 
   # Auto-trigger opening night readiness check for shows opening tomorrow
   check-opening-night-readiness:
@@ -1873,6 +2035,10 @@ jobs:
           # and re-email every run, reintroducing the exact storm this
           # migration fixes (#486, same class as #406's opening-night fix).
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          # BRO-3662: logDispatchAttempt() rewrites this TRACKED file on every
+          # dispatch attempt; left unstaged it makes every later rebase refuse
+          # pre-flight and forces the clobber-prone merge path.
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes to commit"
           else

@@ -355,15 +355,36 @@ fi
 # normal, not the incident's hazard (second-opinion review, BRO-2663 plan
 # review). Extracted to a lib (not inlined like the CORE-DATA block above) so
 # it's unit-tested — see scripts/tests/session-start-staleness.test.mjs.
+#
+# BRO-4229: in a CLOUD session the check also fast-forwards the checkout when
+# nothing can be lost (trySyncCodeCheckout), so hook fixes landed on main reach
+# sessions already in flight. It targets $CLAUDE_PROJECT_DIR, where the hook
+# wrappers in .claude/settings.json read their scripts from, even when $PWD is
+# a worktree. Never runs on the Mac: this file self-skips there (top of file),
+# and the gate below also requires CLAUDE_CODE_REMOTE=true.
+CODE_DIR="$REPO_ROOT"
+CODE_SYNC=no
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -n "${CLAUDE_PROJECT_DIR:-}" ]; then
+  CODE_DIR="$CLAUDE_PROJECT_DIR"
+  CODE_SYNC=yes
+fi
 if { [ "$SESSION_EVENT" = "startup" ] || [ "$SESSION_EVENT" = "resume" ]; } \
-   && [ -n "$REPO_ROOT" ] && [[ "$PWD" != *"/.claude/worktrees/"* ]] \
-   && [ -f "$REPO_ROOT/scripts/lib/code-checkout-staleness.js" ] \
+   && [ -n "$CODE_DIR" ] && [[ "$CODE_DIR" != *"/.claude/worktrees/"* ]] \
+   && [ -f "$CODE_DIR/scripts/lib/code-checkout-staleness.js" ] \
    && command -v node >/dev/null 2>&1; then
   CODE_STALE_MSG=$(node -e '
-    const { runCodeCheckoutStalenessCheck } = require(process.argv[1]);
-    const r = runCodeCheckoutStalenessCheck({ repoDir: process.argv[2] });
+    const lib = require(process.argv[1]);
+    const repoDir = process.argv[2];
+    const r = lib.runCodeCheckoutStalenessCheck({ repoDir });
+    if (process.argv[3] === "yes" && r.behind > 0) {
+      const s = lib.trySyncCodeCheckout({ repoDir, behind: r.behind, ahead: r.ahead });
+      const synced = lib.formatCodeCheckoutSyncMessage(s, repoDir);
+      if (synced) { console.log(synced); process.exit(0); }
+      if (r.message) console.log(`${r.message}\n   (auto-sync skipped: ${s.reason})`);
+      process.exit(0);
+    }
     if (r.message) console.log(r.message);
-  ' "$REPO_ROOT/scripts/lib/code-checkout-staleness.js" "$REPO_ROOT" 2>/dev/null || true)
+  ' "$CODE_DIR/scripts/lib/code-checkout-staleness.js" "$CODE_DIR" "$CODE_SYNC" 2>/dev/null || true)
   if [ -n "$CODE_STALE_MSG" ]; then
     echo ""
     echo "$CODE_STALE_MSG"
@@ -570,14 +591,42 @@ if [ -n "$REPO_ROOT" ] && [ -f "$REPO_ROOT/scripts/lib/disk-space-check.js" ] &&
   fi
 fi
 
+# GLOBAL INSTRUCTIONS for cloud sessions (BRO-4237, replaces the BRO-4234
+# printed owner banner). Cloud sessions have no ~/.claude, so the owner's
+# global rules (who they are, how to talk to them, what never to do) never
+# reached them. Fetch them from the private thomaspryor/claude-config repo
+# with the session's own GitHub token and install them as ~/.claude/CLAUDE.md
+# + anti-slop-rules.md: Claude Code loads that natively for the session AND
+# its subagents (proved by a fresh test session, 2026-09-28), while printed
+# banner text reaches neither subagents nor anything past the output cap.
+# Private (nothing committed to this public repo) and always current. Fails
+# open; never touches a ~/.claude file without the GENERATED marker.
+# Kill switch: CLOUD_GLOBAL_RULES_DISABLED=1.
+# repo-only: never copy this block into the ~/.claude/hooks master.
+if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ "${CLOUD_GLOBAL_RULES_DISABLED:-}" != "1" ] \
+   && command -v node >/dev/null 2>&1; then
+  GI_DIR="${CLAUDE_PROJECT_DIR:-$REPO_ROOT}"
+  GI_OUT=""
+  if [ -f "$GI_DIR/scripts/sync-global-instructions.js" ]; then
+    GI_OUT=$(node "$GI_DIR/scripts/sync-global-instructions.js" install --home "$HOME" 2>&1 || true)
+  fi
+  # Never fail silently (second opinion): without the file the session knows
+  # nothing about the owner, so print a short fallback plus the reason.
+  if ! grep -q 'GENERATED from thomaspryor/claude-config' "$HOME/.claude/CLAUDE.md" 2>/dev/null; then
+    echo "⚠️  Owner's global instructions not installed (${GI_OUT:-installer missing}). Until fixed: the owner is not technical (plain English, no commands for them to run), never reviews or merges PRs (land your own work), and uses the iPhone app or a browser, not a terminal."
+    echo ""
+  fi
+fi
+
 cat << 'EOF'
-CRITICAL SESSION RULES (CLAUDE.md has full text — these 6 are the most-violated):
-1. NOTION: create card immediately via `node scripts/notion-brain.js create` (CLI, not MCP — MCP is blocked).
+CRITICAL SESSION RULES (CLAUDE.md has full text — these 7 are the most-violated):
+1. LINEAR CARD FIRST, before any edit: `node scripts/linear-brain.js create "<title>" --dispatch --notes "...## Acceptance criteria..."`. Dispatched onto an existing issue → `node scripts/linear-session.js claim --issue=BRO-N` instead. Notion is retired: never notion-brain.js.
 2. VERIFY: run the command + show output before claiming done. `node --check` is syntax only, not a test.
 3. ASYNC = WAIT: deploys/CI started ≠ done. Verify it succeeded; fix if it failed.
 4. FIX, DON'T REPORT: discovered issues get fixed now, not listed for later.
-5. KEEP GOING: do natural follow-ups (rebuild, deploy, fix adjacent). Don't offer handoffs to "a new session" — banned phrase list in CLAUDE.md §5.
+5. KEEP GOING: do natural follow-ups (rebuild, deploy, fix adjacent). Don't offer handoffs to "a new session".
 6. TERSE OUTPUT: short answers, no trailing recap, drop pleasantries. Output tokens cost ~5x input — verbose explanation is the single biggest token leak Claude controls. Verification evidence still required (rule 2); cut narration, keep proof.
+7. PRs: the owner NEVER reviews or merges them. Land it yourself: `git push origin HEAD:refs/heads/land/<name>`, follow the Land run, close the PR (CLOUD.md § Landing). "Waiting on review" is never a reason to leave a PR open.
 Flow: implement → /did-it-work → /ship-check → /wrap-up. Don't stop between skills unless user said stop or you hit a real blocker.
 EOF
 

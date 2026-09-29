@@ -37,6 +37,7 @@ const {
   findShowKeywordInText,
   isRevivalByCanonicalTitle,
 } = require('../lib/review-guards');
+const { listShowDirs } = require('../lib/list-show-dirs');
 
 const argv = process.argv.slice(2);
 const jsonArg = argv.find(a => a.startsWith('--json='));
@@ -180,10 +181,7 @@ const perShow = {};
 let totalScanned = 0;
 let totalWP = 0;
 
-const dirs = fs.readdirSync(REVIEW_ROOT).filter(d => {
-  try { return fs.statSync(path.join(REVIEW_ROOT, d)).isDirectory(); }
-  catch { return false; }
-});
+const dirs = listShowDirs(REVIEW_ROOT);
 
 for (const showId of dirs) {
   const show = showById[showId];

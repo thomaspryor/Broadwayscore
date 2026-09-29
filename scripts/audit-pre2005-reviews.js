@@ -18,7 +18,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { safeWriteReview, safeRenameReview } = require('./lib/review-write-guard');
+const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { parseHistoricalDate } = require('./lib/date-utils');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 
@@ -463,6 +463,7 @@ if (applyMode) {
       // Check if target already has this file — if so, flag source as wrongProduction
       if (fs.existsSync(targetPath)) {
         reviewData.wrongProduction = true;
+        invalidateWrongProductionAutoClear(reviewData);
         reviewData.wrongProductionProvenance = 'content';
         reviewData.auditSuggested = 'wrongProduction';
         reviewData.auditReason = 'pre2005-audit: duplicate exists at ' + result.suggestedShowId;

@@ -41,6 +41,15 @@ on:
 # Uses Archive.org first (often has full pre-paywall snapshots).
 # ~2,479 truncated reviews across all domains.
 
+# Per-run group (not shared): matrix partitions eligible reviews into
+# disjoint parallel_jobs shards, and self-chains the next round with a NEW
+# run_id after rebuild. A shared group would only queue a second concurrent
+# manual dispatch, never affect the chain or the matrix.
+# See docs/workflow-concurrency-audit.md.
+concurrency:
+  group: rescrape-truncated-${{ github.run_id }}
+  cancel-in-progress: false
+
 jobs:
   prepare:
     runs-on: ubuntu-latest
@@ -249,6 +258,11 @@ jobs:
           RETRY_FAILED: ${{ inputs.retry_failed && 'true' || 'false' }}
           ARCHIVE_FIRST: 'true'
           COMMIT_EVERY: '25'
+          # BRO-2381: without this, pushReviewTextsCheckpoint()'s mid-run
+          # checkpoint to the private review-texts repo silently no-ops for
+          # the whole run — a timeout/cancellation mid-run loses everything
+          # collected since the last checkpoint.
+          REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: node scripts/collect-review-texts.js --aggressive
 
       - name: Validate data

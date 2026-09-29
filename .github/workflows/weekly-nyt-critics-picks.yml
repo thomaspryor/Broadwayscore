@@ -23,7 +23,7 @@ permissions:
 jobs:
   refresh:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 20
     steps:
       - name: Checkout repository
         uses: actions/checkout@v5
@@ -33,26 +33,51 @@ jobs:
         with:
           node-version: '20'
 
+      # NYT 403s the runner's plain fetch (since 2026-09-16); the script
+      # falls back to fetchPage() (Bright Data → ScrapingBee → Playwright),
+      # which needs deps + proxy secrets.
+      - name: Install dependencies
+        run: npm ci || npm install
+
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       - name: Refresh NYT Critics Picks
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="--dry-run"
           fi
-          node scripts/refresh-nyt-critics-picks.js $ARGS
+          node scripts/refresh-nyt-critics-picks.js --time-budget-min=10 $ARGS
 
       - name: Commit and push changes
         if: always() && inputs.dry_run != true
+        env:
+          PUSH_RECONCILE_MERGED_JSON: '1'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/nyt-critics-picks.json
+          git add data/audit/scraper-spend-ledger.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No changes"
             exit 0
           fi
           git commit -m "data: Update NYT Critics Picks"
           bash scripts/lib/push-with-retry.sh
+
+      - name: Commit scraper-spend ledger
+        if: always()
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: weekly-nyt-critics-picks
 
       - name: Notify on failure
         if: failure()

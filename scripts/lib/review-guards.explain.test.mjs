@@ -23,6 +23,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const guards = require('./review-guards.js');
 const { explainExclusion, isIncludableForRebuild } = guards;
+const { listShowDirs } = require('./list-show-dirs');
 
 const ROOT = path.resolve(new URL('../..', import.meta.url).pathname);
 const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data', 'review-texts');
@@ -100,6 +101,9 @@ test('each exclusion rule name fires for its own trigger', () => {
     ['fullTextWrongAuthorNoExcerpt', { fullText: text, fullTextWrongAuthor: true }],
     ['noTextOrScoreSignal', { url: 'https://example.com/review' }],
     ['blockedReviewUrl', { fullText: text, url: 'https://www.google.com/url?q=https://example.com' }],
+    ['namedNonReviewUrl', { fullText: text, source: 'serp-discovery', url: 'https://www.londontheatre.co.uk/show/47207-the-last-ship' }],
+    ['previewPlaceholder', { fullText: text, isPreviewPlaceholder: true }],
+    ['previewPlaceholder', { aggregatorStars: 4, isPreviewPlaceholder: true }],
     // wrongShow survives its own rule (manually cleared) but still blocks the
     // stale wrong_content flag — the real live shape of this rule.
     ['wrongContentFlagsUncleared', { fullText: text, incompleteReason: 'wrong_content', wrongShow: true, wrongShowManualClear: true }],
@@ -110,6 +114,56 @@ test('each exclusion rule name fires for its own trigger', () => {
     assert.strictEqual(got, expected, `expected rule "${expected}" for ${JSON.stringify(data)?.slice(0, 120)}, got "${got}"`);
     assert.strictEqual(isIncludableForRebuild(data, null, undefined), false);
   }
+});
+
+test('namedNonReviewUrl (BRO-4101) is scoped to serp-discovery sources only — a real review whose citation URL happens to sit on a named-pattern host must not be dropped just for sharing a source label', () => {
+  const text = 'A perfectly ordinary review body with more than enough words to pass the text gate.';
+  // londontheatre.co.uk/show/<id> is a NAMED_NON_REVIEW_URL_PATTERNS entry
+  // (ticketing-listing) not also covered by domain-filters' blockedReviewUrl
+  // list, so this exercises the namedNonReviewUrl branch specifically rather
+  // than being pre-excluded by an earlier rule in the chain. (It used to be
+  // broadwayworld.com/shows/.../cast, but since the 2026 audit's S1-T0 the
+  // host-scoped listingPageUrl rule runs first and claims every
+  // broadwayworld.com/shows/ URL regardless of source — see
+  // tests/unit/listing-page-url.test.mjs.)
+  const named = { fullText: text, url: 'https://www.londontheatre.co.uk/show/47207-the-last-ship', criticName: 'A Real Critic' };
+  const nonSerpSources = [undefined, 'show-score-playwright', 'bww-roundup', 'submit-review-form'];
+  for (const source of nonSerpSources) {
+    const data = source === undefined ? { ...named } : { ...named, source };
+    assert.notStrictEqual(explainExclusion(data, null, undefined), 'namedNonReviewUrl', `source=${source} must not trigger namedNonReviewUrl`);
+  }
+  for (const source of ['serp-discovery', 'serp-discovery-per-critic', 'outlet-serp-discovery', 'broad-web-serp', 'site-search', 'opening-night-discovery']) {
+    assert.strictEqual(explainExclusion({ ...named, source }, null, undefined), 'namedNonReviewUrl', `source=${source} should trigger namedNonReviewUrl`);
+  }
+});
+
+test('namedNonReviewUrlManualClear escape hatch lets a human-verified file through', () => {
+  const text = 'A perfectly ordinary review body with more than enough words to pass the text gate.';
+  const data = {
+    fullText: text,
+    source: 'serp-discovery',
+    url: 'https://www.londontheatre.co.uk/show/47207-the-last-ship',
+    namedNonReviewUrlManualClear: true,
+  };
+  assert.notStrictEqual(explainExclusion(data, null, undefined), 'namedNonReviewUrl');
+});
+
+test('previewPlaceholder — BRO-931 #3 escape hatches let a genuinely-cleared file through', () => {
+  const text = 'A perfectly ordinary review body with more than enough words to pass the text gate.';
+  const cleared = [
+    { fullText: text, isPreviewPlaceholder: true, wrongProductionManualClear: true },
+    { fullText: text, isPreviewPlaceholder: true, wrongProductionOverride: true },
+    { fullText: text, isPreviewPlaceholder: true, humanReviewedWrongProduction: false },
+    { fullText: text, isPreviewPlaceholder: true, humanReviewScore: 82 },
+    { fullText: text, isPreviewPlaceholder: true, llmScore: { score: 74 } },
+  ];
+  for (const data of cleared) {
+    assert.strictEqual(explainExclusion(data, null, undefined), null, `expected cleared: ${JSON.stringify(data)}`);
+    assert.strictEqual(isIncludableForRebuild(data, null, undefined), true);
+  }
+  // llmScore present but score is null/missing — NOT a real clear signal
+  const notCleared = { fullText: text, isPreviewPlaceholder: true, llmScore: { score: null } };
+  assert.strictEqual(explainExclusion(notCleared, null, undefined), 'previewPlaceholder');
 });
 
 test('a clean review yields null and includable=true', () => {
@@ -273,11 +327,8 @@ test('parity: explainExclusion()===null <=> isIncludableForRebuild()===true on e
 
   let files = 0;
   const mismatches = [];
-  for (const dir of fs.readdirSync(REVIEW_TEXTS_DIR)) {
+  for (const dir of listShowDirs(REVIEW_TEXTS_DIR)) {
     const showDir = path.join(REVIEW_TEXTS_DIR, dir);
-    let st;
-    try { st = fs.statSync(showDir); } catch { continue; }
-    if (!st.isDirectory()) continue;
     const show = byId.get(dir) || null;
     let entries;
     try { entries = fs.readdirSync(showDir); } catch { continue; }

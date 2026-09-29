@@ -287,6 +287,7 @@ function walkShowDirs(root) {
 function audit() {
   const cohesive = [], different = [];
   let placeholderVsRealCount = 0;
+  let staleBackpointerCount = 0;
   for (const showDir of walkShowDirs(REVIEW_TEXTS_DIR)) {
     const showId = path.basename(showDir);
     let files;
@@ -310,8 +311,93 @@ function audit() {
     for (const members of Object.values(groups)) {
       if (members.length < 2) continue;
       const set = new Set(members);
-      // skip groups already collapsed by a duplicateOf link between members
-      if (members.some(f => { const d = load(f); return d && typeof d.duplicateOf === 'string' && set.has(d.duplicateOf); })) continue;
+      // A member already carrying a LIVE duplicateOf link into this same-URL
+      // group means the group is already collapsed for scoring purposes — but
+      // the canonical each of those links point at can still carry its OWN
+      // stale duplicateOf/duplicateTextOf pointing back into the cluster
+      // (BRO-318/BRO-2391 recurrence: collect-review-texts.js's content-
+      // fingerprint dedup re-sets that pointer on every refetch whose
+      // extraction differs by so much as a scraped quiz-widget prefix — see
+      // loves-labours-lost-globe-west-end-2026, re-broke 2026-08-25 and again
+      // 2026-08-26 after the ORIGINAL 2026-08-22 fix). Until now the only tool
+      // that caught this shape was fix-canonical-duplicate-backpointer.js,
+      // which is NOT wired into any CI workflow (grep .github/workflows/ —
+      // zero hits) and only ever ran by hand. This audit — which the daily
+      // dedupe-same-url-bylines.yml cron already runs — now repairs it too,
+      // so a re-set stale pointer self-heals on the next scheduled run instead
+      // of waiting for a human to notice validate-data's NEW-duplicate-URL
+      // gate go red and hand-run the other script.
+      // A member's link can be expressed via EITHER pointer field (mixed-field
+      // cycles are the documented corpus-wide norm — see canonical-duplicate-
+      // pointers.js's DUPLICATE_POINTER_FIELDS / duplicate-cycle.js's own
+      // "mixed-field 2-node cycle" test) — checking duplicateOf only missed
+      // the exact class this ticket is about: collect-review-texts.js's
+      // fingerprint dedup links a LOSER back at its canonical via
+      // duplicateTextOf, not duplicateOf (adversarial review, BRO-2391).
+      const pointsAt = (f, target) => {
+        const d = load(f);
+        return !!(d && (d.duplicateOf === target || d.duplicateTextOf === target));
+      };
+      const linkedCanonicals = new Set(members
+        .map(f => {
+          const d = load(f);
+          const t = d && (d.duplicateOf || d.duplicateTextOf);
+          return typeof t === 'string' && set.has(t) ? t : null;
+        })
+        .filter(Boolean));
+      if (linkedCanonicals.size) {
+        for (const canonName of linkedCanonicals) {
+          const canonData = load(canonName);
+          // Must actually BE the canonical (not itself pointing elsewhere) —
+          // mirrors fix-canonical-duplicate-backpointer.js's own check.
+          if (!canonData || canonData.duplicateOf) continue;
+          // Never touch a human-reviewed or locked file — mirrors fix-
+          // canonical-duplicate-backpointer.js's own guard. fix() below writes
+          // with force:true, which BYPASSES protectedFields (only logs a
+          // warning), so this has to be enforced here rather than left to
+          // safeWriteReview (adversarial review, BRO-2391: an operator's
+          // "vouched independent, not a duplicate" call must never be
+          // silently overwritten by this daily-scheduled heal).
+          if (canonData.humanReviewScore != null || canonData._locked === true) continue;
+          // Only members with a LIVE pointer AT THIS canonical are its losers
+          // — never "every other member of the group." A same URL can hold
+          // TWO independent linked pairs (B->A and D->C); folding blindly
+          // through `members.filter(f => f !== canonName)` would merge them
+          // into one enumeration-order-dependent collapse, and would also
+          // sweep in a genuinely different, uncorroborated review that
+          // happens to share the URL by coincidence — neither is provably
+          // "this canonical's cluster" the way an existing pointer is
+          // (adversarial review, BRO-2391).
+          const losers = members.filter(f => f !== canonName && pointsAt(f, canonName));
+          if (!losers.length) continue;
+          if (losers.some(f => { const d = load(f); return d && (d.humanReviewScore != null || d._locked === true); })) continue;
+          // A TRUE, uncommitted mutual cycle — this canonical points at a
+          // loser that ALSO has no duplicateOf of its own (so it never
+          // committed to being anyone's loser) and, per `losers`, points back
+          // at us too — must be left alone, not force-collapsed from BOTH
+          // directions. Real corpus case (cats-1982, the-sunflower): A and B
+          // both carry duplicateOf:null with mutual duplicateTextOf at each
+          // other. Without this check, A would be queued as canonical-of-B in
+          // this same pass B gets queued as canonical-of-A, and fix()
+          // processing the second entry after the first has already rewritten
+          // the pair would silently REVERSE the first entry's collapse
+          // (adversarial review, BRO-2391). This is the exact "genuinely
+          // uncommitted cycle" case hasContestedCycleClear/the double-clear
+          // repair already own — leave it for that, or a human, to resolve.
+          if (losers.some(f => !load(f).duplicateOf && pointsAt(canonName, f))) continue;
+          // No `siblings`: this whole group is already a same-URL cluster
+          // (grouped by normalizeUrl above), which planCanonicalPointerClear's
+          // own docs treat as sufficient proof a pointer into it is a cycle —
+          // same rationale fix() below already relies on for freshly-cohesive
+          // groups.
+          const plan = planCanonicalPointerClear(canonData, { self: canonName, clusterFiles: losers });
+          if (plan.drop.length) {
+            cohesive.push({ showId, canonical: canonName, losers });
+            staleBackpointerCount++;
+          }
+        }
+        continue;
+      }
       // only includable members double-count
       const incl = members.filter(f => {
         const d = load(f);
@@ -361,7 +447,9 @@ function audit() {
       }
     }
   }
-  return { cohesive, different, placeholderVsRealCount };
+  return {
+    cohesive, different, placeholderVsRealCount, staleBackpointerCount,
+  };
 }
 
 function fix(cohesive) {
@@ -436,14 +524,16 @@ function writeAuditReport(different) {
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
-  const { cohesive, different, placeholderVsRealCount } = audit();
+  const {
+    cohesive, different, placeholderVsRealCount, staleBackpointerCount,
+  } = audit();
   if (JSON_OUT) {
     console.log(JSON.stringify({
-      cohesiveCount: cohesive.length, differentCount: different.length, placeholderVsRealCount, cohesive, different,
+      cohesiveCount: cohesive.length, differentCount: different.length, placeholderVsRealCount, staleBackpointerCount, cohesive, different,
     }, null, 2));
     process.exit(cohesive.length === 0 ? 0 : 1);
   }
-  console.log(`Same-URL double-count groups: ${cohesive.length} cohesive (collapsible), ${different.length} different-text (report-only), ${placeholderVsRealCount} placeholder-vs-real or contested-clear (forced into the above).`);
+  console.log(`Same-URL double-count groups: ${cohesive.length} cohesive (collapsible), ${different.length} different-text (report-only), ${placeholderVsRealCount} placeholder-vs-real or contested-clear (forced into the above), ${staleBackpointerCount} already-linked group(s) with a stale canonical backpointer re-set since the last collapse (also included above).`);
   for (const g of cohesive.slice(0, 40)) {
     console.log(`  [collapse] ${g.showId}: keep ${g.canonical}, mark ${g.losers.join(', ')} duplicate`);
   }

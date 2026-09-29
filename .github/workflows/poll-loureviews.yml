@@ -53,6 +53,16 @@ jobs:
       - name: Poll LouReviews
         id: poll
         run: |
+          # BRO-4157 triage: NOT adding pipefail here on purpose. poll-loureviews.js's
+          # own docstring is explicit — "Exit 0 always (a poller failure must
+          # not red a cron)" — its top-level `.catch()` always calls
+          # `process.exit(0)` after logging `__LOUREVIEWS_NEW__=0`. Pipefail
+          # would correctly propagate a crash's exit code into this step, but
+          # the script itself never produces a nonzero one to propagate, so it
+          # would be a no-op here (confirmed via Codex adversarial review,
+          # which caught an earlier draft of this comment overclaiming what
+          # pipefail alone could fix). Fixing the swallow would mean reversing
+          # that documented design choice, out of scope for this triage.
           # Wide default (400d ≈ 750 posts, under the poller's 10-page/1000-post cap).
           # 14d missed MJ The Musical + All My Sons: Louise reviewed them Oct/Nov 2025,
           # but both shows only entered shows.json on 2026-03-02 — ~4mo later, long

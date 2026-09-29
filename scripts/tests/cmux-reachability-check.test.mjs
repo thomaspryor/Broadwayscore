@@ -69,7 +69,13 @@ test('logReachabilityAttempt + readReachabilityAttempts round-trip in chronologi
     logReachabilityAttempt({ ok: false, error: 'timeout' }, { logPath, now: Date.parse('2026-09-07T10:15:00Z') });
     logReachabilityAttempt({ ok: true }, { logPath, now: Date.parse('2026-09-07T10:30:00Z') });
 
-    const attempts = readReachabilityAttempts({ logPath });
+    // Read back as of the same simulated instant the entries were logged at —
+    // readReachabilityAttempts defaults `now` to the REAL Date.now(), so
+    // without this the 7-day retention window prunes these fixed 2026-09-07
+    // timestamps the instant real wall-clock time passes them (it did: this
+    // test went red on 2026-09-14, exactly 7 days later, with 0 attempts
+    // read back instead of 3 — CI run 34843981603, filed as BRO-3316).
+    const attempts = readReachabilityAttempts({ logPath, now: Date.parse('2026-09-07T10:30:00Z') });
     assert.equal(attempts.length, 3);
     assert.deepEqual(attempts.map((a) => a.ok), [false, false, true]);
   } finally {
@@ -85,7 +91,7 @@ test('readReachabilityAttempts prunes entries older than the retention window', 
     logReachabilityAttempt({ ok: false }, { logPath, now: eightDaysAgo });
     logReachabilityAttempt({ ok: false }, { logPath, now });
 
-    const attempts = readReachabilityAttempts({ logPath, days: 7 });
+    const attempts = readReachabilityAttempts({ logPath, days: 7, now });
     assert.equal(attempts.length, 1);
   } finally {
     fs.rmSync(logPath, { force: true });

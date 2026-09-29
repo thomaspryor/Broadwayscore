@@ -35,6 +35,7 @@ const MARKET_SEARCH_KEYWORDS = {
   'west-end': 'West End',
   'off-west-end': 'Off-West End',
   regional: 'theater',
+  tour: 'national tour',
 };
 
 /** market/category slug → human label used in prompt text. */
@@ -44,6 +45,7 @@ const MARKET_LABELS = {
   'west-end': 'West End',
   'off-west-end': 'Off-West End',
   regional: 'Regional (US, outside New York)',
+  tour: 'North American national tour',
 };
 
 /**
@@ -202,7 +204,38 @@ function getMarketSearchKeyword(market) {
   return 'theater';
 }
 
+/**
+ * True for a national-tour show (category/market 'tour', BRO-4211).
+ *
+ * @param {string|null|undefined} market
+ * @returns {boolean}
+ */
+function isTourMarket(market) {
+  return market !== null && market !== undefined && String(market).trim().toLowerCase() === 'tour';
+}
+
+/**
+ * Prompt note for a national tour. The show's venue is "North American Tour"
+ * and every review names a different city and theater, so without this the
+ * wrong_production gate rejects tour-stop reviews as "a particular stop, not
+ * the tour" (Ladue News / Shucked tour, 2026-09-28, both ensemble legs).
+ *
+ * @returns {string}
+ */
+function getTourPromptContext() {
+  return [
+    'NOTE: This is a NATIONAL TOUR: the touring company of a Broadway show, playing one city after another.',
+    'A review of ANY stop on the tour (any city, any theater, e.g. "now playing at the Fox Theatre") IS a review of',
+    'THIS production and is valid. Mentions of the original Broadway run, its cast, its awards or its New York',
+    'reviews are normal background, not evidence of a mismatch. Mark wrong_production only if the critic is',
+    'reviewing the original Broadway run in New York, a West End or UK production, a different national tour',
+    'of the same title (another year or another touring company), or a separate regional, community or school staging.',
+  ].join(' ');
+}
+
 module.exports = {
+  isTourMarket,
+  getTourPromptContext,
   MARKET_LABELS,
   MARKET_LABEL_REGIONAL_UK,
   MARKET_SEARCH_KEYWORDS,

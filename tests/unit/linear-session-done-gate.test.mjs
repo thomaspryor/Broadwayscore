@@ -33,7 +33,36 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 process.env.LINEAR_API_KEY = 'test-key';
-const { cmdReport } = require('../../scripts/linear-session.js');
+
+// The CLI's `deps.verifyCmdEvidence || makeVerifyCmdEvidence(...)` fallback
+// (linear-session.js) is the branch a real session takes, and a test that
+// always injects a stub proves nothing about it — a fallback replaced by a
+// rubber stamp would keep every test in this file green. Patching the
+// linear-cmd-execution.js export HERE, before linear-session.js is required
+// below (it destructures the factory at require time), gives that branch a
+// spy instead of the real executor: the wiring test asserts the CLI actually
+// builds from this factory and hands it the recorded command, and every other
+// unstubbed call in this file is kept from shelling out to a real
+// origin/main checkout by accident.
+const cmdExecModule = require('../../scripts/lib/linear-cmd-execution.js');
+const SPY_PASS = { allowed: true, verdict: 'own-verify-passed', reason: 'spy: command passed', notOnMain: false, sha: 'spy0000000' };
+const SPY_FAIL = { allowed: false, verdict: 'own-verify-failed', reason: 'spy: command failed', notOnMain: false, sha: 'spy0000000' };
+// `result` is shared mutable state across tests in this one process, so every
+// test that changes it restores SPY_PASS in a finally (ship-check finding,
+// Codex, 2026-09-21).
+const factorySpy = { built: 0, cmds: [], opts: [], result: SPY_PASS };
+cmdExecModule.makeVerifyCmdEvidence = (opts) => {
+  factorySpy.built += 1;
+  factorySpy.opts.push(opts);
+  // Calling the logger, not just type-checking it: a CLI that passed
+  // `{ log: () => {} }` satisfies typeof === 'function' and prints nothing
+  // while it blocks on a real checkout (ship-check finding, 2026-09-21 —
+  // mutation-proven, the type check alone left all 38 tests green).
+  if (opts && typeof opts.log === 'function') opts.log('LOG_PROBE');
+  return (cmd) => { factorySpy.cmds.push(cmd); return factorySpy.result; };
+};
+
+const { cmdReport, cmdClaim } = require('../../scripts/linear-session.js');
 
 // Mirrors this team's real states (queried live: In Review, Canceled, Todo,
 // Backlog, Duplicate, Done, In Progress) closely enough to exercise
@@ -46,7 +75,7 @@ const TEAM_STATES = [
   { id: 'state-done', name: 'Done', type: 'completed' },
 ];
 
-function makeIssueResponse({ description, commentBodies = [] }) {
+function makeIssueResponse({ description, commentBodies = [], state, comments }) {
   return {
     data: {
       issue: {
@@ -56,9 +85,11 @@ function makeIssueResponse({ description, commentBodies = [] }) {
         description,
         priority: 2,
         url: 'https://linear.app/broadway-scorecard/issue/BRO-9458/fixture',
-        state: { id: 'state-progress', name: 'In Progress', type: 'started' },
+        state: state || { id: 'state-progress', name: 'In Progress', type: 'started' },
         labels: { nodes: [] },
-        comments: { nodes: commentBodies.map((body, i) => ({ id: `c${i}`, body, createdAt: null, user: null })) },
+        comments: {
+          nodes: comments || commentBodies.map((body, i) => ({ id: `c${i}`, body, createdAt: null, user: null })),
+        },
       },
     },
   };
@@ -131,10 +162,99 @@ test('allowed: a safe-form verify command in the issue description', async () =>
       issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
       updateShouldBeCalled: true,
     });
-    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+    // deps.verifyCmdEvidence, not the real linear-cmd-execution.js executor:
+    // unstubbed, this one case clones/fetches origin/main and runs `node --test
+    // ...` for REAL (~36s on a loaded machine, and it is the same shell-out that
+    // blew tests/unit/linear-brain-done-gate.test.mjs's 15s cap and blocked
+    // BRO-3435's land on 2026-09-21). What this file proves is the WIRING — that
+    // cmdReport hands the recorded command to the executor seam — which the
+    // captured `cmds` assertion below states directly; the executor's own real
+    // behavior is scripts/lib/linear-cmd-execution.test.mjs's job.
+    const cmds = [];
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+      { verifyCmdEvidence: (cmd) => { cmds.push(cmd); return { allowed: true, verdict: 'own-verify-passed', reason: 'stub: command passed', notOnMain: false, sha: 'stub000000' }; } }
+    );
+    assert.deepEqual(cmds, ['node --test tests/unit/done-semantics-gate.test.mjs']);
     assert.match(h.getLogs(), /"doneGateRefused":false/);
     assert.match(h.getLogs(), /"stateName":"Done"/);
   });
+});
+
+test('refused: the recorded acceptance command is executed and FAILS', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
+      updateShouldBeCalled: false,
+    });
+    // No `verdict` on the result — this is applyCmdExecution's own fallback
+    // branch (linear-done-gate.js: `(execResult && execResult.verdict) ||
+    // 'verify-cmd-failed'`). The brain-side twin of this test covers the other
+    // branch, a result that DOES carry the executor's real 'own-verify-failed'.
+    await assert.rejects(
+      () => cmdReport(
+        { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+        { verifyCmdEvidence: () => ({ allowed: false, reason: 'stub: command failed' }) }
+      ),
+      /EXIT/
+    );
+    assert.equal(h.getExitCode(), 5);
+    assert.match(h.getErrors(), /REFUSED \(verify-cmd-failed\)/);
+    assert.match(h.getLogs(), /"doneGateRefused":true/);
+  });
+});
+
+test('wiring: with NO verifyCmdEvidence dep, the CLI builds the executor from linear-cmd-execution.js and hands it the recorded command', async () => {
+  const before = { built: factorySpy.built, cmds: factorySpy.cmds.length };
+  let calls;
+  await withStubbedExit(async (h) => {
+    calls = mockFetch({
+      issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
+      updateShouldBeCalled: true,
+    });
+    // Deliberately no second argument: this is the production default path.
+    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+    assert.match(h.getLogs(), /"doneGateRefused":false/);
+    assert.match(h.getErrors(), /LOG_PROBE/, 'the factory must get a logger that actually reaches the operator, or they see nothing while it blocks on a real checkout');
+  });
+  assert.equal(factorySpy.built, before.built + 1, 'cmdReport must build the executor from makeVerifyCmdEvidence when no dep is injected');
+  assert.deepEqual(
+    factorySpy.cmds.slice(before.cmds),
+    ['node --test tests/unit/done-semantics-gate.test.mjs'],
+    'the recorded acceptance command must reach the real factory\'s verifier, not be waved through'
+  );
+  // `updateShouldBeCalled: true` only PERMITS the mutation — it never requires
+  // it, so a cmdReport that stopped writing would keep this test green
+  // (ship-check finding, Codex, 2026-09-21). Require exactly one issueUpdate,
+  // carrying the Done state.
+  const updates = calls.filter((c) => c.query.includes('issueUpdate'));
+  assert.equal(updates.length, 1, 'the allowed path must perform exactly one issueUpdate');
+  assert.equal(updates[0].variables.input.stateId, 'state-done');
+});
+
+test('wiring: the default path REFUSES when the executor it built says the command failed', async () => {
+  factorySpy.result = SPY_FAIL;
+  try {
+    const before = factorySpy.cmds.length;
+    let calls;
+    await withStubbedExit(async (h) => {
+      calls = mockFetch({
+        issue: { description: '## Acceptance criteria\n- `node --test tests/unit/done-semantics-gate.test.mjs` passes' },
+        updateShouldBeCalled: false,
+      });
+      await assert.rejects(
+        () => cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' }),
+        /EXIT/
+      );
+      assert.equal(h.getExitCode(), 5);
+      assert.match(h.getErrors(), /REFUSED \(own-verify-failed\)/);
+      assert.match(h.getLogs(), /"doneGateRefused":true/);
+    });
+    assert.equal(factorySpy.cmds.length, before + 1, 'the verifier it built must still be consulted');
+    assert.equal(calls.filter((c) => c.query.includes('issueUpdate')).length, 0);
+  } finally {
+    factorySpy.result = SPY_PASS;
+  }
 });
 
 test('allowed: PR-EVIDENCE recorded in a past comment (not the description or this report)', async () => {
@@ -146,8 +266,37 @@ test('allowed: PR-EVIDENCE recorded in a past comment (not the description or th
       },
       updateShouldBeCalled: true,
     });
-    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+    // The verifier is stubbed: this test is about WHERE the evidence is read
+    // from, not whether PR #1001 is real. done-evidence-verify.test.mjs owns that.
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+      { verifyEvidence: () => ({ verified: true, reason: 'stub: on origin/main' }) }
+    );
     assert.match(h.getLogs(), /"doneGateRefused":false/);
+  });
+});
+
+test('refused: PR-EVIDENCE whose commit is not on origin/main — report posts the comment but the state does not move', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Fixed the thing, looks good.',
+        commentBodies: ['PR-EVIDENCE: merged deployed checked (https://github.com/thomaspryor/Broadwayscore/commit/deadbeefcafe)'],
+      },
+      updateShouldBeCalled: false,
+    });
+    await assert.rejects(
+      () => cmdReport(
+        { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+        { verifyEvidence: () => ({ verified: false, reason: 'stub: commit is NOT on origin/main' }) }
+      ),
+      /EXIT/
+    );
+    assert.equal(h.getExitCode(), 5);
+    assert.match(h.getErrors(), /REFUSED \(pr-evidence-not-on-main\)/);
+    assert.match(h.getErrors(), /NOT on origin\/main/);
+    // The outcome comment still posts — only the state move is refused.
+    assert.match(h.getLogs(), /"doneGateRefused":true/);
   });
 });
 
@@ -162,8 +311,30 @@ test('not gated: report --status=in-review never consults the gate even with zer
 test('--force with a reason ≥10 chars bypasses the gate', async () => {
   await withStubbedExit(async (h) => {
     mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
-    await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work', force: 'owner said ship it now' });
+    // deps.appendBypassRow stubbed everywhere a bypass can fire in this file
+    // (ship-check finding, 2026-09-21) — without it this test writes a REAL
+    // row to data/audit/linear-gate-bypass.jsonl on every CI run.
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work', force: 'owner said ship it now' },
+      { appendBypassRow: () => {} }
+    );
     assert.match(h.getLogs(), /"doneGateRefused":false/);
+  });
+});
+
+test('the --force bypass on report --status=done logs a "force" row via linear-session.js\'s OWN ledger wiring (ship-check finding, 2026-09-21: linear-brain.js\'s wiring alone undercounted the path sessions actually use)', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
+    const rows = [];
+    await cmdReport(
+      { issue: 'BRO-9458', status: 'done', summary: 'did the work', force: 'owner said ship it now, no time to verify' },
+      { appendBypassRow: (row) => rows.push(row) }
+    );
+    assert.equal(rows.length, 1);
+    assert.equal(rows[0].gate, 'done');
+    assert.equal(rows[0].mechanism, 'force');
+    assert.equal(rows[0].reason, 'owner said ship it now, no time to verify');
+    assert.equal(rows[0].identifier, 'BRO-9458');
   });
 });
 
@@ -172,10 +343,113 @@ test('LINEAR_DONE_GATE_DISABLED=1 bypasses the gate for automation', async () =>
     process.env.LINEAR_DONE_GATE_DISABLED = '1';
     try {
       mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
-      await cmdReport({ issue: 'BRO-9458', status: 'done', summary: 'did the work' });
+      await cmdReport(
+        { issue: 'BRO-9458', status: 'done', summary: 'did the work' },
+        { appendBypassRow: () => {} }
+      );
       assert.match(h.getLogs(), /"doneGateRefused":false/);
     } finally {
       delete process.env.LINEAR_DONE_GATE_DISABLED;
     }
+  });
+});
+
+// ── report --since= staleness check (BRO-3869) ─────────────────────────────
+
+test('report --since=: warns and sets staleness.stale when a comment postdates --since — never blocks the report itself', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Fixed the thing, looks good.',
+        comments: [{ id: 'c1', body: 'concluded already', createdAt: '2026-09-16T16:57:00.000Z', user: { name: 'Bob' } }],
+      },
+      updateShouldBeCalled: true,
+    });
+    await cmdReport({ issue: 'BRO-9458', status: 'in-review', summary: 'did the work', since: '2026-09-16T12:00:00.000Z' });
+    assert.match(h.getErrors(), /changed since 2026-09-16T12:00:00\.000Z/);
+    assert.match(h.getErrors(), /Bob/);
+    assert.match(h.getLogs(), /"stale":true/);
+  });
+});
+
+test('report without --since: no staleness check runs at all (staleness is null, no warning)', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Fixed the thing, looks good.',
+        comments: [{ id: 'c1', body: 'irrelevant', createdAt: '2026-09-16T16:57:00.000Z', user: { name: 'Bob' } }],
+      },
+      updateShouldBeCalled: true,
+    });
+    await cmdReport({ issue: 'BRO-9458', status: 'in-review', summary: 'did the work' });
+    assert.doesNotMatch(h.getErrors(), /changed since/);
+    assert.match(h.getLogs(), /"staleness":null/);
+  });
+});
+
+test('report --since=<malformed>: degrades to a warning instead of aborting the mandatory outcome report (code-review finding, BRO-3869)', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({ issue: { description: 'Fixed the thing, looks good.' }, updateShouldBeCalled: true });
+    // Must NOT throw/reject — a bad --since must never take down the report.
+    await cmdReport({ issue: 'BRO-9458', status: 'in-review', summary: 'did the work', since: 'not-a-real-date' });
+    assert.match(h.getErrors(), /--since=not-a-real-date could not be checked/);
+    // The outcome comment still posted and the marker still printed.
+    assert.match(h.getLogs(), /__LINEAR_ISSUE_ID__=issue-uuid-457b/);
+    assert.match(h.getLogs(), /"stateName":"In Review"/);
+  });
+});
+
+// ── claim reopening a terminal issue (BRO-3869) ────────────────────────────
+
+test('claim: reopening a Done issue warns with its concluding comments BEFORE the state-move mutation', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Concluded — shipped single button.',
+        state: { id: 'state-done', name: 'Done', type: 'completed' },
+        comments: [{ id: 'c1', body: 'No real difference, shipping single-button on UX grounds.', createdAt: '2026-09-16T16:57:00.000Z', user: { name: 'Bob' } }],
+      },
+      updateShouldBeCalled: true,
+    });
+    await cmdClaim({ issue: 'BRO-9458' });
+    assert.match(h.getErrors(), /was "Done" \(a concluded state\) — you're reopening it/);
+    assert.match(h.getErrors(), /shipping single-button on UX grounds/);
+  });
+});
+
+test('claim: reopening a Done issue shows the NEWEST comments even when the API returns them newest-first (BRO-3456 order, code-review finding)', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: {
+        description: 'Concluded — shipped single button.',
+        state: { id: 'state-done', name: 'Done', type: 'completed' },
+        // Deliberately NEWEST-first with 4 comments, matching what
+        // linear-client.getIssue() actually returns live for BRO-3456
+        // despite the query's `orderBy: createdAt`. A naive .slice(-3) on
+        // this raw order drops the NEWEST comment (the actual conclusion)
+        // and shows the 3 oldest instead.
+        comments: [
+          { id: 'c4', body: 'SHIPPED conclusion — do not revert this.', createdAt: '2026-09-16T16:57:00.000Z', user: { name: 'Bob' } },
+          { id: 'c3', body: 'later investigation note', createdAt: '2026-09-16T15:00:00.000Z', user: { name: 'Bob' } },
+          { id: 'c2', body: 'middle investigation note', createdAt: '2026-09-16T10:00:00.000Z', user: { name: 'Bob' } },
+          { id: 'c1', body: 'earliest, stale investigation note', createdAt: '2026-09-15T21:24:00.000Z', user: { name: 'Bob' } },
+        ],
+      },
+      updateShouldBeCalled: true,
+    });
+    await cmdClaim({ issue: 'BRO-9458' });
+    assert.match(h.getErrors(), /SHIPPED conclusion — do not revert this/);
+    assert.doesNotMatch(h.getErrors(), /earliest, stale investigation note/);
+  });
+});
+
+test('claim: reopening a routine Todo issue does NOT print the concluded-state warning', async () => {
+  await withStubbedExit(async (h) => {
+    mockFetch({
+      issue: { description: 'Just a todo.', state: { id: 'state-todo', name: 'Todo', type: 'unstarted' } },
+      updateShouldBeCalled: true,
+    });
+    await cmdClaim({ issue: 'BRO-9458' });
+    assert.doesNotMatch(h.getErrors(), /a concluded state/);
   });
 });

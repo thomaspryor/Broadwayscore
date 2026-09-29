@@ -23,6 +23,7 @@ const {
   CAPS,
   CLAIM_OUTAGE_MIN,
   CLAIM_LABEL_GRACE_MS,
+  PACING_WINDOW_MS,
   WATCHDOG_EVENTS,
 } = require('../../scripts/lib/dispatch-watchdog-core.js');
 
@@ -30,6 +31,34 @@ test('BRO-409 incident shape: live tabs at min, zero launches, deep eligible que
   assert.equal(
     isDispatchFlowDead({ liveAutoWorkspaces: MIN_LIVE_AUTO_WORKSPACES, launchesLast45m: 0, eligibleQueueDepth: 207 }),
     true,
+  );
+});
+
+test('16-19 Sep 2026 incident shape: launches still flowing from retries, tabs well above min, cmux-only hold, zero claims for 6h with dispatchable work -> dead', () => {
+  // Measured from the real ledger: 76.4h with zero watchdog-redispatch rows
+  // while 23 of 64 45-min windows still had launch rows and health() logged
+  // "healthy" every 15 min. Before the claims path, every term below was
+  // green: launches>0 short-circuits the launch path, tabs>=3 keeps the
+  // tab path quiet, and the depth fed under a cmux-only hold was -1.
+  assert.equal(
+    isDispatchFlowDead({
+      liveAutoWorkspaces: 12,
+      launchesLast45m: 3,
+      dispatchableDepth: 11,       // core.stallDetectionDepth(plan) — headless work under a cmux-only hold
+      dispatchPaused: false,
+      claimsLastWindow: 0,
+    }),
+    true,
+  );
+  // The same reading one legitimate-lull away: nothing dispatchable -> not dead.
+  assert.equal(
+    isDispatchFlowDead({ liveAutoWorkspaces: 12, launchesLast45m: 3, dispatchableDepth: 0, claimsLastWindow: 0 }),
+    false,
+  );
+  // And the pre-fix blind reading — depth unknown (-1) — still cannot prove dead.
+  assert.equal(
+    isDispatchFlowDead({ liveAutoWorkspaces: 12, launchesLast45m: 3, dispatchableDepth: -1, claimsLastWindow: 0 }),
+    false,
   );
 });
 
@@ -138,11 +167,20 @@ test('BRO-2462: day-budget-spent is a policy pause — pausedByPolicy true', () 
 
 test('BRO-2462: a claim-outage (wedged launcher) is NOT a policy pause — pausedByPolicy stays false even though holds is non-empty', () => {
   const now = Date.parse('2026-08-20T12:00:00.000Z');
-  const claimAgeMs = CLAIM_LABEL_GRACE_MS * 2; // past the boot-window grace, well under the 24h rearm
+  // BRO-3411: past the boot-window grace, past BRO-3390's 60min hourly-pacing
+  // window (so these claims don't ALSO trip usedThisHour >= CAPS.perHour —
+  // that would conflate this test's claim-outage signal with the separate
+  // hourly-pacing policy-pause path), and well under the 24h rearm.
+  const claimAgeMs = PACING_WINDOW_MS * 2;
   const tasks = new Map();
   const entries = [];
+  // BRO-3437: awaitingClaim gates on isLiveBoardTaskId() — a bare id like
+  // 'wedged-0' is silently excluded, collapsing awaitingClaim to 0 and
+  // claimOutage to false. Fixture on Linear-shaped ids, same fix already
+  // applied to scripts/tests/dispatch-watchdog-core.test.mjs's own claim-
+  // outage test ("#1564: a wedged launcher...").
   for (let i = 0; i < CLAIM_OUTAGE_MIN; i++) {
-    const taskId = `wedged-${i}`;
+    const taskId = `linear:BRO-${9000 + i}`;
     tasks.set(taskId, { id: taskId, status: 'pending', subject: `P1: wedged task ${i}`, description: 'P1 wedged' });
     entries.push({ event: WATCHDOG_EVENTS.REDISPATCH, taskId, ts: new Date(now - claimAgeMs).toISOString() });
   }

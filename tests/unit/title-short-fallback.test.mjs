@@ -256,3 +256,13 @@ describe('verifyTbPage — short-title fallback', () => {
     assert.strictEqual(v.ok, true, v.reason);
   });
 });
+
+// Colon subtitles (Our Sinatra 2026-09-27): BWW slug drops the subtitle.
+test('BWW validator: colon-subtitled title matches a head-only roundup slug', () => {
+  const { validateBWWRoundupUrlMatchesShow: v } = require('../../scripts/lib/bww-roundup-validator.js');
+  const url = 'https://www.broadwayworld.com/article/Review-Roundup-OUR-SINATRA-Opens-Off-Broadway-20260925';
+  assert.equal(v(url, 'Our Sinatra: A Musical Celebration', 'off-broadway'), true);
+  assert.equal(v(url, 'Our Town: A Play', 'off-broadway'), false);
+  // one-word colon head stays strict
+  assert.equal(v('https://www.broadwayworld.com/article/Review-Roundup-HAMLET-Opens-20260101', 'Hamlet: Remix', 'off-broadway'), false);
+});

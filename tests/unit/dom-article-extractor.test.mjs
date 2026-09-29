@@ -182,3 +182,41 @@ describe('DOM extractor: NY Sun teaser-card scenario', () => {
     assert.ok(!text.includes('Teaser 0'), 'teaser content leaked');
   });
 });
+
+describe('DOM extractor: talkinbroadway.com bail-out (BRO-912)', () => {
+  // This DOM path's 'section.page' selector has no byline anchor and would
+  // blend stacked "Past Reviews" runs together — the byline-anchored fix
+  // lives in scripts/lib/article-extractor.js, which this closure-serialized
+  // function can't require(). It bails out instead so a possibly-blended
+  // result is never silently returned. Currently unreachable in production
+  // (talkinbroadway.com is in collect-review-texts.js's knownBlockedSites,
+  // which gates the Playwright tier off) — this is a defense-in-depth test.
+  test('returns "" for a talkinbroadway.com URL even with plausible section.page content', () => {
+    const html = `<html><body>
+      <section class="page">
+        <P><B>Theatre Review by <A HREF='mailto:x'>Matthew Murray</A> - October 1, 2020</B></CENTER>
+        <P>${'An earlier stacked run review, describing a different cast. '.repeat(15)}
+        <P><B>Theatre Review by <A HREF='mailto:y'>Howard Miller</A> - April 15, 2026</B></CENTER>
+        <P>${'The current opening-night review of the show. '.repeat(15)}
+      </section>
+    </body></html>`;
+    const text = extractArticleTextFromDocument(docFromHtml(html), 'https://www.talkinbroadway.com/page/world/Foo2026.html');
+    assert.strictEqual(text, '', 'should bail out rather than blend stacked runs via the naive selector');
+  });
+
+  test('no URL passed (existing call sites) still extracts normally — bail-out is opt-in via url arg', () => {
+    const html = `<html><body>
+      <section class="page">
+        <P>${'Review prose that should still be extracted when no URL is known. '.repeat(15)}
+      </section>
+    </body></html>`;
+    const text = extractArticleTextFromDocument(docFromHtml(html));
+    assert.ok(text.length > 0, 'without a url argument, extraction should proceed as before');
+  });
+
+  test('a non-talkinbroadway.com URL is unaffected', () => {
+    const html = `<html><body><article><p>${'Some other outlet review text. '.repeat(15)}</p></article></body></html>`;
+    const text = extractArticleTextFromDocument(docFromHtml(html), 'https://example.com/review');
+    assert.ok(text.length > 0, 'non-TB URLs should extract normally');
+  });
+});

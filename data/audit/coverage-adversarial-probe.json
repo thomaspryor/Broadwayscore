@@ -1,47 +1,106 @@
 {
-  "generatedAt": "2026-08-24T13:12:50.849Z",
+  "generatedAt": "2026-09-28T19:42:08.468Z",
   "days": 45,
   "pages": 1,
   "sample": [
-    "the-gin-game-2026",
-    "cat-cohen-broad-strokes-off-broadway-2026",
-    "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-    "abigails-party-west-end-2026",
-    "les-miserables-arena-concert-spectacular-off-broadway-2026"
+    "the-cherry-orchard-riverside-studios-off-west-end-2026",
+    "september-l-davis-the-apology-tour-off-broadway-2026",
+    "how-shakespeare-saved-my-life-off-broadway-2026",
+    "the-human-voice-the-seven-deadly-sins-west-end-2026",
+    "la-gringa-off-broadway-2026"
   ],
   "shows": [
     {
-      "showId": "the-gin-game-2026",
-      "title": "The Gin Game",
-      "openingDate": "2026-07-15",
+      "showId": "the-cherry-orchard-riverside-studios-off-west-end-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-09-08",
       "sampleState": "measured",
-      "sampleReason": "opened 41d ago",
-      "naiveQuery": "The Gin Game Housing Works Bookstore review",
+      "sampleReason": "opened 21d ago",
+      "naiveQuery": "The Cherry Orchard Riverside Studios review",
       "candidates": [
         {
-          "url": "https://www.theatermania.com/news/review-the-gin-game-starring-debra-winger-and-arliss-howard_1846902/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://nystagereview.com/2026/07/20/the-gin-game-debra-winger-and-arliss-howard-deliver-a-winning-hand/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://bookevents.nyc/events/the-gin-game-jul-15",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.tickpick.com/buy-the-gin-game-tickets-housing-works-bookstore-cafe-8-6-26-7pm/8129318/",
+          "url": "https://www.thereviewshub.com/the-cherry-orchard-riverside-studios-london/",
           "state": "gap",
           "reason": null
         },
         {
-          "url": "https://pulsd.com/new-york/events/housing-works-bookstore-cafe/the-gin-game",
+          "url": "https://www.londonpubtheatres.com/review-the-cherry-orchard-at-riverside-studios-8-12-september-2026",
           "state": "gap",
           "reason": null
+        },
+        {
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-the-cherry-orchard-riverside-studios",
+          "state": "excluded",
+          "reason": "aggregator-own-page"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-cherry-orchard-review-riverside-studios-london-rep-radical-classical",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://playstosee.com/reviews/the-cherry-orchard-5/",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.broadwayworld.com/westend/article/Review-THE-CHERRY-ORCHARD-Riverside-Theatre-20260911",
+          "state": "gap",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 0
+    },
+    {
+      "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
+      "title": "September L. Davis: The Apology Tour",
+      "openingDate": "2026-09-20",
+      "sampleState": "measured",
+      "sampleReason": "opened 9d ago",
+      "naiveQuery": "September L. Davis: The Apology Tour Studio Seaview review",
+      "candidates": [
+        {
+          "url": "https://www.theatermania.com/news/ana-gasteyers-september-l-davis-to-perform-apology-tour-off-broadway_1847868/",
+          "state": "gap",
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/ana-gasteyers-september-l-davis-the-apology-tour-to-run-off-broadway-this-fall",
+          "state": "gap",
+          "reason": null
+        }
+      ],
+      "queries": [
+        {
+          "ok": true,
+          "raw": 10
+        }
+      ],
+      "onDiskCount": 1
+    },
+    {
+      "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
+      "title": "How Shakespeare Saved My Life",
+      "openingDate": "2026-09-27",
+      "sampleState": "measured",
+      "sampleReason": "opened 2d ago",
+      "naiveQuery": "How Shakespeare Saved My Life The Public Theater/Shiva Theater review",
+      "candidates": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/how-shakespeare-saved-my-life-off-broadway-review-jacob-ming-trent",
+          "state": "live",
+          "reason": null
+        },
+        {
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/",
+          "state": "excluded",
+          "reason": "wrongProduction"
         }
       ],
       "queries": [
@@ -50,123 +109,71 @@
           "raw": 9
         }
       ],
-      "onDiskCount": 13
+      "onDiskCount": 18
     },
     {
-      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
-      "title": "Cat Cohen: Broad Strokes",
-      "openingDate": "2026-07-27",
+      "showId": "the-human-voice-the-seven-deadly-sins-west-end-2026",
+      "title": "The Human Voice / The Seven Deadly Sins",
+      "openingDate": "2026-09-12",
       "sampleState": "measured",
-      "sampleReason": "opened 29d ago",
-      "naiveQuery": "Cat Cohen: Broad Strokes Lucille Lortel Theatre review",
+      "sampleReason": "opened 17d ago",
+      "naiveQuery": "The Human Voice / The Seven Deadly Sins Charing Cross Theatre review",
       "candidates": [
         {
-          "url": "https://www.theatermania.com/news/review-cat-cohen-broad-strokes-a-medical-emergency-cabaret_1847157/",
+          "url": "https://everything-theatre.co.uk/2026/09/review-the-human-voice-the-seven-deadly-sins-charing-cross-theatre/",
           "state": "live",
           "reason": null
         },
         {
-          "url": "https://www.vulture.com/article/cat-cohen-broad-strokes-lucille-lortel.html",
+          "url": "https://getthechance.wales/2026/09/18/review-the-seven-deadly-sins-the-human-voice-charing-cross-theatre-london-by-james-ellis/",
           "state": "live",
           "reason": null
-        },
-        {
-          "url": "https://www.nytimes.com/2026/07/27/theater/cat-cohen-broad-strokes.html",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-cat-cohens-broad-strokes-off-broadway",
-          "state": "excluded",
-          "reason": "rejectionReason"
         }
       ],
       "queries": [
         {
           "ok": true,
-          "raw": 7
+          "raw": 10
         }
       ],
-      "onDiskCount": 26
+      "onDiskCount": 17
     },
     {
-      "showId": "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026",
-      "title": "The Wind in the Willows - Theatre On Kew",
-      "openingDate": "2026-07-25",
+      "showId": "la-gringa-off-broadway-2026",
+      "title": "La Gringa",
+      "openingDate": "2026-08-24",
       "sampleState": "measured",
-      "sampleReason": "opened 31d ago",
-      "naiveQuery": "The Wind in the Willows - Theatre On Kew Theatre on Kew review",
+      "sampleReason": "opened 36d ago",
+      "naiveQuery": "La Gringa Repertorio Español / Spanish Theatre Repertory review",
       "candidates": [
         {
-          "url": "https://www.thereviewshub.com/the-wind-in-the-willows-theatre-on-kew-london/",
-          "state": "live",
-          "reason": null
-        },
-        {
-          "url": "https://www.broadwayworld.com/westend/article/Review-THE-WIND-IN-THE-WILLOWS-Theatre-On-Kew-20260727",
+          "url": "https://repertorio.nyc/show/292/la-gringa",
           "state": "gap",
           "reason": null
         },
         {
-          "url": "https://www.timeout.com/london/theatre/the-wind-in-the-willows-8",
-          "state": "excluded",
-          "reason": "rejectionReason"
-        }
-      ],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 9
-        }
-      ],
-      "onDiskCount": 6
-    },
-    {
-      "showId": "abigails-party-west-end-2026",
-      "title": "Abigail’s Party",
-      "openingDate": "2026-08-19",
-      "sampleState": "measured",
-      "sampleReason": "opened 6d ago",
-      "naiveQuery": "Abigail’s Party Harold Pinter Theatre review",
-      "candidates": [
-        {
-          "url": "https://www.curtaincallreviews.co.uk/abigail-s-party-2",
-          "state": "live",
+          "url": "https://www.showify.us/shows/la-gringa",
+          "state": "gap",
           "reason": null
         }
       ],
       "queries": [
         {
           "ok": true,
-          "raw": 8
+          "raw": 10
         }
       ],
-      "onDiskCount": 29
-    },
-    {
-      "showId": "les-miserables-arena-concert-spectacular-off-broadway-2026",
-      "title": "Les Misérables: The Arena Concert Spectacular",
-      "openingDate": "2026-07-28",
-      "sampleState": "measured",
-      "sampleReason": "opened 28d ago",
-      "naiveQuery": "Les Misérables: The Arena Concert Spectacular Radio City Music Hall review",
-      "candidates": [],
-      "queries": [
-        {
-          "ok": true,
-          "raw": 0
-        }
-      ],
-      "onDiskCount": 15
+      "onDiskCount": 1
     }
   ],
   "summary": {
     "verdict": "gaps-found",
     "measured": 5,
-    "gapCount": 3,
+    "gapCount": 9,
     "gapShows": [
-      "the-gin-game-2026",
-      "the-wind-in-the-willows-theatre-on-kew-off-west-end-2026"
+      "the-cherry-orchard-riverside-studios-off-west-end-2026",
+      "september-l-davis-the-apology-tour-off-broadway-2026",
+      "la-gringa-off-broadway-2026"
     ]
   }
 }
