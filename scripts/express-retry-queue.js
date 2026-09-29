@@ -54,6 +54,11 @@ const {
   markAttempted,
   pruneStale,
   DEFAULT_RETRY_DELAY_HOURS,
+  isThinCoverageEntry,
+  isTruncatedRefetchEntry,
+  findTruncatedT1Shows,
+  planTruncatedRefetches,
+  markEntryAttempted,
 } = require('./lib/express-retry-decision');
 const { isShowCoverageComplete } = require('./lib/opening-night-readiness');
 const { dispatchExpressRetry } = require('./lib/dispatch-express-retry');
@@ -62,6 +67,7 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 const QUEUE_PATH = path.join(REPO_ROOT, 'data', 'audit', 'express-retry-queue.json');
 const REVIEW_TEXTS_DIR = path.join(REPO_ROOT, 'data', 'review-texts');
 const SHOWS_PATH = path.join(REPO_ROOT, 'data', 'shows.json');
+const REVIEWS_PATH = path.join(REPO_ROOT, 'data', 'reviews.json');
 
 function readQueueEntries() {
   try {
@@ -105,6 +111,30 @@ function loadReviewFiles(showId) {
     .filter(Boolean);
 }
 
+function loadShowsList() {
+  try {
+    const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
+    return Array.isArray(shows.shows) ? shows.shows : shows;
+  } catch {
+    return [];
+  }
+}
+
+function loadReviewsList() {
+  try {
+    const parsed = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
+    return Array.isArray(parsed.reviews) ? parsed.reviews : Array.isArray(parsed) ? parsed : [];
+  } catch {
+    return [];
+  }
+}
+
+/** BRO-4334: shows in their opening window with truncated Tier-1 reviews. */
+function currentTruncatedT1Shows(nowIso) {
+  const { getTier } = require('./lib/outlet-tiers');
+  return findTruncatedT1Shows({ reviews: loadReviewsList(), shows: loadShowsList(), nowIso, getTier });
+}
+
 function arg(name, def) {
   const pfx = `--${name}=`;
   const hit = process.argv.find((a) => a.startsWith(pfx));
@@ -119,6 +149,24 @@ async function routeStillThinAlert(showId, market, reason) {
       title: `Opening Night Express retry still found thin review coverage for ${showId}`,
       description: `The early auto-fire found next to nothing, and the same-night retry (${reason}) still hasn't closed the gap. Full-text upgrade will otherwise wait on the weekly recollect-for-scores.yml cron.`,
       hint: `node scripts/verify-review-recovery.js --show=${showId} --production   # check what's still missing, then collect/ingest manually`,
+      severity: 'warn',
+      disposition: 'digest',
+      cooldownHours: 24 * 7,
+    });
+  } catch (err) {
+    console.error(`[express-retry-queue] routeAlert failed: ${err.message}`);
+  }
+}
+
+async function routeRefetchNeverFiredAlert(showId, lostEntries) {
+  try {
+    const { routeAlert } = require('./lib/owner-alert-router');
+    const outlets = [...new Set(lostEntries.flatMap((e) => e.outletIds || []))].join(', ') || 'Tier-1 outlets';
+    await routeAlert({
+      conditionKey: `truncated-t1-refetch-never-fired:${showId}`,
+      title: `Truncated Tier-1 review refetch never dispatched for ${showId}`,
+      description: `The +${lostEntries.map((e) => e.offsetHours).join('h/+')}h refetch(es) of truncated ${outlets} text failed to dispatch on every hourly attempt for 3 days — those reviews may still be scored off partial text.`,
+      hint: `node scripts/verify-review-recovery.js --show=${showId} --production   # then re-collect the truncated reviews manually`,
       severity: 'warn',
       disposition: 'digest',
       cooldownHours: 24 * 7,
@@ -168,13 +216,27 @@ async function cmdEvaluate() {
 async function cmdDispatchDue() {
   const nowIso = new Date().toISOString();
   let entries = readQueueEntries();
+
+  // BRO-4334: schedule +1h/+3h/+12h refetches for truncated T1 reviews of
+  // shows in their opening window (idempotent per show).
+  const truncatedShows = currentTruncatedT1Shows(nowIso);
+  const plan = planTruncatedRefetches(entries, truncatedShows, nowIso);
+  let dirty = plan.changed;
+  entries = plan.entries;
+  for (const showId of plan.planned) {
+    const c = truncatedShows.find((x) => x.showId === showId);
+    console.log(`[express-retry-queue] ${showId}: truncated T1 text (${c.outletIds.join(', ')}) — scheduled refetches at +1h/+3h/+12h`);
+  }
+
   const due = selectDueRetries(entries, nowIso);
   if (!due.length) {
     console.log('[express-retry-queue] nothing due');
+    if (dirty) writeQueueEntries(pruneStale(entries, nowIso));
     return;
   }
 
-  for (const entry of due) {
+  const dispatchedShows = new Set();
+  for (const entry of due.filter(isThinCoverageEntry)) {
     const show = loadShow(entry.showId);
     if (isShowCoverageComplete(entry.showId, entry.market, show)) {
       console.log(`[express-retry-queue] ${entry.showId}: coverage already complete — skipping retry dispatch`);
@@ -190,7 +252,36 @@ async function cmdDispatchDue() {
       console.error(`[express-retry-queue] dispatch failed for ${entry.showId}: ${result.error} — leaving un-attempted for next tick`);
       continue;
     }
+    dispatchedShows.add(entry.showId);
     entries = markAttempted(entries, entry.showId, entry.queuedAt, nowIso);
+  }
+
+  // Truncated-T1 refetches: one Express retry run per show per tick,
+  // however many of its offsets are due; skipped once nothing is truncated.
+  const stillTruncated = new Set(truncatedShows.map((c) => c.showId));
+  const refetchDue = due.filter(isTruncatedRefetchEntry);
+  for (const showId of [...new Set(refetchDue.map((e) => e.showId))]) {
+    const showEntries = refetchDue.filter((e) => e.showId === showId);
+    let extra = {};
+    if (!stillTruncated.has(showId)) {
+      console.log(`[express-retry-queue] ${showId}: no truncated T1 reviews left — skipping refetch`);
+      extra = { skipped: true, skipReason: 'no-truncated-t1' };
+    } else if (dispatchedShows.has(showId)) {
+      console.log(`[express-retry-queue] ${showId}: Express retry already dispatched this tick — refetch rides along`);
+      extra = { skipped: true, skipReason: 'express-retry-same-tick' };
+    } else {
+      console.log(`[express-retry-queue] dispatching truncated-T1 refetch for ${showId} (+${showEntries.map((e) => e.offsetHours).join('h/+')}h)`);
+      // Plain is_retry Express run (gather + collect + score). The collector
+      // re-fetches truncated reviews (and, in the opening window, hard-paywall
+      // texts that fail the completeness check) while skipping complete ones.
+      const result = await dispatchExpressRetry(showId, showEntries[0].market);
+      if (!result.ok) {
+        console.error(`[express-retry-queue] refetch dispatch failed for ${showId}: ${result.error} — leaving un-attempted for next tick`);
+        continue;
+      }
+      dispatchedShows.add(showId);
+    }
+    for (const e of showEntries) entries = markEntryAttempted(entries, e, nowIso, extra);
   }
 
   const pruned = pruneStale(entries, nowIso);
@@ -199,11 +290,18 @@ async function cmdDispatchDue() {
   // a transient blip) — pruneStale would otherwise have silently dropped it
   // with zero operator visibility right as this tick was about to try again.
   const droppedWithoutDispatch = entries.filter(
-    (e) => !e.attempted && !pruned.some((p) => p.showId === e.showId && p.queuedAt === e.queuedAt)
+    (e) => isThinCoverageEntry(e) && !e.attempted && !pruned.some((p) => p.showId === e.showId && p.queuedAt === e.queuedAt)
   );
   for (const entry of droppedWithoutDispatch) {
     console.error(`[express-retry-queue] ${entry.showId}: queued ${entry.queuedAt} never dispatched after 3 days — dropping and alerting`);
     await routeStillThinAlert(entry.showId, entry.market, 'retry dispatch failed on every attempt for 3 days — never fired');
+  }
+  // BRO-4334: same visibility for truncated-T1 refetches that never fired.
+  const droppedRefetches = entries.filter((e) => isTruncatedRefetchEntry(e) && !e.attempted && !pruned.includes(e));
+  for (const showId of [...new Set(droppedRefetches.map((e) => e.showId))]) {
+    const lost = droppedRefetches.filter((e) => e.showId === showId);
+    console.error(`[express-retry-queue] ${showId}: ${lost.length} truncated-T1 refetch(es) never dispatched after 3 days — dropping and alerting`);
+    await routeRefetchNeverFiredAlert(showId, lost);
   }
 
   writeQueueEntries(pruned);
