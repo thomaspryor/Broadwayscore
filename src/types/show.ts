@@ -48,6 +48,8 @@ export interface ShowMetadata {
   runtime?: string; // e.g., "2h 30m"
   intermissions?: number;
   priorRuns?: PriorRun[];
+  /** Ids of concurrent sibling productions this row is NOT a duplicate of (neither a transfer nor a prior run — e.g. a family panto and its adults-only twin at the same venue). Honoured by scripts/lib/deduplication.js isCrossLinked. */
+  distinctFrom?: string[];
   tourLegs?: TourLeg[];
 }
 
