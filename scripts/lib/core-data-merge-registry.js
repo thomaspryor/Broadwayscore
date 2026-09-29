@@ -54,6 +54,7 @@
 
 const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require('./merge-commercial-data');
 const { mergeDiaryShows } = require('./merge-diary-shows');
+const { mergeOweVenueCandidates } = require('./merge-owe-venue-candidates');
 const { mergeSocialPostHistory } = require('./merge-social-post-history');
 const { mergeFeedbackLedger } = require('./merge-feedback-ledger');
 const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
@@ -844,20 +845,25 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
   },
   {
-    // BRO-4204 S4-T11/T12: two producers since the Off-West End promoter
-    // landed — discover-new-shows.js stages (update-show-status.yml) and
-    // scripts/promote-owe-venue-candidates.js prunes (promote-owe-venue-
-    // candidates.yml). Both workflows sit in the SAME `shows-json-writer`
-    // concurrency group (cancel-in-progress: false), so the two commits are
-    // mutually exclusive — the grosses.json shape checkEntry() accepts, not
-    // a true single writer. Same-host protection is lib/owe-venue-
-    // staging.js's updateStaging (withFileLock).
+    // BRO-4204 S4-T11/T12 registered this as single-writer + apiFallbackSafe:
+    // discover-new-shows.js (update-show-status.yml) stages and the promoter
+    // prunes, both in the `shows-json-writer` concurrency group, "mutually
+    // exclusive, no real race". That claim missed the third writer: a hand
+    // `--stage-only` merge lands through land.yml, outside the group. On
+    // 2026-09-29 (BRO-4268) Update Shows read the file at 02:47, batch 4
+    // landed 53 evidence rows at 03:25, and the run's 03:49 push wrote its
+    // stale copy back over them — 53 rows lost, then the promoter pruned the
+    // rest to 0. Active union-by-candidateHash merge now (ours wins on a
+    // shared key, remote-only rows re-added; see merge-owe-venue-candidates.js);
+    // the apiFallbackSafe bypass is withdrawn — the writers are NOT mutually
+    // exclusive. Same-host protection stays lib/owe-venue-staging.js's
+    // updateStaging (withFileLock). writeStaging emits no trailing newline.
     file: 'audit/owe-venue-candidates.json',
     surface: 'public-repo',
-    status: 'single-writer',
-    apiFallbackSafe: true,
-    concurrencyGroup: 'shows-json-writer',
-    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 2 writers (update-show-status.yml "Commit and push changes"; promote-owe-venue-candidates.yml "Commit OWE promotion audit log + pruned staging" via git-add-existing.sh), BOTH group shows-json-writer (cancel-in-progress: false) — mutually exclusive, no real race. Previously 2026-09-14 (BRO-3071): 1 writer (update-show-status.yml).',
+    status: 'active',
+    merge: mergeOweVenueCandidates,
+    format: 'json',
+    newline: false,
   },
   {
     // BRO-4204 S4-T12: the OWE promoter's state file (what this run

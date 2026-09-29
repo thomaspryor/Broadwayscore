@@ -1,0 +1,61 @@
+// BRO-4268: the staging file's push-time union merge. Replays the 2026-09-29
+// lost update (Update Shows' stale copy overwrote 53 landed evidence rows).
+import { test } from 'node:test';
+import assert from 'node:assert/strict';
+import { createRequire } from 'node:module';
+const require = createRequire(import.meta.url);
+const { mergeOweVenueCandidates, keyOf } = require('./merge-owe-venue-candidates.js');
+const { candidateHash } = require('./owe-venue-staging.js');
+const { findEntry } = require('./core-data-merge-registry.js');
+
+const venue = (title, venueName) => ({ title, venue: venueName, source: `venue-page:${venueName.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`, candidateHash: candidateHash({ title, venue: venueName }) });
+const evidence = (title, venueName) => ({ title, venue: venueName, source: 'audit-review-evidence', evidence: [{ kind: 'review-url', url: 'https://www.londonboxoffice.co.uk/news/post/x' }], candidateHash: candidateHash({ title, venue: venueName }) });
+
+test('the 2026-09-29 race: a stale discovery copy (ours) no longer drops the evidence rows that landed on main (remote)', () => {
+  const ours = [venue('Goblin', 'Park Theatre'), venue('The Silence And The Noise', 'Park Theatre')];
+  const remote = [evidence('A Ghost in Your Ear', 'Hampstead Theatre Downstairs'), evidence('Flush', 'Arcola Theatre')];
+  const { merged, stats } = mergeOweVenueCandidates(ours, remote);
+  assert.equal(merged.length, 4);
+  assert.deepEqual(stats, { ours: 2, remote: 2, added: 2, kept: 0, unkeyed: 0 });
+  assert.ok(merged.some((c) => c.title === 'Flush'), 'the landed evidence row survives the stale push');
+  assert.deepEqual(merged.slice(0, 2), ours, 'ours keeps its order and comes first');
+});
+
+test('shared key: ours wins (the pusher may have refreshed the row), remote copy is not duplicated', () => {
+  const mine = { ...venue('Goblin', 'Park Theatre'), openingDate: '2026-10-01' };
+  const theirs = { ...venue('Goblin', 'Park Theatre'), openingDate: null };
+  const { merged, stats } = mergeOweVenueCandidates([mine], [theirs]);
+  assert.equal(merged.length, 1);
+  assert.equal(merged[0].openingDate, '2026-10-01');
+  assert.equal(stats.kept, 1);
+});
+
+test('a row without candidateHash is keyed from title+venue, so hand-staged rows dedupe against discovery rows', () => {
+  const hand = { title: 'Flush', venue: 'Arcola Theatre', source: 'audit-review-evidence' };
+  assert.equal(keyOf(hand), candidateHash({ title: 'Flush', venue: 'Arcola Theatre' }));
+  const { merged } = mergeOweVenueCandidates([hand], [venue('Flush', 'Arcola Theatre')]);
+  assert.equal(merged.length, 1, 'same title+venue on both sides is one row');
+});
+
+test('the promoter prune is not sticky: rows remote still lists come back (re-pruned next run) rather than being lost', () => {
+  const { merged, stats } = mergeOweVenueCandidates([], [venue('Goblin', 'Park Theatre')]);
+  assert.equal(merged.length, 1);
+  assert.equal(stats.added, 1);
+});
+
+test('non-array or junk input never throws and never invents rows', () => {
+  assert.deepEqual(mergeOweVenueCandidates(null, undefined).merged, []);
+  assert.deepEqual(mergeOweVenueCandidates({ shows: [] }, 'x').merged, []);
+  const { merged, stats } = mergeOweVenueCandidates([null, 42, { title: 'no venue' }], [{ venue: 'no title' }]);
+  assert.equal(merged.length, 1, 'unkeyed ours rows are kept (never drop the pusher\'s data), unkeyed remote rows are not re-added');
+  assert.equal(stats.unkeyed, 2);
+});
+
+test('the registry routes data/audit/owe-venue-candidates.json (public-repo surface) through this merge', () => {
+  const e = findEntry('data/audit/owe-venue-candidates.json', 'public-repo');
+  assert.ok(e, 'registry entry exists');
+  assert.equal(e.status, 'active');
+  assert.equal(e.merge, mergeOweVenueCandidates);
+  assert.equal(e.format, 'json');
+  assert.equal(e.newline, false, 'owe-venue-staging.js writeStaging writes no trailing newline');
+});
