@@ -391,13 +391,6 @@ function decideOffWestEndVenuePromotion(candidate, ctx = {}) {
   if (fragment) {
     return { confirmed: false, persistent: true, reason: `title "${candidate.title}" is a URL fragment (${fragment}) — phantom listing-scraper row, never a production` };
   }
-  // Discovery's own venue-page exclusions (workshops, galas, Q&As, coffee
-  // concerts, labs, ...) re-applied at promotion time so a candidate staged
-  // BEFORE a phrase was added is still caught.
-  if (excludeTitle(candidate.title)) {
-    return { confirmed: false, persistent: true, reason: `"${candidate.title}" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production` };
-  }
-
   // S4-T6 ingest gate — London paths reject these outright (no TodayTix
   // Plays/Musicals override): a venue listing is not review evidence.
   if (isNonTheatreVenue(candidate.venue)) {
@@ -408,6 +401,16 @@ function decideOffWestEndVenuePromotion(candidate, ctx = {}) {
   }
   if (gate({ name: candidate.title, venue: candidate.venue, description: candidate.description || '' }, { market: 'london' })) {
     return { confirmed: false, persistent: true, reason: `"${candidate.title}" @ ${candidate.venue} fails the London ingest gate (isNonTheaterContent: festival/panel/screening/one-off title or non-theatre venue)` };
+  }
+
+  // Discovery's own venue-page exclusions (workshops, galas, Q&As, coffee
+  // concerts, labs, ...) re-applied at promotion time so a candidate staged
+  // BEFORE a phrase was added is still caught. Runs AFTER the ingest gate
+  // (2026-09-29): shouldExcludeVenueShow now also carries NON_THEATRE_TITLE_RE,
+  // so a festival/panel title would otherwise be attributed here instead of
+  // to the policy gate (docs/show-inclusion-policy.md) that owns that rule.
+  if (excludeTitle(candidate.title)) {
+    return { confirmed: false, persistent: true, reason: `"${candidate.title}" matches a venue-page exclusion phrase (VENUE_PAGE_EXCLUDE_PATTERNS / NON_THEATER_PATTERNS) — not a production` };
   }
 
   // S8-T3 — a candidate that carries review/coverage evidence is decided on
