@@ -1286,9 +1286,9 @@
     "queuedAt": "2026-09-29T09:23:28.237Z"
   },
   {
-    "conditionKey": "land:land/reddit-opening-posts-2",
-    "title": "Landing blocked: unit-tests-node red on land/reddit-opening-posts-2",
-    "description": "land.yml did not land land/reddit-opening-posts-2: the unit-tests-node gate went red at 7b6324fa1c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36545979248",
+    "conditionKey": "land:land/font-selfhost-v2",
+    "title": "Landing blocked: race red on land/font-selfhost-v2",
+    "description": "land.yml did not land land/font-selfhost-v2: the race gate went red at cbdb82a8a7. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/font-selfhost-v2 @ cbdb82a8a7 (origin/land/font-selfhost-v2) → origin/main @ 3a8cadc1db [land] attempt 1/3: rebased onto 3a8cadc1db, 12 file(s) changed — running checks [land] verified-base: main moved 68d126bd30 → 3a8cadc1db across 63 file(s), substantive — running the full gauntlet [land] linked 20 gitignored path(s) into the worktree (node_modules/core data) [land] checks: colocated Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36544606413",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -1297,21 +1297,21 @@
     "fields": [
       {
         "name": "branch",
-        "value": "land/reddit-opening-posts-2"
+        "value": "land/font-selfhost-v2"
       },
       {
         "name": "gate",
-        "value": "unit-tests-node"
+        "value": "race"
       },
       {
         "name": "tip",
-        "value": "7b6324fa1cc484f147af39a904651293dd76b4e9"
+        "value": "cbdb82a8a7b537055804d23c3678acad8c6aba25"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36545979248"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36544606413"
       }
     ],
-    "queuedAt": "2026-09-29T09:25:35.490Z"
+    "queuedAt": "2026-09-29T09:27:58.352Z"
   }
 ]
