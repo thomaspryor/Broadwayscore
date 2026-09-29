@@ -2293,5 +2293,34 @@
       }
     ],
     "queuedAt": "2026-09-29T19:55:13.934Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-absence-guard-4137",
+    "title": "Landing blocked: rebase red on land/worktree-absence-guard-4137",
+    "description": "land.yml did not land land/worktree-absence-guard-4137: the rebase gate went red at c6ec9c3a55. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36623407618",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-absence-guard-4137"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c6ec9c3a5544fb9701346f175cf2d6ae09773b04"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36623407618"
+      }
+    ],
+    "queuedAt": "2026-09-29T20:04:40.703Z"
   }
 ]
