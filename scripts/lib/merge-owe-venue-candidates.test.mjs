@@ -16,7 +16,7 @@ test('the 2026-09-29 race: a stale discovery copy (ours) no longer drops the evi
   const remote = [evidence('A Ghost in Your Ear', 'Hampstead Theatre Downstairs'), evidence('Flush', 'Arcola Theatre')];
   const { merged, stats } = mergeOweVenueCandidates(ours, remote);
   assert.equal(merged.length, 4);
-  assert.deepEqual(stats, { ours: 2, remote: 2, added: 2, kept: 0, unkeyed: 0 });
+  assert.deepEqual(stats, { added: 2, kept: 0, total: 4 });
   assert.ok(merged.some((c) => c.title === 'Flush'), 'the landed evidence row survives the stale push');
   assert.deepEqual(merged.slice(0, 2), ours, 'ours keeps its order and comes first');
 });
@@ -43,12 +43,19 @@ test('the promoter prune is not sticky: rows remote still lists come back (re-pr
   assert.equal(stats.added, 1);
 });
 
-test('non-array or junk input never throws and never invents rows', () => {
+test('non-array or junk input never throws; keyless rows pass through from both sides (same rule as the OB file)', () => {
   assert.deepEqual(mergeOweVenueCandidates(null, undefined).merged, []);
   assert.deepEqual(mergeOweVenueCandidates({ shows: [] }, 'x').merged, []);
-  const { merged, stats } = mergeOweVenueCandidates([null, 42, { title: 'no venue' }], [{ venue: 'no title' }]);
-  assert.equal(merged.length, 1, 'unkeyed ours rows are kept (never drop the pusher\'s data), unkeyed remote rows are not re-added');
-  assert.equal(stats.unkeyed, 2);
+  const { merged, stats } = mergeOweVenueCandidates([{ title: 'no venue' }], [{ venue: 'no title' }]);
+  assert.equal(merged.length, 2, 'a keyless row on either side is kept verbatim — a missing key says nothing about whether it is a duplicate');
+  assert.deepEqual(stats, { added: 1, kept: 0, total: 2 });
+});
+
+test('the OWE merge is the OB factory with a title+venue-deriving key — one rule set, not two twins', () => {
+  const { makeVenueCandidatesMerge, mergeObVenueCandidates } = require('./merge-ob-venue-candidates.js');
+  assert.equal(typeof makeVenueCandidatesMerge, 'function');
+  const a = venue('Goblin', 'Park Theatre');
+  assert.deepEqual(mergeOweVenueCandidates([a], []).merged, mergeObVenueCandidates([a], []).merged);
 });
 
 test('the registry routes data/audit/owe-venue-candidates.json (public-repo surface) through this merge', () => {
@@ -58,4 +65,5 @@ test('the registry routes data/audit/owe-venue-candidates.json (public-repo surf
   assert.equal(e.merge, mergeOweVenueCandidates);
   assert.equal(e.format, 'json');
   assert.equal(e.newline, false, 'owe-venue-staging.js writeStaging writes no trailing newline');
+  assert.equal(e.apiFallbackMerge, true, 'the promoter bundles this file with apiFallbackSafe files — without apiFallbackMerge the commit would lose the Git Data API fast path (BRO-2435 shape)');
 });

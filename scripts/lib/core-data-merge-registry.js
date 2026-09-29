@@ -864,6 +864,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     merge: mergeOweVenueCandidates,
     format: 'json',
     newline: false,
+    // Second-opinion review (2026-09-29): the promoter's "Commit OWE promotion
+    // audit log + pruned staging" step bundles this file with two
+    // apiFallbackSafe files (owe-last-promotion-ids.json, owe-promotion-
+    // log.jsonl); a MANAGED file without apiFallbackMerge would turn that
+    // commit into a mixed-safety bundle (audit-push-retry-budgets.js, the
+    // BRO-2435 shape) and drop it to the slow path. The merger is 2-arg and
+    // fast-path-shaped, so the Git Data API fallback may run it.
+    apiFallbackMerge: true,
+    verifiedBy: '2026-09-29 (BRO-4268): writers = update-show-status.yml "Commit and push changes" (discover-new-shows.js writeStagingCandidates; sets PUSH_RECONCILE_MERGED_JSON=1), promote-owe-venue-candidates.yml "Commit OWE promotion audit log + pruned staging" (prune; env added the same day), and land.yml for hand --stage-only merges (plain git rebase, true 3-way). Lost update reproduced from run 36514213162 vs landing 9cad7c9a.',
   },
   {
     // BRO-4204 S4-T12: the OWE promoter's state file (what this run
