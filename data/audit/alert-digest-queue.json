@@ -538,5 +538,34 @@
       }
     ],
     "queuedAt": "2026-09-29T00:08:43.120Z"
+  },
+  {
+    "conditionKey": "land:land/tour-automation",
+    "title": "Landing blocked: unit-tests-node red on land/tour-automation",
+    "description": "land.yml did not land land/tour-automation: the unit-tests-node gate went red at 8552323769. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36500841731",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/tour-automation"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "8552323769e2403ef753b43e67b453f8d66df96b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36500841731"
+      }
+    ],
+    "queuedAt": "2026-09-29T00:26:45.928Z"
   }
 ]
