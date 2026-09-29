@@ -1,37 +1,20 @@
 {
-  "updatedAt": "2026-09-29T04:12:11.025Z",
-  "processed": 299,
-  "failed": 252,
-  "successRate": "54.3%",
+  "updatedAt": "2026-09-29T04:36:16.208Z",
+  "processed": 335,
+  "failed": 266,
+  "successRate": "55.7%",
   "tierBreakdown": {
-    "playwright": 146,
+    "playwright": 156,
     "amp": 0,
-    "browserbase": 28,
+    "browserbase": 30,
     "directCookies": 4,
-    "scrapingbee": 50,
-    "brightdata": 16,
+    "scrapingbee": 71,
+    "brightdata": 18,
     "archiveToday": 0,
-    "archive": 68
+    "archive": 75
   },
-  "browserbaseSessions": 21,
+  "browserbaseSessions": 23,
   "recentActivity": [
-    {
-      "t": "2026-09-29T03:39:53.336Z",
-      "event": "bb-cookie-inject",
-      "domain": "thetimes.com"
-    },
-    {
-      "t": "2026-09-29T03:40:10.732Z",
-      "event": "bb-session",
-      "session": "e89fd823",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/tracee-ellis-ross-broadway-ever"
-    },
-    {
-      "t": "2026-09-29T03:40:31.570Z",
-      "event": "bb-session",
-      "session": "0f224a3c",
-      "url": "https://www.wsj.com/articles/every-brilliant-thing-review-daniel-radcliffes-spir"
-    },
     {
       "t": "2026-09-29T03:40:32.081Z",
       "event": "bb-cookie-inject",
@@ -127,6 +110,23 @@
       "t": "2026-09-29T04:11:13.898Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T04:16:56.702Z",
+      "event": "bb-session",
+      "session": "68f1e900",
+      "url": "https://deadline.com/2025/08/two-strangers-carry-a-cake-across-new-york-broadway"
+    },
+    {
+      "t": "2026-09-29T04:21:17.703Z",
+      "event": "bb-session",
+      "session": "d7742a02",
+      "url": "https://www.wsj.com/articles/john-proctor-is-the-villain-review-reconceiving-the"
+    },
+    {
+      "t": "2026-09-29T04:21:18.219Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }

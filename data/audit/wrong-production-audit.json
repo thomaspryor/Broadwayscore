@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T04:04:24.853Z",
+  "timestamp": "2026-09-29T04:29:28.701Z",
   "stats": {
-    "totalReviews": 44602,
-    "alreadyFlagged": 18254,
-    "dateGuardCatches": 228,
-    "directorMismatch": 1102,
+    "totalReviews": 44589,
+    "alreadyFlagged": 18239,
+    "dateGuardCatches": 234,
+    "directorMismatch": 1104,
     "tvFilmSignals": 1321,
-    "londonSignals": 1217,
+    "londonSignals": 1216,
     "offBroadwaySignals": 512,
     "yearMismatch": 97,
-    "noPublishDate": 3871
+    "noPublishDate": 3865
   },
   "findings": [
     {
@@ -4201,6 +4201,8 @@
     {
       "showId": "carmen-off-broadway-2025",
       "file": "financialtimes--george-grella.json",
+      "publishDate": "2024-01-02",
+      "url": "https://www.ft.com/content/376a1a78-c5d5-4432-aaa4-2d10b3d54f29",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -6117,12 +6119,95 @@
     },
     {
       "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "score": 84,
+      "publishDate": "2025-12-16",
+      "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 367d before show (2025-12-16 vs 2026-12-18)"
+        }
+      ]
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "file": "london-theatre-reviews--the-anonymous-reviewer.json",
+      "score": 83,
+      "publishDate": "2025-12-15",
+      "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26427",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 368d before show (2025-12-15 vs 2026-12-18)"
+        }
+      ]
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 83,
+      "publishDate": "2025-12-15",
+      "url": "https://www.standard.co.uk/culture/theatre/christmas-carol-goes-wrong-apollo-theatre-review-b1262590.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 368d before show (2025-12-15 vs 2026-12-18)"
+        }
+      ]
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "file": "telegraph--shehrazade-zafar-arif.json",
+      "publishDate": "2025-12-14",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/christmas-carol-goes-wrong-mischief-review/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 369d before show (2025-12-14 vs 2026-12-18)"
+        }
+      ]
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
       "file": "thestage--holly-o.json",
       "findings": [
         {
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 3274d before show (2017-12-31 vs 2026-12-18)"
+        }
+      ]
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "file": "timeout-london--anya-ryan.json",
+      "score": 81,
+      "publishDate": "2025-12-15",
+      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 368d before show (2025-12-15 vs 2026-12-18)"
+        }
+      ]
+    },
+    {
+      "showId": "christmas-carol-goes-wrong-west-end-2026",
+      "file": "times-uk--clive-davis.json",
+      "score": 78,
+      "publishDate": "2025-12-14",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-goes-wrong-review-apollo-shaftsbury-lbgtdhfk3",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 369d before show (2025-12-14 vs 2026-12-18)"
         }
       ]
     },
@@ -15479,6 +15564,19 @@
     },
     {
       "showId": "into-the-woods-west-end-2025",
+      "file": "london-box-office--shehrazade-zafar-arif.json",
+      "publishDate": "2025-12-12",
+      "url": "https://www.londonboxoffice.co.uk/news/post/review-round-up-into-the-woods-bridge-theatre",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
       "file": "london-box-office--stuart-king.json",
       "score": 56,
       "publishDate": "2025-12-12",
@@ -15699,6 +15797,20 @@
       "score": 81,
       "publishDate": "2026-01-10",
       "url": "https://theatresoutheast.com/into-the-woods-the-bridge-theatre-review/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"james lapine\" from into-the-woods-2002"
+        }
+      ]
+    },
+    {
+      "showId": "into-the-woods-west-end-2025",
+      "file": "theatre-weekly--unknown.json",
+      "score": null,
+      "publishDate": "2026-01-14",
+      "url": "https://theatreweekly.com/new-production-images-released-for-into-the-woods-at-the-bridge-theatre/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -37183,20 +37295,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "arcadia-west-end-2026",
-      "file": "artsdesk--demetrios-matheou.json",
-      "score": 79,
-      "publishDate": null,
-      "url": "https://theartsdesk.com/theatre/arcadia-duke-yorks-theatre-review-reaching-stars",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
