@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-29T09:20:40.945Z",
+  "generatedAt": "2026-09-29T12:07:43.506Z",
   "windowDays": 45,
-  "showsScanned": 84,
+  "showsScanned": 89,
   "gaps": [
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=truly-howard-hughes-off-broadway-2026",
       "firstSeen": "2026-09-09T14:56:32.660Z",
-      "fileAgeHours": 474.4007697222222,
+      "fileAgeHours": 477.1757852777778,
       "gapSeenAt": "2026-09-29T02:37:21.498Z",
-      "nonTerminalAgeHours": 6.7220683333333335
+      "nonTerminalAgeHours": 9.506113333333333
     },
     {
       "showId": "tru-off-west-end-2026",
@@ -35,9 +35,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=tru-off-west-end-2026",
       "firstSeen": "2026-09-27T08:56:02.196Z",
-      "fileAgeHours": 48.409365,
+      "fileAgeHours": 51.18438333333334,
       "gapSeenAt": "2026-09-29T02:37:21.498Z",
-      "nonTerminalAgeHours": 6.7220683333333335
+      "nonTerminalAgeHours": 9.506113333333333
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -53,8 +53,26 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 160.66794555555555,
+      "fileAgeHours": 163.44296305555557,
       "gapSeenAt": "2026-09-29T09:20:40.944Z",
+      "nonTerminalAgeHours": 2.784045
+    },
+    {
+      "showId": "september-l-davis-the-apology-tour-off-broadway-2026",
+      "title": "September L. Davis: The Apology Tour",
+      "openingDate": "2026-09-20",
+      "file": "timeout--unknown.json",
+      "outletId": "timeout",
+      "tier": 1,
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://www.timeout.com/newyork/theater/september-l-davis-the-apology-tour",
+      "recovery": null,
+      "recoveryCount": 0,
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=september-l-davis-the-apology-tour-off-broadway-2026",
+      "firstSeen": "2026-09-28T17:47:33.366Z",
+      "fileAgeHours": 18.325825833333333,
+      "gapSeenAt": "2026-09-29T12:07:43.506Z",
       "nonTerminalAgeHours": 0
     },
     {
@@ -70,9 +88,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 66.43546194444444,
+      "fileAgeHours": 69.21048777777777,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 63.619909166666666
+      "nonTerminalAgeHours": 66.40395416666667
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
@@ -88,8 +106,29 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
       "firstSeen": "2026-09-17T08:13:24.884Z",
-      "fileAgeHours": 289.1199025,
+      "fileAgeHours": 291.8949269444444,
       "gapSeenAt": "2026-09-29T09:20:40.944Z",
+      "nonTerminalAgeHours": 2.784045
+    },
+    {
+      "showId": "a-slow-fire-off-west-end-2026",
+      "title": "A Slow Fire",
+      "openingDate": "2026-08-25",
+      "file": "times-uk--unknown.json",
+      "outletId": "times-uk",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s",
+      "recovery": {
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=a-slow-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-29T11:13:07.795Z",
+      "fileAgeHours": 0.9099191666666666,
+      "gapSeenAt": "2026-09-29T12:07:43.506Z",
       "nonTerminalAgeHours": 0
     }
   ],
