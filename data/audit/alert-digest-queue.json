@@ -793,5 +793,34 @@
       }
     ],
     "queuedAt": "2026-09-29T05:37:36.859Z"
+  },
+  {
+    "conditionKey": "land:land/nyt-pick-opening-night",
+    "title": "Landing blocked: scripts-lib-tests red on land/nyt-pick-opening-night",
+    "description": "land.yml did not land land/nyt-pick-opening-night: the scripts-lib-tests gate went red at fb1f4224bd. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36525477644",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/nyt-pick-opening-night"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "fb1f4224bd4b750e76546189e7d5b0121a6c4291"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36525477644"
+      }
+    ],
+    "queuedAt": "2026-09-29T05:44:00.327Z"
   }
 ]
