@@ -1,33 +1,44 @@
 {
-  "updatedAt": "2026-09-29T02:34:57.114Z",
-  "processed": 217,
-  "failed": 189,
-  "successRate": "53.4%",
+  "updatedAt": "2026-09-29T03:07:05.600Z",
+  "processed": 207,
+  "failed": 184,
+  "successRate": "52.9%",
   "tierBreakdown": {
-    "playwright": 102,
+    "playwright": 105,
     "amp": 0,
-    "browserbase": 10,
+    "browserbase": 8,
     "directCookies": 3,
-    "scrapingbee": 49,
-    "brightdata": 13,
+    "scrapingbee": 42,
+    "brightdata": 10,
     "archiveToday": 0,
-    "archive": 42
+    "archive": 39
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
-      "t": "2026-09-28T23:44:59.828Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "t": "2026-09-28T22:21:59.584Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     },
     {
-      "t": "2026-09-29T00:11:05.630Z",
+      "t": "2026-09-28T22:22:23.801Z",
       "event": "bb-session",
-      "session": "b4a5ffe5",
-      "url": "https://www.talkinbroadway.com/page/world/SchoolGirls.html"
+      "session": "05aa036d",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
     },
     {
-      "t": "2026-09-29T00:11:06.170Z",
+      "t": "2026-09-28T22:22:28.052Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-28T22:23:50.158Z",
+      "event": "bb-session",
+      "session": "73563b4f",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-09-28T22:23:50.675Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
@@ -112,19 +123,25 @@
     {
       "t": "2026-09-29T01:37:08.392Z",
       "event": "bb-session",
-      "session": "9c06cf88",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+      "session": "a36d106b",
+      "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
     },
     {
-      "t": "2026-09-29T01:37:09.093Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-09-29T01:42:09.241Z",
+      "t": "2026-09-29T02:43:58.494Z",
       "event": "bb-session",
-      "session": "d48d2fb2",
-      "url": "https://deadline.com/2026/09/school-girls-or-the-african-mean-girls-play-broadwa"
+      "session": "40ea1d4a",
+      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
+    },
+    {
+      "t": "2026-09-29T02:57:44.893Z",
+      "event": "bb-session",
+      "session": "f3e1aace",
+      "url": "https://thestage.co.uk/reviews/end-of-the-rainbow-review-soho-theatre-walthamsto"
+    },
+    {
+      "t": "2026-09-29T02:57:45.481Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
