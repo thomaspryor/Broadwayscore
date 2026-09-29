@@ -22,6 +22,8 @@
  * Pure: no I/O.
  */
 
+const { foldDiacritics } = require('./title-match');
+
 const DAY = 86400000;
 // Tours lay off for a summer (Hadestown: June to October) without ending, so
 // only a gap past six months, or a New York run, starts a new tour.
@@ -264,7 +266,7 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
 /** Tours To You slug guesses for a title ("MJ" is listed as mj-the-musical). */
 function scheduleSlugs(tour) {
   if (tour && tour.tourScheduleSlug) return [tour.tourScheduleSlug];
-  const base = String((tour && tour.title) || '').toLowerCase()
+  const base = foldDiacritics(String((tour && tour.title) || '')).toLowerCase()
     .replace(/&/g, 'and').replace(/['’]/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   return base ? [base, `${base}-the-musical`] : [];
 }

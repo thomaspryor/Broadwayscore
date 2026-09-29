@@ -26,6 +26,7 @@ const path = require('path');
 const https = require('https');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { tourAutomationMode } = require('./lib/tour-automation-mode');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { decideTourDates, scheduleSlugs, parseTourSchedule } = require('./lib/tour-schedule');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -41,6 +42,7 @@ const SOURCE = 'tourstoyou+wikipedia';
 const USAGE = `enrich-tour-dates.js — fill national-tour launch/closing dates (BRO-4262)
   --write       write shows.json (default: report only)
   --show=ID     one tour
+  --time-budget-min=N  stop cleanly after N minutes
   TOUR_DATES_MODE=off  skip entirely`;
 
 function fetchJson(url) {
@@ -116,8 +118,11 @@ async function main() {
   const targets = shows.filter(s => s.category === 'tour' && (only ? s.id === only : (!s.openingDate || !s.closingDate)));
   console.log(`${targets.length} tour(s) to check${write ? '' : ' (report only)'}`);
 
+  // Stop cleanly before the workflow's timeout; the rest waits for tomorrow.
+  const budget = createRunBudget(parseTimeBudgetMin(argv));
   const results = [];
   for (const tour of targets) {
+    if (budget.exceeded()) { console.log(`Time budget reached; ${targets.length - results.length} tour(s) left for the next run`); break; }
     console.log(`\n${tour.id}`);
     const { url, html } = await fetchSchedule(tour, fetchPage);
     let wiki = '';

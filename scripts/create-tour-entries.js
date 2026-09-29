@@ -28,6 +28,7 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { tourAutomationMode } = require('./lib/tour-automation-mode');
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { openTourCandidates } = require('./lib/tour-roundup-candidate');
 const { decideTourDates } = require('./lib/tour-schedule');
 const { buildTourEntry } = require('./lib/tour-entry');
@@ -40,6 +41,7 @@ const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'tour-autocreate.json');
 
 const USAGE = `create-tour-entries.js — create national-tour entries from roundup candidates (BRO-4262)
   --write   write shows.json and mark candidates created (default: report only)
+  --time-budget-min=N  stop cleanly after N minutes
   TOUR_AUTOCREATE=off|report   kill switch / force report-only`;
 
 async function main() {
@@ -60,8 +62,11 @@ async function main() {
   const retiredIds = { has: (id) => { try { return require('./lib/retired-show-ids').isRetiredId(id); } catch { return false; } } };
   console.log(`${open.length} open tour candidate(s)${write ? '' : ' (report only)'}`);
 
+  // Stop cleanly before the workflow's timeout; unprocessed candidates stay open.
+  const budget = createRunBudget(parseTimeBudgetMin(argv));
   const results = [];
   for (const c of open) {
+    if (budget.exceeded()) { console.log(`Time budget reached; ${open.length - results.length} candidate(s) left for the next run`); break; }
     const parent = byId.get(c.broadwayShowId);
     console.log(`\n${c.title} (${c.broadwayShowId})`);
     const probe = { id: null, title: parent.title, tourScheduleSlug: c.tourScheduleSlug, openingDate: null, closingDate: null };

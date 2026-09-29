@@ -576,7 +576,7 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/create-tour-entries.js --write
+        run: node scripts/create-tour-entries.js --write --time-budget-min=8
 
       - name: Push core data (new tour entries)
         if: always() && steps.create_tours.outputs.created != ''

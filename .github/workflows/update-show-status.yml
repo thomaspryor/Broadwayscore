@@ -375,7 +375,7 @@ jobs:
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
-        run: node scripts/enrich-tour-dates.js --write
+        run: node scripts/enrich-tour-dates.js --write --time-budget-min=6
         continue-on-error: true
         timeout-minutes: 8
 
