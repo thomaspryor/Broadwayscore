@@ -1877,7 +1877,7 @@ function classifyContentTier(review) {
 
   // T1: COMPLETE - Full review with no truncation issues
   // Check ending - allow URLs, ticket info at end (common footer pattern)
-  const trimmed = fullText.trim();
+  const trimmed = stripVenueListingsTrailer(fullText.trim()); // BRO-4387: venue/listings trailer is not review prose
   let hasProperEnding = /[.!?"'"")\]]$/.test(trimmed) ||
     /\.(com|org|net|co\.uk)\/?$/.test(trimmed) ||
     /[.!?]\s*[A-DF][+-]?$/.test(trimmed);

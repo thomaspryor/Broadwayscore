@@ -60,3 +60,12 @@ test('mid-sentence truncation before an address stays flagged', () => {
 test('genuinely unpunctuated ending stays flagged', () => {
   assert.ok(detectTruncationSignals(BODY + 'and the cast then moves on to').signals.includes('no_ending_punctuation'));
 });
+
+test('classifyContentTier: complete review + venue address trailer is not truncated', () => {
+  const { classifyContentTier } = require('./content-quality.js');
+  const prose = 'A wonderfully staged evening with sharp performances and a clear point of view about ambition and loss. '.repeat(30);
+  for (const trailer of ['Hayes Theater 240 West 44th Street New York, NY 10036', 'Listings and ticket information can be found here']) {
+    const r = classifyContentTier({ fullText: prose + trailer });
+    assert.equal(r.contentTier, 'complete', trailer);
+  }
+});
