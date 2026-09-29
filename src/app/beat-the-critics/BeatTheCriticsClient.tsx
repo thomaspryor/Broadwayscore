@@ -795,7 +795,7 @@ export function BeatTheCriticsClient({ data }: { data: BeatTheCriticsData }) {
             <p className="text-sm text-gray-400 mt-1.5 mb-1">Enter your email to officially enter. After the ceremony on June 8, we&apos;ll email you with your results. You&apos;ll also be added to our mailing list — unsubscribe anytime.</p>
             <p className="text-sm font-semibold text-amber-400 mb-4">🎟️ Beat a critic and you&apos;ll be entered in the <strong>$200 TodayTix prize draw</strong>.</p>
             <div className="flex gap-2 mb-3">
-              <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
+              <input ref={emailRef} type="email" placeholder="you@email.com" className="flex-1 px-4 py-3.5 rounded-xl border border-white/10 bg-surface-raised text-white text-base sm:text-sm outline-none focus:border-[#ff1368] transition-colors placeholder:text-gray-500" />
               <button onClick={handleEmailSave} disabled={emailSubmitting} className="px-6 py-3.5 rounded-xl bg-[#ff1368] text-white text-sm font-bold hover:bg-[#e6115e] transition-colors whitespace-nowrap disabled:opacity-60">
                 {emailSubmitting ? 'Submitting...' : 'Submit'}
               </button>

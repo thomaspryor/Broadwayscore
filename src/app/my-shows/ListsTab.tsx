@@ -847,7 +847,7 @@ function ListModal({
               onChange={e => setName(e.target.value)}
               placeholder="e.g. Best of 2025, Must-See..."
               maxLength={100}
-              className="w-full px-3 py-2.5 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand/50"
+              className="w-full px-3 py-2.5 text-base sm:text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand/50"
               autoFocus
             />
           </div>
@@ -864,7 +864,7 @@ function ListModal({
                 placeholder="What's this list about?"
                 maxLength={500}
                 rows={3}
-                className="w-full px-3 py-2.5 text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand/50 resize-none"
+                className="w-full px-3 py-2.5 text-base sm:text-sm bg-white/5 border border-white/10 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-brand/50 resize-none"
               />
             </div>
           ) : (

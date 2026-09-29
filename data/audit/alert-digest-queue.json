@@ -938,5 +938,63 @@
       }
     ],
     "queuedAt": "2026-09-29T06:31:09.906Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4272-roundup-ingest",
+    "title": "Landing blocked: scripts-lib-tests red on land/bro-4272-roundup-ingest",
+    "description": "land.yml did not land land/bro-4272-roundup-ingest: the scripts-lib-tests gate went red at 763451d61d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36529679176",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4272-roundup-ingest"
+      },
+      {
+        "name": "gate",
+        "value": "scripts-lib-tests"
+      },
+      {
+        "name": "tip",
+        "value": "763451d61d08da0bb063372bdb0ac68ca407d6c1"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36529679176"
+      }
+    ],
+    "queuedAt": "2026-09-29T06:38:34.078Z"
+  },
+  {
+    "conditionKey": "land:land/audit-owe-staging-merge-4",
+    "title": "Landing blocked: unit-tests-node red on land/audit-owe-staging-merge-4",
+    "description": "land.yml did not land land/audit-owe-staging-merge-4: the unit-tests-node gate went red at cb72461c9b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36529993329",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/audit-owe-staging-merge-4"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cb72461c9b3348c8a0e69bd80b0e7a439c11cb78"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36529993329"
+      }
+    ],
+    "queuedAt": "2026-09-29T06:42:40.878Z"
   }
 ]

@@ -718,6 +718,7 @@ export default function MyShowsClient() {
 
       {ratingTarget && (
         <RatingEditor
+          key={ratingTarget.reviewId ?? ratingTarget.id}
           showTitle={ratingTarget.title}
           reviewId={ratingTarget.reviewId}
           initialRating={ratingTarget.initialRating ?? 0}
