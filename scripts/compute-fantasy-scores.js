@@ -35,6 +35,9 @@ const {
   projectRemainingGrosses,
   computeExpectedAwardsPoints,
   validateTonyPredictions,
+  // Shared tier mapper, pinned to src/config/scoring.ts by
+  // tests/unit/fantasy-tier-parity.test.ts.
+  criticLabelForScore: getCriticLabel,
 } = require('./lib/fantasy-helpers');
 const seasonConfig = require('../src/config/fantasy-season.json');
 
@@ -51,15 +54,6 @@ const weeks = grossesRaw.weeks || {};
 if (meta.season !== seasonConfig.season) {
   console.error(`fantasy-league.json is for season ${meta.season} but src/config/fantasy-season.json says ${seasonConfig.season}. Run generate-fantasy-config.js first.`);
   process.exit(1);
-}
-
-// ── Scoring tier thresholds (from src/config/scoring.ts) ────────────
-function getCriticLabel(score) {
-  if (score >= 83) return 'Critical Gold';
-  if (score >= 75) return 'Recommended';
-  if (score >= 65) return 'Worth Seeing';
-  if (score >= 55) return 'Skippable';
-  return 'Critical Miss';
 }
 
 // ── Compute box office points ───────────────────────────────────────

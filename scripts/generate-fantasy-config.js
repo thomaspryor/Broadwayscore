@@ -184,30 +184,9 @@ function computeCriticScore(showId) {
   return result ? result.s : null;
 }
 
-// Mirrors src/config/scoring.ts getCriticLabel (tests pin the two together).
-function getCriticLabel(score) {
-  if (score >= 83) return 'Critical Gold';
-  if (score >= 75) return 'Recommended';
-  if (score >= 65) return 'Worth Seeing';
-  if (score >= 55) return 'Skippable';
-  return 'Critical Miss';
-}
-
-// Mirrors src/lib/audience-grade-utils.ts getAudienceGrade thresholds.
-function gradeFromAudienceScore(score) {
-  if (score == null) return null;
-  if (score >= 90) return 'A+';
-  if (score >= 88) return 'A';
-  if (score >= 83) return 'A-';
-  if (score >= 78) return 'B+';
-  if (score >= 73) return 'B';
-  if (score >= 68) return 'B-';
-  if (score >= 63) return 'C+';
-  if (score >= 58) return 'C';
-  if (score >= 53) return 'C-';
-  if (score >= 48) return 'D';
-  return 'F';
-}
+// Tier mappers shared with compute-fantasy-scores.js; pinned to the site's
+// scoring.ts / audience-grade-utils.ts by tests/unit/fantasy-tier-parity.test.ts.
+const { criticLabelForScore: getCriticLabel, audienceGradeForScore: gradeFromAudienceScore } = require('./lib/fantasy-helpers');
 const MIN_AUDIENCE_REVIEWS = 15;
 function getAudienceGrade(showId) {
   const data = audienceData[showId];

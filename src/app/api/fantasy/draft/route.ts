@@ -10,6 +10,8 @@ import {
   EARLY_BIRD_CUTOFF,
   isDraftClosed,
   isDraftOpen,
+  isScoreLockedForEntry,
+  nyDate,
   scoringFromDate,
   validatePicks,
 } from '@/config/fantasy';
@@ -64,7 +66,7 @@ function buildConfirmationHtml(opts: {
   totalCost: number;
 }): string {
   const scoringFrom = scoringFromDate(opts.createdAt);
-  const isEarlyBird = scoringFrom < opts.createdAt.slice(0, 10);
+  const isEarlyBird = nyDate(opts.createdAt) <= EARLY_BIRD_CUTOFF;
   const lockedCount = opts.picks.filter(p => p.locked).length;
   const rows = opts.picks.map(p => `
         <tr>
@@ -73,7 +75,7 @@ function buildConfirmationHtml(opts: {
         </tr>`).join('');
 
   const leagueLine = opts.leagueName
-    ? `<p style="margin:0 0 12px;color:#a1a1aa;font-size:14px;">League: <a href="${SITE}/fantasy/league/${encodeURIComponent(opts.leagueName)}" style="color:#d4a574;">${escapeHtml(opts.leagueName)}</a></p>`
+    ? `<p style="margin:0 0 12px;color:#a1a1aa;font-size:14px;">League: <a href="${SITE}/fantasy/league/${encodeURIComponent(opts.leagueName.toLowerCase())}" style="color:#d4a574;">${escapeHtml(opts.leagueName)}</a></p>`
     : '';
 
   return `<!DOCTYPE html>
@@ -244,16 +246,16 @@ export async function POST(request: NextRequest) {
 
     const createdAt: string = inserted?.created_at || new Date().toISOString();
     const scoringFrom = scoringFromDate(createdAt);
-    const draftDay = createdAt.slice(0, 10);
     const pickSummary = (picks as string[]).map(id => ({
       title: shows[id].title,
       price: shows[id].price,
       openingDate: shows[id].openingDate ?? null,
-      // Same rule as computeLeaderboard: opened on or before the draft day.
-      locked: !!shows[id].openingDate && shows[id].openingDate! <= draftDay,
+      // Same rule as computeLeaderboard: opened on or before the New York draft day.
+      locked: isScoreLockedForEntry(shows[id].openingDate, createdAt),
     }));
 
     // Confirmation email — best-effort; the entry is already stored above.
+    let emailSent = false;
     if (RESEND_API_KEY) {
       try {
         const res = await fetch('https://api.resend.com/emails', {
@@ -273,7 +275,8 @@ export async function POST(request: NextRequest) {
             }),
           }),
         });
-        if (!res.ok) console.error('Fantasy confirmation email failed:', res.status, (await res.text()).slice(0, 200));
+        if (res.ok) emailSent = true;
+        else console.error('Fantasy confirmation email failed:', res.status, (await res.text()).slice(0, 200));
       } catch (emailErr) {
         console.error('Fantasy confirmation email threw:', emailErr instanceof Error ? emailErr.message : String(emailErr));
       }
@@ -287,6 +290,7 @@ export async function POST(request: NextRequest) {
       scoring_from: scoringFrom,
       locked_picks: pickSummary.filter(p => p.locked).map(p => p.title),
       roster_limit: FANTASY_TEAM_SIZE,
+      email_sent: emailSent,
     });
   } catch (err) {
     console.error('Fantasy draft error:', err);
