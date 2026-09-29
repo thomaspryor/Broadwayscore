@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-28T15:18:22.681Z",
+    "lastUpdated": "2026-09-29T04:03:43.234Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11398,6 +11398,17 @@
       "region": "london",
       "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
       "regionInferredAt": "2026-09-28T15:18:22.681Z"
+    },
+    "theatrebookings": {
+      "displayName": "Theatrebookings",
+      "tier": 3,
+      "aliases": [
+        "theatrebookings"
+      ],
+      "domain": "theatrebookings.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-09-29T04:03:43.234Z"
     }
   },
   "_aliasIndex": {
