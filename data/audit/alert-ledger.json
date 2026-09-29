@@ -146,12 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T23:34:15.828Z",
+      "lastSeen": "2026-09-29T23:54:17.387Z",
       "lastNotifiedAt": "2026-09-29T23:34:15.828Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 118,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6957,25 +6958,13 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"preview + opening → both dates, opening marked theatermania (unconfirmed)\"",
       "firstSeen": "2026-09-29T23:08:03.730Z",
-      "lastSeen": "2026-09-29T23:34:15.825Z",
+      "lastSeen": "2026-09-29T23:54:17.382Z",
       "lastNotifiedAt": "2026-09-29T23:08:03.730Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4397",
-      "silentRefires": 1
-    },
-    "land:land/bro-4396-all": {
-      "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: rebase red on land/bro-4396-all",
-      "firstSeen": "2026-09-29T23:51:16.937Z",
-      "lastSeen": "2026-09-29T23:51:16.937Z",
-      "lastNotifiedAt": "2026-09-29T23:51:16.937Z",
-      "lastSurfacedAt": "2026-09-29T23:51:16.937Z",
-      "notifyCount": 1,
-      "cardId": null,
-      "linearIdentifier": null
+      "silentRefires": 2
     }
   }
 }
