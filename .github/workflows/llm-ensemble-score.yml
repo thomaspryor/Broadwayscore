@@ -473,6 +473,19 @@ jobs:
         run: |
           node scripts/run-ensemble-scoring-guard.js ${{ steps.build-args.outputs.args }}
 
+      # Turn excerpt-based scores whose full text has since arrived into
+      # rescore requests before the capped drain below picks them up. The
+      # collect-time trigger only fires when a score already exists; when the
+      # text lands first (another job) and an excerpt score is merged on top,
+      # nothing flagged it (School Girls 2026-09-29: 6 of 19 reviews). The
+      # predicate skips human/extracted-star scores and files already rescored
+      # on the current text (no re-flag loop). Own if: so it still runs when
+      # the drain is skipped; the drain's cap bounds spend.
+      - name: Flag excerpt-scored reviews that now have full text
+        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true'
+        continue-on-error: true
+        run: node scripts/audit-stale-score-input.js --fix
+
       # Anti-starvation drain (2026-07-11). check-needed is a strict priority
       # cascade: the needsRescore branch only fires when UNSCORED==0 corpus-wide.
       # New reviews arrive near-continuously, so flagged files sat for days (47

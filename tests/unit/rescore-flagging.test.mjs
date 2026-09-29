@@ -159,3 +159,36 @@ test('CV self-heal clear on a still non-includable file (other flag still set) â
   };
   assert.equal(isStaleScoreInput(data), false);
 });
+
+// School Girls 2026-09-29 review: guards added when the stale sweep was wired
+// into the scoring workflows.
+const staleBase = () => ({
+  assignedScore: 81,
+  scoreSource: 'llm-v6',
+  llmMetadata: { textSource: { type: 'excerpt' } },
+  contentTier: 'complete',
+  fullText: 'x'.repeat(2000),
+  textFetchedAt: '2026-09-29T03:36:49.467Z',
+});
+
+test('excerpt-scored LLM review whose fullText arrived later reads as stale (Guardian, School Girls)', () => {
+  assert.equal(isStaleScoreInput(staleBase()), true);
+});
+
+test('loop guard: already rescored with the current text on disk â†’ not stale again', () => {
+  const d = { ...staleBase(), rescoreCompletedAt: '2026-09-29T06:00:00.000Z' };
+  assert.equal(isStaleScoreInput(d), false);
+});
+
+test('loop guard releases when newer text arrives after the last rescore', () => {
+  const d = { ...staleBase(), rescoreCompletedAt: '2026-09-29T02:00:00.000Z' };
+  assert.equal(isStaleScoreInput(d), true);
+});
+
+test('human or extracted star scores are never flagged for an LLM rescore', () => {
+  assert.equal(isStaleScoreInput({ ...staleBase(), humanReviewScore: 80 }), false);
+  assert.equal(isStaleScoreInput({ ...staleBase(), scoreSource: 'manual_extracted_star_rating' }), false);
+  assert.equal(isStaleScoreInput({ ...staleBase(), scoreSource: 'explicit-rating' }), false);
+  assert.equal(isStaleScoreInput({ ...staleBase(), scoreSource: 'anchored-v6' }), true);
+  assert.equal(isStaleScoreInput({ ...staleBase(), scoreSource: undefined }), true);
+});

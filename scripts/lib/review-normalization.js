@@ -660,7 +660,18 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // don't auto-overwrite with a different URL. First-URL-set (existing.url
   // is null/undefined) is still allowed — the protection only blocks CHANGES.
   // See: Boy at the Back of the Class thestage URL oscillation (2026-04-10).
-  const urlIsProtected = existing.urlVerified === true || existing.urlManualOverride === true;
+  // School Girls 2026-09-29: an AUTO flip-flop pin (urlVerifiedAuto) on a url
+  // an independent aggregator record contradicts (BWW's typo'd Theatrely link
+  // vs Playbill Verdict's real one) must yield to the corroborated url, or the
+  // write guard's tie-break (review-write-guard.js _flipFlopShouldTakeIncoming)
+  // never sees the change. Human pins (urlManualOverride, urlVerified without
+  // Auto, _locked) are never lifted. Lazy require: review-write-guard requires
+  // this module lazily too.
+  const tieBreakTakesIncoming = !!incoming.url && !!existing.url && existing._locked !== true
+    && existing.urlManualOverride !== true
+    && existing.urlVerified === true && existing.urlVerifiedAuto === true
+    && require('./review-write-guard')._flipFlopShouldTakeIncoming(existing.url, incoming.url, existing);
+  const urlIsProtected = (existing.urlVerified === true || existing.urlManualOverride === true) && !tieBreakTakesIncoming;
   const existingUrlLooksBroken = !existing.url || existing.url.includes('undefined');
   // A garbage incoming url ('undefined' fragments, non-http strings like
   // 'N/A' or relative paths) must never REPLACE a real existing url — the
@@ -681,7 +692,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // detects the swap-BACK half of the cycle — incoming matches the url this
   // file held before its last URL-change clear — and refuses it.
   const { isUrlFlipFlop } = require('./url-change-invariant');
-  const urlFlipFlop = urlChanged && isUrlFlipFlop(existing, incoming.url);
+  const urlFlipFlop = urlChanged && !tieBreakTakesIncoming && isUrlFlipFlop(existing, incoming.url);
   if (urlFlipFlop) {
     console.warn(`[mergeReviews] refused url flip-flop for ${existing.outletId || context.file || '?'}: ${incoming.url} matches the url this file held before its last change`);
     logExclusion({
@@ -2277,7 +2288,17 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // Manual URL decisions win — mirrors review-write-guard.js's own
   // locked/urlVerified/urlManualOverride check. Without this, a manually
   // verified URL could get silently swapped here.
-  if (existingData._locked === true || existingData.urlVerified === true || existingData.urlManualOverride === true) {
+  // Exception (School Girls 2026-09-29): an AUTO flip-flop pin on a url that an
+  // independent aggregator record on this file contradicts — BWW linked
+  // Theatrely with a typo'd 404 url while playbillVerdictUrl held the real one,
+  // and the pin locked in the 404. Human pins (_locked, urlManualOverride,
+  // urlVerified without Auto) still always win. See review-write-guard.js
+  // _flipFlopShouldTakeIncoming (shared tie-break; it also lifts the pin on write).
+  const corroboratedOverAutoPin = existingData._locked !== true && existingData.urlManualOverride !== true
+    && existingData.urlVerified === true && existingData.urlVerifiedAuto === true
+    && require('./review-write-guard')._flipFlopShouldTakeIncoming(existingData.url, newUrl, existingData);
+  if (!corroboratedOverAutoPin
+    && (existingData._locked === true || existingData.urlVerified === true || existingData.urlManualOverride === true)) {
     return false;
   }
   // Task #1695: contentTier is only ever 'invalid' when a wrongProduction/
@@ -2295,9 +2316,12 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
     return false;
   }
   // Only upgrade if current content is bad
+  // A url contradicted by an independent aggregator record counts as bad
+  // content: the stored text may have come from the other url before a flip.
   const badContent = !existingData.fullText
     || (existingData.contentTier && existingData.contentTier !== 'complete')
-    || existingData.needsRefetch;
+    || existingData.needsRefetch
+    || corroboratedOverAutoPin;
   if (!badContent) return false;
 
   // Roundup-page guard (BRO-4128): a candidate that is itself a roundup/

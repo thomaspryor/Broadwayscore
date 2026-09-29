@@ -362,11 +362,15 @@ jobs:
             UNSCORED=$(node -e "
               const fs = require('fs');
               const path = require('path');
+              const { isStaleScoreInput } = require('./scripts/lib/rescore-flagging');
+              const { isActionableRescore } = require('./scripts/lib/scoring-queue-counts');
               const dir = path.join('data', 'review-texts', '$SHOW_ID');
               if (!fs.existsSync(dir)) { console.log(0); process.exit(0); }
               let n = 0;
               for (const f of fs.readdirSync(dir)) {
-                if (!f.endsWith('.json')) continue;
+                // _blocklist.json and other _-prefixed files are show metadata,
+                // not reviews (counting them kept any_action true every poll).
+                if (!f.endsWith('.json') || f.startsWith('_')) continue;
                 try {
                   const d = JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8'));
                   // 'Unscored' = no llmScore AND no humanReviewScore AND no
@@ -374,13 +378,22 @@ jobs:
                   // does NOT count as scored — composite still needs LLM.
                   const hasScore = d.llmScore != null || d.humanReviewScore != null;
                   if (!hasScore && !d.wrongProduction && !d.wrongShow && !d.isRoundupArticle) n++;
+                  // Scored off a roundup excerpt but full text is now on disk
+                  // (or already queued for that rescore). School Girls 2026:
+                  // 6 of 19 reviews sat at excerpt scores for hours because
+                  // nothing counted them as work.
+                  // Counts only what the scorer would actually take
+                  // (isActionableRescore mirrors index.ts's --needs-rescore
+                  // filter: text-gate blocks, cooldowns), so a stuck flag
+                  // cannot force a rebuild + deploy on every poll.
+                  else if (hasScore && (isActionableRescore(d, { filePath: path.join(dir, f) }) || isStaleScoreInput(d))) n++;
                 } catch (_) {}
               }
               console.log(n);
             " 2>/dev/null || echo 0)
             if [ "$UNSCORED" -gt 0 ]; then
               ANY_READY=true
-              echo "  → $UNSCORED unscored review(s) waiting for $SHOW_ID"
+              echo "  → $UNSCORED unscored or excerpt-scored review(s) waiting for $SHOW_ID"
             fi
             # Balusters postmortem CLASS 4 — collect shows needing Guardian redispatch
             if grep -q "\[GUARDIAN\] Guardian URL discovered without originalScore" "$PER_SHOW_OUT" 2>/dev/null; then
@@ -651,6 +664,29 @@ jobs:
             SCORE_TOTAL=$((SCORE_TOTAL + 1))
             SCORE_RC=0
             npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble 2>&1 || SCORE_RC=$?
+            # Rescore reviews first scored off a roundup excerpt whose full
+            # text has since arrived (often from a parallel job, so the
+            # collect-time trigger never saw a score to invalidate). The
+            # normal pass above skips anything already scored.
+            node scripts/audit-stale-score-input.js --fix --show="$SHOW_ID" 2>&1 || true
+            PENDING_RESCORE=$(SHOW_ID="$SHOW_ID" node -e "
+              const fs = require('fs'); const path = require('path');
+              const { isActionableRescore } = require('./scripts/lib/scoring-queue-counts');
+              const dir = path.join('data', 'review-texts', process.env.SHOW_ID);
+              let n = 0;
+              try { for (const f of fs.readdirSync(dir)) {
+                if (!f.endsWith('.json') || f.startsWith('_')) continue;
+                try { if (isActionableRescore(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')), { filePath: path.join(dir, f) })) n++; } catch (_) {}
+              } } catch (_) {}
+              console.log(n);
+            " 2>/dev/null || echo 0)
+            if [ "${PENDING_RESCORE:-0}" -gt 0 ]; then
+              echo "  Rescoring $PENDING_RESCORE excerpt-scored review(s) on full text for $SHOW_ID"
+              # A failure here is logged, not counted as a score-stage crash:
+              # one unrescoreable file must not fail every poll.
+              npx ts-node scripts/llm-scoring/index.ts --show="$SHOW_ID" --ensemble --needs-rescore 2>&1 \
+                || echo "  ⚠️ needs-rescore pass exited non-zero for $SHOW_ID (flags stay queued for the daily drain)"
+            fi
             if [ "$SCORE_RC" -ne 0 ]; then
               SCORE_FAILED=$((SCORE_FAILED + 1))
               echo "  ⚠️ scoring exited $SCORE_RC for $SHOW_ID — counted as a score-stage failure"
@@ -679,8 +715,62 @@ jobs:
         continue-on-error: true
 
       # === FAST PATH: inline rebuild+deploy (skips separate rebuild-reviews.yml) ===
+      # NYT Critic's Pick on opening night: data/nyt-critics-picks.json is
+      # otherwise refreshed only Mon/Wed/Fri (weekly-nyt-critics-picks.yml),
+      # so a pick published tonight waited up to 2 days for its badge
+      # (School Girls 2026). Runs on EVERY fast_path poll, not only when the
+      # poll found new files: a pick usually appears on the spotlight page
+      # after the NYT review was already scored. The helper only fires for
+      # recent, unflagged NYT reviews not yet on the list, at most once per
+      # 30 min (negative cache: data/audit/nyt-spotlight-check.json), and fetches
+      # page 1 of the spotlight only. A new pick sets picks_added, which
+      # forces the rebuild/commit/deploy below. The weekly job also writes
+      # this file; both only ever ADD URLs, so a push-with-retry conflict
+      # that drops one of our additions heals on the next scrape.
+      - name: Refresh NYT Critic's Picks (fast_path)
+        id: nyt_picks
+        # Kill switch: repo variable DISABLE_NYT_PICK_FASTPATH=1.
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && vars.DISABLE_NYT_PICK_FASTPATH != '1'
+        continue-on-error: true
+        timeout-minutes: 10  # spotlight fetch (<=2 min budget) + push-with-retry (240s deadline) + buffer
+        env:
+          SHOWS: ${{ steps.find.outputs.shows }}
+          # Union-merge the append-only spend ledger on push conflicts
+          # (reconcile-coverage.js requires it for scraper-spend-ledger.jsonl).
+          PUSH_RECONCILE_MERGED_JSON: '1'
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: |
+          echo "picks_added=false" >> "$GITHUB_OUTPUT"
+          NEEDED=$(node scripts/lib/nyt-pick-refresh-needed.js --shows="$SHOWS" --min-interval-min=30 | grep -o 'refresh_needed=[a-z]*' | cut -d= -f2)
+          if [ "$NEEDED" != "true" ]; then
+            echo "No recent unpicked NYT review (or checked <30 min ago) - skipping spotlight fetch"
+            exit 0
+          fi
+          BEFORE=$(node -e "try{console.log(require('./data/nyt-critics-picks.json').urls.length)}catch{console.log(0)}")
+          node scripts/lib/nyt-pick-refresh-needed.js --mark-checked
+          node scripts/refresh-nyt-critics-picks.js --max-pages=1 --time-budget-min=2 || echo "::warning::NYT spotlight refresh failed - badge waits for the next poll or the Mon/Wed/Fri job"
+          AFTER=$(node -e "try{console.log(require('./data/nyt-critics-picks.json').urls.length)}catch{console.log(0)}")
+          if [ "$AFTER" -gt "$BEFORE" ]; then
+            echo "Added $((AFTER - BEFORE)) NYT Critic's Pick(s) - forcing rebuild"
+            echo "picks_added=true" >> "$GITHUB_OUTPUT"
+          fi
+          # Persist the check stamp, spend ledger and any new picks now, not
+          # only when the fast rebuild commits: otherwise the 30-min negative
+          # cache resets every run (fresh checkout) and the spend goes unrecorded.
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          bash scripts/lib/git-add-existing.sh data/nyt-critics-picks.json data/audit/nyt-spotlight-check.json data/audit/scraper-spend-ledger.jsonl
+          if ! git diff --cached --quiet; then
+            git commit -m "data: NYT Critic's Picks opening-night check [skip ci]"
+            GIT_NET_TIMEOUT_SEC=30 bash scripts/lib/push-with-retry.sh 5 main || echo "::warning::NYT picks check commit did not push; the fast-path commit retries it"
+          fi
+
       - name: Cancel competing rebuilds (fast_path)
-        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
@@ -699,7 +789,7 @@ jobs:
 
       - name: Rebuild reviews.json (fast_path)
         id: fast_rebuild
-        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && steps.poll.outputs.any_action == 'true'
+        if: inputs.fast_path && steps.find.outputs.has_shows == 'true' && (steps.poll.outputs.any_action == 'true' || steps.nyt_picks.outputs.picks_added == 'true')
         env:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
@@ -827,7 +917,10 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/*.json 2>/dev/null || true
-          bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html
+          # The NYT step commits its own stamp + spend-ledger rows; the picks
+          # file is re-added here only so a same-run pick rides with the rebuild.
+          bash scripts/lib/git-add-existing.sh public/opening-night-status.json public/status.html \
+            data/nyt-critics-picks.json data/audit/nyt-spotlight-check.json
           git add public/data/shows/ 2>/dev/null || true
           git checkout -- data/reviews.json data/audience-buzz.json 2>/dev/null || true
           git diff --cached --quiet && { echo "No public data changes to commit"; exit 0; }

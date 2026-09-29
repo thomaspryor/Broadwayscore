@@ -1494,11 +1494,11 @@ function safeWriteReview(filePath, newData, options = {}) {
           console.warn(`[review-write-guard] rejecting garbage url ${JSON.stringify(newData.url)} on ${path.basename(filePath)}: keeping ${existing.url}`);
           newData.url = existing.url;
         } else if (normalizedUrlDiffers && (lockedOverride || existing.urlManualOverride === true
-          || (existing.urlVerified === true && !(existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url))))) {
+          || (existing.urlVerified === true && !(existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url, existing))))) {
           console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
           newData.url = existing.url;
         } else if (normalizedUrlDiffers && isUrlFlipFlop(existing, newData.url)
-          && !_flipFlopShouldTakeIncoming(existing.url, newData.url)) {
+          && !_flipFlopShouldTakeIncoming(existing.url, newData.url, existing)) {
           // Flip-flop breaker (BRO-121): newData.url matches the url this file
           // held before its last URL-change clear (_urlChangedClear.from) — a
           // poller/aggregator is oscillating between two url variants
@@ -1527,7 +1527,7 @@ function safeWriteReview(filePath, newData, options = {}) {
             newData.urlVerifiedNote = `Auto-pinned ${new Date().toISOString().slice(0, 10)}: url flip-flopped back to a prior value (poller alternates ${existing.url} <-> ${flippedFromUrl}) — locked against further automated changes (BRO-121).`;
           }
         } else if (urlCanonicallyChanged(existing.url, newData.url)) {
-          const liftAutoPin = existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url);
+          const liftAutoPin = existing.urlVerifiedAuto === true && _flipFlopShouldTakeIncoming(existing.url, newData.url, existing);
           if (liftAutoPin) {
             // The auto-pin belonged to the non-review url being replaced; it must
             // not lock in the incoming url (its note names the old one).
@@ -2981,13 +2981,35 @@ function protectStagedDeletions(cwd, options = {}) {
  * Also lets an AUTO pin (urlVerifiedAuto) on such a url be corrected; a human
  * pin (urlManualOverride / urlVerified without Auto) is never overridden.
  */
-function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl) {
-  const { namedNonReviewReason } = require('./non-review-url-patterns');
-  if (!namedNonReviewReason(existingUrl || '') || namedNonReviewReason(incomingUrl || '')) return false;
+function _flipFlopShouldTakeIncoming(existingUrl, incomingUrl, existing) {
   // Same site only: a host-wide named pattern can sit over real reviews
   // elsewhere, so never let this hop an auto-pin to a different outlet.
   const host = (u) => { try { return new URL(u).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; } };
-  return !!host(existingUrl) && host(existingUrl) === host(incomingUrl);
+  if (!host(existingUrl) || host(existingUrl) !== host(incomingUrl)) return false;
+  const { namedNonReviewReason } = require('./non-review-url-patterns');
+  if (namedNonReviewReason(existingUrl || '') && !namedNonReviewReason(incomingUrl || '')) return true;
+  // Corroboration tie-break (School Girls 2026-09-29): BWW's roundup linked
+  // Theatrely with a stray trailing 'j' (a 404) while Playbill Verdict had the
+  // real url; the poller alternated and the breaker pinned the 404 because
+  // the file happened to hold it. When an independent aggregator record on
+  // this file names one side and not the other, that side is the real article.
+  return _urlCorroboration(incomingUrl, existing) > _urlCorroboration(existingUrl, existing);
+}
+
+// Per-aggregator review-url fields. Aggregator PAGE urls stored in the same
+// fields (a DTLI/Show Score show page) never equal a review url, so they
+// cannot vouch for either side.
+const _CORROBORATING_URL_FIELDS = ['playbillVerdictUrl', 'dtliUrl', 'showScoreUrl', 'stagedoorUrl', 'wetUrl', 'aggregatorUrl'];
+
+function _urlCorroboration(url, record) {
+  if (!url || !record || typeof record !== 'object') return 0;
+  const target = _normalizeUrlForCollision(url);
+  let n = 0;
+  for (const field of _CORROBORATING_URL_FIELDS) {
+    const v = record[field];
+    if (typeof v === 'string' && v && _normalizeUrlForCollision(v) === target) n++;
+  }
+  return n;
 }
 
 module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };

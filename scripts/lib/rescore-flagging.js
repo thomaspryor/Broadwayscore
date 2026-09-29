@@ -67,7 +67,32 @@ function isStaleScoreInput(data, show, filePath) {
   // Excluding ensembleData would have suppressed ~96% of the real backlog.
   // Already queued — idempotent no-op for the caller.
   if (data.needsRescore === true) return false;
+  // Authoritative non-LLM scores: a human score or a published star/grade
+  // extraction wins over the ensemble, so rescoring the excerpt-based LLM
+  // score can only waste spend or, via --needs-rescore's bypass of the
+  // star-rating skip (llm-scoring/index.ts), override the real rating (the
+  // Innocence 2026-04-27 incident).
+  if (data.humanReviewScore != null) return false;
+  if (data.scoreSource && !isLlmScoreSource(data.scoreSource)) return false;
+  // Loop guard (School Girls 2026-09-29 review): when the scorer judges the
+  // fullText unusable it still records textSource 'excerpt', so without this
+  // every sweep would re-flag the same file after each rescore — one paid
+  // 3-model call per sweep, forever. Once a rescore completed with the current
+  // text already on disk, only newer text can make the input stale again.
+  if (data.rescoreCompletedAt) {
+    const completed = Date.parse(data.rescoreCompletedAt);
+    const fetched = Date.parse(data.textFetchedAt || '');
+    if (!Number.isFinite(fetched) || !Number.isFinite(completed) || completed >= fetched) return false;
+  }
   return isScoreable(data, show, filePath);
+}
+
+// scoreSource values written by the LLM scorers (llm-scoring/*, anchored-v6
+// WE path). Anything else (explicit-rating, guardian-api, *-star-rating,
+// human-review, …) is an extracted or human score.
+function isLlmScoreSource(scoreSource) {
+  const s = String(scoreSource);
+  return s.startsWith('llm') || s === 'anchored-v6' || s.startsWith('ensemble');
 }
 
 /**
