@@ -2798,7 +2798,14 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     console.log(`    [Method 3] domain supplement error (non-fatal): ${(e.message || '').substring(0, 100)}`);
   }
 
-  return reviews;
+  // Bare-critic-name phantoms whose headline outlet wasn't registered yet
+  // (the case BRO-3247's registered-headline fallback above can't reach).
+  const { dropCriticNamePhantoms } = require('./lib/bww-critic-name-phantoms');
+  const { kept, dropped } = dropCriticNamePhantoms(reviews);
+  for (const { phantom, twin } of dropped) {
+    console.log(`    [BWW RR] dropped phantom outlet "${phantom.outletId}" (critic name) — same review as ${twin.outletId} / ${twin.criticName}`);
+  }
+  return kept;
 }
 
 /**
