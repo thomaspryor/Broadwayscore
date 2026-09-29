@@ -20,6 +20,7 @@ const path = require('path');
 const https = require('https');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
+const { hasBookableEvidence } = require('./lib/todaytix-reopen-guard');
 const { countByShow, isStuckInPreviews, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion, blockAnnouncedCatchUp } = require('./lib/announced-promotion');
@@ -156,7 +157,8 @@ function showCategory(show) {
  * Refresh closing dates for all markets from TodayTix API.
  * Also detects wrongly-closed shows that TodayTix still lists as active.
  */
-async function refreshTodayTixDates(data, updates) {
+async function refreshTodayTixDates(data, updates, opts = {}) {
+  const fetchShows = opts.fetchShows || fetchAllTodayTixShows;
   console.log('\n--- TodayTix Date Refresh ---');
 
   // Track IDs of shows reopened by TodayTix so the main closing loop
@@ -210,18 +212,22 @@ async function refreshTodayTixDates(data, updates) {
   let dateUpdates = 0;
   let reopened = 0;
   let newTtIds = 0;
-  const seenTtIds = new Set(); // Track all TodayTix IDs seen across locations
+  // Track TodayTix IDs with positive bookability evidence (BRO-4286) — mere
+  // feed presence (a stale "ghost listing") must not count as "still active"
+  // for stale-open auto-close suppression or the ShowScore cross-validation
+  // below, or this reproduces the exact same bug those paths are meant to guard.
+  const seenTtIds = new Set();
 
   for (const loc of locations) {
     try {
-      const ttShows = await fetchAllTodayTixShows(loc.id);
+      const ttShows = await fetchShows(loc.id);
       console.log(`  TodayTix ${loc.label}: ${ttShows.length} shows`);
       if (ttShows.length === 0) {
         console.error(`  ⚠️  WARNING: TodayTix ${loc.label} returned 0 shows — API may be down or format changed`);
       }
 
       for (const ttShow of ttShows) {
-        seenTtIds.add(String(ttShow.id));
+        if (hasBookableEvidence(ttShow)) seenTtIds.add(String(ttShow.id));
         const ttEndDate = ttShow.endDate === 'null' ? null : ttShow.endDate || null;
         const normTtTitle = (ttShow.displayName || ttShow.name || '').toLowerCase().replace(/[^a-z0-9]/g, '');
 
@@ -245,6 +251,20 @@ async function refreshTodayTixDates(data, updates) {
               const closedNorm = (closedMatch.title || '').toLowerCase().replace(/[^a-z0-9]/g, '');
               if (closedNorm && normTtTitle && closedNorm !== normTtTitle && !closedNorm.includes(normTtTitle) && !normTtTitle.includes(closedNorm)) {
                 console.log(`  ⚠️  TodayTix ID ${ttShow.id} recycled: our "${closedMatch.title}" vs TT "${ttShow.displayName || ttShow.name}" — skipping`);
+                break;
+              }
+              // Feed presence alone isn't proof of an active run — TodayTix can carry a
+              // stale "ghost listing" for weeks after a show actually closes (BRO-4286).
+              // Require positive bookability evidence before reopening.
+              if (!hasBookableEvidence(ttShow)) {
+                console.log(`  ⏭️  ${closedMatch.title}: TodayTix (id=${ttShow.id}) still lists this show but shows no bookable evidence (areRegularTicketsAvailable=${ttShow.areRegularTicketsAvailable}, bookingEndDate=${ttShow.bookingEndDate || 'none'}) — staying closed`);
+                break;
+              }
+              // A human-corrected closingDate is an explicit signal to trust over
+              // TodayTix — reopening would leave status=open next to a protected,
+              // now-contradictory closingDate.
+              if (!canWriteClosingDate(closedMatch)) {
+                console.log(`  🔒 ${closedMatch.title}: humanCorrectedClosingDate=true — not reopening despite TodayTix (id=${ttShow.id}) listing (closingDate=${closedMatch.closingDate} preserved)`);
                 break;
               }
               // Same todaytixId AND similar title — TodayTix still lists this exact show!
@@ -954,7 +974,11 @@ async function updateShowStatuses() {
   return updates;
 }
 
-updateShowStatuses().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  updateShowStatuses().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = { refreshTodayTixDates };
