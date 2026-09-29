@@ -429,18 +429,6 @@
     "queuedAt": "2026-09-28T22:37:43.007Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
-    "title": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
-    "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-28T22:37:43.055Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
     "title": "Review gap — \"Tru\" missing 2 cited review(s)",
     "description": "Tru (tru-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
@@ -636,5 +624,29 @@
       }
     ],
     "queuedAt": "2026-09-29T02:12:10.076Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Review gap — \"School Girls; Or, The African Mean Girls Play\" missing 7 cited review(s)",
+    "description": "School Girls; Or, The African Mean Girls Play (school-girls-or-the-african-mean-girls-play-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=school-girls-or-the-african-mean-girls-play-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T02:37:18.902Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-standard-of-living-west-end-2026",
+    "title": "Review gap — \"The Standard Of Living\" missing 10 cited review(s)",
+    "description": "The Standard Of Living (the-standard-of-living-west-end-2026): 10 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-standard-of-living-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T02:37:18.928Z"
   }
 ]
