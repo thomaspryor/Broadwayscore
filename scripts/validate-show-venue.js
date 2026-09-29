@@ -205,6 +205,9 @@ function isExemptFromPlaybillCheck(show) {
   // establishes for a stub. A tour without a roundup still goes through the
   // tour-aware Playbill match in scorePlaybillUrl.
   if (show.category === 'tour' && src.startsWith('aggregator-roundup')) return true;
+  // A tour found running on Tours To You (BRO-4325) is created only when
+  // Wikipedia confirms the launch too: two independent sources already agree.
+  if (show.category === 'tour' && src === 'tour-schedule:tourstoyou' && show.openingDateSource === 'tourstoyou+wikipedia') return true;
   // Free outdoor/park productions with no Playbill /production/ page at all
   // (not tracked by Playbill's commercial-production database) are exempt.
   // Without this, the SERP query in findPlaybillUrl() falls back to a

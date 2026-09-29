@@ -190,4 +190,4 @@ if (require.main === module) {
     .finally(() => require('./lib/scraper').cleanup().catch(() => {}).finally(() => process.exit(process.exitCode || 0)));
 }
 
-module.exports = { fetchWikiText, fetchSchedule };
+module.exports = { fetchWikiText, fetchSchedule, fetchText };

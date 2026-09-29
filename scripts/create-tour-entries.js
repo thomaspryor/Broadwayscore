@@ -14,6 +14,11 @@
  * Anything short of that stays a candidate, and route-tour-candidates.js asks
  * the owner about it as before.
  *
+ * Before that, discover-running-tours.js records tours already on the road
+ * from Tours To You's full show list (BRO-4325): a roundup only ever arrives
+ * for a new tour, so tours running before launch would never be found.
+ * --no-discover skips it.
+ *
  * Created ids go to GITHUB_OUTPUT (created=a,b) so the workflow can gather
  * reviews and sweep the Broadway parent for them.
  *
@@ -29,7 +34,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { tourAutomationMode } = require('./lib/tour-automation-mode');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { openTourCandidates } = require('./lib/tour-roundup-candidate');
+const { openTourCandidates, recordTourCandidates } = require('./lib/tour-roundup-candidate');
 const { decideTourDates } = require('./lib/tour-schedule');
 const { buildTourEntry } = require('./lib/tour-entry');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -42,6 +47,7 @@ const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'tour-autocreate.json');
 const USAGE = `create-tour-entries.js — create national-tour entries from roundup candidates (BRO-4262)
   --write   write shows.json and mark candidates created (default: report only)
   --time-budget-min=N  stop cleanly after N minutes
+  --no-discover  skip finding running tours on Tours To You
   TOUR_AUTOCREATE=off|report   kill switch / force report-only`;
 
 async function main() {
@@ -56,6 +62,22 @@ async function main() {
   };
   if (mode === 'off') { console.log('TOUR_AUTOCREATE=off — skipping'); writeAudit({ mode: 'off', created: [], results: [] }); return; }
   const write = argv.includes('--write') && mode === 'write';
+  // Stop cleanly before the workflow's timeout; unprocessed candidates stay open.
+  const budget = createRunBudget(parseTimeBudgetMin(argv));
+
+  if (!argv.includes('--no-discover')) {
+    try {
+      const { discoverRunningTours } = require('./discover-running-tours');
+      const current = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
+      const { candidates } = await discoverRunningTours({ shows: current, budget });
+      // Recorded in report mode too: route-tour-candidates.js reads the file.
+      const n = recordTourCandidates(CANDIDATES, candidates);
+      console.log(`${candidates.length} running tour(s) found; ${n} candidate row(s) tracked`);
+    } catch (e) {
+      // Discovery failing must not stop roundup candidates from being created.
+      console.log(`::warning::running-tour discovery failed: ${e.message}`);
+    }
+  }
   if (!fs.existsSync(CANDIDATES)) { console.log('No tour candidates recorded.'); writeAudit({ mode: write ? 'write' : 'report', created: [], results: [] }); return; }
 
   const { fetchSchedule, fetchWikiText } = require('./enrich-tour-dates');
@@ -68,24 +90,25 @@ async function main() {
   const retiredIds = { has: (id) => { try { return require('./lib/retired-show-ids').isRetiredId(id); } catch { return false; } } };
   console.log(`${open.length} open tour candidate(s)${write ? '' : ' (report only)'}`);
 
-  // Stop cleanly before the workflow's timeout; unprocessed candidates stay open.
-  const budget = createRunBudget(parseTimeBudgetMin(argv));
   const results = [];
   for (const c of open) {
     if (budget.exceeded()) { console.log(`Time budget reached; ${open.length - results.length} candidate(s) left for the next run`); break; }
     const parent = byId.get(c.broadwayShowId);
     console.log(`\n${c.title} (${c.broadwayShowId})`);
     const probe = { id: null, title: parent.title, tourScheduleSlug: c.tourScheduleSlug, openingDate: null, closingDate: null };
-    const { url: scheduleUrl, html } = await fetchSchedule(probe, fetchPage);
+    // A tour found on Tours To You is fetched there plainly (no paid scraper).
+    const found = c.source === 'tourstoyou';
+    const { url: scheduleUrl, html } = await fetchSchedule(probe, found ? async () => '' : fetchPage);
     let wiki = '';
     try { wiki = await fetchWikiText(parent.title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
     const decision = scheduleUrl
-      ? decideTourDates(probe, html, wiki, new Date(), { seenAt: c.firstSeen || c.lastSeen })
+      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart } : { seenAt: c.firstSeen || c.lastSeen })
       : { write: {}, notes: [], problem: 'no Tours To You page found for this title' };
-    const built = buildTourEntry({ parent, shows, decision, roundupUrl: c.url, scheduleUrl, retiredIds });
+    const roundupUrl = found ? null : c.url;
+    const built = buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds });
     if (built.skip) console.log(`  stays a suggestion: ${built.skip}`);
     else console.log(`  ${write ? 'creating' : 'would create'} ${built.entry.id} (${built.entry.openingDate}..${built.entry.closingDate || 'running'})`);
-    results.push({ candidate: c.broadwayShowId, roundupUrl: c.url, scheduleUrl, notes: decision.notes, skip: built.skip || null, entry: built.entry || null });
+    results.push({ candidate: c.broadwayShowId, roundupUrl, scheduleUrl, notes: decision.notes, skip: built.skip || null, entry: built.entry || null });
   }
 
   const created = [];

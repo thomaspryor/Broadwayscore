@@ -13,7 +13,8 @@
  * - Rows marked ♦ are rescheduled/cancelled and ignored.
  * - A gap of more than 8 weeks between engagements starts a new segment: a
  *   second tour, or a sit-down run before the tour (Life of Pi's Toronto run).
- * - A launch date is written only when Wikipedia also names it.
+ * - A launch date is written only when Wikipedia also names it: the date, a
+ *   date inside the first engagement, or the launch city in the tour's year.
  * - A closing date is written only on a positive signal: a later segment of
  *   the same title has started, Wikipedia names that final date, or the page
  *   states a closed range for the tour ("Tour (2024–2026)"). Silence
@@ -145,6 +146,18 @@ const wikiForms = d => {
   const cap = m[0].toUpperCase() + m.slice(1);
   return [`${cap} ${d.getUTCDate()}, ${d.getUTCFullYear()}`, `${d.getUTCDate()} ${cap} ${d.getUTCFullYear()}`, iso(d)];
 };
+/**
+ * Article prose only: citations carry their own dates (access-date, the
+ * source's publish date) that say nothing about the tour. Come From Away's
+ * "access-date=September 20, 2026" matched its tour's first stop (BRO-4325).
+ */
+function proseOnly(wikiText) {
+  return String(wikiText || '')
+    .replace(/<ref[^>]*\/>/gi, '')
+    .replace(/<ref[\s\S]*?<\/ref>/gi, '')
+    .replace(/\{\{\s*cite[\s\S]*?\}\}/gi, '');
+}
+
 /** Wikipedia names this date (either date style, or ISO in a template). */
 function wikiNames(wikiText, d) {
   const t = String(wikiText || '');
@@ -157,7 +170,7 @@ function wikiNames(wikiText, d) {
  * (a last listed stop's date can show up in an unrelated sentence).
  */
 function wikiNamesClosing(wikiText, d) {
-  const t = String(wikiText || '');
+  const t = proseOnly(wikiText);
   for (const form of wikiForms(d)) {
     let i = t.indexOf(form);
     while (i !== -1) {
@@ -179,8 +192,69 @@ function segmentLaunch(seg, wikiText) {
   // 120 days covers a sit-down run before the tour proper (Life of Pi:
   // Toronto in September, Baltimore launch in December).
   const limit = seg.start.getTime() + 120 * DAY;
-  const row = seg.rows.find(r => r.start.getTime() <= limit && wikiNames(wikiText, r.start));
+  const openers = seg.rows.filter(r => r.start.getTime() <= limit);
+  const prose = proseOnly(wikiText);
+  const row = openers.find(r => wikiNamesLaunch(prose, r.start))
+    // Wikipedia often names the launch another way (BRO-4325): opening night
+    // inside the first engagement (Water for Elephants: previews Sep 27,
+    // "premiered on September 30, 2025"), or the launch city with its month
+    // or season ("began in September 2026, starting from the Hippodrome
+    // Theatre in Baltimore"; "launch in fall of 2026 in Cleveland"). Both must
+    // sit in tour text; the city beside a launch word.
+    || (wikiNamesOpeningInside(prose, seg.rows[0]) ? seg.rows[0] : null)
+    || openers.find(r => wikiNamesLaunchCity(prose, r));
   return row ? row.start : null;
+}
+
+/** Windows of wikitext around each mention of a tour, where launch facts sit. */
+function tourWindows(wikiText, radius = 300) {
+  const t = String(wikiText || '');
+  const out = [];
+  for (const m of t.matchAll(/\btour(s|ing|ed)?\b/gi)) out.push(t.slice(Math.max(0, m.index - radius), m.index + radius));
+  return out;
+}
+
+const LAUNCH_WORD = /\b(launch|premier|began|begin|start|kick(ed|s)? off|open(ed|s)? (in|at|on))/i;
+
+/**
+ * Tour text names this date beside a launch word. A date in a table of stops
+ * is not a launch: Harry Potter's article lists Seattle on 22 August 2026, but
+ * the tour began in Denver in May (BRO-4325).
+ */
+function wikiNamesLaunch(prose, d) {
+  const forms = wikiForms(d);
+  return tourWindows(prose, 250).some(w => LAUNCH_WORD.test(w) && forms.some(f => w.includes(f)));
+}
+
+/** A date inside the engagement (not its first day) named in tour text. */
+function wikiNamesOpeningInside(wikiText, row) {
+  const windows = tourWindows(wikiText, 250).filter(w => LAUNCH_WORD.test(w));
+  for (let t = row.start.getTime() + DAY; t <= row.end.getTime(); t += DAY) {
+    const forms = wikiForms(new Date(t));
+    if (windows.some(w => forms.some(f => w.includes(f)))) return true;
+  }
+  return false;
+}
+
+const SEASONS = { spring: [2, 3, 4], summer: [5, 6, 7], fall: [8, 9, 10], autumn: [8, 9, 10], winter: [11, 0, 1] };
+
+/**
+ * Tour text names the engagement's city, its month or season with its year
+ * ("September 2026", "September 13, 2026", "fall of 2026"), and a launch word.
+ * A bare year is not enough: Beauty and the Beast "opened in June 2025 ... in
+ * Chicago", but the Chicago stop began July 9.
+ */
+function wikiNamesLaunchCity(wikiText, row) {
+  const city = String(row.city || '').split(',')[0].trim();
+  if (city.length < 4) return false;
+  const esc = x => x.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const cityRe = new RegExp(`\\b${esc(city)}\\b`, 'i');
+  const y = row.start.getUTCFullYear();
+  const mi = row.start.getUTCMonth();
+  const month = MONTHS[mi];
+  const seasons = Object.keys(SEASONS).filter(k => SEASONS[k].includes(mi)).join('|');
+  const whenRe = new RegExp(`\\b(${month}(\\s+\\d{1,2},)?\\s+${y}|(${seasons})\\s+(of\\s+)?${y})\\b`, 'i');
+  return tourWindows(wikiText, 250).some(w => cityRe.test(w) && whenRe.test(w) && LAUNCH_WORD.test(w));
 }
 
 /**
@@ -189,9 +263,11 @@ function segmentLaunch(seg, wikiText) {
  * - Id year ({title}-tour-2022): the one segment whose named launch is that year.
  * - Otherwise (a new tour from a roundup): the segment whose named launch falls
  *   within 120 days before the roundup was first seen (a week after, for
- *   listings that lag). No match = null, never a guess.
+ *   listings that lag).
+ * - A tour found running (segmentStart): the segment starting then.
+ * No match = null, never a guess.
  */
-function pickSegment(segments, tour, wikiText, { seenAt } = {}) {
+function pickSegment(segments, tour, wikiText, { seenAt, segmentStart } = {}) {
   const tours = segments.filter(s => s.rows.length > 1);
   const launch = tour && tour.openingDate ? new Date(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`) : null;
   if (launch && !Number.isNaN(launch.getTime())) {
@@ -203,10 +279,28 @@ function pickSegment(segments, tour, wikiText, { seenAt } = {}) {
     const sameYear = named.filter(x => x.launch.getUTCFullYear() === idYear);
     return sameYear.length === 1 ? sameYear[0].s : null;
   }
+  // A tour found running on its schedule page (tour-discovery.js): the segment
+  // discovery saw, by its first engagement.
+  if (segmentStart) {
+    const at = new Date(`${String(segmentStart).slice(0, 10)}T00:00:00Z`).getTime();
+    const hit = tours.filter(s => Math.abs(s.start.getTime() - at) <= 7 * DAY);
+    return hit.length === 1 ? hit[0] : null;
+  }
   const seen = seenAt ? new Date(seenAt) : null;
   if (!seen || Number.isNaN(seen.getTime())) return null;
   const near = named.filter(x => x.launch <= new Date(seen.getTime() + 7 * DAY) && x.launch >= new Date(seen.getTime() - 120 * DAY));
   return near.length === 1 ? near[0].s : null;
+}
+
+/**
+ * The one tour segment running at now (from 30 days before its first
+ * engagement to 30 days after its last), or null. Two running at once
+ * (Hamilton's companies share a page) is ambiguous and returns null.
+ */
+function currentSegment(segments, now = new Date()) {
+  const t = now.getTime();
+  const hit = segments.filter(s => s.rows.length > 1 && s.start.getTime() - 30 * DAY <= t && t <= s.end.getTime() + 30 * DAY);
+  return hit.length === 1 ? hit[0] : null;
 }
 
 /**
@@ -241,7 +335,7 @@ function statedClosedRanges(source) {
  * @param {string} scheduleHtml Tours To You page
  * @param {string} wikiText Wikipedia raw wikitext of the show's article
  * @param {Date} [now]
- * @param {{seenAt?: string}} [opts] when the roundup for a new tour was first seen
+ * @param {{seenAt?: string, segmentStart?: string}} [opts] when the roundup for a new tour was first seen, or the first engagement of a tour found running
  * @returns {{write: {openingDate?: string, closingDate?: string}, notes: string[], problem?: string}}
  */
 function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = {}) {
@@ -294,6 +388,10 @@ module.exports = {
   parseTourSchedule,
   segmentTourRows,
   pickSegment,
+  currentSegment,
+  segmentLaunch,
+  wikiNamesOpeningInside,
+  wikiNamesLaunchCity,
   decideTourDates,
   statedClosedRanges,
   scheduleSlugs,
