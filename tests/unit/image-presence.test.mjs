@@ -108,6 +108,7 @@ test('findImagelessScoredShows flags a scored, old, imageless show and ignores t
     { id: 'c', hasImages: false, reviewCount: 0, sinceMs: old },
     { id: 'd', hasImages: false, reviewCount: 5, sinceMs: fresh },
     { id: 'e', hasImages: false, reviewCount: 5, sinceMs: null },
+    { id: 'f', hasImages: false, reviewCount: 5, sinceMs: nowMs - DEFAULT_THRESHOLD_HOURS * 3600 * 1000 },
   ], { nowMs, thresholdHours: DEFAULT_THRESHOLD_HOURS });
-  assert.deepEqual(flagged.map((f) => f.id), ['a']);
+  assert.deepEqual(flagged.map((f) => f.id), ['a', 'f']);
 });
