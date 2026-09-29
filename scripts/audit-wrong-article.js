@@ -60,6 +60,10 @@ function findSuspects(textsDir, shows) {
 }
 
 function main(argv) {
+  if (require('./lib/cli-help').hasHelpFlag(argv)) {
+    console.log('Usage: node scripts/audit-wrong-article.js [--list | --record-verified]  (no flag = CI check)');
+    return 0;
+  }
   const { scanned, suspects } = findSuspects(TEXTS, loadShows());
   let verified = {};
   try { verified = JSON.parse(fs.readFileSync(VERIFIED_PATH, 'utf8')); } catch { /* none yet */ }

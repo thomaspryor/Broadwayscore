@@ -93,7 +93,7 @@ const HELP_CHECK_RE = /hasHelpFlag\s*\(|(['"])--help\1|(['"])-h\2(?=\s*[),;]|\s*
 // e.g. bsc-conductor.js's `spawnSync: realSpawnSync`), not a risky CALL, and
 // matching it produced false positives on every already-fixed autonomous-*/
 // bsc-* script (adversarial review follow-up, task #498).
-const RISKY_CALL_RE = /\b(?:execSync|spawnSync|spawn|execFile(?:Sync)?)\s*\(|\bsaveShows\s*\(|\bsafeWriteReview\s*\(|\bfs\.(?:rmSync|unlinkSync|rmdirSync)\s*\(|\baxios\.\w+\s*\(|\bhttps?\.(?:request|get)\s*\(|\bfetchPage\s*\(|\bfetch\s*\(/g;
+const RISKY_CALL_RE = /\b(?:execSync|spawnSync|spawn|execFile(?:Sync)?)\s*\(|\bsaveShows\s*\(|\bsafeWriteReview\s*\(|\bfs\.(?:rmSync|unlinkSync|rmdirSync|writeFileSync|renameSync)\s*\(|\baxios\.\w+\s*\(|\bhttps?\.(?:request|get)\s*\(|\bfetchPage\s*\(|\bfetch\s*\(/g;
 const MAIN_FN_RE = /(?:async\s+)?function\s+main\s*\(/;
 
 function loadBaseline() {
@@ -538,7 +538,7 @@ function checkFile(file, src) {
   }
 
   if (!ordering.hasHelpCheck && hasRiskyOp) {
-    return { file, rule: 'B', blocking: true, detail: 'performs risky work (execSync/child_process/saveShows/safeWriteReview/fs delete/network call) with no --help/-h check anywhere' };
+    return { file, rule: 'B', blocking: true, detail: 'performs risky work (execSync/child_process/saveShows/safeWriteReview/fs write/delete/network call) with no --help/-h check anywhere' };
   }
 
   return null;

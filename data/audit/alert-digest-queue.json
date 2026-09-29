@@ -2501,5 +2501,63 @@
       }
     ],
     "queuedAt": "2026-09-29T21:57:36.228Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4396-part1",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4396-part1",
+    "description": "land.yml did not land land/bro-4396-part1: the unit-tests-node gate went red at 7d95fdd92e. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36641097496",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4396-part1"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "7d95fdd92ef4731342a7f716e8f28c5faf88d54b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36641097496"
+      }
+    ],
+    "queuedAt": "2026-09-29T23:06:11.795Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4396-all",
+    "title": "Landing blocked: rebase red on land/bro-4396-all",
+    "description": "land.yml did not land land/bro-4396-all: the rebase gate went red at 9e628fa8ed. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4396-all @ 9e628fa8ed (origin/land/bro-4396-all) → origin/main @ e03b22336c REFUSED: rebase: branch would not rebase cleanly onto origin/main @ e03b22336c: Rebasing (1/1) error: could not apply 9e628fa8ed... feat(BRO-4396): Off-Broadway venue coverage: 54 listings readers, TheaterMania + own-listing corroboration, per-venue coverage alert hint: Resolve all conflicts manually, mark  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36644790728",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4396-all"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "9e628fa8ed877277b40ebeb4786c89c1dbbdf6ef"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36644790728"
+      }
+    ],
+    "queuedAt": "2026-09-29T23:51:16.938Z"
   }
 ]

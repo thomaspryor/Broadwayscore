@@ -19,6 +19,12 @@ const fs = require('fs');
 const path = require('path');
 const { isScoreable } = require('./lib/is-scoreable');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { hasHelpFlag } = require('./lib/cli-help');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/flag-rescore-needed.js [--dry-run] [--tier=1,2]\n  --dry-run   Show what would be flagged without writing files\n  --tier=N,M  Only flag outlets in specified tiers');
+  process.exit(0);
+}
 
 // Build showId → { title } map so isScoreable can activate the wrongShow
 // stale-flag override (Notion 34e637c5-416f-8121).
@@ -37,6 +43,7 @@ function loadShowTitles() {
         previewsStartDate: s.previewsStartDate,
         openingDate: s.openingDate,
         priorRuns: s.priorRuns,
+        tourLegs: s.tourLegs,
       });
     }
   } catch { /* fall through — predicate fails safe to exclude wrongShow files */ }

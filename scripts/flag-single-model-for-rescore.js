@@ -19,6 +19,10 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
 const SHOWS_JSON = path.join(__dirname, '..', 'data', 'shows.json');
 const apply = process.argv.includes('--apply');
+if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/flag-single-model-for-rescore.js [--apply] (dry run without --apply)');
+  process.exit(0);
+}
 
 // Build showId → { title } map so isScoreable can activate the wrongShow
 // stale-flag override (Notion 34e637c5-416f-8121).
@@ -37,6 +41,7 @@ function loadShowTitles() {
         previewsStartDate: s.previewsStartDate,
         openingDate: s.openingDate,
         priorRuns: s.priorRuns,
+        tourLegs: s.tourLegs,
       });
     }
   } catch { /* fall through — predicate fails safe to exclude wrongShow files */ }

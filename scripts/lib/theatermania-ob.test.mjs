@@ -12,6 +12,7 @@ const {
 const { addShowsFromPlans } = require('./pending-add-shows.js');
 const { isUnconfirmedDateSource } = require('./date-source-confidence.js');
 const { checkForDuplicate } = require('./deduplication.js');
+const { isKnownOffBroadwayVenue } = require('./venue-classification.js');
 const { isNonTheaterContent, isOneNightShow } = require('../discover-new-shows.js');
 
 const fixture = JSON.parse(readFileSync(new URL('./fixtures/theatermania-ob-sample.json', import.meta.url), 'utf8'));
@@ -42,17 +43,20 @@ test('preview + opening → both dates, opening marked theatermania (unconfirmed
   assert.equal(r.candidate.venue, '59E59 Theaters');
   assert.equal(r.candidate.category, 'off-broadway');
   assert.equal(r.candidate.provisional, undefined, '59E59 is a known OB venue: no Playbill cross-check needed');
-  // A venue not on data/off-broadway-venues.json. (This used the fixture's
-  // Judson Memorial Church row, which stopped being unknown once BRO-4377's
-  // shows landed and the list was regenerated — the list grows daily, so the
-  // test pins a venue that will never be on it.)
-  const qt = row(/^Queeney Todd/);
-  const unknownId = 990000001;
-  const unknownVenue = parseTmOffBroadwayRow(
-    { ...qt, acf: { ...qt.acf, the_venue: [unknownId] } },
-    { venuesById: new Map([...venuesById, [unknownId, { id: unknownId, title: { rendered: 'Zzyzx Test Loft' }, acf: { city: 'New York' } }]]), genresById },
-  );
-  assert.equal(unknownVenue.candidate.venue, 'Zzyzx Test Loft');
+  // data/off-broadway-venues.json grows as discovery adds shows (Judson
+  // Memorial Church joined it 2026-09-29 22:35 and turned main red), so the
+  // fixture's real venue can't be pinned as unknown: check the rule against
+  // the live list, and prove the unknown branch with a venue no list holds.
+  const judson = parse(/^Queeney Todd/);
+  assert.equal(judson.candidate.venue, 'Judson Memorial Church');
+  assert.equal(judson.candidate.provisional, isKnownOffBroadwayVenue(judson.candidate.venue) ? undefined : true);
+  const qRow = row(/^Queeney Todd/);
+  const renamed = new Map(venuesById);
+  for (const [id, v] of venuesById) {
+    if (v.title?.rendered === 'Judson Memorial Church') renamed.set(id, { ...v, title: { rendered: 'Zzq Nonexistent Playhouse' } });
+  }
+  const unknownVenue = parseTmOffBroadwayRow(qRow, { venuesById: renamed, genresById });
+  assert.equal(unknownVenue.candidate.venue, 'Zzq Nonexistent Playhouse');
   assert.equal(unknownVenue.candidate.provisional, true, 'unknown venue → provisional');
   assert.equal(r.candidate.discoverySource, 'theatermania-ob');
   assert.equal(isUnconfirmedDateSource({ category: 'off-broadway', openingDateSource: 'theatermania' }), true,

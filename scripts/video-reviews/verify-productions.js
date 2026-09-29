@@ -33,6 +33,7 @@ const path = require('path');
 const { listShowDirs } = require('../lib/list-show-dirs');
 const { describeProduction, videoPredatesProduction } = require('../lib/video-production-context');
 const { GPT4O, CLAUDE_SONNET, GEMINI_FLASH } = require('../lib/models');
+const { invalidateWrongProductionAutoClear } = require('../lib/review-write-guard');
 
 const ROOT = path.resolve(__dirname, '../..');
 const TRANSCRIPTS_DIR = path.join(ROOT, 'data/video-reviews-transcripts');
@@ -241,6 +242,8 @@ async function main() {
       if (isWrong) {
         fresh.wrongProduction = true;
         fresh.wrongProductionReason = v.reason;
+        // a stale auto-clear breadcrumb beside a fresh flag would let the guards clear it again
+        invalidateWrongProductionAutoClear(fresh);
       }
       fs.writeFileSync(job.file, JSON.stringify(fresh, null, 2) + '\n');
     }

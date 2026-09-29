@@ -338,6 +338,36 @@ function stripTrailingJunk(text) {
 }
 
 /**
+ * Strip a raw leading HTML tag left behind when the article's first child is
+ * an image (e.g. a WordPress star-rating graphic) and the extractor's
+ * HTML-to-text pass didn't convert it. Found in Theatre Weekly's Dog Man
+ * review (BRO-4154 punctuation-bug recovery, 2026-09-25): fullText started
+ * with a full `<img ... srcset="...">` tag before any review prose. Only
+ * strips void tags that never wrap real prose (img/source/br/meta/link) and
+ * <picture> wrappers, so genuine text starting with "<" is untouched. Runs
+ * BEFORE entity decoding so prose that begins with an escaped "&lt;img&gt;"
+ * is never mistaken for markup.
+ *
+ * @param {string} text
+ * @returns {string}
+ */
+function stripLeadingHtmlArtifacts(text) {
+  if (!text) return text;
+  let out = text;
+  for (let i = 0; i < 8; i++) {
+    // Void/self-closing image tags, plus open/close of <picture>, which only
+    // wraps <source>/<img>. <figure> is NOT stripped: it can carry a
+    // <figcaption> that would be left dangling.
+    // Quoted attribute values may contain '>' (alt="5 > 3 stars"); the
+    // length cap keeps a stray '<img' in prose from eating a paragraph.
+    const next = out.replace(/^\s*(?:<(?:img|source|br|meta|link)\b(?:"[^"]*"|'[^']*'|[^>"']){0,4000}>|<\/?picture\b[^>]{0,200}>)\s*/i, '');
+    if (next === out) break;
+    out = next;
+  }
+  return out;
+}
+
+/**
  * Strip leading navigation junk from scraped review text.
  * Many sites (TheWrap, BroadwayNews, NY Daily News, Chicago Tribune) include
  * "Skip to content" followed by site navigation menus, whitespace, and other
@@ -445,6 +475,10 @@ function cleanText(text) {
 
   let cleaned = text;
 
+  // Step 1a: Strip a raw leading <img>/<picture>/<source> tag artifact —
+  // before decoding, so an escaped "&lt;img&gt;" in prose is never touched.
+  cleaned = stripLeadingHtmlArtifacts(cleaned);
+
   // Step 1: Decode HTML entities
   cleaned = decodeHtmlEntities(cleaned);
 
@@ -484,6 +518,7 @@ function cleanText(text) {
 
 module.exports = {
   decodeHtmlEntities,
+  stripLeadingHtmlArtifacts,
   stripLeadingNavigation,
   stripTrailingJunk,
   stripCrossReferences,

@@ -155,8 +155,12 @@ function main() {
       reason: 'shadow-gated-contradiction',
       wrongShowOnly: flag === 'wrongShow',
     });
-    if (flag === 'wrongProduction') { d.wrongProductionManualClear = true; }
-    else if (flag === 'wrongShow') { d.wrongShowManualClear = true; }
+    // BRO-4385: an automated writer must NOT claim a human clear — every later
+    // wrongProduction guard honors ManualClear. Leave an AutoCleared breadcrumb.
+    if (flag === 'wrongProduction') {
+      d.wrongProductionAutoCleared = 'shadow-gated-contradiction';
+      d.wrongProductionAutoClearedAt = new Date().toISOString();
+    } else if (flag === 'wrongShow') { d.wrongShowManualClear = true; }
     d.autoClearedAt = new Date().toISOString();
     d.autoClearReason = 'shadow-gated-contradiction';
     safeWriteReview(fp, d);

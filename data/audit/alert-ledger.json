@@ -146,10 +146,10 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T22:13:28.370Z",
-      "lastNotifiedAt": "2026-09-29T22:13:28.370Z",
+      "lastSeen": "2026-09-29T23:34:15.828Z",
+      "lastNotifiedAt": "2026-09-29T23:34:15.828Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
-      "notifyCount": 115,
+      "notifyCount": 118,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -3849,11 +3849,11 @@
       "resolvedAt": "2026-09-22T16:48:58.111Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T22:13:28.361Z",
+      "lastSeen": "2026-09-29T22:18:39.062Z",
       "lastNotifiedAt": "2026-09-29T21:10:44.551Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
@@ -3866,7 +3866,9 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
       "absentRunIds": [],
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-09-29T22:37:03.239Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -4742,13 +4744,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-29T22:10:41.470Z",
+      "lastSeen": "2026-09-29T23:47:15.722Z",
       "lastNotifiedAt": "2026-09-29T12:18:28.491Z",
       "lastSurfacedAt": "2026-09-29T12:18:28.491Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 16
+      "silentRefires": 22
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5872,18 +5874,20 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T22:13:28.367Z",
+      "lastSeen": "2026-09-29T22:18:39.100Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4255",
       "absentRunIds": [],
-      "silentRefires": 14
+      "silentRefires": 14,
+      "resolvedAt": "2026-09-29T22:37:03.244Z",
+      "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6597,9 +6601,9 @@
       "absentRunIds": [
         "36632283654",
         "36634165435",
-        "36636848795"
+        "36637503085"
       ],
-      "resolvedAt": "2026-09-29T22:13:28.238Z",
+      "resolvedAt": "2026-09-29T22:18:38.976Z",
       "resolveReason": "stale-signature"
     },
     "land:land/font-selfhost-v3": {
@@ -6875,11 +6879,11 @@
       "linearIdentifier": "BRO-4390"
     },
     "test-yml:red:Lint Workflows:8be00113": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
       "firstSeen": "2026-09-29T21:43:53.789Z",
-      "lastSeen": "2026-09-29T22:13:28.355Z",
+      "lastSeen": "2026-09-29T23:08:03.724Z",
       "lastNotifiedAt": "2026-09-29T21:43:53.789Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -6891,22 +6895,25 @@
         "runId": "36633606651",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36633606651"
       },
-      "silentRefires": 1
+      "silentRefires": 4,
+      "resolvedAt": "2026-09-29T23:34:15.817Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-4380-enforce": {
       "status": "open",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/bro-4380-enforce",
       "firstSeen": "2026-09-29T21:47:33.892Z",
-      "lastSeen": "2026-09-29T21:47:33.892Z",
+      "lastSeen": "2026-09-29T22:47:30.283Z",
       "lastNotifiedAt": "2026-09-29T21:47:33.892Z",
       "lastSurfacedAt": "2026-09-29T21:47:33.892Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/job/linear-BRO-4385-mun5p7dd": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4385-mun5p7dd",
       "firstSeen": "2026-09-29T21:47:48.321Z",
@@ -6915,28 +6922,57 @@
       "lastSurfacedAt": "2026-09-29T21:47:48.321Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T22:22:59.584Z"
     },
     "land:land/bro-4154-recollect-0929": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-4154-recollect-0929",
       "firstSeen": "2026-09-29T21:50:33.440Z",
-      "lastSeen": "2026-09-29T21:50:33.440Z",
+      "lastSeen": "2026-09-29T23:01:20.899Z",
       "lastNotifiedAt": "2026-09-29T21:50:33.440Z",
       "lastSurfacedAt": "2026-09-29T21:50:33.440Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 3,
+      "resolvedAt": "2026-09-29T23:40:20.739Z"
     },
     "land:land/job/linear-BRO-4387-mun6krwj": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4387-mun6krwj",
       "firstSeen": "2026-09-29T21:57:36.227Z",
       "lastSeen": "2026-09-29T21:57:36.227Z",
       "lastNotifiedAt": "2026-09-29T21:57:36.227Z",
       "lastSurfacedAt": "2026-09-29T21:57:36.227Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T22:33:30.585Z"
+    },
+    "test-yml:red:Unit Tests:5da79e92": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"preview + opening → both dates, opening marked theatermania (unconfirmed)\"",
+      "firstSeen": "2026-09-29T23:08:03.730Z",
+      "lastSeen": "2026-09-29T23:34:15.825Z",
+      "lastNotifiedAt": "2026-09-29T23:08:03.730Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4397",
+      "silentRefires": 1
+    },
+    "land:land/bro-4396-all": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: rebase red on land/bro-4396-all",
+      "firstSeen": "2026-09-29T23:51:16.937Z",
+      "lastSeen": "2026-09-29T23:51:16.937Z",
+      "lastNotifiedAt": "2026-09-29T23:51:16.937Z",
+      "lastSurfacedAt": "2026-09-29T23:51:16.937Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

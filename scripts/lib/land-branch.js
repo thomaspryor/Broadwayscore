@@ -158,7 +158,10 @@ function shouldRetry(attempt, maxAttempts = MAX_ATTEMPTS) {
 // which keeps ONE pending run and cancels an older pending one when a newer
 // land/** push arrives. A headless job whose Land job was cancelled that way
 // used to stop at "re-run this script" and strand its work.
-const MAX_CANCEL_RETRIES = 3;
+// Same cap as the server-side re-trigger (land-retry-on-cancel.js: a run may
+// reach MAX_ATTEMPTS attempts, i.e. MAX_ATTEMPTS-1 re-runs), so the script never
+// calls a cancel final while the server would still re-run it.
+const MAX_CANCEL_RETRIES = require('./land-retry-on-cancel').MAX_ATTEMPTS - 1;
 const CANCEL_RETRY_BACKOFF_SEC = [30, 60, 120];
 
 /**
@@ -179,6 +182,30 @@ function decideCancelledLandRetry({ landConclusion, checksConclusion, remoteTip,
   if (retriesUsed >= maxRetries) return no(`retry budget spent (${retriesUsed}/${maxRetries})`);
   const backoffSec = CANCEL_RETRY_BACKOFF_SEC[Math.min(retriesUsed, CANCEL_RETRY_BACKOFF_SEC.length - 1)];
   return { retry: true, reason: `Land cancelled while pending, Checks green, tip unchanged — retry ${retriesUsed + 1}/${maxRetries}`, backoffSec };
+}
+
+// A retry-eligible cancel is re-run SERVER-side (land-retry-cancelled.yml,
+// BRO-4246); the landing script only waits for it. It used to call
+// `gh run rerun` itself 30s later, which raced the server: on 2026-09-29 the
+// server had already re-run land run 36629730821, the local rerun failed with
+// "This workflow is already running", and the script printed REFUSED
+// ("nothing reached main") for a run that was live.
+// The server re-trigger starts from a workflow_run event and needs a runner
+// first; under queue pressure that takes minutes.
+const CANCEL_GRACE_SEC = 300;
+const CANCEL_GRACE_POLL_SEC = 15;
+
+/**
+ * Pure: after a retry-eligible cancel, has the run been re-triggered?
+ * 'resume' once the run is live again or its attempt number moved past the
+ * one that was cancelled; 'wait' otherwise. Unknown status reads as 'wait'.
+ */
+function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
+  const a = Number(attempt);
+  const before = Number(attemptBefore);
+  if (Number.isFinite(a) && Number.isFinite(before) && a > before) return 'resume';
+  if (status && status !== 'completed') return 'resume';
+  return 'wait';
 }
 
 /**
@@ -700,6 +727,9 @@ module.exports = {
   shouldRetry,
   decideCancelledLandRetry,
   MAX_CANCEL_RETRIES,
+  decideCancelledWait,
+  CANCEL_GRACE_SEC,
+  CANCEL_GRACE_POLL_SEC,
   isPlausibleBranchName,
   formatLandLine,
 };
