@@ -485,6 +485,13 @@ async function scrapeNYCTheatreRoundups() {
     });
   }
 
+  // NYC Theatre covers New York productions. A national tour's title search
+  // finds its Broadway page, whose excerpts were being filed as tour reviews
+  // (Maybe Happy Ending's tour got the Times' Broadway rave; BRO-4325).
+  const { kept, tours } = require('./lib/tour-family').withoutTours(recentShows);
+  if (tours.length) console.log(`Skipping ${tours.length} national tour(s): NYC Theatre reviews New York productions only (${tours.map(s => s.id).join(', ')})`);
+  recentShows = kept;
+
   console.log(`Processing ${recentShows.length} shows from 2023+\n`);
 
   for (const show of recentShows) {
