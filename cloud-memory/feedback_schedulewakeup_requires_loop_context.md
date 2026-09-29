@@ -1,14 +1,14 @@
 ---
 name: schedulewakeup-requires-loop-context
-description: ScheduleWakeup errors outside an active /loop prompt; use Monitor to wait on background bash tasks.
+description: ScheduleWakeup errors without a prompt and is unreliable even with one (a wakeup can silently never fire); to wait on CI or a background task, stay in-turn with a run_in_background Bash loop or Monitor.
 metadata:
   node_type: memory
   type: feedback
   originSessionId: 8fc1cc3a-9b9f-4c9a-a535-c304e55cf232
-  modified: 2026-09-23T08:38:44.100Z
+  modified: 2026-09-29T05:40:00.000Z
 ---
 
-ScheduleWakeup requires a `prompt` field tied to an active `/loop` (dynamic-mode) session and errors (`prompt is required when stop is not true`) when called outside that context — it is not a general-purpose "wake me up later" tool.
+ScheduleWakeup errors (`prompt is required when stop is not true`) when called without a `prompt`; it is not a dependable general-purpose "wake me up later" tool.
 
 **Why:** hit this twice in the same session (BRO-4070) trying to use it as a generic delay/backoff mechanism while waiting on a long-running background `Bash` task (a `land.yml` CI landing, ~19 min). Both calls errored immediately.
 

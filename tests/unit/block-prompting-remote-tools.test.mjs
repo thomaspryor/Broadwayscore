@@ -28,6 +28,8 @@ const BSC_PROXY = repoWithOrigin('http://127.0.0.1:4242/git/thomaspryor/Broadway
 const OTHER = repoWithOrigin('https://github.com/thomaspryor/BroadwayScorecard-app');
 const LOOKALIKE = repoWithOrigin('https://github.com/notthomaspryor/Broadwayscore');
 const NO_ORIGIN = repoWithOrigin(null);
+const BSC_SSH = repoWithOrigin('git@github.com:thomaspryor/Broadwayscore.git');
+const LOOKALIKE_SSH = repoWithOrigin('git@github.com:thomaspryor/Broadwayscore-fork.git');
 
 function run(payload, { cwd = BSC, projectDir = cwd, env = {} } = {}) {
   const input = typeof payload === 'string' ? payload : JSON.stringify(payload);
@@ -74,6 +76,14 @@ test('add_repo for Broadwayscore is denied when it is the project checkout', () 
   assert.equal(run(addRepo('thomaspryor', 'Broadwayscore')), 'deny');
   assert.equal(run(addRepo('ThomasPryor', 'broadwayscore')), 'deny');
   assert.equal(run(addRepo('thomaspryor', 'Broadwayscore'), { cwd: BSC_PROXY }), 'deny');
+});
+
+test('add_repo matching tolerates .git suffixes, stray spaces and SSH origins', () => {
+  assert.equal(run(addRepo('thomaspryor', 'Broadwayscore.git')), 'deny');
+  assert.equal(run(addRepo(' thomaspryor ', ' Broadwayscore ')), 'deny');
+  assert.equal(run(addRepo('thomaspryor', 'Broadwayscore'), { cwd: BSC_SSH }), 'deny');
+  assert.equal(run(addRepo('thomaspryor', 'Broadwayscore'), { cwd: LOOKALIKE_SSH }), 'pass');
+  assert.equal(run(addRepo('thomaspryor', 'Broadwayscore-fork.git')), 'pass');
 });
 
 test('add_repo decision follows the project dir, not the current directory', () => {
