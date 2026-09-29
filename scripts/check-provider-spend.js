@@ -164,7 +164,16 @@ async function main() {
   // wrong — the exact gap that let the Aug 1 Browserbase rebound go unnamed.
   const callLedger = readCallLedger();
   const ledgerCounts = countCallsByProvider(callLedger, DAY);
-  const ledgerCredits = creditsByProvider(callLedger, DAY);
+  // ScrapingBee/Scrapingdog "dayCredits" is the counter delta since the
+  // previous record's reading, not the UTC day. Sum ledger credits over that
+  // same window once the previous record carries its reading time; comparing
+  // a ~13:00->13:00 billed window to a 00:00->24:00 ledger day put
+  // Scrapingdog at 13% on 2026-09-28 when the matching window was ~81%.
+  record.capturedAt = now.toISOString();
+  const creditScope = prev && prev.capturedAt && prev.capturedAt < record.capturedAt
+    ? { from: prev.capturedAt, to: record.capturedAt }
+    : DAY;
+  const ledgerCredits = creditsByProvider(callLedger, creditScope);
   const attributedPct = computeAttributedPct(ledgerCounts, record.providers, ledgerCredits);
   record.attributedPct = attributedPct;
   // Billed-unit denominator per provider — reuses provider-telemetry.js's
@@ -175,7 +184,7 @@ async function main() {
     if (attributedPct[provider] == null) continue;
     const isCreditBased = CREDIT_BILLED_PROVIDERS.has(provider);
     const top = isCreditBased
-      ? topCallersByCredits(callLedger, DAY, provider, 5).map((t) => ({ script: t.script, amount: t.credits }))
+      ? topCallersByCredits(callLedger, creditScope, provider, 5).map((t) => ({ script: t.script, amount: t.credits }))
       : topCallers(callLedger, DAY, provider, 5).map((t) => ({ script: t.script, amount: t.count }));
     const billingUnit = BILLING_COUNT_FIELD[provider](record.providers[provider] || {});
     const topSum = top.reduce((s, t) => s + t.amount, 0);
