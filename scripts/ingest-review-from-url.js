@@ -45,6 +45,7 @@ const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
+const { extractShowSection } = require('./lib/multi-show-section-extract');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 // classifyReviewUrl reasons that never occur on a scored review in the corpus
@@ -259,7 +260,17 @@ if (!show) {
   // recoverFromOwnUrl) both drive, so site chrome landed unstripped in
   // fullText and fed straight into the LLM scoring prompt (BRO-2605 ship-check
   // finding).
-  const text = stripTrailingJunk(extractArticleTextFromUrl(html, url, criticArg));
+  let text = stripTrailingJunk(extractArticleTextFromUrl(html, url, criticArg));
+  // Multi-show blog posts (interestedbystander): keep only THIS show's section,
+  // and refuse rather than score other shows' paragraphs into the file (BRO-4387).
+  if (/interestedbystander\.com\//i.test(url) && text) {
+    const sec = extractShowSection(text, show.title);
+    if (!sec) {
+      console.error(`Refusing ingest: could not isolate a "${show.title}" section in multi-show post ${url}. Ingest manually or pass the correct show title.`);
+      process.exit(1);
+    }
+    text = sec.text;
+  }
   // Star-rating fallback: UK star outlets (The Stage, Telegraph, Times, …)
   // serve recent articles as a registration wall with the review body absent
   // from server HTML — but the page's own StarRating block is still present.
