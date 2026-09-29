@@ -48,7 +48,7 @@ test('selectCandidates respects age window, review minimum and OB cap', () => {
 
 test('lintDraft fixes dashes, adds the link, and refuses wrong facts', () => {
   const f = lib.buildFacts(show, slim(), []);
-  const good = lib.lintDraft({ title: 'Reviews are in for Trainspotting — 36/100', body: 'Critics blamed "the format, not the cast." Anyone been?' }, f);
+  const good = lib.lintDraft({ title: 'Reviews are in for Trainspotting — 36/100', body: 'Outlet 0 called it "quote number 0 about the show." Anyone been?' }, f);
   assert.ok(good.ok, good.problems.join('; '));
   assert.ok(!/[—–]/.test(good.draft.title));
   assert.ok(good.draft.body.endsWith(f.url));
@@ -58,7 +58,7 @@ test('lintDraft fixes dashes, adds the link, and refuses wrong facts', () => {
   assert.ok(!lib.lintDraft({ title: '36/100', body: 'The Times called it "a total mess of a night"' }, f).ok, 'invented quote');
   assert.ok(!lib.lintDraft({ title: '36/100', body: 'We saw it last week.' }, f).ok, 'fake personal experience');
   assert.ok(!lib.lintDraft({ title: '36/100', body: 'Let us delve in. #theatre' }, f).ok, 'AI tells / hashtags');
-  assert.ok(lib.lintDraft({ title: '36/100, #2 of 20', body: 'ok' }, { ...f, reviewCount: 20 }).ok, '#2 is not a hashtag');
+  assert.ok(lib.lintDraft({ title: '36/100, #2 of 20', body: 'ok' }, { ...f, rankNote: '#2 of 20 West End shows currently running', rankPosition: 2, rankOf: 20 }).ok, '#2 is not a hashtag');
   assert.ok(!lib.lintDraft({ title: '36/100', body: 'ok', suggestedReply: 'Rankings also consider audience grade.' }, f).ok, 'made-up method in reply');
   assert.ok(!lib.lintDraft({ title: '36/100', body: 'ok', personalLines: ['Would love to hear more!'] }, f).ok, 'AI tell in personal line');
   assert.ok(!lib.lintDraft({ title: '36/100', body: 'Big night. The big talking point? Critics loved it.' }, f).ok, 'dramatic fragment');
@@ -81,7 +81,7 @@ test('submitUrl pre-fills title and body', () => {
 });
 
 test('applyPostedDetection marks a draft posted from the owner\'s post history', () => {
-  const drafts = { drafts: { a: { showTitle: 'Trainspotting', status: 'ready', createdAt: '2026-09-28T06:00:00Z' } } };
+  const drafts = { drafts: { a: { showTitle: 'Trainspotting', subreddit: 'TheWestEnd', status: 'ready', createdAt: '2026-09-28T06:00:00Z' } } };
   const posts = [{ title: 'Reviews are in for Trainspotting the Musical. 36/100', created_utc: Date.parse('2026-09-28T12:00:00Z') / 1000, permalink: '/r/TheWestEnd/comments/abc/x/', subreddit: 'TheWestEnd', score: 95 }];
   const out = lib.applyPostedDetection(drafts, posts);
   assert.equal(out.drafts.a.status, 'posted');
@@ -93,7 +93,7 @@ test('applyPostedDetection marks a draft posted from the owner\'s post history',
 });
 
 test('applyPostedDetection title match is whole-word and theater-sub only', () => {
-  const drafts = { drafts: { r: { showTitle: 'Rent', status: 'ready', createdAt: '2026-09-28T06:00:00Z' } } };
+  const drafts = { drafts: { r: { showTitle: 'Rent', subreddit: 'Broadway', status: 'ready', createdAt: '2026-09-28T06:00:00Z' } } };
   const at = Date.parse('2026-09-28T12:00:00Z') / 1000;
   const post = (title, subreddit = 'Broadway') => ({ title, subreddit, created_utc: at });
   assert.equal(lib.applyPostedDetection(drafts, [post('Lowest scoring show currently running')]).drafts.r.status, 'ready');
@@ -117,8 +117,8 @@ test('lintDraft refuses numbers and grades not in the fact sheet', () => {
 
 test('buildPeers: rank cohort only includes shows with a full review count', () => {
   const mk = (id, category, status) => ({ id, category, status });
-  const shows = [mk('we-ok', 'west-end', 'open'), mk('we-thin', 'west-end', 'open'), mk('ob-thin', 'off-broadway', 'open'), mk('ob-ok', 'off-broadway', 'previews'), mk('ob-closed', 'off-broadway', 'closed')];
-  const slims = new Map([['we-ok', slim({ n: 8 })], ['we-thin', slim({ n: 7 })], ['ob-thin', slim({ n: 3 })], ['ob-ok', slim({ n: 5 })], ['ob-closed', slim({ n: 20 })]]);
+  const shows = [mk('we-ok', 'west-end', 'open'), mk('we-thin', 'west-end', 'open'), mk('ob-thin', 'off-broadway', 'open'), mk('ob-ok', 'off-broadway', 'open'), mk('ob-previews', 'off-broadway', 'previews'), mk('ob-closed', 'off-broadway', 'closed')];
+  const slims = new Map([['we-ok', slim({ n: 8 })], ['we-thin', slim({ n: 7 })], ['ob-thin', slim({ n: 3 })], ['ob-ok', slim({ n: 5 })], ['ob-previews', slim({ n: 20 })], ['ob-closed', slim({ n: 20 })]]);
   const p = lib.buildPeers(shows, slims);
   assert.deepEqual((p['west-end'] || []).map(x => x.id), ['we-ok']);
   assert.deepEqual((p['off-broadway'] || []).map(x => x.id), ['ob-ok']);
@@ -130,6 +130,65 @@ test('lintDraft: small wrong numbers are refused even if some digit elsewhere ma
   assert.ok(!ok('Only 4 critics liked it.'), '4 is not a count in the fact sheet');
   assert.ok(ok(`It opened on the ${Number(f.openingDate.slice(8, 10))}th.`), 'the opening day is allowed');
   assert.ok(ok(`${f.buckets.rave} raves and ${f.buckets.negative} pans.`));
+});
+
+test('lintDraft catches the ship-check bad-draft set (BRO-4360)', () => {
+  // slim(): 10 reviews alternating Rave/Negative -> 5 raves, 5 negative; quotes "Quote number N about the show and its cast." from "Outlet N".
+  const f = lib.buildFacts(show, slim(), [60, 70, 80, 90].map((cs, i) => ({ id: `p${i}`, cs })));
+  const bad = (body, extra = {}) => !lib.lintDraft({ title: '36/100', body, ...extra }, f).ok;
+  const good = (body, extra = {}) => lib.lintDraft({ title: '36/100', body, ...extra }, f).ok;
+  // quotes
+  assert.ok(bad("Outlet 0 called it 'utterly dreadful stuff'."), 'single-quoted fake');
+  assert.ok(bad('Outlet 0 called it ‘utterly dreadful stuff’.'), 'curly single fake');
+  assert.ok(bad('Outlet 0 called it *utterly dreadful stuff*.'), 'italic fake');
+  assert.ok(bad('Outlet 0 said "utterly dreadful".'), 'two-word fake');
+  assert.ok(bad('x', { title: 'Critics say "utterly dreadful", 36/100' }), 'fake quote in title');
+  assert.ok(bad('The Guardian said "quote number 0 about the show".'), 'real quote, wrong outlet');
+  assert.ok(bad('Outlet 0 said "blamed the format".'), 'consensus is not a critic quote');
+  assert.ok(good('Outlet 0 said "quote number 0 about the show".'), 'real quote, right outlet');
+  assert.ok(good("It's the show's big night and they're thrilled."), 'apostrophes are not quotes');
+  // numbers tied to what they count
+  assert.ok(bad('24 raves and 5 negative.'), '24 raves (24 is only the opening day)');
+  assert.ok(bad('Twelve raves and five pans.'), 'word numbers are checked');
+  assert.ok(bad('It has 90 reviews.'), 'a quote score is not a review count');
+  assert.ok(good('Five raves, five pans, 10 reviews.'), 'correct word/digit counts');
+  // grades without +/-
+  assert.ok(bad('Audiences give it a B.'), 'plain B grade (fact sheet: B-)');
+  assert.ok(bad('Audiences give it an F.'), 'plain F grade');
+  assert.ok(good('A strange night. Audiences are at a B- so far.'), 'correct grade; sentence-initial article A is fine');
+  // rank claims need a rank
+  const noRank = lib.buildFacts(show, slim(), []);
+  assert.ok(!lib.lintDraft({ title: '36/100', body: 'The lowest-rated show in the West End right now.' }, noRank).ok, 'superlative with no rank');
+  // reply and personal lines get the same checks
+  assert.ok(bad('ok', { suggestedReply: 'It got 42 reviews and a B+.' }), 'wrong facts in the reply');
+  assert.ok(bad('ok', { personalLines: ["I've seen it twice."] }), "I've seen it without history");
+  assert.ok(good('ok', { personalLines: ["[if true] We've seen it twice."] }), 'explicit [if true] option is allowed');
+  assert.ok(bad('ok', { personalLines: ['We saw it last week.'] }), 'unmarked seen claim in a personal line');
+});
+
+test('rank ties on the rounded score block rank claims', () => {
+  const tied = lib.buildFacts(show, slim({ cs: 89.9 }), [{ id: 'm', cs: 89.8 }, ...[50, 60, 70, 80].map((cs, i) => ({ id: `p${i}`, cs }))]);
+  assert.equal(tied.rankNote, null, '89.9 and 89.8 both show as 90');
+  const clear = lib.buildFacts(show, slim({ cs: 91 }), [{ id: 'm', cs: 89.8 }, ...[50, 60, 70, 80].map((cs, i) => ({ id: `p${i}`, cs }))]);
+  assert.match(clear.rankNote, /^highest/);
+});
+
+test('templateDraft skips a consensus that would fail the checks', () => {
+  const s2 = slim(); s2.cn = { t: "Sting's passion project dazzles." };
+  const f = lib.buildFacts(show, s2, []);
+  const t = lib.templateDraft(f);
+  assert.ok(!/passion project/.test(t.body));
+  assert.ok(lib.lintDraft(t, f).ok, lib.lintDraft(t, f).problems.join('; '));
+});
+
+test('posted detection: exact slug, same subreddit, removed posts ignored', () => {
+  const at = Date.parse('2026-09-28T12:00:00Z') / 1000;
+  const d = { showTitle: 'Kimberly Akimbo', subreddit: 'TheWestEnd', url: 'https://westendscorecard.com/show/kimberly-akimbo-west-end', status: 'ready', createdAt: '2026-09-28T06:00:00Z' };
+  const run = post => lib.applyPostedDetection({ drafts: { k: d } }, [{ created_utc: at, ...post }]).drafts.k.status;
+  assert.equal(run({ title: 'Kimberly Akimbo scores 84', subreddit: 'Broadway' }), 'ready', 'Broadway post about the Broadway production');
+  assert.equal(run({ title: 'x', selftext: 'see broadwayscorecard.com/show/kimberly-akimbo-west-end-2019' }), 'ready', 'slug prefix of a longer slug');
+  assert.equal(run({ title: 'Kimberly Akimbo 84/100', subreddit: 'TheWestEnd', removed_by_category: 'automod_filtered' }), 'ready', 'removed post');
+  assert.equal(run({ title: 'x', subreddit: 'Broadway', selftext: 'westendscorecard.com/show/kimberly-akimbo-west-end.' }), 'posted', 'crosspost that links the page');
 });
 
 test('applyPostedDetection matches a shortened title via the show-page link', () => {
@@ -149,7 +208,7 @@ test('a template draft made after an LLM error is re-drafted next run', () => {
   assert.equal(pick({ ...base, status: 'posted', lintProblems: ['llm error: x'] }), 0);
 });
 
-test('pickRecentExamples takes his recent top roundup posts, newest window first', () => {
+test('pickRecentExamples takes the owner recent top roundup posts, newest window first', () => {
   const now = Date.parse('2026-09-29T00:00:00Z');
   const day = 86400;
   const body = 'x'.repeat(200);
@@ -162,7 +221,7 @@ test('pickRecentExamples takes his recent top roundup posts, newest window first
   ];
   const ex = lib.pickRecentExamples(posts, { nowMs: now, maxAgeDays: 120 });
   assert.deepEqual(ex.map(e => e.upvotes), [95, 15], 'old, off-topic and bodiless posts excluded; best first');
-  assert.match(lib.buildUserPrompt(lib.buildFacts(show, slim(), []), ex), /HIS MOST RECENT WELL-RECEIVED POSTS[\s\S]*Trainspotting/);
+  assert.match(lib.buildUserPrompt(lib.buildFacts(show, slim(), []), ex), /TOM'S MOST RECENT WELL-RECEIVED POSTS[\s\S]*Trainspotting/);
 });
 
 test('activeDrafts hides posted and stale drafts', () => {
