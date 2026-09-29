@@ -357,30 +357,6 @@
     "queuedAt": "2026-09-28T21:10:42.308Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026",
-    "title": "Review gap — \"Lost in Del Valle\" missing 12 cited review(s)",
-    "description": "Lost in Del Valle (lost-in-del-valle-return-off-broadway-2026): 12 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lost-in-del-valle-return-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-28T22:37:43.007Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
-    "title": "Review gap — \"Tru\" missing 2 cited review(s)",
-    "description": "Tru (tru-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-28T22:37:43.059Z"
-  },
-  {
     "conditionKey": "land:land/audit-agent-batch-1",
     "title": "Landing blocked: unit-tests-node red on land/audit-agent-batch-1",
     "description": "land.yml did not land land/audit-agent-batch-1: the unit-tests-node gate went red at 343c247e35. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36492174430",
@@ -1747,18 +1723,6 @@
     "queuedAt": "2026-09-29T15:57:50.543Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:cosi-fan-tutte-off-broadway-2026",
-    "title": "Review gap — \"Così fan tutte\" missing 2 cited review(s)",
-    "description": "Così fan tutte (cosi-fan-tutte-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=cosi-fan-tutte-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T16:28:12.019Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:human-things-off-broadway-2026",
     "title": "Review gap — \"Human Things\" missing 2 cited review(s)",
     "description": "Human Things (human-things-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=human-things-off-broadway-2026 --checkpoint --ingest-missing",
@@ -1769,18 +1733,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-29T16:28:12.043Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:table-17-off-west-end-2026",
-    "title": "Review gap — \"Table 17\" missing 3 cited review(s)",
-    "description": "Table 17 (table-17-off-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=table-17-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T16:28:12.089Z"
   },
   {
     "conditionKey": "review-gap:opening-window:the-holes-off-broadway-2026",
@@ -2411,32 +2363,27 @@
     "queuedAt": "2026-09-29T20:37:42.225Z"
   },
   {
-    "conditionKey": "land:land/bro-4265-tm-gap-test-2",
-    "title": "Landing blocked: rebase red on land/bro-4265-tm-gap-test-2",
-    "description": "land.yml did not land land/bro-4265-tm-gap-test-2: the rebase gate went red at 7dddda8afa. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4265-tm-gap-test-2 @ 7dddda8afa (origin/land/bro-4265-tm-gap-test-2) → origin/main @ ed4b36a557 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ ed4b36a557: Rebasing (1/4) Rebasing (2/4) Rebasing (3/4) Rebasing (4/4) error: could not apply 7dddda8afa... STATE.md for BRO-4265 resume hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36626735338",
-    "severity": "error",
+    "conditionKey": "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026",
+    "title": "Review gap — \"Lost in Del Valle\" missing 2 cited review(s)",
+    "description": "Lost in Del Valle (lost-in-del-valle-return-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lost-in-del-valle-return-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-4265-tm-gap-test-2"
-      },
-      {
-        "name": "gate",
-        "value": "rebase"
-      },
-      {
-        "name": "tip",
-        "value": "7dddda8afa3d15733de1e87729a0cca2dff0ab48"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36626735338"
-      }
-    ],
-    "queuedAt": "2026-09-29T21:02:15.556Z"
+    "fields": [],
+    "queuedAt": "2026-09-29T21:21:31.133Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
+    "title": "Review gap — \"Tru\" missing 3 cited review(s)",
+    "description": "Tru (tru-off-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-29T21:21:31.211Z"
   }
 ]

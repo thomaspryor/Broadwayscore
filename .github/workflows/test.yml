@@ -345,6 +345,8 @@ on:
       # scripts/audit-toplevel-script-test-yml-coverage.test.mjs enforces it).
       - 'scripts/check-broadway-source-coverage.js'
       - 'scripts/check-discovery-source-blind.js'
+      # BRO-4381: the Off-Broadway twin (test: tests/unit/check-off-broadway-source-coverage.test.mjs).
+      - 'scripts/check-off-broadway-source-coverage.js'
       # West End promoter job summary (audit S4-T10): required by
       # tests/unit/we-aggregator-dedup-rejections.test.mjs, so a solo edit
       # must trigger CI (same floor test).
@@ -1247,6 +1249,7 @@ on:
       # tests/unit/discovery-source-coverage.test.mjs (already globbed via
       # 'tests/**'); these two are path-listed so a solo edit triggers CI.
       - 'scripts/check-broadway-source-coverage.js'
+      - 'scripts/check-off-broadway-source-coverage.js' # BRO-4381 OB twin
       # Duplicate-show audit + the title-fragment detector it now also runs
       # (colocated *.test.mjs runs in the lib glob). Without these a solo edit
       # triggers ZERO CI.
