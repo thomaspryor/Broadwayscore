@@ -78,7 +78,7 @@ for r in "${REASONS[@]}"; do
   # Exact-match the JSON-escaped reason (parens/colons need no JSON escaping,
   # but this asserts round-trip fidelity through argv -> parseArgs -> JSON,
   # not just "some substring survived").
-  if echo "$CONTENT" | grep -qF "\"reason\":\"$r\""; then
+  if grep -qF "\"reason\":\"$r\"" <<<"$CONTENT"; then
     echo "PASS: reason '$r' round-tripped through the shell->CLI->JSON handoff intact"
   else
     echo "FAIL: reason '$r' did NOT round-trip. Ledger content:"; echo "$CONTENT" | sed 's/^/    /'

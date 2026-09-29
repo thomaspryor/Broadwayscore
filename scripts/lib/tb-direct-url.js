@@ -67,17 +67,32 @@ function buildTbCandidateUrls(title, year) {
   // has no publish-date signal, so for a revival it could match an old production's page
   // before a same-titled dated page is ever tried (verifyTbPage's date-window gate only
   // rejects it if a date happens to be extractable from the page).
-  const shortTitle = shortTitleCandidate(title);
-  if (shortTitle && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
+  // Short-title variants. Two sources, most specific first:
+  //   1. the title cut at its first ';' or ':' — TB files subtitled shows under the main
+  //      title only ("School Girls; Or, The African Mean Girls Play" → SchoolGirls.html,
+  //      School Girls opening night 2026-09-28; shortTitleCandidate only knows commas,
+  //      which gave "School Girls; Or" → SchoolGirlsOr*.html, never tried the real page);
+  //   2. shortTitleCandidate's comma cut ("Beaches, A New Musical" → Beaches.html).
+  const shortTitles = [];
+  const punctCut = (typeof title === 'string' ? title : '').split(/[;:]/)[0].trim();
+  if (punctCut && punctCut !== title) shortTitles.push(punctCut);
+  const commaShort = shortTitleCandidate(title);
+  if (commaShort && !shortTitles.includes(commaShort)) shortTitles.push(commaShort);
+  const seen = new Set(urls);
+  for (const shortTitle of shortTitles) {
+    if (normalizeText(shortTitle).length < MIN_SHORT_VARIANT_CHARS) continue;
     const camelShort = toCamelSlug(shortTitle);
     const lowerShort = toLowerSlug(shortTitle);
-    if (camelShort && camelShort !== camel) {
-      // All dated variants (camel + lowercase) before the bare undated one, so a
-      // revival can't match an old production's page before any dated page is tried.
-      urls.push(`${TB_HOST}/page/world/${camelShort}${y4}.html`);
-      urls.push(`${TB_HOST}/page/world/${camelShort}${y2}.html`);
-      urls.push(`${TB_HOST}/page/world/${lowerShort}${y4}.html`);
-      urls.push(`${TB_HOST}/page/world/${camelShort}.html`);
+    if (!camelShort || camelShort === camel) continue;
+    // All dated variants (camel + lowercase) before the bare undated one, so a
+    // revival can't match an old production's page before any dated page is tried.
+    for (const u of [
+      `${TB_HOST}/page/world/${camelShort}${y4}.html`,
+      `${TB_HOST}/page/world/${camelShort}${y2}.html`,
+      `${TB_HOST}/page/world/${lowerShort}${y4}.html`,
+      `${TB_HOST}/page/world/${camelShort}.html`,
+    ]) {
+      if (!seen.has(u)) { seen.add(u); urls.push(u); }
     }
   }
   return urls;
@@ -143,9 +158,14 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
   // oh-mary-2024 + oh-mary-west-end-2025 (both open when ship-check caught the bug).
   // 4 chars is safe for known cases: "Beaches" (7), "Grey" (4 — would work if subtitled).
   const titleVariants = [showTitle];
-  const shortTitle = shortTitleCandidate(showTitle);
-  if (shortTitle && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
-    titleVariants.push(shortTitle);
+  // Same two short forms buildTbCandidateUrls() tries: the main title before a ';' or ':'
+  // and the comma cut. A candidate URL the builder reaches must not then be rejected
+  // here because TB's page title carries only that main title.
+  const punctCut = (typeof showTitle === 'string' ? showTitle : '').split(/[;:]/)[0].trim();
+  for (const shortTitle of [punctCut !== showTitle ? punctCut : '', shortTitleCandidate(showTitle)]) {
+    if (shortTitle && !titleVariants.includes(shortTitle) && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
+      titleVariants.push(shortTitle);
+    }
   }
   const titleMatched = titleVariants.some(variant => {
     const normVariant = normalizeText(variant);
@@ -170,12 +190,35 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
   return { ok: true, publishDate };
 }
 
-async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = false, logger = console }) {
+// Total wall-clock budget for one tryTbDirectUrl() call. Each candidate that fails at the
+// scraper layer can cost 60-90 s (provider chain: Scrapingdog 400 → stealth 500 → Bright
+// Data timeout → Playwright timeout); on 2026-09-28 the loop ate 9 of the poller's 10
+// per-show minutes and the pass was killed before any review file was written (BRO-4217).
+// The budget bounds that pathological case; when TB answers fast every candidate still fits.
+const DEFAULT_TB_BUDGET_MS = 240000;
+function tbBudgetMs(explicit) {
+  if (Number.isFinite(explicit) && explicit >= 0) return explicit;
+  // An unset workflow var arrives as '' (env: X: ${{ vars.X }}) and Number('') is 0,
+  // which would silently mean "one candidate, no index fallback". Blank means unset.
+  const raw = String(process.env.TB_DIRECT_URL_BUDGET_MS || '').trim();
+  const env = raw ? Number(raw) : NaN;
+  return Number.isFinite(env) && env >= 0 ? env : DEFAULT_TB_BUDGET_MS;
+}
+
+async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = false, logger = console, budgetMs, now = Date.now }) {
   if (!show || !show.title) return { found: false, reason: 'no show title' };
   const candidates = overrideUrl
     ? [overrideUrl]
     : buildTbCandidateUrls(show.title, year);
+  const deadline = now() + tbBudgetMs(budgetMs);
+  let tried = 0;
+  const overBudget = () => tried > 0 && now() > deadline;
   for (const url of candidates) {
+    if (overBudget()) {
+      logger.log(`  Talkin' Broadway: time budget exhausted after ${tried}/${candidates.length} candidates — stopping so the poll cycle can finish`);
+      return { found: false, reason: `time budget exhausted after ${tried} of ${candidates.length} candidates` };
+    }
+    tried++;
     logger.log(`  Checking Talkin' Broadway: ${url}`);
     let page;
     try {
@@ -207,6 +250,10 @@ async function tryTbDirectUrl({ show, year, overrideUrl, fetchPage, isRevival = 
   // Fallback: TB always shows the latest review at /page/world/index.html.
   // Title format: `Talkin' Broadway on Broadway Review: "{TITLE}" {date}`.
   // Verify the quoted title matches the show before accepting.
+  if (!overrideUrl && overBudget()) {
+    logger.log(`  Talkin' Broadway: time budget exhausted after ${tried}/${candidates.length} candidates — skipping the index.html fallback`);
+    return { found: false, reason: `time budget exhausted after ${tried} of ${candidates.length} candidates (index fallback skipped)` };
+  }
   if (!overrideUrl) {
     const indexUrl = `${TB_HOST}/page/world/index.html`;
     logger.log(`  Talkin' Broadway: trying index.html fallback...`);
@@ -252,5 +299,5 @@ module.exports = {
   buildTbCandidateUrls,
   verifyTbPage,
   tryTbDirectUrl,
-  _internal: { toCamelSlug, toLowerSlug, extractTitle, hasBylineSignal, hasStarRatingSignal, extractPublishDateCandidate, withinDateWindow },
+  _internal: { toCamelSlug, toLowerSlug, extractTitle, hasBylineSignal, hasStarRatingSignal, extractPublishDateCandidate, withinDateWindow, tbBudgetMs, DEFAULT_TB_BUDGET_MS },
 };
