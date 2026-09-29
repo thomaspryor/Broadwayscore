@@ -87,9 +87,13 @@ function peersByMarket(shows, slims) {
 
 // ── LLM ─────────────────────────────────────────────────────────────────────
 
-function parseJsonBlock(text) {
+function parseJsonBlock(text, stopReason) {
   const m = String(text || '').match(/\{[\s\S]*\}/);
-  if (!m) throw new Error('no JSON in model output');
+  if (!m) {
+    // Say what came back, so a CI log shows why (truncation, refusal, prose).
+    const snippet = String(text || '').replace(/\s+/g, ' ').slice(0, 160);
+    throw new Error(`no JSON in model output (stop: ${stopReason || '?'}, ${String(text || '').length} chars: "${snippet}")`);
+  }
   return JSON.parse(m[0]);
 }
 
@@ -101,11 +105,12 @@ async function callAnthropic(system, user) {
     try {
       const msg = await client.messages.create({
         model,
-        max_tokens: 1500,
+        max_tokens: 4000,
         system,
         messages: [{ role: 'user', content: user }],
       });
-      return { model, text: msg.content.map(c => c.text || '').join('') };
+      const text = msg.content.filter(c => c.type === 'text').map(c => c.text).join('');
+      return { model, text, stopReason: msg.stop_reason };
     } catch (e) {
       lastErr = e;
       // Only an unknown model id moves on to the next model.
@@ -155,15 +160,20 @@ async function writeDraft(facts, examples = []) {
   let user = lib.buildUserPrompt(facts, examples);
   // Three tries: each retry is told what the last one got wrong.
   for (let attempt = 1; attempt <= 3; attempt++) {
+    // Last try goes to the other provider when available, so one model's bad
+    // day still yields a voiced draft instead of the template.
+    const useOpenAI = attempt === 3 && process.env.ANTHROPIC_API_KEY && process.env.OPENAI_API_KEY;
     try {
-      const { model, text } = await call(lib.STYLE_GUIDE, user);
-      const res = lib.lintDraft(parseJsonBlock(text), facts);
+      const { model, text, stopReason } = await (useOpenAI ? callOpenAI : call)(lib.STYLE_GUIDE, user);
+      const res = lib.lintDraft(parseJsonBlock(text, stopReason), facts);
       if (res.ok) return { draft: res.draft, source: model, problems: [] };
       problems = res.problems;
       user = `${lib.buildUserPrompt(facts, examples)}\n\nYour previous draft had these problems, fix them: ${problems.join('; ')}`;
     } catch (e) {
       problems = [`llm error: ${e.message}`];
+      user = `${lib.buildUserPrompt(facts, examples)}\n\nYour previous reply could not be parsed. Reply with the JSON object only.`;
     }
+    console.log(`  attempt ${attempt}${useOpenAI ? ' (OpenAI)' : ''}: ${problems.join('; ').slice(0, 300)}`);
   }
   return { draft: lib.templateDraft(facts), source: 'template', problems };
 }
