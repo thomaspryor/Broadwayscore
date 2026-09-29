@@ -34,3 +34,11 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: node scripts/land-retry-cancelled.js --run=${{ github.event.workflow_run.id }}
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Land retry-on-cancel failed'
+          description: 'run ${{ github.event.workflow_run.id }} — could not re-run the cancelled Land job'
+          severity: 'warning'
