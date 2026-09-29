@@ -45,9 +45,20 @@ const LIVE_SHAPE = {
   updatedAt: '2026-09-28T16:39:01.569Z',
 };
 
-test('watched sources are the three S4-T3 names and the threshold is the lib\'s (3)', () => {
-  assert.deepEqual(WATCHED_SOURCES, ['playbillBroadway', 'olt', 'theatremonkey']);
+test('watched sources are the three S4-T3 names + TheaterMania OB (BRO-4381) and the threshold is the lib\'s (3)', () => {
+  assert.deepEqual(WATCHED_SOURCES, ['playbillBroadway', 'olt', 'theatremonkey', 'theatermaniaOB']);
   assert.equal(ZERO_STREAK_ALERT_THRESHOLD, 3);
+});
+
+test('BRO-4381: a blind Off-Broadway guard (TheaterMania) is a blindness signal; a healthy one is not', () => {
+  const coverage = { sources: { theatermaniaOB: { zeroStreak: 0 } } };
+  const blind = evaluateDiscoveryBlindness({ coverage, guardState: null, obGuardState: { guard: { blind: true, reason: '300 rows but none current', at: 'x' } } });
+  assert.equal(blind.blind, true);
+  assert.match(blind.reasons.join('\n'), /Off-Broadway source-coverage guard is blind/);
+  const ok = evaluateDiscoveryBlindness({ coverage, guardState: null, obGuardState: { guard: { blind: false, count: 6 } } });
+  assert.equal(ok.blind, false);
+  const streak = evaluateDiscoveryBlindness({ coverage: { sources: { theatermaniaOB: { zeroStreak: 3 } } }, guardState: null });
+  assert.match(streak.reasons.join('\n'), /theatermaniaOB: 0 candidates for 3/);
 });
 
 test('healthy coverage + healthy guard → not blind', () => {

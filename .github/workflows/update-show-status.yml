@@ -260,6 +260,17 @@ jobs:
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
         run: node scripts/check-broadway-source-coverage.js
 
+      # Off-Broadway twin (BRO-4381): diffs TheaterMania's current OB listings
+      # (public WP REST API, no secrets) against shows.json + pending-fix
+      # add-show plans. Alert-only, never writes shows.json. A blind feed
+      # exits 1 and records `guard.blind: true` in
+      # data/audit/off-broadway-source-coverage-state.json; continue-on-error
+      # keeps status flips running and the discovery-source-blind job below
+      # turns the run red.
+      - name: Check Off-Broadway source coverage
+        continue-on-error: true
+        run: node scripts/check-off-broadway-source-coverage.js
+
       # Regional→Broadway transfer auto-linking: if a just-discovered (or any
       # existing) Broadway show title-matches a tracked regional tryout and
       # opened after it, set the reciprocal transferOf/transferredTo pair so
@@ -721,6 +732,9 @@ jobs:
           git add data/audit/tour-dates.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-gaps.json 2>/dev/null || true
           git add data/audit/broadway-source-coverage-state.json 2>/dev/null || true
+          # BRO-4381 OB coverage guard (registered in core-data-merge-registry.js).
+          git add data/audit/off-broadway-source-coverage-gaps.json 2>/dev/null || true
+          git add data/audit/off-broadway-source-coverage-state.json 2>/dev/null || true
           # OB + OWE venue-page staging (BRO-182 adversarial review, 2026-08-26):
           # this is the ONLY step that runs discover-new-shows.js
           # --include-off-broadway --include-west-end, which is the only writer
@@ -974,6 +988,8 @@ jobs:
   #   * data/audit/broadway-source-coverage-state.json `guard.blind` — written
   #     by update-shows' "Check Broadway source coverage" step when the
   #     Playbill parser has rotted (S4-T2).
+  #   * data/audit/off-broadway-source-coverage-state.json `guard.blind` and
+  #     the theatermaniaOB zero streak (BRO-4381) — the OB twin.
   # Its OWN job, not a final step of update-shows (owner decision 2026-09-28):
   # create-issue, trigger-data-agent, catchup-zero-review-shows and
   # check-opening-night-readiness all gate on update-shows SUCCEEDING, so a

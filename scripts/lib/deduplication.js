@@ -776,15 +776,26 @@ function colonSegmentKey(t) {
  * first colon ("Louis Katz: Conflicted" ~ "Conflicted", "Crazy Mama: A True
  * Story" ~ "Crazy Mama"). Title-only; callers must also require same venue.
  */
+// BRO-4381: listing sites drop taglines the catalogue keeps, joined by a
+// spaced dash ("ANON – a tempest at our kitchen table") or a "The (New)
+// Musical" suffix ("Copperfield! The New Musical"). A colon is not the only
+// subtitle separator.
+const SUBTITLE_SEPARATOR_RE = /:|\s[–—-]\s/;
+const MUSICAL_SUFFIX_RE = /\s+(?:the\s+)?(?:new\s+)?musical$/i;
+
 function isColonSegmentVariant(titleA, titleB) {
   const [short, long] = String(titleA || '').length <= String(titleB || '').length
     ? [titleA, titleB] : [titleB, titleA];
   const longStr = String(long || '');
-  const idx = longStr.indexOf(':');
-  if (idx < 0) return false;
   const key = colonSegmentKey(short);
   if (key.length < 4 || key === colonSegmentKey(longStr)) return false;
-  return key === colonSegmentKey(longStr.slice(0, idx)) || key === colonSegmentKey(longStr.slice(idx + 1));
+  const m = longStr.match(SUBTITLE_SEPARATOR_RE);
+  if (m) {
+    const head = longStr.slice(0, m.index);
+    const tail = longStr.slice(m.index + m[0].length);
+    if (key === colonSegmentKey(head) || key === colonSegmentKey(tail)) return true;
+  }
+  return MUSICAL_SUFFIX_RE.test(longStr) && key === colonSegmentKey(longStr.replace(MUSICAL_SUFFIX_RE, ''));
 }
 
 // Double-bill / pairing separators: " / " (spaced or not), " & ", " and ".
@@ -886,6 +897,22 @@ function isCrossLinked(a, b) {
 }
 
 /**
+ * Full-title key for the multi-part-show skip in checkForDuplicate: case,
+ * punctuation and articles removed, subtitle kept. "Going Bacharach: Songs Of
+ * An Icon" (TheaterMania) and "Going Bacharach: The Songs of an Icon" are one
+ * show (BRO-4381), while "Angels in America: Millennium Approaches" vs
+ * "...: Perestroika" still differ.
+ */
+function subtitleKey(title) {
+  return foldDiacritics(String(title || '').toLowerCase())
+    .replace(/[‘’']/g, '')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\b(?:the|a|an)\b/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+/**
  * Check if a show might be a duplicate of an existing show
  * Returns { isDuplicate: boolean, reason: string, existingShow: object|null }
  *
@@ -967,7 +994,7 @@ function checkForDuplicate(newShow, existingShows) {
       // Skip if both titles have subtitles but different full titles — multi-part shows
       // e.g., "Angels in America: Millennium Approaches" vs "Angels in America: Perestroika"
       const hasSubtitle = (t) => /[:\-–—\[]/.test(t);
-      if (hasSubtitle(newShow.title) && hasSubtitle(existing.title) && newTitleLower !== existingTitleLower) continue;
+      if (hasSubtitle(newShow.title) && hasSubtitle(existing.title) && subtitleKey(newShow.title) !== subtitleKey(existing.title)) continue;
       return {
         isDuplicate: true,
         reason: `Normalized title match: "${newTitleNormalized}" matches "${existing.title}"`,
@@ -994,7 +1021,7 @@ function checkForDuplicate(newShow, existingShows) {
           newTitleNormalized.substring(0, 15) === existingTitleNormalized.substring(0, 15)) {
         // Skip multi-part shows at same venue (e.g., Coast of Utopia parts)
         const hasSubtitle = (t) => /[:\-–—\[]/.test(t);
-        if (hasSubtitle(newShow.title) && hasSubtitle(existing.title) && newTitleLower !== existingTitleLower) continue;
+        if (hasSubtitle(newShow.title) && hasSubtitle(existing.title) && subtitleKey(newShow.title) !== subtitleKey(existing.title)) continue;
         if (isMultiProduction(newShow, existing)) continue;
         return {
           isDuplicate: true,
