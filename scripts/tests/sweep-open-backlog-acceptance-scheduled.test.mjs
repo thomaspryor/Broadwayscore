@@ -109,5 +109,5 @@ test('BRO-3941: the report path the workflow commits is the one the sweep script
 test('BRO-3941: the host workflow has a schedule trigger, so the sweep actually runs unattended', () => {
   const head = lines.slice(0, lines.findIndex((l) => /^jobs:/.test(l))).filter((l) => !/^\s*#/.test(l)).join('\n');
   assert.match(head, /^ {2}schedule:\s*$/m);
-  assert.match(head, /^ {6}- cron:/m);
+  assert.match(head, /^ +- cron:/m);
 });
