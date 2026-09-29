@@ -125,6 +125,15 @@ for (const item of audit.reviews) {
       entry.resolution = 'Complex disagreement. Needs manual review.';
       results.other.push(entry);
     }
+  } else if (item.reason === 'aggregator-thumb-contradicts-llm' || item.reason === 'aggregator-thumbs-split') {
+    // BRO-4287 aggregatorThumbCheck reasons: the adjudicator re-reads these.
+    entry.resolution = item.reason === 'aggregator-thumbs-split'
+      ? 'DTLI and BWW disagree Up vs Down. Adjudicator decides.'
+      : 'Aggregator thumb contradicts LLM. Adjudicator decides.';
+    results.other.push(entry);
+  } else {
+    entry.resolution = `Unrecognized reason '${item.reason}'. Needs manual review.`;
+    results.other.push(entry);
   }
 }
 

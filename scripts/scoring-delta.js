@@ -607,8 +607,9 @@ function loadBaselineGuards() {
   // added to any sandboxed guard resolves to its baseline copy. The hand-picked
   // list below went stale twice: failed-fetch-policy.js (BRO-39) and
   // title-match.js, a top-level cross-market-guard.js require that made every
-  // run die with MODULE_NOT_FOUND (BRO-4287). The explicit copies below remain
-  // for their working-tree fallback when BASE_REF predates a file.
+  // run die with MODULE_NOT_FOUND (BRO-4287). A BASE_REF with no scripts/lib
+  // at all is not supported (throws). The explicit copies below keep their
+  // working-tree fallback for a BASE_REF that predates an individual file.
   try {
     const stage = path.join(tmpDir, 'stage');
     fs.mkdirSync(stage, { recursive: true });
