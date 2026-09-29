@@ -53,13 +53,13 @@ const timeoutOf = (s) => Number((s.body.match(/^ {8}timeout-minutes:\s*(\d+)/m) 
 test('BRO-3941: a scheduled step runs the sweep script with --time-budget-min', () => {
   const step = steps[idx(SWEEP_STEP)];
   assert.ok(step, `expected a step named "${SWEEP_STEP}"`);
-  assert.match(step.body, /run:\s*node scripts\/sweep-open-backlog-acceptance\.js\b.*--time-budget-min\s+\d+/);
+  assert.match(step.body, /^ {8}run:\s*(\|\s*\n\s*)?node scripts\/sweep-open-backlog-acceptance\.js\b[^\n]*--time-budget-min\s+\d+/m);
 });
 
 test('BRO-3941: the sweep step is non-blocking, always-run, and has a step timeout above its budget', () => {
   const step = steps[idx(SWEEP_STEP)];
   assert.match(step.body, /^ {8}continue-on-error:\s*true\s*$/m);
-  assert.match(step.body, /^ {8}if:\s*always\(\)\s*$/m);
+  assert.match(step.body, /^ {8}if:\s*(\$\{\{\s*)?always\(\)(\s*\}\})?\s*$/m);
   const budget = Number(step.body.match(/--time-budget-min\s+(\d+)/)[1]);
   assert.ok(timeoutOf(step) > budget, `step timeout ${timeoutOf(step)}min must exceed script budget ${budget}min`);
 });
@@ -73,7 +73,8 @@ test('BRO-3941: an isolated commit step stages ONLY the sweep report and pushes 
   assert.ok(step, `expected a step named "${COMMIT_STEP}"`);
   const adds = step.body.match(/git add [^\n]+/g) || [];
   assert.equal(adds.length, 1, 'exactly one git add');
-  assert.ok(adds[0].includes(REPORT), 'stages the sweep report');
+  assert.equal(adds[0].replace(/\s+2>.*$|\s*\|\|.*$/, '').trim(), `git add ${REPORT}`, 'stages exactly the sweep report');
+  assert.match(step.body, /git commit -m /, 'commits what it staged');
   assert.ok(!/git add (-A|--all|\.)(\s|$)/.test(step.body), 'must not bulk-stage');
   assert.match(step.body, /bash scripts\/lib\/push-with-retry\.sh\b/);
   assert.match(step.body, /git config user\.name/, 'git identity configured');
@@ -82,7 +83,7 @@ test('BRO-3941: an isolated commit step stages ONLY the sweep report and pushes 
 test('BRO-3941: the commit step is continue-on-error, always-run, with a timeout above its push deadline', () => {
   const step = steps[idx(COMMIT_STEP)];
   assert.match(step.body, /^ {8}continue-on-error:\s*true\s*$/m);
-  assert.match(step.body, /^ {8}if:\s*always\(\)\s*$/m);
+  assert.match(step.body, /^ {8}if:\s*(\$\{\{\s*)?always\(\)(\s*\}\})?\s*$/m);
   const deadline = Number(step.body.match(/PUSH_DEADLINE_SEC:\s*'(\d+)'/)[1]);
   assert.ok(timeoutOf(step) * 60 > deadline, `timeout ${timeoutOf(step)}min must exceed PUSH_DEADLINE_SEC ${deadline}s`);
   assert.match(step.body, /PUSH_API_FALLBACK_AFTER_ATTEMPTS:\s*'3'/);
@@ -95,7 +96,7 @@ test('BRO-3941: the commit step immediately follows the sweep step (BRO-471 orde
 test('BRO-3941: no other step stages the sweep report (never bundled into a bulk commit)', () => {
   for (const s of steps) {
     if (s.name === COMMIT_STEP) continue;
-    const staging = (s.body.match(/git add [^\n]+/g) || []).filter((l) => l.includes(REPORT));
+    const staging = (s.body.match(/git add [^\n]+/g) || []).filter((l) => l.includes(REPORT) || /git add (-A|--all|\.|data\/audit\/?)(\s|$)/.test(l));
     assert.equal(staging.length, 0, `step "${s.name}" must not stage ${REPORT}`);
   }
 });
@@ -103,4 +104,10 @@ test('BRO-3941: no other step stages the sweep report (never bundled into a bulk
 test('BRO-3941: the report path the workflow commits is the one the sweep script writes', () => {
   const src = fs.readFileSync(path.join(REPO, 'scripts', 'sweep-open-backlog-acceptance.js'), 'utf8');
   assert.match(src, /path\.join\(REPO,\s*'data',\s*'audit',\s*'open-backlog-acceptance-sweep\.json'\)/);
+});
+
+test('BRO-3941: the host workflow has a schedule trigger, so the sweep actually runs unattended', () => {
+  const head = lines.slice(0, lines.findIndex((l) => /^jobs:/.test(l))).filter((l) => !/^\s*#/.test(l)).join('\n');
+  assert.match(head, /^ {2}schedule:\s*$/m);
+  assert.match(head, /^ {6}- cron:/m);
 });
