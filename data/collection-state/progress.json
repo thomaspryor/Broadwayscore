@@ -815,7 +815,19 @@
     "after-miss-julie-off-west-end-2026/thestage--dave-fargnoli.json",
     "miles-off-west-end-2026/jazzwise--unknown.json",
     "ballad-lines-off-west-end-2026/guardian--emma-john.json",
-    "ballad-lines-off-west-end-2026/1883magazine--unknown.json"
+    "ballad-lines-off-west-end-2026/1883magazine--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "in-honor-of-jean-michel-basquiat-off-broadway-2026/exeunt-magazine--unknown.json",
+    "pre-existing-condition-off-broadway-2026/guardian--unknown.json",
+    "pre-existing-condition-off-broadway-2026/new-york-city-theatre--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1353,7 +1365,7 @@
     ]
   },
   "startTime": "2026-09-28T20:31:08.071Z",
-  "lastProcessed": "ballad-lines-off-west-end-2026/broadwayworld--unknown.json",
+  "lastProcessed": "pre-existing-condition-off-broadway-2026/new-york-city-theatre--unknown.json",
   "log": [
     {
       "t": "2026-09-28T20:47:55.386Z",
@@ -1810,6 +1822,40 @@
       "event": "bb-session",
       "session": "43899a92",
       "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-29T12:03:01.060Z",
+      "event": "bb-session",
+      "session": "684680aa",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-29T12:03:01.768Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-29T12:03:19.465Z",
+      "event": "bb-session",
+      "session": "fd22dcd9",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-29T12:03:20.099Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-29T12:04:49.835Z",
+      "event": "bb-session",
+      "session": "541e9bac",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-09-29T12:05:09.487Z",
+      "event": "bb-session",
+      "session": "2d751d97",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
     }
   ],
   "recoveredAfterFailure": [
