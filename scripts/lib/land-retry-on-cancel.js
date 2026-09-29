@@ -13,12 +13,12 @@
  * Retry ONLY when: the run is cancelled, Checks succeeded, Land was cancelled
  * before doing any work (no step ran to completion past queueing — a Land job
  * cancelled mid-flight by a human must not be replayed), the land/** ref still
- * exists (it is deleted once landed), and the attempt budget is not spent.
+ * exists (it is deleted once landed) at the same tip the run verified, and the attempt budget is not spent.
  */
 
 const MAX_ATTEMPTS = 6;
 
-function decideLandRetry({ run, jobs, branchExists, maxAttempts = MAX_ATTEMPTS } = {}) {
+function decideLandRetry({ run, jobs, branchExists, branchTip, maxAttempts = MAX_ATTEMPTS } = {}) {
   const no = (reason) => ({ retry: false, reason });
   if (!run) return no('no-run');
   if (run.conclusion !== 'cancelled') return no(`run-conclusion-${run.conclusion || 'none'}`);
@@ -32,6 +32,7 @@ function decideLandRetry({ run, jobs, branchExists, maxAttempts = MAX_ATTEMPTS }
   const started = (land.steps || []).some((s) => s.conclusion === 'success' || s.conclusion === 'failure');
   if (started) return no('land-started-work');
   if (!branchExists) return no('branch-gone');
+  if (branchTip && run.head_sha && branchTip !== run.head_sha) return no('superseded-tip');
   const attempt = run.run_attempt || 1;
   if (attempt >= maxAttempts) return no('attempts-exhausted');
   return { retry: true, reason: 'land-cancelled-while-queued', attempt };

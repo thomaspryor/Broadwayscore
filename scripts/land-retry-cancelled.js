@@ -23,12 +23,13 @@ const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 const run = gh([`repos/${repo}/actions/runs/${runId}`]);
 const jobs = gh([`repos/${repo}/actions/runs/${runId}/jobs?filter=latest&per_page=50`]).jobs;
 let branchExists = false;
+let branchTip;
 try {
-  execFileSync('gh', ['api', `repos/${repo}/git/ref/heads/${run.head_branch}`], { stdio: 'pipe' });
+  branchTip = JSON.parse(execFileSync('gh', ['api', `repos/${repo}/git/ref/heads/${run.head_branch}`], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] })).object.sha;
   branchExists = true;
 } catch { /* 404 → landed/deleted */ }
 
-const d = decideLandRetry({ run, jobs, branchExists });
+const d = decideLandRetry({ run, jobs, branchExists, branchTip });
 console.log(`run ${runId} ${run.head_branch} attempt ${run.run_attempt}: ${d.retry ? 'RETRY' : 'skip'} (${d.reason})`);
 if (d.retry && !dry) {
   execFileSync('gh', ['api', '-X', 'POST', `repos/${repo}/actions/runs/${runId}/rerun-failed-jobs`], { stdio: 'inherit' });
