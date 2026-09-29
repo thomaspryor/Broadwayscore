@@ -363,6 +363,30 @@ function loadDirFiles(showId) {
   }).filter(Boolean);
 }
 
+let _bwwRoundupUrlMap = null;
+function getBwwRoundupUrlMap() {
+  if (_bwwRoundupUrlMap) return _bwwRoundupUrlMap;
+  try { _bwwRoundupUrlMap = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'bww-roundup-urls.json'), 'utf8')) || {}; }
+  catch { _bwwRoundupUrlMap = {}; }
+  return _bwwRoundupUrlMap;
+}
+
+// Playbill's Verdict category page lists only recent articles; a show that opened
+// more than 30 days ago (or hasn't opened) won't be on it.
+function isInVerdictWindow(show, now = Date.now()) {
+  const opened = show && show.openingDate ? Date.parse(show.openingDate) : NaN;
+  return Number.isFinite(opened) && opened <= now + 86400000 && now - opened <= 30 * 86400000;
+}
+
+const _verdictPageCache = new Map();
+async function fetchVerdictCategoryOnce(url) {
+  if (!_verdictPageCache.has(url)) {
+    const res = await fetchPage(url, { skipVerify: true }).catch(() => null);
+    _verdictPageCache.set(url, (res && res.content) || '');
+  }
+  return _verdictPageCache.get(url);
+}
+
 async function findAggregatorArticles(show) {
   const title = show.title;
   const id = show.id;
@@ -399,6 +423,28 @@ async function findAggregatorArticles(show) {
     } catch (e) {
       _serpStats.errors++;
       if (verbose) console.error(`  SERP error for ${id}: ${e.message}`);
+    }
+  }
+  // Known-good sources first (BRO-4272, School Girls 2026-09-28). The SERP query above
+  // returned only the 2017 off-Broadway Playbill article and no BWW roundup, so this
+  // audit diffed the Broadway opening against the wrong production while the poller,
+  // using these same two sources, had the right roundups all along:
+  //   1. the BWW roundup URL the poller already verified and persisted;
+  //   2. Playbill's Verdict category page (recent articles only, so opening-window
+  //      shows only; the page is fetched once per run, not once per show).
+  const persistedBww = show.bwwRoundupUrl || getBwwRoundupUrlMap()[id];
+  if (typeof persistedBww === 'string' && persistedBww) urls.add(persistedBww.split('?')[0].split('#')[0]);
+  // US shows only: a WE show sharing a title with a Broadway production would otherwise
+  // pick up the Broadway Verdict (a medium-confidence title match).
+  if (['broadway', 'off-broadway'].includes(show.category) && isInVerdictWindow(show)) {
+    try {
+      const { searchPlaybillVerdict } = require('./lib/playbill-verdict-discover');
+      const hit = await searchPlaybillVerdict(show, { fetchHtml: fetchVerdictCategoryOnce });
+      const clean = hit && hit.articleUrl ? hit.articleUrl.split('?')[0].split('#')[0] : null;
+      // Same slug gate the SERP results above pass through.
+      if (clean && urlMatchesShow(clean, tokens)) urls.add(clean);
+    } catch (e) {
+      if (verbose) console.error(`  Playbill Verdict lookup error for ${id}: ${e.message}`);
     }
   }
   // Deterministic BWW Review Roundup discovery via the market section page
@@ -1402,6 +1448,30 @@ function currentRunUncollected(r) {
   const missing = currentRunOnly(r.missing).filter(m => !ingestedOk.has(m.url)).length;
   const citedNoUrl = currentRunCount(r.citedNoUrl);
   return missing + citedNoUrl;
+}
+
+// End-of-night coverage alert (BRO-4272). The expected-vs-captured tally below only
+// printed ::warning:: lines into the daily digest, so on School Girls 2026 three
+// roundup-listed reviews sat uncaptured all night and were found by hand. For a
+// Broadway / off-Broadway show in its first 3 days, a residual gap after auto-ingest
+// now files an 'auto' card (roundup-gap:<showId>); a later run that audits the show
+// with no residual resolves it. WE shows keep their own weAlert path above.
+const ROUNDUP_GAP_ALERT_DAYS = 3;
+function planRoundupGapAlerts(results, ingestMissing, now = Date.now()) {
+  const alert = [];
+  const resolve = [];
+  for (const r of results || []) {
+    if (!['broadway', 'off-broadway'].includes(r.category)) continue;
+    const opened = r.openingDate ? Date.parse(r.openingDate) : NaN;
+    if (!Number.isFinite(opened) || opened > now || now - opened > ROUNDUP_GAP_ALERT_DAYS * 86400000) continue;
+    const counts = computeResidualCounts(r, ingestMissing);
+    if (counts.residual > 0) alert.push({ showId: r.showId, title: r.title, counts, missing: currentRunOnly(r.missing || []) });
+    // Resolve only on a run that actually found the roundups: a discovery miss (SERP
+    // outage, Verdict fetch failure) also shows residual 0 and would close the incident,
+    // so the next run's gap would file a fresh duplicate card.
+    else if ((r.aggregatorArticles || []).length > 0) resolve.push(r.showId);
+  }
+  return { alert, resolve };
 }
 
 function computeResidualCounts(r, ingestMissing) {
@@ -2480,6 +2550,43 @@ async function main(argv = process.argv.slice(2)) {
     console.log(`Expected-vs-captured: ${residualShows.length} show(s) with residual review gaps after auto-ingest.`);
   }
 
+  // Opening-window alert (BRO-4272): CI runs only (manual runs have an operator
+  // watching stdout and no committed ledger).
+  // Same inputs and gates as the opening-window alert above: reportedResults (the
+  // blast-radius-accepted set) and never on --dry-run.
+  if (!dryRun && useCheckpoint && process.env.GITHUB_ACTIONS === 'true') {
+    const plan = planRoundupGapAlerts(reportedResults, ingestMissing);
+    if (plan.alert.length || plan.resolve.length) {
+      const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
+      for (const showId of plan.resolve) {
+        try { resolveCondition(`roundup-gap:${showId}`, { reason: 'no residual roundup gap after auto-ingest' }); }
+        catch (e) { console.error(`::warning::roundup-gap resolve failed for ${showId}: ${(e.message || '').slice(0, 120)}`); }
+      }
+      for (const g of plan.alert) {
+        const lines = g.missing.slice(0, 15).map((m) => `- ${m.knownOutletId || m.host}: ${m.url}`);
+        try {
+          await routeAlert({
+            conditionKey: `roundup-gap:${g.showId}`,
+            title: `${g.title}: ${g.counts.residual} roundup-listed review(s) still not captured`,
+            description: `The BWW / Playbill roundups for ${g.showId} list reviews the site doesn't have after this run's auto-ingest `
+              + `(failed=${g.counts.failedIngest} capped=${g.counts.capped} flaggedOut=${g.counts.flaggedOut} conflict=${g.counts.conflictIngest}).\n`
+              + `${lines.join('\n') || '(see data/audit/show-review-gap.json)'}\n\n`
+              + 'For each: grep the poller / this audit log for the URL; the EXCLUSION line names the guard that dropped it. Fix the guard, then ingest.',
+            severity: 'warning',
+            disposition: 'auto',
+            cooldownHours: 12,
+            verify: {
+              line: `VERIFY: node scripts/audit-show-review-gap.js --show=${g.showId} --dry-run --verbose`,
+              note: 'no "review gap" warning for the show once every roundup-cited review is captured',
+            },
+          });
+        } catch (e) {
+          console.error(`::error::roundup-gap alert failed for ${g.showId}: ${(e.message || '').slice(0, 120)}`);
+        }
+      }
+    }
+  }
+
   // Contract drift, reported OUTSIDE the residual loop (ship-check 2026-08-09,
   // finding B). The first version printed this only for shows that already had
   // residual > 0, so a run whose ONLY problem was an unrecognised skip reason
@@ -2564,4 +2671,4 @@ if (require.main === module) {
 // REVIEW_TEXTS_DIR before requiring this module.
 // main + USAGE are exported so scripts/audit-show-review-gap.test.mjs can
 // prove --help never falls through to a real gh call (task #266).
-module.exports = { urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, computeResidualCounts, currentRunUncollected, main, USAGE };
+module.exports = { planRoundupGapAlerts, isInVerdictWindow, findAggregatorArticles, urlMatchesShow, titleTokens, provisionalOutletIdFromHost, freshnessMsFor, hostOf, registrableHost, getKnownDomainMap, isReviewUrl, normalizeReviewUrl, classifyShowFile, isCoveredFile, bumpRecoveryCount, acceptSerpCensusResult, computeResidualCounts, currentRunUncollected, main, USAGE };
