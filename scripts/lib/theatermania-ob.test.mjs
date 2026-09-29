@@ -122,6 +122,9 @@ test('pending-fix add-show plans dedupe TheaterMania candidates (BRO-4377 overla
       { type: 'add-show', show: { id: 'fantasma-off-broadway-2026', title: 'Fantasma', slug: 'fantasma', venue: '59E59 Theaters', category: 'off-broadway', openingDate: '2026-11-22' } },
       { type: 'data-edit', field: 'x' },
     ] } },
+    { issueNumber: 'bro-2', status: 'partial', plan: { actions: [
+      { type: 'add-show', show: { id: 'x-off-broadway-2026', title: 'Partial Plan Show', venue: 'HERE' } },
+    ] } },
     { issueNumber: 'bro-1', status: 'rejected', plan: { actions: [
       { type: 'add-show', show: { id: 'degenerates-off-broadway-2026', title: 'Degenerates', slug: 'degenerates', venue: 'Playwrights Horizons' } },
     ] } },

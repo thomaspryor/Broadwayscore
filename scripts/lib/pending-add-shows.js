@@ -9,9 +9,11 @@
  * that the TheaterMania source (BRO-4381) lists too. Discovery and the OB
  * coverage guard treat these as already known.
  *
- * Every plan except a rejected one counts: 'applied'/'partial' plans are
- * harmless to include (their shows are in shows.json already, or were refused
- * for a reason a human should look at, not rediscovered around).
+ * 'pending' and 'applied' plans count ('applied' shows are already in
+ * shows.json, so including them only covers a lagging data clone). A
+ * 'rejected' plan never adds anything, and a 'partial' one may have refused
+ * the very add-show action in question, so neither may hide a real show from
+ * discovery or the coverage guard (ship-check review).
  */
 
 'use strict';
@@ -21,7 +23,7 @@ const path = require('path');
 const { slugify } = require('./deduplication');
 
 const DEFAULT_DIR = path.join(__dirname, '..', '..', 'data', 'pending-fixes');
-const IGNORED_STATUSES = new Set(['rejected']);
+const IGNORED_STATUSES = new Set(['rejected', 'partial']);
 
 /**
  * @param {object[]} plans parsed pending-fix plan files
