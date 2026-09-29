@@ -141,7 +141,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -152,7 +152,8 @@
       "notifyCount": 108,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 10
+      "silentRefires": 10,
+      "resolvedAt": "2026-09-29T14:55:00.265Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3162,13 +3163,13 @@
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-29T13:49:50.714Z",
+      "lastSeen": "2026-09-29T14:38:55.133Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.682Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.682Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3547,13 +3548,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-29T13:49:50.717Z",
+      "lastSeen": "2026-09-29T14:38:55.138Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.687Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.687Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3824,13 +3825,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-29T13:49:50.709Z",
+      "lastSeen": "2026-09-29T14:38:55.124Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.672Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.672Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -3851,7 +3852,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T10:25:25.720Z",
+      "lastSeen": "2026-09-29T14:55:02.173Z",
       "lastNotifiedAt": "2026-09-29T07:36:11.543Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
@@ -3864,7 +3865,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
       "absentRunIds": [],
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -4168,13 +4169,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-29T13:49:50.706Z",
+      "lastSeen": "2026-09-29T14:38:55.118Z",
       "lastNotifiedAt": "2026-09-28T15:26:29.664Z",
       "lastSurfacedAt": "2026-09-28T15:26:29.664Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -4722,13 +4723,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-29T12:25:27.302Z",
+      "lastSeen": "2026-09-29T14:45:02.312Z",
       "lastNotifiedAt": "2026-09-29T12:18:28.491Z",
       "lastSurfacedAt": "2026-09-29T12:18:28.491Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5718,13 +5719,13 @@
       "disposition": "digest",
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-09-29T13:49:50.699Z",
+      "lastSeen": "2026-09-29T14:38:55.108Z",
       "lastNotifiedAt": "2026-09-28T19:21:55.577Z",
       "lastSurfacedAt": "2026-09-28T19:21:55.577Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 9
+      "silentRefires": 10
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5782,13 +5783,13 @@
       "disposition": "digest",
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-09-29T13:49:50.702Z",
+      "lastSeen": "2026-09-29T14:38:55.113Z",
       "lastNotifiedAt": "2026-09-28T19:48:00.401Z",
       "lastSurfacedAt": "2026-09-28T19:48:00.401Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -5850,23 +5851,20 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T00:37:58.820Z",
-      "lastNotifiedAt": "2026-09-28T21:32:51.430Z",
+      "lastSeen": "2026-09-29T14:55:02.180Z",
+      "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
-      "notifyCount": 1,
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4255",
-      "silentRefires": 6,
       "absentRunIds": [
         "36506774213",
         "36511066143"
-      ],
-      "resolvedAt": "2026-09-29T03:38:45.758Z",
-      "resolveReason": "job-green"
+      ]
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6198,13 +6196,13 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on School Girls; Or, The African Mean Girls Play",
       "firstSeen": "2026-09-29T08:38:17.175Z",
-      "lastSeen": "2026-09-29T13:39:17.725Z",
+      "lastSeen": "2026-09-29T15:06:17.778Z",
       "lastNotifiedAt": "2026-09-29T08:38:17.175Z",
       "lastSurfacedAt": "2026-09-29T08:38:17.175Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-fulltext-mentions-show:short:school-girls-or-the-african-mean-girls-play-2026": {
       "status": "open",
@@ -6223,13 +6221,13 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on School Girls; Or, The African Mean Girls Play",
       "firstSeen": "2026-09-29T08:38:17.183Z",
-      "lastSeen": "2026-09-29T13:39:17.734Z",
+      "lastSeen": "2026-09-29T15:06:17.785Z",
       "lastNotifiedAt": "2026-09-29T08:38:17.183Z",
       "lastSurfacedAt": "2026-09-29T08:38:17.183Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-publish-date-pre-opening:missing:the-standard-of-living-west-end-2026": {
       "status": "open",
@@ -6457,12 +6455,13 @@
       "disposition": "digest",
       "title": "Content mismatch on School Girls; Or, The African Mean Girls Play",
       "firstSeen": "2026-09-29T13:39:17.729Z",
-      "lastSeen": "2026-09-29T13:39:17.729Z",
+      "lastSeen": "2026-09-29T15:06:17.782Z",
       "lastNotifiedAt": "2026-09-29T13:39:17.729Z",
       "lastSurfacedAt": "2026-09-29T13:39:17.729Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "broadcast-gate:checklist:school-girls-or-the-african-mean-girls-play-2026": {
       "status": "open",
@@ -6470,12 +6469,13 @@
       "requestedDisposition": "human",
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-09-29T13:39:17.858Z",
-      "lastSeen": "2026-09-29T13:39:17.858Z",
+      "lastSeen": "2026-09-29T15:06:17.909Z",
       "lastNotifiedAt": "2026-09-29T13:39:17.858Z",
       "lastSurfacedAt": "2026-09-29T13:39:17.858Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "broadcast:overdue:school-girls-or-the-african-mean-girls-play-2026": {
       "status": "open",
@@ -6485,6 +6485,18 @@
       "lastSeen": "2026-09-29T13:39:18.283Z",
       "lastNotifiedAt": "2026-09-29T13:39:18.283Z",
       "lastSurfacedAt": "2026-09-29T13:39:18.283Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "express-retry-still-thin:schtick-a-pole-in-it-off-broadway-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Opening Night Express retry still found thin review coverage for schtick-a-pole-in-it-off-broadway-2026",
+      "firstSeen": "2026-09-29T14:30:25.266Z",
+      "lastSeen": "2026-09-29T14:30:25.266Z",
+      "lastNotifiedAt": "2026-09-29T14:30:25.266Z",
+      "lastSurfacedAt": "2026-09-29T14:30:25.266Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
