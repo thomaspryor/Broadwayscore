@@ -52,12 +52,15 @@ async function getEmailsPageWithRetry(apiKey, after, retries = 2) {
 
 // Newest-first pagination until a page's oldest row is before sinceMs.
 // Throws on API failure (callers decide what an outage means).
-async function fetchOwnerEmailsSince({ apiKey, ownerEmail, sinceMs }) {
+// strict: throw if history is incomplete (missing `data`, or MAX_PAGES hit before
+// reaching sinceMs) so a caller that pages on absence never pages on a truncated feed.
+async function fetchOwnerEmailsSince({ apiKey, ownerEmail, sinceMs, strict = false }) {
   const owner = ownerEmail.toLowerCase();
   const rows = [];
   let after = null;
   for (let page = 0; page < MAX_PAGES; page++) {
     const j = await getEmailsPageWithRetry(apiKey, after);
+    if (strict && !Array.isArray(j.data)) throw new Error('Resend response had no data array');
     const data = j.data || [];
     if (data.length === 0) break;
     for (const e of data) {
@@ -68,6 +71,7 @@ async function fetchOwnerEmailsSince({ apiKey, ownerEmail, sinceMs }) {
     const lastMs = new Date(String(last.created_at).trim().replace(' ', 'T').replace(/\+00$/, 'Z')).getTime();
     if (lastMs < sinceMs || !j.has_more) break;
     after = last.id;
+    if (strict && page === MAX_PAGES - 1) throw new Error(`history incomplete: ${MAX_PAGES} pages fetched without reaching the start of the window`);
   }
   return rows;
 }

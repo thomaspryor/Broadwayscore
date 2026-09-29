@@ -38,6 +38,14 @@ async function main() {
     process.exit(2);
   }
 
+  // The digest goes out 07:30 ET; a manual/early run before 09:00 ET would
+  // page for a digest that simply has not been due yet.
+  const etHour = Number(new Intl.DateTimeFormat('en-US', { timeZone: 'America/New_York', hour: '2-digit', hourCycle: 'h23' }).format(new Date()));
+  if (!dateArg && etHour < 9) {
+    console.log(`[morning-digest] ${dateET}: only ${etHour}:xx ET, digest not due until 07:30 + margin. Nothing to check.`);
+    return;
+  }
+
   const apiKey = process.env.RESEND_API_KEY;
   const ownerEmail = process.env.OWNER_EMAIL;
   let emails = null;
@@ -49,7 +57,7 @@ async function main() {
     // pagination stops once rows are older than that.
     const sinceMs = new Date(`${dateET}T00:00:00Z`).getTime() - 24 * 3600 * 1000;
     try {
-      emails = await fetchOwnerEmailsSince({ apiKey, ownerEmail, sinceMs });
+      emails = await fetchOwnerEmailsSince({ apiKey, ownerEmail, sinceMs, strict: true });
     } catch (err) {
       apiError = err.message;
     }
@@ -62,7 +70,12 @@ async function main() {
     console.error('::warning::Cannot verify the morning digest; NOT paging. Fix the checker.');
     process.exit(2);
   }
-  if (dryRun) {
+  // A historical --date is report-only: routeAlert/resolveCondition would
+  // mutate the SHARED 'mac:morning-digest-missing' incident for a day that
+  // is not today (ship-check finding).
+  const historical = !!dateArg && dateET !== dayKeyET(new Date().toISOString());
+  if (dryRun || historical) {
+    if (historical && !dryRun) console.log('[morning-digest] --date is not today: report-only, no alert state touched');
     if (decision.action === 'page') console.log('[morning-digest] dry-run: would page the owner');
     return;
   }
@@ -80,7 +93,15 @@ async function main() {
     disposition: 'human',
     cooldownHours: 20,
   });
-  console.log(`[morning-digest] routeAlert -> ${result.action}`);
+  console.log(`[morning-digest] routeAlert -> ${result.action} delivered=${result.delivered}`);
+  // routeAlert returns delivered:false WITHOUT throwing when the email fails
+  // (owner-alert-router.js). A missing digest whose page did not go out must
+  // not end green. Cooldown suppression / already-open incidents are not
+  // 'human' sends, so they carry no delivered:false.
+  if (result.delivered === false) {
+    console.error('::error::Digest is missing and the owner page was NOT delivered');
+    process.exit(2);
+  }
 }
 
 main().catch((err) => { console.error('Fatal:', err.message); process.exit(2); });

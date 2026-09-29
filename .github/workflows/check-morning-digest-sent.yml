@@ -9,7 +9,8 @@ name: Check Morning Digest Sent
 # (mac:morning-digest-missing, page-worthy allowlist, 20h cooldown).
 # 14:30 UTC = 10:30 EDT / 9:30 EST; the digest goes out at 07:30 ET, and GHA
 # cron can fire 30 min to 3 h late, so a late fire only delays the page.
-# An unreadable Resend API exits 2 (job red, notify-failure) and NEVER pages.
+# An unreadable Resend API or an undelivered page exits 2: job red + critical
+# notify-failure email (severity 'warning' would send nothing), and never a false page.
 on:
   schedule:
     - cron: '30 14 * * *'
@@ -87,4 +88,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Check Morning Digest Sent Failed (cannot verify the digest)'
-          severity: 'warning'
+          severity: 'critical'
+          email: 'true'
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}
