@@ -648,5 +648,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-29T02:37:18.928Z"
+  },
+  {
+    "conditionKey": "land:land/audit-agent-batch-4",
+    "title": "Landing blocked: lint-workflows red on land/audit-agent-batch-4",
+    "description": "land.yml did not land land/audit-agent-batch-4: the lint-workflows gate went red at 58d767ed5d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36512380430",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/audit-agent-batch-4"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "58d767ed5d6855791e2adc060ca5da01f40a16e6"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36512380430"
+      }
+    ],
+    "queuedAt": "2026-09-29T02:52:21.094Z"
   }
 ]
