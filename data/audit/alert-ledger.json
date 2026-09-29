@@ -146,13 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T16:54:39.303Z",
+      "lastSeen": "2026-09-29T17:45:34.057Z",
       "lastNotifiedAt": "2026-09-29T16:20:41.341Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 109,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -1498,12 +1498,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-28T19:06:26.167Z",
+      "lastSeen": "2026-09-29T17:26:38.204Z",
       "lastNotifiedAt": "2026-09-28T19:06:26.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-2864"
+      "linearIdentifier": "BRO-2864",
+      "silentRefires": 1
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1622,13 +1623,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-28T19:06:26.162Z",
+      "lastSeen": "2026-09-29T17:26:38.195Z",
       "lastNotifiedAt": "2026-09-24T16:18:57.029Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": "BRO-3656",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -3845,7 +3846,7 @@
       "resolvedAt": "2026-09-22T16:48:58.111Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
@@ -3863,9 +3864,12 @@
       },
       "absentRunIds": [
         "36595156888",
-        "36597393562"
+        "36597393562",
+        "36605299983"
       ],
-      "silentRefires": 4
+      "silentRefires": 4,
+      "resolvedAt": "2026-09-29T17:45:32.286Z",
+      "resolveReason": "stale-signature"
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -5874,14 +5878,14 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T16:54:39.300Z",
+      "lastSeen": "2026-09-29T17:45:32.295Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4255",
       "absentRunIds": [],
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6528,13 +6532,13 @@
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/video-production-verify",
       "firstSeen": "2026-09-29T15:29:46.283Z",
-      "lastSeen": "2026-09-29T16:40:23.385Z",
+      "lastSeen": "2026-09-29T17:41:21.402Z",
       "lastNotifiedAt": "2026-09-29T15:29:46.283Z",
       "lastSurfacedAt": "2026-09-29T15:29:46.283Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4358-ss-dead-url": {
       "status": "resolved",
@@ -6579,6 +6583,30 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36595156888"
       },
       "silentRefires": 1
+    },
+    "land:land/ledger-trim-order": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/ledger-trim-order",
+      "firstSeen": "2026-09-29T17:45:51.027Z",
+      "lastSeen": "2026-09-29T17:45:51.027Z",
+      "lastNotifiedAt": "2026-09-29T17:45:51.027Z",
+      "lastSurfacedAt": "2026-09-29T17:45:51.027Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/reddit-post-email-2": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/reddit-post-email-2",
+      "firstSeen": "2026-09-29T17:49:06.699Z",
+      "lastSeen": "2026-09-29T17:49:06.699Z",
+      "lastNotifiedAt": "2026-09-29T17:49:06.699Z",
+      "lastSurfacedAt": "2026-09-29T17:49:06.699Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
