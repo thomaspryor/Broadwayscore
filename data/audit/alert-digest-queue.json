@@ -1753,5 +1753,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-29T14:30:25.267Z"
+  },
+  {
+    "conditionKey": "land:land/video-production-verify",
+    "title": "Landing blocked: unit-tests-node red on land/video-production-verify",
+    "description": "land.yml did not land land/video-production-verify: the unit-tests-node gate went red at f507655475. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36586890816",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/video-production-verify"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "f5076554750a26455644bb5bd14f4d7c578ea069"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36586890816"
+      }
+    ],
+    "queuedAt": "2026-09-29T15:29:46.284Z"
   }
 ]
