@@ -60,6 +60,11 @@ function markRescoreComplete(fileData, completedAt) {
     delete fileData.staleScoredBeforeOpening;
     delete fileData.staleScoredBeforeOpeningAt;
   }
+  // Same for stale-automated-text-verdict.js's parked-score stamp.
+  if (fileData.staleTextVerdictScoreParked) {
+    delete fileData.staleTextVerdictScoreParked;
+    delete fileData.staleTextVerdictScoreParkedAt;
+  }
   return fileData;
 }
 

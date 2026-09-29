@@ -60,6 +60,7 @@ const {
   WIRE_SERVICE_OUTLETS,
   outletOwnsUrlDomainIgnoringPath,
 } = require('./lib/review-normalization');
+const { resolveUrlEditionOutletId } = require('./lib/outlet-canonicalize');
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -3080,6 +3081,17 @@ function createReviewFile(showId, reviewData, options = {}) {
   // Use centralized normalization for consistent file naming
   // Prefer outletId (canonical ID like "nytimes") over outlet (display name like "NYT Theater")
   // to avoid misattribution — normalizeOutlet("NYT Theater") → "nyt-theater" (wrong outlet)
+  // URL edition (timeout.com /london vs /newyork) beats the supplied outlet name (2026-09-29: a
+  // timeout.com/newyork review on just-in-time-2025 was filed as T1 nytimes).
+  {
+    const urlOutlet = resolveUrlEditionOutletId({ outletId: reviewData.outletId, outletName: reviewData.outlet, url: reviewData.url });
+    if (urlOutlet.source !== 'name') {
+      console.log(`    ⚠ outlet "${reviewData.outletId || reviewData.outlet}" -> ${urlOutlet.outletId} (${urlOutlet.source}: ${reviewData.url})`);
+      // Mutates in place, like the defaultCritic promotion below.
+      reviewData.outletId = urlOutlet.outletId;
+      reviewData.outlet = urlOutlet.displayName || reviewData.outlet;
+    }
+  }
   const outletForNormalization = reviewData.outletId || reviewData.outlet;
   const normalizedOutletId = normalizeOutlet(outletForNormalization);
 

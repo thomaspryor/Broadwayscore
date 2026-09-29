@@ -146,13 +146,12 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T21:07:46.996Z",
-      "lastNotifiedAt": "2026-09-29T19:39:12.553Z",
+      "lastSeen": "2026-09-29T21:12:13.956Z",
+      "lastNotifiedAt": "2026-09-29T21:12:13.956Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
-      "notifyCount": 111,
+      "notifyCount": 112,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "silentRefires": 10
+      "linearIdentifier": "BRO-3030"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3850,14 +3849,14 @@
       "resolvedAt": "2026-09-22T16:48:58.111Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T14:55:02.173Z",
-      "lastNotifiedAt": "2026-09-29T07:36:11.543Z",
+      "lastSeen": "2026-09-29T21:10:44.551Z",
+      "lastNotifiedAt": "2026-09-29T21:10:44.551Z",
       "lastSurfacedAt": null,
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-4196",
       "dispatch": {
@@ -3870,10 +3869,7 @@
         "36595156888",
         "36597393562",
         "36605999433"
-      ],
-      "silentRefires": 4,
-      "resolvedAt": "2026-09-29T17:52:27.914Z",
-      "resolveReason": "stale-signature"
+      ]
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -4749,13 +4745,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-29T21:00:36.559Z",
+      "lastSeen": "2026-09-29T21:14:34.657Z",
       "lastNotifiedAt": "2026-09-29T12:18:28.491Z",
       "lastSurfacedAt": "2026-09-29T12:18:28.491Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5883,7 +5879,7 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T21:07:46.992Z",
+      "lastSeen": "2026-09-29T21:12:13.953Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -6594,7 +6590,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"fewer than 50 outlets have a null domain\"",
       "firstSeen": "2026-09-29T17:52:27.963Z",
-      "lastSeen": "2026-09-29T21:07:46.985Z",
+      "lastSeen": "2026-09-29T21:12:13.946Z",
       "lastNotifiedAt": "2026-09-29T17:52:27.963Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,

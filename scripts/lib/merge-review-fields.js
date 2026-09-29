@@ -57,6 +57,8 @@ const NEVER_TRANSFER_PATTERN = new RegExp(
     'incompleteReason', 'incompleteDetail', // describe the source's own content state
     'manualContentTier', 'humanReview',     // operator decisions about THAT file
     'allowEarlyDate', 'allowCrossMarket',
+    'allowTourSignal', 'allowFilmSignal', // (+Reason) judged on THAT file's fullText
+    'allowSignalHistory',
     '_locked',
   ].join('|') + ')'
 );
