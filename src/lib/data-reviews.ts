@@ -9,53 +9,24 @@ import { slugify } from './data-core';
 
 import reviewsData from '../../data/reviews.json';
 import showsData from '../../data/shows.json';
+// Retired critic slugs → canonical (2026 data audit, S5-T9). The same compact
+// map src/middleware.ts 301s from; entries originate in
+// data/critic-slug-aliases.json (core data) via scripts/build-slug-redirects.js
+// at prebuild, so the redirect and this lookup can never disagree.
+import slugRedirectsData from '../../data/slug-redirects-compact.json';
+import { resolveCriticRedirect, type SlugRedirectMap } from './slug-redirects';
 
 // ============================================
-// Normalization maps — merge typo duplicates
+// Normalization maps — merge split outlet profiles
 // ============================================
 
-// Critic name typos → canonical name (case-sensitive keys matching reviews.json)
-const CRITIC_NAME_FIXES: Record<string, string> = {
-  'Ben Brantly': 'Ben Brantley',
-  'Ben Branley': 'Ben Brantley',
-  'Ben Brantley (Pt. 2)': 'Ben Brantley',
-  'Aramide Timubu': 'Aramide Tinubu',
-  'Thom Geir': 'Thom Geier',
-  'Thom Geler': 'Thom Geier',
-  'Thom Greier': 'Thom Geier',
-  'Franck Scheck': 'Frank Scheck',
-  'Frank Sheck': 'Frank Scheck',
-  'Jonny Oleksinski': 'Johnny Oleksinski',
-  'Hinton Als': 'Hilton Als',
-  'Sarah Holdren': 'Sara Holdren',
-  'Linda Winder': 'Linda Winer',
-  'Robert Holfer': 'Robert Hofler',
-  'Jonathan Mandrell': 'Jonathan Mandell',
-  'Elyse Gardner': 'Elysa Gardner',
-  'Brain Scott Lipton': 'Brian Scott Lipton',
-  'Brian Lipton': 'Brian Scott Lipton',
-  'Scott Lipton': 'Brian Scott Lipton',
-  'Lea Greenblatt': 'Leah Greenblatt',
-  'Lovia Gyarke': 'Lovia Gyarkye',
-  'Barbara Shuler': 'Barbara Schuler',
-  'Charles McNUlty': 'Charles McNulty',
-  'Marilyn Stasio.': 'Marilyn Stasio',
-  'Marilyn Stasio (Pt. 2)': 'Marilyn Stasio',
-  'Michal Feingold': 'Michael Feingold',
-  'Suzt Evans': 'Suzy Evans',
-  'Adam Markavitz': 'Adam Markovitz',
-  'Diana Snyder': 'Diane Snyder',
-  'A. D. Amorosi': 'A.D. Amorosi',
-  'Rob Weinert- Kendt': 'Rob Weinert-Kendt',
-  'Elizabeth Vincentelli': 'Elisabeth Vincentelli',
-  'Steve Suskin': 'Steven Suskin',
-  'Daniel D&#8217;Addario': "Daniel D'Addario",
-  'CSA.     Naveen Kumar': 'Naveen Kumar',
-  'Reviews Karen Galindo': 'Karen Galindo',
-  'Michael Glitz': 'Michael Giltz',
-  // 'Nancy Sasso Janis' is the correct byline (Patch.com); was previously remapped
-  // to 'Sasso Janis' which is wrong. Removed 2026-04-11 after /ship-check audit.
-};
+// Critic names carry NO map here. reviews.json `criticName` is already the
+// display name — or null when the byline is not a person ("Archive", an
+// outlet's own name, "Written by") — because scripts/rebuild-all-reviews.js
+// runs scripts/lib/critic-display-name.js displayCriticName() once at
+// emission (2026 data audit, S7-T2). The typo table that used to live here
+// (CRITIC_NAME_FIXES) is scripts/lib/critic-name-fixes.json, read by that
+// helper only; a second map on this side is exactly the drift S7-T1 removed.
 
 // Variant outletIds → canonical outletId (merges split profiles)
 const OUTLET_ID_FIXES: Record<string, string> = {
@@ -251,7 +222,8 @@ interface RawReviewEntry {
   showId: string;
   outletId: string;
   outlet: string;
-  criticName?: string;
+  /** Display name from displayCriticName() at emission, or null: no person byline. */
+  criticName?: string | null;
   url: string;
   publishDate?: string;
   assignedScore: number;
@@ -260,12 +232,100 @@ interface RawReviewEntry {
   pullQuote?: string;
 }
 
+// ============================================
+// Critic grouping — pure, so tests/unit/data-reviews-critic-grouping.test.ts
+// can require() the real rule (CLAUDE.md §15)
+// ============================================
+
+/**
+ * The critic-page identity of an emitted byline: its URL slug, or null when
+ * the review gets no critic page. reviews.json carries null for a byline
+ * that is not a person (S7-T2), and that null is the only signal this side
+ * honours — no name map, no placeholder list. "Unknown" is the pre-S7-T2
+ * sentinel the emitter no longer writes; still excluded so a reviews.json
+ * built before the emitter change cannot mint /critics/unknown.
+ *
+ * Keying on the slug (not the string) is what makes the diacritic fold
+ * (S7-T3) safe: displayCriticName() keeps each byline's own spelling, so
+ * "Juan A. Ramírez" and "Juan A. Ramirez" both reach here and must land on
+ * ONE page at /critics/juan-a-ramirez, not on a page plus a collision-suffixed
+ * twin. Two different people who share a name already shared a page before
+ * this rule (exact-string grouping), so it merges nothing new but spelling.
+ */
+export function criticProfileKey(criticName: string | null | undefined): string | null {
+  if (typeof criticName !== 'string') return null;
+  const name = criticName.trim();
+  if (!name || name === 'Unknown') return null;
+  return slugify(name) || null;
+}
+
+export interface CriticGroup<T> {
+  /** URL slug — the group key. */
+  slug: string;
+  /** Display name: the spelling most reviews carry; ties keep diacritics, then the longer, then the earlier alphabetically. */
+  name: string;
+  reviews: T[];
+}
+
+function nonAsciiCount(s: string): number {
+  let n = 0;
+  for (const ch of s) if (ch.charCodeAt(0) > 0x7f) n++;
+  return n;
+}
+
+/** The spelling a critic page is titled with, from spelling → review count. */
+export function pickCriticDisplayName(spellings: ReadonlyMap<string, number>): string {
+  let best: string | null = null;
+  let bestCount = -1;
+  for (const [spelling, count] of Array.from(spellings.entries())) {
+    if (best === null || count > bestCount) {
+      best = spelling;
+      bestCount = count;
+      continue;
+    }
+    if (count < bestCount) continue;
+    const better =
+      nonAsciiCount(spelling) > nonAsciiCount(best) ||
+      (nonAsciiCount(spelling) === nonAsciiCount(best) &&
+        (spelling.length > best.length || (spelling.length === best.length && spelling < best)));
+    if (better) best = spelling;
+  }
+  return best ?? '';
+}
+
+/**
+ * Group reviews into critic pages. Reviews whose criticProfileKey() is null
+ * (no byline) are left out; groups keep first-seen order, reviews keep input
+ * order. Every spelling in a group is listed in `spellings` so callers can
+ * map a byline back to its page.
+ */
+export function groupReviewsByCritic<T extends { criticName: string | null }>(
+  reviews: readonly T[]
+): Array<CriticGroup<T> & { spellings: Map<string, number> }> {
+  const groups = new Map<string, { reviews: T[]; spellings: Map<string, number> }>();
+  for (const review of reviews) {
+    const slug = criticProfileKey(review.criticName);
+    if (!slug) continue;
+    const spelling = (review.criticName as string).trim();
+    let group = groups.get(slug);
+    if (!group) {
+      group = { reviews: [], spellings: new Map() };
+      groups.set(slug, group);
+    }
+    group.reviews.push(review);
+    group.spellings.set(spelling, (group.spellings.get(spelling) || 0) + 1);
+  }
+  return Array.from(groups.entries()).map(([slug, g]) => ({
+    slug,
+    name: pickCriticDisplayName(g.spellings),
+    reviews: g.reviews,
+    spellings: g.spellings,
+  }));
+}
+
 // Accumulation maps
 const outletReviewsMap = new Map<string, ProfileReview[]>();
-const criticReviewsMap = new Map<string, ProfileReview[]>();
-// Track critic name → outlets for freelancer detection and primary outlet
-const criticOutletsMap = new Map<string, Map<string, number>>(); // criticName → Map<outletName, count>
-const criticOutletRecencyMap = new Map<string, Map<string, number>>(); // criticName → Map<outletName, latestParsedDate>
+const allProfileReviews: ProfileReview[] = [];
 
 const reviews = (reviewsData as { reviews: RawReviewEntry[] }).reviews;
 
@@ -282,9 +342,8 @@ for (const review of reviews) {
   if (GARBAGE_OUTLET_IDS.has(rawOutletId)) continue;
   const outletId = OUTLET_ID_FIXES[rawOutletId] || rawOutletId;
 
-  // Normalize critic name
-  const rawCriticName = review.criticName;
-  const criticName = rawCriticName ? (CRITIC_NAME_FIXES[rawCriticName] || rawCriticName) : null;
+  // The emitted display name, as is (see the note above the outlet map).
+  const criticName = typeof review.criticName === 'string' && review.criticName.trim() ? review.criticName.trim() : null;
 
   const tierInfo = getOutletTier(outletId);
   const parsedDate = parseReviewDate(review.publishDate);
@@ -317,24 +376,8 @@ for (const review of reviews) {
   if (!outletReviewsMap.has(outletKey)) outletReviewsMap.set(outletKey, []);
   outletReviewsMap.get(outletKey)!.push(profileReview);
 
-  // Group by critic (exclude Unknown)
-  if (criticName && criticName !== 'Unknown') {
-    const criticKey = criticName;
-    if (!criticReviewsMap.has(criticKey)) criticReviewsMap.set(criticKey, []);
-    criticReviewsMap.get(criticKey)!.push(profileReview);
-
-    // Track outlets per critic
-    if (!criticOutletsMap.has(criticKey)) criticOutletsMap.set(criticKey, new Map());
-    const outletCounts = criticOutletsMap.get(criticKey)!;
-    outletCounts.set(review.outlet, (outletCounts.get(review.outlet) || 0) + 1);
-
-    // Track most recent review date per outlet per critic
-    if (!criticOutletRecencyMap.has(criticKey)) criticOutletRecencyMap.set(criticKey, new Map());
-    const recencyMap = criticOutletRecencyMap.get(criticKey)!;
-    if (parsedDate && (!recencyMap.has(review.outlet) || parsedDate > recencyMap.get(review.outlet)!)) {
-      recencyMap.set(review.outlet, parsedDate);
-    }
-  }
+  // Critic grouping happens below over this list (groupReviewsByCritic).
+  allProfileReviews.push(profileReview);
 }
 
 // ============================================
@@ -375,8 +418,8 @@ for (const [outletId, reviews] of Array.from(outletReviewsMap.entries())) {
   const stats = computeStats(reviews);
   const logo = getOutletLogo(displayName);
 
-  // Count unique critics (excluding Unknown/null)
-  const uniqueCritics = new Set(reviews.filter(r => r.criticName).map(r => r.criticName));
+  // Count unique critics (by page identity, so spelling variants count once; no byline → not a critic)
+  const uniqueCritics = new Set(reviews.map(r => criticProfileKey(r.criticName)).filter(Boolean));
 
   // Generate slug — collision handled below
   let slug = slugify(displayName);
@@ -421,13 +464,25 @@ outletsByGenerosity.forEach((p, i) => { p.generosityRank = i + 1; });
 // ============================================
 
 const criticSlugMap = new Map<string, CriticProfile>();
+// Every spelling a page's reviews carry → that page's slug (back-fills criticSlug below).
+const criticNameToSlug = new Map<string, string>();
 
 const criticProfilesList: CriticProfile[] = [];
-for (const [criticName, reviews] of Array.from(criticReviewsMap.entries())) {
+for (const group of groupReviewsByCritic(allProfileReviews)) {
+  const { slug, name: criticName, reviews } = group;
   const stats = computeStats(reviews);
 
+  // Outlets in first-seen order with review counts and most recent review date.
+  const outletCounts = new Map<string, number>();
+  const recencyMap = new Map<string, number>();
+  for (const r of reviews) {
+    outletCounts.set(r.outlet, (outletCounts.get(r.outlet) || 0) + 1);
+    if (r.parsedDate && (!recencyMap.has(r.outlet) || r.parsedDate > recencyMap.get(r.outlet)!)) {
+      recencyMap.set(r.outlet, r.parsedDate);
+    }
+  }
+
   // Determine primary outlet (most reviews)
-  const outletCounts = criticOutletsMap.get(criticName)!;
   let primaryOutlet = '';
   let primaryOutletId = '';
   let maxCount = 0;
@@ -442,16 +497,13 @@ for (const [criticName, reviews] of Array.from(criticReviewsMap.entries())) {
   }
 
   // Sort outlets by most recent review date (descending)
-  const recencyMap = criticOutletRecencyMap.get(criticName);
   const outlets = Array.from(outletCounts.keys());
-  if (recencyMap) {
-    outlets.sort((a, b) => (recencyMap.get(b) || 0) - (recencyMap.get(a) || 0));
-  }
+  outlets.sort((a, b) => (recencyMap.get(b) || 0) - (recencyMap.get(a) || 0));
   const isFreelancer = outlets.length >= 3;
 
-  // Generate slug — collision handled with outlet disambiguation
-  let slug = slugify(criticName);
-
+  // The slug IS the group key, so two pages can never collide here — the
+  // outlet-suffixed twins the old exact-string grouping minted for spelling
+  // variants ("holly-o-mahony-the-stage") are gone by construction.
   const profile: CriticProfile = {
     name: criticName,
     slug,
@@ -468,18 +520,9 @@ for (const [criticName, reviews] of Array.from(criticReviewsMap.entries())) {
     generosityRank: 0,
   };
 
-  // Handle slug collision — disambiguate with primary outlet
-  if (criticSlugMap.has(slug)) {
-    slug = `${slug}-${slugify(primaryOutlet)}`;
-    profile.slug = slug;
-    // If still collides (extremely unlikely), append outletId
-    if (criticSlugMap.has(slug)) {
-      slug = `${slug}-${primaryOutletId}`;
-      profile.slug = slug;
-    }
-  }
   criticSlugMap.set(slug, profile);
   criticProfilesList.push(profile);
+  for (const spelling of Array.from(group.spellings.keys())) criticNameToSlug.set(spelling, slug);
 }
 
 // Sort by review count desc and assign ranks
@@ -498,12 +541,6 @@ criticsByGenerosity.forEach((p, i) => { p.generosityRank = i + 1; });
 const outletIdToSlug = new Map<string, string>();
 for (const outlet of outletProfilesList) {
   outletIdToSlug.set(outlet.outletId, outlet.slug);
-}
-
-// Build criticName → slug lookup from critic profiles
-const criticNameToSlug = new Map<string, string>();
-for (const critic of criticProfilesList) {
-  criticNameToSlug.set(critic.name, critic.slug);
 }
 
 // Fill in slugs on all reviews (shared objects, so both outlet and critic profile reviews updated)
@@ -536,8 +573,21 @@ export function getAllCritics(): CriticProfile[] {
   return criticProfilesList;
 }
 
-export function getCriticBySlug(slug: string): CriticProfile | undefined {
-  return criticSlugMap.get(slug);
+const criticRedirectMap: SlugRedirectMap = slugRedirectsData as Record<string, string>;
+
+/**
+ * @param redirects the compact redirect map — tests only; production callers
+ *   always resolve through the tracked data/slug-redirects-compact.json.
+ */
+export function getCriticBySlug(slug: string, redirects: SlugRedirectMap = criticRedirectMap): CriticProfile | undefined {
+  const exact = criticSlugMap.get(slug);
+  if (exact) return exact;
+  // Old slug (diacritic-mangled, merged spelling) → the canonical profile.
+  // Requests normally never get here — the middleware 301s first — but any
+  // caller holding an old slug (or a runtime without the middleware) still
+  // resolves the same critic instead of a 404.
+  const canonical = resolveCriticRedirect(redirects, slug);
+  return canonical ? criticSlugMap.get(canonical) : undefined;
 }
 
 export function getAllCriticSlugs(): string[] {
@@ -549,5 +599,11 @@ export function getOutletSlugById(outletId: string): string | null {
 }
 
 export function getCriticSlugByName(name: string): string | null {
-  return criticNameToSlug.get(name) || null;
+  const known = criticNameToSlug.get(name);
+  if (known) return known;
+  // A spelling this build has not seen on a critic-page review (e.g. a
+  // show-page byline outside the four profiled markets) still links when its
+  // page identity exists.
+  const key = criticProfileKey(name);
+  return key && criticSlugMap.has(key) ? key : null;
 }

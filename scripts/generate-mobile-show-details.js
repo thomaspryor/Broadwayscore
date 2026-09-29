@@ -391,6 +391,12 @@ for (const review of reviews) {
   reviewsByShow[review.showId].push(review);
 }
 
+// Exact-string set of CANONICAL display names — the spelling
+// scripts/lib/critic-display-name.js displayCriticName() emits into
+// reviews.json (S7-T2), which is why no typo/alias map is needed here and
+// why every entry must be a fixed point of that helper
+// (tests/unit/rebuild-display-critic-name-call-site.test.mjs checks it).
+// Mirrors src/lib/engine.ts and scripts/lib/compute-critic-score.js.
 const TOP_CRITICS = new Set([
   'Jesse Green', 'Ben Brantley', 'Charles Isherwood', 'David Rooney',
   'Hilton Als', 'Helen Shaw', 'Peter Marks', 'Elisabeth Vincentelli',
@@ -523,7 +529,7 @@ for (const show of visibleShows) {
       const tier = isTopCritic ? 1 : getOutletTier(r.outletId);
 
       const entry = {
-        cn: r.criticName || null,           // criticName
+        cn: r.criticName || null,           // criticName — emitted unchanged: reviews.json already carries the display name or null (S7-T2)
         o: getOutletDisplayName(r.outletId, r.outlet), // outlet display name
         s: r.assignedScore,                 // score (0-100)
         b: r.bucket,                        // bucket (Positive/Mixed/Negative)

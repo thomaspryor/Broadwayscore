@@ -94,6 +94,11 @@ posthog-monday.yml
 # unmonitored inside scrape-new-aggregators.yml), not user-facing staleness
 # worth paging on. Failures alert via notify-failure (warning severity).
 promote-we-aggregator.yml
+# Off-West End venue-page promotion (BRO-4204 S4-T12): the OWE sibling of the
+# entry above — a stale run means staged venue-page candidates wait a day
+# longer to become rows, not user-facing staleness. Failures alert via
+# notify-failure (warning severity); the daily digest covers the rest.
+promote-owe-venue-candidates.yml
 process-review-formspree.yml
 purge-archives-history.yml
 rebuild-fast.yml

@@ -68,11 +68,11 @@ import { getBroadwayDuration } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 
-/** Inlined to avoid pulling @/lib/data-core (server-only JSON imports) into the
- *  client bundle. Matches the data-core slugify exactly. */
-function slugify(str: string): string {
-  return str.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-}
+// The same slugify @/lib/data-core re-exports, imported from its pure home so
+// this client bundle never pulls data-core's server-only JSON imports (and
+// can never drift from the theater page's own slug — S7-T3 added the
+// diacritic fold in one place for both).
+import { slugify } from '../../../scripts/lib/url-slug';
 import type { AudienceGrade } from '@/components/show-cards';
 import type { TicketLinkData } from '@/lib/ticket-utils';
 import { getTicketCtaNote } from '@/lib/ticket-cta-note';

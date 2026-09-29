@@ -57,7 +57,8 @@ test('existing.transferredTo naming the candidate id exempts that row (reverse d
 
 // Return-engagement shape: same title, SAME venue, prior run closed last
 // year, the return is open now. One year apart falls inside the >2yr
-// window and the venues match, so isMultiProduction says "same production".
+// window and the venues match, so before S5-T1 isMultiProduction said "same
+// production"; the start-after-close rule now resolves it on dates alone.
 const priorRun = {
   id: 'lost-in-del-valle-off-broadway-2025',
   title: 'Lost in Del Valle',
@@ -76,15 +77,25 @@ const returnRun = {
   openingDate: '2026-09-15',
 };
 
-test('return engagement WITHOUT an id-bearing priorRuns entry is still a duplicate (current behaviour)', () => {
+test('return engagement WITHOUT an id-bearing priorRuns entry: S5-T1 resolves it on dates, and a dates-only priorRuns is still not a cross-link', () => {
+  // Pinned as "still a duplicate" while S0-T2b was the only rule; the S5-T1
+  // start-after-close rule (tests/unit/show-dedup-temporal.test.mjs) now
+  // reads a return that opens after the prior run closed as a new production
+  // with or without a link.
   const noLink = checkForDuplicate(returnRun, [priorRun]);
-  assert.equal(noLink.isDuplicate, true, 'un-linked same-venue return must still be flagged');
+  assert.equal(noLink.isDuplicate, false, `un-linked same-venue return opening after the prior run closed is a new production (S5-T1): ${noLink.reason}`);
 
   // Today's shows.json priorRuns shape carries dates + venue but no id —
   // that is NOT a cross-link and must not blanket-exempt every priorRuns show.
   const datesOnly = { ...returnRun, priorRuns: [{ openingDate: '2025-06-01', closingDate: '2025-07-15', venue: 'Rattlestick Theater' }] };
-  const result = checkForDuplicate(datesOnly, [priorRun]);
-  assert.equal(result.isDuplicate, true, 'priorRuns without an id names no row and exempts nothing');
+  assert.equal(isCrossLinked(datesOnly, priorRun), false, 'priorRuns without an id names no row and is not a cross-link');
+
+  // Without temporal separation (the "return" overlaps the prior run) the
+  // un-linked same-venue pair is still flagged — the S0-T2b exemption is
+  // what a real link buys, not a blanket pass for priorRuns-bearing rows.
+  const overlapping = { ...returnRun, openingDate: '2025-07-01' };
+  assert.equal(checkForDuplicate(overlapping, [priorRun]).isDuplicate, true, 'an overlapping un-linked same-venue pair is still a duplicate');
+  assert.equal(checkForDuplicate({ ...overlapping, priorRuns: datesOnly.priorRuns }, [priorRun]).isDuplicate, true, 'dates-only priorRuns exempts nothing');
 });
 
 test('candidate.priorRuns entry naming the existing id exempts that row (object and string forms)', () => {

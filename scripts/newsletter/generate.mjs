@@ -433,14 +433,15 @@ function seeAllLink(href, label, opts = {}) {
     </td></tr>`;
 }
 
-// Matches slugify() in src/lib/data-core.ts — the outlet/critic detail pages
-// (src/lib/data-reviews.ts) derive their slugs from displayName via this same
-// regex, NOT from the outlet-registry.json key, so any link builder here must
-// use it too or it 404s (e.g. registry key "hollywood-reporter" vs the actual
-// page slug "the-hollywood-reporter" for displayName "The Hollywood Reporter").
-function slugify(name) {
-  return (name || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
-}
+// The SAME slugify() src/lib/data-core.ts re-exports — the outlet/critic
+// detail pages (src/lib/data-reviews.ts) derive their slugs from displayName
+// via this rule, NOT from the outlet-registry.json key, so any link builder
+// here must use it too or it 404s (e.g. registry key "hollywood-reporter" vs
+// the actual page slug "the-hollywood-reporter" for displayName "The
+// Hollywood Reporter"). Shared, not copied, since S7-T3 added the diacritic
+// fold ("José Solís" → jose-solis): a copy here would have kept linking to
+// the retired jose-sol-s.
+const { slugify } = cjsRequire(path.join(repo, 'scripts/lib/url-slug'));
 
 // Critic + outlet registries — look up the slug for a critic / outlet name so
 // we can deep-link to /critics/{slug} and /critics/outlets/{slug}.

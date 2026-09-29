@@ -35,6 +35,12 @@ function normalizeBylineCapture(raw) {
   // chrome that wasn't matched by the trailing-chrome regex above.
   cleaned = cleaned.replace(/\s+/g, ' ').trim();
 
+  // Byline residue that rides along with the name (audit S7-T4): HTML that
+  // survived text extraction, a pronoun parenthetical, a job-title clause
+  // after a separator. One implementation, applied at capture time here and
+  // again by displayCriticName() at emission — never a second regex copy.
+  cleaned = stripBylineSuffixes(cleaned);
+
   // Strip leading job-title tokens some outlets prefix onto a byline capture
   // ("Senior Editor Jane Doe", "Contributing Critic John Smith"). Loops so
   // multi-word titles ("Senior Contributing Editor Jane Doe") fully strip, not
@@ -62,6 +68,59 @@ function normalizeBylineCapture(raw) {
   }
 
   return cleaned;
+}
+
+// ---------------------------------------------------------------------------
+// stripBylineSuffixes (audit S7-T4, BRO-4204)
+//
+// Three artifact shapes the 2026 corpus captured WITH the name, each of which
+// minted its own critic page because the strings differ from the clean name:
+//   "Dominic Cavendish, Chief Theatre Critic"   — job-title clause after a separator
+//   "Sarah Crompton (she/her)"                   — pronoun parenthetical
+//   "Michael Sommers<br>" / "Name>"              — HTML that survived text extraction
+//
+// The separator is REQUIRED for the job-title strip: "Chief Editor" (a title
+// with no name, or conceivably a surname) stays untouched — the existing test
+// at scripts/lib/byline-normalization.test.mjs pins that. Only listed
+// qualifier words may sit around the title noun, so a co-byline such as
+// "Jane Doe, Chris Host" is not mistaken for ", Host".
+// ---------------------------------------------------------------------------
+const HTML_TAG_RE = /<\/?[a-z][^<>]*\/?>/gi;
+const STRAY_ANGLE_RE = /^[\s<>]+|[\s<>]+$/g;
+const CLAUSE_SEP = '(?:,|;|\\||:|/|[-–—]|\\(|\\[)';
+const TITLE_QUALIFIER = '(?:chief|senior|deputy|associate|assistant|contributing|guest|freelance|lead|principal|staff|executive|managing|editorial|founding|resident|arts|theatre|theater|drama|dance|music|film|culture|features?|opinion|entertainment|digital|web|online|london|new york|west end|broadway|uk|us|the|our|a|an|of|and|&|at|large|emeritus|emerita|in|residence)';
+const TITLE_NOUN = '(?:critic|editor|writer|reporter|correspondent|columnist|reviewer|contributor|journalist|blogger|producer|presenter|host|author|publisher|founder|director|intern)s?(?:-in-chief)?';
+const TRAILING_JOB_TITLE_RE = new RegExp(
+  '\\s*' + CLAUSE_SEP + '\\s*(?:' + TITLE_QUALIFIER + '\\s+)*' + TITLE_NOUN + '(?:\\s+' + TITLE_QUALIFIER + ')*\\s*[\\)\\]]?\\s*$',
+  'i'
+);
+// "(she/her)", "[they/them]", "(she/her/hers)" and the bare "she/her" form.
+const TRAILING_PRONOUNS_PAREN_RE = /\s*[([]\s*[a-z]{1,5}(?:\s*\/\s*[a-z]{1,5}){1,2}\s*[)\]]\s*$/i;
+const TRAILING_PRONOUNS_BARE_RE = /\s+[a-z]{1,5}(?:\/[a-z]{1,5}){1,2}\s*$/i;
+const TRAILING_SEPARATORS_RE = /[\s,;|:/–—-]+$/;
+const LEADING_SEPARATORS_RE = /^[\s,;|:/–—-]+/;
+
+/**
+ * Strip the residue a byline capture drags along after the name: HTML
+ * tags / stray angle brackets, a trailing pronoun parenthetical, a trailing
+ * job-title clause introduced by a separator, and dangling separators.
+ * Idempotent; the name itself is never altered.
+ *
+ * @param {*} raw - a byline capture or stored criticName.
+ * @returns {string} the name without its suffixes ('' when nothing is left);
+ *   a non-string input is returned unchanged.
+ */
+function stripBylineSuffixes(raw) {
+  if (typeof raw !== 'string') return raw;
+  let s = raw.replace(HTML_TAG_RE, ' ').replace(STRAY_ANGLE_RE, '').replace(/\s+/g, ' ').trim();
+  for (let pass = 0; pass < 4 && s; pass++) {
+    const before = s;
+    s = s.replace(TRAILING_PRONOUNS_PAREN_RE, '').replace(TRAILING_PRONOUNS_BARE_RE, '');
+    s = s.replace(TRAILING_JOB_TITLE_RE, '');
+    s = s.replace(TRAILING_SEPARATORS_RE, '').replace(LEADING_SEPARATORS_RE, '').trim();
+    if (s === before) break;
+  }
+  return s;
 }
 
 /**
@@ -175,6 +234,7 @@ function sanitizeCriticName(raw) {
 
 module.exports = {
   normalizeBylineCapture,
+  stripBylineSuffixes,
   normalizeCriticName,
   looksLikeUrlCriticName,
   sanitizeCriticName,

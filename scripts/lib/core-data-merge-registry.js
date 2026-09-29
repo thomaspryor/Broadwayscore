@@ -844,12 +844,42 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
   },
   {
+    // BRO-4204 S4-T11/T12: two producers since the Off-West End promoter
+    // landed — discover-new-shows.js stages (update-show-status.yml) and
+    // scripts/promote-owe-venue-candidates.js prunes (promote-owe-venue-
+    // candidates.yml). Both workflows sit in the SAME `shows-json-writer`
+    // concurrency group (cancel-in-progress: false), so the two commits are
+    // mutually exclusive — the grosses.json shape checkEntry() accepts, not
+    // a true single writer. Same-host protection is lib/owe-venue-
+    // staging.js's updateStaging (withFileLock).
     file: 'audit/owe-venue-candidates.json',
     surface: 'public-repo',
     status: 'single-writer',
     apiFallbackSafe: true,
     concurrencyGroup: 'shows-json-writer',
-    verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (update-show-status.yml), group shows-json-writer (cancel-in-progress: false).',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 2 writers (update-show-status.yml "Commit and push changes"; promote-owe-venue-candidates.yml "Commit OWE promotion audit log + pruned staging" via git-add-existing.sh), BOTH group shows-json-writer (cancel-in-progress: false) — mutually exclusive, no real race. Previously 2026-09-14 (BRO-3071): 1 writer (update-show-status.yml).',
+  },
+  {
+    // BRO-4204 S4-T12: the OWE promoter's state file (what this run
+    // promoted / dropped) — same shape as audit/we-last-promotion-ids.json;
+    // read by promote-owe-venue-candidates.yml's job-summary step, written
+    // only by a non-dry-run scripts/promote-owe-venue-candidates.js run.
+    file: 'audit/owe-last-promotion-ids.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 1 writer (promote-owe-venue-candidates.yml, git-add-existing.sh in its "Commit OWE promotion audit log + pruned staging" step), group shows-json-writer (cancel-in-progress: false).',
+  },
+  {
+    // BRO-4204 S4-T12: the OWE promoter's append-only jsonl audit log —
+    // same shape and single-writer story as audit/we-promotion-log.jsonl.
+    file: 'audit/owe-promotion-log.jsonl',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'shows-json-writer',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T12): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js) against real .github/workflows/*.yml — 1 writer (promote-owe-venue-candidates.yml, git-add-existing.sh in its "Commit OWE promotion audit log + pruned staging" step), group shows-json-writer (cancel-in-progress: false).',
   },
   {
     file: 'audit/playbill-broadway-last-success.json',
@@ -1154,6 +1184,20 @@ const CORE_DATA_MERGE_REGISTRY = [
     apiFallbackSafe: true,
     concurrencyGroup: 'promote-we-aggregator',
     verifiedBy: '2026-09-14 (BRO-3071 what-else sweep): findWritingWorkflows()-class check (scripts/lib/api-fallback-writer-drift.js; manual grep for loop-staged idiom where the static regex has a documented blind spot) against real .github/workflows/*.yml — 1 writer (promote-we-aggregator.yml), group promote-we-aggregator (cancel-in-progress: false).',
+  },
+  {
+    // BRO-4204 S4-T9: remembered-rejection store (lib/we-rejected-candidates.js)
+    // written only by a non-dry-run promote-we-aggregator-candidates.js run and
+    // committed by the same "Commit WE promotion audit log" step as the two
+    // entries above. Registered so that step's Git Data API fallback stays
+    // available (push-with-retry.sh disqualifies a diff touching an
+    // unregistered path — the BRO-2722 progress-watch-state failure class).
+    file: 'audit/we-rejected-candidates.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'promote-we-aggregator',
+    verifiedBy: '2026-09-28 (BRO-4204 S4-T9): same findWritingWorkflows()-class check as the two promote-we-aggregator entries above — 1 writer (promote-we-aggregator.yml, git-add-existing.sh in its "Commit WE promotion audit log" step), group promote-we-aggregator (cancel-in-progress: false).',
   },
   {
     file: 'audit/affiliate-link-probe.json',
@@ -1803,6 +1847,12 @@ const CORE_DATA_MERGE_REGISTRY = [
   // union merge (by id / by archived row id) BEFORE the first CI writer lands.
   { file: 'retired-show-ids.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js from human sessions; no workflow writer yet (2026 data audit S0-T2)' },
   { file: 'deleted-shows.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js (archive of deleted rows beside retired-show-ids.json); no workflow writer yet (2026 data audit S0-T2)' },
+  // 2026 data audit (S5-T9): retired critic slug → canonical slug, a flat
+  // {old: canonical} object read by scripts/lib/critic-slug-aliases.js at
+  // prebuild (scripts/build-slug-redirects.js). Hand-edited from human
+  // sessions only; S7-T3 (diacritic fold) may add a script writer — promote
+  // to 'active' with a keyed union merge before any CI writer lands.
+  { file: 'critic-slug-aliases.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, human sessions editing the core-data repo; read-only for scripts/lib/critic-slug-aliases.js; no workflow writer yet (2026 data audit S5-T9)' },
 ];
 
 /**

@@ -122,6 +122,19 @@ function parseRating(originalRating) {
     }
   }
 
+  // Percent rating ("80%", "72.5 %", "100 percent") — a 0-100 scale already, so
+  // the expected score is the number itself. BRO-4204 S7-T11: every one of the
+  // 96 "unparseable" originalRatings the audit found was an `NN%` string
+  // (Theatermania/BWW-style percent verdicts relayed by aggregators); they
+  // fell through to `type: 'unknown'` and inflated the unparseable rate.
+  const percentMatch = rating.match(/^(\d+(?:\.\d+)?)\s*(?:%|percent)$/i);
+  if (percentMatch) {
+    const value = parseFloat(percentMatch[1]);
+    if (value >= 0 && value <= 100) {
+      return { type: 'percent', expected: value, parsedValue: `${value}%`, unparseable: false };
+    }
+  }
+
   // Check for letter grades (including ranges like B+/A-)
   const letterRangeMatch = rating.match(/^([A-DF][+-]?)\s*(?:\/|to)\s*([A-DF][+-]?)$/i);
   if (letterRangeMatch) {

@@ -12,6 +12,9 @@ const fs = require('fs');
 const path = require('path');
 const { checkForDuplicate, slugify, normalizeTitle } = require('./lib/deduplication');
 const { getMarketPool } = require('./lib/venue-classification');
+// Shared id-base rule (S5-T3) — the private regex that lived here listed only
+// west-end|off-broadway, so `-off-west-end-2026` ids kept a dangling `-off`.
+const { stripIdSuffix } = require('./lib/market-slug');
 
 const SHOWS_FILE = path.join(__dirname, '..', 'data', 'shows.json');
 const data = JSON.parse(fs.readFileSync(SHOWS_FILE, 'utf8'));
@@ -31,8 +34,6 @@ const titleIndex = new Map();  // lowercase title → [shows]
 const slugIndex = new Map();   // slug → [shows]
 const idBaseIndex = new Map(); // id base (no year/market suffix) → [shows]
 const normIndex = new Map();   // normalized title → [shows]
-
-const stripIdSuffix = (s) => s.replace(/-(?:west-end|off-broadway)(?:-\d{4})?$/, '').replace(/-\d{4}$/, '');
 
 const addToIndex = (index, key, show) => {
   if (!index.has(key)) index.set(key, []);

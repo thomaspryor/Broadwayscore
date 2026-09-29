@@ -22,6 +22,7 @@ const path = require('path');
 const { tourImageProblems } = require('./lib/tour-family');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { loadRetiredIdsSafe, checkRetiredIds } = require('./lib/validate-retired-ids');
+const { checkIdYearDrift } = require('./lib/id-year-drift');
 
 // --dry-run (Sprint 0 / S0-T1): run every check, print every verdict, exit with
 // the same code — but never touch disk. Three write paths honour it: the
@@ -56,7 +57,7 @@ const { previewsAfterOpening, excessivePreviewGap, inheritedDateFromSibling, sus
 
 // Canonical Broadway-category predicate. Treats null category as Broadway
 // per historical-import convention; use this instead of raw string compare.
-const { isBroadwayCategory, isMisCategorisedNonNycRow } = require('./lib/venue-classification');
+const { isBroadwayCategory, isMisCategorisedNonNycRow, isUnreviewedNonTheatreRow } = require('./lib/venue-classification');
 const { classifyReverseCrossMarket, classifyUsOnWeCrossMarket } = require('./lib/cross-market-guard');
 const { earliestShowDate, evaluatePreWindowInclusion } = require('./lib/date-guard');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -496,6 +497,16 @@ function validateRetiredIds(shows) {
   const { retired, error: loadError } = loadRetiredIdsSafe();
   if (loadError) warn(`Retired-id registry could not be loaded (${loadError}) — treating as empty`);
   checkRetiredIds(shows, retired, { warn, ok });
+}
+
+// BRO-4204 S5-T4: a non-closed show whose id year matches neither its opening
+// year nor its previews year (evita-2026 opening 2027-03-25, wanted-2022
+// opening 2026-11-08). WARN only — the id is a live URL; renaming it is
+// S8-T1's tooled job (rename-show-id.js + redirects), never an auto-fix here.
+// Decision logic: scripts/lib/id-year-drift.js (unit-tested with real rows).
+function validateIdYearDrift(shows) {
+  info('Checking id year against opening/previews dates...');
+  checkIdYearDrift(shows, { warn, ok });
 }
 
 // ===========================================
@@ -5256,6 +5267,32 @@ function validateNonTheaterContent(shows) {
   }
   if (flagged === 0) ok('No suspicious non-theater content detected');
   else console.log(`  ⚠️  ${flagged} show(s) flagged for review`);
+
+  // Non-theatre VENUE rows (2026 data audit, BRO-4204 S4-T8). Owner rule D3:
+  // a row at a stadium / arena / concert hall / cabaret room stays only if it
+  // has a review, is opera, or sits in a SOLT/Broadway house; everything else
+  // is a concert, a sports fixture or a cabaret night that reached shows.json
+  // before discovery learned to refuse it (isNonTheaterContent gate 3). WARN,
+  // not error: the decision (scripts/lib/venue-classification.js
+  // isUnreviewedNonTheatreRow) is deliberately conservative, and the reviewed
+  // and opera rows it exempts are kept on purpose. The rule itself is written
+  // up in docs/show-inclusion-policy.md.
+  console.log('--- Non-Theatre Venue Check ---');
+  const reviewedShowIds = new Set();
+  try {
+    const reviewsData = JSON.parse(fs.readFileSync(path.join(DATA_DIR, 'reviews.json'), 'utf8'));
+    for (const r of (reviewsData.reviews || reviewsData)) if (r.showId) reviewedShowIds.add(r.showId);
+  } catch (e) {
+    info(`reviews.json unreadable (${e.message}) — non-theatre venue check treats every row as unreviewed`);
+  }
+  let venueFlagged = 0;
+  for (const show of shows) {
+    if (!isUnreviewedNonTheatreRow(show, reviewedShowIds.has(show.id))) continue;
+    warn(`Non-theatre venue with no reviews: "${show.title}" (${show.id}) at "${show.venue}" [${show.category || 'no category'}${show.type ? `, ${show.type}` : ''}] — not opera and not a SOLT/Broadway house; remove the row or leave it if a review is expected (docs/show-inclusion-policy.md)`);
+    venueFlagged++;
+  }
+  if (venueFlagged === 0) ok('No unreviewed rows at non-theatre venues');
+  else console.log(`  ⚠️  ${venueFlagged} unreviewed row(s) at stadium/arena/concert-hall/cabaret venues`);
 }
 
 // Lint guard: detect hardcoded outlet ID lists in scripts that should use outlet-registry.json
@@ -5340,6 +5377,7 @@ function runValidation() {
   validateStatus(shows);
   validateShowTypes(shows);
   validateDates(shows);
+  validateIdYearDrift(shows);
   validateTourLegs(shows);
   validateSlugs(shows);
   validateImageUrls(shows);

@@ -19,6 +19,15 @@
  */
 'use strict';
 
+const { isRecentlyLive } = require('./show-liveness');
+
+// Liveness for catch-up candidacy: status=open ONLY. This reproduces the
+// job's historical inline filter (`s.status !== 'open' → skip`) by
+// construction — previews have no reviews to catch up yet, and a closed
+// zero-review show is a status/data problem, not a dispatch target
+// (audit S7-T7; tests/unit/show-liveness.test.mjs pins the equivalence).
+const CATCHUP_LIVENESS = Object.freeze({ liveStatuses: Object.freeze(['open']), allowClosed: false });
+
 const DEFAULT_AGE_BOUND_DAYS = 90;
 const DEFAULT_GRACE_DAYS = 3;
 const DEFAULT_MAX_ATTEMPTS = 3;
@@ -71,7 +80,7 @@ function selectCatchupCandidates(shows, reviews, attempts, opts = {}) {
   const givenUp = [];
 
   for (const s of (shows || [])) {
-    if (!s || s.status !== 'open') continue;
+    if (!s || !isRecentlyLive(s, CATCHUP_LIVENESS)) continue;
     if (reviewCounts[s.id]) continue;
     if (!s.openingDate) continue;
     // Give initial pipeline discovery a grace window before treating a show
@@ -99,6 +108,7 @@ module.exports = {
   DEFAULT_MAX_ATTEMPTS,
   DEFAULT_MAX_ATTEMPT_DAYS,
   DEFAULT_BATCH_SIZE,
+  CATCHUP_LIVENESS,
   hasGivenUp,
   selectCatchupCandidates,
 };

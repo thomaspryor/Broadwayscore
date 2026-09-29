@@ -43,9 +43,141 @@ function isUnambiguousRatingString(raw) {
 // TEXT CLEANING
 // ===================================================
 
+// Canonical thumb spellings are 'Up' / 'Flat' / 'Down'. Aggregator scrapers
+// have written 'Meh' (DTLI's own label), and — BRO-4204 audit S6-T6 — the
+// upper-case 'UP' / 'MEH' / 'DOWN' (112 corpus files as of 2026-09-28), which
+// the old exact-match version passed through untouched: the P2 thumb
+// validation then read 'UP' as neutral and silently lost the signal. Any
+// casing of up/meh/flat/down normalizes; an unknown spelling still passes
+// through unchanged (callers treat it as neutral).
 function normalizeThumb(thumb) {
-  if (thumb === 'Meh' || thumb === 'Flat') return 'Flat';
-  return thumb; // 'Up' or 'Down'
+  if (thumb == null) return thumb;
+  const key = String(thumb).trim().toLowerCase();
+  if (key === 'meh' || key === 'flat') return 'Flat';
+  if (key === 'up') return 'Up';
+  if (key === 'down') return 'Down';
+  return thumb;
+}
+
+// Direction of a 0-100 score's bucket: Rave/Positive → positive, Negative/Pan
+// → negative, Mixed → neutral.
+function bucketDirectionOfScore(score) {
+  const bucket = scoreToBucket(score);
+  if (bucket === 'Rave' || bucket === 'Positive') return 'positive';
+  if (bucket === 'Negative' || bucket === 'Pan') return 'negative';
+  return 'neutral';
+}
+
+/**
+ * BRO-4204 audit S6-T6: do BOTH aggregator thumbs (DTLI + BWW) agree with each
+ * other AND point the opposite way from the verdict — a two-bucket
+ * disagreement (both Up vs a Negative/Pan score, both Down vs a Positive/Rave
+ * score)? Mixed verdicts and Flat thumbs never qualify: a one-bucket gap
+ * (Up vs Mixed) is ordinary calibration noise that the P2 thumb validation
+ * already handles. Two editors who both read the full review and both
+ * disagree with the LLM by two buckets is the case the adjudication queue
+ * exists for, so the rebuild stamps `needsAdjudication: true` on the emitted
+ * record and queues it (reason 'both-thumbs-disagree-with-llm').
+ *
+ * Pure. Thumb spellings go through normalizeThumb.
+ *
+ * @param {object} data   review-text record (dtliThumb / bwwThumb read)
+ * @param {number} score  the verdict being emitted
+ * @returns {boolean}
+ */
+function bothThumbsOpposeVerdict(data, score) {
+  if (!data || typeof score !== 'number' || !Number.isFinite(score)) return false;
+  const dtli = data.dtliThumb ? normalizeThumb(data.dtliThumb) : null;
+  const bww = data.bwwThumb ? normalizeThumb(data.bwwThumb) : null;
+  if (!dtli || !bww || dtli !== bww) return false;
+  if (dtli !== 'Up' && dtli !== 'Down') return false;
+  const verdictDir = bucketDirectionOfScore(score);
+  if (verdictDir === 'neutral') return false;
+  const thumbDir = dtli === 'Up' ? 'positive' : 'negative';
+  return thumbDir !== verdictDir;
+}
+
+/**
+ * BRO-4204 audit S6-T5: what makes an `originalScore` value a PUBLISHED rating
+ * the P0.5 path may score from, as opposed to a bare number some upstream
+ * writer relayed (Show-Score's 0-100 critic score, a manual --score, an
+ * aggregator's normalized value) that only LOOKS like a rating?
+ *
+ *   'unambiguous'                 — letter grade / star form / X-out-of-N
+ *                                   (isUnambiguousRatingString)
+ *   'verified-scoreSource'        — the extraction source is one of the
+ *                                   outlet-verified extractors
+ *   'verified-originalScoreSource'— same, recorded on originalScoreSource
+ *   'starRating'                  — the file carries the star form alongside
+ *                                   the normalized number (manual ingest shape:
+ *                                   starRating "4/5", originalScore 80)
+ *   null                          — a bare numeric / percentage / freeform
+ *                                   string with no verified provenance: NOT a
+ *                                   published rating; P0.5 must not score it
+ *
+ * The Rocky Horror 2026 shape that motivated this (originalScore 75 numeric,
+ * source 'manual', no starRating, no scoreSource) returns null. "88.6/100"
+ * returns 'unambiguous' — an explicit denominator is a rating form by
+ * isUnambiguousRatingString's definition — even from a relay source such as
+ * theatre-record; provenance gating of X/100 strings would need its own field
+ * and is out of scope here (documented in the colocated test).
+ *
+ * Parsing itself is unchanged: parseOriginalScore (score-parsers.js) keeps
+ * its semantics; this is a gate at its P0.5 call site only.
+ *
+ * @param {string|number} raw  the candidate originalScore value
+ * @param {object} data        review-text record (scoreSource / originalScoreSource / starRating read)
+ * @returns {string|null}
+ */
+// Registry starScale by outletId (lazy, cached). Tests pass opts.starScale
+// instead of touching the registry.
+let _starScaleRegistry = null;
+function registryStarScale(outletId) {
+  if (!outletId) return null;
+  if (_starScaleRegistry === null) {
+    try {
+      const _fs = require('fs');
+      const _path = require('path');
+      _starScaleRegistry = JSON.parse(_fs.readFileSync(_path.join(__dirname, '..', '..', 'data', 'outlet-registry.json'), 'utf-8'));
+    } catch {
+      _starScaleRegistry = { outlets: {} };
+    }
+  }
+  const entry = (_starScaleRegistry.outlets || {})[outletId];
+  if (!entry || !Number.isFinite(entry.starScale) || entry.starScale <= 0) return null;
+  return entry.starScale;
+}
+
+// 'star-ladder' (S6-T5 follow-up): a bare number at an outlet the registry says
+// publishes N-star ratings, sitting exactly on that ladder (k * 100/N for a
+// whole k in 1..N — Time Out's 60 = ★★★, the Guardian's 80 = ★★★★, USA Today's
+// 75 = ★★★ of 4), is the older web-search pipeline's star relay, not a made-up
+// number. The strict gate's scoring-delta showed ~50 such T1 relays (timeout,
+// guardian, times-uk) would otherwise be replaced by an LLM read within a few
+// points of the published star. A number OFF the ladder (75 at a 5-star
+// outlet, EW's 88) or at an outlet with no starScale stays ambiguous.
+function isOnStarLadder(raw, starScale) {
+  if (!Number.isFinite(starScale) || starScale <= 0) return false;
+  const n = typeof raw === 'number' ? raw : (typeof raw === 'string' && /^\s*\d+(?:\.\d+)?\s*$/.test(raw) ? Number(raw) : NaN);
+  if (!Number.isFinite(n) || n <= 0 || n > 100) return false;
+  const k = n / (100 / starScale);
+  return Math.abs(k - Math.round(k)) < 1e-9 && Math.round(k) >= 1 && Math.round(k) <= starScale;
+}
+
+function publishedRatingEvidence(raw, data, opts) {
+  if (raw == null || raw === '') return null;
+  if (isUnambiguousRatingString(raw)) return 'unambiguous';
+  const d = data || {};
+  if (d.scoreSource && OUTLET_VERIFIED_SOURCES.has(d.scoreSource)) return 'verified-scoreSource';
+  if (d.originalScoreSource && OUTLET_VERIFIED_SOURCES.has(d.originalScoreSource)) return 'verified-originalScoreSource';
+  if (isUnambiguousRatingString(d.starRating)) return 'starRating';
+  const starScale = opts && Object.prototype.hasOwnProperty.call(opts, 'starScale') ? opts.starScale : registryStarScale(d.outletId);
+  if (isOnStarLadder(raw, starScale)) return 'star-ladder';
+  return null;
+}
+
+function isPublishedRatingEvidence(raw, data) {
+  return publishedRatingEvidence(raw, data) !== null;
 }
 
 const { normalizeDate } = require('./date-utils');
@@ -428,6 +560,39 @@ function aggregatorStarsCorroboratedByFullText(data) {
  * @param {function} [opts.flagForHumanReview] - Callback for flagging reviews
  * @returns {{ score: number, source: string } | null}
  */
+/**
+ * Every `source` label getBestScore() can emit, in priority order. BRO-4204
+ * S7-T11: rebuild-all-reviews.js initialises `_meta.stats.scoreSources` from
+ * this list so a label that no review hits in a given rebuild still reports 0
+ * (not absent — and, before S6-T5 made the counter safe, not `null`: the
+ * three main sources 'llm-v6'/'anchored-v6'/'adjudicated' were missing from
+ * the seed object, `undefined++` produced NaN and JSON serialised it as null).
+ * tests/unit/rebuild-score-source-stats.test.mjs scans this function's source
+ * so a new `source: '…'` literal without a matching entry here fails CI.
+ */
+const SCORE_SOURCE_LABELS = Object.freeze([
+  'human-review',
+  'adjudicated',
+  'anchored-v6',
+  'llm-v6',
+  'originalScore-priority0',
+  'aggregatorStars-relay',
+  'llmScore-override-star-conflict',
+  'originalScore-inline-recovery',
+  'llmScore-override-inline-recovery-conflict',
+  'llmScore',
+  'originalScore-showscore-downgraded',
+  'llmScore-lowconf',
+  'llmScore-review',
+  'assignedScore',
+  'bucket',
+  'bwwScore-fallback',
+  'aggregatorStars-fallback',
+  'thumb',
+  'llmScore-thumb-validated',
+  'llmScore-thumb-boosted',
+]);
+
 function getBestScore(data, opts = {}) {
   const stats = opts.stats || {};
   const flagForHumanReview = opts.flagForHumanReview || (() => {});
@@ -542,7 +707,17 @@ function getBestScore(data, opts = {}) {
       && lateStarReliable
       && parseOriginalScore(data.originalScore, data.outletId) !== null;
     if (!llmV6HasLateStar) {
-      return { score: data.llmScore.score, source: effectiveV6Source };
+      const v6Score = data.llmScore.score;
+      // S6-T6: both aggregator editors disagree with the v6 verdict by two
+      // buckets → emit the verdict but mark it for the adjudication queue.
+      if (bothThumbsOpposeVerdict(data, v6Score)) {
+        inc('bothThumbsOpposeV6Verdict');
+        flagForHumanReview(data, 'both-thumbs-disagree-with-llm',
+          `${effectiveV6Source} verdict ${v6Score} (${scoreToBucket(v6Score)}) vs both aggregator thumbs `
+          + `${normalizeThumb(data.dtliThumb)}/${normalizeThumb(data.bwwThumb)} — two-bucket disagreement, needsAdjudication`);
+        return { score: v6Score, source: effectiveV6Source, needsAdjudication: true };
+      }
+      return { score: v6Score, source: effectiveV6Source };
     }
   }
 
@@ -643,9 +818,28 @@ function getBestScore(data, opts = {}) {
     flagForHumanReview(data, 'aggregatorStars-excerpt-mismatch',
       `aggregatorStars "${data.aggregatorStars}" ignored — its excerpt field doesn't overlap with fullText (likely cross-attributed from a different show's aggregator roundup row)`);
   }
-  const effectiveOriginalScore = (!scoreCleared && !isAggregatorScoreSource && resolvedOriginalScore)
-    || (aggregatorStarsUsable ? data.aggregatorStars : null);
-  const effectiveScoreLabel = data.originalScore ? 'originalScore' : 'aggregatorStars (known star outlet)';
+  // S6-T5 (BRO-4204 audit): a bare NUMBER in originalScore (Show-Score's 75
+  // relayed by a manual/web-search writer, a normalized value with no
+  // extraction source) is NOT a published rating — the old code parsed it via
+  // parseNumericRating and shipped it as 'originalScore-priority0' over the
+  // ensemble LLM read. Require the unambiguous star/letter form, an
+  // outlet-verified extraction source, or the star form riding alongside in
+  // starRating (publishedRatingEvidence). An ambiguous originalScore falls
+  // through — to a usable aggregatorStars relay here, else to P1+ — and is
+  // counted as skippedAmbiguousOriginalScore.
+  const originalCandidate = (!scoreCleared && !isAggregatorScoreSource && resolvedOriginalScore) || null;
+  const originalEvidence = originalCandidate ? publishedRatingEvidence(originalCandidate, data) : null;
+  if (originalCandidate && !originalEvidence) inc('skippedAmbiguousOriginalScore');
+  const gatedOriginalScore = originalEvidence === 'starRating' ? data.starRating
+    : originalEvidence ? originalCandidate : null;
+  // When aggregatorStars drives the score the emitted record labels it
+  // 'aggregatorStars-relay' (and rebuild-all-reviews.js displays the relayed
+  // star as originalRating) instead of masquerading as the outlet's own
+  // originalScore.
+  const effectiveFromAggregatorStars = !gatedOriginalScore && !!aggregatorStarsUsable;
+  const effectiveOriginalScore = gatedOriginalScore || (effectiveFromAggregatorStars ? data.aggregatorStars : null);
+  const effectiveScoreLabel = effectiveFromAggregatorStars ? 'aggregatorStars (known star outlet)' : 'originalScore';
+  const p05Source = effectiveFromAggregatorStars ? 'aggregatorStars-relay' : 'originalScore-priority0';
 
   if (effectiveOriginalScore && !downgradeShowScore) {
     if (data.scoreConfidence === 'low' || data.scoreSource === 'star-icon' || data.scoreSource === 'star-icon-cleared') {
@@ -716,7 +910,7 @@ function getBestScore(data, opts = {}) {
             }
           }
         }
-        return { score: parsed, source: 'originalScore-priority0' };
+        return { score: parsed, source: p05Source };
       }
     }
   }
@@ -1096,7 +1290,11 @@ function compareFilesForDedupPriority(a, b) {
 }
 
 module.exports = {
+  isOnStarLadder,
   isUnambiguousRatingString,
+  publishedRatingEvidence,
+  isPublishedRatingEvidence,
+  bothThumbsOpposeVerdict,
   // Text cleaning
   normalizeThumb,
   normalizePublishDate,
@@ -1112,6 +1310,7 @@ module.exports = {
   isContentVerificationActive,
   aggregatorStarsCorroboratedByFullText,
   getBestScore,
+  SCORE_SOURCE_LABELS,
   // URL date extraction
   extractDateFromUrl,
   // Dedup tiebreaking

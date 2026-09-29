@@ -100,6 +100,9 @@ export async function GET(
   // Accept both `/api/badge/proof-2026` and `/api/badge/proof-2026.svg`.
   const slug = params.slug.replace(/\.svg$/i, '');
 
+  // No middleware runs for /api/*, so an old URL (`/api/badge/<id>.svg`, or a
+  // merged row's alias) must resolve here: getShowBySlug() falls back to the
+  // show's id / `aliases[]` — the same rules /show/<slug> is redirected by (S5-T7).
   const show = getShowBySlug(slug);
   if (!show || !isCategoryEnabled(show.category)) return notFoundSvg();
 

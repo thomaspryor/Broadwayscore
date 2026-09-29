@@ -96,18 +96,19 @@ test('discover-new-shows.js applies applyGenreCategoryOverride before pushing a 
 // (isNonTheatricalGenre(undefined) is false). All three West End intake
 // functions must call applyGenreCategoryOverride — assert the count so a
 // future refactor can't silently drop one.
-test('all 3 West End show-intake sites call applyGenreCategoryOverride (BRO-157 follow-up)', () => {
+test('all 4 West End show-intake sites call applyGenreCategoryOverride (BRO-157 follow-up)', () => {
   const src = readFileSync(join(ROOT, 'scripts/discover-new-shows.js'), 'utf8');
   const callCount = (src.match(/applyGenreCategoryOverride\(/g) || []).length;
   assert.strictEqual(
-    callCount, 3,
-    `Expected applyGenreCategoryOverride() to be called exactly 3 times ` +
-      `(fetchShowsFromTodayTixLondon, fetchShowsFromOfficialLondonTheatre, and the ` +
+    callCount, 4,
+    `Expected applyGenreCategoryOverride() to be called exactly 4 times ` +
+      `(fetchShowsFromTodayTixLondon, fetchShowsFromOfficialLondonTheatre, ` +
+      `fetchShowsFromTheatremonkey (S4-T5: it writes real venues again), and the ` +
       `TodayTix-confirmed validated.push branch) — found ${callCount}. If you added or ` +
       `removed a West End intake path, keep every one genre-aware or this count out of sync.`
   );
 
-  for (const fnName of ['fetchShowsFromTodayTixLondon', 'fetchShowsFromOfficialLondonTheatre']) {
+  for (const fnName of ['fetchShowsFromTodayTixLondon', 'fetchShowsFromOfficialLondonTheatre', 'fetchShowsFromTheatremonkey']) {
     const start = src.indexOf(`async function ${fnName}`);
     assert.ok(start !== -1, `could not find function ${fnName} in discover-new-shows.js`);
     const nextFnStart = src.indexOf('\nasync function ', start + 1);

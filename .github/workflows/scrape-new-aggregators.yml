@@ -343,7 +343,7 @@ jobs:
           # this TRACKED file on every dispatch attempt; left unstaged it makes
           # every later rebase refuse pre-flight and forces the clobber-prone
           # merge path in push-with-retry.sh.
-          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/playbill-verdict-sitemap-seen.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+          bash scripts/lib/git-add-existing.sh data/audit/playbill-verdict-unmatched.json data/audit/playbill-verdict-sitemap-seen.json data/audit/ob-venue-candidates.json data/audit/ob-aggregator-rejections.json data/audit/last-promotion-ids.json data/audit/ob-promotion-log.jsonl data/audit/alert-digest-queue.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/lortel-last-success.json
           if ! git diff --staged --quiet; then
             git commit -m "data: Playbill Verdict unmatched audit + candidate staging [skip ci]"
             bash scripts/lib/push-with-retry.sh

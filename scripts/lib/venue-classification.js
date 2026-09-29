@@ -13,7 +13,10 @@
 
 const path = require('path');
 const { foldDiacritics } = require('./title-match');
-const { isPlaceholderVenue } = require('../audit-placeholder-venues');
+// Single home of the placeholder predicate (S4-T7): the census CLI, this
+// write-time guard and the source lint all require() this same module.
+const { isPlaceholderVenue } = require('./placeholder-venue');
+const { BROADWAY_THEATERS, normalizeVenueName: normalizeBroadwayVenue } = require('./broadway-theaters');
 const venueList = require(path.join(__dirname, '../../data/west-end-venues.json'));
 const obVenueList = require(path.join(__dirname, '../../data/off-broadway-venues.json'));
 
@@ -147,6 +150,134 @@ const SPECIAL_ENGAGEMENT_VENUE_RE = /radio city music hall|park avenue armory|ca
 function isSpecialEngagementVenue(venue) {
   if (!venue || venue === 'TBA') return false;
   return SPECIAL_ENGAGEMENT_VENUE_RE.test(venue);
+}
+
+// ── Non-theatre venues (2026 data audit, BRO-4204 S4-T6) ─────────────────────
+//
+// Stadiums, arenas, concert halls, cabaret rooms and one-off attraction sites
+// in both markets. A listing at one of these is a concert, a sports fixture, a
+// fairground ride or a cabaret night — not a staged production — unless
+// something else vouches for it: TodayTix tagging it Plays/Musicals (NYC path
+// only), or a registered outlet reviewing it (the aggregator promoters, which
+// do not consult this regex — see docs/show-inclusion-policy.md).
+//
+// Every named venue below is either a real row from the audit's non-theatre
+// accounting (Joe's Pub, 54 Below, Carnegie Hall, Radio City Music Hall,
+// Bowery Ballroom, Twickenham Stadium, Eventim Apollo, Royal Albert Hall,
+// Royal Festival Hall / Queen Elizabeth Hall, Alexandra Palace, King's Place,
+// Battersea Power Station) or an obvious sibling TodayTix lists in the same
+// feeds. Substring regex, not a normalized Set, for the same reason as
+// NON_NYC_VENUE_RE: the strings carry suffixes ("Stern Auditorium / Perelman
+// Stage at Carnegie Hall", "Joe's Pub at The Public Theatre").
+//
+// Deliberately NOT matched (each one is a theatre that a looser token hits):
+//   - bare "park": Park Theatre (20 Off-West End rows), Regent's Park Open Air
+//     Theatre, Park Avenue Armory. Festival/one-night park bookings fall to
+//     the one-night gate instead.
+//   - bare "wembley": Troubadour Wembley Park Theatre (Starlight Express).
+//   - bare "apollo": Apollo Theatre / Apollo Victoria are West End houses.
+//   - "Barbican Centre" / "Barbican Theatre": only Barbican Hall (the concert
+//     hall) matches.
+//   - "Alexandra Palace Theatre": the restored Victorian theatre inside Ally
+//     Pally stages plays and pantos; the bare site name is the concert venue.
+//   - "Arena Stage" (Washington DC regional theatre) despite the arena token.
+//   - "Shoreditch Town Hall" (an arts venue that stages theatre): only NYC's
+//     "The Town Hall" matches.
+//   - "Wilton's Music Hall" (an Off-West End theatre): Radio City Music Hall
+//     and Music Hall of Williamsburg still match.
+const NON_THEATRE_VENUE_RE = new RegExp([
+  // NYC concert halls, arenas, stadiums
+  'carnegie hall', 'radio city music hall', 'madison square garden', 'barclays center',
+  'beacon theat(?:re|er)', '(?:^|\\bthe\\s+)town hall\\b',
+  // NYC cabaret rooms and jazz clubs
+  '\\b54 below\\b', "feinstein['’]?s", "joe['’]?s pub", '\\bbirdland\\b', 'caf[eé] carlyle',
+  'bowery ballroom', 'hammerstein ballroom', 'blue note', 'village vanguard', "dizzy['’]?s club",
+  'green room 42', "don['’]?t tell mama", 'comedy cellar',
+  // London stadiums and arenas
+  'twickenham (?:stadium|stoop)', 'wembley (?:stadium|arena)', 'ovo arena', '\\bthe o2\\b',
+  '\\bo2 (?:arena|academy|shepherd)', 'alexandra palace(?!\\s+theat)', 'crystal palace',
+  // London concert halls
+  'royal albert hall', 'barbican hall', 'royal festival hall', 'queen elizabeth hall', 'purcell room',
+  'southbank centre', 'cadogan hall', 'union chapel', 'eventim apollo', 'hammersmith apollo',
+  "king['’]?s place",
+  // London cabaret rooms and jazz clubs
+  "ronnie scott['’]?s", 'crazy coqs', 'pizza express (?:live|jazz)', 'jazz caf[eé]',
+  // London one-off attraction sites (fairground rides, park festivals)
+  'battersea power station', '\\bhyde park\\b',
+  // Generic tokens (both markets)
+  '\\bstadium\\b', '\\barena\\b(?!\\s+stage\\b)', '\\bconcert hall\\b',
+  "(?<!wilton['’]s\\s)\\bmusic hall\\b", '\\bjazz club\\b', '\\bcabaret\\b', '\\bcomedy club\\b',
+  '\\bracecourse\\b',
+].join('|'), 'i');
+
+/**
+ * True when a venue is a stadium, arena, concert hall, cabaret room or
+ * attraction site (NON_THEATRE_VENUE_RE). Accepts a string or a TodayTix-shape
+ * `{ name }` object. Not a market decision on its own: discovery's
+ * isNonTheaterContent() applies the Plays/Musicals override for NYC and
+ * rejects outright for London; validate-data.js pairs it with the review /
+ * opera / theatre-house exemptions via isUnreviewedNonTheatreRow().
+ */
+function isNonTheatreVenue(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name || name === 'TBA') return false;
+  return NON_THEATRE_VENUE_RE.test(name);
+}
+
+// Greater London receiving houses whose listings are UK tour stops, not London
+// productions (audit bucket "Tour stops at receiving houses": I'm Every Woman,
+// Noughts and Crosses and Jack and the Beanstalk at Hackney Empire; The Karate
+// Kid, Dear England and The Choir of Man at New Wimbledon Theatre). None is a
+// SOLT house, so isOffWestEndVenue() files them as off-west-end. The London
+// discovery paths reject these outright; a production critics review there
+// (the Hackney panto, say) still arrives through the aggregator promoters.
+const LONDON_RECEIVING_HOUSE_RE = /hackney empire|new wimbledon theat(?:re|er)|richmond theat(?:re|er)|churchill theat(?:re|er)|fairfield halls|new victoria theat(?:re|er)/i;
+
+function isLondonReceivingHouse(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name || name === 'TBA') return false;
+  return LONDON_RECEIVING_HOUSE_RE.test(name);
+}
+
+const BROADWAY_HOUSE_NAMES = new Set();
+for (const t of Object.values(BROADWAY_THEATERS)) {
+  if (t.canonical) BROADWAY_HOUSE_NAMES.add(normalizeBroadwayVenue(t.canonical));
+  for (const alias of t.aliases || []) BROADWAY_HOUSE_NAMES.add(normalizeBroadwayVenue(alias));
+}
+
+/**
+ * True when a venue is a SOLT West End house or one of the official Broadway
+ * houses — the two lists we hold that are theatres by definition. Exact match
+ * on the normalized name (not findTheater()'s partial match, which lets
+ * "Broadway Comedy Club" pass as the Broadway Theatre). The Off-Broadway
+ * allowlist is deliberately NOT consulted: it is derived from
+ * category='off-broadway' rows and already carries Joe's Pub, 54 Below and
+ * Carnegie Hall, which is the contamination this audit is cleaning up.
+ */
+function isTheatreHouse(venue) {
+  const name = typeof venue === 'string' ? venue : venue?.name;
+  if (!name || name === 'TBA') return false;
+  return isWestEndVenue(name) || BROADWAY_HOUSE_NAMES.has(normalizeBroadwayVenue(name));
+}
+
+/**
+ * validate-data.js decision for the S4-T8 warning (owner rule D3, 2026 audit):
+ * a row at a non-theatre venue is suspect unless it has a review, is opera, or
+ * sits in a theatre house. WARN, not error — the reviewed/opera rows are kept
+ * on purpose and discovery now refuses new ones at ingest, so this is the
+ * backstop for rows that were already in the file or came from a manual add.
+ * Extracted here (CLAUDE.md §15) so the colocated test requires the real
+ * decision instead of re-implementing it.
+ *
+ * @param {object} show        a shows.json row
+ * @param {boolean} hasReviews whether reviews.json has at least one row for show.id
+ */
+function isUnreviewedNonTheatreRow(show, hasReviews) {
+  if (!show || !show.venue) return false;
+  if (hasReviews) return false;
+  if (show.type === 'opera') return false;
+  if (!isNonTheatreVenue(show.venue)) return false;
+  return !isTheatreHouse(show.venue);
 }
 
 /**
@@ -387,4 +518,4 @@ function venueSlug(venue) {
   return cleaned;
 }
 
-module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, isMisCategorisedNonNycRow, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };
+module.exports = { isOffWestEndVenue, isWestEndVenue, isKnownOffBroadwayVenue, isNonNycVenue, isNonNycLocale, NON_NYC_VENUE_RE, NON_THEATRE_VENUE_RE, isNonTheatreVenue, LONDON_RECEIVING_HOUSE_RE, isLondonReceivingHouse, isTheatreHouse, isUnreviewedNonTheatreRow, isSpecialEngagementVenue, isLondonMarket, getMarketPool, marketForCategory, isUkOutletUrl, isBroadwayUrl, isBroadwayCategory, isOffBroadwayCategory, isMisCategorisedNonNycRow, sanitizeVenueForWrite, BROADWAY_URL_PATTERNS, US_ONLY_OUTLET_IDS, normalizeVenueName, WEST_END_VENUES, OFF_BROADWAY_VENUES, GENERIC_VENUE_SLUGS, venueSlug };

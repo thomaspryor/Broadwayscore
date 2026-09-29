@@ -105,6 +105,7 @@ scripts/lib/cmux-workspaces.test.mjs
 scripts/lib/collect-time-budget.test.mjs
 scripts/lib/collection-attempt-guard.test.mjs
 scripts/lib/colocated-test-ci-coverage.test.mjs
+scripts/lib/cross-market-reroute-guard.test.mjs
 scripts/lib/cyrus-relay-health.test.mjs
 scripts/lib/cyrus-runner-health.test.mjs
 scripts/lib/direct-provider-detector.test.mjs
@@ -130,6 +131,9 @@ scripts/lib/owner-alert-router.test.mjs
 scripts/lib/pre-send-banner.test.mjs
 scripts/lib/prune-closeable.test.mjs
 scripts/lib/push-content-survival.test.mjs
+scripts/lib/rebuild-helpers.published-rating-gate.test.mjs
+scripts/lib/rebuild-helpers.thumb-adjudication.test.mjs
+scripts/lib/score-to-bucket-boundaries.test.mjs
 scripts/lib/scraper-playwright-missing-browser.test.mjs
 scripts/lib/serp-review-census.test.mjs
 scripts/lib/show-title-normalize.test.mjs
@@ -324,6 +328,7 @@ tests/unit/brand-mention-serp-bd-first.test.mjs
 tests/unit/broadcast-state.test.mjs
 tests/unit/broadway-fantasy-league.test.mjs
 tests/unit/broadway-schedule-discovery.test.mjs
+tests/unit/broadway-source-coverage-rotted.test.mjs
 tests/unit/broadway-venue-fallback.test.mjs
 tests/unit/broadwayOpenings-sort.test.mjs
 tests/unit/brothers-paranormal-show-exists.test.mjs
@@ -350,6 +355,7 @@ tests/unit/bww-roundup-persistence.test.mjs
 tests/unit/bww-roundup-thumbs-and-urls.test.mjs
 tests/unit/bww-rr-discover.test.mjs
 tests/unit/byline-attestation.test.mjs
+tests/unit/byline-capture-suffixes.test.mjs
 tests/unit/byline-normalization.test.mjs
 tests/unit/bylines-unknown-recovery.test.mjs
 tests/unit/canonical-duplicate-pointers.test.mjs
@@ -365,6 +371,7 @@ tests/unit/cast-tombstone.test.mjs
 tests/unit/census-ledger-outlet-ids.test.mjs
 tests/unit/check-claude-auth-health.test.mjs
 tests/unit/check-corpus-drift.test.mjs
+tests/unit/check-discovery-source-blind.test.mjs
 tests/unit/checkout-rate-limit-retry.test.mjs
 tests/unit/ci-cancellation-logic.test.mjs
 tests/unit/ci-config-hygiene.test.mjs
@@ -427,10 +434,13 @@ tests/unit/coverage-guard-wired.test.mjs
 tests/unit/coverage-verdict.test.mjs
 tests/unit/coverageExpectation-drift.test.mjs
 tests/unit/creative-team-validator.test.mjs
+tests/unit/critic-alias-picker.test.mjs
 tests/unit/critic-consensus-eligibility.test.mjs
+tests/unit/critic-display-name.test.mjs
 tests/unit/critic-fill-rules.test.mjs
 tests/unit/critic-listing-promotion.test.mjs
 tests/unit/critic-registry-guard.test.mjs
+tests/unit/critic-slug-aliases.test.mjs
 tests/unit/critics-circle-parser.test.mjs
 tests/unit/critics-label-interactivity.test.mjs
 tests/unit/critics-take-generation.test.mjs
@@ -438,6 +448,7 @@ tests/unit/cron-health-chronic-refresh-show-score.test.mjs
 tests/unit/cron-health-sets.test.mjs
 tests/unit/cron-health-tight-by-design-sync.test.mjs
 tests/unit/cross-market-contamination.test.mjs
+tests/unit/cross-market-null-url.test.mjs
 tests/unit/cross-market-write-guard.test.mjs
 tests/unit/cross-outlet-triage.test.mjs
 tests/unit/cross-production-guards.test.mjs
@@ -491,6 +502,7 @@ tests/unit/done-semantics-gate.test.mjs
 tests/unit/dtli-homepage-scan-revival-tiebreak.test.mjs
 tests/unit/dtli-sibling-reroute.test.mjs
 tests/unit/dtli-slug-discover.test.mjs
+tests/unit/dtli-slug-year-rule.test.mjs
 tests/unit/dtli-thumbs-extraction.test.mjs
 tests/unit/duplicate-cycle.test.mjs
 tests/unit/duplicate-dispatch-guard.test.mjs
@@ -563,12 +575,15 @@ tests/unit/high-society-2026-west-end.test.mjs
 tests/unit/homepage-interactive-labels.test.mjs
 tests/unit/human-review-score-provisional.test.mjs
 tests/unit/ibdb-table-columns.test.mjs
+tests/unit/id-year-drift.test.mjs
 tests/unit/image-healing.test.mjs
 tests/unit/image-optimizer-exposure.test.mjs
 tests/unit/image-presence.test.mjs
 tests/unit/import-ledger-checkpoint.test.mjs
 tests/unit/import-ledger.test.mjs
 tests/unit/in-review-backlog.test.mjs
+tests/unit/in-window-slug-veto.test.mjs
+tests/unit/inclusion-policy.test.mjs
 tests/unit/ingest-bulk-drop-detection.test.mjs
 tests/unit/ingest-manual-review-collision.test.mjs
 tests/unit/ingest-manual-review-fields.test.mjs
@@ -663,6 +678,7 @@ tests/unit/news-article-not-a-review.test.mjs
 tests/unit/no-reset-rsync-push-pattern.test.mjs
 tests/unit/no-url-guess-loops.test.mjs
 tests/unit/non-review-patterns.test.mjs
+tests/unit/non-theatre-venue.test.mjs
 tests/unit/nonreview-contenttype-wrongshow.test.mjs
 tests/unit/nonreview-cv-precedence.test.mjs
 tests/unit/nonreview-slug-coverage.test.mjs
@@ -682,6 +698,8 @@ tests/unit/ob-candidates-digest.test.mjs
 tests/unit/ob-cross-validation.test.mjs
 tests/unit/off-broadway-venue-fallback.test.mjs
 tests/unit/olivier-awards.test.mjs
+tests/unit/olt-enrichment.test.mjs
+tests/unit/olt-fetchpage-port.test.mjs
 tests/unit/opening-digest-gates.test.mjs
 tests/unit/opening-night-automation.test.mjs
 tests/unit/opening-night-bd-gate.test.mjs
@@ -717,6 +735,7 @@ tests/unit/orchestrator-guardian-dispatch.test.mjs
 tests/unit/orphan-pending-decision.test.mjs
 tests/unit/outlet-alias-collision.test.mjs
 tests/unit/outlet-feed-discovery.test.mjs
+tests/unit/outlet-host-mismatch.test.mjs
 tests/unit/outlet-listing-poller.test.mjs
 tests/unit/outlet-logos-generated.test.mjs
 tests/unit/outlet-recency-monitor.test.mjs
@@ -735,6 +754,7 @@ tests/unit/per-category-precursor-warnings.test.mjs
 tests/unit/placeholder-byline.test.mjs
 tests/unit/placeholder-images.test.mjs
 tests/unit/placeholder-venue-guard.test.mjs
+tests/unit/placeholder-venue.test.mjs
 tests/unit/plan-ready.test.mjs
 tests/unit/playbill-ob-schedule.test.mjs
 tests/unit/playbill-schedule-parser.test.mjs
@@ -752,6 +772,7 @@ tests/unit/process-feedback-push-timeout.test.mjs
 tests/unit/progress-watch.test.mjs
 tests/unit/promote-dedup-jaccard.test.mjs
 tests/unit/promote-historical-auto.test.mjs
+tests/unit/promote-owe-venue-candidates.test.mjs
 tests/unit/promote-regional-auto.test.mjs
 tests/unit/promote-we-aggregator-auto.test.mjs
 tests/unit/protected-field-lock.test.mjs
@@ -771,11 +792,13 @@ tests/unit/push-with-retry-fallback-eligibility.test.mjs
 tests/unit/push-with-retry-trap-exit-code.test.mjs
 tests/unit/rebuild-all-reviews.test.mjs
 tests/unit/rebuild-dedup-scored-preference.test.mjs
+tests/unit/rebuild-display-critic-name-call-site.test.mjs
 tests/unit/rebuild-fast-contamination-guard.test.mjs
 tests/unit/rebuild-fast-push-timeout.test.mjs
 tests/unit/rebuild-helpers.test.mjs
 tests/unit/rebuild-publish-fail-closed.test.mjs
 tests/unit/rebuild-reviews-push-timeout.test.mjs
+tests/unit/rebuild-score-source-stats.test.mjs
 tests/unit/reconcile-broadcast-state.test.mjs
 tests/unit/reconcile-bww-roundup-ledger.test.mjs
 tests/unit/reconcile-merged-json-jsonl-hardening.test.mjs
@@ -792,6 +815,7 @@ tests/unit/reddit-api-scrapingdog.test.mjs
 tests/unit/reddit-grosses.test.mjs
 tests/unit/reddit-scraper-ci.test.mjs
 tests/unit/regression-guards.test.mjs
+tests/unit/rename-show-id.test.mjs
 tests/unit/rescore-actionable-depth.test.mjs
 tests/unit/rescore-flagging.test.mjs
 tests/unit/rescore-lifecycle.test.mjs
@@ -884,15 +908,19 @@ tests/unit/should-defer-cv-wrong-show.test.mjs
 tests/unit/should-skip-locked-enrichment.test.mjs
 tests/unit/should-skip-poller-update.test.mjs
 tests/unit/show-dedup-crosslink.test.mjs
+tests/unit/show-dedup-id-suffix.test.mjs
 tests/unit/show-dedup-slash-venue-globe-national.test.mjs
 tests/unit/show-dedup-slug-prefix.test.mjs
 tests/unit/show-dedup-temporal.test.mjs
+tests/unit/show-dedup-title-order-swap.test.mjs
 tests/unit/show-format-coverage.test.mjs
 tests/unit/show-images-phantom-path.test.mjs
+tests/unit/show-liveness.test.mjs
 tests/unit/show-match-verifier.test.mjs
 tests/unit/show-matching-date-disambiguation.test.mjs
 tests/unit/show-page-rage-clicks.test.mjs
 tests/unit/show-proof-rage-clicks.test.mjs
+tests/unit/show-score-archive-pagination.test.mjs
 tests/unit/show-score-pagination-regex.test.mjs
 tests/unit/show-score-profile-parser.test.mjs
 tests/unit/shows-write-guard.test.mjs
@@ -901,6 +929,7 @@ tests/unit/silent-failure-logging.test.mjs
 tests/unit/site-search-discovery.test.mjs
 tests/unit/slug-mismatch-glued-compound-title.test.mjs
 tests/unit/slug-mismatch-opaque-urls.test.mjs
+tests/unit/source-last-success.test.mjs
 tests/unit/stage-extractor.test.mjs
 tests/unit/stage-latency.test.mjs
 tests/unit/stage-pagesonstages-extractor.test.mjs
@@ -939,6 +968,7 @@ tests/unit/theatr-coverage-audit.test.mjs
 tests/unit/theatr-data-workflow.test.mjs
 tests/unit/theatr-skip-shows.test.mjs
 tests/unit/theatrely-extractor.test.mjs
+tests/unit/theatremonkey-venue.test.mjs
 tests/unit/ticket-buttons-single-only.test.mjs
 tests/unit/time-bomb-detector.test.mjs
 tests/unit/time-to-publish-sla.test.mjs
@@ -967,6 +997,7 @@ tests/unit/url-cross-production-ownership.test.mjs
 tests/unit/url-or-title-guard.test.mjs
 tests/unit/url-ownership.test.mjs
 tests/unit/url-path-matching.test.mjs
+tests/unit/url-slug.test.mjs
 tests/unit/url-utils-normalize.test.mjs
 tests/unit/url-validation-integration.test.mjs
 tests/unit/url-validation.test.mjs
@@ -994,6 +1025,7 @@ tests/unit/video-discovery-merge.test.mjs
 tests/unit/visual-qa-flag-awareness.test.mjs
 tests/unit/watchlist-delete-icon-contrast.test.mjs
 tests/unit/watchlist-grid-remove-affordance.test.mjs
+tests/unit/we-aggregator-dedup-rejections.test.mjs
 tests/unit/we-gap-reference.test.mjs
 tests/unit/we-gate-proving.test.mjs
 tests/unit/we-listing-discover.test.mjs
