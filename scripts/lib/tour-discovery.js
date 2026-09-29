@@ -88,7 +88,9 @@ function runningTourCandidate({ slug, scheduleUrl, html, shows, now = new Date()
 
 /**
  * One candidate per Broadway show. Two pages running a tour of the same show
- * from different starts (two companies) is ambiguous: neither is kept.
+ * from different starts (two companies) is ambiguous: the first is kept with
+ * an ambiguous note, so it is never created automatically but still reaches
+ * the owner as a suggestion.
  * @returns {{candidates: object[], ambiguous: string[]}}
  */
 function dedupeCandidates(candidates) {
@@ -101,8 +103,11 @@ function dedupeCandidates(candidates) {
   const ambiguous = [];
   for (const [id, list] of byShow) {
     const starts = new Set(list.map(c => c.segmentStart));
-    if (starts.size > 1) ambiguous.push(`${id}: ${list.map(c => `${c.tourScheduleSlug}@${c.segmentStart}`).join(', ')}`);
-    else out.push(list[0]);
+    if (starts.size > 1) {
+      const note = `${id}: ${list.map(c => `${c.tourScheduleSlug}@${c.segmentStart}`).join(', ')}`;
+      ambiguous.push(note);
+      out.push({ ...list[0], ambiguous: note });
+    } else out.push(list[0]);
   }
   return { candidates: out, ambiguous };
 }

@@ -30,7 +30,7 @@ const USAGE = `discover-running-tours.js — find national tours on the road now
 /** Every show page slug on Tours To You (WordPress pages API, 100 a page). */
 async function listShowPages(fetchText) {
   const out = [];
-  for (let page = 1; page <= 10; page++) {
+  for (let page = 1; page <= 50; page++) {
     let rows;
     try {
       rows = JSON.parse(await fetchText(`${PAGES_API}&page=${page}`));
@@ -75,7 +75,7 @@ async function discoverRunningTours({ shows, budget = null, log = console.log })
     }
   }
   const { candidates, ambiguous } = dedupeCandidates(found);
-  for (const a of ambiguous) log(`  ambiguous (two tours running at once), skipped: ${a}`);
+  for (const a of ambiguous) log(`  ambiguous (two tours running at once), left for the owner: ${a}`);
   return { candidates, ambiguous, checked, pages: slugs.length };
 }
 

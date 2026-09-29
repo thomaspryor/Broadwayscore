@@ -56,9 +56,11 @@ async function main() {
   const mode = tourAutomationMode(process.env.TOUR_AUTOCREATE);
   // Every run leaves a report, even an empty one: the daily digest reads its
   // timestamp to tell a quiet week from a job that stopped running.
+  // What running-tour discovery did this run, for the health check (BRO-4325).
+  let discovery = null;
   const writeAudit = (body) => {
     fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
-    fs.writeFileSync(AUDIT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), ...body }, null, 2) + '\n');
+    fs.writeFileSync(AUDIT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), discovery, ...body }, null, 2) + '\n');
   };
   if (mode === 'off') { console.log('TOUR_AUTOCREATE=off — skipping'); writeAudit({ mode: 'off', created: [], results: [] }); return; }
   const write = argv.includes('--write') && mode === 'write';
@@ -69,13 +71,15 @@ async function main() {
     try {
       const { discoverRunningTours } = require('./discover-running-tours');
       const current = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
-      const { candidates } = await discoverRunningTours({ shows: current, budget });
+      const { candidates, ambiguous, pages, checked } = await discoverRunningTours({ shows: current, budget });
+      discovery = { pages, checked, found: candidates.length, ambiguous: ambiguous.length, error: null };
       // Recorded in report mode too: route-tour-candidates.js reads the file.
       const n = recordTourCandidates(CANDIDATES, candidates);
       console.log(`${candidates.length} running tour(s) found; ${n} candidate row(s) tracked`);
     } catch (e) {
       // Discovery failing must not stop roundup candidates from being created.
       console.log(`::warning::running-tour discovery failed: ${e.message}`);
+      discovery = { error: e.message };
     }
   }
   if (!fs.existsSync(CANDIDATES)) { console.log('No tour candidates recorded.'); writeAudit({ mode: write ? 'write' : 'report', created: [], results: [] }); return; }
@@ -95,6 +99,13 @@ async function main() {
     if (budget.exceeded()) { console.log(`Time budget reached; ${open.length - results.length} candidate(s) left for the next run`); break; }
     const parent = byId.get(c.broadwayShowId);
     console.log(`\n${c.title} (${c.broadwayShowId})`);
+    // Two companies of one show on the road: which is "the" tour is the
+    // owner's call (route-tour-candidates.js asks).
+    if (c.ambiguous) {
+      console.log(`  stays a suggestion: two tours running at once (${c.ambiguous})`);
+      results.push({ candidate: c.broadwayShowId, roundupUrl: null, scheduleUrl: c.url, notes: [], skip: `two tours running at once: ${c.ambiguous}`, entry: null });
+      continue;
+    }
     const probe = { id: null, title: parent.title, tourScheduleSlug: c.tourScheduleSlug, openingDate: null, closingDate: null };
     // A tour found on Tours To You is fetched there plainly (no paid scraper).
     const found = c.source === 'tourstoyou';
@@ -135,8 +146,7 @@ async function main() {
     }
   }
 
-  fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
-  fs.writeFileSync(AUDIT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), mode: write ? 'write' : 'report', created, results }, null, 2) + '\n');
+  writeAudit({ mode: write ? 'write' : 'report', created, results });
   if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `created=${created.join(',')}\n`);
   console.log(`\n${write ? `Created ${created.length}` : `${results.filter(r => r.entry).length} would be created`}; ${results.filter(r => r.skip).length} stay suggestions.`);
 }
