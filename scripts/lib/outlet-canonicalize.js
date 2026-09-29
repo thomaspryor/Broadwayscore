@@ -279,6 +279,38 @@ function resolveCanonicalOutletId({ outletArg, url }) {
   };
 }
 
+/**
+ * resolveUrlEditionOutletId({ outletId, outletName, url })
+ *
+ * For bespoke writers that derive outletId from an aggregator-supplied outlet
+ * NAME while the review URL is in hand (sweep-we-aggregators.js writeReview,
+ * gather-reviews.js createReviewFile — also the opening-night poller's writer,
+ * merge-wet-stars-urls.js, cleanup-duplicate-reviews.js). On a declared
+ * path-split edition host (timeout.com /london vs /newyork) the URL always
+ * decides, whatever the name says: 2026-09-29 my-neighbour-totoro-west-end-2025
+ * had its timeout.com/london review re-created as outletId "timeout", and
+ * just-in-time-2025 had a timeout.com/newyork review filed as T1 "nytimes".
+ *
+ * Deliberately edition-only. A general "URL domain beats name" rule is wrong
+ * too often on the real corpus: The Observer (UK) publishes on theguardian.com
+ * while the registry's "observer" is observer.com, and T1 reviews syndicate to
+ * aol.co.uk / msn.com. Cross-domain T1 disagreements are caught by the corpus
+ * test in outlet-url-attribution.test.mjs instead of rewritten blind.
+ * @returns {{ outletId: string, displayName: string|null, source: 'url-edition'|'name' }}
+ */
+function resolveUrlEditionOutletId({ outletId, outletName, url } = {}) {
+  const base = outletId || normalizeOutlet(outletName || '');
+  const byName = { outletId: base, displayName: null, source: 'name' };
+  if (!url || typeof url !== 'string') return byName;
+  const edition = resolveOutletFromUrlIfPathInformed(url);
+  if (!edition || !edition.outletId || edition.outletId === base) return byName;
+  return {
+    outletId: edition.outletId,
+    displayName: getOutletDisplayName(edition.outletId) || edition.displayName,
+    source: 'url-edition',
+  };
+}
+
 const VALID_CV_STYLES = new Set(['standard', 'long-biographical']);
 
 // BRO-2776: 'long-biographical' is the ONE canonical value. review-guards.js's
@@ -547,6 +579,7 @@ function sameOutletUrlVariant({ candidateUrl, heldUrls, domainToOutlet, ambiguou
 
 module.exports = {
   resolveCanonicalOutletId,
+  resolveUrlEditionOutletId,
   getCvStyle,
   resolveCvStyle,
   findInvalidCvStyles,

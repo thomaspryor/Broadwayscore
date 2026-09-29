@@ -473,6 +473,20 @@ jobs:
         run: |
           node scripts/run-ensemble-scoring-guard.js ${{ steps.build-args.outputs.args }}
 
+      # Hand re-fetched reviews back to the scorer when an automated
+      # text-quality verdict (not_a_review / garbage_text / truncated_text,
+      # heuristic+llm nonReviewFlag) predates the complete fullText now on
+      # disk. The verdict moves into priorAutomatedTextVerdicts[] and the file
+      # is flagged needsRescore, so the drain below re-judges it on the new
+      # text (a re-rejection stamps a fresh rejectedAt, so no loop). Never
+      # touches wrong_production/wrong_show or human verdicts; see
+      # scripts/lib/stale-automated-text-verdict.js. Surge guard: >25 files
+      # refuses (predicate/writer regression), continue-on-error keeps scoring.
+      - name: Clear stale automated text verdicts on re-fetched reviews
+        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true'
+        continue-on-error: true
+        run: node scripts/clear-stale-automated-text-verdicts.js --apply
+
       # Turn excerpt-based scores whose full text has since arrived into
       # rescore requests before the capped drain below picks them up. The
       # collect-time trigger only fires when a score already exists; when the
