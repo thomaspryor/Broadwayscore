@@ -59,6 +59,7 @@ const showsWriteGuard = require('./lib/shows-write-guard');
 const { fetchTmOffBroadway, parseTmOffBroadwayRow, findTmSameTitleShow } = require('./lib/theatermania-ob');
 const { loadPendingAddShows } = require('./lib/pending-add-shows');
 const { matchesRetired } = require('./lib/retired-show-ids');
+const { decidePrematurePreviews } = require('./lib/premature-previews');
 
 // Tags each candidate with which discovery source produced it (BRO-2072) so
 // reconcileMatchedShow() below can require multi-source agreement before
@@ -3204,9 +3205,15 @@ async function discoverShows() {
           status = 'open';
           openingDate = show.openingDate || null;
         } else {
-          // "Opens Mar 08" — the date IS the opening date (not preview date)
-          status = 'previews';
-          openingDate = show.openingDate; // ShowScore "Opens" date = press night
+          // "Opens Mar 08" — usually press night, but for a show that hasn't
+          // started it can be the first performance (PHYL's "Opens Oct 03"
+          // was its first preview; press night Oct 22, BRO-4377). Either
+          // way a future date is no evidence previews have begun.
+          openingDate = show.openingDate;
+          status = decidePrematurePreviews(
+            { status: 'previews', openingDate, openingDateSource: 'showscore', previewsStartDate: show.previewsStartDate || null },
+            new Date().toISOString().slice(0, 10),
+          ) ? 'upcoming' : 'previews';
         }
       } else if (show.openingDate) {
         openingDate = show.openingDate;
