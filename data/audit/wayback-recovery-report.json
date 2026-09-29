@@ -1,26 +1,33 @@
 {
-  "totalCandidates": 28,
-  "cdxFound": 9,
-  "cdxNotFound": 3,
-  "recovered": 6,
+  "totalCandidates": 78,
+  "cdxFound": 23,
+  "cdxNotFound": 10,
+  "recovered": 20,
   "recoveredByTier": {
     "1": 1,
-    "2": 0,
-    "3": 5
+    "2": 3,
+    "3": 16
   },
   "recoveredByDomain": {
-    "timeout.com": 1,
+    "vulture.com": 1,
+    "billboard.com": 1,
+    "nypost.com": 1,
+    "usatoday.com": 1,
     "independent.co.uk": 1,
-    "standard.co.uk": 1,
-    "abcnews.go.com": 2,
-    "vanityfair.com": 1
+    "radiotimes.com": 1,
+    "everything-theatre.co.uk": 1,
+    "dailymail.co.uk": 1,
+    "broadwayworld.com": 11,
+    "abcnews.go.com": 1
   },
   "tooShort": 0,
   "garbage": 0,
   "wrongShow": 0,
   "archiveTodayRecovered": 0,
-  "errors": 16,
-  "notInArchive": 3,
-  "domainSkipped": 0,
-  "circuitBrokenDomains": []
+  "errors": 41,
+  "notInArchive": 10,
+  "domainSkipped": 4,
+  "circuitBrokenDomains": [
+    "observer.com"
+  ]
 }
