@@ -146,12 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T21:12:13.956Z",
-      "lastNotifiedAt": "2026-09-29T21:12:13.956Z",
+      "lastSeen": "2026-09-29T21:24:39.355Z",
+      "lastNotifiedAt": "2026-09-29T19:39:12.553Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 112,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 11
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3855,8 +3856,8 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T21:10:44.551Z",
-      "lastNotifiedAt": "2026-09-29T21:10:44.551Z",
+      "lastSeen": "2026-09-29T21:24:38.736Z",
+      "lastNotifiedAt": "2026-09-29T21:24:38.736Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
@@ -5883,14 +5884,14 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T21:12:13.953Z",
+      "lastSeen": "2026-09-29T21:24:39.351Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": "BRO-4255",
       "absentRunIds": [],
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6599,7 +6600,10 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4362",
-      "silentRefires": 8
+      "silentRefires": 8,
+      "absentRunIds": [
+        "36631466657"
+      ]
     },
     "land:land/font-selfhost-v3": {
       "status": "open",
