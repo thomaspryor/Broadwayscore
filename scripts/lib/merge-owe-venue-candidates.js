@@ -15,7 +15,7 @@
  * re-added, keyless rows pass through from both sides. The only difference is
  * the key: a hand-staged row may arrive without candidateHash, so the key is
  * derived from title+venue exactly as owe-venue-staging.js's candidateHash()
- * would stamp it — a hand row and discovery's row for the same show dedupe.
+ * (owe-candidate-hash.js, write-free) would stamp it — a hand row and discovery's row for the same show dedupe.
  *
  * KNOWN LIMITATION: pure key union, no tombstone — a row the promoter pruned
  * that remote still carries comes back for a cycle and is pruned again next
@@ -25,7 +25,7 @@
  */
 'use strict';
 
-const { candidateHash } = require('./owe-venue-staging');
+const { candidateHash } = require('./owe-candidate-hash');
 const { makeVenueCandidatesMerge } = require('./merge-ob-venue-candidates');
 
 function keyOf(c) {
