@@ -52,6 +52,20 @@ const HISTORY_PATH = path.join(DATA_DIR, 'reddit-digest-history.json');
 const AUDIT_DIR = path.join(DATA_DIR, 'audit');
 const DIGEST_SNAPSHOT_FILE = path.join(AUDIT_DIR, 'reddit-digest-snapshot.json');
 const DIGEST_ITEM_CAP = 8;
+const SLIM_DIR = path.join(__dirname, '..', 'public', 'data', 'shows');
+
+// Canonical Critic Score, straight from the show's slim public file — the
+// same source scripts/lib/canonical-critic-scores.ts wraps (CLAUDE.md §3).
+// Do NOT raw-mean data/reviews.json for this: it diverges from what the site
+// displays and feeds show scores directly into the LLM-drafted reply context.
+function getCriticScore(showId) {
+  try {
+    const j = JSON.parse(fs.readFileSync(path.join(SLIM_DIR, `${showId}.json`), 'utf8'));
+    return typeof j.cs === 'number' ? Math.round(j.cs) : null;
+  } catch {
+    return null;
+  }
+}
 
 const SUBREDDIT = 'Broadway';
 const LOOKBACK_HOURS = 26;
@@ -279,20 +293,27 @@ function loadShowContext() {
   const shows = showsRaw.shows || showsRaw;
   const showList = Array.isArray(shows) ? shows : Object.values(shows);
 
-  // Compute average scores from reviews
+  // Compute canonical scores per show. data/reviews.json is a flat
+  // { reviews: [...] } array of { showId, assignedScore, ... } — NOT an
+  // object keyed by showId — so grouping by showId first is required before
+  // any per-show score can be computed (a prior version read `reviewsRaw.shows`,
+  // which doesn't exist, so `scores[showId]` was always undefined here and
+  // every show in this LLM-reply context silently showed "no scores yet").
   const scores = {};
-  const reviewEntries = reviewsRaw.shows || reviewsRaw;
-  if (typeof reviewEntries === 'object') {
-    for (const [showId, reviews] of Object.entries(reviewEntries)) {
-      if (!Array.isArray(reviews)) continue;
-      const scored = reviews.filter(r => r.assignedScore != null && !r.excluded);
-      if (scored.length > 0) {
-        scores[showId] = {
-          avg: Math.round(scored.reduce((s, r) => s + r.assignedScore, 0) / scored.length),
-          count: scored.length,
-        };
-      }
-    }
+  const reviewsList = Array.isArray(reviewsRaw.reviews) ? reviewsRaw.reviews : [];
+  const scoredCountByShow = {};
+  for (const r of reviewsList) {
+    if (!r.showId || r.assignedScore == null || r.excluded) continue;
+    scoredCountByShow[r.showId] = (scoredCountByShow[r.showId] || 0) + 1;
+  }
+  for (const [showId, count] of Object.entries(scoredCountByShow)) {
+    // Canonical Critic Score, straight from the show's slim public file — the
+    // same source scripts/lib/canonical-critic-scores.ts wraps (CLAUDE.md
+    // §3). Do NOT raw-mean assignedScore here: it diverges from what the
+    // site displays and feeds show scores directly into the LLM-drafted
+    // reply context.
+    const avg = getCriticScore(showId);
+    if (avg != null) scores[showId] = { avg, count };
   }
 
   // Build context for open + recently closed shows
