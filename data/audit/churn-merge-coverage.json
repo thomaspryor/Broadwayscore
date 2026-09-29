@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-29T13:49:03.969Z",
+    "generatedAt": "2026-09-29T14:37:36.629Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -16,11 +16,11 @@
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 99
+      "churn": 101
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 68
+      "churn": 70
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
@@ -28,33 +28,33 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 30
+      "churn": 31
     }
   ],
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 263
+      "churn": 264
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 119
+      "churn": 122
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 119
+      "churn": 122
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 119
+      "churn": 122
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 110
+      "churn": 111
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 95
+      "churn": 97
     },
     {
       "path": "data/audit/alert-digest-queue.json",
@@ -62,7 +62,7 @@
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 69
+      "churn": 71
     },
     {
       "path": "public/data/shows/kimberly-akimbo-off-west-end-2026.json",
@@ -133,16 +133,16 @@
       "churn": 54
     },
     {
+      "path": "public/data/shows/golden-boy-off-west-end-2026.json",
+      "churn": 54
+    },
+    {
       "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
       "churn": 54
     },
     {
       "path": "public/data/shows/care-west-end-2026.json",
       "churn": 53
-    },
-    {
-      "path": "public/data/shows/golden-boy-off-west-end-2026.json",
-      "churn": 52
     },
     {
       "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
@@ -162,7 +162,7 @@
     },
     {
       "path": "public/data/shows/school-girls-or-the-african-mean-girls-play-2026.json",
-      "churn": 40
+      "churn": 42
     },
     {
       "path": "public/data/shows/how-shakespeare-saved-my-life-off-broadway-2026.json",
@@ -180,62 +180,62 @@
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 255,
+      "churn": 259,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 218,
+      "churn": 221,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 198,
+      "churn": 202,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 192,
+      "churn": 195,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 192,
+      "churn": 195,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 192,
+      "churn": 195,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 137,
+      "churn": 141,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-elf-lyons-the-woman-on-the-edge-off-broadway-2026.json",
-      "churn": 119,
+      "churn": 122,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-secret-circus-musical-off-broadway-2026.json",
-      "churn": 119,
+      "churn": 122,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-tru-off-west-end-2026.json",
-      "churn": 119,
+      "churn": 122,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 119,
+      "churn": 122,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 112,
+      "churn": 113,
       "mergeAttr": "ours"
     },
     {
@@ -245,37 +245,37 @@
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 84,
+      "churn": 86,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 76,
+      "churn": 78,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-how-shakespeare-saved-my-life-off-broadway-2026.json",
-      "churn": 71,
+      "churn": 74,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 69,
+      "churn": 71,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 68,
+      "churn": 70,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 68,
+      "churn": 70,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 66,
+      "churn": 68,
       "mergeAttr": "ours"
     },
     {
@@ -285,7 +285,7 @@
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 41,
+      "churn": 43,
       "mergeAttr": "ours"
     }
   ]
