@@ -90,3 +90,9 @@ test('unflagged categories are always public and in the app feed', () => {
     assert.equal(jsMarkets.isHiddenFromAppFeed(c, ''), false, String(c));
   }
 });
+
+test('per-show files: regional stays published with no env flags; tours too; nothing else changes (BRO-4262 ship-check)', () => {
+  for (const c of ['broadway', 'off-broadway', 'west-end', 'off-west-end', 'regional', 'tour', undefined]) {
+    assert.equal(jsMarkets.isPublishedShowFile(c, ''), true, String(c));
+  }
+});

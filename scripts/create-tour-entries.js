@@ -93,8 +93,11 @@ async function main() {
     const { loadShows, saveShows } = createShowsWriteGuard(SHOWS_PATH);
     const snapshot = loadShows();
     for (const r of results.filter(x => x.entry)) {
-      // Re-check under the write lock: another run may have added it meanwhile.
+      // Re-check under the write lock: another run may have added it, or a
+      // tour of the title may have been added or reopened meanwhile.
       if (snapshot.shows.some(s => s.id === r.entry.id)) continue;
+      const recheck = buildTourEntry({ parent: snapshot.shows.find(s => s.id === r.candidate), shows: snapshot.shows, decision: { write: { openingDate: r.entry.openingDate, closingDate: r.entry.closingDate }, notes: r.notes }, roundupUrl: r.roundupUrl, scheduleUrl: r.scheduleUrl, retiredIds });
+      if (recheck.skip) { console.log(`  ${r.entry.id} skipped under lock: ${recheck.skip}`); continue; }
       snapshot.shows.push(r.entry);
       created.push(r.entry.id);
     }

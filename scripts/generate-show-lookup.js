@@ -15,7 +15,7 @@ const path = require('path');
 // Mirror of src/lib/calendar/duration.ts — kept in lockstep by
 // tests/unit/parse-runtime-parity.test.ts. See that file before editing either.
 const { parseRuntimeMinutes } = require('./lib/parse-runtime');
-const { isCategoryEnabled } = require('./lib/markets');
+const { isPublishedShowFile } = require('./lib/markets');
 
 const dataDir = path.join(__dirname, '../data');
 const outputDir = path.join(__dirname, '../public/data');
@@ -38,7 +38,7 @@ try {
 // Web-only file (My Shows, shared lists), so it follows the website gate: a
 // category shown on the site (tour, launched BRO-4211) must resolve here too.
 const relevantShows = shows.filter(show =>
-  isCategoryEnabled(show.category) &&
+  isPublishedShowFile(show.category) &&
   (show.status !== 'closed' || show.closingDate)
 );
 

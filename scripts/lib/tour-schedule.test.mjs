@@ -48,7 +48,7 @@ test('launch needs Wikipedia; close needs a positive signal', () => {
   assert.deepEqual(decideTourDates(tour, html, '', NOW).write, {}, 'no Wikipedia, no stated range: write nothing');
   assert.deepEqual(decideTourDates(tour, html, 'began on December 7, 2024 in Baltimore', NOW).write, { openingDate: '2024-12-07' });
   assert.deepEqual(
-    decideTourDates(tour, html, 'began on December 7, 2024 ... closed on January 26, 2025', NOW).write,
+    decideTourDates(tour, html, 'The tour began on December 7, 2024 and closed on January 26, 2025', NOW).write,
     { openingDate: '2024-12-07', closingDate: '2025-01-26' },
   );
   const stated = html.replace('<p></p>', '<ul><li><span>North American Tour</span> (2024–2025)</li></ul>');
@@ -119,4 +119,14 @@ test('a new tour is matched only near when its roundup was seen', () => {
   assert.equal(decideTourDates({ id: null }, html, wiki, NOW, { seenAt: '2026-02-20' }).write.openingDate, '2026-02-13');
   assert.match(decideTourDates({ id: null }, html, wiki, NOW, { seenAt: '2026-09-20' }).problem, /no schedule segment/);
   assert.match(decideTourDates({ id: null }, html, wiki, NOW).problem, /no schedule segment/, 'no seenAt, no guess');
+});
+
+test('a stray mention of the last stop date does not close a tour', () => {
+  const html = page([
+    row('Baltimore, MD', 'Hippodrome', 'December 7-14, 2024'),
+    row('Washington, DC', 'Kennedy Center', 'December 17, 2024–January 5, 2025'),
+    row('Fort Lauderdale, FL', 'Broward Center', 'January 21-26, 2025'),
+  ]);
+  const wiki = 'The tour began on December 7, 2024.\n\n' + 'x'.repeat(800) + ' The composer turned 50 on January 26, 2025.';
+  assert.equal(decideTourDates({ id: 'x-tour-2024', openingDate: '2024-12-07', closingDate: null }, html, wiki, NOW).write.closingDate, undefined);
 });

@@ -34,4 +34,15 @@ function isHiddenFromAppFeed(category, featuresEnv) {
   return !(row.featureFlag && enabledFeatures(featuresEnv).has(row.featureFlag));
 }
 
-module.exports = { MARKETS, VALID_CATEGORIES, isCategoryEnabled, isHiddenFromAppFeed };
+/**
+ * True when a category gets its public/data per-show file and show-lookup row.
+ * Everything the app feed carries (regional included, flag or not), plus a
+ * category the website shows but the app withholds (tour, launched in code).
+ * Gating these on isCategoryEnabled alone dropped the 30 regional detail files
+ * whenever CI ran without NEXT_PUBLIC_FEATURES (ship-check, BRO-4262).
+ */
+function isPublishedShowFile(category, featuresEnv) {
+  return !isHiddenFromAppFeed(category, featuresEnv) || isCategoryEnabled(category, featuresEnv);
+}
+
+module.exports = { MARKETS, VALID_CATEGORIES, isCategoryEnabled, isHiddenFromAppFeed, isPublishedShowFile };

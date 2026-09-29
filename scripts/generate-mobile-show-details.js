@@ -23,7 +23,7 @@ const { getTier: getAuthoritativeTier } = require('./lib/outlet-tiers');
 const { shouldHideReviews } = require('./lib/should-hide-reviews');
 const { dedupByCritic } = require('./lib/dedup-by-critic');
 const { getMarketMinReviews, T3_ONLY_EXTRA } = require('./lib/min-reviews');
-const { isCategoryEnabled } = require('./lib/markets');
+const { isPublishedShowFile } = require('./lib/markets');
 const { computeSiteAwardScore } = require('./snapshot-award-scores');
 const { categoryToAwardsMarket } = require('./lib/olivier-award-market');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -430,7 +430,7 @@ for (const review of reviews) {
   if (review.assignedScore != null) showsWithScores.add(review.showId);
 }
 let visibleShows = shows.filter(show =>
-  isCategoryEnabled(show.category) &&
+  isPublishedShowFile(show.category) &&
   (showsWithScores.has(show.id) || show.status !== 'closed')
 );
 if (SHOW_ARG) {

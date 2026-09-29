@@ -54,7 +54,14 @@ function readJson(file) {
 function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const auto = process.argv.includes('--auto');
-  if (auto && process.env.TOUR_SWEEP === 'off') { console.log('TOUR_SWEEP=off — skipping'); return; }
+  if (auto && process.env.TOUR_SWEEP === 'off') {
+    console.log('TOUR_SWEEP=off — skipping');
+    // Still report, so the digest can tell "switched off" from "stopped running".
+    const out = path.join(ROOT, 'data', 'audit', 'tour-sweep.json');
+    fs.mkdirSync(path.dirname(out), { recursive: true });
+    fs.writeFileSync(out, JSON.stringify({ generatedAt: new Date().toISOString(), mode: 'off', moved: 0, held: [], tours: [] }, null, 2) + '\n');
+    return;
+  }
   const execute = (process.argv.includes('--execute') || auto) && process.env.TOUR_SWEEP !== 'report';
   const all = process.argv.includes('--all') || auto;
   const maxMoves = Number(flag('max-moves')) || 20;

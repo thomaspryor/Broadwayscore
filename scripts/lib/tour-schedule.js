@@ -152,6 +152,24 @@ function wikiNames(wikiText, d) {
 }
 
 /**
+ * Wikipedia names this date as a tour's end: the date appears within 300
+ * characters of "tour" and of a closing word, not anywhere in the article
+ * (a last listed stop's date can show up in an unrelated sentence).
+ */
+function wikiNamesClosing(wikiText, d) {
+  const t = String(wikiText || '');
+  for (const form of wikiForms(d)) {
+    let i = t.indexOf(form);
+    while (i !== -1) {
+      const around = t.slice(Math.max(0, i - 300), i + form.length + 300);
+      if (/\btour/i.test(around) && /\b(clos|final|end(ed|s)?\b|conclud|last performance)/i.test(around)) return true;
+      i = t.indexOf(form, i + 1);
+    }
+  }
+  return false;
+}
+
+/**
  * A segment's launch: the first engagement Wikipedia names. Skips openers a
  * tour isn't dated from (Life of Pi's Toronto sit-down before Baltimore;
  * Kimberly Akimbo's Utica previews before the Denver launch, when named).
@@ -255,7 +273,7 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
     .some(r => r.from === launchYear && r.to === seg.end.getUTCFullYear());
   const ended = seg.end.getTime() + DAY <= now.getTime();
   if (ended && !tour.closingDate) {
-    if (wikiNames(wikiText, seg.end)) write.closingDate = iso(seg.end);
+    if (wikiNamesClosing(wikiText, seg.end)) write.closingDate = iso(seg.end);
     else if (stated) write.closingDate = iso(seg.end);
     else if (separateTourStarted) write.closingDate = iso(seg.end);
     else notes.push(`last listed stop ended ${iso(seg.end)} but nothing confirms the tour closed; left open`);

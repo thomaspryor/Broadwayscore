@@ -31,7 +31,7 @@
 const { parseDate } = require('./date-utils');
 const { pickRerouteTarget, urlYearFromPath, isLikelyTourReview } = require('./review-guards');
 const { pickTourForDate } = require('./tour-family');
-const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
+const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS, isUkOutletUrl } = require('./venue-classification');
 const { VENUE_STOPWORDS } = require('./production-match-gate');
 
 const DAY = 86400000;
@@ -244,6 +244,26 @@ function tourDecision(showId, sibData, { url, publishDate, dateSource }) {
 }
 
 /**
+ * A write aimed AT a tour (BRO-4262 ship-check): the generic sibling rules skip
+ * tours, so without this a tour accepted anything. A UK outlet is a different
+ * production. A dated review (a date read off the URL doesn't count) must fall
+ * inside a tour of this title: another tour's window reroutes there, no window
+ * at all means a Broadway-era or later review, so reject.
+ * @returns {{action:'reroute'|'reject', targetShowId?, reason}|null}
+ */
+function tourTargetDecision(showId, sibData, { url, publishDate, dateSource }) {
+  if (!sibData || sibData.category !== 'tour') return null;
+  if (url && isUkOutletUrl(url)) return { action: 'reject', reason: 'tour: UK outlet reviews a UK production' };
+  const tours = [{ id: showId, openingDate: sibData.openingDate, closingDate: sibData.closingDate },
+    ...(sibData.siblings || []).filter(s => s.category === 'tour')];
+  if (!publishDate || /url/i.test(String(dateSource || ''))) return null;
+  const pick = pickTourForDate(tours, { publishDate });
+  if (pick.tourId && pick.tourId !== showId) return { action: 'reroute', targetShowId: pick.tourId, reason: `tour: date fits ${pick.tourId}` };
+  if (pick.reason === 'outside-tour-windows') return { action: 'reject', reason: 'tour: review date is outside every tour of this title' };
+  return null;
+}
+
+/**
  * Classify the market routing for a prospective write.
  *
  * @param {object} args
@@ -283,6 +303,8 @@ function classifyMarketRouting(args) {
   // --- Tour branch (BRO-4262) ---
   const tourReroute = tourDecision(showId, rawSibData, { url, publishDate, dateSource });
   if (tourReroute && !visitedSet.has(tourReroute.targetShowId)) return tourReroute;
+  const tourTarget = tourTargetDecision(showId, rawSibData, { url, publishDate, dateSource });
+  if (tourTarget && !(tourTarget.action === 'reroute' && visitedSet.has(tourTarget.targetShowId))) return tourTarget;
 
   // Every other rule works on non-tour siblings only, and never runs FOR a tour:
   // a tour and its Broadway run share title and market pool by design.
@@ -438,6 +460,7 @@ function classifyMarketRouting(args) {
 module.exports = {
   classifyMarketRouting,
   tourDecision,
+  tourTargetDecision,
   buildSiblingIndex,
   normalizeTitle,
   collectSameTitleSignals,

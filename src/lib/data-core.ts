@@ -19,6 +19,7 @@ import { getAudienceBuzz } from './data-audience';
 import { isOperaShow } from './show-market';
 import { belongsOnWestEndListing, belongsOnOffWestEndHub } from './genre';
 import { isCategoryEnabled } from './markets';
+import { getMarketMinReviews } from './market-utils';
 import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
@@ -203,8 +204,19 @@ export function getRegionalShows(): ComputedShow[] {
 }
 
 /** North American national tours (category 'tour', BRO-4211). */
+/**
+ * A tour is listed (Tours page, the Broadway page's "On tour" line, sitemap)
+ * once it has enough critic reviews for a score. A tour created automatically
+ * from a roundup starts with none; its page exists for review gathering but
+ * isn't promoted until it can show a score (BRO-4262).
+ */
+export function isTourListed(show: Pick<ComputedShow, 'category' | 'criticScore'>): boolean {
+  if (show.category !== 'tour') return true;
+  return (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews('tour');
+}
+
 export function getTourShows(): ComputedShow[] {
-  return getAllShows().filter(show => show.category === 'tour');
+  return getAllShows().filter(show => show.category === 'tour' && isTourListed(show));
 }
 
 /**
@@ -219,7 +231,7 @@ export function getToursOf(show: Pick<ComputedShow, 'id' | 'title' | 'category'>
   if (show.category && show.category !== 'broadway') return [];
   const title = show.title.trim().toLowerCase();
   return getAllShows().filter(t => {
-    if (t.category !== 'tour' || !t.tourOf) return false;
+    if (t.category !== 'tour' || !t.tourOf || !isTourListed(t)) return false;
     if (t.tourOf === show.id) return true;
     const parent = getShowById(t.tourOf);
     return !!parent && parent.title.trim().toLowerCase() === title;

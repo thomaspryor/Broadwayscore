@@ -109,7 +109,13 @@ async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const mode = tourAutomationMode(process.env.TOUR_DATES_MODE);
-  if (mode === 'off') { console.log('TOUR_DATES_MODE=off — skipping'); return; }
+  if (mode === 'off') {
+    console.log('TOUR_DATES_MODE=off — skipping');
+    // Still report, so the digest can tell "switched off" from "stopped running".
+    fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
+    fs.writeFileSync(AUDIT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), mode: 'off', applied: [], tours: [] }, null, 2) + '\n');
+    return;
+  }
   const write = argv.includes('--write') && mode === 'write';
   const only = (argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
   const { fetchPage } = require('./lib/scraper');

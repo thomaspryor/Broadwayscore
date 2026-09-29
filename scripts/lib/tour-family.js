@@ -67,7 +67,8 @@ function tourWindows(tours, now = new Date()) {
 function pickTourForDate(tours, review = {}, now = new Date()) {
   if (!Array.isArray(tours) || tours.length === 0) return { tourId: null, reason: 'no-tour' };
   const windows = tourWindows(tours, now);
-  const pub = review.dateSource === 'url' ? null : toDate(review.publishDate);
+  // Any URL-derived source ('url', 'extracted-from-url', 'url-backfill-*').
+  const pub = /url/i.test(String(review.dateSource || '')) ? null : toDate(review.publishDate);
   if (!pub) {
     if (windows.length === 1 && windows[0].open) return { tourId: windows[0].id, reason: 'undated-single-running-tour' };
     return { tourId: null, reason: 'undated-ambiguous' };
