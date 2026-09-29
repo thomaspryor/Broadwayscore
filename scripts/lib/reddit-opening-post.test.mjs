@@ -204,8 +204,20 @@ test('a template draft made after an LLM error is re-drafted next run', () => {
   const base = { status: 'ready', source: 'template' };
   const pick = d => lib.selectCandidates({ shows, slims, drafts: { drafts: { [show.id]: d } }, peersByMarket: {}, today: '2026-09-29' }).length;
   assert.equal(pick({ ...base, lintProblems: ['llm error: 529 overloaded'] }), 1);
-  assert.equal(pick({ ...base, lintProblems: ['title does not state the score 36'] }), 0);
+  assert.equal(pick({ ...base, lintProblems: ['title does not state the score 36'], emailedAt: '2026-09-29T06:00:00Z' }), 0, 'already emailed: left alone');
   assert.equal(pick({ ...base, status: 'posted', lintProblems: ['llm error: x'] }), 0);
+});
+
+test('an unsent draft is redrafted when its numbers go stale, kept when still accurate', () => {
+  const shows = [show];
+  const slims = new Map([[show.id, slim()]]);
+  const f = lib.buildFacts(show, slim(), []);
+  const pick = d => lib.selectCandidates({ shows, slims, drafts: { drafts: { [show.id]: d } }, peersByMarket: {}, today: '2026-09-29' }).length;
+  const accurate = { status: 'ready', source: 'claude', title: `Trainspotting scores ${f.score}/100`, body: `${f.reviewCount} reviews.` };
+  assert.equal(pick(accurate), 0, 'still matches today');
+  assert.equal(pick({ ...accurate, body: `${f.reviewCount - 1} reviews, ${f.buckets.rave + 1} raves.` }), 1, 'counts moved: redraft');
+  assert.equal(pick({ ...accurate, body: 'Now #3 of 24 shows.' }), 1, 'stale rank: redraft');
+  assert.equal(pick({ ...accurate, body: 'Now #3 of 24 shows.', emailedAt: '2026-09-29T06:00:00Z' }), 0, 'already emailed: never redrafted');
 });
 
 test('pickRecentExamples takes the owner recent top roundup posts, newest window first', () => {

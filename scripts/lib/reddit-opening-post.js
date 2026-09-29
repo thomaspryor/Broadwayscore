@@ -230,7 +230,11 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (forceShowId) {
       if (show.id !== forceShowId) continue;
     } else {
-      if (already[show.id] && !isRetryableDraft(already[show.id])) continue;
+      const prev = already[show.id];
+      // An existing draft is left alone, unless its LLM call failed, or it
+      // hasn't been emailed yet and no longer matches today's numbers (counts
+      // and ranks move as reviews land): then it is redrafted (see below).
+      if (prev && !isRetryableDraft(prev) && !(prev.status === 'ready' && !prev.emailedAt)) continue;
       if (!show.openingDate) continue;
       const age = daysBetween(show.openingDate, today);
       if (age < MIN_AGE_DAYS || age > MAX_AGE_DAYS) continue;
@@ -241,6 +245,8 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (!forceShowId && reviewCount < MIN_REVIEWS[market]) continue;
     const facts = buildFacts(show, slim, peersByMarket[market] || [], { seen: seenLookup(show.title) });
     if (!facts) continue;
+    const prev = already[show.id];
+    if (!forceShowId && prev && !isRetryableDraft(prev) && lintDraft(prev, facts).ok) continue; // unsent but still accurate
     // Off-West End shows only when they'd carry a post on their own.
     if (!forceShowId && market === 'off-west-end' && notability(facts) < 25) continue;
     out.push({ show, facts, notability: notability(facts) });
@@ -533,6 +539,14 @@ function factProblems(where, raw, facts, { isPersonal = false } = {}) {
     if (grade !== facts.audienceGrade) problems.push(`${where} cites grade ${grade}, fact sheet says ${facts.audienceGrade || 'none'}`);
   }
 
+  // "#N of M" must be exactly the computed rank.
+  let rk;
+  const rankRe = /#(\d+)\s+of\s+(?:the\s+)?(\d+)/g;
+  while ((rk = rankRe.exec(text))) {
+    if (Number(rk[1]) !== facts.rankPosition || Number(rk[2]) !== facts.rankOf) {
+      problems.push(`${where} says #${rk[1]} of ${rk[2]}, the computed rank is ${facts.rankPosition ? `#${facts.rankPosition} of ${facts.rankOf}` : 'none'}`);
+    }
+  }
   // Rank and superlative claims need a computed, untied rank behind them.
   if (!facts.rankNote && (/#\d+\s+of\s+\d+/.test(text) || /\b(highest|lowest|best|worst|top|bottom)[- ](rated|scoring|reviewed|score|scored)\b/i.test(text))) {
     problems.push(`${where} makes a rank claim the fact sheet doesn't support`);
