@@ -70,7 +70,9 @@ const { tryTbDirectUrl } = require('./lib/tb-direct-url');
 const { isInOpeningWindow } = require('./lib/opening-window-backoff');
 const {
   DEFAULT_SERP_BURST_CONFIG,
+  DEFAULT_BW_SERP_BURST_CONFIG,
   checkSerpBurstAllowed,
+  planSerpOutlets,
 } = require('./lib/serp-burst-caps');
 const {
   DEFAULT_SERP_SESSION_CONFIG,
@@ -88,7 +90,8 @@ const REVIEWS_PATH = path.join(DATA_DIR, 'reviews.json');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const OUTLET_REGISTRY_PATH = path.join(DATA_DIR, 'outlet-registry.json');
 const BACKOFF_DIR = path.join(DATA_DIR, 'audit', 'poller-backoff');
-const SERP_BURST_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-burst-ledger.json');
+// Env override exists for tests only (tests/unit/serp-burst-ledger.test.mjs).
+const SERP_BURST_LEDGER_PATH = process.env.SERP_BURST_LEDGER_PATH || path.join(DATA_DIR, 'audit', 'serp-burst-ledger.json');
 const SERP_SESSION_LEDGER_PATH = path.join(DATA_DIR, 'audit', 'serp-session-ledger.json');
 
 // Lazy-loaded showId -> sibling categories index for checkArchiveCategory()'s
@@ -178,14 +181,24 @@ function loadSerpBurstLedger(now = new Date()) {
       raw = JSON.parse(fs.readFileSync(SERP_BURST_LEDGER_PATH, 'utf8'));
     }
   } catch { raw = null; }
+  // lastBurstAt (BRO-4272) is kept OUTSIDE the daily reset: Broadway's opening window
+  // crosses 00:00 UTC, and the hourly spacing must hold across it. Entries older than
+  // 2 days are dropped so the map doesn't grow forever.
+  const lastBurstAt = {};
+  for (const [id, at] of Object.entries((raw && raw.lastBurstAt) || {})) {
+    const ms = Date.parse(at);
+    if (Number.isFinite(ms) && now.getTime() - ms < 2 * 86400000) lastBurstAt[id] = at;
+  }
   if (!raw || raw.date !== today) {
-    return { date: today, globalBursts: 0, perShow: {}, tripwireAlerted: false };
+    return { date: today, globalBursts: 0, perShow: {}, tripwireAlerted: false, bw: { globalBursts: 0, perShow: {} }, lastBurstAt };
   }
   return {
     date: today,
     globalBursts: raw.globalBursts || 0,
     perShow: raw.perShow || {},
     tripwireAlerted: raw.tripwireAlerted || false,
+    bw: { globalBursts: (raw.bw && raw.bw.globalBursts) || 0, perShow: (raw.bw && raw.bw.perShow) || {} },
+    lastBurstAt,
   };
 }
 
@@ -199,10 +212,13 @@ function writeSerpBurstLedger(ledger) {
   }
 }
 
-function incrementSerpBurstLedger(showId, now = new Date()) {
+// bucket 'bw' counts Broadway/off-Broadway bursts apart from the WE caps + tripwire.
+function incrementSerpBurstLedger(showId, now = new Date(), { bucket = 'we' } = {}) {
   const ledger = loadSerpBurstLedger(now);
-  ledger.globalBursts += 1;
-  ledger.perShow[showId] = (ledger.perShow[showId] || 0) + 1;
+  const counts = bucket === 'bw' ? ledger.bw : ledger;
+  counts.globalBursts += 1;
+  counts.perShow[showId] = (counts.perShow[showId] || 0) + 1;
+  ledger.lastBurstAt[showId] = now.toISOString();
   writeSerpBurstLedger(ledger);
   return ledger;
 }
@@ -269,6 +285,10 @@ const FORCE_SERP = process.argv.includes('--force-serp');
 //   - a tripwire that fires a real owner email (sendAlert) if daily bursts get unusually high
 // Emergency kill-switch (rarely needed): gh variable set DISABLE_WE_SERP_BURST --body true
 const ENABLE_WE_SERP_BURST = process.env.DISABLE_WE_SERP_BURST !== 'true';
+// Broadway hourly SERP sweep (BRO-4272): same override, one burst per show
+// per hour after first reviews land, own caps (DEFAULT_BW_SERP_BURST_CONFIG).
+// Kill switch: gh variable set DISABLE_BW_SERP_BURST --body true
+const ENABLE_BW_SERP_BURST = process.env.DISABLE_BW_SERP_BURST !== 'true';
 const SKIP_SITE_SEARCH = process.argv.includes('--skip-site-search');
 const SKIP_OMC = process.argv.includes('--skip-omc');
 const VERBOSE = process.argv.includes('--verbose') || true; // Always verbose for CI logs
@@ -1770,26 +1790,40 @@ async function pollCycle() {
   // --skip-serp for those shows, bounded by the daily-global + per-show ceilings in
   // scripts/lib/serp-burst-caps.js (the per-cycle SERP_BUDGET still bounds outlet fan-out).
   // Disabled only via the DISABLE_WE_SERP_BURST kill-switch.
+  // Broadway (BRO-4272): the same override on an hourly spacing, with its
+  // own caps + ledger bucket + DISABLE_BW_SERP_BURST kill switch. School Girls 2026 got no
+  // SERP at all on opening night, so the curated T3 list (stageandcinema) never ran.
+  const _burstCat = show.category || show.market || '';
+  const _isBwBurst = DEFAULT_BW_SERP_BURST_CONFIG.markets.includes(_burstCat);
+  const _burstEnabled = _isBwBurst ? ENABLE_BW_SERP_BURST : ENABLE_WE_SERP_BURST;
+  const _burstConfig = _isBwBurst ? DEFAULT_BW_SERP_BURST_CONFIG : DEFAULT_SERP_BURST_CONFIG;
   let serpBurstActive = false;
-  if (SKIP_SERP && ENABLE_WE_SERP_BURST) {
+  if (SKIP_SERP && _burstEnabled) {
     const hoursSinceOpening = show.openingDate
       ? (Date.now() - new Date(show.openingDate).getTime()) / 3600000
       : null;
     const ledger = loadSerpBurstLedger();
+    const counts = _isBwBurst ? ledger.bw : ledger;
+    const lastAt = ledger.lastBurstAt[SHOW_ID] ? Date.parse(ledger.lastBurstAt[SHOW_ID]) : NaN;
     const decision = checkSerpBurstAllowed({
       flagEnabled: true,
       show,
       mode: _mode,
       hoursSinceOpening,
-      burstsToday: ledger.globalBursts,
-      burstsForShowToday: ledger.perShow[SHOW_ID] || 0,
+      burstsToday: counts.globalBursts,
+      burstsForShowToday: counts.perShow[SHOW_ID] || 0,
+      minutesSinceLastBurstForShow: Number.isFinite(lastAt) ? (Date.now() - lastAt) / 60000 : null,
+      // Stored state, not this cycle's results: late cycles that find nothing new are
+      // exactly when the stragglers publish.
+      firstReviewsLanded: getFoundOutletIds(SHOW_ID, { show, market }).size > 0,
+      config: _burstConfig,
     });
     if (decision.allowed) {
       serpBurstActive = true;
       console.log(
-        `\n[Layer 4] SERP BURST: overriding --skip-serp for aggressive-window WE show ` +
-        `(${ledger.perShow[SHOW_ID] || 0}/${DEFAULT_SERP_BURST_CONFIG.perShowCap} this show, ` +
-        `${ledger.globalBursts}/${DEFAULT_SERP_BURST_CONFIG.dailyGlobalCap} used today)`
+        `\n[Layer 4] SERP BURST: overriding --skip-serp for aggressive-window ${_isBwBurst ? 'Broadway' : 'WE'} show ` +
+        `(${counts.perShow[SHOW_ID] || 0}/${_burstConfig.perShowCap} this show, ` +
+        `${counts.globalBursts}/${_burstConfig.dailyGlobalCap} used today)`
       );
     } else {
       console.log(`\n[Layer 4] SERP burst not allowed (${decision.reason}) — honoring --skip-serp`);
@@ -1901,7 +1935,10 @@ async function pollCycle() {
       // Count the burst against the daily ledger only when SERP actually runs (missing
       // outlets exist) — a no-op cycle where everything is already found must not consume
       // the daily/per-show cap and starve another opening.
-      if (serpBurstActive) {
+      if (serpBurstActive && _isBwBurst) {
+        // Broadway bucket: own caps, no WE tripwire (its threshold is sized for WE).
+        incrementSerpBurstLedger(SHOW_ID, new Date(), { bucket: 'bw' });
+      } else if (serpBurstActive) {
         const updated = incrementSerpBurstLedger(SHOW_ID);
         // Automated tripwire: if daily bursts get unusually high, fire ONE real owner
         // notification per UTC day — no human log-watching required. The hard daily cap
@@ -1933,6 +1970,16 @@ async function pollCycle() {
           config: DEFAULT_SERP_BURST_CONFIG,
           routeAlert,
           writeSerpBurstLedger,
+        });
+      }
+      // Broadway: ~70 T1/T2 outlets read as missing against a 12-call budget, so a plain
+      // tier sort re-searches the same first 12 every pass and never reaches the T3 list
+      // (BRO-4272). Rotate by the passes already run today and keep 3 slots for T3.
+      if (market === 'broadway') {
+        missingOutlets = planSerpOutlets(missingOutlets, {
+          budget: SERP_BUDGET,
+          lowTierReserve: 3,
+          rotation: sessionLedger.perShow[SHOW_ID] || 0,
         });
       }
       serpResults = await runSERPBackup(show, missingOutlets, knownUrls);

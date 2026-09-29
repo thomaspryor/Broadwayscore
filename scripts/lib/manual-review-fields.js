@@ -272,6 +272,14 @@ function detectIngestCollision(opts = {}) {
     const [fileOutlet, fileCritic] = parts;
     if (normalizeOutlet(fileOutlet) !== normalizedOutlet) continue;
     if (normalizedCritic && fileCritic !== 'unknown' && normalizeCritic(fileCritic) !== normalizedCritic) continue;
+    // A critic-less incoming (Playbill Verdict rows never carry a critic) writes to
+    // <outlet>--unknown.json and can never merge into a NAMED sibling (distinct URL →
+    // findExistingReviewFile treats it as a new critic, and skips flagged files as merge
+    // targets anyway), so a named file is no collision. Counting it dropped The
+    // Guardian's 2026 School Girls review against guardian--miriam-gillinson.json, the
+    // flagged 2023 London review (BRO-4272). Flagged <outlet>--unknown.json files still
+    // block, which is the Beaches merge path.
+    if (!normalizedCritic && fileCritic !== 'unknown') continue;
 
     let data;
     try { data = JSON.parse(fs.readFileSync(path.join(showDir, file), 'utf-8')); }
