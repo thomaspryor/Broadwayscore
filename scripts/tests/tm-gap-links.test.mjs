@@ -72,35 +72,38 @@ test('no live/upcoming show links to a ticket storefront that cannot sell its ma
   assert.deepEqual(bad, [], `ticket links on the wrong regional storefront:\n${bad.join('\n')}`);
 });
 
-test('verified TodayTix-gap shows carry a real Ticketmaster link', () => {
-  // 2026-09-29: The Gruffalo (Lyric) closed on 2026-09-08; its Ticketmaster
-  // event page went dead and the link was pruned, so it leaves this list and
-  // the floor below drops to 2. Re-verify and re-add when a new gap show gets
-  // a live TM page — never lower the floor for any other reason.
-  const EXPECTED = {
-    'a-christmas-carol-west-end-2026': 'ticketmaster.co.uk',
-    'derren-brown-only-human-west-end-2026': 'ticketmaster.co.uk',
-  };
+// Shows verified to carry a live TM page. When one CLOSES its event page dies
+// and the link is pruned on purpose (The Gruffalo, 2026-09-08 -> BRO-4265 red
+// for 25 pushes), so closed shows are exempt and the floor tracks the shows
+// still live. Add a show here only after verifying a live TM event page.
+const EXPECTED = {
+  'a-christmas-carol-west-end-2026': 'ticketmaster.co.uk',
+  'derren-brown-only-human-west-end-2026': 'ticketmaster.co.uk',
+};
+const stillLive = Object.keys(EXPECTED).filter(id => {
+  const show = shows.find(s => s.id === id);
+  return show && LIVE_STATUSES.has(show.status);
+});
 
+test('verified TodayTix-gap shows carry a real Ticketmaster link', () => {
   for (const [id, expectedHost] of Object.entries(EXPECTED)) {
     const show = shows.find(s => s.id === id);
     assert.ok(show, `show ${id} should exist in shows.json`);
+    if (!LIVE_STATUSES.has(show.status)) continue; // closed: TM link legitimately pruned
     const tm = (show.ticketLinks || []).find(l => l.platform === 'Ticketmaster');
     assert.ok(tm, `show ${id} should carry a Ticketmaster link`);
     assert.ok(tm.url.includes(expectedHost), `${id} TM url should be on ${expectedHost}, got ${tm.url}`);
   }
 });
 
-test('TodayTix-gap shows without TodayTix have at least 2 real Ticketmaster links (documented ceiling — see file header; 3 until The Gruffalo closed 2026-09-08)', () => {
+test('TodayTix-gap shows without TodayTix keep a Ticketmaster link for every still-live verified show (documented ceiling, see file header)', () => {
   const gapWithTm = liveShows.filter(s => {
     const links = s.ticketLinks || [];
-    const hasTodayTix = links.some(l => l.platform === 'TodayTix');
-    const hasTm = links.some(l => l.platform === 'Ticketmaster');
-    return !hasTodayTix && hasTm;
+    return !links.some(l => l.platform === 'TodayTix') && links.some(l => l.platform === 'Ticketmaster');
   });
   assert.ok(
-    gapWithTm.length >= 2,
-    `expected at least 2 TodayTix-gap shows with a Ticketmaster link, got ${gapWithTm.length}`
+    gapWithTm.length >= stillLive.length,
+    `expected at least ${stillLive.length} TodayTix-gap shows with a Ticketmaster link, got ${gapWithTm.length}`
   );
 });
 
