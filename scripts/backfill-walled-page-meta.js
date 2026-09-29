@@ -107,9 +107,18 @@ async function main() {
     if (html) {
       const showTitle = (showsById[d.showId || path.basename(path.dirname(fp))] || {}).title;
       let fresh = null;
-      const set = salvageWalledPageMetaToFile(fp, html, { showTitle, dryRun, onApplied: (x) => { fresh = x; } });
-      const suspect = set.find((s) => s.endsWith('Suspect'));
-      if (suspect) {
+      let set;
+      try {
+        set = salvageWalledPageMetaToFile(fp, html, { showTitle, dryRun, onApplied: (x) => { fresh = x; } });
+      } catch (e) {
+        // One file edited or corrupted mid-run must not abort the rest.
+        console.log(`  ✗ ${label}: salvage failed (${String(e.message || e).slice(0, 80)})`);
+        set = null;
+      }
+      const suspect = set && set.find((s) => s.endsWith('Suspect'));
+      if (!set) {
+        failed++;
+      } else if (suspect) {
         console.log(`  ⚠ ${label}: ${suspect} ("${showTitle}") — not applied`);
         suspects.push(`${suspect} ${label} ${d.url}`);
         failed++;

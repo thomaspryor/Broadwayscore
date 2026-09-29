@@ -998,7 +998,11 @@ function selectBestExcerpt(data, showTitle) {
   //    blurb, then the outlet's own standfirst salvaged from a walled page
   //    (walled-page-meta.js). Ranked after fullText so existing quotes never
   //    change; before this, paywalled The Stage reviews shipped quote-less.
-  for (const field of ['theStageExcerpt', 'outletStandfirst']) {
+  // Only when NOTHING else produced a candidate: a soft-rejected critic
+  // sentence (deferred) used to win via finish(null) below, and these rank at
+  // or above RAW_SOURCE_RANK, so letting them in would replace it (ship-check
+  // on #940). Gating on an empty `deferred` keeps every existing quote as is.
+  for (const field of deferred.length ? [] : ['theStageExcerpt', 'outletStandfirst']) {
     if (!data[field]) continue;
     const cleaned = cleanExcerpt(data[field]);
     if (cleaned && cleaned.length > 25) {

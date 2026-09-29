@@ -15,7 +15,7 @@
  *   - Returns an array so callers can file the same article under 2+ shows
  */
 
-const { normalizeTitle } = require('./title-match');
+const { normalizeTitle, foldDiacritics } = require('./title-match');
 const { COMMON_WORD_SHOW_TITLES } = require('./multi-show-splitter');
 
 /**
@@ -37,8 +37,9 @@ function escapeRegex(s) {
  *  - Single-word normalized titles shorter than 7 chars and NOT in
  *    COMMON_WORD_SHOW_TITLES are also skipped — too short to match reliably
  *    (e.g. "nine" → 4 chars, would FP constantly).
- *  - Multi-word titles (≥2 tokens) use simple text.includes() after
- *    normalization — low FP risk since the full phrase must appear.
+ *  - Multi-word titles (≥2 tokens) must appear as whole words after
+ *    normalization, and an "&"-led title ("& Juliet" -> "and juliet") may
+ *    not follow another word ("Romeo and Juliet").
  *
  * @param {string} headline - Article headline/title from listing page
  * @param {string} urlSlug  - URL slug/path of the article
@@ -58,17 +59,27 @@ function hyphenSpaced(s) {
 
 function findMatchingShows(headline, urlSlug, activeShows) {
   if (!headline && !urlSlug) return [];
-  const raw = (headline || '') + ' ' + (urlSlug || '');
-  const combined = normalizeTitle(raw);
+  // Slug separators become spaces too (hyphenSpaced handles the dashes):
+  // normalizeTitle glues "hamilton-review-..." into one word the whole-word
+  // test below can never find a title in.
+  const combined = hyphenSpaced(String(headline || '').replace(/[_/]+/g, ' ')
+    + ' ' + String(urlSlug || '').replace(/[/_.]+/g, ' '));
   if (!combined) return [];
-  const combinedSpaced = hyphenSpaced(raw);
+  // Glued path segments ("TheBalusters.html", "Ragtime2025.html" on Talkin'
+  // Broadway) only count when the segment STARTS with the glued title, so
+  // "duchess-theatre" never yields "chess" and "romeo-and-juliet" never
+  // yields "and juliet".
+  // Only truly glued segments (no separators at all); a hyphenated slug is
+  // already covered by `combined`, and prefix-matching it would let
+  // "deep-heatwave" yield "Deep Heat".
+  const gluedSegments = String(urlSlug || '').split(/[/.]+/)
+    .filter((s) => s && !/[-_\s]/.test(s));
 
   const matches = [];
 
   for (const show of activeShows) {
-    const norm = normalizeTitle(show.title || '');
+    const norm = hyphenSpaced(String(show.title || '').replace(/[_/]+/g, ' '));
     if (!norm) continue;
-    const normSpaced = hyphenSpaced(show.title);
 
     const tokens = norm.split(/\s+/).filter(Boolean);
 
@@ -85,12 +96,34 @@ function findMatchingShows(headline, urlSlug, activeShows) {
       continue;
     }
 
-    // Multi-word titles or longer single-word distinctive titles:
-    // simple substring match on the combined normalized text is sufficient.
-    // The spaced form must match on word boundaries: without them, "heat"
-    // spaced out of a slug would sit inside "theatre".
-    if (combined.includes(norm)
-        || (normSpaced && new RegExp(`(^|\\s)${escapeRegex(normSpaced)}(\\s|$)`).test(combinedSpaced))) {
+    // Multi-word titles or longer single-word distinctive titles: the title
+    // must appear as whole words. A raw includes() also matched inside longer
+    // words and, since normalizeTitle turns "&" into "and", put The Stage's
+    // "Romeo and Juliet review" on "& Juliet" (and-juliet-2022, 2026-09-27).
+    // So an "&"-led title may not follow another word either. Whole words
+    // also keep "heat" spaced out of a slug from matching inside "theatre"
+    // (BRO-4185's concern).
+    const hay = ` ${combined} `;
+    let at = hay.indexOf(` ${norm} `);
+    let ok = false;
+    while (at !== -1 && !ok) {
+      ok = !(tokens[0] === 'and' && at > 0);
+      at = hay.indexOf(` ${norm} `, at + 1);
+    }
+    if (!ok) {
+      const glued = foldDiacritics(norm).replace(/[^a-z0-9]/g, '');
+      ok = glued.length >= 6 && tokens[0] !== 'and'
+        // normalizeTitle drops a leading article; the glued URL keeps it.
+        // The title must end the segment or stop at a digit or a capital
+        // ("Ragtime2025", "TheBalusters"), never mid-word.
+        && gluedSegments.some((seg) => ['', 'the', 'a', 'an'].some((art) => {
+          const lower = foldDiacritics(seg).toLowerCase();
+          if (!lower.startsWith(art + glued)) return false;
+          const next = seg.charAt(art.length + glued.length);
+          return next === '' || /[0-9A-Z]/.test(next);
+        }));
+    }
+    if (ok) {
       matches.push(show);
     }
   }

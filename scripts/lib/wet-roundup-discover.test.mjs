@@ -59,3 +59,30 @@ test('long titles still accept a >=60% whole-word match', () => {
   // Stopwords don't count toward the 60%: only "house" would be shared here.
   assert.equal(wetPostTitleMatchesShow('The House with the Chicken Legs reviews', 'The House of Bernarda Alba'), false);
 });
+
+test('generic title words do not make two shows match (ship-check on #940)', () => {
+  const cases = [
+    ['Amélie, A New Musical reviews', 'Beaches, A New Musical'],
+    ['King Richard III reviews', 'King Charles III'],
+    ['You Never Can Tell reviews', 'Catch Me If You Can'],
+    ['Tosca - English National Opera reviews', 'La Boheme - English National Opera'],
+    ['Collected Stories reviews', 'STORIES – The Tap Dance Sensation'],
+    ['Jack and the Beanstalk reviews', 'Jack: A Night on the Town'],
+  ];
+  for (const [wp, show] of cases) {
+    assert.equal(wetPostTitleMatchesShow(wp, show), false, `${show} <- ${wp}`);
+  }
+});
+
+test('a one-word main title before a subtitle still matches its own posts', () => {
+  for (const wp of ['Doubt review', 'Review: Doubt at the Donmar', 'Doubt Reviews: critics praise the cast']) {
+    assert.equal(wetPostTitleMatchesShow(wp, 'Doubt: A Parable'), true, wp);
+  }
+  assert.equal(wetPostTitleMatchesShow('King Charles III review', 'King Charles III'), true);
+});
+
+test('an "&"-led title does not match inside another title', () => {
+  assert.equal(wetPostTitleMatchesShow('Romeo and Juliet reviews at the Harold Pinter', '& Juliet'), false);
+  assert.equal(wetPostTitleMatchesShow('& Juliet reviews round-up at the Shaftesbury Theatre in London', '& Juliet'), true);
+  assert.equal(wetPostTitleMatchesShow('Review: & Juliet at the Shaftesbury', '& Juliet'), true);
+});

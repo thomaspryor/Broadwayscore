@@ -89,11 +89,29 @@ function headlineMatchesShow(headline, showTitle) {
   const { titleTokens } = require('./show-match-verifier');
   const tTokens = titleTokens(showTitle);
   if (!tTokens.length) return true;
-  const h = headline.toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[‘’']/g, '').replace(/[^a-z0-9]+/g, ' ');
-  const hTokens = new Set(h.split(' '));
-  const squashed = h.replace(/ /g, '');
-  return tTokens.some((t) => hTokens.has(t) || squashed.includes(t));
+  // The Stage headlines read "<Title> review" (old pages: the bare title).
+  // Compare the part before "review" as a whole: every main-title token must
+  // be in it, and it must not name words from outside the show's title. An
+  // any-token test let "Romeo and Juliet review" pass for "& Juliet"
+  // (ship-check on #940, and-juliet-2022/thestage--unknown.json).
+  //
+  // Headlines shorten ("Come Alive! The Greatest Showman" for "...Circus
+  // Spectacular") or add a subtitle or company ("Jane Eyre: A Musical",
+  // "Matthew Bourne's New Adventures – The Car Man"), so each colon/dash
+  // segment is tried: one passes when all its words come from the show's
+  // title and it includes the title's first word. That still rejects
+  // "Christmas Carol Goes Wrong" for The Play That Goes Wrong.
+  const namePart = String(headline).split(/\s+[–—-]?\s*review\b/i)[0];
+  if (!titleTokens(namePart).length) return true;
+  const titleSquashed = tTokens.join('');
+  const inTitle = (t) => tTokens.includes(t) || tTokens.includes(t.replace(/s$/, '')) || titleSquashed.includes(t);
+  const first = tTokens[0];
+  const parts = [namePart, ...namePart.split(/\s+[:–—-]\s+|:\s+/)];
+  return parts.some((part) => {
+    const p = titleTokens(part);
+    if (!p.length || !p.every(inTitle)) return false;
+    return p.includes(first) || p.includes(`${first}s`) || p.join('').includes(first);
+  });
 }
 
 /**
@@ -123,12 +141,15 @@ function applyWalledPageMeta(data, html, opts = {}) {
   if (!data || !isTheStageUrl(data.url)) return [];
   const meta = extractTheStageArticleMeta(html);
   if (!meta) return [];
-  if (opts.showTitle && !headlineMatchesShow(meta.headline, opts.showTitle)) {
-    return ['wrongShowSuspect'];
-  }
+  // Page kind first: a round-up's headline ("Cats at Regent's Park – review
+  // round-up") also fails the stricter show match, and the kind is the more
+  // useful label.
   const kind = classifyStageHeadline(meta.headline, opts.showTitle);
   if (kind === 'roundup') return ['roundupSuspect'];
   if (kind === 'not-review') return ['notReviewSuspect'];
+  if (opts.showTitle && !headlineMatchesShow(meta.headline, opts.showTitle)) {
+    return ['wrongShowSuspect'];
+  }
   const set = [];
   if (meta.publishDate && !data.publishDate) {
     data.publishDate = meta.publishDate;

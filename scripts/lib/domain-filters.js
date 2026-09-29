@@ -354,8 +354,11 @@ function isBlockedReviewUrl(url) {
     // (2026-09-26). The shape blocks the whole class. News outlets that file
     // real reviews under /whats-on/ (manchestereveningnews.co.uk/whats-on/
     // theatre-news/review-..., chroniclelive, londonmumsmagazine) keep "review"
-    // in the path, so they pass.
-    if ((pathParts[0] === 'whats-on' || pathParts[0] === 'whatson') && !/review/.test(lowerPath)) return true;
+    // in the path, so they pass. "review" must be a whole word: a bare
+    // substring test let londonmumsmagazine's ".../million-dollar-quartet-
+    // preview-your-cheat-sheet..." through.
+    if ((pathParts[0] === 'whats-on' || pathParts[0] === 'whatson')
+      && !/(^|[^a-z])review(s|ed)?([^a-z]|$)/.test(lowerPath)) return true;
     // Malformed URLs (e.g., "http://Here We Are review — ...")
     if (parsed.hostname.includes(' ') || !parsed.hostname.includes('.')) return true;
     return false;

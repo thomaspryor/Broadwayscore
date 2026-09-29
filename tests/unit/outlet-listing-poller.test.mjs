@@ -375,3 +375,30 @@ describe('mergeAlwaysOnOutlets', () => {
     assert.deepEqual(out, ['a', 'the-recs']);
   });
 });
+
+describe('findMatchingShows — whole-word matching (ship-check on #940)', () => {
+  const shows = [
+    { id: 'and-juliet-2022', title: '& Juliet', status: 'open' },
+    { id: 'chess-2025', title: 'Chess', status: 'open' },
+    { id: 'lean-to-off-broadway-2026', title: 'Lean-To', status: 'open' },
+    { id: 'the-balusters-2026', title: 'The Balusters', status: 'open' },
+    { id: 'hamilton-2015', title: 'Hamilton', status: 'open' },
+  ];
+  const ids = (h, u) => findMatchingShows(h, u, shows).map(s => s.id);
+
+  test('"Romeo and Juliet" is not "& Juliet" (2026-09-27 live contamination)', () => {
+    assert.deepEqual(ids('Romeo and Juliet review', '/reviews/romeo-and-juliet-review-new-vic-newcastle-under-lyme-russell-kane-not-too-tame'), []);
+    assert.deepEqual(ids('& Juliet review', '/reviews/and-juliet-review-shaftesbury'), ['and-juliet-2022']);
+  });
+
+  test('a title inside a longer word does not match', () => {
+    assert.deepEqual(ids('', '/reviews/white-rabbit-red-rabbit-duchess-theatre-review/'), []);
+    assert.deepEqual(ids('', '/news/baby-wants-candy-shamilton-the-other-palace'), []);
+  });
+
+  test('slug-only and glued-slug matches still work', () => {
+    assert.deepEqual(ids('', '/reviews/hamilton-review-victoria-palace'), ['hamilton-2015']);
+    assert.deepEqual(ids('', '/2026/09/lean-to/'), ['lean-to-off-broadway-2026']);
+    assert.deepEqual(ids('', '/page/world/TheBalusters.html'), ['the-balusters-2026']);
+  });
+});

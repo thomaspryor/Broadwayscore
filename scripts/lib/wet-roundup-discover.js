@@ -48,9 +48,34 @@ function _normalizeForMatch(t) {
 
 const _MATCH_STOPWORDS = new Set(['the', 'and', 'for', 'with', 'from', 'are', 'was']);
 
+// Words that appear in many unrelated show titles, so sharing one says nothing
+// about identity. Counting them let "Beaches, A New Musical" match "Amelie, A
+// New Musical", "King Charles III" match "King Richard III", and every
+// "X - English National Opera" match every other ENO show (ship-check on #940,
+// measured over all 3,061 show titles).
+const _GENERIC_TITLE_WORDS = new Set([
+  'new', 'musical', 'play', 'opera', 'national', 'english', 'york', 'london',
+  'broadway', 'west', 'end', 'theatre', 'theater', 'show', 'live', 'tour',
+  'part', 'one', 'two', 'ii', 'iii', 'iv', 'vi', 'vii', 'viii', 'you', 'can',
+  'all', 'not', 'our', 'his', 'her', 'who', 'what', 'how', 'why', 'this', 'that',
+]);
+
+function _distinctiveWords(norm) {
+  return Array.from(new Set(norm.split(' ')
+    .filter(w => w.length > 2 && !_MATCH_STOPWORDS.has(w) && !_GENERIC_TITLE_WORDS.has(w))));
+}
+
 function _phraseIn(haystackNorm, phraseNorm) {
   const p = phraseNorm.replace(/^(the|a|an) /, '');
-  return !!p && ` ${haystackNorm} `.includes(` ${p} `);
+  if (!p) return false;
+  // An "&"-led title normalizes to "and ...", which also sits inside another
+  // title ("Romeo and Juliet" for "& Juliet"), so it must lead the haystack,
+  // after an optional "review(s)" prefix.
+  if (p.startsWith('and ')) {
+    const lead = haystackNorm.replace(/^reviews? (of )?/, '');
+    return lead === p || lead.startsWith(`${p} `);
+  }
+  return ` ${haystackNorm} `.includes(` ${p} `);
 }
 
 /**
@@ -68,7 +93,10 @@ function _phraseIn(haystackNorm, phraseNorm) {
  *   - whole-word matching on DISTINCT tokens only;
  *   - titles with <= 2 distinctive tokens (where single-word collisions bite)
  *     must appear as a contiguous phrase;
- *   - longer titles need >= 60% of their distinct tokens as whole words.
+ *   - longer titles need >= 60% of their distinct tokens as whole words;
+ *   - generic title words (musical, new, opera, III, ...) never count as
+ *     distinctive, and a one-word main title before a subtitle colon must lead
+ *     the post title.
  */
 function wetPostTitleMatchesShow(wpTitle, showTitle) {
   const wpNorm = _normalizeForMatch(wpTitle);
@@ -77,11 +105,24 @@ function wetPostTitleMatchesShow(wpTitle, showTitle) {
   if (_phraseIn(wpNorm, showNorm)) return true;
   // Subtitled shows ("Orlando: A Pornobiography") are often posted under the
   // main title alone; the main title must still match as a whole phrase.
+  // A one-word main title ("Stories", "Jack") is too generic to match anywhere
+  // in the post title ("Collected Stories"), so it must LEAD the post title,
+  // after an optional "Review:" prefix. mainNorm is [a-z0-9 ] only (see
+  // _normalizeForMatch), so it is safe inside the RegExp below.
   const mainTitle = String(showTitle || '').split(/\s*[:–—]\s+/)[0];
-  if (mainTitle && mainTitle !== showTitle && _phraseIn(wpNorm, _normalizeForMatch(mainTitle))) return true;
+  if (mainTitle && mainTitle !== showTitle) {
+    const mainNorm = _normalizeForMatch(mainTitle).replace(/^(the|a|an) /, '');
+    if (mainNorm && _distinctiveWords(mainNorm).length >= 2) {
+      if (_phraseIn(wpNorm, mainNorm)) return true;
+    } else if (mainNorm) {
+      const lead = wpNorm.replace(/^reviews? /, '').replace(/^(the|a|an) /, '');
+      // ...and be followed by the post's own framing, so "Jack and the
+      // Beanstalk reviews" is not "Jack: A Night on the Town".
+      if (lead === mainNorm || new RegExp(`^${mainNorm} (reviews?|at)( |$)`).test(lead)) return true;
+    }
+  }
   const wpTokens = new Set(wpNorm.split(' '));
-  const showWords = Array.from(new Set(showNorm.split(' ')
-    .filter(w => w.length > 2 && !_MATCH_STOPWORDS.has(w))));
+  const showWords = _distinctiveWords(showNorm);
   if (showWords.length <= 2) return false; // short titles: phrase match only
   const matched = showWords.filter(w => wpTokens.has(w));
   return matched.length >= Math.ceil(showWords.length * 0.6);
