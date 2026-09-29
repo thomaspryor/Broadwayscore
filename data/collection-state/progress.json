@@ -201,7 +201,8 @@
     "broken-snow-off-broadway-2026/theater-scene--darryl-reilly.json",
     "grace-pervades-west-end-2026/independent--alice-saville.json",
     "grace-pervades-west-end-2026/whatsonstage--sarah-crompton.json",
-    "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json"
+    "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
+    "la-boheme-off-broadway-2026/operawire--david-salazar.json"
   ],
   "failed": [
     "tru-off-west-end-2026/telegraph--claire-allfree.json",
@@ -382,7 +383,18 @@
     "grace-pervades-west-end-2026/standard--ghenet-pinderhughes-randall.json",
     "grace-pervades-west-end-2026/thestage--tom-wicker.json",
     "mercury-off-broadway-2026/theatrecat--unknown.json",
-    "mercury-off-broadway-2026/thestage--unknown.json"
+    "mercury-off-broadway-2026/thestage--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/talkinbroadway--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -481,7 +493,8 @@
       "celebrity-autobiography-2026/one-minute-critic--matthew-wexler.json",
       "equus-west-end-2026/londontheatrehub--peter-shaffer.json",
       "the-maids-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json"
+      "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
+      "la-boheme-off-broadway-2026/operawire--david-salazar.json"
     ],
     "amp": [],
     "browserbase": [
@@ -605,7 +618,7 @@
     ]
   },
   "startTime": "2026-09-28T20:31:08.071Z",
-  "lastProcessed": "well-ill-let-you-go-off-broadway-2026/ny1--spectrum-news-staff.json",
+  "lastProcessed": "macbeth-off-broadway-2026/talkclassical--unknown.json",
   "log": [
     {
       "t": "2026-09-28T20:47:55.386Z",
@@ -859,6 +872,62 @@
       "t": "2026-09-28T23:44:59.828Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T00:11:05.630Z",
+      "event": "bb-session",
+      "session": "b4a5ffe5",
+      "url": "https://www.talkinbroadway.com/page/world/SchoolGirls.html"
+    },
+    {
+      "t": "2026-09-29T00:11:06.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-29T00:11:23.460Z",
+      "event": "bb-session",
+      "session": "3b23b11f",
+      "url": "https://www.talkinbroadway.com/page/world/SchoolGirls.html"
+    },
+    {
+      "t": "2026-09-29T00:11:23.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-29T00:12:17.557Z",
+      "event": "bb-session",
+      "session": "609c9e83",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-29T00:12:25.958Z",
+      "event": "bb-session",
+      "session": "54a2b58b",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-29T00:15:48.826Z",
+      "event": "bb-session",
+      "session": "ccdcb2a3",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-29T00:15:49.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-29T00:16:07.723Z",
+      "event": "bb-session",
+      "session": "378381ad",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-29T00:16:08.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
