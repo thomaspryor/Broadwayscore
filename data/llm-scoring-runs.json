@@ -1,21 +1,5 @@
 [
   {
-    "startedAt": "2026-09-27T19:14:16.176Z",
-    "completedAt": "2026-09-27T19:15:43.708Z",
-    "totalReviews": 44902,
-    "processed": 18,
-    "skipped": 44880,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 86835,
-      "output": 5772,
-      "total": 258139
-    },
-    "costUsd": 0.37719864999999997,
-    "runId": "36342245544",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-27T19:15:45.240Z",
     "completedAt": "2026-09-27T19:22:13.134Z",
     "totalReviews": 177,
@@ -259921,19 +259905,41 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-29T11:38:58.448Z",
-    "completedAt": "2026-09-29T11:39:03.599Z",
-    "totalReviews": 2,
-    "processed": 2,
+    "startedAt": "2026-09-29T11:38:28.748Z",
+    "completedAt": "2026-09-29T11:42:19.920Z",
+    "totalReviews": 45285,
+    "processed": 40,
+    "skipped": 45240,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 232960,
+      "output": 13188,
+      "total": 605013
+    },
+    "costUsd": 0.9871196,
+    "runId": "36560170008",
+    "errorDetails": [
+      {
+        "showId": "hole-off-west-end-2026",
+        "outletId": "broadwayworld",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-29T11:42:21.982Z",
+    "completedAt": "2026-09-29T11:48:19.876Z",
+    "totalReviews": 168,
+    "processed": 168,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 5929,
-      "output": 488,
-      "total": 6417
+      "input": 444017,
+      "output": 40369,
+      "total": 484386
     },
-    "costUsd": 0.0162335,
-    "runId": "36560251901",
+    "costUsd": 1.2377456999999998,
+    "runId": "36560170008",
     "errorDetails": []
   }
 ]
