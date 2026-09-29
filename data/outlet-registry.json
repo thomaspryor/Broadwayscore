@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-29T15:43:35.495Z",
+    "lastUpdated": "2026-09-29T16:24:11.333Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11564,6 +11564,38 @@
         "media-mikes"
       ],
       "domain": "mediamikes.com"
+    },
+    "birmingham-times": {
+      "displayName": "Birmingham Times",
+      "tier": 3,
+      "aliases": [
+        "birmingham-times"
+      ],
+      "domain": "birminghamtimes.com"
+    },
+    "gulf-coast": {
+      "displayName": "Gulf Coast",
+      "tier": 3,
+      "aliases": [
+        "gulf-coast"
+      ],
+      "domain": "gulfcoastnewsnow.com"
+    },
+    "hotchka": {
+      "displayName": "Hotchka",
+      "tier": 3,
+      "aliases": [
+        "hotchka"
+      ],
+      "domain": "hotchka.com"
+    },
+    "kc-studio": {
+      "displayName": "Kc Studio",
+      "tier": 3,
+      "aliases": [
+        "kc-studio"
+      ],
+      "domain": "kcstudio.org"
     }
   },
   "_aliasIndex": {

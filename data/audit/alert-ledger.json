@@ -3161,12 +3161,13 @@
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-29T15:50:02.071Z",
+      "lastSeen": "2026-09-29T16:24:45.351Z",
       "lastNotifiedAt": "2026-09-29T15:50:02.071Z",
       "lastSurfacedAt": "2026-09-29T15:50:02.071Z",
       "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3545,12 +3546,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-29T15:50:02.076Z",
+      "lastSeen": "2026-09-29T16:24:45.357Z",
       "lastNotifiedAt": "2026-09-29T15:50:02.076Z",
       "lastSurfacedAt": "2026-09-29T15:50:02.076Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3821,12 +3823,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-29T15:50:02.061Z",
+      "lastSeen": "2026-09-29T16:24:45.341Z",
       "lastNotifiedAt": "2026-09-29T15:50:02.061Z",
       "lastSurfacedAt": "2026-09-29T15:50:02.061Z",
       "notifyCount": 9,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4166,12 +4169,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-29T15:50:02.055Z",
+      "lastSeen": "2026-09-29T16:24:45.335Z",
       "lastNotifiedAt": "2026-09-29T15:50:02.055Z",
       "lastSurfacedAt": "2026-09-29T15:50:02.055Z",
       "notifyCount": 9,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5715,13 +5719,13 @@
       "disposition": "digest",
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-09-29T15:50:02.046Z",
+      "lastSeen": "2026-09-29T16:24:45.323Z",
       "lastNotifiedAt": "2026-09-28T19:21:55.577Z",
       "lastSurfacedAt": "2026-09-28T19:21:55.577Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11
+      "silentRefires": 12
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5779,13 +5783,13 @@
       "disposition": "digest",
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-09-29T15:50:02.050Z",
+      "lastSeen": "2026-09-29T16:24:45.329Z",
       "lastNotifiedAt": "2026-09-28T19:48:00.401Z",
       "lastSurfacedAt": "2026-09-28T19:48:00.401Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 10
+      "silentRefires": 11
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -6510,7 +6514,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-4358-ss-dead-url": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/bro-4358-ss-dead-url",
       "firstSeen": "2026-09-29T15:52:18.691Z",
@@ -6519,7 +6523,8 @@
       "lastSurfacedAt": "2026-09-29T15:52:18.691Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T16:23:46.389Z"
     },
     "opening-night-remediation-exhausted-empty-cast:hay-fever-west-end-2026": {
       "status": "open",
