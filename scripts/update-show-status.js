@@ -24,6 +24,7 @@ const { countByShow, isStuckInPreviews, openSignalFromReviews, openSignalFromDis
 const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./lib/opening-date-fallback');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion, blockAnnouncedCatchUp } = require('./lib/announced-promotion');
+const { decidePrematurePreviews } = require('./lib/premature-previews');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -743,6 +744,21 @@ async function updateShowStatuses() {
       changes.note = `openingDate ${show.openingDate} is in the future; previews started ${show.previewsStartDate}`;
       if (!dryRun) {
         show.status = 'previews';
+      }
+    }
+
+    // Check 2d: previews → upcoming when performances haven't begun
+    // (lib/premature-previews.js; BRO-4377: KEVIN!!!!! showed "In Previews"
+    // in September for a run starting December 5). Runs before Check 2b so
+    // a show whose date is today moves straight on.
+    {
+      const premature = decidePrematurePreviews(show, new Date().toISOString().slice(0, 10));
+      if (premature) {
+        changes.status = { from: 'previews', to: premature.to };
+        changes.note = premature.reason;
+        if (!dryRun) {
+          show.status = premature.to;
+        }
       }
     }
 
