@@ -146,12 +146,13 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T22:37:03.257Z",
-      "lastNotifiedAt": "2026-09-29T22:37:03.257Z",
+      "lastSeen": "2026-09-29T22:46:20.696Z",
+      "lastNotifiedAt": "2026-09-29T22:32:11.885Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 116,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "silentRefires": 1
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6883,7 +6884,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
       "firstSeen": "2026-09-29T21:43:53.789Z",
-      "lastSeen": "2026-09-29T22:37:03.253Z",
+      "lastSeen": "2026-09-29T22:46:20.691Z",
       "lastNotifiedAt": "2026-09-29T21:43:53.789Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -6895,7 +6896,7 @@
         "runId": "36633606651",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36633606651"
       },
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-4380-enforce": {
       "status": "open",
