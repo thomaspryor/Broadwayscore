@@ -74,7 +74,10 @@ function emitStage({ showId, reviewKey, stage, at, metadata }) {
   // "stuck ≥60 min". BSC_STAGE_LATENCY_MUTE=1 (set in test.yml's unit step) makes
   // the emit a no-op UNLESS a test explicitly points STAGE_LATENCY_LOG at its own
   // file — so stage-latency's own tests still work.
-  if (process.env.BSC_STAGE_LATENCY_MUTE === '1' && !process.env.STAGE_LATENCY_LOG) return;
+  // NODE_TEST_CONTEXT: a local `node --test` run has no test.yml env, and it
+  // appended fake 'rebuilt' rows to the tracked log (2026-09-29, as BRO-4220 did
+  // for the spend ledger). Node sets it in every test process and its children.
+  if ((process.env.BSC_STAGE_LATENCY_MUTE === '1' || process.env.NODE_TEST_CONTEXT) && !process.env.STAGE_LATENCY_LOG) return;
 
   const logFile = process.env.STAGE_LATENCY_LOG || DEFAULT_LOG;
 
