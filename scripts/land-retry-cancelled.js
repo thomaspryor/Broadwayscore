@@ -10,7 +10,13 @@
  */
 
 const { execFileSync } = require('child_process');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const { decideLandRetry } = require('./lib/land-retry-on-cancel');
+
+if (hasHelpFlag(process.argv.slice(2))) {
+  console.log('usage: node scripts/land-retry-cancelled.js --run=<id> [--dry-run]');
+  process.exit(0);
+}
 
 const arg = (n) => (process.argv.find((a) => a.startsWith(`--${n}=`)) || '').split('=').slice(1).join('=');
 const runId = arg('run');
