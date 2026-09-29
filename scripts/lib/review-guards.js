@@ -3843,6 +3843,8 @@ function buildMultiProdYearGuard(shows) {
 function isNamedNonReviewUrlRecord(data) {
   return Boolean(
     data && data.url && data.namedNonReviewUrlManualClear !== true &&
+    // review-file-writer's human override (ingest --allow-non-review-url) is spread onto the record
+    data.allowNonReviewUrl !== true &&
     require('./non-review-url-patterns').namedNonReviewReason(data.url, {
       // allSources entries (BRO-4386 ticket-seller product pages) are non-reviews
       // whichever path wrote them: the leak came via submit-review-form.

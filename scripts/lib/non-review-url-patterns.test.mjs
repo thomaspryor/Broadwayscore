@@ -410,3 +410,8 @@ test('BRO-4386: allSourcesOnly returns only allSources entries; rebuild predicat
   assert.ok(isNamedNonReviewUrlRecord({ url: 'https://www.broadway.com/shows/x/', source: 'serp-discovery' }));
   assert.ok(!isNamedNonReviewUrlRecord({ url: 'https://www.bestoftheatre.co.uk/blog/post/review-roundup-x', source: 'submit-review-form' }));
 });
+
+test('BRO-4386: allowNonReviewUrl human override survives rebuild predicate', () => {
+  const { isNamedNonReviewUrlRecord } = require('./review-guards.js');
+  assert.ok(!isNamedNonReviewUrlRecord({ url: 'https://www.bestoftheatre.co.uk/cats', source: 'submit-review-form', allowNonReviewUrl: true }));
+});
