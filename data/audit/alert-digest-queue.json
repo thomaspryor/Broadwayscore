@@ -2414,5 +2414,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-29T21:43:21.280Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4380-enforce",
+    "title": "Landing blocked: rebase red on land/bro-4380-enforce",
+    "description": "land.yml did not land land/bro-4380-enforce: the rebase gate went red at a92e3a9a70. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36635282836",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4380-enforce"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "a92e3a9a7098dfd8f26e2a25458e9bbceb336690"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36635282836"
+      }
+    ],
+    "queuedAt": "2026-09-29T21:47:33.893Z"
   }
 ]
