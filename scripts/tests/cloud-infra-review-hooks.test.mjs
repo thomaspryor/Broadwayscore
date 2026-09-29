@@ -122,3 +122,31 @@ test('settings.json: both infra hooks registered on the right events', () => {
   const post = find('PostToolUse', 'infra-post-write-audit.sh');
   assert.ok(post && new RegExp(`^(?:${post.matcher})$`).test('Bash'), 'infra-post-write-audit.sh must run after Bash');
 });
+
+// BRO-4134 (rollout watch 2026-09-29): an unescaped ~ in a case pattern
+// (`~/*)`) or prefix strip (`${x#~/}`) is tilde-EXPANDED by bash, so it never
+// matches the literal "~/..." a command carries. Every copy of the push/merge
+// review gates misread `cd ~/...` and `git -C ~/...` this way and judged the
+// command against the wrong repo (a ~/.claude push was refused as a direct
+// push to Broadwayscore main). Guard every repo hook script against it.
+test('no hook script uses an unescaped ~ in a case pattern or prefix strip', () => {
+  const repo = path.resolve(new URL('.', import.meta.url).pathname, '..', '..');
+  const dirs = [path.join(repo, '.claude', 'hooks'), path.join(repo, 'scripts', 'hooks')];
+  const bad = [];
+  let scanned = 0;
+  for (const d of dirs) {
+    if (!fs.existsSync(d)) continue;
+    for (const name of fs.readdirSync(d)) {
+      const p = path.join(d, name);
+      if (!fs.statSync(p).isFile()) continue;
+      const text = fs.readFileSync(p, 'utf8');
+      if (!/^#!.*\b(ba)?sh\b/.test(text) && !name.endsWith('.sh')) continue;
+      scanned++;
+      text.split('\n').forEach((line, i) => {
+        if (/(^|\s)~\/?\*?\)|\$\{[A-Za-z_]+#~/.test(line)) bad.push(`${path.relative(repo, p)}:${i + 1}: ${line.trim()}`);
+      });
+    }
+  }
+  assert.ok(scanned > 5, `expected to scan hook scripts, scanned ${scanned}`);
+  assert.deepEqual(bad, [], 'write \\~ (escaped) in case patterns and ${x#\\~/}');
+});

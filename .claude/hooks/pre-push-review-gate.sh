@@ -64,8 +64,8 @@ _GIT_C=$(printf '%s' "$command" | grep -oE 'git[[:space:]]+-C[[:space:]]+[^[:spa
 GIT_C_REPO=""
 if [ -n "$_GIT_C" ]; then
   case "$_GIT_C" in
-    ~/*)  _GIT_C="$HOME/${_GIT_C#~/}" ;;
-    ~)    _GIT_C="$HOME" ;;
+    \~/*)  _GIT_C="$HOME/${_GIT_C#\~/}" ;;
+    \~)    _GIT_C="$HOME" ;;
   esac
   [ -d "$_GIT_C" ] && GIT_C_REPO=$(git -C "$_GIT_C" rev-parse --show-toplevel 2>/dev/null)
 fi
@@ -105,8 +105,8 @@ _FIRST_CD=$(printf '%s' "$command" | grep -oE '(^|[[:space:];&|(])cd[[:space:]]+
 EVAL_ROOT="$SESSION_ROOT"
 if [ -n "$_FIRST_CD" ]; then
   case "$_FIRST_CD" in
-    ~/*)  _FIRST_CD="$HOME/${_FIRST_CD#~/}" ;;
-    ~)    _FIRST_CD="$HOME" ;;
+    \~/*)  _FIRST_CD="$HOME/${_FIRST_CD#\~/}" ;;
+    \~)    _FIRST_CD="$HOME" ;;
   esac
   if [ -d "$_FIRST_CD" ]; then
     _CD_REPO=$(git -C "$_FIRST_CD" rev-parse --show-toplevel 2>/dev/null)
