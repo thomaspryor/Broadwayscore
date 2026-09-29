@@ -14,7 +14,7 @@
 // page is resale-marketplace-only with zero primary inventory ("Tickets for
 // this event are not currently available on Ticketmaster"), the same dead-end
 // pattern that got StubHub hidden. This test asserts the REAL, verified
-// count rather than the originally-hoped-for 15 — see the session's Notion
+// count rather than the originally-hoped-for 15 (now 2: The Gruffalo closed 2026-09-08, see EXPECTED below) — see the session's Notion
 // outcome for the full research trail.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
@@ -86,6 +86,7 @@ const stillLive = Object.keys(EXPECTED).filter(id => {
 });
 
 test('verified TodayTix-gap shows carry a real Ticketmaster link', () => {
+  if (stillLive.length === 0) console.warn('tm-gap-links: every EXPECTED show has closed; refresh EXPECTED with a newly verified live TM show');
   for (const [id, expectedHost] of Object.entries(EXPECTED)) {
     const show = shows.find(s => s.id === id);
     assert.ok(show, `show ${id} should exist in shows.json`);
