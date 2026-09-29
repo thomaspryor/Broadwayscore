@@ -119,3 +119,12 @@ test('digest line: null when no data in trailing week', () => {
   // quiet yesterday inside an active week is a real $0
   assert.match(renderClaudeSpendDigestLine({ '2026-09-07': 700 }, now), /2026-09-09 \(UTC\): \$0 list-price · 7-day avg \$100\/day/);
 });
+
+test('digest wiring: buildHtml renders a passed-in line escaped and never shells out', async () => {
+  const { buildHtml } = require('../send-morning-digest.js');
+  const t0 = Date.now();
+  const html = buildHtml({ sections: {}, claudeSpendLine: 'Claude Code demand <x> $1' });
+  assert.match(html, /Claude Code demand &lt;x&gt; \$1/);
+  assert.ok(Date.now() - t0 < 5000, 'buildHtml must not scan transcripts');
+  assert.doesNotMatch(buildHtml({ sections: {} }), /Claude Code demand/);
+});

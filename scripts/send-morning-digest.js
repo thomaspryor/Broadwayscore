@@ -454,7 +454,7 @@ function buildSubject({ health = null, autofixRows = null, awaitingOwner = null,
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, claudeSpendLine = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -575,7 +575,6 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   if (watchdogLeakMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(watchdogLeakMsg)}</p>`);
   }
-  const claudeSpendLine = localClaudeSpendLine();
   if (claudeSpendLine) {
     parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(claudeSpendLine)}</p>`);
   }
@@ -710,7 +709,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, claudeSpendLine = null, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -742,7 +741,7 @@ function composeDigestEmail({
   }
 
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, claudeSpendLine, now });
   return { subject, html };
 }
 
