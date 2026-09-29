@@ -1190,5 +1190,34 @@
       }
     ],
     "queuedAt": "2026-09-29T08:54:01.383Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4231-llm-score",
+    "title": "Landing blocked: push red on land/bro-4231-llm-score",
+    "description": "land.yml did not land land/bro-4231-llm-score: the push gate went red at 47cc1092f1. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4231-llm-score @ 47cc1092f1 (origin/land/bro-4231-llm-score) → origin/main @ 808a8b16d1 [land] attempt 1/3: rebased onto 808a8b16d1, 1 file(s) changed — running checks [land] verified-base: main moved c87aba11ba → 808a8b16d1 across 97 file(s), substantive — running the full gauntlet [land] linked 20 gitignored path(s) into the worktree (node_modules/core data) [land] checks: audit- Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36542553531",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4231-llm-score"
+      },
+      {
+        "name": "gate",
+        "value": "push"
+      },
+      {
+        "name": "tip",
+        "value": "47cc1092f1907b7ffca130f1f2dec35ef4c040cc"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36542553531"
+      }
+    ],
+    "queuedAt": "2026-09-29T08:55:26.913Z"
   }
 ]
