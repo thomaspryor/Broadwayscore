@@ -1,95 +1,23 @@
 {
-  "updatedAt": "2026-09-29T23:34:08.796Z",
-  "processed": 197,
-  "failed": 130,
-  "successRate": "60.2%",
+  "updatedAt": "2026-09-30T00:04:05.050Z",
+  "processed": 156,
+  "failed": 101,
+  "successRate": "60.7%",
   "tierBreakdown": {
-    "playwright": 113,
+    "playwright": 86,
     "amp": 2,
-    "browserbase": 9,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 30,
+    "scrapingdog": 22,
     "scrapingbee": 15,
-    "brightdata": 3,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 28
+    "archive": 19
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
-      "t": "2026-09-29T21:58:17.879Z",
-      "event": "bb-cookie-inject",
-      "domain": "newyorker.com"
-    },
-    {
-      "t": "2026-09-29T22:07:36.777Z",
-      "event": "bb-session",
-      "session": "83a0dd88",
-      "url": "https://www.express.co.uk/entertainment/music/1617674/Abba-Voyage-review-London-"
-    },
-    {
-      "t": "2026-09-29T22:13:43.650Z",
-      "event": "bb-session",
-      "session": "a4341e8c",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-29T22:13:47.663Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-29T22:14:09.165Z",
-      "event": "bb-session",
-      "session": "6baf9068",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-29T22:14:13.349Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-29T22:15:39.900Z",
-      "event": "bb-session",
-      "session": "ce84ba30",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-09-29T22:15:40.354Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-29T22:15:57.842Z",
-      "event": "bb-session",
-      "session": "625d8d23",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-09-29T22:15:58.344Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-29T22:54:08.304Z",
-      "event": "bb-session",
-      "session": "cde0b0fa",
-      "url": "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review."
-    },
-    {
-      "t": "2026-09-29T22:54:09.172Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-29T22:54:27.421Z",
-      "event": "bb-session",
-      "session": "08b9f15d",
-      "url": "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review."
-    },
-    {
-      "t": "2026-09-29T22:54:28.211Z",
+      "t": "2026-09-29T21:35:31.739Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
@@ -125,7 +53,90 @@
     {
       "t": "2026-09-29T23:00:21.538Z",
       "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T21:47:08.204Z",
+      "event": "bb-session",
+      "session": "a7b89cb5",
+      "url": "https://deadline.com/2026/02/rege-jean-page-great-gatsby-theater-adaptation-star"
+    },
+    {
+      "t": "2026-09-29T21:49:10.433Z",
+      "event": "bb-session",
+      "session": "742f30d6",
+      "url": "https://www.nytimes.com/2025/10/29/theater/bat-boy-phantom-of-opera.html"
+    },
+    {
+      "t": "2026-09-29T21:49:10.921Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T21:49:29.554Z",
+      "event": "bb-session",
+      "session": "99d430d9",
+      "url": "https://www.nytimes.com/2025/10/29/theater/bat-boy-phantom-of-opera.html"
+    },
+    {
+      "t": "2026-09-29T21:49:29.997Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T23:50:46.660Z",
+      "event": "bb-session",
+      "session": "28c53e1c",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-29T23:50:51.211Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-29T23:51:10.926Z",
+      "event": "bb-session",
+      "session": "15cf57e3",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-29T23:51:15.401Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-29T23:53:55.623Z",
+      "event": "bb-session",
+      "session": "c8b13ffb",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-09-29T23:53:56.361Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-29T23:54:14.247Z",
+      "event": "bb-session",
+      "session": "70f8c38b",
+      "url": "http://www.wsj.com/articles/SB106748686155075900"
+    },
+    {
+      "t": "2026-09-29T23:54:14.943Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-30T00:02:24.980Z",
+      "event": "bb-session",
+      "session": "26cc80ae",
+      "url": "https://www.thestage.co.uk/reviews/the-seagull-review-barbican-theatre-london-ch"
+    },
+    {
+      "t": "2026-09-30T00:02:25.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
