@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-29T04:36:27.469Z",
+  "runDate": "2026-09-29T09:41:04.035Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,43 +11,43 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 335,
-    "failed": 266,
+    "processed": 411,
+    "failed": 291,
     "skipped": 0,
-    "successRate": "55.7%"
+    "successRate": "58.5%"
   },
   "tierBreakdown": {
-    "playwright": 156,
+    "playwright": 201,
     "amp": 0,
     "browserbase": 30,
     "directCookies": 4,
-    "scrapingbee": 71,
-    "brightdata": 18,
+    "scrapingbee": 74,
+    "brightdata": 27,
     "archiveToday": 0,
-    "archive": 75
+    "archive": 83
   },
   "statistics": {
-    "tier1Attempts": 143,
-    "tier1Success": 98,
+    "tier1Attempts": 114,
+    "tier1Success": 58,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 23,
-    "tier1_5Success": 13,
-    "tier2Attempts": 62,
-    "tier2Success": 33,
-    "tier3Attempts": 37,
-    "tier3Success": 15,
-    "tier3_6Attempts": 22,
+    "tier1_5Attempts": 10,
+    "tier1_5Success": 2,
+    "tier2Attempts": 37,
+    "tier2Success": 13,
+    "tier3Attempts": 53,
+    "tier3Success": 26,
+    "tier3_6Attempts": 35,
     "tier3_6Success": 0,
-    "tier4Attempts": 122,
-    "tier4Success": 44,
-    "totalFailed": 118,
-    "scrapingBeePageCredits": 197,
+    "tier4Attempts": 77,
+    "tier4Success": 20,
+    "totalFailed": 216,
+    "scrapingBeePageCredits": 200,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 23,
-    "browserbaseMinutesUsed": 7.2,
-    "urlDiscoveryAttempts": 69,
-    "urlDiscoverySuccess": 11,
+    "browserbaseSessionsUsed": 10,
+    "browserbaseMinutesUsed": 5,
+    "urlDiscoveryAttempts": 129,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -385,14 +385,89 @@
     "life-of-pi-tour-2024/broadwayworld--andrew-child.json",
     "life-of-pi-tour-2024/broadwayworld--christopher-verleger.json",
     "life-of-pi-tour-2024/broadwayworld--dara-homer.json",
-    "life-of-pi-tour-2024/broadwayworld--jon-bee.json"
+    "life-of-pi-tour-2024/broadwayworld--jon-bee.json",
+    "school-girls-or-the-african-mean-girls-play-2026/theatrely--joey-sims.json",
+    "school-girls-or-the-african-mean-girls-play-2026/playbill--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/nydailynews--chris-jones.json",
+    "my-neighbour-totoro-west-end-2025/whatsonstage--tom-millward.json",
+    "operation-mincemeat-west-end-2024/whatsonstage--theo-bosanquet.json",
+    "magic-mike-live-west-end-2021/whatsonstage--sarah-crompton.json",
+    "mother-courage-and-her-children-globe-west-end-2026/whatsonstage--sarah-crompton.json",
+    "krapps-last-tape-godots-todo-list-west-end-2026/whatsonstage--sarah-crompton.json",
+    "between-the-river-and-the-sea-west-end-2026/whatsonstage--sarah-crompton.json",
+    "titanique-2026/whatsonstage--tanyel-gumushan.json",
+    "giant-royal-court-off-west-end-2024/whatsonstage--sarah-crompton.json",
+    "whos-afraid-of-virginia-woolf-2020/whatsonstage--peter-kessler.json",
+    "the-little-foxes-2017/whatsonstage--sarah-crompton.json",
+    "spring-awakening-2006/whatsonstage--matt-trueman.json",
+    "les-miserables-2006/whatsonstage--ben-hewis.json",
+    "lend-me-a-tenor-1989/whatsonstage--editorial-staff.json",
+    "les-miserables-1987/whatsonstage--tanyel-gumushan.json",
+    "the-karate-kid-the-musical-west-end-2026/whatsonstage--tanyel-gumushan.json",
+    "september-l-davis-the-apology-tour-off-broadway-2026/playbill--unknown.json",
+    "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "wicked-2003/wsj--terry-teachout.json",
+    "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+    "christmas-carol-goes-wrong-west-end-2026/telegraph--shehrazade-zafar-arif.json",
+    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+    "now-you-see-me-live-west-end-2026/londontheatredirect--marco-da-silva.json",
+    "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json",
+    "myras-story-west-end-2026/broadwayworld--unknown.json",
+    "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+    "american-psycho-off-west-end-2026/artsdesk--unknown.json",
+    "american-psycho-off-west-end-2026/daily-mail--unknown.json",
+    "american-psycho-off-west-end-2026/independent--unknown.json",
+    "american-psycho-off-west-end-2026/mirror--unknown.json",
+    "american-psycho-off-west-end-2026/standard--unknown.json",
+    "american-psycho-off-west-end-2026/telegraph--unknown.json",
+    "ballad-lines-off-west-end-2026/london-theatre--unknown.json",
+    "ballad-lines-off-west-end-2026/standard--unknown.json",
+    "a-ghost-in-your-ear-off-west-end-2026/timeout-london--unknown.json",
+    "a-ghost-in-your-ear-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+    "a-ghost-in-your-ear-off-west-end-2026/artsdesk--rachel-halliburton.json",
+    "a-ghost-in-your-ear-off-west-end-2026/everything-theatre--unknown.json",
+    "a-ghost-in-your-ear-off-west-end-2026/liamodell--unknown.json",
+    "a-ghost-in-your-ear-off-west-end-2026/londonpubtheatres--unknown.json",
+    "a-ghost-in-your-ear-off-west-end-2026/londontheatre1--unknown.json",
+    "a-ghost-in-your-ear-off-west-end-2026/standard--nick-curtis.json",
+    "a-ghost-in-your-ear-off-west-end-2026/theatre-weekly--greg-stewart.json",
+    "a-ghost-in-your-ear-off-west-end-2026/whatsonstage--miriam-sallon.json",
+    "indian-ink-off-west-end-2025/loureviews--louise-penn.json",
+    "indian-ink-off-west-end-2025/timeout-london--tim-bano.json",
+    "indian-ink-off-west-end-2025/all-that-dazzles-uk--unknown.json",
+    "indian-ink-off-west-end-2025/artsdesk--helen-hawkins.json",
+    "indian-ink-off-west-end-2025/british-theatre--unknown.json",
+    "indian-ink-off-west-end-2025/daily-mail--unknown.json",
+    "indian-ink-off-west-end-2025/islingtontribune--unknown.json",
+    "indian-ink-off-west-end-2025/london-theatre--unknown.json",
+    "indian-ink-off-west-end-2025/londontheatre1--unknown.json",
+    "indian-ink-off-west-end-2025/plays-international--maryam-philpott.json",
+    "indian-ink-off-west-end-2025/standard--nick-curtis.json",
+    "indian-ink-off-west-end-2025/standard--unknown.json",
+    "indian-ink-off-west-end-2025/times-uk--clive-davis.json",
+    "indian-ink-off-west-end-2025/whatsonstage--sarah-crompton.json",
+    "the-last-five-years-2025/la-weekly--alan-scherstuhl.json",
+    "life-of-pi-tour-2024/broadwayworld--taylor-clemons.json",
+    "life-of-pi-tour-2024/broadwayworld--timoth-david-copney.json",
+    "life-of-pi-tour-2024/cleveland-plain-dealer--joey-morona.json",
+    "life-of-pi-tour-2024/dallasvoice--david-taffet.json",
+    "life-of-pi-tour-2024/dc-theater-arts--bob-ashby.json",
+    "swept-away-2024/broadwaynews--brittani-samuel.json",
+    "shit-meet-fan-off-broadway-2024/nytimes--maya-phillips.json",
+    "shit-meet-fan-off-broadway-2024/into--httpswwwfacebookcomwexlerwrites.json",
+    "elf-2024/broadwaynews--brittani-samuel.json",
+    "tammy-faye-2024/broadwaynews--brittani-samuel.json",
+    "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
+    "tammy-faye-2024/culturesauce--thom-geier.json",
+    "la-boheme-off-broadway-2024/observer--unknown.json",
+    "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
+    "left-on-tenth-2024/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "tru-off-west-end-2026/telegraph--claire-allfree.json",
     "darkling-off-west-end-2026/thestage--holly-omahony.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--holly-o.json",
-    "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
     "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
     "pre-existing-condition-off-broadway-2026/new-york-sun--elysa-gardner.json",
@@ -479,7 +554,6 @@
     "book-of-mormon-2011/ap--mark-kennedy.json",
     "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
     "wicked-west-end-2021/frontmezzjunkies--unknown.json",
-    "wicked-2003/wsj--terry-teachout.json",
     "wicked-2003/standard--unknown.json",
     "wicked-2003/times-uk--unknown.json",
     "the-lion-king-1997/calgary-herald--louis-b-hobson.json",
@@ -515,8 +589,6 @@
     "cats-west-end-2026/thestage--jonathan-mandell.json",
     "cats-west-end-2026/times-uk--carol-midgley.json",
     "im-every-woman-off-west-end-2026/theupcoming--unknown.json",
-    "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
-    "now-you-see-me-live-west-end-2026/londontheatredirect--marco-da-silva.json",
     "dinosaur-world-live-off-west-end-2026/jonathan-baz--florit-shoihetphoto.json",
     "twelfth-night-off-west-end-2026/london-box-office--stuart-king.json",
     "twelfth-night-off-west-end-2026/nysr--unknown.json",
@@ -572,7 +644,6 @@
     "please-please-me-west-end-2026/standard--unknown.json",
     "beaches-2026/chicago-critic--tom-williams.json",
     "proof-2026/times-uk--unknown.json",
-    "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json",
     "titanique-2026/frontmezzjunkies--unknown.json",
     "titanique-2026/wsj--charles-isherwood.json",
     "death-of-a-salesman-2026/broadway-and-me--janice-c-simpson.json",
@@ -646,14 +717,44 @@
     "pirates-the-penzance-musical-2025/broadwaynews--brittani-samuel.json",
     "smash-2025/broadway-and-me--janice-c-simpson.json",
     "the-last-five-years-2025/hypable--unknown.json",
-    "the-last-five-years-2025/la-weekly--alan-scherstuhl.json",
     "boop-2025/cbsnews--unknown.json",
     "the-picture-of-dorian-gray-2025/theater-life--paulanne-simmons.json",
     "purpose-2025/theatre-reviews-limited--david-roberts.json",
     "redwood-2025/juiceph--wanggo-gallaga.json",
     "pen-pals-off-broadway-2025/theater-life--paulanne-simmons.json",
     "eureka-day-2024/times-uk--clive-davis.json",
-    "life-of-pi-tour-2024/pioneer-press--rob-hubbard.json"
+    "life-of-pi-tour-2024/pioneer-press--rob-hubbard.json",
+    "the-book-of-mormon-west-end-2024/whatsonstage--sarah-crompton.json",
+    "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
+    "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
+    "spamalot-2005/whatsonstage--editorial-staff.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
+    "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026/off-off-online--deirdre-donovan.json",
+    "six-2021/whatsonstage--alex-wood.json",
+    "the-phantom-of-the-opera-west-end-1986/whatsonstage--sarah-crompton.json",
+    "twelfth-night-off-west-end-2026/toronto-star--joshua-chong.json",
+    "the-enormous-crocodile-west-end-2026/third-coast-review--unknown.json",
+    "the-gruffalo-west-end-2026/waterstones--unknown.json",
+    "jesus-christ-superstar-west-end-2026/newsday--unknown.json",
+    "romeo-and-juliet-off-broadway-2026/express-uk--neil-norman.json",
+    "consumed-west-end-2026/whatsonstage--sarah-crompton.json",
+    "kinky-boots-the-musical-west-end-2026/chicago-sun-times--the-hand-club-for.json",
+    "marie-and-rosetta-west-end-2026/newsday--unknown.json",
+    "american-psycho-off-west-end-2026/london-theatre--unknown.json",
+    "ballad-lines-off-west-end-2026/thestage--unknown.json",
+    "a-ghost-in-your-ear-off-west-end-2026/guardian--arifa-akbar.json",
+    "a-ghost-in-your-ear-off-west-end-2026/partially-obstructed-view--unknown.json",
+    "a-ghost-in-your-ear-off-west-end-2026/thestage--holly-omahony.json",
+    "a-ghost-in-your-ear-off-west-end-2026/times-uk--dominic-maxwell.json",
+    "indian-ink-off-west-end-2025/guardian--mark-lawson.json",
+    "indian-ink-off-west-end-2025/telegraph--claire-allfree.json",
+    "indian-ink-off-west-end-2025/telegraph--unknown.json",
+    "indian-ink-off-west-end-2025/thestage--tom-wicker.json",
+    "indian-ink-off-west-end-2025/thestage--unknown.json",
+    "indian-ink-off-west-end-2025/times-uk--unknown.json",
+    "eurydice-off-broadway-2026/timeout--raven-snook.json",
+    "death-becomes-her-2024/chicago-reader--kerry-reid.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -812,7 +913,52 @@
       "purpose-2025/theatre-reviews-limited--david-roberts.json",
       "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
       "grangeville-off-broadway-2026/timeout--adam-feldman.json",
-      "mystic-pizza-regional-2025/wmscradio--cupor1.json"
+      "mystic-pizza-regional-2025/wmscradio--cupor1.json",
+      "school-girls-or-the-african-mean-girls-play-2026/playbill--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/nydailynews--chris-jones.json",
+      "the-karate-kid-the-musical-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "september-l-davis-the-apology-tour-off-broadway-2026/playbill--unknown.json",
+      "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "christmas-carol-goes-wrong-west-end-2026/london-theatre-reviews--the-anonymous-reviewer.json",
+      "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
+      "now-you-see-me-live-west-end-2026/londontheatredirect--marco-da-silva.json",
+      "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json",
+      "romeo-and-juliet-west-end-2026/londontheatrehub--william-shakespeare.json",
+      "american-psycho-off-west-end-2026/artsdesk--unknown.json",
+      "american-psycho-off-west-end-2026/independent--unknown.json",
+      "american-psycho-off-west-end-2026/mirror--unknown.json",
+      "american-psycho-off-west-end-2026/standard--unknown.json",
+      "ballad-lines-off-west-end-2026/london-theatre--unknown.json",
+      "ballad-lines-off-west-end-2026/standard--unknown.json",
+      "a-ghost-in-your-ear-off-west-end-2026/timeout-london--unknown.json",
+      "a-ghost-in-your-ear-off-west-end-2026/all-that-dazzles-uk--daz-gale.json",
+      "a-ghost-in-your-ear-off-west-end-2026/artsdesk--rachel-halliburton.json",
+      "a-ghost-in-your-ear-off-west-end-2026/everything-theatre--unknown.json",
+      "a-ghost-in-your-ear-off-west-end-2026/liamodell--unknown.json",
+      "a-ghost-in-your-ear-off-west-end-2026/londonpubtheatres--unknown.json",
+      "a-ghost-in-your-ear-off-west-end-2026/londontheatre1--unknown.json",
+      "a-ghost-in-your-ear-off-west-end-2026/standard--nick-curtis.json",
+      "a-ghost-in-your-ear-off-west-end-2026/theatre-weekly--greg-stewart.json",
+      "indian-ink-off-west-end-2025/loureviews--louise-penn.json",
+      "indian-ink-off-west-end-2025/timeout-london--tim-bano.json",
+      "indian-ink-off-west-end-2025/all-that-dazzles-uk--unknown.json",
+      "indian-ink-off-west-end-2025/artsdesk--helen-hawkins.json",
+      "indian-ink-off-west-end-2025/british-theatre--unknown.json",
+      "indian-ink-off-west-end-2025/islingtontribune--unknown.json",
+      "indian-ink-off-west-end-2025/london-theatre--unknown.json",
+      "indian-ink-off-west-end-2025/londontheatre1--unknown.json",
+      "indian-ink-off-west-end-2025/plays-international--maryam-philpott.json",
+      "indian-ink-off-west-end-2025/standard--nick-curtis.json",
+      "indian-ink-off-west-end-2025/standard--unknown.json",
+      "eurydice-off-broadway-2026/timeout--raven-snook.json",
+      "life-of-pi-tour-2024/dallasvoice--david-taffet.json",
+      "life-of-pi-tour-2024/dc-theater-arts--bob-ashby.json",
+      "swept-away-2024/broadwaynews--brittani-samuel.json",
+      "shit-meet-fan-off-broadway-2024/into--httpswwwfacebookcomwexlerwrites.json",
+      "tammy-faye-2024/broadwaynews--brittani-samuel.json",
+      "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
+      "tammy-faye-2024/culturesauce--thom-geier.json",
+      "romeo-juliet-2024/broadwaynews--brittani-samuel.json"
     ],
     "amp": [],
     "browserbase": [
@@ -924,7 +1070,10 @@
       "life-of-pi-tour-2024/broadwayworld--tyler-hinton.json",
       "life-of-pi-tour-2024/broadwayworld--christopher-verleger.json",
       "life-of-pi-tour-2024/broadwayworld--dara-homer.json",
-      "life-of-pi-tour-2024/broadwayworld--jon-bee.json"
+      "life-of-pi-tour-2024/broadwayworld--jon-bee.json",
+      "school-girls-or-the-african-mean-girls-play-2026/theatrely--joey-sims.json",
+      "christmas-carol-goes-wrong-west-end-2026/telegraph--shehrazade-zafar-arif.json",
+      "myras-story-west-end-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
@@ -944,7 +1093,16 @@
       "beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json",
       "dolly-a-true-original-musical-regional-2025/nytimes--emily-cochrane.json",
       "john-proctor-is-the-villain-2025/wsj--charles-isherwood.json",
-      "the-picture-of-dorian-gray-2025/theater-life--paulanne-simmons.json"
+      "the-picture-of-dorian-gray-2025/theater-life--paulanne-simmons.json",
+      "spellbound-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "american-psycho-off-west-end-2026/daily-mail--unknown.json",
+      "a-ghost-in-your-ear-off-west-end-2026/whatsonstage--miriam-sallon.json",
+      "indian-ink-off-west-end-2025/daily-mail--unknown.json",
+      "call-me-izzy-2025/theater-life--david-sheward.json",
+      "pen-pals-off-broadway-2025/theater-life--paulanne-simmons.json",
+      "life-of-pi-tour-2024/broadwayworld--timoth-david-copney.json",
+      "life-of-pi-tour-2024/cleveland-plain-dealer--joey-morona.json",
+      "la-boheme-off-broadway-2024/observer--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1022,90 +1180,133 @@
       "dead-outlaw-2025/broadwayworld--nicole-rosky.json",
       "grangeville-off-broadway-2026/new-york-sun--unknown.json",
       "gypsy-2024/ew--kathryn-vandervalk.json",
-      "life-of-pi-tour-2024/broadwayworld--andrew-child.json"
+      "life-of-pi-tour-2024/broadwayworld--andrew-child.json",
+      "american-psycho-off-west-end-2026/telegraph--unknown.json",
+      "indian-ink-off-west-end-2025/times-uk--clive-davis.json",
+      "indian-ink-off-west-end-2025/whatsonstage--sarah-crompton.json",
+      "the-last-five-years-2025/la-weekly--alan-scherstuhl.json",
+      "life-of-pi-tour-2024/broadwayworld--taylor-clemons.json",
+      "shit-meet-fan-off-broadway-2024/nytimes--maya-phillips.json",
+      "elf-2024/broadwaynews--brittani-samuel.json",
+      "left-on-tenth-2024/broadwaynews--brittani-samuel.json"
     ]
   },
   "failuresByOutlet": {
-    "The Guardian": {
-      "count": 4,
-      "domain": "theguardian.com",
+    "Jonathan Baz": {
+      "count": 1,
+      "domain": "jonathanbaz.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
     "The Stage": {
-      "count": 4,
+      "count": 10,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
+    "Londontheatredirect": {
+      "count": 1,
+      "domain": "londontheatredirect.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "The Times (UK)": {
-      "count": 3,
-      "domain": "thetimes.co.uk",
+      "count": 5,
+      "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "WhatsOnStage": {
+    "The Reviews Hub": {
       "count": 1,
-      "domain": "whatsonstage.com",
+      "domain": "thereviewshub.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Broadway & Me": {
-      "count": 3,
-      "domain": "broadwayandme.blogspot.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Nottingham Confidential": {
-      "count": 3,
-      "domain": "facebook.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Click Liverpool": {
+    "BroadwayWorld": {
       "count": 2,
-      "domain": "facebook.com",
+      "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "Evening Chronicle": {
+    "Times": {
       "count": 1,
-      "domain": "facebook.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Telegraph": {
-      "count": 1,
-      "domain": "telegraph.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Herald (Glasgow)": {
-      "count": 1,
-      "domain": "facebook.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The i": {
-      "count": 1,
-      "domain": "inews.co.uk",
+      "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
     "Broadway News": {
       "count": 1,
-      "domain": "broadwaynews.com",
+      "domain": "broadway.news",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NorthJersey.com": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Woman Around Town": {
+      "count": 1,
+      "domain": "womanaroundtown.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Click Liverpool": {
+      "count": 1,
+      "domain": "facebook.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Daily Echo": {
+      "count": 1,
+      "domain": "facebook.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Guardian": {
+      "count": 3,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "London Theatre": {
+      "count": 1,
+      "domain": "londontheatre.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Partially Obstructed View": {
+      "count": 1,
+      "domain": "partially-obstructed-view.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Telegraph": {
+      "count": 2,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Nottingham Confidential": {
+      "count": 1,
+      "domain": "facebook.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1116,77 +1317,13 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
-    },
-    "L.A. Weekly": {
-      "count": 1,
-      "domain": "laweekly.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CBS News": {
-      "count": 1,
-      "domain": "cbsnews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": [
     {
-      "reviewId": "the-price-off-west-end-2026/whatsonstage--tanyel-gumushan.json",
-      "oldUrl": "https://www.whatsonstage.com/news/arthur-millers-the-price-revival-announces-extension_1721180/",
-      "newUrl": "https://www.whatsonstage.com/news/the-price-at-marylebone-theatre-review_1719472/"
-    },
-    {
-      "reviewId": "one-flew-over-the-cuckoos-nest-west-end-2026/standard--nick-curtis.json",
-      "oldUrl": "https://www.standard.co.uk/culture/theatre/one-flew-over-the-cuckoo-s-nest-review-aaron-pierre-b1278926.html",
-      "newUrl": "https://www.standard.co.uk/culture/theatre/one-flew-over-the-cuckoos-nest-old-vic-review-aaron-pierre-b1278926.html"
-    },
-    {
-      "reviewId": "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json",
-      "oldUrl": "https://www.whatsonstage.com/news/one-flew-over-the-cuckoos-nest-at-the-old-vic-review_1718322/",
-      "newUrl": "https://www.whatsonstage.com/news/aaron-pierre-olivia-williams-and-jason-pennycooke-reflect-on-race-power-and-control-in-one-flew-over-the-cuckoos-nest-at-the-old-vic_1718567/"
-    },
-    {
-      "reviewId": "cats-the-jellicle-ball-2026/nysr--unknown.json",
-      "oldUrl": "https://nystagereview.com/2024/06/20/cats-the-jellicle-ball-alw-in-the-house/",
-      "newUrl": "https://nystagereview.com/2026/04/07/cats-the-jellicle-ball-a-disco-tastic-revival-of-lloyd-webbers-musical/"
-    },
-    {
-      "reviewId": "inter-alia-west-end-2026/standard--unknown.json",
-      "oldUrl": "https://www.standard.co.uk/culture/theatre/rosamund-pike-inter-alia-review-national-theatre-lyttelton-b1239772.html",
-      "newUrl": "https://www.standard.co.uk/culture/theatre/inter-alia-review-rosamund-pike-b1277876.html"
-    },
-    {
-      "reviewId": "les-liaisons-dangereuses-west-end-2026/times-uk--clive-davis.json",
-      "oldUrl": "https://www.thetimes.com/article/24f78977-1a2a-491a-bd9e-ced1dc5821b9",
-      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/les-liaisons-dangereuses-review-aidan-turners-dandy-lacks-teeth-m9zc5qsm6"
-    },
-    {
-      "reviewId": "romeo-and-juliet-west-end-2026/loureviews--louise-penn.json",
-      "oldUrl": "https://loureviews.blog/2026/07/03/show-preview-blossom-timothy-and-ava-honey-on-romeo-and-juliet-at-greenwich-theatre/",
-      "newUrl": "https://loureviews.blog/2026/06/30/edinburgh-fringe-preview-brooke-laing-on-romeo-and-juliet-for-bairns/"
-    },
-    {
-      "reviewId": "romeo-and-juliet-west-end-2026/wsj--terry-teachout.json",
-      "oldUrl": "https://www.wsj.com/articles/romeo-and-juliet-review-no-love-lost-for-shakespeare-in-the-park-c066ffdf",
-      "newUrl": "https://www.wsj.com/arts-culture/theater/romeo-juliet-suite-review-tragedy-reinterpreted-d6bcc704"
-    },
-    {
-      "reviewId": "romeo-and-juliet-west-end-2026/exeunt-magazine--unknown.json",
-      "oldUrl": "https://exeuntnyc.com/reviews/review-romeo-juliet-at-the-delacorte-theater/attachment/09_romeojuliet_0286r/",
-      "newUrl": "https://exeuntnyc.com/reviews/review-romeo-juliet-at-the-delacorte-theater/"
-    },
-    {
-      "reviewId": "the-tempest-globe-west-end-2026/thestage--dave-fargnoli.json",
-      "oldUrl": "https://www.thestage.co.uk/reviews/the-tempest-review-theatrer-royal-drury-lane-london-sigourney-weaver-jamie-lloyd",
-      "newUrl": "https://www.thestage.co.uk/reviews/the-tempest-review-sam-wanamaker-playhouse-shakespeares-globe-london-tim-crouch"
-    },
-    {
-      "reviewId": "blackout-songs-off-broadway-2026/culturesauce--thom-geier.json",
-      "oldUrl": "https://culturesauce.com/2026/01/27/blackout-songs-is-both-drunk-and-disorderly-off-broadway-review/",
-      "newUrl": "https://culturesauce.com/blackout-songs-off-broadway-review/"
+      "reviewId": "the-karate-kid-the-musical-west-end-2026/whatsonstage--tanyel-gumushan.json",
+      "oldUrl": "https://www.whatsonstage.com/news/the-karate-kid-musical-uk-premiere-photos-released_1720058/",
+      "newUrl": "https://www.whatsonstage.com/news/karate-kid-musical-tour-first-listen_1717167/"
     }
   ]
 }
