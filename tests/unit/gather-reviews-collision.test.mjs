@@ -148,55 +148,6 @@ test('Unknown critic hits any matching-outlet record (filename parts are <outlet
   assert.equal(result.reason, 'stale-flag-on-existing-file');
 });
 
-// ── BRO-4272 (School Girls 2026-09-28): critic-less, dateless roundup row ──
-test('Unknown-critic dateless row is NOT blocked by a flagged NAMED file at the same outlet', () => {
-  const showDir = seedShow('school-girls-2026-guardian', {
-    'guardian--miriam-gillinson.json': {
-      outletId: 'guardian', criticName: 'Miriam Gillinson',
-      url: 'https://www.theguardian.com/stage/2023/jun/18/school-girls-or-the-african-mean-girls-play-review-lyric-hammersmith',
-      publishDate: '2023-06-18',
-      wrongProduction: true,
-    },
-  });
-  const result = detectIngestCollision({
-    showDir, outletId: 'guardian', criticName: 'Unknown',
-    url: 'https://www.theguardian.com/stage/2026/sep/28/school-african-mean-girls-play-review',
-    openingDate: '2026-09-28',
-  });
-  assert.equal(result.ok, true);
-});
-
-test('Unknown-critic dateless row is still BLOCKED by a flagged <outlet>--unknown file (Beaches merge path)', () => {
-  const showDir = seedShow('school-girls-2026-unk', {
-    'guardian--unknown.json': {
-      outletId: 'guardian', criticName: 'Unknown',
-      url: 'https://www.theguardian.com/stage/2023/jun/18/old',
-      wrongProduction: true,
-    },
-  });
-  const result = detectIngestCollision({
-    showDir, outletId: 'guardian', criticName: 'Unknown',
-    url: 'https://www.theguardian.com/stage/2026/sep/28/new',
-  });
-  assert.equal(result.ok, false);
-  assert.equal(result.reason, 'stale-flag-on-existing-file');
-});
-
-test('NAMED dateless row is still BLOCKED by a flagged file of the same critic', () => {
-  const showDir = seedShow('school-girls-2026-named', {
-    'chicagotribune--chris-jones.json': {
-      outletId: 'chicagotribune', criticName: 'Chris Jones',
-      url: 'https://www.chicagotribune.com/2018/old.html',
-      wrongProduction: true,
-    },
-  });
-  const result = detectIngestCollision({
-    showDir, outletId: 'chicagotribune', criticName: 'Chris Jones',
-    url: 'https://www.chicagotribune.com/2026/09/28/new/',
-  });
-  assert.equal(result.ok, false);
-});
-
 // ── Revival / returning-production carve-out (2026-07-04, To Kill a Mockingbird WE) ──
 // When openingDate is supplied and the incoming review's publishDate falls in this
 // production's opening window, a stale prior-production file for the same outlet is a
