@@ -4901,10 +4901,21 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             { scrapingBeeKey, nbResults: 3 }
           ).catch(() => null);
 
+          // Every title token must appear in the URL slug. This replaced a
+          // `url.includes(title.substring(0, 6))` test, which never matched a
+          // title with a space in its first 6 chars ("man to", "the li") and
+          // let a one-word title ("hamlet") take any production's round-up:
+          // the same substring class that put Fences on Man to Man via WET.
+          const { titleTokens: _tsTitleTokens, urlSlugTokens: _tsSlugTokens } = require('./lib/show-match-verifier');
+          // Main title only (The Stage drops subtitles like ": A New Musical"),
+          // and a possessive slug token ("cuckoos") still counts.
+          const _tsTokens = _tsTitleTokens(String(show.title).split(/\s*[:–—]\s+/)[0]);
           let tsUrl = null;
-          if (serpResults) {
+          if (serpResults && _tsTokens.length) {
             for (const r of serpResults) {
-              if (r.url && r.url.includes('review-round-up') && r.url.toLowerCase().includes(show.title.toLowerCase().substring(0, 6))) {
+              const slug = r.url ? _tsSlugTokens(r.url) : [];
+              if (r.url && r.url.includes('review-round-up')
+                  && _tsTokens.every((t) => slug.includes(t) || slug.includes(`${t}s`))) {
                 tsUrl = r.url;
                 break;
               }
@@ -4944,7 +4955,13 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               await tsPage.waitForTimeout(2000);
               const tsHtml = await tsPage.content();
 
-              if (tsHtml && tsHtml.length > 5000) {
+              // Same cross-show / cross-production guard theatre.reviews uses
+              // (tr-roundup-discover.js): slug, page title and year.
+              const { verifyAggregatorUrl: _tsVerify } = require('./lib/show-match-verifier');
+              const tsCheck = tsHtml ? _tsVerify({ url: tsUrl, html: tsHtml, show, openingDate: show.openingDate }) : null;
+              if (tsCheck && !tsCheck.isValid) {
+                console.log(`    ✗ TS ${tsUrl} rejected: ${tsCheck.rejectReason} (cross-show guard)`);
+              } else if (tsHtml && tsHtml.length > 5000) {
                 const { extractReviews: extractTS } = require('./scrape-thestage-roundups');
                 const tsReviews = extractTS(tsHtml, showId);
                 const tsLiveDate = extractRoundupDateFromHtml(tsHtml);

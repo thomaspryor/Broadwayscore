@@ -732,8 +732,13 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // Man page. Like the cross-outlet guard below, nothing from such a record
   // (url, text, score, critic, date) belongs here, so the whole merge no-ops.
   // Fails open without a show title (slugLooksLikeDifferentShow's contract).
+  // Only fires when the EXISTING url names this show: headline-style slugs
+  // ("katie-holmes-...-review", "aisle-review-...") name no title at all, and
+  // refusing their swaps was ~20 false positives across the corpus (ship-check
+  // on #940). The real incident swapped AWAY from a man-to-man-review slug.
   const _mergeShowTitle = (context.show && context.show.title) || context.showTitle || null;
   if (urlChanged && !urlSwapRegressed && _mergeShowTitle
+      && urlSlugNamesShow(existing.url, _mergeShowTitle)
       && reviewSlugNamesDifferentShow(incoming.url, _mergeShowTitle)) {
     console.warn(`[mergeReviews] refused cross-show swap for ${existing.outletId || context.file || '?'}: ${incoming.url} does not match "${_mergeShowTitle || existing.url}"`);
     logExclusion({
@@ -2185,6 +2190,25 @@ function slugLooksLikeDifferentShow(newUrl, { showTitle, refUrl } = {}) {
  * reviewed. True only when that segment has distinctive tokens and none of
  * them (nor a squashed-title match, e.g. "electrapersona") names this show.
  */
+/**
+ * Does the URL's last path segment contain one of the show title's tokens
+ * (whole, or inside a squashed compound)? Positive identity, the counterpart
+ * of reviewSlugNamesDifferentShow below.
+ */
+function urlSlugNamesShow(url, showTitle) {
+  if (!url || !showTitle) return false;
+  let seg = '';
+  try {
+    seg = new URL(url).pathname.toLowerCase().split('/').filter(Boolean).pop() || '';
+  } catch { return false; }
+  const { titleTokens } = require('./show-match-verifier');
+  const tTokens = titleTokens(showTitle);
+  if (!tTokens.length || !seg) return false;
+  const segTokens = seg.replace(/\.[a-z]+$/, '').split('-');
+  const squashedSeg = segTokens.join('');
+  return tTokens.some((t) => segTokens.includes(t) || squashedSeg.includes(t));
+}
+
 function reviewSlugNamesDifferentShow(url, showTitle) {
   if (!url || !showTitle) return false;
   let seg = '';
@@ -2451,6 +2475,7 @@ module.exports = {
   maybeUpgradeUrl,
   slugLooksLikeDifferentShow,
   reviewSlugNamesDifferentShow,
+  urlSlugNamesShow,
   validateCriticOutlet,
   loadCriticRegistry,
   resolveOutletFromCritic,

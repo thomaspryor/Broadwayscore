@@ -11,7 +11,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { extractTheStageArticleMeta, applyWalledPageMeta } = require('./walled-page-meta.js');
+const { extractTheStageArticleMeta, applyWalledPageMeta, headlineMatchesShow } = require('./walled-page-meta.js');
 
 const WALLED = `
 <div><a href="/reviews/reviews" class="aos-SectionTitle">Reviews</a><span class="aos-ArticleDate aos-MR10px aos-MBS3 aos-NM aos-FL">Sep 16, 2026</span></div>
@@ -126,4 +126,19 @@ test('only applies to The Stage URLs', () => {
   const other = { url: 'https://www.whatsonstage.com/news/darkling-review_1/', criticName: 'Unknown' };
   assert.deepEqual(applyWalledPageMeta(other, WALLED), []);
   assert.equal(other.criticName, 'Unknown');
+});
+
+test('headlineMatchesShow compares the whole name before "review" (ship-check on #940)', () => {
+  const cases = [
+    ['Romeo and Juliet review', '& Juliet', false],
+    ['Christmas Carol Goes Wrong review', 'The Play That Goes Wrong', false],
+    ['The Importance of Being Earnest review', 'The Importance of Being Oscar', false],
+    ['& Juliet review', '& Juliet', true],
+    ['Come Alive! The Greatest Showman review', 'Come Alive! The Greatest Showman Circus Spectacular', true],
+    ['Jane Eyre: A Musical review', 'Jane Eyre', true],
+    ['Matthew Bourne’s New Adventures – The Car Man review', 'The Car Man', true],
+    ['Orlando review', 'Orlando: A Pornobiography', true],
+    ['The Mousetrap', 'The Mousetrap', true],
+  ];
+  for (const [h, t, want] of cases) assert.equal(headlineMatchesShow(h, t), want, `${t} <- ${h}`);
 });
