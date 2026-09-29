@@ -3851,7 +3851,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T08:00:22.488Z",
+      "lastSeen": "2026-09-29T09:56:01.488Z",
       "lastNotifiedAt": "2026-09-29T07:36:11.543Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
@@ -3864,7 +3864,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36353075509"
       },
       "absentRunIds": [],
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -4740,13 +4740,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run wrongShow auto-clear ensemble corpus scan (needs review-texts), Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-29T09:43:00.475Z",
+      "lastSeen": "2026-09-29T09:46:50.815Z",
       "lastNotifiedAt": "2026-09-28T11:41:47.830Z",
       "lastSurfacedAt": "2026-09-28T11:41:47.830Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 35
+      "silentRefires": 36
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5826,7 +5826,7 @@
       "resolvedAt": "2026-09-28T21:34:36.649Z"
     },
     "test-yml:red:Unit Tests:93a67e1f": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every off-Broadway venue-complex subVenueSlugs entry resolves to a real shows.json venue\"",
       "firstSeen": "2026-09-28T20:47:43.893Z",
@@ -5839,8 +5839,11 @@
       "silentRefires": 17,
       "absentRunIds": [
         "36536362078",
-        "36538656177"
-      ]
+        "36538656177",
+        "36550867638"
+      ],
+      "resolvedAt": "2026-09-29T09:56:01.480Z",
+      "resolveReason": "stale-signature"
     },
     "we-aggregator-go-live:ballet-shoes-west-end-2025": {
       "status": "open",
@@ -6126,13 +6129,13 @@
       "disposition": "digest",
       "title": "Landing blocked: scripts-lib-tests red on land/bro-4272-roundup-ingest",
       "firstSeen": "2026-09-29T06:38:34.077Z",
-      "lastSeen": "2026-09-29T08:46:24.699Z",
+      "lastSeen": "2026-09-29T09:53:29.436Z",
       "lastNotifiedAt": "2026-09-29T06:38:34.077Z",
       "lastSurfacedAt": "2026-09-29T06:38:34.077Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/audit-owe-staging-merge-4": {
       "status": "resolved",
