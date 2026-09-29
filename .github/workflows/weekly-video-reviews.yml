@@ -126,6 +126,11 @@ jobs:
       # Writes to data/video-reviews-transcripts/raw/. Skips existing files.
       - name: Collect transcripts
         id: collect
+        # BRO-4343: YouTube bot-walls yt-dlp on runner IPs; collect-transcripts.js
+        # falls back to fetchPage() (Bright Data first) for YouTube captions.
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
         run: |
           set -euo pipefail
           ARGS=()
