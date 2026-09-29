@@ -158,9 +158,14 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
   // oh-mary-2024 + oh-mary-west-end-2025 (both open when ship-check caught the bug).
   // 4 chars is safe for known cases: "Beaches" (7), "Grey" (4 — would work if subtitled).
   const titleVariants = [showTitle];
-  const shortTitle = shortTitleCandidate(showTitle);
-  if (shortTitle && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
-    titleVariants.push(shortTitle);
+  // Same two short forms buildTbCandidateUrls() tries: the main title before a ';' or ':'
+  // and the comma cut. A candidate URL the builder reaches must not then be rejected
+  // here because TB's page title carries only that main title.
+  const punctCut = (typeof showTitle === 'string' ? showTitle : '').split(/[;:]/)[0].trim();
+  for (const shortTitle of [punctCut !== showTitle ? punctCut : '', shortTitleCandidate(showTitle)]) {
+    if (shortTitle && !titleVariants.includes(shortTitle) && normalizeText(shortTitle).length >= MIN_SHORT_VARIANT_CHARS) {
+      titleVariants.push(shortTitle);
+    }
   }
   const titleMatched = titleVariants.some(variant => {
     const normVariant = normalizeText(variant);
