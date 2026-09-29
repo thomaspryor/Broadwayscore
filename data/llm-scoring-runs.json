@@ -1,21 +1,5 @@
 [
   {
-    "startedAt": "2026-09-27T21:33:31.518Z",
-    "completedAt": "2026-09-27T21:39:54.969Z",
-    "totalReviews": 178,
-    "processed": 178,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 461414,
-      "output": 42193,
-      "total": 503607
-    },
-    "costUsd": 1.3015921,
-    "runId": "36350421594",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-27T22:41:42.061Z",
     "completedAt": "2026-09-27T22:41:42.064Z",
     "totalReviews": 0,
@@ -260571,6 +260555,49 @@
     },
     "costUsd": 0,
     "runId": "36596568470",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-29T16:44:26.464Z",
+    "completedAt": "2026-09-29T16:46:10.023Z",
+    "totalReviews": 45661,
+    "processed": 14,
+    "skipped": 45637,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 114440,
+      "output": 5651,
+      "total": 298947
+    },
+    "costUsd": 0.49349719999999997,
+    "runId": "36596586843",
+    "errorDetails": [
+      {
+        "showId": "lost-in-del-valle-return-off-broadway-2026",
+        "outletId": "sohoplayhouse",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "gimme-a-sign-off-broadway-2026",
+        "outletId": "thecomedybureau",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-29T16:46:11.964Z",
+    "completedAt": "2026-09-29T16:53:05.386Z",
+    "totalReviews": 174,
+    "processed": 174,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 454254,
+      "output": 41669,
+      "total": 495923
+    },
+    "costUsd": 1.2724712,
+    "runId": "36596586843",
     "errorDetails": []
   }
 ]
