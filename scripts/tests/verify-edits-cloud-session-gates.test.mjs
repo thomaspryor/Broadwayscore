@@ -1551,3 +1551,27 @@ test('NO-VERIFY from an earlier turn does not waive a later unverified edit (own
   assertBlocked(r, 'a stale NO-VERIFY must not cover new work');
   assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
 });
+
+test('NOCARD: edits that a hook blocked are not work (BRO-4238 smoke test false positive)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('nocard-blocked');
+  const blocked = { ...toolUse('Edit', { file_path: '/home/user/Broadwayscore/scripts/lib/review-gate.mjs', old_string: 'a', new_string: 'b' },
+    'PreToolUse:Edit hook error: 🛑 INFRA PLAN REVIEW GATE: shared-infrastructure edit needs a review first'), _isError: true };
+  const r = runHook(writeTranscript(dir, [blocked], { card: false }), 'The edit was refused, nothing changed.\n\nSAFE TO EXIT — nothing changed.');
+  fs.rmSync(dir, { recursive: true, force: true });
+  assertAllowed(r, 'a refused edit is not work');
+  // The same edit going through still needs a card.
+  const dir2 = makeTmpDir('nocard-real');
+  const r2 = runHook(writeTranscript(dir2, [QUALIFYING_EDIT, toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' })], { card: false }), 'Done.\n\nSAFE TO EXIT — done.');
+  fs.rmSync(dir2, { recursive: true, force: true });
+  assertBlocked(r2, 'a real edit without a card');
+});
+
+test('NOCARD: a push that ran but whose pipeline exited non-zero is still work', skipNoRepoHook, () => {
+  // `git push ... 2>&1 | grep -v "^remote:"`: the push succeeds, grep filters
+  // every line and exits 1, so the result is is_error "Exit code 1".
+  const dir = makeTmpDir('nocard-exitcode');
+  const push = { ...toolUse('Bash', { command: 'git push -q origin HEAD:refs/heads/wip/x 2>&1 | grep -v "^remote:"' }, 'Exit code 1'), _isError: true };
+  const r = runHook(writeTranscript(dir, [push], { card: false }), 'Pushed.\n\nSAFE TO EXIT — pushed.');
+  fs.rmSync(dir, { recursive: true, force: true });
+  assertBlocked(r, 'a push that ran is work and still needs a card');
+});
