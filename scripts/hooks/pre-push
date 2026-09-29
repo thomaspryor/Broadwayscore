@@ -191,7 +191,7 @@ for spec in ${PUSH_SPECS[@]+"${PUSH_SPECS[@]}"}; do
 $range_files"
 
   # CLAUDE.md guards: run whenever CLAUDE.md is part of this push.
-  if echo "$range_files" | grep -q "^CLAUDE.md$"; then
+  if grep -q "^CLAUDE.md$" <<<"$range_files"; then
     # 1. Critical-section revert guard (only meaningful when there's a
     #    remote_oid to compare against).
     if [ "$remote_oid" != "0000000000000000000000000000000000000000" ]; then
@@ -199,8 +199,8 @@ $range_files"
       local_content=$(git show "$local_oid:CLAUDE.md" 2>/dev/null)
       if [ -n "$remote_content" ]; then
         for pattern in "${CRITICAL_PATTERNS[@]}"; do
-          if echo "$remote_content" | grep -q "$pattern" && \
-             ! echo "$local_content" | grep -q "$pattern"; then
+          if grep -q "$pattern" <<<"$remote_content" && \
+             ! grep -q "$pattern" <<<"$local_content"; then
             echo ""
             echo "=== PRE-PUSH BLOCKED: CLAUDE.md section reverted ==="
             echo ""
@@ -300,10 +300,10 @@ fi
 # .github/workflows/ (or the guard script / its inputs); demo-flags fires on
 # src/ TypeScript changes. All pure grep / file reads, a few seconds total.
 WF_CHECKS=""
-if echo "$ALL_CHANGED_FILES" | grep -qE "^\.github/workflows/.*\.ya?ml$|^scripts/lint-workflow-guards\.sh$|^\.gitattributes$|^scripts/setup-local-data\.sh$"; then
+if grep -qE "^\.github/workflows/.*\.ya?ml$|^scripts/lint-workflow-guards\.sh$|^\.gitattributes$|^scripts/setup-local-data\.sh$" <<<"$ALL_CHANGED_FILES"; then
   WF_CHECKS="workflows"
 fi
-if echo "$ALL_CHANGED_FILES" | grep -qE "^src/.*\.(ts|tsx)$"; then
+if grep -qE "^src/.*\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
   WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}demo-flags"
 fi
 # BRO-3684: alert-ledger-commit now shells out to scan-alert-ledger-gaps.js,
@@ -311,20 +311,20 @@ fi
 # any trigger above (the broad `^scripts/.*\.js$` one below only adds
 # ledger-coverage), so a scanner/checker-only edit that broke the check would
 # not re-run it locally before push.
-if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/lib/(scan-alert-ledger-gaps|alert-ledger-commit-check)\.js$"; then
+if grep -qE "^scripts/lib/(scan-alert-ledger-gaps|alert-ledger-commit-check)\.js$" <<<"$ALL_CHANGED_FILES"; then
   WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}alert-ledger-commit"
 fi
 # reset-soft-partial-commit scans scripts/*.js content (not workflow YAML),
 # so it needs its own scripts/-scoped trigger — same class of gap
 # lint-write-routing.sh's checks fixed above (card #687).
-if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/lib/reset-soft-partial-commit-check\.js$"; then
+if grep -qE "^scripts/[^/]+\.js$|^scripts/lib/reset-soft-partial-commit-check\.js$" <<<"$ALL_CHANGED_FILES"; then
   WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}reset-soft-partial-commit"
 fi
 # ledger-coverage's AST walk covers all of scripts/**/*.js (any file can add
 # or remove a serpQuery()/discoverCorrectUrl() call reachable from an
 # existing workflow entry point), so it needs its own scripts/-scoped
 # trigger — same class of gap as reset-soft-partial-commit above.
-if echo "$ALL_CHANGED_FILES" | grep -qE "^scripts/.*\.js$"; then
+if grep -qE "^scripts/.*\.js$" <<<"$ALL_CHANGED_FILES"; then
   WF_CHECKS="${WF_CHECKS:+$WF_CHECKS,}ledger-coverage"
 fi
 if [ -n "$WF_CHECKS" ] && [ -f scripts/lint-workflow-guards.sh ]; then
@@ -344,7 +344,7 @@ fi
 
 # Node workflow audits (concurrency groups, notify-failure/playwright/push-retry
 # hygiene, cron-health coverage) — only when the push touches workflow files.
-if echo "$ALL_CHANGED_FILES" | grep -qE "^\.github/workflows/.*\.ya?ml$"; then
+if grep -qE "^\.github/workflows/.*\.ya?ml$" <<<"$ALL_CHANGED_FILES"; then
   run_audit "workflow-concurrency" "scripts/audit-workflow-concurrency.js"
   run_audit "workflow-hygiene" "scripts/audit-workflow-hygiene.js"
   run_audit "cron-health-coverage" "scripts/audit-cron-health-coverage.js"
@@ -371,7 +371,7 @@ fi
 # as the corpus gates, just for code) and are slow enough (~1-2 min) to drive a
 # `--no-verify` habit that defeats the hook. tsc is the sweet spot: ~30-60s,
 # exit-code-clean, and near-zero false-blocks because CI already keeps main green.
-if echo "$ALL_CHANGED_FILES" | grep -qE "\.(ts|tsx)$"; then
+if grep -qE "\.(ts|tsx)$" <<<"$ALL_CHANGED_FILES"; then
   if [ -f data/reviews.json ] && [ -f data/shows.json ]; then
     echo "pre-push: tsc --noEmit (push touches TypeScript)…"
     if ! npx tsc --noEmit >/tmp/pre-push-tsc.out 2>&1; then

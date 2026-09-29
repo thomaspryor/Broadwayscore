@@ -17,5 +17,11 @@
   "reasoning": "Reviewer praises Lithgow's performance but repeatedly criticizes the play for failing at both its goals, feeling dated, and lacking substance—explicitly says it 'could have been an email.'",
   "keyQuote": "It just feels like it's trying to have its cake and eat it too, and in the process it's not really achieving either goal.",
   "scoredAt": "2026-07-05T12:03:22.902Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "same",
+    "method": "manual",
+    "reason": "Giant is a play about Roald Dahl starring John Lithgow at the Music Box; the LLM mistook the story setting for the venue (BRO-4328 review).",
+    "checkedAt": "2026-09-29T14:57:25.721Z"
+  }
 }

@@ -40,7 +40,7 @@ for BATCH_IDX in $(seq 0 $((TOTAL_BATCHES - 1))); do
   ELAPSED=0
   while [ $ELAPSED -lt $TIMEOUT ]; do
     STATUS=$(gh run view "$RUN_ID" --json status,conclusion -q '.status + " " + (.conclusion // "")' -R "$REPO" 2>/dev/null || echo "unknown")
-    if echo "$STATUS" | grep -q "completed"; then
+    if grep -q "completed" <<<"$STATUS"; then
       echo "$(date): Batch $BATCH_IDX finished: $STATUS" >> "$LOG"
       break
     fi

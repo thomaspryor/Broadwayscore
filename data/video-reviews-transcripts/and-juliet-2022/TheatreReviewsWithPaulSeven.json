@@ -18,5 +18,22 @@
   "keyQuote": "much to my own amazement I came out of the theater singing I want it that way and I'd be delighted to see this show maybe one more time",
   "scoredAt": "2026-04-19T08:19:04.170Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/RoZjaOjkEDE/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/RoZjaOjkEDE/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "this is the shastri theater and I'm here to review and Juliette and Juliet at the shots were theatre London",
+    "reason": "The review explicitly states it is about the production at the Shaftesbury Theatre in London, not the Broadway production in New York.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The reviewer explicitly states the video is about the production at the Shaftesbury Theatre in London, which is a different city and country from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:54:41.262Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review explicitly states it is about the production at the Shaftesbury Theatre in London, not the Broadway production in New York."
 }

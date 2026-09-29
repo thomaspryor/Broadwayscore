@@ -229,12 +229,12 @@ lint_workflows() {
       FAILED="$FAILED\n  - $label"
     fi
   }
-  if echo "$MSG" | grep -Fq "[skip-actionlint]"; then
+  if grep -Fq "[skip-actionlint]" <<<"$MSG"; then
     echo "::warning::actionlint check skipped via [skip-actionlint] commit-message tag"
   else
     lwgate actionlint actionlint -color -shellcheck="" -ignore 'maximum number of inputs' .github/workflows/*.yml
   fi
-  if echo "$MSG" | grep -Fq "[skip-orphan-audit]"; then
+  if grep -Fq "[skip-orphan-audit]" <<<"$MSG"; then
     echo "::warning::orphan-test audit + decayed-exemption check skipped via [skip-orphan-audit] commit-message tag"
   else
     lwgate audit-orphan-tests node scripts/audit-orphan-tests.js
@@ -305,7 +305,7 @@ lint_workflows() {
     '
   }
   lwgate claude-md-integrity claude_md
-  if echo "$MSG" | grep -Fq "[skip-cron-audit]"; then
+  if grep -Fq "[skip-cron-audit]" <<<"$MSG"; then
     echo "::warning::cron-health coverage audit skipped via [skip-cron-audit] commit-message tag"
   else
     lwgate audit-cron-health-coverage node scripts/audit-cron-health-coverage.js
@@ -313,7 +313,7 @@ lint_workflows() {
   local PWC
   PWC=$(node scripts/audit-playwright-count-assertions.js || true)
   echo "$PWC"
-  if echo "$PWC" | grep -q "unguarded count() assignment"; then
+  if grep -q "unguarded count() assignment" <<<"$PWC"; then
     echo "::warning::Playwright count()-without-assertion pattern found — a selector drift here would silently pass having checked nothing."
   fi
   tony_loso() {

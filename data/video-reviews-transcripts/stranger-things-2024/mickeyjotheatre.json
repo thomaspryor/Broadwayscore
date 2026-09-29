@@ -18,5 +18,22 @@
   "keyQuote": "I found this to be a little bit disappointing because I think in comparison with the TV series... it was a little bit inconsequential and a lot of the cleverness of the series wasn't really reflected in the writing of the play",
   "scoredAt": "2026-04-19T08:33:03.564Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/eMCEmNUl7f4/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/eMCEmNUl7f4/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "which has just opened at The Phoenix Theater in London's West End",
+    "reason": "The video explicitly reviews a production in London's West End, not the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is reviewing a production at The Phoenix Theater in London's West End, which is a different city and country from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:35.174Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly reviews a production in London's West End, not the assigned Broadway production in New York City."
 }

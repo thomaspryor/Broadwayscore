@@ -18,5 +18,22 @@
   "keyQuote": "each and every time that I've seen this show I would agree that this is a four-star show I think it's really fun",
   "scoredAt": "2026-04-19T08:19:11.703Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/n9Z7yeeVrCU/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/n9Z7yeeVrCU/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "West End closing review at the Shaftesbury Theatre",
+    "reason": "The video explicitly reviews the West End production at the Shaftesbury Theatre, not the Broadway production in New York.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is a \"West End closing review at the Shaftesbury Theatre\" and discusses the show's \"West End run\" coming to an end, clearly indicating it is about a production in London, not Broadway in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:54:42.031Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly reviews the West End production at the Shaftesbury Theatre, not the Broadway production in New York."
 }

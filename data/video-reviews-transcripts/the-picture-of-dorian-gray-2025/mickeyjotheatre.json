@@ -18,5 +18,22 @@
   "keyQuote": "it doesn't work for me consistently but you take the big swings in order to achieve big reward and there are some stunning moments here",
   "scoredAt": "2026-04-19T08:35:48.826Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/jFetNka89WY/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/jFetNka89WY/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "theater Royal Hay Market in London's west end",
+    "reason": "The review is about a production in London's West End, not the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states the production is playing at the Theatre Royal Haymarket in London's West End, which is a different city from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:55.465Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review is about a production in London's West End, not the assigned Broadway production in New York City."
 }

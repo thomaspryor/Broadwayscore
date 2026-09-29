@@ -18,5 +18,22 @@
   "keyQuote": "stereophonic study of the creative process doesn't take you far enough beyond its rock music context. So, I give Stereophonic three stars.",
   "scoredAt": "2026-04-19T08:32:42.374Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/KkcDJdCLNMA/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/KkcDJdCLNMA/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "\"Review: Stereophonic in London's West End\"",
+    "reason": "The video title explicitly states the review is about a production in London's West End, not the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video title and the reviewer's opening statement explicitly state the review is for a production of 'Stereophonic' in London's West End, specifically at the Duke of York's Theatre, which is a different city and venue from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:33.463Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video title explicitly states the review is about a production in London's West End, not the assigned Broadway production in New York City."
 }

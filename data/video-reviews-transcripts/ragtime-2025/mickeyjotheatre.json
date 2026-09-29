@@ -18,5 +18,22 @@
   "keyQuote": "I loved this cast I love this show I do not think that this production needs to be on Broadway because this did not feel like a Broadway Revival this felt like a glorious concert staging of rag time",
   "scoredAt": "2026-04-19T08:30:53.271Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/nYHdpHqcBz8/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/nYHdpHqcBz8/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "concert",
+    "evidenceQuote": "this is a semi-staged concert presentation being performed for around 2 weeks between October 30th and November 10th at New York City Center",
+    "reason": "The video is about a semi-staged concert presentation at New York City Center, not the full Broadway run at the Vivian Beaumont Theater.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is a semi-staged concert presentation at New York City Center, which is a different type of production (concert) than the assigned full Broadway revival at the Vivian Beaumont Theater.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:20.119Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video is about a semi-staged concert presentation at New York City Center, not the full Broadway run at the Vivian Beaumont Theater."
 }

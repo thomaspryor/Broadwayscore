@@ -80,7 +80,7 @@ run_audit() {
 }
 
 # Unbounded git fetch on a shallow-checkout path (task #420).
-if echo "$CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/(workflows|actions)/.*\.ya?ml$"; then
+if grep -qE "^scripts/.*\.(js|mjs|cjs|ts|sh)$|^\.github/(workflows|actions)/.*\.ya?ml$" <<<"$CHANGED_FILES"; then
   run_audit "unbounded-fetch" "scripts/audit-unbounded-fetch.js" || FAIL=1
 fi
 
@@ -97,7 +97,7 @@ fi
 # test.yml passes no flag and scans the whole tree, which is right there.
 # LIST_ONLY must skip the pipe entirely — same reason as orphan-tests below:
 # run_audit returns before reading stdin, leaving a writer with no reader.
-if echo "$CHANGED_FILES" | grep -qE "^scripts/.*\.(js|mjs|cjs|ts)$"; then
+if grep -qE "^scripts/.*\.(js|mjs|cjs|ts)$" <<<"$CHANGED_FILES"; then
   if [ "$LIST_ONLY" = "1" ]; then
     run_audit "cmux-spawn-credential" "scripts/audit-cmux-spawn-credential.js" --scope-stdin || FAIL=1
   else
@@ -124,7 +124,7 @@ fi
 # separate inline "Node workflow audits" block — the small (<1s) duplicate run
 # on a plain `git push` is accepted rather than touching that unrelated block
 # in this shared-infra change (CLAUDE.md rule 18 scope discipline).
-if echo "$CHANGED_FILES" | grep -qE "^\.github/workflows/.*\.ya?ml$|^tests/unit/workflow-line-length\.test\.mjs$|^scripts/lib/workflow-line-length\.js$|^scripts/audit-workflow-concurrency\.js$|^scripts/lib/ci-cancellation-guard\.js$|^scripts/lib/run-actionlint-if-present\.js$"; then
+if grep -qE "^\.github/workflows/.*\.ya?ml$|^tests/unit/workflow-line-length\.test\.mjs$|^scripts/lib/workflow-line-length\.js$|^scripts/audit-workflow-concurrency\.js$|^scripts/lib/ci-cancellation-guard\.js$|^scripts/lib/run-actionlint-if-present\.js$" <<<"$CHANGED_FILES"; then
   run_audit "workflow-line-length" "tests/unit/workflow-line-length.test.mjs" || FAIL=1
   run_audit "workflow-concurrency" "scripts/audit-workflow-concurrency.js" || FAIL=1
   run_audit "workflow-actionlint" "scripts/lib/run-actionlint-if-present.js" || FAIL=1
@@ -167,7 +167,7 @@ fi
 # (TEST_FILE_EXTENSIONS, MANIFESTS, push-path glob translation), so editing
 # either alone must still re-run the audits that depend on it, or a broken
 # change to the canonical list ships without its own gate firing.
-if echo "$CHANGED_FILES" | grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^scripts/lib/.*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests|toplevel-script-test-yml-coverage)\.js$|^scripts/lib/(test-yml-manifest-paths|test-manifest|test-yml-push-paths)\.js$|^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$"; then
+if grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|js|cjs|sh)$|^scripts/lib/.*\.test\.(mjs|ts|js|cjs|sh)$|^\.github/workflows/test\.yml$|^scripts/audit-(tests-vs-derived-data|orphan-tests|toplevel-script-test-yml-coverage)\.js$|^scripts/lib/(test-yml-manifest-paths|test-manifest|test-yml-push-paths)\.js$|^tests/(unit-test-manifest(-tsx)?|e2e-unit-test-manifest)\.txt$" <<<"$CHANGED_FILES"; then
   run_audit "tests-vs-derived-data" "scripts/audit-tests-vs-derived-data.js" || FAIL=1
   # scripts/lib/ colocated-test coverage (BRO-2749/BRO-3239): is every
   # scripts/lib/*.test.* file actually invoked by a workflow run: body?
@@ -203,7 +203,7 @@ if echo "$CHANGED_FILES" | grep -qE "^(tests/unit|scripts)/[^/]*\.test\.(mjs|ts|
 fi
 
 # Playwright evaluate-click anti-pattern.
-if echo "$CHANGED_FILES" | grep -qE "^tests/e2e/.*\.(ts|tsx|mjs|js)$|^scripts/audit-playwright-evaluate-click\.js$"; then
+if grep -qE "^tests/e2e/.*\.(ts|tsx|mjs|js)$|^scripts/audit-playwright-evaluate-click\.js$" <<<"$CHANGED_FILES"; then
   run_audit "playwright-evaluate-click" "scripts/audit-playwright-evaluate-click.js" || FAIL=1
 fi
 
@@ -225,7 +225,7 @@ fi
 # scripts/*.mjs or scripts/*.ts writer must be able to trigger this audit
 # locally the same way a .js one does — otherwise it silently skips the local
 # gate and only gets caught later in CI (task #1826 review finding).
-if echo "$CHANGED_FILES" | grep -qE "^scripts/[^/]+\.(js|mjs|ts)$|^scripts/lint-write-routing\.sh$|^\.review-write-guard-exempt\.txt$|^\.reviews-json-write-exempt\.txt$|^\.shows-json-write-exempt\.txt$|^\.commercial-json-write-exempt\.txt$|^\.audience-buzz-json-write-exempt\.txt$"; then
+if grep -qE "^scripts/[^/]+\.(js|mjs|ts)$|^scripts/lint-write-routing\.sh$|^\.review-write-guard-exempt\.txt$|^\.reviews-json-write-exempt\.txt$|^\.shows-json-write-exempt\.txt$|^\.commercial-json-write-exempt\.txt$|^\.audience-buzz-json-write-exempt\.txt$" <<<"$CHANGED_FILES"; then
   if [ "$LIST_ONLY" = "1" ]; then
     echo "write-routing"
   elif [ -f scripts/lint-write-routing.sh ]; then
@@ -260,7 +260,7 @@ fi
 # would miss a guard DELETED from a file the push doesn't otherwise touch).
 # Fires on the same `scripts/*.js` shape as the write-routing lint above, plus
 # the audit's own baseline file.
-if echo "$CHANGED_FILES" | grep -qE "^scripts/[^/]+\.js$|^scripts/\.help-flag-safety-baseline\.json$"; then
+if grep -qE "^scripts/[^/]+\.js$|^scripts/\.help-flag-safety-baseline\.json$" <<<"$CHANGED_FILES"; then
   run_audit "help-flag-safety" "scripts/audit-help-flag-safety.js" || FAIL=1
 fi
 
