@@ -146,8 +146,8 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T22:32:11.885Z",
-      "lastNotifiedAt": "2026-09-29T22:32:11.885Z",
+      "lastSeen": "2026-09-29T22:37:03.257Z",
+      "lastNotifiedAt": "2026-09-29T22:37:03.257Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 116,
       "cardId": null,
@@ -3867,7 +3867,7 @@
       },
       "absentRunIds": [],
       "silentRefires": 3,
-      "resolvedAt": "2026-09-29T22:32:11.867Z",
+      "resolvedAt": "2026-09-29T22:37:03.239Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
@@ -5886,7 +5886,7 @@
       "linearIdentifier": "BRO-4255",
       "absentRunIds": [],
       "silentRefires": 14,
-      "resolvedAt": "2026-09-29T22:32:11.872Z",
+      "resolvedAt": "2026-09-29T22:37:03.244Z",
       "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
@@ -6883,7 +6883,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
       "firstSeen": "2026-09-29T21:43:53.789Z",
-      "lastSeen": "2026-09-29T22:32:11.881Z",
+      "lastSeen": "2026-09-29T22:37:03.253Z",
       "lastNotifiedAt": "2026-09-29T21:43:53.789Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
@@ -6936,7 +6936,7 @@
       "silentRefires": 1
     },
     "land:land/job/linear-BRO-4387-mun6krwj": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4387-mun6krwj",
       "firstSeen": "2026-09-29T21:57:36.227Z",
@@ -6945,7 +6945,8 @@
       "lastSurfacedAt": "2026-09-29T21:57:36.227Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-29T22:33:30.585Z"
     }
   }
 }
