@@ -1,30 +1,17 @@
 {
-  "generatedAt": "2026-09-29T12:08:17.898Z",
+  "generatedAt": "2026-09-29T16:31:12.191Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 172,
-  "clean": 170,
-  "defective": 2,
+  "checked": 174,
+  "clean": 171,
+  "defective": 3,
   "byType": {
-    "unreachable": 2
+    "unreachable": 1,
+    "missing-from-prod": 1,
+    "score-drift": 2
   },
   "shows": [
-    {
-      "showId": "spandex-off-broadway-2026",
-      "title": "Spandex",
-      "openingDate": "2026-09-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
     {
       "showId": "the-cherry-orchard-riverside-studios-off-west-end-2026",
       "title": "The Cherry Orchard",
@@ -39,6 +26,44 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
+    },
+    {
+      "showId": "who-killed-marilyn-off-west-end-2026",
+      "title": "Who Killed Marilyn?",
+      "openingDate": "2026-08-21",
+      "ok": false,
+      "defects": [
+        {
+          "type": "missing-from-prod",
+          "detail": "3 scored outlet(s) absent from the deployed payload: daily-mail, standard, whatsonstage"
+        },
+        {
+          "type": "score-drift",
+          "detail": "deployed payload has no numeric cs (local 34.67)"
+        }
+      ],
+      "missingFromProd": [
+        "daily-mail",
+        "standard",
+        "whatsonstage"
+      ],
+      "localCount": 4,
+      "deployedCount": 1
+    },
+    {
+      "showId": "three-men-in-a-boat-off-west-end-2026",
+      "title": "Three Men in a Boat",
+      "openingDate": "2026-09-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 77.27 vs local 76.67 (Δ0.6)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 3,
+      "deployedCount": 3
     }
   ]
 }
