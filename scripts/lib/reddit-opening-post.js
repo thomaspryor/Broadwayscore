@@ -132,7 +132,7 @@ function buildPeers(shows, slims) {
 /**
  * The verified fact sheet. Returns null when the slim file has no score.
  */
-function buildFacts(show, slim, peers, { seen = null } = {}) {
+function buildFacts(show, slim, peers, { seen = null, crosspost = null } = {}) {
   if (!slim || typeof slim.cs !== 'number') return null;
   const market = marketOf(show);
   const score = Math.round(slim.cs);
@@ -171,6 +171,7 @@ function buildFacts(show, slim, peers, { seen = null } = {}) {
     market,
     marketLabel: label,
     subreddit: SUBREDDIT_BY_MARKET[market],
+    crosspostSubreddit: crosspost,
     venue: typeof show.venue === 'string' ? show.venue : (show.venue && show.venue.name) || null,
     openingDate: show.openingDate,
     type: show.type || null,
@@ -217,12 +218,32 @@ function isRetryableDraft(d) {
 }
 
 /**
+ * A second, bigger audience worth a crosspost. West End / Off-West End shows
+ * with a Broadway production of the same title also play on r/Broadway (the
+ * owner's Trainspotting post: 95 on r/TheWestEnd, then 74 on r/Broadway).
+ * There's no sizable Off-Broadway subreddit (largest ~250 members, checked
+ * 2026-09-29), so Off-Broadway posts already go to r/Broadway.
+ */
+function crosspostSubreddit(show, broadwayTitles) {
+  const m = marketOf(show);
+  if (m !== 'west-end' && m !== 'off-west-end') return null;
+  return broadwayTitles.has(normTitle(show.title)) ? 'Broadway' : null;
+}
+
+/**
  * Pick the openings to draft today.
  * shows: shows.json array. slims: Map id -> slim json. drafts: existing
  * drafts file ({ drafts: { [showId]: {...} } }). peersByMarket: market -> [{id, cs}].
  */
 function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLookup = () => null, forceShowId = null }) {
   const already = (drafts && drafts.drafts) || {};
+  // Broadway productions that are current, upcoming, or opened in the last
+  // 5 years: a 1990s revival doesn't make a Globe Shakespeare r/Broadway news.
+  const recentYear = Number(String(today).slice(0, 4)) - 5;
+  const broadwayTitles = new Set(shows
+    .filter(x => marketOf(x) === 'broadway')
+    .filter(x => ['open', 'previews', 'upcoming'].includes(x.status) || Number(String(x.openingDate || '').slice(0, 4)) >= recentYear)
+    .map(x => normTitle(x.title)));
   const out = [];
   for (const show of shows) {
     const market = marketOf(show);
@@ -243,7 +264,7 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (!slim) continue;
     const reviewCount = slim.rc || (slim.rv || []).length;
     if (!forceShowId && reviewCount < MIN_REVIEWS[market]) continue;
-    const facts = buildFacts(show, slim, peersByMarket[market] || [], { seen: seenLookup(show.title) });
+    const facts = buildFacts(show, slim, peersByMarket[market] || [], { seen: seenLookup(show.title), crosspost: crosspostSubreddit(show, broadwayTitles) });
     if (!facts) continue;
     const prev = already[show.id];
     if (!forceShowId && prev && !isRetryableDraft(prev) && lintDraft(prev, facts).ok) continue; // unsent but still accurate
@@ -790,6 +811,7 @@ module.exports = {
   allowedNumbers,
   notability,
   selectCandidates,
+  crosspostSubreddit,
   makeSeenLookup,
   normTitle,
   buildUserPrompt,

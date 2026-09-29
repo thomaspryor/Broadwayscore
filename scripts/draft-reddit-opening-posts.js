@@ -234,6 +234,8 @@ async function main() {
       ...draft,
       submitUrl: lib.submitUrl(c.facts.subreddit, draft.title, draft.body),
       oldRedditSubmitUrl: lib.oldRedditSubmitUrl(c.facts.subreddit, draft.title, draft.body),
+      crosspostSubreddit: c.facts.crosspostSubreddit || null,
+      crosspostSubmitUrl: c.facts.crosspostSubreddit ? lib.submitUrl(c.facts.crosspostSubreddit, draft.title, draft.body) : null,
     };
     // A redraft (retry after an LLM outage, or --show) keeps the email
     // stamps and posted state, so it never re-sends a "new post" email or

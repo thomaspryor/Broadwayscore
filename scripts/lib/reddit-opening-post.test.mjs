@@ -273,3 +273,20 @@ test('reddit email subjects classify as their own sender, not the opening digest
   assert.equal(classifySubject(mail.buildSubject(d, 'new')).key, 'reddit-post-ready');
   assert.equal(classifySubject(mail.buildSubject(d, 'reminder')).key, 'reddit-post-ready');
 });
+
+test('crosspost: West End shows with a current/recent Broadway production also get r/Broadway', () => {
+  const we = { id: 'ka-we', title: 'Kimberly Akimbo', category: 'off-west-end', openingDate: '2026-09-27', status: 'open' };
+  const old = { id: 'ayli-we', title: 'As You Like It', category: 'west-end', openingDate: '2026-09-27', status: 'open' };
+  const ob = { id: 'x-ob', title: 'Kimberly Akimbo', category: 'off-broadway', openingDate: '2026-09-27', status: 'open' };
+  const shows = [we, old, ob,
+    { id: 'ka-bw', title: 'Kimberly Akimbo', category: 'broadway', openingDate: '2022-11-10', status: 'closed' },
+    { id: 'ayli-bw', title: 'As You Like It', category: 'broadway', openingDate: '1974-12-03', status: 'closed' }];
+  const slims = new Map(shows.map(x => [x.id, slim({ cs: 80, n: 30 })]));
+  const pick = id => lib.selectCandidates({ shows, slims, drafts: { drafts: {} }, peersByMarket: {}, today: '2026-09-29', forceShowId: id })[0].facts;
+  assert.equal(pick('ka-we').crosspostSubreddit, 'Broadway');
+  assert.equal(pick('ayli-we').crosspostSubreddit, null, 'a 1974 Broadway revival is not a reason');
+  assert.equal(pick('x-ob').subreddit, 'Broadway');
+  assert.equal(pick('x-ob').crosspostSubreddit, null, 'Off-Broadway already posts to r/Broadway');
+  const html = mail.buildHtml({ showTitle: 'Kimberly Akimbo', score: 80, reviewCount: 30, subreddit: 'TheWestEnd', title: 't', body: 'b', submitUrl: 'https://a', oldRedditSubmitUrl: 'https://b', crosspostSubreddit: 'Broadway', crosspostSubmitUrl: 'https://c' }, 'new');
+  assert.match(html, /Also post to r\/Broadway/);
+});
