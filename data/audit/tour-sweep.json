@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-29T05:21:25.943Z",
-  "moved": 0,
+  "generatedAt": "2026-09-29T09:14:51.351Z",
+  "moved": 3,
   "held": [],
   "tours": [
     {
@@ -38,6 +38,149 @@
         "undated-after-close": 1,
         "wrong-show": 1
       }
+    },
+    {
+      "tourId": "and-juliet-tour-2024",
+      "fromIds": [
+        "and-juliet-2022"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "beetlejuice-tour-2026",
+      "fromIds": [
+        "beetlejuice-2019",
+        "beetlejuice-2022",
+        "beetlejuice-2025"
+      ],
+      "held": false,
+      "counts": {
+        "already-routed": 1,
+        "non-review": 2,
+        "before-broadway-opening": 1
+      }
+    },
+    {
+      "tourId": "book-of-mormon-tour-2022",
+      "fromIds": [
+        "book-of-mormon-2011"
+      ],
+      "held": false,
+      "counts": {
+        "already-routed": 1,
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "buena-vista-social-club-tour-2026",
+      "fromIds": [
+        "buena-vista-social-club-2025"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "death-becomes-her-tour-2026",
+      "fromIds": [
+        "death-becomes-her-2024"
+      ],
+      "held": false,
+      "counts": {
+        "tour-review": 1
+      }
+    },
+    {
+      "tourId": "hells-kitchen-tour-2025",
+      "fromIds": [
+        "hells-kitchen-2024"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "jersey-boys-tour-2026",
+      "fromIds": [
+        "jersey-boys-2005"
+      ],
+      "held": false,
+      "counts": {
+        "tour-review": 1,
+        "before-tour-launch": 1
+      }
+    },
+    {
+      "tourId": "maybe-happy-ending-tour-2026",
+      "fromIds": [
+        "maybe-happy-ending-2024"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "mrs-doubtfire-tour-2025",
+      "fromIds": [
+        "mrs-doubtfire-2021"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "the-great-gatsby-tour-2026",
+      "fromIds": [
+        "the-great-gatsby-2024"
+      ],
+      "held": false,
+      "counts": {
+        "duplicate-on-tour": 1
+      }
+    },
+    {
+      "tourId": "the-notebook-tour-2025",
+      "fromIds": [
+        "the-notebook-2024"
+      ],
+      "held": false,
+      "counts": {
+        "tryout": 1
+      }
+    },
+    {
+      "tourId": "the-outsiders-tour-2025",
+      "fromIds": [
+        "the-outsiders-2024"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "the-phantom-of-the-opera-tour-2025",
+      "fromIds": [
+        "the-phantom-of-the-opera-1988"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "waitress-tour-2026",
+      "fromIds": [
+        "waitress-2016",
+        "waitress-2021"
+      ],
+      "held": false,
+      "counts": {
+        "before-broadway-opening": 1,
+        "already-routed": 2,
+        "tour-review": 1
+      }
+    },
+    {
+      "tourId": "water-for-elephants-tour-2025",
+      "fromIds": [
+        "water-for-elephants-2024"
+      ],
+      "held": false,
+      "counts": {}
     }
   ]
 }
