@@ -61,17 +61,29 @@ jobs:
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
 
+      # YouTube extraction needs a JS runtime since yt-dlp 2026.08 (the
+      # [default] extra pulls in yt-dlp-ejs, which runs on deno).
+      - name: Setup Deno
+        uses: denoland/setup-deno@v2
+        with:
+          deno-version: v2.x
+
       # yt-dlp is not on ubuntu-latest by default.
       # --break-system-packages required on Ubuntu 24.04+ (PEP 668).
+      # curl-cffi: TikTok needs browser impersonation since yt-dlp 2026.08.19;
+      # without it every TikTok fetch failed "Unexpected response from webpage
+      # request" and the pipeline extracted 0 transcripts for six weeks (BRO-4323).
       - name: Install yt-dlp
         run: |
-          pip install yt-dlp --break-system-packages --quiet
+          pip install "yt-dlp[default,curl-cffi]" --break-system-packages --quiet
           yt-dlp --version
+          python3 -c "import curl_cffi; print('curl_cffi', curl_cffi.__version__)"
 
       # Step 1 of 8 — scan creator feeds for new review candidates.
       # Writes to data/video-reviews-discovery/{handle}.json.
       # Skips creators scanned < 24h ago unless --refresh.
       - name: Discover videos
+        id: discover
         run: |
           set -euo pipefail
           ARGS=()
@@ -81,7 +93,15 @@ jobs:
           if [ "${{ inputs.refresh }}" = "true" ]; then
             ARGS+=("--refresh")
           fi
-          node scripts/video-reviews/discover-videos.js "${ARGS[@]}"
+          # Exit 3 = a creator has gone unscanned for 2+ weeks; carry on for
+          # everyone else and fail the job at the end ("Fail on pipeline outage").
+          rc=0
+          node scripts/video-reviews/discover-videos.js "${ARGS[@]}" || rc=$?
+          if [ "$rc" -eq 3 ]; then
+            echo "outage=true" >> "$GITHUB_OUTPUT"
+          elif [ "$rc" -ne 0 ]; then
+            exit "$rc"
+          fi
 
       # Step 2 of 8 — LLM pre-classification of TikTok titles (Haiku).
       # TikTok captions rarely contain the word "review" ("This was pure magic!",
@@ -105,13 +125,22 @@ jobs:
       # Step 3 of 8 — extract transcripts for new candidates via yt-dlp.
       # Writes to data/video-reviews-transcripts/raw/. Skips existing files.
       - name: Collect transcripts
+        id: collect
         run: |
           set -euo pipefail
           ARGS=()
           if [ -n "${{ inputs.creator }}" ]; then
             ARGS+=("--creator=${{ inputs.creator }}")
           fi
-          node scripts/video-reviews/collect-transcripts.js "${ARGS[@]}"
+          # Exit 3 = a platform extracted 0 transcripts with yt-dlp errors;
+          # still publish what the other platform produced, fail at the end.
+          rc=0
+          node scripts/video-reviews/collect-transcripts.js "${ARGS[@]}" || rc=$?
+          if [ "$rc" -eq 3 ]; then
+            echo "outage=true" >> "$GITHUB_OUTPUT"
+          elif [ "$rc" -ne 0 ]; then
+            exit "$rc"
+          fi
 
       # Step 4 of 8 — LLM classification: genuine review vs casting news / commentary.
       # Writes to data/video-reviews-transcripts/classified/.
@@ -197,6 +226,16 @@ jobs:
 
           git commit -m "chore(video-reviews): weekly update (${TOTAL} reviews total)"
           bash scripts/lib/push-with-retry.sh 25 main
+
+      # BRO-4323: from 2026-08-19 to 2026-09-28 every run extracted 0 of 500+
+      # transcripts and still went green. Discover/collect exit 3 on an outage;
+      # this step turns the run red after the healthy work is committed, so
+      # "Notify on failure" below fires.
+      - name: Fail on pipeline outage
+        if: steps.discover.outputs.outage == 'true' || steps.collect.outputs.outage == 'true'
+        run: |
+          echo "::error::Video pipeline outage (discover=${{ steps.discover.outputs.outage || 'false' }}, collect=${{ steps.collect.outputs.outage || 'false' }}). See the Discover videos / Collect transcripts logs for the yt-dlp error."
+          exit 1
 
       # Non-critical: weekly misses surface in the morning data-health-check digest.
       # Escalate to 'critical' if same-day alerting becomes important.

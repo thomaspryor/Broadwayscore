@@ -24,6 +24,13 @@ const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
 
+const { detectTranscriptOutages } = require('../lib/video-pipeline-health');
+
+// Exit code for "a whole platform's extractor is broken" (BRO-4323): the
+// workflow keeps publishing what the healthy platform produced, then fails
+// the job at the end. A crash still exits 1.
+const OUTAGE_EXIT_CODE = 3;
+
 const DISCOVERY_DIR = path.join(__dirname, '../../data/video-reviews-discovery');
 const RAW_TRANSCRIPTS_DIR = path.join(__dirname, '../../data/video-reviews-transcripts/raw');
 
@@ -36,7 +43,16 @@ function parseVTT(vttText) {
   return lines.filter((l, i) => i === 0 || l !== lines[i - 1]).join(' ');
 }
 
+// Last yt-dlp ERROR line seen, so a failure says why instead of just "no subs".
+let lastError = null;
+
+function errorLine(output) {
+  const lines = String(output || '').split('\n').filter(l => /ERROR:/.test(l));
+  return lines.length ? lines[lines.length - 1].trim().substring(0, 300) : null;
+}
+
 function extractTranscript(videoId, platform, handle) {
+  lastError = null;
   const tmpDir = '/tmp/videoscore-collect';
   if (!fs.existsSync(tmpDir)) fs.mkdirSync(tmpDir, { recursive: true });
   const outPath = path.join(tmpDir, videoId);
@@ -74,6 +90,7 @@ function extractTranscript(videoId, platform, handle) {
     }
     return parseVTT(fs.readFileSync(path.join(tmpDir, files[0]), 'utf8'));
   } catch (err) {
+    lastError = errorLine(err.stdout) || errorLine(err.stderr) || String(err.message || err).substring(0, 300);
     return null;
   }
 }
@@ -86,6 +103,7 @@ function main() {
 
   const discoveryFiles = fs.readdirSync(DISCOVERY_DIR).filter(f => f.endsWith('.json') && !f.startsWith('.'));
   let extracted = 0, skipped = 0, failed = 0;
+  const byPlatform = {}; // platform -> { attempted, extracted, errored, sampleError }
 
   for (const file of discoveryFiles) {
     const data = JSON.parse(fs.readFileSync(path.join(DISCOVERY_DIR, file), 'utf8'));
@@ -105,6 +123,13 @@ function main() {
 
       process.stdout.write(`  ${video.id} "${video.title?.substring(0, 50)}..." `);
       const transcript = extractTranscript(video.id, data.platform, data.handle);
+      const stats = byPlatform[data.platform] || (byPlatform[data.platform] = { attempted: 0, extracted: 0, errored: 0, sampleError: null });
+      stats.attempted++;
+      if (transcript) stats.extracted++;
+      else if (lastError) {
+        stats.errored++;
+        if (!stats.sampleError) stats.sampleError = lastError;
+      }
 
       if (transcript) {
         const wordCount = transcript.split(/\s+/).length;
@@ -124,7 +149,7 @@ function main() {
         console.log(`✓ ${wordCount}w`);
       } else {
         failed++;
-        console.log('✗ no subs');
+        console.log(lastError ? `✗ ${lastError}` : '✗ no subs');
       }
 
       // Rate limit
@@ -135,6 +160,15 @@ function main() {
   console.log(`\n=== Collection Summary ===`);
   console.log(`Extracted: ${extracted}, Skipped (cached): ${skipped}, Failed: ${failed}`);
   console.log(`Total raw transcripts: ${fs.readdirSync(RAW_TRANSCRIPTS_DIR).filter(f => f.endsWith('.json')).length}`);
+
+  for (const [platform, s] of Object.entries(byPlatform)) {
+    console.log(`  ${platform}: ${s.extracted}/${s.attempted} extracted, ${s.errored} yt-dlp errors${s.sampleError ? ` (e.g. ${s.sampleError})` : ''}`);
+  }
+  const outages = detectTranscriptOutages(byPlatform);
+  if (outages.length) {
+    console.error(`\n::error::Transcript extraction is failing for ${outages.join(', ')}: 0 successes. yt-dlp is likely missing a dependency or blocked; see the sample error above.`);
+    process.exit(OUTAGE_EXIT_CODE);
+  }
 }
 
 main();
