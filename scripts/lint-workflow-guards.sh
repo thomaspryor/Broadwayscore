@@ -88,7 +88,7 @@ check_core_data_pairing() {
     name=$(basename "$f")
     # -Fx exact-name match (grep -qw would let vercel-demo.yml exempt a future
     # foo-vercel-demo.yml — '-' and '.' are non-word chars to grep)
-    if echo "$EXEMPT" | tr ' ' '\n' | grep -Fxq "$name"; then continue; fi
+    if grep -Fxq "$name" <<<"${EXEMPT// /$'\n'}"; then continue; fi
     # Require an actual `uses: .../push-core-data` step, not a mere text
     # mention in a comment or heredoc.
     if grep -qE '^[[:space:]]*uses:.*push-core-data' "$f"; then continue; fi

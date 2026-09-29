@@ -14,9 +14,13 @@
  * Pure so tests/unit/pipefail-grep-q-check.test.mjs can require() it.
  */
 
-const PIPEFAIL_RE = /^\s*set\s+-[a-zA-Z]*o\s+pipefail\b|^\s*set\s+-o\s+pipefail\b|^\s*set\s+-[a-zA-Z]*\s+-o\s+pipefail\b/m;
-// echo/printf of a variable piped straight into grep -q / -qE / -Eq / -qx …
-const RISKY_RE = /\b(?:echo|printf)\b[^|\n]*\$\{?[A-Za-z_][A-Za-z0-9_]*[^|\n]*\|\s*grep\s+-[a-zA-Z]*q/;
+// Any `set` line that turns pipefail on (-o pipefail, -euo pipefail,
+// -o errexit -o pipefail, ...).
+const PIPEFAIL_RE = /^\s*set\s+[^\n#]*\bpipefail\b/m;
+// echo/printf of a variable whose pipeline ends in an early-exiting grep
+// (-q/--quiet in any flag position), possibly through intermediate stages
+// such as `| tr ' ' '\n' |`.
+const RISKY_RE = /\b(?:echo|printf)\b[^|\n]*\$\{?[A-Za-z_][A-Za-z0-9_]*[^|\n]*(?:\|[^|\n]*)*\|\s*grep\b[^|\n]*?(?:\s-[a-zA-Z]*q[a-zA-Z]*\b|\s--quiet\b)/;
 
 /** @returns {{line:number, text:string}[]} risky lines ([] when the script has no pipefail) */
 function findPipefailGrepQ(source) {

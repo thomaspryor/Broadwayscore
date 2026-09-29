@@ -24,6 +24,9 @@ test('flags echo/printf of a variable piped into grep -q only when pipefail is s
   const risky = 'set -euo pipefail\nif echo "$FILES" | grep -qE "^src/"; then :; fi\nprintf \'%s\\n\' "$X" | grep -qxF foo\n';
   assert.deepEqual(findPipefailGrepQ(risky).map(h => h.line), [2, 3]);
   assert.deepEqual(findPipefailGrepQ('if echo "$FILES" | grep -q x; then :; fi\n'), []);
+  // Split flags, --quiet, an intermediate stage, and errexit-style set lines.
+  const variants = 'set -o errexit -o pipefail\necho "$A" | grep -E -q x\necho "$A" | grep --quiet x\necho "$A" | tr " " "\\n" | grep -Fxq x\n';
+  assert.deepEqual(findPipefailGrepQ(variants).map(h => h.line), [2, 3, 4]);
 });
 
 test('here-strings, comments and annotated lines are not flagged', () => {
