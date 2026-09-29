@@ -185,6 +185,15 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // blocked, never the bare page.
   { host: /(^|\.)broadwayworld\.com$/, path: /^\/shows?\/[^/]+\/.+/, reason: 'venue-production-page' },
   { host: /(^|\.)borninthecity\.com$/, reason: 'merch-store' },
+  // Ticket-seller PRODUCT pages (BRO-4386, 2026-09-29): both hosts also publish
+  // real /blog/ posts, so only the product-page shapes are blocked, never the
+  // host. theatrebookings.com/play/<slug> and bestoftheatre.co.uk/<slug> (one
+  // top-level segment; reviews/roundups live under /blog/post/) were scored
+  // off promo copy (The Standard of Living: 50 Negative and 85 Rave, no critic,
+  // no publishDate). Measured on the review-texts repo: every top-level
+  // bestoftheatre.co.uk/<slug> file is house copy; 45 /blog/ URLs unaffected.
+  { host: /(^|\.)theatrebookings\.com$/, path: /^\/play\//i, reason: 'ticket-seller-product-page', allSources: true },
+  { host: /(^|\.)bestoftheatre\.co\.uk$/, path: /^\/(?!blog(\/|$))[^/]+\/?$/i, reason: 'ticket-seller-product-page', allSources: true },
   { host: /(^|\.)eventticketscenter\.com$/, reason: 'ticketing-reseller' },
   // Stagebuddy publishes real reviews under /theater/reviews/…; its
   // theater-feature section is previews/features, not reviews (Disruption
@@ -324,15 +333,18 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
 /**
  * Does this URL match one of the NAMED_NON_REVIEW_URL_PATTERNS above?
  * @param {string} url
+ * @param {{allSourcesOnly?: boolean}} [opts] allSourcesOnly: only entries flagged
+ *   allSources (unambiguous shapes that are non-reviews whatever wrote them)
  * @returns {string|null} the pattern's reason label, or null
  */
-function namedNonReviewReason(url) {
+function namedNonReviewReason(url, opts) {
   let u;
   try { u = new URL(url); } catch { return null; }
   const host = u.hostname.replace(/^www\./, '').toLowerCase();
   for (const p of NAMED_NON_REVIEW_URL_PATTERNS) {
     if (!p.host.test(host)) continue;
     if (p.path && !p.path.test(u.pathname)) continue;
+    if (opts && opts.allSourcesOnly && !p.allSources) continue;
     return p.reason;
   }
   return null;
