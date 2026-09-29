@@ -104,6 +104,9 @@ test('(a) shared-infrastructure paths are classified IN scope', () => {
     ['.github/workflows/weekly-grosses.yml', 'ci', 'shared'],
     ['/Users/x/.claude/hooks/finish-line-gate.sh', 'hooks', 'critical'],
     ['/Users/x/.claude/settings.json', 'hooks', 'critical'],
+    ['/Users/x/.claude/hooks/lib/transcript.py', 'hooks', 'critical'],
+    ['.claude/hooks/lib/strip-git-commit-noise.js', 'hooks', 'critical'],
+    ['.claude/hooks/github-main-guard.sh', 'hooks', 'critical'],
     // wider shared surface — in scope, but only the observe tier
     ['scripts/lib/title-match.js', 'shared-lib', 'shared'],
     ['scripts/lib/content-quality.js', 'gates', 'critical'],

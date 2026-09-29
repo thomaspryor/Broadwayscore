@@ -158,8 +158,10 @@ const SHARED_INFRA_RULES = [
     tier: 'critical',
     label: 'agent hook / harness settings',
     // Hooks live in the ~/.claude repo, so this rule matches on the tail of an
-    // absolute path rather than a repo-relative one.
-    re: /(?:^|\/)\.claude\/(?:hooks\/[^/]+\.(?:sh|js|mjs|py)|settings(?:\.local)?\.json)$/,
+    // absolute path rather than a repo-relative one. hooks/lib/ holds the
+    // modules the hooks import (transcript.py, strip-git-commit-noise.js), so
+    // it decides gate behavior too (BRO-4238 review: it was unclassified).
+    re: /(?:^|\/)\.claude\/(?:hooks\/(?:lib\/)?[^/]+\.(?:sh|js|mjs|py)|settings(?:\.local)?\.json)$/,
     why: 'runs inside every session on this machine; a fail-closed bug wedges every workspace at once',
   },
   {
