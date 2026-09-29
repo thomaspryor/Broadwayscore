@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4275",
   "planId": "b7032126-a4b6-4168-b9ef-25fe2b58c094",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-09-29T09:40:00.000Z",
   "submitter": {
     "name": null,
@@ -48,5 +48,28 @@
         "description": "Use the critic's verdict line instead of background about the playwright"
       }
     ]
-  }
+  },
+  "executedAt": "2026-09-29T10:13:22.233Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json humanReviewNote: null -> \"Largely negative on the writing (juvenile, cringy, far less witty), praise limited to the cast and one number; DTLI thumbs down. Ensemble scored 57 (BRO-4275).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/thewrap--robert-hofler.json humanReviewScore: null -> 50"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "school-girls-or-the-african-mean-girls-play-2026/theatermania--hayley-levitt.json llmPullQuote: \"Audiences fell in love with her sharp eye for behavior and even sharper ear for comedy, a combination that earned her a 2024 Tony nomination for Jaja’s African Hair Braiding.\" -> \"She just had the good fortune of figuring out a decade ago that hope looks silly on everyone, but teen girls wear it best.\""
+    }
+  ]
 }
