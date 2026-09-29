@@ -194,10 +194,10 @@ function classifyBlock({ blockingPaths = [], aheadCount = 0, behindCount = 0, un
  * it in the first place).
  *
  * baseLines MUST be the post-merge (origin) content and extraLines the saved
- * local copy, NOT the other way round. Both ledgers rotate by dropping from
- * the FRONT and keeping the newest tail — provider-telemetry.js:69
- * (`lines.slice(lines.length - MAX_LEDGER_LINES)`) and stage-latency.js's
- * rotateIfNeeded() — so the locally-appended rows have to land at the END or
+ * local copy, NOT the other way round. stage-latency.js's rotateIfNeeded()
+ * drops from the FRONT and keeps the newest tail (provider-telemetry.js's
+ * trimLedgerLines now keeps the newest rows by ts, which is order-safe
+ * either way), so the locally-appended rows have to land at the END or
  * the very next append would trim away exactly the rows we just rescued.
  * This is deliberately the OPPOSITE order from merge-scraper-spend-ledger.js's
  * ours-first rule, which merges committed snapshots where no trim follows.
