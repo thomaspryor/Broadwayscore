@@ -657,12 +657,28 @@
     "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
     "once-upon-a-one-more-time-2023/pages-on-stages--mason-pilevsky.json",
     "grey-house-2023/newyorker--dan-stahl.json",
-    "primary-trust-off-broadway-2023/nytimes--naveen-kumar.json"
+    "primary-trust-off-broadway-2023/nytimes--naveen-kumar.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
+    "buena-vista-social-club-tour-2026/deadline--greg-evans.json",
+    "beetlejuice-tour-2026/variety--unknown.json",
+    "beetlejuice-tour-2026/deadline--greg-evans.json",
+    "beetlejuice-tour-2026/observer--david-cote.json",
+    "beetlejuice-tour-2026/theatermania--unknown.json",
+    "beetlejuice-tour-2026/thewrap--robert-hofler.json",
+    "beetlejuice-tour-2026/rollingstone--david-browne.json",
+    "mrs-doubtfire-tour-2025/dayton-local--michael-woody.json",
+    "mrs-doubtfire-tour-2025/folsom-times--bill-sullivan.json",
+    "mrs-doubtfire-tour-2025/media-mikes--ben-ryland.json",
+    "mrs-doubtfire-tour-2025/pioneer-press--rob-hubbard.json",
+    "mrs-doubtfire-tour-2025/shepherd-express--anne-siegel.json",
+    "mrs-doubtfire-tour-2025/virginian-pilot--page-laws.json",
+    "and-juliet-tour-2024/deadline--unknown.json",
+    "and-juliet-tour-2024/latimes--unknown.json",
+    "and-juliet-tour-2024/people--unknown.json"
   ],
   "failed": [
     "tru-off-west-end-2026/telegraph--claire-allfree.json",
     "darkling-off-west-end-2026/thestage--holly-omahony.json",
-    "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
     "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--holly-o.json",
     "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
     "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
@@ -1005,7 +1021,10 @@
     "back-to-the-future-2023/wsj--charles-isherwood.json",
     "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json",
     "just-for-us-2023/theater-life--paulanne-simmons.json",
-    "once-upon-a-one-more-time-2023/nyt-theater--jonathan-mandell.json"
+    "once-upon-a-one-more-time-2023/nyt-theater--jonathan-mandell.json",
+    "as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json",
+    "mrs-doubtfire-tour-2025/arkansas-democrat-gazette--eric-e-harrison.json",
+    "hadestown-2019/musical-theatre-review--angela-thomas.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1355,9 +1374,23 @@
       "merrily-we-roll-along-2023/broadwaynews--naveen-kumar.json",
       "just-for-us-2023/timeout--raven-snook.json",
       "once-upon-a-one-more-time-2023/pages-on-stages--mason-pilevsky.json",
-      "primary-trust-off-broadway-2023/nytimes--naveen-kumar.json"
+      "primary-trust-off-broadway-2023/nytimes--naveen-kumar.json",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json",
+      "beetlejuice-tour-2026/variety--unknown.json",
+      "beetlejuice-tour-2026/observer--david-cote.json",
+      "beetlejuice-tour-2026/theatermania--unknown.json",
+      "mrs-doubtfire-tour-2025/dayton-local--michael-woody.json",
+      "mrs-doubtfire-tour-2025/folsom-times--bill-sullivan.json",
+      "mrs-doubtfire-tour-2025/media-mikes--ben-ryland.json",
+      "mrs-doubtfire-tour-2025/pioneer-press--rob-hubbard.json",
+      "mrs-doubtfire-tour-2025/shepherd-express--anne-siegel.json",
+      "mrs-doubtfire-tour-2025/virginian-pilot--page-laws.json",
+      "and-juliet-tour-2024/people--unknown.json"
     ],
-    "amp": [],
+    "amp": [
+      "data/review-texts/and-juliet-tour-2024/deadline--unknown.json",
+      "and-juliet-tour-2024/deadline--unknown.json"
+    ],
     "browserbase": [
       "data/review-texts/the-last-ship-west-end-2026/times-uk--ed-potton.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
@@ -1397,7 +1430,11 @@
       "hells-kitchen-tour-2025/deadline--greg-evans.json",
       "data/review-texts/invisible-me-off-west-end-2026/times-uk--unknown.json",
       "data/review-texts/gutenberg-2023/deadline--greg-evans.json",
-      "gutenberg-2023/deadline--greg-evans.json"
+      "gutenberg-2023/deadline--greg-evans.json",
+      "data/review-texts/buena-vista-social-club-tour-2026/deadline--greg-evans.json",
+      "buena-vista-social-club-tour-2026/deadline--greg-evans.json",
+      "data/review-texts/beetlejuice-tour-2026/deadline--greg-evans.json",
+      "beetlejuice-tour-2026/deadline--greg-evans.json"
     ],
     "directCookies": [
       "maybe-happy-ending-2024/newyorker--conde-nast.json",
@@ -1520,7 +1557,8 @@
       "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
       "patriots-2024/broadwaynews--brittani-samuel.json",
       "cabaret-2024/broadwaynews--brittani-samuel.json",
-      "stereophonic-2024/broadwaynews--brittani-samuel.json"
+      "stereophonic-2024/broadwaynews--brittani-samuel.json",
+      "and-juliet-tour-2024/latimes--unknown.json"
     ],
     "brightdata": [
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
@@ -1689,7 +1727,9 @@
       "once-upon-a-one-more-time-2023/wsj--charles-isherwood.json",
       "just-for-us-2023/theater-life--paulanne-simmons.json",
       "once-upon-a-one-more-time-2023/ap--mark-kennedy.json",
-      "once-upon-a-one-more-time-2023/nyt-theater--jonathan-mandell.json"
+      "once-upon-a-one-more-time-2023/nyt-theater--jonathan-mandell.json",
+      "beetlejuice-tour-2026/thewrap--robert-hofler.json",
+      "beetlejuice-tour-2026/rollingstone--david-browne.json"
     ],
     "scrapingdog": [
       "thelma-and-louise-a-new-musical-off-west-end-2026/thestage--holly-o.json",
@@ -1701,11 +1741,12 @@
       "the-notebook-tour-2025/the-chronicle--emily-cui.json",
       "cable-street-off-west-end-2026/musical-theatre-review--unknown.json",
       "cable-street-off-west-end-2026/1883magazine--unknown.json",
-      "the-lonely-few-off-broadway-2024/theater-life--paulanne-simmons.json"
+      "the-lonely-few-off-broadway-2024/theater-life--paulanne-simmons.json",
+      "hadestown-2019/musical-theatre-review--angela-thomas.json"
     ]
   },
   "startTime": "2026-09-28T20:31:08.071Z",
-  "lastProcessed": "primary-trust-off-broadway-2023/nytimes--naveen-kumar.json",
+  "lastProcessed": "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
   "log": [
     {
       "t": "2026-09-28T20:47:55.386Z",
@@ -2351,6 +2392,66 @@
       "t": "2026-09-29T14:13:10.602Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-29T14:50:52.699Z",
+      "event": "bb-session",
+      "session": "7a3dedf4",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-09-29T14:51:10.611Z",
+      "event": "bb-session",
+      "session": "b8aa20eb",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-09-29T14:51:36.869Z",
+      "event": "bb-session",
+      "session": "ce65c374",
+      "url": "https://deadline.com/2026/02/buena-vista-social-club-grammy-award-broadway-12367"
+    },
+    {
+      "t": "2026-09-29T14:52:41.987Z",
+      "event": "bb-session",
+      "session": "54e4e7d2",
+      "url": "https://www.gigantic.com/the-seven-deadly-sins-the-human-voice-2026-09-12-19-30-"
+    },
+    {
+      "t": "2026-09-29T14:52:59.676Z",
+      "event": "bb-session",
+      "session": "fcd269a6",
+      "url": "https://www.gigantic.com/the-seven-deadly-sins-the-human-voice-2026-09-12-19-30-"
+    },
+    {
+      "t": "2026-09-29T14:53:27.816Z",
+      "event": "bb-session",
+      "session": "692afe5b",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-29T14:53:37.399Z",
+      "event": "bb-session",
+      "session": "ff303fe5",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-29T14:56:34.349Z",
+      "event": "bb-session",
+      "session": "146063aa",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-29T14:56:42.345Z",
+      "event": "bb-session",
+      "session": "df6b4f91",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-09-29T14:57:33.598Z",
+      "event": "bb-session",
+      "session": "c242e8f4",
+      "url": "https://deadline.com/2024/08/beetlejuice-beetlejuice-ovation-venice-premiere-123"
     }
   ],
   "recoveredAfterFailure": [
@@ -2365,6 +2466,7 @@
     "now-you-see-me-live-west-end-2026/londontheatre1--ryan-collins.json",
     "now-you-see-me-live-west-end-2026/londontheatredirect--marco-da-silva.json",
     "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json",
-    "the-last-five-years-2025/la-weekly--alan-scherstuhl.json"
+    "the-last-five-years-2025/la-weekly--alan-scherstuhl.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/jonathan-baz--unknown.json"
   ]
 }
