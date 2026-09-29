@@ -146,7 +146,7 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T21:07:46.996Z",
+      "lastSeen": "2026-09-29T21:10:45.213Z",
       "lastNotifiedAt": "2026-09-29T19:39:12.553Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 111,
@@ -3850,14 +3850,14 @@
       "resolvedAt": "2026-09-22T16:48:58.111Z"
     },
     "test-yml:red:Unit Tests:0858c92a": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T14:55:02.173Z",
-      "lastNotifiedAt": "2026-09-29T07:36:11.543Z",
+      "lastSeen": "2026-09-29T21:10:44.551Z",
+      "lastNotifiedAt": "2026-09-29T21:10:44.551Z",
       "lastSurfacedAt": null,
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-4196",
       "dispatch": {
@@ -3870,10 +3870,7 @@
         "36595156888",
         "36597393562",
         "36605999433"
-      ],
-      "silentRefires": 4,
-      "resolvedAt": "2026-09-29T17:52:27.914Z",
-      "resolveReason": "stale-signature"
+      ]
     },
     "test-yml:red:Unit Tests:7a4fb44d": {
       "status": "resolved",
@@ -5883,7 +5880,7 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T21:07:46.992Z",
+      "lastSeen": "2026-09-29T21:10:44.542Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -6600,7 +6597,10 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4362",
-      "silentRefires": 8
+      "silentRefires": 7,
+      "absentRunIds": [
+        "36629882705"
+      ]
     },
     "land:land/font-selfhost-v3": {
       "status": "open",
