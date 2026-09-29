@@ -28,7 +28,7 @@
  *
  * Usage:
  *   node scripts/check-discovery-source-blind.js
- *       [--coverage=<path>] [--state=<path>] [--json]
+ *       [--coverage=<path>] [--state=<path>] [--ob-state=<path>] [--json]
  */
 'use strict';
 
@@ -41,11 +41,12 @@ const USAGE = `check-discovery-source-blind.js — exit 1 when a Broadway / West
 discovery source is blind (read-only; the red-run step of update-show-status).
 
 Usage:
-  node scripts/check-discovery-source-blind.js [--coverage=<path>] [--state=<path>] [--json]
+  node scripts/check-discovery-source-blind.js [--coverage=<path>] [--state=<path>] [--ob-state=<path>] [--json]
 
 Options:
   --coverage=<path>   discovery-source-coverage.json (default data/audit/…)
   --state=<path>      broadway-source-coverage-state.json (default data/audit/…)
+  --ob-state=<path>   off-broadway-source-coverage-state.json (default data/audit/…)
   --json              machine-readable verdict
   --help, -h          this help
 
@@ -56,13 +57,16 @@ file cannot be read.`;
 const ROOT = path.join(__dirname, '..');
 const DEFAULT_COVERAGE_PATH = path.join(ROOT, 'data', 'audit', 'discovery-source-coverage.json');
 const DEFAULT_STATE_PATH = path.join(ROOT, 'data', 'audit', 'broadway-source-coverage-state.json');
+const DEFAULT_OB_STATE_PATH = path.join(ROOT, 'data', 'audit', 'off-broadway-source-coverage-state.json');
 
 // The three sources S4-T3 names: Playbill's announced Broadway schedule, and
 // the two West End listing sources (Official London Theatre, TheatreMonkey).
 // TodayTix / Playbill OB / the venue crawls are not watched here — they are
 // either the primary source (a TodayTix outage already fails discovery on
 // its own) or advisory.
-const WATCHED_SOURCES = ['playbillBroadway', 'olt', 'theatremonkey'];
+// BRO-4381 adds TheaterMania's Off-Broadway listings, the independent OB
+// source that found the 16 productions BRO-4377 had to add by hand.
+const WATCHED_SOURCES = ['playbillBroadway', 'olt', 'theatremonkey', 'theatermaniaOB'];
 
 /**
  * Pure decision.
@@ -70,10 +74,11 @@ const WATCHED_SOURCES = ['playbillBroadway', 'olt', 'theatremonkey'];
  * @param {{ coverage: object|null, guardState: object|null }} input
  *   coverage   — parsed discovery-source-coverage.json, or null if unreadable
  *   guardState — parsed broadway-source-coverage-state.json, or null if absent
+ *   obGuardState — parsed off-broadway-source-coverage-state.json (BRO-4381), or null if absent
  * @param {{ threshold?: number, watched?: string[] }} [opts]
  * @returns {{ blind: boolean, reasons: string[] }}
  */
-function evaluateDiscoveryBlindness({ coverage, guardState }, opts = {}) {
+function evaluateDiscoveryBlindness({ coverage, guardState, obGuardState = null }, opts = {}) {
   const threshold = opts.threshold ?? ZERO_STREAK_ALERT_THRESHOLD;
   const watched = opts.watched ?? WATCHED_SOURCES;
   const reasons = [];
@@ -96,6 +101,11 @@ function evaluateDiscoveryBlindness({ coverage, guardState }, opts = {}) {
     reasons.push(`Broadway source-coverage guard is blind (${guard.reason || 'unknown'} at ${guard.at || 'unknown time'}) — Playbill parser rotted`);
   }
 
+  const obGuard = obGuardState && typeof obGuardState === 'object' ? obGuardState.guard : null;
+  if (obGuard && obGuard.blind === true) {
+    reasons.push(`Off-Broadway source-coverage guard is blind (${obGuard.reason || 'unknown'} at ${obGuard.at || 'unknown time'}) — TheaterMania OB feed failed or changed shape`);
+  }
+
   return { blind: reasons.length > 0, reasons };
 }
 
@@ -113,21 +123,23 @@ function main(argv = process.argv.slice(2)) {
 
   const coveragePath = argValue(argv, '--coverage') || DEFAULT_COVERAGE_PATH;
   const statePath = argValue(argv, '--state') || DEFAULT_STATE_PATH;
+  const obStatePath = argValue(argv, '--ob-state') || DEFAULT_OB_STATE_PATH;
   const asJson = argv.includes('--json');
 
   const verdict = evaluateDiscoveryBlindness({
     coverage: readJsonOrNull(coveragePath),
     guardState: readJsonOrNull(statePath),
+    obGuardState: readJsonOrNull(obStatePath),
   });
 
   if (asJson) {
-    console.log(JSON.stringify({ ...verdict, coveragePath, statePath, watched: WATCHED_SOURCES, threshold: ZERO_STREAK_ALERT_THRESHOLD }, null, 2));
+    console.log(JSON.stringify({ ...verdict, coveragePath, statePath, obStatePath, watched: WATCHED_SOURCES, threshold: ZERO_STREAK_ALERT_THRESHOLD }, null, 2));
   } else if (verdict.blind) {
     console.error(`::error::${verdict.reasons.length} discovery blindness signal(s) — failing the run (S4-T3):`);
     for (const r of verdict.reasons) console.error(`  - ${r}`);
     console.error('Fix the source (parser/DOM drift, blocked fetch, missing secret) and confirm the streak resets in data/audit/discovery-source-coverage.json on the next run.');
   } else {
-    console.log(`Discovery sources contributing: ${WATCHED_SOURCES.join(', ')} all below the ${ZERO_STREAK_ALERT_THRESHOLD}-run zero-streak threshold; Broadway coverage guard not blind.`);
+    console.log(`Discovery sources contributing: ${WATCHED_SOURCES.join(', ')} all below the ${ZERO_STREAK_ALERT_THRESHOLD}-run zero-streak threshold; Broadway and Off-Broadway coverage guards not blind.`);
   }
 
   return verdict.blind ? 1 : 0;
