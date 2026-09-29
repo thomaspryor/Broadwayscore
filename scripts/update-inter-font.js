@@ -152,6 +152,27 @@ ${wrapRange(r.unicodeRange)}
 `);
   }
   const latin = results.find((r) => r.subset === 'latin');
+
+  // The metric-override fallback face describes ONE font file. If the woff2
+  // changed, those numbers are now stale and the fallback is no longer
+  // metric-matched — text will shift when the real font swaps in, and nothing
+  // reports it because the page still renders. check-font-integrity.js fails on
+  // the marker below, so the update cannot land half-done; say so here too,
+  // where the person doing the update is actually looking.
+  console.log(`[inter] ⚠ The fallback metrics in globals.css were computed for the PREVIOUS`);
+  console.log(`[inter]   file and are now stale. Recompute them against the new woff2:\n`);
+  console.log(`    node -e "
+      const fontkit = require('next/dist/compiled/@next/font/dist/fontkit');
+      const { getFallbackMetricsFromFontFile } =
+        require('next/dist/compiled/@next/font/dist/local/get-fallback-metrics-from-font-file.js');
+      const buf = require('fs').readFileSync('public/fonts/${latin.filename}');
+      const mod = fontkit.default || fontkit;
+      console.log(getFallbackMetricsFromFontFile(mod(buf), 'sans-serif'));
+    "\n`);
+  console.log(`[inter]   then update the @font-face for 'InterVariable Fallback' AND its`);
+  console.log(`[inter]   marker comment to:\n`);
+  console.log(` * metrics-for: /fonts/${latin.filename}\n`);
+
   console.log(`[inter] And in src/app/layout.tsx:\n`);
   console.log(`const INTER_LATIN_WOFF2 = '/fonts/${latin.filename}';\n`);
   console.log('[inter] Then: npm run build && node scripts/check-font-integrity.js');

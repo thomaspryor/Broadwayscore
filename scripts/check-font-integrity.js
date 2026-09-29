@@ -292,6 +292,41 @@ function analyze(paths = {}) {
     }
   }
 
+  // 6. The metric-override fallback face describes ONE font file. Swapping the
+  //    woff2 without recomputing ascent/descent/size-adjust silently un-matches
+  //    the metrics and brings back the layout shift the face exists to prevent
+  //    — and nothing would report it, because the page still renders fine.
+  //    So the overrides carry a `metrics-for:` marker naming the file they were
+  //    computed from, and it must still be a real @font-face src.
+  //    Read from the RAW css: the marker lives in a comment, which the parsed
+  //    copy has had stripped.
+  const hasOverrides = /(?:ascent-override|size-adjust)\s*:/.test(css);
+  if (hasOverrides) {
+    const marker = cssRaw.match(/metrics-for:\s*(\S+)/);
+    if (!marker) {
+      failures.push({
+        check: 'metrics-unanchored',
+        detail:
+          `${p.globalsCss} sets ascent-override/size-adjust on a fallback face but has no ` +
+          `\`metrics-for: <font path>\` marker saying which file those numbers were ` +
+          `computed from. Without it a future font swap silently leaves stale metrics and ` +
+          `reintroduces layout shift. Add the marker in the comment above the face.`,
+      });
+    } else if (!declaredSrcs.has(marker[1])) {
+      failures.push({
+        check: 'metrics-stale',
+        detail:
+          `${p.globalsCss} says its fallback metrics were computed from ${marker[1]}, but no ` +
+          `@font-face uses that file any more — the font was updated without recomputing ` +
+          `ascent-override/descent-override/size-adjust. The fallback is no longer ` +
+          `metric-matched, so text will shift when the real font swaps in. Recompute them ` +
+          `with the metrics block printed by scripts/update-inter-font.js and update the marker.`,
+      });
+    } else {
+      notes.push(`fallback metrics anchored to: ${marker[1]}`);
+    }
+  }
+
   return { failures, notes };
 }
 

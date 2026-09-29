@@ -50,6 +50,7 @@ function repoFixture({ css, tailwind, layout, fontFiles = ['fonts/i.woff2'] } = 
     'src/app/globals.css',
     css ??
       `@font-face{font-family:'InterVariable';src:url('/fonts/i.woff2') format('woff2');unicode-range:U+0000-00FF}\n` +
+        `/* metrics-for: /fonts/i.woff2 */\n` +
         `@font-face{font-family:'InterVariable Fallback';src:local('Arial');size-adjust:107.89%}\n`
   );
   write(
@@ -140,6 +141,45 @@ describe('font wiring: shipped assets and the duplicated filename', () => {
     const dir = repoFixture();
     fs.rmSync(path.join(dir, 'tailwind.config.ts'));
     assert.ok(checks(dir).includes('missing-file'));
+  });
+});
+
+describe('font wiring: the metric-override face must stay anchored', () => {
+  // The four override numbers describe ONE font file. Swapping the woff2
+  // without recomputing them silently un-matches the metrics and brings back
+  // the layout shift the face exists to prevent — and nothing reports it,
+  // because the page still renders. So the overrides carry a marker naming the
+  // file they came from, and it has to keep pointing at a real @font-face src.
+  test('flags overrides whose metrics-for file is no longer used — a stale swap', () => {
+    const dir = repoFixture({
+      css:
+        `@font-face{font-family:'InterVariable';src:url('/fonts/i-NEWHASH.woff2') format('woff2')}\n` +
+        `/* metrics-for: /fonts/i-OLDHASH.woff2 */\n` +
+        `@font-face{font-family:'InterVariable Fallback';src:local('Arial');ascent-override:89.79%}\n`,
+      layout: `const F = '/fonts/i-NEWHASH.woff2';\n`,
+      fontFiles: ['fonts/i-NEWHASH.woff2'],
+    });
+    assert.ok(checks(dir).includes('metrics-stale'));
+  });
+
+  test('flags overrides with no metrics-for marker at all', () => {
+    const dir = repoFixture({
+      css:
+        `@font-face{font-family:'InterVariable';src:url('/fonts/i.woff2') format('woff2')}\n` +
+        `@font-face{font-family:'InterVariable Fallback';src:local('Arial');size-adjust:107.89%}\n`,
+    });
+    assert.ok(checks(dir).includes('metrics-unanchored'));
+  });
+
+  test('a correctly anchored marker passes', () => {
+    assert.deepEqual(checks(repoFixture()), []);
+  });
+
+  test('no overrides at all means nothing to anchor — not a failure', () => {
+    const dir = repoFixture({
+      css: `@font-face{font-family:'InterVariable';src:url('/fonts/i.woff2') format('woff2')}\n`,
+    });
+    assert.deepEqual(checks(dir), []);
   });
 });
 
