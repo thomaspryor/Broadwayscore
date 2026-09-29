@@ -97,6 +97,12 @@ function expectedFromPriors(priors, pointsTable) {
 
 function round2(n) { return Math.round(n * 100) / 100; }
 
+/** $1,245,000 → "$1.2M", $455,000 → "$455K" */
+function fmtGross(n) {
+  if (n >= 1_000_000) return `$${(n / 1_000_000).toFixed(1)}M`;
+  return `$${Math.round(n / 1000)}K`;
+}
+
 /** Which Tony top category a Broadway show competes in. */
 function topCategoryFor(show) {
   if (show.category !== 'broadway') return null;
@@ -249,7 +255,7 @@ function projectShowPoints(show, ctx) {
     let weekly;
     if (ctx.trailingWeeklyGross) {
       weekly = ctx.trailingWeeklyGross;
-      notes.push(`grossing ~$${Math.round(weekly / 1000)}K/week`);
+      notes.push(`grossing about ${fmtGross(weekly)} a week`);
     } else {
       const key = `${show.type === 'musical' ? 'musical' : 'play'}-${show.isRevival ? 'revival' : 'new'}`;
       const base = ctx.weeklyGrossPriors[key] || 500_000;
@@ -260,7 +266,7 @@ function projectShowPoints(show, ctx) {
       weekly = base * GROSS_MULTIPLIER[grossTier];
       const ceiling = weeklyGrossCeiling(ctx.venueCapacity, show.type);
       if (ceiling != null && weekly > ceiling) weekly = ceiling;
-      notes.push(`projected ~$${Math.round(weekly / 1000)}K/week`);
+      notes.push(`projected about ${fmtGross(weekly)} a week`);
     }
     boxOfficeEV = weeks * (weekly / 100_000) * S.boxOffice.pointsPer100K;
     notes.push(weeks > 0 ? `${weeks} scoring weeks of grosses${show.closingDate ? '' : (priors.runWeeks != null || show.type !== 'musical' ? ' (assumed limited run)' : '')}` : 'no grosses left to earn');

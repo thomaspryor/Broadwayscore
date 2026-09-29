@@ -192,17 +192,23 @@ export default function FantasyLeaderboardTable() {
             <div className="ml-12 mr-4 mb-2 mt-1 bg-surface-raised/50 rounded-lg p-3 space-y-1.5">
               <p className="text-xs text-gray-500 uppercase tracking-wider mb-2">Picks</p>
               {entry.picks.map((pick, i) => (
-                <div key={pick.showId} className="flex items-center justify-between text-sm">
+                <div key={pick.showId} className="flex items-center justify-between text-sm gap-3">
                   <span className="text-gray-300">
                     <span className="text-gray-600 mr-2">{i + 1}.</span>
                     {pick.showTitle}
                     <span className="text-gray-600 ml-2">(${pick.price})</span>
+                    {pick.scoreLocked && (
+                      <span className="text-gray-600 ml-2 text-xs">drafted after opening</span>
+                    )}
                   </span>
                   <span className={`font-mono ${pick.points > 0 ? 'text-emerald-400' : 'text-gray-600'}`}>
                     {pick.points.toFixed(1)}
                   </span>
                 </div>
               ))}
+              {entry.scoringFrom && (
+                <p className="text-xs text-gray-600 pt-1">Box office counted from the week of {entry.scoringFrom}.</p>
+              )}
             </div>
           )}
         </div>

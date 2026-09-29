@@ -49,9 +49,12 @@ jobs:
           fi
 
       # Prices are frozen for the season — generate-fantasy-config.js reads
-      # data/fantasy-league-frozen.json and emits those prices verbatim.
+      # data/fantasy-league-frozen.json and emits those prices verbatim. The
+      # catalog is append-only: a show announced after the freeze is priced
+      # once (scripts/lib/fantasy-pricing.js + data/fantasy-preseason-priors.json)
+      # and appended to the frozen file; nothing is ever removed or repriced.
       # No Gold Derby refresh, no EV projection, no repricing step.
-      - name: Regenerate fantasy config (frozen prices)
+      - name: Regenerate fantasy config (frozen prices, append new shows)
         if: steps.season-check.outputs.in_season == 'true'
         run: node scripts/generate-fantasy-config.js
 
@@ -62,7 +65,7 @@ jobs:
       - name: Commit updated fantasy data
         if: steps.season-check.outputs.in_season == 'true' && inputs.dry_run != true
         run: |
-          git add data/fantasy-league.json data/fantasy-scores.json
+          git add data/fantasy-league.json data/fantasy-scores.json data/fantasy-league-frozen.json data/fantasy-ev.json
           if git diff --staged --quiet; then
             echo "No fantasy data changes to commit"
           else
