@@ -74,7 +74,7 @@ function buildTbCandidateUrls(title, year) {
   //      which gave "School Girls; Or" → SchoolGirlsOr*.html, never tried the real page);
   //   2. shortTitleCandidate's comma cut ("Beaches, A New Musical" → Beaches.html).
   const shortTitles = [];
-  const punctCut = title.split(/[;:]/)[0].trim();
+  const punctCut = (typeof title === 'string' ? title : '').split(/[;:]/)[0].trim();
   if (punctCut && punctCut !== title) shortTitles.push(punctCut);
   const commaShort = shortTitleCandidate(title);
   if (commaShort && !shortTitles.includes(commaShort)) shortTitles.push(commaShort);
@@ -193,7 +193,10 @@ function verifyTbPage(html, { showTitle, openingDate, isRevival = false } = {}) 
 const DEFAULT_TB_BUDGET_MS = 240000;
 function tbBudgetMs(explicit) {
   if (Number.isFinite(explicit) && explicit >= 0) return explicit;
-  const env = Number(process.env.TB_DIRECT_URL_BUDGET_MS);
+  // An unset workflow var arrives as '' (env: X: ${{ vars.X }}) and Number('') is 0,
+  // which would silently mean "one candidate, no index fallback". Blank means unset.
+  const raw = String(process.env.TB_DIRECT_URL_BUDGET_MS || '').trim();
+  const env = raw ? Number(raw) : NaN;
   return Number.isFinite(env) && env >= 0 ? env : DEFAULT_TB_BUDGET_MS;
 }
 

@@ -125,12 +125,30 @@ function detectCrossShowUrlMismatch(showId, url, opts = {}) {
       if (contained) {
         const otherTokens = new Set([...other.slug.split('-'), ...otherIdSlug.split('-')]);
         const vouching = [...thisTokens].filter(t => !otherTokens.has(t));
-        // One token is not enough: a real Mean Girls review whose slug happens to say
+        // Whole path words only: "school" must not match "preschool".
+        const hasWord = t => new RegExp(`(^|[^a-z0-9])${t}([^a-z0-9]|$)`).test(urlPath);
+        const present = vouching.filter(hasWord);
+        // One word is not enough: a real Mean Girls review whose slug happens to say
         // "high-school" must still be caught. Two of this show's own words (or all of
-        // them when it has only one) have to appear before the URL is trusted.
+        // them when it has only one) have to appear before the URL is trusted...
         const needed = Math.min(2, vouching.length);
-        const present = vouching.filter(t => urlPath.includes(t)).length;
-        if (needed > 0 && present >= needed) continue;
+        if (needed > 0 && present.length >= needed) continue;
+        // ...unless the URL reproduces this show's own phrase around the contained
+        // title: the word that sits right next to the other show's title in THIS slug,
+        // kept together the same way ("african-mean-girls" is School Girls' subtitle;
+        // "mean-girls-high-school" and "mean-girls-school-edition" are not).
+        if (present.length > 0) {
+          const phrases = [];
+          for (const [container, part] of [[thisShow.slug, other.slug], [idSlug, otherIdSlug], [idSlugNorm, otherIdSlugNorm]]) {
+            const at = part ? container.indexOf(part) : -1;
+            if (at < 0) continue;
+            const before = container.slice(0, at).split('-').filter(Boolean).pop();
+            const after = container.slice(at + part.length).split('-').filter(Boolean)[0];
+            if (before && present.includes(before)) phrases.push(`${before}-${part}`);
+            if (after && present.includes(after)) phrases.push(`${part}-${after}`);
+          }
+          if (phrases.some(p => urlPath.includes(p))) continue;
+        }
       }
       if (urlPath.includes(other.slug)) {
         return { matchedShowId: other.id, matchedTitle: other.title, showTitle: thisShow.title };

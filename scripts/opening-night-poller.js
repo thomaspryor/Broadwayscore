@@ -847,7 +847,9 @@ async function runAggregators(show) {
             ...(tb.publishDate ? { publishDate: tb.publishDate } : {}),
           });
         } else {
-          console.log(`  Talkin' Broadway: ${tb.reason} — review may not be published yet`);
+          // A budget stop says nothing about whether the review exists; only a clean miss does.
+          const suffix = /time budget exhausted/.test(tb.reason || '') ? '' : ' — review may not be published yet';
+          console.log(`  Talkin' Broadway: ${tb.reason}${suffix}`);
         }
       }
     } catch (err) {
