@@ -60,7 +60,7 @@ function FantasyDraftInner() {
   const [picks, setPicks] = useState<string[]>(['']);
   const [tiebreakers, setTiebreakers] = useState<Record<string, string>>({});
   const [submitting, setSubmitting] = useState(false);
-  const [submitted, setSubmitted] = useState<null | { scoringFrom: string | null; lockedPicks: string[] }>(null);
+  const [submitted, setSubmitted] = useState<null | { scoringFrom: string | null; lockedPicks: string[]; emailSent: boolean }>(null);
   const [error, setError] = useState<string | null>(null);
 
   // The draft window is evaluated on the client after mount so a statically
@@ -81,7 +81,7 @@ function FantasyDraftInner() {
   // Best Musical-eligible: Broadway musicals with Tony eligibility
   const bestMusicalCandidates = useMemo(() => {
     return Object.entries(config.shows)
-      .filter(([, s]) => s.type === 'musical' && s.category === 'broadway' && s.eligible?.tonys && !s.isRevival)
+      .filter(([, s]) => s.type === 'musical' && s.category === 'broadway' && s.eligible?.tonys && !(s as FantasyShow).isRevival)
       .map(([id, s]) => ({ id, title: s.title }))
       .sort((a, b) => a.title.localeCompare(b.title));
   }, []);
@@ -155,6 +155,7 @@ function FantasyDraftInner() {
       setSubmitted({
         scoringFrom: typeof data.scoring_from === 'string' ? data.scoring_from : null,
         lockedPicks: Array.isArray(data.locked_picks) ? data.locked_picks : [],
+        emailSent: data.email_sent === true,
       });
     } catch {
       setError('Network error. Please try again.');
@@ -173,7 +174,7 @@ function FantasyDraftInner() {
           <p className="text-gray-400 mb-2">
             Your picks are locked in{teamName ? ` as "${teamName}"` : ''}. Picks are final.
             {leagueName && (
-              <> You&apos;ve joined league <a href={`/fantasy/league/${leagueName}`} className="text-brand hover:underline font-semibold">{leagueName}</a>.</>
+              <> You&apos;ve joined league <a href={`/fantasy/league/${leagueName.trim().toLowerCase()}`} className="text-brand hover:underline font-semibold">{leagueName}</a>.</>
             )}
           </p>
           <p className="text-gray-400 mb-2">
@@ -181,7 +182,9 @@ function FantasyDraftInner() {
           </p>
           <p className="text-gray-500 text-sm mb-8">
             {submitted.scoringFrom && <>Box office counts from the week of {longDate(submitted.scoringFrom)}. </>}
-            We emailed a copy of your roster to {email.trim()}.
+            {submitted.emailSent
+              ? <>We emailed a copy of your roster to {email.trim()}.</>
+              : <>Find your team on the leaderboard by searching for {email.trim()}.</>}
           </p>
 
           <div className="bg-surface-raised/50 rounded-xl p-6 mb-8 text-left">
@@ -286,21 +289,23 @@ function FantasyDraftInner() {
         {/* Email + Team info */}
         <div className="space-y-4 mb-6">
           <div>
-            <label className="block text-sm text-gray-400 mb-1">Email *</label>
+            <label htmlFor="fantasy-email" className="block text-sm text-gray-400 mb-1">Email *</label>
             <input
+              id="fantasy-email"
               type="email"
               className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
               placeholder="you@email.com"
               value={email}
               onChange={e => setEmail(e.target.value)}
             />
-            <p className="text-xs text-gray-600 mt-1">One entry per email, final once submitted. We email you a copy of your roster and weekly standings.</p>
+            <p className="text-xs text-gray-500 mt-1">One entry per email, final once submitted. We email you a copy of your roster and weekly standings.</p>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div>
-              <label className="block text-sm text-gray-400 mb-1">Team Name</label>
+              <label htmlFor="fantasy-team-name" className="block text-sm text-gray-400 mb-1">Team Name</label>
               <input
+                id="fantasy-team-name"
                 type="text"
                 className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
                 placeholder="Optional"
@@ -310,7 +315,7 @@ function FantasyDraftInner() {
               />
             </div>
             <div>
-              <label className="block text-sm text-gray-400 mb-1">League</label>
+              <label htmlFor="fantasy-league-name" className="block text-sm text-gray-400 mb-1">League</label>
               {leagueFromUrl ? (
                 <div className="w-full bg-surface-raised border border-brand/30 rounded-lg px-4 py-2.5 text-brand font-mono text-sm">
                   {leagueName}
@@ -318,16 +323,17 @@ function FantasyDraftInner() {
                 </div>
               ) : (
                 <input
+                  id="fantasy-league-name"
                   type="text"
                   className="w-full bg-surface-raised border border-white/10 rounded-lg px-4 py-2.5 text-white placeholder-gray-500 focus:border-brand/50 focus:outline-none transition-colors"
-                  placeholder="Optional — or create a league first"
+                  placeholder="Optional, or create a league first"
                   value={leagueName}
                   onChange={e => setLeagueName(e.target.value)}
                   maxLength={50}
                 />
               )}
               {!leagueFromUrl && (
-                <p className="text-xs text-gray-600 mt-1">
+                <p className="text-xs text-gray-500 mt-1">
                   <a href="/fantasy/create-league" className="text-brand/70 hover:text-brand transition-colors">Create a private league →</a>
                 </p>
               )}
@@ -365,7 +371,7 @@ function FantasyDraftInner() {
         </div>
 
         {/* Legend */}
-        <div className="text-xs text-gray-600 mb-8 space-y-1">
+        <div className="text-xs text-gray-500 mb-8 space-y-1">
           <p><span className="text-yellow-400">{ELIGIBILITY_MARKERS.criticScoreLocked}</span> = already open. Reviews are public, so this show earns box office and awards points only.</p>
           <p>OB = Off-Broadway (no box office points, not Tony-eligible)</p>
           <p>Box office counts from the week you draft. Draft by {shortDate(EARLY_BIRD_CUTOFF)} and it counts from {shortDate(SCORING_START)}. Critic and audience points count for shows that open after you draft.</p>
@@ -374,7 +380,7 @@ function FantasyDraftInner() {
         {/* Tiebreakers */}
         <div className="space-y-3 mb-8">
           <h2 className="text-sm text-gray-500 uppercase tracking-wider">Tiebreakers</h2>
-          <p className="text-xs text-gray-600">Used to break ties on Tony night. Closest answer wins.</p>
+          <p className="text-xs text-gray-500">Used to break ties on Tony night. Closest answer wins.</p>
           {TIEBREAKER_QUESTIONS.map(q => (
             <div key={q.id}>
               <label className="block text-sm text-gray-400 mb-1">{q.question}</label>

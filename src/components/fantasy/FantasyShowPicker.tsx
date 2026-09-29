@@ -95,8 +95,8 @@ export default function FantasyShowPicker({
         <span className="font-bold text-emerald-400">${selectedShow.price}</span>
         <button
           onClick={() => onRemove(selectedShow.id)}
-          className="text-gray-500 hover:text-red-400 transition-colors p-1"
-          aria-label="Remove pick"
+          className="text-gray-500 hover:text-red-400 transition-colors p-2 -m-1"
+          aria-label={`Remove ${selectedShow.title}`}
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
@@ -109,10 +109,15 @@ export default function FantasyShowPicker({
   return (
     <div ref={ref} className="relative">
       <div
+        role="button"
+        tabIndex={0}
+        aria-expanded={isOpen}
+        aria-label={`Pick a show for slot ${slotIndex + 1}`}
         className={`flex items-center gap-3 rounded-lg border p-3 cursor-pointer transition-colors ${
           isOpen ? 'bg-surface-overlay border-brand/50' : 'bg-surface-raised/50 border-white/10 border-dashed hover:border-white/20'
         }`}
         onClick={() => setIsOpen(true)}
+        onKeyDown={e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); setIsOpen(true); } }}
       >
         <span className="text-xs text-gray-500 font-mono w-5">{slotIndex + 1}</span>
         {isOpen ? (

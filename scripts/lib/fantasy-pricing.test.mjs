@@ -64,12 +64,14 @@ describe('boxOfficeWeeks', () => {
     assert.equal(pricing.boxOfficeWeeks(show, base), 12);
   });
 
-  test('a play with no closing date assumes a limited run, a musical runs to season end', () => {
+  test('a play with no closing date assumes a limited run; a musical scales with its tier', () => {
     const playWeeks = pricing.boxOfficeWeeks(newPlay, base);
     assert.equal(playWeeks, 16);
-    const musicalWeeks = pricing.boxOfficeWeeks(newMusical, base);
-    // 2026-12-07 → 2027-06-13 = 188 days = 26 weeks
-    assert.equal(musicalWeeks, 26);
+    // tier 5: open-ended, 2026-12-07 → 2027-06-13 = 188 days = 26 weeks
+    assert.equal(pricing.boxOfficeWeeks(newMusical, { ...base, tier: 5 }), 26);
+    // tier 3 (default): 22-week run assumed
+    assert.equal(pricing.boxOfficeWeeks(newMusical, base), 22);
+    assert.equal(pricing.boxOfficeWeeks(newMusical, { ...base, tier: 1 }), 12);
   });
 
   test('priors.runWeeks overrides the default run length', () => {

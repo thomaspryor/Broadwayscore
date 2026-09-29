@@ -142,7 +142,7 @@ export default function FantasyGuidePage() {
 
         <TierSection
           title="Off-Broadway"
-          subtitle="$5–8"
+          subtitle={obShows.length ? `$${Math.min(...obShows.map(s => s.price))}–${Math.max(...obShows.map(s => s.price))}` : ''}
           description="No box office. Not Tony-eligible. Earn CriticScore, AudienceGrade, and Drama Desk, Outer Critics, Lortel and Obie awards."
           shows={obShows}
         />

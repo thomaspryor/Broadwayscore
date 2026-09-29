@@ -9,13 +9,16 @@ import {
   DRAFT_OPENS,
   FANTASY_TONY_WINDOW,
   draftDeadlineDate,
+  getCriticLabel,
 } from '@/config/fantasy';
 import { SCORE_BUCKETS } from '@/config/score-buckets';
 
+// Keyed by the points-table label (getCriticLabel), not the display label:
+// the 55-64 bucket displays as "Mixed" but scores as "Skippable".
 const CRITIC_TIER_RANGES: Record<string, string> = Object.fromEntries(
   SCORE_BUCKETS
     .filter((b) => b.id !== 'pending')
-    .map((b) => [b.label, `${b.minScore}–${b.maxScore}`])
+    .map((b) => [getCriticLabel(b.minScore), `${b.minScore}–${b.maxScore}`])
 );
 
 function longDate(iso: string): string {
@@ -49,6 +52,10 @@ export default function FantasyLandingPage() {
   const alreadyOpen = shows.filter(s => !s.eligible.criticScore && s.status !== 'closed');
   const seasonLabel = FANTASY_TONY_WINDOW.label;
   const deadlineDate = draftDeadlineDate();
+  const allPrices = shows.map(s => s.price);
+  const obPrices = shows.filter(s => s.category === 'off-broadway').map(s => s.price);
+  const priceRange = { min: Math.min(...allPrices), max: Math.max(...allPrices) };
+  const obRange = obPrices.length ? { min: Math.min(...obPrices), max: Math.max(...obPrices) } : null;
 
   // Worked example for "Scoring in 30 seconds", computed from the live point
   // tables so the numbers can never drift from the rules.
@@ -163,7 +170,7 @@ export default function FantasyLandingPage() {
             <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-brand/15 text-brand font-bold text-lg mb-3">1</div>
             <h3 className="font-semibold mb-2 text-white">Draft</h3>
             <p className="text-sm text-gray-400">
-              Pick up to {info.teamSize} of the {info.totalShows} shows opening this season.
+              Pick up to {info.teamSize} of the {info.totalShows} draftable shows from this Tony season.
               Stay within your ${info.budget} budget.
               No account needed.
             </p>
@@ -201,7 +208,7 @@ export default function FantasyLandingPage() {
             <li className="flex justify-between gap-4"><span>{example.noms} Tony nominations, wins Best Musical</span><span className="font-mono text-gray-300 shrink-0">{example.awards} pts</span></li>
             <li className="flex justify-between gap-4 border-t border-white/10 pt-1.5 font-semibold text-white"><span>Season total from one pick</span><span className="font-mono shrink-0">{example.total} pts</span></li>
           </ul>
-          <p className="text-xs text-gray-600 mt-3">
+          <p className="text-xs text-gray-500 mt-3">
             A flop earns a few box office points and nothing else. That gap is the whole game.
           </p>
         </div>
@@ -251,7 +258,7 @@ export default function FantasyLandingPage() {
                 <span className="font-mono text-gray-300">{AWARDS_POINTS.obieAward} pts</span>
               </div>
             </div>
-            <p className="text-xs text-gray-600 mt-2">
+            <p className="text-xs text-gray-500 mt-2">
               Scoring events across six weeks from early May through Tony night in June. Awards count for every player, whenever you drafted.
             </p>
           </div>
@@ -266,7 +273,7 @@ export default function FantasyLandingPage() {
               Points accumulate from the week you draft through Tony Awards night.
               Draft by {shortDate(info.earlyBirdCutoff ?? info.scoringStart)} and your box office counts from the season start on {shortDate(info.scoringStart)}.
             </p>
-            <p className="text-xs text-gray-600 mt-2">
+            <p className="text-xs text-gray-500 mt-2">
               Broadway shows only. Off-Broadway shows don&apos;t report grosses.
             </p>
           </div>
@@ -282,14 +289,14 @@ export default function FantasyLandingPage() {
                   <span className="text-gray-400">
                     {tier}
                     {CRITIC_TIER_RANGES[tier] && (
-                      <span className="text-gray-600 font-mono text-xs ml-1.5">{CRITIC_TIER_RANGES[tier]}</span>
+                      <span className="text-gray-500 font-mono text-xs ml-1.5">{CRITIC_TIER_RANGES[tier]}</span>
                     )}
                   </span>
                   <span className="font-mono text-gray-300 whitespace-nowrap">{pts} pts</span>
                 </div>
               ))}
             </div>
-            <p className="text-xs text-gray-600 mt-3">
+            <p className="text-xs text-gray-500 mt-3">
               Based on Broadway Scorecard&apos;s critic composite score.
               Counts only for shows that had not opened yet when you drafted them.
             </p>
@@ -310,7 +317,7 @@ export default function FantasyLandingPage() {
                   </div>
                 ))}
             </div>
-            <p className="text-xs text-gray-600 mt-3">
+            <p className="text-xs text-gray-500 mt-3">
               Same rule as CriticScore: counts only for shows that opened after you drafted them.
             </p>
           </div>
@@ -373,7 +380,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'How do show prices work?',
-              a: `Each show has a price from $5 to $35 based on how many points it is projected to earn: its Tony prospects, its box office outlook, how many weeks it runs, and, for shows that already opened, the score it has. Prices are set when the draft opens and do not change during the season. You have $${info.budget} for up to ${info.teamSize} slots, so you need a mix of big bets and value picks. Every price comes with a one-line rationale in the Draft Guide.`,
+              a: `Each show has a price from $${priceRange.min} to $${priceRange.max} based on how many points it is projected to earn: its Tony prospects, its box office outlook, how many weeks it runs, and, for shows that already opened, the score it has. Prices are set when the draft opens and do not change during the season. You have $${info.budget} for up to ${info.teamSize} slots, so you need a mix of big bets and value picks. Every price comes with a one-line rationale in the Draft Guide.`,
             },
             {
               q: 'What is the best strategy?',
@@ -385,7 +392,7 @@ export default function FantasyLandingPage() {
             },
             {
               q: 'What about Off-Broadway shows?',
-              a: 'Priced $5 to $8. They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Lortel, and Obie awards. No box office and no Tony nominations.',
+              a: `${obRange ? `Priced $${obRange.min} to $${obRange.max}. ` : ''}They earn CriticScore and AudienceGrade points, plus Drama Desk, Outer Critics Circle, Lortel, and Obie awards. No box office and no Tony nominations.`,
             },
             {
               q: 'What if a new show is announced after I draft?',

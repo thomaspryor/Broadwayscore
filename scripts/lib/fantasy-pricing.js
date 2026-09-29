@@ -78,10 +78,14 @@ const CAP_OCCUPANCY = 0.95;
 const PERFORMANCES_PER_WEEK = 8;
 
 // Plays without an announced closing date almost always run as limited
-// engagements (nonprofit houses and star vehicles alike); assume this many
-// weeks from the first performance. Musicals without a closing date are
-// treated as open-ended through the scoring end. priors.runWeeks overrides.
-const DEFAULT_RUN_WEEKS = { play: 16, musical: null };
+// engagements (nonprofit houses and star vehicles alike); assume 16 weeks
+// from the first performance. Musicals without a closing date carry closure
+// risk that scales with their buzz: a tier-5 title is treated as open-ended
+// through the scoring end, a tier-1 one as a 12-week run. Without this an
+// early-opening tier-3 musical out-prices a spring frontrunner purely on
+// weeks of grosses (ship-check 2026-09-29). priors.runWeeks overrides.
+const DEFAULT_PLAY_RUN_WEEKS = 16;
+const MUSICAL_RUN_WEEKS_BY_TIER = { 1: 12, 2: 16, 3: 22, 4: 30, 5: null };
 
 function clampTier(t) {
   const n = Number(t);
@@ -120,13 +124,16 @@ function addDays(iso, days) {
   return new Date(Date.parse(iso + 'T00:00:00Z') + days * 86_400_000).toISOString().slice(0, 10);
 }
 
-function boxOfficeWeeks(show, { scoringStart, scoringEnd, runWeeks }) {
+function boxOfficeWeeks(show, { scoringStart, scoringEnd, runWeeks, tier }) {
   const first = [show.previewsStartDate, show.openingDate].filter(Boolean).sort()[0];
   if (!first) return 0;
   const start = first > scoringStart ? first : scoringStart;
   let end = show.closingDate || null;
   if (!end) {
-    const assumed = runWeeks != null ? runWeeks : DEFAULT_RUN_WEEKS[show.type === 'musical' ? 'musical' : 'play'];
+    let assumed;
+    if (runWeeks != null) assumed = runWeeks;
+    else if (show.type === 'musical') assumed = MUSICAL_RUN_WEEKS_BY_TIER[clampTier(tier)];
+    else assumed = DEFAULT_PLAY_RUN_WEEKS;
     end = assumed != null ? addDays(first, assumed * 7) : scoringEnd;
   }
   if (end > scoringEnd) end = scoringEnd;
@@ -251,7 +258,7 @@ function projectShowPoints(show, ctx) {
   let boxOfficeEV = 0;
   let weeks = 0;
   if (!isOB) {
-    weeks = boxOfficeWeeks(show, { ...ctx, runWeeks: priors.runWeeks });
+    weeks = boxOfficeWeeks(show, { ...ctx, runWeeks: priors.runWeeks, tier });
     let weekly;
     if (ctx.trailingWeeklyGross) {
       weekly = ctx.trailingWeeklyGross;
@@ -269,7 +276,8 @@ function projectShowPoints(show, ctx) {
       notes.push(`projected about ${fmtGross(weekly)} a week`);
     }
     boxOfficeEV = weeks * (weekly / 100_000) * S.boxOffice.pointsPer100K;
-    notes.push(weeks > 0 ? `${weeks} scoring weeks of grosses${show.closingDate ? '' : (priors.runWeeks != null || show.type !== 'musical' ? ' (assumed limited run)' : '')}` : 'no grosses left to earn');
+    const runAssumed = !show.closingDate && priors.runWeeks == null && (show.type !== 'musical' || MUSICAL_RUN_WEEKS_BY_TIER[tier] != null);
+    notes.push(weeks > 0 ? `${weeks} scoring weeks of grosses${runAssumed ? ' (run length estimated)' : ''}` : 'no grosses left to earn');
   }
 
   // Awards
@@ -284,7 +292,7 @@ function projectShowPoints(show, ctx) {
   }
 
   if (priors.note) notes.unshift(`Tier ${tier}: ${priors.note}`);
-  else notes.unshift(`Tier ${tier} (default, no prior set)`);
+  else notes.unshift(`Tier ${tier}: priced as a typical ${show.category === 'off-broadway' ? 'Off-Broadway' : 'Broadway'} ${show.isRevival ? 'revival' : 'new'} ${show.type === 'musical' ? 'musical' : 'play'}`);
 
   const totalPoints = round2(criticEV + audienceEV + boxOfficeEV + awardsEV);
   return {
