@@ -1,3 +1,4 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: shows.json is itself the source of truth (discovery/hand-edited); structural alias/id-clash check plus one retired-id regression pin
 // BRO-4049: crazy-mama-off-broadway-2026 (TodayTix stub) duplicated
 // crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 (59E59 venue
 // page). Discovery filed opening-night reviews under the stub id. Requires the
