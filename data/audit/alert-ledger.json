@@ -146,8 +146,8 @@
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
-      "lastSeen": "2026-09-29T21:44:02.499Z",
-      "lastNotifiedAt": "2026-09-29T21:44:02.499Z",
+      "lastSeen": "2026-09-29T21:49:38.405Z",
+      "lastNotifiedAt": "2026-09-29T21:49:38.405Z",
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 114,
       "cardId": null,
@@ -3853,7 +3853,7 @@
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no scored show is currently flagged imageless past the self-heal threshold (similar shows)\"",
       "firstSeen": "2026-09-21T01:14:39.220Z",
-      "lastSeen": "2026-09-29T21:43:53.782Z",
+      "lastSeen": "2026-09-29T21:49:38.401Z",
       "lastNotifiedAt": "2026-09-29T21:10:44.551Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
@@ -5876,7 +5876,7 @@
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T21:44:02.496Z",
+      "lastSeen": "2026-09-29T21:49:38.396Z",
       "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
@@ -6595,8 +6595,8 @@
       "linearIdentifier": "BRO-4362",
       "silentRefires": 8,
       "absentRunIds": [
-        "36631901602",
-        "36633606651"
+        "36632283654",
+        "36634165435"
       ]
     },
     "land:land/font-selfhost-v3": {
@@ -6911,6 +6911,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "test-yml:red:Lint Workflows:8be00113": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
+      "firstSeen": "2026-09-29T21:49:38.047Z",
+      "lastSeen": "2026-09-29T21:49:38.047Z",
+      "lastNotifiedAt": "2026-09-29T21:49:38.047Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4392"
     }
   }
 }
