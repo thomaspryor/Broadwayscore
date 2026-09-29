@@ -115,6 +115,23 @@ test('lintDraft refuses numbers and grades not in the fact sheet', () => {
   assert.ok(lib.lintDraft({ title: `Trainspotting scores 85/100, #2 of ${g.rankOf} West End shows`, body: 'ok' }, g).ok);
 });
 
+test('buildPeers: rank cohort only includes shows with a full review count', () => {
+  const mk = (id, category, status) => ({ id, category, status });
+  const shows = [mk('we-ok', 'west-end', 'open'), mk('we-thin', 'west-end', 'open'), mk('ob-thin', 'off-broadway', 'open'), mk('ob-ok', 'off-broadway', 'previews'), mk('ob-closed', 'off-broadway', 'closed')];
+  const slims = new Map([['we-ok', slim({ n: 8 })], ['we-thin', slim({ n: 7 })], ['ob-thin', slim({ n: 3 })], ['ob-ok', slim({ n: 5 })], ['ob-closed', slim({ n: 20 })]]);
+  const p = lib.buildPeers(shows, slims);
+  assert.deepEqual((p['west-end'] || []).map(x => x.id), ['we-ok']);
+  assert.deepEqual((p['off-broadway'] || []).map(x => x.id), ['ob-ok']);
+});
+
+test('lintDraft: small wrong numbers are refused even if some digit elsewhere matches', () => {
+  const f = lib.buildFacts(show, slim(), []);
+  const ok = (body) => lib.lintDraft({ title: '36/100', body }, f).ok;
+  assert.ok(!ok('Only 4 critics liked it.'), '4 is not a count in the fact sheet');
+  assert.ok(ok(`It opened on the ${Number(f.openingDate.slice(8, 10))}th.`), 'the opening day is allowed');
+  assert.ok(ok(`${f.buckets.rave} raves and ${f.buckets.negative} pans.`));
+});
+
 test('applyPostedDetection matches a shortened title via the show-page link', () => {
   const drafts = { drafts: { r: { showTitle: 'The Rocky Horror Show', url: 'https://broadwayscorecard.com/show/rocky-horror-show', status: 'ready', createdAt: '2026-09-28T06:00:00Z' } } };
   const post = { title: 'Rocky Horror gets a 69', selftext: 'blah [link](http://broadwayscorecard.com/show/rocky-horror-show)', created_utc: Date.parse('2026-09-28T12:00:00Z') / 1000 };
