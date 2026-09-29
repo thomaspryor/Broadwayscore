@@ -1906,20 +1906,22 @@ function scoreCandidate(verifyResult, url) {
   return score;
 }
 
-// Verify images from a non-trusted tier.
-// Returns { images, verifyResult, url, tierName, score } for candidate collection,
-// or null if rejected.
 // Local /images/shows/ files an images object points at -> { absPath: Buffer }.
+// Dry runs write candidates under DRY_RUN_DIR, so read (and later restore) there.
 function snapshotLocalImageFiles(images) {
   const out = {};
+  const base = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
   for (const p of Object.values(images || {})) {
     if (typeof p !== 'string' || !p.startsWith('/images/shows/')) continue;
-    const abs = path.join(__dirname, '..', 'public', p);
+    const abs = path.join(base, p.slice('/images/shows/'.length));
     try { out[abs] = fs.readFileSync(abs); } catch { /* not written yet */ }
   }
   return out;
 }
 
+// Verify images from a non-trusted tier.
+// Returns { images, verifyResult, url, tierName, score } for candidate collection,
+// or null if rejected.
 async function verifyAndCollect(images, show, tierName, verifyCtx) {
   if (!verifyCtx) {
     delete images._verifyBuffer;
@@ -2406,6 +2408,10 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
     dirBefore,
     show.id
   );
+  // This show is done: drop its deferred photos (they hold file bytes).
+  if (verifyCtx?.productionPhotoFallbacks) {
+    verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks.filter(f => f.showId !== show.id);
+  }
 
   return { show, images, apiSourced: !!apiData };
 }

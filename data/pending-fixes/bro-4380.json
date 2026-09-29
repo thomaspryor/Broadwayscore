@@ -10,8 +10,8 @@
   "plan": {
     "summary": "BRO-4380: 25 shows used another show's image paths or held another show's art in their own folder. Clear the wrong paths and keep own files verified to be this show's art.",
     "steps": [
-      "Replace images on each listed show (compare-and-set on the current object)",
-      "Image files showing other shows were deleted, and posters copied over wrong thumbnails, in the same landing (public repo)"
+      "Replace images on each listed show (compare-and-set on the current object; only null or existing own /images/shows/ files)",
+      "Posters were copied over 3 wrong thumbnails in the landing that added this plan; the 30 image files showing other shows are deleted in a follow-up landing once this plan has applied"
     ],
     "riskLevel": "Low",
     "actions": [
