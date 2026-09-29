@@ -31,7 +31,7 @@
 const { parseDate } = require('./date-utils');
 const { pickRerouteTarget, urlYearFromPath, isLikelyTourReview } = require('./review-guards');
 const { pickTourForDate } = require('./tour-family');
-const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS, isUkOutletUrl } = require('./venue-classification');
+const { isBroadwayUrl, isLondonMarket, getMarketPool, GENERIC_VENUE_SLUGS } = require('./venue-classification');
 const { VENUE_STOPWORDS } = require('./production-match-gate');
 
 const DAY = 86400000;
@@ -251,9 +251,20 @@ function tourDecision(showId, sibData, { url, publishDate, dateSource }) {
  * at all means a Broadway-era or later review, so reject.
  * @returns {{action:'reroute'|'reject', targetShowId?, reason}|null}
  */
+// Strictly UK: a .uk domain or a named UK-only outlet. isUkOutletUrl's
+// 'theatre'/'independent' hostname heuristic flags US tour-stop sites
+// (mdtheatreguide.com, bgindependentmedia.org), so it isn't used here.
+const UK_ONLY_HOSTS = /(^|\.)(thestage|whatsonstage|britishtheatre|londontheatre1?|westendtheatre|thereviewshub)\./i;
+function isStrictlyUkUrl(url) {
+  try {
+    const h = new URL(url).hostname.toLowerCase();
+    return /\.uk$/.test(h) || UK_ONLY_HOSTS.test(`${h}.`);
+  } catch { return false; }
+}
+
 function tourTargetDecision(showId, sibData, { url, publishDate, dateSource }) {
   if (!sibData || sibData.category !== 'tour') return null;
-  if (url && isUkOutletUrl(url)) return { action: 'reject', reason: 'tour: UK outlet reviews a UK production' };
+  if (url && isStrictlyUkUrl(url)) return { action: 'reject', reason: 'tour: UK outlet reviews a UK production' };
   const tours = [{ id: showId, openingDate: sibData.openingDate, closingDate: sibData.closingDate },
     ...(sibData.siblings || []).filter(s => s.category === 'tour')];
   if (!publishDate || /url/i.test(String(dateSource || ''))) return null;

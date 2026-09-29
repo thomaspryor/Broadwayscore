@@ -215,6 +215,10 @@ test('a write aimed at a tour: UK outlets rejected; dated reviews go to the tour
   const idx = buildSiblingIndex(shows);
   const r = (url, publishDate, dateSource) => classifyMarketRouting({ showId: 'wicked-tour-2013', url, publishDate, dateSource, category: 'tour', siblingIndex: idx });
   assert.equal(r('https://www.whatsonstage.com/news/wicked-review', '2019-05-01').action, 'reject');
+  assert.equal(r('https://www.thestage.co.uk/reviews/wicked', '2019-05-01').action, 'reject');
+  // US sites with 'theatre'/'independent' in the name are tour stops, not UK outlets.
+  assert.equal(r('https://mdtheatreguide.com/2024/12/theatre-review-wicked-at-the-hippodrome/', null).action, 'accept');
+  assert.equal(r('https://bgindependentmedia.org/wicked-at-stranahan/', null).action, 'accept');
   assert.deepEqual([r('https://www.denverpost.com/x', '2008-05-01').action, r('https://www.denverpost.com/x', '2008-05-01').targetShowId], ['reroute', 'wicked-tour-2005']);
   assert.equal(r('https://www.nytimes.com/2003/10/31/theater/wicked.html', '2003-10-31').action, 'reject', 'Broadway-era date fits no tour');
   assert.equal(r('https://www.denverpost.com/x', '2019-05-01').action, 'accept');

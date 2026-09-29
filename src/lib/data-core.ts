@@ -212,7 +212,11 @@ export function getRegionalShows(): ComputedShow[] {
  */
 export function isTourListed(show: Pick<ComputedShow, 'category' | 'criticScore'>): boolean {
   if (show.category !== 'tour') return true;
-  return (show.criticScore?.reviewCount ?? 0) >= getMarketMinReviews('tour');
+  const cs = show.criticScore;
+  // Same rule as the score badge (ScoreBadge.tsx): +2 when no T1/T2 review.
+  const top = (cs?.tier1Count ?? 0) + (cs?.tier2Count ?? 0);
+  const min = getMarketMinReviews('tour') + (top === 0 ? 2 : 0);
+  return (cs?.reviewCount ?? 0) >= min;
 }
 
 export function getTourShows(): ComputedShow[] {
