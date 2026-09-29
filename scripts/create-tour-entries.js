@@ -48,9 +48,15 @@ async function main() {
   const argv = process.argv.slice(2);
   if (hasHelpFlag(argv)) { console.log(USAGE); return; }
   const mode = tourAutomationMode(process.env.TOUR_AUTOCREATE);
-  if (mode === 'off') { console.log('TOUR_AUTOCREATE=off — skipping'); return; }
+  // Every run leaves a report, even an empty one: the daily digest reads its
+  // timestamp to tell a quiet week from a job that stopped running.
+  const writeAudit = (body) => {
+    fs.mkdirSync(path.dirname(AUDIT_PATH), { recursive: true });
+    fs.writeFileSync(AUDIT_PATH, JSON.stringify({ generatedAt: new Date().toISOString(), ...body }, null, 2) + '\n');
+  };
+  if (mode === 'off') { console.log('TOUR_AUTOCREATE=off — skipping'); writeAudit({ mode: 'off', created: [], results: [] }); return; }
   const write = argv.includes('--write') && mode === 'write';
-  if (!fs.existsSync(CANDIDATES)) { console.log('No tour candidates recorded.'); return; }
+  if (!fs.existsSync(CANDIDATES)) { console.log('No tour candidates recorded.'); writeAudit({ mode: write ? 'write' : 'report', created: [], results: [] }); return; }
 
   const { fetchSchedule, fetchWikiText } = require('./enrich-tour-dates');
   const { fetchPage } = require('./lib/scraper');

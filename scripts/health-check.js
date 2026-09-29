@@ -3932,8 +3932,37 @@ function obClosingBacklogResults(report, now = new Date()) {
  * - a date problem (schedule page unreadable, stored launch disagrees) is a warn;
  * - tours created automatically are reported so the owner sees them land.
  */
-function tourAutomationResults({ sweep, dates, autocreate } = {}) {
+// How long each tour job may go without leaving a report before the digest
+// says it has stopped: the sweep and date jobs run daily, auto-create weekly.
+const TOUR_JOB_MAX_AGE_HOURS = { sweep: 36, dates: 36, autocreate: 9 * 24 };
+// Before this, a missing report just means the job hasn't had its first run.
+const TOUR_JOBS_EXPECTED_FROM = '2026-10-06';
+
+function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date()) {
   const out = [];
+  const jobs = [
+    ['sweep', sweep, 'daily tour review mover (rebuild-reviews.yml)'],
+    ['dates', dates, 'daily tour dates check (update-show-status.yml)'],
+    ['autocreate', autocreate, 'weekly new-tour check (scrape-new-aggregators.yml, BWW landing job)'],
+  ];
+  const quiet = [];
+  for (const [key, report, label] of jobs) {
+    const at = report && report.generatedAt ? new Date(report.generatedAt) : null;
+    if (!at || Number.isNaN(at.getTime())) {
+      if (now.toISOString().slice(0, 10) >= TOUR_JOBS_EXPECTED_FROM) quiet.push(`${label}: no report yet`);
+    } else {
+      const hours = (now - at) / 3600000;
+      if (hours > TOUR_JOB_MAX_AGE_HOURS[key]) quiet.push(`${label}: last report ${Math.round(hours / 24)} day(s) ago`);
+    }
+  }
+  if (quiet.length) {
+    out.push({
+      name: 'Data: tour automation stopped reporting',
+      status: 'warn',
+      message: `A national-tour job has not run on schedule: ${quiet.join('; ')}.`,
+      hint: 'Check that workflow\'s recent runs; the step may be failing or the kill switch (TOUR_SWEEP / TOUR_DATES_MODE / TOUR_AUTOCREATE) set to off.',
+    });
+  }
   const held = (sweep && sweep.held) || [];
   if (held.length) {
     out.push({
