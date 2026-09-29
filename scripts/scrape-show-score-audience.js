@@ -842,6 +842,9 @@ async function processShow(show) {
 
     if (!html.includes('show-score.com') && !html.includes('Show Score')) {
       console.log(`  SKIP: Page doesn't appear to be Show Score`);
+      // Usually a bot-challenge/interstitial page: treat as a fetch failure so
+      // it isn't stamped fresh and suppressed for --skip-fresh-hours.
+      showFetchFailed = true;
       return null;
     }
 

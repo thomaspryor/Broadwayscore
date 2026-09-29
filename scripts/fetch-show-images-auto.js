@@ -1807,9 +1807,9 @@ async function fetchFromGoogleImages(show) {
   // ============================================================
   if (!thumbnailBuffer && !posterBuffer) {
     console.log(`   ✗ No usable images found`);
-    // BRO-4243: both searches THREW (provider outage/exhaustion) — not evidence
+    // BRO-4243: a search THREW (provider outage/exhaustion) — not evidence
     // the show has no findable art, so the caller must not back it off.
-    if (squareErrored && posterErrored) return { searchErrored: true };
+    if (squareErrored || posterErrored) return { searchErrored: true };
     return null;
   }
 
