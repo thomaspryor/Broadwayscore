@@ -473,6 +473,13 @@ async function main() {
     }
     console.log(`Filtered to show${showIdFilter.length > 1 ? 's' : ''}: ${showIdFilter.join(', ')} (${toProcess.length} matches)`);
   }
+  // Broadway.com is US only. Listing matches can still land on a London id
+  // (4 West End shows carried the Broadway production's rating, 2026-09-29).
+  const londonDropped = toProcess.filter(m => isLondonMarket(m.show.category));
+  if (londonDropped.length > 0) {
+    console.log(`Dropping ${londonDropped.length} London-market match(es): ${londonDropped.map(m => m.show.id).join(', ')}`);
+    toProcess = toProcess.filter(m => !isLondonMarket(m.show.category));
+  }
   if (showLimit) {
     toProcess = toProcess.slice(0, showLimit);
     console.log(`Limited to ${showLimit} shows`);
