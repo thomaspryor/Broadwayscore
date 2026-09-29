@@ -21,5 +21,22 @@
   "ensembleScores": {
     "sonnet": 88,
     "opus": 82
-  }
+  },
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Florence Welch Rachel Chavkin production of Gatsby that's currently playing previews in Boston",
+    "reason": "The video explicitly mentions a production of 'Gatsby' in previews in Boston, which is a different city from the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly mentions a production of 'Gatsby' in previews in Boston, which is a different city from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:46.131Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly mentions a production of 'Gatsby' in previews in Boston, which is a different city from the assigned Broadway production in New York City."
 }

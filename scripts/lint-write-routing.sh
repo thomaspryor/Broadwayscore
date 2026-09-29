@@ -77,8 +77,8 @@ candidate_files() {
   local allowlist="$1"; shift
   local ext ext_re f full=0
   if [ "$SCOPE_STDIN" = "1" ]; then
-    if printf '%s\n' "$SCOPE_FILES" | grep -qxF "$allowlist" \
-      || printf '%s\n' "$SCOPE_FILES" | grep -qxF "scripts/lint-write-routing.sh"; then
+    if grep -qxF "$allowlist" <<<"$SCOPE_FILES" \
+      || grep -qxF "scripts/lint-write-routing.sh" <<<"$SCOPE_FILES"; then
       full=1
     fi
   fi
@@ -107,7 +107,7 @@ read_allowlist() {
 # ── allowlist membership, done in-process ──────────────────────────────────
 #
 # Every check below used to test membership with
-#   echo "$EXEMPT" | grep -Fxq "$name" && continue
+#   grep -Fxq "$name" <<<"$EXEMPT" && continue
 # once per candidate file. Two forks per file per check — ~600 files x 5
 # checks = ~6,000 subprocesses per `all` run — and, critically, a lookup whose
 # FAILURE IS INDISTINGUISHABLE FROM "not in the list". `set -o pipefail` is on

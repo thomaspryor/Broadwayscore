@@ -22,5 +22,22 @@
     "sonnet": 95,
     "opus": 91
   },
-  "thumbnail": "https://i.ytimg.com/vi/H9V5J7htSK8/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/H9V5J7htSK8/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "KENREX is as cool as theatre can get | ★★★★★ review of the play at The Other Palace Theatre, London",
+    "reason": "The video explicitly reviews a production of 'KENREX' at The Other Palace Theatre in London, not the assigned Off-Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is a review of 'KENREX' at The Other Palace Theatre in London, which is a different city and country from the assigned Off-Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:46.061Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly reviews a production of 'KENREX' at The Other Palace Theatre in London, not the assigned Off-Broadway production in New York City."
 }

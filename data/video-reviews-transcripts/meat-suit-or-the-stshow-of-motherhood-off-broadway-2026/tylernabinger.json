@@ -21,5 +21,20 @@
   "ensembleScores": {
     "sonnet": 62,
     "opus": 60
+  },
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "at Second Stage",
+    "reason": "The video title mentions 'at Second Stage', which indicates a different venue than the assigned production at The Irene Diamond Stage at the Pershing Square Signature Center.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "Second Stage is a theater company in New York City, and the video title mentioning 'at Second Stage' does not indicate a different city or country, but rather a different venue or theater company within the same city, which is not sufficient evidence to confirm it's a different production based on the given criteria.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:58.221Z"
   }
 }

@@ -18,5 +18,22 @@
   "keyQuote": "two strangers carry a cake across New York doesn't quite reach the heights of great musical comedy but it is a good romcom that will leave you with a smile on your face",
   "scoredAt": "2026-04-19T08:37:27.103Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/n7HvPCBscss/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/n7HvPCBscss/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "Criterion theater in padil Circus to see two strangers carry a cake across New York",
+    "reason": "The review is about a production at the Criterion Theatre in London's West End, not the assigned Broadway production in New York.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The evidence explicitly states the review is about a production at the Criterion Theatre in Piccadilly Circus, which is in London, not the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:57:09.734Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review is about a production at the Criterion Theatre in London's West End, not the assigned Broadway production in New York."
 }

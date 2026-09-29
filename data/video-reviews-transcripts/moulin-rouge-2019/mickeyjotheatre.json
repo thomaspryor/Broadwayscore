@@ -18,5 +18,22 @@
   "keyQuote": "I think I saw a three star cast perform a five star show... if it's all about having that emotional connection and seeing a really great love story authentically and beautifully portrayed I just don't know if this is the show for you.",
   "scoredAt": "2026-04-19T08:28:04.307Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/HLANxka-L_U/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/HLANxka-L_U/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "this is a hugely anticipated news show for the west end",
+    "reason": "The review explicitly mentions the West End production, indicating it is about the London run, not the Broadway production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly mentions the West End production, the Piccadilly Theatre, and UK cast members, indicating it is about the London run, not the Broadway production.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:01.861Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review explicitly mentions the West End production, indicating it is about the London run, not the Broadway production."
 }

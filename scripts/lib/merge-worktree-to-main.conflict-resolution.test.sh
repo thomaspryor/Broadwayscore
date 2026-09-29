@@ -104,13 +104,13 @@ if [ "$code1" -eq 0 ]; then
 elif [ "$final1" = "main-old-content" ]; then
   echo "FAIL[1]: conflict.txt was silently resolved to main's STALE content ('main-old-content') — the branch's real fix was discarded exactly like the task #888 incident."
   fail=1
-elif ! echo "$out1" | grep -q "merge of feature-branch failed"; then
+elif ! grep -q "merge of feature-branch failed" <<<"$out1"; then
   # Non-zero alone isn't enough — an earlier, unrelated failure would also
   # exit non-zero and falsely pass this case without exercising the path
   # under test (same rigor as the sibling checkout-fail test).
   echo "FAIL[1]: exited non-zero but NOT via the expected 'merge of feature-branch failed' message — this case didn't exercise what it claims to."
   fail=1
-elif ! echo "$status1" | grep -q '^UU scripts/lib/conflict.txt'; then
+elif ! grep -q '^UU scripts/lib/conflict.txt' <<<"$status1"; then
   echo "FAIL[1]: expected conflict.txt to still show as an unresolved (UU) merge conflict — got: $status1"
   fail=1
 elif [ -z "$stash1" ]; then
@@ -180,7 +180,7 @@ if [ "$code2" -ne 0 ]; then
 elif [ "$merged2" -lt 1 ]; then
   echo "FAIL[2]: feature-branch's commit never landed on main despite a 0 exit — merge did not actually complete."
   fail=1
-elif echo "$status2" | grep -qE '^(U|AA|DD)'; then
+elif grep -qE '^(U|AA|DD)' <<<"$status2"; then
   # Untracked noise (e.g. data/audit/verify-merge-landed.log from the async
   # delayed-reverify the real script schedules) is expected and fine — only
   # an unresolved/unmerged entry indicates the stash conflict wasn't cleaned up.

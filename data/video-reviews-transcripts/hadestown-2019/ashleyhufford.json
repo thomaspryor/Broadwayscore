@@ -17,5 +17,22 @@
   "reasoning": "The reviewer explicitly praises the cast as one of their favorites ever, calls Will Mann's Hermes 'unreal,' and expresses enthusiasm about the chemistry and performances throughout.",
   "keyQuote": "This cast is so good. I have seen many, many Hadestown casts, and this tour has one of my favorite casts ever.",
   "scoredAt": "2026-07-05T12:03:37.060Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "We are in New Haven to see a show.",
+    "reason": "The video explicitly states that the creator is in New Haven to see the Hadestown tour, which is a different city from the assigned Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states the creator is in New Haven to see the Hadestown tour, which is a different city from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:26.022Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly states that the creator is in New Haven to see the Hadestown tour, which is a different city from the assigned Broadway production in New York City."
 }

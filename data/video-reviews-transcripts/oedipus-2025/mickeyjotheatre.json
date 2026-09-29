@@ -18,5 +18,22 @@
   "keyQuote": "the best part of their new production of Oedipus... is that it lasts for 100 minutes. I'm even sorry to say that the worst part of it is that that is 100 minutes too many.",
   "scoredAt": "2026-04-19T08:28:40.458Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/ps8FDyCqQms/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/ps8FDyCqQms/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "London production starring Rami Malek",
+    "reason": "The video explicitly reviews a London production of 'Oedipus' starring Rami Malek, not the assigned Broadway production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is reviewing a London production of 'Oedipus' at the Old Vic, which is a different city and venue from the assigned Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:56:05.161Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly reviews a London production of 'Oedipus' starring Rami Malek, not the assigned Broadway production."
 }

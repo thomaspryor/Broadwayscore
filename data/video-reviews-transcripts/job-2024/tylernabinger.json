@@ -17,5 +17,14 @@
   "reasoning": "Creator gives an enthusiastic first-hand review with clear recommendation language ('one of the most compelling theater pieces I've seen in a while', 'phenomenally acted', 'if you can, go see it'), only caveating with a content warning.",
   "keyQuote": "one of the most compelling theater pieces I've seen in a while",
   "scoredAt": "2026-04-19T19:00:11.107Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "reason": "Video posted 20230926, before this production's first performance (2024-07-15).",
+    "method": "date",
+    "checkedAt": "2026-09-29T14:55:38.925Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "Video posted 20230926, before this production's first performance (2024-07-15)."
 }
