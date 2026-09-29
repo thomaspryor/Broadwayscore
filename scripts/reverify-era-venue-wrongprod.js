@@ -89,6 +89,8 @@ for (const s of (showsData.shows || showsData)) showsMap.set(s.id, s);
         openingDate: show.openingDate || null,
         publishDate: d.publishDate || null,
         market: show.category || 'broadway',
+        // show carries priorRuns/tourLegs so the verifier knows declared earlier runs.
+        show,
       });
     } catch (e) {
       errors++;

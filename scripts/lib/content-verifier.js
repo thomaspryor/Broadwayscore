@@ -399,7 +399,10 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
   }
 
   const { prompt, urlYearConflict } = buildVerificationPrompt({
-    scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url
+    scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url,
+    // Declared earlier runs / tour legs: reviews of those are THIS production.
+    priorRuns: show && show.priorRuns,
+    tourLegs: show && show.tourLegs,
   });
 
   const result = await callWithFallback(prompt);
@@ -529,7 +532,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
  *
  * @returns {{ prompt: string, urlYearConflict: {urlYear: number, publishYear: number, gapYears: number}|null }}
  */
-function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url }) {
+function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, priorRuns, tourLegs }) {
   // Market-aware prompt construction
   const effectiveMarket = market || 'broadway';
   const marketConfig = {
@@ -724,6 +727,8 @@ function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, 
     }
   }
 
+  const priorRunHint = buildPriorRunHint(priorRuns, tourLegs);
+
   const wrongProdList = mc.wrongProdExamples.map(e => `   - ${e}`).join('\n');
 
   const prompt = `You are a content verification assistant for a theater review aggregator. We are verifying reviews of **${mc.label}** productions (${mc.description}).
@@ -807,9 +812,40 @@ ${effectiveMarket === 'west-end' || effectiveMarket === 'off-west-end' ? `- **To
 
 ${effectiveMarket === 'broadway' ? `- **Pre-Broadway tryouts at regional houses:** Reviews at Chicago Shakespeare, Goodman Theatre, Kennedy Center, La Jolla Playhouse, Old Globe, Mark Taper Forum, ART Cambridge, etc. BEFORE the Broadway transfer ARE wrong production for the Broadway entry. Even if the same show later moved to Broadway, the tryout review describes the pre-Broadway venue.` : ''}
 
-Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}${longRunnerHint}${urlYearHint}`;
+Set isValid=true only if the content is a review of the ${mc.label} production and is not truncated/junk.${temporalHint}${longRunnerHint}${urlYearHint}${priorRunHint}`;
 
   return { prompt, urlYearConflict };
+}
+
+/**
+ * Declared earlier runs / tour legs of THIS production (show.priorRuns,
+ * show.tourLegs) as a prompt hint. Without it the collector's verifier flags
+ * a review of a declared run (Totoro's Barbican run, the Garrick 2022 run of
+ * My Son's a Queer) as wrongProduction, and that "Collector LLM" reason is not
+ * one shouldAutoClearWrongProductionPriorRun may override, so the file stays
+ * excluded. Wording mirrors scripts/llm-scoring/input-builder.ts so the
+ * collector and the scorer judge a declared run the same way. Also used by
+ * clear-stale-wrong-production-flags.js's re-check prompt.
+ *
+ * @param {Array<{openingDate?: string, closingDate?: string, venue?: string}>} [priorRuns]
+ * @param {Array<{startDate?: string, endDate?: string, venue?: string}>} [tourLegs]
+ * @returns {string} '' when neither declares an entry
+ */
+function buildPriorRunHint(priorRuns, tourLegs) {
+  const sanitize = (s) => String(s).replace(/\s+/g, ' ').trim().slice(0, 200);
+  const describe = (venue, from, to) => {
+    const dates = from || to ? ` (${from || 'unknown'} to ${to || 'unknown'})` : '';
+    return `${venue ? sanitize(venue) : 'earlier run'}${dates}`;
+  };
+  const legs = [];
+  for (const p of Array.isArray(priorRuns) ? priorRuns : []) {
+    if (p && typeof p === 'object') legs.push(describe(p.venue, p.openingDate, p.closingDate));
+  }
+  for (const l of Array.isArray(tourLegs) ? tourLegs : []) {
+    if (l && typeof l === 'object') legs.push(describe(l.venue, l.startDate, l.endDate));
+  }
+  if (legs.length === 0) return '';
+  return `\n\n**DECLARED EARLIER RUNS / TOUR LEGS OF THIS PRODUCTION**: This same production also played declared earlier runs/tour legs: ${legs.join('; ')}. A review of a listed run at that venue, published during that run or in the weeks right after it closed, IS a review of THIS production: do NOT set wrongProduction=true for it, even where the guidance above calls a tryout, transfer or earlier venue a different production. Any other staging (including earlier stagings by the same company, even at the same venue in a different year) is still wrongProduction.`;
 }
 
 // ============================================================
@@ -983,6 +1019,7 @@ module.exports = {
   // (venue aliases, long-runner hint, URL-year conflict) are directly
   // unit-testable without mocking the LLM call. See card 34c637c5-416f-812b.
   buildVerificationPrompt,
+  buildPriorRunHint,
   // Generic prompt→text providers, exported so other verifiers (e.g. the
   // slug-misroute content check) can run multi-model agreement without
   // duplicating the HTTPS plumbing. Each takes a prompt string, returns a

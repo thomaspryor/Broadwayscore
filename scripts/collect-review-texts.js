@@ -565,6 +565,7 @@ const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
+const { clearAutomatedTextRejectionOnRefetch } = require('./lib/stale-automated-text-verdict');
 const { neutralizeStaleFlagsOnBodyReplacement } = require('./lib/stale-flag-neutralization');
 const { emitStage } = require('./lib/stage-latency');
 
@@ -4701,15 +4702,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
-  // Clear previous LLM scoring rejection so re-scraped reviews can be scored again.
-  // The scoring pipeline skips files with rejectionReason set.
-  if (data.rejectionReason) {
-    delete data.rejectionReason;
-    delete data.rejectedAt;
-    delete data.rejectedBy;
-    delete data.rejectionReasoning;
-    delete data.promptVersion;
-  }
+  // Clear a previous automated TEXT-QUALITY rejection (not_a_review /
+  // garbage_text / truncated_text from the ensemble or a heuristic) so the
+  // re-scraped body gets judged again: null-assigned (a delete is restored by
+  // push-review-texts), the old-text score parked, needsRescore raised.
+  // wrong_production / wrong_show verdicts, human rejections and rejections
+  // with no rejectedBy (free-text, hand-written) are about the article, not
+  // the fetch, and stay. scripts/clear-stale-automated-text-verdicts.js is the
+  // daily backstop for writers that bypass this path.
+  clearAutomatedTextRejectionOnRefetch(data);
 
   // Extract original score from HTML/text if not already present,
   // or if the existing score came from Show Score (SS assigns its own stars,

@@ -164,10 +164,16 @@ describe('drift vs canonical predicate', () => {
 
 describe('wiring', () => {
   test('rebuild-all-reviews.js consolidation passes use the guarded merge', () => {
+    // The outlet-mismatch pass moved to scripts/lib/outlet-mismatch-heal.js
+    // (runOutletMismatchCleanup, 2026-09-29); the --unknown pass stays inline.
     const contents = readFileSync(resolve(ROOT, 'scripts/rebuild-all-reviews.js'), 'utf8');
+    const heal = readFileSync(resolve(ROOT, 'scripts/lib/outlet-mismatch-heal.js'), 'utf8');
     assert.match(contents, /require\(['"]\.\/lib\/merge-review-fields['"]\)/);
-    const calls = contents.match(/mergeUniqueReviewFields\s*\(/g) || [];
-    assert.ok(calls.length >= 2, `both cleanup passes must use the guarded merge; found ${calls.length}`);
+    assert.match(contents, /runOutletMismatchCleanup\s*\(/);
+    assert.match(heal, /require\(['"]\.\/merge-review-fields['"]\)/);
+    const calls = (contents.match(/mergeUniqueReviewFields\s*\(/g) || []).length
+      + (heal.match(/mergeUniqueReviewFields\s*\(/g) || []).length;
+    assert.ok(calls >= 2, `both cleanup passes must use the guarded merge; found ${calls}`);
     assert.ok(!/for \(const \[key, val\] of Object\.entries\(d\)\)/.test(contents),
       'a consolidation pass still blind-copies fields — route it through mergeUniqueReviewFields');
   });

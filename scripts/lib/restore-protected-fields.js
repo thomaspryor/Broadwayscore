@@ -98,6 +98,7 @@ const MANUAL_FIELDS = [
   'allowTourSignal',
   'allowTourSignalReason',
   'allowFilmSignal',
+  'allowFilmSignalReason',
   'routedFromShowId',
   // Added in Rocky Horror 2026-04-23 postmortem (Session 2 #7)
   'humanReviewedTour',

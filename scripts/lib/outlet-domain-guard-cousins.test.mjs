@@ -46,7 +46,10 @@ function quiet(fn) {
 
 // --- gather-reviews.js createReviewFile() domain-validation gate ---
 
-test('createReviewFile flags timeout-labeled review whose URL is timeout.com/london as domainMismatch', () => {
+test('createReviewFile files a timeout-labeled review whose URL is timeout.com/london under timeout-london', () => {
+  // Was refused as domainMismatch, which dropped a real review. Since
+  // 2026-09-29 the URL edition decides the outlet up front
+  // (resolveUrlEditionOutletId), so it lands under the right edition instead.
   withTempShowDir('__test-odgc-gather-timeout', () => {
     const result = quiet(() => createReviewFile('__test-odgc-gather-timeout', {
       outletId: 'timeout',
@@ -54,8 +57,25 @@ test('createReviewFile flags timeout-labeled review whose URL is timeout.com/lon
       criticName: 'Some Critic',
       url: 'https://www.timeout.com/london/theatre/some-west-end-show-review',
       source: 'serp',
+    }, { allowWestEnd: true }));
+    assert.equal(result, true);
+    const dir = path.join(REVIEW_TEXTS_DIR, '__test-odgc-gather-timeout');
+    assert.deepEqual(fs.readdirSync(dir).filter(f => f.endsWith('.json')), ['timeout-london--some-critic.json']);
+    const written = JSON.parse(fs.readFileSync(path.join(dir, 'timeout-london--some-critic.json'), 'utf8'));
+    assert.equal(written.outletId, 'timeout-london');
+  });
+});
+
+test('createReviewFile still flags a cross-domain label (nytimes on theguardian.com) as domainMismatch', () => {
+  withTempShowDir('__test-odgc-gather-crossdomain', () => {
+    const result = quiet(() => createReviewFile('__test-odgc-gather-crossdomain', {
+      outletId: 'nytimes',
+      outlet: 'The New York Times',
+      criticName: 'Some Critic',
+      url: 'https://www.theguardian.com/stage/2026/jan/01/some-show-review',
+      source: 'serp',
     }));
-    assert.equal(result, 'domainMismatch', 'path-split timeout.com/london must still be caught as a mismatch');
+    assert.equal(result, 'domainMismatch');
   });
 });
 

@@ -26,6 +26,7 @@ const path = require('path');
 
 const { discoverWetRoundupRows } = require('./lib/wet-roundup-discover');
 const { normalizeOutlet, normalizeCritic } = require('./lib/review-normalization');
+const { resolveUrlEditionOutletId } = require('./lib/outlet-canonicalize');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { KNOWN_STAR_OUTLETS } = require('./lib/score-extractors');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -126,9 +127,11 @@ async function main() {
   // Index WET rows by canonical outletId (a list, not a single row — outlets
   // like times-uk cover both "The Times" and "The Sunday Times" as distinct
   // WET rows with distinct critics, URLs, and stars).
+  // Keyed by the URL-edition outlet so a "Time Out" row with a
+  // timeout.com/london URL matches the timeout-london file, not "timeout".
   const wetByOutletId = new Map();
   for (const row of wetResult.rows) {
-    const outletId = normalizeOutlet(row.outlet);
+    const outletId = resolveUrlEditionOutletId({ outletName: row.outlet, url: row.url }).outletId;
     if (!wetByOutletId.has(outletId)) wetByOutletId.set(outletId, []);
     wetByOutletId.get(outletId).push(row);
   }
