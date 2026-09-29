@@ -1,12 +1,14 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-29T07:04:39.647Z",
-    "totalFlagged": 65,
+    "generatedAt": "2026-09-29T08:32:14.264Z",
+    "totalFlagged": 165,
     "reasons": {
       "possible-tour-fulltext": 18,
+      "aggregator-thumb-contradicts-llm": 96,
       "venue-url-mismatch": 28,
       "originalScore-llm-conflict": 12,
-      "both-thumbs-disagree-with-llm": 3,
+      "aggregator-thumbs-split": 5,
+      "both-thumbs-disagree-with-llm": 2,
       "aggregatorStars-excerpt-mismatch": 4
     }
   },
@@ -23,7 +25,49 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:18.457Z"
+      "flaggedAt": "2026-09-29T08:29:42.433Z"
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "outletId": "dailybeast",
+      "criticName": "Tim Teeman",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:42.868Z"
+    },
+    {
+      "showId": "a-behanding-in-spokane-2010",
+      "outletId": "nypost",
+      "criticName": "Elisabeth Vincentelli",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 45 (Negative) vs aggregator thumbs DTLI/BWW Up/- — opposite direction, needsAdjudication",
+      "llmScore": 45,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:43.005Z"
+    },
+    {
+      "showId": "a-night-with-janis-joplin-2013",
+      "outletId": "hollywood-reporter",
+      "criticName": "David Rooney",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 65 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 65,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:29:45.865Z"
     },
     {
       "showId": "a-night-with-janis-joplin-2013",
@@ -37,7 +81,49 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-09-29T07:02:21.668Z"
+      "flaggedAt": "2026-09-29T08:29:45.884Z"
+    },
+    {
+      "showId": "a-night-with-janis-joplin-2013",
+      "outletId": "variety",
+      "criticName": "Marilyn Stasio",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 67 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 67,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:29:45.923Z"
+    },
+    {
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "outletId": "cititour",
+      "criticName": "Scott Lipton",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 74 (Positive) vs aggregator thumbs DTLI/BWW -/Down — opposite direction, needsAdjudication",
+      "llmScore": 74,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:47.260Z"
+    },
+    {
+      "showId": "a-wonderful-world-the-louis-armstrong-musical-2024",
+      "outletId": "dailybeast",
+      "criticName": "Tim Teeman",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 58 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 58,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:47.266Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -51,7 +137,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-09-29T07:02:25.320Z"
+      "flaggedAt": "2026-09-29T08:29:49.977Z"
     },
     {
       "showId": "almost-famous-2022",
@@ -65,7 +151,49 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:25.391Z"
+      "flaggedAt": "2026-09-29T08:29:50.061Z"
+    },
+    {
+      "showId": "almost-famous-2022",
+      "outletId": "variety",
+      "criticName": "Frank Rizzo",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 67 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 67,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 5,
+      "flaggedAt": "2026-09-29T08:29:50.103Z"
+    },
+    {
+      "showId": "almost-famous-2022",
+      "outletId": "vulture",
+      "criticName": "Jackson McHenry",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:50.111Z"
+    },
+    {
+      "showId": "amazing-grace-2015",
+      "outletId": "nbcny",
+      "criticName": "Robert Kahn",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:50.267Z"
     },
     {
       "showId": "anastasia-2017",
@@ -79,7 +207,63 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:27.686Z"
+      "flaggedAt": "2026-09-29T08:29:52.556Z"
+    },
+    {
+      "showId": "baby-its-you-2011",
+      "outletId": "ap",
+      "criticName": "Mark Kennedy",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 61 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:55.552Z"
+    },
+    {
+      "showId": "beetlejuice-tour-2022",
+      "outletId": "fort-worth-star-telegram",
+      "criticName": "Rick Mauch",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llmScore verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:57.845Z"
+    },
+    {
+      "showId": "bengal-tiger-at-the-baghdad-zoo-2011",
+      "outletId": "chicagotribune",
+      "criticName": "Unknown",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:58.440Z"
+    },
+    {
+      "showId": "big-river-2003",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 79 (Positive) vs aggregator thumbs DTLI/BWW Down/- — opposite direction, needsAdjudication",
+      "llmScore": 79,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:29:59.325Z"
     },
     {
       "showId": "black-is-the-color-of-my-voice-west-end-2026",
@@ -93,7 +277,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:34.225Z"
+      "flaggedAt": "2026-09-29T08:29:59.800Z"
     },
     {
       "showId": "blackbird-2016",
@@ -107,7 +291,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:34.340Z"
+      "flaggedAt": "2026-09-29T08:29:59.935Z"
     },
     {
       "showId": "bring-it-on-the-musical-2012",
@@ -121,7 +305,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:36.200Z"
+      "flaggedAt": "2026-09-29T08:30:01.904Z"
+    },
+    {
+      "showId": "buena-vista-social-club-2025",
+      "outletId": "amny",
+      "criticName": "Matt Windman",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 44 (Negative) vs aggregator thumbs DTLI/BWW -/Up — opposite direction, needsAdjudication",
+      "llmScore": 44,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": 8,
+      "flaggedAt": "2026-09-29T08:30:02.176Z"
+    },
+    {
+      "showId": "bullets-over-broadway-2014",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llmScore verdict 61 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:30:02.693Z"
     },
     {
       "showId": "cabaret-at-the-kit-kat-club-west-end-2021",
@@ -135,7 +347,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:37.874Z"
+      "flaggedAt": "2026-09-29T08:30:03.795Z"
+    },
+    {
+      "showId": "camelot-2023",
+      "outletId": "talkinbroadway",
+      "criticName": "Howard Miller",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 66 (Mixed) vs aggregator thumbs DTLI/BWW -/Down — one bucket off, needsAdjudication",
+      "llmScore": 66,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "bwwScore": 4,
+      "flaggedAt": "2026-09-29T08:30:04.263Z"
     },
     {
       "showId": "catch-me-if-you-can-2011",
@@ -149,7 +375,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-09-29T07:02:39.664Z"
+      "flaggedAt": "2026-09-29T08:30:05.756Z"
     },
     {
       "showId": "catch-me-if-you-can-2011",
@@ -163,7 +389,63 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 6,
-      "flaggedAt": "2026-09-29T07:02:39.707Z"
+      "flaggedAt": "2026-09-29T08:30:05.804Z"
+    },
+    {
+      "showId": "charlie-and-the-chocolate-factory-2017",
+      "outletId": "nbcny",
+      "criticName": "Robert Kahn",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 61 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 5,
+      "flaggedAt": "2026-09-29T08:30:07.317Z"
+    },
+    {
+      "showId": "children-of-a-lesser-god-2018",
+      "outletId": "deadline",
+      "criticName": "Greg Evans",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 74 (Positive) vs aggregator thumbs DTLI/BWW Down/- — opposite direction, needsAdjudication",
+      "llmScore": 74,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:30:08.025Z"
+    },
+    {
+      "showId": "china-doll-2015",
+      "outletId": "deadline",
+      "criticName": "Jeremy Gerard",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 60 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:30:08.259Z"
+    },
+    {
+      "showId": "come-fly-away-2010",
+      "outletId": "staten-island-advance",
+      "criticName": "Michael Kuchwara",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 15 (Pan) vs aggregator thumbs DTLI/BWW Up/- — opposite direction, needsAdjudication",
+      "llmScore": 15,
+      "llmBucket": "Pan",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:09.530Z"
     },
     {
       "showId": "come-from-away-2017",
@@ -177,7 +459,189 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:43.339Z"
+      "flaggedAt": "2026-09-29T08:30:09.736Z"
+    },
+    {
+      "showId": "company-2021",
+      "outletId": "nytimes",
+      "criticName": "Jesse Green",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 60 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:30:10.032Z"
+    },
+    {
+      "showId": "cost-of-living-2022",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": 9,
+      "flaggedAt": "2026-09-29T08:30:10.667Z"
+    },
+    {
+      "showId": "cyrano-de-bergerac-2012",
+      "outletId": "amny",
+      "criticName": "Matt Windman",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:11.139Z"
+    },
+    {
+      "showId": "dead-accounts-2012",
+      "outletId": "hollywood-reporter",
+      "criticName": "David Rooney",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 60 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:30:12.495Z"
+    },
+    {
+      "showId": "death-of-a-salesman-2026",
+      "outletId": "variety",
+      "criticName": "Naveen Kumar",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Up/Up — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:14.259Z"
+    },
+    {
+      "showId": "dirty-rotten-scoundrels-2005",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 57 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 57,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:15.438Z"
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "outletId": "hollywood-reporter",
+      "criticName": "Richard Lawson",
+      "reason": "aggregator-thumbs-split",
+      "detail": "llm-v6 verdict 17 (Pan) vs split aggregator thumbs DTLI/BWW Down/Up",
+      "llmScore": 17,
+      "llmBucket": "Pan",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:16.144Z"
+    },
+    {
+      "showId": "dog-day-afternoon-2026",
+      "outletId": "usatoday",
+      "criticName": "Patrick Ryan",
+      "reason": "aggregator-thumbs-split",
+      "detail": "llm-v6 verdict 19 (Pan) vs split aggregator thumbs DTLI/BWW Down/Up",
+      "llmScore": 19,
+      "llmBucket": "Pan",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:16.322Z"
+    },
+    {
+      "showId": "doubt-2024",
+      "outletId": "washpost",
+      "criticName": "Naveen Kumar",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 46 (Negative) vs aggregator thumbs DTLI/BWW -/Up — opposite direction, needsAdjudication",
+      "llmScore": 46,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:30:16.838Z"
+    },
+    {
+      "showId": "elf-2012",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 59 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 59,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:18.071Z"
+    },
+    {
+      "showId": "elling-2010",
+      "outletId": "nydailynews",
+      "criticName": "Joe Dziemianowicz",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 64 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 64,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:18.649Z"
+    },
+    {
+      "showId": "end-of-the-rainbow-2012",
+      "outletId": "newsday",
+      "criticName": "Linda Winer",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:30:18.915Z"
+    },
+    {
+      "showId": "every-brilliant-thing-2026",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 44 (Negative) vs aggregator thumbs DTLI/BWW -/Up — opposite direction, needsAdjudication",
+      "llmScore": 44,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:20.220Z"
     },
     {
       "showId": "fela-2012",
@@ -191,7 +655,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:54.759Z"
+      "flaggedAt": "2026-09-29T08:30:21.583Z"
     },
     {
       "showId": "fela-2012",
@@ -205,21 +669,63 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:02:54.765Z"
+      "flaggedAt": "2026-09-29T08:30:21.590Z"
+    },
+    {
+      "showId": "first-date-2013",
+      "outletId": "ew",
+      "criticName": "Thom Geier",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "anchored-v6 verdict 72 (Positive) vs aggregator thumbs DTLI/BWW Down/- — opposite direction, needsAdjudication",
+      "llmScore": 72,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:30:22.197Z"
+    },
+    {
+      "showId": "funny-girl-2022",
+      "outletId": "observer",
+      "criticName": "David Cote",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 47 (Negative) vs aggregator thumbs DTLI/BWW Up/- — opposite direction, needsAdjudication",
+      "llmScore": 47,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:24.712Z"
     },
     {
       "showId": "good-night-and-good-luck-2025",
       "outletId": "timeout",
       "criticName": "Adam Feldman",
       "reason": "both-thumbs-disagree-with-llm",
-      "detail": "anchored-v6 verdict 71 (Positive) vs both aggregator thumbs Down/Down — two-bucket disagreement, needsAdjudication",
+      "detail": "anchored-v6 verdict 71 (Positive) vs aggregator thumbs DTLI/BWW Down/Down — opposite direction, needsAdjudication",
       "llmScore": 71,
       "llmBucket": "Mixed",
       "llmConfidence": "medium",
       "dtliThumb": "Down",
       "bwwThumb": "Down",
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:00.573Z"
+      "flaggedAt": "2026-09-29T08:30:27.870Z"
+    },
+    {
+      "showId": "good-night-oscar-2023",
+      "outletId": "vulture",
+      "criticName": "Jackson McHenry",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 69 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 69,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:28.320Z"
     },
     {
       "showId": "hadestown-west-end-2024",
@@ -233,7 +739,63 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:03.205Z"
+      "flaggedAt": "2026-09-29T08:30:30.660Z"
+    },
+    {
+      "showId": "hamlet-2009",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 60 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:31.265Z"
+    },
+    {
+      "showId": "harmony-2023",
+      "outletId": "wsj",
+      "criticName": "Charles Isherwood",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 60 (Mixed) vs aggregator thumbs DTLI/BWW Down/Down — one bucket off, needsAdjudication",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": "Down",
+      "bwwScore": 4,
+      "flaggedAt": "2026-09-29T08:30:31.907Z"
+    },
+    {
+      "showId": "head-over-heels-2018",
+      "outletId": "chicagotribune",
+      "criticName": "Chris Jones",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:30:32.740Z"
+    },
+    {
+      "showId": "here-lies-love-2023",
+      "outletId": "newyorker",
+      "criticName": "Helen Shaw",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": 8,
+      "flaggedAt": "2026-09-29T08:30:34.882Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -247,7 +809,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:07.256Z"
+      "flaggedAt": "2026-09-29T08:30:35.020Z"
     },
     {
       "showId": "here-there-are-blueberries-theatre-royal-stratford-east-west-end-2026",
@@ -261,7 +823,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:07.287Z"
+      "flaggedAt": "2026-09-29T08:30:35.056Z"
+    },
+    {
+      "showId": "i-need-that-2023",
+      "outletId": "theatermania",
+      "criticName": "David Gordon",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:38.474Z"
     },
     {
       "showId": "indecent-2017",
@@ -275,7 +851,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:11.922Z"
+      "flaggedAt": "2026-09-29T08:30:39.984Z"
+    },
+    {
+      "showId": "jekyll-and-hyde-2013",
+      "outletId": "nytimes",
+      "criticName": "Charles Isherwood",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:42.911Z"
+    },
+    {
+      "showId": "jesus-christ-superstar-2012",
+      "outletId": "newsday",
+      "criticName": "Linda Winer",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:43.348Z"
     },
     {
       "showId": "john-lithgow-stories-by-heart-2018",
@@ -289,7 +893,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:16.120Z"
+      "flaggedAt": "2026-09-29T08:30:44.480Z"
     },
     {
       "showId": "juno-and-the-paycock-west-end-2024",
@@ -297,13 +901,13 @@
       "criticName": "Tim Adams",
       "reason": "venue-url-mismatch",
       "detail": "URL mentions National Theatre but show venue is Gielgud Theatre",
-      "llmScore": 76,
+      "llmScore": 75,
       "llmBucket": "Mixed",
       "llmConfidence": "low",
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:17.027Z"
+      "flaggedAt": "2026-09-29T08:30:45.448Z"
     },
     {
       "showId": "king-kong-2018",
@@ -317,7 +921,63 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:18.410Z"
+      "flaggedAt": "2026-09-29T08:30:46.992Z"
+    },
+    {
+      "showId": "latin-history-for-morons-2017",
+      "outletId": "nytimes",
+      "criticName": "Jesse Green",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 61 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:30:49.071Z"
+    },
+    {
+      "showId": "lempicka-2024",
+      "outletId": "new-york-sun",
+      "criticName": "Elysa Gardner",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 74 (Positive) vs aggregator thumbs DTLI/BWW -/Down — opposite direction, needsAdjudication",
+      "llmScore": 74,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "bwwScore": 4,
+      "flaggedAt": "2026-09-29T08:30:49.604Z"
+    },
+    {
+      "showId": "lennon-2005",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 19 (Pan) vs aggregator thumbs DTLI/BWW Up/- — opposite direction, needsAdjudication",
+      "llmScore": 19,
+      "llmBucket": "Pan",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:49.783Z"
+    },
+    {
+      "showId": "les-liaisons-dangereuses-2016",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llmScore verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:30:50.228Z"
     },
     {
       "showId": "les-miserables-west-end-2021",
@@ -331,7 +991,77 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:21.805Z"
+      "flaggedAt": "2026-09-29T08:30:50.673Z"
+    },
+    {
+      "showId": "long-days-journey-into-night-2016",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 48 (Negative) vs aggregator thumbs DTLI/BWW Up/- — opposite direction, needsAdjudication",
+      "llmScore": 48,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:52.678Z"
+    },
+    {
+      "showId": "looped-2010",
+      "outletId": "hollywood-reporter",
+      "criticName": "Frank Scheck",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:52.764Z"
+    },
+    {
+      "showId": "marcel-on-the-train-off-broadway-2026",
+      "outletId": "forward",
+      "criticName": "PJ Grisar",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:55.883Z"
+    },
+    {
+      "showId": "marcel-on-the-train-off-broadway-2026",
+      "outletId": "nyt-theater",
+      "criticName": "Jonathan Mandell",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:55.893Z"
+    },
+    {
+      "showId": "marcel-on-the-train-off-broadway-2026",
+      "outletId": "timeout",
+      "criticName": "Adam Feldman",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:55.906Z"
     },
     {
       "showId": "marie-and-rosetta-west-end-2026",
@@ -345,7 +1075,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:26.817Z"
+      "flaggedAt": "2026-09-29T08:30:55.972Z"
     },
     {
       "showId": "marie-and-rosetta-west-end-2026",
@@ -359,7 +1089,63 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:26.850Z"
+      "flaggedAt": "2026-09-29T08:30:56.007Z"
+    },
+    {
+      "showId": "marvins-room-2017",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:56.403Z"
+    },
+    {
+      "showId": "master-class-2011",
+      "outletId": "faster-times",
+      "criticName": "Jonathan Mandell",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 61 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:30:56.953Z"
+    },
+    {
+      "showId": "meteor-shower-2017",
+      "outletId": "hollywood-reporter",
+      "criticName": "David Rooney",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 68 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 68,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:30:58.639Z"
+    },
+    {
+      "showId": "meteor-shower-2017",
+      "outletId": "variety",
+      "criticName": "Marilyn Stasio",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 66 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 66,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:30:58.821Z"
     },
     {
       "showId": "motown-the-musical-2016",
@@ -373,7 +1159,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:32.613Z"
+      "flaggedAt": "2026-09-29T08:31:02.024Z"
     },
     {
       "showId": "mrs-warrens-profession-2010",
@@ -387,7 +1173,21 @@
       "dtliThumb": "Down",
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:33.434Z"
+      "flaggedAt": "2026-09-29T08:31:02.965Z"
+    },
+    {
+      "showId": "natasha-pierre-and-the-great-comet-of-1812-2016",
+      "outletId": "ap",
+      "criticName": "Mark Kennedy",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "anchored-v6 verdict 89 (Rave) vs aggregator thumbs DTLI/BWW Down/- — opposite direction, needsAdjudication",
+      "llmScore": 89,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:04.188Z"
     },
     {
       "showId": "noises-off-2016",
@@ -401,7 +1201,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-09-29T07:03:36.217Z"
+      "flaggedAt": "2026-09-29T08:31:05.927Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -409,13 +1209,13 @@
       "criticName": "Dominic Cavendish",
       "reason": "venue-url-mismatch",
       "detail": "URL mentions Chichester Festival Theatre but show venue is Gielgud Theatre",
-      "llmScore": 82,
+      "llmScore": 79,
       "llmBucket": "Positive",
       "llmConfidence": "medium",
       "dtliThumb": null,
       "bwwThumb": "Up",
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:38.157Z"
+      "flaggedAt": "2026-09-29T08:31:08.045Z"
     },
     {
       "showId": "oliver-west-end-2024",
@@ -429,7 +1229,161 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:38.171Z"
+      "flaggedAt": "2026-09-29T08:31:08.062Z"
+    },
+    {
+      "showId": "our-town-2024",
+      "outletId": "deadline",
+      "criticName": "Greg Evans",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:31:10.861Z"
+    },
+    {
+      "showId": "paranormal-activity-2026",
+      "outletId": "cititour",
+      "criticName": "Brian Lipton",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 64 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 64,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:11.851Z"
+    },
+    {
+      "showId": "paranormal-activity-2026",
+      "outletId": "theater-pizzazz",
+      "criticName": "Ron Fassler",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 45 (Negative) vs aggregator thumbs DTLI/BWW -/Up — opposite direction, needsAdjudication",
+      "llmScore": 45,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:11.965Z"
+    },
+    {
+      "showId": "plaza-suite-2022",
+      "outletId": "vulture",
+      "criticName": "Sara Holdren",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:13.828Z"
+    },
+    {
+      "showId": "pre-existing-condition-off-broadway-2026",
+      "outletId": "nyt-theater",
+      "criticName": "Jonathan Mandell",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:14.372Z"
+    },
+    {
+      "showId": "pre-existing-condition-off-broadway-2026",
+      "outletId": "nytg",
+      "criticName": "Kyle Turner",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 45 (Negative) vs aggregator thumbs DTLI/BWW -/Up — opposite direction, needsAdjudication",
+      "llmScore": 45,
+      "llmBucket": "Negative",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:14.441Z"
+    },
+    {
+      "showId": "prima-facie-2023",
+      "outletId": "theatermania",
+      "criticName": "Zachary Stewart",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:15.412Z"
+    },
+    {
+      "showId": "race-2009",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 60 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 4,
+      "flaggedAt": "2026-09-29T08:31:17.385Z"
+    },
+    {
+      "showId": "race-2009",
+      "outletId": "variety",
+      "criticName": "David Rooney",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:31:17.400Z"
+    },
+    {
+      "showId": "ragtime-2025",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "aggregator-thumbs-split",
+      "detail": "llm-v6 verdict 40 (Negative) vs split aggregator thumbs DTLI/BWW Down/Up",
+      "llmScore": 40,
+      "llmBucket": "Negative",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": "Up",
+      "bwwScore": 3,
+      "flaggedAt": "2026-09-29T08:31:17.705Z"
+    },
+    {
+      "showId": "romeo-and-juliet-west-end-2026",
+      "outletId": "variety",
+      "criticName": "Ellise Shafer",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 76 (Positive) vs aggregator thumbs DTLI/BWW -/Down — opposite direction, needsAdjudication",
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:19.779Z"
     },
     {
       "showId": "romeo-and-juliet-west-end-2026",
@@ -443,7 +1397,63 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:48.955Z"
+      "flaggedAt": "2026-09-29T08:31:19.814Z"
+    },
+    {
+      "showId": "scandalous-2012",
+      "outletId": "newsday",
+      "criticName": "Linda Winer",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 61 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:31:21.069Z"
+    },
+    {
+      "showId": "school-girls-or-the-african-mean-girls-play-2026",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "aggregator-thumbs-split",
+      "detail": "llm-v6 verdict 58 (Mixed) vs split aggregator thumbs DTLI/BWW Down/Up",
+      "llmScore": 58,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": "Up",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:21.498Z"
+    },
+    {
+      "showId": "significant-other-2017",
+      "outletId": "nydailynews",
+      "criticName": "Joe Dziemianowicz",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:23.653Z"
+    },
+    {
+      "showId": "skeleton-crew-2022",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": 8,
+      "flaggedAt": "2026-09-29T08:31:24.777Z"
     },
     {
       "showId": "something-rotten-2015",
@@ -457,7 +1467,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:54.403Z"
+      "flaggedAt": "2026-09-29T08:31:25.657Z"
+    },
+    {
+      "showId": "spamalot-2023",
+      "outletId": "slantmagazine",
+      "criticName": "Dan Rubins",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:31:26.363Z"
     },
     {
       "showId": "spring-awakening-2015",
@@ -471,7 +1495,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:55.966Z"
+      "flaggedAt": "2026-09-29T08:31:27.287Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -485,7 +1509,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.072Z"
+      "flaggedAt": "2026-09-29T08:31:27.405Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -499,7 +1523,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.079Z"
+      "flaggedAt": "2026-09-29T08:31:27.413Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -513,7 +1537,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.082Z"
+      "flaggedAt": "2026-09-29T08:31:27.417Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -527,7 +1551,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.084Z"
+      "flaggedAt": "2026-09-29T08:31:27.419Z"
     },
     {
       "showId": "standing-at-the-skys-edge-west-end-2024",
@@ -541,7 +1565,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.088Z"
+      "flaggedAt": "2026-09-29T08:31:27.422Z"
+    },
+    {
+      "showId": "stick-fly-2011",
+      "outletId": "nytimes",
+      "criticName": "Charles Isherwood",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 76 (Positive) vs aggregator thumbs DTLI/BWW Down/- — opposite direction, needsAdjudication",
+      "llmScore": 76,
+      "llmBucket": "Positive",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:31:28.329Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -555,7 +1593,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.950Z"
+      "flaggedAt": "2026-09-29T08:31:28.371Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -569,7 +1607,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.954Z"
+      "flaggedAt": "2026-09-29T08:31:28.375Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -583,7 +1621,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.958Z"
+      "flaggedAt": "2026-09-29T08:31:28.380Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -597,7 +1635,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.962Z"
+      "flaggedAt": "2026-09-29T08:31:28.383Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -611,7 +1649,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.966Z"
+      "flaggedAt": "2026-09-29T08:31:28.388Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -625,7 +1663,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.975Z"
+      "flaggedAt": "2026-09-29T08:31:28.399Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -639,7 +1677,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.979Z"
+      "flaggedAt": "2026-09-29T08:31:28.403Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -653,7 +1691,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.981Z"
+      "flaggedAt": "2026-09-29T08:31:28.406Z"
     },
     {
       "showId": "sting-west-end-2026",
@@ -667,7 +1705,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:56.986Z"
+      "flaggedAt": "2026-09-29T08:31:28.411Z"
     },
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
@@ -681,7 +1719,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:57.580Z"
+      "flaggedAt": "2026-09-29T08:31:29.042Z"
     },
     {
       "showId": "suffs-2024",
@@ -695,7 +1733,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:57.868Z"
+      "flaggedAt": "2026-09-29T08:31:29.339Z"
     },
     {
       "showId": "summer-2018",
@@ -709,7 +1747,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:58.219Z"
+      "flaggedAt": "2026-09-29T08:31:29.694Z"
     },
     {
       "showId": "sylvia-west-end-2023",
@@ -723,7 +1761,63 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:03:59.907Z"
+      "flaggedAt": "2026-09-29T08:31:31.580Z"
+    },
+    {
+      "showId": "the-caretaker-2003",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:35.652Z"
+    },
+    {
+      "showId": "the-cherry-orchard-2016",
+      "outletId": "deadline",
+      "criticName": "Jeremy Gerard",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:36.001Z"
+    },
+    {
+      "showId": "the-cherry-orchard-2016",
+      "outletId": "timeout",
+      "criticName": "David Cote",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:36.059Z"
+    },
+    {
+      "showId": "the-color-purple-2005",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": 10,
+      "flaggedAt": "2026-09-29T08:31:36.964Z"
     },
     {
       "showId": "the-color-purple-2015",
@@ -737,7 +1831,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-09-29T07:04:05.040Z"
+      "flaggedAt": "2026-09-29T08:31:37.120Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -751,7 +1845,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:06.683Z"
+      "flaggedAt": "2026-09-29T08:31:38.845Z"
     },
     {
       "showId": "the-devil-wears-prada-west-end-2024",
@@ -765,7 +1859,63 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:06.683Z"
+      "flaggedAt": "2026-09-29T08:31:38.845Z"
+    },
+    {
+      "showId": "the-encounter-2016",
+      "outletId": "newsday",
+      "criticName": "Linda Winer",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 60 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:31:39.423Z"
+    },
+    {
+      "showId": "the-frogs-2004",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 25 (Pan) vs aggregator thumbs DTLI/BWW Up/- — opposite direction, needsAdjudication",
+      "llmScore": 25,
+      "llmBucket": "Pan",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:41.051Z"
+    },
+    {
+      "showId": "the-goat-or-who-is-sylvia-2002",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 57 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 57,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:41.805Z"
+    },
+    {
+      "showId": "the-great-society-2019",
+      "outletId": "variety",
+      "criticName": "Marilyn Stasio",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:31:42.273Z"
     },
     {
       "showId": "the-heiress-2012",
@@ -779,7 +1929,63 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-09-29T07:04:10.520Z"
+      "flaggedAt": "2026-09-29T08:31:42.954Z"
+    },
+    {
+      "showId": "the-house-of-blue-leaves-2011",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "low",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:43.834Z"
+    },
+    {
+      "showId": "the-lightning-thief-2019",
+      "outletId": "chicagotribune",
+      "criticName": "Chris Jones",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 66 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 66,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:47.337Z"
+    },
+    {
+      "showId": "the-lightning-thief-2019",
+      "outletId": "variety",
+      "criticName": "Frank Rizzo",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:47.392Z"
+    },
+    {
+      "showId": "the-little-prince-2022",
+      "outletId": "variety",
+      "criticName": "A.D. Amorosi",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 69 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 69,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": 5,
+      "flaggedAt": "2026-09-29T08:31:48.245Z"
     },
     {
       "showId": "the-mousetrap-west-end-2021",
@@ -793,7 +1999,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:16.612Z"
+      "flaggedAt": "2026-09-29T08:31:49.411Z"
     },
     {
       "showId": "the-mousetrap-west-end-2021",
@@ -807,7 +2013,21 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:16.647Z"
+      "flaggedAt": "2026-09-29T08:31:49.450Z"
+    },
+    {
+      "showId": "the-outsiders-2024",
+      "outletId": "variety",
+      "criticName": "Maya Phillips",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:31:51.334Z"
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
@@ -821,7 +2041,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:19.118Z"
+      "flaggedAt": "2026-09-29T08:31:52.137Z"
     },
     {
       "showId": "the-phantom-of-the-opera-west-end-1986",
@@ -835,7 +2055,35 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:19.126Z"
+      "flaggedAt": "2026-09-29T08:31:52.146Z"
+    },
+    {
+      "showId": "the-picture-of-dorian-gray-2025",
+      "outletId": "thewrap",
+      "criticName": "Robert Hofler",
+      "reason": "aggregator-thumbs-split",
+      "detail": "llm-v6 verdict 64 (Mixed) vs split aggregator thumbs DTLI/BWW Down/Up",
+      "llmScore": 64,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": "Up",
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:31:52.573Z"
+    },
+    {
+      "showId": "the-pitmen-painters-2010",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 61 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 61,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": 6,
+      "flaggedAt": "2026-09-29T08:31:52.694Z"
     },
     {
       "showId": "the-play-that-goes-wrong-west-end-2021",
@@ -849,7 +2097,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:19.870Z"
+      "flaggedAt": "2026-09-29T08:31:52.967Z"
     },
     {
       "showId": "the-price-2017",
@@ -863,7 +2111,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:20.278Z"
+      "flaggedAt": "2026-09-29T08:31:53.436Z"
     },
     {
       "showId": "the-producers-west-end-2025",
@@ -877,7 +2125,7 @@
       "dtliThumb": null,
       "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:20.506Z"
+      "flaggedAt": "2026-09-29T08:31:53.685Z"
     },
     {
       "showId": "the-real-thing-2014",
@@ -891,21 +2139,175 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 8,
-      "flaggedAt": "2026-09-29T07:04:20.971Z"
+      "flaggedAt": "2026-09-29T08:31:54.205Z"
     },
     {
-      "showId": "the-rocky-horror-show-2026",
-      "outletId": "variety",
-      "criticName": "Frank Rizzo",
-      "reason": "both-thumbs-disagree-with-llm",
-      "detail": "LLM=50 (Down), both thumbs=Meh",
-      "llmScore": 50,
-      "llmBucket": "Negative",
-      "llmConfidence": "medium",
-      "dtliThumb": "Meh",
-      "bwwThumb": "Meh",
+      "showId": "the-ritz-2007",
+      "outletId": "nytimes",
+      "criticName": "Unknown",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
       "bwwScore": null,
-      "flaggedAt": "2026-09-29T07:04:21.790Z"
+      "flaggedAt": "2026-09-29T08:31:54.652Z"
+    },
+    {
+      "showId": "the-rivals-2004",
+      "outletId": "nytimes",
+      "criticName": "Charles Isherwood",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:54.659Z"
+    },
+    {
+      "showId": "the-shark-is-broken-2023",
+      "outletId": "observer",
+      "criticName": "David Cote",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llmScore verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW -/Down — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "bwwScore": 4,
+      "flaggedAt": "2026-09-29T08:31:56.319Z"
+    },
+    {
+      "showId": "the-story-west-end-2026",
+      "outletId": "observer",
+      "criticName": "David Cote",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 62 (Mixed) vs aggregator thumbs DTLI/BWW -/Down — one bucket off, needsAdjudication",
+      "llmScore": 62,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:31:57.297Z"
+    },
+    {
+      "showId": "the-women-2001",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:32:00.582Z"
+    },
+    {
+      "showId": "the-year-of-magical-thinking-2007",
+      "outletId": "nytimes",
+      "criticName": "Ben Brantley",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 64 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 64,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:32:00.603Z"
+    },
+    {
+      "showId": "titanique-2026",
+      "outletId": "latimes",
+      "criticName": "Charles McNulty",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 60 (Mixed) vs aggregator thumbs DTLI/BWW Up/- — one bucket off, needsAdjudication",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Up",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:32:02.378Z"
+    },
+    {
+      "showId": "uncle-vanya-2024",
+      "outletId": "new-york-sun",
+      "criticName": "Elysa Gardner",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 58 (Mixed) vs aggregator thumbs DTLI/BWW -/Up — one bucket off, needsAdjudication",
+      "llmScore": 58,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Up",
+      "bwwScore": 7,
+      "flaggedAt": "2026-09-29T08:32:06.134Z"
+    },
+    {
+      "showId": "walking-with-ghosts-2022",
+      "outletId": "nytimes",
+      "criticName": "Alexis Soloski",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 66 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 66,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:32:07.175Z"
+    },
+    {
+      "showId": "walking-with-ghosts-2022",
+      "outletId": "theatrely",
+      "criticName": "Juan A. Ramirez",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 60 (Mixed) vs aggregator thumbs DTLI/BWW Down/- — one bucket off, needsAdjudication",
+      "llmScore": 60,
+      "llmBucket": "Mixed",
+      "llmConfidence": "high",
+      "dtliThumb": "Down",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:32:07.272Z"
+    },
+    {
+      "showId": "water-for-elephants-2024",
+      "outletId": "cititour",
+      "criticName": "Brian Scott Lipton",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 63 (Mixed) vs aggregator thumbs DTLI/BWW -/Down — one bucket off, needsAdjudication",
+      "llmScore": 63,
+      "llmBucket": "Mixed",
+      "llmConfidence": "medium",
+      "dtliThumb": null,
+      "bwwThumb": "Down",
+      "bwwScore": 4,
+      "flaggedAt": "2026-09-29T08:32:07.933Z"
+    },
+    {
+      "showId": "wicked-2003",
+      "outletId": "nytimes",
+      "criticName": "Ben",
+      "reason": "aggregator-thumb-contradicts-llm",
+      "detail": "llm-v6 verdict 75 (Positive) vs aggregator thumbs DTLI/BWW Down/- — opposite direction, needsAdjudication",
+      "llmScore": 75,
+      "llmBucket": "Positive",
+      "llmConfidence": "medium",
+      "dtliThumb": "DOWN",
+      "bwwThumb": null,
+      "bwwScore": null,
+      "flaggedAt": "2026-09-29T08:32:09.273Z"
     },
     {
       "showId": "wit-2012",
@@ -919,7 +2321,7 @@
       "dtliThumb": "Up",
       "bwwThumb": null,
       "bwwScore": 9,
-      "flaggedAt": "2026-09-29T07:04:35.100Z"
+      "flaggedAt": "2026-09-29T08:32:09.530Z"
     }
   ]
 }
