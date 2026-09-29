@@ -15,6 +15,12 @@
 
 const { tourInheritance, toursOfTitle, tourImageProblems } = require('./tour-family');
 
+/** The Tours To You slug in a schedule URL, or null. */
+function scheduleSlugOf(url) {
+  const m = String(url || '').match(/tourstoyou\.org\/shows\/([a-z0-9-]+)/);
+  return m ? m[1] : null;
+}
+
 /** Parent id without its year: beetlejuice-2019 -> beetlejuice. */
 function baseSlug(parentId) {
   return String(parentId || '').replace(/-\d{4}$/, '');
@@ -71,6 +77,9 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
       : { discoverySource: 'tour-schedule:tourstoyou', tourLaunchEvidence: `Tours To You schedule ${scheduleUrl}, launch confirmed by Wikipedia` }),
     statusSource: `auto-created ${today} (BRO-4262): ${scheduleUrl || 'Tours To You'} + Wikipedia; ${decision.notes.join('; ')}`,
     openingDateSource: 'tourstoyou+wikipedia',
+    // The page the dates came from: numbered pages (the-book-of-mormon-1) are
+    // other tours, so the daily date job must not guess from the title.
+    ...(scheduleSlugOf(scheduleUrl) ? { tourScheduleSlug: scheduleSlugOf(scheduleUrl) } : {}),
     ...(close ? { closingDateSource: 'tourstoyou+wikipedia', closingDateUpdatedAt: today } : {}),
     images: { hero: null, thumbnail: null, poster: null },
   };
@@ -80,4 +89,4 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
   return { entry };
 }
 
-module.exports = { buildTourEntry, baseSlug };
+module.exports = { buildTourEntry, baseSlug, scheduleSlugOf };

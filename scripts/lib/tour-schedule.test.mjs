@@ -130,3 +130,22 @@ test('a stray mention of the last stop date does not close a tour', () => {
   const wiki = 'The tour began on December 7, 2024.\n\n' + 'x'.repeat(800) + ' The composer turned 50 on January 26, 2025.';
   assert.equal(decideTourDates({ id: 'x-tour-2024', openingDate: '2024-12-07', closingDate: null }, html, wiki, NOW).write.closingDate, undefined);
 });
+
+test('an ended tour closes when Wikipedia says it ends in the last stop\'s month (BRO-4325, Suffs)', () => {
+  const { wikiNamesClosingMonth } = require('./tour-schedule.js');
+  const html = page([
+    row('Yakima, WA', 'Capitol Theatre', 'September 8-14, 2025'),
+    row('Seattle, WA', 'Paramount', 'September 16-28, 2025'),
+    row('Denver, CO', 'Buell', 'January 6-18, 2026'),
+    row('Houston, TX', 'Hobby Center', 'April 14-26, 2026'),
+    row('Fort Worth, TX', 'Bass Hall', 'July 28-August 9, 2026'),
+  ]);
+  const wiki = 'The production closed in January 2025, and a North American tour began in September 2025 at the Capitol Theatre in Yakima and is scheduled to end in August 2026.';
+  const d = decideTourDates({ id: 'suffs-tour-2025', title: 'Suffs', openingDate: null, closingDate: null }, html, wiki, NOW);
+  assert.deepEqual(d.write, { openingDate: '2025-09-08', closingDate: '2026-08-09' });
+  // A different month, a UK tour, or a tour still running never closes it.
+  assert.equal(wikiNamesClosingMonth('The North American tour is scheduled to end in July 2026.', new Date('2026-08-09T00:00:00Z')), false);
+  assert.equal(wikiNamesClosingMonth('The UK tour will end in August 2026.', new Date('2026-08-09T00:00:00Z')), false);
+  const running = decideTourDates({ id: 'suffs-tour-2025', title: 'Suffs', openingDate: null, closingDate: null }, html, wiki, new Date('2026-08-01T00:00:00Z'));
+  assert.equal(running.write.closingDate, undefined);
+});
