@@ -42,7 +42,7 @@ runs:
             LARGE="${LARGE}${file} (${SIZE} bytes)
         "
           fi
-        done <<< "$(git diff --cached --name-only --diff-filter=ACM 2>/dev/null | grep '^data/' || true)"
+        done <<< "$(git diff --no-renames --cached --name-only --diff-filter=ACM 2>/dev/null | grep '^data/' || true)"
 
         if [ -n "$LARGE" ]; then
           echo "::error::Large staged files detected that should not be committed:"

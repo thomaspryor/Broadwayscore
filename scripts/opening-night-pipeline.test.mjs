@@ -12,6 +12,10 @@ const {
   verifyPipeline,
 } = require('./lib/opening-night-pipeline-stages.js');
 const { buildStageResults } = require('./opening-night-pipeline-verify.js');
+const { buildCollectSummary, writeCollectSummary, readCollectSummary } = require('./lib/collect-run-summary.js');
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 describe('verifyGatherStage / verifyScoreStage (counted, per-show)', () => {
   test('nothing to do is ok', () => {
@@ -196,5 +200,77 @@ describe('buildStageResults — env-var contract used by the CLI wrapper', () =>
       DEPLOY_VERIFIED: 'true',
     });
     assert.equal(verifyPipeline(results).ok, true);
+  });
+});
+
+// BRO-4273: runs 36493405907 / 36503960657 finished collecting and pushed
+// their texts, then node stayed alive until the 12-min step kill; the
+// verifier read the kill as a crash and failed a run whose deploy went live.
+describe('collect finished-but-killed / finished-with-skips (BRO-4273)', () => {
+  test('failure outcome WITH a finished marker is degraded, not crashed', () => {
+    const r = verifyCollectStage({ attempted: true, outcome: 'failure', finished: true, timedOut: 0 });
+    assert.equal(r.ok, true);
+    assert.equal(r.degraded, true);
+    assert.match(r.reason, /did not exit cleanly/);
+  });
+
+  test('cancelled outcome WITH a finished marker is degraded', () => {
+    const r = verifyCollectStage({ attempted: true, outcome: 'cancelled', finished: true });
+    assert.equal(r.ok, true);
+    assert.equal(r.degraded, true);
+  });
+
+  test('failure outcome WITHOUT a marker is still a crash', () => {
+    const r = verifyCollectStage({ attempted: true, outcome: 'failure', finished: false });
+    assert.equal(r.ok, false);
+    assert.match(r.reason, /crashed/);
+  });
+
+  test('success with skipped URLs is degraded and names the count', () => {
+    const r = verifyCollectStage({ attempted: true, outcome: 'success', finished: true, timedOut: 2 });
+    assert.equal(r.ok, true);
+    assert.equal(r.degraded, true);
+    assert.match(r.reason, /2 URL\(s\) skipped/);
+  });
+
+  test('success with no skips stays clean', () => {
+    const r = verifyCollectStage({ attempted: true, outcome: 'success', finished: true, timedOut: 0 });
+    assert.equal(r.ok, true);
+    assert.equal(r.degraded, undefined);
+  });
+
+  test('marker round-trip through COLLECT_SUMMARY_FILE turns the run-36493405907 shape into a passing pipeline', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'collect-summary-'));
+    const file = path.join(dir, 'collect-summary.json');
+    writeCollectSummary(file, buildCollectSummary({
+      processed: 0,
+      failed: 1,
+      timedOut: [{ reviewId: 'x/talkinbroadway--unknown.json', url: 'https://www.talkinbroadway.com/page/world/SchoolGirls.html' }],
+    }));
+    assert.deepEqual(readCollectSummary(file), { finished: true, timedOut: 1 });
+    const env = {
+      GATHER_FAILED: '0', GATHER_TOTAL: '1',
+      COLLECT_ATTEMPTED: 'true', COLLECT_OUTCOME: 'failure', COLLECT_SUMMARY_FILE: file,
+      SCORE_FAILED: '0', SCORE_TOTAL: '1',
+      REBUILD_ATTEMPTED: 'true', REBUILD_OUTCOME: 'success',
+      DEPLOY_ATTEMPTED: 'true', DEPLOY_DISPATCHED: 'true', DEPLOY_VERIFIED: 'true',
+    };
+    const v = verifyPipeline(buildStageResults(env));
+    assert.equal(v.ok, true);
+    assert.equal(v.degraded.length, 1);
+    // Same env without the marker: the old behaviour (crash) still holds.
+    const { COLLECT_SUMMARY_FILE, ...noMarker } = env;
+    assert.equal(verifyPipeline(buildStageResults(noMarker)).ok, false);
+  });
+
+  test('missing, garbage or unfinished marker reads as not finished', () => {
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'collect-summary-'));
+    const bad = path.join(dir, 'bad.json');
+    fs.writeFileSync(bad, '{not json');
+    const unfinished = path.join(dir, 'unfinished.json');
+    fs.writeFileSync(unfinished, JSON.stringify({ finished: false }));
+    for (const f of [undefined, '', path.join(dir, 'missing.json'), bad, unfinished]) {
+      assert.deepEqual(readCollectSummary(f), { finished: false, timedOut: 0 });
+    }
   });
 });

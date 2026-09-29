@@ -43,7 +43,32 @@ function verifyGatherStage({ failed = 0, total = 0 } = {}) {
   return verifyCountedStage('gather', { failed, total });
 }
 
-function verifyCollectStage({ attempted = true, outcome } = {}) {
+/**
+ * BRO-4273: collect-review-texts.js writes a summary marker right after its
+ * final checkpoint push (`finished`, plus how many URLs it gave up on after
+ * the per-review timeout). Runs 36493405907 / 36503960657 finished and
+ * pushed their texts, then node stayed alive until the 12-min step kill, and
+ * this stage read that kill as a crash and failed a run whose deploy went
+ * live. Finished-but-killed and finished-with-skips are degraded, not crashed;
+ * a failure with no marker (died before its final push) is still a crash.
+ */
+function verifyCollectStage({ attempted = true, outcome, finished = false, timedOut = 0 } = {}) {
+  if (attempted && finished) {
+    if (outcome === 'failure' || outcome === 'cancelled') {
+      return {
+        ok: true,
+        degraded: true,
+        reason: `collect: finished its work, but the step did not exit cleanly (outcome '${outcome}')`,
+      };
+    }
+    if (outcome === 'success' && timedOut > 0) {
+      return {
+        ok: true,
+        degraded: true,
+        reason: `collect: finished; ${timedOut} URL(s) skipped after the per-URL timeout`,
+      };
+    }
+  }
   return verifyStepStage('collect', { attempted, outcome });
 }
 

@@ -55,6 +55,7 @@ const { loadCookiesForDomain, hasCookiesForUrl, buildCookieHeaderForUrl, COOKIE_
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { isTimeBudgetExceeded } = require('./lib/collect-time-budget.js');
+const { buildCollectSummary, writeCollectSummary } = require('./lib/collect-run-summary.js');
 const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
 const { protectStagedDeletions, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard.js');
 const { shouldPushReviewTextsCheckpoint } = require('./lib/review-texts-checkpoint-gate.js');
@@ -686,6 +687,10 @@ const stats = {
   cookieExpiryCount: 0,
 };
 
+// Reviews abandoned by the per-review REVIEW_TIMEOUT this run (BRO-4273).
+// Run-local, not persisted: they are in state.failed too and retried next run.
+const timedOutReviews = [];
+
 // State tracking
 let state = {
   processed: [],
@@ -744,6 +749,12 @@ const MAX_BROWSER_CRASHES = 5;
 // succeeded. setupBrowser() checks its captured generation before committing
 // to the module globals; a stale one tears itself down instead.
 let browserGeneration = 0;
+// BRO-4273: set once main() starts its final cleanup. A review abandoned by
+// REVIEW_TIMEOUT keeps running in the background, and its own browser-restart
+// path used to launch a fresh Chromium AFTER main() closed the last one; that
+// orphan child process kept node alive until the CI step's 12-min kill
+// (reproduced locally against a never-responding URL).
+let collectorShuttingDown = false;
 
 // ============================================================================
 // PAGE HELPERS (scroll, paywall dismissal)
@@ -3188,12 +3199,16 @@ function checkContentQuality(text) {
  */
 function withTimeout(promise, ms, tierName) {
   if (!ms) return promise;
+  // Clear the timer once the race settles (BRO-4273): a pending setTimeout
+  // keeps node's event loop alive, so every uncleared one held the process
+  // open for up to `ms` after its work was already done.
+  let timer;
   return Promise.race([
     promise,
-    new Promise((_, reject) =>
-      setTimeout(() => reject(new Error(`${tierName} timed out after ${ms}ms`)), ms)
-    )
-  ]);
+    new Promise((_, reject) => {
+      timer = setTimeout(() => reject(new Error(`${tierName} timed out after ${ms}ms`)), ms);
+    })
+  ]).finally(() => clearTimeout(timer));
 }
 
 // ============================================================================
@@ -6236,6 +6251,9 @@ function findReviewsToProcess() {
 // ============================================================================
 
 async function setupBrowser() {
+  if (collectorShuttingDown) {
+    throw new Error('collector is shutting down — not launching a new browser');
+  }
   console.log('\nLaunching browser with stealth...');
   const myGeneration = ++browserGeneration;
 
@@ -7494,16 +7512,18 @@ async function main() {
 
       // Hard timeout per review - prevents hung Playwright from killing entire run
       let result;
+      let reviewTimer;
       try {
         result = await Promise.race([
           processReview(review),
-          new Promise((_, reject) =>
-            setTimeout(() => reject(new Error('REVIEW_TIMEOUT')), CONFIG.reviewTimeout)
-          )
+          new Promise((_, reject) => {
+            reviewTimer = setTimeout(() => reject(new Error('REVIEW_TIMEOUT')), CONFIG.reviewTimeout);
+          })
         ]);
       } catch (e) {
         if (e.message === 'REVIEW_TIMEOUT') {
           console.log(`  ✗ TIMEOUT: Review took >${CONFIG.reviewTimeout/1000}s - skipping (${review.outlet} - ${review.critic})`);
+          timedOutReviews.push({ reviewId: review.reviewId, url: review.url });
           // Kill and restart browser to clear hung state. Bounded — a hung
           // browser.close()/launch() (zombie process, exhausted resources after
           // many restarts) otherwise stalls the whole run indefinitely with 0%
@@ -7513,6 +7533,8 @@ async function main() {
           try { await withTimeout(setupBrowser(), 60000, 'setupBrowser'); } catch(_) {}
         }
         result = { success: false, error: e.message };
+      } finally {
+        clearTimeout(reviewTimer);
       }
 
       if (result.success) {
@@ -7542,12 +7564,53 @@ async function main() {
     saveState();
     commitChanges(state.processed.length, true);
 
+    // BRO-4273: record "loop finished, final checkpoint attempted" BEFORE
+    // browser cleanup — runs 36493405907/36503960657 got this far, then hung
+    // until the step's 12-min kill, and the pipeline verifier read that as a
+    // crash. The poller's "Commit collected texts" step does the durable
+    // push; this marker only says the collection work itself completed.
+    if (timedOutReviews.length > 0) {
+      console.log(`\n⏭ ${timedOutReviews.length} URL(s) skipped after the ${CONFIG.reviewTimeout / 1000}s per-URL timeout (retried next run):`);
+      for (const r of timedOutReviews) console.log(`    - ${r.url || r.reviewId}`);
+    }
+    try {
+      if (writeCollectSummary(process.env.COLLECT_SUMMARY_FILE, buildCollectSummary({
+        processed: state.processed.length,
+        failed: state.failed.length,
+        timedOut: timedOutReviews,
+      }))) {
+        console.log(`  ✓ Collect summary written to ${process.env.COLLECT_SUMMARY_FILE}`);
+      }
+    } catch (e) {
+      console.log(`  ⚠ Could not write collect summary: ${e.message}`);
+    }
+
   } finally {
-    await closeBrowser();
+    collectorShuttingDown = true;
+    // Bounded like every other closeBrowser() call site (BRO-4273).
+    try { await withTimeout(closeBrowser(), 30000, 'closeBrowser'); } catch (_) {}
   }
 
   // Generate report
   generateReport();
+}
+
+/**
+ * BRO-4273: once main() is done, node should exit by itself. If a stray
+ * handle (an abandoned processReview() from a REVIEW_TIMEOUT, a Browserbase
+ * CDP socket) keeps the event loop alive, exit anyway after a short grace
+ * instead of idling until the CI step's timeout kills it. unref()'d, so it
+ * never delays a clean exit. Every write in main() is synchronous, so
+ * nothing in flight is lost.
+ */
+function exitIfStuckAfterMain(graceMs = 20000) {
+  const t = setTimeout(() => {
+    let handles = '';
+    try { handles = ` (active: ${process.getActiveResourcesInfo().join(', ')})`; } catch (_) {}
+    console.log(`\n⚠ Collection finished but open handles kept node alive ${graceMs / 1000}s — forcing exit${handles}`);
+    process.exit(0);
+  }, graceMs);
+  t.unref();
 }
 
 module.exports = { pushReviewTextsCheckpoint };
@@ -7556,8 +7619,8 @@ module.exports = { pushReviewTextsCheckpoint };
 // file for pushReviewTextsCheckpoint() without kicking off a real collection
 // run — see CLAUDE.md rule 15, test extraction pattern).
 if (require.main === module) {
-  main().catch(error => {
+  main().then(() => exitIfStuckAfterMain()).catch(error => {
     console.error('Fatal error:', error);
-    closeBrowser().finally(() => process.exit(1));
+    withTimeout(closeBrowser(), 30000, 'closeBrowser').catch(() => {}).finally(() => process.exit(1));
   });
 }
