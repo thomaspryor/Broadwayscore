@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-09-29T15:40:26.034Z",
-  "processed": 675,
-  "failed": 349,
-  "successRate": "65.9%",
+  "updatedAt": "2026-09-29T15:46:18.886Z",
+  "processed": 692,
+  "failed": 351,
+  "successRate": "66.3%",
   "tierBreakdown": {
-    "playwright": 34,
-    "amp": 0,
-    "browserbase": 0,
-    "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 6,
-    "brightdata": 0,
+    "playwright": 369,
+    "amp": 2,
+    "browserbase": 43,
+    "directCookies": 5,
+    "scrapingdog": 16,
+    "scrapingbee": 116,
+    "brightdata": 48,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 119
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
       "t": "2026-09-29T15:12:06.176Z",
@@ -26,6 +26,23 @@
       "t": "2026-09-29T15:12:06.763Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-29T15:36:57.560Z",
+      "event": "bb-session",
+      "session": "54706ef3",
+      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
+    },
+    {
+      "t": "2026-09-29T15:36:58.145Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-29T15:43:53.672Z",
+      "event": "bb-session",
+      "session": "ba269f55",
+      "url": "http://www.hollywoodreporter.com/review/ride-cyclone-review-951519"
     }
   ]
 }
