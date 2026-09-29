@@ -84,7 +84,7 @@ jobs:
           bash scripts/lib/push-with-retry.sh 5 main
 
       - name: Notify on failure
-        if: failure()
+        if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
           title: 'Check Morning Digest Sent Failed (cannot verify the digest)'
