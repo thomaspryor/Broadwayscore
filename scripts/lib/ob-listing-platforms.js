@@ -54,7 +54,10 @@ function cleanListingTitle(raw) {
   // Box offices tag an annual return with its season ("A Christmas Carol the
   // Musical 2026"); the catalog year lives in the id, not the title.
   // Not when the year is part of the name ("Class of 2026", "Summer in 2027").
-  if (!/\b(?:of|in|since|circa|class)\s+20[2-3]\d$/i.test(t)) t = t.replace(/\s+(?:20[2-3]\d)$/, '').trim();
+  // Season prefix: "2026: The Master Builder" (Arcola's Spektrix names).
+  t = t.replace(/^20[2-3]\d:\s+/, '');
+  // London box offices bracket it: "Cinderella (2026)" (Lyric Hammersmith).
+  if (!/\b(?:of|in|since|circa|class)\s+20[2-3]\d$/i.test(t)) t = t.replace(/\s+(?:20[2-3]\d|\(20[2-3]\d\))$/, '').trim();
   return t;
 }
 
@@ -100,7 +103,9 @@ function mergeByTitle(rows) {
     if (!prev) { byKey.set(key, { ...r }); continue; }
     if (r.firstDate && (!prev.firstDate || r.firstDate < prev.firstDate)) prev.firstDate = r.firstDate;
     if (r.lastDate && (!prev.lastDate || r.lastDate > prev.lastDate)) prev.lastDate = r.lastDate;
-    if (typeof r.performanceCount === 'number') prev.performanceCount = (prev.performanceCount || 0) + r.performanceCount;
+    // An explicit null (a run of unknown size) keeps the merged count unknown.
+    if (prev.performanceCount === null || r.performanceCount === null) prev.performanceCount = null;
+    else if (typeof r.performanceCount === 'number') prev.performanceCount = (prev.performanceCount || 0) + r.performanceCount;
     if (!prev.url && r.url) prev.url = r.url;
   }
   return [...byKey.values()];
@@ -177,6 +182,9 @@ function jsonLdEventNodes(items) {
     if (Array.isArray(node.itemListElement)) {
       for (const li of node.itemListElement) visit(li && li.item ? li.item : li, depth + 1);
     }
+    // A venue node listing its events (schema.org Place/Organization `event`,
+    // Marylebone Theatre's PerformingArtsTheater, BRO-4398).
+    if (node.event && typeof node.event === 'object') visit(node.event, depth + 1);
   };
   for (const it of items) visit(it, 0);
   return out;
@@ -197,7 +205,10 @@ function extractDatedJsonLdEvents(doc) {
         title: cleanListingTitle(ev.name),
         firstDate: first,
         lastDate: last,
-        performanceCount: subs.length || 1,
+        // One node for a whole run ("startDate 2026-09-19, endDate
+        // 2026-11-14", no subEvent) says nothing about how many shows it has:
+        // unknown, not 1 (Menier's JSON-LD, BRO-4398).
+        performanceCount: subs.length || (first && last && first !== last ? null : 1),
         url: typeof ev.url === 'string' ? ev.url : null,
       });
     }
@@ -232,9 +243,49 @@ function validIso(y, m, d) {
  * date lands within [today - 180d, today + 365d]. Returns nulls when no date
  * is found. `through/until/thru` before a single date makes it lastDate only.
  */
-function parseDateRangeText(text, { todayIso = new Date().toISOString().slice(0, 10) } = {}) {
+function parseDateRangeText(text, { todayIso = new Date().toISOString().slice(0, 10), dayFirst = false } = {}) {
   const s = String(text || '').replace(/\s+/g, ' ').trim();
   if (!s) return { firstDate: null, lastDate: null };
+  const tokens = dayFirst ? dayFirstTokens(s) : monthFirstTokens(s);
+  return resolveDateTokens(tokens, s, todayIso);
+}
+
+const MONTH_NAME_RE_SRC = '(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)';
+const WEEKDAY_RE_SRC = '(?:(?:mon|tue|wed|thu|fri|sat|sun)[a-z]*\\.?,?\\s+)?';
+
+/**
+ * UK order (BRO-4398, London venue cards): "Tue 8 Sep – Sat 31 Oct 2026",
+ * "29 Sept - 24 Oct 2026", "13 - 24 October 2026", "Fri 16 - Fri 23 Oct
+ * 2026", "5th March 2027", "30/09/2026". A bare day before a separator takes
+ * the month and year of the next dated token ("13 - 24 October").
+ */
+function dayFirstTokens(s) {
+  const tokens = [];
+  const dayMonthRe = new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s+${MONTH_NAME_RE_SRC}\\b\\.?(?:,?\\s+(\\d{4}))?`, 'gi');
+  let m;
+  while ((m = dayMonthRe.exec(s)) !== null) {
+    const mon = MONTHS[m[2].toLowerCase()];
+    if (mon) tokens.push({ idx: m.index, mon, day: Number(m[1]), year: m[3] ? Number(m[3]) : null });
+  }
+  const bareDayRe = new RegExp(`\\b(\\d{1,2})(?:st|nd|rd|th)?\\s*[-–—]\\s*${WEEKDAY_RE_SRC}(?=\\d{1,2}(?:st|nd|rd|th)?\\s+${MONTH_NAME_RE_SRC}\\b)`, 'gi');
+  while ((m = bareDayRe.exec(s)) !== null) {
+    const next = tokens.filter(t => t.idx > m.index).sort((a, b) => a.idx - b.idx)[0];
+    if (!next) continue;
+    const day = Number(m[1]);
+    // "30 - 2 Nov" crosses a month end: the bare day belongs to October.
+    const mon = day > next.day ? (next.mon === 1 ? 12 : next.mon - 1) : next.mon;
+    const year = next.year == null ? null : (mon > next.mon ? next.year - 1 : next.year);
+    tokens.push({ idx: m.index, mon, day, year });
+  }
+  const numRe = /\b(\d{1,2})\/(\d{1,2})(?:\/(\d{2}|\d{4}))?\b(?!\/)/g;
+  while ((m = numRe.exec(s)) !== null) {
+    const y = m[3] ? (m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3])) : null;
+    tokens.push({ idx: m.index, mon: Number(m[2]), day: Number(m[1]), year: y });
+  }
+  return tokens;
+}
+
+function monthFirstTokens(s) {
   const tokens = [];
   // Month-name dates: "Oct 3", "October 3, 2026", "Oct. 3rd 2026"
   const monthRe = /\b(jan(?:uary)?|feb(?:ruary)?|mar(?:ch)?|apr(?:il)?|may|june?|july?|aug(?:ust)?|sept?(?:ember)?|oct(?:ober)?|nov(?:ember)?|dec(?:ember)?)\.?\s+(\d{1,2})(?!\d|:|\s*(?:am|pm)\b)(?:st|nd|rd|th)?(?:,?\s+(\d{4}))?(?:\s*[-–—]\s*(\d{1,2})(?:st|nd|rd|th)?(?!\d|:|\s*[a-z/])(?:,?\s+(\d{4}))?)?/gi;
@@ -252,6 +303,10 @@ function parseDateRangeText(text, { todayIso = new Date().toISOString().slice(0,
     const y = m[3] ? (m[3].length === 2 ? 2000 + Number(m[3]) : Number(m[3])) : null;
     tokens.push({ idx: m.index, mon: Number(m[1]), day: Number(m[2]), year: y });
   }
+  return tokens;
+}
+
+function resolveDateTokens(tokens, s, todayIso) {
   if (tokens.length === 0) return { firstDate: null, lastDate: null };
   tokens.sort((a, b) => a.idx - b.idx);
 
@@ -321,7 +376,7 @@ function extractDatedCards(doc, venue, { todayIso } = {}) {
     const title = cleanListingTitle(titleEl ? titleEl.textContent : '');
     if (!title) continue;
     const dateEl = venue.dateSelector ? card.querySelector(venue.dateSelector) : null;
-    const { firstDate, lastDate } = parseDateRangeText(dateEl ? dateEl.textContent : '', { todayIso });
+    const { firstDate, lastDate } = parseDateRangeText(dateEl ? dateEl.textContent : '', { todayIso, dayFirst: !!venue.dayFirst });
     const a = venue.linkSelector ? card.querySelector(venue.linkSelector) : (card.matches && card.matches('a[href]') ? card : card.querySelector('a[href]'));
     rows.push({ title, firstDate, lastDate, performanceCount: null, url: a ? a.getAttribute('href') : null });
   }
@@ -334,32 +389,54 @@ function extractDatedCards(doc, venue, { todayIso } = {}) {
 // ---------------------------------------------------------------------------
 
 /**
- * @param {object[]} events - GET https://<host>/<client>/api/v3/events
- * @param {{genres?: string[], genreField?: string}} [opts] - keep only events
- *   whose genre attribute is one of `genres` (PAC NYC lists DJ sets, talks
- *   and access services on the same account).
+ * @param {object[]|{events: object[], instances?: object[]}} payload -
+ *   GET https://<host>/<client>/api/v3/events, or that plus
+ *   GET .../api/v3/instances (fetchSpektrixEvents with {instances: true}).
+ *   With instances, each event's performance count is its number of
+ *   non-cancelled instances, so the promotion gate can tell a run from a
+ *   monthly club night (BRO-4398: London accounts sell those beside plays).
+ * @param {{genres?: string[], genreField?: string, exclude?: Object<string, RegExp>}} [opts]
+ *   genres: keep only events whose genre attribute is one of these (PAC NYC
+ *   lists DJ sets, talks and access services on the same account).
+ *   exclude: drop an event when any named field matches its RegExp
+ *   (`{attribute_SupplementaryEvent: /^true$/i}` for add-ons).
  */
-function parseSpektrixEvents(events, opts = {}) {
-  if (!Array.isArray(events)) return [];
+function parseSpektrixEvents(payload, opts = {}) {
+  const events = Array.isArray(payload) ? payload : (payload && Array.isArray(payload.events) ? payload.events : null);
+  if (!events) return [];
+  const instances = payload && !Array.isArray(payload) && Array.isArray(payload.instances) ? payload.instances : null;
+  let counts = null;
+  if (instances) {
+    counts = new Map();
+    for (const i of instances) {
+      const id = i && i.event && i.event.id;
+      if (!id || i.cancelled === true) continue;
+      counts.set(id, (counts.get(id) || 0) + 1);
+    }
+  }
   const genreField = opts.genreField || 'attribute_Genre1';
   const genres = opts.genres ? new Set(opts.genres.map(g => g.toLowerCase())) : null;
+  const exclude = opts.exclude ? Object.entries(opts.exclude) : [];
   const rows = [];
   for (const e of events) {
     if (!e || !e.name) continue;
     if (String(e.attribute_NoEventPage || '').toLowerCase() === 'true') continue;
     if (genres && !genres.has(String(e[genreField] || '').toLowerCase())) continue;
+    if (exclude.some(([field, re]) => re.test(String(e[field] == null ? '' : e[field])))) continue;
     rows.push({
       title: cleanListingTitle(e.name),
       firstDate: isoDay(e.firstInstanceDateTime),
       lastDate: isoDay(e.lastInstanceDateTime),
       // instanceDates is display text ("September 16-October 18"), not a
-      // list, so the performance count is unknown; the gate falls back to
-      // "at least two distinct dates".
-      performanceCount: null,
+      // list, so without the instances feed the count is unknown and the
+      // gate falls back to "at least two distinct dates".
+      performanceCount: counts ? (counts.get(e.id) || 0) : null,
       url: e.webUrl || null,
     });
   }
-  return mergeByTitle(rows.filter(r => r.title && (r.firstDate || r.lastDate)));
+  // An event whose instances were all cancelled (or none published) is not
+  // on sale as a run.
+  return mergeByTitle(rows.filter(r => r.title && (r.firstDate || r.lastDate) && r.performanceCount !== 0));
 }
 
 // ---------------------------------------------------------------------------
@@ -540,10 +617,18 @@ async function fetchTribeEvents(siteUrl, { perPage = 50, maxPages = 4 } = {}) {
   return { events };
 }
 
-async function fetchSpektrixEvents(url) {
+async function fetchSpektrixEvents(url, { instances = false, todayIso = new Date().toISOString().slice(0, 10) } = {}) {
   const json = await getJson(url);
   if (!Array.isArray(json)) throw new Error(`Spektrix ${url}: events is not an array`);
-  return json;
+  if (!instances) return json;
+  // The full instances feed runs to 3 MB / 40 s on a busy account
+  // (Riverside Studios, 2026-09-30); 180 days back still covers the whole
+  // of any run that is current, which is all the count is used for.
+  const since = new Date(Date.parse(`${todayIso}T00:00:00Z`) - 180 * DAY_MS).toISOString().slice(0, 10);
+  const instUrl = url.replace(/\/events\/?(\?.*)?$/, `/instances?startFrom=${since}`);
+  const inst = await getJson(instUrl, { timeoutMs: 90000 });
+  if (!Array.isArray(inst)) throw new Error(`Spektrix ${instUrl}: instances is not an array`);
+  return { events: json, instances: inst };
 }
 
 /** Parse a listing HTML string into a Document (shared by the HTML readers). */
