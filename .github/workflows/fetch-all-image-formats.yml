@@ -68,6 +68,15 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      # BRO-4326: fetch-show-images-auto.js's fetchPage() chain tries
+      # Playwright first for public sites (todaytix, ibdb, playbill). Without
+      # a browser every attempt failed "Executable doesn't exist" and fell
+      # straight through to paid Bright Data / Scrapingdog — 53 wasted
+      # launches per run, invisible because the fallbacks kept the job green.
+      # Pinned by tests/unit/workflow-playwright-setup.test.mjs.
+      - name: Setup Playwright
+        uses: ./.github/actions/setup-playwright
+
       - name: Fetch show images (auto-discovery)
         id: fetch
         env:
