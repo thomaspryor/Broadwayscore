@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-30T12:44:31.329Z",
+    "generatedAt": "2026-09-30T13:49:55.903Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": true,
@@ -16,23 +16,23 @@
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 173
+      "churn": 176
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 102
+      "churn": 104
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 72
+      "churn": 73
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 48
+      "churn": 50
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 46
+      "churn": 47
     },
     {
       "path": "data/audit/main-streak-failing-jobs.json",
@@ -42,54 +42,62 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 481
+      "churn": 485
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 225
+      "churn": 228
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 225
+      "churn": 228
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 225
+      "churn": 228
     },
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 205
+      "churn": 207
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 183
+      "churn": 184
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 138
+      "churn": 140
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 103
+      "churn": 105
     },
     {
       "path": "public/data/shows/kimberly-akimbo-off-west-end-2026.json",
-      "churn": 95
+      "churn": 96
     },
     {
       "path": "public/data/shows/death-note-the-musical-west-end-2026.json",
-      "churn": 94
+      "churn": 95
     },
     {
       "path": "public/data/shows/man-to-man-west-end-2026.json",
-      "churn": 92
+      "churn": 93
     },
     {
       "path": "public/data/shows/archduke-west-end-2026.json",
-      "churn": 91
+      "churn": 92
     },
     {
       "path": "public/data/shows/cyrano-de-bergerac-west-end-2026.json",
+      "churn": 92
+    },
+    {
+      "path": "public/data/shows/into-the-woods-west-end-2025.json",
+      "churn": 92
+    },
+    {
+      "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
       "churn": 91
     },
     {
@@ -97,52 +105,44 @@
       "churn": 91
     },
     {
-      "path": "public/data/shows/into-the-woods-west-end-2025.json",
-      "churn": 91
-    },
-    {
-      "path": "public/data/shows/a-month-in-the-country-west-end-2026.json",
-      "churn": 90
-    },
-    {
       "path": "public/data/shows/as-you-like-it-globe-west-end-2026.json",
-      "churn": 88
+      "churn": 89
     },
     {
       "path": "public/data/shows/care-west-end-2026.json",
-      "churn": 86
+      "churn": 87
+    },
+    {
+      "path": "public/data/shows/all-my-sons-west-end-2025.json",
+      "churn": 85
     },
     {
       "path": "public/data/shows/equus-west-end-2026.json",
       "churn": 85
     },
     {
-      "path": "public/data/shows/all-my-sons-west-end-2025.json",
-      "churn": 84
-    },
-    {
       "path": "public/data/shows/golden-boy-off-west-end-2026.json",
-      "churn": 84
+      "churn": 85
     },
     {
       "path": "public/data/shows/loves-labours-lost-globe-west-end-2026.json",
-      "churn": 84
+      "churn": 85
     },
     {
       "path": "public/data/shows/bloodsport-after-helen-of-troy-off-west-end-2026.json",
-      "churn": 81
+      "churn": 82
     },
     {
       "path": "public/data/shows/john-proctor-is-the-villain-west-end-2026.json",
-      "churn": 81
+      "churn": 82
     },
     {
       "path": "public/data/shows/jesus-christ-superstar-west-end-2026.json",
-      "churn": 77
+      "churn": 78
     },
     {
       "path": "public/data/shows/are-you-watching-west-end-2026.json",
-      "churn": 76
+      "churn": 77
     },
     {
       "path": "public/data/shows/mass-west-end-2026.json",
@@ -153,20 +153,20 @@
       "churn": 72
     },
     {
+      "path": "public/data/shows/oh-mary-west-end-2025.json",
+      "churn": 72
+    },
+    {
       "path": "public/data/shows/manic-street-creature-west-end-2026.json",
       "churn": 71
     },
     {
-      "path": "public/data/shows/oh-mary-west-end-2025.json",
-      "churn": 71
-    },
-    {
       "path": "public/data/shows/school-girls-or-the-african-mean-girls-play-2026.json",
-      "churn": 68
+      "churn": 69
     },
     {
       "path": "public/data/shows/moulin-rouge-the-musical-west-end-2021.json",
-      "churn": 66
+      "churn": 67
     },
     {
       "path": "public/data/shows/tru-off-west-end-2026.json",
@@ -182,7 +182,7 @@
     },
     {
       "path": "public/data/shows/degenerates-off-broadway-2026.json",
-      "churn": 49
+      "churn": 50
     },
     {
       "path": "public/data/shows/the-last-ship-west-end-2026.json",
@@ -206,10 +206,14 @@
     },
     {
       "path": "public/data/shows/la-boheme-off-broadway-2026.json",
-      "churn": 35
+      "churn": 36
     },
     {
       "path": "public/data/shows/garry-starr-classic-penguins-off-broadway-2026.json",
+      "churn": 33
+    },
+    {
+      "path": "public/data/shows/midnight-off-broadway-2026.json",
       "churn": 33
     },
     {
@@ -217,11 +221,11 @@
       "churn": 33
     },
     {
-      "path": "public/data/shows/midnight-off-broadway-2026.json",
-      "churn": 32
+      "path": "public/data/shows/the-urmetazoan-off-west-end-2026.json",
+      "churn": 33
     },
     {
-      "path": "public/data/shows/the-urmetazoan-off-west-end-2026.json",
+      "path": "public/data/shows/here-comes-j-edgar-off-west-end-2026.json",
       "churn": 32
     },
     {
@@ -231,116 +235,112 @@
     {
       "path": "public/data/shows/ancient-grease-off-west-end-2026.json",
       "churn": 31
-    },
-    {
-      "path": "public/data/shows/here-comes-j-edgar-off-west-end-2026.json",
-      "churn": 31
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 420,
+      "churn": 429,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 381,
+      "churn": 386,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 354,
+      "churn": 364,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 342,
+      "churn": 351,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 342,
+      "churn": 351,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 342,
+      "churn": 351,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 256,
+      "churn": 259,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-elf-lyons-the-woman-on-the-edge-off-broadway-2026.json",
-      "churn": 225,
+      "churn": 228,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-the-secret-circus-musical-off-broadway-2026.json",
-      "churn": 225,
+      "churn": 228,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-tru-off-west-end-2026.json",
-      "churn": 225,
+      "churn": 228,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 225,
+      "churn": 228,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 212,
+      "churn": 214,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 198,
+      "churn": 199,
       "mergeAttr": "union"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 139,
+      "churn": 142,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-school-girls-or-the-african-mean-girls-play-2026.json",
-      "churn": 131,
+      "churn": 134,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 131,
+      "churn": 134,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/wrong-production-audit.json",
-      "churn": 103,
+      "churn": 105,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 102,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/syndicated-duplicates.json",
-      "churn": 102,
+      "churn": 104,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 97,
+      "churn": 99,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/browserbase-usage.json",
-      "churn": 73,
+      "churn": 76,
       "mergeAttr": "ours"
     },
     {
@@ -350,17 +350,17 @@
     },
     {
       "path": "data/audit/url-collision-report.json",
+      "churn": 45,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/orphan-unscored-whos-afraid-of-virginia-woolf-west-end-2026.json",
       "churn": 44,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 43,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/orphan-unscored-whos-afraid-of-virginia-woolf-west-end-2026.json",
-      "churn": 41,
+      "churn": 44,
       "mergeAttr": "ours"
     },
     {
@@ -370,12 +370,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 31,
+      "churn": 32,
       "mergeAttr": "ours"
     }
   ]
