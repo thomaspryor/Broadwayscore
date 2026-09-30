@@ -1,27 +1,27 @@
 {
-  "runDate": "2026-09-30T19:41:51.352Z",
+  "runDate": "2026-09-30T19:45:43.251Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "an-american-daughter-off-broadway-2026",
+    "showFilter": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 0,
+    "processed": 2,
+    "failed": 2,
     "skipped": 0,
-    "successRate": "100.0%"
+    "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 1,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
@@ -29,53 +29,68 @@
   },
   "statistics": {
     "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
-    "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier1_9Attempts": 3,
+    "tier1_9Success": 1,
+    "tier2Attempts": 2,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier3_6Attempts": 2,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 3,
     "tier4Success": 0,
-    "totalFailed": 0,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
+    "browserbaseSessionsUsed": 2,
+    "browserbaseMinutesUsed": 0.1,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-    "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
-    "an-american-daughter-off-broadway-2026/playbill--unknown.json",
-    "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
   ],
-  "failed": [],
+  "failed": [
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/broadwaynews--unknown.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/tennessean--unknown.json"
+  ],
   "tierDetails": {
     "playwright": [
-      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-      "an-american-daughter-off-broadway-2026/nysr--david-finkle.json",
-      "an-american-daughter-off-broadway-2026/playbill--unknown.json",
-      "an-american-daughter-off-broadway-2026/times-square-chronicles--suzanna-bowling.json"
+      "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/recast--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": []
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Broadway News": {
+      "count": 1,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Tennessean": {
+      "count": 1,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
