@@ -17,7 +17,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const require = createRequire(import.meta.url);
 const { mergeUniqueReviewFields } = require(resolve(ROOT, 'scripts/lib/merge-review-fields.js'));
 const { mergeReviews, maybeUpgradeUrl } = require(resolve(ROOT, 'scripts/lib/review-normalization.js'));
-const { isMergedDuplicateUrl, recordMergedDuplicateUrl } = require(resolve(ROOT, 'scripts/lib/merged-duplicate-urls.js'));
+const { isMergedDuplicateUrl, recordMergedDuplicateUrl, absorbMergedDuplicates } = require(resolve(ROOT, 'scripts/lib/merged-duplicate-urls.js'));
 const { createOrMergeReviewFile } = require(resolve(ROOT, 'scripts/lib/review-file-writer.js'));
 
 const LONG = 'https://culturesauce.com/how-shakespeare-saved-my-life-treats-the-bard-as-life-coach-off-broadway-review/';
@@ -96,6 +96,26 @@ describe('merged-away url tombstone', () => {
   });
 });
 
+describe('chain merges and escape hatch', () => {
+  test('A<-B<-C: folding a survivor that has tombstones keeps them all', () => {
+    const b = survivor(); recordMergedDuplicateUrl(b, SHORT);
+    const a = { ...survivor(), url: 'https://culturesauce.com/a/' };
+    assert.equal(mergeUniqueReviewFields(a, b).changed, true);
+    assert.equal(isMergedDuplicateUrl(a, SHORT), true);
+    assert.equal(isMergedDuplicateUrl(a, LONG), true);
+    const c = { url: 'https://culturesauce.com/c/', mergedDuplicateUrls: ['https://culturesauce.com/d/'] };
+    const target = { url: 'https://culturesauce.com/t/', mergedDuplicateUrls: [SHORT] };
+    absorbMergedDuplicates(target, c);
+    assert.equal(target.mergedDuplicateUrls.length, 3);
+  });
+
+  test('urlManualOverride on the incoming write bypasses the merged-duplicate refusal', () => {
+    const t = survivor(); recordMergedDuplicateUrl(t, SHORT);
+    const out = mergeReviews(t, { outletId: 'culturesauce', criticName: 'Thom Geier', url: SHORT, urlManualOverride: true });
+    assert.equal(out.url, SHORT);
+  });
+});
+
 describe('drift: every fold-and-delete site records the merged-away url', () => {
   const { readFileSync } = require('node:fs');
   for (const f of [
@@ -103,9 +123,10 @@ describe('drift: every fold-and-delete site records the merged-away url', () => 
     'scripts/consolidate-duplicate-reviews.js',
     'scripts/fix-critic-name-duplicates.js',
     'scripts/backfill-pv-critics.js',
+    'scripts/fix-outlet-case.js',
   ]) {
-    test(`${f} calls recordMergedDuplicateUrl`, () => {
-      assert.match(readFileSync(resolve(ROOT, f), 'utf8'), /recordMergedDuplicateUrl/);
+    test(`${f} records merged duplicate urls`, () => {
+      assert.match(readFileSync(resolve(ROOT, f), 'utf8'), /(record|absorb)MergedDuplicateUrls?|absorbMergedDuplicates/);
     });
   }
 });

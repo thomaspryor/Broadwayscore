@@ -811,7 +811,8 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // makes applyUrlChangeInvariant wipe the surviving text + score (Culture
   // Sauce "How Shakespeare Saved My Life", 2026-09-30). No-op the whole merge,
   // like the cross-outlet guard below: incoming.fullText came from that URL.
-  if (urlChanged && require('./merged-duplicate-urls').isMergedDuplicateUrl(existing, incoming.url)) {
+  if (urlChanged && incoming.urlManualOverride !== true && incoming.allowMergedDuplicateUrl !== true
+      && require('./merged-duplicate-urls').isMergedDuplicateUrl(existing, incoming.url)) {
     console.warn(`[mergeReviews] refused merged-away url for ${existing.outletId || context.file || '?'}: ${incoming.url}`);
     logExclusion({
       script: context.script || 'unknown-caller',

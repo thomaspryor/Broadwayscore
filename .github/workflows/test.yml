@@ -673,6 +673,7 @@ on:
       - 'scripts/consolidate-duplicate-reviews.js'
       - 'scripts/fix-critic-name-duplicates.js'
       - 'scripts/backfill-pv-critics.js'
+      - 'scripts/fix-outlet-case.js'
       # Canonical feedback-pipeline field allowlist (card #1482) — shared by
       # auto-fix-feedback-bug.js, diagnose-feedback-bug.js,
       # generate-remediation-plan.js, and execute-approved-fix.js. Colocated

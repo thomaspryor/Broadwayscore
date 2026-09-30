@@ -1058,7 +1058,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // duplicate was deleted. Creating a file for it re-manufactures that duplicate
   // (and the next merge pass repeats the cycle). NEW files only: writes that
   // resolve to an existing file are covered by mergeReviews/maybeUpgradeUrl.
-  if (input.url) {
+  if (input.url && fields.allowMergedDuplicateUrl !== true) {
     const owner = findMergedDuplicateOwner({ showDir, url: input.url, outletId, normalizeOutletId: normalizeOutlet });
     if (owner) {
       console.warn(`  ⛔ Refusing create: ${input.url} was merged into ${owner.filename}`);

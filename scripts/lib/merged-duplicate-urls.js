@@ -17,7 +17,7 @@ const fs = require('fs');
 const path = require('path');
 const { normalizeUrl } = require('./review-normalization');
 
-const MAX_TRACKED = 12;
+const MAX_TRACKED = 50;
 
 function keyOf(url) {
   if (!url || typeof url !== 'string' || !/^https?:\/\//i.test(url)) return null;
@@ -46,6 +46,20 @@ function recordMergedDuplicateUrl(target, url) {
 }
 
 /**
+ * Fold everything `source` knows into `target`: its own URL plus the tombstones
+ * it already carried (a survivor that is itself merged away later, A<-B<-C).
+ * Returns true when target changed.
+ */
+function absorbMergedDuplicates(target, source) {
+  if (!target || !source) return false;
+  let changed = recordMergedDuplicateUrl(target, source.url);
+  if (Array.isArray(source.mergedDuplicateUrls)) {
+    for (const u of source.mergedDuplicateUrls) if (recordMergedDuplicateUrl(target, u)) changed = true;
+  }
+  return changed;
+}
+
+/**
  * Find a file in `showDir` (same outlet) that a merge already folded `url` into.
  * Reads only the show's own directory; fails open (null) on any read error.
  */
@@ -66,4 +80,4 @@ function findMergedDuplicateOwner({ showDir, url, outletId, normalizeOutletId = 
   return null;
 }
 
-module.exports = { isMergedDuplicateUrl, recordMergedDuplicateUrl, findMergedDuplicateOwner, MAX_TRACKED };
+module.exports = { isMergedDuplicateUrl, recordMergedDuplicateUrl, absorbMergedDuplicates, findMergedDuplicateOwner, MAX_TRACKED };
