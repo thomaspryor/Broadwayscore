@@ -50,6 +50,10 @@ function applyAddShow(shows, action) {
   if (action.priorRunOf) {
     prior = shows.find(s => s.id === action.priorRunOf);
     if (!prior) return { ok: false, reason: `add-show: priorRunOf "${action.priorRunOf}" not found` };
+    // PriorRun.openingDate is required (src/types/show.ts); a null one is
+    // silently skipped by findMatchingPriorRun, same reason crossLinkFrom
+    // refuses a dateless show.
+    if (!prior.openingDate) return { ok: false, reason: `add-show: priorRunOf "${action.priorRunOf}" has no openingDate` };
   }
 
   const added = { ...show, venue: sanitizeVenueForWrite(show.venue), discoverySource: show.discoverySource || 'manual-user-request' };
