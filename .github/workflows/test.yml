@@ -139,9 +139,9 @@ on:
       # dependencies.js — the same top-level-scripts/ gap shape as
       # check-cloud-secrets.js directly above, and self-referential in the same
       # way. Read the trigger carefully before assuming this entry does more
-      # than it does: the `dependency-audit` JOB is schedule/workflow_dispatch
-      # only (see its `if:` below), so this path does NOT make the npm-audit
-      # gate run on push and is not meant to. What it buys is the unit test,
+      # than it does: the npm-audit gate itself runs daily in
+      # audit-dependencies.yml (BRO-4434), not here, so this path does NOT
+      # make it run on push and is not meant to. What it buys is the unit test,
       # whose `the real shipped ALLOWLIST satisfies its own rule` case asserts
       # every entry in that file's ALLOWLIST carries an `exposure` assessment
       # of >= MIN_EXPOSURE_CHARS. That ALLOWLIST is where a critical CVE gets
@@ -151,6 +151,10 @@ on:
       # entry covers the source, and editing the source alone is the dangerous
       # direction.
       - 'scripts/audit-dependencies.js'
+      # tests/unit/audit-awards-freshness.test.mjs requires
+      # ../../scripts/audit-awards-freshness.js (BRO-4434; run daily by
+      # check-corpus-drift.js, never by this workflow).
+      - 'scripts/audit-awards-freshness.js'
       # tests/unit/input-builder-market-label.test.mjs and two colocated
       # scoreability specs import scripts/llm-scoring/input-builder.ts;
       # tests/unit/llm-scoring-stale-roundup-flag.test.mjs imports
@@ -294,8 +298,9 @@ on:
       # Editing that gate itself ran nothing.
       #
       # NOT yet machine-checked — the detector needs to be job-aware (a
-      # schedule-only job like dependency-audit gains nothing from a push-path
-      # entry), which is why this list is hand-added here and the audit for it
+      # script run only by another workflow, like audit-dependencies.yml's,
+      # gains nothing from a push-path entry), which is why this list is
+      # hand-added here and the audit for it
       # is tracked separately.
       #
       # Deliberately no `test.yml:NNNN` references here: the first version of
@@ -3271,7 +3276,11 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    # Run daily at 6 AM UTC (1 AM EST) to catch issues
+    # Run daily at 6 AM UTC (1 AM EST) to catch issues. Since BRO-4434 the
+    # only schedule-specific work here is visual-regression (its job-level
+    # `if`) and data-validation's schedule-only "Create issue on failure"
+    # steps; the outside-state checks that used to ride this cron
+    # (dependency-audit, awards-data-freshness) run in their own workflows.
     # TODO: Change to weekly (0 6 * * 1) once review inventory is stable
     - cron: '0 6 * * *'
   workflow_dispatch:
@@ -4277,119 +4286,6 @@ jobs:
           # sweep. Logic lives in scripts/lib/test-data-write-guard.js.
           node scripts/test-data-write-guard.js
 
-  dependency-audit:
-    name: Dependency Audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    # Only run on schedule (daily) — not every push, to avoid noise
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    # continue-on-error removed (2026-08-16): it predates the allowlist
-    # wrapper below (added 2026-07-11, commit b1f018ba240) and silently
-    # defeated it — that commit's own message says the wrapper "fails on any
-    # critical NOT in an expiring allowlist... Failure paths tested
-    # (unallowlisted -> exit 1, expired -> exit 1)", but continue-on-error
-    # swallowed that exit 1 at the job level, so the job always reported
-    # success in the GitHub UI regardless. A genuine unallowlisted critical
-    # (the exact case the wrapper was built to catch, e.g. the 2026-07 axios
-    # SSRF — see memory/roadmap.md) would never have reddened this job or
-    # been visible to test-summary's needs-list check (task #1690). The
-    # wrapper is already the noise-reduction layer (expiring allowlist for
-    # unfixable transitive vulns) — this flag was pure leftover, not a
-    # second, deliberate layer of noise suppression on top of it.
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-      - name: Setup Node.js
-        uses: actions/setup-node@v5
-        with:
-          node-version: '20'
-      - name: npm audit (critical only, expiring allowlist)
-        # Allowlist wrapper (scripts/audit-dependencies.js): raw `npm audit`
-        # has no exemption mechanism, so an unfixable critical (decompress
-        # GHSA-mp2f-45pm-3cg9 — no patched release exists) turned CI
-        # permanently red on 2026-07-11. The wrapper fails on any critical
-        # NOT in its expiring allowlist and on expired entries.
-        # BRO-4434 landing A: the script's exit contract is now the
-        # audit-time-bomb-tests one (findings exit 0 unless --strict). This
-        # job is deleted in landing B; until then --strict keeps it a gate.
-        run: node scripts/audit-dependencies.js --strict
-
-  awards-data-freshness:
-    name: Awards Data Freshness
-    runs-on: ubuntu-latest
-    # 3 -> 10 (2026-08-15, BRO-162). The "3 min is ample" reasoning below was
-    # about the freshness-check STEP (an O(1) API call), but it's `actions/
-    # checkout` itself that has high runner/network variance — the same class
-    # of bug just fixed for the lint-workflows job in 5f3c06f9b85 (checkout
-    # 16s clean vs 4m52s killed, same runner pool). Direct evidence for THIS
-    # job: runs 31713911025 (2026-08-13) and 31822872316 (2026-08-14) were
-    # both killed with Checkout still `in_progress` at the 3-min mark (3m20s
-    # and 2m59s respectively) — real work never even started. Because a job
-    # hitting its own timeout gets conclusion "cancelled", and any cancelled
-    # job makes the WHOLE test.yml run report "cancelled" regardless of other
-    # jobs' outcomes, this was one of the sources behind BRO-162 (masked a
-    # genuine Data Validation + Test Summary failure in 31713911025). 10
-    # borrows lint-workflows' measured 4m52s-worst-checkout headroom rather
-    # than a same-job measurement (no run has finished a slow checkout here to
-    # time it) — the freshness-check step itself is still ~1s of real work.
-    timeout-minutes: 10
-    # Schedule + manual only — never block unrelated PRs.
-    # Surfaces in daily digest via getWorkflowRunSummary; promotes from
-    # "operator forgot annual update" silent rot to a loud weekly failure.
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v5
-        with:
-          # Shallow — the freshness check no longer reads git history (see below),
-          # only the local ./.github/actions/notify-failure composite needs the tree.
-          fetch-depth: 1
-      - name: Check awards.json was updated within 14 months
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          # Annual awards cadence (Tony, Pulitzer, DD, OCC, DL, NYDCC, Olivier)
-          # means data/awards.json should change at least once per ceremony year.
-          # 14 months = 12-month annual cycle + 2 months grace for late ceremonies
-          # (Tonys were September 2021 due to COVID).
-          #
-          # Last-touch date comes from the GitHub commits-by-path API (O(1)) rather
-          # than `git log` over a full-history clone. The full clone (fetch-depth: 0)
-          # of this 134k-commit, ~2min-churn repo blew first the 3-min then the
-          # bumped 8-min job timeout (2026-06-30, Notion 38f637c5) — and on a
-          # high-churn repo even a 14-month --shallow-since fetch pulls most of
-          # history, so the API is the only stable fix. Same answer as git mtime.
-          #
-          # If this fires, run the annual update — see memory/awards-annual-update.md.
-          MAX_DAYS=425  # ~14 months
-          LAST_ISO=$(gh api "/repos/${{ github.repository }}/commits?path=data/awards.json&per_page=1" \
-            --jq '.[0].commit.committer.date')
-          if [ -z "$LAST_ISO" ] || [ "$LAST_ISO" = "null" ]; then
-            echo "::error::Could not determine last-touch date for data/awards.json via the GitHub API"
-            exit 1
-          fi
-          LAST_TS=$(date -u -d "$LAST_ISO" +%s 2>/dev/null \
-            || date -u -j -f "%Y-%m-%dT%H:%M:%SZ" "$LAST_ISO" +%s)
-          NOW=$(date +%s)
-          AGE_DAYS=$(( (NOW - LAST_TS) / 86400 ))
-          echo "data/awards.json last touched ${AGE_DAYS} days ago (${LAST_ISO})"
-          if [ "$AGE_DAYS" -gt "$MAX_DAYS" ]; then
-            echo "::error::data/awards.json is ${AGE_DAYS} days stale (max ${MAX_DAYS}). Run the annual awards update — see memory/awards-annual-update.md"
-            exit 1
-          fi
-          echo "Awards data freshness OK (within ${MAX_DAYS}-day window)"
-      - name: Notify on failure
-        # BRO-162: `failure()` never fires on a timeout-cancelled job (its
-        # conclusion is "cancelled", not "failure") — so if checkout ever
-        # exceeds the budget above, this alert silently doesn't fire either.
-        # Widening the timeout reduces frequency but doesn't close that gap.
-        if: failure() || cancelled()
-        uses: ./.github/actions/notify-failure
-        with:
-          title: 'Awards Data Stale (>14 months)'
-          severity: 'warning'
-          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-
   design-tokens-lint:
     name: Design Token Drift Guard
     runs-on: ubuntu-latest
@@ -4520,8 +4416,9 @@ jobs:
     name: Unit Tests
     # Skip on Dependabot PRs — they don't have access to REVIEW_TEXTS_TOKEN
     # (separate secret namespace) so checkout-core-data fails. Dependabot updates
-    # touch lockfiles + workflow YAML, not test logic; lint-workflows + dependency-audit +
-    # design-tokens-lint cover the relevant bumps.
+    # touch lockfiles + workflow YAML, not test logic; lint-workflows +
+    # design-tokens-lint (and the daily audit-dependencies.yml) cover the
+    # relevant bumps.
     if: github.actor != 'dependabot[bot]'
     runs-on: ubuntu-latest
     # Was 5 — the last known-good run before card #616's follow-up already took
@@ -6475,16 +6372,18 @@ jobs:
     # actively RESOLVED the still-open main-is-red alert incident even though
     # the run's real conclusion was `failure`. `typescript-check` runs on
     # every push too and had the same blind spot, just not yet observed
-    # causing an incident. `dependency-audit`/`awards-data-freshness` are
-    # gated `if: schedule || workflow_dispatch` (always `skipped`, never
-    # `failure`, on a push) — added anyway so a scheduled/manual full run
-    # gets the same complete picture. ANY job added to this workflow that can
-    # fail on a push to main must be added here too, or it silently
-    # re-creates this exact blind spot (see .github/workflows/CLAUDE.md
-    # "Notification Severity").
+    # causing an incident. ANY job added to this workflow that can fail on a
+    # push to main must be added here too, or it silently re-creates this
+    # exact blind spot (see .github/workflows/CLAUDE.md "Notification
+    # Severity"). tests/unit/test-yml-code-only-jobs.test.mjs now pins this
+    # list to the documented code-only set (BRO-4434): main's color means the
+    # CODE is healthy. Checks on outside state never sit here — the npm
+    # advisory gate is audit-dependencies.yml and awards.json freshness is a
+    # check-corpus-drift.js audit (both were schedule-only jobs in this file
+    # until 2026-09-30 and turned main red with no code change).
     # data-validation is deliberately NOT here: it audits corpus state, is
     # continue-on-error, and routes failures to the daily digest (BRO-3425).
-    needs: [unit-tests, data-safety-guards, e2e-tests, visual-regression, design-tokens-lint, lint-workflows, typescript-check, dependency-audit, awards-data-freshness]
+    needs: [unit-tests, data-safety-guards, e2e-tests, visual-regression, design-tokens-lint, lint-workflows, typescript-check]
     if: always()
     steps:
       - name: Check results
@@ -6495,8 +6394,8 @@ jobs:
         # this check to see it, instead of two parallel lists that can drift
         # out of sync with each other (the exact shape of the #1690 bug).
         # `skipped`/`success`/`cancelled` never match 'failure', so
-        # dependency-audit/awards-data-freshness being skipped on push is a
-        # no-op here, not a false trip.
+        # visual-regression being skipped on push is a no-op here, not a
+        # false trip.
         run: |
           # A timed-out job reports 'cancelled', not 'failure'; a job that never
           # finished has not passed (BRO-3425 ship-check, data-safety-guards).
