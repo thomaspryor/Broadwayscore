@@ -291,3 +291,51 @@ test('real OWE_VENUE_CONFIGS end to end: an undated row at a dated venue (or one
   });
   assert.equal(d.confirmed, true, d.reason);
 });
+
+test('BRO-4433 main: a confirmed dated duplicate dates its undated row (null fields only), fixes a slug-truncated title, and a dry run only lists it', async () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const { main, datedBackfillFor } = require('../../scripts/promote-owe-venue-candidates.js');
+  const { writeStagingCandidates } = require('../../scripts/lib/owe-venue-staging.js');
+  const dir = fs.mkdtempSync(join(os.tmpdir(), 'owe-backfill-'));
+  const paths = {
+    showsPath: join(dir, 'shows.json'),
+    stagingPath: join(dir, 'owe-venue-candidates.json'),
+    lastPromotionFile: join(dir, 'owe-last-promotion-ids.json'),
+  };
+  const row = (id, title, extra = {}) => ({ id, title, slug: id.replace(/-\d{4}$/, ''), venue: 'Southwark Playhouse', status: 'announced', type: 'play', category: 'off-west-end', market: 'west-end', openingDate: null, previewsStartDate: null, closingDate: null, ...extra });
+  const shows = [
+    row('twenty-thousand-streets-off-west-end-2026', 'Twenty Thousand Streets'),
+    row('private-jones-off-west-end-2026', 'Private Jones'),
+    // Already dated by another source: never touched, not even its null closingDate.
+    row('jane-eyre-off-west-end-2026', 'Jane Eyre', { previewsStartDate: '2026-08-20' }),
+  ];
+  fs.writeFileSync(paths.showsPath, JSON.stringify({ _meta: { totalShows: shows.length }, shows }, null, 2) + '\n');
+  const titles = new Set(['Twenty Thousand Streets Under the Sky', 'Private Jones', 'Jane Eyre']);
+  writeStagingCandidates(venueRows('Southwark Playhouse').filter(c => titles.has(c.title)), paths.stagingPath);
+  const entries = [];
+  const io = { ...paths, retiredEntries: [], log: () => {}, logEntry: e => entries.push(e), now: () => NOW, fetchPage: async () => { throw new Error('no network in tests'); } };
+
+  const before = fs.readFileSync(paths.showsPath, 'utf8');
+  const dry = await main(['--dry-run'], io);
+  assert.deepEqual(dry.backfills.map(b => b.id).sort(), ['private-jones-off-west-end-2026', 'twenty-thousand-streets-off-west-end-2026']);
+  assert.equal(fs.readFileSync(paths.showsPath, 'utf8'), before, 'dry run writes nothing');
+
+  const res = await main([], io);
+  assert.equal(res.promoted.length, 0);
+  const after = Object.fromEntries(JSON.parse(fs.readFileSync(paths.showsPath, 'utf8')).shows.map(s => [s.id, s]));
+  const tts = after['twenty-thousand-streets-off-west-end-2026'];
+  assert.deepEqual([tts.previewsStartDate, tts.closingDate, tts.title, tts.slug, tts.status], ['2026-09-10', '2026-10-17', 'Twenty Thousand Streets Under the Sky', 'twenty-thousand-streets-off-west-end', 'announced']);
+  const pj = after['private-jones-off-west-end-2026'];
+  assert.deepEqual([pj.previewsStartDate, pj.closingDate, pj.title], ['2026-12-14', '2027-01-30', 'Private Jones']);
+  assert.deepEqual([after['jane-eyre-off-west-end-2026'].previewsStartDate, after['jane-eyre-off-west-end-2026'].closingDate], ['2026-08-20', null]);
+  assert.equal(entries.filter(e => e.kind === 'backfill-dates').length, 2);
+  assert.equal(entries.find(e => e.id === 'twenty-thousand-streets-off-west-end-2026' && e.kind === 'backfill-dates').oldTitle, 'Twenty Thousand Streets');
+  assert.deepEqual(require('../../scripts/lib/owe-venue-staging.js').loadStaging(paths.stagingPath), [], 'duplicates leave staging');
+
+  // A subtitle/venue tag is not a title upgrade; an undated candidate gives nothing.
+  const murder = { title: 'Murder in the Cathedral: OT in the Church', venue: 'Southwark Playhouse', source: 'venue-listing:x', discoverySource: 'venue-listing:x', listingFirstDate: '2026-10-12', listingLastDate: '2026-11-07' };
+  const patch = datedBackfillFor(murder, { title: 'Murder Cathedral' });
+  assert.deepEqual(patch, { previewsStartDate: '2026-10-12', closingDate: '2026-11-07' });
+  assert.equal(datedBackfillFor({ title: 'Private Jones', venue: 'Southwark Playhouse' }, { title: 'Private Jones' }), null);
+});
