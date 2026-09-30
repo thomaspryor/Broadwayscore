@@ -26,7 +26,7 @@ const WORKFLOWS_DIR = path.join(REPO_ROOT, '.github', 'workflows');
  * own "doc says 11, grep finds 12/13" history) — for THOSE, a job-timeout
  * cancellation would silently swallow the one real-time alert this repo
  * relies on. Fixed by adding `|| cancelled()`, mirroring opening-digest.yml
- * and test.yml's "Awards Data Stale" step.
+ * (and, until BRO-4434 moved it out, test.yml's "Awards Data Stale" step).
  *
  * A workflow/step belongs here ONLY when its risky step(s) genuinely rely on
  * the job-level timeout-minutes ceiling to catch a hang. If a step already

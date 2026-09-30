@@ -3276,7 +3276,11 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    # Run daily at 6 AM UTC (1 AM EST) to catch issues
+    # Run daily at 6 AM UTC (1 AM EST) to catch issues. Since BRO-4434 the
+    # only schedule-specific work here is visual-regression (its job-level
+    # `if`) and data-validation's schedule-only "Create issue on failure"
+    # steps; the outside-state checks that used to ride this cron
+    # (dependency-audit, awards-data-freshness) run in their own workflows.
     # TODO: Change to weekly (0 6 * * 1) once review inventory is stable
     - cron: '0 6 * * *'
   workflow_dispatch:

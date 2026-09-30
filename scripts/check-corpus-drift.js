@@ -457,7 +457,10 @@ const AUDITS = [
   {
     name: 'awards-freshness',
     healPathRequired: true, // BRO-4434: moved from test.yml's awards-data-freshness job (main = code only)
-    label: 'data/awards.json untouched for >14 months (annual awards cadence)',
+    // Neutral on purpose (ship-check): exit 1 also covers "last-touch date
+    // unknown" (API/token/gh failure), and this label is the digest row AND
+    // the escalated card's title — it must not claim staleness on an outage.
+    label: 'data/awards.json stale (>14 months) or last-touch date unknown — see detail (annual awards cadence)',
     script: 'audit-awards-freshness.js',
     args: [],
     healExempt: 'annual manual update (memory/awards-annual-update.md) — the digest→card promotion IS the heal path; no mechanical fix exists for "nobody ran this year\'s ceremonies".',

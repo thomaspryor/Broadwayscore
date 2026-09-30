@@ -2,8 +2,9 @@
 /**
  * Dependency audit gate with an expiring allowlist for unfixable advisories.
  *
- * Replaces the raw `npm audit --audit-level=critical` CI step (test.yml
- * "Dependency Audit"). That step has no exemption mechanism, so a critical
+ * Replaced the raw `npm audit --audit-level=critical` CI step that test.yml's
+ * "Dependency Audit" job ran until 2026-07-11 (the job itself left test.yml
+ * on 2026-09-30, see BRO-4434 below). A raw step has no exemption mechanism, so a critical
  * advisory with NO patched release (e.g. decompress GHSA-mp2f-45pm-3cg9,
  * range <=4.2.1 — 4.2.1 IS the latest version) turns CI permanently red until
  * a breaking major upgrade of the dependent (sanity) ships. `|| true` is
