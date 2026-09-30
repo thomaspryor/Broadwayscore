@@ -377,6 +377,25 @@ assert(
   'Day -4 within window=3: excluded'
 );
 
+// Calendar-day comparison + asymmetric post-opening window (BRO-4435):
+// NYT Degenerates review, opening 2026-09-28, pubDate 2026-09-30T09:02Z (2.38 days).
+assert(
+  isWithinOpeningWindow(new Date('2026-09-30T09:02:17Z'), '2026-09-28', 2),
+  'Day +2 mid-morning: within window (calendar days, not elapsed hours)'
+);
+assert(
+  isWithinOpeningWindow(new Date('2026-10-05T12:00:00Z'), '2026-09-28', 2, 7),
+  'Day +7 with postWindowDays=7: included'
+);
+assert(
+  !isWithinOpeningWindow(new Date('2026-10-06T12:00:00Z'), '2026-09-28', 2, 7),
+  'Day +8 with postWindowDays=7: excluded'
+);
+assert(
+  !isWithinOpeningWindow(new Date('2026-09-25T12:00:00Z'), '2026-09-28', 2, 7),
+  'Day -3 with postWindowDays=7: still excluded before opening'
+);
+
 // ============================================================
 // FIX — openingWindow feed flag (rss-discovery.js)
 // Only narrow Broadway feeds get date-window; WE feeds always title-match.

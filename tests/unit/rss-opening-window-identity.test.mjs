@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow } = require('../../scripts/lib/rss-discovery.js');
+const { titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts } = require('../../scripts/lib/rss-discovery.js');
 
 test('urlSlugMatchesShow: NYT review slug matches show title', () => {
   assert.equal(urlSlugMatchesShow(
@@ -70,4 +70,30 @@ test('the combined openingWindow gate: date window alone is NOT sufficient', () 
     'Bowen Yang Will Make His Broadway Debut in Oh, Mary!',
     'https://www.nytimes.com/2026/08/04/theater/bowen-yang-broadway-oh-mary.html',
     'The Pass'), false);
+});
+
+// BRO-4435: the NYT Degenerates review (opening 2026-09-28) was posted
+// 2026-09-30T09:02Z, 2.38 elapsed days after UTC midnight, and was dropped.
+test('openingWindowFeedAccepts: NYT review posted day +2 mid-morning is accepted', () => {
+  assert.equal(openingWindowFeedAccepts({
+    title: 'Critic\u2019s Pick: \u2018Degenerates\u2019 Unmasks the Longing Disguised as Hate',
+    link: 'https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneath-the-hate-and-self-hate.html',
+    pubDate: new Date('2026-09-30T09:02:17Z'),
+  }, 'Degenerates', '2026-09-28'), true);
+});
+
+test('openingWindowFeedAccepts: days +3..+7 need a review marker, +8 is out', () => {
+  const review = { title: "'Degenerates' Review: Lonely Men", link: 'https://www.nytimes.com/2026/10/03/theater/degenerates-review.html', pubDate: new Date('2026-10-03T10:00:00Z') };
+  const news = { title: "'Degenerates' Extends Its Run", link: 'https://www.nytimes.com/2026/10/03/theater/degenerates-extension.html', pubDate: new Date('2026-10-03T10:00:00Z') };
+  assert.equal(openingWindowFeedAccepts(review, 'Degenerates', '2026-09-28'), true);
+  assert.equal(openingWindowFeedAccepts(news, 'Degenerates', '2026-09-28'), false);
+  assert.equal(openingWindowFeedAccepts({ ...review, pubDate: new Date('2026-10-06T10:00:00Z') }, 'Degenerates', '2026-09-28'), false);
+});
+
+test('openingWindowFeedAccepts: in-window item without identity match is rejected', () => {
+  assert.equal(openingWindowFeedAccepts({
+    title: 'Duncan Sheik, Who Traded Pop Stardom for Broadway, Dies at 56',
+    link: 'https://www.nytimes.com/2026/09/29/theater/duncan-sheik-dead.html',
+    pubDate: new Date('2026-09-29T12:00:00Z'),
+  }, 'Degenerates', '2026-09-28'), false);
 });
