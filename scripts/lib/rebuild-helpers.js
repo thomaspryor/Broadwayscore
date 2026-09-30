@@ -538,8 +538,7 @@ function isContentVerificationActive(data) {
 
   // Stale if content hash changed
   if (data.contentVerification.contentHash && data.fullText) {
-    const crypto = require('crypto');
-    const currentHash = crypto.createHash('md5').update(data.fullText.substring(0, 2500)).digest('hex');
+    const currentHash = require('./content-verifier').contentHash(data.fullText);
     if (data.contentVerification.contentHash !== currentHash) return false;
   }
 

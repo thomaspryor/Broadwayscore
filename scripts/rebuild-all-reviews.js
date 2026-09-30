@@ -2224,7 +2224,7 @@ showDirs.forEach(showId => {
           // #651: pure non-review (wrongArticle without wrongProduction) routes to
           // isNonReview, not wrongShow — see the matching non-upcoming pass above.
           const uCvIsPureNonReview = ucv.wrongArticle === true && ucv.wrongProduction !== true;
-          if (uCvIsPureNonReview && !uEnsembleSaysReview && ud.isNonReview !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
+          if (uCvIsPureNonReview && !isCvVerdictFromPartialWindow(ucv, ud.fullText) && !uEnsembleSaysReview && ud.isNonReview !== true && !ud.allowEarlyDate && !ud.allowCrossMarket) {
             // CV outlet-style override (S3-T5 followup): defer for known long-biographical
             // outlets even on upcoming-show path. Long-biographical previews share the same
             // FP class as opening-day reviews (e.g., NY Sun biographical lead on an upcoming show).

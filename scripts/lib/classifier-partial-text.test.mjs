@@ -37,6 +37,14 @@ test('tier wordCount ignores the blob', () => {
   assert.equal(t.wordCount, clean.wordCount);
 });
 
+test('no CV staleness hash site hashes raw fullText', () => {
+  const fs = require('node:fs');
+  for (const f of ['review-guards.js', 'rebuild-helpers.js', '../scoring-delta.js', '../rebuild-all-reviews.js']) {
+    const src = fs.readFileSync(new URL(f, import.meta.url), 'utf8');
+    assert.ok(!/createHash\('md5'\)\.update\([a-zA-Z.]*fullText\.substring\(0, 2500\)/.test(src), f + ' hashes raw fullText');
+  }
+});
+
 test('contentHash ignores a leading blob (CV reads the stripped text)', () => {
   assert.equal(cv.contentHash(BLOB + '\n\n' + REVIEW), cv.contentHash(REVIEW));
 });
@@ -50,6 +58,10 @@ test('CV verdict from the 2500-char head of a longer article is partial-window',
   // whole article fit in the window: verdict is complete
   assert.equal(cv.isCvVerdictFromPartialWindow({ wrongArticle: true, articleType: 'preview', confidence: 'medium' }, 'short '.repeat(100)), false);
   assert.equal(cv.isCvVerdictFromPartialWindow({ wrongArticle: false }, long), false);
+  // different-show evidence is never advisory
+  assert.equal(cv.isCvVerdictFromPartialWindow({ wrongArticle: true, wrongProduction: true, articleType: 'review', confidence: 'medium' }, long), false);
+  // a high-confidence preview of a piece only slightly over the window stands
+  assert.equal(cv.isCvVerdictFromPartialWindow({ wrongArticle: true, articleType: 'preview', confidence: 'high' }, 'w '.repeat(1500)), false);
 });
 
 test('classifier sample includes the region where the show is discussed', () => {

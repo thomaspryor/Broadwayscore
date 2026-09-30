@@ -2111,7 +2111,7 @@ function computeCvIsStale(data) {
     if (fetchedAt > verifiedAt) return true;
   }
   if (cv.contentHash && data.fullText) {
-    const currentHash = crypto.createHash('md5').update(data.fullText.substring(0, 2500)).digest('hex');
+    const currentHash = require('./content-verifier').contentHash(data.fullText); // lazy: content-verifier requires this module
     if (cv.contentHash !== currentHash) return true;
   }
   return false;

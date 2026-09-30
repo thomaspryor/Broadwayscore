@@ -14,7 +14,8 @@
       "cleansed Standard: clear Gemini isNonReview (JSON blob prefix)",
       "electra NYT: clear Gemini isNonReview (bot-truncated text)",
       "les-mis arena NY Sun: clear Gemini isNonReview (history opening)",
-      "hungry-women Theatrely: clear wrongProduction (multi-show column)"
+      "hungry-women Theatrely: clear wrongProduction (multi-show column)",
+      "under-the-shadow + woman-in-mind Standard (Nick Curtis): clear Gemini isNonReview (same JSON-blob cousin as cleansed)"
     ],
     "riskLevel": "Low",
     "actions": [
@@ -144,6 +145,38 @@
         "field": "wrongProductionReason",
         "oldValue": "CV-promoted: The scraped content is a review of 'The Pass' by John Donnelly, featuring cast members Matisse Ratron-Neal, Terry Bell, Ino Badanjak, and Oliver Rowland-Jones, directed by Max Hunter. This is complete",
         "newValue": null,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "BRO-4429: clear classifier verdict made on partial text"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
         "description": "BRO-4429: clear classifier verdict made on partial text"
       }
     ]
