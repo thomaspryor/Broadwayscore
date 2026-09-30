@@ -649,7 +649,7 @@ async function runPhase3(candidates) {
       }
 
       const newUrl = await discoverCorrectUrl(
-        { showId: c.showId, outletId: c.outletId, outlet: c.outlet, url: c.url },
+        { showId: c.showId, outletId: c.outletId, outlet: c.outlet, url: c.url, serpRejectedUrls: c.data && c.data.serpRejectedUrls },
         CONFIG.scrapingBeeKey,
         { brightDataKey: CONFIG.brightDataKey }
       );
