@@ -373,6 +373,7 @@ const _scraperStats = {
   // (BRO-2560 review finding, both the Claude and Codex ship-check
   // reviewers). See getScraperStats().
   pwBrowserMissingCount: 0,
+  pwDeadlineHits: 0, // BRO-4401: Playwright tiers abandoned at PLAYWRIGHT_TIER_DEADLINE_MS
 };
 
 // Matches ONLY the two known "no usable Playwright browser in this
@@ -816,9 +817,15 @@ async function fetchWithScrapingBee(url, options = {}) {
 // any other Playwright failure (the caller falls through to the paid tiers).
 const PLAYWRIGHT_TIER_DEADLINE_MS = 90 * 1000;
 
+// Bumped on every reset. An abandoned tier that resumes later (its launch
+// or navigation finally returning) compares the generation it started under
+// with the current one and must never touch a browser it did not launch.
+let playwrightGeneration = 0;
+
 async function _resetPlaywrightBrowser() {
   const b = playwright;
   playwright = null;
+  playwrightGeneration++;
   if (!b) return;
   // browser.close() can itself hang on a wedged renderer — bound it too.
   await Promise.race([
@@ -860,6 +867,8 @@ async function fetchWithPlaywright(url, options = {}) {
 async function _fetchWithPlaywrightInner(url, options = {}) {
   _scraperStats.pwAttempts++;
   let context = null;
+  const myGeneration = playwrightGeneration;
+  let myBrowser = null;
   try {
     if (!chromium) {
       try {
@@ -876,10 +885,19 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
       }
     }
     if (!playwright) {
-      playwright = await chromium.launch({
+      const launched = await chromium.launch({
         headless: true
       });
+      if (playwrightGeneration !== myGeneration) {
+        // A deadline reset happened while this launch was pending: this tier
+        // has been abandoned, so its browser must not become the shared one
+        // (that would orphan whatever the newer generation launched).
+        try { await launched.close(); } catch (_) {}
+        throw new Error('Playwright tier abandoned by deadline during launch');
+      }
+      playwright = launched;
     }
+    myBrowser = playwright;
 
     // Attach subscriber cookies (WSJ/FT/NYT/etc.) when available. Cookie-loader
     // returns Playwright-compatible objects {name, value, domain, path, ...}.
@@ -966,10 +984,14 @@ async function _fetchWithPlaywrightInner(url, options = {}) {
       try { await context.close(); } catch (_) {}
     }
     // If the browser is in a bad state (e.g. after a timeout), close and
-    // reset so the next call can relaunch a fresh instance.
-    if (playwright) {
+    // reset so the next call can relaunch a fresh instance — but only the
+    // browser THIS tier used. An abandoned tier failing late ("Target
+    // closed" after a deadline reset) must not close a browser a newer call
+    // has since launched (review finding, BRO-4401).
+    if (playwright && playwright === myBrowser) {
       try { await playwright.close(); } catch (_) {}
       playwright = null;
+      playwrightGeneration++;
     }
     return null;
   }
