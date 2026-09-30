@@ -237,7 +237,10 @@ const SITE_SEARCH_ENDPOINTS = {
     name: 'Time Out',
     url: 'https://www.timeout.com/search?q={TITLE}+{MARKET_KEYWORD}',
     domain: 'timeout.com',
-    linkPattern: /href="(https:\/\/www\.timeout\.com\/[^"]*review[^"]*)"/gi,
+    // Accepts absolute AND root-relative hrefs (search result cards are relative),
+    // any section: London opening-night reviews live under /london/news/ (BRO-4399).
+    linkPattern: /href="((?:https:\/\/www\.timeout\.com)?\/[a-z]+\/[^"]*review[^"]*)"/gi,
+    normalizeUrl: (u) => (u.startsWith('/') ? `https://www.timeout.com${u}` : u),
     requiresJs: true,
   },
   'ew': {
@@ -1253,7 +1256,7 @@ async function searchOutletSite(outletId, showTitle, options = {}) {
       let match;
       config.linkPattern.lastIndex = 0;
       while ((match = config.linkPattern.exec(html)) !== null) {
-        const url = match[1];
+        const url = config.normalizeUrl ? config.normalizeUrl(match[1]) : match[1];
         if (!seen.has(url) && urlLooksLikeReview(url, showTitle)) {
           seen.add(url);
           // outletIdOverride honoured here too — it used to apply only on the
