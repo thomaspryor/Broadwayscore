@@ -6475,12 +6475,34 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
 
   const skippedAliasCollisionOutlets = [];
   const skippedAliasCollisionDetails = [];
+  // BRO-4370 / BRO-4401: an outlet is auto-registered only WITH a resolvable
+  // domain. A critic-name id, an id with no URL evidence, or a domain that
+  // collides with a registered outlet is parked in
+  // data/audit/outlet-registry-staging.json instead of becoming a
+  // `domain: null` row (the rows that pushed the null-domain ceiling to
+  // 51/50 and registered three critics as outlets on 2026-09-29). Decision
+  // logic lives in scripts/lib/outlet-auto-register.js.
+  const {
+    STAGING_RELATIVE_PATH: OUTLET_STAGING_RELATIVE_PATH,
+    criticNameSlugs,
+    decideOutletAutoRegistration,
+    mergeStagingEntries,
+  } = require('./lib/outlet-auto-register');
+  const stagedOutlets = [];
+  const reviewCountByOutlet = {};
+  const exampleShowByOutlet = {};
+  for (const r of allReviews) {
+    if (!r.outletId) continue;
+    reviewCountByOutlet[r.outletId] = (reviewCountByOutlet[r.outletId] || 0) + 1;
+    if (!exampleShowByOutlet[r.outletId]) exampleShowByOutlet[r.outletId] = r.showId || null;
+  }
   if (newOutlets.length > 0) {
     // Auto-add missing outlets with tier 3 (region is filled in by the
     // backfill pass below, which runs over the whole registry including
     // these brand-new entries)
     const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
     const { wouldCauseAliasCollision, findOutletAliasCollisions } = require('./lib/outlet-alias-collision');
+    const criticSlugs = criticNameSlugs(criticRegistry);
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
@@ -6526,15 +6548,65 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       // "the-times-barbican" shares thetimes.co.uk with "times-uk". Writing
       // that domain straight through would trip validate-data.js's
       // domain-collision gate the instant this commit lands (task #1776).
-      // Leave domain null in that case; region backfill below still applies.
+      // That case, a critic-name id, and a hint-less id are all STAGED
+      // rather than written with domain:null (BRO-4370).
       const hintDomain = outletDomainHints[outletId] || null;
-      const domain = hintDomain && !wouldCauseDomainCollision(outletRegistry.outlets, outletId, hintDomain)
-        ? hintDomain
-        : null;
+      const decision = decideOutletAutoRegistration({
+        outletId,
+        domainHint: hintDomain,
+        domainCollides: !!hintDomain && wouldCauseDomainCollision(outletRegistry.outlets, outletId, hintDomain),
+        criticSlugs,
+      });
+      if (decision.action === 'stage') {
+        stagedOutlets.push({
+          outletId,
+          reason: decision.reason,
+          domainHint: hintDomain,
+          reviewCount: reviewCountByOutlet[outletId] || 0,
+          exampleShowId: exampleShowByOutlet[outletId] || null,
+        });
+        console.warn(`⚠️  STAGED "${outletId}" instead of auto-registering (${decision.reason}) — resolve in ${OUTLET_STAGING_RELATIVE_PATH}`);
+        continue;
+      }
       outletRegistry.outlets[outletId] = {
         ...candidateEntry,
-        domain
+        domain: decision.domain
       };
+    }
+  }
+
+  // Persist the staging list (self-pruning: an id that has since been
+  // registered, or whose reviews are gone, drops out). Written whenever it
+  // CHANGES, not only when something was staged this run, so a resolved
+  // entry actually leaves the file.
+  {
+    const stagingPath = path.join(__dirname, '..', OUTLET_STAGING_RELATIVE_PATH);
+    let existingStaged = [];
+    try {
+      existingStaged = JSON.parse(fs.readFileSync(stagingPath, 'utf8')).staged || [];
+    } catch { /* first run, or unreadable — start empty */ }
+    const registeredLower = new Set(Object.keys(outletRegistry.outlets).map((id) => id.toLowerCase()));
+    const merged = mergeStagingEntries(existingStaged, stagedOutlets, {
+      nowIso: new Date().toISOString(),
+      stillUnregistered: (id) => !registeredLower.has(String(id).toLowerCase()) && reviewOutletIds.has(id),
+    });
+    const before = JSON.stringify(existingStaged.map((e) => [e.outletId, e.reason]).sort());
+    const after = JSON.stringify(merged.map((e) => [e.outletId, e.reason]).sort());
+    if (before !== after || (stagedOutlets.length > 0 && !fs.existsSync(stagingPath))) {
+      try {
+        fs.mkdirSync(path.dirname(stagingPath), { recursive: true });
+        fs.writeFileSync(stagingPath, JSON.stringify({
+          _comment: 'Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.',
+          updatedAt: new Date().toISOString(),
+          staged: merged,
+        }, null, 2) + '\n');
+      } catch (stagingErr) {
+        console.warn(`  Could not write ${OUTLET_STAGING_RELATIVE_PATH}: ${stagingErr.message}`);
+      }
+    }
+    if (stagedOutlets.length > 0) {
+      console.warn(`\n⚠️  STAGED ${stagedOutlets.length} unregistered outlet(s) (no resolvable domain / critic name / domain collision): ${stagedOutlets.map((s) => s.outletId).sort().join(', ')}`);
+      console.warn(`  Listed in ${OUTLET_STAGING_RELATIVE_PATH}; they resolve as tier 3 / raw-id display until a human gives them a domain or merges them.`);
     }
   }
 

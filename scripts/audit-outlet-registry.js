@@ -39,6 +39,13 @@ const path = require('path');
 const readline = require('readline');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
+// BRO-4370 / BRO-4401: ids the rebuild deliberately REFUSED to auto-register
+// (no resolvable domain, critic name, domain collision) are parked in
+// data/audit/outlet-registry-staging.json. They are known gaps awaiting a
+// human, not NEW ones, so --strict reports them separately instead of
+// failing on them — otherwise refusing a domainless row here would just
+// move the red from the null-domain ceiling to this gate.
+const { loadStagedOutletIds, STAGING_RELATIVE_PATH: OUTLET_STAGING_PATH } = require('./lib/outlet-auto-register');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { isExcludedFromOutletRegistryAudit } = require('./lib/outlet-registry-audit-exclusions');
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
@@ -977,11 +984,19 @@ async function main() {
     }
 
     const baselineSet = baselineKeySet(loadBaseline().outletIds);
-    const newViolators = computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet);
+    const stagedSet = loadStagedOutletIds(path.join(__dirname, '..'));
+    const stagedViolators = computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet)
+      .filter((m) => stagedSet.has(m.outletId));
+    const newViolators = computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet)
+      .filter((m) => !stagedSet.has(m.outletId));
 
     if (auditResult.findings.missingFromRegistry.length > 0 && !JSON_OUTPUT && !UPDATE_MODE) {
       console.log('\n!!! Outlets missing from registry - add them to data/outlet-registry.json !!!');
-      console.log(`    (${auditResult.findings.missingFromRegistry.length - newViolators.length} baselined, ${newViolators.length} new)`);
+      console.log(`    (${auditResult.findings.missingFromRegistry.length - newViolators.length - stagedViolators.length} baselined, ${stagedViolators.length} staged by the rebuild, ${newViolators.length} new)`);
+      if (stagedViolators.length > 0) {
+        console.log(`\n⏸  Staged by the rebuild (refused a domainless / critic-name / colliding registration — resolve in ${OUTLET_STAGING_PATH}):`);
+        for (const v of stagedViolators) console.log(`  ${v.outletId} (${v.count} reviews)`);
+      }
     }
 
     const junkBaselineSet = baselineKeySet(loadJunkBaseline().outletIds);

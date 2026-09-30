@@ -74,6 +74,18 @@ function isExcludedFromOutletRegistryAudit(review) {
     !wrongShowCleared(review)
   ) return true;
 
+  // 6. Not yet scored, still waiting on score extraction (BRO-4401). The
+  // rebuild only registers outlets from reviews it INCLUDES, and an unscored
+  // file is never included — so nothing can register this outlet until the
+  // file scores, and demanding a registry row now is asking for what no
+  // pipeline step can supply (2026-09-29: two submit-review-form files,
+  // localwineevents / splitdecision, 187- and 182-word archive fetches with
+  // scoreExtractionPending:true, turned Data Validation red as "NEW outlets
+  // missing from registry"). Once scored, the rebuild registers the outlet
+  // with its URL-derived domain on the next run, and the file re-enters
+  // this audit's scope naturally.
+  if (review.scoreExtractionPending === true && !hasValidScore(review)) return true;
+
   return false;
 }
 

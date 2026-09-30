@@ -784,19 +784,30 @@ runs:
     # directly to the public repo (where the calling job is already
     # checked out) instead — the same repo/branch every other public-repo
     # commit in these workflows lands on.
-    - name: Sync outlet-registry.json to public repo (BRO-1084)
+    #
+    # BRO-4370 / BRO-4401: the same block now also writes
+    # data/audit/outlet-registry-staging.json — the outlets it REFUSED to
+    # register (no resolvable domain, a critic name, a domain collision)
+    # instead of minting a domain:null row. audit-outlet-registry.js
+    # --strict in test.yml reads the COMMITTED staging file (it runs with
+    # no prior rebuild) to tell a parked id from a NEW registry gap, so the
+    # staging file has to land here too. It is `git add`ed before any diff
+    # check on purpose: `git diff --quiet -- <path>` exits 0 for an
+    # UNTRACKED file, so the old "unchanged → exit 0" guard would have
+    # discarded the staging file the first time it was ever created
+    # (second-opinion finding, BRO-4401).
+    - name: Sync outlet-registry.json + staging list to public repo (BRO-1084, BRO-4370)
       if: steps.refusal-check.outputs.skip != 'true'
       shell: bash
       working-directory: ${{ github.workspace }}
       run: |
-        if [ ! -f "data/outlet-registry.json" ]; then
+        REGISTRY="data/outlet-registry.json"
+        STAGING="data/audit/outlet-registry-staging.json"
+        if [ ! -f "$REGISTRY" ] && [ ! -f "$STAGING" ]; then
           exit 0
         fi
-        if git diff --quiet -- data/outlet-registry.json && git diff --staged --quiet -- data/outlet-registry.json; then
-          exit 0
-        fi
-        if ! node -e "JSON.parse(require('fs').readFileSync('data/outlet-registry.json','utf8'))" 2>/dev/null; then
-          echo "::error::data/outlet-registry.json is not valid JSON — refusing to commit"
+        if [ -f "$REGISTRY" ] && ! node -e "JSON.parse(require('fs').readFileSync('$REGISTRY','utf8'))" 2>/dev/null; then
+          echo "::error::$REGISTRY is not valid JSON — refusing to commit"
           exit 1
         fi
         # Same identity-config need as any inline root-checkout commit (see
@@ -805,9 +816,18 @@ runs:
         # private clone at /tmp/core-data-checkout, never here.
         git config user.name "github-actions[bot]"
         git config user.email "github-actions[bot]@users.noreply.github.com"
-        git add data/outlet-registry.json
-        if git diff --staged --quiet -- data/outlet-registry.json; then
+        git add -- "$REGISTRY" 2>/dev/null || true
+        if [ -f "$STAGING" ]; then
+          if node -e "JSON.parse(require('fs').readFileSync('$STAGING','utf8'))" 2>/dev/null; then
+            git add -- "$STAGING" 2>/dev/null || true
+          else
+            # Advisory file: a bad write must not fail ~20 workflows' push step.
+            echo "::warning::$STAGING is not valid JSON — leaving it uncommitted this run"
+            git reset -q -- "$STAGING" 2>/dev/null || true
+          fi
+        fi
+        if git diff --staged --quiet -- "$REGISTRY" "$STAGING"; then
           exit 0
         fi
-        git commit -m "data: auto-register outlet(s) from rebuild"
+        git commit -m "data: outlet registry auto-register/staging from rebuild"
         bash scripts/lib/push-with-retry.sh 5 main
