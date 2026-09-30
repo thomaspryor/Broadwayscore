@@ -14,15 +14,23 @@
  * it, and neither may require the other.
  */
 
+function _canonUrl(u) {
+  return String(u || '').trim().toLowerCase()
+    .replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[?#].*$/, '').replace(/\/+$/, '');
+}
+
 /**
- * The showId the article was originally filed under: a parent's own showId,
- * a child's multiShowSplitParentShowId. null for any other file.
+ * Group key of a split file: its article URL (canonicalised). Any two files
+ * flagged as split sections of the same article are siblings, whichever run
+ * wrote them (a parent split in one run and a section re-ingested later).
+ * null for any file that is not a split section. `showId` is unused and kept
+ * for call-site symmetry.
  */
-function multiShowSplitGroup(data, showId) {
+function multiShowSplitGroup(data, showId) { // eslint-disable-line no-unused-vars
   if (!data || typeof data !== 'object') return null;
-  if (data.multiShowSplitChild === true && data.multiShowSplitParentShowId) return data.multiShowSplitParentShowId;
-  if (data.multiShowSplitParent === true) return data.showId || showId || null;
-  return null;
+  if (data.multiShowSplitChild !== true && data.multiShowSplitParent !== true) return null;
+  const key = _canonUrl(data.url);
+  return key || null;
 }
 
 /** True when both files are sections of the same split article. */
