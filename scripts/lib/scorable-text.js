@@ -121,4 +121,21 @@ function isCapsuleReview(data) {
   );
 }
 
-module.exports = { selectScorableText, isCapsuleReview, DEFAULT_MIN_TEXT_LENGTH };
+/**
+ * BRO-4430: when selectScorableText returned the chrome-stripped form of the
+ * stored fullText (a prefix of it), that is the text to quality-check and
+ * score. Returns it, or null when the selection is the raw fullText or an
+ * excerpt (callers keep fullText as is).
+ * @param {object} data   review record
+ * @param {string|null} selectedText  selectScorableText(...).text
+ * @returns {string|null}
+ */
+function strippedFullTextSelection(data, selectedText) {
+  const full = data && data.fullText;
+  if (!full || !selectedText || selectedText === full) return null;
+  if (selectedText.length >= full.length) return null;
+  return full.startsWith(selectedText) || full.trim().startsWith(selectedText) ? selectedText : null;
+}
+
+module.exports = {
+  strippedFullTextSelection, selectScorableText, isCapsuleReview, DEFAULT_MIN_TEXT_LENGTH };

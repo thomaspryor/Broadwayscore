@@ -301,6 +301,7 @@ tests/unit/audience-full-snapshot.test.mjs
 tests/unit/audience-label-affordance.test.mjs
 tests/unit/audit-aggregator-gap-push-timeout.test.mjs
 tests/unit/audit-audience-buzz-stale-source.test.mjs
+tests/unit/audit-awards-freshness.test.mjs
 tests/unit/audit-corpus-contamination.test.mjs
 tests/unit/audit-cross-show-excerpt-contamination.test.mjs
 tests/unit/audit-delete-without-breadcrumb.test.mjs
@@ -982,6 +983,7 @@ tests/unit/talkin-broadway-scraper.test.mjs
 tests/unit/test-exit-code-leak-guard.test.mjs
 tests/unit/test-manifest-integrity.test.mjs
 tests/unit/test-manifest-sort.test.mjs
+tests/unit/test-yml-code-only-jobs.test.mjs
 tests/unit/test-yml-timeout-headroom.test.mjs
 tests/unit/text-quality-nyt-bot-stub.test.mjs
 tests/unit/the-lonely-few-image.test.mjs

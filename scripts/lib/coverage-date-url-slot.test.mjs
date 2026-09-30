@@ -352,3 +352,19 @@ test('unexpectedChanges tolerates exactly the url-change-invariant side effects 
   // Other fields keep the strict comparison.
   assert.deepEqual(unexpectedChanges({ a: 1 }, { a: 1, needsRefetch: true }, 'criticName'), ['needsRefetch']);
 });
+
+test('a TheaterMania cast announcement is a named non-review url; its reviews are not', () => {
+  const { namedNonReviewReason } = require('./non-review-url-patterns.js');
+  assert.equal(namedNonReviewReason(TM_CAST), 'cast-announcement');
+  assert.equal(namedNonReviewReason(TM_REVIEW), null);
+});
+
+test('the scorer scores the chrome-stripped text the selection chose', () => {
+  const { strippedFullTextSelection } = require('./scorable-text.js');
+  const data = { showId: 'tru-off-west-end-2026', fullText: TRU_REVIEW + LT_CHROME };
+  const sel = selectScorableText(data, { showTitle: 'Tru' });
+  assert.equal(strippedFullTextSelection(data, sel.text), sel.text);
+  // Raw text selected, or an excerpt: no override.
+  assert.equal(strippedFullTextSelection({ fullText: TRU_REVIEW }, TRU_REVIEW), null);
+  assert.equal(strippedFullTextSelection({ fullText: TRU_REVIEW }, 'an unrelated excerpt'), null);
+});

@@ -454,6 +454,22 @@ const AUDITS = [
     healExempt: 'ratchet — fix the producer that wrote the bad outletId, not the ceiling; no mechanical --fix is safe (the class is discovered per-writer, not per-file).',
     crashCodes: [],            // 0 clean/shrinking / 1 = population grew
   },
+  {
+    name: 'awards-freshness',
+    healPathRequired: true, // BRO-4434: moved from test.yml's awards-data-freshness job (main = code only)
+    // Neutral on purpose (ship-check): exit 1 also covers "last-touch date
+    // unknown" (API/token/gh failure), and this label is the digest row AND
+    // the escalated card's title — it must not claim staleness on an outage.
+    label: 'data/awards.json stale (>14 months) or last-touch date unknown — see detail (annual awards cadence)',
+    script: 'audit-awards-freshness.js',
+    args: [],
+    healExempt: 'annual manual update (memory/awards-annual-update.md) — the digest→card promotion IS the heal path; no mechanical fix exists for "nobody ran this year\'s ceremonies".',
+    // 1 = stale OR the commits-by-path API gave no answer (printed as such).
+    // Deliberately NOT a crash code: a GitHub API blip is one drift line,
+    // never a job-level exit 3 that reds the other ~30 audits (plan-review
+    // pre-mortem, BRO-4434).
+    crashCodes: [],
+  },
 ];
 
 function runAudit(audit) {
