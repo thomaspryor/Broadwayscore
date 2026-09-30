@@ -2655,28 +2655,9 @@ function isProductionAwareCvVerdict(cv) {
   return typeof v === 'string' && (v.startsWith('llm:') || v.startsWith('human') || v === 'manual');
 }
 
-/**
- * Split group of a file produced by the multi-show fan-out
- * (multi-show-review-fanout.js, BRO-4431): the showId the article was
- * originally filed under. A parent's group is its own showId, a child's is
- * multiShowSplitParentShowId. null for any other file.
- */
-function multiShowSplitGroup(data, showId) {
-  if (!data || typeof data !== 'object') return null;
-  if (data.multiShowSplitChild === true && data.multiShowSplitParentShowId) return data.multiShowSplitParentShowId;
-  if (data.multiShowSplitParent === true) return data.showId || showId || null;
-  return null;
-}
-
-/**
- * True when two files sharing a URL are sections of the SAME multi-show
- * article split by the fan-out: the shared URL is by design, not a
- * cross-production leak. Only siblings are exempt, so a split file that
- * collides with an unrelated copy of the URL is still judged normally.
- */
-function isMultiShowSplitSibling(groupA, groupB) {
-  return !!groupA && groupA === groupB;
-}
+// Split-sibling identity (BRO-4431) lives in a dependency-free module so
+// url-ownership.js can share it; re-exported below.
+const { multiShowSplitGroup, isMultiShowSplitSibling } = require('./multi-show-split-group');
 
 function shouldSkipCrossShowUrlFlag(data) {
   if (!data || typeof data !== 'object') return false;

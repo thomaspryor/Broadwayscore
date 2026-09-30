@@ -480,6 +480,9 @@ function childWriteDecision(existing, parentData) {
     && String(existing.url).replace(/[?#].*$/, '').replace(/\/$/, '') === String(parentData.url).replace(/[?#].*$/, '').replace(/\/$/, '');
   const textless = !existing.fullText || String(existing.fullText).length < 300;
   if (sameUrl && textless) return 'fill';
+  // The same article already filed under that show (e.g. the original
+  // parent when this section was re-ingested under another show).
+  if (sameUrl) return 'held';
   return 'skip';
 }
 
@@ -506,6 +509,7 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   const { loadBlocklist, findBlockedEntry } = require('./poller-blocklist');
   const { safeWriteReview } = require('./review-write-guard');
   let written = 0;
+  let held = 0;
   for (const sec of plan.otherSections) {
     const childDir = path.join(reviewTextsDir, sec.showId);
     const childPath = path.join(childDir, fileName);
@@ -516,6 +520,7 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
     // An operator-deleted URL (poller-blocklist, BRO-3247 class) stays deleted.
     let decision = data.url && findBlockedEntry(loadBlocklist(childDir), data.url) ? 'blocked' : childWriteDecision(existing, data);
     result.children.push({ showId: sec.showId, action: decision, chars: sec.sectionText.length });
+    if (decision === 'held') { held++; continue; }
     if (dryRun || decision === 'skip' || decision === 'blocked') continue;
     const child = buildChild(data, sec, ownShowId, now);
     const toWrite = decision === 'fill' ? { ...existing, ...child, source: existing.source || child.source } : child;
@@ -525,10 +530,12 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
     else result.children[result.children.length - 1].action = `refused:${(w && w.skipped) || 'write-guard'}`;
   }
 
-  // Only trim the parent when the other sections now live somewhere: when
-  // every sibling already existed (or was refused), the article stays whole
-  // rather than losing text no file holds.
-  if (!dryRun && written === 0) return result;
+  // Only trim the parent when another section now lives somewhere: written
+  // in this run, or the same article already held under that show (a
+  // section re-ingested after its sibling was split earlier). When every
+  // sibling slot holds a DIFFERENT review (or was refused), the article stays
+  // whole rather than losing text no file holds.
+  if (!dryRun && written + held === 0) return result;
   const parent = rewriteParent(data, plan.ownSection, plan.otherSections.map((s) => s.showId), now);
   result.parentRewritten = true;
   // Deliberate text trim: replace (not merge) so the stale whole-article

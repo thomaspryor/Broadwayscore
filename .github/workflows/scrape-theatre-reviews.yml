@@ -95,6 +95,13 @@ jobs:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: Update from scrape-theatre-reviews'
 
+      - name: Commit scraper-spend ledger
+        if: always() && inputs.dry_run != true
+        continue-on-error: true
+        uses: ./.github/actions/commit-scraper-spend-ledger
+        with:
+          workflow-name: scrape-theatre-reviews
+
       - name: Trigger rebuild
         if: always() && inputs.dry_run != true
         run: |

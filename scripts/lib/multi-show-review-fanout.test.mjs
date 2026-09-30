@@ -157,7 +157,7 @@ test('childWriteDecision: create, fill a textless stub for the same URL, else sk
   assert.equal(childWriteDecision(null, parent), 'create');
   assert.equal(childWriteDecision({ url: 'https://example.com/a', fullText: '' }, parent), 'fill');
   assert.equal(childWriteDecision({ url: 'https://example.com/other', fullText: '' }, parent), 'skip');
-  assert.equal(childWriteDecision({ url: 'https://example.com/a', fullText: 'x'.repeat(400) }, parent), 'skip');
+  assert.equal(childWriteDecision({ url: 'https://example.com/a', fullText: 'x'.repeat(400) }, parent), 'held', 'same article already filed there');
 });
 
 test('applyMultiShowFanoutToFile writes the sibling, trims the parent, and is idempotent', () => {
@@ -225,6 +225,23 @@ test('fan-out honours the child show blocklist and never trims a parent when no 
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('re-ingesting the article under a missing sibling show keeps only that section', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fanout-'));
+  const url = 'https://www.newyorker.com/magazine/2026/10/05/gut-renos';
+  const cherry = 'the-cherry-orchard-park-avenue-armory-off-broadway-2026';
+  fs.mkdirSync(path.join(dir, 'delirium-off-broadway-2026'));
+  fs.mkdirSync(path.join(dir, cherry));
+  // Delirium already holds its (trimmed) section from an earlier split.
+  fs.writeFileSync(path.join(dir, 'delirium-off-broadway-2026', 'newyorker--emily-nussbaum.json'), JSON.stringify(base({ showId: 'delirium-off-broadway-2026', url, fullText: 'Delirium section '.repeat(80), multiShowSplitParent: true, multiShowSplitProcessed: 'x' })));
+  const file = path.join(dir, cherry, 'newyorker--emily-nussbaum.json');
+  fs.writeFileSync(file, JSON.stringify(base({ showId: cherry, url, publishDate: '2026-09-29', fullText: TWO_SHOW_COLUMN })));
+  const r = applyMultiShowFanoutToFile(file, { shows: SHOWS, reviewTextsDir: dir });
+  assert.equal(r.children[0].action, 'held');
+  assert.equal(r.parentRewritten, true);
+  assert.doesNotMatch(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, /Delirium/);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('a processed parent whose full article was re-collected is trimmed again', () => {
   const trimmed = planMultiShowFanout(base({ showId: 'delirium-off-broadway-2026', publishDate: '2026-09-29', fullText: 'x'.repeat(900), multiShowSplitProcessed: '2026-09-30', multiShowSplitParent: true, multiShowSplitTextLength: 900 }), SHOWS);
   assert.equal(trimmed, null, 'unchanged trimmed text is left alone');
@@ -234,9 +251,13 @@ test('a processed parent whose full article was re-collected is trimmed again', 
 
 test('split siblings sharing a URL are not cross-production copies; unrelated copies still are', () => {
   const { multiShowSplitGroup, isMultiShowSplitSibling } = require('./review-guards.js');
-  const parent = { showId: 'delirium-off-broadway-2026', multiShowSplitParent: true };
-  const child = { showId: 'the-cherry-orchard-park-avenue-armory-off-broadway-2026', multiShowSplitChild: true, multiShowSplitParentShowId: 'delirium-off-broadway-2026' };
-  const other = { showId: 'the-cherry-orchard-1977' };
+  const url = 'https://www.newyorker.com/magazine/2026/10/05/gut-renos-of-ionesco-and-chekhov';
+  const parent = { showId: 'delirium-off-broadway-2026', url, multiShowSplitParent: true };
+  const child = { showId: 'the-cherry-orchard-park-avenue-armory-off-broadway-2026', url: url + '?utm=x', multiShowSplitChild: true, multiShowSplitParentShowId: 'delirium-off-broadway-2026' };
+  const other = { showId: 'the-cherry-orchard-1977', url };
+  // A section re-ingested later is also a sibling (both split-flagged, same article).
+  const later = { showId: 'x', url: 'http://newyorker.com/magazine/2026/10/05/gut-renos-of-ionesco-and-chekhov/', multiShowSplitParent: true };
+  assert.ok(isMultiShowSplitSibling(multiShowSplitGroup(later), multiShowSplitGroup(parent)));
   assert.ok(isMultiShowSplitSibling(multiShowSplitGroup(parent), multiShowSplitGroup(child)));
   assert.equal(isMultiShowSplitSibling(multiShowSplitGroup(child), multiShowSplitGroup(other)), false);
   assert.equal(isMultiShowSplitSibling(null, null), false);
@@ -247,6 +268,54 @@ test('split siblings sharing a URL are not cross-production copies; unrelated co
   }
   assert.match(fs.readFileSync(path.join(root, 'gather-reviews.js'), 'utf8'), /multiShowSplitChildShowIds\.includes\(showId\)/);
   assert.match(fs.readFileSync(path.join(root, 'audit-cross-show-url-collisions.js'), 'utf8'), /data\.multiShowSplitChild === true/);
+});
+
+test('review-texts push ownership gate keeps split siblings, still drops an unrelated cross-show copy', () => {
+  const { execFileSync } = require('node:child_process');
+  const script = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'validate-added-review-ownership.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'owngate-'));
+  const git = (...a) => execFileSync('git', a, { cwd: dir, stdio: 'pipe' });
+  git('init', '-q'); git('config', 'user.email', 't@t'); git('config', 'user.name', 't');
+  const w = (rel, obj) => { fs.mkdirSync(path.join(dir, path.dirname(rel)), { recursive: true }); fs.writeFileSync(path.join(dir, rel), JSON.stringify(obj)); };
+  const url = 'https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html';
+  const text = 'x'.repeat(3000);
+  w('how-shakespeare-saved-my-life-off-broadway-2026/vulture--sara-holdren.json', { showId: 'how-shakespeare-saved-my-life-off-broadway-2026', outletId: 'vulture', criticName: 'Sara Holdren', url, fullText: text });
+  w('other-show-2026/placeholder.json', { showId: 'other-show-2026', outletId: 'x', url: 'https://example.com/y', fullText: text });
+  git('add', '-A'); git('commit', '-qm', 'base');
+  // The split: parent marked, child added — plus an unrelated copy of the URL.
+  w('how-shakespeare-saved-my-life-off-broadway-2026/vulture--sara-holdren.json', { showId: 'how-shakespeare-saved-my-life-off-broadway-2026', outletId: 'vulture', criticName: 'Sara Holdren', url, fullText: text, multiShowSplitParent: true });
+  w('arias-with-a-twist-off-broadway-2026/vulture--sara-holdren.json', { showId: 'arias-with-a-twist-off-broadway-2026', outletId: 'vulture', criticName: 'Sara Holdren', url, fullText: text, multiShowSplitChild: true, multiShowSplitParentShowId: 'how-shakespeare-saved-my-life-off-broadway-2026' });
+  git('add', '-A'); git('commit', '-qm', 'split');
+  execFileSync('node', [script, `--base=${git('rev-parse', 'HEAD~1').toString().trim()}`], { cwd: dir, stdio: 'pipe' });
+  assert.ok(fs.existsSync(path.join(dir, 'arias-with-a-twist-off-broadway-2026/vulture--sara-holdren.json')), 'split sibling kept');
+  // A later, unrelated copy of the URL under a third show is still a leak.
+  w('unrelated-show-2026/vulture--sara-holdren.json', { showId: 'unrelated-show-2026', outletId: 'vulture', criticName: 'Sara Holdren', url, fullText: text });
+  git('add', '-A'); git('commit', '-qm', 'leak');
+  execFileSync('node', [script, `--base=${git('rev-parse', 'HEAD~1').toString().trim()}`], { cwd: dir, stdio: 'pipe' });
+  assert.equal(fs.existsSync(path.join(dir, 'unrelated-show-2026/vulture--sara-holdren.json')), false, 'unrelated cross-show copy still dropped');
+  assert.ok(fs.existsSync(path.join(dir, 'arias-with-a-twist-off-broadway-2026/vulture--sara-holdren.json')));
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('writer Guard I lets a split article be re-created under a section show it names, not under others', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const { _resetUrlOwnershipIndex } = require('./url-ownership.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'guardi-'));
+  const url = 'https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html';
+  fs.mkdirSync(path.join(dir, 'how-shakespeare-saved-my-life-off-broadway-2026'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'how-shakespeare-saved-my-life-off-broadway-2026', 'vulture--sara-holdren.json'), JSON.stringify({
+    showId: 'how-shakespeare-saved-my-life-off-broadway-2026', outletId: 'vulture', criticName: 'Sara Holdren', url,
+    fullText: 'x'.repeat(3000), multiShowSplitParent: true, multiShowSplitChildShowIds: ['arias-with-a-twist-off-broadway-2026'],
+  }));
+  _resetUrlOwnershipIndex();
+  const ok = createOrMergeReviewFile('arias-with-a-twist-off-broadway-2026', { outletId: 'vulture', outlet: 'Vulture', criticName: 'Sara Holdren', url, source: 'submit-review-form', fields: {} }, { reviewTextsDir: dir });
+  assert.equal(ok.action, 'new', JSON.stringify(ok));
+  _resetUrlOwnershipIndex();
+  const refused = createOrMergeReviewFile('delirium-off-broadway-2026', { outletId: 'vulture', outlet: 'Vulture', criticName: 'Sara Holdren', url, source: 'submit-review-form', fields: {} }, { reviewTextsDir: dir });
+  assert.equal(refused.action, 'skipped');
+  assert.match(refused.reason, /cross-show-url-owned/);
+  _resetUrlOwnershipIndex();
+  fs.rmSync(dir, { recursive: true, force: true });
 });
 
 test('New Yorker extractor reads every body block (second show was dropped before)', () => {
@@ -440,4 +509,75 @@ test('process-review-submission retries once, then falls back to the retry stub'
   const ingest = fs.readFileSync(new URL('../ingest-review-from-url.js', import.meta.url), 'utf8');
   assert.match(ingest, /hasFlag\('stub-on-failure'\)/);
   assert.match(ingest, /writeRetryStubAndExit\(fetchFailure\)/);
+});
+
+// ── Stuck submissions 908 / 913 (Golden Boy) ──
+
+const GB = 'golden-boy-off-west-end-2026';
+const DM_URL = 'https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing';
+const DM_OPEN = 'JOSH O’Connor has an unusual conflict of interest in Clifford Odets’ 1937 drama Golden Boy: play the violin or become a prize boxer. ';
+const DM_MORE = 'Rupert Goold stages the fight scenes with a crunching physicality that makes the ring feel dangerous, and the Almeida is packed tight around it. '
+  + 'The supporting cast are sharp throughout, and the design keeps the gym smells almost tangible from the stalls, bell to bell. ';
+
+test('a longer copy of the same article replaces a truncated body on an explicit ingest (issue 908)', () => {
+  const { isSameArticleBodyUpgrade } = require('./stale-merge-check.js');
+  const stored = { fullText: DM_OPEN + DM_MORE.slice(0, 180) + '\n\nAssociated Newspapers Limited', contentTier: 'truncated' };
+  const fuller = DM_OPEN + DM_MORE.repeat(4);
+  assert.equal(isSameArticleBodyUpgrade(stored, fuller), true);
+  assert.equal(isSameArticleBodyUpgrade({ ...stored, contentTier: 'complete' }, fuller), false, 'a complete body is never swapped');
+  assert.equal(isSameArticleBodyUpgrade(stored, 'An entirely different page about ticket offers. '.repeat(30)), false, 'different article');
+  assert.equal(isSameArticleBodyUpgrade(stored, DM_OPEN + DM_MORE.slice(0, 200)), false, 'not meaningfully longer');
+  assert.equal(isSameArticleBodyUpgrade({ ...stored, manualContentTier: 'truncated' }, fuller), false, 'manual tier lock wins');
+
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-908-'));
+  fs.mkdirSync(path.join(dir, GB));
+  const file = path.join(dir, GB, 'daily-mail--patrick-marmion.json');
+  fs.writeFileSync(file, JSON.stringify({ showId: GB, outletId: 'daily-mail', outlet: 'Daily Mail', criticName: 'Patrick Marmion', url: DM_URL, publishDate: '2026-09-16', ...stored }, null, 2));
+  const input = { outletId: 'daily-mail', outlet: 'Daily Mail', criticName: 'Patrick Marmion', url: DM_URL, source: 'submit-review-form', fields: { fullText: fuller } };
+  createOrMergeReviewFile(GB, { ...input }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, stored.fullText, 'scraper merges still never overwrite a body');
+  createOrMergeReviewFile(GB, { ...input, replaceBadBody: true }, { reviewTextsDir: dir });
+  const landed = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(landed.fullText, fuller);
+  assert.equal(landed.replaceBadBody, undefined, 'the flag is not persisted');
+  const ingest = fs.readFileSync(new URL('../ingest-review-from-url.js', import.meta.url), 'utf8');
+  assert.match(ingest, /replaceBadBody: true/);
+  // The real stored shape: one lede sentence, then the sign-up wall.
+  const wall = '\n\nAssociated Newspapers Limited is a company registered in England and Wales (Company No. 084121). '
+    + 'By continuing you agree that your information will be used in line with our Privacy Policy. '.repeat(3);
+  const ledeOnly = { fullText: DM_OPEN + wall, contentTier: 'truncated' };
+  assert.equal(isSameArticleBodyUpgrade(ledeOnly, DM_OPEN + DM_MORE.repeat(5)), true, 'same lede');
+  assert.equal(isSameArticleBodyUpgrade(ledeOnly, DM_MORE.repeat(8)), false, 'lede absent');
+});
+
+test('a record classified "not a review" gives up its slot to the real review url (issue 913)', () => {
+  const { isStaleNonReviewSlot } = require('./review-slot-guards.js');
+  const news = {
+    showId: GB, outletId: 'west-end-best-friend', criticName: 'News Desk',
+    url: 'https://www.westendbestfriend.co.uk/news/almeida-theatre-golden-boy-broadcast-cinemas-national-theatre-live',
+    wrongProduction: true, isNonReview: true, contentTier: 'invalid',
+  };
+  const review = 'https://www.westendbestfriend.co.uk/news/review-golden-boy-almeida-theatre';
+  assert.equal(isStaleNonReviewSlot(news, review), true);
+  // Same /news/ url shape but only a wrongProduction verdict: a prior
+  // production's REVIEW, which must keep blocking.
+  const { isNonReview, ...prior } = news; // eslint-disable-line no-unused-vars
+  assert.equal(isStaleNonReviewSlot(prior, review), false);
+
+  // End to end through the writer: the slot moves AND keeps the new text.
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-913-'));
+  fs.mkdirSync(path.join(dir, GB));
+  const file = path.join(dir, GB, 'west-end-best-friend--unknown.json');
+  fs.writeFileSync(file, JSON.stringify({ ...news, criticName: 'Unknown', publishDate: '2026-08-13', fullText: 'National Theatre Live has announced a broadcast. '.repeat(40) }, null, 2));
+  const body = 'Josh O\u2019Connor is magnetic as Joe Bonaparte in this Golden Boy revival at the Almeida. '.repeat(25);
+  const res = createOrMergeReviewFile(GB, { outletId: 'west-end-best-friend', outlet: 'West End Best Friend', criticName: 'Unknown', url: review, source: 'submit-review-form', fields: { fullText: body, publishDate: '2026-09-17' } }, { reviewTextsDir: dir });
+  assert.equal(res.action, 'updated');
+  const landed = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(landed.url, review);
+  assert.equal(landed.fullText, body);
+  assert.equal(landed.publishDate, '2026-09-17');
+  assert.notEqual(landed.isNonReview, true);
+  assert.notEqual(landed.wrongProduction, true);
 });
