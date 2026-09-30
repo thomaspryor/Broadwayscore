@@ -78,3 +78,54 @@ test('alertableUncovered + diffUncovered: alert once per busy, unexplained venue
   const covered = diffUncovered(second.ledger, [], 't3');
   assert.deepEqual(covered.ledger, {});
 });
+
+// ── BRO-4398: the London pool ──────────────────────────────────────────────
+const { londonReaderConfigs, findReaderKeyFor, isDatedReader } = require('./ob-venue-reader-coverage.js');
+const { OWE_VENUE_CONFIGS } = require('./venue-listing-discover.js');
+const LINK_PAGES = [
+  { name: 'Park Theatre', category: 'off-west-end', linkPattern: /x/ },
+  { name: 'The Other Palace', category: 'off-west-end', linkPattern: /x/ },
+  { name: 'Marylebone Theatre', category: 'off-west-end', linkPattern: /x/ },
+];
+const oweShow = (id, venue, extra = {}) => ({ id, title: id, category: 'off-west-end', venue, status: 'open', openingDate: '2026-09-01', ...extra });
+
+test('londonReaderConfigs: a dated reader replaces the same venue\'s link reader; link-only venues stay, undated', () => {
+  const configs = londonReaderConfigs(OWE_VENUE_CONFIGS, LINK_PAGES);
+  assert.equal(configs.filter(c => c.name === 'Park Theatre').length, 1);
+  assert.equal(isDatedReader(configs.find(c => c.name === 'Park Theatre')), true);
+  assert.equal(isDatedReader(configs.find(c => c.name === 'The Other Palace')), false);
+});
+
+test('London coverage: dated vs undated-only vs uncovered; "Park" does not claim Regent\'s Park or Wembley Park', () => {
+  const keys = readerKeys(londonReaderConfigs(OWE_VENUE_CONFIGS, LINK_PAGES), { otherReaders: [] });
+  assert.equal(findReaderFor("Regent's Park Open Air Theatre", keys), null);
+  assert.equal(findReaderFor('Troubadour Wembley Park Theatre', keys), 'Troubadour Wembley Park Theatre');
+  assert.equal(findReaderFor('The Maria Theatre', keys), 'Young Vic');
+  assert.equal(findReaderFor('Southwark Playhouse Elephant', keys), 'Southwark Playhouse');
+  assert.equal(findReaderKeyFor('Hampstead Theatre Downstairs', keys).dated, true);
+
+  const shows = [
+    oweShow('a', 'Bush Theatre'), oweShow('b', 'Bush Theatre'),
+    oweShow('c', 'The Other Palace - Studio'),
+    oweShow('d', 'Donmar Warehouse'), oweShow('e', 'Donmar Warehouse'),
+    oweShow('f', 'Brand New Fringe Room'), oweShow('g', 'Brand New Fringe Room'),
+    oweShow('h', 'Shaftesbury Theatre', { category: 'west-end' }),
+  ];
+  const cov = computeVenueReaderCoverage({ shows, configs: londonReaderConfigs(OWE_VENUE_CONFIGS, LINK_PAGES), todayIso: '2026-09-30', market: 'london', isKnownVenue: known });
+  assert.equal(cov.market, 'london');
+  assert.equal(cov.active, 4);
+  assert.equal(cov.activeCovered, 2);
+  assert.equal(cov.activeDated, 1);
+  assert.deepEqual(cov.undatedOnly.map(u => u.venue), ['The Other Palace - Studio']);
+  const byVenue = Object.fromEntries(cov.uncovered.map(u => [u.venue, u]));
+  assert.match(byVenue['Donmar Warehouse'].noReaderReason, /403/);
+  assert.equal(byVenue['Brand New Fringe Room'].noReaderReason, null);
+  assert.deepEqual(alertableUncovered(cov.uncovered).map(u => u.venue), ['Brand New Fringe Room']);
+});
+
+test('computeVenueReaderCoverage: unknown market throws; the NYC default is unchanged', () => {
+  assert.throws(() => computeVenueReaderCoverage({ shows: [], configs: [], market: 'paris' }), /unknown market/);
+  const cov = computeVenueReaderCoverage({ shows: [show('x', '59E59 Theaters', { status: 'open' })], configs: OB_VENUE_CONFIGS, todayIso: TODAY, isKnownVenue: known });
+  assert.equal(cov.market, 'nyc');
+  assert.equal(cov.activeCovered, 1);
+});

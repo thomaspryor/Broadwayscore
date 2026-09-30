@@ -16,7 +16,7 @@
  * uncovered venues.
  */
 
-const { normalizeVenueName, isKnownOffBroadwayVenue } = require('./venue-classification');
+const { normalizeVenueName, isKnownOffBroadwayVenue, isOffWestEndVenue, isWestEndVenue } = require('./venue-classification');
 const { foldDiacritics } = require('./title-match');
 // venue-write-guard-ok: report rows and an alert ledger, never a shows.json write.
 
@@ -45,13 +45,65 @@ const NO_READER_REASONS = [
   ['theaterlab', 'site returns an empty page to a plain fetch'],
 ];
 
-function noReaderReason(key) {
-  const hit = NO_READER_REASONS.find(([frag]) => ` ${key} `.includes(` ${frag} `));
+// London (BRO-4398): active Off-West End houses checked 2026-09-30 that no
+// reader reads, with why.
+const LONDON_NO_READER_REASONS = [
+  ['other palace', '403 to a plain fetch; link reader in discover-new-shows.js VENUE_LISTING_PAGES needs the proxy chain'],
+  ['donmar', '403 to a plain fetch (Cloudflare); no public ticketing feed found'],
+  ['soho', 'Spektrix account (sohotheatre) is ~1,500 events, almost all stand-up; not read on purpose'],
+  ['theatre503', 'Spektrix account (theatre503) is courses and one-nighters; not read on purpose'],
+  ['peacock', "Sadler's Wells' West End dance house; dance, not theatre"],
+  ['sadler s wells', 'dance house; not read'],
+  ['charing cross', 'no ticketing feed or dated listing on the homepage (probed 2026-09-30)'],
+  ['globe', "Shakespeare's Globe site has no dated listing or public feed in its HTML (probed 2026-09-30)"],
+  ['sam wanamaker', "Shakespeare's Globe's indoor house; same site as the Globe"],
+  ['open air', "Regent's Park Open Air Theatre site renders its listing in JavaScript"],
+  ['jermyn street', 'no ticketing feed or dated listing on the homepage (probed 2026-09-30)'],
+  ['southbank', 'Southbank Centre halls are concert venues'],
+  ['festival hall', 'Southbank Centre concert hall'],
+  ['queen elizabeth hall', 'Southbank Centre concert hall'],
+  ['royal albert hall', 'concert hall'],
+  ['alexandra palace', 'concert and events venue'],
+  ['battersea power station', 'shopping/events site; its shows are pop-up engagements listed on TodayTix'],
+  ['county hall', 'immersive/event space in a former office building'],
+  ['richmond', 'a place name, not a venue: fix the show rows'],
+  ['new wimbledon', 'ATG receiving house (UK tours)'],
+  ['hackney empire', 'variety/receiving house (comedy, panto, tours)'],
+  ['theatre on kew', 'seasonal pop-up in Kew Gardens'],
+  ['marble arch', 'TodayTix-run venue (The Arts at Marble Arch); its shows are TodayTix listings'],
+];
+
+/**
+ * The London reader set for computeVenueReaderCoverage: every dated reader
+ * (OWE_VENUE_CONFIGS) plus the VENUE_LISTING_PAGES link readers of venues
+ * with no dated reader. A venue with both is represented by the dated one
+ * only, so the link reader's looser name match cannot claim other houses.
+ */
+function londonReaderConfigs(oweConfigs, listingPages) {
+  const dated = Array.isArray(oweConfigs) ? oweConfigs : [];
+  const names = new Set(dated.map(c => venueKey(c.name)));
+  const links = (Array.isArray(listingPages) ? listingPages : [])
+    .filter(p => p && p.category === 'off-west-end' && !names.has(venueKey(p.name)))
+    .map(p => ({ ...p, strategy: 'link' }));
+  return [...dated, ...links];
+}
+
+const NO_READER_REASONS_BY_MARKET = { nyc: NO_READER_REASONS, london: LONDON_NO_READER_REASONS };
+
+function noReaderReason(key, market = 'nyc') {
+  const list = NO_READER_REASONS_BY_MARKET[market] || NO_READER_REASONS;
+  const hit = list.find(([frag]) => ` ${key} `.includes(` ${frag} `));
   return hit ? hit[1] : null;
 }
 
+// What each coverage market reads (BRO-4398 extended this from the NYC pool).
+const MARKETS = {
+  nyc: { category: 'off-broadway', isKnownVenue: isKnownOffBroadwayVenue, otherReaders: OTHER_VENUE_READERS },
+  london: { category: 'off-west-end', isKnownVenue: v => isOffWestEndVenue(v) && !isWestEndVenue(v), otherReaders: [] },
+};
+
 // Words too generic to identify a venue on their own ("the center").
-const GENERIC_WORDS = new Set(['theater', 'theatre', 'theaters', 'theatres', 'center', 'centre', 'stage', 'studio', 'hall', 'nyc', 'new', 'york', 'the', 'at', 'space', 'room']);
+const GENERIC_WORDS = new Set(['theater', 'theatre', 'theaters', 'theatres', 'center', 'centre', 'stage', 'studio', 'studios', 'hall', 'nyc', 'new', 'york', 'london', 'the', 'at', 'space', 'room', 'main', 'house']);
 
 function venueKey(name) {
   return foldDiacritics(normalizeVenueName(String(name || '')))
@@ -70,7 +122,14 @@ function isDistinctive(key) {
  * (a company's other rooms, e.g. Signature → Pershing Square Signature
  * Center).
  */
-function readerKeys(configs) {
+// Readers whose rows carry run dates (the ones a promoter can accept as
+// evidence on their own); a slug-title link reader does not.
+const UNDATED_STRATEGIES = new Set(['link', 'selector', 'regex']);
+function isDatedReader(c) {
+  return !!(c && c.strategy && !UNDATED_STRATEGIES.has(c.strategy));
+}
+
+function readerKeys(configs, { otherReaders = OTHER_VENUE_READERS } = {}) {
   const keys = [];
   for (const c of configs || []) {
     // coverageExact: a reader that reads only some rooms of a house (Theatre
@@ -79,7 +138,7 @@ function readerKeys(configs) {
     if (Array.isArray(c.coverageExact)) {
       for (const n of c.coverageExact) {
         const k = venueKey(n);
-        if (k) keys.push({ key: k, reader: c.name, exactOnly: true });
+        if (k) keys.push({ key: k, reader: c.name, exactOnly: true, dated: isDatedReader(c) });
       }
       continue;
     }
@@ -87,22 +146,31 @@ function readerKeys(configs) {
       const k = venueKey(n);
       // A name made only of generic words ("The Theater Center") matches
       // exactly, never as a substring.
-      if (k) keys.push({ key: k, reader: c.name, exactOnly: !isDistinctive(k) });
+      if (k) keys.push({ key: k, reader: c.name, exactOnly: !isDistinctive(k), dated: isDatedReader(c) });
     }
   }
-  for (const o of OTHER_VENUE_READERS) keys.push({ key: o.key, reader: o.reader });
-  return keys;
+  for (const o of otherReaders) keys.push({ key: o.key, reader: o.reader, dated: false });
+  // A dated reader wins over an undated one for the same venue (London venues
+  // have both: the dated reader and the link reader it falls back to).
+  return keys.sort((a, b) => Number(b.dated) - Number(a.dated));
 }
 
 /** Which reader covers this venue string, or null. Whole-word containment either way. */
 function findReaderFor(venue, keys) {
+  const hit = findReaderKeyFor(venue, keys);
+  return hit ? hit.reader : null;
+}
+
+/** The matching readerKeys() entry ({key, reader, dated}), or null. */
+function findReaderKeyFor(venue, keys) {
   const v = venueKey(venue);
   if (!v) return null;
-  for (const { key, reader, exactOnly } of keys) {
-    if (v === key) return reader;
+  for (const k of keys) {
+    const { key, exactOnly } = k;
+    if (v === key) return k;
     if (exactOnly) continue;
-    if (` ${v} `.includes(` ${key} `)) return reader;
-    if (isDistinctive(v) && ` ${key} `.includes(` ${v} `)) return reader;
+    if (` ${v} `.includes(` ${key} `)) return k;
+    if (isDistinctive(v) && ` ${key} `.includes(` ${v} `)) return k;
   }
   return null;
 }
@@ -121,21 +189,25 @@ function latestDate(show) {
  *   venues: one row per venue string seen on an OB show, with its reader
  *   uncovered: the ACTIVE venues with no reader, busiest first
  */
-function computeVenueReaderCoverage({ shows, configs, todayIso = new Date().toISOString().slice(0, 10), isKnownVenue = isKnownOffBroadwayVenue }) {
-  const keys = readerKeys(configs);
+function computeVenueReaderCoverage({ shows, configs, todayIso = new Date().toISOString().slice(0, 10), market = 'nyc', isKnownVenue }) {
+  const m = MARKETS[market];
+  if (!m) throw new Error(`computeVenueReaderCoverage: unknown market "${market}"`);
+  const knownFn = typeof isKnownVenue === 'function' ? isKnownVenue : m.isKnownVenue;
+  const keys = readerKeys(configs, { otherReaders: m.otherReaders });
   const cutoff = new Date(Date.parse(`${todayIso}T00:00:00Z`) - ACTIVE_WINDOW_DAYS * DAY_MS).toISOString().slice(0, 10);
   const byVenue = new Map();
   for (const s of shows || []) {
-    if (!s || s.category !== 'off-broadway' || !s.venue || s.venue === 'TBA') continue;
+    if (!s || s.category !== m.category || typeof s.venue !== 'string' || !s.venue || s.venue === 'TBA') continue;
     const k = venueKey(s.venue);
     if (!k) continue;
     let row = byVenue.get(k);
     if (!row) {
-      row = { venue: s.venue.trim(), key: k, known: false, reader: findReaderFor(s.venue, keys), recentShows: 0, lastShow: null, lastDate: null };
+      const hit = findReaderKeyFor(s.venue, keys);
+      row = { venue: s.venue.trim(), key: k, known: false, reader: hit ? hit.reader : null, readerDated: hit ? !!hit.dated : false, recentShows: 0, lastShow: null, lastDate: null };
       byVenue.set(k, row);
     }
     let known = false;
-    try { known = isKnownVenue(s.venue); } catch { known = false; }
+    try { known = knownFn(s.venue); } catch { known = false; }
     row.known = row.known || known;
     const last = latestDate(s);
     const recent = LIVE_STATUSES.has(s.status) || (last && last >= cutoff);
@@ -144,15 +216,25 @@ function computeVenueReaderCoverage({ shows, configs, todayIso = new Date().toIS
   }
   const venues = [...byVenue.values()].filter(r => r.known).sort((a, b) => b.recentShows - a.recentShows || a.key.localeCompare(b.key));
   const active = venues.filter(r => r.recentShows > 0);
-  const uncovered = groupRooms(active.filter(r => !r.reader));
-  return { venues, active: active.length, activeCovered: active.filter(r => r.reader).length, uncovered };
+  const uncovered = groupRooms(active.filter(r => !r.reader), market);
+  return {
+    market,
+    venues,
+    active: active.length,
+    activeCovered: active.filter(r => r.reader).length,
+    activeDated: active.filter(r => r.reader && r.readerDated).length,
+    // Covered only by a slug-title reader: discovery sees the titles, but
+    // the promoter can never take the venue's own listing as evidence.
+    undatedOnly: groupRooms(active.filter(r => r.reader && !r.readerDated), market),
+    uncovered,
+  };
 }
 
 /**
  * Fold rooms of one house into one row ("The Griffin Theater at The Shed"
  * into "The Shed") so the ranking counts the house, not each spelling.
  */
-function groupRooms(rows) {
+function groupRooms(rows, market = 'nyc') {
   const sorted = [...rows].sort((a, b) => a.key.split(' ').length - b.key.split(' ').length || a.key.localeCompare(b.key));
   const groups = [];
   for (const r of sorted) {
@@ -162,7 +244,7 @@ function groupRooms(rows) {
       parent.spellings.push(r.venue);
       if (r.lastDate && (!parent.lastDate || r.lastDate > parent.lastDate)) { parent.lastDate = r.lastDate; parent.lastShow = r.lastShow; }
     } else {
-      groups.push({ ...r, spellings: [r.venue], noReaderReason: noReaderReason(r.key) });
+      groups.push({ ...r, spellings: [r.venue], noReaderReason: noReaderReason(r.key, market) });
     }
   }
   return groups.sort((a, b) => b.recentShows - a.recentShows || a.key.localeCompare(b.key));
@@ -199,6 +281,11 @@ module.exports = {
   ACTIVE_WINDOW_DAYS,
   ALERT_MIN_RECENT_SHOWS,
   NO_READER_REASONS,
+  LONDON_NO_READER_REASONS,
+  MARKETS,
+  londonReaderConfigs,
+  isDatedReader,
+  findReaderKeyFor,
   alertableUncovered,
   OTHER_VENUE_READERS,
   venueKey,

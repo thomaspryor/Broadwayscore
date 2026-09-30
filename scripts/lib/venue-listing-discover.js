@@ -557,16 +557,21 @@ const OWE_VENUE_CONFIGS = [
   { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', spektrixUrl: 'https://system.spektrix.com/southwarkplayhouse/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /writers collective/i], category: 'off-west-end' },
   { name: 'Orange Tree Theatre', url: 'https://www.orangetreetheatre.co.uk/whats-on/', spektrixUrl: 'https://tickets.orangetreetheatre.co.uk/orangetree/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   // Park sells stand-up, music and kids' clubs on the same account.
-  { name: 'Park Theatre', url: 'https://parktheatre.co.uk/whats-on/', spektrixUrl: 'https://tickets.parktheatre.co.uk/parktheatre/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_Genre', spektrixGenres: ['Drama', 'Comedy', 'Musicals'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // coverageExact: "Park" alone would also claim Regent's Park Open Air
+  // Theatre and Troubadour Wembley Park in the coverage report.
+  { name: 'Park Theatre', coverageExact: ['Park Theatre', 'Park90', 'Park200'], url: 'https://parktheatre.co.uk/whats-on/', spektrixUrl: 'https://tickets.parktheatre.co.uk/parktheatre/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_Genre', spektrixGenres: ['Drama', 'Comedy', 'Musicals'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   { name: 'Bush Theatre', url: 'https://www.bushtheatre.co.uk/whats-on/', spektrixUrl: 'https://tickets.bushtheatre.co.uk/bushtheatre/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /^alt b:/i], category: 'off-west-end' },
   { name: 'Arcola Theatre', url: 'https://www.arcolatheatre.com/whats-on/', spektrixUrl: 'https://boxoffice.arcolatheatre.com/arcolatheatre/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_Genre', spektrixGenres: ['Theatre'], strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /\bayt\b/i], category: 'off-west-end' },
   { name: "King's Head Theatre", url: 'https://kingsheadtheatre.com/whats-on/', spektrixUrl: 'https://tickets.kingsheadtheatre.com/kingsheadtheatre/api/v3/events', spektrixInstances: true, spektrixExclude: { attribute_LiveOnWebsite: /^false$/i }, strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /\badult$/i], category: 'off-west-end' },
   { name: 'Lyric Hammersmith', url: 'https://lyric.co.uk/whats-on/', spektrixUrl: 'https://tickets.lyric.co.uk/lyrichammersmith/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   // Young Vic's Shedinburgh strand is a festival of one-nighters in The Maria.
-  { name: 'Young Vic', url: 'https://www.youngvic.org/whats-on', spektrixUrl: 'https://system.spektrix.com/youngvic/api/v3/events', spektrixInstances: true, spektrixExclude: { ...SPEKTRIX_SUPPLEMENTARY, attribute_Festival: /\S/ }, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  { name: 'Young Vic', coversVenues: ['The Maria Theatre', 'Young Vic (Main House)'], url: 'https://www.youngvic.org/whats-on', spektrixUrl: 'https://system.spektrix.com/youngvic/api/v3/events', spektrixInstances: true, spektrixExclude: { ...SPEKTRIX_SUPPLEMENTARY, attribute_Festival: /\S/ }, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   // Mostly cinema, classes and wellness: theatre only.
   { name: 'Riverside Studios', url: 'https://riversidestudios.co.uk/whats-on/', spektrixUrl: 'https://spektrix.riversidestudios.co.uk/riversidestudios/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_EventType', spektrixGenres: ['Theatre'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   { name: 'Bridge Theatre', url: 'https://bridgetheatre.co.uk/', spektrixUrl: 'https://tickets.bridgetheatre.co.uk/bridgetheatrelondon/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // Barbican's account is ~3,000 events (4.9 MB, ~40 s on 2026-09-30), mostly
+  // concerts and cinema: theatre only, and no /instances pull on top of it.
+  { name: 'Barbican Theatre', coversVenues: ['Barbican Centre'], url: 'https://www.barbican.org.uk/whats-on/theatre-dance', spektrixUrl: 'https://spektrix.barbican.org.uk/barbicancentre/api/v3/events', spektrixTimeoutMs: 120000, spektrixGenreField: 'attribute_PrimaryArtForm', spektrixGenres: ['Theatre'], spektrixExclude: { attribute_SuppEvent: /^true$/i }, strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /\btest!*$/i], category: 'off-west-end' },
   // ── JSON-LD ──
   // Menier: Event nodes in the homepage @graph, one per run.
   { name: 'Menier Chocolate Factory', url: 'https://www.menierchocolatefactory.com/', strategy: 'json-ld', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
@@ -580,6 +585,8 @@ const OWE_VENUE_CONFIGS = [
   // Hampstead sells through Tessitura (no public feed); its what's-on cards
   // carry "Dates: 28 Aug – 7 Nov 2026".
   { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: '.card', titleSelector: '.card__heading', dateSelector: '.card__dates', linkSelector: 'a[href*="/production/"]', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // One page for both Troubadour houses: keep the Wembley Park cards.
+  { name: 'Troubadour Wembley Park Theatre', url: 'https://www.troubadourtheatres.com/whats-on/', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: '.c-featured-event', itemMustMatch: /Wembley/, titleSelector: 'h3', dateSelector: '.c-featured-event__details__discription', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: 'a.production-card', titleSelector: 'h3', dateSelector: 'div.text-2xl.text-center', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
 ];
 
@@ -839,7 +846,7 @@ async function scrapeVenueListing(venue) {
     return parseVenueListingHtml(venue, json);
   }
   if (venue.strategy === 'spektrix') {
-    return parseVenueListingHtml(venue, await fetchSpektrixEvents(venue.spektrixUrl, { instances: !!venue.spektrixInstances }));
+    return parseVenueListingHtml(venue, await fetchSpektrixEvents(venue.spektrixUrl, { instances: !!venue.spektrixInstances, timeoutMs: venue.spektrixTimeoutMs }));
   }
   if (venue.strategy === 'json-api') {
     return parseVenueListingHtml(venue, await getJson(venue.jsonUrl));

@@ -617,8 +617,8 @@ async function fetchTribeEvents(siteUrl, { perPage = 50, maxPages = 4 } = {}) {
   return { events };
 }
 
-async function fetchSpektrixEvents(url, { instances = false, todayIso = new Date().toISOString().slice(0, 10) } = {}) {
-  const json = await getJson(url);
+async function fetchSpektrixEvents(url, { instances = false, todayIso = new Date().toISOString().slice(0, 10), timeoutMs } = {}) {
+  const json = await getJson(url, timeoutMs ? { timeoutMs } : {});
   if (!Array.isArray(json)) throw new Error(`Spektrix ${url}: events is not an array`);
   if (!instances) return json;
   // The full instances feed runs to 3 MB / 40 s on a busy account
