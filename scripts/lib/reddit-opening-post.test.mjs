@@ -213,7 +213,7 @@ test('an unsent draft is redrafted when its numbers go stale, kept when still ac
   const slims = new Map([[show.id, slim()]]);
   const f = lib.buildFacts(show, slim(), []);
   const pick = d => lib.selectCandidates({ shows, slims, drafts: { drafts: { [show.id]: d } }, peersByMarket: {}, today: '2026-09-29' }).length;
-  const accurate = { status: 'ready', source: 'claude', title: `Trainspotting scores ${f.score}/100`, body: `${f.reviewCount} reviews.` };
+  const accurate = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: `Trainspotting scores ${f.score}/100`, body: `${f.reviewCount} reviews.` };
   assert.equal(pick(accurate), 0, 'still matches today');
   assert.equal(pick({ ...accurate, body: `${f.reviewCount - 1} reviews, ${f.buckets.rave + 1} raves.` }), 1, 'counts moved: redraft');
   assert.equal(pick({ ...accurate, body: 'Now #3 of 24 shows.' }), 1, 'stale rank: redraft');
@@ -285,8 +285,24 @@ test('crosspost: West End shows with a current/recent Broadway production also g
   const pick = id => lib.selectCandidates({ shows, slims, drafts: { drafts: {} }, peersByMarket: {}, today: '2026-09-29', forceShowId: id })[0].facts;
   assert.equal(pick('ka-we').crosspostSubreddit, 'Broadway');
   assert.equal(pick('ayli-we').crosspostSubreddit, null, 'a 1974 Broadway revival is not a reason');
-  assert.equal(pick('x-ob').subreddit, 'Broadway');
-  assert.equal(pick('x-ob').crosspostSubreddit, null, 'Off-Broadway already posts to r/Broadway');
+  assert.equal(pick('x-ob').subreddit, 'offbroadwayNYC', 'Off-Broadway goes to r/offbroadwayNYC');
+  assert.equal(pick('x-ob').crosspostSubreddit, 'Broadway', 'with r/Broadway as the second button');
   const html = mail.buildHtml({ showTitle: 'Kimberly Akimbo', score: 80, reviewCount: 30, subreddit: 'TheWestEnd', title: 't', body: 'b', submitUrl: 'https://a', oldRedditSubmitUrl: 'https://b', crosspostSubreddit: 'Broadway', crosspostSubmitUrl: 'https://c' }, 'new');
+  assert.match(html, /Also post to r\/Broadway/);
+});
+
+test('an unsent draft aimed at the old subreddit is redrafted; a crosspost counts as posted', () => {
+  const ob = { id: 'ob1', title: 'Delirium', category: 'off-broadway', openingDate: '2026-09-27', status: 'open' };
+  const slims = new Map([['ob1', slim({ cs: 87, n: 7 })]]);
+  const f = lib.buildFacts(ob, slim({ cs: 87, n: 7 }), []);
+  const accurate = { status: 'ready', source: 'claude', title: `Delirium scores ${f.score}/100`, body: `${f.reviewCount} reviews.` };
+  const pick = d => lib.selectCandidates({ shows: [ob], slims, drafts: { drafts: { ob1: d } }, peersByMarket: {}, today: '2026-09-29' }).length;
+  assert.equal(pick({ ...accurate, subreddit: 'offbroadwayNYC' }), 0);
+  assert.equal(pick({ ...accurate, subreddit: 'Broadway' }), 1, 'old target: redraft');
+  const d = { showTitle: 'Delirium', subreddit: 'offbroadwayNYC', crosspostSubreddit: 'Broadway', status: 'ready', createdAt: '2026-09-28T06:00:00Z' };
+  const out = lib.applyPostedDetection({ drafts: { ob1: d } }, [{ title: 'Delirium scores 87/100', subreddit: 'Broadway', created_utc: Date.parse('2026-09-28T12:00:00Z') / 1000 }]);
+  assert.equal(out.drafts.ob1.status, 'posted');
+  const html = mail.buildHtml({ ...d, market: 'off-broadway', score: 87, reviewCount: 7, title: 't', body: 'b', submitUrl: 'https://a', oldRedditSubmitUrl: 'https://b', crosspostSubmitUrl: 'https://c' }, 'new');
+  assert.match(html, /r\/offbroadwayNYC/);
   assert.match(html, /Also post to r\/Broadway/);
 });
