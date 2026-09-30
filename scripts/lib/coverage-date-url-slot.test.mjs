@@ -352,3 +352,9 @@ test('unexpectedChanges tolerates exactly the url-change-invariant side effects 
   // Other fields keep the strict comparison.
   assert.deepEqual(unexpectedChanges({ a: 1 }, { a: 1, needsRefetch: true }, 'criticName'), ['needsRefetch']);
 });
+
+test('a TheaterMania cast announcement is a named non-review url; its reviews are not', () => {
+  const { namedNonReviewReason } = require('./non-review-url-patterns.js');
+  assert.equal(namedNonReviewReason(TM_CAST), 'cast-announcement');
+  assert.equal(namedNonReviewReason(TM_REVIEW), null);
+});
