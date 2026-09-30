@@ -150,7 +150,7 @@ function reparentDependents(showDir, recMap, removed, survivor) {
 }
 
 function apply(p, showDir) {
-  const { safeWriteReview, safeUnlinkReview } = require('./lib/review-write-guard');
+  const { safeWriteReview, safeUnlinkReview, writeReviewOrThrow } = require('./lib/review-write-guard');
   const recMap = new Map(loadRecords(showDir).map((r) => [r.file, r.data]));
   if (!recMap.has(p.a) || !recMap.has(p.b)) return 'skipped: file already gone';
   // force:true below bypasses the write guard's lock; a locked file is an owner decision, not ours to delete/rewrite.
@@ -171,7 +171,7 @@ function apply(p, showDir) {
         const promoted = { ...pd, duplicateOf: null, duplicateReason: null, duplicateClearReason: 'BRO-4406: attested record promoted over web-search guesses' };
         foldAggregatorFields(promoted, recMap.get(canonical));
         foldAggregatorFields(promoted, recMap.get(loser));
-        safeWriteReview(path.join(showDir, pf), promoted, { force: true });
+        writeReviewOrThrow(path.join(showDir, pf), promoted, { force: true });
         for (const f of [canonical, loser]) safeUnlinkReview(path.join(showDir, f), { force: true });
         return `same-review: promoted ${pf} (attested), removed web-search ${canonical}, ${loser}`;
       }
@@ -189,7 +189,7 @@ function apply(p, showDir) {
       survivor = loser;
       removed = canonical;
     }
-    safeWriteReview(path.join(showDir, survivor), canon, { force: true });
+    writeReviewOrThrow(path.join(showDir, survivor), canon, { force: true });
     const moved = reparentDependents(showDir, recMap, removed, survivor);
     const r = safeUnlinkReview(path.join(showDir, removed), { force: true });
     return `${moved.length ? `[${moved.join('; ')}] ` : ''}same-review: kept ${survivor}${survivor !== canonical ? ` (content of ${canonical})` : ''}, removed ${removed}${r.wrote === false && r.skipped ? ` (${r.skipped})` : ''}`;
@@ -227,7 +227,9 @@ function run(argv) {
     let pairs = scanShow(showId, loadRecords(showDir), liveIdx, showDir);
     if (liveOnly) pairs = pairs.filter((p) => p.live);
     for (const p of pairs) {
-      if (doApply && p.live) p.applied = apply(p, showDir);
+      if (doApply && p.live) {
+        try { p.applied = apply(p, showDir); } catch (e) { p.applied = `ERROR (pair left untouched or half-done, re-run audit): ${e.message}`; }
+      }
       report.push(p);
     }
   }
