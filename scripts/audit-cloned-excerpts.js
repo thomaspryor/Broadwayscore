@@ -80,7 +80,7 @@ function loadRecords(showDir) {
 /** Pairs in one show dir, with liveness and classification. */
 function scanShow(showId, records, liveIdx, showDir) {
   const pairs = guard.findClonedPairs(records);
-  return pairs.map(({ a, b, shared }) => {
+  return pairs.map(({ a, b, shared, via }) => {
     const live = (r) => !guard.isFileExcluded(r.data)
       && liveIdx.has(liveKey(showId, r.data.outletId || r.file.split('--')[0], r.data.criticName));
     const c = guard.classifyPair(a, b);
@@ -90,7 +90,7 @@ function scanShow(showId, records, liveIdx, showDir) {
     }
     return {
       showId, outlet: a.data.outletId || a.file.split('--')[0],
-      a: a.file, b: b.file, live: live(a) && live(b), shared: shared[0].slice(0, 70), ...c,
+      a: a.file, b: b.file, live: live(a) && live(b), shared: shared.length ? shared[0].slice(0, 70) : (via || ''), ...c,
     };
   });
 }
@@ -112,6 +112,10 @@ function pickCanonical(p, showDir, recMap) {
 }
 
 function foldAggregatorFields(canon, loser) {
+  // A web-search loser's excerpt fields are LLM-invented text (Feldman's
+  // "timeless and urgently contemporary" blurb was in no aggregator); folding
+  // them into the survivor would launder a hallucination into the real review.
+  if (loser.source === 'web-search') return;
   const fields = [...EXCERPT_FIELDS, 'dtliThumb', 'dtliUrl', 'bwwThumb', 'bwwRoundupUrl', 'showScoreUrl', 'playbillVerdictUrl'];
   for (const f of fields) {
     if ((canon[f] === undefined || canon[f] === null || canon[f] === '') && loser[f]) canon[f] = loser[f];
