@@ -171,6 +171,11 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   { host: /(^|\.)londontheatre\.co\.uk$/, path: /^\/show\/\d+/, reason: 'ticketing-listing' },
   { host: /(^|\.)broadway\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//, reason: 'venue-production-page' },
+  // Cast announcements live under /news/ beside real reviews (/news/review-...),
+  // so only the announcement slug is blocked. One submitted via the review form
+  // held The Body of Mary's TheaterMania slot and blocked the real review
+  // (BRO-4430).
+  { host: /(^|\.)theatermania\.com$/, path: /^\/news\/(?:cast-announced|casting-announced|full-cast-announced)-/i, reason: 'cast-announcement' },
   // Sixth wave (task #1073, 2026-08-05 — Pass/Disruption/Vessel coverage audit):
   // BWW /shows/{id}/... (cast/synopsis/videos) pages are listing pages, never
   // reviews — the-vessel had one ingested via SERP as a "review" whose 920-char
