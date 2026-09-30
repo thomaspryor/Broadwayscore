@@ -60,7 +60,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, cvNonReviewHumanCleared, wrongShowCleared, cvWrongArticleFamily } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, cvNonReviewHumanCleared, wrongShowCleared, cvWrongArticleFamily, isMisroutedCvNonReviewWrongShow } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -2149,7 +2149,7 @@ const crossShowFingerprints = new Map();
         } else if (cv.wrongArticle === true && ensembleSaysReview) {
           stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
         }
-        if (cv.isFilmTv === true && !ensembleSaysReview && d.wrongShow !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
+        if (cv.isFilmTv === true && !ensembleSaysReview && d.wrongShow !== true && !wrongShowCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
           if (shouldDeferCvWrongShow(d)) {
             d.flaggedForReview = true;
             d.flagReason = 'cv-promotion-deferred';
@@ -3364,7 +3364,9 @@ showDirs.forEach(showId => {
         try { safeWriteReview(path.join(showDir, file), data, { force: true }); } catch (e) {}
         stats.wrongShowAutoCleared = (stats.wrongShowAutoCleared || 0) + 1;
       }
-      if (data.wrongShow === true) {
+      // BRO-4429: a wrongShow left over from the old misrouted CV not-a-review
+      // promotion carries nothing once a human cleared that verdict.
+      if (data.wrongShow === true && !isMisroutedCvNonReviewWrongShow(data)) {
         if (cvFlagVetoedInWindow(data, showById[showId], 'wrongShow', {
           urlFiledUnderOtherShow: (urlShowIdsAll.get(normalizeUrlForDedup(data.url)) || new Set()).size > 1,
         })) {

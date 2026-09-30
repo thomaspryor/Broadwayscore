@@ -159,6 +159,37 @@ test('Gemini stamp is allowed on an ordinary record and on a low-confidence CV',
   assert.equal(geminiNonReviewStampBlocker({ ...plain, contentVerification: { articleType: 'preview', confidence: 'high', wrongArticle: true } }), null);
 });
 
+test('a CV "review" verdict older than the stored text does not block the stamp', () => {
+  const rec = {
+    url: 'https://example.com/news/item', fullText: para(400, 'x'),
+    textFetchedAt: '2026-09-02T00:00:00.000Z',
+    contentVerification: { articleType: 'review', confidence: 'high', verifiedAt: '2026-09-01T00:00:00.000Z' },
+  };
+  assert.equal(geminiNonReviewStampBlocker(rec), null);
+  assert.equal(geminiNonReviewStampBlocker({ ...rec, textFetchedAt: '2026-08-31T00:00:00.000Z' }), 'cv-high-confidence-review');
+});
+
+test('mention windows spread across the middle when the title is named often', () => {
+  const early = Array.from({ length: 6 }, (_, i) => `Hungry Women line ${i}. ${para(20, 'e')}`).join(' ');
+  const text = [para(300, 'head'), early, para(500, 'filler'), `LATE: Hungry Women is the verdict here. ${para(40, 'l')}`, para(300, 'tail')].join('\n\n');
+  const { text: sample } = sampleTextForClassifier(text, 'Hungry Women', { budget: 4000 });
+  assert.ok(sample.includes('LATE: Hungry Women is the verdict'), 'late mention reached despite six early ones');
+});
+
+test('misrouted CV not-a-review wrongShow is void once a human clears the non-review verdict', () => {
+  const { isMisroutedCvNonReviewWrongShow, wrongShowCleared } = require('./review-guards.js');
+  const saviors = {
+    wrongShow: true, wrongShowReason: 'CV-promoted: The scraped content reads as a preview...',
+    isNonReview: false, nonReviewManualClear: true,
+    contentVerification: { wrongArticle: true, wrongProduction: false, articleType: 'preview', confidence: 'high' },
+  };
+  assert.equal(isMisroutedCvNonReviewWrongShow(saviors), true);
+  assert.equal(wrongShowCleared(saviors), true);
+  assert.equal(isMisroutedCvNonReviewWrongShow({ ...saviors, nonReviewManualClear: undefined }), false, 'no human clear');
+  assert.equal(isMisroutedCvNonReviewWrongShow({ ...saviors, wrongShowReason: 'CV-promoted (film/TV): x' }), false, 'film/TV untouched');
+  assert.equal(isMisroutedCvNonReviewWrongShow({ ...saviors, contentVerification: { ...saviors.contentVerification, wrongProduction: true } }), false, 'real wrong-show shape untouched');
+});
+
 test('RC2 short-extraction guard still blocks (review-marker URL, short body)', () => {
   assert.equal(
     geminiNonReviewStampBlocker({ url: 'https://example.com/reviews/show-review/', fullText: 'Accept all cookies to continue.' }),

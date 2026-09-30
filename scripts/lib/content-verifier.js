@@ -390,7 +390,10 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
   // shows only the first 2,500 chars, which for WhatsOnStage captures was
   // entirely IAB consent text (BRO-4185 A).
   scrapedText = stripConsentLayerPrefix(scrapedText);
-  // Same for page-data JSON captured ahead of the article (BRO-4429).
+  // Same for page-data JSON captured ahead of the article (BRO-4429). The
+  // staleness hash stays over the text as callers store it (the rebuild
+  // compares it with fullText's first 2,500 chars), not the stripped text.
+  const hashSource = scrapedText;
   scrapedText = stripLeadingJsonBlob(scrapedText);
   if (!scrapedText || scrapedText.length < 200) {
     return {
@@ -417,7 +420,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
 
   if (!result) {
     // No LLM providers available — fall back to heuristics
-    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), contentHash: contentHash(hashSource), urlYearConflict };
   }
 
   try {
@@ -520,7 +523,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         isFilmTv: filmTvFlag,
         reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),
         verifiedBy: `llm:${result.provider}`,
-        contentHash: contentHash(scrapedText),
+        contentHash: contentHash(hashSource),
         // What the verdict read (BRO-4429): 'whole' or head + show-mention
         // passages + tail. Absent on verdicts from the old 2,500-char window.
         textSampling: cvTextSampling(scrapedText, showTitle),
@@ -529,11 +532,11 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
     }
 
     console.log(`    LLM verify (${result.provider}): could not parse JSON, falling back to heuristic`);
-    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), contentHash: contentHash(hashSource), urlYearConflict };
 
   } catch (error) {
     console.error(`    LLM verify parse error: ${error.message}`);
-    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), urlYearConflict };
+    return { ...heuristicVerify({ scrapedText, excerpt, showTitle }), contentHash: contentHash(hashSource), urlYearConflict };
   }
 }
 

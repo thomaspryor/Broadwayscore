@@ -71,7 +71,14 @@ function sampleTextForClassifier(text, showTitle, { budget = 6000 } = {}) {
   // the title is named fewer than MAX_MENTION_WINDOWS times in the middle.
   const step = (middleEnd - middleStart) / (MAX_MENTION_WINDOWS + 1);
   const spaced = Array.from({ length: MAX_MENTION_WINDOWS }, (_, k) => Math.round(middleStart + step * (k + 1)));
-  const mentions = findMentionOffsets(body, showTitle).filter((o) => o >= middleStart && o < middleEnd);
+  // Spread the picks across the middle: the three EARLIEST mentions of an
+  // often-named title all sit just after the head, and the late middle (the
+  // second section of a multi-show column) is never read.
+  const allMentions = findMentionOffsets(body, showTitle).filter((o) => o >= middleStart && o < middleEnd);
+  const mentions = allMentions.length <= MAX_MENTION_WINDOWS
+    ? allMentions
+    : [...new Set(Array.from({ length: MAX_MENTION_WINDOWS }, (_, k) =>
+      allMentions[Math.round((k * (allMentions.length - 1)) / (MAX_MENTION_WINDOWS - 1))]))];
 
   // Greedy: keep a candidate only if its window overlaps none already kept.
   const windows = [];
@@ -114,7 +121,10 @@ function geminiNonReviewStampBlocker(data) {
   if (data.isNotReviewManualClear === true) return 'manual-clear:isNotReview';
   if (data.humanReviewScore != null) return 'human-score';
   const cv = data.contentVerification;
-  if (cv && cv.articleType === 'review' && cv.wrongArticle !== true
+  // A CV verdict made before the text was re-fetched judged other text.
+  const cvPredatesText = cv && data.textFetchedAt && cv.verifiedAt
+    && Date.parse(data.textFetchedAt) > Date.parse(cv.verifiedAt);
+  if (cv && !cvPredatesText && cv.articleType === 'review' && cv.wrongArticle !== true
       && (cv.articleTypeConfidence || cv.confidence) === 'high') {
     return 'cv-high-confidence-review';
   }

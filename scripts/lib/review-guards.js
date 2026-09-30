@@ -1658,8 +1658,24 @@ function cvWrongArticleFamily(cv) {
   return cv.wrongProduction === true ? 'wrongShow' : 'nonReview';
 }
 
+/**
+ * wrongShow that exists only because the rebuild's main loop used to promote a
+ * pure not-a-review CV verdict (wrongArticle without wrongProduction) to
+ * wrongShow as well as isNonReview (BRO-4429; ~620 files carry both). Once a
+ * human clears the non-review verdict, that wrongShow has nothing left behind
+ * it. Film/TV promotions ("CV-promoted (film/TV): ...") and every other writer
+ * are untouched.
+ */
+function isMisroutedCvNonReviewWrongShow(data) {
+  if (!data || data.wrongShow !== true) return false;
+  if (typeof data.wrongShowReason !== 'string' || !data.wrongShowReason.startsWith('CV-promoted: ')) return false;
+  if (cvWrongArticleFamily(data.contentVerification) !== 'nonReview') return false;
+  return cvNonReviewHumanCleared(data);
+}
+
 function wrongShowCleared(data) {
   if (!data) return false;
+  if (isMisroutedCvNonReviewWrongShow(data)) return true;
   // Note: isCombinedReview alone is NOT sufficient. It's set whenever a URL
   // appears in 2+ show dirs, which can happen for roundups / year-end pieces
   // where a wrong_show flag is legitimate (article only nominally covers
@@ -5210,6 +5226,7 @@ module.exports = {
   cvWrongArticleManuallyCleared,
   cvNonReviewHumanCleared,
   cvWrongArticleFamily,
+  isMisroutedCvNonReviewWrongShow,
   wrongShowCleared,
   rejectedAtHumanCleared,
   isTimestampAfter,
