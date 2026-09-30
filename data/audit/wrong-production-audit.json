@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T07:21:59.322Z",
+  "timestamp": "2026-09-30T07:52:50.297Z",
   "stats": {
-    "totalReviews": 45214,
-    "alreadyFlagged": 18504,
-    "dateGuardCatches": 243,
+    "totalReviews": 45222,
+    "alreadyFlagged": 18506,
+    "dateGuardCatches": 245,
     "directorMismatch": 1186,
-    "tvFilmSignals": 1310,
+    "tvFilmSignals": 1311,
     "londonSignals": 1235,
     "offBroadwaySignals": 506,
     "yearMismatch": 101,
-    "noPublishDate": 4015
+    "noPublishDate": 4018
   },
   "findings": [
     {
@@ -6265,7 +6265,7 @@
     {
       "showId": "christmas-carol-goes-wrong-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2025-12-14",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-goes-wrong-review-apollo-shaftsbury-lbgtdhfk3",
       "findings": [
@@ -6888,7 +6888,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -9073,7 +9073,7 @@
     {
       "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 83,
+      "score": 84,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -10227,6 +10227,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "file": "the-list--unknown.json",
+      "publishDate": null,
+      "url": "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -15572,7 +15585,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 79,
+      "score": 82,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -15698,7 +15711,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 79,
+      "score": 82,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -16654,7 +16667,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -16785,7 +16798,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "plays-international--jane-edwardes.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2026-03-29",
       "url": "https://playsinternational.org.uk/john-proctor-is-the-villain-royal-court-jerwood-theatre-downstairs/",
       "findings": [
@@ -37080,7 +37093,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2026-09-04",
       "url": "https://www.allthatdazzles.co.uk/post/review-a-month-in-the-country-donmar-warehouse",
       "findings": [
@@ -37149,7 +37162,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -37177,7 +37190,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 80,
+      "score": 79,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -38495,7 +38508,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 76,
+      "score": 77,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -38593,7 +38606,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -39890,7 +39903,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-05-21",
       "url": "https://www.londonboxoffice.co.uk/news/post/review-care-young-vic",
       "findings": [
@@ -40030,7 +40043,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 57,
+      "score": 58,
       "publishDate": "2026-09-22",
       "url": "https://theartsdesk.com/theatre/catarina-and-beauty-killing-fascists-national-theatre-review-thoroughly-uncomfortable-watch",
       "findings": [
@@ -41569,7 +41582,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 79,
+      "score": 81,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -41583,7 +41596,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 75,
+      "score": 77,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -42903,6 +42916,30 @@
       ]
     },
     {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "file": "theatreinedinburgh--chris-omaweng.json",
+      "publishDate": "2026-08-25",
+      "url": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 36d before show (2026-08-25 vs 2026-09-30)"
+        }
+      ]
+    },
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "file": "thestage--jamie-body.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 47d before show (2026-08-14 vs 2026-09-30)"
+        }
+      ]
+    },
+    {
       "showId": "flyby-off-west-end-2026",
       "file": "monstagigz--unknown.json",
       "score": null,
@@ -43519,7 +43556,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -43533,7 +43570,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -44124,7 +44161,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
