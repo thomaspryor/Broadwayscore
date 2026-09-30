@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T11:05:14.231Z",
+  "generatedAt": "2026-09-30T13:33:33.982Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -167,19 +167,7 @@
           "isDualMarket": true
         },
         {
-          "name": "The Times (UK)",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Independent",
-          "isDualMarket": true
-        },
-        {
           "name": "Daily Mail",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Stage",
           "isDualMarket": true
         }
       ],
@@ -427,10 +415,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "The New York Sun",
           "isDualMarket": false
         },
         {
@@ -1318,10 +1302,6 @@
           "isDualMarket": false
         },
         {
-          "name": "BroadwayWorld",
-          "isDualMarket": true
-        },
-        {
           "name": "amNewYork",
           "isDualMarket": false
         },
@@ -1822,10 +1802,6 @@
         {
           "name": "Observer",
           "isDualMarket": true
-        },
-        {
-          "name": "Playbill",
-          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -2837,45 +2813,6 @@
       "status": "previews",
       "slug": "kramerfauci-st-anns",
       "thumbnail": "/images/shows/kramerfauci-off-broadway-2026/thumbnail.webp",
-      "daysUntil": 4,
-      "readinessChecks": {
-        "wrongProduction": {
-          "pass": true,
-          "detail": "No pre-existing score files"
-        },
-        "dtliSlug": {
-          "pass": false,
-          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
-        },
-        "bwwRoundup": {
-          "pass": null,
-          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
-          "warn": true
-        },
-        "talkingBroadway": {
-          "pass": null,
-          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
-          "warn": true
-        }
-      },
-      "readinessSummary": {
-        "failures": 2,
-        "warnings": 2,
-        "unknowns": 4,
-        "total": 7
-      },
-      "preflight": false
-    },
-    {
-      "id": "slam-frank-off-broadway-2026",
-      "title": "Slam Frank",
-      "market": "broadway",
-      "category": "off-broadway",
-      "type": "musical",
-      "openingDate": "2026-10-04",
-      "status": "previews",
-      "slug": "slam-frank-off-broadway",
-      "thumbnail": "/images/shows/slam-frank-off-broadway-2026/thumbnail.jpg",
       "daysUntil": 4,
       "readinessChecks": {
         "wrongProduction": {

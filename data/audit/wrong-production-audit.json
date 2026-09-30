@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T11:05:05.868Z",
+  "timestamp": "2026-09-30T13:33:25.635Z",
   "stats": {
-    "totalReviews": 45313,
-    "alreadyFlagged": 18539,
-    "dateGuardCatches": 247,
+    "totalReviews": 45324,
+    "alreadyFlagged": 18554,
+    "dateGuardCatches": 248,
     "directorMismatch": 1187,
     "tvFilmSignals": 1311,
     "londonSignals": 1236,
     "offBroadwaySignals": 507,
     "yearMismatch": 101,
-    "noPublishDate": 4068
+    "noPublishDate": 4063
   },
   "findings": [
     {
@@ -1117,7 +1117,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 74,
+      "score": 73,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -6888,7 +6888,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -8675,7 +8675,7 @@
     {
       "showId": "dog-man-the-musical-west-end-2026",
       "file": "whatsonstage--theo-bosanquet.json",
-      "score": 61,
+      "score": 58,
       "publishDate": "2026-08-04",
       "url": "https://www.whatsonstage.com/news/dog-man-the-musical-at-londons-southbank-centre-and-on-tour-review_1728502/",
       "findings": [
@@ -13783,7 +13783,7 @@
     {
       "showId": "here-comes-j-edgar-off-west-end-2026",
       "file": "londonpubtheatres--francis-beckett.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-07-17",
       "url": "https://www.londonpubtheatres.com/review-here-comes-j-edgar-at-kings-head-theatre-17-july-4-august-2026",
       "findings": [
@@ -15585,7 +15585,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 82,
+      "score": 79,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -15711,7 +15711,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 81,
+      "score": 78,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -16667,7 +16667,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -17224,7 +17224,7 @@
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 88,
+      "score": 89,
       "publishDate": "2026-09-10",
       "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
       "findings": [
@@ -20769,6 +20769,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "telegraph--unknown.json",
+      "score": 84,
       "publishDate": "2022-10-18",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/neighbour-totoro-barbican-review-vital-power-surge-anglo-japanese/",
       "findings": [
@@ -21009,6 +21010,18 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "whatsonstage--whatsonstage-reviewer.json",
+      "score": null,
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1322d before show (2023-02-02 vs 2026-09-16)"
         }
       ]
     },
@@ -37200,7 +37213,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 74,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -37228,7 +37241,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 82,
+      "score": 79,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -38644,7 +38657,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -39983,7 +39996,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 76,
+      "score": 79,
       "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/care-review-play-young-vic-dementia-drama-quietly-heartbreaking-wwhzbd0bl",
       "findings": [
@@ -41620,7 +41633,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 80,
+      "score": 82,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -41634,7 +41647,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 76,
+      "score": 75,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -44200,7 +44213,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -53007,6 +53020,7 @@
     {
       "showId": "stranger-things-the-first-shadow-west-end-2023",
       "file": "whatsonstage--sarah-crompton.json",
+      "score": 96,
       "publishDate": "2023-12-14",
       "url": "https://www.whatsonstage.com/news/stranger-things-the-first-shadow-review-west-end-sci-fi-prequel-dials-the-visual-spectacle-up-to-11_1558176/",
       "findings": [
