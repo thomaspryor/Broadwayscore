@@ -1,5 +1,5 @@
 /**
- * The 5 exclusion branches audit-outlet-registry.js uses to decide a review
+ * The 6 exclusion branches audit-outlet-registry.js uses to decide a review
  * file never needs a registry entry (BRO-3804). Extracted to a pure function
  * so scripts/outlet-registry.test.mjs can exercise each branch against
  * synthetic fixtures without real review-texts (memory: Test Extraction
@@ -10,6 +10,12 @@
  */
 const { isNonReviewDemotedByFreshCV, isRejectedNonReview, wrongShowCleared, hasValidScore } = require('./review-guards');
 const { isBlockedReviewUrl } = require('./domain-filters');
+// The rebuild's OWN include predicate (rebuild-all-reviews.js wraps this same
+// function for its skippedNoScore decision) — branch 6 must agree with it
+// exactly, not with hasValidScore(): a corpus scan found 532 files that
+// hasValidScore accepts (single-model llmScore, aggregatorStars on a
+// non-star outlet) which getBestScore refuses, and 740 the other way.
+const { getBestScore } = require('./rebuild-helpers');
 const { WRONG_URL_INCOMPLETE } = require('./t1-silent-gap');
 
 const WRONG_PRODUCTION_REJECTION_REASONS = new Set(['wrong_production', 'wrong_show']);
@@ -111,8 +117,18 @@ function outletRegistryAuditExclusionBranch(review) {
 function isUnscoredForRebuild(review) {
   // A human's explicit wrongProduction/wrongShow clear keeps the file in
   // scope even unscored — the same "a human verdict wins" rule branches 4
-  // and 5 already follow.
-  return !hasValidScore(review) && !wrongShowCleared(review);
+  // and 5 already follow (a human who cleared the file can register its
+  // outlet by hand; the audit keeps asking rather than going quiet).
+  if (wrongShowCleared(review)) return false;
+  // Shallow clone: getBestScore is the rebuild's live scorer and may stamp
+  // fields on the object it is given; this audit must not mutate a review.
+  let best = null;
+  try {
+    best = getBestScore({ ...review }, { stats: {}, flagForHumanReview: () => {} });
+  } catch {
+    best = null;
+  }
+  return best === null || best === undefined;
 }
 
 module.exports = {

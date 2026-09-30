@@ -41,15 +41,21 @@ const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators, partitionAwaitingRebuild } = require('./lib/outlet-registry-baseline');
 const REVIEWS_JSON_PATH = path.join(__dirname, '../data/reviews.json');
 
-// When did the rebuild that produced data/reviews.json run? Read only the
-// leading bytes: the file is ~13 MB and _meta.lastUpdated sits at the top.
+// When did the rebuild that produced data/reviews.json START scanning
+// review-texts? Prefer _meta.reviewTextsScannedAt (stamped before the scan,
+// BRO-4401); fall back to _meta.lastUpdated (stamped at the end, so a file
+// that landed mid-run reads as older than a rebuild that never saw it — one
+// cycle of false "new", tolerated only for reviews.json files predating the
+// new field). Read only the leading bytes: the file is ~13 MB and _meta sits
+// at the top.
 function lastRebuildMs() {
   try {
     const fd = fs.openSync(REVIEWS_JSON_PATH, 'r');
     const buf = Buffer.alloc(4096);
     const n = fs.readSync(fd, buf, 0, buf.length, 0);
     fs.closeSync(fd);
-    const m = buf.toString('utf8', 0, n).match(/"lastUpdated"\s*:\s*"([^"]+)"/);
+    const head = buf.toString('utf8', 0, n);
+    const m = head.match(/"reviewTextsScannedAt"\s*:\s*"([^"]+)"/) || head.match(/"lastUpdated"\s*:\s*"([^"]+)"/);
     return m ? Date.parse(m[1]) : NaN;
   } catch {
     return NaN;
@@ -64,10 +70,10 @@ function lastRebuildMs() {
 const { loadStagedOutletIds, STAGING_RELATIVE_PATH: OUTLET_STAGING_PATH } = require('./lib/outlet-auto-register');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { outletRegistryAuditExclusionBranch } = require('./lib/outlet-registry-audit-exclusions');
-// Advisory only (BRO-4401 what-else): branch 6 excludes unscored files still
-// waiting on score extraction, which is correct (the rebuild never includes
-// them) but could hide a real registry gap indefinitely if a file never
-// scores. Count how many have been waiting past this many days so the
+// Advisory only (BRO-4401 what-else): branch 6 excludes unscored files (by
+// the rebuild's own getBestScore predicate), which is correct (the rebuild
+// never includes them) but could hide a real registry gap indefinitely if a
+// file never scores. Count how many have been waiting past this many days so the
 // backlog is visible in every run, without failing --strict on it.
 const PENDING_UNSCORED_STALE_DAYS = 14;
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
@@ -383,7 +389,11 @@ function auditOutletRegistry() {
       const outletData = outletsInReviews.get(reviewOutletId);
       outletData.count++;
       {
-        const seenAt = review.firstSeenAt || review.textFetchedAt || null;
+        // firstSeenAt ONLY (stamped once at file creation, review-file-writer.js).
+        // textFetchedAt is bumped on every re-fetch, so using it here would let
+        // a file the rebuild never registers be deferred on every cycle forever
+        // (review finding). A file with no firstSeenAt is simply never deferred.
+        const seenAt = review.firstSeenAt || null;
         if (seenAt && (!outletData.earliestSeenAt || seenAt < outletData.earliestSeenAt)) outletData.earliestSeenAt = seenAt;
       }
       if (reviewOutlet) outletData.displayNames.push(reviewOutlet);

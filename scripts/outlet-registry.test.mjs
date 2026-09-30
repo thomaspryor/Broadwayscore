@@ -37,7 +37,7 @@ const { isExcludedFromOutletRegistryAudit } = require(
 describe('isExcludedFromOutletRegistryAudit (BRO-3804)', () => {
   test('a normal scored review is NOT excluded', () => {
     assert.equal(
-      isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', llmScore: { score: 85 } }),
+      isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', humanReviewScore: 85 }),
       false
     );
   });
@@ -54,7 +54,7 @@ describe('isExcludedFromOutletRegistryAudit (BRO-3804)', () => {
       isExcludedFromOutletRegistryAudit({
         outletId: 'telegraph-class',
         isNonReview: true,
-        llmScore: { score: 72 }, // scored: branch 6 (unscored, BRO-4401) must not be what decides this case
+        humanReviewScore: 72, // scored: branch 6 (unscored, BRO-4401) must not be what decides this case
         contentVerification: {
           articleType: 'review',
           isValid: true,
@@ -120,7 +120,7 @@ describe('isExcludedFromOutletRegistryAudit (BRO-3804)', () => {
         outletId: 'new-outlet',
         url: 'https://new-outlet.com/review',
         incompleteReason: 'paywalled',
-        llmScore: { score: 66 }, // scored: branch 6 (unscored, BRO-4401) must not be what decides this case
+        humanReviewScore: 66, // scored: branch 6 (unscored, BRO-4401) must not be what decides this case
       }),
       false
     );
@@ -151,7 +151,7 @@ describe('isExcludedFromOutletRegistryAudit (BRO-3804)', () => {
       isExcludedFromOutletRegistryAudit({
         outletId: 'nytimes',
         incompleteReason: 'wrong_content',
-        llmScore: { score: 78 },
+        humanReviewScore: 78, // a score the rebuild itself accepts (a bare single-model llmScore is blockedSingleModel there)
       }),
       false
     );
@@ -304,15 +304,19 @@ describe('isExcludedFromOutletRegistryAudit branch 6 (BRO-4401): unscored files,
 
   test('a scored file with a stale scoreExtractionPending flag is NOT excluded', () => {
     assert.equal(
-      isExcludedFromOutletRegistryAudit({ outletId: 'nytimes', scoreExtractionPending: true, llmScore: { score: 80 } }),
+      isExcludedFromOutletRegistryAudit({ outletId: 'nytimes', scoreExtractionPending: true, humanReviewScore: 80 }),
       false,
     );
   });
 
   test('a SCORED file on an unregistered outlet is still a real registry gap (every score source counts)', () => {
-    assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', llmScore: { score: 71 } }), false);
+    assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', adjudicatedScore: 71 }), false);
     assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', assignedScore: 64 }), false);
     assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', originalScore: '4/5' }), false);
+  });
+
+  test('the predicate is the REBUILD\'s (getBestScore), not hasValidScore: a bare single-model llmScore is blockedSingleModel there, so it is excluded here too', () => {
+    assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', llmScore: { score: 71 } }), true);
   });
 });
 
@@ -349,7 +353,7 @@ describe('outletRegistryAuditExclusionBranch (BRO-4401): the audit counts branch
 
   test('a plain unscored file is branch 6; a scored one is 0 (in scope)', () => {
     assert.equal(outletRegistryAuditExclusionBranch({ outletId: 'ourquadcities', url: 'https://www.ourquadcities.com/x' }), 6);
-    assert.equal(outletRegistryAuditExclusionBranch({ outletId: 'ourquadcities', url: 'https://www.ourquadcities.com/x', llmScore: { score: 70 } }), 0);
+    assert.equal(outletRegistryAuditExclusionBranch({ outletId: 'ourquadcities', url: 'https://www.ourquadcities.com/x', humanReviewScore: 70 }), 0);
     assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'ourquadcities', url: 'https://www.ourquadcities.com/x' }), true);
   });
 });
