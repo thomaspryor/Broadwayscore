@@ -1,10 +1,10 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-30T21:30:22.265Z",
+    "generatedAt": "2026-09-30T21:38:04.479Z",
     "note": "Corpus-statistics drift monitor. Non-blocking; surfaced via health-check.js digest. Not a code-correctness gate."
   },
   "summary": {
-    "auditsRun": 35,
+    "auditsRun": 36,
     "driftCount": 21,
     "crashCount": 0,
     "anyDrift": true,
@@ -81,7 +81,7 @@
       "exitCode": 1,
       "ok": false,
       "crashed": false,
-      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 55 exempt, 28 covered\n  ⚠️   188  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️   104  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️    89  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    67  data/audit/tour-sweep.json  — no merge driver; needs a decision\n  ⚠️    50  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    33  data/audit/main-streak-failing-jobs.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
+      "detail": "[churn-merge-coverage] window=3d minChurn=30 → 6 flagged, 55 exempt, 28 covered\n  ⚠️   188  data/audit/guard-escalation-state.json  — no merge driver; needs a decision\n  ⚠️   104  data/audit/orphaned-duplicate-pointer-heal.json  — no merge driver; needs a decision\n  ⚠️    90  data/audit/pipeline-health/test.last-success  — no merge driver; needs a decision\n  ⚠️    67  data/audit/tour-sweep.json  — no merge driver; needs a decision\n  ⚠️    50  data/audit/validation-baseline.json  — no merge driver; needs a decision\n  ⚠️    33  data/audit/main-streak-failing-jobs.json  — no merge driver; needs a decision\n[churn-merge-coverage] wrote /home/runner/work/Broadwayscore/Broadwayscore/data/audit/churn-merge-coverage.json"
     },
     {
       "name": "review-contamination",
@@ -325,6 +325,15 @@
       "ok": true,
       "crashed": false,
       "detail": "Scanned 45843 review-text files (0 unreadable/skipped)\n  live aggregator-URL mismatches:   0\n  latent (behind exclusion flags):  1 (ceiling 2, grace +3)\n\nLATENT (invisible to the gate until an auto-clear promotes them):\n  dracula-west-end-2025/telegraph--paul-raven.json\n\n::notice::latent population shrank to 1 (ceiling 2) — tighten the pin. Set \"latentCeiling\" to 1 in scripts/.aggregator-url-latent.json."
+    },
+    {
+      "name": "awards-freshness",
+      "label": "data/awards.json stale (>14 months) or last-touch date unknown — see detail (annual awards cadence)",
+      "command": "node scripts/audit-awards-freshness.js",
+      "exitCode": 0,
+      "ok": true,
+      "crashed": false,
+      "detail": "✅ awards freshness: fresh — data/awards.json last touched 20 days ago (2026-09-10T21:12:29Z), within the 425-day window"
     }
   ]
 }

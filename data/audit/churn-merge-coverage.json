@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-09-30T21:29:01.086Z",
+    "generatedAt": "2026-09-30T21:36:28.561Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -24,7 +24,7 @@
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
-      "churn": 89
+      "churn": 90
     },
     {
       "path": "data/audit/tour-sweep.json",
@@ -42,7 +42,11 @@
   "exempt": [
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 528
+      "churn": 530
+    },
+    {
+      "path": "data/llm-scoring-runs.json",
+      "churn": 248
     },
     {
       "path": "public/data/admin/critic-coverage.json",
@@ -55,10 +59,6 @@
     {
       "path": "public/data/mobile-shows.json",
       "churn": 248
-    },
-    {
-      "path": "data/llm-scoring-runs.json",
-      "churn": 246
     },
     {
       "path": "public/data/stats-reviews.json",
@@ -269,7 +269,7 @@
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 423,
+      "churn": 424,
       "mergeAttr": "union"
     },
     {
@@ -299,7 +299,7 @@
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 253,
+      "churn": 255,
       "mergeAttr": "ours"
     },
     {
@@ -324,7 +324,7 @@
     },
     {
       "path": "data/audit/landings.jsonl",
-      "churn": 224,
+      "churn": 225,
       "mergeAttr": "union"
     },
     {
@@ -374,7 +374,7 @@
     },
     {
       "path": "tests/unit-test-manifest.txt",
-      "churn": 63,
+      "churn": 65,
       "mergeAttr": "union"
     },
     {
@@ -394,12 +394,12 @@
     },
     {
       "path": "data/audit/churn-merge-coverage.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/corpus-drift.json",
-      "churn": 37,
+      "churn": 38,
       "mergeAttr": "ours"
     }
   ]
