@@ -284,6 +284,7 @@ test('parity: every write-path blocked domain is also blocked on the discovery p
   const {
     SOCIAL_DOMAINS, TICKET_DOMAINS, AGGREGATOR_DOMAINS, REFERENCE_DOMAINS,
     VENUE_DOMAINS, PR_FIRM_DOMAINS, UGC_PLATFORM_DOMAINS,
+    LOOKALIKE_CONTENT_FARM_DOMAINS, CENSUS_JUNK_DOMAINS,
   } = domainFilters;
   const sets = {
     SOCIAL_DOMAINS,
@@ -293,6 +294,8 @@ test('parity: every write-path blocked domain is also blocked on the discovery p
     VENUE_DOMAINS,
     PR_FIRM_DOMAINS,
     UGC_PLATFORM_DOMAINS,
+    LOOKALIKE_CONTENT_FARM_DOMAINS,
+    CENSUS_JUNK_DOMAINS,
   };
   // Pre-existing unmirrored hosts, frozen 2026-09-02 when this test was widened
   // from three sets to all seven. Every one predates the widening. They are
