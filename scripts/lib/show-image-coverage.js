@@ -124,11 +124,28 @@ function pruneEmptyShowImageDir(showDir) {
  * @returns {Set<string>} entry names; empty when the directory does not exist
  */
 function snapshotShowImageDir(showDir) {
+  const names = new Set();
+  // BRO-4401: also keep the BYTES of every pre-existing flat file. Several
+  // source paths write thumbnail.jpg/poster.jpg in place before Gemini
+  // verifies the candidate; when a show already had art, a rejected
+  // candidate OVERWRITES it and survives every name-based cleanup because
+  // the name was "pre-existing". Run 36676191484 (2026-09-30): Player's
+  // accepted production still was replaced by a Google Images hit Gemini
+  // rejected as "a soccer match score update", and that file was committed
+  // to main with shows.json still pointing at it. A show dir holds a handful
+  // of files of a few hundred KB, so an in-memory copy is cheap.
+  const contents = new Map();
   try {
-    return new Set(fs.readdirSync(showDir));
+    for (const e of fs.readdirSync(showDir, { withFileTypes: true })) {
+      names.add(e.name);
+      if (!e.isFile()) continue;
+      try { contents.set(e.name, fs.readFileSync(path.join(showDir, e.name))); } catch { /* unreadable: name-only */ }
+    }
   } catch {
-    return new Set();
+    return names;
   }
+  Object.defineProperty(names, 'contents', { value: contents, enumerable: false });
+  return names;
 }
 
 /**
@@ -151,15 +168,20 @@ function snapshotShowImageDir(showDir) {
  *
  * @param {string} showDir
  * @param {Set<string>} before result of snapshotShowImageDir taken pre-fetch
- * @returns {{removed: string[], prunedDir: boolean}}
+ * Pre-existing files whose BYTES changed during the fetch are restored from
+ * the snapshot's in-memory copy (BRO-4401) — a rejected candidate that
+ * overwrote good art in place is the other route to the same symptom.
+ *
+ * @returns {{removed: string[], restored: string[], prunedDir: boolean}}
  */
 function discardFailedFetchArtifacts(showDir, before) {
   const removed = [];
+  const restored = [];
   let entries;
   try {
     entries = fs.readdirSync(showDir, { withFileTypes: true });
   } catch {
-    return { removed, prunedDir: false };
+    return { removed, restored, prunedDir: false };
   }
   for (const e of entries) {
     if (!e.isFile()) continue;      // never recurse into a nested archive
@@ -171,7 +193,26 @@ function discardFailedFetchArtifacts(showDir, before) {
       // Another process may have moved it; leaving it is the safe direction.
     }
   }
-  return { removed, prunedDir: pruneEmptyShowImageDir(showDir) };
+  // BRO-4401: a pre-existing file whose bytes changed during the fetch was
+  // overwritten in place by a candidate that was then rejected. Put the
+  // snapshot bytes back (also when the file is gone), or the show page
+  // renders the wrong art with shows.json still pointing at the name.
+  const contents = before && before.contents;
+  if (contents && contents.size > 0) {
+    for (const [name, bytes] of contents) {
+      const file = path.join(showDir, name);
+      let current = null;
+      try { current = fs.readFileSync(file); } catch { current = null; }
+      if (current && current.equals(bytes)) continue;
+      try {
+        fs.writeFileSync(file, bytes);
+        restored.push(name);
+      } catch {
+        // unrestorable — the removed/restored report still tells the operator
+      }
+    }
+  }
+  return { removed, restored, prunedDir: pruneEmptyShowImageDir(showDir) };
 }
 
 /**
@@ -204,9 +245,12 @@ async function runFetchWithCleanup(fetchFn, showImageDir, dirBefore, showId, log
   } finally {
     if (!images) {
       try {
-        const { removed, prunedDir } = discardFailedFetchArtifacts(showImageDir, dirBefore);
+        const { removed, restored, prunedDir } = discardFailedFetchArtifacts(showImageDir, dirBefore);
         if (removed.length > 0) {
           log(`   🧹 discarded ${removed.length} rejected candidate file(s) for ${showId} (${removed.join(', ')}) — they would have read as coverage`);
+        }
+        if (restored && restored.length > 0) {
+          log(`   🧹 restored ${restored.length} pre-existing file(s) a rejected candidate had overwritten for ${showId} (${restored.join(', ')})`);
         }
         if (prunedDir) {
           log(`   🧹 removed empty image dir for ${showId} (would otherwise read as coverage)`);

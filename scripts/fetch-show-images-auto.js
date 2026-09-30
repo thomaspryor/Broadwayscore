@@ -3170,6 +3170,23 @@ async function main() {
       process.exit(1);
     }
   }
+
+  // Explicit exit (BRO-4401). Run 36676191484 printed its SUMMARY at
+  // 07:21:17 and then sat for 2h38m until the run watchdog fired at 09:59:
+  // with a real browser installed, the shared Playwright instance (and its
+  // pipes to chrome-headless-shell) keeps the event loop alive after all
+  // work is done, and this script never called scraper.cleanup(). Every
+  // write above is synchronous, so exiting here loses nothing; the bounded
+  // cleanup() is a courtesy close, not a requirement.
+  try {
+    await Promise.race([
+      scraper.cleanup(),
+      new Promise((resolve) => setTimeout(resolve, 15000).unref()),
+    ]);
+  } catch (e) {
+    console.log(`   scraper cleanup: ${e.message}`);
+  }
+  process.exit(0);
 }
 
 main().catch(err => {
