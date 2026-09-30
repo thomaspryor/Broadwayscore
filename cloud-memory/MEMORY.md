@@ -23,8 +23,8 @@
 - [Show status before external comms](feedback_check_show_status_before_external_comms.md) — surface status/closingDate with show drafts; OB closings lag
 - [Polling + job liveness](feedback_liveness_needs_lsof_not_mtime.md) — no gh loops, never gh run watch; liveness = lsof+ledger not mtime/pgrep
 
-## 📇 Board (Linear)
-- [Linear board workflow](linear-board-workflow.md) — create/claim, Outcome + close; never Notion
+## 📇 Notion / brain
+- [Notion brain workflow](notion-brain-workflow.md) — IDs, schema, lifecycle; CLI only, never MCP ([[feedback_notion_cli_only.md]])
 - [Notion cards need context](feedback_notion_card_context.md) — paths, commands, root cause, repro; read FULL create output, avoid "rejected" ([[feedback_notion_create_verify.md]], [[feedback_notion_create_hook_false_rejection.md]])
 
 ## 🌳 Worktrees & git
@@ -36,7 +36,6 @@
 - [Stray symlink crashes pipeline](feedback_stray_symlink_crashes_pipeline.md) — committed abs-path symlink dangles in CI; use listShowDirs()
 - [audit-review-contamination strict CI gate](feedback_audit_contamination_strict_mode.md) — strict A/B/C fail CI; B = false-pos wrongProduction
 - [Commit data repo edits IMMEDIATELY](feedback_data_repos_clobber_uncommitted.md) — rebase clobbers uncommitted; no reset-hard+rsync ([[feedback_reset_rsync_wipes_ci_fields.md]]); gh api PUT /contents/ if git broken ([[feedback_gh_api_emergency_commit.md]])
-- [Stale origin/main, prefer reclone](feedback_stale_origin_main_prefer_shallow_reclone.md) — fetch hangs/no-ops stale; retry EnterWorktree once or shallow-clone to /tmp
 
 ## ⚙️ CI / GitHub Actions / workflows
 - [Workflow cascade prevention](feedback_workflow_cascade_prevention.md) — trace dispatch graph; circular chains → 1000+ runs/day
@@ -96,7 +95,7 @@
 - [In-place URL update preserves stale state](feedback_inplace_url_update_preserves_stale_state.md) — real reviews merged into flagged slots stay suppressed; check file's CURRENT url first; run isScoreable() for hidden blockers
 - [SEO site-avg position brand-skewed](feedback_seo_site_avg_position_is_brand_skewed.md) — never cite GSC avg as ranking quality; use de-branded review-intent
 - [Cloudflare/DataDome blocks](feedback_cloudflare_bypass_hierarchy.md) — managed challenge + WSJ/NewYorker CI IP block defeat all; Browserbase only ([[feedback_wsj_newyorker_ci_ip_block.md]])
-- [Cookie auth](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies; Mac Studio Terminal needs FDA ([[feedback_mac_studio_cookies.md]]); health = body-length not expiry ([[feedback_cookie_health_body_length_not_expiry.md]]); Stage re-login ONLY via Mac Studio renew-cookies.js, never CI ([[feedback_stage_cookie_only.md]])
+- [Cookie auth](feedback_stage_cookie_minimal_set.md) — Stage = 5 cookies; Mac Studio Terminal needs FDA ([[feedback_mac_studio_cookies.md]]); health = body-length not expiry, re-login needs user ([[feedback_cookie_health_body_length_not_expiry.md]])
 - [Audience scrapers share normalize](feedback_audience_scrapers_share_normalize.md) — import normalizeTitle from title-match.js; commit audience-buzz before CI rebuild ([[feedback_audience_buzz_commit_before_rebuild.md]])
 - [Table scrapers need structural assertions](feedback_scraper_table_assertions.md) — hardcoded cells[N] breaks on column change
 - [Orphan cast invisible by design](feedback_orphan_cast_invisible_by_design.md) — rows w/o ibdbPersonId skipped at manifest build

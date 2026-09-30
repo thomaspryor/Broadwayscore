@@ -5,7 +5,7 @@ metadata:
   node_type: memory
   type: reference
   originSessionId: 7eb56e93-0b3f-45ba-9f4a-0e817b217c32
-  modified: 2026-09-17T22:52:16.574Z
+  modified: 2026-09-29T18:54:14.220Z
 ---
 
 **Vercel billing via API** (VERCEL_TOKEN in .env, team `team_zvgatcxkXdPbfhtHQMOnjpXo`):
@@ -13,6 +13,8 @@ metadata:
 - `GET https://api.vercel.com/v1/invoices/upcoming?teamId=<team>` — current-period accrual with `quantity` + unit price per line item. This is the number the dashboard "current charges" shows.
 - `GET /v1/usage` rejects all date formats tried ("timerange not supported") — use the upcoming invoice instead.
 - `GET /v6/deployments?teamId=&limit=100&until=<ms>` — paginate with `pagination.next`/last `createdAt`.
+- `GET /v1/invoices?teamId=<team>&limit=N` — closed/paid invoices (past periods), full per-line-item `amount` (dollars) per `billableItem`. Reliable for trend analysis across months.
+- **2026-09-25:** `/v1/invoices/upcoming` no longer reliably reflects in-progress-period usage — it returned only a stale Pro-flat-fee entry (`amountDue: "20.00"`, no usage line items) mid-cycle, contradicting the 2026-07 note above that it mirrors the dashboard's "current charges." Don't trust it for a live cost check; use `/v1/invoices` (closed periods only) instead and accept that the current in-progress period isn't visible until it closes.
 
 **2026-07-19 findings:** usage $22→$37→$75/mo (Mar→Jun periods); driver is ~139 READY production builds/day (5-min cron gate only checks HEAD-moved; ~1,000 bookkeeping commits/day means it always passes; only 7% of commits are site-relevant). Each build = ~2,473 ISR writes + 7.4 CPU-min + edge-cache invalidation. ISR Writes/Fast Origin Transfer/Build CPU ≈ $67 of $69 usage. Fix direction: content-aware should-deploy gate (diff site-relevant paths vs last-deployed SHA) — task #161. Also: git integration creates ~680 canceled phantom deployments/day (cost $0, ignored-build-step `exit 0`). Full writeup: ~/Documents/claude-outputs/vercel-cost-analysis-2026-07-19.md
 

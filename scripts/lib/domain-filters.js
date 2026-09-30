@@ -275,6 +275,42 @@ const UGC_PLATFORM_DOMAINS = new Set([
   'vocal.media',
 ]);
 
+// Content-farm look-alikes (BRO-4419): hosts whose name imitates a real outlet
+// and were filed under the imitated outlet's id. Defined next to the detector
+// in outlet-lookalike-guard.js (pure, no deps) so both share one list.
+const { LOOKALIKE_CONTENT_FARM_DOMAINS } = require('./outlet-lookalike-guard');
+
+// Census auto-ingest junk hosts (BRO-4419): hosts the SERP census / discovery
+// path ingested that are not review sources — ticket sellers, event listings,
+// venue and show marketing pages, retail, link trackers, forums, podcasts.
+// Measured 2026-09-30 over data/review-texts: every host here has 0
+// complete-tier files and 0 rows in reviews.json, and each sampled file is a
+// listing/marketing page. Real (if unregistered) review outlets such as
+// berkeleyside.com or culturebot.org are deliberately NOT here.
+const CENSUS_JUNK_DOMAINS = new Set([
+  // ticket sellers / event listings / link trackers
+  'enjoy.ly', 'criterionticketing.com', 'ticketed.com', 'london-theater-tickets.com',
+  'lwtickets.co.uk', 'showify.us', 'recast.show', 'inyougo.com', 'todolist.london',
+  'todoweekend.com', 'makeitmarylebone.co.uk', 'productionlist.com', 'datathistle.com',
+  'events.newyorkfamily.com', 'tickets.mothdays.com', 'theatertickets.my.salesforce-sites.com',
+  'nycitycenter.queue-it.net', 'click.icptrack.com', 'r20.rs6.net', 'us.cisionone.cision.com',
+  'pr-optout.com', 'da.feedsportal.com', 'terripaddock.com', 'everythingimmersive.com',
+  'localwineevents.com', 'broadwaystars.com', 'paddingtonthemusical.lnk.to',
+  // venue / production marketing pages
+  'nationaltheatre.org', 'signaturetheatre.org', 'noelcowardtheatre.co.uk', 'bushtheatre.co.uk',
+  'atctheatre.com', 'lyric.co.uk', 'parktheatre.co.uk', 'southwarkplayhouse.co.uk',
+  'unicorntheatre.com', 'traverse.co.uk', 'nytw.org', 'darylroththeatre.com',
+  'mischiefcomedy.com', 'draculawestend.com', 'thehungergamesonstage.com',
+  'andrewlloydwebber.com', 'allegraplay.com', 'americanpsychothemusical.com',
+  'roalddahl.com', 'sting.com', 'broadwayrecords.com', 'wembleypark.com',
+  // retail / reference / SEO
+  'waterstones.com', 'exclusivebooks.co.za', 'britannica.com', 'foodandwine.com',
+  'content.lovetovisit.net', 'theschooltrip.co.uk', 'rottentomatoes.com',
+  // forums / podcasts / archives / bare IP
+  'zeno.fm', 'podcastrex.com', 'oocities.org', 'classical.net', 'talkclassical.com',
+  'travelaol.yuku.com', 'opera.hu', 'opera-online.com', '205.229.215.203',
+]);
+
 /**
  * Check if a hostname matches any domain in a set (exact or subdomain match).
  * e.g., "m.facebook.com" matches "facebook.com"
@@ -312,7 +348,9 @@ function isBlockedReviewUrl(url) {
       || matchesDomainSet(hostname, REFERENCE_DOMAINS)
       || matchesDomainSet(hostname, VENUE_DOMAINS)
       || matchesDomainSet(hostname, PR_FIRM_DOMAINS)
-      || matchesDomainSet(hostname, UGC_PLATFORM_DOMAINS)) return true;
+      || matchesDomainSet(hostname, UGC_PLATFORM_DOMAINS)
+      || matchesDomainSet(hostname, LOOKALIKE_CONTENT_FARM_DOMAINS)
+      || matchesDomainSet(hostname, CENSUS_JUNK_DOMAINS)) return true;
     // Path-based blocking for sites that publish BOTH reviews and listings
     const lowerPath = parsed.pathname.toLowerCase();
     // Playbill: /article/ paths are reviews/content (allow), /production/ and /show/ are listings (block)
@@ -372,7 +410,8 @@ function isBlockedDomain(domain) {
   const d = domain.replace(/^www\./, '').toLowerCase();
   return SOCIAL_DOMAINS.has(d) || TICKET_DOMAINS.has(d)
     || AGGREGATOR_DOMAINS.has(d) || REFERENCE_DOMAINS.has(d)
-    || VENUE_DOMAINS.has(d) || PR_FIRM_DOMAINS.has(d) || UGC_PLATFORM_DOMAINS.has(d);
+    || VENUE_DOMAINS.has(d) || PR_FIRM_DOMAINS.has(d) || UGC_PLATFORM_DOMAINS.has(d)
+    || LOOKALIKE_CONTENT_FARM_DOMAINS.has(d) || CENSUS_JUNK_DOMAINS.has(d);
 }
 
 module.exports = {
@@ -383,6 +422,8 @@ module.exports = {
   VENUE_DOMAINS,
   PR_FIRM_DOMAINS,
   UGC_PLATFORM_DOMAINS,
+  LOOKALIKE_CONTENT_FARM_DOMAINS,
+  CENSUS_JUNK_DOMAINS,
   isSocialMediaUrl,
   isBlockedReviewUrl,
   isBlockedDomain,
