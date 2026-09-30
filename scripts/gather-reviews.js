@@ -4166,7 +4166,11 @@ function createReviewFile(showId, reviewData, options = {}) {
   // this raw write untouched and clobbers wrongProduction/wrongShow/duplicateOf
   // and the scored fields alongside it. Route through the same guard as the
   // other 6 write sites fixed for #816.
-  safeWriteReview(filepath, preserveFlaggedFields(filepath, review));
+  const writeResult = safeWriteReview(filepath, preserveFlaggedFields(filepath, review));
+  if (writeResult && writeResult.wrote === false && writeResult.skipped === 'phantom_of_sibling') {
+    console.log(`    ✗ Skipped ${filename}: phantom of ${writeResult.duplicateOfFile} (BRO-4412)`);
+    return false;
+  }
 
   // Register in global URL index so subsequent calls see it
   if (review.url && _globalUrlIndex) {
