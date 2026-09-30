@@ -323,14 +323,14 @@ test('runOutletMismatchCleanup: publisher-domain relabel renames; excluded stub 
   } finally { fx.cleanup(); }
   const fx2 = fixture({
     'about-entertainment--ben-brantley.json': live,
-    'nytimes--ben-brantley.json': { ...live, outletId: 'nytimes', outlet: 'The New York Times', url: 'https://www.nytimes.com/2009/03/10/theater/reviews/10thir.html', fullText: 'garbage', rejectedAt: '2026-03-02', rejectionReason: 'garbage_text' },
+    'nytimes--ben-brantley.json': { ...live, outletId: 'nytimes', outlet: 'The New York Times', url: 'https://www.nytimes.com/2009/03/10/theater/reviews/10thir.html', fullText: 'garbage', wrongProduction: true },
   });
   try {
     const r = run(fx2.root);
     assert.equal(r.errorCount, 0);
     assert.ok(!fx2.exists('about-entertainment--ben-brantley.json'));
     const t = fx2.read('nytimes--ben-brantley.json');
-    assert.equal(t.rejectedAt, undefined);
+    assert.equal(t.wrongProduction, undefined);
     assert.match(t.fullText, /^A full review/);
   } finally { fx2.cleanup(); }
 });
