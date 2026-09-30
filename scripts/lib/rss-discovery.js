@@ -16,7 +16,8 @@ const { foldDiacritics } = require('./title-match');
 // Theater-specific feeds (narrow enough that date-window filtering is safe)
 // NOTE: Guardian Stage is NOT here — it covers all performing arts globally (WE, opera, dance, regional).
 // Guardian is handled by the Guardian Open Platform API in site-search-discovery.js (tag=stage/stage).
-// openingWindow: true — marks feeds narrow enough to use ±2-day date window when openingDate is known.
+// openingWindow: true — marks feeds narrow enough to use a date window around openingDate (see
+// openingWindowFeedAccepts) when openingDate is known; an identity match is always required too.
 // Only Broadway-specific feeds qualify; WE feeds (even without needsFilter) must still title-match.
 // trackRecoupment: true marks feeds the hourly recoupment poller
 // (scripts/poll-trade-press-rss.js) reads. Only set on feeds whose host is also
@@ -309,6 +310,34 @@ function isWithinOpeningWindow(pubDate, openingDate, windowDays = 2, postWindowD
   return diffDays >= -windowDays && diffDays <= postWindowDays;
 }
 
+// Days before/after opening an openingWindow-feed item may be published.
+// Post-opening is wider because the NYT often posts Off-Broadway reviews 2-3
+// days after opening (Degenerates, BRO-4435). Beyond REVIEW_FREE_POST_DAYS the
+// item must also look like a review, so same-show news (extensions, closings,
+// transfers) published later in the week stays out.
+const OPENING_WINDOW_PRE_DAYS = 2;
+const OPENING_WINDOW_POST_DAYS = 7;
+const REVIEW_FREE_POST_DAYS = 2;
+
+/**
+ * Decide whether an openingWindow-feed item (NYT Theater, Variety Legit) belongs to a show.
+ * The window used to REPLACE title matching entirely, which attributed every
+ * theater-section article published near an opening to that show: 8 NYT
+ * obituaries/news items landed in _pending/the-vessel-off-broadway-2026 and an
+ * Oh Mary piece in _pending/the-pass-off-broadway-2026 (2026-08-05, task #1073).
+ * The date window is an ADDITIONAL signal, never a substitute for identity: the
+ * item's title OR URL slug must mention the show. titleMatchesShow is word-boundary +
+ * diacritic-folded, so short titles ("The Pass") match safely.
+ */
+function openingWindowFeedAccepts(item, showTitle, openingDate) {
+  if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, OPENING_WINDOW_POST_DAYS)) return false;
+  if (!titleMatchesShow(item.title, showTitle) && !urlSlugMatchesShow(item.link, showTitle)) return false;
+  if (!isWithinOpeningWindow(item.pubDate, openingDate, OPENING_WINDOW_PRE_DAYS, REVIEW_FREE_POST_DAYS)) {
+    return /review/i.test(`${item.title || ''} ${item.link || ''}`);
+  }
+  return true;
+}
+
 /**
  * Check all RSS feeds for reviews of a show.
  *
@@ -318,7 +347,7 @@ function isWithinOpeningWindow(pubDate, openingDate, windowDays = 2, postWindowD
  * @param {Set} options.knownUrls - URLs already discovered (skip these)
  * @param {boolean} options.verbose - Log progress
  * @param {string} options.openingDate - Show's opening date (YYYY-MM-DD). When provided,
- *   narrow THEATER_FEEDS use a ±2-day date window instead of title matching.
+ *   openingWindow feeds use openingWindowFeedAccepts (date window + identity match).
  *   Entertainment feeds always use title matching regardless of this option.
  * @returns {Promise<Array<{url: string, outletId: string, source: string}>>}
  */
@@ -347,20 +376,9 @@ async function checkRSSFeeds(showTitle, options = {}) {
           // Entertainment feeds (THR, Deadline): always title-match — they cover everything
           if (!titleMatchesShow(item.title, showTitle)) continue;
         } else if (feed.openingWindow && openingDate) {
-          // Narrow Broadway-specific feeds (NYT Theater, Variety Legit): when openingDate is
-          // known, require the ±2-day date window AND an identity match (task #1073).
-          // The window used to REPLACE title matching entirely, which attributed every
-          // theater-section article published near an opening to that show — 8 NYT
-          // obituaries/news items landed in _pending/the-vessel-off-broadway-2026 and an
-          // Oh Mary piece in _pending/the-pass-off-broadway-2026 (2026-08-05). The date
-          // window is now an ADDITIONAL signal, never a substitute for identity: the item's
-          // title OR URL slug must mention the show. titleMatchesShow is word-boundary +
-          // diacritic-folded, so short titles ("The Pass") match safely.
-          // Up to 2 days before (previews) and 7 after: the NYT often posts
-          // Off-Broadway reviews 2-3 days after opening (Degenerates, BRO-4435).
-          if (!isWithinOpeningWindow(item.pubDate, openingDate, 2, 7)) continue;
-          const slugMatch = urlSlugMatchesShow(item.link, showTitle);
-          if (!titleMatchesShow(item.title, showTitle) && !slugMatch) continue;
+          // Narrow Broadway-specific feeds (NYT Theater, Variety Legit): date window AND
+          // identity match (task #1073), see openingWindowFeedAccepts.
+          if (!openingWindowFeedAccepts(item, showTitle, openingDate)) continue;
         } else {
           // All other feeds (WE feeds, Broadway feeds without openingDate): title-match
           if (!titleMatchesShow(item.title, showTitle)) continue;
@@ -417,4 +435,4 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
