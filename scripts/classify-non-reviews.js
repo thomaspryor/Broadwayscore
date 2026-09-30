@@ -45,7 +45,9 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { shouldSkipNonReviewStamp } = require('./lib/flagged-recovery');
+const { shouldSkipNonReviewStamp, nonReviewStampBlockReason } = require('./lib/flagged-recovery');
+const { hasBotStubTruncationSignal } = require('./lib/content-quality');
+const { buildClassifySample } = require('./lib/classify-sample');
 const { CLAUDE_SONNET, CLAUDE_OPUS, GEMINI_FLASH, GPT4O } = require('./lib/models');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -311,10 +313,7 @@ Return ONLY a JSON object (no markdown, no explanation):
 {"isReview": true/false, "contentType": "review|profile|interview|preview|feature|news|obituary", "confidence": "high|medium|low", "reasoning": "<1-2 sentences>"}`;
 
 function buildClassifyPrompt(showTitle, fullText) {
-  let text = fullText;
-  if (fullText.length > 3000) {
-    text = fullText.substring(0, 2000) + '\n\n[...middle truncated...]\n\n' + fullText.substring(fullText.length - 1000);
-  }
+  const text = buildClassifySample(showTitle, fullText);
   return `The target show is: "${showTitle}"\n\nArticle text:\n${text}`;
 }
 
@@ -1150,6 +1149,12 @@ async function main() {
           // recovery sweep (audit-show-review-gap.js) refetches it instead.
           if (shouldSkipNonReviewStamp(data)) {
             console.log(`  [EXTRACTION-SUSPECT] ${nr.file} — short body (${(data.fullText || '').trim().length} chars) from review-marker URL; skipping terminal stamp, leaving retriable`);
+            continue;
+          }
+          // BRO-4429: a sampled-text LLM verdict must not overrule stronger evidence.
+          const blockReason = nonReviewStampBlockReason(data, hasBotStubTruncationSignal(data));
+          if (blockReason) {
+            console.log(`  [EVIDENCE-CONFLICT] ${nr.file} — ${blockReason}; skipping terminal stamp`);
             continue;
           }
           data.isNonReview = true;

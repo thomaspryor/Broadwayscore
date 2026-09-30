@@ -1229,7 +1229,7 @@ function decideInclusion(review, show, guards) {
       }
     }
     if (!stale && cv.contentHash && review.fullText) {
-      const h = crypto.createHash('md5').update(review.fullText.substring(0, 2500)).digest('hex');
+      const h = require('./lib/content-verifier').contentHash(review.fullText);
       if (cv.contentHash !== h) stale = true;
     }
     // wrongArticle @ high confidence survives staleness (see rebuild-all-reviews.js:1106-1112)
