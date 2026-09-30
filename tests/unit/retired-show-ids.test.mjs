@@ -38,10 +38,11 @@ const ROW = {
   status: 'announced',
 };
 
-test('exported contract is exactly the seven documented names', () => {
+test('exported contract is exactly the eight documented names', () => {
+  // unretireId (BRO-4398): the retire-show plan action's save-failure rollback.
   assert.deepEqual(Object.keys(mod).sort(), [
     'ARCHIVE_PATH', 'RETIRED_IDS_PATH', '_resetCache',
-    'isRetiredId', 'loadRetiredIds', 'matchesRetired', 'retireId',
+    'isRetiredId', 'loadRetiredIds', 'matchesRetired', 'retireId', 'unretireId',
   ]);
   assert.match(RETIRED_IDS_PATH, /[\\/]data[\\/]retired-show-ids\.json$/);
   assert.match(ARCHIVE_PATH, /[\\/]data[\\/]deleted-shows\.json$/);
