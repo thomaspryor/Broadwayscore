@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T06:36:01.431Z",
+  "generatedAt": "2026-09-30T06:52:53.446Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -126,23 +126,22 @@
       "status": "open",
       "slug": "the-standard-of-living-west-end",
       "thumbnail": "/images/shows/the-standard-of-living-west-end-2026/thumbnail.webp",
-      "siteScore": 74.5,
-      "liveScore": 75,
-      "scoreDrift": 0.5,
+      "siteScore": 72.83,
+      "liveScore": 73,
+      "scoreDrift": 0.1700000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 7,
+      "total": 8,
       "t1": 3,
-      "t2": 2,
+      "t2": 3,
       "t3": 2,
       "positive": 5,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "7/8 total",
           "T1:2/3",
           "hi-conf:2/6"
         ],
@@ -284,6 +283,18 @@
           "t3": 2,
           "p": 5,
           "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-30T06:52:53.446Z",
+          "rc": 8,
+          "s": 72.83,
+          "t1": 3,
+          "t2": 3,
+          "t3": 2,
+          "p": 5,
+          "m": 3,
           "n": 0,
           "bc": "waiting"
         }
