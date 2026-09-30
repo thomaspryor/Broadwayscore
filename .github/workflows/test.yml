@@ -3330,9 +3330,12 @@ jobs:
     # not this job. 5 minutes left only ~3.3x headroom over the real work, which
     # a single slow checkout consumes entirely; 10 covers the worst checkout
     # observed (4m52s) PLUS the full 1m13s of real work at ~1.6x, and is still
-    # ~6.6x the good-path 1m31s. Do NOT read this as licence to raise the other
-    # timeouts in this file — none of them was killed by this.
-    timeout-minutes: 10
+    # ~6.6x the good-path 1m31s.
+    # 10 -> 15 (2026-09-30, BRO-4443): the worst checkout is now 9m14s (Unit
+    # Tests, run 36750754558), which plus this job's ~2 min of work exceeds 10.
+    # Every job's budget must cover its measured runtime + that stall — pinned
+    # per job by tests/unit/test-yml-timeout-headroom.test.mjs.
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -4390,7 +4393,12 @@ jobs:
   design-tokens-lint:
     name: Design Token Drift Guard
     runs-on: ubuntu-latest
-    timeout-minutes: 3
+    # 3 -> 15 (2026-09-30, BRO-4443): run 36751787270 was cancelled at 3m44s
+    # with Checkout still running (normal: ~20s; the real work is ~10s). The
+    # cancelled job turned the whole main run red. Budget = measured runtime +
+    # the 9m14s worst observed checkout, pinned by
+    # tests/unit/test-yml-timeout-headroom.test.mjs.
+    timeout-minutes: 15
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -4543,7 +4551,13 @@ jobs:
     # now disabled there via MERGE_SCRIPT_NO_REEXEC=1) and every main run was
     # cancelled at the ceiling. Each fixture step has its own 3-min timeout,
     # so a hang there fails its step instead of eating this budget.
-    timeout-minutes: 20
+    # 20 -> 30 (2026-09-30, BRO-4443): NOT suite growth. Run 36750754558 spent
+    # 9m14s in actions/checkout (normal ~20s), then every step passed in the
+    # usual ~13 min, and the job was cancelled at 22.6 min. 30 covers the
+    # ~14 min worst green runtime + that stall. The rule above still holds:
+    # a hung TEST must be found, not absorbed — the per-step `timeout 180` and
+    # --test-timeout ceilings are what bound those.
+    timeout-minutes: 30
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -6484,9 +6498,12 @@ jobs:
         # dependency-audit/awards-data-freshness being skipped on push is a
         # no-op here, not a false trip.
         run: |
-          # A timed-out data-safety-guards reports 'cancelled', not 'failure'; a
-          # guard that never finished has not passed (BRO-3425 ship-check).
-          if [ "${{ contains(needs.*.result, 'failure') }}" == "true" ] || [ "${{ needs.data-safety-guards.result }}" == "cancelled" ]; then
+          # A timed-out job reports 'cancelled', not 'failure'; a job that never
+          # finished has not passed (BRO-3425 ship-check, data-safety-guards).
+          # Widened to every needs job (BRO-4443): run 36750754558 had Unit
+          # Tests cancelled by a checkout stall and this step still printed
+          # "All tests passed", hiding the red run from the streak alert below.
+          if [ "${{ contains(needs.*.result, 'failure') }}" == "true" ] || [ "${{ contains(needs.*.result, 'cancelled') }}" == "true" ]; then
             echo "Some tests failed"
             exit 1
           else

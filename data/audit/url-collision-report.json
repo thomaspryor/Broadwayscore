@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-09-30T16:00:09.344Z",
+  "generatedAt": "2026-09-30T18:24:54.269Z",
   "summary": {
-    "total": 7,
-    "high": 1,
+    "total": 9,
+    "high": 3,
     "medium": 3,
     "low": 3
   },
@@ -32,6 +32,33 @@
       ],
       "suggestedWinner": "christmas-carol-goes-wrong-apollo-west-end-2025",
       "reason": "publishDate 2025-12-14 is 0 days from christmas-carol-goes-wrong-apollo-west-end-2025 opening (2025-12-14)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/death-becomes-her-broadway-musical-review",
+      "normalizedUrl": "https://timeout.com/newyork/theater/death-becomes-her-broadway-musical-review",
+      "candidates": [
+        {
+          "showId": "death-becomes-her-2024",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": "November 21st, 2024",
+          "openingDate": "2024-11-21",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout"
+        },
+        {
+          "showId": "death-becomes-her-tour-2026",
+          "file": "timeout--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-09-12",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "timeout"
+        }
+      ],
+      "suggestedWinner": "death-becomes-her-2024",
+      "reason": "publishDate November 21st, 2024 is 0 days from death-becomes-her-2024 opening (2024-11-21)",
       "confidence": "high"
     },
     {
@@ -87,6 +114,33 @@
       "suggestedWinner": "giant-royal-court-off-west-end-2024",
       "reason": "publishDate 2024-09-26 is 1 days from giant-royal-court-off-west-end-2024 but also 2 days from giant-west-end-2025",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+      "normalizedUrl": "https://theatrely.com/post/gender-trouble-the-pass-hungry-women-review-roundup",
+      "candidates": [
+        {
+          "showId": "hungry-women-off-broadway-2026",
+          "file": "theatrely--emily-wyrwa.json",
+          "publishDate": null,
+          "openingDate": "2026-07-25",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatrely"
+        },
+        {
+          "showId": "the-pass-off-broadway-2026",
+          "file": "theatrely--juan-a-ramirez.json",
+          "publishDate": "2026-08-03",
+          "openingDate": "2026-08-04",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatrely"
+        }
+      ],
+      "suggestedWinner": "the-pass-off-broadway-2026",
+      "reason": "publishDate 2026-08-03 is 1 days from the-pass-off-broadway-2026 opening (2026-08-04)",
+      "confidence": "high"
     },
     {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",

@@ -45,6 +45,36 @@ function findJobBoundaries(lines, jobsIdx) {
   return jobStarts;
 }
 
+/**
+ * Split a workflow's raw YAML into { jobKey: lines[] } using findJobBoundaries.
+ * Returns an empty object when the file has no top-level `jobs:` key.
+ */
+function readWorkflowJobBlocks(raw) {
+  const lines = raw.split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
+  if (jobsIdx === -1) return {};
+  const jobStarts = findJobBoundaries(lines, jobsIdx);
+  const blocks = {};
+  for (let j = 0; j < jobStarts.length - 1; j++) {
+    const start = jobStarts[j];
+    blocks[lines[start].trim().replace(/:\s*$/, '')] = lines.slice(start, jobStarts[j + 1]);
+  }
+  return blocks;
+}
+
+/**
+ * Job-level `timeout-minutes` of a job block (header line first), or null when
+ * the job declares none. Only matches at header indent + 2, so step-level
+ * timeouts inside the job are ignored.
+ */
+function jobTimeoutMinutes(jobLines) {
+  const headerIndent = indentOf(jobLines[0]);
+  const line = jobLines.find(
+    (l) => indentOf(l) === headerIndent + 2 && /^\s*timeout-minutes\s*:\s*\d+/.test(l),
+  );
+  return line ? parseInt(line.trim().split(':')[1].trim(), 10) : null;
+}
+
 /** Return lines in `run:` blocks that contain `pattern` (non-comment). Rules (b)/(c). */
 function runLineMatches(raw, pattern) {
   const lines = raw.split('\n');
@@ -710,6 +740,8 @@ module.exports = {
   RUN_LINE_RE,
   findFullBlobFullHistoryCheckouts,
   findJobBoundaries,
+  readWorkflowJobBlocks,
+  jobTimeoutMinutes,
   runLineMatches,
   findMissingGitIdentityCommits,
   findCoreFileWritesWithoutPush,
