@@ -76,6 +76,32 @@ test('helpers behave on synthetic cases', () => {
   assert.equal(isRejectedAtExclusion({}), false);
 });
 
+// CI-safe parity matrix (the corpus test below skips without the private checkout).
+test('synthetic matrix: helpers agree with explainExclusion on rejection-shaped records', () => {
+  const base = { outletId: 'nytimes', fullText: 'x'.repeat(3000), url: 'https://example.com/review-of-the-show', assignedScore: 80, llmScore: { score: 80 } };
+  const long = 'A real independent aggregator quote about the production that is comfortably longer than one hundred and fifty characters so the excerpt gate accepts it as clean content. '.repeat(2);
+  const cases = [
+    { rejectionReason: 'garbage_text' },
+    { rejectionReason: 'not_a_review' },
+    { rejectionReason: 'not_a_review', bwwExcerpt: long, aggregatorStars: '4/5' },
+    { rejectionReason: 'not_a_review', bwwExcerpt: long, aggregatorStars: '4/5', wrongShow: true },
+    { rejectionReason: 'not_a_review', originalScoreSource: 'json-ld', outletId: 'guardian' },
+    { rejectionReason: 'not_a_review', scoreSource: 'wos-star-images', originalScoreNormalized: 100 },
+    { rejectionReason: 'garbage_text', scoreSource: 'wos-star-images', originalScoreNormalized: 100 },
+    { rejectedAt: '2026-01-01T00:00:00Z' },
+    { rejectedAt: '2026-01-01T00:00:00Z', textFetchedAt: '2026-03-01T00:00:00Z' },
+    { rejectedAt: '2026-01-01T00:00:00Z', wrongProduction: true, wrongProductionManualClear: true },
+  ];
+  for (const c of cases) {
+    const d = { ...base, ...c };
+    const helper = NEW_REBUILD_EXCLUDES(d);
+    const reason = explainExclusion(d, undefined, 'x.json');
+    const blamed = reason === 'rejectionReason' || reason === 'rejectedAt';
+    if (helper) assert.notEqual(reason, null, JSON.stringify(c));
+    if (!helper) assert.equal(blamed, false, JSON.stringify(c));
+  }
+});
+
 const dir = corpusDir();
 test('corpus: helpers agree with explainExclusion; every old-vs-new flip is classified', { skip: dir ? false : 'review-texts corpus not present' }, () => {
   let scanned = 0;
