@@ -156,6 +156,23 @@ jobs:
           REVIEW_TEXTS_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: node scripts/collect-review-texts.js
 
+      # The Stage walls most reviews behind a free-account prompt. The
+      # collector salvages the date/byline/standfirst/stars above the wall
+      # inline, but only while it still retries; stubs it has abandoned stay
+      # unscored and never reach the site (BRO-4428). Each file is re-checked
+      # at most every 14 days, so this costs a few dozen fetches at most.
+      - name: Salvage The Stage walled-page metadata
+        if: always() && steps.market.outputs.market == 'west-end'
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+        run: node scripts/backfill-walled-page-meta.js --limit=40 --delay-ms=3000 --time-budget-min=12
+
       - name: Validate data
         if: always()
         run: node scripts/validate-data.js
