@@ -1,21 +1,54 @@
 {
-  "updatedAt": "2026-09-30T05:18:41.340Z",
-  "processed": 363,
-  "failed": 230,
-  "successRate": "61.2%",
+  "updatedAt": "2026-09-30T05:50:36.840Z",
+  "processed": 402,
+  "failed": 243,
+  "successRate": "62.3%",
   "tierBreakdown": {
-    "playwright": 222,
+    "playwright": 232,
     "amp": 2,
     "browserbase": 11,
     "directCookies": 0,
-    "scrapingdog": 36,
-    "scrapingbee": 29,
-    "brightdata": 10,
+    "scrapingdog": 39,
+    "scrapingbee": 50,
+    "brightdata": 14,
     "archiveToday": 0,
-    "archive": 62
+    "archive": 66
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-09-30T00:58:08.662Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-30T00:58:26.486Z",
+      "event": "bb-session",
+      "session": "7a3e120a",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-09-30T00:58:27.181Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-30T01:18:21.533Z",
+      "event": "bb-session",
+      "session": "14c74e1a",
+      "url": "https://www.thetimes.co.uk/culture/film/article/jack-ryan-ghost-war-review-john-"
+    },
+    {
+      "t": "2026-09-30T01:18:22.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-30T01:20:19.270Z",
+      "event": "bb-session",
+      "session": "10ac1323",
+      "url": "https://www.thetimes.co.uk/money/tax/article/proof-students-loans-misled-terms-5"
+    },
     {
       "t": "2026-09-30T01:20:20.002Z",
       "event": "bb-cookie-inject",
@@ -95,40 +128,6 @@
       "event": "bb-session",
       "session": "e95149b7",
       "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
-    },
-    {
-      "t": "2026-09-30T04:55:12.709Z",
-      "event": "bb-session",
-      "session": "3da0f3bb",
-      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
-    },
-    {
-      "t": "2026-09-30T04:55:31.924Z",
-      "event": "bb-session",
-      "session": "026853e0",
-      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
-    },
-    {
-      "t": "2026-09-30T04:57:38.410Z",
-      "event": "bb-session",
-      "session": "1b5ada57",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-09-30T04:57:38.975Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-09-30T04:57:56.421Z",
-      "event": "bb-session",
-      "session": "f8a1d5ed",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-09-30T04:57:56.878Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
