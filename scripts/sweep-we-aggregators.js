@@ -25,6 +25,7 @@ const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
 const { resolveUrlEditionOutletId } = require('./lib/outlet-canonicalize');
+const { isAggregatorPageUrl } = require('./lib/review-slot-guards');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { serpQuery } = require('./lib/url-discovery');
@@ -421,6 +422,7 @@ function writeReview(review, showId) {
 
   // Safety: if findExistingReviewFile returned null (e.g. wrongProduction skip),
   // but the file physically exists, load it to avoid overwriting scored data
+  const isExistingFile = !!(existingMatch && existingMatch.data) || fs.existsSync(filePath);
   let data;
   if (existingMatch && existingMatch.data) {
     data = existingMatch.data;
@@ -434,7 +436,14 @@ function writeReview(review, showId) {
   data.outlet = data.outlet || review.outlet;
   data.outletId = data.outletId || outletId;
   data.criticName = data.criticName || review.critic || review.criticName || 'Unknown';
-  if (review.url && !data.url) data.url = review.url;
+  // BRO-4430: rows parsed from a round-up TABLE carry the round-up page itself
+  // as `url` (no per-outlet link). Never backfill that into an EXISTING file:
+  // its text came from elsewhere (Theatre Record writes url ''), and the
+  // rebuild drops any file whose url is an aggregator page, which silently
+  // dropped the Theatre Record FT review of How the Other Half Loves. A NEW
+  // file keeps the round-up url as its placeholder, as before: url discovery
+  // later upgrades it to the outlet's own review.
+  if (review.url && !data.url && !(isExistingFile && isAggregatorPageUrl(review.url))) data.url = review.url;
 
   // Source-specific excerpt fields
   if (review.source === 'westendtheatre' && review.excerpt) data.westEndTheatreExcerpt = review.excerpt;

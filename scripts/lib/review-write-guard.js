@@ -1614,7 +1614,14 @@ function safeWriteReview(filePath, newData, options = {}) {
           console.warn(`[review-write-guard] blocked url change on ${path.basename(filePath)} (${lockedOverride ? '_locked' : 'urlVerified/urlManualOverride'}): keeping ${existing.url}`);
           newData.url = existing.url;
         } else if (normalizedUrlDiffers && isUrlFlipFlop(existing, newData.url)
+          && options.approvedUrlRepair !== true
           && !_flipFlopShouldTakeIncoming(existing.url, newData.url, existing)) {
+          // options.approvedUrlRepair (BRO-4430): an owner-approved url repair
+          // (execute-approved-fix review-field-edit on `url`, whose guards
+          // already proved the current url wrong) is a decision, not a poller
+          // oscillation. NYSR: David Finkle's file was moved onto Frank
+          // Scheck's review, so restoring his own url IS a swap back to the
+          // prior url, and the breaker pinned Scheck's url instead.
           // Flip-flop breaker (BRO-121): newData.url matches the url this file
           // held before its last URL-change clear (_urlChangedClear.from) — a
           // poller/aggregator is oscillating between two url variants

@@ -3513,5 +3513,65 @@
       }
     ],
     "queuedAt": "2026-09-30T19:17:49.507Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-degenerates-off-broadway-2026",
+    "title": "Unhandled CV.wrongProduction on Degenerates",
+    "description": "talkinbroadway/Marc Miller (talkinbroadway--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The review is valid in terms of being a review, but i — https://www.talkinbroadway.com/page/ob/09_29_26.html",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T19:26:19.830Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-degenerates-off-broadway-2026",
+    "title": "Unverified revival on Degenerates",
+    "description": "degenerates-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T19:26:19.836Z"
+  },
+  {
+    "conditionKey": "opening-night-slug-mismatch-degenerates-off-broadway-2026",
+    "title": "Review URL cross-show mismatch on Degenerates",
+    "description": "Review URL for talkinbroadway/Marc Miller does not mention show slug (checked: degenerates-off-broadway, degenerates): https://www.talkinbroadway.com/page/ob/09_29_26.html",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T19:26:19.842Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-motherfucker-off-broadway-2026",
+    "title": "Placeholder synopsis on Motherfucker",
+    "description": "synopsis for motherfucker-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T19:26:22.395Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-a-thousand-natural-shocks-off-broadway-2026",
+    "title": "Placeholder synopsis on A Thousand Natural Shocks",
+    "description": "synopsis for a-thousand-natural-shocks-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T19:26:23.660Z"
   }
 ]

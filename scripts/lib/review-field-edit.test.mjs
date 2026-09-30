@@ -30,11 +30,17 @@ test('clears a stale rejection (english-2025 NYT, BRO-4202)', () => {
 });
 
 test('refuses fields outside the allowlist (scores, text, lock)', () => {
-  for (const field of ['assignedScore', 'llmScore', 'originalScore', 'fullText', '_locked', 'url', 'approvedFixes']) {
+  for (const field of ['assignedScore', 'llmScore', 'originalScore', 'fullText', '_locked', 'approvedFixes']) {
     assert.equal(REVIEW_TEXT_EDITABLE_FIELDS.includes(field), false, field);
     const res = applyReviewFieldEdit({}, { field, oldValue: null, newValue: 1 }, stamp);
     assert.equal(res.ok, false, field);
   }
+  // url is allowlisted only as a guarded REPAIR (BRO-4430, see
+  // coverage-date-url-slot.test.mjs): a real review url is never replaceable.
+  const real = { outletId: 'nytimes', url: 'https://www.nytimes.com/2026/01/01/theater/x-review.html' };
+  const res = applyReviewFieldEdit(real, { field: 'url', oldValue: real.url, newValue: 'https://www.nytimes.com/2026/01/02/theater/y-review.html' }, stamp);
+  assert.equal(res.ok, false);
+  assert.match(res.reason, /not provably wrong/);
 });
 
 test('compare-and-set: refuses when the value changed since the plan was written', () => {
