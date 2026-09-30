@@ -34,6 +34,14 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   'wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear',
   'wrongShow', 'wrongShowManualClear',
   'isNotReviewManualClear',
+  // non-review verdict (BRO-4429): isNonReview is set by the Gemini non-review
+  // pass and the rebuild's CV promotion. It is not a write-guard protected
+  // field, so false clears it; nonReviewManualClear locks the clear against
+  // both (classify-non-reviews.js skips it, review-guards.js
+  // cvNonReviewHumanCleared). wrongArticleManualClear clears the
+  // cvWrongArticleHighConfidence exclusion for a CV that called a review a
+  // preview/feature.
+  'isNonReview', 'nonReviewManualClear', 'wrongArticleManualClear',
   // duplicate pointer (a clear needs duplicateClearReason alongside it)
   'duplicateOf', 'duplicateReason', 'duplicateClearReason',
   // score override (BRO-4275): humanReviewScore is the one score the rebuild
@@ -47,6 +55,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
 const FIELD_VALUE_CHECKS = {
+  isNonReview: (v) => (v === null || typeof v === 'boolean' ? null : 'isNonReview must be boolean or null'),
+  // Only ever set: a false/null "clear of the clear" would silently re-open
+  // the file to every classifier.
+  nonReviewManualClear: (v) => (v === true ? null : 'nonReviewManualClear can only be set to true'),
+  wrongArticleManualClear: (v) => (v === true ? null : 'wrongArticleManualClear can only be set to true'),
   // No null: both are write-guard PROTECTED_FIELDS with no clear breadcrumb,
   // so a clear would be silently restored on write.
   humanReviewScore: (v) => (Number.isInteger(v) && v >= 1 && v <= 100

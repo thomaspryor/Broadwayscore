@@ -1636,6 +1636,28 @@ function cvWrongArticleManuallyCleared(data) {
   return data.wrongArticleManualClear === true || data.humanReviewedWrongArticle === false;
 }
 
+/**
+ * A human already said this file IS a review (BRO-4429), so a content-verifier
+ * "not a review" verdict must not be promoted over it. The rebuild's CV
+ * promotion sites checked only `isNonReview !== true`, so a human clear
+ * (isNonReview=false + nonReviewManualClear) was re-stamped on the next run.
+ */
+function cvNonReviewHumanCleared(data) {
+  if (!data) return false;
+  return data.nonReviewManualClear === true || cvWrongArticleManuallyCleared(data);
+}
+
+/**
+ * Which exclusion family a content-verifier wrongArticle verdict belongs to
+ * (#651, BRO-4429): 'wrongShow' when CV ALSO flagged wrongProduction (a review,
+ * but of a different production), 'nonReview' when it did not (not a review at
+ * all: preview/interview/feature), null when CV raised no wrongArticle.
+ */
+function cvWrongArticleFamily(cv) {
+  if (!cv || cv.wrongArticle !== true) return null;
+  return cv.wrongProduction === true ? 'wrongShow' : 'nonReview';
+}
+
 function wrongShowCleared(data) {
   if (!data) return false;
   // Note: isCombinedReview alone is NOT sufficient. It's set whenever a URL
@@ -5186,6 +5208,8 @@ module.exports = {
   computeCvIsStale,
   isNonReviewDemotedByFreshCV,
   cvWrongArticleManuallyCleared,
+  cvNonReviewHumanCleared,
+  cvWrongArticleFamily,
   wrongShowCleared,
   rejectedAtHumanCleared,
   isTimestampAfter,

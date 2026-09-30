@@ -5309,6 +5309,9 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // just in the LLM prompt hint. Reverify scripts already persist this
       // via `...result` spreads — this keeps the main ingestion path in sync.
       urlYearConflict: contentVerification.urlYearConflict || null,
+      // BRO-4429: what the verdict read ('whole' / 'head+mentions+tail');
+      // absent means the old first-2,500-chars window.
+      textSampling: contentVerification.textSampling || null,
       verifiedAt: new Date().toISOString(),
       // Stamp the hash over cleanedText (what's about to be stored as
       // data.fullText a few lines up), NOT contentVerification.contentHash —

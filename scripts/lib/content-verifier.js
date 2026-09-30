@@ -22,7 +22,13 @@ const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 const { getCvStyle } = require('./outlet-canonicalize');
 const { hasOpinionLanguage } = require('./content-quality');
-const { stripConsentLayerPrefix } = require('./text-cleaning');
+const { stripConsentLayerPrefix, stripLeadingJsonBlob } = require('./text-cleaning');
+const { sampleTextForClassifier } = require('./classifier-partial-text');
+
+const CV_SAMPLE_BUDGET = 4000;
+function cvTextSampling(scrapedText, showTitle) {
+  return sampleTextForClassifier(scrapedText, showTitle, { budget: CV_SAMPLE_BUDGET }).sampled ? 'head+mentions+tail' : 'whole';
+}
 
 /**
  * Extract a sensible publication year from a URL path.
@@ -384,6 +390,8 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
   // shows only the first 2,500 chars, which for WhatsOnStage captures was
   // entirely IAB consent text (BRO-4185 A).
   scrapedText = stripConsentLayerPrefix(scrapedText);
+  // Same for page-data JSON captured ahead of the article (BRO-4429).
+  scrapedText = stripLeadingJsonBlob(scrapedText);
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
@@ -513,6 +521,9 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
         reasoning: wpFlag ? wpReasoning : (parsed.reasoning || ''),
         verifiedBy: `llm:${result.provider}`,
         contentHash: contentHash(scrapedText),
+        // What the verdict read (BRO-4429): 'whole' or head + show-mention
+        // passages + tail. Absent on verdicts from the old 2,500-char window.
+        textSampling: cvTextSampling(scrapedText, showTitle),
         urlYearConflict
       };
     }
@@ -533,6 +544,10 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
  * @returns {{ prompt: string, urlYearConflict: {urlYear: number, publishYear: number, gapYears: number}|null }}
  */
 function buildVerificationPrompt({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, priorRuns, tourLegs }) {
+  // BRO-4429: the old first-2,500-chars window judged a review by its lead
+  // (background paragraphs read as "preview"/"feature", a multi-show column's
+  // first section read as wrongProduction). Read head + show mentions + tail.
+  const sample = sampleTextForClassifier(scrapedText, showTitle, { budget: CV_SAMPLE_BUDGET });
   // Market-aware prompt construction
   const effectiveMarket = market || 'broadway';
   const marketConfig = {
@@ -741,8 +756,8 @@ I scraped what should be a ${mc.label} theater review. Verify if the content is 
 - Outlet: ${outletName}
 - Critic: ${criticName || 'Unknown'}${dateContext}${publishDateContext}${venueContext}${excerptContext}
 
-**Scraped Content (first 2500 chars):**
-${scrapedText.substring(0, 2500)}
+**Scraped Content (${sample.sampled ? 'excerpt: opening, the passages that name the show, and the ending; "[...]" marks omitted text, which is NOT truncation' : 'complete'}):**
+${sample.text}
 
 **Total scraped length:** ${scrapedText.length} characters
 

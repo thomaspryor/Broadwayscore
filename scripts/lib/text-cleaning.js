@@ -470,6 +470,63 @@ function hasStrippableConsentLayer(text) {
   return !!text && typeof text === 'string' && stripConsentLayerPrefix(text) !== text;
 }
 
+// Page-data JSON captured AHEAD of the article (BRO-4429: a wayback fetch of a
+// standard.co.uk review stored ~9.4k chars of the homepage's article-list
+// array, '[{"id":1292195,"path":"/news/politics/...","title":"Nigel Farage..."'
+// before the review). Every head-window classifier then judged the JSON: the
+// Gemini non-review pass called the review "news". Only a text that OPENS with
+// a balanced JSON array/object that JSON.parse accepts counts, so prose that
+// starts with "[Photo: ...]" or "{Updated}" is never touched.
+const LEADING_JSON_MIN_CHARS = 200;
+const LEADING_JSON_SCAN_LIMIT = 200000;
+
+/** End index (exclusive) of a leading JSON blob, or -1 when the text has none. */
+function leadingJsonBlobEnd(text) {
+  if (!text || typeof text !== 'string') return -1;
+  const start = text.length - text.trimStart().length;
+  const open = text[start];
+  if (open !== '[' && open !== '{') return -1;
+  // The first token inside must look like JSON ('{', '[' or a quoted key/value).
+  if (!/^[[{]\s*["{[]/.test(text.slice(start, start + 20))) return -1;
+  let depth = 0;
+  let inString = false;
+  let escaped = false;
+  const limit = Math.min(text.length, start + LEADING_JSON_SCAN_LIMIT);
+  for (let i = start; i < limit; i++) {
+    const c = text[i];
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (c === '\\') escaped = true;
+      else if (c === '"') inString = false;
+      continue;
+    }
+    if (c === '"') inString = true;
+    else if (c === '[' || c === '{') depth++;
+    else if (c === ']' || c === '}') {
+      depth--;
+      if (depth === 0) {
+        const end = i + 1;
+        if (end - start < LEADING_JSON_MIN_CHARS) return -1;
+        try { JSON.parse(text.slice(start, end)); } catch { return -1; }
+        return end;
+      }
+    }
+  }
+  return -1;
+}
+
+/** True when the text opens with a page-data JSON blob (see leadingJsonBlobEnd). */
+function hasLeadingJsonBlob(text) {
+  return leadingJsonBlobEnd(text) >= 0;
+}
+
+/** Drop a leading page-data JSON blob; returns the text unchanged when there is none. */
+function stripLeadingJsonBlob(text) {
+  const end = leadingJsonBlobEnd(text);
+  if (end < 0) return text;
+  return text.slice(end).trimStart();
+}
+
 function cleanText(text) {
   if (!text) return text;
 
@@ -484,6 +541,9 @@ function cleanText(text) {
 
   // Step 1b: Strip a leading IAB consent-layer block (see stripConsentLayerPrefix)
   cleaned = stripConsentLayerPrefix(cleaned);
+
+  // Step 1c: Strip a leading page-data JSON blob (see leadingJsonBlobEnd)
+  cleaned = stripLeadingJsonBlob(cleaned);
 
   // Step 2: Strip control characters (keep \n, \r, \t)
   cleaned = cleaned.replace(/[\x00-\x08\x0B\x0C\x0E-\x1F\x7F]/g, '');
@@ -525,6 +585,8 @@ module.exports = {
   cleanText,
   stripConsentLayerPrefix,
   hasStrippableConsentLayer,
+  hasLeadingJsonBlob,
+  stripLeadingJsonBlob,
   TRAILING_JUNK_PATTERNS,
   hasUndecodedHtmlEntities,
   hasJsonLdArtifact,

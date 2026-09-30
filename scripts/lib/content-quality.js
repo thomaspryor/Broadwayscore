@@ -1813,7 +1813,11 @@ function classifyContentTier(review) {
     };
   }
 
-  const fullText = review.fullText || '';
+  // Tier the review prose, not page-data JSON captured ahead of it (BRO-4429:
+  // a standard.co.uk wayback fetch stored ~9.4k chars of homepage JSON before
+  // the review). A text that is nothing but JSON tiers as stub.
+  const { stripLeadingJsonBlob } = require('./text-cleaning');
+  const fullText = stripLeadingJsonBlob(review.fullText || '');
   const wordCount = countWords(fullText);
   const charCount = fullText.length;
 

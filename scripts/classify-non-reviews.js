@@ -45,7 +45,7 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { safeWriteReview } = require('./lib/review-write-guard');
-const { shouldSkipNonReviewStamp } = require('./lib/flagged-recovery');
+const { sampleTextForClassifier, geminiNonReviewStampBlocker } = require('./lib/classifier-partial-text');
 const { CLAUDE_SONNET, CLAUDE_OPUS, GEMINI_FLASH, GPT4O } = require('./lib/models');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -310,12 +310,14 @@ IMPORTANT: Short reviews that pack a verdict into 1-3 sentences ARE reviews. Do 
 Return ONLY a JSON object (no markdown, no explanation):
 {"isReview": true/false, "contentType": "review|profile|interview|preview|feature|news|obituary", "confidence": "high|medium|low", "reasoning": "<1-2 sentences>"}`;
 
+// BRO-4429: this used to send the first 2,000 + last 1,000 chars, so a review
+// with a background lead (NY Sun "Les Mis"), a leading homepage-JSON blob
+// (Standard) or a long body was judged on its lead and footer. Send the whole
+// body up to 6,000 chars, else head + the passages naming the show + tail.
+const CLASSIFY_SAMPLE_BUDGET = 6000;
 function buildClassifyPrompt(showTitle, fullText) {
-  let text = fullText;
-  if (fullText.length > 3000) {
-    text = fullText.substring(0, 2000) + '\n\n[...middle truncated...]\n\n' + fullText.substring(fullText.length - 1000);
-  }
-  return `The target show is: "${showTitle}"\n\nArticle text:\n${text}`;
+  const { text } = sampleTextForClassifier(fullText, showTitle, { budget: CLASSIFY_SAMPLE_BUDGET });
+  return `The target show is: "${showTitle}"\n\nArticle text ("[...]" marks omitted passages):\n${text}`;
 }
 
 function parseClassifyResponse(raw) {
@@ -923,6 +925,14 @@ async function main() {
         lockedSkipCount++;
         continue;
       }
+      // Records this pass may not overrule (human clears, a high-confidence
+      // CV "review", bot-stub text: BRO-4429) are not sent at all.
+      const selectBlocker = geminiNonReviewStampBlocker(data);
+      if (selectBlocker) {
+        stats.skippedStampBlocked = (stats.skippedStampBlocked || 0) + 1;
+        if (VERBOSE) console.log(`  [SKIP ${selectBlocker}] ${relPath}`);
+        continue;
+      }
 
       // In incremental mode, skip files already classified (have classifiedAt timestamp)
       if (INCREMENTAL && data.classifiedAt) {
@@ -1148,8 +1158,12 @@ async function main() {
           // Stamping isNonReview here is terminal — the file is excluded from
           // rebuild and never retried. Skip the stamp; the uncited-stub
           // recovery sweep (audit-show-review-gap.js) refetches it instead.
-          if (shouldSkipNonReviewStamp(data)) {
-            console.log(`  [EXTRACTION-SUSPECT] ${nr.file} — short body (${(data.fullText || '').trim().length} chars) from review-marker URL; skipping terminal stamp, leaving retriable`);
+          // BRO-4429 widened this to every record the verdict must not
+          // overrule (geminiNonReviewStampBlocker): a CV/human that said
+          // "review", or bot-stub text, which a head+tail read can't judge.
+          const applyBlocker = geminiNonReviewStampBlocker(data);
+          if (applyBlocker) {
+            console.log(`  [STAMP-BLOCKED ${applyBlocker}] ${nr.file} — skipping terminal isNonReview stamp`);
             continue;
           }
           data.isNonReview = true;
@@ -1195,6 +1209,7 @@ async function main() {
   console.log('\n=== SUMMARY ===');
   console.log(`Files scanned: ${stats.totalFiles}`);
   console.log(`In reviews.json: ${stats.inReviewsJson}`);
+  console.log(`Skipped (stamp blocked: human clear / CV review / bot-stub): ${stats.skippedStampBlocked || 0}`);
   console.log(`LLM classified: ${stats.llmClassified}`);
   console.log(`Non-reviews found (high confidence): ${nonReviews.length}`);
   console.log(`Uncertain (medium/low): ${uncertainCases.length}`);
