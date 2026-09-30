@@ -148,6 +148,9 @@ function parseRSSItems(xml) {
     // poller's pre-filter regex so a title like "Hamilton hits milestone" still
     // qualifies if the dek says "recouped".
     const description = (itemXml.match(/<description[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/) || [])[1] || '';
+    // <dc:creator> is the byline on NYT/Variety items (BRO-4435: the NYT
+    // Degenerates review came in as nytimes--unknown.json while the feed said Helen Shaw).
+    const creator = (itemXml.match(/<dc:creator[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/dc:creator>/) || [])[1] || '';
     if (title && link) {
       const linkTrim = link.trim();
       items.push({
@@ -156,6 +159,7 @@ function parseRSSItems(xml) {
         pubDate: pubDate.trim() ? new Date(pubDate.trim()) : null,
         guid: (guid.trim() || linkTrim),
         description: decodeEntities(description.trim()),
+        creator: decodeEntities(creator.trim()),
       });
     }
   }
@@ -339,6 +343,20 @@ function openingWindowFeedAccepts(item, showTitle, openingDate) {
 }
 
 /**
+ * Return a feed item's byline when it names exactly one person, else null.
+ * Multi-author ("A and B", "A, B") or non-name creators are left for the
+ * text collector, which reads the byline from the page.
+ */
+function singleBylineName(creator) {
+  const name = String(creator || '').replace(/^by\s+/i, '').trim();
+  if (!name || /,|&|\band\b/i.test(name)) return null;
+  const words = name.split(/\s+/);
+  if (words.length < 2 || words.length > 4) return null;
+  if (!words.every(w => /^[\p{Lu}][\p{L}'.-]*$/u.test(w))) return null;
+  return name;
+}
+
+/**
  * Check all RSS feeds for reviews of a show.
  *
  * @param {string} showTitle - The show title to search for
@@ -412,6 +430,7 @@ async function checkRSSFeeds(showTitle, options = {}) {
           // Unknown+rss-discovery → _pending/ strand that rebuild-all-reviews
           // never re-reads. See tests/unit/pending-strand-routing.test.mjs.
           if (feed.defaultCritic) hit.criticName = feed.defaultCritic;
+          else if (singleBylineName(item.creator)) hit.criticName = singleBylineName(item.creator);
           results.push(hit);
           feedResults++;
           if (verbose) {
@@ -435,4 +454,4 @@ async function checkRSSFeeds(showTitle, options = {}) {
   return results;
 }
 
-module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };
+module.exports = { checkRSSFeeds, ALL_FEEDS, SUBSTACK_CRITIC_FEEDS, TRACK_RECOUPMENT_FEEDS, titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseRSSItems, parseAtomItems, parseFeedItems, fetchUrl };

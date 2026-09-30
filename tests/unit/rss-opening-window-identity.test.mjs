@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts } = require('../../scripts/lib/rss-discovery.js');
+const { titleMatchesShow, urlSlugMatchesShow, isWithinOpeningWindow, openingWindowFeedAccepts, singleBylineName, parseFeedItems } = require('../../scripts/lib/rss-discovery.js');
 
 test('urlSlugMatchesShow: NYT review slug matches show title', () => {
   assert.equal(urlSlugMatchesShow(
@@ -96,4 +96,17 @@ test('openingWindowFeedAccepts: in-window item without identity match is rejecte
     link: 'https://www.nytimes.com/2026/09/29/theater/duncan-sheik-dead.html',
     pubDate: new Date('2026-09-29T12:00:00Z'),
   }, 'Degenerates', '2026-09-28'), false);
+});
+
+test('parseFeedItems reads dc:creator; singleBylineName keeps single-person bylines only', () => {
+  const xml = '<rss><channel><item><title>Critic\u2019s Pick: \u2018Degenerates\u2019</title>'
+    + '<link>https://www.nytimes.com/2026/09/30/theater/degenerates-review.html</link>'
+    + '<dc:creator>Helen Shaw</dc:creator><pubDate>Wed, 30 Sep 2026 09:02:17 +0000</pubDate></item></channel></rss>';
+  const [item] = parseFeedItems(xml);
+  assert.equal(item.creator, 'Helen Shaw');
+  assert.equal(singleBylineName(item.creator), 'Helen Shaw');
+  assert.equal(singleBylineName('By Jesse Green'), 'Jesse Green');
+  assert.equal(singleBylineName('Jesse Green and Laura Collins-Hughes'), null);
+  assert.equal(singleBylineName('Staff'), null);
+  assert.equal(singleBylineName(''), null);
 });
