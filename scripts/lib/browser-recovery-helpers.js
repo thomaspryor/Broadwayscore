@@ -12,6 +12,7 @@
  * outlet script only supplies its login/cookie/selector specifics.
  */
 
+const { isolateMultiShowSectionForShowId } = require('./multi-show-section-extract');
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -151,6 +152,12 @@ function loadCandidates({ filePrefix, showsAllowlist, maxUrls = Infinity }) {
 function processRecoveredText(candidate, rawText, labels) {
   let cleanedText = cleanText(rawText);
   cleanedText = stripTrailingJunk(cleanedText);
+  // Multi-show posts: isolate before the length/mention/upgrade guards below.
+  {
+    const iso = isolateMultiShowSectionForShowId(candidate.url, cleanedText, candidate.showId);
+    if (iso.action === 'refuse') return { ok: false, reason: 'multi-show post: no unique section for this show' };
+    cleanedText = iso.text;
+  }
   if (cleanedText.length < 300) {
     return { ok: false, reason: `too short after cleaning (${cleanedText.length})` };
   }

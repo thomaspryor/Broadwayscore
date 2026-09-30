@@ -20,6 +20,7 @@
  *   SOURCE_MODE=not_attempted Process review files with incompleteReason='not_attempted' (URLs never scraped)
  */
 
+const { isolateMultiShowSectionForShowId } = require('./lib/multi-show-section-extract');
 const fs = require('fs');
 const path = require('path');
 const http = require('http');
@@ -1297,6 +1298,12 @@ async function processRecoveredText(candidate, text, html, archiveData) {
   // Clean the text
   let cleanedText = cleanText(text);
   cleanedText = stripTrailingJunk(cleanedText, candidate.outletId);
+  // Multi-show posts: isolate before the length/upgrade guards below.
+  {
+    const iso = isolateMultiShowSectionForShowId(candidate.url, cleanedText, candidate.showId);
+    if (iso.action === 'refuse') { console.log('    Multi-show post: no unique section for this show, skip'); return false; }
+    cleanedText = iso.text;
+  }
 
   if (cleanedText.length < CONFIG.minTextLength) {
     console.log(`    Too short after cleaning: ${cleanedText.length} chars`);

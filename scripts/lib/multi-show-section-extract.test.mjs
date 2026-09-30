@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { extractShowSection, findSectionHeadings } = require('./multi-show-section-extract.js');
+const { extractShowSection, findSectionHeadings, isolateMultiShowSection, isMultiShowPostUrl, isolateMultiShowSectionForShowId } = require('./multi-show-section-extract.js');
 const { stripVenueListingsTrailer, detectTruncationSignals } = require('./content-quality.js');
 
 // Synthetic post mirroring the real interestedbystander shape (real text is private/copyrighted).
@@ -74,4 +74,70 @@ test('accented show titles match whole, not shredded at the accent', () => {
   const t = 'Les Misérables (c) A BTheater: Les Misérables Body one text here. Pen Pals (c) C DTheater: Pen Pals Body two.';
   const r = extractShowSection(t, 'Les Miserables');
   assert.ok(r && /Body one/.test(r.text) && !/Body two/.test(r.text));
+});
+
+// Shared gate used by collect-review-texts.js AND ingest-review-from-url.js.
+const IB_URL = 'https://theinterestedbystander.com/2026/03/01/an-ark-try-step-trip-pen-pals/';
+
+test('isolateMultiShowSection: multi-show host keeps only the section', () => {
+  const r = isolateMultiShowSection(IB_URL, POST, 'Pen Pals');
+  assert.equal(r.action, 'isolated');
+  assert.match(r.text, /^Pen Pals \(c\)/);
+  assert.doesNotMatch(r.text, /Vessel|Try\/Step\/Trip Under/);
+});
+
+test('isolateMultiShowSection: section not found in a multi-section post refuses (stores nothing)', () => {
+  const r = isolateMultiShowSection(IB_URL, POST, 'Stereophonic');
+  assert.equal(r.action, 'refuse');
+  assert.equal(r.text, null);
+});
+
+test('isolateMultiShowSection: single-section post on the host and other hosts pass text through', () => {
+  const one = 'Giulia (c) PhotogTheater: Giulia At the Mint A whole review of one show.';
+  assert.deepEqual(isolateMultiShowSection(IB_URL, one, 'Giulia'), { action: 'single-section', text: one });
+  assert.deepEqual(isolateMultiShowSection('https://www.nytimes.com/x.html', POST, 'Pen Pals'), { action: 'not-multi-show', text: POST });
+  assert.equal(isMultiShowPostUrl('https://www.theinterestedbystander.com/x'), true);
+});
+
+// The corpus spelling (69 review-texts files, all 20 reviews.json rows): www.interestedbystander.com.
+test('isMultiShowPostUrl matches the real www.interestedbystander.com host', () => {
+  assert.equal(isMultiShowPostUrl('https://www.interestedbystander.com/2024/04/stereophonic/'), true);
+  assert.equal(isolateMultiShowSection('https://www.interestedbystander.com/2026/03/post/', POST, 'Pen Pals').action, 'isolated');
+  assert.equal(isMultiShowPostUrl('https://notinterestedbystander.com/x'), false);
+});
+
+test('isolateMultiShowSectionForShowId looks the title up in shows.json (unknown id => refuse, never the whole post)', () => {
+  const r = isolateMultiShowSectionForShowId('https://www.interestedbystander.com/p/', POST, 'no-such-show-id-9999');
+  assert.equal(r.action, 'refuse');
+  assert.equal(isolateMultiShowSectionForShowId('https://www.nytimes.com/x', POST, 'x').action, 'not-multi-show');
+});
+
+// Corpus sweep decision (scripts/isolate-multi-show-sections.js planIsolation).
+const { planIsolation } = require('./multi-show-isolation-plan.js');
+const SB_POST = 'DRAG (c) PhotogOff-Broadway: DRAG: The Musical At New World Stages A drag review. ' +
+  'Sunset Blvd (c) Marc BrennerBroadway: Sunset Blvd At the St. James Theatre I have seen it. The end.';
+
+test('planIsolation: whole post reduced to the section, CV whole-post verdict auto-cleared, rescore queued', () => {
+  const data = { url: 'https://www.interestedbystander.com/2024/11/capsule.html', fullText: SB_POST,
+    wrongShow: true, wrongShowReason: 'CV-promoted: The scraped content reviews "DRAG: The Musical"',
+    contentVerification: { wrongArticle: true } };
+  const p = planIsolation(data, 'sunset-boulevard-2024', '2026-09-29T00:00:00.000Z');
+  assert.ok(p && p.data);
+  assert.match(p.data.fullText, /^Sunset Blvd \(c\)/);
+  assert.doesNotMatch(p.data.fullText, /DRAG/);
+  assert.equal(p.data.wrongShow, false);
+  assert.ok(p.data.wrongShowAutoCleared);
+  assert.equal(p.data.contentVerification.wrongArticle, false);
+  assert.equal(p.data.contentVerification.staleWholePostVerdict, true);
+  assert.equal(p.data.needsRescore, true);
+  assert.deepEqual(p.clearedFlags, ['wrongShow']);
+  // idempotent: the isolated section is a single-section text
+  assert.equal(planIsolation(p.data, 'sunset-boulevard-2024', '2026-09-29T00:00:00.000Z'), null);
+});
+
+test('planIsolation: a human/other-reason wrongShow is left alone; other hosts untouched', () => {
+  const data = { url: 'https://www.interestedbystander.com/x.html', fullText: SB_POST, wrongShow: true, wrongShowReason: 'manual: wrong show' };
+  const p = planIsolation(data, 'sunset-boulevard-2024', '2026-09-29T00:00:00.000Z');
+  assert.equal(p.data.wrongShow, true);
+  assert.equal(planIsolation({ url: 'https://www.nytimes.com/x', fullText: SB_POST }, 'sunset-boulevard-2024', 'x'), null);
 });
