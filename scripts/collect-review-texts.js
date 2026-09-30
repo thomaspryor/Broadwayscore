@@ -7049,6 +7049,26 @@ async function processReview(review) {
         }
       }
 
+      // BRO-4431: other tier-1/2 star outlets (Times, Sunday Times, FT, i,
+      // Mail) wall their text too, but may still carry the critic's rating in
+      // the page's structured data. Save that as the score (gap-fill only)
+      // so the review isn't an unscored stub that never reaches the site.
+      if (result.html && review.filePath && review.outletId !== 'thestage') {
+        try {
+          const { pageStarPatch } = require('./lib/paywall-stub-score');
+          const stored = JSON.parse(fs.readFileSync(review.filePath, 'utf8'));
+          const showEntry = _showsJsonCache ? _showsJsonCache.shows.find((s) => s.id === review.showId) : null;
+          const patch = pageStarPatch(stored, result.html, { show: showEntry });
+          if (patch) {
+            const { safeWriteReview } = require('./lib/review-write-guard');
+            safeWriteReview(review.filePath, { ...stored, ...patch });
+            console.log(`    ↳ Paywalled page rating saved: ${patch.originalScore} (${patch.originalScoreSource})`);
+          }
+        } catch (e) {
+          console.log(`    ⚠ paywalled-page rating salvage failed: ${e.message}`);
+        }
+      }
+
       // Record as failed fetch with reason (increments failure count)
       recordFailedFetch(review, 'garbage_content', {
         method: result.method,

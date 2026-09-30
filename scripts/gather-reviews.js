@@ -4905,11 +4905,25 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           }, res => { if (res.statusCode !== 200) { r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => r(d)); }).on('error', () => r(null));
         });
 
-        if (homepageHtml) {
+        // BRO-4431: the homepage only lists the latest ~10 posts, so a
+        // roundup that scrolled off (Golden Boy, Cleansed) was never found.
+        // The WP search API answers plain requests (verified 2026-09-30);
+        // try it first and fall back to the homepage scan.
+        let roundupUrl = null;
+        try {
+          const apiPosts = await new Promise(r => {
+            trHttp.get(apiUrl, {
+              headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', Accept: 'application/json' },
+            }, res => { if (res.statusCode !== 200) { res.resume(); r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => { try { r(JSON.parse(d)); } catch { r(null); } }); }).on('error', () => r(null));
+          });
+          const { pickTheatreReviewsRoundup } = require('./lib/theatre-reviews-discovery');
+          roundupUrl = pickTheatreReviewsRoundup(apiPosts, searchTitle);
+        } catch {}
+
+        if (!roundupUrl && homepageHtml) {
           const cheerio = require('cheerio');
           const $ = cheerio.load(homepageHtml);
           const titleLower = searchTitle.toLowerCase();
-          let roundupUrl = null;
           $('a[href*="/reviews-roundup/"]').each((_, el) => {
             const href = $(el).attr('href');
             const text = $(el).text().toLowerCase();

@@ -191,3 +191,97 @@ test('every review-text writer calls the fan-out (collector, URL ingest, backfil
     assert.match(src, /applyMultiShowFanoutToFile\(/, `${f} must call applyMultiShowFanoutToFile`);
   }
 });
+
+// ---------------------------------------------------------------------------
+// Paywalled tier-1/2 stubs get the rating we can see (BRO-4431 part 2)
+// ---------------------------------------------------------------------------
+const { aggregatorStarsPatch, pageStarPatch, relayBlockReason } = require('./paywall-stub-score.js');
+const { getBestScore } = require('./rebuild-helpers.js');
+const { isIncludableForRebuild } = require('./review-guards.js');
+
+const timesStub = () => ({
+  showId: 'cleansed-off-west-end-2026', outletId: 'times-uk', outlet: 'The Times', criticName: 'Clive Davis',
+  url: null, publishDate: '2026-07-31', contentTier: 'stub', fullText: null, _showCategory: 'off-west-end',
+});
+
+test('relayed TR stars land on a textless T1 stub and the scorer uses them', () => {
+  const stub = timesStub();
+  const patch = aggregatorStarsPatch(stub, { stars: 1, source: 'theatre-reviews' });
+  assert.equal(patch.aggregatorStars, '1/5');
+  const scored = { ...stub, ...patch };
+  assert.ok(isIncludableForRebuild(scored));
+  const best = getBestScore(scored, { stats: {}, flagForHumanReview: () => {} });
+  assert.equal(best.source, 'aggregatorStars-relay');
+  assert.equal(best.score, 20);
+  // Without the relay the stub has no score and never reaches the site.
+  assert.equal(getBestScore(stub, { stats: {}, flagForHumanReview: () => {} }), null);
+});
+
+test('relay is refused for full texts, scored/cleared files, exclusions and non-star outlets', () => {
+  const r = (over) => relayBlockReason({ ...timesStub(), ...over }, 3);
+  assert.equal(r({}), null);
+  assert.equal(r({ fullText: 'x'.repeat(2000) }), 'has-body');
+  assert.equal(r({ originalScore: '4/5 stars' }), 'already-scored');
+  assert.equal(r({ originalScoreCleared: true }), 'already-scored');
+  assert.equal(r({ wrongProduction: true }), 'excluded');
+  assert.equal(r({ outletId: 'wsj' }), 'not-major-star-outlet');
+  assert.equal(r({ outletId: 'thestage' }), 'not-major-star-outlet', 'Stage has its own walled-page path');
+  assert.equal(relayBlockReason(timesStub(), null), 'no-stars');
+  // A 113-word paywall teaser is still a stub for this purpose.
+  assert.equal(r({ fullText: 'teaser '.repeat(113), contentTier: 'truncated' }), null);
+});
+
+test('pageStarPatch reads a walled page\'s own schema.org review rating, in-window only', () => {
+  const show = { id: 'cleansed-off-west-end-2026', title: 'Cleansed', openingDate: '2026-07-30', closingDate: '2026-09-20' };
+  const html = '<script type="application/ld+json">{"@type":"Review","reviewRating":{"@type":"Rating","ratingValue":"3"}}</script><h1>Cleansed review</h1><p>Subscribe to read</p>';
+  const patch = pageStarPatch(timesStub(), html, { show });
+  assert.equal(patch.originalScore, '3/5 stars');
+  assert.equal(patch.originalScoreNormalized, 60);
+  assert.equal(patch.scoreExtractedFrom, 'paywalled-page-structured-data');
+  // Stale article filed under a later production: stays unscored.
+  assert.equal(pageStarPatch({ ...timesStub(), publishDate: '2019-05-01' }, html, { show }), null);
+  // A bare ratingValue with no Review declaration is not trusted.
+  assert.equal(pageStarPatch(timesStub(), '<div>"ratingValue": 4</div>', { show }), null);
+  // Glyphs in teaser text are not structured data.
+  assert.equal(pageStarPatch(timesStub(), '<p>★★★★☆</p>', { show }), null);
+});
+
+const { extractReviews: extractTR } = require('../scrape-theatre-reviews.js');
+const { pickTheatreReviewsRoundup } = require('./theatre-reviews-discovery.js');
+
+test('TR parser keeps unlinked paywalled rows ("Times’", "The i’s"), drops guessed and unrated stars', () => {
+  const html = `<div class="entry-content">
+    <p>Intro text about the play.</p>
+    <p>3 stars ⭑⭑⭑</p>
+    <p>The Financial Times’ Sarah Hemming pointed out: ‘It is still an incredibly tough watch for anyone.’</p>
+    <p><a href="https://www.theguardian.com/stage/x">The Guardian</a>’s Arifa Akbar said: ‘an extraordinary evening at the theatre.’</p>
+    <p>1 star ⭑</p>
+    <p>The Times’ Clive Davis had no truck with it: ‘there is no depth or hinterland to any of it.’</p>
+    <p>(1 star assumed) The i’s Fiona Mountford regretted her decision: ‘Kane enthusiasts will find much to admire.’</p>
+    <p>0 stars –</p>
+    <p>The Mail‘s Patrick Marmion seemed to have some appreciation of the play: ‘it often feels relentless and random.’</p>
+  </div>`;
+  const rows = extractTR(html, 'cleansed-off-west-end-2026');
+  const by = Object.fromEntries(rows.map((r) => [r.outletId, r]));
+  assert.equal(by.financialtimes.critic, 'Sarah Hemming');
+  assert.equal(by.financialtimes.stars, 3);
+  assert.equal(by.financialtimes.url, '');
+  assert.equal(by.guardian.stars, 3);
+  assert.equal(by['times-uk'].critic, 'Clive Davis');
+  assert.equal(by['times-uk'].stars, 1);
+  assert.equal(by['i-paper'].critic, 'Fiona Mountford');
+  assert.equal(by['i-paper'].stars, null, 'TR guessed this rating');
+  assert.equal(by['daily-mail'].stars, null, '"0 stars" tier = critic published no rating');
+});
+
+test('TR round-up discovery uses the WP search API result, not just the homepage', () => {
+  const posts = [
+    { link: 'https://theatre.reviews/review/theatre-review-cleansed/', slug: 'theatre-review-cleansed', title: { rendered: 'Theatre review: Cleansed' } },
+    { link: 'https://theatre.reviews/reviews-roundup/cleansed-almeida-reviews/', slug: 'cleansed-almeida-reviews', title: { rendered: 'Cleansed &#8211; Almeida reviews' } },
+  ];
+  assert.equal(pickTheatreReviewsRoundup(posts, 'Cleansed'), 'https://theatre.reviews/reviews-roundup/cleansed-almeida-reviews/');
+  assert.equal(pickTheatreReviewsRoundup(posts, 'Golden Boy'), null);
+  assert.equal(pickTheatreReviewsRoundup(null, 'Cleansed'), null);
+  const src = fs.readFileSync(new URL('../gather-reviews.js', import.meta.url), 'utf8');
+  assert.match(src, /pickTheatreReviewsRoundup\(/, 'gather-reviews must use the API discovery');
+});
