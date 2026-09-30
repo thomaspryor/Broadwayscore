@@ -784,7 +784,7 @@
       "linearIdentifier": null
     },
     "bd-circuit-breaker-web_unlocker2": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1091/750 reqs)",
@@ -794,7 +794,8 @@
       "lastSurfacedAt": "2026-09-30T07:34:59.719Z",
       "notifyCount": 21,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "resolvedAt": "2026-09-30T19:42:11.516Z"
     },
     "bd-circuit-breaker-serp_api1": {
       "status": "open",
@@ -4723,7 +4724,7 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Validate market expansion",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-30T19:35:10.639Z",
+      "lastSeen": "2026-09-30T19:43:59.829Z",
       "lastNotifiedAt": "2026-09-30T13:08:17.223Z",
       "lastSurfacedAt": "2026-09-30T13:08:17.223Z",
       "notifyCount": 7,
@@ -7847,6 +7848,18 @@
       "lastSeen": "2026-09-30T19:26:23.659Z",
       "lastNotifiedAt": "2026-09-30T19:26:23.659Z",
       "lastSurfacedAt": "2026-09-30T19:26:23.659Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-4431-coverage": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: race red on land/bro-4431-coverage",
+      "firstSeen": "2026-09-30T19:43:36.096Z",
+      "lastSeen": "2026-09-30T19:43:36.096Z",
+      "lastNotifiedAt": "2026-09-30T19:43:36.096Z",
+      "lastSurfacedAt": "2026-09-30T19:43:36.096Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
