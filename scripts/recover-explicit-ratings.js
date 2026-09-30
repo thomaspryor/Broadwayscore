@@ -58,6 +58,7 @@ function loadShowTitles() {
         previewsStartDate: s.previewsStartDate,
         openingDate: s.openingDate,
         priorRuns: s.priorRuns,
+        tourLegs: s.tourLegs,
       });
     }
   } catch { /* fall through — predicate fails safe to exclude wrongShow files */ }
@@ -70,6 +71,10 @@ const showFor = (d) => (d.showId ? SHOW_TITLES.get(d.showId) : undefined);
 // CLI args
 // ---------------------------------------------------------------------------
 const args = process.argv.slice(2);
+if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
+  console.log('Usage: node scripts/recover-explicit-ratings.js [--dry-run] (see header comment for all flags)');
+  process.exit(0);
+}
 const DRY_RUN = args.includes('--dry-run');
 const PHASES = (() => {
   const p = args.find(a => a.startsWith('--phase='));

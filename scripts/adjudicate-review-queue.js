@@ -24,6 +24,7 @@ const { KNOWN_STAR_OUTLETS, buildUserPrompt } = require('./lib/adjudication-prom
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
 const { ADJUDICATED_NOTE_PREFIX } = require('./lib/wrong-production-autoclear');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { applyContaminationAllow, contaminationKindForQueueReason } = require('./lib/contamination-allow-signal');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -368,6 +369,13 @@ Respond with ONLY this JSON (no markdown fences):
               console.log(`  ⏭️  Skipping wrongProduction set — contentVerification already affirms this production (${cv.verifiedBy}, high confidence)`);
               sourceData.tourCheckVerified = 'false-positive';
               sourceData.tourCheckNote = `Auto-adjudicated wrong-market verdict overridden by CV affirmation: ${cv.reasoning ? cv.reasoning.slice(0, 200) : 'CV isValid=true, high confidence'}`;
+              // tourCheckVerified alone is read by nothing: the fullText tour/film
+              // guards (review-guards.js explainExclusion, rebuild-all-reviews.js)
+              // only stand down for allowTourSignal / allowFilmSignal, so without
+              // this the "legit" verdict left the review excluded forever.
+              applyContaminationAllow(sourceData,
+                contaminationKindForQueueReason(review.reason),
+                `adjudicate-review-queue ${new Date().toISOString().slice(0, 10)}: ${sourceData.tourCheckNote}`);
               fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
               console.log(`  ✅ Contamination adjudicated: correct-market (CV override) — ${result.reasoning}`);
               results.resolved++;
@@ -406,6 +414,10 @@ Respond with ONLY this JSON (no markdown fences):
           } else {
             sourceData.tourCheckVerified = 'false-positive';
             sourceData.tourCheckNote = `Auto-adjudicated: legitimate ${expectedType} review. ${result.reasoning}`;
+            // Same as the CV-override branch above: set the flag the guards read.
+            applyContaminationAllow(sourceData,
+              contaminationKindForQueueReason(review.reason),
+              `adjudicate-review-queue ${new Date().toISOString().slice(0, 10)}: ${sourceData.tourCheckNote}`);
           }
           fs.writeFileSync(filePath, JSON.stringify(sourceData, null, 2) + '\n');
           console.log(`  ✅ Contamination adjudicated: ${result.verdict} (${result.confidence}) — ${result.reasoning}`);

@@ -18,5 +18,22 @@
   "keyQuote": "it is just let down by this slightly by the Numbers narrative and by a very limiting narrow scope",
   "scoredAt": "2026-04-19T08:27:56.626Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/f9Tv_wB-gQY/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/f9Tv_wB-gQY/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "one of the west end's most recent new musical openings a transfer from Broadway MJ the musical",
+    "reason": "The video explicitly reviews the West End production of 'MJ The Musical', not the Broadway production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is reviewing 'one of the west end's most recent new musical openings a transfer from Broadway MJ the musical', indicating it is about the London production, not the Broadway one.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:59.960Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly reviews the West End production of 'MJ The Musical', not the Broadway production."
 }

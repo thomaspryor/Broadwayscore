@@ -50,7 +50,7 @@ const { execFileSync } = require('child_process');
 const { normalizeOutlet } = require('./lib/review-normalization');
 const { explainExclusion } = require('./lib/review-guards');
 const { resolveReviewTextsDir, mainWorktreeOf } = require('./lib/review-texts-dir');
-const { classifyGap, justifiesUrlResolution } = require('./lib/review-gap-triage');
+const { classifyGap, justifiesUrlResolution, isOtherProductionFile } = require('./lib/review-gap-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--json]';
@@ -260,8 +260,11 @@ function findReviewTextFiles(outletId, showId) {
   // sync doesn't inflate candidateCount or get exclusion-checked twice.
   const seenPaths = new Set();
   const allFiles = [...localFiles, ...originFiles].filter((f) => {
-    if (seenPaths.has(f.path)) return false;
-    seenPaths.add(f.path);
+    // Key on content too: a stale local copy must not shadow a corrected origin/main
+    // copy of the same path (BRO-4098 ship-check).
+    const key = `${f.path}\0${JSON.stringify(f.data)}`;
+    if (seenPaths.has(key)) return false;
+    seenPaths.add(key);
     return true;
   });
   const originError = [...treeErrors, ...readErrors].filter(Boolean).join('; ') || null;
@@ -378,10 +381,18 @@ function checkLiveProd(json, outletId) {
   const live = await fetchLiveShowJson(showId);
   const inLiveProd = live.checked ? checkLiveProd(live.json, outletId) : false;
 
-  const exclusionRule = resolveExclusion(reviewText.files, showRecord);
+  // BRO-4098: files belonging to a different production of the same title do
+  // not count as "ingested" for THIS production.
+  const currentFiles = [];
+  const otherProductionFiles = [];
+  for (const f of reviewText.files) {
+    const rule = f.data ? explainExclusion(f.data, showRecord, f.path) : null;
+    (isOtherProductionFile(f, showRecord, rule) ? otherProductionFiles : currentFiles).push(f);
+  }
+  const exclusionRule = resolveExclusion(currentFiles, showRecord);
 
   const state = classifyGap({
-    reviewTextsExists: reviewText.exists,
+    reviewTextsExists: currentFiles.length > 0,
     exclusionRule,
     inReviewsJson: reviewsJson.inEither,
     inLiveProd,
@@ -412,6 +423,7 @@ function checkLiveProd(json, outletId) {
       reviewTexts: {
         existsLocal: reviewText.files.some((f) => f.path.startsWith(reviewText.reviewTextsDir) && !f.path.includes('origin')),
         candidateCount: reviewText.files.length,
+        otherProductionPaths: otherProductionFiles.map((f) => f.path),
         anyPendingByline: reviewText.anyPending,
         paths: reviewText.files.map((f) => f.path),
         exclusionRule,
@@ -440,6 +452,7 @@ function checkLiveProd(json, outletId) {
     console.log(`  review-texts: ${reviewText.files.length} candidate file(s)${reviewText.anyPending ? ' [includes _pending no-byline strand — run replay-pending-bylines.js]' : ''}${exclusionRule ? ` [EXCLUDED: ${exclusionRule}]` : ''}${reviewText.originError ? ` [origin/main check FAILED: ${reviewText.originError}]` : ''}`);
     console.log(`  reviews.json: local=${reviewsJson.inLocal} origin/main=${reviewsJson.inOrigin}${reviewsJson.originError ? ` [origin/main check FAILED: ${reviewsJson.originError}]` : ''}`);
     console.log(`  live prod:    ${live.checked ? (live.showNotDeployed ? 'show not deployed at all (404)' : `present=${inLiveProd}`) : `unchecked (${live.err})`}`);
+    if (otherProductionFiles.length > 0) console.log(`  other-production: ${otherProductionFiles.length} file(s) ignored (different production of this title): ${otherProductionFiles.map((f) => path.basename(f.path)).join(', ')}`);
     for (const w of fetchWarnings) console.log(`  WARNING: ${w}`);
     if (gitErrors.length > 0) {
       console.log(`  WARNING: ${gitErrors.length} check(s) could not be completed — this classification may be understating pipeline progress. Do not treat '${state}' as final until these are resolved.`);

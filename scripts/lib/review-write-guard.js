@@ -240,6 +240,7 @@ const PROTECTED_FIELDS = [
   'allowTourSignal',
   'allowTourSignalReason',
   'allowFilmSignal',
+  'allowFilmSignalReason',
   'routedFromShowId',
   'urlVerified',
   // Provenance marker (BRO-121): distinguishes an automated flip-flop pin
@@ -317,6 +318,16 @@ const PROTECTED_FIELDS = [
   // ANY future, unrelated score loss on this file forever).
   'staleScoredBeforeOpening',
   'staleScoredBeforeOpeningAt',
+  // Same bug class, stale-automated-text-verdict.js: clearing a stale
+  // not_a_review/garbage_text verdict parks the score computed from the old
+  // body (llmScore/ensembleData/adjudicatedScore/assignedScore → null) and
+  // stamps these two, which the CLEAR_BREADCRUMBS entries below honor.
+  'staleTextVerdictScoreParked',
+  'staleTextVerdictScoreParkedAt',
+  // BRO-4391: one-shot stamp that a wrong_production verdict was re-judged with
+  // the show's declared priorRuns/tourLegs in the prompt. Dropping it would
+  // re-arm isPreContextWrongProduction and loop clear→rescore→re-reject.
+  'productionVerdictRecheckedAt',
   'needsRescore',
   // Task #1237 audit (same bug class as #97 above): apply-audit-flags.js deletes
   // fullText/assignedScore/ensembleData and sets fullTextWrongAuthor=true when a
@@ -631,6 +642,16 @@ const _freshStaleScoredBeforeOpening = (d) => {
 // never happens (file never re-collected) so the stamp can't suppress
 // restoring a later, unrelated fullText/score loss on this file indefinitely.
 const WRONG_AUTHOR_FRESH_DAYS = 3;
+// stale-automated-text-verdict.js parkTextDerivedScore(): same 3-day bridge
+// as _freshStaleScoredBeforeOpening; markRescoreComplete() retires the stamp
+// the moment the scorer writes a score for the new text.
+const _freshStaleTextVerdictScoreParked = (d) => _freshAutoClearStamp(d, {
+  flagField: 'staleTextVerdictScoreParked',
+  atField: 'staleTextVerdictScoreParkedAt',
+  days: STALE_SCORE_FRESH_DAYS,
+  flagIsString: false,
+});
+
 const _freshFullTextWrongAuthor = (d) => {
   if (!d || d.fullTextWrongAuthor !== true || !d.fullTextWrongAuthorAt) return false;
   const at = Date.parse(String(d.fullTextWrongAuthorAt));
@@ -923,10 +944,11 @@ const CLEAR_BREADCRUMBS = {
   // file, forever. 3 days comfortably covers the two same-job push-review-
   // texts calls opening-night-express.yml makes (and any immediate retry)
   // while still expiring long before it could mask a later real bug.
-  assignedScore: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d),
-  llmScore: _freshStaleScoredBeforeOpening,
+  assignedScore: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d) || _freshStaleTextVerdictScoreParked(d),
+  llmScore: (d) => _freshStaleScoredBeforeOpening(d) || _freshStaleTextVerdictScoreParked(d),
   llmMetadata: _freshStaleScoredBeforeOpening,
-  ensembleData: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d),
+  ensembleData: (d) => _freshStaleScoredBeforeOpening(d) || _freshFullTextWrongAuthor(d) || _freshStaleTextVerdictScoreParked(d),
+  adjudicatedScore: _freshStaleTextVerdictScoreParked,
   // apply-audit-flags.js (task #1237): deletes fullText alongside assignedScore/
   // ensembleData when a byline mismatch is detected — see PROTECTED_FIELDS
   // comment above and _freshFullTextWrongAuthor. fullText has no other
@@ -1076,8 +1098,65 @@ function preserveFlaggedFields(filePath, review) {
  * @param {boolean} [options.merge=true] - If true, merge with existing; if false, replace (still protected)
  * @returns {{ wrote: boolean, preserved: string[] }} Which protected fields were preserved
  */
+// Quarantine writes to _pending/<show>/ bypass safeWriteReview, so they need
+// the same sparse-checkout check: in a sparse clone a tracked _pending file
+// outside the sparse set would otherwise be replaced wholesale.
+function _writeQuarantine(pendingPath, content) {
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(pendingPath)) {
+    console.error(`[review-write-guard] NOT quarantining to ${pendingPath}: tracked but outside this sparse checkout`);
+    return false;
+  }
+  fs.writeFileSync(pendingPath, content);
+  return true;
+}
+
+// A quarantine that could not be saved must not be reported with a
+// quarantinedPath: writeReviewOrThrow treats that as a completed move and the
+// caller would delete the source (Codex ship-check 2026-09-25).
+const QUARANTINE_NOT_SAVED = { wrote: false, skipped: 'hidden-by-sparse-checkout' };
+
+/**
+ * safeWriteReview for MOVE/MERGE-then-delete callers: throws when the write
+ * did not land, so the caller's following unlink of the source never runs.
+ * safeWriteReview reports refusals (locked, quarantined, sparse-hidden target,
+ * conflict-marked target) as {wrote:false}; callers that ignored the result
+ * and deleted the source lost the review (review 2026-09-25: rebuild reroute,
+ * merge-slug-directories, audit-we-market-misroutes).
+ */
+function writeReviewOrThrow(filePath, newData, options = {}) {
+  const r = safeWriteReview(filePath, newData, options);
+  // A quarantine (date-implausible, cross-market, recreated-excluded-url)
+  // saved the payload to _pending/, so the move DID complete; throwing there
+  // would turn a finished move into a retry + error on every rebuild (review
+  // round 3). Only a refusal that saved the payload nowhere keeps the source.
+  if (!r || (r.wrote === false && !r.quarantinedPath)) {
+    throw new Error(`write to ${path.basename(filePath)} did not land (${(r && r.skipped) || 'no result'}) — source kept`);
+  }
+  return r;
+}
+
 function safeWriteReview(filePath, newData, options = {}) {
   const { force = false, merge = true } = options;
+  // A file missing only because this checkout is sparse is not new: writing it
+  // replaces the committed review wholesale on the next commit (2026-09-25,
+  // the-children-2017 WSJ; sparse-checkout-guard.js). Not bypassable by force.
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(filePath)) {
+    console.error(`[review-write-guard] BLOCKED write to ${path.basename(filePath)}: tracked in git but outside this sparse checkout`);
+    return { wrote: false, skipped: 'hidden-by-sparse-checkout' };
+  }
+  // An on-disk file with committed conflict markers can't be parsed, so the
+  // preserve/merge logic below would see "no existing record" and overwrite it
+  // with whichever side the caller read, silently dropping the other side's
+  // fields (e.g. a newer human override). Refuse; a person resolves it, then
+  // any writer works again. Deliberate repair flows pass overwriteConflicted.
+  if (!options.overwriteConflicted) {
+    let onDiskRaw = null;
+    try { onDiskRaw = fs.readFileSync(filePath, 'utf8'); } catch { /* absent/unreadable: nothing to protect */ }
+    if (onDiskRaw && require('./conflict-markers').hasConflictMarkers(onDiskRaw)) {
+      console.error(`[review-write-guard] BLOCKED write to ${path.basename(filePath)}: file on disk has git conflict markers — resolve it first`);
+      return { wrote: false, skipped: 'on-disk-conflict-markers' };
+    }
+  }
   const preserved = [];
   let lockedSkipped = false;
   // Set true by the date-plausibility/cross-market write-time guard (card
@@ -1282,7 +1361,7 @@ function safeWriteReview(filePath, newData, options = {}) {
               pendingReason: 'date_implausible',
               _dateImplausibleDetail: `publishDate ${newData.publishDate} is ${verdict.daysBefore}d before earliest show date ${verdict.earliestDate}`,
             };
-            fs.writeFileSync(pendingPath, JSON.stringify(quarantined, null, 2) + '\n');
+            if (!_writeQuarantine(pendingPath, JSON.stringify(quarantined, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
             console.warn(`[review-write-guard] date-implausible: ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${verdict.daysBefore}d before earliest date, not within priorRuns)`);
             return { wrote: false, skipped: 'date_implausible', quarantinedPath: pendingPath, daysBefore: verdict.daysBefore };
           }
@@ -1327,11 +1406,11 @@ function safeWriteReview(filePath, newData, options = {}) {
                 const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
                 fs.mkdirSync(pendingDir, { recursive: true });
                 const pendingPath = path.join(pendingDir, path.basename(filePath));
-                fs.writeFileSync(pendingPath, JSON.stringify({
+                if (!_writeQuarantine(pendingPath, JSON.stringify({
                   ...newData,
                   pendingReason: 'cross_market_contamination',
                   _crossMarketDetail: detail,
-                }, null, 2) + '\n');
+                }, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
                 console.warn(`[review-write-guard] cross-market (class A): ${parentDirName}/${path.basename(filePath)} → quarantined to _pending/${parentDirName}/${path.basename(filePath)} (${detail})`);
                 return {
                   wrote: false,
@@ -1343,6 +1422,39 @@ function safeWriteReview(filePath, newData, options = {}) {
               }
             }
           }
+        }
+      }
+    }
+  }
+
+  // Wrong-article write guard (BRO-4383). Text ARRIVING (new or changed fullText)
+  // that never names the show and carries no cast/creative/venue evidence is a
+  // different article. Recovery writers (wayback, WSJ, SERP) validate against a
+  // slug-derived title and accept coincidental id-word pairs, so two such texts
+  // were scored live (little-bear-ridge-road NYTheater, pied-a-terre WSJ). Stamp
+  // wrongShow in place (recoverable, keeps the text for audit) rather than drop.
+  // Only titleMentions===0 fires here; the ambiguous 1-mention class is left to
+  // the daily audit-wrong-article.js LLM pass. Respects human/auto clears.
+  if (newData && typeof newData.fullText === 'string' && !newData.wrongShow && !newData._auditAllowWrongArticle) {
+    const parentDirName = path.basename(path.dirname(filePath));
+    const grandparentDirName = path.basename(path.dirname(path.dirname(filePath)));
+    if (parentDirName && !parentDirName.startsWith('_') && !parentDirName.startsWith('.') && grandparentDirName !== '_pending') {
+      const show = _getShowById(parentDirName);
+      let onDiskForArticle = null;
+      try { onDiskForArticle = JSON.parse(fs.readFileSync(filePath, 'utf-8')); } catch { /* new/unreadable file */ }
+      const textArriving = !onDiskForArticle || onDiskForArticle.fullText !== newData.fullText;
+      const humanDecided = onDiskForArticle && (onDiskForArticle._locked === true || _wrongShowCleared(onDiskForArticle) || _freshWrongShowAutoClear(onDiskForArticle));
+      if (show && textArriving && !humanDecided) {
+        const verdict = require('./wrong-article-screen').screenWrongArticle(newData.fullText, show);
+        if (verdict.applicable && !verdict.sparseIdentity && verdict.suspect && verdict.titleMentions === 0) {
+          newData = {
+            ...newData,
+            wrongShow: true,
+            wrongShowReason: `Write guard (BRO-4383): fullText never names "${show.title}" and has no cast/creative/venue evidence for it — likely a different article`,
+            wrongShowAt: new Date().toISOString(),
+          };
+          invalidateWrongShowAutoClear(newData);
+          console.warn(`[review-write-guard] ${parentDirName}/${path.basename(filePath)} → auto-flagged wrongShow (incoming text never names the show)`);
         }
       }
     }
@@ -1534,9 +1646,15 @@ function safeWriteReview(filePath, newData, options = {}) {
             delete newData.urlVerified; delete newData.urlVerifiedAuto; delete newData.urlVerifiedNote;
           }
           const inv = applyUrlChangeInvariant(existing, newData, { fileLabel: path.basename(filePath) });
-          if (liftAutoPin && newData._urlChangedClear && Array.isArray(newData._urlChangedClear.cleared)) {
-            // Breadcrumb so restore-protected-fields.js treats the lifted pin as an
-            // intentional clear, not a loss to restore (urlVerified* are PROTECTED).
+          if (liftAutoPin) {
+            // Breadcrumb so the push-review-texts action's PROTECTED_FIELDS restore
+            // (isIntentionalClear) treats the lifted pin as intentional. The
+            // invariant only writes a fresh _urlChangedClear when it cleared
+            // something else, so build one for THIS swap when it didn't.
+            const bc = newData._urlChangedClear;
+            if (!(inv.changed && bc && bc.to === newData.url && Array.isArray(bc.cleared))) {
+              newData._urlChangedClear = { from: existing.url, to: newData.url, at: new Date().toISOString(), cleared: [] };
+            }
             for (const f of ['urlVerified', 'urlVerifiedAuto', 'urlVerifiedNote']) {
               if (!newData._urlChangedClear.cleared.includes(f)) newData._urlChangedClear.cleared.push(f);
             }
@@ -1621,11 +1739,11 @@ function safeWriteReview(filePath, newData, options = {}) {
         const pendingDir = path.join(path.dirname(path.dirname(filePath)), '_pending', parentDirName);
         fs.mkdirSync(pendingDir, { recursive: true });
         const pendingPath = path.join(pendingDir, path.basename(filePath));
-        fs.writeFileSync(pendingPath, JSON.stringify({
+        if (!_writeQuarantine(pendingPath, JSON.stringify({
           ...newData,
           pendingReason: 'recreated_previously_excluded_url',
           _recreatedPreviouslyExcludedUrlDetail: `url previously carried ${clearedOrphan.clearedFields.join('/')} on ${clearedOrphan.filename}, cleared ${clearedOrphan.at || 'at an unknown date'} when that file's own url changed away from this one`,
-        }, null, 2) + '\n');
+        }, null, 2) + '\n')) return { ...QUARANTINE_NOT_SAVED };
         console.warn(`[review-write-guard] ${path.basename(filePath)}: quarantined to _pending/${parentDirName}/${path.basename(filePath)} — url previously excluded (${clearedOrphan.clearedFields.join(', ')}) on ${clearedOrphan.filename}, cleared via url change, no live verdict to rescue`);
         return { wrote: false, skipped: 'recreated_previously_excluded_url', quarantinedPath: pendingPath };
       }
@@ -1886,6 +2004,10 @@ function safeWriteReview(filePath, newData, options = {}) {
       }
     }
   }
+
+  // BRO-4403: last stop before disk — no writer can (re)introduce an
+  // HTML-escaped url or a leaked leading <img> in fullText.
+  newData = require('./review-url-entity-decode').sanitizeReviewRecord(newData);
 
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved, lockedSkipped, ...(autoFlaggedWrongProduction ? { autoFlaggedWrongProduction: true } : {}) };
@@ -2654,12 +2776,17 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
     return { wrote: false, skipped: 'noop' };
   }
 
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(dstPath)) {
+    console.error(`[review-write-guard] Refusing rename onto ${path.basename(dstPath)}: tracked but outside this sparse checkout`);
+    return { wrote: false, skipped: 'hidden-by-sparse-checkout' };
+  }
+
   if (fs.existsSync(dstPath)) {
     return { wrote: false, skipped: 'conflict', conflictPath: dstPath };
   }
 
   fs.mkdirSync(path.dirname(dstPath), { recursive: true });
-  const contentToWrite = (newData && typeof newData === 'object') ? newData : srcData;
+  let contentToWrite = (newData && typeof newData === 'object') ? newData : srcData;
   // A file flagged as a duplicate of `dstFile` that is now being renamed ONTO
   // that name (byline identified: outlet--unknown.json → outlet--critic.json)
   // would carry the pointer along and become a duplicate of itself — silently
@@ -2688,6 +2815,7 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
       contentToWrite.showId = dstDirName;
     }
   }
+  contentToWrite = require('./review-url-entity-decode').sanitizeReviewRecord(contentToWrite); // BRO-4403
   fs.writeFileSync(dstPath, JSON.stringify(contentToWrite, null, 2) + '\n');
   fs.unlinkSync(srcPath);
 
@@ -3012,4 +3140,4 @@ function _urlCorroboration(url, record) {
   return n;
 }
 
-module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming };
+module.exports = { safeWriteReview, safeRenameReview, safeUnlinkReview, checkForDataLoss, getEffectiveProtectedFields, checkUrlCollision, isExcludedIgnoringDuplicate, shouldMarkUrlCollisionDuplicate, shouldMarkPostCorrectionDuplicate, wouldFormDuplicateCycle, coerceAssignedScore, shouldSkipPollerUpdate, shouldSkipLockedEnrichment, hasPlaceholderUrlPattern, preserveFlaggedFields, protectStagedDeletions, PROTECTED_FIELDS, CLEAR_BREADCRUMBS, isIntentionalClear, invalidateWrongProductionAutoClear, isFreshWrongProductionAutoClear: _freshWrongProductionAutoClear, invalidateWrongShowAutoClear, isFreshWrongShowAutoClear: _freshWrongShowAutoClear, _setShowsCacheForTest, SUBSTANTIVE_BODY_CHARS, NEAR_EMPTY_BODY_CHARS, _flipFlopShouldTakeIncoming, writeReviewOrThrow };

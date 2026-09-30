@@ -531,7 +531,34 @@ function selectAutoApplyClosures(candidates, showsById, todaytixMissingState, to
   return applied;
 }
 
+/**
+ * Open OB shows neither closing signal can ever flag: no todaytixId (no
+ * staleness diff), no review-text dir (no boilerplate sweep), and no stored
+ * closingDate. Spellbound (SoHo Playhouse, OvationTix-only) sat `open` for two
+ * days past its 2026-09-06 close until a reader emailed in (BRO-3086). Reported
+ * so the blind spot is visible instead of silent; only shows past
+ * `graceDays` since opening are listed (brand-new shows have no reviews yet).
+ *
+ * @param {object[]} obShows open off-broadway shows
+ * @param {(showId: string) => boolean} hasReviewTexts
+ * @param {string} todayISO
+ * @param {number} [graceDays=10]
+ */
+function findUnmonitoredOpenShows(obShows, hasReviewTexts, todayISO, graceDays = 10) {
+  return (obShows || [])
+    .filter((s) => s.status === 'open' && !s.closingDate && (!s.todaytixId || s.todaytixStalenessIgnore === true))
+    .filter((s) => !hasReviewTexts(s.id))
+    .filter((s) => s.openingDate && daysBetween(s.openingDate, todayISO) >= graceDays)
+    .map((s) => ({
+      showId: s.id,
+      openingDate: s.openingDate,
+      daysOpen: daysBetween(s.openingDate, todayISO),
+      ticketPlatforms: (s.ticketLinks || []).map((l) => l.platform).filter(Boolean),
+    }));
+}
+
 module.exports = {
+  findUnmonitoredOpenShows,
   MONTH_NAMES,
   AUTO_APPLY_MIN_TODAYTIX_MISSING_CHECKS,
   AUTO_APPLY_MIN_TODAYTIX_MISSING_DAYS,

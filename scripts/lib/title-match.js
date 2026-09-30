@@ -221,6 +221,27 @@ const VENUE_ALIASES = [
     canonical: 'irish rep',
     matches: [/irish\s*repertory/i, /^irish\s*rep/i],
   },
+  // BRO-4381: TheaterMania writes the bare "HERE" and "Gural Theatre at
+  // A.R.T/New York"; shows.json has "HERE Arts Center" and "Jeffrey and Paula
+  // Gural Theatre at A.R.T./New York Theatres". HERE is anchored (a common
+  // word); Gural keys on the stage name, not A.R.T., whose Mezzanine Theatre
+  // is a separate room.
+  {
+    canonical: 'here arts center',
+    // Optional trailing "(Mainstage)"-style room qualifier: the alias check
+    // returns before the parenthetical strip, so both spellings must hit.
+    matches: [/^here(?:\s+arts?\s+cent(?:er|re))?(?:\s*\([^)]*\))?$/i],
+  },
+  {
+    canonical: 'art gural',
+    matches: [/\bgural\s+theat/i],
+  },
+  // Lincoln Center's LCT3 stage: "LCT3 at the Claire Tow Theater" in
+  // shows.json, bare "Claire Tow Theater" on TheaterMania (BRO-4381).
+  {
+    canonical: 'claire tow',
+    matches: [/claire\s*tow/i],
+  },
   // Roundabout's Steinberg Center houses TWO stages: the Laura Pels and the
   // Black Box. Black Box must be checked FIRST (aliases scan in order) or the
   // bare /steinberg center/ fallback collapses it onto the Pels key.

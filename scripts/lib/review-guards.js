@@ -1659,6 +1659,58 @@ function wrongShowCleared(data) {
   );
 }
 
+/**
+ * True when a human has cleared the verdict an orphaned/stale `rejectedAt`
+ * most likely recorded, so the rejectedAt backstop must defer. rejectedAt
+ * survives after its rejectionReason is cleared, and it does not say WHICH
+ * verdict it stamped, so:
+ *   - a human wrongProduction clear defers it (2026-04-22, the four audit
+ *     B-class clears: giant-2026, heart-wall-we, shedevil-we, authenticator-we);
+ *   - a human wrongShow clear defers it only with evidence the rejection WAS
+ *     wrong_show (_rejectionWasWrongShow) — clearing a wrong-show verdict says
+ *     nothing about a (possibly nulled) not_a_review / wrong_production one.
+ *     stranger-things-the-first-shadow-west-end-2023/timeout-london--andrzej-
+ *     lukowski.json carried wrongShowOverride (Sonnet-confirmed real review)
+ *     and stayed excluded as 'rejectedAt' (2026-09-29).
+ * Shared by explainExclusion and rebuild-all-reviews.js's rejectedAt guard.
+ */
+/**
+ * `later` is strictly after `earlier` — both parsed with Date.parse, so mixed
+ * ISO / date-only / offset stamps compare as instants, not as strings.
+ * Unparseable or missing on either side → false. Shared by the rejectedAt
+ * re-fetch exception (here + rebuild-all-reviews.js) and
+ * stale-automated-text-verdict.js so all three agree on "fetched after".
+ */
+function isTimestampAfter(later, earlier) {
+  const a = Date.parse(later == null ? '' : String(later));
+  const b = Date.parse(earlier == null ? '' : String(earlier));
+  return Number.isFinite(a) && Number.isFinite(b) && a > b;
+}
+
+// Evidence that an orphaned rejectedAt stamped a WRONG-SHOW verdict. The
+// clear-failure-flags "Hamlet" shape (rejectionReason nulled, rejectedBy +
+// rejectionReasoning left behind) records some other verdict and must NOT be
+// deferred by a wrongShow clear. A fully stripped block (no reason, no
+// rejectedBy, no reasoning — only the stamp) is what the wrong-show clear
+// scripts leave (stranger-things WE timeout-london); a reasoning text that
+// names a wrong-show call counts too.
+function _rejectionWasWrongShow(data) {
+  if (data.rejectionReason === 'wrong_show') return true;
+  if (typeof data.rejectionReasoning === 'string' && /wrong[_ -]?show/i.test(data.rejectionReasoning)) return true;
+  return data.rejectionReason == null && data.rejectedBy == null && data.rejectionReasoning == null;
+}
+
+function rejectedAtHumanCleared(data) {
+  if (!data) return false;
+  if (
+    data.wrongProductionManualClear === true ||
+    data.wrongProductionOverride === true ||
+    data.humanReviewedWrongProduction === false
+  ) return true;
+  const wsHumanCleared = data.wrongShowManualClear === true || data.wrongShowOverride === true;
+  return wsHumanCleared && _rejectionWasWrongShow(data);
+}
+
 const WRONG_SHOW_TITLE_STOPWORDS = new Set([
   'the','a','an','of','and','or','for','to','in','on','at','with','as','by',
   'is','are','was','were','be','been','it','this','that','these','those',
@@ -3620,6 +3672,10 @@ function resolveStaleWrongProductionRecovery(data, discoveredUrl, show) {
   return { url: discoveredUrl, oldUrl };
 }
 
+// A review published more than this many years after a sibling's run closed is not
+// a review of that sibling (BRO-4404). Retrospectives within the window still route.
+const MAX_YEARS_AFTER_CLOSE = 2;
+
 /**
  * Cross-production reroute decision (URL-year guard).
  *
@@ -3673,6 +3729,7 @@ function pickRerouteTarget(currentShowYear, siblings, detectedYear, currentShowR
     if (!sib || !sib.year || !sib.id) continue;
     const dist = Math.abs(detectedYear - sib.year);
     if (dist >= distToCurrent) continue; // not closer than current
+    if (Number.isFinite(sib.endYear) && detectedYear > sib.endYear + MAX_YEARS_AFTER_CLOSE) continue;
     if (
       best === null ||
       dist < best.distance ||
@@ -3682,6 +3739,11 @@ function pickRerouteTarget(currentShowYear, siblings, detectedYear, currentShowR
     }
   }
   if (!best) return { action: 'keep' };
+  // BRO-4404: a sibling whose run CLOSED more than MAX_YEARS_AFTER_CLOSE before the
+  // review's year cannot be what the review is about (romeo-and-juliet-2013/
+  // observer--unknown.json: a 2017 Met OPERA review was routed into the 2013
+  // Broadway play, which closed in 2013, because 2013 was merely nearer than
+  // 2026). Skipped in the loop above; kept here as a pointer for readers.
   return { action: 'reroute', ...best };
 }
 
@@ -3721,6 +3783,7 @@ function buildMultiProdYearGuard(shows) {
         id: p.id,
         year: p.openingDate ? parseInt(p.openingDate.slice(0, 4))
           : p.previewsStartDate ? parseInt(p.previewsStartDate.slice(0, 4)) : null,
+        endYear: p.closingDate ? parseInt(p.closingDate.slice(0, 4)) : null,
       })).filter(p => p.year);
       if (siblings.length > 0) guard[show.id] = { showYear, siblings };
     }
@@ -3779,6 +3842,98 @@ function buildMultiProdYearGuard(shows) {
  * referenced entry is also excluded; mirroring that precisely requires context
  * this predicate doesn't have.
  */
+/**
+ * Named non-review URL rule (BRO-4101), as a pure predicate shared by
+ * explainExclusion() AND rebuild-all-reviews.js's inline loop. Until
+ * 2026-09-25 only explainExclusion had it, so the rule never reached
+ * reviews.json (nytg /show/ listings and Stage /news/ items stayed live).
+ * Scope and escape hatch are documented at its call site in explainExclusion.
+ * @param {object} data review-text record
+ * @returns {boolean}
+ */
+function isNamedNonReviewUrlRecord(data) {
+  return Boolean(
+    data && data.url && data.namedNonReviewUrlManualClear !== true &&
+    // review-file-writer's human override (ingest --allow-non-review-url) is spread onto the record
+    data.allowNonReviewUrl !== true &&
+    require('./non-review-url-patterns').namedNonReviewReason(data.url, {
+      // allSources entries (BRO-4386 ticket-seller product pages) are non-reviews
+      // whichever path wrote them: the leak came via submit-review-form.
+      allSourcesOnly: !require('./unvetted-serp-sources').isUnvettedSerpSource(data.source),
+    })
+  );
+}
+
+// Freshness-bounded auto-clear check, shared by every wpCleared site in explainExclusion and isRejectedAtExclusion (module-level so both can call it).
+// review-write-guard.js's own use of this stamp (isFreshWrongProductionAutoClear)
+// is deliberately freshness-gated: a years-old stamp on a file that was
+// legitimately re-flagged later must not keep suppressing exclusion forever.
+// Lazy require avoids a load-order cycle — review-write-guard.js lazy-requires
+// this file for wrongShowCleared.
+function isFreshWpAutoCleared(d) {
+  try {
+    return !!require('./review-write-guard').isFreshWrongProductionAutoClear(d);
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Canonical rejectionReason exclusion (BRO-4404). explainExclusion AND
+ * rebuild-all-reviews.js both call this — rebuild used to carry a narrower inline
+ * copy (structural-star exception only), so JSON-LD-star and excerpt-scored
+ * not_a_review files were includable per the guards but dropped by rebuild.
+ * Returns true when the file must be excluded.
+ */
+function isRejectedByReasonExclusion(data) {
+  if (!data) return false;
+  if (data.rejectionReason) {
+    const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
+      (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
+      require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
+    // Excerpt-sourced fallback: 'not_a_review' fires when the FULLTEXT fetch itself was
+    // garbage (paywall bounce page, archive snapshot of a "your subscription has lapsed"
+    // notice) — a fetch-quality failure, not evidence the review doesn't exist. When the
+    // file also carries an aggregator excerpt (BWW/DTLI/Show-Score/...) with a real star
+    // rating, that content is independent of the bad fullText and is scoreable via the
+    // excerpt path (mirrors the #501/#502 fullText:null+bwwExcerpt fix for the case where
+    // fullText is present but junk instead of absent). Confirmed live 2026-08-01:
+    // times-uk--clive-davis.json on the-comedy-about-spies-west-end-2026 — fullText was a
+    // Wayback snapshot of a Times subscription-lapsed page (correctly not_a_review), but
+    // bwwExcerpt held a real review quote and aggregatorStars held Show-Score's 4/5.
+    // Scoped to 'not_a_review' only — 'garbage_text' is a stronger, collector-time signal.
+    // hasStructuralStarScore (below) is the one exception that DOES cover 'garbage_text' —
+    // it isn't reading the rejected prose, it's reading page markup, so the reason the
+    // prose was rejected doesn't matter.
+    return !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data);
+  }
+  return false;
+}
+
+/**
+ * Canonical rejectedAt exclusion (BRO-4404); see isRejectedByReasonExclusion.
+ * Returns true when the file must be excluded.
+ */
+function isRejectedAtExclusion(data) {
+  if (!data) return false;
+  if (data.rejectedAt && typeof data.rejectedAt === 'string') {
+    const reFetched = isTimestampAfter(data.textFetchedAt, data.rejectedAt);
+    const wpCleared = rejectedAtHumanCleared(data) || isFreshWpAutoCleared(data);
+    // Exception 3: matches the rejectionReason exception — not_a_review + json-ld star
+    // from a known star outlet clears the rejectedAt gate as well.
+    const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
+      (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
+      require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
+    // Exception 4: matches the rejectionReason exception above — an
+    // independent aggregator excerpt + star rating clears the rejectedAt gate too, for
+    // the same reason: the rejection was about the fullText fetch, not this content.
+    // Exception 5: matches hasStructuralStarScore above — a markup-based star score
+    // never read the rejected prose, so it clears the rejectedAt gate too.
+    return !reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data);
+  }
+  return false;
+}
+
 function explainExclusion(data, show, filePath) {
   if (!data) return 'no-data';
 
@@ -3810,20 +3965,6 @@ function explainExclusion(data, show, filePath) {
       !!(data.llmScore && data.llmScore.score != null);
     if (!placeholderCleared) return 'previewPlaceholder';
   }
-
-  // Freshness-bounded auto-clear check, shared by the 3 wpCleared sites below.
-  // review-write-guard.js's own use of this stamp (isFreshWrongProductionAutoClear)
-  // is deliberately freshness-gated: a years-old stamp on a file that was
-  // legitimately re-flagged later must not keep suppressing exclusion forever.
-  // Lazy require avoids a load-order cycle — review-write-guard.js lazy-requires
-  // this file for wrongShowCleared.
-  const isFreshWpAutoCleared = (d) => {
-    try {
-      return !!require('./review-write-guard').isFreshWrongProductionAutoClear(d);
-    } catch {
-      return false;
-    }
-  };
 
   // S3-T6: CV-promotion-deferred reviews are explicitly includable.
   //
@@ -4084,11 +4225,7 @@ function explainExclusion(data, show, filePath) {
   // matching a named pattern has no way to keep it scored short of lying
   // about the URL or source. Same direct-check pattern as
   // wrongProductionManualClear elsewhere in this file.
-  if (
-    data.url && data.namedNonReviewUrlManualClear !== true &&
-    require('./unvetted-serp-sources').isUnvettedSerpSource(data.source) &&
-    require('./non-review-url-patterns').namedNonReviewReason(data.url)
-  ) return 'namedNonReviewUrl';
+  if (isNamedNonReviewUrlRecord(data)) return 'namedNonReviewUrl';
   if (
     (data.isNonReview === true && !isNonReviewDemotedByFreshCV(data)) ||
     data.isNotReview === true ||
@@ -4191,26 +4328,7 @@ function explainExclusion(data, show, filePath) {
   // even when the outlet's JSON-LD schema records an explicit star rating. The json-ld
   // star IS the critic's published verdict — authoritative for KNOWN_STAR_OUTLETS. Allow
   // inclusion so the P0.5 path in getBestScore can use the structured-data score.
-  if (data.rejectionReason) {
-    const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
-      (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
-      require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
-    // Excerpt-sourced fallback: 'not_a_review' fires when the FULLTEXT fetch itself was
-    // garbage (paywall bounce page, archive snapshot of a "your subscription has lapsed"
-    // notice) — a fetch-quality failure, not evidence the review doesn't exist. When the
-    // file also carries an aggregator excerpt (BWW/DTLI/Show-Score/...) with a real star
-    // rating, that content is independent of the bad fullText and is scoreable via the
-    // excerpt path (mirrors the #501/#502 fullText:null+bwwExcerpt fix for the case where
-    // fullText is present but junk instead of absent). Confirmed live 2026-08-01:
-    // times-uk--clive-davis.json on the-comedy-about-spies-west-end-2026 — fullText was a
-    // Wayback snapshot of a Times subscription-lapsed page (correctly not_a_review), but
-    // bwwExcerpt held a real review quote and aggregatorStars held Show-Score's 4/5.
-    // Scoped to 'not_a_review' only — 'garbage_text' is a stronger, collector-time signal.
-    // hasStructuralStarScore (below) is the one exception that DOES cover 'garbage_text' —
-    // it isn't reading the rejected prose, it's reading page markup, so the reason the
-    // prose was rejected doesn't matter.
-    if (!isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data)) return 'rejectionReason';
-  }
+  if (isRejectedByReasonExclusion(data)) return 'rejectionReason';
   if (data.rejectedBy && Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return 'rejectedByMultipleModels';
   // Canonical exclusion signal: rejectedAt timestamp is set by llm-scoring when the ensemble
   // rejects a review (wrong_production, wrong_show, not_a_review, garbage_text). It is only
@@ -4229,25 +4347,7 @@ function explainExclusion(data, show, filePath) {
   // authenticator-we): LLM ensemble told "show context specifies Broadway" for WE shows
   // rejected them, and wrongProductionManualClear alone couldn't override the rejectedAt
   // guard. See Notion card 34b637c5-416f-81ff-a6d6-d453e7ed537c.
-  if (data.rejectedAt && typeof data.rejectedAt === 'string') {
-    const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
-    const wpCleared =
-      data.wrongProductionManualClear === true ||
-      data.wrongProductionOverride === true ||
-      data.humanReviewedWrongProduction === false ||
-      isFreshWpAutoCleared(data);
-    // Exception 3: matches the rejectionReason exception above — not_a_review + json-ld star
-    // from a known star outlet clears the rejectedAt gate as well.
-    const isJsonLdStarNotAReview = data.rejectionReason === 'not_a_review' &&
-      (data.originalScoreSource === 'json-ld' || data.aggregatorStarsSource === 'json-ld') &&
-      require('./score-extractors').KNOWN_STAR_OUTLETS.has(data.outletId);
-    // Exception 4: matches the rejectionReason exception above (line ~2650) — an
-    // independent aggregator excerpt + star rating clears the rejectedAt gate too, for
-    // the same reason: the rejection was about the fullText fetch, not this content.
-    // Exception 5: matches hasStructuralStarScore above — a markup-based star score
-    // never read the rejected prose, so it clears the rejectedAt gate too.
-    if (!reFetched && !wpCleared && !isJsonLdStarNotAReview && !hasIndependentExcerptScore(data) && !hasStructuralStarScore(data)) return 'rejectedAt';
-  }
+  if (isRejectedAtExclusion(data)) return 'rejectedAt';
 
   // Stale wrong-content flag: rebuild's drift-checker excludes this at line 3158.
   // Clear condition: wrongShow + wrongProduction are both gone AND text is substantial.
@@ -5036,6 +5136,8 @@ function isReviewContentTrustworthy(data) {
 }
 
 module.exports = {
+  isRejectedByReasonExclusion,
+  isRejectedAtExclusion,
   buildMultiProdYearGuard,
   shouldSkipScoredReview,
   pickBestDtliSlug,
@@ -5085,6 +5187,8 @@ module.exports = {
   isNonReviewDemotedByFreshCV,
   cvWrongArticleManuallyCleared,
   wrongShowCleared,
+  rejectedAtHumanCleared,
+  isTimestampAfter,
   isLikelyStaleSuspectedMisattribution,
   getCriticRegistry,
   _resetCriticRegistryCache,
@@ -5116,6 +5220,7 @@ module.exports = {
   resolveStaleWrongProductionRecovery,
   pickRerouteTarget,
   isIncludableForRebuild,
+  isNamedNonReviewUrlRecord,
   explainExclusion,
   duplicateOfInheritedFlag,
   hasStructuralStarScore,

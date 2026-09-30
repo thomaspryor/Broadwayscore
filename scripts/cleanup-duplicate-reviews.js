@@ -32,6 +32,7 @@ const {
   mergeReviews,
   getOutletDisplayName,
 } = require('./lib/review-normalization');
+const { resolveUrlEditionOutletId } = require('./lib/outlet-canonicalize');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
 // ─── Lazy-loaded show record map for mergeReviews' wrong-production URL-swap
@@ -167,12 +168,20 @@ function processShow(showId) {
       const filePath = path.join(showDir, file);
       const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
 
-      const key = generateReviewKey(data.outlet, data.criticName);
-      const canonicalFilename = generateReviewFilename(data.outlet, data.criticName);
+      // Identity comes from the URL edition when there is one, so a
+      // timeout.com/london review named "Time Out" groups (and is filed)
+      // with timeout-london, never with Time Out New York.
+      const resolved = resolveUrlEditionOutletId({ outletName: data.outlet || data.outletId, url: data.url });
+      const outletId = resolved.outletId;
+      const key = generateReviewKey(outletId, data.criticName);
+      const canonicalFilename = generateReviewFilename(outletId, data.criticName);
 
       if (!reviewGroups.has(key)) {
         reviewGroups.set(key, {
           key,
+          outletId,
+          // URL edition disagrees with the file's own outletId (single-file fix below).
+          editionFix: resolved.source === 'url-edition' && normalizeOutlet(data.outletId || '') !== outletId,
           canonicalFilename,
           files: [],
           reviews: [],
@@ -210,8 +219,10 @@ function processShow(showId) {
         mergedReview = mergeReviews(mergedReview, group.reviews[i], {}, { script: 'cleanup-duplicate-reviews', showId, show: _getShowById(showId) });
       }
 
-      // Normalize the outlet and critic names in the merged review
-      mergedReview.outletId = normalizeOutlet(mergedReview.outlet);
+      // Normalize the outlet and critic names in the merged review. The URL
+      // edition wins over the display name (timeout.com/london must not
+      // collapse to "timeout" just because outlet reads "Time Out").
+      mergedReview.outletId = group.outletId;
       mergedReview.outlet = getOutletDisplayName(mergedReview.outletId);
 
       // Try to restore LLM score from backup
@@ -242,9 +253,12 @@ function processShow(showId) {
       const currentFile = group.files[0];
       const canonicalFilename = group.canonicalFilename;
 
-      if (currentFile !== canonicalFilename) {
+      // Also correct a correctly-named file whose outletId disagrees with its
+      // URL edition (the name already carries the resolved outlet).
+      const needsOutletFix = group.editionFix;
+      if (currentFile !== canonicalFilename || needsOutletFix) {
         if (verbose) {
-          console.log(`  Rename: ${currentFile} -> ${canonicalFilename}`);
+          console.log(`  ${currentFile !== canonicalFilename ? `Rename: ${currentFile} -> ${canonicalFilename}` : `Outlet: ${currentFile} ${group.reviews[0].outletId} -> ${group.outletId}`}`);
         }
 
         if (!dryRun) {
@@ -253,7 +267,7 @@ function processShow(showId) {
 
           // Update the review data with normalized names
           const data = group.reviews[0];
-          data.outletId = normalizeOutlet(data.outlet);
+          data.outletId = group.outletId;
           data.outlet = getOutletDisplayName(data.outletId);
 
           // Try to restore LLM score from backup
@@ -367,7 +381,7 @@ function processFromAudit() {
     }
 
     // Normalize
-    merged.outletId = normalizeOutlet(merged.outlet);
+    merged.outletId = resolveUrlEditionOutletId({ outletName: merged.outlet, url: merged.url }).outletId;
     merged.outlet = getOutletDisplayName(merged.outletId);
 
     // Restore LLM scores

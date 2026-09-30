@@ -112,6 +112,7 @@ const {
   decideEmptyBodyRecovery,
   nextRecoveryCount,
   filledDateOutsideWindow,
+  filledDateOutsideWindowNote,
 } = require('./lib/flagged-recovery');
 // Same set the rebuild's aggregatorStars-fallback scores from (P5.7) — the
 // star fallback below must not write stars the rebuild would then ignore.
@@ -232,6 +233,7 @@ const {
 } = require('./lib/gap-audit-checkpoint');
 const loadCheckpoint = () => loadCheckpointFile(CHECKPOINT_PATH);
 const { blastRadiusCheck } = require('./lib/coverage-gate');
+const { auditExitDecision } = require('./lib/aggregator-gap-audit-exit');
 
 // Non-review host/path patterns — canonical copy lives in
 // scripts/lib/non-review-url-patterns.js (task #907 ship-check finding:
@@ -1526,7 +1528,7 @@ function bumpRecoveryCount(showId, file, value) {
 // file (a fill, not a sibling). The retry counter is bumped regardless of fetch
 // outcome (see bumpRecoveryCount) so the cap actually halts retries. Returns the
 // per-flaggedMiss outcome for logging + the audit JSON.
-function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null) {
+function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null) {
   // Re-run the cap/url decision against the CURRENT on-disk file, not the
   // reconstructed flaggedMiss view. The audit JSON can be minutes stale, and a
   // parallel session/workflow may have FILLED the file since detection —
@@ -1595,10 +1597,11 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null) {
     // this entry — flag it here instead of shipping it to validate-data.js
     // (which went red on main when the sweep filled a 2021 'Sessions' review
     // into Tender's Times slot).
-    if (recovered && filledDateOutsideWindow(after.publishDate, openingDate)) {
+    // `show` lets a date inside a declared priorRuns/tourLegs window pass.
+    if (recovered && filledDateOutsideWindow(after.publishDate, openingDate, show)) {
       after.wrongProduction = true;
       invalidateWrongProductionAutoClear(after);
-      after.wrongProductionNote = `auto-flag: filled text dated ${after.publishDate}, outside the production window around opening ${openingDate} (post-fill recovery guard)`;
+      after.wrongProductionNote = filledDateOutsideWindowNote(after.publishDate, openingDate);
       safeWriteReview(fp, after, { force: true });
       recovered = false;
       reason = `filled text dated ${after.publishDate} — outside production window, flagged wrongProduction`;
@@ -1995,7 +1998,7 @@ async function main(argv = process.argv.slice(2)) {
         const recCapped = recoverables.slice(recBudget);
         r.recoveryResults = [];
         for (const m of budget) {
-          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate);
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate, s);
           if (!res.skipped) perShowFetches++;
           r.recoveryResults.push(res);
           if (res.skipped) {
@@ -2052,7 +2055,7 @@ async function main(argv = process.argv.slice(2)) {
             recoverableCritic: d.criticName || null,
             recoverableCount: d.aggUrlRecoveryCount || 0,
           };
-          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate);
+          const res = recoverEmptyBodyFlaggedMiss(r.showId, m, s.openingDate, s);
           if (!res.skipped) perShowFetches++;
           r.recoveryResults = r.recoveryResults || [];
           r.recoveryResults.push({ ...res, uncited: true });
@@ -2652,7 +2655,7 @@ async function main(argv = process.argv.slice(2)) {
   // sat parked — the workflow now makes real progress (the fix's whole
   // point) but still surfaces loudly until a human resolves or overrides the
   // specific quarantined shows.
-  const exitCode = (!dryRun && !blast.ok) ? 1 : ((failOnGap && runWithGap > 0) ? 1 : 0);
+  const { exitCode } = auditExitDecision({ dryRun, blast, failOnGap, runWithGap });
   try { await scraperCleanup(); } catch { /* best-effort */ }
   process.exit(exitCode);
 }

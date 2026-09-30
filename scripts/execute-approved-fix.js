@@ -191,6 +191,22 @@ function executeDataEdit(action) {
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
     }
+    if (field === 'images') {
+      const { crossShowImageProblems } = require('./lib/cross-show-images.js');
+      if (!newValue || typeof newValue !== 'object' || Array.isArray(newValue)) {
+        return { ok: false, reason: 'images: newValue must be an object' };
+      }
+      for (const [k, v] of Object.entries(newValue)) {
+        if (!['thumbnail', 'poster', 'hero'].includes(k)) return { ok: false, reason: `images: unexpected key "${k}"` };
+        if (v !== null && typeof v !== 'string') return { ok: false, reason: `images.${k}: must be a string or null` };
+        if (typeof v === 'string' && !v.startsWith('/images/shows/')) return { ok: false, reason: `images.${k}: only local /images/shows/ paths or null` };
+        if (typeof v === 'string' && !fs.existsSync(path.join(ROOT, 'public', v))) return { ok: false, reason: `images.${k}: ${v} does not exist` };
+      }
+      const cross = crossShowImageProblems({ id: showId, images: newValue }, shows);
+      if (cross.length) {
+        return { ok: false, reason: `images: ${cross.map(c => `${c.key} -> ${c.owner}`).join(', ')} is another show's art (BRO-4380)` };
+      }
+    }
 
     shows[idx][field] = newValue;
     // `shows` was mutated in place and (for the object-root shape) IS

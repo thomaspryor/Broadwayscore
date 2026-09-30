@@ -32,6 +32,17 @@ const crypto = require('crypto');
 const { getOutletDisplayName, normalizeOutlet: normalizeOutletCanonical, normalizeCritic: normalizeCriticCanonical, generateReviewFilename, isJunkOutlet, loadCriticRegistry, outletOwnsUrlDomain, reviewSlugNamesDifferentShow } = require('./lib/review-normalization');
 const { decideUnknownTwinUrlCarry, decideDuplicateTwinUrlCarry } = require('./lib/review-text-identity');
 const { BLOCKLIST_FILENAME } = require('./lib/poller-blocklist');
+const { parseAgreeingConflictedReview } = require('./lib/conflict-markers');
+// Pre-pass readers (sort metadata, dup-cycle siblings) must see the same
+// record the main loop keeps for a conflict-marked file, or the dedup
+// tie-break ranks it from defaults and can still drop it (review, 2026-09-25).
+function parseReviewFileText(raw) {
+  try { return JSON.parse(raw); } catch (e) {
+    const resolved = parseAgreeingConflictedReview(raw);
+    if (resolved) return resolved.data;
+    throw e;
+  }
+}
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
@@ -39,6 +50,7 @@ const { applyPaywallTierOverride } = require('./lib/paywall-completeness');
 const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
+const { runOutletMismatchCleanup, renameAndRepoint, makeDirIO } = require('./lib/outlet-mismatch-heal');
 const { LETTER_GRADES, BUCKET_SCORES, THUMB_SCORES } = require('./lib/score-extractors');
 const { parseStarRating, parseLetterGrade, parseOriginalScore, LETTER_GRADE_OUTLETS } = require('./lib/score-parsers');
 const { excerptMentionsWrongShow, isTourReviewExcerpt, tourContextForShow, isFilmTvReview, excerptMentionsFormerCast } = require('./lib/excerpt-validation');
@@ -48,7 +60,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore, cvFlagVetoedInWindow } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -87,7 +99,7 @@ const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
 const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
-const { safeWriteReview, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
 const { KNOWN_SYNDICATION_PAIRS } = require('./lib/syndication-pairs');
 const { logExclusion: _sharedLogExclusion } = require('./lib/exclusion-logger');
 const { writeShowExclusionsFile } = require('./lib/rebuild-exclusion-audit');
@@ -1852,7 +1864,7 @@ const crossShowFingerprints = new Map();
 // from the --unknown file into it and delete the stale --unknown file. This prevents duplicate
 // entries in validate-review-texts.js (which keys on JSON criticName, not filename).
 {
-  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0;
+  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0, skippedLockedCount = 0;
   for (const sid of showDirs) {
     const sDir = path.join(reviewTextsDir, sid);
     const unknownFiles = fs.readdirSync(sDir).filter(f => f.endsWith('.json') && f.includes('--unknown'));
@@ -1875,7 +1887,7 @@ const crossShowFingerprints = new Map();
           const mergeResult = mergeUniqueReviewFields(existingData, d);
           if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
           if (mergeResult.changed) {
-            safeWriteReview(expectedPath, existingData);
+            writeReviewOrThrow(expectedPath, existingData);
           }
           // Clear any sibling files that point at this file via duplicateOf —
           // otherwise the audit-duplicate-of-url-mismatch CI gate flags them
@@ -1884,19 +1896,24 @@ const crossShowFingerprints = new Map();
           fs.unlinkSync(filePath);
           mergedCount++;
         } else {
-          // No named file — just rename
-          fs.renameSync(filePath, expectedPath);
+          // No named file — rename through the write guard (moves the
+          // llm-score sidecar, refuses sparse-hidden targets) and repoint
+          // sibling duplicate pointers at the old name (2026-09-29 ship-check:
+          // a raw rename left broken_duplicate_ref siblings).
+          renameAndRepoint(makeDirIO(sDir, false), f, expectedFilename, d, sid);
           renamedCount++;
         }
       } catch (e) {
+        if (e.code === 'LOCKED') { skippedLockedCount++; continue; } // _locked refused the rename
         errorCount++;
         console.warn(`  [stale-unknown] Error processing ${sid}/${f}: ${e.message}`);
       }
     }
   }
-  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0) {
-    console.log(`Stale --unknown cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${errorCount ? `, ${errorCount} errors` : ''}`);
+  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0 || skippedLockedCount > 0) {
+    console.log(`Stale --unknown cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${skippedLockedCount ? `, ${skippedLockedCount} skipped (_locked)` : ''}${errorCount ? `, ${errorCount} errors` : ''}`);
   }
+  stats.staleUnknownSkippedLocked = skippedLockedCount;
   stats.staleUnknownRenamed = renamedCount;
   stats.staleUnknownMerged = mergedCount;
   stats.staleUnknownSkippedFlagged = skippedFlaggedCount;
@@ -1918,49 +1935,30 @@ const crossShowFingerprints = new Map();
 // -never-get-west-end-2026 / trainspotting-the-musical-west-end-2026,
 // 2026-08-22): a "Rebuild Reviews (Fast)" run silently undid a prior manual
 // fix that had restored the correct _blocklist.json filename.
+//
+// URL edition first (2026-09-29): a name-derived outletId can disagree with a
+// path-split edition URL (timeout.com/london filed as "timeout"). The JSON
+// outletId + outlet are rewritten before the rename/merge below, which is
+// keyed on the JSON outletId: renaming alone would be flipped back next run,
+// and scoring would keep reading the wrong edition's tier.
+//
+// Flagged tombstones (2026-09-29): a misnamed exclusion-flagged source is
+// refused by mergeUniqueReviewFields and used to stay forever. It is now
+// deleted when flaggedTombstoneDecision says nothing can be lost (target
+// excluded for the same URL, source excluded today, no operator assertion,
+// sibling pointers repointed to the target first).
+//
+// The pass lives in scripts/lib/outlet-mismatch-heal.js (runOutletMismatchCleanup)
+// so scripts/heal-outlet-mismatch.js can apply it to the corpus on its own.
 {
-  let renamedCount = 0, mergedCount = 0, errorCount = 0, skippedFlaggedCount = 0;
-  for (const sid of showDirs) {
-    const sDir = path.join(reviewTextsDir, sid);
-    for (const f of fs.readdirSync(sDir).filter(x => x.endsWith('.json') && x !== BLOCKLIST_FILENAME)) {
-      try {
-        const filePath = path.join(sDir, f);
-        if (!fs.existsSync(filePath)) continue; // File may have been renamed by Pass 1
-        const fileOutlet = f.split('--')[0];
-        const d = JSON.parse(fs.readFileSync(filePath, 'utf8'));
-        const jsonOutlet = normalizeOutletCanonical(d.outletId || d.outlet);
-        if (!jsonOutlet || !fileOutlet || jsonOutlet === fileOutlet) continue;
-        const expectedFilename = generateReviewFilename(jsonOutlet, d.criticName || 'Unknown');
-        if (expectedFilename === f) continue;
-        const expectedPath = path.join(sDir, expectedFilename);
-        if (fs.existsSync(expectedPath)) {
-          // Named file exists — merge unique fields, delete stale.
-          // Guarded: an exclusion-flagged source never folds into an unflagged
-          // target (totoro contamination, Notion 39b637c5-416f-815e) — leave it.
-          const existingData = JSON.parse(fs.readFileSync(expectedPath, 'utf8'));
-          const mergeResult = mergeUniqueReviewFields(existingData, d);
-          if (mergeResult.action !== 'merged') { skippedFlaggedCount++; continue; }
-          if (mergeResult.changed) {
-            safeWriteReview(expectedPath, existingData);
-          }
-          // Cascade-clear duplicateOf siblings before unlinking (see Pass 1).
-          cascadeClearDuplicateRefs(sDir, f);
-          fs.unlinkSync(filePath);
-          mergedCount++;
-        } else {
-          // No correctly-named file — just rename
-          fs.renameSync(filePath, expectedPath);
-          renamedCount++;
-        }
-      } catch (e) {
-        errorCount++;
-        console.warn(`  [outlet-mismatch] Error processing ${sid}/${f}: ${e.message}`);
-      }
-    }
+  const r = runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById });
+  const { renamedCount, mergedCount, errorCount, skippedFlaggedCount, editionFixedCount, tombstoneDeletedCount, skippedLockedCount } = r;
+  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0 || editionFixedCount > 0 || tombstoneDeletedCount > 0 || skippedLockedCount > 0) {
+    console.log(`Stale outlet-mismatch cleanup: ${editionFixedCount} URL-edition outletId fixes, ${renamedCount} renamed, ${mergedCount} merged+deleted, ${tombstoneDeletedCount} flagged tombstones deleted, ${skippedFlaggedCount} flagged tombstones left in place${skippedLockedCount ? `, ${skippedLockedCount} skipped (_locked)` : ''}${errorCount ? `, ${errorCount} errors` : ''}`);
   }
-  if (renamedCount > 0 || mergedCount > 0 || skippedFlaggedCount > 0) {
-    console.log(`Stale outlet-mismatch cleanup: ${renamedCount} renamed, ${mergedCount} merged+deleted, ${skippedFlaggedCount} flagged tombstones left in place${errorCount ? `, ${errorCount} errors` : ''}`);
-  }
+  stats.staleOutletSkippedLocked = skippedLockedCount;
+  stats.staleOutletEditionFixed = editionFixedCount;
+  stats.staleOutletTombstonesDeleted = tombstoneDeletedCount;
   stats.staleOutletRenamed = renamedCount;
   stats.staleOutletMerged = mergedCount;
   stats.staleOutletSkippedFlagged = skippedFlaggedCount;
@@ -2270,7 +2268,7 @@ showDirs.forEach(showId => {
   const _loadDupCycleSibling = (name) => {
     if (Object.prototype.hasOwnProperty.call(_dupCycleCache, name)) return _dupCycleCache[name];
     try {
-      _dupCycleCache[name] = JSON.parse(fs.readFileSync(path.join(showDir, name), 'utf8'));
+      _dupCycleCache[name] = parseReviewFileText(fs.readFileSync(path.join(showDir, name), 'utf8'));
     } catch {
       _dupCycleCache[name] = null;
     }
@@ -2290,7 +2288,7 @@ showDirs.forEach(showId => {
     // pre-#1406 behavior for the parse-failure fallback path below.
     const meta = { isDupe: 0, isVerified: 1, hasEnsemble: 1, isOutletAsCritic: 0, hasScore: 0, isUnknown: /unknown|unnamed/i.test(f) ? 1 : 0 };
     try {
-      const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      const d = parseReviewFileText(fs.readFileSync(path.join(showDir, f), 'utf8'));
       meta.isDupe = (d.isDuplicate || d.duplicateOf || d.duplicateTextOf) ? 1 : 0;
       meta.isVerified = d.contentVerification?.isValid ? 0 : 1;
       meta.hasEnsemble = d.ensembleData ? 0 : 1;
@@ -2409,17 +2407,32 @@ showDirs.forEach(showId => {
       const filePath = path.join(showDir, file);
       const rawContent = fs.readFileSync(filePath, 'utf8');
 
-      // Guard: detect git merge conflict markers (silent data corruption)
+      // Guard: git merge conflict markers. A bad rebase committing markers must
+      // not silently drop the review from the site (deep-heat-rivalry
+      // thestage--unknown.json, 2026-09-25): read one valid side in memory
+      // (parseAgreeingConflictedReview: only when both sides agree on every non-operational field) and list it loudly in
+      // the CORRUPTED summary every run until a person resolves it:
+      // safeWriteReview refuses to overwrite a conflict-marked file, so the
+      // rebuild never "repairs" it by persisting one side. When the sides
+      // disagree (or don't parse) the file is skipped, as before.
+      let data;
       if (/^<{7}\s|^={7}$|^>{7}\s/m.test(rawContent)) {
-        console.error(`  [CORRUPTED] ${showId}/${file}: contains git merge conflict markers — SKIPPING`);
-        logExclusion("skippedCorrupted", showId, file, null, { reason: "git merge conflict markers in file" });
-        stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
         if (!stats.corruptedFiles) stats.corruptedFiles = [];
-        stats.corruptedFiles.push(`${showId}/${file}`);
-        return;
+        const resolved = parseAgreeingConflictedReview(rawContent);
+        if (!resolved) {
+          console.error(`  [CORRUPTED] ${showId}/${file}: contains git merge conflict markers — SKIPPING`);
+          logExclusion("skippedCorrupted", showId, file, null, { reason: "git merge conflict markers in file" });
+          stats.skippedCorrupted = (stats.skippedCorrupted || 0) + 1;
+          stats.corruptedFiles.push(`${showId}/${file}`);
+          return;
+        }
+        console.error(`  [CONFLICT-MARKERS] ${showId}/${file}: read the "${resolved.side}" side in memory — FIX THE FILE`);
+        stats.conflictReadInMemory = (stats.conflictReadInMemory || 0) + 1;
+        stats.corruptedFiles.push(`${showId}/${file} (conflict markers; read "${resolved.side}" side in memory)`);
+        data = resolved.data;
+      } else {
+        data = JSON.parse(rawContent);
       }
-
-      const data = JSON.parse(rawContent);
 
       // Region-backfill evidence (BRO-133) — record BEFORE any skip/exclusion check
       // below so an outlet whose reviews are currently excluded still contributes
@@ -3262,6 +3275,17 @@ showDirs.forEach(showId => {
         return;
       }
 
+      // Named non-review URL shape on an unvetted SERP record (ticket/listing
+      // page, news item). Same predicate as explainExclusion, which until
+      // 2026-09-25 was the ONLY place it ran, so it never reached reviews.json.
+      // Placed here, same order as explainExclusion and before any branch
+      // below that writes flags back to disk.
+      if (isNamedNonReviewUrlRecord(data)) {
+        logExclusion("skippedNamedNonReviewUrl", showId, file, data);
+        stats.skippedNamedNonReviewUrl = (stats.skippedNamedNonReviewUrl || 0) + 1;
+        return;
+      }
+
       // Skip wrong-show reviews (review content is for a different show)
       // OVERRIDE: If this is a London show AND the review URL is from a UK/major outlet domain,
       // the wrongShow flag is often a false positive from LLM classification —
@@ -4084,7 +4108,7 @@ showDirs.forEach(showId => {
             sourceData.routedFromShowId = showId;
             sourceData.routedReason = `${yearSource}=${detectedYear} closer to ${targetShowId} (${decision.targetYear}) than ${showId} (${guard.showYear})`;
             sourceData.routedAt = new Date().toISOString();
-            safeWriteReview(targetPath, sourceData);
+            writeReviewOrThrow(targetPath, sourceData);
             targetWritten = true;
             fs.unlinkSync(sourcePath);
             console.log(`  [REROUTE] ${showId}/${file} → ${targetShowId}/${file} (${yearSource}=${detectedYear}, dist ${decision.distance})`);
@@ -4212,7 +4236,7 @@ showDirs.forEach(showId => {
       // rejected as garbage_text, but wos-star-images had already read 5/5 stars off
       // the page's own <img> markup. Mirrors explainExclusion's identical carve-out in
       // review-guards.js — see hasStructuralStarScore there for the full rationale.
-      if (data.rejectionReason && !hasStructuralStarScore(data)) {
+      if (isRejectedByReasonExclusion(data)) {
         logExclusion("skippedRejectionReason", showId, file, data);
         stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
         return;
@@ -4256,15 +4280,10 @@ showDirs.forEach(showId => {
       // collect-review-texts.js line 4247. Without this guard, the Vulture FILM review of
       // Hamlet (rejected 2026-04-20 as wrong_production) slipped back into reviews.json after
       // clear-failure-flags nulled its rejectionReason.
-      if (data.rejectedAt && typeof data.rejectedAt === 'string') {
-        const reFetched = data.textFetchedAt && typeof data.textFetchedAt === 'string' && data.textFetchedAt > data.rejectedAt;
-        // Same structural-star-score exception as the rejectionReason guard above
-        // (BRO-2282) — mirrors review-guards.js explainExclusion's rejectedAt block.
-        if (!reFetched && !hasStructuralStarScore(data)) {
-          logExclusion("skippedRejectedAt", showId, file, data);
-          stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
-          return;
-        }
+      if (isRejectedAtExclusion(data)) {
+        logExclusion("skippedRejectedAt", showId, file, data);
+        stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
+        return;
       }
 
       // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
@@ -6069,10 +6088,10 @@ try {
 // Print summary
 console.log('\n=== SUMMARY ===\n');
 // LOUD WARNING for corrupted files — these represent silent data loss
-if (stats.skippedCorrupted > 0) {
+if (stats.skippedCorrupted > 0 || stats.conflictReadInMemory > 0) {
   console.error(`\n${'!'.repeat(60)}`);
-  console.error(`!! CORRUPTED FILES FOUND: ${stats.skippedCorrupted} files skipped due to corruption`);
-  console.error(`!! These files have merge conflicts or invalid JSON — reviews are LOST`);
+  console.error(`!! CORRUPTED FILES FOUND: ${stats.skippedCorrupted || 0} skipped, ${stats.conflictReadInMemory || 0} conflict-marked but read in memory`);
+  console.error(`!! Skipped files are LOST from reviews.json; conflict-marked ones were kept via one side. Fix every file listed.`);
   stats.corruptedFiles.forEach(f => console.error(`!!   ${f}`));
   console.error(`${'!'.repeat(60)}\n`);
 }
@@ -6088,6 +6107,7 @@ console.log(`  Allowed (multi-critic same URL): ${stats.allowedMultiCriticUrl ||
 console.log(`  Skipped (cross-outlet duplicate URL): ${stats.skippedCrossOutletDuplicateUrl || 0}`);
 console.log(`  Allowed (multi-critic cross-outlet URL): ${stats.allowedMultiCriticUrlCrossOutlet || 0}`);
 console.log(`  Skipped (corrupted/invalid JSON): ${stats.skippedCorrupted || 0}`);
+console.log(`  Skipped (named non-review URL): ${stats.skippedNamedNonReviewUrl || 0}`);
 console.log(`  Skipped (wrong production): ${stats.skippedWrongProduction || 0}`);
 console.log(`  Skipped (premature pre-opening): ${stats.skippedPrematurePreOpening || 0}`);
 if (stats.contentVerificationPromoted > 0) {
@@ -6455,12 +6475,39 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
 
   const skippedAliasCollisionOutlets = [];
   const skippedAliasCollisionDetails = [];
+  // BRO-4370 / BRO-4401: an outlet is auto-registered only WITH a resolvable
+  // domain. A critic-name id, an id with no URL evidence, or a domain that
+  // collides with a registered outlet is parked in
+  // data/audit/outlet-registry-staging.json instead of becoming a
+  // `domain: null` row (the rows that pushed the null-domain ceiling to
+  // 51/50 and registered three critics as outlets on 2026-09-29). Decision
+  // logic lives in scripts/lib/outlet-auto-register.js.
+  const {
+    STAGING_RELATIVE_PATH: OUTLET_STAGING_RELATIVE_PATH,
+    criticNameSlugs,
+    decideOutletAutoRegistration,
+    mergeStagingEntries,
+  } = require('./lib/outlet-auto-register');
+  const stagedOutlets = [];
+  const reviewCountByOutlet = {};
+  const exampleShowByOutlet = {};
+  for (const r of allReviews) {
+    if (!r.outletId) continue;
+    reviewCountByOutlet[r.outletId] = (reviewCountByOutlet[r.outletId] || 0) + 1;
+    if (!exampleShowByOutlet[r.outletId]) exampleShowByOutlet[r.outletId] = r.showId || null;
+  }
   if (newOutlets.length > 0) {
     // Auto-add missing outlets with tier 3 (region is filled in by the
     // backfill pass below, which runs over the whole registry including
     // these brand-new entries)
     const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
     const { wouldCauseAliasCollision, findOutletAliasCollisions } = require('./lib/outlet-alias-collision');
+    // Registry names PLUS every criticName in this rebuild: the registry is
+    // built from attributed reviews, so a byline mis-filed as an outlet is
+    // precisely the name it does not know yet (BRO-4370's three ids were all
+    // absent from it) — but the same name rides on the correctly attributed
+    // twin record in this very run.
+    const criticSlugs = criticNameSlugs(criticRegistry, allReviews);
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
@@ -6506,15 +6553,74 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       // "the-times-barbican" shares thetimes.co.uk with "times-uk". Writing
       // that domain straight through would trip validate-data.js's
       // domain-collision gate the instant this commit lands (task #1776).
-      // Leave domain null in that case; region backfill below still applies.
+      // That case, a critic-name id, and a hint-less id are all STAGED
+      // rather than written with domain:null (BRO-4370).
       const hintDomain = outletDomainHints[outletId] || null;
-      const domain = hintDomain && !wouldCauseDomainCollision(outletRegistry.outlets, outletId, hintDomain)
-        ? hintDomain
-        : null;
+      const decision = decideOutletAutoRegistration({
+        outletId,
+        domainHint: hintDomain,
+        domainCollides: !!hintDomain && wouldCauseDomainCollision(outletRegistry.outlets, outletId, hintDomain),
+        criticSlugs,
+      });
+      if (decision.action === 'stage') {
+        stagedOutlets.push({
+          outletId,
+          reason: decision.reason,
+          domainHint: hintDomain,
+          reviewCount: reviewCountByOutlet[outletId] || 0,
+          exampleShowId: exampleShowByOutlet[outletId] || null,
+        });
+        console.warn(`⚠️  STAGED "${outletId}" instead of auto-registering (${decision.reason}) — resolve in ${OUTLET_STAGING_RELATIVE_PATH}`);
+        continue;
+      }
       outletRegistry.outlets[outletId] = {
         ...candidateEntry,
-        domain
+        domain: decision.domain
       };
+    }
+  }
+
+  // Persist the staging list (self-pruning: an id that has since been
+  // registered, or whose reviews are gone, drops out). Written whenever it
+  // CHANGES, not only when something was staged this run, so a resolved
+  // entry actually leaves the file.
+  {
+    const stagingPath = path.join(__dirname, '..', OUTLET_STAGING_RELATIVE_PATH);
+    let existingStaged = [];
+    try {
+      existingStaged = JSON.parse(fs.readFileSync(stagingPath, 'utf8')).staged || [];
+    } catch { /* first run, or unreadable — start empty */ }
+    const registeredLower = new Set(Object.keys(outletRegistry.outlets).map((id) => id.toLowerCase()));
+    // Prune a parked id only once it is registered, or once NO review file
+    // carries it any more (outletShowCategoriesRaw is collected from every
+    // file touched, included or not). Pruning on mere exclusion from this
+    // build would let audit-outlet-registry.js --strict — which scans every
+    // file — report the still-present id as a NEW gap (ship-check finding).
+    const seenInAnyFile = (id) => reviewOutletIds.has(id)
+      || Object.prototype.hasOwnProperty.call(outletShowCategoriesRaw, id)
+      || Object.prototype.hasOwnProperty.call(outletShowCategoriesRaw, String(id).toLowerCase());
+    const merged = mergeStagingEntries(existingStaged, stagedOutlets, {
+      nowIso: new Date().toISOString(),
+      stillUnregistered: (id) => !registeredLower.has(String(id).toLowerCase()) && seenInAnyFile(id),
+    });
+    const fingerprint = (list) => JSON.stringify(list.map((e) => [e.outletId, e.reason, e.reviewCount || 0, e.domainHint || null]).sort());
+    const before = fingerprint(existingStaged);
+    const after = fingerprint(merged);
+    if (before !== after || (stagedOutlets.length > 0 && !fs.existsSync(stagingPath))) {
+      try {
+        fs.mkdirSync(path.dirname(stagingPath), { recursive: true });
+        fs.writeFileSync(stagingPath, JSON.stringify({
+          _comment: 'Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.',
+          updatedAt: new Date().toISOString(),
+          staged: merged,
+        }, null, 2) + '\n');
+      } catch (stagingErr) {
+        console.warn(`  Could not write ${OUTLET_STAGING_RELATIVE_PATH}: ${stagingErr.message}`);
+      }
+    }
+    if (stagedOutlets.length > 0) {
+      console.warn(`\n⚠️  STAGED ${stagedOutlets.length} unregistered outlet(s) (no resolvable domain / critic name / domain collision): ${stagedOutlets.map((s) => s.outletId).sort().join(', ')}`);
+      console.warn(`  Listed in ${OUTLET_STAGING_RELATIVE_PATH}; they resolve as tier 3 / raw-id display until a human gives them a domain or merges them.`);
     }
   }
 
@@ -6522,7 +6628,11 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   // both the newOutlets just added above and pre-existing entries (BRO-133).
   const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
 
-  const registeredOutlets = newOutlets.filter(id => !skippedAliasCollisionOutlets.includes(id));
+  // Staged ids were NOT written to the registry — counting them here would
+  // rewrite + commit data/outlet-registry.json on every one of ~20 workflows'
+  // runs for as long as anything stays parked (ship-check P0).
+  const stagedOutletIdSet = new Set(stagedOutlets.map((s) => s.outletId));
+  const registeredOutlets = newOutlets.filter(id => !skippedAliasCollisionOutlets.includes(id) && !stagedOutletIdSet.has(id));
 
   if (registeredOutlets.length > 0 || backfilledOutlets.length > 0) {
     if (outletRegistry._meta) {

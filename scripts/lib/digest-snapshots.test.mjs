@@ -741,3 +741,38 @@ test('readSyncRefused: maxItems truncates, moreCount reflects the rest', () => {
   assert.equal(summary.items.length, 2);
   assert.equal(summary.moreCount, 2);
 });
+
+// BRO-4141: a long visitor-problem name + "(+N more)" + a big decision count
+// produced a 128-char subject; digest-content-invariants requires < 120 and
+// failed every run from 2026-09-24. The name shrinks to fit.
+test('buildSubject: a long visitor-problem name is shortened to keep the subject under 120 chars', () => {
+  const long = 'Unknown check with an extremely long descriptive name that keeps going and going';
+  const s = buildSubject({
+    health: { errors: [{ name: long }, { name: 'Another unknown visitor-facing check' }], warns: [],
+      queued: Array.from({ length: 40 }, (_, i) => ({ title: `d${i}`, decision: true })) },
+    autofixRows: Array.from({ length: 40 }, () => ({ state: 'decision' })),
+    now: new Date('2026-09-29T11:30:00Z'),
+  });
+  assert.ok(s.length < 120, `${s.length}: ${s}`);
+  assert.match(s, /^Morning digest — Tue, Sep 29 · ⚠️ visitors affected: .+… \(\+1 more\) · \d+ decisions for you$/);
+});
+
+// Codex review (BRO-4141): every siteState branch must stay < 120, including
+// with a stale-approval prefix.
+test('buildSubject: < 120 chars across affected/minor with stale approvals', () => {
+  const now = new Date('2026-09-29T11:30:00Z');
+  const long = 'Unknown check with an extremely long descriptive name that keeps going and going';
+  const variants = [
+    { health: { errors: [{ name: long }, { name: 'Another unknown visitor check' }], warns: [] } },
+    { health: { errors: [], warns: [{ name: 'Unknown visitor warn one' }, { name: 'Unknown visitor warn two' }] } },
+  ];
+  for (const v of variants) {
+    for (const n of [1, 9, 400]) {
+      const awaitingOwner = { items: Array.from({ length: n }, (_, i) => ({ title: `a${i}`, stale: true })) };
+      const s = buildSubject({ ...v, awaitingOwner, now });
+      assert.ok(s.length < 120, `${s.length}: ${s}`);
+      assert.match(s, /^Morning digest — Tue, Sep 29 · ⚠️ \d+ (approvals? )?waiting 48h\+/);
+      assert.match(s, /\d+ decisions? for you$/);
+    }
+  }
+});

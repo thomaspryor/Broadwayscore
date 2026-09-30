@@ -120,7 +120,7 @@ awk '
 git -C "$WORK/main-checkout" fetch -q origin main
 FILES_ON_ORIGIN=$(git -C "$WORK/main-checkout" ls-tree -r --name-only origin/main)
 for f in file-a.txt file-b.txt; do
-  echo "$FILES_ON_ORIGIN" | grep -qx "$f" || fail "$f missing from origin/main -- a push was lost"
+  grep -qx "$f" <<<"$FILES_ON_ORIGIN" || fail "$f missing from origin/main -- a push was lost"
 done
 
 echo "PASS: mutex serialized both pushers and neither push was lost"

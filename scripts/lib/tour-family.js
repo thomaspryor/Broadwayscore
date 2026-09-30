@@ -155,7 +155,21 @@ function tourImageProblems(tour, shows) {
   return problems;
 }
 
+/**
+ * Split targets for an aggregator that reviews New York productions only
+ * (NYC Theatre, Playbill's Verdict). A national tour's title search there
+ * finds its Broadway page, whose excerpts were filed as tour reviews
+ * (BRO-4325). Returns { kept, tours }.
+ */
+function withoutTours(shows) {
+  const kept = [];
+  const tours = [];
+  for (const s of shows || []) (isTourShow(s) ? tours : kept).push(s);
+  return { kept, tours };
+}
+
 module.exports = {
+  withoutTours,
   isTourShow,
   tourImageProblems,
   tourInheritance,

@@ -24,6 +24,7 @@ const { execFileSync } = require('child_process');
 const cheerio = require('cheerio');
 const { matchTitleToShow, loadShows } = require('./lib/show-matching');
 const { normalizeOutlet, normalizeCritic, findExistingReviewFile } = require('./lib/review-normalization');
+const { resolveUrlEditionOutletId } = require('./lib/outlet-canonicalize');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { serpQuery } = require('./lib/url-discovery');
@@ -48,7 +49,7 @@ Usage:
   node scripts/sweep-we-aggregators.js [options]
   node scripts/sweep-we-aggregators.js --help, -h    print this usage and exit
 `;
-const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
+const REVIEW_TEXTS_DIR = process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '..', 'data', 'review-texts');
 
 // BRO-3097: best-effort hostname extraction for Browserbase ledger attribution
 // (a malformed/undefined indexUrl must not throw — attribution is measurement
@@ -405,7 +406,14 @@ function writeReview(review, showId) {
   const showDir = path.join(REVIEW_TEXTS_DIR, showId);
   if (!fs.existsSync(showDir)) fs.mkdirSync(showDir, { recursive: true });
 
-  const outletId = review.outletId || normalizeOutlet(review.outlet);
+  // URL edition (timeout.com /london vs /newyork) beats the aggregator's outlet name (2026-09-29: a
+  // timeout.com/london review was re-created as outletId "timeout").
+  const urlOutlet = resolveUrlEditionOutletId({ outletId: review.outletId, outletName: review.outlet, url: review.url });
+  if (urlOutlet.source !== 'name') {
+    console.log(`  [outlet] ${showId}: "${review.outlet}" -> ${urlOutlet.outletId} (${urlOutlet.source}: ${review.url})`);
+    review = { ...review, outlet: urlOutlet.displayName || review.outlet };
+  }
+  const outletId = urlOutlet.outletId;
   const criticSlug = normalizeCritic(review.critic || review.criticName || 'Unknown');
 
   const existingMatch = findExistingReviewFile(showDir, outletId, criticSlug);
@@ -1371,7 +1379,11 @@ async function main() {
   process.exit(0);
 }
 
-main().catch(err => {
-  console.error('Fatal error:', err);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch(err => {
+    console.error('Fatal error:', err);
+    process.exit(1);
+  });
+}
+
+module.exports = { writeReview };

@@ -21,7 +21,7 @@
 // than the gap it closes. Every BLOCK case here is paired with at least one
 // ALLOW case proving the gate doesn't over-fire.
 
-import { test } from 'node:test';
+import { test, after } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import os from 'node:os';
@@ -83,8 +83,16 @@ function attachmentNotice(text) {
   return { _attachment: text };
 }
 
+// Every hook run leaves a per-chain loop-guard ledger in /tmp keyed by the
+// transcript path (BRO-4367); remove them all when the file finishes.
+const WRITTEN_TRANSCRIPTS = new Set();
+after(() => {
+  for (const t of WRITTEN_TRANSCRIPTS) fs.rmSync(chainFileFor(t), { force: true, recursive: true });
+});
+
 function writeTranscript(dir, toolCalls, { card = true, userText = 'please do the work' } = {}) {
   const p = path.join(dir, 'transcript.jsonl');
+  WRITTEN_TRANSCRIPTS.add(p);
   const lines = [
     JSON.stringify({ type: 'user', message: { role: 'user', content: [{ type: 'text', text: userText }] } }),
   ];
@@ -132,11 +140,11 @@ const STUB_ROOT = fs.mkdtempSync(path.join(os.tmpdir(), 'veg-stubroot-'));
 fs.mkdirSync(path.join(STUB_ROOT, 'scripts'));
 fs.writeFileSync(path.join(STUB_ROOT, 'scripts', 'linear-brain.js'), 'process.exit(Number(process.env.STUB_PROBE_EXIT || 0));\n');
 
-function runHook(transcriptPath, lastAssistantMessage, env = {}) {
+function runHook(transcriptPath, lastAssistantMessage, env = {}, stopHookActive = false) {
   const stdin = JSON.stringify({
     transcript_path: transcriptPath,
     session_id: `veg-test-${randomUUID()}`,
-    stop_hook_active: false,
+    stop_hook_active: stopHookActive,
     last_assistant_message: lastAssistantMessage,
   });
   // fakeHome defeats the self-skip preamble so this always runs the REPO copy
@@ -445,6 +453,7 @@ test('regression: a fully clean session (edit + verify + push + Linear close-out
     toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' }),
     SHIP_CHECK,
     WHAT_ELSE,
+    WRAP_UP,
     GIT_PUSH,
     BOARD_CLOSEOUT_DONE,
   ]);
@@ -834,6 +843,7 @@ test('regression: a fully clean session, standalone check (edit + verify + push 
     toolUse('Bash', { command: 'npx tsc --noEmit src/lib/scoring.ts' }),
     SHIP_CHECK,
     WHAT_ELSE,
+    WRAP_UP,
     GIT_PUSH,
     BOARD_CLOSEOUT_DONE,
   ]);
@@ -1057,7 +1067,7 @@ test('P0 regression: NOCARD standing down (Linear unreachable) still runs the UN
 
 test('P0 regression: NOWRAPUP standing down (Linear unreachable) still runs the UNVERIFIED gate → BLOCKED', skipNoRepoHook, () => {
   const dir = makeTmpDir('nowrapup-fallthrough');
-  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, SHIP_CHECK, WHAT_ELSE, GIT_PUSH]);
+  const transcript = writeTranscript(dir, [QUALIFYING_EDIT, SHIP_CHECK, WHAT_ELSE, WRAP_UP, GIT_PUSH]);
   const r = runHook(transcript, 'Pushed.\n\nSAFE TO EXIT — pushed.', { STUB_PROBE_EXIT: '4' });
   assertBlocked(r, 'a stood-down close-out gate must not wave through an unverified edit');
   assert.match(r.stderr, /unverified edit/i, `got: ${r.stderr.slice(0, 300)}`);
@@ -1451,23 +1461,23 @@ function chain(name, calls, msg, env) {
 test('chain: hook edit + SAFE TO EXIT with no review → BLOCKED (the incident)', skipNoRepoHook, () => {
   const r = chain('chain-noreview', [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
   assertBlocked(r, 'unreviewed hook edit');
-  assert.match(r.stderr, /no review since them.*github-main-guard\.sh|github-main-guard\.sh.*no review/s, `got: ${r.stderr.slice(0, 300)}`);
+  assert.match(r.stderr, /github-main-guard\.sh.*finish chain is incomplete.*\/ship-check/s, `got: ${r.stderr.slice(0, 300)}`);
 });
 
 test('chain: reviewed but /what-else never ran → BLOCKED', skipNoRepoHook, () => {
   const r = chain('chain-nowhatelse', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
   assertBlocked(r, 'no what-else');
-  assert.match(r.stderr, /what-else never ran/i, `got: ${r.stderr.slice(0, 300)}`);
+  assert.match(r.stderr, /Still to run.*\/what-else, then \/wrap-up/, `got: ${r.stderr.slice(0, 300)}`);
 });
 
 test('chain: review + what-else → ALLOWED; second-opinion counts as the review', skipNoRepoHook, () => {
-  assertAllowed(chain('chain-full', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'full chain');
+  assertAllowed(chain('chain-full', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'full chain');
   const so = toolUse('Skill', { skill: 'second-opinion' });
-  assertAllowed(chain('chain-so', [HOOK_EDIT, HOOK_RUN, so, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'second-opinion');
+  assertAllowed(chain('chain-so', [HOOK_EDIT, HOOK_RUN, so, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'second-opinion');
 });
 
 test('chain: fixups right after the review are covered; stop-hook feedback does not end the fixup window', skipNoRepoHook, () => {
-  assertAllowed(chain('chain-fixups', [HOOK_EDIT, SHIP_CHECK, HOOK_EDIT, HOOK_FEEDBACK, HOOK_EDIT, HOOK_RUN, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+  assertAllowed(chain('chain-fixups', [HOOK_EDIT, SHIP_CHECK, HOOK_EDIT, HOOK_FEEDBACK, HOOK_EDIT, HOOK_RUN, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
     'two fixups after the review');
   const many = Array(9).fill(HOOK_EDIT);
   assertBlocked(chain('chain-fixups-over', [HOOK_EDIT, SHIP_CHECK, ...many, HOOK_RUN, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
@@ -1477,9 +1487,9 @@ test('chain: fixups right after the review are covered; stop-hook feedback does 
 test('chain: new work after the owner speaks again needs a new review and a new /what-else', skipNoRepoHook, () => {
   const r = chain('chain-newwork', [HOOK_EDIT, SHIP_CHECK, WHAT_ELSE, OWNER('Sure do it now'), HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
   assertBlocked(r, 'edit after a new owner message');
-  assert.match(r.stderr, /no review since them/i, `got: ${r.stderr.slice(0, 300)}`);
+  assert.match(r.stderr, /Still to run.*\/ship-check/, `got: ${r.stderr.slice(0, 300)}`);
   const r2 = chain('chain-newwork-reviewed', [HOOK_EDIT, SHIP_CHECK, WHAT_ELSE, OWNER('Sure do it now'), HOOK_EDIT, HOOK_RUN, SHIP_CHECK, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
-  assert.match(r2.stderr, /what-else never ran/i, `the earlier /what-else covered the earlier work only; got: ${r2.stderr.slice(0, 300)}`);
+  assert.match(r2.stderr, /does not count\): \/what-else, then \/wrap-up/, `the earlier /what-else covered the earlier work only; got: ${r2.stderr.slice(0, 300)}`);
 });
 
 test('chain: workflow edits count (they used to be skipped entirely)', skipNoRepoHook, () => {
@@ -1490,7 +1500,7 @@ test('chain: mid-work stops, docs-only edits, bypass lines and the kill switch a
   assertAllowed(chain('chain-notsafe', [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], 'Step 1 of 3 done.\n\nNOT SAFE TO EXIT — landing still running.'), 'mid-work');
   assertAllowed(chain('chain-docs', [DOC_EDIT, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'docs only');
   assertAllowed(chain('chain-bypass', [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE],
-    'NO-SHIP-CHECK: reverted my own change byte-for-byte, nothing new to review\nNO-WHAT-ELSE: pure revert, nothing adjacent\n\nSAFE TO EXIT — reverted.'), 'bypass lines');
+    'NO-SHIP-CHECK: reverted my own change byte-for-byte, nothing new to review\nNO-WHAT-ELSE: pure revert, nothing adjacent\nNO-WRAP-UP: closed out the card by hand for a pure revert\n\nSAFE TO EXIT — reverted.'), 'bypass lines');
   // NO-VERIFY waives execution evidence only, never the review.
   assertBlocked(chain('chain-noverify', [HOOK_EDIT, HOOK_RUN, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE],
     'NO-VERIFY: ran it by hand in the container\n\nSAFE TO EXIT — done.'), 'NO-VERIFY must not waive the review');
@@ -1502,12 +1512,12 @@ const COMPACTION = { _notice: 'This session is being continued from a previous c
 const OWNER_SLASH = (name) => ({ _notice: `<command-message>${name}</command-message>\n<command-name>/${name}</command-name>`, _extra: { origin: null } });
 
 test('chain: a compaction summary is not an owner message (fixups and /what-else survive it)', skipNoRepoHook, () => {
-  assertAllowed(chain('chain-compaction', [HOOK_EDIT, SHIP_CHECK, WHAT_ELSE, COMPACTION, HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+  assertAllowed(chain('chain-compaction', [HOOK_EDIT, SHIP_CHECK, WHAT_ELSE, WRAP_UP, COMPACTION, HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
     'compaction must not start new work');
 });
 
-test('chain: /ship-check and /what-else typed by the owner count', skipNoRepoHook, () => {
-  assertAllowed(chain('chain-slash', [HOOK_EDIT, HOOK_RUN, OWNER_SLASH('ship-check'), OWNER_SLASH('what-else'), GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+test('chain: /ship-check, /what-else and /wrap-up typed by the owner count', skipNoRepoHook, () => {
+  assertAllowed(chain('chain-slash', [HOOK_EDIT, HOOK_RUN, OWNER_SLASH('ship-check'), OWNER_SLASH('what-else'), OWNER_SLASH('wrap-up'), GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
     'owner-typed slash commands');
 });
 
@@ -1575,3 +1585,158 @@ test('NOCARD: a push that ran but whose pipeline exited non-zero is still work',
   fs.rmSync(dir, { recursive: true, force: true });
   assertBlocked(r, 'a push that ran is work and still needs a card');
 });
+
+// ─────────── Mac parity (BRO-4367, 2026-09-29) ─────────
+// Incident: a cloud session ran /second-opinion plus an Agent "code review",
+// did the wrap-up steps by hand and ended SAFE TO EXIT; the gate let it pass.
+const AGENT_REVIEW = toolUse('Agent', { description: 'Code review of the fix', prompt: 'review the diff' });
+const CODEX_REVIEW = toolUse('Bash', { command: 'codex exec "review this diff"' });
+
+test('parity: the incident (second-opinion + Agent review, wrap-up by hand) → BLOCKED for /wrap-up', skipNoRepoHook, () => {
+  const so = toolUse('Skill', { skill: 'second-opinion' });
+  const r = chain('parity-incident', [HOOK_EDIT, HOOK_RUN, so, AGENT_REVIEW, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'wrap-up done by hand');
+  assert.match(r.stderr, /Still to run.*\/wrap-up/, `got: ${r.stderr.slice(0, 400)}`);
+  assert.doesNotMatch(r.stderr, /does not count\): \/ship-check/, 'the review itself was fine');
+});
+
+test('parity: an Agent "review" or a codex call is not a chain review', skipNoRepoHook, () => {
+  for (const [name, rev] of [['agent', AGENT_REVIEW], ['codex', CODEX_REVIEW]]) {
+    const r = chain(`parity-${name}`, [HOOK_EDIT, HOOK_RUN, rev, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+    assertBlocked(r, `${name} review`);
+    assert.match(r.stderr, /does not count\): \/ship-check/, `${name}: got ${r.stderr.slice(0, 300)}`);
+  }
+});
+
+test('parity: a big session (>15 code edits) needs /ship-check or /code-review, not /second-opinion', skipNoRepoHook, () => {
+  const edits = Array(16).fill(HOOK_EDIT);
+  const so = toolUse('Skill', { skill: 'second-opinion' });
+  const r = chain('parity-big-so', [...edits, HOOK_RUN, so, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'big session with only /second-opinion');
+  assert.match(r.stderr, /too big for \/second-opinion/, `got: ${r.stderr.slice(0, 300)}`);
+  assertAllowed(chain('parity-big-cr', [...edits, HOOK_RUN, OWNER_SLASH('code-review'), WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+    'big session with owner-typed /code-review');
+  assertAllowed(chain('parity-small-so', [HOOK_EDIT, HOOK_RUN, so, WHAT_ELSE, WRAP_UP, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED),
+    'small session: /second-opinion still counts');
+});
+
+test('parity: every missing step is named in ONE block', skipNoRepoHook, () => {
+  const r = chain('parity-all', [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'nothing ran');
+  assert.match(r.stderr, /does not count\): \/ship-check.*then \/what-else, then \/wrap-up/, `got: ${r.stderr.slice(0, 400)}`);
+});
+
+test('parity: a /wrap-up from before the owner\'s latest message does not cover new work', skipNoRepoHook, () => {
+  const r = chain('parity-old-wrapup', [HOOK_EDIT, SHIP_CHECK, WHAT_ELSE, WRAP_UP, OWNER('one more fix please'), HOOK_EDIT, HOOK_RUN, SHIP_CHECK, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED);
+  assertBlocked(r, 'stale wrap-up');
+  assert.match(r.stderr, /does not count\): \/wrap-up/, `got: ${r.stderr.slice(0, 300)}`);
+});
+
+test('parity: namespaced skill names count; NO-WRAP-UP bypass works', skipNoRepoHook, () => {
+  const ns = (n) => toolUse('Skill', { skill: `bsc:${n}` });
+  assertAllowed(chain('parity-ns', [HOOK_EDIT, HOOK_RUN, ns('ship-check'), ns('what-else'), ns('wrap-up'), GIT_PUSH, LINEAR_CLOSEOUT_DONE], CLOSED), 'namespaced');
+  assertAllowed(chain('parity-nowrap', [HOOK_EDIT, HOOK_RUN, SHIP_CHECK, WHAT_ELSE, GIT_PUSH, LINEAR_CLOSEOUT_DONE],
+    'NO-WRAP-UP: owner asked to stop here, card closed above\n\nSAFE TO EXIT — done.'), 'NO-WRAP-UP bypass');
+});
+
+// Per-gate loop guard (BRO-4367): the first block used to spend the whole
+// turn-chain, so fixing one gate let every other gate through unchecked.
+function chainFileFor(transcript) {
+  const sum = spawnSync('bash', ['-c', 'printf "%s" "$1" | cksum | cut -d" " -f1', '_', transcript], { encoding: 'utf8' }).stdout.trim();
+  return `/tmp/verify-edits-chain-${sum}`;
+}
+
+test('loop guard: a different gate still blocks after an earlier block; the same gate does not re-block', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  // 1st Stop: no status line.
+  assertBlocked(runHook(t, 'All done here.'), 'no status line');
+  // 2nd Stop in the same chain: status line fixed, chain still unrun → blocks.
+  const r2 = runHook(t, CLOSED, {}, true);
+  assertBlocked(r2, 'chain gate must still fire after an unrelated block');
+  assert.match(r2.stderr, /finish chain is incomplete/, `got: ${r2.stderr.slice(0, 300)}`);
+  // 3rd Stop: same gate again → let through (no infinite loop).
+  assertAllowed(runHook(t, CLOSED, {}, true), 'same gate is not re-blocked in one chain');
+  fs.rmSync(chainFileFor(t), { force: true });
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('loop guard: an already-fired gate falls through to the next gate instead of hiding it', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-fallthrough');
+  // NOWRAPUP (card never closed) outranks the chain gate; UNVERIFIED (edit
+  // never run) is a terminal verdict. Each fires once, then the chain shows.
+  for (const [name, calls] of [['nowrapup', [HOOK_EDIT, HOOK_RUN, GIT_PUSH]], ['unverified', [QUALIFYING_EDIT, GIT_PUSH, LINEAR_CLOSEOUT_DONE]]]) {
+    const t = writeTranscript(dir, calls);
+    const first = runHook(t, CLOSED);
+    assertBlocked(first, `${name}: first gate`);
+    assert.doesNotMatch(first.stderr, /finish chain is incomplete/, `${name}: first block should be the earlier gate`);
+    const second = runHook(t, CLOSED, {}, true);
+    assertBlocked(second, `${name}: chain must still fire`);
+    assert.match(second.stderr, /finish chain is incomplete/, `${name}: got ${second.stderr.slice(0, 300)}`);
+    fs.rmSync(chainFileFor(t), { force: true });
+  }
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('loop guard: blocks are capped per chain', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-cap');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  fs.writeFileSync(chainFileFor(t), 'A\nB\nC\nD\n');
+  assertAllowed(runHook(t, CLOSED, {}, true), 'cap reached');
+  fs.rmSync(chainFileFor(t), { force: true });
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// ship-check findings on the loop guard (2026-09-29).
+test('loop guard: partial progress on the finish chain re-blocks until every step ran', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-partial');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  assertBlocked(runHook(t, CLOSED), 'nothing ran');
+  // Ran only /ship-check, claims again in the same chain.
+  writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE, SHIP_CHECK]);
+  const r2 = runHook(t, CLOSED, {}, true);
+  assertBlocked(r2, 'what-else and wrap-up still missing');
+  assert.match(r2.stderr, /does not count\): \/what-else, then \/wrap-up/, `got: ${r2.stderr.slice(0, 300)}`);
+  // Same missing set again: let through (no loop).
+  assertAllowed(runHook(t, CLOSED, {}, true), 'same missing set is not re-blocked');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// second-opinion finding: the ledger was joined/split on ',' and NOCHAIN keys
+// contain commas, so "review,what-else,wrap-up" read back as a set holding
+// "NOCHAIN:review" and a review-only missing set was wrongly skipped.
+test('loop guard: running /what-else + /wrap-up but no review still re-blocks for the review', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-review-last');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  assertBlocked(runHook(t, CLOSED), 'nothing ran');
+  writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE, WHAT_ELSE, WRAP_UP]);
+  const r2 = runHook(t, CLOSED, {}, true);
+  assertBlocked(r2, 'review still missing');
+  assert.match(r2.stderr, /does not count\): \/ship-check/, `got: ${r2.stderr.slice(0, 300)}`);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('loop guard: a ledger from an earlier chain is cleared at the next chain\'s first Stop', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-stale');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  fs.writeFileSync(chainFileFor(t), 'NOCHAIN:review,what-else,wrap-up\nA\nB\nC\n');
+  // New chain, first Stop is clean for this hook (mid-work), another Stop hook blocks.
+  assertAllowed(runHook(t, 'Working.\n\nNOT SAFE TO EXIT — still editing.'), 'mid-work stop');
+  // Next Stop arrives with stop_hook_active=true because the OTHER hook blocked.
+  const r = runHook(t, CLOSED, {}, true);
+  assertBlocked(r, 'stale ledger must not skip the chain gate');
+  assert.match(r.stderr, /finish chain is incomplete/, `got: ${r.stderr.slice(0, 300)}`);
+  assert.doesNotMatch(r.stderr, /No such file/, 'no stray shell noise in the block message');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('loop guard: an unwritable ledger falls back to letting the Stop through (never loops)', skipNoRepoHook, () => {
+  const dir = makeTmpDir('loopguard-unwritable');
+  const t = writeTranscript(dir, [HOOK_EDIT, HOOK_RUN, GIT_PUSH, LINEAR_CLOSEOUT_DONE]);
+  fs.rmSync(chainFileFor(t), { force: true });
+  fs.mkdirSync(chainFileFor(t));   // a directory: appends fail
+  assertAllowed(runHook(t, CLOSED, {}, true), 'cannot record, so must not block again');
+  fs.rmSync(chainFileFor(t), { force: true, recursive: true });
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+

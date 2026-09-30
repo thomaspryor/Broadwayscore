@@ -43,3 +43,13 @@ test('stores the trimmed venue, same as the priorRuns link', () => {
   assert.equal(shows[1].venue, 'Playwrights Horizons');
   assert.equal(cur.priorRuns[0].venue, 'Playwrights Horizons');
 });
+
+test('priorRunOf puts a priorRuns link to the earlier run on the NEW entry', () => {
+  const old = { id: 'old', slug: 'old', venue: 'SoHo Playhouse', openingDate: '2026-04-09', closingDate: '2026-05-03' };
+  const shows = [old];
+  const r = applyAddShow(shows, { show: base(), priorRunOf: 'old' });
+  assert.equal(r.ok, true);
+  assert.deepEqual(shows[1].priorRuns, [{ id: 'old', venue: 'SoHo Playhouse', openingDate: '2026-04-09', closingDate: '2026-05-03' }]);
+  assert.equal(old.priorRuns, undefined);
+  assert.equal(applyAddShow([], { show: base(), priorRunOf: 'nope' }).ok, false);
+});

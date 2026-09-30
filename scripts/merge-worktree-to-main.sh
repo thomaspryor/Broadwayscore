@@ -82,7 +82,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
 # the branch that ships a newer script never defers to the older origin
 # copy (2026-09-20: a byte-compare did exactly that and the old copy merged
 # the WIP branch into the shared main checkout).
-MERGE_SCRIPT_VERSION=2
+MERGE_SCRIPT_VERSION=3
 # Runs BEFORE any lib is sourced: a detached copy (`git show origin/main:… >
 # /tmp/x.sh && bash /tmp/x.sh`) has no scripts/lib beside it, and an old
 # worktree's copy may lack libs a newer version needs — so the re-exec
@@ -371,7 +371,7 @@ land_via_landing_branch() {
   if [ "$remote_land" = "$tip" ]; then
     log "origin/$land_name is already at ${tip:0:10} — resuming the wait for land.yml (no re-push)"
   elif ! pout=$(git -C "$push_dir" push origin "$tip:refs/heads/$land_name" 2>&1); then
-    if echo "$pout" | grep -qiE 'non-fast-forward|fetch first|\[rejected\]'; then
+    if grep -qiE 'non-fast-forward|fetch first|\[rejected\]' <<<"$pout"; then
       log "  origin/$land_name exists from an earlier attempt — replacing it"
       pout=$(git -C "$push_dir" push --force origin "$tip:refs/heads/$land_name" 2>&1) || { echo "$pout" >&2; die "push to $land_name failed"; }
     else
@@ -396,9 +396,16 @@ land_via_landing_branch() {
       sleep 20
     done
   fi
+  # BRO-4379: a Land job cancelled while PENDING (superseded in the 'landing'
+  # group) is re-run in place by land-retry-cancelled.yml (server side); this
+  # script only waits for that, inside ONE shared wait budget.
+  local cancel_retries=0 budget_deadline remaining_min
+  budget_deadline=$(( $(date +%s) + wait_min * 60 ))
+  while :; do
   if [ -n "$run_id" ] && [ -f "$wait_sh" ]; then
-    log "land run $run_url — waiting (wait-for-run.sh: one API call per ≥60s, ${wait_min} min cap)"
-    (cd "$push_dir" && bash "$wait_sh" "$run_id" "$wait_min"); poll_rc=$?
+    remaining_min=$(( (budget_deadline - $(date +%s) + 59) / 60 )); [ "$remaining_min" -ge 1 ] || remaining_min=1
+    log "land run $run_url — waiting (wait-for-run.sh: one API call per ≥60s, ${remaining_min} of ${wait_min} min budget left)"
+    (cd "$push_dir" && bash "$wait_sh" "$run_id" "$remaining_min"); poll_rc=$?
   else
     log "no land.yml run visible for ${tip:0:10} (gh unavailable, or the listing lagged) — polling refs/heads/$land_name via git ls-remote every 60s (${wait_min} min cap; land.yml deletes it only after ancestry is verified)"
     local deadline; deadline=$(( $(date +%s) + wait_min * 60 )); poll_rc=2
@@ -423,6 +430,14 @@ land_via_landing_branch() {
         # non-empty AND no '+': an EMPTY cherry (merge-only branch, or a
         # failed cherry) is no evidence at all, never equivalence.
         proof="patch-equivalent (rebased by land.yml)"
+      elif [ -n "$landed_sha" ] && is_landed "$landed_sha" "$DEFAULT_BRANCH"; then
+        # land.yml rebased, and a neighbouring commit shifted the diff context
+        # (e.g. an adjacent manifest line), so patch-ids drift and `git cherry`
+        # shows '+' for a commit that DID land (2026-09-29, BRO-4374: tip
+        # f9b37e2cae -> c82ddbb0cfc). The landings.jsonl row keyed by our exact
+        # tip, confirmed on origin, is land.yml's own record; prove_and_finish
+        # still runs the file + content-survival checks below.
+        proof="landings.jsonl row (rebased by land.yml; patch-id drifted)"
       else
         die "land run reported success but ${tip:0:10}'s commits are on origin/$DEFAULT_BRANCH neither as ancestors nor as equivalent patches — inspect ${run_url:-the land.yml run} before assuming anything landed"
       fi
@@ -442,14 +457,61 @@ land_via_landing_branch() {
         log "land run went red but ${tip:0:10}'s patches ARE on origin/$DEFAULT_BRANCH — treating as landed; inspect ${run_url:-the run} for the red step"
         prove_and_finish "$tip" "$fork" "$late_sha" "patch-equivalent (run red after the push)" "$land_name" "$run_url" "$t0"
       fi
-      local conclusion="failure" gate="unknown"
+      local conclusion="failure" gate="unknown" checks_c="" land_c="" attempt_now="" run_status="completed"
       if [ -n "$run_id" ] && command -v gh >/dev/null 2>&1; then
-        read -r conclusion gate < <(cd "$push_dir" && gh run view "$run_id" --json conclusion,jobs --jq '[.conclusion, ([.jobs[] | select(.conclusion=="failure") | .steps[] | select(.conclusion=="failure") | .name] | first // "unknown")] | join(" ")' 2>/dev/null || echo "failure unknown")
+        read -r run_status conclusion checks_c land_c attempt_now gate < <(cd "$push_dir" && gh run view "$run_id" --json status,conclusion,jobs,attempt --jq '[.status, (.conclusion // "none"), ([.jobs[] | select(.name=="Checks") | .conclusion] | first // "none"), ([.jobs[] | select(.name=="Land") | .conclusion] | first // "none"), (.attempt // 1 | tostring), ([.jobs[] | select(.conclusion=="failure") | .steps[] | select(.conclusion=="failure") | .name] | first // "unknown")] | join(" ")' 2>/dev/null || echo "completed failure none none 1 unknown")
+      fi
+      # The server re-trigger can make the run live again between wait-for-run's
+      # verdict and this re-read: that is not a verdict at all, keep waiting.
+      if [ "$run_status" != "completed" ] && [ "$(date +%s)" -lt "$budget_deadline" ]; then
+        log "land run is live again (status $run_status, attempt $attempt_now) — resuming the wait"
+        cancel_retries=$(( cancel_retries + 1 ))
+        continue
+      fi
+      if [ "$conclusion" = "cancelled" ] && command -v node >/dev/null 2>&1; then
+        local remote_tip decision retry_flag backoff_s why _w st at
+        remote_tip=$(git -C "$push_dir" ls-remote origin "refs/heads/$land_name" 2>/dev/null | awk '{print $1}' | head -1)
+        decision=$(LC="$land_c" CC="$checks_c" RT="$remote_tip" TIP="$tip" N="$cancel_retries" node -e '
+          const { decideCancelledLandRetry } = require(process.argv[1]);
+          const d = decideCancelledLandRetry({ landConclusion: process.env.LC, checksConclusion: process.env.CC, remoteTip: process.env.RT, tip: process.env.TIP, retriesUsed: Number(process.env.N) });
+          console.log(`${d.retry ? 1 : 0}\t${d.backoffSec}\t${d.reason}`);' "$SCRIPT_DIR/lib/land-branch.js" 2>/dev/null || printf '0\t0\tdecision helper failed')
+        IFS=$'\t' read -r retry_flag backoff_s why <<<"$decision"
+        if [ "$retry_flag" = "1" ]; then
+          # Wait for the server-side re-trigger instead of racing it with our
+          # own local re-run call (which fails "already running" once the server
+          # has acted, and used to end in a false REFUSED).
+          local grace_s poll_s grace_end resumed=0 wait_verdict
+          read -r grace_s poll_s < <(node -e 'const l = require(process.argv[1]); console.log(l.CANCEL_GRACE_SEC, l.CANCEL_GRACE_POLL_SEC);' "$SCRIPT_DIR/lib/land-branch.js" 2>/dev/null || echo "300 15")
+          grace_end=$(( $(date +%s) + grace_s ))
+          [ "$grace_end" -le "$budget_deadline" ] || grace_end=$budget_deadline
+          log "land run cancelled while pending — $why; waiting up to $(( grace_end - $(date +%s) ))s for the server-side re-trigger (land-retry-cancelled.yml)"
+          while [ "$(date +%s)" -lt "$grace_end" ]; do
+            read -r st at < <(cd "$push_dir" && gh run view "$run_id" --json status,attempt --jq '[.status, (.attempt // 1 | tostring)] | join(" ")' 2>/dev/null || echo "completed 0")
+            wait_verdict=$(ST="$st" AT="$at" AB="${attempt_now:-1}" node -e 'const { decideCancelledWait } = require(process.argv[1]); console.log(decideCancelledWait({ status: process.env.ST, attempt: process.env.AT, attemptBefore: process.env.AB }));' "$SCRIPT_DIR/lib/land-branch.js" 2>/dev/null || echo wait)
+            if [ "$wait_verdict" = "resume" ]; then resumed=1; break; fi
+            sleep "$poll_s"
+          done
+          if [ "$resumed" = "1" ]; then
+            cancel_retries=$(( cancel_retries + 1 ))
+            log "server re-triggered the Land job (attempt ${at}) — resuming the wait"
+            continue
+          fi
+          if [ "$(date +%s)" -ge "$budget_deadline" ]; then
+            echo "TIMEOUT: $BRANCH — land run cancelled and the wait budget ran out before a server re-trigger${run_url:+ ($run_url)}; refs/heads/$land_name is in place — re-run this script to resume."
+            exit 2
+          fi
+          # Not seeing a re-trigger (slow runner, gh read failing) is not proof
+          # the server refused: end resumable, never REFUSED/"nothing reached main".
+          echo "TIMEOUT: $BRANCH — land run cancelled while pending and no server re-trigger seen within ${grace_s}s${run_url:+ ($run_url)}. land-retry-cancelled.yml may still re-run it (runner queue), or may have refused (land-started-work, branch-gone, superseded-tip, attempts-exhausted). refs/heads/$land_name is in place — re-run this script to resume the wait; if the run stays cancelled, push an empty commit to $BRANCH and re-run to land it fresh."
+          exit 2
+        else
+          log "land run cancelled; not re-triggering: ${why}"
+        fi
       fi
       echo "REFUSED: $BRANCH — land run $conclusion at gate '$gate'${run_url:+ ($run_url)}"
       echo "  alert conditionKey: land:$land_name (digest) — refs/heads/$land_name is left in place; nothing reached $DEFAULT_BRANCH."
       case "$conclusion" in
-        cancelled) echo "  cancelled = superseded in the 'landing' concurrency group; re-run this script (an empty commit is fine) to land again." ;;
+        cancelled) echo "  cancelled = superseded in the 'landing' concurrency group (server re-triggers seen: $cancel_retries); re-run this script (an empty commit is fine) to land again." ;;
         *) echo "  Fix on $BRANCH, commit, and re-run this script (any push to $land_name re-runs the checks)." ;;
       esac
       exit 1
@@ -459,6 +521,7 @@ land_via_landing_branch() {
       exit 2
       ;;
   esac
+  done
 }
 
 if [ "${LAND_LEGACY_DIRECT:-}" = "1" ]; then
@@ -906,7 +969,7 @@ else
         log "ancestry check UNKNOWN (shallow checkout) — treating as not-yet-confirmed, retrying"
       fi
     fi
-    if echo "$OUT" | grep -qiE "could not resolve host|failed to connect|timed out" || [ "$FETCHED" = 0 ]; then
+    if grep -qiE "could not resolve host|failed to connect|timed out" <<<"$OUT" || [ "$FETCHED" = 0 ]; then
       restore_stash; die "GitHub unreachable (network) — re-run when connectivity returns. Local merge is intact."
     fi
     log "push not yet confirmed landed (attempt $attempt) — merging remote and retrying"

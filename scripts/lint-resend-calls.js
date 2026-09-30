@@ -41,6 +41,10 @@ const ALLOWLIST = new Set([
   // 2026-09-20 on being handed the GitHub run URL: "Why would it be useful to
   // be at a GitHub URL? I never go there." Transactional to OWNER_EMAIL only.
   'scripts/lib/traffic-report-email.js',
+  // Reddit opening-post drafts, one email per new draft (BRO-4360). Owner
+  // sign-off 2026-09-29: "Send it as a separate email, not an existing one."
+  // Transactional to the owner only.
+  'scripts/send-reddit-post-email.js',
   // Grandfathered — not yet migrated (Sprint 2/3 targets). Remove each line as
   // it's migrated onto owner-alert-router.js.
   'scripts/sync-followers.js',
@@ -66,7 +70,7 @@ const ALLOWLIST = new Set([
   // it sends nothing. If a future edit adds a `method:` or a /send|/emails call here,
   // this comment is falsified and the entry must come back out.
   'scripts/newsletter/verify-sent-vs-state.mjs',
-  'scripts/monitor-scheduled-email-count.js', // GET /emails read-only monitor (card #510) — routeAlert() for the actual alert, this is just data collection
+  'scripts/lib/resend-owner-emails.js', // GET /emails read-only history reader (BRO-4373; moved out of monitor-scheduled-email-count.js, card #510) — shared by the monitor and check-morning-digest-sent.js, which alert via routeAlert()
   'scripts/send-follow-notifications.js',
   'scripts/newsletter/create-broadcast-draft.mjs',
   'scripts/newsletter/send-test.mjs',

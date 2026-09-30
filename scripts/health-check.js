@@ -3902,7 +3902,16 @@ function obClosingBacklogResults(report, now = new Date()) {
     ...(report.reviewTextSweep.candidates || []),
     ...((report.todaytixStaleness && report.todaytixStaleness.candidates) || []),
   ];
-  if (candidates.length === 0) return [];
+  // Open shows neither signal can watch (BRO-3086, Spellbound): listed even
+  // when there are no candidates, or the blind spot stays a JSON-only fact.
+  const blind = report.unmonitoredOpenShows || [];
+  const blindResult = blind.length ? [{
+    name: 'Data: OB shows no closing signal can detect',
+    status: 'warn',
+    message: `${blind.length} open Off-Broadway show(s) have no TodayTix id, no review texts and no closingDate, so a closure would go unnoticed. Oldest: ${blind.reduce((a, b) => (b.daysOpen > a.daysOpen ? b : a)).showId}`,
+    hint: 'Verify each on its venue/ticketing page; set closingDate (and status if closed) in shows.json (data repo), or add closingDate once announced.',
+  }] : [];
+  if (candidates.length === 0) return blindResult;
 
   const withAge = candidates.map(c => ({
     ...c,
@@ -3916,7 +3925,7 @@ function obClosingBacklogResults(report, now = new Date()) {
     : `${oldest.showId}${oldest.ageDays != null ? ` (missing ${oldest.ageDays}d)` : ''}`;
 
   const status = oldest.ageDays != null && oldest.ageDays >= OB_CLOSING_AGED_DAYS_ERROR ? 'error' : 'warn';
-  return [{
+  return [...blindResult, {
     name: 'Data: OB closing candidates awaiting review',
     status,
     message: `${candidates.length} open Off-Broadway show(s) look closed per the weekly detector. Oldest: ${label}`,

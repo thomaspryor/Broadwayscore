@@ -1,4 +1,5 @@
 import { ImageResponse } from 'next/og';
+import sharp from 'sharp';
 import { getShowBySlug, getHotShowSlugs } from '@/lib/data-core';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getScoreTier } from '@/components/show-cards';
@@ -8,7 +9,10 @@ import { BASE_URL, toAbsoluteUrl } from '@/lib/seo';
 
 export const alt = 'Broadway Scorecard — show score';
 export const size = { width: 1200, height: 630 };
-export const contentType = 'image/png';
+// JPEG, not PNG: the hero is a full-bleed photo and PNG encodes it at ~1.2 MB.
+// WhatsApp drops link previews whose image is over ~300 KB, so we re-encode
+// (see toJpeg) to ~100-200 KB.
+export const contentType = 'image/jpeg';
 
 // Match page.tsx revalidate so score updates between deploys propagate to OG
 // scrapers (Facebook/Twitter/iMessage) within a day, not stuck on deploy-time.
@@ -40,6 +44,21 @@ const TIER_STYLE: Record<string, { bg: string; text: string; glow: string }> = {
   'Mixed':     { bg: '#d97706', text: '#1a1a1a', glow: 'rgba(217, 119, 6, 0.35)' },
   'Critical Miss': { bg: '#ef4444', text: '#ffffff', glow: 'rgba(239, 68, 68, 0.35)' },
 };
+
+// ImageResponse only emits PNG. Re-encode to a small progressive JPEG.
+async function toJpeg(png: ImageResponse): Promise<Response> {
+  const input = Buffer.from(await png.arrayBuffer());
+  const jpeg = await sharp(input)
+    .flatten({ background: '#0f0f14' })
+    .jpeg({ quality: 78, progressive: true, mozjpeg: true })
+    .toBuffer();
+  return new Response(jpeg, {
+    headers: {
+      'Content-Type': 'image/jpeg',
+      'Cache-Control': 'public, immutable, no-transform, max-age=31536000',
+    },
+  });
+}
 
 export default async function OGImage({ params }: { params: { slug: string } }) {
   const show = getShowBySlug(params.slug);
@@ -92,7 +111,7 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
     ? 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)'
     : tierStyle?.bg;
 
-  return new ImageResponse(
+  return toJpeg(new ImageResponse(
     (
       <div
         style={{
@@ -149,11 +168,11 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
       </div>
     ),
     size
-  );
+  ));
 }
 
-function fallbackImage() {
-  return new ImageResponse(
+function fallbackImage(): Promise<Response> {
+  return toJpeg(new ImageResponse(
     (
       <div
         style={{
@@ -173,5 +192,5 @@ function fallbackImage() {
       </div>
     ),
     size
-  );
+  ));
 }

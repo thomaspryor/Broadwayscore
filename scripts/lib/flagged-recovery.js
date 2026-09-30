@@ -32,6 +32,8 @@
 // file on EVERY attempt — including fetch failure — or this cap can never bite.
 const FLAGGED_RECOVERY_CAP = 3;
 
+const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+
 // A dir file is "empty body" when the rebuild would drop it for lack of usable
 // content: no fullText at the 400-char includability floor, no aggregator star
 // score, and no assigned score. Mirrors the emptyBody arm of classifyShowFile in
@@ -175,12 +177,25 @@ function nextRecoveryCount(file) {
 // gap-ingest-policy's articleRunIdentity; the +365d end is deliberately wider
 // than that policy's +90d (roundup-article identity) because an individual
 // review of a long-running show can legitimately publish months after opening.
-function filledDateOutsideWindow(publishDate, openingDate) {
+//
+// `show` (optional): a date inside one of the show's DECLARED earlier runs /
+// tour legs (show.priorRuns / show.tourLegs) is this production, not a
+// mismatch (My Son's a Queer's i-paper review of its 2023 Ambassadors run).
+function filledDateOutsideWindow(publishDate, openingDate, show = null) {
   if (!publishDate || !openingDate) return false;
   const pd = new Date(publishDate).getTime();
   const op = new Date(openingDate).getTime();
   if (Number.isNaN(pd) || Number.isNaN(op)) return false;
-  return pd < op - 30 * 86400000 || pd > op + 365 * 86400000;
+  if (!(pd < op - 30 * 86400000 || pd > op + 365 * 86400000)) return false;
+  if (show && (isWithinPriorRun(publishDate, show.priorRuns) || isWithinTourLeg(publishDate, show.tourLegs))) return false;
+  return true;
+}
+
+// The note the post-fill guard stamps. Its prefix is in
+// wrong-production-autoclear.js DATE_GUARD_PREFIXES, so a later priorRuns
+// declaration auto-clears it; built here so the two cannot drift.
+function filledDateOutsideWindowNote(publishDate, openingDate) {
+  return `auto-flag: filled text dated ${publishDate}, outside the production window around opening ${openingDate} (post-fill recovery guard)`;
 }
 
 // Host-level coverage fallback for the gap census, used when no dir file
@@ -203,6 +218,7 @@ module.exports = {
   FLAGGED_RECOVERY_CAP,
   hostFallbackVouchers,
   filledDateOutsideWindow,
+  filledDateOutsideWindowNote,
   isEmptyBodyFile,
   isRecoverableFlaggedFile,
   isRecoverableUncitedStub,

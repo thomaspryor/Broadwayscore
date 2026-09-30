@@ -91,8 +91,8 @@ audit_out=$(
   GIT_C_REPO=""
   if [ -n "$_GIT_C" ]; then
     case "$_GIT_C" in
-      ~/*)  _GIT_C="$HOME/${_GIT_C#~/}" ;;
-      ~)    _GIT_C="$HOME" ;;
+      \~/*)  _GIT_C="$HOME/${_GIT_C#\~/}" ;;
+      \~)    _GIT_C="$HOME" ;;
     esac
     [ -d "$_GIT_C" ] && GIT_C_REPO=$(git -C "$_GIT_C" rev-parse --show-toplevel 2>/dev/null)
   fi

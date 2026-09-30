@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-29T17:15:48.187Z",
+  "timestamp": "2026-09-30T01:44:47.339Z",
   "stats": {
-    "totalReviews": 45259,
-    "alreadyFlagged": 18398,
-    "dateGuardCatches": 237,
-    "directorMismatch": 1162,
-    "tvFilmSignals": 1327,
-    "londonSignals": 1233,
-    "offBroadwaySignals": 516,
+    "totalReviews": 45347,
+    "alreadyFlagged": 18508,
+    "dateGuardCatches": 240,
+    "directorMismatch": 1185,
+    "tvFilmSignals": 1323,
+    "londonSignals": 1234,
+    "offBroadwaySignals": 509,
     "yearMismatch": 101,
-    "noPublishDate": 4044
+    "noPublishDate": 3986
   },
   "findings": [
     {
@@ -561,7 +561,7 @@
     {
       "showId": "a-time-to-kill-2013",
       "file": "nytimes--charles-isherwood.json",
-      "score": 42,
+      "score": 48,
       "publishDate": "October 20, 2013",
       "url": "http://www.nytimes.com/2013/10/21/theater/reviews/a-time-to-kill-opens-on-broadway.html",
       "findings": [
@@ -686,20 +686,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"gregory mosher\" from a-view-from-the-bridge-2010"
-        }
-      ]
-    },
-    {
-      "showId": "a-walk-on-the-moon-off-broadway-2026",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 68,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2026/07/theater-review-walk-on-moon-is-old.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -869,6 +855,20 @@
       ]
     },
     {
+      "showId": "affluenza-off-west-end-2026",
+      "file": "monstagigz--unknown.json",
+      "score": 74,
+      "publishDate": "2026-09-29",
+      "url": "https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "after-midnight-2013",
       "file": "broadwayworld--michael-dale.json",
       "score": 90,
@@ -963,6 +963,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "alice-in-wonderland-off-broadway-2026",
+      "file": "goodstoriespodcast--unknown.json",
+      "publishDate": "2026-09-29",
+      "url": "https://www.goodstoriespodcast.net/alice-in-wonderland-by-lewis-carroll/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 2\""
         }
       ]
     },
@@ -1119,7 +1132,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 76,
+      "score": 74,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -1458,20 +1471,6 @@
       ]
     },
     {
-      "showId": "an-act-of-god-2016",
-      "file": "star-watch-byline--e-caroll.json",
-      "score": 86,
-      "publishDate": "2016-07-30",
-      "url": "https://www.starwatchbyline.com/?p=15756",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
       "showId": "an-american-daughter-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
       "score": 18,
@@ -1496,25 +1495,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"daniel sullivan\" from an-american-daughter-1997"
-        }
-      ]
-    },
-    {
-      "showId": "an-american-daughter-off-broadway-2026",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 91,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -1795,6 +1775,20 @@
       ]
     },
     {
+      "showId": "and-juliet-tour-2024",
+      "file": "fort-worth-star-telegram--rick-mauch.json",
+      "score": 86,
+      "publishDate": "2025-11-13",
+      "url": "https://www.star-telegram.com/entertainment/fort-worth/article312903174.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "and-then-the-rodeo-burned-down-off-broadway-2026",
       "file": "nytg--amelia-merrill.json",
       "score": 85,
@@ -1969,20 +1963,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"martin charnin\" from annie-1997"
-        }
-      ]
-    },
-    {
-      "showId": "anything-goes-2011",
-      "file": "variety--unknown.json",
-      "score": 88,
-      "publishDate": "April 7, 2011",
-      "url": "http://www.variety.com/review/VE1117944987?refCatId=33",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -2416,20 +2396,6 @@
       "score": 74,
       "publishDate": "2026-04-22",
       "url": "https://ew.com/beaches-broadway-review-you-will-laugh-and-cry-11955759",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "beaches-2026",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 60,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2026/04/broadway-review-beaches-outlook-is.html?m=0",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -3738,10 +3704,10 @@
     },
     {
       "showId": "buena-vista-social-club-tour-2026",
-      "file": "broadwayworld--michael-rabice.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "https://www.broadwayworld.com/buffalo/article/Review-BUENA-VISTA-SOCIAL-CLUB-at-Sheas-Buffalo-Theatre-20260917",
+      "file": "buffalorising--peter-hall.json",
+      "score": 70,
+      "publishDate": "2026-09-17",
+      "url": "https://www.buffalorising.com/2026/09/no-translation-needed-buena-vista-social-club-speaks-straight-to-the-heart-of-a-muy-simpatico-audience/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -4516,7 +4482,7 @@
     {
       "showId": "caroline-or-change-2021",
       "file": "hollywood-reporter--david-rooney.json",
-      "score": 80,
+      "score": 92,
       "publishDate": "2021-10-28",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/caroline-or-change-broadway-review-1235038296/",
       "findings": [
@@ -4846,6 +4812,20 @@
       "file": "seatplan--unknown.json",
       "publishDate": "2026-07-21",
       "url": "https://seatplan.com/new-york/cat-cohen-broad-strokes-tickets/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "cat-cohen-broad-strokes-off-broadway-2026",
+      "file": "the-interested-bystander--cary-wong.json",
+      "score": 90,
+      "publishDate": null,
+      "url": "https://www.interestedbystander.com/2026/08/theater-review-thirty-years-later-in.html",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -5264,7 +5244,7 @@
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "cititour--brian-scott-lipton.json",
-      "score": 86,
+      "score": 88,
       "publishDate": "2024-06-20",
       "url": "https://cititour.com/NYC_News/Cats-The-Jellice-Ball-is-Practically-Purrfect/8448",
       "findings": [
@@ -5584,7 +5564,7 @@
     {
       "showId": "cats-the-jellicle-ball-off-broadway-2024",
       "file": "thewrap--robert-hofler.json",
-      "score": 25,
+      "score": 36,
       "publishDate": "2024-06-21",
       "url": "https://www.thewrap.com/cats-jellicle-ball-off-broadway-review-andrew-lloyd-webber/",
       "findings": [
@@ -6234,22 +6214,8 @@
     },
     {
       "showId": "christmas-carol-goes-wrong-west-end-2026",
-      "file": "london-box-office--stuart-king.json",
-      "score": 83,
-      "publishDate": "2025-12-16",
-      "url": "https://www.londonboxoffice.co.uk/news/post/christmas-carol-goes-wrong-apollo-theatre-review",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 367d before show (2025-12-16 vs 2026-12-18)"
-        }
-      ]
-    },
-    {
-      "showId": "christmas-carol-goes-wrong-west-end-2026",
       "file": "london-theatre-reviews--the-anonymous-reviewer.json",
-      "score": 83,
+      "score": 90,
       "publishDate": "2025-12-15",
       "url": "https://www.londontheatrereviews.co.uk/post.cfm?p=26427",
       "findings": [
@@ -6263,7 +6229,7 @@
     {
       "showId": "christmas-carol-goes-wrong-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 83,
+      "score": 82,
       "publishDate": "2025-12-15",
       "url": "https://www.standard.co.uk/culture/theatre/christmas-carol-goes-wrong-apollo-theatre-review-b1262590.html",
       "findings": [
@@ -6284,6 +6250,11 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 369d before show (2025-12-14 vs 2026-12-18)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },
@@ -6304,7 +6275,7 @@
     {
       "showId": "christmas-carol-goes-wrong-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2025-12-14",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/christmas-carol-goes-wrong-review-apollo-shaftsbury-lbgtdhfk3",
       "findings": [
@@ -6927,7 +6898,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 81,
+      "score": 80,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -7264,20 +7235,6 @@
       ]
     },
     {
-      "showId": "days-of-wine-and-roses-2024",
-      "file": "variety--aramide-tinubu.json",
-      "score": 79,
-      "publishDate": "January 29, 2024",
-      "url": "https://variety.com/2005/legit/reviews/days-of-wine-and-roses-2-1200527616/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
       "showId": "dead-accounts-2012",
       "file": "newsday--linda-winer.json",
       "score": 41,
@@ -7428,6 +7385,48 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "file": "cleveland-plain-dealer--joey-morona.json",
+      "score": 87,
+      "publishDate": "2026-09-21",
+      "url": "https://www.cleveland.com/entertainment/2026/09/death-becomes-her-review-hit-musicals-tour-launch-is-a-killer-good-time-at-playhouse-square.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
+        }
+      ]
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "file": "clevescene--gwendolyn-kocher.json",
+      "score": 78,
+      "publishDate": "2026-09-21",
+      "url": "https://www.clevescene.com/arts/death-becomes-her-begins-a-new-life-with-tour-launch-at-playhouse-square/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
+        }
+      ]
+    },
+    {
+      "showId": "death-becomes-her-tour-2026",
+      "file": "the-news-herald--mark-meszoros.json",
+      "score": 74,
+      "publishDate": "2026-09-21",
+      "url": "https://www.news-herald.com/2026/09/21/death-becomes-her-at-playhouse-square-review-a-fatally-fun-time/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"christopher gattelli\" from death-becomes-her-2024"
         }
       ]
     },
@@ -7696,7 +7695,7 @@
       "file": "usatoday--elysa-gardner.json",
       "score": 82,
       "publishDate": "2012-03-15T20:42:51-04:00",
-      "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-15/death-of-a-salesman/53555044/1?csp=34life&amp;utm_source=feedburner&amp;utm_medium=feed&amp;utm_campaign=Feed%3A+usatoday-LifeTopStories+%28Life+-+Top+Stories%29",
+      "url": "http://www.usatoday.com/life/theater/reviews/story/2012-03-15/death-of-a-salesman/53555044/1?csp=34life&utm_source=feedburner&utm_medium=feed&utm_campaign=Feed%3A+usatoday-LifeTopStories+%28Life+-+Top+Stories%29",
       "findings": [
         {
           "type": "YEAR_MISMATCH",
@@ -8319,7 +8318,7 @@
       "file": "nypost--johnny-oleksinski.json",
       "score": 54,
       "publishDate": "2021-11-17T19:32:08-05:00",
-      "url": "https://nypost.com/2021/11/17/diana-review-a-lifetime-original-broadway-show/?utm_campaign=SocialFlow&amp;utm_source=NYPTwitter&amp;utm_medium=SocialFlow",
+      "url": "https://nypost.com/2021/11/17/diana-review-a-lifetime-original-broadway-show/?utm_campaign=SocialFlow&utm_source=NYPTwitter&utm_medium=SocialFlow",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8456,20 +8455,6 @@
     },
     {
       "showId": "diana-the-musical-2021",
-      "file": "variety--charles-isherwood.json",
-      "score": 17,
-      "publishDate": "November 18, 2021",
-      "url": "https://variety.com/2021/legit/reviews/diana-musical-review-broadway-1235114301/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "diana-the-musical-2021",
       "file": "variety--naveen-kumar.json",
       "score": 19,
       "publishDate": "November 17, 2021",
@@ -8540,20 +8525,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "disruption-off-broadway-2026",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 74,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -8996,7 +8967,7 @@
       "file": "nytimes--laura-collins-hughes.json",
       "score": 74,
       "publishDate": "November 17, 2024",
-      "url": "https://www.nytimes.com/2024/11/17/theater/elf-review-broadway.html#:~:text=Review%3A%20In%20'Elf'%20on,trapped%20inside%20a%20creaky%20adaptation.&amp;text=Santa%20Clauses%20are%20pretty%20interchangeable.",
+      "url": "https://www.nytimes.com/2024/11/17/theater/elf-review-broadway.html#:~:text=Review%3A%20In%20'Elf'%20on,trapped%20inside%20a%20creaky%20adaptation.&text=Santa%20Clauses%20are%20pretty%20interchangeable.",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -10154,6 +10125,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"streaming service\""
+        }
+      ]
+    },
+    {
+      "showId": "fish-in-the-dark-2015",
+      "file": "chortle--darren-richman.json",
+      "score": 82,
+      "publishDate": "March 6th, 2015",
+      "url": "https://www.chortle.co.uk/review/2015/03/06/21977/larry_davids_fish_in_the_dark",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -11819,11 +11804,97 @@
     },
     {
       "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "file": "cititour--brian-scott-lipton.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "https://cititour.com/NYC_Broadway/Going-Bacharach-The-Songs-of-an-Icon/1350",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david zippel\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "file": "front-row-center--holli-harms.json",
+      "score": 92,
+      "publishDate": "2026-01-12T20:34:20",
+      "url": "https://thefrontrowcenter.com/2026/01/going-bacharach-the-songs-of-an-icon/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david zippel\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "file": "nysr--david-finkle.json",
+      "score": 71,
+      "publishDate": "2026-01-13",
+      "url": "https://nystagereview.com/2026/01/12/going-bacharach-mishandling-an-icons-songs/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david zippel\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "file": "theatermania--zachary-stewart.json",
+      "score": 77,
+      "publishDate": "2026-01-13",
+      "url": "https://www.theatermania.com/news/review-going-bacharach-an-off-broadway-concert_1818204/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david zippel\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 77,
       "publishDate": "2026-01-13",
       "url": "https://t2conline.com/going-bacharach-the-songs-of-an-icon-a-tale-of-two-acts-and-the-songs-of-a-giant/",
       "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david zippel\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
         {
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
@@ -13737,7 +13808,7 @@
     {
       "showId": "here-comes-j-edgar-off-west-end-2026",
       "file": "londonpubtheatres--francis-beckett.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-07-17",
       "url": "https://www.londonpubtheatres.com/review-here-comes-j-edgar-at-kings-head-theatre-17-july-4-august-2026",
       "findings": [
@@ -15506,7 +15577,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "a-youngish-perspective--unknown.json",
-      "score": 93,
+      "score": 94,
       "publishDate": "2025-12-13",
       "url": "https://ayoungishperspective.co.uk/2025/12/13/review-into-the-woods-2/",
       "findings": [
@@ -15539,7 +15610,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 79,
+      "score": 82,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -15581,7 +15652,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "broadwayworld--aliya-al-hassan.json",
-      "score": 97,
+      "score": 96,
       "publishDate": "2025-12-12",
       "url": "https://www.broadwayworld.com/westend/article/Review-INTO-THE-WOODS-Bridge-Theatre-20251212",
       "findings": [
@@ -15767,7 +15838,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "musical-theatre-review--ian-bowkett.json",
-      "score": 92,
+      "score": 91,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/into-the-woods-bridge-theatre/",
       "findings": [
@@ -15903,7 +15974,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "the-recs--the-recs-it.json",
-      "score": 97,
+      "score": 98,
       "publishDate": null,
       "url": "https://therecs.co.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -15978,6 +16049,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "times-uk--clive-davis.json",
+      "score": 95,
       "publishDate": "2025-12-12",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/into-the-woods-review-bridge-theatre-gzw6h6f8b",
       "findings": [
@@ -16648,7 +16720,7 @@
     {
       "showId": "john-proctor-is-the-villain-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-03-27",
       "url": "https://www.theguardian.com/stage/2026/mar/27/john-proctor-is-the-villain-review-royal-court-theatre",
       "findings": [
@@ -17193,7 +17265,7 @@
       "file": "nypost--johnny-oleksinski.json",
       "score": 77,
       "publishDate": "2022-11-10T21:18:09-05:00",
-      "url": "https://nypost.com/2022/11/10/kimberly-akimbo-review-a-weird-but-sweet-broadway-musical/?utm_source=NYPTwitter&amp;utm_campaign=SocialFlow&amp;utm_medium=SocialFlow",
+      "url": "https://nypost.com/2022/11/10/kimberly-akimbo-review-a-weird-but-sweet-broadway-musical/?utm_source=NYPTwitter&utm_campaign=SocialFlow&utm_medium=SocialFlow",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -17205,7 +17277,7 @@
     {
       "showId": "kimberly-akimbo-off-west-end-2026",
       "file": "thestage--tom-wicker.json",
-      "score": 89,
+      "score": 88,
       "publishDate": "2026-09-10",
       "url": "https://www.thestage.co.uk/reviews/kimberly-akimbo-review-hampstead-theatre-london",
       "findings": [
@@ -20241,7 +20313,7 @@
     {
       "showId": "much-ado-about-nothing-globe-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-06-20",
       "url": "https://www.londonboxoffice.co.uk/news/post/much-ado-shakespeares-globe-review",
       "findings": [
@@ -20812,7 +20884,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "gay-times--chris-selman.json",
-      "score": 98,
+      "score": 99,
       "publishDate": "2022-10-24",
       "url": "https://www.gaytimes.co.uk/originals/my-sons-a-queer-but-what-can-you-do-makes-triumphant-west-end-debut-review/",
       "findings": [
@@ -20820,6 +20892,19 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1423d before show (2022-10-24 vs 2026-09-16)"
+        }
+      ]
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "file": "i-paper--unknown.json",
+      "publishDate": "2023-02-02",
+      "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963?srsltid=AU7gw4VFjlKyCLX7gE4D3lV4jNb7Qo-HtXPpIbMALtDTUI0ijAXKWBoP",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1322d before show (2023-02-02 vs 2026-09-16)"
         }
       ]
     },
@@ -20910,7 +20995,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "thestage--paul-vale.json",
-      "score": 93,
+      "score": 94,
       "publishDate": "February 2nd, 2023",
       "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge",
       "findings": [
@@ -21165,6 +21250,19 @@
       ]
     },
     {
+      "showId": "nutcracker-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2024-12-13",
+      "url": "https://www.londonboxoffice.co.uk/news/post/nutcracker-coliseum-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 734d before show (2024-12-13 vs 2026-12-17)"
+        }
+      ]
+    },
+    {
       "showId": "oh-hello-on-broadway-2016",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 79,
@@ -21331,7 +21429,7 @@
     {
       "showId": "oh-mary-off-broadway-2024",
       "file": "theater-life--david-sheward.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2024-02-11T14:18:21",
       "url": "https://theaterlife.com/oh-mary/",
       "findings": [
@@ -22126,20 +22224,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "paranormal-activity-2026",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 75,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2026/08/theater-reviews-in-late-summer-new.html",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -23595,7 +23679,7 @@
       "file": "nypost--elisabeth-vincentelli.json",
       "score": 79,
       "publishDate": "April 26, 2010",
-      "url": "http://www.nypost.com/p/entertainment/theater/promises_are_fulfilled_NknsdSoPPOk1FuD87dnabM?CMP=OTC-rss&amp;FEEDNAME=",
+      "url": "http://www.nypost.com/p/entertainment/theater/promises_are_fulfilled_NknsdSoPPOk1FuD87dnabM?CMP=OTC-rss&FEEDNAME=",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -24280,7 +24364,7 @@
     {
       "showId": "romeo-and-juliet-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 59,
+      "score": 60,
       "publishDate": "2026-04-01",
       "url": "https://www.theguardian.com/stage/2026/apr/01/romeo-and-juliet-review-overbearing-directorial-stamp-is-saved-by-dazzling-cast",
       "findings": [
@@ -24630,6 +24714,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "school-girls-or-the-african-mean-girls-play-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "score": 87,
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TM4Q64",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"hbo max\""
         }
       ]
     },
@@ -26420,7 +26518,7 @@
     {
       "showId": "stereophonic-off-broadway-2023",
       "file": "front-row-center--cameron-hughes.json",
-      "score": 89,
+      "score": 91,
       "publishDate": "2023-10-29T22:30:03",
       "url": "https://thefrontrowcenter.com/2023/10/stereophonic/",
       "findings": [
@@ -26564,6 +26662,17 @@
     },
     {
       "showId": "stick-man-off-west-end-2026",
+      "file": "london-box-office--emmie-newitt.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1002d before show (2024-03-06 vs 2026-12-03)"
+        }
+      ]
+    },
+    {
+      "showId": "stick-man-off-west-end-2026",
       "file": "whatsonstage--michael-coveney.json",
       "score": 81,
       "publishDate": "2011-08-07",
@@ -26638,6 +26747,136 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 4\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "artsfuse--debra-cash.json",
+      "score": 45,
+      "publishDate": "2026-03-19",
+      "url": "https://artsfuse.org/326060/theater-review-suffs-marches-on-without-the-fire-its-story-deserves/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "cleveland-plain-dealer--joey-morona.json",
+      "score": 61,
+      "publishDate": "2026-02-05",
+      "url": "https://www.cleveland.com/entertainment/2026/02/suffs-at-playhouse-square-review-musical-about-womens-suffrage-movement-is-relevant-inspiring.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "latimes--charles-mcnulty.json",
+      "publishDate": "2025-11-21",
+      "url": "https://www.latimes.com/entertainment-arts/story/2025-11-21/suffs-review-women-vote-musical-theatre-hollywood-pantages",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "minneapolis-star-tribune--rohan-preston.json",
+      "score": 86,
+      "publishDate": "2026-04-09",
+      "url": "https://www.startribune.com/should-women-vote-suffs-shows-a-past-and-current-fight/601664006",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "san-francisco-chronicle--lily-janiak.json",
+      "score": 73,
+      "publishDate": "2025-10-24",
+      "url": "https://www.sfchronicle.com/entertainment/article/suffs-broadwaysf-review-protests-21073924.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "seattle-times--dusty-somers.json",
+      "score": 60,
+      "publishDate": "2025-09-22",
+      "url": "https://www.seattletimes.com/entertainment/theater/suffs-crackles-with-energy-at-5th-avenue-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "socal-thrills--russell-tom.json",
+      "score": 89,
+      "publishDate": "2025-11-21",
+      "url": "https://socalthrills.com/theatre-review-suffs-the-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "stageandcinema--milo-shapiro.json",
+      "score": null,
+      "publishDate": "2025-10-03",
+      "url": "https://stageandcinema.com/2025/10/02/theater-review-suffs-national-tour/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "the-news-herald--mark-meszoros.json",
+      "score": 77,
+      "publishDate": "2026-02-06",
+      "url": "https://www.news-herald.com/2026/02/06/suffs-at-playhouse-square-review-hear-these-impressive-women-roar/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
         }
       ]
     },
@@ -27135,7 +27374,7 @@
     {
       "showId": "sunset-boulevard-2017",
       "file": "wsj--terry-teachout.json",
-      "score": 45,
+      "score": 44,
       "publishDate": "2017-02-10",
       "url": "https://www.wsj.com/articles/sunset-boulevard-review-the-picture-got-small-1486690200?gaa_at=eafs&gaa_n=AWEtsqebjjSCOi7Wd3wqjJrvNets_tsaaHeufm51SnMGWFi1qWkp-BEB3L13&gaa_ts=698c3f59&gaa_sig=JK_4BNhrzEcoFXRVHIUb_F-6vwH8TEkVV8XSTJEdJlfDiUjRjqHw9Z1hZ40XpMPy_7pZSqlgss7GNhRqclKFaA%3D%3D",
       "findings": [
@@ -30066,6 +30305,25 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "broadwayworld--david-friscic.json",
+      "score": null,
+      "publishDate": "2026-05-19",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-THE-GREAT-GATSBY-at-National-Theatre-20260519",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"national theatre\""
         }
       ]
     },
@@ -33288,20 +33546,6 @@
       ]
     },
     {
-      "showId": "time-stands-still-2010",
-      "file": "hollywood-reporter--charles-isherwood.json",
-      "score": 84,
-      "publishDate": "January 28, 2010",
-      "url": "https://www.hollywoodreporter.com/hr/film-reviews/time-stands-still-theater-review-1004063419.story",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "titanique-2026",
       "file": "broadwayworld--nicole-rosky.json",
       "score": null,
@@ -34167,7 +34411,7 @@
       "file": "british-theatre--sandra-giorgetti.json",
       "score": 77,
       "publishDate": "2026-09-28",
-      "url": null,
+      "url": "https://www.britishtheatreguide.info/reviews/tru-menier-chocolat-26049",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34229,10 +34473,9 @@
     },
     {
       "showId": "tru-off-west-end-2026",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 64,
+      "file": "financialtimes--julianna-barnaby.json",
       "publishDate": "2026-09-28",
-      "url": "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2",
+      "url": "https://www.westendtheatre.com/369207/news/tru-reviews/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34578,7 +34821,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 74,
       "publishDate": "2026-09-27",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36208,7 +36451,7 @@
       "file": "nytimes--charles-isherwood.json",
       "score": 95,
       "publishDate": "October 14, 2012",
-      "url": "http://theater.nytimes.com/2012/10/15/theater/reviews/tracy-letts-in-whos-afraid-of-virginia-woolf.html?_r=0&amp;adxnnl=1&amp;ref=theater&amp;adxnnlx=1350253537-D2F1mvl4k86ll70uRrnxIg",
+      "url": "http://theater.nytimes.com/2012/10/15/theater/reviews/tracy-letts-in-whos-afraid-of-virginia-woolf.html?_r=0&adxnnl=1&ref=theater&adxnnlx=1350253537-D2F1mvl4k86ll70uRrnxIg",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36769,7 +37012,7 @@
       "file": "vulture--sara-holdren.json",
       "score": 24,
       "publishDate": "November 21, 2022",
-      "url": "https://www.vulture.com/article/this-christmas-carol-tries-to-put-scrooge-on-the-couch.html#:~:text=If%20you%20want%20a%20big%2Dhearted%2C,community%2Dminded%2C%20UK%2Ddeveloped%20musical&amp;text=Theater%20Review%3A%20A%20Christmas%20Carol,Tags%3A",
+      "url": "https://www.vulture.com/article/this-christmas-carol-tries-to-put-scrooge-on-the-couch.html#:~:text=If%20you%20want%20a%20big%2Dhearted%2C,community%2Dminded%2C%20UK%2Ddeveloped%20musical&text=Theater%20Review%3A%20A%20Christmas%20Carol,Tags%3A",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -36876,7 +37119,7 @@
     {
       "showId": "a-dolls-house-part-2-2017",
       "file": "wsj--terry-teachout.json",
-      "score": 42,
+      "score": 34,
       "publishDate": "April 27th, 2017",
       "url": "https://www.wsj.com/articles/a-dolls-house-part-2-review-an-unneeded-sequel-1493339401",
       "findings": [
@@ -37038,7 +37281,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -37066,7 +37309,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "theartsdispatch--the-arts-dispatch.json",
-      "score": 79,
+      "score": 80,
       "publishDate": "2026-09-13",
       "url": "https://theartsdispatch.substack.com/p/a-month-in-the-country-review-donmar",
       "findings": [
@@ -38384,7 +38627,7 @@
     {
       "showId": "archduke-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
-      "score": 80,
+      "score": 78,
       "publishDate": "2026-06-28",
       "url": "https://www.londontheatre1.com/reviews/archduke-royal-court/",
       "findings": [
@@ -38482,7 +38725,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -39539,20 +39782,6 @@
       ]
     },
     {
-      "showId": "bug-2026",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 69,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2026/01/theater-catching-up-on-theater-filled.html?m=0",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
       "showId": "burlesque-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
       "score": 78,
@@ -39821,7 +40050,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": null,
+      "score": 81,
       "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/care-review-play-young-vic-dementia-drama-quietly-heartbreaking-wwhzbd0bl",
       "findings": [
@@ -40535,20 +40764,6 @@
       ]
     },
     {
-      "showId": "chinese-republicans-off-broadway-2026",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 76,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2026/02/theater-reviews-off-broadway-explores.html",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
-        }
-      ]
-    },
-    {
       "showId": "chinglish-2011",
       "file": "theater-life--eric-march.json",
       "score": 39,
@@ -40978,6 +41193,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
+      "showId": "crybabies-the-scaring-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-09-08",
+      "url": "https://www.londonboxoffice.co.uk/news/post/crybabies-the-scaring-soho-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -41458,7 +41686,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "musical-theatre-review--unknown.json",
-      "score": 80,
+      "score": 81,
       "publishDate": null,
       "url": "https://musicaltheatrereview.com/death-note-the-musical-barbican-theatre/",
       "findings": [
@@ -41472,7 +41700,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 74,
+      "score": 76,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -42751,20 +42979,6 @@
     },
     {
       "showId": "festen-2006",
-      "file": "about-entertainment--ben-brantley.json",
-      "score": 56,
-      "publishDate": "April 10, 2006",
-      "url": "http://theater.nytimes.com/2006/04/10/theater/reviews/10fest.html?pagewanted=1&amp;adxnnl=1&amp;adxnnlx=1305666540-SKmWd4y9msy5ziGPWDoWNQ",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "festen-2006",
       "file": "newsday--linda-winer.json",
       "score": 78,
       "publishDate": "2006-04-10",
@@ -43250,6 +43464,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+      "file": "nysr--elysa-gardner.json",
+      "score": 81,
+      "publishDate": "2026-01-13",
+      "url": "https://nystagereview.com/2026/01/12/going-bacharach-the-songs-of-an-icon-in-a-joyful-virtuosic-tribute/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 239d before show (2026-01-13 vs 2026-09-09)"
         }
       ]
     },
@@ -44027,7 +44255,7 @@
     {
       "showId": "hadestown-west-end-2024",
       "file": "whatsonstage--sarah-crompton.json",
-      "score": 77,
+      "score": 79,
       "publishDate": "2024-02-21",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/hadestown-national-anais-mitchel-eva-noblezada_48001.html",
       "findings": [
@@ -46854,6 +47082,19 @@
       ]
     },
     {
+      "showId": "kiss-me-kate-2019",
+      "file": "the-komisar-scoop--lucy-komisar.json",
+      "publishDate": null,
+      "url": "https://www.thekomisarscoop.com/2019/05/kiss-me-kate-a-terrific-feminist-take-on-taming-of-the-shrew/",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
       "showId": "kpop-2022",
       "file": "chicagotribune--chris-jones.json",
       "score": 57,
@@ -47853,7 +48094,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -48352,7 +48593,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 82,
+      "score": 81,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -48366,7 +48607,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-04-30",
       "url": "https://www.theguardian.com/stage/2026/apr/30/mass-review-donmar-warehouse-london",
       "findings": [
@@ -48380,7 +48621,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "london-theatre--holly-omahony.json",
-      "score": 61,
+      "score": 62,
       "publishDate": "2026-04-30",
       "url": "https://www.londontheatre.co.uk/reviews/mass-review-donmar-warehouse",
       "findings": [
@@ -50269,20 +50510,6 @@
       ]
     },
     {
-      "showId": "paranormal-activity-west-end-2025",
-      "file": "times-uk--unknown.json",
-      "score": 82,
-      "publishDate": "2025-12-16",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/paranormal-activity-review-this-play-is-as-terrifying-as-the-film-pqdnk35jz",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
       "showId": "passing-strange-2008",
       "file": "chicagotribune--chris-jones.json",
       "score": 76,
@@ -50382,20 +50609,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
-      "showId": "pied-a-terre-off-broadway-2026",
-      "file": "wsj--terry-teachout.json",
-      "score": 71,
-      "publishDate": null,
-      "url": "https://www.wsj.com/articles/the-visitor-tom-mccarthy-david-hyde-pierce-tom-kitt-brian-yorkey-11636058879?gaa_at=eafs&gaa_n=AWEtsqeBDXWyBmRxFfbDTkUzL7qrazNUkWWBdaa4ulmbFxIYvOTDw0dpauQ1&gaa_ts=699d3829&gaa_sig=e1gOKBVHBvig6rQk-3OvML_Eq6gJL-Xd1AL3P1TpPRV-dO59rj-P_6JPpa9qgVx--Apqq90OvGAPy6tuE8isNg%3D%3D",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -50758,34 +50971,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"soho rep\""
-        }
-      ]
-    },
-    {
-      "showId": "reasons-to-be-pretty-2009",
-      "file": "theater-life--eric-march.json",
-      "score": 88,
-      "publishDate": "2009-03-29T04:58:00",
-      "url": "https://theaterlife.com/reasons-to-be-pretty/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
-      "showId": "redwood-2025",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 88,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2025/02/theater-reviews-idina-menzel-defies.html?m=0",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
         }
       ]
     },
@@ -51262,20 +51447,6 @@
       ]
     },
     {
-      "showId": "school-girls-or-the-african-mean-girls-play-2026",
-      "file": "playbill--unknown.json",
-      "score": null,
-      "publishDate": "2026-09-28",
-      "url": "https://playbill.com/article/reviews-are-out-for-school-girls-or-the-african-mean-girls-play-on-broadway",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
-        }
-      ]
-    },
-    {
       "showId": "school-pictures-off-broadway-2023",
       "file": "theater-scene--victor-gluck.json",
       "score": 86,
@@ -51686,7 +51857,7 @@
       "file": "about-entertainment--charles-isherwood.json",
       "score": 75,
       "publishDate": "April 20, 2011",
-      "url": "http://theater.nytimes.com/2011/04/21/theater/reviews/sister-act-comes-to-broadway-review.html?adxnnl=1&amp;ref=theater&amp;adxnnlx=1303352471-oj+I8TNa+sfHJvrc5onh0w",
+      "url": "http://theater.nytimes.com/2011/04/21/theater/reviews/sister-act-comes-to-broadway-review.html?adxnnl=1&ref=theater&adxnnlx=1303352471-oj+I8TNa+sfHJvrc5onh0w",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -52303,20 +52474,6 @@
       "score": 96,
       "publishDate": "April 19, 2024",
       "url": "https://www.timeout.com/newyork/theater/stereophonic-broadway-play-review-david-adjmi-will-butler",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"playwrights horizons\""
-        }
-      ]
-    },
-    {
-      "showId": "stereophonic-2024",
-      "file": "variety--aramide-tinubu.json",
-      "score": 92,
-      "publishDate": "April 19, 2024",
-      "url": "https://variety.com/2024/legit/reviews/stereophonic-review-broadway-1235997112/",
       "findings": [
         {
           "type": "OFF_BROADWAY_SIGNAL",
@@ -54133,19 +54290,6 @@
       ]
     },
     {
-      "showId": "the-car-man-west-end-2026",
-      "file": "westendtheatre--luke-dillon.json",
-      "publishDate": "2026-03-24",
-      "url": "https://www.westendtheatre.com/346327/news/the-car-man-cast-2026/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 126d before show (2026-03-24 vs 2026-07-28)"
-        }
-      ]
-    },
-    {
       "showId": "the-caretaker-2003",
       "file": "theatermania--unknown.json",
       "score": 59,
@@ -54836,20 +54980,6 @@
       ]
     },
     {
-      "showId": "the-emporium-off-broadway-2025",
-      "file": "the-interested-bystander--cary-wong.json",
-      "score": 52,
-      "publishDate": null,
-      "url": "https://www.interestedbystander.com/2026/05/off-broadway-reviews-past-is-not-full.html?m=0",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
-        }
-      ]
-    },
-    {
       "showId": "the-encounter-2016",
       "file": "frontmezzjunkies--steven-ross.json",
       "score": 44,
@@ -55074,20 +55204,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "the-ferryman-2018",
-      "file": "british-theatre--philip-fisher.json",
-      "score": 92,
-      "publishDate": "January 16th, 2019",
-      "url": "https://www.britishtheatreguide.info/reviews/the-ferryman-bernard-b-jaco-17010",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
@@ -55537,7 +55653,7 @@
     {
       "showId": "the-inheritance-2019",
       "file": "curtainup--charles-wright.json",
-      "score": 72,
+      "score": 78,
       "publishDate": null,
       "url": "https://www.curtainup.com/inheritancebway.html",
       "findings": [
@@ -57317,6 +57433,24 @@
       ]
     },
     {
+      "showId": "the-standard-of-living-west-end-2026",
+      "file": "west-end-wilma--westendwilma.json",
+      "publishDate": "2026-08-07",
+      "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 45d before show (2026-08-07 vs 2026-09-21)"
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
       "showId": "the-story-west-end-2026",
       "file": "afridiziak-theatre-news--unknown.json",
       "score": 89,
@@ -58569,7 +58703,7 @@
     {
       "showId": "torch-song-2018",
       "file": "wsj--matt-windman.json",
-      "score": 75,
+      "score": 74,
       "publishDate": "November 1st, 2018",
       "url": "https://www.wsj.com/articles/torch-song-review-less-radical-still-funny-1541118600",
       "findings": [

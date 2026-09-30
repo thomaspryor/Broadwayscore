@@ -22,5 +22,20 @@
   "ensembleScores": {
     "sonnet": 75,
     "opus": 75
+  },
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "the English countryside",
+    "reason": "The play is set in the English countryside, which suggests it is not the Broadway production assigned in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": false,
+      "reason": "The evidence states where the story is SET, not where the play is performed, and the assigned production is 'Giant' while the video review is clearly about a play featuring Roald Dahl and John Lithgow, which is a different production entirely.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:19.868Z"
   }
 }

@@ -303,10 +303,36 @@ if [ "${1:-}" = "--all" ]; then
     rm -rf "$TEMP_DIR/review-texts/aggregator-archive"
   fi
 
-  # Copy review text directories
-  if ! cp -a "$TEMP_DIR/review-texts/." "$DATA_DIR/review-texts/"; then
-    echo "FATAL: cp of review-texts failed — refusing to report a count from stale contents." >&2
-    exit 1
+  # Copy review text directories.
+  # MIRROR, not overlay (2026-09-29): overlaying with cp -a kept every file
+  # origin had since deleted or renamed (outlet renames, tombstones), so the
+  # local copy drifted 1,396 commits of deletions behind and corpus tests
+  # (timeout-london-attribution) failed on files that no longer exist. Build
+  # the fresh copy beside the old one, then swap. A symlinked review-texts
+  # (worktrees) is left alone and filled in place as before.
+  if [ -L "$DATA_DIR/review-texts" ]; then
+    if ! cp -a "$TEMP_DIR/review-texts/." "$DATA_DIR/review-texts/"; then
+      echo "FATAL: cp of review-texts failed — refusing to report a count from stale contents." >&2
+      exit 1
+    fi
+  else
+    NEW_RT="$DATA_DIR/.review-texts.new.$$"
+    rm -rf "$NEW_RT"
+    if ! cp -a "$TEMP_DIR/review-texts" "$NEW_RT"; then
+      rm -rf "$NEW_RT"
+      echo "FATAL: cp of review-texts failed — old copy left in place." >&2
+      exit 1
+    fi
+    NEW_COUNT=$(find "$NEW_RT" -name "*.json" -type f | wc -l | tr -d ' ')
+    if [ "$NEW_COUNT" -lt 1000 ]; then
+      rm -rf "$NEW_RT"
+      echo "FATAL: fresh review-texts has only $NEW_COUNT json files — refusing to swap it in." >&2
+      exit 1
+    fi
+    OLD_RT="$DATA_DIR/.review-texts.old.$$"
+    [ -d "$DATA_DIR/review-texts" ] && mv "$DATA_DIR/review-texts" "$OLD_RT"
+    mv "$NEW_RT" "$DATA_DIR/review-texts"
+    rm -rf "$OLD_RT"
   fi
   RT_COUNT=$(find "$DATA_DIR/review-texts" -name "*.json" -type f | wc -l | tr -d ' ')
   echo "Review texts: $RT_COUNT files copied to data/review-texts/"

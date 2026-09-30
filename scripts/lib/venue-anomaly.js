@@ -27,6 +27,8 @@
 const fs = require('fs');
 const path = require('path');
 
+const MIN_ABSOLUTE_SPIKE = 3;
+const MIN_ROT_MEDIAN = 2;
 const COUNTS_FILE = path.join(__dirname, '..', '..', 'data', 'audit', 'ob-venue-counts.json');
 const MIN_BASELINE_DAYS = 7;
 const ANOMALY_MULTIPLIER = 2;
@@ -56,7 +58,7 @@ function median(arr) {
  * @param {string} venueName
  * @param {number} todayCount
  * @param {Object} options - { dateOverride for testing }
- * @returns {{ status: 'ok'|'no-baseline'|'anomalous', median: number, todayCount: number }}
+ * @returns {{ status: 'ok'|'no-baseline'|'anomalous'|'dropped', median: number, todayCount: number }}
  */
 function checkVenueAnomaly(venueName, todayCount, options = {}) {
   const counts = loadCounts();
@@ -80,7 +82,18 @@ function checkVenueAnomaly(venueName, todayCount, options = {}) {
   const baselineCounts = recordedDays.map(([, n]) => n);
   const med = median(baselineCounts);
 
-  if (med >= 1 && todayCount > ANOMALY_MULTIPLIER * med) {
+  // A reader that used to return rows and now returns none is a rotted URL
+  // or a dead feed (NYTW's season page moves every year). Warn, don't fail:
+  // a venue can be dark between seasons (BRO-4396).
+  if (todayCount === 0 && med >= MIN_ROT_MEDIAN) {
+    console.warn(`::warning::venue ${venueName} returned 0 candidates (7-day median ${med}) — listing URL or feed may have rotted`);
+    saveCounts(counts);
+    return { status: 'dropped', median: med, todayCount };
+  }
+
+  // The spike must also be absolute: a small venue going 1 → 3 is a season
+  // announcement, not a selector leak (BRO-4396 added many 1-2 show venues).
+  if (med >= 1 && todayCount > ANOMALY_MULTIPLIER * med && todayCount - med >= MIN_ABSOLUTE_SPIKE) {
     console.warn(`::warning::venue ${venueName} anomaly: today=${todayCount} > ${ANOMALY_MULTIPLIER}× median ${med} (baseline ${baselineCounts.join(',')})`);
     process.exitCode = 1;
     saveCounts(counts);

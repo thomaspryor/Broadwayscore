@@ -22,5 +22,22 @@
     "sonnet": 94,
     "opus": 94
   },
-  "thumbnail": "https://i.ytimg.com/vi/qsQRI-eUo0c/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/qsQRI-eUo0c/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "one of the newest openings at the National Theater in London",
+    "reason": "The review explicitly states that the production is at the National Theater in London, not Broadway in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states multiple times that the production is at the National Theatre in London, not Broadway in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:38.582Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review explicitly states that the production is at the National Theater in London, not Broadway in New York City."
 }

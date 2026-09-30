@@ -60,6 +60,7 @@ const {
   WIRE_SERVICE_OUTLETS,
   outletOwnsUrlDomainIgnoringPath,
 } = require('./lib/review-normalization');
+const { resolveUrlEditionOutletId } = require('./lib/outlet-canonicalize');
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -77,6 +78,13 @@ const { classifyMarketRouting, buildSiblingIndex, tourDecision } = require('./li
 const { isNationalTourRoundupSlug } = require('./lib/tour-roundup-candidate');
 const { isBWWRoundupContent, validateBWWRoundupUrlMatchesShow, isCloudflareChallenge } = require('./lib/bww-roundup-validator');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
+// 1 Minute Critic direct-discovery. Mirrors opening-night-poller.js Layer 2b:
+// omc-discovery covers OMC on a per-show RSS + date-window matcher, and was
+// wired into the poller in BRO-4322 — but this manual/backfill path had no
+// OMC coverage until now, so a `gather-reviews.js --show=…` re-ingest for
+// The Maids or Heated Rivalry would still miss 1MC despite the poller now
+// catching it on the cron. US markets only (omc-discovery is region=us).
+const { discoverNewReviews: discoverOMCReviews, OUTLET_NAME: OMC_OUTLET_NAME } = require('./lib/omc-discovery');
 const { findBWWRoundupLinkOnHomepage } = require('./lib/bww-homepage-scan');
 const { LETTER_GRADES, extractScore } = require('./lib/score-extractors');
 const { shouldTriggerRebuild } = require('./lib/gather-reviews-rebuild-trigger');
@@ -156,6 +164,23 @@ const OUTLETS_PATH = path.join(__dirname, 'config', 'critic-outlets.json');
 const DTLI_SLUG_MAP_PATH = path.join(__dirname, '..', 'data', 'dtli-slug-map.json');
 const SHOW_SCORE_URLS_PATH = path.join(__dirname, '..', 'data', 'show-score-urls.json');
 const REGISTRY_PATH = path.join(__dirname, '..', 'data', 'outlet-registry.json');
+const { dropCriticNamePhantoms } = require('./lib/bww-critic-name-phantoms');
+let _outletsWithDomain = null;
+// A registered outlet with a real domain (e.g. a critic's own site) is never
+// treated as a BWW critic-name phantom. An unreadable registry answers true
+// for everything, so no record is dropped when the protection can't be checked.
+function registeredOutletHasDomain(outletId) {
+  if (!_outletsWithDomain) {
+    try {
+      const reg = JSON.parse(fs.readFileSync(REGISTRY_PATH, 'utf8'));
+      _outletsWithDomain = new Set(Object.entries(reg.outlets || {}).filter(([, o]) => o && o.domain).map(([id]) => id));
+    } catch (e) {
+      console.warn(`    [BWW RR] outlet registry unreadable (${e.message}); critic-name phantom drop disabled`);
+      _outletsWithDomain = 'unreadable';
+    }
+  }
+  return _outletsWithDomain === 'unreadable' || _outletsWithDomain.has(outletId);
+}
 
 const {
   shouldQueryPerCritic: _shouldQueryPerCritic,
@@ -2790,7 +2815,13 @@ function extractBWWRoundupReviews(html, showId, bwwUrl, showTitle) {
     console.log(`    [Method 3] domain supplement error (non-fatal): ${(e.message || '').substring(0, 100)}`);
   }
 
-  return reviews;
+  // Bare-critic-name phantoms whose headline outlet wasn't registered yet
+  // (the case BRO-3247's registered-headline fallback above can't reach).
+  const { kept, dropped } = dropCriticNamePhantoms(reviews, { hasDomain: registeredOutletHasDomain });
+  for (const { phantom, twin } of dropped) {
+    console.log(`    [BWW RR] dropped phantom outlet "${phantom.outletId}" (critic name) — same review as ${twin.outletId} / ${twin.criticName}`);
+  }
+  return kept;
 }
 
 /**
@@ -3073,6 +3104,17 @@ function createReviewFile(showId, reviewData, options = {}) {
   // Use centralized normalization for consistent file naming
   // Prefer outletId (canonical ID like "nytimes") over outlet (display name like "NYT Theater")
   // to avoid misattribution — normalizeOutlet("NYT Theater") → "nyt-theater" (wrong outlet)
+  // URL edition (timeout.com /london vs /newyork) beats the supplied outlet name (2026-09-29: a
+  // timeout.com/newyork review on just-in-time-2025 was filed as T1 nytimes).
+  {
+    const urlOutlet = resolveUrlEditionOutletId({ outletId: reviewData.outletId, outletName: reviewData.outlet, url: reviewData.url });
+    if (urlOutlet.source !== 'name') {
+      console.log(`    ⚠ outlet "${reviewData.outletId || reviewData.outlet}" -> ${urlOutlet.outletId} (${urlOutlet.source}: ${reviewData.url})`);
+      // Mutates in place, like the defaultCritic promotion below.
+      reviewData.outletId = urlOutlet.outletId;
+      reviewData.outlet = urlOutlet.displayName || reviewData.outlet;
+    }
+  }
   const outletForNormalization = reviewData.outletId || reviewData.outlet;
   const normalizedOutletId = normalizeOutlet(outletForNormalization);
 
@@ -5232,6 +5274,38 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
       console.log(`  [Site Search Total] ${siteSearchResults.length} review(s) found`);
     } catch (err) {
       console.log(`  Site search error: ${err.message}`);
+    }
+  }
+
+  // STEP 1d: 1 Minute Critic direct RSS (US markets only)
+  // Mirrors opening-night-poller.js Layer 2b. Free, per-show, runs
+  // regardless of --aggregators-only (RSS fetch, not paid SERP). Skips WE
+  // markets because omc-discovery is region=us and its 80% word-overlap
+  // matcher would misattribute a Broadway 1MC review to a shared-title WE
+  // transfer (Cats, Chicago, Fallen Angels).
+  if (isWestEnd) {
+    console.log(`\n[1d/4] SKIPPED 1 Minute Critic RSS (US-only outlet; show is west-end)`);
+  } else {
+    try {
+      const knownUrlsForOmc = new Set(foundReviews.map(r => r.url).filter(Boolean));
+      const omcResults = await discoverOMCReviews(showId, show, undefined, { verbose: true });
+      let added = 0;
+      for (const r of omcResults) {
+        if (!r.url || knownUrlsForOmc.has(r.url)) continue;
+        knownUrlsForOmc.add(r.url);
+        foundReviews.push({
+          showId,
+          outletId: r.outletId,
+          outlet: r.outlet || OMC_OUTLET_NAME,
+          criticName: r.criticName || 'Unknown',
+          url: r.url,
+          source: 'omc-discovery',
+        });
+        added++;
+      }
+      console.log(`\n[1d/4] ${OMC_OUTLET_NAME} RSS: ${added} new review(s)${omcResults.length > added ? ` (${omcResults.length - added} already known)` : ''}`);
+    } catch (err) {
+      console.log(`  OMC error: ${err.message}`);
     }
   }
 

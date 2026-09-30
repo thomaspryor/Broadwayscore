@@ -33,12 +33,14 @@ const { cleanSearchTitle } = require('./lib/title-normalization');
 const { isCrossMarketPlaybillUrl } = require('./lib/playbill-url-market');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { getMarketSearchKeyword } = require('./lib/market-label');
+const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
 const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup } = require('./lib/show-image-coverage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { findNewerSameTitleProduction } = require('./lib/canon-poster-art');
 const { buildRetryCandidateImages } = require('./lib/google-image-retry-candidate.js');
+const { pickOwnProductionPhotoFallback, stripCrossShowImages } = require('./lib/cross-show-images');
 const scraper = require('./lib/scraper');
 const { fetchPage, checkScrapingBeeCredits } = scraper;
 
@@ -336,9 +338,11 @@ async function fetchFromRegionalVenue(show, verifyCtx) {
   return null;
 }
 
-// Search Google for TodayTix pages (works for closed shows)
-async function searchGoogleForTodayTix(showTitle) {
-  const query = `site:todaytix.com "${showTitle}" broadway nyc`;
+// Search Google for TodayTix pages (works for closed shows). `market` picks
+// the city keyword — "london" vs "broadway nyc" — so a West End title does
+// not resolve to its Broadway run's page (scripts/lib/todaytix-market.js).
+async function searchGoogleForTodayTix(market, showTitle) {
+  const query = todaytixSerpQuery(market, showTitle);
   const results = await serpQuery(query);
   // Return in original format (callers expect {organic_results})
   return { organic_results: (results || []).map(r => ({ url: r.url, title: r.title })) };
@@ -953,7 +957,8 @@ async function fetchAllTodayTixShows() {
       const response = await fetchTodayTixApiPage(offset, limit, loc);
       if (!response.data || response.data.length === 0) break;
 
-      allShows.push(...response.data);
+      const marketSlug = loc === 1 ? 'nyc' : 'london';
+      for (const s of response.data) allShows.push({ ...s, _market: marketSlug });
       const total = response.pagination?.total || '?';
       console.log(`   Fetched ${allShows.length} shows (${market}: ${offset + response.data.length}/${total})...`);
 
@@ -978,14 +983,20 @@ async function fetchAllTodayTixShows() {
 
   const lookup = {};
   const byId = {}; // TodayTix ID → image data (avoids title collisions between NYC/London)
+  // Per-market title lookups (BRO-4401): the combined map is last-write-wins,
+  // so a title running in both cities (Hamilton, Hadestown, Wicked…) always
+  // resolved to the London entry whatever the show's own market.
+  const byMarket = { nyc: {}, london: {} };
   for (const show of allShows) {
     const name = show.displayName || show.name;
     if (!name) continue;
 
     const images = show.images?.productMedia || {};
+    const market = show._market || 'nyc';
     const entry = {
       id: show.id,
       displayName: name,
+      market,
       square: extractUrl(images.posterImageSquare),
       poster: extractUrl(images.posterImage),
       hero: extractUrl(images.appHeroImage),
@@ -995,14 +1006,19 @@ async function fetchAllTodayTixShows() {
     const key = normalizeTitle(name);
     lookup[key] = entry;
     byId[show.id] = entry;
+    byMarket[market][key] = entry;
   }
 
   lookup._byId = byId;
+  lookup._byMarket = byMarket;
   return lookup;
 }
 
 // Match our show title against the TodayTix API lookup map
-function matchTodayTixShow(showTitle, apiLookup, todaytixId) {
+// `market` ('nyc' | 'london', from todaytixMarket(show)) restricts title
+// matching to that city's active shows (BRO-4401); without it the combined
+// map's last-write-wins order handed a Broadway show its London twin's id.
+function matchTodayTixShow(showTitle, apiLookup, todaytixId, market) {
   if (!apiLookup || Object.keys(apiLookup).length === 0) return null;
 
   // 0. Direct ID match (most reliable — handles cross-market title collisions like "Hamilton")
@@ -1010,15 +1026,17 @@ function matchTodayTixShow(showTitle, apiLookup, todaytixId) {
     return apiLookup._byId[todaytixId];
   }
 
+  const pool = (market && apiLookup._byMarket && apiLookup._byMarket[market]) || apiLookup;
+  const poolEntries = Object.entries(pool).filter(([k]) => !k.startsWith('_'));
   const normalized = normalizeTitle(showTitle);
 
   // 1. Exact normalized match
-  if (apiLookup[normalized]) {
-    return apiLookup[normalized];
+  if (pool[normalized]) {
+    return pool[normalized];
   }
 
   // 2. Substring containment (with length-ratio guard to prevent false positives)
-  for (const [apiNorm, data] of Object.entries(apiLookup)) {
+  for (const [apiNorm, data] of poolEntries) {
     if (isSafeSubstringMatch(apiNorm, normalized)) {
       return data;
     }
@@ -1027,10 +1045,10 @@ function matchTodayTixShow(showTitle, apiLookup, todaytixId) {
   // 3. Strip year suffix from our title and retry (e.g., "hells kitchen 2024" → "hells kitchen")
   const withoutYear = normalized.replace(/\s*\d{4}$/, '').trim();
   if (withoutYear !== normalized && withoutYear.length > 2) {
-    if (apiLookup[withoutYear]) {
-      return apiLookup[withoutYear];
+    if (pool[withoutYear]) {
+      return pool[withoutYear];
     }
-    for (const [apiNorm, data] of Object.entries(apiLookup)) {
+    for (const [apiNorm, data] of poolEntries) {
       if (isSafeSubstringMatch(apiNorm, withoutYear)) {
         return data;
       }
@@ -1054,31 +1072,40 @@ function saveTodayTixIds(data) {
   fs.writeFileSync(TODAYTIX_IDS_PATH, JSON.stringify(data, null, 2) + '\n');
 }
 
-// Search TodayTix for a show and extract its ID
-async function discoverTodayTixId(showTitle) {
-  console.log(`   Searching TodayTix for "${showTitle}"...`);
+// Search TodayTix for a show and extract its ID.
+// Market-aware (BRO-4326 / BRO-4401): a West End / Off-West End show searches
+// and matches /london/ pages, everything else /nyc/. Before this every London
+// show searched New York, rejected its own /london/ SERP hits and fell
+// through to IBDB / Google Images false positives — see scripts/lib/todaytix-market.js.
+async function discoverTodayTixId(show) {
+  const showTitle = show.title;
+  const market = todaytixMarket(show);
+  console.log(`   Searching TodayTix (${market}) for "${showTitle}"...`);
+
+  const slugTitleOverlap = (slug) => {
+    const slugWords = slug.replace(/-/g, ' ').toLowerCase().split(/\s+/).filter(w => w.length > 0);
+    const titleWords = normalizeTitle(showTitle).split(/\s+/).filter(w => w.length > 0);
+    return titleWords.length > 0 ? titleWords.filter(w => slugWords.includes(w)).length / titleWords.length : 0;
+  };
 
   // Method 1: Direct TodayTix search (works for open shows)
-  const searchUrl = `https://www.todaytix.com/nyc/shows?q=${encodeURIComponent(cleanSearchTitle(showTitle))}`;
+  const searchUrl = todaytixSearchUrl(market, cleanSearchTitle(showTitle));
 
   try {
     const html = await fetchPageWithFallback(searchUrl);
 
-    // Look for show links in format: /nyc/shows/{id}-{slug}
-    const showLinkMatch = html.match(/\/nyc\/shows\/(\d+)-([a-z0-9-]+)/i);
+    // Look for show links in format: /<market>/shows/{id}-{slug}
+    const link = extractTodaytixShowLink(html, market);
 
-    if (showLinkMatch) {
-      const id = parseInt(showLinkMatch[1]);
-      const slug = showLinkMatch[2];
+    if (link) {
+      const { id, slug } = link;
 
       // Verify slug matches show title (prevent false positives like "fun-home" → "fun-homes-oscar-williams")
-      const slugWords1 = slug.replace(/-/g, ' ').toLowerCase().split(/\s+/).filter(w => w.length > 0);
-      const titleWords1 = normalizeTitle(showTitle).split(/\s+/).filter(w => w.length > 0);
-      const overlap1 = titleWords1.length > 0 ? titleWords1.filter(w => slugWords1.includes(w)).length / titleWords1.length : 0;
+      const overlap1 = slugTitleOverlap(slug);
 
       if (overlap1 >= 0.5) {
         console.log(`   ✓ Found TodayTix ID: ${id} (${slug})`);
-        return { id, slug };
+        return { id, slug, market };
       } else {
         console.log(`   ✗ Skipping TodayTix result: slug "${slug}" doesn't match "${showTitle}" (${Math.round(overlap1 * 100)}% overlap)`);
       }
@@ -1089,7 +1116,7 @@ async function discoverTodayTixId(showTitle) {
     if (jsonMatch) {
       const id = parseInt(jsonMatch[1]);
       console.log(`   ✓ Found TodayTix ID from JSON: ${id}`);
-      return { id, slug: null };
+      return { id, slug: null, market };
     }
   } catch (err) {
     console.log(`   ⚠ Direct TodayTix search failed: ${err.message}`);
@@ -1098,32 +1125,30 @@ async function discoverTodayTixId(showTitle) {
   // Method 2: Google SERP search (works for closed shows whose pages still exist)
   console.log(`   Trying Google SERP search for TodayTix page...`);
   try {
-    const serpData = await searchGoogleForTodayTix(showTitle);
+    const serpData = await searchGoogleForTodayTix(market, showTitle);
     const results = serpData?.organic_results || serpData?.results || [];
 
     for (const result of results) {
       const url = result.url || result.link || '';
-      // Match NYC show URLs only (reject /london/, /chicago/, etc.)
-      const match = url.match(/todaytix\.com\/nyc\/shows\/(\d+)-([a-z0-9-]+)/i);
+      // Match THIS market's show URLs only: a London show must not take the
+      // Broadway run's page (different art), and vice versa.
+      const match = extractTodaytixShowLink(url, market);
       if (match) {
-        const id = parseInt(match[1]);
-        const slug = match[2];
+        const { id, slug } = match;
 
         // Verify slug matches show title (prevent SERP false positives)
-        const slugWords2 = slug.replace(/-/g, ' ').toLowerCase().split(/\s+/).filter(w => w.length > 0);
-        const titleWords2 = normalizeTitle(showTitle).split(/\s+/).filter(w => w.length > 0);
-        const overlap2 = titleWords2.length > 0 ? titleWords2.filter(w => slugWords2.includes(w)).length / titleWords2.length : 0;
+        const overlap2 = slugTitleOverlap(slug);
 
         if (overlap2 >= 0.5) {
           console.log(`   ✓ Found TodayTix ID via Google: ${id} (${slug})`);
-          return { id, slug };
+          return { id, slug, market };
         } else {
           console.log(`   ✗ Skipping SERP result: slug "${slug}" doesn't match "${showTitle}" (${Math.round(overlap2 * 100)}% overlap)`);
         }
       }
     }
 
-    console.log(`   ✗ No TodayTix NYC page found in Google results`);
+    console.log(`   ✗ No TodayTix ${market} page found in Google results`);
   } catch (err) {
     console.log(`   ⚠ Google SERP search failed: ${err.message}`);
   }
@@ -1905,6 +1930,19 @@ function scoreCandidate(verifyResult, url) {
   return score;
 }
 
+// Local /images/shows/ files an images object points at -> { absPath: Buffer }.
+// Dry runs write candidates under DRY_RUN_DIR, so read (and later restore) there.
+function snapshotLocalImageFiles(images) {
+  const out = {};
+  const base = dryRunMode ? DRY_RUN_DIR : IMAGES_DIR;
+  for (const p of Object.values(images || {})) {
+    if (typeof p !== 'string' || !p.startsWith('/images/shows/')) continue;
+    const abs = path.join(base, p.slice('/images/shows/'.length));
+    try { out[abs] = fs.readFileSync(abs); } catch { /* not written yet */ }
+  }
+  return out;
+}
+
 // Verify images from a non-trusted tier.
 // Returns { images, verifyResult, url, tierName, score } for candidate collection,
 // or null if rejected.
@@ -1958,7 +1996,12 @@ async function verifyAndCollect(images, show, tierName, verifyCtx) {
     console.log(`   ⚠ DEFERRED (production photo): ${result.description} — will use as fallback if no poster art`);
     verifyCtx.productionPhotos = (verifyCtx.productionPhotos || 0) + 1;
     verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks || [];
-    verifyCtx.productionPhotoFallbacks.push({ images, verifyResult: result, url: urlToVerify, tierName, score: -5, bufSize });
+    // showId: the list is run-wide (verifyCtx is shared by every show), so the
+    // last-resort step must only ever take this show's own entry (BRO-4380).
+    // files: the bytes its local paths hold NOW. Later Google candidates for this
+    // show rewrite the same thumbnail.jpg, so without this snapshot the fallback
+    // path ends up serving whatever rejected candidate was written last.
+    verifyCtx.productionPhotoFallbacks.push({ showId: show.id, images, files: snapshotLocalImageFiles(images), verifyResult: result, url: urlToVerify, tierName, score: -5, bufSize });
     return null;  // Don't add to main candidates yet
   }
 
@@ -2132,7 +2175,9 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   // NEEDS VERIFICATION — scraped images may be from wrong show/production
   if (todayTixInfo && todayTixInfo.id) {
     const slug = todayTixInfo.slug || show.title.toLowerCase().replace(/[^a-z0-9]+/g, '-');
-    const url = `https://www.todaytix.com/nyc/shows/${todayTixInfo.id}-${slug}`;
+    // Cached ids discovered before market-aware discovery carry no market;
+    // fall back to the show's own market rather than the old hard-coded /nyc/.
+    const url = todaytixShowUrl(todayTixInfo.market || todaytixMarket(show), todayTixInfo.id, slug);
     console.log(`   Fetching: ${url}`);
 
     try {
@@ -2300,10 +2345,15 @@ async function fetchShowImages(show, todayTixInfo, apiData, verifyCtx) {
   if (!existingThumb                                      // GUARD 1: Don't overwrite existing images
       && !isPinned                                         // GUARD 2: Never override pinned images
       && verifyCtx?.productionPhotoFallbacks?.length > 0) {
-    const best = verifyCtx.productionPhotoFallbacks[0];
-    if (best.bufSize > 5000) {                             // GUARD 3: Quality floor (>5KB)
+    // BRO-4380: [0] used to be whichever show deferred a photo first in the run,
+    // so later shows got that show's /images/shows/<other-id>/ paths.
+    const best = pickOwnProductionPhotoFallback(verifyCtx.productionPhotoFallbacks, show.id);
+    if (!best) {
+      console.log('   ✗ No production photo of this show to fall back on');
+    } else if (best.bufSize > 5000) {                             // GUARD 3: Quality floor (>5KB)
       console.log(`   ⚠ LAST RESORT: Using production photo — no poster art available (${(best.bufSize/1024).toFixed(0)} KB)`);
       verifyCtx.lastResort = (verifyCtx.lastResort || 0) + 1;
+      for (const [abs, bytes] of Object.entries(best.files || {})) fs.writeFileSync(abs, bytes);
       return best.images;
     } else {
       console.log(`   ✗ Production photo too small/no buffer (${best.bufSize} bytes), skipping`);
@@ -2338,11 +2388,12 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
 
   if (!skipTodayTix) {
     // Try matching against TodayTix API data (instant, no HTTP call)
-    apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
+    const market = todaytixMarket(show);
+    apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, market);
 
     // Cache API-discovered TodayTix ID
     if (apiData && apiData.id) {
-      todayTixIds.shows[show.id] = { id: apiData.id, slug: null };
+      todayTixIds.shows[show.id] = { id: apiData.id, slug: null, market: apiData.market || market };
     }
 
     // When re-sourcing bad images, clear the cached TodayTix ID so we re-discover
@@ -2351,11 +2402,24 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
       delete todayTixIds.shows[show.id];
     }
 
+    // A London show's cached id that predates market-aware discovery was
+    // found through the NYC-only path (BRO-4401 review: 42 such entries
+    // share their id with an NYC show — hadestown-west-end-2024 → the NYC
+    // Hadestown). Treat it as stale and re-discover rather than build a
+    // /london/ URL from a New York id.
+    for (const cacheKey of [show.id, show.slug]) {
+      const cached = cacheKey && todayTixIds.shows[cacheKey];
+      if (market === 'london' && cached && !cached.market) {
+        console.log(`   Discarding pre-market cached TodayTix ID ${cached.id} for ${cacheKey} (found via the NYC-only path) — re-discovering`);
+        delete todayTixIds.shows[cacheKey];
+      }
+    }
+
     // If no API match, try page-scrape discovery
     todayTixInfo = todayTixIds.shows[show.id] || todayTixIds.shows[show.slug];
 
     if (!todayTixInfo && !apiData) {
-      todayTixInfo = await discoverTodayTixId(show.title);
+      todayTixInfo = await discoverTodayTixId(show);
       if (todayTixInfo) {
         todayTixIds.shows[show.id] = todayTixInfo;
       }
@@ -2384,6 +2448,10 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
     dirBefore,
     show.id
   );
+  // This show is done: drop its deferred photos (they hold file bytes).
+  if (verifyCtx?.productionPhotoFallbacks) {
+    verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks.filter(f => f.showId !== show.id);
+  }
 
   return { show, images, apiSourced: !!apiData };
 }
@@ -2399,7 +2467,7 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
   const apiShows = [];
   const scrapeShows = [];
   for (const show of shows) {
-    const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
+    const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, todaytixMarket(show));
     if (apiData) {
       apiShows.push(show);
     } else {
@@ -2488,6 +2556,9 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
   return results;
 }
 
+// Every show in the run, for applyImages' cross-show path guard (lineage links).
+let allShowsForImageGuard = [];
+
 // Apply fetched images to a show object, preserving existing local images
 // when the new fetch doesn't provide a replacement.
 function applyImages(show, images) {
@@ -2517,7 +2588,14 @@ function applyImages(show, images) {
     if (key.startsWith('_')) delete images[key];
   }
 
-  show.images = images;
+  // BRO-4380 backstop: never persist a path under another show's image dir
+  // unless the two are linked productions (or allowlisted). Also a fresh object,
+  // so no two shows ever share one images object by reference.
+  const { images: safe, dropped } = stripCrossShowImages(show.id, { ...images }, allShowsForImageGuard);
+  for (const d of dropped) {
+    console.log(`   ✗ Refusing ${d.key} for ${show.id}: ${d.path} belongs to ${d.owner}`);
+  }
+  show.images = safe;
 }
 
 // Generate a phone-friendly HTML comparison page for dry-run results
@@ -2649,6 +2727,7 @@ async function main() {
   console.log('='.repeat(60));
 
   const showsData = loadShows();
+  allShowsForImageGuard = showsData.shows;
   allShowsData = showsData;
 
   // ============================================================
@@ -2793,7 +2872,7 @@ async function main() {
       }
 
       // Try TodayTix API match
-      const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
+      const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, todaytixMarket(show));
       if (apiData) {
         const hero = apiData.hero || apiData.headerImage || null;
         if (hero && !/coming.?soon/i.test(hero) && !/NORAM/i.test(hero)) {

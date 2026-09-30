@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-29T17:12:04.743Z",
+  "generated": "2026-09-30T01:41:33.787Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 20,
+  "count": 18,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -67,13 +67,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "ohio-state-murders-2022",
-      "loserFile": "variety--naveen-kumar.json",
-      "targetFile": "variety--aramide-tinubu.json",
-      "reason": "orphaned-duplicate-heal: variety--aramide-tinubu.json was flagged invalid after variety--naveen-kumar.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "proof-2026",
       "loserFile": "nytimes--sarah-bahr.json",
       "targetFile": "nytimes--helen-shaw.json",
@@ -127,13 +120,6 @@
       "loserFile": "whatsonstage--tanyel-gumushan.json",
       "targetFile": "whatsonstage--alun-hood.json",
       "reason": "orphaned-duplicate-heal: whatsonstage--alun-hood.json was flagged invalid after whatsonstage--tanyel-gumushan.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-scottsboro-boys-2010",
-      "loserFile": "ap--unknown.json",
-      "targetFile": "ap--mark-kennedy.json",
-      "reason": "orphaned-duplicate-heal: ap--mark-kennedy.json was flagged invalid after ap--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {

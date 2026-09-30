@@ -100,17 +100,39 @@ function bucketCounts(slim) {
  * critic score). peers: [{ id, cs }] of open shows that have a score.
  */
 function rankAmongPeers(showId, cs, peers) {
-  const scored = peers.filter(p => typeof p.cs === 'number');
-  if (!scored.some(p => p.id === showId)) scored.push({ id: showId, cs });
-  const sorted = scored.slice().sort((a, b) => b.cs - a.cs);
-  const pos = sorted.findIndex(p => p.id === showId) + 1;
-  return { position: pos, of: sorted.length };
+  // Rank on the whole numbers the site shows: 89.9 vs 89.8 both read "90",
+  // so neither may claim "highest" (ship-check 2026-09-29).
+  const mine = Math.round(cs);
+  const others = peers.filter(p => typeof p.cs === 'number' && p.id !== showId).map(p => Math.round(p.cs));
+  const position = 1 + others.filter(v => v > mine).length;
+  const tied = others.some(v => v === mine);
+  return { position, of: others.length + 1, tied };
+}
+
+/**
+ * Rank cohort per market: open/previews shows whose score rests on at least
+ * as many reviews as a draft needs itself (MIN_REVIEWS). A thinner peer makes
+ * "#3 of 25 currently running" a claim Reddit would rightly pick apart
+ * (ship-check 2026-09-29: Delirium ranked behind a 3-review opera).
+ */
+function buildPeers(shows, slims) {
+  const out = {};
+  for (const s of shows) {
+    const m = marketOf(s);
+    if (!SUBREDDIT_BY_MARKET[m]) continue;
+    if (s.status !== 'open') continue; // "currently running" means open, not in previews
+    const slim = slims.get(s.id);
+    if (!slim || typeof slim.cs !== 'number') continue;
+    if ((slim.rc || (slim.rv || []).length) < MIN_REVIEWS[m]) continue;
+    (out[m] = out[m] || []).push({ id: s.id, cs: slim.cs });
+  }
+  return out;
 }
 
 /**
  * The verified fact sheet. Returns null when the slim file has no score.
  */
-function buildFacts(show, slim, peers, { seen = null } = {}) {
+function buildFacts(show, slim, peers, { seen = null, crosspost = null } = {}) {
   if (!slim || typeof slim.cs !== 'number') return null;
   const market = marketOf(show);
   const score = Math.round(slim.cs);
@@ -136,7 +158,7 @@ function buildFacts(show, slim, peers, { seen = null } = {}) {
   let rankNote = null;
   const label = { 'west-end': 'West End', 'off-west-end': 'Off-West End', 'off-broadway': 'Off-Broadway' }[market];
   const inLabel = market === 'west-end' ? 'the West End' : label;
-  if (rank.of >= 5) {
+  if (rank.of >= 5 && !rank.tied) {
     if (rank.position === 1) rankNote = `highest critic score of any show currently running in ${inLabel}`;
     else if (rank.position === rank.of) rankNote = `lowest critic score of any show currently running in ${inLabel}`;
     else if (rank.position <= 3) rankNote = `#${rank.position} of ${rank.of} ${label} shows currently running`;
@@ -149,6 +171,7 @@ function buildFacts(show, slim, peers, { seen = null } = {}) {
     market,
     marketLabel: label,
     subreddit: SUBREDDIT_BY_MARKET[market],
+    crosspostSubreddit: crosspost,
     venue: typeof show.venue === 'string' ? show.venue : (show.venue && show.venue.name) || null,
     openingDate: show.openingDate,
     type: show.type || null,
@@ -195,12 +218,32 @@ function isRetryableDraft(d) {
 }
 
 /**
+ * A second, bigger audience worth a crosspost. West End / Off-West End shows
+ * with a Broadway production of the same title also play on r/Broadway (the
+ * owner's Trainspotting post: 95 on r/TheWestEnd, then 74 on r/Broadway).
+ * There's no sizable Off-Broadway subreddit (largest ~250 members, checked
+ * 2026-09-29), so Off-Broadway posts already go to r/Broadway.
+ */
+function crosspostSubreddit(show, broadwayTitles) {
+  const m = marketOf(show);
+  if (m !== 'west-end' && m !== 'off-west-end') return null;
+  return broadwayTitles.has(normTitle(show.title)) ? 'Broadway' : null;
+}
+
+/**
  * Pick the openings to draft today.
  * shows: shows.json array. slims: Map id -> slim json. drafts: existing
  * drafts file ({ drafts: { [showId]: {...} } }). peersByMarket: market -> [{id, cs}].
  */
 function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLookup = () => null, forceShowId = null }) {
   const already = (drafts && drafts.drafts) || {};
+  // Broadway productions that are current, upcoming, or opened in the last
+  // 5 years: a 1990s revival doesn't make a Globe Shakespeare r/Broadway news.
+  const recentYear = Number(String(today).slice(0, 4)) - 5;
+  const broadwayTitles = new Set(shows
+    .filter(x => marketOf(x) === 'broadway')
+    .filter(x => ['open', 'previews', 'upcoming'].includes(x.status) || Number(String(x.openingDate || '').slice(0, 4)) >= recentYear)
+    .map(x => normTitle(x.title)));
   const out = [];
   for (const show of shows) {
     const market = marketOf(show);
@@ -208,7 +251,11 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (forceShowId) {
       if (show.id !== forceShowId) continue;
     } else {
-      if (already[show.id] && !isRetryableDraft(already[show.id])) continue;
+      const prev = already[show.id];
+      // An existing draft is left alone, unless its LLM call failed, or it
+      // hasn't been emailed yet and no longer matches today's numbers (counts
+      // and ranks move as reviews land): then it is redrafted (see below).
+      if (prev && !isRetryableDraft(prev) && !(prev.status === 'ready' && !prev.emailedAt)) continue;
       if (!show.openingDate) continue;
       const age = daysBetween(show.openingDate, today);
       if (age < MIN_AGE_DAYS || age > MAX_AGE_DAYS) continue;
@@ -217,8 +264,10 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (!slim) continue;
     const reviewCount = slim.rc || (slim.rv || []).length;
     if (!forceShowId && reviewCount < MIN_REVIEWS[market]) continue;
-    const facts = buildFacts(show, slim, peersByMarket[market] || [], { seen: seenLookup(show.title) });
+    const facts = buildFacts(show, slim, peersByMarket[market] || [], { seen: seenLookup(show.title), crosspost: crosspostSubreddit(show, broadwayTitles) });
     if (!facts) continue;
+    const prev = already[show.id];
+    if (!forceShowId && prev && !isRetryableDraft(prev) && lintDraft(prev, facts).ok) continue; // unsent but still accurate
     // Off-West End shows only when they'd carry a post on their own.
     if (!forceShowId && market === 'off-west-end' && notability(facts) < 25) continue;
     out.push({ show, facts, notability: notability(facts) });
@@ -274,7 +323,7 @@ sees most things on Broadway, visits London often, and built Broadway Scorecard 
 West End Scorecard (a Rotten Tomatoes style aggregator of critic reviews). The
 post announces that reviews are in for a show that just opened.
 
-WHAT WORKED IN HIS REAL POSTS (upvotes in brackets):
+WHAT WORKED IN TOM'S REAL POSTS (upvotes in brackets):
 - A title that leads with the show and the number, plus ONE hook that gives the
   number meaning: a record, a rank, a comparison, a surprise.
   "CATS scores 88/100. Highest-scoring Broadway musical revival on the site. Ever." [575]
@@ -291,7 +340,7 @@ WHAT WORKED IN HIS REAL POSTS (upvotes in brackets):
   that match what you saw?").
 - One link, at the very end, bare.
 
-A FULL REAL POST OF HIS (95 upvotes, r/TheWestEnd). Match this energy and shape,
+A FULL REAL POST OF TOM'S (95 upvotes, r/TheWestEnd). Match this energy and shape,
 not its facts:
 ---
 Hi all, Tom here. I launched WestEndScorecard a few weeks back, and this is my first review roundup post. And it's a doozy!
@@ -315,27 +364,34 @@ As a Jellicle Ball lover, this feels a little too soon lol
 WHAT GOT HIM DOWNVOTED OR PILED ON:
 - Treating art like a math test, or ranking a show people love as "low scoring"
   ("Who cares about these arbitrary, fake scores? It's art" got 51 upvotes on
-  his 0-point post). Never say a show is bad because of a number. Report what
+  Tom's 0-point post). Never say a show is bad because of a number. Report what
   critics said; let readers decide.
 - Roundups of several small shows with no personal hook (6 and 14 upvotes).
-- Sounding like marketing. He built the site and says so plainly when it comes
+- Sounding like marketing. Tom built the site and says so plainly when it comes
   up, but the post is about the show, never the site.
 
 VOICE:
 - Warm, curious, a bit nerdy about the data, genuinely into theater.
 - Short paragraphs. 80-170 words in the body. Contractions. Casual.
-- In r/TheWestEnd he's a friendly visitor from NYC; don't fake British idiom.
+- In r/TheWestEnd Tom is a friendly visitor from NYC; don't fake British idiom.
 - At most one "lol" or "haha". Emoji: none, or one at most.
 
 HARD RULES:
 - Use ONLY the facts in the FACT SHEET. Never invent quotes, critics, box
   office, transfers, awards, cast, or comparisons that aren't given.
-- Quote critics only with words that appear in the FACT SHEET quotes.
-- Do not claim he has seen the show unless OWNER HISTORY says seen=true. If he
-  has tickets, you may say he's going soon. Otherwise don't mention seeing it.
-- Never invent his plans, trips, dates, or opinions (no "planning to see it next
+- Quote critics only with words that appear in the FACT SHEET quotes, copied
+  exactly, and name that quote's outlet or critic in the same sentence. Don't
+  quote the consensus text; paraphrase it.
+- Never use these phrases (they read as AI or marketing): "I'd love to",
+  "would love to", "making waves", "buzzing about", "Hey Broadway fans",
+  "passion project", "must-see", "high marks", "the critics have spoken",
+  "dive into", "delve", "journey", "navigate", "Absolutely!", or a dramatic
+  "The big question? ..." fragment.
+- Do not claim Tom has seen the show unless OWNER HISTORY says seen=true. If
+  Tom has tickets, you may say they're going soon. Otherwise don't mention seeing it.
+- Never invent Tom's plans, trips, dates, or opinions (no "planning to see it next
   month", no "the film, which I love"). The same goes for personalLines: write
-  them as honest options he can pick only if true, e.g. "Would you see it?"
+  them as honest options Tom can pick only if true, e.g. "Would you see it?"
   style questions, or "[if true] We've got tickets for later this month."
 - Read like a person texting theater friends, not a press release or a
   customer-service reply. No "the critics have spoken", no "Absolutely!", no
@@ -354,7 +410,7 @@ HARD RULES:
 `.trim();
 
 /**
- * His best recent "reviews are in" style posts, freshest voice first. Pulled
+ * The owner's best recent "reviews are in" style posts, freshest voice first. Pulled
  * live each run so the examples never go stale (owner ask 2026-09-29: keep the
  * examples recent). posts: Arctic Shift rows.
  */
@@ -377,7 +433,7 @@ function pickRecentExamples(posts, { nowMs = Date.now(), maxAgeDays = 120, n = 3
 
 function buildUserPrompt(facts, examples = []) {
   const ex = examples.length
-    ? `HIS MOST RECENT WELL-RECEIVED POSTS (match this voice, not these facts):\n${examples.map(e =>
+    ? `TOM'S MOST RECENT WELL-RECEIVED POSTS (match this voice, not these facts):\n${examples.map(e =>
       `--- r/${e.subreddit}, ${e.date}, ${e.upvotes} upvotes\nTITLE: ${e.title}\n${e.body}`).join('\n\n')}\n---\n\n`
     : '';
   return `${ex}FACT SHEET (JSON):
@@ -391,8 +447,8 @@ Return JSON only, no prose around it:
   "body": "post body in Reddit markdown, ending with the link ${facts.url}",
   "why": "one sentence: the hook you chose and why it should land",
   "expectedPushback": "one sentence: the most likely snarky or critical comment",
-  "suggestedReply": "a short, friendly reply Tom could give to that comment, in his voice",
-  "personalLines": ["2 optional one-line additions Tom could paste in to make it personal, e.g. whether he plans to see it. Must not claim he has seen it unless OWNER HISTORY says so."]
+  "suggestedReply": "a short, friendly reply Tom could give to that comment, in Tom's voice",
+  "personalLines": ["2 optional one-line additions Tom could paste in to make it personal, e.g. whether they plan to see it. Must not claim Tom has seen it unless OWNER HISTORY says so."]
 }`;
 }
 
@@ -406,6 +462,8 @@ const BANNED = [
   /\bpassion project\b/i, /\bnavigat/i, /\bjourney\b/i,
   /\bhey (broadway|theatre|theater|west end) (fans|folks)\b/i, /\b(I'?d|would) love to\b/i, /\bbuzzing about\b/i,
   /\bmaking waves\b/i,
+  // "The big talking point? Critics..." dramatic fragment (anti-slop rule).
+  /(^|[.!]\s+)The [a-z][a-z ]{1,30}\? [A-Z]/m,
   /\bhope this finds\b/i, /\bexcited to share\b/i,
 ];
 
@@ -413,13 +471,116 @@ function normQuote(s) {
   return String(s || '').toLowerCase().replace(/[’‘]/g, "'").replace(/[^a-z0-9']+/g, ' ').trim();
 }
 
-// Spans inside "straight" or “curly” double quotes.
+// Spans that read as quotations: "double", “curly”, ‘curly single’, 'single'
+// (opening quote after a space or start, so apostrophes don't count), and
+// *italic* / _italic_ markdown.
 function quotedSpans(text) {
   const out = [];
-  const re = /["“]([^"”\n]{3,400})["”]/g;
-  let m;
-  while ((m = re.exec(String(text || '')))) out.push(m[1].replace(/[.,!?]+$/, ''));
+  const t = String(text || '');
+  const res = [
+    /["“]([^"”\n]{2,400})["”]/g,
+    /‘([^’\n]{2,400})’/g,
+    /(?:^|[\s(])'([^'\n]{2,400}?)'(?=[\s.,!?;:)]|$)/g,
+    /(?:^|[^*])\*([^*\n]{2,400})\*(?!\*)/g,
+    /(?:^|\s)_([^_\n]{2,400})_(?=[\s.,!?;:]|$)/g,
+  ];
+  for (const re of res) {
+    let m;
+    while ((m = re.exec(t))) out.push({ text: m[1].replace(/[.,!?]+$/, ''), index: m.index });
+  }
   return out;
+}
+
+const NUM_WORDS = {
+  zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5, six: 6, seven: 7, eight: 8, nine: 9, ten: 10,
+  eleven: 11, twelve: 12, thirteen: 13, fourteen: 14, fifteen: 15, sixteen: 16, seventeen: 17,
+  eighteen: 18, nineteen: 19, twenty: 20, thirty: 30, forty: 40, fifty: 50, sixty: 60, seventy: 70,
+  eighty: 80, ninety: 90,
+};
+
+// "twenty-three raves" -> "23 raves", so word numbers get the same checks.
+function wordsToDigits(text) {
+  return String(text || '').replace(/\b(twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)[- ](one|two|three|four|five|six|seven|eight|nine)\b/gi,
+    (_, a, b) => String(NUM_WORDS[a.toLowerCase()] + NUM_WORDS[b.toLowerCase()]))
+    .replace(/\b(zero|one|two|three|four|five|six|seven|eight|nine|ten|eleven|twelve|thirteen|fourteen|fifteen|sixteen|seventeen|eighteen|nineteen|twenty|thirty|forty|fifty|sixty|seventy|eighty|ninety)\b/gi,
+      w => String(NUM_WORDS[w.toLowerCase()]));
+}
+
+// The sentence around position i (for quote attribution).
+function sentenceAt(text, i) {
+  const start = Math.max(text.lastIndexOf('. ', i), text.lastIndexOf('\n', i), text.lastIndexOf('! ', i), text.lastIndexOf('? ', i)) + 1;
+  const ends = ['. ', '\n', '! ', '? '].map(x => text.indexOf(x, i + 1)).filter(x => x >= 0);
+  return text.slice(start, ends.length ? Math.min(...ends) + 1 : text.length);
+}
+
+/**
+ * Fact checks shared by every piece of text that could end up on Reddit
+ * (title, body, the suggested reply, the optional personal lines).
+ */
+function factProblems(where, raw, facts, { isPersonal = false } = {}) {
+  const problems = [];
+  const text = wordsToDigits(String(raw || '').replace(/https?:\/\/\S+/g, ''));
+  const allowed = allowedNumbers(facts);
+  for (const n of (text.match(/\d+/g) || []).map(Number)) {
+    if (!allowed.has(n)) problems.push(`${where} has number ${n} that is not in the fact sheet`);
+  }
+  for (const m of text.match(/\b\d{1,3}\s*\/\s*100\b/g) || []) {
+    if (parseInt(m, 10) !== facts.score) problems.push(`${where} cites ${m}, fact sheet says ${facts.score}/100`);
+  }
+  if (/\d\s*(%|percent)/i.test(text)) problems.push(`${where} uses a percentage the fact sheet doesn't give`);
+
+  // Counts must match what they count ("24 raves" is wrong even if 24 is the opening day).
+  const b = facts.buckets || {};
+  const counted = [
+    [/(\d+)\s+(?:raves?)\b/gi, b.rave, 'raves'],
+    [/(\d+)\s+(?:positives?)\b/gi, b.positive, 'positive'],
+    [/(\d+)\s+(?:mixed)\b/gi, b.mixed, 'mixed'],
+    [/(\d+)\s+(?:negatives?|pans?)\b/gi, b.negative, 'negative'],
+    [/(\d+)\s+(?:critic\s+)?reviews?\b/gi, facts.reviewCount, 'reviews'],
+    [/(\d+)\s+(?:critics)\b/gi, facts.reviewCount, 'critics'],
+  ];
+  for (const [re, want, label] of counted) {
+    let m;
+    while ((m = re.exec(text))) {
+      const n = Number(m[1]);
+      // "5 reviews" may be a subset ("only 5 reviews are negative"), but can't exceed the total.
+      const ok = label === 'reviews' || label === 'critics' ? n <= (want || 0) : n === (want || 0);
+      if (!ok) problems.push(`${where} says ${n} ${label}, fact sheet says ${want || 0}`);
+    }
+  }
+
+  // Grades, with or without +/- ("a B", "an F", "a B+ grade").
+  const rawStr = String(raw || '');
+  const gradeRe = /\b(?:at|is|gets?|got|given|of|with|an?|grade)\s+(?:an?\s+)?([A-DF][+-]?)(?![A-Za-z0-9]|-[a-z])|\b([A-DF][+-]?)\s+grade\b/g;
+  let g;
+  while ((g = gradeRe.exec(rawStr))) {
+    const grade = g[1] || g[2];
+    // "a" / "A" is usually the article; only treat a bare A as a grade when the sentence is about grades or audiences.
+    if (grade === 'A' && !/grade|audience/i.test(sentenceAt(rawStr, g.index))) continue;
+    if (grade !== facts.audienceGrade) problems.push(`${where} cites grade ${grade}, fact sheet says ${facts.audienceGrade || 'none'}`);
+  }
+
+  // "#N of M" must be exactly the computed rank.
+  let rk;
+  const rankRe = /#(\d+)\s+of\s+(?:the\s+)?(\d+)/g;
+  while ((rk = rankRe.exec(text))) {
+    if (Number(rk[1]) !== facts.rankPosition || Number(rk[2]) !== facts.rankOf) {
+      problems.push(`${where} says #${rk[1]} of ${rk[2]}, the computed rank is ${facts.rankPosition ? `#${facts.rankPosition} of ${facts.rankOf}` : 'none'}`);
+    }
+  }
+  // Rank and superlative claims need a computed, untied rank behind them.
+  if (!facts.rankNote && (/#\d+\s+of\s+\d+/.test(text) || /\b(highest|lowest|best|worst|top|bottom)[- ](rated|scoring|reviewed|score|scored)\b/i.test(text))) {
+    problems.push(`${where} makes a rank claim the fact sheet doesn't support`);
+  }
+
+  // No claim the owner saw it unless their history says so. Personal lines
+  // may say it only as an explicit "[if true]" option they pick themselves.
+  const h = facts.ownerHistory;
+  const saw = /\b(I|we)\s*(saw|caught|watched|'ve seen|'ve caught|have seen|have caught)\b|\bsaw it\b/i;
+  if (!(h && h.seen) && saw.test(rawStr) && !(isPersonal && /^\[if true\]/i.test(rawStr.trim()))) {
+    problems.push(`${where} claims owner saw a show their history does not list`);
+  }
+  return problems;
 }
 
 function stripDashes(s) {
@@ -427,6 +588,26 @@ function stripDashes(s) {
     .replace(/\s*[—–]\s*/g, ', ')
     .replace(/,\s*,/g, ',')
     .replace(/,\s*([.!?])/g, '$1');
+}
+
+/**
+ * Numbers a draft may state: the counts and ranks we computed, the critic
+ * scores behind the quotes, the opening date, and digits that appear in the
+ * show's own name, venue, consensus or quotes ("Table 17", "after 39 years").
+ * Deliberately NOT every digit in the fact sheet: that let any stray small
+ * number through (ship-check 2026-09-29).
+ */
+function allowedNumbers(facts) {
+  const nums = new Set([0, 1, 100]);
+  const add = v => { if (typeof v === 'number' && Number.isFinite(v)) nums.add(v); };
+  [facts.score, facts.reviewCount, facts.audienceCount, facts.rankPosition, facts.rankOf].forEach(add);
+  Object.values(facts.buckets || {}).forEach(add);
+  const quotes = [...(facts.bestQuotes || []), ...(facts.worstQuotes || []), facts.loneDissenter].filter(Boolean);
+  quotes.forEach(q => add(q.score));
+  if (facts.openingDate) facts.openingDate.split('-').map(Number).forEach(add);
+  const texts = [facts.title, facts.venue, facts.consensus, facts.rankNote, ...(facts.cast || []), ...quotes.map(q => q.quote)];
+  for (const t of texts) for (const d of String(t || '').match(/\d+/g) || []) add(Number(d));
+  return nums;
 }
 
 /**
@@ -451,23 +632,12 @@ function lintDraft(raw, facts) {
   const titleNums = (draft.title.match(/\b\d{1,3}\b/g) || []).map(Number);
   if (!titleNums.includes(facts.score)) problems.push(`title does not state the score ${facts.score}`);
 
-  // Every number in the post must exist somewhere in the fact sheet (score,
-  // counts, rank, quotes, venue, url). A wrong number is what gets a post
-  // torn apart, so an unsupported one sends the draft back.
-  const allowed = new Set([0, 1, 100, ...(JSON.stringify(facts).match(/\d+/g) || []).map(Number)]);
-  const noUrl = s => s.replace(/https?:\/\/\S+/g, '');
-  for (const [where, text] of [['title', draft.title], ['body', draft.body]]) {
-    for (const n of (noUrl(text).match(/\d+/g) || []).map(Number)) {
-      if (!allowed.has(n)) problems.push(`${where} has number ${n} that is not in the fact sheet`);
-    }
-    for (const m of text.match(/\b\d{1,3}\s*\/\s*100\b/g) || []) {
-      if (parseInt(m, 10) !== facts.score) problems.push(`${where} cites ${m}, fact sheet says ${facts.score}/100`);
-    }
-    if (/\d\s*(%|percent)/i.test(text)) problems.push(`${where} uses a percentage the fact sheet doesn't give`);
-    for (const g of noUrl(text).match(/(?<![A-Za-z])[A-D][+-](?![A-Za-z0-9])/g) || []) {
-      if (g !== facts.audienceGrade) problems.push(`${where} cites grade ${g}, fact sheet says ${facts.audienceGrade || 'none'}`);
-    }
-  }
+  // Every number, count, grade, rank and "I saw it" claim in anything that
+  // gets pasted to Reddit must be backed by the fact sheet.
+  problems.push(...factProblems('title', draft.title, facts));
+  problems.push(...factProblems('body', draft.body, facts));
+  problems.push(...factProblems('suggestedReply', draft.suggestedReply, facts));
+  draft.personalLines.forEach((l, i) => problems.push(...factProblems(`personalLine${i + 1}`, l, facts, { isPersonal: true })));
 
   if (!draft.body.includes(facts.url)) {
     draft.body = `${draft.body}\n\n${facts.url}`;
@@ -475,7 +645,11 @@ function lintDraft(raw, facts) {
   // The reply and personal lines get pasted to Reddit too.
   const extras = [draft.suggestedReply, ...draft.personalLines];
   for (const re of BANNED) {
-    if ([draft.title, draft.body, ...extras].some(t => re.test(t))) problems.push(`banned phrasing ${re}`);
+    for (const t of [draft.title, draft.body, ...extras]) {
+      const m = t.match(re);
+      // Quote the offending words, not the regex: the retry prompt feeds this back to the model.
+      if (m) { problems.push(`remove the phrase "${m[0].trim()}"`); break; }
+    }
   }
   if (/\brank(ing|ings|ed)?\b[^.]*\b(consider|factor|weigh|include)/i.test(draft.suggestedReply)) {
     problems.push('suggestedReply explains the ranking method (not supported by facts)');
@@ -483,19 +657,28 @@ function lintDraft(raw, facts) {
   const words = draft.body.split(/\s+/).filter(Boolean).length;
   if (words > 260) problems.push(`body too long (${words} words)`);
 
-  // Anything in quotation marks must be a real critic line from the fact
-  // sheet: a made-up quote attributed to a critic is the one thing Reddit
-  // would rightly never forgive.
-  const sources = [facts.consensus, ...[facts.bestQuotes, facts.worstQuotes, [facts.loneDissenter]]
-    .flat().filter(Boolean).map(q => q.quote)].map(normQuote).join(' | ');
-  for (const span of quotedSpans(draft.body)) {
-    if (span.split(/\s+/).length < 3) continue;
-    if (!sources.includes(normQuote(span))) problems.push(`quote not found in the reviews: "${span.slice(0, 60)}"`);
-  }
-
-  const h = facts.ownerHistory;
-  if (!(h && h.seen) && /\b(I|we) (saw|caught|watched)\b/i.test(draft.body)) {
-    problems.push('claims owner saw a show his history does not list');
+  // Anything that reads as a quotation must be a real critic line, credited
+  // in the same sentence to an outlet or critic that actually wrote it, and
+  // not a fragment lifted out of a negation ("a triumph" from "not a
+  // triumph"). A made-up or misattributed quote is the one thing Reddit
+  // would rightly never forgive. The site's own consensus is not a quote.
+  const critics = [facts.bestQuotes, facts.worstQuotes, [facts.loneDissenter]].flat().filter(Boolean);
+  for (const [where, text] of [['title', draft.title], ['body', draft.body], ['suggestedReply', draft.suggestedReply]]) {
+    for (const span of quotedSpans(text)) {
+      const q = normQuote(span.text);
+      if (!q || q.split(' ').length < 2) continue;
+      if (q === normQuote(facts.title)) continue; // the show's own title in quotes is not a critic quote
+      const hits = critics.filter(c => {
+        const src = ` ${normQuote(c.quote)} `;
+        const at = src.indexOf(` ${q} `);
+        if (at < 0) return false;
+        return !/\b(not|never|hardly|no)\s*$|n't\s*$/.test(src.slice(Math.max(0, at - 12), at + 1));
+      });
+      if (!hits.length) { problems.push(`${where}: quote not found in the reviews: "${span.text.slice(0, 60)}"`); continue; }
+      const sentence = sentenceAt(text, span.index).toLowerCase();
+      const credited = hits.some(c => [c.outlet, c.critic].filter(Boolean).some(n => sentence.includes(String(n).toLowerCase())));
+      if (!credited) problems.push(`${where}: quote "${span.text.slice(0, 40)}" is not credited to the outlet that wrote it`);
+    }
   }
   return { ok: problems.length === 0, draft, problems };
 }
@@ -523,7 +706,11 @@ function templateDraft(facts) {
   const title = `Reviews are in for ${facts.title}: ${facts.score}/100 from critics${hook}`;
   const lines = [];
   lines.push(`${facts.title} opened ${facts.venue ? `at ${facts.venue} ` : ''}with ${aOrAn(facts.score)} ${facts.score}/100 critic score across ${facts.reviewCount} reviews. ${breakdownSentence(facts.buckets)}.`);
-  if (facts.consensus) lines.push(facts.consensus);
+  const consensus = stripDashes(facts.consensus || '');
+  // The consensus is the site's own summary: use it only if it passes the
+  // same checks and quotes nobody (a quoted phrase would read as a critic quote).
+  const quotesSomeone = quotedSpans(consensus).some(sp => normQuote(sp.text) !== normQuote(facts.title));
+  if (consensus && !quotesSomeone && !BANNED.some(re => re.test(consensus)) && !factProblems('consensus', consensus, facts).length) lines.push(consensus);
   if (facts.audienceGrade) lines.push(`Audiences have it at ${facts.audienceGrade} so far.`);
   if (facts.loneDissenter) lines.push(`${facts.loneDissenter.outlet} is the lone holdout.`);
   lines.push('Anyone caught it yet? Curious whether it matches what you saw in the room.');
@@ -564,16 +751,28 @@ function applyPostedDetection(drafts, posts) {
     if (d.status === 'posted') continue;
     const key = normTitle(d.showTitle);
     // The show-page slug catches posts whose title shortens the show name
-    // ("Rocky Horror gets a 69") but which link the page, as his always do.
+    // ("Rocky Horror gets a 69") but which link the page, as the owner's always do.
     const slug = d.url ? String(d.url).replace(/\/+$/, '').split('/').pop() : null;
     if ((!key || key.length < 3) && !slug) continue;
     const createdSec = Date.parse(d.createdAt) / 1000 - 3 * 86400; // allow posting a bit before the draft
     const hit = (posts || []).find(p => {
       if (!p || (p.created_utc || 0) < createdSec) return false;
-      if (slug && `${p.selftext || ''} ${p.url || ''}`.includes(`/show/${slug}`)) return true;
-      // Title fallback: whole-word match, and only in a theater sub, so a
-      // show called "Rent" isn't cleared by a post saying "currently".
-      if (!key || key.length < 3 || !THEATER_SUBS.has(String(p.subreddit || '').toLowerCase())) return false;
+      // A post removed by mods or AutoModerator isn't posted.
+      if (p.removed_by_category || /^\[(removed|deleted)\]$/.test(String(p.selftext || '').trim())) return false;
+      const hay = `${p.selftext || ''} ${p.url || ''}`.toLowerCase();
+      if (slug) {
+        const needle = `/show/${slug.toLowerCase()}`;
+        let at = hay.indexOf(needle);
+        while (at >= 0) {
+          if (!/[a-z0-9-]/.test(hay[at + needle.length] || '')) return true; // not a prefix of a longer slug
+          at = hay.indexOf(needle, at + 1);
+        }
+      }
+      // Title fallback: whole-word match, and only in the draft's own
+      // subreddit, so a r/Broadway post about the Broadway Kimberly Akimbo
+      // doesn't clear the Off-West End transfer's draft.
+      if (!key || key.length < 3) return false;
+      if (String(p.subreddit || '').toLowerCase() !== String(d.subreddit || '').toLowerCase()) return false;
       return ` ${normTitle(p.title)} `.includes(` ${key} `);
     });
     if (hit) {
@@ -607,9 +806,12 @@ module.exports = {
   marketOf,
   showUrl,
   audienceGradeLetter,
+  buildPeers,
   buildFacts,
+  allowedNumbers,
   notability,
   selectCandidates,
+  crosspostSubreddit,
   makeSeenLookup,
   normTitle,
   buildUserPrompt,
@@ -617,6 +819,8 @@ module.exports = {
   lintDraft,
   stripDashes,
   quotedSpans,
+  factProblems,
+  wordsToDigits,
   templateDraft,
   submitUrl,
   oldRedditSubmitUrl,

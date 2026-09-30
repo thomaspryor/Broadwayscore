@@ -46,6 +46,7 @@ const {
   selectAutoApplyClosures,
   shouldSuppressTodayTixCandidate,
   isEligibleForFutureClosingDateFill,
+  findUnmonitoredOpenShows,
 } = require('./lib/ob-closing-detector');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { hasHelpFlag } = require('./lib/cli-help.js');
@@ -293,6 +294,12 @@ function main() {
     dryRun
   );
 
+  const unmonitoredOpenShows = findUnmonitoredOpenShows(
+    obShows,
+    (id) => fs.existsSync(path.join(REVIEW_TEXTS_DIR, id)),
+    todayISO()
+  );
+
   const report = {
     generatedAt: new Date().toISOString(),
     mode: dryRun ? 'dry-run' : 'apply',
@@ -305,6 +312,7 @@ function main() {
       unconfirmed: reviewTextSweep.unconfirmed,
       suppressed: reviewTextSweep.suppressed,
     },
+    unmonitoredOpenShows,
     todaytixStaleness: {
       checked: todaytixStaleness.checked,
       skipped: todaytixStaleness.skipped,
@@ -340,6 +348,12 @@ function main() {
   }
   for (const c of todaytixStaleness.candidates) {
     console.log(`  ${c.showId} — missing ${c.consecutiveMissingChecks} consecutive checks (since ${c.firstMissingDate})`);
+  }
+
+  console.log('\n=== Unmonitored open shows (no signal can detect their closing) ===');
+  if (unmonitoredOpenShows.length === 0) console.log('  (none)');
+  for (const u of unmonitoredOpenShows) {
+    console.log(`  ${u.showId} — open ${u.daysOpen}d, tickets: ${u.ticketPlatforms.join(', ') || 'none'}`);
   }
 
   console.log(`\nReport written to ${path.relative(ROOT, REPORT_PATH)}`);

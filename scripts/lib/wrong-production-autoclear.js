@@ -274,11 +274,16 @@ const AUTO_REASON_REGEXES = [
 //  - "Date guard" (flag-wrong-production-by-date.js standalone)
 //  - "Auto-flagged" (gather-reviews.js Broadway-only ingest guard)
 //  - "Review published" (rebuild-all-reviews.js per-review skip-pre-opening writer)
+//  - "auto-flag: filled text dated" (audit-show-review-gap.js post-fill
+//    recovery guard, lib/flagged-recovery.js filledDateOutsideWindow). Date
+//    only; without it a filled review of a declared earlier run stayed
+//    excluded (My Son's a Queer's i-paper review of the 2023 Ambassadors run).
 const DATE_GUARD_PREFIXES = [
   'Pre-opening guard',
   'Date guard',
   'Auto-flagged',
   'Review published',
+  'auto-flag: filled text dated',
 ];
 const startsWithAny = (s, prefixes) => prefixes.some((p) => s.startsWith(p));
 

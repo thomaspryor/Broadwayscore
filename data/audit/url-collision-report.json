@@ -1,12 +1,39 @@
 {
-  "generatedAt": "2026-09-29T18:45:27.194Z",
+  "generatedAt": "2026-09-30T01:27:30.547Z",
   "summary": {
-    "total": 5,
+    "total": 7,
     "high": 0,
-    "medium": 3,
-    "low": 2
+    "medium": 4,
+    "low": 3
   },
   "collisions": [
+    {
+      "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
+      "normalizedUrl": "https://timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
+      "candidates": [
+        {
+          "showId": "christmas-carol-goes-wrong-apollo-west-end-2025",
+          "file": "timeout-london--anya-ryan.json",
+          "publishDate": null,
+          "openingDate": "2025-12-14",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "timeout-london"
+        },
+        {
+          "showId": "christmas-carol-goes-wrong-west-end-2026",
+          "file": "timeout-london--anya-ryan.json",
+          "publishDate": "2025-12-15",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout-london"
+        }
+      ],
+      "suggestedWinner": "christmas-carol-goes-wrong-west-end-2026",
+      "reason": "Only one candidate has score/fullText",
+      "confidence": "medium"
+    },
     {
       "url": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
       "normalizedUrl": "https://inews.co.uk/culture/arts/giant-review-john-lithgow-tyrant-roald-dahl-blistering-antisemitism-play-3298295",
@@ -113,6 +140,33 @@
       ],
       "suggestedWinner": "masquerade-off-broadway-2025",
       "reason": "publishDate 2026-05-27 is 240+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.interestedbystander.com/2024/12/theater-reviews-eureka-day-hysterically.html",
+      "normalizedUrl": "https://interestedbystander.com/2024/12/theater-reviews-eureka-day-hysterically.html",
+      "candidates": [
+        {
+          "showId": "pen-pals-2025",
+          "file": "the-interested-bystander--cary-wong.json",
+          "publishDate": "December 30th, 2025",
+          "openingDate": null,
+          "hasScore": true,
+          "hasFullText": false,
+          "outletId": "the-interested-bystander"
+        },
+        {
+          "showId": "pen-pals-off-broadway-2025",
+          "file": "the-interested-bystander--cary-wong.json",
+          "publishDate": "December 30th, 2025",
+          "openingDate": "2025-01-06",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "the-interested-bystander"
+        }
+      ],
+      "suggestedWinner": "pen-pals-off-broadway-2025",
+      "reason": "publishDate December 30th, 2025 is 358+ days from all openings; defaulting to most recent production",
       "confidence": "low"
     },
     {

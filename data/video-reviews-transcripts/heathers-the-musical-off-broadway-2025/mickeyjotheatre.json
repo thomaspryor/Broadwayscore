@@ -18,5 +18,22 @@
   "keyQuote": "heather's for me is a four-star show it's really fun it's really enjoyable the music is really compelling it's a great score",
   "scoredAt": "2026-04-19T08:24:42.589Z",
   "scoringModel": "claude-opus-4-7",
-  "thumbnail": "https://i.ytimg.com/vi/UiaIEx6mhIA/hqdefault.jpg"
+  "thumbnail": "https://i.ytimg.com/vi/UiaIEx6mhIA/hqdefault.jpg",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "one of the most popular new musicals right now in the uk is heathers since it first opened at the other palace",
+    "reason": "The review is about a production of 'Heathers' in the UK at The Other Palace, not the assigned Off-Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states it is reviewing a production of 'Heathers' in the UK at The Other Palace, which is a different city and country from the assigned Off-Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:55:31.349Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The review is about a production of 'Heathers' in the UK at The Other Palace, not the assigned Off-Broadway production in New York City."
 }

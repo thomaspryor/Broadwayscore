@@ -36,6 +36,7 @@
  *   --force-exhausted  Override the proven-zero-sweep guard (see below)
  */
 
+const { isolateMultiShowSectionForShowId } = require('./lib/multi-show-section-extract');
 const fs = require('fs');
 const path = require('path');
 const { execSync } = require('child_process');
@@ -278,6 +279,12 @@ async function fetchAndExtract(url) {
  */
 async function processRecovered(candidate, text, html, newUrl, method) {
   let cleanedText = stripTrailingJunk(text, candidate.outletId);
+  // Multi-show posts: isolate before any length/upgrade guard or URL rewrite.
+  {
+    const iso = isolateMultiShowSectionForShowId(newUrl || candidate.url, cleanedText, candidate.showId);
+    if (iso.action === 'refuse') return { ok: false, reason: 'multi-show post: no unique section for this show' };
+    cleanedText = iso.text;
+  }
 
   if (cleanedText.length < CONFIG.minTextLength) {
     console.log(`    Too short after cleaning: ${cleanedText.length} chars`);

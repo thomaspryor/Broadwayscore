@@ -17,5 +17,22 @@
   "reasoning": "Creator clearly enjoyed the show, calling it an 'absolute blast,' praising the cast, dance numbers, and new songs. Minor caveats about it being a kid show and lacking animals don't diminish the strong recommendation.",
   "keyQuote": "I had an absolute blast... Show is super fun, this cast is so super talented",
   "scoredAt": "2026-04-19T08:18:53.480Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "different",
+    "confidence": "high",
+    "evidenceType": "other_city",
+    "evidenceQuote": "I'm seeing this one in Denver, because I count national tours.",
+    "reason": "The video explicitly states that the creator is seeing the national tour of Aladdin in Denver, not the Broadway production in New York City.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "confirmation": {
+      "confirmed": true,
+      "reason": "The video explicitly states that the creator is seeing the national tour of Aladdin in Denver, not the Broadway production in New York City.",
+      "model": "gemini-2.5-flash"
+    },
+    "checkedAt": "2026-09-29T14:54:38.608Z"
+  },
+  "wrongProduction": true,
+  "wrongProductionReason": "The video explicitly states that the creator is seeing the national tour of Aladdin in Denver, not the Broadway production in New York City."
 }

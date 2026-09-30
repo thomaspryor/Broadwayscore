@@ -123,6 +123,7 @@ test('a discovered tour is decided by its segment start and built with schedule 
   assert.equal(built.entry.discoverySource, 'tour-schedule:tourstoyou');
   assert.match(built.entry.tourLaunchEvidence, /tourstoyou\.org\/shows\/hells-kitchen/);
   assert.equal(built.entry.status, 'open');
+  assert.equal(built.entry.tourScheduleSlug, 'hells-kitchen', 'the date job reads the same page, never a guess');
   assert.equal(buildTourEntry({ parent, shows: [parent], decision: d, now: NOW }).skip, 'no evidence URL (roundup or schedule)');
 });
 
@@ -190,4 +191,15 @@ test('ship-check: an ambiguous row clears when the tour is no longer ambiguous',
   const [row1] = JSON.parse(fs.readFileSync(file, 'utf8'));
   assert.equal(row1.ambiguous, undefined);
   assert.equal(row1.firstSeen, '2026-09-01T00:00:00Z', 'same slug keeps firstSeen');
+});
+
+test('New-York-only aggregators never take a national tour (BRO-4325: NYC Theatre filed Broadway excerpts as tour reviews)', () => {
+  const { withoutTours } = require('../../scripts/lib/tour-family.js');
+  const out = withoutTours([
+    { id: 'maybe-happy-ending-2024', category: 'broadway' },
+    { id: 'maybe-happy-ending-tour-2026', category: 'tour' },
+    { id: 'oh-mary-2024' },
+  ]);
+  assert.deepEqual(out.kept.map(s => s.id), ['maybe-happy-ending-2024', 'oh-mary-2024']);
+  assert.deepEqual(out.tours.map(s => s.id), ['maybe-happy-ending-tour-2026']);
 });

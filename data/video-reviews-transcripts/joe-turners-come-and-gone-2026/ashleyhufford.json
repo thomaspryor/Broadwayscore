@@ -17,5 +17,15 @@
   "reasoning": "Sponsored content with a wine brand, but the creator did attend and gives a clear enthusiastic recommendation of the production, praising cast, story, and relevance with an explicit call to see it.",
   "keyQuote": "I thought the entire cast was incredible, and the story was so compelling.",
   "scoredAt": "2026-07-05T12:04:29.454Z",
-  "scoringModel": "claude-opus-4-7"
+  "scoringModel": "claude-opus-4-7",
+  "productionCheck": {
+    "verdict": "same",
+    "confidence": "high",
+    "evidenceType": null,
+    "evidenceQuote": "",
+    "reason": "The video explicitly mentions celebrating the opening of 'Joe Turner's Come and Gone' on Broadway, which matches the assigned production.",
+    "method": "llm",
+    "model": "gpt-4o",
+    "checkedAt": "2026-09-29T14:55:39.970Z"
+  }
 }

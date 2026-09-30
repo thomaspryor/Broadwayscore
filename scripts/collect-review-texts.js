@@ -113,6 +113,7 @@ const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash } = requ
 const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
+const { isolateMultiShowSection, MULTI_SHOW_NOT_FOUND_REASON } = require('./lib/multi-show-section-extract');
 const { assessTextQuality, isGarbageContent, validateShowMentioned, validateContentMentionsShow, extractByline, matchesCritic, computeContentFingerprint, classifyContentTier, verifyFullTextContent, extractAuthorFromHtml, extractHighConfidenceAuthor, URL_CONTENT_CHECK_VERSION } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName, generateReviewFilename, normalizeOutlet } = require('./lib/review-normalization');
 const { setExtractedScore, AGGREGATOR_SCORE_SOURCES } = require('./lib/score-routing');
@@ -565,6 +566,7 @@ const { recordSbCall, sbBilledCredits } = require('./lib/provider-telemetry');
 const { discoverCorrectUrl: _sharedDiscoverUrl } = require('./lib/url-discovery');
 const { shouldRetryUrlDiscovery, recordSerpAttempt, shouldRetryFetch, recordFetchAttempt } = require('./lib/review-guards');
 const { clearFailureFlags } = require('./lib/clear-failure-flags');
+const { clearAutomatedTextRejectionOnRefetch } = require('./lib/stale-automated-text-verdict');
 const { neutralizeStaleFlagsOnBodyReplacement } = require('./lib/stale-flag-neutralization');
 const { emitStage } = require('./lib/stage-latency');
 
@@ -4576,7 +4578,37 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   }
 
   // Clean text (decode entities, strip control chars, collapse whitespace, strip junk) before classification
-  const preCleanedText = cleanText(text) || text;
+  let preCleanedText = cleanText(text) || text;
+
+  // Multi-show blog posts (interestedbystander): keep only THIS show's
+  // section, or store nothing (BRO-4387 follow-up: until 2026-09-29 only
+  // ingest-review-from-url.js isolated the section, so every collector
+  // re-fetch pulled the whole post and scored other shows into the file).
+  {
+    const sid = review.showId || data.showId;
+    let meta = null;
+    try {
+      if (!_showsJsonCache) _showsJsonCache = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+      meta = _showsJsonCache.shows.find(s => s.id === sid) || null;
+    } catch (e) { /* shows.json unavailable */ }
+    const iso = isolateMultiShowSection(data.url || review.url, preCleanedText, meta ? meta.title : '');
+    if (iso.action === 'refuse') {
+      console.log(`    [MULTI-SHOW] could not isolate this show's section in ${data.url || review.url} — not storing another show's text`);
+      if (!data.fullText) {
+        if (data.rescoreReason === 'fullText added after excerpt-based scoring' && !hadFullTextBefore) {
+          delete data.needsRescore; delete data.rescoreReason; // set above for text we are not storing
+        }
+        data.incompleteReason = MULTI_SHOW_NOT_FOUND_REASON;
+        data.incompleteDetail = 'multi-show post has no unique section for this show (isolateMultiShowSection)';
+        fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2) + '\n');
+      }
+      return;
+    }
+    if (iso.action === 'isolated') {
+      console.log(`    [MULTI-SHOW] kept this show's section (${iso.text.length} of ${preCleanedText.length} chars)`);
+      preCleanedText = iso.text;
+    }
+  }
 
   // Text quality classification with truncation detection (also strips trailing junk)
   const qualityResult = classifyTextQuality(preCleanedText, review.showId || data.showId, validation.wordCount, excerptLength);
@@ -4701,15 +4733,15 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     }
   }
 
-  // Clear previous LLM scoring rejection so re-scraped reviews can be scored again.
-  // The scoring pipeline skips files with rejectionReason set.
-  if (data.rejectionReason) {
-    delete data.rejectionReason;
-    delete data.rejectedAt;
-    delete data.rejectedBy;
-    delete data.rejectionReasoning;
-    delete data.promptVersion;
-  }
+  // Clear a previous automated TEXT-QUALITY rejection (not_a_review /
+  // garbage_text / truncated_text from the ensemble or a heuristic) so the
+  // re-scraped body gets judged again: null-assigned (a delete is restored by
+  // push-review-texts), the old-text score parked, needsRescore raised.
+  // wrong_production / wrong_show verdicts, human rejections and rejections
+  // with no rejectedBy (free-text, hand-written) are about the article, not
+  // the fetch, and stay. scripts/clear-stale-automated-text-verdicts.js is the
+  // daily backstop for writers that bypass this path.
+  clearAutomatedTextRejectionOnRefetch(data);
 
   // Extract original score from HTML/text if not already present,
   // or if the existing score came from Show Score (SS assigns its own stars,
@@ -6082,8 +6114,8 @@ function findReviewsToProcess() {
 
         // Skip permanently retired URLs (broken redirects, etc.) — these are in failed-fetches.json
         // too, but checking the file field avoids re-reading failed-fetches for files added after load
-        if (data.incompleteReason === 'permanently_unavailable' && CONFIG.incompleteReasonFilter.length === 0) {
-          logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedPermanentlyUnavailable', details: { url: data.url, outletId: data.outletId } });
+        if ((data.incompleteReason === 'permanently_unavailable' || data.incompleteReason === MULTI_SHOW_NOT_FOUND_REASON) && CONFIG.incompleteReasonFilter.length === 0) {
+          logExclusion({ script: 'collect-review-texts', showId, file, reason: data.incompleteReason === MULTI_SHOW_NOT_FOUND_REASON ? 'skippedMultiShowSectionNotFound' : 'skippedPermanentlyUnavailable', details: { url: data.url, outletId: data.outletId } });
           continue;
         }
 

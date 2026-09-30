@@ -154,6 +154,10 @@ function run() {
               if (writeResult.lockedSkipped) {
                 lockedSkipCount++;
                 console.log(`  [LOCKED-SKIP] ${showId}: canonical locked between read and write — ${canonical.file}`);
+              } else if (writeResult.wrote === false && !writeResult.quarantinedPath) {
+                // Refused and saved nowhere (sparse-hidden / conflict-marked
+                // target): keep the phantom, or its content is lost.
+                console.log(`  [WRITE-REFUSED] ${showId}: ${canonical.file} not written (${writeResult.skipped}) — phantom kept`);
               } else {
                 const unlinkResult = safeUnlinkReview(phantomPath);
                 if (!unlinkResult.wrote) {

@@ -125,7 +125,7 @@
         },
         "latimes": {
           "firstSeenAt": "2026-09-29T16:31:03.607Z",
-          "state": "GAP"
+          "state": "CIRCUIT_OPEN"
         },
         "nypost": {
           "firstSeenAt": "2026-09-29T16:31:03.607Z",
@@ -282,7 +282,7 @@
         },
         "latimes": {
           "firstSeenAt": "2026-09-29T16:31:03.607Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "http://latimesblogs.latimes.com/culturemonster/2011/03/theater-review-the-book-of-mormon-at-the-eugene-oneill-theatre.html"
         },
         "nytimes": {
@@ -297,7 +297,7 @@
         },
         "washpost": {
           "firstSeenAt": "2026-09-29T16:31:03.607Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "http://www.washingtonpost.com/lifestyle/style/review-of-broadways-the-book-of-mormon/2011/03/24/ABguJSRB_story.html"
         }
       },
@@ -411,6 +411,11 @@
     },
     "burlesque-west-end-2026": {
       "cells": {
+        "independent": {
+          "firstSeenAt": "2026-09-29T21:21:56.967Z",
+          "state": "GAP",
+          "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/burlesque-the-musical-review-b2793763.html"
+        },
         "standard": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
           "state": "GAP",
@@ -920,11 +925,6 @@
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
           "state": "GAP",
           "url": "https://www.theguardian.com/stage/2025/apr/26/just-in-time-broadway-play-review"
-        },
-        "timeout": {
-          "firstSeenAt": "2026-09-20T15:36:31.781Z",
-          "state": "GAP",
-          "url": "https://www.timeout.com/newyork/theater/just-in-time-broadway-review-bobby-darin-jonathan-groff"
         }
       },
       "market": "broadway",
@@ -954,11 +954,6 @@
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
           "state": "GAP",
           "url": "https://www.telegraph.co.uk/theatre/what-to-see/les-miserables-sondheim-theatre-review-perfect-theatre-perfect/"
-        },
-        "thestage": {
-          "firstSeenAt": "2026-09-26T17:43:32.299Z",
-          "state": "GAP",
-          "url": "https://www.thestage.co.uk/reviews/les-miserables-review-at-sondheim-theatre-london--still-spectacular"
         }
       },
       "market": "west-end",
@@ -1198,7 +1193,7 @@
         },
         "washpost": {
           "firstSeenAt": "2026-09-29T16:31:03.607Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.washingtonpost.com/entertainment/theater/2024/11/12/maybe-happy-ending-broadway-review/"
         }
       },
@@ -1268,7 +1263,7 @@
         },
         "washpost": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.washingtonpost.com/theater-dance/2022/02/01/mj-michael-jackson-musical/"
         }
       },
@@ -1377,7 +1372,7 @@
         },
         "washpost": {
           "firstSeenAt": "2026-09-29T16:31:03.607Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.washingtonpost.com/arts-entertainment/2021/12/05/mrs-doubtfire-broadway-review/"
         }
       },
@@ -1401,6 +1396,18 @@
       "market": "west-end",
       "openingDate": "2025-03-08",
       "title": "My Neighbour Totoro"
+    },
+    "my-sons-a-queer-but-what-can-you-do-west-end-2026": {
+      "cells": {
+        "timeout": {
+          "firstSeenAt": "2026-09-29T21:21:56.967Z",
+          "state": "GAP",
+          "url": "https://www.timeout.com/london/theatre/my-sons-a-queer-but-what-can-you-do-review"
+        }
+      },
+      "market": "west-end",
+      "openingDate": "2026-09-17",
+      "title": "My Son’s A Queer (But What Can You Do?)"
     },
     "oh-mary-2024": {
       "cells": {
@@ -1636,6 +1643,11 @@
     },
     "school-girls-or-the-african-mean-girls-play-2026": {
       "cells": {
+        "nydailynews": {
+          "firstSeenAt": "2026-09-29T21:21:56.967Z",
+          "state": "IN_FLIGHT",
+          "url": "https://www.nydailynews.com/2026/09/28/school-girls-african-mean-girls-play-review-broadway/"
+        },
         "nypost": {
           "firstSeenAt": "2026-09-28T07:54:48.508Z",
           "state": "IN_FLIGHT"
@@ -1885,7 +1897,7 @@
         },
         "latimes": {
           "firstSeenAt": "2026-09-29T16:31:03.607Z",
-          "state": "GAP"
+          "state": "CIRCUIT_OPEN"
         },
         "nydailynews": {
           "firstSeenAt": "2026-09-29T12:08:08.432Z",
@@ -2085,7 +2097,7 @@
         },
         "washpost": {
           "firstSeenAt": "2026-08-14T10:00:10.554Z",
-          "state": "GAP",
+          "state": "CIRCUIT_OPEN",
           "url": "https://www.washingtonpost.com/entertainment/theater_dance/pass-over-broadway/2021/08/22/01ba1088-0298-11ec-ba7e-2cf966e88e93_story.html"
         }
       },
@@ -2095,6 +2107,11 @@
     },
     "the-phantom-of-the-opera-tour-2025": {
       "cells": {
+        "nytimes": {
+          "firstSeenAt": "2026-09-30T01:06:40.593Z",
+          "state": "GAP",
+          "url": "http://theater2.nytimes.com/2005/07/01/theater/reviews/01phan.html"
+        },
         "talkinbroadway": {
           "firstSeenAt": "2026-09-29T16:31:03.607Z",
           "state": "GAP",
@@ -2358,28 +2375,6 @@
       "market": "broadway",
       "openingDate": "2025-09-27",
       "title": "Water for Elephants"
-    },
-    "who-killed-marilyn-off-west-end-2026": {
-      "cells": {
-        "guardian": {
-          "firstSeenAt": "2026-09-29T16:31:03.607Z",
-          "state": "GAP",
-          "url": "https://www.westendtheatre.com/363852/news/who-killed-marilyn-reviews/"
-        },
-        "telegraph": {
-          "firstSeenAt": "2026-09-29T16:31:03.607Z",
-          "state": "GAP",
-          "url": "https://www.westendtheatre.com/363852/news/who-killed-marilyn-reviews/"
-        },
-        "times-uk": {
-          "firstSeenAt": "2026-09-29T16:31:03.607Z",
-          "state": "GAP",
-          "url": "https://www.westendtheatre.com/363852/news/who-killed-marilyn-reviews/"
-        }
-      },
-      "market": "west-end",
-      "openingDate": "2026-08-21",
-      "title": "Who Killed Marilyn?"
     },
     "wicked-2003": {
       "cells": {

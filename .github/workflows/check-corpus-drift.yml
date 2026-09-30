@@ -299,6 +299,9 @@ jobs:
       # "Workflow repeat-failure" row escalates. Placed AFTER "Notify on
       # failure" on purpose: that email means "audit could not run", which is
       # not what a data finding here means.
+      # 2026-09-29 (BRO-3425): + image-presence (imageless scored shows vs the
+      # self-heal threshold) and outlet-registry-live-data (null-domain ceiling,
+      # domain collisions) — same shape, reddened main 2026-09-29.
       - name: Live-data assertions (moved from test.yml unit batch)
         if: always()
-        run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs
+        run: node --test tests/unit/cast-changes-real-data.test.mjs tests/unit/bro3887-cache-fix-acceptance.test.mjs tests/unit/image-presence.test.mjs tests/unit/outlet-registry-live-data.test.mjs

@@ -46,6 +46,9 @@ const ALWAYS_UNCONFIRMED = new Set([
   // lib/opening-date-fallback.js: first-performance date used as a last
   // resort when no source gave a press night. Always overwritable.
   'previews-fallback',
+  // BRO-4381: TheaterMania's opening_date (discover-new-shows.js, OB). A
+  // listings site, usually right, but Playbill / review inference outrank it.
+  'theatermania',
   null,
   undefined,
   '',

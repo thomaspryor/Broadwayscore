@@ -182,3 +182,18 @@ test('unit: subject empty or too long fails', () => {
   assert.equal(assertDigestInvariants('<div>x</div>', { subject: 'x'.repeat(120) }).ok, false);
   assert.equal(assertDigestInvariants('<div>x</div>', { subject: 'x'.repeat(119) }).ok, true);
 });
+
+// BRO-4141: a Linear card title starting "Backlog drain R0-R6: ..." listed in
+// the digest tripped the forbidden-section check every day from 2026-09-24.
+// Only a rendered heading ("Label:" / "<h3>Label</h3>", emoji prefix allowed)
+// is a forbidden section.
+test('forbidden headings: headings match, card titles and prose do not', async () => {
+  const { createRequire } = await import('node:module');
+  const { assertDigestInvariants } = createRequire(import.meta.url)('./digest-content-invariants.js');
+  const hits = html => assertDigestInvariants(html, {}).violations.filter(v => v.includes('forbidden section')).length;
+  assert.equal(hits('<li>Backlog drain R0-R6: watchdog restart, cancel</li>'), 0);
+  assert.equal(hits('<p>Score drift is fine today</p>'), 0);
+  assert.equal(hits('<div style="font-weight:700">Backlog drain: 12 open</div>'), 1);
+  assert.equal(hits('<h3>📉 Score drift</h3>'), 1);
+  assert.equal(hits('<h3>Fixes &amp; features merged</h3>'), 1);
+});

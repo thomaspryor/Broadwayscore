@@ -20,6 +20,8 @@
  * (CLAUDE.md rule 15) — all the git/fs/network work lives in the CLI.
  */
 
+const { isWithinPriorRun, isWithinTourLeg } = require('./wrong-production-autoclear');
+
 /**
  * @param {object} signals
  * @param {boolean} signals.reviewTextsExists - a review-texts file for this
@@ -39,9 +41,66 @@ function classifyGap({ reviewTextsExists, exclusionRule, inReviewsJson, inLivePr
   return 'true-missed-discovery';
 }
 
+// Date-only comparison (UTC midnight) so a non-ISO string can't shift a day.
+function _ts(v) {
+  if (!v) return null;
+  const m = String(v).match(/^\d{4}-\d{2}-\d{2}/);
+  const t = Date.parse(m ? m[0] : v);
+  return Number.isNaN(t) ? null : t;
+}
+
+// Shared with the promote step's skip stamp (replay-pending-bylines.js,
+// fetch-guardian-reviews.js write this wording into promoteSkippedReason).
+const OUT_OF_WINDOW_REASON_RE = /outside this production's window/i;
+
+/**
+ * BRO-4098: a review-texts file for the outlet that belongs to a DIFFERENT
+ * production of the same title (2018 Northern Stage, Chicago 2016) is not
+ * evidence the current production's review was ingested. Counting it made
+ * triage answer 'ingested-but-excluded / do NOT start URL resolution' on
+ * opening night while the real review was a genuine discovery miss.
+ *
+ * Deliberately conservative: when a date is unknown the file is treated as
+ * CURRENT (the old, safe answer), never as another production. Signals use
+ * dates and text only, never URL contents. Only previewsStartDate bounds the
+ * run (reviews legitimately precede openingDate), and a date inside a declared
+ * priorRuns window is current.
+ *
+ *   - explainExclusion says wrongProduction/wrongShow AND publishDate is
+ *     before previewsStartDate (a dated in-window flag is likely a false
+ *     positive worth un-flagging, so it stays ingested-but-excluded)
+ *   - a _pending file dated before previewsStartDate, or one the promoter
+ *     skipped as outside the production window
+ *
+ * Unreadable files (data == null) are never other-production.
+ *
+ * @param {{data: object|null, pending: boolean}} file
+ * @param {object|null} showRecord
+ * @param {string|null} exclusionRule - explainExclusion() verdict for the file
+ */
+function isOtherProductionFile(file, showRecord, exclusionRule) {
+  const data = file && file.data;
+  if (!data) return false;
+  const start = _ts(showRecord && showRecord.previewsStartDate);
+  const pub = _ts(data.publishDate);
+  const predates = start != null && pub != null && pub < start;
+  if (predates && (isWithinPriorRun(data.publishDate, showRecord.priorRuns) || isWithinTourLeg(data.publishDate, showRecord.tourLegs))) return false;
+  // A human verdict that the content is right outranks any date heuristic.
+  if (data.wrongProductionManualClear === true || data.wrongProductionOverride === true
+    || data.humanReviewedWrongProduction === false || data.humanReviewScore != null) return false;
+  if (exclusionRule === 'wrongProduction' || exclusionRule === 'wrongShow') return predates;
+  if (file.pending) {
+    if (predates) return true;
+    // The stamp is a stale diagnostic: a corrected in-window date beats it.
+    const inWindow = start != null && pub != null && pub >= start;
+    if (!inWindow && OUT_OF_WINDOW_REASON_RE.test(String(data.promoteSkippedReason || ''))) return true;
+  }
+  return false;
+}
+
 /** Only this state justifies starting URL-resolution work (site search, RSS, sitemap). */
 function justifiesUrlResolution(state) {
   return state === 'true-missed-discovery';
 }
 
-module.exports = { classifyGap, justifiesUrlResolution };
+module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile };

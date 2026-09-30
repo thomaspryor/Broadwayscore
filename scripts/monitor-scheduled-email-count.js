@@ -42,11 +42,11 @@
  */
 'use strict';
 
-const https = require('https');
 const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { fetchOwnerEmailsSince: fetchOwnerEmailsSinceShared } = require('./lib/resend-owner-emails.js');
 const { buildDailyReport, decideDayViolation, dayKeyET } = require('./lib/scheduled-email-count-rules');
 const { compareToBaseline } = require('./audit-alert-senders.js');
 
@@ -70,71 +70,12 @@ const daysArg = process.argv.find((a) => a.startsWith('--days='));
 // the full previous day even though "today" is partial; only complete days
 // (dayKey < today) are eligible to alert — see the filter in main().
 const WINDOW_DAYS = daysArg ? Number(daysArg.split('=')[1]) : (DRY_RUN ? 7 : 2);
-// Broadcast sends (newsletter blasts) pad the feed with hundreds of non-owner
-// rows per send at limit=100/page — cap pagination so a big broadcast day
-// can't turn this into a runaway API loop. 40 pages = 4,000 emails scanned,
-// comfortably more than a multi-day window with the owner's send volume.
-const MAX_PAGES = 40;
 
 const RESEND_API_KEY = process.env.RESEND_API_KEY;
 const OWNER_EMAIL = process.env.OWNER_EMAIL;
 
-function getEmailsPage(after) {
-  return new Promise((resolve, reject) => {
-    const path = '/emails?limit=100' + (after ? `&after=${after}` : '');
-    const req = https.request(
-      {
-        hostname: 'api.resend.com',
-        path,
-        method: 'GET',
-        headers: { Authorization: `Bearer ${RESEND_API_KEY}` },
-        timeout: 20000,
-      },
-      (res) => {
-        let body = '';
-        res.on('data', (chunk) => { body += chunk; });
-        res.on('end', () => {
-          if (res.statusCode !== 200) return reject(new Error(`HTTP ${res.statusCode}: ${body.slice(0, 200)}`));
-          try { resolve(JSON.parse(body)); } catch (e) { reject(e); }
-        });
-      },
-    );
-    req.on('error', reject);
-    req.on('timeout', () => { req.destroy(new Error('timeout')); });
-    req.end();
-  });
-}
-
-// Paginates GET /emails (newest-first per Resend's API) until the page's
-// oldest row falls before sinceMs, filtering to rows addressed to OWNER_EMAIL.
-async function getEmailsPageWithRetry(after, retries = 2) {
-  try {
-    return await getEmailsPage(after);
-  } catch (err) {
-    if (retries <= 0) throw err;
-    await new Promise((r) => setTimeout(r, 1000));
-    return getEmailsPageWithRetry(after, retries - 1);
-  }
-}
-
 async function fetchOwnerEmailsSince(sinceMs) {
-  const owner = OWNER_EMAIL.toLowerCase();
-  const rows = [];
-  let after = null;
-  for (let page = 0; page < MAX_PAGES; page++) {
-    const j = await getEmailsPageWithRetry(after);
-    const data = j.data || [];
-    if (data.length === 0) break;
-    for (const e of data) {
-      const to = Array.isArray(e.to) ? e.to : [e.to];
-      if (to.some((t) => String(t || '').toLowerCase() === owner)) rows.push(e);
-    }
-    const last = data[data.length - 1];
-    const lastMs = new Date(String(last.created_at).replace(' ', 'T').replace(/\+00$/, 'Z')).getTime();
-    if (lastMs < sinceMs || !j.has_more) break;
-    after = last.id;
-  }
-  return rows;
+  return fetchOwnerEmailsSinceShared({ apiKey: RESEND_API_KEY, ownerEmail: OWNER_EMAIL, sinceMs });
 }
 
 // Part (a) of the "exactly 1 scheduled email/day" goal — see the header

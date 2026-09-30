@@ -45,6 +45,7 @@ const path = require('path');
 const { fetchPage } = require('./lib/scraper');
 const { isBlockedReviewUrl } = require('./lib/domain-filters');
 const { loadBlocklist, findBlockedEntry } = require('./lib/poller-blocklist');
+const { isolateMultiShowSection } = require('./lib/multi-show-section-extract');
 const { extractArticleTextFromUrl, extractPublishDate, extractLsaByline } = require('./lib/article-extractor');
 const { classifyReviewUrl } = require('./lib/non-review-url-patterns');
 // classifyReviewUrl reasons that never occur on a scored review in the corpus
@@ -87,6 +88,7 @@ const dryRun = hasFlag('dry-run');
 const reviewTextsDir = getArg('data-dir')
   || path.join(__dirname, '..', 'data', 'review-texts');
 const forceClearStale = hasFlag('force-clear-stale-flag');
+const allowNonReviewUrl = hasFlag('allow-non-review-url');
 // Provisional onboarding: use --outlet verbatim as a slug WITHOUT fuzzy alias
 // resolution. For aggregator-cited outlets not yet in the registry (the ctvoice /
 // New York Notebook class, girl-interrupted 2026-06-05), normalizeOutlet() can
@@ -100,7 +102,7 @@ const forceClearStale = hasFlag('force-clear-stale-flag');
 let provisional = hasFlag('provisional');
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
   process.exit(1);
 }
 
@@ -258,7 +260,15 @@ if (!show) {
   // recoverFromOwnUrl) both drive, so site chrome landed unstripped in
   // fullText and fed straight into the LLM scoring prompt (BRO-2605 ship-check
   // finding).
-  const text = stripTrailingJunk(extractArticleTextFromUrl(html, url, criticArg));
+  let text = stripTrailingJunk(extractArticleTextFromUrl(html, url, criticArg));
+  // Multi-show blog posts (interestedbystander): keep only THIS show's section,
+  // and refuse rather than score other shows' paragraphs into the file (BRO-4387).
+  const iso = isolateMultiShowSection(url, text, show.title);
+  if (iso.action === 'refuse') {
+    console.error(`Refusing ingest: could not isolate a "${show.title}" section in multi-show post ${url}. Ingest manually or pass the correct show title.`);
+    process.exit(1);
+  }
+  text = iso.text;
   // Star-rating fallback: UK star outlets (The Stage, Telegraph, Times, …)
   // serve recent articles as a registration wall with the review body absent
   // from server HTML — but the page's own StarRating block is still present.
@@ -411,6 +421,10 @@ if (!show) {
     publishDate: publishDate,
     operatorTrust: false,
   });
+  // Human override for review-file-writer's submitted-non-review-url guard
+  // (a real review on a ticket/listing host). Persists on the file as a
+  // record of the override.
+  if (allowNonReviewUrl) fields.allowNonReviewUrl = true;
   if (stageMeta && stageMeta.standfirst && stageMeta.standfirst.length >= 25) {
     fields.outletStandfirst = stageMeta.standfirst;
   }

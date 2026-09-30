@@ -154,6 +154,60 @@ function shouldRetry(attempt, maxAttempts = MAX_ATTEMPTS) {
   return attempt < maxAttempts;
 }
 
+// BRO-4379: land.yml's `land` job sits in the `landing` concurrency group,
+// which keeps ONE pending run and cancels an older pending one when a newer
+// land/** push arrives. A headless job whose Land job was cancelled that way
+// used to stop at "re-run this script" and strand its work.
+// Same cap as the server-side re-trigger (land-retry-on-cancel.js: a run may
+// reach MAX_ATTEMPTS attempts, i.e. MAX_ATTEMPTS-1 re-runs), so the script never
+// calls a cancel final while the server would still re-run it.
+const MAX_CANCEL_RETRIES = require('./land-retry-on-cancel').MAX_ATTEMPTS - 1;
+const CANCEL_RETRY_BACKOFF_SEC = [30, 60, 120];
+
+/**
+ * Pure decision: should the landing script re-run a land.yml run whose Land
+ * job was cancelled? Yes only when the Checks job verified this tip
+ * (success), the Land job itself was cancelled, origin/<land branch> is still
+ * at `tip` (a newer push means the newer run owns the landing), and the retry
+ * budget is not spent. Fails closed on any missing/unknown input.
+ * @returns {{retry:boolean, reason:string, backoffSec:number}}
+ */
+function decideCancelledLandRetry({ landConclusion, checksConclusion, remoteTip, tip, retriesUsed, maxRetries = MAX_CANCEL_RETRIES } = {}) {
+  const no = (reason) => ({ retry: false, reason, backoffSec: 0 });
+  if (!Number.isInteger(retriesUsed) || retriesUsed < 0) return no(`invalid retriesUsed ${JSON.stringify(retriesUsed)}`);
+  if (landConclusion !== 'cancelled') return no(`Land job conclusion is ${JSON.stringify(landConclusion || null)}, not cancelled`);
+  if (checksConclusion !== 'success') return no(`Checks job conclusion is ${JSON.stringify(checksConclusion || null)}, not success`);
+  if (!tip || !remoteTip) return no('tip or remote tip unknown');
+  if (remoteTip !== tip) return no(`origin branch moved (${String(remoteTip).slice(0, 10)} != ${String(tip).slice(0, 10)}): a newer push owns the landing`);
+  if (retriesUsed >= maxRetries) return no(`retry budget spent (${retriesUsed}/${maxRetries})`);
+  const backoffSec = CANCEL_RETRY_BACKOFF_SEC[Math.min(retriesUsed, CANCEL_RETRY_BACKOFF_SEC.length - 1)];
+  return { retry: true, reason: `Land cancelled while pending, Checks green, tip unchanged — retry ${retriesUsed + 1}/${maxRetries}`, backoffSec };
+}
+
+// A retry-eligible cancel is re-run SERVER-side (land-retry-cancelled.yml,
+// BRO-4246); the landing script only waits for it. It used to call
+// `gh run rerun` itself 30s later, which raced the server: on 2026-09-29 the
+// server had already re-run land run 36629730821, the local rerun failed with
+// "This workflow is already running", and the script printed REFUSED
+// ("nothing reached main") for a run that was live.
+// The server re-trigger starts from a workflow_run event and needs a runner
+// first; under queue pressure that takes minutes.
+const CANCEL_GRACE_SEC = 300;
+const CANCEL_GRACE_POLL_SEC = 15;
+
+/**
+ * Pure: after a retry-eligible cancel, has the run been re-triggered?
+ * 'resume' once the run is live again or its attempt number moved past the
+ * one that was cancelled; 'wait' otherwise. Unknown status reads as 'wait'.
+ */
+function decideCancelledWait({ status, attempt, attemptBefore } = {}) {
+  const a = Number(attempt);
+  const before = Number(attemptBefore);
+  if (Number.isFinite(a) && Number.isFinite(before) && a > before) return 'resume';
+  if (status && status !== 'completed') return 'resume';
+  return 'wait';
+}
+
 /**
  * A branch name is passed to git as a positional ref; refuse anything that
  * could read as an option or contain whitespace/control characters. Not a
@@ -671,6 +725,11 @@ module.exports = {
   firstFailedCheck,
   classifyPushFailure,
   shouldRetry,
+  decideCancelledLandRetry,
+  MAX_CANCEL_RETRIES,
+  decideCancelledWait,
+  CANCEL_GRACE_SEC,
+  CANCEL_GRACE_POLL_SEC,
   isPlausibleBranchName,
   formatLandLine,
 };

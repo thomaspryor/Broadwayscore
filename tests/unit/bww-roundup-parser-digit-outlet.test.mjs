@@ -77,4 +77,25 @@ describe('bww-roundup-parser: digit-leading outlet names', () => {
     assert.strictEqual(out[0].outletRaw, 'The New York Times');
     assert.strictEqual(out[1].outletRaw, 'Time Out');
   });
+
+  test('digit-space-letter shape inside a quote does not truncate the preceding quote', () => {
+    // Adversarial ship-check finding: with the new (?:[0-9]+\\s+)? prefix,
+    // an offhand reference like "10 Downing Street:" INSIDE a critic's quote
+    // could theoretically look like a new NAME, OUTLET: entry and prematurely
+    // close the preceding quote. It must NOT — the boundary requires a real
+    // NAME_LOOKAHEAD (2 capitalized name-words + comma) before OUTLET, and
+    // "10 Downing Street" has no such name in front of it.
+    const body =
+      "Let's see what the critics had to say! " +
+      "Jesse Green, The New York Times: A wonderful revival, evoking 10 Downing Street: an emblem of British theatre. " +
+      "Adam Feldman, Time Out: Marvelous.";
+
+    const out = parseArticleBodyReviews(body);
+    assert.strictEqual(out.length, 2, 'exactly two critic entries');
+    const nyt = out.find(r => r.outletRaw === 'The New York Times');
+    assert.ok(
+      nyt.quote.includes('evoking 10 Downing Street'),
+      `NYT quote must retain the "10 Downing Street" phrase (got: ${JSON.stringify(nyt.quote)})`
+    );
+  });
 });
