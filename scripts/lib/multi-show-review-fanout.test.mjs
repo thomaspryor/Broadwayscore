@@ -549,6 +549,15 @@ test('a longer copy of the same article replaces a truncated body on an explicit
   const ledeOnly = { fullText: DM_OPEN + wall, contentTier: 'truncated' };
   assert.equal(isSameArticleBodyUpgrade(ledeOnly, DM_OPEN + DM_MORE.repeat(5)), true, 'same lede');
   assert.equal(isSameArticleBodyUpgrade(ledeOnly, DM_MORE.repeat(8)), false, 'lede absent');
+
+  // The real 908 re-fetch: same lede, then "Continue reading" and a list of
+  // other headlines. Longer, same article, and still a paywall page: the
+  // writer keeps the stored body.
+  const wallFetch = DM_OPEN + 'Continue reading Get unlimited digital access, first month free Subscribe Already a subscriber? Sign in Topics Showbiz Theatre More Theatre '
+    + 'Theatre Economics on the stage? It sounds dry but this adds up to a night of fun Theatre Brassy Eighties romp still has a caustic edge '.repeat(4);
+  fs.writeFileSync(file, JSON.stringify({ showId: GB, outletId: 'daily-mail', outlet: 'Daily Mail', criticName: 'Patrick Marmion', url: DM_URL, publishDate: '2026-09-16', ...ledeOnly }, null, 2));
+  createOrMergeReviewFile(GB, { ...input, replaceBadBody: true, fields: { fullText: wallFetch } }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, ledeOnly.fullText, 'a paywall page is not an upgrade');
 });
 
 test('a record classified "not a review" gives up its slot to the real review url (issue 913)', () => {
@@ -570,7 +579,7 @@ test('a record classified "not a review" gives up its slot to the real review ur
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-913-'));
   fs.mkdirSync(path.join(dir, GB));
   const file = path.join(dir, GB, 'west-end-best-friend--unknown.json');
-  fs.writeFileSync(file, JSON.stringify({ ...news, criticName: 'Unknown', publishDate: '2026-08-13', fullText: 'National Theatre Live has announced a broadcast. '.repeat(40) }, null, 2));
+  fs.writeFileSync(file, JSON.stringify({ ...news, criticName: 'News Desk', criticEnrichedFrom: 'html-extraction', publishDate: '2026-08-13', fullText: 'National Theatre Live has announced a broadcast. '.repeat(40) }, null, 2));
   const body = 'Josh O\u2019Connor is magnetic as Joe Bonaparte in this Golden Boy revival at the Almeida. '.repeat(25);
   const res = createOrMergeReviewFile(GB, { outletId: 'west-end-best-friend', outlet: 'West End Best Friend', criticName: 'Unknown', url: review, source: 'submit-review-form', fields: { fullText: body, publishDate: '2026-09-17' } }, { reviewTextsDir: dir });
   assert.equal(res.action, 'updated');
@@ -580,6 +589,7 @@ test('a record classified "not a review" gives up its slot to the real review ur
   assert.equal(landed.publishDate, '2026-09-17');
   assert.notEqual(landed.isNonReview, true);
   assert.notEqual(landed.wrongProduction, true);
+  assert.equal(landed.criticName, 'Unknown', 'the old page\'s byline goes with it');
 });
 
 // ── Captions inside one essay about both shows (Vulture, BRO-4431) ──

@@ -1254,8 +1254,17 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // truncated stored body for a longer copy of the same article; the field
   // loop below would otherwise keep the short one because it is non-blank.
   // The reclassify step further down then sees the changed body.
+  // The candidate must also classify no worse than the stored body: a
+  // longer fetch of the same paywalled page (lede + "Continue reading" + a
+  // related-links list) is not an upgrade (Golden Boy Daily Mail, 908).
+  const _tierRank = { complete: 4, excerpt: 3, truncated: 2, stub: 1, invalid: 0 };
+  const _candidateTier = () => {
+    const r = classifyContentTier({ ...existing, fullText: fields.fullText, contentTier: undefined });
+    return r && r.contentTier;
+  };
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
-      && isSameArticleBodyUpgrade(existing, fields.fullText)) {
+      && isSameArticleBodyUpgrade(existing, fields.fullText)
+      && (_tierRank[_candidateTier()] ?? 0) >= Math.max(1, _tierRank[existing.contentTier] ?? 0)) {
     console.log(`  ↑ Replacing stored body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);
     existing.fullText = fields.fullText;
     changed = true;
@@ -1413,6 +1422,15 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       for (const key of ['fullText', 'publishDate']) {
         const val = fields[key];
         if (val != null && val !== '' && !existing[key]) existing[key] = val;
+      }
+      // A byline read from the OLD page's content went with that page (913:
+      // "News Desk" from a broadcast post stayed on the moved review).
+      if (existing.criticEnrichedFrom) {
+        const incoming = criticName && criticName.toLowerCase() !== 'unknown' ? criticName : 'Unknown';
+        if (existing.criticName !== incoming) {
+          existing.criticName = incoming;
+          delete existing.criticEnrichedFrom;
+        }
       }
     }
   }
