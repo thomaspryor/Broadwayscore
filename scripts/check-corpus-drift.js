@@ -385,8 +385,7 @@ const AUDITS = [
     name: 'outlet-identity-hygiene',
     healPathRequired: true, // BRO-4419: drift surfaces in the daily digest
     label: 'live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets',
-    // heal-exempt: fixing a hit is a judgment call (confirm the outlet with a
-    // tier, or block the host), not something a --fix can decide.
+    healExempt: 'each hit is a judgment call (confirm the outlet with a tier, or block the host); no --fix can decide that.',
     script: 'audit-outlet-identity-hygiene.js',
     args: ['--strict'],
     crashCodes: [],            // 0 clean / 1 = a live look-alike, look-alike alias, or undecided provisional outlet
