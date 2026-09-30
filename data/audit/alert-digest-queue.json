@@ -3296,5 +3296,29 @@
       }
     ],
     "queuedAt": "2026-09-30T05:17:14.332Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:whos-afraid-of-virginia-woolf-west-end-2026",
+    "title": "Pre-opening publishDate on Who’s Afraid of Virginia Woolf?",
+    "description": "outinjersey/Allen Neuner SHIPPED with publishDate 2026-09-19 (11d before openingDate 2026-09-30): https://outinjersey.net/whos-afraid-of-virginia-woolf-fun-and-games-at-george-and-marthas/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T06:48:24.640Z"
+  },
+  {
+    "conditionKey": "opening-night-revival-unverified-the-standard-of-living-west-end-2026",
+    "title": "Unverified revival on The Standard Of Living",
+    "description": "the-standard-of-living-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T06:48:26.110Z"
   }
 ]
