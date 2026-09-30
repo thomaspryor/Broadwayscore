@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-30T03:06:00.142Z",
+  "detectedAt": "2026-09-30T03:22:50.369Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "culturesauce--thom-geier.json",
+      "outletId": "culturesauce",
+      "criticName": "Thom Geier",
+      "url": "https://culturesauce.com/how-shakespeare-saved-my-life-off-broadway-review/",
+      "fullTextLen": 0,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "excerpt",
+      "eligibilityReason": null
+    },
     {
       "file": "showify--unknown.json",
       "outletId": "showify",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
