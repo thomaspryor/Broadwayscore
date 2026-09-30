@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T03:06:10.909Z",
+  "timestamp": "2026-09-30T03:53:10.437Z",
   "stats": {
-    "totalReviews": 45197,
-    "alreadyFlagged": 18486,
+    "totalReviews": 45199,
+    "alreadyFlagged": 18492,
     "dateGuardCatches": 240,
-    "directorMismatch": 1184,
+    "directorMismatch": 1186,
     "tvFilmSignals": 1311,
-    "londonSignals": 1234,
+    "londonSignals": 1236,
     "offBroadwaySignals": 506,
     "yearMismatch": 101,
-    "noPublishDate": 4051
+    "noPublishDate": 4024
   },
   "findings": [
     {
@@ -1416,7 +1416,7 @@
     {
       "showId": "american-psycho-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "publishDate": null,
+      "publishDate": "2026-02-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/american-psycho-almeida-review",
       "findings": [
         {
@@ -26704,6 +26704,19 @@
     },
     {
       "showId": "suffs-tour-2025",
+      "file": "marin-independent-journal--john-chavez.json",
+      "publishDate": "2025-10-28",
+      "url": "https://www.marinij.com/2025/10/28/review-suffs-musical/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
       "file": "minneapolis-star-tribune--rohan-preston.json",
       "score": 86,
       "publishDate": "2026-04-09",
@@ -26778,6 +26791,19 @@
       "score": 77,
       "publishDate": "2026-02-06",
       "url": "https://www.news-herald.com/2026/02/06/suffs-at-playhouse-square-review-hear-these-impressive-women-roar/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "theatermania--pete-hempstead.json",
+      "publishDate": "2025-11-20",
+      "url": "https://www.theatermania.com/news/review-shaina-taubs-suffs-reminds-us-to-keep-marching_1812851/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -39062,6 +39088,19 @@
       ]
     },
     {
+      "showId": "bird-grove-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-02-24",
+      "url": "https://www.londonboxoffice.co.uk/news/post/bird-grove-hampstead-theatre-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "birthday-candles-2022",
       "file": "theater-scene--victor-gluck.json",
       "score": 63,
@@ -47579,6 +47618,19 @@
       ]
     },
     {
+      "showId": "lost-atoms-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2026-02-04",
+      "url": "https://www.londonboxoffice.co.uk/news/post/lost-atoms-lyric-hammersmith-review",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
+        }
+      ]
+    },
+    {
       "showId": "lost-in-del-valle-return-off-broadway-2026",
       "file": "theatermania--dan-rubins.json",
       "score": 62,
@@ -48636,7 +48688,7 @@
     {
       "showId": "miles-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "publishDate": null,
+      "publishDate": "2026-02-10",
       "url": "https://www.londonboxoffice.co.uk/news/post/miles-southwark-playhouse-borough-review",
       "findings": [
         {
