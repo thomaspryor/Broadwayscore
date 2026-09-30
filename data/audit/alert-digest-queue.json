@@ -3126,5 +3126,30 @@
       }
     ],
     "queuedAt": "2026-09-30T02:33:16.259Z"
+  },
+  {
+    "conditionKey": "land:bro-4401-ci-reds",
+    "title": "Landing blocked: checks red on bro-4401-ci-reds",
+    "description": "land.yml did not land bro-4401-ci-reds: the checks gate went red. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36662927939",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "bro-4401-ci-reds"
+      },
+      {
+        "name": "gate",
+        "value": "checks"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36662927939"
+      }
+    ],
+    "queuedAt": "2026-09-30T03:08:04.618Z"
   }
 ]
