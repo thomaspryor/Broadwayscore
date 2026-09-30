@@ -1551,9 +1551,9 @@ async function fetchSingleVenuePage(venue) {
 }
 
 /**
- * A venue page's HTML: plain fetch() with browser headers first (free, and
- * what these sites serve), fetchPage()'s proxy chain only on a non-2xx or
- * for a preferPlaywright venue. Shared by the link readers and the dated
+ * A venue page's HTML: a plain request with browser headers first (free,
+ * and what these sites serve), the fetchPage proxy chain only on a non-2xx
+ * or for a preferPlaywright venue. Shared by the link readers and the dated
  * HTML readers in OWE_VENUE_CONFIGS (BRO-4398).
  */
 async function fetchVenueHtml(venue) {
