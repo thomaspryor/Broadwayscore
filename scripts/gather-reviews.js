@@ -3464,7 +3464,12 @@ function createReviewFile(showId, reviewData, options = {}) {
       try {
         const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
         const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
-        allowCrossShow = existingData.isRoundupArticle === true || existingData.isCombinedReview === true;
+        allowCrossShow = existingData.isRoundupArticle === true || existingData.isCombinedReview === true
+          // BRO-4431: this show is a split sibling of the existing file's
+          // multi-show article, so sharing the URL is by design.
+          || (existingData.multiShowSplitParent === true && Array.isArray(existingData.multiShowSplitChildShowIds)
+            && existingData.multiShowSplitChildShowIds.includes(showId))
+          || (existingData.multiShowSplitChild === true && existingData.multiShowSplitParentShowId === showId);
         // Don't let invalid/wrong-content files block legitimate reviews
         existingIsJunk = existingData.contentTier === 'invalid'
           || existingData.wrongShow === true
@@ -4920,7 +4925,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             apiReq.on('timeout', () => { apiReq.destroy(); r(null); });
           });
           const { pickTheatreReviewsRoundup } = require('./lib/theatre-reviews-discovery');
-          roundupUrl = pickTheatreReviewsRoundup(apiPosts, searchTitle);
+          // Only with a date floor (the API query's `after=`): without one a
+          // revival title can pick an older production's round-up.
+          if (dateFloor) roundupUrl = pickTheatreReviewsRoundup(apiPosts, searchTitle);
         } catch {}
 
         if (!roundupUrl && homepageHtml) {
@@ -4935,7 +4942,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               return false;
             }
           });
+        }
 
+        {
           if (roundupUrl) {
             const { extractReviews: extractTR } = require('./scrape-theatre-reviews');
             const trPageHtml = await new Promise(r => {

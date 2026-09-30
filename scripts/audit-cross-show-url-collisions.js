@@ -228,7 +228,11 @@ for (const showId of showDirs) {
     } catch { continue; }
 
     // Skip already-flagged files
-    if (data.wrongProduction || data.wrongShow || data.isRoundupArticle || data.isCombinedReview || data.duplicateOf) {
+    // multiShowSplit*: sections of one multi-show article split per show by
+    // multi-show-review-fanout.js (BRO-4431) share its URL by design, like a
+    // combined review.
+    if (data.wrongProduction || data.wrongShow || data.isRoundupArticle || data.isCombinedReview || data.duplicateOf
+      || data.multiShowSplitChild === true || data.multiShowSplitParent === true) {
       skippedFlagged++;
       continue;
     }

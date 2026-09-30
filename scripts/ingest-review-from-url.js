@@ -32,6 +32,8 @@
  *     [--dry-run]
  *
  * Exit codes: 0 on success or skip (review already exists, no-op merge),
+ * 3 when the page could not be read (fetch error, no HTML, empty extraction;
+ * with --stub-on-failure a retry stub is written and it exits 0 instead),
  * 1 on hard failure (fetch error, extraction empty, collision-blocked, the
  * write-guard silently refusing/redirecting an update — BRO-3182 — or a
  * merge-into-existing that reported "Updated" without actually landing the
@@ -106,6 +108,10 @@ let provisional = hasFlag('provisional');
 // salvage, aggregator star relay) instead of exiting 1 and dropping the
 // review. process-review-submission.yml passes this on its final attempt.
 const stubOnFailure = hasFlag('stub-on-failure');
+// Exit code for "the page could not be read" (fetch error, no HTML, empty
+// extraction). Refusals (blocked/non-review URL, blocklist, wrong show,
+// write-guard) keep exit 1, so the workflow retries only what a retry can fix.
+const EXIT_FETCH_FAILED = 3;
 
 if (!showId || !url) {
   console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
@@ -177,12 +183,12 @@ if (!show) {
     html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
   } catch (e) {
     console.error(`Fetch failed: ${e.message}`);
-    if (!stubOnFailure) process.exit(1);
+    if (!stubOnFailure) process.exit(EXIT_FETCH_FAILED);
     fetchFailure = `fetch failed: ${e.message}`;
   }
   if (!fetchFailure && (!html || typeof html !== 'string' || html.length < 500)) {
     console.error(`Fetch returned no usable HTML (got ${html ? html.length : 0} chars)`);
-    if (!stubOnFailure) process.exit(1);
+    if (!stubOnFailure) process.exit(EXIT_FETCH_FAILED);
     fetchFailure = `no usable HTML (${html ? html.length : 0} chars)`;
   }
   if (fetchFailure) html = '';
@@ -326,7 +332,7 @@ if (!show) {
     if (!recoveredScore) {
       console.error(`Article extraction returned ${text ? text.length : 0} chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.`);
       if (stubOnFailure) writeRetryStubAndExit(`extraction returned ${text ? text.length : 0} chars (paywall/bot wall or missing pattern)`);
-      process.exit(1);
+      process.exit(EXIT_FETCH_FAILED);
     }
     console.log(`  → Body extraction empty (${text ? text.length : 0} chars) — recovered explicit rating from page HTML: ${recoveredScore.originalScore} (${recoveredScore.normalizedScore}/100) [${recoveredScore.source}]`);
   }

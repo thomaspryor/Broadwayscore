@@ -60,7 +60,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, cvNonReviewHumanCleared, cvWrongArticleFamily, wrongShowCleared } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -1385,11 +1385,13 @@ const crossMarketCriticIndexEntries = [];
         const norm = allNorm;
         if (!norm) continue;
         const existing = crossShowUrlIndex.get(norm);
+        // BRO-4431: split sections of one multi-show article share its URL.
+        const splitGroup = multiShowSplitGroup(d, sid);
         if (existing && existing.showId !== sid) {
           if (!existing.conflicts) existing.conflicts = [];
-          existing.conflicts.push({ showId: sid, file: f, showYear });
+          existing.conflicts.push({ showId: sid, file: f, showYear, splitGroup });
         } else if (!existing) {
-          crossShowUrlIndex.set(norm, { showId: sid, file: f, showYear, conflicts: [] });
+          crossShowUrlIndex.set(norm, { showId: sid, file: f, showYear, splitGroup, conflicts: [] });
         }
       } catch { /* skip unreadable files */ }
     }
@@ -3454,8 +3456,12 @@ showDirs.forEach(showId => {
         const norm = normalizeUrlForDedup(data.url);
         const entry = norm ? crossShowUrlIndex.get(norm) : null;
         if (entry && entry.conflicts.length > 0) {
-          const allCopies = [{ showId: entry.showId, showYear: entry.showYear },
-            ...entry.conflicts.map(c => ({ showId: c.showId, showYear: c.showYear }))];
+          // Sibling sections of the same split multi-show article are not
+          // competing copies (BRO-4431); every other copy still is.
+          const mySplitGroup = multiShowSplitGroup(data, showId);
+          const allCopies = [{ showId: entry.showId, showYear: entry.showYear, splitGroup: entry.splitGroup },
+            ...entry.conflicts.map(c => ({ showId: c.showId, showYear: c.showYear, splitGroup: c.splitGroup }))]
+            .filter(c => !isMultiShowSplitSibling(mySplitGroup, c.splitGroup));
           const myYear = showDateMap[showId] ? showDateMap[showId].getFullYear() : null;
           let reviewYear = null;
           if (data.publishDate) {

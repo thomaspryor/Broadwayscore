@@ -142,12 +142,17 @@ function extractAllBalancedDivsByClass(html, classNeedle) {
   const out = [];
   let rest = html;
   const escaped = classNeedle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  const openRe = new RegExp('<div[^>]*class="[^"]*\\b' + escaped + '\\b[^"]*"[^>]*>', 'i');
+  // Same quote handling as extractBalancedDivByClass (single or double).
+  const openRe = new RegExp(
+    '<div[^>]*class=(?:"[^"]*\\b' + escaped + '\\b[^"]*"|\'[^\']*\\b' + escaped + '\\b[^\']*\')[^>]*>',
+    'i'
+  );
   for (let guard = 0; guard < 50; guard++) {
     const inner = extractBalancedDivByClass(rest, classNeedle);
     if (inner == null) break;
     out.push(inner);
     const m = rest.match(openRe);
+    if (!m) break;
     rest = rest.slice(m.index + m[0].length + inner.length);
   }
   return out;

@@ -60,11 +60,22 @@ test('intro strategy: a column that introduces each show in quotes fans out to b
   assert.doesNotMatch(plan.ownSection.sectionText, /Cherry Orchard/);
 });
 
-test('intro strategy works from either show and with paragraph breaks collapsed', () => {
+test('intro strategy works from either show; a title quoted mid-paragraph never opens a section', () => {
   const fromCherry = planMultiShowFanout(base({ showId: 'the-cherry-orchard-park-avenue-armory-off-broadway-2026', publishDate: '2026-09-29', fullText: TWO_SHOW_COLUMN }), SHOWS);
   assert.equal(fromCherry.otherSections[0].showId, 'delirium-off-broadway-2026');
+  // Paragraph breaks collapsed: the second show's introduction is now
+  // mid-paragraph, which is indistinguishable from a comparison. Stay whole.
   const flat = planMultiShowFanout(base({ showId: 'delirium-off-broadway-2026', publishDate: '2026-09-29', fullText: TWO_SHOW_COLUMN.replace(/\n\n/g, ' ') }), SHOWS);
-  assert.equal(flat.otherSections[0].showId, 'the-cherry-orchard-park-avenue-armory-off-broadway-2026');
+  assert.equal(flat, null);
+});
+
+test('a single review that returns to its show after a comparison is not split (Crucible vs A View From the Bridge)', () => {
+  const shows = [
+    { id: 'the-crucible-2016', title: 'The Crucible', category: 'broadway', openingDate: '2016-03-31' },
+    { id: 'a-view-from-the-bridge-2015', title: 'A View From the Bridge', category: 'broadway', openingDate: '2015-11-12' },
+  ];
+  const text = `Ivo van Hove stages “The Crucible” as a classroom nightmare. ${filler('classroom', 6)}\n\n“A View From the Bridge,” his previous Arthur Miller revival, stripped the play bare in the same way. ${filler('comparison', 5)} This “Crucible” is louder and less sure of itself. ${filler('witch trial', 4)}`;
+  assert.equal(planMultiShowFanout(base({ showId: 'the-crucible-2016', publishDate: '2016-04-01', fullText: text }), shows), null);
 });
 
 test('an old production named in passing ("Our Class", 2023) never becomes a section', () => {
@@ -172,6 +183,49 @@ test('applyMultiShowFanoutToFile fills a textless discovery stub for the same ar
   assert.equal(filled.source, 'outlet-listing-poller', 'keeps the discovery source');
   assert.match(filled.fullText, /Cherry Orchard/);
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('fan-out honours the child show blocklist and never trims a parent when no sibling was written', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fanout-'));
+  const url = 'https://www.newyorker.com/magazine/2026/10/05/gut-renos';
+  const cherry = 'the-cherry-orchard-park-avenue-armory-off-broadway-2026';
+  fs.mkdirSync(path.join(dir, 'delirium-off-broadway-2026'));
+  fs.mkdirSync(path.join(dir, cherry));
+  fs.writeFileSync(path.join(dir, cherry, '_blocklist.json'), JSON.stringify({ urls: [{ url, reason: 'operator deleted' }] }));
+  const file = path.join(dir, 'delirium-off-broadway-2026', 'newyorker--emily-nussbaum.json');
+  fs.writeFileSync(file, JSON.stringify(base({ showId: 'delirium-off-broadway-2026', url, publishDate: '2026-09-29', fullText: TWO_SHOW_COLUMN, llmScore: { score: 70 } })));
+  const r = applyMultiShowFanoutToFile(file, { shows: SHOWS, reviewTextsDir: dir });
+  assert.equal(r.children[0].action, 'blocked');
+  assert.equal(r.parentRewritten, false);
+  assert.equal(fs.existsSync(path.join(dir, cherry, 'newyorker--emily-nussbaum.json')), false);
+  const parent = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(parent.fullText, TWO_SHOW_COLUMN, 'parent kept whole');
+  assert.equal(parent.llmScore.score, 70);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('a processed parent whose full article was re-collected is trimmed again', () => {
+  const trimmed = planMultiShowFanout(base({ showId: 'delirium-off-broadway-2026', publishDate: '2026-09-29', fullText: 'x'.repeat(900), multiShowSplitProcessed: '2026-09-30', multiShowSplitParent: true, multiShowSplitTextLength: 900 }), SHOWS);
+  assert.equal(trimmed, null, 'unchanged trimmed text is left alone');
+  const recollected = planMultiShowFanout(base({ showId: 'delirium-off-broadway-2026', publishDate: '2026-09-29', fullText: TWO_SHOW_COLUMN, multiShowSplitProcessed: '2026-09-30', multiShowSplitParent: true, multiShowSplitTextLength: 900 }), SHOWS);
+  assert.ok(recollected && recollected.otherSections.length === 1);
+});
+
+test('split siblings sharing a URL are not cross-production copies; unrelated copies still are', () => {
+  const { multiShowSplitGroup, isMultiShowSplitSibling } = require('./review-guards.js');
+  const parent = { showId: 'delirium-off-broadway-2026', multiShowSplitParent: true };
+  const child = { showId: 'the-cherry-orchard-park-avenue-armory-off-broadway-2026', multiShowSplitChild: true, multiShowSplitParentShowId: 'delirium-off-broadway-2026' };
+  const other = { showId: 'the-cherry-orchard-1977' };
+  assert.ok(isMultiShowSplitSibling(multiShowSplitGroup(parent), multiShowSplitGroup(child)));
+  assert.equal(isMultiShowSplitSibling(multiShowSplitGroup(child), multiShowSplitGroup(other)), false);
+  assert.equal(isMultiShowSplitSibling(null, null), false);
+  // Every cross-show URL judge uses it.
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+  for (const f of ['rebuild-all-reviews.js', 'cleanup-dedup-comprehensive.js']) {
+    assert.match(fs.readFileSync(path.join(root, f), 'utf8'), /isMultiShowSplitSibling\(/, f);
+  }
+  assert.match(fs.readFileSync(path.join(root, 'gather-reviews.js'), 'utf8'), /multiShowSplitChildShowIds\.includes\(showId\)/);
+  assert.match(fs.readFileSync(path.join(root, 'audit-cross-show-url-collisions.js'), 'utf8'), /data\.multiShowSplitChild === true/);
 });
 
 test('New Yorker extractor reads every body block (second show was dropped before)', () => {

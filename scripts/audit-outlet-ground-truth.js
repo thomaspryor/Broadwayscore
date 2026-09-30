@@ -147,11 +147,15 @@ async function main() {
   const listed = []; // { source, showId, outletId, url, critic, stars, date, trRow? }
   const sourceStats = {};
   const note = (id, k) => { sourceStats[id] = sourceStats[id] || { queries: 0, listed: 0, errors: 0 }; sourceStats[id][k]++; };
+  // Listing gets half the time budget; the rest is for ingest.
+  const listingOver = () => Date.now() - startedAt > budgetMs / 2;
+  let listingTruncated = false;
 
   // 1. WordPress search APIs, one query per show.
   for (const src of WP_SEARCH_SOURCES) {
     if (!wantSource(src.id)) continue;
     for (const show of byMarket[src.market] || []) {
+      if (listingOver()) { listingTruncated = true; break; }
       const after = new Date(Date.parse(show.openingDate) - 21 * 86400000).toISOString();
       note(src.id, 'queries');
       try {
@@ -197,6 +201,7 @@ async function main() {
     const registry = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'outlet-registry.json'), 'utf8'));
     const tracked = registry.outlets || registry;
     for (const show of byMarket.london) {
+      if (listingOver()) { listingTruncated = true; break; }
       note('theatre-reviews', 'queries');
       try {
         const after = new Date(Date.parse(show.openingDate) - 7 * 86400000).toISOString();
@@ -232,8 +237,27 @@ async function main() {
   console.log(`\nListed ${listed.length} reviews, ${gaps.length} missing:`);
   for (const g of gaps) console.log(`  - ${g.showId} ${g.outletId} ${g.url || `(no link) ${g.critic} ${g.stars || '-'}★`} [${g.source}]`);
 
-  // Recover.
   const ingested = [];
+  const writeReport = (phase) => {
+    if (has('dry-run')) return;
+    fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
+    fs.writeFileSync(REPORT_PATH, JSON.stringify({
+      generatedAt: new Date().toISOString(),
+      phase,
+      days,
+      shows: shows.length,
+      sources: sourceStats,
+      listingTruncated,
+      listed: listed.length,
+      ingested,
+      missing: gaps.map(({ trRow, ...g }) => g),
+    }, null, 2) + '\n');
+  };
+  // Written before ingest too, so the --min-interval-hours throttle holds even
+  // when the calling step's `timeout` kills a slow ingest.
+  writeReport('listed');
+
+  // Recover.
   if (ingest && gaps.length) {
     let n = 0;
     const trByShow = new Map();
@@ -284,18 +308,7 @@ async function main() {
     }
   }
 
-  if (!has('dry-run')) {
-    fs.mkdirSync(path.dirname(REPORT_PATH), { recursive: true });
-    fs.writeFileSync(REPORT_PATH, JSON.stringify({
-      generatedAt: new Date().toISOString(),
-      days,
-      shows: shows.length,
-      sources: sourceStats,
-      listed: listed.length,
-      ingested,
-      missing: gaps.map(({ trRow, ...g }) => g),
-    }, null, 2) + '\n');
-  }
+  writeReport('done');
 }
 
 main().catch((e) => {

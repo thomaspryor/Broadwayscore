@@ -15,7 +15,7 @@
 const fs = require('fs');
 const path = require('path');
 const { normalizeUrl } = require('./lib/review-normalization');
-const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag } = require('./lib/review-guards');
+const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, multiShowSplitGroup, isMultiShowSplitSibling } = require('./lib/review-guards');
 const { cascadeClearDuplicateRefs } = require('./lib/cascade-clear-duplicate-refs');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
@@ -293,11 +293,14 @@ function cleanupCrossShowUrlDupes() {
       if (score > bestScore) { bestScore = score; bestShow = entry.showId; }
     }
     if (!bestShow || bestScore <= 0) { skippedNoYear++; continue; }
+    const bestEntry = entries.find(e => e.showId === bestShow);
+    const bestSplitGroup = bestEntry ? multiShowSplitGroup(bestEntry.data, bestShow) : null;
     for (const entry of entries) {
       if (entry.showId === bestShow) continue;
       const fp = path.join(entry.dir, entry.file); const data = readJsonFile(fp);
       if (!data || data.wrongProduction) continue;
       if (shouldSkipCrossShowUrlFlag(data)) continue; // same cross-show-URL class: honor CV verdict + manual-clear
+      if (isMultiShowSplitSibling(multiShowSplitGroup(data, entry.showId), bestSplitGroup)) continue; // BRO-4431: sections of one multi-show article
       console.log(`  ${entry.showId}/${entry.file} → wrongProduction (belongs to ${bestShow})`);
       data.wrongProduction = true; data._wrongProductionReason = `URL matches ${bestShow} (year-based)`;
       invalidateWrongProductionAutoClear(data);

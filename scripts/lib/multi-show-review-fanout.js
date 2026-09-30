@@ -258,6 +258,17 @@ function introSections(text, shows, ownShowId, publishDate) {
     const sep = sepEnds.filter((e) => e <= at && at - e < 250).pop();
     return sep !== undefined ? sep : sentenceStart(text, at);
   });
+  // Every later section must open a unit of the article: right after a
+  // separator rule, at a paragraph start, or with its title leading the
+  // sentence (capsule headers like "‘Fallen Angels’ For the most ..."). A
+  // title quoted mid-paragraph is a comparison, not a new review.
+  for (let i = 1; i < intros.length; i++) {
+    if (intros[i].afterSeparator) continue;
+    const before = text.slice(Math.max(0, cuts[i] - 3), cuts[i]);
+    const paragraphStart = cuts[i] === 0 || /\n\s*$/.test(before);
+    const titleLeads = intros[i].at - cuts[i] <= 3;
+    if (!paragraphStart && !titleLeads) return [];
+  }
 
   const sections = [];
   for (let i = 0; i < intros.length; i++) {
@@ -274,9 +285,13 @@ function introSections(text, shows, ownShowId, publishDate) {
     // comparison, e.g. Icke's "Oedipus" in a review of The Other Place, is
     // not a review of it).
     if (own < (sec.afterSeparator ? 1 : 2)) return [];
+    // A section may not mention any other planned show at all: a review of
+    // one show that compares it to another running show (The Crucible vs
+    // van Hove's A View From the Bridge, BRO-4431 ship-check) names the
+    // first show again after the comparison; real capsules do not.
     for (const other of sections) {
       if (other === sec) continue;
-      if (countMatches(other.m.any, sec.raw) >= own) return [];
+      if (countMatches(other.m.any, sec.raw) > 0) return [];
     }
     if (sec.sectionText.length < MIN_SECTION_CHARS) return [];
     if (sec.sectionText.length / total < MIN_SECTION_SHARE) return [];
@@ -298,7 +313,13 @@ function introSections(text, shows, ownShowId, publishDate) {
  */
 function planMultiShowFanout(data, shows, opts = {}) {
   if (!data || typeof data !== 'object') return null;
-  if (data.multiShowSplitProcessed || data.multiShowSplitChild) return null;
+  if (data.multiShowSplitChild) return null;
+  if (data.multiShowSplitProcessed) {
+    const retrimmed = data.multiShowSplitParent && typeof data.fullText === 'string'
+      && Number.isFinite(data.multiShowSplitTextLength)
+      && data.fullText.length > data.multiShowSplitTextLength + 200;
+    if (!retrimmed) return null;
+  }
   // Aggregator round-ups quote many critics; they are not one critic's review.
   if (data.isRoundupArticle) return null;
   if (data.wrongProduction === true) return null;
@@ -317,6 +338,9 @@ function planMultiShowFanout(data, shows, opts = {}) {
     sections = introSections(text, shows, ownShowId, data.publishDate);
   }
   if (sections.length < 2) return null;
+  // The last section carries the page footer (newsletter/subscribe chrome).
+  const { stripTrailingJunk } = require('./text-cleaning');
+  sections = sections.map((sec) => ({ ...sec, sectionText: stripTrailingJunk(sec.sectionText) || sec.sectionText }));
   const ownSection = sections.find((s) => s.showId === ownShowId);
   if (!ownSection) return null;
   const otherSections = sections.filter((s) => s.showId !== ownShowId);
@@ -337,10 +361,14 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   out.multiShowSplitChildShowIds = childShowIds;
   out.multiShowSplitAnchorKind = ownSection.anchorKind;
   out.multiShowSplitOriginalLength = (data.fullText || '').length;
+  // Lets the planner notice a later re-collection that put the whole article
+  // back into fullText (the processed marker survives merges) and re-trim.
+  out.multiShowSplitTextLength = out.fullText.length;
 
   // Clear wrongShow if it was set for being a multi-show roundup — the file's
   // text is now just its own show's section. Preserve any manual review state.
-  if (out.wrongShow === true && !out.wrongShowManualClear && !out.wrongShowOverride) {
+  const humanVerdict = /manual|human|owner|admin/i.test(`${out.rejectedBy || ''} ${out.wrongShowSource || ''}`);
+  if (out.wrongShow === true && !out.wrongShowManualClear && !out.wrongShowOverride && !humanVerdict) {
     delete out.wrongShow;
     delete out.wrongShowReason;
     delete out.rejectedAt;
@@ -368,9 +396,9 @@ function rewriteParent(data, ownSection, childShowIds, now = new Date().toISOStr
   }
 
   // Always re-score after a split — the trimmed text is materially different
-  // from whatever was scored before (or unscored). A critic-published score
-  // (originalScore) is per-article and cannot be attributed to one section,
-  // so it is left for the scorer to re-derive.
+  // from whatever was scored before (or unscored). A critic-published
+  // originalScore stays on the parent (the file the article was filed under)
+  // and is never copied to children: it can't be attributed to one section.
   out.needsRescore = true;
   out.needsRescoreReason = 'multi-show-split: text trimmed to own section';
   delete out.ensembleData;
@@ -441,6 +469,9 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   const now = new Date().toISOString();
   const fileName = path.basename(filePath);
 
+  const { loadBlocklist, findBlockedEntry } = require('./poller-blocklist');
+  const { safeWriteReview } = require('./review-write-guard');
+  let written = 0;
   for (const sec of plan.otherSections) {
     const childDir = path.join(reviewTextsDir, sec.showId);
     const childPath = path.join(childDir, fileName);
@@ -448,18 +479,27 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
     if (fs.existsSync(childPath)) {
       try { existing = JSON.parse(fs.readFileSync(childPath, 'utf8')); } catch { existing = { unreadable: true }; }
     }
-    const decision = childWriteDecision(existing, data);
+    // An operator-deleted URL (poller-blocklist, BRO-3247 class) stays deleted.
+    let decision = data.url && findBlockedEntry(loadBlocklist(childDir), data.url) ? 'blocked' : childWriteDecision(existing, data);
     result.children.push({ showId: sec.showId, action: decision, chars: sec.sectionText.length });
-    if (dryRun || decision === 'skip') continue;
+    if (dryRun || decision === 'skip' || decision === 'blocked') continue;
     const child = buildChild(data, sec, ownShowId, now);
     const toWrite = decision === 'fill' ? { ...existing, ...child, source: existing.source || child.source } : child;
     fs.mkdirSync(childDir, { recursive: true });
-    fs.writeFileSync(childPath, JSON.stringify(toWrite, null, 2) + '\n');
+    const w = safeWriteReview(childPath, toWrite);
+    if (w && w.wrote !== false) written++;
+    else result.children[result.children.length - 1].action = `refused:${(w && w.skipped) || 'write-guard'}`;
   }
 
+  // Only trim the parent when the other sections now live somewhere: when
+  // every sibling already existed (or was refused), the article stays whole
+  // rather than losing text no file holds.
+  if (!dryRun && written === 0) return result;
   const parent = rewriteParent(data, plan.ownSection, plan.otherSections.map((s) => s.showId), now);
   result.parentRewritten = true;
-  if (!dryRun) fs.writeFileSync(filePath, JSON.stringify(parent, null, 2) + '\n');
+  // Deliberate text trim: replace (not merge) so the stale whole-article
+  // llmScore/ensembleData really go; the guard's other checks still apply.
+  if (!dryRun) safeWriteReview(filePath, parent, { merge: false, force: true });
   return result;
 }
 

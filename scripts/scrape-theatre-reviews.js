@@ -365,7 +365,7 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
       try {
         const written = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
         const patch = aggregatorStarsPatch(written, relay);
-        if (patch) fs.writeFileSync(result.filepath, JSON.stringify({ ...written, ...patch }, null, 2) + '\n');
+        if (patch) require('./lib/review-write-guard').safeWriteReview(result.filepath, { ...written, ...patch });
       } catch (e) {
         console.warn(`  ⚠ aggregatorStars relay failed for ${result.filepath}: ${e.message}`);
       }
