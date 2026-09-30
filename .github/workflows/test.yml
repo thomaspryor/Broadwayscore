@@ -4306,7 +4306,10 @@ jobs:
         # GHSA-mp2f-45pm-3cg9 — no patched release exists) turned CI
         # permanently red on 2026-07-11. The wrapper fails on any critical
         # NOT in its expiring allowlist and on expired entries.
-        run: node scripts/audit-dependencies.js
+        # BRO-4434 landing A: the script's exit contract is now the
+        # audit-time-bomb-tests one (findings exit 0 unless --strict). This
+        # job is deleted in landing B; until then --strict keeps it a gate.
+        run: node scripts/audit-dependencies.js --strict
 
   awards-data-freshness:
     name: Awards Data Freshness
