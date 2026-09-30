@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-09-30T03:44:32.472Z",
+  "runDate": "2026-09-30T06:05:30.957Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,46 +11,46 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 358,
-    "failed": 229,
+    "processed": 425,
+    "failed": 260,
     "skipped": 0,
-    "successRate": "61.0%"
+    "successRate": "62.0%"
   },
   "tierBreakdown": {
-    "playwright": 220,
+    "playwright": 234,
     "amp": 2,
     "browserbase": 11,
     "directCookies": 0,
-    "scrapingdog": 35,
-    "scrapingbee": 28,
-    "brightdata": 10,
+    "scrapingdog": 40,
+    "scrapingbee": 66,
+    "brightdata": 14,
     "archiveToday": 0,
-    "archive": 61
+    "archive": 72
   },
   "statistics": {
-    "tier1Attempts": 114,
-    "tier1Success": 66,
+    "tier1Attempts": 83,
+    "tier1Success": 33,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 3,
-    "tier1_9Attempts": 44,
-    "tier1_9Success": 10,
-    "tier2Attempts": 44,
-    "tier2Success": 7,
-    "tier3Attempts": 44,
-    "tier3Success": 19,
-    "tier3_6Attempts": 31,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 50,
+    "tier1_9Success": 20,
+    "tier2Attempts": 81,
+    "tier2Success": 41,
+    "tier3Attempts": 47,
+    "tier3Success": 26,
+    "tier3_6Attempts": 37,
     "tier3_6Success": 0,
-    "tier4Attempts": 89,
-    "tier4Success": 29,
-    "totalFailed": 206,
-    "scrapingBeePageCredits": 24,
+    "tier4Attempts": 78,
+    "tier4Success": 18,
+    "totalFailed": 222,
+    "scrapingBeePageCredits": 66,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 5.1,
-    "urlDiscoveryAttempts": 123,
-    "urlDiscoverySuccess": 2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 124,
+    "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -411,7 +411,74 @@
     "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
     "smash-2025/broadwaynews--brittani-samuel.json",
     "the-last-five-years-2025/broadwaynews--brittani-samuel.json",
-    "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json"
+    "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json",
+    "the-pass-off-west-end-2026/ground--unknown.json",
+    "maybe-happy-ending-tour-2026/baltimoresun--unknown.json",
+    "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+    "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+    "jesus-christ-superstar-west-end-2026/whatsonstage--alun-hood.json",
+    "grangeville-off-broadway-2026/timeout--adam-feldman.json",
+    "grangeville-off-broadway-2026/broadwayworld--team-bww.json",
+    "redwood-2025/broadwaynews--brittani-samuel.json",
+    "mystic-pizza-regional-2025/wmscradio--cupor1.json",
+    "english-2025/broadwaynews--brittani-samuel.json",
+    "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json",
+    "gypsy-2024/broadwaynews--brittani-samuel.json",
+    "gypsy-2024/ew--kathryn-vandervalk.json",
+    "cult-of-love-2024/broadwaynews--brittani-samuel.json",
+    "life-of-pi-tour-2024/broadwayworld--christopher-verleger.json",
+    "life-of-pi-tour-2024/broadwayworld--krista-garver.json",
+    "life-of-pi-tour-2024/broadwayworld--timoth-david-copney.json",
+    "life-of-pi-tour-2024/broadwayworld--tyler-hinton.json",
+    "life-of-pi-tour-2024/cleveland-plain-dealer--joey-morona.json",
+    "life-of-pi-tour-2024/dallasvoice--david-taffet.json",
+    "swept-away-2024/broadwaynews--brittani-samuel.json",
+    "elf-2024/broadwaynews--brittani-samuel.json",
+    "tammy-faye-2024/broadwaynews--brittani-samuel.json",
+    "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
+    "tammy-faye-2024/broadwayworld--cindy-marcolina.json",
+    "tammy-faye-2024/culturesauce--thom-geier.json",
+    "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
+    "left-on-tenth-2024/broadwaynews--brittani-samuel.json",
+    "left-on-tenth-2024/nydailynews--chris-jones.json",
+    "sunset-boulevard-2024/nytimes--jesse-green.json",
+    "shucked-tour-2024/ladue-news--mark-bretz.json",
+    "shucked-tour-2024/broadwayworld--roy-berko.json",
+    "shucked-tour-2024/cleveland-plain-dealer--joey-morona.json",
+    "shucked-tour-2024/the-charlotte-ledger--lawrence-toppman.json",
+    "our-town-2024/broadwaynews--brittani-samuel.json",
+    "yellow-face-2024/nydailynews--chris-jones.json",
+    "mcneal-2024/nytimes--jesse-green.json",
+    "mcneal-2024/broadwaynews--brittani-samuel.json",
+    "the-hills-of-california-2024/express-uk--george-simpson.json",
+    "the-roommate-2024/broadwaynews--brittani-samuel.json",
+    "job-2024/broadwaynews--brittani-samuel.json",
+    "starlight-express-west-end-2024/thereviewshub--the-reviews-hub-london.json",
+    "starlight-express-west-end-2024/daily-mail--patrick-marmion.json",
+    "home-2024/nytimes--jesse-green.json",
+    "mother-play-2024/broadwaynews--brittani-samuel.json",
+    "illinoise-2024/broadwaynews--brittani-samuel.json",
+    "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+    "mary-jane-2024/broadwaynews--brittani-samuel.json",
+    "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
+    "patriots-2024/broadwaynews--brittani-samuel.json",
+    "cabaret-2024/broadwaynews--brittani-samuel.json",
+    "stereophonic-2024/broadwaynews--brittani-samuel.json",
+    "suffs-2024/broadwaynews--brittani-samuel.json",
+    "suffs-2024/broadway-and-me--janice-c-simpson.json",
+    "suffs-2024/times-uk--nancy-durrant.json",
+    "the-wiz-2024/broadwaynews--brittani-samuel.json",
+    "the-wiz-2024/washpost--gloria-oladipo.json",
+    "lempicka-2024/broadwaynews--brittani-samuel.json",
+    "lempicka-2024/broadway-and-me--janice-c-simpson.json",
+    "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+    "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json",
+    "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json",
+    "oh-mary-off-broadway-2024/queerty--jude-cramer.json",
+    "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
+    "harmony-2023/broadwaynews--brittani-samuel.json",
+    "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json",
+    "here-lies-love-2023/broadwaynews--brittani-samuel.json"
   ],
   "failed": [
     "suffs-tour-2025/marin-independent-journal--john-chavez.json",
@@ -425,7 +492,6 @@
     "lost-in-del-valle-return-off-broadway-2026/vulture--unknown.json",
     "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
     "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
-    "the-pass-off-west-end-2026/ground--unknown.json",
     "darkling-off-west-end-2026/thestage--holly-omahony.json",
     "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
     "golden-boy-off-west-end-2026/whatsonstage--unknown.json",
@@ -642,7 +708,39 @@
     "the-last-five-years-2025/hypable--unknown.json",
     "the-picture-of-dorian-gray-2025/theater-life--paulanne-simmons.json",
     "purpose-2025/theatre-reviews-limited--david-roberts.json",
-    "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json"
+    "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+    "wicked-west-end-2021/telegraph--marianka-swain.json",
+    "diana-the-untold-and-untrue-story-off-broadway-2026/timeout--helen-shaw.json",
+    "all-my-sons-west-end-2025/jonathan-baz--unknown.json",
+    "redwood-2025/juiceph--wanggo-gallaga.json",
+    "pen-pals-off-broadway-2025/theater-life--paulanne-simmons.json",
+    "eureka-day-2024/times-uk--clive-davis.json",
+    "death-becomes-her-2024/chicago-reader--kerry-reid.json",
+    "elf-2024/amny--matt-windman.json",
+    "left-on-tenth-2024/washpost--peter-marks.json",
+    "the-hills-of-california-2024/thestage--sam-marlowe.json",
+    "the-hills-of-california-2024/times-uk--clive-davis.json",
+    "giant-royal-court-off-west-end-2024/times-uk--clive-davis.json",
+    "the-roommate-2024/wsj--charles-isherwood.json",
+    "starlight-express-west-end-2024/thestage--paul-vale.json",
+    "little-bear-ridge-road-regional-2024/hollywood-reporter--unknown.json",
+    "home-2024/queerty--httpswwwfacebookcomwexlerwrites.json",
+    "the-lonely-few-off-broadway-2024/queerty--charlie-grey.json",
+    "the-lonely-few-off-broadway-2024/theater-life--paulanne-simmons.json",
+    "heart-of-rock-and-roll-2024/latimes--httpswwwlatimescompeoplecharles-mcnulty.json",
+    "cabaret-2024/theater-life--paulanne-simmons.json",
+    "cabaret-2024/observer--jesse-green.json",
+    "stereophonic-2024/observer--jesse-green.json",
+    "stereophonic-2024/usatoday--charles-isherwood.json",
+    "orlando-off-broadway-2026/guardian--unknown.json",
+    "the-whos-tommy-2024/hollywood-reporter--david-rooney.json",
+    "mj-the-musical-west-end-2024/times-uk--unknown.json",
+    "the-notebook-2024/broadway-and-me--janice-c-simpson.json",
+    "standing-at-the-skys-edge-west-end-2024/thestage--dave-fargnoli.json",
+    "harmony-2023/queerty--httpswwwfacebookcomwexlerwrites.json",
+    "stereophonic-off-broadway-2023/thestage--lane-williamson.json",
+    "back-to-the-future-2023/wsj--charles-isherwood.json",
+    "here-lies-love-2023/aaartsalliance--rohan-zhou-lee.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -865,7 +963,21 @@
       "lets-love-off-broadway-2026/front-row-center--tulis-mccall.json",
       "morgan-bassichis-can-i-be-frank-off-broadway-2026/nysr--michael-sommers.json",
       "eurydice-off-broadway-2026/amny--matt-windman.json",
-      "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json"
+      "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
+      "maybe-happy-ending-tour-2026/baltimoresun--unknown.json",
+      "jesus-christ-superstar-west-end-2026/whatsonstage--alun-hood.json",
+      "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
+      "grangeville-off-broadway-2026/timeout--adam-feldman.json",
+      "mystic-pizza-regional-2025/wmscradio--cupor1.json",
+      "gypsy-2024/ew--kathryn-vandervalk.json",
+      "life-of-pi-tour-2024/dallasvoice--david-taffet.json",
+      "tammy-faye-2024/theatre-reviews-limited--david-roberts.json",
+      "tammy-faye-2024/culturesauce--thom-geier.json",
+      "left-on-tenth-2024/nydailynews--chris-jones.json",
+      "yellow-face-2024/nydailynews--chris-jones.json",
+      "the-hills-of-california-2024/express-uk--george-simpson.json",
+      "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json",
+      "oh-mary-off-broadway-2024/queerty--jude-cramer.json"
     ],
     "amp": [
       "data/review-texts/hamilton-west-end-2021/variety--kj-yossman.json",
@@ -920,7 +1032,12 @@
       "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
       "arcadia-west-end-2026/theartsdispatch--the-arts-dispatch.json",
       "suffs-tour-2025/marin-independent-journal--john-chavez.json",
-      "call-me-izzy-2025/theater-life--david-sheward.json"
+      "call-me-izzy-2025/theater-life--david-sheward.json",
+      "the-pass-off-west-end-2026/ground--unknown.json",
+      "the-picture-of-dorian-gray-2025/theater-life--paulanne-simmons.json",
+      "pen-pals-off-broadway-2025/theater-life--paulanne-simmons.json",
+      "shucked-tour-2024/ladue-news--mark-bretz.json",
+      "the-lonely-few-off-broadway-2024/theater-life--paulanne-simmons.json"
     ],
     "scrapingbee": [
       "suffs-tour-2025/broadwayworld--richard-sasanow.json",
@@ -950,7 +1067,45 @@
       "lost-in-del-valle-return-off-broadway-2026/vulture--unknown.json",
       "suffs-tour-2025/broadwayworld--jay-irwin.json",
       "smash-2025/broadwaynews--brittani-samuel.json",
-      "the-last-five-years-2025/broadwaynews--brittani-samuel.json"
+      "the-last-five-years-2025/broadwaynews--brittani-samuel.json",
+      "tosca-off-broadway-2026/broadwayworld--dc-felton.json",
+      "redwood-2025/broadwaynews--brittani-samuel.json",
+      "english-2025/broadwaynews--brittani-samuel.json",
+      "all-in-comedy-about-love-2024/broadwaynews--brittani-samuel.json",
+      "gypsy-2024/broadwaynews--brittani-samuel.json",
+      "cult-of-love-2024/broadwaynews--brittani-samuel.json",
+      "life-of-pi-tour-2024/broadwayworld--christopher-verleger.json",
+      "life-of-pi-tour-2024/broadwayworld--krista-garver.json",
+      "life-of-pi-tour-2024/broadwayworld--timoth-david-copney.json",
+      "life-of-pi-tour-2024/broadwayworld--tyler-hinton.json",
+      "swept-away-2024/broadwaynews--brittani-samuel.json",
+      "elf-2024/broadwaynews--brittani-samuel.json",
+      "tammy-faye-2024/broadwaynews--brittani-samuel.json",
+      "romeo-juliet-2024/broadwaynews--brittani-samuel.json",
+      "left-on-tenth-2024/broadwaynews--brittani-samuel.json",
+      "shucked-tour-2024/broadwayworld--roy-berko.json",
+      "shucked-tour-2024/the-charlotte-ledger--lawrence-toppman.json",
+      "our-town-2024/broadwaynews--brittani-samuel.json",
+      "mcneal-2024/broadwaynews--brittani-samuel.json",
+      "the-roommate-2024/broadwaynews--brittani-samuel.json",
+      "job-2024/broadwaynews--brittani-samuel.json",
+      "starlight-express-west-end-2024/daily-mail--patrick-marmion.json",
+      "mother-play-2024/broadwaynews--brittani-samuel.json",
+      "illinoise-2024/broadwaynews--brittani-samuel.json",
+      "uncle-vanya-2024/broadwaynews--brittani-samuel.json",
+      "mary-jane-2024/broadwaynews--brittani-samuel.json",
+      "heart-of-rock-and-roll-2024/broadwaynews--brittani-samuel.json",
+      "patriots-2024/broadwaynews--brittani-samuel.json",
+      "cabaret-2024/broadwaynews--brittani-samuel.json",
+      "stereophonic-2024/broadwaynews--brittani-samuel.json",
+      "suffs-2024/broadwaynews--brittani-samuel.json",
+      "the-wiz-2024/broadwaynews--brittani-samuel.json",
+      "lempicka-2024/broadwaynews--brittani-samuel.json",
+      "the-whos-tommy-2024/broadwaynews--brittani-samuel.json",
+      "prayer-for-the-french-republic-2024/broadwaynews--brittani-samuel.json",
+      "harmony-2023/broadwaynews--brittani-samuel.json",
+      "jajas-african-hair-braiding-2023/broadwaynews--brittani-samuel.json",
+      "here-lies-love-2023/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [
       "hamlet-off-broadway-2026/theatermania--zachary-stewart.json",
@@ -962,7 +1117,11 @@
       "beetlejuice-2025/observer--httpsobservercomauthorrex-reed.json",
       "art-2025/thewrap--robert-hofler.json",
       "suffs-tour-2025/deadline--greg-evans.json",
-      "suffs-tour-2025/theatermania--pete-hempstead.json"
+      "suffs-tour-2025/theatermania--pete-hempstead.json",
+      "life-of-pi-tour-2024/cleveland-plain-dealer--joey-morona.json",
+      "sunset-boulevard-2024/nytimes--jesse-green.json",
+      "shucked-tour-2024/cleveland-plain-dealer--joey-morona.json",
+      "mcneal-2024/nytimes--jesse-green.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1026,34 +1185,24 @@
       "morgan-bassichis-can-i-be-frank-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "evita-west-end-2025/express-uk--neil-norman.json",
       "eurydice-off-broadway-2026/timeout--raven-snook.json",
-      "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json"
+      "the-picture-of-dorian-gray-2025/showbiz411--roger-friedman.json",
+      "tosca-off-broadway-2026/broadwayworld--alexandre-diaconu.json",
+      "grangeville-off-broadway-2026/broadwayworld--team-bww.json",
+      "tammy-faye-2024/broadwayworld--cindy-marcolina.json",
+      "starlight-express-west-end-2024/thereviewshub--the-reviews-hub-london.json",
+      "home-2024/nytimes--jesse-green.json",
+      "cabaret-2024/theater-life--paulanne-simmons.json",
+      "suffs-2024/broadway-and-me--janice-c-simpson.json",
+      "suffs-2024/times-uk--nancy-durrant.json",
+      "the-wiz-2024/washpost--gloria-oladipo.json",
+      "lempicka-2024/broadway-and-me--janice-c-simpson.json",
+      "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json"
     ]
   },
   "failuresByOutlet": {
-    "The Guardian": {
-      "count": 3,
-      "domain": "theguardian.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
     "The Stage": {
-      "count": 10,
+      "count": 8,
       "domain": "thestage.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Broadway News": {
-      "count": 2,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Tennessean": {
-      "count": 1,
-      "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1080,14 +1229,14 @@
       "isKnownBlocked": false
     },
     "The Times (UK)": {
-      "count": 3,
+      "count": 5,
       "domain": "thetimes.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
     "BroadwayWorld": {
-      "count": 3,
+      "count": 2,
       "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -1107,16 +1256,9 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Rapidian": {
+    "Broadway News": {
       "count": 1,
-      "domain": "therapidian.org",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Woman Around Town": {
-      "count": 1,
-      "domain": "womanaroundtown.com",
+      "domain": "broadway.news",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1126,6 +1268,20 @@
       "domain": "northjersey.com",
       "hasCredentials": true,
       "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "The Telegraph": {
+      "count": 1,
+      "domain": "telegraph.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Woman Around Town": {
+      "count": 1,
+      "domain": "womanaroundtown.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
       "isKnownBlocked": false
     },
     "Click Liverpool": {
@@ -1142,23 +1298,16 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
+    "The Guardian": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "here": {
       "count": 1,
       "domain": "u7061146.ct.sendgrid.net",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Times": {
-      "count": 1,
-      "domain": "thetimes.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Times Square Chronicles": {
-      "count": 1,
-      "domain": "t2conline.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1176,18 +1325,35 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
+    },
+    "The Washington Post": {
+      "count": 1,
+      "domain": "washingtonpost.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Observer": {
+      "count": 1,
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Hollywood Reporter": {
+      "count": 1,
+      "domain": "hollywoodreporter.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": true
+    },
+    "Broadway & Me": {
+      "count": 1,
+      "domain": "broadwayandme.blogspot.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
     }
   },
-  "urlDiscoveries": [
-    {
-      "reviewId": "oh-mary-west-end-2025/chicagotribune--chris-jones.json",
-      "oldUrl": "https://wgnradio.com/news/entertainment-news/ap-in-project-hail-mary-phil-lord-and-chris-miller-finally-get-their-space-odyssey/",
-      "newUrl": "https://www.chicagotribune.com/2026/01/21/oh-mary-coming-chicago/"
-    },
-    {
-      "reviewId": "suffs-tour-2025/theatermania--pete-hempstead.json",
-      "oldUrl": "https://www.theatermania.com/news/suffs-and-top-hat-will-air-on-pbs-in-may_1825897/",
-      "newUrl": "https://www.theatermania.com/news/review-shaina-taubs-suffs-reminds-us-to-keep-marching_1812851/"
-    }
-  ]
+  "urlDiscoveries": []
 }
