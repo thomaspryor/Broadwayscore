@@ -1,12 +1,12 @@
 /**
- * Run: node --test tests/unit/audit-publisher-domain-live.test.mjs
+ * Run: node --test scripts/lib/audit-publisher-domain-live.test.mjs
  * BRO-4411: the audit must flag NYT reviews live as About Entertainment even
  * though the heal rule skips them, and stay quiet on legitimate rows.
  */
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-const { findMisattributions } = createRequire(import.meta.url)('../../scripts/audit-publisher-domain-live.js');
+const { findMisattributions } = createRequire(import.meta.url)('../audit-publisher-domain-live.js');
 
 const NYT = 'http://theater.nytimes.com/2009/03/10/theater/reviews/10thir.html';
 
