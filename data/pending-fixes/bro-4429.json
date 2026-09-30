@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4429",
   "planId": "81130b68-3144-4415-9ef4-8a97ee0bd3b4",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-09-30T16:10:02.994Z",
   "submitter": {
     "name": null,
@@ -180,5 +180,108 @@
         "description": "BRO-4429: clear classifier verdict made on partial text"
       }
     ]
-  }
+  },
+  "executedAt": "2026-09-30T17:06:05.392Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json rejectionReason: \"not_a_review\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json isNonReviewReason: \"CV-promoted (not a review): The scraped content reads as a preview or plot synopsis of 'The Saviors' at Atlantic Theater Company, describing the characters, setting, and themes without offering critical evaluation. The text is i\" -> null"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cleansed-off-west-end-2026/standard--nick-curtis.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cleansed-off-west-end-2026/standard--nick-curtis.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "electra-persona-west-end-2026/nytimes--houman-barekat.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "electra-persona-west-end-2026/nytimes--houman-barekat.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json wrongProductionManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json wrongProduction: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json wrongProductionReason: write guard kept \"CV-promoted: The scraped content is a review of 'The Pass' by John Donnelly, featuring cast members Matisse Ratron-Neal, Terry Bell, Ino Badanjak, and Oliver Rowland-Jones, directed by Max Hunter. This is complete\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woman-in-mind-west-end-2025/standard--nick-curtis.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "woman-in-mind-west-end-2025/standard--nick-curtis.json isNonReview: true -> false"
+    }
+  ]
 }
