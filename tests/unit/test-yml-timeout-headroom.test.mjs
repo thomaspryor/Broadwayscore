@@ -59,7 +59,21 @@ const EXEMPT = {
   'dependency-audit': 'schedule-only; removed by BRO-4434 landing B',
 };
 
-const blocks = readWorkflowJobBlocks(fs.readFileSync(TEST_YML, 'utf8'));
+const raw = fs.readFileSync(TEST_YML, 'utf8');
+const blocks = readWorkflowJobBlocks(raw);
+
+test('test.yml: no job header the job parser would skip (e.g. `job: # comment`)', () => {
+  // findJobBoundaries only recognises bare `  job-key:` lines; a header with a
+  // trailing comment would silently escape the budget check below.
+  const lines = raw.split('\n');
+  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
+  const skipped = [];
+  for (let i = jobsIdx + 1; i < lines.length; i++) {
+    if (/^\S/.test(lines[i])) break;
+    if (/^ {2}[A-Za-z0-9_.-]+\s*:\s*#/.test(lines[i])) skipped.push(lines[i].trim());
+  }
+  assert.deepEqual(skipped, [], 'move the comment off the job header line');
+});
 
 test('test.yml: every job is either budget-checked or explicitly exempt', () => {
   const unknown = Object.keys(blocks).filter(
