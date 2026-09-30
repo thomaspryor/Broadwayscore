@@ -145,10 +145,48 @@ function runValidation(changedFiles) {
   return true;
 }
 
-function rollbackDataFiles() {
+// Core-data files are gitignored here, so `git checkout -- data/` cannot
+// restore them; the plan runner snapshots them before the first action and
+// rollbackDataFiles puts them back (BRO-4398: a failed retire-show plan must
+// not push a deleted row, or a registry entry without its deletion).
+const CORE_SNAPSHOT_FILES = ['data/shows.json', 'data/commercial.json', 'data/audience-buzz.json', 'data/retired-show-ids.json', 'data/deleted-shows.json'];
+
+function snapshotCoreData() {
+  const snap = new Map();
+  for (const rel of CORE_SNAPSHOT_FILES) {
+    const abs = path.join(ROOT, rel);
+    let target = abs;
+    try {
+      target = fs.realpathSync(abs);
+    } catch {
+      // A dangling link (local setup-local-data.sh link whose clone file does
+      // not exist yet): writers follow it and create the target, so the
+      // rollback must address the target too, never the link.
+      try { target = path.resolve(path.dirname(abs), fs.readlinkSync(abs)); } catch { /* plain absent file */ }
+    }
+    snap.set(target, fs.existsSync(target) ? fs.readFileSync(target) : null);
+  }
+  return snap;
+}
+
+function rollbackDataFiles(snapshot) {
   try {
     execSync('git checkout -- data/', { cwd: ROOT, stdio: 'pipe' });
   } catch { /* best effort */ }
+  if (!snapshot) return;
+  for (const [target, content] of snapshot) {
+    try {
+      const now = fs.existsSync(target) ? fs.readFileSync(target) : null;
+      // Only files this plan changed; atomic tmp+rename like the write guards.
+      if (content === null ? now === null : (now !== null && now.equals(content))) continue;
+      if (content === null) { fs.unlinkSync(target); continue; }
+      const tmp = `${target}.rollback.${process.pid}`;
+      fs.writeFileSync(tmp, content);
+      fs.renameSync(tmp, target);
+    } catch (e) {
+      console.error(`  rollback could not restore ${target}: ${e.message}`);
+    }
+  }
 }
 
 async function sendEmail(to, from, subject, html) {
@@ -510,6 +548,8 @@ async function main() {
   console.log(`  Summary: ${planData.plan.summary}`);
   console.log(`  Actions: ${planData.plan.actions.length}`);
 
+  const coreSnapshot = snapshotCoreData();
+
   // 3. Execute each action
   const results = [];
   const applied = [];
@@ -561,11 +601,12 @@ async function main() {
   const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show');
   const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
-    const changedFiles = [...new Set(dataTouching.map(a => a.file).filter(Boolean))];
+    // add-show / retire-show carry no `file`: they always write shows.json.
+    const changedFiles = [...new Set(dataTouching.map(a => a.file || ((a.type === 'add-show' || a.type === 'retire-show') ? 'shows.json' : null)).filter(Boolean))];
     console.log('\nRunning validation...');
     if (!runValidation(changedFiles)) {
       console.error('Validation failed — rolling back');
-      rollbackDataFiles();
+      rollbackDataFiles(coreSnapshot);
 
       // Update plan status
       planData.status = 'validation-failed';
