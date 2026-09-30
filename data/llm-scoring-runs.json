@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-09-29T22:03:17.728Z",
-    "completedAt": "2026-09-29T22:03:17.731Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "36634259270",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-29T22:59:11.806Z",
-    "completedAt": "2026-09-29T22:59:11.821Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "36637789247",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-09-30T00:29:32.955Z",
     "completedAt": "2026-09-30T00:30:01.205Z",
     "totalReviews": 15,
@@ -292463,6 +292431,44 @@
     },
     "costUsd": 1.1548974,
     "runId": "36760213249",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-30T18:54:45.641Z",
+    "completedAt": "2026-09-30T18:56:26.428Z",
+    "totalReviews": 45814,
+    "processed": 11,
+    "skipped": 45791,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 113403,
+      "output": 5124,
+      "total": 296300
+    },
+    "costUsd": 0.4833549999999999,
+    "runId": "36761498007",
+    "errorDetails": [
+      {
+        "showId": "lost-in-del-valle-return-off-broadway-2026",
+        "outletId": "sohoplayhouse",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-30T18:56:27.776Z",
+    "completedAt": "2026-09-30T19:02:26.187Z",
+    "totalReviews": 156,
+    "processed": 156,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 414092,
+      "output": 37024,
+      "total": 451116
+    },
+    "costUsd": 1.1537124,
+    "runId": "36761498007",
     "errorDetails": []
   }
 ]
