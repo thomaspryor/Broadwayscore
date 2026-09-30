@@ -1,19 +1,54 @@
 {
-  "updatedAt": "2026-09-30T06:05:10.901Z",
-  "processed": 425,
-  "failed": 260,
-  "successRate": "62.0%",
+  "updatedAt": "2026-09-30T06:08:51.967Z",
+  "processed": 15,
+  "failed": 8,
+  "successRate": "65.2%",
   "tierBreakdown": {
-    "playwright": 234,
-    "amp": 2,
-    "browserbase": 11,
+    "playwright": 12,
+    "amp": 0,
+    "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 40,
-    "scrapingbee": 66,
-    "brightdata": 14,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 72
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-09-30T05:59:50.169Z",
+      "event": "bb-session",
+      "session": "b7cc4815",
+      "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girl"
+    },
+    {
+      "t": "2026-09-30T05:59:51.159Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-30T06:00:09.662Z",
+      "event": "bb-session",
+      "session": "993839ee",
+      "url": "https://www.nytimes.com/2026/09/28/theater/school-girls-or-the-african-mean-girl"
+    },
+    {
+      "t": "2026-09-30T06:00:10.559Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-30T06:06:05.676Z",
+      "event": "bb-session",
+      "session": "b315aa91",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-30T06:06:15.335Z",
+      "event": "bb-session",
+      "session": "9c0c2999",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    }
+  ]
 }
