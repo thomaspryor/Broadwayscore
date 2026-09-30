@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-09-30T06:08:51.967Z",
-  "processed": 15,
-  "failed": 8,
-  "successRate": "65.2%",
+  "updatedAt": "2026-09-30T07:41:25.371Z",
+  "processed": 23,
+  "failed": 17,
+  "successRate": "57.5%",
   "tierBreakdown": {
-    "playwright": 12,
+    "playwright": 15,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
+    "scrapingdog": 2,
+    "scrapingbee": 2,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 72
+    "archive": 73
   },
   "browserbaseSessions": 4,
   "recentActivity": [
@@ -49,6 +49,40 @@
       "event": "bb-session",
       "session": "9c0c2999",
       "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-30T07:38:56.104Z",
+      "event": "bb-session",
+      "session": "f360727d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-30T07:38:56.504Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-30T07:39:13.507Z",
+      "event": "bb-session",
+      "session": "0f23a33f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-30T07:39:13.823Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-30T07:40:09.498Z",
+      "event": "bb-session",
+      "session": "d26684ad",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-30T07:40:31.404Z",
+      "event": "bb-session",
+      "session": "af07b540",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
     }
   ]
 }

@@ -14,7 +14,15 @@
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
     "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json",
     "alice-in-wonderland-off-broadway-2026/goodstoriespodcast--unknown.json",
-    "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json"
+    "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json",
+    "la-boheme-off-broadway-2026/operawire--david-salazar.json",
+    "delirium-off-broadway-2026/arlekinplayers--unknown.json",
+    "cosi-fan-tutte-off-broadway-2026/operawire--francisco-salazar.json",
+    "lost-in-del-valle-return-off-broadway-2026/sohoplayhouse--unknown.json",
+    "september-l-davis-the-apology-tour-off-broadway-2026/timeout--unknown.json",
+    "truly-howard-hughes-off-broadway-2026/cititour--unknown.json"
   ],
   "failed": [
     "degenerates-off-broadway-2026/thewrap--robert-hofler.json",
@@ -24,7 +32,16 @@
     "midnight-off-broadway-2026/chicagotribune--unknown.json",
     "midnight-off-broadway-2026/eventsfy--unknown.json",
     "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
-    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json"
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "delirium-off-broadway-2026/brooklyneagle--brooklyn-eagle-staff.json",
+    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
+    "macbeth-off-broadway-2026/thewrap--robert-hofler.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json",
+    "macbeth-off-broadway-2026/woman-around-town--unknown.json",
+    "the-hope-theory-off-broadway-2026/broadwayworld--unknown.json",
+    "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/broadwaynews--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -40,16 +57,21 @@
       "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
       "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
       "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
-      "alice-in-wonderland-off-broadway-2026/goodstoriespodcast--unknown.json"
+      "alice-in-wonderland-off-broadway-2026/goodstoriespodcast--unknown.json",
+      "the-secret-circus-musical-off-broadway-2026/stagebuddy--unknown.json",
+      "la-boheme-off-broadway-2026/operawire--david-salazar.json",
+      "september-l-davis-the-apology-tour-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
-      "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json",
+      "the-secret-circus-musical-off-broadway-2026/mommypoppins--unknown.json"
     ],
     "scrapingbee": [
-      "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json"
+      "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
+      "truly-howard-hughes-off-broadway-2026/cititour--unknown.json"
     ],
     "brightdata": [
       "degenerates-off-broadway-2026/vulture--sara-holdren.json",
@@ -128,11 +150,12 @@
       "suffs-2024/times-uk--nancy-durrant.json",
       "the-wiz-2024/washpost--gloria-oladipo.json",
       "lempicka-2024/broadway-and-me--janice-c-simpson.json",
-      "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json"
+      "water-for-elephants-2024/broadway-and-me--janice-c-simpson.json",
+      "delirium-off-broadway-2026/arlekinplayers--unknown.json"
     ]
   },
   "startTime": "2026-09-29T23:32:36.605Z",
-  "lastProcessed": "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+  "lastProcessed": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/broadwaynews--unknown.json",
   "log": [
     {
       "t": "2026-09-30T05:59:50.169Z",
@@ -167,6 +190,40 @@
       "event": "bb-session",
       "session": "9c0c2999",
       "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-30T07:38:56.104Z",
+      "event": "bb-session",
+      "session": "f360727d",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-30T07:38:56.504Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-30T07:39:13.507Z",
+      "event": "bb-session",
+      "session": "0f23a33f",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-09-30T07:39:13.823Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-30T07:40:09.498Z",
+      "event": "bb-session",
+      "session": "d26684ad",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-09-30T07:40:31.404Z",
+      "event": "bb-session",
+      "session": "af07b540",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
     }
   ]
 }
