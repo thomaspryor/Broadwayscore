@@ -51,6 +51,8 @@ const WINDOW_AFTER_DAYS = 45;
 const DAY_MS = 86400000;
 // The first show's introduction must fall within this share of the article.
 const FIRST_INTRO_MAX_SHARE = 0.4;
+// A later section's show must be named within this many chars of its start.
+const INTRO_LEAD_CHARS = 160;
 // Partial texts can't be sectioned reliably (the missing tail may be the
 // rest of the first show); invalid ones only when rejected for wrong/multi show.
 const PARTIAL_TIERS = new Set(['truncated', 'excerpt', 'stub']);
@@ -268,6 +270,10 @@ function introSections(text, shows, ownShowId, publishDate) {
     const paragraphStart = cuts[i] === 0 || /\n\s*$/.test(before);
     const titleLeads = intros[i].at - cuts[i] <= 3;
     if (!paragraphStart && !titleLeads) return [];
+    // A new review names its show up front; a paragraph that only gets to a
+    // title later ("At Sunday's opening ... the original 'Jitney' ensemble")
+    // is colour inside the same review (Sweat/Showbiz411, BRO-4431 review).
+    if (intros[i].at - cuts[i] > INTRO_LEAD_CHARS) return [];
   }
 
   const sections = [];

@@ -69,6 +69,15 @@ test('intro strategy works from either show; a title quoted mid-paragraph never 
   assert.equal(flat, null);
 });
 
+test('an opening-party paragraph that reaches another show late is not a section (Sweat / Jitney)', () => {
+  const shows = [
+    { id: 'sweat-2017', title: 'Sweat', category: 'broadway', openingDate: '2017-03-26' },
+    { id: 'jitney-2017', title: 'Jitney', category: 'broadway', openingDate: '2017-01-19' },
+  ];
+  const text = `Lynn Nottage’s “Sweat” is high-wattage drama about a Reading bar. ${filler('bar', 8)} “Sweat” deserves its audience.\n\nAt Sunday’s opening party at the brasserie, stars mingled with an array of well-wishers, producers, family and friends, and Stephen McKinley Henderson, part of the original “Jitney” ensemble, was hobnobbing near the bar with the cast of the recent “Jitney” production. ${filler('party', 6)}`;
+  assert.equal(planMultiShowFanout(base({ showId: 'sweat-2017', publishDate: '2017-03-27', fullText: text }), shows), null);
+});
+
 test('a single review that returns to its show after a comparison is not split (Crucible vs A View From the Bridge)', () => {
   const shows = [
     { id: 'the-crucible-2016', title: 'The Crucible', category: 'broadway', openingDate: '2016-03-31' },
