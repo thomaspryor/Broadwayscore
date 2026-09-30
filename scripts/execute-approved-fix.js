@@ -156,7 +156,14 @@ function snapshotCoreData() {
   for (const rel of CORE_SNAPSHOT_FILES) {
     const abs = path.join(ROOT, rel);
     let target = abs;
-    try { target = fs.realpathSync(abs); } catch { /* absent */ }
+    try {
+      target = fs.realpathSync(abs);
+    } catch {
+      // A dangling link (local setup-local-data.sh link whose clone file does
+      // not exist yet): writers follow it and create the target, so the
+      // rollback must address the target too, never the link.
+      try { target = path.resolve(path.dirname(abs), fs.readlinkSync(abs)); } catch { /* plain absent file */ }
+    }
     snap.set(target, fs.existsSync(target) ? fs.readFileSync(target) : null);
   }
   return snap;
@@ -169,8 +176,13 @@ function rollbackDataFiles(snapshot) {
   if (!snapshot) return;
   for (const [target, content] of snapshot) {
     try {
-      if (content === null) { if (fs.existsSync(target)) fs.unlinkSync(target); }
-      else fs.writeFileSync(target, content);
+      const now = fs.existsSync(target) ? fs.readFileSync(target) : null;
+      // Only files this plan changed; atomic tmp+rename like the write guards.
+      if (content === null ? now === null : (now !== null && now.equals(content))) continue;
+      if (content === null) { fs.unlinkSync(target); continue; }
+      const tmp = `${target}.rollback.${process.pid}`;
+      fs.writeFileSync(tmp, content);
+      fs.renameSync(tmp, target);
     } catch (e) {
       console.error(`  rollback could not restore ${target}: ${e.message}`);
     }
