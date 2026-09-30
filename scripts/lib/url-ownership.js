@@ -61,6 +61,16 @@ function _isBlockingOwnerCopy(data) {
   return true;
 }
 
+// Shows a split file names as the article's other sections (BRO-4431): a
+// parent lists its children, a child names its parent.
+function _splitShows(data) {
+  if (!data || (data.multiShowSplitParent !== true && data.multiShowSplitChild !== true)) return null;
+  const out = [];
+  if (Array.isArray(data.multiShowSplitChildShowIds)) out.push(...data.multiShowSplitChildShowIds);
+  if (data.multiShowSplitParentShowId) out.push(data.multiShowSplitParentShowId);
+  return out.length ? out : null;
+}
+
 function buildUrlOwnershipIndex(reviewTextsDir, { force = false } = {}) {
   if (_index && _index.dir === reviewTextsDir && !force) return _index.map;
   const map = new Map();
@@ -88,7 +98,7 @@ function buildUrlOwnershipIndex(reviewTextsDir, { force = false } = {}) {
       if (!_isOwnableUrl(data.url)) continue;
       const key = _normalizeUrl(data.url);
       if (!key) continue;
-      const entry = { showId, file: f, blocking: _isBlockingOwnerCopy(data), splitGroup: multiShowSplitGroup(data, showId) };
+      const entry = { showId, file: f, blocking: _isBlockingOwnerCopy(data), splitGroup: multiShowSplitGroup(data, showId), splitShows: _splitShows(data) };
       const arr = map.get(key);
       if (arr) arr.push(entry); else map.set(key, [entry]);
     }
@@ -115,10 +125,14 @@ function findCrossShowOwners(url, currentShowId, reviewTextsDir) {
  * @param {string|null} [candidateSplitGroup] multiShowSplitGroup() of the new file
  * @returns {{ block: boolean, owner?: {showId:string, file:string} }}
  */
-function shouldBlockCrossShowCreate(owners, candidateSplitGroup = null) {
+function shouldBlockCrossShowCreate(owners, candidateSplitGroup = null, candidateShowId = null) {
   // A sibling section of the same split multi-show article (BRO-4431) is the
-  // same review filed per show, not a competing owner.
-  const live = (owners || []).find((e) => e.blocking && !isMultiShowSplitSibling(candidateSplitGroup, e.splitGroup));
+  // same review filed per show, not a competing owner; so is a split owner
+  // that names the candidate show as one of the article's sections (the
+  // section being re-created under that show).
+  const live = (owners || []).find((e) => e.blocking
+    && !isMultiShowSplitSibling(candidateSplitGroup, e.splitGroup)
+    && !(candidateShowId && Array.isArray(e.splitShows) && e.splitShows.includes(candidateShowId)));
   return live ? { block: true, owner: { showId: live.showId, file: live.file } } : { block: false };
 }
 
@@ -134,7 +148,7 @@ function recordUrlOwner(url, showId, file, reviewTextsDir, record = null) {
   if (!_isOwnableUrl(url) || !_index || _index.dir !== reviewTextsDir) return;
   const key = _normalizeUrl(url);
   if (!key) return;
-  const entry = { showId, file, blocking: record ? _isBlockingOwnerCopy(record) : true, splitGroup: record ? multiShowSplitGroup(record, showId) : null };
+  const entry = { showId, file, blocking: record ? _isBlockingOwnerCopy(record) : true, splitGroup: record ? multiShowSplitGroup(record, showId) : null, splitShows: record ? _splitShows(record) : null };
   const arr = _index.map.get(key);
   if (arr) arr.push(entry); else _index.map.set(key, [entry]);
 }

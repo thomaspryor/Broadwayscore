@@ -1134,7 +1134,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // existing file were handled above.
   if (input.url && fields.allowCrossShowUrl !== true) {
     const owners = findCrossShowOwners(input.url, showId, reviewTextsDir);
-    const verdict = shouldBlockCrossShowCreate(owners);
+    const verdict = shouldBlockCrossShowCreate(owners, null, showId);
     // Reroute exemption: if Guard A just rerouted this write AWAY from the
     // owning show (owner is in the visited chain), the market-routing decision
     // explicitly supersedes the owner's copy — blocking here would discard the

@@ -138,7 +138,7 @@ function decideOwnershipDrops(newFiles, reviewTextsDir) {
     const showId = rel.split('/')[0];
     const owners = findCrossShowOwners(data.url, showId, reviewTextsDir);
     // BRO-4431: sibling sections of one split multi-show article share its URL.
-    const verdict = shouldBlockCrossShowCreate(owners, multiShowSplitGroup(data, showId));
+    const verdict = shouldBlockCrossShowCreate(owners, multiShowSplitGroup(data, showId), showId);
     if (verdict.block) {
       drops.push({ file: rel, showId, url: data.url, owner: verdict.owner, kind: 'cross-show' });
       continue;

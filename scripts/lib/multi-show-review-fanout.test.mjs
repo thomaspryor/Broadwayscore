@@ -157,7 +157,7 @@ test('childWriteDecision: create, fill a textless stub for the same URL, else sk
   assert.equal(childWriteDecision(null, parent), 'create');
   assert.equal(childWriteDecision({ url: 'https://example.com/a', fullText: '' }, parent), 'fill');
   assert.equal(childWriteDecision({ url: 'https://example.com/other', fullText: '' }, parent), 'skip');
-  assert.equal(childWriteDecision({ url: 'https://example.com/a', fullText: 'x'.repeat(400) }, parent), 'skip');
+  assert.equal(childWriteDecision({ url: 'https://example.com/a', fullText: 'x'.repeat(400) }, parent), 'held', 'same article already filed there');
 });
 
 test('applyMultiShowFanoutToFile writes the sibling, trims the parent, and is idempotent', () => {
@@ -225,6 +225,23 @@ test('fan-out honours the child show blocklist and never trims a parent when no 
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+test('re-ingesting the article under a missing sibling show keeps only that section', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fanout-'));
+  const url = 'https://www.newyorker.com/magazine/2026/10/05/gut-renos';
+  const cherry = 'the-cherry-orchard-park-avenue-armory-off-broadway-2026';
+  fs.mkdirSync(path.join(dir, 'delirium-off-broadway-2026'));
+  fs.mkdirSync(path.join(dir, cherry));
+  // Delirium already holds its (trimmed) section from an earlier split.
+  fs.writeFileSync(path.join(dir, 'delirium-off-broadway-2026', 'newyorker--emily-nussbaum.json'), JSON.stringify(base({ showId: 'delirium-off-broadway-2026', url, fullText: 'Delirium section '.repeat(80), multiShowSplitParent: true, multiShowSplitProcessed: 'x' })));
+  const file = path.join(dir, cherry, 'newyorker--emily-nussbaum.json');
+  fs.writeFileSync(file, JSON.stringify(base({ showId: cherry, url, publishDate: '2026-09-29', fullText: TWO_SHOW_COLUMN })));
+  const r = applyMultiShowFanoutToFile(file, { shows: SHOWS, reviewTextsDir: dir });
+  assert.equal(r.children[0].action, 'held');
+  assert.equal(r.parentRewritten, true);
+  assert.doesNotMatch(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, /Delirium/);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('a processed parent whose full article was re-collected is trimmed again', () => {
   const trimmed = planMultiShowFanout(base({ showId: 'delirium-off-broadway-2026', publishDate: '2026-09-29', fullText: 'x'.repeat(900), multiShowSplitProcessed: '2026-09-30', multiShowSplitParent: true, multiShowSplitTextLength: 900 }), SHOWS);
   assert.equal(trimmed, null, 'unchanged trimmed text is left alone');
@@ -234,9 +251,13 @@ test('a processed parent whose full article was re-collected is trimmed again', 
 
 test('split siblings sharing a URL are not cross-production copies; unrelated copies still are', () => {
   const { multiShowSplitGroup, isMultiShowSplitSibling } = require('./review-guards.js');
-  const parent = { showId: 'delirium-off-broadway-2026', multiShowSplitParent: true };
-  const child = { showId: 'the-cherry-orchard-park-avenue-armory-off-broadway-2026', multiShowSplitChild: true, multiShowSplitParentShowId: 'delirium-off-broadway-2026' };
-  const other = { showId: 'the-cherry-orchard-1977' };
+  const url = 'https://www.newyorker.com/magazine/2026/10/05/gut-renos-of-ionesco-and-chekhov';
+  const parent = { showId: 'delirium-off-broadway-2026', url, multiShowSplitParent: true };
+  const child = { showId: 'the-cherry-orchard-park-avenue-armory-off-broadway-2026', url: url + '?utm=x', multiShowSplitChild: true, multiShowSplitParentShowId: 'delirium-off-broadway-2026' };
+  const other = { showId: 'the-cherry-orchard-1977', url };
+  // A section re-ingested later is also a sibling (both split-flagged, same article).
+  const later = { showId: 'x', url: 'http://newyorker.com/magazine/2026/10/05/gut-renos-of-ionesco-and-chekhov/', multiShowSplitParent: true };
+  assert.ok(isMultiShowSplitSibling(multiShowSplitGroup(later), multiShowSplitGroup(parent)));
   assert.ok(isMultiShowSplitSibling(multiShowSplitGroup(parent), multiShowSplitGroup(child)));
   assert.equal(isMultiShowSplitSibling(multiShowSplitGroup(child), multiShowSplitGroup(other)), false);
   assert.equal(isMultiShowSplitSibling(null, null), false);
@@ -273,6 +294,27 @@ test('review-texts push ownership gate keeps split siblings, still drops an unre
   execFileSync('node', [script, `--base=${git('rev-parse', 'HEAD~1').toString().trim()}`], { cwd: dir, stdio: 'pipe' });
   assert.equal(fs.existsSync(path.join(dir, 'unrelated-show-2026/vulture--sara-holdren.json')), false, 'unrelated cross-show copy still dropped');
   assert.ok(fs.existsSync(path.join(dir, 'arias-with-a-twist-off-broadway-2026/vulture--sara-holdren.json')));
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('writer Guard I lets a split article be re-created under a section show it names, not under others', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const { _resetUrlOwnershipIndex } = require('./url-ownership.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'guardi-'));
+  const url = 'https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html';
+  fs.mkdirSync(path.join(dir, 'how-shakespeare-saved-my-life-off-broadway-2026'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'how-shakespeare-saved-my-life-off-broadway-2026', 'vulture--sara-holdren.json'), JSON.stringify({
+    showId: 'how-shakespeare-saved-my-life-off-broadway-2026', outletId: 'vulture', criticName: 'Sara Holdren', url,
+    fullText: 'x'.repeat(3000), multiShowSplitParent: true, multiShowSplitChildShowIds: ['arias-with-a-twist-off-broadway-2026'],
+  }));
+  _resetUrlOwnershipIndex();
+  const ok = createOrMergeReviewFile('arias-with-a-twist-off-broadway-2026', { outletId: 'vulture', outlet: 'Vulture', criticName: 'Sara Holdren', url, source: 'submit-review-form', fields: {} }, { reviewTextsDir: dir });
+  assert.equal(ok.action, 'new', JSON.stringify(ok));
+  _resetUrlOwnershipIndex();
+  const refused = createOrMergeReviewFile('delirium-off-broadway-2026', { outletId: 'vulture', outlet: 'Vulture', criticName: 'Sara Holdren', url, source: 'submit-review-form', fields: {} }, { reviewTextsDir: dir });
+  assert.equal(refused.action, 'skipped');
+  assert.match(refused.reason, /cross-show-url-owned/);
+  _resetUrlOwnershipIndex();
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
