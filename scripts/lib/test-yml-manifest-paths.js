@@ -159,6 +159,10 @@ const UNREGISTERED_TEST_QUARANTINE = new Map([
     'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: asserts no scored show in the live catalog is imageless past the self-heal threshold (Date.now()), which turns true whenever a newly scored show still lacks a poster. In the unit batch it turned main red on 2026-09-29 (5 West End shows) with no code change.',
   ],
   [
+    'tests/unit/venue-complex-live-data.test.mjs',
+    'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: venue-complex orphan + candidate-gap checks over data/shows.json, which bots add to and retire from many times a day. In the unit batch it turned main red 2026-09-29 (orphans) and 2026-09-30 ("box" candidate gap) with no code change. Orphans stay gated at write time by validate-data.js.',
+  ],
+  [
     'tests/unit/outlet-registry-live-data.test.mjs',
     'BRO-3425 — runs in check-corpus-drift.yml (data-health), not test.yml: null-domain ceiling + domain collisions over data/outlet-registry.json, which the rebuild auto-registers into and commits to main many times a day. In the unit batch it turned main red on 2026-09-29 (51 > 50) with no code change.',
   ],
