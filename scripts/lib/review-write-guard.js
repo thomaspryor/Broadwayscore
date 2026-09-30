@@ -2010,6 +2010,34 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // BRO-4412 phantom-critic guard: web-search invents bylines/URLs, and its
+  // records used to land beside the real review of the same outlet (Time Out
+  // "Adam Feldman" beside Bernardo; 3 Variety bylines on one Doll's House
+  // review). Engine dedup is (outlet, criticName), so each byline counted.
+  // Refuse a NEW web-search record that is the same article as, or an
+  // unverifiable guess beside, a live same-outlet sibling under another byline.
+  if (!force) {
+    try {
+      const guard = require('./cloned-excerpt-guard');
+      const dir = path.dirname(filePath);
+      const self = path.basename(filePath);
+      if (newData.source === 'web-search' && !fs.existsSync(filePath)) {
+        const siblings = [];
+        for (const f of fs.readdirSync(dir)) {
+          if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === self) continue;
+          try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')) }); } catch { /* unreadable sibling */ }
+        }
+        const twin = guard.phantomOfSibling(self, newData, siblings);
+        if (twin) {
+          console.warn(`[review-write-guard] phantom critic refused: ${self} is a web-search duplicate of ${twin}`);
+          return { wrote: false, skipped: 'phantom_of_sibling', duplicateOfFile: twin };
+        }
+      }
+    } catch (e) {
+      console.warn(`[review-write-guard] phantom-critic guard skipped for ${path.basename(filePath)}: ${e.message}`);
+    }
+  }
+
   // showId backstop (2026-07-18): validate-review-texts --gate hard-fails any
   // corpus file missing showId, and writers that build payloads from scratch
   // (show-not-mentioned-recovery URL updates shipped allegra-west-end-2026/
