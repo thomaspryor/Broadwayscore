@@ -311,6 +311,45 @@ test('a failed submission becomes a queued-retry stub that counts as pending, no
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+// ---------------------------------------------------------------------------
+// Outlet-listing ground truth (part 4)
+// ---------------------------------------------------------------------------
+const gt = require('./outlet-ground-truth.js');
+
+test('ground truth: a TheaterMania review post is matched to its show and flagged when we lack it', () => {
+  const show = { id: 'beyond-the-stardust-off-broadway-2026', title: 'Beyond the Stardust', category: 'off-broadway', openingDate: '2026-09-10' };
+  const tm = gt.WP_SEARCH_SOURCES.find((s) => s.id === 'theatermania');
+  const posts = [
+    { link: 'https://www.theatermania.com/news/review-beyond-the-stardust-an-afrofuturist-dance-party_1854359/', date: '2026-09-18T12:43:42', title: { rendered: 'Review: Beyond the Stardust Is an Afrofuturist Dance Party' } },
+    { link: 'https://www.theatermania.com/news/the-flea-announces-cast-for-immersive-musical-beyond-the-stardust_1845492/', date: '2026-07-13T11:00:45', title: { rendered: 'The Flea Announces Cast' } },
+    { link: 'https://www.theatermania.com/news/review-something-else_1/', date: '2026-09-18', title: { rendered: 'Review: Something Else' } },
+  ];
+  const rows = gt.reviewPostsForShow(posts, show, tm);
+  assert.deepEqual(rows.map((r) => r.url), ['https://www.theatermania.com/news/review-beyond-the-stardust-an-afrofuturist-dance-party_1854359/']);
+  assert.equal(gt.hasReviewFor([], { url: rows[0].url }), false);
+  assert.equal(gt.hasReviewFor([{ outletId: 'theatermania', url: 'https://theatermania.com/news/review-beyond-the-stardust-an-afrofuturist-dance-party_1854359' }], { url: rows[0].url }), true, 'www/trailing slash differences are the same review');
+});
+
+test('ground truth: NYT sitemap rows, TR rows without a link, eligibility window', () => {
+  const html = '<a href="https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing.html">x</a><a href="https://www.nytimes.com/2026/09/30/theater/broadway-news-roundup.html">y</a>';
+  const rows = gt.parseNytSitemapDay(html);
+  assert.equal(rows.length, 1);
+  const shows = [{ id: 'degenerates-off-broadway-2026', title: 'Degenerates', category: 'off-broadway', openingDate: '2026-09-28' }];
+  assert.deepEqual(gt.nytShowsForSlug(rows[0].slug, shows).map((s) => s.id), ['degenerates-off-broadway-2026']);
+  // Paywalled TR row: matched by outlet + critic, including a URL-less file.
+  const files = [{ outletId: 'times-uk', criticName: 'Ann Treneman' }];
+  assert.equal(gt.hasReviewFor(files, { outletId: 'times-uk', critic: 'Clive Davis' }), false);
+  assert.equal(gt.hasReviewFor([...files, { outletId: 'times-uk', criticName: 'Clive Davis', url: null }], { outletId: 'times-uk', critic: 'Clive Davis' }), true);
+  const now = Date.parse('2026-09-30T12:00:00Z');
+  const all = [...shows, { id: 'old', title: 'Old', category: 'broadway', openingDate: '2026-01-01' }, { id: 'reg', title: 'Reg', category: 'regional', openingDate: '2026-09-29' }];
+  assert.deepEqual(gt.eligibleShows(all, { now, days: 21 }).map((s) => s.id), ['degenerates-off-broadway-2026']);
+});
+
+test('ground truth audit is scheduled (audit-aggregator-gap.yml) with ingest + alert', () => {
+  const wf = fs.readFileSync(new URL('../../.github/workflows/audit-aggregator-gap.yml', import.meta.url), 'utf8');
+  assert.match(wf, /node scripts\/audit-outlet-ground-truth\.js [^\n]*--ingest[^\n]*--alert/);
+});
+
 test('process-review-submission retries once, then falls back to the retry stub', () => {
   const wf = fs.readFileSync(new URL('../../.github/workflows/process-review-submission.yml', import.meta.url), 'utf8');
   assert.match(wf, /sleep 60\s*\n\s*node scripts\/ingest-review-from-url\.js [^\n]*--stub-on-failure/);

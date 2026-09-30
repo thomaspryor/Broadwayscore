@@ -51,7 +51,9 @@ jobs:
     # of job-timeout margin for the trailing steps — raised to 48 to restore
     # the same proportional buffer update-show-status.yml uses for its own
     # PUSH_DEADLINE_SEC override (task #458).
-    timeout-minutes: 48
+    # 60 (was 48): BRO-4431 added the outlet ground-truth audit (hard-capped
+    # at 12 min by `timeout 720`, runs at most every 6h) before the commit.
+    timeout-minutes: 60
     if: ${{ vars.AGGREGATOR_GAP_AUDIT_DISABLED != 'true' }}
     steps:
       - uses: actions/checkout@v4
@@ -245,6 +247,31 @@ jobs:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/audit-t1-silent-gaps.js --recover --alert
+
+      # BRO-4431: ask the outlets themselves (TheaterMania/WhatsOnStage/NYSR/
+      # New York Theater WP search, NYT daily sitemaps, theatre.reviews
+      # round-ups) what they reviewed in the last 21 days, ingest what we
+      # lack (retry stub + TR star relay on paywalled rows) and digest-alert
+      # what is still missing. Every step above reasons from aggregators or
+      # files we already hold, so a review nobody cited (TheaterMania on
+      # Beyond the Stardust, New York Theater on Brooklyn's Bridge, FT/Times
+      # on Cleansed) was invisible. Self-throttled to once per 6h; its report
+      # is committed below so the throttle survives across runs.
+      # Kill switch: repo variable OUTLET_GROUND_TRUTH_DISABLED=true.
+      - name: Outlet ground-truth audit
+        if: ${{ always() && vars.OUTLET_GROUND_TRUTH_DISABLED != 'true' }}
+        continue-on-error: true
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: timeout 720 node scripts/audit-outlet-ground-truth.js --days=21 --ingest --ingest-cap=12 --alert --min-interval-hours=6 --time-budget-min=8
 
       # Date-independent backstop for a live show sitting on a discovered
       # review URL we never fetched (card #1408). Every OTHER coverage check
@@ -452,7 +479,7 @@ jobs:
           # those rows never reach the public repo and are lost every run,
           # which is why attributedPct read near-zero for BD's SERP zone
           # (Sprint 3, card 3b1637c5).
-          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/coverage-digest-snapshot.json data/audit/scraper-spend-ledger.jsonl data/audit/uncollected-live-reviews.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
+          for f in data/audit/show-review-gap.json data/audit/unknown-aggregator-outlets.json data/audit/gap-audit-checkpoint.json data/audit/we-gate-proving.json data/audit/t1-silent-gaps.json data/audit/t1-silent-gap-alerts.json data/audit/t1-coverage-ledger.json data/audit/t1-coverage-digest-state.json data/audit/t1-coverage-signals.json data/audit/t1-coverage-stats.json data/audit/t1-coverage-ack.json data/audit/t1-outlet-breaker.json data/audit/deployed-coverage-diff.json data/audit/t1-recovery-state.json data/audit/autoclear-shadow.jsonl data/audit/autoclear-shadow-report.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl data/audit/coverage-digest-snapshot.json data/audit/scraper-spend-ledger.jsonl data/audit/uncollected-live-reviews.json data/audit/outlet-ground-truth.json; do # workflow-line-length-ok: fixed audit-file list, grows rarely (task #537) not per-test-addition — not the task #763 merge-conflict class
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --cached --quiet; then

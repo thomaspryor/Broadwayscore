@@ -4912,9 +4912,12 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
         let roundupUrl = null;
         try {
           const apiPosts = await new Promise(r => {
-            trHttp.get(apiUrl, {
+            const apiReq = trHttp.get(apiUrl, {
               headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', Accept: 'application/json' },
-            }, res => { if (res.statusCode !== 200) { res.resume(); r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => { try { r(JSON.parse(d)); } catch { r(null); } }); }).on('error', () => r(null));
+              timeout: 15000,
+            }, res => { if (res.statusCode !== 200) { res.resume(); r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => { try { r(JSON.parse(d)); } catch { r(null); } }); });
+            apiReq.on('error', () => r(null));
+            apiReq.on('timeout', () => { apiReq.destroy(); r(null); });
           });
           const { pickTheatreReviewsRoundup } = require('./lib/theatre-reviews-discovery');
           roundupUrl = pickTheatreReviewsRoundup(apiPosts, searchTitle);
