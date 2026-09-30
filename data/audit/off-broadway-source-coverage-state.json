@@ -3,13 +3,14 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-09-30T14:52:37.729Z"
+    "at": "2026-09-30T17:17:24.833Z"
   },
   "venueReaders": {
-    "at": "2026-09-30T14:52:37.729Z",
+    "at": "2026-09-30T17:17:24.833Z",
     "readers": 54,
     "active": 152,
     "activeCovered": 99,
+    "activeDated": 75,
     "uncovered": {
       "theatre row theatre 5": {
         "firstSeen": "2026-09-30T01:29:53.899Z",
@@ -66,6 +67,130 @@
         "venue": "Theaterlab",
         "recentShows": 2,
         "reason": "site returns an empty page to a plain fetch"
+      }
+    ]
+  },
+  "venueReadersLondon": {
+    "at": "2026-09-30T17:17:24.833Z",
+    "readers": 20,
+    "active": 86,
+    "activeCovered": 25,
+    "activeDated": 21,
+    "uncovered": {
+      "rose": {
+        "firstSeen": "2026-09-30T17:17:24.833Z",
+        "venue": "Rose Theatre"
+      },
+      "wilton s music hall": {
+        "firstSeen": "2026-09-30T17:17:24.833Z",
+        "venue": "Wilton's Music Hall"
+      },
+      "vaults": {
+        "firstSeen": "2026-09-30T17:17:24.833Z",
+        "venue": "The Vaults Theatre"
+      },
+      "waterloo east": {
+        "firstSeen": "2026-09-30T17:17:24.833Z",
+        "venue": "Waterloo East Theatre"
+      }
+    },
+    "explained": [
+      {
+        "venue": "Sadler's Wells",
+        "recentShows": 9,
+        "reason": "dance house; not read"
+      },
+      {
+        "venue": "Soho Theatre",
+        "recentShows": 9,
+        "reason": "Spektrix account (sohotheatre) is ~1,500 events, almost all stand-up; not read on purpose"
+      },
+      {
+        "venue": "Charing Cross Theatre",
+        "recentShows": 7,
+        "reason": "no ticketing feed or dated listing on the homepage (probed 2026-09-30)"
+      },
+      {
+        "venue": "Donmar Warehouse",
+        "recentShows": 7,
+        "reason": "403 to a plain fetch (Cloudflare); no public ticketing feed found"
+      },
+      {
+        "venue": "Globe Theatre",
+        "recentShows": 7,
+        "reason": "Shakespeare's Globe site has no dated listing or public feed in its HTML (probed 2026-09-30)"
+      },
+      {
+        "venue": "Peacock Theatre",
+        "recentShows": 7,
+        "reason": "Sadler's Wells' West End dance house; dance, not theatre"
+      },
+      {
+        "venue": "Regent's Park Open Air Theatre",
+        "recentShows": 5,
+        "reason": "Regent's Park Open Air Theatre site renders its listing in JavaScript"
+      },
+      {
+        "venue": "Sam Wanamaker Playhouse",
+        "recentShows": 5,
+        "reason": "Shakespeare's Globe's indoor house; same site as the Globe"
+      },
+      {
+        "venue": "The Arts at Marble Arch",
+        "recentShows": 4,
+        "reason": "TodayTix-run venue (The Arts at Marble Arch); its shows are TodayTix listings"
+      },
+      {
+        "venue": "Barbican Theatre",
+        "recentShows": 3,
+        "reason": "Spektrix account (barbicancentre) is ~3,000 events / 4.9 MB with no usable performance counts, and its Theatre art form holds 3-day dance and circus visits: not read (BRO-4398 review)"
+      },
+      {
+        "venue": "Jermyn Street Theatre",
+        "recentShows": 3,
+        "reason": "no ticketing feed or dated listing on the homepage (probed 2026-09-30)"
+      },
+      {
+        "venue": "Theatre on Kew",
+        "recentShows": 3,
+        "reason": "seasonal pop-up in Kew Gardens"
+      },
+      {
+        "venue": "County Hall",
+        "recentShows": 2,
+        "reason": "immersive/event space in a former office building"
+      },
+      {
+        "venue": "Hackney Empire",
+        "recentShows": 2,
+        "reason": "variety/receiving house (comedy, panto, tours)"
+      },
+      {
+        "venue": "New Wimbledon Theatre",
+        "recentShows": 2,
+        "reason": "ATG receiving house (UK tours)"
+      },
+      {
+        "venue": "Queen Elizabeth Hall - Southbank Centre",
+        "recentShows": 2,
+        "reason": "Southbank Centre halls are concert venues"
+      },
+      {
+        "venue": "Richmond",
+        "recentShows": 2,
+        "reason": "a place name, not a venue: fix the show rows"
+      }
+    ],
+    "undatedOnly": [
+      {
+        "venue": "The Other Palace",
+        "recentShows": 12,
+        "reader": "The Other Palace"
+      },
+      {
+        "venue": "Marylebone Theatre",
+        "recentShows": 5,
+        "reader": "Marylebone Theatre"
       }
     ]
   }
