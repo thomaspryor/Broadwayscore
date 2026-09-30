@@ -2104,66 +2104,6 @@
     "queuedAt": "2026-09-30T01:06:00.172Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:alice-in-wonderland-off-broadway-2026",
-    "title": "Review gap — \"Alice in Wonderland\" missing 13 cited review(s)",
-    "description": "Alice in Wonderland (alice-in-wonderland-off-broadway-2026): 13 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alice-in-wonderland-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T01:06:00.181Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:school-girls-or-the-african-mean-girls-play-2026",
-    "title": "Review gap — \"School Girls; Or, The African Mean Girls Play\" missing 2 cited review(s)",
-    "description": "School Girls; Or, The African Mean Girls Play (school-girls-or-the-african-mean-girls-play-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=school-girls-or-the-african-mean-girls-play-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T01:06:00.272Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
-    "title": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
-    "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T01:06:00.312Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-standard-of-living-west-end-2026",
-    "title": "Review gap — \"The Standard Of Living\" missing 6 cited review(s)",
-    "description": "The Standard Of Living (the-standard-of-living-west-end-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-standard-of-living-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T01:06:00.317Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:whos-afraid-of-virginia-woolf-west-end-2026",
-    "title": "Review gap — \"Who’s Afraid of Virginia Woolf?\" missing 4 cited review(s)",
-    "description": "Who’s Afraid of Virginia Woolf? (whos-afraid-of-virginia-woolf-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=whos-afraid-of-virginia-woolf-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T01:06:00.335Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-4402-mundeekv",
     "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4402-mundeekv",
     "description": "land.yml did not land land/job/linear-BRO-4402-mundeekv: the unit-tests-node gate went red at cb5222a229. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36651534999",
@@ -3022,18 +2962,6 @@
     "queuedAt": "2026-09-30T14:36:15.334Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:degenerates-off-broadway-2026",
-    "title": "Review gap — \"Degenerates\" missing 1 cited review(s)",
-    "description": "Degenerates (degenerates-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=degenerates-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T14:36:15.339Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026",
     "title": "Review gap — \"Elf Lyons: The Woman on the Edge\" missing 1 cited review(s)",
     "description": "Elf Lyons: The Woman on the Edge (elf-lyons-the-woman-on-the-edge-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=elf-lyons-the-woman-on-the-edge-off-broadway-2026 --checkpoint --ingest-missing",
@@ -3080,18 +3008,6 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-30T14:36:15.364Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:human-things-off-broadway-2026",
-    "title": "Review gap — \"Human Things\" missing 1 cited review(s)",
-    "description": "Human Things (human-things-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=human-things-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T14:36:15.369Z"
   },
   {
     "conditionKey": "review-gap:opening-window:in-honor-of-jean-michel-basquiat-off-broadway-2026",
@@ -3614,5 +3530,77 @@
       }
     ],
     "queuedAt": "2026-09-30T21:52:18.742Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:alice-in-wonderland-off-broadway-2026",
+    "title": "Review gap — \"Alice in Wonderland\" missing 13 cited review(s)",
+    "description": "Alice in Wonderland (alice-in-wonderland-off-broadway-2026): 13 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alice-in-wonderland-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T23:32:29.183Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Review gap — \"School Girls; Or, The African Mean Girls Play\" missing 3 cited review(s)",
+    "description": "School Girls; Or, The African Mean Girls Play (school-girls-or-the-african-mean-girls-play-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=school-girls-or-the-african-mean-girls-play-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T23:32:29.263Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
+    "title": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
+    "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T23:32:29.294Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-standard-of-living-west-end-2026",
+    "title": "Review gap — \"The Standard Of Living\" missing 4 cited review(s)",
+    "description": "The Standard Of Living (the-standard-of-living-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-standard-of-living-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T23:32:29.302Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:whos-afraid-of-virginia-woolf-west-end-2026",
+    "title": "Review gap — \"Who’s Afraid of Virginia Woolf?\" missing 1 cited review(s)",
+    "description": "Who’s Afraid of Virginia Woolf? (whos-afraid-of-virginia-woolf-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=whos-afraid-of-virginia-woolf-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T23:32:29.329Z"
+  },
+  {
+    "conditionKey": "outlet-ground-truth:the-turn-of-the-screw-off-west-end-2026:https://www.whatsonstage.com/news/the-turn-of-the-screw-at-arcola-theatre-and-on-tour-review_1732158/",
+    "title": "Missing review from a tracked outlet: the-turn-of-the-screw-off-west-end-2026 — whatsonstage",
+    "description": "whatsonstage lists a review we don't hold (https://www.whatsonstage.com/news/the-turn-of-the-screw-at-arcola-theatre-and-on-tour-review_1732158/), and automatic ingest did not recover it.",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T23:40:58.615Z"
   }
 ]

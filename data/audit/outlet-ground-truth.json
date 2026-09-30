@@ -1,0 +1,52 @@
+{
+  "generatedAt": "2026-09-30T23:40:58.617Z",
+  "phase": "done",
+  "days": 21,
+  "shows": 72,
+  "sources": {
+    "theatermania": {
+      "queries": 46,
+      "listed": 20,
+      "errors": 0
+    },
+    "whatsonstage": {
+      "queries": 26,
+      "listed": 11,
+      "errors": 0
+    },
+    "nysr": {
+      "queries": 1,
+      "listed": 0,
+      "errors": 1
+    },
+    "nytimes": {
+      "queries": 4,
+      "listed": 3,
+      "errors": 0
+    }
+  },
+  "listingTruncated": true,
+  "listed": 34,
+  "ingested": [
+    {
+      "showId": "very-blue-light-off-broadway-2026",
+      "url": "https://www.theatermania.com/news/review-very-blue-light-an-awkward-reunion-in-the-desert_1853648/",
+      "ok": true
+    },
+    {
+      "showId": "chewing-gum-dreams-off-west-end-2026",
+      "url": "https://www.whatsonstage.com/news/chewing-gum-dreams-at-theatre503-review_1731562/",
+      "ok": false,
+      "error": "spawnSync node ETIMEDOUT"
+    }
+  ],
+  "missing": [
+    {
+      "source": "whatsonstage",
+      "showId": "the-turn-of-the-screw-off-west-end-2026",
+      "outletId": "whatsonstage",
+      "url": "https://www.whatsonstage.com/news/the-turn-of-the-screw-at-arcola-theatre-and-on-tour-review_1732158/",
+      "date": "2026-09-21"
+    }
+  ]
+}
