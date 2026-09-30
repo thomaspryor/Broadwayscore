@@ -40,7 +40,8 @@ const CHECKOUT_STALL_SEC = 554;
 // A new job must be added here with its measured runtime.
 const MEASURED_RUNTIME_SEC = {
   'lint-workflows': 114,
-  'awards-data-freshness': 24,
+  // awards-data-freshness (24s) left test.yml in BRO-4434 landing B: it is a
+  // check-corpus-drift.js audit now (awards-freshness).
   'design-tokens-lint': 30,
   'typescript-check': 108,
   'unit-tests': 852,
@@ -54,9 +55,8 @@ const MEASURED_RUNTIME_SEC = {
 const EXEMPT = {
   // Aggregates needs.* results in seconds; no checkout-bound work to protect.
   'test-summary': 'aggregator job, no timeout-minutes (GitHub default)',
-  // Schedule/dispatch only (never on push, so never reds main), and BRO-4434
-  // landing B deletes the job; leave its budget to that change.
-  'dependency-audit': 'schedule-only; removed by BRO-4434 landing B',
+  // dependency-audit was exempt here as schedule-only until BRO-4434 landing
+  // B deleted the job (it is audit-dependencies.yml now).
 };
 
 const raw = fs.readFileSync(TEST_YML, 'utf8');
