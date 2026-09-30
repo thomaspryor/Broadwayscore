@@ -3308,5 +3308,17 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-30T13:08:17.224Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-t1-missing:the-standard-of-living-west-end-2026",
+    "title": "Auto-remediation gave up on the-standard-of-living-west-end-2026",
+    "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-standard-of-living-west-end-2026\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T13:50:53.459Z"
   }
 ]
