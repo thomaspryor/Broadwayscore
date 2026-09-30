@@ -382,6 +382,16 @@ const AUDITS = [
     crashCodes: [],            // 0 under baseline / 1 = new un-baselined mismatch
   },
   {
+    name: 'outlet-identity-hygiene',
+    healPathRequired: true, // BRO-4419: drift surfaces in the daily digest
+    label: 'live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets',
+    // heal-exempt: fixing a hit is a judgment call (confirm the outlet with a
+    // tier, or block the host), not something a --fix can decide.
+    script: 'audit-outlet-identity-hygiene.js',
+    args: ['--strict'],
+    crashCodes: [],            // 0 clean / 1 = a live look-alike, look-alike alias, or undecided provisional outlet
+  },
+  {
     name: 'critic-outlets',
     healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
     label: 'critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)',
