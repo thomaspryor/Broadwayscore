@@ -180,11 +180,18 @@ jobs:
           fi
 
       - name: Time gate — no broadcast before 7 AM ET
-        if: steps.find.outputs.has_shows == 'true' && inputs.send_to_all != 'true'
+        # No send_to_all skip here or on the readiness gate (BRO-4417 what-else):
+        # the old `inputs.send_to_all != 'true'` compared a BOOLEAN input to a
+        # string, which GitHub coerces to 1 != NaN, so it was always true and
+        # both gates always ran (run 36594174568, send_to_all=true, ran both).
+        # Making it a real skip would leave readiness_gate.outputs.ready_shows
+        # empty, and the check step reads only that, so an approval dispatch
+        # would find zero shows and create no draft.
+        if: steps.find.outputs.has_shows == 'true'
         id: time_gate
         run: |
-          # Automated runs must wait until 7 AM ET (12:00 UTC in EDT, 11:00 UTC in EST)
-          # Manual dispatch with send_to_all bypasses this gate
+          # Every run, manual approval dispatches included, waits until 7 AM ET
+          # (see the note above this step's if:).
           HOUR_UTC=$(date -u +%H)
           # 7 AM ET = 11 AM UTC (EDT) or 12 PM UTC (EST). Use 11 as the threshold.
           if [ "$HOUR_UTC" -lt 11 ]; then
@@ -196,7 +203,7 @@ jobs:
           fi
 
       - name: Readiness gate — market-aware (Broadway 15+agg, West End 12)
-        if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true' && inputs.send_to_all != 'true'
+        if: steps.find.outputs.has_shows == 'true' && steps.time_gate.outputs.blocked != 'true'
         id: readiness_gate
         run: |
           # Market-aware readiness gate (scripts/lib/broadcast-readiness.js):
