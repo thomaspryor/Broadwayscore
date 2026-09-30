@@ -3238,5 +3238,63 @@
       }
     ],
     "queuedAt": "2026-09-30T04:30:36.374Z"
+  },
+  {
+    "conditionKey": "land:land/broadcast-deadline-fallback",
+    "title": "Landing blocked: unit-tests-node red on land/broadcast-deadline-fallback",
+    "description": "land.yml did not land land/broadcast-deadline-fallback: the unit-tests-node gate went red at 3780f4752a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36669368236",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/broadcast-deadline-fallback"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3780f4752a90bfea08b7ebe51fa19fbbfeca56b4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36669368236"
+      }
+    ],
+    "queuedAt": "2026-09-30T04:59:32.014Z"
+  },
+  {
+    "conditionKey": "land:land/BRO-4419-outlet-identity",
+    "title": "Landing blocked: unit-tests-node red on land/BRO-4419-outlet-identity",
+    "description": "land.yml did not land land/BRO-4419-outlet-identity: the unit-tests-node gate went red at bfc0e95788. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36670436669",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/BRO-4419-outlet-identity"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "bfc0e957888eb1754e05fc1be6a039f5f0332cfd"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36670436669"
+      }
+    ],
+    "queuedAt": "2026-09-30T05:17:14.332Z"
   }
 ]
