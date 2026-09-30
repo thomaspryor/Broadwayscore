@@ -3484,5 +3484,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-30T18:21:25.634Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4434-code-only-main",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4434-code-only-main",
+    "description": "land.yml did not land land/bro-4434-code-only-main: the unit-tests-node gate went red at 1c54ab12fc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36760075344",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4434-code-only-main"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "1c54ab12fc4d2f7786e1b63d56b8369bd88862da"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36760075344"
+      }
+    ],
+    "queuedAt": "2026-09-30T19:17:49.507Z"
   }
 ]
