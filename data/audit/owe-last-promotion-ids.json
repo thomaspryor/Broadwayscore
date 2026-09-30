@@ -1,68 +1,103 @@
 {
-  "generatedAt": "2026-09-30T20:10:36.863Z",
-  "promoted": [
-    {
-      "id": "dissent-off-west-end-2027",
-      "source": "venue-page:young-vic",
-      "sourceUrl": "https://www.youngvic.org/whats-on"
-    },
-    {
-      "id": "eulogy-off-west-end-2027",
-      "source": "venue-page:young-vic",
-      "sourceUrl": "https://www.youngvic.org/whats-on"
-    },
-    {
-      "id": "gem-of-the-ocean-off-west-end-2027",
-      "source": "venue-page:young-vic",
-      "sourceUrl": "https://www.youngvic.org/whats-on"
-    },
-    {
-      "id": "whats-the-fking-point-off-west-end-2027",
-      "source": "venue-page:young-vic",
-      "sourceUrl": "https://www.youngvic.org/whats-on"
-    },
-    {
-      "id": "act-of-god-off-west-end-2026",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    },
-    {
-      "id": "an-intervention-off-west-end-2027",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    },
-    {
-      "id": "are-you-even-indian-off-west-end-2026",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    },
-    {
-      "id": "imitations-off-west-end-2026",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    },
-    {
-      "id": "in-my-own-little-world-off-west-end-2026",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    },
-    {
-      "id": "measure-for-measure-off-west-end-2026",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    },
-    {
-      "id": "the-virtuous-burglar-off-west-end-2026",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    },
-    {
-      "id": "tinderella-off-west-end-2026",
-      "source": "venue-page:riverside-studios",
-      "sourceUrl": "https://riversidestudios.co.uk/whats-on/"
-    }
-  ],
+  "generatedAt": "2026-09-30T20:36:00.480Z",
+  "promoted": [],
   "rejected": [
+    {
+      "title": "dissent",
+      "venue": "Young Vic",
+      "source": "venue-page:young-vic",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as dissent-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Eulogy",
+      "venue": "Young Vic",
+      "source": "venue-page:young-vic",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as eulogy-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Gem of the Ocean",
+      "venue": "Young Vic",
+      "source": "venue-page:young-vic",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as gem-of-the-ocean-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "What's the F**king Point?",
+      "venue": "Young Vic",
+      "source": "venue-page:young-vic",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as whats-the-fking-point-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Act of God",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as act-of-god-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "An Intervention",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as an-intervention-off-west-end-2027 (normalized-equal)"
+    },
+    {
+      "title": "Are You Even Indian?",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as are-you-even-indian-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Imitations",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as imitations-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "In My Own Little World",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as in-my-own-little-world-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Measure for Measure",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as measure-for-measure-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "The Virtuous Burglar",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as the-virtuous-burglar-off-west-end-2026 (normalized-equal)"
+    },
+    {
+      "title": "Tinderella",
+      "venue": "Riverside Studios",
+      "source": "venue-page:riverside-studios",
+      "sourceUrl": null,
+      "kind": "skip-duplicate",
+      "reason": "already in shows.json as tinderella-off-west-end-2026 (normalized-equal)"
+    },
     {
       "title": "Triumph",
       "venue": "Almeida Theatre",
