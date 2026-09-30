@@ -3402,5 +3402,34 @@
       }
     ],
     "queuedAt": "2026-09-30T16:53:55.437Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4429-classifier-partial-text",
+    "title": "Landing blocked: rebase red on land/bro-4429-classifier-partial-text",
+    "description": "land.yml did not land land/bro-4429-classifier-partial-text: the rebase gate went red at aa3630e59f. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4429-classifier-partial-text @ aa3630e59f (origin/land/bro-4429-classifier-partial-text) → origin/main @ a15bee37f2 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ a15bee37f2: Rebasing (1/5) error: could not apply b7b5e328e6d... fix(classifiers): read the whole review, not a head window (BRO-4429) hint: Resolve all conflicts manually, mark them as resolved with  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36746762284",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4429-classifier-partial-text"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "aa3630e59f40d9af8d03f85a824883d9b47d7296"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36746762284"
+      }
+    ],
+    "queuedAt": "2026-09-30T17:24:54.494Z"
   }
 ]
