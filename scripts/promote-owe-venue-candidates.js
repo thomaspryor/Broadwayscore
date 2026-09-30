@@ -126,7 +126,7 @@ const {
 } = require('./lib/venue-classification');
 const { matchesRetired, loadRetiredIds } = require('./lib/retired-show-ids');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
-const { normalizeTitle, foldDiacritics } = require('./lib/title-match');
+const { normalizeTitle, foldDiacritics, titleTokens } = require('./lib/title-match');
 const { urlFragmentReason } = require('./lib/url-fragment-title');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -350,6 +350,52 @@ function findVenueListingPage(venue, listingPages) {
   const key = normalizeVenueName(venue);
   if (!key) return null;
   return pages.find(p => p && p.category === 'off-west-end' && normalizeVenueName(p.name) === key) || null;
+}
+
+/** Title tokens without season years ("Berlin_2027" → {berlin}). */
+function tokensWithoutYears(title) {
+  return new Set([...titleTokens(String(title || '').replace(/_/g, ' '))].filter(t => !/^(?:19|20)\d\d$/.test(t)));
+}
+
+/** Same house: normalized venue equal, or one is the other plus a room ("Southwark Playhouse Elephant"). */
+function sameLondonHouse(a, b) {
+  const ka = normalizeVenueName(a);
+  const kb = normalizeVenueName(b);
+  if (!ka || !kb) return false;
+  return ka === kb || ka.startsWith(`${kb} `) || kb.startsWith(`${ka} `);
+}
+
+/**
+ * A catalog row at the same house whose title is the candidate's with words
+ * missing, or the other way round (BRO-4398). Slug-title readers minted
+ * truncated rows ("Twenty Thousand Streets", "Berlin_2027") that the dated
+ * readers now see under the full name ("Twenty Thousand Streets Under the
+ * Sky", "BERLIN"); findExistingMatch's normalized-equal test misses both.
+ * The smaller token set needs two words unless the sets are equal, and a row
+ * that closed more than 180 days before the candidate's run starts is an
+ * earlier production, not this one.
+ *
+ * @param {object} candidate
+ * @param {Array<{id, title, venue, status?, closingDate?}>} pool
+ * @returns {{match: object, reason: string}|null}
+ */
+function findSameHouseTokenMatch(candidate, pool) {
+  const ct = tokensWithoutYears(candidate && candidate.title);
+  if (ct.size === 0) return null;
+  const start = validDateOrNull(candidate.listingFirstDate) || validDateOrNull(candidate.previewsStartDate) || validDateOrNull(candidate.openingDate);
+  const cutoff = start ? new Date(Date.parse(`${start}T00:00:00Z`) - 180 * DAY_MS).toISOString().slice(0, 10) : null;
+  for (const e of Array.isArray(pool) ? pool : []) {
+    if (!e || !e.title || typeof e.venue !== 'string' || !sameLondonHouse(candidate.venue, e.venue)) continue;
+    if (cutoff && typeof e.closingDate === 'string' && e.closingDate < cutoff) continue;
+    const et = tokensWithoutYears(e.title);
+    if (et.size === 0) continue;
+    const [small, big] = ct.size <= et.size ? [ct, et] : [et, ct];
+    if (small.size < 2 && small.size !== big.size) continue;
+    if ([...small].every(t => big.has(t))) {
+      return { match: e, reason: `same house, title words ${small.size === big.size ? 'equal' : 'contained'} ("${e.title}" vs "${candidate.title}")` };
+    }
+  }
+  return null;
 }
 
 /**
@@ -875,7 +921,7 @@ async function evaluateCandidates(candidates, ctx) {
       // 1. Already in shows.json (venue-gated match, then the London-pool
       //    title fallback) — the ordinary way a staged candidate resolves
       //    once TodayTix/OLT/a hand add landed the same production.
-      const existingMatch = findExistingMatch(c, existingCandidates);
+      const existingMatch = findExistingMatch(c, existingCandidates) || findSameHouseTokenMatch(c, existingCandidates);
       if (existingMatch) {
         prune(c, 'skip-duplicate', `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})`, { matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
         continue;
@@ -1041,7 +1087,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   // (S4-T9) applies to off-west-end candidates too.
   const existingCandidates = showsData.shows
     .filter(s => s.category === 'west-end' || s.category === 'off-west-end')
-    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category }));
+    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category, status: s.status, closingDate: s.closingDate || null }));
   // Loud on a malformed registry (loadRetiredIds throws) — silently treating
   // it as empty is exactly how a retired id slips back in.
   const retiredEntries = Array.isArray(io.retiredEntries) ? io.retiredEntries : loadRetiredIds();
@@ -1175,6 +1221,7 @@ module.exports = {
   findVenueListingPage,
   isDatedListingCandidate,
   isCuratedLondonVenue,
+  findSameHouseTokenMatch,
   listingRunDates,
   evaluateCandidates,
   main,

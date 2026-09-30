@@ -208,3 +208,19 @@ test('evaluateCandidates: a dated fixture candidate promotes with its run dates;
   assert.match(promoted[0].confirmationReason, /venue's own listing/);
   assert.ok(pruned.some(p => p.kind === 'skip-duplicate' && p.candidate.title === 'The Hungry Ghost'));
 });
+
+test('findSameHouseTokenMatch: slug-title catalog rows match the dated full title at the same house only', () => {
+  const { findSameHouseTokenMatch } = require('../../scripts/promote-owe-venue-candidates.js');
+  const pool = [
+    { id: 'twenty-thousand-streets-off-west-end-2026', title: 'Twenty Thousand Streets', venue: 'Southwark Playhouse' },
+    { id: 'berlin2027-off-west-end-2026', title: 'Berlin_2027', venue: 'Kiln Theatre' },
+    { id: 'king-lear-old', title: 'King Lear', venue: 'Orange Tree Theatre', closingDate: '2019-05-01' },
+    { id: 'hamlet-elsewhere', title: 'Hamlet', venue: 'Almeida Theatre' },
+  ];
+  const hit = (title, venue, extra = {}) => findSameHouseTokenMatch({ title, venue, ...extra }, pool);
+  assert.equal(hit('Twenty Thousand Streets Under the Sky', 'Southwark Playhouse Elephant')?.match.id, 'twenty-thousand-streets-off-west-end-2026');
+  assert.equal(hit('Berlin', 'Kiln Theatre')?.match.id, 'berlin2027-off-west-end-2026');
+  assert.equal(hit('King Lear', 'Orange Tree Theatre', { listingFirstDate: '2027-02-15' }), null, 'a production that closed years earlier is not this one');
+  assert.equal(hit('Hamlet', 'Kiln Theatre'), null, 'another house');
+  assert.equal(hit('Streets', 'Southwark Playhouse'), null, 'one word is not enough to call a subset');
+});
