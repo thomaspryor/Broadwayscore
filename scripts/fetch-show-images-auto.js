@@ -36,7 +36,13 @@ const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
-const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup } = require('./lib/show-image-coverage');
+const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup, discardFailedFetchArtifacts } = require('./lib/show-image-coverage');
+const { armRunWatchdog } = require('./lib/run-watchdog');
+// Shows whose fetch is in flight right now: { showId: { dir, dirBefore } }.
+// The run watchdog (BRO-4401) discards their half-written artifacts before
+// exiting, so a hung fetch never leaves an empty/partial image dir behind
+// that hasRealImage() would later read as coverage.
+const inFlightFetches = new Map();
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { findNewerSameTitleProduction } = require('./lib/canon-poster-art');
 const { buildRetryCandidateImages } = require('./lib/google-image-retry-candidate.js');
@@ -1082,10 +1088,18 @@ async function discoverTodayTixId(show) {
   const market = todaytixMarket(show);
   console.log(`   Searching TodayTix (${market}) for "${showTitle}"...`);
 
+  // Overlap in BOTH directions, take the weaker. Forward alone ("how many
+  // title words appear in the slug") is 100% for any one-word title inside
+  // a longer slug: run 36655690883 accepted 37071-player-kings for "Player",
+  // cached it in todaytix-ids.json, and fetched Player Kings' art (Gemini
+  // rejected it, but the cache entry would have steered every later run).
   const slugTitleOverlap = (slug) => {
     const slugWords = slug.replace(/-/g, ' ').toLowerCase().split(/\s+/).filter(w => w.length > 0);
     const titleWords = normalizeTitle(showTitle).split(/\s+/).filter(w => w.length > 0);
-    return titleWords.length > 0 ? titleWords.filter(w => slugWords.includes(w)).length / titleWords.length : 0;
+    if (titleWords.length === 0 || slugWords.length === 0) return 0;
+    const forward = titleWords.filter(w => slugWords.includes(w)).length / titleWords.length;
+    const reverse = slugWords.filter(w => titleWords.includes(w)).length / slugWords.length;
+    return Math.min(forward, reverse);
   };
 
   // Method 1: Direct TodayTix search (works for open shows)
@@ -2442,6 +2456,7 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   // (which would leave Promise.allSettled recording a rejection and the
   // freshly created EMPTY directory surviving as false coverage). See
   // scripts/lib/show-image-coverage.js for the cleanup logic and tests.
+  inFlightFetches.set(show.id, { dir: showImageDir, dirBefore });
   let images;
   try {
     images = await runFetchWithCleanup(
@@ -2451,6 +2466,7 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
       show.id
     );
   } finally {
+    inFlightFetches.delete(show.id);
     // This show is done (or failed): drop its deferred photos (they hold file bytes).
     if (verifyCtx?.productionPhotoFallbacks) {
       verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks.filter(f => f.showId !== show.id);
@@ -2977,6 +2993,26 @@ async function main() {
   };
 
   // Use concurrent processing for large batches, sequential for small
+  // Hard wall-clock deadline (BRO-4401): processShowsConcurrently checks the
+  // budget only BETWEEN batches, so a fetch that never returns ran until the
+  // job was cancelled at 160 min with finished work never checkpointed
+  // (run 36655690883). At budget + 10 min: checkpoint what finished, discard
+  // in-flight artifacts, exit 0 so the workflow's if: always() archive +
+  // commit steps still land the finished shows.
+  armRunWatchdog({
+    maxRuntimeMin,
+    graceMin: 10,
+    onFire: () => {
+      for (const [id, f] of inFlightFetches) {
+        try {
+          const { removed } = discardFailedFetchArtifacts(f.dir, f.dirBefore);
+          console.log(`   watchdog: discarded ${removed.length} in-flight artifact(s) for ${id}`);
+        } catch (e) { console.log(`   watchdog: could not clean ${id}: ${e.message}`); }
+      }
+      try { saveTodayTixIds(todayTixIds); } catch (e) { console.log(`   watchdog: todaytix cache not saved: ${e.message}`); }
+      if (!dryRunMode) saveShowsData();
+    },
+  });
   const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData, maxRuntimeMin);
 
   // Post-fetch duplicate image audit: detect shows sharing the same image.

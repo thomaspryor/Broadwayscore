@@ -805,7 +805,59 @@ async function fetchWithScrapingBee(url, options = {}) {
  * @param {object} [options]
  * @param {boolean} [options.fast] - Use domcontentloaded instead of networkidle (for simple public sites)
  */
+// BRO-4401: the Playwright tier is bounded END TO END. page.goto() has its
+// own 30s timeout, but the first run of fetch-all-image-formats.yml with a
+// real browser (36655690883, 2026-09-30) sat for 2.5 hours on one
+// google.com/search fetch with a live chrome-headless-shell orphan — some
+// step between launch and page.content() never returned, and nothing above
+// it had a clock. The wrapper races the whole tier against
+// PLAYWRIGHT_TIER_DEADLINE_MS; on expiry it abandons the page, resets the
+// browser so the next call relaunches cleanly, and returns null exactly like
+// any other Playwright failure (the caller falls through to the paid tiers).
+const PLAYWRIGHT_TIER_DEADLINE_MS = 90 * 1000;
+
+async function _resetPlaywrightBrowser() {
+  const b = playwright;
+  playwright = null;
+  if (!b) return;
+  // browser.close() can itself hang on a wedged renderer — bound it too.
+  await Promise.race([
+    b.close().catch(() => {}),
+    new Promise((resolve) => setTimeout(resolve, 5000).unref()),
+  ]);
+}
+
+/**
+ * Race a tier against a deadline. Resolves the tier's own value, or
+ * `{ timedOut: true }` when `ms` elapses first. Pure control flow, exported
+ * for its test; the Playwright-specific reset happens in fetchWithPlaywright.
+ */
+function raceTierAgainstDeadline(tierPromise, ms) {
+  let timer;
+  // Deliberately NOT unref()'d: the timer is what guarantees the race ends.
+  // It is cleared the moment the tier settles, so it never holds a finished
+  // run open; unref'ing it let a hung tier with nothing else on the loop
+  // exit the process before the deadline could fire (test finding).
+  const deadline = new Promise((resolve) => { timer = setTimeout(() => resolve({ timedOut: true }), ms); });
+  return Promise.race([tierPromise, deadline]).finally(() => clearTimeout(timer));
+}
+
 async function fetchWithPlaywright(url, options = {}) {
+  const inner = _fetchWithPlaywrightInner(url, options);
+  // A tier that times out is abandoned, not awaited: if it later rejects
+  // (browser closed under it), that rejection must not surface as unhandled.
+  inner.catch(() => {});
+  const result = await raceTierAgainstDeadline(inner, PLAYWRIGHT_TIER_DEADLINE_MS);
+  if (result && result.timedOut) {
+    _scraperStats.pwDeadlineHits = (_scraperStats.pwDeadlineHits || 0) + 1;
+    console.error(`⚠️  Playwright tier exceeded ${PLAYWRIGHT_TIER_DEADLINE_MS / 1000}s at ${url} — abandoning the page and resetting the browser (BRO-4401)`);
+    await _resetPlaywrightBrowser();
+    return null;
+  }
+  return result;
+}
+
+async function _fetchWithPlaywrightInner(url, options = {}) {
   _scraperStats.pwAttempts++;
   let context = null;
   try {
@@ -1693,6 +1745,8 @@ module.exports = {
   fetchWithScrapingBee,
   fetchWithScrapingdog,
   fetchWithPlaywright,
+  raceTierAgainstDeadline,
+  PLAYWRIGHT_TIER_DEADLINE_MS,
   isChallengeOrGarbage: _isChallengeOrGarbage,
   cleanup,
   domainMatchesExpected,
