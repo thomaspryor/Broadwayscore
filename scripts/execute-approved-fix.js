@@ -279,8 +279,11 @@ function executeRetireShow(action) {
   } catch (e) {
     // The registry entry is already written: take it back out so the row
     // (still in shows.json) and the registry agree and the plan can re-run.
-    unretireId(action.id);
-    return { ok: false, reason: `retire-show ${action.id}: shows.json save failed (${e.message}); registry entry reverted` };
+    let reverted = false;
+    let revertError = null;
+    try { reverted = unretireId(action.id); } catch (re) { revertError = re.message; }
+    const tail = reverted ? 'registry entry reverted' : `registry entry NOT reverted (${revertError || 'not found'}) — remove ${action.id} from data/retired-show-ids.json and data/deleted-shows.json by hand`;
+    return { ok: false, reason: `retire-show ${action.id}: shows.json save failed (${e.message}); ${tail}` };
   }
   return result;
 }

@@ -288,12 +288,10 @@ function unretireId(id, opts = {}) {
     if (!Array.isArray(arr)) continue;
     const next = arr.filter(e => !(e && e.id === id));
     if (next.length === arr.length) continue;
-    const tmp = `${p}.tmp.${process.pid}`;
-    fs.writeFileSync(tmp, JSON.stringify(next, null, 2) + '\n');
-    fs.renameSync(tmp, p);
+    writeJsonArray(p, next); // symlink-safe, like retireId's own writes
     removed = true;
   }
-  if (typeof _resetCache === 'function') _resetCache();
+  _resetCache();
   return removed;
 }
 

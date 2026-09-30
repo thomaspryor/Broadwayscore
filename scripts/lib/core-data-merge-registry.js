@@ -1912,6 +1912,8 @@ const CORE_DATA_MERGE_REGISTRY = [
   // scripts/lib/retired-show-ids.js. BRO-4398 added the first CI writer
   // (execute-approved-fix.yml's retire-show action) beside human sessions, so
   // both are now reconciled by a keyed union on `id` (merge-retired-ids.js).
+  // Consequence: an un-retirement (deleting an entry) must land on the
+  // private repo with no CI push racing it, or the union restores the entry.
   { file: 'retired-show-ids.json', surface: 'private-core-data', status: 'active', merge: mergeRetiredRecords, format: 'json', newline: true },
   { file: 'deleted-shows.json', surface: 'private-core-data', status: 'active', merge: mergeRetiredRecords, format: 'json', newline: true },
   // 2026 data audit (S5-T9): retired critic slug → canonical slug, a flat
