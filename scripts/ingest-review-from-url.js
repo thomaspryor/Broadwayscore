@@ -489,6 +489,9 @@ if (!show) {
     url,
     source: 'submit-review-form',
     fields,
+    // BRO-4431: this is one explicit url, so a longer copy of the same
+    // article may replace a truncated stored body (issue 908).
+    replaceBadBody: true,
   }, { dryRun, reviewTextsDir });
 
   // BRO-3790: createOrMergeReviewFile's merge-into-existing path only fills

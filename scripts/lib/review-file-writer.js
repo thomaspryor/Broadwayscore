@@ -36,6 +36,7 @@ const {
 const { findSiblingUrlOwner } = require('./review-url-collision');
 const { findMergedDuplicateOwner } = require('./merged-duplicate-urls');
 const { isStaleNonReviewSlot, isAggregatorPageUrl } = require('./review-slot-guards');
+const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
 const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
@@ -1249,6 +1250,17 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // metadata merge.
   const fullTextBefore = existing.fullText || '';
 
+  // BRO-4431: an explicit single-url ingest (input.replaceBadBody) may swap a
+  // truncated stored body for a longer copy of the same article; the field
+  // loop below would otherwise keep the short one because it is non-blank.
+  // The reclassify step further down then sees the changed body.
+  if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
+      && isSameArticleBodyUpgrade(existing, fields.fullText)) {
+    console.log(`  ↑ Replacing truncated body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);
+    existing.fullText = fields.fullText;
+    changed = true;
+  }
+
   // Snapshot the score BEFORE the field merge too (BRO-4128 ship-check/Codex
   // finding): the merge loop below can plant fields.originalScore/
   // aggregatorStars onto `existing` when the file was previously unscored,
@@ -1392,6 +1404,17 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     preMergeSnapshot,
   })) {
     changed = true;
+    // BRO-4431: the url change just cleared the OLD page's body/date
+    // (applyUrlChangeInvariant), after the field loop above had already
+    // skipped this write's own values because those fields were non-blank.
+    // They describe the new url, so fill them now (issue 913: a news post's
+    // slot moved to the real review and was left with no text).
+    if (existing.url === input.url) {
+      for (const key of ['fullText', 'publishDate']) {
+        const val = fields[key];
+        if (val != null && val !== '' && !existing[key]) existing[key] = val;
+      }
+    }
   }
   if (!urlLocked && input.url && !existing.url &&
       !slugLooksLikeDifferentShow(input.url, { showTitle: _getShowTitle(showId) })) {
