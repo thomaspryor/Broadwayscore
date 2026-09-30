@@ -1,0 +1,89 @@
+{
+  "runDate": "2026-09-30T00:15:15.597Z",
+  "config": {
+    "batchSize": 10,
+    "maxReviews": 50,
+    "priority": "all",
+    "showFilter": "amelie-a-new-musical-2017,bob-fosses-dancin-2023,dog-man-the-musical-west-end-2026,electra-persona-west-end-2026,fela-2009,for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022,noda-map-320f-west-end-2026,romeo-and-juliet-2013",
+    "aggressive": false,
+    "scrapingBeeEnabled": true,
+    "brightDataEnabled": true,
+    "stealthPluginLoaded": true
+  },
+  "summary": {
+    "processed": 1,
+    "failed": 7,
+    "skipped": 0,
+    "successRate": "12.5%"
+  },
+  "tierBreakdown": {
+    "playwright": 1,
+    "amp": 1,
+    "browserbase": 1,
+    "directCookies": 0,
+    "scrapingdog": 1,
+    "scrapingbee": 0,
+    "brightdata": 0,
+    "archiveToday": 0,
+    "archive": 0
+  },
+  "statistics": {
+    "tier1Attempts": 6,
+    "tier1Success": 5,
+    "ampAttempts": 1,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 3,
+    "tier1_5Success": 1,
+    "tier1_9Attempts": 1,
+    "tier1_9Success": 1,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
+    "tier3_6Success": 0,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 6,
+    "scrapingBeePageCredits": 0,
+    "scrapingBeeSerpCredits": 0,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 1.5,
+    "urlDiscoveryAttempts": 0,
+    "urlDiscoverySuccess": 0,
+    "urlDiscoveryCapped": 0
+  },
+  "processed": [
+    "noda-map-320f-west-end-2026/thereviewshub--daniel-spicer-cusack.json"
+  ],
+  "failed": [
+    "electra-persona-west-end-2026/muddystilettos--muddy-stilettos.json",
+    "dog-man-the-musical-west-end-2026/musical-theatre-review--unknown.json",
+    "bob-fosses-dancin-2023/timeout--adam-feldman.json",
+    "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-2022/timeout--adam-feldman.json",
+    "amelie-a-new-musical-2017/timeout--adam-feldman.json",
+    "romeo-and-juliet-2013/observer--unknown.json",
+    "fela-2009/variety--unknown.json"
+  ],
+  "tierDetails": {
+    "playwright": [
+      "noda-map-320f-west-end-2026/thereviewshub--daniel-spicer-cusack.json"
+    ],
+    "amp": [
+      "data/review-texts/fela-2009/variety--unknown.json"
+    ],
+    "browserbase": [
+      "data/review-texts/romeo-and-juliet-2013/observer--unknown.json"
+    ],
+    "directCookies": [],
+    "scrapingdog": [
+      "dog-man-the-musical-west-end-2026/musical-theatre-review--unknown.json"
+    ],
+    "scrapingbee": [],
+    "brightdata": [],
+    "archiveToday": [],
+    "archive": []
+  },
+  "failuresByOutlet": {},
+  "urlDiscoveries": []
+}
