@@ -273,6 +273,31 @@ jobs:
         if: steps.find.outputs.has_shows == 'true'
         uses: ./.github/actions/setup-playwright
 
+      # BRO-4408: drain the _pending/ no-byline sink for the in-window shows
+      # BEFORE the poll loop. Site-search hits without a byline (TheWrap /
+      # Telegraph / WhatsOnStage on opening night) land in _pending/ and were
+      # only promoted by enrich-reviews.yml (every 6h), so a T1/T2 review sat
+      # invisible for hours. Promotions stay UNCOMMITTED in the review-texts
+      # checkout: the poll step's `git status --porcelain` then sets any_new,
+      # which gates the commit + collect + score chain for them. Scoped to the
+      # exact in-window list (steps.find.outputs.shows), never --all-open.
+      # BD_OPENING_NIGHT exempts these in-window fetches from the BD daily
+      # breaker (brightdata-caps.js isExemptCaller); replay-pending-bylines.js
+      # is not on the script allowlist.
+      - name: Drain pending no-byline reviews (in-window shows)
+        if: steps.find.outputs.has_shows == 'true'
+        env:
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
+          BD_OPENING_NIGHT: '1'
+          IN_WINDOW_SHOWS: ${{ steps.find.outputs.shows }}
+        run: node scripts/replay-pending-bylines.js --shows="$IN_WINDOW_SHOWS" --time-budget-min=4
+        continue-on-error: true
+        timeout-minutes: 8
+
       - name: Run poller for each show
         if: steps.find.outputs.has_shows == 'true'
         id: poll
