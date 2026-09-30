@@ -133,6 +133,8 @@ const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { loadStaging, updateStaging, mergeCandidates, writeStagingCandidates, STAGING_PATH } = require('./lib/owe-venue-staging');
 const { resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
 const { stripHtml } = require('./lib/article-extractor');
+const { decideVenueListingPromotion } = require('./lib/ob-cross-validation');
+const { OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
 
 // venue-write-guard-ok: the ONLY shows.json venue write in this file is
 // buildOffWestEndVenueShowEntry's `venue: sanitizeVenueForWrite(candidate.venue)`
@@ -351,6 +353,48 @@ function findVenueListingPage(venue, listingPages) {
 }
 
 /**
+ * A candidate staged by one of OWE_VENUE_CONFIGS' dated readers (BRO-4398):
+ * it carries the venue's own first/last performance dates.
+ */
+function isDatedListingCandidate(candidate) {
+  return !!(candidate && (candidate.listingFirstDate || candidate.listingLastDate));
+}
+
+/**
+ * Is `venue` one of the curated London venues discovery reads — a dated
+ * reader (OWE_VENUE_CONFIGS) or a VENUE_LISTING_PAGES link reader? The OWE
+ * analogue of isKnownOffBroadwayVenue for decideVenueListingPromotion:
+ * a dated listing only counts as evidence at a house we chose to read.
+ * normalizeVenueName equality, never a substring match.
+ */
+function isCuratedLondonVenue(venue, opts = {}) {
+  const key = normalizeVenueName(venue);
+  if (!key) return false;
+  const dated = Array.isArray(opts.datedConfigs) ? opts.datedConfigs : OWE_VENUE_CONFIGS;
+  if (dated.some(d => d && normalizeVenueName(d.name) === key)) return true;
+  return !!findVenueListingPage(venue, opts.listingPages);
+}
+
+/**
+ * The run dates a dated listing supports, in show-entry terms: first
+ * performance → previewsStartDate (London's first performance, as discovery
+ * records TodayTix/OLT start dates), last → closingDate. Not when the
+ * reader flags the first date as merely the next one on sale, or the last
+ * as a booking horizon.
+ */
+function listingRunDates(candidate) {
+  if (!isDatedListingCandidate(candidate)) return { previewsStartDate: null, closingDate: null };
+  return {
+    previewsStartDate: candidate.listingFirstDateIsNext ? null : validDateOrNull(candidate.listingFirstDate),
+    closingDate: candidate.listingLastDateIsHorizon ? null : validDateOrNull(candidate.listingLastDate),
+  };
+}
+
+// decideVenueListingPromotion refusals that change with time rather than
+// with the listing: a run more than a year out becomes eligible later.
+const DATED_LISTING_HOLD_RE = /\bmore than \d+d out\b/;
+
+/**
  * Pure promotion rule for one staged Off-West End venue-page candidate
  * ({title, venue, category, source, description, ...}). Testable in
  * isolation (CLAUDE.md §15). `persistent` says whether the refusal is a
@@ -425,6 +469,37 @@ function decideOffWestEndVenuePromotion(candidate, ctx = {}) {
     return decideByReviewEvidence(candidate, evidence, evidencePages, registry);
   }
 
+  // BRO-4398 — a dated reader's row is decided on the venue's own dated
+  // listing, exactly as decideVenueListingPromotion decides an OB venue's:
+  // a run (five-plus performances, or a multi-day span when uncounted) that
+  // has not ended and starts within a year. No re-fetch: the listing it was
+  // staged from is the evidence, and a refusal here is final for the row
+  // (discovery re-stages it with fresh dates if the listing changes).
+  if (isDatedListingCandidate(candidate)) {
+    const isOneNightShow = typeof ctx.isOneNightShow === 'function' ? ctx.isOneNightShow : discovery().isOneNightShow;
+    const v = decideVenueListingPromotion(candidate, {
+      ...(ctx.todayIso ? { todayIso: ctx.todayIso } : {}),
+      isKnownVenue: venue => isCuratedLondonVenue(venue, { listingPages: ctx.listingPages, datedConfigs: ctx.datedConfigs }),
+      gates: { isOneNightShow },
+    });
+    if (v.confirmed) {
+      const dated = (Array.isArray(ctx.datedConfigs) ? ctx.datedConfigs : OWE_VENUE_CONFIGS)
+        .find(d => d && normalizeVenueName(d.name) === normalizeVenueName(candidate.venue));
+      return {
+        confirmed: true,
+        persistent: false,
+        reason: v.reason,
+        source: 'venue-listing',
+        page: candidate.listingUrl || (dated ? dated.url : null) || null,
+      };
+    }
+    return {
+      confirmed: false,
+      persistent: !DATED_LISTING_HOLD_RE.test(v.reason),
+      reason: `venue's dated listing does not confirm a run: ${v.reason}`,
+    };
+  }
+
   const page = findVenueListingPage(candidate.venue, ctx.listingPages);
   if (!page) {
     return { confirmed: false, persistent: true, reason: `venue "${candidate.venue}" is not one of the curated VENUE_LISTING_PAGES Off-West End venue pages — venue-page confirmation is impossible (add the venue to VENUE_LISTING_PAGES in scripts/discover-new-shows.js, or add the show by hand)` };
@@ -484,9 +559,12 @@ function buildOffWestEndVenueShowEntry(candidate, venueVocabulary, options = {})
   // the same normaliser validate-data.js gates on, so a row written here can
   // never fail the gate that guards it.
   const normalizedTitle = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }, { venueVocabulary }).title;
+  // A dated reader's row (BRO-4398) supplies its run from the listing when
+  // the candidate carries no explicit dates of its own.
+  const listed = listingRunDates(candidate);
   const openingDate = validDateOrNull(candidate.openingDate);
-  const previewsStartDate = validDateOrNull(candidate.previewsStartDate);
-  const closingDate = validDateOrNull(candidate.closingDate);
+  const previewsStartDate = validDateOrNull(candidate.previewsStartDate) || listed.previewsStartDate;
+  const closingDate = validDateOrNull(candidate.closingDate) || listed.closingDate;
   const minted = discovery().mintCandidateId({
     title: normalizedTitle,
     category: 'off-west-end',
@@ -711,6 +789,8 @@ async function fetchVenueListings(candidates, opts = {}) {
   const pages = new Map();
   for (const c of candidates) {
     if (reviewEvidence(c).length > 0) continue;
+    // BRO-4398: decided on the dated listing it was staged from.
+    if (isDatedListingCandidate(c)) continue;
     const page = findVenueListingPage(c && c.venue, opts.listingPages);
     if (page && !pages.has(page.name)) pages.set(page.name, page);
   }
@@ -818,7 +898,7 @@ async function evaluateCandidates(candidates, ctx) {
       // 3. Confirmation: phantom/excluded titles, the S4-T6 ingest gate, then
       //    the venue page itself — or, for an evidence-backed candidate, the
       //    registered-outlet page it cites (S8-T3).
-      const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry });
+      const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry, todayIso: now().toISOString().slice(0, 10) });
       if (!decision.confirmed) {
         if (decision.persistent) prune(c, 'skip-unconfirmed', decision.reason);
         else hold(c, 'skip-unconfirmed', decision.reason);
@@ -1093,6 +1173,9 @@ module.exports = {
   fetchVenueListing,
   fetchVenueListings,
   findVenueListingPage,
+  isDatedListingCandidate,
+  isCuratedLondonVenue,
+  listingRunDates,
   evaluateCandidates,
   main,
   MAX_PROMOTE_PER_RUN,
