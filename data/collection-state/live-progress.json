@@ -1,21 +1,45 @@
 {
-  "updatedAt": "2026-09-30T23:03:34.386Z",
-  "processed": 580,
-  "failed": 372,
-  "successRate": "60.9%",
+  "updatedAt": "2026-09-30T23:25:06.705Z",
+  "processed": 614,
+  "failed": 398,
+  "successRate": "60.7%",
   "tierBreakdown": {
-    "playwright": 310,
+    "playwright": 326,
     "amp": 9,
     "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 35,
     "scrapingbee": 76,
-    "brightdata": 45,
+    "brightdata": 53,
     "archiveToday": 0,
-    "archive": 134
+    "archive": 144
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 30,
   "recentActivity": [
+    {
+      "t": "2026-09-30T15:08:56.301Z",
+      "event": "bb-session",
+      "session": "34741221",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-09-30T15:09:06.088Z",
+      "event": "bb-session",
+      "session": "599b70ee",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-30T15:29:54.956Z",
+      "event": "bb-session",
+      "session": "10f8eb16",
+      "url": "https://bachtrack.com/review-mary-queen-of-scots-scottish-ballet-sophie-laplane-"
+    },
+    {
+      "t": "2026-09-30T15:30:13.255Z",
+      "event": "bb-session",
+      "session": "d8e6e97e",
+      "url": "https://bachtrack.com/review-mary-queen-of-scots-scottish-ballet-sophie-laplane-"
+    },
     {
       "t": "2026-09-30T15:34:31.460Z",
       "event": "bb-session",
@@ -93,39 +117,6 @@
       "t": "2026-09-30T18:33:15.545Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-30T22:49:16.547Z",
-      "event": "bb-session",
-      "session": "368ed9ae",
-      "url": "https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneat"
-    },
-    {
-      "t": "2026-09-30T22:49:17.493Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-30T22:49:37.875Z",
-      "event": "bb-session",
-      "session": "6cdb675f",
-      "url": "https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneat"
-    },
-    {
-      "t": "2026-09-30T22:49:38.729Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-30T22:55:34.490Z",
-      "event": "bb-session",
-      "session": "709fe747",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-09-30T22:55:35.390Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
