@@ -22,6 +22,7 @@ const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
+const { evaluateSerpAcceptance } = require('./serp-review-acceptance');
 const { isTimeOutLondonListing } = require('./timeout-london-url');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
@@ -1382,6 +1383,18 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     });
     if (!candValidation.ok) {
       log(`    ✗ ${candValidation.reason}: ${candValidation.detail} — ${url.substring(0, 80)}`);
+      continue;
+    }
+
+    // BRO-4409: non-review shapes / different work sharing a title token.
+    const acceptance = evaluateSerpAcceptance({ url, title: result.title, snippet: result.snippet, showTitle: showInfo.title });
+    if (!acceptance.ok) {
+      log(`    ✗ SERP acceptance (${acceptance.reason}): ${url.substring(0, 80)}`);
+      continue;
+    }
+    // A URL a previous run adopted and a human/audit reverted must not come back.
+    if (Array.isArray(review.serpRejectedUrls) && review.serpRejectedUrls.includes(url)) {
+      log(`    ✗ Previously rejected adoption (serpRejectedUrls): ${url.substring(0, 80)}`);
       continue;
     }
 
