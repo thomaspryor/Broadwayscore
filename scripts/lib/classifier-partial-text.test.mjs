@@ -104,3 +104,60 @@ test('ensemble scoring text (getBestTextForScoring) excludes the JSON blob', () 
   assert.ok(!r.text.includes('Farage'));
   assert.ok(r.text.startsWith('Cleansed is'));
 });
+
+// A multi-show column (Theatrely on Hungry Women shape): the target show's
+// section starts after the first 2,500 chars.
+const COLUMN = [
+  `The Other Play | Photo: Someone. ${'otherplay staging acting '.repeat(140)}`,
+  `Meanwhile Hungry Women imagines a world without men and it is a thrilling night. ${'hungry '.repeat(200)}`,
+  `${'middle '.repeat(250)}`,
+  `In short, Hungry Women is hardly starved for material and I loved it. ${'closing '.repeat(40)}`,
+].join('\n\n');
+
+test('classifier sample finds a title with accents and a subtitle (shows.json form vs the critic\'s)', () => {
+  const text = 'history '.repeat(500) + 'This “Les Misérables” at Radio City is enormous and it works. ' + 'mis '.repeat(100) + 'coda '.repeat(400);
+  const s = buildClassifySample('Les Misérables: The Arena Concert Spectacular', text);
+  assert.ok(s.includes('Radio City is enormous'), 'folded, subtitle-free variant matched');
+});
+
+test('classifier sample spreads windows instead of taking the earliest mentions', () => {
+  const early = Array.from({ length: 6 }, (_, i) => `Hungry Women line ${i}. ${'e '.repeat(400)}`).join(' ');
+  const text = 'head '.repeat(400) + early + 'filler '.repeat(900) + 'LATE: Hungry Women is the verdict here. ' + 'tail '.repeat(300);
+  const s = buildClassifySample('Hungry Women', text);
+  assert.ok(s.includes('LATE: Hungry Women is the verdict'));
+});
+
+test('content-verifier prompt carries the late section of a multi-show column after the 2,500-char head', () => {
+  assert.ok(!COLUMN.slice(0, cv.CV_WINDOW_CHARS).includes('Hungry Women'), 'fixture: title absent from the head');
+  const { prompt } = cv.buildVerificationPrompt({
+    scrapedText: COLUMN, showTitle: 'Hungry Women', outletName: 'Theatrely', criticName: 'A Critic',
+    market: 'off-broadway', publishDate: '2026-08-03',
+  });
+  assert.ok(prompt.includes('Hungry Women imagines a world without men'));
+  assert.ok(prompt.includes('hardly starved'), 'ending included');
+  assert.ok(prompt.includes('which is NOT truncation'));
+});
+
+test('wrong-show and wrong-production prompts reach the late section of a multi-show column', () => {
+  const { buildWrongShowUserPrompt, buildWrongProductionUserPrompt } = require('./classifier-prompts.js');
+  const show = { id: 'hw-2026', title: 'Hungry Women', type: 'play', market: 'off-broadway' };
+  assert.ok(buildWrongShowUserPrompt({ show, showTitle: 'Hungry Women', showId: show.id, text: COLUMN }).includes('Hungry Women imagines'));
+  const wp = buildWrongProductionUserPrompt({ show, result: { showId: show.id, showYear: 2026, signals: [] }, reviewData: { fullText: COLUMN }, revivals: [] });
+  assert.ok(wp.includes('Hungry Women imagines'));
+});
+
+test('CV wrongArticle routes by family: not-a-review is never wrongShow', () => {
+  const { cvWrongArticleFamily } = require('./review-guards.js');
+  assert.equal(cvWrongArticleFamily({ wrongArticle: true, wrongProduction: false, articleType: 'preview' }), 'nonReview');
+  assert.equal(cvWrongArticleFamily({ wrongArticle: true, wrongProduction: true }), 'wrongShow');
+  assert.equal(cvWrongArticleFamily({ wrongArticle: false, wrongProduction: true }), null);
+  assert.equal(cvWrongArticleFamily(null), null);
+});
+
+test('a human non-review clear stops CV re-promotion', () => {
+  const { cvNonReviewHumanCleared } = require('./review-guards.js');
+  assert.equal(cvNonReviewHumanCleared({ nonReviewManualClear: true }), true);
+  assert.equal(cvNonReviewHumanCleared({ wrongArticleManualClear: true }), true);
+  assert.equal(cvNonReviewHumanCleared({ humanReviewedWrongArticle: false }), true);
+  assert.equal(cvNonReviewHumanCleared({ isNonReview: false }), false);
+});

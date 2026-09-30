@@ -14,6 +14,7 @@ const {
   getOperaWrongShowContext,
 } = require('./opera-prompt-context');
 const { getMarketLabel, isNonMetroMarket, getRegionalPromptContext, isTourMarket, getTourPromptContext } = require('./market-label');
+const { buildClassifySample } = require('./classify-sample');
 
 /**
  * Build the wrong-PRODUCTION classifier user prompt.
@@ -42,10 +43,9 @@ function buildWrongProductionUserPrompt({ show, result, reviewData, revivals }) 
     || reviewData.pullQuote
     || '';
 
-  let truncated = text;
-  if (text.length > 3000) {
-    truncated = text.substring(0, 2000) + '\n\n[...truncated...]\n\n' + text.substring(text.length - 1000);
-  }
+  // BRO-4429: head + the passages naming the show + tail, not 2,000 + 1,000
+  // chars (a production-identifying passage mid-text was never read).
+  const truncated = buildClassifySample(showTitle, text, { head: 2000, fullLimit: 4000 });
 
   // Market-aware framing. Labelling a West End / Off-Broadway production as a
   // "Broadway opening" makes the LLM read the correctly-filed local-market
@@ -100,11 +100,14 @@ ${truncated || '(no text available)'}`;
  * @returns {string}
  */
 function buildWrongShowUserPrompt({ show, showTitle, showId, text }) {
-  const truncated = text.length > 2000 ? text.substring(0, 2000) : text;
+  // BRO-4429: was the first 2,000 chars only, so a multi-show column whose
+  // first section is another show read as the wrong show.
+  const truncated = buildClassifySample(showTitle, text || '', { head: 2000, fullLimit: 4000 });
   const isOpera = isOperaShow(show);
   const operaContext = isOpera ? `\n\n${getOperaWrongShowContext()}\n` : '';
+  const scope = truncated.length < (text || '').length ? 'opening, passages naming the show, and ending; "[...]" marks omitted text' : 'complete';
 
-  return `Show: "${showTitle}" (${showId})${operaContext}\n\nReview text (first ${Math.min(text.length, 2000)} chars):\n${truncated}`;
+  return `Show: "${showTitle}" (${showId})${operaContext}\n\nReview text (${scope}):\n${truncated}`;
 }
 
 module.exports = {

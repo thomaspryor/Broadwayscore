@@ -182,7 +182,7 @@ test('wrong-show: handles null show.type gracefully', () => {
   assert.doesNotMatch(prompt, /OPERA CONTEXT/);
 });
 
-test('wrong-show: truncates long text at 2000 chars', () => {
+test('wrong-show: samples long text (head + show mentions + tail) instead of a 2000-char head (BRO-4429)', () => {
   const longText = 'a'.repeat(5000);
   const prompt = buildWrongShowUserPrompt({
     show: { type: 'musical' },
@@ -190,7 +190,16 @@ test('wrong-show: truncates long text at 2000 chars', () => {
     showId: 'test-2026',
     text: longText,
   });
-  assert.match(prompt, /first 2000 chars/);
+  assert.match(prompt, /opening, passages naming the show, and ending/);
+  assert.ok(prompt.length < 4400, `prompt stays near the sample size: ${prompt.length}`);
+});
+
+test('wrong-show: a late section naming the show reaches the prompt; short text is sent whole', () => {
+  const column = `The Other Play | Photo: X. ${'other '.repeat(700)} Meanwhile Hungry Women imagines a world without men. ${'filler '.repeat(500)} The end.`;
+  const prompt = buildWrongShowUserPrompt({ show: { type: 'play' }, showTitle: 'Hungry Women', showId: 'hw-2026', text: column });
+  assert.match(prompt, /Hungry Women imagines a world without men/);
+  const short = buildWrongShowUserPrompt({ show: { type: 'musical' }, showTitle: 'Test', showId: 'test-2026', text: 'A short review of Test.' });
+  assert.match(short, /\(complete\)/);
 });
 
 test('classifier prompt tells the model any tour stop counts (BRO-4211)', () => {

@@ -23,6 +23,7 @@ const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 const { getCvStyle } = require('./outlet-canonicalize');
 const { hasOpinionLanguage, stripLeadingJsonBlob } = require('./content-quality');
 const { stripConsentLayerPrefix } = require('./text-cleaning');
+const { buildClassifySample } = require('./classify-sample');
 
 /**
  * Extract a sensible publication year from a URL path.
@@ -151,6 +152,12 @@ const HEAD_AMBIGUOUS_ARTICLE_TYPES = new Set(['preview', 'feature', 'news', 'oth
 
 // The prompt shows the verifier only this many leading chars of the article.
 const CV_WINDOW_CHARS = 2500;
+// BRO-4429: after that head the prompt also carries up to two passages that
+// name the show and this many closing chars, so a multi-show column whose first
+// section is another show (Theatrely on Hungry Women) or a review whose verdict
+// comes late is not judged on its opening alone. The head (and so contentHash
+// and isCvVerdictFromPartialWindow) is unchanged.
+const CV_TAIL_CHARS = 800;
 
 /**
  * Hash the first 2500 chars of text — used to detect when contentVerification
@@ -748,8 +755,8 @@ I scraped what should be a ${mc.label} theater review. Verify if the content is 
 - Outlet: ${outletName}
 - Critic: ${criticName || 'Unknown'}${dateContext}${publishDateContext}${venueContext}${excerptContext}
 
-**Scraped Content (first 2500 chars):**
-${scrapedText.substring(0, CV_WINDOW_CHARS)}
+**Scraped Content (${scrapedText.length > CV_WINDOW_CHARS + CV_TAIL_CHARS ? `first ${CV_WINDOW_CHARS} chars, then the passages that name the show and the ending; "[...]" marks omitted text, which is NOT truncation` : 'complete'}):**
+${buildClassifySample(showTitle, scrapedText, { head: CV_WINDOW_CHARS, tail: CV_TAIL_CHARS, window: 700, maxWindows: 2, fullLimit: CV_WINDOW_CHARS + CV_TAIL_CHARS })}
 
 **Total scraped length:** ${scrapedText.length} characters
 
