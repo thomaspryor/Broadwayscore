@@ -556,10 +556,15 @@ function cleanText(text) {
   if (!text) return text;
 
   // Decode HTML entities first (&#8217; → ', &#8220; → ", etc.)
-  const { decodeHtmlEntities } = require('./text-cleaning');
+  const { decodeHtmlEntities, stripLeadingJsonBlob } = require('./text-cleaning');
   let cleaned = decodeHtmlEntities(text);
 
   // === LEADING JUNK ===
+
+  // Page-data JSON captured ahead of the article (BRO-4429): the ensemble's
+  // scoreability check read the standard.co.uk homepage JSON and rejected a
+  // real review as garbage_text.
+  cleaned = stripLeadingJsonBlob(cleaned);
 
   // Remove common mastheads
   cleaned = cleaned.replace(/^(Democracy Dies in Darkness|All the News That's Fit to Print)\s*/i, '');

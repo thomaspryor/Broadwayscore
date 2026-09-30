@@ -1,0 +1,165 @@
+{
+  "issueNumber": "bro-4429",
+  "planId": "d1d0eaf8-8587-42ec-b3c5-460ef004dea0",
+  "status": "pending",
+  "createdAt": "2026-09-30T16:28:06.399Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Re-include real reviews that classifiers dropped after reading only part of the text (BRO-4429). The code fix that stops new cases lands in the same change. The five verified cases: The Saviors (TheaterMania), Cleansed (Evening Standard), Electra/Persona (NYT), Les Mis arena (NY Sun), Hungry Women (Theatrely).",
+    "steps": [
+      "Clear isNonReview and lock it with nonReviewManualClear",
+      "The Saviors: also clear the CV-promoted wrongShow and not_a_review rejection, and mark the CV wrongArticle verdict human-cleared",
+      "Hungry Women: clear the wrongProduction verdict (CV read only The Pass section), fix the byline, and score the Hungry Women section by hand"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: TheaterMania review (URL /review-the-saviors-..., cited by Playbill Verdict and Show Score); CV read only the first 2,500 chars and called the set-up paragraphs a preview"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "wrongArticleManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Human read the whole article: it is this production's review (clears cvWrongArticleHighConfidence)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "rejectionReason",
+        "oldValue": "not_a_review",
+        "newValue": null,
+        "description": "not_a_review came from the same partial-window CV verdict"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "wrongShowManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "wrongShow was the main-loop promotion of a pure not-a-review CV verdict (#651 shape)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "the-saviors-off-broadway-2026/theatermania--zachary-stewart.json",
+        "field": "wrongShow",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Clear the CV-promoted wrongShow (marker set first so the write guard keeps the clear)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cleansed-off-west-end-2026/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: Evening Standard 4-star review; Gemini read ~9.4k chars of homepage JSON stored ahead of the review and called it news"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cleansed-off-west-end-2026/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/nytimes--houman-barekat.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: NYT review; Gemini called bot-truncated text a preview after a high-confidence CV review verdict and the BRO-4204 manual clear"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "electra-persona-west-end-2026/nytimes--houman-barekat.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: NY Sun review cited by Playbill Verdict; the opening paragraphs are history, the verdict on the Radio City staging follows"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "les-miserables-arena-concert-spectacular-off-broadway-2026/new-york-sun--simon-goldstein.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "wrongProductionManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Multi-show Theatrely column (The Pass, then Hungry Women); CV saw only The Pass section"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "criticName",
+        "oldValue": "Emily Wyrwa",
+        "newValue": "Juan A. Ramirez",
+        "description": "The column's author bio names Juan A. Ramirez; Emily Wyrwa was carried over from the casting-news URL this file held before"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "humanReviewNote",
+        "oldValue": null,
+        "newValue": "Scored from the Hungry Women section only (the column also reviews The Pass): potent, remarkably strong first act, predictable later structure, engaging and highly enjoyable production (BRO-4429).",
+        "description": "Why the score is set by hand"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "humanReviewScoreProvisional",
+        "oldValue": null,
+        "newValue": false,
+        "description": "Make the score final so the rebuild honours it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "humanReviewScore",
+        "oldValue": null,
+        "newValue": 78,
+        "description": "Positive review of Hungry Women; an ensemble rescore would read The Pass section too"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hungry-women-off-broadway-2026/theatrely--emily-wyrwa.json",
+        "field": "llmPullQuote",
+        "oldValue": null,
+        "newValue": "Hungry Women is hardly starved for material, and serves up a playwright ravished with talent and voracious in ambition.",
+        "description": "Verdict line from the Hungry Women section"
+      }
+    ]
+  }
+}

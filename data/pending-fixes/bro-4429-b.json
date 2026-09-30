@@ -1,0 +1,212 @@
+{
+  "issueNumber": "bro-4429-b",
+  "planId": "c574ed03-2443-44c6-9108-258225f2f697",
+  "status": "pending",
+  "createdAt": "2026-09-30T16:28:06.401Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Re-include real reviews that classifiers dropped after reading only part of the text (BRO-4429). The code fix that stops new cases lands in the same change. Same-class files: Evening Standard reviews stored behind homepage JSON, and reviews the Gemini non-review pass stamped over a high-confidence content-verifier \"review\" verdict, a human clear, or bot-truncated text.",
+    "steps": [
+      "Clear isNonReview and lock it with nonReviewManualClear",
+      "Woman in Mind: clear the ensemble garbage_text rejection that read the homepage JSON"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "review-field-edit",
+        "file": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: Evening Standard 3-star review; Gemini judged the homepage JSON stored ahead of it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "under-the-shadow-off-west-end-2026/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: Evening Standard 3-star review; Gemini judged the homepage JSON stored ahead of it"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "rejectionReason",
+        "oldValue": "garbage_text",
+        "newValue": null,
+        "description": "The ensemble garbage_text rejection read the homepage JSON stored ahead of the review (its reasoning says so); the scorer now skips that JSON"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "rejectionReasoning",
+        "oldValue": "claude: This appears to be a JSON data structure containing news articles and headlines, not a coherent review text of Woman in Mind; openai: The text provided is a collection of unrelated news articles and not a review of the show 'Woman in Mind'.",
+        "newValue": null,
+        "description": "The ensemble garbage_text rejection read the homepage JSON stored ahead of the review (its reasoning says so); the scorer now skips that JSON"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "rejectedBy",
+        "oldValue": "ensemble-scoreability-check",
+        "newValue": null,
+        "description": "The ensemble garbage_text rejection read the homepage JSON stored ahead of the review (its reasoning says so); the scorer now skips that JSON"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "woman-in-mind-west-end-2025/standard--nick-curtis.json",
+        "field": "rejectedAt",
+        "oldValue": "2026-03-16T19:25:49.990Z",
+        "newValue": null,
+        "description": "The ensemble garbage_text rejection read the homepage JSON stored ahead of the review (its reasoning says so); the scorer now skips that JSON"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/broadwayworld--michael-dale.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: BWW Review of the 2019 revival (CV high-confidence review, manual wrongProduction clear)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "all-my-sons-2019/broadwayworld--michael-dale.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-the-jellicle-ball-off-broadway-2024/queerty--matthew-wexler.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: Queerty review of the PAC NYC run (CV high-confidence review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "cats-the-jellicle-ball-off-broadway-2024/queerty--matthew-wexler.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gigi-2015/timeout--adam-feldman.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: Time Out \"Gigi: Theater review by Adam Feldman\" (CV high-confidence review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gigi-2015/timeout--adam-feldman.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gutenberg-2023/deadline--greg-evans.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: Deadline Broadway review, opening night (CV high-confidence review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "gutenberg-2023/deadline--greg-evans.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hercules-west-end-2025/thestage--sam-marlowe.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: The Stage review of the Drury Lane production"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "hercules-west-end-2025/thestage--sam-marlowe.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "giant-public-theater-off-broadway-2012/wsj--terry-teachout.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: WSJ Teachout review of the Public Theater run (manual wrongProduction clear)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "giant-public-theater-off-broadway-2012/wsj--terry-teachout.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "network-2018/thestage--mark-shenton.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: The Stage review of the Belasco production (CV high-confidence review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "network-2018/thestage--mark-shenton.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json",
+        "field": "isNonReview",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Real review: Bloomberg Jeremy Gerard review of the Richard Rodgers revival (CV high-confidence review)"
+      },
+      {
+        "type": "review-field-edit",
+        "file": "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json",
+        "field": "nonReviewManualClear",
+        "oldValue": null,
+        "newValue": true,
+        "description": "Lock the clear so the non-review passes skip this file"
+      }
+    ]
+  }
+}

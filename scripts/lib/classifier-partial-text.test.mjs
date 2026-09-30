@@ -71,6 +71,14 @@ test('text-cleaning leaves editor notes and bracketed prose alone', () => {
   }
 });
 
+test('LLM scoring input skips a leading JSON blob (ensemble garbage_text rejection)', () => {
+  const { getBestTextForScoring } = require('./text-quality.js');
+  const best = getBestTextForScoring({ fullText: `${homepageJson()}\n \n ${REVIEW_PROSE}` });
+  assert.equal(best.type, 'fullText');
+  assert.ok(best.text.startsWith('Culture | Theatre'), best.text.slice(0, 40));
+  assert.ok(!best.text.includes('"standfirst"'));
+});
+
 test('content tier judges the prose behind a JSON blob, and a JSON-only text is not complete', () => {
   const withBlob = classifyContentTier({ fullText: `${homepageJson()}\n${REVIEW_PROSE}` });
   const prose = classifyContentTier({ fullText: REVIEW_PROSE });
