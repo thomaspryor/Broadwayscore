@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-09-30T00:47:03.884Z",
+  "runDate": "2026-09-30T00:48:03.412Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "king-charles-iii-2015,pretty-woman-the-musical-2018,schmigadoon-2026",
+    "showFilter": "standing-at-the-skys-edge-west-end-2024,vanya-and-sonia-and-masha-and-spike-2013,wolf-hall-parts-one-and-two-2015",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 1,
+    "processed": 2,
+    "failed": 2,
     "skipped": 0,
     "successRate": "50.0%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,23 +28,23 @@
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 1,
-    "tier1Success": 1,
+    "tier1Attempts": 4,
+    "tier1Success": 4,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
-    "tier4Success": 1,
-    "totalFailed": 1,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 2,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,13 +54,18 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "pretty-woman-the-musical-2018/nypost--joe-dziemianowicz.json"
+    "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json",
+    "vanya-and-sonia-and-masha-and-spike-2013/bloomberg--jeremy-gerard.json"
   ],
   "failed": [
-    "schmigadoon-2026/timeout--unknown.json"
+    "standing-at-the-skys-edge-west-end-2024/i-paper--fiona-mountford.json",
+    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json",
+      "vanya-and-sonia-and-masha-and-spike-2013/bloomberg--jeremy-gerard.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
