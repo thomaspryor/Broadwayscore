@@ -27,6 +27,7 @@ const { isCrossOutletUrl } = require('./lib/review-normalization');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
 const { pushWithRetry } = require('./lib/push-with-retry.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { hasUsableText, isPlausibleArticleRedirect, AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
 
 // ---------------------------------------------------------------------------
 // CONFIG
@@ -108,7 +109,7 @@ function loadCandidates() {
         } else {
           // Default filters: skip flagged, skip if has text, require URL
           if (data.wrongProduction || data.wrongShow || data.wrongAttribution || data.isRoundupArticle) continue;
-          if (data.fullText && data.fullText.length > 100) continue;
+          if (hasUsableText(data)) continue;
           if (!data.url) continue;
           if (data.urlDiscoveryMethod) continue;
         }
@@ -191,7 +192,9 @@ function updateReviewUrl(candidate, newUrl, method) {
   // pre-publication tally (BRO-4281) must go too or the new URL starts with
   // free failures.
   metadata.fetchPrePubFailures = undefined;
-  const updated = updateFileUrlWithInvariant(candidate.filePath, newUrl, metadata);
+  // Same review at a new address: aggregator excerpts/stars/grades describe the
+  // review, not the old page, and are not re-gathered for old shows.
+  const updated = updateFileUrlWithInvariant(candidate.filePath, newUrl, metadata, { preserveFields: new Set(AGGREGATOR_FIELDS) });
   if (!updated) {
     // Same canonical URL (protocol/tracking-only rewrite) or unreadable file —
     // stamp metadata AND keep the legacy same-URL flag reset: a flagged
@@ -482,7 +485,17 @@ async function runPhase2(candidates) {
             newUrl = location;
           }
 
-          if (newUrl !== c.url) {
+          const plausible = isPlausibleArticleRedirect(c.url, newUrl);
+          if (newUrl !== c.url && !plausible.ok) {
+            console.log(`  [301/302 refused] ${c.reviewId}: ${c.url} → ${newUrl} (${plausible.reason})`);
+            stats.phase2.redirectsRefused = (stats.phase2.redirectsRefused || 0) + 1;
+            // Queue for Phase 3 SERP search, which ranks these with confirmed 404s.
+            // Skip the rewrite when already recorded, or every weekly run churns a commit.
+            if (!CONFIG.dryRun && !(c.data.redirectRefused && c.data.redirectRefused.to === newUrl)) {
+              c.data.redirectRefused = { to: newUrl, reason: plausible.reason, at: new Date().toISOString() };
+              fs.writeFileSync(c.filePath, JSON.stringify(c.data, null, 2) + '\n');
+            }
+          } else if (newUrl !== c.url) {
             console.log(`  [301/302] ${c.reviewId}`);
             console.log(`    ${c.url} → ${newUrl}`);
             updateReviewUrl(c, newUrl, 'http-redirect');
@@ -574,15 +587,16 @@ async function runPhase3(candidates) {
       if (fresh.urlDiscoveryMethod) continue;
       // When filtering by reason, skip default guards (no_url has no URL, wrong_content has text)
       if (!CONFIG.reasonFilter) {
-        if (fresh.fullText && fresh.fullText.length > 100) continue;
+        if (hasUsableText(fresh)) continue;
         if (!fresh.url) continue;
       }
       c.url = fresh.url;
       c.data = fresh;
 
-      // Categorize by priority
+      // Categorize by priority. A refused redirect (the URL now serves an
+      // unrelated page) is as dead as a 404.
       const attempts = fresh.fetchAttempts || [];
-      const is404 = fresh.httpStatus === 404 || fresh.httpStatus === 410 ||
+      const is404 = fresh.httpStatus === 404 || fresh.httpStatus === 410 || !!fresh.redirectRefused ||
         (attempts.length > 0 && ((attempts[attempts.length - 1].error || '').toLowerCase().match(/404|not found|dead/)));
 
       if (is404) {
