@@ -164,6 +164,7 @@ jobs:
       - name: Salvage The Stage walled-page metadata
         if: always() && steps.market.outputs.market == 'west-end'
         continue-on-error: true
+        timeout-minutes: 15
         env:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
           SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}

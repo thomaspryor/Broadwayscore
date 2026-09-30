@@ -66,7 +66,10 @@ function isCandidate(d) {
   if (d.wrongShow || d.wrongProduction || d.duplicateOf) return false;
   const critic = String(d.criticName || '').trim();
   const needsCritic = !critic || /^(unknown|the stage)$/i.test(critic);
-  const needsScore = !d.originalScore && d.originalScoreNormalized == null && d.originalScoreCleared !== true;
+  // Files already scoring from aggregator stars keep that score (the rebuild
+  // skips an originalScore next to an aggregator scoreSource anyway).
+  const needsScore = !d.originalScore && d.originalScoreNormalized == null && d.originalScoreCleared !== true
+    && d.aggregatorStars == null && d.aggregatorStarsNormalized == null;
   if (!(!d.publishDate || needsCritic || !d.outletStandfirst || needsScore)) return false;
   // Every attempt is stamped (below), so a page that yields nothing new is
   // re-fetched every RECHECK_DAYS, not on every scheduled run.
@@ -121,12 +124,14 @@ async function main() {
         console.log(`  ✗ ${label}: fetch failed (${String(e.message || e).slice(0, 80)})`);
       }
     }
+    // The directory is authoritative: a moved file can carry a stale showId.
+    const show = showsById[path.basename(path.dirname(fp))] || showsById[d.showId];
     if (html) {
-      const showTitle = (showsById[d.showId || path.basename(path.dirname(fp))] || {}).title;
+      const showTitle = (show || {}).title;
       let fresh = null;
       let set;
       try {
-        set = salvageWalledPageMetaToFile(fp, html, { showTitle, show: showsById[d.showId || path.basename(path.dirname(fp))], dryRun, onApplied: (x) => { fresh = x; } });
+        set = salvageWalledPageMetaToFile(fp, html, { showTitle, show, dryRun, onApplied: (x) => { fresh = x; } });
       } catch (e) {
         // One file edited or corrupted mid-run must not abort the rest.
         console.log(`  ✗ ${label}: salvage failed (${String(e.message || e).slice(0, 80)})`);
@@ -149,13 +154,14 @@ async function main() {
     } else {
       failed++;
     }
-    if (!dryRun && !fromCache) {
+    // Stamp only a page that actually loaded: an outage or exhausted scraper
+    // credits must not park every candidate for RECHECK_DAYS.
+    if (!dryRun && !fromCache && html) {
       try { stampChecked(fp, d.url); } catch (e) { console.log(`  ⚠ ${label}: attempt stamp failed (${String(e.message || e).slice(0, 80)})`); }
     }
     if (i < candidates.length - 1) await new Promise((r) => setTimeout(r, delayMs));
   }
   console.log(`\nDone: ${updated} updated, ${failed} without metadata${dryRun ? ' (dry run, nothing written)' : ''}`);
-  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `updated=${dryRun ? 0 : updated}\n`);
   if (suspects.length) {
     console.log(`\n${suspects.length} suspect file(s) (another show, a round-up, or not a review):`);
     for (const s of suspects) console.log(`  ${s}`);

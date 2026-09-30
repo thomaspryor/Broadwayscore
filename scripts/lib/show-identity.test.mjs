@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { resolveShowIdentity } = require('./show-identity.js');
+const { resolveShowIdentity, resolveShowMeta } = require('./show-identity.js');
 const { assessTextQuality, detectMultiShowContent } = require('./content-quality.js');
 
 // ============================================================================
@@ -93,4 +93,13 @@ test('a proper showId lets detectMultiShowContent exclude the show under review'
     !withId.showsFound.includes('holy fool'),
     `the show under review must be excluded from its own mention count, got ${JSON.stringify(withId.showsFound)}`
   );
+});
+
+// BRO-4428: walled-page star salvage gates the score on the show's run
+// window, so it needs the shows.json entry, not just the title.
+test('resolveShowMeta returns the shows.json entry, or null for an unknown id', () => {
+  const meta = resolveShowMeta('holy-fool-off-west-end-2026');
+  assert.ok(meta && meta.id === 'holy-fool-off-west-end-2026');
+  assert.equal(resolveShowMeta('no-such-show-9999'), null);
+  assert.equal(resolveShowMeta(undefined), null);
 });
