@@ -424,6 +424,56 @@ function findSameHouseTokenMatch(candidate, pool) {
 }
 
 /**
+ * BRO-4433 — the run a confirmed dated candidate supplies for the existing
+ * row it deduped to, when that row carries no run dates at all (a slug-title
+ * or TodayTix stub minted 'announced' before the venue's dated reader
+ * existed). Only an 'announced' row, and only a run starting in the stub
+ * id's year or the next. Fills null fields only; a row with any of previewsStartDate /
+ * openingDate / closingDate is left alone (its dates came from a source we
+ * do not second-guess here). Status is not touched: update-show-status.js
+ * Check 2e (decideAnnouncedPromotion) moves an announced row once it has a
+ * date, on its next run.
+ *
+ * Also offers a title when the row's title is a slug-derived truncation of
+ * the dated title ("Twenty Thousand Streets" → "Twenty Thousand Streets
+ * Under the Sky"): the dated title's words strictly contain the row's, it
+ * carries no subtitle/venue tag (":" or "("), and it normalizes without a
+ * manual-review flag. The id and slug never change.
+ *
+ * @param {object} candidate  a dated-listing candidate
+ * @param {{previewsStartDate?, openingDate?, closingDate?, title?}} row
+ * @param {object} [venueVocabulary]
+ * @returns {{previewsStartDate?: string, closingDate?: string, title?: string}|null}
+ */
+function datedBackfillFor(candidate, row, venueVocabulary) {
+  if (!isDatedListingCandidate(candidate) || !row || rowWindow(row)) return null;
+  if (row.status && row.status !== 'announced') return null;
+  const run = listingRunDates(candidate);
+  // An undated stub's id carries the year it was minted (discovery mints the
+  // current year when it has no dates), so a run starting later than the
+  // year after is a later production: an annual panto, a revival (BRO-4433
+  // ship-check). A 2026 stub for a spring-2027 run is still the same one.
+  const idYear = /-(20\d\d)$/.exec(String(row.id || ''));
+  const runStart = run.previewsStartDate || validDateOrNull(candidate.listingFirstDate);
+  if (idYear && runStart) {
+    const y = Number(idYear[1]);
+    const ry = Number(runStart.slice(0, 4));
+    if (ry < y || ry > y + 1) return null;
+  }
+  const patch = {};
+  if (run.previewsStartDate && row.previewsStartDate == null) patch.previewsStartDate = run.previewsStartDate;
+  if (run.closingDate && row.closingDate == null) patch.closingDate = run.closingDate;
+  if (Object.keys(patch).length === 0) return null;
+  const ct = tokensWithoutYears(candidate.title);
+  const rt = tokensWithoutYears(row.title);
+  if (rt.size > 0 && ct.size > rt.size && [...rt].every(t => ct.has(t)) && !/[:(]|\s[-–—]\s/.test(candidate.title)) {
+    const norm = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }, { venueVocabulary });
+    if (!norm.manualReview && norm.title && norm.title !== row.title) patch.title = norm.title;
+  }
+  return patch;
+}
+
+/**
  * Duplicate check for one candidate. findExistingMatch's London-pool title
  * fallback (same title at any London venue) is right for an aggregator
  * row, but a dated venue listing is itself evidence of a production at THAT
@@ -943,8 +993,10 @@ async function fetchVenueListings(candidates, opts = {}) {
  * @param {Function} [ctx.log]
  * @param {Function} [ctx.logEntry] injectable audit-log sink
  * @param {Function} [ctx.now] clock
- * @returns {Promise<{promoted: Array, held: Array, pruned: Array}>}
+ * @returns {Promise<{promoted: Array, held: Array, pruned: Array, backfills: Array}>}
  *   pruned = candidates that leave staging (promoted + persistent refusals)
+ *   backfills = {candidate, id, patch, sourceUrl} for undated rows a
+ *     confirmed dated duplicate dates (BRO-4433; the candidate is also pruned)
  */
 async function evaluateCandidates(candidates, ctx) {
   const {
@@ -966,6 +1018,7 @@ async function evaluateCandidates(candidates, ctx) {
   const promoted = [];
   const held = [];
   const pruned = [];
+  const backfills = [];
 
   const hold = (c, kind, reason, extra = {}) => {
     held.push({ candidate: c, kind, reason });
@@ -988,6 +1041,17 @@ async function evaluateCandidates(candidates, ctx) {
       //    once TodayTix/OLT/a hand add landed the same production.
       const existingMatch = findDuplicate(c, existingCandidates);
       if (existingMatch) {
+        // BRO-4433 — a confirmed dated listing dates the undated row it
+        // matched (null fields only; main() writes it).
+        const patch = datedBackfillFor(c, existingMatch.match, venueVocabulary);
+        if (patch) {
+          const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry, datedConfigs, todayIso: now().toISOString().slice(0, 10) });
+          if (decision.confirmed) {
+            backfills.push({ candidate: c, id: existingMatch.match.id, patch, sourceUrl: typeof decision.page === 'string' ? decision.page : null });
+            if (patch.previewsStartDate) existingMatch.match.previewsStartDate = patch.previewsStartDate;
+            if (patch.closingDate) existingMatch.match.closingDate = patch.closingDate;
+          }
+        }
         prune(c, 'skip-duplicate', `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})`, { matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
         continue;
       }
@@ -1054,7 +1118,7 @@ async function evaluateCandidates(candidates, ctx) {
     }
   }
 
-  return { promoted, held, pruned };
+  return { promoted, held, pruned, backfills };
 }
 
 function parseIntFlag(argv, name, fallback) {
@@ -1130,7 +1194,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
 
   const candidates = collectCandidates({ stagingPath, ...(stagedOverride ? { staged: stagedOverride } : {}) });
   log(`Loaded ${candidates.length} staged Off-West End candidate(s) from ${path.relative(process.cwd(), stagingPath)}${stagedOverride ? ' (+ stage file)' : ''}.`);
-  const result = { promoted: [], held: [], pruned: [], dryRun, suppressedWrites: showsGuard.suppressedWrites };
+  const result = { promoted: [], held: [], pruned: [], backfills: [], dryRun, suppressedWrites: showsGuard.suppressedWrites };
   if (candidates.length === 0) {
     log('No staged candidates to promote.');
     if (!dryRun) writeLastPromotionFile([], [], lastPromotionFile);
@@ -1152,7 +1216,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   // (S4-T9) applies to off-west-end candidates too.
   const existingCandidates = showsData.shows
     .filter(s => s.category === 'west-end' || s.category === 'off-west-end')
-    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category, previewsStartDate: s.previewsStartDate || null, openingDate: s.openingDate || null, closingDate: s.closingDate || null }));
+    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category, status: s.status, previewsStartDate: s.previewsStartDate || null, openingDate: s.openingDate || null, closingDate: s.closingDate || null }));
   // Loud on a malformed registry (loadRetiredIds throws) — silently treating
   // it as empty is exactly how a retired id slips back in.
   const retiredEntries = Array.isArray(io.retiredEntries) ? io.retiredEntries : loadRetiredIds();
@@ -1171,7 +1235,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   if (evidenceCount > 0) log(`Fetching evidence pages for ${evidenceCount} evidence-backed candidate(s)...`);
   const evidencePages = await fetchEvidencePages(candidates, evidenceOpts);
 
-  const { promoted, held, pruned } = await evaluateCandidates(candidates, {
+  const { promoted, held, pruned, backfills } = await evaluateCandidates(candidates, {
     existingCandidates,
     existingIds,
     venueVocabulary,
@@ -1187,7 +1251,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
     logEntry: logEntryFn,
     ...(io.now ? { now: io.now } : {}),
   });
-  Object.assign(result, { promoted, held, pruned });
+  Object.assign(result, { promoted, held, pruned, backfills });
   const rejected = pruned.filter(p => p.kind !== 'promote');
 
   log('');
@@ -1200,6 +1264,10 @@ async function main(argv = process.argv.slice(2), io = {}) {
     log('Dropping from staging:');
     for (const r of rejected.slice(0, 40)) log(`  - [${r.kind}] ${r.candidate.title} (${r.candidate.venue || 'no venue'}): ${r.reason}`);
     if (rejected.length > 40) log(`  ... +${rejected.length - 40} more`);
+  }
+  if (backfills.length > 0) {
+    log(`Dating ${backfills.length} undated row(s) from the venue's dated listing (null fields only):`);
+    for (const b of backfills) log(`  = ${b.id}: ${Object.entries(b.patch).map(([k, v]) => `${k}=${JSON.stringify(v)}`).join(', ')}`);
   }
   if (held.length > 0) {
     log('Holding in staging:');
@@ -1220,7 +1288,26 @@ async function main(argv = process.argv.slice(2), io = {}) {
     log(`Staging file: ${next.length} candidate(s) remain (${prunedHashes.size} removed).`);
   };
 
-  if (promoted.length === 0) {
+  // BRO-4433 — apply the backfills to the loaded rows, re-checking each
+  // field is still null on the row itself (never overwrite).
+  const applied = [];
+  if (backfills.length > 0) {
+    const byId = new Map(showsData.shows.map(s => [s.id, s]));
+    for (const b of backfills) {
+      const row = byId.get(b.id);
+      if (!row || rowWindow(row) || row.status !== 'announced') continue;
+      const set = {};
+      const oldTitle = row.title;
+      for (const k of ['previewsStartDate', 'closingDate']) {
+        if (b.patch[k] && row[k] == null) { row[k] = b.patch[k]; set[k] = b.patch[k]; }
+      }
+      if (Object.keys(set).length === 0) continue;
+      if (b.patch.title) { row.title = b.patch.title; set.title = b.patch.title; }
+      applied.push({ ...b, set, oldTitle });
+    }
+  }
+
+  if (promoted.length === 0 && applied.length === 0) {
     writeLastPromotionFile([], rejectedRows, lastPromotionFile);
     log('Nothing to promote; shows.json unchanged.');
     // Persistent refusals still leave staging on a zero-promotion run, or
@@ -1232,7 +1319,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   for (const p of promoted) showsData.shows.push(p.entry);
   try {
     const evidencePromotions = promoted.filter(p => reviewEvidence(p.candidate).length > 0).length;
-    const r = showsGuard.saveShows(showsData, { reason: `promote-owe-venue-candidates: ${promoted.length - evidencePromotions} venue-page + ${evidencePromotions} review-evidence promotion(s)` });
+    const r = showsGuard.saveShows(showsData, { reason: `promote-owe-venue-candidates: ${promoted.length - evidencePromotions} venue-page + ${evidencePromotions} review-evidence promotion(s), ${applied.length} undated row(s) dated from the venue's dated listing` });
     log(`Wrote shows.json: ${r.lineCountBefore} → ${r.lineCountAfter} lines.`);
   } catch (e) {
     if (e instanceof AtomicWriteShrinkError) {
@@ -1248,6 +1335,9 @@ async function main(argv = process.argv.slice(2), io = {}) {
   // that never happened.
   for (const p of promoted) {
     logEntryFn({ kind: 'promote', title: p.candidate.title, venue: p.candidate.venue, id: p.entry.id, status: p.entry.status, source: p.candidate.source, sourceUrl: p.sourceUrl });
+  }
+  for (const b of applied) {
+    logEntryFn({ kind: 'backfill-dates', title: b.candidate.title, venue: b.candidate.venue, id: b.id, set: b.set, ...(b.set.title ? { oldTitle: b.oldTitle } : {}), source: b.candidate.source, sourceUrl: b.sourceUrl });
   }
   writeLastPromotionFile(promoted, rejectedRows, lastPromotionFile);
   rewriteStaging();
@@ -1289,6 +1379,7 @@ module.exports = {
   isCuratedLondonVenue,
   findSameHouseTokenMatch,
   findDuplicate,
+  datedBackfillFor,
   listingRunDates,
   evaluateCandidates,
   main,
