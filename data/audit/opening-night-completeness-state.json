@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "updatedAt": "2026-09-30T01:56:08.820Z",
+  "updatedAt": "2026-09-30T02:27:01.078Z",
   "shows": {
     "delirium-off-broadway-2026": {
       "openingDate": "2026-09-24",
@@ -314,6 +314,12 @@
           "outletId": "standard",
           "criticName": "Nick Curtis",
           "url": "https://www.standard.co.uk/culture/theatre/tru-at-menier-chocolate-factory-review-b1298631.html",
+          "scored": true
+        },
+        {
+          "outletId": "financialtimes",
+          "criticName": "Sarah Hemming",
+          "url": "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2?syn-25a6b1a6=1",
           "scored": true
         },
         {
@@ -771,12 +777,26 @@
     },
     "alice-in-wonderland-off-broadway-2026": {
       "openingDate": "2026-09-26",
-      "snapshot": [],
+      "snapshot": [
+        {
+          "outletId": "goodstoriespodcast",
+          "criticName": null,
+          "url": "https://www.goodstoriespodcast.net/alice-in-wonderland-by-lewis-carroll/",
+          "scored": true
+        }
+      ],
       "lastAlertAt": null
     },
     "whos-afraid-of-virginia-woolf-west-end-2026": {
       "openingDate": "2026-09-30",
-      "snapshot": [],
+      "snapshot": [
+        {
+          "outletId": "outinjersey",
+          "criticName": "Allen Neuner",
+          "url": "https://outinjersey.net/whos-afraid-of-virginia-woolf-fun-and-games-at-george-and-marthas/",
+          "scored": true
+        }
+      ],
       "lastAlertAt": null
     }
   }
