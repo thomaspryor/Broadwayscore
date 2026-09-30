@@ -153,6 +153,8 @@ function apply(p, showDir) {
   const { safeWriteReview, safeUnlinkReview } = require('./lib/review-write-guard');
   const recMap = new Map(loadRecords(showDir).map((r) => [r.file, r.data]));
   if (!recMap.has(p.a) || !recMap.has(p.b)) return 'skipped: file already gone';
+  // force:true below bypasses the write guard's lock; a locked file is an owner decision, not ours to delete/rewrite.
+  if (recMap.get(p.a)._locked === true || recMap.get(p.b)._locked === true) return 'skipped: _locked file, needs owner review';
   if (p.cls === 'same-review') {
     const { canonical, loser } = pickCanonical(p, showDir, recMap);
     // Both live twins are web-search guesses, but an already-excluded sibling
