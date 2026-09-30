@@ -22,6 +22,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { listShowDirs } = require('./lib/list-show-dirs');
 const { hasHelpFlag } = require('./lib/cli-help');
 const { planIsolation } = require('./lib/multi-show-isolation-plan');
 const { safeWriteReview } = require('./lib/review-write-guard');
@@ -38,10 +39,10 @@ function main() {
   const onlyShow = showArg ? showArg.slice(7) : null;
   const at = new Date().toISOString();
   let changed = 0; let refused = 0;
-  for (const showId of fs.readdirSync(dir)) {
+  // listShowDirs: a dangling symlink must not crash the daily scheduled run.
+  for (const showId of listShowDirs(dir)) {
     if (showId[0] === '_' || showId[0] === '.' || (onlyShow && showId !== onlyShow)) continue;
     const showDir = path.join(dir, showId);
-    if (!fs.statSync(showDir).isDirectory()) continue;
     for (const file of fs.readdirSync(showDir)) {
       if (!file.endsWith('.json') || file === 'failed-fetches.json') continue;
       const filePath = path.join(showDir, file);
