@@ -3151,26 +3151,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-09-30T20:00:14.121Z",
+      "lastSeen": "2026-09-30T20:09:00.850Z",
       "lastNotifiedAt": "2026-09-29T21:43:21.279Z",
       "lastSurfacedAt": "2026-09-29T21:43:21.279Z",
       "notifyCount": 13,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "digest",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-09-30T20:00:14.129Z",
+      "lastSeen": "2026-09-30T20:09:00.858Z",
       "lastNotifiedAt": "2026-09-30T17:26:29.412Z",
       "lastSurfacedAt": "2026-09-30T17:26:29.412Z",
       "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3421,13 +3421,13 @@
       "disposition": "digest",
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-09-30T20:00:14.134Z",
+      "lastSeen": "2026-09-30T20:09:00.863Z",
       "lastNotifiedAt": "2026-09-30T01:50:42.423Z",
       "lastSurfacedAt": "2026-09-30T01:50:42.423Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3548,13 +3548,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-09-30T20:00:14.138Z",
+      "lastSeen": "2026-09-30T20:09:00.867Z",
       "lastNotifiedAt": "2026-09-30T17:26:29.419Z",
       "lastSurfacedAt": "2026-09-30T17:26:29.419Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3823,13 +3823,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-09-30T20:00:14.114Z",
+      "lastSeen": "2026-09-30T20:09:00.843Z",
       "lastNotifiedAt": "2026-09-30T17:26:29.397Z",
       "lastSurfacedAt": "2026-09-30T17:26:29.397Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4184,13 +4184,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-09-30T20:00:14.107Z",
+      "lastSeen": "2026-09-30T20:09:00.836Z",
       "lastNotifiedAt": "2026-09-30T17:26:29.389Z",
       "lastSurfacedAt": "2026-09-30T17:26:29.389Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5742,13 +5742,13 @@
       "disposition": "digest",
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-09-30T20:00:14.094Z",
+      "lastSeen": "2026-09-30T20:09:00.823Z",
       "lastNotifiedAt": "2026-09-29T21:43:21.254Z",
       "lastSurfacedAt": "2026-09-29T21:43:21.254Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5806,13 +5806,13 @@
       "disposition": "digest",
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-09-30T20:00:14.100Z",
+      "lastSeen": "2026-09-30T20:09:00.829Z",
       "lastNotifiedAt": "2026-09-29T21:43:21.261Z",
       "lastSurfacedAt": "2026-09-29T21:43:21.261Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13
+      "silentRefires": 14
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -6261,13 +6261,13 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on The Standard Of Living",
       "firstSeen": "2026-09-29T08:38:22.320Z",
-      "lastSeen": "2026-09-30T18:45:29.800Z",
+      "lastSeen": "2026-09-30T20:10:09.066Z",
       "lastNotifiedAt": "2026-09-29T08:38:22.320Z",
       "lastSurfacedAt": "2026-09-29T08:38:22.320Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-placeholder-synopsis-creation-stories-and-all-the-important-importants-off-broadway-2026": {
       "status": "open",
@@ -7608,13 +7608,13 @@
       "disposition": "digest",
       "title": "Unverified revival on The Standard Of Living",
       "firstSeen": "2026-09-30T06:48:26.108Z",
-      "lastSeen": "2026-09-30T19:44:46.334Z",
+      "lastSeen": "2026-09-30T20:10:09.070Z",
       "lastNotifiedAt": "2026-09-30T06:48:26.108Z",
       "lastSurfacedAt": "2026-09-30T06:48:26.108Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "backstop:tru-off-west-end-2026/london-theatre--unknown.json": {
       "status": "open",
@@ -7758,26 +7758,26 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on The Standard Of Living",
       "firstSeen": "2026-09-30T18:06:57.454Z",
-      "lastSeen": "2026-09-30T19:44:46.326Z",
+      "lastSeen": "2026-09-30T20:10:09.057Z",
       "lastNotifiedAt": "2026-09-30T18:06:57.454Z",
       "lastSurfacedAt": "2026-09-30T18:06:57.454Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-remediation-exhausted-explicit-ratings:the-standard-of-living-west-end-2026:telegraph": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on the-standard-of-living-west-end-2026",
       "firstSeen": "2026-09-30T18:06:57.475Z",
-      "lastSeen": "2026-09-30T19:44:46.341Z",
+      "lastSeen": "2026-09-30T20:10:09.074Z",
       "lastNotifiedAt": "2026-09-30T18:06:57.475Z",
       "lastSurfacedAt": "2026-09-30T18:06:57.475Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "broadcast-gate:checklist:the-standard-of-living-west-end-2026": {
       "status": "open",
@@ -7785,26 +7785,26 @@
       "requestedDisposition": "human",
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-09-30T18:06:57.598Z",
-      "lastSeen": "2026-09-30T19:44:46.463Z",
+      "lastSeen": "2026-09-30T20:10:09.199Z",
       "lastNotifiedAt": "2026-09-30T18:06:57.598Z",
       "lastSurfacedAt": "2026-09-30T18:06:57.598Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-fulltext-mentions-show:the-standard-of-living-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Content mismatch on The Standard Of Living",
       "firstSeen": "2026-09-30T18:21:25.633Z",
-      "lastSeen": "2026-09-30T19:44:46.330Z",
+      "lastSeen": "2026-09-30T20:10:09.062Z",
       "lastNotifiedAt": "2026-09-30T18:21:25.633Z",
       "lastSurfacedAt": "2026-09-30T18:21:25.633Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "land:land/bro-4434-code-only-main": {
       "status": "open",
