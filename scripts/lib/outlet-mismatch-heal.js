@@ -106,13 +106,15 @@ function criticOutletCount(criticName, outletId) {
  *    host owner (the URL is then the wrong field, not the outlet).
  * @returns {{ outletId: string, outlet: string, from: string|null } | null}
  */
-function publisherDomainCorrection(data) {
+function publisherDomainCorrection(data, { ignoreDuplicateOf = false } = {}) {
   if (!data || typeof data.url !== 'string' || !data.url || data._locked) return null;
   if (NOT_A_REVIEW_FLAGS.some((k) => data[k])) return null;
   if (carriesOperatorAssertion(data)) return null;
   // Already a pointer-marked duplicate of another file: excluded from scoring,
   // and relabelling it would only detach it from the file it duplicates.
-  if (data.duplicateOf || data.duplicateTextOf || data.crossOutletDuplicate) return null;
+  // BRO-4411: pointerHealPlan() opts in for a duplicateOf whose target is
+  // itself excluded, where "excluded" leaves the source to be recovered live.
+  if ((data.duplicateOf && !ignoreDuplicateOf) || data.duplicateTextOf || data.crossOutletDuplicate) return null;
   // Explicitly rejected (not_a_review, ...): excluded for its own reason, not
   // because of the outlet label, so a relabel changes nothing but a filename.
   if (data.rejectedAt || data.rejectionReason) return null;
@@ -138,6 +140,53 @@ function publisherDomainCorrection(data) {
     from: data.outletId || null,
     reason: 'publisher-domain',
   };
+}
+
+
+/**
+ * BRO-4411: a publisher-domain misfile that is a duplicateOf an EXCLUDED file.
+ * publisherDomainCorrection() skips every pointer-marked duplicate, which is
+ * right while the target scores. But when the target is excluded the rebuild
+ * "recovers" the duplicate and scores it under the WRONG outlet (15 NYT
+ * reviews live as About Entertainment; detect-syndicated-duplicates had
+ * flagged the correctly-filed nytimes file as the duplicate of the misfiled
+ * one, and the misfile pointed back: a cycle with no scored member).
+ *
+ * Returns a plan, or null when the shape is anything else (kept untouched):
+ *  - the source is a publisher-domain misfile once the pointer is ignored, and
+ *    excluded for no reason other than that pointer;
+ *  - the pointed-at file exists, is the same article (sameArticlePath), is
+ *    excluded today, and carries no operator assertion / wrongShow;
+ *  - the target's exclusion is only a stale syndication mark pointing back at
+ *    the source (kind 'cycle'), or the target is excluded for its own reason
+ *    under a different filename than the corrected name (kind 'drop-pointer').
+ * @returns {{ kind: 'cycle'|'drop-pointer', fix: object, stripped: object, ptr: string, target: object } | null}
+ */
+function pointerHealPlan({ data, file, io, explain }) {
+  if (!data || !data.duplicateOf || data.duplicateTextOf || data.crossOutletDuplicate) return null;
+  const fix = publisherDomainCorrection(data, { ignoreDuplicateOf: true });
+  if (!fix) return null;
+  const stripped = { ...data };
+  delete stripped.duplicateOf;
+  delete stripped.duplicateReason;
+  if (explain(stripped, file)) return null; // excluded for its own reason too
+  const ptr = data.duplicateOf;
+  if (typeof ptr !== 'string' || ptr.includes('/') || !io.exists(ptr)) return null;
+  const target = io.read(ptr);
+  if (carriesOperatorAssertion(target) || target.wrongShow || !sameArticlePath(data.url, target.url)) return null;
+  if (!explain(target, ptr)) return null; // target scores: normal duplicate, leave alone
+  const { generateReviewFilename } = require('./review-normalization');
+  const expected = generateReviewFilename(fix.outletId, data.criticName || 'Unknown');
+  if (expected === ptr) {
+    const primary = typeof target.syndicatedPrimaryFile === 'string' ? path.basename(target.syndicatedPrimaryFile) : null;
+    if (target.isSyndicatedDuplicate !== true || primary !== file) return null;
+    // false/null, not delete: the write guard's merge mode restores any key
+    // the incoming write leaves undefined.
+    const cleared = { ...target, isSyndicatedDuplicate: false, syndicatedPrimaryFile: null, syndicationSimilarity: null };
+    if (explain(cleared, ptr)) return null; // still excluded for another reason: nothing to gain
+    return { kind: 'cycle', fix, stripped, ptr, target, cleared };
+  }
+  return { kind: 'drop-pointer', fix, stripped, ptr, target };
 }
 
 /** Apply the URL-edition or publisher-domain correction in place; returns it or null. */
@@ -418,7 +467,9 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
       try {
         if (!io.exists(f)) continue; // renamed/deleted earlier in this pass
         const fileOutlet = f.split('--')[0];
-        const d = io.read(f);
+        let d = io.read(f);
+        const plan = pointerHealPlan({ data: d, file: f, io, explain });
+        if (plan) d = { ...plan.stripped, duplicateClearReason: `BRO-4411: publisher-domain misfile; ${plan.ptr} is excluded (${plan.kind})` };
         const editionFix = applyUrlEditionCorrection(d);
         // A publisher-domain relabel is only persisted once the rename/merge
         // it needs lands (BRO-4402): a kept tombstone must stay untouched, not
@@ -448,6 +499,26 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         // contamination, Notion 39b637c5-416f-815e); it is deleted only as a
         // same-URL tombstone of an equally excluded target.
         const existingData = io.read(expectedFilename);
+        if (plan && plan.kind === 'cycle' && expectedFilename === plan.ptr) {
+          // Keep the correctly-filed file (its text/score), drop the stale
+          // syndication mark that made it the "duplicate" of this misfile, and
+          // fold the misfile's unique fields in. One scored row, no double count.
+          const tgt = plan.cleared;
+          tgt.syndicationClearedReason = `BRO-4411: stale isSyndicatedDuplicate of misfiled ${f}`;
+          const { duplicateClearReason: _dcr, ...src } = d;
+          const m = mergeUniqueReviewFields(tgt, src);
+          if (m.action !== 'merged') { keep(`pointer-${m.action}`, `${sid}/${f}`); continue; }
+          if (explain(tgt, expectedFilename)) { keep('pointer-target-still-excluded', `${sid}/${f}`); continue; }
+          const pointing = siblingsPointingAt(f, io.siblings(f)).filter((x) => x.file !== expectedFilename);
+          repointSiblingRefs(pointing, f, expectedFilename, sid, 'merged into');
+          io.write(expectedFilename, tgt);
+          for (const s of pointing) io.write(s.file, s.data);
+          io.unlink(f);
+          announceFix();
+          out.mergedCount++;
+          act(`${sid}/${f}: misfiled duplicate merged into ${expectedFilename}; stale syndication mark cleared`);
+          continue;
+        }
         if (deferWrite && excludedTargetSwapAllowed({
           source: d, target: existingData,
           sourceExcluded: !!explain(d, f), targetExcluded: !!explain(existingData, expectedFilename),
@@ -516,6 +587,7 @@ module.exports = {
   makeDirIO,
   urlEditionCorrection,
   publisherDomainCorrection,
+  pointerHealPlan,
   excludedTargetSwapAllowed,
   sameArticlePath,
   applyUrlEditionCorrection,

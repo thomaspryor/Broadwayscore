@@ -341,3 +341,58 @@ test('sameArticlePath: same publisher + path across host prefixes only', () => {
   assert.equal(sameArticlePath('https://www.express.co.uk/a', 'https://www.dailymail.co.uk/a'), false);
   assert.equal(sameArticlePath('https://www.nytimes.com/', 'https://www.nytimes.com/'), false);
 });
+
+// ── BRO-4411: publisher-domain misfile that is a duplicateOf an EXCLUDED file ─
+
+const excl = (d) => (d && (d.duplicateOf ? 'duplicateOf' : d.isSyndicatedDuplicate ? 'isSyndicatedDuplicate' : d.wrongAttribution ? 'wrongAttribution' : d.wrongProduction ? 'wrongProduction' : null)) || null;
+const NYT_WWW = 'https://www.nytimes.com/2009/03/10/theater/reviews/10thir.html';
+const misfile = (extra = {}) => ({ showId: 'show-a', outletId: 'about-entertainment', outlet: 'About Entertainment', criticName: 'Ben Brantley', url: NYT, assignedScore: 71, duplicateOf: 'nytimes--ben-brantley.json', duplicateReason: 'outlet-mismatch: ...', ...extra });
+const nytFile = (extra = {}) => ({ showId: 'show-a', outletId: 'nytimes', outlet: 'The New York Times', criticName: 'Ben Brantley', url: NYT_WWW, assignedScore: 78, fullText: 'The full NYT review text. '.repeat(20), isSyndicatedDuplicate: true, syndicatedPrimaryFile: 'show-a/about-entertainment--ben-brantley.json', syndicationSimilarity: 95, ...extra });
+
+test('publisherDomainCorrection: duplicateOf stays untouched by default, corrected only with ignoreDuplicateOf', () => {
+  const d = misfile();
+  assert.equal(publisherDomainCorrection(d), null);
+  assert.equal(publisherDomainCorrection(d, { ignoreDuplicateOf: true }).outletId, 'nytimes');
+  assert.equal(publisherDomainCorrection({ ...d, duplicateTextOf: 'x.json' }, { ignoreDuplicateOf: true }), null);
+});
+
+test('runOutletMismatchCleanup: misfile duplicateOf an excluded nytimes file (syndication cycle) collapses to ONE live nytimes row', () => {
+  const fx = fixture({ 'about-entertainment--ben-brantley.json': misfile(), 'nytimes--ben-brantley.json': nytFile() });
+  try {
+    const r = run(fx.root, { explainFn: excl });
+    assert.equal(r.errorCount, 0);
+    assert.ok(!fx.exists('about-entertainment--ben-brantley.json'), 'misfile removed: no double count');
+    const t = fx.read('nytimes--ben-brantley.json');
+    assert.equal(t.isSyndicatedDuplicate, false);
+    assert.equal(t.syndicatedPrimaryFile, null);
+    assert.equal(t.assignedScore, 78, 'target text/score kept');
+    assert.match(t.fullText, /^The full NYT review/);
+    assert.equal(excl(t), null, 'target now scores');
+    assert.deepEqual(run(fx.root, { explainFn: excl, dryRun: true }).actions, [], 'converged');
+  } finally { fx.cleanup(); }
+});
+
+test('runOutletMismatchCleanup: pointer at a file excluded for its OWN reason is left alone when it is not the corrected file', () => {
+  const fx = fixture({
+    'about-entertainment--ben-brantley.json': misfile({ duplicateOf: 'nytimes--charles-isherwood.json' }),
+    'nytimes--charles-isherwood.json': nytFile({ criticName: 'Charles Isherwood', isSyndicatedDuplicate: undefined, syndicatedPrimaryFile: undefined, wrongAttribution: true }),
+  });
+  try {
+    const r = run(fx.root, { explainFn: excl });
+    assert.equal(r.errorCount, 0);
+    assert.ok(fx.exists('nytimes--ben-brantley.json'), 'renamed to the correct outlet');
+    assert.equal(fx.read('nytimes--ben-brantley.json').duplicateOf, undefined);
+    assert.equal(fx.read('nytimes--charles-isherwood.json').wrongAttribution, true, 'wrongAttribution file untouched');
+  } finally { fx.cleanup(); }
+});
+
+test('runOutletMismatchCleanup: nothing happens when the duplicateOf target scores, is wrongShow, or operator-asserted', () => {
+  for (const tgt of [nytFile({ isSyndicatedDuplicate: undefined }), nytFile({ wrongShow: true }), nytFile({ humanReviewScore: 80 })]) {
+    const fx = fixture({ 'about-entertainment--ben-brantley.json': misfile(), 'nytimes--ben-brantley.json': tgt });
+    try {
+      const before = fx.snapshot();
+      run(fx.root, { explainFn: excl });
+      assert.deepEqual(fx.snapshot(), before);
+    } finally { fx.cleanup(); }
+  }
+});
