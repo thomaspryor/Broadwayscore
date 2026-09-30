@@ -45,7 +45,7 @@ import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { indentOf, findJobBoundaries } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
+const { readWorkflowJobBlocks, jobTimeoutMinutes } = require('../../scripts/lib/audit-workflow-hygiene-rules.js');
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const SWEEP_YML = path.join(
@@ -78,28 +78,9 @@ const MEASURED_FIXED_COST_SEC = 569 + 480 + 366;
 const MIN_HEADROOM_FRACTION = 0.15;
 
 function readJobBlock(jobName, ymlPath = SWEEP_YML) {
-  const raw = fs.readFileSync(ymlPath, 'utf8');
-  const lines = raw.split('\n');
-  const jobsIdx = lines.findIndex((l) => /^jobs\s*:/.test(l));
-  assert.notEqual(jobsIdx, -1, `${path.basename(ymlPath)} must have a top-level jobs: key`);
-  const jobStarts = findJobBoundaries(lines, jobsIdx);
-  for (let j = 0; j < jobStarts.length - 1; j++) {
-    const start = jobStarts[j];
-    const name = lines[start].trim().replace(/:\s*$/, '');
-    if (name === jobName) {
-      return lines.slice(start, jobStarts[j + 1]);
-    }
-  }
-  return null;
-}
-
-function jobTimeoutMinutes(jobLines) {
-  const headerIndent = indentOf(jobLines[0]);
-  const line = jobLines.find(
-    (l) => indentOf(l) === headerIndent + 2 && /^\s*timeout-minutes\s*:\s*\d+/.test(l),
-  );
-  assert.ok(line, 'this job must declare an explicit timeout-minutes');
-  return parseInt(line.trim().split(':')[1].trim(), 10);
+  const blocks = readWorkflowJobBlocks(fs.readFileSync(ymlPath, 'utf8'));
+  assert.ok(Object.keys(blocks).length, `${path.basename(ymlPath)} must have a top-level jobs: key`);
+  return blocks[jobName] || null;
 }
 
 // The sweep step builds its flags in a shell variable
@@ -272,6 +253,7 @@ test('audit-provisional-venues: fixed step cost + the budgeted step\'s own cap +
   assert.ok(jobLines, 'could not find the audit: job in audit-provisional-venues.yml');
 
   const timeoutMin = jobTimeoutMinutes(jobLines);
+  assert.ok(timeoutMin, 'this job must declare an explicit timeout-minutes');
   const stepText = findVenueAuditStepText(jobLines);
   const budgetMin = stepText && budgetMinutesFrom(stepText);
   assert.ok(budgetMin > 0, 'expected --time-budget-min= on the Playbill audit step (see the sibling test)');
