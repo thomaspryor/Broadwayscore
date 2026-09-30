@@ -72,6 +72,13 @@ const ALLOWED_SCRIPTS = [
   'generate-critic-consensus.js',
   'validate-data.js',
   'fetch-show-images-auto.js',
+  // BRO-4431: session-authored plans can ingest a specific review URL
+  // (fans multi-show articles out, retry stub on an unreadable page), re-run
+  // the multi-show split on an already-collected article, and re-read a
+  // show's theatre.reviews round-up (paywalled rows + star relay).
+  'ingest-review-from-url.js',
+  'split-multi-show-roundups.js',
+  'scrape-theatre-reviews.js',
 ];
 
 // --- Helpers ---

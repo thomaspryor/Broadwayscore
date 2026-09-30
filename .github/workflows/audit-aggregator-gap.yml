@@ -260,6 +260,7 @@ jobs:
       # Kill switch: repo variable OUTLET_GROUND_TRUTH_DISABLED=true.
       - name: Outlet ground-truth audit
         if: ${{ always() && vars.OUTLET_GROUND_TRUTH_DISABLED != 'true' }}
+        # lint-allow-swallow: an outlet API outage must not fail the hourly gap job before its audit/review-texts commits; the report's `missing`/`sources.errors` and the digest alerts carry the signal
         continue-on-error: true
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}

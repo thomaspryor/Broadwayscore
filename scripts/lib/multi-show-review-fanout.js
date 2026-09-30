@@ -232,8 +232,27 @@ function introSections(text, shows, ownShowId, publishDate) {
   let sm;
   while ((sm = SEPARATOR_RE.exec(text))) sepEnds.push(sm.index + sm[0].length);
 
+  // ALL-CAPS headings ("ARIAS WITH A TWIST ... THE CHERRY ORCHARD" in a
+  // Theatrely capsule round-up whose extracted text lost its paragraphs).
+  const headings = [];
+  const HEADING_RE = /(?<![A-Za-z’'])[A-Z][A-Z0-9’'&:,.!\- ]{4,}[A-Z0-9](?![A-Za-z])/g;
+  let hm;
+  while ((hm = HEADING_RE.exec(text))) {
+    const h = hm[0].trim();
+    if (h.split(/\s+/).length < 2 && h.length < 8) continue;
+    headings.push({ at: hm.index, norm: normalizeTitle(h), showId: null });
+  }
+
   const intros = [];
   for (const m of matchers) {
+    // An exact ALL-CAPS title heading is the strongest introduction there is.
+    const norms = new Set(titleVariants(m.show.title).map((v) => normalizeTitle(v)));
+    const head = headings.find((h) => !h.showId && norms.has(h.norm));
+    if (head) {
+      head.showId = m.show.id;
+      intros.push({ m, at: head.at, afterSeparator: true, heading: true });
+      continue;
+    }
     const quotedAt = firstIndex(m.quoted, text, (at) => isParenthetical(text, at));
     const anyAt = firstIndex(m.any, text, (at) => isParenthetical(text, at));
     let at = -1;
@@ -255,8 +274,14 @@ function introSections(text, shows, ownShowId, publishDate) {
 
   // Cut points: the start of the introducing sentence, or the separator just
   // before it when one sits in between.
-  const cuts = intros.map(({ at }, i) => {
+  // With 2+ show headings the article is heading-structured: any OTHER heading
+  // (a show we don't track, e.g. "VERY BLUE LIGHT") ends the section before it,
+  // so its text is never folded into a tracked show's section.
+  const headingStructured = headings.filter((h) => h.showId).length >= 2;
+  const foreignHeads = headingStructured ? headings.filter((h) => !h.showId).map((h) => h.at) : [];
+  const cuts = intros.map(({ at, heading }, i) => {
     if (i === 0) return 0;
+    if (heading) return at;
     const sep = sepEnds.filter((e) => e <= at && at - e < 250).pop();
     return sep !== undefined ? sep : sentenceStart(text, at);
   });
@@ -278,7 +303,10 @@ function introSections(text, shows, ownShowId, publishDate) {
 
   const sections = [];
   for (let i = 0; i < intros.length; i++) {
-    const raw = text.slice(cuts[i], i + 1 < cuts.length ? cuts[i + 1] : text.length);
+    let end = i + 1 < cuts.length ? cuts[i + 1] : text.length;
+    const foreign = foreignHeads.find((a) => a > intros[i].at && a < end);
+    if (foreign !== undefined) end = foreign;
+    const raw = text.slice(cuts[i], end);
     sections.push({ m: intros[i].m, raw, sectionText: stripSeparators(raw), afterSeparator: intros[i].afterSeparator });
   }
 
@@ -300,7 +328,7 @@ function introSections(text, shows, ownShowId, publishDate) {
       if (countMatches(other.m.any, sec.raw) > 0) return [];
     }
     if (sec.sectionText.length < MIN_SECTION_CHARS) return [];
-    if (sec.sectionText.length / total < MIN_SECTION_SHARE) return [];
+    if (!headingStructured && sec.sectionText.length / total < MIN_SECTION_SHARE) return [];
   }
   if (!sections.some((s) => s.m.show.id === ownShowId)) return [];
 

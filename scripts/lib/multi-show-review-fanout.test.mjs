@@ -69,6 +69,18 @@ test('intro strategy works from either show; a title quoted mid-paragraph never 
   assert.equal(flat, null);
 });
 
+test('ALL-CAPS capsule headings split a flattened round-up; untracked capsules are cut out', () => {
+  const shows = [
+    { id: 'arias-with-a-twist-off-broadway-2026', title: 'Arias with a Twist', category: 'off-broadway', openingDate: '2026-09-23' },
+    { id: 'the-cherry-orchard-park-avenue-armory-off-broadway-2026', title: 'The Cherry Orchard', category: 'off-broadway', openingDate: '2026-09-17' },
+  ];
+  const text = `Our critic reviews a few shows Off-Broadway right now: ARIAS WITH A TWIST ${filler('puppet', 8)} DON JUAN IN SOHO ${filler('rake', 8)} THE CHERRY ORCHARD ${filler('estate', 8)}`;
+  const plan = planMultiShowFanout(base({ showId: 'arias-with-a-twist-off-broadway-2026', publishDate: '2026-09-26', fullText: text }), shows);
+  assert.ok(plan);
+  assert.doesNotMatch(plan.ownSection.sectionText, /DON JUAN|rake/, 'untracked capsule cut out');
+  assert.match(plan.otherSections[0].sectionText, /^THE CHERRY ORCHARD/);
+});
+
 test('an opening-party paragraph that reaches another show late is not a section (Sweat / Jitney)', () => {
   const shows = [
     { id: 'sweat-2017', title: 'Sweat', category: 'broadway', openingDate: '2017-03-26' },
@@ -411,6 +423,15 @@ test('ground truth: NYT sitemap rows, TR rows without a link, eligibility window
 test('ground truth audit is scheduled (audit-aggregator-gap.yml) with ingest + alert', () => {
   const wf = fs.readFileSync(new URL('../../.github/workflows/audit-aggregator-gap.yml', import.meta.url), 'utf8');
   assert.match(wf, /node scripts\/audit-outlet-ground-truth\.js [^\n]*--ingest[^\n]*--alert/);
+});
+
+test('session-authored pending-fix plans can ingest a URL, re-split an article and re-read TR', () => {
+  const exec = fs.readFileSync(new URL('../execute-approved-fix.js', import.meta.url), 'utf8');
+  for (const s of ['ingest-review-from-url.js', 'split-multi-show-roundups.js', 'scrape-theatre-reviews.js']) {
+    assert.match(exec, new RegExp(`'${s.replace(/\./g, '\\.')}'`), s);
+  }
+  const wf = fs.readFileSync(new URL('../../.github/workflows/execute-approved-fix.yml', import.meta.url), 'utf8');
+  assert.match(wf, /BRIGHTDATA_TOKEN: \$\{\{ secrets\.BRIGHTDATA_TOKEN \}\}/);
 });
 
 test('process-review-submission retries once, then falls back to the retry stub', () => {

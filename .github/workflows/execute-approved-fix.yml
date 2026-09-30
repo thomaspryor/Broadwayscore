@@ -32,7 +32,9 @@ concurrency:
 jobs:
   execute:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # 45 (was 10): BRO-4431 lets run-script ingest review URLs, each a scraper
+    # fetch of up to a few minutes (run-script caps each script at 5 min).
+    timeout-minutes: 45
 
     steps:
       - name: Checkout repository
@@ -76,6 +78,13 @@ jobs:
           # Plans are PII-redacted; the submitter thank-you recovers contact
           # info from the issue's DIAGNOSIS_JSON, which needs a token.
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          # BRO-4431: run-script can ingest a review URL (ingest-review-from-url.js
+          # fetches through the shared scraper chain).
+          BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
+          BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
+          SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
+          SCRAPINGDOG_API_KEY: ${{ secrets.SCRAPINGDOG_API_KEY }}
+          SCRAPER_USE_SCRAPINGDOG: '1'
         run: node scripts/execute-approved-fix.js
 
 
