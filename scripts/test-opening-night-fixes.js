@@ -2128,6 +2128,12 @@ console.log('\n=== pickRerouteTarget: URL-year reroute decision ===\n');
   const mammaMiaRevivalSibling = [{ id: 'mamma-mia-2025', year: 2025 }];
   const r12 = pickRerouteTarget(2001, mammaMiaRevivalSibling, 2014, [2001, 2015]);
   assert(r12.action === 'keep', 'run-window: 2014 mid-run review of mamma-mia-2001 stays put');
+  // BRO-4404: nearest sibling >2y away is not a match (2017 Met opera review vs R&J 2013/2026)
+  const rjSibling = [{ id: 'romeo-and-juliet-2013', year: 2013 }];
+  const r12b = pickRerouteTarget(2026, rjSibling, 2017, [2026, 2026]);
+  assert(r12b.action === 'keep', 'reroute cap: 2017 URL year is 4y from the only sibling (2013) -> keep, not reroute');
+  const r12c = pickRerouteTarget(2026, rjSibling, 2015, [2026, 2026]);
+  assert(r12c.action === 'reroute' && r12c.targetShowId === 'romeo-and-juliet-2013', 'reroute cap: 2y away still reroutes');
   // And without run window, legacy behavior still reroutes (locks in backward compat)
   const r13 = pickRerouteTarget(2001, mammaMiaRevivalSibling, 2014);
   assert(

@@ -3672,6 +3672,9 @@ function resolveStaleWrongProductionRecovery(data, discoveredUrl, show) {
   return { url: discoveredUrl, oldUrl };
 }
 
+// Max year distance to a sibling production for pickRerouteTarget to reroute (BRO-4404).
+const MAX_REROUTE_DISTANCE = 2;
+
 /**
  * Cross-production reroute decision (URL-year guard).
  *
@@ -3734,6 +3737,15 @@ function pickRerouteTarget(currentShowYear, siblings, detectedYear, currentShowR
     }
   }
   if (!best) return { action: 'keep' };
+  // BRO-4404: "closest sibling" is not "matching sibling". A review whose year is
+  // more than MAX_REROUTE_DISTANCE from EVERY production belongs to none of them
+  // (romeo-and-juliet-2013/observer--unknown.json: a 2017 Met OPERA review routed
+  // to the 2013 Broadway play because 2013 was merely nearer than 2026). Keep it
+  // where it is and let the window/premature guards judge it, instead of
+  // laundering it into a production that looks plausible.
+  // Only for run-window callers: the legacy 3-arg form keeps its documented
+  // unbounded nearest-sibling behavior (test-opening-night-fixes.js locks it in).
+  if (Array.isArray(currentShowRunWindow) && best.distance > MAX_REROUTE_DISTANCE) return { action: 'keep' };
   return { action: 'reroute', ...best };
 }
 
