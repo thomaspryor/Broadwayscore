@@ -20,6 +20,7 @@
  *   node scripts/collection-coverage-dashboard.js --issue      # Create GitHub issue
  */
 
+const { isRejectedByReasonExclusion } = require('./lib/review-guards');
 const fs = require('fs');
 const path = require('path');
 const { isLondonMarket } = require('./lib/venue-classification');
@@ -158,7 +159,7 @@ function scanReviewTexts() {
 
       // Check flags
       const isFlagged = review.wrongShow || review.wrongProduction || review.wrongAttribution ||
-        review.isRoundupArticle || review.duplicateOf || review.rejectionReason;
+        review.isRoundupArticle || review.duplicateOf || isRejectedByReasonExclusion(review);
       if (isFlagged) {
         for (const b of buckets) { b.flagged++; b.total++; }
         continue;

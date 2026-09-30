@@ -16,6 +16,8 @@ import { createRequire } from 'node:module';
 const require_ = createRequire(import.meta.url);
 const {
   urlEditionCorrection,
+  publisherDomainCorrection,
+  sameArticlePath,
   applyUrlEditionCorrection,
   sameReviewUrl,
   carriesOperatorAssertion,
@@ -271,4 +273,71 @@ test('runOutletMismatchCleanup: a _locked file refusing its rename is counted, n
     assert.deepEqual(r.kept.locked, ['show-a/time--jane-doe.json']);
     assert.ok(fx.exists('time--jane-doe.json'));
   } finally { fx.cleanup(); }
+});
+
+// ── publisherDomainCorrection (BRO-4402) ────────────────────────────────────
+
+const NYT = 'http://theater.nytimes.com/2009/03/10/theater/reviews/10thir.html';
+
+test('publisherDomainCorrection: nytimes URL on about-entertainment -> nytimes', () => {
+  const fix = publisherDomainCorrection({ outletId: 'about-entertainment', criticName: 'Ben Brantley', url: NYT });
+  assert.equal(fix.outletId, 'nytimes');
+  assert.equal(fix.from, 'about-entertainment');
+  const d = { outletId: 'about-entertainment', outlet: 'About Entertainment', criticName: 'Ben Brantley', url: NYT };
+  applyUrlEditionCorrection(d, '2026-09-30');
+  assert.equal(d.outletId, 'nytimes');
+  assert.match(d.outletIdCorrectedReason, /^publisher-domain:/);
+});
+
+test('publisherDomainCorrection: observer on theguardian.com is NOT corrected (sister paper)', () => {
+  assert.equal(publisherDomainCorrection({ outletId: 'observer', criticName: 'Kate Kellaway', url: 'https://www.theguardian.com/stage/2019/jun/16/x' }), null);
+});
+
+test('publisherDomainCorrection: archive host, own domain, _locked, roundup/wrongShow, rejected, duplicate untouched', () => {
+  const base = { outletId: 'about-entertainment', criticName: 'Ben Brantley', url: NYT };
+  assert.equal(publisherDomainCorrection({ ...base, _locked: true }), null);
+  assert.equal(publisherDomainCorrection({ ...base, wrongShow: true }), null);
+  assert.equal(publisherDomainCorrection({ ...base, wrongProduction: true }), null);
+  assert.equal(publisherDomainCorrection({ ...base, isRoundupArticle: true }), null);
+  assert.equal(publisherDomainCorrection({ ...base, rejectedAt: '2026-01-01' }), null);
+  assert.equal(publisherDomainCorrection({ ...base, duplicateOf: 'nytimes--ben-brantley.json' }), null);
+  assert.equal(publisherDomainCorrection({ ...base, humanReviewScore: 80 }), null);
+  assert.equal(publisherDomainCorrection({ outletId: 'denver-post', criticName: 'X', url: 'https://www.jasonraize.net/pr_tlk_dp020898.html' }), null);
+  assert.equal(publisherDomainCorrection({ outletId: 'nytimes', criticName: 'X', url: 'https://www.nytimes.com/a' }), null);
+  assert.equal(publisherDomainCorrection({ outletId: 'sunday-telegraph', criticName: 'X', url: 'https://www.telegraph.co.uk/a' }), null);
+});
+
+test('publisherDomainCorrection: a critic established at the current outlet keeps the label (URL is the wrong field)', () => {
+  // Robert Feldberg is a North Jersey critic: variety.com URL is a bad URL, not a bad outlet.
+  assert.equal(publisherDomainCorrection({ outletId: 'northjerseycom', criticName: 'Robert Feldberg', url: 'https://variety.com/2015/legit/reviews/x/' }), null);
+});
+
+test('runOutletMismatchCleanup: publisher-domain relabel renames; excluded stub at the target is replaced, not merged over', () => {
+  const live = { showId: 'show-a', outletId: 'about-entertainment', outlet: 'About Entertainment', criticName: 'Ben Brantley', url: NYT, fullText: 'A full review text. '.repeat(30), contentTier: 'complete' };
+  const fx = fixture({ 'about-entertainment--ben-brantley.json': live });
+  try {
+    const r = run(fx.root);
+    assert.equal(r.errorCount, 0);
+    assert.ok(!fx.exists('about-entertainment--ben-brantley.json'));
+    assert.equal(fx.read('nytimes--ben-brantley.json').outletId, 'nytimes');
+    assert.deepEqual(run(fx.root, { dryRun: true }).actions, []);
+  } finally { fx.cleanup(); }
+  const fx2 = fixture({
+    'about-entertainment--ben-brantley.json': live,
+    'nytimes--ben-brantley.json': { ...live, outletId: 'nytimes', outlet: 'The New York Times', url: 'https://www.nytimes.com/2009/03/10/theater/reviews/10thir.html', fullText: 'garbage', wrongProduction: true },
+  });
+  try {
+    const r = run(fx2.root);
+    assert.equal(r.errorCount, 0);
+    assert.ok(!fx2.exists('about-entertainment--ben-brantley.json'));
+    const t = fx2.read('nytimes--ben-brantley.json');
+    assert.equal(t.wrongProduction, undefined);
+    assert.match(t.fullText, /^A full review/);
+  } finally { fx2.cleanup(); }
+});
+
+test('sameArticlePath: same publisher + path across host prefixes only', () => {
+  assert.equal(sameArticlePath(NYT, 'https://www.nytimes.com/2009/03/10/theater/reviews/10thir.html?ref=x'), true);
+  assert.equal(sameArticlePath('https://www.express.co.uk/a', 'https://www.dailymail.co.uk/a'), false);
+  assert.equal(sameArticlePath('https://www.nytimes.com/', 'https://www.nytimes.com/'), false);
 });
