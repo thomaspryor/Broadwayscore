@@ -2,7 +2,7 @@
 /**
  * Systematic review-text contamination audit.
  *
- * Detects 8 classes of data-quality issues across all review-texts folders:
+ * Detects 9 classes of data-quality issues across all review-texts folders:
  *   A. Cross-market contamination — review dated near a sibling production's
  *      opening but filed under a different production of the same title.
  *      (Catches Broadway↔WE and Broadway↔OB folder mixups.)
@@ -22,6 +22,10 @@
  *      isRoundupArticle != true.
  *   F. Empty --unknown junk files — filename contains --unknown, URL is null,
  *      and fullText is empty. Pure scrape garbage.
+ *   G. Older/other production live (BRO-4432) — a stale "Wrong production" /
+ *      "Wrong show" contentTierReason with no effective flag, or a URL whose own
+ *      date (path or Times v1 UUID) contradicts publishDate and falls outside
+ *      every run and priorRun. (Report-only for now.)
  *
  * Usage:
  *   node scripts/audit-review-contamination.js              # Report mode (exits 0 unless --strict)
@@ -100,6 +104,7 @@ const {
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
 const { countStrictHits, shouldBlockContaminationGate } = require('./lib/contamination-gate');
 const { buildLiveScoredIndex, isGenuineDoubleCount } = require('./lib/c2-live-scored-check');
+const { olderProductionLiveReason } = require('./lib/older-production-live-guard');
 
 // BRO-74: ground truth for "is this URL actually double-counted by the
 // scoring engine right now" — read directly from the rebuild's own output
@@ -340,6 +345,12 @@ const hits = {
   D_pre_opening_feature: [],
   E_unflagged_roundup: [],
   F_empty_unknown: [],
+  // G: an older/other production's review live on this show that the date
+  // backstops miss (BRO-4432): a stale "Wrong production"/"Wrong show"
+  // contentTierReason with the flag gone, or a URL whose own date contradicts
+  // publishDate and falls outside every run. REPORT-ONLY (not in
+  // STRICT_CLASSES) until one corpus cycle shows its hit count.
+  G_older_production_live: [],
 };
 
 let filesScanned = 0;
@@ -588,6 +599,17 @@ for (const showId of showDirs) {
           }
         }
       }
+    }
+
+    // ─── G: older/other production live on this show (BRO-4432) ────
+    // wrongProduction/wrongShow are left to the helper, which reads them as
+    // EFFECTIVE flags (an auto-cleared flag is how the Oliver! file leaked).
+    const excludedOtherwise = d.isRoundupArticle || d.wrongAttribution
+      || d.contentVerification?.wrongArticle || d.isNonReview || d.nonReviewFlag
+      || d.nonReviewContent || d.duplicateOf || d.rejectionReason;
+    if (shouldRunClass('G') && !excludedOtherwise) {
+      const g = olderProductionLiveReason(d, show);
+      if (g) hits.G_older_production_live.push({ showId, file: f, kind: g.kind, reason: g.reason, url: d.url || null });
     }
   }
 

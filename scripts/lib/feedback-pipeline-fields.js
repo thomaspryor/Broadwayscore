@@ -21,6 +21,10 @@ const FEEDBACK_EDITABLE_FIELDS = {
     // Whole images object, compare-and-set; human-approved plans only (BRO-4380:
     // clearing another show's art). execute-approved-fix refuses cross-show paths.
     'images',
+    // Whole cast array, compare-and-set; human-approved plans only (BRO-4432:
+    // a wrong-show IBDB match put The Century Girl's 1916 cast on a 2026 Globe
+    // As You Like It). execute-approved-fix checks the {name, role} shape.
+    'cast',
   ],
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',
@@ -97,10 +101,23 @@ function buildShowSnapshot(show) {
     if (value !== undefined) {
       snapshot[field] = value;
     } else {
-      snapshot[field] = field === 'creativeTeam' ? [] : null;
+      snapshot[field] = (field === 'creativeTeam' || field === 'cast') ? [] : null;
     }
   }
   return snapshot;
+}
+
+// shows.json cast value check for the human-approved data-edit path
+// (BRO-4432): an array of {name, role?} with non-empty string names. [] clears
+// a wrong cast. Returns an error string or null.
+function castValueProblem(v) {
+  if (!Array.isArray(v)) return 'cast: newValue must be an array';
+  for (const [i, m] of v.entries()) {
+    if (!m || typeof m !== 'object' || Array.isArray(m)) return `cast[${i}]: must be an object`;
+    if (typeof m.name !== 'string' || !m.name.trim()) return `cast[${i}].name: must be a non-empty string`;
+    if (m.role != null && typeof m.role !== 'string') return `cast[${i}].role: must be a string`;
+  }
+  return null;
 }
 
 module.exports = {
@@ -109,4 +126,5 @@ module.exports = {
   SHOW_IDENTITY_FIELDS,
   pickEditableFields,
   buildShowSnapshot,
+  castValueProblem,
 };

@@ -211,6 +211,12 @@ function executeDataEdit(action) {
       }
     }
 
+    if (field === 'cast') {
+      const { castValueProblem } = require('./lib/feedback-pipeline-fields.js');
+      const castProblem = castValueProblem(newValue);
+      if (castProblem) return { ok: false, reason: castProblem };
+    }
+
     shows[idx][field] = newValue;
     // `shows` was mutated in place and (for the object-root shape) IS
     // `data.shows` — pass `data` itself, not a rebuilt `{...data, shows}`
