@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-09-30T01:07:31.760Z",
-  "processed": 240,
-  "failed": 157,
-  "successRate": "60.5%",
+  "updatedAt": "2026-09-30T01:26:20.778Z",
+  "processed": 276,
+  "failed": 181,
+  "successRate": "60.4%",
   "tierBreakdown": {
-    "playwright": 145,
+    "playwright": 171,
     "amp": 2,
-    "browserbase": 9,
+    "browserbase": 11,
     "directCookies": 0,
-    "scrapingdog": 28,
+    "scrapingdog": 29,
     "scrapingbee": 24,
-    "brightdata": 0,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 30
+    "archive": 36
   },
-  "browserbaseSessions": 12,
+  "browserbaseSessions": 14,
   "recentActivity": [
-    {
-      "t": "2026-09-29T21:49:29.997Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-29T23:50:46.660Z",
-      "event": "bb-session",
-      "session": "28c53e1c",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-29T23:50:51.211Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-29T23:51:10.926Z",
-      "event": "bb-session",
-      "session": "15cf57e3",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
     {
       "t": "2026-09-29T23:51:15.401Z",
       "event": "bb-login-uncertain",
@@ -127,6 +105,28 @@
       "t": "2026-09-30T00:58:27.181Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-30T01:18:21.533Z",
+      "event": "bb-session",
+      "session": "14c74e1a",
+      "url": "https://www.thetimes.co.uk/culture/film/article/jack-ryan-ghost-war-review-john-"
+    },
+    {
+      "t": "2026-09-30T01:18:22.373Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-30T01:20:19.270Z",
+      "event": "bb-session",
+      "session": "10ac1323",
+      "url": "https://www.thetimes.co.uk/money/tax/article/proof-students-loans-misled-terms-5"
+    },
+    {
+      "t": "2026-09-30T01:20:20.002Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
