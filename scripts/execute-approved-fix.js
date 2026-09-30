@@ -561,11 +561,19 @@ async function main() {
   const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show');
   const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
-    const changedFiles = [...new Set(dataTouching.map(a => a.file).filter(Boolean))];
+    // add-show / retire-show carry no `file`: they always write shows.json.
+    const changedFiles = [...new Set(dataTouching.map(a => a.file || ((a.type === 'add-show' || a.type === 'retire-show') ? 'shows.json' : null)).filter(Boolean))];
     console.log('\nRunning validation...');
     if (!runValidation(changedFiles)) {
       console.error('Validation failed — rolling back');
       rollbackDataFiles();
+      // The retired-id registry is core data (gitignored), which the git
+      // checkout above cannot restore: take back this plan's retirements.
+      planData.plan.actions.forEach((a, i) => {
+        if (a.type === 'retire-show' && results[i] && results[i].ok) {
+          try { unretireId(a.id); } catch (e) { console.error(`  could not revert registry entry for ${a.id}: ${e.message}`); }
+        }
+      });
 
       // Update plan status
       planData.status = 'validation-failed';
