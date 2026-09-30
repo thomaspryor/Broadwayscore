@@ -2114,72 +2114,6 @@
     "queuedAt": "2026-09-29T20:04:40.703Z"
   },
   {
-    "conditionKey": "opening-night-drift:tru-off-west-end-2026",
-    "title": "Opening night drift: Tru (tru-off-west-end-2026)",
-    "description": "Review counts do not reconcile for Tru (tru-off-west-end-2026): local review-texts=22, reviews.json aggregate=18, live production=18, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36624079924",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "Tru (tru-off-west-end-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=22, aggregate=18, live=18, drift=4",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-09-27",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36624079924)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-09-29T20:10:35.748Z"
-  },
-  {
-    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
-    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=3, reviews.json aggregate=0, live production=n/a, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36624079924",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=3, aggregate=0, live=n/a, drift=3",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-09-26",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36624079924)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-09-29T20:10:35.763Z"
-  },
-  {
     "conditionKey": "land:land/job/linear-BRO-4049-mun2wijz",
     "title": "Landing blocked: rebase red on land/job/linear-BRO-4049-mun2wijz",
     "description": "land.yml did not land land/job/linear-BRO-4049-mun2wijz: the rebase gate went red at ef8f1e49ca. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36624444710",
@@ -3308,5 +3242,71 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-30T07:43:36.778Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:tru-off-west-end-2026",
+    "title": "Opening night drift: Tru (tru-off-west-end-2026)",
+    "description": "Review counts do not reconcile for Tru (tru-off-west-end-2026): local review-texts=22, reviews.json aggregate=18, live production=18, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36703634711",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Tru (tru-off-west-end-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=22, aggregate=18, live=18, drift=4",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-09-27",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36703634711)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-09-30T10:40:38.895Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
+    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
+    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=3, reviews.json aggregate=0, live production=n/a, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36703634711",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=3, aggregate=0, live=n/a, drift=3",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-09-26",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36703634711)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-09-30T10:40:39.026Z"
   }
 ]
