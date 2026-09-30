@@ -3672,8 +3672,9 @@ function resolveStaleWrongProductionRecovery(data, discoveredUrl, show) {
   return { url: discoveredUrl, oldUrl };
 }
 
-// Max year distance to a sibling production for pickRerouteTarget to reroute (BRO-4404).
-const MAX_REROUTE_DISTANCE = 2;
+// A review published more than this many years after a sibling's run closed is not
+// a review of that sibling (BRO-4404). Retrospectives within the window still route.
+const MAX_YEARS_AFTER_CLOSE = 2;
 
 /**
  * Cross-production reroute decision (URL-year guard).
@@ -3728,6 +3729,7 @@ function pickRerouteTarget(currentShowYear, siblings, detectedYear, currentShowR
     if (!sib || !sib.year || !sib.id) continue;
     const dist = Math.abs(detectedYear - sib.year);
     if (dist >= distToCurrent) continue; // not closer than current
+    if (Number.isFinite(sib.endYear) && detectedYear > sib.endYear + MAX_YEARS_AFTER_CLOSE) continue;
     if (
       best === null ||
       dist < best.distance ||
@@ -3737,15 +3739,11 @@ function pickRerouteTarget(currentShowYear, siblings, detectedYear, currentShowR
     }
   }
   if (!best) return { action: 'keep' };
-  // BRO-4404: "closest sibling" is not "matching sibling". A review whose year is
-  // more than MAX_REROUTE_DISTANCE from EVERY production belongs to none of them
-  // (romeo-and-juliet-2013/observer--unknown.json: a 2017 Met OPERA review routed
-  // to the 2013 Broadway play because 2013 was merely nearer than 2026). Keep it
-  // where it is and let the window/premature guards judge it, instead of
-  // laundering it into a production that looks plausible.
-  // Only for run-window callers: the legacy 3-arg form keeps its documented
-  // unbounded nearest-sibling behavior (test-opening-night-fixes.js locks it in).
-  if (Array.isArray(currentShowRunWindow) && best.distance > MAX_REROUTE_DISTANCE) return { action: 'keep' };
+  // BRO-4404: a sibling whose run CLOSED more than MAX_YEARS_AFTER_CLOSE before the
+  // review's year cannot be what the review is about (romeo-and-juliet-2013/
+  // observer--unknown.json: a 2017 Met OPERA review was routed into the 2013
+  // Broadway play, which closed in 2013, because 2013 was merely nearer than
+  // 2026). Skipped in the loop above; kept here as a pointer for readers.
   return { action: 'reroute', ...best };
 }
 
@@ -3785,6 +3783,7 @@ function buildMultiProdYearGuard(shows) {
         id: p.id,
         year: p.openingDate ? parseInt(p.openingDate.slice(0, 4))
           : p.previewsStartDate ? parseInt(p.previewsStartDate.slice(0, 4)) : null,
+        endYear: p.closingDate ? parseInt(p.closingDate.slice(0, 4)) : null,
       })).filter(p => p.year);
       if (siblings.length > 0) guard[show.id] = { showYear, siblings };
     }
