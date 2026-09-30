@@ -113,6 +113,8 @@ const {
   nextRecoveryCount,
   filledDateOutsideWindow,
   filledDateOutsideWindowNote,
+  filledTextIsOtherArticle,
+  discardWrongPageFill,
 } = require('./lib/flagged-recovery');
 // Same set the rebuild's aggregatorStars-fallback scores from (P5.7) — the
 // star fallback below must not write stars the rebuild would then ignore.
@@ -1598,7 +1600,15 @@ function recoverEmptyBodyFlaggedMiss(showId, m, openingDate = null, show = null)
     // (which went red on main when the sweep filled a 2021 'Sessions' review
     // into Tender's Times slot).
     // `show` lets a date inside a declared priorRuns/tourLegs window pass.
-    if (recovered && filledDateOutsideWindow(after.publishDate, openingDate, show)) {
+    if (recovered && filledTextIsOtherArticle(after.publishDate, after.url, openingDate, show)) {
+      // BRO-4430: right url, wrong article served. Discard the fill (kept
+      // in wrongFullText for the audit trail) instead of flagging the url.
+      const servedDate = after.publishDate;
+      discardWrongPageFill(after);
+      safeWriteReview(fp, after, { force: true });
+      recovered = false;
+      reason = `fetch served a different article (dated ${servedDate}); fill discarded, url kept`;
+    } else if (recovered && filledDateOutsideWindow(after.publishDate, openingDate, show)) {
       after.wrongProduction = true;
       invalidateWrongProductionAutoClear(after);
       after.wrongProductionNote = filledDateOutsideWindowNote(after.publishDate, openingDate);

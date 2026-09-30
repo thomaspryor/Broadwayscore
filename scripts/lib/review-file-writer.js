@@ -35,6 +35,7 @@ const {
 } = require('./review-normalization');
 const { findSiblingUrlOwner } = require('./review-url-collision');
 const { findMergedDuplicateOwner } = require('./merged-duplicate-urls');
+const { isStaleNonReviewSlot, isAggregatorPageUrl } = require('./review-slot-guards');
 const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
@@ -1009,7 +1010,11 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       // on-url-change.test.mjs) — both regressed until this was narrowed to
       // the unresolved-critic case only.
       const incomingCriticUnresolved = !criticName || criticName.toLowerCase() === 'unknown';
-      if (incomingCriticUnresolved && isFlaggedMergeTarget(data)) {
+      // BRO-4430: a flagged file whose own url is a non-review page (cast
+      // announcement, show page) is not an identity for this review; the
+      // merge below replaces its url (maybeUpgradeUrl) instead of refusing.
+      if (incomingCriticUnresolved && isFlaggedMergeTarget(data)
+          && !isStaleNonReviewSlot(data, input.url)) {
         console.warn(`  ⛔ Refusing write: ${filename} is a flagged/rejected record (wrongProduction/duplicateOf/rejectionReason) and the incoming critic is unresolved — a human/override flow must clear it first`);
         return { action: 'skipped', reason: 'flagged-filename-collision', guardRefused: true, filepath };
       }
@@ -1359,7 +1364,10 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // existing wrongShow=true + unknown-critic files in the corpus — informational
   // only, since this guard only affects a FUTURE merge attempt onto one of
   // those files, not any existing state retroactively.
-  const urlLocked = existing.wrongShow === true && isWrongShowUnknownLocked(existing, { criticName });
+  // BRO-4430: the lock protects a flagged review url from being reassigned;
+  // a flagged non-review page (The Pass NYTG show page) has nothing to protect.
+  const urlLocked = existing.wrongShow === true && isWrongShowUnknownLocked(existing, { criticName })
+    && !isStaleNonReviewSlot(existing, input.url);
   if (urlLocked) {
     console.warn(`  ⊘ wrongShow lock: refusing to reassign URL on ${filepath} (both critics unknown)`);
   }
@@ -1410,7 +1418,11 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       selfCriticName: existing.criticName,
       selfFilename: path.basename(filepath),
     });
-    if (_swapVerdict.regression) {
+    if (isAggregatorPageUrl(input.url)) {
+      // BRO-4430: an aggregator/round-up page is never this outlet's own
+      // review url; the rebuild drops any file carrying one (isBlockedReviewUrl).
+      console.warn(`  ⊘ aggregator-url guard: refusing first-set url on ${filepath}: ${input.url} is an aggregator/round-up page`);
+    } else if (_swapVerdict.regression) {
       console.warn(`  ⊘ url-downgrade guard: refusing first-set url on ${filepath}: ${_swapVerdict.reason}`);
     } else if (_collisionOwner) {
       console.warn(`  ⊘ url-collision guard: refusing first-set url on ${filepath}: ${input.url} is already owned by ${_collisionOwner.filename}`);

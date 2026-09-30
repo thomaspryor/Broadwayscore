@@ -61,6 +61,17 @@ function selectScorableText(data, options) {
     if (!rejected) {
       return { text: data.fullText, isExcerpt: false };
     }
+    // BRO-4430: text stored before a site-chrome pattern existed (the Tru
+    // London Theatre review kept its booking calendar and "Latest News" list)
+    // is rejected as multi-show garbage for the chrome alone. Retry once on
+    // the stripped text; a text that passed above is never changed.
+    const { stripTrailingJunk } = require('./text-cleaning');
+    const stripped = stripTrailingJunk(data.fullText);
+    if (stripped && stripped !== data.fullText && stripped.length >= 100) {
+      const q2 = assessTextQuality(stripped, data.showId, opts.showTitle);
+      const rejected2 = q2.quality === 'garbage' || (q2.quality === 'suspicious' && q2.confidence === 'high');
+      if (!rejected2) return { text: stripped, isExcerpt: false };
+    }
     if (typeof opts.onFullTextRejected === 'function') {
       opts.onFullTextRejected(quality);
     }

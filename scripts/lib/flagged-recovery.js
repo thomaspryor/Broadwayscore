@@ -220,6 +220,39 @@ function filledDateOutsideWindowNote(publishDate, openingDate) {
   return `auto-flag: filled text dated ${publishDate}, outside the production window around opening ${openingDate} (post-fill recovery guard)`;
 }
 
+// BRO-4430: when the filled text's date is outside the window but the url
+// ITSELF carries a full in-window date, the url is right and the fetch was
+// served a different article (Golden Boy BWW: .../Almeida-Theatre-20260916
+// returned BWW's Feb 2026 "Man and Boy" review). Flagging wrongProduction then
+// blames the url and holds the real review out forever; the fill is what is
+// wrong, so the caller discards it and leaves the url for a re-fetch.
+// The url date is used only as contradicting evidence here, never stored.
+function filledTextIsOtherArticle(publishDate, url, openingDate, show = null) {
+  if (!filledDateOutsideWindow(publishDate, openingDate, show)) return false;
+  if (!url) return false;
+  const { extractDateFromUrl } = require('./rebuild-helpers');
+  const u = extractDateFromUrl(url);
+  if (!u || !u.date || !/^\d{4}-\d{2}-\d{2}$/.test(u.date)) return false;
+  return !filledDateOutsideWindow(u.date, openingDate, show);
+}
+
+// The discard filledTextIsOtherArticle calls for (mutates `rec`): the served
+// text moves to wrongFullText (audit trail), its date and any rating the same
+// ingest lifted off the wrong page go, and the url is queued for a re-fetch.
+const WRONG_PAGE_SCORE_FIELDS = ['originalScore', 'originalRating', 'originalScoreSource', 'originalScoreNormalized',
+  'originalScoreType', 'scoreSource', 'assignedScore', 'llmScore', 'llmMetadata', 'ensembleData'];
+function discardWrongPageFill(rec) {
+  const servedDate = rec.publishDate;
+  rec.wrongFullText = rec.fullText;
+  rec.fullText = null;
+  delete rec.publishDate;
+  for (const f of WRONG_PAGE_SCORE_FIELDS) delete rec[f];
+  rec.needsRefetch = true;
+  rec.incompleteReason = 'wrong_page_served';
+  rec.incompleteDetail = `fetch returned an article dated ${servedDate}; the url's own date is inside the production window`;
+  return rec;
+}
+
 // Host-level coverage fallback for the gap census, used when no dir file
 // carries the aggregator-listed URL itself. Which same-host files may stand
 // in for that URL:
@@ -241,6 +274,8 @@ module.exports = {
   hostFallbackVouchers,
   filledDateOutsideWindow,
   filledDateOutsideWindowNote,
+  filledTextIsOtherArticle,
+  discardWrongPageFill,
   isEmptyBodyFile,
   isRecoverableFlaggedFile,
   isRecoverableUncitedStub,

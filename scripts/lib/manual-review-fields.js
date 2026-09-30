@@ -231,6 +231,7 @@ function detectIngestCollision(opts = {}) {
 
   const { normalizeOutlet, normalizeCritic } = require('./review-normalization');
   const { hasClearBreadcrumbValue } = require('./flag-contradiction');
+  const { isStaleNonReviewSlot } = require('./review-slot-guards');
   const normalizedOutlet = normalizeOutlet(outletId);
   const normalizedCritic = criticName && criticName.toLowerCase() !== 'unknown'
     ? normalizeCritic(criticName)
@@ -282,6 +283,13 @@ function detectIngestCollision(opts = {}) {
     // and as a boolean by older writers (283 vs 445 in corpus), so `=== true`
     // silently missed the string majority — use the canonical predicate (#1020).
     const urlMatches = url && data.url && _normUrl(url) === _normUrl(data.url);
+
+    // STALE NON-REVIEW SLOT (BRO-4430): a flagged file whose own url is a
+    // cast announcement, show/listing page or round-up is not a prior
+    // production's review, so it cannot be the Beaches collision. The Body of
+    // Mary TheaterMania review was refused 3x against a flagged cast-announcement
+    // file. The writer replaces such a file's url (review-slot-guards.js).
+    if (!urlMatches && isStaleNonReviewSlot(data, url)) continue;
 
     // OTHER-PRODUCTION CARVE-OUT (BRO-4271): an existing file that is provably
     // about a different production (London edition url, London-only outlet, a
