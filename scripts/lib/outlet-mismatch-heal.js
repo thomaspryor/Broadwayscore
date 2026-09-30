@@ -106,18 +106,21 @@ function criticOutletCount(criticName, outletId) {
  *    host owner (the URL is then the wrong field, not the outlet).
  * @returns {{ outletId: string, outlet: string, from: string|null } | null}
  */
-function publisherDomainCorrection(data, { ignoreDuplicateOf = false } = {}) {
+function publisherDomainCorrection(data, { ignoreDuplicateOf = false, ignoreRejection = false } = {}) {
   if (!data || typeof data.url !== 'string' || !data.url || data._locked) return null;
   if (NOT_A_REVIEW_FLAGS.some((k) => data[k])) return null;
-  if (carriesOperatorAssertion(data)) return null;
+  // A script's own duplicateClearReason breadcrumb (e.g. "audit-duplicate-of-url-mismatch.js")
+  // matches the operator-text pattern but records only a pointer edit.
+  const { duplicateClearReason: _breadcrumb, ...assertable } = data;
+  if (carriesOperatorAssertion(ignoreDuplicateOf ? assertable : data)) return null;
   // Already a pointer-marked duplicate of another file: excluded from scoring,
   // and relabelling it would only detach it from the file it duplicates.
-  // BRO-4411: pointerHealPlan() opts in for a duplicateOf whose target is
+  // BRO-4411: misfileHealPlan() opts in for a duplicateOf whose target is
   // itself excluded, where "excluded" leaves the source to be recovered live.
   if ((data.duplicateOf && !ignoreDuplicateOf) || data.duplicateTextOf || data.crossOutletDuplicate) return null;
   // Explicitly rejected (not_a_review, ...): excluded for its own reason, not
   // because of the outlet label, so a relabel changes nothing but a filename.
-  if (data.rejectedAt || data.rejectionReason) return null;
+  if ((data.rejectedAt || data.rejectionReason) && !ignoreRejection) return null;
   const current = normalizeOutlet(data.outletId || data.outlet || '');
   if (!current) return null;
   let host;
@@ -143,55 +146,92 @@ function publisherDomainCorrection(data, { ignoreDuplicateOf = false } = {}) {
 }
 
 
+const alnum = (t) => (typeof t === 'string' ? t.normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '') : '');
+
+/** True when `source`'s text adds nothing to `target`: empty, or contained (ignoring punctuation/whitespace, e.g. "-" vs "--", a URL prefix). */
+function textCovered(source, target) {
+  const a = alnum(source && source.fullText);
+  if (!a) return true;
+  const b = alnum(target && target.fullText);
+  if (b.includes(a)) return true;
+  // Same article, different extraction (photo captions, boilerplate): >=90% of
+  // the misfile's 40-char windows, sampled every 40, appear in the target.
+  if (a.length < 400) return false;
+  let hit = 0, n = 0;
+  for (let i = 0; i + 40 <= a.length; i += 40, n++) if (b.includes(a.slice(i, i + 40))) hit++;
+  return n > 0 && hit / n >= 0.9;
+}
+
 /**
- * BRO-4411: a publisher-domain misfile that is a duplicateOf an EXCLUDED file.
- * publisherDomainCorrection() skips every pointer-marked duplicate, which is
- * right while the target scores. But when the target is excluded the rebuild
- * "recovers" the duplicate and scores it under the WRONG outlet (15 NYT
- * reviews live as About Entertainment; detect-syndicated-duplicates had
- * flagged the correctly-filed nytimes file as the duplicate of the misfiled
- * one, and the misfile pointed back: a cycle with no scored member).
+ * BRO-4411: a publisher-domain misfile that the standard relabel skips but the
+ * rebuild still scores under the WRONG outlet (15 NYT reviews live as "About
+ * Entertainment"). Returns a plan, or null (file left for the normal path).
  *
- * Returns a plan, or null when the shape is anything else (kept untouched):
- *  - the source is a publisher-domain misfile once the pointer is ignored, and
- *    excluded for no reason other than that pointer;
- *  - the pointed-at file exists, is the same article (sameArticlePath), is
- *    excluded today, and carries no operator assertion / wrongShow;
- *  - the target's exclusion is only a stale syndication mark pointing back at
- *    the source (kind 'cycle'), or the target is excluded for its own reason
- *    under a different filename than the corrected name (kind 'drop-pointer').
- * @returns {{ kind: 'cycle'|'drop-pointer', fix: object, stripped: object, ptr: string, target: object } | null}
+ *  - 'cycle': the misfile is a duplicateOf an EXCLUDED file, and that file's
+ *    only exclusion is a stale isSyndicatedDuplicate pointing back at the
+ *    misfile (detect-syndicated-duplicates picked the misfile as "primary").
+ *    Neither scores by rule, so the rebuild recovers the misfile. Fix: keep the
+ *    correctly-filed target, clear its stale mark, fold the misfile into it.
+ *  - 'cycle-swap': as 'cycle', but the misfile carries the fuller extraction of the
+ *    article (target holds paywall boilerplate): the target is replaced by the
+ *    relabelled misfile instead, via the excluded-target swap.
+ *  - 'drop-pointer': the duplicateOf target is excluded for its own reason and
+ *    is not the corrected file; the pointer is dropped and the file relabelled.
+ *  - 'twin': no pointer; a stale rejection marker on the misfile (explainExclusion
+ *    says it scores today) and a live, same-article file already at the
+ *    corrected name: two live rows for one article. The misfile is deleted.
+ * Every kind needs: same article (sameArticlePath), no operator assertion or
+ * wrongShow on either side (a script's own duplicateClearReason breadcrumb about
+ * the pointer being resolved is not an assertion), the misfile's text covered by
+ * the target's, and no score/excerpt data the target lacks.
+ * @returns {{ kind: string, fix: object, stripped: object, ptr: string, target: object, cleared?: object } | null}
  */
-function pointerHealPlan({ data, file, io, explain }) {
-  if (!data || !data.duplicateOf || data.duplicateTextOf || data.crossOutletDuplicate) return null;
-  const fix = publisherDomainCorrection(data, { ignoreDuplicateOf: true });
+function misfileHealPlan({ data, file, io, explain }) {
+  if (!data || data.duplicateTextOf || data.crossOutletDuplicate) return null;
+  const hasPtr = !!data.duplicateOf;
+  const stale = !hasPtr && !!(data.rejectedAt || data.rejectionReason) && !explain(data, file);
+  if (!hasPtr && !stale) return null;
+  const fix = publisherDomainCorrection(data, { ignoreDuplicateOf: true, ignoreRejection: true });
   if (!fix) return null;
   const stripped = { ...data };
   delete stripped.duplicateOf;
   delete stripped.duplicateReason;
-  if (explain(stripped, file)) return null; // excluded for its own reason too
-  const ptr = data.duplicateOf;
+  const { duplicateClearReason: _breadcrumb, ...forAssertion } = stripped;
+  if (carriesOperatorAssertion(forAssertion)) return null;
+  const { generateReviewFilename } = require('./review-normalization');
+  const expected = generateReviewFilename(fix.outletId, data.criticName || 'Unknown');
+  const ptr = hasPtr ? data.duplicateOf : expected;
   if (typeof ptr !== 'string' || ptr.includes('/') || !io.exists(ptr)) return null;
   const target = io.read(ptr);
   if (carriesOperatorAssertion(target) || target.wrongShow || !sameArticlePath(data.url, target.url)) return null;
-  if (!explain(target, ptr)) return null; // target scores: normal duplicate, leave alone
-  const { generateReviewFilename } = require('./review-normalization');
-  const expected = generateReviewFilename(fix.outletId, data.criticName || 'Unknown');
-  if (expected === ptr) {
-    const primary = typeof target.syndicatedPrimaryFile === 'string' ? path.basename(target.syndicatedPrimaryFile) : null;
-    if (target.isSyndicatedDuplicate !== true || primary !== file) return null;
-    // false/null, not delete: the write guard's merge mode restores any key
-    // the incoming write leaves undefined.
-    const cleared = { ...target, isSyndicatedDuplicate: false, syndicatedPrimaryFile: null, syndicationSimilarity: null };
-    if (explain(cleared, ptr)) return null; // still excluded for another reason: nothing to gain
-    return { kind: 'cycle', fix, stripped, ptr, target, cleared };
+  const targetWhy = explain(target, ptr);
+  if (!hasPtr) { // twin
+    if (targetWhy || uniqueScoreDataFields(stripped, target).length || !textCovered(stripped, target)) return null;
+    return { kind: 'twin', fix, stripped, ptr, target };
   }
-  return { kind: 'drop-pointer', fix, stripped, ptr, target };
+  if (!targetWhy) return null; // target scores: an ordinary duplicate, leave alone
+  if (expected !== ptr) {
+    if (explain(stripped, file)) return null;
+    return { kind: 'drop-pointer', fix, stripped, ptr, target };
+  }
+  const primary = typeof target.syndicatedPrimaryFile === 'string' ? path.basename(target.syndicatedPrimaryFile) : null;
+  if (target.isSyndicatedDuplicate !== true || primary !== file) return null;
+  const covered = textCovered(stripped, target) && !uniqueScoreDataFields(stripped, target).length;
+  // Different extractions of the same article (paywall boilerplate vs body): keep the fuller one.
+  const fuller = !covered && !explain(stripped, file) && alnum(stripped.fullText).length > alnum(target.fullText).length;
+  if (!covered && !fuller) return null;
+  // The misfile may itself be excluded (rejected as garbage): it is being deleted, not scored.
+  if (explain(stripped, file) && !(stripped.rejectedAt || stripped.rejectionReason)) return null;
+  // false/null, not delete: the write guard's merge mode restores any key
+  // the incoming write leaves undefined.
+  const cleared = { ...target, isSyndicatedDuplicate: false, syndicatedPrimaryFile: null, syndicationSimilarity: null };
+  if (explain(cleared, ptr)) return null; // still excluded for another reason: nothing to gain
+  return { kind: covered ? 'cycle' : 'cycle-swap', fix, stripped, ptr, target, cleared };
 }
 
 /** Apply the URL-edition or publisher-domain correction in place; returns it or null. */
-function applyUrlEditionCorrection(data, today = new Date().toISOString().slice(0, 10)) {
-  const fix = urlEditionCorrection(data) ? { ...urlEditionCorrection(data), reason: 'url-edition' } : publisherDomainCorrection(data);
+function applyUrlEditionCorrection(data, today = new Date().toISOString().slice(0, 10), opts = {}) {
+  const fix = urlEditionCorrection(data) ? { ...urlEditionCorrection(data), reason: 'url-edition' } : publisherDomainCorrection(data, opts);
   if (!fix) return null;
   data.outletIdCorrectedFrom = fix.from;
   data.outletIdCorrectedReason = `${fix.reason}: ${data.url} resolves to ${fix.outletId} (${today})`;
@@ -468,9 +508,9 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         if (!io.exists(f)) continue; // renamed/deleted earlier in this pass
         const fileOutlet = f.split('--')[0];
         let d = io.read(f);
-        const plan = pointerHealPlan({ data: d, file: f, io, explain });
-        if (plan) d = { ...plan.stripped, duplicateClearReason: `BRO-4411: publisher-domain misfile; ${plan.ptr} is excluded (${plan.kind})` };
-        const editionFix = applyUrlEditionCorrection(d);
+        const plan = misfileHealPlan({ data: d, file: f, io, explain });
+        if (plan) d = { ...plan.stripped, ...(plan.kind === 'twin' ? {} : { duplicateClearReason: `BRO-4411: publisher-domain misfile; ${plan.ptr} is excluded (${plan.kind})` }) };
+        const editionFix = applyUrlEditionCorrection(d, undefined, plan ? { ignoreDuplicateOf: true, ignoreRejection: true } : {});
         // A publisher-domain relabel is only persisted once the rename/merge
         // it needs lands (BRO-4402): a kept tombstone must stay untouched, not
         // become a mislabelled file that re-reports every run.
@@ -499,16 +539,30 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         // contamination, Notion 39b637c5-416f-815e); it is deleted only as a
         // same-URL tombstone of an equally excluded target.
         const existingData = io.read(expectedFilename);
-        if (plan && plan.kind === 'cycle' && expectedFilename === plan.ptr) {
-          // Keep the correctly-filed file (its text/score), drop the stale
-          // syndication mark that made it the "duplicate" of this misfile, and
-          // fold the misfile's unique fields in. One scored row, no double count.
-          const tgt = plan.cleared;
-          tgt.syndicationClearedReason = `BRO-4411: stale isSyndicatedDuplicate of misfiled ${f}`;
-          const { duplicateClearReason: _dcr, ...src } = d;
-          const m = mergeUniqueReviewFields(tgt, src);
-          if (m.action !== 'merged') { keep(`pointer-${m.action}`, `${sid}/${f}`); continue; }
-          if (explain(tgt, expectedFilename)) { keep('pointer-target-still-excluded', `${sid}/${f}`); continue; }
+        if (plan && plan.kind === 'cycle-swap' && expectedFilename === plan.ptr) {
+          if (siblingsPointingAt(expectedFilename, io.siblings(expectedFilename)).some((x) => x.file !== f)) {
+            keep('misfile-target-has-other-pointers', `${sid}/${f}`); continue;
+          }
+          io.unlink(expectedFilename);
+          try {
+            renameAndRepoint(io, f, expectedFilename, d, sid);
+          } catch (e) {
+            io.write(expectedFilename, existingData); // restore the target; nothing lost
+            throw e;
+          }
+          announceFix();
+          out.renamedCount++;
+          act(`${sid}/${f}: replaced ${expectedFilename} (stale syndication mark, shorter text) with relabelled fuller copy`);
+          continue;
+        }
+        if (plan && (plan.kind === 'cycle' || plan.kind === 'twin') && expectedFilename === plan.ptr) {
+          // Keep the correctly-filed file (its text/score), fold the misfile's
+          // unique provenance in, clear the stale syndication mark ('cycle').
+          // One scored row, no double count.
+          const tgt = plan.kind === 'cycle' ? plan.cleared : existingData;
+          if (plan.kind === 'cycle') tgt.syndicationClearedReason = `BRO-4411: stale isSyndicatedDuplicate of misfiled ${f}`;
+          Object.assign(tgt, uniqueTransferableFields(d, tgt));
+          if (explain(tgt, expectedFilename)) { keep('misfile-target-still-excluded', `${sid}/${f}`); continue; }
           const pointing = siblingsPointingAt(f, io.siblings(f)).filter((x) => x.file !== expectedFilename);
           repointSiblingRefs(pointing, f, expectedFilename, sid, 'merged into');
           io.write(expectedFilename, tgt);
@@ -516,7 +570,7 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
           io.unlink(f);
           announceFix();
           out.mergedCount++;
-          act(`${sid}/${f}: misfiled duplicate merged into ${expectedFilename}; stale syndication mark cleared`);
+          act(`${sid}/${f}: misfiled ${plan.kind} folded into ${expectedFilename} and deleted`);
           continue;
         }
         if (deferWrite && excludedTargetSwapAllowed({
@@ -587,7 +641,7 @@ module.exports = {
   makeDirIO,
   urlEditionCorrection,
   publisherDomainCorrection,
-  pointerHealPlan,
+  misfileHealPlan,
   excludedTargetSwapAllowed,
   sameArticlePath,
   applyUrlEditionCorrection,

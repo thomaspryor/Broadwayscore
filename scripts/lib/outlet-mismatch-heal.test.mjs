@@ -396,3 +396,52 @@ test('runOutletMismatchCleanup: nothing happens when the duplicateOf target scor
     } finally { fx.cleanup(); }
   }
 });
+
+test('runOutletMismatchCleanup: twin (stale rejection on the misfile, live same-article nytimes file) keeps ONE row', () => {
+  const stale = misfile({ duplicateOf: undefined, duplicateReason: undefined, rejectedAt: '2026-07-11T00:00:00Z', rejectedBy: 'ensemble-scoreability-check', fullText: 'The full NYT review text. '.repeat(20) });
+  const live = nytFile({ isSyndicatedDuplicate: undefined, syndicatedPrimaryFile: undefined, syndicationSimilarity: undefined });
+  // explain: rejection markers alone do not exclude (stale-flag exception); mimic explainExclusion.
+  const ex = (d) => (d && (d.duplicateOf ? 'duplicateOf' : d.isSyndicatedDuplicate ? 'isSyndicatedDuplicate' : null)) || null;
+  const fx = fixture({ 'about-entertainment--ben-brantley.json': stale, 'nytimes--ben-brantley.json': live });
+  try {
+    const r = run(fx.root, { explainFn: ex });
+    assert.equal(r.errorCount, 0);
+    assert.ok(!fx.exists('about-entertainment--ben-brantley.json'));
+    assert.equal(fx.read('nytimes--ben-brantley.json').assignedScore, 78);
+  } finally { fx.cleanup(); }
+  // Text the target lacks is never thrown away.
+  const fx2 = fixture({ 'about-entertainment--ben-brantley.json': { ...stale, fullText: 'A completely different body.' }, 'nytimes--ben-brantley.json': live });
+  try {
+    const before = fx2.snapshot();
+    run(fx2.root, { explainFn: ex });
+    assert.deepEqual(fx2.snapshot(), before);
+  } finally { fx2.cleanup(); }
+});
+
+test('runOutletMismatchCleanup: cycle tolerates a script duplicateClearReason breadcrumb and text the target prefixes with a URL', () => {
+  const src = misfile({ duplicateClearReason: 'audit-duplicate-of-url-mismatch.js (--fix) on 2026-08-07: url differed', fullText: 'Other peoples dreams are boring.' });
+  const tgt = nytFile({ fullText: 'https://www.nytimes.com/x.htmlShare full article Other peoples dreams are boring.' });
+  const fx = fixture({ 'about-entertainment--ben-brantley.json': src, 'nytimes--ben-brantley.json': tgt });
+  try {
+    run(fx.root, { explainFn: excl });
+    assert.ok(!fx.exists('about-entertainment--ben-brantley.json'));
+    assert.equal(fx.read('nytimes--ben-brantley.json').isSyndicatedDuplicate, false);
+  } finally { fx.cleanup(); }
+});
+
+test('runOutletMismatchCleanup: cycle where the misfile has the fuller extraction replaces the boilerplate target', () => {
+  const body = 'Oh, what a lovely production this is. '.repeat(30);
+  const src = misfile({ fullText: `https://www.nytimes.com/x.htmlShare full article\n\n${body}` });
+  const tgt = nytFile({ fullText: 'All print options include free, unlimited access to NYTimes.com.' });
+  const fx = fixture({ 'about-entertainment--ben-brantley.json': src, 'nytimes--ben-brantley.json': tgt });
+  try {
+    const r = run(fx.root, { explainFn: excl });
+    assert.equal(r.errorCount, 0);
+    assert.ok(!fx.exists('about-entertainment--ben-brantley.json'));
+    const t = fx.read('nytimes--ben-brantley.json');
+    assert.equal(t.outletId, 'nytimes');
+    assert.match(t.fullText, /lovely production/);
+    assert.equal(t.duplicateOf, undefined);
+    assert.equal(t.isSyndicatedDuplicate, undefined);
+  } finally { fx.cleanup(); }
+});
