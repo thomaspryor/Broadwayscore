@@ -68,8 +68,11 @@ jobs:
     if: ${{ vars.DEPENDENCY_AUDIT_DISABLED != 'true' }}
     runs-on: ubuntu-latest
     # The audit itself is ~45s (npm audit against the registry); checkout
-    # variance on this runner pool has hit 5 min (lint-workflows precedent).
-    timeout-minutes: 10
+    # variance on this runner pool has hit 5 min (lint-workflows precedent),
+    # push-with-retry's deadline is 4 min, and a Linear 429 retry loop has no
+    # wall-clock cap — 10 could kill the persist push mid-rebase. 20, like
+    # audit-time-bomb-tests.yml (ship-check).
+    timeout-minutes: 20
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -145,7 +148,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl data/audit/alert-digest-queue.json; do
-            [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
+            if [ -e "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
           done
           if git diff --cached --quiet; then
             echo "No alert-router state changes to commit"

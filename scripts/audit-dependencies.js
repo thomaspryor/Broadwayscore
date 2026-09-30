@@ -96,10 +96,15 @@ const CONDITION_PREFIX = 'dependency-audit:';
 const EXPIRING_KEY_INFIX = 'expiring:';
 
 /** Safe-form acceptance lines for the filed cards (autonomous-triage-core.js
- * SAFE_CHECK_FORMS accepts `node --test <file>`). The two live tests run the
+ * SAFE_CHECK_FORMS accepts `node --test <file>`). The `VERIFY: ` prefix is
+ * load-bearing: buildCardNotes() drops `verify.line` into the card raw and
+ * extractVerifyCmd() only harvests `VERIFY:` lines or backticked spans — a
+ * bare command is prose, the card is "no-safe-verify", and neither the
+ * red-first dispatcher nor the parked drain will ever pick it up (BRO-3881;
+ * caught again by this landing's ship-check). The two live tests run the
  * REAL `npm audit` and are deliberately absent from every unit manifest. */
-const VERIFY_CLEAN = 'node --test tests/live/audit-dependencies-clean.test.mjs';
-const VERIFY_NO_EXPIRING = 'node --test tests/live/audit-dependencies-no-expiring.test.mjs';
+const VERIFY_CLEAN = 'VERIFY: node --test tests/live/audit-dependencies-clean.test.mjs';
+const VERIFY_NO_EXPIRING = 'VERIFY: node --test tests/live/audit-dependencies-no-expiring.test.mjs';
 
 /** Minimum length of an `exposure` assessment — long enough to be a sentence. */
 const MIN_EXPOSURE_CHARS = 40;
@@ -390,19 +395,31 @@ function expiringKey(ghsa) { return `${CONDITION_PREFIX}${EXPIRING_KEY_INFIX}${g
  *
  * @returns {{ alerts: Array<object>, alertDispatchFailed: boolean }}
  */
-async function runAlerts({ findings, expiringSoon, allowlist, router, runContext = {}, log = console.error }) {
+async function runAlerts({ findings, expiringSoon, allowlist, router, runContext = {}, warnDays = 0, log = console.error }) {
   const { routeAlert, resolveCondition, loadLedger } = router;
   const byGhsa = new Map((allowlist || []).filter((a) => a && a.ghsa).map((a) => [a.ghsa, a]));
+
+  // One card per GHSA: evaluateAuditReport can report the same id more than
+  // once (a disqualified entry that is ALSO duplicated), and a second
+  // routeAlert on the same key would only add a cooldown-silent row.
+  const seen = new Set();
+  findings = findings.filter((f) => (seen.has(f.ghsa) ? false : (seen.add(f.ghsa), true)));
+
   const currentKeys = new Set([
     ...findings.map((f) => findingKey(f.ghsa)),
     ...expiringSoon.map((e) => expiringKey(e.ghsa)),
   ]);
 
+  // Sweep-resolve what this run no longer reports. A run with no warning
+  // window (warnDays 0) says nothing about reminders, so it must not close
+  // them — only a windowed run is authoritative for `expiring:` keys.
+  const expiringPrefix = `${CONDITION_PREFIX}${EXPIRING_KEY_INFIX}`;
   const ledger = loadLedger();
   for (const key of Object.keys((ledger && ledger.conditions) || {})) {
     if (!key.startsWith(CONDITION_PREFIX)) continue;
     if (ledger.conditions[key].status !== 'open') continue;
     if (currentKeys.has(key)) continue;
+    if (warnDays === 0 && key.startsWith(expiringPrefix)) continue;
     resolveCondition(key, { reason: 'audit-dependencies: no longer reported' });
   }
 
@@ -434,6 +451,9 @@ async function runAlerts({ findings, expiringSoon, allowlist, router, runContext
       ? `\n\nCurrent allowlist entry — reason: ${entry.reason}\nexposure: ${entry.exposure}\nissue: ${entry.issue}\nexpires: ${entry.expires}`
       : '';
     const key = findingKey(f.ghsa);
+    // The reminder for this GHSA is superseded by the real finding — resolve
+    // it BEFORE filing so a throwing routeAlert cannot leave the pair open.
+    resolveCondition(expiringKey(f.ghsa), { reason: 'superseded by finding' });
     try {
       const result = await routeAlert({
         conditionKey: key,
@@ -451,8 +471,6 @@ async function runAlerts({ findings, expiringSoon, allowlist, router, runContext
         verify: { line: VERIFY_CLEAN, note: 'runs the real npm audit; passes only when no unallowlisted, expired or disqualified critical remains' },
       });
       record(key, result);
-      // The reminder for this GHSA is now superseded by the real finding.
-      resolveCondition(expiringKey(f.ghsa), { reason: 'superseded by finding' });
     } catch (err) {
       alertDispatchFailed = true;
       log(`[alert] routeAlert threw for ${key}: ${err.message}`);
@@ -586,6 +604,7 @@ async function main() {
       allowlist: ALLOWLIST,
       router,
       runContext,
+      warnDays: opts.warnDays,
     }));
     for (const a of alerts) {
       console.log(`   [alert] ${a.conditionKey} → ${a.action}${a.linearIdentifier ? ` (${a.linearIdentifier})` : ''}${a.dispatchOk ? '' : ' — DISPATCH FAILED'}`);
