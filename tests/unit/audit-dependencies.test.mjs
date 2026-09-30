@@ -288,3 +288,293 @@ describe('duplicate allowlist entries', () => {
     assert.equal(new Set(ids).size, ids.length);
   });
 });
+
+
+// --- BRO-4434: the audit left test.yml (main's color = code only). It now runs
+// daily with --alert and files cards. These pin the parts that make that safe:
+// structured findings (stable conditionKeys), the expiring-soon window, the
+// exit-code table, and --alert's handling of the REAL router contract
+// (routeAlert resolves { dispatchOk:false } on failure — it never throws).
+const {
+  decideExitCode, runAlerts, parseArgs, findingKey, expiringKey, CONDITION_PREFIX,
+  VERIFY_CLEAN, VERIFY_NO_EXPIRING,
+} = require('../../scripts/audit-dependencies');
+
+describe('structured findings (BRO-4434)', () => {
+  test('an unallowlisted critical is a finding keyed by its GHSA, and errors mirrors findings', () => {
+    const report = { vulnerabilities: { evil: { severity: 'critical', via: [criticalVia('GHSA-xxxx-yyyy-zzzz')] } } };
+    const r = evaluateAuditReport(report, ALLOW, TODAY);
+    assert.deepEqual(r.findings.map((f) => [f.kind, f.ghsa, f.module]), [['unallowlisted', 'GHSA-xxxx-yyyy-zzzz', 'evil']]);
+    assert.deepEqual(r.errors, r.findings.map((f) => f.message));
+    assert.equal(r.couldNotRun, false);
+  });
+
+  test('each disqualification kind is a distinct finding on the entry\'s own GHSA', () => {
+    const cases = [
+      ['missing-exposure', { ...ALLOW[0], exposure: 'nope' }],
+      ['missing-issue', { ...ALLOW[0], issue: 'task 12' }],
+      ['invalid-expiry', { ...ALLOW[0], expires: '2026-13-40' }],
+      ['expired', { ...ALLOW[0], expires: '2026-01-01' }],
+    ];
+    for (const [kind, entry] of cases) {
+      const r = evaluateAuditReport({ vulnerabilities: {} }, [entry], TODAY);
+      assert.deepEqual(r.findings.map((f) => [f.kind, f.ghsa]), [[kind, ALLOW[0].ghsa]], kind);
+    }
+    const dup = evaluateAuditReport({ vulnerabilities: {} }, [ALLOW[0], { ...ALLOW[0] }], TODAY);
+    assert.deepEqual(dup.findings.map((f) => f.kind), ['duplicate-entry']);
+  });
+
+  test('could-not-run shapes are flagged as such, with no findings', () => {
+    for (const bad of [null, { error: { code: 'ENOAUDIT', summary: 'down' } }, { auditReportVersion: 2 }]) {
+      const r = evaluateAuditReport(bad, ALLOW, TODAY);
+      assert.equal(r.couldNotRun, true);
+      assert.equal(r.ok, false);
+      assert.deepEqual(r.findings, []);
+      assert.deepEqual(r.expiringSoon, []);
+    }
+  });
+});
+
+describe('expiring-soon window (BRO-4434)', () => {
+  const entry = (expires) => [{ ...ALLOW[0], expires }];
+  const clean = { vulnerabilities: {} };
+
+  test('off by default: warnDays 0 never lists anything', () => {
+    const r = evaluateAuditReport(clean, entry('2026-07-12'), TODAY);
+    assert.deepEqual(r.expiringSoon, []);
+  });
+
+  test('inside the window is listed with daysLeft; never affects ok', () => {
+    const r = evaluateAuditReport(clean, entry('2026-07-20'), TODAY, { warnDays: 14 });
+    assert.equal(r.ok, true);
+    assert.deepEqual(r.expiringSoon, [{ ghsa: ALLOW[0].ghsa, module: 'decompress', expires: '2026-07-20', daysLeft: 9 }]);
+  });
+
+  test('boundary is inclusive: today+warnDays is listed, today+warnDays+1 is not (the 2026-09-30 off-by-one)', () => {
+    // TODAY = 2026-07-11: +14 = 07-25 (in), +15 = 07-26 (out).
+    assert.equal(evaluateAuditReport(clean, entry('2026-07-25'), TODAY, { warnDays: 14 }).expiringSoon.length, 1);
+    assert.equal(evaluateAuditReport(clean, entry('2026-07-26'), TODAY, { warnDays: 14 }).expiringSoon.length, 0);
+  });
+
+  test('tomorrow is 1 day left, never 0', () => {
+    const r = evaluateAuditReport(clean, entry('2026-07-12'), TODAY, { warnDays: 14 });
+    assert.equal(r.expiringSoon[0].daysLeft, 1);
+  });
+
+  test('an expired or malformed entry is a finding, NOT an expiring-soon reminder', () => {
+    for (const expires of ['2026-07-11', '2026-01-01', 'soon']) {
+      const r = evaluateAuditReport(clean, entry(expires), TODAY, { warnDays: 14 });
+      assert.deepEqual(r.expiringSoon, [], expires);
+      assert.equal(r.findings.length, 1, expires);
+    }
+  });
+});
+
+describe('decideExitCode (BRO-4434) — the audit-time-bomb-tests contract', () => {
+  test('table', () => {
+    assert.equal(decideExitCode({}).exitCode, 0);
+    assert.equal(decideExitCode({ findingsCount: 2 }).exitCode, 0, 'findings alone are reported, not fatal');
+    assert.equal(decideExitCode({ findingsCount: 2, strict: true }).exitCode, 1);
+    assert.equal(decideExitCode({ couldNotRun: true, findingsCount: 2, strict: true, alertDispatchFailed: true }).exitCode, 2, 'could-not-run wins');
+    assert.equal(decideExitCode({ findingsCount: 2, strict: true, alertDispatchFailed: true }).exitCode, 3, 'a lost alert beats --strict');
+    assert.equal(decideExitCode({ alertDispatchFailed: true }).exitCode, 3);
+    assert.match(decideExitCode({ findingsCount: 1 }).reason, /1 finding/);
+  });
+});
+
+describe('parseArgs (BRO-4434)', () => {
+  test('parses flags and rejects junk loudly', () => {
+    assert.deepEqual(parseArgs(['--strict', '--alert', '--warn-days=14', '--out=/tmp/x.json']),
+      { strict: true, alert: true, warnDays: 14, out: '/tmp/x.json', help: false });
+    assert.throws(() => parseArgs(['--warn-days=soon']), /non-negative integer/);
+    assert.throws(() => parseArgs(['--bogus']), /unknown argument/);
+  });
+});
+
+// A fake router with the SAME contract as scripts/lib/owner-alert-router.js:
+// routeAlert resolves (never throws) with { action, dispatchOk, linearIdentifier };
+// resolveCondition on an unknown/non-open key is a no-op returning false.
+function fakeRouter({ conditions = {}, respond } = {}) {
+  const calls = [];
+  const resolved = [];
+  return {
+    calls,
+    resolved,
+    loadLedger: () => ({ conditions }),
+    resolveCondition: (key) => {
+      resolved.push(key);
+      const c = conditions[key];
+      if (!c || c.status !== 'open') return false;
+      c.status = 'resolved';
+      return true;
+    },
+    routeAlert: async (opts) => {
+      calls.push(opts);
+      return respond ? respond(opts) : { action: 'auto', dispatchOk: true, linearIdentifier: `BRO-${9000 + calls.length}` };
+    },
+  };
+}
+
+describe('runAlerts (BRO-4434) against the real router contract', () => {
+  const finding = { kind: 'unallowlisted', ghsa: 'GHSA-aaaa-bbbb-cccc', module: 'evil', message: 'critical advisory not in allowlist — evil: bad (url)' };
+  const expiring = { ghsa: ALLOW[0].ghsa, module: 'decompress', expires: '2026-07-20', daysLeft: 9 };
+
+  test('a finding files a dispatched-at-filing card with a safe-form VERIFY line; expiring-soon files a PARKED one', async () => {
+    const router = fakeRouter();
+    const r = await runAlerts({ findings: [finding], expiringSoon: [expiring], allowlist: ALLOW, router, runContext: { runId: '123', runUrl: 'https://x/runs/123' }, log: () => {} });
+    assert.equal(r.alertDispatchFailed, false);
+    assert.equal(router.calls.length, 2);
+    const [f, e] = router.calls;
+    assert.equal(f.conditionKey, findingKey(finding.ghsa));
+    assert.equal(f.disposition, 'auto');
+    assert.deepEqual(f.dispatchAtFiling, { runId: '123', runUrl: 'https://x/runs/123' });
+    assert.equal(f.verify.line, VERIFY_CLEAN);
+    assert.match(f.verify.line, /^VERIFY: node --test tests\/live\/[\w-]+\.test\.mjs$/, 'VERIFY: prefix + a SAFE_CHECK_FORM, or the drain never selects the card');
+    assert.match(f.title, /^Security issue in evil — needs a decision \(GHSA-aaaa-bbbb-cccc\)$/, 'plain words first, id last');
+    assert.match(f.description, /^A helper session is assigned/, 'first line says who acts');
+    assert.equal(e.conditionKey, expiringKey(expiring.ghsa));
+    assert.equal(e.dispatchAtFiling, undefined, 'extending an exemption is a judgment call — parked, not dispatched');
+    assert.equal(e.verify.line, VERIFY_NO_EXPIRING);
+    assert.match(e.title, /^Security exception for decompress ends on 2026-07-20 — extend or fix \(GHSA-mp2f-45pm-3cg9\)$/);
+    assert.match(e.description, /^Nothing breaks on 2026-07-20/, 'first line says what ignoring it means');
+    assert.match(e.description, /9 day\(s\) ahead/);
+    assert.deepEqual(r.alerts.map((a) => a.linearIdentifier), ['BRO-9001', 'BRO-9002']);
+  });
+
+  test('outside CI (no runId) the finding card is parked too, never a half-formed dispatchAtFiling', async () => {
+    const router = fakeRouter();
+    await runAlerts({ findings: [finding], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
+    assert.equal(router.calls[0].dispatchAtFiling, undefined);
+  });
+
+  test('dispatchOk:false counts as a failure even though the router did not throw (pre-mortem P0)', async () => {
+    const router = fakeRouter({ respond: () => ({ action: 'auto', dispatchOk: false, dispatchError: 'authentication required' }) });
+    const logged = [];
+    const r = await runAlerts({ findings: [finding], expiringSoon: [], allowlist: ALLOW, router, log: (m) => logged.push(m) });
+    assert.equal(r.alertDispatchFailed, true);
+    assert.equal(r.alerts[0].dispatchOk, false);
+    assert.match(logged.join('\n'), /authentication required/);
+  });
+
+  test('an "auto" result with no tracker identifier is a failure too', async () => {
+    const router = fakeRouter({ respond: () => ({ action: 'auto', dispatchOk: true }) });
+    const r = await runAlerts({ findings: [finding], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
+    assert.equal(r.alertDispatchFailed, true);
+  });
+
+  test('a silent result that names NO tracker is a failure (the ledger claims a card nothing can point at)', async () => {
+    const router = fakeRouter({ respond: () => ({ action: 'silent', linearIdentifier: null }) });
+    const r = await runAlerts({ findings: [finding], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
+    assert.equal(r.alertDispatchFailed, true);
+  });
+
+  test('a cooldown-silent result with an existing tracker is NOT a failure', async () => {
+    const router = fakeRouter({ respond: () => ({ action: 'silent', linearIdentifier: 'BRO-1' }) });
+    const r = await runAlerts({ findings: [finding], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
+    assert.equal(r.alertDispatchFailed, false);
+    assert.equal(r.alerts[0].linearIdentifier, 'BRO-1');
+  });
+
+  test('a throwing router is caught, counted, and does not stop the other alerts', async () => {
+    let n = 0;
+    const router = fakeRouter({ respond: () => { if (++n === 1) throw new Error('boom'); return { action: 'auto', dispatchOk: true, linearIdentifier: 'BRO-2' }; } });
+    const r = await runAlerts({ findings: [finding], expiringSoon: [expiring], allowlist: ALLOW, router, log: () => {} });
+    assert.equal(r.alertDispatchFailed, true);
+    assert.equal(r.alerts.length, 2);
+    assert.equal(r.alerts[1].linearIdentifier, 'BRO-2');
+  });
+
+  test('opening a finding for a GHSA resolves that GHSA\'s parked expiring reminder (no false pair after the expiry date)', async () => {
+    const key = expiringKey(ALLOW[0].ghsa);
+    const router = fakeRouter({ conditions: { [key]: { status: 'open' } } });
+    const expiredFinding = { kind: 'expired', ghsa: ALLOW[0].ghsa, module: 'decompress', message: 'expired allowlist entry' };
+    await runAlerts({ findings: [expiredFinding], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
+    assert.ok(router.resolved.includes(key));
+    assert.equal(router.loadLedger().conditions[key].status, 'resolved');
+    // the finding card carries the entry's exposure/issue so the dispatched session sees the prior decision
+    assert.match(router.calls[0].description, /exposure: Not exposed/);
+    assert.match(router.calls[0].description, /issue: BRO-3202/);
+  });
+
+  test('a clean run sweep-resolves every open dependency-audit: key and touches nothing else', async () => {
+    const stale = findingKey('GHSA-gone-gone-gone');
+    const staleExp = expiringKey('GHSA-gone-gone-gone');
+    const other = 'time-bomb-tests:x';
+    const router = fakeRouter({ conditions: {
+      [stale]: { status: 'open' }, [staleExp]: { status: 'open' }, [other]: { status: 'open' },
+      [findingKey('GHSA-resolved-already')]: { status: 'resolved' },
+    } });
+    // warnDays > 0: a windowed run is authoritative for the expiring keys too
+    const r = await runAlerts({ findings: [], expiringSoon: [], allowlist: ALLOW, router, warnDays: 14, log: () => {} });
+    assert.equal(r.alertDispatchFailed, false);
+    assert.equal(router.calls.length, 0);
+    assert.deepEqual(router.resolved.sort(), [stale, staleExp].sort());
+    assert.equal(router.loadLedger().conditions[other].status, 'open');
+  });
+
+  test('a key still reported this run is NOT swept', async () => {
+    const key = findingKey(finding.ghsa);
+    const router = fakeRouter({ conditions: { [key]: { status: 'open' } }, respond: () => ({ action: 'silent', linearIdentifier: 'BRO-5' }) });
+    await runAlerts({ findings: [finding], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
+    assert.ok(!router.resolved.includes(key));
+  });
+
+  test('every key this script opens starts with the sweep prefix', () => {
+    assert.ok(findingKey('X').startsWith(CONDITION_PREFIX));
+    assert.ok(expiringKey('X').startsWith(CONDITION_PREFIX));
+    assert.notEqual(findingKey('X'), expiringKey('X'));
+  });
+});
+
+// Ship-check P0 (BRO-3881 class): a bare command in verify.line is prose to
+// extractVerifyCmd(); the card reads "no-safe-verify" and neither the
+// red-first dispatcher nor the parked drain ever picks it up. Go through the
+// REAL card-notes builder and the REAL verifiability gate (CLAUDE.md §15).
+describe('the filed cards are dispatchable end to end (BRO-4434)', () => {
+  const { buildCardNotes } = require('../../scripts/lib/owner-alert-router');
+  const { evaluateVerifiability } = require('../../scripts/lib/verify-gate');
+
+  for (const [label, line] of [['finding card', VERIFY_CLEAN], ['expiring reminder', VERIFY_NO_EXPIRING]]) {
+    test(`${label}: buildCardNotes + evaluateVerifiability arm on the VERIFY line`, () => {
+      const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: 'dependency-audit:GHSA-x', verify: { line, note: 'n' } });
+      const v = evaluateVerifiability(notes, []);
+      assert.equal(v.armed, true, `${label} not armed: ${JSON.stringify(v)}`);
+    });
+  }
+
+  test('a bare command (no VERIFY: prefix) would NOT arm — the regression this pins', () => {
+    const notes = buildCardNotes({ description: 'd', hint: 'h', fields: [], conditionKey: 'k', verify: { line: VERIFY_CLEAN.replace(/^VERIFY: /, ''), note: 'n' } });
+    assert.equal(evaluateVerifiability(notes, []).armed, false);
+  });
+});
+
+describe('runAlerts hygiene (ship-check P2s, BRO-4434)', () => {
+  const dup = (kind) => ({ kind, ghsa: 'GHSA-dupe-dupe-dupe', module: 'm', message: kind });
+
+  test('several findings on one GHSA file ONE card', async () => {
+    const router = fakeRouter();
+    const r = await runAlerts({ findings: [dup('missing-issue'), dup('duplicate-entry')], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
+    assert.equal(router.calls.length, 1);
+    assert.equal(r.alerts.length, 1);
+  });
+
+  test('a run with no warning window leaves open expiring reminders alone; a windowed run sweeps them', async () => {
+    const key = expiringKey('GHSA-gone-gone-gone');
+    const mk = () => fakeRouter({ conditions: { [key]: { status: 'open' } } });
+    const r0 = mk();
+    await runAlerts({ findings: [], expiringSoon: [], allowlist: ALLOW, router: r0, warnDays: 0, log: () => {} });
+    assert.equal(r0.loadLedger().conditions[key].status, 'open');
+    const r14 = mk();
+    await runAlerts({ findings: [], expiringSoon: [], allowlist: ALLOW, router: r14, warnDays: 14, log: () => {} });
+    assert.equal(r14.loadLedger().conditions[key].status, 'resolved');
+  });
+
+  test('the expiring reminder is resolved even when routeAlert throws for the finding', async () => {
+    const key = expiringKey('GHSA-thrw-thrw-thrw');
+    const router = fakeRouter({ conditions: { [key]: { status: 'open' } }, respond: () => { throw new Error('boom'); } });
+    const finding = { kind: 'expired', ghsa: 'GHSA-thrw-thrw-thrw', module: 'm', message: 'expired' };
+    const r = await runAlerts({ findings: [finding], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
+    assert.equal(r.alertDispatchFailed, true);
+    assert.equal(router.loadLedger().conditions[key].status, 'resolved');
+  });
+});

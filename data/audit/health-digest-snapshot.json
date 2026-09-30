@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-30T13:04:10.754Z",
-  "subject": "BSC URGENT (day 41): 5 unresolved errors",
-  "bannerText": "5 errors, 39 warnings",
-  "consecutiveErrorDays": 41,
+  "generatedAt": "2026-09-30T17:26:52.347Z",
+  "subject": "BSC URGENT (day 42): 5 unresolved errors",
+  "bannerText": "5 errors, 40 warnings",
+  "consecutiveErrorDays": 42,
   "errors": [
-    {
-      "name": "Main: red streak",
-      "message": "main's Test Suite has had no confirmed-green run in 340.2h (7 failing runs) — first red commit 8312f5b21, job \"Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk."
-    },
     {
       "name": "Push-retry deadman",
       "message": "16 push-retry failure(s) in the last 7d across Broadwayscore:main, broadway-scorecard-data:main [Rebuild Reviews Data x5, Scrape New Aggregators x4, Rebuild Reviews (Fast) x2, Opening Night Express x1, Card Verifiability Audit x1, Gather Review Data x1, Enrich Reviews x1, Promote Off-West End Venue Candidates x1]. Most recent reason: retries-exhausted."
+    },
+    {
+      "name": "Workflow repeat-failure: Land",
+      "message": "Land failed 3 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Data: live show with zero critic reviews on site",
@@ -18,11 +18,11 @@
     },
     {
       "name": "Infra: worktree GC log stale",
-      "message": "worktree-gc.log has no line in the last 131.9h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
+      "message": "worktree-gc.log has no line in the last 136.2h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
-      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Tartuffe (Remixed)\" (wet-roundup — missing 17d) — 2 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Tartuffe (Remixed)\" (wet-roundup — missing 18d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ],
   "warns": [
@@ -40,7 +40,7 @@
     },
     {
       "name": "Sync: baseline drift",
-      "message": "Reviews dropped: 21937 vs baseline 22018"
+      "message": "Reviews dropped: 21951 vs baseline 22016"
     },
     {
       "name": "Sync: grosses weekEnding",
@@ -52,7 +52,7 @@
     },
     {
       "name": "Quality: corpus drift",
-      "message": "19 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), same-title-sibling review misrouted to the wrong production (baseline-diff), duplicate SHOW entries in shows.json (baseline-diff), exclusion flag contradicted by its own content-verification pass (baseline-diff), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416), public/data/shows/{id}.json existing for an id no longer in shows.json"
+      "message": "20 audit(s) drifting: content-quality regex false-positive rate, cross-show URL contamination (review URL slug names a different show), resolvable unknown outlets (in reviews, not yet in registry), duplicate reviews (same showDir|outlet|critic), high-churn tracked files lacking a .gitattributes merge driver, review-text contamination (strict classes A/C/E/F), stale duplicateOf flags (our URL ≠ sibling URL) — full report (gate = spike floor), same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count), data/cast/*.json wrong-show contamination — full report (gate = wrong-show class only), data/audience-buzz.json source divergence — full --strict (gate = divergence spike only), reviews scored off an excerpt that now have fullText, never flagged for rescore, critic-consensus text overstating the critical split (hedge/\"divided\" language vs a dominant bucketBreakdown majority), same-title-sibling review misrouted to the wrong production (baseline-diff), duplicate SHOW entries in shows.json (baseline-diff), exclusion flag contradicted by its own content-verification pass (baseline-diff), cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff), critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff), a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance), maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416), public/data/shows/{id}.json existing for an id no longer in shows.json"
     },
     {
       "name": "Quality: DMARC deliverability",
@@ -64,27 +64,31 @@
     },
     {
       "name": "Data quality: cross-outlet attribution drift",
-      "message": "Unreviewed cross-outlet attribution suspect(s) found (23h ago)"
+      "message": "Unreviewed cross-outlet attribution suspect(s) found (4h ago)"
     },
     {
       "name": "Data quality: cv-wrongproduction lifetime sweep",
-      "message": "14 NEW unhandled CV.wrongProduction review(s) since last run (989 total across 454 show(s), 23h ago)"
+      "message": "33 NEW unhandled CV.wrongProduction review(s) since last run (1004 total across 464 show(s), 4h ago)"
     },
     {
       "name": "Data quality: fulltext-mentions-show lifetime sweep",
-      "message": "46 NEW unmatched review(s) since last run (706 total across 344 show(s), 23h ago)"
+      "message": "20 NEW unmatched review(s) since last run (643 total across 327 show(s), 4h ago)"
     },
     {
       "name": "Data quality: slug-mismatch lifetime sweep",
-      "message": "13 NEW cross-show URL mismatch(es) since last run (1646 total across 743 show(s), 23h ago)"
+      "message": "61 NEW cross-show URL mismatch(es) since last run (1645 total across 748 show(s), 4h ago)"
     },
     {
       "name": "Data quality: revival-unverified lifetime sweep",
-      "message": "5 NEW unverified revival flag(s) since last run (48 total across 48 show(s), 23h ago)"
+      "message": "4 NEW unverified revival flag(s) since last run (52 total across 52 show(s), 4h ago)"
     },
     {
       "name": "Data quality: missed opening-night broadcasts",
-      "message": "5 show(s) opened and qualified but never emailed subscribers (0 still alertable, 5 aged out past the paging window, 23h ago)"
+      "message": "6 show(s) opened and qualified but never emailed subscribers (0 still alertable, 6 aged out past the paging window, 4h ago)"
+    },
+    {
+      "name": "Data quality: stale announced shows",
+      "message": "2 show(s) still 'announced' after apparently opening (22 silenced by contamination, 4h ago)"
     },
     {
       "name": "Coverage: adversarial probe",
@@ -104,7 +108,7 @@
     },
     {
       "name": "Main: green rate",
-      "message": "rate 35% (green 77 / red 143, 220 runs, 23 hung (cancelled >= 10 min, counted red)), 7d trend from 12.9%, day 0 of 14 at ≥80% → FAIL"
+      "message": "rate 36.4% (green 82 / red 143, 225 runs, 23 hung (cancelled >= 10 min, counted red)), 7d trend from 12.9%, day 0 of 14 at ≥80% → FAIL"
     },
     {
       "name": "Stuck work: paused P0/P1 cards",
@@ -143,12 +147,8 @@
       "message": "1 pipeline signal(s) flagged possibly-stuck by the overnight digest — investigate and unstick. Shows losing scored reviews: going-bacharach-the-songs-of-an-icon-off-broadway-2026: 5→0 reviews (scored files exist but being dropped)"
     },
     {
-      "name": "Workflow repeat-failure: Check Corpus Drift",
-      "message": "Check Corpus Drift failed 2 times in the last 24h — likely broken, not transient."
-    },
-    {
-      "name": "Workflow repeat-failure: Fetch Guardian Reviews via API",
-      "message": "Fetch Guardian Reviews via API failed 2 times in the last 24h — likely broken, not transient."
+      "name": "Workflow repeat-failure: Execute Approved Fix",
+      "message": "Execute Approved Fix failed 2 times in the last 24h — likely broken, not transient."
     },
     {
       "name": "Feedback: needs-manual-review backlog",
@@ -156,15 +156,15 @@
     },
     {
       "name": "Data: T1/T2 silent review gaps",
-      "message": "6 discovered review(s) not reaching the composite score (2 T1). First: school-girls-or-the-african-mean-girls-play-2026 — nydailynews (unscored)"
+      "message": "12 discovered review(s) not reaching the composite score (3 T1). First: school-girls-or-the-african-mean-girls-play-2026 — new-york-sun (empty-body)"
     },
     {
       "name": "Infra: notion-schedule-coupling audit",
-      "message": "5 live schedule(s) still reference the frozen Notion mirror (23h ago)"
+      "message": "5 live schedule(s) still reference the frozen Notion mirror (4h ago)"
     },
     {
       "name": "Data: BWW roundup discovery misses near opening",
-      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. First: school-girls-or-the-african-mean-girls-play-2026 (8 misses, last 2026-09-29T01:39:40.426Z)."
+      "message": "1 show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. First: school-girls-or-the-african-mean-girls-play-2026 (4 misses, last 2026-09-29T01:39:40.426Z)."
     }
   ],
   "queued": [
@@ -1095,83 +1095,6 @@
       ]
     },
     {
-      "title": "Review gap — \"Alvin Ailey American Dance Theater - New Works\" missing 3 cited review(s)",
-      "description": "Alvin Ailey American Dance Theater - New Works (alvin-ailey-american-dance-theater-new-works-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"America, Who Hurt You?\" missing 1 cited review(s)",
-      "description": "America, Who Hurt You? (america-who-hurt-you-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=america-who-hurt-you-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Becoming Hamlet\" missing 2 cited review(s)",
-      "description": "Becoming Hamlet (becoming-hamlet-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=becoming-hamlet-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Crazy Mama: A True Story of Love and Madness\" missing 3 cited review(s)",
-      "description": "Crazy Mama: A True Story of Love and Madness (crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Darkling\" missing 2 cited review(s)",
-      "description": "Darkling (darkling-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=darkling-off-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Deep Heat Rivalry\" missing 4 cited review(s)",
-      "description": "Deep Heat Rivalry (deep-heat-rivalry-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=deep-heat-rivalry-off-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Elf Lyons: The Woman on the Edge\" missing 1 cited review(s)",
-      "description": "Elf Lyons: The Woman on the Edge (elf-lyons-the-woman-on-the-edge-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=elf-lyons-the-woman-on-the-edge-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Gimme a Sign!\" missing 1 cited review(s)",
-      "description": "Gimme a Sign! (gimme-a-sign-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=gimme-a-sign-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Golden Boy\" missing 1 cited review(s)",
-      "description": "Golden Boy (golden-boy-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=golden-boy-off-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"How Shakespeare Saved My Life\" missing 2 cited review(s)",
-      "description": "How Shakespeare Saved My Life (how-shakespeare-saved-my-life-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=how-shakespeare-saved-my-life-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"In Honor of Jean-Michel Basquiat\" missing 1 cited review(s)",
-      "description": "In Honor of Jean-Michel Basquiat (in-honor-of-jean-michel-basquiat-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
       "title": "Review gap — \"Kimberly Akimbo\" missing 5 cited review(s)",
       "description": "Kimberly Akimbo (kimberly-akimbo-off-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=kimberly-akimbo-off-west-end-2026 --checkpoint --ingest-missing",
       "severity": "warning",
@@ -1179,92 +1102,8 @@
       "fields": []
     },
     {
-      "title": "Review gap — \"Lean-To\" missing 1 cited review(s)",
-      "description": "Lean-To (lean-to-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lean-to-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Macbeth\" missing 3 cited review(s)",
-      "description": "Macbeth (macbeth-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=macbeth-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" missing 2 cited review(s)",
-      "description": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) (mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"My Son’s A Queer (But What Can You Do?)\" missing 4 cited review(s)",
-      "description": "My Son’s A Queer (But What Can You Do?) (my-sons-a-queer-but-what-can-you-do-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=my-sons-a-queer-but-what-can-you-do-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Night City\" missing 2 cited review(s)",
-      "description": "Night City (night-city-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=night-city-off-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Safe House\" missing 3 cited review(s)",
-      "description": "Safe House (safe-house-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=safe-house-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Spandex\" missing 1 cited review(s)",
-      "description": "Spandex (spandex-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=spandex-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"The Cherry Orchard\" missing 1 cited review(s)",
-      "description": "The Cherry Orchard (the-cherry-orchard-park-avenue-armory-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-cherry-orchard-park-avenue-armory-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"The Hope Theory\" missing 6 cited review(s)",
-      "description": "The Hope Theory (the-hope-theory-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-hope-theory-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"The Human Voice / The Seven Deadly Sins\" missing 1 cited review(s)",
-      "description": "The Human Voice / The Seven Deadly Sins (the-human-voice-the-seven-deadly-sins-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"The Last Ship\" missing 5 cited review(s)",
-      "description": "The Last Ship (the-last-ship-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
       "title": "T1 Coverage Scoreboard (still open — BRO-3030)",
       "description": "Still firing after 51 notifications since it was filed. Tracked at BRO-3030.\n\nbroadway: 71.2% (381/535)\noff-broadway: 33.7% (130/386)\nwest-end: 77.1% (364/472)\n\nOldest gaps:\nABBA Voyage — independent (1106h)\nAladdin — ew (1106h)\nAs You Like It — i-paper (1106h)\nAs You Like It — standard (1106h)\nAvenue Q — independent (1106h)\n… 172 more open gap(s)\n\nCircuit open (retrieval failing across shows — dispatch paused, auto-probing):\n& Juliet — nydailynews (1106h)\nBuena Vista Social Club — broadwaynews (1106h)\nBuena Vista Social Club — nydailynews (1106h)\nHadestown — nydailynews (1106h)\nHeathers The Musical — dailybeast (1106h)\n… 24 more circuit-open cell(s)",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
-      "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36566722839",
       "severity": "warning",
       "url": null,
       "fields": []
@@ -1381,27 +1220,6 @@
     {
       "title": "Auto-remediation gave up on hay-fever-west-end-2026",
       "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"hay-fever-west-end-2026\",\"category\":\"west-end\",\"force\":\"true\"}",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"Human Things\" missing 2 cited review(s)",
-      "description": "Human Things (human-things-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=human-things-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"The Holes\" missing 1 cited review(s)",
-      "description": "The Holes (the-holes-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-holes-off-broadway-2026 --checkpoint --ingest-missing",
-      "severity": "warning",
-      "url": null,
-      "fields": []
-    },
-    {
-      "title": "Review gap — \"The Urmetazoan\" missing 2 cited review(s)",
-      "description": "The Urmetazoan (the-urmetazoan-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-urmetazoan-off-west-end-2026 --checkpoint --ingest-missing",
       "severity": "warning",
       "url": null,
       "fields": []
@@ -2594,19 +2412,258 @@
       ]
     },
     {
-      "title": "Main test.yml red — no confirmed-green run in 340.2h (still open — BRO-3030)",
-      "description": "Still firing after 67 notifications since it was filed. Tracked at BRO-3030.\n\nmain's Test Suite has had no confirmed-green run in 340.2h (7 failing runs) — first red commit 8312f5b21, job \"Unit Tests, Test Summary\". Nobody has looked; every session keeps pushing onto a red trunk.",
+      "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Validate market expansion",
+      "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36718890201",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Auto-remediation gave up on the-standard-of-living-west-end-2026",
+      "description": "t1-outlets-scored keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: gather-reviews.yml {\"shows\":\"the-standard-of-living-west-end-2026\"}",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Alvin Ailey American Dance Theater - New Works\" missing 3 cited review(s)",
+      "description": "Alvin Ailey American Dance Theater - New Works (alvin-ailey-american-dance-theater-new-works-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alvin-ailey-american-dance-theater-new-works-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"America, Who Hurt You?\" missing 1 cited review(s)",
+      "description": "America, Who Hurt You? (america-who-hurt-you-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=america-who-hurt-you-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Becoming Hamlet\" missing 2 cited review(s)",
+      "description": "Becoming Hamlet (becoming-hamlet-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=becoming-hamlet-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Crazy Mama: A True Story of Love and Madness\" missing 3 cited review(s)",
+      "description": "Crazy Mama: A True Story of Love and Madness (crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Darkling\" missing 2 cited review(s)",
+      "description": "Darkling (darkling-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=darkling-off-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Deep Heat Rivalry\" missing 4 cited review(s)",
+      "description": "Deep Heat Rivalry (deep-heat-rivalry-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=deep-heat-rivalry-off-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Degenerates\" missing 1 cited review(s)",
+      "description": "Degenerates (degenerates-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=degenerates-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Elf Lyons: The Woman on the Edge\" missing 1 cited review(s)",
+      "description": "Elf Lyons: The Woman on the Edge (elf-lyons-the-woman-on-the-edge-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=elf-lyons-the-woman-on-the-edge-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Gimme a Sign!\" missing 1 cited review(s)",
+      "description": "Gimme a Sign! (gimme-a-sign-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=gimme-a-sign-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Golden Boy\" missing 1 cited review(s)",
+      "description": "Golden Boy (golden-boy-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=golden-boy-off-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"How Shakespeare Saved My Life\" missing 2 cited review(s)",
+      "description": "How Shakespeare Saved My Life (how-shakespeare-saved-my-life-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=how-shakespeare-saved-my-life-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Human Things\" missing 1 cited review(s)",
+      "description": "Human Things (human-things-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=human-things-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"In Honor of Jean-Michel Basquiat\" missing 1 cited review(s)",
+      "description": "In Honor of Jean-Michel Basquiat (in-honor-of-jean-michel-basquiat-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Lean-To\" missing 1 cited review(s)",
+      "description": "Lean-To (lean-to-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lean-to-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Macbeth\" missing 3 cited review(s)",
+      "description": "Macbeth (macbeth-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=macbeth-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Mrs. Stern Wanders the Prussian State Library (Luna Stage)\" missing 2 cited review(s)",
+      "description": "Mrs. Stern Wanders the Prussian State Library (Luna Stage) (mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"My Son’s A Queer (But What Can You Do?)\" missing 4 cited review(s)",
+      "description": "My Son’s A Queer (But What Can You Do?) (my-sons-a-queer-but-what-can-you-do-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=my-sons-a-queer-but-what-can-you-do-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Night City\" missing 2 cited review(s)",
+      "description": "Night City (night-city-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=night-city-off-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Safe House\" missing 3 cited review(s)",
+      "description": "Safe House (safe-house-off-broadway-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=safe-house-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Spandex\" missing 1 cited review(s)",
+      "description": "Spandex (spandex-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=spandex-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"Table 17\" missing 5 cited review(s)",
+      "description": "Table 17 (table-17-off-west-end-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=table-17-off-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"The Cherry Orchard\" missing 1 cited review(s)",
+      "description": "The Cherry Orchard (the-cherry-orchard-park-avenue-armory-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-cherry-orchard-park-avenue-armory-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"The Holes\" missing 1 cited review(s)",
+      "description": "The Holes (the-holes-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-holes-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"The Hope Theory\" missing 6 cited review(s)",
+      "description": "The Hope Theory (the-hope-theory-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-hope-theory-off-broadway-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"The Human Voice / The Seven Deadly Sins\" missing 1 cited review(s)",
+      "description": "The Human Voice / The Seven Deadly Sins (the-human-voice-the-seven-deadly-sins-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-human-voice-the-seven-deadly-sins-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"The Last Ship\" missing 4 cited review(s)",
+      "description": "The Last Ship (the-last-ship-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-last-ship-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Review gap — \"The Urmetazoan\" missing 2 cited review(s)",
+      "description": "The Urmetazoan (the-urmetazoan-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-urmetazoan-off-west-end-2026 --checkpoint --ingest-missing",
+      "severity": "warning",
+      "url": null,
+      "fields": []
+    },
+    {
+      "title": "Landing blocked: unit-tests-node red on land/bro-4428-stage-walled-stars",
+      "description": "land.yml did not land land/bro-4428-stage-walled-stars: the unit-tests-node gate went red at e3e1ff296d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36743309159",
       "severity": "error",
       "url": null,
       "fields": [
         {
-          "name": "First red commit",
-          "value": "8312f5b21635dd2f009f0ad60d73f0e2c4028eae"
+          "name": "branch",
+          "value": "land/bro-4428-stage-walled-stars"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "e3e1ff296dc29672e17e6ebb15129044f9fe83a8"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36743309159"
+        }
+      ]
+    },
+    {
+      "title": "Landing blocked: unit-tests-node red on land/bro-4428-stage-dates",
+      "description": "land.yml did not land land/bro-4428-stage-dates: the unit-tests-node gate went red at bbd52e709f. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36743838979",
+      "severity": "error",
+      "url": null,
+      "fields": [
+        {
+          "name": "branch",
+          "value": "land/bro-4428-stage-dates"
+        },
+        {
+          "name": "gate",
+          "value": "unit-tests-node"
+        },
+        {
+          "name": "tip",
+          "value": "bbd52e709fc850d5f81a18ee83705a859485452a"
+        },
+        {
+          "name": "run",
+          "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36743838979"
         }
       ]
     }
   ],
   "autoFixedCount": 2,
-  "passedCount": 57,
+  "passedCount": 56,
   "totalCount": 105
 }

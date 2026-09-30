@@ -42,7 +42,9 @@ const { candidateKey } = require('./reverse-discovery');
  * Sources whose presence PROVES critics have published. Shared with
  * audit-reverse-discovery.js so the two can never drift apart.
  */
-const EVIDENCE_SOURCES = new Set(['wet-roundup', 'bww-roundup', 'playbill-roundup']);
+// guardian-review (BRO-4432): a single named critic's review is the same
+// proof a roundup is, one level down.
+const EVIDENCE_SOURCES = new Set(['wet-roundup', 'bww-roundup', 'playbill-roundup', 'guardian-review']);
 
 /**
  * Days an evidence-anchored candidate may sit before the digest escalates.

@@ -231,7 +231,7 @@ test('an in-progress run reported with conclusion "" (not null) does not fire a 
 });
 
 test('failingJobsFromNeeds returns empty string when every job in `needs` succeeded or was skipped', () => {
-  const needs = { 'unit-tests': { result: 'success' }, 'dependency-audit': { result: 'skipped' } };
+  const needs = { 'unit-tests': { result: 'success' }, 'visual-regression': { result: 'skipped' } };
   assert.equal(failingJobsFromNeeds(needs), '');
 });
 
@@ -245,7 +245,7 @@ test('failingJobsFromNeeds comma-joins multiple failing jobs and excludes skippe
     'unit-tests': { result: 'success' },
     'data-validation': { result: 'failure' },
     'lint-workflows': { result: 'failure' },
-    'dependency-audit': { result: 'skipped' },
+    'visual-regression': { result: 'skipped' },
   };
   assert.equal(failingJobsFromNeeds(needs), 'data-validation, lint-workflows');
 });

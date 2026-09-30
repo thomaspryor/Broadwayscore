@@ -1,18 +1,31 @@
 {
   "stale": [
     "Commercial Friday Refresh",
-    "Commercial Weekly Orchestrator"
+    "Commercial Weekly Orchestrator",
+    "Daily Data Health Check (digest snapshot carrier)",
+    "Opening Night Checklist"
   ],
-  "redispatched": [],
+  "redispatched": [
+    "Daily Data Health Check (digest snapshot carrier)",
+    "Opening Night Checklist"
+  ],
   "staleStreak": {
     "Commercial Friday Refresh": {
-      "days": 37,
-      "lastCounted": "2026-09-29"
+      "days": 38,
+      "lastCounted": "2026-09-30"
     },
     "Commercial Weekly Orchestrator": {
-      "days": 41,
-      "lastCounted": "2026-09-29"
+      "days": 42,
+      "lastCounted": "2026-09-30"
+    },
+    "Daily Data Health Check (digest snapshot carrier)": {
+      "days": 1,
+      "lastCounted": "2026-09-30"
+    },
+    "Opening Night Checklist": {
+      "days": 1,
+      "lastCounted": "2026-09-30"
     }
   },
-  "updatedAt": "2026-09-29T17:26:37.393Z"
+  "updatedAt": "2026-09-30T17:23:55.464Z"
 }

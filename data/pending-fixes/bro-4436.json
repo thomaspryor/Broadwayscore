@@ -1,0 +1,51 @@
+{
+  "issueNumber": "bro-4436",
+  "planId": "c25f9d16-d49f-471f-89bf-d6d106231090",
+  "status": "applied",
+  "createdAt": "2026-09-30T17:05:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Degenerates (Playwrights Horizons) is a world premiere that officially opened 2026-09-29 (Playbill: previews Sept 16, opens Sept 29, runs through Oct 18; NYSR review: 'Degenerates opened September 29, 2026'). shows.json has openingDate 2026-09-28 and isRevival true. The one-day-early date put the NYT review (pubDate 2026-09-30T09:02Z) 2.38 days after opening, outside the 2-day RSS window (BRO-4435). Found by the BRO-4436 score audit.",
+    "steps": [
+      "Set openingDate to 2026-09-29",
+      "Set isRevival to false (world premiere)"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "degenerates-off-broadway-2026",
+        "field": "openingDate",
+        "oldValue": "2026-09-28",
+        "newValue": "2026-09-29",
+        "description": "Official opening night per Playbill and NYSR"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "degenerates-off-broadway-2026",
+        "field": "isRevival",
+        "oldValue": true,
+        "newValue": false,
+        "description": "Playbill calls it the world premiere production"
+      }
+    ]
+  },
+  "executedAt": "2026-09-30T17:27:31.641Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: openingDate updated for degenerates-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: isRevival updated for degenerates-off-broadway-2026"
+    }
+  ]
+}
