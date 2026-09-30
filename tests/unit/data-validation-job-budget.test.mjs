@@ -321,6 +321,7 @@ test('test.yml data-validation: fixed cost + its push-bound steps fit inside tim
   assert.ok(jobLines, 'could not find the data-validation: job in test.yml');
 
   const timeoutMin = jobTimeoutMinutes(jobLines);
+  assert.ok(timeoutMin, 'data-validation must declare an explicit timeout-minutes');
   const timeoutSec = timeoutMin * 60;
 
   // Every push-bound step is modelled at the shared default deadline + one
