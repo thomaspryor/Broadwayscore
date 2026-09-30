@@ -15,7 +15,7 @@ test('rejects Wonder Woman 1984 film piece for show "1984" (title present)', () 
 
 test('rejects Wonder Woman 1984 film piece even with no SERP title (numeric title needs stage signal)', () => {
   const r = ev({ url: NY + 'culture/culture-desk/does-wonder-woman-1984-hide-its-heros-true-superpowers', showTitle: '1984' });
-  assert.equal(r.reason, 'lone-token-title-without-stage-signal');
+  assert.equal(r.reason, 'numeric-title-without-stage-signal');
 });
 
 test("rejects New Yorker Radio Hour podcast page for Hell's Kitchen", () => {
@@ -45,6 +45,10 @@ test('accepts a numeric-title stage review that carries a theatre signal', () =>
   assert.equal(ev({ url: NY + 'magazine/2017/07/03/1984-on-broadway', title: '“1984” on Broadway', showTitle: '1984' }).ok, true);
 });
 
+test('accepts WSJ "1984 review" slug where the number leads (numeric title, no theatre word)', () => {
+  assert.equal(ev({ url: 'https://www.wsj.com/articles/1984-review-a-stunning-dystopia-on-our-telescreens-11585859139', showTitle: '1984' }).ok, true);
+});
+
 test('podcast outlets we ingest on purpose are exempt from the podcast path rule', () => {
   assert.equal(ev({ url: 'https://broadwaypodcastnetwork.com/podcasts/good-show/hungry-women-with-julia-lester/46', showTitle: 'Hungry Women' }).ok, true);
 });
@@ -57,4 +61,9 @@ test('longerQuotedWork ignores an exact-title quote and stage words', () => {
 
 test('classifyReviewUrl layer still applies (ticket seller)', () => {
   assert.equal(ev({ url: 'https://www.telecharge.com/Broadway/Hamilton', showTitle: 'Hamilton' }).ok, false);
+});
+
+test('BroadwayWorld own /article/BWW-Review-* pages are not treated as aggregator nav', () => {
+  assert.equal(ev({ url: 'https://www.broadwayworld.com/article/BWW-Review-Lucy-Kirkwoods-Thoughtful-THE-CHILDREN-Comes-to-Broadway-20171213', showTitle: 'The Children' }).ok, true);
+  assert.equal(ev({ url: 'https://forum.broadwayworld.com/thread/THE-INHERITANCE-Reviews', showTitle: 'The Inheritance' }).ok, false);
 });

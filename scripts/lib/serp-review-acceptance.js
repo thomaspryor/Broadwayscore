@@ -10,8 +10,8 @@
  * "Goings On" listings blurb. Layers, all pure (no fs/network):
  *   1. classifyReviewUrl (canonical never-a-review URL shapes)
  *   2. SERP-only path shapes: podcasts, radio hour, goings-on listings
- *   3. bare-number titles ("1984") need a stage signal in the
- *      url/title/snippet, so a film/TV page sharing the token is refused
+ *   3. bare-number titles ("1984") need a stage signal or must lead the
+ *      slug, so a film/TV page sharing the token is refused
  *   4. a quoted work in the result title that CONTAINS the show title but is
  *      longer ("Wonder Woman 1984") is a different work
  *
@@ -35,6 +35,8 @@ const SERP_NON_REVIEW_PATHS = [
 ];
 
 const STAGE_SIGNAL_RE = /\b(theat(er|re)s?|broadway|stage|play(house|wright)?|musical|revival|off[- ]broadway|west[- ]end|opera|ballet|playbill|previews?|cast|onstage)\b/i;
+
+const NUMERIC_TITLE_LEAD_WORDS = new Set(['the', 'a', 'an', 'review', 'reviews', 'orwell', 'orwells', 'broadway']);
 
 function norm(s) {
   return foldDiacritics(String(s || '')).toLowerCase()
@@ -75,11 +77,14 @@ function longerQuotedWork(rawTitle, showTitle) {
  * @returns {{ok: boolean, reason: string|null}}
  */
 function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle } = {}) {
-  const cls = classifyReviewUrl(url);
-  if (!cls.ok) return { ok: false, reason: `non-review-url:${cls.reason}` };
-
   let pathname = '';
   try { pathname = new URL(url).pathname; } catch { return { ok: false, reason: 'unparseable-url' }; }
+  const cls = classifyReviewUrl(url);
+  // classifyReviewUrl's aggregator-nav regex wants a "/review" path segment, so
+  // BroadwayWorld's own /article/BWW-Review-* pages (real reviews, scored) read
+  // as nav. Exempt exactly that shape (2 live corpus files, BRO-4409 scan).
+  const bwwOwnReview = cls.reason === 'aggregator-internal-nav' && hostOf(url) === 'broadwayworld.com' && /^\/article\/BWW-Review-/i.test(pathname);
+  if (!cls.ok && !bwwOwnReview) return { ok: false, reason: `non-review-url:${cls.reason}` };
   const host = hostOf(url);
   for (const { re, reason, exemptHosts } of SERP_NON_REVIEW_PATHS) {
     if (re.test(pathname) && !(exemptHosts && exemptHosts.has(host))) {
@@ -90,15 +95,24 @@ function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle } = {
   const quoted = longerQuotedWork(title, showTitle);
   if (quoted) return { ok: false, reason: `different-work:${quoted}` };
 
-  // A bare-number title ("1984") is shared by films, novels and years; only
-  // trust the hit when the page itself talks about theatre. Other one-word
-  // titles are covered by url-discovery's generic-title disambiguator, and a
-  // blanket stage-signal rule there would cost real recall (a "Hadestown"
-  // review slug carries no theatre word).
+  // A bare-number title ("1984") is shared by films, novels and years. Trust
+  // the hit when the page talks about theatre, or when the number leads the
+  // slug ("1984-review-a-stunning-dystopia"); refuse when it trails another
+  // work's name ("wonder-woman-1984-..."). Other one-word titles are covered by
+  // url-discovery's generic-title disambiguator; a blanket stage-signal rule
+  // there would cost real recall (a "Hadestown" slug carries no theatre word).
   const tokens = coreTitleTokens(showTitle);
   if (tokens.length === 1 && /^\d+$/.test(tokens[0])) {
     const hay = `${pathname.replace(/[-_/]+/g, ' ')} ${title} ${snippet}`;
-    if (!STAGE_SIGNAL_RE.test(hay)) return { ok: false, reason: 'lone-token-title-without-stage-signal' };
+    if (!STAGE_SIGNAL_RE.test(hay)) {
+      const seg = pathname.split('/').filter(Boolean).pop() || '';
+      const words = seg.toLowerCase().replace(/\.[a-z]+$/, '').split(/[-_]+/);
+      const i = words.indexOf(tokens[0]);
+      const prev = i > 0 ? words[i - 1] : null;
+      if (i < 0 || (prev && !NUMERIC_TITLE_LEAD_WORDS.has(prev))) {
+        return { ok: false, reason: 'numeric-title-without-stage-signal' };
+      }
+    }
   }
   return { ok: true, reason: null };
 }
