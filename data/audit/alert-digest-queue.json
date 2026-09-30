@@ -3180,5 +3180,34 @@
       }
     ],
     "queuedAt": "2026-09-30T03:21:57.169Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4410-munhu7rs",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-4410-munhu7rs",
+    "description": "land.yml did not land land/job/linear-BRO-4410-munhu7rs: the rebase gate went red at c0aba35af6. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4410-munhu7rs @ c0aba35af6 (origin/land/job/linear-BRO-4410-munhu7rs) → origin/main @ 9f4be0fc64 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9f4be0fc64: Rebasing (1/1) error: could not apply c0aba35af6... fix(venue-complex-audit): treat 'box' as generic so Black Box Theatre isn't a Signature candidate (BRO-4410) hint: Resolve all conflicts manuall Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36662501146",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4410-munhu7rs"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c0aba35af6208982ec866f346c68132c8384dad0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36662501146"
+      }
+    ],
+    "queuedAt": "2026-09-30T03:31:44.557Z"
   }
 ]
