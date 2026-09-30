@@ -427,7 +427,8 @@ function findSameHouseTokenMatch(candidate, pool) {
  * BRO-4433 — the run a confirmed dated candidate supplies for the existing
  * row it deduped to, when that row carries no run dates at all (a slug-title
  * or TodayTix stub minted 'announced' before the venue's dated reader
- * existed). Fills null fields only; a row with any of previewsStartDate /
+ * existed). Only an 'announced' row, and only a run starting in the stub
+ * id's year or the next. Fills null fields only; a row with any of previewsStartDate /
  * openingDate / closingDate is left alone (its dates came from a source we
  * do not second-guess here). Status is not touched: update-show-status.js
  * Check 2e (decideAnnouncedPromotion) moves an announced row once it has a
@@ -446,14 +447,26 @@ function findSameHouseTokenMatch(candidate, pool) {
  */
 function datedBackfillFor(candidate, row, venueVocabulary) {
   if (!isDatedListingCandidate(candidate) || !row || rowWindow(row)) return null;
+  if (row.status && row.status !== 'announced') return null;
   const run = listingRunDates(candidate);
+  // An undated stub's id carries the year it was minted (discovery mints the
+  // current year when it has no dates), so a run starting later than the
+  // year after is a later production: an annual panto, a revival (BRO-4433
+  // ship-check). A 2026 stub for a spring-2027 run is still the same one.
+  const idYear = /-(20\d\d)$/.exec(String(row.id || ''));
+  const runStart = run.previewsStartDate || validDateOrNull(candidate.listingFirstDate);
+  if (idYear && runStart) {
+    const y = Number(idYear[1]);
+    const ry = Number(runStart.slice(0, 4));
+    if (ry < y || ry > y + 1) return null;
+  }
   const patch = {};
   if (run.previewsStartDate && row.previewsStartDate == null) patch.previewsStartDate = run.previewsStartDate;
   if (run.closingDate && row.closingDate == null) patch.closingDate = run.closingDate;
   if (Object.keys(patch).length === 0) return null;
   const ct = tokensWithoutYears(candidate.title);
   const rt = tokensWithoutYears(row.title);
-  if (rt.size > 0 && ct.size > rt.size && [...rt].every(t => ct.has(t)) && !/[:(]/.test(candidate.title)) {
+  if (rt.size > 0 && ct.size > rt.size && [...rt].every(t => ct.has(t)) && !/[:(]|\s[-–—]\s/.test(candidate.title)) {
     const norm = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }, { venueVocabulary });
     if (!norm.manualReview && norm.title && norm.title !== row.title) patch.title = norm.title;
   }
@@ -1203,7 +1216,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   // (S4-T9) applies to off-west-end candidates too.
   const existingCandidates = showsData.shows
     .filter(s => s.category === 'west-end' || s.category === 'off-west-end')
-    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category, previewsStartDate: s.previewsStartDate || null, openingDate: s.openingDate || null, closingDate: s.closingDate || null }));
+    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category, status: s.status, previewsStartDate: s.previewsStartDate || null, openingDate: s.openingDate || null, closingDate: s.closingDate || null }));
   // Loud on a malformed registry (loadRetiredIds throws) — silently treating
   // it as empty is exactly how a retired id slips back in.
   const retiredEntries = Array.isArray(io.retiredEntries) ? io.retiredEntries : loadRetiredIds();
@@ -1282,7 +1295,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
     const byId = new Map(showsData.shows.map(s => [s.id, s]));
     for (const b of backfills) {
       const row = byId.get(b.id);
-      if (!row || rowWindow(row)) continue;
+      if (!row || rowWindow(row) || row.status !== 'announced') continue;
       const set = {};
       const oldTitle = row.title;
       for (const k of ['previewsStartDate', 'closingDate']) {

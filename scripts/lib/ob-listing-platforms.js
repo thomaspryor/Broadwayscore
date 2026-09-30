@@ -58,10 +58,6 @@ function cleanListingTitle(raw) {
   t = t.replace(/^20[2-3]\d:\s+/, '');
   // London box offices bracket it: "Cinderella (2026)" (Lyric Hammersmith).
   if (!/\b(?:of|in|since|circa|class)\s+20[2-3]\d$/i.test(t)) t = t.replace(/\s+(?:20[2-3]\d|\(20[2-3]\d\))$/, '').trim();
-  // Month-and-year booking tags: "Romeo and Juliet - Oct26", "The Law of
-  // Mayhem Apr27", "Wolf Country Jan 27" (Wilton's Music Hall's Spektrix
-  // names). Abbreviated month only, two-digit year 20-39.
-  t = t.replace(/\s+(?:-\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec) ?[23]\d$/, '').trim();
   return t;
 }
 
@@ -495,7 +491,9 @@ function parseTicketsolveShows(xml, opts = {}) {
   for (const m of xml.matchAll(/<show\b[^>]*>([\s\S]*?)<\/show>/g)) {
     const body = m[1];
     const eventsAt = body.indexOf('<events');
-    const head = eventsAt >= 0 ? body.slice(0, eventsAt) : body;
+    // Show-level fields only: not the <events>, nor the <images> block whose
+    // <url>s would shadow the show's own.
+    const head = (eventsAt >= 0 ? body.slice(0, eventsAt) : body).replace(/<images\b[\s\S]*?<\/images>/g, '');
     const name = cdataText((head.match(/<name\b[^>]*>([\s\S]*?)<\/name>/) || [])[1]);
     const category = cdataText((head.match(/<event_category\b[^>]*>([\s\S]*?)<\/event_category>/) || [])[1]);
     if (!name || (opts.excludeCategory && opts.excludeCategory.test(category))) continue;

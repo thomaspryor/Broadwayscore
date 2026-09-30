@@ -108,12 +108,18 @@ test('cleanListingTitle strips London season tags', () => {
   assert.equal(cleanListingTitle('Cinderella (2026)'), 'Cinderella');
   assert.equal(cleanListingTitle('2026: The Master Builder'), 'The Master Builder');
   assert.equal(cleanListingTitle('Class of 2026'), 'Class of 2026');
-  // BRO-4433: Wilton's month-and-year booking tags.
-  assert.equal(cleanListingTitle('Romeo and Juliet - Oct26'), 'Romeo and Juliet');
-  assert.equal(cleanListingTitle('The Law of Mayhem Apr27'), 'The Law of Mayhem');
-  assert.equal(cleanListingTitle('Wolf Country Jan 27'), 'Wolf Country');
-  assert.equal(cleanListingTitle('Catch-22'), 'Catch-22');
-  assert.equal(cleanListingTitle('Blink 182'), 'Blink 182');
+  // BRO-4433: month-and-year tags are stripped per venue, never here (a
+  // title can end in a date).
+  assert.equal(cleanListingTitle('Halloween Oct 31'), 'Halloween Oct 31');
+});
+
+test("stripMonthYearTags (Wilton's only): booking tags go, other venues' titles are untouched", () => {
+  const wiltons = OWE_VENUE_CONFIGS.find(v => v.name === "Wilton's Music Hall");
+  const ev = (id, name) => ({ id, name, firstInstanceDateTime: '2026-10-15T19:30:00', lastInstanceDateTime: '2026-10-20T19:30:00', attribute_GenresForWebsiteFiltering: 'Theatre' });
+  const payload = [ev('a', 'Romeo and Juliet - Oct26'), ev('b', 'The Law of Mayhem Apr27'), ev('c', 'Wolf Country Jan 27'), ev('d', 'Catch-22')];
+  assert.deepEqual(parseVenueListingHtml(wiltons, payload, { todayIso: TODAY }).map(c => c.title).sort(), ['Catch-22', 'Romeo and Juliet', 'The Law of Mayhem', 'Wolf Country']);
+  const other = { ...wiltons, name: 'Other', stripMonthYearTags: undefined };
+  assert.ok(parseVenueListingHtml(other, payload, { todayIso: TODAY }).some(c => c.title === 'Wolf Country Jan 27'));
 });
 
 test('parseTicketsolveShows: local performance days, run blocks, cancelled and excluded categories skipped', () => {
@@ -356,4 +362,12 @@ test('BRO-4433 main: a confirmed dated duplicate dates its undated row (null fie
   const patch = datedBackfillFor(murder, { title: 'Murder Cathedral' });
   assert.deepEqual(patch, { previewsStartDate: '2026-10-12', closingDate: '2026-11-07' });
   assert.equal(datedBackfillFor({ title: 'Private Jones', venue: 'Southwark Playhouse' }, { title: 'Private Jones' }), null);
+  // A stub minted two years before the listed run is an earlier production;
+  // a non-announced row is left to its own pipeline; a spaced-dash variant is no title upgrade.
+  const pjc = { title: 'Private Jones', venue: 'Southwark Playhouse', source: 'venue-listing:x', discoverySource: 'venue-listing:x', listingFirstDate: '2026-12-14', listingLastDate: '2027-01-30' };
+  assert.equal(datedBackfillFor(pjc, { id: 'private-jones-off-west-end-2024', title: 'Private Jones', status: 'announced' }), null);
+  assert.ok(datedBackfillFor(pjc, { id: 'private-jones-off-west-end-2026', title: 'Private Jones', status: 'announced' }));
+  assert.equal(datedBackfillFor(pjc, { id: 'private-jones-off-west-end-2026', title: 'Private Jones', status: 'closed' }), null);
+  const md = datedBackfillFor({ ...pjc, title: 'Private Jones - Relaxed Performance' }, { id: 'private-jones-off-west-end-2026', title: 'Private Jones', status: 'announced' });
+  assert.equal(md.title, undefined);
 });

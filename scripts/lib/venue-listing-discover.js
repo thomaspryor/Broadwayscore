@@ -575,7 +575,7 @@ const OWE_VENUE_CONFIGS = [
   { name: 'Rose Theatre Kingston', url: 'https://www.rosetheatre.org/whats-on', spektrixUrl: 'https://tickets.rosetheatre.org/rosetheatrekingston/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_WebCategory', spektrixGenres: ['Drama'], strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /\btest\b/i], category: 'off-west-end' },
   // Wilton's sells film-with-live-score nights, music hall, magic, opera
   // and heritage tours alongside its theatre.
-  { name: "Wilton's Music Hall", url: 'https://wiltons.org.uk/whats-on/', spektrixUrl: 'https://tickets.wiltons.org.uk/wiltons/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_GenresForWebsiteFiltering', spektrixGenres: ['Theatre', 'Musical Theatre', 'New Writing', 'Family'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  { name: "Wilton's Music Hall", url: 'https://wiltons.org.uk/whats-on/', spektrixUrl: 'https://tickets.wiltons.org.uk/wiltons/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_GenresForWebsiteFiltering', spektrixGenres: ['Theatre', 'Musical Theatre', 'New Writing', 'Family'], stripMonthYearTags: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   // ── Ticketsolve ──
   { name: 'Waterloo East Theatre', url: 'https://www.waterlooeast.co.uk/', ticketsolveUrl: 'https://waterlooeast.ticketsolve.com/shows.xml', ticketsolveExcludeCategory: /showcase|workshop|class|course/i, strategy: 'ticketsolve', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   // ── JSON-LD ──
@@ -625,6 +625,16 @@ const {
 // Strategies whose payload is JSON from a ticketing/CMS API, not a page.
 // venue-listing-discover.test.mjs replays these from .json fixtures.
 const DATED_JSON_STRATEGIES = new Set(['ovationtix', 'tribe-events', 'spektrix', 'json-api']);
+// Strategies scrapeVenueListing fetches from their own feed URL rather than
+// venue.url: the JSON ones plus Ticketsolve's shows.xml (BRO-4433 ship-check:
+// discover-new-shows.js gated on DATED_JSON_STRATEGIES alone and fetched the
+// Waterloo East homepage instead of its feed).
+// A booking tagged with its month and two-digit year: "Romeo and Juliet -
+// Oct26", "The Law of Mayhem Apr27", "Wolf Country Jan 27" (Wilton's Music
+// Hall's Spektrix names). Per venue (stripMonthYearTags), never global: a
+// title can end in a date ("Halloween Oct 31"), BRO-4433 ship-check.
+const MONTH_YEAR_TAG_RE = /\s+(?:-\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec) ?[23]\d$/;
+const FEED_STRATEGIES = new Set([...DATED_JSON_STRATEGIES, 'ticketsolve']);
 
 function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString().slice(0, 10) } = {}) {
   // Dated platform readers (BRO-4396) take a JSON payload (object or string)
@@ -683,7 +693,8 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
   const seen = new Set();
   const filtered = [];
   for (const r of rows) {
-    const title = String((r && r.title) || '').replace(/\s+/g, ' ').trim();
+    let title = String((r && r.title) || '').replace(/\s+/g, ' ').trim();
+    if (venue.stripMonthYearTags) title = title.replace(MONTH_YEAR_TAG_RE, '').trim();
     if (title.length < 2 || title.length > 160) continue;
     if (excludePatterns.some(p => p.test(title))) continue;
     if (seen.has(title)) continue; // dedupe within page
@@ -713,6 +724,9 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
     // is the NEXT performance, not the first one (ship-check 2026-09-29: Elf
     // Lyons began 2026-09-24, OvationTix said 2026-10-01).
     ...(r.firstDate && venue.strategy === 'ovationtix' ? { listingFirstDateIsNext: true } : {}),
+    // Ticketsolve's shows.xml likewise drops past performances: a run whose
+    // first listed day has arrived may have started earlier (BRO-4433).
+    ...(r.firstDate && venue.strategy === 'ticketsolve' && r.firstDate <= todayIso ? { listingFirstDateIsNext: true } : {}),
     // NYTG is an editorial listing, not the venue's box office, and its
     // closing date for an open-ended run is a booking horizon (Gazillion
     // Bubble Show: 2007 to 2027-01-18), so it never becomes closingDate.
@@ -1039,6 +1053,7 @@ function writeStagingCandidates(newCandidates, stagingPath = STAGING_PATH) {
 module.exports = {
   STAGING_PATH,
   DATED_JSON_STRATEGIES,
+  FEED_STRATEGIES,
   OB_VENUE_CONFIGS,
   OWE_VENUE_CONFIGS,
   COMMON_OB_EXCLUDE_PATTERNS,
