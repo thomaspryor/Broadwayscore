@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-09-30T01:26:20.778Z",
-  "processed": 276,
-  "failed": 181,
-  "successRate": "60.4%",
+  "updatedAt": "2026-09-30T01:43:58.711Z",
+  "processed": 280,
+  "failed": 188,
+  "successRate": "59.8%",
   "tierBreakdown": {
-    "playwright": 171,
+    "playwright": 175,
     "amp": 2,
     "browserbase": 11,
     "directCookies": 0,
@@ -14,19 +14,8 @@
     "archiveToday": 0,
     "archive": 36
   },
-  "browserbaseSessions": 14,
+  "browserbaseSessions": 2,
   "recentActivity": [
-    {
-      "t": "2026-09-29T23:51:15.401Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-29T23:53:55.623Z",
-      "event": "bb-session",
-      "session": "c8b13ffb",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
     {
       "t": "2026-09-29T23:53:56.361Z",
       "event": "bb-cookie-inject",
@@ -127,6 +116,18 @@
       "t": "2026-09-30T01:20:20.002Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.co.uk"
+    },
+    {
+      "t": "2026-09-30T01:39:13.991Z",
+      "event": "bb-session",
+      "session": "bb74aa6e",
+      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+    },
+    {
+      "t": "2026-09-30T01:39:32.992Z",
+      "event": "bb-session",
+      "session": "65ab3372",
+      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
     }
   ]
 }
