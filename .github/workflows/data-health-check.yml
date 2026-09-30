@@ -1108,9 +1108,10 @@ jobs:
       # it specifically to give this step many cheap retries under the
       # common low-contention case, which lowering MAX_RETRIES would regress.
       # All 9 files here are single-writer + apiFallbackSafe, so the
-      # fallback is actually usable — unlike "Commit health check + triage
-      # data" below, which deliberately does not get this override (see its
-      # own comment).
+      # fallback is actually usable. (The old "Commit health check + triage
+      # data" step was split by BRO-3318: its 3 alert files now get this
+      # same override in "Commit alert router state (apiFallbackMerge)";
+      # only "Commit triage data", a directory, stays fallback-disqualified.)
       - name: Commit health check audit snapshots (apiFallbackSafe)
         if: always()
         env:
