@@ -1,15 +1,14 @@
 {
-  "updatedAt": "2026-09-29T13:35:37.238Z",
-  "scanned": 2178,
-  "showsWithViolations": 48,
-  "totalViolations": 48,
-  "newSinceLastRun": 5,
+  "updatedAt": "2026-09-30T13:21:38.496Z",
+  "scanned": 2216,
+  "showsWithViolations": 52,
+  "totalViolations": 52,
+  "newSinceLastRun": 4,
   "newViolationKeys": [
-    "how-shakespeare-saved-my-life-off-broadway-2026",
-    "christmas-carol-goes-wrong-west-end-2026",
-    "school-pictures-off-broadway-2026",
-    "lost-in-del-valle-return-off-broadway-2026",
-    "beetlejuice-tour-2026"
+    "the-standard-of-living-west-end-2026",
+    "the-outsiders-tour-2025",
+    "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+    "elektra-off-broadway-2026"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -51,6 +50,7 @@
     "tosca-off-broadway-2026",
     "the-smile-of-her-off-west-end-2026",
     "disruption-off-broadway-2026",
+    "the-standard-of-living-west-end-2026",
     "darkling-off-west-end-2026",
     "christmas-carol-goes-wrong-west-end-2026",
     "pre-existing-condition-off-broadway-2026",
@@ -59,7 +59,10 @@
     "becoming-hamlet-off-broadway-2026",
     "school-pictures-off-broadway-2026",
     "lost-in-del-valle-return-off-broadway-2026",
-    "beetlejuice-tour-2026"
+    "beetlejuice-tour-2026",
+    "the-outsiders-tour-2025",
+    "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+    "elektra-off-broadway-2026"
   ],
   "hits": [
     {
@@ -138,7 +141,7 @@
       "showId": "the-outsiders-2024",
       "title": "The Outsiders",
       "openingDate": "2024-04-11",
-      "message": "the-outsiders-2024 review text mentions \"revival\" 70x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-2024 review text mentions \"revival\" 67x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -372,7 +375,7 @@
       "showId": "cosi-fan-tutte-off-broadway-2026",
       "title": "Così fan tutte",
       "openingDate": "2026-09-23",
-      "message": "cosi-fan-tutte-off-broadway-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "cosi-fan-tutte-off-broadway-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -390,7 +393,7 @@
       "showId": "tosca-off-broadway-2026",
       "title": "Tosca",
       "openingDate": "2026-11-01",
-      "message": "tosca-off-broadway-2026 review text mentions \"revival\" 8x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "tosca-off-broadway-2026 review text mentions \"revival\" 7x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -409,6 +412,15 @@
       "title": "Disruption",
       "openingDate": "2026-08-02",
       "message": "disruption-off-broadway-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-standard-of-living-west-end-2026",
+      "title": "The Standard Of Living",
+      "openingDate": "2026-09-29",
+      "message": "the-standard-of-living-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -490,6 +502,33 @@
       "title": "Beetlejuice",
       "openingDate": "2026-02-13",
       "message": "beetlejuice-tour-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-outsiders-tour-2025",
+      "title": "The Outsiders",
+      "openingDate": "2025-09-17",
+      "message": "the-outsiders-tour-2025 review text mentions \"revival\" 20x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026",
+      "title": "Going Bacharach: The Songs of an Icon",
+      "openingDate": "2026-09-16",
+      "message": "going-bacharach-the-songs-of-an-icon-return-off-broadway-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "elektra-off-broadway-2026",
+      "title": "Elektra",
+      "openingDate": null,
+      "message": "elektra-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

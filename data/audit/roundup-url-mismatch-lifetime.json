@@ -1,6 +1,6 @@
 {
-  "updatedAt": "2026-09-29T13:35:36.458Z",
-  "scanned": 2178,
+  "updatedAt": "2026-09-30T13:21:37.681Z",
+  "scanned": 2216,
   "showsWithViolations": 14,
   "totalViolations": 45,
   "newSinceLastRun": 0,
@@ -223,7 +223,7 @@
       "showId": "wit-2012",
       "title": "Wit",
       "openingDate": "2012-01-26",
-      "message": "[SHIPPED] hollywood-reporter--david-rooney.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118\n[excluded] nytimes--ben-brantley.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118",
+      "message": "[SHIPPED] hollywood-reporter--david-rooney.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118\n[SHIPPED] nytimes--ben-brantley.json: bwwRoundupUrl points to different show — https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118",
       "violations": [
         {
           "filename": "hollywood-reporter--david-rooney.json",
@@ -235,7 +235,7 @@
           "filename": "nytimes--ben-brantley.json",
           "bwwRoundupUrl": "https://www.broadwayworld.com/article/Review-Roundup-A-FREE-MAN-OF-COLOR-20101118",
           "url": "https://www.nytimes.com/2012/01/27/theater/reviews/cynthia-nixon-in-wit-at-manhattan-theater-club.html",
-          "shipped": false
+          "shipped": true
         }
       ]
     },
