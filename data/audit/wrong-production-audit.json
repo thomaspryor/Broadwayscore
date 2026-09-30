@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T01:35:32.748Z",
+  "timestamp": "2026-09-30T01:44:47.339Z",
   "stats": {
-    "totalReviews": 45345,
+    "totalReviews": 45347,
     "alreadyFlagged": 18508,
     "dateGuardCatches": 240,
-    "directorMismatch": 1187,
+    "directorMismatch": 1185,
     "tvFilmSignals": 1323,
     "londonSignals": 1234,
     "offBroadwaySignals": 509,
     "yearMismatch": 101,
-    "noPublishDate": 3983
+    "noPublishDate": 3986
   },
   "findings": [
     {
@@ -34491,25 +34491,6 @@
     },
     {
       "showId": "tru-off-west-end-2026",
-      "file": "financialtimes--sarah-hemming.json",
-      "score": 64,
-      "publishDate": "2026-09-28",
-      "url": "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"jay presson allen\" from tru-1989"
-        },
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
-        }
-      ]
-    },
-    {
-      "showId": "tru-off-west-end-2026",
       "file": "guardian--mark-lawson.json",
       "score": 65,
       "publishDate": "2026-09-27",
@@ -34840,7 +34821,7 @@
       "file": "times-uk--dominic-maxwell.json",
       "score": 74,
       "publishDate": "2026-09-27",
-      "url": null,
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
