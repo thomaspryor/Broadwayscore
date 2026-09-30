@@ -109,4 +109,10 @@ test('parseFeedItems reads dc:creator; singleBylineName keeps single-person byli
   assert.equal(singleBylineName('Jesse Green and Laura Collins-Hughes'), null);
   assert.equal(singleBylineName('Staff'), null);
   assert.equal(singleBylineName(''), null);
+  for (const org of ['The Associated Press', 'Variety Staff', 'Staff Reporter', 'Gordon Cox Contributor', 'NYT Editors']) {
+    assert.equal(singleBylineName(org), null, org);
+  }
+  const multi = '<rss><channel><item><title>X Review</title><link>https://variety.com/2026/legit/reviews/x-review/</link>'
+    + '<dc:creator>Aramide Tinubu</dc:creator><dc:creator>Chris Willman</dc:creator></item></channel></rss>';
+  assert.equal(parseFeedItems(multi)[0].creator, '');
 });

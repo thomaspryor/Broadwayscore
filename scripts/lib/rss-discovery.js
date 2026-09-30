@@ -150,7 +150,9 @@ function parseRSSItems(xml) {
     const description = (itemXml.match(/<description[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/description>/) || [])[1] || '';
     // <dc:creator> is the byline on NYT/Variety items (BRO-4435: the NYT
     // Degenerates review came in as nytimes--unknown.json while the feed said Helen Shaw).
-    const creator = (itemXml.match(/<dc:creator[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/dc:creator>/) || [])[1] || '';
+    // One element per author on multi-author WordPress feeds: keep only a sole creator.
+    const creators = [...itemXml.matchAll(/<dc:creator[^>]*>(?:<!\[CDATA\[)?([\s\S]*?)(?:\]\]>)?<\/dc:creator>/g)].map(m => m[1]);
+    const creator = creators.length === 1 ? creators[0] : '';
     if (title && link) {
       const linkTrim = link.trim();
       items.push({
@@ -350,6 +352,7 @@ function openingWindowFeedAccepts(item, showTitle, openingDate) {
 function singleBylineName(creator) {
   const name = String(creator || '').replace(/^by\s+/i, '').trim();
   if (!name || /,|&|\band\b/i.test(name)) return null;
+  if (/\b(staff|press|reporter|contributor|editors?|wire|associated|desk|team)\b/i.test(name)) return null;
   const words = name.split(/\s+/);
   if (words.length < 2 || words.length > 4) return null;
   if (!words.every(w => /^[\p{Lu}][\p{L}'.-]*$/u.test(w))) return null;
@@ -430,7 +433,11 @@ async function checkRSSFeeds(showTitle, options = {}) {
           // Unknown+rss-discovery → _pending/ strand that rebuild-all-reviews
           // never re-reads. See tests/unit/pending-strand-routing.test.mjs.
           if (feed.defaultCritic) hit.criticName = feed.defaultCritic;
-          else if (singleBylineName(item.creator)) hit.criticName = singleBylineName(item.creator);
+          // RSS bylines are untrusted (review-guards VERIFIED_DISCOVERY_SOURCES), so only
+          // stamp items that say they are reviews; the rest keep the _pending replay path.
+          else if (/review/i.test(`${item.title} ${item.link}`) && singleBylineName(item.creator)) {
+            hit.criticName = singleBylineName(item.creator);
+          }
           results.push(hit);
           feedResults++;
           if (verbose) {
