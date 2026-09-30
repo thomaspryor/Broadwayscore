@@ -53,3 +53,10 @@ test('priorRunOf puts a priorRuns link to the earlier run on the NEW entry', () 
   assert.equal(old.priorRuns, undefined);
   assert.equal(applyAddShow([], { show: base(), priorRunOf: 'nope' }).ok, false);
 });
+
+test('priorRunOf refuses an earlier run with no openingDate', () => {
+  const old = { id: 'old', slug: 'old', venue: 'SoHo Playhouse', openingDate: null };
+  const shows = [old];
+  assert.equal(applyAddShow(shows, { show: base(), priorRunOf: 'old' }).ok, false);
+  assert.equal(shows.length, 1);
+});
