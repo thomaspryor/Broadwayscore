@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T21:13:23.691Z",
+  "timestamp": "2026-09-30T21:21:29.353Z",
   "stats": {
     "totalReviews": 45416,
     "alreadyFlagged": 18593,
     "dateGuardCatches": 249,
     "directorMismatch": 1189,
     "tvFilmSignals": 1314,
-    "londonSignals": 1240,
+    "londonSignals": 1241,
     "offBroadwaySignals": 505,
     "yearMismatch": 101,
-    "noPublishDate": 4036
+    "noPublishDate": 4034
   },
   "findings": [
     {
@@ -43617,6 +43617,20 @@
       "score": 91,
       "publishDate": "2026-09-18",
       "url": "https://www.britishtheatreguide.info/reviews/golden-boy-almeida-theatre-26021",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "golden-boy-off-west-end-2026",
+      "file": "broadwayworld--gary-naylor.json",
+      "score": null,
+      "publishDate": "2026-09-16",
+      "url": "https://www.broadwayworld.com/westend/article/Review-GOLDEN-BOY-starring-Josh-OConnor-Almeida-Theatre-20260916",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
