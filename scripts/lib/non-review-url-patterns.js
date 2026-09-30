@@ -29,7 +29,7 @@
 // — see the note in classifyReviewUrl. domain-filters.js is dependency-free
 // (no fs, no network), so this preserves this module's "safe for the S5 probe's
 // pure decision layer" load contract.
-const { TICKET_DOMAINS, matchesDomainSet } = require('./domain-filters');
+const { TICKET_DOMAINS, LOOKALIKE_CONTENT_FARM_DOMAINS, CENSUS_JUNK_DOMAINS, matchesDomainSet } = require('./domain-filters');
 const { platformSuffixOf, multipartSuffixOf, stripCosmeticPrefixes } = require('./host-suffix-lists');
 
 // Non-review domains ignored inside aggregator articles (platform widgets,
@@ -329,6 +329,13 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // Heritage Month events-calendar site) is not a review source.
   { host: /(^|\.)southasianheritage\.org\.uk$/, reason: 'event-listing' },
 ];
+
+// BRO-4419: mirror the two domain-filters.js sets classifyReviewUrl() does not
+// borrow (same phantom-census-gap reason as vocal.media / vocaleyes above).
+// Generated from the sets so the mirror cannot drift; the parity test walks them.
+const _hostRegex = (d) => new RegExp('(^|\\.)' + d.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '$');
+for (const d of LOOKALIKE_CONTENT_FARM_DOMAINS) NAMED_NON_REVIEW_URL_PATTERNS.push({ host: _hostRegex(d), reason: 'content-farm-lookalike' });
+for (const d of CENSUS_JUNK_DOMAINS) NAMED_NON_REVIEW_URL_PATTERNS.push({ host: _hostRegex(d), reason: 'census-junk-host' });
 
 /**
  * Does this URL match one of the NAMED_NON_REVIEW_URL_PATTERNS above?
