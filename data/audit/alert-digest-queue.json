@@ -3462,35 +3462,6 @@
     "queuedAt": "2026-09-30T18:21:25.634Z"
   },
   {
-    "conditionKey": "land:land/bro-4434-code-only-main",
-    "title": "Landing blocked: unit-tests-node red on land/bro-4434-code-only-main",
-    "description": "land.yml did not land land/bro-4434-code-only-main: the unit-tests-node gate went red at 1c54ab12fc. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36760075344",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-4434-code-only-main"
-      },
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "tip",
-        "value": "1c54ab12fc4d2f7786e1b63d56b8369bd88862da"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36760075344"
-      }
-    ],
-    "queuedAt": "2026-09-30T19:17:49.507Z"
-  },
-  {
     "conditionKey": "opening-night-cv-wrongproduction-unhandled-degenerates-off-broadway-2026",
     "title": "Unhandled CV.wrongProduction on Degenerates",
     "description": "talkinbroadway/Marc Miller (talkinbroadway--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 2d of opening, likely correct production] The review is valid in terms of being a review, but i — https://www.talkinbroadway.com/page/ob/09_29_26.html",
@@ -3614,5 +3585,34 @@
       }
     ],
     "queuedAt": "2026-09-30T21:22:10.440Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4434-code-only-main",
+    "title": "Landing blocked: resolve red on land/bro-4434-code-only-main",
+    "description": "land.yml did not land land/bro-4434-code-only-main: the resolve gate went red at 6425a9326d. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/bro-4434-code-only-main\" is neither a local branch nor on origin (attempts 0, 0.6s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36778912846",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4434-code-only-main"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "6425a9326d6efff5a637e5c9f3e35080b62e847f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36778912846"
+      }
+    ],
+    "queuedAt": "2026-09-30T21:52:18.742Z"
   }
 ]
