@@ -39,42 +39,41 @@ function parseShortDate(text) {
   return `${year}-${String(month + 1).padStart(2, '0')}-${String(num).padStart(2, '0')}`;
 }
 
+const SHOW_SCORE_NON_VENUE_RE = /\b(online|virtual|stream(?:ing|ed)?|zoom|various|multiple venues|site[- ]specific|tbd|tba)\b/i;
+
 /**
- * Extract show status from ShowScore HTML page.
- * Parses the `.show-page-v2__info-top-line` element.
- *
- * Returns { ssStatus, openingDate, closingDate, venue, raw } or null
- *
- * Status mapping:
- *   "Opens Mar 08"  → { ssStatus: 'previews', openingDate: '2026-03-08' }
- *   "Open run"      → { ssStatus: 'open' }
- *   "Ends Mar 28"   → { ssStatus: 'open', closingDate: '2026-03-28' }
- *   "Closed"        → { ssStatus: 'closed' }
+ * Venue from a parsed ShowScore show page, or null. Order: the old venue
+ * link in .show-page-v2__info-top-line, the survey modal's venue-name
+ * attribute, then a known-venue parenthetical in <title>. Shared by
+ * extractStatusFromHtml and discover-new-shows.js fetchShowScoreStatus.
+ * @param {Document} doc
+ * @param {Element|null} [topLine]
+ * @returns {string|null}
  */
-function extractStatusFromHtml(html) {
-  const dom = new JSDOM(html);
-  const doc = dom.window.document;
-  const topLine = doc.querySelector('.show-page-v2__info-top-line');
-  if (!topLine) {
-    dom.window.close();
-    return null;
-  }
-
-  const statusText = topLine.childNodes[0]?.textContent?.trim() || '';
-  if (!statusText) {
-    dom.window.close();
-    return null;
-  }
-
+function venueFromShowScoreDoc(doc, topLine = doc.querySelector('.show-page-v2__info-top-line')) {
   // Extract venue. The first <a> in this element is sometimes ShowScore's
   // neighbourhood-filter link ("Midtown E", "Soho/Tribeca") rather than the
   // venue link — sanitizeVenueForWrite fails closed on those (card #994).
-  const venueLink = topLine.querySelector('a');
+  const venueLink = topLine ? topLine.querySelector('a') : null;
   const venueFull = venueLink?.textContent?.trim() || '';
   const venueRaw = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || null;
   let venue = sanitizeVenueForWrite(venueRaw);
 
-  // ShowScore's current template dropped the dedicated venue link entirely —
+  // BRO-4432: the page still carries the venue as a structured attribute,
+  // <survey-review-modal venue-name='The Tank'> (verified live on
+  // show-score.com/off-off-broadway-shows/falls-for-jodie, 2026-09-30). It is
+  // a venue field, not free text, so the denylist sanitizer is the right
+  // guard, same as for the old venue link. Without it every Show Score-only
+  // candidate deferred forever on "no verified venue".
+  if (!venue) {
+    const modal = doc.querySelector('survey-review-modal[venue-name]');
+    const attr = modal ? String(modal.getAttribute('venue-name') || '').trim() : '';
+    // The sanitizer's denylist predates this field; refuse the non-venue
+    // values a survey attribute can carry for streamed or touring shows.
+    if (attr && !SHOW_SCORE_NON_VENUE_RE.test(attr)) venue = sanitizeVenueForWrite(attr);
+  }
+
+  // Last resort. ShowScore's current template dropped the dedicated venue link —
   // .show-page-v2__info-top-line now holds ONLY the Google Maps neighbourhood
   // link (confirmed across multiple current OB/WE show pages, 2026-09-13),
   // so the block above always fails closed now. When ShowScore disambiguates
@@ -105,6 +104,38 @@ function extractStatusFromHtml(html) {
     }
   }
 
+  return venue;
+}
+
+/**
+ * Extract show status from ShowScore HTML page.
+ * Parses the `.show-page-v2__info-top-line` element.
+ *
+ * Returns { ssStatus, openingDate, closingDate, venue, raw } or null
+ *
+ * Status mapping:
+ *   "Opens Mar 08"  → { ssStatus: 'previews', openingDate: '2026-03-08' }
+ *   "Open run"      → { ssStatus: 'open' }
+ *   "Ends Mar 28"   → { ssStatus: 'open', closingDate: '2026-03-28' }
+ *   "Closed"        → { ssStatus: 'closed' }
+ */
+function extractStatusFromHtml(html) {
+  const dom = new JSDOM(html);
+  const doc = dom.window.document;
+  const topLine = doc.querySelector('.show-page-v2__info-top-line');
+  if (!topLine) {
+    dom.window.close();
+    return null;
+  }
+
+  const statusText = topLine.childNodes[0]?.textContent?.trim() || '';
+  if (!statusText) {
+    dom.window.close();
+    return null;
+  }
+
+  const venue = venueFromShowScoreDoc(doc, topLine);
+
   let ssStatus = null;
   let openingDate = null;
   let closingDate = null;
@@ -125,4 +156,4 @@ function extractStatusFromHtml(html) {
   return { ssStatus, openingDate, closingDate, venue, raw: statusText };
 }
 
-module.exports = { extractStatusFromHtml, parseShortDate };
+module.exports = { extractStatusFromHtml, parseShortDate, venueFromShowScoreDoc };

@@ -13,6 +13,7 @@ const {
   AUTO_FIX_EDITABLE_FIELDS,
   pickEditableFields,
   buildShowSnapshot,
+  castValueProblem,
 } = require('../../scripts/lib/feedback-pipeline-fields.js');
 
 const __filename = fileURLToPath(import.meta.url);
@@ -65,7 +66,7 @@ describe('feedback-pipeline-fields', () => {
     // Fields only the human-approved path (generate-remediation-plan.js ->
     // execute-approved-fix.js) may touch — never the unattended auto-fix.
     const humanOnly = {
-      'shows.json': ['status', 'openingDate', 'closingDate', 'previewsStartDate', 'creativeTeam', 'images'],
+      'shows.json': ['status', 'openingDate', 'closingDate', 'previewsStartDate', 'creativeTeam', 'images', 'cast'],
       'commercial.json': ['recouped', 'recoupmentSource'],
     };
     for (const [file, fields] of Object.entries(humanOnly)) {
@@ -136,5 +137,20 @@ describe('feedback-pipeline-fields', () => {
     }
     assert.deepEqual(serialized.creativeTeam, []);
     assert.equal(serialized.synopsis, null);
+  });
+
+  test('castValueProblem accepts [] and {name, role} arrays, refuses other shapes (BRO-4432)', () => {
+    assert.equal(castValueProblem([]), null);
+    assert.equal(castValueProblem([{ name: 'Rob Madge', role: 'Performer' }, { name: 'A N Other' }]), null);
+    assert.match(castValueProblem(null), /must be an array/);
+    assert.match(castValueProblem('Rob Madge'), /must be an array/);
+    assert.match(castValueProblem([{ role: 'Rosalind' }]), /name/);
+    assert.match(castValueProblem([{ name: '  ' }]), /name/);
+    assert.match(castValueProblem([{ name: 'X', role: 3 }]), /role/);
+    assert.match(castValueProblem([['X']]), /must be an object/);
+  });
+
+  test('buildShowSnapshot emits cast as [] when the show has none', () => {
+    assert.deepEqual(buildShowSnapshot({ id: 'x', title: 'X', slug: 'x' }).cast, []);
   });
 });

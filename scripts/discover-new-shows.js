@@ -37,7 +37,7 @@ const path = require('path');
 const https = require('https');
 const { JSDOM } = require('jsdom');
 const { fetchPage, cleanup } = require('./lib/scraper');
-const { parseShortDate } = require('./lib/show-score-status');
+const { parseShortDate, venueFromShowScoreDoc } = require('./lib/show-score-status');
 const { checkKnownShow, detectPlayFromTitle } = require('./lib/known-shows');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { slugify, checkForDuplicate, findSameTitleTwinIfNoOpeningDate } = require('./lib/deduplication');
@@ -1882,43 +1882,12 @@ async function fetchShowScoreStatus(showScoreUrl) {
     const statusText = topLine.childNodes[0]?.textContent?.trim() || '';
     if (!statusText) return null;
 
-    // Extract venue from the link in info-top-line. The first <a> here is
-    // sometimes ShowScore's neighbourhood-filter link ("Midtown E",
-    // "Soho/Tribeca") rather than the venue link — sanitizeVenueForWrite
-    // fails closed on those rather than writing the blob (card #994).
-    const venueLink = topLine.querySelector('a');
-    const venueFull = venueLink?.textContent?.trim() || '';
-    // Strip "NYC: " or "London: " prefix
-    const venueRaw = venueFull.replace(/^(NYC|London|Chicago|LA):\s*/i, '').trim() || null;
-    // null (never the literal string 'TBA') when rejected — a caller that
-    // resurrects the placeholder via `|| 'TBA'` reopens the exact leak this
-    // guard exists to close (S0 remainder, card #994: isla-off-broadway-2026
-    // landed with venue:'TBA' via this exact `|| 'TBA'` fallback).
-    let venue = sanitizeVenueForWrite(venueRaw);
-
-    // ShowScore's current template dropped the dedicated venue link — the
-    // block above now always fails closed (confirmed across multiple current
-    // OB/WE pages, 2026-09-13). When ShowScore disambiguates a title (two
-    // shows both named "Safe House"), it appends the venue in parens to
-    // <title> — parse that as a fallback instead of losing the venue
-    // entirely (this exact gap silently skip-looped safe-house-off-broadway
-    // out of discovery for 3+ days while it was open).
-    // sanitizeVenueForWrite is a denylist, not an allowlist — a parenthetical
-    // that isn't a venue ("World Premiere", "2026 Revival", a subtitle) would
-    // sail through it and get written as a real venue, un-flagged. Require a
-    // positive match against the known venue lists instead (ship-check
-    // finding). Off-West-End has no enumerated list (isOffWestEndVenue is the
-    // NEGATION of the West End list, so it can't be used as a positive check)
-    // — those shows get no rescue here and stay deferred, the safe prior behavior.
-    if (!venue) {
-      const titleParen = doc.title?.match(/\(([^)]+)\)/);
-      if (titleParen) {
-        const candidate = titleParen[1].trim();
-        if (isKnownOffBroadwayVenue(candidate) || isWestEndVenue(candidate)) {
-          venue = sanitizeVenueForWrite(candidate);
-        }
-      }
-    }
+    // Venue: shared chain in lib/show-score-status.js (old venue link, the
+    // survey modal's venue-name attribute, then a known-venue <title>
+    // parenthetical). A copy of that chain lived here and missed the
+    // venue-name fallback, so every Show Score-only candidate deferred on
+    // "no verified venue" (BRO-4432: The Tank's Falls for Jodie).
+    const venue = venueFromShowScoreDoc(doc, topLine);
 
     // Extract runtime from second segment (between delimiters)
     const delimiters = topLine.querySelectorAll('.show-page-v2__info-top-line-delimiter');
