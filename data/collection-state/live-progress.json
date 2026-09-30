@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-09-30T18:24:16.739Z",
-  "processed": 354,
-  "failed": 257,
-  "successRate": "57.9%",
+  "updatedAt": "2026-09-30T18:34:04.545Z",
+  "processed": 93,
+  "failed": 75,
+  "successRate": "55.4%",
   "tierBreakdown": {
-    "playwright": 190,
-    "amp": 10,
+    "playwright": 57,
+    "amp": 2,
     "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 37,
-    "scrapingbee": 22,
-    "brightdata": 1,
+    "scrapingdog": 16,
+    "scrapingbee": 4,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 115
   },
-  "browserbaseSessions": 9,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-09-30T17:23:45.929Z",
@@ -84,6 +84,28 @@
       "event": "bb-session",
       "session": "a7d50749",
       "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-09-30T18:24:14.366Z",
+      "event": "bb-session",
+      "session": "609aba70",
+      "url": "https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneat"
+    },
+    {
+      "t": "2026-09-30T18:24:14.918Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-30T18:24:32.380Z",
+      "event": "bb-session",
+      "session": "3d84f399",
+      "url": "https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneat"
+    },
+    {
+      "t": "2026-09-30T18:24:32.890Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
