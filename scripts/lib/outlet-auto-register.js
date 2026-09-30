@@ -46,14 +46,23 @@ const STAGE_REASONS = Object.freeze({
 });
 
 /**
- * Every slug a critic could be filed under: the registry key itself plus the
- * slug of the display name (they normally agree, but the display name is what
- * an aggregator byline actually carries).
+ * Every slug a critic could be filed under: the critic-registry key, the
+ * slug of its display name (what an aggregator byline actually carries), AND
+ * the slug of every criticName on the reviews being rebuilt.
+ *
+ * The third source is load-bearing. data/critic-registry.json is generated
+ * from already-scored, already-attributed reviews, so a byline the parser
+ * mis-filed as an outlet is exactly the one the registry has never seen:
+ * on 2026-09-29 none of paula-citron / ben-ryland / bill-sullivan were in it
+ * (verified against the live file while building this). Their names WERE
+ * present as criticName on the correctly attributed twin records in the
+ * same rebuild, which is what bww-critic-name-phantoms.js keys on too.
  *
  * @param {{critics?: Record<string, {displayName?: string}>}|null} criticRegistry data/critic-registry.json, or null when unreadable
+ * @param {Array<{criticName?: string|null}>} [reviews] the rebuild's included reviews
  * @returns {Set<string>}
  */
-function criticNameSlugs(criticRegistry) {
+function criticNameSlugs(criticRegistry, reviews) {
   const slugs = new Set();
   const critics = (criticRegistry && criticRegistry.critics) || {};
   for (const [key, entry] of Object.entries(critics)) {
@@ -61,6 +70,12 @@ function criticNameSlugs(criticRegistry) {
     if (keySlug) slugs.add(keySlug);
     const nameSlug = slugifyName(entry && entry.displayName);
     if (nameSlug) slugs.add(nameSlug);
+  }
+  for (const r of reviews || []) {
+    const name = r && r.criticName;
+    if (!name || /^(unknown|unnamed|staff)$/i.test(String(name).trim())) continue;
+    const slug = slugifyName(name);
+    if (slug) slugs.add(slug);
   }
   return slugs;
 }

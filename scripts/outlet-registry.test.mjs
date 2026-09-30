@@ -208,6 +208,24 @@ describe('decideOutletAutoRegistration (BRO-4370): register only with a resolvab
     );
   });
 
+  test('a byline the critic REGISTRY has never seen is still caught via the rebuild\'s own criticNames (the BRO-4370 shape)', () => {
+    // data/critic-registry.json is generated from attributed reviews, so on
+    // 2026-09-29 none of the three mis-filed bylines were in it; their names
+    // rode on the correctly attributed twin records in the same rebuild.
+    const slugs = criticNameSlugs(
+      { critics: {} },
+      [
+        { outletId: 'media-mikes', criticName: 'Ben Ryland' },
+        { outletId: 'ludwig-van', criticName: 'Paula Citron' },
+        { outletId: 'nytimes', criticName: 'Unknown' },
+        { outletId: 'x', criticName: null },
+      ],
+    );
+    assert.ok(slugs.has('ben-ryland') && slugs.has('paula-citron'));
+    assert.ok(!slugs.has('unknown'), 'sentinel bylines are never critic slugs');
+    assert.equal(decideOutletAutoRegistration({ outletId: 'ben-ryland', domainHint: null, criticSlugs: slugs }).reason, STAGE_REASONS.CRITIC_NAME);
+  });
+
   test('critic matching is case-insensitive and survives an unreadable critic registry', () => {
     assert.equal(decideOutletAutoRegistration({ outletId: 'Paula-Citron', domainHint: 'x.com', criticSlugs }).action, 'stage');
     assert.equal(criticNameSlugs(null).size, 0);

@@ -6502,7 +6502,12 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
     // these brand-new entries)
     const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
     const { wouldCauseAliasCollision, findOutletAliasCollisions } = require('./lib/outlet-alias-collision');
-    const criticSlugs = criticNameSlugs(criticRegistry);
+    // Registry names PLUS every criticName in this rebuild: the registry is
+    // built from attributed reviews, so a byline mis-filed as an outlet is
+    // precisely the name it does not know yet (BRO-4370's three ids were all
+    // absent from it) — but the same name rides on the correctly attributed
+    // twin record in this very run.
+    const criticSlugs = criticNameSlugs(criticRegistry, allReviews);
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
