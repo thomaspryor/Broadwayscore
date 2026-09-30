@@ -28,7 +28,20 @@
     "my-neighbour-totoro-west-end-2025/timeout-london--unknown.json",
     "my-neighbour-totoro-west-end-2025/financialtimes--unknown.json",
     "my-neighbour-totoro-west-end-2025/telegraph--unknown.json",
-    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json"
+    "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+    "maybe-happy-ending-2024/nydailynews--chris-jones.json",
+    "oh-mary-2024/broadwaynews--brittani-samuel.json",
+    "oh-mary-2024/theatermania--unknown.json",
+    "oh-mary-2024/cititour--unknown.json",
+    "oh-mary-2024/one-minute-critic--matthew-wexler.json",
+    "oh-mary-2024/people--unknown.json",
+    "oh-mary-2024/telegraph--unknown.json",
+    "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+    "stranger-things-the-first-shadow-west-end-2023/london-with-a-toddler--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/monstagigz--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json",
+    "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json",
+    "and-juliet-2022/all-that-dazzles-uk--unknown.json"
   ],
   "failed": [
     "the-rocky-horror-show-2026/nytimes--charlotte-dulany.json",
@@ -71,7 +84,24 @@
     "titanique-west-end-2024/nypost--johnny-oleksinski.json",
     "titanique-west-end-2024/thestage--paul-vale.json",
     "titanique-west-end-2024/times-uk--unknown.json",
-    "maybe-happy-ending-2024/newyorker--conde-nast.json"
+    "maybe-happy-ending-2024/newyorker--conde-nast.json",
+    "maybe-happy-ending-2024/wsj--unknown.json",
+    "oh-mary-2024/newyorker--naomi-fry.json",
+    "oh-mary-2024/queerty--jude-cramer.json",
+    "the-great-gatsby-2024/wsj--charles-isherwood.json",
+    "the-great-gatsby-2024/talkinbroadway--unknown.json",
+    "the-outsiders-2024/wsj--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/guardian--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/thestage--unknown.json",
+    "stranger-things-the-first-shadow-west-end-2023/times-uk--clive-davis.json",
+    "and-juliet-2022/newyorker--conde-nast.json",
+    "and-juliet-2022/guardian--unknown.json",
+    "and-juliet-2022/theater-pizzazz--unknown.json",
+    "and-juliet-2022/thestage--tim-bano.json",
+    "and-juliet-2022/broadway-blog--joey-sims.json",
+    "mj-2022/broadwaynews--charles-isherwood.json",
+    "mj-2022/wsj--charles-isherwood.json",
+    "mj-2022/nydailynews--karu-f-daniels.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -91,7 +121,14 @@
       "operation-mincemeat-2025/londontheatredirect--unknown.json",
       "my-neighbour-totoro-west-end-2025/timeout-london--unknown.json",
       "my-neighbour-totoro-west-end-2025/financialtimes--unknown.json",
-      "my-neighbour-totoro-west-end-2025/telegraph--unknown.json"
+      "my-neighbour-totoro-west-end-2025/telegraph--unknown.json",
+      "maybe-happy-ending-2024/nydailynews--chris-jones.json",
+      "oh-mary-2024/theatermania--unknown.json",
+      "oh-mary-2024/people--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/london-with-a-toddler--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/monstagigz--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/whatsonstage--sarah-crompton.json",
+      "and-juliet-2022/all-that-dazzles-uk--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -106,7 +143,10 @@
     "scrapingbee": [
       "oh-mary-west-end-2025/theatrely--unknown.json",
       "oh-mary-west-end-2025/broadwayworld--aliya-al-hassan.json",
-      "oh-mary-west-end-2025/broadwayworld--unknown.json"
+      "oh-mary-west-end-2025/broadwayworld--unknown.json",
+      "oh-mary-2024/broadwaynews--brittani-samuel.json",
+      "oh-mary-2024/cititour--unknown.json",
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
     ],
     "brightdata": [],
     "archiveToday": [],
@@ -115,11 +155,14 @@
       "heathers-the-musical-off-broadway-2025/amny--unknown.json",
       "heathers-the-musical-off-broadway-2025/thewrap--unknown.json",
       "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-      "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json"
+      "my-neighbour-totoro-west-end-2025/the-morning-star--unknown.json",
+      "oh-mary-2024/one-minute-critic--matthew-wexler.json",
+      "oh-mary-2024/telegraph--unknown.json",
+      "stranger-things-the-first-shadow-west-end-2023/times-uk--dominic-maxwell.json"
     ]
   },
   "startTime": "2026-09-30T10:00:25.737Z",
-  "lastProcessed": "maybe-happy-ending-2024/newyorker--conde-nast.json",
+  "lastProcessed": "mj-2022/nydailynews--karu-f-daniels.json",
   "log": [
     {
       "t": "2026-09-30T10:01:15.193Z",
@@ -243,6 +286,116 @@
       "t": "2026-09-30T10:37:12.952Z",
       "event": "bb-cookie-inject",
       "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-09-30T10:38:09.355Z",
+      "event": "bb-session",
+      "session": "693904a8",
+      "url": "https://www.wsj.com/articles/maybe-happy-ending-review-a-robotic-romance-of-real"
+    },
+    {
+      "t": "2026-09-30T10:38:10.025Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-30T10:39:43.177Z",
+      "event": "bb-session",
+      "session": "0cb5dc8f",
+      "url": "https://www.newyorker.com/magazine/2024/07/15/oh-mary-theatre-review"
+    },
+    {
+      "t": "2026-09-30T10:39:43.970Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-09-30T10:42:26.862Z",
+      "event": "bb-session",
+      "session": "a82dbcd0",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-09-30T10:42:27.701Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-30T10:42:36.723Z",
+      "event": "bb-session",
+      "session": "23f06e7f",
+      "url": "https://www.wsj.com/arts-culture/theater/the-great-gatsby-broadway-review-jeremy"
+    },
+    {
+      "t": "2026-09-30T10:42:37.445Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-30T10:44:12.601Z",
+      "event": "bb-session",
+      "session": "609f083d",
+      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html"
+    },
+    {
+      "t": "2026-09-30T10:44:13.367Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-30T10:44:31.384Z",
+      "event": "bb-session",
+      "session": "af06b1e2",
+      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html"
+    },
+    {
+      "t": "2026-09-30T10:44:32.116Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-09-30T10:44:51.388Z",
+      "event": "bb-session",
+      "session": "68f07acf",
+      "url": "https://www.wsj.com/arts-culture/books/auslander-review-the-lives-of-outsiders-a"
+    },
+    {
+      "t": "2026-09-30T10:44:52.079Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-30T10:52:13.368Z",
+      "event": "bb-session",
+      "session": "3640ecfc",
+      "url": "https://www.newyorker.com/goings-on-about-town/theatre/and-juliet-11-28-22"
+    },
+    {
+      "t": "2026-09-30T10:52:14.259Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-09-30T10:54:16.619Z",
+      "event": "bb-session",
+      "session": "e6f108c6",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-09-30T10:54:17.485Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-09-30T10:54:26.304Z",
+      "event": "bb-session",
+      "session": "3ab46e47",
+      "url": "https://www.wsj.com/articles/mj-the-musical-review-broadway-michael-jackson-1164"
+    },
+    {
+      "t": "2026-09-30T10:54:27.060Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
