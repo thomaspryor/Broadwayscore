@@ -22,6 +22,7 @@ const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
+const { isTimeOutLondonListing } = require('./timeout-london-url');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
 const { sdBilledCredits } = require('./provider-telemetry');
@@ -1221,6 +1222,13 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     }
 
     if (urlLower.includes('/search?') || urlLower.includes('/tag/') || urlLower.includes('/category/')) continue;
+    // Time Out London per-show listing (/london/theatre/<show>, no "review" in
+    // slug) is not a review; accepting it hid the real /london/news/ review
+    // (BRO-4399, The Standard of Living).
+    if (isTimeOutLondonListing(url)) {
+      log(`    ✗ Time Out London listing page, not a review: ${url.substring(0, 80)}`);
+      continue;
+    }
     if (urlLower.includes('/attachment/') || urlLower.match(/\.(jpg|jpeg|png|gif|webp)$/)) continue;
     // TheaterMania /shows/ pages are listing pages, not reviews
     if (urlLower.includes('theatermania.com/shows/')) continue;
