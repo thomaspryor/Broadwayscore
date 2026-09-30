@@ -2383,6 +2383,20 @@ on:
       # colocated test (runs in the scripts/lib/*.test.mjs glob step). Path-listed
       # so an edit triggers CI per feedback_test_yml_push_path_allowlist.
       - 'scripts/fantasy-weekly-email.js'
+      # Fantasy League weekly pipeline (BRO-4324, re-landed under BRO-4143): no
+      # step in this suite runs the generator or the scorer, but
+      # scripts/tests/scripts-no-undef.test.mjs lints scripts/**/*.js and
+      # scripts/lib/score-tier-label-contract.test.mjs reads
+      # compute-fantasy-scores.js by path, so a solo edit must still trigger CI.
+      # The three data files are committed to main by fantasy-weekly.yml;
+      # path-listed so a bad regeneration fails
+      # tests/unit/fantasy-season-config.test.ts on its own push, not on
+      # someone else's.
+      - 'scripts/generate-fantasy-config.js'
+      - 'scripts/compute-fantasy-scores.js'
+      - 'data/fantasy-league.json'
+      - 'data/fantasy-league-frozen.json'
+      - 'data/fantasy-scores.json'
       - 'scripts/send-btc-results.js'
       # tests/unit-test-manifest.txt (node --test batch). The dependency
       # (scripts/lib/btc-confirmation.js) is already covered by the
