@@ -51,7 +51,7 @@ const stats = { pagesChecked: 0, reviewsExtracted: 0, filesCreated: 0, filesUpda
 /**
  * Fetch a URL via plain HTTPS (no API key needed — static HTML site)
  */
-function fetchPage(url) {
+function fetchPlain(url) {
   return new Promise((resolve, reject) => {
     const req = https.get(url, {
       headers: {
@@ -61,7 +61,7 @@ function fetchPage(url) {
       timeout: 15000,
     }, res => {
       if (res.statusCode === 301 || res.statusCode === 302) {
-        return fetchPage(res.headers.location).then(resolve).catch(reject);
+        return fetchPlain(res.headers.location).then(resolve).catch(reject);
       }
       if (res.statusCode !== 200) {
         resolve(null);
@@ -74,6 +74,51 @@ function fetchPage(url) {
     req.on('error', reject);
     req.on('timeout', () => { req.destroy(); reject(new Error('Request timeout')); });
   });
+}
+
+/**
+ * Plain request first (static site, free); when a CI runner is blocked
+ * (theatre.reviews' CleanTalk answered 'Failed to fetch' for the Cleansed
+ * round-up from GitHub Actions, BRO-4431), fall back to the shared scraper.
+ */
+async function fetchPage(url) {
+  let html = null;
+  try { html = await fetchPlain(url); } catch { html = null; }
+  if (html) return html;
+  try {
+    const { fetchPage: scraperFetch } = require('./lib/scraper');
+    const r = await scraperFetch(url, { timeout: 30000 });
+    return r && typeof r === 'object' ? r.content : r;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * --shows mode: find each target show's round-up through the WordPress
+ * search API (covers the whole archive; the category-archive walk below
+ * stopped at page 2 from CI and never reached Golden Boy, BRO-4431).
+ */
+async function discoverRoundupsBySearch(targetShows) {
+  const { fetchJSON } = require('./lib/scraper');
+  const { pickTheatreReviewsRoundup } = require('./lib/theatre-reviews-discovery');
+  const found = [];
+  for (const show of targetShows) {
+    const od = Date.parse(show.openingDate || show.previewsStartDate || '');
+    if (!od) continue;
+    const after = new Date(od - 7 * 86400000).toISOString();
+    try {
+      const posts = await fetchJSON(`https://theatre.reviews/wp-json/wp/v2/posts?per_page=5&after=${encodeURIComponent(after)}&search=${encodeURIComponent(show.title)}`);
+      const url = pickTheatreReviewsRoundup(Array.isArray(posts) ? posts : [], show.title);
+      if (url) {
+        found.push({ url, show, extractedTitle: show.title });
+        console.log(`  Matched (search): "${show.title}" → ${show.id}`);
+      }
+    } catch (e) {
+      console.log(`  search failed for ${show.id}: ${e.message}`);
+    }
+  }
+  return found;
 }
 
 /**
@@ -389,11 +434,14 @@ async function main() {
   const weShows = shows.filter(s => isLondonMarket(s.category));
   console.log(`Loaded ${weShows.length} London market shows\n`);
 
-  // Step 1: Discover roundup URLs
-  const roundupUrls = await discoverRoundupUrls();
+  // Step 1: Discover roundup URLs. Targeted runs search per show first.
+  const matched = [];
+  if (TARGET_SHOWS) {
+    matched.push(...await discoverRoundupsBySearch(weShows.filter(s => TARGET_SHOWS.includes(s.id))));
+  }
+  const roundupUrls = TARGET_SHOWS && matched.length === TARGET_SHOWS.length ? [] : await discoverRoundupUrls();
 
   // Step 2: Match URLs to shows
-  const matched = [];
   for (const url of roundupUrls) {
     const title = extractTitleFromSlug(url);
     if (!title) continue;
@@ -405,6 +453,7 @@ async function main() {
       continue;
     }
     if (TARGET_SHOWS && !TARGET_SHOWS.includes(match.show.id)) continue;
+    if (matched.some(m => m.show.id === match.show.id)) continue;
     matched.push({ url, show: match.show, extractedTitle: title });
     console.log(`  Matched: "${title}" → ${match.show.id}`);
   }
