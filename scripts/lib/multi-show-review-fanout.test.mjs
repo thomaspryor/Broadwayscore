@@ -285,3 +285,36 @@ test('TR round-up discovery uses the WP search API result, not just the homepage
   const src = fs.readFileSync(new URL('../gather-reviews.js', import.meta.url), 'utf8');
   assert.match(src, /pickTheatreReviewsRoundup\(/, 'gather-reviews must use the API discovery');
 });
+
+// ---------------------------------------------------------------------------
+// Reader submissions whose page can't be read are retried, not dropped (part 3)
+// ---------------------------------------------------------------------------
+const { buildRetryStubFields, isQueuedRetryStub } = require('./submission-retry-stub.js');
+const { checkSubmissionLanded } = require('./submission-landing.js');
+
+test('a failed submission becomes a queued-retry stub that counts as pending, not a dead end', () => {
+  const fields = buildRetryStubFields('fetch failed: All scraping methods failed', { publishDate: '2026-09-19' });
+  assert.equal(fields.contentTier, 'stub');
+  assert.equal(fields.submissionRetryQueued, true);
+  assert.ok(isQueuedRetryStub(fields));
+  // Once any recovery path fills the text it is no longer a queued stub.
+  assert.equal(isQueuedRetryStub({ ...fields, fullText: 'x'.repeat(500) }), false);
+
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'sub-'));
+  const showId = 'golden-boy-off-west-end-2026';
+  const url = 'https://www.thetimes.com/culture/theatre-dance/article/golden-boy-review-8dnqk7c6l';
+  fs.mkdirSync(path.join(dir, showId));
+  fs.writeFileSync(path.join(dir, showId, 'times-uk--unknown.json'), JSON.stringify({ showId, outletId: 'times-uk', url, ...fields }));
+  const res = checkSubmissionLanded({ showId, url, reviews: [], reviewTextsDir: dir, show: { id: showId, title: 'Golden Boy', openingDate: '2026-09-15' } });
+  assert.equal(res.landed, false);
+  assert.equal(res.pendingScore, true, 'goes to the awaiting-score sweep (close when live, escalate after 36h)');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('process-review-submission retries once, then falls back to the retry stub', () => {
+  const wf = fs.readFileSync(new URL('../../.github/workflows/process-review-submission.yml', import.meta.url), 'utf8');
+  assert.match(wf, /sleep 60\s*\n\s*node scripts\/ingest-review-from-url\.js [^\n]*--stub-on-failure/);
+  const ingest = fs.readFileSync(new URL('../ingest-review-from-url.js', import.meta.url), 'utf8');
+  assert.match(ingest, /hasFlag\('stub-on-failure'\)/);
+  assert.match(ingest, /writeRetryStubAndExit\(fetchFailure\)/);
+});

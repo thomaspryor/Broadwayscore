@@ -101,6 +101,11 @@ const allowNonReviewUrl = hasFlag('allow-non-review-url');
 // for an unregistered domain and flips this on, so the write path stamps the
 // record as provisional exactly as an explicit --provisional call would.
 let provisional = hasFlag('provisional');
+// BRO-4431: on a fetch/extraction failure, save a URL-only stub queued for
+// automatic retry (collector cadence, T1/T2 silent-gap audit, paywall rating
+// salvage, aggregator star relay) instead of exiting 1 and dropping the
+// review. process-review-submission.yml passes this on its final attempt.
+const stubOnFailure = hasFlag('stub-on-failure');
 
 if (!showId || !url) {
   console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
@@ -166,17 +171,21 @@ if (!show) {
   }
 
   let html;
+  let fetchFailure = null;
   try {
     const r = await fetchPage(url, { source: 'process-review-submission' });
     html = (r && (r.content || r.html || r.body)) || (typeof r === 'string' ? r : null);
   } catch (e) {
     console.error(`Fetch failed: ${e.message}`);
-    process.exit(1);
+    if (!stubOnFailure) process.exit(1);
+    fetchFailure = `fetch failed: ${e.message}`;
   }
-  if (!html || typeof html !== 'string' || html.length < 500) {
+  if (!fetchFailure && (!html || typeof html !== 'string' || html.length < 500)) {
     console.error(`Fetch returned no usable HTML (got ${html ? html.length : 0} chars)`);
-    process.exit(1);
+    if (!stubOnFailure) process.exit(1);
+    fetchFailure = `no usable HTML (${html ? html.length : 0} chars)`;
   }
+  if (fetchFailure) html = '';
 
   // Outlet resolution runs BEFORE the text-extraction gate: the star-rating
   // fallback below needs outletId to pick an extractor, and none of this
@@ -261,6 +270,27 @@ if (!show) {
   // recoverFromOwnUrl) both drive, so site chrome landed unstripped in
   // fullText and fed straight into the LLM scoring prompt (BRO-2605 ship-check
   // finding).
+  // BRO-4431 retry stub: written after outlet resolution (which needs no
+  // HTML) so the stub is filed under the right outlet.
+  const writeRetryStubAndExit = (reason) => {
+    const { buildRetryStubFields } = require('./lib/submission-retry-stub');
+    const stubResult = createOrMergeReviewFile(showId, {
+      outletId,
+      outlet: outletName,
+      criticName: criticArg || 'Unknown',
+      url,
+      source: 'submit-review-form',
+      fields: buildRetryStubFields(reason, { publishDate: publishDateArg }),
+    }, { dryRun, reviewTextsDir });
+    if (stubResult.guardRefused === true || WRITE_GUARD_REFUSED_REASONS.has(stubResult.reason)) {
+      console.error(`\n❌ Retry stub refused by the write guard (${stubResult.reason})`);
+      process.exit(1);
+    }
+    console.log(`⏳ Queued for retry (${reason}): ${stubResult.filepath || stubResult.reason || stubResult.action}`);
+    process.exit(0);
+  };
+  if (fetchFailure) writeRetryStubAndExit(fetchFailure);
+
   let text = stripTrailingJunk(extractArticleTextFromUrl(html, url, criticArg));
   // Multi-show blog posts (interestedbystander): keep only THIS show's section,
   // and refuse rather than score other shows' paragraphs into the file (BRO-4387).
@@ -295,6 +325,7 @@ if (!show) {
     }
     if (!recoveredScore) {
       console.error(`Article extraction returned ${text ? text.length : 0} chars — pattern may be missing for this outlet. Add an entry to scripts/lib/article-extractor.js PATTERNS.`);
+      if (stubOnFailure) writeRetryStubAndExit(`extraction returned ${text ? text.length : 0} chars (paywall/bot wall or missing pattern)`);
       process.exit(1);
     }
     console.log(`  → Body extraction empty (${text ? text.length : 0} chars) — recovered explicit rating from page HTML: ${recoveredScore.originalScore} (${recoveredScore.normalizedScore}/100) [${recoveredScore.source}]`);
