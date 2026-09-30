@@ -66,6 +66,10 @@ const PAGE_WORTHY_PREFIXES = [
   // owner noticed one show's email arriving and another's never had). Nothing
   // retries these automatically, so the page IS the recovery mechanism.
   'broadcast:never-sent:',
+  // BRO-4417: the draft deadline passed, so the draft was created over QA-gate
+  // findings. The owner must read them before pressing Send, and the draft is
+  // sitting in Resend right now, so the next morning's digest is too late.
+  'broadcast:deadline-draft:',
   // 'opening-night-drift:' was listed here 2026-09 and REMOVED 2026-09-23
   // (owner email-noise complaint): it emailed once per show every 6h for the
   // whole ±7-day opening window, ~40 emails in one week across 5 shows. A
