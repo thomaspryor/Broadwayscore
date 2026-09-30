@@ -112,6 +112,10 @@ function pickCanonical(p, showDir, recMap) {
 }
 
 function foldAggregatorFields(canon, loser) {
+  // A web-search loser's excerpt fields are LLM-invented text (Feldman's
+  // "timeless and urgently contemporary" blurb was in no aggregator); folding
+  // them into the survivor would launder a hallucination into the real review.
+  if (loser.source === 'web-search') return;
   const fields = [...EXCERPT_FIELDS, 'dtliThumb', 'dtliUrl', 'bwwThumb', 'bwwRoundupUrl', 'showScoreUrl', 'playbillVerdictUrl'];
   for (const f of fields) {
     if ((canon[f] === undefined || canon[f] === null || canon[f] === '') && loser[f]) canon[f] = loser[f];
