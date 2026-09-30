@@ -273,3 +273,37 @@ test('BRO-4074: neither tie still refuses, and the refusal names the twin as an 
   assert.match(plan.refusals.join('\n'), /patch-identical/,
     'an operator who hits this must be told the rebase-landed twin is allowed, or they hit the same dead end');
 });
+
+// BRO-4141 / BRO-4373 (2026-09-30): a job that timed out, was job-retried and
+// RESUMED (same session) then stopped short had every commit authored by its
+// first leg. The resume must not move the tie window's start forward.
+test('ledgerPrecondition: a resume after job-retried keeps the ORIGINAL launch', () => {
+  const rows = [
+    { event: 'launch', ts: '2026-09-29T18:48:40.000Z', taskId: 'linear:BRO-4373', verifyCmd: 'node --test x.test.mjs' },
+    { event: 'job-spawned', ts: '2026-09-29T18:48:40.991Z', taskId: 'linear:BRO-4373', jobId: 'j1' },
+    { event: 'job-failed', ts: '2026-09-29T20:48:43.393Z', taskId: 'linear:BRO-4373', jobId: 'j1' },
+    { event: 'job-retried', ts: '2026-09-29T20:51:59.078Z', taskId: 'linear:BRO-4373', jobId: 'j1', sessionId: 's1' },
+    { event: 'job-spawned', ts: '2026-09-29T20:51:59.142Z', taskId: 'linear:BRO-4373', jobId: 'j2', subject: 'resume #linear:BRO-4373', resumed: true, resumeOfSession: 's1' },
+    { event: 'job-stopped-short', ts: '2026-09-29T22:04:06.375Z', taskId: 'linear:BRO-4373', jobId: 'j2' },
+  ];
+  const pre = core.ledgerPrecondition(rows);
+  assert.deepEqual(pre.refusals, []);
+  assert.equal(pre.launch.ts, '2026-09-29T18:48:40.991Z');
+  // A genuinely NEW dispatch later (not preceded by job-retried) still moves it.
+  const relaunched = [...rows,
+    { event: 'launch', ts: '2026-09-30T09:00:00.000Z', taskId: 'linear:BRO-4373' },
+    { event: 'job-stopped-short', ts: '2026-09-30T10:00:00.000Z', taskId: 'linear:BRO-4373' }];
+  assert.equal(core.ledgerPrecondition(relaunched).launch.ts, '2026-09-30T09:00:00.000Z');
+  // Codex review: job-retried is written BEFORE the resume spawns; if the
+  // resume dies unrecorded and a FRESH dispatch follows, that fresh launch
+  // (no resume linkage) must move the window, or a first-leg partial commit
+  // could be acked for the fresh job.
+  const freshAfterRetry = [...rows.slice(0, 4),
+    { event: 'launch', ts: '2026-09-29T23:00:00.000Z', taskId: 'linear:BRO-4373' },
+    { event: 'job-spawned', ts: '2026-09-29T23:00:00.500Z', taskId: 'linear:BRO-4373', jobId: 'j3' },
+    { event: 'job-stopped-short', ts: '2026-09-30T00:00:00.000Z', taskId: 'linear:BRO-4373', jobId: 'j3' }];
+  assert.equal(core.ledgerPrecondition(freshAfterRetry).launch.ts, '2026-09-29T23:00:00.500Z');
+  // resumed:true but naming a DIFFERENT session is not this job's resume.
+  const wrongSession = rows.map(r => (r.jobId === 'j2' && r.event === 'job-spawned') ? { ...r, resumeOfSession: 'other' } : r);
+  assert.equal(core.ledgerPrecondition(wrongSession).launch.ts, '2026-09-29T20:51:59.142Z');
+});

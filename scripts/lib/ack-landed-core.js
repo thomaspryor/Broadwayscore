@@ -211,8 +211,25 @@ function ledgerPrecondition(rows) {
   let launch = null;
   let launchVerifyCmd = null; // only 'launch' rows carry verifyCmd; job-spawned does not
   let stranded = null;
+  // A launch that directly follows job-retried is the SAME job resumed
+  // (bsc-runner's retry resumes the session), not a new attempt: its commits
+  // were authored from the ORIGINAL launch on. Advancing `launch` to the
+  // resume refused a real landing (BRO-4373, 2026-09-30: every commit
+  // authored by the first leg, "BEFORE this dispatch launched").
+  // Causal linkage required (Codex review; same rule as dispatch-ledger.js
+  // followRetryChain): only a spawn marked resumed with resumeOfSession equal
+  // to the retried job's sessionId is a resume. job-retried is written before
+  // the detached resume spawns, so the resume can die unrecorded and a fresh
+  // dispatch follow — that fresh launch must still move the window.
+  let retriedSession = null;
   for (const r of list) {
-    if (LAUNCH_EVENTS.has(String(r.event))) launch = r;
+    const e = String(r.event);
+    if (e === 'job-retried') { retriedSession = r.sessionId || null; continue; }
+    if (LAUNCH_EVENTS.has(e)) {
+      const isResume = Boolean(launch && retriedSession && r.resumed === true
+        && r.resumeOfSession && r.resumeOfSession === retriedSession);
+      if (!isResume) { launch = r; retriedSession = null; }
+    }
     if (String(r.event) === 'launch' && r.verifyCmd) launchVerifyCmd = String(r.verifyCmd);
     if (String(r.event) === 'job-stranded' && r.sha) stranded = r;
   }
