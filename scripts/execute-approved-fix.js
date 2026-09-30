@@ -145,10 +145,36 @@ function runValidation(changedFiles) {
   return true;
 }
 
-function rollbackDataFiles() {
+// Core-data files are gitignored here, so `git checkout -- data/` cannot
+// restore them; the plan runner snapshots them before the first action and
+// rollbackDataFiles puts them back (BRO-4398: a failed retire-show plan must
+// not push a deleted row, or a registry entry without its deletion).
+const CORE_SNAPSHOT_FILES = ['data/shows.json', 'data/commercial.json', 'data/audience-buzz.json', 'data/retired-show-ids.json', 'data/deleted-shows.json'];
+
+function snapshotCoreData() {
+  const snap = new Map();
+  for (const rel of CORE_SNAPSHOT_FILES) {
+    const abs = path.join(ROOT, rel);
+    let target = abs;
+    try { target = fs.realpathSync(abs); } catch { /* absent */ }
+    snap.set(target, fs.existsSync(target) ? fs.readFileSync(target) : null);
+  }
+  return snap;
+}
+
+function rollbackDataFiles(snapshot) {
   try {
     execSync('git checkout -- data/', { cwd: ROOT, stdio: 'pipe' });
   } catch { /* best effort */ }
+  if (!snapshot) return;
+  for (const [target, content] of snapshot) {
+    try {
+      if (content === null) { if (fs.existsSync(target)) fs.unlinkSync(target); }
+      else fs.writeFileSync(target, content);
+    } catch (e) {
+      console.error(`  rollback could not restore ${target}: ${e.message}`);
+    }
+  }
 }
 
 async function sendEmail(to, from, subject, html) {
@@ -510,6 +536,8 @@ async function main() {
   console.log(`  Summary: ${planData.plan.summary}`);
   console.log(`  Actions: ${planData.plan.actions.length}`);
 
+  const coreSnapshot = snapshotCoreData();
+
   // 3. Execute each action
   const results = [];
   const applied = [];
@@ -566,14 +594,7 @@ async function main() {
     console.log('\nRunning validation...');
     if (!runValidation(changedFiles)) {
       console.error('Validation failed — rolling back');
-      rollbackDataFiles();
-      // The retired-id registry is core data (gitignored), which the git
-      // checkout above cannot restore: take back this plan's retirements.
-      planData.plan.actions.forEach((a, i) => {
-        if (a.type === 'retire-show' && results[i] && results[i].ok) {
-          try { unretireId(a.id); } catch (e) { console.error(`  could not revert registry entry for ${a.id}: ${e.message}`); }
-        }
-      });
+      rollbackDataFiles(coreSnapshot);
 
       // Update plan status
       planData.status = 'validation-failed';
