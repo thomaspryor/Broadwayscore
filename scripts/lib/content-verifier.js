@@ -21,7 +21,7 @@ const { isLondonMarket, isSpecialEngagementVenue } = require('./venue-classifica
 const { applyTemporalOverrides, applyVenueClassificationCarveout } = require('./review-guards');
 const { buildVenueContext: _expandVenueContext } = require('./venue-aliases');
 const { getCvStyle } = require('./outlet-canonicalize');
-const { hasOpinionLanguage } = require('./content-quality');
+const { hasOpinionLanguage, stripLeadingJsonBlob } = require('./content-quality');
 const { stripConsentLayerPrefix } = require('./text-cleaning');
 
 /**
@@ -146,13 +146,17 @@ function _extractUrlYear(url) {
   return null;
 }
 
+// The prompt shows the verifier only this many leading chars of the article.
+const CV_WINDOW_CHARS = 2500;
+
 /**
  * Hash the first 2500 chars of text — used to detect when contentVerification
  * was done on different content than the stored fullText.
  */
 function contentHash(text) {
   if (!text) return null;
-  return crypto.createHash('md5').update(text.substring(0, 2500)).digest('hex');
+  // BRO-4429: hash what the verifier actually reads (leading JSON blob removed).
+  return crypto.createHash('md5').update(stripLeadingJsonBlob(text).substring(0, CV_WINDOW_CHARS)).digest('hex');
 }
 
 // ============================================================
@@ -383,7 +387,7 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
   // Judge the article, not a consent layer captured ahead of it: the prompt
   // shows only the first 2,500 chars, which for WhatsOnStage captures was
   // entirely IAB consent text (BRO-4185 A).
-  scrapedText = stripConsentLayerPrefix(scrapedText);
+  scrapedText = stripLeadingJsonBlob(stripConsentLayerPrefix(scrapedText));
   if (!scrapedText || scrapedText.length < 200) {
     return {
       isValid: false,
@@ -742,7 +746,7 @@ I scraped what should be a ${mc.label} theater review. Verify if the content is 
 - Critic: ${criticName || 'Unknown'}${dateContext}${publishDateContext}${venueContext}${excerptContext}
 
 **Scraped Content (first 2500 chars):**
-${scrapedText.substring(0, 2500)}
+${scrapedText.substring(0, CV_WINDOW_CHARS)}
 
 **Total scraped length:** ${scrapedText.length} characters
 
@@ -1008,7 +1012,24 @@ function shouldDeferCvWrongShow(reviewData) {
   return hasOpinionLanguage(fullText);
 }
 
+/**
+ * BRO-4429: a "not a review" CV verdict (wrongArticle) formed from the first
+ * 2500 chars of a LONGER article is a weak signal — a review whose opening is
+ * scene-setting reads as a preview (the-saviors / TheaterMania). Such a verdict
+ * must not terminally exclude the file: rebuild treats it as advisory.
+ * A high-confidence non-preview verdict (interview, obituary, listicle...) stays
+ * actionable since those are identifiable from the head.
+ */
+function isCvVerdictFromPartialWindow(cv, fullText) {
+  if (!cv || cv.wrongArticle !== true) return false;
+  const len = stripLeadingJsonBlob(fullText || '').length;
+  if (len <= CV_WINDOW_CHARS) return false;
+  return cv.articleType === 'preview' || cv.confidence !== 'high';
+}
+
 module.exports = {
+  CV_WINDOW_CHARS,
+  isCvVerdictFromPartialWindow,
   verifyContent,
   heuristicVerify,
   quickValidityCheck,

@@ -47,7 +47,7 @@ const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
 const { applyPaywallTierOverride } = require('./lib/paywall-completeness');
-const { shouldDeferCvWrongShow } = require('./lib/content-verifier');
+const { shouldDeferCvWrongShow, isCvVerdictFromPartialWindow, contentHash: cvContentHash } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
 const { mergeUniqueReviewFields } = require('./lib/merge-review-fields');
 const { runOutletMismatchCleanup, renameAndRepoint, makeDirIO } = require('./lib/outlet-mismatch-heal');
@@ -2038,7 +2038,7 @@ const crossShowFingerprints = new Map();
           if (new Date(d.textFetchedAt).getTime() > new Date(cv.verifiedAt).getTime()) stale = true;
         }
         if (!stale && cv.contentHash && d.fullText) {
-          const h = crypto.createHash('md5').update(d.fullText.substring(0, 2500)).digest('hex');
+          const h = cvContentHash(d.fullText);
           if (cv.contentHash !== h) stale = true;
         }
         // EXCEPTION: never skip staleness for high-confidence wrongArticle findings
@@ -2117,7 +2117,10 @@ const crossShowFingerprints = new Map();
         // just of a different production) — pure non-review content routes to
         // the isNonReview/rejectionReason family instead.
         const cvIsPureNonReview = cv.wrongArticle === true && cv.wrongProduction !== true;
-        if (cvIsPureNonReview && !ensembleSaysReview && d.isNonReview !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
+        // BRO-4429: verdict formed from the 2500-char head of a longer article is advisory.
+        const cvPartialWindow = isCvVerdictFromPartialWindow(cv, d.fullText);
+        if (cvPartialWindow && cv.wrongArticle === true) stats.cvPartialWindowAdvisory = (stats.cvPartialWindowAdvisory || 0) + 1;
+        if (cvIsPureNonReview && !cvPartialWindow && !ensembleSaysReview && d.isNonReview !== true && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
           // CV outlet-style override (S3-T5): defer for known long-biographical
           // outlets when the text is substantive + opinionated. The CV pass false-positives
           // on Vulture/NY Sun/NYSR/NYT long-biographical leads. flaggedForReview surfaces
@@ -2900,7 +2903,7 @@ showDirs.forEach(showId => {
         // Staleness guard 2: if verification was done on different content than current fullText,
         // skip promotion. The verifier may have re-scraped the URL and gotten a different page.
         if (!cvIsStale && cv.contentHash && data.fullText) {
-          const currentHash = crypto.createHash('md5').update(data.fullText.substring(0, 2500)).digest('hex');
+          const currentHash = cvContentHash(data.fullText);
           if (cv.contentHash !== currentHash) {
             cvIsStale = true;
             stats.contentHashMismatchSkippedPromotion = (stats.contentHashMismatchSkippedPromotion || 0) + 1;
@@ -2964,7 +2967,9 @@ showDirs.forEach(showId => {
           // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
           // wrongArticle means the fetched text is genuinely for a different show/venue)
           const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
-          if (cv.wrongArticle === true && !ensembleSaysReview && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
+          const cvPartialWindow = isCvVerdictFromPartialWindow(cv, data.fullText);
+          if (cvPartialWindow) stats.cvPartialWindowAdvisory = (stats.cvPartialWindowAdvisory || 0) + 1;
+          if (cv.wrongArticle === true && !cvPartialWindow && !ensembleSaysReview && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {
             // CV outlet-style override (S3-T5): defer wrongShow for known long-biographical
             // outlets when the text is substantive + opinionated. The CV pass false-positives
             // on Vulture/NY Sun/NYSR/NYT long-biographical leads. flaggedForReview surfaces
@@ -2980,7 +2985,7 @@ showDirs.forEach(showId => {
               invalidateWrongShowAutoClear(data); // BRO-3225: re-flag must invalidate a still-fresh auto-clear stamp
               promoted = true;
             }
-          } else if (cv.wrongArticle === true && ensembleSaysReview) {
+          } else if (cv.wrongArticle === true && (ensembleSaysReview || cvPartialWindow)) {
             stats.cvWrongArticleAdvisory = (stats.cvWrongArticleAdvisory || 0) + 1;
           }
           if (cv.isFilmTv === true && !ensembleSaysReview && data.wrongShow !== true && !skipWsForLondon && !data.allowEarlyDate && !data.allowCrossMarket) {

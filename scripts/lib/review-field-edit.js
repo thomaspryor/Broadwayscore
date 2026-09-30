@@ -34,6 +34,9 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   'wrongProduction', 'wrongProductionReason', 'wrongProductionManualClear',
   'wrongShow', 'wrongShowManualClear',
   'isNotReviewManualClear',
+  // Gemini/CV non-review verdict (BRO-4429): the isNonReview family is what
+  // classify-non-reviews.js stamps; isNotReview* above is the write-guard's.
+  'isNonReview', 'isNonReviewReason', 'nonReviewManualClear', 'wrongArticleManualClear',
   // duplicate pointer (a clear needs duplicateClearReason alongside it)
   'duplicateOf', 'duplicateReason', 'duplicateClearReason',
   // score override (BRO-4275): humanReviewScore is the one score the rebuild

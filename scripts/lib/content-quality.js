@@ -1041,6 +1041,40 @@ function detectHorrorFilmContent(text) {
 }
 
 /**
+ * BRO-4429: strip a leading JSON array/object blob (a wayback-recovery fetch of
+ * standard.co.uk prepended ~5KB of homepage JSON — `[{"id":"...`). Returns the
+ * text after the balanced blob; unchanged when there is no leading blob of 200+
+ * chars. String-aware bracket matching, so braces inside JSON strings are fine.
+ */
+function stripLeadingJsonBlob(text) {
+  if (typeof text !== 'string') return text;
+  const m = /^\s*[\[{]\s*\{?\s*"[\w$-]+"\s*:/.exec(text);
+  if (!m) return text;
+  const start = text.search(/\S/);
+  let depth = 0, inStr = false, esc = false;
+  for (let i = start; i < text.length; i++) {
+    const c = text[i];
+    if (inStr) {
+      if (esc) esc = false;
+      else if (c === '\\') esc = true;
+      else if (c === '"') inStr = false;
+      continue;
+    }
+    if (c === '"') inStr = true;
+    else if (c === '[' || c === '{') depth++;
+    else if (c === ']' || c === '}') {
+      depth--;
+      if (depth === 0) {
+        if (i + 1 - start < 200) return text;
+        return text.slice(i + 1).trim();
+      }
+    }
+  }
+  // Unbalanced (truncated blob): the whole text is JSON, nothing to keep.
+  return text.length - start >= 200 ? '' : text;
+}
+
+/**
  * Main function to check if content is garbage/invalid
  *
  * @param {string} text - The fullText content to check
@@ -1050,6 +1084,18 @@ function isGarbageContent(text) {
   // Null/undefined check
   if (text === null || text === undefined) {
     return { isGarbage: true, reason: 'No content (null or undefined)' };
+  }
+
+  // BRO-4429: a leading JSON blob is fetch debris, not review prose. Judge the
+  // text after it; a blob with nothing real behind it is garbage.
+  if (typeof text === 'string') {
+    const stripped = stripLeadingJsonBlob(text);
+    if (stripped !== text) {
+      if (stripped.trim().length < 100) {
+        return { isGarbage: true, reason: 'JSON blob with no article text behind it' };
+      }
+      text = stripped;
+    }
   }
 
   // Empty or whitespace-only
@@ -1813,7 +1859,8 @@ function classifyContentTier(review) {
     };
   }
 
-  const fullText = review.fullText || '';
+  // BRO-4429: a leading JSON blob must not count toward length/completeness.
+  const fullText = stripLeadingJsonBlob(review.fullText || '');
   const wordCount = countWords(fullText);
   const charCount = fullText.length;
 
@@ -3447,6 +3494,7 @@ module.exports = {
   URL_CONTENT_CHECK_VERSION,
   stripVenueListingsTrailer,
   isGarbageContent,
+  stripLeadingJsonBlob,
   hasReviewContent,
   assessTextQuality,
   detectGarbageFromReasoning,

@@ -93,6 +93,28 @@ function shouldSkipNonReviewStamp(d) {
   return text.length < 800 && looksLikeReviewUrl(d.url);
 }
 
+// BRO-4429: the Gemini non-review classifier reads a sample of the text and its
+// verdict is terminal (isNonReview excludes the file). Never let it overrule
+// stronger evidence: a high-confidence content-verifier "review" verdict, an
+// operator clear of the wrong-production/show flags (BRO-4204 electra), or text
+// that is bot-truncated (the classifier is judging a stub, not the article).
+// Returns a reason string when the stamp must be skipped, else null.
+function nonReviewStampBlockReason(d, hasBotStub) {
+  if (!d) return null;
+  const cv = d.contentVerification;
+  if (cv && cv.isValid === true && cv.confidence === 'high' && cv.wrongArticle !== true
+      && (!cv.articleType || cv.articleType === 'review')) {
+    return 'high-confidence content-verifier says review';
+  }
+  if (d.wrongProductionManualClear === true || d.wrongShowManualClear === true
+      || d.wrongArticleManualClear === true || d.humanReviewedWrongProduction === false
+      || d.humanReviewedWrongArticle === false) {
+    return 'operator manually cleared a verdict flag';
+  }
+  if (hasBotStub) return 'text is bot-truncated';
+  return null;
+}
+
 // RC3 (The Upcoming, 2026-07-23): empty-body files whose outlets no aggregator
 // cites never entered flaggedMisses, so the hourly self-heal never retried them
 // — a 0-byte stub of a real published review sat inert until a human refetched
@@ -224,6 +246,7 @@ module.exports = {
   isRecoverableUncitedStub,
   looksLikeReviewUrl,
   shouldSkipNonReviewStamp,
+  nonReviewStampBlockReason,
   STAR_SOURCE_BY_REFERENCE,
   decideEmptyBodyRecovery,
   nextRecoveryCount,
