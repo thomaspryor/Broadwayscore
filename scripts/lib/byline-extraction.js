@@ -23,6 +23,11 @@ function decodeEntities(s) {
 function extractByline(html) {
   if (!html) return null;
   const candidates = [
+    // An explicit "Reviewer: Name" line under the headline names the person;
+    // the meta author on those sites is the house account (The Reviews Hub:
+    // meta author "The Reviews Hub - London", sub-title "Reviewer: Scott
+    // Matthewman", 58 files filed under the house name, BRO-4431).
+    />\s*Reviewer:\s*([A-Z][A-Za-z .'’-]{1,60}?)\s*</,
     // OpenGraph / standard meta tags — most authoritative when present.
     /<meta[^>]+property=["']article:author["'][^>]+content=["']([^"']+)["']/i,
     /<meta[^>]+name=["']author["'][^>]+content=["']([^"']+)["']/i,

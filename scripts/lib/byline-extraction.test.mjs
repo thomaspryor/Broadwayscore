@@ -18,6 +18,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { extractByline } from './byline-extraction.js';
+import { extractAuthorFromHtml } from './content-quality.js';
 
 test('extracts a byline nested inside an <a id="article-author-tag"> (TheaterMania live-page shape)', () => {
   const html = `<p class="author-name mb-0 me-2 text-decoration-none text-blue"><a id="article-author-tag" class="text-decoration-none text-blue" href="https://www.theatermania.com/authors/kenji-fujishima">Kenji Fujishima</a></p>`;
@@ -59,4 +60,12 @@ test('returns null with no matching markup', () => {
 test('returns null for empty/falsy input', () => {
   assert.equal(extractByline(''), null);
   assert.equal(extractByline(null), null);
+});
+
+test('an explicit "Reviewer: Name" line beats a house-account meta author (The Reviews Hub, BRO-4431)', () => {
+  const html = '<meta name="author" content="The Reviews Hub - London" /><h1 class="post-title">Cleansed – Almeida Theatre, London</h1><div class="sub-title">Reviewer: Scott Matthewman</div><a href="/author/trh_london/" rel="author">The Reviews Hub - London</a>';
+  assert.equal(extractByline(html), 'Scott Matthewman');
+  assert.equal(extractAuthorFromHtml(html, '', { url: 'https://www.thereviewshub.com/cleansed-almeida-theatre-london/' }), 'Scott Matthewman');
+  // No Reviewer line: the meta author still wins as before.
+  assert.equal(extractByline('<meta name="author" content="Jane Doe" />'), 'Jane Doe');
 });
