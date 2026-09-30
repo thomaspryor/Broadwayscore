@@ -120,21 +120,83 @@ function foldAggregatorFields(canon, loser) {
   if (srcs.size > 1) canon.sources = [...srcs];
 }
 
+
+/**
+ * Files already marked duplicate of a file we are about to delete would be
+ * cascade-cleared by safeUnlinkReview and come back LIVE (the-outsiders-2024:
+ * a third byline pointed at the deleted twin and re-entered the composite).
+ * Retarget them at the survivor when they are the same article (same
+ * canonical url); delete text-less stubs (nothing to preserve); otherwise
+ * leave them to the cascade and let the next audit run report them.
+ */
+function reparentDependents(showDir, recMap, removed, survivor) {
+  const { safeWriteReview, safeUnlinkReview } = require('./lib/review-write-guard');
+  const notes = [];
+  const survivorUrl = guard.canonUrl(recMap.get(survivor).url);
+  for (const [f, d] of recMap) {
+    if (f === removed || f === survivor) continue;
+    const field = d.duplicateOf === removed ? 'duplicateOf' : d.duplicateTextOf === removed ? 'duplicateTextOf' : null;
+    if (!field) continue;
+    const sameUrl = survivorUrl && guard.canonUrl(d.url) === survivorUrl;
+    if (sameUrl || !d.url) {
+      safeWriteReview(path.join(showDir, f), { ...d, [field]: survivor }, { force: true });
+      notes.push(`${f} ${field}->${survivor}`);
+    } else if (((d.fullText || '').length) < 100) {
+      safeUnlinkReview(path.join(showDir, f), { force: true });
+      notes.push(`${f} stub removed`);
+    }
+  }
+  return notes;
+}
+
 function apply(p, showDir) {
   const { safeWriteReview, safeUnlinkReview } = require('./lib/review-write-guard');
   const recMap = new Map(loadRecords(showDir).map((r) => [r.file, r.data]));
   if (!recMap.has(p.a) || !recMap.has(p.b)) return 'skipped: file already gone';
   if (p.cls === 'same-review') {
     const { canonical, loser } = pickCanonical(p, showDir, recMap);
+    // Both live twins are web-search guesses, but an already-excluded sibling
+    // that points at one of them is the attested record (aggregator-sourced,
+    // real url): promote IT and delete the guesses (the-outsiders-2024: two
+    // null-url web-search bylines live, the real show-score Variety review
+    // suppressed as their duplicate).
+    if (recMap.get(canonical).source === 'web-search') {
+      const promo = [...recMap].find(([f, d]) => f !== p.a && f !== p.b
+        && (d.duplicateOf === p.a || d.duplicateOf === p.b || d.duplicateOf === canonical || d.duplicateOf === loser)
+        && d.source !== 'web-search' && d.url && guard.isSameReview(d, recMap.get(canonical)).same);
+      if (promo) {
+        const [pf, pd] = promo;
+        const promoted = { ...pd, duplicateOf: null, duplicateReason: null, duplicateClearReason: 'BRO-4406: attested record promoted over web-search guesses' };
+        foldAggregatorFields(promoted, recMap.get(canonical));
+        foldAggregatorFields(promoted, recMap.get(loser));
+        safeWriteReview(path.join(showDir, pf), promoted, { force: true });
+        for (const f of [canonical, loser]) safeUnlinkReview(path.join(showDir, f), { force: true });
+        return `same-review: promoted ${pf} (attested), removed web-search ${canonical}, ${loser}`;
+      }
+    }
     const canon = { ...recMap.get(canonical) };
     foldAggregatorFields(canon, recMap.get(loser));
-    safeWriteReview(path.join(showDir, canonical), canon, { force: true });
-    const r = safeUnlinkReview(path.join(showDir, loser), { force: true });
-    return `same-review: kept ${canonical}, removed ${loser}${r.wrote === false && r.skipped ? ` (${r.skipped})` : ''}`;
+    // A canonical living in a `--unknown` file beside a named twin of the same
+    // critic: keep the CONTENT but under the named filename, so the next
+    // aggregator ingest (which writes `--<critic-slug>`) lands on this file
+    // instead of re-creating the twin.
+    const slug = (f) => f.replace(/\.json$/, '').split('--').slice(1).join('--');
+    let survivor = canonical;
+    let removed = loser;
+    if (slug(canonical) === 'unknown' && slug(loser) !== 'unknown' && guard.sameCritic(recMap.get(canonical), recMap.get(loser))) {
+      survivor = loser;
+      removed = canonical;
+    }
+    safeWriteReview(path.join(showDir, survivor), canon, { force: true });
+    const moved = reparentDependents(showDir, recMap, removed, survivor);
+    const r = safeUnlinkReview(path.join(showDir, removed), { force: true });
+    return `${moved.length ? `[${moved.join('; ')}] ` : ''}same-review: kept ${survivor}${survivor !== canonical ? ` (content of ${canonical})` : ''}, removed ${removed}${r.wrote === false && r.skipped ? ` (${r.skipped})` : ''}`;
   }
   if (p.cls === 'phantom') {
+    const keeper = p.phantom === p.a ? p.b : p.a;
+    const moved = reparentDependents(showDir, recMap, p.phantom, keeper);
     const r = safeUnlinkReview(path.join(showDir, p.phantom), { force: true });
-    return `phantom: removed ${p.phantom}${r.wrote === false && r.skipped ? ` (${r.skipped})` : ''}`;
+    return `${moved.length ? `[${moved.join('; ')}] ` : ''}phantom: removed ${p.phantom}${r.wrote === false && r.skipped ? ` (${r.skipped})` : ''}`;
   }
   if (p.cls === 'excerpt-copy') {
     const d = { ...recMap.get(p.stripFrom) };
