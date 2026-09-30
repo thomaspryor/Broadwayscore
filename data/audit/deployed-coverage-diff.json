@@ -1,11 +1,90 @@
 {
-  "generatedAt": "2026-09-30T19:58:16.969Z",
+  "generatedAt": "2026-09-30T23:41:11.072Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 190,
-  "clean": 190,
-  "defective": 0,
-  "byType": {},
-  "shows": []
+  "clean": 185,
+  "defective": 5,
+  "byType": {
+    "score-drift": 2,
+    "unreachable": 3
+  },
+  "shows": [
+    {
+      "showId": "alice-in-wonderland-off-broadway-2026",
+      "title": "Alice in Wonderland",
+      "openingDate": "2026-09-26",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    },
+    {
+      "showId": "spandex-off-broadway-2026",
+      "title": "Spandex",
+      "openingDate": "2026-09-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    },
+    {
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    },
+    {
+      "showId": "arias-with-a-twist-off-broadway-2026",
+      "title": "Arias with a Twist",
+      "openingDate": "2026-09-23",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 81.17 vs local 80.46 (Δ0.71)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 8,
+      "deployedCount": 8
+    },
+    {
+      "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
+      "title": "The Cherry Orchard",
+      "openingDate": "2026-09-17",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 75.05 vs local 74.47 (Δ0.58)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 12,
+      "deployedCount": 12
+    }
+  ]
 }
