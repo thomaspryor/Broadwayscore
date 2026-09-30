@@ -409,7 +409,10 @@ function launchDecision({ windows, killSwitch, lockExists, heartbeatAgeMin, clau
   }
   if (sessionDead) {
     if (attemptsTonight >= MAX_ATTEMPTS_PER_NIGHT) {
-      return { action: 'escalate', reason: `session dead and ${attemptsTonight} attempts already spent tonight` };
+      // dead: the monitor itself keeps dying (SIGKILL/OOM before recording a
+      // result) — the ONLY escalate that means "pipeline dead", so the
+      // launcher pages for it; every other escalate is a deliberate stop.
+      return { action: 'escalate', dead: true, reason: `session dead and ${attemptsTonight} attempts already spent tonight` };
     }
     return { action: 'reclaim-and-launch', reason: 'locked session dead (stale heartbeat + no process)' };
   }

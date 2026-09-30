@@ -574,12 +574,17 @@ async function main(argv = process.argv.slice(2)) {
   if (decision.action === 'escalate') {
     if (!nightState.escalated) {
       await alert({
-        conditionKey: `on-monitor-attempts-exhausted-${key}`,
+        conditionKey: decision.dead ? `on-monitor-dead-session-${key}` : `on-monitor-attempts-exhausted-${key}`,
         title: `Opening-night monitor: escalating for ${windows.map(w => w.showId).join(', ')} — ${decision.reason}`,
         description: `${decision.reason} (${nightState.attempts} total passes tonight, $${(nightState.usdTonight || 0).toFixed(2)} spent) and the launcher will not start another until a night boundary resets the counters. ` +
           `Ledger: data/audit/dispatch-ledger.jsonl. State: ${nightStatePath(key)}. ` +
           `Coverage falls back to the standing pipeline; check the show page(s) in the morning.`,
-        severity: 'error', disposition: 'human',
+        // BRO-4141: spend cap / attempt cap / no-progress brake are deliberate
+        // STOPS — the owner got "[CRITICAL] … spend cap reached ($202.66 >=
+        // $200)" on 2026-09-30 with nothing to do — so they go to the digest.
+        // decision.dead (the launcher itself kept dying until the cap) is the
+        // one escalate that means the pipeline is dead, and still pages.
+        severity: decision.dead ? 'error' : 'warning', disposition: decision.dead ? 'human' : 'digest',
       });
       writeNightState(key, { ...nightState, escalated: true });
     }

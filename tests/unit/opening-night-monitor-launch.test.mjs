@@ -440,3 +440,28 @@ test('handleAuthFailure: 3 consecutive starved ticks page once; auth-rejected pa
     delete require.cache[launcherPath];
   }
 });
+
+// BRO-4141 (2026-09-30): "[CRITICAL] … escalating … nightly spend cap reached
+// ($202.66 >= $200)" paged the owner. Every escalate reason is a deliberate
+// stop, so it must route to the digest; dead-pipeline keys still page.
+test('monitor escalate (spend/attempt/no-progress stop) is digest-only; dead-pipeline keys still page', async () => {
+  const { createRequire } = await import('node:module');
+  const req = createRequire(import.meta.url);
+  const { isPageWorthy } = req('../../scripts/lib/page-worthy-alerts.js');
+  assert.equal(isPageWorthy('on-monitor-attempts-exhausted-on-monitor-2026-09-29'), false);
+  assert.equal(isPageWorthy('on-monitor-auth-failed-2026-09-30'), true);
+  assert.equal(isPageWorthy('on-monitor-launch-failed-on-monitor-2026-09-29'), true);
+  // Codex review: a launcher that keeps dying until the cap is the one
+  // escalate meaning "pipeline dead" — it must keep paging under its own key.
+  assert.equal(isPageWorthy('on-monitor-dead-session-on-monitor-2026-09-29'), true);
+  const { launchDecision, MAX_ATTEMPTS_PER_NIGHT } = req('../../scripts/lib/opening-night-windows.js');
+  const base = { windows: [{ showId: 'x' }], killSwitch: false, claudeAlive: false, metaExists: true };
+  const dead = launchDecision({ ...base, lockExists: true, heartbeatAgeMin: 999, lockAgeSec: 99999, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT });
+  assert.equal(dead.action, 'escalate'); assert.equal(dead.dead, true);
+  const capped = launchDecision({ ...base, lockExists: false, attemptsTonight: MAX_ATTEMPTS_PER_NIGHT });
+  assert.equal(capped.action, 'escalate'); assert.ok(!capped.dead);
+  const src = readFileSync(new URL('../../scripts/opening-night-monitor-launch.js', import.meta.url), 'utf8');
+  const esc = src.slice(src.indexOf("decision.action === 'escalate'"), src.indexOf("decision.action === 'escalate'") + 1800);
+  assert.match(esc, /decision\.dead \? `on-monitor-dead-session-\$\{key\}` : `on-monitor-attempts-exhausted-\$\{key\}`/);
+  assert.match(esc, /disposition: decision\.dead \? 'human' : 'digest'/);
+});

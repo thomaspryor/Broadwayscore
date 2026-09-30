@@ -47,7 +47,11 @@ const PAGE_WORTHY_PREFIXES = [
   'on-monitor-launch-failed-', // opening-night-monitor-launch.js: the launcher could not start a monitor session tonight
   'on-monitor-auth-failed-', // opening-night-monitor-launch.js: claude auth preflight failed — zero coverage tonight
   'on-monitor-auth-starved-sustained-', // opening-night-monitor-launch.js: Mac too starved to start ANY pass for 3 ticks (~1h) in an opening window (BRO-4141; single blips go to digest as on-monitor-auth-starved-)
-  'on-monitor-attempts-exhausted-', // opening-night-monitor-launch.js: 3 launch attempts died tonight, falling back to the standing pipeline
+  // 'on-monitor-attempts-exhausted-' REMOVED 2026-09-30 (BRO-4141): every
+  // escalate reason is a deliberate stop (spend cap / attempt cap / no-progress
+  // brake), e.g. "[CRITICAL] … spend cap reached ($202.66 >= $200)" — not a
+  // dead pipeline and nothing the owner can act on. It routes to the digest.
+  'on-monitor-dead-session-', // opening-night-monitor-launch.js: the launcher kept dying (SIGKILL/OOM) until the attempt cap — monitor is dead for the rest of the window
   'broadcast:draft-creation-failed:', // send-opening-night-broadcast.js: the time-sensitive opening-night email draft failed to create
   // BRO-886: the draft itself was created and tracked fine — only the
   // "hey, go review this in Resend" notification email failed. Without an
