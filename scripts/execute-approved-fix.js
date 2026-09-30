@@ -211,6 +211,12 @@ function executeDataEdit(action) {
       }
     }
 
+    if (field === 'cast') {
+      const { castValueProblem } = require('./lib/feedback-pipeline-fields.js');
+      const castProblem = castValueProblem(newValue);
+      if (castProblem) return { ok: false, reason: castProblem };
+    }
+
     shows[idx][field] = newValue;
     // `shows` was mutated in place and (for the object-root shape) IS
     // `data.shows` — pass `data` itself, not a rebuilt `{...data, shows}`
@@ -327,7 +333,7 @@ function executeReviewFieldEdit(action, stamp) {
   if (JSON.stringify(got) !== JSON.stringify(action.newValue)) {
     return { ok: false, reason: `${action.file} ${action.field}: write guard kept ${JSON.stringify(got)}` };
   }
-  const extra = unexpectedChanges(record, after, action.field);
+  const extra = unexpectedChanges(record, after, action.field, res.sideEffectKeys || []);
   if (extra.length) {
     return { ok: false, reason: `${action.file} ${action.field} applied, but the write guard also changed ${extra.join(', ')}; check the record before trusting it` };
   }
