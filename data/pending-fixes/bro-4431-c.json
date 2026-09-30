@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4431-c",
   "planId": "78321ea6-b38f-45a3-94db-593365edb098",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-09-30T22:45:00.000Z",
   "submitter": {
     "name": null,
@@ -15,8 +15,31 @@
     ],
     "riskLevel": "Low",
     "actions": [
-      { "type": "run-script", "script": "ingest-review-from-url.js", "args": "--show=how-shakespeare-saved-my-life-off-broadway-2026 --url=https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html", "description": "Vulture Holdren: whole article back, split undone" },
-      { "type": "run-script", "script": "ingest-review-from-url.js", "args": "--show=golden-boy-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/golden-boy-josh-oconnor-boxing-five-star-review-8dnqk7c6l --critic=\"Patrick Kidd\" --stub-on-failure", "description": "The Times Kidd: page star rating" }
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=how-shakespeare-saved-my-life-off-broadway-2026 --url=https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
+        "description": "Vulture Holdren: whole article back, split undone"
+      },
+      {
+        "type": "run-script",
+        "script": "ingest-review-from-url.js",
+        "args": "--show=golden-boy-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/golden-boy-josh-oconnor-boxing-five-star-review-8dnqk7c6l --critic=\"Patrick Kidd\" --stub-on-failure",
+        "description": "The Times Kidd: page star rating"
+      }
     ]
-  }
+  },
+  "executedAt": "2026-09-30T22:44:52.368Z",
+  "results": [
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    },
+    {
+      "action": "run-script",
+      "ok": true,
+      "msg": "Ran ingest-review-from-url.js successfully"
+    }
+  ]
 }
