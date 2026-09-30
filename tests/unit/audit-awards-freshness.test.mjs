@@ -4,6 +4,7 @@
  * check-corpus-drift.js AUDITS entry. Requires the real functions (CLAUDE.md
  * §15); the GitHub call is injected.
  */
+// TESTS-VS-DERIVED-DATA-EXEMPT: asserts the AWARDS_PATH constant string and the API query built from it; never opens data/awards.json (structural — the audit matches the path literal, not a read)
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
