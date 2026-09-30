@@ -15,7 +15,7 @@
  * overwrites). Pages go through fetchPage() per the scraping rule.
  *
  * Usage:
- *   node scripts/backfill-walled-page-meta.js [--show=ID] [--limit=N] [--dry-run] [--delay-ms=3000]
+ *   node scripts/backfill-walled-page-meta.js [--show=ID] [--limit=N] [--dry-run] [--delay-ms=3000] [--recheck-days=14]
  *     [--html-cache=DIR] [--list-urls]
  */
 
@@ -48,6 +48,17 @@ const listUrls = args.includes('--list-urls');
 const cacheKey = (u) => require('crypto').createHash('sha1').update(String(u)).digest('hex');
 
 const { isTheStageUrl, salvageWalledPageMetaToFile } = require('./lib/walled-page-meta');
+const RECHECK_DAYS = Number(getArg('recheck-days') || 14);
+
+// Stamp an attempt on the file (url unchanged since the candidate scan).
+function stampChecked(fp, url) {
+  const { safeWriteReview } = require('./lib/review-write-guard');
+  const { normalizeUrl } = require('./lib/review-normalization');
+  const cur = JSON.parse(fs.readFileSync(fp, 'utf8'));
+  if (normalizeUrl(cur.url || '') !== normalizeUrl(url || '')) return;
+  cur.walledPageMetaCheckedAt = new Date().toISOString();
+  safeWriteReview(fp, cur);
+}
 
 function isCandidate(d) {
   if (!d || !isTheStageUrl(d.url)) return false;
@@ -55,8 +66,12 @@ function isCandidate(d) {
   if (d.wrongShow || d.wrongProduction || d.duplicateOf) return false;
   const critic = String(d.criticName || '').trim();
   const needsCritic = !critic || /^(unknown|the stage)$/i.test(critic);
-  const needsScore = !d.originalScore && d.originalScoreNormalized == null;
-  return !d.publishDate || needsCritic || !d.outletStandfirst || needsScore;
+  const needsScore = !d.originalScore && d.originalScoreNormalized == null && d.originalScoreCleared !== true;
+  if (!(!d.publishDate || needsCritic || !d.outletStandfirst || needsScore)) return false;
+  // Every attempt is stamped (below), so a page that yields nothing new is
+  // re-fetched every RECHECK_DAYS, not on every scheduled run.
+  const checked = Date.parse(d.walledPageMetaCheckedAt || '');
+  return !(checked && Date.now() - checked < RECHECK_DAYS * 86400000);
 }
 
 function findCandidates() {
@@ -95,7 +110,8 @@ async function main() {
     const label = path.relative(reviewTextsDir, fp);
     let html = null;
     const cached = htmlCacheDir && path.join(htmlCacheDir, `${cacheKey(d.url)}.html`);
-    if (cached && fs.existsSync(cached)) {
+    const fromCache = !!(cached && fs.existsSync(cached));
+    if (fromCache) {
       html = fs.readFileSync(cached, 'utf8');
     } else {
       try {
@@ -133,9 +149,13 @@ async function main() {
     } else {
       failed++;
     }
+    if (!dryRun && !fromCache) {
+      try { stampChecked(fp, d.url); } catch (e) { console.log(`  ⚠ ${label}: attempt stamp failed (${String(e.message || e).slice(0, 80)})`); }
+    }
     if (i < candidates.length - 1) await new Promise((r) => setTimeout(r, delayMs));
   }
   console.log(`\nDone: ${updated} updated, ${failed} without metadata${dryRun ? ' (dry run, nothing written)' : ''}`);
+  if (process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, `updated=${dryRun ? 0 : updated}\n`);
   if (suspects.length) {
     console.log(`\n${suspects.length} suspect file(s) (another show, a round-up, or not a review):`);
     for (const s of suspects) console.log(`  ${s}`);

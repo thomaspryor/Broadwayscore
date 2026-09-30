@@ -197,3 +197,25 @@ test('bracketed subtitle in the headline still matches the show', () => {
   // Brackets do not launder a different show's name.
   assert.equal(headlineMatchesShow('Romeo and Juliet (Globe) review', '& Juliet'), false);
 });
+
+test('window uses the page date first, and parses ordinal stored dates', () => {
+  const url = 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london';
+  // Stored date is out of window but the page says Sep 16, 2026: page wins.
+  const stale = { url, criticName: 'Unknown', publishDate: '2019-01-01' };
+  assert.ok(applyWalledPageMeta(stale, WALLED, { show: DARKLING_RUN }).includes('originalScore'));
+  // No page date: an ordinal stored date inside the run still scores.
+  const noDate = WALLED.replace(/<span class="aos-ArticleDate[^<]*<\/span>/g, '');
+  assert.equal(extractTheStageArticleMeta(noDate).publishDate, null);
+  const ordinal = { url, criticName: 'Unknown', publishDate: 'September 16th, 2026' };
+  assert.ok(applyWalledPageMeta(ordinal, noDate, { show: DARKLING_RUN }).includes('originalScore'));
+  // Raw new Date() can't parse this; an out-of-run ordinal date still refuses.
+  const oldOrdinal = { url, criticName: 'Unknown', publishDate: 'January 26th, 2023' };
+  assert.ok(!applyWalledPageMeta(oldOrdinal, noDate, { show: DARKLING_RUN }).includes('originalScore'));
+});
+
+test('a deliberately cleared score stays cleared (originalScoreCleared is sticky)', () => {
+  const url = 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london';
+  const cleared = { url, criticName: 'Unknown', originalScoreCleared: true };
+  assert.ok(!applyWalledPageMeta(cleared, WALLED, { show: DARKLING_RUN }).includes('originalScore'));
+  assert.equal(cleared.originalScore, undefined);
+});

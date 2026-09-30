@@ -204,10 +204,19 @@ function applyWalledPageMeta(data, html, opts = {}) {
   // The score is what puts a stub on the site, so it also needs the review
   // to date from THIS production's run: stale files (a 2025 Barbican Seagull
   // filed under the 2027 Globe one, a 2012 Stick Man) must stay unscored.
-  // No show passed, or no date: fail closed.
+  // No show passed, or no date: fail closed. The page's own date wins over a
+  // stored one (the stars come from this page); stored dates can be ordinal
+  // ("December 17th, 2025"), which raw new Date() can't parse. A show with no
+  // closingDate has a window ending opening+30d, so a later review of a long
+  // run stays unscored here (it can still score through the collector).
+  // originalScoreCleared is sticky by convention (review-write-guard.js; the
+  // other backfills skip it too), so a deliberately cleared score stays cleared.
   const { isReviewWithinOwnProductionWindow } = require('./review-guards');
-  const inWindow = !!opts.show && isReviewWithinOwnProductionWindow(opts.show, data.publishDate);
-  if (meta.stars && inWindow && !data.originalScore && data.originalScoreNormalized == null && !data.originalScoreManual) {
+  const { normalizeDate } = require('./date-utils');
+  const reviewDate = meta.publishDate || normalizeDate(data.publishDate);
+  const inWindow = !!opts.show && !!reviewDate && isReviewWithinOwnProductionWindow(opts.show, reviewDate);
+  if (meta.stars && inWindow && !data.originalScore && data.originalScoreNormalized == null
+    && !data.originalScoreManual && data.originalScoreCleared !== true) {
     const { starsToNumeric } = require('./score-extractors');
     data.originalScore = `${meta.stars}/5 stars`;
     data.originalScoreNormalized = starsToNumeric(meta.stars, 5);
