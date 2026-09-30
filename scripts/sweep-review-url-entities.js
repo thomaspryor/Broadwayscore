@@ -7,6 +7,7 @@
  *   REVIEW_TEXTS_DIR overrides the corpus root (default data/review-texts)
  */
 const fs = require('fs');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { sanitizeReviewRecord } = require('./lib/review-url-entity-decode');
@@ -36,6 +37,10 @@ function findIssues(data) {
 }
 
 function main() {
+  if (hasHelpFlag(process.argv)) {
+    console.log('sweep-review-url-entities.js [--apply] [--requeue-out=FILE] [--reset-from=TSV]  (audit by default; REVIEW_TEXTS_DIR overrides corpus root)');
+    process.exit(0);
+  }
   if (!fs.existsSync(DIR)) { console.error(`FAIL: corpus root missing: ${DIR}`); process.exit(1); }
   let scanned = 0; const hits = []; const failed = []; const requeue = [];
   for (const file of walk(DIR)) {
