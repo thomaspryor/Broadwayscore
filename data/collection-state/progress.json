@@ -39,7 +39,18 @@
     "electra-persona-west-end-2026/southbank--unknown.json",
     "electra-persona-west-end-2026/theatreboard--unknown.json",
     "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
-    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json"
+    "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "degenerates-off-broadway-2026/talkinbroadway--marc-miller.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "school-girls-or-the-african-mean-girls-play-2026/playbill--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "failed": [
     "mamma-mia-west-end-2021/whatsonstage--sarah-crompton.json",
@@ -61,7 +72,13 @@
     "the-story-west-end-2026/times-uk--clive-davis.json",
     "electra-persona-west-end-2026/vocaleyes--unknown.json",
     "as-you-like-it-globe-west-end-2026/times-uk--victoria-segal.json",
-    "white-rabbit-red-rabbit-west-end-2026/thestage--dave-fargnoli.json"
+    "white-rabbit-red-rabbit-west-end-2026/thestage--dave-fargnoli.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--unknown.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -88,7 +105,14 @@
       "electra-persona-west-end-2026/southbank--unknown.json",
       "electra-persona-west-end-2026/theatreboard--unknown.json",
       "electra-persona-west-end-2026/whatsonstage--alex-wood.json",
-      "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json"
+      "as-you-like-it-globe-west-end-2026/letterboxd--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+      "school-girls-or-the-african-mean-girls-play-2026/playbill--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
@@ -104,12 +128,17 @@
       "the-story-west-end-2026/ground--unknown.json",
       "a-month-in-the-country-west-end-2026/ents24--unknown.json",
       "a-month-in-the-country-west-end-2026/sueterryvoices--unknown.json",
-      "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json"
+      "a-month-in-the-country-west-end-2026/theartsdispatch--the-arts-dispatch.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
     ],
     "scrapingbee": [
-      "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json"
+      "darkling-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json"
     ],
-    "brightdata": [],
+    "brightdata": [
+      "degenerates-off-broadway-2026/talkinbroadway--marc-miller.json"
+    ],
     "archiveToday": [],
     "archive": [
       "table-17-off-west-end-2026/londontheatredirect--agata-kucharska.json",
@@ -118,7 +147,7 @@
     ]
   },
   "startTime": "2026-09-30T14:51:16.562Z",
-  "lastProcessed": "white-rabbit-red-rabbit-west-end-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
   "log": [
     {
       "t": "2026-09-30T15:08:56.301Z",
@@ -131,6 +160,18 @@
       "event": "bb-session",
       "session": "599b70ee",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-30T15:39:52.310Z",
+      "event": "bb-session",
+      "session": "36303437",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+    },
+    {
+      "t": "2026-09-30T15:40:01.665Z",
+      "event": "bb-session",
+      "session": "472f1866",
+      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
     }
   ],
   "recoveredAfterFailure": [
