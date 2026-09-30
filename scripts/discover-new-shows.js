@@ -146,6 +146,7 @@ const {
   OB_VENUE_CONFIGS,
   OWE_VENUE_CONFIGS,
   DATED_JSON_STRATEGIES,
+  FEED_STRATEGIES,
   parseVenueListingHtml,
   scrapeVenueListing,
   settledWithConcurrency,
@@ -1480,9 +1481,10 @@ function oweCandidatesFromDatedListing(cfg, rows) {
 async function fetchOneVenueListing(linkVenue, datedCfg) {
   if (datedCfg) {
     try {
-      // JSON feeds (Spektrix) go through the lib's own fetcher; dated HTML
-      // pages through the same plain-fetch-first path as the link readers.
-      const listing = DATED_JSON_STRATEGIES.has(datedCfg.strategy)
+      // Feeds (Spektrix JSON, Ticketsolve XML) go through the lib's own
+      // fetcher; dated HTML pages through the same plain-fetch-first path
+      // as the link readers.
+      const listing = FEED_STRATEGIES.has(datedCfg.strategy)
         ? await scrapeVenueListing(datedCfg)
         : parseVenueListingHtml(datedCfg, await fetchVenueHtml(datedCfg));
       const rows = oweCandidatesFromDatedListing(datedCfg, listing);
@@ -3536,6 +3538,7 @@ module.exports = {
   fetchSingleVenuePage,
   parseVenueListingPage,
   oweCandidatesFromDatedListing,
+  fetchOneVenueListing,
   fetchShowsFromVenueListings,
   shouldExcludeVenueShow,
   applyVerifiedIbdbCreativeTeam,

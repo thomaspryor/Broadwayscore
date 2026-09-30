@@ -108,6 +108,30 @@ test('cleanListingTitle strips London season tags', () => {
   assert.equal(cleanListingTitle('Cinderella (2026)'), 'Cinderella');
   assert.equal(cleanListingTitle('2026: The Master Builder'), 'The Master Builder');
   assert.equal(cleanListingTitle('Class of 2026'), 'Class of 2026');
+  // BRO-4433: month-and-year tags are stripped per venue, never here (a
+  // title can end in a date).
+  assert.equal(cleanListingTitle('Halloween Oct 31'), 'Halloween Oct 31');
+});
+
+test("stripMonthYearTags (Wilton's only): booking tags go, other venues' titles are untouched", () => {
+  const wiltons = OWE_VENUE_CONFIGS.find(v => v.name === "Wilton's Music Hall");
+  const ev = (id, name) => ({ id, name, firstInstanceDateTime: '2026-10-15T19:30:00', lastInstanceDateTime: '2026-10-20T19:30:00', attribute_GenresForWebsiteFiltering: 'Theatre' });
+  const payload = [ev('a', 'Romeo and Juliet - Oct26'), ev('b', 'The Law of Mayhem Apr27'), ev('c', 'Wolf Country Jan 27'), ev('d', 'Catch-22')];
+  assert.deepEqual(parseVenueListingHtml(wiltons, payload, { todayIso: TODAY }).map(c => c.title).sort(), ['Catch-22', 'Romeo and Juliet', 'The Law of Mayhem', 'Wolf Country']);
+  const other = { ...wiltons, name: 'Other', stripMonthYearTags: undefined };
+  assert.ok(parseVenueListingHtml(other, payload, { todayIso: TODAY }).some(c => c.title === 'Wolf Country Jan 27'));
+});
+
+test('parseTicketsolveShows: local performance days, run blocks, cancelled and excluded categories skipped', () => {
+  const { parseTicketsolveShows } = require('../../scripts/lib/ob-listing-platforms.js');
+  const ev = (iso, status = 'available') => `<event><name><![CDATA[x]]></name><date_time_iso format="ISO 8601" zone="GMT">${iso}</date_time_iso><status>${status}</status></event>`;
+  const show = (name, cat, evs) => `<show id="1"><name><![CDATA[${name}]]></name><event_category><![CDATA[${cat}]]></event_category><url>https://x.ticketsolve.com/shows/1</url><events>${evs.join('')}</events></show>`;
+  const xml = `<venues><venue><name><![CDATA[V]]></name><shows>${[
+    show('Late Night', 'Drama', [ev('2026-10-01T23:30:00+01:00'), ev('2026-10-02T23:30:00+01:00'), ev('2026-10-03T19:30:00+01:00', 'cancelled')]),
+    show('Showcase Night', 'Showcase', [ev('2026-10-01T19:30:00+01:00'), ev('2026-10-02T19:30:00+01:00')]),
+  ].join('')}</shows></venue></venues>`;
+  const rows = parseTicketsolveShows(xml, { todayIso: TODAY, excludeCategory: /showcase/i });
+  assert.deepEqual(rows.map(r => [r.title, r.firstDate, r.lastDate, r.performanceCount]), [['Late Night', '2026-10-01', '2026-10-02', 2]]);
 });
 
 // ── the dated-listing promotion rule ───────────────────────────────────────
@@ -290,4 +314,60 @@ test('real OWE_VENUE_CONFIGS end to end: an undated row at a dated venue (or one
     evidencePages: new Map([[withEvidence.evidence[0].url, { text: 'Nine Night review: a triumph at the Kiln', error: null }]]),
   });
   assert.equal(d.confirmed, true, d.reason);
+});
+
+test('BRO-4433 main: a confirmed dated duplicate dates its undated row (null fields only), fixes a slug-truncated title, and a dry run only lists it', async () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const { main, datedBackfillFor } = require('../../scripts/promote-owe-venue-candidates.js');
+  const { writeStagingCandidates } = require('../../scripts/lib/owe-venue-staging.js');
+  const dir = fs.mkdtempSync(join(os.tmpdir(), 'owe-backfill-'));
+  const paths = {
+    showsPath: join(dir, 'shows.json'),
+    stagingPath: join(dir, 'owe-venue-candidates.json'),
+    lastPromotionFile: join(dir, 'owe-last-promotion-ids.json'),
+  };
+  const row = (id, title, extra = {}) => ({ id, title, slug: id.replace(/-\d{4}$/, ''), venue: 'Southwark Playhouse', status: 'announced', type: 'play', category: 'off-west-end', market: 'west-end', openingDate: null, previewsStartDate: null, closingDate: null, ...extra });
+  const shows = [
+    row('twenty-thousand-streets-off-west-end-2026', 'Twenty Thousand Streets'),
+    row('private-jones-off-west-end-2026', 'Private Jones'),
+    // Already dated by another source: never touched, not even its null closingDate.
+    row('jane-eyre-off-west-end-2026', 'Jane Eyre', { previewsStartDate: '2026-08-20' }),
+  ];
+  fs.writeFileSync(paths.showsPath, JSON.stringify({ _meta: { totalShows: shows.length }, shows }, null, 2) + '\n');
+  const titles = new Set(['Twenty Thousand Streets Under the Sky', 'Private Jones', 'Jane Eyre']);
+  writeStagingCandidates(venueRows('Southwark Playhouse').filter(c => titles.has(c.title)), paths.stagingPath);
+  const entries = [];
+  const io = { ...paths, retiredEntries: [], log: () => {}, logEntry: e => entries.push(e), now: () => NOW, fetchPage: async () => { throw new Error('no network in tests'); } };
+
+  const before = fs.readFileSync(paths.showsPath, 'utf8');
+  const dry = await main(['--dry-run'], io);
+  assert.deepEqual(dry.backfills.map(b => b.id).sort(), ['private-jones-off-west-end-2026', 'twenty-thousand-streets-off-west-end-2026']);
+  assert.equal(fs.readFileSync(paths.showsPath, 'utf8'), before, 'dry run writes nothing');
+
+  const res = await main([], io);
+  assert.equal(res.promoted.length, 0);
+  const after = Object.fromEntries(JSON.parse(fs.readFileSync(paths.showsPath, 'utf8')).shows.map(s => [s.id, s]));
+  const tts = after['twenty-thousand-streets-off-west-end-2026'];
+  assert.deepEqual([tts.previewsStartDate, tts.closingDate, tts.title, tts.slug, tts.status], ['2026-09-10', '2026-10-17', 'Twenty Thousand Streets Under the Sky', 'twenty-thousand-streets-off-west-end', 'announced']);
+  const pj = after['private-jones-off-west-end-2026'];
+  assert.deepEqual([pj.previewsStartDate, pj.closingDate, pj.title], ['2026-12-14', '2027-01-30', 'Private Jones']);
+  assert.deepEqual([after['jane-eyre-off-west-end-2026'].previewsStartDate, after['jane-eyre-off-west-end-2026'].closingDate], ['2026-08-20', null]);
+  assert.equal(entries.filter(e => e.kind === 'backfill-dates').length, 2);
+  assert.equal(entries.find(e => e.id === 'twenty-thousand-streets-off-west-end-2026' && e.kind === 'backfill-dates').oldTitle, 'Twenty Thousand Streets');
+  assert.deepEqual(require('../../scripts/lib/owe-venue-staging.js').loadStaging(paths.stagingPath), [], 'duplicates leave staging');
+
+  // A subtitle/venue tag is not a title upgrade; an undated candidate gives nothing.
+  const murder = { title: 'Murder in the Cathedral: OT in the Church', venue: 'Southwark Playhouse', source: 'venue-listing:x', discoverySource: 'venue-listing:x', listingFirstDate: '2026-10-12', listingLastDate: '2026-11-07' };
+  const patch = datedBackfillFor(murder, { title: 'Murder Cathedral' });
+  assert.deepEqual(patch, { previewsStartDate: '2026-10-12', closingDate: '2026-11-07' });
+  assert.equal(datedBackfillFor({ title: 'Private Jones', venue: 'Southwark Playhouse' }, { title: 'Private Jones' }), null);
+  // A stub minted two years before the listed run is an earlier production;
+  // a non-announced row is left to its own pipeline; a spaced-dash variant is no title upgrade.
+  const pjc = { title: 'Private Jones', venue: 'Southwark Playhouse', source: 'venue-listing:x', discoverySource: 'venue-listing:x', listingFirstDate: '2026-12-14', listingLastDate: '2027-01-30' };
+  assert.equal(datedBackfillFor(pjc, { id: 'private-jones-off-west-end-2024', title: 'Private Jones', status: 'announced' }), null);
+  assert.ok(datedBackfillFor(pjc, { id: 'private-jones-off-west-end-2026', title: 'Private Jones', status: 'announced' }));
+  assert.equal(datedBackfillFor(pjc, { id: 'private-jones-off-west-end-2026', title: 'Private Jones', status: 'closed' }), null);
+  const md = datedBackfillFor({ ...pjc, title: 'Private Jones - Relaxed Performance' }, { id: 'private-jones-off-west-end-2026', title: 'Private Jones', status: 'announced' });
+  assert.equal(md.title, undefined);
 });

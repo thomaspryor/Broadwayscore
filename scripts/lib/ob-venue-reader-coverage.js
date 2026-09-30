@@ -72,6 +72,7 @@ const LONDON_NO_READER_REASONS = [
   ['theatre on kew', 'seasonal pop-up in Kew Gardens'],
   ['barbican', 'Spektrix account (barbicancentre) is ~3,000 events / 4.9 MB with no usable performance counts, and its Theatre art form holds 3-day dance and circus visits: not read (BRO-4398 review)'],
   ['marble arch', 'TodayTix-run venue (The Arts at Marble Arch); its shows are TodayTix listings'],
+  ['vaults', 'Wix site: the programme is images and Eventbrite links, no dated listing, JSON-LD events or ticketing feed (probed 2026-09-30, BRO-4433)'],
 ];
 
 /**
