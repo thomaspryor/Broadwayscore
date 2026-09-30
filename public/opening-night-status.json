@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T18:06:32.742Z",
+  "generatedAt": "2026-09-30T18:29:23.107Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -2862,6 +2862,84 @@
       "preflight": false
     },
     {
+      "id": "motherfucker-off-broadway-2026",
+      "title": "Motherfucker",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-10-01",
+      "status": "upcoming",
+      "slug": "motherfucker-off-broadway",
+      "thumbnail": null,
+      "daysUntil": 1,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "a-thousand-natural-shocks-off-broadway-2026",
+      "title": "A Thousand Natural Shocks",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-10-02",
+      "status": "upcoming",
+      "slug": "a-thousand-natural-shocks-off-broadway",
+      "thumbnail": null,
+      "daysUntil": 2,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
       "id": "kramerfauci-st-anns-off-broadway-2026",
       "title": "Kramer/Fauci",
       "market": "broadway",
@@ -2946,7 +3024,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-10-05",
-      "status": "open",
+      "status": "previews",
       "slug": "affluenza-off-west-end",
       "thumbnail": "/images/shows/affluenza-off-west-end-2026/thumbnail.jpg",
       "daysUntil": 5,

@@ -97,7 +97,7 @@ const RED_CONCLUSIONS = new Set(['failure', 'timed_out', 'startup_failure']);
 
 // A cancelled run that lasted at least this long hit a job timeout (hung) —
 // see "hung" in the header. A mid-setup cancel lasts a minute or two.
-const HUNG_CANCEL_MIN = 10;   // below test.yml job timeouts that matter (unit-tests 15); setup cancels are 1-2 min
+const HUNG_CANCEL_MIN = 10;   // below test.yml job timeouts that matter (push-run jobs all >= 15 since BRO-4443); setup cancels are 1-2 min
 
 /**
  * @param {string|null|undefined} conclusion
