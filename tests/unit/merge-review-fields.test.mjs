@@ -102,9 +102,10 @@ describe('mergeUniqueReviewFields', () => {
 
   test('no-change merge reports changed=false', () => {
     const target = { outletId: 'x', url: 'https://x.test/r' };
-    const r = mergeUniqueReviewFields(target, { outletId: 'x', url: 'https://x.test/other' });
+    const r = mergeUniqueReviewFields(target, { outletId: 'x', url: 'https://x.test/r' });
     assert.strictEqual(r.action, 'merged');
     assert.strictEqual(r.changed, false);
+    assert.strictEqual(target.mergedDuplicateUrls, undefined);
   });
 });
 

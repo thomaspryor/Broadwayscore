@@ -83,6 +83,10 @@ function _setShowsCacheForTest(map) { _showsByIdCache = map; _siblingOpeningsCac
 // Fields that represent collected/scored data and must not be silently erased.
 // KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.
 const PROTECTED_FIELDS = [
+  // URLs of duplicate files merged into this one and deleted (BRO-4414). Losing
+  // this list lets a writer re-adopt a loser's URL and wipe this review's text
+  // and score. Read by scripts/lib/merged-duplicate-urls.js.
+  'mergedDuplicateUrls',
   'assignedScore',
   'crossOutletVerified',
   // Audit-trail fields for the crossOutlet triage (audit-cross-outlet-

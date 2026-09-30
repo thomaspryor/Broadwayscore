@@ -18,6 +18,7 @@ const REQUIRED_OVERRIDES = [
   'allowEarlyDate',
   'allowLateDate',
   'allowCrossMarket',
+  'mergedDuplicateUrls', // BRO-4414
   'allowTourSignal',
   'allowTourSignalReason',
   'allowFilmSignal',

@@ -37,6 +37,7 @@
  */
 
 const { wrongShowCleared } = require('./review-guards');
+const { recordMergedAwayUrl } = require('./merged-duplicate-urls');
 
 // Field families that never transfer between review files.
 const NEVER_TRANSFER_PATTERN = new RegExp(
@@ -136,6 +137,9 @@ function mergeUniqueReviewFields(target, source) {
       changed = true;
     }
   }
+  // BRO-4414: the source file is about to be deleted by the caller; its URL must
+  // outlive it or the next writer pass re-adopts it and wipes this target.
+  if (recordMergedAwayUrl(target, source && source.url)) changed = true;
   return { action: 'merged', changed };
 }
 

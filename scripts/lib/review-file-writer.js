@@ -34,6 +34,7 @@ const {
   loadOutletRegistry,
 } = require('./review-normalization');
 const { findSiblingUrlOwner } = require('./review-url-collision');
+const { findMergedAwayOwner } = require('./merged-duplicate-urls');
 const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
@@ -1049,6 +1050,19 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     if (submissionReason) {
       console.warn(`  ⛔ Refusing submitted non-review page: ${input.url} (${submissionReason})`);
       return { action: 'skipped', reason: `submitted-non-review-url: ${submissionReason}`, guardRefused: true };
+    }
+  }
+
+  // --- Guard M: merged-away URL (BRO-4414) ---
+  // A sibling file already absorbed this URL in an earlier merge and the
+  // duplicate was deleted. Creating a file for it re-manufactures that duplicate
+  // (and the next merge pass repeats the cycle). NEW files only: writes that
+  // resolve to an existing file are covered by mergeReviews/maybeUpgradeUrl.
+  if (input.url) {
+    const owner = findMergedAwayOwner({ showDir, url: input.url, outletId, normalizeOutletId: normalizeOutlet });
+    if (owner) {
+      console.warn(`  ⛔ Refusing create: ${input.url} was merged into ${owner.filename}`);
+      return { action: 'skipped', reason: `merged-away-url: already merged into ${owner.filename}`, guardRefused: true };
     }
   }
 

@@ -72,6 +72,7 @@ const MERGE_SINGLE_FIELDS = [
 // Source-specific excerpt fields — always keep from both sides
 const { EXCERPT_FIELDS: _CANONICAL_EXCERPTS } = require('./lib/excerpt-fields');
 const { hasHelpFlag } = require('./lib/cli-help.js');
+const { recordMergedAwayUrl } = require('./lib/merged-duplicate-urls');
 
 const USAGE = `consolidate-duplicate-reviews.js — Consolidate intra-show duplicate review-text files.
 
@@ -244,6 +245,10 @@ function main() {
       }
 
       // --- Execute ---
+
+      // BRO-4414: losers are deleted below; keep their URLs on the winner so a
+      // later aggregator pass cannot re-adopt them and wipe the winner.
+      for (const l of losers) recordMergedAwayUrl(winner.data, l.data && l.data.url);
 
       // Write merged data to winner file
       fs.writeFileSync(winner.filePath, JSON.stringify(winner.data, null, 2) + '\n');
