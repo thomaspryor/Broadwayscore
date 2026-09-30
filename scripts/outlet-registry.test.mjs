@@ -194,6 +194,16 @@ describe('decideOutletAutoRegistration (BRO-4370): register only with a resolvab
     assert.equal(decideOutletAutoRegistration({ outletId: 'john-oconnor', domainHint: 'x.com', criticSlugs }).action, 'stage');
   });
 
+  test("a critic's OWN site (name == domain) is a real outlet and registers", () => {
+    const slugs = criticNameSlugs({ critics: { 'carole-di-tosti': { displayName: 'Carole Di Tosti' } } });
+    assert.deepEqual(
+      decideOutletAutoRegistration({ outletId: 'carole-di-tosti', domainHint: 'caroleditosti.com', criticSlugs: slugs }),
+      { action: 'register', domain: 'caroleditosti.com' },
+    );
+    // same name, URL evidence points at someone else's site → mis-filed byline
+    assert.equal(decideOutletAutoRegistration({ outletId: 'carole-di-tosti', domainHint: 'broadwayworld.com', criticSlugs: slugs }).reason, STAGE_REASONS.CRITIC_NAME);
+  });
+
   test('no resolvable domain → staged (the old domain:null row is never written)', () => {
     assert.deepEqual(
       decideOutletAutoRegistration({ outletId: 'from-the-fourth-row', domainHint: null, criticSlugs }),

@@ -800,6 +800,12 @@ runs:
       if: steps.refusal-check.outputs.skip != 'true'
       shell: bash
       working-directory: ${{ github.workspace }}
+      env:
+        # The staging file is multi-writer (every rebuild-running workflow
+        # pushes it through this step) and registered active in
+        # scripts/lib/core-data-merge-registry.js; this flag makes
+        # push-with-retry.sh run that union merge instead of ours-wins.
+        PUSH_RECONCILE_MERGED_JSON: '1'
       run: |
         REGISTRY="data/outlet-registry.json"
         STAGING="data/audit/outlet-registry-staging.json"

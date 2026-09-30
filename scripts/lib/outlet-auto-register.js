@@ -92,7 +92,12 @@ function criticNameSlugs(criticRegistry, reviews) {
  */
 function decideOutletAutoRegistration({ outletId, domainHint, domainCollides = false, criticSlugs }) {
   const id = String(outletId || '').toLowerCase();
-  if (criticSlugs && criticSlugs.size > 0 && criticSlugs.has(id)) {
+  // A critic's OWN site (carole-di-tosti → caroleditosti.com) is a real
+  // outlet: the name matches a byline AND the domain is literally the name.
+  // Only a critic-name id whose URL evidence points somewhere else (or
+  // nowhere) is a mis-filed byline.
+  const ownSite = !!domainHint && String(domainHint).toLowerCase().replace(/[^a-z0-9]/g, '').includes(id.replace(/-/g, ''));
+  if (criticSlugs && criticSlugs.size > 0 && criticSlugs.has(id) && !ownSite) {
     return { action: 'stage', reason: STAGE_REASONS.CRITIC_NAME };
   }
   if (!domainHint) {
@@ -148,10 +153,16 @@ function mergeStagingEntries(existing, fresh, { nowIso, stillUnregistered } = {}
  */
 function loadStagedOutletIds(rootDir) {
   const fs = require('fs');
+  const file = path.join(rootDir, STAGING_RELATIVE_PATH);
+  if (!fs.existsSync(file)) return new Set();
   try {
-    const data = JSON.parse(fs.readFileSync(path.join(rootDir, STAGING_RELATIVE_PATH), 'utf8'));
+    const data = JSON.parse(fs.readFileSync(file, 'utf8'));
     return new Set((data.staged || []).map((e) => e && e.outletId).filter(Boolean));
-  } catch {
+  } catch (err) {
+    // A present-but-unreadable file must not look like "nothing staged":
+    // the audit would then report every parked id as a brand-new gap with
+    // no hint why (ship-check finding).
+    console.warn(`⚠️  ${STAGING_RELATIVE_PATH} exists but could not be parsed (${err.message}) — treating as empty; staged ids will read as NEW`);
     return new Set();
   }
 }

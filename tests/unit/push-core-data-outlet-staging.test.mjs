@@ -53,6 +53,10 @@ test('the staging file is git-added BEFORE any diff --quiet guard (untracked fil
   assert.ok(stagedGate > addIdx, 'the "nothing to commit" gate must be a --staged diff placed AFTER the git add');
 });
 
+test('the step opts into push-with-retry reconciliation (the staging file is multi-writer and registered active)', () => {
+  assert.match(syncStepBody(), /PUSH_RECONCILE_MERGED_JSON:\s*'1'/);
+});
+
 test('an invalid staging file warns and is unstaged; only the registry itself can fail the step', () => {
   const body = syncStepBody();
   assert.match(body, /::warning::\$STAGING is not valid JSON/);
