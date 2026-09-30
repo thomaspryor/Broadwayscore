@@ -570,6 +570,14 @@ const OWE_VENUE_CONFIGS = [
   // Mostly cinema, classes and wellness: theatre only.
   { name: 'Riverside Studios', url: 'https://riversidestudios.co.uk/whats-on/', spektrixUrl: 'https://spektrix.riversidestudios.co.uk/riversidestudios/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_EventType', spektrixGenres: ['Theatre'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   { name: 'Bridge Theatre', url: 'https://bridgetheatre.co.uk/', spektrixUrl: 'https://tickets.bridgetheatre.co.uk/bridgetheatrelondon/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // Rose Theatre Kingston's account also sells workshops, tribute acts,
+  // touring family shows and offers: its own Drama web category only.
+  { name: 'Rose Theatre Kingston', url: 'https://www.rosetheatre.org/whats-on', spektrixUrl: 'https://tickets.rosetheatre.org/rosetheatrekingston/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_WebCategory', spektrixGenres: ['Drama'], strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /\btest\b/i], category: 'off-west-end' },
+  // Wilton's sells film-with-live-score nights, music hall, magic, opera
+  // and heritage tours alongside its theatre.
+  { name: "Wilton's Music Hall", url: 'https://wiltons.org.uk/whats-on/', spektrixUrl: 'https://tickets.wiltons.org.uk/wiltons/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_GenresForWebsiteFiltering', spektrixGenres: ['Theatre', 'Musical Theatre', 'New Writing', 'Family'], stripMonthYearTags: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // ── Ticketsolve ──
+  { name: 'Waterloo East Theatre', url: 'https://www.waterlooeast.co.uk/', ticketsolveUrl: 'https://waterlooeast.ticketsolve.com/shows.xml', ticketsolveExcludeCategory: /showcase|workshop|class|course/i, strategy: 'ticketsolve', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   // ── JSON-LD ──
   // Menier: Event nodes in the homepage @graph, one per run.
   { name: 'Menier Chocolate Factory', url: 'https://www.menierchocolatefactory.com/', strategy: 'json-ld', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
@@ -606,6 +614,7 @@ const {
   fetchTribeEvents,
   fetchSpektrixEvents,
   parseSpektrixEvents,
+  parseTicketsolveShows,
   extractJsonItems,
   extractNextData,
   parseNytgVenuePages,
@@ -616,6 +625,16 @@ const {
 // Strategies whose payload is JSON from a ticketing/CMS API, not a page.
 // venue-listing-discover.test.mjs replays these from .json fixtures.
 const DATED_JSON_STRATEGIES = new Set(['ovationtix', 'tribe-events', 'spektrix', 'json-api']);
+// Strategies scrapeVenueListing fetches from their own feed URL rather than
+// venue.url: the JSON ones plus Ticketsolve's shows.xml (BRO-4433 ship-check:
+// discover-new-shows.js gated on DATED_JSON_STRATEGIES alone and fetched the
+// Waterloo East homepage instead of its feed).
+// A booking tagged with its month and two-digit year: "Romeo and Juliet -
+// Oct26", "The Law of Mayhem Apr27", "Wolf Country Jan 27" (Wilton's Music
+// Hall's Spektrix names). Per venue (stripMonthYearTags), never global: a
+// title can end in a date ("Halloween Oct 31"), BRO-4433 ship-check.
+const MONTH_YEAR_TAG_RE = /\s+(?:-\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec) ?[23]\d$/;
+const FEED_STRATEGIES = new Set([...DATED_JSON_STRATEGIES, 'ticketsolve']);
 
 function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString().slice(0, 10) } = {}) {
   // Dated platform readers (BRO-4396) take a JSON payload (object or string)
@@ -641,6 +660,8 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
     else if (venue.strategy === 'spektrix') rows = parseSpektrixEvents(payload, { genres: venue.spektrixGenres, genreField: venue.spektrixGenreField, exclude: venue.spektrixExclude, todayIso });
     else if (venue.strategy === 'json-api') rows = extractJsonItems(payload, venue.jsonSpec);
     else rows = parseTribeEvents(payload);
+  } else if (venue.strategy === 'ticketsolve') {
+    rows = parseTicketsolveShows(html, { todayIso, excludeCategory: venue.ticketsolveExcludeCategory });
   } else if (venue.strategy === 'nytg-venue') {
     rows = parseNytgVenuePages(html);
   } else if (venue.strategy === 'next-data') {
@@ -672,7 +693,8 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
   const seen = new Set();
   const filtered = [];
   for (const r of rows) {
-    const title = String((r && r.title) || '').replace(/\s+/g, ' ').trim();
+    let title = String((r && r.title) || '').replace(/\s+/g, ' ').trim();
+    if (venue.stripMonthYearTags) title = title.replace(MONTH_YEAR_TAG_RE, '').trim();
     if (title.length < 2 || title.length > 160) continue;
     if (excludePatterns.some(p => p.test(title))) continue;
     if (seen.has(title)) continue; // dedupe within page
@@ -702,6 +724,9 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
     // is the NEXT performance, not the first one (ship-check 2026-09-29: Elf
     // Lyons began 2026-09-24, OvationTix said 2026-10-01).
     ...(r.firstDate && venue.strategy === 'ovationtix' ? { listingFirstDateIsNext: true } : {}),
+    // Ticketsolve's shows.xml likewise drops past performances: a run whose
+    // first listed day has arrived may have started earlier (BRO-4433).
+    ...(r.firstDate && venue.strategy === 'ticketsolve' && r.firstDate <= todayIso ? { listingFirstDateIsNext: true } : {}),
     // NYTG is an editorial listing, not the venue's box office, and its
     // closing date for an open-ended run is a booking horizon (Gazillion
     // Bubble Show: 2007 to 2027-01-18), so it never becomes closingDate.
@@ -848,6 +873,9 @@ async function scrapeVenueListing(venue) {
   }
   if (venue.strategy === 'json-api') {
     return parseVenueListingHtml(venue, await getJson(venue.jsonUrl));
+  }
+  if (venue.strategy === 'ticketsolve') {
+    return parseVenueListingHtml(venue, await getJson(venue.ticketsolveUrl, { raw: true }));
   }
   if (venue.strategy === 'nytg-venue') {
     // One page per slug (Theatre Row's rooms each have their own), joined:
@@ -1025,6 +1053,7 @@ function writeStagingCandidates(newCandidates, stagingPath = STAGING_PATH) {
 module.exports = {
   STAGING_PATH,
   DATED_JSON_STRATEGIES,
+  FEED_STRATEGIES,
   OB_VENUE_CONFIGS,
   OWE_VENUE_CONFIGS,
   COMMON_OB_EXCLUDE_PATTERNS,
