@@ -47,6 +47,7 @@ const WEAK_TIERS = new Set(['truncated', 'excerpt', 'stub', 'invalid']);
 
 function normText(s) {
   return String(s == null ? '' : s)
+    .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
     .toLowerCase()
     .replace(/&[a-z]+;|&#\d+;/g, ' ')
     .replace(/[^a-z0-9]+/g, ' ')
