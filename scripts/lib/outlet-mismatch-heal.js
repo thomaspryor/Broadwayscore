@@ -55,15 +55,124 @@ function urlEditionCorrection(data) {
   };
 }
 
-/** Apply urlEditionCorrection() to data in place; returns the correction or null. */
+// Legitimate cross-publication relations (BRO-4402): the file's outlet
+// publishes on the URL owner's host on purpose, so the URL is NOT evidence of
+// a misfiling. Keys are the FILE's outletId; values the host-owner outlets it
+// may legitimately sit on.
+const CROSS_PUBLICATION_ALLOW = {
+  observer: ['guardian'],            // Observer reviews live on theguardian.com
+  'the-sun': ['times-uk'],           // News UK sister titles
+  'sunday-times': ['times-uk'],
+  'slash-film': ['film-festival-traveler'], // same critic, both sites
+  'film-festival-traveler': ['slash-film'],
+  'sunday-telegraph': ['telegraph'],
+  'sunday-express': ['express-uk'],
+  'daily-pilot': ['latimes'],        // LA Times community paper, hosted on latimes.com
+  nippertown: ['the-daily-gazette'], // section of the Daily Gazette site
+  'st-petersburg-times': ['tampa-bay-times'], // same paper, renamed
+};
+// Hosts that archive OTHER papers' reviews under the archive's own domain.
+const ARCHIVE_HOSTS = new Set(['jasonraize.com', 'jasonraize.net']);
+// Flags meaning "this is not this show's review at all": the fix is the
+// wrongProduction/wrongShow/roundup flag, never a rename onto the host owner.
+const NOT_A_REVIEW_FLAGS = ['wrongProduction', 'wrongShow', 'isRoundupArticle'];
+const MIN_CRITIC_OUTLET_REVIEWS = 3;
+
+const compactId = (id) => String(id || '').replace(/[^a-z0-9]/gi, '').toLowerCase();
+
+let _criticRegistry;
+function criticOutletCount(criticName, outletId) {
+  if (_criticRegistry === undefined) {
+    try {
+      _criticRegistry = JSON.parse(require('fs').readFileSync(path.join(__dirname, '../../data/critic-registry.json'), 'utf8')).critics || {};
+    } catch { _criticRegistry = {}; }
+  }
+  const slug = String(criticName || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const c = _criticRegistry[slug];
+  return (c && c.outletCounts && c.outletCounts[outletId]) || 0;
+}
+
+/**
+ * A review whose URL is on ANOTHER registry outlet's own domain is filed under
+ * the wrong outletId (e.g. Brantley's theater.nytimes.com review under
+ * about-entertainment, T3 0.35 instead of nytimes T1 1.0). Returns the
+ * correction to the host owner, or null. Never corrects:
+ *  - _locked / operator-asserted, rejected and pointer-marked duplicate files;
+ *  - wrongProduction / wrongShow / roundup-flagged files (wrong flag, not rename);
+ *  - a URL the current outlet itself owns (domain/domainAliases, wire services,
+ *    edition pairs — isCrossOutletUrl), allow-listed sister/syndication pairs,
+ *    archive hosts, aggregator hosts, or registry-duplicate ids of one outlet;
+ *  - a critic with an established record at the CURRENT outlet and none at the
+ *    host owner (the URL is then the wrong field, not the outlet).
+ * @returns {{ outletId: string, outlet: string, from: string|null } | null}
+ */
+function publisherDomainCorrection(data) {
+  if (!data || typeof data.url !== 'string' || !data.url || data._locked) return null;
+  if (NOT_A_REVIEW_FLAGS.some((k) => data[k])) return null;
+  if (carriesOperatorAssertion(data)) return null;
+  // Already a pointer-marked duplicate of another file: excluded from scoring,
+  // and relabelling it would only detach it from the file it duplicates.
+  if (data.duplicateOf || data.duplicateTextOf || data.crossOutletDuplicate) return null;
+  // Explicitly rejected (not_a_review, ...): excluded for its own reason, not
+  // because of the outlet label, so a relabel changes nothing but a filename.
+  if (data.rejectedAt || data.rejectionReason) return null;
+  const current = normalizeOutlet(data.outletId || data.outlet || '');
+  if (!current) return null;
+  let host;
+  try { host = new URL(data.url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; }
+  if ([...ARCHIVE_HOSTS].some((h) => host === h || host.endsWith('.' + h))) return null;
+  const { isCrossOutletUrl, resolveOutletFromUrl } = require('./review-normalization');
+  if (!isCrossOutletUrl(current, data.url)) return null;
+  const owner = resolveOutletFromUrl(data.url);
+  if (!owner || !owner.outletId || owner.outletId === current) return null;
+  if (compactId(owner.outletId) === compactId(current)) return null; // registry duplicate ids
+  if ((CROSS_PUBLICATION_ALLOW[current] || []).includes(owner.outletId)) return null;
+  const { AGGREGATOR_OUTLET_IDS } = require('./aggregator-domains');
+  if (AGGREGATOR_OUTLET_IDS && AGGREGATOR_OUTLET_IDS.has && AGGREGATOR_OUTLET_IDS.has(owner.outletId)) return null;
+  const atOwner = criticOutletCount(data.criticName, owner.outletId);
+  const atCurrent = criticOutletCount(data.criticName, current);
+  if (atOwner < MIN_CRITIC_OUTLET_REVIEWS && atCurrent >= MIN_CRITIC_OUTLET_REVIEWS) return null;
+  return {
+    outletId: owner.outletId,
+    outlet: getOutletDisplayName(owner.outletId) || owner.displayName || owner.outletId,
+    from: data.outletId || null,
+    reason: 'publisher-domain',
+  };
+}
+
+/** Apply the URL-edition or publisher-domain correction in place; returns it or null. */
 function applyUrlEditionCorrection(data, today = new Date().toISOString().slice(0, 10)) {
-  const fix = urlEditionCorrection(data);
+  const fix = urlEditionCorrection(data) ? { ...urlEditionCorrection(data), reason: 'url-edition' } : publisherDomainCorrection(data);
   if (!fix) return null;
   data.outletIdCorrectedFrom = fix.from;
-  data.outletIdCorrectedReason = `url-edition: ${data.url} resolves to ${fix.outletId} (${today})`;
+  data.outletIdCorrectedReason = `${fix.reason}: ${data.url} resolves to ${fix.outletId} (${today})`;
   data.outletId = fix.outletId;
   data.outlet = fix.outlet;
   return fix;
+}
+
+/** Same article on the same publisher, ignoring host prefix (theater. vs www.), scheme and query. */
+function sameArticlePath(a, b) {
+  try {
+    const A = new URL(a), B = new URL(b);
+    const tail = (u) => u.hostname.replace(/^.*?([^.]+\.[^.]+)$/, '$1') + u.pathname.replace(/\/+$/, '');
+    return tail(A) === tail(B);
+  } catch { return false; }
+}
+
+/**
+ * Publisher-domain relabel whose correctly-labelled file already exists but is
+ * EXCLUDED (garbage/truncated text, wrongProduction, a duplicate stub of this
+ * very file) while the misfiled source is a live copy of the same article: the
+ * merge path would fold the live source into the excluded stub and delete it,
+ * losing the review. Replace the stub with the relabelled source instead.
+ * Never when either side carries an operator assertion or the stub is wrongShow.
+ */
+function excludedTargetSwapAllowed({ source, target, sourceExcluded, targetExcluded }) {
+  if (sourceExcluded || !targetExcluded) return false;
+  if (carriesOperatorAssertion(source) || carriesOperatorAssertion(target)) return false;
+  if (target.wrongShow) return false;
+  return sameArticlePath(source.url, target.url);
 }
 
 function sameReviewUrl(a, b) {
@@ -308,17 +417,25 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         const fileOutlet = f.split('--')[0];
         const d = io.read(f);
         const editionFix = applyUrlEditionCorrection(d);
-        if (editionFix) {
-          io.write(f, d);
+        // A publisher-domain relabel is only persisted once the rename/merge
+        // it needs lands (BRO-4402): a kept tombstone must stay untouched, not
+        // become a mislabelled file that re-reports every run.
+        const deferWrite = !!editionFix && editionFix.reason === 'publisher-domain';
+        const announceFix = () => {
           out.editionFixedCount++;
-          act(`${sid}/${f}: outletId ${editionFix.from} -> ${editionFix.outletId} (URL edition)`);
-        }
+          act(`${sid}/${f}: outletId ${editionFix.from} -> ${editionFix.outletId} (${editionFix.reason})`);
+        };
+        if (editionFix && !deferWrite) { io.write(f, d); announceFix(); }
         const jsonOutlet = normalizeOutlet(d.outletId || d.outlet);
-        if (!jsonOutlet || !fileOutlet || jsonOutlet === fileOutlet) continue;
+        if (!jsonOutlet || !fileOutlet || jsonOutlet === fileOutlet) {
+          if (deferWrite) { io.write(f, d); announceFix(); }
+          continue;
+        }
         const expectedFilename = generateReviewFilename(jsonOutlet, d.criticName || 'Unknown');
         if (expectedFilename === f) continue;
         if (!io.exists(expectedFilename)) {
           const repointed = renameAndRepoint(io, f, expectedFilename, d, sid);
+          if (deferWrite) announceFix();
           out.renamedCount++;
           act(`${sid}/${f}: renamed -> ${expectedFilename}${repointed.length ? `; repointed ${repointed.join(', ')}` : ''}`);
           continue;
@@ -328,6 +445,17 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         // contamination, Notion 39b637c5-416f-815e); it is deleted only as a
         // same-URL tombstone of an equally excluded target.
         const existingData = io.read(expectedFilename);
+        if (deferWrite && excludedTargetSwapAllowed({
+          source: d, target: existingData,
+          sourceExcluded: !!explain(d, f), targetExcluded: !!explain(existingData, expectedFilename),
+        })) {
+          io.unlink(expectedFilename);
+          renameAndRepoint(io, f, expectedFilename, d, sid);
+          announceFix();
+          out.renamedCount++;
+          act(`${sid}/${f}: replaced excluded ${expectedFilename} with relabelled live copy`);
+          continue;
+        }
         const mergeResult = mergeUniqueReviewFields(existingData, d);
         if (mergeResult.action === 'skip-flagged-source') {
           const decide = () => flaggedTombstoneDecision({
@@ -346,6 +474,7 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
           repointSiblingRefs(recheck.repoint, f, expectedFilename, sid, 'deleted as flagged tombstone of');
           for (const s of recheck.repoint) io.write(s.file, s.data);
           io.unlink(f);
+          if (deferWrite) announceFix();
           out.tombstoneDeletedCount++;
           act(`${sid}/${f}: deleted flagged tombstone (same URL as excluded ${expectedFilename})`
             + `${moved.length ? `; moved ${moved.join(',')}` : ''}`
@@ -355,6 +484,7 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         if (mergeResult.action !== 'merged') { keep(mergeResult.action, `${sid}/${f}`); continue; }
         if (mergeResult.changed) io.write(expectedFilename, existingData);
         io.unlink(f);
+        if (deferWrite) announceFix();
         out.mergedCount++;
         act(`${sid}/${f}: merged into ${expectedFilename} and deleted`);
       } catch (e) {
@@ -374,6 +504,9 @@ module.exports = {
   renameAndRepoint,
   makeDirIO,
   urlEditionCorrection,
+  publisherDomainCorrection,
+  excludedTargetSwapAllowed,
+  sameArticlePath,
   applyUrlEditionCorrection,
   sameReviewUrl,
   carriesOperatorAssertion,
