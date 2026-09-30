@@ -156,6 +156,21 @@ jobs:
             echo "::warning::review-url-cluster audit found $N byline-explosion cluster(s) — reviews likely buried/unscored. Run: node scripts/audit-review-url-clusters.js"
           fi
 
+      - name: Audit live publisher-domain misattributions (BRO-4411)
+        if: always()
+        run: |
+          # Measures the LIVE reviews.json, not the heal rule: 15 NYT reviews sat
+          # live as "About Entertainment" while heal-outlet-mismatch dry-run said 0
+          # (the rule skipped pointer-marked duplicates the rebuild then recovered).
+          # Non-blocking warning; exit 2 = unreadable input.
+          RC=0; OUT=$(node scripts/audit-publisher-domain-live.js 2>&1) || RC=$?
+          echo "$OUT" | tail -25
+          if [ "$RC" = "1" ]; then
+            echo "::warning::publisher-domain audit: live reviews whose URL host belongs to a different outlet than outletId. Run: node scripts/audit-publisher-domain-live.js"
+          elif [ "$RC" != "0" ]; then
+            echo "::warning::audit-publisher-domain-live.js could not run (exit=$RC) — no misattribution signal this run."
+          fi
+
       - name: Audit isNonReview content-type/wrongShow + slug coverage (BRO-3862)
         if: always()
         run: |

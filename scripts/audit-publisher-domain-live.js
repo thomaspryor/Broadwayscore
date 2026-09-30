@@ -21,6 +21,7 @@ function findMisattributions(rows) {
   const out = [];
   for (const r of rows) {
     if (!r || !r.url || !r.outletId) continue;
+    if (r.contentTier === 'invalid') continue; // kept in reviews.json but unscored (wrong production etc.)
     let fix = publisherDomainCorrection({ outletId: r.outletId, outlet: r.outlet, criticName: r.criticName, url: r.url });
     // Independent hard check, not routed through the rule's exemptions.
     let host = '';
