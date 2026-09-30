@@ -49,6 +49,79 @@ function extractShowTitleFromWetRoundup(postTitle) {
 }
 
 /**
+ * Guardian stage-review RSS item -> { title, market } or null (BRO-4432).
+ *
+ * The roundup sources (WET / BWW / Playbill) only cover productions big
+ * enough to get a roundup, so fringe London shows (Arcola, Yard, Theatre503,
+ * New Diorama) reviewed by the Guardian never reached reverse discovery. The
+ * Guardian's theatre-reviews feed is a single critic review per item, which
+ * is itself proof a reviewed production exists.
+ *
+ * Headline shapes: "<Title> review – <standfirst>" and "<Title> – review: ...".
+ * Market: 'west-end' for a London production (a "London" or London-venue
+ * keyword tag, or the Guardian's own "-london" slug suffix), 'nyc' for New York (Broadway /
+ * Off-Broadway / New York tags, or a new-york slug). Anything else (UK
+ * regional, Edinburgh, tours, schools tours) returns null: no catalogue
+ * market to check it against. The URL is only a routing signal here, never
+ * metadata written to a show (CLAUDE.md §3).
+ *
+ * @param {{title?:string, link?:string, categories?:string[]}} item
+ * @returns {{title:string, market:'west-end'|'nyc'}|null}
+ */
+// "review" must be followed by a dash/colon or the end, so "The Review Show
+// review – ..." yields "The Review Show", not "The".
+const GUARDIAN_REVIEW_TITLE_RE = /^(.{2,120}?)\s+(?:[\u2013\u2014-]\s+)?review\s*(?:[\u2013\u2014:-]|$)/i;
+// Not "US theater": that tag also covers Chicago, LA and regional US houses.
+const GUARDIAN_NYC_TAGS = new Set(['broadway', 'off-broadway', 'new york']);
+// Guardian keyword tags for London houses whose reviews often carry no
+// "London" tag or slug suffix (Tru at the Menier, 2026-09-27).
+const GUARDIAN_LONDON_VENUE_TAGS = new Set([
+  'west end', 'national theatre', 'old vic', 'young vic', 'royal court', 'almeida theatre',
+  'donmar warehouse', 'bridge theatre', "shakespeare's globe", 'barbican', 'menier chocolate factory',
+  'arcola theatre', 'kiln theatre', 'southwark playhouse', 'hampstead theatre', 'bush theatre',
+  'soho theatre', 'orange tree theatre', 'park theatre', 'theatre503', 'finborough theatre',
+  'yard theatre', 'new diorama theatre', 'jermyn street theatre', "king's head theatre",
+  'lyric hammersmith', 'battersea arts centre', 'gate theatre', 'hackney empire',
+  'riverside studios',
+]);
+function extractGuardianReview(item) {
+  if (!item || !item.title) return null;
+  const decoded = decodeEntities(item.title).replace(/\s+/g, ' ').trim();
+  const m = decoded.match(GUARDIAN_REVIEW_TITLE_RE);
+  if (!m) return null;
+  const title = m[1].replace(/[\s\u2013\u2014:-]+$/, '').trim();
+  if (!title || /^review/i.test(title)) return null;
+  let slugTokens = [];
+  try {
+    const last = new URL(item.link).pathname.split('/').filter(Boolean).pop() || '';
+    slugTokens = last.toLowerCase().split('-');
+  } catch { /* no/invalid link: tags alone decide */ }
+  const tags = (item.categories || [])
+    .map(c => decodeEntities(String(c)).replace(/[\u2018\u2019]/g, "'").trim().toLowerCase());
+  if (tags.includes('london') || slugTokens.includes('london') || tags.some(t => GUARDIAN_LONDON_VENUE_TAGS.has(t))) {
+    return { title, market: 'west-end' };
+  }
+  const slug = slugTokens.join('-');
+  if (tags.some(t => GUARDIAN_NYC_TAGS.has(t)) || /(^|-)new-york(-|$)/.test(slug)) return { title, market: 'nyc' };
+  return null;
+}
+
+/**
+ * Guardian RSS XML -> [{ title, link, pubDate, categories }] (raw strings;
+ * extractGuardianReview decodes entities).
+ * @param {string} xml
+ */
+function parseGuardianReviewsRss(xml) {
+  const field = (it, tag) => ((it.match(new RegExp(`<${tag}>([\\s\\S]*?)</${tag}>`)) || [])[1] || '').trim();
+  return [...String(xml || '').matchAll(/<item>([\s\S]*?)<\/item>/g)].map(([, it]) => ({
+    title: field(it, 'title'),
+    link: field(it, 'link'),
+    pubDate: field(it, 'pubDate'),
+    categories: [...it.matchAll(/<category[^>]*>([^<]*)<\/category>/g)].map(m => m[1]),
+  }));
+}
+
+/**
  * BWW Google-News sitemap <n:title> values are "Review Roundup: TITLE, ..."
  * for opening-night roundups (the format audit-reverse-discovery.js needs),
  * mixed with syndication-shaped titles for non-stage content (a movie/TV
@@ -628,6 +701,8 @@ function candidateKey(c) {
 module.exports = {
   decodeEntities,
   extractShowTitleFromWetRoundup,
+  extractGuardianReview,
+  parseGuardianReviewsRss,
   extractShowTitleFromBwwRoundup,
   extractShowTitleFromPlaybillRoundup,
   isPlaybillNonNycRoundup,

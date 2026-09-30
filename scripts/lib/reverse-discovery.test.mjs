@@ -5,6 +5,8 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   extractShowTitleFromWetRoundup,
+  extractGuardianReview,
+  parseGuardianReviewsRss,
   extractShowTitleFromBwwRoundup,
   isBwwNonStageTieIn,
   isBwwNonNycRoundup,
@@ -455,4 +457,53 @@ test('title index: one-word / junk pre-colon heads are not indexed', () => {
   const index = buildShowTitleIndex(shows, 'nyc');
   assert.equal(resolveMatchedShowId('2', index), null);
   assert.equal(resolveMatchedShowId('DOLLY', index), null);
+});
+
+// ── Guardian theatre-reviews source (BRO-4432) ──
+// Item shapes copied from https://www.theguardian.com/stage/theatre+tone/reviews/rss on 2026-09-30.
+const GUARDIAN_RSS = `<rss><channel><title>Theatre + Reviews | The Guardian</title>
+<item><title>The Turn of the Screw review – Henry James&#x2019;s classic ghost story with a twist</title><link>https://www.theguardian.com/stage/2026/sep/20/the-turn-of-the-screw-review-henry-james-arcola-theatre-london</link><pubDate>Sun, 20 Sep 2026 10:00:00 GMT</pubDate><category domain="https://www.theguardian.com/stage/theatre">Theatre</category><category domain="https://www.theguardian.com/stage/arcola-theatre">Arcola theatre</category></item>
+<item><title>Tru – review: a five-star performance of a three-star script about the life of Truman Capote</title><link>https://www.theguardian.com/stage/2026/sep/27/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote</link><pubDate>Sun, 27 Sep 2026 07:00:00 GMT</pubDate><category domain="x">Menier Chocolate Factory</category></item>
+<item><title>School Girls; Or, The African Mean Girls Play review – comedy makes a splash</title><link>https://www.theguardian.com/stage/2026/sep/28/school-african-mean-girls-play-review</link><pubDate>Tue, 29 Sep 2026 02:00:00 GMT</pubDate><category domain="x">Broadway</category><category domain="x">US theater</category></item>
+<item><title>Happy Days review – Beckett&#x2019;s bewitching heroine</title><link>https://www.theguardian.com/stage/2026/sep/28/happy-days-review-beckett-pitlochry-festival-theatre-siobhan-redmond-forbes-masson</link><pubDate>Mon, 28 Sep 2026 12:00:00 GMT</pubDate><category domain="x">Pitlochry Festival theatre</category></item>
+</channel></rss>`;
+
+test('parseGuardianReviewsRss returns title/link/pubDate/categories per item', () => {
+  const items = parseGuardianReviewsRss(GUARDIAN_RSS);
+  assert.equal(items.length, 4);
+  assert.equal(items[0].link, 'https://www.theguardian.com/stage/2026/sep/20/the-turn-of-the-screw-review-henry-james-arcola-theatre-london');
+  assert.deepEqual(items[0].categories, ['Theatre', 'Arcola theatre']);
+  assert.equal(items[2].pubDate, 'Tue, 29 Sep 2026 02:00:00 GMT');
+  assert.deepEqual(parseGuardianReviewsRss(''), []);
+});
+
+test('extractGuardianReview: London by slug suffix, venue tag; NYC by tag; regional dropped', () => {
+  const [screw, tru, school, happy] = parseGuardianReviewsRss(GUARDIAN_RSS);
+  assert.deepEqual(extractGuardianReview(screw), { title: 'The Turn of the Screw', market: 'west-end' });
+  assert.deepEqual(extractGuardianReview(tru), { title: 'Tru', market: 'west-end' });
+  assert.deepEqual(extractGuardianReview(school), { title: 'School Girls; Or, The African Mean Girls Play', market: 'nyc' });
+  assert.equal(extractGuardianReview(happy), null);
+});
+
+test('extractGuardianReview: a curly-apostrophe venue tag still routes to London', () => {
+  assert.deepEqual(
+    extractGuardianReview({ title: 'A World Elsewhere review – x', link: 'https://www.theguardian.com/stage/2026/jul/28/a-world-elsewhere-review', categories: ['Shakespeare\u2019s Globe'] }),
+    { title: 'A World Elsewhere', market: 'west-end' });
+});
+
+test('extractGuardianReview: non-review headlines and empty titles are null', () => {
+  assert.equal(extractGuardianReview({ title: 'Interview: Rory Kinnear on Keynes', link: 'https://www.theguardian.com/stage/2026/sep/01/x-london', categories: [] }), null);
+  assert.equal(extractGuardianReview({ title: 'Review – a night out', link: 'https://www.theguardian.com/stage/2026/sep/01/x-london', categories: [] }), null);
+  assert.equal(extractGuardianReview(null), null);
+  assert.equal(extractGuardianReview({ title: 'Hamlet review – y', link: 'not a url', categories: ['London'] })?.market, 'west-end');
+});
+
+
+test('extractGuardianReview: "Review" inside a title parses; a US-theater-only (regional) item is dropped', () => {
+  assert.deepEqual(
+    extractGuardianReview({ title: 'The Review Show review \u2013 a satire of critics', link: 'https://www.theguardian.com/stage/2026/sep/01/the-review-show-review-soho-theatre-london', categories: [] }),
+    { title: 'The Review Show', market: 'west-end' });
+  assert.equal(
+    extractGuardianReview({ title: 'A Streetcar Named Desire review \u2013 steamy', link: 'https://www.theguardian.com/stage/2026/sep/01/streetcar-review-steppenwolf-chicago', categories: ['US theater', 'Chicago'] }),
+    null);
 });
