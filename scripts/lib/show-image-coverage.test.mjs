@@ -28,6 +28,7 @@ const {
   pruneEmptyShowImageDir,
   snapshotShowImageDir,
   discardFailedFetchArtifacts,
+  runFetchWithCleanup,
   dirHasImageFiles,
 } = require('./show-image-coverage.js');
 
@@ -232,5 +233,61 @@ test('a NEW nested dir is not deleted either (only files are)', () => {
 
 test('discard on a missing dir is a no-op, not a throw', () => {
   const r = discardFailedFetchArtifacts(path.join(makeRoot(), 'nope'), new Set());
-  assert.deepEqual(r, { removed: [], prunedDir: false });
+  assert.deepEqual(r, { removed: [], restored: [], prunedDir: false });
+});
+
+
+// BRO-4401 (run 36676191484, 2026-09-30): a rejected Google Images candidate
+// OVERWROTE Player's accepted thumbnail in place. Name-based cleanup kept it
+// ("pre-existing"), and main got a soccer half-time graphic for a play with
+// shows.json still pointing at the file. The snapshot now carries bytes and
+// the failure path restores them.
+test('a rejected candidate that overwrote pre-existing art is restored byte-for-byte on failure', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sic-restore-'));
+  const dir = path.join(root, 'player-off-west-end-2026');
+  fs.mkdirSync(dir, { recursive: true });
+  const good = Buffer.from('GOOD-ART-BYTES');
+  fs.writeFileSync(path.join(dir, 'thumbnail.jpg'), good);
+  const before = snapshotShowImageDir(dir);
+  assert.ok(before.has('thumbnail.jpg'));
+
+  const images = await runFetchWithCleanup(async () => {
+    fs.writeFileSync(path.join(dir, 'thumbnail.jpg'), Buffer.from('SOCCER-HALF-TIME-GRAPHIC'));
+    fs.writeFileSync(path.join(dir, 'poster.jpg'), Buffer.from('NEW-CANDIDATE'));
+    return null; // verification rejected everything
+  }, dir, before, 'player-off-west-end-2026', () => {});
+
+  assert.equal(images, null);
+  assert.ok(fs.readFileSync(path.join(dir, 'thumbnail.jpg')).equals(good), 'the overwritten pre-existing file must be restored');
+  assert.equal(fs.existsSync(path.join(dir, 'poster.jpg')), false, 'the brand-new candidate is still discarded');
+});
+
+test('a SUCCESSFUL fetch keeps its new bytes (nothing is restored over accepted art)', async () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sic-keep-'));
+  const dir = path.join(root, 'show');
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'thumbnail.jpg'), Buffer.from('OLD'));
+  const before = snapshotShowImageDir(dir);
+  await runFetchWithCleanup(async () => {
+    fs.writeFileSync(path.join(dir, 'thumbnail.jpg'), Buffer.from('NEW-ACCEPTED'));
+    return { thumbnail: '/images/shows/show/thumbnail.jpg' };
+  }, dir, before, 'show', () => {});
+  assert.equal(fs.readFileSync(path.join(dir, 'thumbnail.jpg')).toString(), 'NEW-ACCEPTED');
+});
+
+test('discardFailedFetchArtifacts reports restored files and tolerates a snapshot with no contents (missing dir)', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'sic-report-'));
+  const dir = path.join(root, 'show');
+  fs.mkdirSync(dir, { recursive: true });
+  fs.writeFileSync(path.join(dir, 'poster.jpg'), Buffer.from('A'));
+  const before = snapshotShowImageDir(dir);
+  fs.writeFileSync(path.join(dir, 'poster.jpg'), Buffer.from('B'));
+  fs.unlinkSync(path.join(dir, 'poster.jpg')); // even a deleted pre-existing file comes back
+  const r = discardFailedFetchArtifacts(dir, before);
+  assert.deepEqual(r.restored, ['poster.jpg']);
+  assert.equal(fs.readFileSync(path.join(dir, 'poster.jpg')).toString(), 'A');
+
+  const missing = snapshotShowImageDir(path.join(root, 'nope'));
+  assert.equal(missing.size, 0);
+  assert.deepEqual(discardFailedFetchArtifacts(path.join(root, 'nope'), missing), { removed: [], restored: [], prunedDir: false });
 });
