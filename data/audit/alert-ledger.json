@@ -141,7 +141,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -152,7 +152,8 @@
       "notifyCount": 118,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-09-30T01:53:43.031Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6959,7 +6960,7 @@
       "resolvedAt": "2026-09-29T22:33:30.585Z"
     },
     "test-yml:red:Unit Tests:5da79e92": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run scripts/lib tests (visual-qa transcript-scan etc.) — \"preview + opening → both dates, opening marked theatermania (unconfirmed)\"",
       "firstSeen": "2026-09-29T23:08:03.730Z",
@@ -6969,7 +6970,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4397",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-09-30T01:53:45.272Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-4396-all": {
       "status": "open",
