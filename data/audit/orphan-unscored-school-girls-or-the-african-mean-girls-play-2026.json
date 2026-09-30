@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "school-girls-or-the-african-mean-girls-play-2026",
   "openingDate": "2026-09-28",
-  "detectedAt": "2026-09-30T01:07:07.303Z",
+  "detectedAt": "2026-09-30T01:18:48.049Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "outletId": "lighting-and-sound-america",
+      "criticName": "David Barbour",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=TM4Q64",
+      "fullTextLen": 6083,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "nydailynews--chris-jones.json",
       "outletId": "nydailynews",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-09-30T01:07:07.303Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
