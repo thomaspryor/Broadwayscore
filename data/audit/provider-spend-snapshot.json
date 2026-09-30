@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-30T13:04:35.372Z",
-  "bannerText": "OVER BUDGET: brightdata $3.51 > $2.5 (438 serp + 1899 unlocker reqs); scrapingbee 38759 credits > 35000",
+  "generatedAt": "2026-09-30T17:28:20.509Z",
+  "bannerText": "OVER BUDGET: brightdata $3.51 > $2.5 (438 serp + 1899 unlocker reqs); scrapingbee 41581 credits > 35000",
   "items": [
     {
       "title": "2026-09-29 · Browserbase: $0.97 (150 sessions, 148.09min)"
@@ -9,10 +9,10 @@
       "title": "2026-09-29 · Bright Data: $3.51 (438 serp / 1899 unlocker)"
     },
     {
-      "title": "ScrapingBee: 38759 credits (780749 this cycle)"
+      "title": "ScrapingBee: 41581 credits (783571 this cycle)"
     },
     {
-      "title": "ScrapingDog: 41257 credits (1317848 this cycle)"
+      "title": "ScrapingDog: 47580 credits (1324171 this cycle)"
     },
     {
       "title": "Browserbase attribution: 31% attributed — top callers (covers 30% of billed calls): collect-review-texts.js 38, gather-reviews.js:the-stage 2, sweep-we-aggregators.js:the-stage 2, sweep-we-aggregators.js:theatre-reviews 2, bww-rr-discover.js 1"
@@ -27,10 +27,16 @@
       "title": "⚠️ Bright Data top-caller coverage low: 77% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
     },
     {
-      "title": "ScrapingBee attribution: 87% attributed — top callers (covers 82% of billed credits): scrape-reddit-sentiment.js 19460cr, gather-reviews.js 5412cr, fetch-show-images-auto.js 4069cr, opening-night-poller.js 1926cr, sweep-we-aggregators.js 873cr"
+      "title": "ScrapingBee attribution: 81% attributed — top callers (covers 76% of billed credits): scrape-reddit-sentiment.js 19460cr, gather-reviews.js 5412cr, fetch-show-images-auto.js 4069cr, opening-night-poller.js 1926cr, sweep-we-aggregators.js 873cr"
     },
     {
-      "title": "ScrapingDog attribution: 98% attributed — top callers (covers 87% of billed credits): gather-reviews.js 29089cr, collect-outlet-reviews.js 2050cr, scrape-nyc-theatre-roundups.js 1740cr, audit-show-review-gap.js 1647cr, fetch-show-images-auto.js 1187cr"
+      "title": "⚠️ ScrapingBee top-caller coverage low: 76% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
+    },
+    {
+      "title": "ScrapingDog attribution: 85% attributed — top callers (covers 75% of billed credits): gather-reviews.js 29089cr, collect-outlet-reviews.js 2050cr, scrape-nyc-theatre-roundups.js 1740cr, audit-show-review-gap.js 1647cr, fetch-show-images-auto.js 1187cr"
+    },
+    {
+      "title": "⚠️ ScrapingDog top-caller coverage low: 75% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight"
     }
   ],
   "moreCount": 0
