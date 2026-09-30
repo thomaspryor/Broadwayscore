@@ -17,7 +17,7 @@
  * the scraping rule.
  *
  * Usage:
- *   node scripts/backfill-walled-page-meta.js [--show=ID] [--limit=N] [--dry-run] [--delay-ms=3000] [--recheck-days=14]
+ *   node scripts/backfill-walled-page-meta.js [--show=ID] [--limit=N] [--dry-run] [--delay-ms=3000] [--recheck-days=14] [--time-budget-min=N]
  *     [--html-cache=DIR] [--list-urls]
  */
 
@@ -51,6 +51,10 @@ const cacheKey = (u) => require('crypto').createHash('sha1').update(String(u)).d
 
 const { isTheStageUrl, salvageWalledPageMetaToFile } = require('./lib/walled-page-meta');
 const RECHECK_DAYS = Number(getArg('recheck-days') || 14);
+// Wall-clock budget so a scheduled run exits cleanly before its step
+// timeout instead of being killed mid-write (scripts/lib/run-budget.js).
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const budget = createRunBudget(parseTimeBudgetMin(args));
 
 // Stamp an attempt on the file (url unchanged since the candidate scan).
 function stampChecked(fp, url) {
@@ -119,6 +123,10 @@ async function main() {
   const suspects = [];
   let updated = 0, failed = 0;
   for (const [i, { fp, d }] of candidates.entries()) {
+    if (budget.exceeded()) {
+      console.log(`  ⏱ time budget reached — ${candidates.length - i} candidate(s) left for the next run`);
+      break;
+    }
     const label = path.relative(reviewTextsDir, fp);
     let html = null;
     const cached = htmlCacheDir && path.join(htmlCacheDir, `${cacheKey(d.url)}.html`);

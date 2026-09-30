@@ -171,7 +171,7 @@ jobs:
           SCRAPER_USE_SCRAPINGDOG: '1'
           BRIGHTDATA_TOKEN: ${{ secrets.BRIGHTDATA_TOKEN }}
           BRIGHTDATA_ZONE: ${{ secrets.BRIGHTDATA_ZONE }}
-        run: node scripts/backfill-walled-page-meta.js --limit=40 --delay-ms=3000
+        run: node scripts/backfill-walled-page-meta.js --limit=40 --delay-ms=3000 --time-budget-min=12
 
       - name: Validate data
         if: always()
