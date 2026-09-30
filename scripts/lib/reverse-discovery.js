@@ -60,7 +60,7 @@ function extractShowTitleFromWetRoundup(postTitle) {
  * Headline shapes: "<Title> review – <standfirst>" and "<Title> – review: ...".
  * Market: 'west-end' for a London production (a "London" or London-venue
  * keyword tag, or the Guardian's own "-london" slug suffix), 'nyc' for New York (Broadway /
- * Off-Broadway / US theater tags, or a new-york slug). Anything else (UK
+ * Off-Broadway / New York tags, or a new-york slug). Anything else (UK
  * regional, Edinburgh, tours, schools tours) returns null: no catalogue
  * market to check it against. The URL is only a routing signal here, never
  * metadata written to a show (CLAUDE.md §3).
@@ -68,8 +68,11 @@ function extractShowTitleFromWetRoundup(postTitle) {
  * @param {{title?:string, link?:string, categories?:string[]}} item
  * @returns {{title:string, market:'west-end'|'nyc'}|null}
  */
-const GUARDIAN_REVIEW_TITLE_RE = /^(.{2,120}?)\s+(?:[\u2013\u2014-]\s+)?review\b/i;
-const GUARDIAN_NYC_TAGS = new Set(['broadway', 'off-broadway', 'us theater', 'us theatre', 'new york']);
+// "review" must be followed by a dash/colon or the end, so "The Review Show
+// review – ..." yields "The Review Show", not "The".
+const GUARDIAN_REVIEW_TITLE_RE = /^(.{2,120}?)\s+(?:[\u2013\u2014-]\s+)?review\s*(?:[\u2013\u2014:-]|$)/i;
+// Not "US theater": that tag also covers Chicago, LA and regional US houses.
+const GUARDIAN_NYC_TAGS = new Set(['broadway', 'off-broadway', 'new york']);
 // Guardian keyword tags for London houses whose reviews often carry no
 // "London" tag or slug suffix (Tru at the Menier, 2026-09-27).
 const GUARDIAN_LONDON_VENUE_TAGS = new Set([

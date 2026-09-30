@@ -39,6 +39,8 @@ function parseShortDate(text) {
   return `${year}-${String(month + 1).padStart(2, '0')}-${String(num).padStart(2, '0')}`;
 }
 
+const SHOW_SCORE_NON_VENUE_RE = /\b(online|virtual|stream(?:ing|ed)?|zoom|various|multiple venues|site[- ]specific|tbd|tba)\b/i;
+
 /**
  * Venue from a parsed ShowScore show page, or null. Order: the old venue
  * link in .show-page-v2__info-top-line, the survey modal's venue-name
@@ -66,7 +68,9 @@ function venueFromShowScoreDoc(doc, topLine = doc.querySelector('.show-page-v2__
   if (!venue) {
     const modal = doc.querySelector('survey-review-modal[venue-name]');
     const attr = modal ? String(modal.getAttribute('venue-name') || '').trim() : '';
-    if (attr) venue = sanitizeVenueForWrite(attr);
+    // The sanitizer's denylist predates this field; refuse the non-venue
+    // values a survey attribute can carry for streamed or touring shows.
+    if (attr && !SHOW_SCORE_NON_VENUE_RE.test(attr)) venue = sanitizeVenueForWrite(attr);
   }
 
   // Last resort. ShowScore's current template dropped the dedicated venue link —

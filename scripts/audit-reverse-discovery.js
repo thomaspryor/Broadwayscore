@@ -371,6 +371,12 @@ async function main(argv = process.argv.slice(2)) {
   const evidenceItems = [];
   for (const it of items) {
     if (!EVIDENCE_SOURCES.has(it.source)) continue;
+    // A Guardian review proves a MISSING show was reviewed (escalation), but a
+    // match is not "published reviews right now" for opening-night selection:
+    // the Guardian also reviews recasts of long runners and other productions
+    // of the same classic (Les Misérables "new cast"). Roundups only fire at
+    // openings, so only they record evidence (BRO-4432 ship-check).
+    if (it.source === 'guardian-review') continue;
     const index = it.market === 'west-end' ? weIndex : nycIndex;
     const showId = resolveMatchedShowId(it.title, index);
     if (showId) evidenceItems.push({ showId, source: it.source, url: it.url, date: it.date.split('T')[0] });

@@ -106,3 +106,34 @@ test('llmPullQuote must be verbatim from fullText (quote marks and spacing ignor
   assert.equal(applyReviewFieldEdit({}, { field: 'llmPullQuote', oldValue: null, newValue: 'No stored text to check this against.' }, stamp).ok, false);
   assert.equal(applyReviewFieldEdit(rec, { field: 'llmPullQuote', oldValue: null, newValue: 'too short' }, stamp).ok, false);
 });
+
+// BRO-4432: a plan-set flag beside a stale machine auto-clear stayed
+// ineffective (isEffectivelyWrongProductionOrShow reads the auto-clear first).
+test('setting wrongProduction true retracts a stale auto-clear, reported as an expected side effect', () => {
+  const { isEffectivelyWrongProductionOrShow } = require('./content-quality.js');
+  const { unexpectedChanges } = require('./review-field-edit.js');
+  const record = {
+    url: 'https://www.theguardian.com/stage/2020/mar/01/pass-over-kiln-review',
+    wrongProduction: false,
+    wrongProductionAutoCleared: 'rebuild: WE/OB exempt from URL-year guard (was: URL contains year 2020)',
+    wrongProductionAutoClearedAt: '2026-06-01',
+  };
+  const res = applyReviewFieldEdit(record, { field: 'wrongProduction', oldValue: false, newValue: true }, stamp);
+  assert.equal(res.ok, true);
+  assert.equal(res.record.wrongProductionAutoCleared, undefined);
+  assert.equal(res.record.wrongProductionAutoClearedAt, undefined);
+  assert.ok(res.sideEffectKeys.includes('wrongProductionAutoCleared'));
+  assert.match(res.msg, /retracted/);
+  assert.equal(isEffectivelyWrongProductionOrShow(res.record).effectivelyWrongProduction, true);
+  // The executor passes sideEffectKeys, so the retraction is not "unexpected".
+  assert.deepEqual(unexpectedChanges(record, res.record, 'wrongProduction', res.sideEffectKeys), []);
+  assert.ok(unexpectedChanges(record, res.record, 'wrongProduction').includes('wrongProductionAutoCleared'));
+});
+
+test('setting a flag with no auto-clear present has no side effects', () => {
+  const res = applyReviewFieldEdit({ url: 'u' }, { field: 'wrongProduction', oldValue: null, newValue: true }, stamp);
+  assert.equal(res.ok, true);
+  assert.deepEqual(res.sideEffectKeys, []);
+  const off = applyReviewFieldEdit({ url: 'u', wrongProduction: true }, { field: 'wrongProduction', oldValue: true, newValue: false }, stamp);
+  assert.deepEqual(off.sideEffectKeys, []);
+});

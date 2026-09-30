@@ -39,3 +39,10 @@ test('no modal, no link, no known-venue parenthetical: null (deferred, as before
 <div class='show-page-v2__info-top-line'> Closed </div></body></html>`;
   assert.equal(venueFromShowScoreDoc(docOf(html)), null);
 });
+
+test('non-venue survey attributes (Online, Various venues, Site-specific) are refused', () => {
+  for (const bad of ['Online', 'Various venues', 'Site-specific', 'Virtual Stage', 'Streaming']) {
+    const html = FALLS_FOR_JODIE.replace("venue-name='The Tank'", `venue-name='${bad}'`);
+    assert.equal(venueFromShowScoreDoc(docOf(html)), null, bad);
+  }
+});

@@ -498,3 +498,12 @@ test('extractGuardianReview: non-review headlines and empty titles are null', ()
   assert.equal(extractGuardianReview({ title: 'Hamlet review – y', link: 'not a url', categories: ['London'] })?.market, 'west-end');
 });
 
+
+test('extractGuardianReview: "Review" inside a title parses; a US-theater-only (regional) item is dropped', () => {
+  assert.deepEqual(
+    extractGuardianReview({ title: 'The Review Show review \u2013 a satire of critics', link: 'https://www.theguardian.com/stage/2026/sep/01/the-review-show-review-soho-theatre-london', categories: [] }),
+    { title: 'The Review Show', market: 'west-end' });
+  assert.equal(
+    extractGuardianReview({ title: 'A Streetcar Named Desire review \u2013 steamy', link: 'https://www.theguardian.com/stage/2026/sep/01/streetcar-review-steppenwolf-chicago', categories: ['US theater', 'Chicago'] }),
+    null);
+});

@@ -104,9 +104,22 @@ function applyReviewFieldEdit(record, action, stamp) {
     return { ok: false, reason: 'clearing duplicateOf needs a duplicateClearReason edit first (else the write guard restores it)' };
   }
   const next = { ...record, [field]: newValue };
+  // A human verdict setting the flag must retract any earlier machine
+  // auto-clear, or isEffectivelyWrongProductionOrShow keeps reading the flag
+  // as cleared and the review stays live (BRO-4432; the helper's contract:
+  // "every wrongProduction = true writer should call this").
+  let sideEffectKeys = [];
+  if (newValue === true && (field === 'wrongProduction' || field === 'wrongShow')) {
+    const guard = require('./review-write-guard');
+    const beforeRetract = { ...next };
+    if (field === 'wrongProduction') guard.invalidateWrongProductionAutoClear(next);
+    else guard.invalidateWrongShowAutoClear(next);
+    sideEffectKeys = unexpectedChanges(beforeRetract, next, field);
+  }
   const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
   next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at }];
-  return { ok: true, record: next, msg: `${field}: ${JSON.stringify(expected)} -> ${JSON.stringify(newValue)}` };
+  const retractMsg = sideEffectKeys.length ? ` (retracted ${sideEffectKeys.join(', ')})` : '';
+  return { ok: true, record: next, sideEffectKeys, msg: `${field}: ${JSON.stringify(expected)} -> ${JSON.stringify(newValue)}${retractMsg}` };
 }
 
 /**
@@ -129,11 +142,11 @@ function resolveReviewPath(reviewTextsDir, rel) {
  * criticName; a URL collision can set duplicateOf). An approved fix must not
  * report success while one of those quietly changed what ships (ship-check).
  */
-function unexpectedChanges(before, after, field) {
+function unexpectedChanges(before, after, field, expectedKeys = []) {
   const keys = new Set([...Object.keys(before || {}), ...Object.keys(after || {})]);
   const changed = [];
   for (const k of keys) {
-    if (k === field || k === 'approvedFixes') continue;
+    if (k === field || k === 'approvedFixes' || expectedKeys.includes(k)) continue;
     if (JSON.stringify(before[k] === undefined ? null : before[k]) !== JSON.stringify(after[k] === undefined ? null : after[k])) changed.push(k);
   }
   return changed.sort();
