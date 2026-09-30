@@ -3472,5 +3472,17 @@
       }
     ],
     "queuedAt": "2026-09-30T18:06:57.601Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:the-standard-of-living-west-end-2026",
+    "title": "Content mismatch on The Standard Of Living",
+    "description": "theatrecat/Unknown (theatrecat--unknown.json) SHIPPED but fullText never mentions 'The Standard Of Living' (4380 chars): https://theatrecat.com/2026/09/30/the-standard-of-living-theatre-royal-haymarket-w1/\n⚠️  financialtimes/Sarah Hemming (financialtimes--sarah-hemming.json) also too short to assess (0 chars): https://www.ft.com/content/8f443987-91a7-4785-83e8-51937613fc77?syn-25a6b1a6=1",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T18:21:25.634Z"
   }
 ]
