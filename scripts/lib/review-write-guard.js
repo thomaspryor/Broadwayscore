@@ -324,6 +324,10 @@ const PROTECTED_FIELDS = [
   // stamps these two, which the CLEAR_BREADCRUMBS entries below honor.
   'staleTextVerdictScoreParked',
   'staleTextVerdictScoreParkedAt',
+  // BRO-4391: one-shot stamp that a wrong_production verdict was re-judged with
+  // the show's declared priorRuns/tourLegs in the prompt. Dropping it would
+  // re-arm isPreContextWrongProduction and loop clear→rescore→re-reject.
+  'productionVerdictRecheckedAt',
   'needsRescore',
   // Task #1237 audit (same bug class as #97 above): apply-audit-flags.js deletes
   // fullText/assignedScore/ensembleData and sets fullTextWrongAuthor=true when a

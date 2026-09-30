@@ -33,6 +33,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { isTimestampAfter } = require('./review-guards');
 const { hasEnsembleConsensus, isTextStaleRelativeToUrlRewrite } = require('./wrong-production-autoclear.js');
 
 function isHumanOverridden(data) {
@@ -55,6 +56,12 @@ function classifyAutoclearVsEnsemble(data, { reason, autoClearedField, flagField
   if (!hasEnsembleConsensus(data, reason)) return { isViolation: false };
   if (data[flagField] === true) return { isViolation: false }; // flag never actually cleared
   if (isHumanOverridden(data)) return { isViolation: false, exemptReason: 'human-overridden' };
+  // BRO-4391: a verdict issued before the show's declared runs/tour legs were
+  // in the prompt was re-checked once; only a rejection NEWER than the recheck
+  // (issued with that context) is a verdict to defer to.
+  if (data.productionVerdictRecheckedAt && !isTimestampAfter(data.rejectedAt, data.productionVerdictRecheckedAt)) {
+    return { isViolation: false, exemptReason: 'pre-context-verdict-rechecked' };
+  }
   if (isTextStaleRelativeToUrlRewrite(data)) return { isViolation: false, exemptReason: 'stale-rejection-url-rewrite' };
   return { isViolation: true };
 }

@@ -1,142 +1,38 @@
 {
-  "updatedAt": "2026-09-30T00:04:05.050Z",
-  "processed": 156,
-  "failed": 101,
-  "successRate": "60.7%",
+  "updatedAt": "2026-09-30T00:14:57.003Z",
+  "processed": 1,
+  "failed": 7,
+  "successRate": "12.5%",
   "tierBreakdown": {
-    "playwright": 86,
-    "amp": 2,
-    "browserbase": 8,
+    "playwright": 1,
+    "amp": 1,
+    "browserbase": 1,
     "directCookies": 0,
-    "scrapingdog": 22,
-    "scrapingbee": 15,
+    "scrapingdog": 1,
+    "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 19
+    "archive": 0
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-09-29T21:35:31.739Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-29T22:56:36.459Z",
+      "t": "2026-09-30T00:13:16.351Z",
       "event": "bb-session",
-      "session": "efc64560",
-      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+      "session": "416c6665",
+      "url": "https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/"
     },
     {
-      "t": "2026-09-29T22:56:47.772Z",
+      "t": "2026-09-30T00:13:36.188Z",
       "event": "bb-session",
-      "session": "3e069779",
-      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
+      "session": "33d05aec",
+      "url": "https://musicaltheatrereview.com/dog-man-the-musical-queen-elizabeth-hall/"
     },
     {
-      "t": "2026-09-29T23:00:02.846Z",
+      "t": "2026-09-30T00:14:40.837Z",
       "event": "bb-session",
-      "session": "8704db69",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-09-29T23:00:03.713Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-09-29T23:00:20.609Z",
-      "event": "bb-session",
-      "session": "44ce9ce4",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-09-29T23:00:21.538Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-29T21:47:08.204Z",
-      "event": "bb-session",
-      "session": "a7b89cb5",
-      "url": "https://deadline.com/2026/02/rege-jean-page-great-gatsby-theater-adaptation-star"
-    },
-    {
-      "t": "2026-09-29T21:49:10.433Z",
-      "event": "bb-session",
-      "session": "742f30d6",
-      "url": "https://www.nytimes.com/2025/10/29/theater/bat-boy-phantom-of-opera.html"
-    },
-    {
-      "t": "2026-09-29T21:49:10.921Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-29T21:49:29.554Z",
-      "event": "bb-session",
-      "session": "99d430d9",
-      "url": "https://www.nytimes.com/2025/10/29/theater/bat-boy-phantom-of-opera.html"
-    },
-    {
-      "t": "2026-09-29T21:49:29.997Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-09-29T23:50:46.660Z",
-      "event": "bb-session",
-      "session": "28c53e1c",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-29T23:50:51.211Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-29T23:51:10.926Z",
-      "event": "bb-session",
-      "session": "15cf57e3",
-      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
-    },
-    {
-      "t": "2026-09-29T23:51:15.401Z",
-      "event": "bb-login-uncertain",
-      "domain": "northjersey.com"
-    },
-    {
-      "t": "2026-09-29T23:53:55.623Z",
-      "event": "bb-session",
-      "session": "c8b13ffb",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-09-29T23:53:56.361Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-29T23:54:14.247Z",
-      "event": "bb-session",
-      "session": "70f8c38b",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-09-29T23:54:14.943Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-30T00:02:24.980Z",
-      "event": "bb-session",
-      "session": "26cc80ae",
-      "url": "https://www.thestage.co.uk/reviews/the-seagull-review-barbican-theatre-london-ch"
-    },
-    {
-      "t": "2026-09-30T00:02:25.753Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
+      "session": "bd7f86ac",
+      "url": "https://observer.com/2017/01/romeo-and-juliet-opera-review-met/"
     }
   ]
 }
