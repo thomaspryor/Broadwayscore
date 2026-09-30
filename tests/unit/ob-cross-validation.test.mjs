@@ -39,7 +39,8 @@ test('isCandidateConfirmed: rejects gala/benefit phantom that neither source has
     { playbillEntries: PLAYBILL, lortelEntries: LORTEL }
   );
   assert.equal(r.confirmed, false);
-  assert.match(r.reason, /no Playbill\/Lortel match/);
+  // BRO-4396: the junk filter now names it before any source lookup.
+  assert.match(r.reason, /not a production \(gala\/benefit/);
 });
 
 test('isCandidateConfirmed: normalizes punctuation (||: GIRLS :|| variants)', () => {

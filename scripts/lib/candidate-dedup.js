@@ -71,6 +71,11 @@ function inLondonPool(row) {
  * @param {number} [opts.jaccardThreshold]
  * @param {number} [opts.typoEditDistanceMax]
  * @param {number} [opts.typoMinTitleLength]
+ * @param {(a: string, b: string) => boolean} [opts.venuePredicate=venuesMatch]
+ *   venue equality test. promote-ob-venue-candidates.js passes a looser one
+ *   (ob-cross-validation.js venuesCompatible) as a SECOND pass so a room
+ *   suffix ("Soho Playhouse Main Stage") still reads as the same house
+ *   (BRO-4396); a looser predicate only ever finds more duplicates.
  * @param {boolean} [opts.londonPoolFallback=true] when the venue strings do
  *   not match, fall back to a normalized-title match against rows in the
  *   London pool (both sides category west-end / off-west-end). See
@@ -83,7 +88,8 @@ function findExistingMatch(candidate, existingShows, opts = {}) {
   const londonPoolFallback = opts.londonPoolFallback ?? true;
 
   const all = Array.isArray(existingShows) ? existingShows : [];
-  const cands = all.filter(e => venuesMatch(candidate.venue, e.venue));
+  const venuePredicate = opts.venuePredicate || venuesMatch;
+  const cands = all.filter(e => venuePredicate(candidate.venue, e.venue));
   const venueMatched = findExistingMatchAtVenue(candidate, cands, { jaccardThreshold, typoEditDistanceMax, typoMinTitleLength });
   if (venueMatched) return venueMatched;
   if (!londonPoolFallback || !inLondonPool(candidate)) return null;
