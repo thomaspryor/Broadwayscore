@@ -153,7 +153,7 @@
       "cardId": null,
       "linearIdentifier": "BRO-3030",
       "silentRefires": 1,
-      "resolvedAt": "2026-09-30T01:53:43.031Z"
+      "resolvedAt": "2026-09-30T01:58:36.502Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -5877,20 +5877,23 @@
       "linearIdentifier": null
     },
     "test-yml:red:E2E Tests:36f3f039": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "main test.yml red: E2E Tests / Run E2E tests",
       "firstSeen": "2026-09-28T21:32:51.430Z",
-      "lastSeen": "2026-09-29T22:18:39.100Z",
-      "lastNotifiedAt": "2026-09-29T14:55:02.180Z",
+      "lastSeen": "2026-09-30T01:58:38.693Z",
+      "lastNotifiedAt": "2026-09-30T01:58:38.693Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-4255",
+      "linearIdentifier": "BRO-4407",
       "absentRunIds": [],
-      "silentRefires": 14,
-      "resolvedAt": "2026-09-29T22:37:03.244Z",
-      "resolveReason": "job-green"
+      "dispatch": {
+        "requestedAt": "2026-09-30T01:58:38.693Z",
+        "mode": "dispatch-at-filing",
+        "runId": "36656601667",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36656601667"
+      }
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
       "status": "open",
@@ -6971,7 +6974,7 @@
       "cardId": null,
       "linearIdentifier": "BRO-4397",
       "silentRefires": 2,
-      "resolvedAt": "2026-09-30T01:53:45.272Z",
+      "resolvedAt": "2026-09-30T01:58:38.685Z",
       "resolveReason": "job-green"
     },
     "land:land/bro-4396-all": {
