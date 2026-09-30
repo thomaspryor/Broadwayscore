@@ -3,6 +3,70 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-09-29T22:16:38.819Z"
+    "at": "2026-09-30T01:29:53.899Z"
+  },
+  "venueReaders": {
+    "at": "2026-09-30T01:29:53.899Z",
+    "readers": 54,
+    "active": 151,
+    "activeCovered": 98,
+    "uncovered": {
+      "theatre row theatre 5": {
+        "firstSeen": "2026-09-30T01:29:53.899Z",
+        "venue": "Theatre Row, Theatre 5"
+      }
+    },
+    "explained": [
+      {
+        "venue": "The Shed",
+        "recentShows": 5,
+        "reason": "queue-it bot wall on theshed.org/program; needs a real browser"
+      },
+      {
+        "venue": "AMT Theater",
+        "recentShows": 4,
+        "reason": "sells through Ludus behind a Cloudflare JS challenge; the Wix site lists shows as free text"
+      },
+      {
+        "venue": "Theater 555",
+        "recentShows": 3,
+        "reason": "Wix pages are image-only; tickets are a VenueTix single-page app"
+      },
+      {
+        "venue": "Urban Stages",
+        "recentShows": 3,
+        "reason": "site lists readings and a music festival, no production listing"
+      },
+      {
+        "venue": "the cell",
+        "recentShows": 2,
+        "reason": "Tickettailor listing says \"Multiple dates\"; run dates only on per-event pages"
+      },
+      {
+        "venue": "The Culture Club",
+        "recentShows": 2,
+        "reason": "no public listing found"
+      },
+      {
+        "venue": "Peter Jay Sharp Theater",
+        "recentShows": 2,
+        "reason": "name shared by Playwrights Horizons (read) and Symphony Space"
+      },
+      {
+        "venue": "spit&vigor's Tiny Baby Blackbox Theatre",
+        "recentShows": 2,
+        "reason": "Wix events widget returns only the next ~8 dates"
+      },
+      {
+        "venue": "St. Luke's Theatre",
+        "recentShows": 2,
+        "reason": "stlukestheatre.com says the venue closed in January 2021"
+      },
+      {
+        "venue": "Theaterlab",
+        "recentShows": 2,
+        "reason": "site returns an empty page to a plain fetch"
+      }
+    ]
   }
 }
