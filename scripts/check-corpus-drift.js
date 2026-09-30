@@ -454,6 +454,19 @@ const AUDITS = [
     healExempt: 'ratchet — fix the producer that wrote the bad outletId, not the ceiling; no mechanical --fix is safe (the class is discovered per-writer, not per-file).',
     crashCodes: [],            // 0 clean/shrinking / 1 = population grew
   },
+  {
+    name: 'awards-freshness',
+    healPathRequired: true, // BRO-4434: moved from test.yml's awards-data-freshness job (main = code only)
+    label: 'data/awards.json untouched for >14 months (annual awards cadence)',
+    script: 'audit-awards-freshness.js',
+    args: [],
+    healExempt: 'annual manual update (memory/awards-annual-update.md) — the digest→card promotion IS the heal path; no mechanical fix exists for "nobody ran this year\'s ceremonies".',
+    // 1 = stale OR the commits-by-path API gave no answer (printed as such).
+    // Deliberately NOT a crash code: a GitHub API blip is one drift line,
+    // never a job-level exit 3 that reds the other ~30 audits (plan-review
+    // pre-mortem, BRO-4434).
+    crashCodes: [],
+  },
 ];
 
 function runAudit(audit) {
