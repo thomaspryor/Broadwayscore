@@ -7,6 +7,12 @@
  *   - WE/OWE: WestEndTheatre.com WP-API, category 10 (review roundups).
  *     WET publishes a roundup for every notable WE/OWE opening — a roundup
  *     whose show title matches nothing in shows.json is a missing show.
+ *   - WE/OWE + NYC: the Guardian's theatre-reviews RSS (BRO-4432). One
+ *     critic review per item, routed to a market by lib/reverse-discovery.js
+ *     extractGuardianReview (London / New York tags or slug; regional UK
+ *     and tours are dropped). The roundup sources above only cover shows big
+ *     enough for a roundup; fringe London houses (Arcola, Yard, Theatre503,
+ *     New Diorama) reached no source at all before this.
  *   - BW/OB:  DTLI shows-sitemap entries (last 2 sitemaps) with a recent
  *     lastmod. DTLI creates/updates a show page around opening night.
  *   - BW/OB:  BroadwayWorld's Google-News sitemap (bwwgnewsbway.cfm) — a
@@ -51,12 +57,12 @@
 const USAGE = `audit-reverse-discovery.js — find reviewed-but-missing shows
 
 Usage:
-  node scripts/audit-reverse-discovery.js [--dry-run] [--days=N] [--source=wet|dtli|bww|playbill|all]
+  node scripts/audit-reverse-discovery.js [--dry-run] [--days=N] [--source=wet|guardian|dtli|bww|playbill|all]
 
 Options:
   --dry-run     Print candidates; skip state/audit writes and Discord alert
   --days=N      Recency window for source items (default 45)
-  --source=X    Limit to one source (wet|dtli|bww|playbill|nyt-theater|all)
+  --source=X    Limit to one source (wet|guardian|dtli|bww|playbill|nyt-theater|all)
   --help, -h    Show this help
 
 Exit codes: 0 = ran (candidates or not); 1 = every source fetch failed.
@@ -77,7 +83,7 @@ async function main(argv = process.argv.slice(2)) {
   const path = require('path');
   const { fetchPage, fetchJSON } = require('./lib/scraper');
   const {
-    extractShowTitleFromWetRoundup, titleFromDtliSlug, extractShowTitleFromBwwRoundup,
+    extractShowTitleFromWetRoundup, extractGuardianReview, parseGuardianReviewsRss, titleFromDtliSlug, extractShowTitleFromBwwRoundup,
     extractShowTitleFromPlaybillRoundup, isPlaybillNonNycRoundup, resolveMatchedShowId,
     isBwwNonStageTieIn, isBwwNonNycRoundup, extractOpeningsFromNytheaterPost,
     buildShowTitleIndex, findUnmatchedCandidates, candidateKey,
@@ -126,6 +132,39 @@ async function main(argv = process.argv.slice(2)) {
       sourcesOk++;
     } catch (e) {
       console.error(`WET source failed: ${e.message}`);
+    }
+  }
+
+  // ── Source 1b: Guardian theatre reviews (WE/OWE + NYC) — BRO-4432 ──
+  // One critic review per item, so an unmatched one is a reviewed production
+  // missing from the catalogue. Covers fringe London houses (Arcola, Yard,
+  // Theatre503, New Diorama) that never get a WET/BWW roundup. ~20 items,
+  // roughly a 10-day window at the Guardian's pace; this job runs every 6h.
+  if (sourceFilter === 'all' || sourceFilter === 'guardian') {
+    sourcesTried++;
+    try {
+      const xml = (await fetchPage('https://www.theguardian.com/stage/theatre+tone/reviews/rss')).content;
+      const feed = parseGuardianReviewsRss(xml);
+      if (feed.length === 0) throw new Error('Guardian reviews RSS had no <item>s');
+      let routed = 0, recent = 0, reviewHeadlines = 0;
+      for (const it of feed) {
+        const ts = Date.parse(it.pubDate);
+        if (!Number.isFinite(ts) || ts < cutoff) continue;
+        recent++;
+        if (/\breview\b/i.test(it.title)) reviewHeadlines++;
+        // null = regional UK / tour / unparseable: no catalogue market to check.
+        const r = extractGuardianReview(it);
+        if (!r) continue;
+        routed++;
+        items.push({ title: r.title, source: 'guardian-review', url: it.link, date: new Date(ts).toISOString(), market: r.market });
+      }
+      // Every item in this feed is a "<Title> review" headline; none in a
+      // non-empty recent window is format drift, not a quiet week.
+      if (recent > 0 && reviewHeadlines === 0) throw new Error(`Guardian title-format drift: ${recent} recent items, 0 "review" headlines`);
+      console.log(`Guardian: ${routed} London/NYC reviews of ${recent} within ${days}d`);
+      sourcesOk++;
+    } catch (e) {
+      console.error(`Guardian source failed: ${e.message}`);
     }
   }
 
