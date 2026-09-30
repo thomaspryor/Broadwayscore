@@ -81,7 +81,7 @@ const { invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = req
 const { EXCERPT_FIELDS } = require('../lib/excerpt-fields');
 // Shared with the cascade gate's queue counter (scripts/count-scoring-queue.js)
 // so "would this review be scoreable?" has exactly one answer — see task #652.
-const { selectScorableText } = require('../lib/scorable-text');
+const { selectScorableText, strippedFullTextSelection } = require('../lib/scorable-text');
 const { declaredRunsForPrompt } = require('../lib/declared-runs');
 // Same predicates the cascade gate counts with — one source, so the gate can
 // never again believe there is work the scorer will not take (task #652).
@@ -2047,6 +2047,10 @@ async function main(): Promise<void> {
 
     // Pre-scoring content quality check
     const scorableText = getScorableText(reviewFile, filePath);
+    // BRO-4430: the selection stripped trailing site chrome (booking calendar,
+    // "Latest News") from the stored text; score that, not the raw page.
+    const strippedSelection = strippedFullTextSelection(reviewFile, scorableText);
+    if (strippedSelection) reviewFile.fullText = strippedSelection;
     if (scorableText && reviewFile.fullText && reviewFile.fullText.length >= 100) {
       // Use the REAL show title from shows.json (not a hyphens-to-spaces synthesis
       // of the showId). This mirrors the call in getScorableText() a few lines up.

@@ -1,80 +1,107 @@
 {
-  "runDate": "2026-09-30T20:34:59.971Z",
+  "runDate": "2026-09-30T21:11:00.604Z",
   "config": {
     "batchSize": 10,
-    "maxReviews": 5,
+    "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "",
-    "aggressive": true,
+    "showFilter": "golden-boy-off-west-end-2026",
+    "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 1,
-    "failed": 4,
+    "processed": 5,
+    "failed": 6,
     "skipped": 0,
-    "successRate": "20.0%"
+    "successRate": "45.5%"
   },
   "tierBreakdown": {
-    "playwright": 0,
+    "playwright": 2,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 1,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 9,
+    "tier1Success": 3,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 3,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 1,
-    "tier1_9Success": 0,
-    "tier2Attempts": 1,
-    "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier3_6Attempts": 0,
+    "tier1_9Attempts": 5,
+    "tier1_9Success": 3,
+    "tier2Attempts": 5,
+    "tier2Success": 1,
+    "tier3Attempts": 4,
+    "tier3Success": 2,
+    "tier3_6Attempts": 4,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 8,
     "tier4Success": 1,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 0,
+    "totalFailed": 5,
+    "scrapingBeePageCredits": 11,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 4,
+    "browserbaseSessionsUsed": 3,
+    "browserbaseMinutesUsed": 0.1,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
+    "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json",
+    "golden-boy-off-west-end-2026/broadwayworld--unknown.json",
+    "golden-boy-off-west-end-2026/daily-mail--patrick-marmion.json",
+    "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
+    "golden-boy-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
   ],
   "failed": [
-    "cosi-fan-tutte-off-broadway-2026/wsj--heidi-waleson.json",
-    "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
-    "the-price-off-west-end-2026/wsj--unknown.json",
-    "titanique-2026/wsj--charles-isherwood.json"
+    "golden-boy-off-west-end-2026/ntlive--powster.json",
+    "golden-boy-off-west-end-2026/thestage--dave-fargnoli.json",
+    "golden-boy-off-west-end-2026/thestage--the-stage.json",
+    "golden-boy-off-west-end-2026/times-uk--patrick-kidd.json",
+    "golden-boy-off-west-end-2026/times-uk--the-times.json",
+    "golden-boy-off-west-end-2026/whatsonstage--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [],
+    "playwright": [
+      "golden-boy-off-west-end-2026/londonlivinglarge--london-living-large.json",
+      "golden-boy-off-west-end-2026/theatre-vibe--lizzie-loveridge.json"
+    ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "golden-boy-off-west-end-2026/daily-mail--patrick-marmion.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "an-ark-off-broadway-2026/wsj--charles-isherwood.json"
+      "golden-boy-off-west-end-2026/the-jewish-chronicle--john-nathan.json",
+      "golden-boy-off-west-end-2026/broadwayworld--unknown.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "ntlive": {
+      "count": 1,
+      "domain": "ntlive.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Times (UK)": {
+      "count": 1,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
