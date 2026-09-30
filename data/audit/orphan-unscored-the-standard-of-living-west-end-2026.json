@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "showId": "the-standard-of-living-west-end-2026",
+  "openingDate": "2026-09-29",
+  "detectedAt": "2026-09-30T20:02:29.960Z",
+  "windowDays": 7,
+  "orphans": [
+    {
+      "file": "london-theatre--unknown.json",
+      "outletId": "london-theatre",
+      "criticName": "Unknown",
+      "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
+      "fullTextLen": 5786,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "times-uk--unknown.json",
+      "outletId": "times-uk",
+      "criticName": "Unknown",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+      "fullTextLen": 0,
+      "dispatchActionable": false,
+      "skipReason": "no_scorable_text",
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "stub",
+      "eligibilityReason": null
+    }
+  ],
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
+  "blockedOrphanCount": 1,
+  "blockBroadcast": true,
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-30T20:02:29.960Z"
+}
