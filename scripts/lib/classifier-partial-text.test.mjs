@@ -136,6 +136,17 @@ test('content-verifier prompt shows the late section of a multi-show column', ()
   assert.ok(!prompt.includes('first 2500 chars'));
 });
 
+test('wrong-show and wrong-production prompts reach the late section of a multi-show column', () => {
+  const { buildWrongShowUserPrompt, buildWrongProductionUserPrompt } = require('./classifier-prompts.js');
+  const show = { id: 'hungry-women-off-broadway-2026', title: 'Hungry Women', type: 'play', market: 'off-broadway' };
+  const ws = buildWrongShowUserPrompt({ show, showTitle: 'Hungry Women', showId: show.id, text: LONG_COLUMN });
+  assert.ok(ws.includes('Hungry Women imagines a world without men'), 'wrong-show prompt');
+  const wp = buildWrongProductionUserPrompt({
+    show, result: { showId: show.id, showYear: 2026, signals: [] }, reviewData: { fullText: LONG_COLUMN }, revivals: [],
+  });
+  assert.ok(wp.includes('Hungry Women imagines a world without men'), 'wrong-production prompt');
+});
+
 test('Gemini stamp is blocked by a human clear, a high-confidence CV review, and bot-stub text', () => {
   // Electra/Persona NYT shape: all three at once; the human clear is reported first.
   const electra = {
