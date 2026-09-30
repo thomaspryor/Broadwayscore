@@ -218,12 +218,15 @@ function executeDataEdit(action) {
     }
 
     shows[idx][field] = newValue;
+    // The site also reads tags:'revival', so the flag alone can't clear it (BRO-4436).
+    if (field === 'isRevival') require('./lib/revival-tags.js').syncRevivalTags(shows[idx]);
     // `shows` was mutated in place and (for the object-root shape) IS
     // `data.shows` — pass `data` itself, not a rebuilt `{...data, shows}`
     // copy, so shows-write-guard's object-identity snapshot lookup still
     // matches and the concurrent-writer merge fires.
     saveJsonFile(relPath, Array.isArray(data) ? shows : data);
-    return { ok: true, msg: `shows.json: ${field} updated for ${showId}` };
+    const tagNote = field === 'isRevival' ? ` (tags: ${JSON.stringify(shows[idx].tags)})` : '';
+    return { ok: true, msg: `shows.json: ${field} updated for ${showId}${tagNote}` };
 
   } else if (file === 'commercial.json') {
     const slug = action.showSlug || showId;

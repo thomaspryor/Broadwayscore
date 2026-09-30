@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4432-c",
   "planId": "c3f1a2d4-7e5b-4c19-9a0d-4432c0ffee01",
-  "status": "pending",
+  "status": "partial",
   "createdAt": "2026-09-30T18:05:00.000Z",
   "submitter": {
     "name": null,
@@ -40,5 +40,23 @@
         "description": "Same file; the stored contentTierReason already says Wrong production"
       }
     ]
-  }
+  },
+  "executedAt": "2026-09-30T18:01:08.965Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "as-you-like-it-globe-west-end-2026/guardian--arifa-akbar.json wrongProduction: false -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, wrongProductionAutoCleared, wrongProductionAutoClearedAt)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "oliver-west-end-2024/thestage--dave-fargnoli.json wrongShow: null -> true (retracted clearBreadcrumbRetracted, clearBreadcrumbRetractedAt, clearBreadcrumbRetractedFields, wrongShowAutoCleared)"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": false,
+      "reason": "wrongProduction: current value doesn't match expected (data changed since plan was created)"
+    }
+  ]
 }
