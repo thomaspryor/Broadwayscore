@@ -616,7 +616,8 @@ jobs:
             esac
             if [ "$BLOCKED" = "true" ] && [ "$PRIOR_BLOCKED" != "true" ] && [[ "$DEADLINE_SHOWS" == *",$SHOW,"* ]]; then
               BLOCKED=false
-              OVERRIDDEN_SHOWS+=("$SHOW")
+              # id:action so the owner page can tell "still unscored" from "check crashed".
+              OVERRIDDEN_SHOWS+=("$SHOW:$ACTION")
               echo "::warning::Show $SHOW is past its draft deadline: unscored review(s) recorded ($ACTION), draft not blocked"
             fi
           done
@@ -854,6 +855,11 @@ jobs:
             # step narrowed the batch), so any run type creates the draft now.
             SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
             CREATE_DRAFT="true"
+            # The workflow readiness gate (15+ reviews + aggregator) already
+            # passed; the script's stricter T1/T2/high-confidence gate must not
+            # silently leave a past-deadline show with no draft. The owner still
+            # reviews the draft (and the page lists what the gates flagged).
+            DRAFT_FLAGS="--force-create-draft"
             echo "** DEADLINE MODE — draft deadline passed for ${{ steps.check.outputs.deadline_shows }}: preview to owner AND creating Resend draft **"
           else
             SEND_TO_FLAG="--send-to=${{ secrets.OWNER_EMAIL }}"
@@ -873,7 +879,7 @@ jobs:
             fi
             if [ "$CREATE_DRAFT" = "true" ]; then
               echo "--- $market draft ---"
-              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" 2>&1) || true
+              OUTPUT=$(node scripts/send-opening-night-broadcast.js --market="$market" --lookback="$LOOKBACK" --shows="$shows" ${DRAFT_FLAGS:-} 2>&1) || true
               echo "$OUTPUT"
               if echo "$OUTPUT" | grep -q "Draft ready\|Draft created"; then
                 SENT="true"
@@ -931,16 +937,21 @@ jobs:
                 for (const s of d.shows || []) for (const c of s.checks || []) {
                   if (!c.ok && c.severity === 'error') errs.push(c.name + ': ' + String(c.message).slice(0, 300));
                 }
-              } catch (e) { errs.push('(checklist output unreadable: ' + e.message + ')'); }
-              lines.push(id + ' QA checklist errors:\n  - ' + (errs.length ? errs.join('\n  - ') : '(none captured)'));
+              } catch (e) { errs.push('the QA checklist did not produce results (it crashed or timed out), so NONE of this show\'s reviews were checked'); }
+              lines.push(id + ' QA checklist errors:\n  - ' + (errs.length ? errs.join('\n  - ') : 'the checklist reported errors but none could be read back, so treat every review as unchecked'));
             }
             for (const id of split(process.env.DRIFT_OVERRIDDEN)) {
               ids.add(id);
               lines.push(id + ': review-count drift over 2 (a scored review may be missing from the email). See data/audit/review-count-drift-' + id + '.json');
             }
-            for (const id of split(process.env.ORPHAN_OVERRIDDEN)) {
+            for (const entry of split(process.env.ORPHAN_OVERRIDDEN)) {
+              const [id, action] = entry.split(':');
               ids.add(id);
-              lines.push(id + ': at least one review was still unscored, so the score in the draft may change once it is scored. A rescore was dispatched.');
+              if (action === 'error' || !['in-flight', 'wait', 'dispatch', 'alert'].includes(action)) {
+                lines.push(id + ': the unscored-review check itself failed (' + (action || 'unknown') + '), so it is not known whether every review was scored. Check the score in the draft.');
+              } else {
+                lines.push(id + ': at least one review was still unscored (' + action + '), so the score in the draft may change once it is scored.');
+              }
             }
             const list = [...ids].sort().join(',');
             routeAlert({
@@ -1262,7 +1273,11 @@ jobs:
           "
 
       - name: Send push notifications (mobile app)
-        if: steps.check.outputs.broadway != '' && env.BROADCAST_HOLD_ACTIVE != 'true'
+        # BRO-4417: only when a preview/draft really went out this run, and once per
+        # show (push:<id> marker in opening-night-sent.json). Before this, any run
+        # that reached this step re-pushed, which the hourly deadline cron would
+        # have turned into up to 11 "reviews are in" pushes a day.
+        if: steps.check.outputs.broadway != '' && env.BROADCAST_HOLD_ACTIVE != 'true' && steps.broadcast.outputs.broadcast_sent == 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -1271,6 +1286,13 @@ jobs:
           # actually broadcast (post-readiness-gate set, NOT steps.find.outputs.broadway).
           IFS=',' read -ra SHOW_IDS <<< "${{ steps.check.outputs.broadway }}"
           for SHOW_ID in "${SHOW_IDS[@]}"; do
+            if node -e "
+              const s = JSON.parse(require('fs').readFileSync('data/opening-night-sent.json', 'utf8')).shows || {};
+              process.exit(s['push:' + process.argv[1]] ? 0 : 1);
+            " "$SHOW_ID" 2>/dev/null; then
+              echo "Push already sent for $SHOW_ID, skipping"
+              continue
+            fi
             # Look up slug and title from shows.json
             SHOW_INFO=$(node -e "
               const shows = require('./data/shows.json').shows;
@@ -1288,7 +1310,14 @@ jobs:
               --repo thomaspryor/BroadwayScorecard-app \
               -f type=reviews-in \
               -f "show=$SLUG" \
-              -f "title=$TITLE" || echo "Push dispatch failed for $SLUG — non-critical"
+              -f "title=$TITLE" && node -e "
+                const fs = require('fs');
+                const p = 'data/opening-night-sent.json';
+                const d = JSON.parse(fs.readFileSync(p, 'utf8'));
+                d.shows = d.shows || {};
+                d.shows['push:' + process.argv[1]] = { sentAt: new Date().toISOString() };
+                fs.writeFileSync(p, JSON.stringify(d, null, 2) + '\n');
+              " "$SHOW_ID" || echo "Push dispatch failed for $SLUG — non-critical"
           done
 
       # BRO-2455 (2026-08-26): this used to be one "Commit data" step

@@ -26,6 +26,29 @@ test('overdue alert keeps the old inline definition (openingDate+T04:00Z, +1 day
   assert.ok(overdueAlertAt('2026-09-28') < draftDeadlineAt('2026-09-28'), 'owner is paged before any gate is overridden');
 });
 
+test('a timestamped openingDate uses its calendar date', () => {
+  assert.equal(draftDeadlineAt('2026-09-28T19:00:00Z').toISOString(), '2026-09-29T14:00:00.000Z');
+});
+
+test('overdue alert matches the old inline math across month, year and EST boundaries', () => {
+  const oldInline = (d) => { const x = new Date(d + 'T04:00:00Z'); x.setUTCDate(x.getUTCDate() + 1); return x.toISOString(); };
+  for (const d of ['2026-09-28', '2026-09-30', '2026-12-31', '2027-01-14', '2028-02-28', '2028-02-29']) {
+    assert.equal(overdueAlertAt(d).toISOString(), oldInline(d), d);
+  }
+});
+
+test('a sent (completed) broadcast is never forced', () => {
+  const shows = [bway('a', '2026-09-28')];
+  const sentShows = { a: { completed: true, draftStatus: 'sent', sentAt: '2026-09-29T20:00:00Z' } };
+  assert.deepEqual(pastDeadlineShows({ showIds: ['a'], shows, sentShows, nowMs: at('2026-09-30T20:00:00Z') }), []);
+});
+
+test('a show with no category is treated as Broadway (not subject to the Round-up rule)', () => {
+  const shows = [{ id: 'nocat', openingDate: '2026-09-28' }];
+  const newsletterIssues = [{ edition: 'west-end', featuredShowIds: ['nocat'] }];
+  assert.equal(pastDeadlineShows({ showIds: ['nocat'], shows, sentShows: {}, newsletterIssues, nowMs: at('2026-09-30T12:00:00Z') }).length, 1);
+});
+
 test('unparseable opening dates never trip the deadline', () => {
   for (const bad of [null, undefined, '', 'TBA', '2026-13-45x', 'Fall 2026']) {
     assert.equal(draftDeadlineAt(bad), null, String(bad));
