@@ -39,8 +39,21 @@ const path = require('path');
 const readline = require('readline');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
+// BRO-4370 / BRO-4401: ids the rebuild deliberately REFUSED to auto-register
+// (no resolvable domain, critic name, domain collision) are parked in
+// data/audit/outlet-registry-staging.json. They are known gaps awaiting a
+// human, not NEW ones, so --strict reports them separately instead of
+// failing on them — otherwise refusing a domainless row here would just
+// move the red from the null-domain ceiling to this gate.
+const { loadStagedOutletIds, STAGING_RELATIVE_PATH: OUTLET_STAGING_PATH } = require('./lib/outlet-auto-register');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { isExcludedFromOutletRegistryAudit } = require('./lib/outlet-registry-audit-exclusions');
+const { isExcludedFromOutletRegistryAudit, isPendingUnscored } = require('./lib/outlet-registry-audit-exclusions');
+// Advisory only (BRO-4401 what-else): branch 6 excludes unscored files still
+// waiting on score extraction, which is correct (the rebuild never includes
+// them) but could hide a real registry gap indefinitely if a file never
+// scores. Count how many have been waiting past this many days so the
+// backlog is visible in every run, without failing --strict on it.
+const PENDING_UNSCORED_STALE_DAYS = 14;
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 
@@ -262,6 +275,7 @@ function auditOutletRegistry() {
     registryNormalizationConflicts: [], // Cases where registry and normalization module disagree
     junkEntriesInRegistry: [],    // Junk/sentinel ids or aliases already IN the registry (task #1783)
     skippedJunkOutlets: [],        // outletIds seen in reviews but never suggested — isJunkOutlet (task #1783)
+    pendingUnscoredExcluded: { total: 0, stale: [] }, // branch-6 exclusions, with the ones waiting > PENDING_UNSCORED_STALE_DAYS (advisory)
   };
 
   // A reserved-sentinel id (e.g. "unknown" — literally what
@@ -316,7 +330,19 @@ function auditOutletRegistry() {
       // to scripts/lib/outlet-registry-audit-exclusions.js so it's unit
       // tested (scripts/outlet-registry.test.mjs) instead of re-derived here.
       // See that file's comments for the incident history behind each branch.
-      if (isExcludedFromOutletRegistryAudit(review)) continue;
+      if (isExcludedFromOutletRegistryAudit(review)) {
+        if (isPendingUnscored(review)) {
+          findings.pendingUnscoredExcluded.total++;
+          // Only an UNREGISTERED outlet is hidden by this exclusion — a
+          // pending nytimes file hides nothing, the registry has nytimes.
+          const since = Date.parse(review.textFetchedAt || review.firstSeenAt || '');
+          const unregistered = !registryAliasMap[reviewOutletId.toLowerCase()];
+          if (unregistered && !Number.isNaN(since) && Date.now() - since > PENDING_UNSCORED_STALE_DAYS * 86400000) {
+            findings.pendingUnscoredExcluded.stale.push({ outletId: reviewOutletId, file: reviewFile.fullPath });
+          }
+        }
+        continue;
+      }
 
       // Track this outlet
       if (!outletsInReviews.has(reviewOutletId)) {
@@ -521,6 +547,12 @@ function printReport(auditResult) {
   console.log(`  Unused in registry: ${findings.unusedInRegistry.length} outlets`);
   if (findings.skippedJunkOutlets.length > 0) {
     console.log(`  Skipped as junk (never suggested): ${findings.skippedJunkOutlets.length} outlets`);
+  }
+  if (findings.pendingUnscoredExcluded && findings.pendingUnscoredExcluded.total > 0) {
+    const { total, stale } = findings.pendingUnscoredExcluded;
+    console.log(`  Unscored files pending score extraction (excluded, branch 6): ${total} — ${stale.length} on UNREGISTERED outlets waiting > ${PENDING_UNSCORED_STALE_DAYS} days${stale.length ? ' (advisory: those outlets stay unaudited until the file scores or is rejected)' : ''}`);
+    for (const s of stale.slice(0, 10)) console.log(`    · ${s.outletId} — ${s.file}`);
+    if (stale.length > 10) console.log(`    … and ${stale.length - 10} more`);
   }
   console.log('');
 
@@ -774,10 +806,16 @@ async function updateRegistry(auditResult, dryRun = false) {
   const registry = loadRegistry();
   const normalization = loadNormalization();
   const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
+  // Same register-or-stage rule as the rebuild's auto-register pass
+  // (BRO-4370 / BRO-4401): never write a domain:null row from here either.
+  const { decideOutletAutoRegistration, criticNameSlugs } = require('./lib/outlet-auto-register');
+  const criticSlugs = criticNameSlugs(
+    normalization && typeof normalization.loadCriticRegistry === 'function' ? normalization.loadCriticRegistry() : null,
+  );
   const safeAdditions = [];
   const skippedShadows = [];
   const skippedJunk = [];
-  let domainsDropped = 0;
+  const skippedStaged = [];
 
   for (const entry of suggestedAdditions) {
     // Defense-in-depth (task #1783): the missingFromRegistry scan already
@@ -797,15 +835,21 @@ async function updateRegistry(auditResult, dryRun = false) {
     // collide with an already-registered outlet — e.g. a venue-disambiguated
     // "the-times-barbican" shares thetimes.co.uk with "times-uk" (task
     // #1776, rebuild-all-reviews.js's AUTO-REGISTER block hit the same bug).
-    // Drop the domain instead of writing it through; check against the
+    // Such an entry — like a hint-less one or a critic-name id — is REFUSED
+    // rather than written with domain:null (BRO-4370); check against the
     // registry AS IT WILL BE after earlier entries in this same batch are
     // added, so two colliding new outlets in one run don't both claim it.
-    let { domain } = entry;
-    if (domain && wouldCauseDomainCollision(registry.outlets, entry.outletId, domain)) {
-      domainsDropped++;
-      domain = null;
+    const decision = decideOutletAutoRegistration({
+      outletId: entry.outletId,
+      domainHint: entry.domain || null,
+      domainCollides: !!entry.domain && wouldCauseDomainCollision(registry.outlets, entry.outletId, entry.domain),
+      criticSlugs,
+    });
+    if (decision.action === 'stage') {
+      skippedStaged.push({ outletId: entry.outletId, reason: decision.reason });
+      continue;
     }
-    const safeEntry = { ...entry, domain };
+    const safeEntry = { ...entry, domain: decision.domain };
     registry.outlets[entry.outletId] = safeEntry;
     safeAdditions.push(safeEntry);
   }
@@ -824,8 +868,11 @@ async function updateRegistry(auditResult, dryRun = false) {
     }
   }
 
-  if (domainsDropped > 0) {
-    console.log(`\n${domainsDropped} suggested domain(s) dropped to null (would have collided with an already-registered outlet — task #1776).`);
+  if (skippedStaged.length > 0) {
+    console.log('\n=== REFUSED (no resolvable domain / critic name / domain collision — BRO-4370) ===\n');
+    for (const { outletId, reason } of skippedStaged) {
+      console.log(`  ✗ "${outletId}" → not registered (${reason}); add it by hand with a real domain, or merge it`);
+    }
   }
 
   if (safeAdditions.length === 0) {
@@ -977,11 +1024,19 @@ async function main() {
     }
 
     const baselineSet = baselineKeySet(loadBaseline().outletIds);
-    const newViolators = computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet);
+    const stagedSet = loadStagedOutletIds(path.join(__dirname, '..'));
+    const stagedViolators = computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet)
+      .filter((m) => stagedSet.has(m.outletId));
+    const newViolators = computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet)
+      .filter((m) => !stagedSet.has(m.outletId));
 
     if (auditResult.findings.missingFromRegistry.length > 0 && !JSON_OUTPUT && !UPDATE_MODE) {
       console.log('\n!!! Outlets missing from registry - add them to data/outlet-registry.json !!!');
-      console.log(`    (${auditResult.findings.missingFromRegistry.length - newViolators.length} baselined, ${newViolators.length} new)`);
+      console.log(`    (${auditResult.findings.missingFromRegistry.length - newViolators.length - stagedViolators.length} baselined, ${stagedViolators.length} staged by the rebuild, ${newViolators.length} new)`);
+      if (stagedViolators.length > 0) {
+        console.log(`\n⏸  Staged by the rebuild (refused a domainless / critic-name / colliding registration — resolve in ${OUTLET_STAGING_PATH}):`);
+        for (const v of stagedViolators) console.log(`  ${v.outletId} (${v.count} reviews)`);
+      }
     }
 
     const junkBaselineSet = baselineKeySet(loadJunkBaseline().outletIds);

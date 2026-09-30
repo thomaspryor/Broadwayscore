@@ -55,6 +55,7 @@
 const { mergeCommercialJson, mergePendingReview, mergeResearchQueue } = require('./merge-commercial-data');
 const { mergeDiaryShows } = require('./merge-diary-shows');
 const { mergeOweVenueCandidates } = require('./merge-owe-venue-candidates');
+const { mergeOutletRegistryStaging } = require('./merge-outlet-registry-staging');
 const { mergeSocialPostHistory } = require('./merge-social-post-history');
 const { mergeFeedbackLedger } = require('./merge-feedback-ledger');
 const { mergeBwwRoundupLedger } = require('./merge-bww-roundup-ledger');
@@ -539,6 +540,32 @@ const CORE_DATA_MERGE_REGISTRY = [
     concurrencyGroup: 'outlet-registry-baseline-maintenance',
     verifiedBy: '2026-09-07 (BRO-2699): same writer/commit step/concurrency group as audit/outlet-registry-baseline.json above — both files are written by the same --update-baseline call and staged in the same `git add` line. Same residual local-vs-CI risk accepted for the same reason (full-overwrite snapshot, not append-only state).',
     note: 'sentinel/reserved-word outletIds already accepted into the registry (e.g. "lets-note") — frozen so isJunkOutlet() suggestions don\'t re-flag them',
+  },
+  // BRO-4370 / BRO-4401 (2026-09-30): the rebuild's auto-register pass now
+  // PARKS outlets it refuses to register (no resolvable domain, critic name,
+  // domain collision) here instead of writing domain:null registry rows.
+  // Written by scripts/rebuild-all-reviews.js's AUTO-REGISTER block, which
+  // ~20 workflows run, and committed by push-core-data/action.yml's
+  // "Sync outlet-registry.json + staging list" step in each of them — so
+  // genuinely multi-writer: two rebuilds from the same base push different
+  // snapshots. Registered active + apiFallbackMerge for the same two
+  // reasons as audit/owe-venue-candidates.json above: (1) without a merge fn
+  // the fallback is ours-wins and a concurrent run's parked ids vanish until
+  // a later full rebuild re-parks them, and in that window
+  // audit-outlet-registry.js --strict reports them as NEW gaps (red Data
+  // Validation); (2) an unregistered data/audit/ path in the outgoing diff
+  // disqualifies the Git Data API fallback for every later commit step in
+  // the job (BRO-3426 lesson).
+  {
+    file: 'audit/outlet-registry-staging.json',
+    surface: 'public-repo',
+    status: 'active',
+    merge: mergeOutletRegistryStaging,
+    format: 'json',
+    newline: true,
+    apiFallbackMerge: true,
+    verifiedBy: '2026-09-30 (BRO-4401): sole WRITER scripts/rebuild-all-reviews.js (AUTO-REGISTER NEW OUTLETS block, fs.writeFileSync with trailing newline), reached by every workflow that runs the rebuild without --show= (grep "node scripts/rebuild-all-reviews.js" .github/workflows → rebuild-fast, rebuild-reviews, scrape-new-aggregators, backfill-aggregators, opening-night-stage-alert, scoring-audit, verify-existing-reviews, fetch-guardian-reviews and the ~12 others that call push-core-data). Committers: push-core-data/action.yml (explicit git add, pinned by tests/unit/push-core-data-outlet-staging.test.mjs) plus rebuild-fast.yml / rebuild-reviews.yml through their `git add data/audit/*.json` globs. READER: scripts/audit-outlet-registry.js --strict (loadStagedOutletIds) in test.yml, read-only. Merge is a union by outletId (ours wins fields, earliest firstSeenAt, remote-only rows re-added); the next full rebuild regenerates and self-prunes the list, so a transiently re-added stale row costs one cycle and never accumulates.',
+    note: 'outlets the rebuild refused to auto-register (BRO-4370), awaiting a human to give them a domain or merge them; self-pruning',
   },
   // BRO-2296 (audit-census-recall.yml losing its push race twice running,
   // 2026-08-31 and 2026-09-07 — same "overall deadline 240s exceeded" shape
