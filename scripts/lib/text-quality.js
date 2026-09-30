@@ -20,7 +20,7 @@ const { EXCERPT_FIELDS: _EXCERPT_FIELD_NAMES } = require('./excerpt-fields');
 // classification — narrowing/widening a pattern there changes all four call
 // sites at once. That's the intended single-source-of-truth behavior, but
 // keep it in mind before tightening a pattern for classification purposes only.
-const { TRUNCATION_SIGNALS: _CONTENT_QUALITY_SIGNALS } = require('./content-quality');
+const { TRUNCATION_SIGNALS: _CONTENT_QUALITY_SIGNALS, stripLeadingJsonBlob } = require('./content-quality');
 const BOT_STUB_PATTERNS = _CONTENT_QUALITY_SIGNALS.severeAnywhere;
 const EXCERPT_FIELDS = _EXCERPT_FIELD_NAMES.map(field => ({
   field,
@@ -557,7 +557,9 @@ function cleanText(text) {
 
   // Decode HTML entities first (&#8217; → ', &#8220; → ", etc.)
   const { decodeHtmlEntities } = require('./text-cleaning');
-  let cleaned = decodeHtmlEntities(text);
+  // BRO-4429: a leading JSON blob (wayback fetch of a news homepage) made the
+  // ensemble reject real Standard reviews as garbage_text.
+  let cleaned = decodeHtmlEntities(stripLeadingJsonBlob(text));
 
   // === LEADING JUNK ===
 
