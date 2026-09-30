@@ -1,62 +1,29 @@
 {
-  "updatedAt": "2026-09-30T12:06:22.595Z",
-  "processed": 75,
-  "failed": 40,
-  "successRate": "65.2%",
+  "updatedAt": "2026-09-30T12:09:22.017Z",
+  "processed": 106,
+  "failed": 74,
+  "successRate": "58.9%",
   "tierBreakdown": {
-    "playwright": 36,
+    "playwright": 55,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 13,
-    "scrapingbee": 4,
-    "brightdata": 0,
+    "scrapingdog": 15,
+    "scrapingbee": 9,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 67
+    "archive": 81
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 13,
   "recentActivity": [
     {
-      "t": "2026-09-30T10:09:46.295Z",
+      "t": "2026-09-30T07:40:09.498Z",
       "event": "bb-session",
-      "session": "6087cf4e",
-      "url": "https://bachtrack.com/review-mary-queen-of-scots-scottish-ballet-sophie-laplane-"
+      "session": "d26684ad",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
     },
     {
-      "t": "2026-09-30T10:17:46.920Z",
-      "event": "bb-session",
-      "session": "f37fcf1b",
-      "url": "https://www.talkinbroadway.com/page/regional/sanfran/s2344.html"
-    },
-    {
-      "t": "2026-09-30T10:17:47.768Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-09-30T10:18:05.847Z",
-      "event": "bb-session",
-      "session": "e461222a",
-      "url": "https://www.talkinbroadway.com/page/regional/sanfran/s2344.html"
-    },
-    {
-      "t": "2026-09-30T10:18:06.549Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-09-30T10:18:29.093Z",
-      "event": "bb-session",
-      "session": "abbb9a78",
-      "url": "https://www.wsj.com/articles/masquerade-review-a-new-phantom-haunts-new-york-a76"
-    },
-    {
-      "t": "2026-09-30T10:18:29.870Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-30T10:23:45.032Z",
+      "t": "2026-09-30T07:40:31.404Z",
       "event": "bb-session",
       "session": "af07b540",
       "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
@@ -86,50 +53,83 @@
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
     },
     {
-      "t": "2026-09-30T12:00:41.967Z",
+      "t": "2026-09-30T11:38:13.544Z",
       "event": "bb-session",
-      "session": "1bb5f127",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+      "session": "815f40a6",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
     },
     {
-      "t": "2026-09-30T12:00:42.630Z",
+      "t": "2026-09-30T11:38:13.917Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-30T11:38:32.218Z",
+      "event": "bb-session",
+      "session": "86e7b7b1",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-09-30T11:38:32.633Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-09-30T11:49:17.321Z",
+      "event": "bb-session",
+      "session": "836a2333",
+      "url": "https://northernartsreview.co.uk/north-east/review-mary-shelley-at-peoples-theat"
+    },
+    {
+      "t": "2026-09-30T11:49:39.792Z",
+      "event": "bb-session",
+      "session": "b42b40c3",
+      "url": "https://northernartsreview.co.uk/north-east/review-mary-shelley-at-peoples-theat"
+    },
+    {
+      "t": "2026-09-30T11:50:51.292Z",
+      "event": "bb-session",
+      "session": "5bf891b6",
+      "url": "https://bachtrack.com/review-mary-queen-of-scots-scottish-ballet-sophie-laplane-"
+    },
+    {
+      "t": "2026-09-30T11:51:09.480Z",
+      "event": "bb-session",
+      "session": "954bacaa",
+      "url": "https://bachtrack.com/review-mary-queen-of-scots-scottish-ballet-sophie-laplane-"
+    },
+    {
+      "t": "2026-09-30T11:58:54.445Z",
+      "event": "bb-session",
+      "session": "466ebe7e",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-09-30T11:58:54.848Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-09-30T12:05:57.546Z",
+      "event": "bb-session",
+      "session": "b0813e9a",
+      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html"
+    },
+    {
+      "t": "2026-09-30T12:05:57.958Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
     },
     {
-      "t": "2026-09-30T12:01:00.204Z",
+      "t": "2026-09-30T12:06:14.926Z",
       "event": "bb-session",
-      "session": "3f4a1fe8",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+      "session": "6fcd04e9",
+      "url": "https://www.talkinbroadway.com/page/regional/cincy/cincy616.html"
     },
     {
-      "t": "2026-09-30T12:01:00.744Z",
+      "t": "2026-09-30T12:06:15.258Z",
       "event": "bb-cookie-inject",
       "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-09-30T12:01:51.100Z",
-      "event": "bb-session",
-      "session": "35e4da6f",
-      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
-    },
-    {
-      "t": "2026-09-30T12:02:16.660Z",
-      "event": "bb-session",
-      "session": "2bf43e0b",
-      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
-    },
-    {
-      "t": "2026-09-30T12:05:39.066Z",
-      "event": "bb-session",
-      "session": "173e052c",
-      "url": "https://parade.com/news/neil-patrick-harris-returns-to-broadway-in-revival-of-a-"
-    },
-    {
-      "t": "2026-09-30T12:05:58.500Z",
-      "event": "bb-session",
-      "session": "e669f280",
-      "url": "https://parade.com/news/neil-patrick-harris-returns-to-broadway-in-revival-of-a-"
     }
   ]
 }
