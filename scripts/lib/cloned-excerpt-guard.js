@@ -203,8 +203,11 @@ function isFileExcluded(d) {
  *   phantom?:string, owner?:string, stripFrom?:string}}
  */
 function classifyPair(a, b) {
-  const same = isSameReview(a.data, b.data);
+  const same = isSameArticle(a.data, b.data);
   if (same.same) return { cls: 'same-review', reason: same.reason };
+  const ga = isUnverifiableGuess(a.data) && isAttestedFull(b.data);
+  const gb = isUnverifiableGuess(b.data) && isAttestedFull(a.data);
+  if (ga !== gb) return { cls: 'phantom', reason: 'unverifiable web-search guess (dead/mismatched url) beside an attested full review', phantom: ga ? a.file : b.file };
 
   const wa = isWeakWebSearch(a.data);
   const wb = isWeakWebSearch(b.data);
@@ -256,10 +259,42 @@ function fieldsHoldingExcerpts(data, sharedNorm) {
   return out;
 }
 
+// Identical-article detection (BRO-4412). Aggregator-excerpt sharing misses
+// web-search phantoms whose fullText is a copy of the real article under a
+// guessed byline/URL (3 Variety rows on a-dolls-house-2023). Two same-outlet
+// files that carry the same article (near-identical text or same canonical
+// URL) are one review however many bylines they wear.
+const MIN_ARTICLE_CHARS = 150;
+// A web-search record whose URL could not be fetched or matched to the show:
+// its byline/text are a guess and cannot stand beside a real sibling.
+const UNVERIFIABLE_REASONS = new Set(['url_dead', 'url_content_mismatch', 'wrong_content', 'scraper_garbage']);
+
+/** Same article by text or URL, ignoring the excerpt fields. */
+function isSameArticle(a, b) {
+  const ta = normText(a.fullText);
+  if (ta.length >= MIN_ARTICLE_CHARS && ta === normText(b.fullText)) return { same: true, reason: 'identical fullText' };
+  return isSameReview(a, b);
+}
+
+/** Web-search record with an unfetchable/mismatched URL: an unverified guess. */
+function isUnverifiableGuess(d) {
+  return Boolean(d && WEAK_SOURCES.has(d.source) && normText(d.fullText).length < 1000
+    && (d.fetchDiscoveryAbandoned || UNVERIFIABLE_REASONS.has(d.incompleteReason))
+    && !(d.sources || []).some((s) => !WEAK_SOURCES.has(s)));
+}
+
+/** A real (non-web-search, full-length) live review from this outlet. */
+function isAttestedFull(d) {
+  return Boolean(d && !WEAK_SOURCES.has(d.source) && normText(d.fullText).length >= LONG_TEXT_CHARS && !isFileExcluded(d));
+}
+
 /**
- * All same-outlet pairs in one show directory that share an excerpt.
+ * All same-outlet pairs in one show directory that share an excerpt, carry the
+ * same article (text/URL), or pair an unverifiable web-search guess with an
+ * attested full review from the same outlet (Time Out "Adam Feldman" beside
+ * Melissa Rose Bernardo on for-colored-girls: guessed dead URL, 160 chars).
  * @param {{file:string,data:object}[]} records
- * @returns {{a:object,b:object,shared:string[]}[]}
+ * @returns {{a:object,b:object,shared:string[],via?:string}[]}
  */
 function findClonedPairs(records) {
   const byOutlet = new Map();
@@ -272,8 +307,14 @@ function findClonedPairs(records) {
   for (const arr of byOutlet.values()) {
     for (let i = 0; i < arr.length; i++) {
       for (let j = i + 1; j < arr.length; j++) {
-        const shared = sharedExcerpts(arr[i].data, arr[j].data);
-        if (shared.length) pairs.push({ a: arr[i], b: arr[j], shared });
+        const [x, y] = [arr[i], arr[j]];
+        const shared = sharedExcerpts(x.data, y.data);
+        if (shared.length) { pairs.push({ a: x, b: y, shared }); continue; }
+        const same = isSameArticle(x.data, y.data);
+        if (same.same) { pairs.push({ a: x, b: y, shared: [], via: same.reason }); continue; }
+        if ((isUnverifiableGuess(x.data) && isAttestedFull(y.data)) || (isUnverifiableGuess(y.data) && isAttestedFull(x.data))) {
+          pairs.push({ a: x, b: y, shared: [], via: 'unverifiable-guess' });
+        }
       }
     }
   }
@@ -311,7 +352,29 @@ function excerptFieldsToStrip(file, incoming, siblings) {
   return { fields: [...fields], because };
 }
 
+/**
+ * Write-time refusal (BRO-4412). Is the INCOMING web-search record a phantom of
+ * a live same-outlet sibling under a different byline: same article, or an
+ * unverifiable guess beside an attested full review? Web-search is the only
+ * writer that guesses bylines/URLs, so only its records are refused; an
+ * attested (aggregator/scrape) record is never blocked here.
+ * @returns {string|null} the sibling file it duplicates, else null
+ */
+function phantomOfSibling(file, incoming, siblings) {
+  if (!incoming || incoming.source !== 'web-search') return null;
+  const outlet = incoming.outletId || file.split('--')[0];
+  for (const s of siblings) {
+    if (s.file === file || isFileExcluded(s.data)) continue;
+    if (((s.data && s.data.outletId) || s.file.split('--')[0]) !== outlet) continue;
+    if (sameCritic(incoming, s.data)) continue; // same byline = the same file's rewrite, not a phantom
+    const c = classifyPair({ file, data: incoming }, s);
+    if (c.cls === 'same-review' || (c.cls === 'phantom' && c.phantom === file)) return s.file;
+  }
+  return null;
+}
+
 module.exports = {
+  phantomOfSibling,
   MIN_EXCERPT_CHARS,
   EXCLUSION_FLAGS,
   normText,
@@ -320,6 +383,9 @@ module.exports = {
   sharedExcerpts,
   canonUrl,
   isSameReview,
+  isSameArticle,
+  isUnverifiableGuess,
+  isAttestedFull,
   isWeakWebSearch,
   excerptCoverage,
   sameCritic,

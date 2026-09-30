@@ -109,3 +109,68 @@ test('safeWriteReview (the real write choke point) strips the cloned excerpt on 
   assert.equal(JSON.parse(fs.readFileSync(path.join(dir, 'nysr--frank-scheck.json'), 'utf8')).bwwExcerpt, null);
   assert.ok(JSON.parse(fs.readFileSync(path.join(dir, 'nysr--roma-torre.json'), 'utf8')).bwwExcerpt);
 });
+
+// ---- BRO-4412: identical-article phantoms and unverifiable guesses -------------
+const ARTICLE = words(400, 'variety');
+const noisy = `${ARTICLE} subscribe now`;
+
+test('BRO-4412: three Variety bylines on one article are one review; attested byline is kept', () => {
+  const guess1 = rec('variety--charles-isherwood.json', { criticName: 'Charles Isherwood', url: 'https://variety.com/a-1', source: 'web-search', fullText: ARTICLE });
+  const guess2 = rec('variety--aramide-tinubu.json', { criticName: 'Aramide Tinubu', url: 'https://variety.com/a-2', source: 'web-search', fullText: noisy });
+  const real = rec('variety--trish-deitch.json', { criticName: 'Trish Deitch', url: 'https://variety.com/a-3', source: 'playbill-verdict', fullText: noisy });
+  const pairs = g.findClonedPairs([guess1, guess2, real]);
+  assert.equal(pairs.length, 3);
+  for (const p of pairs) assert.equal(g.classifyPair(p.a, p.b).cls, 'same-review');
+});
+
+test('BRO-4412: identical fullText with different URLs pairs even with no aggregator excerpt', () => {
+  const a = rec('variety--a.json', { criticName: 'A One', url: 'https://variety.com/x', fullText: ARTICLE });
+  const b = rec('variety--b.json', { criticName: 'B Two', url: 'https://variety.com/y', fullText: ARTICLE });
+  assert.equal(g.findClonedPairs([a, b]).length, 1);
+  assert.equal(g.isSameArticle(a.data, b.data).same, true);
+});
+
+test('BRO-4412: Feldman-style phantom (160 chars, dead url, own excerpt) is paired and classified phantom', () => {
+  const real = rec('timeout--melissa-rose-bernardo.json', { criticName: 'Melissa Rose Bernardo', url: 'https://timeout.com/real', source: 'playbill-verdict', fullText: words(300, 'bernardo'), bwwExcerpt: 'Real excerpt from the Bernardo review, long enough to count as one.' });
+  const phantom = rec('timeout--adam-feldman.json', { criticName: 'Adam Feldman', url: 'https://timeout.com/guessed-review', source: 'web-search', fullText: 'x'.repeat(160), dtliExcerpt: 'A different invented excerpt about the revival that no source published.', contentTier: 'truncated', incompleteReason: 'url_content_mismatch', fetchDiscoveryAbandoned: true });
+  const pairs = g.findClonedPairs([real, phantom]);
+  assert.equal(pairs.length, 1);
+  const c = g.classifyPair(pairs[0].a, pairs[0].b);
+  assert.equal(c.cls, 'phantom');
+  assert.equal(c.phantom, 'timeout--adam-feldman.json');
+});
+
+test('BRO-4412: a fetched web-search review by a second critic is NOT a phantom', () => {
+  const real = rec('nytimes--jesse-green.json', { criticName: 'Jesse Green', url: 'https://nyt/a', source: 'playbill-verdict', fullText: words(300, 'green') });
+  const second = rec('nytimes--laura-collins-hughes.json', { criticName: 'Laura Collins-Hughes', url: 'https://nyt/b', source: 'web-search', fullText: words(400, 'lch'), contentTier: 'complete' });
+  assert.equal(g.findClonedPairs([real, second]).length, 0);
+});
+
+test('BRO-4412: two different real articles from one outlet are not paired', () => {
+  const a = rec('nytimes--x.json', { criticName: 'X Y', url: 'https://nyt/a', fullText: words(300, 'one') });
+  const b = rec('nytimes--z.json', { criticName: 'Z W', url: 'https://nyt/b', fullText: words(300, 'two') });
+  assert.equal(g.findClonedPairs([a, b]).length, 0);
+});
+
+test('BRO-4412: phantomOfSibling refuses a new web-search twin, never an attested or same-byline write', () => {
+  const real = rec('variety--trish-deitch.json', { criticName: 'Trish Deitch', url: 'https://variety.com/a-3', source: 'playbill-verdict', fullText: ARTICLE });
+  const guess = { outletId: 'variety', criticName: 'Charles Isherwood', url: 'https://variety.com/a-1', source: 'web-search', fullText: noisy };
+  assert.equal(g.phantomOfSibling('variety--charles-isherwood.json', guess, [real]), 'variety--trish-deitch.json');
+  assert.equal(g.phantomOfSibling('variety--charles-isherwood.json', { ...guess, source: 'playbill-verdict' }, [real]), null);
+  assert.equal(g.phantomOfSibling('variety--trish-deitch.json', { ...guess, criticName: 'Trish Deitch' }, [real]), null);
+});
+
+test('BRO-4412: safeWriteReview refuses a brand-new web-search phantom byline', () => {
+  const { safeWriteReview } = require('./review-write-guard.js');
+  const dir = path.join(fs.mkdtempSync(path.join(os.tmpdir(), 'phantom-')), 'some-show-2021');
+  fs.mkdirSync(dir);
+  fs.writeFileSync(path.join(dir, 'variety--trish-deitch.json'), JSON.stringify({
+    showId: 'some-show-2021', outletId: 'variety', criticName: 'Trish Deitch', url: 'https://variety.com/a-3', source: 'playbill-verdict', fullText: ARTICLE,
+  }));
+  const r = safeWriteReview(path.join(dir, 'variety--charles-isherwood.json'), {
+    showId: 'some-show-2021', outletId: 'variety', criticName: 'Charles Isherwood', url: 'https://variety.com/a-1', source: 'web-search', fullText: noisy,
+  });
+  assert.equal(r.wrote, false);
+  assert.equal(r.skipped, 'phantom_of_sibling');
+  assert.equal(fs.existsSync(path.join(dir, 'variety--charles-isherwood.json')), false);
+});
