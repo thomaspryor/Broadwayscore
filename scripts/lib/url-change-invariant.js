@@ -70,6 +70,11 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   'fullText', 'textFetchedAt', 'textWordCount', 'textStatus', 'textQuality',
   'sourceMethod', 'isFullReview',
   'wrongFullText', 'wrongAttribution', 'wrongArticle', 'showNotMentioned',
+  // "Not a review" verdict on the OLD url's article (CV-promoted or classifier-
+  // set). Kept, it excluded the real review a url correction pointed at
+  // (BRO-4430: The Pass NYTG show page, NYSR Finkle's file after it was moved
+  // off Frank Scheck's review). The new url's article is re-verified on fetch.
+  'isNonReview', 'isNonReviewReason',
   'isRoundupArticle', 'isCombinedReview',
   'wrongProductionAutoCleared', 'wrongProductionAutoClearedAt',
   'urlPlaceholderSuspect',
@@ -452,6 +457,33 @@ function updateFileUrlWithInvariant(filePath, newUrl, metadata = {}, opts = {}) 
         file: path.basename(filePath),
         reason: 'skippedCrossOutletMerge',
         details: { existingUrl: existing.url, incomingUrl: newUrl, outletId: existing.outletId, criticName: existing.criticName },
+      });
+      return null;
+    }
+  }
+  // BRO-4430: these callers repair ONE critic's slot, so two more urls are
+  // never right for it: an aggregator/round-up page (never an outlet's own
+  // review; the rebuild drops it), and a url a sibling file already holds for
+  // a DIFFERENT named critic (NYSR: show-not-mentioned recovery moved David
+  // Finkle's file onto Frank Scheck's review, and his own review was lost).
+  if (typeof newUrl === 'string' && newUrl !== existing.url) {
+    const { isAggregatorPageUrl, urlOwnedByOtherCritic } = require('./review-slot-guards');
+    const owner = urlOwnedByOtherCritic({
+      showDir: path.dirname(filePath),
+      url: newUrl,
+      selfFilename: path.basename(filePath),
+      selfCriticName: existing.criticName,
+    });
+    const refusal = isAggregatorPageUrl(newUrl) ? 'skippedAggregatorPageUrl'
+      : owner ? 'skippedUrlOwnedByOtherCritic' : null;
+    if (refusal) {
+      const { logExclusion } = require('./exclusion-logger');
+      logExclusion({
+        script: 'url-change-invariant',
+        showId: existing.showId || 'unknown',
+        file: path.basename(filePath),
+        reason: refusal,
+        details: { existingUrl: existing.url, incomingUrl: newUrl, outletId: existing.outletId, criticName: existing.criticName, owner },
       });
       return null;
     }

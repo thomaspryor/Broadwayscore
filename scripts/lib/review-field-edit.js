@@ -46,6 +46,11 @@ const REVIEW_TEXT_EDITABLE_FIELDS = [
   // the pull quote shown on the site (BRO-4275). `url` stays out: a URL change
   // trips url-change-invariant.js, which wipes fullText/score and refetches.
   'llmPullQuote',
+  // url (BRO-4430): only to REPAIR a wrong url, never to replace a real
+  // review url. See FIELD_VALUE_CHECKS.url for the narrow conditions; the
+  // write then runs url-change-invariant (clears old-url-derived state) and
+  // the collector refetches the new url (needsRefetch + urlCorrectedFrom).
+  'url',
 ];
 
 // Per-field value checks beyond "scalar". Returns an error string or null.
@@ -69,7 +74,36 @@ const FIELD_VALUE_CHECKS = {
     }
     return null;
   },
+  // A url edit is allowed only when the CURRENT url is provably wrong for this
+  // file: an aggregator/round-up page, a non-review page (show page, cast
+  // announcement), or another named critic's review a sibling file already
+  // holds (ctx.currentUrlOwnedByOtherCritic, computed by the executor).
+  // The new value must be a review-candidate url on this outlet's own domain,
+  // or '' (only when the current url is an aggregator page: a Theatre Record
+  // text is stored with no url, and '' restores that shape without clearing
+  // the text, since '' is not a url change for url-change-invariant).
+  url: (v, record, ctx = {}) => {
+    const { isAggregatorPageUrl } = require('./review-slot-guards');
+    const { classifyReviewUrl } = require('./non-review-url-patterns');
+    const current = record.url || '';
+    const currentAggregator = isAggregatorPageUrl(current);
+    const currentWrong = currentAggregator
+      || (current && classifyReviewUrl(current).ok === false)
+      || ctx.currentUrlOwnedByOtherCritic === true;
+    if (!currentWrong) return 'url: the current url is not provably wrong (aggregator, non-review page, or another critic\'s review)';
+    if (v === '') return currentAggregator ? null : 'url: clearing to "" is only for an aggregator-page url';
+    if (typeof v !== 'string' || !/^https?:\/\//i.test(v)) return 'url must be an http(s) url or ""';
+    if (!classifyReviewUrl(v).ok || isAggregatorPageUrl(v)) return 'url: new value is not a review-candidate url';
+    const { isCrossOutletUrl } = require('./review-normalization');
+    if (record.outletId && isCrossOutletUrl(record.outletId, v)) return `url: new value belongs to another outlet than ${record.outletId}`;
+    return null;
+  },
 };
+
+// Bookkeeping a url edit legitimately changes besides `url` itself: the
+// url-change-invariant clear (breadcrumb + the fields it names) and the
+// refetch markers set below.
+const URL_EDIT_SIDE_EFFECT_KEYS = ['_urlChangedClear', 'duplicateClearReason', 'needsRefetch', 'urlCorrectedFrom', 'urlCorrectedReason'];
 
 function isScalar(v) {
   return v === null || ['string', 'number', 'boolean'].includes(typeof v);
@@ -82,7 +116,7 @@ function isScalar(v) {
  * @param {{fixId:string, at:string}} stamp  plan id + ISO time for provenance
  * @returns {{ok:true, record:object, msg:string} | {ok:false, reason:string}}
  */
-function applyReviewFieldEdit(record, action, stamp) {
+function applyReviewFieldEdit(record, action, stamp, ctx = {}) {
   if (!record || typeof record !== 'object') return { ok: false, reason: 'record is not an object' };
   const { field, oldValue, newValue } = action || {};
   if (!REVIEW_TEXT_EDITABLE_FIELDS.includes(field)) {
@@ -92,7 +126,7 @@ function applyReviewFieldEdit(record, action, stamp) {
     return { ok: false, reason: `${field}: oldValue/newValue must be scalar or null` };
   }
   const valueCheck = FIELD_VALUE_CHECKS[field];
-  const valueError = valueCheck ? valueCheck(newValue, record) : null;
+  const valueError = valueCheck ? valueCheck(newValue, record, ctx) : null;
   if (valueError) return { ok: false, reason: valueError };
   if (record._locked === true) return { ok: false, reason: 'record is _locked' };
   const current = record[field] === undefined ? null : record[field];
@@ -115,6 +149,13 @@ function applyReviewFieldEdit(record, action, stamp) {
     if (field === 'wrongProduction') guard.invalidateWrongProductionAutoClear(next);
     else guard.invalidateWrongShowAutoClear(next);
     sideEffectKeys = unexpectedChanges(beforeRetract, next, field);
+  }
+  if (field === 'url' && newValue) {
+    // Same markers as review-normalization maybeUpgradeUrl: the collector
+    // refetches a url-corrected review past its wrong-content cooldown.
+    next.urlCorrectedFrom = record.url || null;
+    next.urlCorrectedReason = `approved fix ${stamp.fixId}: current url was wrong for this file`;
+    next.needsRefetch = true;
   }
   const prior = Array.isArray(record.approvedFixes) ? record.approvedFixes : [];
   next.approvedFixes = [...prior, { fixId: stamp.fixId, field, at: stamp.at }];
@@ -145,8 +186,14 @@ function resolveReviewPath(reviewTextsDir, rel) {
 function unexpectedChanges(before, after, field, expectedKeys = []) {
   const keys = new Set([...Object.keys(before || {}), ...Object.keys(after || {})]);
   const changed = [];
+  const expected = new Set();
+  if (field === 'url') {
+    for (const k of URL_EDIT_SIDE_EFFECT_KEYS) expected.add(k);
+    const bc = after && after._urlChangedClear;
+    if (bc && bc.to === after.url && Array.isArray(bc.cleared)) bc.cleared.forEach((k) => expected.add(k));
+  }
   for (const k of keys) {
-    if (k === field || k === 'approvedFixes' || expectedKeys.includes(k)) continue;
+    if (k === field || k === 'approvedFixes' || expectedKeys.includes(k) || expected.has(k)) continue;
     if (JSON.stringify(before[k] === undefined ? null : before[k]) !== JSON.stringify(after[k] === undefined ? null : after[k])) changed.push(k);
   }
   return changed.sort();

@@ -272,6 +272,12 @@ const HIGH_CONFIDENCE_JUNK_PATTERNS = [
   // this the trailing footer makes detectTruncationSignals() misclassify a
   // complete review as truncated).
   /\s*\d+\s*Comments\s*NEWSLETTER\s*WEEKDAYS\s*The 7[\s\S]*$/i,
+  // londontheatre.co.uk / newyorktheatreguide.com (one platform): after the
+  // review and its FAQ comes "Originally published on <Mon D, YYYY HH:MM>",
+  // then the booking calendar, "Latest News" and "Related articles", which name
+  // a dozen other shows. assessTextQuality read that as a multi-show page and
+  // the Tru London Theatre review was never scored (BRO-4430).
+  /\s*Originally published on [A-Z][a-z]{2,8}\.? \d{1,2}, \d{4}[\s\S]*$/,
 ];
 
 /**
