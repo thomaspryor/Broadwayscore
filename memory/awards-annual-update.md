@@ -11,7 +11,7 @@ Run once per year, ideally late June / early July after the Tony ceremony, to ca
 Five of the six precursor ceremonies (DD, OCC, DL, NYDCC, Pulitzer) are appended to inline JS constants in `scripts/enrich-awards-with-precursors.js`. Tony has its own scraper. Olivier has `scripts/enrich-olivier-awards.js`. There is no automated pipeline for the inline-constant ceremonies — by design, because (a) the volume is tiny (~25 keys/year), (b) hand-curated data is git-diffable and resists source-website changes, (c) the historic backfill (`HISTORIC_PULITZER`) uses the same direct-by-id pattern and works perfectly.
 
 Two safety nets back this runbook:
-1. **CI freshness gate** in `.github/workflows/test.yml` (`awards-data-freshness` job): fails daily if `data/awards.json` hasn't changed in 14 months. Surfaces in the daily email digest if it fires.
+1. **Freshness audit** `scripts/audit-awards-freshness.js`, run daily as a `check-corpus-drift.js` AUDITS entry (`awards-freshness`): drifts if `data/awards.json` hasn't changed in 14 months. Surfaces as a daily digest line and, after the alert router's escalation threshold (~2 weeks), a Linear card. (Was test.yml's `awards-data-freshness` job until BRO-4434, 2026-09-30 — main's color is code-only now.)
 2. **Cron health check** in `.github/workflows/check-cron-health.yml`: alerts within ~1 week if `update-tony-awards.yml` (weekly Monday cron) stops running.
 
 ---
@@ -126,5 +126,5 @@ If something looks wrong: `git revert HEAD` and try again.
 - `data/awards.json` — derived output (committed, deployed)
 - `src/lib/awards-scoring.ts` — read-only consumer; the prestige-weighted Awards Score formula
 - `.github/workflows/update-tony-awards.yml` — automated Tony scraper (weekly cron + manual)
-- `.github/workflows/test.yml` (`awards-data-freshness` job) — 14-month staleness gate
+- `scripts/audit-awards-freshness.js` (+ `check-corpus-drift.js` AUDITS `awards-freshness`) — 14-month staleness audit
 - `.github/workflows/check-cron-health.yml` (Tony entry) — weekly cron health check

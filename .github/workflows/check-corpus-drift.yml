@@ -129,6 +129,9 @@ jobs:
         # routePerAuditAlerts()'s catch block.
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          # BRO-4434: audit-awards-freshness.js asks the commits-by-path API
+          # via `gh api` (one call/day); the runner's default token is enough.
+          GH_TOKEN: ${{ github.token }}
         run: |
           ARGS=""
           if [ "${{ inputs.strict }}" = "true" ]; then

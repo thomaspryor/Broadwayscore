@@ -10,9 +10,10 @@ const path = require('path');
  * silently never fires for a timeout, exactly the alert this repo relies on
  * for a severity:'critical' pipeline. `cancelled()` has to appear in the
  * condition for the alert to survive that path. (BRO-2531 / BRO-162 are the
- * same class on non-critical workflows; opening-digest.yml and
- * tests/unit/... test.yml's "Awards Data Stale" step are the reference
- * `if: failure() || cancelled()` shape this scan checks for.)
+ * same class on non-critical workflows; opening-digest.yml's notify step is
+ * the reference `if: failure() || cancelled()` shape this scan checks for —
+ * test.yml's "Awards Data Stale" step, the other former reference, left
+ * test.yml in BRO-4434.)
  *
  * Self-registering by design: this walks every job in every workflow file
  * looking for `uses: ./.github/actions/notify-failure` steps whose
