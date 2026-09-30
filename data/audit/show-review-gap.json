@@ -1,18 +1,18 @@
 {
-  "generatedAt": "2026-09-30T14:36:15.177Z",
+  "generatedAt": "2026-09-30T19:58:03.707Z",
   "windowDays": 1095,
-  "targets": 298,
-  "auditedThisRun": 14,
-  "carriedForward": 569,
+  "targets": 316,
+  "auditedThisRun": 11,
+  "carriedForward": 575,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 317,
-    "missingCurrentRun": 478,
+    "withGap": 319,
+    "missingCurrentRun": 481,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 802,
-    "totalRecoverable": 4,
-    "totalRecovered": 8,
+    "totalFlaggedMisses": 800,
+    "totalRecoverable": 6,
+    "totalRecovered": 9,
     "priorProductionCitations": 2592
   },
   "results": [
@@ -33997,10 +33997,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 29,
         "byReason": {
+          "non-review-host": 20,
           "aggregator-internal-nav": 4,
-          "non-review-host": 18,
+          "non-review-path": 1,
           "ticketing-reseller": 4
         }
       },
@@ -34125,7 +34126,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-09-30T07:43:36.484Z"
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "electra-persona-west-end-2026",
@@ -35600,7 +35601,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 4,
+            "results": 3,
             "accepted": 0,
             "error": null
           },
@@ -35631,7 +35632,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           },
           {
@@ -35641,7 +35642,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -35661,13 +35662,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 27,
         "byReason": {
-          "aggregator-internal-nav": 3,
+          "non-review-host": 24,
           "venue-production-page": 1,
-          "non-review-host": 25,
-          "non-review-path": 1,
-          "census-junk-host": 1
+          "aggregator-internal-nav": 1,
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -35809,7 +35809,7 @@
         "liveCount": 0,
         "candidateCount": 8
       },
-      "computedAt": "2026-09-30T07:43:36.484Z"
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -39414,6 +39414,254 @@
         "candidateCount": 0
       },
       "computedAt": "2026-09-28T01:29:33.709Z"
+    },
+    {
+      "showId": "falls-for-jodie-off-broadway-2026",
+      "title": "Falls for Jodie",
+      "openingDate": "2026-09-24",
+      "status": "open",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.theatermania.com/news/review-in-falls-for-jodie-john-hinckley-jr-makes-a-friend_1855201/",
+        "https://www.picturethispost.com/tank-presents-falls-for-jodie-preview/",
+        "https://saysmesaysmom.blogspot.com/2026/09/more-theater-monday-falls-for-jodie.html",
+        "https://sydneydramaturgical.com/whats-on-events/falls-for-jodie"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.theatermania.com/news/review-in-falls-for-jodie-john-hinckley-jr-makes-a-friend_1855201/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.picturethispost.com/tank-presents-falls-for-jodie-preview/",
+          "host": "picturethispost.com",
+          "knownOutletId": "picture-this-post",
+          "serpCensus": true
+        },
+        {
+          "url": "https://saysmesaysmom.blogspot.com/2026/09/more-theater-monday-falls-for-jodie.html",
+          "host": "saysmesaysmom.blogspot.com",
+          "knownOutletId": "says-me-says-mom",
+          "serpCensus": true
+        },
+        {
+          "url": "https://sydneydramaturgical.com/whats-on-events/falls-for-jodie",
+          "host": "sydneydramaturgical.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Falls for Jodie\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Falls for Jodie\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Falls for Jodie\" review tank",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Falls for Jodie\" Holmes review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Falls for Jodie The Tank review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Falls for Jodie The Tank review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Falls for Jodie The Tank review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 4,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 43,
+        "byReason": {
+          "census-junk-host": 4,
+          "non-review-host": 32,
+          "venue-production-page": 3,
+          "aggregator-internal-nav": 3,
+          "non-review-path": 1
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theatermania.com/news/review-in-falls-for-jodie-john-hinckley-jr-makes-a-friend_1855201/",
+          "host": "theatermania.com",
+          "outletId": "theatermania",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.picturethispost.com/tank-presents-falls-for-jodie-preview/",
+          "host": "picturethispost.com",
+          "outletId": "picture-this-post",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://saysmesaysmom.blogspot.com/2026/09/more-theater-monday-falls-for-jodie.html",
+          "host": "saysmesaysmom.blogspot.com",
+          "outletId": "says-me-says-mom",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://sydneydramaturgical.com/whats-on-events/falls-for-jodie",
+          "host": "sydneydramaturgical.com",
+          "outletId": "sydneydramaturgical",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "theatermania",
+            "outlet": "theatermania",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermania.com/news/review-in-falls-for-jodie-john-hinckley-jr-makes-a-friend_1855201/"
+          },
+          {
+            "outletId": "picture-this-post",
+            "outlet": "picture-this-post",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.picturethispost.com/tank-presents-falls-for-jodie-preview/"
+          },
+          {
+            "outletId": "says-me-says-mom",
+            "outlet": "says-me-says-mom",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://saysmesaysmom.blogspot.com/2026/09/more-theater-monday-falls-for-jodie.html"
+          },
+          {
+            "outletId": "sydneydramaturgical.com",
+            "outlet": "sydneydramaturgical.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://sydneydramaturgical.com/whats-on-events/falls-for-jodie"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.theatermania.com/news/review-in-falls-for-jodie-john-hinckley-jr-makes-a-friend_1855201/",
+            "outletId": "theatermania",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
+            "url": "https://www.picturethispost.com/tank-presents-falls-for-jodie-preview/",
+            "outletId": "picture-this-post",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
+            "url": "https://saysmesaysmom.blogspot.com/2026/09/more-theater-monday-falls-for-jodie.html",
+            "outletId": "says-me-says-mom",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
+            "url": "https://sydneydramaturgical.com/whats-on-events/falls-for-jodie",
+            "outletId": "sydneydramaturgical.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 4
+      },
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "father-time-off-broadway-2026",
@@ -57167,14 +57415,13 @@
         "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html",
         "https://www.timeout.com/newyork/theater/how-shakespeare-saved-my-life-jacob-ming-trent-review",
         "https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
-        "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
         "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
+        "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
         "https://thefrontrowcenter.com/2026/09/how-shakespeare-saved-my-life/",
-        "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
         "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html",
-        "https://www.hillrag.com/2026/06/23/how-shakespeare-saved-my-life/"
+        "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/"
       ],
-      "dirFiles": 21,
+      "dirFiles": 22,
       "dirClean": 11,
       "inReviewsJson": 11,
       "missing": [
@@ -57185,8 +57432,8 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
-          "host": "folger.edu",
+          "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
+          "host": "encoreplus.app",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -57219,24 +57466,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.hillrag.com/2026/06/23/how-shakespeare-saved-my-life/",
-          "host": "hillrag.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "hillrag--gregory-ford.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.hillrag.com/2026/06/23/how-shakespeare-saved-my-life/"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -57263,7 +57492,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -57293,7 +57522,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -57309,21 +57538,21 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 13,
+        "resultCount": 11,
         "error": null
       },
       "candidatesRejected": {
-        "count": 420,
+        "count": 422,
         "byReason": {
-          "aggregator-internal-nav": 266,
-          "venue-production-page": 1,
-          "non-review-host": 56,
-          "ticketing-reseller": 2,
-          "ticketing-listing": 1,
           "census-junk-host": 1,
+          "non-review-host": 57,
+          "venue-production-page": 2,
+          "aggregator-internal-nav": 266,
+          "roundup-page": 6,
+          "ticketing-reseller": 2,
           "not-http-url": 76,
           "aggregator-section-root": 11,
-          "roundup-page": 6
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -57341,16 +57570,16 @@
           "reason": "unknown-outlet-aggregator-host (show-score.com)"
         },
         {
-          "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
-          "host": "folger.edu",
-          "outletId": "folger",
+          "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
+          "host": "encoreplus.app",
+          "outletId": "encoreplus",
           "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Refusing to ingest — https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/ matches a known "
+          "reason": "⚠️  provisional outlet \"encoreplus\" (not in registry) — onboard to outlet-registry.json after review"
         }
       ],
       "ingestSkippedByCap": [],
@@ -57365,11 +57594,11 @@
             "url": "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life"
           },
           {
-            "outletId": "folger.edu",
-            "outlet": "folger.edu",
+            "outletId": "encoreplus.app",
+            "outlet": "encoreplus.app",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/"
+            "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/"
           },
           {
             "outletId": "theatreeddys.com",
@@ -57377,13 +57606,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html"
-          },
-          {
-            "outletId": "hillrag.com",
-            "outlet": "hillrag.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.hillrag.com/2026/06/23/how-shakespeare-saved-my-life/"
           }
         ],
         "suppressedMissing": [],
@@ -57450,11 +57672,11 @@
             "firstSeenAt": "2026-09-29T21:21:30.952Z"
           },
           {
-            "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
-            "outletId": "folger.edu",
+            "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
+            "outletId": "encoreplus.app",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T12:06:49.970Z"
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
           },
           {
             "url": "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html",
@@ -57462,20 +57684,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T12:06:49.970Z"
-          },
-          {
-            "url": "https://www.hillrag.com/2026/06/23/how-shakespeare-saved-my-life/",
-            "outletId": "hillrag.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T12:06:49.970Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 9,
-        "candidateCount": 13
+        "candidateCount": 12
       },
-      "computedAt": "2026-09-30T07:43:36.484Z"
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -68319,11 +68534,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 30,
         "byReason": {
-          "non-review-host": 25,
-          "ticketing-reseller": 1,
-          "census-junk-host": 2
+          "census-junk-host": 1,
+          "non-review-host": 24,
+          "aggregator-internal-nav": 1,
+          "ticketing-reseller": 4
         }
       },
       "dedupedVariants": [],
@@ -68370,7 +68586,7 @@
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=wsj.com): Scrapingdog HTTP 400: Oops! Something went w"
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         },
         {
           "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
@@ -68512,7 +68728,7 @@
         "liveCount": 3,
         "candidateCount": 9
       },
-      "computedAt": "2026-09-30T07:43:36.484Z"
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
@@ -79822,10 +80038,10 @@
         "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
         "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/",
         "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
-        "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/",
-        "https://www.tickadoo.com/new-york/midnight"
+        "https://www.show-score.com/off-broadway-shows/midnight-daryl-roth-theatre",
+        "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/"
       ],
-      "dirFiles": 14,
+      "dirFiles": 15,
       "dirClean": 1,
       "inReviewsJson": 1,
       "missing": [
@@ -80010,6 +80226,12 @@
           "knownOutletId": "splash-magazines",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/midnight-daryl-roth-theatre",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
       "dirOnly": [],
@@ -80125,24 +80347,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.tickadoo.com/new-york/midnight",
-          "host": "tickadoo.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "tickadoo--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.tickadoo.com/new-york/midnight"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -80179,7 +80383,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -80189,7 +80393,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -80211,15 +80415,14 @@
       "candidatesRejected": {
         "count": 1395,
         "byReason": {
-          "aggregator-internal-nav": 986,
+          "census-junk-host": 2,
+          "non-review-host": 132,
           "venue-production-page": 1,
-          "non-review-host": 124,
+          "aggregator-internal-nav": 984,
           "non-review-path": 1,
-          "ticketing-reseller": 6,
-          "census-junk-host": 3,
+          "ticketing-reseller": 2,
           "not-http-url": 244,
-          "aggregator-section-root": 29,
-          "roundup-page": 1
+          "aggregator-section-root": 29
         }
       },
       "dedupedVariants": [],
@@ -80407,11 +80610,31 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
+      "ingestResults": [
+        {
+          "url": "https://www.show-score.com/off-broadway-shows/midnight-daryl-roth-theatre",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "unknown-outlet-aggregator-host (show-score.com)"
+        }
+      ],
       "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/off-broadway-shows/midnight-daryl-roth-theatre"
+          },
           {
             "outletId": "theatrely",
             "outlet": "theatrely",
@@ -80425,17 +80648,17 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/"
-          },
-          {
-            "outletId": "tickadoo.com",
-            "outlet": "tickadoo.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.tickadoo.com/new-york/midnight"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
+          {
+            "url": "https://www.show-score.com/off-broadway-shows/midnight-daryl-roth-theatre",
+            "outletId": "show-score.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
           {
             "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
             "outletId": "theatrely",
@@ -80449,20 +80672,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T12:06:49.970Z"
-          },
-          {
-            "url": "https://www.tickadoo.com/new-york/midnight",
-            "outletId": "tickadoo.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T12:06:49.970Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-09-30T07:43:36.484Z"
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -83570,6 +83786,7 @@
       "category": "off-broadway",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
         "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942",
         "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc"
       ],
@@ -83586,6 +83803,24 @@
       ],
       "dirOnly": [],
       "flaggedMisses": [
+        {
+          "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
+          "host": "pulsd.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "pulsd--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942",
           "host": "eventbrite.com",
@@ -83639,7 +83874,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -83665,14 +83900,14 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 2,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 35,
+        "count": 33,
         "byReason": {
-          "non-review-host": 34,
-          "census-junk-host": 1
+          "census-junk-host": 1,
+          "non-review-host": 32
         }
       },
       "dedupedVariants": [],
@@ -83702,6 +83937,13 @@
             "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc"
           },
           {
+            "outletId": "pulsd.com",
+            "outlet": "pulsd.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc"
+          },
+          {
             "outletId": "eventbrite.com",
             "outlet": "eventbrite.com",
             "critic": "Unknown",
@@ -83719,6 +83961,13 @@
             "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
+            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
+            "outletId": "pulsd.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
             "url": "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942",
             "outletId": "eventbrite.com",
             "state": "IN_FLIGHT",
@@ -83730,7 +83979,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-09-30T07:43:36.484Z"
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "mother-play-2024",
@@ -84290,6 +84539,42 @@
         "candidateCount": 14
       },
       "computedAt": "2026-09-05T17:16:12.711Z"
+    },
+    {
+      "showId": "motherfucker-off-broadway-2026",
+      "title": "Motherfucker",
+      "openingDate": "2026-10-01",
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
@@ -108138,6 +108423,180 @@
         "candidateCount": 12
       },
       "computedAt": "2026-09-16T07:01:53.756Z"
+    },
+    {
+      "showId": "savage-and-simon-says-a-double-bill-off-west-end-2026",
+      "title": "Savage & Simon Says: A Double Bill",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.londontheatregeek.co.uk/shows/savage-and-simon-says-a-double-bill"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.londontheatregeek.co.uk/shows/savage-and-simon-says-a-double-bill",
+          "host": "londontheatregeek.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 1
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Savage and Simon Says: A Double Bill\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Savage and Simon Says: A Double Bill\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Savage and Simon Says: A Double Bill\" review lyric",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Savage and Simon Says: A Double Bill Lyric Hammersmith review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Savage and Simon Says: A Double Bill Lyric Hammersmith review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Savage and Simon Says: A Double Bill Lyric Hammersmith review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 1,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 28,
+        "byReason": {
+          "census-junk-host": 2,
+          "non-review-host": 24,
+          "non-review-path": 1,
+          "roundup-page": 1
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.londontheatregeek.co.uk/shows/savage-and-simon-says-a-double-bill",
+          "host": "londontheatregeek.co.uk",
+          "outletId": "londontheatregeek",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "londontheatregeek.co.uk",
+            "outlet": "londontheatregeek.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatregeek.co.uk/shows/savage-and-simon-says-a-double-bill"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.londontheatregeek.co.uk/shows/savage-and-simon-says-a-double-bill",
+            "outletId": "londontheatregeek.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "schmigadoon-2026",
@@ -140892,37 +141351,36 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.theguardian.com/stage/2026/sep/30/the-standard-of-living-review-rory-kinnear-theatre-royal-haymarket-london-james-graham-nicholas-hytner",
-        "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
-        "https://www.londonboxoffice.co.uk/news/post/the-standard-of-living-theatre-royal-haymarket-review",
-        "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
-        "https://www.whatsonstage.com/news/the-standard-of-living-with-rory-kinnear-and-natalia-osipova-in-the-west-end-review_1733934/",
-        "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
         "https://www.thereviewshub.com/the-standard-of-living-theatre-royal-haymarket-london/",
+        "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+        "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
+        "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket",
         "https://www.allthatdazzles.co.uk/post/review-the-standard-of-living-theatre-royal-haymarket",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-standard-of-living-theatre-royal-haymarket-review/",
-        "https://www.londontheatredirect.com/play/the-standard-of-living-tickets",
         "https://trh.co.uk/whatson/the-standard-of-living/",
+        "https://www.whatsonstage.com/news/the-standard-of-living-with-rory-kinnear-and-natalia-osipova-in-the-west-end-review_1733934/",
         "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham",
+        "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket/amp",
         "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
-        "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
-        "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket",
-        "https://londontheatrehub.co.uk/shows/the-standard-of-living/",
-        "https://www.timeout.com/london/theatre/the-standard-of-living"
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-standard-of-living-rory-kinnear-john-maynard-keynes-b3058809.html",
+        "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
+        "https://www.ft.com/content/8f443987-91a7-4785-83e8-51937613fc77"
       ],
-      "dirFiles": 17,
-      "dirClean": 8,
-      "inReviewsJson": 8,
+      "dirFiles": 27,
+      "dirClean": 15,
+      "inReviewsJson": 15,
       "missing": [
         {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
-          "host": "thetimes.com",
-          "knownOutletId": "times-uk",
+          "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
+          "host": "londontheatre.co.uk",
+          "knownOutletId": "london-theatre",
           "serpCensus": true
         },
         {
-          "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
-          "host": "show-score.com",
-          "knownOutletId": null,
+          "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
           "serpCensus": true
         },
         {
@@ -140932,47 +141390,61 @@
           "serpCensus": true
         },
         {
-          "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
-          "host": "monstagigz.com",
-          "knownOutletId": "monstagigz",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket",
-          "host": "sueterryvoices.com",
-          "knownOutletId": "sueterryvoices",
-          "serpCensus": true
-        },
-        {
-          "url": "https://londontheatrehub.co.uk/shows/the-standard-of-living/",
-          "host": "londontheatrehub.co.uk",
-          "knownOutletId": "londontheatrehub",
+          "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket/amp",
+          "host": "londontheatredirect.com",
+          "knownOutletId": "londontheatredirect",
           "serpCensus": true
         }
       ],
       "dirOnly": [
         {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
           "host": "closeupculture.com",
+          "count": 1
+        },
+        {
+          "host": "londonboxoffice.co.uk",
+          "count": 1
+        },
+        {
+          "host": "london-unattached.com",
+          "count": 1
+        },
+        {
+          "host": "theatrecat.com",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
       "flaggedMisses": [
         {
-          "url": "https://www.londontheatredirect.com/play/the-standard-of-living-tickets",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "recoverable": true,
+          "recoverableFile": "times-uk--unknown.json",
+          "recoverableOutletId": "times-uk",
+          "recoverableCritic": "Unknown",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "londontheatredirect--london-theatre-direct-limited.json",
-              "flag": "wrongShow",
-              "urlInDir": "https://www.londontheatredirect.com/play/the-standard-of-living-tickets?srsltid=AU7gw4V2n47Nlvph7Kuypm2T4k3I5QgnkG7Kzqxlp6qWyyyz6V-24jhI"
+              "file": "times-uk--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx"
             }
           ],
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
+          ],
+          "weRefStars": 3,
+          "weRefStarsSource": "westendtheatre",
           "serpCensus": true
         },
         {
@@ -140994,49 +141466,36 @@
           "serpCensus": true
         },
         {
-          "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "url": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "recoverable": true,
+          "recoverableFile": "thestage--sam-marlowe.json",
+          "recoverableOutletId": "thestage",
+          "recoverableCritic": "Sam Marlowe",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "west-end-wilma--westendwilma.json",
-              "flag": "clean",
-              "urlInDir": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/"
+              "file": "thestage--sam-marlowe.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear"
             }
           ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/the-standard-of-living",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout-london--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/london/theatre/the-standard-of-living"
-            }
+          "weRef": true,
+          "weRefSources": [
+            "westendtheatre"
           ],
-          "serpCensus": true
+          "weRefStars": 2,
+          "weRefStarsSource": "westendtheatre"
         }
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 1,
+        "rowCount": 15,
         "sources": {
           "westendtheatre": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 8,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -141046,11 +141505,11 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 1
           },
           "lbo-roundup": {
             "found": true,
-            "rows": 1,
+            "rows": 7,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -141064,12 +141523,16 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 1,
-        "corroborated": 1,
+        "currentRunRows": 15,
+        "corroborated": 7,
         "perSource": {
           "lbo-roundup": {
-            "cited": 1,
-            "corroborated": 1
+            "cited": 7,
+            "corroborated": 7
+          },
+          "westendtheatre": {
+            "cited": 7,
+            "corroborated": 5
           }
         }
       },
@@ -141095,7 +141558,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -141105,7 +141568,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -141114,8 +141577,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 8,
+            "accepted": 1,
             "error": null
           },
           {
@@ -141125,7 +141588,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -141135,48 +141598,50 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 17,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 26,
+        "count": 25,
         "byReason": {
-          "non-review-host": 23,
+          "non-review-host": 18,
           "non-review-path": 1,
-          "ticketing-listing": 2
+          "roundup-page": 2,
+          "ticketing-listing": 3,
+          "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
-          "host": "thetimes.com",
-          "outletId": "times-uk",
+          "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
+          "host": "londontheatre.co.uk",
+          "outletId": "london-theatre",
           "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+          "reason": "spawnSync node ETIMEDOUT"
         },
         {
-          "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
+          "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect",
+          "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
+          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=londontheatredirect.com): Scrapingdog HTTP 404: {\"mess"
         },
         {
           "url": "https://trh.co.uk/whatson/the-standard-of-living/",
@@ -141191,53 +141656,55 @@
           "reason": "Refusing to ingest — https://trh.co.uk/whatson/the-standard-of-living/ matches a known non-review do"
         },
         {
-          "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
-          "host": "monstagigz.com",
-          "outletId": "monstagigz",
+          "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket/amp",
+          "host": "londontheatredirect.com",
+          "outletId": "londontheatredirect",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket",
-          "host": "sueterryvoices.com",
-          "outletId": "sueterryvoices",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
+          "reason": "Fetch failed: All scraping methods failed"
         }
       ],
-      "ingestSkippedByCap": [
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
         {
-          "url": "https://londontheatrehub.co.uk/shows/the-standard-of-living/",
-          "host": "londontheatrehub.co.uk",
-          "outletId": "londontheatrehub"
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+          "host": "thetimes.com",
+          "file": "times-uk--unknown.json",
+          "recovered": true,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": true,
+          "reason": null,
+          "recoveryCount": 0
+        }
+      ],
+      "recoverySkippedByCap": [
+        {
+          "url": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
+          "host": "thestage.co.uk",
+          "file": "thestage--sam-marlowe.json"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
+            "outletId": "london-theatre",
+            "outlet": "london-theatre",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx"
+            "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket"
           },
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
+            "outletId": "londontheatredirect",
+            "outlet": "londontheatredirect",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end"
+            "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket"
           },
           {
             "outletId": "trh.co.uk",
@@ -141247,32 +141714,18 @@
             "url": "https://trh.co.uk/whatson/the-standard-of-living/"
           },
           {
-            "outletId": "monstagigz",
-            "outlet": "monstagigz",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/"
-          },
-          {
-            "outletId": "sueterryvoices",
-            "outlet": "sueterryvoices",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket"
-          },
-          {
-            "outletId": "londontheatrehub",
-            "outlet": "londontheatrehub",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://londontheatrehub.co.uk/shows/the-standard-of-living/"
-          },
-          {
             "outletId": "londontheatredirect",
             "outlet": "londontheatredirect",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatredirect.com/play/the-standard-of-living-tickets"
+            "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket/amp"
+          },
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx"
           },
           {
             "outletId": "guardian",
@@ -141282,18 +141735,11 @@
             "url": "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham"
           },
           {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
+            "outletId": "thestage",
+            "outlet": "thestage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/london/theatre/the-standard-of-living"
+            "url": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear"
           }
         ],
         "suppressedMissing": [],
@@ -141305,26 +141751,14 @@
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
-            "url": "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-30T07:43:36.484Z"
-          },
-          {
-            "url": "https://www.londonboxoffice.co.uk/news/post/the-standard-of-living-theatre-royal-haymarket-review",
-            "outletId": "londonboxoffice.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-30T07:43:36.484Z"
-          },
-          {
-            "url": "https://www.whatsonstage.com/news/the-standard-of-living-with-rory-kinnear-and-natalia-osipova-in-the-west-end-review_1733934/",
-            "outletId": "whatsonstage.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-30T07:43:36.484Z"
-          },
-          {
             "url": "https://www.thereviewshub.com/the-standard-of-living-theatre-royal-haymarket-london/",
             "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
+            "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
@@ -141341,18 +141775,42 @@
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
-            "outletId": "times-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
+            "url": "https://www.whatsonstage.com/news/the-standard-of-living-with-rory-kinnear-and-natalia-osipova-in-the-west-end-review_1733934/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
-            "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
-            "outletId": "show-score.com",
+            "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
+            "outletId": "monstagigz.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-standard-of-living-rory-kinnear-john-maynard-keynes-b3058809.html",
+            "outletId": "independent.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
+            "url": "https://www.ft.com/content/8f443987-91a7-4785-83e8-51937613fc77",
+            "outletId": "ft.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
+            "outletId": "london-theatre",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
+            "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket",
+            "outletId": "londontheatredirect",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
           },
           {
             "url": "https://trh.co.uk/whatson/the-standard-of-living/",
@@ -141362,32 +141820,18 @@
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
-            "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
-            "outletId": "monstagigz",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-30T07:43:36.484Z"
-          },
-          {
-            "url": "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket",
-            "outletId": "sueterryvoices",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://londontheatrehub.co.uk/shows/the-standard-of-living/",
-            "outletId": "londontheatrehub",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-30T07:43:36.484Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/play/the-standard-of-living-tickets",
+            "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket/amp",
             "outletId": "londontheatredirect",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
             "url": "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham",
@@ -141397,25 +141841,18 @@
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
-            "outletId": "west-end-wilma",
+            "url": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
+            "outletId": "thestage",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/the-standard-of-living",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 7,
-        "candidateCount": 17
+        "liveCount": 9,
+        "candidateCount": 15
       },
-      "computedAt": "2026-09-30T07:43:36.484Z"
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -148540,14 +148977,14 @@
         "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
         "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
         "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
-        "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
-        "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
-        "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
         "https://www.timeout.com/london/theatre/tru-review",
-        "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
-        "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/",
+        "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
         "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
-        "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/",
+        "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
+        "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
+        "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
+        "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/",
+        "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
         "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
         "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2"
       ],
@@ -148607,12 +149044,6 @@
           "host": "lovelondonloveculture.com",
           "knownOutletId": "lovelondonloveculture",
           "serpCensus": true
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/",
-          "host": "uktw.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -148630,10 +149061,6 @@
         },
         {
           "host": "standard.co.uk",
-          "count": 1
-        },
-        {
-          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
@@ -148672,7 +149099,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 0
+            "fetchErrors": 2
           },
           "lbo-roundup": {
             "found": false,
@@ -148721,7 +149148,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -148731,7 +149158,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -148751,7 +149178,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 3,
             "error": null
           },
           {
@@ -148761,7 +149188,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
@@ -148771,13 +149198,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 388,
+        "count": 393,
         "byReason": {
+          "non-review-host": 47,
           "aggregator-internal-nav": 263,
-          "non-review-host": 45,
+          "non-review-path": 1,
+          "roundup-page": 4,
           "not-http-url": 66,
           "aggregator-section-root": 11,
-          "roundup-page": 3
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [],
@@ -148853,18 +149282,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/29/review-round-up-tru-menier-chocola"
-        },
-        {
-          "url": "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  provisional outlet \"uktw\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
         }
       ],
       "ingestSkippedByCap": [],
@@ -148884,13 +149301,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://lovelondonloveculture.com/2026/09/29/review-round-up-tru-menier-chocolate-factory/"
-          },
-          {
-            "outletId": "uktw.co.uk",
-            "outlet": "uktw.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/"
           },
           {
             "outletId": "lighting-and-sound-america",
@@ -148951,10 +149361,10 @@
             "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.timeout.com/london/theatre/tru-review",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
             "url": "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
@@ -148963,16 +149373,16 @@
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
-            "outletId": "liamodell.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/tru-review",
-            "outletId": "timeout.com",
+            "url": "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
+            "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
+          },
+          {
+            "url": "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
+            "outletId": "westendbestfriend.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
           },
           {
             "url": "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
@@ -148981,16 +149391,22 @@
             "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+          },
+          {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/",
             "outletId": "telegraph.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
-            "outletId": "thestage.co.uk",
+            "url": "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
+            "outletId": "liamodell.com",
             "state": "live",
-            "firstSeenAt": "2026-09-28T07:54:42.859Z"
+            "firstSeenAt": "2026-09-29T21:21:30.952Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
@@ -149019,13 +149435,6 @@
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
-            "url": "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/",
-            "outletId": "uktw.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
             "outletId": "lighting-and-sound-america",
             "state": "GAP",
@@ -149034,10 +149443,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 17,
+        "liveCount": 18,
         "candidateCount": 21
       },
-      "computedAt": "2026-09-30T07:43:36.484Z"
+      "computedAt": "2026-09-30T19:58:03.707Z"
     },
     {
       "showId": "truly-howard-hughes-off-broadway-2026",

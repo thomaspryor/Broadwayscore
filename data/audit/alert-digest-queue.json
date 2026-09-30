@@ -1841,30 +1841,6 @@
     "queuedAt": "2026-09-29T20:37:42.225Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026",
-    "title": "Review gap — \"Lost in Del Valle\" missing 2 cited review(s)",
-    "description": "Lost in Del Valle (lost-in-del-valle-return-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lost-in-del-valle-return-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T21:21:31.133Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
-    "title": "Review gap — \"Tru\" missing 3 cited review(s)",
-    "description": "Tru (tru-off-west-end-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T21:21:31.211Z"
-  },
-  {
     "conditionKey": "land:land/worktree-main-green-0929b",
     "title": "Landing blocked: rebase red on land/worktree-main-green-0929b",
     "description": "land.yml did not land land/worktree-main-green-0929b: the rebase gate went red at 7b28b39963. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/worktree-main-green-0929b @ 7b28b39963 (origin/land/worktree-main-green-0929b) → origin/main @ b8585e936d REFUSED: rebase: branch would not rebase cleanly onto origin/main @ b8585e936d: Rebasing (1/5) Rebasing (2/5) Rebasing (3/5) error: could not apply 866ad4e04d... test(BRO-3425): split live outlet-registry + image-presence assertions out of test.yml's unit batch hint: Resolve all co Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36629730821",
@@ -3575,32 +3551,39 @@
     "queuedAt": "2026-09-30T19:26:23.660Z"
   },
   {
-    "conditionKey": "land:land/bro-4431-coverage",
-    "title": "Landing blocked: race red on land/bro-4431-coverage",
-    "description": "land.yml did not land land/bro-4431-coverage: the race gate went red at 7e216981c1. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4431-coverage @ 7e216981c1 (origin/land/bro-4431-coverage) → origin/main @ 30ce10e038 [land] attempt 1/3: rebased onto 30ce10e038, 22 file(s) changed — running checks [land] verified-base: main moved 9c958ee3d5 → 30ce10e038 across 148 file(s), substantive — running the full gauntlet [land] linked 20 gitignored path(s) into the worktree (node_modules/core data) [land] checks: coloca Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36763308332",
-    "severity": "error",
+    "conditionKey": "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026",
+    "title": "Review gap — \"Lost in Del Valle\" missing 2 cited review(s)",
+    "description": "Lost in Del Valle (lost-in-del-valle-return-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=lost-in-del-valle-return-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-4431-coverage"
-      },
-      {
-        "name": "gate",
-        "value": "race"
-      },
-      {
-        "name": "tip",
-        "value": "7e216981c17d0b91c10a5dd9df65e218bf3973f9"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36763308332"
-      }
-    ],
-    "queuedAt": "2026-09-30T19:43:36.097Z"
+    "fields": [],
+    "queuedAt": "2026-09-30T19:58:03.883Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:midnight-off-broadway-2026",
+    "title": "Review gap — \"Midnight\" missing 1 cited review(s)",
+    "description": "Midnight (midnight-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=midnight-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T19:58:03.892Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:tru-off-west-end-2026",
+    "title": "Review gap — \"Tru\" missing 2 cited review(s)",
+    "description": "Tru (tru-off-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=tru-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T19:58:03.952Z"
   }
 ]
