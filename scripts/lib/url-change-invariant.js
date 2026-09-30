@@ -76,7 +76,7 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   // rediscover-review-urls.js Phase 2 refusal of THIS url's redirect; moot once the url moves.
   'redirectRefused',
   // Salvaged from the old URL's walled page (walled-page-meta.js).
-  'outletStandfirst', 'outletHeadline', 'walledPageMetaAt',
+  'outletStandfirst', 'outletHeadline', 'walledPageMetaAt', 'walledPageMetaCheckedAt',
   // The old ARTICLE's publish date. Leaving it makes the fix defeat itself:
   // the rebuild's date guards re-flag the cleared file from the stale date,
   // and the Tour-transfer carve-out below would then preserve that flag across

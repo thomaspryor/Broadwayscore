@@ -76,7 +76,30 @@ function extractTheStageArticleMeta(html) {
   const teaser = html.match(/<div[^>]*class="[^"]*aos-(?:DS32-Teaser|Article-IntroText)[^"]*"[^>]*>([\s\S]{1,600}?)<\/div>/i);
   const standfirst = teaser ? (_decode(teaser[1]) || null) : null;
 
-  return { headline, criticName, publishDate, standfirst };
+  return { headline, criticName, publishDate, standfirst, stars: _articleStars(html, h1.index) };
+}
+
+/**
+ * The article's own star rating: the first StarRating block after the h1 and
+ * before the article's byline. Related-review cards further down carry their
+ * own StarRating blocks and bylines (15 of them on the Thelma & Louise page),
+ * so the byline must also come before the article's own standfirst: an
+ * article with no byline would otherwise reach into the first related card.
+ * Any of the three missing, or out of order, yields null.
+ * Without this a walled review saved date/critic/quote but no score, and a
+ * stub with no score never reaches the site (BRO-4428: Thelma & Louise,
+ * The Standard of Living, Choir Boy and ~8 more 2026 Stage reviews).
+ */
+function _articleStars(html, h1Index) {
+  const after = html.slice(h1Index);
+  const byline = after.search(/class="[^"]*aos-ArticleAuthor/i);
+  const teaser = after.search(/class="[^"]*aos-(?:DS32-Teaser|Article-IntroText)/i);
+  if (byline < 0 || teaser < 0 || byline > teaser) return null;
+  const block = after.slice(0, byline).match(/StarRating[^"]*">((?:<img[^>]*>\s*){1,5})/);
+  if (!block) return null;
+  const filled = (block[1].match(/stageStar\.svg/g) || []).length;
+  const empty = (block[1].match(/stageNoStar\.svg/g) || []).length;
+  return filled > 0 && filled + empty === 5 ? filled : null;
 }
 
 /**
@@ -106,7 +129,10 @@ function headlineMatchesShow(headline, showTitle) {
   const titleSquashed = tTokens.join('');
   const inTitle = (t) => tTokens.includes(t) || tTokens.includes(t.replace(/s$/, '')) || titleSquashed.includes(t);
   const first = tTokens[0];
-  const parts = [namePart, ...namePart.split(/\s+[:–—-]\s+|:\s+/)];
+  // A bracketed subtitle ("Slaughterhouse-Five (or the Children's Crusade)
+  // review", BRO-4428) is tried with the brackets dropped too.
+  const unbracketed = namePart.replace(/\s*\([^)]*\)\s*/g, ' ').trim();
+  const parts = [namePart, unbracketed, ...namePart.split(/\s+[:–—-]\s+|:\s+/)];
   return parts.some((part) => {
     const p = titleTokens(part);
     if (!p.length || !p.every(inTitle)) return false;
@@ -135,7 +161,8 @@ function classifyStageHeadline(headline, showTitle) {
  * returns the list of fields it set (empty when nothing changed).
  * With opts.showTitle, refuses (returns ['wrongShowSuspect']) when the page
  * headline names a different show: a date and byline must not make another
- * show's review look more legitimate.
+ * show's review look more legitimate. The star rating is only applied with
+ * opts.show (a shows.json entry) and a publishDate inside that run.
  */
 function applyWalledPageMeta(data, html, opts = {}) {
   if (!data || !isTheStageUrl(data.url)) return [];
@@ -177,6 +204,32 @@ function applyWalledPageMeta(data, html, opts = {}) {
     data.outletHeadline = meta.headline;
     set.push('outletHeadline');
   }
+  // The score is what puts a stub on the site, so it also needs the review
+  // to date from THIS production's run: stale files (a 2025 Barbican Seagull
+  // filed under the 2027 Globe one, a 2012 Stick Man) must stay unscored.
+  // No show passed, or no date: fail closed. The page's own date wins over a
+  // stored one (the stars come from this page); stored dates can be ordinal
+  // ("December 17th, 2025"), which raw new Date() can't parse. A show with no
+  // closingDate has a window ending opening+30d, so a later review of a long
+  // run stays unscored here (it can still score through the collector).
+  // originalScoreCleared is sticky by convention (review-write-guard.js; the
+  // other backfills skip it too), so a deliberately cleared score stays cleared.
+  const { isReviewWithinOwnProductionWindow } = require('./review-guards');
+  const { normalizeDate } = require('./date-utils');
+  const reviewDate = meta.publishDate || normalizeDate(data.publishDate);
+  const inWindow = !!opts.show && !!reviewDate && isReviewWithinOwnProductionWindow(opts.show, reviewDate);
+  // A full-text review is scored from its text; salvaging stars here would
+  // swap its score source under it (BRO-4428).
+  const excluded = data.wrongShow === true || data.wrongProduction === true || !!data.duplicateOf || !!data.fullText;
+  if (meta.stars && inWindow && !excluded && !data.originalScore && data.originalScoreNormalized == null
+    && !data.originalScoreManual && data.originalScoreCleared !== true) {
+    const { starsToNumeric } = require('./score-extractors');
+    data.originalScore = `${meta.stars}/5 stars`;
+    data.originalScoreNormalized = starsToNumeric(meta.stars, 5);
+    data.originalScoreSource = 'stage-star-svg';
+    data.scoreExtractedFrom = 'thestage-walled-page';
+    set.push('originalScore');
+  }
   if (set.length) data.walledPageMetaAt = new Date().toISOString();
   return set;
 }
@@ -198,7 +251,7 @@ function salvageWalledPageMetaToFile(filePath, html, opts = {}) {
     const target = generateReviewFilename(data.outlet || data.outletId || 'thestage', name);
     return target !== path.basename(filePath) && fs.existsSync(path.join(path.dirname(filePath), target));
   };
-  const set = applyWalledPageMeta(data, html, { showTitle: opts.showTitle, criticSlotTaken });
+  const set = applyWalledPageMeta(data, html, { showTitle: opts.showTitle, show: opts.show, criticSlotTaken });
   const applied = set.length && !set.some((s) => s.endsWith('Suspect'));
   if (applied && !opts.dryRun) {
     const { safeWriteReview } = require('./review-write-guard');

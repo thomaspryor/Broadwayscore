@@ -9,13 +9,15 @@
  * metadata inline (lib/walled-page-meta.js); this script repairs files that
  * were collected before that fix.
  *
- * Candidates: thestage URL, no fullText, not flagged wrongShow/
- * wrongProduction/duplicateOf, and missing at least one of publishDate, a
- * named critic, or outletStandfirst. Gap-fill only (applyWalledPageMeta never
- * overwrites). Pages go through fetchPage() per the scraping rule.
+ * Candidates: thestage URL, not flagged wrongShow/wrongProduction/
+ * duplicateOf, and either (no fullText and missing at least one of
+ * publishDate, a named critic, outletStandfirst, or a star rating) or
+ * (fullText but no publishDate: date only, BRO-4428). Gap-fill only
+ * (applyWalledPageMeta never overwrites). Pages go through fetchPage() per
+ * the scraping rule.
  *
  * Usage:
- *   node scripts/backfill-walled-page-meta.js [--show=ID] [--limit=N] [--dry-run] [--delay-ms=3000]
+ *   node scripts/backfill-walled-page-meta.js [--show=ID] [--limit=N] [--dry-run] [--delay-ms=3000] [--recheck-days=14] [--time-budget-min=N]
  *     [--html-cache=DIR] [--list-urls]
  */
 
@@ -48,14 +50,44 @@ const listUrls = args.includes('--list-urls');
 const cacheKey = (u) => require('crypto').createHash('sha1').update(String(u)).digest('hex');
 
 const { isTheStageUrl, salvageWalledPageMetaToFile } = require('./lib/walled-page-meta');
+const RECHECK_DAYS = Number(getArg('recheck-days') || 14);
+// Wall-clock budget so a scheduled run exits cleanly before its step
+// timeout instead of being killed mid-write (scripts/lib/run-budget.js).
+const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
+const budget = createRunBudget(parseTimeBudgetMin(args));
+
+// Stamp an attempt on the file (url unchanged since the candidate scan).
+function stampChecked(fp, url) {
+  const { safeWriteReview } = require('./lib/review-write-guard');
+  const { normalizeUrl } = require('./lib/review-normalization');
+  const cur = JSON.parse(fs.readFileSync(fp, 'utf8'));
+  if (normalizeUrl(cur.url || '') !== normalizeUrl(url || '')) return;
+  cur.walledPageMetaCheckedAt = new Date().toISOString();
+  safeWriteReview(fp, cur);
+}
 
 function isCandidate(d) {
   if (!d || !isTheStageUrl(d.url)) return false;
-  if (d.fullText) return false;
   if (d.wrongShow || d.wrongProduction || d.duplicateOf) return false;
+  // Full-text reviews are live already; the page only adds a missing date
+  // (reader report 2026-09-25: Stage reviews showing no date). Their score
+  // stays with the full-text scoring (applyWalledPageMeta skips fullText).
+  if (d.fullText) {
+    if (d.publishDate) return false;
+    const checkedFt = Date.parse(d.walledPageMetaCheckedAt || '');
+    return !(checkedFt && Date.now() - checkedFt < RECHECK_DAYS * 86400000);
+  }
   const critic = String(d.criticName || '').trim();
   const needsCritic = !critic || /^(unknown|the stage)$/i.test(critic);
-  return !d.publishDate || needsCritic || !d.outletStandfirst;
+  // Files already scoring from aggregator stars keep that score (the rebuild
+  // skips an originalScore next to an aggregator scoreSource anyway).
+  const needsScore = !d.originalScore && d.originalScoreNormalized == null && d.originalScoreCleared !== true
+    && d.aggregatorStars == null && d.aggregatorStarsNormalized == null;
+  if (!(!d.publishDate || needsCritic || !d.outletStandfirst || needsScore)) return false;
+  // Every attempt is stamped (below), so a page that yields nothing new is
+  // re-fetched every RECHECK_DAYS, not on every scheduled run.
+  const checked = Date.parse(d.walledPageMetaCheckedAt || '');
+  return !(checked && Date.now() - checked < RECHECK_DAYS * 86400000);
 }
 
 function findCandidates() {
@@ -91,10 +123,15 @@ async function main() {
   const suspects = [];
   let updated = 0, failed = 0;
   for (const [i, { fp, d }] of candidates.entries()) {
+    if (budget.exceeded()) {
+      console.log(`  ⏱ time budget reached — ${candidates.length - i} candidate(s) left for the next run`);
+      break;
+    }
     const label = path.relative(reviewTextsDir, fp);
     let html = null;
     const cached = htmlCacheDir && path.join(htmlCacheDir, `${cacheKey(d.url)}.html`);
-    if (cached && fs.existsSync(cached)) {
+    const fromCache = !!(cached && fs.existsSync(cached));
+    if (fromCache) {
       html = fs.readFileSync(cached, 'utf8');
     } else {
       try {
@@ -104,12 +141,14 @@ async function main() {
         console.log(`  ✗ ${label}: fetch failed (${String(e.message || e).slice(0, 80)})`);
       }
     }
+    // The directory is authoritative: a moved file can carry a stale showId.
+    const show = showsById[path.basename(path.dirname(fp))] || showsById[d.showId];
     if (html) {
-      const showTitle = (showsById[d.showId || path.basename(path.dirname(fp))] || {}).title;
+      const showTitle = (show || {}).title;
       let fresh = null;
       let set;
       try {
-        set = salvageWalledPageMetaToFile(fp, html, { showTitle, dryRun, onApplied: (x) => { fresh = x; } });
+        set = salvageWalledPageMetaToFile(fp, html, { showTitle, show, dryRun, onApplied: (x) => { fresh = x; } });
       } catch (e) {
         // One file edited or corrupted mid-run must not abort the rest.
         console.log(`  ✗ ${label}: salvage failed (${String(e.message || e).slice(0, 80)})`);
@@ -131,6 +170,11 @@ async function main() {
       }
     } else {
       failed++;
+    }
+    // Stamp only a page that actually loaded: an outage or exhausted scraper
+    // credits must not park every candidate for RECHECK_DAYS.
+    if (!dryRun && !fromCache && html) {
+      try { stampChecked(fp, d.url); } catch (e) { console.log(`  ⚠ ${label}: attempt stamp failed (${String(e.message || e).slice(0, 80)})`); }
     }
     if (i < candidates.length - 1) await new Promise((r) => setTimeout(r, delayMs));
   }
