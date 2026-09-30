@@ -154,9 +154,12 @@ function applyUrlEditionCorrection(data, today = new Date().toISOString().slice(
 /** Same article on the same publisher, ignoring host prefix (theater. vs www.), scheme and query. */
 function sameArticlePath(a, b) {
   try {
+    const { resolveOutletFromUrl } = require('./review-normalization');
     const A = new URL(a), B = new URL(b);
-    const tail = (u) => u.hostname.replace(/^.*?([^.]+\.[^.]+)$/, '$1') + u.pathname.replace(/\/+$/, '');
-    return tail(A) === tail(B);
+    const ra = resolveOutletFromUrl(a), rb = resolveOutletFromUrl(b);
+    if (!ra || !rb || ra.outletId !== rb.outletId) return false;
+    const p = (u) => u.pathname.replace(/\/+$/, '');
+    return p(A).length > 1 && p(A) === p(B);
   } catch { return false; }
 }
 
@@ -168,8 +171,8 @@ function sameArticlePath(a, b) {
  * losing the review. Replace the stub with the relabelled source instead.
  * Never when either side carries an operator assertion or the stub is wrongShow.
  */
-function excludedTargetSwapAllowed({ source, target, sourceExcluded, targetExcluded }) {
-  if (sourceExcluded || !targetExcluded) return false;
+function excludedTargetSwapAllowed({ source, target, sourceExcluded, targetExcluded, otherPointersAtTarget = 0 }) {
+  if (sourceExcluded || !targetExcluded || otherPointersAtTarget) return false;
   if (carriesOperatorAssertion(source) || carriesOperatorAssertion(target)) return false;
   if (target.wrongShow) return false;
   return sameArticlePath(source.url, target.url);
@@ -432,7 +435,7 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
           continue;
         }
         const expectedFilename = generateReviewFilename(jsonOutlet, d.criticName || 'Unknown');
-        if (expectedFilename === f) continue;
+        if (expectedFilename === f) { if (deferWrite) { io.write(f, d); announceFix(); } continue; }
         if (!io.exists(expectedFilename)) {
           const repointed = renameAndRepoint(io, f, expectedFilename, d, sid);
           if (deferWrite) announceFix();
@@ -448,9 +451,17 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         if (deferWrite && excludedTargetSwapAllowed({
           source: d, target: existingData,
           sourceExcluded: !!explain(d, f), targetExcluded: !!explain(existingData, expectedFilename),
+          // Siblings (other than the source) that treat the stub as their primary
+          // would be un-flagged by the unlink's cascade clear: refuse then.
+          otherPointersAtTarget: siblingsPointingAt(expectedFilename, io.siblings(expectedFilename)).filter((x) => x.file !== f).length,
         })) {
           io.unlink(expectedFilename);
-          renameAndRepoint(io, f, expectedFilename, d, sid);
+          try {
+            renameAndRepoint(io, f, expectedFilename, d, sid);
+          } catch (e) {
+            io.write(expectedFilename, existingData); // restore the stub; nothing lost
+            throw e;
+          }
           announceFix();
           out.renamedCount++;
           act(`${sid}/${f}: replaced excluded ${expectedFilename} with relabelled live copy`);

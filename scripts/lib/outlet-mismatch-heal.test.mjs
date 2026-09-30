@@ -17,6 +17,7 @@ const require_ = createRequire(import.meta.url);
 const {
   urlEditionCorrection,
   publisherDomainCorrection,
+  sameArticlePath,
   applyUrlEditionCorrection,
   sameReviewUrl,
   carriesOperatorAssertion,
@@ -333,4 +334,10 @@ test('runOutletMismatchCleanup: publisher-domain relabel renames; excluded stub 
     assert.equal(t.wrongProduction, undefined);
     assert.match(t.fullText, /^A full review/);
   } finally { fx2.cleanup(); }
+});
+
+test('sameArticlePath: same publisher + path across host prefixes only', () => {
+  assert.equal(sameArticlePath(NYT, 'https://www.nytimes.com/2009/03/10/theater/reviews/10thir.html?ref=x'), true);
+  assert.equal(sameArticlePath('https://www.express.co.uk/a', 'https://www.dailymail.co.uk/a'), false);
+  assert.equal(sameArticlePath('https://www.nytimes.com/', 'https://www.nytimes.com/'), false);
 });
