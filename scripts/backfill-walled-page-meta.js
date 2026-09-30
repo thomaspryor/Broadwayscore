@@ -106,7 +106,19 @@ function findCandidates() {
       if (isCandidate(d)) out.push({ fp, d });
     }
   }
-  return out;
+  // Newest productions first: --limit used to be spent in directory order,
+  // so 2018 Broadway files took the slots while open West End shows later
+  // in the alphabet (Thelma & Louise, The Standard of Living) waited a cycle.
+  let showsById = {};
+  try {
+    const sj = JSON.parse(fs.readFileSync(path.join(__dirname, '..', 'data', 'shows.json'), 'utf8'));
+    showsById = Object.fromEntries((sj.shows || sj).map((s) => [s.id, s]));
+  } catch { /* no shows.json: keep directory order */ }
+  const recency = ({ fp }) => {
+    const s = showsById[path.basename(path.dirname(fp))] || {};
+    return String(s.openingDate || s.previewsStartDate || s.closingDate || '');
+  };
+  return out.sort((a, b) => recency(b).localeCompare(recency(a)));
 }
 
 async function main() {
