@@ -111,8 +111,7 @@ function publisherDomainCorrection(data, { ignoreDuplicateOf = false, ignoreReje
   if (NOT_A_REVIEW_FLAGS.some((k) => data[k])) return null;
   // A script's own duplicateClearReason breadcrumb (e.g. "audit-duplicate-of-url-mismatch.js")
   // matches the operator-text pattern but records only a pointer edit.
-  const { duplicateClearReason: _breadcrumb, ...assertable } = data;
-  if (carriesOperatorAssertion(ignoreDuplicateOf ? assertable : data)) return null;
+  if (carriesOperatorAssertion(ignoreDuplicateOf ? withoutScriptBreadcrumb(data) : data)) return null;
   // Already a pointer-marked duplicate of another file: excluded from scoring,
   // and relabelling it would only detach it from the file it duplicates.
   // BRO-4411: misfileHealPlan() opts in for a duplicateOf whose target is
@@ -146,6 +145,14 @@ function publisherDomainCorrection(data, { ignoreDuplicateOf = false, ignoreReje
 }
 
 
+/** Strip a duplicateClearReason written by a script ("x-y.js ..." / "BRO-N: ...") — it records a pointer edit, not a human decision. */
+function withoutScriptBreadcrumb(data) {
+  const v = data && data.duplicateClearReason;
+  if (typeof v !== 'string' || !/^([\w.-]+\.js\b|BRO-\d+:)/.test(v.trim())) return data;
+  const { duplicateClearReason: _b, ...rest } = data;
+  return rest;
+}
+
 const alnum = (t) => (typeof t === 'string' ? t.normalize('NFKD').toLowerCase().replace(/[^a-z0-9]+/g, '') : '');
 
 /** True when `source`'s text adds nothing to `target`: empty, or contained (ignoring punctuation/whitespace, e.g. "-" vs "--", a URL prefix). */
@@ -159,7 +166,8 @@ function textCovered(source, target) {
   if (a.length < 400) return false;
   let hit = 0, n = 0;
   for (let i = 0; i + 40 <= a.length; i += 40, n++) if (b.includes(a.slice(i, i + 40))) hit++;
-  return n > 0 && hit / n >= 0.9;
+  // The conclusion (verdict) must survive too: the sampled windows skip the tail.
+  return n > 0 && hit / n >= 0.9 && b.includes(a.slice(-60));
 }
 
 /**
@@ -196,8 +204,7 @@ function misfileHealPlan({ data, file, io, explain }) {
   const stripped = { ...data };
   delete stripped.duplicateOf;
   delete stripped.duplicateReason;
-  const { duplicateClearReason: _breadcrumb, ...forAssertion } = stripped;
-  if (carriesOperatorAssertion(forAssertion)) return null;
+  if (carriesOperatorAssertion(withoutScriptBreadcrumb(stripped))) return null;
   const { generateReviewFilename } = require('./review-normalization');
   const expected = generateReviewFilename(fix.outletId, data.criticName || 'Unknown');
   const ptr = hasPtr ? data.duplicateOf : expected;
@@ -542,6 +549,11 @@ function runOutletMismatchCleanup({ reviewTextsDir, showDirs, showById = {}, dry
         if (plan && plan.kind === 'cycle-swap' && expectedFilename === plan.ptr) {
           if (siblingsPointingAt(expectedFilename, io.siblings(expectedFilename)).some((x) => x.file !== f)) {
             keep('misfile-target-has-other-pointers', `${sid}/${f}`); continue;
+          }
+          // The swap deletes the target: first carry over every field it holds that
+          // the fuller copy lacks (aggregator excerpts, urls, provenance).
+          for (const [k, v] of Object.entries(existingData)) {
+            if (d[k] == null && v != null && !k.startsWith('_') && !/^(isSyndicatedDuplicate|syndicat|duplicate)/.test(k) && isTransferableField(k)) d[k] = v;
           }
           io.unlink(expectedFilename);
           try {

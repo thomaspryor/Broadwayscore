@@ -432,7 +432,7 @@ test('runOutletMismatchCleanup: cycle tolerates a script duplicateClearReason br
 test('runOutletMismatchCleanup: cycle where the misfile has the fuller extraction replaces the boilerplate target', () => {
   const body = 'Oh, what a lovely production this is. '.repeat(30);
   const src = misfile({ fullText: `https://www.nytimes.com/x.htmlShare full article\n\n${body}` });
-  const tgt = nytFile({ fullText: 'All print options include free, unlimited access to NYTimes.com.' });
+  const tgt = nytFile({ fullText: 'All print options include free, unlimited access to NYTimes.com.', bwwExcerpt: 'Roundup excerpt only the target has' });
   const fx = fixture({ 'about-entertainment--ben-brantley.json': src, 'nytimes--ben-brantley.json': tgt });
   try {
     const r = run(fx.root, { explainFn: excl });
@@ -443,5 +443,23 @@ test('runOutletMismatchCleanup: cycle where the misfile has the fuller extractio
     assert.match(t.fullText, /lovely production/);
     assert.equal(t.duplicateOf, undefined);
     assert.equal(t.isSyndicatedDuplicate, undefined);
+    assert.equal(t.bwwExcerpt, 'Roundup excerpt only the target has', 'target-only data carried over');
+  } finally { fx.cleanup(); }
+});
+
+test('publisherDomainCorrection: a human-written duplicateClearReason still protects the file', () => {
+  assert.equal(publisherDomainCorrection(misfile({ duplicateClearReason: 'manual: keep as About' }), { ignoreDuplicateOf: true }), null);
+  assert.equal(publisherDomainCorrection(misfile({ duplicateClearReason: 'audit-duplicate-of-url-mismatch.js (--fix) on 2026-08-07' }), { ignoreDuplicateOf: true }).outletId, 'nytimes');
+});
+
+test('runOutletMismatchCleanup: a differing conclusion is not "covered" text', () => {
+  const body = 'A long shared paragraph of the review body goes here. '.repeat(20);
+  const src = misfile({ fullText: body + ' And the verdict: a triumph nobody else quotes.' });
+  const tgt = nytFile({ fullText: body });
+  const fx = fixture({ 'about-entertainment--ben-brantley.json': src, 'nytimes--ben-brantley.json': tgt });
+  try {
+    run(fx.root, { explainFn: excl });
+    // Source is longer, so it may replace the target, but never be folded away as "covered".
+    assert.match(fx.read('nytimes--ben-brantley.json').fullText, /triumph nobody else quotes/);
   } finally { fx.cleanup(); }
 });
