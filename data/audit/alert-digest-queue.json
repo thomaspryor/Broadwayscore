@@ -3099,35 +3099,6 @@
     "queuedAt": "2026-09-30T02:30:04.664Z"
   },
   {
-    "conditionKey": "land:land/bro-4401-ci-reds",
-    "title": "Landing blocked: unit-tests-node red on land/bro-4401-ci-reds",
-    "description": "land.yml did not land land/bro-4401-ci-reds: the unit-tests-node gate went red at a5dd4da266. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36658094273",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-4401-ci-reds"
-      },
-      {
-        "name": "gate",
-        "value": "unit-tests-node"
-      },
-      {
-        "name": "tip",
-        "value": "a5dd4da266b79332f71f437060712eea52e64778"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36658094273"
-      }
-    ],
-    "queuedAt": "2026-09-30T02:33:16.259Z"
-  },
-  {
     "conditionKey": "land:bro-4401-ci-reds",
     "title": "Landing blocked: checks red on bro-4401-ci-reds",
     "description": "land.yml did not land bro-4401-ci-reds: the checks gate went red. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36662927939",
@@ -3238,5 +3209,34 @@
       }
     ],
     "queuedAt": "2026-09-30T03:45:28.736Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4401-ci-reds",
+    "title": "Landing blocked: rebase red on land/bro-4401-ci-reds",
+    "description": "land.yml did not land land/bro-4401-ci-reds: the rebase gate went red at 3e16c26c0a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36668999103",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4401-ci-reds"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3e16c26c0a1e8760c1e91b8ab95445dfe682934d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36668999103"
+      }
+    ],
+    "queuedAt": "2026-09-30T04:30:36.374Z"
   }
 ]

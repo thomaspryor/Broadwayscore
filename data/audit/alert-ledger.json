@@ -4742,13 +4742,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Audit review contamination, Audit outlet-registry gaps",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-30T03:59:33.447Z",
+      "lastSeen": "2026-09-30T04:31:44.502Z",
       "lastNotifiedAt": "2026-09-29T12:18:28.491Z",
       "lastSurfacedAt": "2026-09-29T12:18:28.491Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 34
+      "silentRefires": 36
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -6295,7 +6295,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-4231-llm-score": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: push red on land/bro-4231-llm-score",
       "firstSeen": "2026-09-29T08:55:26.913Z",
@@ -6304,7 +6304,8 @@
       "lastSurfacedAt": "2026-09-29T08:55:26.913Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-30T04:43:32.359Z"
     },
     "review-gap:opening-window:three-men-in-a-boat-off-west-end-2026": {
       "status": "open",
@@ -7459,17 +7460,16 @@
       "linearIdentifier": null
     },
     "land:land/bro-4401-ci-reds": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
-      "title": "Landing blocked: unit-tests-node red on land/bro-4401-ci-reds",
+      "title": "Landing blocked: rebase red on land/bro-4401-ci-reds",
       "firstSeen": "2026-09-30T02:33:16.258Z",
-      "lastSeen": "2026-09-30T02:33:16.258Z",
-      "lastNotifiedAt": "2026-09-30T02:33:16.258Z",
-      "lastSurfacedAt": "2026-09-30T02:33:16.258Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-09-30T04:30:36.373Z",
+      "lastNotifiedAt": "2026-09-30T04:30:36.373Z",
+      "lastSurfacedAt": "2026-09-30T04:30:36.373Z",
+      "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-30T03:13:22.356Z"
+      "linearIdentifier": null
     },
     "land:bro-4401-ci-reds": {
       "status": "open",
@@ -7484,7 +7484,7 @@
       "linearIdentifier": null
     },
     "land:land/job/linear-BRO-4411-munht1ia": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/job/linear-BRO-4411-munht1ia",
       "firstSeen": "2026-09-30T03:21:57.167Z",
@@ -7493,7 +7493,8 @@
       "lastSurfacedAt": "2026-09-30T03:21:57.167Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-09-30T04:01:47.531Z"
     },
     "land:land/job/linear-BRO-4410-munhu7rs": {
       "status": "open",

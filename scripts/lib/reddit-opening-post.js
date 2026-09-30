@@ -24,7 +24,10 @@ const { foldDiacritics } = require('./title-match');
 const SUBREDDIT_BY_MARKET = {
   'west-end': 'TheWestEnd',
   'off-west-end': 'TheWestEnd',
-  'off-broadway': 'Broadway',
+  // r/offbroadwayNYC: ~4.2k weekly visitors, 112 contributions/week, Top 50
+  // in Performing Arts (owner screenshot 2026-09-30). r/Broadway is the
+  // crosspost for these.
+  'off-broadway': 'offbroadwayNYC',
 };
 
 // Minimum critic reviews before a roundup is worth posting. Lower than the
@@ -218,14 +221,16 @@ function isRetryableDraft(d) {
 }
 
 /**
- * A second, bigger audience worth a crosspost. West End / Off-West End shows
- * with a Broadway production of the same title also play on r/Broadway (the
- * owner's Trainspotting post: 95 on r/TheWestEnd, then 74 on r/Broadway).
- * There's no sizable Off-Broadway subreddit (largest ~250 members, checked
- * 2026-09-29), so Off-Broadway posts already go to r/Broadway.
+ * A second, bigger audience worth a crosspost to r/Broadway (282k):
+ *  - every Off-Broadway show (primary is the smaller r/offbroadwayNYC, and
+ *    the owner's Off-Broadway posts did well on r/Broadway);
+ *  - West End / Off-West End shows with a current or recent Broadway
+ *    production of the same title (Trainspotting: 95 on r/TheWestEnd, then
+ *    74 on r/Broadway).
  */
 function crosspostSubreddit(show, broadwayTitles) {
   const m = marketOf(show);
+  if (m === 'off-broadway') return 'Broadway';
   if (m !== 'west-end' && m !== 'off-west-end') return null;
   return broadwayTitles.has(normTitle(show.title)) ? 'Broadway' : null;
 }
@@ -267,7 +272,7 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     const facts = buildFacts(show, slim, peersByMarket[market] || [], { seen: seenLookup(show.title), crosspost: crosspostSubreddit(show, broadwayTitles) });
     if (!facts) continue;
     const prev = already[show.id];
-    if (!forceShowId && prev && !isRetryableDraft(prev) && lintDraft(prev, facts).ok) continue; // unsent but still accurate
+    if (!forceShowId && prev && !isRetryableDraft(prev) && prev.subreddit === facts.subreddit && lintDraft(prev, facts).ok) continue; // unsent but still accurate
     // Off-West End shows only when they'd carry a post on their own.
     if (!forceShowId && market === 'off-west-end' && notability(facts) < 25) continue;
     out.push({ show, facts, notability: notability(facts) });
@@ -738,7 +743,7 @@ function oldRedditSubmitUrl(subreddit, title, body) {
   return `https://old.reddit.com/r/${subreddit}/submit?${q.toString()}`;
 }
 
-const THEATER_SUBS = new Set(['broadway', 'thewestend', 'offbroadway', 'musicals', 'theatre', 'londontheatre']);
+const THEATER_SUBS = new Set(['broadway', 'thewestend', 'offbroadwaynyc', 'offbroadway', 'musicals', 'theatre', 'londontheatre']);
 
 /**
  * Mark drafts posted when one of the owner's recent Reddit posts is about the
@@ -772,7 +777,8 @@ function applyPostedDetection(drafts, posts) {
       // subreddit, so a r/Broadway post about the Broadway Kimberly Akimbo
       // doesn't clear the Off-West End transfer's draft.
       if (!key || key.length < 3) return false;
-      if (String(p.subreddit || '').toLowerCase() !== String(d.subreddit || '').toLowerCase()) return false;
+      const subs = [d.subreddit, d.crosspostSubreddit].filter(Boolean).map(x => String(x).toLowerCase());
+      if (!subs.includes(String(p.subreddit || '').toLowerCase())) return false;
       return ` ${normTitle(p.title)} `.includes(` ${key} `);
     });
     if (hit) {

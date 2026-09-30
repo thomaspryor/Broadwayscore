@@ -95,6 +95,7 @@ const MANUAL_FIELDS = [
   'allowEarlyDate',
   'allowLateDate',
   'allowCrossMarket',
+  'mergedDuplicateUrls', // BRO-4414 merged-away duplicate URL tombstone
   'allowTourSignal',
   'allowTourSignalReason',
   'allowFilmSignal',
