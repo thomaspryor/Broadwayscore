@@ -31,6 +31,7 @@
  */
 
 const fs = require('fs');
+const { multiShowSplitGroup, isMultiShowSplitSibling } = require('./multi-show-split-group');
 const path = require('path');
 
 let _index = null; // { dir, map: Map<normUrl, Array<{showId, file, blocking}>> }
@@ -87,7 +88,7 @@ function buildUrlOwnershipIndex(reviewTextsDir, { force = false } = {}) {
       if (!_isOwnableUrl(data.url)) continue;
       const key = _normalizeUrl(data.url);
       if (!key) continue;
-      const entry = { showId, file: f, blocking: _isBlockingOwnerCopy(data) };
+      const entry = { showId, file: f, blocking: _isBlockingOwnerCopy(data), splitGroup: multiShowSplitGroup(data, showId) };
       const arr = map.get(key);
       if (arr) arr.push(entry); else map.set(key, [entry]);
     }
@@ -110,11 +111,14 @@ function findCrossShowOwners(url, currentShowId, reviewTextsDir) {
 
 /**
  * Pure decision: should a NEW file with this URL be blocked under this show?
- * @param {Array<{showId:string, file:string, blocking:boolean}>} owners
+ * @param {Array<{showId:string, file:string, blocking:boolean, splitGroup?:string|null}>} owners
+ * @param {string|null} [candidateSplitGroup] multiShowSplitGroup() of the new file
  * @returns {{ block: boolean, owner?: {showId:string, file:string} }}
  */
-function shouldBlockCrossShowCreate(owners) {
-  const live = (owners || []).find((e) => e.blocking);
+function shouldBlockCrossShowCreate(owners, candidateSplitGroup = null) {
+  // A sibling section of the same split multi-show article (BRO-4431) is the
+  // same review filed per show, not a competing owner.
+  const live = (owners || []).find((e) => e.blocking && !isMultiShowSplitSibling(candidateSplitGroup, e.splitGroup));
   return live ? { block: true, owner: { showId: live.showId, file: live.file } } : { block: false };
 }
 
@@ -130,7 +134,7 @@ function recordUrlOwner(url, showId, file, reviewTextsDir, record = null) {
   if (!_isOwnableUrl(url) || !_index || _index.dir !== reviewTextsDir) return;
   const key = _normalizeUrl(url);
   if (!key) return;
-  const entry = { showId, file, blocking: record ? _isBlockingOwnerCopy(record) : true };
+  const entry = { showId, file, blocking: record ? _isBlockingOwnerCopy(record) : true, splitGroup: record ? multiShowSplitGroup(record, showId) : null };
   const arr = _index.map.get(key);
   if (arr) arr.push(entry); else _index.map.set(key, [entry]);
 }
