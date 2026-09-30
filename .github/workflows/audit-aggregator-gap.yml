@@ -271,7 +271,11 @@ jobs:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
-        run: timeout 720 node scripts/audit-outlet-ground-truth.js --days=21 --ingest --ingest-cap=12 --alert --min-interval-hours=6 --time-budget-min=8
+          # A manual dispatch's window_days widens the audit (backfill) and
+          # skips the 6h throttle; the hourly cron uses 21 days / 6h.
+          GT_DAYS: ${{ github.event.inputs.window_days || '21' }}
+          GT_INTERVAL: ${{ github.event_name == 'workflow_dispatch' && '0' || '6' }}
+        run: timeout 720 node scripts/audit-outlet-ground-truth.js --days="$GT_DAYS" --ingest --ingest-cap=12 --alert --min-interval-hours="$GT_INTERVAL" --time-budget-min=8
 
       # Date-independent backstop for a live show sitting on a discovered
       # review URL we never fetched (card #1408). Every OTHER coverage check
