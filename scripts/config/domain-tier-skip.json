@@ -321,6 +321,13 @@
       "addedAt": "2026-07-30"
     }
   },
+  "google.com": {
+    "playwright": {
+      "skip": true,
+      "reason": "BRO-4401: SERP pages never go to a headless browser. Until 2026-09-30 fetch-all-image-formats.yml had no browser, so every google.com/search fetch fell straight through to Scrapingdog/Bright Data; the first run with a browser (36655690883) hung 2.5h on one google.com/search page (consent wall / bot check, live chrome orphan at cleanup). Keep SERP fetches on the paid SERP-capable tiers.",
+      "addedAt": "2026-09-30"
+    }
+  },
   "hosted.ap.org": {
     "brightdata": {
       "skip": true,
@@ -955,6 +962,13 @@
       "skip": true,
       "reason": "12 failures, 0 successes",
       "addedAt": "2026-07-30"
+    }
+  },
+  "www.google.com": {
+    "playwright": {
+      "skip": true,
+      "reason": "BRO-4401: SERP pages never go to a headless browser. Until 2026-09-30 fetch-all-image-formats.yml had no browser, so every google.com/search fetch fell straight through to Scrapingdog/Bright Data; the first run with a browser (36655690883) hung 2.5h on one google.com/search page (consent wall / bot check, live chrome orphan at cleanup). Keep SERP fetches on the paid SERP-capable tiers.",
+      "addedAt": "2026-09-30"
     }
   },
   "youtube.com": {

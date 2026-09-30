@@ -36,7 +36,13 @@ const { getMarketSearchKeyword } = require('./lib/market-label');
 const { todaytixMarket, todaytixSearchUrl, extractTodaytixShowLink, todaytixSerpQuery, todaytixShowUrl } = require('./lib/todaytix-market');
 const { imageOnDisk, isPlaceholderFile, PLACEHOLDER_FILE_HASHES } = require('./lib/show-images');
 const { resolveMarketSlug } = require('./lib/verify-image');
-const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup } = require('./lib/show-image-coverage');
+const { pruneEmptyShowImageDir, snapshotShowImageDir, runFetchWithCleanup, discardFailedFetchArtifacts } = require('./lib/show-image-coverage');
+const { armRunWatchdog } = require('./lib/run-watchdog');
+// Shows whose fetch is in flight right now: { showId: { dir, dirBefore } }.
+// The run watchdog (BRO-4401) discards their half-written artifacts before
+// exiting, so a hung fetch never leaves an empty/partial image dir behind
+// that hasRealImage() would later read as coverage.
+const inFlightFetches = new Map();
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { findNewerSameTitleProduction } = require('./lib/canon-poster-art');
 const { buildRetryCandidateImages } = require('./lib/google-image-retry-candidate.js');
@@ -1082,6 +1088,15 @@ async function discoverTodayTixId(show) {
   const market = todaytixMarket(show);
   console.log(`   Searching TodayTix (${market}) for "${showTitle}"...`);
 
+  // Forward overlap only ("how many title words appear in the slug"), the
+  // original rule. A two-way check was tried on 2026-09-30 to stop a one-word
+  // title matching a longer slug (run 36655690883: 37071-player-kings for
+  // "Player") and withdrawn: reviewer's scan of the 564 cached real slugs
+  // found 188 would fail it (every "<title>-on-broadway" / "-the-musical"
+  // slug, which normalizeTitle strips from the title side only) while
+  // player-kings itself still passed at exactly 0.5. Wrong-show hits are
+  // caught downstream by Gemini verification; the cache poison they leave in
+  // todaytix-ids.json is pre-existing and tracked in BRO-4401's outcome.
   const slugTitleOverlap = (slug) => {
     const slugWords = slug.replace(/-/g, ' ').toLowerCase().split(/\s+/).filter(w => w.length > 0);
     const titleWords = normalizeTitle(showTitle).split(/\s+/).filter(w => w.length > 0);
@@ -2442,6 +2457,7 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   // (which would leave Promise.allSettled recording a rejection and the
   // freshly created EMPTY directory surviving as false coverage). See
   // scripts/lib/show-image-coverage.js for the cleanup logic and tests.
+  inFlightFetches.set(show.id, { dir: showImageDir, dirBefore });
   let images;
   try {
     images = await runFetchWithCleanup(
@@ -2451,6 +2467,7 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
       show.id
     );
   } finally {
+    inFlightFetches.delete(show.id);
     // This show is done (or failed): drop its deferred photos (they hold file bytes).
     if (verifyCtx?.productionPhotoFallbacks) {
       verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks.filter(f => f.showId !== show.id);
@@ -2518,12 +2535,24 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
     }
     const batch = scrapeShows.slice(i, i + scrapeConcurrency);
     const batchResults = await Promise.allSettled(
-      batch.map(show => processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx))
+      // Apply each show's result the moment ITS fetch settles, not after the
+      // whole batch: if a batch-mate hangs and the run watchdog fires, a show
+      // that already finished must be in shows.json before the checkpoint,
+      // or its files land on disk with no row pointing at them — the exact
+      // "art in the dir, nothing in shows.json" false coverage
+      // show-image-coverage.js exists to prevent (review finding, BRO-4401).
+      batch.map(show => processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verifyCtx).then((v) => {
+        if (v && v.images && !dryRunMode) {
+          applyImages(v.show, v.images);
+          v.applied = true;
+        }
+        return v;
+      }))
     );
 
     for (const settled of batchResults) {
       if (settled.status === 'fulfilled' && settled.value && settled.value.images) {
-        if (!dryRunMode) applyImages(settled.value.show, settled.value.images);
+        if (!dryRunMode && !settled.value.applied) applyImages(settled.value.show, settled.value.images);
         if (dryRunMode) dryRunResults.push({ showId: settled.value.show.id, title: settled.value.show.title, currentThumbnail: settled.value.show.images?.thumbnail || null, newImages: settled.value.images, source: settled.value.apiSourced ? 'TodayTix API' : 'scrape' });
         results.success.push(settled.value.show.title);
       } else {
@@ -2977,6 +3006,27 @@ async function main() {
   };
 
   // Use concurrent processing for large batches, sequential for small
+  // Hard wall-clock deadline (BRO-4401): processShowsConcurrently checks the
+  // budget only BETWEEN batches, so a fetch that never returns ran until the
+  // job was cancelled at 160 min with finished work never checkpointed
+  // (run 36655690883). At budget + 10 min: checkpoint what finished, discard
+  // in-flight artifacts, exit 0 so the workflow's if: always() archive +
+  // commit steps still land the finished shows.
+  armRunWatchdog({
+    maxRuntimeMin,
+    graceMin: 10,
+    onFire: () => {
+      for (const [id, f] of inFlightFetches) {
+        try {
+          const { removed } = discardFailedFetchArtifacts(f.dir, f.dirBefore);
+          console.log(`   watchdog: discarded ${removed.length} in-flight artifact(s) for ${id}`);
+        } catch (e) { console.log(`   watchdog: could not clean ${id}: ${e.message}`); }
+      }
+      try { saveTodayTixIds(todayTixIds); } catch (e) { console.log(`   watchdog: todaytix cache not saved: ${e.message}`); }
+      try { if (ibdbImageCache) saveIbdbImageCache(ibdbImageCache); } catch (e) { console.log(`   watchdog: ibdb cache not saved: ${e.message}`); }
+      if (!dryRunMode) saveShowsData();
+    },
+  });
   const results = await processShowsConcurrently(shows, apiLookup, todayTixIds, badImagesOnly, concurrency, verifyCtx, saveShowsData, maxRuntimeMin);
 
   // Post-fetch duplicate image audit: detect shows sharing the same image.
