@@ -198,6 +198,9 @@ function executeDataEdit(action) {
       }
       for (const [k, v] of Object.entries(newValue)) {
         if (!['thumbnail', 'poster', 'hero'].includes(k)) return { ok: false, reason: `images: unexpected key "${k}"` };
+        // Only values the plan changes are checked: a plan that fixes one key
+        // must not be refused over an untouched (e.g. already missing) path.
+        if (oldValue && typeof oldValue === 'object' && JSON.stringify(oldValue[k]) === JSON.stringify(v)) continue;
         if (v !== null && typeof v !== 'string') return { ok: false, reason: `images.${k}: must be a string or null` };
         if (typeof v === 'string' && !v.startsWith('/images/shows/')) return { ok: false, reason: `images.${k}: only local /images/shows/ paths or null` };
         if (typeof v === 'string' && !fs.existsSync(path.join(ROOT, 'public', v))) return { ok: false, reason: `images.${k}: ${v} does not exist` };

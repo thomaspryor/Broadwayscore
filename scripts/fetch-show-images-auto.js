@@ -2442,15 +2442,19 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
   // (which would leave Promise.allSettled recording a rejection and the
   // freshly created EMPTY directory surviving as false coverage). See
   // scripts/lib/show-image-coverage.js for the cleanup logic and tests.
-  const images = await runFetchWithCleanup(
-    () => fetchShowImages(show, todayTixInfo, apiData, verifyCtx),
-    showImageDir,
-    dirBefore,
-    show.id
-  );
-  // This show is done: drop its deferred photos (they hold file bytes).
-  if (verifyCtx?.productionPhotoFallbacks) {
-    verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks.filter(f => f.showId !== show.id);
+  let images;
+  try {
+    images = await runFetchWithCleanup(
+      () => fetchShowImages(show, todayTixInfo, apiData, verifyCtx),
+      showImageDir,
+      dirBefore,
+      show.id
+    );
+  } finally {
+    // This show is done (or failed): drop its deferred photos (they hold file bytes).
+    if (verifyCtx?.productionPhotoFallbacks) {
+      verifyCtx.productionPhotoFallbacks = verifyCtx.productionPhotoFallbacks.filter(f => f.showId !== show.id);
+    }
   }
 
   return { show, images, apiSourced: !!apiData };
