@@ -23,6 +23,8 @@ const WALLED = `
 <div class="related"><span class="aos-ArticleDate aos-MR10px">Sep 12, 2026</span>
 <a class="aos-ArticleAuthor aos-NM aos-FL aos-MR10px aos-DF" title="Neil Norman" href="/neilno">by&nbsp;Neil Norman</a></div>`;
 
+const DARKLING_RUN = { previewsStartDate: '2026-09-10', openingDate: '2026-09-15', closingDate: '2026-10-11' };
+
 test('extracts the article\'s own date, byline, standfirst (not a related card\'s)', () => {
   const meta = extractTheStageArticleMeta(WALLED);
   assert.deepEqual(meta, {
@@ -30,6 +32,7 @@ test('extracts the article\'s own date, byline, standfirst (not a related card\'
     criticName: "Holly O'Mahony",
     publishDate: '2026-09-16',
     standfirst: 'Evocative coming-of-age monologue set against the Bhopal disaster',
+    stars: 4,
   });
 });
 
@@ -54,8 +57,11 @@ test('applyWalledPageMeta fills gaps only', () => {
     url: 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london',
     criticName: 'Unknown', publishDate: null,
   };
-  const set = applyWalledPageMeta(stub, WALLED);
-  assert.deepEqual(set.sort(), ['criticName', 'outletHeadline', 'outletStandfirst', 'publishDate']);
+  const set = applyWalledPageMeta(stub, WALLED, { show: DARKLING_RUN });
+  assert.deepEqual(set.sort(), ['criticName', 'originalScore', 'outletHeadline', 'outletStandfirst', 'publishDate']);
+  assert.equal(stub.originalScore, '4/5 stars');
+  assert.equal(stub.originalScoreNormalized, 80);
+  assert.equal(stub.originalScoreSource, 'stage-star-svg');
   assert.equal(stub.publishDate, '2026-09-16');
   assert.equal(stub.criticName, "Holly O'Mahony");
 
@@ -141,4 +147,53 @@ test('headlineMatchesShow compares the whole name before "review" (ship-check on
     ['The Mousetrap', 'The Mousetrap', true],
   ];
   for (const [h, t, want] of cases) assert.equal(headlineMatchesShow(h, t), want, `${t} <- ${h}`);
+});
+
+// BRO-4428: a walled stub with no score never reaches the site, so the star
+// rating above the wall must be salvaged too, and only the article's own.
+test('star rating: article block only, never a related card\'s', () => {
+  const noArticleStars = `<h1 class="aos-ArticleTitle">Choir Boy review</h1>
+<a class="aos-ArticleAuthor aos-NM" title="Sam Marlowe" href="/s">by&nbsp;Sam Marlowe</a>
+<div class="related"><div class="aos-StarRating aos-FL"><img src="/19stageStar.svg" /><img src="/19stageStar.svg" /><img src="/19stageNoStar.svg" /><img src="/19stageNoStar.svg" /><img src="/19stageNoStar.svg" /></div></div>`;
+  assert.equal(extractTheStageArticleMeta(noArticleStars).stars, null);
+
+  const noByline = `<h1 class="aos-ArticleTitle">Choir Boy review</h1>
+<div class="aos-StarRating aos-FL"><img src="/19stageStar.svg" /><img src="/19stageStar.svg" /><img src="/19stageNoStar.svg" /><img src="/19stageNoStar.svg" /><img src="/19stageNoStar.svg" /></div>`;
+  assert.equal(extractTheStageArticleMeta(noByline).stars, null);
+
+  const partial = WALLED.replace('<img src="/19stageNoStar.svg" />', '');
+  assert.equal(extractTheStageArticleMeta(partial).stars, null);
+});
+
+test('star rating never overwrites an existing or manual score', () => {
+  const url = 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london';
+  const scored = { url, criticName: 'Holly O\'Mahony', originalScore: '3/5 stars', originalScoreNormalized: 60 };
+  applyWalledPageMeta(scored, WALLED, { show: DARKLING_RUN });
+  assert.equal(scored.originalScore, '3/5 stars');
+  assert.equal(scored.originalScoreNormalized, 60);
+
+  const manual = { url, criticName: 'Unknown', originalScoreManual: true };
+  assert.ok(!applyWalledPageMeta(manual, WALLED, { show: DARKLING_RUN }).includes('originalScore'));
+  assert.equal(manual.originalScore, undefined);
+});
+
+test('star rating needs the review to date from this production\'s run', () => {
+  const url = 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london';
+  // Page date Sep 16, 2026; a 2027 run of the same title must not get it.
+  const later = { url, criticName: 'Unknown' };
+  const set = applyWalledPageMeta(later, WALLED, { show: { previewsStartDate: '2027-01-15', closingDate: '2027-04-10' } });
+  assert.ok(!set.includes('originalScore'));
+  assert.equal(later.originalScore, undefined);
+  assert.equal(later.publishDate, '2026-09-16');
+
+  // No show passed: fail closed on the score, still fill date/critic.
+  const noShow = { url, criticName: 'Unknown' };
+  assert.ok(!applyWalledPageMeta(noShow, WALLED).includes('originalScore'));
+  assert.equal(noShow.criticName, "Holly O'Mahony");
+});
+
+test('bracketed subtitle in the headline still matches the show', () => {
+  assert.equal(headlineMatchesShow('Slaughterhouse-Five (or the Children’s Crusade) review', 'Slaughterhouse-Five'), true);
+  // Brackets do not launder a different show's name.
+  assert.equal(headlineMatchesShow('Romeo and Juliet (Globe) review', '& Juliet'), false);
 });
