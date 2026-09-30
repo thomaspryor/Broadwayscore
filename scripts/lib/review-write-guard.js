@@ -2005,6 +2005,10 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // BRO-4403: last stop before disk — no writer can (re)introduce an
+  // HTML-escaped url or a leaked leading <img> in fullText.
+  newData = require('./review-url-entity-decode').sanitizeReviewRecord(newData);
+
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved, lockedSkipped, ...(autoFlaggedWrongProduction ? { autoFlaggedWrongProduction: true } : {}) };
 }
