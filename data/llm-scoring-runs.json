@@ -218910,35 +218910,41 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-30T14:47:54.147Z",
-    "completedAt": "2026-09-30T14:47:59.919Z",
-    "totalReviews": 34,
-    "processed": 1,
-    "skipped": 33,
-    "errors": 0,
+    "startedAt": "2026-09-30T14:49:34.880Z",
+    "completedAt": "2026-09-30T14:49:35.102Z",
+    "totalReviews": 10,
+    "processed": 0,
+    "skipped": 9,
+    "errors": 1,
     "tokensUsed": {
-      "input": 6548,
-      "output": 317,
-      "total": 15811
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "costUsd": 0.024401000000000003,
-    "runId": "36731437504",
-    "errorDetails": []
+    "costUsd": 0,
+    "runId": "36731441211",
+    "errorDetails": [
+      {
+        "showId": "the-secret-circus-musical-off-broadway-2026",
+        "outletId": "flopbox",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
   },
   {
-    "startedAt": "2026-09-30T14:48:01.833Z",
-    "completedAt": "2026-09-30T14:48:24.299Z",
-    "totalReviews": 6,
-    "processed": 6,
+    "startedAt": "2026-09-30T14:49:37.055Z",
+    "completedAt": "2026-09-30T14:49:37.058Z",
+    "totalReviews": 0,
+    "processed": 0,
     "skipped": 0,
     "errors": 0,
     "tokensUsed": {
-      "input": 16610,
-      "output": 1452,
-      "total": 18062
+      "input": 0,
+      "output": 0,
+      "total": 0
     },
-    "costUsd": 0.046416400000000003,
-    "runId": "36731437504",
+    "costUsd": 0,
+    "runId": "36731441211",
     "errorDetails": []
   }
 ]
