@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-30T01:17:47.912Z",
+    "lastUpdated": "2026-09-30T02:26:53.228Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11594,6 +11594,14 @@
         "wkrn"
       ],
       "domain": "wkrn.com"
+    },
+    "goodstoriespodcast": {
+      "displayName": "Goodstoriespodcast",
+      "tier": 3,
+      "aliases": [
+        "goodstoriespodcast"
+      ],
+      "domain": "goodstoriespodcast.net"
     }
   },
   "_aliasIndex": {

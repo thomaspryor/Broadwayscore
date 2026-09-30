@@ -1981,6 +1981,35 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // BRO-4406 cloned-excerpt guard: an aggregator excerpt lives on ONE file per
+  // show+outlet. A writer that matched an aggregator row to a file by outlet
+  // alone (or a web-search record that copied the excerpt into its own text)
+  // used to leave the same excerpt on two files; both counted (phantom
+  // double-counts, 2026-09-30 scan). Strip it from the INCOMING record only
+  // when a same-outlet sibling provably owns it. Same-review twins are left to
+  // the duplicate machinery; audit-cloned-excerpts.js reports them daily.
+  if (!force) {
+    try {
+      const guard = require('./cloned-excerpt-guard');
+      if (guard.excerptValues(newData).size > 0) {
+        const dir = path.dirname(filePath);
+        const self = path.basename(filePath);
+        const siblings = [];
+        for (const f of fs.readdirSync(dir)) {
+          if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === self) continue;
+          try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')) }); } catch { /* unreadable sibling */ }
+        }
+        const strip = guard.excerptFieldsToStrip(self, newData, siblings);
+        for (const f of strip.fields) newData[f] = null;
+        if (strip.fields.length) {
+          console.warn(`[review-write-guard] cloned excerpt: stripped ${strip.fields.join(',')} from ${self} (${strip.because.join('; ')})`);
+        }
+      }
+    } catch (e) {
+      console.warn(`[review-write-guard] cloned-excerpt guard skipped for ${path.basename(filePath)}: ${e.message}`);
+    }
+  }
+
   // showId backstop (2026-07-18): validate-review-texts --gate hard-fails any
   // corpus file missing showId, and writers that build payloads from scratch
   // (show-not-mentioned-recovery URL updates shipped allegra-west-end-2026/

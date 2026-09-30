@@ -1,43 +1,21 @@
 {
-  "updatedAt": "2026-09-30T01:43:58.711Z",
-  "processed": 280,
-  "failed": 188,
-  "successRate": "59.8%",
+  "updatedAt": "2026-09-30T02:27:13.950Z",
+  "processed": 283,
+  "failed": 180,
+  "successRate": "61.1%",
   "tierBreakdown": {
-    "playwright": 175,
+    "playwright": 176,
     "amp": 2,
     "browserbase": 11,
     "directCookies": 0,
     "scrapingdog": 29,
-    "scrapingbee": 24,
-    "brightdata": 3,
+    "scrapingbee": 25,
+    "brightdata": 5,
     "archiveToday": 0,
-    "archive": 36
+    "archive": 37
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-09-29T23:53:56.361Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-29T23:54:14.247Z",
-      "event": "bb-session",
-      "session": "70f8c38b",
-      "url": "http://www.wsj.com/articles/SB106748686155075900"
-    },
-    {
-      "t": "2026-09-29T23:54:14.943Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-09-30T00:02:24.980Z",
-      "event": "bb-session",
-      "session": "26cc80ae",
-      "url": "https://www.thestage.co.uk/reviews/the-seagull-review-barbican-theatre-london-ch"
-    },
     {
       "t": "2026-09-30T00:02:25.753Z",
       "event": "bb-cookie-inject",
@@ -118,16 +96,38 @@
       "domain": "thetimes.co.uk"
     },
     {
-      "t": "2026-09-30T01:39:13.991Z",
+      "t": "2026-09-30T02:07:19.715Z",
       "event": "bb-session",
-      "session": "bb74aa6e",
-      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+      "session": "40b2a8da",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
     },
     {
-      "t": "2026-09-30T01:39:32.992Z",
+      "t": "2026-09-30T02:07:29.360Z",
       "event": "bb-session",
-      "session": "65ab3372",
-      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+      "session": "42d796d9",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-09-30T02:25:39.222Z",
+      "event": "bb-session",
+      "session": "a40c5642",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-30T02:25:43.242Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-09-30T02:26:05.642Z",
+      "event": "bb-session",
+      "session": "5622f4b2",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-09-30T02:26:09.516Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
