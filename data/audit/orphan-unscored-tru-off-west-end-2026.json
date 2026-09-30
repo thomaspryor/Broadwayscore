@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "tru-off-west-end-2026",
   "openingDate": "2026-09-27",
-  "detectedAt": "2026-09-30T18:54:15.974Z",
+  "detectedAt": "2026-09-30T19:51:30.816Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -40,13 +40,13 @@
       "eligibilityReason": null
     },
     {
-      "file": "london-theatre--unknown.json",
+      "file": "london-theatre--aliya-al-hassan.json",
       "outletId": "london-theatre",
-      "criticName": "Unknown",
+      "criticName": "Aliya Al-Hassan",
       "url": "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
       "fullTextLen": 7362,
-      "dispatchActionable": false,
-      "skipReason": "no_scorable_text",
+      "dispatchActionable": true,
+      "skipReason": null,
       "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
@@ -92,9 +92,9 @@
     }
   ],
   "orphanCount": 5,
-  "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 5,
+  "dispatchableOrphanCount": 1,
+  "blockedOrphanCount": 4,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-09-30T19:51:30.816Z"
 }
