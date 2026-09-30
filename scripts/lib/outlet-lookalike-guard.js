@@ -27,7 +27,7 @@ const LOOKALIKE_CONTENT_FARM_DOMAINS = new Set([
   'guardianlv.com', // Guardian Liberty Voice; grey-gardens-2006 was filed as outletId guardian
 ]);
 
-const MULTIPART_SLD = new Set(['co', 'com', 'org', 'net', 'ac', 'gov']);
+const MULTIPART_SLD = new Set(['co', 'com', 'org', 'net', 'ac', 'gov', 'me', 'ltd']);
 
 function normalizeHost(host) {
   return String(host || '').replace(/^www\./, '').toLowerCase();
