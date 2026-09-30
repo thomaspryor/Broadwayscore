@@ -90,6 +90,10 @@ function buildSiblingIndex(shows) {
           year: ym ? parseInt(ym[1], 10) : null,
           openingDate: sibOpening && !isNaN(sibOpening.getTime()) ? sibOpening : null,
           closingDate: sibClosing && !isNaN(sibClosing.getTime()) ? sibClosing : null,
+          // pickRerouteTarget skips a sibling closed more than 2 years before the
+          // review's year (BRO-4404); without endYear that cap never applied here.
+          // Same derivation as review-guards' buildMultiProdYearGuard.
+          endYear: x.closingDate ? (parseInt(String(x.closingDate).slice(0, 4), 10) || null) : null,
           category: x.category || null,
           venue: x.venue || null,
           title: x.title || null,
@@ -362,7 +366,9 @@ function classifyMarketRouting(args) {
       // Example: a-dolls-house-off-west-end-2026 (null openingDate) with 2022 UK
       // reviews of the Jessica Chastain West End run — nearest sibling by year
       // is a-dolls-house-2023 (BW) but the reviews are NOT about that production.
-      const reviewYear = reviewDate.getFullYear();
+      // UTC: an ISO date parses as UTC midnight, so local getFullYear() in US
+      // time put Jan 1 reviews in the previous year.
+      const reviewYear = reviewDate.getUTCFullYear();
       const reroute = pickRerouteTarget(sibData.showYear, sibData.siblings, reviewYear);
       if (reroute.action === 'reroute' && !visitedSet.has(reroute.targetShowId)) {
         const target = sibData.siblings.find(s => s.id === reroute.targetShowId);

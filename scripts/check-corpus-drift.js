@@ -198,6 +198,18 @@ const AUDITS = [
     args: [],                  // report mode: 0 clean / 1 = ANY mismatch (drift)
     crashCodes: [],
   },
+  // BRO-4406: same show + same outlet, one aggregator excerpt on TWO files, both live
+  // in reviews.json (phantom/duplicate reviews double-counted). The write-time guard
+  // in review-write-guard strips new clones; this daily run catches any that slip past
+  // (same-review twins, writers that bypass safeWriteReview). Fix: `node
+  // scripts/audit-cloned-excerpts.js --live-only --apply` in the review-texts clone.
+  {
+    name: 'cloned-excerpts',
+    label: 'same-outlet review files sharing one aggregator excerpt, both live (phantom/duplicate double-count)',
+    script: 'audit-cloned-excerpts.js',
+    args: ['--live-only'],     // 0 clean / 1 = any live cloned pair (drift)
+    crashCodes: [],
+  },
   {
     name: 'cast-changes',
     label: 'cast-changes.json integrity — full --strict (gate = cross-show conflict / spike)',
