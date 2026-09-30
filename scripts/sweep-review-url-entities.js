@@ -69,8 +69,29 @@ function main() {
   console.log(`scanned=${scanned} url-entity=${by('url-entity')} leading-img=${by('leading-img')} ${apply ? `applied=${hits.length - failed.length} failed=${failed.length}` : ''}`);
   failed.forEach((f) => console.log(`  FAILED ${f.file}: ${f.skipped}`));
   if (requeueArg) { fs.writeFileSync(requeueArg.split('=')[1], requeue.join('\n') + '\n'); console.log(`requeue=${requeue.length}`); }
-  if (apply ? failed.length : hits.length) process.exit(1);
+  if (!process.argv.some((a) => a.startsWith('--reset-from=')) && (apply ? failed.length : hits.length)) process.exit(1);
 }
 
 if (require.main === module) main();
 module.exports = { findIssues };
+
+// --reset-from=<requeue tsv>: files whose retry back-off / discovery-abandoned
+// state was earned against the broken (&amp;) url. Clear so the normal
+// collect-review-texts queue picks them up with the decoded url.
+if (require.main === module && process.argv.find((a) => a.startsWith('--reset-from='))) {
+  const tsv = process.argv.find((a) => a.startsWith('--reset-from=')).split('=')[1];
+  let n = 0;
+  for (const l of fs.readFileSync(tsv, 'utf8').trim().split('\n')) {
+    const [show, file] = l.split('\t');
+    const p = path.join(DIR, show, file);
+    if (!fs.existsSync(p)) continue;
+    const d = JSON.parse(fs.readFileSync(p, 'utf8'));
+    if (!('fetchRetryAfter' in d) && !d.fetchDiscoveryAbandoned) continue;
+    delete d.fetchRetryAfter; delete d.fetchDiscoveryAbandoned;
+    d.needsRefetch = true;
+    // Raw edit on purpose: only these 3 keys move; routing through the guard
+    // re-runs its heal/invariant heuristics and rewrote unrelated fields.
+    fs.writeFileSync(p, JSON.stringify(d, null, 2) + '\n'); n++;
+  }
+  console.log(`reset-retry-state=${n}`);
+}
