@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T02:46:18.479Z",
+  "timestamp": "2026-09-30T03:06:10.909Z",
   "stats": {
-    "totalReviews": 45347,
+    "totalReviews": 45197,
     "alreadyFlagged": 18486,
-    "dateGuardCatches": 241,
-    "directorMismatch": 1186,
-    "tvFilmSignals": 1316,
-    "londonSignals": 1237,
-    "offBroadwaySignals": 507,
+    "dateGuardCatches": 240,
+    "directorMismatch": 1184,
+    "tvFilmSignals": 1311,
+    "londonSignals": 1234,
+    "offBroadwaySignals": 506,
     "yearMismatch": 101,
-    "noPublishDate": 4053
+    "noPublishDate": 4051
   },
   "findings": [
     {
@@ -37,20 +37,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
-        }
-      ]
-    },
-    {
-      "showId": "1984-2017",
-      "file": "ew--isabella-biedenahrn.json",
-      "score": 73,
-      "publishDate": "June 22, 2017",
-      "url": "http://ew.com/theater/2017/06/22/1984-ew-stage-review/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"hulu\""
         }
       ]
     },
@@ -3362,20 +3348,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
-        }
-      ]
-    },
-    {
-      "showId": "birthday-candles-2022",
-      "file": "variety--marilyn-stasio.json",
-      "score": 84,
-      "publishDate": "April 11, 2022",
-      "url": "https://variety.com/2022/legit/reviews/birthday-candles-review-debra-messing-1235233772/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -7639,20 +7611,6 @@
     },
     {
       "showId": "death-of-a-salesman-2012",
-      "file": "nytimes--jesse-green.json",
-      "score": 62,
-      "publishDate": "March 15, 2012",
-      "url": "https://www.nytimes.com/2012/03/16/theater/reviews/death-of-a-salesman-with-philip-seymour-hoffman.html",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"robert falls\" from death-of-a-salesman-1999"
-        }
-      ]
-    },
-    {
-      "showId": "death-of-a-salesman-2012",
       "file": "philadelphia-inquirer--howard-shapiro.json",
       "score": 90,
       "publishDate": "2012-03-15",
@@ -8194,20 +8152,6 @@
       "showId": "diana-the-musical-2021",
       "file": "deadline--greg-evans.json",
       "score": 34,
-      "publishDate": "November 17, 2021",
-      "url": "https://deadline.com/2021/11/diana-musical-broadway-review-1234874770/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "diana-the-musical-2021",
-      "file": "deadline--pete-hammond.json",
-      "score": 25,
       "publishDate": "November 17, 2021",
       "url": "https://deadline.com/2021/11/diana-musical-broadway-review-1234874770/",
       "findings": [
@@ -17699,20 +17643,6 @@
     },
     {
       "showId": "leopoldstadt-2022",
-      "file": "deadline--pete-hammond.json",
-      "score": 93,
-      "publishDate": "October 3, 2022",
-      "url": "https://deadline.com/2022/10/leopoldstadt-broadway-review-tom-stoppard-1235132736/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "leopoldstadt-2022",
       "file": "variety--charles-isherwood.json",
       "score": 88,
       "publishDate": "October 3, 2022",
@@ -22042,20 +21972,6 @@
       "file": "deadline--greg-evans.json",
       "score": 92,
       "publishDate": "March 16, 2023",
-      "url": "https://deadline.com/2023/03/parade-broadway-review-ben-platt-micaela-diamond-1235300687/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"harold prince\" from parade-1998"
-        }
-      ]
-    },
-    {
-      "showId": "parade-2023",
-      "file": "deadline--pete-hammond.json",
-      "score": 92,
-      "publishDate": "February 17, 2023",
       "url": "https://deadline.com/2023/03/parade-broadway-review-ben-platt-micaela-diamond-1235300687/",
       "findings": [
         {
@@ -29130,25 +29046,6 @@
       "score": 81,
       "publishDate": "2025-05-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre-20250513",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 445d before show (2025-05-13 vs 2026-08-01)"
-        },
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"national theatre\""
-        }
-      ]
-    },
-    {
-      "showId": "the-comedy-about-spies-west-end-2026",
-      "file": "broadwayworld--unknown.json",
-      "score": 81,
-      "publishDate": "2025-05-13",
-      "url": "https://www.broadwayworld.com/westend/article/Review-THE-COMEDY-ABOUT-SPIES-Noel-Coward-Theatre",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -43294,20 +43191,6 @@
       ]
     },
     {
-      "showId": "garry-starr-classic-penguins-off-broadway-2026",
-      "file": "one-minute-critic--unknown.json",
-      "score": 60,
-      "publishDate": "2026-09-09",
-      "url": "https://1minutecritic.com/garry-starr-classic-penguins-review/",
-      "findings": [
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"signature theatre\""
-        }
-      ]
-    },
-    {
       "showId": "gary-a-sequel-to-titus-andronicus-2019",
       "file": "theater-scene--victor-gluck.json",
       "score": 79,
@@ -44533,20 +44416,6 @@
       "score": 45,
       "publishDate": null,
       "url": "https://www.talkinbroadway.com/page/world/Hangmen.html",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "hangmen-2022",
-      "file": "talkinbroadway--matthew-murray.json",
-      "score": 44,
-      "publishDate": "May 2, 2022",
-      "url": "https://www.talkinbroadway.com/world/Hangmen.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -46581,20 +46450,6 @@
       "score": 62,
       "publishDate": "2026-07-17",
       "url": "https://observer.co.uk/culture/theatre/article/jesus-christ-superstar-sam-ryders-voice-is-his-salvation",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review appears to be about a London/West End production"
-        }
-      ]
-    },
-    {
-      "showId": "jesus-christ-superstar-west-end-2026",
-      "file": "observer--katherine-cowles.json",
-      "score": 63,
-      "publishDate": "2026-07-17",
-      "url": null,
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -52814,20 +52669,6 @@
       "score": 58,
       "publishDate": "April 22, 2025",
       "url": "https://www.timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccarthy",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
-      "showId": "stranger-things-2024",
-      "file": "timeout--unknown.json",
-      "score": 60,
-      "publishDate": "2025-04-22",
-      "url": "https://timeout.com/newyork/theater/stranger-things-the-first-shadow-broadway-review-prequel-louis-mccartney",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",

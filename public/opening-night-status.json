@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T02:46:25.200Z",
+  "generatedAt": "2026-09-30T03:06:18.900Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -752,27 +752,27 @@
       "status": "open",
       "slug": "degenerates-off-broadway",
       "thumbnail": "/images/shows/degenerates-off-broadway-2026/thumbnail.webp",
-      "siteScore": 77.52,
-      "liveScore": 78,
-      "scoreDrift": 0.480000000000004,
+      "siteScore": 71.57,
+      "liveScore": 72,
+      "scoreDrift": 0.4300000000000068,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 8,
+      "total": 9,
       "t1": 0,
-      "t2": 4,
+      "t2": 5,
       "t3": 4,
       "positive": 6,
       "mixed": 2,
-      "negative": 0,
+      "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "8/12 total",
+          "9/12 total",
           "T1:0/3",
-          "hi-conf:5/8"
+          "hi-conf:6/8"
         ],
-        "highConfidence": 5,
+        "highConfidence": 6,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -1151,6 +1151,18 @@
           "p": 6,
           "m": 2,
           "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-30T03:06:18.900Z",
+          "rc": 9,
+          "s": 71.57,
+          "t1": 0,
+          "t2": 5,
+          "t3": 4,
+          "p": 6,
+          "m": 2,
+          "n": 1,
           "bc": "waiting"
         }
       ]
