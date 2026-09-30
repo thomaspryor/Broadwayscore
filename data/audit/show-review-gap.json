@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-09-30T01:06:00.050Z",
+  "generatedAt": "2026-09-30T07:43:36.484Z",
   "windowDays": 1095,
-  "targets": 293,
-  "auditedThisRun": 13,
-  "carriedForward": 569,
+  "targets": 295,
+  "auditedThisRun": 11,
+  "carriedForward": 572,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 315,
-    "missingCurrentRun": 473,
+    "withGap": 317,
+    "missingCurrentRun": 483,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 802,
+    "totalFlaggedMisses": 797,
     "totalRecoverable": 4,
     "totalRecovered": 8,
     "priorProductionCitations": 2592
@@ -17700,6 +17700,211 @@
       "computedAt": "2026-09-20T16:50:31.684Z"
     },
     {
+      "showId": "burning-leaves-off-broadway-2026",
+      "title": "Burning Leaves",
+      "openingDate": null,
+      "status": "previews",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://stagebuddy.com/event/burning-leaves-a-new-play",
+        "https://stagebuddy.com/event/burning-leaves-a-new-play-by-tom-rowan-a-free-reading",
+        "https://www.iloveny.com/thebeat/post/tosos-theatre-company-presents-the-world-premier-of-burning-leaves/"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://stagebuddy.com/event/burning-leaves-a-new-play",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "serpCensus": true
+        },
+        {
+          "url": "https://stagebuddy.com/event/burning-leaves-a-new-play-by-tom-rowan-a-free-reading",
+          "host": "stagebuddy.com",
+          "knownOutletId": "stagebuddy",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.iloveny.com/thebeat/post/tosos-theatre-company-presents-the-world-premier-of-burning-leaves/",
+          "host": "iloveny.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": true,
+        "complete": true,
+        "query": "\"Burning Leaves\" Off-Broadway review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Burning Leaves\" Off-Broadway review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Burning Leaves\" review york",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Burning Leaves A.R.T./New York Theatres review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Burning Leaves A.R.T./New York Theatres review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Burning Leaves A.R.T./New York Theatres review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 3,
+        "error": null
+      },
+      "candidatesRejected": {
+        "count": 28,
+        "byReason": {
+          "aggregator-internal-nav": 8,
+          "venue-production-page": 3,
+          "non-review-host": 15,
+          "non-review-path": 1,
+          "ticketing-reseller": 1
+        }
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://stagebuddy.com/event/burning-leaves-a-new-play",
+          "host": "stagebuddy.com",
+          "outletId": "stagebuddy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "spawnSync node ETIMEDOUT"
+        },
+        {
+          "url": "https://stagebuddy.com/event/burning-leaves-a-new-play-by-tom-rowan-a-free-reading",
+          "host": "stagebuddy.com",
+          "outletId": "stagebuddy",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://www.iloveny.com/thebeat/post/tosos-theatre-company-presents-the-world-premier-of-burning-leaves/",
+          "host": "iloveny.com",
+          "outletId": "iloveny",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://www.iloveny.com/thebeat/post/tosos-theatre-company-presents-the-world-p"
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "stagebuddy",
+            "outlet": "stagebuddy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagebuddy.com/event/burning-leaves-a-new-play"
+          },
+          {
+            "outletId": "stagebuddy",
+            "outlet": "stagebuddy",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://stagebuddy.com/event/burning-leaves-a-new-play-by-tom-rowan-a-free-reading"
+          },
+          {
+            "outletId": "iloveny.com",
+            "outlet": "iloveny.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.iloveny.com/thebeat/post/tosos-theatre-company-presents-the-world-premier-of-burning-leaves/"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://stagebuddy.com/event/burning-leaves-a-new-play",
+            "outletId": "stagebuddy",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://stagebuddy.com/event/burning-leaves-a-new-play-by-tom-rowan-a-free-reading",
+            "outletId": "stagebuddy",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.iloveny.com/thebeat/post/tosos-theatre-company-presents-the-world-premier-of-burning-leaves/",
+            "outletId": "iloveny.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 2
+      },
+      "computedAt": "2026-09-30T07:43:36.484Z"
+    },
+    {
       "showId": "burnout-paradise-off-broadway-2026",
       "title": "Burnout Paradise",
       "openingDate": "2026-03-05",
@@ -33699,12 +33904,11 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 28,
+        "count": 26,
         "byReason": {
-          "non-review-host": 19,
-          "ticketing-reseller": 4,
           "aggregator-internal-nav": 4,
-          "non-review-path": 1
+          "non-review-host": 18,
+          "ticketing-reseller": 4
         }
       },
       "dedupedVariants": [],
@@ -33828,12 +34032,7 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-09-29T21:21:30.952Z",
-      "quarantine": {
-        "nextState": "incomplete:0:1",
-        "since": "2026-09-30T01:06:00.103Z",
-        "lastAt": "2026-09-30T01:06:00.103Z"
-      }
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "electra-persona-west-end-2026",
@@ -35369,12 +35568,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 31,
         "byReason": {
-          "non-review-host": 25,
           "aggregator-internal-nav": 3,
           "venue-production-page": 1,
-          "non-review-path": 1
+          "non-review-host": 25,
+          "non-review-path": 1,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -35516,12 +35716,7 @@
         "liveCount": 0,
         "candidateCount": 8
       },
-      "computedAt": "2026-09-29T21:21:30.952Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-09-30T01:06:00.103Z",
-        "lastAt": "2026-09-30T01:06:00.103Z"
-      }
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -39310,37 +39505,491 @@
       "showId": "flamenc-oh-off-west-end-2026",
       "title": "Flamenc Oh!!",
       "openingDate": null,
-      "status": "upcoming",
+      "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/aug/15/flamenc-oh-review-assembly-hall-edinburgh-flamenco",
+        "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667",
+        "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/",
+        "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/",
+        "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh",
+        "https://one4review.co.uk/2026/08/flamenc-oh-4/",
+        "https://festmag.com/2026/08/28/review-flamenc-oh/",
+        "https://halibuts.com/events/eventdetail/151420-337975-flamenc_oh-the_peacock_theatre-1-Oct-2026-7.30pm",
+        "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html",
+        "https://corrblimey.uk/2026/07/26/have-a-gander-at-the-edinburgh-festival-fringe-2026-flamenc-oh/",
+        "https://www.heraldscotland.com/life_style/26448685.fringe-flamenc-oh-assembly-rooms-music-hall-30-august/",
+        "https://www.show-score.com/uk/london/off-west-end-shows/flamenc-oh"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/15/flamenc-oh-review-assembly-hall-edinburgh-flamenco",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true
+        },
+        {
+          "url": "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667",
+          "host": "list.co.uk",
+          "knownOutletId": "the-list",
+          "serpCensus": true
+        },
+        {
+          "url": "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/",
+          "host": "entertainment-now.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/",
+          "host": "theatreinedinburgh.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://one4review.co.uk/2026/08/flamenc-oh-4/",
+          "host": "one4review.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://festmag.com/2026/08/28/review-flamenc-oh/",
+          "host": "festmag.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://halibuts.com/events/eventdetail/151420-337975-flamenc_oh-the_peacock_theatre-1-Oct-2026-7.30pm",
+          "host": "halibuts.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html",
+          "host": "aol.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://corrblimey.uk/2026/07/26/have-a-gander-at-the-edinburgh-festival-fringe-2026-flamenc-oh/",
+          "host": "corrblimey.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.heraldscotland.com/life_style/26448685.fringe-flamenc-oh-assembly-rooms-music-hall-30-august/",
+          "host": "heraldscotland.com",
+          "knownOutletId": "herald",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.show-score.com/uk/london/off-west-end-shows/flamenc-oh",
+          "host": "show-score.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
-      "weReference": null,
+      "weReference": {
+        "rowCount": 0,
+        "sources": {
+          "westendtheatre": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "theatre-reviews": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "lbo-roundup": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "fetchErrors": 0
+          },
+          "thestage-archive": {
+            "found": false,
+            "rows": 0,
+            "emptyParse": false,
+            "error": null,
+            "passive": true
+          }
+        },
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
+      },
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Flamenc Oh!!\" West End review",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Flamenc Oh!!\" West End review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Flamenc Oh!!\" review peacock",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 5,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Flamenc Oh!! Peacock Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 4,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Flamenc Oh!! Peacock Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Flamenc Oh!! Peacock Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 12,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 24,
+        "byReason": {
+          "non-review-host": 16,
+          "non-review-path": 1,
+          "ticketing-reseller": 2,
+          "event-listing": 3,
+          "ticketing-listing": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/15/flamenc-oh-review-assembly-hall-edinburgh-flamenco",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667",
+          "host": "list.co.uk",
+          "outletId": "the-list",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/",
+          "host": "entertainment-now.com",
+          "outletId": "entertainment-now",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/",
+          "host": "theatreinedinburgh.co.uk",
+          "outletId": "theatreinedinburgh",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://one4review.co.uk/2026/08/flamenc-oh-4/",
+          "host": "one4review.co.uk",
+          "outletId": "one4review"
+        },
+        {
+          "url": "https://festmag.com/2026/08/28/review-flamenc-oh/",
+          "host": "festmag.com",
+          "outletId": "festmag"
+        },
+        {
+          "url": "https://halibuts.com/events/eventdetail/151420-337975-flamenc_oh-the_peacock_theatre-1-Oct-2026-7.30pm",
+          "host": "halibuts.com",
+          "outletId": "halibuts"
+        },
+        {
+          "url": "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html",
+          "host": "aol.co.uk",
+          "outletId": "aol"
+        },
+        {
+          "url": "https://corrblimey.uk/2026/07/26/have-a-gander-at-the-edinburgh-festival-fringe-2026-flamenc-oh/",
+          "host": "corrblimey.uk",
+          "outletId": "corrblimey"
+        },
+        {
+          "url": "https://www.heraldscotland.com/life_style/26448685.fringe-flamenc-oh-assembly-rooms-music-hall-30-august/",
+          "host": "heraldscotland.com",
+          "outletId": "herald"
+        },
+        {
+          "url": "https://www.show-score.com/uk/london/off-west-end-shows/flamenc-oh",
+          "host": "show-score.com",
+          "outletId": null
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/aug/15/flamenc-oh-review-assembly-hall-edinburgh-flamenco"
+          },
+          {
+            "outletId": "the-list",
+            "outlet": "the-list",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667"
+          },
+          {
+            "outletId": "entertainment-now.com",
+            "outlet": "entertainment-now.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/"
+          },
+          {
+            "outletId": "theatreinedinburgh.co.uk",
+            "outlet": "theatreinedinburgh.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh"
+          },
+          {
+            "outletId": "one4review.co.uk",
+            "outlet": "one4review.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://one4review.co.uk/2026/08/flamenc-oh-4/"
+          },
+          {
+            "outletId": "festmag.com",
+            "outlet": "festmag.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://festmag.com/2026/08/28/review-flamenc-oh/"
+          },
+          {
+            "outletId": "halibuts.com",
+            "outlet": "halibuts.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://halibuts.com/events/eventdetail/151420-337975-flamenc_oh-the_peacock_theatre-1-Oct-2026-7.30pm"
+          },
+          {
+            "outletId": "aol.co.uk",
+            "outlet": "aol.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html"
+          },
+          {
+            "outletId": "corrblimey.uk",
+            "outlet": "corrblimey.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://corrblimey.uk/2026/07/26/have-a-gander-at-the-edinburgh-festival-fringe-2026-flamenc-oh/"
+          },
+          {
+            "outletId": "herald",
+            "outlet": "herald",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.heraldscotland.com/life_style/26448685.fringe-flamenc-oh-assembly-rooms-music-hall-30-august/"
+          },
+          {
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.show-score.com/uk/london/off-west-end-shows/flamenc-oh"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/15/flamenc-oh-review-assembly-hall-edinburgh-flamenco",
+            "outletId": "guardian",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667",
+            "outletId": "the-list",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://entertainment-now.com/2026/08/edfringe-review-flamenc-oh/",
+            "outletId": "entertainment-now.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/",
+            "outletId": "theatreinedinburgh.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/yllana-flamenc-oh-review-assembly-rooms-music-hall-edinburgh",
+            "outletId": "thestage",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://one4review.co.uk/2026/08/flamenc-oh-4/",
+            "outletId": "one4review.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://festmag.com/2026/08/28/review-flamenc-oh/",
+            "outletId": "festmag.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://halibuts.com/events/eventdetail/151420-337975-flamenc_oh-the_peacock_theatre-1-Oct-2026-7.30pm",
+            "outletId": "halibuts.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.aol.co.uk/articles/flamenc-oh-review-frills-flirting-040046000.html",
+            "outletId": "aol.co.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://corrblimey.uk/2026/07/26/have-a-gander-at-the-edinburgh-festival-fringe-2026-flamenc-oh/",
+            "outletId": "corrblimey.uk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.heraldscotland.com/life_style/26448685.fringe-flamenc-oh-assembly-rooms-music-hall-30-august/",
+            "outletId": "herald",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.show-score.com/uk/london/off-west-end-shows/flamenc-oh",
+            "outletId": "show-score.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          }
+        ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 12
       },
-      "computedAt": "2026-09-27T02:05:03.576Z"
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "floyd-collins-2025",
@@ -56442,23 +57091,16 @@
         "https://www.timeout.com/newyork/theater/how-shakespeare-saved-my-life-jacob-ming-trent-review",
         "https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
         "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
+        "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
         "https://thefrontrowcenter.com/2026/09/how-shakespeare-saved-my-life/",
-        "https://culturesauce.com/how-shakespeare-saved-my-life-treats-the-bard-as-life-coach-off-broadway-review/",
         "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
         "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html",
-        "https://www.hillrag.com/2026/06/23/how-shakespeare-saved-my-life/",
-        "https://www.showify.us/shows/how-shakespeare-saved-my-life"
+        "https://www.hillrag.com/2026/06/23/how-shakespeare-saved-my-life/"
       ],
-      "dirFiles": 20,
+      "dirFiles": 21,
       "dirClean": 11,
-      "inReviewsJson": 9,
+      "inReviewsJson": 11,
       "missing": [
-        {
-          "url": "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html",
-          "host": "nytimes.com",
-          "knownOutletId": "nytimes",
-          "serpCensus": true
-        },
         {
           "url": "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
           "host": "show-score.com",
@@ -56478,7 +57120,7 @@
           "count": 1
         },
         {
-          "host": "offoffonline.com",
+          "host": "theatermania.com",
           "count": 1
         }
       ],
@@ -56534,7 +57176,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 7,
             "error": null
           },
           {
@@ -56544,7 +57186,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -56554,7 +57196,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -56584,42 +57226,31 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 14,
+        "resultCount": 13,
         "error": null
       },
       "candidatesRejected": {
-        "count": 418,
+        "count": 420,
         "byReason": {
-          "non-review-host": 57,
-          "ticketing-reseller": 2,
           "aggregator-internal-nav": 266,
+          "venue-production-page": 1,
+          "non-review-host": 56,
+          "ticketing-reseller": 2,
+          "ticketing-listing": 1,
+          "census-junk-host": 1,
           "not-http-url": 76,
           "aggregator-section-root": 11,
-          "venue-production-page": 1,
-          "roundup-page": 3,
-          "ticketing-listing": 2
+          "roundup-page": 6
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
-        {
-          "url": "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html",
-          "host": "nytimes.com",
-          "outletId": "nytimes",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
         {
           "url": "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
           "host": "show-score.com",
@@ -56649,13 +57280,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "nytimes",
-            "outlet": "nytimes",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html"
-          },
           {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
@@ -56712,6 +57336,12 @@
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
+            "url": "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html",
+            "outletId": "nytimes.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T21:21:30.952Z"
+          },
+          {
             "url": "https://www.timeout.com/newyork/theater/how-shakespeare-saved-my-life-jacob-ming-trent-review",
             "outletId": "timeout.com",
             "state": "live",
@@ -56724,29 +57354,16 @@
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           },
           {
+            "url": "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
             "url": "https://thefrontrowcenter.com/2026/09/how-shakespeare-saved-my-life/",
             "outletId": "thefrontrowcenter.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T12:06:49.970Z"
-          },
-          {
-            "url": "https://culturesauce.com/how-shakespeare-saved-my-life-treats-the-bard-as-life-coach-off-broadway-review/",
-            "outletId": "culturesauce.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T12:06:49.970Z"
-          },
-          {
-            "url": "https://www.showify.us/shows/how-shakespeare-saved-my-life",
-            "outletId": "showify.us",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://www.nytimes.com/2026/09/29/theater/how-shakespeare-saved-my-life-review.html",
-            "outletId": "nytimes",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
           },
           {
             "url": "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
@@ -56778,15 +57395,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 8,
+        "liveCount": 9,
         "candidateCount": 13
       },
-      "computedAt": "2026-09-29T21:21:30.952Z",
-      "quarantine": {
-        "nextState": "complete:7:7",
-        "since": "2026-09-30T01:06:00.103Z",
-        "lastAt": "2026-09-30T01:06:00.103Z"
-      }
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -67454,16 +68066,14 @@
         "https://www.nytimes.com/2023/04/23/arts/music/la-boheme-yannick-nezet-seguin-met-opera-review.html",
         "https://www.nytimes.com/2021/11/10/arts/music/boheme-met-opera-review.html",
         "https://thefrontrowcenter.com/2022/06/la-boheme-by-the-metropolitan-opera-at-lincoln-center-an-audience-member-chimes-in/",
-        "https://www.thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser",
         "https://askonasholt.com/artist/kristina-mkhitaryan/press/kristina-mkhitaryan-debuts-as-mimi-in-la-boheme-at-the-metropolitan-opera",
         "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
         "https://operawire.com/metropolitan-opera-2026-27-review-la-boheme/",
         "https://newyorkclassicalreview.com/2026/09/tenor-sub-brings-a-welcome-puccini-reunion-in-mets-opening-cast-boheme/",
         "https://seenandheard-international.com/2026/09/an-exciting-opening-week-at-the-met-opera-and-a-la-boheme-to-match/",
         "https://operamylove.com/reviews/zeffirellis-production-of-la-boheme-at-the-metropolitan-opera-shines/",
-        "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
-        "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
         "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
+        "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
         "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/"
       ],
       "dirFiles": 14,
@@ -67490,15 +68100,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true
-        },
-        {
           "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
           "host": "wsj.com",
           "knownOutletId": "wsj",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+          "host": "britishtheatreguide.info",
+          "knownOutletId": "british-theatre",
           "serpCensus": true
         },
         {
@@ -67549,24 +68159,6 @@
           "priorRunSource": "show-score-url-year"
         },
         {
-          "url": "https://www.thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
           "host": "kcindependent.com",
           "knownOutletId": null,
@@ -67580,24 +68172,6 @@
               "file": "kcindependent--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
-          "host": "rottentomatoes.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "rottentomatoes--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025"
             }
           ],
           "serpCensus": true
@@ -67617,7 +68191,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -67637,7 +68211,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -67647,7 +68221,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 0,
             "error": null
           },
           {
@@ -67663,14 +68237,15 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 11,
+        "resultCount": 9,
         "error": null
       },
       "candidatesRejected": {
         "count": 28,
         "byReason": {
           "non-review-host": 25,
-          "ticketing-reseller": 3
+          "ticketing-reseller": 1,
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
@@ -67708,18 +68283,6 @@
           "reason": "⚠️  provisional outlet \"operamylove\" (not in registry) — onboard to outlet-registry.json after revie"
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
-          "host": "britishtheatreguide.info",
-          "outletId": "british-theatre",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        },
-        {
           "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
           "host": "wsj.com",
           "outletId": "wsj",
@@ -67732,16 +68295,28 @@
           "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=wsj.com): Scrapingdog HTTP 400: Oops! Something went w"
         },
         {
-          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
-          "host": "newcriterion.com",
-          "outletId": "the-new-criterion",
+          "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+          "host": "britishtheatreguide.info",
+          "outletId": "british-theatre",
           "provisional": false,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=newcriterion.com): Scrapingdog HTTP 400: Oops! Somethi"
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        },
+        {
+          "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/",
+          "host": "newcriterion.com",
+          "outletId": "the-new-criterion",
+          "provisional": false,
+          "ok": false,
+          "noop": true,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "ingest no-op — exit 0 but no file with this URL landed in this show dir (no-changes)"
         }
       ],
       "ingestSkippedByCap": [],
@@ -67777,25 +68352,11 @@
             "url": "https://newcriterion.com/dispatch/la-boheme-and-grand-opera/"
           },
           {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser"
-          },
-          {
             "outletId": "kcindependent.com",
             "outlet": "kcindependent.com",
             "critic": "Unknown",
             "stars": null,
             "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/"
-          },
-          {
-            "outletId": "rottentomatoes.com",
-            "outlet": "rottentomatoes.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025"
           }
         ],
         "suppressedMissing": [
@@ -67841,17 +68402,17 @@
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
-            "outletId": "british-theatre",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-26T17:42:56.172Z"
-          },
-          {
             "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89",
             "outletId": "wsj",
             "state": "SUPPRESSED",
             "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-09-26T17:42:56.172Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/la-boheme-metropolitan-op-18976",
+            "outletId": "british-theatre",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
@@ -67862,37 +68423,18 @@
             "firstSeenAt": "2026-09-26T17:42:56.172Z"
           },
           {
-            "url": "https://www.thestage.co.uk/reviews/la-boheme-review-wales-millennium-centre-cardiff-floris-visser",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T09:20:33.796Z"
-          },
-          {
             "url": "https://kcindependent.com/review-lyric-delivers-honest-thought-provoking-boheme/",
             "outletId": "kcindependent.com",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://www.rottentomatoes.com/m/the_metropolitan_opera_la_boheme_2025",
-            "outletId": "rottentomatoes.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T07:54:42.859Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 3,
-        "candidateCount": 11
+        "candidateCount": 9
       },
-      "computedAt": "2026-09-29T21:21:30.952Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-09-30T01:06:00.103Z",
-        "lastAt": "2026-09-30T01:06:00.103Z"
-      }
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
@@ -79166,8 +79708,8 @@
         "https://playbill.com/article/what-do-london-reviews-think-of-midnight-at-the-never-get-starring-ben-platt",
         "https://playbill.com/article/reviews-critics-are-weighing-in-on-new-jason-robert-brown-taylor-mac-musical-midnight-in-the-garden-of-good-and-evil",
         "https://www.broadwayworld.com/article/Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721",
-        "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
         "https://www.broadwayworld.com/article/Review-Roundup-11-TO-MIDNIGHT-Opens-at-the-Orpheum-Theatre-20260211",
+        "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
         "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-MIDNIGHT-IN-THE-GARDEN-OF-GOOD-AND-EVIL-at-Goodman-Theatre-20240709"
       ],
       "aggregatorListedUrls": [
@@ -79185,6 +79727,8 @@
         "https://variety.com/2024/legit/reviews/midnight-in-the-garden-of-good-and-evil-review-musical-goodman-theatre-1236063818/",
         "https://www.timeout.com/london/theatre/midnight-at-the-never-get-review",
         "https://www.telegraph.co.uk/theatre/what-to-see/midnight-at-the-never-get-review/",
+        "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
+        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
         "http://www.nytimes.com/2013/11/04/theater/reviews/after-midnight-on-broadway-fetes-the-heyday-of-an-era.html",
         "http://abcnews.go.com/Entertainment/wireStory/review-midnight-celebrates-thrilling-jazz-20772398",
         "http://www.hollywoodreporter.com/review/midnight-theater-review-652788",
@@ -79197,11 +79741,8 @@
         "http://www.northjersey.com/arts_entertainment/theater/230451301_Theater_review___After_Midnight_.html",
         "http://www.vulture.com/2013/11/theater-review-after-midnight.html",
         "http://www.amny.com/urbanite-1.812039/3-stars-for-after-midnight-1.6370710",
-        "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
-        "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
         "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
         "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/",
-        "https://www.darylroththeatre.com/production/midnight/",
         "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
         "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/",
         "https://www.tickadoo.com/new-york/midnight"
@@ -79295,6 +79836,13 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
+          "url": "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
           "url": "http://www.nytimes.com/2013/11/04/theater/reviews/after-midnight-on-broadway-fetes-the-heyday-of-an-era.html",
           "host": "nytimes.com",
           "knownOutletId": "nytimes",
@@ -79372,13 +79920,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
-          "host": "newyorktheatreguide.com",
-          "knownOutletId": "nytg",
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
           "host": "suntimes.com",
           "knownOutletId": "chicago-sun-times",
@@ -79434,25 +79975,6 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/sc-ent-1103-after-midnight-broadway-review-20131103,0,4589866.column",
-          "host": "chicagotribune.com",
-          "knownOutletId": "chicagotribune",
-          "recoverable": true,
-          "recoverableFile": "chicagotribune--unknown.json",
-          "recoverableOutletId": "chicagotribune",
-          "recoverableCritic": "Unknown",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chicagotribune--unknown.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.chicagotribune.com/2026/09/08/chicago-theater-report-steppenwolf-star-casting/"
-            }
-          ],
-          "priorRun": true,
-          "priorRunSource": "aggregator-article-date"
-        },
-        {
           "url": "https://1minutecritic.com/11-to-midnight-review-cost-n-mayor/",
           "host": "1minutecritic.com",
           "knownOutletId": "one-minute-critic",
@@ -79472,22 +79994,23 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.darylroththeatre.com/production/midnight/",
-          "host": "darylroththeatre.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
+          "url": "http://www.chicagotribune.com/entertainment/theater/theaterloop/sc-ent-1103-after-midnight-broadway-review-20131103,0,4589866.column",
+          "host": "chicagotribune.com",
+          "knownOutletId": "chicagotribune",
+          "recoverable": true,
+          "recoverableFile": "chicagotribune--unknown.json",
+          "recoverableOutletId": "chicagotribune",
+          "recoverableCritic": "Unknown",
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "darylroththeatre--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.darylroththeatre.com/production/midnight/"
+              "file": "chicagotribune--unknown.json",
+              "flag": "emptyBody",
+              "urlInDir": "https://www.chicagotribune.com/2026/09/08/chicago-theater-report-steppenwolf-star-casting/"
             }
           ],
-          "serpCensus": true
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
         },
         {
           "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
@@ -79568,7 +80091,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -79604,18 +80127,21 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 4,
+        "resultCount": 3,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1387,
+        "count": 1395,
         "byReason": {
-          "non-review-host": 122,
+          "aggregator-internal-nav": 986,
+          "venue-production-page": 1,
+          "non-review-host": 124,
+          "non-review-path": 1,
           "ticketing-reseller": 6,
-          "aggregator-internal-nav": 985,
+          "census-junk-host": 3,
           "not-http-url": 244,
           "aggregator-section-root": 29,
-          "venue-production-page": 1
+          "roundup-page": 1
         }
       },
       "dedupedVariants": [],
@@ -79633,12 +80159,12 @@
           "publishDate": "2026-07-21"
         },
         {
-          "url": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
-          "publishDate": "2013-11-03"
-        },
-        {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-11-TO-MIDNIGHT-Opens-at-the-Orpheum-Theatre-20260211",
           "publishDate": "2026-02-11"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-AFTER-MIDNIGHT-Opens-on-Broadway--Updating-Live-20131103",
+          "publishDate": "2013-11-03"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-Critics-Sound-Off-On-MIDNIGHT-IN-THE-GARDEN-OF-GOOD-AND-EVIL-at-Goodman-Theatre-20240709",
@@ -79719,6 +80245,12 @@
           "reason": "prior-run"
         },
         {
+          "url": "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
           "url": "http://www.nytimes.com/2013/11/04/theater/reviews/after-midnight-on-broadway-fetes-the-heyday-of-an-era.html",
           "host": "nytimes.com",
           "priorRun": true,
@@ -79785,12 +80317,6 @@
           "reason": "prior-run"
         },
         {
-          "url": "https://www.newyorktheatreguide.com/reviews/11-to-midnight-off-broadway-review-cost-n-mayor",
-          "host": "newyorktheatreguide.com",
-          "priorRun": true,
-          "reason": "prior-run"
-        },
-        {
           "url": "https://chicago.suntimes.com/theater/2024/07/09/midnight-in-the-garden-of-good-and-evil-review-goodman-theatre-chicago",
           "host": "suntimes.com",
           "priorRun": true,
@@ -79808,13 +80334,6 @@
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "darylroththeatre.com",
-            "outlet": "darylroththeatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.darylroththeatre.com/production/midnight/"
-          },
           {
             "outletId": "theatrely",
             "outlet": "theatrely",
@@ -79840,13 +80359,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.darylroththeatre.com/production/midnight/",
-            "outletId": "darylroththeatre.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T12:06:49.970Z"
-          },
-          {
             "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
             "outletId": "theatrely",
             "state": "GAP",
@@ -79870,14 +80382,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 4
+        "candidateCount": 3
       },
-      "computedAt": "2026-09-29T21:21:30.952Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-09-30T01:06:00.103Z",
-        "lastAt": "2026-09-30T01:06:00.103Z"
-      }
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -82986,7 +83493,6 @@
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
         "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942",
-        "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
         "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-experience-nyc"
       ],
       "dirFiles": 3,
@@ -83016,24 +83522,6 @@
               "file": "eventbrite--unknown.json",
               "flag": "clean",
               "urlInDir": "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
-          "host": "pulsd.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "pulsd--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc"
             }
           ],
           "serpCensus": true
@@ -83073,7 +83561,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -83099,13 +83587,14 @@
         ],
         "queriesOk": 5,
         "queriesTotal": 5,
-        "resultCount": 3,
+        "resultCount": 2,
         "error": null
       },
       "candidatesRejected": {
-        "count": 31,
+        "count": 35,
         "byReason": {
-          "non-review-host": 31
+          "non-review-host": 34,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -83140,13 +83629,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.eventbrite.com/e/moonrise-a-dinner-experience-at-paradise-club-tickets-1997723558942"
-          },
-          {
-            "outletId": "pulsd.com",
-            "outlet": "pulsd.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc"
           }
         ],
         "suppressedMissing": [],
@@ -83164,25 +83646,13 @@
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://pulsd.com/new-york/promotions/paradise-club-moonrise-theatrical-dinner-show-nyc",
-            "outletId": "pulsd.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-29T09:20:33.796Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-09-29T21:21:30.952Z",
-      "quarantine": {
-        "nextState": "no-census-yet:0:0",
-        "since": "2026-09-30T01:06:00.103Z",
-        "lastAt": "2026-09-30T01:06:00.103Z"
-      }
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "mother-play-2024",
@@ -140412,25 +140882,34 @@
       "category": "west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
+        "https://www.theguardian.com/stage/2026/sep/30/the-standard-of-living-review-rory-kinnear-theatre-royal-haymarket-london-james-graham-nicholas-hytner",
+        "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
+        "https://www.londonboxoffice.co.uk/news/post/the-standard-of-living-theatre-royal-haymarket-review",
+        "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+        "https://www.whatsonstage.com/news/the-standard-of-living-with-rory-kinnear-and-natalia-osipova-in-the-west-end-review_1733934/",
         "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
-        "https://closeupculture.com/2026/09/29/the-standard-of-living-theatre-review/",
+        "https://www.thereviewshub.com/the-standard-of-living-theatre-royal-haymarket-london/",
+        "https://www.allthatdazzles.co.uk/post/review-the-standard-of-living-theatre-royal-haymarket",
+        "https://www.telegraph.co.uk/theatre/what-to-see/the-standard-of-living-theatre-royal-haymarket-review/",
         "https://www.londontheatredirect.com/play/the-standard-of-living-tickets",
-        "https://www.bestoftheatre.co.uk/the-standard-of-living",
-        "https://www.thewestendshows.co.uk/the-standard-of-living-opens-at-theatre-royal-haymarket/",
+        "https://trh.co.uk/whatson/the-standard-of-living/",
         "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham",
-        "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/",
-        "https://www.timeout.com/london/theatre/the-standard-of-living",
-        "https://www.westendtheatre.com/358085/news/rory-kinnear-standard-of-living-james-graham/",
+        "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
         "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
         "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket",
-        "https://theatreweekly.com/james-grahams-the-standard-of-living-releases-first-rehearsal-images-ahead-of-west-end-premiere/",
-        "https://southlondon.co.uk/lifestyle/the-standard-of-living/",
-        "https://www.londontheatre.co.uk/theatre-news/news/new-james-graham-play-the-standard-of-living-to-open-in-the-west-end"
+        "https://londontheatrehub.co.uk/shows/the-standard-of-living/",
+        "https://www.timeout.com/london/theatre/the-standard-of-living"
       ],
-      "dirFiles": 7,
-      "dirClean": 2,
-      "inReviewsJson": 2,
+      "dirFiles": 17,
+      "dirClean": 8,
+      "inReviewsJson": 8,
       "missing": [
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+          "host": "thetimes.com",
+          "knownOutletId": "times-uk",
+          "serpCensus": true
+        },
         {
           "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
           "host": "show-score.com",
@@ -140438,27 +140917,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://closeupculture.com/2026/09/29/the-standard-of-living-theatre-review/",
-          "host": "closeupculture.com",
-          "knownOutletId": "closeupculture",
+          "url": "https://trh.co.uk/whatson/the-standard-of-living/",
+          "host": "trh.co.uk",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.timeout.com/london/theatre/the-standard-of-living",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.westendtheatre.com/358085/news/rory-kinnear-standard-of-living-james-graham/",
-          "host": "westendtheatre.com",
-          "knownOutletId": "westendtheatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
-          "host": "westendwilma.com",
-          "knownOutletId": "west-end-wilma",
+          "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
+          "host": "monstagigz.com",
+          "knownOutletId": "monstagigz",
           "serpCensus": true
         },
         {
@@ -140468,27 +140935,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://theatreweekly.com/james-grahams-the-standard-of-living-releases-first-rehearsal-images-ahead-of-west-end-premiere/",
-          "host": "theatreweekly.com",
-          "knownOutletId": "theatre-weekly",
-          "serpCensus": true
-        },
-        {
-          "url": "https://southlondon.co.uk/lifestyle/the-standard-of-living/",
-          "host": "southlondon.co.uk",
-          "knownOutletId": "south-london",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/new-james-graham-play-the-standard-of-living-to-open-in-the-west-end",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
+          "url": "https://londontheatrehub.co.uk/shows/the-standard-of-living/",
+          "host": "londontheatrehub.co.uk",
+          "knownOutletId": "londontheatrehub",
           "serpCensus": true
         }
       ],
       "dirOnly": [
         {
-          "host": "theatrebookings.com",
+          "host": "closeupculture.com",
           "count": 1
         }
       ],
@@ -140512,24 +140967,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.thewestendshows.co.uk/the-standard-of-living-opens-at-theatre-royal-haymarket/",
-          "host": "thewestendshows.co.uk",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thewestendshows--thewestendshowsco-uk.json",
-              "flag": "clean",
-              "urlInDir": "https://www.thewestendshows.co.uk/the-standard-of-living-opens-at-theatre-royal-haymarket/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham",
           "host": "theguardian.com",
           "knownOutletId": "guardian",
@@ -140548,9 +140985,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/",
-          "host": "monstagigz.com",
-          "knownOutletId": "monstagigz",
+          "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
+          "host": "westendwilma.com",
+          "knownOutletId": "west-end-wilma",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -140558,9 +140995,27 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "monstagigz--unknown.json",
+              "file": "west-end-wilma--westendwilma.json",
+              "flag": "clean",
+              "urlInDir": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/the-standard-of-living",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--unknown.json",
               "flag": "wrongProduction",
-              "urlInDir": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/"
+              "urlInDir": "https://www.timeout.com/london/theatre/the-standard-of-living"
             }
           ],
           "serpCensus": true
@@ -140568,7 +141023,7 @@
       ],
       "citedNoUrl": [],
       "weReference": {
-        "rowCount": 0,
+        "rowCount": 1,
         "sources": {
           "westendtheatre": {
             "found": false,
@@ -140582,11 +141037,11 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
-            "found": false,
-            "rows": 0,
+            "found": true,
+            "rows": 1,
             "emptyParse": false,
             "error": null,
             "fetchErrors": 0
@@ -140600,9 +141055,14 @@
           }
         },
         "allSourcesFailed": false,
-        "currentRunRows": 0,
-        "corroborated": 0,
-        "perSource": {}
+        "currentRunRows": 1,
+        "corroborated": 1,
+        "perSource": {
+          "lbo-roundup": {
+            "cited": 1,
+            "corroborated": 1
+          }
+        }
       },
       "serpCensus": {
         "ran": true,
@@ -140615,8 +141075,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 6,
             "error": null
           },
           {
@@ -140625,7 +141085,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
+            "results": 9,
             "accepted": 3,
             "error": null
           },
@@ -140635,8 +141095,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 0,
+            "results": 9,
+            "accepted": 1,
             "error": null
           },
           {
@@ -140646,7 +141106,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -140656,7 +141116,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -140672,19 +141132,31 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 14,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 26,
         "byReason": {
-          "non-review-host": 24,
+          "non-review-host": 23,
           "non-review-path": 1,
           "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
+        {
+          "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+          "host": "thetimes.com",
+          "outletId": "times-uk",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
+        },
         {
           "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
           "host": "show-score.com",
@@ -140698,45 +141170,33 @@
           "reason": "unknown-outlet-aggregator-host (show-score.com)"
         },
         {
-          "url": "https://closeupculture.com/2026/09/29/the-standard-of-living-theatre-review/",
-          "host": "closeupculture.com",
-          "outletId": "closeupculture",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.timeout.com/london/theatre/the-standard-of-living",
-          "host": "timeout.com",
-          "outletId": "timeout-london",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://www.westendtheatre.com/358085/news/rory-kinnear-standard-of-living-james-graham/",
-          "host": "westendtheatre.com",
-          "outletId": "westendtheatre",
-          "provisional": false,
+          "url": "https://trh.co.uk/whatson/the-standard-of-living/",
+          "host": "trh.co.uk",
+          "outletId": "trh",
+          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "Refusing to ingest — https://www.westendtheatre.com/358085/news/rory-kinnear-standard-of-living-jame"
+          "reason": "Refusing to ingest — https://trh.co.uk/whatson/the-standard-of-living/ matches a known non-review do"
         },
         {
-          "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
-          "host": "westendwilma.com",
-          "outletId": "west-end-wilma",
+          "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
+          "host": "monstagigz.com",
+          "outletId": "monstagigz",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket",
+          "host": "sueterryvoices.com",
+          "outletId": "sueterryvoices",
           "provisional": false,
           "ok": true,
           "noop": false,
@@ -140748,29 +141208,21 @@
       ],
       "ingestSkippedByCap": [
         {
-          "url": "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket",
-          "host": "sueterryvoices.com",
-          "outletId": "sueterryvoices"
-        },
-        {
-          "url": "https://theatreweekly.com/james-grahams-the-standard-of-living-releases-first-rehearsal-images-ahead-of-west-end-premiere/",
-          "host": "theatreweekly.com",
-          "outletId": "theatre-weekly"
-        },
-        {
-          "url": "https://southlondon.co.uk/lifestyle/the-standard-of-living/",
-          "host": "southlondon.co.uk",
-          "outletId": "south-london"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/theatre-news/news/new-james-graham-play-the-standard-of-living-to-open-in-the-west-end",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre"
+          "url": "https://londontheatrehub.co.uk/shows/the-standard-of-living/",
+          "host": "londontheatrehub.co.uk",
+          "outletId": "londontheatrehub"
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
+          {
+            "outletId": "times-uk",
+            "outlet": "times-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx"
+          },
           {
             "outletId": "show-score.com",
             "outlet": "show-score.com",
@@ -140779,32 +141231,18 @@
             "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end"
           },
           {
-            "outletId": "closeupculture",
-            "outlet": "closeupculture",
+            "outletId": "trh.co.uk",
+            "outlet": "trh.co.uk",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://closeupculture.com/2026/09/29/the-standard-of-living-theatre-review/"
+            "url": "https://trh.co.uk/whatson/the-standard-of-living/"
           },
           {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
+            "outletId": "monstagigz",
+            "outlet": "monstagigz",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.timeout.com/london/theatre/the-standard-of-living"
-          },
-          {
-            "outletId": "westendtheatre",
-            "outlet": "westendtheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.westendtheatre.com/358085/news/rory-kinnear-standard-of-living-james-graham/"
-          },
-          {
-            "outletId": "west-end-wilma",
-            "outlet": "west-end-wilma",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/"
+            "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/"
           },
           {
             "outletId": "sueterryvoices",
@@ -140814,25 +141252,11 @@
             "url": "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket"
           },
           {
-            "outletId": "theatre-weekly",
-            "outlet": "theatre-weekly",
+            "outletId": "londontheatrehub",
+            "outlet": "londontheatrehub",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://theatreweekly.com/james-grahams-the-standard-of-living-releases-first-rehearsal-images-ahead-of-west-end-premiere/"
-          },
-          {
-            "outletId": "south-london",
-            "outlet": "south-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://southlondon.co.uk/lifestyle/the-standard-of-living/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/new-james-graham-play-the-standard-of-living-to-open-in-the-west-end"
+            "url": "https://londontheatrehub.co.uk/shows/the-standard-of-living/"
           },
           {
             "outletId": "londontheatredirect",
@@ -140842,13 +141266,6 @@
             "url": "https://www.londontheatredirect.com/play/the-standard-of-living-tickets"
           },
           {
-            "outletId": "thewestendshows.co.uk",
-            "outlet": "thewestendshows.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thewestendshows.co.uk/the-standard-of-living-opens-at-theatre-royal-haymarket/"
-          },
-          {
             "outletId": "guardian",
             "outlet": "guardian",
             "critic": "Unknown",
@@ -140856,123 +141273,140 @@
             "url": "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham"
           },
           {
-            "outletId": "monstagigz",
-            "outlet": "monstagigz",
+            "outletId": "west-end-wilma",
+            "outlet": "west-end-wilma",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/"
+            "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/the-standard-of-living"
           }
         ],
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.bestoftheatre.co.uk/the-standard-of-living",
-            "outletId": "bestoftheatre.co.uk",
+            "url": "https://www.theguardian.com/stage/2026/sep/30/the-standard-of-living-review-rory-kinnear-theatre-royal-haymarket-london-james-graham-nicholas-hytner",
+            "outletId": "theguardian.com",
             "state": "live",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/the-standard-of-living-theatre-royal-haymarket-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.whatsonstage.com/news/the-standard-of-living-with-rory-kinnear-and-natalia-osipova-in-the-west-end-review_1733934/",
+            "outletId": "whatsonstage.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.thereviewshub.com/the-standard-of-living-theatre-royal-haymarket-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-the-standard-of-living-theatre-royal-haymarket",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-standard-of-living-theatre-royal-haymarket-review/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
+            "outletId": "times-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
             "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
             "outletId": "show-score.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://closeupculture.com/2026/09/29/the-standard-of-living-theatre-review/",
-            "outletId": "closeupculture",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
+            "url": "https://trh.co.uk/whatson/the-standard-of-living/",
+            "outletId": "trh.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
-            "url": "https://www.timeout.com/london/theatre/the-standard-of-living",
-            "outletId": "timeout-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://www.westendtheatre.com/358085/news/rory-kinnear-standard-of-living-james-graham/",
-            "outletId": "westendtheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
-            "outletId": "west-end-wilma",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
+            "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
+            "outletId": "monstagigz",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
             "url": "https://www.sueterryvoices.com/news/the-standard-of-living-at-theatre-royal-haymarket",
             "outletId": "sueterryvoices",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://theatreweekly.com/james-grahams-the-standard-of-living-releases-first-rehearsal-images-ahead-of-west-end-premiere/",
-            "outletId": "theatre-weekly",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://southlondon.co.uk/lifestyle/the-standard-of-living/",
-            "outletId": "south-london",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/theatre-news/news/new-james-graham-play-the-standard-of-living-to-open-in-the-west-end",
-            "outletId": "london-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-29T12:06:49.970Z"
+            "url": "https://londontheatrehub.co.uk/shows/the-standard-of-living/",
+            "outletId": "londontheatrehub",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
             "url": "https://www.londontheatredirect.com/play/the-standard-of-living-tickets",
             "outletId": "londontheatredirect",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://www.thewestendshows.co.uk/the-standard-of-living-opens-at-theatre-royal-haymarket/",
-            "outletId": "thewestendshows.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
             "url": "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham",
             "outletId": "guardian",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/",
-            "outletId": "monstagigz",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
+            "url": "https://westendwilma.com/show-the-standard-of-living-theatre-royal-haymarket/",
+            "outletId": "west-end-wilma",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-09-29T21:21:30.952Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/the-standard-of-living",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 1,
-        "candidateCount": 14
+        "liveCount": 7,
+        "candidateCount": 17
       },
-      "computedAt": "2026-09-29T21:21:30.952Z",
-      "quarantine": {
-        "nextState": "complete:1:1",
-        "since": "2026-09-30T01:06:00.103Z",
-        "lastAt": "2026-09-30T01:06:00.103Z"
-      }
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -142932,22 +143366,22 @@
         "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/",
         "https://sierz.co.uk/reviews/the-urmetazoan-hampstead-theatre/",
         "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/",
-        "https://www.londontheatre1.com/reviews/the-urmetazoan-hampstead-theatre/",
         "https://www.broadwayworld.com/westend/article/Review-THE-URMETAZOAN-Hampstead-Theatre-20260925",
         "https://www.londonboxoffice.co.uk/news/post/the-urmetazoan-hampstead-theatre-review",
         "https://www.allthatdazzles.co.uk/post/review-the-urmetazoan-hampstead-theatre-downstairs",
-        "https://thespyinthestalls.com/2026/09/the-urmetazoan/",
         "https://fairypoweredproductions.com/the-urmetazoan-review/",
-        "https://www.timeout.com/london/theatre/the-urmetazoan",
+        "https://thespyinthestalls.com/2026/09/the-urmetazoan/",
         "https://khambayswordswordswords.blog/2026/09/26/the-urmetazoan-at-hampstead-theatre-2026-review/",
+        "https://www.londontheatre1.com/reviews/the-urmetazoan-hampstead-theatre/",
+        "https://www.timeout.com/london/theatre/the-urmetazoan",
+        "https://northwestend.com/the-urmetazoan-hampstead-theatre/amp/",
         "https://www.thestage.co.uk/reviews/the-urmetazoan-review-hampstead-theatre-london-alex-rugman",
         "https://www.thereviewshub.com/tag/the-urmetazoan/",
-        "https://www.datathistle.com/event/3105084-the-urmetazoan/",
-        "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan"
+        "https://fullhouse.me/production/the-urmetazoan-2026"
       ],
-      "dirFiles": 20,
-      "dirClean": 12,
-      "inReviewsJson": 12,
+      "dirFiles": 21,
+      "dirClean": 13,
+      "inReviewsJson": 13,
       "missing": [
         {
           "url": "https://lovelondonloveculture.com/2026/09/29/review-round-up-the-urmetazoan-hampstead-theatre/",
@@ -142956,14 +143390,14 @@
           "serpCensus": true
         },
         {
-          "url": "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/",
-          "host": "readaboutstuff.com",
-          "knownOutletId": "readaboutstuff",
+          "url": "https://northwestend.com/the-urmetazoan-hampstead-theatre/amp/",
+          "host": "northwestend.com",
+          "knownOutletId": "north-west-end",
           "serpCensus": true
         },
         {
-          "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan",
-          "host": "show-score.com",
+          "url": "https://fullhouse.me/production/the-urmetazoan-2026",
+          "host": "fullhouse.me",
           "knownOutletId": null,
           "serpCensus": true
         }
@@ -143010,24 +143444,6 @@
             }
           ],
           "serpCensus": true
-        },
-        {
-          "url": "https://www.datathistle.com/event/3105084-the-urmetazoan/",
-          "host": "datathistle.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "datathistle--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.datathistle.com/event/3105084-the-urmetazoan/"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -143046,7 +143462,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -143085,7 +143501,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 9,
+            "accepted": 8,
             "error": null
           },
           {
@@ -143094,8 +143510,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 2,
+            "results": 9,
+            "accepted": 3,
             "error": null
           },
           {
@@ -143104,8 +143520,8 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 10,
-            "accepted": 1,
+            "results": 9,
+            "accepted": 2,
             "error": null
           },
           {
@@ -143115,7 +143531,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -143135,13 +143551,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 15,
+        "count": 12,
         "byReason": {
-          "non-review-host": 9,
-          "non-review-path": 1,
           "venue-production-page": 3,
-          "ticketing-listing": 1,
-          "roundup-page": 1
+          "non-review-host": 6,
+          "non-review-path": 1,
+          "ticketing-listing": 2
         }
       },
       "dedupedVariants": [],
@@ -143159,28 +143574,28 @@
           "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/29/review-round-up-the-urmetazoan-ham"
         },
         {
-          "url": "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/",
-          "host": "readaboutstuff.com",
-          "outletId": "readaboutstuff",
+          "url": "https://northwestend.com/the-urmetazoan-hampstead-theatre/amp/",
+          "host": "northwestend.com",
+          "outletId": "north-west-end",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "Fetch failed: All scraping methods failed"
         },
         {
-          "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan",
-          "host": "show-score.com",
-          "outletId": null,
+          "url": "https://fullhouse.me/production/the-urmetazoan-2026",
+          "host": "fullhouse.me",
+          "outletId": "fullhouse",
           "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
+          "reason": "⚠️  provisional outlet \"fullhouse\" (not in registry) — onboard to outlet-registry.json after review."
         }
       ],
       "ingestSkippedByCap": [],
@@ -143195,18 +143610,18 @@
             "url": "https://lovelondonloveculture.com/2026/09/29/review-round-up-the-urmetazoan-hampstead-theatre/"
           },
           {
-            "outletId": "readaboutstuff",
-            "outlet": "readaboutstuff",
+            "outletId": "north-west-end",
+            "outlet": "north-west-end",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/"
+            "url": "https://northwestend.com/the-urmetazoan-hampstead-theatre/amp/"
           },
           {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
+            "outletId": "fullhouse.me",
+            "outlet": "fullhouse.me",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan"
+            "url": "https://fullhouse.me/production/the-urmetazoan-2026"
           },
           {
             "outletId": "sierz-co-uk",
@@ -143221,13 +143636,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.timeout.com/london/theatre/the-urmetazoan"
-          },
-          {
-            "outletId": "datathistle.com",
-            "outlet": "datathistle.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.datathistle.com/event/3105084-the-urmetazoan/"
           }
         ],
         "suppressedMissing": [],
@@ -143245,14 +143653,14 @@
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
-            "url": "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/",
-            "outletId": "theupcoming.co.uk",
+            "url": "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/",
+            "outletId": "readaboutstuff.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
-            "url": "https://www.londontheatre1.com/reviews/the-urmetazoan-hampstead-theatre/",
-            "outletId": "londontheatre1.com",
+            "url": "https://www.theupcoming.co.uk/2026/09/25/the-urmetazoan-at-hampstead-theatre-theatre-review/",
+            "outletId": "theupcoming.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
@@ -143275,20 +143683,26 @@
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
-            "url": "https://thespyinthestalls.com/2026/09/the-urmetazoan/",
-            "outletId": "thespyinthestalls.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T16:28:11.903Z"
-          },
-          {
             "url": "https://fairypoweredproductions.com/the-urmetazoan-review/",
             "outletId": "fairypoweredproductions.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
+            "url": "https://thespyinthestalls.com/2026/09/the-urmetazoan/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T16:28:11.903Z"
+          },
+          {
             "url": "https://khambayswordswordswords.blog/2026/09/26/the-urmetazoan-at-hampstead-theatre-2026-review/",
             "outletId": "khambayswordswordswords.blog",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T16:28:11.903Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/the-urmetazoan-hampstead-theatre/",
+            "outletId": "londontheatre1.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
@@ -143312,18 +143726,18 @@
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
           },
           {
-            "url": "https://readaboutstuff.com/2026/09/29/review-the-urmetazoan-hampstead-theatre-london/",
-            "outletId": "readaboutstuff",
+            "url": "https://northwestend.com/the-urmetazoan-hampstead-theatre/amp/",
+            "outletId": "north-west-end",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T16:28:11.903Z"
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
-            "url": "https://www.show-score.com/uk/london/off-west-end-shows/the-urmetazoan",
-            "outletId": "show-score.com",
+            "url": "https://fullhouse.me/production/the-urmetazoan-2026",
+            "outletId": "fullhouse.me",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T16:28:11.903Z"
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
             "url": "https://sierz.co.uk/reviews/the-urmetazoan-hampstead-theatre/",
@@ -143338,25 +143752,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T16:28:11.903Z"
-          },
-          {
-            "url": "https://www.datathistle.com/event/3105084-the-urmetazoan/",
-            "outletId": "datathistle.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T16:28:11.903Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 11,
+        "liveCount": 12,
         "candidateCount": 17
       },
-      "computedAt": "2026-09-29T16:28:11.903Z",
-      "quarantine": {
-        "nextState": "incomplete:11:15",
-        "since": "2026-09-30T01:06:00.103Z",
-        "lastAt": "2026-09-30T01:06:00.103Z"
-      }
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "the-very-hungry-caterpillar-interactive-show-off-broadway-2026",
@@ -148157,27 +148559,26 @@
         "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
         "https://www.londontheatre.co.uk/reviews/tru-review-menier-chocolate-factory",
         "https://monstagigz.com/2026/09/19/theatre-review-tru-starring-jesse-tyler-ferguson-at-the-menier-chocolate-factory/",
-        "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
-        "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
-        "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
+        "https://lovelondonloveculture.com/2026/09/29/review-round-up-tru-menier-chocolate-factory/",
         "https://www.thereviewshub.com/tru-menier-chocolate-factory-london/",
-        "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
+        "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
+        "https://www.britishtheatreguide.info/reviews/tru-menier-chocolat-26049",
+        "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
         "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
-        "https://www.timeout.com/london/theatre/tru-review",
+        "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
+        "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
         "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
         "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
-        "https://www.britishtheatreguide.info/reviews/tru-menier-chocolat-26049",
-        "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
+        "https://www.timeout.com/london/theatre/tru-review",
         "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
-        "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/",
+        "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/",
         "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
-        "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
+        "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/",
         "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
-        "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2",
-        "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/"
+        "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2"
       ],
       "dirFiles": 32,
-      "dirClean": 20,
+      "dirClean": 22,
       "inReviewsJson": 18,
       "missing": [
         {
@@ -148228,9 +148629,9 @@
           "knownOutletId": "theatermania"
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/tru-menier-chocolat-26049",
-          "host": "britishtheatreguide.info",
-          "knownOutletId": "british-theatre",
+          "url": "https://lovelondonloveculture.com/2026/09/29/review-round-up-tru-menier-chocolate-factory/",
+          "host": "lovelondonloveculture.com",
+          "knownOutletId": "lovelondonloveculture",
           "serpCensus": true
         },
         {
@@ -148238,17 +148639,6 @@
           "host": "uktw.co.uk",
           "knownOutletId": null,
           "serpCensus": true
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
-          "host": "thetimes.com",
-          "knownOutletId": "times-uk",
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
-          ],
-          "weRefStars": 4,
-          "weRefStarsSource": "westendtheatre"
         }
       ],
       "dirOnly": [
@@ -148261,7 +148651,15 @@
           "count": 1
         },
         {
+          "host": "stagedtheatre.co.uk",
+          "count": 1
+        },
+        {
           "host": "standard.co.uk",
+          "count": 1
+        },
+        {
+          "host": "westendbestfriend.co.uk",
           "count": 1
         }
       ],
@@ -148300,7 +148698,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -148319,11 +148717,11 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 7,
-        "corroborated": 5,
+        "corroborated": 6,
         "perSource": {
           "westendtheatre": {
-            "cited": 5,
-            "corroborated": 5
+            "cited": 6,
+            "corroborated": 6
           }
         }
       },
@@ -148339,7 +148737,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 4,
+            "accepted": 6,
             "error": null
           },
           {
@@ -148359,7 +148757,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           },
           {
@@ -148369,7 +148767,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -148379,7 +148777,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -148389,7 +148787,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -148399,15 +148797,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 391,
+        "count": 388,
         "byReason": {
-          "non-review-host": 43,
           "aggregator-internal-nav": 263,
+          "non-review-host": 45,
           "not-http-url": 66,
           "aggregator-section-root": 11,
-          "roundup-page": 6,
-          "non-review-path": 1,
-          "ticketing-listing": 1
+          "roundup-page": 3
         }
       },
       "dedupedVariants": [],
@@ -148473,16 +148869,16 @@
           "reason": "❌ Refusing to ingest — collision with theatermania--zachary-stewart.json\n   reason: stale-flag-on-ex"
         },
         {
-          "url": "https://www.britishtheatreguide.info/reviews/tru-menier-chocolat-26049",
-          "host": "britishtheatreguide.info",
-          "outletId": "british-theatre",
+          "url": "https://lovelondonloveculture.com/2026/09/29/review-round-up-tru-menier-chocolate-factory/",
+          "host": "lovelondonloveculture.com",
+          "outletId": "lovelondonloveculture",
           "provisional": false,
-          "ok": true,
+          "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": null
+          "reason": "Refusing to ingest — https://lovelondonloveculture.com/2026/09/29/review-round-up-tru-menier-chocola"
         },
         {
           "url": "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/",
@@ -148495,18 +148891,6 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  provisional outlet \"uktw\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
-        },
-        {
-          "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
-          "host": "thetimes.com",
-          "outletId": "times-uk",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
         }
       ],
       "ingestSkippedByCap": [],
@@ -148521,11 +148905,11 @@
             "url": "https://www.theatermania.com/news/review-jesse-tyler-ferguson-plays-truman-capote-in-tru_1828438/"
           },
           {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
+            "outletId": "lovelondonloveculture",
+            "outlet": "lovelondonloveculture",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.britishtheatreguide.info/reviews/tru-menier-chocolat-26049"
+            "url": "https://lovelondonloveculture.com/2026/09/29/review-round-up-tru-menier-chocolate-factory/"
           },
           {
             "outletId": "uktw.co.uk",
@@ -148533,13 +148917,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/"
-          },
-          {
-            "outletId": "times-uk",
-            "outlet": "times-uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p"
           },
           {
             "outletId": "lighting-and-sound-america",
@@ -148564,8 +148941,8 @@
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
-            "url": "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
-            "outletId": "allthatdazzles.co.uk",
+            "url": "https://www.thereviewshub.com/tru-menier-chocolate-factory-london/",
+            "outletId": "thereviewshub.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
@@ -148576,14 +148953,20 @@
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
+            "url": "https://www.britishtheatreguide.info/reviews/tru-menier-chocolat-26049",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T21:21:30.952Z"
+          },
+          {
             "url": "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
             "outletId": "theguardian.com",
             "state": "live",
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
-            "url": "https://www.thereviewshub.com/tru-menier-chocolate-factory-london/",
-            "outletId": "thereviewshub.com",
+            "url": "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
+            "outletId": "southlondon.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
@@ -148594,16 +148977,10 @@
             "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
-            "url": "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
-            "outletId": "southlondon.co.uk",
+            "url": "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
+            "outletId": "allthatdazzles.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://www.timeout.com/london/theatre/tru-review",
-            "outletId": "timeout.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
             "url": "https://theatreweekly.com/review-tru-at-menier-chocolate-factory/",
@@ -148618,10 +148995,10 @@
             "firstSeenAt": "2026-09-29T21:21:30.952Z"
           },
           {
-            "url": "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
-            "outletId": "westendbestfriend.co.uk",
+            "url": "https://www.timeout.com/london/theatre/tru-review",
+            "outletId": "timeout.com",
             "state": "live",
-            "firstSeenAt": "2026-09-29T09:20:33.796Z"
+            "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
             "url": "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
@@ -148630,26 +149007,26 @@
             "firstSeenAt": "2026-09-29T09:20:33.796Z"
           },
           {
+            "url": "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/",
+            "outletId": "telegraph.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-28T16:16:03.674Z"
+          },
+          {
             "url": "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
             "outletId": "thestage.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-28T07:54:42.859Z"
           },
           {
-            "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
-            "outletId": "stagedtheatre.co.uk",
+            "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
+            "outletId": "thetimes.com",
             "state": "live",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+            "firstSeenAt": "2026-09-28T14:10:59.050Z"
           },
           {
             "url": "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2",
             "outletId": "ft.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-28T16:16:03.674Z"
-          },
-          {
-            "url": "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/",
-            "outletId": "telegraph.co.uk",
             "state": "live",
             "firstSeenAt": "2026-09-28T16:16:03.674Z"
           },
@@ -148661,11 +149038,11 @@
             "firstSeenAt": "2026-09-26T23:29:00.474Z"
           },
           {
-            "url": "https://www.britishtheatreguide.info/reviews/tru-menier-chocolat-26049",
-            "outletId": "british-theatre",
+            "url": "https://lovelondonloveculture.com/2026/09/29/review-round-up-tru-menier-chocolate-factory/",
+            "outletId": "lovelondonloveculture",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
+            "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
             "url": "https://www.uktw.co.uk/London/Menier-Chocolate-Factory/Play/Tru/L1015970351/",
@@ -148673,13 +149050,6 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
-            "outletId": "times-uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-28T14:10:59.050Z"
           },
           {
             "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=GZKHRD",
@@ -148691,14 +149061,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 17,
-        "candidateCount": 22
+        "candidateCount": 21
       },
-      "computedAt": "2026-09-29T21:21:30.952Z",
-      "quarantine": {
-        "nextState": "incomplete:5:8",
-        "since": "2026-09-30T01:06:00.103Z",
-        "lastAt": "2026-09-30T01:06:00.103Z"
-      }
+      "computedAt": "2026-09-30T07:43:36.484Z"
     },
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
