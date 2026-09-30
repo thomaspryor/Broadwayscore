@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-09-30T18:29:23.107Z",
+  "generatedAt": "2026-09-30T19:51:53.875Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -138,25 +138,25 @@
       "status": "open",
       "slug": "the-standard-of-living-west-end",
       "thumbnail": "/images/shows/the-standard-of-living-west-end-2026/thumbnail.webp",
-      "siteScore": 68.09,
+      "siteScore": 67.59,
       "liveScore": 68,
-      "scoreDrift": -0.09000000000000341,
+      "scoreDrift": 0.4099999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 14,
+      "total": 15,
       "t1": 5,
-      "t2": 3,
+      "t2": 4,
       "t3": 6,
       "positive": 7,
-      "mixed": 6,
+      "mixed": 7,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "hi-conf:3/6"
+          "hi-conf:4/6"
         ],
-        "highConfidence": 3,
+        "highConfidence": 4,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -336,6 +336,18 @@
           "m": 6,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-30T19:51:53.875Z",
+          "rc": 15,
+          "s": 67.59,
+          "t1": 5,
+          "t2": 4,
+          "t3": 6,
+          "p": 7,
+          "m": 7,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -349,9 +361,9 @@
       "status": "open",
       "slug": "degenerates-off-broadway",
       "thumbnail": "/images/shows/degenerates-off-broadway-2026/thumbnail.webp",
-      "siteScore": 74.37,
+      "siteScore": 74.41,
       "liveScore": 74,
-      "scoreDrift": -0.37000000000000455,
+      "scoreDrift": -0.4099999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -783,6 +795,18 @@
           "m": 4,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-09-30T19:51:53.875Z",
+          "rc": 14,
+          "s": 74.41,
+          "t1": 2,
+          "t2": 8,
+          "t3": 4,
+          "p": 9,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -882,6 +906,10 @@
         {
           "name": "Observer",
           "isDualMarket": true
+        },
+        {
+          "name": "Playbill",
+          "isDualMarket": false
         },
         {
           "name": "The Daily Beast",
@@ -2111,9 +2139,9 @@
       "status": "open",
       "slug": "tru-off-west-end",
       "thumbnail": "/images/shows/tru-off-west-end-2026/thumbnail.png",
-      "siteScore": 71.15,
+      "siteScore": 71.46,
       "liveScore": 71,
-      "scoreDrift": -0.15000000000000568,
+      "scoreDrift": -0.45999999999999375,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2352,6 +2380,18 @@
           "t": "2026-09-30T02:31:32.406Z",
           "rc": 18,
           "s": 71.15,
+          "t1": 7,
+          "t2": 5,
+          "t3": 6,
+          "p": 12,
+          "m": 4,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-09-30T19:51:53.875Z",
+          "rc": 18,
+          "s": 71.46,
           "t1": 7,
           "t2": 5,
           "t3": 6,
