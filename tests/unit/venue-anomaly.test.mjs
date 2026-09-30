@@ -86,3 +86,28 @@ test('checkVenueAnomaly: median 0 (baseline all zeros) skips alarm', () => {
   assert.equal(r.status, 'ok');
   assert.notEqual(process.exitCode, 1);
 });
+
+// BRO-4396: small venues and rotted feeds.
+test('checkVenueAnomaly: a 1 → 3 jump is a season announcement, not a leak', () => {
+  clearCounts();
+  process.exitCode = 0;
+  seedHistory('TestVenueF', {
+    '2026-05-03': 1, '2026-05-04': 1, '2026-05-05': 1,
+    '2026-05-06': 1, '2026-05-07': 1, '2026-05-08': 1, '2026-05-09': 1,
+  });
+  const r = checkVenueAnomaly('TestVenueF', 3, { dateOverride: '2026-05-10' });
+  assert.equal(r.status, 'ok');
+  assert.notEqual(process.exitCode, 1);
+});
+
+test('checkVenueAnomaly: a reader that drops to 0 is flagged as rotted, without failing the run', () => {
+  clearCounts();
+  process.exitCode = 0;
+  seedHistory('TestVenueG', {
+    '2026-05-03': 4, '2026-05-04': 4, '2026-05-05': 4,
+    '2026-05-06': 4, '2026-05-07': 4, '2026-05-08': 4, '2026-05-09': 4,
+  });
+  const r = checkVenueAnomaly('TestVenueG', 0, { dateOverride: '2026-05-10' });
+  assert.equal(r.status, 'dropped');
+  assert.notEqual(process.exitCode, 1);
+});

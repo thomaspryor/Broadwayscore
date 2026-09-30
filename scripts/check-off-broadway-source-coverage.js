@@ -23,6 +23,14 @@
  * New gaps are logged through sendAlert (log-only at 'warning'; the daily
  * digest carries it).
  *
+ * BRO-4396: also reports per-venue listings-reader coverage — every venue on
+ * an Off-Broadway show, whether OB_VENUE_CONFIGS (or another reader) reads
+ * it, and the ACTIVE ones (a show in the last 12 months) that have none —
+ * into the same state file under `venueReaders`, and alerts the first time
+ * an active venue with 2+ recent shows has no reader and no recorded reason
+ * (scripts/lib/ob-venue-reader-coverage.js). Runs before the TheaterMania
+ * fetch, so a blind feed does not hide it.
+ *
  * Usage: node scripts/check-off-broadway-source-coverage.js [--dry-run]
  *          [--fixture=<json>] [--today=YYYY-MM-DD] [--audit-dir=<dir>] [--shows=<path>]
  */
@@ -80,6 +88,8 @@ async function main(argv = process.argv.slice(2)) {
   const outPath = path.join(auditDir, 'off-broadway-source-coverage-gaps.json');
   const statePath = path.join(auditDir, 'off-broadway-source-coverage-state.json');
   const nowIso = new Date().toISOString();
+
+  await reportVenueReaderCoverage({ fs, showsPath, statePath, auditDir, todayIso, nowIso, dryRun });
 
   let feed;
   try {
@@ -154,6 +164,52 @@ async function main(argv = process.argv.slice(2)) {
     });
   }
   return 0;
+}
+
+// venue-write-guard-ok: reportVenueReaderCoverage writes venue strings to an
+// audit state file (report rows), never to shows.json.
+/**
+ * BRO-4396 per-venue reader coverage. Never throws: a failure here logs and
+ * leaves the TheaterMania guard to run.
+ */
+async function reportVenueReaderCoverage({ fs, showsPath, statePath, auditDir, todayIso, nowIso, dryRun }) {
+  try {
+    const { computeVenueReaderCoverage, diffUncovered, alertableUncovered } = require('./lib/ob-venue-reader-coverage');
+    const { OB_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
+    const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
+    const cov = computeVenueReaderCoverage({ shows, configs: OB_VENUE_CONFIGS, todayIso });
+    const alertable = alertableUncovered(cov.uncovered);
+    console.log(`Venue reader coverage: ${OB_VENUE_CONFIGS.length} readers; ${cov.activeCovered}/${cov.active} active OB venue spellings covered; ${cov.uncovered.length} active house(s) without a reader, ${alertable.length} alertable (2+ recent shows, no recorded reason).`);
+    for (const u of cov.uncovered.filter(x => x.recentShows >= 2)) {
+      console.log(`  no reader: ${u.spellings.join(' / ')} (${u.recentShows} recent)${u.noReaderReason ? ` — ${u.noReaderReason}` : ' — ALERT'}`);
+    }
+    if (dryRun) return;
+    const prev = readJsonOr(fs, statePath, {});
+    const { ledger, fresh } = diffUncovered((prev.venueReaders && prev.venueReaders.uncovered) || {}, alertable, nowIso);
+    const next = {
+      ...prev,
+      venueReaders: {
+        at: nowIso,
+        readers: OB_VENUE_CONFIGS.length,
+        active: cov.active,
+        activeCovered: cov.activeCovered,
+        uncovered: ledger,
+        explained: cov.uncovered.filter(u => u.noReaderReason && u.recentShows >= 2).map(u => ({ venue: u.venue, recentShows: u.recentShows, reason: u.noReaderReason })),
+      },
+    };
+    fs.mkdirSync(auditDir, { recursive: true });
+    fs.writeFileSync(statePath, JSON.stringify(next, null, 2) + '\n');
+    if (fresh.length > 0) {
+      const { sendAlert } = require('./lib/discord-notify');
+      await sendAlert({
+        severity: 'warning',
+        title: `Off-Broadway venue coverage: ${fresh.length} active venue(s) with no listings reader`,
+        description: fresh.map(u => `**${u.spellings.join(' / ')}**: ${u.recentShows} show(s) in the last 12 months (latest ${u.lastShow || 'n/a'}), and no reader in scripts/lib/venue-listing-discover.js OB_VENUE_CONFIGS. Add one (a platform reader if the venue sells through OvationTix/Spektrix/NYTG) or record why in NO_READER_REASONS.`).join('\n\n').slice(0, 3500),
+      });
+    }
+  } catch (e) {
+    console.warn(`::warning::venue reader coverage failed (${e.message}); TheaterMania guard continues`);
+  }
 }
 
 if (require.main === module) {
