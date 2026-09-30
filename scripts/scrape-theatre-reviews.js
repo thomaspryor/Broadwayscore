@@ -34,6 +34,7 @@ const { normalizeOutlet } = require('./lib/review-normalization');
 const { resolveArchiveRowOutletId } = require('./lib/archive-outlet-identity');
 const { isLondonMarket } = require('./lib/venue-classification');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
+const { aggregatorStarsPatch } = require('./lib/paywall-stub-score');
 
 const ARCHIVE_DIR = path.join(__dirname, '..', 'data', 'aggregator-archive', 'theatre-reviews');
 const REVIEW_TEXTS_DIR = path.join(__dirname, '..', 'data', 'review-texts');
@@ -160,20 +161,34 @@ function extractReviews(html, showId) {
   const paragraphs = content.length ? content.find('p') : $('p');
 
   let currentStars = 0;
+  // BRO-4431: a "0 stars –" tier lists critics who published NO rating (the
+  // Mail's Patrick Marmion "vetoed" stars on Cleansed). Before, the header
+  // didn't match, so those rows inherited the previous tier's stars.
+  let seenTier = false;
 
   paragraphs.each((_, el) => {
     const $p = $(el);
-    const text = $p.text().trim();
+    let text = $p.text().trim();
     if (!text) return;
 
     // --- Detect star-tier header ---
     // Patterns: "4 stars ⭑⭑⭑⭑" or "Three stars ⭑⭑⭑" (digit or word, with or without <span>)
-    const WORD_TO_NUM = { one: 1, two: 2, three: 3, four: 4, five: 5 };
-    const tierMatch = text.match(/^(\d|one|two|three|four|five)\s*stars?\s*[⭑★]+$/i);
+    const WORD_TO_NUM = { zero: 0, one: 1, two: 2, three: 3, four: 4, five: 5 };
+    const tierMatch = text.match(/^(\d|zero|one|two|three|four|five)\s*stars?\s*(?:[⭑★]+|[–—-]|)$/i);
     if (tierMatch) {
       const raw = tierMatch[1].toLowerCase();
-      currentStars = WORD_TO_NUM[raw] || parseInt(raw, 10);
+      currentStars = raw in WORD_TO_NUM ? WORD_TO_NUM[raw] : parseInt(raw, 10);
+      seenTier = true;
       return;
+    }
+
+    // "(1 star assumed) The i's Fiona Mountford ..." — TR GUESSED the rating;
+    // keep the row (it is a real review) but not the guessed stars.
+    let assumed = false;
+    const assumedMatch = text.match(/^\(\s*\d\s*stars?\s+assumed\s*\)\s*/i);
+    if (assumedMatch) {
+      assumed = true;
+      text = text.slice(assumedMatch[0].length);
     }
 
     // --- Detect "Critics' Average Rating" footer — stop processing ---
@@ -190,7 +205,7 @@ function extractReviews(html, showId) {
     }
 
     // Skip if we haven't seen a star header yet
-    if (currentStars === 0) return;
+    if (!seenTier) return;
 
     // Skip editorial boilerplate
     if (text.match(/^\[Links to full reviews/i)) return;
@@ -198,7 +213,7 @@ function extractReviews(html, showId) {
     if (text.match(/can be seen at/i) && text.length < 200) return;
 
     // --- Try to extract a review from this paragraph ---
-    const review = parseReviewParagraph($, $p, text, currentStars);
+    const review = parseReviewParagraph($, $p, text, assumed || currentStars === 0 ? null : currentStars);
     if (review) {
       reviews.push(review);
     }
@@ -241,7 +256,13 @@ function parseReviewParagraph($, $p, text, stars) {
 
   // Try Pattern A: <Outlet>'s <Critic>
   // Note: theatre.reviews uses U+2018 (left single quote) for possessives
-  const patternA = text.match(/^(?:<[^>]+>)?([A-Z][\w\s&.'-]+?)['\u2018\u2019]s\s+([A-Z][a-z]+(?:\s[A-Z][a-z]+(?:-[A-Z][a-z]+)?)+)/);
+  // BRO-4431: also "The Times’ Clive Davis" / "The Financial Times’ Sarah
+  // Hemming" (plural possessive, no trailing s) and "The i’s Fiona Mountford"
+  // (lower-case outlet). Those rows were dropped, and they are exactly the
+  // paywalled T1/T2 reviews TR lists without a link.
+  const POSSESSIVE = "(?:['\\u2018\\u2019]s|(?<=s)['\\u2018\\u2019])\\s+";
+  const CRITIC = "([A-Z][a-z]+(?:\\s[A-Z][a-z]+(?:-[A-Z][a-z]+)?)+)";
+  const patternA = text.match(new RegExp("^(?:<[^>]+>)?((?:The\\s+i)|[A-Z][\\w\\s&.'-]+?)" + POSSESSIVE + CRITIC));
   if (patternA) {
     if (!outlet) outlet = patternA[1].trim();
     critic = patternA[2].trim();
@@ -258,7 +279,7 @@ function parseReviewParagraph($, $p, text, stars) {
 
   // Try Pattern C: "The Outlet's CriticName" where outlet has no link
   if (!critic && !outlet) {
-    const patternC = text.match(/^(?:The\s+)?([A-Z][\w\s&.'-]+?)['\u2018\u2019]s\s+([A-Z][a-z]+(?:\s[A-Z][a-z]+(?:-[A-Z][a-z]+)?)+)/);
+    const patternC = text.match(new RegExp("^(?:The\\s+)?([A-Z][\\w\\s&.'-]+?)" + POSSESSIVE + CRITIC));
     if (patternC) {
       outlet = patternC[1].trim();
       critic = patternC[2].trim();
@@ -286,7 +307,7 @@ function parseReviewParagraph($, $p, text, stars) {
     outlet,
     outletId: normalizeOutlet(outlet),
     critic: critic || 'Unknown',
-    stars,
+    stars: stars || null,
     starsOutOf: 5,
     excerpt,
     url: reviewUrl,
@@ -309,6 +330,15 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
     // originalScore. TR rates shows independently; attributing TR's rating to
     // the listed outlet causes wrong scores (e.g. TR gives 3/5, outlet gave 5/5).
     if (review.stars) fields.theatreReviewsStars = `${review.stars}/${review.starsOutOf}`;
+    // BRO-4431 exception: a paywalled tier-1/2 star outlet (Times, FT, i,
+    // Mail...) with no readable body would otherwise stay an unscored stub
+    // forever. There, and only there, TR's tier IS the score we can see
+    // (304/332 agreement with outlets' own ratings) — relay it as
+    // aggregatorStars, which the scorer trusts for known star outlets.
+    // Applied to the file as written (new) or merged into (existing), never
+    // via `fields`, whose blank-fill merge would also reach files that have a
+    // scorable body.
+    const relay = { stars: review.stars, starsOutOf: review.starsOutOf, source: 'theatre-reviews' };
 
     const result = createOrMergeReviewFile(showId, {
       outlet: review.outlet,
@@ -326,8 +356,20 @@ function writeReviewFiles(reviews, showId, reviewTextsDir = REVIEW_TEXTS_DIR) {
         if (review.critic && review.critic !== 'Unknown' && (!existing.criticName || existing.criticName === 'Unknown')) {
           existing.criticName = review.critic;
         }
+        const mergePatch = aggregatorStarsPatch(existing, relay);
+        if (mergePatch) Object.assign(existing, mergePatch);
       },
     });
+
+    if (result.action === 'new' && result.filepath && !DRY_RUN) {
+      try {
+        const written = JSON.parse(fs.readFileSync(result.filepath, 'utf8'));
+        const patch = aggregatorStarsPatch(written, relay);
+        if (patch) require('./lib/review-write-guard').safeWriteReview(result.filepath, { ...written, ...patch });
+      } catch (e) {
+        console.warn(`  ⚠ aggregatorStars relay failed for ${result.filepath}: ${e.message}`);
+      }
+    }
 
     if (result.action === 'new') created++;
     else if (result.action === 'updated') updated++;

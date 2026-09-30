@@ -13,6 +13,7 @@ const fs = require('fs');
 const path = require('path');
 const { canonicalizeUrlForDedup, explainExclusion } = require('./review-guards');
 const { unscoredSkipReason } = require('./scoring-queue-counts');
+const { isQueuedRetryStub } = require('./submission-retry-stub');
 
 function findSubmissionFile(showDir, submittedUrl) {
   const want = canonicalizeUrlForDedup(submittedUrl);
@@ -43,6 +44,13 @@ function checkSubmissionLanded({ showId, url, reviews, reviewTextsDir, show }) {
   const fileUrl = canonicalizeUrlForDedup(file.data.url);
   const inReviews = !!fileUrl && reviews.some((r) => r.showId === showId && canonicalizeUrlForDedup(r.url) === fileUrl);
   if (inReviews) return { landed: true, reason: null, file: file.path };
+  // BRO-4431: a page we couldn't read yet was saved as a stub that the
+  // collector, the T1/T2 gap audit and the aggregator star relay keep
+  // retrying. Same wait-then-escalate path as an unscored review (the sweep
+  // closes it once live, escalates after AWAITING_SCORE_MAX_HOURS).
+  if (isQueuedRetryStub(file.data)) {
+    return { landed: false, pendingScore: true, reason: 'page could not be read yet; queued for automatic retry', file: file.path };
+  }
   const why = explainExclusion(file.data, show, file.path);
   if (why) return { landed: false, reason: why, file: file.path };
   // BRO-4141: an unscored review is left out of the rebuild and goes live when

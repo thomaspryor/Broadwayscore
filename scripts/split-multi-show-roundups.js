@@ -40,7 +40,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { splitMultiShowArticle, loadShows } = require('./lib/multi-show-splitter');
+const { loadShows } = require('./lib/multi-show-splitter');
+const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { listShowDirs: listShowDirsSafe } = require('./lib/list-show-dirs');
 
 // ============================================================================
@@ -72,7 +73,6 @@ function main() {
     process.exit(2);
   }
 
-  const showIdSet = new Set(shows.map(s => s.id));
   const showDirs = listShowDirs();
   if (onlyShow) {
     if (!showDirs.includes(onlyShow)) {
@@ -123,64 +123,22 @@ function main() {
         continue;
       }
 
-      const text = data.fullText;
-      if (!text || text.length < 800) continue;
-
-      const sections = splitMultiShowArticle(text, shows);
-      if (sections.length < 2) continue;
-
-      // Filter to sections whose showId is in shows.json (sanity).
-      const validSections = sections.filter(s => showIdSet.has(s.showId));
-      if (validSections.length < 2) continue;
+      // BRO-4431: one implementation shared with collect-review-texts.js and
+      // ingest-review-from-url.js (caption + intro strategies, child-stub fill).
+      const fan = applyMultiShowFanoutToFile(filePath, { shows, reviewTextsDir: REVIEW_TEXTS_DIR, dryRun: !APPLY });
+      if (!fan.applied) continue;
 
       stats.splittable++;
-      console.log(`\n[${showId}/${file}] ${validSections.length} sections detected`);
-      for (const sec of validSections) {
-        console.log(`  - ${sec.showId} (${sec.showTitle}) ${sec.anchorKind} chars=${sec.sectionText.length}`);
-      }
-
-      const ownSection = validSections.find(s => s.showId === showId);
-      const otherSections = validSections.filter(s => s.showId !== showId);
-
-      // 1. Rewrite parent file's fullText to its own section (if found).
-      if (ownSection) {
-        const updated = rewriteParent(data, ownSection, otherSections.map(s => s.showId));
-        if (APPLY) {
-          fs.writeFileSync(filePath, JSON.stringify(updated, null, 2) + '\n');
-        }
-        stats.parentsRewritten++;
-        console.log(`  ✓ parent rewrite: fullText ${text.length}→${ownSection.sectionText.length} chars, ${data.wrongShow ? 'wrongShow cleared, ' : ''}children=${otherSections.length}`);
-      } else {
-        // No section for the file's own showId — the file is misattributed.
-        // Still mark processed and keep wrongShow=true; the existing rejection
-        // is correct.
-        if (APPLY) {
-          data.multiShowSplitProcessed = new Date().toISOString();
-          data.multiShowSplitNote = 'no section for own showId — split skipped, file remains misattributed';
-          fs.writeFileSync(filePath, JSON.stringify(data, null, 2) + '\n');
-        }
-        console.log(`  ⚠ no section for own showId (${showId}) — parent left as-is; only siblings will be created`);
-      }
-
-      // 2. Create child files for other shows.
-      for (const sec of otherSections) {
-        const childDir = path.join(REVIEW_TEXTS_DIR, sec.showId);
-        const childPath = path.join(childDir, file);
-
-        // Don't overwrite an existing review for that show by the same critic.
-        if (fs.existsSync(childPath)) {
+      stats.parentsRewritten++;
+      console.log(`\n[${showId}/${file}] multi-show (${fan.strategy}): parent trimmed to own section`);
+      for (const c of fan.children) {
+        if (c.action === 'skip') {
           stats.childrenSkippedExist++;
-          console.log(`  ✗ child exists, skip: ${sec.showId}/${file}`);
-          continue;
+          console.log(`  ✗ child exists, skip: ${c.showId}/${file}`);
+        } else {
+          stats.childrenCreated++;
+          console.log(`  ✓ child ${c.action === 'fill' ? 'filled' : 'created'}: ${c.showId}/${file} (${c.chars} chars)`);
         }
-
-        const child = buildChild(data, sec, showId);
-        if (APPLY) {
-          fs.mkdirSync(childDir, { recursive: true });
-          fs.writeFileSync(childPath, JSON.stringify(child, null, 2) + '\n');
-        }
-        stats.childrenCreated++;
-        console.log(`  ✓ child created: ${sec.showId}/${file} (${sec.sectionText.length} chars)`);
       }
     }
   }
@@ -207,85 +165,6 @@ function main() {
 
 function listShowDirs() {
   return listShowDirsSafe(REVIEW_TEXTS_DIR).filter(d => !d.startsWith('_')); // _pending etc.
-}
-
-function rewriteParent(data, ownSection, childShowIds) {
-  const out = { ...data };
-  out.fullText = ownSection.sectionText;
-  out.wordCount = ownSection.sectionText.split(/\s+/).filter(Boolean).length;
-  out.textWordCount = out.wordCount;
-  out.multiShowSplitProcessed = new Date().toISOString();
-  out.multiShowSplitParent = true;
-  out.multiShowSplitChildShowIds = childShowIds;
-  out.multiShowSplitAnchorKind = ownSection.anchorKind;
-  out.multiShowSplitOriginalLength = (data.fullText || '').length;
-
-  // Clear wrongShow if it was set for being a multi-show roundup — the file's
-  // text is now just its own show's section. Preserve any manual review state.
-  if (out.wrongShow === true && !out.wrongShowManualClear && !out.wrongShowOverride) {
-    delete out.wrongShow;
-    delete out.wrongShowReason;
-    delete out.rejectedAt;
-    delete out.rejectedBy;
-    delete out.rejectionReason;
-    delete out.rejectionReasoning;
-    out.wrongShowClearedBy = 'multi-show-splitter';
-    out.wrongShowClearedAt = new Date().toISOString();
-  }
-
-  // The file is now SINGLE-show after trimming — clear isMultiShowReview so
-  // the LLM-scoring trim/skip path doesn't re-trim already-trimmed text.
-  if (out.isMultiShowReview === true) {
-    delete out.isMultiShowReview;
-    delete out.multiShowReason;
-    out.multiShowReviewClearedBy = 'multi-show-splitter';
-  }
-
-  // contentTier was likely 'invalid' from a wrongShow rejection — the trimmed
-  // text is a valid single-show section now. Reset to 'complete' so rebuild
-  // includes it. Only override invalid-with-wrong-show-reason — preserve
-  // genuine 'truncated'/'stub'/manual-quality verdicts.
-  if (out.contentTier === 'invalid' && /wrong\s*show|multi[\s-]?show/i.test(out.contentTierReason || '')) {
-    out.contentTier = 'complete';
-    out.contentTierReason = 'multi-show-split: trimmed to own show section';
-  }
-
-  // Always re-score after a split — the trimmed text is materially different
-  // from whatever was scored before (or unscored).
-  out.needsRescore = true;
-  out.needsRescoreReason = 'multi-show-split: text trimmed to own section';
-  // Clear any stale ensemble/llm scores derived from the un-trimmed text.
-  delete out.ensembleData;
-  delete out.llmScore;
-
-  return out;
-}
-
-function buildChild(parentData, section, parentShowId) {
-  const child = {
-    showId: section.showId,
-    outletId: parentData.outletId,
-    outlet: parentData.outlet,
-    criticName: parentData.criticName,
-    url: parentData.url,
-    publishDate: parentData.publishDate,
-    fullText: section.sectionText,
-    source: 'multi-show-split',
-    contentTier: 'complete',
-    contentTierReason: `Split from multi-show roundup originally filed under ${parentShowId}`,
-    wordCount: section.sectionText.split(/\s+/).filter(Boolean).length,
-    isFullReview: true,
-    textStatus: 'complete',
-    textQuality: 'full',
-    multiShowSplitChild: true,
-    multiShowSplitParentShowId: parentShowId,
-    multiShowSplitAnchorKind: section.anchorKind,
-    multiShowSplitProcessed: new Date().toISOString(),
-    needsRescore: true,
-    needsRescoreReason: 'multi-show-split: new child file, awaiting scoring',
-  };
-  child.textWordCount = child.wordCount;
-  return child;
 }
 
 main();
