@@ -1,5 +1,21 @@
 [
   {
+    "startedAt": "2026-09-29T07:37:28.594Z",
+    "completedAt": "2026-09-29T07:37:37.899Z",
+    "totalReviews": 45069,
+    "processed": 0,
+    "skipped": 45067,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 11975,
+      "output": 382,
+      "total": 29208
+    },
+    "costUsd": 0.06696859999999999,
+    "runId": "36535031940",
+    "errorDetails": []
+  },
+  {
     "startedAt": "2026-09-29T07:37:39.829Z",
     "completedAt": "2026-09-29T07:44:16.001Z",
     "totalReviews": 177,
@@ -218910,24 +218926,8 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-09-30T14:49:45.217Z",
-    "completedAt": "2026-09-30T14:49:53.549Z",
-    "totalReviews": 20,
-    "processed": 1,
-    "skipped": 18,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 13422,
-      "output": 478,
-      "total": 31706
-    },
-    "costUsd": 0.0472999,
-    "runId": "36731433359",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-30T14:49:55.414Z",
-    "completedAt": "2026-09-30T14:49:55.417Z",
+    "startedAt": "2026-09-30T14:51:59.305Z",
+    "completedAt": "2026-09-30T14:51:59.321Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -218938,50 +218938,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "36731433359",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-09-30T14:43:15.625Z",
-    "completedAt": "2026-09-30T14:44:58.764Z",
-    "totalReviews": 45763,
-    "processed": 9,
-    "skipped": 45736,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 130107,
-      "output": 5024,
-      "total": 338207
-    },
-    "costUsd": 0.5327395500000001,
-    "runId": "36730819651",
-    "errorDetails": [
-      {
-        "showId": "the-secret-circus-musical-off-broadway-2026",
-        "outletId": "flopbox",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "burning-leaves-off-broadway-2026",
-        "outletId": "theater-scene",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-09-30T14:45:00.751Z",
-    "completedAt": "2026-09-30T14:50:54.240Z",
-    "totalReviews": 154,
-    "processed": 154,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 405573,
-      "output": 36891,
-      "total": 442464
-    },
-    "costUsd": 1.1345448999999999,
-    "runId": "36730819651",
+    "runId": "36731798858",
     "errorDetails": []
   }
 ]
