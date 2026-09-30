@@ -340,6 +340,36 @@ function introSections(text, shows, ownShowId, publishDate) {
   }));
 }
 
+// "How Shakespeare Saved My Life is at the Public Theater through October 25."
+const RUN_LISTING_RE = /[^.!?\n]{0,160}\bis (?:at|playing at|running at|now at|in performance at)\b[^.!?\n]{0,160}\.?/gi;
+
+/**
+ * True when a caption section names another section's show. Photo captions
+ * mark where a picture sits, not where one review ends: an essay that moves
+ * between two shows (Vulture's How Shakespeare Saved My Life / Arias With a
+ * Twist, BRO-4431) has both captions inside running text, and cutting at
+ * them filed half of each review under the other show. The intro strategy
+ * has the same rule. Closing run listings ("X is at ... through ...") are
+ * ignored.
+ */
+function captionSectionsCrossTalk(sections, shows) {
+  const byId = new Map(shows.map((sh) => [sh.id, sh]));
+  const matchers = new Map();
+  for (const sec of sections) {
+    const show = byId.get(sec.showId);
+    const m = show && buildShowMatcher(show);
+    if (m) matchers.set(sec.showId, m);
+  }
+  for (const sec of sections) {
+    const body = String(sec.sectionText || '').replace(RUN_LISTING_RE, ' ');
+    for (const [id, m] of matchers) {
+      if (id === sec.showId) continue;
+      if (countMatches(m.any, body) > 0) return true;
+    }
+  }
+  return false;
+}
+
 /**
  * Plan the fan-out for one review file's data. Pure (shows passed in).
  * Returns null when the text is not a multi-show article, else
@@ -367,6 +397,7 @@ function planMultiShowFanout(data, shows, opts = {}) {
 
   let strategy = 'caption';
   let sections = splitMultiShowArticle(text, shows).filter((s) => showIds.has(s.showId));
+  if (sections.length >= 2 && captionSectionsCrossTalk(sections, shows)) sections = [];
   if (sections.length < 2 || !sections.some((s) => s.showId === ownShowId)) {
     strategy = 'intro';
     sections = introSections(text, shows, ownShowId, data.publishDate);
@@ -500,7 +531,12 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   try { data = JSON.parse(fs.readFileSync(filePath, 'utf8')); } catch { return result; }
   const ownShowId = data.showId || path.basename(path.dirname(filePath));
   const plan = planMultiShowFanout(data, shows, { ownShowId });
-  if (!plan) return result;
+  if (!plan) {
+    if (!dryRun && isWholeArticleBackOnBadSplit(data)) {
+      result.unsplit = unsplitArticle(filePath, data, reviewTextsDir, ownShowId);
+    }
+    return result;
+  }
   result.applied = true;
   result.strategy = plan.strategy;
   const now = new Date().toISOString();
@@ -544,8 +580,77 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   return result;
 }
 
+/**
+ * A split parent whose fullText is the whole article again (a re-ingest put
+ * it back) but whose article no longer plans as a split: the earlier split
+ * was wrong (BRO-4431 Vulture caption split).
+ */
+function isWholeArticleBackOnBadSplit(data) {
+  return !!(data && data.multiShowSplitParent === true && typeof data.fullText === 'string'
+    && Number.isFinite(data.multiShowSplitTextLength)
+    && data.fullText.length > data.multiShowSplitTextLength + 200);
+}
+
+const SPLIT_FIELDS = [
+  'multiShowSplitProcessed', 'multiShowSplitParent', 'multiShowSplitChild',
+  'multiShowSplitChildShowIds', 'multiShowSplitParentShowId', 'multiShowSplitAnchorKind',
+  'multiShowSplitOriginalLength', 'multiShowSplitTextLength',
+];
+
+/**
+ * Undo a wrong split: the parent keeps the whole article it now holds, and a
+ * child this split created (still flagged as its child) gets the whole
+ * article too, since its section was cut at the same wrong point. Both are
+ * re-scored. Children that hold anything else are left alone.
+ */
+function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
+  const { safeWriteReview } = require('./review-write-guard');
+  const now = new Date().toISOString();
+  const allShows = [ownShowId, ...(data.multiShowSplitChildShowIds || [])];
+  const strip = (rec) => {
+    const out = { ...rec };
+    for (const k of SPLIT_FIELDS) delete out[k];
+    out.multiShowUnsplitAt = now;
+    // The established joint-review marker (flag-combined-reviews.js): every
+    // cross-show URL check treats the copies as one article.
+    out.isCombinedReview = true;
+    out.combinedWith = allShows.filter((id) => id !== out.showId);
+    out.needsRescore = true;
+    out.needsRescoreReason = 'multi-show-split undone: article is one essay about both shows';
+    delete out.ensembleData;
+    delete out.llmScore;
+    return out;
+  };
+  const children = [];
+  for (const childShowId of data.multiShowSplitChildShowIds || []) {
+    const childPath = path.join(reviewTextsDir, childShowId, path.basename(filePath));
+    let child;
+    try { child = JSON.parse(fs.readFileSync(childPath, 'utf8')); } catch { continue; }
+    const { multiShowSplitGroup } = require('./multi-show-split-group');
+    const sameArticle = !!data.url && child.url
+      && multiShowSplitGroup({ ...child, multiShowSplitChild: true }) === multiShowSplitGroup(data);
+    if (child.multiShowSplitChild !== true || child.multiShowSplitParentShowId !== ownShowId) {
+      // Already holds the whole article unsplit (re-ingested under its show):
+      // mark it joint too, text unchanged.
+      if (sameArticle && child.isCombinedReview !== true && child.wrongProduction !== true && !child.duplicateOf) {
+        safeWriteReview(childPath, { ...child, isCombinedReview: true, combinedWith: allShows.filter((id) => id !== child.showId) }, { merge: false, force: true });
+        children.push(childShowId);
+      }
+      continue;
+    }
+    const next = strip(child);
+    next.fullText = data.fullText;
+    safeWriteReview(childPath, next, { merge: false, force: true });
+    children.push(childShowId);
+  }
+  safeWriteReview(filePath, strip(data), { merge: false, force: true });
+  return { children };
+}
+
 module.exports = {
   planMultiShowFanout,
+  captionSectionsCrossTalk,
+  isWholeArticleBackOnBadSplit,
   applyMultiShowFanoutToFile,
   introSections,
   rewriteParent,

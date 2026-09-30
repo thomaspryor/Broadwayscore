@@ -120,7 +120,7 @@ test('separator capsules: the second capsule may name its show once', () => {
   assert.doesNotMatch(plan.ownSection.sectionText, /—{3,}/);
 });
 
-test('caption strategy (Vulture double review) still delegates to multi-show-splitter', () => {
+test('caption strategy (clean captioned halves) still delegates to multi-show-splitter', () => {
   const shows = [
     { id: 'how-shakespeare-saved-my-life-off-broadway-2026', title: 'How Shakespeare Saved My Life', category: 'off-broadway', openingDate: '2026-09-27' },
     { id: 'arias-with-a-twist-off-broadway-2026', title: 'Arias with a Twist', category: 'off-broadway', openingDate: '2026-09-23' },
@@ -580,4 +580,67 @@ test('a record classified "not a review" gives up its slot to the real review ur
   assert.equal(landed.publishDate, '2026-09-17');
   assert.notEqual(landed.isNonReview, true);
   assert.notEqual(landed.wrongProduction, true);
+});
+
+// ── Captions inside one essay about both shows (Vulture, BRO-4431) ──
+
+const VULTURE_SHOWS = [
+  { id: 'how-shakespeare-saved-my-life-off-broadway-2026', title: 'How Shakespeare Saved My Life', category: 'off-broadway', openingDate: '2026-09-27' },
+  { id: 'arias-with-a-twist-off-broadway-2026', title: 'Arias with a Twist', category: 'off-broadway', openingDate: '2026-09-23' },
+];
+const ESSAY = `Joey Arias in Arias With a Twist, at the HERE Arts Center.\n Photo: Someone\n How do you tell a life story onstage? Two shows this month, How Shakespeare Saved My Life and Arias With a Twist, try it. ${filler('memory', 8)}\n\n`
+  + `Jacob Ming-Trent in How Shakespeare Saved My Life, at the Public Theater.\n Photo: Someone\n ${filler('solo show', 10)} It is an irony that Arias With a Twist flips inside out. ${filler('cabaret', 10)}\n\n`
+  + 'How Shakespeare Saved My Life is at the Public Theater through October 25. Arias With a Twist is at HERE Arts Center through November 1.';
+
+test('captions inside one essay about both shows do not split it', () => {
+  const plan = planMultiShowFanout(base({ showId: 'how-shakespeare-saved-my-life-off-broadway-2026', publishDate: '2026-09-28', fullText: ESSAY }), VULTURE_SHOWS);
+  assert.equal(plan, null);
+  const { captionSectionsCrossTalk } = require('./multi-show-review-fanout.js');
+  // Closing run listings alone are not cross-talk.
+  const clean = [
+    { showId: VULTURE_SHOWS[0].id, sectionText: `${filler('solo show', 6)} How Shakespeare Saved My Life is at the Public Theater through October 25.` },
+    { showId: VULTURE_SHOWS[1].id, sectionText: `${filler('cabaret', 6)} Arias With a Twist is at HERE Arts Center through November 1. How Shakespeare Saved My Life is at the Public Theater through October 25.` },
+  ];
+  assert.equal(captionSectionsCrossTalk(clean, VULTURE_SHOWS), false);
+});
+
+test('a wrong split is undone when the whole article comes back (re-ingest)', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-unsplit-'));
+  const [hs, arias] = VULTURE_SHOWS.map((s) => s.id);
+  const url = 'https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html';
+  const hsSection = ESSAY.slice(ESSAY.indexOf('Jacob Ming-Trent'));
+  const common = { outletId: 'vulture', outlet: 'Vulture', criticName: 'Sara Holdren', url, publishDate: '2026-09-28', contentTier: 'complete' };
+  fs.mkdirSync(path.join(dir, hs));
+  fs.mkdirSync(path.join(dir, arias));
+  const parentPath = path.join(dir, hs, 'vulture--sara-holdren.json');
+  const childPath = path.join(dir, arias, 'vulture--sara-holdren.json');
+  fs.writeFileSync(parentPath, JSON.stringify({ ...common, showId: hs, fullText: hsSection, assignedScore: 45,
+    multiShowSplitProcessed: '2026-09-30T00:00:00Z', multiShowSplitParent: true, multiShowSplitChildShowIds: [arias],
+    multiShowSplitAnchorKind: 'caption', multiShowSplitTextLength: hsSection.length }, null, 2));
+  fs.writeFileSync(childPath, JSON.stringify({ ...common, showId: arias, fullText: ESSAY.slice(0, ESSAY.indexOf('Jacob Ming-Trent')),
+    multiShowSplitChild: true, multiShowSplitParentShowId: hs, multiShowSplitProcessed: '2026-09-30T00:00:00Z' }, null, 2));
+
+  // The re-ingest: an explicit ingest may put the whole article back on a
+  // split parent (same lede), which a scraper merge never does.
+  const { isSameArticleBodyUpgrade } = require('./stale-merge-check.js');
+  const parentBefore = JSON.parse(fs.readFileSync(parentPath, 'utf8'));
+  assert.equal(isSameArticleBodyUpgrade(parentBefore, ESSAY), true);
+  assert.equal(isSameArticleBodyUpgrade(parentBefore, filler('other', 40)), false);
+  fs.writeFileSync(parentPath, JSON.stringify({ ...parentBefore, fullText: ESSAY }, null, 2));
+
+  const res = applyMultiShowFanoutToFile(parentPath, { shows: VULTURE_SHOWS, reviewTextsDir: dir });
+  assert.equal(res.applied, false);
+  assert.deepEqual(res.unsplit.children, [arias]);
+  for (const [p, other] of [[parentPath, arias], [childPath, hs]]) {
+    const d = JSON.parse(fs.readFileSync(p, 'utf8'));
+    assert.equal(d.fullText, ESSAY, p);
+    assert.equal(d.multiShowSplitParent, undefined);
+    assert.equal(d.multiShowSplitChild, undefined);
+    assert.equal(d.isCombinedReview, true);
+    assert.deepEqual(d.combinedWith, [other]);
+    assert.equal(d.needsRescore, true);
+  }
+  // A correctly split parent is untouched by the undo path.
+  const { isWholeArticleBackOnBadSplit } = require('./multi-show-review-fanout.js');
+  assert.equal(isWholeArticleBackOnBadSplit({ ...parentBefore }), false);
 });
