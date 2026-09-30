@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-29T13:29:09.718Z",
-  "bannerText": "43/56 Done(14d) verified on main · 2 FAILED · 2 vacuous · 109 stuck-but-done",
+  "generatedAt": "2026-09-30T13:11:10.887Z",
+  "bannerText": "82/102 Done(14d) verified on main · 2 FAILED · 0 vacuous · 36 stuck-but-done — PARTIAL RUN: 135 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
       "title": "FAILED BRO-4272 — Opening night: roundup-listed reviews not auto-ingested (Culture Sauce, Guardian, Chicago Tribune added by hand)",
@@ -13,35 +13,35 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4216/cloud-sessions-land-private-data-fixes-through-ci-declarative-data"
     },
     {
-      "title": "STUCK BRO-4231 — P1: llm-ensemble-score.yml + ~21 other workflows check out full history without filter: blob:none — ensemble-score alone burns ~24 min x ~55 runs/day on checkout",
+      "title": "STUCK BRO-205 — P1: 6 scraper callers treat conflict skips as benign — the silent-veto class beyond the gap audit",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4231/p1-llm-ensemble-scoreyml-21-other-workflows-check-out-full-history"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-205/p1-6-scraper-callers-treat-conflict-skips-as-benign-the-silent-veto"
     },
     {
-      "title": "STUCK BRO-4183 — Auto cookie renewal for paywalled outlets (The Stage first): Mac Studio launchd + Keychain + persistent profile",
+      "title": "STUCK BRO-199 — Newsletter closing lede announced a future final performance as present-tense news",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4183/auto-cookie-renewal-for-paywalled-outlets-the-stage-first-mac-studio"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-199/newsletter-closing-lede-announced-a-future-final-performance-as"
     },
     {
-      "title": "STUCK BRO-4155 — P2: extraction returns ~100 chars for stagebuddy, interestedbystander, theatreweekly reviews",
+      "title": "STUCK BRO-187 — Review-coverage systemic fixes: junk census candidates, extraction rot, babysitter remediation loop (Pass/Disruption/Vessel)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4155/p2-extraction-returns-100-chars-for-stagebuddy-interestedbystander"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-187/review-coverage-systemic-fixes-junk-census-candidates-extraction-rot"
     },
     {
-      "title": "STUCK BRO-4153 — P2: timeout.com domain collision — London Time Out reviews resolve to NYC \"timeout\" outlet",
+      "title": "STUCK BRO-178 — Image fetch: run cleanup on the throw path (try/finally in processOneShow)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4153/p2-timeoutcom-domain-collision-london-time-out-reviews-resolve-to-nyc"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-178/image-fetch-run-cleanup-on-the-throw-path-tryfinally-in-processoneshow"
     },
     {
-      "title": "STUCK BRO-4152 — P1: Theatre Record still drops recoverable Daily Mail reviews (single-word titles, title-match misses, stub-text merges)",
+      "title": "STUCK BRO-177 — Broadway edition has the same subject/card-order mismatch class fixed for WE: broadwayOpenings renders shows.json order",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4152/p1-theatre-record-still-drops-recoverable-daily-mail-reviews-single"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-177/broadway-edition-has-the-same-subjectcard-order-mismatch-class-fixed"
     },
     {
-      "title": "STUCK BRO-4140 — P1: sending a message to a tab by bare number silently hits the wrong tab (crown handoff misdelivered)",
+      "title": "STUCK BRO-176 — Exclusion-reason census: nothing consumes explainExclusion's rule names — attribute corpus drift to a rule",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4140/p1-sending-a-message-to-a-tab-by-bare-number-silently-hits-the-wrong"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-176/exclusion-reason-census-nothing-consumes-explainexclusions-rule-names"
     }
   ],
-  "moreCount": 105
+  "moreCount": 30
 }
