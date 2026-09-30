@@ -108,6 +108,24 @@ test('cleanListingTitle strips London season tags', () => {
   assert.equal(cleanListingTitle('Cinderella (2026)'), 'Cinderella');
   assert.equal(cleanListingTitle('2026: The Master Builder'), 'The Master Builder');
   assert.equal(cleanListingTitle('Class of 2026'), 'Class of 2026');
+  // BRO-4433: Wilton's month-and-year booking tags.
+  assert.equal(cleanListingTitle('Romeo and Juliet - Oct26'), 'Romeo and Juliet');
+  assert.equal(cleanListingTitle('The Law of Mayhem Apr27'), 'The Law of Mayhem');
+  assert.equal(cleanListingTitle('Wolf Country Jan 27'), 'Wolf Country');
+  assert.equal(cleanListingTitle('Catch-22'), 'Catch-22');
+  assert.equal(cleanListingTitle('Blink 182'), 'Blink 182');
+});
+
+test('parseTicketsolveShows: local performance days, run blocks, cancelled and excluded categories skipped', () => {
+  const { parseTicketsolveShows } = require('../../scripts/lib/ob-listing-platforms.js');
+  const ev = (iso, status = 'available') => `<event><name><![CDATA[x]]></name><date_time_iso format="ISO 8601" zone="GMT">${iso}</date_time_iso><status>${status}</status></event>`;
+  const show = (name, cat, evs) => `<show id="1"><name><![CDATA[${name}]]></name><event_category><![CDATA[${cat}]]></event_category><url>https://x.ticketsolve.com/shows/1</url><events>${evs.join('')}</events></show>`;
+  const xml = `<venues><venue><name><![CDATA[V]]></name><shows>${[
+    show('Late Night', 'Drama', [ev('2026-10-01T23:30:00+01:00'), ev('2026-10-02T23:30:00+01:00'), ev('2026-10-03T19:30:00+01:00', 'cancelled')]),
+    show('Showcase Night', 'Showcase', [ev('2026-10-01T19:30:00+01:00'), ev('2026-10-02T19:30:00+01:00')]),
+  ].join('')}</shows></venue></venues>`;
+  const rows = parseTicketsolveShows(xml, { todayIso: TODAY, excludeCategory: /showcase/i });
+  assert.deepEqual(rows.map(r => [r.title, r.firstDate, r.lastDate, r.performanceCount]), [['Late Night', '2026-10-01', '2026-10-02', 2]]);
 });
 
 // ── the dated-listing promotion rule ───────────────────────────────────────

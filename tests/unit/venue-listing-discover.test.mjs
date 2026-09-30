@@ -195,6 +195,10 @@ const EXPECTED_OWE = {
   'Troubadour Wembley Park Theatre': { min: 1, max: 3, mustInclude: ['high-school-musical'], mustExclude: ['hunger-games'] },
   'Hampstead Theatre': { min: 3, max: 8, mustInclude: ['kimberly-akimbo', 'the-urmetazoan', 'jumpers'] },
   'Finborough Theatre': { min: 2, max: 8, mustInclude: ['what-the-animals-say', 'the-moth'], mustExclude: ['walking-tours', 'voices-from-ukraine', 'remember-your-lovers'] },
+  // BRO-4433 readers.
+  'Rose Theatre Kingston': { min: 2, max: 6, mustInclude: ['jane-eyre', 'frankenstein', 'three-men-in-a-boat'], mustExclude: ['play-in-a-week', 'test', 'tribute', 'dinosaur', 'secure-my-booking', 'touch-tour'] },
+  "Wilton's Music Hall": { min: 10, max: 30, mustInclude: ['the-little-match-girl', 'not-the-benny-hill-show', 'romeo-and-juliet', 'wolf-country'], mustExclude: ['live-score', 'guided-tours', 'the-marriage-of-figaro', 'oct26', 'apr27', 'jan-27', 'cally-beaton'] },
+  'Waterloo East Theatre': { min: 1, max: 5, mustInclude: ['jerker', 'a-train-to-woking'], mustExclude: ['standby-please'] },
 };
 
 test('OWE_VENUE_CONFIGS: every reader is off-west-end and has an EXPECTED_OWE band', () => {
@@ -206,7 +210,7 @@ test('OWE_VENUE_CONFIGS: every reader is off-west-end and has an EXPECTED_OWE ba
 
 for (const venue of OWE_VENUE_CONFIGS) {
   const slug = venue.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-  const ext = DATED_JSON_STRATEGIES.has(venue.strategy) ? '.json' : '.html';
+  const ext = DATED_JSON_STRATEGIES.has(venue.strategy) ? '.json' : venue.strategy === 'ticketsolve' ? '.xml' : '.html';
   const fixturePath = join(OWE_FIXTURE_DIR, slug + ext);
   const expected = EXPECTED_OWE[venue.name] || { min: 1, max: 0, mustInclude: [] };
 

@@ -570,6 +570,14 @@ const OWE_VENUE_CONFIGS = [
   // Mostly cinema, classes and wellness: theatre only.
   { name: 'Riverside Studios', url: 'https://riversidestudios.co.uk/whats-on/', spektrixUrl: 'https://spektrix.riversidestudios.co.uk/riversidestudios/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_EventType', spektrixGenres: ['Theatre'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   { name: 'Bridge Theatre', url: 'https://bridgetheatre.co.uk/', spektrixUrl: 'https://tickets.bridgetheatre.co.uk/bridgetheatrelondon/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // Rose Theatre Kingston's account also sells workshops, tribute acts,
+  // touring family shows and offers: its own Drama web category only.
+  { name: 'Rose Theatre Kingston', url: 'https://www.rosetheatre.org/whats-on', spektrixUrl: 'https://tickets.rosetheatre.org/rosetheatrekingston/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_WebCategory', spektrixGenres: ['Drama'], strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /\btest\b/i], category: 'off-west-end' },
+  // Wilton's sells film-with-live-score nights, music hall, magic, opera
+  // and heritage tours alongside its theatre.
+  { name: "Wilton's Music Hall", url: 'https://wiltons.org.uk/whats-on/', spektrixUrl: 'https://tickets.wiltons.org.uk/wiltons/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_GenresForWebsiteFiltering', spektrixGenres: ['Theatre', 'Musical Theatre', 'New Writing', 'Family'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // ── Ticketsolve ──
+  { name: 'Waterloo East Theatre', url: 'https://www.waterlooeast.co.uk/', ticketsolveUrl: 'https://waterlooeast.ticketsolve.com/shows.xml', ticketsolveExcludeCategory: /showcase|workshop|class|course/i, strategy: 'ticketsolve', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   // ── JSON-LD ──
   // Menier: Event nodes in the homepage @graph, one per run.
   { name: 'Menier Chocolate Factory', url: 'https://www.menierchocolatefactory.com/', strategy: 'json-ld', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
@@ -606,6 +614,7 @@ const {
   fetchTribeEvents,
   fetchSpektrixEvents,
   parseSpektrixEvents,
+  parseTicketsolveShows,
   extractJsonItems,
   extractNextData,
   parseNytgVenuePages,
@@ -641,6 +650,8 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
     else if (venue.strategy === 'spektrix') rows = parseSpektrixEvents(payload, { genres: venue.spektrixGenres, genreField: venue.spektrixGenreField, exclude: venue.spektrixExclude, todayIso });
     else if (venue.strategy === 'json-api') rows = extractJsonItems(payload, venue.jsonSpec);
     else rows = parseTribeEvents(payload);
+  } else if (venue.strategy === 'ticketsolve') {
+    rows = parseTicketsolveShows(html, { todayIso, excludeCategory: venue.ticketsolveExcludeCategory });
   } else if (venue.strategy === 'nytg-venue') {
     rows = parseNytgVenuePages(html);
   } else if (venue.strategy === 'next-data') {
@@ -848,6 +859,9 @@ async function scrapeVenueListing(venue) {
   }
   if (venue.strategy === 'json-api') {
     return parseVenueListingHtml(venue, await getJson(venue.jsonUrl));
+  }
+  if (venue.strategy === 'ticketsolve') {
+    return parseVenueListingHtml(venue, await getJson(venue.ticketsolveUrl, { raw: true }));
   }
   if (venue.strategy === 'nytg-venue') {
     // One page per slug (Theatre Row's rooms each have their own), joined:

@@ -58,6 +58,10 @@ function cleanListingTitle(raw) {
   t = t.replace(/^20[2-3]\d:\s+/, '');
   // London box offices bracket it: "Cinderella (2026)" (Lyric Hammersmith).
   if (!/\b(?:of|in|since|circa|class)\s+20[2-3]\d$/i.test(t)) t = t.replace(/\s+(?:20[2-3]\d|\(20[2-3]\d\))$/, '').trim();
+  // Month-and-year booking tags: "Romeo and Juliet - Oct26", "The Law of
+  // Mayhem Apr27", "Wolf Country Jan 27" (Wilton's Music Hall's Spektrix
+  // names). Abbreviated month only, two-digit year 20-39.
+  t = t.replace(/\s+(?:-\s+)?(?:Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Sept|Oct|Nov|Dec) ?[23]\d$/, '').trim();
   return t;
 }
 
@@ -470,6 +474,48 @@ function parseSpektrixEvents(payload, opts = {}) {
 }
 
 // ---------------------------------------------------------------------------
+// Ticketsolve (BRO-4433): https://<client>.ticketsolve.com/shows.xml lists
+// every on-sale show with one <event> per performance.
+// ---------------------------------------------------------------------------
+
+const cdataText = (s) => String(s == null ? '' : s).replace(/<!\[CDATA\[([\s\S]*?)\]\]>/g, '$1').trim();
+
+/**
+ * Ticketsolve shows.xml → dated rows. Performance days are taken as written
+ * (the venue's local date, never converted to New York), counted per run
+ * block like parseSpektrixEvents; a show whose <event_category> matches
+ * opts.excludeCategory (showcases, classes) is skipped.
+ * @param {string} xml
+ * @param {{todayIso?: string, excludeCategory?: RegExp}} [opts]
+ */
+function parseTicketsolveShows(xml, opts = {}) {
+  if (typeof xml !== 'string' || !xml.includes('<show')) return [];
+  const todayIso = opts.todayIso || new Date().toISOString().slice(0, 10);
+  const rows = [];
+  for (const m of xml.matchAll(/<show\b[^>]*>([\s\S]*?)<\/show>/g)) {
+    const body = m[1];
+    const eventsAt = body.indexOf('<events');
+    const head = eventsAt >= 0 ? body.slice(0, eventsAt) : body;
+    const name = cdataText((head.match(/<name\b[^>]*>([\s\S]*?)<\/name>/) || [])[1]);
+    const category = cdataText((head.match(/<event_category\b[^>]*>([\s\S]*?)<\/event_category>/) || [])[1]);
+    if (!name || (opts.excludeCategory && opts.excludeCategory.test(category))) continue;
+    const days = [];
+    for (const e of body.matchAll(/<event\b[^>]*>([\s\S]*?)<\/event>/g)) {
+      const status = cdataText((e[1].match(/<status\b[^>]*>([\s\S]*?)<\/status>/) || [])[1]).toLowerCase();
+      if (status === 'cancelled' || status === 'canceled') continue;
+      const when = cdataText((e[1].match(/<date_time_iso\b[^>]*>([\s\S]*?)<\/date_time_iso>/) || [])[1]);
+      if (/^\d{4}-\d{2}-\d{2}/.test(when)) days.push(when.slice(0, 10));
+    }
+    const blocks = runBlocks(days);
+    const block = blocks.find(bl => bl.last >= todayIso) || blocks[blocks.length - 1];
+    if (!block) continue;
+    const url = cdataText((head.match(/<url\b[^>]*>([\s\S]*?)<\/url>/) || [])[1]) || null;
+    rows.push({ title: cleanListingTitle(name), firstDate: block.first, lastDate: block.last, performanceCount: block.count, url });
+  }
+  return mergeByTitle(rows.filter(r => r.title));
+}
+
+// ---------------------------------------------------------------------------
 // Generic JSON path reader (WordPress REST, PatronTicket, Next.js page data)
 // ---------------------------------------------------------------------------
 
@@ -576,12 +622,12 @@ function parseNytgVenuePages(htmls) {
 // Fetch helpers (network; exercised by the dry-run, not unit-tested)
 // ---------------------------------------------------------------------------
 
-function getJson(url, { headers = {}, timeoutMs = 30000 } = {}) {
+function getJson(url, { headers = {}, timeoutMs = 30000, raw = false } = {}) {
   return new Promise((resolve, reject) => {
-    const req = https.get(url, { headers: { 'User-Agent': USER_AGENT, Accept: 'application/json', ...headers }, timeout: timeoutMs }, (res) => {
+    const req = https.get(url, { headers: { 'User-Agent': USER_AGENT, Accept: raw ? '*/*' : 'application/json', ...headers }, timeout: timeoutMs }, (res) => {
       if (res.statusCode >= 300 && res.statusCode < 400 && res.headers.location) {
         res.resume();
-        resolve(getJson(new URL(res.headers.location, url).toString(), { headers, timeoutMs }));
+        resolve(getJson(new URL(res.headers.location, url).toString(), { headers, timeoutMs, raw }));
         return;
       }
       if (res.statusCode !== 200) { res.resume(); reject(new Error(`HTTP ${res.statusCode} for ${url}`)); return; }
@@ -589,6 +635,7 @@ function getJson(url, { headers = {}, timeoutMs = 30000 } = {}) {
       res.setEncoding('utf8');
       res.on('data', c => { body += c; });
       res.on('end', () => {
+        if (raw) { resolve(body); return; }
         try { resolve(JSON.parse(body)); } catch { reject(new Error(`non-JSON response from ${url}`)); }
       });
     });
@@ -675,6 +722,7 @@ function htmlToDocument(html) {
 
 module.exports = {
   parseSpektrixEvents,
+  parseTicketsolveShows,
   runBlocks,
   valuesAtPath,
   extractJsonItems,
