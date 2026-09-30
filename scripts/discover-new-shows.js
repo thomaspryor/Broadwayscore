@@ -145,6 +145,7 @@ const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-n
 const {
   OB_VENUE_CONFIGS,
   scrapeVenueListing,
+  settledWithConcurrency,
   writeStagingCandidates,
 } = require('./lib/venue-listing-discover');
 const {
@@ -2278,9 +2279,11 @@ async function discoverShows() {
     // a venue-page redesign from accidentally firing premature broadcasts
     // to real subscribers (see /plan-review v2 P0 User Impact finding).
     try {
-      const results = await Promise.allSettled(
-        OB_VENUE_CONFIGS.map(v => scrapeVenueListing(v))
-      );
+      // 6 readers at a time; the OvationTix orgs share one lane (one caller
+      // on that API at a time: back-to-back calls drew 403s).
+      const results = await settledWithConcurrency(OB_VENUE_CONFIGS, 6, v => scrapeVenueListing(v), {
+        laneOf: v => (v.strategy === 'ovationtix' ? 'ovationtix' : null),
+      });
       const all = [];
       for (let i = 0; i < results.length; i++) {
         const v = OB_VENUE_CONFIGS[i];
@@ -2295,7 +2298,10 @@ async function discoverShows() {
           }
           // Per-venue rolling-median anomaly gate. Fail-soft (warns + sets
           // exitCode but discovery continues for other venues).
-          checkVenueAnomaly(v.name, r.value.length);
+          // anomalyKey: a venue whose reader changed (BRO-4396: SoHo Playhouse
+          // moved to OvationTix, ~15 → ~32 rows) starts a fresh baseline
+          // instead of tripping the 2x-median gate for a week.
+          checkVenueAnomaly(v.anomalyKey || v.name, r.value.length);
           console.log(`  ${v.name}: ${r.value.length} candidates → staging`);
           all.push(...r.value);
         } else {

@@ -323,6 +323,9 @@ function writeLastPromotionFile(promoted, rejected = [], file = LAST_PROMOTION_F
 }
 
 function logEntry(entry) {
+  // A --dry-run must not append to the tracked promotion log (BRO-4396: every
+  // dry run left data/audit/*promotion-log.jsonl modified in the checkout).
+  if (process.argv.includes('--dry-run')) return;
   try {
     fs.mkdirSync(path.dirname(PROMOTION_LOG), { recursive: true });
     fs.appendFileSync(PROMOTION_LOG, JSON.stringify({ timestamp: new Date().toISOString(), ...entry }) + '\n');
