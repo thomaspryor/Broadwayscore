@@ -115,7 +115,7 @@ function isSameReview(a, b) {
   const bothLong = ta.length >= LONG_TEXT_CHARS && tb.length >= LONG_TEXT_CHARS;
   const sim = bothLong ? jaccard(wordSet(a.fullText), wordSet(b.fullText)) : null;
   if (sim !== null && sim >= SIMILAR_TEXT_JACCARD) return { same: true, reason: `text-similar (${sim.toFixed(2)})` };
-  if (!bothLong && ta && tb && (contains(ta, tb) || contains(tb, ta))) return { same: true, reason: 'short text contained in other' };
+  if (!bothLong && Math.min(ta.length, tb.length) >= 60 && (contains(ta, tb) || contains(tb, ta))) return { same: true, reason: 'short text contained in other' };
   const ua = canonUrl(a.url);
   const ub = canonUrl(b.url);
   if (ua && ua === ub && (sim === null || sim >= 0.35)) return { same: true, reason: 'same canonical url' };
@@ -279,7 +279,7 @@ function isSameArticle(a, b) {
 /** Web-search record with an unfetchable/mismatched URL: an unverified guess. */
 function isUnverifiableGuess(d) {
   return Boolean(d && WEAK_SOURCES.has(d.source) && normText(d.fullText).length < 1000
-    && (d.fetchDiscoveryAbandoned || UNVERIFIABLE_REASONS.has(d.incompleteReason))
+    && (UNVERIFIABLE_REASONS.has(d.incompleteReason) || (d.fetchDiscoveryAbandoned && normText(d.fullText).length < 400))
     && !(d.sources || []).some((s) => !WEAK_SOURCES.has(s)));
 }
 
@@ -367,8 +367,10 @@ function phantomOfSibling(file, incoming, siblings) {
     if (s.file === file || isFileExcluded(s.data)) continue;
     if (((s.data && s.data.outletId) || s.file.split('--')[0]) !== outlet) continue;
     if (sameCritic(incoming, s.data)) continue; // same byline = the same file's rewrite, not a phantom
-    const c = classifyPair({ file, data: incoming }, s);
-    if (c.cls === 'same-review' || (c.cls === 'phantom' && c.phantom === file)) return s.file;
+    // Not classifyPair: with no shared excerpt its weak/junk branches would
+    // refuse a genuine short second critic. Only provable phantoms are refused.
+    if (isSameArticle(incoming, s.data).same) return s.file;
+    if (isUnverifiableGuess(incoming) && isAttestedFull(s.data)) return s.file;
   }
   return null;
 }
