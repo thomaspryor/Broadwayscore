@@ -82,8 +82,10 @@ function extractTheStageArticleMeta(html) {
 /**
  * The article's own star rating: the first StarRating block after the h1 and
  * before the article's byline. Related-review cards further down carry their
- * own StarRating blocks (15 of them on the Thelma & Louise page), so a block
- * past the byline, or a page with no byline after the h1, yields null.
+ * own StarRating blocks and bylines (15 of them on the Thelma & Louise page),
+ * so the byline must also come before the article's own standfirst: an
+ * article with no byline would otherwise reach into the first related card.
+ * Any of the three missing, or out of order, yields null.
  * Without this a walled review saved date/critic/quote but no score, and a
  * stub with no score never reaches the site (BRO-4428: Thelma & Louise,
  * The Standard of Living, Choir Boy and ~8 more 2026 Stage reviews).
@@ -91,7 +93,8 @@ function extractTheStageArticleMeta(html) {
 function _articleStars(html, h1Index) {
   const after = html.slice(h1Index);
   const byline = after.search(/class="[^"]*aos-ArticleAuthor/i);
-  if (byline < 0) return null;
+  const teaser = after.search(/class="[^"]*aos-(?:DS32-Teaser|Article-IntroText)/i);
+  if (byline < 0 || teaser < 0 || byline > teaser) return null;
   const block = after.slice(0, byline).match(/StarRating[^"]*">((?:<img[^>]*>\s*){1,5})/);
   if (!block) return null;
   const filled = (block[1].match(/stageStar\.svg/g) || []).length;
@@ -215,7 +218,8 @@ function applyWalledPageMeta(data, html, opts = {}) {
   const { normalizeDate } = require('./date-utils');
   const reviewDate = meta.publishDate || normalizeDate(data.publishDate);
   const inWindow = !!opts.show && !!reviewDate && isReviewWithinOwnProductionWindow(opts.show, reviewDate);
-  if (meta.stars && inWindow && !data.originalScore && data.originalScoreNormalized == null
+  const excluded = data.wrongShow === true || data.wrongProduction === true || !!data.duplicateOf;
+  if (meta.stars && inWindow && !excluded && !data.originalScore && data.originalScoreNormalized == null
     && !data.originalScoreManual && data.originalScoreCleared !== true) {
     const { starsToNumeric } = require('./score-extractors');
     data.originalScore = `${meta.stars}/5 stars`;

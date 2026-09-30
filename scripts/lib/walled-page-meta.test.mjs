@@ -213,6 +213,43 @@ test('window uses the page date first, and parses ordinal stored dates', () => {
   assert.ok(!applyWalledPageMeta(oldOrdinal, noDate, { show: DARKLING_RUN }).includes('originalScore'));
 });
 
+test('no article byline: a related card\'s byline and stars are never used', () => {
+  const html = `<h1 class="aos-ArticleTitle">Darkling review</h1>
+<div class="aos-DS32-Teaser aos-FL100">Evocative coming-of-age monologue set against the Bhopal disaster</div>
+<div id="ao-MeteringDNAllow"><h2>Register to read</h2></div>
+<div class="related"><div class="aos-StarRating aos-FL"><img src="/19stageStar.svg" /><img src="/19stageStar.svg" /><img src="/19stageNoStar.svg" /><img src="/19stageNoStar.svg" /><img src="/19stageNoStar.svg" /></div>
+<a class="aos-ArticleAuthor aos-NM" title="Neil Norman" href="/n">by&nbsp;Neil Norman</a></div>`;
+  assert.equal(extractTheStageArticleMeta(html).stars, null);
+});
+
+test('flagged files never get a salvaged score', () => {
+  const url = 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london';
+  for (const flag of [{ wrongShow: true }, { wrongProduction: true }, { duplicateOf: 'thestage--x.json' }]) {
+    const d = { url, criticName: 'Unknown', ...flag };
+    assert.ok(!applyWalledPageMeta(d, WALLED, { show: DARKLING_RUN }).includes('originalScore'), JSON.stringify(flag));
+  }
+});
+
+test('salvageWalledPageMetaToFile writes the salvaged score through to the file', async () => {
+  const fs = require('fs');
+  const os = require('os');
+  const path = require('path');
+  const { salvageWalledPageMetaToFile } = require('./walled-page-meta.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'walled-'));
+  const fp = path.join(dir, 'thestage--unknown.json');
+  fs.writeFileSync(fp, JSON.stringify({
+    showId: 'darkling-off-west-end-2026', outletId: 'thestage', outlet: 'The Stage', criticName: 'Unknown',
+    url: 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london',
+  }));
+  const set = salvageWalledPageMetaToFile(fp, WALLED, { showTitle: 'Darkling', show: DARKLING_RUN });
+  assert.ok(set.includes('originalScore'));
+  // Naming the critic renames the file (safeWriteReview), so read whatever is there now.
+  const written = JSON.parse(fs.readFileSync(path.join(dir, fs.readdirSync(dir)[0]), 'utf8'));
+  assert.equal(written.originalScore, '4/5 stars');
+  assert.equal(written.originalScoreSource, 'stage-star-svg');
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('a deliberately cleared score stays cleared (originalScoreCleared is sticky)', () => {
   const url = 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london';
   const cleared = { url, criticName: 'Unknown', originalScoreCleared: true };
