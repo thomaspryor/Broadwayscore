@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4429-d",
   "planId": "74d4b660-c813-43f8-9044-8636735f2e59",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-09-30T17:56:50.919Z",
   "submitter": {
     "name": null,
@@ -207,5 +207,128 @@
         "description": "Lock the clear so the non-review passes skip this file"
       }
     ]
-  }
+  },
+  "executedAt": "2026-09-30T18:42:14.905Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/broadwayworld--michael-dale.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "all-my-sons-2019/broadwayworld--michael-dale.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-the-jellicle-ball-off-broadway-2024/queerty--matthew-wexler.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "cats-the-jellicle-ball-off-broadway-2024/queerty--matthew-wexler.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gigi-2015/timeout--adam-feldman.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gigi-2015/timeout--adam-feldman.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gutenberg-2023/deadline--greg-evans.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "gutenberg-2023/deadline--greg-evans.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hercules-west-end-2025/thestage--sam-marlowe.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hercules-west-end-2025/thestage--sam-marlowe.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "giant-public-theater-off-broadway-2012/wsj--terry-teachout.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "giant-public-theater-off-broadway-2012/wsj--terry-teachout.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/thestage--mark-shenton.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "network-2018/thestage--mark-shenton.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "romeo-and-juliet-2013/bloomberg--jeremy-gerard.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bands-visit-2017/stagebuddy--elyse-trevers.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-bands-visit-2017/stagebuddy--elyse-trevers.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-2017/talkinbroadway--matthew-murray.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-price-2017/talkinbroadway--matthew-murray.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "therese-raquin-2015/deadline--jeremy-gerard.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "therese-raquin-2015/deadline--jeremy-gerard.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-houses-off-broadway-2026/forward--miranda-jackel.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "three-houses-off-broadway-2026/forward--miranda-jackel.json nonReviewManualClear: null -> true"
+    }
+  ]
 }
