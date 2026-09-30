@@ -1,104 +1,59 @@
 {
-  "generatedAt": "2026-09-30T07:44:03.116Z",
+  "generatedAt": "2026-09-30T14:36:41.145Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 178,
-  "clean": 172,
-  "defective": 6,
+  "clean": 175,
+  "defective": 3,
   "byType": {
-    "score-drift": 6
+    "unreachable": 3
   },
   "shows": [
     {
-      "showId": "the-standard-of-living-west-end-2026",
-      "title": "The Standard Of Living",
-      "openingDate": "2026-09-29",
+      "showId": "alice-in-wonderland-off-broadway-2026",
+      "title": "Alice in Wonderland",
+      "openingDate": "2026-09-26",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 70.35 vs local 72.83 (Δ2.48)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 8,
-      "deployedCount": 8
+      "localCount": 0,
+      "deployedCount": null
     },
     {
-      "showId": "golden-boy-off-west-end-2026",
-      "title": "Golden Boy",
-      "openingDate": "2026-09-15",
+      "showId": "spandex-off-broadway-2026",
+      "title": "Spandex",
+      "openingDate": "2026-09-19",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 78.96 vs local 79.06 (Δ0.1)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 31,
-      "deployedCount": 31
+      "localCount": 0,
+      "deployedCount": null
     },
     {
-      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
-      "title": "BLOODSPORT: After Helen of Troy",
-      "openingDate": "2026-09-13",
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 73.53 vs local 73.61 (Δ0.08)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28
-    },
-    {
-      "showId": "kimberly-akimbo-off-west-end-2026",
-      "title": "Kimberly Akimbo",
-      "openingDate": "2026-09-09",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 80.87 vs local 80.78 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 32,
-      "deployedCount": 32
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 79.95 vs local 79.21 (Δ0.74)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 30,
-      "deployedCount": 30
-    },
-    {
-      "showId": "hadestown-west-end-2024",
-      "title": "Hadestown",
-      "openingDate": "2024-02-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 74.62 vs local 74.71 (Δ0.09)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 23,
-      "deployedCount": 23
+      "localCount": 0,
+      "deployedCount": null
     }
   ]
 }

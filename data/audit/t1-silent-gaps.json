@@ -1,8 +1,28 @@
 {
-  "generatedAt": "2026-09-30T07:43:44.318Z",
+  "generatedAt": "2026-09-30T14:36:19.168Z",
   "windowDays": 45,
   "showsScanned": 97,
   "gaps": [
+    {
+      "showId": "school-girls-or-the-african-mean-girls-play-2026",
+      "title": "School Girls; Or, The African Mean Girls Play",
+      "openingDate": "2026-09-28",
+      "file": "new-york-sun--unknown.json",
+      "outletId": "new-york-sun",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.nysun.com/article/stellar-cast-makes-school-girls-a-class-act",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=school-girls-or-the-african-mean-girls-play-2026 --url=https://www.nysun.com/article/stellar-cast-makes-school-girls-a-class-act --outlet=new-york-sun   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-30T12:21:33.530Z",
+      "fileAgeHours": 2.24549,
+      "gapSeenAt": "2026-09-30T14:36:19.168Z",
+      "nonTerminalAgeHours": 0
+    },
     {
       "showId": "school-girls-or-the-african-mean-girls-play-2026",
       "title": "School Girls; Or, The African Mean Girls Play",
@@ -17,9 +37,89 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=school-girls-or-the-african-mean-girls-play-2026",
       "firstSeen": "2026-09-29T06:59:42.774Z",
-      "fileAgeHours": 24.731993055555556,
+      "fileAgeHours": 31.609625,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 6.618977222222222
+      "nonTerminalAgeHours": 13.495324444444444
+    },
+    {
+      "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
+      "title": "Thelma & Louise: A New Musical",
+      "openingDate": "2026-09-16",
+      "file": "thestage--the-stage.json",
+      "outletId": "thestage",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.thestage.co.uk/reviews/thelma-and-louise-review-young-vic-london-rachel-tucker-amy-lennox",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=thelma-and-louise-a-new-musical-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/thelma-and-louise-review-young-vic-london-rachel-tucker-amy-lennox --outlet=thestage --critic=\"The Stage\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-30T10:56:35.240Z",
+      "fileAgeHours": 3.6617297222222223,
+      "gapSeenAt": "2026-09-30T14:36:19.168Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
+      "title": "My Son’s A Queer (But What Can You Do?)",
+      "openingDate": "2026-09-17",
+      "file": "whatsonstage--whatsonstage-reviewer.json",
+      "outletId": "whatsonstage",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://www.whatsonstage.com/news/my-sons-a-queer-but-what-can-you-do-at-the-ambassadors-theatre-review_58267/",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=my-sons-a-queer-but-what-can-you-do-west-end-2026 --url=https://www.whatsonstage.com/news/my-sons-a-queer-but-what-can-you-do-at-the-ambassadors-theatre-review_58267/ --outlet=whatsonstage --critic=\"WhatsOnStage Reviewer\"   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": null,
+      "fileAgeHours": null,
+      "gapSeenAt": "2026-09-30T14:36:19.168Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "cosi-fan-tutte-off-broadway-2026",
+      "title": "Così fan tutte",
+      "openingDate": "2026-09-23",
+      "file": "independent--unknown.json",
+      "outletId": "independent",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA_ck9qgVrJI837gwjrGU-vybX08Xoxs_Izf5RcaUmrP6KmbEkfQBtTwbcb9qyJm_DJXgLH4VC81mSAUDwaOPvU",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=cosi-fan-tutte-off-broadway-2026 --url=/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA_ck9qgVrJI837gwjrGU-vybX08Xoxs_Izf5RcaUmrP6KmbEkfQBtTwbcb9qyJm_DJXgLH4VC81mSAUDwaOPvU --outlet=independent   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-30T11:13:40.183Z",
+      "fileAgeHours": 3.3771158333333333,
+      "gapSeenAt": "2026-09-30T14:36:19.168Z",
+      "nonTerminalAgeHours": 0
+    },
+    {
+      "showId": "midnight-off-broadway-2026",
+      "title": "Midnight",
+      "openingDate": "2026-09-27",
+      "file": "playbill--unknown.json",
+      "outletId": "playbill",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://playbill.com/article/todrick-hall-musical-midnight-cancels-1st-week-of-previews-off-broadway",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=midnight-off-broadway-2026 --url=https://playbill.com/article/todrick-hall-musical-midnight-cancels-1st-week-of-previews-off-broadway --outlet=playbill   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-30T11:22:09.104Z",
+      "fileAgeHours": 3.2358069444444446,
+      "gapSeenAt": "2026-09-30T14:36:19.168Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "tru-off-west-end-2026",
@@ -35,9 +135,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=tru-off-west-end-2026",
       "firstSeen": "2026-09-27T08:56:02.196Z",
-      "fileAgeHours": 70.79349638888888,
+      "fileAgeHours": 77.67113416666666,
       "gapSeenAt": "2026-09-29T02:37:21.498Z",
-      "nonTerminalAgeHours": 29.10633888888889
+      "nonTerminalAgeHours": 35.982686111111114
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -49,16 +149,15 @@
       "type": "empty-body",
       "url": "/goto?url=CAESogEB6zswFV2lmVVdCz_FAnxpbkdT0laEhC-CQ-GYdueUSFpNnHAyl6jiFCYcnDmLoQT_XeFwvUMH1G-niwO9E0lWrESc5UKmT2Rw_qzEnWYLffLMtIYgqnIGQCJbIfba-nQTex_bfvPhSqr30ptZ5SVbHKYHN3y3kF2ZDXfr4aNASjO12xNdWA2agtXqIVoHxSFvP0Lvo8lupX-PHEVSnQpE7dU",
       "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data HTTP 400: {\"error\":\"Request validation failed\",\"error_code\":\"val"
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFV2lmVVdCz_FAnxpbkdT0laEhC-CQ-GYdueUSFpNnHAyl6jiFCYcnDmLoQT_XeFwvUMH1G-niwO9E0lWrESc5UKmT2Rw_qzEnWYLffLMtIYgqnIGQCJbIfba-nQTex_bfvPhSqr30ptZ5SVbHKYHN3y3kF2ZDXfr4aNASjO12xNdWA2agtXqIVoHxSFvP0Lvo8lupX-PHEVSnQpE7dU --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:34:19.900Z",
-      "fileAgeHours": 10.155711666666667,
+      "fileAgeHours": 17.032991111111112,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 6.618977222222222
+      "nonTerminalAgeHours": 13.495324444444444
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -70,16 +169,15 @@
       "type": "empty-body",
       "url": "/goto?url=CAESogEB6zswFW3fajLyWSsaMVGbF1waB9K9oVoINubxdhvdb4vtkRj7tH-PNlO_ypaz-kVXcD_mLxKacqDSKkFMezJ5D2a05lxvbHyAYGYB-_-F4hFjnmm5NEmBuKAnzJ6DibPD4crfLodTratehtKcBNzbDiPo0ntENTis3z6FPRwcthknjr39MxqgEIbsWBx9ILix0yHXVBetm4xOpTz4ye4fhNQ",
       "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "⚠️  Bright Data failed: Bright Data HTTP 400: {\"error\":\"Request validation failed\",\"error_code\":\"val"
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
       },
-      "recoveryCount": 1,
+      "recoveryCount": 2,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFW3fajLyWSsaMVGbF1waB9K9oVoINubxdhvdb4vtkRj7tH-PNlO_ypaz-kVXcD_mLxKacqDSKkFMezJ5D2a05lxvbHyAYGYB-_-F4hFjnmm5NEmBuKAnzJ6DibPD4crfLodTratehtKcBNzbDiPo0ntENTis3z6FPRwcthknjr39MxqgEIbsWBx9ILix0yHXVBetm4xOpTz4ye4fhNQ --outlet=tennessean   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:40:48.734Z",
-      "fileAgeHours": 10.048054444444444,
+      "fileAgeHours": 16.924981944444443,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 6.618977222222222
+      "nonTerminalAgeHours": 13.495324444444444
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -94,9 +192,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 88.82031222222223,
+      "fileAgeHours": 95.69724611111111,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 86.00417972222222
+      "nonTerminalAgeHours": 92.88052694444444
     },
     {
       "showId": "a-slow-fire-off-west-end-2026",
@@ -107,17 +205,33 @@
       "tier": 1,
       "type": "empty-body",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s",
-      "recovery": {
-        "attempted": true,
-        "ok": false,
-        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
-      },
-      "recoveryCount": 2,
+      "recovery": null,
+      "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=a-slow-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T11:13:07.795Z",
-      "fileAgeHours": 20.510135833333333,
+      "fileAgeHours": 27.38647611111111,
       "gapSeenAt": "2026-09-29T12:07:43.506Z",
-      "nonTerminalAgeHours": 19.600225555555557
+      "nonTerminalAgeHours": 26.47657277777778
+    },
+    {
+      "showId": "arias-with-a-twist-off-broadway-2026",
+      "title": "Arias with a Twist",
+      "openingDate": "2026-09-23",
+      "file": "exeunt-magazine--unknown.json",
+      "outletId": "exeunt-magazine",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "https://exeuntnyc.com/reviews/review-arias-with-a-twist-at-here-arts-center/",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=arias-with-a-twist-off-broadway-2026 --url=https://exeuntnyc.com/reviews/review-arias-with-a-twist-at-here-arts-center/ --outlet=exeunt-magazine   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-09-30T12:06:28.529Z",
+      "fileAgeHours": 2.4973855555555557,
+      "gapSeenAt": "2026-09-30T14:36:19.168Z",
+      "nonTerminalAgeHours": 0
     }
   ],
   "contradictions": []
