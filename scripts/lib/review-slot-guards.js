@@ -81,7 +81,11 @@ function isStaleNonReviewSlot(existing, incomingUrl) {
   // classifyReviewUrl only (it already covers round-ups): isBlockedReviewUrl
   // also blocks some REAL review shapes (playbill.com/news/article, /features/),
   // and a flagged prior-production review there must keep blocking.
-  if (_classify(existing.url).ok) return false;
+  // BRO-4431: a classifier's "not a review" verdict on the file is the same
+  // evidence when the url shape can't give it (westendbestfriend.co.uk files
+  // news and reviews alike under /news/: a National Theatre Live broadcast
+  // post held the Golden Boy review's slot, issue 913).
+  if (_classify(existing.url).ok && existing.isNonReview !== true) return false;
   const incomingVerdict = _classify(incomingUrl);
   return incomingVerdict.ok === true && !isAggregatorPageUrl(incomingUrl);
 }

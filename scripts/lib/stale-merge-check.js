@@ -66,4 +66,54 @@ function isPreExistingContentBad(preExisting) {
     || !!data.needsRefetch;
 }
 
-module.exports = { findStaleMergeFields, isPreExistingContentBad };
+function _words(text) {
+  const { foldDiacritics } = require('./title-match');
+  return foldDiacritics(String(text || '').toLowerCase()).replace(/[\u2018\u2019']/g, '')
+    .replace(/[^a-z0-9]+/g, ' ').trim().split(' ').filter(Boolean);
+}
+
+function _shingles(words, n) {
+  const out = new Set();
+  for (let i = 0; i + n <= words.length; i++) out.add(words.slice(i, i + n).join(' '));
+  return out;
+}
+
+/**
+ * BRO-4431: true when `incomingText` is a longer copy of the SAME article as
+ * the file's stored body, and that stored body is not a complete one. The
+ * writer's merge only fills blank fields, so a truncated body (a paywall cut,
+ * a 105-word e-edition fetch) was never replaced by a later fuller fetch of
+ * the same page: the Golden Boy Daily Mail submission (issue 908) failed on
+ * exactly that. Same article = at least half of the stored body's 5-word
+ * shingles appear in the incoming text, or the stored body's first 15 words
+ * do (a stub that is one lede sentence plus sign-up boilerplate), so a
+ * different page that merely shares the url never replaces it.
+ * @param {object} existing  record on disk
+ * @param {string} incomingText
+ * @returns {boolean}
+ */
+function isSameArticleBodyUpgrade(existing, incomingText) {
+  if (!existing || typeof incomingText !== 'string') return false;
+  const before = typeof existing.fullText === 'string' ? existing.fullText : '';
+  if (!before) return false; // blank bodies already fill through the merge
+  if (existing.manualContentTier || existing._locked === true) return false;
+  if (!isPreExistingContentBad({ data: existing })) return false;
+  const next = incomingText.trim();
+  if (next.length < before.length + 200 || next.length < before.length * 1.25) return false;
+  const oldWords = _words(before);
+  const newWords = _words(next);
+  // The stored stub's opening (a lede captured before a paywall/sign-up
+  // wall) found in the incoming text is the same article.
+  if (oldWords.length >= 15) {
+    const lede = oldWords.slice(0, 15).join(' ');
+    if ((' ' + newWords.join(' ') + ' ').includes(' ' + lede + ' ')) return true;
+  }
+  const oldShingles = _shingles(oldWords, 5);
+  if (oldShingles.size < 8) return false;
+  const newShingles = _shingles(newWords, 5);
+  let shared = 0;
+  for (const s of oldShingles) if (newShingles.has(s)) shared++;
+  return shared / oldShingles.size >= 0.5;
+}
+
+module.exports = { findStaleMergeFields, isPreExistingContentBad, isSameArticleBodyUpgrade };

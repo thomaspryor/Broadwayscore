@@ -510,3 +510,74 @@ test('process-review-submission retries once, then falls back to the retry stub'
   assert.match(ingest, /hasFlag\('stub-on-failure'\)/);
   assert.match(ingest, /writeRetryStubAndExit\(fetchFailure\)/);
 });
+
+// ── Stuck submissions 908 / 913 (Golden Boy) ──
+
+const GB = 'golden-boy-off-west-end-2026';
+const DM_URL = 'https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-josh-swaps-the-crown-for-swing-at-boxing';
+const DM_OPEN = 'JOSH O’Connor has an unusual conflict of interest in Clifford Odets’ 1937 drama Golden Boy: play the violin or become a prize boxer. ';
+const DM_MORE = 'Rupert Goold stages the fight scenes with a crunching physicality that makes the ring feel dangerous, and the Almeida is packed tight around it. '
+  + 'The supporting cast are sharp throughout, and the design keeps the gym smells almost tangible from the stalls, bell to bell. ';
+
+test('a longer copy of the same article replaces a truncated body on an explicit ingest (issue 908)', () => {
+  const { isSameArticleBodyUpgrade } = require('./stale-merge-check.js');
+  const stored = { fullText: DM_OPEN + DM_MORE.slice(0, 180) + '\n\nAssociated Newspapers Limited', contentTier: 'truncated' };
+  const fuller = DM_OPEN + DM_MORE.repeat(4);
+  assert.equal(isSameArticleBodyUpgrade(stored, fuller), true);
+  assert.equal(isSameArticleBodyUpgrade({ ...stored, contentTier: 'complete' }, fuller), false, 'a complete body is never swapped');
+  assert.equal(isSameArticleBodyUpgrade(stored, 'An entirely different page about ticket offers. '.repeat(30)), false, 'different article');
+  assert.equal(isSameArticleBodyUpgrade(stored, DM_OPEN + DM_MORE.slice(0, 200)), false, 'not meaningfully longer');
+  assert.equal(isSameArticleBodyUpgrade({ ...stored, manualContentTier: 'truncated' }, fuller), false, 'manual tier lock wins');
+
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-908-'));
+  fs.mkdirSync(path.join(dir, GB));
+  const file = path.join(dir, GB, 'daily-mail--patrick-marmion.json');
+  fs.writeFileSync(file, JSON.stringify({ showId: GB, outletId: 'daily-mail', outlet: 'Daily Mail', criticName: 'Patrick Marmion', url: DM_URL, publishDate: '2026-09-16', ...stored }, null, 2));
+  const input = { outletId: 'daily-mail', outlet: 'Daily Mail', criticName: 'Patrick Marmion', url: DM_URL, source: 'submit-review-form', fields: { fullText: fuller } };
+  createOrMergeReviewFile(GB, { ...input }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).fullText, stored.fullText, 'scraper merges still never overwrite a body');
+  createOrMergeReviewFile(GB, { ...input, replaceBadBody: true }, { reviewTextsDir: dir });
+  const landed = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(landed.fullText, fuller);
+  assert.equal(landed.replaceBadBody, undefined, 'the flag is not persisted');
+  const ingest = fs.readFileSync(new URL('../ingest-review-from-url.js', import.meta.url), 'utf8');
+  assert.match(ingest, /replaceBadBody: true/);
+  // The real stored shape: one lede sentence, then the sign-up wall.
+  const wall = '\n\nAssociated Newspapers Limited is a company registered in England and Wales (Company No. 084121). '
+    + 'By continuing you agree that your information will be used in line with our Privacy Policy. '.repeat(3);
+  const ledeOnly = { fullText: DM_OPEN + wall, contentTier: 'truncated' };
+  assert.equal(isSameArticleBodyUpgrade(ledeOnly, DM_OPEN + DM_MORE.repeat(5)), true, 'same lede');
+  assert.equal(isSameArticleBodyUpgrade(ledeOnly, DM_MORE.repeat(8)), false, 'lede absent');
+});
+
+test('a record classified "not a review" gives up its slot to the real review url (issue 913)', () => {
+  const { isStaleNonReviewSlot } = require('./review-slot-guards.js');
+  const news = {
+    showId: GB, outletId: 'west-end-best-friend', criticName: 'News Desk',
+    url: 'https://www.westendbestfriend.co.uk/news/almeida-theatre-golden-boy-broadcast-cinemas-national-theatre-live',
+    wrongProduction: true, isNonReview: true, contentTier: 'invalid',
+  };
+  const review = 'https://www.westendbestfriend.co.uk/news/review-golden-boy-almeida-theatre';
+  assert.equal(isStaleNonReviewSlot(news, review), true);
+  // Same /news/ url shape but only a wrongProduction verdict: a prior
+  // production's REVIEW, which must keep blocking.
+  const { isNonReview, ...prior } = news; // eslint-disable-line no-unused-vars
+  assert.equal(isStaleNonReviewSlot(prior, review), false);
+
+  // End to end through the writer: the slot moves AND keeps the new text.
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-913-'));
+  fs.mkdirSync(path.join(dir, GB));
+  const file = path.join(dir, GB, 'west-end-best-friend--unknown.json');
+  fs.writeFileSync(file, JSON.stringify({ ...news, criticName: 'Unknown', publishDate: '2026-08-13', fullText: 'National Theatre Live has announced a broadcast. '.repeat(40) }, null, 2));
+  const body = 'Josh O\u2019Connor is magnetic as Joe Bonaparte in this Golden Boy revival at the Almeida. '.repeat(25);
+  const res = createOrMergeReviewFile(GB, { outletId: 'west-end-best-friend', outlet: 'West End Best Friend', criticName: 'Unknown', url: review, source: 'submit-review-form', fields: { fullText: body, publishDate: '2026-09-17' } }, { reviewTextsDir: dir });
+  assert.equal(res.action, 'updated');
+  const landed = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(landed.url, review);
+  assert.equal(landed.fullText, body);
+  assert.equal(landed.publishDate, '2026-09-17');
+  assert.notEqual(landed.isNonReview, true);
+  assert.notEqual(landed.wrongProduction, true);
+});
