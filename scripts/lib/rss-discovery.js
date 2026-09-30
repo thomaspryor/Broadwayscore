@@ -292,16 +292,21 @@ function isRecent(pubDate, maxHoursAgo = 48) {
 }
 
 /**
- * Check if an item was published within ±windowDays of the show's opening date.
- * Uses absolute value to cover both preview-period reviews and post-opening reviews.
+ * Check if an item was published within [-windowDays, +postWindowDays] calendar days
+ * of the show's opening date (postWindowDays defaults to windowDays).
+ * Compares UTC calendar days, so time of day never pushes an item out: a review
+ * posted 09:00 UTC two days after opening counts as day +2 (BRO-4435).
  * Returns true if no openingDate or invalid pubDate (fail-open).
  */
-function isWithinOpeningWindow(pubDate, openingDate, windowDays = 2) {
+function isWithinOpeningWindow(pubDate, openingDate, windowDays = 2, postWindowDays = windowDays) {
   if (!openingDate || !pubDate || isNaN(pubDate.getTime())) return true;
   const opening = new Date(openingDate);
   if (isNaN(opening.getTime())) return true;
-  const diffDays = Math.abs((pubDate.getTime() - opening.getTime()) / (1000 * 60 * 60 * 24));
-  return diffDays <= windowDays;
+  const DAY_MS = 1000 * 60 * 60 * 24;
+  const pubDay = Math.floor(pubDate.getTime() / DAY_MS);
+  const openDay = Math.floor(opening.getTime() / DAY_MS);
+  const diffDays = pubDay - openDay;
+  return diffDays >= -windowDays && diffDays <= postWindowDays;
 }
 
 /**
@@ -351,7 +356,9 @@ async function checkRSSFeeds(showTitle, options = {}) {
           // window is now an ADDITIONAL signal, never a substitute for identity: the item's
           // title OR URL slug must mention the show. titleMatchesShow is word-boundary +
           // diacritic-folded, so short titles ("The Pass") match safely.
-          if (!isWithinOpeningWindow(item.pubDate, openingDate, 2)) continue;
+          // Up to 2 days before (previews) and 7 after: the NYT often posts
+          // Off-Broadway reviews 2-3 days after opening (Degenerates, BRO-4435).
+          if (!isWithinOpeningWindow(item.pubDate, openingDate, 2, 7)) continue;
           const slugMatch = urlSlugMatchesShow(item.link, showTitle);
           if (!titleMatchesShow(item.title, showTitle) && !slugMatch) continue;
         } else {
