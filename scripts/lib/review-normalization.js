@@ -938,8 +938,24 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
     }
   }
 
+  // BRO-4430: when the incoming record names a DIFFERENT article than the one
+  // this file now holds (its url change was refused or never applied), its
+  // byline and date describe that other article. Anansi the Spider: Show
+  // Score's 2023 Unicorn review filled "January 26th, 2023" and Anna James
+  // into the file holding the 2026 Regent's Park review, which the date
+  // guards then dropped as another production.
+  // Narrow on purpose: only a url this file was explicitly MOVED AWAY from
+  // (its last url-change breadcrumb, previousUrl or urlCorrectedFrom) proves
+  // the incoming is another article; a mere url variant must still fill.
+  const _movedAwayFrom = [existing._urlChangedClear && existing._urlChangedClear.from, existing.previousUrl, existing.urlCorrectedFrom]
+    .filter((u) => typeof u === 'string' && /^https?:\/\//i.test(u)).map(normalizeUrl);
+  const incomingIsOtherArticle = !!(incoming.url && merged.url
+    && /^https?:\/\//i.test(incoming.url) && /^https?:\/\//i.test(merged.url)
+    && normalizeUrl(incoming.url) !== normalizeUrl(merged.url)
+    && _movedAwayFrom.includes(normalizeUrl(incoming.url)));
+
   // Upgrade Unknown critic name from incoming data
-  if (incoming.criticName && incoming.criticName !== 'Unknown'
+  if (!incomingIsOtherArticle && incoming.criticName && incoming.criticName !== 'Unknown'
       && (!existing.criticName || existing.criticName === 'Unknown')
       && !existing.criticNameManual) {
     merged.criticName = incoming.criticName;
@@ -979,7 +995,7 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   }
 
   // Keep better publish date
-  if (incoming.publishDate && !existing.publishDate) {
+  if (incoming.publishDate && !existing.publishDate && !incomingIsOtherArticle) {
     merged.publishDate = incoming.publishDate;
   }
 
@@ -2361,8 +2377,13 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // flagged via an unrelated auto-guard but with genuinely missing/stub content
   // (contentTier !== 'invalid', e.g. 'stub') still needs to be upgradeable —
   // see url-change-invariant.test.mjs's STALE_FLAGS fixture.
+  // BRO-4430 exception: when the flagged url is itself a non-review page (a
+  // cast announcement, show page or round-up), the flag describes that page,
+  // not a review, so a real review url takes the slot and the invariant clears
+  // the page's flags with it (The Body of Mary TheaterMania, The Pass NYTG).
   if (existingData.contentTier === 'invalid'
-    && (existingData.wrongProduction || existingData.wrongShow || existingData.duplicateOf)) {
+    && (existingData.wrongProduction || existingData.wrongShow || existingData.duplicateOf)
+    && !require('./review-slot-guards').isStaleNonReviewSlot(existingData, newUrl)) {
     return false;
   }
   // Only upgrade if current content is bad
@@ -2385,7 +2406,9 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   // Reuses the same isRoundupUrl() predicate the write path already trusts to
   // keep roundup pages from being ingested as reviews at all.
   const { isRoundupUrl } = require('./review-guards');
-  if (isRoundupUrl(newUrl).isRoundup) {
+  // BRO-4430: any aggregator host (show-score, stagedoor, westendtheatre, ...)
+  // too, not only round-up shapes: the rebuild drops a file carrying one.
+  if (isRoundupUrl(newUrl).isRoundup || require('./review-slot-guards').isAggregatorPageUrl(newUrl)) {
     console.warn(`[maybeUpgradeUrl] refused roundup-page swap for ${existingData.outletId || source || '?'}: ${newUrl}`);
     return false;
   }

@@ -326,9 +326,19 @@ function executeReviewFieldEdit(action, stamp) {
   if (!abs) return { ok: false, reason: `Bad review path: ${action.file}` };
   if (!fs.existsSync(abs)) return { ok: false, reason: `Review file not found: ${action.file}` };
   const record = JSON.parse(fs.readFileSync(abs, 'utf8'));
-  const res = applyReviewFieldEdit(record, action, stamp);
+  // url edits (BRO-4430) may repair a url that a sibling file holds for a
+  // different named critic; that needs the show dir, so it is computed here.
+  const ctx = {};
+  if (action.field === 'url' && record.url) {
+    const { urlOwnedByOtherCritic } = require('./lib/review-slot-guards');
+    ctx.currentUrlOwnedByOtherCritic = !!urlOwnedByOtherCritic({
+      showDir: path.dirname(abs), url: record.url,
+      selfFilename: path.basename(abs), selfCriticName: record.criticName,
+    });
+  }
+  const res = applyReviewFieldEdit(record, action, stamp, ctx);
   if (!res.ok) return res;
-  safeWriteReview(abs, res.record);
+  safeWriteReview(abs, res.record, action.field === 'url' ? { approvedUrlRepair: true } : {});
   // The write guard can legitimately refuse a change (a protected field with
   // no clear breadcrumb). Report that instead of claiming success.
   const after = JSON.parse(fs.readFileSync(abs, 'utf8'));

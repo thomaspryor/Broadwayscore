@@ -151,6 +151,7 @@ const {
   shouldPreserveExclusionFlagsOnUrlRecovery,
 } = require('./lib/wrong-production-autoclear');
 const { shouldRetryGarbageConsentWall, storedTextNeedsConsentRefetch, shouldReleaseConsentLayerNonReview, salvageConsentPrefixedStoredText, salvageSourceHash, applyVerifiedRetryOutcome } = require('./lib/consent-refetch');
+const { shouldRetryDatelessHoldFetch } = require('./lib/review-slot-guards');
 const { checkBrowserbaseCaps, resolveMaxSessionsPerDay } = require('./lib/browserbase-caps');
 const { fetchLiveBrowserbaseSessionsToday: _fetchLiveBBSessions } = require('./lib/browserbase-live-usage');
 const { logExclusion } = require('./lib/exclusion-logger');
@@ -3209,6 +3210,27 @@ async function discoverCorrectUrl(review) {
 
   if (result === '__SERP_UNAVAILABLE__') return '__SERP_UNAVAILABLE__';
 
+  // BRO-4430: refuse a discovered url that is an aggregator/round-up page or
+  // that a sibling file already holds for a DIFFERENT named critic. Checked
+  // here, before any fetch: the show-not-mentioned path fetches the new url
+  // and writes its text into this file BEFORE persisting the url, so a refusal
+  // only at persist time (url-change-invariant) would still leave another
+  // critic's review text in this critic's file (NYSR Finkle/Scheck).
+  if (result && result !== '__SERP_UNAVAILABLE__' && review.filePath) {
+    const { isAggregatorPageUrl, urlOwnedByOtherCritic } = require('./lib/review-slot-guards');
+    const owner = urlOwnedByOtherCritic({
+      showDir: path.dirname(review.filePath),
+      url: result,
+      selfFilename: path.basename(review.filePath),
+      selfCriticName: review.critic,
+    });
+    if (isAggregatorPageUrl(result) || owner) {
+      console.log(`    ⊘ Discovered url refused: ${result} ${owner ? `is ${owner.criticName}'s review (${owner.filename})` : 'is an aggregator/round-up page'}`);
+      stats.urlDiscoveryRefused = (stats.urlDiscoveryRefused || 0) + 1;
+      return null;
+    }
+  }
+
   if (result && result !== null) {
     stats.urlDiscoverySuccess++;
     stats.urlDiscoveryDetails.push({
@@ -6136,6 +6158,9 @@ function findReviewsToProcess() {
         // (girl-interrupted 2026-06-05). When set, bypass the wrong-content cooldown
         // AND the "already has good text" short-circuit below.
         const urlCorrectedRefetch = data.needsRefetch === true && !!data.urlCorrectedFrom;
+        // Set before the gate so the wrong_content-filtered pass also fetches a
+        // dateless-revival hold's stored url instead of SERP-rediscovering it.
+        if (shouldRetryDatelessHoldFetch(data)) data._datelessDateRetry = true;
         if (isWrongContent && !CONFIG.incompleteReasonFilter.includes('wrong_content')) {
           // Allow retry for collector-flagged wrongShow files (bad scrape of correct URL)
           // These have wrongShowReason starting with "Collector LLM" — distinguishes from
@@ -6173,8 +6198,15 @@ function findReviewsToProcess() {
           }
           // 14-day cooldown for collector-flagged retries; a URL correction is a
           // strong signal the next fetch will succeed, so it bypasses the cooldown.
+          // BRO-4430: a dateless-revival hold only lifts when a publish date
+          // arrives, and the url is not in doubt, so fetch the stored url for
+          // its date (14-day cooldown on the same wrongShowRetryAt clock).
+          // Before this the hold was reachable only through the wrong_content
+          // SERP rediscovery, and once that abandoned the review stayed held
+          // forever (An American Daughter, NY Sun).
+          const datelessHoldRetry = data._datelessDateRetry === true;
           const retryAllowed = (isCollectorFlagged && retryAge > 14 * 24 * 60 * 60 * 1000)
-            || urlCorrectedRefetch || garbageRetryAllowed;
+            || urlCorrectedRefetch || garbageRetryAllowed || datelessHoldRetry;
           if (!retryAllowed) {
             logExclusion({ script: 'collect-review-texts', showId, file, reason: 'skippedWrongContent', details: { url: data.url, outletId: data.outletId, wrongShow: data.wrongShow, wrongProduction: data.wrongProduction } });
             continue;
@@ -6214,13 +6246,13 @@ function findReviewsToProcess() {
           }
           if (hasStrippableConsentLayer(data.fullText || '') || hasStrippableConsentLayer(data.wrongFullText || '')) data._consentLayerRetry = true;
           // Always re-try truncated/needs-rescrape reviews - they have text but it's incomplete or garbage
-          if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
+          if (!isTruncated && !needsUrlDiscovery && !hasGarbageText && !urlCorrectedRefetch && !data._datelessDateRetry && (data.isFullReview === true || data.textQuality === 'full' || textLen > 1500) && !failedFetches.has(reviewId)) {
             continue;
           }
           // Skip complete reviews even if they appear in failedFetches — the failure entry is stale
           // from URL discovery before a different source (Theatre Record, WET, etc.) provided full text.
           // Prevents wasted Browserbase sessions on reviews that don't need re-collection.
-          if ((data.contentTier === 'complete' || data.textQuality === 'full') && !isTruncated && !hasGarbageText) {
+          if ((data.contentTier === 'complete' || data.textQuality === 'full') && !isTruncated && !hasGarbageText && !data._datelessDateRetry) {
             continue;
           }
           // Guard: never re-fetch a review that has an assigned score + reasonable text, even if it
@@ -6386,6 +6418,7 @@ function findReviewsToProcess() {
           _networkDrain: data._networkDrain === true,
           _storedSalvage: data._consentLayerRetry === true && !!salvageConsentPrefixedStoredText(data),
           _paywallRecheck: data._paywallRecheck === true,
+          _datelessDateRetry: data._datelessDateRetry === true,
         });
       } catch (e) {
         console.error(`Error reading ${filePath}: ${e.message}`);
@@ -6767,6 +6800,16 @@ function stampSalvage(review) {
   } catch (e) {}
 }
 
+// BRO-4430: cooldown stamp for a dateless-revival hold's stored-url fetch
+// (read by review-slot-guards shouldRetryDatelessHoldFetch).
+function stampDatelessRetry(filePath) {
+  try {
+    const d = JSON.parse(fs.readFileSync(filePath, 'utf8'));
+    d.wrongShowRetryAt = new Date().toISOString();
+    fs.writeFileSync(filePath, JSON.stringify(d, null, 2) + '\n');
+  } catch (e) { /* non-fatal: next run re-evaluates */ }
+}
+
 async function processReview(review) {
   // BRO-4334: fetchReviewText's partial-text deadline counts from here (main()
   // stamps it just before the REVIEW_TIMEOUT race; this covers other callers).
@@ -6794,7 +6837,9 @@ async function processReview(review) {
   }
 
   // Reason-aware URL discovery: no_url, wrong_content, and fabricated entries need SERP search before fetch
-  const needsSerpDiscovery = review.incompleteReason === 'no_url' || review.incompleteReason === 'wrong_content' || review.fabricatedEntry;
+  // A dateless-revival hold (BRO-4430) needs only its stored url's date: no SERP.
+  const needsSerpDiscovery = !review._datelessDateRetry
+    && (review.incompleteReason === 'no_url' || review.incompleteReason === 'wrong_content' || review.fabricatedEntry);
   if (needsSerpDiscovery && review.filePath) {
     const reason = review.fabricatedEntry ? 'fabricated' : review.incompleteReason;
     console.log(`  [${reason}] Attempting URL discovery before fetch...`);
@@ -7235,6 +7280,12 @@ async function processReview(review) {
       } catch (e) {}
     }
 
+    // BRO-4430: a dateless-hold fetch stamps its cooldown whatever the verdict.
+    // applyVerifiedRetryOutcome above clears wrongShowRetryAt on a clean
+    // verdict, and a page with no extractable date would otherwise be
+    // refetched (paid) on every run, filtered or not.
+    if (review._datelessDateRetry && review.filePath) stampDatelessRetry(review.filePath);
+
     // Consent-layer refetch (BRO-4185 A): the "not a review" verdict that set
     // isNonReview judged a consent banner. A fresh, clean, high-confidence
     // verdict on the stripped article releases it.
@@ -7399,6 +7450,8 @@ async function processReview(review) {
       };
     }
     stats.failuresByOutlet[outletName].count++;
+
+    if (review._datelessDateRetry && review.filePath) stampDatelessRetry(review.filePath);
 
     // For wrongShow retries that failed: update retry timestamp to enforce cooldown
     if (review._wrongShowRetrying && review.filePath) {
