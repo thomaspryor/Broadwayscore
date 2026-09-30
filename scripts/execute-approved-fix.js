@@ -13,6 +13,8 @@
  * Actions:
  *   data-edit      — Field changes in shows.json, commercial.json, audience-buzz.json
  *   add-show       — Append one new shows.json entry (scripts/lib/add-show-action.js)
+ *   retire-show    — Remove one provisional shows.json entry and record it in the
+ *                    retired-id registry (scripts/lib/retire-show-action.js)
  *   run-script     — Execute allowlisted pipeline scripts
  *   review-file-op — Move/delete/rename review files in data/review-texts/
  *   review-field-edit — Compare-and-set one allowlisted field on a review file
@@ -40,6 +42,7 @@ const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
+const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
 
@@ -261,6 +264,14 @@ function executeAddShow(action) {
   const data = loadJsonFile('data/shows.json');
   const shows = data.shows || data;
   const result = applyAddShow(shows, action);
+  if (result.ok) saveJsonFile('data/shows.json', Array.isArray(data) ? shows : data);
+  return result;
+}
+
+function executeRetireShow(action) {
+  const data = loadJsonFile('data/shows.json');
+  const shows = data.shows || data;
+  const result = applyRetireShow(shows, action);
   if (result.ok) saveJsonFile('data/shows.json', Array.isArray(data) ? shows : data);
   return result;
 }
@@ -502,6 +513,9 @@ async function main() {
       case 'add-show':
         result = executeAddShow(action);
         break;
+      case 'retire-show':
+        result = executeRetireShow(action);
+        break;
       case 'review-field-edit':
         result = executeReviewFieldEdit(action, { fixId: planData.planId || String(issueNumber), at: new Date().toISOString() });
         break;
@@ -525,7 +539,7 @@ async function main() {
   // 4. Validate if we made data changes. batch-transform mutates data files
   // too — it must NOT bypass validation (it previously did, so a bad bulk
   // transform had no rollback path).
-  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show');
+  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show');
   const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
     const changedFiles = [...new Set(dataTouching.map(a => a.file).filter(Boolean))];
