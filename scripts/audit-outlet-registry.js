@@ -38,7 +38,29 @@ const fs = require('fs');
 const path = require('path');
 const readline = require('readline');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-baseline');
+const { baselineKeySet, computeNewViolators, partitionAwaitingRebuild } = require('./lib/outlet-registry-baseline');
+const REVIEWS_JSON_PATH = path.join(__dirname, '../data/reviews.json');
+
+// When did the rebuild that produced data/reviews.json START scanning
+// review-texts? Prefer _meta.reviewTextsScannedAt (stamped before the scan,
+// BRO-4401); fall back to _meta.lastUpdated (stamped at the end, so a file
+// that landed mid-run reads as older than a rebuild that never saw it — one
+// cycle of false "new", tolerated only for reviews.json files predating the
+// new field). Read only the leading bytes: the file is ~13 MB and _meta sits
+// at the top.
+function lastRebuildMs() {
+  try {
+    const fd = fs.openSync(REVIEWS_JSON_PATH, 'r');
+    const buf = Buffer.alloc(4096);
+    const n = fs.readSync(fd, buf, 0, buf.length, 0);
+    fs.closeSync(fd);
+    const head = buf.toString('utf8', 0, n);
+    const m = head.match(/"reviewTextsScannedAt"\s*:\s*"([^"]+)"/) || head.match(/"lastUpdated"\s*:\s*"([^"]+)"/);
+    return m ? Date.parse(m[1]) : NaN;
+  } catch {
+    return NaN;
+  }
+}
 // BRO-4370 / BRO-4401: ids the rebuild deliberately REFUSED to auto-register
 // (no resolvable domain, critic name, domain collision) are parked in
 // data/audit/outlet-registry-staging.json. They are known gaps awaiting a
@@ -47,11 +69,11 @@ const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-b
 // move the red from the null-domain ceiling to this gate.
 const { loadStagedOutletIds, STAGING_RELATIVE_PATH: OUTLET_STAGING_PATH } = require('./lib/outlet-auto-register');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { isExcludedFromOutletRegistryAudit, isPendingUnscored } = require('./lib/outlet-registry-audit-exclusions');
-// Advisory only (BRO-4401 what-else): branch 6 excludes unscored files still
-// waiting on score extraction, which is correct (the rebuild never includes
-// them) but could hide a real registry gap indefinitely if a file never
-// scores. Count how many have been waiting past this many days so the
+const { outletRegistryAuditExclusionBranch } = require('./lib/outlet-registry-audit-exclusions');
+// Advisory only (BRO-4401 what-else): branch 6 excludes unscored files (by
+// the rebuild's own getBestScore predicate), which is correct (the rebuild
+// never includes them) but could hide a real registry gap indefinitely if a
+// file never scores. Count how many have been waiting past this many days so the
 // backlog is visible in every run, without failing --strict on it.
 const PENDING_UNSCORED_STALE_DAYS = 14;
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
@@ -330,13 +352,22 @@ function auditOutletRegistry() {
       // to scripts/lib/outlet-registry-audit-exclusions.js so it's unit
       // tested (scripts/outlet-registry.test.mjs) instead of re-derived here.
       // See that file's comments for the incident history behind each branch.
-      if (isExcludedFromOutletRegistryAudit(review)) {
-        if (isPendingUnscored(review)) {
+      const exclusionBranch = outletRegistryAuditExclusionBranch(review);
+      if (exclusionBranch !== 0) {
+        // Count only files that branch 6 ALONE excludes: a blocked-domain or
+        // rejected file (branches 1-5) is not "waiting to score".
+        if (exclusionBranch === 6) {
           findings.pendingUnscoredExcluded.total++;
           // Only an UNREGISTERED outlet is hidden by this exclusion — a
           // pending nytimes file hides nothing, the registry has nytimes.
           const since = Date.parse(review.textFetchedAt || review.firstSeenAt || '');
-          const unregistered = !registryAliasMap[reviewOutletId.toLowerCase()];
+          // Same "is this a real gap" filters the missing-outlet scan applies:
+          // junk/sentinel ids and ids normalizeOutlet() resolves to a registered
+          // outlet are not gaps, so they must not inflate this advisory either.
+          const normCanon = normalization && normalization.normalizeOutlet ? normalization.normalizeOutlet(reviewOutletId) : reviewOutletId;
+          const unregistered = !registryAliasMap[reviewOutletId.toLowerCase()]
+            && !(normalization && normalization.isJunkOutlet && normalization.isJunkOutlet(reviewOutletId))
+            && !(normCanon !== reviewOutletId && registry.outlets[normCanon]);
           if (unregistered && !Number.isNaN(since) && Date.now() - since > PENDING_UNSCORED_STALE_DAYS * 86400000) {
             findings.pendingUnscoredExcluded.stale.push({ outletId: reviewOutletId, file: reviewFile.fullPath });
           }
@@ -351,11 +382,20 @@ function auditOutletRegistry() {
           displayNames: [],
           files: [],
           urls: [],
-          shows: new Set()
+          shows: new Set(),
+          earliestSeenAt: null, // oldest firstSeenAt/textFetchedAt across this outlet's files (BRO-4401 awaiting-rebuild rule)
         });
       }
       const outletData = outletsInReviews.get(reviewOutletId);
       outletData.count++;
+      {
+        // firstSeenAt ONLY (stamped once at file creation, review-file-writer.js).
+        // textFetchedAt is bumped on every re-fetch, so using it here would let
+        // a file the rebuild never registers be deferred on every cycle forever
+        // (review finding). A file with no firstSeenAt is simply never deferred.
+        const seenAt = review.firstSeenAt || null;
+        if (seenAt && (!outletData.earliestSeenAt || seenAt < outletData.earliestSeenAt)) outletData.earliestSeenAt = seenAt;
+      }
       if (reviewOutlet) outletData.displayNames.push(reviewOutlet);
       outletData.files.push(reviewFile.fullPath);
       if (review.url) outletData.urls.push(review.url);
@@ -445,7 +485,8 @@ function auditOutletRegistry() {
           shows: Array.from(data.shows),
           exampleFile: data.files[0],
           displayNames: [...new Set(data.displayNames)], // Unique display names
-          urls: data.urls
+          urls: data.urls,
+          earliestSeenAt: data.earliestSeenAt || null,
         });
       }
     }
@@ -550,7 +591,7 @@ function printReport(auditResult) {
   }
   if (findings.pendingUnscoredExcluded && findings.pendingUnscoredExcluded.total > 0) {
     const { total, stale } = findings.pendingUnscoredExcluded;
-    console.log(`  Unscored files pending score extraction (excluded, branch 6): ${total} — ${stale.length} on UNREGISTERED outlets waiting > ${PENDING_UNSCORED_STALE_DAYS} days${stale.length ? ' (advisory: those outlets stay unaudited until the file scores or is rejected)' : ''}`);
+    console.log(`  Unscored files (never included by the rebuild — excluded, branch 6): ${total} — ${stale.length} on UNREGISTERED outlets waiting > ${PENDING_UNSCORED_STALE_DAYS} days${stale.length ? ' (advisory: those outlets stay unaudited until the file scores or is rejected)' : ''}`);
     for (const s of stale.slice(0, 10)) console.log(`    · ${s.outletId} — ${s.file}`);
     if (stale.length > 10) console.log(`    … and ${stale.length - 10} more`);
   }
@@ -1027,15 +1068,21 @@ async function main() {
     const stagedSet = loadStagedOutletIds(path.join(__dirname, '..'));
     const stagedViolators = computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet)
       .filter((m) => stagedSet.has(m.outletId));
-    const newViolators = computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet)
-      .filter((m) => !stagedSet.has(m.outletId));
+    const { awaitingRebuild, actionable: newViolators } = partitionAwaitingRebuild(
+      computeNewViolators(auditResult.findings.missingFromRegistry, baselineSet).filter((m) => !stagedSet.has(m.outletId)),
+      lastRebuildMs(),
+    );
 
     if (auditResult.findings.missingFromRegistry.length > 0 && !JSON_OUTPUT && !UPDATE_MODE) {
       console.log('\n!!! Outlets missing from registry - add them to data/outlet-registry.json !!!');
-      console.log(`    (${auditResult.findings.missingFromRegistry.length - newViolators.length - stagedViolators.length} baselined, ${stagedViolators.length} staged by the rebuild, ${newViolators.length} new)`);
+      console.log(`    (${auditResult.findings.missingFromRegistry.length - newViolators.length - stagedViolators.length - awaitingRebuild.length} baselined, ${stagedViolators.length} staged by the rebuild, ${awaitingRebuild.length} awaiting their first rebuild, ${newViolators.length} new)`);
       if (stagedViolators.length > 0) {
         console.log(`\n⏸  Staged by the rebuild (refused a domainless / critic-name / colliding registration — resolve in ${OUTLET_STAGING_PATH}):`);
         for (const v of stagedViolators) console.log(`  ${v.outletId} (${v.count} reviews)`);
+      }
+      if (awaitingRebuild.length > 0) {
+        console.log('\n⏳ First seen after the last rebuild (data/reviews.json _meta.lastUpdated) — the next rebuild registers or stages them; not counted as new:');
+        for (const v of awaitingRebuild) console.log(`  ${v.outletId} (${v.count} reviews, first seen ${v.earliestSeenAt})`);
       }
     }
 

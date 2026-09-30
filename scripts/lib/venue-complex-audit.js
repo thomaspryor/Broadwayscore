@@ -39,6 +39,11 @@ const GENERIC_TOKENS = new Set([
   // and "NYC" (Perelman PAC, Masquerade NYC, Asylum NYC — none of which are
   // related to each other or to MCC).
   'newman', 'frankel', 'griffin', 'second', 'five', 'nyc',
+  // BRO-3425 (2026-09-30): "black box" is a room type, not a name. Roundabout's
+  // "Black Box Theatre at Harold and Miriam Steinberg Center for Theatre"
+  // false-positived against Signature's "Alice Griffin Jewel Box Theater" on
+  // "box" alone and turned main red. "Jewel" still identifies Signature's.
+  'box', 'black', 'blackbox',
 ]);
 
 function coreTokens(str) {

@@ -133,6 +133,16 @@ function updateReviewFile(filePath, dir, oldFile, outletId, criticName, data) {
 
   // Check if target file already exists (would be a duplicate)
   if (fs.existsSync(newPath)) {
+    // The caller deletes the source file; its URL must survive on the named
+    // file or the next aggregator pass re-adopts it (BRO-4414).
+    if (!dryRun) {
+      try {
+        const named = JSON.parse(fs.readFileSync(newPath, 'utf8'));
+        if (require('./lib/merged-duplicate-urls').absorbMergedDuplicates(named, data)) {
+          fs.writeFileSync(newPath, JSON.stringify(named, null, 2) + '\n');
+        }
+      } catch { /* unreadable named file: caller still deletes, as before */ }
+    }
     return { renamed: false, duplicate: true, newFile };
   }
 

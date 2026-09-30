@@ -1298,6 +1298,12 @@ const multiProductionTitleIds = new Set();
 
 // Get all show directories (filter out orphan dirs that don't match any show in shows.json)
 const validShowIds = new Set(showsData.shows.map(s => s.id));
+// Stamped BEFORE the review-texts scan starts and written to reviews.json
+// _meta.reviewTextsScannedAt: audit-outlet-registry.js --strict uses it as
+// "has any rebuild seen this file yet?" (BRO-4401). _meta.lastUpdated is
+// stamped at the END of a run, so a file that landed mid-run would look
+// older than the rebuild that never saw it.
+const reviewTextsScannedAt = new Date().toISOString();
 const showDirs = listShowDirs(reviewTextsDir)
   .filter(f => !SHOW_FILTER || f === SHOW_FILTER)
   .filter(f => {
@@ -5705,6 +5711,7 @@ const output = {
   _meta: {
     description: "Critic reviews - raw input data",
     lastUpdated: new Date().toISOString(),
+    reviewTextsScannedAt,
     notes: "Rebuilt from review-texts. Reviews without valid scores are EXCLUDED.",
     stats: {
       totalReviews: stats.totalReviews,

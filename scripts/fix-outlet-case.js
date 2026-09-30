@@ -71,6 +71,7 @@ function processReviewFile(filepath) {
 
       const showId = path.basename(dir);
       const merged = mergeReviews(existingReview, review, {}, { script: 'fix-outlet-case', showId, show: _getShowById(showId) });
+      require('./lib/merged-duplicate-urls').absorbMergedDuplicates(merged, review); // BRO-4414
       fs.writeFileSync(newFilepath, JSON.stringify(merged, null, 2));
 
       // Delete the old (uppercase) file

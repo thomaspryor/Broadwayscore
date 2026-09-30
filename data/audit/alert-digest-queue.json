@@ -2689,5 +2689,554 @@
       }
     ],
     "queuedAt": "2026-09-30T01:10:48.855Z"
+  },
+  {
+    "conditionKey": "corpus-drift:url-downgrade",
+    "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
+    "description": "check-corpus-drift.js audit \"url-downgrade\" (node scripts/audit-url-downgrade.js --gate) has been drifting. Latest output:\n\n  [protected] every-brilliant-thing-2026/nytimes--ben-brantley.json — url dated 2014-12-15 (before_preview, 4065d)\n  [protected] evita-2026/broadwayworld--gary-naylor.json — url dated 2026-04-29 (before_preview, 283d)\n  [protected] fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json — url dated 2024-04-12 (before_preview, 876d)\n  [protected] gigi-2015/washpost--peter-marks.json — url dated 2015-01-29 (before_preview, 28d)\n  [protected] hamlet-off-broadway-2026/dc-theater-arts--deb-miller.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/nysr--david-finkle.json — url dated 2024-02-11 (before_preview, 777d)\n  [protected] hamlet-off-broadway-2026/washpost--peter-marks.json — url dated 2018-01-23 (before_preview, 2987d)\n  [protected] heathers-the-musical-off-west-end-2026/broadwayworld--jade-kops.json — url dated 2026-09-04 (after_close, 6d)\n  [protected] kenrex-off-broadway-2026/guardian--mark-fisher.json — url dated 2024-11-01 (before_preview, 510d)\n  [protected] kinky-boots-the-musical-west-end-2026/guardian--arifa-akbar.json — url dated 2025-03-13 (before_preview, 334d)\n  [protected] little-women-2005/ew--ew-staff.json — url dated 2005-06-07 (after_close, 9d)\n  [protected] macbeth-2013/ap--mark-kennedy.json — url dated 2013-04-21 (before_preview, 166d)\n  [protected] manon-off-broadway-2027/broadwayworld--steve-callahan.json — url dated 2024-01-19 (before_preview, 1127d)\n  [protected] mexodus-off-broadway-2026/nyt-theater--unknown.json — url dated 2025-10-04 (before_preview, 132d)\n  [protected] my-sons-a-queer-but-what-can-you-do-west-end-2026/broadwayworld--abbie-grundy.json — url dated 2025-06-05 (before_preview, 447d)\n  [protected] orlando-off-broadway-2026/guardian--unknown.json — url dated 2022-12-11 (before_preview, 452d)\n  [protected] please-please-me-west-end-2026/guardian--susannah-clapp.json — url dated 2024-08-04 (before_preview, 585d)\n  [protected] romeo-and-juliet-off-broadway-2026/guardian--clare-brennan.json — url dated 2024-09-22 (before_preview, 586d)\n  [protected] romeo-and-juliet-west-end-2026/guardian--unknown.json — url dated 2025-07-09 (before_preview, 215d)\n  [protected] seagull-true-story-off-broadway-2026/nysr--frank-scheck.json — url dated 2023-02-28 (before_preview, 1097d)\n  [protected] the-glass-menagerie-2017/chicagotribune--chris-jones.json — url dated 2013-09-26 (before_preview, 1209d)\n  [protected] the-hills-of-california-2024/guardian--arifa-akbar.json — url dated 2024-02-08 (before_preview, 195d)\n  [protected] the-seagull-2008/guardian--arifa-akbar.json — url dated 2025-03-06 (after_close, 5912d)\n  [protected] the-sound-of-music-2027/broadwayworld--anikatrina-fageol.json — url dated 2026-02-18 (before_preview, 377d)\n  [protected] the-sound-of-music-2027/broadwayworld--david-friscic.json — url dated 2025-09-15 (before_preview, 533d)\n  [protected] the-sound-of-music-2027/broadwayworld--greg-dalton-white.json — url dated 2026-08-31 (before_preview, 183d)\n  [protected] the-sound-of-music-2027/broadwayworld--jeffrey-kare.json — url dated 2025-10-08 (before_preview, 510d)\n  [protected] the-sound-of-music-2027/broadwayworld--joni-lorraine.json — url dated 2026-02-04 (before_preview, 391d)\n  [protected] the-sound-of-music-2027/broadwayworld--paul-batterson.json — url dated 2023-10-25 (before_preview, 1224d)\n  [protected] the-sound-of-music-2027/broadwayworld--r-scott-reedy.json — url dated 2026-01-11 (before_preview, 415d)\n  [protected] the-sound-of-music-2027/broadwayworld--tina-st-angelo.json — url dated 2025-10-25 (before_preview, 493d)\n  [protected] the-sound-of-music-2027/broadwayworld--vickie-evans.json — url dated 2025-11-20 (before_preview, 467d)\n  [protected] the-wiz-2024/latimes--mary-mcnamara.json — url dated 2015-12-03 (before_preview, 3018d)\n  [protected] tosca-off-broadway-2026/broadwayworld--aliya-al-hassan.json — url dated 2026-06-29 (before_preview, 104d)\n  [protected] tosca-off-broadway-2026/broadwayworld--roger-catlin.json — url dated 2026-08-10 (before_preview, 62d)\n  [protected] twelfth-night-off-west-end-2026/nysr--unknown.json — url dated 2025-08-21 (before_preview, 317d)\n  [protected] vanya-off-broadway-2025/washpost--unknown.json — url dated 2013-03-14 (before_preview, 4359d)\n\nFAIL: 1 file(s) carry a regressed (wrong-production) url with NO wrongProduction/wrongShow flag — live scoring exposure.\nFix by hand (verify the correct current-run url and restore it, or flag wrongProduction).",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T01:50:42.424Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:an-outrageous-outcome-off-broadway-2027",
+    "title": "An Outrageous Outcome @ The Players Theatre — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-07-08 to 2027-07-25, 12 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/an-outrageous-outcome-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.500Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:broom-play-off-broadway-2026",
+    "title": "Broom Play @ The Players Theatre — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-11-05 to 2026-11-29, 22 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/broom-play-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.505Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:not-nineveh-off-broadway-2027",
+    "title": "Not Nineveh @ The Players Theatre — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-04-01 to 2027-04-18, 12 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/not-nineveh-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.510Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:space-quest-off-broadway-2027",
+    "title": "Space Quest @ The Players Theatre — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-01-07 to 2027-02-07, 20 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/space-quest-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.515Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:the-little-lasses-of-appleton-wisconsin-off-broadway-2027",
+    "title": "The Little Lasses of Appleton, Wisconsin @ The Players Theatre — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-01-07 to 2027-01-24, 12 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/the-little-lasses-of-appleton-wisconsin-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.519Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:we-are-happy-to-serve-you-off-broadway-2026",
+    "title": "We Are Happy to Serve You @ The Players Theatre — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-03 to 2026-12-20, 12 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/we-are-happy-to-serve-you-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.528Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:you-go-on-off-broadway-2027",
+    "title": "You Go On @ The Players Theatre — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-05-06 to 2027-06-06, 20 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/you-go-on-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.533Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:the-masters-tools-off-broadway-2027",
+    "title": "The Master's Tools @ The Flea Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-01-08 to 2027-01-24, 13 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/the-masters-tools-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.538Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:miss-julie-off-broadway-2026",
+    "title": "Miss Julie @ The Space at Irondale — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-11-27 to 2026-12-19, 23 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/miss-julie-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.542Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:all-the-way-home-off-broadway-2027",
+    "title": "All The Way Home @ Theater at St. Jean's — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-04-03 to 2027-04-11, 11 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/all-the-way-home-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.547Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:nikola-tesla-the-forgotten-genius-off-broadway-2027",
+    "title": "Nikola Tesla: The Forgotten Genius @ Theater at St. Jean's — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-03-20 to 2027-03-28, 10 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/nikola-tesla-the-forgotten-genius-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.552Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:sometimes-love-off-broadway-2027",
+    "title": "Sometimes Love @ Theater at St. Jean's — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-03-06 to 2027-03-14, 10 performances). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/sometimes-love-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.557Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:baby-shower-katie-off-broadway-2027",
+    "title": "Baby Shower Katie @ 59E59 Theaters — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-02-27 to 2027-04-11). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/baby-shower-katie-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.562Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:gods-spies-off-broadway-2027",
+    "title": "God's Spies @ 59E59 Theaters — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-01-19 to 2027-02-14). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/gods-spies-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.566Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:starstuff-off-broadway-2026",
+    "title": "Starstuff @ 59E59 Theaters — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-10-28 to 2026-11-14). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/starstuff-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.574Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:the-steel-man-off-broadway-2026",
+    "title": "The Steel Man @ 59E59 Theaters — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-11-03 to 2026-12-13). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/the-steel-man-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.579Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:tim-and-scrooge-off-broadway-2026",
+    "title": "Tim and Scrooge @ 59E59 Theaters — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-16 to 2026-12-27). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/tim-and-scrooge-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.584Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:elektra-off-broadway-2026",
+    "title": "Elektra @ Polonsky Shakespeare Center — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-11-10 to 2026-12-18). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/elektra-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.589Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
+    "title": "Anne Teresa De Keersmaeker & Radouan Mriziga: Il Cimento dell'Armonia e dell'Inventione @ NYU Skirball — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-04-22 to 2027-04-24). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.593Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
+    "title": "Rosie Revere, Ada Twist, and Iggy Peck @ New Victory Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-10-17 to 2026-10-25). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.598Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:do-not-try-this-at-home-off-broadway-2026",
+    "title": "Do Not Try This at Home @ New Victory Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-11-14 to 2026-11-29). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/do-not-try-this-at-home-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.603Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:tilt-an-80s-circus-thrill-ride-off-broadway-2026",
+    "title": "Tilt! An '80s Circus Thrill Ride @ New Victory Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-12-05 to 2027-01-03). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/tilt-an-80s-circus-thrill-ride-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.608Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:the-sorcerers-apprentice-off-broadway-2027",
+    "title": "The Sorcerer's Apprentice @ New Victory Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-01-15 to 2027-01-24). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/the-sorcerers-apprentice-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.613Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:the-mo-co-show-off-broadway-2027",
+    "title": "The Mo & Co. Show! @ New Victory Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-02-06 to 2027-02-21). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/the-mo-co-show-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.620Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:little-journey-off-broadway-2027",
+    "title": "Little Journey @ New Victory Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-03-06 to 2027-03-14). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/little-journey-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.625Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:ten-thousand-hours-off-broadway-2027",
+    "title": "Ten Thousand Hours @ New Victory Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-03-20 to 2027-04-04). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/ten-thousand-hours-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.630Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:mario-the-maker-magician-returns-off-broadway-2027",
+    "title": "Mario the Maker Magician Returns! @ New Victory Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-04-17 to 2027-05-09). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/mario-the-maker-magician-returns-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.635Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:doodle-pop-off-broadway-2027",
+    "title": "Doodle POP @ New Victory Theater — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-05-15 to 2027-05-23). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/doodle-pop-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.640Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:the-kick-inside-off-broadway-2026",
+    "title": "The Kick Inside @ HERE Arts Center — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-10-21 to 2026-11-07). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/the-kick-inside-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.645Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:stone-belly-off-broadway-2027",
+    "title": "Stone Belly @ HERE Arts Center — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-05-20 to 2027-05-29). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/stone-belly-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.650Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:blood-be-sweet-off-broadway-2027",
+    "title": "Blood Be Sweet @ New York Theatre Workshop — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2027-04-21 to 2027-05-30). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/blood-be-sweet-off-broadway-2027",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.655Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:burning-leaves-off-broadway-2026",
+    "title": "Burning Leaves @ A.R.T./New York Theatres — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-09-26 to 2026-10-17). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/burning-leaves-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.659Z"
+  },
+  {
+    "conditionKey": "ob-venue-go-live:the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
+    "title": "The Curious Incident of the Dog in the Night-Time @ A.R.T./New York Theatres — off-Broadway show added",
+    "description": "Auto-promoted via the venue listing (venue's own listing: 2026-11-20 to 2026-12-06). Reviews ingest automatically once critics publish.",
+    "severity": "info",
+    "url": "https://broadwayscorecard.com/show/the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T02:30:04.664Z"
+  },
+  {
+    "conditionKey": "land:bro-4401-ci-reds",
+    "title": "Landing blocked: checks red on bro-4401-ci-reds",
+    "description": "land.yml did not land bro-4401-ci-reds: the checks gate went red. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36662927939",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "bro-4401-ci-reds"
+      },
+      {
+        "name": "gate",
+        "value": "checks"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36662927939"
+      }
+    ],
+    "queuedAt": "2026-09-30T03:08:04.618Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4411-munht1ia",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-4411-munht1ia",
+    "description": "land.yml did not land land/job/linear-BRO-4411-munht1ia: the rebase gate went red at 6622afe3f8. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4411-munht1ia @ 6622afe3f8 (origin/land/job/linear-BRO-4411-munht1ia) → origin/main @ db7f7fdee2 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ db7f7fdee2: Rebasing (1/5) Rebasing (2/5) Rebasing (3/5) error: could not apply 2b9fd8b6cc... BRO-4411: outlet-tiers about-entertainment back to registry T3; audit test + corpus-drift step hint: Resolve all c Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36661871467",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4411-munht1ia"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "6622afe3f81f97862a6f93ec8a612765762aca75"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36661871467"
+      }
+    ],
+    "queuedAt": "2026-09-30T03:21:57.169Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4410-munhu7rs",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-4410-munhu7rs",
+    "description": "land.yml did not land land/job/linear-BRO-4410-munhu7rs: the rebase gate went red at c0aba35af6. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4410-munhu7rs @ c0aba35af6 (origin/land/job/linear-BRO-4410-munhu7rs) → origin/main @ 9f4be0fc64 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 9f4be0fc64: Rebasing (1/1) error: could not apply c0aba35af6... fix(venue-complex-audit): treat 'box' as generic so Black Box Theatre isn't a Signature candidate (BRO-4410) hint: Resolve all conflicts manuall Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36662501146",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4410-munhu7rs"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "c0aba35af6208982ec866f346c68132c8384dad0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36662501146"
+      }
+    ],
+    "queuedAt": "2026-09-30T03:31:44.557Z"
+  },
+  {
+    "conditionKey": "land:land/og-jpeg-helper",
+    "title": "Landing blocked: unit-tests-node red on land/og-jpeg-helper",
+    "description": "land.yml did not land land/og-jpeg-helper: the unit-tests-node gate went red at 21ddfaf12b. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36663810107",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/og-jpeg-helper"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "21ddfaf12b7a6dd424d969830bf3e3ae53154b25"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36663810107"
+      }
+    ],
+    "queuedAt": "2026-09-30T03:45:28.736Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4401-ci-reds",
+    "title": "Landing blocked: rebase red on land/bro-4401-ci-reds",
+    "description": "land.yml did not land land/bro-4401-ci-reds: the rebase gate went red at 3e16c26c0a. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36668999103",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4401-ci-reds"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3e16c26c0a1e8760c1e91b8ab95445dfe682934d"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36668999103"
+      }
+    ],
+    "queuedAt": "2026-09-30T04:30:36.374Z"
   }
 ]

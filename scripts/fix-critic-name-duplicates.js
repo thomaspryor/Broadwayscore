@@ -217,6 +217,7 @@ function main() {
 
         if (!dryRun) {
           const merged = mergeReviewData(canonicalData, variantData);
+          require('./lib/merged-duplicate-urls').absorbMergedDuplicates(merged, variantData); // BRO-4414
           fs.writeFileSync(canonicalPath, JSON.stringify(merged, null, 2));
           fs.unlinkSync(variantPath);
           console.log(`    -> Merged and deleted variant`);

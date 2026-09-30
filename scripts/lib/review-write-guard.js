@@ -83,6 +83,10 @@ function _setShowsCacheForTest(map) { _showsByIdCache = map; _siblingOpeningsCac
 // Fields that represent collected/scored data and must not be silently erased.
 // KEEP IN SYNC with .github/actions/push-review-texts/action.yml PROTECTED array.
 const PROTECTED_FIELDS = [
+  // URLs of duplicate files merged into this one and deleted (BRO-4414). Losing
+  // this list lets a writer re-adopt a loser's URL and wipe this review's text
+  // and score. Read by scripts/lib/merged-duplicate-urls.js.
+  'mergedDuplicateUrls',
   'assignedScore',
   'crossOutletVerified',
   // Audit-trail fields for the crossOutlet triage (audit-cross-outlet-
@@ -1978,6 +1982,63 @@ function safeWriteReview(filePath, newData, options = {}) {
         // unreadable — too uncertain to tombstone. Keep primary either way.
         console.warn(`[review-write-guard] URL collision: ${path.basename(filePath)} shares URL with ${collider} — keeping primary (${newData.urlCorrectedFrom ? 'post-URL-correction, not provably duplicate' : 'has the substantive body'})`);
       }
+    }
+  }
+
+  // BRO-4406 cloned-excerpt guard: an aggregator excerpt lives on ONE file per
+  // show+outlet. A writer that matched an aggregator row to a file by outlet
+  // alone (or a web-search record that copied the excerpt into its own text)
+  // used to leave the same excerpt on two files; both counted (phantom
+  // double-counts, 2026-09-30 scan). Strip it from the INCOMING record only
+  // when a same-outlet sibling provably owns it. Same-review twins are left to
+  // the duplicate machinery; audit-cloned-excerpts.js reports them daily.
+  if (!force) {
+    try {
+      const guard = require('./cloned-excerpt-guard');
+      if (guard.excerptValues(newData).size > 0) {
+        const dir = path.dirname(filePath);
+        const self = path.basename(filePath);
+        const siblings = [];
+        for (const f of fs.readdirSync(dir)) {
+          if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === self) continue;
+          try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')) }); } catch { /* unreadable sibling */ }
+        }
+        const strip = guard.excerptFieldsToStrip(self, newData, siblings);
+        for (const f of strip.fields) newData[f] = null;
+        if (strip.fields.length) {
+          console.warn(`[review-write-guard] cloned excerpt: stripped ${strip.fields.join(',')} from ${self} (${strip.because.join('; ')})`);
+        }
+      }
+    } catch (e) {
+      console.warn(`[review-write-guard] cloned-excerpt guard skipped for ${path.basename(filePath)}: ${e.message}`);
+    }
+  }
+
+  // BRO-4412 phantom-critic guard: web-search invents bylines/URLs, and its
+  // records used to land beside the real review of the same outlet (Time Out
+  // "Adam Feldman" beside Bernardo; 3 Variety bylines on one Doll's House
+  // review). Engine dedup is (outlet, criticName), so each byline counted.
+  // Refuse a NEW web-search record that is the same article as, or an
+  // unverifiable guess beside, a live same-outlet sibling under another byline.
+  if (!force) {
+    try {
+      const guard = require('./cloned-excerpt-guard');
+      const dir = path.dirname(filePath);
+      const self = path.basename(filePath);
+      if (newData.source === 'web-search' && !fs.existsSync(filePath)) {
+        const siblings = [];
+        for (const f of fs.readdirSync(dir)) {
+          if (!f.endsWith('.json') || f === 'failed-fetches.json' || f === self) continue;
+          try { siblings.push({ file: f, data: JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')) }); } catch { /* unreadable sibling */ }
+        }
+        const twin = guard.phantomOfSibling(self, newData, siblings);
+        if (twin) {
+          console.warn(`[review-write-guard] phantom critic refused: ${self} is a web-search duplicate of ${twin}`);
+          return { wrote: false, skipped: 'phantom_of_sibling', duplicateOfFile: twin };
+        }
+      }
+    } catch (e) {
+      console.warn(`[review-write-guard] phantom-critic guard skipped for ${path.basename(filePath)}: ${e.message}`);
     }
   }
 

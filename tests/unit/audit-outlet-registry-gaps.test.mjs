@@ -63,7 +63,11 @@ test('BRO-3909: an unrelated real-outlet review is NOT excluded (sanity check ag
     outletId: 'new-outlet',
     outlet: 'New Outlet',
     url: 'https://new-outlet.com/reviews/the-cherry-orchard',
-    score: 80,
+    // A score the REBUILD accepts (review-file shape, not a bare `score`
+    // field): since BRO-4401 an unscored file is out of the audit's scope
+    // because the rebuild never includes it, so it could never register
+    // the outlet — the over-blocking this test guards against is branch 3.
+    humanReviewScore: 80,
   };
   assert.equal(isExcludedFromOutletRegistryAudit(review), false);
 });
