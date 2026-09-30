@@ -784,7 +784,7 @@
       "linearIdentifier": null
     },
     "bd-circuit-breaker-web_unlocker2": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "Bright Data daily breaker TRIPPED: web_unlocker2 (1091/750 reqs)",
@@ -794,7 +794,8 @@
       "lastSurfacedAt": "2026-09-30T07:34:59.719Z",
       "notifyCount": 21,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "resolvedAt": "2026-09-30T19:42:11.516Z"
     },
     "bd-circuit-breaker-serp_api1": {
       "status": "open",
@@ -4723,7 +4724,7 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Validate market expansion",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-09-30T19:35:10.639Z",
+      "lastSeen": "2026-09-30T19:43:59.829Z",
       "lastNotifiedAt": "2026-09-30T13:08:17.223Z",
       "lastSurfacedAt": "2026-09-30T13:08:17.223Z",
       "notifyCount": 7,
@@ -7582,13 +7583,13 @@
       "disposition": "digest",
       "title": "Unverified revival on The Standard Of Living",
       "firstSeen": "2026-09-30T06:48:26.108Z",
-      "lastSeen": "2026-09-30T19:26:19.814Z",
+      "lastSeen": "2026-09-30T19:44:46.334Z",
       "lastNotifiedAt": "2026-09-30T06:48:26.108Z",
       "lastSurfacedAt": "2026-09-30T06:48:26.108Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "backstop:tru-off-west-end-2026/london-theatre--unknown.json": {
       "status": "open",
@@ -7620,13 +7621,13 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on the-standard-of-living-west-end-2026",
       "firstSeen": "2026-09-30T13:50:53.458Z",
-      "lastSeen": "2026-09-30T19:26:19.818Z",
+      "lastSeen": "2026-09-30T19:44:46.338Z",
       "lastNotifiedAt": "2026-09-30T13:50:53.458Z",
       "lastSurfacedAt": "2026-09-30T13:50:53.458Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "review-gap:opening-window:degenerates-off-broadway-2026": {
       "status": "open",
@@ -7731,26 +7732,26 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on The Standard Of Living",
       "firstSeen": "2026-09-30T18:06:57.454Z",
-      "lastSeen": "2026-09-30T19:26:19.807Z",
+      "lastSeen": "2026-09-30T19:44:46.326Z",
       "lastNotifiedAt": "2026-09-30T18:06:57.454Z",
       "lastSurfacedAt": "2026-09-30T18:06:57.454Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-remediation-exhausted-explicit-ratings:the-standard-of-living-west-end-2026:telegraph": {
       "status": "open",
       "disposition": "digest",
       "title": "Auto-remediation gave up on the-standard-of-living-west-end-2026",
       "firstSeen": "2026-09-30T18:06:57.475Z",
-      "lastSeen": "2026-09-30T19:26:19.822Z",
+      "lastSeen": "2026-09-30T19:44:46.341Z",
       "lastNotifiedAt": "2026-09-30T18:06:57.475Z",
       "lastSurfacedAt": "2026-09-30T18:06:57.475Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "broadcast-gate:checklist:the-standard-of-living-west-end-2026": {
       "status": "open",
@@ -7758,26 +7759,26 @@
       "requestedDisposition": "human",
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-09-30T18:06:57.598Z",
-      "lastSeen": "2026-09-30T18:45:29.925Z",
+      "lastSeen": "2026-09-30T19:44:46.463Z",
       "lastNotifiedAt": "2026-09-30T18:06:57.598Z",
       "lastSurfacedAt": "2026-09-30T18:06:57.598Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-fulltext-mentions-show:the-standard-of-living-west-end-2026": {
       "status": "open",
       "disposition": "digest",
       "title": "Content mismatch on The Standard Of Living",
       "firstSeen": "2026-09-30T18:21:25.633Z",
-      "lastSeen": "2026-09-30T19:26:19.811Z",
+      "lastSeen": "2026-09-30T19:44:46.330Z",
       "lastNotifiedAt": "2026-09-30T18:21:25.633Z",
       "lastSurfacedAt": "2026-09-30T18:21:25.633Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "land:land/bro-4434-code-only-main": {
       "status": "open",
@@ -7850,6 +7851,42 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
+    },
+    "land:land/bro-4431-coverage": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: race red on land/bro-4431-coverage",
+      "firstSeen": "2026-09-30T19:43:36.096Z",
+      "lastSeen": "2026-09-30T19:43:36.096Z",
+      "lastNotifiedAt": "2026-09-30T19:43:36.096Z",
+      "lastSurfacedAt": "2026-09-30T19:43:36.096Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "scheduled-email-missing:morning-digest:2026-09-29": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Morning digest did not arrive on 2026-09-29",
+      "firstSeen": "2026-09-30T19:47:24.927Z",
+      "lastSeen": "2026-09-30T19:47:24.927Z",
+      "lastNotifiedAt": "2026-09-30T19:47:24.927Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4445"
+    },
+    "scheduled-email-missing:opening-digest:2026-09-29": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Opening digest did not arrive on 2026-09-29",
+      "firstSeen": "2026-09-30T19:47:29.264Z",
+      "lastSeen": "2026-09-30T19:47:29.264Z",
+      "lastNotifiedAt": "2026-09-30T19:47:29.264Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4446"
     }
   }
 }
