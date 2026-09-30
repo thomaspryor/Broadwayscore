@@ -96,7 +96,11 @@ function decideOutletAutoRegistration({ outletId, domainHint, domainCollides = f
   // outlet: the name matches a byline AND the domain is literally the name.
   // Only a critic-name id whose URL evidence points somewhere else (or
   // nowhere) is a mis-filed byline.
-  const ownSite = !!domainHint && String(domainHint).toLowerCase().replace(/[^a-z0-9]/g, '').includes(id.replace(/-/g, ''));
+  // Exact host-label match, not a substring: a short mononym slug would
+  // otherwise "own" almost any domain (ship-check finding).
+  const compact = id.replace(/-/g, '');
+  const ownSite = !!domainHint && String(domainHint).toLowerCase().split('.')
+    .some((label) => label === compact || label === id);
   if (criticSlugs && criticSlugs.size > 0 && criticSlugs.has(id) && !ownSite) {
     return { action: 'stage', reason: STAGE_REASONS.CRITIC_NAME };
   }

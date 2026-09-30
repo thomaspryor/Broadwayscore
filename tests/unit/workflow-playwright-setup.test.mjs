@@ -31,7 +31,7 @@ function workflowsRunning(script) {
   const dir = resolve(ROOT, '.github', 'workflows');
   return readdirSync(dir)
     .filter((f) => f.endsWith('.yml'))
-    .filter((f) => readFileSync(resolve(dir, f), 'utf8').includes(`node ${script}`));
+    .filter((f) => new RegExp(`node\\s+(?:\\./)?${script.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`).test(readFileSync(resolve(dir, f), 'utf8')));
 }
 
 describe('workflows whose main step is a Playwright-first scraper install a browser (BRO-4326)', () => {

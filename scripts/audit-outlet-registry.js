@@ -781,10 +781,16 @@ async function updateRegistry(auditResult, dryRun = false) {
   const registry = loadRegistry();
   const normalization = loadNormalization();
   const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
+  // Same register-or-stage rule as the rebuild's auto-register pass
+  // (BRO-4370 / BRO-4401): never write a domain:null row from here either.
+  const { decideOutletAutoRegistration, criticNameSlugs } = require('./lib/outlet-auto-register');
+  const criticSlugs = criticNameSlugs(
+    normalization && typeof normalization.loadCriticRegistry === 'function' ? normalization.loadCriticRegistry() : null,
+  );
   const safeAdditions = [];
   const skippedShadows = [];
   const skippedJunk = [];
-  let domainsDropped = 0;
+  const skippedStaged = [];
 
   for (const entry of suggestedAdditions) {
     // Defense-in-depth (task #1783): the missingFromRegistry scan already
@@ -804,15 +810,21 @@ async function updateRegistry(auditResult, dryRun = false) {
     // collide with an already-registered outlet — e.g. a venue-disambiguated
     // "the-times-barbican" shares thetimes.co.uk with "times-uk" (task
     // #1776, rebuild-all-reviews.js's AUTO-REGISTER block hit the same bug).
-    // Drop the domain instead of writing it through; check against the
+    // Such an entry — like a hint-less one or a critic-name id — is REFUSED
+    // rather than written with domain:null (BRO-4370); check against the
     // registry AS IT WILL BE after earlier entries in this same batch are
     // added, so two colliding new outlets in one run don't both claim it.
-    let { domain } = entry;
-    if (domain && wouldCauseDomainCollision(registry.outlets, entry.outletId, domain)) {
-      domainsDropped++;
-      domain = null;
+    const decision = decideOutletAutoRegistration({
+      outletId: entry.outletId,
+      domainHint: entry.domain || null,
+      domainCollides: !!entry.domain && wouldCauseDomainCollision(registry.outlets, entry.outletId, entry.domain),
+      criticSlugs,
+    });
+    if (decision.action === 'stage') {
+      skippedStaged.push({ outletId: entry.outletId, reason: decision.reason });
+      continue;
     }
-    const safeEntry = { ...entry, domain };
+    const safeEntry = { ...entry, domain: decision.domain };
     registry.outlets[entry.outletId] = safeEntry;
     safeAdditions.push(safeEntry);
   }
@@ -831,8 +843,11 @@ async function updateRegistry(auditResult, dryRun = false) {
     }
   }
 
-  if (domainsDropped > 0) {
-    console.log(`\n${domainsDropped} suggested domain(s) dropped to null (would have collided with an already-registered outlet — task #1776).`);
+  if (skippedStaged.length > 0) {
+    console.log('\n=== REFUSED (no resolvable domain / critic name / domain collision — BRO-4370) ===\n');
+    for (const { outletId, reason } of skippedStaged) {
+      console.log(`  ✗ "${outletId}" → not registered (${reason}); add it by hand with a real domain, or merge it`);
+    }
   }
 
   if (safeAdditions.length === 0) {

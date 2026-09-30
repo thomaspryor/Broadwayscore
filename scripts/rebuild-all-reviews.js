@@ -6591,12 +6591,21 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       existingStaged = JSON.parse(fs.readFileSync(stagingPath, 'utf8')).staged || [];
     } catch { /* first run, or unreadable — start empty */ }
     const registeredLower = new Set(Object.keys(outletRegistry.outlets).map((id) => id.toLowerCase()));
+    // Prune a parked id only once it is registered, or once NO review file
+    // carries it any more (outletShowCategoriesRaw is collected from every
+    // file touched, included or not). Pruning on mere exclusion from this
+    // build would let audit-outlet-registry.js --strict — which scans every
+    // file — report the still-present id as a NEW gap (ship-check finding).
+    const seenInAnyFile = (id) => reviewOutletIds.has(id)
+      || Object.prototype.hasOwnProperty.call(outletShowCategoriesRaw, id)
+      || Object.prototype.hasOwnProperty.call(outletShowCategoriesRaw, String(id).toLowerCase());
     const merged = mergeStagingEntries(existingStaged, stagedOutlets, {
       nowIso: new Date().toISOString(),
-      stillUnregistered: (id) => !registeredLower.has(String(id).toLowerCase()) && reviewOutletIds.has(id),
+      stillUnregistered: (id) => !registeredLower.has(String(id).toLowerCase()) && seenInAnyFile(id),
     });
-    const before = JSON.stringify(existingStaged.map((e) => [e.outletId, e.reason]).sort());
-    const after = JSON.stringify(merged.map((e) => [e.outletId, e.reason]).sort());
+    const fingerprint = (list) => JSON.stringify(list.map((e) => [e.outletId, e.reason, e.reviewCount || 0, e.domainHint || null]).sort());
+    const before = fingerprint(existingStaged);
+    const after = fingerprint(merged);
     if (before !== after || (stagedOutlets.length > 0 && !fs.existsSync(stagingPath))) {
       try {
         fs.mkdirSync(path.dirname(stagingPath), { recursive: true });
@@ -6619,7 +6628,11 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   // both the newOutlets just added above and pre-existing entries (BRO-133).
   const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
 
-  const registeredOutlets = newOutlets.filter(id => !skippedAliasCollisionOutlets.includes(id));
+  // Staged ids were NOT written to the registry — counting them here would
+  // rewrite + commit data/outlet-registry.json on every one of ~20 workflows'
+  // runs for as long as anything stays parked (ship-check P0).
+  const stagedOutletIdSet = new Set(stagedOutlets.map((s) => s.outletId));
+  const registeredOutlets = newOutlets.filter(id => !skippedAliasCollisionOutlets.includes(id) && !stagedOutletIdSet.has(id));
 
   if (registeredOutlets.length > 0 || backfilledOutlets.length > 0) {
     if (outletRegistry._meta) {

@@ -957,7 +957,8 @@ async function fetchAllTodayTixShows() {
       const response = await fetchTodayTixApiPage(offset, limit, loc);
       if (!response.data || response.data.length === 0) break;
 
-      allShows.push(...response.data);
+      const marketSlug = loc === 1 ? 'nyc' : 'london';
+      for (const s of response.data) allShows.push({ ...s, _market: marketSlug });
       const total = response.pagination?.total || '?';
       console.log(`   Fetched ${allShows.length} shows (${market}: ${offset + response.data.length}/${total})...`);
 
@@ -982,14 +983,20 @@ async function fetchAllTodayTixShows() {
 
   const lookup = {};
   const byId = {}; // TodayTix ID → image data (avoids title collisions between NYC/London)
+  // Per-market title lookups (BRO-4401): the combined map is last-write-wins,
+  // so a title running in both cities (Hamilton, Hadestown, Wicked…) always
+  // resolved to the London entry whatever the show's own market.
+  const byMarket = { nyc: {}, london: {} };
   for (const show of allShows) {
     const name = show.displayName || show.name;
     if (!name) continue;
 
     const images = show.images?.productMedia || {};
+    const market = show._market || 'nyc';
     const entry = {
       id: show.id,
       displayName: name,
+      market,
       square: extractUrl(images.posterImageSquare),
       poster: extractUrl(images.posterImage),
       hero: extractUrl(images.appHeroImage),
@@ -999,14 +1006,19 @@ async function fetchAllTodayTixShows() {
     const key = normalizeTitle(name);
     lookup[key] = entry;
     byId[show.id] = entry;
+    byMarket[market][key] = entry;
   }
 
   lookup._byId = byId;
+  lookup._byMarket = byMarket;
   return lookup;
 }
 
 // Match our show title against the TodayTix API lookup map
-function matchTodayTixShow(showTitle, apiLookup, todaytixId) {
+// `market` ('nyc' | 'london', from todaytixMarket(show)) restricts title
+// matching to that city's active shows (BRO-4401); without it the combined
+// map's last-write-wins order handed a Broadway show its London twin's id.
+function matchTodayTixShow(showTitle, apiLookup, todaytixId, market) {
   if (!apiLookup || Object.keys(apiLookup).length === 0) return null;
 
   // 0. Direct ID match (most reliable — handles cross-market title collisions like "Hamilton")
@@ -1014,15 +1026,17 @@ function matchTodayTixShow(showTitle, apiLookup, todaytixId) {
     return apiLookup._byId[todaytixId];
   }
 
+  const pool = (market && apiLookup._byMarket && apiLookup._byMarket[market]) || apiLookup;
+  const poolEntries = Object.entries(pool).filter(([k]) => !k.startsWith('_'));
   const normalized = normalizeTitle(showTitle);
 
   // 1. Exact normalized match
-  if (apiLookup[normalized]) {
-    return apiLookup[normalized];
+  if (pool[normalized]) {
+    return pool[normalized];
   }
 
   // 2. Substring containment (with length-ratio guard to prevent false positives)
-  for (const [apiNorm, data] of Object.entries(apiLookup)) {
+  for (const [apiNorm, data] of poolEntries) {
     if (isSafeSubstringMatch(apiNorm, normalized)) {
       return data;
     }
@@ -1031,10 +1045,10 @@ function matchTodayTixShow(showTitle, apiLookup, todaytixId) {
   // 3. Strip year suffix from our title and retry (e.g., "hells kitchen 2024" → "hells kitchen")
   const withoutYear = normalized.replace(/\s*\d{4}$/, '').trim();
   if (withoutYear !== normalized && withoutYear.length > 2) {
-    if (apiLookup[withoutYear]) {
-      return apiLookup[withoutYear];
+    if (pool[withoutYear]) {
+      return pool[withoutYear];
     }
-    for (const [apiNorm, data] of Object.entries(apiLookup)) {
+    for (const [apiNorm, data] of poolEntries) {
       if (isSafeSubstringMatch(apiNorm, withoutYear)) {
         return data;
       }
@@ -2374,17 +2388,31 @@ async function processOneShow(show, apiLookup, todayTixIds, badImagesOnly, verif
 
   if (!skipTodayTix) {
     // Try matching against TodayTix API data (instant, no HTTP call)
-    apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
+    const market = todaytixMarket(show);
+    apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, market);
 
     // Cache API-discovered TodayTix ID
     if (apiData && apiData.id) {
-      todayTixIds.shows[show.id] = { id: apiData.id, slug: null };
+      todayTixIds.shows[show.id] = { id: apiData.id, slug: null, market: apiData.market || market };
     }
 
     // When re-sourcing bad images, clear the cached TodayTix ID so we re-discover
     if (badImagesOnly && todayTixIds.shows[show.id]) {
       console.log(`   Clearing cached TodayTix ID for ${show.id} (re-discovering)`);
       delete todayTixIds.shows[show.id];
+    }
+
+    // A London show's cached id that predates market-aware discovery was
+    // found through the NYC-only path (BRO-4401 review: 42 such entries
+    // share their id with an NYC show — hadestown-west-end-2024 → the NYC
+    // Hadestown). Treat it as stale and re-discover rather than build a
+    // /london/ URL from a New York id.
+    for (const cacheKey of [show.id, show.slug]) {
+      const cached = cacheKey && todayTixIds.shows[cacheKey];
+      if (market === 'london' && cached && !cached.market) {
+        console.log(`   Discarding pre-market cached TodayTix ID ${cached.id} for ${cacheKey} (found via the NYC-only path) — re-discovering`);
+        delete todayTixIds.shows[cacheKey];
+      }
     }
 
     // If no API match, try page-scrape discovery
@@ -2439,7 +2467,7 @@ async function processShowsConcurrently(shows, apiLookup, todayTixIds, badImages
   const apiShows = [];
   const scrapeShows = [];
   for (const show of shows) {
-    const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
+    const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, todaytixMarket(show));
     if (apiData) {
       apiShows.push(show);
     } else {
@@ -2844,7 +2872,7 @@ async function main() {
       }
 
       // Try TodayTix API match
-      const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId);
+      const apiData = matchTodayTixShow(show.title, apiLookup, show.todaytixId, todaytixMarket(show));
       if (apiData) {
         const hero = apiData.hero || apiData.headerImage || null;
         if (hero && !/coming.?soon/i.test(hero) && !/NORAM/i.test(hero)) {
