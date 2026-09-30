@@ -1670,7 +1670,10 @@ function isMisroutedCvNonReviewWrongShow(data) {
   if (!data || data.wrongShow !== true) return false;
   if (typeof data.wrongShowReason !== 'string' || !data.wrongShowReason.startsWith('CV-promoted: ')) return false;
   if (cvWrongArticleFamily(data.contentVerification) !== 'nonReview') return false;
-  return cvNonReviewHumanCleared(data);
+  // Only the explicit non-review clear. wrongArticleManualClear says "this is
+  // a review", not "of this production", and an out-of-window file carrying it
+  // must keep its wrongShow (in-window-slug-veto.test.mjs).
+  return data.nonReviewManualClear === true;
 }
 
 function wrongShowCleared(data) {

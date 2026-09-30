@@ -182,7 +182,7 @@ test('wrong-show: handles null show.type gracefully', () => {
   assert.doesNotMatch(prompt, /OPERA CONTEXT/);
 });
 
-test('wrong-show: truncates long text at 2000 chars', () => {
+test('wrong-show: samples long text (head + show mentions + tail) instead of a 2000-char head (BRO-4429)', () => {
   const longText = 'a'.repeat(5000);
   const prompt = buildWrongShowUserPrompt({
     show: { type: 'musical' },
@@ -190,7 +190,16 @@ test('wrong-show: truncates long text at 2000 chars', () => {
     showId: 'test-2026',
     text: longText,
   });
-  assert.match(prompt, /first 2000 chars/);
+  assert.match(prompt, /opening, passages naming the show, and ending/);
+  assert.ok(prompt.length < 4400, `prompt stays near the 4000-char sample budget: ${prompt.length}`);
+});
+
+test('wrong-show: short text is sent whole', () => {
+  const prompt = buildWrongShowUserPrompt({
+    show: { type: 'musical' }, showTitle: 'Test', showId: 'test-2026', text: 'A short review of Test.',
+  });
+  assert.match(prompt, /\(complete\)/);
+  assert.match(prompt, /A short review of Test\./);
 });
 
 test('classifier prompt tells the model any tour stop counts (BRO-4211)', () => {
