@@ -58,6 +58,7 @@ function isExcluded(data) {
 function hasAnyScore(data) {
   return !!data.originalScore || data.originalScoreNormalized != null || !!data.aggregatorStars
     || !!data.originalScoreManual || data.originalScoreCleared === true
+    || data.assignedScore != null || data.humanReviewScore != null
     || (data.llmScore && typeof data.llmScore.score === 'number');
 }
 
