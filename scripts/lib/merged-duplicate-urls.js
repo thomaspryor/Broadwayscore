@@ -25,7 +25,7 @@ function keyOf(url) {
 }
 
 /** True when `url` was folded into `record` by an earlier merge. */
-function isMergedAwayUrl(record, url) {
+function isMergedDuplicateUrl(record, url) {
   const k = keyOf(url);
   if (!k || !record || !Array.isArray(record.mergedDuplicateUrls)) return false;
   return record.mergedDuplicateUrls.some((u) => keyOf(u) === k);
@@ -35,7 +35,7 @@ function isMergedAwayUrl(record, url) {
  * Record `url` on `target` as merged away. No-op for the target's own URL, an
  * empty/garbage URL, or one already recorded. Returns true when target changed.
  */
-function recordMergedAwayUrl(target, url) {
+function recordMergedDuplicateUrl(target, url) {
   const k = keyOf(url);
   if (!k || !target) return false;
   if (target.url && keyOf(target.url) === k) return false;
@@ -49,7 +49,7 @@ function recordMergedAwayUrl(target, url) {
  * Find a file in `showDir` (same outlet) that a merge already folded `url` into.
  * Reads only the show's own directory; fails open (null) on any read error.
  */
-function findMergedAwayOwner({ showDir, url, outletId, normalizeOutletId = (x) => x }) {
+function findMergedDuplicateOwner({ showDir, url, outletId, normalizeOutletId = (x) => x }) {
   const k = keyOf(url);
   if (!k || !showDir) return null;
   let files;
@@ -59,11 +59,11 @@ function findMergedAwayOwner({ showDir, url, outletId, normalizeOutletId = (x) =
     if (!f.endsWith('.json')) continue;
     let d;
     try { d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8')); } catch { continue; }
-    if (!d || !Array.isArray(d.mergedDuplicateUrls) || !isMergedAwayUrl(d, url)) continue;
+    if (!d || !Array.isArray(d.mergedDuplicateUrls) || !isMergedDuplicateUrl(d, url)) continue;
     if (want && d.outletId && normalizeOutletId(d.outletId) !== want) continue;
     return { filename: f, data: d };
   }
   return null;
 }
 
-module.exports = { isMergedAwayUrl, recordMergedAwayUrl, findMergedAwayOwner, MAX_TRACKED };
+module.exports = { isMergedDuplicateUrl, recordMergedDuplicateUrl, findMergedDuplicateOwner, MAX_TRACKED };

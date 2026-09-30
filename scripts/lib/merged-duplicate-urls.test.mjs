@@ -17,7 +17,7 @@ const ROOT = resolve(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const require = createRequire(import.meta.url);
 const { mergeUniqueReviewFields } = require(resolve(ROOT, 'scripts/lib/merge-review-fields.js'));
 const { mergeReviews, maybeUpgradeUrl } = require(resolve(ROOT, 'scripts/lib/review-normalization.js'));
-const { isMergedAwayUrl, recordMergedAwayUrl } = require(resolve(ROOT, 'scripts/lib/merged-duplicate-urls.js'));
+const { isMergedDuplicateUrl, recordMergedDuplicateUrl } = require(resolve(ROOT, 'scripts/lib/merged-duplicate-urls.js'));
 const { createOrMergeReviewFile } = require(resolve(ROOT, 'scripts/lib/review-file-writer.js'));
 
 const LONG = 'https://culturesauce.com/how-shakespeare-saved-my-life-treats-the-bard-as-life-coach-off-broadway-review/';
@@ -41,16 +41,16 @@ describe('merged-away url tombstone', () => {
 
   test('recording is idempotent, ignores own url and garbage', () => {
     const t = survivor();
-    assert.equal(recordMergedAwayUrl(t, LONG), false);
-    assert.equal(recordMergedAwayUrl(t, 'N/A'), false);
-    assert.equal(recordMergedAwayUrl(t, SHORT), true);
-    assert.equal(recordMergedAwayUrl(t, SHORT.slice(0, -1)), false);
+    assert.equal(recordMergedDuplicateUrl(t, LONG), false);
+    assert.equal(recordMergedDuplicateUrl(t, 'N/A'), false);
+    assert.equal(recordMergedDuplicateUrl(t, SHORT), true);
+    assert.equal(recordMergedDuplicateUrl(t, SHORT.slice(0, -1)), false);
     assert.equal(t.mergedDuplicateUrls.length, 1);
   });
 
   test('mergeReviews refuses to adopt a merged-away url and keeps text + score', () => {
     const t = survivor();
-    recordMergedAwayUrl(t, SHORT);
+    recordMergedDuplicateUrl(t, SHORT);
     const out = mergeReviews(t, { outletId: 'culturesauce', criticName: 'Thom Geier', url: SHORT, source: 'playbill-verdict' });
     assert.equal(out.url, LONG);
     assert.equal(out.assignedScore, 58);
@@ -65,7 +65,7 @@ describe('merged-away url tombstone', () => {
 
   test('maybeUpgradeUrl refuses a merged-away url even on bad content', () => {
     const t = { ...survivor(), fullText: null, contentTier: 'stub', assignedScore: undefined, originalScore: undefined };
-    recordMergedAwayUrl(t, SHORT);
+    recordMergedDuplicateUrl(t, SHORT);
     assert.equal(maybeUpgradeUrl(t, SHORT, 'playbill-verdict'), false);
     assert.equal(t.url, LONG);
   });
@@ -78,21 +78,21 @@ describe('merged-away url tombstone', () => {
     const NYT_LONG = 'https://www.nytimes.com/2025/09/01/theater/vanya-review-long.html';
     const NYT_SHORT = 'https://www.nytimes.com/2025/09/01/theater/vanya-review.html';
     const t = { ...survivor(), showId, outletId: 'nytimes', criticName: 'Jesse Green', url: NYT_LONG };
-    recordMergedAwayUrl(t, NYT_SHORT);
+    recordMergedDuplicateUrl(t, NYT_SHORT);
     writeFileSync(join(showDir, 'nytimes--jesse-green.json'), JSON.stringify(t));
     const r = createOrMergeReviewFile(showId, {
       outletId: 'nytimes', outlet: 'The New York Times', criticName: 'Unknown', url: NYT_SHORT, source: 'broad-web-serp',
       fields: { fullText: null, contentTier: 'excerpt' },
     }, { reviewTextsDir: dir });
     assert.equal(r.action, 'skipped');
-    assert.match(r.reason, /merged-away-url/);
+    assert.match(r.reason, /merged-duplicate-url/);
     assert.deepEqual(readdirSync(showDir), ['nytimes--jesse-green.json']);
   });
 
-  test('isMergedAwayUrl is false for unrelated urls and records without the field', () => {
-    assert.equal(isMergedAwayUrl(survivor(), SHORT), false);
-    const t = survivor(); recordMergedAwayUrl(t, SHORT);
-    assert.equal(isMergedAwayUrl(t, 'https://culturesauce.com/other-review/'), false);
+  test('isMergedDuplicateUrl is false for unrelated urls and records without the field', () => {
+    assert.equal(isMergedDuplicateUrl(survivor(), SHORT), false);
+    const t = survivor(); recordMergedDuplicateUrl(t, SHORT);
+    assert.equal(isMergedDuplicateUrl(t, 'https://culturesauce.com/other-review/'), false);
   });
 });
 
@@ -104,8 +104,8 @@ describe('drift: every fold-and-delete site records the merged-away url', () => 
     'scripts/fix-critic-name-duplicates.js',
     'scripts/backfill-pv-critics.js',
   ]) {
-    test(`${f} calls recordMergedAwayUrl`, () => {
-      assert.match(readFileSync(resolve(ROOT, f), 'utf8'), /recordMergedAwayUrl/);
+    test(`${f} calls recordMergedDuplicateUrl`, () => {
+      assert.match(readFileSync(resolve(ROOT, f), 'utf8'), /recordMergedDuplicateUrl/);
     });
   }
 });

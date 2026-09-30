@@ -811,13 +811,13 @@ function mergeReviews(existing, incoming, options = {}, context = {}) {
   // makes applyUrlChangeInvariant wipe the surviving text + score (Culture
   // Sauce "How Shakespeare Saved My Life", 2026-09-30). No-op the whole merge,
   // like the cross-outlet guard below: incoming.fullText came from that URL.
-  if (urlChanged && require('./merged-duplicate-urls').isMergedAwayUrl(existing, incoming.url)) {
+  if (urlChanged && require('./merged-duplicate-urls').isMergedDuplicateUrl(existing, incoming.url)) {
     console.warn(`[mergeReviews] refused merged-away url for ${existing.outletId || context.file || '?'}: ${incoming.url}`);
     logExclusion({
       script: context.script || 'unknown-caller',
       showId: context.showId || 'unknown',
       file: context.file || '-',
-      reason: 'skippedMergedAwayUrl',
+      reason: 'skippedMergedDuplicateUrl',
       details: { existingUrl: existing.url, incomingUrl: incoming.url, outletId: existing.outletId, criticName: existing.criticName },
     });
     return { ...existing };
@@ -2333,7 +2333,7 @@ function maybeUpgradeUrl(existingData, newUrl, source, opts = {}) {
   if (!newUrl.startsWith('http://') && !newUrl.startsWith('https://')) return false;
   if (isProfileUrl(newUrl)) return false;
   // BRO-4414: never adopt a URL an earlier merge folded into this record.
-  if (require('./merged-duplicate-urls').isMergedAwayUrl(existingData, newUrl)) return false;
+  if (require('./merged-duplicate-urls').isMergedDuplicateUrl(existingData, newUrl)) return false;
   // Manual URL decisions win — mirrors review-write-guard.js's own
   // locked/urlVerified/urlManualOverride check. Without this, a manually
   // verified URL could get silently swapped here.
