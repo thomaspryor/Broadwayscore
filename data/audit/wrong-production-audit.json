@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T01:44:47.339Z",
+  "timestamp": "2026-09-30T02:31:24.267Z",
   "stats": {
-    "totalReviews": 45347,
-    "alreadyFlagged": 18508,
-    "dateGuardCatches": 240,
-    "directorMismatch": 1185,
-    "tvFilmSignals": 1323,
+    "totalReviews": 45351,
+    "alreadyFlagged": 18485,
+    "dateGuardCatches": 241,
+    "directorMismatch": 1187,
+    "tvFilmSignals": 1319,
     "londonSignals": 1234,
     "offBroadwaySignals": 509,
     "yearMismatch": 101,
-    "noPublishDate": 3986
+    "noPublishDate": 4026
   },
   "findings": [
     {
@@ -188,9 +188,8 @@
     {
       "showId": "a-christmas-carol-2019",
       "file": "newyorker--jesse-green.json",
-      "score": 50,
-      "publishDate": "December 16, 2019",
-      "url": "https://www.newyorker.com/magazine/2019/12/23/a-christmas-carol-brings-dickens-to-broadway",
+      "publishDate": null,
+      "url": "https://www.newyorker.com/culture/goings-on/god-bless-a-christmas-carol-every-one",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -7249,20 +7248,6 @@
       ]
     },
     {
-      "showId": "dead-accounts-2012",
-      "file": "variety--marilyn-stasio.json",
-      "score": 38,
-      "publishDate": "November 29, 2012",
-      "url": "https://variety.com/2012/film/news/better-days-for-indie-financing-1118061665/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
       "showId": "dead-outlaw-2025",
       "file": "ew--emlyn-travis.json",
       "score": 74,
@@ -8050,7 +8035,7 @@
     {
       "showId": "deep-heat-rivalry-off-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
-      "score": 81,
+      "score": 79,
       "publishDate": "2026-09-17",
       "url": "https://www.allthatdazzles.co.uk/post/review-deep-heat-rivalry-the-other-palace-studio",
       "findings": [
@@ -8106,7 +8091,7 @@
     {
       "showId": "deep-heat-rivalry-off-west-end-2026",
       "file": "theatre-weekly--pely-carney.json",
-      "score": 77,
+      "score": 78,
       "publishDate": "2026-09-17",
       "url": "https://theatreweekly.com/review-deep-heat-rivalry-at-the-other-palace-studio/",
       "findings": [
@@ -16075,20 +16060,6 @@
       ]
     },
     {
-      "showId": "irving-berlins-white-christmas-2009",
-      "file": "variety--david-rooney.json",
-      "score": 58,
-      "publishDate": "November 25, 2009",
-      "url": "https://variety.com/2013/film/features/twickenham-1200471981/attachment/family-tree-3/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
-        }
-      ]
-    },
-    {
       "showId": "is-he-dead-2007",
       "file": "variety--david-rooney.json",
       "score": 86,
@@ -16099,20 +16070,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "is-this-a-room-2021",
-      "file": "hollywood-reporter--angie-han.json",
-      "score": 82,
-      "publishDate": "October 11, 2021",
-      "url": "https://www.hollywoodreporter.com/video/universals-wicked-production-gets-pushed-to-2022-thr-news/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 3\""
         }
       ]
     },
@@ -20898,6 +20855,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "i-paper--unknown.json",
+      "score": 77,
       "publishDate": "2023-02-02",
       "url": "https://inews.co.uk/culture/arts/my-sons-a-queer-but-what-can-you-do-ambassadors-theatre-review-a-bubbly-story-with-a-big-heart-2123963?srsltid=AU7gw4VFjlKyCLX7gE4D3lV4jNb7Qo-HtXPpIbMALtDTUI0ijAXKWBoP",
       "findings": [
@@ -20995,7 +20953,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "thestage--paul-vale.json",
-      "score": 94,
+      "score": 96,
       "publishDate": "February 2nd, 2023",
       "url": "https://www.thestage.co.uk/reviews/my-sons-a-queer-but-what-can-you-do-review-at-ambassadors-london-by-rob-madge",
       "findings": [
@@ -24171,20 +24129,6 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
-        }
-      ]
-    },
-    {
-      "showId": "relatively-speaking-2011",
-      "file": "variety--charles-isherwood.json",
-      "score": 45,
-      "publishDate": "October 11, 2011",
-      "url": "https://variety.com/2011/film/news/goldwyn-awards-name-winners-1118045506/",
-      "findings": [
-        {
-          "type": "TV_FILM_SIGNAL",
-          "severity": "HIGH",
-          "detail": "Contains TV/film keyword: \"season 4\""
         }
       ]
     },
@@ -30792,7 +30736,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 65,
+      "score": 57,
       "publishDate": "2026-09-24",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-last-ship-theatre-royal-drury-lane",
       "findings": [
@@ -34476,6 +34420,25 @@
       "file": "financialtimes--julianna-barnaby.json",
       "publishDate": "2026-09-28",
       "url": "https://www.westendtheatre.com/369207/news/tru-reviews/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"rob ashford\" from tru-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-west-end-2026",
+      "file": "financialtimes--sarah-hemming.json",
+      "score": 60,
+      "publishDate": null,
+      "url": "https://www.ft.com/content/843bd598-2633-4ffb-8b89-f4e926f26cf2?syn-25a6b1a6=1",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -40148,7 +40111,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "artsdesk--aleks-sierz.json",
-      "score": 62,
+      "score": 57,
       "publishDate": "2026-09-22",
       "url": "https://theartsdesk.com/theatre/catarina-and-beauty-killing-fascists-national-theatre-review-thoroughly-uncomfortable-watch",
       "findings": [
@@ -40189,7 +40152,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 84,
+      "score": 95,
       "publishDate": "2026-09-22",
       "url": "https://www.broadwayworld.com/westend/article/Review-CATERINA-AND-THE-BEAUTY-OF-KILLING-FASCISTS-National-Theatre-20260922",
       "findings": [
@@ -47824,6 +47787,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"theater for a new audience\""
+        }
+      ]
+    },
+    {
+      "showId": "lost-in-del-valle-return-off-broadway-2026",
+      "file": "vulture--kendall-dupre.json",
+      "publishDate": "2026-04-15",
+      "url": "https://www.newyorksocialdiary.com/lost-in-del-valle-this-true-tale-doesnt-write-itself/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 152d before show (2026-04-15 vs 2026-09-14)"
         }
       ]
     },
