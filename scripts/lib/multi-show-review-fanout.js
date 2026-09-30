@@ -341,7 +341,7 @@ function introSections(text, shows, ownShowId, publishDate) {
 }
 
 // "How Shakespeare Saved My Life is at the Public Theater through October 25."
-const RUN_LISTING_RE = /[^.!?\n]{0,160}\bis (?:at|playing at|running at|now at|in performance at)\b[^.!?\n]{0,160}\.?/gi;
+const RUN_LISTING_RE = /[^.!?\n]{0,160}\bis (?:at|playing at|running at|now at|in performance at)\b[^.!?\n]{0,120}\b(?:through|until|to)\b[^.!?\n]{0,60}\.?/gi;
 
 /**
  * True when a caption section names another section's show. Photo captions
@@ -378,6 +378,8 @@ function captionSectionsCrossTalk(sections, shows) {
 function planMultiShowFanout(data, shows, opts = {}) {
   if (!data || typeof data !== 'object') return null;
   if (data.multiShowSplitChild) return null;
+  // An undone split stays whole (a later heuristic change must not re-cut it).
+  if (data.multiShowUnsplitAt) return null;
   if (data.multiShowSplitProcessed) {
     const retrimmed = data.multiShowSplitParent && typeof data.fullText === 'string'
       && Number.isFinite(data.multiShowSplitTextLength)
@@ -532,7 +534,7 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
   const ownShowId = data.showId || path.basename(path.dirname(filePath));
   const plan = planMultiShowFanout(data, shows, { ownShowId });
   if (!plan) {
-    if (!dryRun && isWholeArticleBackOnBadSplit(data)) {
+    if (!dryRun && isWholeArticleBackOnBadSplit(data, shows)) {
       result.unsplit = unsplitArticle(filePath, data, reviewTextsDir, ownShowId);
     }
     return result;
@@ -585,10 +587,19 @@ function applyMultiShowFanoutToFile(filePath, opts = {}) {
  * it back) but whose article no longer plans as a split: the earlier split
  * was wrong (BRO-4431 Vulture caption split).
  */
-function isWholeArticleBackOnBadSplit(data) {
-  return !!(data && data.multiShowSplitParent === true && typeof data.fullText === 'string'
+function isWholeArticleBackOnBadSplit(data, shows) {
+  if (!(data && data.multiShowSplitParent === true && typeof data.fullText === 'string'
     && Number.isFinite(data.multiShowSplitTextLength)
-    && data.fullText.length > data.multiShowSplitTextLength + 200);
+    && data.fullText.length > data.multiShowSplitTextLength + 200)) return false;
+  // Never on a record a human or another verdict owns.
+  if (data._locked === true || data.manualContentTier || data.humanReviewScore != null
+    || data.wrongProduction === true || data.isRoundupArticle === true || data.duplicateOf) return false;
+  // Positive evidence only: the article's caption sections exist and cross-
+  // talk. A planner null for any other reason (partial tier, a show missing
+  // from the catalogue) must not undo a correct split.
+  const showIds = new Set(shows.map((s) => s.id));
+  const sections = splitMultiShowArticle(data.fullText, shows).filter((s) => showIds.has(s.showId));
+  return sections.length >= 2 && captionSectionsCrossTalk(sections, shows);
 }
 
 const SPLIT_FIELDS = [
@@ -629,6 +640,7 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
     const { multiShowSplitGroup } = require('./multi-show-split-group');
     const sameArticle = !!data.url && child.url
       && multiShowSplitGroup({ ...child, multiShowSplitChild: true }) === multiShowSplitGroup(data);
+    if (child._locked === true || child.manualContentTier || child.humanReviewScore != null) continue;
     if (child.multiShowSplitChild !== true || child.multiShowSplitParentShowId !== ownShowId) {
       // Already holds the whole article unsplit (re-ingested under its show):
       // mark it joint too, text unchanged.

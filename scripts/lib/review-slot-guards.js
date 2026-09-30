@@ -85,7 +85,13 @@ function isStaleNonReviewSlot(existing, incomingUrl) {
   // evidence when the url shape can't give it (westendbestfriend.co.uk files
   // news and reviews alike under /news/: a National Theatre Live broadcast
   // post held the Golden Boy review's slot, issue 913).
-  if (_classify(existing.url).ok && existing.isNonReview !== true) return false;
+  // A wrongProduction/wrongShow record also marked isNonReview only counts
+  // when its content verdict agrees (wrong_content): CV promotion can mis-set
+  // isNonReview on a real prior-production review, which must keep blocking.
+  const nonReviewVerdict = existing.isNonReview === true
+    && ((existing.wrongProduction !== true && existing.wrongShow !== true)
+      || existing.incompleteReason === 'wrong_content');
+  if (_classify(existing.url).ok && !nonReviewVerdict) return false;
   const incomingVerdict = _classify(incomingUrl);
   return incomingVerdict.ok === true && !isAggregatorPageUrl(incomingUrl);
 }

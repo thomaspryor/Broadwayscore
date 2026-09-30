@@ -2858,11 +2858,11 @@ function extractAuthorFromHtml(html, text, options = {}) {
 
   // An explicit "Reviewer: Name" line under the headline beats a house-account
   // meta author (The Reviews Hub: meta "The Reviews Hub - London", sub-title
-  // "Reviewer: Scott Matthewman"; BRO-4431). Same pattern as
-  // byline-extraction.js.
+  // "Reviewer: Scott Matthewman"; BRO-4431). One reader:
+  // byline-extraction.js extractReviewerLine.
   {
-    const rv = />\s*Reviewer:\s*([A-Z][A-Za-z .'’-]{1,60}?)\s*</.exec(html);
-    if (rv && isValidAuthorName(rv[1].trim())) return cleanAuthorName(rv[1].trim());
+    const reviewer = require('./byline-extraction').extractReviewerLine(html);
+    if (reviewer && isValidAuthorName(reviewer)) return cleanAuthorName(reviewer);
   }
 
   const metaPatterns = [

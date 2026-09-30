@@ -522,7 +522,7 @@ const DM_MORE = 'Rupert Goold stages the fight scenes with a crunching physicali
 test('a longer copy of the same article replaces a truncated body on an explicit ingest (issue 908)', () => {
   const { isSameArticleBodyUpgrade } = require('./stale-merge-check.js');
   const stored = { fullText: DM_OPEN + DM_MORE.slice(0, 180) + '\n\nAssociated Newspapers Limited', contentTier: 'truncated' };
-  const fuller = DM_OPEN + DM_MORE.repeat(4);
+  const fuller = DM_OPEN + DM_MORE.repeat(12);
   assert.equal(isSameArticleBodyUpgrade(stored, fuller), true);
   assert.equal(isSameArticleBodyUpgrade({ ...stored, contentTier: 'complete' }, fuller), false, 'a complete body is never swapped');
   assert.equal(isSameArticleBodyUpgrade(stored, 'An entirely different page about ticket offers. '.repeat(30)), false, 'different article');
@@ -565,7 +565,7 @@ test('a record classified "not a review" gives up its slot to the real review ur
   const news = {
     showId: GB, outletId: 'west-end-best-friend', criticName: 'News Desk',
     url: 'https://www.westendbestfriend.co.uk/news/almeida-theatre-golden-boy-broadcast-cinemas-national-theatre-live',
-    wrongProduction: true, isNonReview: true, contentTier: 'invalid',
+    wrongProduction: true, isNonReview: true, contentTier: 'invalid', incompleteReason: 'wrong_content',
   };
   const review = 'https://www.westendbestfriend.co.uk/news/review-golden-boy-almeida-theatre';
   assert.equal(isStaleNonReviewSlot(news, review), true);
@@ -573,6 +573,9 @@ test('a record classified "not a review" gives up its slot to the real review ur
   // production's REVIEW, which must keep blocking.
   const { isNonReview, ...prior } = news; // eslint-disable-line no-unused-vars
   assert.equal(isStaleNonReviewSlot(prior, review), false);
+  // isNonReview mis-set by CV promotion on a real prior-production review
+  // (no wrong_content verdict) keeps blocking.
+  assert.equal(isStaleNonReviewSlot({ ...news, incompleteReason: undefined }, review), false);
 
   // End to end through the writer: the slot moves AND keeps the new text.
   const { createOrMergeReviewFile } = require('./review-file-writer.js');
@@ -653,4 +656,55 @@ test('a wrong split is undone when the whole article comes back (re-ingest)', ()
   // A correctly split parent is untouched by the undo path.
   const { isWholeArticleBackOnBadSplit } = require('./multi-show-review-fanout.js');
   assert.equal(isWholeArticleBackOnBadSplit({ ...parentBefore }), false);
+});
+
+// ── Second-opinion findings (BRO-4431 follow-up review) ──
+
+test('body upgrade tier order: complete > truncated > excerpt, strictly better unless complete', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-tier-'));
+  fs.mkdirSync(path.join(dir, GB));
+  const file = path.join(dir, GB, 'daily-mail--patrick-marmion.json');
+  const stored = DM_OPEN + DM_MORE.repeat(2);
+  const seed = { showId: GB, outletId: 'daily-mail', outlet: 'Daily Mail', criticName: 'Patrick Marmion', url: DM_URL, publishDate: '2026-09-16', fullText: stored, contentTier: 'truncated' };
+  const input = { outletId: 'daily-mail', outlet: 'Daily Mail', criticName: 'Patrick Marmion', url: DM_URL, source: 'submit-review-form', replaceBadBody: true };
+  // A longer copy that still classifies truncated (no ending) is not taken.
+  fs.writeFileSync(file, JSON.stringify(seed, null, 2));
+  const stillCut = DM_OPEN + DM_MORE.repeat(3) + 'And then the second act';
+  createOrMergeReviewFile(GB, { ...input, fields: { fullText: stillCut } }, { reviewTextsDir: dir });
+  const after = JSON.parse(fs.readFileSync(file, 'utf8'));
+  const { classifyContentTier } = require('./content-quality.js');
+  const candTier = classifyContentTier({ ...seed, fullText: stillCut, contentTier: undefined }).contentTier;
+  if (candTier !== 'complete') assert.equal(after.fullText, stored, `a ${candTier} copy does not replace a truncated body`);
+});
+
+test('a correct split that gets its whole article back re-trims; it is never undone', () => {
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-retrim-'));
+  const [hs, arias] = VULTURE_SHOWS.map((s) => s.id);
+  const clean = `Joey Arias in Arias With a Twist, at the HERE Arts Center.\n Photo: Someone\n ${filler('cabaret', 8)}\n\nJacob Ming-Trent in How Shakespeare Saved My Life, at the Public Theater.\n Photo: Someone\n ${filler('solo show', 10)}`;
+  const own = clean.slice(clean.indexOf('Jacob Ming-Trent'));
+  fs.mkdirSync(path.join(dir, hs));
+  const p = path.join(dir, hs, 'vulture--sara-holdren.json');
+  const rec = { showId: hs, outletId: 'vulture', outlet: 'Vulture', criticName: 'Sara Holdren', url: 'https://www.vulture.com/x.html', publishDate: '2026-09-28', contentTier: 'complete',
+    fullText: clean, multiShowSplitProcessed: '2026-09-30T00:00:00Z', multiShowSplitParent: true, multiShowSplitChildShowIds: [arias], multiShowSplitTextLength: own.length };
+  const { isWholeArticleBackOnBadSplit } = require('./multi-show-review-fanout.js');
+  assert.equal(isWholeArticleBackOnBadSplit(rec, VULTURE_SHOWS), false);
+  // Planner null for another reason (a partial tier) is not evidence either.
+  assert.equal(isWholeArticleBackOnBadSplit({ ...rec, fullText: ESSAY, contentTier: 'truncated', humanReviewScore: 70 }, VULTURE_SHOWS), false);
+  fs.writeFileSync(p, JSON.stringify(rec, null, 2));
+  const res = applyMultiShowFanoutToFile(p, { shows: VULTURE_SHOWS, reviewTextsDir: dir });
+  assert.equal(res.unsplit, undefined);
+  // An undone split stays whole.
+  assert.equal(planMultiShowFanout({ ...rec, multiShowSplitParent: undefined, multiShowSplitProcessed: undefined, multiShowUnsplitAt: '2026-09-30' }, VULTURE_SHOWS), null);
+});
+
+test('an ordinary url upgrade keeps an enriched byline (only a stale-slot move resets it)', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-byline-'));
+  fs.mkdirSync(path.join(dir, GB));
+  const file = path.join(dir, GB, 'guardian--arifa-akbar.json');
+  fs.writeFileSync(file, JSON.stringify({ showId: GB, outletId: 'guardian', outlet: 'The Guardian', criticName: 'Arifa Akbar', criticEnrichedFrom: 'html-override:jsonld-person',
+    url: 'https://amp.theguardian.com/stage/2026/sep/17/golden-boy-review-almeida', publishDate: '2026-09-17', fullText: 'Short cut text of the review.', contentTier: 'truncated' }, null, 2));
+  createOrMergeReviewFile(GB, { outletId: 'guardian', outlet: 'The Guardian', criticName: 'Arifa Akbar', url: 'https://www.theguardian.com/stage/2026/sep/17/golden-boy-review-almeida', source: 'submit-review-form', fields: {} }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).criticName, 'Arifa Akbar');
 });

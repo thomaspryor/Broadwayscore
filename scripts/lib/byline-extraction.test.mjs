@@ -66,6 +66,9 @@ test('an explicit "Reviewer: Name" line beats a house-account meta author (The R
   const html = '<meta name="author" content="The Reviews Hub - London" /><h1 class="post-title">Cleansed – Almeida Theatre, London</h1><div class="sub-title">Reviewer: Scott Matthewman</div><a href="/author/trh_london/" rel="author">The Reviews Hub - London</a>';
   assert.equal(extractByline(html), 'Scott Matthewman');
   assert.equal(extractAuthorFromHtml(html, '', { url: 'https://www.thereviewshub.com/cleansed-almeida-theatre-london/' }), 'Scott Matthewman');
+  // Placeholder or initial-only reviewer lines fall through to the meta author.
+  assert.equal(extractByline('<meta name="author" content="Jane Doe" /><div>Reviewer: Anonymous Guest</div>'), 'Jane Doe');
+  assert.equal(extractByline('<meta name="author" content="Jane Doe" /><li>Reviewer: John D</li>'), 'Jane Doe');
   // No Reviewer line: the meta author still wins as before.
   assert.equal(extractByline('<meta name="author" content="Jane Doe" />'), 'Jane Doe');
 });

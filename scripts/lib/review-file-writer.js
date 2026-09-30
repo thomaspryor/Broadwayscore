@@ -1257,14 +1257,21 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // The candidate must also classify no worse than the stored body: a
   // longer fetch of the same paywalled page (lede + "Continue reading" + a
   // related-links list) is not an upgrade (Golden Boy Daily Mail, 908).
-  const _tierRank = { complete: 4, excerpt: 3, truncated: 2, stub: 1, invalid: 0 };
-  const _candidateTier = () => {
+  // Tier order is the codebase's (complete > truncated > excerpt > stub >
+  // invalid, merge-reviews-json TIER_RANK). A split parent's section is
+  // complete, so its whole article must be complete too; any other stored
+  // body must be strictly beaten, or matched only by 'complete'.
+  const _bodyUpgradeTierOk = () => {
+    const { tierRank } = require('./merge-reviews-json');
     const r = classifyContentTier({ ...existing, fullText: fields.fullText, contentTier: undefined });
-    return r && r.contentTier;
+    const cand = r && r.contentTier;
+    if (!cand) return false;
+    if (existing.multiShowSplitParent === true) return cand === 'complete';
+    return cand === 'complete' || tierRank({ contentTier: cand }) > tierRank(existing);
   };
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
       && isSameArticleBodyUpgrade(existing, fields.fullText)
-      && (_tierRank[_candidateTier()] ?? 0) >= Math.max(1, _tierRank[existing.contentTier] ?? 0)) {
+      && _bodyUpgradeTierOk()) {
     console.log(`  ↑ Replacing stored body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);
     existing.fullText = fields.fullText;
     changed = true;
@@ -1397,6 +1404,10 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // candidate URL that belongs to a different show (combined-roundup
   // contamination), and the full show record so the regression guard (#1416)
   // can reject a candidate dated outside the current run (a prior production).
+  // Decided BEFORE the swap: only a stale non-review slot's byline came from
+  // the page being replaced (913); an ordinary url upgrade (amp->canonical,
+  // round-up->direct) keeps the file's enriched byline.
+  const staleSlotMove = !!(input.url && isStaleNonReviewSlot(preMergeSnapshot, input.url));
   if (!urlLocked && input.url && maybeUpgradeUrl(existing, input.url, input.source, {
     showTitle: _getShowTitle(showId),
     show: _getShowById(showId),
@@ -1425,7 +1436,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       }
       // A byline read from the OLD page's content went with that page (913:
       // "News Desk" from a broadcast post stayed on the moved review).
-      if (existing.criticEnrichedFrom) {
+      if (staleSlotMove && existing.criticEnrichedFrom) {
         const incoming = criticName && criticName.toLowerCase() !== 'unknown' ? criticName : 'Unknown';
         if (existing.criticName !== incoming) {
           existing.criticName = incoming;
