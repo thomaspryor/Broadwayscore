@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4430",
   "planId": "cd3c013e-41dc-4839-b255-b5d687aa55be",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-09-30T12:00:00.000Z",
   "submitter": {
     "name": null,
@@ -204,5 +204,118 @@
         "description": "London Theatre review author (JSON-LD)."
       }
     ]
-  }
+  },
+  "executedAt": "2026-09-30T19:34:29.165Z",
+  "results": [
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted golden-boy-off-west-end-2026/broadwayworld--gary-naylor.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anansi-the-spider-west-end-2026/thestage--anna-james.json criticName: \"Anna James\" -> \"Oliver Jones\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anansi-the-spider-west-end-2026/thestage--anna-james.json publishDate: \"January 26th, 2023\" -> \"2026-08-19\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anansi-the-spider-west-end-2026/thestage--anna-james.json humanReviewScore: null -> 80"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "anansi-the-spider-west-end-2026/thestage--anna-james.json humanReviewNote: null -> \"The Stage 4/5 by Oliver Jones, 2026-08-19 (Regent's Park). The stored LLM score came from the 2023 Unicorn review's Show Score excerpt. BRO-4430.\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json publishDate: null -> \"2026-08-11\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "how-the-other-half-loves-west-end-2026/financialtimes--sarah-hemming.json url: \"https://www.westendtheatre.com/362643/news/how-the-other-half-loves-reviews-round-up/\" -> \"\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/nytg--unknown.json url: \"https://www.newyorktheatreguide.com/show/47271-the-pass\" -> \"https://www.newyorktheatreguide.com/reviews/the-pass-off-broadway-review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/nytg--unknown.json criticName: \"Unknown\" -> \"Amelia Merrill\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-pass-off-broadway-2026/nytg--unknown.json publishDate: null -> \"2026-08-06\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json url: \"https://www.theatermania.com/news/cast-announced-for-the-body-of-mary-a-play-in-three-acts-of-god_1848241/\" -> \"https://www.theatermania.com/news/review-the-body-of-mary-a-play-in-three-acts-of-god_1853803/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json criticName: \"Unknown\" -> \"Zachary Stewart\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026/theatermania--unknown.json publishDate: null -> \"2026-09-16\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json url: \"https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wassersteins-play-shows-its-age/\" -> \"https://nystagereview.com/2026/08/11/an-american-daughter-wendy-wasserstein-revival-falters/\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "an-american-daughter-off-broadway-2026/nysr--david-finkle.json publishDate: null -> \"2026-08-11\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted an-american-daughter-off-broadway-2026/nysr--unknown.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Deleted garry-starr-classic-penguins-off-broadway-2026/nysr--roma-torre.json"
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved garry-starr-classic-penguins-off-broadway-2026/nysr--michael-sommers.json → garry-starr-classic-penguins-off-broadway-2026/nysr--roma-torre.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/nysr--roma-torre.json criticName: \"Michael Sommers\" -> \"Roma Torre\""
+    },
+    {
+      "action": "review-file-op",
+      "ok": true,
+      "msg": "Moved garry-starr-classic-penguins-off-broadway-2026/nysr--unknown.json → garry-starr-classic-penguins-off-broadway-2026/nysr--michael-sommers.json"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "garry-starr-classic-penguins-off-broadway-2026/nysr--michael-sommers.json criticName: \"Unknown\" -> \"Michael Sommers\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/london-theatre--unknown.json criticName: \"Unknown\" -> \"Aliya Al-Hassan\""
+    }
+  ]
 }
