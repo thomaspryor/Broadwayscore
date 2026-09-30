@@ -107,6 +107,21 @@ jobs:
     # (16%) of real margin over the 84min worst case.
     timeout-minutes: 100
     steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -129,16 +144,6 @@ jobs:
           # demand. Same setup as land.yml, which also pushes main.
           fetch-depth: 0
           filter: blob:none
-
-      # BRO-4273: blob:none makes rebase/diff fetch missing blobs over the
-      # network, outside push-with-retry.sh's per-op timeout wrappers. Give
-      # those lazy fetches git's own low-speed abort (same 1KB/s for 45s the
-      # helper applies to fetch/push) so a stalled one fails instead of
-      # hanging until the job timeout.
-      - name: Guard lazy blob fetches against stalls
-        run: |
-          git config --local http.lowSpeedLimit 1000
-          git config --local http.lowSpeedTime 45
 
       # BRO-66: REVIEW_TEXTS_TOKEN is a classic PAT — 5000 req/hr across ALL
       # API calls from that token, shared by every workflow that checks out

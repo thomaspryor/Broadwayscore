@@ -633,9 +633,82 @@ function findBareAuditDirectoryGlobs(raw) {
   return violations;
 }
 
+/**
+ * Rule (o) (BRO-4231): an actions/checkout step whose `with:` block sets
+ * `fetch-depth: 0` without `filter: blob:none` — a FULL-BLOB full-history
+ * clone of this repo (~545 MB pack, ~24 min per checkout, measured on
+ * llm-ensemble-score.yml run 36523767401 and collect-review-texts.yml run
+ * 36550916420) where a blobless partial clone (~30 s, runs 36672742657 /
+ * 36672749242) keeps the full commit graph that `fetch-depth: 0` exists for
+ * (merge-base for push-with-retry.sh, the #209 parentless-root incident) and
+ * fetches blobs lazily. Nearly every job here reads only the working tree
+ * and pushes through push-with-retry.sh, which handles partial clones since
+ * BRO-4219.
+ *
+ * ADVISORY ONLY (rule (f)/(n) posture): the sweep that introduced this rule
+ * converted every safe workflow, but a genuine full-blob need exists
+ * (purge-archives-history.yml runs git filter-repo over every historical
+ * blob) and is exempted with `# hygiene-full-blobs-ok: <reason>` on the same
+ * step (anywhere between the step's first line and its `fetch-depth: 0`,
+ * or in the `with:` block).
+ *
+ * Comment-aware: a `fetch-depth: 0` that appears only in a `#` comment
+ * (guard-no-orphan-commit.yml, update-show-status.yml's rationale block) is
+ * not a key. Workflow files only — composite actions expose `fetch-depth`
+ * as an INPUT (checkout-review-texts/action.yml), so the caller passes a
+ * different file list. Returns [{ lineNum, text }] for each offending
+ * `fetch-depth: 0` line.
+ */
+// `fetch-depth: 0`, optionally quoted, optionally followed by a `# comment`.
+const FETCH_DEPTH_ZERO_RE = /^\s*fetch-depth\s*:\s*(['"]?)0\1\s*(?:#.*)?$/;
+const BLOB_NONE_FILTER_RE = /^\s*filter\s*:\s*(['"]?)blob:none\1\s*(?:#.*)?$/;
+const FULL_BLOBS_OK_RE = /hygiene-full-blobs-ok:/;
+
+function findFullBlobFullHistoryCheckouts(raw) {
+  const lines = raw.replace(/\r\n?/g, '\n').split('\n');
+  const hits = [];
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i];
+    if (line.trimStart().startsWith('#')) continue;
+    if (!FETCH_DEPTH_ZERO_RE.test(line)) continue;
+    const ind = indentOf(line);
+    const stepIndent = ind - 4; // `- uses:` sits two keys shallower than a `with:` value
+    let filtered = false;
+    let exempt = false;
+    // Upward: the rest of this `with:` block and the step's other keys, up to
+    // the step's `- ` line, then the contiguous comment block that introduces
+    // the step (that is where a reviewer writes "why this step is special").
+    for (let j = i - 1; j >= 0; j--) {
+      const l = lines[j];
+      if (l.trim() === '') continue;
+      const jInd = indentOf(l);
+      if (jInd < stepIndent) break; // above the step
+      if (FULL_BLOBS_OK_RE.test(l)) exempt = true;
+      if (jInd >= ind && !l.trimStart().startsWith('#') && BLOB_NONE_FILTER_RE.test(l)) filtered = true;
+      if (jInd === stepIndent && l.trimStart().startsWith('- ')) {
+        for (let k = j - 1; k >= 0 && indentOf(lines[k]) === stepIndent && lines[k].trimStart().startsWith('#'); k--) {
+          if (FULL_BLOBS_OK_RE.test(lines[k])) exempt = true;
+        }
+        break;
+      }
+    }
+    // Downward: the rest of the `with:` block (blank lines allowed inside).
+    for (let j = i + 1; j < lines.length; j++) {
+      const l = lines[j];
+      if (l.trim() === '') continue;
+      if (indentOf(l) < ind) break; // left the with: block
+      if (FULL_BLOBS_OK_RE.test(l)) exempt = true;
+      if (!l.trimStart().startsWith('#') && BLOB_NONE_FILTER_RE.test(l)) filtered = true;
+    }
+    if (!filtered && !exempt) hits.push({ lineNum: i + 1, text: line });
+  }
+  return hits;
+}
+
 module.exports = {
   indentOf,
   RUN_LINE_RE,
+  findFullBlobFullHistoryCheckouts,
   findJobBoundaries,
   runLineMatches,
   findMissingGitIdentityCommits,

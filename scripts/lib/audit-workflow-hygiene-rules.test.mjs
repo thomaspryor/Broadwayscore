@@ -38,6 +38,7 @@ const {
   findCoreFileWritesWithoutPush,
   findPipefailDeadExitCodeEcho,
   findBareAuditDirectoryGlobs,
+  findFullBlobFullHistoryCheckouts,
 } = require('./audit-workflow-hygiene-rules.js');
 
 const CORE_FILES = ['shows.json', 'reviews.json'];
@@ -345,5 +346,172 @@ jobs:
 `;
     const violations = findBareAuditDirectoryGlobs(raw);
     assert.deepStrictEqual(violations, []);
+  });
+});
+
+describe('findFullBlobFullHistoryCheckouts (rule o, BRO-4231)', () => {
+  test('bare fetch-depth: 0 with no filter is flagged', () => {
+    const raw = `
+jobs:
+  collect:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v5
+        with:
+          token: \${{ secrets.GITHUB_TOKEN }}
+          fetch-depth: 0
+
+      - name: Next
+        run: echo hi
+`;
+    const hits = findFullBlobFullHistoryCheckouts(raw);
+    assert.strictEqual(hits.length, 1);
+    assert.strictEqual(hits[0].lineNum, 10);
+  });
+
+  test('fetch-depth: 0 with filter: blob:none in the same with: block passes (filter before or after, comments between)', () => {
+    const after = `
+jobs:
+  j:
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+          # BRO-4231: rationale comment between the two keys
+          filter: blob:none
+`;
+    const before = `
+jobs:
+  j:
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          filter: blob:none
+          fetch-depth: 0
+`;
+    assert.deepStrictEqual(findFullBlobFullHistoryCheckouts(after), []);
+    assert.deepStrictEqual(findFullBlobFullHistoryCheckouts(before), []);
+  });
+
+  test('a filter on the NEXT step does not cover this step', () => {
+    const raw = `
+jobs:
+  j:
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+      - uses: actions/checkout@v5
+        with:
+          repository: other/repo
+          filter: blob:none
+`;
+    const hits = findFullBlobFullHistoryCheckouts(raw);
+    assert.strictEqual(hits.length, 1);
+    assert.strictEqual(hits[0].lineNum, 7);
+  });
+
+  test('fetch-depth: 0 mentioned only in comments is not a key (guard-no-orphan-commit / update-show-status shapes)', () => {
+    const raw = `
+# fetch-depth: 0 on this busy repo took >5 min — we use the compare API instead
+jobs:
+  j:
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          # fetch-depth: 0 (task #1810 root-cause fix): a GIT_TRACE_CURL diagnostic
+          # proved the hangs are local computation, not network
+          fetch-depth: 1
+`;
+    assert.deepStrictEqual(findFullBlobFullHistoryCheckouts(raw), []);
+  });
+
+  test('hygiene-full-blobs-ok on the step exempts it', () => {
+    const raw = `
+jobs:
+  purge:
+    steps:
+      - name: Checkout (full clone — filter-repo needs every blob)
+        uses: actions/checkout@v5
+        with:
+          # hygiene-full-blobs-ok: filter-repo rewrites every historical blob
+          fetch-depth: 0
+`;
+    assert.deepStrictEqual(findFullBlobFullHistoryCheckouts(raw), []);
+  });
+
+  test('a hygiene-full-blobs-ok marker on a DIFFERENT step does not exempt this one', () => {
+    const raw = `
+jobs:
+  j:
+    steps:
+      - name: A
+        with:
+          # hygiene-full-blobs-ok: only this step
+          fetch-depth: 0
+      - name: B
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+`;
+    const hits = findFullBlobFullHistoryCheckouts(raw);
+    assert.strictEqual(hits.length, 1);
+    assert.strictEqual(hits[0].lineNum, 12);
+  });
+
+  test('fetch-depth: 300 / fetch-depth: 1 are not full-history and never flagged', () => {
+    const raw = `
+jobs:
+  j:
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 300
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 1
+`;
+    assert.deepStrictEqual(findFullBlobFullHistoryCheckouts(raw), []);
+  });
+
+  test('quoted value, trailing comment and CRLF are still the same key; a quoted filter still counts', () => {
+    const base = (v, extra = '') => `
+jobs:
+  j:
+    steps:
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: ${v}
+${extra}`;
+    assert.strictEqual(findFullBlobFullHistoryCheckouts(base("'0'")).length, 1, 'quoted 0');
+    assert.strictEqual(findFullBlobFullHistoryCheckouts(base('0 # keep full history')).length, 1, 'trailing comment');
+    assert.strictEqual(findFullBlobFullHistoryCheckouts(base('0').replace(/\n/g, '\r\n')).length, 1, 'CRLF');
+    assert.strictEqual(findFullBlobFullHistoryCheckouts(base('${{ inputs.depth }}')).length, 0, 'expression is not 0');
+    assert.deepStrictEqual(findFullBlobFullHistoryCheckouts(base('0', "          filter: 'blob:none'\n")), [], 'quoted filter');
+  });
+
+  test('a hygiene-full-blobs-ok marker in the comment block introducing the step exempts it, but not one above the previous step', () => {
+    const own = `
+jobs:
+  j:
+    steps:
+      # hygiene-full-blobs-ok: filter-repo rewrites every blob
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+`;
+    const previous = `
+jobs:
+  j:
+    steps:
+      # hygiene-full-blobs-ok: belongs to the echo step
+      - run: echo a
+      - uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+`;
+    assert.deepStrictEqual(findFullBlobFullHistoryCheckouts(own), []);
+    assert.strictEqual(findFullBlobFullHistoryCheckouts(previous).length, 1);
   });
 });

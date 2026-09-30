@@ -68,11 +68,14 @@ jobs:
       contents: write
       actions: write
     steps:
+      # BRO-4231: default depth. Nothing here reads or pushes THIS repo's history:
+      # the audit script has no git calls, and the apply-mode push at the end runs
+      # inside data/review-texts (its own depth-1 clone, push-review-texts's
+      # working-directory), so the ~24-min full-history checkout bought nothing.
       - name: Checkout repository
         uses: actions/checkout@v4
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          fetch-depth: 0
 
       - name: Checkout core data
         uses: ./.github/actions/checkout-core-data

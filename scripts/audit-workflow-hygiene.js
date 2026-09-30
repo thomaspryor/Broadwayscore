@@ -168,7 +168,20 @@
  *     see findBareAuditDirectoryGlobs's
  *     own doc comment for the full reasoning.
  *
+ * (o) FULL-BLOB-CHECKOUT (advisory, BRO-4231): an actions/checkout `with:`
+ *     block that sets `fetch-depth: 0` without `filter: blob:none`. Full
+ *     history is kept on purpose (merge-base for push-with-retry.sh; the #209
+ *     parentless-root incident) but a full-BLOB clone of this repo costs ~24
+ *     min per checkout versus ~30 s blobless (llm-ensemble-score.yml runs
+ *     36523767401 vs 36672742657). Detector is the comment-aware pure
+ *     findFullBlobFullHistoryCheckouts() in scripts/lib/audit-workflow-
+ *     hygiene-rules.js; workflow files only (composite actions expose
+ *     fetch-depth as an input). ADVISORY ONLY. Exempt a step that really
+ *     needs every historical blob (git filter-repo, blame, log -p) with
+ *     `# hygiene-full-blobs-ok: <reason>` on that step.
+ *
  * Exemption annotations (add inside the workflow YAML — anywhere in the file):
+ *   # hygiene-full-blobs-ok: <reason>     — (on the checkout step) skip full-blob-checkout check
  *   # hygiene-notify-ok: <reason>          — skip notify-failure check for this workflow
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
  *   # hygiene-push-ok: <reason>            — skip push-with-retry check for this workflow
@@ -199,6 +212,7 @@ const {
   findPipefailDeadExitCodeEcho,
   extractSingleQuotedEvalBodies,
   findBareAuditDirectoryGlobs,
+  findFullBlobFullHistoryCheckouts,
 } = require('./lib/audit-workflow-hygiene-rules');
 const { scanWorkflow: scanPaidProviders } = require('./lib/paid-provider-push-scan');
 const { execFileSync } = require('child_process');
@@ -720,6 +734,8 @@ async function main() {
   // Rule (n) is advisory — collected separately from `violations` so it never
   // feeds the blocking `total` below (see its doc comment for why).
   const bareAuditGlobFindings = [];
+  // Rule (o) is advisory too (same posture; see its doc comment).
+  const fullBlobCheckoutFindings = [];
 
   for (const file of files) {
     const raw = fs.readFileSync(path.join(WORKFLOW_DIR, file), 'utf8');
@@ -817,6 +833,12 @@ async function main() {
       }
     }
 
+    // ── Rule (o): full-blob full-history checkout (advisory) ────────────────
+    {
+      const hits = findFullBlobFullHistoryCheckouts(raw);
+      if (hits.length > 0) fullBlobCheckoutFindings.push({ file, hits });
+    }
+
     // Rule (l): no paid-provider spend in a push-triggered workflow (BRO-2984).
     // Honors its own `# paid-provider-ok:` marker internally (scanWorkflow
     // returns zero violations when present), so no extra guard is needed here.
@@ -857,6 +879,18 @@ async function main() {
       `ℹ️  data/audit/ pathspecs with no fixed basename (bare directory or *-glob): ${glob} line(s) across ${bareAuditGlobFindings.length} workflow(s) — invisible to scripts/lib/api-fallback-writer-drift.js's static scanner (BRO-2722/BRO-3990 bug class). See rule (n) doc comment.`,
     );
     for (const { file, hits } of bareAuditGlobFindings) {
+      console.log(`   • ${file}`);
+      for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
+    }
+  }
+
+  // ── Rule (o): full-blob full-history checkouts (advisory — never counts toward `total`) ─
+  if (fullBlobCheckoutFindings.length > 0) {
+    const n = fullBlobCheckoutFindings.reduce((acc, { hits }) => acc + hits.length, 0);
+    console.log(
+      `ℹ️  fetch-depth: 0 checkouts without filter: blob:none: ${n} across ${fullBlobCheckoutFindings.length} workflow(s) — a full-blob clone costs ~24 min vs ~30 s blobless (BRO-4231). Add \`filter: blob:none\` + the low-speed guard step (see opening-night-poller.yml) or \`# hygiene-full-blobs-ok: <reason>\` on the step.`,
+    );
+    for (const { file, hits } of fullBlobCheckoutFindings) {
       console.log(`   • ${file}`);
       for (const h of hits) console.log(`       line ${h.lineNum}: ${h.text.trim()}`);
     }
