@@ -51,8 +51,10 @@ jobs:
     #      don't support the `timeout-minutes` key, so a shell-level `timeout` is
     #      what actually stops a hang from silently eating the whole job's
     #      budget (it now fails loud within 8 min, with captured output).
-    #   2. Checkout's fetch-depth: 0 (task #1810, see below) adds a real, ongoing
-    #      ~17-25 min per run for the full all-branches/tags fetch.
+    #   2. Checkout's fetch-depth: 0 (task #1810, see below) added a real, ongoing
+    #      ~17-25 min per run for the full all-branches/tags fetch — until
+    #      BRO-4231 made it blobless (~30 s). The budget below keeps that
+    #      headroom rather than re-deriving it.
     # 130 gives real headroom over the corrected worst case: checkout + misc
     # setup ~40 min + discovery 45 min (hard step cap, see timeout-minutes on
     # "Discover new shows" below) + enrichment ~18 min (incl. BRO-166's
@@ -74,6 +76,21 @@ jobs:
       pre_validation_status: ${{ steps.pre-validate.outputs.status }}
       validate_outcome: ${{ steps.validate.outcome }}
     steps:
+      # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
+      # on the checkout below), so rebase/diff/show fetch missing blobs over the
+      # network outside push-with-retry.sh's per-op timeout wrappers. Set git's
+      # low-speed abort (1 KB/s for 45 s, the bound the helper applies to its own
+      # fetch/push) for EVERY git transfer in this job: --global, and before the
+      # checkout, so actions/checkout's own first lazy blob batch and the depth-1
+      # private-repo clones (checkout-core-data / checkout-review-texts, no
+      # timeout of their own; their retry loop catches the abort) are bounded
+      # too. A stalled transfer fails fast instead of hanging to the job timeout.
+      # lowSpeed cannot catch a pre-transfer stall. Runner $HOME is ephemeral.
+      - name: Set git low-speed abort for this job
+        run: |
+          git config --global http.lowSpeedLimit 1000
+          git config --global http.lowSpeedTime 45
+
       - name: Checkout
         uses: actions/checkout@v5
         with:
@@ -99,6 +116,12 @@ jobs:
           # checkout step was a secondary cost, not the dominant driver of the
           # cancellations that prompted the correction).
           fetch-depth: 0
+          # BRO-4231: filter: blob:none keeps the full commit graph fetch-depth: 0 is
+          # here for (a resolvable merge-base for push-with-retry.sh; #209 parentless
+          # root) but stops downloading every historical blob of this repo's data/*.json
+          # rewrites: ~24 min -> ~30 s per checkout (llm-ensemble-score runs 36523767401
+          # -> 36672742657). Full rationale: opening-night-poller.yml's Checkout step.
+          filter: blob:none
 
 
       - name: Checkout core data
@@ -681,10 +704,11 @@ jobs:
         # being CANCELLED (not failed) exactly at the old 75-min cap, driven
         # mainly by an intermittent Setup Playwright hang (50-75 min, now
         # capped at 8 min at the source via task #1815) plus fetch-depth:0 checkout cost
-        # (~17-25 min). Current worst-case non-push budget is ~100-110 min
+        # (~17-25 min then; ~30 s since BRO-4231 made the clone blobless).
+        # Worst-case non-push budget at the time was ~100-110 min
         # (checkout+setup ~40 + discovery 45 hard cap + enrichment ~10 +
         # StubHub 5 hard cap), leaving ~20-30 min of the 130-min ceiling for
-        # push — 1200s (20 min) still preserves real margin. Scoped to THIS step only (not the shared script default — see
+        # push — 1200s (20 min) still preserves real margin, now with more to spare. Scoped to THIS step only (not the shared script default — see
         # push-with-retry.sh's PUSH_DEADLINE_SEC comment for why) since the
         # other push-with-retry.sh calls below push much smaller,
         # rarely-conflicting files. If churn persists past this, the real

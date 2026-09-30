@@ -91,6 +91,8 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: main
+          # hygiene-full-blobs-ok: git filter-repo below rewrites every historical blob, so a
+          # blobless clone would lazily fetch all of them anyway (BRO-4231 keeps this one full).
           fetch-depth: 0
           token: ${{ secrets.GITHUB_TOKEN }}
 
