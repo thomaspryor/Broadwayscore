@@ -73,6 +73,8 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   'isRoundupArticle', 'isCombinedReview',
   'wrongProductionAutoCleared', 'wrongProductionAutoClearedAt',
   'urlPlaceholderSuspect',
+  // rediscover-review-urls.js Phase 2 refusal of THIS url's redirect; moot once the url moves.
+  'redirectRefused',
   // Salvaged from the old URL's walled page (walled-page-meta.js).
   'outletStandfirst', 'outletHeadline', 'walledPageMetaAt',
   // The old ARTICLE's publish date. Leaving it makes the fix defeat itself:
