@@ -126,13 +126,15 @@ const {
 } = require('./lib/venue-classification');
 const { matchesRetired, loadRetiredIds } = require('./lib/retired-show-ids');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
-const { normalizeTitle, foldDiacritics } = require('./lib/title-match');
+const { normalizeTitle, foldDiacritics, titleTokens } = require('./lib/title-match');
 const { urlFragmentReason } = require('./lib/url-fragment-title');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { loadStaging, updateStaging, mergeCandidates, writeStagingCandidates, STAGING_PATH } = require('./lib/owe-venue-staging');
 const { resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
 const { stripHtml } = require('./lib/article-extractor');
+const { decideVenueListingPromotion } = require('./lib/ob-cross-validation');
+const { OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
 
 // venue-write-guard-ok: the ONLY shows.json venue write in this file is
 // buildOffWestEndVenueShowEntry's `venue: sanitizeVenueForWrite(candidate.venue)`
@@ -350,6 +352,138 @@ function findVenueListingPage(venue, listingPages) {
   return pages.find(p => p && p.category === 'off-west-end' && normalizeVenueName(p.name) === key) || null;
 }
 
+/** Title tokens without season years ("Berlin_2027" → {berlin}). */
+function tokensWithoutYears(title) {
+  return new Set([...titleTokens(String(title || '').replace(/_/g, ' '))].filter(t => !/^(?:19|20)\d\d$/.test(t)));
+}
+
+/** Same house: normalized venue equal, or one is the other plus a room ("Southwark Playhouse Elephant"). */
+function sameLondonHouse(a, b) {
+  const ka = normalizeVenueName(a);
+  const kb = normalizeVenueName(b);
+  if (!ka || !kb) return false;
+  return ka === kb || ka.startsWith(`${kb} `) || kb.startsWith(`${ka} `);
+}
+
+/** A catalog row's own run window, or null when it carries no dates. */
+function rowWindow(e) {
+  const first = validDateOrNull(e.previewsStartDate) || validDateOrNull(e.openingDate);
+  const last = validDateOrNull(e.closingDate);
+  if (!first && !last) return null;
+  return { first: first || last, last: last || '9999-12-31' };
+}
+
+function shiftDay(iso, days) {
+  return new Date(Date.parse(`${iso}T00:00:00Z`) + days * DAY_MS).toISOString().slice(0, 10);
+}
+
+/**
+ * A catalog row at the same house that is this candidate's production
+ * under a variant title (BRO-4398). Slug-title readers minted rows such as
+ * "Twenty Thousand Streets" and "Berlin_2027" that the dated readers now see
+ * as "Twenty Thousand Streets Under the Sky" and "BERLIN";
+ * findExistingMatch's normalized-equal test misses both.
+ *   - Equal word sets (season years and punctuation ignored): the same
+ *     show, unless the row closed more than 180 days before this run starts
+ *     (an earlier production).
+ *   - One title's words contained in the other's (two words at least):
+ *     only for a dated candidate, and only when the row is undated (a stub
+ *     minted from a slug) or its own run overlaps this one within 30 days.
+ *     "Private Lives" is not "Private Lives of the Royals" three months
+ *     later, and "A Doll's House Part 2" is not last year's "A Doll's House".
+ *
+ * @param {object} candidate
+ * @param {Array<{id, title, venue, previewsStartDate?, openingDate?, closingDate?}>} pool
+ * @returns {{match: object, reason: string}|null}
+ */
+function findSameHouseTokenMatch(candidate, pool) {
+  const ct = tokensWithoutYears(candidate && candidate.title);
+  if (ct.size === 0) return null;
+  const run = listingRunDates(candidate);
+  const start = validDateOrNull(candidate.listingFirstDate) || run.previewsStartDate || validDateOrNull(candidate.previewsStartDate) || validDateOrNull(candidate.openingDate);
+  const end = validDateOrNull(candidate.listingLastDate) || start;
+  const dated = isDatedListingCandidate(candidate) && start && end;
+  const cutoff = start ? shiftDay(start, -180) : null;
+  for (const e of Array.isArray(pool) ? pool : []) {
+    if (!e || !e.title || typeof e.venue !== 'string' || !sameLondonHouse(candidate.venue, e.venue)) continue;
+    const et = tokensWithoutYears(e.title);
+    if (et.size === 0) continue;
+    const equal = ct.size === et.size && [...ct].every(t => et.has(t));
+    if (equal) {
+      if (cutoff && typeof e.closingDate === 'string' && e.closingDate < cutoff) continue;
+      return { match: e, reason: `same house, same title words ("${e.title}" vs "${candidate.title}")` };
+    }
+    if (!dated) continue;
+    const [small, big] = ct.size <= et.size ? [ct, et] : [et, ct];
+    if (small.size < 2 || ![...small].every(t => big.has(t))) continue;
+    const w = rowWindow(e);
+    if (w && !(w.first <= shiftDay(end, 30) && w.last >= shiftDay(start, -30))) continue;
+    return { match: e, reason: `same house, title words contained, ${w ? 'overlapping run' : 'undated catalog row'} ("${e.title}" vs "${candidate.title}")` };
+  }
+  return null;
+}
+
+/**
+ * Duplicate check for one candidate. findExistingMatch's London-pool title
+ * fallback (same title at any London venue) is right for an aggregator
+ * row, but a dated venue listing is itself evidence of a production at THAT
+ * house: Lyric Hammersmith's "Cinderella" is not the Palladium's, nor is
+ * Barbican's "A Doll's House" the Almeida's (BRO-4398 review). For a dated
+ * candidate the fallback only counts at the same house.
+ */
+function findDuplicate(candidate, pool) {
+  if (!isDatedListingCandidate(candidate)) {
+    return findExistingMatch(candidate, pool) || findSameHouseTokenMatch(candidate, pool);
+  }
+  const strict = findExistingMatch(candidate, pool, { londonPoolFallback: false });
+  if (strict) return strict;
+  const loose = findExistingMatch(candidate, pool);
+  if (loose && loose.match && sameLondonHouse(candidate.venue, loose.match.venue)) return loose;
+  return findSameHouseTokenMatch(candidate, pool);
+}
+
+/**
+ * A candidate staged by one of OWE_VENUE_CONFIGS' dated readers (BRO-4398):
+ * it carries the venue's own first/last performance dates.
+ */
+function isDatedListingCandidate(candidate) {
+  return !!(candidate && (candidate.listingFirstDate || candidate.listingLastDate));
+}
+
+/**
+ * Is `venue` one of the curated London venues discovery reads — a dated
+ * reader (OWE_VENUE_CONFIGS) or a VENUE_LISTING_PAGES link reader? The OWE
+ * analogue of isKnownOffBroadwayVenue for decideVenueListingPromotion:
+ * a dated listing only counts as evidence at a house we chose to read.
+ * normalizeVenueName equality, never a substring match.
+ */
+function isCuratedLondonVenue(venue, opts = {}) {
+  const key = normalizeVenueName(venue);
+  if (!key) return false;
+  const dated = Array.isArray(opts.datedConfigs) ? opts.datedConfigs : OWE_VENUE_CONFIGS;
+  if (dated.some(d => d && normalizeVenueName(d.name) === key)) return true;
+  return !!findVenueListingPage(venue, opts.listingPages);
+}
+
+/**
+ * The run dates a dated listing supports, in show-entry terms: first
+ * performance → previewsStartDate (London's first performance, as discovery
+ * records TodayTix/OLT start dates), last → closingDate. Not when the
+ * reader flags the first date as merely the next one on sale, or the last
+ * as a booking horizon.
+ */
+function listingRunDates(candidate) {
+  if (!isDatedListingCandidate(candidate)) return { previewsStartDate: null, closingDate: null };
+  return {
+    previewsStartDate: candidate.listingFirstDateIsNext ? null : validDateOrNull(candidate.listingFirstDate),
+    closingDate: candidate.listingLastDateIsHorizon ? null : validDateOrNull(candidate.listingLastDate),
+  };
+}
+
+// decideVenueListingPromotion refusals that change with time rather than
+// with the listing: a run more than a year out becomes eligible later.
+const DATED_LISTING_HOLD_RE = /\bmore than \d+d out\b/;
+
 /**
  * Pure promotion rule for one staged Off-West End venue-page candidate
  * ({title, venue, category, source, description, ...}). Testable in
@@ -425,6 +559,37 @@ function decideOffWestEndVenuePromotion(candidate, ctx = {}) {
     return decideByReviewEvidence(candidate, evidence, evidencePages, registry);
   }
 
+  // BRO-4398 — a dated reader's row is decided on the venue's own dated
+  // listing, exactly as decideVenueListingPromotion decides an OB venue's:
+  // a run (five-plus performances, or a multi-day span when uncounted) that
+  // has not ended and starts within a year. No re-fetch: the listing it was
+  // staged from is the evidence, and a refusal here is final for the row
+  // (discovery re-stages it with fresh dates if the listing changes).
+  if (isDatedListingCandidate(candidate)) {
+    const isOneNightShow = typeof ctx.isOneNightShow === 'function' ? ctx.isOneNightShow : discovery().isOneNightShow;
+    const v = decideVenueListingPromotion(candidate, {
+      ...(ctx.todayIso ? { todayIso: ctx.todayIso } : {}),
+      isKnownVenue: venue => isCuratedLondonVenue(venue, { listingPages: ctx.listingPages, datedConfigs: ctx.datedConfigs }),
+      gates: { isOneNightShow },
+    });
+    if (v.confirmed) {
+      const dated = (Array.isArray(ctx.datedConfigs) ? ctx.datedConfigs : OWE_VENUE_CONFIGS)
+        .find(d => d && normalizeVenueName(d.name) === normalizeVenueName(candidate.venue));
+      return {
+        confirmed: true,
+        persistent: false,
+        reason: v.reason,
+        source: 'venue-listing',
+        page: candidate.listingUrl || (dated ? dated.url : null) || null,
+      };
+    }
+    return {
+      confirmed: false,
+      persistent: !DATED_LISTING_HOLD_RE.test(v.reason),
+      reason: `venue's dated listing does not confirm a run: ${v.reason}`,
+    };
+  }
+
   const page = findVenueListingPage(candidate.venue, ctx.listingPages);
   if (!page) {
     return { confirmed: false, persistent: true, reason: `venue "${candidate.venue}" is not one of the curated VENUE_LISTING_PAGES Off-West End venue pages — venue-page confirmation is impossible (add the venue to VENUE_LISTING_PAGES in scripts/discover-new-shows.js, or add the show by hand)` };
@@ -484,9 +649,12 @@ function buildOffWestEndVenueShowEntry(candidate, venueVocabulary, options = {})
   // the same normaliser validate-data.js gates on, so a row written here can
   // never fail the gate that guards it.
   const normalizedTitle = normalizeShowTitle({ title: candidate.title, venue: candidate.venue }, { venueVocabulary }).title;
+  // A dated reader's row (BRO-4398) supplies its run from the listing when
+  // the candidate carries no explicit dates of its own.
+  const listed = listingRunDates(candidate);
   const openingDate = validDateOrNull(candidate.openingDate);
-  const previewsStartDate = validDateOrNull(candidate.previewsStartDate);
-  const closingDate = validDateOrNull(candidate.closingDate);
+  const previewsStartDate = validDateOrNull(candidate.previewsStartDate) || listed.previewsStartDate;
+  const closingDate = validDateOrNull(candidate.closingDate) || listed.closingDate;
   const minted = discovery().mintCandidateId({
     title: normalizedTitle,
     category: 'off-west-end',
@@ -711,6 +879,8 @@ async function fetchVenueListings(candidates, opts = {}) {
   const pages = new Map();
   for (const c of candidates) {
     if (reviewEvidence(c).length > 0) continue;
+    // BRO-4398: decided on the dated listing it was staged from.
+    if (isDatedListingCandidate(c)) continue;
     const page = findVenueListingPage(c && c.venue, opts.listingPages);
     if (page && !pages.has(page.name)) pages.set(page.name, page);
   }
@@ -795,7 +965,7 @@ async function evaluateCandidates(candidates, ctx) {
       // 1. Already in shows.json (venue-gated match, then the London-pool
       //    title fallback) — the ordinary way a staged candidate resolves
       //    once TodayTix/OLT/a hand add landed the same production.
-      const existingMatch = findExistingMatch(c, existingCandidates);
+      const existingMatch = findDuplicate(c, existingCandidates);
       if (existingMatch) {
         prune(c, 'skip-duplicate', `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})`, { matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
         continue;
@@ -818,7 +988,7 @@ async function evaluateCandidates(candidates, ctx) {
       // 3. Confirmation: phantom/excluded titles, the S4-T6 ingest gate, then
       //    the venue page itself — or, for an evidence-backed candidate, the
       //    registered-outlet page it cites (S8-T3).
-      const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry });
+      const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry, todayIso: now().toISOString().slice(0, 10) });
       if (!decision.confirmed) {
         if (decision.persistent) prune(c, 'skip-unconfirmed', decision.reason);
         else hold(c, 'skip-unconfirmed', decision.reason);
@@ -961,7 +1131,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   // (S4-T9) applies to off-west-end candidates too.
   const existingCandidates = showsData.shows
     .filter(s => s.category === 'west-end' || s.category === 'off-west-end')
-    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category }));
+    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category, previewsStartDate: s.previewsStartDate || null, openingDate: s.openingDate || null, closingDate: s.closingDate || null }));
   // Loud on a malformed registry (loadRetiredIds throws) — silently treating
   // it as empty is exactly how a retired id slips back in.
   const retiredEntries = Array.isArray(io.retiredEntries) ? io.retiredEntries : loadRetiredIds();
@@ -1093,6 +1263,11 @@ module.exports = {
   fetchVenueListing,
   fetchVenueListings,
   findVenueListingPage,
+  isDatedListingCandidate,
+  isCuratedLondonVenue,
+  findSameHouseTokenMatch,
+  findDuplicate,
+  listingRunDates,
   evaluateCandidates,
   main,
   MAX_PROMOTE_PER_RUN,

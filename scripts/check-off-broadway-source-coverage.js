@@ -90,6 +90,7 @@ async function main(argv = process.argv.slice(2)) {
   const nowIso = new Date().toISOString();
 
   await reportVenueReaderCoverage({ fs, showsPath, statePath, auditDir, todayIso, nowIso, dryRun });
+  await reportVenueReaderCoverage({ fs, showsPath, statePath, auditDir, todayIso, nowIso, dryRun, market: 'london' });
 
   let feed;
   try {
@@ -169,32 +170,50 @@ async function main(argv = process.argv.slice(2)) {
 // venue-write-guard-ok: reportVenueReaderCoverage writes venue strings to an
 // audit state file (report rows), never to shows.json.
 /**
- * BRO-4396 per-venue reader coverage. Never throws: a failure here logs and
- * leaves the TheaterMania guard to run.
+ * BRO-4396 per-venue reader coverage; BRO-4398 added the London pool
+ * (market 'london': Off-West End shows against OWE_VENUE_CONFIGS' dated
+ * readers plus the VENUE_LISTING_PAGES link readers, recorded under
+ * `venueReadersLondon`, with the venues only an undated link reader covers
+ * listed apart). Never throws: a failure here logs and leaves the
+ * TheaterMania guard to run.
  */
-async function reportVenueReaderCoverage({ fs, showsPath, statePath, auditDir, todayIso, nowIso, dryRun }) {
+async function reportVenueReaderCoverage({ fs, showsPath, statePath, auditDir, todayIso, nowIso, dryRun, market = 'nyc' }) {
+  const london = market === 'london';
+  const label = london ? 'Off-West End' : 'Off-Broadway';
+  const stateKey = london ? 'venueReadersLondon' : 'venueReaders';
   try {
-    const { computeVenueReaderCoverage, diffUncovered, alertableUncovered } = require('./lib/ob-venue-reader-coverage');
-    const { OB_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
+    const { computeVenueReaderCoverage, diffUncovered, alertableUncovered, londonReaderConfigs } = require('./lib/ob-venue-reader-coverage');
+    const { OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
+    // discover-new-shows.js is required lazily (it reads argv at load) and
+    // only for the London link readers.
+    const configs = london ? londonReaderConfigs(OWE_VENUE_CONFIGS, require('./discover-new-shows').VENUE_LISTING_PAGES) : OB_VENUE_CONFIGS;
+    const readerList = london ? 'scripts/lib/venue-listing-discover.js OWE_VENUE_CONFIGS' : 'scripts/lib/venue-listing-discover.js OB_VENUE_CONFIGS';
+    const reasonList = london ? 'LONDON_NO_READER_REASONS' : 'NO_READER_REASONS';
     const shows = JSON.parse(fs.readFileSync(showsPath, 'utf8')).shows;
-    const cov = computeVenueReaderCoverage({ shows, configs: OB_VENUE_CONFIGS, todayIso });
+    const cov = computeVenueReaderCoverage({ shows, configs, todayIso, market });
     const alertable = alertableUncovered(cov.uncovered);
-    console.log(`Venue reader coverage: ${OB_VENUE_CONFIGS.length} readers; ${cov.activeCovered}/${cov.active} active OB venue spellings covered; ${cov.uncovered.length} active house(s) without a reader, ${alertable.length} alertable (2+ recent shows, no recorded reason).`);
+    console.log(`Venue reader coverage (${label}): ${configs.length} readers; ${cov.activeCovered}/${cov.active} active venue spellings covered (${cov.activeDated} by a dated reader); ${cov.uncovered.length} active house(s) without a reader, ${alertable.length} alertable (2+ recent shows, no recorded reason).`);
+    for (const u of (london ? cov.undatedOnly : []).filter(x => x.recentShows >= 2)) {
+      console.log(`  undated reader only: ${u.spellings.join(' / ')} (${u.recentShows} recent) — ${u.reader}`);
+    }
     for (const u of cov.uncovered.filter(x => x.recentShows >= 2)) {
       console.log(`  no reader: ${u.spellings.join(' / ')} (${u.recentShows} recent)${u.noReaderReason ? ` — ${u.noReaderReason}` : ' — ALERT'}`);
     }
     if (dryRun) return;
+    // Re-read: the NYC and London passes write the same state file in turn.
     const prev = readJsonOr(fs, statePath, {});
-    const { ledger, fresh } = diffUncovered((prev.venueReaders && prev.venueReaders.uncovered) || {}, alertable, nowIso);
+    const { ledger, fresh } = diffUncovered((prev[stateKey] && prev[stateKey].uncovered) || {}, alertable, nowIso);
     const next = {
       ...prev,
-      venueReaders: {
+      [stateKey]: {
         at: nowIso,
-        readers: OB_VENUE_CONFIGS.length,
+        readers: configs.length,
         active: cov.active,
         activeCovered: cov.activeCovered,
+        activeDated: cov.activeDated,
         uncovered: ledger,
         explained: cov.uncovered.filter(u => u.noReaderReason && u.recentShows >= 2).map(u => ({ venue: u.venue, recentShows: u.recentShows, reason: u.noReaderReason })),
+        ...(london ? { undatedOnly: cov.undatedOnly.map(u => ({ venue: u.venue, recentShows: u.recentShows, reader: u.reader })) } : {}),
       },
     };
     fs.mkdirSync(auditDir, { recursive: true });
@@ -203,12 +222,12 @@ async function reportVenueReaderCoverage({ fs, showsPath, statePath, auditDir, t
       const { sendAlert } = require('./lib/discord-notify');
       await sendAlert({
         severity: 'warning',
-        title: `Off-Broadway venue coverage: ${fresh.length} active venue(s) with no listings reader`,
-        description: fresh.map(u => `**${u.spellings.join(' / ')}**: ${u.recentShows} show(s) in the last 12 months (latest ${u.lastShow || 'n/a'}), and no reader in scripts/lib/venue-listing-discover.js OB_VENUE_CONFIGS. Add one (a platform reader if the venue sells through OvationTix/Spektrix/NYTG) or record why in NO_READER_REASONS.`).join('\n\n').slice(0, 3500),
+        title: `${label} venue coverage: ${fresh.length} active venue(s) with no listings reader`,
+        description: fresh.map(u => `**${u.spellings.join(' / ')}**: ${u.recentShows} show(s) in the last 12 months (latest ${u.lastShow || 'n/a'}), and no reader in ${readerList}. Add one (a platform reader if the venue sells through OvationTix/Spektrix/NYTG) or record why in ${reasonList}.`).join('\n\n').slice(0, 3500),
       });
     }
   } catch (e) {
-    console.warn(`::warning::venue reader coverage failed (${e.message}); TheaterMania guard continues`);
+    console.warn(`::warning::${label} venue reader coverage failed (${e.message}); TheaterMania guard continues`);
   }
 }
 

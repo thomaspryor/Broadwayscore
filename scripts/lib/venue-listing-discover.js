@@ -505,6 +505,90 @@ const OB_VENUE_CONFIGS = [
 ];
 
 // ============================================================
+// OFF-WEST END DATED READERS (BRO-4398)
+// ============================================================
+// London venues read through the same dated readers as the OB pool
+// (ob-listing-platforms.js). discover-new-shows.js's OWE fan-out uses one of
+// these in place of the venue's slug-title link reader in VENUE_LISTING_PAGES
+// (same `name`, so promote-owe-venue-candidates.js finds the venue either
+// way), and reads the ones with no link reader directly. Dated rows let the
+// OWE promoter accept the venue's own listing as evidence of a run
+// (decideVenueListingPromotion), which an undated slug title never could.
+//
+// Spektrix clients were read from each site's ticketing markup
+// (client-name / custom-domain attributes, or the /api/v3 base URL in its
+// scripts) and probed live 2026-09-30. `spektrixInstances` adds the
+// per-event performance count from /api/v3/instances, which is what tells
+// a four-week run from a monthly club night on these mixed-program accounts.
+//
+// Not read here (probed 2026-09-30): Marylebone Theatre (its
+// JSON-LD event list stops at 2025 productions; link reader stays), The
+// Other Palace, Donmar
+// Warehouse and Royal Court (403 to plain HTTP; Royal Court is also
+// catalogued West End), Soho Theatre (1,515 Spektrix events, almost all
+// stand-up), Theatre503 (courses and one-nighters; none catalogued) and
+// Barbican (see LONDON_NO_READER_REASONS in ob-venue-reader-coverage.js).
+
+// Spektrix accounts sell add-ons and access services as events. Each
+// pattern names a row seen on a London account on 2026-09-30.
+const LONDON_SPEKTRIX_EXCLUDE_PATTERNS = [
+  /^\*/,                                                         // Park: "**The Pianist Programme", "*Drinks"
+  /\bprogrammes?\b|\bplaytext\b|\bcast album\b|\bbundle\b/i,     // Southwark: "... Playtext", "... Bundle"
+  /touch tour|audio descri|caption|assisted listening|headset/i, // access services
+  /\bdrinks\b|\bpizzas?\b|pre-?order|ice cream|\bmerch/i,        // bar/food pre-orders
+  /secure my booking|gift (?:voucher|card)|\bmembership\b|\bdonat/i,
+  /backstage tours?\b|\btheatre tours?\b|walking tours?\b/i,       // Almeida "Theatre Tour", Finborough walks
+  /\btest (?:event|show)\b|\b(?:priority|web|booking) test\b|^z?test\b/i, // "Tfg Test Event", Young Vic "Temporary Priority Test"
+  /\b(?:online )?course\b|\bintensive\b|\bmaster ?class\b|\bworkshops?\b/i, // Theatre503/Riverside classes
+  /\bscratch nights?\b|\br&d\b|\bsharing\)?$/i,                  // Lyric/Riverside works in development
+  /\bin conversation\b|\bq ?& ?a\b|\bbook signing\b/i,
+  /^for the culture:/i,                                          // Lyric's one-night festival strand
+  /\bon screen\b|\bnt live\b/i,                                  // Orange Tree streams, Kiln/Riverside broadcasts
+  /^winner of\b/i,                                               // Park: "Winner of the 2026 Papatango New Writing Prize" (title TBA)
+];
+const LONDON_OWE_EXCLUDE_PATTERNS = [...COMMON_OB_EXCLUDE_PATTERNS, ...LONDON_SPEKTRIX_EXCLUDE_PATTERNS];
+// Add-ons flagged by the account itself (Kiln, Young Vic).
+const SPEKTRIX_SUPPLEMENTARY = { attribute_SupplementaryEvent: /^true$/i };
+
+const OWE_VENUE_CONFIGS = [
+  // ── Spektrix ──
+  { name: 'Theatre Royal Stratford East', url: 'https://www.stratfordeast.com/whats-on', spektrixUrl: 'https://tickets.stratfordeast.com/stratfordeast/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /^ses\b/i], category: 'off-west-end' },
+  // Kiln runs a cinema on the same account (films, NT Live): theatre only.
+  { name: 'Kiln Theatre', url: 'https://kilntheatre.com/whats-on/', spektrixUrl: 'https://tickets.kilntheatre.com/tricycle/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_Type', spektrixGenres: ['Theatre'], spektrixExclude: SPEKTRIX_SUPPLEMENTARY, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', spektrixUrl: 'https://system.spektrix.com/southwarkplayhouse/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /writers collective/i], category: 'off-west-end' },
+  { name: 'Orange Tree Theatre', url: 'https://www.orangetreetheatre.co.uk/whats-on/', spektrixUrl: 'https://tickets.orangetreetheatre.co.uk/orangetree/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // Park sells stand-up, music and kids' clubs on the same account.
+  // coverageExact: "Park" alone would also claim Regent's Park Open Air
+  // Theatre and Troubadour Wembley Park in the coverage report.
+  { name: 'Park Theatre', coverageExact: ['Park Theatre', 'Park90', 'Park200'], url: 'https://parktheatre.co.uk/whats-on/', spektrixUrl: 'https://tickets.parktheatre.co.uk/parktheatre/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_Genre', spektrixGenres: ['Drama', 'Comedy', 'Musicals'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  { name: 'Bush Theatre', url: 'https://www.bushtheatre.co.uk/whats-on/', spektrixUrl: 'https://tickets.bushtheatre.co.uk/bushtheatre/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /^alt b:/i], category: 'off-west-end' },
+  { name: 'Arcola Theatre', url: 'https://www.arcolatheatre.com/whats-on/', spektrixUrl: 'https://boxoffice.arcolatheatre.com/arcolatheatre/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_Genre', spektrixGenres: ['Theatre'], strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /\bayt\b/i], category: 'off-west-end' },
+  { name: "King's Head Theatre", url: 'https://kingsheadtheatre.com/whats-on/', spektrixUrl: 'https://tickets.kingsheadtheatre.com/kingsheadtheatre/api/v3/events', spektrixInstances: true, spektrixExclude: { attribute_LiveOnWebsite: /^false$/i }, strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /\badult$/i], category: 'off-west-end' },
+  { name: 'Lyric Hammersmith', url: 'https://lyric.co.uk/whats-on/', spektrixUrl: 'https://tickets.lyric.co.uk/lyrichammersmith/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // Young Vic's Shedinburgh strand is a festival of one-nighters in The Maria.
+  { name: 'Young Vic', coversVenues: ['The Maria Theatre', 'Young Vic (Main House)'], url: 'https://www.youngvic.org/whats-on', spektrixUrl: 'https://system.spektrix.com/youngvic/api/v3/events', spektrixInstances: true, spektrixExclude: { ...SPEKTRIX_SUPPLEMENTARY, attribute_Festival: /\S/ }, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // Mostly cinema, classes and wellness: theatre only.
+  { name: 'Riverside Studios', url: 'https://riversidestudios.co.uk/whats-on/', spektrixUrl: 'https://spektrix.riversidestudios.co.uk/riversidestudios/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_EventType', spektrixGenres: ['Theatre'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  { name: 'Bridge Theatre', url: 'https://bridgetheatre.co.uk/', spektrixUrl: 'https://tickets.bridgetheatre.co.uk/bridgetheatrelondon/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // ── JSON-LD ──
+  // Menier: Event nodes in the homepage @graph, one per run.
+  { name: 'Menier Chocolate Factory', url: 'https://www.menierchocolatefactory.com/', strategy: 'json-ld', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // ── Dated cards (UK day-first dates) ──
+  // datedOnly: an undated card on these pages is a promo for another house
+  // (New Diorama's Operation Mincemeat) or a walk/talk strand (Finborough).
+  { name: 'Almeida Theatre', url: 'https://almeida.co.uk/whats-on/', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: '.c-event-card', titleSelector: '.c-event-card__title', dateSelector: '.c-event-card__daterange', linkSelector: 'a.c-event-card__permalink', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: 'figure', titleSelector: 'figcaption h2', dateSelector: 'figcaption h3', linkSelector: 'a[href*="/whats-on/"]', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // One card per booking block: a run split over two blocks (What The
+  // Animals Say, 29 Sep-24 Oct and 27 Oct-21 Nov) merges to one row.
+  // Hampstead sells through Tessitura (no public feed); its what's-on cards
+  // carry "Dates: 28 Aug – 7 Nov 2026".
+  { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: '.card', titleSelector: '.card__heading', dateSelector: '.card__dates', linkSelector: 'a[href*="/production/"]', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  // One page for both Troubadour houses: keep the Wembley Park cards.
+  { name: 'Troubadour Wembley Park Theatre', url: 'https://www.troubadourtheatres.com/whats-on/', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: '.c-featured-event', itemMustMatch: /Wembley/, titleSelector: 'h3', dateSelector: '.c-featured-event__details__discription', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+  { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: 'a.production-card', titleSelector: 'h3', dateSelector: 'div.text-2xl.text-center', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
+];
+
+// ============================================================
 // PURE PARSING
 // ============================================================
 
@@ -554,7 +638,7 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
       try { payload = JSON.parse(payload); } catch { return []; }
     }
     if (venue.strategy === 'ovationtix') rows = parseOvationTixBundle(payload, { clientId: venue.ovationtixClientId });
-    else if (venue.strategy === 'spektrix') rows = parseSpektrixEvents(payload, { genres: venue.spektrixGenres });
+    else if (venue.strategy === 'spektrix') rows = parseSpektrixEvents(payload, { genres: venue.spektrixGenres, genreField: venue.spektrixGenreField, exclude: venue.spektrixExclude, todayIso });
     else if (venue.strategy === 'json-api') rows = extractJsonItems(payload, venue.jsonSpec);
     else rows = parseTribeEvents(payload);
   } else if (venue.strategy === 'nytg-venue') {
@@ -594,6 +678,7 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
     if (seen.has(title)) continue; // dedupe within page
     // A dated row that already finished is archive, not a current booking.
     if (r.lastDate && r.lastDate < todayIso) continue;
+    if (venue.datedOnly && !r.firstDate && !r.lastDate) continue;
     seen.add(title);
     filtered.push({ ...r, title });
   }
@@ -759,7 +844,7 @@ async function scrapeVenueListing(venue) {
     return parseVenueListingHtml(venue, json);
   }
   if (venue.strategy === 'spektrix') {
-    return parseVenueListingHtml(venue, await fetchSpektrixEvents(venue.spektrixUrl));
+    return parseVenueListingHtml(venue, await fetchSpektrixEvents(venue.spektrixUrl, { instances: !!venue.spektrixInstances, timeoutMs: venue.spektrixTimeoutMs }));
   }
   if (venue.strategy === 'json-api') {
     return parseVenueListingHtml(venue, await getJson(venue.jsonUrl));
@@ -941,7 +1026,9 @@ module.exports = {
   STAGING_PATH,
   DATED_JSON_STRATEGIES,
   OB_VENUE_CONFIGS,
+  OWE_VENUE_CONFIGS,
   COMMON_OB_EXCLUDE_PATTERNS,
+  LONDON_SPEKTRIX_EXCLUDE_PATTERNS,
   parseVenueListingHtml,
   scrapeVenueListing,
   settledWithConcurrency,

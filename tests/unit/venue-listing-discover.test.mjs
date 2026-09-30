@@ -18,7 +18,7 @@ import { dirname, join } from 'node:path';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { OB_VENUE_CONFIGS, parseVenueListingHtml, DATED_JSON_STRATEGIES } = require('../../scripts/lib/venue-listing-discover.js');
+const { OB_VENUE_CONFIGS, OWE_VENUE_CONFIGS, parseVenueListingHtml, DATED_JSON_STRATEGIES } = require('../../scripts/lib/venue-listing-discover.js');
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const FIXTURE_DIR = join(__dirname, '..', 'fixtures', 'ob-discovery');
@@ -164,5 +164,74 @@ for (const venue of OB_VENUE_CONFIGS) {
   test(`${venue.name}: parser rejects empty html`, () => {
     assert.deepEqual(parseVenueListingHtml(venue, ''), []);
     assert.deepEqual(parseVenueListingHtml(venue, '<html></html>'), []);
+  });
+}
+
+// ── BRO-4398: Off-West End dated readers ───────────────────────────────────
+// Fixtures captured live 2026-09-30 with plain curl (Spektrix: /api/v3/events
+// plus /api/v3/instances trimmed to {event.id, start, cancelled}, both cut to
+// events still running that day). Every row must be dated, since a dated row
+// is what lets promote-owe-venue-candidates.js accept the venue's own
+// listing; Spektrix rows must also carry a performance count. mustExclude
+// names add-ons and non-theatre rows each account really lists.
+const OWE_FIXTURE_DIR = join(__dirname, '..', 'fixtures', 'owe-discovery');
+const OWE_CAPTURED_ON = '2026-09-30';
+const EXPECTED_OWE = {
+  'Theatre Royal Stratford East': { min: 5, max: 12, mustInclude: ['bloodsport', 'robin-hood', 'surinderella'], mustExclude: ['ses-sep'] },
+  'Kiln Theatre': { min: 2, max: 5, mustInclude: ['nine-night', 'table-17', 'berlin'], mustExclude: ['hadestown', 'nt-live', 'audio-description', 'bad-apples'] },
+  'Southwark Playhouse': { min: 8, max: 14, mustInclude: ['jane-eyre', 'dog-mom', 'twenty-thousand-streets-under-the-sky'], mustExclude: ['playtext', 'bundle', 'writers-collective', 'chris-test'] },
+  'Orange Tree Theatre': { min: 15, max: 32, mustInclude: ['cranford', 'a-small-and-quiet-light', 'king-lear'], mustExclude: ['ot-on-screen'] },
+  'Park Theatre': { min: 10, max: 20, mustInclude: ['the-pianist', 'holy-fool', 'bull'], mustExclude: ['programme', 'drinks', 'pizzas', 'touch-tour', 'winner-of', 'cast-album'] },
+  'Bush Theatre': { min: 5, max: 10, mustInclude: ['darkling', 'the-hungry-ghost'], mustExclude: ['touch-tour', 'captioning', 'pre-order', 'audio-description', 'alt-b'] },
+  'Arcola Theatre': { min: 5, max: 10, mustInclude: ['the-master-builder', 'incident-at-vichy'], mustExclude: ['2026-', 'ayt', 'writing-workshop'] },
+  "King's Head Theatre": { min: 4, max: 8, mustInclude: ['dick-whittington', 'gang-of-three'], mustExclude: ['adult', 'secure-my-booking'] },
+  'Lyric Hammersmith': { min: 8, max: 18, mustInclude: ['fences', 'the-children', 'cinderella'], mustExclude: ['for-the-culture', 'touch-tour', 'secure-my-booking', 'test-event', 'scratch'] },
+  'Young Vic': { min: 6, max: 14, mustInclude: ['thelma-louise', 'eurotrash', 'girls'], mustExclude: ['priority-test', 'headset', 'assisted-listening'] },
+  'Riverside Studios': { min: 10, max: 25, mustInclude: ['cadel-lungs-on-legs', 'tinderella'], mustExclude: ['yoga', 'pilates', 'rehearsal-room', 'scratch-night', 'in-conversation', 'riverside-sharing'] },
+  'Bridge Theatre': { min: 1, max: 4, mustInclude: ['pride', 'ivanov'] },
+  'Menier Chocolate Factory': { min: 1, max: 4, mustInclude: ['tru', 'fourteen-again'] },
+  'Almeida Theatre': { min: 2, max: 6, mustInclude: ['golden-boy', 'desire-under-the-elms'], mustExclude: ['theatre-tour'] },
+  'New Diorama Theatre': { min: 2, max: 6, mustInclude: ['stuffed', 'orlando-a-pornobiography'], mustExclude: ['operation-mincemeat'] },
+  'Troubadour Wembley Park Theatre': { min: 1, max: 3, mustInclude: ['high-school-musical'], mustExclude: ['hunger-games'] },
+  'Hampstead Theatre': { min: 3, max: 8, mustInclude: ['kimberly-akimbo', 'the-urmetazoan', 'jumpers'] },
+  'Finborough Theatre': { min: 2, max: 8, mustInclude: ['what-the-animals-say', 'the-moth'], mustExclude: ['walking-tours', 'voices-from-ukraine', 'remember-your-lovers'] },
+};
+
+test('OWE_VENUE_CONFIGS: every reader is off-west-end and has an EXPECTED_OWE band', () => {
+  for (const v of OWE_VENUE_CONFIGS) {
+    assert.equal(v.category, 'off-west-end', v.name);
+    assert.ok(EXPECTED_OWE[v.name], `EXPECTED_OWE[${JSON.stringify(v.name)}] missing`);
+  }
+});
+
+for (const venue of OWE_VENUE_CONFIGS) {
+  const slug = venue.name.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const ext = DATED_JSON_STRATEGIES.has(venue.strategy) ? '.json' : '.html';
+  const fixturePath = join(OWE_FIXTURE_DIR, slug + ext);
+  const expected = EXPECTED_OWE[venue.name] || { min: 1, max: 0, mustInclude: [] };
+
+  test(`OWE ${venue.name}: fixture parses to band ${expected.min}..${expected.max}, every row dated`, () => {
+    assert.ok(existsSync(fixturePath), `fixture missing: ${fixturePath}`);
+    const candidates = parseVenueListingHtml(venue, readFileSync(fixturePath, 'utf8'), { todayIso: OWE_CAPTURED_ON });
+    const titles = candidates.map(c => c.title).join(', ');
+    assert.ok(candidates.length >= expected.min && candidates.length <= expected.max, `${venue.name}: got ${candidates.length} (${titles})`);
+    const slugs = candidates.map(c => c.slug).join(' | ');
+    for (const required of expected.mustInclude) {
+      assert.ok(candidates.some(c => c.slug.includes(required)), `${venue.name}: expected "${required}" in ${slugs}`);
+    }
+    for (const banned of expected.mustExclude || []) {
+      assert.ok(!candidates.some(c => c.slug.includes(banned)), `${venue.name}: "${banned}" must be filtered out; got ${slugs}`);
+    }
+    const undated = candidates.filter(c => !c.listingFirstDate || !c.listingLastDate);
+    assert.deepEqual(undated.map(c => c.title), [], `${venue.name}: dated reader returned undated rows`);
+    if (venue.strategy === 'spektrix' && venue.spektrixInstances) {
+      const uncounted = candidates.filter(c => typeof c.listingPerformanceCount !== 'number' || c.listingPerformanceCount < 1);
+      assert.deepEqual(uncounted.map(c => c.title), [], `${venue.name}: Spektrix rows need a performance count from /instances`);
+    }
+    for (const c of candidates) assert.equal(c.category, 'off-west-end');
+  });
+
+  test(`OWE ${venue.name}: parser rejects empty payload`, () => {
+    assert.deepEqual(parseVenueListingHtml(venue, ''), []);
   });
 }
