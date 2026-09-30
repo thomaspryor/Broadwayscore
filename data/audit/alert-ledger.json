@@ -72,39 +72,37 @@
       "disposition": "auto",
       "title": "BSC Daily: Audience coverage: open-show gaps",
       "firstSeen": "2026-07-24T07:50:35.242Z",
-      "lastSeen": "2026-09-28T14:32:40.908Z",
+      "lastSeen": "2026-09-30T13:04:06.012Z",
       "lastNotifiedAt": "2026-09-27T12:30:26.842Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": "3b6637c5-416f-8101-ba5f-dda540f78b96",
       "linearIdentifier": "BRO-3700",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-09-27T12:30:27.940Z",
-      "lastNotifiedAt": "2026-09-23T12:15:51.472Z",
+      "lastSeen": "2026-09-30T13:04:06.023Z",
+      "lastNotifiedAt": "2026-09-30T13:04:06.023Z",
       "lastSurfacedAt": null,
-      "notifyCount": 7,
+      "notifyCount": 8,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
-      "linearIdentifier": "BRO-3164",
-      "silentRefires": 2
+      "linearIdentifier": "BRO-3164"
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-09-28T14:32:41.719Z",
-      "lastNotifiedAt": "2026-09-23T12:15:54.278Z",
+      "lastSeen": "2026-09-30T13:04:08.049Z",
+      "lastNotifiedAt": "2026-09-30T13:04:08.049Z",
       "lastSurfacedAt": null,
-      "notifyCount": 8,
+      "notifyCount": 9,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
-      "linearIdentifier": "BRO-3081",
-      "silentRefires": 3
+      "linearIdentifier": "BRO-3081"
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -158,12 +156,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: star-vs-score mismatch",
       "firstSeen": "2026-07-27T08:00:24.727Z",
-      "lastSeen": "2026-09-28T14:32:41.015Z",
+      "lastSeen": "2026-09-30T13:04:08.046Z",
       "lastNotifiedAt": "2026-09-28T14:32:41.015Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-3978"
+      "linearIdentifier": "BRO-3978",
+      "silentRefires": 1
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -285,13 +284,13 @@
     },
     "provider-spend:overspend": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-09-23T12:16:31.539Z",
-      "lastNotifiedAt": "2026-09-23T12:16:31.539Z",
-      "lastSurfacedAt": "2026-09-23T12:16:31.539Z",
-      "notifyCount": 21,
+      "lastSeen": "2026-09-30T13:04:35.414Z",
+      "lastNotifiedAt": "2026-09-30T13:04:35.414Z",
+      "lastSurfacedAt": "2026-09-30T13:04:35.414Z",
+      "notifyCount": 22,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -451,13 +450,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Sync: cast coverage",
       "firstSeen": "2026-08-05T07:41:41.804Z",
-      "lastSeen": "2026-09-28T14:32:41.011Z",
+      "lastSeen": "2026-09-30T13:04:06.015Z",
       "lastNotifiedAt": "2026-09-27T12:30:27.728Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": "3b3637c5-416f-8197-91e3-e6b68252159b",
       "linearIdentifier": "BRO-4171",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "backstop:crazysexycool-regional-2026/washpost--thomas-floyd.json": {
       "status": "open",
@@ -730,13 +729,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: outlet domain moves",
       "firstSeen": "2026-08-11T07:57:54.489Z",
-      "lastSeen": "2026-09-28T14:32:41.723Z",
+      "lastSeen": "2026-09-30T13:04:10.556Z",
       "lastNotifiedAt": "2026-09-27T12:30:27.950Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": "3b9637c5-416f-81bd-965b-ddfceefeae77",
       "linearIdentifier": "BRO-2263",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: outlet invalid-content rate": {
       "status": "open",
@@ -809,18 +808,17 @@
       "linearIdentifier": null
     },
     "test-yml:main-streak": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
-      "title": "Main test.yml red — no confirmed-green run in 7.1h",
+      "title": "Main test.yml red — no confirmed-green run in 340.2h",
       "firstSeen": "2026-08-12T22:51:32.068Z",
-      "lastSeen": "2026-09-25T12:17:47.510Z",
-      "lastNotifiedAt": "2026-09-25T12:17:47.510Z",
-      "lastSurfacedAt": "2026-09-21T13:24:17.774Z",
-      "notifyCount": 66,
+      "lastSeen": "2026-09-30T13:03:19.987Z",
+      "lastNotifiedAt": "2026-09-30T13:03:19.987Z",
+      "lastSurfacedAt": "2026-09-30T13:03:19.987Z",
+      "notifyCount": 67,
       "cardId": null,
-      "linearIdentifier": "BRO-3030",
-      "resolvedAt": "2026-09-27T15:42:03.282Z"
+      "linearIdentifier": "BRO-3030"
     },
     "opening-night-placeholder-synopsis-anansi-the-spider-west-end-2026": {
       "status": "open",
@@ -1554,11 +1552,12 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: coverageExpectation drift",
       "firstSeen": "2026-08-24T07:46:55.105Z",
-      "lastSeen": "2026-08-31T14:28:26.920Z",
-      "lastNotifiedAt": "2026-08-31T14:28:26.920Z",
-      "notifyCount": 2,
+      "lastSeen": "2026-09-30T13:04:10.560Z",
+      "lastNotifiedAt": "2026-09-30T13:04:10.560Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-2297"
+      "linearIdentifier": "BRO-4351"
     },
     "cron-health:Commercial Friday Refresh": {
       "status": "open",
@@ -3014,13 +3013,12 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: DMARC deliverability",
       "firstSeen": "2026-09-15T12:12:15.198Z",
-      "lastSeen": "2026-09-28T14:32:41.721Z",
-      "lastNotifiedAt": "2026-09-23T12:16:01.267Z",
+      "lastSeen": "2026-09-30T13:04:10.136Z",
+      "lastNotifiedAt": "2026-09-30T13:04:10.136Z",
       "lastSurfacedAt": null,
-      "notifyCount": 2,
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": "BRO-4093",
-      "silentRefires": 3
+      "linearIdentifier": "BRO-4093"
     },
     "health-check:Digest: content-invariant check": {
       "status": "open",
@@ -7617,6 +7615,18 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4420"
+    },
+    "provider-spend:attribution-gap:brightdata": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Untracked brightdata spend: ledger explains only 36%, 80% of billed",
+      "firstSeen": "2026-09-30T13:04:35.419Z",
+      "lastSeen": "2026-09-30T13:04:35.419Z",
+      "lastNotifiedAt": "2026-09-30T13:04:35.419Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4423"
     }
   }
 }
