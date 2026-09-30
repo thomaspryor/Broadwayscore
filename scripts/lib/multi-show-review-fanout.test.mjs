@@ -249,6 +249,33 @@ test('split siblings sharing a URL are not cross-production copies; unrelated co
   assert.match(fs.readFileSync(path.join(root, 'audit-cross-show-url-collisions.js'), 'utf8'), /data\.multiShowSplitChild === true/);
 });
 
+test('review-texts push ownership gate keeps split siblings, still drops an unrelated cross-show copy', () => {
+  const { execFileSync } = require('node:child_process');
+  const script = path.join(path.dirname(new URL(import.meta.url).pathname), '..', 'validate-added-review-ownership.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'owngate-'));
+  const git = (...a) => execFileSync('git', a, { cwd: dir, stdio: 'pipe' });
+  git('init', '-q'); git('config', 'user.email', 't@t'); git('config', 'user.name', 't');
+  const w = (rel, obj) => { fs.mkdirSync(path.join(dir, path.dirname(rel)), { recursive: true }); fs.writeFileSync(path.join(dir, rel), JSON.stringify(obj)); };
+  const url = 'https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html';
+  const text = 'x'.repeat(3000);
+  w('how-shakespeare-saved-my-life-off-broadway-2026/vulture--sara-holdren.json', { showId: 'how-shakespeare-saved-my-life-off-broadway-2026', outletId: 'vulture', criticName: 'Sara Holdren', url, fullText: text });
+  w('other-show-2026/placeholder.json', { showId: 'other-show-2026', outletId: 'x', url: 'https://example.com/y', fullText: text });
+  git('add', '-A'); git('commit', '-qm', 'base');
+  // The split: parent marked, child added — plus an unrelated copy of the URL.
+  w('how-shakespeare-saved-my-life-off-broadway-2026/vulture--sara-holdren.json', { showId: 'how-shakespeare-saved-my-life-off-broadway-2026', outletId: 'vulture', criticName: 'Sara Holdren', url, fullText: text, multiShowSplitParent: true });
+  w('arias-with-a-twist-off-broadway-2026/vulture--sara-holdren.json', { showId: 'arias-with-a-twist-off-broadway-2026', outletId: 'vulture', criticName: 'Sara Holdren', url, fullText: text, multiShowSplitChild: true, multiShowSplitParentShowId: 'how-shakespeare-saved-my-life-off-broadway-2026' });
+  git('add', '-A'); git('commit', '-qm', 'split');
+  execFileSync('node', [script, `--base=${git('rev-parse', 'HEAD~1').toString().trim()}`], { cwd: dir, stdio: 'pipe' });
+  assert.ok(fs.existsSync(path.join(dir, 'arias-with-a-twist-off-broadway-2026/vulture--sara-holdren.json')), 'split sibling kept');
+  // A later, unrelated copy of the URL under a third show is still a leak.
+  w('unrelated-show-2026/vulture--sara-holdren.json', { showId: 'unrelated-show-2026', outletId: 'vulture', criticName: 'Sara Holdren', url, fullText: text });
+  git('add', '-A'); git('commit', '-qm', 'leak');
+  execFileSync('node', [script, `--base=${git('rev-parse', 'HEAD~1').toString().trim()}`], { cwd: dir, stdio: 'pipe' });
+  assert.equal(fs.existsSync(path.join(dir, 'unrelated-show-2026/vulture--sara-holdren.json')), false, 'unrelated cross-show copy still dropped');
+  assert.ok(fs.existsSync(path.join(dir, 'arias-with-a-twist-off-broadway-2026/vulture--sara-holdren.json')));
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
 test('New Yorker extractor reads every body block (second show was dropped before)', () => {
   const block = (t) => `<div class="body__inner-container"><p class="x">${t}</p></div>`;
   const first = `Igor Golyak’s “Delirium” opens on a crushed man. ${filler('Delirium', 4)}`;

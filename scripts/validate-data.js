@@ -3304,8 +3304,11 @@ function validateReviewTextDuplicates(shows) {
       try {
         const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
         // Skip flagged files — these are intentional duplicates or known-bad entries
+        // multiShowSplit*: per-show sections of one multi-show article share
+        // its URL by design (multi-show-review-fanout.js, BRO-4431).
         if (data.wrongProduction || data.wrongShow || data.isRoundupArticle ||
-            data.isCombinedReview || data.duplicateOf || data.fabricatedEntry) continue;
+            data.isCombinedReview || data.duplicateOf || data.fabricatedEntry
+            || data.multiShowSplitChild === true || data.multiShowSplitParent === true) continue;
         if (!data.url) continue;
         // URL normalization: strip protocol, www, trailing slash, query/fragment, lowercase
         const normUrl = data.url.trim().replace(/^https?:\/\//, '').replace(/^www\./, '').replace(/[#?].*$/, '').replace(/\/$/, '').toLowerCase();
