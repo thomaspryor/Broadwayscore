@@ -100,6 +100,7 @@ process.on('unhandledRejection', (reason, promise) => {
 // Score extraction for original scores
 const { extractScore, extractDesignation, extractNYTCriticsPick, OUTLET_VERIFIED_SOURCES, OUTLET_EXTRACTORS } = require('./lib/score-extractors');
 const { findBoldHeaderAnchors, loadShows: loadSplitterShows } = require('./lib/multi-show-splitter');
+const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { extractExplicitScore } = require('./lib/llm-score-extractor');
 // BRO-912: shared byline-anchored extractor (article-extractor.js) — aliased
 // to avoid colliding with this file's own Playwright-DOM extractArticleText(page).
@@ -5636,6 +5637,20 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
   }
 
   fs.writeFileSync(review.filePath, JSON.stringify(data, null, 2));
+
+  // BRO-4431: a multi-show article (photo-caption sections, capsule round-ups
+  // split by a rule, or a column that introduces each show in turn) is filed
+  // under EVERY show it reviews: this file keeps its own section and sibling
+  // files are written for the others. Before this, the split only ran in an
+  // offline backfill no workflow called, so the other shows never got it.
+  try {
+    const fan = applyMultiShowFanoutToFile(review.filePath, { shows: loadSplitterShows() });
+    if (fan.applied) {
+      console.log(`    ↔ Multi-show article (${fan.strategy}): ${fan.children.map((c) => `${c.showId}=${c.action}`).join(', ')}`);
+    }
+  } catch (e) {
+    console.log(`    ⚠ multi-show fan-out failed: ${e.message}`);
+  }
 
   try {
     emitStage({

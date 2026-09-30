@@ -62,6 +62,7 @@ const { createOrMergeReviewFile, WRITE_GUARD_REFUSED_REASONS } = require('./lib/
 const { findStaleMergeFields, isPreExistingContentBad } = require('./lib/stale-merge-check');
 const { buildManualReviewFields, detectIngestCollision } = require('./lib/manual-review-fields');
 const { safeWriteReview } = require('./lib/review-write-guard');
+const { applyMultiShowFanoutToFile } = require('./lib/multi-show-review-fanout');
 const { isStalePublishDate } = require('./lib/stale-publish-date');
 const { extractByline } = require('./lib/byline-extraction');
 const { pageMentionsShowTitle } = require('./lib/submission-show-match');
@@ -504,6 +505,20 @@ if (!show) {
     if (staleFields.length > 0) {
       console.error(`\n❌ Stale merge: ${staleFields.join(', ')} still hold a pre-existing value at ${result.filepath} that does not match this ingest — merge-into-existing only fills blank fields, it does not correct a non-blank-but-wrong one. Manual field correction needed.`);
       process.exit(1);
+    }
+  }
+
+  // BRO-4431: a multi-show article (Vulture/New Yorker double reviews,
+  // Theatrely capsule round-ups) is filed under every show it reviews, not
+  // only the one it was submitted for.
+  if (!dryRun && result.filepath && (result.action === 'new' || result.action === 'updated')) {
+    try {
+      const fan = applyMultiShowFanoutToFile(result.filepath, { reviewTextsDir });
+      if (fan.applied) {
+        console.log(`  ↔ Multi-show article (${fan.strategy}): own section kept, ${fan.children.map((c) => `${c.showId}=${c.action}`).join(', ')}`);
+      }
+    } catch (e) {
+      console.warn(`  ⚠ multi-show fan-out failed: ${e.message}`);
     }
   }
 
