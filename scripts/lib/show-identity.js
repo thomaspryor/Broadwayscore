@@ -76,9 +76,14 @@ function resolveShowIdentity(showId) {
   return { showId: id, showTitle: pickShowTitleForHeuristic(id, showMeta) };
 }
 
+/** The shows.json entry for a show id, or null. */
+function resolveShowMeta(showId) {
+  return loadShows().find(s => s && s.id === showId) || null;
+}
+
 /** Test seam: drop the memoised shows.json. */
 function _resetCache() {
   _showsCache = null;
 }
 
-module.exports = { resolveShowIdentity, _resetCache };
+module.exports = { resolveShowIdentity, resolveShowMeta, _resetCache };

@@ -11,7 +11,7 @@
  *
  * Candidates: thestage URL, no fullText, not flagged wrongShow/
  * wrongProduction/duplicateOf, and missing at least one of publishDate, a
- * named critic, or outletStandfirst. Gap-fill only (applyWalledPageMeta never
+ * named critic, outletStandfirst, or a star rating (BRO-4428). Gap-fill only (applyWalledPageMeta never
  * overwrites). Pages go through fetchPage() per the scraping rule.
  *
  * Usage:
@@ -55,7 +55,8 @@ function isCandidate(d) {
   if (d.wrongShow || d.wrongProduction || d.duplicateOf) return false;
   const critic = String(d.criticName || '').trim();
   const needsCritic = !critic || /^(unknown|the stage)$/i.test(critic);
-  return !d.publishDate || needsCritic || !d.outletStandfirst;
+  const needsScore = !d.originalScore && d.originalScoreNormalized == null;
+  return !d.publishDate || needsCritic || !d.outletStandfirst || needsScore;
 }
 
 function findCandidates() {
@@ -109,7 +110,7 @@ async function main() {
       let fresh = null;
       let set;
       try {
-        set = salvageWalledPageMetaToFile(fp, html, { showTitle, dryRun, onApplied: (x) => { fresh = x; } });
+        set = salvageWalledPageMetaToFile(fp, html, { showTitle, show: showsById[d.showId || path.basename(path.dirname(fp))], dryRun, onApplied: (x) => { fresh = x; } });
       } catch (e) {
         // One file edited or corrupted mid-run must not abort the rest.
         console.log(`  ✗ ${label}: salvage failed (${String(e.message || e).slice(0, 80)})`);
