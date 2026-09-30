@@ -181,3 +181,13 @@ test('an emptied subVenueSlugs array is legitimate when the complex slug is itse
   const nwsShows = showsData.shows.filter(s => isOffBroadway(s) && slugify(normalizeVenueName(s.venue || '')) === 'new-world-stages');
   assert.ok(nwsShows.length > 0, 'the complex now depends entirely on ownTheater, so at least one show must use the bare "New World Stages" venue string');
 });
+
+// BRO-4410: "Jewel Box" (Signature) must not link the unrelated Roundabout
+// "Black Box Theatre at ... Steinberg Center" via the shared "box" token.
+test('a shared "box" token does not flag Black Box Theatre as a Signature sub-venue candidate', () => {
+  const shows = [
+    { venue: 'Black Box Theatre at Harold and Miriam Steinberg Center for Theatre', category: 'off-broadway' },
+  ];
+  const defs = { 'signature-theatre': { name: 'Signature Theatre', subVenueSlugs: ['signature-theatre-company-alice-griffin-jewel-box-theater'] } };
+  assert.deepEqual(findCandidateGaps(shows, defs, () => true), {});
+});

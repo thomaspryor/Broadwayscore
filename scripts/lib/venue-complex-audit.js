@@ -38,7 +38,11 @@ const GENERIC_TOKENS = new Set([
   // bare numbers are already filtered below, this is the spelled-out form),
   // and "NYC" (Perelman PAC, Masquerade NYC, Asylum NYC — none of which are
   // related to each other or to MCC).
-  'newman', 'frankel', 'griffin', 'second', 'five', 'nyc',
+  //
+  // BRO-4410: "Box" (Signature's Alice Griffin Jewel Box Theater vs the
+  // unrelated Roundabout "Black Box Theatre at Harold and Miriam Steinberg
+  // Center for Theatre") — "black box" is a generic theatre-format word.
+  'newman', 'frankel', 'griffin', 'second', 'five', 'nyc', 'box',
 ]);
 
 function coreTokens(str) {
