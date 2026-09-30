@@ -914,7 +914,9 @@ jobs:
       # refused, e.g. missing consensus). The conditionKey prefix is page-worthy,
       # so this pages immediately instead of landing in the next morning's digest.
       - name: "Page owner: deadline draft created over QA findings"
-        if: steps.broadcast.outputs.draft_created == 'true' && (steps.checklist_gate.outputs.overridden != '' || steps.drift_gate.outputs.overridden != '' || steps.orphan_gate.outputs.overridden != '')
+        # always(): a draft that exists must be flagged even if some earlier,
+        # unrelated step in the job failed (audit-alert-reachability, BRO-2817).
+        if: always() && steps.broadcast.outputs.draft_created == 'true' && (steps.checklist_gate.outputs.overridden != '' || steps.drift_gate.outputs.overridden != '' || steps.orphan_gate.outputs.overridden != '')
         env:
           DISCORD_WEBHOOK_ALERTS: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
