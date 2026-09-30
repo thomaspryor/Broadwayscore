@@ -67,3 +67,7 @@ test('BroadwayWorld own /article/BWW-Review-* pages are not treated as aggregato
   assert.equal(ev({ url: 'https://www.broadwayworld.com/article/BWW-Review-Lucy-Kirkwoods-Thoughtful-THE-CHILDREN-Comes-to-Broadway-20171213', showTitle: 'The Children' }).ok, true);
   assert.equal(ev({ url: 'https://forum.broadwayworld.com/thread/THE-INHERITANCE-Reviews', showTitle: 'The Inheritance' }).ok, false);
 });
+
+test('a long quoted editorial headline is not mistaken for a different work', () => {
+  assert.equal(longerQuotedWork('Critic says “a truly dazzling and unforgettable night at Hamilton” tonight', 'Hamilton'), null);
+});

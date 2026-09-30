@@ -67,7 +67,9 @@ function longerQuotedWork(rawTitle, showTitle) {
     const padded = ` ${inner} `;
     if (!padded.includes(` ${want} `)) continue;
     const extra = inner.split(' ').filter(t => !want.split(' ').includes(t) && !STAGE_SIGNAL_RE.test(t));
-    if (extra.length > 0) return sp;
+    // A short extra run reads as another work's name ("Wonder Woman 1984"); a
+    // long quoted span is an editorial headline quote, not a work title.
+    if (extra.length > 0 && extra.length <= 3) return sp;
   }
   return null;
 }

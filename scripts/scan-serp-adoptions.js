@@ -59,7 +59,7 @@ function main() {
       const res = evaluateFile(data, titleById.get(data.showId || dir));
       if (!res) continue;
       scanned++;
-      if (!res.ok) rejects.push({ fp, rel: `${dir}/${f}`, url: data.url, prev: data.previousUrl, reason: res.reason, title: titleById.get(data.showId || dir), live: live.has(liveKey(data)) });
+      if (!res.ok) rejects.push({ fp, rel: `${dir}/${f}`, url: data.url, prev: data.previousUrl, reason: res.reason, prevRejected: Array.isArray(data.serpRejectedUrls) ? data.serpRejectedUrls : [], title: titleById.get(data.showId || dir), live: live.has(liveKey(data)) });
     }
   }
 
@@ -72,7 +72,7 @@ function main() {
     if (fix && prevOk) {
       const out = updateFileUrlWithInvariant(r.fp, r.prev, {
         urlDiscoveryMethod: REVERTED_METHOD,
-        serpRejectedUrls: [r.url],
+        serpRejectedUrls: [...new Set([...(r.prevRejected || []), r.url])],
         urlRevertedAt: new Date().toISOString(),
         urlRevertReason: `BRO-4409: ${r.reason}`,
       }, { preserveFields: new Set(AGGREGATOR_FIELDS) });
