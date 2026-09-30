@@ -1,17 +1,17 @@
 {
-  "runDate": "2026-09-30T20:03:22.554Z",
+  "runDate": "2026-09-30T20:22:28.099Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 1000,
     "priority": "all",
-    "showFilter": "an-american-daughter-off-broadway-2026",
+    "showFilter": "the-pass-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 3,
+    "processed": 2,
     "failed": 0,
     "skipped": 0,
     "successRate": "100.0%"
@@ -23,12 +23,12 @@
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 1,
+    "brightdata": 0,
     "archiveToday": 0,
     "archive": 1
   },
   "statistics": {
-    "tier1Attempts": 2,
+    "tier1Attempts": 1,
     "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
@@ -38,12 +38,12 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 1,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 2,
-    "tier4Success": 1,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
     "totalFailed": 0,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
@@ -54,26 +54,23 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json",
-    "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
-    "an-american-daughter-off-broadway-2026/playbill--unknown.json"
+    "the-pass-off-broadway-2026/nytg--amelia-merrill.json",
+    "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
   ],
   "failed": [],
   "tierDetails": {
     "playwright": [
-      "an-american-daughter-off-broadway-2026/nyc-theatre-addict--michael-higgins.json"
+      "the-pass-off-broadway-2026/nytg--amelia-merrill.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [
-      "an-american-daughter-off-broadway-2026/new-york-sun--elysa-gardner.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "an-american-daughter-off-broadway-2026/playbill--unknown.json"
+      "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json"
     ]
   },
   "failuresByOutlet": {},

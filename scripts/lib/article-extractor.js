@@ -136,6 +136,48 @@ function extractBalancedDivByClass(html, classNeedle) {
 }
 
 /**
+ * Every balanced <div class="…needle…"> body on the page, in document order.
+ */
+function extractAllBalancedDivsByClass(html, classNeedle) {
+  const out = [];
+  let rest = html;
+  const escaped = classNeedle.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  // Same quote handling as extractBalancedDivByClass (single or double).
+  const openRe = new RegExp(
+    '<div[^>]*class=(?:"[^"]*\\b' + escaped + '\\b[^"]*"|\'[^\']*\\b' + escaped + '\\b[^\']*\')[^>]*>',
+    'i'
+  );
+  for (let guard = 0; guard < 50; guard++) {
+    const inner = extractBalancedDivByClass(rest, classNeedle);
+    if (inner == null) break;
+    out.push(inner);
+    const m = rest.match(openRe);
+    if (!m) break;
+    rest = rest.slice(m.index + m[0].length + inner.length);
+  }
+  return out;
+}
+
+/**
+ * The New Yorker: join the <p> prose of every body__inner-container block,
+ * one paragraph per line pair (paragraph breaks help the multi-show fan-out).
+ */
+function extractNewYorkerBody(html) {
+  const blocks = extractAllBalancedDivsByClass(html, 'body__inner-container');
+  if (!blocks.length) return null;
+  const paras = [];
+  for (const b of blocks) {
+    const ps = b.match(/<p\b[^>]*>[\s\S]*?<\/p>/g) || [];
+    for (const p of ps) {
+      const t = stripHtml(p);
+      if (t) paras.push(t);
+    }
+  }
+  const text = paras.join('\n\n').trim();
+  return text || null;
+}
+
+/**
  * BRO-203: article-extractor had no true generic fallback — a domain with no
  * PATTERNS entry (and whose HTML doesn't happen to use <article>/<main>)
  * returned 0 chars, so genuinely-new outlets stayed uncollectable even after
@@ -724,6 +766,17 @@ function extractArticleText(html, hostname, criticHint) {
   if (host.includes('thetimes.co.uk') || host.includes('thetimes.com')) {
     const timesText = extractTimesBody(html);
     return timesText && timesText.length >= 300 ? timesText : null;
+  }
+
+  // The New Yorker: the body is split across SEVERAL body__inner-container
+  // blocks (ad/newsletter slots sit between them). The PATTERNS entries below
+  // only ever captured the first block, which on a two-show column (Nussbaum,
+  // "Gut Renos of Ionesco and Chekhov", BRO-4431) is the first show only, so
+  // the second show's half never reached the multi-show fan-out. Falls
+  // through to PATTERNS when no block is found.
+  if (host.includes('newyorker.com')) {
+    const nyText = extractNewYorkerBody(html);
+    if (nyText && nyText.length >= 500) return nyText;
   }
 
   // Lighting & Sound America: table-based layout, no container div — prose lives

@@ -3464,7 +3464,12 @@ function createReviewFile(showId, reviewData, options = {}) {
       try {
         const existingPath = path.join(REVIEW_TEXTS_DIR, existing.showId, existing.file);
         const existingData = JSON.parse(fs.readFileSync(existingPath, 'utf8'));
-        allowCrossShow = existingData.isRoundupArticle === true || existingData.isCombinedReview === true;
+        allowCrossShow = existingData.isRoundupArticle === true || existingData.isCombinedReview === true
+          // BRO-4431: this show is a split sibling of the existing file's
+          // multi-show article, so sharing the URL is by design.
+          || (existingData.multiShowSplitParent === true && Array.isArray(existingData.multiShowSplitChildShowIds)
+            && existingData.multiShowSplitChildShowIds.includes(showId))
+          || (existingData.multiShowSplitChild === true && existingData.multiShowSplitParentShowId === showId);
         // Don't let invalid/wrong-content files block legitimate reviews
         existingIsJunk = existingData.contentTier === 'invalid'
           || existingData.wrongShow === true
@@ -4905,11 +4910,30 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
           }, res => { if (res.statusCode !== 200) { r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => r(d)); }).on('error', () => r(null));
         });
 
-        if (homepageHtml) {
+        // BRO-4431: the homepage only lists the latest ~10 posts, so a
+        // roundup that scrolled off (Golden Boy, Cleansed) was never found.
+        // The WP search API answers plain requests (verified 2026-09-30);
+        // try it first and fall back to the homepage scan.
+        let roundupUrl = null;
+        try {
+          const apiPosts = await new Promise(r => {
+            const apiReq = trHttp.get(apiUrl, {
+              headers: { 'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36', Accept: 'application/json' },
+              timeout: 15000,
+            }, res => { if (res.statusCode !== 200) { res.resume(); r(null); return; } let d = ''; res.on('data', c => d += c); res.on('end', () => { try { r(JSON.parse(d)); } catch { r(null); } }); });
+            apiReq.on('error', () => r(null));
+            apiReq.on('timeout', () => { apiReq.destroy(); r(null); });
+          });
+          const { pickTheatreReviewsRoundup } = require('./lib/theatre-reviews-discovery');
+          // Only with a date floor (the API query's `after=`): without one a
+          // revival title can pick an older production's round-up.
+          if (dateFloor) roundupUrl = pickTheatreReviewsRoundup(apiPosts, searchTitle);
+        } catch {}
+
+        if (!roundupUrl && homepageHtml) {
           const cheerio = require('cheerio');
           const $ = cheerio.load(homepageHtml);
           const titleLower = searchTitle.toLowerCase();
-          let roundupUrl = null;
           $('a[href*="/reviews-roundup/"]').each((_, el) => {
             const href = $(el).attr('href');
             const text = $(el).text().toLowerCase();
@@ -4918,7 +4942,9 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
               return false;
             }
           });
+        }
 
+        {
           if (roundupUrl) {
             const { extractReviews: extractTR } = require('./scrape-theatre-reviews');
             const trPageHtml = await new Promise(r => {

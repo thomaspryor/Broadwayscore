@@ -234,7 +234,7 @@ jobs:
     # Only run if validation passed
     if: needs.validate.outputs.recommendation == 'approve'
     runs-on: ubuntu-latest
-    timeout-minutes: 15
+    timeout-minutes: 25  # BRO-4431: one retry + stub fallback
 
     steps:
       - name: Checkout repository
@@ -293,7 +293,24 @@ jobs:
           # submitted URL, extracts text + byline, resolves the outlet from
           # the URL domain, and runs the same write path as
           # scripts/ingest-manual-review.js.
-          node scripts/ingest-review-from-url.js --show="$SHOW_ID" --url="$REVIEW_URL"
+          #
+          # BRO-4431: a failed fetch used to fail the job, label the issue
+          # scraping-failed and stop (Golden Boy #907/#908, Thelma & Louise
+          # #919). Retry once (bot walls and proxy blips are often transient),
+          # then save a URL-only stub queued for automatic retry: the
+          # collector, the T1/T2 gap audit and the paywall/aggregator star
+          # salvage all work from it, and the landed check below treats it as
+          # pending (awaiting-score sweep), not as a dead end. A refusal
+          # (blocked domain, blocklist, wrong show) still fails here.
+          status=0
+          node scripts/ingest-review-from-url.js --show="$SHOW_ID" --url="$REVIEW_URL" || status=$?
+          [ "$status" -eq 0 ] && exit 0
+          # Exit 3 = the page could not be read. Anything else is a refusal
+          # (blocked/non-review URL, blocklist, wrong show): fail as before.
+          [ "$status" -ne 3 ] && exit "$status"
+          echo "::warning::First ingest attempt could not read the page; retrying in 60s"
+          sleep 60
+          node scripts/ingest-review-from-url.js --show="$SHOW_ID" --url="$REVIEW_URL" --stub-on-failure
 
       # BRO-4141: score the new review before the rebuild. Without a score the
       # rebuild leaves it out, the landed check below reported "not on the

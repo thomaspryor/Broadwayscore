@@ -122,6 +122,11 @@ const KNOWN_BACKLOG = [
   ['hamilton-west-end-2021', 'timeout-london', 'Andrzej Lukowski', 'Andrzej Lukowsksi'],
   ['hands-on-a-hardbody-2013', 'ew', 'Clark Collins', 'Clark Collis'],
   ['harry-potter-2021', 'telegraph', 'Diana Snyder', 'Diane Snyder'],
+  // Not a double count: amny--unknown.json is the 2014 original-production
+  // review (Playbill Verdict row, publishDate 2014-03-31, contentTier invalid,
+  // so the rebuild already excludes it) mis-filed under the 2025 revival on
+  // 2026-09-30; amny--matt-windman.json is the real 2025 review.
+  ['heathers-the-musical-off-broadway-2025', 'amny', 'Matt Windman', 'Matt Windam'],
   ['heisenberg-2016', 'amny', 'Matt Windham', 'Matt Windman'],
   ['heisenberg-2016', 'wnyc', 'Jennifer Vanasco', 'Jennifer Vavasco'],
   ['hells-kitchen-2024', 'nytimes', 'Elisabeth Vincentelli', 'Elizabeth Vincentelli'],
