@@ -88,11 +88,18 @@ test('parseSpektrixEvents: instance counts, cancelled instances, attribute exclu
     { id: 'c', name: 'All Cancelled', firstInstanceDateTime: '2026-10-01T19:30:00', lastInstanceDateTime: '2026-10-02T19:30:00' },
   ];
   const instances = [
-    { event: { id: 'a' }, cancelled: false }, { event: { id: 'a' }, cancelled: false }, { event: { id: 'a' }, cancelled: true },
-    { event: { id: 'b' }, cancelled: false }, { event: { id: 'c' }, cancelled: true },
+    { event: { id: 'a' }, start: '2026-10-01T19:30:00', cancelled: false }, { event: { id: 'a' }, start: '2026-10-20T19:30:00', cancelled: false }, { event: { id: 'a' }, start: '2026-10-05T19:30:00', cancelled: true },
+    { event: { id: 'b' }, start: '2026-10-01T19:30:00', cancelled: false }, { event: { id: 'c' }, start: '2026-10-01T19:30:00', cancelled: true },
   ];
   const rows = parseSpektrixEvents({ events, instances }, { exclude: { attribute_SupplementaryEvent: /^true$/i } });
   assert.deepEqual(rows.map(r => [r.title, r.performanceCount]), [['Run', 2]]);
+  // One event holding bookings months apart: the row is the current/next block.
+  const split = parseSpektrixEvents({
+    events: [{ id: 'g', name: 'God Is A Woman', firstInstanceDateTime: '2026-04-03T19:30:00', lastInstanceDateTime: '2027-01-10T19:30:00' }],
+    instances: ['2026-04-03', '2026-04-04', '2026-06-10', '2026-06-11', '2027-01-05', '2027-01-06', '2027-01-07', '2027-01-08', '2027-01-10']
+      .map(d => ({ event: { id: 'g' }, start: `${d}T19:30:00`, cancelled: false })),
+  }, { todayIso: '2026-09-30' });
+  assert.deepEqual(split.map(r => [r.firstDate, r.lastDate, r.performanceCount]), [['2027-01-05', '2027-01-10', 5]]);
   // Events alone: count unknown, nothing dropped for it.
   assert.deepEqual(parseSpektrixEvents(events).map(r => r.performanceCount), [null, null, null]);
 });
@@ -120,7 +127,7 @@ test('real fixtures: one-nighters, short bookings and recurring nights are refus
   const byTitle = new Map([...venueRows('Theatre Royal Stratford East'), ...venueRows('Park Theatre'), ...venueRows("King's Head Theatre")].map(c => [c.title, c]));
   const refused = {
     'The Ballad of John and Paul': /one-night|only 1 performance/, // Stratford East, 1 performance
-    'Drag Tales': /only 3 performance/,                           // Park, a monthly drag brunch
+    'Drag Tales': /one-night|only \d performance/,                // Park, a monthly drag brunch (one date per block)
     'Thou Shalt Sit The F*** Down': /one-night|only 1 performance/,
   };
   for (const [title, re] of Object.entries(refused)) {
@@ -218,9 +225,27 @@ test('findSameHouseTokenMatch: slug-title catalog rows match the dated full titl
     { id: 'hamlet-elsewhere', title: 'Hamlet', venue: 'Almeida Theatre' },
   ];
   const hit = (title, venue, extra = {}) => findSameHouseTokenMatch({ title, venue, ...extra }, pool);
-  assert.equal(hit('Twenty Thousand Streets Under the Sky', 'Southwark Playhouse Elephant')?.match.id, 'twenty-thousand-streets-off-west-end-2026');
+  const run = { listingFirstDate: '2026-09-10', listingLastDate: '2026-10-17' };
+  assert.equal(hit('Twenty Thousand Streets Under the Sky', 'Southwark Playhouse Elephant', run)?.match.id, 'twenty-thousand-streets-off-west-end-2026');
+  assert.equal(hit('Twenty Thousand Streets Under the Sky', 'Southwark Playhouse'), null, 'an undated candidate needs equal words');
   assert.equal(hit('Berlin', 'Kiln Theatre')?.match.id, 'berlin2027-off-west-end-2026');
   assert.equal(hit('King Lear', 'Orange Tree Theatre', { listingFirstDate: '2027-02-15' }), null, 'a production that closed years earlier is not this one');
   assert.equal(hit('Hamlet', 'Kiln Theatre'), null, 'another house');
   assert.equal(hit('Streets', 'Southwark Playhouse'), null, 'one word is not enough to call a subset');
+});
+
+test('dedupe: contained titles need an overlapping run; the London-wide title match needs the same house for a dated row', () => {
+  const { findSameHouseTokenMatch, findDuplicate } = require('../../scripts/promote-owe-venue-candidates.js');
+  const pool = [
+    { id: 'private-lives-of-the-royals', title: 'Private Lives of the Royals', venue: 'Park Theatre', previewsStartDate: '2026-06-01', closingDate: '2026-07-01' },
+    { id: 'a-dolls-house-almeida', title: "A Doll's House", venue: 'Almeida Theatre', previewsStartDate: '2026-04-01', closingDate: '2026-05-23' },
+    { id: 'cinderella-palladium', title: 'Cinderella', venue: 'London Palladium', category: 'west-end', previewsStartDate: '2026-12-05', closingDate: '2027-01-10' },
+    { id: 'robin-hood-merry-mandem', title: 'Robin Hood and the Merry Mandem', venue: 'Theatre Royal Stratford East' },
+  ];
+  const dated = (title, venue, first, last) => ({ title, venue, category: 'off-west-end', source: 'venue-page:x', listingFirstDate: first, listingLastDate: last, listingPerformanceCount: 30 });
+  assert.equal(findSameHouseTokenMatch(dated('Private Lives', 'Park Theatre', '2026-10-01', '2026-11-01'), pool), null);
+  assert.equal(findSameHouseTokenMatch(dated("A Doll's House Part 2", 'Almeida Theatre', '2027-01-10', '2027-02-20'), pool), null);
+  assert.equal(findSameHouseTokenMatch(dated('Robin Hood', 'Theatre Royal Stratford East', '2026-11-21', '2027-01-02'), pool)?.match.id, 'robin-hood-merry-mandem');
+  assert.equal(findDuplicate(dated('Cinderella', 'Lyric Hammersmith', '2026-11-14', '2027-01-03'), pool), null, "the Lyric's Cinderella is not the Palladium's");
+  assert.equal(findDuplicate(dated("A Doll's House", 'Barbican Theatre', '2027-02-03', '2027-02-06'), pool), null);
 });

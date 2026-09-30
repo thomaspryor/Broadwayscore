@@ -365,37 +365,81 @@ function sameLondonHouse(a, b) {
   return ka === kb || ka.startsWith(`${kb} `) || kb.startsWith(`${ka} `);
 }
 
+/** A catalog row's own run window, or null when it carries no dates. */
+function rowWindow(e) {
+  const first = validDateOrNull(e.previewsStartDate) || validDateOrNull(e.openingDate);
+  const last = validDateOrNull(e.closingDate);
+  if (!first && !last) return null;
+  return { first: first || last, last: last || '9999-12-31' };
+}
+
+function shiftDay(iso, days) {
+  return new Date(Date.parse(`${iso}T00:00:00Z`) + days * DAY_MS).toISOString().slice(0, 10);
+}
+
 /**
- * A catalog row at the same house whose title is the candidate's with words
- * missing, or the other way round (BRO-4398). Slug-title readers minted
- * truncated rows ("Twenty Thousand Streets", "Berlin_2027") that the dated
- * readers now see under the full name ("Twenty Thousand Streets Under the
- * Sky", "BERLIN"); findExistingMatch's normalized-equal test misses both.
- * The smaller token set needs two words unless the sets are equal, and a row
- * that closed more than 180 days before the candidate's run starts is an
- * earlier production, not this one.
+ * A catalog row at the same house that is this candidate's production
+ * under a variant title (BRO-4398). Slug-title readers minted rows such as
+ * "Twenty Thousand Streets" and "Berlin_2027" that the dated readers now see
+ * as "Twenty Thousand Streets Under the Sky" and "BERLIN";
+ * findExistingMatch's normalized-equal test misses both.
+ *   - Equal word sets (season years and punctuation ignored): the same
+ *     show, unless the row closed more than 180 days before this run starts
+ *     (an earlier production).
+ *   - One title's words contained in the other's (two words at least):
+ *     only for a dated candidate, and only when the row is undated (a stub
+ *     minted from a slug) or its own run overlaps this one within 30 days.
+ *     "Private Lives" is not "Private Lives of the Royals" three months
+ *     later, and "A Doll's House Part 2" is not last year's "A Doll's House".
  *
  * @param {object} candidate
- * @param {Array<{id, title, venue, status?, closingDate?}>} pool
+ * @param {Array<{id, title, venue, previewsStartDate?, openingDate?, closingDate?}>} pool
  * @returns {{match: object, reason: string}|null}
  */
 function findSameHouseTokenMatch(candidate, pool) {
   const ct = tokensWithoutYears(candidate && candidate.title);
   if (ct.size === 0) return null;
-  const start = validDateOrNull(candidate.listingFirstDate) || validDateOrNull(candidate.previewsStartDate) || validDateOrNull(candidate.openingDate);
-  const cutoff = start ? new Date(Date.parse(`${start}T00:00:00Z`) - 180 * DAY_MS).toISOString().slice(0, 10) : null;
+  const run = listingRunDates(candidate);
+  const start = validDateOrNull(candidate.listingFirstDate) || run.previewsStartDate || validDateOrNull(candidate.previewsStartDate) || validDateOrNull(candidate.openingDate);
+  const end = validDateOrNull(candidate.listingLastDate) || start;
+  const dated = isDatedListingCandidate(candidate) && start && end;
+  const cutoff = start ? shiftDay(start, -180) : null;
   for (const e of Array.isArray(pool) ? pool : []) {
     if (!e || !e.title || typeof e.venue !== 'string' || !sameLondonHouse(candidate.venue, e.venue)) continue;
-    if (cutoff && typeof e.closingDate === 'string' && e.closingDate < cutoff) continue;
     const et = tokensWithoutYears(e.title);
     if (et.size === 0) continue;
-    const [small, big] = ct.size <= et.size ? [ct, et] : [et, ct];
-    if (small.size < 2 && small.size !== big.size) continue;
-    if ([...small].every(t => big.has(t))) {
-      return { match: e, reason: `same house, title words ${small.size === big.size ? 'equal' : 'contained'} ("${e.title}" vs "${candidate.title}")` };
+    const equal = ct.size === et.size && [...ct].every(t => et.has(t));
+    if (equal) {
+      if (cutoff && typeof e.closingDate === 'string' && e.closingDate < cutoff) continue;
+      return { match: e, reason: `same house, same title words ("${e.title}" vs "${candidate.title}")` };
     }
+    if (!dated) continue;
+    const [small, big] = ct.size <= et.size ? [ct, et] : [et, ct];
+    if (small.size < 2 || ![...small].every(t => big.has(t))) continue;
+    const w = rowWindow(e);
+    if (w && !(w.first <= shiftDay(end, 30) && w.last >= shiftDay(start, -30))) continue;
+    return { match: e, reason: `same house, title words contained, ${w ? 'overlapping run' : 'undated catalog row'} ("${e.title}" vs "${candidate.title}")` };
   }
   return null;
+}
+
+/**
+ * Duplicate check for one candidate. findExistingMatch's London-pool title
+ * fallback (same title at any London venue) is right for an aggregator
+ * row, but a dated venue listing is itself evidence of a production at THAT
+ * house: Lyric Hammersmith's "Cinderella" is not the Palladium's, nor is
+ * Barbican's "A Doll's House" the Almeida's (BRO-4398 review). For a dated
+ * candidate the fallback only counts at the same house.
+ */
+function findDuplicate(candidate, pool) {
+  if (!isDatedListingCandidate(candidate)) {
+    return findExistingMatch(candidate, pool) || findSameHouseTokenMatch(candidate, pool);
+  }
+  const strict = findExistingMatch(candidate, pool, { londonPoolFallback: false });
+  if (strict) return strict;
+  const loose = findExistingMatch(candidate, pool);
+  if (loose && loose.match && sameLondonHouse(candidate.venue, loose.match.venue)) return loose;
+  return findSameHouseTokenMatch(candidate, pool);
 }
 
 /**
@@ -921,7 +965,7 @@ async function evaluateCandidates(candidates, ctx) {
       // 1. Already in shows.json (venue-gated match, then the London-pool
       //    title fallback) — the ordinary way a staged candidate resolves
       //    once TodayTix/OLT/a hand add landed the same production.
-      const existingMatch = findExistingMatch(c, existingCandidates) || findSameHouseTokenMatch(c, existingCandidates);
+      const existingMatch = findDuplicate(c, existingCandidates);
       if (existingMatch) {
         prune(c, 'skip-duplicate', `already in shows.json as ${existingMatch.match.id} (${existingMatch.reason})`, { matchedTo: existingMatch.match.id, matchReason: existingMatch.reason });
         continue;
@@ -1087,7 +1131,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
   // (S4-T9) applies to off-west-end candidates too.
   const existingCandidates = showsData.shows
     .filter(s => s.category === 'west-end' || s.category === 'off-west-end')
-    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category, status: s.status, closingDate: s.closingDate || null }));
+    .map(s => ({ id: s.id, title: s.title, venue: s.venue, category: s.category, previewsStartDate: s.previewsStartDate || null, openingDate: s.openingDate || null, closingDate: s.closingDate || null }));
   // Loud on a malformed registry (loadRetiredIds throws) — silently treating
   // it as empty is exactly how a retired id slips back in.
   const retiredEntries = Array.isArray(io.retiredEntries) ? io.retiredEntries : loadRetiredIds();
@@ -1222,6 +1266,7 @@ module.exports = {
   isDatedListingCandidate,
   isCuratedLondonVenue,
   findSameHouseTokenMatch,
+  findDuplicate,
   listingRunDates,
   evaluateCandidates,
   main,

@@ -1525,7 +1525,9 @@ async function fetchShowsFromVenueListings(category) {
       }
       // Per-venue rolling-median anomaly gate (same lib the OB path uses).
       // Fail-soft: warns + sets exitCode but keeps discovering other venues.
-      checkVenueAnomaly(venue.name, rows.length);
+      // The dated reader returns a venue's whole account, the link reader a
+      // page of slugs: separate baselines, or a fallback day trips the gate.
+      checkVenueAnomaly(result.value.dated ? `${venue.name} (dated)` : venue.name, rows.length);
       successCount++;
       allShows.push(...rows);
       const dated = rows.filter(r => r.listingFirstDate && r.listingLastDate).length;

@@ -526,7 +526,8 @@ const OB_VENUE_CONFIGS = [
 // Other Palace, Donmar
 // Warehouse and Royal Court (403 to plain HTTP; Royal Court is also
 // catalogued West End), Soho Theatre (1,515 Spektrix events, almost all
-// stand-up) and Theatre503 (courses and one-nighters; none catalogued).
+// stand-up), Theatre503 (courses and one-nighters; none catalogued) and
+// Barbican (see LONDON_NO_READER_REASONS in ob-venue-reader-coverage.js).
 
 // Spektrix accounts sell add-ons and access services as events. Each
 // pattern names a row seen on a London account on 2026-09-30.
@@ -569,9 +570,6 @@ const OWE_VENUE_CONFIGS = [
   // Mostly cinema, classes and wellness: theatre only.
   { name: 'Riverside Studios', url: 'https://riversidestudios.co.uk/whats-on/', spektrixUrl: 'https://spektrix.riversidestudios.co.uk/riversidestudios/api/v3/events', spektrixInstances: true, spektrixGenreField: 'attribute_EventType', spektrixGenres: ['Theatre'], strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   { name: 'Bridge Theatre', url: 'https://bridgetheatre.co.uk/', spektrixUrl: 'https://tickets.bridgetheatre.co.uk/bridgetheatrelondon/api/v3/events', spektrixInstances: true, strategy: 'spektrix', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
-  // Barbican's account is ~3,000 events (4.9 MB, ~40 s on 2026-09-30), mostly
-  // concerts and cinema: theatre only, and no /instances pull on top of it.
-  { name: 'Barbican Theatre', coversVenues: ['Barbican Centre'], url: 'https://www.barbican.org.uk/whats-on/theatre-dance', spektrixUrl: 'https://spektrix.barbican.org.uk/barbicancentre/api/v3/events', spektrixTimeoutMs: 120000, spektrixGenreField: 'attribute_PrimaryArtForm', spektrixGenres: ['Theatre'], spektrixExclude: { attribute_SuppEvent: /^true$/i }, strategy: 'spektrix', excludeTitlePatterns: [...LONDON_OWE_EXCLUDE_PATTERNS, /\btest!*$/i], category: 'off-west-end' },
   // ── JSON-LD ──
   // Menier: Event nodes in the homepage @graph, one per run.
   { name: 'Menier Chocolate Factory', url: 'https://www.menierchocolatefactory.com/', strategy: 'json-ld', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
@@ -640,7 +638,7 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
       try { payload = JSON.parse(payload); } catch { return []; }
     }
     if (venue.strategy === 'ovationtix') rows = parseOvationTixBundle(payload, { clientId: venue.ovationtixClientId });
-    else if (venue.strategy === 'spektrix') rows = parseSpektrixEvents(payload, { genres: venue.spektrixGenres, genreField: venue.spektrixGenreField, exclude: venue.spektrixExclude });
+    else if (venue.strategy === 'spektrix') rows = parseSpektrixEvents(payload, { genres: venue.spektrixGenres, genreField: venue.spektrixGenreField, exclude: venue.spektrixExclude, todayIso });
     else if (venue.strategy === 'json-api') rows = extractJsonItems(payload, venue.jsonSpec);
     else rows = parseTribeEvents(payload);
   } else if (venue.strategy === 'nytg-venue') {

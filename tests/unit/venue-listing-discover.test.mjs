@@ -192,7 +192,6 @@ const EXPECTED_OWE = {
   'Menier Chocolate Factory': { min: 1, max: 4, mustInclude: ['tru', 'fourteen-again'] },
   'Almeida Theatre': { min: 2, max: 6, mustInclude: ['golden-boy', 'desire-under-the-elms'], mustExclude: ['theatre-tour'] },
   'New Diorama Theatre': { min: 2, max: 6, mustInclude: ['stuffed', 'orlando-a-pornobiography'], mustExclude: ['operation-mincemeat'] },
-  'Barbican Theatre': { min: 8, max: 22, mustInclude: ['hamlet-hail-to-the-thief', 'death-note-the-musical', 'tom-at-the-farm'], mustExclude: ['touch-tour', 'jane-test'] },
   'Troubadour Wembley Park Theatre': { min: 1, max: 3, mustInclude: ['high-school-musical'], mustExclude: ['hunger-games'] },
   'Hampstead Theatre': { min: 3, max: 8, mustInclude: ['kimberly-akimbo', 'the-urmetazoan', 'jumpers'] },
   'Finborough Theatre': { min: 2, max: 8, mustInclude: ['what-the-animals-say', 'the-moth'], mustExclude: ['walking-tours', 'voices-from-ukraine', 'remember-your-lovers'] },

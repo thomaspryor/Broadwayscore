@@ -401,19 +401,46 @@ function extractDatedCards(doc, venue, { todayIso } = {}) {
  *   exclude: drop an event when any named field matches its RegExp
  *   (`{attribute_SupplementaryEvent: /^true$/i}` for add-ons).
  */
+const RUN_BLOCK_GAP_DAYS = 30;
+
+/** Sorted ISO days → [{first, last, count}] blocks split at gaps over RUN_BLOCK_GAP_DAYS. */
+function runBlocks(daysList) {
+  const days = daysList.filter(Boolean).sort();
+  const blocks = [];
+  for (const d of days) {
+    const cur = blocks[blocks.length - 1];
+    if (cur && (Date.parse(`${d}T00:00:00Z`) - Date.parse(`${cur.last}T00:00:00Z`)) / DAY_MS <= RUN_BLOCK_GAP_DAYS) {
+      cur.last = d;
+      cur.count++;
+    } else {
+      blocks.push({ first: d, last: d, count: 1 });
+    }
+  }
+  return blocks;
+}
+
 function parseSpektrixEvents(payload, opts = {}) {
   const events = Array.isArray(payload) ? payload : (payload && Array.isArray(payload.events) ? payload.events : null);
   if (!events) return [];
   const instances = payload && !Array.isArray(payload) && Array.isArray(payload.instances) ? payload.instances : null;
-  let counts = null;
+  // Per event: its non-cancelled instance days, split into blocks wherever
+  // two performances are more than RUN_BLOCK_GAP_DAYS apart. One Spektrix
+  // event can hold separate bookings months apart (King's Head "God Is A
+  // Woman The Musical": April, June and January blocks, BRO-4398 review);
+  // the row describes the block that is current or next, not their union.
+  let blocksById = null;
   if (instances) {
-    counts = new Map();
+    const days = new Map();
     for (const i of instances) {
       const id = i && i.event && i.event.id;
       if (!id || i.cancelled === true) continue;
-      counts.set(id, (counts.get(id) || 0) + 1);
+      if (!days.has(id)) days.set(id, []);
+      days.get(id).push(isoDay(i.start) || null);
     }
+    blocksById = new Map();
+    for (const [id, list] of days) blocksById.set(id, runBlocks(list));
   }
+  const todayIso = opts.todayIso || new Date().toISOString().slice(0, 10);
   const genreField = opts.genreField || 'attribute_Genre1';
   const genres = opts.genres ? new Set(opts.genres.map(g => g.toLowerCase())) : null;
   const exclude = opts.exclude ? Object.entries(opts.exclude) : [];
@@ -423,16 +450,19 @@ function parseSpektrixEvents(payload, opts = {}) {
     if (String(e.attribute_NoEventPage || '').toLowerCase() === 'true') continue;
     if (genres && !genres.has(String(e[genreField] || '').toLowerCase())) continue;
     if (exclude.some(([field, re]) => re.test(String(e[field] == null ? '' : e[field])))) continue;
-    rows.push({
-      title: cleanListingTitle(e.name),
-      firstDate: isoDay(e.firstInstanceDateTime),
-      lastDate: isoDay(e.lastInstanceDateTime),
-      // instanceDates is display text ("September 16-October 18"), not a
-      // list, so without the instances feed the count is unknown and the
-      // gate falls back to "at least two distinct dates".
-      performanceCount: counts ? (counts.get(e.id) || 0) : null,
-      url: e.webUrl || null,
-    });
+    let firstDate = isoDay(e.firstInstanceDateTime);
+    let lastDate = isoDay(e.lastInstanceDateTime);
+    // instanceDates is display text ("September 16-October 18"), not a
+    // list, so without the instances feed the count is unknown and the
+    // gate falls back to "at least two distinct dates".
+    let performanceCount = null;
+    if (blocksById) {
+      const blocks = blocksById.get(e.id) || [];
+      const block = blocks.find(bl => bl.last >= todayIso) || blocks[blocks.length - 1];
+      performanceCount = block ? block.count : 0;
+      if (block && blocks.length > 1) { firstDate = block.first; lastDate = block.last; }
+    }
+    rows.push({ title: cleanListingTitle(e.name), firstDate, lastDate, performanceCount, url: e.webUrl || null });
   }
   // An event whose instances were all cancelled (or none published) is not
   // on sale as a run.
@@ -626,9 +656,16 @@ async function fetchSpektrixEvents(url, { instances = false, todayIso = new Date
   // of any run that is current, which is all the count is used for.
   const since = new Date(Date.parse(`${todayIso}T00:00:00Z`) - 180 * DAY_MS).toISOString().slice(0, 10);
   const instUrl = url.replace(/\/events\/?(\?.*)?$/, `/instances?startFrom=${since}`);
-  const inst = await getJson(instUrl, { timeoutMs: 90000 });
-  if (!Array.isArray(inst)) throw new Error(`Spektrix ${instUrl}: instances is not an array`);
-  return { events: json, instances: inst };
+  // A slow or broken instances feed must not blank the venue: keep the
+  // events with their counts unknown (the gate then needs a multi-day span).
+  try {
+    const inst = await getJson(instUrl, { timeoutMs: 90000 });
+    if (!Array.isArray(inst)) throw new Error('instances is not an array');
+    return { events: json, instances: inst };
+  } catch (e) {
+    console.warn(`::warning::Spektrix ${instUrl}: ${e.message} — reading events without performance counts`);
+    return json;
+  }
 }
 
 /** Parse a listing HTML string into a Document (shared by the HTML readers). */
@@ -638,6 +675,7 @@ function htmlToDocument(html) {
 
 module.exports = {
   parseSpektrixEvents,
+  runBlocks,
   valuesAtPath,
   extractJsonItems,
   extractNextData,
