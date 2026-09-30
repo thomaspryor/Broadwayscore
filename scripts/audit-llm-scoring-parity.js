@@ -24,6 +24,8 @@ const path = require('path');
 
 const {
   isIncludableForRebuild,
+  isRejectedByReasonExclusion,
+  isRejectedAtExclusion,
   isLikelyStaleRoundupFlag,
   isLikelyStaleWrongShow,
   wrongShowCleared,
@@ -82,15 +84,9 @@ function classifyRebuildExclusion(data, show) {
   ) {
     return 'contentVerificationWrongHigh';
   }
-  if (data.rejectionReason) return 'rejectionReason';
+  if (isRejectedByReasonExclusion(data)) return 'rejectionReason';
   if (Array.isArray(data.rejectedBy) && data.rejectedBy.length >= 2) return 'rejectedBy2plus';
-  if (data.rejectedAt && typeof data.rejectedAt === 'string') {
-    const reFetched =
-      data.textFetchedAt &&
-      typeof data.textFetchedAt === 'string' &&
-      data.textFetchedAt > data.rejectedAt;
-    if (!reFetched && !wpClearedFlags(data)) return 'rejectedAt';
-  }
+  if (isRejectedAtExclusion(data)) return 'rejectedAt';
   if (data.incompleteReason === 'wrong_content') {
     const wpBlocking = data.wrongProduction === true && !wpClearedFlags(data);
     if (data.wrongShow || wpBlocking) return 'incompleteReason_wrong_content';

@@ -900,6 +900,15 @@ async function fetchWithPlaywright(url, options = {}) {
     console.error(`⚠️  Playwright failed: ${error.message}`);
     if (isPlaywrightMissingBrowserError(error.message)) {
       _scraperStats.pwBrowserMissingCount++;
+      // BRO-4326: a workflow that forgot ./.github/actions/setup-playwright
+      // hides behind the paid fallbacks — every attempt logs this error and
+      // then succeeds on Bright Data / Scrapingdog, so the job stays green
+      // and nobody sees the 50+ wasted launches per run. One GitHub
+      // annotation per process makes the missing step visible in the run
+      // summary of ANY workflow with the gap, not just the ones a test lists.
+      if (_scraperStats.pwBrowserMissingCount === 1 && process.env.GITHUB_ACTIONS === 'true') {
+        console.log(`::warning title=Playwright browser missing::${process.env.GITHUB_WORKFLOW || 'this workflow'} runs a fetchPage() scraper with no Playwright browser installed — every Playwright tier falls straight through to paid providers. Add "- uses: ./.github/actions/setup-playwright" after "npm ci" (BRO-4326).`);
+      }
     }
     if (context) {
       try { await context.close(); } catch (_) {}
@@ -982,7 +991,7 @@ function pageChainOrder(flags) {
 }
 
 async function fetchPage(url, options = {}) {
-  url = unwrapRedirectUrl(url);
+  url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
   const preferPlaywright = options.preferPlaywright || false;
   const isPublicSite = _isPlaywrightFirstDomain(url);
   const isBroadwayWorld = url.includes('broadwayworld.com');

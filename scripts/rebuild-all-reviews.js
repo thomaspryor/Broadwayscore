@@ -60,7 +60,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, rejectedAtHumanCleared, isTimestampAfter } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -4236,7 +4236,7 @@ showDirs.forEach(showId => {
       // rejected as garbage_text, but wos-star-images had already read 5/5 stars off
       // the page's own <img> markup. Mirrors explainExclusion's identical carve-out in
       // review-guards.js — see hasStructuralStarScore there for the full rationale.
-      if (data.rejectionReason && !hasStructuralStarScore(data)) {
+      if (isRejectedByReasonExclusion(data)) {
         logExclusion("skippedRejectionReason", showId, file, data);
         stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
         return;
@@ -4280,18 +4280,10 @@ showDirs.forEach(showId => {
       // collect-review-texts.js line 4247. Without this guard, the Vulture FILM review of
       // Hamlet (rejected 2026-04-20 as wrong_production) slipped back into reviews.json after
       // clear-failure-flags nulled its rejectionReason.
-      if (data.rejectedAt && typeof data.rejectedAt === 'string') {
-        const reFetched = isTimestampAfter(data.textFetchedAt, data.rejectedAt);
-        // Same structural-star-score exception as the rejectionReason guard above
-        // (BRO-2282) — mirrors review-guards.js explainExclusion's rejectedAt block,
-        // including its human-clear deferral (rejectedAtHumanCleared): without it
-        // a human wrongShow/wrongProduction clear left the review excluded here
-        // while explainExclusion called it includable.
-        if (!reFetched && !hasStructuralStarScore(data) && !rejectedAtHumanCleared(data)) {
-          logExclusion("skippedRejectedAt", showId, file, data);
-          stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
-          return;
-        }
+      if (isRejectedAtExclusion(data)) {
+        logExclusion("skippedRejectedAt", showId, file, data);
+        stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
+        return;
       }
 
       // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
@@ -6483,12 +6475,39 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
 
   const skippedAliasCollisionOutlets = [];
   const skippedAliasCollisionDetails = [];
+  // BRO-4370 / BRO-4401: an outlet is auto-registered only WITH a resolvable
+  // domain. A critic-name id, an id with no URL evidence, or a domain that
+  // collides with a registered outlet is parked in
+  // data/audit/outlet-registry-staging.json instead of becoming a
+  // `domain: null` row (the rows that pushed the null-domain ceiling to
+  // 51/50 and registered three critics as outlets on 2026-09-29). Decision
+  // logic lives in scripts/lib/outlet-auto-register.js.
+  const {
+    STAGING_RELATIVE_PATH: OUTLET_STAGING_RELATIVE_PATH,
+    criticNameSlugs,
+    decideOutletAutoRegistration,
+    mergeStagingEntries,
+  } = require('./lib/outlet-auto-register');
+  const stagedOutlets = [];
+  const reviewCountByOutlet = {};
+  const exampleShowByOutlet = {};
+  for (const r of allReviews) {
+    if (!r.outletId) continue;
+    reviewCountByOutlet[r.outletId] = (reviewCountByOutlet[r.outletId] || 0) + 1;
+    if (!exampleShowByOutlet[r.outletId]) exampleShowByOutlet[r.outletId] = r.showId || null;
+  }
   if (newOutlets.length > 0) {
     // Auto-add missing outlets with tier 3 (region is filled in by the
     // backfill pass below, which runs over the whole registry including
     // these brand-new entries)
     const { wouldCauseDomainCollision } = require('./lib/outlet-registry-domain-collisions');
     const { wouldCauseAliasCollision, findOutletAliasCollisions } = require('./lib/outlet-alias-collision');
+    // Registry names PLUS every criticName in this rebuild: the registry is
+    // built from attributed reviews, so a byline mis-filed as an outlet is
+    // precisely the name it does not know yet (BRO-4370's three ids were all
+    // absent from it) — but the same name rides on the correctly attributed
+    // twin record in this very run.
+    const criticSlugs = criticNameSlugs(criticRegistry, allReviews);
     for (const outletId of newOutlets) {
       const displayName = outletId
         .split('-')
@@ -6534,15 +6553,74 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
       // "the-times-barbican" shares thetimes.co.uk with "times-uk". Writing
       // that domain straight through would trip validate-data.js's
       // domain-collision gate the instant this commit lands (task #1776).
-      // Leave domain null in that case; region backfill below still applies.
+      // That case, a critic-name id, and a hint-less id are all STAGED
+      // rather than written with domain:null (BRO-4370).
       const hintDomain = outletDomainHints[outletId] || null;
-      const domain = hintDomain && !wouldCauseDomainCollision(outletRegistry.outlets, outletId, hintDomain)
-        ? hintDomain
-        : null;
+      const decision = decideOutletAutoRegistration({
+        outletId,
+        domainHint: hintDomain,
+        domainCollides: !!hintDomain && wouldCauseDomainCollision(outletRegistry.outlets, outletId, hintDomain),
+        criticSlugs,
+      });
+      if (decision.action === 'stage') {
+        stagedOutlets.push({
+          outletId,
+          reason: decision.reason,
+          domainHint: hintDomain,
+          reviewCount: reviewCountByOutlet[outletId] || 0,
+          exampleShowId: exampleShowByOutlet[outletId] || null,
+        });
+        console.warn(`⚠️  STAGED "${outletId}" instead of auto-registering (${decision.reason}) — resolve in ${OUTLET_STAGING_RELATIVE_PATH}`);
+        continue;
+      }
       outletRegistry.outlets[outletId] = {
         ...candidateEntry,
-        domain
+        domain: decision.domain
       };
+    }
+  }
+
+  // Persist the staging list (self-pruning: an id that has since been
+  // registered, or whose reviews are gone, drops out). Written whenever it
+  // CHANGES, not only when something was staged this run, so a resolved
+  // entry actually leaves the file.
+  {
+    const stagingPath = path.join(__dirname, '..', OUTLET_STAGING_RELATIVE_PATH);
+    let existingStaged = [];
+    try {
+      existingStaged = JSON.parse(fs.readFileSync(stagingPath, 'utf8')).staged || [];
+    } catch { /* first run, or unreadable — start empty */ }
+    const registeredLower = new Set(Object.keys(outletRegistry.outlets).map((id) => id.toLowerCase()));
+    // Prune a parked id only once it is registered, or once NO review file
+    // carries it any more (outletShowCategoriesRaw is collected from every
+    // file touched, included or not). Pruning on mere exclusion from this
+    // build would let audit-outlet-registry.js --strict — which scans every
+    // file — report the still-present id as a NEW gap (ship-check finding).
+    const seenInAnyFile = (id) => reviewOutletIds.has(id)
+      || Object.prototype.hasOwnProperty.call(outletShowCategoriesRaw, id)
+      || Object.prototype.hasOwnProperty.call(outletShowCategoriesRaw, String(id).toLowerCase());
+    const merged = mergeStagingEntries(existingStaged, stagedOutlets, {
+      nowIso: new Date().toISOString(),
+      stillUnregistered: (id) => !registeredLower.has(String(id).toLowerCase()) && seenInAnyFile(id),
+    });
+    const fingerprint = (list) => JSON.stringify(list.map((e) => [e.outletId, e.reason, e.reviewCount || 0, e.domainHint || null]).sort());
+    const before = fingerprint(existingStaged);
+    const after = fingerprint(merged);
+    if (before !== after || (stagedOutlets.length > 0 && !fs.existsSync(stagingPath))) {
+      try {
+        fs.mkdirSync(path.dirname(stagingPath), { recursive: true });
+        fs.writeFileSync(stagingPath, JSON.stringify({
+          _comment: 'Outlets seen on included reviews that the rebuild REFUSED to auto-register (BRO-4370): no resolvable domain, a critic name, or a domain collision. Resolve by adding the outlet to data/outlet-registry.json with a domain, merging it into the right outlet, or fixing the review files; the rebuild prunes resolved rows on its next run.',
+          updatedAt: new Date().toISOString(),
+          staged: merged,
+        }, null, 2) + '\n');
+      } catch (stagingErr) {
+        console.warn(`  Could not write ${OUTLET_STAGING_RELATIVE_PATH}: ${stagingErr.message}`);
+      }
+    }
+    if (stagedOutlets.length > 0) {
+      console.warn(`\n⚠️  STAGED ${stagedOutlets.length} unregistered outlet(s) (no resolvable domain / critic name / domain collision): ${stagedOutlets.map((s) => s.outletId).sort().join(', ')}`);
+      console.warn(`  Listed in ${OUTLET_STAGING_RELATIVE_PATH}; they resolve as tier 3 / raw-id display until a human gives them a domain or merges them.`);
     }
   }
 
@@ -6550,7 +6628,11 @@ if (stats.suspectedLateReviews && stats.suspectedLateReviews.length > 0) {
   // both the newOutlets just added above and pre-existing entries (BRO-133).
   const backfilledOutlets = backfillMissingOutletRegions(outletRegistry.outlets, outletShowCategories, isLondonMarket);
 
-  const registeredOutlets = newOutlets.filter(id => !skippedAliasCollisionOutlets.includes(id));
+  // Staged ids were NOT written to the registry — counting them here would
+  // rewrite + commit data/outlet-registry.json on every one of ~20 workflows'
+  // runs for as long as anything stays parked (ship-check P0).
+  const stagedOutletIdSet = new Set(stagedOutlets.map((s) => s.outletId));
+  const registeredOutlets = newOutlets.filter(id => !skippedAliasCollisionOutlets.includes(id) && !stagedOutletIdSet.has(id));
 
   if (registeredOutlets.length > 0 || backfilledOutlets.length > 0) {
     if (outletRegistry._meta) {

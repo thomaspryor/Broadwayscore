@@ -437,18 +437,6 @@
     "queuedAt": "2026-09-29T00:26:45.928Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:the-standard-of-living-west-end-2026",
-    "title": "Review gap — \"The Standard Of Living\" missing 10 cited review(s)",
-    "description": "The Standard Of Living (the-standard-of-living-west-end-2026): 10 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-standard-of-living-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-29T02:37:18.928Z"
-  },
-  {
     "conditionKey": "land:land/audit-agent-batch-4",
     "title": "Landing blocked: lint-workflows red on land/audit-agent-batch-4",
     "description": "land.yml did not land land/audit-agent-batch-4: the lint-workflows gate went red at 58d767ed5d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36512380430",
@@ -2600,5 +2588,135 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-30T00:32:05.201Z"
+  },
+  {
+    "conditionKey": "review-gap:blast-radius-refused",
+    "title": "Review-gap audit refused to write — 55.0% of shows changed coverage state (still open — BRO-3030)",
+    "description": "Still firing after 53 notifications since it was filed. Tracked at BRO-3030.\n\nreview-gap blast radius 55.0% (11/20 shows changed state) exceeds 5% — refusing to write. Inspect the inputs (dead SERP provider / empty census / partial checkout all look like this). Force with COVERAGE_BLAST_RADIUS_OVERRIDE=1.\n\nChanged shows: degenerates-off-broadway-2026, ectoplasm-off-broadway-2026, elf-lyons-the-woman-on-the-edge-off-broadway-2026, how-shakespeare-saved-my-life-off-broadway-2026, la-boheme-off-broadway-2026, midnight-off-broadway-2026, moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026, school-girls-or-the-african-mean-girls-play-2026, the-standard-of-living-west-end-2026, the-urmetazoan-off-west-end-2026, tru-off-west-end-2026\n\nPARTIAL write: the other 13 show(s) audited this run were NOT risky and were persisted normally. Only the 11 changed show(s) above were quarantined (kept at their prior entry). Check the scraper/SERP providers and the core-data checkout, then re-run. To force the quarantined show(s) through as-is: COVERAGE_BLAST_RADIUS_OVERRIDE=1 node scripts/audit-show-review-gap.js …",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T01:06:00.172Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:alice-in-wonderland-off-broadway-2026",
+    "title": "Review gap — \"Alice in Wonderland\" missing 13 cited review(s)",
+    "description": "Alice in Wonderland (alice-in-wonderland-off-broadway-2026): 13 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alice-in-wonderland-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T01:06:00.181Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Review gap — \"School Girls; Or, The African Mean Girls Play\" missing 2 cited review(s)",
+    "description": "School Girls; Or, The African Mean Girls Play (school-girls-or-the-african-mean-girls-play-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=school-girls-or-the-african-mean-girls-play-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T01:06:00.272Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
+    "title": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
+    "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T01:06:00.312Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-standard-of-living-west-end-2026",
+    "title": "Review gap — \"The Standard Of Living\" missing 6 cited review(s)",
+    "description": "The Standard Of Living (the-standard-of-living-west-end-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-standard-of-living-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T01:06:00.317Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:whos-afraid-of-virginia-woolf-west-end-2026",
+    "title": "Review gap — \"Who’s Afraid of Virginia Woolf?\" missing 4 cited review(s)",
+    "description": "Who’s Afraid of Virginia Woolf? (whos-afraid-of-virginia-woolf-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=whos-afraid-of-virginia-woolf-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-09-30T01:06:00.335Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4402-mundeekv",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4402-mundeekv",
+    "description": "land.yml did not land land/job/linear-BRO-4402-mundeekv: the unit-tests-node gate went red at cb5222a229. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36651534999",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4402-mundeekv"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cb5222a2297a21916df6f44dd9d58d05290f1c7c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36651534999"
+      }
+    ],
+    "queuedAt": "2026-09-30T01:10:48.855Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4406-munedbmq",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4406-munedbmq",
+    "description": "land.yml did not land land/job/linear-BRO-4406-munedbmq: the unit-tests-node gate went red at cf23e6fb11. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36654616573",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4406-munedbmq"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "cf23e6fb1144e0229aea40aacd3b4aef910138b8"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36654616573"
+      }
+    ],
+    "queuedAt": "2026-09-30T01:47:50.168Z"
   }
 ]

@@ -473,6 +473,17 @@ jobs:
         run: |
           node scripts/run-ensemble-scoring-guard.js ${{ steps.build-args.outputs.args }}
 
+      # Backstop for multi-show blog posts (interestedbystander etc.): every
+      # text writer isolates the show's own section at write time, but a file
+      # written before that landed, or a push conflict that keeps the longer
+      # fullText, leaves the whole post in place and other shows get scored
+      # into this one. Idempotent, scoped to MULTI_SHOW_POST_HOSTS; rewritten
+      # files get needsRescore, drained below.
+      - name: Isolate multi-show blog post sections
+        if: github.event_name == 'schedule' && steps.check-needed.outputs.skip != 'true'
+        continue-on-error: true
+        run: node scripts/isolate-multi-show-sections.js --apply
+
       # Hand re-fetched reviews back to the scorer when an automated
       # text-quality verdict (not_a_review / garbage_text / truncated_text,
       # heuristic+llm nonReviewFlag) predates the complete fullText now on
