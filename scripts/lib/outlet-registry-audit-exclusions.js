@@ -84,12 +84,20 @@ function isExcludedFromOutletRegistryAudit(review) {
   // missing from registry"). Once scored, the rebuild registers the outlet
   // with its URL-derived domain on the next run, and the file re-enters
   // this audit's scope naturally.
-  if (review.scoreExtractionPending === true && !hasValidScore(review)) return true;
+  if (isPendingUnscored(review)) return true;
 
   return false;
 }
 
+/** Branch 6's predicate on its own, so the audit can count how long files
+ * have been sitting in it (a file that never scores would otherwise hide a
+ * registry gap forever without anyone seeing it). */
+function isPendingUnscored(review) {
+  return review.scoreExtractionPending === true && !hasValidScore(review);
+}
+
 module.exports = {
   isExcludedFromOutletRegistryAudit,
+  isPendingUnscored,
   WRONG_PRODUCTION_REJECTION_REASONS,
 };

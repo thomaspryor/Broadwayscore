@@ -47,7 +47,13 @@ const { baselineKeySet, computeNewViolators } = require('./lib/outlet-registry-b
 // move the red from the null-domain ceiling to this gate.
 const { loadStagedOutletIds, STAGING_RELATIVE_PATH: OUTLET_STAGING_PATH } = require('./lib/outlet-auto-register');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { isExcludedFromOutletRegistryAudit } = require('./lib/outlet-registry-audit-exclusions');
+const { isExcludedFromOutletRegistryAudit, isPendingUnscored } = require('./lib/outlet-registry-audit-exclusions');
+// Advisory only (BRO-4401 what-else): branch 6 excludes unscored files still
+// waiting on score extraction, which is correct (the rebuild never includes
+// them) but could hide a real registry gap indefinitely if a file never
+// scores. Count how many have been waiting past this many days so the
+// backlog is visible in every run, without failing --strict on it.
+const PENDING_UNSCORED_STALE_DAYS = 14;
 const { CV_STYLES, findInvalidCvStyles, countArmedCvStyles } = require('./lib/outlet-canonicalize');
 const { outletFieldShapeErrors } = require('./lib/outlet-registry-field-shape');
 
@@ -269,6 +275,7 @@ function auditOutletRegistry() {
     registryNormalizationConflicts: [], // Cases where registry and normalization module disagree
     junkEntriesInRegistry: [],    // Junk/sentinel ids or aliases already IN the registry (task #1783)
     skippedJunkOutlets: [],        // outletIds seen in reviews but never suggested — isJunkOutlet (task #1783)
+    pendingUnscoredExcluded: { total: 0, stale: [] }, // branch-6 exclusions, with the ones waiting > PENDING_UNSCORED_STALE_DAYS (advisory)
   };
 
   // A reserved-sentinel id (e.g. "unknown" — literally what
@@ -323,7 +330,19 @@ function auditOutletRegistry() {
       // to scripts/lib/outlet-registry-audit-exclusions.js so it's unit
       // tested (scripts/outlet-registry.test.mjs) instead of re-derived here.
       // See that file's comments for the incident history behind each branch.
-      if (isExcludedFromOutletRegistryAudit(review)) continue;
+      if (isExcludedFromOutletRegistryAudit(review)) {
+        if (isPendingUnscored(review)) {
+          findings.pendingUnscoredExcluded.total++;
+          // Only an UNREGISTERED outlet is hidden by this exclusion — a
+          // pending nytimes file hides nothing, the registry has nytimes.
+          const since = Date.parse(review.textFetchedAt || review.firstSeenAt || '');
+          const unregistered = !registryAliasMap[reviewOutletId.toLowerCase()];
+          if (unregistered && !Number.isNaN(since) && Date.now() - since > PENDING_UNSCORED_STALE_DAYS * 86400000) {
+            findings.pendingUnscoredExcluded.stale.push({ outletId: reviewOutletId, file: reviewFile.fullPath });
+          }
+        }
+        continue;
+      }
 
       // Track this outlet
       if (!outletsInReviews.has(reviewOutletId)) {
@@ -528,6 +547,12 @@ function printReport(auditResult) {
   console.log(`  Unused in registry: ${findings.unusedInRegistry.length} outlets`);
   if (findings.skippedJunkOutlets.length > 0) {
     console.log(`  Skipped as junk (never suggested): ${findings.skippedJunkOutlets.length} outlets`);
+  }
+  if (findings.pendingUnscoredExcluded && findings.pendingUnscoredExcluded.total > 0) {
+    const { total, stale } = findings.pendingUnscoredExcluded;
+    console.log(`  Unscored files pending score extraction (excluded, branch 6): ${total} — ${stale.length} on UNREGISTERED outlets waiting > ${PENDING_UNSCORED_STALE_DAYS} days${stale.length ? ' (advisory: those outlets stay unaudited until the file scores or is rejected)' : ''}`);
+    for (const s of stale.slice(0, 10)) console.log(`    · ${s.outletId} — ${s.file}`);
+    if (stale.length > 10) console.log(`    … and ${stale.length - 10} more`);
   }
   console.log('');
 
