@@ -60,7 +60,7 @@ const {
   EXCERPT_SOURCE_RANK, pickExcerptCandidate,
 } = require('./lib/pull-quote-guards');
 const { emitStage, readTrackedShowIds, selectTerminalShowIds } = require('./lib/stage-latency');
-const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, hasStructuralStarScore, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord, rejectedAtHumanCleared, isTimestampAfter } = require('./lib/review-guards');
+const { isRoundupUrl, isLikelyStaleRoundupFlag, isLikelyStaleSuspectedMisattribution, getCriticRegistry, isVenueMismatch, shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, shouldSkipRoundupAudit, isRoundupPageAsReview, isQuotingRoundupHostUrl, cvBlocksUkWrongProductionAutoClear, buildShowKeywordSet, findShowKeywordInText, checkLlmVerificationAgainstKeywords, pickRerouteTarget, buildMultiProdYearGuard, isIncludableForRebuild, isRejectedByReasonExclusion, isRejectedAtExclusion, duplicateOfInheritedFlag, hasStrongDifferentShowSignal, hasHighConfidenceLlmScore, canonicalizeUrlForDedup, areSameCriticFuzzy, isStaleCvPromotedWrongProduction, isStaleCvPromotedWrongShow, applyVenueClassificationCarveout, isReviewWithinOwnProductionWindow, isPrematureReviewForUnopenedShow, isNonReviewDemotedByFreshCV, isReviewContentTrustworthy, cvFlagVetoedInWindow, isNamedNonReviewUrlRecord } = require('./lib/review-guards');
 const { canonicalizeCritic } = require('./lib/critic-canonicalization');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
 const { extractBylineFromText } = require('./lib/byline-from-text');
@@ -4236,7 +4236,7 @@ showDirs.forEach(showId => {
       // rejected as garbage_text, but wos-star-images had already read 5/5 stars off
       // the page's own <img> markup. Mirrors explainExclusion's identical carve-out in
       // review-guards.js — see hasStructuralStarScore there for the full rationale.
-      if (data.rejectionReason && !hasStructuralStarScore(data)) {
+      if (isRejectedByReasonExclusion(data)) {
         logExclusion("skippedRejectionReason", showId, file, data);
         stats.skippedRejectionReason = (stats.skippedRejectionReason || 0) + 1;
         return;
@@ -4280,18 +4280,10 @@ showDirs.forEach(showId => {
       // collect-review-texts.js line 4247. Without this guard, the Vulture FILM review of
       // Hamlet (rejected 2026-04-20 as wrong_production) slipped back into reviews.json after
       // clear-failure-flags nulled its rejectionReason.
-      if (data.rejectedAt && typeof data.rejectedAt === 'string') {
-        const reFetched = isTimestampAfter(data.textFetchedAt, data.rejectedAt);
-        // Same structural-star-score exception as the rejectionReason guard above
-        // (BRO-2282) — mirrors review-guards.js explainExclusion's rejectedAt block,
-        // including its human-clear deferral (rejectedAtHumanCleared): without it
-        // a human wrongShow/wrongProduction clear left the review excluded here
-        // while explainExclusion called it includable.
-        if (!reFetched && !hasStructuralStarScore(data) && !rejectedAtHumanCleared(data)) {
-          logExclusion("skippedRejectedAt", showId, file, data);
-          stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
-          return;
-        }
+      if (isRejectedAtExclusion(data)) {
+        logExclusion("skippedRejectedAt", showId, file, data);
+        stats.skippedRejectedAt = (stats.skippedRejectedAt || 0) + 1;
+        return;
       }
 
       // Skip reviews where LLM reasoning indicates wrong content (error pages, press releases, etc.)
