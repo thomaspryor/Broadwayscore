@@ -1,21 +1,19 @@
 {
-  "generatedAt": "2026-09-29T21:22:06.801Z",
+  "generatedAt": "2026-09-30T01:06:50.895Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 173,
-  "clean": 170,
-  "defective": 3,
+  "checked": 178,
+  "clean": 177,
+  "defective": 1,
   "byType": {
-    "missing-from-prod": 2,
-    "score-drift": 1,
     "unreachable": 1
   },
   "shows": [
     {
-      "showId": "the-cherry-orchard-riverside-studios-off-west-end-2026",
-      "title": "The Cherry Orchard",
-      "openingDate": "2026-09-08",
+      "showId": "spandex-off-broadway-2026",
+      "title": "Spandex",
+      "openingDate": "2026-09-19",
       "ok": false,
       "defects": [
         {
@@ -26,44 +24,6 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
-    },
-    {
-      "showId": "the-cherry-orchard-park-avenue-armory-off-broadway-2026",
-      "title": "The Cherry Orchard",
-      "openingDate": "2026-09-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: broadwayworld"
-        }
-      ],
-      "missingFromProd": [
-        "broadwayworld"
-      ],
-      "localCount": 11,
-      "deployedCount": 10
-    },
-    {
-      "showId": "burlesque-west-end-2026",
-      "title": "Burlesque",
-      "openingDate": "2025-07-22",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: london-theatre-reviews"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 62.87 vs local 63.87 (Δ1)"
-        }
-      ],
-      "missingFromProd": [
-        "london-theatre-reviews"
-      ],
-      "localCount": 17,
-      "deployedCount": 16
     }
   ]
 }
