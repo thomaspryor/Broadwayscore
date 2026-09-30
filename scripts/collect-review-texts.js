@@ -6976,7 +6976,8 @@ async function processReview(review) {
       if (result.html && review.filePath) {
         try {
           const { salvageWalledPageMetaToFile } = require('./lib/walled-page-meta');
-          const salvaged = salvageWalledPageMetaToFile(review.filePath, result.html, { showTitle, expectedUrl: review.url });
+          const { resolveShowMeta } = require('./lib/show-identity');
+          const salvaged = salvageWalledPageMetaToFile(review.filePath, result.html, { showTitle, show: resolveShowMeta(qualityShowId), expectedUrl: review.url });
           const suspect = salvaged.find((s) => s.endsWith('Suspect'));
           if (suspect) {
             console.log(`    ⚠ Walled page ${suspect} for "${showTitle}" — metadata not applied`);

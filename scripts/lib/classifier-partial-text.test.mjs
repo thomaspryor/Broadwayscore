@@ -96,3 +96,11 @@ test('review-field-edit accepts the Gemini non-review clear pair', () => {
   assert.equal(b.ok, true);
   assert.equal(b.record.isNonReview, false);
 });
+
+test('ensemble scoring text (getBestTextForScoring) excludes the JSON blob', () => {
+  const { getBestTextForScoring } = require('./text-quality.js');
+  const r = getBestTextForScoring({ fullText: BLOB + '\n\n' + REVIEW });
+  assert.equal(r.type, 'fullText');
+  assert.ok(!r.text.includes('Farage'));
+  assert.ok(r.text.startsWith('Cleansed is'));
+});

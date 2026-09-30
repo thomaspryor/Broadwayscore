@@ -20,6 +20,7 @@ const fs = require('fs');
 const path = require('path');
 const { checkIBDBForPriorProductions } = require('./lib/ibdb-dates');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { syncRevivalTags } = require('./lib/revival-tags');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -144,11 +145,7 @@ async function main() {
         const showRecord = data.shows.find(s => s.id === c.id);
         if (showRecord) {
           showRecord.isRevival = true;
-          if (!showRecord.tags) showRecord.tags = [];
-          // Strip any stale "new" tag from creation-time classification — a show
-          // can't be both (Galileo 2026-08-14 shipped with tags:["new","revival"]).
-          showRecord.tags = showRecord.tags.filter(t => t !== 'new');
-          if (!showRecord.tags.includes('revival')) showRecord.tags.push('revival');
+          syncRevivalTags(showRecord);
         }
       }
       saveShows(data);
@@ -195,11 +192,7 @@ async function main() {
       const showRecord = data.shows.find(s => s.id === c.id);
       if (showRecord) {
         showRecord.isRevival = true;
-        if (!showRecord.tags) showRecord.tags = [];
-        // Strip any stale "new" tag from creation-time classification — a show
-        // can't be both (Galileo 2026-08-14 shipped with tags:["new","revival"]).
-        showRecord.tags = showRecord.tags.filter(t => t !== 'new');
-        if (!showRecord.tags.includes('revival')) showRecord.tags.push('revival');
+        syncRevivalTags(showRecord);
       }
     }
     saveShows(data);
