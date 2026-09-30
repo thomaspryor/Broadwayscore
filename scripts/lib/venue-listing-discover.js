@@ -521,8 +521,7 @@ const OB_VENUE_CONFIGS = [
 // per-event performance count from /api/v3/instances, which is what tells
 // a four-week run from a monthly club night on these mixed-program accounts.
 //
-// Not read here (probed 2026-09-30): Hampstead Theatre (Tessitura, no
-// public feed; its /whats-on/ link reader stays), Marylebone Theatre (its
+// Not read here (probed 2026-09-30): Marylebone Theatre (its
 // JSON-LD event list stops at 2025 productions; link reader stays), The
 // Other Palace, Donmar
 // Warehouse and Royal Court (403 to plain HTTP; Royal Court is also
@@ -578,6 +577,9 @@ const OWE_VENUE_CONFIGS = [
   { name: 'New Diorama Theatre', url: 'https://www.newdiorama.com/whats-on', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: 'figure', titleSelector: 'figcaption h2', dateSelector: 'figcaption h3', linkSelector: 'a[href*="/whats-on/"]', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   // One card per booking block: a run split over two blocks (What The
   // Animals Say, 29 Sep-24 Oct and 27 Oct-21 Nov) merges to one row.
+  // Hampstead sells through Tessitura (no public feed); its what's-on cards
+  // carry "Dates: 28 Aug – 7 Nov 2026".
+  { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: '.card', titleSelector: '.card__heading', dateSelector: '.card__dates', linkSelector: 'a[href*="/production/"]', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
   { name: 'Finborough Theatre', url: 'https://www.finboroughtheatre.co.uk/', strategy: 'dated-selector', dayFirst: true, datedOnly: true, itemSelector: 'a.production-card', titleSelector: 'h3', dateSelector: 'div.text-2xl.text-center', excludeTitlePatterns: LONDON_OWE_EXCLUDE_PATTERNS, category: 'off-west-end' },
 ];
 

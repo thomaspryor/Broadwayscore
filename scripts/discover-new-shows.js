@@ -144,6 +144,9 @@ const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot, titl
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
 const {
   OB_VENUE_CONFIGS,
+  OWE_VENUE_CONFIGS,
+  DATED_JSON_STRATEGIES,
+  parseVenueListingHtml,
   scrapeVenueListing,
   settledWithConcurrency,
   writeStagingCandidates,
@@ -1347,7 +1350,9 @@ const VENUE_LISTING_PAGES = [
   // Lookahead also pre-excludes ticketing utility slugs the site could add later
   // (none exist as of 2026-07-21 — adversarial-review hardening, not observed noise).
   { name: 'Menier Chocolate Factory', url: 'https://www.menierchocolatefactory.com/', linkPattern: /\/tickets\/(?!(?:series|gift|vouchers?|membership|support|donat[a-z]*|access)\b)[a-z0-9-]+/, titleFromSlug: true, category: 'off-west-end' },
-  { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', linkPattern: /\/whats-on\/\d{4}\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
+  // Show pages moved from /whats-on/<year>/<slug> to /production/<slug>/
+  // (found 2026-09-30, BRO-4398: the old pattern had matched nothing).
+  { name: 'Hampstead Theatre', url: 'https://www.hampsteadtheatre.com/whats-on/', linkPattern: /\/production\/[a-z0-9-]+\/?$/, titleFromSlug: true, category: 'off-west-end' },
   { name: 'Kiln Theatre', url: 'https://kilntheatre.com/whats-on/', linkPattern: /\/whats-on\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   { name: 'Southwark Playhouse', url: 'https://southwarkplayhouse.co.uk/', linkPattern: /\/productions\/[^/]+/, titleFromSlug: true, category: 'off-west-end' },
   // Added 2026-07-31 (Space Dogs miss, owner-reported): short-run Studio shows never
@@ -1419,36 +1424,112 @@ const VENUE_PAGE_EXCLUDE_PATTERNS = [
 ];
 
 // Per-venue candidate cap (mirrors OB_VENUE_CAP below) — one bad parser
-// regression on a venue page can't flood staging with garbage.
+// regression on a venue page can't flood staging with garbage. A dated
+// reader (BRO-4398) reads the venue's whole box-office account, so it gets
+// the OB cap instead.
 const OWE_VENUE_CAP = 30;
+const OWE_DATED_VENUE_CAP = 60;
+
+/**
+ * Off-West End candidates from one of OWE_VENUE_CONFIGS' dated readers
+ * (scripts/lib/venue-listing-discover.js, BRO-4398), in the staging shape
+ * parseVenueListingPage produces plus the listing* fields the promoter's
+ * dated rule reads. Titles come from box-office/structured data, so they
+ * skip cleanVenueTitle's card-text heuristics (which would cut "Miss
+ * Bennet: Christmas at Pemberley" at " at "); the venue-page exclusions
+ * (shouldExcludeVenueShow) still apply.
+ *
+ * @param {{name: string}} cfg an OWE_VENUE_CONFIGS entry
+ * @param {Array<object>} rows parseVenueListingHtml / scrapeVenueListing output
+ * @returns {Array<object>}
+ */
+function oweCandidatesFromDatedListing(cfg, rows) {
+  const out = [];
+  const seen = new Set();
+  for (const r of Array.isArray(rows) ? rows : []) {
+    const title = String((r && r.title) || '').replace(/\s+/g, ' ').trim();
+    if (title.length < 2 || seen.has(title.toLowerCase())) continue;
+    if (shouldExcludeVenueShow(title)) continue;
+    seen.add(title.toLowerCase());
+    const listing = {};
+    for (const k of ['listingFirstDate', 'listingLastDate', 'listingPerformanceCount', 'listingUrl', 'listingFirstDateIsNext', 'listingLastDateIsHorizon', 'listingEvidence']) {
+      if (r[k] !== undefined) listing[k] = r[k];
+    }
+    out.push({
+      title,
+      venue: cfg.name,
+      slug: title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''),
+      openingDate: null,
+      closingDate: null,
+      category: isWestEndVenue(cfg.name) ? 'west-end' : 'off-west-end',
+      description: '',
+      provisional: true,
+      discoverySource: `venue-page:${cfg.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`,
+      ...listing,
+    });
+  }
+  return out;
+}
+
+/**
+ * One venue's candidates: its dated reader when it has one (BRO-4398),
+ * falling back to its VENUE_LISTING_PAGES link reader when the dated read
+ * throws or comes back empty (a feed outage must not blank a venue that
+ * the old reader still covers).
+ */
+async function fetchOneVenueListing(linkVenue, datedCfg) {
+  if (datedCfg) {
+    try {
+      // JSON feeds (Spektrix) go through the lib's own fetcher; dated HTML
+      // pages through the same plain-fetch-first path as the link readers.
+      const listing = DATED_JSON_STRATEGIES.has(datedCfg.strategy)
+        ? await scrapeVenueListing(datedCfg)
+        : parseVenueListingHtml(datedCfg, await fetchVenueHtml(datedCfg));
+      const rows = oweCandidatesFromDatedListing(datedCfg, listing);
+      if (rows.length > 0 || !linkVenue) return { rows, dated: true };
+      console.log(`  ${datedCfg.name}: dated reader returned 0 rows — falling back to the venue page`);
+    } catch (e) {
+      if (!linkVenue) throw e;
+      console.log(`  ${datedCfg.name}: dated reader failed (${e.message}) — falling back to the venue page`);
+    }
+  }
+  return { rows: await fetchSingleVenuePage(linkVenue), dated: false };
+}
 
 async function fetchShowsFromVenueListings(category) {
   const venues = VENUE_LISTING_PAGES.filter(v => v.category === category);
+  const datedConfigs = category === 'off-west-end' ? OWE_VENUE_CONFIGS : [];
+  const linkNames = new Set(venues.map(v => v.name));
+  const units = [
+    ...venues.map(v => ({ name: v.name, link: v, dated: datedConfigs.find(d => d.name === v.name) || null })),
+    ...datedConfigs.filter(d => !linkNames.has(d.name)).map(d => ({ name: d.name, link: null, dated: d })),
+  ];
   const label = category === 'off-broadway' ? 'Off-Broadway' : 'Off-West End';
-  console.log(`Fetching shows from ${label} venue pages...`);
+  console.log(`Fetching shows from ${label} venue pages (${units.filter(u => u.dated).length} with a dated reader)...`);
 
-  const results = await Promise.allSettled(
-    venues.map(venue => fetchSingleVenuePage(venue))
-  );
+  const results = await Promise.allSettled(units.map(u => fetchOneVenueListing(u.link, u.dated)));
 
   const allShows = [];
   let successCount = 0;
 
   for (let i = 0; i < results.length; i++) {
-    const venue = venues[i];
+    const venue = units[i];
     const result = results[i];
-    if (result.status === 'fulfilled' && result.value.length > 0) {
-      if (result.value.length > OWE_VENUE_CAP) {
-        console.error(`::error::Venue ${venue.name} returned ${result.value.length} candidates (cap: ${OWE_VENUE_CAP}) — likely parser regression. Skipping this venue's candidates.`);
+    const rows = result.status === 'fulfilled' ? result.value.rows : [];
+    if (result.status === 'fulfilled' && rows.length > 0) {
+      const cap = result.value.dated ? OWE_DATED_VENUE_CAP : OWE_VENUE_CAP;
+      if (rows.length > cap) {
+        console.error(`::error::Venue ${venue.name} returned ${rows.length} candidates (cap: ${cap}) — likely parser regression. Skipping this venue's candidates.`);
         process.exitCode = 1;
         continue;
       }
       // Per-venue rolling-median anomaly gate (same lib the OB path uses).
       // Fail-soft: warns + sets exitCode but keeps discovering other venues.
-      checkVenueAnomaly(venue.name, result.value.length);
+      checkVenueAnomaly(venue.name, rows.length);
       successCount++;
-      allShows.push(...result.value);
-      console.log(`  ${venue.name}: ${result.value.length} shows`);
+      allShows.push(...rows);
+      const dated = rows.filter(r => r.listingFirstDate && r.listingLastDate).length;
+      console.log(`  ${venue.name}: ${rows.length} shows${result.value.dated ? ` (dated reader, ${dated} dated)` : ''}`);
     } else if (result.status === 'rejected') {
       console.log(`  ${venue.name}: failed (${result.reason?.message})`);
     } else {
@@ -1456,7 +1537,7 @@ async function fetchShowsFromVenueListings(category) {
     }
   }
 
-  console.log(`${label} venue pages: ${successCount}/${venues.length} venues responded, ${allShows.length} total shows`);
+  console.log(`${label} venue pages: ${successCount}/${units.length} venues responded, ${allShows.length} total shows`);
   return allShows;
 }
 
@@ -1466,6 +1547,16 @@ async function fetchShowsFromOweVenues() {
 }
 
 async function fetchSingleVenuePage(venue) {
+  return parseVenueListingPage(venue, await fetchVenueHtml(venue));
+}
+
+/**
+ * A venue page's HTML: plain fetch() with browser headers first (free, and
+ * what these sites serve), fetchPage()'s proxy chain only on a non-2xx or
+ * for a preferPlaywright venue. Shared by the link readers and the dated
+ * HTML readers in OWE_VENUE_CONFIGS (BRO-4398).
+ */
+async function fetchVenueHtml(venue) {
   // Use fetch() instead of https.get() — CDN-protected sites TLS-fingerprint block Node's http module
   let html;
   // Venues that need JS rendering bypass the plain fetch() entirely and go
@@ -1496,8 +1587,7 @@ async function fetchSingleVenuePage(venue) {
       html = result.content;
     }
   }
-
-  return parseVenueListingPage(venue, html);
+  return html;
 }
 
 /**
@@ -3469,6 +3559,8 @@ module.exports = {
   VENUE_LISTING_PAGES,
   fetchSingleVenuePage,
   parseVenueListingPage,
+  oweCandidatesFromDatedListing,
+  fetchShowsFromVenueListings,
   shouldExcludeVenueShow,
   applyVerifiedIbdbCreativeTeam,
   mintCandidateId,
