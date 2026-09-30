@@ -86,11 +86,13 @@ const ALLOWLIST = [
     // same unpatched range (<=4.2.1, 4.2.1 is latest; only the @xhmikosr fork
     // has fixes) and the same single path as GHSA-mp2f-45pm-3cg9 above:
     // decompress <- @sanity/cli <- sanity (package-lock.json, 2026-09-30).
+    // sanity is a regular dependency, but no script, workflow or src/ code runs
+    // the sanity CLI (grep 2026-09-30); src/sanity/schemas imports only types.
     ghsa: 'GHSA-hrh2-vp3x-79xf',
     module: 'decompress',
     reason: 'No patched release of decompress exists (advisory range <=4.2.1; 4.2.1 is latest). '
       + 'Removal requires the breaking sanity major upgrade.',
-    exposure: 'Not exposed: reached only via the sanity CLI toolchain (dev-time CMS tooling). '
+    exposure: 'Not exposed: reached only via the sanity CLI, which no site runtime path, script or CI workflow invokes. '
       + 'It is never bundled into the site runtime, so no attacker-supplied archive ever '
       + 'reaches it — the extraction path only runs against files a developer already has.',
     issue: 'BRO-3202',
