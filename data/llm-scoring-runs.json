@@ -218940,5 +218940,48 @@
     "costUsd": 0,
     "runId": "36731433359",
     "errorDetails": []
+  },
+  {
+    "startedAt": "2026-09-30T14:43:15.625Z",
+    "completedAt": "2026-09-30T14:44:58.764Z",
+    "totalReviews": 45763,
+    "processed": 9,
+    "skipped": 45736,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 130107,
+      "output": 5024,
+      "total": 338207
+    },
+    "costUsd": 0.5327395500000001,
+    "runId": "36730819651",
+    "errorDetails": [
+      {
+        "showId": "the-secret-circus-musical-off-broadway-2026",
+        "outletId": "flopbox",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "burning-leaves-off-broadway-2026",
+        "outletId": "theater-scene",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-09-30T14:45:00.751Z",
+    "completedAt": "2026-09-30T14:50:54.240Z",
+    "totalReviews": 154,
+    "processed": 154,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 405573,
+      "output": 36891,
+      "total": 442464
+    },
+    "costUsd": 1.1345448999999999,
+    "runId": "36730819651",
+    "errorDetails": []
   }
 ]
