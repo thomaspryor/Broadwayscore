@@ -97,7 +97,11 @@ function isSameArticleBodyUpgrade(existing, incomingText) {
   const before = typeof existing.fullText === 'string' ? existing.fullText : '';
   if (!before) return false; // blank bodies already fill through the merge
   if (existing.manualContentTier || existing._locked === true) return false;
-  if (!isPreExistingContentBad({ data: existing })) return false;
+  // A split parent holds one section of the article; a re-ingest bringing
+  // the whole article back lets the fan-out re-plan (re-trim, or undo a
+  // wrong split). Only the lede test below applies to it.
+  const splitParent = existing.multiShowSplitParent === true;
+  if (!splitParent && !isPreExistingContentBad({ data: existing })) return false;
   const next = incomingText.trim();
   if (next.length < before.length + 200 || next.length < before.length * 1.25) return false;
   const oldWords = _words(before);
@@ -108,6 +112,7 @@ function isSameArticleBodyUpgrade(existing, incomingText) {
     const lede = oldWords.slice(0, 15).join(' ');
     if ((' ' + newWords.join(' ') + ' ').includes(' ' + lede + ' ')) return true;
   }
+  if (splitParent) return false;
   const oldShingles = _shingles(oldWords, 5);
   if (oldShingles.size < 8) return false;
   const newShingles = _shingles(newWords, 5);

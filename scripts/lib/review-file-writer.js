@@ -1256,7 +1256,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // The reclassify step further down then sees the changed body.
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'
       && isSameArticleBodyUpgrade(existing, fields.fullText)) {
-    console.log(`  ↑ Replacing truncated body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);
+    console.log(`  ↑ Replacing stored body (${fullTextBefore.length} chars) with a longer copy of the same article (${fields.fullText.length} chars)`);
     existing.fullText = fields.fullText;
     changed = true;
   }
