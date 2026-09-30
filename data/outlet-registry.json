@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-09-30T09:26:31.104Z",
+    "lastUpdated": "2026-09-30T09:45:31.446Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11652,6 +11652,14 @@
       ],
       "domain": "indiependent.co.uk",
       "region": "london"
+    },
+    "theatreinedinburgh": {
+      "displayName": "Theatreinedinburgh",
+      "tier": 3,
+      "aliases": [
+        "theatreinedinburgh"
+      ],
+      "domain": "theatreinedinburgh.co.uk"
     }
   },
   "_aliasIndex": {
