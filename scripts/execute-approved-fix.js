@@ -43,6 +43,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
+const { unretireId } = require('./lib/retired-show-ids.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
 
@@ -272,7 +273,15 @@ function executeRetireShow(action) {
   const data = loadJsonFile('data/shows.json');
   const shows = data.shows || data;
   const result = applyRetireShow(shows, action);
-  if (result.ok) saveJsonFile('data/shows.json', Array.isArray(data) ? shows : data);
+  if (!result.ok) return result;
+  try {
+    saveJsonFile('data/shows.json', Array.isArray(data) ? shows : data);
+  } catch (e) {
+    // The registry entry is already written: take it back out so the row
+    // (still in shows.json) and the registry agree and the plan can re-run.
+    unretireId(action.id);
+    return { ok: false, reason: `retire-show ${action.id}: shows.json save failed (${e.message}); registry entry reverted` };
+  }
   return result;
 }
 

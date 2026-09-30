@@ -9,7 +9,8 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const { applyRetireShow } = require('./retire-show-action.js');
-const { retireId, loadRetiredIds, matchesRetired } = require('./retired-show-ids.js');
+const { retireId, unretireId, loadRetiredIds, matchesRetired } = require('./retired-show-ids.js');
+const { mergeRetiredRecords } = require('./merge-retired-ids.js');
 
 const row = (id, title, extra = {}) => ({ id, title, venue: 'Kiln Theatre', category: 'off-west-end', status: 'announced', provisional: true, ...extra });
 
@@ -53,4 +54,21 @@ test('refuses: wrong title, non-provisional row, missing reason, unknown id, alr
   assert.equal(again.ok, false);
   assert.match(again.reason, /already retired/);
   assert.equal(shows.length, 2, 'the row stays when the registry refuses');
+});
+
+test('unretireId reverts a retirement in both files (the save-failure rollback)', () => {
+  const { paths, retire } = scratch();
+  retire('x-off-west-end-2026', { reason: 'r', archivedRow: row('x-off-west-end-2026', 'X') });
+  retire('y-off-west-end-2026', { reason: 'r', archivedRow: row('y-off-west-end-2026', 'Y') });
+  assert.equal(unretireId('x-off-west-end-2026', paths), true);
+  assert.deepEqual(loadRetiredIds({ listPath: paths.listPath }).map(e => e.id), ['y-off-west-end-2026']);
+  assert.deepEqual(JSON.parse(fs.readFileSync(paths.archivePath, 'utf8')).map(e => e.id), ['y-off-west-end-2026']);
+  assert.equal(unretireId('x-off-west-end-2026', paths), false);
+});
+
+test('mergeRetiredRecords: union by id, ours first, nothing dropped on a push race', () => {
+  const { merged, stats } = mergeRetiredRecords([{ id: 'a' }, { id: 'b', reason: 'ours' }], [{ id: 'b', reason: 'remote' }, { id: 'c' }]);
+  assert.deepEqual(merged.map(e => e.id), ['a', 'b', 'c']);
+  assert.equal(merged[1].reason, 'ours');
+  assert.equal(stats.added, 1);
 });

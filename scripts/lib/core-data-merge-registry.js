@@ -75,6 +75,7 @@ const { mergeAlertDigestQueue } = require('./merge-alert-digest-queue');
 const { mergeAlertRouterAttempts } = require('./merge-alert-router-attempts');
 const { mergeGuardEscalationState } = require('./merge-guard-escalation-state');
 const { mergeBreakerTransitions } = require('./merge-breaker-transitions');
+const { mergeRetiredRecords } = require('./merge-retired-ids');
 
 const CORE_DATA_MERGE_REGISTRY = [
   // ── public-repo surface (push-with-retry.sh) ──────────────────────────────
@@ -1907,13 +1908,12 @@ const CORE_DATA_MERGE_REGISTRY = [
   { file: 'subscribers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers-westend.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   // 2026 data audit (S0-T2/S0-T4): the retired-id registry and its archive of
-  // deleted shows.json rows. Both are append-only arrays written only by
-  // retireId() in scripts/lib/retired-show-ids.js, which today runs from a
-  // human session against the core-data repo (Sprint 0 ramp, Sprint 2 batch
-  // tool) — no workflow writes either yet. Promote to 'active' with a keyed
-  // union merge (by id / by archived row id) BEFORE the first CI writer lands.
-  { file: 'retired-show-ids.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js from human sessions; no workflow writer yet (2026 data audit S0-T2)' },
-  { file: 'deleted-shows.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, retireId() in scripts/lib/retired-show-ids.js (archive of deleted rows beside retired-show-ids.json); no workflow writer yet (2026 data audit S0-T2)' },
+  // deleted shows.json rows, append-only arrays written by retireId() in
+  // scripts/lib/retired-show-ids.js. BRO-4398 added the first CI writer
+  // (execute-approved-fix.yml's retire-show action) beside human sessions, so
+  // both are now reconciled by a keyed union on `id` (merge-retired-ids.js).
+  { file: 'retired-show-ids.json', surface: 'private-core-data', status: 'active', merge: mergeRetiredRecords, format: 'json', newline: true },
+  { file: 'deleted-shows.json', surface: 'private-core-data', status: 'active', merge: mergeRetiredRecords, format: 'json', newline: true },
   // 2026 data audit (S5-T9): retired critic slug → canonical slug, a flat
   // {old: canonical} object read by scripts/lib/critic-slug-aliases.js at
   // prebuild (scripts/build-slug-redirects.js). Hand-edited from human

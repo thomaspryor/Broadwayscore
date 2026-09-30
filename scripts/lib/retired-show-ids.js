@@ -272,12 +272,38 @@ function retireId(id, options) {
   return { entry, listPath, archivePath };
 }
 
+/**
+ * Undo a retireId() whose shows.json removal then failed to save (the
+ * retire-show plan action, BRO-4398): drop `id` from the registry and the
+ * archive. Only for that rollback; a real un-retirement is a human call.
+ * @returns {boolean} whether an entry was removed
+ */
+function unretireId(id, opts = {}) {
+  const listPath = resolveListPath(opts);
+  const archivePath = resolveArchivePath(opts);
+  let removed = false;
+  for (const p of [listPath, archivePath]) {
+    let arr;
+    try { arr = JSON.parse(fs.readFileSync(p, 'utf8')); } catch { continue; }
+    if (!Array.isArray(arr)) continue;
+    const next = arr.filter(e => !(e && e.id === id));
+    if (next.length === arr.length) continue;
+    const tmp = `${p}.tmp.${process.pid}`;
+    fs.writeFileSync(tmp, JSON.stringify(next, null, 2) + '\n');
+    fs.renameSync(tmp, p);
+    removed = true;
+  }
+  if (typeof _resetCache === 'function') _resetCache();
+  return removed;
+}
+
 module.exports = {
   RETIRED_IDS_PATH,
   ARCHIVE_PATH,
   loadRetiredIds,
   isRetiredId,
   retireId,
+  unretireId,
   matchesRetired,
   _resetCache,
 };
