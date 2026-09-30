@@ -1,23 +1,23 @@
 {
-  "runDate": "2026-09-30T00:48:03.412Z",
+  "runDate": "2026-09-30T00:54:27.794Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 50,
     "priority": "all",
-    "showFilter": "standing-at-the-skys-edge-west-end-2024,vanya-and-sonia-and-masha-and-spike-2013,wolf-hall-parts-one-and-two-2015",
+    "showFilter": "doubt-2024,hello-dolly-2017,ifthen-2014,kiss-me-kate-2019,new-york-new-york-2023,oliver-west-end-2024,speedtheplow-2008,the-human-voice-the-seven-deadly-sins-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 2,
-    "failed": 2,
+    "processed": 4,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "50.0%"
+    "successRate": "44.4%"
   },
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -25,18 +25,18 @@
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 4,
-    "tier1Success": 4,
+    "tier1Attempts": 9,
+    "tier1Success": 9,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
     "tier3Attempts": 0,
     "tier3Success": 0,
@@ -44,7 +44,7 @@
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 2,
+    "totalFailed": 5,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
@@ -54,17 +54,24 @@
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json",
-    "vanya-and-sonia-and-masha-and-spike-2013/bloomberg--jeremy-gerard.json"
+    "doubt-2024/the-komisar-scoop--lucy-komisar.json",
+    "new-york-new-york-2023/the-komisar-scoop--lucy-komisar.json",
+    "kiss-me-kate-2019/the-komisar-scoop--lucy-komisar.json",
+    "ifthen-2014/nypost--elisabeth-vincentelli.json"
   ],
   "failed": [
-    "standing-at-the-skys-edge-west-end-2024/i-paper--fiona-mountford.json",
-    "wolf-hall-parts-one-and-two-2015/timeout--adam-feldman.json"
+    "the-human-voice-the-seven-deadly-sins-west-end-2026/london-theatre-reviews--unknown.json",
+    "oliver-west-end-2024/city-am--unknown.json",
+    "kiss-me-kate-2019/woman-around-town--alix-cohen.json",
+    "hello-dolly-2017/woman-around-town--alix-cohen.json",
+    "speedtheplow-2008/the-komisar-scoop--lucy-komisar.json"
   ],
   "tierDetails": {
     "playwright": [
-      "standing-at-the-skys-edge-west-end-2024/express-uk--neil-norman.json",
-      "vanya-and-sonia-and-masha-and-spike-2013/bloomberg--jeremy-gerard.json"
+      "doubt-2024/the-komisar-scoop--lucy-komisar.json",
+      "new-york-new-york-2023/the-komisar-scoop--lucy-komisar.json",
+      "kiss-me-kate-2019/the-komisar-scoop--lucy-komisar.json",
+      "ifthen-2014/nypost--elisabeth-vincentelli.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -73,9 +80,7 @@
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "pretty-woman-the-musical-2018/nypost--joe-dziemianowicz.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
