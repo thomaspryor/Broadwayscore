@@ -222,6 +222,15 @@ test('no article byline: a related card\'s byline and stars are never used', () 
   assert.equal(extractTheStageArticleMeta(html).stars, null);
 });
 
+test('a full-text review gets its missing date but keeps its text-based score', () => {
+  const d = { url: 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london', criticName: "Holly O'Mahony", fullText: 'x'.repeat(2000) };
+  const set = applyWalledPageMeta(d, WALLED, { show: DARKLING_RUN });
+  assert.ok(set.includes('publishDate'));
+  assert.equal(d.publishDate, '2026-09-16');
+  assert.ok(!set.includes('originalScore'));
+  assert.equal(d.originalScore, undefined);
+});
+
 test('flagged files never get a salvaged score', () => {
   const url = 'https://www.thestage.co.uk/reviews/darkling-review-bush-theatre-london';
   for (const flag of [{ wrongShow: true }, { wrongProduction: true }, { duplicateOf: 'thestage--x.json' }]) {

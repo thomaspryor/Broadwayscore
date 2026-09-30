@@ -218,7 +218,9 @@ function applyWalledPageMeta(data, html, opts = {}) {
   const { normalizeDate } = require('./date-utils');
   const reviewDate = meta.publishDate || normalizeDate(data.publishDate);
   const inWindow = !!opts.show && !!reviewDate && isReviewWithinOwnProductionWindow(opts.show, reviewDate);
-  const excluded = data.wrongShow === true || data.wrongProduction === true || !!data.duplicateOf;
+  // A full-text review is scored from its text; salvaging stars here would
+  // swap its score source under it (BRO-4428).
+  const excluded = data.wrongShow === true || data.wrongProduction === true || !!data.duplicateOf || !!data.fullText;
   if (meta.stars && inWindow && !excluded && !data.originalScore && data.originalScoreNormalized == null
     && !data.originalScoreManual && data.originalScoreCleared !== true) {
     const { starsToNumeric } = require('./score-extractors');

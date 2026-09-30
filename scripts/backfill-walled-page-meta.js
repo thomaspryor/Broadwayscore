@@ -9,10 +9,12 @@
  * metadata inline (lib/walled-page-meta.js); this script repairs files that
  * were collected before that fix.
  *
- * Candidates: thestage URL, no fullText, not flagged wrongShow/
- * wrongProduction/duplicateOf, and missing at least one of publishDate, a
- * named critic, outletStandfirst, or a star rating (BRO-4428). Gap-fill only (applyWalledPageMeta never
- * overwrites). Pages go through fetchPage() per the scraping rule.
+ * Candidates: thestage URL, not flagged wrongShow/wrongProduction/
+ * duplicateOf, and either (no fullText and missing at least one of
+ * publishDate, a named critic, outletStandfirst, or a star rating) or
+ * (fullText but no publishDate: date only, BRO-4428). Gap-fill only
+ * (applyWalledPageMeta never overwrites). Pages go through fetchPage() per
+ * the scraping rule.
  *
  * Usage:
  *   node scripts/backfill-walled-page-meta.js [--show=ID] [--limit=N] [--dry-run] [--delay-ms=3000] [--recheck-days=14]
@@ -62,8 +64,15 @@ function stampChecked(fp, url) {
 
 function isCandidate(d) {
   if (!d || !isTheStageUrl(d.url)) return false;
-  if (d.fullText) return false;
   if (d.wrongShow || d.wrongProduction || d.duplicateOf) return false;
+  // Full-text reviews are live already; the page only adds a missing date
+  // (reader report 2026-09-25: Stage reviews showing no date). Their score
+  // stays with the full-text scoring (applyWalledPageMeta skips fullText).
+  if (d.fullText) {
+    if (d.publishDate) return false;
+    const checkedFt = Date.parse(d.walledPageMetaCheckedAt || '');
+    return !(checkedFt && Date.now() - checkedFt < RECHECK_DAYS * 86400000);
+  }
   const critic = String(d.criticName || '').trim();
   const needsCritic = !critic || /^(unknown|the stage)$/i.test(critic);
   // Files already scoring from aggregator stars keep that score (the rebuild
