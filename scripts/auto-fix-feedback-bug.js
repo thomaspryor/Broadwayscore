@@ -29,6 +29,7 @@ const commercialWriteGuard = _require('./lib/commercial-write-guard.js');
 const audienceBuzzWriteGuard = _require('./lib/audience-buzz-write-guard.js');
 const { hasHelpFlag } = _require('./lib/cli-help.js');
 const { foldDiacritics } = _require('./lib/title-match.js');
+const { syncRevivalTags } = _require('./lib/revival-tags.js');
 const { pickEditableFields, AUTO_FIX_EDITABLE_FIELDS } = _require('./lib/feedback-pipeline-fields.js');
 const { normalizeDiagnosisShowIds, summarizeShowFixOutcomes } = _require('./lib/feedback-multishow.js');
 
@@ -458,6 +459,8 @@ If you cannot fix it, respond: { "canFix": false, "reason": "why" }`;
           continue;
         }
         shows[showIndex][change.field] = change.newValue;
+        // The site also reads tags:'revival' (BRO-4436).
+        if (change.field === 'isRevival') syncRevivalTags(shows[showIndex]);
         applied.push(`shows.json: ${change.field} = "${String(change.newValue).substring(0, 80)}..."`);
 
       } else if (change.file === 'commercial.json') {

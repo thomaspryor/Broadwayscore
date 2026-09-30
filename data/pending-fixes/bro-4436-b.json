@@ -8,7 +8,7 @@
     "email": null
   },
   "plan": {
-    "summary": "Follow-up to bro-4436. Degenerates 2026 is a world premiere; the bro-4436 plan set isRevival=false but tags still hold 'revival', and the site treats either as a revival (src/lib/engine.ts). Re-assert isRevival=false with the executor that now keeps tags in step (scripts/lib/revival-tags.js), which swaps 'revival' for 'new'.",
+    "summary": "Follow-up to bro-4436. Degenerates 2026 is a world premiere; the bro-4436 plan set isRevival=false but tags still hold 'revival', and the site treats either as a revival (src/lib/engine.ts). Re-assert isRevival=false with the executor that now keeps tags in step (scripts/lib/revival-tags.js), which removes the stale 'revival' tag.",
     "steps": [
       "Re-assert isRevival false so the executor syncs tags"
     ],

@@ -7,8 +7,11 @@
  * clears the flag: Degenerates 2026 (a world premiere) kept its "revival"
  * label after an approved fix set isRevival=false (BRO-4436).
  *
- * A show is never both 'new' and 'revival' (Galileo 2026-08-14 shipped with
- * tags ["new","revival"]), so setting one removes the other.
+ * Setting the flag also drops a stale 'new' tag (Galileo 2026-08-14 shipped
+ * with tags ["new","revival"]). Clearing it only removes 'revival': 'new'
+ * means "low-confidence, verify by hand" (discover-new-shows.js), so it is
+ * never added here (same as the Paddington fix; validate-data.js flags the
+ * mismatch as "Remove the tag").
  *
  * Mutates and returns `show`. Only `show.tags` changes.
  */
@@ -20,7 +23,6 @@ function syncRevivalTags(show) {
     if (!show.tags.includes('revival')) show.tags.push('revival');
   } else {
     show.tags = tags.filter(t => t !== 'revival');
-    if (tags.includes('revival') && !show.tags.includes('new')) show.tags.push('new');
   }
   return show;
 }

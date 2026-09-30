@@ -7,9 +7,11 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { syncRevivalTags } = require('../../scripts/lib/revival-tags.js');
 
-test('clearing isRevival removes the revival tag and marks the show new', () => {
+test('clearing isRevival removes the revival tag and adds nothing', () => {
   const show = { id: 'degenerates-off-broadway-2026', isRevival: false, tags: ['revival'] };
-  assert.deepEqual(syncRevivalTags(show).tags, ['new']);
+  assert.deepEqual(syncRevivalTags(show).tags, []);
+  const upcoming = { isRevival: false, tags: ['upcoming', 'revival'] };
+  assert.deepEqual(syncRevivalTags(upcoming).tags, ['upcoming']);
 });
 
 test('setting isRevival drops a stale new tag and adds revival once', () => {
