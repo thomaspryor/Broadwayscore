@@ -81,6 +81,21 @@ const ALLOWLIST = [
     issue: 'BRO-3202',
     expires: '2026-10-15',
   },
+  {
+    // Published 2026-09-29 23:49Z (symlink-chain path traversal). Same package,
+    // same unpatched range (<=4.2.1, 4.2.1 is latest; only the @xhmikosr fork
+    // has fixes) and the same single path as GHSA-mp2f-45pm-3cg9 above:
+    // decompress <- @sanity/cli <- sanity (package-lock.json, 2026-09-30).
+    ghsa: 'GHSA-hrh2-vp3x-79xf',
+    module: 'decompress',
+    reason: 'No patched release of decompress exists (advisory range <=4.2.1; 4.2.1 is latest). '
+      + 'Removal requires the breaking sanity major upgrade.',
+    exposure: 'Not exposed: reached only via the sanity CLI toolchain (dev-time CMS tooling). '
+      + 'It is never bundled into the site runtime, so no attacker-supplied archive ever '
+      + 'reaches it — the extraction path only runs against files a developer already has.',
+    issue: 'BRO-3202',
+    expires: '2026-10-15',
+  },
   // --- Next.js 14.2.35: both advisories' first patched release is 15.5.24 ---
   // 14.2.35 is the LAST 14.x release (npm view next versions, 2026-09-13) —
   // there is no 14.x backport, so "just patch it" is a Next 14 -> 15/16 major
