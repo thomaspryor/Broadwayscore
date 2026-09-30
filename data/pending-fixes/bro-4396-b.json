@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4396-b",
   "planId": "a31f60af-b21f-4a60-ad8b-05a86da9707b",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-09-30T04:07:12.250Z",
   "submitter": {
     "name": null,
@@ -23,5 +23,13 @@
         "description": "Review dated 2025-11-11 predates this production (earliest date 2026-07-28, prior run from 2026-06-15)"
       }
     ]
-  }
+  },
+  "executedAt": "2026-09-30T04:40:53.558Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "the-car-man-west-end-2026/daily-echo--lorelei-reddin.json wrongProduction: false -> true"
+    }
+  ]
 }
