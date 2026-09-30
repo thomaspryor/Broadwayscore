@@ -259,3 +259,35 @@ test('an undated row at a venue with a dated reader is dropped, not confirmed by
   assert.deepEqual([d.confirmed, d.persistent], [false, true]);
   assert.match(d.reason, /has a dated reader/);
 });
+
+test('shouldExcludeVenueShow: a title ending in "Concert" is a one-off concert; a play naming one is not', () => {
+  const { shouldExcludeVenueShow } = require('../../scripts/discover-new-shows.js');
+  assert.equal(shouldExcludeVenueShow('Scribbles Concert'), true);
+  assert.equal(shouldExcludeVenueShow('Scribbles Concert! '), true);
+  assert.equal(shouldExcludeVenueShow('Concert of the Birds'), false);
+});
+
+test('real OWE_VENUE_CONFIGS end to end: an undated row at a dated venue (or one of its rooms) prunes; an evidence-backed one there still confirms', async () => {
+  const { isCuratedLondonVenue } = require('../../scripts/promote-owe-venue-candidates.js');
+  assert.equal(isCuratedLondonVenue('The Maria Theatre'), true, 'a room of a dated reader counts');
+  const undated = (title, venue) => {
+    const c = { title, venue, category: 'off-west-end', source: 'venue-page:x', discoverySource: 'venue-page:x', description: '' };
+    return { ...c, candidateHash: candidateHash(c) };
+  };
+  const logged = [];
+  const { promoted, pruned } = await evaluateCandidates([undated('Sense And Sensibility', 'Kiln Theatre'), undated('Some Studio Play', 'The Maria Theatre')], {
+    existingCandidates: [], existingIds: new Set(), venueVocabulary: buildVenueVocabulary([]), retiredEntries: [],
+    venueListings: new Map([['Kiln Theatre', { titles: new Set(['sense and sensibility']), rowCount: 20, error: null }]]),
+    logEntry: e => logged.push(e), now: () => NOW,
+  });
+  assert.equal(promoted.length, 0);
+  assert.equal(pruned.filter(p => /has a dated reader/.test(p.reason)).length, 2);
+
+  const withEvidence = { ...undated('Nine Night', 'Kiln Theatre'), evidence: [{ kind: 'review-url', url: 'https://www.theguardian.com/stage/2026/nov/20/nine-night-review' }] };
+  const d = decideOffWestEndVenuePromotion(withEvidence, {
+    todayIso: TODAY,
+    outletRegistry: { outlets: { guardian: { tier: 1 } } },
+    evidencePages: new Map([[withEvidence.evidence[0].url, { text: 'Nine Night review: a triumph at the Kiln', error: null }]]),
+  });
+  assert.equal(d.confirmed, true, d.reason);
+});

@@ -1730,6 +1730,11 @@ function shouldExcludeVenueShow(title) {
   if (londonListingTitleRejected(title)) return true;
   const lower = String(title || '').toLowerCase();
   if (VENUE_PAGE_EXCLUDE_PATTERNS.some(p => lower.includes(p))) return true;
+  // A venue-page title ending in "Concert" is a one-off concert ("Scribbles
+  // Concert", The Other Palace, promoted 2026-09-30, BRO-4398). Corpus-audited
+  // 2026-09-30: no shows.json title ends in "concert" ("... in Concert" was
+  // already refused by londonListingTitleRejected above).
+  if (/\bconcerts?\W*$/.test(lower.trim())) return true;
   return false;
 }
 

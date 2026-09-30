@@ -458,11 +458,21 @@ function isDatedListingCandidate(candidate) {
  * normalizeVenueName equality, never a substring match.
  */
 function isCuratedLondonVenue(venue, opts = {}) {
-  const key = normalizeVenueName(venue);
-  if (!key) return false;
-  const dated = Array.isArray(opts.datedConfigs) ? opts.datedConfigs : OWE_VENUE_CONFIGS;
-  if (dated.some(d => d && normalizeVenueName(d.name) === key)) return true;
+  if (datedReaderFor(venue, opts.datedConfigs)) return true;
   return !!findVenueListingPage(venue, opts.listingPages);
+}
+
+/**
+ * The OWE_VENUE_CONFIGS dated reader for `venue`: its name or one of its
+ * coversVenues / coverageExact rooms ("The Maria Theatre" → Young Vic),
+ * compared by normalizeVenueName equality.
+ */
+function datedReaderFor(venue, datedConfigs) {
+  const key = normalizeVenueName(venue);
+  if (!key) return null;
+  const dated = Array.isArray(datedConfigs) ? datedConfigs : OWE_VENUE_CONFIGS;
+  return dated.find(d => d && [d.name, ...(d.coversVenues || []), ...(d.coverageExact || [])]
+    .some(n => normalizeVenueName(n) === key)) || null;
 }
 
 /**
@@ -573,8 +583,7 @@ function decideOffWestEndVenuePromotion(candidate, ctx = {}) {
       gates: { isOneNightShow },
     });
     if (v.confirmed) {
-      const dated = (Array.isArray(ctx.datedConfigs) ? ctx.datedConfigs : OWE_VENUE_CONFIGS)
-        .find(d => d && normalizeVenueName(d.name) === normalizeVenueName(candidate.venue));
+      const dated = datedReaderFor(candidate.venue, ctx.datedConfigs);
       return {
         confirmed: true,
         persistent: false,
@@ -596,8 +605,7 @@ function decideOffWestEndVenuePromotion(candidate, ctx = {}) {
   // that page is what put Kiln's cinema screenings and The Other Palace's
   // "Scribbles Concert" into shows.json on 2026-09-30. Discovery re-stages
   // the production, dated, if the venue's own listing carries it.
-  const datedFor = (Array.isArray(ctx.datedConfigs) ? ctx.datedConfigs : OWE_VENUE_CONFIGS)
-    .find(d => d && normalizeVenueName(d.name) === normalizeVenueName(candidate.venue));
+  const datedFor = datedReaderFor(candidate.venue, ctx.datedConfigs);
   if (datedFor) {
     return { confirmed: false, persistent: true, reason: `${datedFor.name} has a dated reader; an undated row staged there is not confirmed by its link page — dropped (discovery re-stages it with dates if the venue's listing carries it)` };
   }
