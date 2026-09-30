@@ -667,6 +667,12 @@ on:
       # email. Colocated *.test.mjs runs in the scripts/lib/*.test.mjs glob;
       # path-listed so a solo edit triggers CI.
       - 'scripts/execute-approved-fix.js'
+      # Fold-and-delete sites guarded by scripts/lib/merged-duplicate-urls.test.mjs
+      # (BRO-4414 drift test, runs in the scripts/lib/*.test.mjs glob); top-level
+      # scripts sit outside scripts/lib/**, so a solo edit would trigger ZERO CI.
+      - 'scripts/consolidate-duplicate-reviews.js'
+      - 'scripts/fix-critic-name-duplicates.js'
+      - 'scripts/backfill-pv-critics.js'
       # Canonical feedback-pipeline field allowlist (card #1482) — shared by
       # auto-fix-feedback-bug.js, diagnose-feedback-bug.js,
       # generate-remediation-plan.js, and execute-approved-fix.js. Colocated
