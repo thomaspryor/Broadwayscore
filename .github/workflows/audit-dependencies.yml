@@ -88,7 +88,11 @@ jobs:
         run: |
           WARN_DAYS="${{ github.event.inputs.warn_days || '14' }}"
           ALERT_FLAG=""
-          if [ "${{ github.event.inputs.alert || 'true' }}" = "true" ]; then
+          # NOT `inputs.alert || 'true'`: a boolean input rendered false is the
+          # expression value `false`, and `false || 'true'` is 'true' — the
+          # dispatch-with-alert=false case would still file cards. Schedule
+          # runs have no inputs and always alert.
+          if [ "${{ github.event_name == 'schedule' || inputs.alert == true }}" = "true" ]; then
             ALERT_FLAG="--alert"
           fi
           # --out (not `--json > file`): --alert makes routeAlert() write its

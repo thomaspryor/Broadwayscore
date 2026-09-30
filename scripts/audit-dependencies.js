@@ -413,8 +413,14 @@ async function runAlerts({ findings, expiringSoon, allowlist, router, runContext
   const alerts = [];
   let alertDispatchFailed = false;
   const record = (conditionKey, result) => {
-    const failed = result.action !== 'silent'
-      && (result.dispatchOk === false || (result.action === 'auto' && !result.linearIdentifier));
+    // 'auto' must have filed a tracker; 'silent' (ledger cooldown or Linear
+    // duplicate) must NAME the tracker it is deferring to. The router only
+    // records a condition as notified after a successful dispatch, so a
+    // silent result with no identifier means the ledger claims a card that
+    // nothing can point at — loud, not green (ship-check finding).
+    const failed = result.dispatchOk === false
+      || (result.action === 'auto' && !result.linearIdentifier)
+      || (result.action === 'silent' && !result.linearIdentifier);
     if (failed) {
       alertDispatchFailed = true;
       log(`[alert] dispatch failed for ${conditionKey}: ${result.dispatchError || 'no tracker identifier returned'}`);
@@ -431,8 +437,10 @@ async function runAlerts({ findings, expiringSoon, allowlist, router, runContext
     try {
       const result = await routeAlert({
         conditionKey: key,
-        title: `Dependency advisory needs a decision: ${f.module} (${f.ghsa})`,
-        description: `${f.message}${exemption}\n\nFound by \`node scripts/audit-dependencies.js\` (daily, .github/workflows/audit-dependencies.yml). Main's Test Suite no longer goes red for this (BRO-4434); this card is the only signal.`,
+        // Plain words first, id last (owner-reader review): the owner reads
+        // the board, not the code. Say who acts and what ignoring it means.
+        title: `Security issue in ${f.module} — needs a decision (${f.ghsa})`,
+        description: `A helper session is assigned to this card automatically; the owner does not need to act. If nothing is done, the site keeps running with an unreviewed critical advisory in a dependency, and the daily audit re-files this card after its 7-day cooldown.\n\nTechnical: ${f.message}${exemption}\n\nFound by \`node scripts/audit-dependencies.js\` (daily, .github/workflows/audit-dependencies.yml). Main's Test Suite no longer goes red for this (BRO-4434); this card is the only signal.`,
         hint: f.kind === 'unallowlisted'
           ? 'Upgrade the dependency if a patched release exists. Otherwise add an ALLOWLIST entry in scripts/audit-dependencies.js with a real `exposure` assessment (is the affected code path reachable on prod?), the granting `issue`, and an `expires` ~90 days out.'
           : 'Re-triage the ALLOWLIST entry in scripts/audit-dependencies.js: fix the field it is missing, or extend `expires` with a fresh reason if the advisory still has no fix.',
@@ -457,8 +465,8 @@ async function runAlerts({ findings, expiringSoon, allowlist, router, runContext
     try {
       const result = await routeAlert({
         conditionKey: key,
-        title: `Dependency exemption for ${e.module} expires in ${e.daysLeft} day(s) (${e.ghsa}) — extend or fix before ${e.expires}`,
-        description: `The ALLOWLIST entry for ${e.ghsa} (${e.module}) in scripts/audit-dependencies.js expires on ${e.expires}. On that day the daily audit files a dispatched "needs a decision" card instead of this reminder. Check whether a patched release now exists; if not, extend \`expires\` with a fresh reason.`,
+        title: `Security exception for ${e.module} ends on ${e.expires} — extend or fix (${e.ghsa})`,
+        description: `Nothing breaks on ${e.expires}: that day the daily audit files a "needs a decision" card and assigns it to a helper session automatically. This reminder (${e.daysLeft} day(s) ahead) exists so the decision can be made calmly beforehand; the owner does not need to act.\n\nTechnical: the ALLOWLIST entry for ${e.ghsa} (${e.module}) in scripts/audit-dependencies.js expires on ${e.expires}. Check whether a patched release now exists; if not, extend \`expires\` with a fresh reason.`,
         hint: 'Check the advisory for a patched release. If none: extend `expires` (~90 days) and refresh `reason`/`exposure` in scripts/audit-dependencies.js. If one exists: upgrade and delete the entry.',
         severity: 'warning',
         disposition: 'auto',

@@ -430,11 +430,14 @@ describe('runAlerts (BRO-4434) against the real router contract', () => {
     assert.deepEqual(f.dispatchAtFiling, { runId: '123', runUrl: 'https://x/runs/123' });
     assert.equal(f.verify.line, VERIFY_CLEAN);
     assert.match(f.verify.line, /^node --test tests\/live\/[\w-]+\.test\.mjs$/, 'must be a SAFE_CHECK_FORM the parked drain accepts');
-    assert.match(f.title, /needs a decision: evil \(GHSA-aaaa-bbbb-cccc\)/);
+    assert.match(f.title, /^Security issue in evil — needs a decision \(GHSA-aaaa-bbbb-cccc\)$/, 'plain words first, id last');
+    assert.match(f.description, /^A helper session is assigned/, 'first line says who acts');
     assert.equal(e.conditionKey, expiringKey(expiring.ghsa));
     assert.equal(e.dispatchAtFiling, undefined, 'extending an exemption is a judgment call — parked, not dispatched');
     assert.equal(e.verify.line, VERIFY_NO_EXPIRING);
-    assert.match(e.title, /expires in 9 day\(s\)/);
+    assert.match(e.title, /^Security exception for decompress ends on 2026-07-20 — extend or fix \(GHSA-mp2f-45pm-3cg9\)$/);
+    assert.match(e.description, /^Nothing breaks on 2026-07-20/, 'first line says what ignoring it means');
+    assert.match(e.description, /9 day\(s\) ahead/);
     assert.deepEqual(r.alerts.map((a) => a.linearIdentifier), ['BRO-9001', 'BRO-9002']);
   });
 
@@ -455,6 +458,12 @@ describe('runAlerts (BRO-4434) against the real router contract', () => {
 
   test('an "auto" result with no tracker identifier is a failure too', async () => {
     const router = fakeRouter({ respond: () => ({ action: 'auto', dispatchOk: true }) });
+    const r = await runAlerts({ findings: [finding], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
+    assert.equal(r.alertDispatchFailed, true);
+  });
+
+  test('a silent result that names NO tracker is a failure (the ledger claims a card nothing can point at)', async () => {
+    const router = fakeRouter({ respond: () => ({ action: 'silent', linearIdentifier: null }) });
     const r = await runAlerts({ findings: [finding], expiringSoon: [], allowlist: ALLOW, router, log: () => {} });
     assert.equal(r.alertDispatchFailed, true);
   });
