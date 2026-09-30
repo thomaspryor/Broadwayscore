@@ -249,3 +249,13 @@ test('dedupe: contained titles need an overlapping run; the London-wide title ma
   assert.equal(findDuplicate(dated('Cinderella', 'Lyric Hammersmith', '2026-11-14', '2027-01-03'), pool), null, "the Lyric's Cinderella is not the Palladium's");
   assert.equal(findDuplicate(dated("A Doll's House", 'Barbican Theatre', '2027-02-03', '2027-02-06'), pool), null);
 });
+
+test('an undated row at a venue with a dated reader is dropped, not confirmed by the link page', () => {
+  // 2026-09-30: Kiln's cinema screenings ("Sense And Sensibility") and The
+  // Other Palace's "Scribbles Concert" reached shows.json this way.
+  const kiln = { title: 'Sense And Sensibility', venue: 'Kiln Theatre', category: 'off-west-end', source: 'venue-page:kiln-theatre', discoverySource: 'venue-page:kiln-theatre' };
+  const listings = new Map([['Kiln Theatre', { titles: new Set(['sense and sensibility']), rowCount: 20, error: null }]]);
+  const d = decideOffWestEndVenuePromotion(kiln, { venueListings: listings, todayIso: TODAY });
+  assert.deepEqual([d.confirmed, d.persistent], [false, true]);
+  assert.match(d.reason, /has a dated reader/);
+});

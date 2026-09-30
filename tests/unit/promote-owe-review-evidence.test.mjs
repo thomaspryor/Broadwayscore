@@ -33,12 +33,17 @@ const {
   fetchEvidencePage,
   fetchEvidencePages,
   fetchVenueListings,
-  evaluateCandidates,
-  main,
+  evaluateCandidates: evaluateRaw,
+  main: mainRaw,
   EVIDENCE_KINDS,
   AUDIT_EVIDENCE_SOURCE,
   DEFAULT_EVIDENCE_FETCH_LIMIT,
 } = require('../../scripts/promote-owe-venue-candidates.js');
+// Undated rows here sit at venues that now have BRO-4398 dated readers; these
+// tests pin the evidence and link-page paths, so run with none configured.
+const LINK_ONLY = { datedConfigs: [] };
+const evaluateCandidates = (cs, ctx = {}) => evaluateRaw(cs, { ...LINK_ONLY, ...ctx });
+const main = (argv, io = {}) => mainRaw(argv, { ...LINK_ONLY, ...io });
 const { VENUE_LISTING_PAGES } = require('../../scripts/discover-new-shows.js');
 const { candidateHash, loadStaging, writeStagingCandidates, mergeCandidates } = require('../../scripts/lib/owe-venue-staging.js');
 const { buildVenueVocabulary } = require('../../scripts/lib/show-title-normalize.js');

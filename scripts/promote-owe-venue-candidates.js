@@ -590,6 +590,18 @@ function decideOffWestEndVenuePromotion(candidate, ctx = {}) {
     };
   }
 
+  // A venue with a dated reader lists every production with its dates, so
+  // an undated row staged there (the old slug-title reader, or its fallback
+  // on a day the dated feed failed) is never confirmed by the link page:
+  // that page is what put Kiln's cinema screenings and The Other Palace's
+  // "Scribbles Concert" into shows.json on 2026-09-30. Discovery re-stages
+  // the production, dated, if the venue's own listing carries it.
+  const datedFor = (Array.isArray(ctx.datedConfigs) ? ctx.datedConfigs : OWE_VENUE_CONFIGS)
+    .find(d => d && normalizeVenueName(d.name) === normalizeVenueName(candidate.venue));
+  if (datedFor) {
+    return { confirmed: false, persistent: true, reason: `${datedFor.name} has a dated reader; an undated row staged there is not confirmed by its link page — dropped (discovery re-stages it with dates if the venue's listing carries it)` };
+  }
+
   const page = findVenueListingPage(candidate.venue, ctx.listingPages);
   if (!page) {
     return { confirmed: false, persistent: true, reason: `venue "${candidate.venue}" is not one of the curated VENUE_LISTING_PAGES Off-West End venue pages — venue-page confirmation is impossible (add the venue to VENUE_LISTING_PAGES in scripts/discover-new-shows.js, or add the show by hand)` };
@@ -936,6 +948,7 @@ async function evaluateCandidates(candidates, ctx) {
     outletRegistry = undefined,
     retiredEntries = undefined,
     listingPages = undefined,
+    datedConfigs = undefined,
     maxPromote = MAX_PROMOTE_PER_RUN,
     timeBudget = null,
     log = () => {},
@@ -988,7 +1001,7 @@ async function evaluateCandidates(candidates, ctx) {
       // 3. Confirmation: phantom/excluded titles, the S4-T6 ingest gate, then
       //    the venue page itself — or, for an evidence-backed candidate, the
       //    registered-outlet page it cites (S8-T3).
-      const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry, todayIso: now().toISOString().slice(0, 10) });
+      const decision = decideOffWestEndVenuePromotion(c, { venueListings, listingPages, evidencePages, outletRegistry, datedConfigs, todayIso: now().toISOString().slice(0, 10) });
       if (!decision.confirmed) {
         if (decision.persistent) prune(c, 'skip-unconfirmed', decision.reason);
         else hold(c, 'skip-unconfirmed', decision.reason);
@@ -1159,6 +1172,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
     outletRegistry,
     retiredEntries,
     listingPages: io.listingPages,
+    datedConfigs: io.datedConfigs,
     maxPromote,
     timeBudget,
     log,

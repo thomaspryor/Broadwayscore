@@ -20,16 +20,24 @@ import path from 'node:path';
 
 const require = createRequire(import.meta.url);
 const {
-  decideOffWestEndVenuePromotion,
+  decideOffWestEndVenuePromotion: decideRaw,
   buildOffWestEndVenueShowEntry,
   collectCandidates,
   fetchVenueListing,
   fetchVenueListings,
   findVenueListingPage,
-  evaluateCandidates,
-  main,
+  evaluateCandidates: evaluateRaw,
+  main: mainRaw,
   MAX_PROMOTE_PER_RUN,
 } = require('../../scripts/promote-owe-venue-candidates.js');
+// These tests pin the undated link-page path, using venues that now have
+// BRO-4398 dated readers (where that path is refused); run them with no
+// dated readers configured. The dated rule is covered in
+// promote-owe-dated-listing.test.mjs.
+const LINK_ONLY = { datedConfigs: [] };
+const decideOffWestEndVenuePromotion = (c, ctx = {}) => decideRaw(c, { ...LINK_ONLY, ...ctx });
+const evaluateCandidates = (cs, ctx = {}) => evaluateRaw(cs, { ...LINK_ONLY, ...ctx });
+const main = (argv, io = {}) => mainRaw(argv, { ...LINK_ONLY, ...io });
 const { VENUE_LISTING_PAGES, parseVenueListingPage } = require('../../scripts/discover-new-shows.js');
 const { candidateHash, loadStaging, writeStagingCandidates, updateStaging } = require('../../scripts/lib/owe-venue-staging.js');
 const { buildVenueVocabulary } = require('../../scripts/lib/show-title-normalize.js');
