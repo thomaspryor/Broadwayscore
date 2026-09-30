@@ -34,4 +34,30 @@ function computeNewViolators(missingOutlets, baselineSet) {
   return (missingOutlets || []).filter(m => !baselineSet.has(m.outletId));
 }
 
-module.exports = { baselineKeySet, computeNewViolators };
+// BRO-4401: test.yml runs --strict on every push, but a review file only
+// gets its outlet registered (or staged, see outlet-auto-register.js) by the
+// NEXT rebuild. A file that landed in review-texts after the last rebuild
+// therefore reads as a "NEW outlet missing from registry" for up to one
+// rebuild cycle (~30 min) through no fault of anyone — 2026-09-30 01:32:
+// goodstoriespodcast / ourquadcities / crisesnotes, all first seen after the
+// 00:10 rebuild reviews.json carried. Split those off: they are reported,
+// not failed; once a rebuild has seen them they are either registered
+// (domain), staged (known) or genuinely missing (fail).
+//
+// violators: { outletId, earliestSeenAt } rows from computeNewViolators().
+// rebuiltAtMs: epoch ms of the rebuild that produced data/reviews.json
+// (its _meta.lastUpdated), or null/NaN when unknown — then nothing is
+// deferred, which is the old behaviour.
+function partitionAwaitingRebuild(violators, rebuiltAtMs) {
+  const awaitingRebuild = [];
+  const actionable = [];
+  const cutoff = Number.isFinite(rebuiltAtMs) ? rebuiltAtMs : null;
+  for (const v of violators || []) {
+    const seen = v && v.earliestSeenAt ? Date.parse(v.earliestSeenAt) : NaN;
+    if (cutoff !== null && Number.isFinite(seen) && seen > cutoff) awaitingRebuild.push(v);
+    else actionable.push(v);
+  }
+  return { awaitingRebuild, actionable };
+}
+
+module.exports = { baselineKeySet, computeNewViolators, partitionAwaitingRebuild };

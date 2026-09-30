@@ -37,7 +37,7 @@ const { isExcludedFromOutletRegistryAudit } = require(
 describe('isExcludedFromOutletRegistryAudit (BRO-3804)', () => {
   test('a normal scored review is NOT excluded', () => {
     assert.equal(
-      isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', score: 85 }),
+      isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', llmScore: { score: 85 } }),
       false
     );
   });
@@ -54,6 +54,7 @@ describe('isExcludedFromOutletRegistryAudit (BRO-3804)', () => {
       isExcludedFromOutletRegistryAudit({
         outletId: 'telegraph-class',
         isNonReview: true,
+        llmScore: { score: 72 }, // scored: branch 6 (unscored, BRO-4401) must not be what decides this case
         contentVerification: {
           articleType: 'review',
           isValid: true,
@@ -119,6 +120,7 @@ describe('isExcludedFromOutletRegistryAudit (BRO-3804)', () => {
         outletId: 'new-outlet',
         url: 'https://new-outlet.com/review',
         incompleteReason: 'paywalled',
+        llmScore: { score: 66 }, // scored: branch 6 (unscored, BRO-4401) must not be what decides this case
       }),
       false
     );
@@ -270,7 +272,19 @@ describe('mergeStagingEntries: the staging list is keyed, keeps firstSeenAt, and
   });
 });
 
-describe('isExcludedFromOutletRegistryAudit branch 6 (BRO-4401): unscored, score-extraction-pending files', () => {
+describe('isExcludedFromOutletRegistryAudit branch 6 (BRO-4401): unscored files, which the rebuild never includes', () => {
+  test('an unscored file WITHOUT the pending flag is excluded too (goodstoriespodcast / ourquadcities / crisesnotes, 2026-09-30: skippedNoScore by the rebuild, red in --strict)', () => {
+    assert.equal(
+      isExcludedFromOutletRegistryAudit({
+        outletId: 'ourquadcities',
+        url: 'https://www.ourquadcities.com/news/local-news/alice-in-wonderland-ballet/',
+        criticName: 'Linda Cook',
+        publishDate: '2026-09-29',
+      }),
+      true,
+    );
+  });
+
   test('a submit-review-form file still waiting on score extraction is excluded', () => {
     // localwineevents--unknown.json / splitdecision--liam-bellman-sharpe.json
     // shape on 2026-09-29: archive fetch, <200 words, no score yet. The rebuild
@@ -295,7 +309,47 @@ describe('isExcludedFromOutletRegistryAudit branch 6 (BRO-4401): unscored, score
     );
   });
 
-  test('an unscored file WITHOUT the pending flag is still a real registry gap', () => {
-    assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review' }), false);
+  test('a SCORED file on an unregistered outlet is still a real registry gap (every score source counts)', () => {
+    assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', llmScore: { score: 71 } }), false);
+    assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', assignedScore: 64 }), false);
+    assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'new-outlet', url: 'https://new-outlet.com/review', originalScore: '4/5' }), false);
+  });
+});
+
+describe('partitionAwaitingRebuild (BRO-4401): files newer than the last rebuild are reported, not failed', () => {
+  const { partitionAwaitingRebuild } = require(resolve(ROOT, 'scripts/lib/outlet-registry-baseline.js'));
+  const rebuiltAt = Date.parse('2026-09-30T00:10:52.114Z');
+
+  test('a violator first seen after the rebuild is deferred; one seen before stays actionable', () => {
+    const { awaitingRebuild, actionable } = partitionAwaitingRebuild(
+      [
+        { outletId: 'ourquadcities', earliestSeenAt: '2026-09-30T01:05:00.000Z' },
+        { outletId: 'old-gap', earliestSeenAt: '2026-09-20T01:05:00.000Z' },
+      ],
+      rebuiltAt,
+    );
+    assert.deepEqual(awaitingRebuild.map((v) => v.outletId), ['ourquadcities']);
+    assert.deepEqual(actionable.map((v) => v.outletId), ['old-gap']);
+  });
+
+  test('unknown rebuild time or missing earliestSeenAt → nothing is deferred (old behaviour)', () => {
+    const rows = [{ outletId: 'a', earliestSeenAt: '2026-09-30T01:05:00.000Z' }, { outletId: 'b' }];
+    assert.equal(partitionAwaitingRebuild(rows, NaN).awaitingRebuild.length, 0);
+    assert.equal(partitionAwaitingRebuild(rows, null).actionable.length, 2);
+    assert.deepEqual(partitionAwaitingRebuild(rows, rebuiltAt).actionable.map((v) => v.outletId), ['b']);
+  });
+});
+
+describe('outletRegistryAuditExclusionBranch (BRO-4401): the audit counts branch-6 files on their own', () => {
+  const { outletRegistryAuditExclusionBranch } = require(resolve(ROOT, 'scripts/lib/outlet-registry-audit-exclusions.js'));
+
+  test('an unscored file on a BLOCKED domain is branch 3, not 6 — it is not "waiting to score"', () => {
+    assert.equal(outletRegistryAuditExclusionBranch({ outletId: 'tickpick', url: 'https://www.tickpick.com/some-listing' }), 3);
+  });
+
+  test('a plain unscored file is branch 6; a scored one is 0 (in scope)', () => {
+    assert.equal(outletRegistryAuditExclusionBranch({ outletId: 'ourquadcities', url: 'https://www.ourquadcities.com/x' }), 6);
+    assert.equal(outletRegistryAuditExclusionBranch({ outletId: 'ourquadcities', url: 'https://www.ourquadcities.com/x', llmScore: { score: 70 } }), 0);
+    assert.equal(isExcludedFromOutletRegistryAudit({ outletId: 'ourquadcities', url: 'https://www.ourquadcities.com/x' }), true);
   });
 });
