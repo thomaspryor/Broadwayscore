@@ -30,6 +30,18 @@ const bway = {
 };
 const shows = [regional, bway];
 
+test('sibling index carries endYear so the BRO-4404 closed-sibling reroute cap applies (R&J 2013 play vs a 2017 opera review)', () => {
+  const { pickRerouteTarget } = require('./review-guards.js');
+  const rj2013 = { id: 'romeo-and-juliet-2013', title: 'Romeo and Juliet', category: 'broadway', openingDate: '2013-09-19', closingDate: '2013-12-08' };
+  const rj2026 = { id: 'romeo-and-juliet-2026', title: 'Romeo and Juliet', category: 'broadway', openingDate: '2026-03-01', closingDate: null };
+  const idx = buildSiblingIndex([rj2013, rj2026]);
+  const sib = idx.get(rj2026.id).siblings.find((s) => s.id === rj2013.id);
+  assert.equal(sib.endYear, 2013);
+  // 2017 is nearer 2013 than 2026, but the 2013 run closed 4 years earlier.
+  const decision = pickRerouteTarget(2026, idx.get(rj2026.id).siblings, 2017);
+  assert.notEqual(decision.targetShowId, rj2013.id);
+});
+
 test('Tier-1 date reroute: a Broadway-opening-night review filed under the regional sibling reroutes to Broadway', () => {
   const siblingIndex = buildSiblingIndex(shows);
   const decision = classifyMarketRouting({
