@@ -2005,6 +2005,10 @@ function safeWriteReview(filePath, newData, options = {}) {
     }
   }
 
+  // BRO-4403: last stop before disk — no writer can (re)introduce an
+  // HTML-escaped url or a leaked leading <img> in fullText.
+  newData = require('./review-url-entity-decode').sanitizeReviewRecord(newData);
+
   fs.writeFileSync(filePath, JSON.stringify(newData, null, 2) + '\n');
   return { wrote: true, preserved, lockedSkipped, ...(autoFlaggedWrongProduction ? { autoFlaggedWrongProduction: true } : {}) };
 }
@@ -2782,7 +2786,7 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
   }
 
   fs.mkdirSync(path.dirname(dstPath), { recursive: true });
-  const contentToWrite = (newData && typeof newData === 'object') ? newData : srcData;
+  let contentToWrite = (newData && typeof newData === 'object') ? newData : srcData;
   // A file flagged as a duplicate of `dstFile` that is now being renamed ONTO
   // that name (byline identified: outlet--unknown.json → outlet--critic.json)
   // would carry the pointer along and become a duplicate of itself — silently
@@ -2811,6 +2815,7 @@ function safeRenameReview(srcPath, dstPath, options = {}) {
       contentToWrite.showId = dstDirName;
     }
   }
+  contentToWrite = require('./review-url-entity-decode').sanitizeReviewRecord(contentToWrite); // BRO-4403
   fs.writeFileSync(dstPath, JSON.stringify(contentToWrite, null, 2) + '\n');
   fs.unlinkSync(srcPath);
 

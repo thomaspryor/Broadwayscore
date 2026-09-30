@@ -982,7 +982,7 @@ function pageChainOrder(flags) {
 }
 
 async function fetchPage(url, options = {}) {
-  url = unwrapRedirectUrl(url);
+  url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
   const preferPlaywright = options.preferPlaywright || false;
   const isPublicSite = _isPlaywrightFirstDomain(url);
   const isBroadwayWorld = url.includes('broadwayworld.com');
