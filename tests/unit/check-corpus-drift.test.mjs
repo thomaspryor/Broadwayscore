@@ -71,6 +71,9 @@ describe('BRO-3535: gates moved from test.yml', () => {
     'aggregator-archive-integrity', 'critic-outlets', 'autoclear-vs-ensemble',
     'contradicted-flag-basis', 'duplicate-of-cleared-contradiction',
     'url-downgrade', 'orphan-show-ids', 'aggregator-url-latent',
+    // BRO-4419: not moved from test.yml; a NEW digest-routed audit that shares the
+    // same healPathRequired/healExempt contract, so it rides this list.
+    'outlet-identity-hygiene',
   ];
 
   test('every moved audit is present, marked healPathRequired, and either has healExempt or is baseline-diff/scheduled-fix', () => {
