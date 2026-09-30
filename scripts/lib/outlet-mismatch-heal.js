@@ -78,7 +78,7 @@ const ARCHIVE_HOSTS = new Set(['jasonraize.com', 'jasonraize.net']);
 const NOT_A_REVIEW_FLAGS = ['wrongProduction', 'wrongShow', 'isRoundupArticle'];
 const MIN_CRITIC_OUTLET_REVIEWS = 3;
 
-const compactId = (id) => String(id || '').replace(/[^a-z0-9]/gi, '').toLowerCase();
+const compactId = (id) => String(id || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/gi, '').toLowerCase();
 
 let _criticRegistry;
 function criticOutletCount(criticName, outletId) {
@@ -87,7 +87,7 @@ function criticOutletCount(criticName, outletId) {
       _criticRegistry = JSON.parse(require('fs').readFileSync(path.join(__dirname, '../../data/critic-registry.json'), 'utf8')).critics || {};
     } catch { _criticRegistry = {}; }
   }
-  const slug = String(criticName || '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+  const slug = String(criticName || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
   const c = _criticRegistry[slug];
   return (c && c.outletCounts && c.outletCounts[outletId]) || 0;
 }
