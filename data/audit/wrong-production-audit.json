@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-09-30T23:47:16.870Z",
+  "timestamp": "2026-10-01T01:06:07.446Z",
   "stats": {
     "totalReviews": 45443,
-    "alreadyFlagged": 18596,
-    "dateGuardCatches": 250,
+    "alreadyFlagged": 18593,
+    "dateGuardCatches": 257,
     "directorMismatch": 1189,
-    "tvFilmSignals": 1317,
+    "tvFilmSignals": 1318,
     "londonSignals": 1242,
     "offBroadwaySignals": 506,
     "yearMismatch": 101,
-    "noPublishDate": 4046
+    "noPublishDate": 4020
   },
   "findings": [
     {
@@ -1117,7 +1117,7 @@
     {
       "showId": "all-my-sons-west-end-2025",
       "file": "daily-mail--robert-gore-langton.json",
-      "score": 74,
+      "score": 75,
       "publishDate": "2025-11-30",
       "url": null,
       "findings": [
@@ -5899,6 +5899,20 @@
       ]
     },
     {
+      "showId": "chewing-gum-dreams-off-west-end-2026",
+      "file": "all-that-dazzles-uk--sam-admin.json",
+      "score": 96,
+      "publishDate": "2026-09-22",
+      "url": "https://www.allthatdazzles.co.uk/post/review-chewing-gum-dreams-theatre503",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "chicago-1996",
       "file": "curtainup--elyse-sommer.json",
       "score": 92,
@@ -6883,7 +6897,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
-      "score": 80,
+      "score": 81,
       "publishDate": "2026-06-29",
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6897,7 +6911,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--unknown.json",
-      "score": 80,
+      "score": 81,
       "publishDate": null,
       "url": "https://theartsdesk.com/theatre/cyrano-de-bergerac-noel-coward-theatre-review-smouldering-sadness-beneath-verbal-fireworks",
       "findings": [
@@ -6911,7 +6925,7 @@
     {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "2025-10-08",
       "url": "https://www.theguardian.com/global/2025/oct/08/cyrano-de-bergerac-review-swan-theatre-stratford-upon-avon",
       "findings": [
@@ -9096,7 +9110,7 @@
     {
       "showId": "equus-west-end-2026",
       "file": "london-theatre--matt-wolf.json",
-      "score": 84,
+      "score": 83,
       "publishDate": "2026-05-19",
       "url": "https://www.londontheatre.co.uk/reviews/equus-review-menier-chocolate-factory",
       "findings": [
@@ -10256,6 +10270,7 @@
     {
       "showId": "flamenc-oh-off-west-end-2026",
       "file": "london-box-office--eve-jawara.json",
+      "score": 88,
       "publishDate": "2026-10-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/flamenc-oh-peacock-theatre-review",
       "findings": [
@@ -10791,6 +10806,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "gang-of-three-off-west-end-2026",
+      "file": "london-box-office--stuart-king.json",
+      "publishDate": "2025-05-08",
+      "url": "https://www.londonboxoffice.co.uk/news/post/gang-of-three-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 511d before show (2025-05-08 vs 2026-10-01)"
         }
       ]
     },
@@ -15635,7 +15663,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "artsdesk--gary-naylor.json",
-      "score": 80,
+      "score": 81,
       "publishDate": null,
       "url": "http://www.theartsdesk.com/theatre/woods-bridge-theatre-review-grimm-sometimes-grim-always-fast-and-furious",
       "findings": [
@@ -15761,7 +15789,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "i-paper--fiona-mountford.json",
-      "score": 82,
+      "score": 80,
       "publishDate": "2025-12-12",
       "url": "https://inews.co.uk/culture/arts/sondheim-into-woods-stylish-stuffed-with-talent-4099283?srsltid=AfmBOopZW29rEZK9Fg8EKA2nVqf0gU1fVIrWNIjC9D0Sf-uihs3xV8FN",
       "findings": [
@@ -15924,7 +15952,7 @@
     {
       "showId": "into-the-woods-west-end-2025",
       "file": "plays-international--jeremy-malies.json",
-      "score": 80,
+      "score": 77,
       "publishDate": "2025-12-15",
       "url": "https://playsinternational.org.uk/into-the-woods-bridge-theatre/",
       "findings": [
@@ -20290,6 +20318,71 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"jerry zaks\" from mrs-doubtfire-2021"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "express-uk--stefan-kyriazis.json",
+      "publishDate": "2025-02-20",
+      "url": "https://www.express.co.uk/entertainment/theatre/2016861/tom-hiddleston-hayley-atwell-Much-Ado-Shakespeare-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "independent--alice-saville.json",
+      "publishDate": "2025-02-20",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/much-ado-about-nothing-tom-hiddleston-hayley-atwell-play-b2701440.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "standard--nick-curtis.json",
+      "publishDate": "2025-02-19",
+      "url": "https://www.standard.co.uk/culture/theatre/much-ado-about-nothing-tom-hiddleston-hayley-atwell-b1212063.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 619d before show (2025-02-19 vs 2026-10-31)"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "telegraph--dominic-cavendish.json",
+      "publishDate": "2025-02-20",
+      "url": "https://www.telegraph.co.uk/theatre/what-to-see/much-ado-about-nothing-review-tom-hiddleston/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
+        }
+      ]
+    },
+    {
+      "showId": "much-ado-about-nothing-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": "2025-02-20",
+      "url": "https://www.timeout.com/london/theatre/much-ado-about-nothing-49-review",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 618d before show (2025-02-20 vs 2026-10-31)"
         }
       ]
     },
@@ -33194,6 +33287,19 @@
       ]
     },
     {
+      "showId": "the-sound-of-music-2027",
+      "file": "the-suburban--alexandra-cohen.json",
+      "publishDate": "2025-11-30",
+      "url": "https://www.thesuburban.com/columnists/mike_cohen_cohen_chatter/the-hills-are-alive-at-mirvish-with-the-sound-of-music/article_72e9ab9f-f497-44fc-b848-c43871574f15.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 478d before show (2025-11-30 vs 2027-03-23)"
+        }
+      ]
+    },
+    {
       "showId": "the-standard-of-living-west-end-2026",
       "file": "london-unattached--dr-adrian-york.json",
       "score": 93,
@@ -37350,7 +37456,7 @@
     {
       "showId": "a-month-in-the-country-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 76,
+      "score": 75,
       "publishDate": "2026-09-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/a-month-in-the-country-donmar-warehouse-review",
       "findings": [
@@ -38794,7 +38900,7 @@
     {
       "showId": "are-you-watching-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-06-05",
       "url": "https://www.londonboxoffice.co.uk/news/post/are-you-watching-royal-court-review",
       "findings": [
@@ -40133,7 +40239,7 @@
     {
       "showId": "care-west-end-2026",
       "file": "times-uk--clive-davis.json",
-      "score": 80,
+      "score": 79,
       "publishDate": null,
       "url": "https://www.thetimes.com/culture/theatre-dance/article/care-review-play-young-vic-dementia-drama-quietly-heartbreaking-wwhzbd0bl",
       "findings": [
@@ -41784,7 +41890,7 @@
     {
       "showId": "death-note-the-musical-west-end-2026",
       "file": "plays-international--maryam-philpott.json",
-      "score": 75,
+      "score": 76,
       "publishDate": "2026-08-13",
       "url": "https://playsinternational.org.uk/death-note-the-musical-barbican/",
       "findings": [
@@ -43105,19 +43211,6 @@
     },
     {
       "showId": "flamenc-oh-off-west-end-2026",
-      "file": "herald--by-evie-glen.json",
-      "publishDate": "2026-08-10",
-      "url": "https://www.heraldscotland.com/life_style/26448685.fringe-flamenc-oh-assembly-rooms-music-hall-30-august/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 51d before show (2026-08-10 vs 2026-09-30)"
-        }
-      ]
-    },
-    {
-      "showId": "flamenc-oh-off-west-end-2026",
       "file": "theatreinedinburgh--chris-omaweng.json",
       "score": 89,
       "publishDate": "2026-08-25",
@@ -43800,7 +43893,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
-      "score": 79,
+      "score": 78,
       "publishDate": "2026-09-18",
       "url": "https://www.londonlivinglarge.com/2026/09/golden-boy-almeida-theatre-sep-8-oct-31.html",
       "findings": [
@@ -48252,7 +48345,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 77,
+      "score": 76,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -48751,7 +48844,7 @@
     {
       "showId": "mass-west-end-2026",
       "file": "artsdesk--demetrios-matheou.json",
-      "score": 81,
+      "score": 80,
       "publishDate": null,
       "url": "http://theartsdesk.com/theatre/mass-donmar-warehouse-review-purgatorial-cat-and-mouse",
       "findings": [
@@ -57587,6 +57680,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "the-sound-of-music-2027",
+      "file": "the-chronicle--howard-gollopnthe-chronicle-telegram.json",
+      "publishDate": "2026-04-24",
+      "url": "https://chroniclet.com/news/464529/cleveland-stages-alive-with-family-musicals-sound-of-music-talking-about-jamie/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 333d before show (2026-04-24 vs 2027-03-23)"
         }
       ]
     },

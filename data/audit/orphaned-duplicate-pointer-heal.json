@@ -1,7 +1,7 @@
 {
-  "generated": "2026-09-30T23:43:59.409Z",
+  "generated": "2026-10-01T01:01:42.071Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 18,
+  "count": 20,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -29,6 +29,13 @@
       "loserFile": "nytimes--elisabeth-vincentelli.json",
       "targetFile": "nytimes--ben-brantley.json",
       "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after nytimes--elisabeth-vincentelli.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "loserFile": "west-end-best-friend--nick-wayne.json",
+      "targetFile": "west-end-best-friend--cara-brazier.json",
+      "reason": "orphaned-duplicate-heal: west-end-best-friend--cara-brazier.json was flagged invalid after west-end-best-friend--nick-wayne.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -128,6 +135,13 @@
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "heathers-the-musical-off-west-end-2026",
+      "loserFile": "west-end-best-friend--nick-wayne.json",
+      "targetFile": "west-end-best-friend--cara-brazier.json",
+      "reason": "orphaned-duplicate-heal: west-end-best-friend--cara-brazier.json was flagged invalid after west-end-best-friend--nick-wayne.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
