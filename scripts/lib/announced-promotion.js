@@ -134,7 +134,24 @@ function blockAnnouncedCatchUp(show, announcedDecision, pressNight, now = new Da
   return null;
 }
 
+/**
+ * A type for a row that is (or is becoming) listed with a status other than
+ * 'announced' but has none (validate-market-expansion.js requires one;
+ * Check 2e and a dated-listing backfill can move a stub out of 'announced'
+ * untyped: 46 rows on 2026-10-01). Only when the title says so
+ * (knownShowType): guessing 'play' would mistype circus, dance and regional
+ * musicals ("The Outsiders") permanently and silence the validator, which is
+ * the only thing pointing at them.
+ * @returns {string|null} the type to set, or null
+ */
+function typeForListedShow(show, finalStatus) {
+  if (!show || show.type || !finalStatus || finalStatus === 'announced') return null;
+  const { knownShowType } = require('./title-says-musical');
+  return knownShowType(show.title, null);
+}
+
 module.exports = {
+  typeForListedShow,
   decideAnnouncedPromotion,
   blockAnnouncedCatchUp,
   ANNOUNCED_PROMOTE_MAX_STALE_DAYS,

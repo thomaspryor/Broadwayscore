@@ -133,7 +133,7 @@ const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { loadStaging, updateStaging, mergeCandidates, writeStagingCandidates, STAGING_PATH } = require('./lib/owe-venue-staging');
 const { resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
 const { stripHtml } = require('./lib/article-extractor');
-const { showTypeFor } = require('./lib/title-says-musical');
+const { showTypeFor, knownShowType } = require('./lib/title-says-musical');
 const { decideVenueListingPromotion } = require('./lib/ob-cross-validation');
 const { OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
 
@@ -444,7 +444,7 @@ function findSameHouseTokenMatch(candidate, pool) {
  * @param {object} candidate  a dated-listing candidate
  * @param {{previewsStartDate?, openingDate?, closingDate?, title?}} row
  * @param {object} [venueVocabulary]
- * @returns {{previewsStartDate?: string, closingDate?: string, title?: string}|null}
+ * @returns {{previewsStartDate?: string, closingDate?: string, title?: string, type?: string}|null}
  */
 function datedBackfillFor(candidate, row, venueVocabulary) {
   if (!isDatedListingCandidate(candidate) || !row || rowWindow(row)) return null;
@@ -465,6 +465,13 @@ function datedBackfillFor(candidate, row, venueVocabulary) {
   if (run.previewsStartDate && row.previewsStartDate == null) patch.previewsStartDate = run.previewsStartDate;
   if (run.closingDate && row.closingDate == null) patch.closingDate = run.closingDate;
   if (Object.keys(patch).length === 0) return null;
+  // The dated row will leave 'announced' (update-show-status Check 2e), where
+  // a type is required: take it from the venue's genre label when that label
+  // says what the show is (never a guess).
+  if (row.type == null) {
+    const t = knownShowType(candidate.title, candidate.listingGenre);
+    if (t) patch.type = t;
+  }
   const ct = tokensWithoutYears(candidate.title);
   const rt = tokensWithoutYears(row.title);
   if (rt.size > 0 && ct.size > rt.size && [...rt].every(t => ct.has(t)) && !/[:(]|\s[-–—]\s/.test(candidate.title)) {
@@ -1304,6 +1311,7 @@ async function main(argv = process.argv.slice(2), io = {}) {
       }
       if (Object.keys(set).length === 0) continue;
       if (b.patch.title) { row.title = b.patch.title; set.title = b.patch.title; }
+      if (b.patch.type && row.type == null) { row.type = b.patch.type; set.type = b.patch.type; }
       applied.push({ ...b, set, oldTitle });
     }
   }
