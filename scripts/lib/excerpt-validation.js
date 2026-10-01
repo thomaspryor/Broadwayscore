@@ -202,11 +202,15 @@ const NAME_SCAN_FIELDS = [
 // carry ("Puppet Show", "Panto Cast"). Never a person's name on their own, so
 // they are never kept as a former-cast token: a bare "show" token matched an
 // ordinary pull quote on the-enormous-crocodile-west-end-2026 ("...see this
-// brilliant show!", BRO-4492).
+// brilliant show!", BRO-4492). "tour" is left out on purpose: it is a real
+// surname in the catalog (Frances de la Tour). Known limit: any other ordinary
+// capitalized word pair near a role name ("Brilliant Family") still splits the
+// same way; only the theatre vocabulary that recurs in reviews is filtered.
 const GENERIC_THEATRE_TOKENS = new Set([
   'show', 'shows', 'musical', 'musicals', 'play', 'plays', 'production', 'productions',
-  'revival', 'cast', 'company', 'ensemble', 'stage', 'tour', 'panto', 'pantomime',
-  'opera', 'ballet', 'puppet', 'puppets', 'audience', 'performance', 'performances',
+  'revival', 'revue', 'drama', 'concert', 'spectacle', 'cast', 'company', 'ensemble',
+  'stage', 'panto', 'pantomime', 'opera', 'ballet', 'puppet', 'puppets', 'audience',
+  'performance', 'performances',
 ]);
 
 // How close a current-show role name must sit to a name candidate (either
