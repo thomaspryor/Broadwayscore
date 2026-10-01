@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
   "openingDate": "2026-09-30",
-  "detectedAt": "2026-10-01T03:01:49.323Z",
+  "detectedAt": "2026-10-01T04:27:22.322Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -21,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "theatremonkey--unknown.json",
-      "outletId": "theatremonkey",
-      "criticName": "Unknown",
-      "url": "https://www.theatremonkey.com/show/whos-afraid-of-virginia-woolf/",
-      "fullTextLen": 1968,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
