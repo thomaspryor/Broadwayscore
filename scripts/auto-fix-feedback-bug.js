@@ -30,6 +30,7 @@ const audienceBuzzWriteGuard = _require('./lib/audience-buzz-write-guard.js');
 const { hasHelpFlag } = _require('./lib/cli-help.js');
 const { foldDiacritics } = _require('./lib/title-match.js');
 const { syncRevivalTags } = _require('./lib/revival-tags.js');
+const { loadIssueDiagnosis } = _require('./lib/feedback-submitter-store.js');
 const { pickEditableFields, AUTO_FIX_EDITABLE_FIELDS } = _require('./lib/feedback-pipeline-fields.js');
 const { normalizeDiagnosisShowIds, summarizeShowFixOutcomes } = _require('./lib/feedback-multishow.js');
 const { readerFromDiagnosis, sendReaderFixOwnerEmail } = _require('./lib/owner-fix-email.js');
@@ -73,14 +74,10 @@ function writeComment(md) {
   fs.writeFileSync(path.join(ROOT, '.github-comment.md'), md);
 }
 
+// DIAGNOSIS_JSON plus the reader's name, email and message from the private
+// store (BRO-4453: new issues no longer carry them; old ones still do).
 function parseDiagnosis(issueBody) {
-  const match = issueBody.match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
-  if (!match) return null;
-  try {
-    return JSON.parse(match[1]);
-  } catch {
-    return null;
-  }
+  return loadIssueDiagnosis(issueBody);
 }
 
 function loadJsonFile(relPath) {

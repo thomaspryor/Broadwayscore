@@ -223,6 +223,9 @@ data/deleted-shows.json
 # Core data (§11) — same repo as shows.json, synced by push-core-data's
 # CORE_FILES, never committed here. Template: tests/fixtures/critic-slug-aliases.seed.json.
 data/critic-slug-aliases.json
+# Feedback reader contact details (BRO-4453): name/email/message keyed by
+# submission id. Core data (§11), pushed by push-core-data's CORE_FILES.
+data/feedback-submitters.json
 
 # Theatr rotated refresh token (written by scrape-theatr-audience.js) — a live
 # credential that must never be committed. The BroadwayScorecard/ line below

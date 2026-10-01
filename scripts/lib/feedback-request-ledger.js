@@ -38,7 +38,7 @@ function entryKey(action, submissionId) {
  * is the difference between "someone fixed my thing" and "this class of request
  * fixes itself from now on" — the owner asked to be told which one happened.
  */
-function buildEntry(action, { submissionId, issueNumber, requestedAt, message, show }) {
+function buildEntry(action, { submissionId, issueNumber, requestedAt, show }) {
   return {
     key: entryKey(action, submissionId),
     kind: action.kind,
@@ -58,13 +58,12 @@ function buildEntry(action, { submissionId, issueNumber, requestedAt, message, s
     // ceremony...) — never free text, so re-checking never has to parse prose.
     contentErrorType: action.contentErrorType || null,
     expected: action.expected || null,
-    // Capped. This file is committed to a PUBLIC repo, and a submitter can type
-    // anything into a free-text box. The same message is already posted verbatim
-    // into a public GitHub issue by the issue-creation step, so the incremental
-    // exposure here is nil — but an unbounded free-text field copied into git
-    // history is worth bounding regardless (ship-check, 2026-08-05). Name and
-    // email are deliberately never stored here at all.
-    requestedMessage: message ? String(message).slice(0, MAX_STORED_MESSAGE) : null,
+    // Never stored (BRO-4453). This file is committed to a PUBLIC repo, and
+    // the reader's own words are personal: they live in the private store
+    // (scripts/lib/feedback-submitter-store.js) under submissionId. Entries
+    // written before 2026-10-01 may still carry a capped copy; readers fall
+    // back to "not shown" when it is null. Name and email were never stored.
+    requestedMessage: null,
     requestedAt: requestedAt || new Date().toISOString(),
     status: 'open',
     satisfiedAt: null,

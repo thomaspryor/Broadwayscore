@@ -54,6 +54,25 @@ jobs:
         run: |
           node scripts/process-feedback.js
 
+      # BRO-4453: reader name/email/message now live ONLY in the private
+      # core-data repo (data/feedback-submitters.json, keyed by submission id),
+      # never in the public issues this job opens. Push the store BEFORE the
+      # issue step below dispatches auto-fix: auto-fix-feedback-bug.yml and
+      # execute-approved-fix.yml read it from their own core-data checkout at
+      # job start, so it has to be on the private repo first. A second push
+      # near the end of the job retries if this one fails. Both run only when
+      # process-feedback.js actually added a reader to the store.
+      - name: Push reader details to private core data
+        id: store_push
+        if: always() && steps.process.outputs.submitter_store_changed == 'true'
+        # A failure here must not stop issue creation; the retry push below
+        # and the loud check after it cover it.
+        continue-on-error: true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: feedback submitter store (process-feedback)'
+
       # Step order is deliberate: issue creation (cheap API calls) runs BEFORE the
       # tracking commit (push-with-retry can burn 15 min under contention). The old
       # order lost a diagnosed bug when the job timed out mid-push (2026-07-07,
@@ -62,14 +81,21 @@ jobs:
       # also persisted in data/audit/pending-bug-diagnoses.json (drained here,
       # committed below) so even a cancellation during THIS step is recoverable
       # on the next run via has_pending_diagnoses.
+      # !cancelled() rather than success(): a failed store push above must not
+      # skip issue creation (the reader's report would otherwise sit unissued).
       - name: Create Bug Diagnosis Issues
-        if: success() && (steps.process.outputs.has_submissions == 'true' || steps.process.outputs.has_pending_diagnoses == 'true')
+        if: ${{ !cancelled() && steps.process.outcome == 'success' && (steps.process.outputs.has_submissions == 'true' || steps.process.outputs.has_pending_diagnoses == 'true') }}
         uses: actions/github-script@v7
+        env:
+          STORE_PUSH_OUTCOME: ${{ steps.store_push.outcome }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const PENDING_PATH = 'data/audit/pending-bug-diagnoses.json';
+            if (process.env.STORE_PUSH_OUTCOME === 'failure') {
+              core.warning('Reader store push failed; auto-fix runs dispatched now will not find reader details until the retry push lands (thank-you emails may be skipped).');
+            }
             const RUN_REPORT_PATH = 'data/audit/feedback-run-report.json';
 
             // --- Owner run-report enrichment (2026-08-05, GH #543) ---------
@@ -89,6 +115,14 @@ jobs:
             // that actually ran — a quieter replay of the bug this report exists
             // to end. See scripts/lib/feedback-run-report.js.
             const runReportLib = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-run-report.js`);
+            // BRO-4453: this repo is PUBLIC. Issue titles, bodies and comments
+            // are built by the lib (no reader name, email or message, plus a
+            // scrub of LLM text); the reader's details come from the private
+            // store only for dedup and scrubbing.
+            const issueText = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-issue-body.js`);
+            const submitterStore = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-submitter-store.js`);
+            const readerStore = submitterStore.loadStore();
+            const readerFor = (submission) => submitterStore.lookupSubmitter(readerStore, submitterStore.submissionKey(submission)) || {};
 
             let runReport = null;
             try {
@@ -188,33 +222,22 @@ jobs:
                 const dispatchable = contentActions.filter((a) => a && a.workflow);
                 const willAutoDispatch = isContentRequest && dispatchable.length > 0;
 
+                const reader = readerFor(submission);
                 const issue = await github.rest.issues.create({
                   owner: context.repo.owner,
                   repo: context.repo.repo,
-                  title: willAutoDispatch
-                    ? `Content request auto-dispatched: ${(item.summary || 'no summary').substring(0, 60)}`
-                    : isContentRequest
-                    ? `Content request needs review: ${(item.summary || 'no summary').substring(0, 60)}`
-                    : `Bug report needs manual review (auto-diagnosis failed): ${(item.summary || 'no summary').substring(0, 60)}`,
-                  body: [
+                  title: issueText.buildIssueTitle(
                     willAutoDispatch
-                      ? `Content-addition request from user feedback — routed to ${dispatchable.length} workflow dispatch(es) below (task #722). No manual action needed unless a dispatch fails.`
+                      ? 'Content request auto-dispatched: '
                       : isContentRequest
-                      ? `Content-addition request from user feedback — needs data work (add show/reviews), not a code fix.`
-                      : `Auto-diagnosis failed for this feedback submission — review manually.`,
-                    '',
-                    `**From:** ${submission.name || 'Anonymous'} | **Show:** ${submission.show || 'N/A'} | **Priority:** ${item.priority || 'unknown'}`,
-                    '',
-                    `**Original message:**`,
-                    `> ${(submission.message || '(no message)').replace(/\n/g, '\n> ')}`,
-                    ...(contentActions.length
-                      ? ['', '**Routing:**', ...contentActions.map((a) =>
-                          a.workflow
-                            ? `- \`${a.kind}\` → \`${a.workflow}\` (${JSON.stringify(a.inputs || {})})`
-                            : `- \`${a.kind}\` — unroutable: ${a.reason || 'no reason given'}`
-                        )]
-                      : []),
-                  ].join('\n'),
+                      ? 'Content request needs review: '
+                      : 'Bug report needs manual review (auto-diagnosis failed): ',
+                    item.summary,
+                    reader
+                  ),
+                  body: issueText.buildNeedsReviewBody({
+                    item, submission, contentActions, dispatchableCount: dispatchable.length, isContentRequest, reader,
+                  }),
                   labels: willAutoDispatch ? ['feedback-digest', 'auto-dispatched'] : ['feedback-digest', 'needs-review'],
                 });
                 console.log(
@@ -278,12 +301,6 @@ jobs:
             // create a new issue or re-ping the owner. See scripts/lib/feedback-dedup.js.
             const { findDuplicateOpenBug } = require(`${process.env.GITHUB_WORKSPACE}/scripts/lib/feedback-dedup.js`);
 
-            function parseDiagnosisJson(issueBody) {
-              const m = (issueBody || '').match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
-              if (!m) return null;
-              try { return JSON.parse(m[1]); } catch { return null; }
-            }
-
             // Fetch all OPEN bug-diagnosis issues and extract their embedded diagnosis.
             const openIssues = await github.paginate(github.rest.issues.listForRepo, {
               owner: context.repo.owner,
@@ -293,7 +310,9 @@ jobs:
               per_page: 100,
             });
             const openBugs = openIssues
-              .map(iss => ({ number: iss.number, diagnosis: parseDiagnosisJson(iss.body) }))
+              // Hydrated from the private store so dedup still compares the
+              // readers' original messages.
+              .map(iss => ({ number: iss.number, diagnosis: submitterStore.loadIssueDiagnosis(iss.body, { store: readerStore }) }))
               .filter(b => b.diagnosis);
             console.log(`Found ${openBugs.length} open bug-diagnosis issue(s) to dedup against`);
 
@@ -326,21 +345,16 @@ jobs:
                 const showIdSet = new Set(normalizeDiagnosisShowIds(diagnosis));
                 if (resolvedShow?.id) showIdSet.add(resolvedShow.id);
                 const showIds = [...showIdSet];
-                const diagPayload = {
-                  ...diagnosis,
-                  showId: resolvedShow?.id || showIds[0] || null,
-                  showSlug: resolvedShow?.slug || null,
-                  showIds,
-                  submitterName: submission.name || null,
-                  submitterEmail: submission.email || null,
-                  submitterShow: submission.show || null,
-                  originalMessage: submission.message || null,
-                };
+                // Public payload: submissionId instead of the reader's details.
+                const diagPayload = issueText.buildPublicDiagnosisPayload({ diagnosis, submission, resolvedShow, showIds });
+                const reader = readerFor(submission);
+                // Dedup-only copy with the reader's message (never published).
+                const dedupDiag = submitterStore.hydrateDiagnosis(diagPayload, readerStore);
 
                 // Skip if this bug duplicates an already-open issue — comment on
                 // the existing one (no new issue, no new auto-fix dispatch, no
                 // new owner email).
-                const dup = findDuplicateOpenBug(diagPayload, openBugs);
+                const dup = findDuplicateOpenBug(dedupDiag, openBugs);
                 if (dup) {
                   console.log(`Duplicate of open issue #${dup.number} (${dup.reason}) — commenting, not creating new`);
                   let commented = false;
@@ -349,13 +363,7 @@ jobs:
                       owner: context.repo.owner,
                       repo: context.repo.repo,
                       issue_number: dup.number,
-                      body: [
-                        `Another user reported this${submission.name ? ` (${submission.name})` : ''} on ${new Date().toISOString().split('T')[0]}:`,
-                        '',
-                        `> ${(submission.message || '(no message)').replace(/\n/g, '\n> ')}`,
-                        '',
-                        `_Matched as a duplicate (${dup.reason}); folded in here instead of opening a new issue._`,
-                      ].join('\n'),
+                      body: issueText.buildDuplicateComment({ submission, reason: dup.reason }),
                     });
                     commented = true;
                   } catch (err) {
@@ -369,32 +377,9 @@ jobs:
                   console.log('  Comment failed — creating a normal issue so the report is not lost');
                 }
 
-                const body = [
-                  `## Bug Report: ${item.summary}`,
-                  `**From:** ${submission.name || 'Anonymous'} | **Show:** ${submission.show || 'N/A'} | **Priority:** ${item.priority}`,
-                  `**Original message:** ${submission.message}`,
-                  '',
-                  `## What's Happening`,
-                  diagnosis.whatsHappening,
-                  '',
-                  `## What I Found`,
-                  ...diagnosis.findings.map(f => `- ${f}`),
-                  '',
-                  `## Proposed Fix`,
-                  diagnosis.proposedFix,
-                  `**Confidence:** ${diagnosis.confidence} | **Type:** ${diagnosis.fixType}`,
-                  `**Files:** ${diagnosis.relevantFiles.join(', ')}`,
-                  ...(showIds.length > 1 ? [`**Shows referenced:** ${showIds.join(', ')} (auto-fix will attempt all of them)`] : []),
-                  '',
-                  '---',
-                  `*Auto-diagnosed by feedback pipeline*`,
-                  '',
-                  `<!-- DIAGNOSIS_JSON`,
-                  JSON.stringify(diagPayload),
-                  `DIAGNOSIS_JSON -->`,
-                ].join('\n');
+                const body = issueText.buildBugDiagnosisBody({ item, submission, diagnosis, payload: diagPayload, showIds, reader });
 
-                const title = `Bug Diagnosis: ${item.summary.substring(0, 60)}`;
+                const title = issueText.buildIssueTitle('Bug Diagnosis: ', item.summary, reader);
                 const labels = ['bug-diagnosis'];
                 if (item.priority) labels.push(`${item.priority.toLowerCase()}-priority`);
 
@@ -413,7 +398,7 @@ jobs:
 
                 // Make this new issue dedup-able for the rest of this run (two
                 // near-identical reports in one batch should collapse too).
-                openBugs.push({ number: issue.data.number, diagnosis: diagPayload });
+                openBugs.push({ number: issue.data.number, diagnosis: dedupDiag });
 
                 // Dispatch auto-fix workflow (GITHUB_TOKEN events don't trigger issues.opened)
                 try {
@@ -533,6 +518,29 @@ jobs:
       # above — "without it every run looks like a brand-new incident").
       # Job's 30min timeout has ample headroom for 600s (no other named
       # step budgets in this job), so no timeout-minutes change needed.
+      # Retry of the reader-store push above (BRO-4453). A no-op when that one
+      # landed (push-core-data finds nothing new to commit); when it failed,
+      # this is the last chance before the submissions are marked processed
+      # below, after which the reader's details would exist nowhere.
+      - name: Push reader details to private core data (retry)
+        id: store_push_retry
+        if: always() && steps.process.outputs.submitter_store_changed == 'true'
+        continue-on-error: true
+        uses: ./.github/actions/push-core-data
+        with:
+          token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+          message: 'data: feedback submitter store (process-feedback retry)'
+
+      # Both pushes failed: the reader's name/email/message exist only on this
+      # runner, and the public files below are redacted. Fail the job (the
+      # failure notification emails the owner) instead of losing them quietly.
+      # The store file is printed nowhere: Actions logs are public.
+      - name: Fail loudly if reader details never reached the private repo
+        if: always() && steps.store_push_retry.outcome == 'failure'
+        run: |
+          echo "::error::Reader contact details for this run's feedback could not be pushed to the private core-data repo (both attempts failed). Thank-you and owner reader-fix emails for these reports will have no reader details."
+          exit 1
+
       - name: Commit tracking file
         if: always()
         env:

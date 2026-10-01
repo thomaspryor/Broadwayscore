@@ -33,6 +33,7 @@ const { detectSystematicIssue } = require('./lib/systematic-fix-detection.js');
 const { buildEscalationCard } = require('./lib/plan-refusal-escalation.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { buildEntry, mergeEntries } = require('./lib/feedback-request-ledger.js');
+const { loadIssueDiagnosis } = require('./lib/feedback-submitter-store.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -40,10 +41,10 @@ const ROOT = path.join(__dirname, '..');
 
 // --- Helpers ---
 
+// DIAGNOSIS_JSON plus the reader's name, email and message from the private
+// store (BRO-4453: new issues no longer carry them; old ones still do).
 function parseDiagnosis(issueBody) {
-  const match = issueBody.match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
-  if (!match) return null;
-  try { return JSON.parse(match[1]); } catch { return null; }
+  return loadIssueDiagnosis(issueBody);
 }
 
 function loadJsonSafe(relPath) {

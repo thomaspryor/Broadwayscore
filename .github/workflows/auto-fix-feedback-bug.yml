@@ -254,12 +254,13 @@ jobs:
           const action = process.env.FIX_ACTION;
           const resendKey = process.env.RESEND_API_KEY;
 
-          // Extract submitter info from DIAGNOSIS_JSON
-          const match = body.match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
-          if (!match) { console.log('No DIAGNOSIS_JSON found'); process.exit(0); }
-
-          let diag;
-          try { diag = JSON.parse(match[1]); } catch { console.log('Invalid JSON'); process.exit(0); }
+          // DIAGNOSIS_JSON plus the reader's details from the private store
+          // (BRO-4453: new issues carry only a submissionId; data/ holds the
+          // core-data checkout from the start of this job).
+          const { loadIssueDiagnosis } = require('./scripts/lib/feedback-submitter-store.js');
+          const { maskEmail } = require('./scripts/lib/pii-scan.js');
+          const diag = loadIssueDiagnosis(body);
+          if (!diag) { console.log('No DIAGNOSIS_JSON found'); process.exit(0); }
 
           const email = diag.submitterEmail;
           if (!email || !resendKey) { console.log('No email or Resend key'); process.exit(0); }
@@ -271,7 +272,7 @@ jobs:
 
           const data = JSON.stringify({
             from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
-            // `updates@` sends but never receives — replies to this thank-you
+            // updates@ sends but never receives: replies to this thank-you
             // would bounce without a Reply-To that reaches the owner's inbox.
             reply_to: buildReplyToAddress(),
             to: [email],
@@ -291,7 +292,7 @@ jobs:
             res.on('data', c => body += c);
             res.on('end', () => {
               if (res.statusCode >= 200 && res.statusCode < 300) {
-                console.log('Sent ' + type + ' thank-you to ' + email);
+                console.log('Sent ' + type + ' thank-you to ' + maskEmail(email));
               } else {
                 console.log('Email failed: ' + res.statusCode + ' ' + body.slice(0, 200));
               }

@@ -48,6 +48,7 @@ const { unretireId } = require('./lib/retired-show-ids.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
 const { shouldEmailOwnerOnFix, readerFromDiagnosis, sendReaderFixOwnerEmail } = require('./lib/owner-fix-email.js');
+const { loadIssueDiagnosis } = require('./lib/feedback-submitter-store.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -699,9 +700,10 @@ async function main() {
   }
 }
 
-// Read the GitHub issue's embedded DIAGNOSIS_JSON (reader name, email, show,
-// original message). The persisted plan file is PII-redacted, so this is the
-// only source of them at execute time. "504-systematic" style ids resolve to
+// Read the GitHub issue's embedded DIAGNOSIS_JSON, with the reader's name,
+// email and message filled from the private store
+// (data/feedback-submitters.json). The persisted plan file is PII-redacted,
+// so this is the only source of them at execute time. "504-systematic" style ids resolve to
 // their parent issue via parseInt. Returns null when unavailable.
 async function fetchDiagnosisFromIssue(issueNumber) {
   const ghIssue = parseInt(issueNumber);
@@ -728,10 +730,9 @@ async function fetchDiagnosisFromIssue(issueNumber) {
   if (!body) return null;
 
   try {
-    const issueBody = JSON.parse(body).body || '';
-    const m = issueBody.match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
-    if (!m) return null;
-    return JSON.parse(m[1]);
+    // New issues carry only a submissionId; the reader's details come from
+    // the private store (BRO-4453). Old issues still carry them inline.
+    return loadIssueDiagnosis(JSON.parse(body).body || '');
   } catch {
     return null;
   }

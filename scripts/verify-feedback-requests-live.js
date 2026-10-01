@@ -301,7 +301,7 @@ function buildLiveAlert(nowLive) {
     for (const rev of named) {
       if (rev.url) lines.push(`  ${rev.text} — ${rev.url}`);
     }
-    lines.push(`  They asked: "${r.entry.requestedMessage || '(no message)'}"`);
+    if (r.entry.requestedMessage) lines.push(`  They asked: "${r.entry.requestedMessage}"`);
     lines.push(`  ${r.entry.systematicFix?.note || 'One-off — no standing route for this ask shape yet.'}`);
     lines.push(`  Asked ${Math.round(daysSince(r.entry.requestedAt) * 10) / 10} day(s) ago${r.entry.issueNumber ? ` — https://github.com/${REPO}/issues/${r.entry.issueNumber}` : ''}`);
     return lines.join('\n');
@@ -367,7 +367,8 @@ function buildStuckAlert(stale, runsByWorkflow) {
     const whatHappened = e.kind === 'content-fix' ? describeContentFixClaim(e) : describeRun(picked);
     const lines = [
       `"${e.title || e.showId}" was asked for ${days} day(s) ago and is still not on the site. ${whatHappened}`,
-      `  They asked: "${e.requestedMessage || '(no message)'}"`,
+      // Older entries only: new ones keep the reader's words private (BRO-4453).
+      ...(e.requestedMessage ? [`  They asked: "${e.requestedMessage}"`] : []),
     ];
     if (picked?.run?.url) lines.push(`  That run: ${picked.run.url}`);
     if (issueUrl) lines.push(`  Tracking issue: ${issueUrl}`);

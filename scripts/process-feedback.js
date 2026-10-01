@@ -24,6 +24,8 @@ const { buildEntry: buildLedgerEntry, mergeEntries: mergeLedgerEntries } = requi
 const { listShowIdsWithImages } = require('./lib/show-image-coverage.js');
 const { mergeCorrectionSubmissions } = require('./lib/feedback-digest-correction-merge.js');
 const { shouldSendThankYouNow } = require('./lib/feedback-thank-you-gate.js');
+const { maskEmail, redactEmails } = require('./lib/pii-scan.js');
+const submitterStore = require('./lib/feedback-submitter-store.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -219,10 +221,10 @@ async function sendThankYouEmail(email, name, category, showName) {
     }, {
       'Authorization': `Bearer ${resendKey}`,
     });
-    console.log(`  Sent ${emailType} thank-you to ${email}`);
+    console.log(`  Sent ${emailType} thank-you to ${maskEmail(email)}`);
     return true;
   } catch (err) {
-    console.error(`  Failed to send email to ${email}: ${err.message}`);
+    console.error(`  Failed to send email to ${maskEmail(email)}: ${err.message}`);
     return false;
   }
 }
@@ -255,12 +257,14 @@ function generateSummary(submissions, categorized, bugDiagnoses = [], spamFlagge
     summary.push('_Formshield flagged these as spam. Real partnership pitches, follow-ups, and messages containing URLs or phone numbers are routinely false-flagged. Open each in the Formspree **Spam** tab and click "Not Spam" to rescue + train the filter._');
     summary.push('');
     spamFlagged.forEach((sub) => {
-      summary.push(`### ${sub.name || 'Anonymous'}${sub.email ? ` — ${sub.email}` : ''}`);
+      // No name, email or message: this digest becomes a PUBLIC issue and is
+      // printed to the public Actions log (BRO-4453). The submitted time is
+      // enough to find it in the Formspree Spam tab.
+      summary.push(`### Submitted ${sub._date || sub.createdAt || 'unknown'}`);
       summary.push('');
       summary.push(`- **Category**: ${sub.category || 'n/a'}`);
       if (sub.show) summary.push(`- **Show**: ${sub.show}`);
-      summary.push(`- **Submitted**: ${sub._date || sub.createdAt || 'unknown'}`);
-      summary.push(`- **Message**: ${sub.message || '(empty)'}`);
+      summary.push(`- **Message length**: ${(sub.message || '').length} characters`);
       summary.push('');
     });
     summary.push('---');
@@ -269,7 +273,7 @@ function generateSummary(submissions, categorized, bugDiagnoses = [], spamFlagge
 
   if (submissions.length === 0) {
     summary.push('*No new inbox submissions this period.*');
-    return summary.join('\n');
+    return redactEmails(summary.join('\n'));
   }
 
   // Group by category
@@ -291,13 +295,12 @@ function generateSummary(submissions, categorized, bugDiagnoses = [], spamFlagge
     summary.push('');
     highPriority.forEach((item) => {
       const sub = submissions[item.submissionNumber - 1];
-      summary.push(`### ${item.category}: ${item.summary}`);
+      summary.push(`### ${item.category}: ${submitterStore.scrubPublicText(item.summary, sub)}`);
       summary.push('');
-      summary.push(`**From**: ${sub.name || 'Anonymous'} ${sub.email ? `(${sub.email})` : ''}`);
+      summary.push(`**Submission id**: ${submissionId(sub) || 'unknown'}`);
       if (sub.show) summary.push(`**Show**: ${sub.show}`);
-      summary.push(`**Message**: ${sub.message}`);
       summary.push('');
-      summary.push(`**Recommended Action**: ${item.recommendedAction}`);
+      summary.push(`**Recommended Action**: ${submitterStore.scrubPublicText(item.recommendedAction, sub)}`);
       summary.push('');
       summary.push('---');
       summary.push('');
@@ -316,16 +319,15 @@ function generateSummary(submissions, categorized, bugDiagnoses = [], spamFlagge
 
     items.forEach((item) => {
       const sub = item.submission;
-      summary.push(`**${item.priority} Priority**: ${item.summary}`);
+      summary.push(`**${item.priority} Priority**: ${submitterStore.scrubPublicText(item.summary, sub)}`);
       summary.push('');
-      summary.push(`- **From**: ${sub.name || 'Anonymous'} ${sub.email ? `(${sub.email})` : ''}`);
+      summary.push(`- **Submission id**: ${submissionId(sub) || 'unknown'}`);
       if (sub.show) summary.push(`- **Show**: ${sub.show}`);
-      summary.push(`- **Message**: ${sub.message}`);
-      summary.push(`- **Action**: ${item.recommendedAction}`);
+      summary.push(`- **Action**: ${submitterStore.scrubPublicText(item.recommendedAction, sub)}`);
 
       const diag = bugDiagnoses.find(d => d.item.submissionNumber === item.submissionNumber && d.diagnosis);
       if (diag) {
-        summary.push(`- **Diagnosis**: ${diag.diagnosis.summary} (${diag.diagnosis.confidence} confidence) — see separate bug-diagnosis issue`);
+        summary.push(`- **Diagnosis**: ${submitterStore.scrubPublicText(diag.diagnosis.summary, sub)} (${diag.diagnosis.confidence} confidence) — see separate bug-diagnosis issue`);
       }
 
       summary.push('');
@@ -338,7 +340,8 @@ function generateSummary(submissions, categorized, bugDiagnoses = [], spamFlagge
   summary.push('');
   summary.push('*Categorized by automated system*');
 
-  return summary.join('\n');
+  // LLM-written summaries can quote an address; this text is public.
+  return redactEmails(summary.join('\n'));
 }
 
 /**
@@ -555,7 +558,7 @@ async function main() {
         // script only plans — it never dispatches directly, so it can't
         // itself confirm the dispatch landed; say "will dispatch" not "did."
         console.log(
-          `Content request (no diagnosis): ${item.summary}\n` +
+          `Content request (no diagnosis): ${submitterStore.scrubPublicText(item.summary, sub)}\n` +
           `  actions: ${contentActions.map((a) => a.kind).join(', ') || 'none'}` +
           (dispatchable.length
             ? ` → ${dispatchable.length} action(s) will be dispatched by the workflow step`
@@ -583,11 +586,11 @@ async function main() {
       if (diagnosisAttempts >= MAX_DIAGNOSES) continue;
       diagnosisAttempts++;
 
-      console.log(`Diagnosing: ${item.summary}`);
+      console.log(`Diagnosing: ${submitterStore.scrubPublicText(item.summary, sub)}`);
       try {
         const diagnosis = await diagnoseBug(sub.message, sub.show || null, sub.category || null);
         bugDiagnoses.push({ item, submission: sub, diagnosis });
-        console.log(`  ${diagnosis.confidence} confidence: ${diagnosis.summary}`);
+        console.log(`  ${diagnosis.confidence} confidence: ${submitterStore.scrubPublicText(diagnosis.summary, sub)}`);
       } catch (err) {
         console.error(`  Diagnosis failed: ${err.message}`);
         bugDiagnoses.push({ item, submission: sub, diagnosis: null });
@@ -601,8 +604,15 @@ async function main() {
     // Write diagnoses for workflow to create separate issues. Merge with any
     // leftovers from a cancelled run (deduped by submission ID) so nothing is
     // dropped; the workflow's issue-creation step drains this file.
+    // BRO-4453: the pending file is committed to the PUBLIC repo whenever an
+    // entry is left over, so it carries redacted submissions only. The
+    // reader's name, email and message go to the private store
+    // (data/feedback-submitters.json, pushed to the core-data repo by the
+    // workflow before any issue or auto-fix dispatch exists).
     const merged = mergePendingDiagnoses(pendingDiagnoses, bugDiagnoses, submissionId);
-    fs.writeFileSync(PENDING_DIAGNOSES_FILE, JSON.stringify(merged, null, 2) + '\n');
+    const { storeChanged } = submitterStore.writePendingWithPrivateReaders(merged, { pendingPath: PENDING_DIAGNOSES_FILE });
+    // Gates the workflow's push of the store to the private repo.
+    if (storeChanged && process.env.GITHUB_OUTPUT) fs.appendFileSync(process.env.GITHUB_OUTPUT, 'submitter_store_changed=true\n');
     if (process.env.GITHUB_OUTPUT && merged.some(d => d && d.submission && d.item)) {
       fs.appendFileSync(process.env.GITHUB_OUTPUT, `has_pending_diagnoses=true\n`);
     }
