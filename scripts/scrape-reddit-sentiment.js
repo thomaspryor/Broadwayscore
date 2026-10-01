@@ -264,6 +264,9 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
       if (verbose) console.log(`    "${query}": ${audiencePosts.length} audience, ${neutralPosts.length} neutral (of ${totalSearched} total, ${filteredByDate} older than 2yr)`);
     } catch (e) {
       if (verbose) console.log(`    "${query}" failed: ${e.message}`);
+      // A failed search is not evidence of "no Reddit discussion": keep the
+      // show out of the no-data stamp/backoff (redditNoDataStreak).
+      showFetchFailed = true;
     }
   }
 
@@ -514,6 +517,7 @@ function updateAudienceBuzz(showId, redditData) {
   }
 
   audienceBuzz.shows[showId].sources.reddit = redditData;
+  delete audienceBuzz.shows[showId].redditNoDataStreak;
 
   // Recalculate combined score
   const sources = audienceBuzz.shows[showId].sources;
@@ -599,7 +603,7 @@ async function main() {
       process.exit(1);
     }
     if (skipFreshHours > 0) {
-      const fresh = shows.filter(s => isRedditFresh((audienceBuzz.shows || {})[s.id], skipFreshHours));
+      const fresh = shows.filter(s => isRedditFresh((audienceBuzz.shows || {})[s.id], skipFreshHours, Date.now(), s));
       if (fresh.length > 0) {
         console.log(`Skipping ${fresh.length} show(s) with Reddit touched in the last ${skipFreshHours}h: ${fresh.map(s => s.id).join(', ')}`);
         shows = shows.filter(s => !fresh.includes(s));
@@ -705,8 +709,14 @@ async function main() {
 
   for (const show of shows) {
     try {
+      const errorsBefore = getStats().errors;
       const redditData = await processShow(show);
       processed++;
+      // reddit-api swallows per-post comment failures and breaker-open skips
+      // internally; any new fetch error during this show means its empty
+      // result can't be trusted as "no discussion".
+      const after = getStats();
+      if (after.errors > errorsBefore || after.circuitBroken) showFetchFailed = true;
 
       if (redditData && !dryRun) {
         successful++;
@@ -733,6 +743,8 @@ async function main() {
         // stale backlog). Ages out for staleDays like a real scrape, then retries.
         audienceBuzz.shows[show.id] = audienceBuzz.shows[show.id] || { sources: {} };
         audienceBuzz.shows[show.id].redditLastAttempted = new Date().toISOString();
+        // Drives isRedditFresh's no-data backoff (1/2/4/8/14 days); reset on data.
+        audienceBuzz.shows[show.id].redditNoDataStreak = (audienceBuzz.shows[show.id].redditNoDataStreak || 0) + 1;
         if (saveAudienceBuzz()) {
           console.log(`  No Reddit data — marked attempted (${processed}/${shows.length})`);
         }

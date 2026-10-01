@@ -250,3 +250,30 @@ test('isRedditFresh (BRO-4215): skips shows touched within the window, using the
   assert.equal(isRedditFresh(scraped('garbage'), 20, now), false, 'unparseable date ignored');
   assert.equal(isRedditFresh(scraped('2026-09-28T11:00:00Z'), 0, now), false, 'hours=0 disables');
 });
+
+test('isRedditFresh backs off shows that keep finding no Reddit data (1/2/4/8/14 days)', () => {
+  const { isRedditFresh } = require('./reddit-post-filters.js');
+  const now = Date.parse('2026-10-01T12:00:00Z');
+  const h = (n) => new Date(now - n * 3600 * 1000).toISOString();
+  const noData = (hoursAgo, streak) => ({ sources: {}, redditLastAttempted: h(hoursAgo), redditNoDataStreak: streak });
+  assert.equal(isRedditFresh(noData(23, 1), 20, now), true, 'streak 1: waits 1 day');
+  assert.equal(isRedditFresh(noData(25, 1), 20, now), false, 'streak 1: retries after 1 day');
+  assert.equal(isRedditFresh(noData(47, 2), 20, now), true, 'streak 2: waits 2 days');
+  assert.equal(isRedditFresh(noData(95, 3), 20, now), true, 'streak 3: waits 4 days');
+  assert.equal(isRedditFresh(noData(24 * 13, 9), 20, now), true, 'streak caps at 14 days');
+  assert.equal(isRedditFresh(noData(24 * 15, 9), 20, now), false, 'retries after 14 days');
+  assert.equal(isRedditFresh(noData(1, 5), 0, now), false, 'hours=0 still forces a refresh');
+  assert.equal(isRedditFresh({ sources: {}, redditLastAttempted: h(23) }, 20, now), false, 'no streak: plain 20h rule');
+  const newerData = { sources: { reddit: { lastUpdated: h(30) } }, redditLastAttempted: h(40), redditNoDataStreak: 4 };
+  assert.equal(isRedditFresh(newerData, 20, now), false, 'data newer than the attempt ignores a stale streak');
+});
+
+test('isRedditFresh caps the no-data backoff at 2 days within 14 days of opening or previews', () => {
+  const { isRedditFresh } = require('./reddit-post-filters.js');
+  const now = Date.parse('2026-10-01T12:00:00Z');
+  const rec = { sources: {}, redditLastAttempted: new Date(now - 72 * 3600 * 1000).toISOString(), redditNoDataStreak: 5 };
+  assert.equal(isRedditFresh(rec, 20, now), true, 'far from opening: 14-day hold');
+  assert.equal(isRedditFresh(rec, 20, now, { openingDate: '2026-09-25' }), false, '6 days after opening: 2-day cap, 3 days passed');
+  assert.equal(isRedditFresh(rec, 20, now, { previewsStartDate: '2026-10-10' }), false, 'previews in 9 days: capped');
+  assert.equal(isRedditFresh(rec, 20, now, { openingDate: '2026-06-01' }), true, 'months after opening: full backoff');
+});
