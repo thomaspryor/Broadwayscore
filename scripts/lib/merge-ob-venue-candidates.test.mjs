@@ -89,3 +89,20 @@ test('keyOf returns candidateHash or null', () => {
   assert.equal(keyOf({}), null);
   assert.equal(keyOf(null), null);
 });
+
+test('BRO-4484: with a base, the KNOWN LIMITATION above is closed — a hash ours pruned stays pruned when remote never touched it', () => {
+  const a = { candidateHash: 'a', title: 'A', venue: 'V' };
+  const b = { candidateHash: 'b', title: 'B', venue: 'V' };
+  const c = { candidateHash: 'c', title: 'C', venue: 'V' };
+  const { merged, stats } = mergeObVenueCandidates([b], [a, b, c], [a, b]);
+  assert.deepEqual(merged, [b, c], 'a (pruned by us) stays gone; c (added remotely after base) is kept');
+  assert.equal(stats.ourDeletes, 1);
+  assert.equal(stats.added, 1);
+});
+
+test('BRO-4484: a non-array base is the two-way union exactly (stats shape unchanged)', () => {
+  const a = { candidateHash: 'a' };
+  for (const base of [undefined, null, {}]) {
+    assert.deepEqual(mergeObVenueCandidates([], [a], base), { merged: [a], stats: { added: 1, kept: 0, total: 1 } });
+  }
+});

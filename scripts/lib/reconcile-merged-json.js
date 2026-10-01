@@ -203,10 +203,37 @@ function readRemote(ref, file, format) {
  *
  * Returns undefined when no base is obtainable, which the mergers treat as
  * "fall back to the conservative two-way behavior" — same as before this fix.
+ *
+ * BRO-4484: this pass runs AFTER push-with-retry.sh's rebase/merge, so
+ * `merge-base HEAD <ref>` is <ref>'s tip itself and "base" equals remote. A
+ * merger fed that base reads every row other writers added since the run
+ * started as "we removed it". push-with-retry.sh therefore passes the run's
+ * pre-rebase fork point (its SCRIPT_ENTRY_BASE) as PUSH_RECONCILE_BASE, which
+ * is used whenever it names a readable commit. No ancestry check: on a
+ * depth-1 checkout the bounded fetch may not connect HEAD back to it, and the
+ * value comes from push-with-retry.sh itself, not from a user. Without it,
+ * mergers marked `requiresTrueBase` (the venue-candidate staging merges) get
+ * no base (two-way union); the others keep the legacy merge-base fallback
+ * they were built against.
  */
-function readBase(ref, file, format) {
+function envBase() {
+  const sha = (process.env.PUSH_RECONCILE_BASE || '').trim();
+  if (!/^[0-9a-f]{7,64}$/i.test(sha)) return null;
   try {
-    const base = execFileSync('git', ['merge-base', 'HEAD', ref], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    execFileSync('git', ['cat-file', '-e', `${sha}^{commit}`], { stdio: 'ignore' });
+    return sha;
+  } catch {
+    return null;
+  }
+}
+
+function readBase(ref, file, format, { requiresTrueBase = false } = {}) {
+  try {
+    let base = envBase();
+    if (!base) {
+      if (requiresTrueBase) return undefined;
+      base = execFileSync('git', ['merge-base', 'HEAD', ref], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'] }).trim();
+    }
     if (!base) return undefined;
     // maxBuffer: same registry-scale-file rationale as readRemote() above.
     const text = execFileSync('git', ['show', `${base}:${file}`], { encoding: 'utf8', maxBuffer: 1024 * 1024 * 512, stdio: ['ignore', 'pipe', 'ignore'] });
@@ -249,7 +276,7 @@ function main() {
       // called exactly as before (arity is the dispatch, so a future merger
       // cannot silently receive a third argument it defines differently).
       const result = t.merge.length >= 3
-        ? t.merge(ours, remote, readBase(ref, t.file, t.format))
+        ? t.merge(ours, remote, readBase(ref, t.file, t.format, { requiresTrueBase: t.merge.requiresTrueBase === true }))
         : t.merge(ours, remote);
       const after = t.format === 'jsonl'
         ? result.merged.map((e) => JSON.stringify(e)).join('\n') + (result.merged.length ? '\n' : '')
@@ -274,6 +301,6 @@ function main() {
   process.stdout.write(changedFiles.join('\n'));
 }
 
-module.exports = { MANAGED, mergerFor, explicitMergerFor, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
+module.exports = { readBase, MANAGED, mergerFor, explicitMergerFor, API_FALLBACK_SAFE, API_FALLBACK_MERGE, apiFallbackMergerFor };
 
 if (require.main === module) main();

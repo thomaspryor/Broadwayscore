@@ -517,5 +517,63 @@
       }
     ],
     "queuedAt": "2026-10-01T22:29:53.889Z"
+  },
+  {
+    "conditionKey": "land:land/spend-review-phase-b",
+    "title": "Landing blocked: unit-tests-node red on land/spend-review-phase-b",
+    "description": "land.yml did not land land/spend-review-phase-b: the unit-tests-node gate went red at 083b7e3822. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36933482113",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/spend-review-phase-b"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "083b7e3822fcdfbaacb064d86a8fcde8fb9dcaaa"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36933482113"
+      }
+    ],
+    "queuedAt": "2026-10-01T22:42:41.824Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4486-recheck-2",
+    "title": "Landing blocked: colocated-tests red on land/bro-4486-recheck-2",
+    "description": "land.yml did not land land/bro-4486-recheck-2: the colocated-tests gate went red at 14e68b46e2. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4486-recheck-2 @ 14e68b46e2 (origin/land/bro-4486-recheck-2) → origin/main @ f1e74b3f51 [land] attempt 1/3: rebased onto f1e74b3f51, 2 file(s) changed — running checks [land] verified-base: main moved 381b6e022f → f1e74b3f51 across 76 file(s), substantive — running the full gauntlet [land] linked 20 gitignored path(s) into the worktree (node_modules/core data) [land] checks: coloca Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36935558725",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4486-recheck-2"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "14e68b46e2024a08196ff0544785be2a9a91cadb"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36935558725"
+      }
+    ],
+    "queuedAt": "2026-10-01T23:03:10.797Z"
   }
 ]

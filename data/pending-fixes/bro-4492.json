@@ -1,14 +1,14 @@
 {
   "issueNumber": "bro-4492",
-  "planId": "d75f43bf-28c1-4e09-8c5a-c5291dc99fba",
-  "status": "pending",
-  "createdAt": "2026-10-01T21:44:08.614Z",
+  "planId": "2a2b64f8-d346-4050-a09c-f76389c19b4d",
+  "status": "applied",
+  "createdAt": "2026-10-01T22:03:55.998Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "Type the 41 listed rows (status past announced) that have no type, so validate-market-expansion passes. Each type comes from the venue page, its ticketing feed, or a trade listing cited in the action. Dance, circus, magic and children's variety are special (same rule as discover-new-shows.js for TodayTix categories). The 5 other Orange Tree rows are in plan bro-4398-d.",
+    "summary": "Part 1 of 2 (25 of 41 rows; execute-approved-fix caps a plan at 25 actions). Type the 41 listed rows (status past announced) that have no type, so validate-market-expansion passes. Each type comes from the venue page, its ticketing feed, or a trade listing cited in the action. Dance, circus, magic and children's variety are special (same rule as discover-new-shows.js for TodayTix categories). The 5 other Orange Tree rows are in plan bro-4398-d.",
     "steps": [
       "Set type null -> musical on the-outsiders-world-premiere-regional-2023",
       "Set type null -> musical on two-strangers-carry-a-cake-across-new-york-at-art-regional-2025",
@@ -34,23 +34,7 @@
       "Set type null -> play on gods-spies-off-broadway-2027",
       "Set type null -> play on starstuff-off-broadway-2026",
       "Set type null -> play on the-steel-man-off-broadway-2026",
-      "Set type null -> musical on tim-and-scrooge-off-broadway-2026",
-      "Set type null -> play on elektra-off-broadway-2026",
-      "Set type null -> special on anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
-      "Set type null -> musical on rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
-      "Set type null -> special on do-not-try-this-at-home-off-broadway-2026",
-      "Set type null -> special on tilt-an-80s-circus-thrill-ride-off-broadway-2026",
-      "Set type null -> play on the-sorcerers-apprentice-off-broadway-2027",
-      "Set type null -> special on the-mo-co-show-off-broadway-2027",
-      "Set type null -> special on little-journey-off-broadway-2027",
-      "Set type null -> special on ten-thousand-hours-off-broadway-2027",
-      "Set type null -> special on mario-the-maker-magician-returns-off-broadway-2027",
-      "Set type null -> special on doodle-pop-off-broadway-2027",
-      "Set type null -> play on the-kick-inside-off-broadway-2026",
-      "Set type null -> special on stone-belly-off-broadway-2027",
-      "Set type null -> play on blood-be-sweet-off-broadway-2027",
-      "Set type null -> play on burning-leaves-off-broadway-2026",
-      "Set type null -> play on the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026"
+      "Set type null -> musical on tim-and-scrooge-off-broadway-2026"
     ],
     "riskLevel": "Low",
     "actions": [
@@ -278,151 +262,135 @@
         "oldValue": null,
         "newValue": "musical",
         "description": "59E59: \"Tim and Scrooge: A Holiday Musical Radio Play\", music by Neil Berg, book and lyrics by Nick Meglin: https://www.59e59.org/shows/show-detail/tim-and-scrooge/"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "elektra-off-broadway-2026",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "play",
-        "description": "Theatre for a New Audience: Sophocles' tragedy in Anne Carson's translation, dir. Daniel Fish (choral songs by Ted Hearne): https://www.theatermania.com/news/tina-benko-rebecca-naomi-jones-to-star-in-daniel-fishs-elektra-in-brooklyn_1855719/ ; https://tfana.org/events/elektra-seminar-package-2026-10-08-630-pm"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "anne-teresa-de-keersmaeker-radouan-mriziga-il-cimento-dellarmonia-e-dellinventione-off-broadway-2027",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "special",
-        "description": "NYU Skirball labels it \"Dance, NYC Premiere\": https://nyuskirball.org/performance/il-cimento-dellarmonia-e-dellinventione/"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "rosie-revere-ada-twist-and-iggy-peck-off-broadway-2026",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "musical",
-        "description": "New Victory \"What Kind of Show?\": \"Musical theater\": https://www.newvictory.org/events/2627-live-performance-rosie-revere-ada-twist-and-iggy-peck"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "do-not-try-this-at-home-off-broadway-2026",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "special",
-        "description": "New Victory \"What Kind of Show?\": \"Extreme action\" (STREB experimental dance and daredevilry): https://www.newvictory.org/events/2627-live-performance-do-not-try-this-at-home"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "tilt-an-80s-circus-thrill-ride-off-broadway-2026",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "special",
-        "description": "New Victory \"What Kind of Show?\": \"Circus\" (Cirque Mechanics): https://www.newvictory.org/events/2627-live-performance-tilt-an-80s-circus-thrill-ride"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-sorcerers-apprentice-off-broadway-2027",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "play",
-        "description": "New Victory \"What Kind of Show?\": \"Theater\" (Cahoots NI story with puppets and illusion; New Victory uses separate Musical theater/Circus/Magic/Dance labels): https://www.newvictory.org/events/2627-live-performance-the-sorcerers-apprentice"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-mo-co-show-off-broadway-2027",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "special",
-        "description": "New Victory \"What Kind of Show?\": \"Visual art and comedy\" (Mo Willems hosts riffing and reading; children's variety): https://www.newvictory.org/events/2627-live-performance-the-mo-and-co-show"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "little-journey-off-broadway-2027",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "special",
-        "description": "New Victory \"What Kind of Show?\": \"Dance\" (Kathak and Chinese dance): https://www.newvictory.org/events/2627-live-performance-little-journey"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "ten-thousand-hours-off-broadway-2027",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "special",
-        "description": "New Victory \"What Kind of Show?\": \"Circus\" (Gravity & Other Myths): https://www.newvictory.org/events/2627-live-performance-ten-thousand-hours"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "mario-the-maker-magician-returns-off-broadway-2027",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "special",
-        "description": "New Victory \"What Kind of Show?\": \"Magic\": https://www.newvictory.org/events/2627-live-performance-mario-the-maker-magician-returns"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "doodle-pop-off-broadway-2027",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "special",
-        "description": "New Victory \"What Kind of Show?\": \"Physical theater with live music and foley\" (wordless illustration and animation show for ages 4+; children's variety): https://www.newvictory.org/events/2627-live-performance-doodle-pop"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-kick-inside-off-broadway-2026",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "play",
-        "description": "HERE: \"an exquisite corpse of a play written by thirteen New York City based playwrights\": https://here.app.getcuebox.com/o/CCTQ0T6B/shows/BN9WR68F"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "stone-belly-off-broadway-2027",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "special",
-        "description": "HERE: \"a dance-theater performance\" centering babaylan mythology: https://here.app.getcuebox.com/o/CCTQ0T6B/shows/6RQ7ZP7N"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "blood-be-sweet-off-broadway-2027",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "play",
-        "description": "NYTW: \"this poetic ritual drama written by ... Abigail C. Onwunali\"; quoted endorsements call it \"her unforgettable play\": https://www.nytw.org/show/blood-be-sweet/"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "burning-leaves-off-broadway-2026",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "play",
-        "description": "A.R.T./New York: by Tom Rowan, \"a humorous, compassionate play\": https://art-newyork.org/events/burning-leaves/"
-      },
-      {
-        "type": "data-edit",
-        "file": "shows.json",
-        "showId": "the-curious-incident-of-the-dog-in-the-night-time-off-broadway-2026",
-        "field": "type",
-        "oldValue": null,
-        "newValue": "play",
-        "description": "A.R.T./New York: EPIC Players stage Simon Stephens' adaptation of the Mark Haddon novel (the Tony-winning Best Play): https://art-newyork.org/events/curious-incident-epic/"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-01T22:47:50.587Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-outsiders-world-premiere-regional-2023"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for two-strangers-carry-a-cake-across-new-york-at-art-regional-2025"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for bluebirds-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for cranford-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for fly-you-fools-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for triumph-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-radium-girls-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for an-outrageous-outcome-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for broom-play-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for not-nineveh-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for space-quest-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-little-lasses-of-appleton-wisconsin-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for we-are-happy-to-serve-you-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for you-go-on-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-masters-tools-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for miss-julie-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for all-the-way-home-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for nikola-tesla-the-forgotten-genius-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for sometimes-love-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for baby-shower-katie-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for gods-spies-off-broadway-2027"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for starstuff-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-steel-man-off-broadway-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for tim-and-scrooge-off-broadway-2026"
+    }
+  ]
 }

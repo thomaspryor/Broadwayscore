@@ -48,6 +48,30 @@ function loadStaging(stagingPath = STAGING_PATH) {
 }
 
 /**
+ * BRO-4484: the read half of updateStaging. Unlike loadStaging (lenient, for
+ * readers), an existing file that does not parse as an array returns null so
+ * updateStaging refuses to rewrite it: writing a mutation of "[]" over a
+ * corrupt or conflict-marked file reads, at push time, as a prune of every
+ * row (the staging merge is three-way and honours prunes). A missing file is
+ * a genuine empty staging list.
+ */
+function loadStagingForUpdate(stagingPath = STAGING_PATH) {
+  let text;
+  try {
+    text = fs.readFileSync(stagingPath, 'utf8');
+  } catch (e) {
+    if (e && e.code === 'ENOENT') return [];
+    return null;
+  }
+  try {
+    const data = JSON.parse(text);
+    return Array.isArray(data) ? data : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
  * Atomic write — tmp file + rename. Prevents half-written staging on crash.
  * tmp name is PID-scoped so two concurrent writers can't clobber each
  * other's in-flight tmp file.
@@ -91,7 +115,11 @@ function updateStaging(mutateFn, stagingPath = STAGING_PATH) {
   let lockHeld = false;
   const next = withFileLock(lockPath, (held) => {
     lockHeld = held;
-    const current = loadStaging(stagingPath);
+    const current = loadStagingForUpdate(stagingPath);
+    if (current === null) {
+      console.error(`::error::owe-venue-candidates staging file ${stagingPath} exists but is not a JSON array — refusing to rewrite it (BRO-4484: a rewrite would prune every row at push time). Fix or restore the file.`);
+      return [];
+    }
     const updated = mutateFn(current);
     if (!Array.isArray(updated)) {
       throw new Error(`updateStaging: mutateFn must return an array, got ${updated === null ? 'null' : typeof updated}`);
