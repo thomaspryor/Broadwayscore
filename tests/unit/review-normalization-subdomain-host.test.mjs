@@ -60,6 +60,10 @@ describe('subdomain hosts never fall to the first-label bare base', () => {
     // "preview" is preview.ph's bare base; preview.ew.com is Entertainment Weekly.
     assert.equal(outletOf('https://preview.ew.com/article/2014/1/1/x'), 'ew');
   });
+  test('an unlisted country suffix (mb.com.ph) does not register the bare base "com"', () => {
+    assert.equal(outletOf('https://mb.com.ph/2024/1/1/review'), outletOf('https://www.mb.com.ph/x'));
+    assert.equal(outletOf('https://com.au/x'), null);
+  });
   test('unrelated subdomain on an unregistered parent resolves to nothing', () => {
     assert.equal(outletOf('https://newyork.example-unregistered-site.com/review'), null);
   });

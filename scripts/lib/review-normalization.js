@@ -1511,7 +1511,11 @@ function buildDomainToOutletIndex() {
  */
 function registrableDomain(hostname) {
   const { platformSuffixOf, multipartSuffixOf } = require('./host-suffix-lists');
+  // Unlisted country suffixes of the common shape (com.ph, org.sg) count as
+  // multi-part too, or mb.com.ph would be keyed under the bare base "com".
+  const ccSecondLevel = hostname.match(/\.((?:co|com|org|net|ac|gov|edu)\.[a-z]{2})$/);
   const suffix = platformSuffixOf(hostname) || multipartSuffixOf(hostname)
+    || (ccSecondLevel && ccSecondLevel[1])
     || hostname.slice(hostname.lastIndexOf('.') + 1);
   if (hostname === suffix || !hostname.endsWith('.' + suffix)) return hostname;
   const head = hostname.slice(0, -(suffix.length + 1));
