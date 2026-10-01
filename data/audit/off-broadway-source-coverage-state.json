@@ -3,18 +3,26 @@
     "blind": false,
     "count": 0,
     "reason": "ok",
-    "at": "2026-09-30T17:53:29.256Z"
+    "at": "2026-10-01T15:00:20.501Z"
   },
   "venueReaders": {
-    "at": "2026-09-30T17:53:29.256Z",
+    "at": "2026-10-01T15:00:20.501Z",
     "readers": 54,
-    "active": 153,
-    "activeCovered": 99,
-    "activeDated": 75,
+    "active": 160,
+    "activeCovered": 100,
+    "activeDated": 76,
     "uncovered": {
+      "broadway comedy club": {
+        "firstSeen": "2026-10-01T15:00:20.501Z",
+        "venue": "Broadway Comedy Club"
+      },
       "ensemble studio": {
         "firstSeen": "2026-09-30T17:53:29.256Z",
         "venue": "Ensemble Studio Theatre"
+      },
+      "tank": {
+        "firstSeen": "2026-10-01T15:00:20.501Z",
+        "venue": "The Tank"
       },
       "theatre row theatre 5": {
         "firstSeen": "2026-09-30T01:29:53.899Z",
@@ -75,27 +83,15 @@
     ]
   },
   "venueReadersLondon": {
-    "at": "2026-09-30T17:53:29.256Z",
-    "readers": 20,
-    "active": 89,
-    "activeCovered": 25,
-    "activeDated": 21,
+    "at": "2026-10-01T15:00:20.501Z",
+    "readers": 23,
+    "active": 91,
+    "activeCovered": 30,
+    "activeDated": 26,
     "uncovered": {
-      "rose": {
-        "firstSeen": "2026-09-30T17:17:24.833Z",
-        "venue": "Rose Theatre"
-      },
-      "wilton s music hall": {
-        "firstSeen": "2026-09-30T17:17:24.833Z",
-        "venue": "Wilton's Music Hall"
-      },
-      "vaults": {
-        "firstSeen": "2026-09-30T17:17:24.833Z",
-        "venue": "The Vaults Theatre"
-      },
-      "waterloo east": {
-        "firstSeen": "2026-09-30T17:17:24.833Z",
-        "venue": "Waterloo East Theatre"
+      "haymarket theatre royal": {
+        "firstSeen": "2026-10-01T15:00:20.501Z",
+        "venue": "Haymarket, Theatre Royal"
       },
       "yard": {
         "firstSeen": "2026-09-30T17:53:29.256Z",
@@ -187,6 +183,11 @@
         "venue": "Richmond",
         "recentShows": 2,
         "reason": "a place name, not a venue: fix the show rows"
+      },
+      {
+        "venue": "The Vaults Theatre",
+        "recentShows": 2,
+        "reason": "Wix site: the programme is images and Eventbrite links, no dated listing, JSON-LD events or ticketing feed (probed 2026-09-30, BRO-4433)"
       }
     ],
     "undatedOnly": [
