@@ -43,61 +43,112 @@
 //   * Order: ours first (original order preserved), then remote-only entries
 //     appended in remote order — deterministic, minimal diff.
 //
-// KNOWN LIMITATION (second-opinion review, 2026-08-26 — same shape as
-// mergeDiaryShows's field-update limitation, scoped to removal instead of
-// updates): this is a pure key UNION with no tombstone, so it can't
-// represent "this hash was intentionally removed." promote-ob-venue-
-// candidates.js's rewriteStaging() and extract-aggregator-candidates.js's
-// pruneStagedCandidates() both remove a candidateHash once its show has
-// landed in shows.json via any path. If that removal conflicts with a
-// remote copy that hasn't observed it yet (hasn't re-run its own prune
-// since), the union merge RESURRECTS the hash for one cycle — it reappears
-// in staging even though it's already a real show. This self-heals: the
-// next promote/extract run re-derives the same "already in shows.json"
-// verdict and prunes it again. Accepted because the alternative (a
-// persisted tombstone list) is out of this ticket's scope and the failure
-// mode this fix exists to close — a candidate silently LOST forever — is
-// categorically worse than a candidate transiently reappearing for one
-// cycle. See the "collision, ours pruned + remote still has it" test below.
+// Three-way mode (BRO-4484): the merge also takes the common-ancestor
+// content `base`, which every push-path caller already supplies to a merger
+// whose arity is 3 (merge-commercial-conflict.js reads git stage :1:,
+// push-via-git-api-merge.js the run's entry base, reconcile-merged-json.js
+// PUSH_RECONCILE_BASE). With a base, removals are honoured instead of
+// unioned back:
+//   * a remote-only key that base also carries, with remote's row unchanged
+//     since base, is a row WE removed (the promoter's prune) -> stays removed;
+//   * an ours key that base also carries, absent from remote, with our row
+//     unchanged since base, is a row THEY removed -> dropped too.
+// A row edited on the side that kept it (re-staged with fresh evidence)
+// wins over the other side's removal; it comes back once and the next prune
+// re-derives the verdict. "Unchanged" compares rows with sorted keys, so a
+// writer that reorders fields is not an edit.
+//
+// Before this, the merge was a pure key union: on 2026-09-29/30 the OWE
+// promoter's pruned staging file was unioned back to its pre-prune content
+// whenever main moved mid-run, final == base, and push-content-survival.js
+// classified the push REVERTED on every attempt (the run went red daily).
+//
+// No base (undefined / non-array: an add/add conflict, a missing or
+// unreadable ancestor) -> the original two-way union, unchanged, including
+// its KNOWN LIMITATION (second-opinion review, 2026-08-26): a hash ours
+// pruned that remote still carries is resurrected for one cycle and pruned
+// again next run. A wrong base is worse than none (it would drop rows other
+// writers added), so callers pass a base only when they have the true one;
+// reconcile-merged-json.js marks this merger `requiresTrueBase`.
 function keyOf(entry) {
   if (!entry || typeof entry !== 'object') return null;
   return entry.candidateHash || null;
 }
 
+// Order-insensitive serialization for the "unchanged since base" test.
+function canonical(v) {
+  if (Array.isArray(v)) return `[${v.map(canonical).join(',')}]`;
+  if (v && typeof v === 'object') {
+    return `{${Object.keys(v).sort().map((k) => `${JSON.stringify(k)}:${canonical(v[k])}`).join(',')}}`;
+  }
+  return JSON.stringify(v);
+}
+
 /**
- * Factory: the same key-union merge for any bare-array candidate staging file
+ * Factory: the same key-union (three-way when given a base) merge for any bare-array candidate staging file
  * (BRO-4268 second-opinion finding: the Off-West End file needs the exact
  * same rules and two hand-written twins would drift). `keyOf(entry)` returns
  * the natural key or null; keyless rows on either side pass through as
  * documented above.
  */
 function makeVenueCandidatesMerge(keyOfFn) {
-  return function mergeVenueCandidates(ours, remote) {
+  function mergeVenueCandidates(ours, remote, base) {
     const oursList = Array.isArray(ours) ? ours : [];
     const remoteList = Array.isArray(remote) ? remote : [];
+    // Key -> canonical row in base; null when there is no usable base.
+    let baseRows = null;
+    if (Array.isArray(base)) {
+      baseRows = new Map();
+      for (const e of base) {
+        const k = keyOfFn(e);
+        if (k && !baseRows.has(k)) baseRows.set(k, canonical(e));
+      }
+    }
+    const unchangedSinceBase = (k, e) => baseRows !== null && baseRows.get(k) === canonical(e);
+
+    const remoteKeys = new Set();
+    for (const e of remoteList) {
+      const k = keyOfFn(e);
+      if (k) remoteKeys.add(k);
+    }
     const oursKeys = new Set();
+    const merged = [];
+    let theirDeletes = 0;
     for (const e of oursList) {
       const k = keyOfFn(e);
+      if (k && !remoteKeys.has(k) && unchangedSinceBase(k, e)) {
+        theirDeletes++; // remote removed it and we never touched it
+        continue;
+      }
+      merged.push(e);
       if (k) oursKeys.add(k);
     }
-    const merged = [...oursList];
     let added = 0;
     let kept = 0;
+    let ourDeletes = 0;
     for (const e of remoteList) {
       const k = keyOfFn(e);
       if (k && oursKeys.has(k)) {
         kept++; // shared key — ours already present, keep ours
         continue;
       }
+      if (k && unchangedSinceBase(k, e)) {
+        ourDeletes++; // we removed it (promoter prune) and remote never touched it
+        continue;
+      }
       merged.push(e);
       if (k) oursKeys.add(k);
       added++;
     }
-    return {
-      merged,
-      stats: { added, kept, total: merged.length },
-    };
-  };
+    const stats = { added, kept, total: merged.length };
+    if (baseRows !== null) Object.assign(stats, { ourDeletes, theirDeletes });
+    return { merged, stats };
+  }
+  // reconcile-merged-json.js: never hand this merger a guessed base (the
+  // post-rebase merge-base is origin's tip, which would read every row other
+  // writers added as "we removed it"); no true base -> two-way union.
+  mergeVenueCandidates.requiresTrueBase = true;
+  return mergeVenueCandidates;
 }
 const mergeObVenueCandidates = makeVenueCandidatesMerge(keyOf);
 

@@ -67,3 +67,52 @@ test('the registry routes data/audit/owe-venue-candidates.json (public-repo surf
   assert.equal(e.newline, false, 'owe-venue-staging.js writeStaging writes no trailing newline');
   assert.equal(e.apiFallbackMerge, true, 'the promoter bundles this file with apiFallbackSafe files — without apiFallbackMerge the commit would lose the Git Data API fast path (BRO-2435 shape)');
 });
+
+// BRO-4484: three-way mode. Every push-path caller hands a three-argument
+// merger the common ancestor, so the promoter's prune now survives a race.
+test('BRO-4484 race: the promoter pruned rows and main moved without touching the file — the prune survives (no REVERTED)', () => {
+  const goblin = venue('Goblin', 'Park Theatre');
+  const flush = evidence('Flush', 'Arcola Theatre');
+  const base = [goblin, flush];
+  const ours = [flush]; // promoter promoted Goblin and pruned it
+  const remote = [goblin, flush]; // main moved, staging file untouched
+  const { merged, stats } = mergeOweVenueCandidates(ours, remote, base);
+  assert.deepEqual(merged, ours, 'final equals the run\'s own content, so content-survival sees "survived"');
+  assert.equal(stats.ourDeletes, 1);
+});
+
+test('BRO-4484: with a base, rows another writer added after we read the file are still kept (the BRO-4268 lost update stays fixed)', () => {
+  const goblin = venue('Goblin', 'Park Theatre');
+  const ghost = evidence('A Ghost in Your Ear', 'Hampstead Theatre Downstairs');
+  const { merged } = mergeOweVenueCandidates([], [goblin, ghost], [goblin]);
+  assert.deepEqual(merged, [ghost]);
+});
+
+test('BRO-4484: a row the remote re-staged with fresh evidence beats our prune (one-cycle resurrection, re-pruned next run)', () => {
+  const goblin = venue('Goblin', 'Park Theatre');
+  const restaged = { ...goblin, evidence: [{ kind: 'venue-page', url: 'https://parktheatre.co.uk/goblin' }] };
+  const { merged } = mergeOweVenueCandidates([], [restaged], [goblin]);
+  assert.deepEqual(merged, [restaged]);
+});
+
+test('BRO-4484: a row remote pruned is not re-added by a stale copy that never edited it; an edited one is kept', () => {
+  const goblin = venue('Goblin', 'Park Theatre');
+  const flush = evidence('Flush', 'Arcola Theatre');
+  const flushEdited = { ...flush, openingDate: '2026-11-02' };
+  const { merged, stats } = mergeOweVenueCandidates([goblin, flushEdited], [], [goblin, flush]);
+  assert.deepEqual(merged, [flushEdited]);
+  assert.equal(stats.theirDeletes, 1);
+});
+
+test('BRO-4484: "unchanged since base" ignores key order', () => {
+  const goblin = venue('Goblin', 'Park Theatre');
+  const reordered = Object.fromEntries(Object.entries(goblin).reverse());
+  const { merged } = mergeOweVenueCandidates([], [reordered], [goblin]);
+  assert.deepEqual(merged, [], 'a writer that only reorders fields has not edited the row');
+});
+
+test('BRO-4484: the merger is three-argument and refuses a guessed base (reconcile-merged-json.js reads requiresTrueBase)', () => {
+  assert.equal(mergeOweVenueCandidates.length, 3);
+  assert.equal(mergeOweVenueCandidates.requiresTrueBase, true);
+  assert.equal(findEntry('data/audit/owe-venue-candidates.json', 'public-repo').merge, mergeOweVenueCandidates);
+});

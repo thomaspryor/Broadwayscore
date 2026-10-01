@@ -1519,9 +1519,14 @@ reconcile_merged_json() {
   # the SAME target set twice (once for the log, once for the list) would
   # report empty the second time — the first pass has already written the
   # merged files.
+  # BRO-4484: PUSH_RECONCILE_BASE hands the three-way mergers this run's
+  # pre-rebase fork point. Their own `merge-base HEAD origin` would be
+  # origin's tip by now (we just rebased onto it), i.e. base == remote. Set
+  # inline per call, never exported. Empty (shallow/unborn entry) is fine:
+  # reconcile-merged-json.js then falls back per merger.
   local out=""
   if [ "${PUSH_RECONCILE_MERGED_JSON:-}" = "1" ]; then
-    out=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || out=""
+    out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH") || out=""
   fi
 
   # BRO-257: unconditional — NOT gated behind PUSH_RECONCILE_MERGED_JSON like
@@ -1539,7 +1544,7 @@ reconcile_merged_json() {
   # silently unprotected on the common path. Scoped to exactly this one file;
   # does not change the opt-in default for any other MANAGED file or caller.
   local ledger_out
-  ledger_out=$(node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json) || ledger_out=""
+  ledger_out=$(PUSH_RECONCILE_BASE="$SCRIPT_ENTRY_BASE" node "$SCRIPT_DIR/reconcile-merged-json.js" "origin/$PULL_BRANCH" data/audit/alert-digest-queue.json) || ledger_out=""
   if [ -n "$ledger_out" ]; then
     out="${out}${out:+$'\n'}${ledger_out}"
   fi
