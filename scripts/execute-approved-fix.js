@@ -40,6 +40,7 @@ const { buildFeedbackThankYouEmail } = require('./lib/email-templates.js');
 const showsWriteGuard = require('./lib/shows-write-guard.js');
 const commercialWriteGuard = require('./lib/commercial-write-guard.js');
 const audienceBuzzWriteGuard = require('./lib/audience-buzz-write-guard.js');
+const { MAX_PLAN_ACTIONS } = require('./lib/pending-fix-limits.js');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
@@ -553,7 +554,7 @@ async function main() {
 
   // BRO-4216: plans can now be written by sessions, not only by the feedback
   // pipeline. Cap the blast radius of any single plan.
-  const MAX_ACTIONS = 25;
+  const MAX_ACTIONS = MAX_PLAN_ACTIONS;
   if ((planData.plan.actions || []).length > MAX_ACTIONS) {
     console.error(`Plan has ${planData.plan.actions.length} actions (max ${MAX_ACTIONS}) — refusing`);
     output('result', 'error');
