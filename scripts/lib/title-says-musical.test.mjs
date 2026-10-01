@@ -9,7 +9,8 @@ const { titleSaysMusical } = require('./title-says-musical.js');
 test('titles ending in "musical" are musicals; a leading "Musical" is not', () => {
   for (const t of ['Death Note The Musical', 'Trainspotting the musical', 'GOD IS A WOMAN THE MUSICAL', 'Copperfield! The New Musical',
     'Shamilton! The Improvised Hip-Hop Musical', "We've Been Here Before: A One Woman Musical", 'Monsters A Killer New Musical Comedy',
-    'Dog Man - The Musical', 'Show: A New Musical', 'Heathers the Musical']) {
+    'Dog Man - The Musical', 'Show: A New Musical', 'Heathers the Musical', 'Singfeld! A Musical About Nothing',
+    'Friends The Musical Parody', 'Kinky Boots The Musical - UK Tour', 'Death Note The Musical in Concert', 'Musical']) {
     assert.equal(titleSaysMusical(t), true, t);
   }
   for (const t of ['The Musical Comedy Murders of 1940', 'Jimmy', 'Musical Chairs at Midnight', '', null]) {
@@ -26,4 +27,5 @@ test('showTypeFor: venue genre label first, then the title', () => {
   assert.equal(showTypeFor('Father Christmas', "Christmas Shows; Children's Show"), 'play');
   assert.equal(showTypeFor('Death Note The Musical', null), 'musical');
   assert.equal(showTypeFor('The Musical Comedy Murders of 1940', undefined), 'play');
+  assert.equal(showTypeFor('X', 'Non-musical drama'), 'play');
 });

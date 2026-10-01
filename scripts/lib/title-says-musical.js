@@ -10,14 +10,18 @@
  * "GOD IS A WOMAN THE MUSICAL", "Copperfield! The New Musical",
  * "Shamilton! The Improvised Hip-Hop Musical", "We've Been Here Before: A One
  * Woman Musical". A title ENDING in "musical" (or "musical comedy") is the
- * signal; a title that merely starts with the word is not ("The Musical
+ * signal anywhere in the title ("Singfeld! A Musical About Nothing",
+ * "Friends The Musical Parody"), except as an opening adjective ("The Musical
  * Comedy Murders of 1940" is a play).
  */
 function titleSaysMusical(title) {
   const t = String(title || '').trim();
-  if (!t) return false;
-  if (/[-–—:]\s*the\s+musical\b|:\s*a\s+(new\s+)?musical\b/i.test(t)) return true;
-  return /\bmusical(?:\s+comedy)?[!.?)"'\s]*$/i.test(t);
+  if (!/(?<![-\w])musical\b/i.test(t)) return false;
+  // "Musical" opening the title is an adjective on the next word ("The
+  // Musical Comedy Murders of 1940", "Musical Chairs"), unless it is the
+  // whole title.
+  if (/^(?:the\s+)?musical\s+\S/i.test(t)) return false;
+  return true;
 }
 
 /**
@@ -28,7 +32,8 @@ function titleSaysMusical(title) {
  */
 function showTypeFor(title, listingGenre) {
   const g = String(listingGenre || '');
-  if (/\bmusicals?\b|\bmusical theat(?:re|er)\b/i.test(g)) return 'musical';
+  // "Non-musical drama" must not count: no hyphen or letter right before.
+  if (/(?<![-\w])musicals?\b/i.test(g)) return 'musical';
   if (/\boperas?\b/i.test(g)) return 'opera';
   return titleSaysMusical(title) ? 'musical' : 'play';
 }
