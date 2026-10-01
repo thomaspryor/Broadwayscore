@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "jena-friedman-motherfucker-off-broadway-2026",
   "openingDate": "2026-10-01",
-  "detectedAt": "2026-10-01T23:30:42.338Z",
+  "detectedAt": "2026-10-01T23:51:32.529Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,9 +11,9 @@
       "criticName": "Unknown",
       "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-2-2026-soho-playhouse-main-theatre/3501096",
       "fullTextLen": 1119,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 1,
-  "blockedOrphanCount": 0,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }

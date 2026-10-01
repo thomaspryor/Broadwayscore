@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-01T23:29:57.774Z",
+  "timestamp": "2026-10-01T23:51:45.353Z",
   "stats": {
-    "totalReviews": 45766,
+    "totalReviews": 45768,
     "alreadyFlagged": 18682,
     "dateGuardCatches": 261,
     "directorMismatch": 1196,
     "tvFilmSignals": 1328,
-    "londonSignals": 1248,
+    "londonSignals": 1249,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
-    "noPublishDate": 4137
+    "noPublishDate": 4138
   },
   "findings": [
     {
@@ -31264,7 +31264,7 @@
     {
       "showId": "the-invention-of-love-off-broadway-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
-      "score": 68,
+      "score": 69,
       "publishDate": "2026-09-22",
       "url": "https://t2conline.com/the-invention-of-love-david-greenspan-is-brilliant-but-tom-stoppard-needs-an-editor/",
       "findings": [
@@ -45373,8 +45373,21 @@
       "showId": "hay-fever-west-end-2026",
       "file": "theupcoming--emilia-gould.json",
       "score": 79,
-      "publishDate": "2026-10-02",
+      "publishDate": null,
       "url": "https://www.theupcoming.co.uk/2026/10/02/hay-fever-at-wyndhams-theatre-theatre-review/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -50849,6 +50862,7 @@
     {
       "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
       "file": "whatsonstage--maygan-forbes.json",
+      "score": 97,
       "publishDate": "2026-04-16",
       "url": "https://www.whatsonstage.com/news/one-flew-over-the-cuckoos-nest-at-the-old-vic-review_1718322/",
       "findings": [
@@ -51315,7 +51329,7 @@
     {
       "showId": "pre-existing-condition-off-broadway-2026",
       "file": "culturesauce--thom-geier.json",
-      "score": 89,
+      "score": 95,
       "publishDate": "2026-09-14",
       "url": "https://culturesauce.com/pre-existing-condition-lupita-nyongo-off-broadway-review/",
       "findings": [
