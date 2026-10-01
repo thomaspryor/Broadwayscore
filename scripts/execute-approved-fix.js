@@ -554,9 +554,8 @@ async function main() {
 
   // BRO-4216: plans can now be written by sessions, not only by the feedback
   // pipeline. Cap the blast radius of any single plan.
-  const MAX_ACTIONS = MAX_PLAN_ACTIONS;
-  if ((planData.plan.actions || []).length > MAX_ACTIONS) {
-    console.error(`Plan has ${planData.plan.actions.length} actions (max ${MAX_ACTIONS}) — refusing`);
+  if ((planData.plan.actions || []).length > MAX_PLAN_ACTIONS) {
+    console.error(`Plan has ${planData.plan.actions.length} actions (max ${MAX_PLAN_ACTIONS}) — refusing`);
     output('result', 'error');
     return;
   }
