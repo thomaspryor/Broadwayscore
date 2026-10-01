@@ -1,8 +1,8 @@
 {
-  "updatedAt": "2026-10-01T03:26:30.835Z",
-  "processed": 90,
+  "updatedAt": "2026-10-01T03:35:27.118Z",
+  "processed": 91,
   "failed": 51,
-  "successRate": "63.8%",
+  "successRate": "64.1%",
   "tierBreakdown": {
     "playwright": 49,
     "amp": 0,
@@ -10,11 +10,11 @@
     "directCookies": 0,
     "scrapingdog": 14,
     "scrapingbee": 8,
-    "brightdata": 4,
+    "brightdata": 5,
     "archiveToday": 0,
     "archive": 12
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 5,
   "recentActivity": [
     {
       "t": "2026-10-01T02:44:38.266Z",
@@ -51,16 +51,48 @@
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-01T03:22:19.653Z",
+      "t": "2026-10-01T03:26:13.256Z",
       "event": "bb-session",
-      "session": "cb6fb495",
-      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+      "session": "5759b90e",
+      "url": "https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneat"
     },
     {
-      "t": "2026-10-01T03:22:39.653Z",
+      "t": "2026-10-01T03:26:14.146Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-01T03:26:32.557Z",
       "event": "bb-session",
-      "session": "13c75e58",
-      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+      "session": "50a33916",
+      "url": "https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneat"
+    },
+    {
+      "t": "2026-10-01T03:26:33.390Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-01T03:33:06.361Z",
+      "event": "bb-session",
+      "session": "df257256",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-01T03:33:07.460Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-01T03:33:25.712Z",
+      "event": "bb-session",
+      "session": "8b455bdc",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-01T03:33:26.565Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
