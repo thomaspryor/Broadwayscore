@@ -45,6 +45,20 @@ test('a cleared rating, a human score or an existing rating is left alone', () =
   assert.equal(findPublishedStarInText({ ...base, originalScore: '4/5 stars' }), null);
 });
 
+test('text the rebuild would not use is never read for stars', () => {
+  // ship-check: a Guardian roundup gave Eureka Day another play's ★★★.
+  const base = { outletId: 'nysr', fullText: `By Frank Scheck ★★★☆☆ ${PROSE}` };
+  assert.equal(findPublishedStarInText({ ...base, wrongProduction: true }), null);
+  assert.equal(findPublishedStarInText({ ...base, wrongShow: true }), null);
+  assert.equal(findPublishedStarInText({ ...base, duplicateOf: 'nysr--other.json' }), null);
+  assert.equal(findPublishedStarInText({ ...base, isRoundupArticle: true }), null);
+});
+
+test('an aggregator-sourced file is left to aggregatorStars', () => {
+  const data = { outletId: 'nysr', scoreSource: 'show-score-stars', fullText: `By Frank Scheck ★★★☆☆ ${PROSE}` };
+  assert.equal(findPublishedStarInText(data), null);
+});
+
 test('a bare "4/5" in text is not treated as a published star', () => {
   const data = { outletId: 'timeout', fullText: `${PROSE} We saw it on 4/5 and left at the interval.` };
   assert.equal(findPublishedStarInText(data), null);
