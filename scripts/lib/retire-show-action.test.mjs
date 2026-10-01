@@ -75,8 +75,8 @@ test('mergeRetiredRecords: union by id, ours first, nothing dropped on a push ra
 
 test('duplicateOf: a non-provisional duplicate with no reviews at the same house retires id-only; anything else refuses', () => {
   const { retire, paths } = scratch();
-  const kept = { id: 'death-note-the-musical-west-end-2026', title: 'Death Note: The Musical', venue: 'Barbican Centre' };
-  const dup = { id: 'death-note-the-musical-west-end-2027', title: 'Death Note The Musical', venue: 'Barbican Theatre' };
+  const kept = { id: 'death-note-the-musical-west-end-2026', title: 'Death Note: The Musical', venue: 'Barbican Centre', market: 'west-end', previewsStartDate: '2026-07-30', openingDate: '2026-08-11', closingDate: '2027-05-15' };
+  const dup = { id: 'death-note-the-musical-west-end-2027', title: 'Death Note The Musical', venue: 'Barbican Theatre', market: 'west-end', previewsStartDate: '2027-03-23', closingDate: '2027-05-15' };
   const base = { id: dup.id, expectTitle: dup.title, reason: 'duplicate of the 2026 row', duplicateOf: kept.id };
   const none = () => 0;
   const cases = [
@@ -95,6 +95,12 @@ test('duplicateOf: a non-provisional duplicate with no reviews at the same house
   }
   const otherHouse = [{ ...kept, venue: 'Almeida Theatre' }, { ...dup }];
   assert.match(applyRetireShow(otherHouse, base, { retire, reviewCount: none }).reason, /same house/);
+  const prefixHouse = [{ ...kept, venue: 'Lyric Theatre' }, { ...dup, venue: 'Lyric Hammersmith' }];
+  assert.match(applyRetireShow(prefixHouse, base, { retire, reviewCount: none }).reason, /same house/, 'Lyric Theatre is not Lyric Hammersmith');
+  const revival = [{ ...kept, closingDate: '2026-12-01' }, { ...dup }];
+  assert.match(applyRetireShow(revival, base, { retire, reviewCount: none }).reason, /revival or return run/);
+  const otherMarket = [{ ...kept, market: 'broadway' }, { ...dup }];
+  assert.match(applyRetireShow(otherMarket, base, { retire, reviewCount: none }).reason, /market/);
   const shows = [{ ...kept }, { ...dup }];
   const ok = applyRetireShow(shows, base, { retire, reviewCount: none });
   assert.equal(ok.ok, true, ok.reason);

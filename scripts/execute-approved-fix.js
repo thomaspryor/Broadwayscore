@@ -322,7 +322,12 @@ function executeAddShow(action) {
 function reviewCountFor(showId) {
   const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8'));
   const list = Array.isArray(data) ? data : (data.reviews || []);
-  return list.filter(r => r && r.showId === showId).length;
+  const scored = list.filter(r => r && r.showId === showId).length;
+  // Collected texts not yet rebuilt into reviews.json (unscored, or newer
+  // than the last rebuild) live here and would be orphaned too.
+  const dir = path.join(ROOT, 'data/review-texts', showId);
+  const texts = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.json')).length : 0;
+  return scored + texts;
 }
 
 function executeRetireShow(action) {

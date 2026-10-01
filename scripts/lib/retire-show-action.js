@@ -30,17 +30,46 @@ const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const { normalizeVenueName } = require('./venue-classification');
 const { normalizeTitle } = require('./title-match');
 
+// Same building: normalized names equal, or one is the other plus only a
+// generic building/room word ("Barbican" / "Barbican Centre"). Never a
+// different house that merely starts the same ("Lyric" / "Lyric Hammersmith",
+// "Park" / "Park Avenue Armory").
+const HOUSE_WORDS = new Set(['centre', 'center', 'theatre', 'theater', 'main', 'house', 'studio', 'stage', 'hall']);
 function sameHouse(a, b) {
   const ka = normalizeVenueName(a);
   const kb = normalizeVenueName(b);
   if (!ka || !kb) return false;
-  return ka === kb || ka.startsWith(`${kb} `) || kb.startsWith(`${ka} `);
+  if (ka === kb) return true;
+  const [short, long] = ka.length <= kb.length ? [ka, kb] : [kb, ka];
+  if (!long.startsWith(`${short} `)) return false;
+  return long.slice(short.length).trim().split(/[\s-]+/).filter(Boolean).every(w => HOUSE_WORDS.has(w));
+}
+
+function isoOrNull(v) {
+  return typeof v === 'string' && /^\d{4}-\d{2}-\d{2}$/.test(v) ? v : null;
+}
+
+// The duplicate's run sits inside the kept row's run: it starts no earlier
+// than the kept run and the kept run has not closed before it starts. A
+// later revival or return run at the same house fails this.
+function sameRun(kept, row) {
+  const keptStart = isoOrNull(kept.previewsStartDate) || isoOrNull(kept.openingDate);
+  const keptEnd = isoOrNull(kept.closingDate);
+  const rowStart = isoOrNull(row.previewsStartDate) || isoOrNull(row.openingDate);
+  const rowEnd = isoOrNull(row.closingDate);
+  if (!keptStart || !rowStart) return false;
+  if (rowStart < keptStart) return false;
+  if (keptEnd && rowStart > keptEnd) return false;
+  if (keptEnd && rowEnd && rowEnd > keptEnd) return false;
+  return true;
 }
 
 /**
  * Why `row` may NOT be retired as a duplicate of `duplicateOf`, or null when
  * it may: the kept row exists and is another row, the two share a title
- * (normalizeTitle) at the same house, and the retired row has no reviews.
+ * (normalizeTitle) at the same house and market, the retired row's run sits
+ * inside the kept row's run, and the retired row has no reviews (scored or
+ * collected review texts).
  */
 function duplicateRefusal(row, duplicateOf, shows, reviewCount) {
   if (typeof duplicateOf !== 'string' || !ID_RE.test(duplicateOf) || duplicateOf === row.id) return 'duplicateOf must name another show id';
@@ -48,6 +77,8 @@ function duplicateRefusal(row, duplicateOf, shows, reviewCount) {
   if (!kept) return `duplicateOf "${duplicateOf}" is not in shows.json`;
   if (normalizeTitle(kept.title) !== normalizeTitle(row.title)) return `title "${row.title}" does not match "${kept.title}"`;
   if (!sameHouse(kept.venue, row.venue)) return `venue "${row.venue}" is not the same house as "${kept.venue}"`;
+  if ((kept.market || null) !== (row.market || null)) return `market ${row.market} differs from ${kept.market}`;
+  if (!sameRun(kept, row)) return `run dates do not fall inside ${duplicateOf}'s run (a revival or return run is not a duplicate)`;
   if (typeof reviewCount !== 'function') return 'review count unavailable';
   const n = reviewCount(row.id);
   if (n !== 0) return `${row.id} has ${n} review(s): move them before retiring`;
