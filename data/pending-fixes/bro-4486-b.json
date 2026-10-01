@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4486-b",
   "planId": "3d6944e7-292f-4d81-8dd8-10d45213fcc8",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-01T21:10:00.000Z",
   "submitter": {
     "name": null,
@@ -64,5 +64,38 @@
         "description": "2-star review anchored to a misread 3-star band"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-01T21:58:32.236Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "care-west-end-2026/financialtimes--tim-bano.json humanReviewNote: null -> \"Review text ends with the critic's rating ★★★☆☆ (3/5); the stored 4/5 came from an LLM misread. Anchored 73 capped at the 3-star band ceiling 70 (BRO-4486).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "care-west-end-2026/financialtimes--tim-bano.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "care-west-end-2026/financialtimes--tim-bano.json humanReviewScore: null -> 70"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json humanReviewNote: null -> \"Review text ends with the critic's rating ★★☆☆☆ (2/5); the stored 3/5 came from an LLM misread. Anchored 56 capped at the 2-star band ceiling 50 (BRO-4486).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "what-we-did-before-our-moth-days-off-broadway-2026/culturesauce--thom-geier.json humanReviewScore: null -> 50"
+    }
+  ]
 }

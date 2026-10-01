@@ -197,6 +197,9 @@ async function main() {
       outletId,
       outlet: outletName,
       criticName: criticName || 'Unknown', // collect-review-texts fills it in later when the page gave none
+      // Read off this URL's own HTML, so the writer may fill an existing
+      // Unknown file at the same URL with it (BRO-4485).
+      bylineFromOwnPage: !!criticName,
       url,
       source: 'ingest-urls',
       fields: {},
@@ -218,6 +221,10 @@ async function main() {
     } else if (writeResult.action === 'updated') {
       results.updated++;
       if (writeResult.filepath) results.touchedPaths.push(writeResult.filepath);
+      // A page-read byline renamed outlet--unknown.json (BRO-4485): stage the
+      // old path's deletion and the show dir, where sibling pointers may
+      // have been rewritten, or the push carries both files.
+      if (writeResult.renamedFrom) results.touchedPaths.push(writeResult.renamedFrom, path.dirname(writeResult.filepath));
       if (verbose) console.log(`    ✓ Updated: ${path.basename(writeResult.filepath || '')}`);
     } else {
       results.skipped++;
@@ -260,7 +267,8 @@ async function main() {
     try {
       console.log('\nPushing review-texts to private repo...');
       // Stage only the files this run touched — never a blanket `git add .`
-      execSync(`git -C "${reviewTextsDir}" add ${relPaths.map(p => `"${p}"`).join(' ')}`, { stdio: 'pipe' });
+      // -A so a path this run renamed away is staged as a deletion.
+      execSync(`git -C "${reviewTextsDir}" add -A -- ${relPaths.map(p => `"${p}"`).join(' ')}`, { stdio: 'pipe' });
       const status = execSync(
         `git -C "${reviewTextsDir}" status --porcelain ${relPaths.map(p => `"${p}"`).join(' ')}`,
         { encoding: 'utf8' }

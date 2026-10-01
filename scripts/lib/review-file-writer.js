@@ -39,7 +39,7 @@ const { isStaleNonReviewSlot, isAggregatorPageUrl } = require('./review-slot-gua
 const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
 const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
-const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
+const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
@@ -1228,6 +1228,80 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   return { action: 'new', filepath };
 }
 
+// "Broadway World" / "The Arts Desk" read as a byline: an outlet's own name
+// from data/outlet-registry.json (display name or alias), compared with
+// "the", parentheticals and punctuation folded away. normalizeOutlet can't
+// answer this: it maps some critic names to their outlet ("Jesse Green").
+let _outletNameSet = null;
+function _compactName(n) {
+  const { foldDiacritics } = require('./title-match');
+  return foldDiacritics(String(n || '')).toLowerCase()
+    .replace(/\([^)]*\)/g, '').replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+}
+function isOutletRegistryName(name) {
+  if (!_outletNameSet) {
+    _outletNameSet = new Set();
+    try {
+      const reg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'outlet-registry.json'), 'utf8'));
+      const outlets = reg.outlets || reg;
+      for (const e of Object.values(outlets)) {
+        if (!e || typeof e !== 'object') continue;
+        for (const a of [e.displayName, e.name, ...(e.aliases || [])]) {
+          const c = _compactName(a);
+          if (c) _outletNameSet.add(c);
+        }
+      }
+    } catch { /* no registry: fall back to the name checks alone */ }
+  }
+  return _outletNameSet.has(_compactName(name));
+}
+
+/**
+ * Whether a merge may write the incoming byline onto a file stored as Unknown
+ * (BRO-4485). Opt-in only: the caller must have read the name off this same
+ * page (input.bylineFromOwnPage, set by ingest-urls), and the incoming URL
+ * must be the file's URL. Aggregator rows and URL-less writes never qualify:
+ * their names are untrusted and pass 1 of findExistingReviewFile can match an
+ * --unknown file with no URL check at all. Also refuses a hand-set or locked
+ * file, a non-name (byline-recovery's isPlausiblePersonName), a credited
+ * creative/cast member, and any same-outlet sibling holding this URL or this
+ * critic: giving an --unknown file the same name+URL as a sibling is what let
+ * the rebuild's dedup drop a scored review (#27 incident, byline-recovery.js).
+ */
+function shouldUpgradeUnknownByline(filepath, existing, ctx) {
+  const { showId, input, criticName } = ctx;
+  if (!input || input.bylineFromOwnPage !== true || !input.url) return false;
+  if (!existing || existing.criticNameManual || existing._locked === true) return false;
+  if (!/--unknown\.json$/.test(path.basename(filepath))) return false;
+  if (existing.criticName && !/^unknown$/i.test(String(existing.criticName).trim())) return false;
+  const { isPlausiblePersonName } = require('./byline-recovery');
+  const { isValidAuthorName } = require('./content-quality');
+  if (!isPlausiblePersonName(criticName) || !isValidAuthorName(criticName)) return false;
+  if (isOutletRegistryName(criticName)) return false;
+  const { canonicalReviewUrl } = require('./review-url-clusters');
+  const canon = existing.url && canonicalReviewUrl(existing.url);
+  if (!canon || canon !== canonicalReviewUrl(input.url)) return false;
+  const show = _getShowById(showId);
+  if (show && evaluateCreditedPersonAsCritic(show, criticName).match) return false;
+  const showDir = path.dirname(filepath);
+  const self = path.basename(filepath);
+  const outletId = normalizeOutlet(existing.outletId || self.split('--')[0]);
+  const namedPath = path.join(showDir, generateReviewFilename(outletId, criticName));
+  if (fs.existsSync(namedPath)) return false;
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(namedPath)) return false;
+  const wanted = normalizeCritic(criticName);
+  for (const f of fs.readdirSync(showDir)) {
+    if (f === self || !f.endsWith('.json')) continue;
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      if (!d || normalizeOutlet(d.outletId || f.split('--')[0]) !== outletId) continue;
+      if (d.url && canonicalReviewUrl(d.url) === canon) return false;
+      if (d.criticName && normalizeCritic(d.criticName) === wanted) return false;
+    } catch { /* unreadable sibling: not evidence either way */ }
+  }
+  return true;
+}
+
 /**
  * Merge incoming data into an existing review file.
  * @private
@@ -1249,6 +1323,18 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // the field-merge loop already blended this write's own incoming fields
   // into `existing` — see maybeUpgradeUrl's opts.preMergeSnapshot doc.
   const preMergeSnapshot = { ...existing };
+  // A real byline read off this file's own page (BRO-4485): ingest-urls read
+  // "Helen Shaw" off the NYT Degenerates page, findExistingReviewFile matched
+  // the existing nytimes--unknown.json by URL, and the merge dropped the name.
+  // The file is renamed to the named slug after the write below, as the
+  // collector's 1B-iii enrichment does, so no "named --unknown" file is left
+  // for the rebuild's rename/merge to act on.
+  const bylineUpgrade = shouldUpgradeUnknownByline(filepath, existing, { showId, input, criticName });
+  if (bylineUpgrade) {
+    existing.criticName = criticName;
+    existing.criticEnrichedFrom = `writer:${input.source || 'unknown-source'}`;
+    changed = true;
+  }
   // Snapshot the body BEFORE the field merge so the reclassify step below can
   // tell "this merge just filled/replaced the text" apart from an unrelated
   // metadata merge.
@@ -1598,6 +1684,22 @@ function _mergeIntoExisting(filepath, existing, ctx) {
         quarantinedPath: writeResult && writeResult.quarantinedPath,
       };
     }
+    if (bylineUpgrade) {
+      const named = path.join(path.dirname(filepath), generateReviewFilename(normalizeOutlet(existing.outletId || path.basename(filepath).split('--')[0]), criticName));
+      const rename = safeRenameReview(filepath, named);
+      if (rename && rename.wrote) {
+        console.log(`  ↑ Byline from page: ${path.basename(filepath)} → ${path.basename(named)}`);
+        // renamedFrom: callers that stage paths must stage the deletion too,
+        // and safeRenameReview may have rewritten sibling pointers in this dir.
+        return { action: 'updated', filepath: named, renamedFrom: filepath };
+      }
+      // Never leave a named --unknown file behind (the rebuild's rename/merge
+      // is the #27 drop path): put the byline back and keep the rest.
+      console.warn(`  ⚠ Rename of ${path.basename(filepath)} skipped (${(rename && rename.skipped) || 'unknown'}); byline not applied`);
+      existing.criticName = 'Unknown';
+      delete existing.criticEnrichedFrom;
+      safeWriteReview(filepath, existing, { merge: false });
+    }
   }
 
   return { action: 'updated', filepath };
@@ -1619,4 +1721,4 @@ const WRITE_GUARD_REFUSED_REASONS = new Set([
   'show-dir-outside-sparse-checkout',
 ]);
 
-module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS };
+module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline };
