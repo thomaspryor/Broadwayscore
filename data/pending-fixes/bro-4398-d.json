@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4398-d",
   "planId": "669b69fa-fc6b-4e97-be41-b6faeac8a3b2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-01T21:35:47.346Z",
   "submitter": {
     "name": null,
@@ -64,5 +64,33 @@
         "description": "Orange Tree Theatre lists \"Infamous Anne\" as \"Drama New Writing\" in its Spektrix account (attribute_Type); the row left announced untyped"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-01T22:13:44.090Z",
+  "results": [
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for king-lear-2-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for richard-ii-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for the-vortex-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for sapling-off-west-end-2026"
+    },
+    {
+      "action": "data-edit",
+      "ok": true,
+      "msg": "shows.json: type updated for infamous-anne-off-west-end-2026"
+    }
+  ]
 }
