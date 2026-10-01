@@ -317,10 +317,23 @@ function executeAddShow(action) {
   return result;
 }
 
+// Reviews per show id in data/reviews.json (a duplicate retire refuses a row
+// that still has reviews).
+function reviewCountFor(showId) {
+  const data = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/reviews.json'), 'utf8'));
+  const list = Array.isArray(data) ? data : (data.reviews || []);
+  const scored = list.filter(r => r && r.showId === showId).length;
+  // Collected texts not yet rebuilt into reviews.json (unscored, or newer
+  // than the last rebuild) live here and would be orphaned too.
+  const dir = path.join(ROOT, 'data/review-texts', showId);
+  const texts = fs.existsSync(dir) ? fs.readdirSync(dir).filter(f => f.endsWith('.json')).length : 0;
+  return scored + texts;
+}
+
 function executeRetireShow(action) {
   const data = loadJsonFile('data/shows.json');
   const shows = data.shows || data;
-  const result = applyRetireShow(shows, action);
+  const result = applyRetireShow(shows, action, { reviewCount: reviewCountFor });
   if (!result.ok) return result;
   try {
     saveJsonFile('data/shows.json', Array.isArray(data) ? shows : data);
