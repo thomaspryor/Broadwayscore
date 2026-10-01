@@ -90,6 +90,7 @@ test('effectiveCreatePriority: parked High and Urgent are clamped to Medium', ()
   assert.equal(PARKED_MAX_PRIORITY, 3);
   assert.deepEqual(effectiveCreatePriority({ priority: 2, mode: 'park', title: 'x' }), { priority: 3, clamped: true });
   assert.deepEqual(effectiveCreatePriority({ priority: 1, mode: 'park', title: 'x' }), { priority: 3, clamped: true });
+  assert.deepEqual(effectiveCreatePriority({ priority: '2', mode: 'park', title: 'x' }), { priority: 3, clamped: true }, 'a numeric string is still High');
 });
 
 test('effectiveCreatePriority: dispatched issues keep the priority they asked for', () => {

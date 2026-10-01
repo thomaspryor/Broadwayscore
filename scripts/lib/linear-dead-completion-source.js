@@ -28,6 +28,7 @@
 
 const { parseLinearTaskId } = require('./linear-watchdog-source.js');
 const { isLatestDispatchDead, resolveDeadAttempt } = require('./dispatch-ledger.js');
+const { BYPASS_LINE_PREFIX } = require('./linear-gate-bypass-ledger.js');
 
 /**
  * @param {Array<object>} entries dispatch-ledger.jsonl entries
@@ -62,7 +63,7 @@ function findLinearDeadLaunchCandidates(entries) {
 // apart); the window is generous so a slow round-trip never hides one.
 const BYPASS_BEFORE_COMPLETION_MS = 30 * 60 * 1000;
 const BYPASS_AFTER_COMPLETION_MS = 2 * 60 * 1000;
-const BYPASS_LINE_RE = /^DONE-GATE-BYPASS:/m;
+const BYPASS_LINE_RE = new RegExp(`^${BYPASS_LINE_PREFIX}`, 'm');
 
 /**
  * Whether a live Linear issue fetched for a candidate should be reopened.

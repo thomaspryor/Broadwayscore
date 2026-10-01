@@ -64,10 +64,15 @@ function shouldWriteLedgerFile(env = process.env) {
   return !(env && env.CLAUDE_CODE_REMOTE === 'true');
 }
 
+// The line's fixed prefix. linear-dead-completion-source.js reads it back to
+// tell a bypassed completion from a gated one (BRO-4487), so both sides share
+// this constant rather than each spelling the string.
+const BYPASS_LINE_PREFIX = 'DONE-GATE-BYPASS:';
+
 /** One greppable line recording a bypass on the Linear issue itself. */
 function bypassCommentLine({ mechanism, reason, targetState } = {}) {
   const why = String(reason || '').replace(/\s+/g, ' ').trim();
-  return `DONE-GATE-BYPASS: mechanism=${mechanism || 'unknown'} target=${targetState || 'unknown'}${why ? ` reason=${why}` : ''}`;
+  return `${BYPASS_LINE_PREFIX} mechanism=${mechanism || 'unknown'} target=${targetState || 'unknown'}${why ? ` reason=${why}` : ''}`;
 }
 
 function appendBypassRow(row, ledgerPath = DEFAULT_LEDGER, env = process.env) {
@@ -101,4 +106,4 @@ function readBypassRows(ledgerPath = DEFAULT_LEDGER) {
   return rows;
 }
 
-module.exports = { DEFAULT_LEDGER, appendBypassRow, readBypassRows, shouldWriteLedgerFile, bypassCommentLine };
+module.exports = { DEFAULT_LEDGER, appendBypassRow, readBypassRows, shouldWriteLedgerFile, bypassCommentLine, BYPASS_LINE_PREFIX };

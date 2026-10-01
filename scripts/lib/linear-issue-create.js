@@ -111,8 +111,9 @@ const PARKED_MAX_PRIORITY = 3;
  */
 function effectiveCreatePriority({ priority, mode, title }) {
   if (mode !== 'park') return { priority, clamped: false };
-  const urgentOrHigh = priority === 1 || priority === 2;
-  const explicitlyRanked = Number.isFinite(priority) && priority > 0;
+  const n = priority === undefined || priority === null || priority === '' ? NaN : Number(priority);
+  const urgentOrHigh = n === 1 || n === 2;
+  const explicitlyRanked = Number.isFinite(n) && n > 0;
   const titlePromotes = !explicitlyRanked && TITLE_PRIORITY_RE.test(String(title || ''));
   if (urgentOrHigh || titlePromotes) return { priority: PARKED_MAX_PRIORITY, clamped: true };
   return { priority, clamped: false };
