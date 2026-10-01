@@ -1269,37 +1269,80 @@ function isOutletRegistryName(name) {
  * the rebuild's dedup drop a scored review (#27 incident, byline-recovery.js).
  */
 function shouldUpgradeUnknownByline(filepath, existing, ctx) {
-  const { showId, input, criticName } = ctx;
+  const { input } = ctx;
   if (!input || input.bylineFromOwnPage !== true || !input.url) return false;
-  if (!existing || existing.criticNameManual || existing._locked === true) return false;
-  if (!/--unknown\.json$/.test(path.basename(filepath))) return false;
-  if (existing.criticName && !/^unknown$/i.test(String(existing.criticName).trim())) return false;
+  const { canonicalReviewUrl } = require('./review-url-clusters');
+  if (!existing || !existing.url || canonicalReviewUrl(existing.url) !== canonicalReviewUrl(input.url)) return false;
+  return pageBylineRefusal(filepath, existing, ctx) === null;
+}
+
+// Outlets whose pages carry other critics' bylines in recirc widgets, so the
+// first byline match on a fetch can be someone else's (review-normalization
+// findExistingReviewFile pass 0: one WhatsOnStage URL produced 9 bylines).
+const ROTATING_BYLINE_OUTLETS = new Set(['whatsonstage', 'times-uk']);
+
+/**
+ * Why a byline read off a file's own page may NOT be written onto that
+ * --unknown file, or null when it may. Shared by the merge path above and
+ * applyPageByline (backfill-unknown-critics.js).
+ */
+function pageBylineRefusal(filepath, existing, ctx) {
+  const { showId, criticName } = ctx;
+  if (!existing || existing.criticNameManual || existing._locked === true) return 'locked-or-manual';
+  if (existing.wrongProduction || existing.duplicateOf) return 'flagged';
+  if (!/--unknown\.json$/.test(path.basename(filepath))) return 'not-unknown-file';
+  if (existing.criticName && !/^unknown$/i.test(String(existing.criticName).trim())) return 'already-named';
   const { isPlausiblePersonName } = require('./byline-recovery');
   const { isValidAuthorName } = require('./content-quality');
-  if (!isPlausiblePersonName(criticName) || !isValidAuthorName(criticName)) return false;
-  if (isOutletRegistryName(criticName)) return false;
-  const { canonicalReviewUrl } = require('./review-url-clusters');
-  const canon = existing.url && canonicalReviewUrl(existing.url);
-  if (!canon || canon !== canonicalReviewUrl(input.url)) return false;
-  const show = _getShowById(showId);
-  if (show && evaluateCreditedPersonAsCritic(show, criticName).match) return false;
+  if (!isPlausiblePersonName(criticName) || !isValidAuthorName(criticName)) return 'implausible-name';
+  if (isOutletRegistryName(criticName)) return 'outlet-name';
   const showDir = path.dirname(filepath);
   const self = path.basename(filepath);
   const outletId = normalizeOutlet(existing.outletId || self.split('--')[0]);
+  // An aggregator / round-up page, or a URL on another outlet's domain, names
+  // whoever wrote that page, not this outlet's critic.
+  if (!existing.url || isAggregatorPageUrl(existing.url)) return 'aggregator-url';
+  const urlOutlet = resolveOutletFromUrl(existing.url);
+  if (urlOutlet && urlOutlet.outletId && normalizeOutlet(urlOutlet.outletId) !== outletId) return 'url-other-outlet';
+  if (ROTATING_BYLINE_OUTLETS.has(outletId)) {
+    const text = String(existing.fullText || '').toLowerCase();
+    if (!text.includes(String(criticName).toLowerCase())) return 'rotating-byline-unconfirmed';
+  }
+  const show = _getShowById(showId);
+  if (show && evaluateCreditedPersonAsCritic(show, criticName).match) return 'credited-creative';
   const namedPath = path.join(showDir, generateReviewFilename(outletId, criticName));
-  if (fs.existsSync(namedPath)) return false;
-  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(namedPath)) return false;
+  if (fs.existsSync(namedPath)) return 'named-file-exists';
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(namedPath)) return 'sparse-hidden';
+  const { canonicalReviewUrl } = require('./review-url-clusters');
+  const canon = canonicalReviewUrl(existing.url);
   const wanted = normalizeCritic(criticName);
   for (const f of fs.readdirSync(showDir)) {
     if (f === self || !f.endsWith('.json')) continue;
     try {
       const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
       if (!d || normalizeOutlet(d.outletId || f.split('--')[0]) !== outletId) continue;
-      if (d.url && canonicalReviewUrl(d.url) === canon) return false;
-      if (d.criticName && normalizeCritic(d.criticName) === wanted) return false;
+      if (d.url && canonicalReviewUrl(d.url) === canon) return 'sibling-same-url';
+      if (d.criticName && normalizeCritic(d.criticName) === wanted) return 'sibling-same-critic';
     } catch { /* unreadable sibling: not evidence either way */ }
   }
-  return true;
+  return null;
+}
+
+/**
+ * Write a byline read off the file's own page onto an --unknown file and
+ * rename it to the named slug, or change nothing. For callers that already
+ * hold the file (backfill-unknown-critics.js) rather than an incoming write.
+ * @returns {{ applied: boolean, reason?: string, newPath?: string }}
+ */
+function applyPageByline(filepath, existing, { showId, criticName, source, dryRun = false }) {
+  const reason = pageBylineRefusal(filepath, existing, { showId, criticName });
+  if (reason) return { applied: false, reason };
+  const named = path.join(path.dirname(filepath), generateReviewFilename(normalizeOutlet(existing.outletId || path.basename(filepath).split('--')[0]), criticName));
+  if (dryRun) return { applied: true, newPath: named };
+  const updated = { ...existing, criticName, criticEnrichedFrom: `page-byline:${source || 'unknown-source'}` };
+  const rename = safeRenameReview(filepath, named, { newData: updated });
+  if (!rename || !rename.wrote) return { applied: false, reason: `rename-${(rename && rename.skipped) || 'failed'}` };
+  return { applied: true, newPath: named };
 }
 
 /**
@@ -1721,4 +1764,4 @@ const WRITE_GUARD_REFUSED_REASONS = new Set([
   'show-dir-outside-sparse-checkout',
 ]);
 
-module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline };
+module.exports = { createOrMergeReviewFile, stampFirstSeen, emitReviewFirstSeen, WRITE_GUARD_REFUSED_REASONS, shouldUpgradeUnknownByline, pageBylineRefusal, applyPageByline };
