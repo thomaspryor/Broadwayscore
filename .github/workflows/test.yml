@@ -285,6 +285,11 @@ on:
       - 'scripts/scrape-mezzanine-audience.test.mjs'
       - 'scripts/triage-review-gap.js'
       - 'scripts/triage-review-gap.test.mjs'
+      - 'scripts/opening-night-tools-data-dir.test.mjs'
+      - 'scripts/lib/review-texts-dir.js'
+      - 'scripts/check-opening-night-drift.js'
+      - 'scripts/check-opening-night-readiness.js'
+      - 'scripts/triage-human-review.js'
       # tests/unit/scrape-nysr-preserves-exclusion-flags.test.mjs
       - 'scripts/scrape-nysr-reviews.js'
       # tests/unit/scrape-theatre-reviews-preserves-exclusion-flags.test.mjs

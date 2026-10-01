@@ -45,3 +45,9 @@ test('every opening-night tool resolves review-texts via the shared helper', () 
     assert.doesNotMatch(src, /__dirname,\s*['"]\.\.\/data\/review-texts/, `${t} hardcodes ../data/review-texts`);
   }
 });
+
+test('cloud: populated plain data/review-texts is used when no home clone exists', () => {
+  const f = fixture({ gitInNested: false });
+  fs.rmSync(f.legacy, { recursive: true });
+  assert.equal(resolveReviewTextsDir({}, f.repo, f.home, noMain), f.nested);
+});

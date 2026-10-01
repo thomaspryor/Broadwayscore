@@ -107,7 +107,11 @@ function resolveReviewTextsDir(
     if (isCheckout(fromMain)) return fromMain;
   }
 
-  return path.join(homedir, 'broadway-review-texts');
+  const legacy = path.join(homedir, 'broadway-review-texts');
+  // Cloud/fresh setups strip .git from data/review-texts and have no home clone:
+  // a populated plain copy beats a nonexistent legacy path (BRO-4500).
+  if (!fs.existsSync(legacy) && fs.existsSync(nested)) return nested;
+  return legacy;
 }
 
 module.exports = { resolveReviewTextsDir, isReviewTextsCheckout, mainWorktreeOf };
