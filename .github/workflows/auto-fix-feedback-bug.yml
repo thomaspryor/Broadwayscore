@@ -80,6 +80,9 @@ jobs:
           ISSUE_BODY: ${{ steps.issue.outputs.body }}
           ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          # Owner "reader fix" email: who reported it + what they wrote (BRO-4452)
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/auto-fix-feedback-bug.js
 
       - name: Commit and push

@@ -32,6 +32,7 @@ const { foldDiacritics } = _require('./lib/title-match.js');
 const { syncRevivalTags } = _require('./lib/revival-tags.js');
 const { pickEditableFields, AUTO_FIX_EDITABLE_FIELDS } = _require('./lib/feedback-pipeline-fields.js');
 const { normalizeDiagnosisShowIds, summarizeShowFixOutcomes } = _require('./lib/feedback-multishow.js');
+const { readerFromDiagnosis, sendReaderFixOwnerEmail } = _require('./lib/owner-fix-email.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -285,6 +286,13 @@ async function main() {
 
     writeComment(`## Fix Applied\n\n**Show:** ${show.title}\n**Change:** Added "${missingPerson}" as co-winner for ${ceremony} / ${category}\n\nThe fix will be live within a few minutes after deployment.\n\n---\n*Auto-fixed by feedback pipeline*`);
     output('fixed');
+    await sendReaderFixOwnerEmail({
+      issueNumber: process.env.ISSUE_NUMBER,
+      reader: readerFromDiagnosis(diagnosis),
+      summary: diagnosis.summary,
+      changes: [`${show.title}: added "${missingPerson}" as co-winner for ${ceremony} / ${category}`],
+      how: 'automatic',
+    });
     console.log('Awards co-winner fix applied successfully');
     return;
   }
@@ -343,6 +351,20 @@ async function main() {
   output(action);
   const totalApplied = perShowResults.reduce((n, r) => n + r.applied.length, 0);
   console.log(`${action}: applied ${totalApplied} edit(s) across ${perShowResults.filter(r => r.applied.length > 0).length}/${resolvedShows.length + unresolvedShowIds.length} show(s)`);
+
+  // Tell Tom who reported it and what they wrote (BRO-4452).
+  await sendReaderFixOwnerEmail({
+    issueNumber: process.env.ISSUE_NUMBER,
+    reader: readerFromDiagnosis(diagnosis),
+    summary: diagnosis.summary,
+    changes: perShowResults.flatMap(r => r.applied.map(a => `${r.show.title}: ${a}`)),
+    skipped: [
+      ...perShowResults.flatMap(r => (r.error ? [`${r.show.title}: ${r.error}`] : r.skipped.map(s => `${r.show.title}: ${s}`))),
+      ...unresolvedShowIds.map(id => `${id}: show not found`),
+    ],
+    how: 'automatic',
+    partial: action === 'partial',
+  });
 }
 
 /**
