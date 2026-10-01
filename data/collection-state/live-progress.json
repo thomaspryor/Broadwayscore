@@ -1,49 +1,21 @@
 {
-  "updatedAt": "2026-10-01T11:22:10.889Z",
-  "processed": 51,
-  "failed": 53,
-  "successRate": "49.0%",
+  "updatedAt": "2026-10-01T11:37:32.905Z",
+  "processed": 99,
+  "failed": 71,
+  "successRate": "58.2%",
   "tierBreakdown": {
-    "playwright": 35,
+    "playwright": 55,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 0,
-    "scrapingbee": 12,
-    "brightdata": 2,
+    "scrapingdog": 10,
+    "scrapingbee": 14,
+    "brightdata": 3,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 11
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 4,
   "recentActivity": [
-    {
-      "t": "2026-10-01T10:07:11.090Z",
-      "event": "bb-session",
-      "session": "63f8e7e3",
-      "url": "https://www.wsj.com/articles/stereophonic-review-david-adjmi-will-butler-broadwa"
-    },
-    {
-      "t": "2026-10-01T10:07:11.409Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-01T10:09:06.196Z",
-      "event": "bb-session",
-      "session": "d9b96f79",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/04/19/stereophonic-broadway-re"
-    },
-    {
-      "t": "2026-10-01T10:09:06.532Z",
-      "event": "bb-cookie-inject",
-      "domain": "washingtonpost.com"
-    },
-    {
-      "t": "2026-10-01T10:09:14.529Z",
-      "event": "bb-session",
-      "session": "988d7cff",
-      "url": "https://www.washingtonpost.com/theater-dance/2024/04/19/stereophonic-broadway-re"
-    },
     {
       "t": "2026-10-01T10:09:14.836Z",
       "event": "bb-cookie-inject",
@@ -125,6 +97,34 @@
       "t": "2026-10-01T10:16:52.452Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-01T11:27:15.700Z",
+      "event": "bb-session",
+      "session": "6e5653b8",
+      "url": "https://www.thestage.co.uk/reviews/twenty-thousand-streets-under-the-sky-review"
+    },
+    {
+      "t": "2026-10-01T11:27:16.466Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-10-01T11:28:44.352Z",
+      "event": "bb-session",
+      "session": "e75fa53c",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/twenty-thousand-streets-u"
+    },
+    {
+      "t": "2026-10-01T11:28:45.125Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-01T11:29:25.940Z",
+      "event": "bb-session",
+      "session": "38e1a226",
+      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-jos"
     }
   ]
 }
