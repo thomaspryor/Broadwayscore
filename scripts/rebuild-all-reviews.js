@@ -3178,6 +3178,7 @@ showDirs.forEach(showId => {
             // ctx needed for those since they only read `data`.
             if (shouldAutoClearWrongProductionUkDualMarket(data, {
               isLondonMarketShow: isLondonMarket(showCat),
+              showEarliestDate: showDateMap[showId],
               isUkUrl,
               outletIsDualOrUk,
               outletIsLondonRegion,

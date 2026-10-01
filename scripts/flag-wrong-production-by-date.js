@@ -17,12 +17,13 @@
 const fs = require('fs');
 const path = require('path');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
-const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
+const { isWithinPriorRun, isWithinTourLeg, isPreRunForUkClear, namesNonLondonCity } = require('./lib/wrong-production-autoclear');
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
 const { shouldSkipWrongProductionAudit } = require('./lib/review-guards');
+const { isLondonMarket } = require('./lib/venue-classification');
 
 // Multi-production (revival) title index: a show id whose base title has ≥2
 // productions in shows.json. Used by the dateless-revival guard below to decide
@@ -212,8 +213,18 @@ function run() {
       }
 
       const decision = evaluateDateGuard({ pubDate, show, outletId: data.outletId });
-      const issue = decision.issue;
-      const diffDays = decision.diffDays;
+      let issue = decision.issue;
+      let diffDays = decision.diffDays;
+
+      // BRO-4476: inside the 60d London window but the URL names another city
+      // (Edinburgh Fringe etc.) and the review predates the run by >14d.
+      let nonLondonCityFlag = false;
+      if (!issue && isLondonMarket(show.category) && data.url && namesNonLondonCity(data)
+          && isPreRunForUkClear(pubDate, earliestStr)) {
+        issue = 'before_preview';
+        nonLondonCityFlag = true;
+        diffDays = Math.ceil((new Date(earliestStr) - pubDate) / 86400000);
+      }
 
       if (!issue) { ok++; continue; }
 
@@ -253,7 +264,9 @@ function run() {
         continue;
       }
 
-      const note = issue === 'before_preview'
+      const note = nonLondonCityFlag
+        ? `Non-London city guard: review ${data.publishDate} is ${diffDays}d before ${earliestStr} (preview/open) and URL names another city — likely a different production`
+        : issue === 'before_preview'
         ? `Date guard: review ${data.publishDate} is ${diffDays}d before ${earliestStr} (preview/open) — likely different production`
         : `Date guard: review ${data.publishDate} is ${diffDays}d after ${show.closingDate} (close+${DAYS_AFTER_CLOSE}d) — likely different production`;
 
@@ -274,6 +287,10 @@ function run() {
         data.wrongProduction = true;
         invalidateWrongProductionAutoClear(data);
         data.wrongProductionNote = note;
+        // Not a dated-guard note, so rebuild's stale date-guard clear (which
+        // re-evaluates at the 60d window) cannot release it; reason also blocks
+        // the UK-URL auto-clear.
+        if (nonLondonCityFlag) data.wrongProductionReason = 'non-london-city-pre-run';
         const result = safeWriteReview(filePath, data);
         if (result.lockedSkipped) lockedSkipCount++;
       }
