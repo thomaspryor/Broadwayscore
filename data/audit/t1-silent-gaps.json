@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-09-30T23:32:31.685Z",
+  "generatedAt": "2026-10-01T02:44:11.347Z",
   "windowDays": 45,
-  "showsScanned": 110,
+  "showsScanned": 114,
   "gaps": [
     {
       "showId": "school-girls-or-the-african-mean-girls-play-2026",
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=school-girls-or-the-african-mean-girls-play-2026",
       "firstSeen": "2026-09-29T06:59:42.774Z",
-      "fileAgeHours": 40.5465375,
+      "fileAgeHours": 43.725902222222224,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 22.432134444444443
+      "nonTerminalAgeHours": 25.626485
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -31,55 +31,16 @@
       "type": "empty-body",
       "url": "/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA_ck9qgVrJI837gwjrGU-vybX08Xoxs_Izf5RcaUmrP6KmbEkfQBtTwbcb9qyJm_DJXgLH4VC81mSAUDwaOPvU",
       "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data HTTP 400: {\"error\":\"Request validation failed\",\"error_code\":\"val"
       },
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=cosi-fan-tutte-off-broadway-2026 --url=/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA_ck9qgVrJI837gwjrGU-vybX08Xoxs_Izf5RcaUmrP6KmbEkfQBtTwbcb9qyJm_DJXgLH4VC81mSAUDwaOPvU --outlet=independent   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T11:13:40.183Z",
-      "fileAgeHours": 12.314003611111112,
+      "fileAgeHours": 15.493729722222222,
       "gapSeenAt": "2026-09-30T14:36:19.168Z",
-      "nonTerminalAgeHours": 8.93681
-    },
-    {
-      "showId": "twenty-thousand-streets-off-west-end-2026",
-      "title": "Twenty Thousand Streets",
-      "openingDate": "2026-09-16",
-      "file": "guardian--unknown.json",
-      "outletId": "guardian",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.theguardian.com/stage/2026/sep/19/twenty-thousand-streets-under-the-sky-review-southwark-playhouse-borough-london",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=twenty-thousand-streets-off-west-end-2026 --url=https://www.theguardian.com/stage/2026/sep/19/twenty-thousand-streets-under-the-sky-review-southwark-playhouse-borough-london --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-30T18:09:22.439Z",
-      "fileAgeHours": 5.385613333333334,
-      "gapSeenAt": "2026-09-30T19:58:06.007Z",
-      "nonTerminalAgeHours": 3.573799166666667
-    },
-    {
-      "showId": "twenty-thousand-streets-off-west-end-2026",
-      "title": "Twenty Thousand Streets",
-      "openingDate": "2026-09-16",
-      "file": "thestage--unknown.json",
-      "outletId": "thestage",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thestage.co.uk/reviews/twenty-thousand-streets-under-the-sky-review",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=twenty-thousand-streets-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/twenty-thousand-streets-under-the-sky-review --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-30T17:49:36.013Z",
-      "fileAgeHours": 5.715176388888889,
-      "gapSeenAt": "2026-09-30T19:58:06.007Z",
-      "nonTerminalAgeHours": 3.573799166666667
+      "nonTerminalAgeHours": 12.131160555555555
     },
     {
       "showId": "twenty-thousand-streets-off-west-end-2026",
@@ -91,15 +52,16 @@
       "type": "empty-body",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/twenty-thousand-streets-under-sky-review-southwark-playhouse-matthew-iliffe-7m2xwtwzq",
       "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
+        "attempted": true,
+        "ok": false,
+        "reason": "Article extraction returned 0 chars — pattern may be missing for this outlet. Add an entry to script"
       },
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=twenty-thousand-streets-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/twenty-thousand-streets-under-sky-review-southwark-playhouse-matthew-iliffe-7m2xwtwzq --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T17:48:55.365Z",
-      "fileAgeHours": 5.7264675,
+      "fileAgeHours": 8.90770388888889,
       "gapSeenAt": "2026-09-30T19:58:06.007Z",
-      "nonTerminalAgeHours": 3.573799166666667
+      "nonTerminalAgeHours": 6.768149722222223
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -111,15 +73,16 @@
       "type": "empty-body",
       "url": "/goto?url=CAESogEB6zswFV2lmVVdCz_FAnxpbkdT0laEhC-CQ-GYdueUSFpNnHAyl6jiFCYcnDmLoQT_XeFwvUMH1G-niwO9E0lWrESc5UKmT2Rw_qzEnWYLffLMtIYgqnIGQCJbIfba-nQTex_bfvPhSqr30ptZ5SVbHKYHN3y3kF2ZDXfr4aNASjO12xNdWA2agtXqIVoHxSFvP0Lvo8lupX-PHEVSnQpE7dU",
       "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data HTTP 400: {\"error\":\"Request validation failed\",\"error_code\":\"val"
       },
       "recoveryCount": 2,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFV2lmVVdCz_FAnxpbkdT0laEhC-CQ-GYdueUSFpNnHAyl6jiFCYcnDmLoQT_XeFwvUMH1G-niwO9E0lWrESc5UKmT2Rw_qzEnWYLffLMtIYgqnIGQCJbIfba-nQTex_bfvPhSqr30ptZ5SVbHKYHN3y3kF2ZDXfr4aNASjO12xNdWA2agtXqIVoHxSFvP0Lvo8lupX-PHEVSnQpE7dU --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:34:19.900Z",
-      "fileAgeHours": 25.969819444444443,
+      "fileAgeHours": 29.151434722222223,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 22.432134444444443
+      "nonTerminalAgeHours": 25.626485
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -131,15 +94,16 @@
       "type": "empty-body",
       "url": "/goto?url=CAESogEB6zswFW3fajLyWSsaMVGbF1waB9K9oVoINubxdhvdb4vtkRj7tH-PNlO_ypaz-kVXcD_mLxKacqDSKkFMezJ5D2a05lxvbHyAYGYB-_-F4hFjnmm5NEmBuKAnzJ6DibPD4crfLodTratehtKcBNzbDiPo0ntENTis3z6FPRwcthknjr39MxqgEIbsWBx9ILix0yHXVBetm4xOpTz4ye4fhNQ",
       "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Bright Data failed: Bright Data HTTP 400: {\"error\":\"Request validation failed\",\"error_code\":\"val"
       },
       "recoveryCount": 2,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFW3fajLyWSsaMVGbF1waB9K9oVoINubxdhvdb4vtkRj7tH-PNlO_ypaz-kVXcD_mLxKacqDSKkFMezJ5D2a05lxvbHyAYGYB-_-F4hFjnmm5NEmBuKAnzJ6DibPD4crfLodTratehtKcBNzbDiPo0ntENTis3z6FPRwcthknjr39MxqgEIbsWBx9ILix0yHXVBetm4xOpTz4ye4fhNQ --outlet=tennessean   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:40:48.734Z",
-      "fileAgeHours": 25.86181,
+      "fileAgeHours": 29.043746388888888,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 22.432134444444443
+      "nonTerminalAgeHours": 25.626485
     },
     {
       "showId": "conflicted-off-broadway-2026",
@@ -151,35 +115,16 @@
       "type": "empty-body",
       "url": "https://www.slantmagazine.com/games/marvels-wolverine-review/",
       "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
+        "attempted": true,
+        "ok": false,
+        "reason": "⚠️  Playwright failed: page.goto: Timeout 30000ms exceeded.\nCall log:\n  - navigating to \"https://www"
       },
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=conflicted-off-broadway-2026 --url=https://www.slantmagazine.com/games/marvels-wolverine-review/ --outlet=slantmagazine   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T16:38:09.097Z",
-      "fileAgeHours": 6.9061594444444445,
+      "fileAgeHours": 10.096624166666667,
       "gapSeenAt": "2026-09-30T19:58:06.007Z",
-      "nonTerminalAgeHours": 3.573799166666667
-    },
-    {
-      "showId": "the-ford-hill-project-off-broadway-2026",
-      "title": "The Ford/Hill Project",
-      "openingDate": "2026-09-08",
-      "file": "theatermania--unknown.json",
-      "outletId": "theatermania",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.theatermania.com/news/review-the-ford-hill-project-gives-silenced-women-the-final-word_1854518/",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=the-ford-hill-project-off-broadway-2026 --url=https://www.theatermania.com/news/review-the-ford-hill-project-gives-silenced-women-the-final-word_1854518/ --outlet=theatermania   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-30T20:31:39.238Z",
-      "fileAgeHours": 3.0144808333333333,
-      "gapSeenAt": "2026-09-30T23:32:31.684Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 6.768149722222223
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -194,9 +139,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 104.63405722222222,
+      "fileAgeHours": 107.824535,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 101.81733694444445
+      "nonTerminalAgeHours": 105.0116875
     },
     {
       "showId": "a-slow-fire-off-west-end-2026",
@@ -211,9 +156,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=a-slow-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T11:13:07.795Z",
-      "fileAgeHours": 36.32327111111111,
+      "fileAgeHours": 39.51376972222222,
       "gapSeenAt": "2026-09-29T12:07:43.506Z",
-      "nonTerminalAgeHours": 35.41338277777778
+      "nonTerminalAgeHours": 38.607733333333336
     },
     {
       "showId": "death-becomes-her-tour-2026",
@@ -225,94 +170,33 @@
       "type": "empty-body",
       "url": "https://timeout.com/newyork/theater/death-becomes-her-broadway-musical-review",
       "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
+        "attempted": true,
+        "ok": true,
+        "reason": null
       },
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=death-becomes-her-tour-2026 --url=https://timeout.com/newyork/theater/death-becomes-her-broadway-musical-review --outlet=timeout   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T19:44:23.692Z",
-      "fileAgeHours": 27.80219138888889,
+      "fileAgeHours": 30.993901944444445,
       "gapSeenAt": "2026-09-30T19:58:06.007Z",
-      "nonTerminalAgeHours": 3.573799166666667
+      "nonTerminalAgeHours": 6.768149722222223
     },
     {
-      "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026",
-      "title": "for colored girls who have considered suicide / when the rainbow is enuf",
-      "openingDate": "2026-09-02",
-      "file": "guardian--unknown.json",
-      "outletId": "guardian",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.theguardian.com/stage/2026/sep/10/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review-yard-theatre-london",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026 --url=https://www.theguardian.com/stage/2026/sep/10/for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-review-yard-theatre-london --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-30T19:20:03.541Z",
-      "fileAgeHours": 4.2078066666666665,
-      "gapSeenAt": "2026-09-30T23:32:31.684Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "youre-so-special-off-west-end-2026",
-      "title": "You're So Special",
-      "openingDate": "2026-09-08",
-      "file": "everything-theatre--unknown.json",
-      "outletId": "everything-theatre",
+      "showId": "burning-leaves-off-broadway-2026",
+      "title": "Burning Leaves",
+      "openingDate": null,
+      "file": "theater-scene--victor-gluck.json",
+      "outletId": "theater-scene",
       "tier": 2,
-      "type": "empty-body",
-      "url": "https://everything-theatre.co.uk/2026/09/review-youre-so-special-soho-theatre/",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
+      "type": "unscored",
+      "dispatchable": false,
+      "url": "https://www.theaterscene.net/tag/burning-leaves/",
+      "recovery": null,
       "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=youre-so-special-off-west-end-2026 --url=https://everything-theatre.co.uk/2026/09/review-youre-so-special-soho-theatre/ --outlet=everything-theatre   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-30T19:34:32.626Z",
-      "fileAgeHours": 3.966394166666667,
-      "gapSeenAt": "2026-09-30T23:32:31.684Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "youre-so-special-off-west-end-2026",
-      "title": "You're So Special",
-      "openingDate": "2026-09-08",
-      "file": "guardian--unknown.json",
-      "outletId": "guardian",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.theguardian.com/stage/2026/sep/09/youre-so-special-review-soho-theatre-julia-grogan",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=youre-so-special-off-west-end-2026 --url=https://www.theguardian.com/stage/2026/sep/09/youre-so-special-review-soho-theatre-julia-grogan --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-30T19:34:32.371Z",
-      "fileAgeHours": 3.9664652777777776,
-      "gapSeenAt": "2026-09-30T23:32:31.684Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "youre-so-special-off-west-end-2026",
-      "title": "You're So Special",
-      "openingDate": "2026-09-08",
-      "file": "londontheatre1--unknown.json",
-      "outletId": "londontheatre1",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.londontheatre1.com/reviews/youre-so-special-soho-theatre-dean-street/",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=youre-so-special-off-west-end-2026 --url=https://www.londontheatre1.com/reviews/youre-so-special-soho-theatre-dean-street/ --outlet=londontheatre1   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-30T19:34:32.873Z",
-      "fileAgeHours": 3.9663258333333333,
-      "gapSeenAt": "2026-09-30T23:32:31.684Z",
+      "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=burning-leaves-off-broadway-2026",
+      "firstSeen": "2026-09-30T14:32:12.902Z",
+      "fileAgeHours": 12.196914444444445,
+      "gapSeenAt": "2026-10-01T02:44:11.346Z",
       "nonTerminalAgeHours": 0
     },
     {
@@ -324,36 +208,13 @@
       "tier": 1,
       "type": "empty-body",
       "url": "https://www.theguardian.com/stage/2026/sep/16/chewing-gum-dreams-review-theatre503-michaela-coel",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
+      "recovery": null,
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=chewing-gum-dreams-off-west-end-2026 --url=https://www.theguardian.com/stage/2026/sep/16/chewing-gum-dreams-review-theatre503-michaela-coel --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T22:10:33.519Z",
-      "fileAgeHours": 1.366146388888889,
+      "fileAgeHours": 4.560491666666667,
       "gapSeenAt": "2026-09-30T23:32:31.684Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "chewing-gum-dreams-off-west-end-2026",
-      "title": "Chewing Gum Dreams",
-      "openingDate": "2026-09-10",
-      "file": "thestage--unknown.json",
-      "outletId": "thestage",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.thestage.co.uk/reviews/chewing-gum-dreams-review-theatre503-london",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=chewing-gum-dreams-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/chewing-gum-dreams-review-theatre503-london --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-09-30T22:10:33.842Z",
-      "fileAgeHours": 1.3660566666666667,
-      "gapSeenAt": "2026-09-30T23:32:31.684Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.1943505555555554
     }
   ],
   "contradictions": []
