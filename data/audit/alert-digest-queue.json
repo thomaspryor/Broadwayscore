@@ -12,16 +12,16 @@
     "queuedAt": "2026-10-01T13:58:14.880Z"
   },
   {
-    "conditionKey": "opening-night-fulltext-mentions-show:short:whos-afraid-of-virginia-woolf-west-end-2026",
-    "title": "Shipped review too short to verify on Who’s Afraid of Virginia Woolf?",
-    "description": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED with fullText too short to assess title mention (36 chars — paywall stub?): https://www.thestage.co.uk/reviews/whos-afraid-of-virginia-woolf-review-sohoplace-london",
+    "conditionKey": "test-yml:data-validation-red",
+    "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Validate market expansion",
+    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36878573265",
     "severity": "warning",
     "url": null,
     "decision": false,
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-01T14:40:07.513Z"
+    "queuedAt": "2026-10-01T14:48:22.612Z"
   },
   {
     "conditionKey": "broadcast-gate:checklist:the-standard-of-living-west-end-2026,whos-afraid-of-virginia-woolf-west-end-2026",
@@ -39,17 +39,5 @@
       }
     ],
     "queuedAt": "2026-10-01T14:40:08.485Z"
-  },
-  {
-    "conditionKey": "test-yml:data-validation-red",
-    "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Validate market expansion",
-    "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36878573265",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-01T14:48:22.612Z"
   }
 ]
