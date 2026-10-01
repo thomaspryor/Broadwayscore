@@ -41,6 +41,8 @@ const LEGIT = [
   'Sue Weston and Susan', 'Jacques le Sourd', 'Barbara Siegel & Scott Siegel',
   'Dan Dinero & Molly Marinik', 'Nicky & Rosie Chambers', 'Elliot & Tom', 'Shahnaz (Shiny) Hussain',
   'Nicholas de Jongh', 'Charles McNulty', 'Ben Brantley', 'Mary MacDonald', 'Jesse Green',
+  // name-first bylines with the outlet in parens (ship-check)
+  'Peter Marks (The Washington Post)', 'Mary Smith (Mary Jones)', 'Victoria Myers (Intermission Magazine)',
 ];
 
 describe('isJunkCriticName', () => {

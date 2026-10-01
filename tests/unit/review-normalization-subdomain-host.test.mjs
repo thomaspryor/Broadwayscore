@@ -35,8 +35,11 @@ describe('Time Out city subdomains', () => {
   test('london.timeout.com is Time Out London', () => {
     assert.equal(outletOf('https://london.timeout.com/theatre/some-play-review'), 'timeout-london');
   });
-  test('another city subdomain resolves to neither registered edition', () => {
+  test('another city or non-edition subdomain resolves to neither registered edition', () => {
     assert.equal(outletOf('https://chicago.timeout.com/theater/some-play-review'), null);
+    assert.equal(outletOf('https://losangeles.timeout.com/theater/x'), null);
+    assert.equal(outletOf('https://hongkong.timeout.com/theater/x'), null);
+    assert.equal(outletOf('https://media.timeout.com/images/x'), null);
   });
   test('www.timeout.com path split is unchanged', () => {
     assert.equal(outletOf('https://www.timeout.com/newyork/theater/some-review'), 'timeout');
@@ -63,6 +66,20 @@ describe('subdomain hosts never fall to the first-label bare base', () => {
   test('an unlisted country suffix (mb.com.ph) does not register the bare base "com"', () => {
     assert.equal(outletOf('https://mb.com.ph/2024/1/1/review'), outletOf('https://www.mb.com.ph/x'));
     assert.equal(outletOf('https://com.au/x'), null);
+  });
+  test('a subdomain outlet does not claim its parent domain as a brand', () => {
+    // abcnews.go.com (ABC News, an AP alias) and *.typepad.com blogs.
+    assert.equal(outletOf('https://go.com/'), null);
+    assert.equal(outletOf('https://typepad.com/'), null);
+  });
+  test('news portals never name the publisher', () => {
+    for (const u of ['https://news.yahoo.com/s/ap/20110420/x', 'https://www.yahoo.com/entertainment/x.html',
+      'https://www.msn.com/en-us/entertainment/news/x/ar-AA1', 'https://www.aol.com/x']) {
+      assert.equal(outletOf(u), null, u);
+    }
+  });
+  test('a trailing root dot is ignored', () => {
+    assert.equal(outletOf('https://nytimes.com./2024/x.html'), 'nytimes');
   });
   test('unrelated subdomain on an unregistered parent resolves to nothing', () => {
     assert.equal(outletOf('https://newyork.example-unregistered-site.com/review'), null);

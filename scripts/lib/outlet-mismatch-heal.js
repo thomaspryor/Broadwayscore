@@ -73,11 +73,6 @@ const CROSS_PUBLICATION_ALLOW = {
 };
 // Hosts that archive OTHER papers' reviews under the archive's own domain.
 const ARCHIVE_HOSTS = new Set(['jasonraize.com', 'jasonraize.net']);
-// News portals that republish wire/partner copy (AP reviews on news.yahoo.com)
-// under their own domain: the host never names the publisher. BRO-4502: once
-// news.yahoo.com stopped mis-resolving to abscbnnewscom it resolved to yahoo,
-// and the heal would have relabelled AP reviews as "Yahoo".
-const SYNDICATION_PORTAL_HOSTS = new Set(['news.yahoo.com', 'msn.com', 'aol.com']);
 // Flags meaning "this is not this show's review at all": the fix is the
 // wrongProduction/wrongShow/roundup flag, never a rename onto the host owner.
 const NOT_A_REVIEW_FLAGS = ['wrongProduction', 'wrongShow', 'isRoundupArticle'];
@@ -129,7 +124,9 @@ function publisherDomainCorrection(data, { ignoreDuplicateOf = false, ignoreReje
   if (!current) return null;
   let host;
   try { host = new URL(data.url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; }
-  if ([...ARCHIVE_HOSTS, ...SYNDICATION_PORTAL_HOSTS].some((h) => host === h || host.endsWith('.' + h))) return null;
+  if ([...ARCHIVE_HOSTS].some((h) => host === h || host.endsWith('.' + h))) return null;
+  // News portals (AP copy on news.yahoo.com) never name the publisher (BRO-4502).
+  if (require('./review-normalization').isSyndicationPortalHost(host)) return null;
   const { isCrossOutletUrl, resolveOutletFromUrl } = require('./review-normalization');
   if (!isCrossOutletUrl(current, data.url)) return null;
   const owner = resolveOutletFromUrl(data.url);

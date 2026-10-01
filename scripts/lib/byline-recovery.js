@@ -74,6 +74,7 @@ function isPlausiblePersonName(name) {
 // costs a page fetch, and a pattern that caught a real first-name-only
 // blogger ("Ross") or a co-author byline ("Sara Holdren and Jesse David Fox")
 // would put a real name up for replacement.
+const OUTLET_THEN_PAREN_NAME_RE = /^[^()]*\b(Post|Times|News|Magazine|Journal|Review|Tribune|Herald|Guardian|Telegraph|Daily|Weekly)\s\(([A-Z][a-z]+(?:\s[A-Z][\w.'’-]+)+)\)$/;
 const JUNK_CRITIC_NAME_PATTERNS = [
   /^read more articles by\s+\S/i,           // Exeunt author-box link text
   /^view (more posts|my complete)\b/i,      // WordPress / Blogger profile links
@@ -85,7 +86,10 @@ const JUNK_CRITIC_NAME_PATTERNS = [
   /\s[Tt]heat(re|er)(\s+[A-Z]{2})?$/,       // venue names: "Morris Theatre DC", "J. Friedman Theatre"
   /\s(and|on|sitting)$/,                    // cut mid-phrase: "Shanxi Radio and", "Deirdre Donovan on"
   /\s[A-Z][’']$/,                           // cut mid-surname: "Holly O'"
-  /^[^()]+\s\([A-Z][a-z]+(\s[A-Z][\w.'’-]+)+\)$/, // outlet (Full Name): "Huffington Post (Steven Suskin)", not "Bee (UK)"
+  // Outlet label, then the byline in parens: "Huffington Post (Steven Suskin)".
+  // Outlet-first only; name-first "Peter Marks (The Washington Post)" and
+  // "Bee (UK)" are real bylines.
+  OUTLET_THEN_PAREN_NAME_RE,
   /,\s*([a-z]+\s+)?editor$/i,               // "Laura Hackett, Fiction Editor"
   /[a-z]{4,}[A-Z][a-z]{4,}/,                // two names run together: "ArgenEdward"
   /\.\s+special to\b/i,                     // "Matt Windman. Special to AmNewYork"
@@ -114,11 +118,11 @@ function isJunkCriticName(name) {
 function nameFromJunkCriticName(name) {
   if (!name || typeof name !== 'string') return null;
   const s = name.trim();
-  const m = s.match(/^read more articles by\s+(.+)$/i)
-    // "Huffington Post (Steven Suskin)": outlet label with the byline in parens.
-    || (isJunkCriticName(s) && s.match(/^[^()]+\s\(([^()]+)\)$/));
-  if (!m) return null;
-  const candidate = m[1].trim();
+  const prefixed = s.match(/^read more articles by\s+(.+)$/i);
+  // "Huffington Post (Steven Suskin)": outlet label with the byline in parens.
+  const paren = !prefixed && s.match(OUTLET_THEN_PAREN_NAME_RE);
+  const candidate = prefixed ? prefixed[1].trim() : paren ? paren[2].trim() : null;
+  if (!candidate) return null;
   return isPlausiblePersonName(candidate) ? candidate : null;
 }
 

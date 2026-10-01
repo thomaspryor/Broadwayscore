@@ -1477,6 +1477,10 @@ function buildDomainToOutletIndex() {
     for (const [domainBase, hosts] of _baseToHosts) {
       if (hosts.size !== 1) continue; // cross-TLD brand collision — leave ambiguous
       const fullHost = [...hosts][0];
+      // A subdomain outlet (abcnews.go.com, yonkerstribune.typepad.com) is
+      // not the brand of its parent domain: it claims no bare base, or
+      // go.com would resolve to ABC News (BRO-4502 ship-check).
+      if (registrableDomain(fullHost) !== fullHost) continue;
       const winner = _domainToOutletCache.get(fullHost);
       if (winner) _claimDomain(domainBase, winner, domainBase);
     }
@@ -1493,7 +1497,11 @@ function buildDomainToOutletIndex() {
         if (!_domainToOutletCache.has(aliasHost)) {
           _domainToOutletCache.set(aliasHost, entry);
         }
-        if (!_domainToOutletCache.has(aliasBase)) {
+        // Same rule as pass 1b: only a registrable alias host claims a bare
+        // base, and never one pass 1a saw on 2+ hosts (left ambiguous).
+        if (registrableDomain(aliasHost) === aliasHost
+            && !(_baseToHosts.has(aliasBase) && _baseToHosts.get(aliasBase).size > 1)
+            && !_domainToOutletCache.has(aliasBase)) {
           _domainToOutletCache.set(aliasBase, entry);
         }
       }
@@ -1501,6 +1509,15 @@ function buildDomainToOutletIndex() {
   }
 
   return _domainToOutletCache;
+}
+
+// News portals whose hosts carry other publishers' copy (wire stories,
+// partner feeds); a URL there never identifies the outlet. Shared with
+// outlet-mismatch-heal.js so the heal and the resolver agree.
+const SYNDICATION_PORTAL_HOSTS = Object.freeze(['yahoo.com', 'msn.com', 'aol.com']);
+function isSyndicationPortalHost(hostname) {
+  const h = String(hostname || '').toLowerCase().replace(/\.+$/, '').replace(/^www\./, '');
+  return SYNDICATION_PORTAL_HOSTS.some((p) => h === p || h.endsWith('.' + p));
 }
 
 /**
@@ -1537,8 +1554,11 @@ function resolveOutletFromUrl(url) {
 
   try {
     const parsedUrl = new URL(url);
-    const hostname = parsedUrl.hostname.replace(/^www\./, '').toLowerCase();
+    const hostname = parsedUrl.hostname.replace(/\.+$/, '').replace(/^www\./, '').toLowerCase();
     const domainBase = hostname.split('.')[0];
+    // News portals republish wire/partner copy under their own domain, so the
+    // host never names the publisher (BRO-4502: AP reviews on news.yahoo.com).
+    if (isSyndicationPortalHost(hostname)) return null;
 
     // Path-aware overrides for shared-domain outlets (before domain lookup)
     // timeout.com hosts both Time Out New York and Time Out London under different paths
@@ -1552,12 +1572,8 @@ function resolveOutletFromUrl(url) {
       const city = hostname.slice(0, -'.timeout.com'.length);
       if (city === 'newyork' || city === 'new-york' || city === 'ny') return { outletId: 'timeout', displayName: 'Time Out New York' };
       if (city === 'london' || city === 'uk') return { outletId: 'timeout-london', displayName: 'Time Out London' };
-      // Another city edition, or a non-city host (media.timeout.com):
-      // decide by path exactly like the bare domain does.
-      if (TIMEOUT_OTHER_CITY_EDITIONS.has(city)) return null;
-      const edition = timeoutEditionForPath('timeout.com', urlPath);
-      if (edition === 'timeout-london') return { outletId: 'timeout-london', displayName: 'Time Out London' };
-      if (edition === 'timeout') return { outletId: 'timeout', displayName: 'Time Out New York' };
+      // Any other city edition (losangeles., hongkong.) or a non-edition host
+      // (media.timeout.com) is neither registered outlet.
       return null;
     }
     if (hostname === 'timeout.com' || hostname === 'timeout.co.uk') {
@@ -2634,6 +2650,7 @@ module.exports = {
   outletOwnsUrlDomainIgnoringPath,
   isCrossOutletUrl,
   WIRE_SERVICE_OUTLETS,
+  isSyndicationPortalHost,
   clearDomainCache,
   getOutletAliases,
   isProfileUrl,
