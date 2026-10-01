@@ -154,7 +154,9 @@ function isRedactedPlaceholder(value) {
   return EMAIL_RE.test(String(value || '')) && firstRealEmail(value) === null;
 }
 const PII_COMPOUND_KEY_RE = /^(submitter|requester|reporter|contributor|user)[_-]?(name|email)$/i;
-const PII_PARENT_KEY_RE = /^(submitter|requester|reporter|contributor)s?$/i;
+// `submission` (BRO-4453): data/audit/pending-bug-diagnoses.json nests the
+// raw Formspree submission under that key, and a name there passed this lint.
+const PII_PARENT_KEY_RE = /^(submitter|requester|reporter|contributor|submission)s?$/i;
 const NESTED_PII_KEYS = new Set(['name', 'email']);
 
 /** j***@nystagereview.com — never echo a full address into (public) CI logs. */

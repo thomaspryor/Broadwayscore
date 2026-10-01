@@ -1907,6 +1907,10 @@ const CORE_DATA_MERGE_REGISTRY = [
   { file: 'followers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
   { file: 'subscribers-westend.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, send-follow-notifications.yml, own concurrency group' },
+  // BRO-4453: reader name/email/message for feedback reports, keyed by
+  // submission id. Kept out of the public repo's GitHub issues. Every job
+  // that checks out core data clones it, same as subscribers.json.
+  { file: 'feedback-submitters.json', surface: 'private-core-data', status: 'single-writer', note: 'single writer, process-feedback.yml (concurrency group process-feedback); readers: auto-fix-feedback-bug, execute-approved-fix' },
   // 2026 data audit (S0-T2/S0-T4): the retired-id registry and its archive of
   // deleted shows.json rows, append-only arrays written by retireId() in
   // scripts/lib/retired-show-ids.js. BRO-4398 added the first CI writer

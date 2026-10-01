@@ -64,7 +64,10 @@ runs:
         # slug → canonical slug, read by scripts/lib/critic-slug-aliases.js at
         # prebuild for the /critics/* 301s. Human-edited today; listed so a
         # future CI writer (S7-T3 diacritic fold) pushes it like the rest.
-        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json"
+        # feedback-submitters.json (BRO-4453): reader name/email/message for
+        # feedback reports, written by process-feedback.js. Private by design:
+        # it is what keeps those details out of the public issues.
+        CORE_FILES="shows.json reviews.json grosses.json grosses-history.json commercial.json audience-buzz.json critic-consensus.json critic-registry.json diary-shows.json audience-reviews-lbo.json opening-night-sent.json followers.json subscribers.json subscribers-westend.json awards.json retired-show-ids.json deleted-shows.json critic-slug-aliases.json feedback-submitters.json"
         # Manifest of files this workflow actually modified — consumed by the
         # "Commit and push core data" step below to decide whether the
         # per-slug reconciliation merge (commercial.json, diary-shows.json) is
