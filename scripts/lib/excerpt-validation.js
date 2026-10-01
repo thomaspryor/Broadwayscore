@@ -198,6 +198,17 @@ const NAME_SCAN_FIELDS = [
   'lboRoundupExcerpt', 'llmPullQuote',
 ];
 
+// Ordinary theatre nouns that a capitalized phrase near a role name can
+// carry ("Puppet Show", "Panto Cast"). Never a person's name on their own, so
+// they are never kept as a former-cast token: a bare "show" token matched an
+// ordinary pull quote on the-enormous-crocodile-west-end-2026 ("...see this
+// brilliant show!", BRO-4492).
+const GENERIC_THEATRE_TOKENS = new Set([
+  'show', 'shows', 'musical', 'musicals', 'play', 'plays', 'production', 'productions',
+  'revival', 'cast', 'company', 'ensemble', 'stage', 'tour', 'panto', 'pantomime',
+  'opera', 'ballet', 'puppet', 'puppets', 'audience', 'performance', 'performances',
+]);
+
 // How close a current-show role name must sit to a name candidate (either
 // side) to count as "this text is describing who plays that role" rather
 // than an unrelated nearby mention.
@@ -387,7 +398,7 @@ function collectFormerCastTokens(data, safeTokens, roleTerms) {
       // mention of just the middle/last word of a 3-word name won't
       // match, which is an acceptable miss next to that false-positive.
       if (tokens.length <= 2) {
-        tokens.forEach(t => former.add(t));
+        tokens.filter(t => !GENERIC_THEATRE_TOKENS.has(t)).forEach(t => former.add(t));
       } else {
         former.add(tokens.join(' '));
       }
