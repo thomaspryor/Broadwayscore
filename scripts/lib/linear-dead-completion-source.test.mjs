@@ -68,8 +68,32 @@ test('findLinearDeadLaunchCandidates: empty/malformed input never throws', () =>
   assert.deepEqual(src.findLinearDeadLaunchCandidates([null, {}, { taskId: 'linear:' }]), []);
 });
 
-test('shouldReopenLinearIssue: only a completed-type state reopens', () => {
-  assert.equal(src.shouldReopenLinearIssue({ state: { type: 'completed' } }), true);
-  assert.equal(src.shouldReopenLinearIssue({ state: { type: 'started' } }), false);
+// BRO-4487: shapes taken from live reopened issues (e.g. BRO-3866: gated Done
+// at 20:24, reopened by this pass at 21:14 although its fix was landed-acked).
+const COMPLETED_AT = '2026-09-20T20:24:00.000Z';
+const bypassComment = (createdAt) => ({ createdAt, body: 'DONE-GATE-BYPASS: mechanism=force target=Done reason=data-repo close' });
+
+test('shouldReopenLinearIssue: only a completed-type state is ever a candidate', () => {
+  assert.equal(src.shouldReopenLinearIssue({ state: { type: 'started' }, completedAt: COMPLETED_AT, comments: { nodes: [bypassComment(COMPLETED_AT)] } }), false);
   assert.equal(src.shouldReopenLinearIssue(null), false);
+});
+
+test('shouldReopenLinearIssue: a gated completion (no bypass line) is never reopened', () => {
+  const issue = {
+    state: { type: 'completed' },
+    completedAt: COMPLETED_AT,
+    comments: { nodes: [{ createdAt: '2026-09-20T20:23:30.000Z', body: 'landed-acked by abc: 9382c35 is on origin/main; `node --test x` exit 0' }] },
+  };
+  assert.equal(src.shouldReopenLinearIssue(issue), false);
+  assert.equal(src.shouldReopenLinearIssue({ state: { type: 'completed' } }), false, 'no completedAt / no comments: owner-closed or legacy, left alone');
+});
+
+test('shouldReopenLinearIssue: a completion that bypassed the Done gate is reopened', () => {
+  const issue = { state: { type: 'completed' }, completedAt: COMPLETED_AT, comments: { nodes: [bypassComment('2026-09-20T20:23:55.000Z')] } };
+  assert.equal(src.shouldReopenLinearIssue(issue), true);
+});
+
+test('completionBypassedDoneGate: a bypass from an EARLIER, different completion does not count', () => {
+  const issue = { state: { type: 'completed' }, completedAt: COMPLETED_AT, comments: { nodes: [bypassComment('2026-09-18T09:00:00.000Z')] } };
+  assert.equal(src.completionBypassedDoneGate(issue), false);
 });
