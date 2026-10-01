@@ -224,7 +224,7 @@ test('safe-form: the acceptance command is admitted; vacuous windows/thresholds,
 
 test('CLI main(): exit 0 on PASS, 1 on FAIL, 2 on gh failure — never PASS when the fetch fails; --record appends exactly one ledger row', () => {
   const cli = require('../ci-green-rate.js');
-  const page = (rows) => () => JSON.stringify(rows);
+  const page = (rows) => () => JSON.stringify({ total: rows.length, runs: rows });
   const quiet = { log: () => {}, error: () => {}, repo: 'thomaspryor/Broadwayscore', ledgerRows: [] };
   const logs = [];
   const recorded = [];
@@ -247,20 +247,124 @@ test('CLI main(): exit 0 on PASS, 1 on FAIL, 2 on gh failure — never PASS when
   assert.equal(cli.main(['--days', '7'], { ...quiet, repo: null, exec: () => { throw new Error('no git'); } }), 2, 'unresolvable repo is exit 2, not a query against an unknown repo');
 });
 
-test('CLI fetchRuns paginates until a short page, and flags the page cap as truncated', () => {
+test('CLI fetchRuns paginates until total_count, and flags the page cap as truncated', () => {
   const cli = require('../ci-green-rate.js');
   const full = Array.from({ length: 100 }, (_, i) => run(i + 1, 'success'));
   const calls = [];
-  const exec = (_gh, args) => { calls.push(args[1]); return JSON.stringify(calls.length < 3 ? full : [run(200, 'success')]); };
+  const exec = (_gh, args) => { calls.push(args[1]); return JSON.stringify({ total: 201, runs: calls.length < 3 ? full.map((r, i) => ({ ...r, databaseId: calls.length * 1000 + i })) : [run(200, 'success')] }); };
   const r = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, exec);
   assert.equal(calls.length, 3);
   assert.equal(r.runs.length, 201);
   assert.equal(r.truncated, false);
   assert.match(calls[1], /^repos\/thomaspryor\/Broadwayscore\/.*&page=2&/);
-  const capped = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 2, now: NOW }, () => JSON.stringify(full));
+  const capped = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 2, now: NOW }, () => JSON.stringify({ total: 500, runs: full }));
   assert.equal(capped.truncated, true);
   assert.equal(capped.runs.length, 200);
   assert.throws(() => cli.fetchRuns({ workflow: 'test.yml', branch: 'main', days: 7, maxPages: 1, now: NOW }, exec), /repo is required/);
+});
+
+test('BRO-4465: a short page mid-window keeps paging, and an incomplete fetch is n/a — never a partial-window verdict', () => {
+  const cli = require('../ci-green-rate.js');
+  const short = Array.from({ length: 39 }, (_, i) => run(i + 1, 'success'));
+  const rest = Array.from({ length: 61 }, (_, i) => run(100 + i, 'failure'));
+  // Page 1 comes back short (39 < 100) but total_count says 100: must fetch page 2.
+  let n = 0;
+  const r = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW },
+    () => JSON.stringify({ total: 100, runs: ++n === 1 ? short : rest }));
+  assert.equal(r.runs.length, 100);
+  // The API never delivers the rest: refuse, and main() reports n/a (exit 2), not a rate.
+  const stuck = () => JSON.stringify({ total: 250, runs: n++ === 0 ? short : [] });
+  n = 0;
+  assert.throws(() => cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, stuck), /incomplete fetch: got 39 of 250/);
+  n = 0;
+  const out = [];
+  assert.equal(cli.main(['--days', '7'], { log: (l) => out.push(l), error: () => {}, repo: 'thomaspryor/Broadwayscore', ledgerRows: [], now: NOW, exec: stuck, record: () => { throw new Error('must not record'); } }), 2);
+  assert.match(out.join('\n'), /^CI-GREEN-RATE: n\/a over 7d — gh api fetch failed, no verdict$/m);
+});
+
+test('BRO-4465: one transient short read is retried once and then scores the full window', () => {
+  const cli = require('../ci-green-rate.js');
+  const full = Array.from({ length: 50 }, (_, i) => run(i + 1, 'success'));
+  let calls = 0;
+  // First fetch: 39 of 50 then an empty page (incomplete). Retry: complete.
+  const exec = () => { calls++; if (calls === 1) return JSON.stringify({ total: 50, runs: full.slice(0, 39) }); if (calls === 2) return JSON.stringify({ total: 50, runs: [] }); return JSON.stringify({ total: 50, runs: full }); };
+  const out = [];
+  assert.equal(cli.main(['--days', '7', '--min', '80'], { log: (l) => out.push(l), error: () => {}, repo: 'thomaspryor/Broadwayscore', ledgerRows: [], now: NOW, exec }), 0);
+  assert.match(out.join('\n'), /green 50 \/ red 0, 50 runs/);
+});
+
+test('BRO-4465: a partial read with a self-consistent total_count is outvoted by the fuller reads', () => {
+  const cli = require('../ci-green-rate.js');
+  const full = Array.from({ length: 250 }, (_, i) => ({ ...run(i + 1, 'success'), databaseId: 5000 + i }));
+  const partial = full.slice(0, 39);
+  // Read 1 lies consistently (total 39, 39 rows); reads 2 and 3 are complete.
+  let calls = 0;
+  const pageOf = (rows, page) => rows.slice((page - 1) * 100, page * 100);
+  const exec = (_gh, args) => {
+    const page = Number(/[?&]page=(\d+)/.exec(args[1])[1]);
+    if (page === 1) calls++;
+    const rows = calls === 1 ? partial : full;
+    return JSON.stringify({ total: rows.length, runs: pageOf(rows, page) });
+  };
+  const warns = [];
+  const r = cli.fetchStable({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, exec, (w) => warns.push(w));
+  assert.equal(r.runs.length, 250);
+  assert.equal(calls, 3);
+  assert.match(warns.join('\n'), /reads disagreed \(39, 250, 250 runs\)/);
+  // Two agreeing reads cost exactly two fetches and no warning.
+  calls = 1; // make every following read "full"
+  const quiet = [];
+  const ok = cli.fetchStable({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, exec, (w) => quiet.push(w));
+  assert.equal(ok.runs.length, 250);
+  assert.equal(calls, 3);
+  assert.deepEqual(quiet, []);
+});
+
+test('BRO-4465: a run completing mid-read (page shift, repeated row) keeps paging instead of reading as incomplete', () => {
+  const cli = require('../ci-green-rate.js');
+  const mk = (id) => ({ ...run(1, 'success'), databaseId: id });
+  // total 150; page 2 repeats id 100 (shifted down by one) so raw rows reach 150 first.
+  const pages = {
+    1: { total: 150, runs: Array.from({ length: 100 }, (_, i) => mk(i + 1)) },
+    2: { total: 150, runs: [mk(100), ...Array.from({ length: 49 }, (_, i) => mk(101 + i))] },
+    3: { total: 150, runs: [mk(150)] },
+  };
+  const exec = (_gh, args) => JSON.stringify(pages[Number(/[?&]page=(\d+)/.exec(args[1])[1])] || { total: 150, runs: [] });
+  const r = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, exec);
+  assert.equal(new Set(r.runs.map((x) => x.databaseId)).size, 150);
+});
+
+test('BRO-4465: a rate-limited tie-break read keeps the good reads; a lone read is flagged unconfirmed', () => {
+  const cli = require('../ci-green-rate.js');
+  const mk = (n) => Array.from({ length: n }, (_, i) => ({ ...run(1, 'success'), databaseId: 9000 + i }));
+  const opts = { repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW };
+  let c = 0;
+  const reads = [mk(40), mk(42)];
+  const exec = () => { c++; if (c <= 2) { const rows = reads[c - 1]; return JSON.stringify({ total: rows.length, runs: rows }); } const e = new Error('HTTP 403'); e.stderr = 'API rate limit exceeded'; throw e; };
+  const warns = [];
+  assert.equal(cli.fetchStable(opts, exec, (w) => warns.push(w)).runs.length, 42);
+  assert.match(warns.join('\n'), /reads disagreed \(40, 42 runs\)/);
+  // Reads 1 and 3 incomplete, read 2 complete: used, but labelled unconfirmed.
+  let d = 0;
+  // d counts reads (page 1 of each). Read 2: complete 5 of 5. Reads 1 and 3: 3 of 9, then an empty page.
+  const exec2 = (_gh, args) => {
+    const page = Number(/[?&]page=(\d+)/.exec(args[1])[1]);
+    if (page === 1) d++;
+    if (d === 2) return JSON.stringify({ total: 5, runs: mk(5) });
+    return JSON.stringify({ total: 9, runs: page === 1 ? mk(3) : [] });
+  };
+  const w2 = [];
+  assert.equal(cli.fetchStable(opts, exec2, (w) => w2.push(w)).runs.length, 5);
+  assert.match(w2.join('\n'), /only 1 of 3 runs API reads completed/);
+});
+
+test('BRO-4465: the 1000-result API ceiling is the page cap (truncated), not a short page', () => {
+  const cli = require('../ci-green-rate.js');
+  let id = 0;
+  const exec = () => JSON.stringify({ total: 1500, runs: Array.from({ length: 100 }, () => run(++id, 'success')) });
+  const r = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 60, maxPages: 20, now: NOW }, exec);
+  assert.equal(r.truncated, true);
+  assert.equal(r.runs.length, 1000);
 });
 
 test('formatReport ends with the verdict line and never says "fixed"', () => {
