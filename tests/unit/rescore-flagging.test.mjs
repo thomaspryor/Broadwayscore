@@ -192,3 +192,37 @@ test('human or extracted star scores are never flagged for an LLM rescore', () =
   assert.equal(isStaleScoreInput({ ...staleBase(), scoreSource: 'anchored-v6' }), true);
   assert.equal(isStaleScoreInput({ ...staleBase(), scoreSource: undefined }), true);
 });
+
+// BRO-4486: NYT Degenerates was scored on a paywall-cut copy stored as
+// fullText (textSource status 'truncated'); the complete text landed two hours
+// later and nothing re-flagged it.
+const COMPLETE_BODY = 'The production is vivid and the cast is strong throughout the evening. '.repeat(40);
+function truncatedFullTextScore(overrides = {}) {
+  return {
+    assignedScore: 74,
+    contentTier: 'complete',
+    fullText: COMPLETE_BODY,
+    textFetchedAt: '2026-09-30T18:33:54.689Z',
+    llmMetadata: { scoredAt: '2026-09-30T16:46:32.881Z', textSource: { type: 'fullText', status: 'truncated' } },
+    ...overrides,
+  };
+}
+
+test('fullText scored as truncated, complete text fetched later → stale', () => {
+  assert.equal(isStaleScoreInput(truncatedFullTextScore()), true);
+});
+
+test('fullText scored as truncated, text not refetched since scoring → NOT stale', () => {
+  assert.equal(isStaleScoreInput(truncatedFullTextScore({ textFetchedAt: '2026-09-30T16:00:00.000Z' })), false);
+});
+
+test('fullText scored as truncated, newer text still truncated → NOT stale (no rescore loop)', () => {
+  const data = truncatedFullTextScore({ fullText: COMPLETE_BODY.slice(0, 1500) + ' and then the' });
+  assert.equal(isStaleScoreInput(data), false);
+});
+
+test('fullText scored as complete → never stale, whatever was fetched later', () => {
+  const data = truncatedFullTextScore();
+  data.llmMetadata.textSource.status = 'complete';
+  assert.equal(isStaleScoreInput(data), false);
+});

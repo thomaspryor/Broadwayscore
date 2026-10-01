@@ -307,6 +307,20 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: node scripts/e2e-canary-alert-chain.js
 
+      # BRO-4487: the outcome number for the Linear P0/P1 queue (open count,
+      # P0 older than 24h, P1 older than 7d, total open). Runs here, in CI,
+      # because the Mac-side digest and dispatcher can go dark for days.
+      # Queues a digest row when overdue; never fails the job (a red job
+      # emails the owner, and paging is page-worthy-alerts.js's call).
+      - name: P0/P1 queue health
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+        run: node scripts/check-priority-queue-health.js --alert
+
       # Scraping Cost System v2 truth layer (owner-approved 2026-07-30):
       # daily billing-API reconciliation. continue-on-error because a crash
       # here must not block the health snapshot commit below — a stuck

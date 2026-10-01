@@ -66,7 +66,7 @@ const URL_DERIVED_FIELDS = Array.from(new Set([
   'llmScore', 'llmMetadata', 'ensembleData',
   'assignedScore', 'bucket', 'llmConfidence', 'scoreSource',
   'originalScore', 'originalScoreSource', 'originalScoreNormalized',
-  'originalScoreType', 'originalRating',
+  'originalScoreType', 'originalRating', 'originalScoreCapturedFrom',
   'fullText', 'textFetchedAt', 'textWordCount', 'textStatus', 'textQuality',
   'sourceMethod', 'isFullReview',
   'wrongFullText', 'wrongAttribution', 'wrongArticle', 'showNotMentioned',

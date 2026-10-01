@@ -120,17 +120,9 @@ async function getOpenIssuesForFrictionScan() {
   return issues;
 }
 
-// Linear's raw priority ints: 0 = No priority, 1 = Urgent, 2 = High. Mirrors
-// the analyzer's own PRIORITY_MAP: 'P0 Now' -> 1, 'P1 Next' -> 2 — the two
-// tiers the old Notion filter (`P0 Now`/`P1 Next`) admitted.
-const ELIGIBLE_PRIORITIES = [1, 2];
-// createMissingShowIssue (posthog-friction-analyzer.js) also stamps
-// `fhash:`/'friction' and files at P1 — but its notes are explicitly
-// "Next step (manual — do NOT auto-add)" (CLAUDE.md Rule 3: a human must
-// validate venue/date before any shows.json entry). Excluded here by its own
-// `missing-show` marker rather than trusting Claude's canFix:false to always
-// catch it (ship-check finding).
-const MISSING_SHOW_RE = /\bmissing-show\b/i;
+// Candidate selection (priority, fhash, missing-show exclusion, and the
+// BRO-4487 parked-at-Medium clamp) lives in lib/friction-fix-eligibility.js.
+const { isFrictionFixCandidate } = require('./lib/friction-fix-eligibility.js');
 
 // `[auto-fix-attempted:...]` used to live on the issue DESCRIPTION (see git
 // history), but that overwrote the description with a stale in-memory
@@ -143,11 +135,7 @@ const MISSING_SHOW_RE = /\bmissing-show\b/i;
 // already narrowed the candidate set to a handful.
 async function getPendingFrictionIssues() {
   const all = await getOpenIssuesForFrictionScan();
-  const candidates = all.filter((issue) => (
-    ELIGIBLE_PRIORITIES.includes(Number(issue.priority)) &&
-    FHASH_RE.test(issue.description || '') &&
-    !MISSING_SHOW_RE.test(issue.description || '')
-  ));
+  const candidates = all.filter(isFrictionFixCandidate);
   const eligible = [];
   for (const candidate of candidates) {
     const full = await linearClient.getIssue(candidate.identifier);

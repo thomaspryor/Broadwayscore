@@ -81,6 +81,7 @@ function buildIssueQuery() {
       description
       priority
       url
+      completedAt
       state { id name type }
       project { name }
       labels(first: 20) { nodes { id name } }

@@ -161,6 +161,14 @@ jobs:
       # the wrong-* classifiers so it respects fresh wrongProduction/wrongShow flags
       # (needsLateStarReanchor returns null for those). See scripts/lib/late-star-anchor.js
       # and the one-shot backfill scripts/flag-late-star-reanchor.js it shares logic with.
+      # BRO-4486: a star printed in the review text but never stored in
+      # originalScore (write paths that skipped the outlet extractor). Store it
+      # first so the late-star flag below re-anchors the file.
+      - name: Capture star ratings printed in review text
+        run: node scripts/capture-published-stars.js --apply 2>&1 | tee -a /tmp/locked-skip.log
+        continue-on-error: true
+        timeout-minutes: 5
+
       - name: Flag late-arriving stars for anchored re-score
         run: node scripts/flag-late-star-reanchor.js --apply 2>&1 | tee -a /tmp/locked-skip.log
         continue-on-error: true

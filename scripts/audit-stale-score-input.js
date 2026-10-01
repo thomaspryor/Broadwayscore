@@ -36,7 +36,7 @@
 const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { isStaleScoreInput, markRescoreNeeded } = require('./lib/rescore-flagging');
+const { isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded } = require('./lib/rescore-flagging');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
 
@@ -88,7 +88,8 @@ function loadShowTitles() {
 function isCandidate(data) {
   if (!data) return false;
   if (data.contentTier !== 'complete' && data.contentTier !== 'truncated') return false;
-  return data.llmMetadata?.textSource?.type === 'excerpt';
+  // BRO-4486: also a paywall-cut "fullText" score once the complete text landed.
+  return data.llmMetadata?.textSource?.type === 'excerpt' || isTruncatedScoreNowComplete(data);
 }
 
 function scan(reviewTextsDir, titleById, showFilter) {

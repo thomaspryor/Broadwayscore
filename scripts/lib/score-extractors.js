@@ -661,9 +661,24 @@ function extractNYPostScore(html, text) {
 
 /**
  * Extract score from Culture Sauce review
- * Format: Star ratings like "4/5"
+ * Format: a five-glyph star run closing the review, before the production
+ * block. The page nests the filled stars in two <strong> tags, so the text
+ * often reads "★★★ ★★" or "★★ ☆ ☆☆" (BRO-4486: 128 of 217 files carry one and
+ * this extractor read none). Older reviews use "4/5".
  */
+const CULTURE_SAUCE_STAR_RUN = /[★☆](?:[  ]*[★☆]){4}/g;
+
 function extractCultureSauceScore(html, text) {
+  const runs = (text || '').match(CULTURE_SAUCE_STAR_RUN);
+  if (runs) {
+    const stars = runs[runs.length - 1].replace(/[  ]/g, '');
+    const filled = (stars.match(/★/g) || []).length;
+    return {
+      originalScore: `${filled}/5 stars`,
+      normalizedScore: starsToNumeric(filled, 5),
+      source: 'unicode-stars'
+    };
+  }
   const match = text.match(/(\d(?:\.\d)?)\s*\/\s*5/);
   if (match) {
     const rating = parseFloat(match[1]);
