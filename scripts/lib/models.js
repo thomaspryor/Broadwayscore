@@ -10,9 +10,17 @@
  */
 module.exports = {
   GEMINI_FLASH: 'gemini-2.5-flash',
-  CLAUDE_SONNET: 'claude-sonnet-4-6',
+  // General-purpose Claude aliases: current generation. Moving these is the
+  // whole point of this file, so NEVER use them for review scoring.
+  CLAUDE_SONNET: 'claude-sonnet-5-5',
   CLAUDE_HAIKU: 'claude-haiku-4-5-20251001',
-  CLAUDE_OPUS: 'claude-opus-4-7',
+  CLAUDE_OPUS: 'claude-opus-5-5',
+  // Review-SCORING pins (CLAUDE.md §13): changing the scoring model shifts
+  // scores corpus-wide, so these move only after the A/B gate passes. Every
+  // call site that scores reviews uses these, never CLAUDE_SONNET/CLAUDE_OPUS
+  // (tests/unit/model-table-single-source.test.mjs enforces).
+  SCORING_SONNET: 'claude-sonnet-4-6',
+  SCORING_OPUS: 'claude-opus-4-7', // video-reviews/score-video-reviews.js
   GPT4O: 'gpt-4o',
   GPT4O_MINI: 'gpt-4o-mini',
   // Cheaper gpt-4o candidate evaluated in task #504 (2026-07-26) — API id

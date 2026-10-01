@@ -21,7 +21,7 @@ const path = require('path');
 const Anthropic = require('@anthropic-ai/sdk').default;
 const { safeWriteReview } = require('./lib/review-write-guard');
 const { isAlreadyLlmScored } = require('./lib/review-guards');
-const { CLAUDE_SONNET } = require('./lib/models');
+const { SCORING_SONNET } = require('./lib/models');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
@@ -68,7 +68,7 @@ The review:
 
 async function scoreReview(client, reviewText) {
   const response = await client.messages.create({
-    model: CLAUDE_SONNET,
+    model: SCORING_SONNET,
     max_tokens: 100,
     messages: [
       {

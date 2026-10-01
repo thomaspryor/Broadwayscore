@@ -8,6 +8,7 @@ import * as path from 'path';
 import { buildScoringInput } from './llm-scoring/input-builder';
 const Anthropic = require('@anthropic-ai/sdk');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { CLAUDE_SONNET } = require('./lib/models');
 const anthropic = new Anthropic();
 
 const SYSTEM_PROMPT = `You are a theater critic review scorer for Broadway and West End shows. Your task is to determine how strongly a critic recommends seeing a show based on their review text.
@@ -81,7 +82,7 @@ async function checkOne(c: any) {
   
   try {
     const response = await anthropic.messages.create({
-      model: 'claude-sonnet-4-6', max_tokens: 300,
+      model: CLAUDE_SONNET, max_tokens: 300,
       system: SYSTEM_PROMPT,
       messages: [{ role: 'user', content: input.context + '\n\n## Review Text\n\n' + input.text }],
     });
