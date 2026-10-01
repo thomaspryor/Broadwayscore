@@ -272,7 +272,7 @@ jobs:
 
           const data = JSON.stringify({
             from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
-            // `updates@` sends but never receives — replies to this thank-you
+            // updates@ sends but never receives: replies to this thank-you
             // would bounce without a Reply-To that reaches the owner's inbox.
             reply_to: buildReplyToAddress(),
             to: [email],

@@ -135,7 +135,7 @@ test('pending-diagnoses write: public file redacted, reader in the private store
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fpend-'));
   const pendingPath = path.join(dir, 'pending-bug-diagnoses.json');
   const storePath = path.join(dir, 'feedback-submitters.json');
-  const entries = [{ item: { summary: 's' }, submission: READER, diagnosis: null }];
+  const entries = [{ item: { summary: 's' }, submission: READER, diagnosis: DIAGNOSIS }];
 
   const first = store.writePendingWithPrivateReaders(entries, { pendingPath, storePath });
   assert.equal(first.storeChanged, true);

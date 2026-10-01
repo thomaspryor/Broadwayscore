@@ -128,6 +128,17 @@ function hydrateDiagnosis(diag, store) {
   };
 }
 
+function scrubDeep(value, reader) {
+  if (typeof value === 'string') return scrubPublicText(value, reader);
+  if (Array.isArray(value)) return value.map((v) => scrubDeep(v, reader));
+  if (value && typeof value === 'object') {
+    const out = {};
+    for (const [k, v] of Object.entries(value)) out[k] = scrubDeep(v, reader);
+    return out;
+  }
+  return value;
+}
+
 // process-feedback.js's write of data/audit/pending-bug-diagnoses.json. That
 // file is committed to the PUBLIC repo whenever an entry is left over for the
 // next run, so it gets redacted submissions; the reader's details go to the
@@ -143,7 +154,13 @@ function writePendingWithPrivateReaders(entries, { pendingPath, storePath = STOR
       storeChanged = true;
     }
   }
-  const publicEntries = entries.map((d) => (d && d.submission ? { ...d, submission: redactSubmission(d.submission) } : d));
+  // The diagnosis and item are LLM text that can quote the reader, so every
+  // string in the entry is scrubbed too, not just the submission.
+  const publicEntries = entries.map((d) => {
+    if (!d || !d.submission) return d;
+    const reader = { name: d.submission.name, message: d.submission.message };
+    return scrubDeep({ ...d, submission: redactSubmission(d.submission) }, reader);
+  });
   fs.writeFileSync(pendingPath, JSON.stringify(publicEntries, null, 2) + '\n');
   return { storeChanged, publicEntries };
 }
