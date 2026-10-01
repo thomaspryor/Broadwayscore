@@ -27,7 +27,7 @@ test('show OG image declares image/jpeg, not image/png', () => {
 
 test('every ImageResponse is wrapped in pngToOgJpegResponse()', () => {
   const total = (src.match(/new ImageResponse\(/g) || []).length;
-  const wrapped = (src.match(/pngToOgJpegResponse\(new ImageResponse\(/g) || []).length;
+  const wrapped = (src.match(/pngToOgJpegResponse\(\s*new ImageResponse\(/g) || []).length;
   assert.ok(total >= 2, 'expected the main and fallback ImageResponse');
   assert.equal(wrapped, total, 'a bare ImageResponse would emit a >1 MB PNG');
 });

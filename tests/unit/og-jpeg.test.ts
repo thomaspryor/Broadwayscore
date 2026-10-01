@@ -46,4 +46,5 @@ test('falls back to the original PNG when the input cannot be re-encoded', async
   const res = await pngToOgJpegResponse(new Response(new Uint8Array(bad)));
   assert.equal(res.headers.get('content-type'), 'image/png');
   assert.deepEqual(Buffer.from(await res.arrayBuffer()), bad);
+  assert.doesNotMatch(res.headers.get('cache-control') || '', /immutable/, 'fallback must not be pinned for a year');
 });
