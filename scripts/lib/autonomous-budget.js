@@ -37,7 +37,7 @@
 'use strict';
 
 const { DEFAULT_CAPS } = require('./opening-night-budget.js');
-const { CLAUDE_SONNET, CLAUDE_OPUS } = require('./models.js');
+const { DISPATCH_SONNET, DISPATCH_OPUS } = require('./models.js');
 
 // Per-card envelopes. maxUSD/maxWallMin are hard per-attempt kill limits the
 // executor enforces cooperatively; estUSD/estAttempt2USD drive admission.
@@ -78,8 +78,8 @@ const DEFAULTS = Object.freeze({
 // ── Model policy ────────────────────────────────────────────────────────────
 
 const MODELS = Object.freeze({
-  attempt1: CLAUDE_SONNET,
-  attempt2Content: CLAUDE_OPUS,
+  attempt1: DISPATCH_SONNET,
+  attempt2Content: DISPATCH_OPUS,
 });
 
 // Tier-2 data-card classes whose diff can DELETE existing review data, not

@@ -6,6 +6,10 @@ on:
     paths:
       - 'src/**'
       - 'tests/**'
+      # Project agent definitions and the commands that name them are covered by
+      # tests/unit/claude-agent-models.test.mjs (spend review 2026-10-01).
+      - '.claude/agents/**'
+      - '.claude/commands/**'
       # scripts/lib/** — single push-path glob covering every file under
       # scripts/lib/ (source .js and colocated *.test.mjs alike). Replaces the
       # ~200 individually hand-listed scripts/lib paths that used to live here

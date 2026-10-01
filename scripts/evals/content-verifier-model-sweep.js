@@ -63,19 +63,18 @@ const MODELS = {
     priceIn: 1.00, priceOut: 5.00,
     envKey: 'ANTHROPIC_API_KEY',
   },
-  // Keys track the models.js alias so the sweep label always names the model run.
-  [CLAUDE_SONNET]: {
+  'claude-sonnet-4-6': {
     provider: 'anthropic',
     api: 'anthropic',
     model: CLAUDE_SONNET,
-    priceIn: 2.00, priceOut: 10.00,
+    priceIn: 3.00, priceOut: 15.00,
     envKey: 'ANTHROPIC_API_KEY',
   },
-  [CLAUDE_OPUS]: {
+  'claude-opus-4-7': {
     provider: 'anthropic',
     api: 'anthropic',
     model: CLAUDE_OPUS,
-    priceIn: 4.00, priceOut: 20.00,
+    priceIn: 15.00, priceOut: 75.00,
     envKey: 'ANTHROPIC_API_KEY',
   },
 };

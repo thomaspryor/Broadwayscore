@@ -36,6 +36,17 @@ describe('models.js is the single Claude model table', () => {
     assert.equal(models.SCORING_SONNET, 'claude-sonnet-4-6');
   });
 
+  // Ship-check 2026-10-01: the 5.5 generation rejects `temperature` and returns a
+  // thinking block first, which breaks ~38 direct-API callers that read
+  // content[0].text. The general aliases stay on 4.x until those callers are
+  // migrated; only the headless `claude` CLI dispatch moves to 5.5.
+  test('direct-API aliases stay on the 4.x generation; CLI dispatch aliases are 5.5', () => {
+    assert.equal(models.CLAUDE_SONNET, 'claude-sonnet-4-6');
+    assert.equal(models.CLAUDE_OPUS, 'claude-opus-4-7');
+    assert.equal(models.DISPATCH_SONNET, 'claude-sonnet-5-5');
+    assert.equal(models.DISPATCH_OPUS, 'claude-opus-5-5');
+  });
+
   test('every SHORT_ALIAS key is an id defined in models.js', () => {
     for (const id of Object.keys(SHORT_ALIAS)) {
       assert.ok(claudeIds.has(id), `SHORT_ALIAS key ${id} is not in models.js`);
@@ -43,8 +54,8 @@ describe('models.js is the single Claude model table', () => {
   });
 
   test('autonomous-budget models come from models.js', () => {
-    assert.equal(budget.pickModel(1), models.CLAUDE_SONNET);
-    assert.equal(budget.pickModel(2, 'content'), models.CLAUDE_OPUS);
+    assert.equal(budget.pickModel(1), models.DISPATCH_SONNET);
+    assert.equal(budget.pickModel(2, 'content'), models.DISPATCH_OPUS);
     const src = readFileSync(join(root, 'scripts/lib/autonomous-budget.js'), 'utf8');
     assert.doesNotMatch(src, /attempt\w*:\s*'claude-/, 'MODELS must not hardcode a claude id');
   });
