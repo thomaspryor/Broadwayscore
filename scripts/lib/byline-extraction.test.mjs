@@ -69,6 +69,11 @@ test('an explicit "Reviewer: Name" line beats a house-account meta author (The R
   // Placeholder or initial-only reviewer lines fall through to the meta author.
   assert.equal(extractByline('<meta name="author" content="Jane Doe" /><div>Reviewer: Anonymous Guest</div>'), 'Jane Doe');
   assert.equal(extractByline('<meta name="author" content="Jane Doe" /><li>Reviewer: John D</li>'), 'Jane Doe');
+  // House names on a Reviewer line are not people.
+  for (const house of ['The Reviews Hub', 'Our Critic', 'Press Night']) {
+    assert.equal(extractByline(`<meta name="author" content="Jane Doe" /><div>Reviewer: ${house}</div>`), 'Jane Doe', house);
+  }
+  assert.equal(extractByline('<div>Reviewer:&nbsp;Jo Smith</div>'), 'Jo Smith');
   // No Reviewer line: the meta author still wins as before.
   assert.equal(extractByline('<meta name="author" content="Jane Doe" />'), 'Jane Doe');
 });

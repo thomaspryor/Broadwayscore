@@ -1266,7 +1266,18 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     const r = classifyContentTier({ ...existing, fullText: fields.fullText, contentTier: undefined });
     const cand = r && r.contentTier;
     if (!cand) return false;
-    if (existing.multiShowSplitParent === true) return cand === 'complete';
+    if (existing.multiShowSplitParent === true) {
+      if (cand !== 'complete') return false;
+      // The fan-out that follows must be able to act on the whole article
+      // (re-trim it, or undo a wrong split); otherwise the parent would be
+      // left holding every show's text.
+      const fan = require('./multi-show-review-fanout');
+      const { loadShows } = require('./multi-show-splitter');
+      const shows = loadShows();
+      const candidate = { ...existing, fullText: fields.fullText };
+      return !!fan.planMultiShowFanout(candidate, shows, { ownShowId: showId })
+        || fan.isWholeArticleBackOnBadSplit(candidate, shows);
+    }
     return cand === 'complete' || tierRank({ contentTier: cand }) > tierRank(existing);
   };
   if (input && input.replaceBadBody === true && typeof fields.fullText === 'string'

@@ -21,7 +21,7 @@ function decodeEntities(s) {
 }
 
 const REVIEWER_LINE_RE = />\s*Reviewer:\s*([A-Z][A-Za-z.'’-]+(?:\s+[A-Z][A-Za-z.'’-]+){1,3})\s*</;
-const NOT_A_PERSON_RE = /\b(?:anonymous|staff|team|editor|editorial|desk|admin|guest|verified|customer)\b/i;
+const NOT_A_PERSON_RE = /\b(?:anonymous|staff|team|editor|editorial|desk|admin|guest|verified|customer|reviews?|hub|critics?|press|night|theatre|theater|magazine|news|online|london|uk)\b|^(?:the|our)\b/i;
 
 /**
  * A "Reviewer: First Last" line (a visible element of its own, not prose)
@@ -32,7 +32,7 @@ const NOT_A_PERSON_RE = /\b(?:anonymous|staff|team|editor|editorial|desk|admin|g
  */
 function extractReviewerLine(html) {
   if (!html) return null;
-  const m = REVIEWER_LINE_RE.exec(html);
+  const m = REVIEWER_LINE_RE.exec(String(html).replace(/&nbsp;|&#160;|&#xa0;/gi, ' '));
   if (!m) return null;
   const name = decodeEntities(m[1]).replace(/\s+/g, ' ').trim();
   if (NOT_A_PERSON_RE.test(name)) return null;
