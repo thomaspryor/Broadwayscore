@@ -63,7 +63,7 @@
       "name": "re-booked after an earlier viewing is booked",
       "show": { "id": "fixture-rebooked", "category": "broadway", "status": "open" },
       "plannedOffset": 5, "reviews": [{ "seenOffset": -100 }],
-      "expected": "booked", "sqlIncluded": true, "sqlLogged": true
+      "expected": "booked", "sqlIncluded": true, "sqlLogged": false
     },
     {
       "name": "closed show with no date is left out (client-side rule)",
