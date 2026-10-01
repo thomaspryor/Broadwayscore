@@ -53,6 +53,8 @@ const { detectBandFromReviewFile } = require('../lib/star-reliability');
 const { getBestTextForScoring } = require('../lib/text-quality');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const { isGroupSettled, buildComparativeMarker } = require('../lib/comparative-band');
 
 const REVIEW_TEXTS_DIR =
   process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '../../data/review-texts');
@@ -299,14 +301,30 @@ function writeBack(entry: ReviewEntry, comparative: number, modelScores: Record<
   data.llmScore = data.llmScore || {};
   data.llmScore.score = comparative;
   data.assignedScore = comparative;
-  data.llmScore.comparative = {
+  data.llmScore.comparative = buildComparativeMarker({
     isolatedScore: isolated,
     models: modelScores,
     agreement,
     groupBand: entry.bandKey,
-    rescoredAt: new Date().toISOString(),
-  };
+  });
   // bucket/thumb stay derived from score downstream; comparative never leaves band.
+  fs.writeFileSync(entry.filePath, JSON.stringify(data, null, 2) + '\n');
+}
+
+/**
+ * BRO-4467: record that this review was compared and kept its score, so the
+ * group counts as settled (isGroupSettled) and the next cron run skips it.
+ * Score fields are untouched.
+ */
+function markKept(entry: ReviewEntry, agreement: number | null) {
+  const data = entry.data;
+  data.llmScore = data.llmScore || {};
+  data.llmScore.comparative = buildComparativeMarker({
+    isolatedScore: entry.isolated,
+    agreement,
+    groupBand: entry.bandKey,
+    kept: true,
+  });
   fs.writeFileSync(entry.filePath, JSON.stringify(data, null, 2) + '\n');
 }
 
@@ -354,7 +372,7 @@ async function main() {
       if (entries.length < 2) continue;
       // Idempotency: nothing new to compare once every entry in this show+band
       // already carries a comparative verdict (see header). Zero API cost.
-      if (entries.every((e) => e.data.llmScore && e.data.llmScore.comparative)) continue;
+      if (isGroupSettled(entries)) continue;
       if (maxRescores > 0 && rescoresDone >= maxRescores) {
         console.log(`\nReached --max-rescores=${maxRescores}; stopping.`);
         break outer;
@@ -371,7 +389,11 @@ async function main() {
       for (const e of entries) {
         totalReviews++;
         const a = byFile.get(e.file);
-        if (!a) { lines.push(`    ${e.file}: ${e.isolated} → ${e.isolated} (kept)`); continue; }
+        if (!a) {
+          lines.push(`    ${e.file}: ${e.isolated} → ${e.isolated} (kept)`);
+          if (!dryRun) markKept(e, result.agreement);
+          continue;
+        }
         const delta = a.comparative - a.isolated;
         sumDelta += delta; sumAbsDelta += Math.abs(delta);
         if (a.comparative !== a.isolated) changed++;
