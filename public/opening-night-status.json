@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T17:46:32.987Z",
+  "generatedAt": "2026-10-01T17:55:36.563Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -13,22 +13,22 @@
       "slug": "hay-fever-west-end",
       "thumbnail": "/images/shows/hay-fever-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": null,
+      "liveScore": 57,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 7,
+      "reviewsNeeded": 4,
       "siteFileExists": true,
-      "total": 0,
+      "total": 1,
       "t1": 0,
-      "t2": 0,
+      "t2": 1,
       "t3": 0,
       "positive": 0,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "0/8 total",
+          "1/8 total",
           "T1:0/3",
           "T2:0/2",
           "hi-conf:0/6"
@@ -95,6 +95,20 @@
         {
           "name": "WhatsOnStage",
           "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-01T17:55:36.563Z",
+          "rc": 1,
+          "s": 57,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 1,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
