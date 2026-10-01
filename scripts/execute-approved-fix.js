@@ -641,7 +641,10 @@ async function main() {
   // MUST stay below the plan-file write above so none of it re-enters the
   // committed JSON. Fetched at most once for steps 6 and 7.
   let readerPromise = null;
-  const getReader = () => (readerPromise ||= fetchDiagnosisFromIssue(issueNumber).then(readerFromDiagnosis));
+  const getReader = () => (readerPromise ||= fetchDiagnosisFromIssue(issueNumber).then((diagnosis) => {
+    if (!diagnosis) console.log(`No DIAGNOSIS_JSON recovered for #${issueNumber} (issue fetch failed, no token, or no block); reader details unknown`);
+    return readerFromDiagnosis(diagnosis);
+  }));
 
   // 6. Tell Tom a reader's report was fixed, with who sent it and what they
   // wrote (BRO-4452). Reader-feedback ids only: session-authored bro-* plans

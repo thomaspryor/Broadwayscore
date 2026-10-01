@@ -50,7 +50,8 @@ test('owner email carries the reader details and their message, escaped', () => 
     changes: ['shows.json: closingDate = "2026-01-04"'],
     skipped: ['No combined roles found — already fixed'],
   });
-  assert.equal(subject, 'Fixed: Wicked (reported by Jo <b>)');
+  assert.equal(subject, 'Partly fixed: Wicked (reported by Jo <b>)', 'a non-empty "Not changed" list is never headlined "Fixed"');
+  assert.match(html, /after the next update/);
   assert.match(html, /Jo &lt;b&gt;/);
   assert.match(html, /href="mailto:jo%2Bt@x\.com">jo\+t@x\.com</);
   assert.match(html, /Line one\n&lt;script&gt;x&lt;\/script&gt;/);
@@ -69,6 +70,10 @@ test('owner email keeps the reader message verbatim, says when details are missi
   assert.match(html, /Fix it — please/);
   assert.match(html, /not given/);
   assert.match(html, /issues\/504"/);
+  const full = buildReaderFixOwnerEmail({ issueNumber: '504', reader: { name: 'Jo', show: 'Wicked' }, changes: ['x'] });
+  assert.equal(full.subject, 'Fixed: Wicked (reported by Jo)');
+  const sys = buildReaderFixOwnerEmail({ issueNumber: '504-systematic', reader: { name: 'Jo', show: 'Wicked' }, changes: ['x'], how: 'systematic' });
+  assert.equal(sys.subject, 'Fixed across shows: Wicked (reported by Jo)');
 });
 
 test('send is a no-op for session-authored plans and without credentials', async () => {

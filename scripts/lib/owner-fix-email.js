@@ -10,7 +10,8 @@
 // emailing them was noise (five in two days). Whitelist the reader shape so
 // any other future id prefix stays silent.
 
-const { escapeHtml, postJSON } = require('./email-templates.js');
+const https = require('https');
+const { escapeHtml } = require('./email-templates.js');
 
 const REPO = 'thomaspryor/Broadwayscore';
 const SEND_TIMEOUT_MS = 20000;
@@ -48,7 +49,7 @@ function buildReaderFixOwnerEmail({ issueNumber, reader, summary, changes = [], 
   const issue = String(issueNumber);
   const ghIssue = parseInt(issue, 10);
   const who = r.name || r.email || 'A reader';
-  const status = partial ? 'Partly fixed' : 'Fixed';
+  const status = partial || skipped.length > 0 ? 'Partly fixed' : how === 'systematic' ? 'Fixed across shows' : 'Fixed';
   const subject = `${status}: ${r.show || 'reader report'} (reported by ${who})`;
 
   const row = (label, valueHtml) =>
@@ -66,7 +67,7 @@ function buildReaderFixOwnerEmail({ issueNumber, reader, summary, changes = [], 
 
   const html = `<!DOCTYPE html><html><head><meta charset="utf-8"></head>
 <body style="margin:0;padding:24px;font-family:-apple-system,sans-serif;font-size:15px;line-height:1.6;color:#333;">
-<p style="margin:0 0 12px;">${escapeHtml(status)}${summary ? `: ${escapeHtml(plainLine(summary))}` : '.'} ${escapeHtml(howText)}</p>
+<p style="margin:0 0 12px;">${escapeHtml(status)}${summary ? `: ${escapeHtml(plainLine(summary))}` : '.'} ${escapeHtml(howText)} It shows on the site after the next update, usually within half an hour.</p>
 <p style="margin:16px 0 4px;font-weight:600;">Who reported it</p>
 <table style="border-collapse:collapse;font-size:15px;">
 ${row('Name', r.name ? escapeHtml(r.name) : '<span style="color:#999;">not given</span>')}
@@ -90,22 +91,40 @@ async function sendReaderFixOwnerEmail(opts) {
   if (!shouldEmailOwnerOnFix({ issueNumber: opts.issueNumber, ownerEmail, appliedCount: (opts.changes || []).length })) return false;
   if (!resendKey) { console.log('Owner fix email: no RESEND_API_KEY'); return false; }
   const { subject, html } = buildReaderFixOwnerEmail(opts);
-  try {
-    await Promise.race([
-      postJSON('https://api.resend.com/emails', {
-        from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
-        to: [ownerEmail],
-        subject,
-        html,
-      }, { Authorization: `Bearer ${resendKey}` }),
-      new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), SEND_TIMEOUT_MS).unref()),
-    ]);
+  const payload = JSON.stringify({
+    from: 'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
+    to: [ownerEmail],
+    subject,
+    html,
+  });
+  const result = await new Promise((resolve) => {
+    // Own request (not email-templates postJSON) so a hung Resend call is
+    // destroyed rather than holding the job open until its timeout.
+    const req = https.request({
+      hostname: 'api.resend.com',
+      path: '/emails',
+      method: 'POST',
+      timeout: SEND_TIMEOUT_MS,
+      headers: {
+        Authorization: `Bearer ${resendKey}`,
+        'Content-Type': 'application/json',
+        'Content-Length': Buffer.byteLength(payload),
+      },
+    }, (res) => {
+      let body = '';
+      res.on('data', (c) => { body += c; });
+      res.on('end', () => resolve(res.statusCode >= 200 && res.statusCode < 300 ? 'ok' : `HTTP ${res.statusCode}: ${body.slice(0, 200)}`));
+    });
+    req.on('timeout', () => req.destroy(new Error('timeout')));
+    req.on('error', (err) => resolve(err.message.slice(0, 200)));
+    req.end(payload);
+  });
+  if (result === 'ok') {
     console.log(`Owner fix email sent for #${opts.issueNumber}`);
     return true;
-  } catch (err) {
-    console.log(`Owner fix email failed for #${opts.issueNumber}: ${err.message.slice(0, 200)}`);
-    return false;
   }
+  console.log(`Owner fix email failed for #${opts.issueNumber}: ${result}`);
+  return false;
 }
 
 module.exports = {
