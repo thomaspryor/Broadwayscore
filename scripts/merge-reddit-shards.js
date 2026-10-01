@@ -123,6 +123,7 @@ function main() {
     }
 
     audienceBuzz.shows[showId].sources.reddit = redditData;
+    delete audienceBuzz.shows[showId].redditNoDataStreak; // data found: reset the no-data backoff
 
     // Recalculate combined score
     const sources = audienceBuzz.shows[showId].sources;

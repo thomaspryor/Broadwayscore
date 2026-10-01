@@ -342,13 +342,40 @@ function lastRedditTouchMs(buzzRecord) {
   return lastSourceTouchMs(buzzRecord, 'reddit', 'redditLastAttempted');
 }
 
-function isRedditFresh(buzzRecord, hours, nowMs = Date.now()) {
-  return isSourceFresh(buzzRecord, 'reddit', hours, { attemptField: 'redditLastAttempted', nowMs });
+// Shows that keep coming back with no Reddit discussion back off: after the
+// Nth consecutive clean no-data attempt (redditNoDataStreak) the next search
+// waits this many days. On 2026-09-30, 25 of 27 shows in one dispatch had no
+// Reddit posts and each re-search cost ~100-200 ScrapingBee credits, every day,
+// for the whole opening window. Any found data resets the streak.
+const REDDIT_NO_DATA_BACKOFF_DAYS = [1, 2, 4, 8, 14];
+
+// Within this many days of a show's previews start or opening, the backoff
+// caps at REDDIT_OPENING_BACKOFF_CAP_DAYS: discussion usually starts then.
+const REDDIT_OPENING_WINDOW_DAYS = 14;
+const REDDIT_OPENING_BACKOFF_CAP_DAYS = 2;
+
+function isRedditFresh(buzzRecord, hours, nowMs = Date.now(), show = null) {
+  if (!(hours > 0)) return false; // 0 = forced refresh (just-opened shows)
+  if (isSourceFresh(buzzRecord, 'reddit', hours, { attemptField: 'redditLastAttempted', nowMs })) return true;
+  const rec = buzzRecord || {};
+  const streak = rec.redditNoDataStreak || 0;
+  const attempted = rec.redditLastAttempted ? new Date(rec.redditLastAttempted).getTime() : NaN;
+  const dataAt = rec.sources && rec.sources.reddit && rec.sources.reddit.lastUpdated
+    ? new Date(rec.sources.reddit.lastUpdated).getTime() : -Infinity;
+  if (!(streak > 0) || Number.isNaN(attempted) || attempted < dataAt) return false;
+  let days = REDDIT_NO_DATA_BACKOFF_DAYS[Math.min(streak, REDDIT_NO_DATA_BACKOFF_DAYS.length) - 1];
+  const nearOpening = show && ['openingDate', 'previewsStartDate'].some((k) => {
+    const t = show[k] ? new Date(show[k]).getTime() : NaN;
+    return !Number.isNaN(t) && Math.abs(nowMs - t) <= REDDIT_OPENING_WINDOW_DAYS * 86400 * 1000;
+  });
+  if (nearOpening) days = Math.min(days, REDDIT_OPENING_BACKOFF_CAP_DAYS);
+  return nowMs - attempted < Math.max(hours * 3600 * 1000, days * 86400 * 1000);
 }
 
 module.exports = {
   lastRedditTouchMs,
   isRedditFresh,
+  REDDIT_NO_DATA_BACKOFF_DAYS,
   isRoundupOrMegathread,
   isGenericTitle,
   isRedditVolumeInflated,
