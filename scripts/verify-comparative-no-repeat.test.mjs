@@ -24,8 +24,17 @@ const RUNS = path.join(HERE, '..', 'data', 'llm-scoring-runs.json');
 const FIX_LIVE_AT = '2026-10-01T14:00:00.000Z';
 // Below this many reviews a repeat is a tiny group, not the costly loop.
 const MIN_PROCESSED = 20;
+// The card's RECHECK-AFTER date. Before it there is not enough post-fix
+// history, and land.yml's colocated-tests gate runs every changed *.test.mjs,
+// so the probe skips rather than failing the landing. From this date on it
+// asserts for real (the recheck only runs it after the date).
+const CHECKABLE_FROM = '2026-10-03T00:00:00.000Z';
 
-test('no costly comparative pass repeats 3+ times after the BRO-4467 fix', () => {
+test('no costly comparative pass repeats 3+ times after the BRO-4467 fix', (t) => {
+  if (new Date().toISOString() < CHECKABLE_FROM) {
+    t.skip(`not checkable before ${CHECKABLE_FROM}`);
+    return;
+  }
   const runs = JSON.parse(fs.readFileSync(RUNS, 'utf8'));
   const after = runs.filter((r) => (r.startedAt || '') >= FIX_LIVE_AT);
   assert.ok(after.length >= 5, `only ${after.length} scoring run(s) recorded since ${FIX_LIVE_AT}; not enough history to judge yet`);
