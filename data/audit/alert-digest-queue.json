@@ -3650,5 +3650,41 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-01T09:45:45.794Z"
+  },
+  {
+    "conditionKey": "opening-night-publish-date-pre-opening:missing:whos-afraid-of-virginia-woolf-west-end-2026",
+    "title": "Shipped review missing publishDate on Who’s Afraid of Virginia Woolf?",
+    "description": "all-that-dazzles-uk/null SHIPPED with no publishDate — cannot confirm post-opening: https://www.allthatdazzles.co.uk/post/review-whos-afraid-of-virginia-woolf-sohoplace\nstandard/Nick Curtis SHIPPED with no publishDate — cannot confirm post-opening: https://www.standard.co.uk/culture/theatre/who-s-afraid-of-virginia-woolf-review-b1299111.html\ntelegraph/Claire Allfree SHIPPED with no publishDate — cannot confirm post-opening: https://www.telegraph.co.uk/theatre/what-to-see/whos-afraid-of-virginia-woolf-review-gillian-anderson/\nwhatsonstage/Sarah Crompton SHIPPED with no publishDate — cannot confirm post-opening: https://www.whatsonstage.com/news/whos-afraid-of-virginia-woolf-review-gillian-anderson-and-billy-crudup-toe-to-toe-in-the-west-end_1734062/",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T13:26:44.403Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:motherfucker-off-broadway-2026",
+    "title": "Auto-remediation gave up on motherfucker-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"motherfucker-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T13:26:51.054Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:a-thousand-natural-shocks-off-broadway-2026",
+    "title": "Auto-remediation gave up on a-thousand-natural-shocks-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"a-thousand-natural-shocks-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T13:26:51.063Z"
   }
 ]
