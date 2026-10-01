@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-01T09:53:30.600Z",
+  "timestamp": "2026-10-01T10:02:51.988Z",
   "stats": {
-    "totalReviews": 45622,
-    "alreadyFlagged": 18636,
+    "totalReviews": 45627,
+    "alreadyFlagged": 18642,
     "dateGuardCatches": 259,
-    "directorMismatch": 1191,
+    "directorMismatch": 1192,
     "tvFilmSignals": 1321,
     "londonSignals": 1246,
     "offBroadwaySignals": 506,
     "yearMismatch": 102,
-    "noPublishDate": 4133
+    "noPublishDate": 4126
   },
   "findings": [
     {
@@ -34547,6 +34547,19 @@
       "score": 78,
       "publishDate": "2026-03-20",
       "url": "https://nystagereview.com/2026/03/19/tru-very-up-close-and-personal-with-truman-capote/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jay presson allen\" from tru-1989"
+        }
+      ]
+    },
+    {
+      "showId": "tru-off-broadway-2026",
+      "file": "nysr--unknown.json",
+      "publishDate": "2026-03-20",
+      "url": "https://nystagereview.com/2026/03/19/tru-gossipy-truman-capote-on-the-uproarious-warpath/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
