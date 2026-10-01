@@ -98,9 +98,27 @@ function isOtherProductionFile(file, showRecord, exclusionRule) {
   return false;
 }
 
+/**
+ * BRO-4475: with a known review URL, a same-outlet record that carries a
+ * DIFFERENT url is a look-alike (BWW forum thread) and must not count. Records
+ * with NO url (unreadable, _pending strand) cannot be disproven, so they stay
+ * candidates (the old outlet-only behaviour). URLs compare query-stripped so a
+ * stray tracking param can't turn an ingested review into a "missed" one.
+ * Returns the records to keep, or null when no url was given.
+ */
+function filterByUrl(records, url, getUrl, normalize) {
+  if (!url) return null;
+  const loose = (u) => normalize(u).split('?')[0];
+  const target = loose(url);
+  return records.filter((r) => {
+    const u = getUrl(r);
+    return !u || loose(u) === target;
+  });
+}
+
 /** Only this state justifies starting URL-resolution work (site search, RSS, sitemap). */
 function justifiesUrlResolution(state) {
   return state === 'true-missed-discovery';
 }
 
-module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile };
+module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile, filterByUrl };

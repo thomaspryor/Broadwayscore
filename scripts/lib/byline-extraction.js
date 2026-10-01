@@ -40,10 +40,52 @@ function extractReviewerLine(html) {
   return name;
 }
 
+// BRO-4475: BroadwayWorld's meta/author markup can carry the author PAGE URL
+// (broadwayworld.com/author/...) as the value; a name is never an href.
+const URL_LIKE_RE = /^(?:https?:)?\/\/|^www\.|^\/[a-z]|\.(?:com|co\.uk|org|net)\/|\/author\//i;
+
+const DOMAIN_LIKE_RE = /\.(?:com|co\.uk|org|net)\b/i;
+
+/**
+ * Author name from schema.org JSON-LD (`"author": {"@type":"Person","name":..}`,
+ * object, array or bare string). Only Person-typed (or untyped) authors; never
+ * a URL, domain, organisation or house name (NOT_A_PERSON_RE).
+ */
+function extractJsonLdAuthor(html) {
+  const blocks = String(html).match(/<script[^>]+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [];
+  for (const block of blocks) {
+    let doc;
+    try {
+      doc = JSON.parse(block.replace(/^<script[^>]*>/i, '').replace(/<\/script>$/i, ''));
+    } catch { continue; }
+    const queue = [doc];
+    while (queue.length) {
+      const node = queue.shift();
+      if (!node || typeof node !== 'object') continue;
+      if (Array.isArray(node)) { queue.push(...node); continue; }
+      if (node.author) {
+        for (const a of [].concat(node.author)) {
+          if (a && typeof a === 'object' && a['@type'] && !/^Person$/i.test([].concat(a['@type'])[0])) continue;
+          const raw = typeof a === 'string' ? a : a && a.name;
+          if (typeof raw !== 'string') continue;
+          const name = stripBylineSuffixes(decodeEntities(raw).trim());
+          if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
+          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name)) continue;
+          return name;
+        }
+      }
+      if (node['@graph']) queue.push(node['@graph']);
+    }
+  }
+  return null;
+}
+
 function extractByline(html) {
   if (!html) return null;
   const reviewer = extractReviewerLine(html);
   if (reviewer) return reviewer;
+  const jsonLd = extractJsonLdAuthor(html);
+  if (jsonLd) return jsonLd;
   const candidates = [
     // OpenGraph / standard meta tags — most authoritative when present.
     /<meta[^>]+property=["']article:author["'][^>]+content=["']([^"']+)["']/i,
@@ -90,6 +132,7 @@ function extractByline(html) {
       // normalizeBylineCapture; one implementation.
       name = stripBylineSuffixes(name);
       if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
+      if (URL_LIKE_RE.test(name)) continue;
       // Capitalize lowercase author slugs from class="author-name" (e.g. "ross" → "Ross").
       if (/^[a-z][a-z\s.'’-]*$/.test(name)) {
         name = name.split(/\s+/).map((w) => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
@@ -101,4 +144,4 @@ function extractByline(html) {
 }
 
 module.exports = {
-  extractReviewerLine, extractByline, decodeEntities };
+  extractReviewerLine, extractByline, extractJsonLdAuthor, decodeEntities };
