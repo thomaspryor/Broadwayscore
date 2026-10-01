@@ -678,6 +678,7 @@ ${diagnosis.originalMessage
       // From the in-memory diagnosis, NOT planData.submitter — the persisted
       // plan is PII-redacted but the email to the owner keeps the full text.
       submitterName: diagnosis.submitterName || 'Anonymous',
+      submitterEmail: diagnosis.submitterEmail || null,
       showTitle: diagnosis.submitterShow || null,
       originalMessage: diagnosis.originalMessage || '',
       planSummary: plan.summary,
