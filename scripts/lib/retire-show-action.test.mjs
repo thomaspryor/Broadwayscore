@@ -72,3 +72,35 @@ test('mergeRetiredRecords: union by id, ours first, nothing dropped on a push ra
   assert.equal(merged[1].reason, 'ours');
   assert.equal(stats.added, 1);
 });
+
+test('duplicateOf: a non-provisional duplicate with no reviews at the same house retires id-only; anything else refuses', () => {
+  const { retire, paths } = scratch();
+  const kept = { id: 'death-note-the-musical-west-end-2026', title: 'Death Note: The Musical', venue: 'Barbican Centre' };
+  const dup = { id: 'death-note-the-musical-west-end-2027', title: 'Death Note The Musical', venue: 'Barbican Theatre' };
+  const base = { id: dup.id, expectTitle: dup.title, reason: 'duplicate of the 2026 row', duplicateOf: kept.id };
+  const none = () => 0;
+  const cases = [
+    [{ ...base, blockTitleVenue: true }, none, /id-only/],
+    [{ ...base, duplicateOf: 'nope' }, none, /not in shows.json/],
+    [{ ...base, duplicateOf: dup.id }, none, /another show id/],
+    [base, () => 3, /3 review/],
+    [base, undefined, /review count unavailable/],
+  ];
+  for (const [action, reviewCount, re] of cases) {
+    const shows = [{ ...kept }, { ...dup }];
+    const r = applyRetireShow(shows, action, { retire, reviewCount });
+    assert.equal(r.ok, false, String(re));
+    assert.match(r.reason, re);
+    assert.equal(shows.length, 2);
+  }
+  const otherHouse = [{ ...kept, venue: 'Almeida Theatre' }, { ...dup }];
+  assert.match(applyRetireShow(otherHouse, base, { retire, reviewCount: none }).reason, /same house/);
+  const shows = [{ ...kept }, { ...dup }];
+  const ok = applyRetireShow(shows, base, { retire, reviewCount: none });
+  assert.equal(ok.ok, true, ok.reason);
+  assert.deepEqual(shows.map(s => s.id), [kept.id]);
+  const entry = loadRetiredIds({ listPath: paths.listPath }).find(e => e.id === dup.id);
+  assert.deepEqual([entry.title, entry.venue], [null, null]);
+  // Without duplicateOf, a non-provisional row still refuses.
+  assert.match(applyRetireShow([{ ...dup }], { id: dup.id, expectTitle: dup.title, reason: 'x' }, { retire, reviewCount: none }).reason, /only provisional/);
+});
