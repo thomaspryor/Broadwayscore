@@ -32,7 +32,7 @@
  */
 
 const fs = require('fs');
-const { classifyBroadcastState } = require('./lib/missed-broadcasts');
+const { classifyBroadcastState, classifyShowBroadcastState } = require('./lib/missed-broadcasts');
 const path = require('path');
 const https = require('https');
 
@@ -174,7 +174,9 @@ function thumbnailUrl(show) {
 function isBroadcastSent(sentData, market, showId) {
   const sent = sentData?.shows || {};
   return (
-    classifyBroadcastState(sent[showId]) === 'sent' ||
+    // Any record sharing this show's draftId, so a multi-show combo key or a
+    // mirror the reconciler missed on a 429 still counts (BRO-4474).
+    classifyShowBroadcastState(sent, showId) === 'sent' ||
     classifyBroadcastState(sent[`${market}:${showId}`]) === 'sent'
   );
 }

@@ -16,6 +16,7 @@
 
 const fs = require('fs');
 const path = require('path');
+const { findSentRecord } = require('./lib/missed-broadcasts');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./opening-night-poller');
 const { getTier, TIER_WEIGHTS } = require('./lib/outlet-tiers');
@@ -132,11 +133,11 @@ function main() {
     let broadcastState = 'waiting';
     let broadcastDetail = 'Not yet broadcast-ready';
     if (sentData?.shows) {
-      const bk = `${market}:${show.id}`;
-      const completed = sentData.shows[show.id] || sentData.shows[bk];
-      if (completed?.completed) {
+      // A real send, not `completed` (set at draft creation) (BRO-4474).
+      const completed = findSentRecord(sentData.shows, show.id, market);
+      if (completed) {
         broadcastState = 'complete';
-        broadcastDetail = `Sent ${new Date(completed.sentAt).toLocaleString()}`;
+        broadcastDetail = completed.sentAt ? `Sent ${new Date(completed.sentAt).toLocaleString()}` : 'Sent';
       } else {
         const today = now.toISOString().slice(0, 10);
         const pk = `preview:${market}:${show.id}:${today}`;
