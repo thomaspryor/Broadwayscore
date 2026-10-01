@@ -1,6 +1,7 @@
 // BRO-4453: reader name/email/message live in the private store, not in the
 // public GitHub issues. These tests pin both halves: what a new issue may
 // contain, and that every consumer still gets the reader back.
+// TESTS-VS-DERIVED-DATA-EXEMPT: reads no data file; 'data/shows.json' appears only as a fixture string in a diagnosis's relevantFiles.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
