@@ -259,9 +259,43 @@ function combineComparative(modelScoreMaps, isolatedScores, band, opts = {}) {
   return out;
 }
 
+/**
+ * True once every review in a show+band group carries a comparative verdict,
+ * so the cron pass can skip the group with zero API calls.
+ *
+ * BRO-4467: this only holds if EVERY entry of a processed group gets a
+ * verdict, including the ones whose score stayed put (models disagreed, only
+ * one model scored it, or the bucket clamp erased the nudge). Before the fix
+ * only changed entries were marked, so any group with one kept review was
+ * re-sent to all three models on every chain run (~45 runs in 16h, ~$1.16 each).
+ */
+function isGroupSettled(entries) {
+  if (!Array.isArray(entries) || entries.length === 0) return false;
+  return entries.every((e) => !!(e && e.data && e.data.llmScore && e.data.llmScore.comparative));
+}
+
+/**
+ * The `llmScore.comparative` verdict written onto a review after its group was
+ * compared. `kept: true` records a review whose score the pass left unchanged;
+ * it still counts toward isGroupSettled.
+ */
+function buildComparativeMarker({ isolatedScore, models = {}, agreement = null, groupBand, kept = false, rescoredAt }) {
+  const marker = {
+    isolatedScore,
+    models,
+    agreement,
+    groupBand,
+    rescoredAt: rescoredAt || new Date().toISOString(),
+  };
+  if (kept) marker.kept = true;
+  return marker;
+}
+
 module.exports = {
   buildComparativeBandPrompt,
   parseComparativeResponse,
   combineComparative,
   orderingAgreement,
+  isGroupSettled,
+  buildComparativeMarker,
 };
