@@ -54,7 +54,12 @@ const { getBestTextForScoring } = require('../lib/text-quality');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const { isGroupSettled, buildComparativeMarker } = require('../lib/comparative-band');
+const {
+  isGroupSettled,
+  buildComparativeMarker,
+  bumpComparativeFailure,
+  recordedIsolatedScore,
+} = require('../lib/comparative-band');
 
 const REVIEW_TEXTS_DIR =
   process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '../../data/review-texts');
@@ -81,6 +86,10 @@ type ReviewEntry = {
 function isExcluded(data: any): boolean {
   if (!data) return true;
   if (data.wrongProduction || data.wrongShow || data.isRoundupArticle) return true;
+  // push-review-texts restores every protected field (llmScore included) on a
+  // _locked file, so neither a new score nor the comparative marker would ever
+  // persist — the group would be re-sent every run (BRO-4467).
+  if (data._locked === true) return true;
   if (HUMAN_PROTECTION_FIELDS.some((f) => data[f] !== undefined && data[f] !== null && data[f] !== false)) {
     return true;
   }
@@ -302,7 +311,7 @@ function writeBack(entry: ReviewEntry, comparative: number, modelScores: Record<
   data.llmScore.score = comparative;
   data.assignedScore = comparative;
   data.llmScore.comparative = buildComparativeMarker({
-    isolatedScore: isolated,
+    isolatedScore: recordedIsolatedScore(data, isolated),
     models: modelScores,
     agreement,
     groupBand: entry.bandKey,
@@ -320,11 +329,22 @@ function markKept(entry: ReviewEntry, agreement: number | null) {
   const data = entry.data;
   data.llmScore = data.llmScore || {};
   data.llmScore.comparative = buildComparativeMarker({
-    isolatedScore: entry.isolated,
+    isolatedScore: recordedIsolatedScore(data, entry.isolated),
     agreement,
     groupBand: entry.bandKey,
     kept: true,
   });
+  fs.writeFileSync(entry.filePath, JSON.stringify(data, null, 2) + '\n');
+}
+
+/**
+ * BRO-4467: count a paid-for attempt whose model replies didn't parse. After
+ * MAX_COMPARATIVE_FAILURES the group is treated as settled (isGroupSettled).
+ */
+function markFailedAttempt(entry: ReviewEntry, reason: string) {
+  const data = entry.data;
+  data.llmScore = data.llmScore || {};
+  data.llmScore.comparativeFailures = bumpComparativeFailure(data.llmScore.comparativeFailures, reason);
   fs.writeFileSync(entry.filePath, JSON.stringify(data, null, 2) + '\n');
 }
 
@@ -379,11 +399,16 @@ async function main() {
       }
       const result = await rescoreGroup(entries, models);
       if (!result) continue;
+      // The models were paid for whether or not their replies parsed, so a
+      // failed group counts toward --max-rescores too (BRO-4467).
+      rescoresDone++;
       if (result.skippedReason) {
         console.log(`  ${show} [${bandKey}] skipped: ${result.skippedReason}`);
+        if (!dryRun) {
+          for (const e of entries) markFailedAttempt(e, result.skippedReason);
+        }
         continue;
       }
-      rescoresDone++;
       const byFile = new Map(result.applied.map((a) => [a.file, a]));
       const lines: string[] = [];
       for (const e of entries) {
