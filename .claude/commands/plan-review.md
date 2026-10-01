@@ -125,9 +125,9 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
      rm -f "$PLAN_REVIEW_CODEX_OUT"
      ```
      If `CODEX_EMPTY` or `CODEX_REFUSED`: this is a coverage FAILURE, not a pass with nothing to say — do NOT report Codex as having run. Fall through to the exact same gpt-5.4-mini fallback used for MISSING below, and record in the coverage banner (Phase 3) that Codex was READY but returned unusable output — distinguish "empty" (CLI produced no text, task #1081) from "refused" (Codex explicitly declined, task #1320) using `$CODEX_REASON`, both distinct from "not installed".
-   - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"`, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent. Record which reviewer actually ran in the coverage banner (Phase 3).
+   - MISSING (expected in cloud): do NOT fall straight to Claude — that removes the only GPT-family reviewer. Instead run this SAME prompt against **gpt-5.4-mini via `api.openai.com`** (`curl https://api.openai.com/v1/chat/completions -H "Authorization: Bearer $OPENAI_API_KEY"`, `model: "gpt-5.4-mini"`, this prompt as the message; check `jq -e '.error'` and surface any error). Only if `OPENAI_API_KEY` is also unavailable, use a Claude agent (subagent_type "review-panelist"). Record which reviewer actually ran in the coverage banner (Phase 3).
 
-2. **Independent Claude — Structure, Gaps & Devil's Advocate** — Use the Task tool with subagent_type "general-purpose" and this prompt:
+2. **Independent Claude — Structure, Gaps & Devil's Advocate** — Use the Task tool with subagent_type "review-panelist" and this prompt:
 
    > You are two people: (1) a senior software engineer who is the most ruthless plan reviewer on the team, and (2) a devil's advocate who joined specifically to challenge assumptions. You have no context beyond what's written here — if something is unclear or assumed, call it out.
    >
@@ -157,7 +157,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    > THE PLAN:
    > [paste the full plan text here]
 
-3. **Pre-mortem analysis** — Use the Task tool with subagent_type "general-purpose" and this prompt:
+3. **Pre-mortem analysis** — Use the Task tool with subagent_type "review-panelist" and this prompt:
 
    > You are conducting a pre-mortem analysis. Assume this plan was implemented exactly as written, deployed to production, and **failed catastrophically** 2 weeks later. You need to write the post-incident report.
    >
@@ -202,7 +202,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
      }')" | jq -r '.candidates[0].content.parts[0].text'
    ```
 
-5. **User Impact & Platform Defaults** — Use the Task tool with subagent_type "general-purpose" and this prompt:
+5. **User Impact & Platform Defaults** — Use the Task tool with subagent_type "review-panelist" and this prompt:
 
    > You are a reviewer whose sole job is to find ways this plan harms or confuses real end users — not developers, not systems, but the actual humans on the receiving end.
    >
@@ -224,7 +224,7 @@ Launch ALL SIX simultaneously in a single message with parallel tool calls — t
    > THE PLAN:
    > [paste the full plan text here]
 
-6. **Code Design & Maintainability — Codebase-Grounded** — Use the Task tool with subagent_type "general-purpose" and this prompt. **This reviewer exists because the others check "will it work" but not "is it the right shape." Skipping it is the failure mode this skill was burned by — sessions shipped working code that turned into tech debt within weeks.**
+6. **Code Design & Maintainability — Codebase-Grounded** — Use the Task tool with subagent_type "review-panelist" and this prompt. **This reviewer exists because the others check "will it work" but not "is it the right shape." Skipping it is the failure mode this skill was burned by — sessions shipped working code that turned into tech debt within weeks.**
 
    > You are a staff engineer whose ONLY job is to find DESIGN problems — not bugs, not gaps, not "will it compile." You evaluate whether the planned code is the RIGHT SHAPE for this codebase and whether it will age well. If your review only flags correctness issues, you have failed — the other reviewers cover that. Your job is the question they don't ask: "is this well designed?"
    >
