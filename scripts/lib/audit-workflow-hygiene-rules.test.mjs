@@ -259,6 +259,12 @@ runs:
     assert.strictEqual(findPipefailDeadExitCodeEcho(wrap('timeout 60 \\\n  git fetch origin\nrc=$?')).length, 1);
     assert.deepStrictEqual(findPipefailDeadExitCodeEcho(wrap('timeout 60 \\\n  git fetch origin || rc=$?\nrc2=$?')), []);
   });
+  test('quoted / braced / export / declare capture spellings are all caught; unrelated echo is not', () => {
+    for (const c of ['RC="$?"', 'rc=${?}', 'export RC=$?', 'declare -i rc=$?', 'echo "$?" > f']) {
+      assert.strictEqual(findPipefailDeadExitCodeEcho(wrap(`cmd\n${c}`)).length, 1, c);
+    }
+    assert.deepStrictEqual(findPipefailDeadExitCodeEcho(wrap('cmd\necho $HOME')), []);
+  });
   test('function bodies are scanned; a per-line `# hygiene-exitcode-ok:` exempts one capture', () => {
     assert.strictEqual(findPipefailDeadExitCodeEcho(wrap('f() {\n  local rc\n  cmd\n  rc=$?\n}')).length, 1);
     assert.deepStrictEqual(findPipefailDeadExitCodeEcho(wrap('f() {\n  cmd\n  rc=$?  # hygiene-exitcode-ok: only called as f || x\n}')), []);

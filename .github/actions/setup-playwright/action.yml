@@ -53,7 +53,9 @@ runs:
             tail -n 40 "$log"
             # A killed install can leave apt/dpkg children holding the dpkg
             # lock; clear them so attempt 2 does not hang on the same lock.
-            sudo pkill -f 'apt-get|dpkg' || true
+            # `[a]`/`[d]` keep the pattern from matching this command's own
+            # `sudo pkill ...` command line (pkill only excludes itself).
+            sudo pkill -f '[a]pt-get|[d]pkg' || true
             timeout 30 sudo dpkg --configure -a || true
           else
             echo "::error::${cmd[*]} ${what} on both attempts — full output of attempt 2:"

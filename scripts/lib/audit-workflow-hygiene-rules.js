@@ -439,7 +439,7 @@ function extractRunBlocks(raw) {
  * `# hygiene-echo-exitcode-ok:` is still honoured by the caller).
  * `\` continuations are joined, so the previous LOGICAL line is checked.
  */
-const CAPTURE_RE = /^(?:local\s+)?[A-Za-z_][A-Za-z0-9_]*=\$\?(?:\s*(?:[;#].*)?)$|^echo\s+"?\$\?"?/;
+const CAPTURE_RE = /^(?:(?:local|export|declare(?:\s+-\w+)*)\s+)?[A-Za-z_][A-Za-z0-9_]*=(?:"\$\?"|\$\{\?\}|"\$\{\?\}"|\$\?)(?:\s*(?:[;#].*)?)$|^echo\s+(?:"\$\?"|\$\?|\$\{\?\}|"\$\{\?\}")(?:\s|$)/;
 const REACHABLE_PREV_RE = /\|\||&&|^!|^(?:if|elif|while|until|then|else|do|fi|done|esac|;;|\}|\))\b|^(?:\}|\))|(?:\bthen|\bdo|;;|\{)\s*$/;
 
 function logicalLines(block) {
