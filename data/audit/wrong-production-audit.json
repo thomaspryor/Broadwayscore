@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-01T20:00:18.109Z",
+  "timestamp": "2026-10-01T20:48:02.665Z",
   "stats": {
-    "totalReviews": 45740,
-    "alreadyFlagged": 18673,
+    "totalReviews": 45752,
+    "alreadyFlagged": 18675,
     "dateGuardCatches": 261,
-    "directorMismatch": 1195,
+    "directorMismatch": 1196,
     "tvFilmSignals": 1328,
     "londonSignals": 1245,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
-    "noPublishDate": 4134
+    "noPublishDate": 4144
   },
   "findings": [
     {
@@ -19446,6 +19446,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "file": "maryland-theatre-guide--herb-merrick.json",
+      "score": 86,
+      "publishDate": null,
+      "url": "https://mdtheatreguide.com/2026/09/theatre-review-maybe-happy-ending-at-the-hippodrome/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael arden\" from maybe-happy-ending-2024"
         }
       ]
     },
