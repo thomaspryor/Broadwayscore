@@ -30,6 +30,27 @@
  */
 
 const { isScoreable } = require('./is-scoreable');
+const { assessFullText } = require('./text-quality');
+
+/**
+ * Scored from a fullText the scorer itself judged truncated (a paywall cut),
+ * and the file now holds newer text that reads as complete.
+ *
+ * BRO-4486: the NYT Degenerates review (Critic's Pick) was scored 74 on a
+ * paywall-cut copy at 16:46; the 877-word text landed at 18:33 and nothing
+ * re-flagged it, because a 'fullText' textSource was always treated as final.
+ * Both conditions are required: textFetchedAt is restamped on every collect,
+ * and a body that still reads as truncated would re-score into the same
+ * 'truncated' verdict and be flagged again after the next fetch.
+ */
+function isTruncatedScoreNowComplete(data) {
+  const src = data && data.llmMetadata && data.llmMetadata.textSource;
+  if (!src || src.type !== 'fullText' || src.status !== 'truncated') return false;
+  const scoredAt = Date.parse(data.llmMetadata.scoredAt || '');
+  const fetchedAt = Date.parse(data.textFetchedAt || '');
+  if (!Number.isFinite(scoredAt) || !Number.isFinite(fetchedAt) || fetchedAt <= scoredAt) return false;
+  return assessFullText(data.fullText) === 'complete';
+}
 
 /**
  * True iff `data` currently carries a score that was computed on less than
@@ -54,8 +75,9 @@ function isStaleScoreInput(data, show, filePath) {
   // write-time hook must avoid: treating "about to be scored for the first
   // time" as "stale."
   if (typeof data.assignedScore !== 'number') return false;
-  // Already scored off the full text — nothing stale about the input.
-  if (data.llmMetadata?.textSource?.type === 'fullText') return false;
+  // Already scored off the full text — nothing stale about the input, unless
+  // that "full text" was a paywall-cut copy and a complete one landed since.
+  if (data.llmMetadata?.textSource?.type === 'fullText' && !isTruncatedScoreNowComplete(data)) return false;
   // NOTE: deliberately does NOT exclude ensembleData. An earlier draft of
   // this predicate assumed modern ensemble scoring always selects the best
   // available text at score time, so a later fullText arrival couldn't make
@@ -114,4 +136,4 @@ function markRescoreNeeded(fileData, reason, flaggedAt) {
   return fileData;
 }
 
-module.exports = { isStaleScoreInput, markRescoreNeeded };
+module.exports = { isStaleScoreInput, isTruncatedScoreNowComplete, markRescoreNeeded };

@@ -44,6 +44,7 @@ const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
 const { isStaleScoreInput, markRescoreNeeded } = require('./rescore-flagging');
+const { capturePublishedStar } = require('./published-star-capture');
 const { isHumanClearedWrongProduction: _isHumanClearedWrongProduction, neutralizeStaleFlagsOnBodyReplacement } = require('./stale-flag-neutralization');
 const { detectRoundupDigest, detectPullQuoteCompilation } = require('./roundup-digest');
 const { isBroadwayUrl, isLondonMarket } = require('./venue-classification');
@@ -1186,6 +1187,9 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     newReview.contentTier = tierResult.contentTier;
   }
 
+  // BRO-4486: a star printed in the text anchors the first scoring.
+  capturePublishedStar(newReview);
+
   // Immutable creation clock — stamped here so it lands in the written JSON.
   stampFirstSeen(newReview);
 
@@ -1555,6 +1559,10 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     // own release condition), so a truncated paywall refetch keeps its retry
     // context while a genuinely-healed body sheds the garbage verdict.
     if (clearFailureFlags(existing).length > 0) changed = true;
+
+    // BRO-4486: the new body may carry the critic's star; late-star-anchor
+    // then re-anchors a file that was already scored without it.
+    if (capturePublishedStar(existing)) changed = true;
 
     // Card #1902: this fullText change may have just made a prior
     // excerpt-based score stale. isStaleScoreInput() is the single gate
