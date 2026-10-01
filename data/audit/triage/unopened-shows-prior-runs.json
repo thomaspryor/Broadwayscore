@@ -1,24 +1,18 @@
 {
-  "generatedAt": "2026-09-30T17:43:55.275Z",
+  "generatedAt": "2026-10-01T14:11:26.778Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3211,
-  "flaggedShows": 55,
-  "flaggedFiles": 205,
-  "readmissionRiskFiles": 1,
-  "readmissionRisks": [
-    {
-      "showId": "king-lear-2-off-west-end-2026",
-      "file": "london-box-office--richard-franklin.json",
-      "publishDate": "2017-08-21",
-      "outletId": "london-box-office"
-    }
-  ],
+  "scannedShows": 3254,
+  "flaggedShows": 64,
+  "flaggedFiles": 218,
+  "readmissionRiskFiles": 0,
+  "readmissionRisks": [],
   "unevaluatedFiles": 0,
   "unevaluated": [],
   "unreadableFiles": 0,
   "byVerdict": {
-    "likely-contamination": 28,
-    "needs-human-review": 27
+    "likely-contamination": 31,
+    "needs-human-review": 32,
+    "likely-single-prior-run": 1
   },
   "shows": [
     {
@@ -1716,7 +1710,7 @@
           2025
         ],
         "spanDays": 5237,
-        "flaggedCount": 2,
+        "flaggedCount": 3,
         "venueMentionCount": 2
       },
       "suggestedPriorRun": null,
@@ -1749,14 +1743,14 @@
         },
         {
           "file": "londonpubtheatres--paula-david.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "londonpubtheatres",
           "criticName": "Paula David",
           "publishDate": "2025-12-07",
           "url": "https://www.londonpubtheatres.com/review-stick-man-at-bloomsbury-theatre-4-dec-2025-4-jan-2026",
-          "wrongProduction": false,
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         },
@@ -2608,6 +2602,70 @@
       ]
     },
     {
+      "showId": "peter-pan-west-end-2026",
+      "title": "Peter Pan",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Polka Theatre",
+      "previewsStartDate": "2026-11-14",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "3/3 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 3,
+        "distinctYears": [
+          2015,
+          2019,
+          2025
+        ],
+        "spanDays": 3610,
+        "flaggedCount": 3,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--isabella-james.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Isabella James",
+          "publishDate": "2019-07-27",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-peter-pan-troubadour",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--phil-willmott.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Phil Willmott",
+          "publishDate": "2015-12-11",
+          "url": "https://www.londonboxoffice.co.uk/news/post/peter-pan-wrong-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2025-10-29",
+          "url": "https://www.londonboxoffice.co.uk/news/post/wendy-and-peter-pan-barbican-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "romeo-and-juliet-west-end-2027",
       "title": "Romeo & Juliet",
       "market": "west-end",
@@ -2676,7 +2734,7 @@
       "market": "west-end",
       "status": "announced",
       "venue": "Theatre Royal Stratford East",
-      "previewsStartDate": null,
+      "previewsStartDate": "2026-11-21",
       "openingDate": null,
       "verdict": "likely-contamination",
       "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
@@ -3117,6 +3175,106 @@
       ]
     },
     {
+      "showId": "the-weddings-off-west-end-2027",
+      "title": "The Wedding(s)",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Park Theatre",
+      "previewsStartDate": "2027-05-27",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 2,
+        "distinctYears": [
+          2020,
+          2024
+        ],
+        "spanDays": 1704,
+        "flaggedCount": 2,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--john-yap.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "John Yap",
+          "publishDate": "2020-02-07",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-the-wedding-singer",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--shehrazade-zafar-arif.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Shehrazade Zafar-Arif",
+          "publishDate": "2024-10-07",
+          "url": "https://www.londonboxoffice.co.uk/news/post/Review-four-funerals-and-a-wedding",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "the-master-builder-off-west-end-2026",
+      "title": "The Master Builder",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Arcola Theatre",
+      "previewsStartDate": "2026-10-16",
+      "openingDate": null,
+      "verdict": "likely-contamination",
+      "reasoning": "2/2 files already carry wrongProduction/wrongShow flags — the temporal gate is corroborating an existing contamination finding, not surfacing a new prior run. wrongProduction has a known ~15% false-positive rate, so a quick spot-check is still worthwhile before treating this as closed.",
+      "stats": {
+        "count": 2,
+        "distinctYears": [
+          2016,
+          2025
+        ],
+        "spanDays": 3370,
+        "flaggedCount": 2,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--nastazja-domaradzka.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Nastazja Domaradzka",
+          "publishDate": "2016-02-08",
+          "url": "https://www.londonboxoffice.co.uk/news/post/master-builder-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2025-05-01",
+          "url": "https://www.londonboxoffice.co.uk/news/post/my-master-builder-review",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "the-snowman-west-end-2026",
       "title": "The Snowman",
       "market": "west-end",
@@ -3194,7 +3352,7 @@
       "market": "west-end",
       "status": "announced",
       "venue": "Almeida Theatre",
-      "previewsStartDate": null,
+      "previewsStartDate": "2026-11-10",
       "openingDate": null,
       "verdict": "needs-human-review",
       "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Almeida Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
@@ -3477,6 +3635,42 @@
       ]
     },
     {
+      "showId": "the-sound-of-music-2027",
+      "title": "The Sound of Music",
+      "market": "broadway",
+      "status": "upcoming",
+      "venue": "Vivian Beaumont Theater - Lincoln Center Theater",
+      "previewsStartDate": "2027-03-23",
+      "openingDate": "2027-04-15",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Vivian Beaumont Theater - Lincoln Center Theater\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2025
+        ],
+        "spanDays": 0,
+        "flaggedCount": 0,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "the-suburban--alexandra-cohen.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
+          "outletId": "the-suburban",
+          "criticName": "Alexandra Cohen",
+          "publishDate": "2025-11-30",
+          "url": "https://www.thesuburban.com/columnists/mike_cohen_cohen_chatter/the-hills-are-alive-at-mirvish-with-the-sound-of-music/article_72e9ab9f-f497-44fc-b848-c43871574f15.html",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "giant-the-play-off-west-end-2026",
       "title": "Giant The Play",
       "market": "west-end",
@@ -3657,6 +3851,42 @@
       ]
     },
     {
+      "showId": "august-osage-county-west-end-2026",
+      "title": "August: Osage County",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Noël Coward Theatre",
+      "previewsStartDate": "2027-01-18",
+      "openingDate": "2027-01-26",
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Noël Coward Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2023
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2023-05-05",
+          "url": "https://www.londonboxoffice.co.uk/news/post/august-in-england-review",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "la-distance-off-west-end-2026",
       "title": "La Distance",
       "market": "west-end",
@@ -3770,7 +4000,7 @@
       "market": "west-end",
       "status": "announced",
       "venue": "Park Theatre",
-      "previewsStartDate": null,
+      "previewsStartDate": "2026-09-30",
       "openingDate": null,
       "verdict": "needs-human-review",
       "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Park Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
@@ -3878,7 +4108,7 @@
       "market": "west-end",
       "status": "announced",
       "venue": "Orange Tree Theatre",
-      "previewsStartDate": null,
+      "previewsStartDate": "2027-02-15",
       "openingDate": null,
       "verdict": "needs-human-review",
       "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Orange Tree Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
@@ -3888,21 +4118,57 @@
           2017
         ],
         "spanDays": 0,
-        "flaggedCount": 0,
+        "flaggedCount": 1,
         "venueMentionCount": 0
       },
       "suggestedPriorRun": null,
       "reviews": [
         {
           "file": "london-box-office--richard-franklin.json",
-          "readmissionRisk": "readmits-on-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": null,
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
           "outletId": "london-box-office",
           "criticName": "Richard Franklin",
           "publishDate": "2017-08-21",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-king-lear-shakespeare-globe",
-          "wrongProduction": false,
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "frankenstein-west-end-2027",
+      "title": "Frankenstein",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Rose Theatre",
+      "previewsStartDate": "2027-04-16",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Rose Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2018
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--christian-durham.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Christian Durham",
+          "publishDate": "2018-05-03",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-young-frankenstein",
+          "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
         }
@@ -3974,6 +4240,119 @@
           "criticName": "Nastazja Domaradzka",
           "publishDate": "2019-12-06",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-dick-whittington-stratford-east",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "the-captain-off-west-end-2027",
+      "title": "The Captain",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "Park Theatre",
+      "previewsStartDate": "2027-01-12",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Park Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2019
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2019-07-12",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-captain-corellis-mandolin",
+          "wrongProduction": true,
+          "wrongShow": true,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "gang-of-three-off-west-end-2026",
+      "title": "Gang Of Three",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "King's Head Theatre",
+      "previewsStartDate": "2026-10-01",
+      "openingDate": null,
+      "verdict": "likely-single-prior-run",
+      "reasoning": "1 premature-scored review(s) cluster within a 0-day window (single run pattern), 0 already flagged. 1/1 review texts mention the show's own venue (\"King's Head Theatre\") — supports same-venue return.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2025
+        ],
+        "spanDays": 0,
+        "flaggedCount": 0,
+        "venueMentionCount": 1
+      },
+      "suggestedPriorRun": {
+        "venue": "King's Head Theatre",
+        "reviewDateRangeStart": "2025-05-08",
+        "reviewDateRangeEnd": "2025-05-08",
+        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
+      },
+      "reviews": [
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2025-05-08",
+          "url": "https://www.londonboxoffice.co.uk/news/post/gang-of-three-review",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "hound-of-the-baskervilles-off-west-end-2026",
+      "title": "Hound of the Baskervilles",
+      "market": "west-end",
+      "status": "upcoming",
+      "venue": "King's Head Theatre",
+      "previewsStartDate": "2026-10-06",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"King's Head Theatre\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2017
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--hugh-wooldridge.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Hugh Wooldridge",
+          "publishDate": "2017-12-12",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-hound-baskervilles",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null

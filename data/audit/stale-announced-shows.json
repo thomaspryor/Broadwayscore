@@ -1,27 +1,15 @@
 {
-  "generatedAt": "2026-09-30T17:44:37.467Z",
+  "generatedAt": "2026-10-01T14:11:46.733Z",
   "staleDaysThreshold": 30,
   "reviewTextsAvailable": true,
-  "flaggedCount": 2,
+  "flaggedCount": 1,
   "flagged": [
-    {
-      "id": "king-lear-2-off-west-end-2026",
-      "title": "King Lear 2",
-      "venue": "Orange Tree Theatre",
-      "category": "off-west-end",
-      "previewsStartDate": null,
-      "openingDate": null,
-      "todaytixId": null,
-      "reasons": [
-        "data/review-texts/ has collected review file(s)"
-      ]
-    },
     {
       "id": "richard-ii-off-west-end-2026",
       "title": "Richard Ii",
       "venue": "Orange Tree Theatre",
       "category": "off-west-end",
-      "previewsStartDate": null,
+      "previewsStartDate": "2027-02-18",
       "openingDate": null,
       "todaytixId": null,
       "reasons": [
@@ -29,7 +17,7 @@
       ]
     }
   ],
-  "silencedByContaminationCount": 22,
+  "silencedByContaminationCount": 23,
   "silencedByContamination": [
     {
       "id": "midnight-in-the-garden-of-good-and-evil-2024",
@@ -162,6 +150,12 @@
       "title": "Gentlemen Prefer Blondes",
       "reviewFiles": 1,
       "excludedFiles": 1
+    },
+    {
+      "id": "king-lear-2-off-west-end-2026",
+      "title": "King Lear 2",
+      "reviewFiles": 2,
+      "excludedFiles": 2
     }
   ]
 }
