@@ -365,3 +365,29 @@ test('a sent record for a DIFFERENT draft never vouches (recreated draft still p
   assert.strictEqual(classifyShowBroadcastState(sentShows, 'x-2026'), 'draft-stuck');
   assert.strictEqual(find({ sentShows })[0].state, 'draft-stuck');
 });
+
+test('no per-show mirror: a sent market:combo record naming the show still counts', () => {
+  const sentShows = {
+    'west-end:a-2026+x-2026': { draftId: 'combo', draftStatus: 'sent', sentAt: '2026-09-02T10:00:00Z', completed: true },
+    'west-end:x-2026-extra': { draftId: 'other', draftStatus: 'sent', sentAt: '2026-09-02T10:00:00Z', completed: true },
+  };
+  assert.strictEqual(classifyShowBroadcastState(sentShows, 'x-2026'), 'sent');
+  assert.strictEqual(classifyShowBroadcastState({ 'west-end:x-2026-extra': sentShows['west-end:x-2026-extra'] }, 'x-2026'), 'never-drafted');
+});
+
+// BRO-4474 review: once Resend reaps the sent broadcast, the stale mirror's
+// lone poll 404s and it becomes deleted + completed:false. The deadline gate
+// must still see the sibling's send and not force a fresh draft.
+test('broadcast-deadline: a show sent on its sibling record is never past-deadline owed', () => {
+  const { pastDeadlineShows } = require('./broadcast-deadline.js');
+  const shows = [{ id: 'x-2026', openingDate: '2026-09-01', category: 'broadway' }];
+  const sentShows = {
+    'x-2026': { draftId: 'd', draftStatus: 'deleted', completed: false, sentAt: null, draftCreatedAt: '2026-09-01T12:00:00Z', broadcastKey: 'broadway:x-2026' },
+    'broadway:x-2026': { draftId: 'd', draftStatus: 'sent', sentAt: '2026-09-01T13:00:00Z', completed: true },
+  };
+  const now = Date.UTC(2026, 8, 7, 12);
+  assert.deepStrictEqual(pastDeadlineShows({ showIds: ['x-2026'], shows, sentShows, nowMs: now }), []);
+  // Control: without the sent sibling the same mirror IS owed.
+  const lone = { 'x-2026': sentShows['x-2026'] };
+  assert.strictEqual(pastDeadlineShows({ showIds: ['x-2026'], shows, sentShows: lone, nowMs: now }).length, 1);
+});

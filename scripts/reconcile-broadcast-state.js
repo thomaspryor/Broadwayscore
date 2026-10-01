@@ -81,6 +81,13 @@ const POLL_INTERVAL_MS = Number.isFinite(Number(process.env.RESEND_POLL_INTERVAL
   ? Number(process.env.RESEND_POLL_INTERVAL_MS)
   : 250;
 const MAX_429_RETRIES = 4;
+// Whole-run cap on 429 retries. Records that never reach sent+sentAt (stuck,
+// cancelled, ambiguous-deleted drafts) are re-polled every run, so under a
+// sustained 429 the per-draft retries alone could outlast the workflow's
+// 10-minute timeout, and the file is only written at the end: a killed run
+// would lose every update it had made.
+const MAX_429_RETRIES_PER_RUN = 20;
+let retriesUsed = 0;
 
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -100,7 +107,8 @@ async function getBroadcastWithRetry(broadcastId) {
   for (let attempt = 0; attempt <= MAX_429_RETRIES; attempt++) {
     response = await getBroadcast(broadcastId);
     if (response.ok || response.statusCode !== 429) return response;
-    if (attempt === MAX_429_RETRIES) break;
+    if (attempt === MAX_429_RETRIES || retriesUsed >= MAX_429_RETRIES_PER_RUN) break;
+    retriesUsed++;
     const wait = POLL_INTERVAL_MS === 0 ? 0 : retryDelayMs(attempt, response.retryAfter);
     warn(`    429 rate-limited, retrying in ${wait}ms (attempt ${attempt + 1}/${MAX_429_RETRIES})`);
     await sleep(wait);
@@ -179,13 +187,41 @@ async function main() {
   const responseByDraftId = new Map();
   let lastRequestAt = 0;
 
+  const isShowRecordKey = (key) => !key.startsWith('preview:') && !key.startsWith('overdue-alert:');
+
+  // A record already observed sent (sent + sentAt) is terminal and skipped
+  // below, so its mirrors were polled ALONE on every later run. Once Resend
+  // reaps the sent broadcast (~24h) that lone poll 404s, and a mirror whose
+  // own last state was `draft` becomes deleted + completed:false, which
+  // shouldRequeueShow reads as "never went out" and re-queues (BRO-4474
+  // review: School Girls' per-show mirror was one 404 away from this). So a
+  // sibling's observed send is applied to the mirror directly, with no GET.
+  const sentRecordByDraftId = new Map();
+  for (const [key, rec] of entries) {
+    if (isShowRecordKey(key) && rec && rec.draftId && rec.draftStatus === 'sent' && rec.sentAt) {
+      sentRecordByDraftId.set(rec.draftId, rec);
+    }
+  }
+
+  // --show=X selects the matching keys AND every other key sharing their
+  // draftId, so a manual correction can't update one copy of a broadcast and
+  // leave its mirror behind.
+  let filterDraftIds = null;
+  if (showFilter) {
+    filterDraftIds = new Set();
+    for (const [key, rec] of entries) {
+      if ((key === showFilter || key.startsWith(showFilter)) && rec && rec.draftId) filterDraftIds.add(rec.draftId);
+    }
+  }
+
   for (const [key, rec] of entries) {
     // Skip keys that aren't show-level broadcast records (previews, overdue alerts).
-    if (key.startsWith('preview:') || key.startsWith('overdue-alert:')) {
+    if (!isShowRecordKey(key)) {
       skipped++;
       continue;
     }
-    if (showFilter && !key.startsWith(showFilter) && key !== showFilter) {
+    if (showFilter && !key.startsWith(showFilter) && key !== showFilter
+        && !(rec && rec.draftId && filterDraftIds.has(rec.draftId))) {
       skipped++;
       continue;
     }
@@ -199,8 +235,19 @@ async function main() {
       continue;
     }
 
+    const sentTwin = sentRecordByDraftId.get(rec.draftId);
     let response = responseByDraftId.get(rec.draftId);
-    if (response) {
+    if (sentTwin) {
+      log(`  ${key}: draft ${rec.draftId.slice(0, 8)}... already observed sent on a sibling record, copying (no GET)`);
+      response = {
+        ok: true,
+        data: {
+          status: 'sent',
+          sent_at: sentTwin.sentAt,
+          ...(typeof sentTwin.recipientCount === 'number' ? { total_recipients: sentTwin.recipientCount } : {}),
+        },
+      };
+    } else if (response) {
       log(`  Reusing poll for ${key} (draft ${rec.draftId.slice(0, 8)}...)`);
     } else {
       const since = Date.now() - lastRequestAt;

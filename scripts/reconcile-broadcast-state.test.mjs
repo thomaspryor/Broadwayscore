@@ -265,3 +265,65 @@ test('retryDelayMs: honors Retry-After seconds (capped), else exponential backof
   assert.equal(retryDelayMs(2, undefined, 250), 2000);
   assert.equal(retryDelayMs(10, undefined, 250), 10_000);
 });
+
+// BRO-4474 review: the sent twin is terminal and skipped, so the stale mirror
+// used to be polled alone; after Resend's ~24h reap that poll 404s and the
+// mirror flips to deleted + completed:false (re-queueable). The sibling's
+// observed send must be copied over with no GET at all.
+test('main(): a stale mirror inherits its sibling\'s observed send without polling (survives the post-reap 404)', async () => {
+  fakeHttpsRequest.calls = 0;
+  await withFakeEnv(
+    {
+      localSentData: {
+        shows: {
+          'broadway:sg-2026': { draftId: 'sg', draftStatus: 'sent', sentAt: '2026-09-29 18:55:52.397843+00', completed: true, recipientCount: 812, draftCreatedAt: '2026-09-29T18:50:29.729Z' },
+          'sg-2026': { draftId: 'sg', draftStatus: 'draft', sentAt: null, completed: true, draftCreatedAt: '2026-09-29T18:50:29.729Z', broadcastKey: 'broadway:sg-2026' },
+        },
+      },
+      httpsResponses: [{ statusCode: 404, body: '' }],
+    },
+    async ({ localWrites }) => {
+      await main();
+      const m = JSON.parse(localWrites[0]).shows['sg-2026'];
+      assert.equal(m.draftStatus, 'sent');
+      assert.equal(m.completed, true);
+      assert.equal(m.sentAt, '2026-09-29 18:55:52.397843+00');
+      assert.equal(m.recipientCount, 812);
+      assert.equal(fakeHttpsRequest.calls, 0, 'no GET: the 404 must never be consulted');
+    },
+  );
+});
+
+test('main(): --show=X also reconciles the other records sharing X\'s draftId', async () => {
+  fakeHttpsRequest.calls = 0;
+  const savedArgv = process.argv;
+  // showFilter is parsed at require time, so load a fresh module instance.
+  process.argv = [...savedArgv.slice(0, 2), '--show=sg-2026'];
+  delete require.cache[require.resolve('./reconcile-broadcast-state.js')];
+  const fresh = require('./reconcile-broadcast-state.js');
+  process.argv = savedArgv;
+  try {
+    await withFakeEnv(
+      {
+        localSentData: {
+          shows: {
+            'broadway:sg-2026': { draftId: 'sg', draftStatus: 'draft', completed: true },
+            'sg-2026': { draftId: 'sg', draftStatus: 'draft', completed: true, broadcastKey: 'broadway:sg-2026' },
+            'unrelated-2026': { draftId: 'zz', draftStatus: 'draft', completed: true },
+          },
+        },
+        httpsResponses: [{ statusCode: 200, body: JSON.stringify({ id: 'sg', status: 'sent', sent_at: '2026-09-29T18:55:52Z' }) }],
+      },
+      async ({ localWrites }) => {
+        await fresh.main();
+        const out = JSON.parse(localWrites[0]).shows;
+        assert.equal(out['sg-2026'].draftStatus, 'sent');
+        assert.equal(out['broadway:sg-2026'].draftStatus, 'sent', 'the broadway: twin must not be left behind');
+        assert.equal(out['unrelated-2026'].draftStatus, 'draft', 'unfiltered drafts stay untouched');
+        assert.equal(fakeHttpsRequest.calls, 1);
+      },
+    );
+  } finally {
+    delete require.cache[require.resolve('./reconcile-broadcast-state.js')];
+  }
+});

@@ -21,7 +21,7 @@
  */
 
 const { shouldRequeueShow } = require('./broadcast-state');
-const { wasCoveredByWeeklyRoundup } = require('./missed-broadcasts');
+const { wasCoveredByWeeklyRoundup, sentOnSiblingRecord } = require('./missed-broadcasts');
 
 // Overdue alert: midnight ET (04:00 UTC in EDT) after opening night. This was
 // inline in the workflow's overdue step as `openingDate+'T04:00:00Z'` + 1 day.
@@ -79,6 +79,9 @@ function pastDeadlineShows({ showIds, shows, sentShows, newsletterIssues = [], n
     // Same "still owed" rule the send script applies (a cancelled or failed draft
     // re-queues after its cooldown, and a healthy draft is never re-created).
     if (!shouldRequeueShow(sent[id], nowMs)) continue;
+    // ...unless a sibling record of the same draft already observed the send
+    // (the per-show mirror can be stale; BRO-4474).
+    if (sentOnSiblingRecord(sent, id)) continue;
     // BRO-3088: the owner declined individual West End sends once the Weekly
     // Round-up covered the show, so a deadline must not force one.
     if (show.category === 'west-end' && wasCoveredByWeeklyRoundup(newsletterIssues, id)) continue;

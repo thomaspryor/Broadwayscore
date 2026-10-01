@@ -153,16 +153,36 @@ function classifyBroadcastState(record) {
  * older combo that was later recreated) can never vouch for a new draft.
  */
 function classifyShowBroadcastState(sentShows, showId) {
+  const state = classifyBroadcastState((sentShows || {})[showId]);
+  if (state === 'sent') return state;
+  return sentOnSiblingRecord(sentShows, showId) ? 'sent' : state;
+}
+
+/**
+ * True when a record OTHER than the show's own per-show mirror observed the
+ * send: one sharing the mirror's draftId, or (no mirror at all) a sent
+ * `market:a+b` key naming the show. Never consults the mirror's own state,
+ * so re-queue gates (send-opening-night-broadcast.js, broadcast-deadline.js)
+ * can add it on top of shouldRequeueShow without inheriting this file's
+ * different reading of the mirror itself.
+ */
+function sentOnSiblingRecord(sentShows, showId) {
   const shows = sentShows || {};
   const own = shows[showId];
-  const state = classifyBroadcastState(own);
-  if (state === 'sent' || !own || !own.draftId) return state;
   for (const [key, rec] of Object.entries(shows)) {
-    if (key === showId || !rec || rec.draftId !== own.draftId) continue;
+    if (key === showId || !rec) continue;
     if (key.startsWith('preview:') || key.startsWith('overdue-alert:')) continue;
-    if (classifyBroadcastState(rec) === 'sent') return 'sent';
+    if (own) {
+      if (!own.draftId || rec.draftId !== own.draftId) continue;
+    } else {
+      // No per-show mirror (recordDraftCompletion always writes one today,
+      // but a partial merge could drop it).
+      const m = /^[a-z-]+:([^:]+)$/.exec(key);
+      if (!m || !m[1].split('+').includes(showId)) continue;
+    }
+    if (classifyBroadcastState(rec) === 'sent') return true;
   }
-  return state;
+  return false;
 }
 
 /** Kept for callers that only need the boolean. */
@@ -306,6 +326,7 @@ module.exports = {
   findMissedBroadcasts,
   classifyBroadcastState,
   classifyShowBroadcastState,
+  sentOnSiblingRecord,
   wasCoveredByWeeklyRoundup,
   daysSinceOpening,
   hasCompletedBroadcast,
