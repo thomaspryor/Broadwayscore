@@ -294234,19 +294234,19 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-01T14:30:31.702Z",
-    "completedAt": "2026-10-01T14:30:36.321Z",
+    "startedAt": "2026-10-01T14:35:32.681Z",
+    "completedAt": "2026-10-01T14:35:38.714Z",
     "totalReviews": 37,
     "processed": 1,
     "skipped": 36,
     "errors": 0,
     "tokensUsed": {
-      "input": 5954,
-      "output": 302,
-      "total": 14811
+      "input": 5368,
+      "output": 353,
+      "total": 13982
     },
-    "costUsd": 0.035045,
-    "runId": "36876453697",
+    "costUsd": 0.0213566,
+    "runId": "36876915571",
     "errorDetails": [],
     "validation": [
       {
@@ -301416,10 +301416,10 @@
       {
         "showId": "flamenc-oh-off-west-end-2026",
         "ourDistribution": {
-          "up": 4,
+          "up": 5,
           "flat": 0,
           "down": 1,
-          "total": 5
+          "total": 6
         },
         "hasDisagreement": false
       },
@@ -304070,6 +304070,16 @@
         },
         "dtliDistribution": {
           "up": 0,
+          "flat": 0,
+          "down": 0,
+          "total": 1
+        },
+        "hasDisagreement": false
+      },
+      {
+        "showId": "imitations-off-west-end-2026",
+        "ourDistribution": {
+          "up": 1,
           "flat": 0,
           "down": 0,
           "total": 1
@@ -318322,10 +318332,10 @@
       {
         "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
         "ourDistribution": {
-          "up": 17,
+          "up": 18,
           "flat": 2,
           "down": 1,
-          "total": 20
+          "total": 21
         },
         "hasDisagreement": false
       },
@@ -318665,8 +318675,8 @@
     ]
   },
   {
-    "startedAt": "2026-10-01T14:31:34.024Z",
-    "completedAt": "2026-10-01T14:31:34.035Z",
+    "startedAt": "2026-10-01T14:36:41.270Z",
+    "completedAt": "2026-10-01T14:36:41.281Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -318677,7 +318687,7 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "36876453697",
+    "runId": "36876915571",
     "errorDetails": []
   }
 ]
