@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-01T06:46:30.062Z",
-    "completedAt": "2026-10-01T06:47:01.243Z",
-    "totalReviews": 45880,
-    "processed": 0,
-    "skipped": 45873,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 34769,
-      "output": 1160,
-      "total": 91849
-    },
-    "costUsd": 0.1612703,
-    "runId": "36826283991",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-01T06:47:03.195Z",
-    "completedAt": "2026-10-01T06:52:35.480Z",
-    "totalReviews": 158,
-    "processed": 158,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 415935,
-      "output": 37277,
-      "total": 453212
-    },
-    "costUsd": 1.1599830000000002,
-    "runId": "36826283991",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-01T06:56:27.542Z",
     "completedAt": "2026-10-01T06:56:35.565Z",
     "totalReviews": 45880,
@@ -319265,6 +319233,49 @@
     },
     "costUsd": 0,
     "runId": "36903863592",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-01T18:13:53.414Z",
+    "completedAt": "2026-10-01T18:14:09.829Z",
+    "totalReviews": 46166,
+    "processed": 0,
+    "skipped": 46160,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 20255,
+      "output": 588,
+      "total": 52862
+    },
+    "costUsd": 0.1082819,
+    "runId": "36904626139",
+    "errorDetails": [
+      {
+        "showId": "the-secret-circus-musical-off-broadway-2026",
+        "outletId": "flopbox",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "lost-in-del-valle-return-off-broadway-2026",
+        "outletId": "sohoplayhouse",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-01T18:14:11.879Z",
+    "completedAt": "2026-10-01T18:14:13.895Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "36904626139",
     "errorDetails": []
   }
 ]
