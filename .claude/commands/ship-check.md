@@ -169,7 +169,7 @@ npx playwright screenshot --browser=chromium --viewport-size=1440,900 --full-pag
 
 Launch all three reviewers simultaneously. Save the screenshots to files that can be referenced.
 
-1. **Claude subagent — Codebase-aware UX review** — Use the Task tool with subagent_type "general-purpose":
+1. **Claude subagent — Codebase-aware UX review** — Use the Task tool with subagent_type "review-panelist":
 
    > You are a QA engineer reviewing a just-completed feature. You have access to the codebase. Your job is to find bugs, edge cases, and UX issues that the developer missed.
    >

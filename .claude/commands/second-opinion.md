@@ -27,7 +27,7 @@ Write the plan + relevant codebase context to a private per-run temp file — ne
 
 ### Phase 2: Agent review
 
-Launch a single Claude agent (subagent_type "general-purpose") with this prompt:
+Launch a single Claude agent (subagent_type "review-panelist") with this prompt:
 
 > You are a senior engineer reviewing a plan before implementation. You have access to the full codebase. Your job is to find two classes of problem with EQUAL weight: (a) it won't work, and (b) it will work but the design is wrong and will age into tech debt. Skip neither.
 >

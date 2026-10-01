@@ -75,7 +75,7 @@ Append these approaches to `/tmp/gut-check-problem.txt`.
 The reviewers have sharply different roles. gpt-5.4-mini challenges and generates alternatives. Claude evaluates and judges. They do NOT do the same thing.
 
 1. **gpt-5.4-mini — Challenger & Alternative Generator** — Run this curl command via Bash.
-   **OpenAI check:** Run `echo ${OPENAI_API_KEY:+SET}` first. If empty, skip the curl and use a Claude agent (Task tool, subagent_type "general-purpose") with the same prompt below. Note: "gpt-5.4-mini unavailable — using Claude as second reviewer."
+   **OpenAI check:** Run `echo ${OPENAI_API_KEY:+SET}` first. If empty, skip the curl and use a Claude agent (Task tool, subagent_type "review-panelist") with the same prompt below. Note: "gpt-5.4-mini unavailable — using Claude as second reviewer."
    **IMPORTANT: gpt-5.4-mini gets `/tmp/gut-check-problem-only.txt` (problem only, NO approaches).** This forces it to generate fresh alternatives without anchoring.
    ```
    curl -s https://api.openai.com/v1/chat/completions \
@@ -91,7 +91,7 @@ The reviewers have sharply different roles. gpt-5.4-mini challenges and generate
      }')" | jq -r '.choices[0].message.content'
    ```
 
-2. **Independent Claude — Judge & Evaluator** — Use the Task tool with subagent_type "general-purpose" and this prompt.
+2. **Independent Claude — Judge & Evaluator** — Use the Task tool with subagent_type "review-panelist" and this prompt.
    **IMPORTANT: Claude gets `/tmp/gut-check-problem.txt` (problem WITH approaches).** It evaluates the approaches that were generated.
 
    > You are the final judge on whether this idea is worth building and which approach is correct. You've killed 30+ features that shouldn't have been built. You are rigorous, quantitative, and user-obsessed.
