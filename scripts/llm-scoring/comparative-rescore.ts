@@ -59,6 +59,7 @@ const {
   buildComparativeMarker,
   bumpComparativeFailure,
   recordedIsolatedScore,
+  MAX_COMPARATIVE_FAILURES,
 } = require('../lib/comparative-band');
 
 const REVIEW_TEXTS_DIR =
@@ -250,6 +251,8 @@ type GroupResult = {
   applied: Array<{ file: string; isolated: number; comparative: number; modelScores: Record<string, number>; warmthRank: number | null }>;
   agreement: number | null;
   skippedReason?: string;
+  /** Fewer than 2 models answered at all (outage): not counted as a failed attempt. */
+  transient?: boolean;
 };
 
 async function rescoreGroup(
@@ -276,7 +279,18 @@ async function rescoreGroup(
 
   const maps = Object.values(perModelMaps);
   if (maps.length < 2) {
-    return { bandKey: entries[0].bandKey, applied: [], agreement: null, skippedReason: `only ${maps.length} model(s) returned parseable scores` };
+    // The callers return null on any HTTP/network error. If fewer than 2
+    // models even answered, this is an outage, not a bad group: don't count it
+    // toward the give-up cap, or a 30-minute provider outage would freeze
+    // every group it touched (BRO-4467).
+    const answered = raw.filter((r) => typeof r === 'string' && r.trim()).length;
+    return {
+      bandKey: entries[0].bandKey,
+      applied: [],
+      agreement: null,
+      skippedReason: `only ${maps.length} model(s) returned parseable scores (${answered} answered)`,
+      transient: answered < 2,
+    };
   }
 
   const isolated: Record<string, number> = {};
@@ -404,8 +418,11 @@ async function main() {
       rescoresDone++;
       if (result.skippedReason) {
         console.log(`  ${show} [${bandKey}] skipped: ${result.skippedReason}`);
-        if (!dryRun) {
+        if (!dryRun && !result.transient) {
           for (const e of entries) markFailedAttempt(e, result.skippedReason);
+          if (isGroupSettled(entries)) {
+            console.warn(`  ⚠️ ${show} [${bandKey}] giving up after ${MAX_COMPARATIVE_FAILURES} unparseable attempts; isolated scores stay`);
+          }
         }
         continue;
       }
