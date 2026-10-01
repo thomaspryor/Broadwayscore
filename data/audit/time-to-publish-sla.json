@@ -1,127 +1,39 @@
 {
-  "generatedAt": "2026-09-30T17:44:41.493Z",
-  "scope": "2 opening window(s): whos-afraid-of-virginia-woolf-west-end-2026 (2026-09-30), the-standard-of-living-west-end-2026 (2026-09-29)",
+  "generatedAt": "2026-10-01T14:11:51.172Z",
+  "scope": "2 opening window(s): hay-fever-west-end-2026 (2026-10-01), creation-stories-and-all-the-important-importants-off-broadway-2026 (2026-10-01)",
   "degraded": null,
   "windows": [
     {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "openingDate": "2026-09-30",
-      "from": "2026-09-29T00:00:00.000Z",
-      "to": "2026-10-04T23:59:59.999Z"
+      "showId": "hay-fever-west-end-2026",
+      "openingDate": "2026-10-01",
+      "from": "2026-09-30T00:00:00.000Z",
+      "to": "2026-10-05T23:59:59.999Z"
     },
     {
-      "showId": "the-standard-of-living-west-end-2026",
-      "openingDate": "2026-09-29",
-      "from": "2026-09-28T00:00:00.000Z",
-      "to": "2026-10-03T23:59:59.999Z"
+      "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
+      "openingDate": "2026-10-01",
+      "from": "2026-09-30T00:00:00.000Z",
+      "to": "2026-10-05T23:59:59.999Z"
     }
   ],
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "logEntryCount": 187499,
+  "logEntryCount": 224415,
   "logOldestEntryAt": "2026-08-21T04:29:05.437Z",
   "publishTimesLoaded": 0,
   "verdict": {
     "verdict": "insufficient-data",
     "pass": false,
-    "evaluated": 3,
+    "evaluated": 0,
     "inFlight": 0,
     "compliant": 0,
-    "compliancePct": 0,
-    "p50Ms": 16003160,
-    "p90Ms": 17535368,
+    "compliancePct": null,
+    "p50Ms": null,
+    "p90Ms": null,
     "targetMinutes": 15,
     "targetPct": 90,
     "minSample": 5,
-    "breaches": [
-      {
-        "showId": "the-standard-of-living-west-end-2026",
-        "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
-        "outletId": "timeout-london",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-09-29T23:56:49.632Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-09-30T00:02:17.668Z",
-        "liveAt": "2026-09-30T04:39:05.000Z",
-        "pipelineMs": 16935368,
-        "publishedToLiveMs": 17535368,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      },
-      {
-        "showId": "the-standard-of-living-west-end-2026",
-        "reviewKey": "guardian:arifa-akbar:https://www.theguardian.com/stage/2026/sep/30/the-standard-of-living-review-rory-kinnear-theatre-royal-haymarket-london-james-graham-nicholas-hytner",
-        "outletId": "guardian",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-09-30T00:22:21.840Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-09-30T00:26:00.192Z",
-        "liveAt": "2026-09-30T04:39:05.000Z",
-        "pipelineMs": 15403160,
-        "publishedToLiveMs": 16003160,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      },
-      {
-        "showId": "the-standard-of-living-west-end-2026",
-        "reviewKey": "all-that-dazzles-uk:all-that-dazzles:https://www.allthatdazzles.co.uk/post/review-the-standard-of-living-theatre-royal-haymarket",
-        "outletId": "all-that-dazzles-uk",
-        "publishedAt": null,
-        "publishedAtAssumedZone": false,
-        "firstSeenAt": "2026-09-30T03:14:19.961Z",
-        "collectedAt": null,
-        "scoredAt": null,
-        "rebuiltAt": "2026-09-30T03:19:48.437Z",
-        "liveAt": "2026-09-30T04:39:05.000Z",
-        "pipelineMs": 5085039,
-        "publishedToLiveMs": 5685039,
-        "basis": "poller-bounded",
-        "stuckAtStage": null
-      }
-    ],
-    "byBasis": {
-      "poller-bounded": {
-        "evaluated": 3,
-        "compliant": 0
-      }
-    }
+    "breaches": [],
+    "byBasis": {}
   },
-  "records": [
-    {
-      "showId": "the-standard-of-living-west-end-2026",
-      "outletId": "timeout-london",
-      "reviewKey": "timeout-london:andrzej-lukowski:https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-09-29T23:56:49.632Z",
-      "liveAt": "2026-09-30T04:39:05.000Z",
-      "pipelineMinutes": 282.3,
-      "publishedToLiveMinutes": 292.3,
-      "stuckAtStage": null
-    },
-    {
-      "showId": "the-standard-of-living-west-end-2026",
-      "outletId": "guardian",
-      "reviewKey": "guardian:arifa-akbar:https://www.theguardian.com/stage/2026/sep/30/the-standard-of-living-review-rory-kinnear-theatre-royal-haymarket-london-james-graham-nicholas-hytner",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-09-30T00:22:21.840Z",
-      "liveAt": "2026-09-30T04:39:05.000Z",
-      "pipelineMinutes": 256.7,
-      "publishedToLiveMinutes": 266.7,
-      "stuckAtStage": null
-    },
-    {
-      "showId": "the-standard-of-living-west-end-2026",
-      "outletId": "all-that-dazzles-uk",
-      "reviewKey": "all-that-dazzles-uk:all-that-dazzles:https://www.allthatdazzles.co.uk/post/review-the-standard-of-living-theatre-royal-haymarket",
-      "basis": "poller-bounded",
-      "firstSeenAt": "2026-09-30T03:14:19.961Z",
-      "liveAt": "2026-09-30T04:39:05.000Z",
-      "pipelineMinutes": 84.8,
-      "publishedToLiveMinutes": 94.8,
-      "stuckAtStage": null
-    }
-  ]
+  "records": []
 }
