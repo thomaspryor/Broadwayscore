@@ -2833,39 +2833,6 @@
     "queuedAt": "2026-09-30T10:40:38.895Z"
   },
   {
-    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
-    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=3, reviews.json aggregate=0, live production=n/a, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36703634711",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=3, aggregate=0, live=n/a, drift=3",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-09-26",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36703634711)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-09-30T10:40:39.026Z"
-  },
-  {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Validate market expansion",
     "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36718890201",
@@ -3602,5 +3569,38 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-09-30T23:40:58.615Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
+    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
+    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=4, reviews.json aggregate=0, live production=n/a, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36797381932",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=4, aggregate=0, live=n/a, drift=4",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-09-26",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36797381932)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-01T00:43:26.377Z"
   }
 ]
