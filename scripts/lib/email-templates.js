@@ -579,36 +579,36 @@ function buildFeedbackThankYouEmail(type, name, showTitle) {
     case 'fixed':
       subject = showRef ? `Re: ${showTitle}` : 'Re: your feedback';
       body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nI really appreciate you taking the time to write in${showRef ? ` about ${showRef}` : ''}. You were absolutely right \u2014 we looked into it and just pushed a fix. It should be live now.\n\nThanks again for helping us get this right. Feedback like yours genuinely makes the site better.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. You were absolutely right \u2014 we looked into it and just pushed a fix. It should be live now.\n\nReally appreciate you taking the time. Feedback like yours genuinely makes the site better.\n\nTom\nBroadway Scorecard™`;
+        ? `Hi ${escapeHtml(greeting)},\n\nI really appreciate you taking the time to write in${showRef ? ` about ${showRef}` : ''}. You were absolutely right. We looked into it and just pushed a fix. It should be live now.\n\nThanks again for helping us get this right. Feedback like yours makes the site better.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. You were absolutely right. We looked into it and just pushed a fix. It should be live now.\n\nReally appreciate you taking the time. Feedback like yours makes the site better.\n\nTom\nBroadway Scorecard™`;
       break;
 
     case 'praise':
       subject = greeting ? `Thanks ${greeting}!` : 'Thank you!';
       body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nJust wanted to say thank you \u2014 your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nJust wanted to say thank you \u2014 your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`;
+        ? `Hi ${escapeHtml(greeting)},\n\nThank you. Your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nThank you. Your kind words really made my day. I\u2019m so glad the site is useful to you.\n\nTom\nBroadway Scorecard™`;
       break;
 
     case 'content':
       subject = showRef ? `Re: ${showTitle}` : 'Re: your request';
       body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage — I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage — I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`;
+        ? `Hi ${escapeHtml(greeting)},\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage, and I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nThanks for writing in${showRef ? ` about ${showRef}` : ''}. Requests like this are exactly how we find gaps in our coverage, and I’ll take a look at adding it.\n\nTom\nBroadway Scorecard™`;
       break;
 
     case 'feature':
       subject = greeting ? `Thanks ${greeting}!` : 'Thanks for the idea!';
       body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nReally appreciate you taking the time to share that idea. I\u2019ve added it to our list \u2014 it\u2019s genuinely helpful to hear what people want to see.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nReally appreciate you taking the time to share that idea. I\u2019ve added it to our list \u2014 it\u2019s genuinely helpful to hear what people want to see.\n\nTom\nBroadway Scorecard™`;
+        ? `Hi ${escapeHtml(greeting)},\n\nReally appreciate you taking the time to share that idea. I\u2019ve added it to our list. It\u2019s helpful to hear what people want to see.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nReally appreciate you taking the time to share that idea. I\u2019ve added it to our list. It\u2019s helpful to hear what people want to see.\n\nTom\nBroadway Scorecard™`;
       break;
 
     default: // 'acknowledged'
       subject = showRef ? `Re: ${showTitle}` : 'Re: your feedback';
       body = greeting
-        ? `Hi ${escapeHtml(greeting)},\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. I really appreciate you taking the time \u2014 it means a lot that you\u2019d flag this for us.\n\nWe\u2019ve noted it and will keep it in mind as we keep improving the site.\n\nTom\nBroadway Scorecard™`
-        : `Hi there,\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. I really appreciate you taking the time \u2014 it means a lot that someone would flag this for us.\n\nWe\u2019ve noted it and will keep it in mind as we keep improving the site.\n\nTom\nBroadway Scorecard™`;
+        ? `Hi ${escapeHtml(greeting)},\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. I really appreciate you taking the time. It means a lot that you\u2019d flag this for us.\n\nWe\u2019ve noted it and will keep it in mind as we keep improving the site.\n\nTom\nBroadway Scorecard™`
+        : `Hi there,\n\nThank you so much for writing in${showRef ? ` about ${showRef}` : ''}. I really appreciate you taking the time. It means a lot that someone would flag this for us.\n\nWe\u2019ve noted it and will keep it in mind as we keep improving the site.\n\nTom\nBroadway Scorecard™`;
       break;
   }
 
