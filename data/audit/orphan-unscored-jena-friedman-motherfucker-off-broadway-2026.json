@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "jena-friedman-motherfucker-off-broadway-2026",
   "openingDate": "2026-10-01",
-  "detectedAt": "2026-10-01T17:50:01.725Z",
+  "detectedAt": "2026-10-01T17:57:46.721Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,26 +11,9 @@
       "criticName": "Unknown",
       "url": "https://thecomedybureau.com/show/jena-friedman-motherfucker-in-nyc/2026-10-01/",
       "fullTextLen": 527,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
-    {
-      "file": "ticketx--unknown.json",
-      "outletId": "ticketx",
-      "criticName": "Unknown",
-      "url": "https://ticketx.com/jena-friedman-tickets/soho-playhouse-2026-10-11-19-pm/3d493100-89b0-4899-9d02-6c198f7d2462",
-      "fullTextLen": 1210,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 2,
-  "blockedOrphanCount": 0,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-01T17:50:01.725Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
