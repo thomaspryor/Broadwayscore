@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-01T05:07:16.873Z",
-    "completedAt": "2026-10-01T05:07:43.460Z",
-    "totalReviews": 45880,
-    "processed": 0,
-    "skipped": 45874,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 29055,
-      "output": 1020,
-      "total": 77617
-    },
-    "costUsd": 0.14187219999999998,
-    "runId": "36818023809",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-01T05:07:45.321Z",
-    "completedAt": "2026-10-01T05:13:39.042Z",
-    "totalReviews": 158,
-    "processed": 158,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 415935,
-      "output": 37110,
-      "total": 453045
-    },
-    "costUsd": 1.1617380000000002,
-    "runId": "36818023809",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-01T05:17:53.582Z",
     "completedAt": "2026-10-01T05:18:03.154Z",
     "totalReviews": 45880,
@@ -294623,6 +294591,49 @@
     },
     "costUsd": 0,
     "runId": "36892972944",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-01T16:40:59.331Z",
+    "completedAt": "2026-10-01T16:41:13.726Z",
+    "totalReviews": 46095,
+    "processed": 0,
+    "skipped": 46089,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 20175,
+      "output": 598,
+      "total": 52761
+    },
+    "costUsd": 0.08324939999999999,
+    "runId": "36893439354",
+    "errorDetails": [
+      {
+        "showId": "jena-friedman-motherfucker-off-broadway-2026",
+        "outletId": "thecomedybureau",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "the-secret-circus-musical-off-broadway-2026",
+        "outletId": "flopbox",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-01T16:41:15.751Z",
+    "completedAt": "2026-10-01T16:41:17.756Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "36893439354",
     "errorDetails": []
   }
 ]
