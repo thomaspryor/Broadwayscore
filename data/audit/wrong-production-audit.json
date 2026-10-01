@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-01T19:03:59.071Z",
+  "timestamp": "2026-10-01T19:23:30.617Z",
   "stats": {
-    "totalReviews": 45741,
+    "totalReviews": 45740,
     "alreadyFlagged": 18673,
     "dateGuardCatches": 261,
     "directorMismatch": 1195,
-    "tvFilmSignals": 1327,
+    "tvFilmSignals": 1328,
     "londonSignals": 1245,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
-    "noPublishDate": 4136
+    "noPublishDate": 4134
   },
   "findings": [
     {
@@ -10357,6 +10357,19 @@
       "file": "the-list--unknown.json",
       "publishDate": null,
       "url": "https://list.co.uk/news/david-ottone-on-flamenc-oh-its-like-a-laboratory-where-you-work-with-very-very-dangerous-material-48667",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "file": "thereviewshub--unknown.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.thereviewshub.com/yllana-flamenc-oh-peacock-theatre-london/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
