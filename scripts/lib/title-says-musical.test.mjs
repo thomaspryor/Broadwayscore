@@ -11,11 +11,13 @@ test('titles ending in "musical" are musicals; a leading "Musical" is not', () =
     'Shamilton! The Improvised Hip-Hop Musical', "We've Been Here Before: A One Woman Musical", 'Monsters A Killer New Musical Comedy',
     'Dog Man - The Musical', 'Show: A New Musical', 'Heathers the Musical', 'Singfeld! A Musical About Nothing',
     'Friends The Musical Parody', 'Kinky Boots The Musical - UK Tour', 'Death Note The Musical in Concert', 'Musical',
-    'Musical Hell: A New Musical', 'The Musical of Musicals (The Musical!)']) {
+    'Musical Hell: A New Musical', 'The Musical of Musicals (The Musical!)', 'Our Sinatra: A Musical Celebration',
+    'Midnight - A New Original Musical by Todrick Hall', 'Heated Rivalry: The Unauthorized Musical Parody', 'Grayson the Musical: A First Look']) {
     assert.equal(titleSaysMusical(t), true, t);
   }
   for (const t of ['The Musical Comedy Murders of 1940', 'Jimmy', 'Musical Chairs at Midnight', 'An Evening of Musical Theatre',
-    'The Best of Musical Theatre', 'A West End Musical Christmas', '', null]) {
+    'The Best of Musical Theatre', 'A West End Musical Christmas', 'Murder at the Musical Society',
+    'Twelfth Night, with Musical Interludes', '', null]) {
     assert.equal(titleSaysMusical(t), false, String(t));
   }
 });
@@ -38,7 +40,7 @@ test('showTypeFor: venue genre label first, then the title', () => {
   assert.equal(knownShowType('X', 'Opera'), null);
   assert.equal(knownShowType('X', 'Dance'), null);
   assert.equal(knownShowType('X', "Children's Show"), null);
-  assert.equal(knownShowType('X', 'Theatre'), 'play');
+  assert.equal(knownShowType('X', 'Theatre'), null, 'a bare Theatre category is not a play signal');
   assert.equal(knownShowType('Swan Lake', 'Dance; Theatre'), null);
   assert.equal(knownShowType('X', 'Opera; Theatre'), null);
   assert.equal(knownShowType('X', 'Drama; Plays/Drama'), 'play');

@@ -9,25 +9,27 @@
  * typed play: "Death Note The Musical", "Trainspotting the musical",
  * "GOD IS A WOMAN THE MUSICAL", "Copperfield! The New Musical",
  * "Shamilton! The Improvised Hip-Hop Musical", "We've Been Here Before: A One
- * Woman Musical". A title ENDING in "musical" (or "musical comedy") is the
- * signal anywhere in the title ("Singfeld! A Musical About Nothing",
- * "Friends The Musical Parody"), except as an opening adjective ("The Musical
- * Comedy Murders of 1940" is a play).
+ * Woman Musical". The signal is "musical" as a noun: ending the title, or
+ * mid-title before punctuation or a billing word ("Singfeld! A Musical About
+ * Nothing", "Friends The Musical Parody"); never as an adjective ("The
+ * Musical Comedy Murders of 1940", "Murder at the Musical Society").
  */
 function titleSaysMusical(title) {
   const t = String(title || '').trim();
   if (!/(?<![-\w])musical\b/i.test(t)) return false;
-  // A title that ends in "musical" is one, whatever comes first
-  // ("Musical Hell: A New Musical").
-  if (/\bmusical\W*$/i.test(t)) return true;
-  if (/\bmusical\s+comedy\W*$/i.test(t)) return true;
-  // "Musical" opening the title is an adjective on the next word ("The
-  // Musical Comedy Murders of 1940", "Musical Chairs").
+  // Ends in "musical" / "musical comedy": "Death Note The Musical",
+  // "Musical Hell: A New Musical", "Monsters A Killer New Musical Comedy".
+  if (/\bmusical(?:\s+comedy)?\W*$/i.test(t)) return true;
+  // "Musical" opening the title is an adjective ("The Musical Comedy Murders
+  // of 1940", "Musical Chairs").
   if (/^(?:the\s+)?musical\s+\S/i.test(t)) return false;
-  // ... and so it is before these nouns anywhere: a concert of show songs
-  // ("An Evening of Musical Theatre", "A West End Musical Christmas").
-  if (/\bmusical\s+(?:theat(?:re|er)s?|christmas|chairs|revue|medley|gala|hall|director|numbers|evening)\b/i.test(t)) return false;
-  return true;
+  // Mid-title, only the noun: "musical" followed by punctuation or by a word
+  // that continues a show's own billing ("Friends The Musical Parody",
+  // "Singfeld! A Musical About Nothing", "Midnight - A New Original Musical
+  // by Todrick Hall", "... The Musical in Concert", "A Musical
+  // Celebration"). Not "Musical Society", "Musical Interludes", "Musical
+  // Theatre".
+  return /\bmusical(?:\s*[:\-–—(,!]|\s+(?:parody|about|by|in|for|from|starring|celebration|revue|journey|adventure|fable|comedy)\b)/i.test(t);
 }
 
 /**
@@ -56,7 +58,8 @@ function knownShowType(title, listingGenre) {
   // "Comedy", "Children's Show" leave the type unknown, also when a generic
   // "Theatre" category sits beside them ("Dance; Theatre").
   if (/\b(?:opera|dance|ballet|comedy|stand.?up|cabaret|music|concert|circus|magic|children|family|cinema|film|talk)\b/i.test(g)) return null;
-  if (/\b(?:plays?|drama|new writing|revival|theatre|theater)\b/i.test(g)) return 'play';
+  // A bare "Theatre" category is not one: venues tag musicals with it too.
+  if (/\b(?:plays?|drama|new writing|revival)\b/i.test(g)) return 'play';
   return null;
 }
 
