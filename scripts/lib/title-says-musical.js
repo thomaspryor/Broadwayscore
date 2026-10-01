@@ -20,9 +20,13 @@ function titleSaysMusical(title) {
   // A title that ends in "musical" is one, whatever comes first
   // ("Musical Hell: A New Musical").
   if (/\bmusical\W*$/i.test(t)) return true;
+  if (/\bmusical\s+comedy\W*$/i.test(t)) return true;
   // "Musical" opening the title is an adjective on the next word ("The
   // Musical Comedy Murders of 1940", "Musical Chairs").
   if (/^(?:the\s+)?musical\s+\S/i.test(t)) return false;
+  // ... and so it is before these nouns anywhere: a concert of show songs
+  // ("An Evening of Musical Theatre", "A West End Musical Christmas").
+  if (/\bmusical\s+(?:theat(?:re|er)s?|christmas|chairs|revue|medley|gala|hall|director|numbers|evening)\b/i.test(t)) return false;
   return true;
 }
 
@@ -46,8 +50,12 @@ function showTypeFor(title, listingGenre) {
  * rather than guess 'play'.
  */
 function knownShowType(title, listingGenre) {
-  if (!listingGenre && !titleSaysMusical(title)) return null;
-  return showTypeFor(title, listingGenre);
+  const g = String(listingGenre || '').replace(/\bnon[\s-]*musicals?\b/gi, '');
+  if (/(?<![-\w])musicals?\b/i.test(g) || titleSaysMusical(title)) return 'musical';
+  // Only a label that names a play counts as one; "Opera", "Dance",
+  // "Comedy", "Children's Show" leave the type unknown.
+  if (/\b(?:plays?|drama|new writing|revival|theatre|theater)\b/i.test(g)) return 'play';
+  return null;
 }
 
 module.exports = { titleSaysMusical, showTypeFor, knownShowType };
