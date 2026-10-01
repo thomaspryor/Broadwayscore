@@ -902,7 +902,8 @@ const CORE_DATA_MERGE_REGISTRY = [
     // landed 53 evidence rows at 03:25, and the run's 03:49 push wrote its
     // stale copy back over them — 53 rows lost, then the promoter pruned the
     // rest to 0. Active union-by-candidateHash merge now (ours wins on a
-    // shared key, remote-only rows re-added; see merge-owe-venue-candidates.js);
+    // shared key, remote-only rows re-added unless the base shows WE pruned
+    // them — three-way since BRO-4484; see merge-owe-venue-candidates.js);
     // the apiFallbackSafe bypass is withdrawn — the writers are NOT mutually
     // exclusive. Same-host protection stays lib/owe-venue-staging.js's
     // updateStaging (withFileLock). writeStaging emits no trailing newline.
@@ -917,8 +918,9 @@ const CORE_DATA_MERGE_REGISTRY = [
     // apiFallbackSafe files (owe-last-promotion-ids.json, owe-promotion-
     // log.jsonl); a MANAGED file without apiFallbackMerge would turn that
     // commit into a mixed-safety bundle (audit-push-retry-budgets.js, the
-    // BRO-2435 shape) and drop it to the slow path. The merger is 2-arg and
-    // fast-path-shaped, so the Git Data API fallback may run it.
+    // BRO-2435 shape) and drop it to the slow path. The merger is fast-path-
+    // shaped (three-arg since BRO-4484: the API fallback passes it the
+    // entry-base blob), so the Git Data API fallback may run it.
     // ROLLBACK: revert this entry AND the PUSH_RECONCILE_MERGED_JSON env on
     // that promoter step together (ship-check adversarial review 2026-09-29):
     // the env alone leaves a MANAGED entry with no reconcile pass; the entry

@@ -161,18 +161,6 @@
     "queuedAt": "2026-10-01T17:09:46.965Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:human-things-off-broadway-2026",
-    "title": "Review gap — \"Human Things\" missing 1 cited review(s)",
-    "description": "Human Things (human-things-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=human-things-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-01T17:09:46.968Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:in-honor-of-jean-michel-basquiat-off-broadway-2026",
     "title": "Review gap — \"In Honor of Jean-Michel Basquiat\" missing 1 cited review(s)",
     "description": "In Honor of Jean-Michel Basquiat (in-honor-of-jean-michel-basquiat-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=in-honor-of-jean-michel-basquiat-off-broadway-2026 --checkpoint --ingest-missing",
@@ -440,5 +428,123 @@
       }
     ],
     "queuedAt": "2026-10-01T20:55:34.116Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:alice-in-wonderland-off-broadway-2026",
+    "title": "Review gap — \"Alice in Wonderland\" missing 13 cited review(s)",
+    "description": "Alice in Wonderland (alice-in-wonderland-off-broadway-2026): 13 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alice-in-wonderland-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T22:20:57.989Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:flamenc-oh-off-west-end-2026",
+    "title": "Review gap — \"Flamenc Oh!!\" missing 1 cited review(s)",
+    "description": "Flamenc Oh!! (flamenc-oh-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=flamenc-oh-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T22:20:58.026Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Review gap — \"School Girls; Or, The African Mean Girls Play\" missing 3 cited review(s)",
+    "description": "School Girls; Or, The African Mean Girls Play (school-girls-or-the-african-mean-girls-play-2026): 3 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=school-girls-or-the-african-mean-girls-play-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T22:20:58.091Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
+    "title": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
+    "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T22:20:58.128Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-standard-of-living-west-end-2026",
+    "title": "Review gap — \"The Standard Of Living\" missing 2 cited review(s)",
+    "description": "The Standard Of Living (the-standard-of-living-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-standard-of-living-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T22:20:58.132Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4486-recheck",
+    "title": "Landing blocked: lint-workflows red on land/bro-4486-recheck",
+    "description": "land.yml did not land land/bro-4486-recheck: the lint-workflows gate went red at ffbb935c2d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36932351301",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4486-recheck"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "ffbb935c2d15126d298179142efc0495b36ff66e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36932351301"
+      }
+    ],
+    "queuedAt": "2026-10-01T22:29:53.889Z"
+  },
+  {
+    "conditionKey": "land:land/spend-review-phase-b",
+    "title": "Landing blocked: unit-tests-node red on land/spend-review-phase-b",
+    "description": "land.yml did not land land/spend-review-phase-b: the unit-tests-node gate went red at 083b7e3822. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36933482113",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/spend-review-phase-b"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "083b7e3822fcdfbaacb064d86a8fcde8fb9dcaaa"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36933482113"
+      }
+    ],
+    "queuedAt": "2026-10-01T22:42:41.824Z"
   }
 ]
