@@ -490,9 +490,9 @@
     "queuedAt": "2026-10-01T22:20:58.132Z"
   },
   {
-    "conditionKey": "land:land/bro-4492-types",
-    "title": "Landing blocked: resolve red on land/bro-4492-types",
-    "description": "land.yml did not land land/bro-4492-types: the resolve gate went red at f98f96c0e8. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/bro-4492-types\" is neither a local branch nor on origin (attempts 0, 1.8s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36932202405",
+    "conditionKey": "land:land/bro-4486-recheck",
+    "title": "Landing blocked: lint-workflows red on land/bro-4486-recheck",
+    "description": "land.yml did not land land/bro-4486-recheck: the lint-workflows gate went red at ffbb935c2d. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36932351301",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -501,21 +501,21 @@
     "fields": [
       {
         "name": "branch",
-        "value": "land/bro-4492-types"
+        "value": "land/bro-4486-recheck"
       },
       {
         "name": "gate",
-        "value": "resolve"
+        "value": "lint-workflows"
       },
       {
         "name": "tip",
-        "value": "f98f96c0e8ead44205dc9e97f6d5c04d7e566355"
+        "value": "ffbb935c2d15126d298179142efc0495b36ff66e"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36932202405"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36932351301"
       }
     ],
-    "queuedAt": "2026-10-01T22:29:33.347Z"
+    "queuedAt": "2026-10-01T22:29:53.889Z"
   }
 ]
