@@ -1,44 +1,21 @@
 {
-  "updatedAt": "2026-10-01T20:58:59.514Z",
-  "processed": 163,
-  "failed": 83,
-  "successRate": "66.3%",
+  "updatedAt": "2026-10-01T21:30:30.844Z",
+  "processed": 201,
+  "failed": 111,
+  "successRate": "64.4%",
   "tierBreakdown": {
-    "playwright": 114,
+    "playwright": 130,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 22,
-    "scrapingbee": 2,
-    "brightdata": 0,
+    "scrapingdog": 28,
+    "scrapingbee": 8,
+    "brightdata": 2,
     "archiveToday": 0,
-    "archive": 5
+    "archive": 14
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 10,
   "recentActivity": [
-    {
-      "t": "2026-10-01T17:51:38.789Z",
-      "event": "bb-session",
-      "session": "dedceb31",
-      "url": "http://www.publictheater.org/"
-    },
-    {
-      "t": "2026-10-01T17:51:56.645Z",
-      "event": "bb-session",
-      "session": "3041b438",
-      "url": "http://www.publictheater.org/"
-    },
-    {
-      "t": "2026-10-01T18:02:35.141Z",
-      "event": "bb-session",
-      "session": "20e4e286",
-      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
-    },
-    {
-      "t": "2026-10-01T18:02:35.642Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
     {
       "t": "2026-10-01T18:02:53.115Z",
       "event": "bb-session",
@@ -118,6 +95,40 @@
       "event": "bb-session",
       "session": "d2976ad2",
       "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-01T21:18:38.972Z",
+      "event": "bb-session",
+      "session": "b3b48e5d",
+      "url": "https://www.thestage.co.uk/reviews/disruption-review-at-the-park-theatre-london-"
+    },
+    {
+      "t": "2026-10-01T21:18:39.737Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-10-01T21:20:52.001Z",
+      "event": "bb-session",
+      "session": "b9e687ea",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-10-01T21:21:00.857Z",
+      "event": "bb-session",
+      "session": "01b84ea4",
+      "url": "https://www.thereviewshub.com/the-rocky-horror-show-aylesbury-waterside-theatre/"
+    },
+    {
+      "t": "2026-10-01T21:26:31.395Z",
+      "event": "bb-session",
+      "session": "63f679ce",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-10-01T21:26:32.216Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
