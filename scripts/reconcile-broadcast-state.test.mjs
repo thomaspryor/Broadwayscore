@@ -10,10 +10,12 @@ import path from 'node:path';
 // per-call), so it must be set before the require() below, not just before
 // main() runs.
 process.env.RESEND_API_KEY = process.env.RESEND_API_KEY || 'fake-key-for-test';
+// No real pacing/backoff sleeps in tests (read at require time, same as above).
+process.env.RESEND_POLL_INTERVAL_MS = '0';
 
 const require = createRequire(import.meta.url);
 const mod = require('./reconcile-broadcast-state.js');
-const { main, SENT_PATH } = mod;
+const { main, SENT_PATH, retryDelayMs } = mod;
 
 // Task #1853 (BRO-60 follow-up): reconcile-broadcast-state.js wrote corrected
 // draftStatus/sentAt/recipientCount/lastReconciledAt fields to SENT_PATH via a
@@ -74,9 +76,11 @@ process.exit(1);
 function fakeHttpsRequest(responses) {
   const queue = [...responses];
   return (_options, callback) => {
+    fakeHttpsRequest.calls = (fakeHttpsRequest.calls || 0) + 1;
     const resp = queue.shift() || { statusCode: 404, body: '' };
     const res = {
       statusCode: resp.statusCode,
+      headers: resp.headers || {},
       on(event, cb) {
         if (event === 'data' && resp.body) cb(Buffer.from(resp.body));
         if (event === 'end') cb();
@@ -221,4 +225,43 @@ test('main(): a stale local copy of an untouched (already-terminal) show never c
       );
     },
   );
+});
+
+// BRO-4474: School Girls (sent from the Resend UI 2026-09-29 18:55 UTC) is
+// recorded under `broadway:<id>` AND a per-show mirror with the same draftId.
+// The reconciler polled both back to back; Resend 429'd the mirror's GET on
+// the 9/29 and 9/30 runs ("10 requests per second"), the mirror stayed
+// `draft`, and check-missed-broadcasts paged the owner for an email they had
+// sent. One GET per draftId, retried on 429, must update every mirror.
+test('main(): mirrors sharing a draftId are polled once, and a 429 is retried, not left stale', async () => {
+  fakeHttpsRequest.calls = 0;
+  await withFakeEnv(
+    {
+      localSentData: {
+        shows: {
+          'broadway:school-girls-2026': { draftId: 'sg-draft', draftStatus: 'draft', completed: true, draftCreatedAt: '2026-09-29T18:50:29.729Z' },
+          'school-girls-2026': { draftId: 'sg-draft', draftStatus: 'draft', completed: true, draftCreatedAt: '2026-09-29T18:50:29.729Z', broadcastKey: 'broadway:school-girls-2026' },
+        },
+      },
+      httpsResponses: [
+        { statusCode: 429, headers: { 'retry-after': '1' }, body: '{"statusCode":429,"message":"Too many requests."}' },
+        { statusCode: 200, body: JSON.stringify({ id: 'sg-draft', status: 'sent', sent_at: '2026-09-29 18:55:52.397843+00' }) },
+      ],
+    },
+    async ({ localWrites }) => {
+      await main();
+      const saved = JSON.parse(localWrites[0]);
+      assert.equal(saved.shows['broadway:school-girls-2026'].draftStatus, 'sent');
+      assert.equal(saved.shows['school-girls-2026'].draftStatus, 'sent', 'the per-show mirror must not be left at draft');
+      assert.equal(fakeHttpsRequest.calls, 2, 'one 429 + one retry; the mirror reuses the poll instead of a third GET');
+    },
+  );
+});
+
+test('retryDelayMs: honors Retry-After seconds (capped), else exponential backoff', () => {
+  assert.equal(retryDelayMs(0, '2', 250), 2000);
+  assert.equal(retryDelayMs(0, '600', 250), 10_000);
+  assert.equal(retryDelayMs(0, undefined, 250), 500);
+  assert.equal(retryDelayMs(2, undefined, 250), 2000);
+  assert.equal(retryDelayMs(10, undefined, 250), 10_000);
 });

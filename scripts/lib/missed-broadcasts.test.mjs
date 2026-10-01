@@ -6,6 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   findMissedBroadcasts,
   classifyBroadcastState,
+  classifyShowBroadcastState,
   wasCoveredByWeeklyRoundup,
   daysSinceOpening,
   hasCompletedBroadcast,
@@ -331,4 +332,36 @@ test('round-up coverage does not mask a genuinely stuck draft (draft-stuck still
   assert.strictEqual(missed.length, 1);
   assert.strictEqual(missed[0].state, 'draft-stuck');
   assert.strictEqual(missed[0].alertable, true);
+});
+
+// BRO-4474: the real School Girls tracker shape on 2026-10-01. The owner sent
+// it from the Resend UI; the reconciler recorded that on the broadway: key but
+// a 429 left the per-show mirror at draft, and this sweep paged anyway.
+test('a send recorded on the broadcastKey record resolves the per-show mirror', () => {
+  const draft = { draftId: 'sg', draftStatus: 'draft', completed: true, draftCreatedAt: '2026-09-29T18:50:29.729Z', sentAt: null };
+  const sentShows = {
+    'x-2026': { ...draft, broadcastKey: 'west-end:x-2026' },
+    'west-end:x-2026': { ...draft, draftStatus: 'sent', sentAt: '2026-09-29 18:55:52.397843+00' },
+  };
+  assert.strictEqual(classifyShowBroadcastState(sentShows, 'x-2026'), 'sent');
+  assert.strictEqual(hasCompletedBroadcast(sentShows, 'x-2026'), true);
+  assert.deepStrictEqual(find({ sentShows }), []);
+});
+
+test('a multi-show combo record vouches for every show in it', () => {
+  const sentShows = {
+    'x-2026': { draftId: 'combo', draftStatus: 'draft', completed: true },
+    'west-end:a-2026+x-2026': { draftId: 'combo', draftStatus: 'sent', sentAt: '2026-09-02T10:00:00Z', completed: true },
+  };
+  assert.strictEqual(classifyShowBroadcastState(sentShows, 'x-2026'), 'sent');
+});
+
+test('a sent record for a DIFFERENT draft never vouches (recreated draft still pages)', () => {
+  const sentShows = {
+    'x-2026': { draftId: 'new', draftStatus: 'draft', completed: true },
+    'west-end:x-2026': { draftId: 'old', draftStatus: 'sent', sentAt: '2026-09-02T10:00:00Z', completed: true },
+    'preview:west-end:x-2026:2026-09-02': { draftId: 'new', draftStatus: 'sent' },
+  };
+  assert.strictEqual(classifyShowBroadcastState(sentShows, 'x-2026'), 'draft-stuck');
+  assert.strictEqual(find({ sentShows })[0].state, 'draft-stuck');
 });

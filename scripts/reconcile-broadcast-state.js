@@ -65,7 +65,47 @@ function parseBroadcastResponse(statusCode, body) {
   if (statusCode === 404) {
     return { ok: true, data: { status: 'deleted' } };
   }
-  return { ok: false, error: `HTTP ${statusCode}: ${(body || '').slice(0, 200)}` };
+  return { ok: false, statusCode, error: `HTTP ${statusCode}: ${(body || '').slice(0, 200)}` };
+}
+
+// Resend allows 10 requests/second per API key. The loop below used to fire
+// one GET per tracker key back to back, and every multi-show or single-show
+// draft is recorded under SEVERAL keys (the `market:id` broadcastKey plus one
+// mirror per show, see recordDraftCompletion in send-opening-night-broadcast.js),
+// so ~20 GETs went out in ~2s. The ~20th got HTTP 429 on both the 2026-09-29
+// and 2026-09-30 runs, and it was always the same key: school-girls' per-show
+// mirror stayed `draft` while its broadway: twin recorded the owner's send,
+// and check-missed-broadcasts paged the owner for an email they had sent
+// (BRO-4474). Pacing + one GET per draftId + a 429 retry close all three gaps.
+const POLL_INTERVAL_MS = Number.isFinite(Number(process.env.RESEND_POLL_INTERVAL_MS))
+  ? Number(process.env.RESEND_POLL_INTERVAL_MS)
+  : 250;
+const MAX_429_RETRIES = 4;
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+/**
+ * Backoff before retry `attempt` (0-based) after a 429. Honors a numeric
+ * Retry-After header (seconds) when Resend sends one, capped at 10s.
+ * Pure, exported for tests.
+ */
+function retryDelayMs(attempt, retryAfterHeader, baseMs = POLL_INTERVAL_MS) {
+  const ra = Number(retryAfterHeader);
+  if (Number.isFinite(ra) && ra > 0) return Math.min(ra * 1000, 10_000);
+  return Math.min(Math.max(baseMs, 250) * 2 ** (attempt + 1), 10_000);
+}
+
+async function getBroadcastWithRetry(broadcastId) {
+  let response;
+  for (let attempt = 0; attempt <= MAX_429_RETRIES; attempt++) {
+    response = await getBroadcast(broadcastId);
+    if (response.ok || response.statusCode !== 429) return response;
+    if (attempt === MAX_429_RETRIES) break;
+    const wait = POLL_INTERVAL_MS === 0 ? 0 : retryDelayMs(attempt, response.retryAfter);
+    warn(`    429 rate-limited, retrying in ${wait}ms (attempt ${attempt + 1}/${MAX_429_RETRIES})`);
+    await sleep(wait);
+  }
+  return response;
 }
 
 async function getBroadcast(broadcastId) {
@@ -81,7 +121,11 @@ async function getBroadcast(broadcastId) {
       (res) => {
         let body = '';
         res.on('data', (chunk) => { body += chunk; });
-        res.on('end', () => resolve(parseBroadcastResponse(res.statusCode, body)));
+        res.on('end', () => {
+          const parsed = parseBroadcastResponse(res.statusCode, body);
+          if (!parsed.ok && res.headers) parsed.retryAfter = res.headers['retry-after'];
+          resolve(parsed);
+        });
       },
     );
     req.on('error', (e) => resolve({ ok: false, error: e.message }));
@@ -127,6 +171,14 @@ async function main() {
 
   const entries = Object.entries(shows);
 
+  // One GET per draftId per run: the per-show mirrors share their
+  // broadcastKey record's draftId, so polling each key separately both
+  // multiplied the request count and let mirrors of ONE broadcast disagree
+  // when a single GET failed. A failed GET is cached too, so the mirrors of a
+  // draft Resend refused stay untouched together rather than half-updated.
+  const responseByDraftId = new Map();
+  let lastRequestAt = 0;
+
   for (const [key, rec] of entries) {
     // Skip keys that aren't show-level broadcast records (previews, overdue alerts).
     if (key.startsWith('preview:') || key.startsWith('overdue-alert:')) {
@@ -147,9 +199,18 @@ async function main() {
       continue;
     }
 
-    log(`  Polling ${key} (draft ${rec.draftId.slice(0, 8)}...)`);
-    const response = await getBroadcast(rec.draftId);
-    polled++;
+    let response = responseByDraftId.get(rec.draftId);
+    if (response) {
+      log(`  Reusing poll for ${key} (draft ${rec.draftId.slice(0, 8)}...)`);
+    } else {
+      const since = Date.now() - lastRequestAt;
+      if (since < POLL_INTERVAL_MS) await sleep(POLL_INTERVAL_MS - since);
+      log(`  Polling ${key} (draft ${rec.draftId.slice(0, 8)}...)`);
+      response = await getBroadcastWithRetry(rec.draftId);
+      lastRequestAt = Date.now();
+      responseByDraftId.set(rec.draftId, response);
+      polled++;
+    }
 
     if (!response.ok) {
       warn(`    ✗ ${response.error}`);
@@ -200,4 +261,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main, parseBroadcastResponse, SENT_PATH };
+module.exports = { main, parseBroadcastResponse, retryDelayMs, SENT_PATH };
