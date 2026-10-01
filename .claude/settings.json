@@ -112,6 +112,15 @@
       }
     ],
     "SessionStart": [
+   {
+    "matcher": "compact",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/compact-state.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else exit 0; fi"
+     }
+    ]
+   },
       {
         "matcher": "startup|clear|compact|resume",
         "hooks": [
@@ -126,7 +135,18 @@
         ]
       }
     ],
-    "Stop": [
+    "PreCompact": [
+   {
+    "matcher": "",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/compact-state.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; else exit 0; fi"
+     }
+    ]
+   }
+  ],
+  "Stop": [
       {
         "matcher": "",
         "hooks": [
