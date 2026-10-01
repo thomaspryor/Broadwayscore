@@ -15,7 +15,7 @@ const CLI = path.join(path.dirname(fileURLToPath(import.meta.url)), 'triage-revi
 const SHOW = 'fixture-show-west-end-2026';
 const show = { id: SHOW, title: 'Fixture Show', previewsStartDate: '2026-09-01', openingDate: '2026-09-10', market: 'west-end' };
 
-function run(files, outlet = 'Fixture Outlet') {
+function run(files, outlet = 'Fixture Outlet', url = null) {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'triage-gap-'));
   fs.mkdirSync(path.join(root, 'data'), { recursive: true });
   fs.writeFileSync(path.join(root, 'data', 'shows.json'), JSON.stringify({ shows: [show] }));
@@ -25,7 +25,7 @@ function run(files, outlet = 'Fixture Outlet') {
     fs.writeFileSync(path.join(rt, rel), JSON.stringify(data));
   }
   fs.mkdirSync(rt, { recursive: true });
-  const out = execFileSync('node', [CLI, `--show=${SHOW}`, `--outlet=${outlet}`, '--json'], {
+  const out = execFileSync('node', [CLI, `--show=${SHOW}`, `--outlet=${outlet}`, ...(url ? [`--url=${url}`] : []), '--json'], {
     cwd: root, encoding: 'utf8',
     env: { ...process.env, REVIEW_TEXTS_DIR: rt, BSC_DATA_REPO: path.join(root, 'no-data-repo') },
   });
@@ -97,4 +97,26 @@ test('isOtherProductionFile: stale skip stamp loses to corrected in-window date;
   assert.equal(isOtherProductionFile({ data: { publishDate: '2016-05-01', wrongProductionManualClear: true }, pending: true }, show, null), false);
   const tour = { ...show, tourLegs: [{ startDate: '2026-05-01', endDate: '2026-08-01' }] };
   assert.equal(isOtherProductionFile({ data: { publishDate: '2026-06-01' }, pending: true }, tour, null), false);
+});
+
+// BRO-4475: outlet-only match on an unrelated file (BWW forum thread) must not mask the real review.
+test('--url: same-outlet file with a DIFFERENT url (wrongShow thread) -> true-missed-discovery, file ignored', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2026-09-12', wrongShow: true, url: 'https://fixture.example/forum/thread-1' } },
+    'Fixture Outlet', 'https://fixture.example/review/real-review');
+  assert.equal(r.state, 'true-missed-discovery');
+  assert.equal(r.matchedBy, 'url');
+  assert.equal(r.outletOnlyIgnoredPaths.length, 1);
+});
+
+test('--url: file whose url matches (www/slash/query-tracking variance) is matched by URL', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2026-09-12', url: 'https://www.fixture.example/review/real-review/' } },
+    'Fixture Outlet', 'http://fixture.example/review/real-review');
+  assert.equal(r.state, 'in-pipeline-awaiting-deploy');
+  assert.equal(r.signals.reviewTexts.candidateCount, 1);
+});
+
+test('no --url: falls back to outlet matching (unchanged)', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2026-09-12', url: 'https://fixture.example/forum/thread-1' } });
+  assert.equal(r.matchedBy, 'outlet');
+  assert.equal(r.state, 'in-pipeline-awaiting-deploy');
 });

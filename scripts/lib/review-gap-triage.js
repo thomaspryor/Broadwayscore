@@ -98,9 +98,25 @@ function isOtherProductionFile(file, showRecord, exclusionRule) {
   return false;
 }
 
+/**
+ * BRO-4475: with a known review URL, a same-outlet record only counts when its
+ * URL matches. Outlet-only matching let an unrelated BWW forum-thread file
+ * (wrongShow) mask the real, un-ingested BWW review.
+ * Returns the records whose normalized URL equals `url`'s, or null when no
+ * url was given (caller falls back to outlet-only matching).
+ */
+function filterByUrl(records, url, getUrl, normalize) {
+  if (!url) return null;
+  const target = normalize(url);
+  return records.filter((r) => {
+    const u = getUrl(r);
+    return !!u && normalize(u) === target;
+  });
+}
+
 /** Only this state justifies starting URL-resolution work (site search, RSS, sitemap). */
 function justifiesUrlResolution(state) {
   return state === 'true-missed-discovery';
 }
 
-module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile };
+module.exports = { classifyGap, justifiesUrlResolution, isOtherProductionFile, filterByUrl };

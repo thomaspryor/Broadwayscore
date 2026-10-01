@@ -47,13 +47,13 @@ const os = require('os');
 const path = require('path');
 const { execFileSync } = require('child_process');
 
-const { normalizeOutlet } = require('./lib/review-normalization');
+const { normalizeOutlet, normalizeUrl } = require('./lib/review-normalization');
 const { explainExclusion } = require('./lib/review-guards');
 const { resolveReviewTextsDir, mainWorktreeOf } = require('./lib/review-texts-dir');
-const { classifyGap, justifiesUrlResolution, isOtherProductionFile } = require('./lib/review-gap-triage');
+const { classifyGap, justifiesUrlResolution, isOtherProductionFile, filterByUrl } = require('./lib/review-gap-triage');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
-const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--json]';
+const USAGE = 'Usage: node scripts/triage-review-gap.js --show=SHOW_ID --outlet="Outlet Name" [--url=REVIEW_URL] [--json]';
 
 // ── Args ─────────────────────────────────────────────────────────────────
 
@@ -81,6 +81,9 @@ for (const a of args) {
 // with a TypeError instead of a clean usage error (ship-check review finding).
 const showId = typeof flags.show === 'string' && flags.show ? flags.show : null;
 const outletName = typeof flags.outlet === 'string' && flags.outlet ? flags.outlet : null;
+// BRO-4475: when the monitor knows the review's URL, match by URL first so an
+// unrelated same-outlet file (BWW forum thread) can't mask a missing review.
+const reviewUrl = typeof flags.url === 'string' && flags.url ? flags.url : null;
 const asJson = flags.json === true || flags.json === 'true';
 
 if (!showId || !outletName) {
@@ -299,9 +302,15 @@ function resolveExclusion(files, showRecord) {
 
 // ── Stage 2: reviews.json (local + core-data-repo origin/main) ─────────────
 
-function checkReviewsJson(showId, outletId) {
+function reviewJsonMatches(list, showId, outletId, url) {
+  const forShow = list.filter((r) => r.showId === showId);
+  if (url) return filterByUrl(forShow, url, (r) => r.url, normalizeUrl).length > 0;
+  return forShow.some((r) => r.outletId === outletId);
+}
+
+function checkReviewsJson(showId, outletId, url) {
   const local = readJsonFromFirstRoot(path.join('data', 'reviews.json'));
-  const inLocal = toReviewList(local).some((r) => r.showId === showId && r.outletId === outletId);
+  const inLocal = reviewJsonMatches(toReviewList(local), showId, outletId, url);
 
   const dataRepoRoot = coreDataRepoRoot();
   const fetchResult = gitFetchOriginMain(dataRepoRoot);
@@ -317,7 +326,7 @@ function checkReviewsJson(showId, outletId) {
   } else {
     originError = originResult.err;
   }
-  const inOrigin = toReviewList(origin).some((r) => r.showId === showId && r.outletId === outletId);
+  const inOrigin = reviewJsonMatches(toReviewList(origin), showId, outletId, url);
 
   return {
     inLocal,
@@ -361,8 +370,9 @@ async function fetchLiveShowJson(showId) {
 // the bare-slug fallback could in principle mismatch. No existing consumer
 // does this same round-trip today (ship-check review finding) — flagged here
 // rather than "fixed" because there's no better signal in the payload to use.
-function checkLiveProd(json, outletId) {
+function checkLiveProd(json, outletId, url) {
   if (!json || !Array.isArray(json.rv)) return false;
+  if (url) return filterByUrl(json.rv, url, (r) => r.u, normalizeUrl).length > 0;
   return json.rv.some((r) => normalizeOutlet(r.o || '') === outletId);
 }
 
@@ -377,9 +387,19 @@ function checkLiveProd(json, outletId) {
     : (show && (show.shows || []).find((s) => s.id === showId));
 
   const reviewText = findReviewTextFiles(outletId, showId);
-  const reviewsJson = checkReviewsJson(showId, outletId);
+  // With --url, only files whose own url matches count; the rest are reported
+  // as outlet-only look-alikes (never evidence the review was ingested).
+  const outletOnlyFiles = [];
+  if (reviewUrl) {
+    const matched = new Set(filterByUrl(reviewText.files, reviewUrl, (f) => f.data && f.data.url, normalizeUrl));
+    for (const f of reviewText.files) if (!matched.has(f)) outletOnlyFiles.push(f);
+    reviewText.files = reviewText.files.filter((f) => matched.has(f));
+    reviewText.anyPending = reviewText.files.some((f) => f.pending);
+  }
+  const matchedBy = reviewUrl ? 'url' : 'outlet';
+  const reviewsJson = checkReviewsJson(showId, outletId, reviewUrl);
   const live = await fetchLiveShowJson(showId);
-  const inLiveProd = live.checked ? checkLiveProd(live.json, outletId) : false;
+  const inLiveProd = live.checked ? checkLiveProd(live.json, outletId, reviewUrl) : false;
 
   // BRO-4098: files belonging to a different production of the same title do
   // not count as "ingested" for THIS production.
@@ -414,6 +434,9 @@ function checkLiveProd(json, outletId) {
     showId,
     outlet: outletName,
     outletId,
+    matchedBy,
+    url: reviewUrl,
+    outletOnlyIgnoredPaths: outletOnlyFiles.map((f) => f.path),
     state,
     justifiesUrlResolution: justifiesUrlResolution(state),
     unverifiedOriginChecks,
@@ -449,6 +472,9 @@ function checkLiveProd(json, outletId) {
     console.log(state);
     console.log(`  show:    ${showId}`);
     console.log(`  outlet:  ${outletName} (outletId: ${outletId})`);
+    console.log(`  matched by: ${matchedBy}${reviewUrl ? ` (${reviewUrl})` : ''}`);
+    for (const f of reviewText.files) console.log(`  matched file: ${f.path}`);
+    if (outletOnlyFiles.length > 0) console.log(`  outlet-only look-alikes IGNORED (url differs): ${outletOnlyFiles.map((f) => path.basename(f.path)).join(', ')}`);
     console.log(`  review-texts: ${reviewText.files.length} candidate file(s)${reviewText.anyPending ? ' [includes _pending no-byline strand — run replay-pending-bylines.js]' : ''}${exclusionRule ? ` [EXCLUDED: ${exclusionRule}]` : ''}${reviewText.originError ? ` [origin/main check FAILED: ${reviewText.originError}]` : ''}`);
     console.log(`  reviews.json: local=${reviewsJson.inLocal} origin/main=${reviewsJson.inOrigin}${reviewsJson.originError ? ` [origin/main check FAILED: ${reviewsJson.originError}]` : ''}`);
     console.log(`  live prod:    ${live.checked ? (live.showNotDeployed ? 'show not deployed at all (404)' : `present=${inLiveProd}`) : `unchecked (${live.err})`}`);
