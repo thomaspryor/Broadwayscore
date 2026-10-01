@@ -1234,7 +1234,9 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 // answer this: it maps some critic names to their outlet ("Jesse Green").
 let _outletNameSet = null;
 function _compactName(n) {
-  return String(n || '').toLowerCase().replace(/\([^)]*\)/g, '').replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+  const { foldDiacritics } = require('./title-match');
+  return foldDiacritics(String(n || '')).toLowerCase()
+    .replace(/\([^)]*\)/g, '').replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
 }
 function isOutletRegistryName(name) {
   if (!_outletNameSet) {
