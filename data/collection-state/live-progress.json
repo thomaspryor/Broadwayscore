@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-01T16:03:10.642Z",
-  "processed": 96,
-  "failed": 44,
-  "successRate": "68.6%",
+  "updatedAt": "2026-10-01T16:08:13.493Z",
+  "processed": 104,
+  "failed": 46,
+  "successRate": "69.3%",
   "tierBreakdown": {
-    "playwright": 56,
+    "playwright": 62,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 15,
-    "scrapingbee": 8,
+    "scrapingbee": 9,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 22
+    "archive": 23
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-01T15:37:19.272Z",
@@ -46,6 +46,17 @@
     },
     {
       "t": "2026-10-01T16:01:18.345Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-01T16:03:59.403Z",
+      "event": "bb-session",
+      "session": "441a3846",
+      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
+    },
+    {
+      "t": "2026-10-01T16:03:59.698Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }
