@@ -1,17 +1,17 @@
 {
-  "generatedAt": "2026-09-30T23:32:29.097Z",
+  "generatedAt": "2026-10-01T02:43:05.209Z",
   "windowDays": 1095,
-  "targets": 322,
-  "auditedThisRun": 15,
-  "carriedForward": 572,
+  "targets": 320,
+  "auditedThisRun": 13,
+  "carriedForward": 575,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 320,
-    "missingCurrentRun": 489,
+    "withGap": 322,
+    "missingCurrentRun": 478,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 810,
-    "totalRecoverable": 6,
+    "totalFlaggedMisses": 803,
+    "totalRecoverable": 5,
     "totalRecovered": 9,
     "priorProductionCitations": 2592
   },
@@ -2001,6 +2001,81 @@
         "candidateCount": 25
       },
       "computedAt": "2026-09-20T15:35:03.611Z"
+    },
+    {
+      "showId": "a-thousand-natural-shocks-off-broadway-2026",
+      "title": "A Thousand Natural Shocks",
+      "openingDate": "2026-10-02",
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [
+        "https://www.zeffy.com/en-US/ticketing/a-thousand-natural-shocks-by-jacob-marx-rice"
+      ],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.zeffy.com/en-US/ticketing/a-thousand-natural-shocks-by-jacob-marx-rice",
+          "host": "zeffy.com",
+          "knownOutletId": null
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.zeffy.com/en-US/ticketing/a-thousand-natural-shocks-by-jacob-marx-rice",
+          "host": "zeffy.com",
+          "outletId": "zeffy",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
+      "censusVerdict": {
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "zeffy.com",
+            "outlet": "zeffy.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.zeffy.com/en-US/ticketing/a-thousand-natural-shocks-by-jacob-marx-rice"
+          }
+        ],
+        "suppressedMissing": [],
+        "candidates": [
+          {
+            "url": "https://www.zeffy.com/en-US/ticketing/a-thousand-natural-shocks-by-jacob-marx-rice",
+            "outletId": "zeffy.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          }
+        ],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 1
+      },
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
@@ -25753,34 +25828,323 @@
       "status": "previews",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://omdkc.com/first-look-photos-released-of-lct3s-creation-stories-and-all-the-important-importants-performances-begin-tonightfirst-look-photos-released-of-lct3s/",
+        "https://www.newyorktheatreguide.com/theatre-news/news/cast-set-for-creation-stories-and-all-the-important-importants-off-broadway",
+        "https://nyc-shows.brooklynvegan.com/events/2026/10/1/creation-stories-and-all-the-important-importants-tickets",
+        "https://www.topstartickets.com/Event/Creation-Stories-and-All-The-Important-Importants-Lincoln-Center-Theater-Claire-Tow-Theater-2026-10-03-14-00-00-Tickets",
+        "https://www.ticketsales.com/creation-stories-and-all-the-important-importants-tickets-lincoln-center-claire-tow-theater/event/7225055",
+        "http://www.viagogo.dk/Billets-de-theatre/Theatre-et-Cabaret/Creation-Stories-and-All-the-Important-Importants-Billets/E-161464547",
+        "https://www.tennesseetickets.com/Events/8095092/Creation-Stories-and-All-The-Important-Importants-Tickets"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://omdkc.com/first-look-photos-released-of-lct3s-creation-stories-and-all-the-important-importants-performances-begin-tonightfirst-look-photos-released-of-lct3s/",
+          "host": "omdkc.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/cast-set-for-creation-stories-and-all-the-important-importants-off-broadway",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "serpCensus": true
+        },
+        {
+          "url": "https://nyc-shows.brooklynvegan.com/events/2026/10/1/creation-stories-and-all-the-important-importants-tickets",
+          "host": "brooklynvegan.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.topstartickets.com/Event/Creation-Stories-and-All-The-Important-Importants-Lincoln-Center-Theater-Claire-Tow-Theater-2026-10-03-14-00-00-Tickets",
+          "host": "topstartickets.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.ticketsales.com/creation-stories-and-all-the-important-importants-tickets-lincoln-center-claire-tow-theater/event/7225055",
+          "host": "ticketsales.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "http://www.viagogo.dk/Billets-de-theatre/Theatre-et-Cabaret/Creation-Stories-and-All-the-Important-Importants-Billets/E-161464547",
+          "host": "viagogo.dk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.tennesseetickets.com/Events/8095092/Creation-Stories-and-All-The-Important-Importants-Tickets",
+          "host": "tennesseetickets.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"creation stories and all the important importants\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"creation stories and all the important importants\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"creation stories and all the important importants\" review lct3",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "creation stories and all the important importants LCT3 at the Claire Tow Theater review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "creation stories and all the important importants LCT3 at the Claire Tow Theater review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "creation stories and all the important importants LCT3 at the Claire Tow Theater review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 7,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 40,
+        "byReason": {
+          "non-review-host": 22,
+          "non-review-path": 2,
+          "ticketing-reseller": 3,
+          "aggregator-internal-nav": 10,
+          "ticketing-listing": 1,
+          "merch-store": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://omdkc.com/first-look-photos-released-of-lct3s-creation-stories-and-all-the-important-importants-performances-begin-tonightfirst-look-photos-released-of-lct3s/",
+          "host": "omdkc.com",
+          "outletId": "omdkc",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/cast-set-for-creation-stories-and-all-the-important-importants-off-broadway",
+          "host": "newyorktheatreguide.com",
+          "outletId": "nytg",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://nyc-shows.brooklynvegan.com/events/2026/10/1/creation-stories-and-all-the-important-importants-tickets",
+          "host": "brooklynvegan.com",
+          "outletId": "brooklynvegan",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Fetch failed: All scraping methods failed"
+        },
+        {
+          "url": "https://www.topstartickets.com/Event/Creation-Stories-and-All-The-Important-Importants-Lincoln-Center-Theater-Claire-Tow-Theater-2026-10-03-14-00-00-Tickets",
+          "host": "topstartickets.com",
+          "outletId": "topstartickets",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"topstartickets\" (not in registry) — onboard to outlet-registry.json after re"
+        },
+        {
+          "url": "https://www.ticketsales.com/creation-stories-and-all-the-important-importants-tickets-lincoln-center-claire-tow-theater/event/7225055",
+          "host": "ticketsales.com",
+          "outletId": "ticketsales",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"ticketsales\" (not in registry) — onboard to outlet-registry.json after revie"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "http://www.viagogo.dk/Billets-de-theatre/Theatre-et-Cabaret/Creation-Stories-and-All-the-Important-Importants-Billets/E-161464547",
+          "host": "viagogo.dk",
+          "outletId": "viagogo"
+        },
+        {
+          "url": "https://www.tennesseetickets.com/Events/8095092/Creation-Stories-and-All-The-Important-Importants-Tickets",
+          "host": "tennesseetickets.com",
+          "outletId": "tennesseetickets"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "omdkc.com",
+            "outlet": "omdkc.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://omdkc.com/first-look-photos-released-of-lct3s-creation-stories-and-all-the-important-importants-performances-begin-tonightfirst-look-photos-released-of-lct3s/"
+          },
+          {
+            "outletId": "nytg",
+            "outlet": "nytg",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/cast-set-for-creation-stories-and-all-the-important-importants-off-broadway"
+          },
+          {
+            "outletId": "brooklynvegan.com",
+            "outlet": "brooklynvegan.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nyc-shows.brooklynvegan.com/events/2026/10/1/creation-stories-and-all-the-important-importants-tickets"
+          },
+          {
+            "outletId": "topstartickets.com",
+            "outlet": "topstartickets.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.topstartickets.com/Event/Creation-Stories-and-All-The-Important-Importants-Lincoln-Center-Theater-Claire-Tow-Theater-2026-10-03-14-00-00-Tickets"
+          },
+          {
+            "outletId": "ticketsales.com",
+            "outlet": "ticketsales.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ticketsales.com/creation-stories-and-all-the-important-importants-tickets-lincoln-center-claire-tow-theater/event/7225055"
+          },
+          {
+            "outletId": "viagogo.dk",
+            "outlet": "viagogo.dk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "http://www.viagogo.dk/Billets-de-theatre/Theatre-et-Cabaret/Creation-Stories-and-All-the-Important-Importants-Billets/E-161464547"
+          },
+          {
+            "outletId": "tennesseetickets.com",
+            "outlet": "tennesseetickets.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.tennesseetickets.com/Events/8095092/Creation-Stories-and-All-The-Important-Importants-Tickets"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://omdkc.com/first-look-photos-released-of-lct3s-creation-stories-and-all-the-important-importants-performances-begin-tonightfirst-look-photos-released-of-lct3s/",
+            "outletId": "omdkc.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/cast-set-for-creation-stories-and-all-the-important-importants-off-broadway",
+            "outletId": "nytg",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
+            "url": "https://nyc-shows.brooklynvegan.com/events/2026/10/1/creation-stories-and-all-the-important-importants-tickets",
+            "outletId": "brooklynvegan.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
+            "url": "https://www.topstartickets.com/Event/Creation-Stories-and-All-The-Important-Importants-Lincoln-Center-Theater-Claire-Tow-Theater-2026-10-03-14-00-00-Tickets",
+            "outletId": "topstartickets.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
+            "url": "https://www.ticketsales.com/creation-stories-and-all-the-important-importants-tickets-lincoln-center-claire-tow-theater/event/7225055",
+            "outletId": "ticketsales.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
+            "url": "http://www.viagogo.dk/Billets-de-theatre/Theatre-et-Cabaret/Creation-Stories-and-All-the-Important-Importants-Billets/E-161464547",
+            "outletId": "viagogo.dk",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
+            "url": "https://www.tennesseetickets.com/Events/8095092/Creation-Stories-and-All-The-Important-Importants-Tickets",
+            "outletId": "tennesseetickets.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          }
+        ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 7
       },
-      "computedAt": "2026-09-30T23:32:29.097Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "cult-of-love-2024",
@@ -31218,8 +31582,7 @@
         "https://nyunews.com/arts/performance/2026/09/29/review-degenerates/",
         "https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneath-the-hate-and-self-hate.html",
         "https://www.talkinbroadway.com/page/ob/index.html",
-        "https://newyorktheater.me/2026/09/29/degenerates-review/",
-        "https://melodramamag.com/shows/degenerates/"
+        "https://newyorktheater.me/2026/09/29/degenerates-review/"
       ],
       "dirFiles": 20,
       "dirClean": 14,
@@ -31252,101 +31615,22 @@
               "urlInDir": "https://www.talkinbroadway.com/page/ob/index.html"
             }
           ]
-        },
-        {
-          "url": "https://melodramamag.com/shows/degenerates/",
-          "host": "melodramamag.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "melodramamag--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://melodramamag.com/shows/degenerates/"
-            }
-          ],
-          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Degenerates\" Off-Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Degenerates\" Off-Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Degenerates\" review playwrights",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 2,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Degenerates Playwrights Horizons/Peter Jay Sharp Theater review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 4,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 394,
+        "count": 374,
         "byReason": {
-          "non-review-host": 52,
-          "aggregator-internal-nav": 258,
-          "not-http-url": 67,
-          "aggregator-section-root": 11,
-          "roundup-page": 2,
-          "ticketing-listing": 1,
-          "ticketing-reseller": 1,
+          "non-review-host": 39,
           "non-review-path": 1,
-          "production-database-listing": 1
+          "aggregator-internal-nav": 256,
+          "not-http-url": 67,
+          "aggregator-section-root": 11
         }
       },
       "dedupedVariants": [],
@@ -31359,13 +31643,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.talkinbroadway.com/page/ob/index.html"
-          },
-          {
-            "outletId": "melodramamag.com",
-            "outlet": "melodramamag.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://melodramamag.com/shows/degenerates/"
           }
         ],
         "suppressedMissing": [],
@@ -31442,20 +31719,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-30T14:36:15.177Z"
-          },
-          {
-            "url": "https://melodramamag.com/shows/degenerates/",
-            "outletId": "melodramamag.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 11,
-        "candidateCount": 13
+        "candidateCount": 12
       },
-      "computedAt": "2026-09-30T23:32:29.097Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "delirium-off-broadway-2026",
@@ -35412,9 +35682,7 @@
         "https://www.sohoplayhouse.com/see-a-show/elf-lyons-the-woman-on-the-edge",
         "https://variety.com/2026/legit/news/elf-lyons-solo-show-woman-on-the-edge-new-york-1236822695/",
         "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the",
-        "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
         "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789",
-        "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
         "https://overlookmaps.com/events/elf-lyons-the-woman-on-the-edge-8952757580201420",
         "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/"
       ],
@@ -35495,24 +35763,6 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
-          "host": "chortle.co.uk",
-          "knownOutletId": "chortle",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "chortle--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
           "url": "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789",
           "host": "list.co.uk",
           "knownOutletId": "the-list",
@@ -35526,24 +35776,6 @@
               "file": "the-list--unknown.json",
               "flag": "wrongProduction",
               "urlInDir": "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
-          "host": "timeout.com",
-          "knownOutletId": "timeout-london",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "timeout--andrzej-lukowski.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
             }
           ],
           "serpCensus": true
@@ -35580,7 +35812,7 @@
             "page": 0,
             "geo": "us",
             "ok": true,
-            "results": 3,
+            "results": 4,
             "accepted": 0,
             "error": null
           },
@@ -35611,7 +35843,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 4,
+            "accepted": 3,
             "error": null
           },
           {
@@ -35631,22 +35863,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 8,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 27,
+        "count": 31,
         "byReason": {
           "non-review-host": 24,
           "venue-production-page": 1,
-          "aggregator-internal-nav": 1,
-          "non-review-path": 1
+          "non-review-path": 1,
+          "aggregator-internal-nav": 4,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -35697,25 +35930,11 @@
             "url": "https://rolandcat.substack.com/p/review-elf-lyons-the-woman-on-the"
           },
           {
-            "outletId": "chortle",
-            "outlet": "chortle",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge"
-          },
-          {
             "outletId": "the-list",
             "outlet": "the-list",
             "critic": "Unknown",
             "stars": null,
             "url": "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789"
-          },
-          {
-            "outletId": "timeout-london",
-            "outlet": "timeout-london",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review"
           },
           {
             "outletId": "paperweightmag.com",
@@ -35756,25 +35975,11 @@
             "firstSeenAt": "2026-09-29T21:21:30.952Z"
           },
           {
-            "url": "https://www.chortle.co.uk/shows/edinburgh_fringe_2026/e/38651/_elf_lyons_is_the_woman_on_the_edge",
-            "outletId": "chortle",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
             "url": "https://list.co.uk/news/elf-lyons-is-the-woman-on-the-edge-comedy-review-clever-and-profound-48789",
             "outletId": "the-list",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-29T12:06:49.970Z"
-          },
-          {
-            "url": "https://www.timeout.com/edinburgh/comedy/elf-lyons-is-the-woman-on-the-edge-review",
-            "outletId": "timeout-london",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
           },
           {
             "url": "https://www.paperweightmag.com/review-elf-lyons-is-the-woman-on-the-edge/",
@@ -35786,9 +35991,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 8
+        "candidateCount": 6
       },
-      "computedAt": "2026-09-30T19:58:03.707Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "encores-la-cage-aux-folles-off-broadway-2026",
@@ -57461,7 +57666,8 @@
         "https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
         "https://www.offoffonline.com/offoffonline/2026/9/21/how-shakespeare-saved-my-life",
         "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
-        "https://thefrontrowcenter.com/2026/09/how-shakespeare-saved-my-life/",
+        "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/",
+        "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
         "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html",
         "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/"
       ],
@@ -57476,6 +57682,12 @@
           "serpCensus": true
         },
         {
+          "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
+          "host": "folger.edu",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
           "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
           "host": "encoreplus.app",
           "knownOutletId": null,
@@ -57483,6 +57695,10 @@
         }
       ],
       "dirOnly": [
+        {
+          "host": "thefrontrowcenter.com",
+          "count": 1
+        },
         {
           "host": "lightingandsoundamerica.com",
           "count": 1
@@ -57493,6 +57709,24 @@
         }
       ],
       "flaggedMisses": [
+        {
+          "url": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/",
+          "host": "mdtheatreguide.com",
+          "knownOutletId": "maryland-theatre-guide",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "maryland-theatre-guide--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/"
+            }
+          ],
+          "serpCensus": true
+        },
         {
           "url": "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html",
           "host": "theatreeddys.com",
@@ -57546,7 +57780,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -57556,7 +57790,7 @@
             "geo": "us",
             "ok": true,
             "results": 9,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -57566,7 +57800,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           },
           {
@@ -57582,20 +57816,20 @@
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 11,
+        "resultCount": 12,
         "error": null
       },
       "candidatesRejected": {
-        "count": 422,
+        "count": 420,
         "byReason": {
-          "census-junk-host": 1,
-          "non-review-host": 57,
-          "venue-production-page": 2,
-          "aggregator-internal-nav": 266,
-          "roundup-page": 6,
+          "non-review-host": 56,
+          "venue-production-page": 1,
           "ticketing-reseller": 2,
+          "aggregator-internal-nav": 267,
+          "census-junk-host": 1,
           "not-http-url": 76,
           "aggregator-section-root": 11,
+          "roundup-page": 5,
           "ticketing-listing": 1
         }
       },
@@ -57612,6 +57846,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "unknown-outlet-aggregator-host (show-score.com)"
+        },
+        {
+          "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
+          "host": "folger.edu",
+          "outletId": "folger",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/ matches a known "
         },
         {
           "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
@@ -57638,11 +57884,25 @@
             "url": "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life"
           },
           {
+            "outletId": "folger.edu",
+            "outlet": "folger.edu",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/"
+          },
+          {
             "outletId": "encoreplus.app",
             "outlet": "encoreplus.app",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/"
+          },
+          {
+            "outletId": "maryland-theatre-guide",
+            "outlet": "maryland-theatre-guide",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/"
           },
           {
             "outletId": "theatreeddys.com",
@@ -57703,12 +57963,6 @@
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
-            "url": "https://thefrontrowcenter.com/2026/09/how-shakespeare-saved-my-life/",
-            "outletId": "thefrontrowcenter.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T12:06:49.970Z"
-          },
-          {
             "url": "https://www.show-score.com/off-broadway-shows/how-shakespeare-saved-my-life",
             "outletId": "show-score.com",
             "state": "GAP",
@@ -57716,11 +57970,25 @@
             "firstSeenAt": "2026-09-29T21:21:30.952Z"
           },
           {
+            "url": "https://www.folger.edu/whats-on/how-shakespeare-saved-my-life/",
+            "outletId": "folger.edu",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
             "url": "https://www.encoreplus.app/berkeleyrep/how-shakespeare-saved-my-life-2026-brt/",
             "outletId": "encoreplus.app",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
+            "url": "https://mdtheatreguide.com/2026/06/theatre-review-how-shakespeare-saved-my-life-at-folger-theatre/",
+            "outletId": "maryland-theatre-guide",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
           },
           {
             "url": "https://theatreeddys.com/2026/01/how-shakespeare-saved-my-life.html",
@@ -57731,10 +57999,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 9,
-        "candidateCount": 12
+        "liveCount": 8,
+        "candidateCount": 13
       },
-      "computedAt": "2026-09-30T19:58:03.707Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "how-the-other-half-loves-west-end-2026",
@@ -68543,7 +68811,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 0,
             "error": null
           },
           {
@@ -68553,7 +68821,7 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 0,
+            "accepted": 1,
             "error": null
           },
           {
@@ -68573,12 +68841,12 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 30,
+        "count": 31,
         "byReason": {
-          "census-junk-host": 1,
-          "non-review-host": 24,
+          "non-review-host": 26,
+          "ticketing-reseller": 2,
           "aggregator-internal-nav": 1,
-          "ticketing-reseller": 4
+          "census-junk-host": 2
         }
       },
       "dedupedVariants": [],
@@ -68767,7 +69035,7 @@
         "liveCount": 3,
         "candidateCount": 9
       },
-      "computedAt": "2026-09-30T19:58:03.707Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "la-breve-y-maravillosa-vida-de-oscar-wao-off-broadway-2024",
@@ -78740,152 +79008,12 @@
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [
-        "https://www.broadwayworld.com/washington-dc/article/Review-MEASURE-FOR-MEASURE-at-Folger-Theatre-20260928",
-        "https://www.theglobeandmail.com/culture/stage/article-review-measure-for-measure-crows-theatre-gets-well-deserved-victory/",
-        "https://slotkinletter.com/2026/09/review-measure-for-measure-3",
-        "https://nextmag.ca/review-house-bodys-measure-for-measure-makes-shakespeares-problem-play-a-sight-to-be-heard/",
-        "https://riversidestudios.co.uk/whats-on/u1P-measure-for-measure/",
-        "https://theatricalia.com/play/12/measure-for-measure/production/svh",
-        "https://www.intermissionmagazine.ca/reviews/measure-for-measure-hb/",
-        "https://www.londontheatre.co.uk/reviews/measure-for-measure-shakespeares-globe-review",
-        "https://www.londontheatre1.com/reviews/play/rsc-measure-for-measure-at-the-barbican-review/",
-        "https://ctxlivetheatre.com/reviews/review-measure-for-measure-by-austin-shakespear/",
-        "https://susanelkin.co.uk/articles/measure-for-measure-susan-elkin-reviews/",
-        "https://playsinternational.org.uk/measure-for-measure-globe-theatre/",
-        "https://www.britishtheatre.com/posts/review-measure-for-measure-donmar-warehouse",
-        "https://theatreandtonic.co.uk/blog/measure-for-measure-the-rsc-review",
-        "https://www.southendtheatrescene.com/measure-for-measure-review.html",
-        "https://www.thereviewshub.com/22a-measure-for-measure-drayton-arms-theatre-london/",
-        "https://www.elementaltheatre.com/post/measure-for-measure",
-        "https://www.ayoungertheatre.com/review-measure-for-measure-young-vic/",
-        "https://northwestend.com/measure-for-measure-shakespeare-north-playhouse/",
-        "https://www.weekendnotes.co.uk/measure-for-measure-royal-shakespeare-company-review/",
         "https://www.londonboxoffice.co.uk/news/post/review-measure-for-measure-rsc"
       ],
-      "dirFiles": 0,
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
-        {
-          "url": "https://www.broadwayworld.com/washington-dc/article/Review-MEASURE-FOR-MEASURE-at-Folger-Theatre-20260928",
-          "host": "broadwayworld.com",
-          "knownOutletId": "broadwayworld",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theglobeandmail.com/culture/stage/article-review-measure-for-measure-crows-theatre-gets-well-deserved-victory/",
-          "host": "theglobeandmail.com",
-          "knownOutletId": "the-globe-and-mail",
-          "serpCensus": true
-        },
-        {
-          "url": "https://slotkinletter.com/2026/09/review-measure-for-measure-3",
-          "host": "slotkinletter.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://nextmag.ca/review-house-bodys-measure-for-measure-makes-shakespeares-problem-play-a-sight-to-be-heard/",
-          "host": "nextmag.ca",
-          "knownOutletId": "next-magazine",
-          "serpCensus": true
-        },
-        {
-          "url": "https://riversidestudios.co.uk/whats-on/u1P-measure-for-measure/",
-          "host": "riversidestudios.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatricalia.com/play/12/measure-for-measure/production/svh",
-          "host": "theatricalia.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.intermissionmagazine.ca/reviews/measure-for-measure-hb/",
-          "host": "intermissionmagazine.ca",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/measure-for-measure-shakespeares-globe-review",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/play/rsc-measure-for-measure-at-the-barbican-review/",
-          "host": "londontheatre1.com",
-          "knownOutletId": "londontheatre1",
-          "serpCensus": true
-        },
-        {
-          "url": "https://ctxlivetheatre.com/reviews/review-measure-for-measure-by-austin-shakespear/",
-          "host": "ctxlivetheatre.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://susanelkin.co.uk/articles/measure-for-measure-susan-elkin-reviews/",
-          "host": "susanelkin.co.uk",
-          "knownOutletId": "susanelkin",
-          "serpCensus": true
-        },
-        {
-          "url": "https://playsinternational.org.uk/measure-for-measure-globe-theatre/",
-          "host": "playsinternational.org.uk",
-          "knownOutletId": "plays-international",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.britishtheatre.com/posts/review-measure-for-measure-donmar-warehouse",
-          "host": "britishtheatre.com",
-          "knownOutletId": "british-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/measure-for-measure-the-rsc-review",
-          "host": "theatreandtonic.co.uk",
-          "knownOutletId": "theatreandtonic",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.southendtheatrescene.com/measure-for-measure-review.html",
-          "host": "southendtheatrescene.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thereviewshub.com/22a-measure-for-measure-drayton-arms-theatre-london/",
-          "host": "thereviewshub.com",
-          "knownOutletId": "thereviewshub",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.elementaltheatre.com/post/measure-for-measure",
-          "host": "elementaltheatre.com",
-          "knownOutletId": "elementaltheatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.ayoungertheatre.com/review-measure-for-measure-young-vic/",
-          "host": "ayoungertheatre.com",
-          "knownOutletId": "a-younger-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://northwestend.com/measure-for-measure-shakespeare-north-playhouse/",
-          "host": "northwestend.com",
-          "knownOutletId": "north-west-end",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.weekendnotes.co.uk/measure-for-measure-royal-shakespeare-company-review/",
-          "host": "weekendnotes.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
         {
           "url": "https://www.londonboxoffice.co.uk/news/post/review-measure-for-measure-rsc",
           "host": "londonboxoffice.co.uk",
@@ -78939,361 +79067,32 @@
         "perSource": {}
       },
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"Measure for Measure\" West End review",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"Measure for Measure\" West End review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 9,
-            "accepted": 4,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"Measure for Measure\" review riverside",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 0,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "Measure for Measure Riverside Studios review",
-            "page": 0,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "Measure for Measure Riverside Studios review",
-            "page": 1,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 5,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "Measure for Measure Riverside Studios review",
-            "page": 2,
-            "geo": "gb",
-            "ok": true,
-            "results": 10,
-            "accepted": 6,
-            "error": null
-          }
-        ],
-        "queriesOk": 5,
-        "queriesTotal": 5,
-        "resultCount": 20,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 15,
-        "byReason": {
-          "non-review-host": 14,
-          "aggregator-internal-nav": 1
-        }
+        "count": 0,
+        "byReason": {}
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.broadwayworld.com/washington-dc/article/Review-MEASURE-FOR-MEASURE-at-Folger-Theatre-20260928",
-          "host": "broadwayworld.com",
-          "outletId": "broadwayworld",
-          "provisional": false,
-          "ok": false,
-          "noop": true,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "measure-for-measure-off-west-end-2026: https://www.broadwayworld.com/washington-dc/article/Review-MEASURE-FOR-MEASURE-at-Folger-Theatre-20260928 looks like a tour-stop or regional-mounting review (BWW city subdirectory / local-paper tour coverage), not a review of this production — refused by the tour-contamination guard. Expected rejection; if this outlet genuinely reviewed THIS production, ingest with the correct production URL or fix isLikelyTourReview in review-guards.js."
-        },
-        {
-          "url": "https://www.theglobeandmail.com/culture/stage/article-review-measure-for-measure-crows-theatre-gets-well-deserved-victory/",
-          "host": "theglobeandmail.com",
-          "outletId": "the-globe-and-mail",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://slotkinletter.com/2026/09/review-measure-for-measure-3",
-          "host": "slotkinletter.com",
-          "outletId": "slotkinletter",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://nextmag.ca/review-house-bodys-measure-for-measure-makes-shakespeares-problem-play-a-sight-to-be-heard/",
-          "host": "nextmag.ca",
-          "outletId": "next-magazine",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://riversidestudios.co.uk/whats-on/u1P-measure-for-measure/",
-          "host": "riversidestudios.co.uk",
-          "outletId": "riversidestudios",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://riversidestudios.co.uk/whats-on/u1P-measure-for-measure/ matches a know"
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
-          "url": "https://theatricalia.com/play/12/measure-for-measure/production/svh",
-          "host": "theatricalia.com",
-          "outletId": "theatricalia"
-        },
-        {
-          "url": "https://www.intermissionmagazine.ca/reviews/measure-for-measure-hb/",
-          "host": "intermissionmagazine.ca",
-          "outletId": "intermissionmagazine"
-        },
-        {
-          "url": "https://www.londontheatre.co.uk/reviews/measure-for-measure-shakespeares-globe-review",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre"
-        },
-        {
-          "url": "https://www.londontheatre1.com/reviews/play/rsc-measure-for-measure-at-the-barbican-review/",
-          "host": "londontheatre1.com",
-          "outletId": "londontheatre1"
-        },
-        {
-          "url": "https://ctxlivetheatre.com/reviews/review-measure-for-measure-by-austin-shakespear/",
-          "host": "ctxlivetheatre.com",
-          "outletId": "ctxlivetheatre"
-        },
-        {
-          "url": "https://susanelkin.co.uk/articles/measure-for-measure-susan-elkin-reviews/",
-          "host": "susanelkin.co.uk",
-          "outletId": "susanelkin"
-        },
-        {
-          "url": "https://playsinternational.org.uk/measure-for-measure-globe-theatre/",
-          "host": "playsinternational.org.uk",
-          "outletId": "plays-international"
-        },
-        {
-          "url": "https://www.britishtheatre.com/posts/review-measure-for-measure-donmar-warehouse",
-          "host": "britishtheatre.com",
-          "outletId": "british-theatre"
-        },
-        {
-          "url": "https://theatreandtonic.co.uk/blog/measure-for-measure-the-rsc-review",
-          "host": "theatreandtonic.co.uk",
-          "outletId": "theatreandtonic"
-        },
-        {
-          "url": "https://www.southendtheatrescene.com/measure-for-measure-review.html",
-          "host": "southendtheatrescene.com",
-          "outletId": "southendtheatrescene"
-        },
-        {
-          "url": "https://www.thereviewshub.com/22a-measure-for-measure-drayton-arms-theatre-london/",
-          "host": "thereviewshub.com",
-          "outletId": "thereviewshub"
-        },
-        {
-          "url": "https://www.elementaltheatre.com/post/measure-for-measure",
-          "host": "elementaltheatre.com",
-          "outletId": "elementaltheatre"
-        },
-        {
-          "url": "https://www.ayoungertheatre.com/review-measure-for-measure-young-vic/",
-          "host": "ayoungertheatre.com",
-          "outletId": "a-younger-theatre"
-        },
-        {
-          "url": "https://northwestend.com/measure-for-measure-shakespeare-north-playhouse/",
-          "host": "northwestend.com",
-          "outletId": "north-west-end"
-        },
-        {
-          "url": "https://www.weekendnotes.co.uk/measure-for-measure-royal-shakespeare-company-review/",
-          "host": "weekendnotes.co.uk",
-          "outletId": "weekendnotes"
-        },
-        {
           "url": "https://www.londonboxoffice.co.uk/news/post/review-measure-for-measure-rsc",
           "host": "londonboxoffice.co.uk",
-          "outletId": "london-box-office"
+          "outletId": "london-box-office",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
-          {
-            "outletId": "broadwayworld",
-            "outlet": "broadwayworld",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.broadwayworld.com/washington-dc/article/Review-MEASURE-FOR-MEASURE-at-Folger-Theatre-20260928"
-          },
-          {
-            "outletId": "the-globe-and-mail",
-            "outlet": "the-globe-and-mail",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theglobeandmail.com/culture/stage/article-review-measure-for-measure-crows-theatre-gets-well-deserved-victory/"
-          },
-          {
-            "outletId": "slotkinletter.com",
-            "outlet": "slotkinletter.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://slotkinletter.com/2026/09/review-measure-for-measure-3"
-          },
-          {
-            "outletId": "next-magazine",
-            "outlet": "next-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://nextmag.ca/review-house-bodys-measure-for-measure-makes-shakespeares-problem-play-a-sight-to-be-heard/"
-          },
-          {
-            "outletId": "riversidestudios.co.uk",
-            "outlet": "riversidestudios.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://riversidestudios.co.uk/whats-on/u1P-measure-for-measure/"
-          },
-          {
-            "outletId": "theatricalia.com",
-            "outlet": "theatricalia.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatricalia.com/play/12/measure-for-measure/production/svh"
-          },
-          {
-            "outletId": "intermissionmagazine.ca",
-            "outlet": "intermissionmagazine.ca",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.intermissionmagazine.ca/reviews/measure-for-measure-hb/"
-          },
-          {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/measure-for-measure-shakespeares-globe-review"
-          },
-          {
-            "outletId": "londontheatre1",
-            "outlet": "londontheatre1",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatre1.com/reviews/play/rsc-measure-for-measure-at-the-barbican-review/"
-          },
-          {
-            "outletId": "ctxlivetheatre.com",
-            "outlet": "ctxlivetheatre.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://ctxlivetheatre.com/reviews/review-measure-for-measure-by-austin-shakespear/"
-          },
-          {
-            "outletId": "susanelkin",
-            "outlet": "susanelkin",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://susanelkin.co.uk/articles/measure-for-measure-susan-elkin-reviews/"
-          },
-          {
-            "outletId": "plays-international",
-            "outlet": "plays-international",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://playsinternational.org.uk/measure-for-measure-globe-theatre/"
-          },
-          {
-            "outletId": "british-theatre",
-            "outlet": "british-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.britishtheatre.com/posts/review-measure-for-measure-donmar-warehouse"
-          },
-          {
-            "outletId": "theatreandtonic",
-            "outlet": "theatreandtonic",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://theatreandtonic.co.uk/blog/measure-for-measure-the-rsc-review"
-          },
-          {
-            "outletId": "southendtheatrescene.com",
-            "outlet": "southendtheatrescene.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.southendtheatrescene.com/measure-for-measure-review.html"
-          },
-          {
-            "outletId": "thereviewshub",
-            "outlet": "thereviewshub",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thereviewshub.com/22a-measure-for-measure-drayton-arms-theatre-london/"
-          },
-          {
-            "outletId": "elementaltheatre",
-            "outlet": "elementaltheatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.elementaltheatre.com/post/measure-for-measure"
-          },
-          {
-            "outletId": "a-younger-theatre",
-            "outlet": "a-younger-theatre",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.ayoungertheatre.com/review-measure-for-measure-young-vic/"
-          },
-          {
-            "outletId": "north-west-end",
-            "outlet": "north-west-end",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://northwestend.com/measure-for-measure-shakespeare-north-playhouse/"
-          },
-          {
-            "outletId": "weekendnotes.co.uk",
-            "outlet": "weekendnotes.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.weekendnotes.co.uk/measure-for-measure-royal-shakespeare-company-review/"
-          },
           {
             "outletId": "london-box-office",
             "outlet": "london-box-office",
@@ -79305,146 +79104,6 @@
         "suppressedMissing": [],
         "candidates": [
           {
-            "url": "https://www.broadwayworld.com/washington-dc/article/Review-MEASURE-FOR-MEASURE-at-Folger-Theatre-20260928",
-            "outletId": "broadwayworld",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.theglobeandmail.com/culture/stage/article-review-measure-for-measure-crows-theatre-gets-well-deserved-victory/",
-            "outletId": "the-globe-and-mail",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://slotkinletter.com/2026/09/review-measure-for-measure-3",
-            "outletId": "slotkinletter.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://nextmag.ca/review-house-bodys-measure-for-measure-makes-shakespeares-problem-play-a-sight-to-be-heard/",
-            "outletId": "next-magazine",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://riversidestudios.co.uk/whats-on/u1P-measure-for-measure/",
-            "outletId": "riversidestudios.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://theatricalia.com/play/12/measure-for-measure/production/svh",
-            "outletId": "theatricalia.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.intermissionmagazine.ca/reviews/measure-for-measure-hb/",
-            "outletId": "intermissionmagazine.ca",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/measure-for-measure-shakespeares-globe-review",
-            "outletId": "london-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.londontheatre1.com/reviews/play/rsc-measure-for-measure-at-the-barbican-review/",
-            "outletId": "londontheatre1",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://ctxlivetheatre.com/reviews/review-measure-for-measure-by-austin-shakespear/",
-            "outletId": "ctxlivetheatre.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://susanelkin.co.uk/articles/measure-for-measure-susan-elkin-reviews/",
-            "outletId": "susanelkin",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://playsinternational.org.uk/measure-for-measure-globe-theatre/",
-            "outletId": "plays-international",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.britishtheatre.com/posts/review-measure-for-measure-donmar-warehouse",
-            "outletId": "british-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://theatreandtonic.co.uk/blog/measure-for-measure-the-rsc-review",
-            "outletId": "theatreandtonic",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.southendtheatrescene.com/measure-for-measure-review.html",
-            "outletId": "southendtheatrescene.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.thereviewshub.com/22a-measure-for-measure-drayton-arms-theatre-london/",
-            "outletId": "thereviewshub",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.elementaltheatre.com/post/measure-for-measure",
-            "outletId": "elementaltheatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.ayoungertheatre.com/review-measure-for-measure-young-vic/",
-            "outletId": "a-younger-theatre",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://northwestend.com/measure-for-measure-shakespeare-north-playhouse/",
-            "outletId": "north-west-end",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.weekendnotes.co.uk/measure-for-measure-royal-shakespeare-company-review/",
-            "outletId": "weekendnotes.co.uk",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
             "url": "https://www.londonboxoffice.co.uk/news/post/review-measure-for-measure-rsc",
             "outletId": "london-box-office",
             "state": "IN_FLIGHT",
@@ -79454,9 +79113,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 21
+        "candidateCount": 1
       },
-      "computedAt": "2026-09-30T23:32:29.097Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "meat-suit-or-the-stshow-of-motherhood-off-broadway-2026",
@@ -80804,7 +80463,7 @@
         "https://chicago.splashmags.com/index.php/2024/07/midnight-in-the-garden-of-good-and-evil-review-immaculate-vibes/",
         "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall",
         "https://www.show-score.com/off-broadway-shows/midnight-daryl-roth-theatre",
-        "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/"
+        "https://www.newyorktheatreguide.com/theatre-news/news/todrick-hall-musical-midnight-to-make-off-broadway-debut-this-fall"
       ],
       "dirFiles": 15,
       "dirClean": 1,
@@ -81096,9 +80755,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/",
-          "host": "nyc.com",
-          "knownOutletId": null,
+          "url": "https://www.newyorktheatreguide.com/theatre-news/news/todrick-hall-musical-midnight-to-make-off-broadway-debut-this-fall",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
           "recoverable": false,
           "recoverableFile": null,
           "recoverableOutletId": null,
@@ -81106,9 +80765,9 @@
           "recoverableCount": 0,
           "dirFlags": [
             {
-              "file": "nyc--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/"
+              "file": "nytg--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.newyorktheatreguide.com/theatre-news/news/todrick-hall-musical-midnight-to-make-off-broadway-debut-this-fall"
             }
           ],
           "serpCensus": true
@@ -81178,14 +80837,13 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 1395,
+        "count": 1397,
         "byReason": {
-          "census-junk-host": 2,
-          "non-review-host": 132,
-          "venue-production-page": 1,
-          "aggregator-internal-nav": 984,
+          "non-review-host": 133,
           "non-review-path": 1,
-          "ticketing-reseller": 2,
+          "ticketing-reseller": 3,
+          "aggregator-internal-nav": 984,
+          "census-junk-host": 3,
           "not-http-url": 244,
           "aggregator-section-root": 29
         }
@@ -81408,11 +81066,11 @@
             "url": "https://www.theatrely.com/post/todrick-halls-original-musical-midnight-sets-new-york-premiere-this-fall"
           },
           {
-            "outletId": "nyc.com",
-            "outlet": "nyc.com",
+            "outletId": "nytg",
+            "outlet": "nytg",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/"
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/todrick-hall-musical-midnight-to-make-off-broadway-debut-this-fall"
           }
         ],
         "suppressedMissing": [],
@@ -81432,18 +81090,18 @@
             "firstSeenAt": "2026-09-29T12:06:49.970Z"
           },
           {
-            "url": "https://www.nyc.com/broadway_tickets/midnight.442588552075689984/",
-            "outletId": "nyc.com",
+            "url": "https://www.newyorktheatreguide.com/theatre-news/news/todrick-hall-musical-midnight-to-make-off-broadway-debut-this-fall",
+            "outletId": "nytg",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T12:06:49.970Z"
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
           }
         ],
         "censusSchema": 2,
         "liveCount": 0,
         "candidateCount": 3
       },
-      "computedAt": "2026-09-30T19:58:03.707Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "milk-and-honey-amt-theater-off-broadway-2026",
@@ -84669,10 +84327,10 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 33,
+        "count": 37,
         "byReason": {
-          "census-junk-host": 1,
-          "non-review-host": 32
+          "non-review-host": 36,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -84744,7 +84402,7 @@
         "liveCount": 0,
         "candidateCount": 2
       },
-      "computedAt": "2026-09-30T19:58:03.707Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "mother-play-2024",
@@ -85312,34 +84970,235 @@
       "status": "upcoming",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
+      "aggregatorListedUrls": [
+        "https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker",
+        "https://www.captainticket.com/NY/New-York-Events/Cheap-Jena-Friedman-Motherfucker-Tickets-Soho-Playhouse-Main-Theatre-2026-10-01-19-00-00-3501095",
+        "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-1-2026-soho-playhouse-main-theatre/3501095",
+        "https://www.ticketwarehouse.com/events/comedy-tickets/3501095/jena-friedman-motherfucker-2026-10-01-19-00-00"
+      ],
       "dirFiles": 0,
       "dirClean": 0,
       "inReviewsJson": 0,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker",
+          "host": "sohoplayhouse.com",
+          "knownOutletId": "sohoplayhouse",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.captainticket.com/NY/New-York-Events/Cheap-Jena-Friedman-Motherfucker-Tickets-Soho-Playhouse-Main-Theatre-2026-10-01-19-00-00-3501095",
+          "host": "captainticket.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-1-2026-soho-playhouse-main-theatre/3501095",
+          "host": "ticketsmarter.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.ticketwarehouse.com/events/comedy-tickets/3501095/jena-friedman-motherfucker-2026-10-01-19-00-00",
+          "host": "ticketwarehouse.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [],
       "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "out-of-window"
+        "ran": true,
+        "complete": true,
+        "query": "\"Motherfucker\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Motherfucker\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Motherfucker\" review soho",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Motherfucker Soho Playhouse Main Stage review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Motherfucker Soho Playhouse Main Stage review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Motherfucker Soho Playhouse Main Stage review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 4,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 36,
+        "byReason": {
+          "non-review-host": 28,
+          "venue-production-page": 3,
+          "non-review-path": 3,
+          "ticketing-reseller": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker",
+          "host": "sohoplayhouse.com",
+          "outletId": "sohoplayhouse",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.captainticket.com/NY/New-York-Events/Cheap-Jena-Friedman-Motherfucker-Tickets-Soho-Playhouse-Main-Theatre-2026-10-01-19-00-00-3501095",
+          "host": "captainticket.com",
+          "outletId": "captainticket",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"captainticket\" (not in registry) — onboard to outlet-registry.json after rev"
+        },
+        {
+          "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-1-2026-soho-playhouse-main-theatre/3501095",
+          "host": "ticketsmarter.com",
+          "outletId": "ticketsmarter",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.ticketwarehouse.com/events/comedy-tickets/3501095/jena-friedman-motherfucker-2026-10-01-19-00-00",
+          "host": "ticketwarehouse.com",
+          "outletId": "ticketwarehouse",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "sohoplayhouse",
+            "outlet": "sohoplayhouse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker"
+          },
+          {
+            "outletId": "captainticket.com",
+            "outlet": "captainticket.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.captainticket.com/NY/New-York-Events/Cheap-Jena-Friedman-Motherfucker-Tickets-Soho-Playhouse-Main-Theatre-2026-10-01-19-00-00-3501095"
+          },
+          {
+            "outletId": "ticketsmarter.com",
+            "outlet": "ticketsmarter.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-1-2026-soho-playhouse-main-theatre/3501095"
+          },
+          {
+            "outletId": "ticketwarehouse.com",
+            "outlet": "ticketwarehouse.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.ticketwarehouse.com/events/comedy-tickets/3501095/jena-friedman-motherfucker-2026-10-01-19-00-00"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.sohoplayhouse.com/see-a-show/jena-friedman-motherfucker",
+            "outletId": "sohoplayhouse",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
+            "url": "https://www.captainticket.com/NY/New-York-Events/Cheap-Jena-Friedman-Motherfucker-Tickets-Soho-Playhouse-Main-Theatre-2026-10-01-19-00-00-3501095",
+            "outletId": "captainticket.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
+            "url": "https://www.ticketsmarter.com/e/jena-friedman-motherfucker-tickets-new-york-10-1-2026-soho-playhouse-main-theatre/3501095",
+            "outletId": "ticketsmarter.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          },
+          {
+            "url": "https://www.ticketwarehouse.com/events/comedy-tickets/3501095/jena-friedman-motherfucker-2026-10-01-19-00-00",
+            "outletId": "ticketwarehouse.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
+          }
+        ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 0
+        "candidateCount": 4
       },
-      "computedAt": "2026-09-30T19:58:03.707Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "mrs-stern-wanders-the-prussian-state-library-luna-stage-off-broadway-2026",
@@ -110082,14 +109941,7 @@
         "http://www.timeout.com/newyork/theater/school-girls-or-the-african-mean-girls-play",
         "http://variety.com/2017/legit/reviews/school-girls-or-the-african-mean-girls-play-review-1202612324/",
         "https://www.theatrely.com/post/a-fabulous-school-girls-or-the-african-mean-girls-play-finally-makes-it-to-broadwayj",
-        "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983",
-        "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/",
-        "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
-        "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-        "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
-        "https://www.theatermania.com/news/review-school-girls-or-the-african-mean-girls-play-brings-80s-fashion-and-ageless-politics-to-broadway_1855224/",
-        "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
-        "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/"
+        "https://ew.com/school-girls-broadway-review-the-african-teen-comedy-subverts-the-genre-12141983"
       ],
       "dirFiles": 34,
       "dirClean": 23,
@@ -110108,24 +109960,6 @@
           "knownOutletId": "nbcnews",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
-        },
-        {
-          "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
-          "host": "show-score.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-          "host": "manhattantheatreclub.com",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
-          "host": "exeuntnyc.com",
-          "knownOutletId": "exeunt-magazine",
-          "serpCensus": true
         }
       ],
       "dirOnly": [
@@ -110158,149 +109992,28 @@
           "count": 1
         },
         {
+          "host": "theatermania.com",
+          "count": 1
+        },
+        {
           "host": "thewrap.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [
-        {
-          "url": "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/",
-          "host": "didtheylikeit.com",
-          "knownOutletId": "dtli",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "dtli--unknown.json",
-              "flag": "clean",
-              "urlInDir": "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
-          "host": "aroundthetownchicago.com",
-          "knownOutletId": "around-the-town-chicago",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "around-the-town-chicago--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
-          "host": "theatreinchicago.com",
-          "knownOutletId": null,
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "theatreinchicago--unknown.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/"
-            }
-          ],
-          "serpCensus": true
-        }
-      ],
+      "flaggedMisses": [],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": true,
-        "complete": true,
-        "query": "\"School Girls; Or, The African Mean Girls Play\" Broadway review 2026",
-        "queryStatus": [
-          {
-            "arm": "primary",
-            "query": "\"School Girls; Or, The African Mean Girls Play\" Broadway review 2026",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 6,
-            "error": null
-          },
-          {
-            "arm": "scoped1",
-            "query": "\"School Girls; Or, The African Mean Girls Play\" review samuel",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "scoped2",
-            "query": "\"School Girls; Or, The African Mean Girls Play\" Bioh review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p0",
-            "query": "School Girls; Or, The African Mean Girls Play Samuel J. Friedman Theatre review",
-            "page": 0,
-            "geo": "us",
-            "ok": true,
-            "results": 9,
-            "accepted": 1,
-            "error": null
-          },
-          {
-            "arm": "naive-p1",
-            "query": "School Girls; Or, The African Mean Girls Play Samuel J. Friedman Theatre review",
-            "page": 1,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          },
-          {
-            "arm": "naive-p2",
-            "query": "School Girls; Or, The African Mean Girls Play Samuel J. Friedman Theatre review",
-            "page": 2,
-            "geo": "us",
-            "ok": true,
-            "results": 10,
-            "accepted": 3,
-            "error": null
-          }
-        ],
-        "queriesOk": 6,
-        "queriesTotal": 6,
-        "resultCount": 15,
-        "error": null
+        "ran": false,
+        "reason": "cooldown"
       },
       "candidatesRejected": {
-        "count": 511,
+        "count": 489,
         "byReason": {
-          "non-review-host": 75,
+          "non-review-host": 61,
           "aggregator-internal-nav": 343,
           "not-http-url": 70,
-          "aggregator-section-root": 15,
-          "roundup-page": 6,
-          "ticketing-listing": 1,
-          "ticketing-reseller": 1
+          "aggregator-section-root": 15
         }
       },
       "dedupedVariants": [],
@@ -110324,91 +110037,11 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [
-        {
-          "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
-          "host": "show-score.com",
-          "outletId": null,
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "unknown-outlet-aggregator-host (show-score.com)"
-        },
-        {
-          "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-          "host": "manhattantheatreclub.com",
-          "outletId": "manhattantheatreclub",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-a"
-        },
-        {
-          "url": "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
-          "host": "exeuntnyc.com",
-          "outletId": "exeunt-magazine",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
-        }
-      ],
+      "ingestResults": [],
       "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "incomplete",
-        "missing": [
-          {
-            "outletId": "show-score.com",
-            "outlet": "show-score.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026"
-          },
-          {
-            "outletId": "manhattantheatreclub.com",
-            "outlet": "manhattantheatreclub.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/"
-          },
-          {
-            "outletId": "exeunt-magazine",
-            "outlet": "exeunt-magazine",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/"
-          },
-          {
-            "outletId": "dtli",
-            "outlet": "dtli",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/"
-          },
-          {
-            "outletId": "around-the-town-chicago",
-            "outlet": "around-the-town-chicago",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/"
-          },
-          {
-            "outletId": "theatreinchicago.com",
-            "outlet": "theatreinchicago.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/"
-          }
-        ],
+        "verdict": "complete",
+        "missing": [],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -110518,61 +110151,13 @@
             "outletId": "ew.com",
             "state": "live",
             "firstSeenAt": "2026-09-30T14:36:15.177Z"
-          },
-          {
-            "url": "https://www.theatermania.com/news/review-school-girls-or-the-african-mean-girls-play-brings-80s-fashion-and-ageless-politics-to-broadway_1855224/",
-            "outletId": "theatermania.com",
-            "state": "live",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://www.show-score.com/broadway-shows/school-girls-or-the-african-mean-girls-play-broadway-2026",
-            "outletId": "show-score.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://www.manhattantheatreclub.com/shows/2026-27-season/school-girls-or-the-african-mean-girls-play/",
-            "outletId": "manhattantheatreclub.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://exeuntnyc.com/reviews/review-school-girls-african-mean-girls-play-lucille-lortel-theatre/",
-            "outletId": "exeunt-magazine",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
-          },
-          {
-            "url": "https://didtheylikeit.com/shows/school-girls-or-the-african-mean-girls-play/",
-            "outletId": "dtli",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://aroundthetownchicago.com/theatre-reviews/school-girls-or-the-african-mean-girls-play/",
-            "outletId": "around-the-town-chicago",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T21:21:30.952Z"
-          },
-          {
-            "url": "https://www.theatreinchicago.com/school-girls-or-the-african-mean-girls-play/11303/",
-            "outletId": "theatreinchicago.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-30T23:32:29.097Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 14,
-        "candidateCount": 20
+        "liveCount": 13,
+        "candidateCount": 13
       },
-      "computedAt": "2026-09-30T23:32:29.097Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -142087,32 +141672,25 @@
         "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
         "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
         "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
-        "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket",
+        "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
+        "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
         "https://www.allthatdazzles.co.uk/post/review-the-standard-of-living-theatre-royal-haymarket",
         "https://www.telegraph.co.uk/theatre/what-to-see/the-standard-of-living-theatre-royal-haymarket-review/",
         "https://trh.co.uk/whatson/the-standard-of-living/",
         "https://www.whatsonstage.com/news/the-standard-of-living-with-rory-kinnear-and-natalia-osipova-in-the-west-end-review_1733934/",
-        "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham",
         "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket/amp",
         "https://monstagigz.com/2026/09/24/theatre-review-the-standard-of-living-starring-rory-kinnear-at-theatre-royal-haymarket/comment-page-1/",
         "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/the-standard-of-living-rory-kinnear-john-maynard-keynes-b3058809.html",
-        "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
         "https://www.ft.com/content/8f443987-91a7-4785-83e8-51937613fc77"
       ],
-      "dirFiles": 27,
-      "dirClean": 15,
-      "inReviewsJson": 15,
+      "dirFiles": 29,
+      "dirClean": 18,
+      "inReviewsJson": 18,
       "missing": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket",
-          "host": "londontheatredirect.com",
-          "knownOutletId": "londontheatredirect",
+          "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
+          "host": "show-score.com",
+          "knownOutletId": null,
           "serpCensus": true
         },
         {
@@ -142135,6 +141713,10 @@
         },
         {
           "host": "closeupculture.com",
+          "count": 1
+        },
+        {
+          "host": "dailymail.com",
           "count": 1
         },
         {
@@ -142178,47 +141760,6 @@
           "weRefStars": 3,
           "weRefStarsSource": "westendtheatre",
           "serpCensus": true
-        },
-        {
-          "url": "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "recoverable": false,
-          "recoverableFile": null,
-          "recoverableOutletId": null,
-          "recoverableCritic": null,
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "guardian--lanre-bakare.json",
-              "flag": "wrongProduction",
-              "urlInDir": "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham"
-            }
-          ],
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
-          "recoverable": true,
-          "recoverableFile": "thestage--sam-marlowe.json",
-          "recoverableOutletId": "thestage",
-          "recoverableCritic": "Sam Marlowe",
-          "recoverableCount": 0,
-          "dirFlags": [
-            {
-              "file": "thestage--sam-marlowe.json",
-              "flag": "emptyBody",
-              "urlInDir": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear"
-            }
-          ],
-          "weRef": true,
-          "weRefSources": [
-            "westendtheatre"
-          ],
-          "weRefStars": 2,
-          "weRefStarsSource": "westendtheatre"
         }
       ],
       "citedNoUrl": [],
@@ -142237,7 +141778,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 1
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": true,
@@ -142256,7 +141797,7 @@
         },
         "allSourcesFailed": false,
         "currentRunRows": 15,
-        "corroborated": 7,
+        "corroborated": 8,
         "perSource": {
           "lbo-roundup": {
             "cited": 7,
@@ -142264,7 +141805,7 @@
           },
           "westendtheatre": {
             "cited": 7,
-            "corroborated": 5
+            "corroborated": 6
           }
         }
       },
@@ -142280,7 +141821,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           },
           {
@@ -142309,7 +141850,7 @@
             "page": 0,
             "geo": "gb",
             "ok": true,
-            "results": 8,
+            "results": 9,
             "accepted": 1,
             "error": null
           },
@@ -142320,7 +141861,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 2,
+            "accepted": 1,
             "error": null
           },
           {
@@ -142340,40 +141881,28 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 25,
+        "count": 23,
         "byReason": {
-          "non-review-host": 18,
+          "non-review-host": 16,
           "non-review-path": 1,
-          "roundup-page": 2,
-          "ticketing-listing": 3,
+          "roundup-page": 3,
+          "ticketing-listing": 2,
           "ticket-seller-product-page": 1
         }
       },
       "dedupedVariants": [],
       "ingestResults": [
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
+          "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
+          "host": "show-score.com",
+          "outletId": null,
+          "provisional": true,
           "ok": false,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "spawnSync node ETIMEDOUT"
-        },
-        {
-          "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket",
-          "host": "londontheatredirect.com",
-          "outletId": "londontheatredirect",
-          "provisional": false,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "⚠️  Scrapingdog failed (dynamic=false, domain=londontheatredirect.com): Scrapingdog HTTP 404: {\"mess"
+          "reason": "unknown-outlet-aggregator-host (show-score.com)"
         },
         {
           "url": "https://trh.co.uk/whatson/the-standard-of-living/",
@@ -142409,34 +141938,32 @@
           "recovered": true,
           "skipped": false,
           "provisional": false,
-          "starFallback": true,
+          "starFallback": false,
           "reason": null,
           "recoveryCount": 0
-        }
-      ],
-      "recoverySkippedByCap": [
+        },
         {
           "url": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
           "host": "thestage.co.uk",
-          "file": "thestage--sam-marlowe.json"
+          "file": "thestage--sam-marlowe.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "ingest no-op (text landed elsewhere or unchanged)",
+          "recoveryCount": 1,
+          "uncited": true
         }
       ],
       "censusVerdict": {
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
+            "outletId": "show-score.com",
+            "outlet": "show-score.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket"
-          },
-          {
-            "outletId": "londontheatredirect",
-            "outlet": "londontheatredirect",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket"
+            "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end"
           },
           {
             "outletId": "trh.co.uk",
@@ -142458,20 +141985,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx"
-          },
-          {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear"
           }
         ],
         "suppressedMissing": [],
@@ -142489,10 +142002,22 @@
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
           },
           {
+            "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+          },
+          {
             "url": "https://www.timeout.com/london/news/the-standard-of-living-review-rory-kinnear-stars-in-latest-play-from-superstar-playwright-james-graham-092926",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-30T19:58:03.707Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-the-standard-of-living-theatre-royal-haymarket",
@@ -142531,18 +142056,11 @@
             "firstSeenAt": "2026-09-30T19:58:03.707Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
-            "outletId": "london-theatre",
+            "url": "https://www.show-score.com/uk/london/west-end-shows/the-standard-of-living-west-end",
+            "outletId": "show-score.com",
             "state": "GAP",
             "reason": "sla-breach",
-            "firstSeenAt": "2026-09-30T19:58:03.707Z"
-          },
-          {
-            "url": "https://www.londontheatredirect.com/news/review-roundup-what-are-the-critics-saying-about-the-standard-of-living-at-theatre-royal-haymarket",
-            "outletId": "londontheatredirect",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-30T19:58:03.707Z"
+            "firstSeenAt": "2026-10-01T02:43:05.209Z"
           },
           {
             "url": "https://trh.co.uk/whatson/the-standard-of-living/",
@@ -142564,27 +142082,13 @@
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-09-30T07:43:36.484Z"
-          },
-          {
-            "url": "https://www.theguardian.com/business/2026/jun/15/bloombsbury-whitehall-play-john-maynard-keynes-standard-of-living-james-graham",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket-london-james-graham-nicholas-hytner-rory-kinnear",
-            "outletId": "thestage",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-09-30T19:58:03.707Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 9,
+        "liveCount": 11,
         "candidateCount": 15
       },
-      "computedAt": "2026-09-30T19:58:03.707Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -149706,6 +149210,7 @@
         "https://www.thereviewshub.com/tru-menier-chocolate-factory-london/",
         "https://playsinternational.org.uk/tru-menier-chocolate-factory/",
         "https://www.britishtheatreguide.info/reviews/tru-menier-chocolat-26049",
+        "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
         "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
         "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
         "https://www.whatsonstage.com/news/tru-with-jesse-tyler-ferguson-and-charlotte-damboise-at-menier-chocolate-factory-review_1732697/",
@@ -149714,7 +149219,6 @@
         "https://www.thestage.co.uk/reviews/tru-review-menier-chocolate-factory-london",
         "https://www.westendbestfriend.co.uk/news/review-tru-menier-chocolate-factory",
         "https://readaboutstuff.com/2026/09/28/review-tru-menier-chocolate-factory-london/",
-        "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
         "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/",
         "https://liamodell.com/2026/09/27/tru-review-menier-chocolate-factory-london-jesse-tyler-ferguson-charlotte-damboise-truman-capote-jay-presson-allen/",
         "https://www.thetimes.com/culture/theatre-dance/article/tru-review-jesse-tyler-ferguson-truman-capote-n5cpff95p",
@@ -149722,7 +149226,7 @@
       ],
       "dirFiles": 32,
       "dirClean": 22,
-      "inReviewsJson": 18,
+      "inReviewsJson": 19,
       "missing": [
         {
           "url": "https://www.thewrap.com/creative-content/theater/tru-off-broadway-review-jesse-tyler-ferguson-truman-capote/",
@@ -149831,7 +149335,7 @@
             "rows": 0,
             "emptyParse": false,
             "error": null,
-            "fetchErrors": 2
+            "fetchErrors": 0
           },
           "lbo-roundup": {
             "found": false,
@@ -149870,7 +149374,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 6,
+            "accepted": 7,
             "error": null
           },
           {
@@ -149910,7 +149414,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 1,
             "error": null
           },
           {
@@ -149920,7 +149424,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 1,
+            "accepted": 2,
             "error": null
           }
         ],
@@ -149932,12 +149436,12 @@
       "candidatesRejected": {
         "count": 393,
         "byReason": {
-          "non-review-host": 47,
-          "aggregator-internal-nav": 263,
+          "non-review-host": 46,
           "non-review-path": 1,
-          "roundup-page": 4,
+          "aggregator-internal-nav": 263,
           "not-http-url": 66,
           "aggregator-section-root": 11,
+          "roundup-page": 5,
           "ticketing-listing": 1
         }
       },
@@ -150075,6 +149579,12 @@
             "firstSeenAt": "2026-09-29T21:21:30.952Z"
           },
           {
+            "url": "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-09-29T02:37:18.744Z"
+          },
+          {
             "url": "https://www.theguardian.com/stage/2026/sep/28/tru-review-a-five-star-performance-of-a-three-star-script-about-the-life-of-truman-capote",
             "outletId": "theguardian.com",
             "state": "live",
@@ -150121,12 +149631,6 @@
             "outletId": "readaboutstuff.com",
             "state": "live",
             "firstSeenAt": "2026-09-29T09:20:33.796Z"
-          },
-          {
-            "url": "https://www.allthatdazzles.co.uk/post/review-tru-menier-chocolate-factory",
-            "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-09-29T02:37:18.744Z"
           },
           {
             "url": "https://www.telegraph.co.uk/theatre/what-to-see/tru-menier-chocolate-factory-review/",
@@ -150178,7 +149682,7 @@
         "liveCount": 18,
         "candidateCount": 21
       },
-      "computedAt": "2026-09-30T19:58:03.707Z"
+      "computedAt": "2026-10-01T02:43:05.209Z"
     },
     {
       "showId": "truly-howard-hughes-off-broadway-2026",
