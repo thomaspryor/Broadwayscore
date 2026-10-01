@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-01T09:49:12.208Z",
+  "generated": "2026-10-01T09:57:23.822Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 21,
+  "count": 19,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -57,13 +57,6 @@
       "loserFile": "timeout--sam-marlowe.json",
       "targetFile": "timeout-london--sam-marlowe.json",
       "reason": "orphaned-duplicate-heal: timeout-london--sam-marlowe.json was flagged invalid after timeout--sam-marlowe.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "merrily-we-roll-along-2023",
-      "loserFile": "nytimes--jesse-green.json",
-      "targetFile": "nytimes--calum-marsh.json",
-      "reason": "orphaned-duplicate-heal: nytimes--calum-marsh.json was flagged invalid after nytimes--jesse-green.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -142,13 +135,6 @@
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "merrily-we-roll-along-2023",
-      "loserFile": "nytimes--jesse-green.json",
-      "targetFile": "nytimes--calum-marsh.json",
-      "reason": "orphaned-duplicate-heal: nytimes--calum-marsh.json was flagged invalid after nytimes--jesse-green.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
