@@ -476,7 +476,9 @@ async function dispatchCard({ title, description, hint, fields, severity, cardAc
   // map error-class severities to High, everything else Medium — Urgent is
   // reserved for humans. (`priority`, when a caller passes one, is the OLD
   // Notion string form — ignored deliberately rather than half-translated;
-  // severity is the honest signal.)
+  // severity is the honest signal.) A PARKED filing never stays High:
+  // createLinearIssue caps parked issues at Medium (BRO-4487), so only a
+  // dispatchAtFiling card actually lands at High.
   const linearPriority = (severity === 'critical' || severity === 'error') ? 2 : 3;
   // task #1310: no default disposition. An alert-filed issue isn't being
   // worked the instant it's created — the Phase-2 drain/auditor picks

@@ -50,9 +50,25 @@ async function getIssueByIdentifier(identifier) {
   return linearClient.getIssue(identifier);
 }
 
+// BRO-4487: cancel BEFORE archiving. Archiving alone left every canary issue
+// in its filed Backlog state forever: 159 synthetic "[E2E Canary]" issues sat
+// archived-but-open at High priority, so any includeArchived query (the open
+// P0/P1 count among them) read them as live work. Cancel failure is non-fatal:
+// the archive still runs, same best-effort contract as before.
 async function archiveIssueByIdentifier(identifier) {
   const issue = await linearClient.getIssue(identifier);
-  if (issue) await linearClient.archiveIssue(issue.id);
+  if (!issue) return;
+  try {
+    const team = await linearClient.getTeam();
+    const states = Array.isArray(team.states) ? team.states : (team.states && team.states.nodes) || [];
+    const canceled = states.find((s) => s && s.type === 'canceled');
+    if (canceled && issue.state && issue.state.type !== 'canceled') {
+      await linearClient.updateIssue(issue.id, { stateId: canceled.id });
+    }
+  } catch (err) {
+    console.error(`[e2e-canary] warning: failed to cancel ${identifier} before archiving — ${err.message}`);
+  }
+  await linearClient.archiveIssue(issue.id);
 }
 
 async function testFullChain() {

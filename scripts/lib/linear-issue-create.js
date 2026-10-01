@@ -36,6 +36,7 @@ const linear = require('./linear-client');
 const { LinearClient } = require('./linear');
 const { resolveDisposition } = require('./card-disposition');
 const { checkIntake, recordCreated, ENFORCE } = require('./intake-breaker');
+const { TITLE_PRIORITY_RE } = require('./linear-watchdog-source');
 
 const USAGE_LIMIT_MESSAGE =
   'Linear issue creation refused: USAGE_LIMIT_EXCEEDED — the workspace is at (or near) the ' +
@@ -90,6 +91,33 @@ function pickStateForMode(states, mode) {
   return state;
 }
 
+// BRO-4487: a PARKED issue is never filed as Urgent/High. CLAUDE.md's rule is
+// "P0/P1 = dispatch at creation", and the dispatch-watchdog refuses anything
+// carrying the PARKED: sentinel (headless-dispatchability.js), so a parked
+// P0/P1 is a contradiction nothing will ever work. Measured 2026-10-01: of
+// 907 open Urgent/High issues ~370 were machine-filed parked alerts
+// (digest-autofix, owner-alert-router, date audits, UX walkthrough) plus
+// session cards parked at P1, and the pile grew ~18/day. Clamped to Medium
+// here, at the one creation chokepoint, so every filer present and future
+// gets it. A "P0:"/"P1:" title prefix counts too: with the priority field
+// unset, linear-watchdog-source.js's priorityOf() falls back to the title,
+// so an unset field must be pinned to Medium or the prefix re-promotes it.
+const PARKED_MAX_PRIORITY = 3;
+
+/**
+ * PURE. The priority a new issue is actually filed at. Dispatched issues keep
+ * whatever the caller asked for; parked issues are capped at Medium.
+ * @returns {{priority: (number|undefined), clamped: boolean}}
+ */
+function effectiveCreatePriority({ priority, mode, title }) {
+  if (mode !== 'park') return { priority, clamped: false };
+  const urgentOrHigh = priority === 1 || priority === 2;
+  const explicitlyRanked = Number.isFinite(priority) && priority > 0;
+  const titlePromotes = !explicitlyRanked && TITLE_PRIORITY_RE.test(String(title || ''));
+  if (urgentOrHigh || titlePromotes) return { priority: PARKED_MAX_PRIORITY, clamped: true };
+  return { priority, clamped: false };
+}
+
 /**
  * @param {object} p
  * @param {string} p.title
@@ -137,8 +165,15 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   const team = await linear.getTeam();
   const state = pickStateForMode(team.states, disposition.mode);
 
+  const filed = effectiveCreatePriority({ priority, mode: disposition.mode, title });
+  if (filed.clamped) {
+    console.warn(`[linear-issue-create] parked issue filed at Medium, not P0/P1 (BRO-4487): "${title}"`);
+  }
+  const clampNote = filed.clamped
+    ? '\n\nPriority: filed at Medium because it is parked. A P0/P1 must be dispatched at creation (BRO-4487); re-file with --dispatch if it needs urgent work.'
+    : '';
   const finalDescription =
-    disposition.mode === 'park' ? `PARKED: ${disposition.reason}\n\n${description || ''}`.trim() : (description || '');
+    disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${description || ''}`.trim() : (description || '');
 
   // Built lazily (not at module load) so requiring this file never reads
   // LINEAR_API_KEY or touches the network — only a real create attempt does.
@@ -156,7 +191,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
       teamId: team.id,
       title,
       description: finalDescription,
-      priority,
+      priority: filed.priority,
       stateId: state.id,
       projectId,
     });
@@ -177,4 +212,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
   return { issue, mode: disposition.mode, stateName: state.name };
 }
 
-module.exports = { createLinearIssue, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE };
+module.exports = {
+  createLinearIssue, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
+  effectiveCreatePriority, PARKED_MAX_PRIORITY,
+};

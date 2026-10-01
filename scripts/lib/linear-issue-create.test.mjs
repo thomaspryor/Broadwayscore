@@ -81,3 +81,54 @@ test('createLinearIssue: rejects immediately on bad disposition, never calls the
     assert.equal(err.dispositionReason, 'BOTH_FLAGS');
   }
 });
+
+// BRO-4487: a parked issue is never filed as Urgent/High. Nothing dispatches a
+// PARKED: card, and CLAUDE.md requires P0/P1 to be dispatched at creation.
+const { effectiveCreatePriority, PARKED_MAX_PRIORITY } = require('./linear-issue-create.js');
+
+test('effectiveCreatePriority: parked High and Urgent are clamped to Medium', () => {
+  assert.equal(PARKED_MAX_PRIORITY, 3);
+  assert.deepEqual(effectiveCreatePriority({ priority: 2, mode: 'park', title: 'x' }), { priority: 3, clamped: true });
+  assert.deepEqual(effectiveCreatePriority({ priority: 1, mode: 'park', title: 'x' }), { priority: 3, clamped: true });
+});
+
+test('effectiveCreatePriority: dispatched issues keep the priority they asked for', () => {
+  assert.deepEqual(effectiveCreatePriority({ priority: 1, mode: 'dispatch', title: 'P0: x' }), { priority: 1, clamped: false });
+  assert.deepEqual(effectiveCreatePriority({ priority: 2, mode: 'dispatch', title: 'x' }), { priority: 2, clamped: false });
+});
+
+test('effectiveCreatePriority: an unset priority with a P0:/P1: title prefix is pinned to Medium when parked', () => {
+  // priorityOf() reads the title when the field is unset, so leaving it unset
+  // would let the prefix re-promote the card to P1.
+  assert.deepEqual(effectiveCreatePriority({ priority: undefined, mode: 'park', title: 'P1: x' }), { priority: 3, clamped: true });
+  assert.deepEqual(effectiveCreatePriority({ priority: 0, mode: 'park', title: 'P0: x' }), { priority: 3, clamped: true });
+});
+
+test('effectiveCreatePriority: parked Medium/Low and unranked untitled issues are left alone', () => {
+  assert.deepEqual(effectiveCreatePriority({ priority: 3, mode: 'park', title: 'P1: x' }), { priority: 3, clamped: false });
+  assert.deepEqual(effectiveCreatePriority({ priority: 4, mode: 'park', title: 'x' }), { priority: 4, clamped: false });
+  assert.deepEqual(effectiveCreatePriority({ priority: undefined, mode: 'park', title: 'x' }), { priority: undefined, clamped: false });
+});
+
+test('createLinearIssue: a parked High issue reaches the Linear client at Medium with a note', async () => {
+  const fs = require('fs');
+  const linearClient = require('./linear-client.js');
+  const { LEDGER_PATH } = require('./intake-breaker.js');
+  const ledgerBefore = fs.existsSync(LEDGER_PATH) ? fs.readFileSync(LEDGER_PATH) : null;
+  const realGetTeam = linearClient.getTeam;
+  linearClient.getTeam = async () => ({ id: 'team-1', states: { nodes: STATES } });
+  let sent = null;
+  try {
+    const client = { createIssue: async (input) => { sent = input; return { identifier: 'BRO-0', id: 'i' }; } };
+    await createLinearIssue({ title: 'Alert: x', description: 'body', park: 'auto-filed parked for triage', priority: 2, client });
+  } finally {
+    linearClient.getTeam = realGetTeam;
+    // recordCreated() appends to the real intake ledger; never leave a test row behind (BRO-2656).
+    if (ledgerBefore === null) { try { fs.unlinkSync(LEDGER_PATH); } catch { /* absent */ } }
+    else fs.writeFileSync(LEDGER_PATH, ledgerBefore);
+  }
+  assert.equal(sent.priority, 3);
+  assert.equal(sent.stateId, 'backlog-1');
+  assert.match(sent.description, /^PARKED: /);
+  assert.match(sent.description, /filed at Medium because it is parked/);
+});
