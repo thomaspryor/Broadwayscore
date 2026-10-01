@@ -97,6 +97,7 @@ function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execF
   if (!repo) throw new Error('fetchRuns: repo is required');
   const sinceDate = core.windowStartDate(days, now);
   const runs = [];
+  const seen = new Set();
   let truncated = false;
   let total = null;
   const env = { ...process.env };
@@ -115,17 +116,19 @@ function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execF
     if (!Array.isArray(rows)) throw new Error('unexpected gh api payload (no runs array after --jq)');
     if (Number.isFinite(parsed.total)) total = parsed.total;
     runs.push(...rows);
+    for (const r of rows) seen.add(r && r.databaseId);
     // Stop on GitHub's own total_count, not on a short page: a page can come
     // back short mid-window (BRO-4465: 39 of 250 runs scored as a confident
-    // 35.9%), and stopping there silently truncates the window.
-    if (rows.length === 0 || (total !== null ? runs.length >= total : rows.length < core.DEFAULTS.perPage)) break;
+    // 35.9%), and stopping there silently truncates the window. Counted in
+    // unique ids: a run completing mid-read shifts page boundaries and
+    // repeats a row, which must not end paging one row early.
+    if (rows.length === 0 || (total !== null ? seen.size >= total : rows.length < core.DEFAULTS.perPage)) break;
     // GitHub serves at most 1000 results for a filtered list: past that it is
     // the page cap, not a short page.
     if (page === maxPages || page * core.DEFAULTS.perPage >= 1000) { truncated = true; break; }
   }
-  const unique = new Set(runs.map((r) => r && r.databaseId)).size;
-  if (!truncated && total !== null && unique < total) {
-    throw new Error(`incomplete fetch: got ${unique} of ${total} runs (short API page) — refusing a partial-window verdict`);
+  if (!truncated && total !== null && seen.size < total) {
+    throw new Error(`incomplete fetch: got ${seen.size} of ${total} runs (short API page) — refusing a partial-window verdict`);
   }
   return { runs, truncated };
 }
@@ -144,9 +147,13 @@ const uniqueCount = (f) => new Set(f.runs.map((r) => r && r.databaseId)).size;
 function fetchStable(fetchOpts, exec = execFileSync, warn = () => {}) {
   const reads = [];
   let lastErr;
+  let attempts = 0;
   const attempt = () => {
+    attempts++;
     try { reads.push(fetchRuns(fetchOpts, exec)); } catch (err) {
-      if (!/incomplete fetch/.test(String(err && err.message))) throw err;
+      // A tie-break read that hits rate-limit/auth must not discard two good
+      // reads; with nothing in hand those errors still fail fast to n/a.
+      if (!/incomplete fetch/.test(String(err && err.message)) && !reads.length) throw err;
       lastErr = err;
     }
   };
@@ -156,7 +163,9 @@ function fetchStable(fetchOpts, exec = execFileSync, warn = () => {}) {
   attempt();
   if (!reads.length) throw lastErr;
   const best = reads.reduce((a, b) => (uniqueCount(b) > uniqueCount(a) ? b : a));
-  warn(`ci-green-rate: runs API reads disagreed (${reads.map(uniqueCount).join(', ')} runs) — using the fullest read (${uniqueCount(best)})`);
+  warn(reads.length === 1
+    ? `ci-green-rate: only 1 of ${attempts} runs API reads completed (${uniqueCount(best)} runs) — using it unconfirmed`
+    : `ci-green-rate: runs API reads disagreed (${reads.map(uniqueCount).join(', ')} runs) — using the fullest read (${uniqueCount(best)})`);
   return best;
 }
 

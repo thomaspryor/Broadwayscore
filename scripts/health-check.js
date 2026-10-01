@@ -2583,7 +2583,7 @@ function checkCiGreenRate(isCI, deps = {}) {
     return [{ name: NAME, status: 'warn', message: 'Skipped — no GH_TOKEN available (local run)' }];
   }
   if (hasLowHeadroom()) {
-    return [{ name: NAME, status: 'warn', message: 'Skipped — low rate-limit headroom (up to 4 GETs for a 7d window)' }];
+    return [{ name: NAME, status: 'warn', message: 'Skipped — low rate-limit headroom (up to 12 GETs for a 7d window: 3 reads x 4 pages)' }];
   }
   const exec = deps.exec || execFileSync;
   const { healthRow } = require('./lib/ci-green-rate.js');

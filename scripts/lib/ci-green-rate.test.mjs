@@ -320,6 +320,44 @@ test('BRO-4465: a partial read with a self-consistent total_count is outvoted by
   assert.deepEqual(quiet, []);
 });
 
+test('BRO-4465: a run completing mid-read (page shift, repeated row) keeps paging instead of reading as incomplete', () => {
+  const cli = require('../ci-green-rate.js');
+  const mk = (id) => ({ ...run(1, 'success'), databaseId: id });
+  // total 150; page 2 repeats id 100 (shifted down by one) so raw rows reach 150 first.
+  const pages = {
+    1: { total: 150, runs: Array.from({ length: 100 }, (_, i) => mk(i + 1)) },
+    2: { total: 150, runs: [mk(100), ...Array.from({ length: 49 }, (_, i) => mk(101 + i))] },
+    3: { total: 150, runs: [mk(150)] },
+  };
+  const exec = (_gh, args) => JSON.stringify(pages[Number(/[?&]page=(\d+)/.exec(args[1])[1])] || { total: 150, runs: [] });
+  const r = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, exec);
+  assert.equal(new Set(r.runs.map((x) => x.databaseId)).size, 150);
+});
+
+test('BRO-4465: a rate-limited tie-break read keeps the good reads; a lone read is flagged unconfirmed', () => {
+  const cli = require('../ci-green-rate.js');
+  const mk = (n) => Array.from({ length: n }, (_, i) => ({ ...run(1, 'success'), databaseId: 9000 + i }));
+  const opts = { repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW };
+  let c = 0;
+  const reads = [mk(40), mk(42)];
+  const exec = () => { c++; if (c <= 2) { const rows = reads[c - 1]; return JSON.stringify({ total: rows.length, runs: rows }); } const e = new Error('HTTP 403'); e.stderr = 'API rate limit exceeded'; throw e; };
+  const warns = [];
+  assert.equal(cli.fetchStable(opts, exec, (w) => warns.push(w)).runs.length, 42);
+  assert.match(warns.join('\n'), /reads disagreed \(40, 42 runs\)/);
+  // Reads 1 and 3 incomplete, read 2 complete: used, but labelled unconfirmed.
+  let d = 0;
+  // d counts reads (page 1 of each). Read 2: complete 5 of 5. Reads 1 and 3: 3 of 9, then an empty page.
+  const exec2 = (_gh, args) => {
+    const page = Number(/[?&]page=(\d+)/.exec(args[1])[1]);
+    if (page === 1) d++;
+    if (d === 2) return JSON.stringify({ total: 5, runs: mk(5) });
+    return JSON.stringify({ total: 9, runs: page === 1 ? mk(3) : [] });
+  };
+  const w2 = [];
+  assert.equal(cli.fetchStable(opts, exec2, (w) => w2.push(w)).runs.length, 5);
+  assert.match(w2.join('\n'), /only 1 of 3 runs API reads completed/);
+});
+
 test('BRO-4465: the 1000-result API ceiling is the page cap (truncated), not a short page', () => {
   const cli = require('../ci-green-rate.js');
   let id = 0;
