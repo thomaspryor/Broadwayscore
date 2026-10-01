@@ -489,7 +489,9 @@ test('routeAlert: disposition=auto creates the Linear issue via the injectable c
     assert.equal(input.title, 'Real chokepoint wiring check');
     assert.equal(input.teamId, 'team-uuid');
     assert.equal(input.stateId, 'backlog-1', 'alert filings are parked (backlog state), never dispatched');
-    assert.equal(input.priority, 2, 'severity:error maps to Linear priority 2 (High)');
+    // severity:error asks for High, but a PARKED filing is capped at Medium by
+    // linear-issue-create.js's effectiveCreatePriority (BRO-4487).
+    assert.equal(input.priority, 3, 'parked severity:error alert is filed at Medium, not High');
     assert.match(input.description, /\[conditionKey:test:linear-js-wiring\]/);
 
     const ledger = router.loadLedger();
