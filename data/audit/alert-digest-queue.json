@@ -413,9 +413,9 @@
     "queuedAt": "2026-10-01T20:10:02.186Z"
   },
   {
-    "conditionKey": "land:land/bro-4485-unknown-byline-upgrade",
-    "title": "Landing blocked: unit-tests-node red on land/bro-4485-unknown-byline-upgrade",
-    "description": "land.yml did not land land/bro-4485-unknown-byline-upgrade: the unit-tests-node gate went red at d2921c3969. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36921194150",
+    "conditionKey": "land:land/og-jpeg-helper",
+    "title": "Landing blocked: colocated-tests red on land/og-jpeg-helper",
+    "description": "land.yml did not land land/og-jpeg-helper: the colocated-tests gate went red at 89763fc44b. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/og-jpeg-helper @ 89763fc44b (origin/land/og-jpeg-helper) → origin/main @ 3afcef2c5b [land] attempt 1/3: rebased onto 3afcef2c5b, 5 file(s) changed — running checks [land] verified-base: main moved 7f6ecebbc6 → 3afcef2c5b across 59 file(s), substantive — running the full gauntlet [land] linked 20 gitignored path(s) into the worktree (node_modules/core data) [land] checks: colocated-test Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36920084686",
     "severity": "error",
     "url": null,
     "decision": false,
@@ -424,21 +424,21 @@
     "fields": [
       {
         "name": "branch",
-        "value": "land/bro-4485-unknown-byline-upgrade"
+        "value": "land/og-jpeg-helper"
       },
       {
         "name": "gate",
-        "value": "unit-tests-node"
+        "value": "colocated-tests"
       },
       {
         "name": "tip",
-        "value": "d2921c396909e8d322fb399278c70e685001d5a5"
+        "value": "89763fc44b8c08f1fc26c57b64d1620e7a6ee876"
       },
       {
         "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36921194150"
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36920084686"
       }
     ],
-    "queuedAt": "2026-10-01T20:53:34.253Z"
+    "queuedAt": "2026-10-01T20:55:34.116Z"
   }
 ]
