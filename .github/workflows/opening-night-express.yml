@@ -172,17 +172,15 @@ jobs:
         run: |
           echo "=== Pausing competing workflows to prevent data races ==="
           CANCELLED=0
-          for WORKFLOW in opening-night-orchestrator.yml opening-night-poller.yml llm-ensemble-score.yml; do
-            for RUN_ID in $(gh run list --workflow=$WORKFLOW --status=in_progress --json databaseId --jq '.[].databaseId' 2>/dev/null); do
-              echo "  Cancelling $WORKFLOW run $RUN_ID..."
-              gh run cancel "$RUN_ID" && CANCELLED=$((CANCELLED+1)) || echo "  ⚠ Could not cancel $RUN_ID"
-            done
-            for RUN_ID in $(gh run list --workflow=$WORKFLOW --status=queued --json databaseId --jq '.[].databaseId' 2>/dev/null); do
-              echo "  Cancelling queued $WORKFLOW run $RUN_ID..."
-              gh run cancel "$RUN_ID" && CANCELLED=$((CANCELLED+1)) || echo "  ⚠ Could not cancel $RUN_ID"
-            done
+          # BRO-4461: orchestrator/poller cancels are recorded so the final step can
+          # re-dispatch them (they were silently lost mid embargo-lift window before).
+          node scripts/lib/express-preemption.js cancel "$RUNNER_TEMP/express-preempted.json"
+          CANCELLED=$(node -e "console.log(require('fs').readFileSync('$RUNNER_TEMP/express-preempted.json','utf8').length>2?1:0)")
+          for RUN_ID in $(gh run list --workflow=llm-ensemble-score.yml --status=in_progress --json databaseId --jq '.[].databaseId' 2>/dev/null) $(gh run list --workflow=llm-ensemble-score.yml --status=queued --json databaseId --jq '.[].databaseId' 2>/dev/null); do
+            echo "  Cancelling llm-ensemble-score.yml run $RUN_ID..."
+            gh run cancel "$RUN_ID" && CANCELLED=1 || echo "  ⚠ Could not cancel $RUN_ID"
           done
-          echo "Cancelled $CANCELLED competing runs. Express has the data repo to itself."
+          echo "Express has the data repo to itself."
           # Wait briefly for cancellations to propagate
           [ $CANCELLED -gt 0 ] && sleep 15 || true
 
@@ -375,15 +373,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
         run: |
-          CANCELLED=0
-          for WORKFLOW in opening-night-orchestrator.yml opening-night-poller.yml; do
-            for RUN_ID in $(gh run list --workflow=$WORKFLOW --status=in_progress \
-                --json databaseId --jq '.[].databaseId' 2>/dev/null); do
-              echo "  Cancelling $WORKFLOW run $RUN_ID (started during scoring)..."
-              gh run cancel "$RUN_ID" && CANCELLED=$((CANCELLED+1)) || true
-            done
-          done
-          [ "$CANCELLED" -gt 0 ] && echo "Re-cancelled $CANCELLED run(s)." || echo "No competing runs to cancel."
+          node scripts/lib/express-preemption.js cancel "$RUNNER_TEMP/express-preempted.json"
 
       - name: Get review count before rebuild
         id: before
@@ -601,6 +591,15 @@ jobs:
               echo "ORCHESTRATOR_PAUSED already cleared"
               ;;
           esac
+
+      # BRO-4461: restore what Express cancelled (e.g. a west-end orchestrator/poller
+      # for a different show, mid embargo-lift window). Runs after the lease is
+      # cleared so the re-dispatched orchestrator does not yield to our own pause.
+      - name: Re-dispatch orchestrator/poller runs Express cancelled
+        if: always() && inputs.dry_run != true
+        env:
+          GH_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
+        run: node scripts/lib/express-preemption.js redispatch "$RUNNER_TEMP/express-preempted.json" || true
 
       - name: Notify on failure
         # BRO-3707: a hang hitting the job's own timeout-minutes: 90 reports
