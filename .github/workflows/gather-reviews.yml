@@ -424,6 +424,28 @@ jobs:
           workflow-name: gather-reviews
           push-retry-args: "8 main"
 
+      # BRO-4146: each matrix shard saves its own bd-serp-cache-<run>-gather-<batch>
+      # key, and the next run's restore-keys prefix restores only the single newest
+      # entry, so every shard but the last to finish lost its SERP results (same 4
+      # shows re-paid ~174 Scrapingdog SERP calls 4h apart on 2026-10-01). Hand the
+      # cache dir to merge-serp-cache below as a tar (keeps the mtimes ttl-cache.js
+      # expires by; artifact zips may not).
+      - name: Upload SERP cache shard
+        if: always()
+        run: |
+          [ -d /tmp/bd-serp-cache ] || { echo "No SERP cache dir"; exit 0; }
+          mkdir -p /tmp/serp-shard-out
+          tar -C /tmp -cf /tmp/serp-shard-out/serp-cache.tar bd-serp-cache
+      - name: Upload SERP cache shard artifact
+        if: always()
+        uses: actions/upload-artifact@v5
+        with:
+          name: serp-cache-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.batch_id }}
+          path: /tmp/serp-shard-out/serp-cache.tar
+          retention-days: 1
+          if-no-files-found: ignore
+          overwrite: true
+
       - name: Notify on gather failure
         # BRO-3707: a hang hitting the job's own timeout-minutes: 55 reports
         # conclusion "cancelled", not "failure" — a bare failure() here would
@@ -434,6 +456,56 @@ jobs:
           title: 'Gather Reviews Failed (gather job)'
           severity: 'critical'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+
+  # BRO-4146: fold every matrix shard's SERP cache into one entry saved AFTER all
+  # shards, so the next run's prefix restore gets all of them instead of only the
+  # last shard to finish. Also drops entries past the 24h TTL (ttl-cache.js never
+  # deletes them, so the dir only grew). Best-effort: never colours the run.
+  merge-serp-cache:
+    needs: [gather-reviews]
+    if: always() && needs.gather-reviews.result != 'skipped'
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    continue-on-error: true
+    steps:
+      # hygiene-cache-runid-ok: ~2-3 MB payload. The run-id (+ attempt) in the key
+      # is load-bearing: an exact key hit skips the save, and this entry must be
+      # the newest so the next run's `restore-keys: bd-serp-cache-` prefix picks it.
+      - name: Restore newest SERP cache (fallback for a shard whose upload failed)
+        uses: actions/cache/restore@v5
+        with:
+          path: /tmp/bd-serp-cache
+          key: bd-serp-cache-${{ github.run_id }}-merged-${{ github.run_attempt }}
+          restore-keys: |
+            bd-serp-cache-
+      - name: Download shard caches
+        uses: actions/download-artifact@v5
+        with:
+          pattern: serp-cache-${{ github.run_id }}-${{ github.run_attempt }}-*
+          path: /tmp/serp-shards
+      - name: Merge shards and drop expired entries
+        run: |
+          mkdir -p /tmp/bd-serp-cache
+          shopt -s nullglob
+          n=0
+          for t in /tmp/serp-shards/*/serp-cache.tar; do
+            d=$(mktemp -d)
+            tar -C "$d" -xf "$t"
+            if [ -d "$d/bd-serp-cache" ]; then
+              files=("$d"/bd-serp-cache/*)
+              [ ${#files[@]} -gt 0 ] && cp -p -u "${files[@]}" /tmp/bd-serp-cache/
+            fi
+            n=$((n+1))
+          done
+          expired=$(find /tmp/bd-serp-cache -type f -mmin +1440 | wc -l)
+          find /tmp/bd-serp-cache -type f -mmin +1440 -delete
+          echo "Merged $n shard cache(s); dropped $expired expired; $(find /tmp/bd-serp-cache -type f | wc -l) entries kept"
+      # hygiene-cache-runid-ok: see the restore step above; same key, same reason.
+      - name: Save merged SERP cache
+        uses: actions/cache/save@v5
+        with:
+          path: /tmp/bd-serp-cache
+          key: bd-serp-cache-${{ github.run_id }}-merged-${{ github.run_attempt }}
 
   # Step 3: Scrape supplementary aggregators (Playbill Verdict + NYC Theatre)
   scrape-aggregators:

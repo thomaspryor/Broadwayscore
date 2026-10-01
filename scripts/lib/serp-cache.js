@@ -11,11 +11,11 @@
  * zero reliability impact.
  *
  * Storage: /tmp/bd-serp-cache/{sha1}.json. Local dev: persists until /tmp
- * clears. NOT persisted across CI runs today — no workflow restores this path
- * with actions/cache (verified 2026-08-02, audit-aggregator-gap.yml has no
- * cache step), so on a GitHub runner every run starts cold and the TTL bounds
- * nothing cross-run. Treat the cache as a within-run/local dedupe only when
- * reasoning about spend.
+ * clears. In CI, gather-reviews.yml and opening-night-poller.yml carry it
+ * across runs with actions/cache (restore-keys prefix bd-serp-cache-; the
+ * poller caches a different path set, so the two chains never share entries).
+ * gather-reviews' merge-serp-cache job folds every matrix shard into one entry
+ * and drops files past the TTL (BRO-4146); get() alone never deletes them.
  *
  * Cached: result arrays including empty arrays (no organic results IS a valid
  * answer). Not cached: nulls (provider failures — retry next time).
