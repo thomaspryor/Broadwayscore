@@ -1,19 +1,77 @@
 {
-  "updatedAt": "2026-10-01T18:57:39.175Z",
-  "processed": 9,
-  "failed": 2,
-  "successRate": "81.8%",
+  "updatedAt": "2026-10-01T19:06:34.698Z",
+  "processed": 116,
+  "failed": 57,
+  "successRate": "67.1%",
   "tierBreakdown": {
-    "playwright": 6,
-    "amp": 0,
+    "playwright": 81,
+    "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 3,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 17
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 3,
+  "recentActivity": [
+    {
+      "t": "2026-10-01T17:51:38.789Z",
+      "event": "bb-session",
+      "session": "dedceb31",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-10-01T17:51:56.645Z",
+      "event": "bb-session",
+      "session": "3041b438",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-10-01T18:02:35.141Z",
+      "event": "bb-session",
+      "session": "20e4e286",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-10-01T18:02:35.642Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-01T18:02:53.115Z",
+      "event": "bb-session",
+      "session": "9d3562fd",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-10-01T18:02:53.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-01T19:00:58.228Z",
+      "event": "bb-session",
+      "session": "52d4cacb",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-01T19:00:58.853Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-01T19:05:53.027Z",
+      "event": "bb-session",
+      "session": "915077d7",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-10-01T19:06:12.400Z",
+      "event": "bb-session",
+      "session": "d65a899e",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    }
+  ]
 }
