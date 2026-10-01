@@ -72,7 +72,7 @@ describe('BRO-3790 cousin: ingest-manual-review.js post-write stale-merge verifi
     fs.rmSync(dir, { recursive: true, force: true });
   });
 
-  test('an operator correcting the criticName on an Unknown-byline file is flagged (criticName is never merged by the writer)', () => {
+  test('an operator naming the critic on an Unknown-byline file lands, so nothing is flagged stale (BRO-4485)', () => {
     const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-3790-manual-critic-'));
     const SAME_URL = 'https://theaterpizzazz.com/the-review-page/';
     const fp = writeExisting(dir, 'manual-stale-critic-show', 'theater-pizzazz--unknown.json', {
@@ -92,12 +92,14 @@ describe('BRO-3790 cousin: ingest-manual-review.js post-write stale-merge verifi
     }, { reviewTextsDir: dir });
 
     const landed = JSON.parse(fs.readFileSync(fp, 'utf8'));
-    assert.equal(landed.criticName, 'Unknown', 'sanity: criticName is never merged by the writer at all');
+    // Before BRO-4485 the writer dropped this name and the check below
+    // flagged it stale; the merge now writes a real byline onto Unknown.
+    assert.equal(landed.criticName, 'Real Critic Name');
 
     const intended = { criticName: normalizeCritic('Real Critic Name') };
     const landedForCompare = { ...landed, criticName: normalizeCritic(landed.criticName) };
     const stale = findStaleMergeFields(intended, landedForCompare);
-    assert.deepEqual(stale, ['criticName'], 'the operator-supplied critic name must be flagged stale');
+    assert.deepEqual(stale, [], 'the operator-supplied critic name landed');
 
     fs.rmSync(dir, { recursive: true, force: true });
   });
