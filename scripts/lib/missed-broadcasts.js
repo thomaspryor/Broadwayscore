@@ -139,9 +139,74 @@ function classifyBroadcastState(record) {
   return 'draft-stuck'; // draft | queued | sending
 }
 
+/**
+ * State for one show, looking past its own record. Every draft is written
+ * under several tracker keys that share one draftId (the `market:id[+id]`
+ * broadcastKey record plus a mirror per show, see recordDraftCompletion in
+ * send-opening-night-broadcast.js), and the reconciler updates them one key at
+ * a time. If one GET fails the copies disagree, and reading only the per-show
+ * mirror paged the owner for a School Girls email they had already sent from
+ * the Resend UI (BRO-4474: the broadway: record said sent, the mirror said
+ * draft). A send observed on ANY record of the same draft is a send.
+ *
+ * Only records with the SAME draftId count, so a stale sibling broadcast (an
+ * older combo that was later recreated) can never vouch for a new draft.
+ */
+function classifyShowBroadcastState(sentShows, showId) {
+  const state = classifyBroadcastState((sentShows || {})[showId]);
+  if (state === 'sent') return state;
+  return sentOnSiblingRecord(sentShows, showId) ? 'sent' : state;
+}
+
+/**
+ * True when a record OTHER than the show's own per-show mirror observed the
+ * send: one sharing the mirror's draftId, or (no mirror at all) a sent
+ * `market:a+b` key naming the show. Never consults the mirror's own state,
+ * so re-queue gates (send-opening-night-broadcast.js, broadcast-deadline.js)
+ * can add it on top of shouldRequeueShow without inheriting this file's
+ * different reading of the mirror itself.
+ */
+function sentOnSiblingRecord(sentShows, showId) {
+  const shows = sentShows || {};
+  const own = shows[showId];
+  for (const [key, rec] of Object.entries(shows)) {
+    if (key === showId || !rec) continue;
+    if (key.startsWith('preview:') || key.startsWith('overdue-alert:')) continue;
+    if (own) {
+      if (!own.draftId || rec.draftId !== own.draftId) continue;
+    } else {
+      // No per-show mirror (recordDraftCompletion always writes one today,
+      // but a partial merge could drop it).
+      const m = /^[a-z-]+:([^:]+)$/.exec(key);
+      if (!m || !m[1].split('+').includes(showId)) continue;
+    }
+    if (classifyBroadcastState(rec) === 'sent') return true;
+  }
+  return false;
+}
+
+/**
+ * The record that proves the send for display (sentAt, reviewCount), or null.
+ * Status pages used to trust `completed`, which is set at DRAFT creation, so a
+ * draft waiting in Resend read "Broadcast sent at Invalid Date" (sentAt null).
+ */
+function findSentRecord(sentShows, showId, market) {
+  const shows = sentShows || {};
+  const candidates = [shows[showId], market ? shows[`${market}:${showId}`] : null];
+  for (const rec of candidates) if (rec && classifyBroadcastState(rec) === 'sent') return rec;
+  const own = shows[showId];
+  for (const [key, rec] of Object.entries(shows)) {
+    if (key === showId || !rec || key.startsWith('preview:') || key.startsWith('overdue-alert:')) continue;
+    const m = /^[a-z-]+:([^:]+)$/.exec(key);
+    const related = own && own.draftId ? rec.draftId === own.draftId : !!(m && m[1].split('+').includes(showId));
+    if (related && classifyBroadcastState(rec) === 'sent') return rec;
+  }
+  return null;
+}
+
 /** Kept for callers that only need the boolean. */
 function hasCompletedBroadcast(sentShows, showId) {
-  return classifyBroadcastState((sentShows || {})[showId]) === 'sent';
+  return classifyShowBroadcastState(sentShows, showId) === 'sent';
 }
 
 /**
@@ -226,7 +291,7 @@ function findMissedBroadcasts({
     const age = daysSinceOpening(s.openingDate, now);
     if (age === null || age < minAgeDays || age > maxReportAgeDays) continue;
 
-    const state = classifyBroadcastState((sentShows || {})[s.id]);
+    const state = classifyShowBroadcastState(sentShows, s.id);
     if (state === 'sent') continue;
 
     // The real gate, not a copy of it: Broadway needs 15 AND a DTLI/BWW
@@ -279,6 +344,9 @@ function findMissedBroadcasts({
 module.exports = {
   findMissedBroadcasts,
   classifyBroadcastState,
+  classifyShowBroadcastState,
+  sentOnSiblingRecord,
+  findSentRecord,
   wasCoveredByWeeklyRoundup,
   daysSinceOpening,
   hasCompletedBroadcast,

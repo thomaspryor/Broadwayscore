@@ -9,7 +9,7 @@
  */
 
 const fs = require('fs');
-const { classifyBroadcastState } = require('./lib/missed-broadcasts');
+const { classifyBroadcastState, classifyShowBroadcastState } = require('./lib/missed-broadcasts');
 const path = require('path');
 const {
   hasEmptyCast,
@@ -64,7 +64,7 @@ const results = upcoming.map(s => {
   // This value goes straight into the owner's morning email — it must mean
   // "subscribers received it", not "a draft exists".
   const broadcastSent = broadcastMarket
-    ? classifyBroadcastState(sent[s.id]) === 'sent' ||
+    ? classifyShowBroadcastState(sent, s.id) === 'sent' || // any record of the same draft (BRO-4474)
       classifyBroadcastState(sent[`${market}:${s.id}`]) === 'sent'
     : null; // null = not applicable
 

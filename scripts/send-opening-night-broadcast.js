@@ -360,11 +360,20 @@ async function main() {
   // the drafting-cycle has aged past REQUEUE_AFTER_HOURS, shouldRequeueShow re-opens the
   // slot so the next run can create a fresh draft. See scripts/lib/broadcast-state.js.
   const { shouldRequeueShow } = require('./lib/broadcast-state');
+  const { sentOnSiblingRecord } = require('./lib/missed-broadcasts');
   const pendingShows = recentlyOpened.filter(s => {
     const showId = s.id || s.slug;
     const individualSent = sentData.shows[showId];
     if (!individualSent) return true;
     if (RECREATE_DRAFT) return true;
+    // A send observed on ANY record of this show's draft (its market: key or a
+    // multi-show combo) is final, even if this per-show mirror is stale or was
+    // flipped to deleted by a post-reap 404 (BRO-4474). Re-queueing here would
+    // put an already-sent show into a fresh combo draft.
+    if (sentOnSiblingRecord(sentData.shows, showId)) {
+      console.log(`  Skipping ${s.title} — already sent (observed on a sibling record)`);
+      return false;
+    }
     if (shouldRequeueShow(individualSent)) {
       if (individualSent.completed) {
         console.log(`  Re-queueing ${s.title} — draft ${individualSent.draftStatus} at ${individualSent.draftCreatedAt}`);
