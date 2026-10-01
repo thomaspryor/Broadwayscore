@@ -43,7 +43,8 @@ const PROMPT_CHARS = 400;
 const MAX_PROMPT_SOURCE_CHARS = 2000;  // longer user-role texts are skill bodies or pasted files, not the ask
 const CMD_CHARS = 200;
 
-const EVIDENCE_RE = /^(EXECUTED:|VERIFY:|PR-EVIDENCE:|DISPATCHED:|LANDED:|NO-VERIFY:|NO-SHIP-CHECK:|NO-CARD:|DECISION NEEDED:|PREVENTION:|RECHECK-AFTER:)/;
+const EVIDENCE_RE = /^(?:[-*]\s+)?(?:\*\*)?(EXECUTED:|VERIFY:|PR-EVIDENCE:|DISPATCHED:|LANDED:|NO-VERIFY:|NO-SHIP-CHECK:|NO-CARD:|DECISION NEEDED:|PREVENTION:|RECHECK-AFTER:)/;
+const EVIDENCE_SECTION_CHARS = 2500; // so status lines can never crowd out the edited-files and commands sections
 const CARD_RE = /\bBRO-\d+\b/g;
 const EDIT_TOOLS = /^(Edit|Write|MultiEdit|NotebookEdit)$/;
 // User-role messages the harness injects (system reminders, subagent hand-backs, task
@@ -79,15 +80,18 @@ function parseTranscript(text) {
     // filtering would hand a compacting subagent an empty checkpoint (found 2026-10-01).
     if (!m) continue;
     if (o.type === 'user') {
+      // isMeta marks harness-injected user turns (skill bodies, hook feedback, agent
+      // hand-backs); INJECTED_RE is the belt for transcripts that lack the flag.
+      if (o.isMeta || o.isCompactSummary) continue;
       const c = m.content;
       const texts = typeof c === 'string' ? [c]
         : Array.isArray(c) ? c.filter(b => b && b.type === 'text' && typeof b.text === 'string').map(b => b.text)
         : [];
       for (const t of texts) {
         const s = t.trim();
-        // Skill bodies and pasted instruction files also arrive as user text; an owner's ask is short.
-        if (!s || INJECTED_RE.test(s) || s.length > MAX_PROMPT_SOURCE_CHARS) continue;
-        prompts.push(s);
+        if (!s || INJECTED_RE.test(s)) continue;
+        // A long genuine ask (a pasted brief, a subagent task) is kept, truncated at render time.
+        prompts.push(s.length > MAX_PROMPT_SOURCE_CHARS ? s.slice(0, MAX_PROMPT_SOURCE_CHARS) : s);
         noteText(s);
       }
     } else if (o.type === 'assistant' && Array.isArray(m.content)) {
@@ -135,11 +139,15 @@ function renderState(facts, git, now = new Date()) {
   const lines = [];
   lines.push(`# Compaction checkpoint (${now.toISOString().slice(0, 16)}Z, written automatically before context was compacted)`);
   lines.push('A snapshot of this session before its history was summarised. Use it to avoid repeating finished steps and to keep the original ask in view. It is not proof: prefer the current files and git state over this list, and re-verify anything that matters, especially after a revert or a change of task.');
-  const prompts = facts.prompts.length <= KEEP_PROMPTS ? facts.prompts
-    : [facts.prompts[0], ...facts.prompts.slice(-(KEEP_PROMPTS - 1))];
+  const many = facts.prompts.length > KEEP_PROMPTS;
+  const prompts = many ? [facts.prompts[0], ...facts.prompts.slice(-(KEEP_PROMPTS - 1))] : facts.prompts;
   if (prompts.length) {
     lines.push('', '## What the owner asked (first, then latest)');
-    for (const p of prompts) lines.push(`- ${truncate(p, PROMPT_CHARS)}`);
+    prompts.forEach((p, i) => {
+      // After many turns the first ask may have been superseded; say so rather than let it anchor the session.
+      const tag = many && i === 0 ? 'original ask, may be superseded: ' : '';
+      lines.push(`- ${tag}${truncate(p, PROMPT_CHARS)}`);
+    });
   }
   if (facts.cards.length) lines.push('', `## Linear cards mentioned: ${facts.cards.join(', ')}`);
   if (git && (git.branch || git.status.length || git.lastCommit)) {
@@ -151,7 +159,13 @@ function renderState(facts, git, now = new Date()) {
   const ev = uniqueTail(facts.evidence, KEEP_EVIDENCE);
   if (ev.length) {
     lines.push('', '## Status lines the session wrote earlier (claims, not verification)');
-    for (const e of ev) lines.push(`- ${truncate(e, 300)}`);
+    let used = 0;
+    for (const e of ev) {
+      const l = `- ${truncate(e, 300)}`;
+      if (used + l.length > EVIDENCE_SECTION_CHARS) break;
+      lines.push(l);
+      used += l.length + 1;
+    }
   }
   const edits = uniqueTail(facts.edits, KEEP_EDITS);
   if (edits.length) {
@@ -194,11 +208,13 @@ function statePath(sessionId, transcriptPath) {
 function findStateFile(sessionId, transcriptPath) {
   const exact = statePath(sessionId, transcriptPath);
   if (fs.existsSync(exact)) return exact;
+  // No exact match (the restore input carried no transcript_path, or a different one):
+  // choose among every file written for this session by freshness, main before subagent.
+  // Freshness matters: a plain-session file left by an older code path must not beat a
+  // checkpoint written seconds ago (found by the end-to-end check, 2026-10-01).
   const sid = safeKey(sessionId || 'unknown');
-  const bySession = path.join(STATE_DIR, `${sid}.md`);
-  if (fs.existsSync(bySession)) return bySession;
   let names = [];
-  try { names = fs.readdirSync(STATE_DIR).filter(f => f.startsWith(`${sid}__`) && f.endsWith('.md')); } catch { return null; }
+  try { names = fs.readdirSync(STATE_DIR).filter(f => (f === `${sid}.md` || f.startsWith(`${sid}__`)) && f.endsWith('.md')); } catch { return null; }
   if (!names.length) return null;
   const rank = (f) => {
     let mtime = 0;
@@ -216,11 +232,29 @@ function writeCheckpoint(input) {
   const git = input.cwd ? gitSnapshot(input.cwd) : null;
   const md = renderState(facts, git);
   fs.mkdirSync(STATE_DIR, { recursive: true });
+  pruneStale();
   const p = statePath(input.session_id, input.transcript_path);
   const tmp = `${p}.${process.pid}.tmp`;
   fs.writeFileSync(tmp, md);
   fs.renameSync(tmp, p); // atomic: a concurrent restore never reads a half-written file
   return p;
+}
+
+/** Checkpoints nobody restored (a subagent's, an abandoned session's) are removed once stale. */
+function pruneStale(now = Date.now()) {
+  let names = [];
+  try { names = fs.readdirSync(STATE_DIR); } catch { return; }
+  for (const f of names) {
+    const p = path.join(STATE_DIR, f);
+    try { if (now - fs.statSync(p).mtimeMs > MAX_AGE_MS) fs.unlinkSync(p); } catch { /* vanished */ }
+  }
+}
+
+function logError(err) {
+  try {
+    fs.mkdirSync(STATE_DIR, { recursive: true });
+    fs.appendFileSync(path.join(STATE_DIR, 'errors.log'), `${new Date().toISOString()} ${err && err.stack ? err.stack.split('\n')[0] : String(err)}\n`);
+  } catch { /* nothing left to try */ }
 }
 
 /**
@@ -269,10 +303,12 @@ function main(argv) {
   return 0;
 }
 
-module.exports = { parseTranscript, renderState, statePath, findStateFile, writeCheckpoint, restoreCheckpoint, STATE_DIR, MAX_CHARS };
+module.exports = { parseTranscript, renderState, statePath, findStateFile, writeCheckpoint, restoreCheckpoint, pruneStale, STATE_DIR, MAX_CHARS, MAX_AGE_MS };
 
 if (require.main === module) {
   let code = 0;
-  try { code = main(process.argv); } catch { code = 0; } // fail-open: a checkpoint bug must never block compaction or a session start
+  // fail-open: a checkpoint bug must never block compaction or a session start,
+  // but it is written to $STATE_DIR/errors.log rather than swallowed.
+  try { code = main(process.argv); } catch (err) { logError(err); code = 0; }
   process.exit(code);
 }

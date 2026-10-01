@@ -9,16 +9,16 @@ const {
   DATA_DESTRUCTIVE_CLASSES,
 } = budget;
 const { DATA_CLASS_REPO } = require('./autonomous-eligibility.js');
-const { CLAUDE_SONNET, CLAUDE_OPUS } = require('./models.js');
+const { DISPATCH_SONNET, DISPATCH_OPUS } = require('./models.js');
 
 // ── pickModel policy ────────────────────────────────────────────────────────
 
 test('attempt 1 is Sonnet; attempt 2 escalates to Opus only on content failure', () => {
-  assert.equal(pickModel(1), CLAUDE_SONNET);
-  assert.equal(pickModel(2, 'content'), CLAUDE_OPUS);
-  assert.equal(pickModel(2, 'infra'), CLAUDE_SONNET);
-  assert.equal(pickModel(2, null), CLAUDE_SONNET);
-  assert.equal(pickModel(2, 'rebase-conflict'), CLAUDE_SONNET);
+  assert.equal(pickModel(1), DISPATCH_SONNET);
+  assert.equal(pickModel(2, 'content'), DISPATCH_OPUS);
+  assert.equal(pickModel(2, 'infra'), DISPATCH_SONNET);
+  assert.equal(pickModel(2, null), DISPATCH_SONNET);
+  assert.equal(pickModel(2, 'rebase-conflict'), DISPATCH_SONNET);
 });
 
 test('attempt cap 2: attempt 3 throws', () => {
@@ -31,19 +31,19 @@ test('attempt cap 2: attempt 3 throws', () => {
 // Opus regardless of failureKind — there's no same-night retry for either,
 // so attempt 1 has to be the best shot.
 test('incremental (L) hint forces attempt 1 onto Opus', () => {
-  assert.equal(pickModel(1, null, { incremental: true }), CLAUDE_OPUS);
+  assert.equal(pickModel(1, null, { incremental: true }), DISPATCH_OPUS);
   // failureKind is irrelevant on attempt 1 either way — only attempt matters.
-  assert.equal(pickModel(1, 'content', { incremental: true }), CLAUDE_OPUS);
+  assert.equal(pickModel(1, 'content', { incremental: true }), DISPATCH_OPUS);
 });
 
 test('data-destructive class hint forces attempt 1 onto Opus', () => {
   assert.ok(DATA_DESTRUCTIVE_CLASSES.has('cluster-cleanup'));
-  assert.equal(pickModel(1, null, { dataClass: 'cluster-cleanup' }), CLAUDE_OPUS);
+  assert.equal(pickModel(1, null, { dataClass: 'cluster-cleanup' }), DISPATCH_OPUS);
 });
 
 test('a non-destructive data class does NOT force Opus (missing-show, re-gather, byline-recovery stay Sonnet)', () => {
   for (const cls of ['missing-show', 're-gather', 'byline-recovery']) {
-    assert.equal(pickModel(1, null, { dataClass: cls }), CLAUDE_SONNET);
+    assert.equal(pickModel(1, null, { dataClass: cls }), DISPATCH_SONNET);
   }
 });
 
@@ -61,8 +61,8 @@ test('every DATA_DESTRUCTIVE_CLASSES entry is a real, repo-routable data class (
 });
 
 test('no hint (default) leaves attempt 1 on Sonnet — backward compatible', () => {
-  assert.equal(pickModel(1, null, {}), CLAUDE_SONNET);
-  assert.equal(pickModel(1), CLAUDE_SONNET);
+  assert.equal(pickModel(1, null, {}), DISPATCH_SONNET);
+  assert.equal(pickModel(1), DISPATCH_SONNET);
 });
 
 // Hard exclusion (user directive, mock-v2 2026-07-12): fable is NEVER

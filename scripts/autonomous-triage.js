@@ -30,14 +30,13 @@ const { triageCard, decide, orderQueue, isSafeCheckCommand, priorityRank, fetchC
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { classifyDataCard } = require('./lib/autonomous-eligibility.js');
 const { estimateUSD } = require('./lib/autonomous-budget.js');
-const { CLAUDE_SONNET } = require('./lib/models.js');
 const ledgerLib = require('./lib/autonomous-ledger.js');
 const ledger = require('./lib/autonomous-ledger.js');
 const { loadParkOverrides } = require('./lib/attempt-memory.js');
 
 const REPO = path.join(__dirname, '..');
 const QUEUE_PATH = path.join(REPO, 'data', 'audit', 'autonomous-queue.json');
-const MODEL = process.env.AUTONOMOUS_TRIAGE_MODEL || CLAUDE_SONNET;
+const MODEL = process.env.AUTONOMOUS_TRIAGE_MODEL || 'claude-sonnet-5';
 // Night-1 fix: the backlog's top is crowded with human-territory P0s, so a
 // raw top-N fetch can produce a window with zero workable cards. Fetch a
 // deeper slice and stop once `--limit` cards have actually reached the LLM.

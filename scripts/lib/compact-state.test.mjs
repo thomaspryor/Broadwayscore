@@ -28,7 +28,9 @@ function sampleTranscript() {
     user('now also check the London rows'),
     user('Another Claude session sent a message:\n<agent-message from="abc">[Subagent hand-back] report text</agent-message>'),
     user('[SYSTEM NOTIFICATION - NOT USER INPUT]\nThis is an automated background-task event'),
-    user('Most plans have serious gaps. ## Instructions ' + 'skill body '.repeat(400)),
+    line({ type: 'user', isMeta: true, message: { role: 'user', content: 'Base directory for this skill: /x\n\nMost plans have serious gaps. ## Instructions ' + 'skill body '.repeat(40) } }),
+    line({ type: 'user', isCompactSummary: true, message: { role: 'user', content: 'This session is being continued from a previous conversation...' } }),
+    assistant([{ type: 'text', text: '- **EXECUTED:** node scripts/y.js — ok' }]),
     'not json at all\n',
   ].join('');
 }
@@ -38,8 +40,25 @@ test('parseTranscript keeps the owner prompts, edits, commands, evidence and car
   assert.deepEqual(f.prompts, ['Fix the BRO-4321 image bug on the show page', 'now also check the London rows']);
   assert.deepEqual(f.edits, ['src/components/ShowImage.tsx', 'scripts/lib/new-helper.js', 'src/components/ShowImage.tsx', 'SIDECHAIN.md']);
   assert.deepEqual(f.bash, ['grep -rn ShowImage src/ | head']);
-  assert.deepEqual(f.evidence, ['EXECUTED: npx tsc --noEmit — 0 errors', 'VERIFY: node scripts/x.js']);
+  assert.deepEqual(f.evidence, ['EXECUTED: npx tsc --noEmit — 0 errors', 'VERIFY: node scripts/x.js', '- **EXECUTED:** node scripts/y.js — ok']);
   assert.deepEqual(f.cards, ['BRO-4321']);
+});
+
+test('a long genuine ask (a pasted brief) is kept and truncated, not dropped; isMeta turns are skipped even without a marker', () => {
+  const brief = 'Please audit every London venue row and ' + 'detail '.repeat(500);
+  const f = parseTranscript(user(brief) + line({ type: 'user', isMeta: true, message: { content: 'short injected text with no marker' } }));
+  assert.equal(f.prompts.length, 1);
+  assert.ok(f.prompts[0].startsWith('Please audit every London venue row'));
+  const md = renderState(f, null);
+  assert.match(md, /Please audit every London venue row/);
+});
+
+test('after many turns the first ask is labelled as possibly superseded', () => {
+  const f = parseTranscript(['first ask', 'second', 'third', 'fourth', 'latest ask'].map(user).join(''));
+  const md = renderState(f, null);
+  assert.match(md, /original ask, may be superseded: first ask/);
+  assert.match(md, /- latest ask/);
+  assert.doesNotMatch(md, /- second/);
 });
 
 test('renderState is markdown, de-duplicates edits, and stays under MAX_CHARS even for a huge transcript', () => {
