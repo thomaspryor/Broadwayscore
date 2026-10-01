@@ -42,7 +42,7 @@ function canonicalVenue(show) {
 // "New World Stages Stage 5" (Jena Friedman: Motherfucker dup, BRO-4503). The
 // suffix must be generic room words / a number / a single letter, so a
 // different house that merely starts the same ("Park" / "Park Avenue Armory")
-// never matches. Same rule as retire-show-action.js sameHouse().
+// never matches. Stricter-by-suffix cousin of retire-show-action.js sameHouse().
 const ROOM_WORDS = new Set(['main', 'stage', 'studio', 'theatre', 'theater', 'house', 'hall', 'room', 'space', 'upstairs', 'downstairs']);
 function sameVenueOrRoom(va, vb) {
   if (!va || !vb || va === 'tba' || vb === 'tba') return false;

@@ -23,6 +23,9 @@ test('sameVenueOrRoom: room suffix matches, different houses and TBA do not', ()
   assert.ok(sameVenueOrRoom(v('New World Stages'), v('New World Stages - Stage 5')));
   assert.ok(!sameVenueOrRoom(v('Lyric Theatre'), v('Lyric Hammersmith')));
   assert.ok(!sameVenueOrRoom(v('Park'), v('Park Avenue Armory')));
+  assert.ok(sameVenueOrRoom(v('59E59 Theaters'), v('59E59 Theaters, Theater B')));
+  assert.ok(!sameVenueOrRoom(v('New World Stages - Stage 1'), v('New World Stages - Stage 5')));
+  assert.ok(!sameVenueOrRoom(v('59E59 Theaters - Theater A'), v('59E59 Theaters - Theater C')));
   assert.ok(!sameVenueOrRoom('tba', 'tba'));
   assert.ok(!sameVenueOrRoom('', 'soho playhouse'));
 });
