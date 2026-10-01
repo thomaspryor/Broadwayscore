@@ -29,7 +29,6 @@ const SCORING_JS = [
   'scripts/eval-v52.js',
   'scripts/test-consistency.js',
   'scripts/video-reviews/score-video-reviews.js',
-  'scripts/video-reviews/eval-prompts.js',
 ];
 
 describe('models.js is the single Claude model table', () => {
@@ -64,4 +63,10 @@ describe('models.js is the single Claude model table', () => {
         `${rel} uses a general alias; scoring must use models.js SCORING_*`);
     });
   }
+
+  // eval-prompts.js runs both a classifier (general alias) and the scorer (pinned).
+  test('video-reviews/eval-prompts.js SCORE_MODEL defaults to a SCORING_* pin', () => {
+    const src = readFileSync(join(root, 'scripts/video-reviews/eval-prompts.js'), 'utf8');
+    assert.match(src, /const SCORE_MODEL = process\.env\.SCORE_MODEL \|\| SCORING_(SONNET|OPUS);/);
+  });
 });

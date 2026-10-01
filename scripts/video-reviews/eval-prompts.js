@@ -11,7 +11,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { SCORING_SONNET } = require('../lib/models');
+const { CLAUDE_SONNET, SCORING_SONNET } = require('../lib/models');
 
 const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY;
 if (!ANTHROPIC_API_KEY) { console.error('Missing ANTHROPIC_API_KEY'); process.exit(1); }
@@ -74,7 +74,8 @@ function getShowList() {
     .map(s => `${s.title} (${s.id})`).join(', ');
 }
 
-const CLASSIFY_MODEL = process.env.CLASSIFY_MODEL || SCORING_SONNET;
+// Classify follows the production classifier (classify-reviews.js); only scoring is pinned.
+const CLASSIFY_MODEL = process.env.CLASSIFY_MODEL || CLAUDE_SONNET;
 const SCORE_MODEL = process.env.SCORE_MODEL || SCORING_SONNET;
 
 async function callClaude(prompt, model) {
