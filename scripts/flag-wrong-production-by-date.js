@@ -18,7 +18,7 @@ const fs = require('fs');
 const path = require('path');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { isWithinPriorRun, isWithinTourLeg } = require('./lib/wrong-production-autoclear');
-const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateLlmYearMisdate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
@@ -166,7 +166,8 @@ function run() {
         continue;
       }
 
-      let pubDate = parseDate(data.publishDate);
+      // LLM-guessed dates never sole basis for a stamp (BRO-4473)
+      let pubDate = parseDate(guardPublishDate(data, show).publishDate);
       if (!pubDate && data.url) {
         // Same URL-date resolution the rebuild uses: extractDateFromUrl handles
         // /YYYY/MM/DD/, Guardian /YYYY/mon/DD/, compact YYYYMMDD and YYYY-MM-DD.
