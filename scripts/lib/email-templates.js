@@ -640,7 +640,7 @@ ${body.split('\n').map(line => line === '' ? '<br>' : `<p style="margin:0;">${li
  */
 function buildFixApprovalEmail(opts) {
   const {
-    submitterName, showTitle, originalMessage,
+    submitterName, submitterEmail, showTitle, originalMessage,
     planSummary, planSteps, riskLevel,
     currentState, verification,
     approveUrl, rejectUrl, issueNumber,
@@ -688,7 +688,7 @@ ${rows}
   const html = `<!DOCTYPE html>
 <html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>
 <body style="margin:0;padding:24px;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;font-size:15px;line-height:1.6;color:#333;">
-<p style="margin:0;">${escapeHtml(who)} wrote in${showRef}:</p>
+<p style="margin:0;">${escapeHtml(who)}${submitterEmail ? ` (<a href="mailto:${encodeURIComponent(submitterEmail).replace(/%40/g, '@')}">${escapeHtml(submitterEmail)}</a>)` : ''} wrote in${showRef}:</p>
 <br>
 ${messageHtml}
 <br>
@@ -696,7 +696,7 @@ ${currentStateHtml}<p style="margin:0;font-weight:600;">Proposed fix:</p>
 <br>
 ${stepsHtml}
 <br>
-<p style="margin:0;color:#555;">Risk: ${escapeHtml(riskLevel)} &mdash; ${escapeHtml(planSummary)}</p>
+<p style="margin:0;color:#555;">Risk: ${escapeHtml(riskLevel)}. ${escapeHtml(planSummary)}</p>
 <br>
 ${verification && !verification.skipped ? (
   verification.passed
