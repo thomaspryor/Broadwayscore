@@ -46,6 +46,7 @@ const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { unretireId } = require('./lib/retired-show-ids.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
+const { shouldEmailOwnerOnFix } = require('./lib/owner-fix-email.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -633,9 +634,10 @@ async function main() {
   output('result', applied.length > 0 ? 'fixed' : 'no-changes');
   output('failed', String(failed.length));
 
-  // 6. Send confirmation to Tom
+  // 6. Send confirmation to Tom (reader-feedback fixes only; session-authored
+  // bro-* plans already report in chat + Linear, BRO-4452)
   const ownerEmail = process.env.OWNER_EMAIL;
-  if (ownerEmail && applied.length > 0) {
+  if (shouldEmailOwnerOnFix({ issueNumber, ownerEmail, appliedCount: applied.length })) {
     try {
       const showTitle = planData.submitter.show || '';
       await sendEmail(
