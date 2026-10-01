@@ -1228,6 +1228,32 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   return { action: 'new', filepath };
 }
 
+// "Broadway World" / "The Arts Desk" read as a byline: an outlet's own name
+// from data/outlet-registry.json (display name or alias), compared with
+// "the", parentheticals and punctuation folded away. normalizeOutlet can't
+// answer this: it maps some critic names to their outlet ("Jesse Green").
+let _outletNameSet = null;
+function _compactName(n) {
+  return String(n || '').toLowerCase().replace(/\([^)]*\)/g, '').replace(/^the\s+/, '').replace(/[^a-z0-9]/g, '');
+}
+function isOutletRegistryName(name) {
+  if (!_outletNameSet) {
+    _outletNameSet = new Set();
+    try {
+      const reg = JSON.parse(fs.readFileSync(path.join(__dirname, '..', '..', 'data', 'outlet-registry.json'), 'utf8'));
+      const outlets = reg.outlets || reg;
+      for (const e of Object.values(outlets)) {
+        if (!e || typeof e !== 'object') continue;
+        for (const a of [e.displayName, e.name, ...(e.aliases || [])]) {
+          const c = _compactName(a);
+          if (c) _outletNameSet.add(c);
+        }
+      }
+    } catch { /* no registry: fall back to the name checks alone */ }
+  }
+  return _outletNameSet.has(_compactName(name));
+}
+
 /**
  * Whether a merge may write the incoming byline onto a file stored as Unknown
  * (BRO-4485). Opt-in only: the caller must have read the name off this same
@@ -1244,9 +1270,12 @@ function shouldUpgradeUnknownByline(filepath, existing, ctx) {
   const { showId, input, criticName } = ctx;
   if (!input || input.bylineFromOwnPage !== true || !input.url) return false;
   if (!existing || existing.criticNameManual || existing._locked === true) return false;
+  if (!/--unknown\.json$/.test(path.basename(filepath))) return false;
   if (existing.criticName && !/^unknown$/i.test(String(existing.criticName).trim())) return false;
   const { isPlausiblePersonName } = require('./byline-recovery');
-  if (!isPlausiblePersonName(criticName)) return false;
+  const { isValidAuthorName } = require('./content-quality');
+  if (!isPlausiblePersonName(criticName) || !isValidAuthorName(criticName)) return false;
+  if (isOutletRegistryName(criticName)) return false;
   const { canonicalReviewUrl } = require('./review-url-clusters');
   const canon = existing.url && canonicalReviewUrl(existing.url);
   if (!canon || canon !== canonicalReviewUrl(input.url)) return false;
@@ -1255,7 +1284,9 @@ function shouldUpgradeUnknownByline(filepath, existing, ctx) {
   const showDir = path.dirname(filepath);
   const self = path.basename(filepath);
   const outletId = normalizeOutlet(existing.outletId || self.split('--')[0]);
-  if (fs.existsSync(path.join(showDir, generateReviewFilename(outletId, criticName)))) return false;
+  const namedPath = path.join(showDir, generateReviewFilename(outletId, criticName));
+  if (fs.existsSync(namedPath)) return false;
+  if (require('./sparse-checkout-guard').isPathHiddenBySparseCheckout(namedPath)) return false;
   const wanted = normalizeCritic(criticName);
   for (const f of fs.readdirSync(showDir)) {
     if (f === self || !f.endsWith('.json')) continue;
@@ -1284,6 +1315,12 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     existing.showId = showId;
     changed = true;
   }
+  // Full snapshot BEFORE any merge mutation runs (BRO-4130). Handed to
+  // maybeUpgradeUrl below as opts.preMergeSnapshot so applyUrlChangeInvariant
+  // judges staleness against the true on-disk state, not a copy taken after
+  // the field-merge loop already blended this write's own incoming fields
+  // into `existing` — see maybeUpgradeUrl's opts.preMergeSnapshot doc.
+  const preMergeSnapshot = { ...existing };
   // A real byline read off this file's own page (BRO-4485): ingest-urls read
   // "Helen Shaw" off the NYT Degenerates page, findExistingReviewFile matched
   // the existing nytimes--unknown.json by URL, and the merge dropped the name.
@@ -1296,12 +1333,6 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     existing.criticEnrichedFrom = `writer:${input.source || 'unknown-source'}`;
     changed = true;
   }
-  // Full snapshot BEFORE any merge mutation runs (BRO-4130). Handed to
-  // maybeUpgradeUrl below as opts.preMergeSnapshot so applyUrlChangeInvariant
-  // judges staleness against the true on-disk state, not a copy taken after
-  // the field-merge loop already blended this write's own incoming fields
-  // into `existing` — see maybeUpgradeUrl's opts.preMergeSnapshot doc.
-  const preMergeSnapshot = { ...existing };
   // Snapshot the body BEFORE the field merge so the reclassify step below can
   // tell "this merge just filled/replaced the text" apart from an unrelated
   // metadata merge.
@@ -1656,9 +1687,16 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       const rename = safeRenameReview(filepath, named);
       if (rename && rename.wrote) {
         console.log(`  ↑ Byline from page: ${path.basename(filepath)} → ${path.basename(named)}`);
-        return { action: 'updated', filepath: named };
+        // renamedFrom: callers that stage paths must stage the deletion too,
+        // and safeRenameReview may have rewritten sibling pointers in this dir.
+        return { action: 'updated', filepath: named, renamedFrom: filepath };
       }
-      console.warn(`  ⚠ Byline set but rename of ${path.basename(filepath)} skipped (${(rename && rename.skipped) || 'unknown'}); the rebuild's stale --unknown rename will retry`);
+      // Never leave a named --unknown file behind (the rebuild's rename/merge
+      // is the #27 drop path): put the byline back and keep the rest.
+      console.warn(`  ⚠ Rename of ${path.basename(filepath)} skipped (${(rename && rename.skipped) || 'unknown'}); byline not applied`);
+      existing.criticName = 'Unknown';
+      delete existing.criticEnrichedFrom;
+      safeWriteReview(filepath, existing, { merge: false });
     }
   }
 

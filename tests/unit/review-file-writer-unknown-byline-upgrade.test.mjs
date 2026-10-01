@@ -54,6 +54,24 @@ describe('page-read byline upgrades an Unknown file (BRO-4485)', () => {
     const d = t.read('nytimes--helen-shaw.json');
     assert.equal(d.criticName, 'Helen Shaw');
     assert.equal(d.criticEnrichedFrom, 'writer:ingest-urls');
+    // Callers that stage paths need the old one to stage its deletion.
+    assert.ok(r.filepath.endsWith('nytimes--helen-shaw.json'));
+    assert.ok(r.renamedFrom.endsWith('nytimes--unknown.json'));
+  });
+
+  test('only an --unknown file qualifies, not a named slug with a blank criticName', () => {
+    const t = setup({ 'nytimes--jesse-green.json': { criticName: '' } });
+    write(t.dir, 'Helen Shaw');
+    assert.deepEqual(t.list(), ['nytimes--jesse-green.json']);
+    assert.equal(t.read('nytimes--jesse-green.json').criticName, '');
+  });
+
+  test("an outlet's own name is not a byline", () => {
+    for (const outletName of ['Broadway World', 'The Arts Desk', 'Arts Desk', 'All That Dazzles']) {
+      const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
+      write(t.dir, outletName);
+      assert.deepEqual(t.list(), ['nytimes--unknown.json'], outletName);
+    }
   });
 
   test('without the page-read opt-in (aggregator rows) nothing changes', () => {
@@ -85,7 +103,8 @@ describe('page-read byline upgrades an Unknown file (BRO-4485)', () => {
   });
 
   test('page chrome is not a name', () => {
-    for (const junk of ['Share full article', 'Updated October', 'Reviewed By', 'Theater Review', 'Critics Pick']) {
+    for (const junk of ['Share full article', 'Updated October', 'Reviewed By', 'Theater Review', 'Critics Pick',
+      'Read More', 'Sign Up', 'Opinion Section', 'National Theatre', 'York Magazine']) {
       const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
       write(t.dir, junk);
       assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown', junk);
@@ -108,5 +127,20 @@ describe('page-read byline upgrades an Unknown file (BRO-4485)', () => {
     });
     write(t.dir, 'Helen Shaw');
     assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown');
+  });
+
+  test('a credited creative of the show is not the critic', () => {
+    const show = 'the-lost-boys-2026'; // creativeTeam: Michael Arden, Director
+    const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4485-creative-'));
+    fs.mkdirSync(path.join(dir, show), { recursive: true });
+    const u = 'https://www.nytimes.com/2026/04/01/theater/the-lost-boys-review.html';
+    fs.writeFileSync(path.join(dir, show, 'nytimes--unknown.json'), JSON.stringify({
+      showId: show, outletId: 'nytimes', outlet: 'The New York Times', criticName: 'Unknown', url: u,
+    }));
+    createOrMergeReviewFile(show, {
+      outletId: 'nytimes', outlet: 'The New York Times', criticName: 'Michael Arden', url: u,
+      source: 'ingest-urls', bylineFromOwnPage: true, fields: {},
+    }, { reviewTextsDir: dir });
+    assert.deepEqual(fs.readdirSync(path.join(dir, show)), ['nytimes--unknown.json']);
   });
 });
