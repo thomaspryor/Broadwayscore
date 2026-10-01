@@ -742,6 +742,15 @@ function extractArticleText(html, hostname, criticHint) {
     return extractLaVoceBody(html);
   }
 
+  // NY Sun (Next.js): the server HTML renders the article as a "Loading
+  // article" skeleton inside <main>; the real body only exists in the page's
+  // JSON-LD NewsArticle.articleBody (BRO-4450 — Hungry Women extracted 0 chars
+  // via the article-wrapper pattern). Falls through to PATTERNS if absent.
+  if (host.includes('nysun.com')) {
+    const sunText = extractLaVoceBody(html);
+    if (sunText) return sunText;
+  }
+
   // The Stage: requires subscriber auth; body lives in <p> across multiple
   // aos-DS32-WYSEdit blocks with mid-article promo widgets. Logged-out HTML
   // has no body, so this returns null and the verifier still flags logout.

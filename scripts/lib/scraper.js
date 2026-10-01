@@ -136,7 +136,11 @@ function _isChallengeOrGarbage(content) {
     content.includes('Attention Required!') ||
     // Anubis proof-of-work bot wall — a 200 whose body is only the interstitial.
     content.includes('Protected by Anubis') ||
-    content.includes('anubis_challenge')
+    content.includes('anubis_challenge') ||
+    // thetimes.com device-verification interstitial (toadmash/Monocle) served as a
+    // 200 by Scrapingdog; without this the chain stops on a 1.4KB page (BRO-4450).
+    content.includes('<title>Verifying Device</title>') ||
+    content.includes('p.toadmash.net')
   );
 }
 
