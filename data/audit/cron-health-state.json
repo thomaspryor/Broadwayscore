@@ -1,31 +1,41 @@
 {
   "stale": [
+    "Check Opening Night Drift",
     "Commercial Friday Refresh",
     "Commercial Weekly Orchestrator",
     "Daily Data Health Check (digest snapshot carrier)",
-    "Opening Night Checklist"
+    "Opening Night Checklist",
+    "Weekly Grosses"
   ],
   "redispatched": [
-    "Daily Data Health Check (digest snapshot carrier)",
-    "Opening Night Checklist"
+    "Check Opening Night Drift",
+    "Weekly Grosses"
   ],
   "staleStreak": {
+    "Check Opening Night Drift": {
+      "days": 1,
+      "lastCounted": "2026-10-01"
+    },
     "Commercial Friday Refresh": {
-      "days": 38,
-      "lastCounted": "2026-09-30"
+      "days": 39,
+      "lastCounted": "2026-10-01"
     },
     "Commercial Weekly Orchestrator": {
-      "days": 42,
-      "lastCounted": "2026-09-30"
+      "days": 43,
+      "lastCounted": "2026-10-01"
     },
     "Daily Data Health Check (digest snapshot carrier)": {
-      "days": 1,
-      "lastCounted": "2026-09-30"
+      "days": 2,
+      "lastCounted": "2026-10-01"
     },
     "Opening Night Checklist": {
+      "days": 2,
+      "lastCounted": "2026-10-01"
+    },
+    "Weekly Grosses": {
       "days": 1,
-      "lastCounted": "2026-09-30"
+      "lastCounted": "2026-10-01"
     }
   },
-  "updatedAt": "2026-09-30T17:23:55.464Z"
+  "updatedAt": "2026-10-01T17:50:33.386Z"
 }
