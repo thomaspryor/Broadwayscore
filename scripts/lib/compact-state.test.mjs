@@ -64,14 +64,41 @@ test('CLI auto mode: PreCompact writes the checkpoint, SessionStart(compact) res
   assert.equal(run({ hook_event_name: 'SessionStart', source: 'startup', session_id: sid }), '', 'startup prints nothing');
   assert.equal(run({ hook_event_name: 'SessionStart', source: 'compact', session_id: sid }), '', 'nothing to restore yet');
   assert.equal(run({ hook_event_name: 'PreCompact', trigger: 'auto', session_id: sid, transcript_path: transcript, cwd: dir }), '');
-  assert.ok(fs.existsSync(statePath(sid)), 'checkpoint file written');
+  assert.ok(fs.existsSync(statePath(sid, transcript)), 'checkpoint file written, keyed by session + transcript');
 
-  const out = JSON.parse(run({ hook_event_name: 'SessionStart', source: 'compact', session_id: sid }));
+  const out = JSON.parse(run({ hook_event_name: 'SessionStart', source: 'compact', session_id: sid, transcript_path: transcript }));
   assert.equal(out.hookSpecificOutput.hookEventName, 'SessionStart');
   assert.match(out.hookSpecificOutput.additionalContext, /BRO-4321/);
   assert.match(out.hookSpecificOutput.additionalContext, /ShowImage\.tsx/);
-  fs.rmSync(statePath(sid), { force: true });
+  assert.match(out.hookSpecificOutput.additionalContext, /It is not proof/);
+  assert.ok(!fs.existsSync(statePath(sid, transcript)), 'restore consumes the checkpoint');
+  assert.equal(run({ hook_event_name: 'SessionStart', source: 'compact', session_id: sid, transcript_path: transcript }), '', 'a second restore finds nothing (no stale re-injection)');
+
+  // A subagent sharing the parent's session_id gets its own file (keyed by transcript basename).
+  const subDir = path.join(dir, 'subagents'); fs.mkdirSync(subDir);
+  const subT = path.join(subDir, 'agent-abc123.jsonl'); fs.writeFileSync(subT, user('subagent task: sweep the logs'));
+  run({ hook_event_name: 'PreCompact', trigger: 'auto', session_id: sid, transcript_path: subT, cwd: dir });
+  run({ hook_event_name: 'PreCompact', trigger: 'auto', session_id: sid, transcript_path: transcript, cwd: dir });
+  assert.notEqual(statePath(sid, subT), statePath(sid, transcript));
+  const subOut = JSON.parse(run({ hook_event_name: 'SessionStart', source: 'compact', session_id: sid, transcript_path: subT }));
+  assert.match(subOut.hookSpecificOutput.additionalContext, /sweep the logs/);
+  assert.doesNotMatch(subOut.hookSpecificOutput.additionalContext, /BRO-4321/);
+  // Restore without a transcript_path falls back to the session-level file.
+  const mainOut = JSON.parse(run({ hook_event_name: 'SessionStart', source: 'compact', session_id: sid }));
+  assert.match(mainOut.hookSpecificOutput.additionalContext, /BRO-4321/);
   fs.rmSync(dir, { recursive: true, force: true });
+});
+
+test('renderState truncates on a line boundary and keeps the ask and status lines ahead of commands', () => {
+  const f = parseTranscript(Array.from({ length: 400 }, (_, i) => assistant([tool('Bash', { command: `cmd-${i} ` + 'x'.repeat(150) })])).join('') + user('the ask') + assistant([{ type: 'text', text: 'EXECUTED: node x.js — ok' }]));
+  f.edits = Array.from({ length: 40 }, (_, i) => `very/long/path/number/${i}/${'y'.repeat(120)}.ts`);
+  const md = renderState(f, null);
+  assert.ok(md.length <= MAX_CHARS);
+  assert.match(md, /the ask/);
+  assert.match(md, /EXECUTED: node x\.js/);
+  assert.ok(md.endsWith('\n…(truncated)'));
+  const lastKept = md.slice(0, -'\n…(truncated)'.length).split('\n').pop();
+  assert.ok(lastKept.startsWith('- ') || lastKept.startsWith('#') || lastKept === '', `cut on a line boundary, got: ${lastKept.slice(0, 40)}`);
 });
 
 test('CLI never fails on garbage input', () => {
