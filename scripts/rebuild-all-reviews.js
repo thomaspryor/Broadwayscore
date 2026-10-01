@@ -96,7 +96,7 @@ const {
   shouldAutoClearStaleLondonOutletCrossMarket,
 } = require('./lib/wrong-production-autoclear');
 const { isAnticipatoryPreviewPost } = require('./lib/content-filters');
-const { evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
+const { guardPublishDate, evaluateDatelessRevivalGuard, earliestShowDate, evaluateDateGuard, evaluatePreWindowInclusion, PRE_WINDOW_DAYS } = require('./lib/date-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch, shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { safeWriteReview, writeReviewOrThrow, invalidateWrongProductionAutoClear, invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
@@ -1575,7 +1575,8 @@ const crossShowFingerprints = new Map();
         // real Bright Star review 2026-06-17).
         // Shared by the dateless-revival auto-clear/guard and the dated
         // pre-opening guard further down.
-        let reviewDate = parseDate(d.publishDate);
+        // LLM-guessed dates never sole basis for a stamp (BRO-4473)
+        let reviewDate = parseDate(guardPublishDate(d, showRecord).publishDate);
         if (!reviewDate && d.url) {
           const urlDate = extractDateFromUrl(d.url);
           if (urlDate && urlDate.date && /^\d{4}-\d{2}-\d{2}$/.test(urlDate.date)) {
@@ -3792,7 +3793,7 @@ showDirs.forEach(showId => {
         // as "no date info" and never excludes. Same bug class as the
         // DATE GUARD fix below (task #1, 2026-08-23) — this guard runs
         // earlier in the pipeline and has the identical parsing gap.
-        const pubDate = parseDate(data.publishDate);
+        const pubDate = parseDate(guardPublishDate(data, showById[showId]).publishDate); // BRO-4473
         const openDate = showDateMap[showId];
         const preWindow = evaluatePreWindowInclusion({
           pubDate,
@@ -4014,7 +4015,7 @@ showDirs.forEach(showId => {
         // dates ("January 26th, 2023", as stored by this exact scraper path),
         // returning Invalid Date and skipping the guard entirely regardless of
         // market — a second way the Anansi review escaped this check.
-        const pubDate = parseDate(data.publishDate);
+        const pubDate = parseDate(guardPublishDate(data, showById[showId]).publishDate); // BRO-4473
         if (pubDate && !isNaN(pubDate.getTime())) {
           const preWindow = evaluatePreWindowInclusion({
             pubDate,
