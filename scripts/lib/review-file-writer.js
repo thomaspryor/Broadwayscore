@@ -1188,7 +1188,7 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   }
 
   // BRO-4486: a star printed in the text anchors the first scoring.
-  capturePublishedStar(newReview);
+  capturePublishedStar(newReview, { show: _getShowById(showId) || undefined, filePath: filepath });
 
   // Immutable creation clock — stamped here so it lands in the written JSON.
   stampFirstSeen(newReview);
@@ -1562,7 +1562,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
 
     // BRO-4486: the new body may carry the critic's star; late-star-anchor
     // then re-anchors a file that was already scored without it.
-    if (capturePublishedStar(existing)) changed = true;
+    if (capturePublishedStar(existing, { show: _getShowById(showId) || undefined, filePath: filepath })) changed = true;
 
     // Card #1902: this fullText change may have just made a prior
     // excerpt-based score stale. isStaleScoreInput() is the single gate

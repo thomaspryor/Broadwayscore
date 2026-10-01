@@ -35,13 +35,18 @@ const limitArg = process.argv.find(a => a.startsWith('--limit='));
 const LIMIT = limitArg ? parseInt(limitArg.split('=')[1], 10) : 0;
 const ROOT = path.join(__dirname, '..');
 
+const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
+const showById = new Map((Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || [])).map(s => [s.id, s]));
+
 let captured = 0;
 const byOutlet = {};
 for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json'))) {
-  if (path.basename(f).startsWith('_')) continue;
+  const showId = path.basename(path.dirname(f));
+  // _-prefixed folders (_superseded-misattributed, _pending) and files are not reviews of a show.
+  if (showId.startsWith('_') || path.basename(f).startsWith('_')) continue;
   let d;
   try { d = JSON.parse(fs.readFileSync(f, 'utf8')); } catch { continue; }
-  if (!capturePublishedStar(d)) continue;
+  if (!capturePublishedStar(d, { show: showById.get(showId), filePath: f })) continue;
   captured++;
   byOutlet[d.outletId] = (byOutlet[d.outletId] || 0) + 1;
   console.log(`  ${path.relative(path.join(ROOT, 'data', 'review-texts'), f)}: ${d.originalScore} (${d.originalScoreSource}), scored ${d.assignedScore ?? '-'} ${d.scoreSource || ''}`);
