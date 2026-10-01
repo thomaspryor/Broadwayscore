@@ -1,19 +1,54 @@
 {
-  "updatedAt": "2026-10-01T02:40:27.147Z",
-  "processed": 47,
-  "failed": 23,
-  "successRate": "67.1%",
+  "updatedAt": "2026-10-01T03:11:11.324Z",
+  "processed": 88,
+  "failed": 42,
+  "successRate": "67.7%",
   "tierBreakdown": {
-    "playwright": 27,
+    "playwright": 47,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 8,
-    "scrapingbee": 5,
-    "brightdata": 1,
+    "scrapingdog": 14,
+    "scrapingbee": 8,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 12
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 4,
+  "recentActivity": [
+    {
+      "t": "2026-10-01T02:44:38.266Z",
+      "event": "bb-session",
+      "session": "a426f34f",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-10-01T02:44:49.138Z",
+      "event": "bb-session",
+      "session": "0c84c513",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-01T02:58:20.998Z",
+      "event": "bb-session",
+      "session": "398cabcf",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-01T02:58:21.909Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-01T02:58:40.260Z",
+      "event": "bb-session",
+      "session": "14520882",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-01T02:58:41.102Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    }
+  ]
 }
