@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T11:30:04.437Z",
+  "generatedAt": "2026-10-01T11:38:30.223Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1253,24 +1253,24 @@
       "slug": "whos-afraid-of-virginia-woolf-west-end",
       "thumbnail": "/images/shows/whos-afraid-of-virginia-woolf-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 88,
+      "liveScore": 92,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 3,
-      "t1": 0,
+      "total": 4,
+      "t1": 1,
       "t2": 2,
       "t3": 1,
-      "positive": 3,
+      "positive": 4,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
-          "T2:0/2",
+          "T2:1/2",
           "hi-conf:1/6"
         ],
         "highConfidence": 1,
@@ -1287,23 +1287,11 @@
       },
       "missingT1": [
         {
-          "name": "The Guardian",
-          "isDualMarket": true
-        },
-        {
           "name": "Observer",
           "isDualMarket": true
         },
         {
           "name": "Financial Times",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Telegraph",
-          "isDualMarket": true
-        },
-        {
-          "name": "The Times (UK)",
           "isDualMarket": true
         },
         {
@@ -1334,10 +1322,6 @@
         },
         {
           "name": "New York Theatre Guide",
-          "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
           "isDualMarket": true
         }
       ],
@@ -1386,6 +1370,18 @@
           "t2": 2,
           "t3": 1,
           "p": 3,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-01T11:38:30.223Z",
+          "rc": 4,
+          "s": 92,
+          "t1": 1,
+          "t2": 2,
+          "t3": 1,
+          "p": 4,
           "m": 0,
           "n": 0,
           "bc": "waiting"
