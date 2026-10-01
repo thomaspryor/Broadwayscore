@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T18:41:07.230Z",
+  "generatedAt": "2026-10-01T19:04:08.402Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -882,23 +882,23 @@
       "status": "open",
       "slug": "flamenc-oh-off-west-end",
       "thumbnail": "/images/shows/flamenc-oh-off-west-end-2026/thumbnail.webp",
-      "siteScore": 82.85,
-      "liveScore": 83,
-      "scoreDrift": 0.15000000000000568,
+      "siteScore": 80.14,
+      "liveScore": 80,
+      "scoreDrift": -0.14000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 0,
       "t2": 1,
-      "t3": 2,
+      "t3": 3,
       "positive": 3,
-      "mixed": 0,
+      "mixed": 1,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/8 total",
+          "4/8 total",
           "T1:0/3",
           "T2:0/2",
           "hi-conf:1/6"
@@ -993,6 +993,18 @@
           "t3": 2,
           "p": 3,
           "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-01T19:04:08.402Z",
+          "rc": 4,
+          "s": 80.14,
+          "t1": 0,
+          "t2": 1,
+          "t3": 3,
+          "p": 3,
+          "m": 1,
           "n": 0,
           "bc": "waiting"
         }
@@ -1613,23 +1625,23 @@
       "status": "open",
       "slug": "the-standard-of-living-west-end",
       "thumbnail": "/images/shows/the-standard-of-living-west-end-2026/thumbnail.webp",
-      "siteScore": 68.67,
+      "siteScore": 68.92,
       "liveScore": 69,
-      "scoreDrift": 0.3299999999999983,
+      "scoreDrift": 0.0799999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 23,
-      "t1": 9,
+      "total": 22,
+      "t1": 8,
       "t2": 5,
       "t3": 9,
       "positive": 11,
-      "mixed": 10,
+      "mixed": 9,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 12,
+        "highConfidence": 11,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1935,6 +1947,18 @@
           "t3": 9,
           "p": 11,
           "m": 10,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-01T19:04:08.402Z",
+          "rc": 22,
+          "s": 68.92,
+          "t1": 8,
+          "t2": 5,
+          "t3": 9,
+          "p": 11,
+          "m": 9,
           "n": 2,
           "bc": "waiting"
         }
