@@ -112,6 +112,23 @@ describe('excerptMentionsFormerCast', () => {
     assert.strictEqual(res.mentionsFormerCast, false);
   });
 
+  it('does not flag a generic theatre noun split out of a capitalized phrase', () => {
+    // Live false positive on the-enormous-crocodile-west-end-2026
+    // (theatre-vibe--unknown.json, 2026-10-01): a two-word capitalized
+    // phrase ending in "Show" sat near a role name, was decomposed into
+    // single tokens, and "show" then matched an ordinary pull quote
+    // ("...the perfect venue in which to see this brilliant show!").
+    const reviewData = {
+      publishDate: '2022-04-01',
+      fullText: 'A Puppet Show as Atticus Finch watches from the porch.',
+    };
+    const res = excerptMentionsFormerCast(
+      'The Gielgud is the perfect venue in which to see this brilliant show!',
+      { show: SHOW, reviewDate: '2022-04-01', reviewData }
+    );
+    assert.strictEqual(res.mentionsFormerCast, false);
+  });
+
   it('does not flag a director/writer inferred from a "directed by X" credit line even when missing from show.creativeTeam', () => {
     // Live false positive on the-enormous-crocodile-west-end-2026, whose
     // show.creativeTeam is [] — the guard has no structured way to know
