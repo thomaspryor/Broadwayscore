@@ -187,7 +187,7 @@ Notes:
 - Never selects `curtain_time`, `time_slot`, `user_id`, `id`, `created_at`, review rows, or anything from `profiles`.
 - The precise booked/unbooked split happens in `selectSharedPlans` (§3.3), because "today" depends on the show's venue timezone, which the database doesn't know.
 
-**Apply:** land the migration, then dispatch `apply-migration.yml` (`migration=supabase/migrations/20261001_plan_shares.sql`, `confirm=APPLY`) **in the same sitting**. `verify-schema.yml` and the pre-deploy schema gate derive their expectations from migration files automatically (`scripts/lib/supabase-schema-expectations.js`), so they go red from the moment the file lands until it's applied. No manual registry edit. `[CHANGED: first draft proposed editing a list that doesn't exist — design P2-c, structure]`
+**Apply:** land the migration, wait for the land run to put it on main (the apply workflow reads the file from main), then dispatch `apply-migration.yml` (`migration=supabase/migrations/20261001_plan_shares.sql`, `confirm=APPLY`) **in the same sitting**. `verify-schema.yml` and the pre-deploy schema gate derive their expectations from migration files automatically (`scripts/lib/supabase-schema-expectations.js`), so they go red from the moment the file lands until it's applied. No manual registry edit. `[CHANGED: first draft proposed editing a list that doesn't exist — design P2-c, structure]`
 
 **Rollback:** revert app code first, confirm live, then land a `DROP` migration (not a hand-run DROP, or the schema verifier fails forever). `[CHANGED: structure]`
 
@@ -215,7 +215,7 @@ New files:
 
 ### 3.5 Analytics, without leaking the token
 
-- `src/lib/analytics/redact-url.ts`: `redactSharedPlanUrl(url)` turns `/plans/<anything>` into `/plans/:token` in absolute URLs, paths and referrers. Wired into every tool `AnalyticsWrapper.tsx` starts: PostHog `before_send` (rewrites `$current_url`, `$pathname`, `$referrer`, `$initial_*`), Vercel `<Analytics beforeSend>`, GA `page_location`/`page_referrer`, Sentry `beforeSend` (request URL + breadcrumbs). Session recording is stopped on `/plans/*` (`posthog.stopSessionRecording()` on mount). `[CHANGED: pre-mortem primary scenario]`
+- `src/lib/analytics/redact-url.ts`: `redactSharedPlanUrl(url)` turns `/plans/<anything>` into `/plans/:token` in absolute URLs, paths and referrers. Wired into every tool `AnalyticsWrapper.tsx` starts: PostHog `before_send` (rewrites `$current_url`, `$pathname`, `$referrer`, `$initial_*`), Vercel `<Analytics beforeSend>` and `<SpeedInsights beforeSend>`, GA `page_location`/`page_referrer`, Sentry `beforeSend` (request URL + breadcrumbs). Session recording is stopped on `/plans/*` (`posthog.stopSessionRecording()` on mount). `[CHANGED: pre-mortem primary scenario]`
 - **Prevention test:** a unit test feeds a sample event through each configured hook and fails if the 32-hex token survives anywhere. A grep test fails if `AnalyticsWrapper.tsx` gains a new analytics init that doesn't route through the redactor.
 - Events (dual-fire `track()` + `captureEvent()`): owner `plans_share_enabled`, `plans_shared` (native-sheet / copy), `plans_share_stopped`, `plans_link_reset`; viewer `plans_page_viewed` (fired on mount: link-preview crawlers don't run JavaScript, so there's no bot inflation and no undercount of people who read without scrolling), `plans_show_tapped`, `plans_calendar_added` (google / ics). `[CHANGED: the first draft gated views on scroll, undercounting the main V2 metric — structure]`
 
