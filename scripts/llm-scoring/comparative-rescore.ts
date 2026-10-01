@@ -53,6 +53,14 @@ const { detectBandFromReviewFile } = require('../lib/star-reliability');
 const { getBestTextForScoring } = require('../lib/text-quality');
 // eslint-disable-next-line @typescript-eslint/no-var-requires
 const { listShowDirs } = require('../lib/list-show-dirs');
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const {
+  isGroupSettled,
+  buildComparativeMarker,
+  bumpComparativeFailure,
+  recordedIsolatedScore,
+  MAX_COMPARATIVE_FAILURES,
+} = require('../lib/comparative-band');
 
 const REVIEW_TEXTS_DIR =
   process.env.REVIEW_TEXTS_DIR || path.join(__dirname, '../../data/review-texts');
@@ -79,6 +87,10 @@ type ReviewEntry = {
 function isExcluded(data: any): boolean {
   if (!data) return true;
   if (data.wrongProduction || data.wrongShow || data.isRoundupArticle) return true;
+  // push-review-texts restores every protected field (llmScore included) on a
+  // _locked file, so neither a new score nor the comparative marker would ever
+  // persist — the group would be re-sent every run (BRO-4467).
+  if (data._locked === true) return true;
   if (HUMAN_PROTECTION_FIELDS.some((f) => data[f] !== undefined && data[f] !== null && data[f] !== false)) {
     return true;
   }
@@ -239,6 +251,8 @@ type GroupResult = {
   applied: Array<{ file: string; isolated: number; comparative: number; modelScores: Record<string, number>; warmthRank: number | null }>;
   agreement: number | null;
   skippedReason?: string;
+  /** Fewer than 2 models answered at all (outage): not counted as a failed attempt. */
+  transient?: boolean;
 };
 
 async function rescoreGroup(
@@ -265,7 +279,18 @@ async function rescoreGroup(
 
   const maps = Object.values(perModelMaps);
   if (maps.length < 2) {
-    return { bandKey: entries[0].bandKey, applied: [], agreement: null, skippedReason: `only ${maps.length} model(s) returned parseable scores` };
+    // The callers return null on any HTTP/network error. If fewer than 2
+    // models even answered, this is an outage, not a bad group: don't count it
+    // toward the give-up cap, or a 30-minute provider outage would freeze
+    // every group it touched (BRO-4467).
+    const answered = raw.filter((r) => typeof r === 'string' && r.trim()).length;
+    return {
+      bandKey: entries[0].bandKey,
+      applied: [],
+      agreement: null,
+      skippedReason: `only ${maps.length} model(s) returned parseable scores (${answered} answered)`,
+      transient: answered < 2,
+    };
   }
 
   const isolated: Record<string, number> = {};
@@ -299,14 +324,41 @@ function writeBack(entry: ReviewEntry, comparative: number, modelScores: Record<
   data.llmScore = data.llmScore || {};
   data.llmScore.score = comparative;
   data.assignedScore = comparative;
-  data.llmScore.comparative = {
-    isolatedScore: isolated,
+  data.llmScore.comparative = buildComparativeMarker({
+    isolatedScore: recordedIsolatedScore(data, isolated),
     models: modelScores,
     agreement,
     groupBand: entry.bandKey,
-    rescoredAt: new Date().toISOString(),
-  };
+  });
   // bucket/thumb stay derived from score downstream; comparative never leaves band.
+  fs.writeFileSync(entry.filePath, JSON.stringify(data, null, 2) + '\n');
+}
+
+/**
+ * BRO-4467: record that this review was compared and kept its score, so the
+ * group counts as settled (isGroupSettled) and the next cron run skips it.
+ * Score fields are untouched.
+ */
+function markKept(entry: ReviewEntry, agreement: number | null) {
+  const data = entry.data;
+  data.llmScore = data.llmScore || {};
+  data.llmScore.comparative = buildComparativeMarker({
+    isolatedScore: recordedIsolatedScore(data, entry.isolated),
+    agreement,
+    groupBand: entry.bandKey,
+    kept: true,
+  });
+  fs.writeFileSync(entry.filePath, JSON.stringify(data, null, 2) + '\n');
+}
+
+/**
+ * BRO-4467: count a paid-for attempt whose model replies didn't parse. After
+ * MAX_COMPARATIVE_FAILURES the group is treated as settled (isGroupSettled).
+ */
+function markFailedAttempt(entry: ReviewEntry, reason: string) {
+  const data = entry.data;
+  data.llmScore = data.llmScore || {};
+  data.llmScore.comparativeFailures = bumpComparativeFailure(data.llmScore.comparativeFailures, reason);
   fs.writeFileSync(entry.filePath, JSON.stringify(data, null, 2) + '\n');
 }
 
@@ -354,24 +406,36 @@ async function main() {
       if (entries.length < 2) continue;
       // Idempotency: nothing new to compare once every entry in this show+band
       // already carries a comparative verdict (see header). Zero API cost.
-      if (entries.every((e) => e.data.llmScore && e.data.llmScore.comparative)) continue;
+      if (isGroupSettled(entries)) continue;
       if (maxRescores > 0 && rescoresDone >= maxRescores) {
         console.log(`\nReached --max-rescores=${maxRescores}; stopping.`);
         break outer;
       }
       const result = await rescoreGroup(entries, models);
       if (!result) continue;
+      // The models were paid for whether or not their replies parsed, so a
+      // failed group counts toward --max-rescores too (BRO-4467).
+      rescoresDone++;
       if (result.skippedReason) {
         console.log(`  ${show} [${bandKey}] skipped: ${result.skippedReason}`);
+        if (!dryRun && !result.transient) {
+          for (const e of entries) markFailedAttempt(e, result.skippedReason);
+          if (isGroupSettled(entries)) {
+            console.warn(`  ⚠️ ${show} [${bandKey}] giving up after ${MAX_COMPARATIVE_FAILURES} unparseable attempts; isolated scores stay`);
+          }
+        }
         continue;
       }
-      rescoresDone++;
       const byFile = new Map(result.applied.map((a) => [a.file, a]));
       const lines: string[] = [];
       for (const e of entries) {
         totalReviews++;
         const a = byFile.get(e.file);
-        if (!a) { lines.push(`    ${e.file}: ${e.isolated} → ${e.isolated} (kept)`); continue; }
+        if (!a) {
+          lines.push(`    ${e.file}: ${e.isolated} → ${e.isolated} (kept)`);
+          if (!dryRun) markKept(e, result.agreement);
+          continue;
+        }
         const delta = a.comparative - a.isolated;
         sumDelta += delta; sumAbsDelta += Math.abs(delta);
         if (a.comparative !== a.isolated) changed++;

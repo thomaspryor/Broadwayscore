@@ -8,6 +8,8 @@ const {
   parseComparativeResponse,
   combineComparative,
   orderingAgreement,
+  isGroupSettled,
+  buildComparativeMarker,
 } = require('./comparative-band.js');
 
 const BAND = { floor: 91, ceiling: 100 };
@@ -126,4 +128,57 @@ test('orderingAgreement: identical ordering → 1, reversed → -1', () => {
   const ids = ['a', 'b', 'c'];
   assert.equal(orderingAgreement({ a: 3, b: 2, c: 1 }, { a: 9, b: 5, c: 1 }, ids), 1);
   assert.equal(orderingAgreement({ a: 3, b: 2, c: 1 }, { a: 1, b: 2, c: 3 }, ids), -1);
+});
+
+// BRO-4467: a group with any unmarked (kept) review used to be re-sent to all
+// models on every cron run. Every processed entry must end up settled.
+test('isGroupSettled: false while any entry lacks a comparative verdict', () => {
+  const changed = { data: { llmScore: { score: 95, comparative: buildComparativeMarker({ isolatedScore: 97, groupBand: '5' }) } } };
+  const keptUnmarked = { data: { llmScore: { score: 97 } } };
+  assert.equal(isGroupSettled([changed, keptUnmarked]), false);
+});
+
+test('isGroupSettled: true once kept entries carry a kept marker', () => {
+  const changed = { data: { llmScore: { score: 95, comparative: buildComparativeMarker({ isolatedScore: 97, groupBand: '5' }) } } };
+  const kept = { data: { llmScore: { score: 97, comparative: buildComparativeMarker({ isolatedScore: 97, groupBand: '5', kept: true }) } } };
+  assert.equal(isGroupSettled([changed, kept]), true);
+});
+
+test('isGroupSettled: empty or missing data is never settled', () => {
+  assert.equal(isGroupSettled([]), false);
+  assert.equal(isGroupSettled(undefined), false);
+  assert.equal(isGroupSettled([{ data: null }]), false);
+});
+
+test('buildComparativeMarker: kept flag only on kept entries, timestamp defaults', () => {
+  const m = buildComparativeMarker({ isolatedScore: 88, models: { claude: 86 }, agreement: 0.9, groupBand: '4' });
+  assert.equal(m.kept, undefined);
+  assert.deepEqual(m.models, { claude: 86 });
+  assert.match(m.rescoredAt, /^\d{4}-\d{2}-\d{2}T/);
+  const k = buildComparativeMarker({ isolatedScore: 88, groupBand: '4', kept: true, rescoredAt: '2026-10-01T00:00:00.000Z' });
+  assert.equal(k.kept, true);
+  assert.deepEqual(k.models, {});
+  assert.equal(k.agreement, null);
+  assert.equal(k.rescoredAt, '2026-10-01T00:00:00.000Z');
+});
+
+test('isGroupSettled: a group that failed to parse MAX_COMPARATIVE_FAILURES times is given up on', () => {
+  const { bumpComparativeFailure, MAX_COMPARATIVE_FAILURES } = require('./comparative-band.js');
+  let f;
+  for (let i = 0; i < MAX_COMPARATIVE_FAILURES - 1; i++) f = bumpComparativeFailure(f, 'only 1 model(s) returned parseable scores');
+  const almost = [{ data: { llmScore: { score: 95, comparativeFailures: f } } }, { data: { llmScore: { score: 93, comparativeFailures: f } } }];
+  assert.equal(isGroupSettled(almost), false);
+  const done = bumpComparativeFailure(f, 'x', '2026-10-01T00:00:00.000Z');
+  assert.equal(done.count, MAX_COMPARATIVE_FAILURES);
+  assert.equal(done.lastAt, '2026-10-01T00:00:00.000Z');
+  assert.equal(isGroupSettled([{ data: { llmScore: { score: 95, comparativeFailures: done } } }, { data: { llmScore: { score: 93, comparativeFailures: done } } }]), true);
+  // A review that joins the band later has no failures, so the group is retried.
+  assert.equal(isGroupSettled([{ data: { llmScore: { score: 95, comparativeFailures: done } } }, { data: { llmScore: { score: 92 } } }]), false);
+});
+
+test('recordedIsolatedScore keeps the first isolated score when a group is re-opened', () => {
+  const { recordedIsolatedScore } = require('./comparative-band.js');
+  assert.equal(recordedIsolatedScore({ llmScore: { score: 92 } }, 92), 92);
+  assert.equal(recordedIsolatedScore({ llmScore: { score: 92, comparative: { isolatedScore: 97 } } }, 92), 97);
+  assert.equal(recordedIsolatedScore(null, 90), 90);
 });
