@@ -1615,3 +1615,14 @@ describe('isPreRunForUkClear / namesNonLondonCity helpers (BRO-4476, shared with
     assert.strictEqual(namesNonLondonCity({ url: 'not a url' }), false);
   });
 });
+
+describe('namesNonLondonCity london carve-out + non-dated-note (BRO-4476)', () => {
+  const { namesNonLondonCity, shouldAutoClearStaleDateGuard } = require('../../scripts/lib/wrong-production-autoclear.js');
+  it('explicit london in slug wins', () => {
+    assert.strictEqual(namesNonLondonCity({ url: 'https://x.com/reviews/london-fringe-review' }), false);
+    assert.strictEqual(namesNonLondonCity({ url: 'https://x.com/reviews/brighton-rock-london' }), false);
+  });
+  it('flagger note is not released by the stale date-guard clear', () => {
+    assert.strictEqual(shouldAutoClearStaleDateGuard({ wrongProduction: true, wrongProductionNote: 'Non-London city guard: review x' }, { nowInWindow: true }), false);
+  });
+});

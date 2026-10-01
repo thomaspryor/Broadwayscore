@@ -854,7 +854,7 @@ function shouldPreserveExclusionFlagsOnUrlRecovery(data) {
 // entry and scored 80. PRE_WINDOW_DAYS (60) is too loose for this path, so it
 // uses its own tighter 14-day window before the show's earliest date.
 const UK_CLEAR_PRE_RUN_DAYS = 14;
-const NON_LONDON_CITY_RE = /(?:^|[^a-z])(?:edinburgh|fringe|assembly[- ]rooms|summerhall|pleasance|underbelly|gilded[- ]balloon|traverse|king'?s[- ]theatre[- ]edinburgh|glasgow|manchester|birmingham|liverpool|leeds|bristol|brighton|sheffield|newcastle|nottingham|cardiff|belfast|dublin|chichester)(?:[^a-z]|$)/i;
+const NON_LONDON_CITY_RE = /(?:^|[^a-z])(?:edinburgh|fringe|assembly[- ]rooms|summerhall|pleasance|underbelly|gilded[- ]balloon|king'?s[- ]theatre[- ]edinburgh|glasgow|manchester|birmingham|liverpool|leeds|sheffield|newcastle|nottingham|cardiff|belfast|dublin|chichester)(?:[^a-z]|$)/i;
 
 function isPreRunForUkClear(publishDate, showEarliestDate) {
   if (!publishDate || !showEarliestDate) return false;
@@ -867,6 +867,8 @@ function isPreRunForUkClear(publishDate, showEarliestDate) {
 function namesNonLondonCity(data) {
   let slug = '';
   try { slug = new URL(data.url).pathname.replace(/[\/_-]+/g, ' '); } catch { slug = ''; }
+  // An explicit 'london' in the slug (london-fringe, brighton-rock-london) outranks the city token.
+  if (/(?:^|\s)london(?:\s|$)/i.test(slug)) return false;
   return NON_LONDON_CITY_RE.test(slug);
 }
 
