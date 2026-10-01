@@ -37,7 +37,7 @@ Identify the project to plan. This is either:
 - The text passed as arguments: $ARGUMENTS
 - If no arguments, look at the most recent project description, feature request, or goal in the conversation
 
-If working in a codebase, use the Explore agent (Task tool, subagent_type "Explore") to understand the existing architecture, patterns, and conventions before planning. This is NOT optional — plans without codebase context produce generic tasks that miss existing infrastructure.
+If working in a codebase, use the repo-sweeper agent (Task tool, subagent_type "repo-sweeper") to understand the existing architecture, patterns, and conventions before planning. This is NOT optional — plans without codebase context produce generic tasks that miss existing infrastructure.
 
 **Roadmap context:** Read the current roadmap to check for related items, dependencies, or prior decisions:
 ```bash
@@ -161,7 +161,7 @@ Add a `MODEL:` line to each sprint header. Example: `MODEL: Sonnet — straightf
 
 Use `/plan-review` to run the full multi-model critique (GPT-4o + Gemini + Claude agent + pre-mortem) on your sprint plan. This gives you 4 independent perspectives with differentiated focus areas.
 
-If `/plan-review` is not available, use the Task tool with subagent_type "general-purpose" to run an independent review:
+If `/plan-review` is not available, use the Task tool with subagent_type "review-panelist" to run an independent review:
 
 > You are a senior engineering manager reviewing a sprint plan. Check for:
 > 1. Tasks that are too large or vague

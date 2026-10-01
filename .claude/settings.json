@@ -1,4 +1,10 @@
 {
+  "_comment_spend": "Spend efficiency (BRO spend review 2026-10-01, plan-review pass recorded). env: hold every session to a 200k context window and compact at 200k instead of running to 600-780k in the 1M variants; 71% of Sep cloud cost came from sessions past 400k, re-read on every step. effortLevel: Opus 5.5 default is medium; /effort or --effort still raises it per session (do NOT use CLAUDE_CODE_EFFORT_LEVEL, it would override /effort). This file is read by cloud sessions, Mac interactive sessions and Mac headless jobs (they run in repo worktrees; strippedEnv in scripts/lib/claude-cli.js never forwards shell vars), so it is the single source for these knobs. Revert = delete these three keys.",
+  "env": {
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "200000",
+    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1"
+  },
+  "effortLevel": "medium",
   "_comment": "Project-scoped Claude Code config. Loaded by cloud apps (iOS, Mac, web) that can't reach the user's ~/.claude/. Each project hook script begins with a self-skip preamble: if ~/.claude/hooks/<basename> exists (local CLI), the project copy exits 0 and the user-level master fires. On cloud sandboxes ~/.claude/hooks/ does not exist, so the project copy runs. See .claude/CLOUD.md.",
   "_comment_permissions": "Server-level MCP allow: 'mcp__<server>' pre-approves the Claude_Code_Remote tools that are NOT marked requiresUserInteraction (get_session, list_triggers, delete_trigger, ...). Cloud sessions name the server 'Claude_Code_Remote' (tools are mcp__Claude_Code_Remote__*), so the old 'claude-code-remote' entry never matched and add_repo/send_later kept hitting the approval wall (BRO-4216); both spellings are listed. Harmless on local CLI where the server isn't connected. KNOWN LIMIT (BRO-4236): add_repo, send_later and create_trigger are marked requiresUserInteraction, which per code.claude.com/docs/en/permission-modes ('Actions no mode auto-approves') prompts even when an allow rule matches, in every mode. No allow rule or mode fixes that; don't re-add rules for them. Instead the PreToolUse hook block-prompting-remote-tools.sh denies the calls that have a prompt-free equivalent before the prompt appears.",
   "permissions": {
@@ -106,6 +112,15 @@
       }
     ],
     "SessionStart": [
+   {
+    "matcher": "compact",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/compact-state.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+     }
+    ]
+   },
       {
         "matcher": "startup|clear|compact|resume",
         "hooks": [
@@ -120,7 +135,18 @@
         ]
       }
     ],
-    "Stop": [
+    "PreCompact": [
+   {
+    "matcher": "",
+    "hooks": [
+     {
+      "type": "command",
+      "command": "G=\"$(git rev-parse --show-toplevel 2>/dev/null)\"; R=\"${CLAUDE_PROJECT_DIR:-$G}\"; H=\"$R/.claude/hooks/compact-state.sh\"; if [ -n \"$R\" ] && [ -f \"$H\" ]; then exec bash \"$H\"; elif [ -n \"$R\" ]; then printf '{\"systemMessage\":\"Hook script missing, skipped (fail-open, BRO-4238): %s\"}\\n' \"$H\"; exit 0; else echo \"FATAL: cannot resolve hook script $H (CLAUDE_PROJECT_DIR=${CLAUDE_PROJECT_DIR:-unset}, PWD=$PWD, git-toplevel=${G:-none})\" >&2; exit 2; fi"
+     }
+    ]
+   }
+  ],
+  "Stop": [
       {
         "matcher": "",
         "hooks": [

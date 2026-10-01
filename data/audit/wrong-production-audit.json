@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-01T22:43:58.815Z",
+  "timestamp": "2026-10-01T23:29:57.774Z",
   "stats": {
-    "totalReviews": 45759,
+    "totalReviews": 45766,
     "alreadyFlagged": 18682,
     "dateGuardCatches": 261,
     "directorMismatch": 1196,
     "tvFilmSignals": 1328,
-    "londonSignals": 1245,
+    "londonSignals": 1248,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
     "noPublishDate": 4137
@@ -40690,7 +40690,7 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "file": "afridiziak-theatre-news--unknown.json",
+      "file": "afridiziak-theatre-news--althyr-pivatto.json",
       "score": 86,
       "publishDate": "2026-09-23",
       "url": "https://www.afridiziak.com/reviews/catarina-and-the-beauty-of-killing-fascists/",
@@ -40773,7 +40773,7 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "file": "fringereview--unknown.json",
+      "file": "fringereview--simon-jenner.json",
       "score": 63,
       "publishDate": "2026-09-25",
       "url": "https://fringereview.co.uk/review/fringereview-uk/2026/caterina-and-the-beauty-of-killing-fascists/",
@@ -40898,7 +40898,7 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "file": "south-london--unknown.json",
+      "file": "south-london--michael-holland.json",
       "score": 69,
       "publishDate": "2026-09-23",
       "url": "https://southlondon.co.uk/area/southwark/review-catarina-and-the-beauty-of-killing-fascists-dorfman-theatre/",
@@ -40926,7 +40926,7 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "file": "thereviewshub--unknown.json",
+      "file": "thereviewshub--richard-maguire.json",
       "score": 61,
       "publishDate": "2026-09-22",
       "url": "https://www.thereviewshub.com/catarina-and-the-beauty-of-killing-fascists-national-theatre-london/",
@@ -40940,7 +40940,7 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--madison-sotos.json",
       "score": 77,
       "publishDate": "2026-09-22",
       "url": "https://www.theupcoming.co.uk/2026/09/22/catarina-and-the-beauty-of-killing-fascists-at-the-national-theatre-theatre-review/",
@@ -40968,7 +40968,7 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "file": "viewfromthegods--unknown.json",
+      "file": "viewfromthegods--simon-jenner.json",
       "score": 63,
       "publishDate": "2026-09-25",
       "url": "https://viewfromthegods.co.uk/2026/09/25/caterina-and-the-beauty-of-killing-fascists-national-theatre-dorfman/",
@@ -45344,9 +45344,37 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
+      "file": "guardian--emma-john.json",
+      "score": 74,
+      "publishDate": null,
+      "url": "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
       "file": "guardian--unknown.json",
       "publishDate": "2026-09-28",
       "url": "https://www.theguardian.com/stage/2026/sep/28/christine-baranski-richard-e-grant-interview-hay-fever-wyndhams-theatre-sex-scenes-parties",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "theupcoming--emilia-gould.json",
+      "score": 79,
+      "publishDate": "2026-10-02",
+      "url": "https://www.theupcoming.co.uk/2026/10/02/hay-fever-at-wyndhams-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -50815,6 +50843,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "file": "whatsonstage--maygan-forbes.json",
+      "publishDate": "2026-04-16",
+      "url": "https://www.whatsonstage.com/news/one-flew-over-the-cuckoos-nest-at-the-old-vic-review_1718322/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"old vic\""
         }
       ]
     },

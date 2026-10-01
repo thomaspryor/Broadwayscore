@@ -8,7 +8,7 @@
 try { require('dotenv').config(); } catch(e) {}
 const fs = require('fs');
 const path = require('path');
-const { CLAUDE_OPUS } = require('../lib/models');
+const { SCORING_OPUS } = require('../lib/models');
 const { listShowDirs } = require('../lib/list-show-dirs');
 
 const TRANSCRIPTS_DIR = path.join(__dirname, '../../data/video-reviews-transcripts');
@@ -55,7 +55,7 @@ const MODEL_ARG = process.argv.find(a => a.startsWith('--model='))?.split('=')[1
 // with nuanced framing (Eddie Redmayne Cabaret critique tagged "reply/follow-up").
 // Eval: Opus 9/9 legit accepted + 5/5 bad rejected; Sonnet 8/9 + 5/5.
 // See scripts/video-reviews/eval-prompts.js.
-const MODEL = MODEL_ARG || process.env.ANTHROPIC_MODEL || CLAUDE_OPUS;
+const MODEL = MODEL_ARG || process.env.ANTHROPIC_MODEL || SCORING_OPUS;
 
 async function scoreTranscript(transcript, showTitle, creatorName, platform) {
   const resp = await fetch('https://api.anthropic.com/v1/messages', {
