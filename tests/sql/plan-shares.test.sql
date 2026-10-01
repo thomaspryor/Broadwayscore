@@ -75,6 +75,21 @@ UPDATE public.plan_shares SET user_id = '22222222-2222-2222-2222-222222222222';
 SELECT t.ok((SELECT count(*) FROM public.plan_shares WHERE user_id = '11111111-1111-1111-1111-111111111111') = 1,
             'a client cannot move the share to another user');
 
+-- The upsert clients use (PostgREST: POST + on_conflict=user_id +
+-- resolution=merge-duplicates) must not change the token…
+INSERT INTO public.plan_shares (user_id, display_name, show_booked, token)
+VALUES ('11111111-1111-1111-1111-111111111111', 'Tom', true, 'eeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee')
+ON CONFLICT (user_id) DO UPDATE
+  SET display_name = EXCLUDED.display_name, show_booked = EXCLUDED.show_booked, token = EXCLUDED.token;
+SELECT t.ok((SELECT token FROM public.plan_shares) = current_setting('t.token_a'),
+            'an upsert onto the existing share keeps the token');
+-- …and one that omits display_name fails (documented client contract: send
+-- the name on every upsert, PATCH for everything else).
+SELECT t.fails($$INSERT INTO public.plan_shares (user_id, show_booked)
+                 VALUES ('11111111-1111-1111-1111-111111111111', false)
+                 ON CONFLICT (user_id) DO UPDATE SET show_booked = EXCLUDED.show_booked$$,
+               'an upsert without display_name is refused (clients must send it)');
+
 SELECT t.fails($$UPDATE public.plan_shares SET display_name = '   '$$, 'blank name refused');
 SELECT t.fails($$UPDATE public.plan_shares SET display_name = repeat('x', 31)$$, 'name over 30 chars refused');
 SELECT t.fails($$INSERT INTO public.plan_shares (user_id, display_name) VALUES ('11111111-1111-1111-1111-111111111111', 'Dup')$$,
@@ -204,6 +219,10 @@ SELECT '11111111-1111-1111-1111-111111111111', 'bulk-' || g FROM generate_series
 SET ROLE anon;
 SELECT t.ok(jsonb_array_length(public.get_shared_plans(current_setting('t.token_new')) -> 'entries') = 300,
             'entries capped at 300');
+SELECT t.ok(EXISTS (
+              SELECT 1 FROM jsonb_array_elements(public.get_shared_plans(current_setting('t.token_new')) -> 'entries') e
+               WHERE e ->> 'show_id' = 'fixture-future'),
+            'the cap keeps older booked rows when 310 newer undated rows exist');
 
 RESET ROLE;
 SELECT t.ok(NOT has_function_privilege('anon', 'public.rotate_plan_share_token()', 'EXECUTE'),
@@ -212,3 +231,7 @@ SELECT t.ok(has_function_privilege('anon', 'public.get_shared_plans(text)', 'EXE
             'grant check: anon can EXECUTE get_shared_plans');
 SELECT t.ok(NOT has_function_privilege('authenticated', 'public.plan_shares_guard()', 'EXECUTE'),
             'grant check: nobody can call the guard directly');
+SELECT t.ok(NOT has_table_privilege('authenticated', 'public.plan_shares', 'TRUNCATE'),
+            'grant check: authenticated cannot TRUNCATE plan_shares');
+SELECT t.ok((SELECT provolatile FROM pg_proc WHERE proname = 'get_shared_plans') = 'v',
+            'get_shared_plans is VOLATILE, so PostgREST refuses GET (token stays out of request logs)');

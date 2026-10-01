@@ -86,9 +86,18 @@ export async function runPlanSharesChecks(ctx) {
   check('plans: server mints the token (client value ignored)', TOKEN_RE.test(tokenOld) && tokenOld !== '0'.repeat(32), `token=${String(tokenOld).slice(0, 6)}…`);
   check('plans: display name trimmed', row.display_name === 'Roundtrip', `display_name=${JSON.stringify(row.display_name)}`);
 
-  await rest('PATCH', `plan_shares?user_id=eq.${userA.id}`, tokenA, { token: 'f'.repeat(32) });
+  const patchTok = await rest('PATCH', `plan_shares?user_id=eq.${userA.id}`, tokenA, { token: 'f'.repeat(32) });
   const reread = await rest('GET', `plan_shares?user_id=eq.${userA.id}&select=token`, tokenA);
-  check('plans: owner cannot overwrite the token', reread.json?.[0]?.token === tokenOld);
+  check('plans: owner cannot overwrite the token', patchTok.ok && reread.json?.[0]?.token === tokenOld,
+    `PATCH HTTP ${patchTok.status}`);
+
+  // The clients' save path: upsert on user_id carrying the name (migration's
+  // CLIENT CONTRACT). Must succeed and must keep the token.
+  const upsert = await rest('POST', 'plan_shares?on_conflict=user_id', tokenA,
+    { user_id: userA.id, display_name: 'Roundtrip', show_booked: true, show_unbooked: true },
+    'return=representation,resolution=merge-duplicates');
+  check('plans: client upsert succeeds and keeps the token',
+    upsert.ok && upsert.json?.[0]?.token === tokenOld, `HTTP ${upsert.status} ${upsert.ok ? '' : upsert.text.slice(0, 120)}`);
 
   const bRead = await rest('GET', `plan_shares?user_id=eq.${userA.id}&select=user_id`, tokenB);
   check('plans: RLS hides the share from another user', Array.isArray(bRead.json) && bRead.json.length === 0,
@@ -113,6 +122,10 @@ export async function runPlanSharesChecks(ctx) {
   if (pastUnloggedShowId) {
     check('plans: a past, unlogged plan stays private', !ids.has(pastUnloggedShowId));
   }
+
+  // VOLATILE ⇒ PostgREST refuses GET, so the token can't land in request logs.
+  const viaGet = await rest('GET', `rpc/get_shared_plans?p_token=${tokenOld}`, anonKey);
+  check('plans: GET on get_shared_plans is refused (token stays out of URLs)', !viaGet.ok, `HTTP ${viaGet.status}`);
 
   const anonRotate = await rpc(anonKey, 'rotate_plan_share_token', {});
   check('plans: anonymous cannot rotate', !anonRotate.ok, `HTTP ${anonRotate.status}`);

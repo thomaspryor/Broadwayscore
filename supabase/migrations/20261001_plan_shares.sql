@@ -61,6 +61,15 @@ CREATE POLICY "own plan share delete" ON public.plan_shares
 -- Belt and braces: anon has no business touching the table at all, so take
 -- away the grant Supabase's default privileges hand it.
 REVOKE ALL ON public.plan_shares FROM anon;
+-- PostgREST never issues these, so authenticated doesn't need them either.
+REVOKE TRUNCATE, REFERENCES, TRIGGER ON public.plan_shares FROM authenticated;
+
+-- CLIENT CONTRACT (web src/hooks/usePlanShare.ts, iOS hooks/usePlanShare.ts):
+--   * Create with an upsert that ALWAYS includes display_name. Postgres checks
+--     NOT NULL before resolving ON CONFLICT, so an upsert carrying only the
+--     toggles fails even when the row exists.
+--   * Change settings with PATCH (`user_id=eq.<uid>`), never an upsert.
+--   * Never send `token`; it is ignored. Reset via rotate_plan_share_token().
 
 -- Guard trigger. A client owns its row and could otherwise write any token it
 -- likes through the UPDATE policy (e.g. 32 zeros). So:
@@ -134,13 +143,21 @@ GRANT EXECUTE ON FUNCTION public.rotate_plan_share_token() TO authenticated;
 --     whose outing is logged. The 2-day slack lets the web server decide
 --     "today" in the VENUE's timezone; a past, unlogged row older than that
 --     (the owner's private "to be rated" list) never leaves.
---   * A section that is switched off is filtered HERE, not just in the UI.
+--   * A section that is switched off is filtered HERE, not just in the UI,
+--     with one accepted overlap: with want-to-see off, a logged row inside the
+--     2-day slack still leaves (it is indistinguishable from a booked row
+--     until the server knows the venue's "today").
+--   * The 300-row cap keeps booked candidates first, so a long want-to-see
+--     list can never push upcoming bookings off the page.
 -- Never selected: curtain_time, time_slot, ids, timestamps, anything from
 -- profiles, any review field.
 CREATE OR REPLACE FUNCTION public.get_shared_plans(p_token TEXT)
 RETURNS JSONB
 LANGUAGE plpgsql
-STABLE
+-- VOLATILE on purpose: PostgREST only allows GET for STABLE/IMMUTABLE
+-- functions, and a GET would put the token in the API's request logs.
+-- VOLATILE forces POST, where it travels in the body.
+VOLATILE
 SECURITY DEFINER
 SET search_path = ''
 AS $$
@@ -192,7 +209,7 @@ BEGIN
            -- a logged row inside the slack window is want-to-see, not booked
            OR (v_share.show_unbooked AND l.logged AND w.planned_date >= current_date - 2)
          )
-       ORDER BY w.created_at DESC
+       ORDER BY (w.planned_date >= current_date - 2) DESC NULLS LAST, w.created_at DESC
        LIMIT 300
     ) e;
 

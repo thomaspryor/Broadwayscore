@@ -225,6 +225,7 @@ New files:
 ### 3.6 Owner UI
 
 **Web**
+- **Client contract (as built):** create with an upsert (`on_conflict=user_id`) that always includes `display_name` (Postgres checks NOT NULL before resolving the conflict); change settings with PATCH; never send `token`; call `get_shared_plans` with POST (it is VOLATILE so PostgREST refuses GET and the token never sits in a URL).
 - `src/hooks/usePlanShare.ts`: `share` (current row or null), `ensure({ displayName, showBooked, showUnbooked })` → URL, `update(patch)`, `rotate()` → URL (via existing `supabaseRestRpc`). Stop sharing is `update({ enabled: false })`. Returns URLs built from `BASE_URL`. The iOS hook exposes the same method names. `[CHANGED: one method set on both platforms; follows useUserLists.shareList returning a URL — design P2-e]`
 - `src/components/user/SharePlansModal.tsx` on the shared `Modal`. Counts come from `selectSharedPlans` run on the owner's own watchlist + reviews.
 - `src/lib/share-link.ts`: `shareOrCopy({ title, text, url })` → `'shared' | 'copied' | 'cancelled'`. Migrate **both** existing inline copies (ListsTab share, `BeatTheCriticsClient.tsx:440`) in the same change. `[CHANGED: design P2-f]`

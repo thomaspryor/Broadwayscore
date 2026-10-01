@@ -29,18 +29,27 @@ function fakeServer(bugs = {}) {
     if (path.startsWith('plan_shares')) {
       if (token === ANON) return res(401, { code: '42501', message: 'permission denied' });
       const mine = token === TOKEN_A;
+      if (method === 'POST' && share && path.includes('on_conflict=user_id')) {
+        if (bugs.upsertRotates) share.token = hex32();
+        Object.assign(share, { display_name: body.display_name, show_booked: body.show_booked, show_unbooked: body.show_unbooked });
+        return res(201, [share]);
+      }
       if (method === 'POST') {
         share = { user_id: body.user_id, display_name: body.display_name.trim(), token: bugs.keepClientToken ? body.token : hex32(), enabled: true };
         return res(201, [share]);
       }
       if (method === 'GET') return res(200, share && (mine || bugs.leakToB) ? [share] : []);
       if (method === 'PATCH') {
+        if (bugs.patchErrors && mine && body.token) return res(400, { message: 'boom' });
         if (!mine && !bugs.leakToB) return res(200, []);
         const { token: t, ...rest2 } = body;
         Object.assign(share, rest2, bugs.tokenWritable && t ? { token: t } : {});
         return res(200, [share]);
       }
       if (method === 'DELETE') { share = null; return res(204, null); }
+    }
+    if (path.startsWith('rpc/get_shared_plans?')) {
+      return bugs.getAllowed ? res(200, null) : res(405, { code: 'PGRST101' });
     }
     if (path === 'rpc/get_shared_plans') {
       if (!share || !share.enabled || body.p_token !== share.token) return res(200, null);
@@ -75,7 +84,7 @@ async function run(bugs) {
 test('a correct server passes every check', async () => {
   const { out, results, failed } = await run({});
   assert.equal(out.skipped, false);
-  assert.ok(results.length >= 14, `expected the full sequence, got ${results.length}`);
+  assert.ok(results.length >= 16, `expected the full sequence, got ${results.length}`);
   assert.deepEqual(failed, []);
 });
 
@@ -93,6 +102,9 @@ for (const [bug, expectFail] of [
   ['leakTime', 'plans: payload carries only the allowed fields'],
   ['leakPast', 'plans: a past, unlogged plan stays private'],
   ['anonRotate', 'plans: anonymous cannot rotate'],
+  ['upsertRotates', 'plans: client upsert succeeds and keeps the token'],
+  ['patchErrors', 'plans: owner cannot overwrite the token'],
+  ['getAllowed', 'plans: GET on get_shared_plans is refused (token stays out of URLs)'],
 ]) {
   test(`server bug "${bug}" is caught`, async () => {
     const { failed } = await run({ [bug]: true });
