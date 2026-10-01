@@ -517,5 +517,34 @@
       }
     ],
     "queuedAt": "2026-10-01T22:29:53.889Z"
+  },
+  {
+    "conditionKey": "land:land/spend-review-phase-b",
+    "title": "Landing blocked: unit-tests-node red on land/spend-review-phase-b",
+    "description": "land.yml did not land land/spend-review-phase-b: the unit-tests-node gate went red at 083b7e3822. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36933482113",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/spend-review-phase-b"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "083b7e3822fcdfbaacb064d86a8fcde8fb9dcaaa"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36933482113"
+      }
+    ],
+    "queuedAt": "2026-10-01T22:42:41.824Z"
   }
 ]
