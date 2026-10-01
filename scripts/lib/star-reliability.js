@@ -33,9 +33,93 @@ function isHighReliabilityStar(data) {
   if (!data) return false;
   // Outlet on the authoritative list bypasses the low-reliability gate —
   // these outlets have dedicated extractors with verified extraction patterns.
+  // NOTE (BRO-4499): this bypass also covers generic text-pattern stars on
+  // authoritative outlets. Tightening it flips ~280 files, many of them genuine
+  // Time Out ratings, so the junk-star defence lives at READ time instead
+  // (isUncorroboratedGenericStar, which needs the LLM score to corroborate).
   if (OUTLET_STAR_AUTHORITATIVE.has(data.outletId)) return true;
   // Otherwise the source string must not be in the low-rel set.
   return !LOW_RELIABILITY_EXTRACTION.has(data.scoreSource);
+}
+
+// Free-text regex star labels: no DOM/schema anchor, so pagination, dates and
+// gallery counters ("1/5") match as ratings. Subset of LOW_RELIABILITY_EXTRACTION.
+const GENERIC_PATTERN_STAR_SOURCES = new Set(['numeric-stars', 'text-pattern']);
+
+/**
+ * True when the star on this record came from a generic free-text pattern.
+ * Checks originalScoreSource as well as scoreSource: a later sentiment pass can
+ * overwrite scoreSource ('sentiment-strong-positive') while the star it left
+ * behind is still the junk match (the Operation Mincemeat record).
+ */
+function isGenericPatternStar(data) {
+  if (!data) return false;
+  return GENERIC_PATTERN_STAR_SOURCES.has(data.originalScoreSource)
+    || GENERIC_PATTERN_STAR_SOURCES.has(data.scoreSource);
+}
+
+/**
+ * A generic-pattern star that the ensemble LLM contradicts across a bucket
+ * boundary by more than 25 points is not corroborated by anything: ignore it
+ * rather than let it outrank the model read. Same thresholds as the
+ * originalScore-llm-conflict check in rebuild-helpers.js getBestScore().
+ *
+ * Live failure (BRO-4499, reader report 2026-10-01): Chicago Tribune / Chris
+ * Jones on Operation Mincemeat, a rave ("a lot of fun and very clever to
+ * boot", 2 of 3 models Positive), shipped as 40 (then 20) off a numeric-stars
+ * "1/5" that nothing else supported.
+ *
+ * @param {object} data - review-text record
+ * @param {number} starScore - the star normalized to 0-100
+ * @returns {boolean}
+ */
+function isUncorroboratedGenericStar(data, starScore) {
+  if (!isGenericPatternStar(data) || !Number.isFinite(starScore)) return false;
+  const llm = data.llmScore && data.llmScore.score;
+  const conf = data.llmScore && data.llmScore.confidence;
+  if (!llm || conf === 'low' || Math.abs(starScore - llm) <= 25) return false;
+  const bucket = (x) => (x >= 70 ? 'positive' : x <= 40 ? 'negative' : 'mixed');
+  return bucket(starScore) !== bucket(llm);
+}
+
+// How far a star-sided adjudication may sit from the record's own trusted star
+// before its stated basis is considered false. A star step is 20 points and a
+// star band ~10 wide, so 12 tolerates in-band placement only.
+const STAR_SIDED_TOLERANCE = 12;
+
+/**
+ * True when an adjudication says it sided with the star but the record's own
+ * trusted star says something else (BRO-4499 cousins: a-dolls-house-part-2
+ * Theater Life, record 4/5 = 80, adjudicated 40 on an invented "2/5").
+ * Only trusted stars count (a low-reliability or generic-pattern star is the
+ * other guard's job), and the adjudicated score must sit in a different bucket.
+ */
+function adjudicationContradictsRecordStar(data) {
+  if (!adjudicationSidedWithStars(data)) return false;
+  const star = data.originalScoreNormalized;
+  const adj = data.adjudicatedScore;
+  if (typeof star !== 'number' || typeof adj !== 'number' || !(star > 0)) return false;
+  const src = data.originalScoreSource || data.scoreSource;
+  if (src && LOW_RELIABILITY_EXTRACTION.has(src)) return false;
+  if (Math.abs(adj - star) <= STAR_SIDED_TOLERANCE) return false;
+  const bucket = (x) => (x >= 70 ? 'positive' : x <= 40 ? 'negative' : 'mixed');
+  return bucket(adj) !== bucket(star);
+}
+
+/**
+ * True when an auto-adjudication says it sided with the star rating. Reads the
+ * structured sidedWith on the last adjudicationHistory entry first, and falls
+ * back to the note wording ('sided with originalScore' / 'sided with stars').
+ */
+function adjudicationSidedWithStars(data) {
+  if (!data) return false;
+  const hist = Array.isArray(data.adjudicationHistory) ? data.adjudicationHistory : [];
+  const last = hist.length ? hist[hist.length - 1] : null;
+  if (last && typeof last.sidedWith === 'string') {
+    return /^(originalScore|stars?|aggregatorStars|original rating|rating|aggregator)$/i.test(last.sidedWith.trim());
+  }
+  return /^Auto-adjudicated \([^)]*sided with (originalScore|stars?|aggregatorStars|original rating|rating|aggregator)\)/i
+    .test(data.adjudicationNote || '');
 }
 
 /**
@@ -97,7 +181,10 @@ function detectBandFromReviewFile(data) {
           band: { fraction, floor: band.floor, ceiling: band.ceiling },
           starsRaw: raw,
           kind: 'star',
-          highReliability: isHighReliabilityStar(data),
+          // BRO-4499: a generic-pattern star the existing LLM read contradicts
+          // must not pin a rescore to its band (Mincemeat's junk "1/5" -> 0-30).
+          highReliability: isHighReliabilityStar(data)
+            && !isUncorroboratedGenericStar(data, fraction * 100),
         };
       }
     }
@@ -174,7 +261,12 @@ function shouldUseAnchoredMode({ category, envFlag }) {
 module.exports = {
   LOW_RELIABILITY_EXTRACTION,
   ANCHORED_MARKETS,
+  GENERIC_PATTERN_STAR_SOURCES,
   isHighReliabilityStar,
+  isGenericPatternStar,
+  isUncorroboratedGenericStar,
+  adjudicationSidedWithStars,
+  adjudicationContradictsRecordStar,
   detectBandFromReviewFile,
   shouldUseAnchoredMode,
 };

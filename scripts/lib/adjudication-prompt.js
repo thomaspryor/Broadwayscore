@@ -15,6 +15,7 @@
 // by adjudication (score-extractors.js marks it noScoreExtractor). This matches the
 // outlet's actual behavior — LT reviews are text-only with no published ratings.
 const { KNOWN_STAR_OUTLETS } = require('./score-extractors');
+const { isGenericPatternStar } = require('./star-reliability');
 
 // Outlets that use binary designations (Critic's Pick, Critics' Choice) instead of
 // star/letter ratings. These are endorsements — they indicate positive sentiment but
@@ -80,7 +81,10 @@ function buildUserPrompt(review, sourceData, showTitle) {
 
   // Star rating / designation context
   const outletId = sourceData.outletId || review.outletId;
-  if (sourceData.originalScore && KNOWN_STAR_OUTLETS.has(outletId)) {
+  // BRO-4499: a rating scraped by a generic free-text pattern ("1/5" matched in
+  // page chrome) is not the critic's own, even on a known star outlet. Label it
+  // unverified so the adjudicator weighs the text, not the junk star.
+  if (sourceData.originalScore && KNOWN_STAR_OUTLETS.has(outletId) && !isGenericPatternStar(sourceData)) {
     // Outlet publishes its own star/letter ratings — trust it
     parts.push(`\n### Original Rating\n${sourceData.originalScore}`);
   } else if (sourceData.originalScore && DESIGNATION_OUTLETS.has(outletId)) {
