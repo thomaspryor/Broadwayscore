@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "jena-friedman-motherfucker-off-broadway-2026",
   "openingDate": "2026-10-01",
-  "detectedAt": "2026-10-01T15:41:15.116Z",
+  "detectedAt": "2026-10-01T15:47:46.180Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -10,10 +10,10 @@
       "outletId": "thecomedybureau",
       "criticName": "Unknown",
       "url": "https://thecomedybureau.com/show/jena-friedman-motherfucker-in-nyc/2026-10-01/",
-      "fullTextLen": 527,
-      "dispatchActionable": false,
-      "skipReason": "terminal_text_gate_block",
-      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "fullTextLen": 1103,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -24,9 +24,9 @@
     }
   ],
   "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 1,
+  "dispatchableOrphanCount": 1,
+  "blockedOrphanCount": 0,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
