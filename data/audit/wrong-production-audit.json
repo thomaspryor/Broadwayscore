@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-01T16:18:11.780Z",
+  "timestamp": "2026-10-01T17:06:20.648Z",
   "stats": {
-    "totalReviews": 45666,
-    "alreadyFlagged": 18648,
-    "dateGuardCatches": 271,
+    "totalReviews": 45683,
+    "alreadyFlagged": 18652,
+    "dateGuardCatches": 268,
     "directorMismatch": 1196,
-    "tvFilmSignals": 1326,
+    "tvFilmSignals": 1328,
     "londonSignals": 1249,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
@@ -5961,6 +5961,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "chewing-gum-dreams-off-west-end-2026",
+      "file": "thereviewshub--richard-maguire.json",
+      "score": 90,
+      "publishDate": "2026-09-17",
+      "url": "https://www.thereviewshub.com/chewing-gum-dreams-theatre503-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
@@ -31191,20 +31205,6 @@
       ]
     },
     {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "file": "islingtontribune--unknown.json",
-      "score": 78,
-      "publishDate": "2021-07-30",
-      "url": "https://www.islingtontribune.co.uk/article/review-the-importance-of-being-oscar-at-park-theatre",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "HIGH",
-          "detail": "Published 1818d before show (2021-07-30 vs 2026-07-22)"
-        }
-      ]
-    },
-    {
       "showId": "the-inheritance-2019",
       "file": "nydailynews--chris-jones.json",
       "score": 81,
@@ -33606,7 +33606,7 @@
     },
     {
       "showId": "the-standard-of-living-west-end-2026",
-      "file": "times-uk--unknown.json",
+      "file": "times-uk--dominic-maxwell.json",
       "score": 68,
       "publishDate": "2026-09-29",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
@@ -33802,6 +33802,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "the-turn-of-the-screw-off-west-end-2026",
+      "file": "thereviewshub--scott-matthewman.json",
+      "score": 76,
+      "publishDate": "2026-09-20",
+      "url": "https://www.thereviewshub.com/the-turn-of-the-screw-arcola-theatre-london/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -43586,31 +43600,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "flamenc-oh-off-west-end-2026",
-      "file": "theatreinedinburgh--chris-omaweng.json",
-      "score": 89,
-      "publishDate": "2026-08-25",
-      "url": "https://theatreinedinburgh.co.uk/reviews/flamenc-oh-assembly-rooms/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 36d before show (2026-08-25 vs 2026-09-30)"
-        }
-      ]
-    },
-    {
-      "showId": "flamenc-oh-off-west-end-2026",
-      "file": "thestage--jamie-body.json",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 47d before show (2026-08-14 vs 2026-09-30)"
         }
       ]
     },
