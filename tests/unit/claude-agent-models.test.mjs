@@ -14,7 +14,7 @@ const commandsDir = path.join(root, '.claude', 'commands');
 const agentsDir = path.join(root, '.claude', 'agents');
 
 function parseFrontmatter(text) {
-  const m = text.match(/^---\n([\s\S]*?)\n---\n/);
+  const m = text.replace(/\r\n/g, '\n').match(/^---\n([\s\S]*?)\n---\n/);
   if (!m) return null;
   const out = {};
   for (const line of m[1].split('\n')) {
@@ -55,11 +55,33 @@ test('every non-builtin subagent_type in commands has an agent file', () => {
   assert.deepEqual(missing, []);
 });
 
-test('review panels reference the pinned agents', () => {
-  const all = commandFiles.map((f) => fs.readFileSync(path.join(commandsDir, f), 'utf8')).join('\n');
-  assert.match(all, /subagent_type "review-panelist"/);
-  assert.match(all, /subagent_type "repo-sweeper"/);
+test('a prose "Claude agent" spawn names its subagent_type on the same line', () => {
+  // "fall back to a Claude agent" with no agent name gets improvised as
+  // general-purpose, which inherits the parent model.
+  const offenders = [];
+  for (const f of commandFiles) {
+    fs.readFileSync(path.join(commandsDir, f), 'utf8').split('\n').forEach((line, i) => {
+      if (/(use|fall back to|launch) a (single )?Claude agent/i.test(line) && !/subagent_type/.test(line)) {
+        offenders.push(`${f}:${i + 1}`);
+      }
+    });
+  }
+  assert.deepEqual(offenders, []);
 });
+
+const PANELS = {
+  'plan-review.md': 'review-panelist',
+  'ship-check.md': 'review-panelist',
+  'second-opinion.md': 'review-panelist',
+  'right-problem.md': 'review-panelist',
+  'plan-tasks.md': 'repo-sweeper',
+};
+for (const [file, agent] of Object.entries(PANELS)) {
+  test(`${file} spawns the pinned ${agent} agent`, () => {
+    const text = fs.readFileSync(path.join(commandsDir, file), 'utf8');
+    assert.ok(text.includes(`subagent_type "${agent}"`));
+  });
+}
 
 for (const [name, want] of Object.entries(EXPECTED)) {
   test(`agent ${name} parses with pinned model, effort and read-only tools`, () => {
@@ -69,6 +91,7 @@ for (const [name, want] of Object.entries(EXPECTED)) {
     assert.equal(fm.model, want.model);
     assert.equal(fm.effort, want.effort);
     assert.ok(fm.description && fm.description.length <= 200, 'description must be short');
+    assert.ok(fm.tools, `${name} must declare an explicit tools allowlist`);
     const tools = fm.tools.split(',').map((t) => t.trim());
     for (const banned of ['Write', 'Edit', 'NotebookEdit', 'Agent', 'Task']) {
       assert.ok(!tools.includes(banned), `${name} must not have ${banned}`);
