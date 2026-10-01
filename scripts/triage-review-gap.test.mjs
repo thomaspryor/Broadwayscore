@@ -120,3 +120,17 @@ test('no --url: falls back to outlet matching (unchanged)', () => {
   assert.equal(r.matchedBy, 'outlet');
   assert.equal(r.state, 'in-pipeline-awaiting-deploy');
 });
+
+test('--url: same review with a stray tracking query string still matches (not a false missed-discovery)', () => {
+  const r = run({ [`${SHOW}/fixture-outlet--a-critic.json`]: { ...base, publishDate: '2026-09-12', url: 'https://fixture.example/review/real-review?foo=bar' } },
+    'Fixture Outlet', 'https://fixture.example/review/real-review');
+  assert.equal(r.state, 'in-pipeline-awaiting-deploy');
+});
+
+test('--url: _pending strand file with no url stays a candidate (never hidden)', () => {
+  const r = run({ [`_pending/${SHOW}/fixture-outlet--418ce4a5.json`]: { ...base, criticName: 'Unknown', publishDate: '2026-09-12', fullText: null, contentTier: 'stub', url: undefined } },
+    'Fixture Outlet', 'https://fixture.example/review/real-review');
+  assert.notEqual(r.state, 'true-missed-discovery');
+  assert.equal(r.signals.reviewTexts.candidateCount, 1);
+  assert.equal(r.signals.reviewTexts.anyPendingByline, true);
+});

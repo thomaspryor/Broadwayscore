@@ -44,9 +44,12 @@ function extractReviewerLine(html) {
 // (broadwayworld.com/author/...) as the value; a name is never an href.
 const URL_LIKE_RE = /^(?:https?:)?\/\/|^www\.|^\/[a-z]|\.(?:com|co\.uk|org|net)\/|\/author\//i;
 
+const DOMAIN_LIKE_RE = /\.(?:com|co\.uk|org|net)\b/i;
+
 /**
  * Author name from schema.org JSON-LD (`"author": {"@type":"Person","name":..}`,
- * object, array or bare string). Never returns a URL.
+ * object, array or bare string). Only Person-typed (or untyped) authors; never
+ * a URL, domain, organisation or house name (NOT_A_PERSON_RE).
  */
 function extractJsonLdAuthor(html) {
   const blocks = String(html).match(/<script[^>]+type=["']application\/ld\+json["'][^>]*>[\s\S]*?<\/script>/gi) || [];
@@ -55,18 +58,23 @@ function extractJsonLdAuthor(html) {
     try {
       doc = JSON.parse(block.replace(/^<script[^>]*>/i, '').replace(/<\/script>$/i, ''));
     } catch { continue; }
-    const stack = [doc];
-    while (stack.length) {
-      const node = stack.pop();
+    const queue = [doc];
+    while (queue.length) {
+      const node = queue.shift();
       if (!node || typeof node !== 'object') continue;
-      if (Array.isArray(node)) { stack.push(...node); continue; }
+      if (Array.isArray(node)) { queue.push(...node); continue; }
       if (node.author) {
         for (const a of [].concat(node.author)) {
-          const name = typeof a === 'string' ? a : a && a.name;
-          if (typeof name === 'string' && name.trim() && !URL_LIKE_RE.test(name.trim())) return decodeEntities(name).trim();
+          if (a && typeof a === 'object' && a['@type'] && !/^Person$/i.test([].concat(a['@type'])[0])) continue;
+          const raw = typeof a === 'string' ? a : a && a.name;
+          if (typeof raw !== 'string') continue;
+          const name = stripBylineSuffixes(decodeEntities(raw).trim());
+          if (!name || name.length < 2 || name.length > 80 || !/[A-Za-z]/.test(name)) continue;
+          if (URL_LIKE_RE.test(name) || DOMAIN_LIKE_RE.test(name) || NOT_A_PERSON_RE.test(name)) continue;
+          return name;
         }
       }
-      if (node['@graph']) stack.push(node['@graph']);
+      if (node['@graph']) queue.push(node['@graph']);
     }
   }
   return null;

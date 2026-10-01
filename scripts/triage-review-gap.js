@@ -304,7 +304,7 @@ function resolveExclusion(files, showRecord) {
 
 function reviewJsonMatches(list, showId, outletId, url) {
   const forShow = list.filter((r) => r.showId === showId);
-  if (url) return filterByUrl(forShow, url, (r) => r.url, normalizeUrl).length > 0;
+  if (url) return filterByUrl(forShow.filter((r) => r.url), url, (r) => r.url, normalizeUrl).length > 0;
   return forShow.some((r) => r.outletId === outletId);
 }
 
@@ -372,7 +372,7 @@ async function fetchLiveShowJson(showId) {
 // rather than "fixed" because there's no better signal in the payload to use.
 function checkLiveProd(json, outletId, url) {
   if (!json || !Array.isArray(json.rv)) return false;
-  if (url) return filterByUrl(json.rv, url, (r) => r.u, normalizeUrl).length > 0;
+  if (url) return filterByUrl(json.rv.filter((r) => r.u), url, (r) => r.u, normalizeUrl).length > 0;
   return json.rv.some((r) => normalizeOutlet(r.o || '') === outletId);
 }
 

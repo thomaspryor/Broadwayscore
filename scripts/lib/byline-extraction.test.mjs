@@ -98,3 +98,15 @@ test('JSON-LD author given as a URL string is ignored', () => {
   const html = `<script type="application/ld+json">{"author":"https://www.broadwayworld.com/author/Alexander-Cohen"}</script><span class="author-name">Jane Critic</span>`;
   assert.equal(extractByline(html), 'Jane Critic');
 });
+
+test('JSON-LD Organization / house-name / domain authors are ignored; meta byline wins', () => {
+  for (const author of ['{"@type":"Organization","name":"BroadwayWorld.com"}', '{"@type":"Person","name":"BroadwayWorld.com"}', '{"@type":"Person","name":"BWW Staff"}']) {
+    const html = `<script type="application/ld+json">{"author":${author}}</script><meta name="author" content="Real Critic">`;
+    assert.equal(extractByline(html), 'Real Critic');
+  }
+});
+
+test('JSON-LD author array: first valid Person in document order', () => {
+  const html = `<script type="application/ld+json">{"author":[{"@type":"Person","name":"Jane Smith"},{"@type":"Person","name":"John Doe"}]}</script>`;
+  assert.equal(extractByline(html), 'Jane Smith');
+});
