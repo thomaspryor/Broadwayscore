@@ -1,10 +1,14 @@
 /**
- * BRO-4485: a merge that brings a real byline onto a file stored as Unknown
- * must keep the name. ingest-urls read "Helen Shaw" off the NYT Degenerates
- * page, findExistingReviewFile matched the existing nytimes--unknown.json by
- * URL, and the merge dropped the name (the review stayed Unknown until a later
- * collector pass). Guards: hand-set names, junk names and a sibling that
- * already holds the URL or the named filename all leave the file alone.
+ * BRO-4485: a byline read off a review's own page must land on the existing
+ * Unknown file for that URL. ingest-urls read "Helen Shaw" off the NYT
+ * Degenerates page, findExistingReviewFile matched the existing
+ * nytimes--unknown.json by URL, and the merge dropped the name.
+ *
+ * The upgrade is deliberately narrow (adversarial review of the first cut):
+ * only an opt-in page-read byline at the same URL, only a plausible person
+ * name, never a credited creative, never when a same-outlet sibling holds the
+ * URL or the critic, and the file is renamed at once so no "named --unknown"
+ * file is left for the rebuild's rename/merge.
  */
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
@@ -15,7 +19,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const { createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer');
 
-const SHOW = 'degenerates-off-broadway-2026';
+const SHOW = 'bro-4485-test-show';
 const URL = 'https://www.nytimes.com/2026/09/30/theater/degenerates-review-the-longing-beneath-the-hate-and-self-hate.html';
 
 function setup(files) {
@@ -27,50 +31,82 @@ function setup(files) {
       showId: SHOW, outletId: 'nytimes', outlet: 'The New York Times', url: URL, source: 'rss-discovery', ...data,
     }, null, 2));
   }
-  return { dir, read: (name) => JSON.parse(fs.readFileSync(path.join(showDir, name), 'utf8')), list: () => fs.readdirSync(showDir).sort() };
+  return {
+    dir,
+    read: (name) => JSON.parse(fs.readFileSync(path.join(showDir, name), 'utf8')),
+    list: () => fs.readdirSync(showDir).sort(),
+  };
 }
 
-function ingest(dir, criticName) {
+function write(dir, criticName, extra = {}) {
   return createOrMergeReviewFile(SHOW, {
-    outletId: 'nytimes', outlet: 'The New York Times', criticName, url: URL, source: 'ingest-urls', fields: {},
+    outletId: 'nytimes', outlet: 'The New York Times', criticName, url: URL,
+    source: 'ingest-urls', bylineFromOwnPage: true, fields: {}, ...extra,
   }, { reviewTextsDir: dir });
 }
 
-describe('merge upgrades an Unknown byline (BRO-4485)', () => {
-  test('NYT Degenerates: Helen Shaw lands on the existing --unknown file', () => {
+describe('page-read byline upgrades an Unknown file (BRO-4485)', () => {
+  test('NYT Degenerates: Helen Shaw lands and the file is renamed', () => {
     const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
-    const r = ingest(t.dir, 'Helen Shaw');
+    const r = write(t.dir, 'Helen Shaw');
     assert.equal(r.action, 'updated');
-    const d = t.read('nytimes--unknown.json');
+    assert.deepEqual(t.list(), ['nytimes--helen-shaw.json']);
+    const d = t.read('nytimes--helen-shaw.json');
     assert.equal(d.criticName, 'Helen Shaw');
     assert.equal(d.criticEnrichedFrom, 'writer:ingest-urls');
+  });
+
+  test('without the page-read opt-in (aggregator rows) nothing changes', () => {
+    const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
+    write(t.dir, 'Helen Shaw', { bylineFromOwnPage: undefined, source: 'dtli' });
     assert.deepEqual(t.list(), ['nytimes--unknown.json']);
+    assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown');
+  });
+
+  test('a URL-less write never names the file', () => {
+    const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
+    write(t.dir, 'Jesse Green', { url: undefined });
+    assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown');
   });
 
   test('an unresolved incoming critic changes nothing', () => {
     const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
-    ingest(t.dir, 'Unknown');
+    write(t.dir, 'Unknown');
     assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown');
   });
 
-  test('a hand-set name is never overwritten', () => {
-    const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown', criticNameManual: true } });
-    ingest(t.dir, 'Helen Shaw');
-    assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown');
+  test('a hand-set or locked file is never overwritten', () => {
+    for (const flag of [{ criticNameManual: true }, { _locked: true }]) {
+      const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown', ...flag } });
+      write(t.dir, 'Helen Shaw');
+      assert.deepEqual(t.list(), ['nytimes--unknown.json']);
+      assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown');
+    }
   });
 
-  test('a junk byline is not accepted', () => {
-    const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
-    ingest(t.dir, 'Share full article');
-    assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown');
+  test('page chrome is not a name', () => {
+    for (const junk of ['Share full article', 'Updated October', 'Reviewed By', 'Theater Review', 'Critics Pick']) {
+      const t = setup({ 'nytimes--unknown.json': { criticName: 'Unknown' } });
+      write(t.dir, junk);
+      assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown', junk);
+    }
   });
 
-  test('no upgrade when a sibling already holds the named filename', () => {
+  test('no upgrade when a sibling already names this critic, even under a drifted slug', () => {
     const t = setup({
       'nytimes--unknown.json': { criticName: 'Unknown' },
-      'nytimes--helen-shaw.json': { criticName: 'Helen Shaw', url: 'https://www.nytimes.com/2026/09/30/theater/other.html' },
+      'nytimes--helen-shaw-2026.json': { criticName: 'Helen Shaw', url: 'https://www.nytimes.com/2026/09/30/theater/other.html' },
     });
-    ingest(t.dir, 'Helen Shaw');
+    write(t.dir, 'Helen Shaw');
+    assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown');
+  });
+
+  test('no upgrade when another same-outlet file holds the same URL', () => {
+    const t = setup({
+      'nytimes--unknown.json': { criticName: 'Unknown' },
+      'nytimes--jesse-green.json': { criticName: 'Jesse Green', wrongProduction: true },
+    });
+    write(t.dir, 'Helen Shaw');
     assert.equal(t.read('nytimes--unknown.json').criticName, 'Unknown');
   });
 });

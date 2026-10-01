@@ -26,6 +26,8 @@ const NOISE_TOKENS = new Set([
   'the', 'by', 'staff', 'team', 'editor', 'editors', 'reviewed', 'review',
   'reviews', 'written', 'posted', 'updated', 'published', 'guest', 'contributor',
   'standard', 'unknown', 'anonymous', 'view', 'posts', 'admin', 'correspondent',
+  // NYT/aggregator page labels ("Critic's Pick", "Critics Pick"; BRO-4485).
+  'critic', 'critics', "critic's", 'critic’s', 'pick', 'share', 'article',
 ]);
 
 /**

@@ -197,6 +197,9 @@ async function main() {
       outletId,
       outlet: outletName,
       criticName: criticName || 'Unknown', // collect-review-texts fills it in later when the page gave none
+      // Read off this URL's own HTML, so the writer may fill an existing
+      // Unknown file at the same URL with it (BRO-4485).
+      bylineFromOwnPage: !!criticName,
       url,
       source: 'ingest-urls',
       fields: {},

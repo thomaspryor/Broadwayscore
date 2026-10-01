@@ -39,7 +39,7 @@ const { isStaleNonReviewSlot, isAggregatorPageUrl } = require('./review-slot-gua
 const { isSameArticleBodyUpgrade } = require('./stale-merge-check');
 const { isShowDirHiddenBySparseCheckout } = require('./sparse-checkout-guard');
 const { validateUrlDomain } = require('./url-discovery');
-const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
+const { safeWriteReview, safeRenameReview, invalidateWrongProductionAutoClear } = require('./review-write-guard');
 const { classifyContentTier } = require('./content-quality');
 const { clearFailureFlags } = require('./clear-failure-flags');
 const { pickRerouteTarget, shouldSkipRoundupAudit, isRoundupPageAsReview, isLikelyTourReview, getWrongProductionReasonForUnknownCritic, getWrongProductionReasonForBww, isWrongShowUnknownLocked } = require('./review-guards');
@@ -1229,45 +1229,50 @@ function createOrMergeReviewFile(showId, input, options = {}) {
 }
 
 /**
- * Merge incoming data into an existing review file.
- * @private
+ * Whether a merge may write the incoming byline onto a file stored as Unknown
+ * (BRO-4485). Opt-in only: the caller must have read the name off this same
+ * page (input.bylineFromOwnPage, set by ingest-urls), and the incoming URL
+ * must be the file's URL. Aggregator rows and URL-less writes never qualify:
+ * their names are untrusted and pass 1 of findExistingReviewFile can match an
+ * --unknown file with no URL check at all. Also refuses a hand-set or locked
+ * file, a non-name (byline-recovery's isPlausiblePersonName), a credited
+ * creative/cast member, and any same-outlet sibling holding this URL or this
+ * critic: giving an --unknown file the same name+URL as a sibling is what let
+ * the rebuild's dedup drop a scored review (#27 incident, byline-recovery.js).
  */
-/**
- * Whether a merge may write the incoming byline onto a file stored as Unknown.
- * Refuses when the name is not a real person, the stored name was set by hand,
- * or another file for this outlet already holds the URL or the named filename:
- * giving an --unknown file the same name+URL as a sibling is what let the
- * rebuild's dedup drop a scored review (#27 incident, see byline-recovery.js).
- */
-function shouldUpgradeUnknownByline(filepath, existing, criticName) {
-  if (!existing || existing.criticNameManual) return false;
+function shouldUpgradeUnknownByline(filepath, existing, ctx) {
+  const { showId, input, criticName } = ctx;
+  if (!input || input.bylineFromOwnPage !== true || !input.url) return false;
+  if (!existing || existing.criticNameManual || existing._locked === true) return false;
   if (existing.criticName && !/^unknown$/i.test(String(existing.criticName).trim())) return false;
-  if (!criticName || /^unknown$/i.test(String(criticName).trim())) return false;
-  const { isValidAuthorName } = require('./content-quality');
-  if (!isValidAuthorName(criticName)) return false;
-  // isValidAuthorName passes page chrome like "Share full article"; a byline
-  // that overwrites Unknown must also look like a name (2-4 capitalized words).
-  const words = String(criticName).trim().split(/\s+/);
-  if (words.length < 2 || words.length > 4 || !words.every(w => /^[\p{Lu}][\p{L}'’.-]*$/u.test(w))) return false;
+  const { isPlausiblePersonName } = require('./byline-recovery');
+  if (!isPlausiblePersonName(criticName)) return false;
+  const { canonicalReviewUrl } = require('./review-url-clusters');
+  const canon = existing.url && canonicalReviewUrl(existing.url);
+  if (!canon || canon !== canonicalReviewUrl(input.url)) return false;
+  const show = _getShowById(showId);
+  if (show && evaluateCreditedPersonAsCritic(show, criticName).match) return false;
   const showDir = path.dirname(filepath);
   const self = path.basename(filepath);
-  const outletId = existing.outletId || self.split('--')[0];
-  const namedFile = generateReviewFilename(outletId, criticName);
-  if (namedFile !== self && fs.existsSync(path.join(showDir, namedFile))) return false;
-  if (existing.url) {
-    const { canonicalReviewUrl } = require('./review-url-clusters');
-    const canon = canonicalReviewUrl(existing.url);
-    for (const f of fs.readdirSync(showDir)) {
-      if (f === self || !f.endsWith('.json') || !f.startsWith(`${outletId}--`)) continue;
-      try {
-        const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
-        if (d && d.url && canonicalReviewUrl(d.url) === canon) return false;
-      } catch { /* unreadable sibling: not evidence either way */ }
-    }
+  const outletId = normalizeOutlet(existing.outletId || self.split('--')[0]);
+  if (fs.existsSync(path.join(showDir, generateReviewFilename(outletId, criticName)))) return false;
+  const wanted = normalizeCritic(criticName);
+  for (const f of fs.readdirSync(showDir)) {
+    if (f === self || !f.endsWith('.json')) continue;
+    try {
+      const d = JSON.parse(fs.readFileSync(path.join(showDir, f), 'utf8'));
+      if (!d || normalizeOutlet(d.outletId || f.split('--')[0]) !== outletId) continue;
+      if (d.url && canonicalReviewUrl(d.url) === canon) return false;
+      if (d.criticName && normalizeCritic(d.criticName) === wanted) return false;
+    } catch { /* unreadable sibling: not evidence either way */ }
   }
   return true;
 }
 
+/**
+ * Merge incoming data into an existing review file.
+ * @private
+ */
 function _mergeIntoExisting(filepath, existing, ctx) {
   const { showId, input, fields, criticName, dryRun, onMerge } = ctx;
   let changed = false;
@@ -1279,14 +1284,16 @@ function _mergeIntoExisting(filepath, existing, ctx) {
     existing.showId = showId;
     changed = true;
   }
-  // A real byline arriving for an Unknown file (BRO-4485): findExistingReviewFile
-  // matches the --unknown file by URL, and nothing below ever wrote the incoming
-  // name, so ingest-urls read "Helen Shaw" off the NYT Degenerates page and the
-  // review stayed Unknown until a later collector pass. Filename is left as is;
-  // the rebuild's rename handles a stale --unknown slug.
-  if (shouldUpgradeUnknownByline(filepath, existing, criticName)) {
+  // A real byline read off this file's own page (BRO-4485): ingest-urls read
+  // "Helen Shaw" off the NYT Degenerates page, findExistingReviewFile matched
+  // the existing nytimes--unknown.json by URL, and the merge dropped the name.
+  // The file is renamed to the named slug after the write below, as the
+  // collector's 1B-iii enrichment does, so no "named --unknown" file is left
+  // for the rebuild's rename/merge to act on.
+  const bylineUpgrade = shouldUpgradeUnknownByline(filepath, existing, { showId, input, criticName });
+  if (bylineUpgrade) {
     existing.criticName = criticName;
-    existing.criticEnrichedFrom = `writer:${(input && input.source) || 'unknown-source'}`;
+    existing.criticEnrichedFrom = `writer:${input.source || 'unknown-source'}`;
     changed = true;
   }
   // Full snapshot BEFORE any merge mutation runs (BRO-4130). Handed to
@@ -1643,6 +1650,15 @@ function _mergeIntoExisting(filepath, existing, ctx) {
         filepath,
         quarantinedPath: writeResult && writeResult.quarantinedPath,
       };
+    }
+    if (bylineUpgrade) {
+      const named = path.join(path.dirname(filepath), generateReviewFilename(normalizeOutlet(existing.outletId || path.basename(filepath).split('--')[0]), criticName));
+      const rename = safeRenameReview(filepath, named);
+      if (rename && rename.wrote) {
+        console.log(`  ↑ Byline from page: ${path.basename(filepath)} → ${path.basename(named)}`);
+        return { action: 'updated', filepath: named };
+      }
+      console.warn(`  ⚠ Byline set but rename of ${path.basename(filepath)} skipped (${(rename && rename.skipped) || 'unknown'}); the rebuild's stale --unknown rename will retry`);
     }
   }
 
