@@ -391,3 +391,15 @@ test('broadcast-deadline: a show sent on its sibling record is never past-deadli
   const lone = { 'x-2026': sentShows['x-2026'] };
   assert.strictEqual(pastDeadlineShows({ showIds: ['x-2026'], shows, sentShows: lone, nowMs: now }).length, 1);
 });
+
+test('findSentRecord: a draft waiting in Resend is not "sent"; a sibling send is found with its sentAt', () => {
+  const { findSentRecord } = require('./missed-broadcasts.js');
+  const draft = { draftId: 'd', draftStatus: 'draft', completed: true, sentAt: null };
+  assert.strictEqual(findSentRecord({ 'x-2026': draft }, 'x-2026', 'broadway'), null);
+  const twin = { draftId: 'd', draftStatus: 'sent', completed: true, sentAt: '2026-09-29T18:55:52Z' };
+  assert.strictEqual(findSentRecord({ 'x-2026': draft, 'broadway:x-2026': twin }, 'x-2026', 'broadway'), twin);
+  assert.strictEqual(findSentRecord({ 'x-2026': draft, 'broadway:a+x-2026': twin }, 'x-2026', 'broadway'), twin);
+  // Legacy pre-schema record (no draftStatus) keeps counting as sent.
+  const legacy = { completed: true };
+  assert.strictEqual(findSentRecord({ 'x-2026': legacy }, 'x-2026', 'broadway'), legacy);
+});

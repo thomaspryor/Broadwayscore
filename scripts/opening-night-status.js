@@ -28,6 +28,7 @@ const { checkReadiness, getMissingT1T2Outlets, getThresholds } = require('./open
 const { getTier, getTierWeight, TIER_WEIGHTS } = require('./lib/outlet-tiers');
 const { computeCriticScore } = require('./lib/compute-critic-score');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { findSentRecord } = require('./lib/missed-broadcasts');
 const { sendAlert } = require('./lib/discord-notify');
 
 // Paths
@@ -155,12 +156,13 @@ function getShowReviewStats(reviewsArr, showId, outletRegistry, showCategory) {
 function getBroadcastStatus(sentData, showId, market) {
   if (!sentData?.shows) return { state: 'waiting', detail: 'No broadcast data' };
 
-  const broadcastKey = `${market}:${showId}`;
-  const completed = sentData.shows[showId] || sentData.shows[broadcastKey];
-  if (completed?.completed) {
+  // A real send, not `completed` (set at draft creation): a draft still
+  // waiting in Resend falls through to 'waiting' (BRO-4474).
+  const completed = findSentRecord(sentData.shows, showId, market);
+  if (completed) {
     return {
       state: 'complete',
-      detail: `Broadcast sent at ${new Date(completed.sentAt).toLocaleString()}`,
+      detail: completed.sentAt ? `Broadcast sent at ${new Date(completed.sentAt).toLocaleString()}` : 'Broadcast sent',
       reviewCount: completed.reviewCount,
       sentAt: completed.sentAt,
     };

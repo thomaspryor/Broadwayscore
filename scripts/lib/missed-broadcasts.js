@@ -185,6 +185,25 @@ function sentOnSiblingRecord(sentShows, showId) {
   return false;
 }
 
+/**
+ * The record that proves the send for display (sentAt, reviewCount), or null.
+ * Status pages used to trust `completed`, which is set at DRAFT creation, so a
+ * draft waiting in Resend read "Broadcast sent at Invalid Date" (sentAt null).
+ */
+function findSentRecord(sentShows, showId, market) {
+  const shows = sentShows || {};
+  const candidates = [shows[showId], market ? shows[`${market}:${showId}`] : null];
+  for (const rec of candidates) if (rec && classifyBroadcastState(rec) === 'sent') return rec;
+  const own = shows[showId];
+  for (const [key, rec] of Object.entries(shows)) {
+    if (key === showId || !rec || key.startsWith('preview:') || key.startsWith('overdue-alert:')) continue;
+    const m = /^[a-z-]+:([^:]+)$/.exec(key);
+    const related = own && own.draftId ? rec.draftId === own.draftId : !!(m && m[1].split('+').includes(showId));
+    if (related && classifyBroadcastState(rec) === 'sent') return rec;
+  }
+  return null;
+}
+
 /** Kept for callers that only need the boolean. */
 function hasCompletedBroadcast(sentShows, showId) {
   return classifyShowBroadcastState(sentShows, showId) === 'sent';
@@ -327,6 +346,7 @@ module.exports = {
   classifyBroadcastState,
   classifyShowBroadcastState,
   sentOnSiblingRecord,
+  findSentRecord,
   wasCoveredByWeeklyRoundup,
   daysSinceOpening,
   hasCompletedBroadcast,
