@@ -419,31 +419,63 @@ function extractRunBlocks(raw) {
 }
 
 /**
- * Return violations of rule (e): a `run:` block that sets `pipefail` and
- * also contains a bare `echo $?` (dead code under bash -e). Exempt: `echo
- * $?` immediately preceded by `|| ` on the same line, since that construct
- * is reachable under `bash -e` (the `||` protects it).
+ * Rule (e), widened by BRO-4480: a captured exit code (`VAR=$?`, `local
+ * VAR=$?`, or `echo $?`) that is unreachable because GHA runs every `run:`
+ * block under `bash -e` (`bash -eo pipefail` with `shell: bash`). When the
+ * command on the previous logical line fails, `-e` aborts the step before the
+ * capture runs, so whatever was meant to report the failure never runs.
+ * BRO-4480: setup-playwright's `timeout 480 cmd` + `status=$?` hid an 8-minute
+ * install hang with zero diagnostics. The old rule only looked at `echo $?`
+ * in blocks that spelled out `pipefail`, and never at composite actions.
+ *
+ * Reachable (not flagged): the previous logical line contains `||` or `&&`
+ * (a failing left side of a list does not trip -e), starts with `!`, is a
+ * control-flow line (if/while/until/elif/then/else/do/fi/done/esac/;;/}/)),
+ * or errexit is off at that point (`set +e`, re-enabled by `set -e`).
+ * Function bodies ARE scanned: whether -e is live inside depends on the
+ * caller (`fn || x` suspends it), which this rule cannot see — exempt such a
+ * line with `# hygiene-exitcode-ok: <reason>` on the capture line or the
+ * command line before it (a per-line exemption; the file-wide
+ * `# hygiene-echo-exitcode-ok:` is still honoured by the caller).
+ * `\` continuations are joined, so the previous LOGICAL line is checked.
  */
+const CAPTURE_RE = /^(?:local\s+)?[A-Za-z_][A-Za-z0-9_]*=\$\?(?:\s*(?:[;#].*)?)$|^echo\s+"?\$\?"?/;
+const REACHABLE_PREV_RE = /\|\||&&|^!|^(?:if|elif|while|until|then|else|do|fi|done|esac|;;|\}|\))\b|^(?:\}|\))|(?:\bthen|\bdo|;;|\{)\s*$/;
+
+function logicalLines(block) {
+  const out = [];
+  let cur = null;
+  for (const l of block.lines) {
+    const text = l.text.trim();
+    if (!cur && (text === '' || text.startsWith('#'))) continue;
+    if (cur) {
+      cur.text = `${cur.text.replace(/\\$/, '')} ${text}`;
+      cur.raw += `\n${l.text}`;
+    } else {
+      cur = { lineNum: l.lineNum, text, raw: l.text };
+    }
+    if (!/\\$/.test(text)) { out.push(cur); cur = null; }
+  }
+  if (cur) out.push(cur);
+  return out;
+}
+
 function findPipefailDeadExitCodeEcho(raw) {
   const violations = [];
-
   for (const block of extractRunBlocks(raw)) {
-    const hasPipefail = block.lines.some(
-      (l) => !l.text.trimStart().startsWith('#') && /\bpipefail\b/.test(l.text),
-    );
-    if (!hasPipefail) continue;
-
-    for (const l of block.lines) {
-      const stripped = l.text.trimStart();
-      if (stripped.startsWith('#')) continue;
-      if (!/echo\s+"?\$\?"?/.test(l.text)) continue;
-      // Guarded on the same line — covers `cmd || echo $?`, brace groups
-      // (`cmd || { echo $?; }`), and subshells (`cmd || (echo $?)`).
-      if (/\|\|.*echo\s+"?\$\?"?/.test(l.text)) continue;
-      violations.push({ lineNum: l.lineNum, text: l.text.trim() });
+    let errexit = true;
+    let prev = null;
+    for (const line of logicalLines(block)) {
+      const { text } = line;
+      if (CAPTURE_RE.test(text) && errexit && prev && !REACHABLE_PREV_RE.test(prev.text)) {
+        const exempt = /hygiene-exitcode-ok:/.test(line.raw) || /hygiene-exitcode-ok:/.test(prev.raw);
+        if (!exempt) violations.push({ lineNum: line.lineNum, text, prev: prev.text });
+      }
+      if (/\bset\s+\+[a-z]*e|\bset\s+\+o\s+errexit/.test(text)) errexit = false;
+      else if (/\bset\s+-[a-z]*e[a-z]*\b|\bset\s+-o\s+errexit/.test(text)) errexit = true;
+      prev = line;
     }
   }
-
   return violations;
 }
 
