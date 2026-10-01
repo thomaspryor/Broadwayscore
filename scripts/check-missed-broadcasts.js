@@ -26,7 +26,7 @@
 
 const fs = require('fs');
 const path = require('path');
-const { findMissedBroadcasts } = require('./lib/missed-broadcasts');
+const { findMissedBroadcasts, applyLiveBroadcastStatus } = require('./lib/missed-broadcasts');
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
@@ -147,34 +147,23 @@ async function main() {
     newsletterIssues,
   });
 
-  // Ask Resend before paging about a draft that looks unsent. The tracker is
-  // only as fresh as the reconciler's last successful poll, and a missed poll
-  // (a 429, a run GitHub never scheduled) paged the owner for a School Girls
-  // email they had sent from the Resend UI two days earlier (BRO-4474). A live
-  // 'sent' suppresses the page for this run; the reconciler, the tracker's
-  // only writer, records it. Read-only, and skipped without a key or on any
-  // error, so the sweep can never stay silent on the strength of a failed GET.
+  // Ask Resend before paging about a draft that looks unsent (BRO-4474):
+  // a send the reconciler missed paged the owner for an email they had sent.
+  // Decision logic + time budget: applyLiveBroadcastStatus. Read-only (the
+  // reconciler stays the tracker's only writer), skipped without a key, and
+  // any failed or slow GET pages on tracker state as before.
   if (!DRY_RUN && process.env.RESEND_API_KEY) {
     const { getBroadcastWithRetry } = require('./reconcile-broadcast-state');
-    const liveSent = new Set();
-    for (const m of missed) {
-      if (!m.alertable || m.state !== 'draft-stuck') continue;
-      const draftId = ((sentRaw.shows || {})[m.id] || {}).draftId;
-      if (!draftId) continue;
-      try {
-        const res = await getBroadcastWithRetry(draftId);
-        const live = res && res.ok && res.data && res.data.status;
-        if (live === 'sent') {
-          console.log(`  ${m.id}: Resend reports draft ${draftId.slice(0, 8)}... as SENT, tracker is stale; not paging`);
-          liveSent.add(m.id);
-        }
-      } catch (err) {
-        console.log(`::warning::${m.id}: live Resend check failed (${err.message}); paging on tracker state`);
-      }
+    const fetchStatus = async (draftId) => {
+      const res = await getBroadcastWithRetry(draftId);
+      return res && res.ok && res.data ? res.data.status : null;
+    };
+    const live = await applyLiveBroadcastStatus(missed, sentRaw.shows, fetchStatus);
+    for (const id of live.confirmedSent) {
+      console.log(`::warning::${id}: Resend reports the draft SENT but the tracker still says draft; not paging. If this repeats, reconcile-broadcast-state is not updating the tracker.`);
     }
-    // Out of the report entirely (snapshot + morning digest), not just unpaged:
-    // a confirmed send is not a missed broadcast.
-    missed = missed.filter((m) => !liveSent.has(m.id));
+    for (const n of live.notes) console.log(`::warning::${n}`);
+    missed = live.missed;
   }
 
   const alertable = missed.filter((m) => m.alertable);

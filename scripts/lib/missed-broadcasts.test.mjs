@@ -403,3 +403,27 @@ test('findSentRecord: a draft waiting in Resend is not "sent"; a sibling send is
   const legacy = { completed: true };
   assert.strictEqual(findSentRecord({ 'x-2026': legacy }, 'x-2026', 'broadway'), legacy);
 });
+
+// BRO-4474 second opinion: the live pre-page check, decision logic only.
+test('applyLiveBroadcastStatus: sent drops, 404 relabels draft-unknown, error/slow keeps paging', async () => {
+  const { applyLiveBroadcastStatus } = require('./missed-broadcasts.js');
+  const row = (id, over = {}) => ({ id, state: 'draft-stuck', alertable: true, ...over });
+  const missed = [row('sent'), row('reaped'), row('err'), row('queued'), row('aged', { alertable: false }), row('never', { state: 'never-drafted' })];
+  const sentShows = Object.fromEntries(missed.map((m) => [m.id, { draftId: `d-${m.id}` }]));
+  const answers = { 'd-sent': 'sent', 'd-reaped': 'deleted', 'd-queued': 'queued' };
+  const calls = [];
+  const out = await applyLiveBroadcastStatus(missed, sentShows, async (d) => { calls.push(d); if (d === 'd-err') throw new Error('500'); return answers[d]; });
+  assert.deepStrictEqual(out.missed.map((m) => `${m.id}:${m.state}`), ['reaped:draft-unknown', 'err:draft-stuck', 'queued:draft-stuck', 'aged:draft-stuck', 'never:never-drafted']);
+  assert.deepStrictEqual(out.confirmedSent, ['sent']);
+  assert.deepStrictEqual(calls, ['d-sent', 'd-reaped', 'd-err', 'd-queued'], 'only alertable draft-stuck shows are checked');
+});
+
+test('applyLiveBroadcastStatus: a hung Resend cannot outlast the time budget', async () => {
+  const { applyLiveBroadcastStatus } = require('./missed-broadcasts.js');
+  const missed = [{ id: 'a', state: 'draft-stuck', alertable: true }, { id: 'b', state: 'draft-stuck', alertable: true }];
+  const t0 = Date.now();
+  const out = await applyLiveBroadcastStatus(missed, { a: { draftId: 'x' }, b: { draftId: 'y' } }, () => new Promise(() => {}), { deadlineMs: 50 });
+  assert.ok(Date.now() - t0 < 1000, 'returned well inside the step timeout');
+  assert.strictEqual(out.missed.length, 2, 'both still page');
+  assert.strictEqual(out.notes.length, 2);
+});
