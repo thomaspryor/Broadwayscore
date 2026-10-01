@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-01T15:29:29.256Z",
-  "processed": 48,
-  "failed": 22,
-  "successRate": "68.6%",
+  "updatedAt": "2026-10-01T15:46:21.041Z",
+  "processed": 293,
+  "failed": 259,
+  "successRate": "53.1%",
   "tierBreakdown": {
-    "playwright": 25,
+    "playwright": 160,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
@@ -15,5 +15,118 @@
     "archive": 7
   },
   "browserbaseSessions": 0,
-  "recentActivity": []
+  "recentActivity": [
+    {
+      "t": "2026-10-01T13:28:15.114Z",
+      "event": "bb-session",
+      "session": "15fe4bdd",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-10-01T13:28:15.513Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-01T13:28:26.440Z",
+      "event": "bb-session",
+      "session": "f8d318cb",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-10-01T13:28:26.792Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-01T13:31:06.679Z",
+      "event": "bb-session",
+      "session": "20dc9dbb",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-10-01T13:31:07.084Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-01T13:38:20.048Z",
+      "event": "bb-session",
+      "session": "c49051fb",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-01T13:38:23.894Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-01T13:38:42.613Z",
+      "event": "bb-session",
+      "session": "b3827023",
+      "url": "http://www.northjersey.com/story-archives/theater-review-the-book-of-mormon-1.11"
+    },
+    {
+      "t": "2026-10-01T13:38:46.417Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-01T15:11:07.274Z",
+      "event": "bb-session",
+      "session": "d564d16f",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-01T15:11:08.271Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-01T15:17:12.178Z",
+      "event": "bb-session",
+      "session": "93c2ec29",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-01T15:17:13.111Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-01T15:17:27.540Z",
+      "event": "bb-session",
+      "session": "14e2a6ec",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-01T15:17:28.432Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-01T15:19:14.596Z",
+      "event": "bb-session",
+      "session": "c57c04d5",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-10-01T15:19:46.837Z",
+      "event": "bb-session",
+      "session": "64fb1705",
+      "url": "https://www.talkclassical.com/threads/verdis-macbeth-from-torino-2026.96888/"
+    },
+    {
+      "t": "2026-10-01T15:19:48.909Z",
+      "event": "bb-session",
+      "session": "a50271c0",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    },
+    {
+      "t": "2026-10-01T15:20:08.350Z",
+      "event": "bb-session",
+      "session": "6e53af75",
+      "url": "https://www.broadwayworld.com/shows/The-Hope-Theory-336350.html"
+    }
+  ]
 }
