@@ -1,64 +1,88 @@
 {
-  "updatedAt": "2026-10-01T16:08:13.493Z",
-  "processed": 104,
-  "failed": 46,
-  "successRate": "69.3%",
+  "updatedAt": "2026-10-01T17:34:01.617Z",
+  "processed": 371,
+  "failed": 292,
+  "successRate": "56.0%",
   "tierBreakdown": {
-    "playwright": 62,
+    "playwright": 206,
     "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 15,
-    "scrapingbee": 9,
-    "brightdata": 2,
+    "scrapingdog": 40,
+    "scrapingbee": 32,
+    "brightdata": 20,
     "archiveToday": 0,
-    "archive": 23
+    "archive": 89
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-10-01T15:37:19.272Z",
+      "t": "2026-10-01T12:55:57.652Z",
       "event": "bb-session",
-      "session": "0f30c768",
+      "session": "d26750f8",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-10-01T12:56:17.415Z",
+      "event": "bb-session",
+      "session": "55ea456f",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-10-01T12:59:37.536Z",
+      "event": "bb-session",
+      "session": "9f74b90a",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-10-01T12:59:58.102Z",
+      "event": "bb-session",
+      "session": "7012493f",
+      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
+    },
+    {
+      "t": "2026-10-01T13:19:22.211Z",
+      "event": "bb-session",
+      "session": "f4d0c0f2",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-01T13:19:22.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-01T13:24:09.631Z",
+      "event": "bb-session",
+      "session": "e77c8141",
+      "url": "https://www.thestage.co.uk/reviews/golden-boy-review-almeida-theatre-london-josh"
+    },
+    {
+      "t": "2026-10-01T13:24:10.094Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-10-01T16:51:56.030Z",
+      "event": "bb-session",
+      "session": "c3663d86",
       "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
     },
     {
-      "t": "2026-10-01T15:37:19.637Z",
+      "t": "2026-10-01T16:51:56.977Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
     },
     {
-      "t": "2026-10-01T15:37:36.631Z",
+      "t": "2026-10-01T16:52:15.388Z",
       "event": "bb-session",
-      "session": "26166a1b",
+      "session": "ec5094a1",
       "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
     },
     {
-      "t": "2026-10-01T15:37:36.975Z",
+      "t": "2026-10-01T16:52:16.202Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-01T16:01:17.982Z",
-      "event": "bb-session",
-      "session": "2485f631",
-      "url": "https://www.wsj.com/articles/an-ark-review-ian-mckellens-shimmering-image-off-br"
-    },
-    {
-      "t": "2026-10-01T16:01:18.345Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-01T16:03:59.403Z",
-      "event": "bb-session",
-      "session": "441a3846",
-      "url": "https://www.wsj.com/opinion/a-transportive-boheme-returns-to-the-met-01f33e89"
-    },
-    {
-      "t": "2026-10-01T16:03:59.698Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
     }
   ]
 }

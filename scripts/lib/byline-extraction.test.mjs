@@ -77,3 +77,36 @@ test('an explicit "Reviewer: Name" line beats a house-account meta author (The R
   // No Reviewer line: the meta author still wins as before.
   assert.equal(extractByline('<meta name="author" content="Jane Doe" />'), 'Jane Doe');
 });
+
+// BRO-4475: BWW author page URL was stored as criticName.
+test('never returns an author-page URL from meta author; falls through to the real name', () => {
+  const html = `<meta name="author" content="https://www.broadwayworld.com/author/Alexander-Cohen"><span class="author-name">Alexander Cohen</span>`;
+  assert.equal(extractByline(html), 'Alexander Cohen');
+});
+
+test('URL-only byline candidates yield null, not the href', () => {
+  const html = `<a rel="author" href="/author/x">https://www.broadwayworld.com/author/Alexander-Cohen</a>`;
+  assert.equal(extractByline(html), null);
+});
+
+test('JSON-LD author name is preferred over a URL meta author', () => {
+  const html = `<script type="application/ld+json">{"@type":"NewsArticle","author":{"@type":"Person","name":"Alexander Cohen","url":"https://www.broadwayworld.com/author/Alexander-Cohen"}}</script><meta name="author" content="https://www.broadwayworld.com/author/Alexander-Cohen">`;
+  assert.equal(extractByline(html), 'Alexander Cohen');
+});
+
+test('JSON-LD author given as a URL string is ignored', () => {
+  const html = `<script type="application/ld+json">{"author":"https://www.broadwayworld.com/author/Alexander-Cohen"}</script><span class="author-name">Jane Critic</span>`;
+  assert.equal(extractByline(html), 'Jane Critic');
+});
+
+test('JSON-LD Organization / house-name / domain authors are ignored; meta byline wins', () => {
+  for (const author of ['{"@type":"Organization","name":"BroadwayWorld.com"}', '{"@type":"Person","name":"BroadwayWorld.com"}', '{"@type":"Person","name":"BWW Staff"}']) {
+    const html = `<script type="application/ld+json">{"author":${author}}</script><meta name="author" content="Real Critic">`;
+    assert.equal(extractByline(html), 'Real Critic');
+  }
+});
+
+test('JSON-LD author array: first valid Person in document order', () => {
+  const html = `<script type="application/ld+json">{"author":[{"@type":"Person","name":"Jane Smith"},{"@type":"Person","name":"John Doe"}]}</script>`;
+  assert.equal(extractByline(html), 'Jane Smith');
+});
