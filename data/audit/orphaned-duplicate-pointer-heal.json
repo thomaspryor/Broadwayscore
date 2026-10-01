@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-01T10:25:55.998Z",
+  "generated": "2026-10-01T10:39:14.979Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 24,
+  "count": 19,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -15,20 +15,6 @@
       "loserFile": "guardian--charles-isherwood.json",
       "targetFile": "guardian--adrian-horton.json",
       "reason": "orphaned-duplicate-heal: guardian--adrian-horton.json was flagged invalid after guardian--charles-isherwood.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "buena-vista-social-club-off-broadway-2023",
-      "loserFile": "theater-pizzazz--carol-rocamora.json",
-      "targetFile": "theater-pizzazz--unknown.json",
-      "reason": "orphaned-duplicate-heal: theater-pizzazz--unknown.json was flagged invalid after theater-pizzazz--carol-rocamora.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "buena-vista-social-club-off-broadway-2023",
-      "loserFile": "theatrely--emily-wyrwa.json",
-      "targetFile": "theatrely--juan-a-ramirez.json",
-      "reason": "orphaned-duplicate-heal: theatrely--juan-a-ramirez.json was flagged invalid after theatrely--emily-wyrwa.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -149,27 +135,6 @@
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "tru-off-broadway-2026",
-      "loserFile": "nysr--unknown.json",
-      "targetFile": "nysr--david-finkle.json",
-      "reason": "orphaned-duplicate-heal: nysr--david-finkle.json was flagged invalid after nysr--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "buena-vista-social-club-off-broadway-2023",
-      "loserFile": "theatrely--emily-wyrwa.json",
-      "targetFile": "theatrely--juan-a-ramirez.json",
-      "reason": "orphaned-duplicate-heal: theatrely--juan-a-ramirez.json was flagged invalid after theatrely--emily-wyrwa.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
-    },
-    {
-      "showId": "tru-off-broadway-2026",
-      "loserFile": "nysr--unknown.json",
-      "targetFile": "nysr--david-finkle.json",
-      "reason": "orphaned-duplicate-heal: nysr--david-finkle.json was flagged invalid after nysr--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }

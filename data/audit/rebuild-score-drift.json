@@ -1,8 +1,16 @@
 {
-  "timestamp": "2026-10-01T10:35:20.225Z",
-  "totalDrifted": 10,
+  "timestamp": "2026-10-01T10:42:19.734Z",
+  "totalDrifted": 8,
   "threshold": 20,
   "reviews": [
+    {
+      "showId": "parade-2023",
+      "outlet": "The Wall Street Journal",
+      "critic": "Charles Isherwood",
+      "oldScore": 80,
+      "newScore": 61,
+      "delta": 19
+    },
     {
       "showId": "paranormal-activity-chicago-regional-2025",
       "outlet": "BroadwayWorld",
@@ -10,14 +18,6 @@
       "oldScore": 58,
       "newScore": 75,
       "delta": 17
-    },
-    {
-      "showId": "parade-2023",
-      "outlet": "The Wall Street Journal",
-      "critic": "Charles Isherwood",
-      "oldScore": 65,
-      "newScore": 80,
-      "delta": 15
     },
     {
       "showId": "working-girl-la-jolla-regional-2025",
@@ -65,22 +65,6 @@
       "critic": "Kevin T. Baldwin",
       "oldScore": 66,
       "newScore": 77,
-      "delta": 11
-    },
-    {
-      "showId": "consumed-west-end-2026",
-      "outlet": "The Upcoming",
-      "critic": "Chloe Vilarrubi",
-      "oldScore": 100,
-      "newScore": 89,
-      "delta": 11
-    },
-    {
-      "showId": "shucked-tour-2024",
-      "outlet": "San Jose Mercury News",
-      "critic": "Jim Harrington",
-      "oldScore": 80,
-      "newScore": 91,
       "delta": 11
     }
   ]
