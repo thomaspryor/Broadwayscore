@@ -10,7 +10,8 @@ test('titles ending in "musical" are musicals; a leading "Musical" is not', () =
   for (const t of ['Death Note The Musical', 'Trainspotting the musical', 'GOD IS A WOMAN THE MUSICAL', 'Copperfield! The New Musical',
     'Shamilton! The Improvised Hip-Hop Musical', "We've Been Here Before: A One Woman Musical", 'Monsters A Killer New Musical Comedy',
     'Dog Man - The Musical', 'Show: A New Musical', 'Heathers the Musical', 'Singfeld! A Musical About Nothing',
-    'Friends The Musical Parody', 'Kinky Boots The Musical - UK Tour', 'Death Note The Musical in Concert', 'Musical']) {
+    'Friends The Musical Parody', 'Kinky Boots The Musical - UK Tour', 'Death Note The Musical in Concert', 'Musical',
+    'Musical Hell: A New Musical', 'The Musical of Musicals (The Musical!)']) {
     assert.equal(titleSaysMusical(t), true, t);
   }
   for (const t of ['The Musical Comedy Murders of 1940', 'Jimmy', 'Musical Chairs at Midnight', '', null]) {
@@ -22,10 +23,15 @@ test('showTypeFor: venue genre label first, then the title', () => {
   const { showTypeFor } = require('./title-says-musical.js');
   assert.equal(showTypeFor('The Pianist', 'Musicals'), 'musical');           // Park Theatre's Spektrix genre
   assert.equal(showTypeFor('Some Show', 'Musical - star casting'), 'musical'); // Young Vic
-  assert.equal(showTypeFor('Some Show', 'Opera'), 'opera');
+  assert.equal(showTypeFor('Some Show', 'Opera'), 'play', 'opera labels are not mapped');
   assert.equal(showTypeFor('Jimmy', 'Drama'), 'play');
   assert.equal(showTypeFor('Father Christmas', "Christmas Shows; Children's Show"), 'play');
   assert.equal(showTypeFor('Death Note The Musical', null), 'musical');
   assert.equal(showTypeFor('The Musical Comedy Murders of 1940', undefined), 'play');
   assert.equal(showTypeFor('X', 'Non-musical drama'), 'play');
+  assert.equal(showTypeFor('X', 'Non musical drama'), 'play');
+  const { knownShowType } = require('./title-says-musical.js');
+  assert.equal(knownShowType('Broom Play', undefined), null, 'no signal: leave the type empty');
+  assert.equal(knownShowType('Broom Play', 'Drama'), 'play');
+  assert.equal(knownShowType('Copperfield! The New Musical', undefined), 'musical');
 });

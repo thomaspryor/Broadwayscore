@@ -17,25 +17,37 @@
 function titleSaysMusical(title) {
   const t = String(title || '').trim();
   if (!/(?<![-\w])musical\b/i.test(t)) return false;
+  // A title that ends in "musical" is one, whatever comes first
+  // ("Musical Hell: A New Musical").
+  if (/\bmusical\W*$/i.test(t)) return true;
   // "Musical" opening the title is an adjective on the next word ("The
-  // Musical Comedy Murders of 1940", "Musical Chairs"), unless it is the
-  // whole title.
+  // Musical Comedy Murders of 1940", "Musical Chairs").
   if (/^(?:the\s+)?musical\s+\S/i.test(t)) return false;
   return true;
 }
 
 /**
  * Show type for an automatically promoted row: the venue's own genre label
- * first (Spektrix "Musicals" / "Musical - star casting" / "Opera"), then the
- * title. A label that names no type (Drama, Theatre, Children's Show) falls
- * back to the title; the default is 'play'.
+ * first (Spektrix "Musicals", "Musical - star casting"), then the title; the
+ * default is 'play'. A label that names no type (Drama, Theatre, Children's
+ * Show) falls back to the title. "Non-musical" / "non musical" labels do not
+ * count. Opera labels are not mapped: arts centres use them for cinema
+ * screenings too, and discovery files staged opera as 'special'.
  */
 function showTypeFor(title, listingGenre) {
-  const g = String(listingGenre || '');
-  // "Non-musical drama" must not count: no hyphen or letter right before.
+  const g = String(listingGenre || '').replace(/\bnon[\s-]*musicals?\b/gi, '');
   if (/(?<![-\w])musicals?\b/i.test(g)) return 'musical';
-  if (/\boperas?\b/i.test(g)) return 'opera';
   return titleSaysMusical(title) ? 'musical' : 'play';
 }
 
-module.exports = { titleSaysMusical, showTypeFor };
+/**
+ * Same, but null when nothing says what the show is (no genre label, no
+ * "musical" in the title): for builders that leave an unknown type empty
+ * rather than guess 'play'.
+ */
+function knownShowType(title, listingGenre) {
+  if (!listingGenre && !titleSaysMusical(title)) return null;
+  return showTypeFor(title, listingGenre);
+}
+
+module.exports = { titleSaysMusical, showTypeFor, knownShowType };

@@ -41,7 +41,7 @@
  *   - Promotion log is JSONL append-only for audit trail
  */
 
-const { showTypeFor } = require('./lib/title-says-musical');
+const { showTypeFor, knownShowType } = require('./lib/title-says-musical');
 const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
@@ -349,7 +349,9 @@ function buildShowEntry(candidate) {
     }),
     category: category || 'off-broadway',
     market: marketForCategory(category || 'off-broadway'),
-    type: null,
+    // The venue's own genre label or a title that says "musical"; empty when
+    // neither says what the show is (lib/title-says-musical.js).
+    type: knownShowType(candidate.title, candidate.listingGenre),
     discoverySource: candidate.source,
     discoveredAt: candidate.discoveredAt,
     // Provisional — opening-night orchestrator + Lortel/IBDB enrichment

@@ -377,7 +377,6 @@ test("type comes from the venue's genre label when it names one, else the title"
   assert.equal(showTypeFor('Jimmy', 'Drama'), 'play');
   assert.equal(showTypeFor('Some Show', 'Musicals'), 'musical');                 // Park Theatre's genre
   assert.equal(showTypeFor('Some Show', 'Musical - star casting'), 'musical');   // Young Vic's genre
-  assert.equal(showTypeFor('Some Show', 'Opera'), 'opera');
   assert.equal(showTypeFor('Father Christmas', "Christmas Shows; Children's Show"), 'play');
   assert.equal(showTypeFor('Death Note The Musical', null), 'musical');
   const entry = buildOffWestEndVenueShowEntry({ title: 'Some Show', venue: 'Park Theatre', category: 'off-west-end', source: 'venue-page:park-theatre', listingFirstDate: '2026-11-01', listingLastDate: '2026-12-01', listingGenre: 'Musicals' }, buildVenueVocabulary([]), { now: NOW });
