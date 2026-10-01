@@ -308,4 +308,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { main, parseBroadcastResponse, retryDelayMs, SENT_PATH };
+module.exports = { main, parseBroadcastResponse, retryDelayMs, getBroadcastWithRetry, SENT_PATH };

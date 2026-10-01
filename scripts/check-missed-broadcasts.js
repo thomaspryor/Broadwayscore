@@ -139,13 +139,43 @@ async function main() {
   const newsletterState = readJson('newsletter-state.json', null);
   const newsletterIssues = (newsletterState && Array.isArray(newsletterState.issues)) ? newsletterState.issues : [];
 
-  const missed = findMissedBroadcasts({
+  let missed = findMissedBroadcasts({
     shows: showsRaw.shows,
     sentShows: sentRaw.shows,
     reviews,
     now: Date.now(),
     newsletterIssues,
   });
+
+  // Ask Resend before paging about a draft that looks unsent. The tracker is
+  // only as fresh as the reconciler's last successful poll, and a missed poll
+  // (a 429, a run GitHub never scheduled) paged the owner for a School Girls
+  // email they had sent from the Resend UI two days earlier (BRO-4474). A live
+  // 'sent' suppresses the page for this run; the reconciler, the tracker's
+  // only writer, records it. Read-only, and skipped without a key or on any
+  // error, so the sweep can never stay silent on the strength of a failed GET.
+  if (!DRY_RUN && process.env.RESEND_API_KEY) {
+    const { getBroadcastWithRetry } = require('./reconcile-broadcast-state');
+    const liveSent = new Set();
+    for (const m of missed) {
+      if (!m.alertable || m.state !== 'draft-stuck') continue;
+      const draftId = ((sentRaw.shows || {})[m.id] || {}).draftId;
+      if (!draftId) continue;
+      try {
+        const res = await getBroadcastWithRetry(draftId);
+        const live = res && res.ok && res.data && res.data.status;
+        if (live === 'sent') {
+          console.log(`  ${m.id}: Resend reports draft ${draftId.slice(0, 8)}... as SENT, tracker is stale; not paging`);
+          liveSent.add(m.id);
+        }
+      } catch (err) {
+        console.log(`::warning::${m.id}: live Resend check failed (${err.message}); paging on tracker state`);
+      }
+    }
+    // Out of the report entirely (snapshot + morning digest), not just unpaged:
+    // a confirmed send is not a missed broadcast.
+    missed = missed.filter((m) => !liveSent.has(m.id));
+  }
 
   const alertable = missed.filter((m) => m.alertable);
   const aged = missed.filter((m) => !m.alertable);
