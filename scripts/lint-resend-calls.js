@@ -45,6 +45,11 @@ const ALLOWLIST = new Set([
   // sign-off 2026-09-29: "Send it as a separate email, not an existing one."
   // Transactional to the owner only.
   'scripts/send-reddit-post-email.js',
+  // "Reader fix applied" email, one per fixed reader bug report (BRO-4452).
+  // Owner sign-off 2026-10-01: "If a reader sends a bug, and you fix it, I
+  // need to know what the reader sent in, their name, email address, etc."
+  // Transactional to the owner only.
+  'scripts/lib/owner-fix-email.js',
   // Grandfathered — not yet migrated (Sprint 2/3 targets). Remove each line as
   // it's migrated onto owner-alert-router.js.
   'scripts/sync-followers.js',

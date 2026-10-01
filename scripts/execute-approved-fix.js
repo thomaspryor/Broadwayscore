@@ -47,7 +47,7 @@ const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { unretireId } = require('./lib/retired-show-ids.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
-const { shouldEmailOwnerOnFix } = require('./lib/owner-fix-email.js');
+const { shouldEmailOwnerOnFix, readerFromDiagnosis, sendReaderFixOwnerEmail } = require('./lib/owner-fix-email.js');
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -635,42 +635,46 @@ async function main() {
   output('result', applied.length > 0 ? 'fixed' : 'no-changes');
   output('failed', String(failed.length));
 
-  // 6. Send confirmation to Tom (reader-feedback fixes only; session-authored
-  // bro-* plans already report in chat + Linear, BRO-4452)
+  // Persisted plans are PII-redacted (submitter.email is null by construction,
+  // see generate-remediation-plan.js), so the reader's contact details and
+  // message come from the issue's DIAGNOSIS_JSON at execute time. Recovery
+  // MUST stay below the plan-file write above so none of it re-enters the
+  // committed JSON. Fetched at most once for steps 6 and 7.
+  let readerPromise = null;
+  const getReader = () => (readerPromise ||= fetchDiagnosisFromIssue(issueNumber).then(readerFromDiagnosis));
+
+  // 6. Tell Tom a reader's report was fixed, with who sent it and what they
+  // wrote (BRO-4452). Reader-feedback ids only: session-authored bro-* plans
+  // already report in chat + Linear.
   const ownerEmail = process.env.OWNER_EMAIL;
   if (shouldEmailOwnerOnFix({ issueNumber, ownerEmail, appliedCount: applied.length })) {
-    try {
-      const showTitle = planData.submitter.show || '';
-      await sendEmail(
-        ownerEmail,
-        'Tom at Broadway Scorecard <updates@broadwayscorecard.com>',
-        showTitle ? `Fix Applied: ${showTitle} (#${issueNumber})` : `Fix Applied: Issue #${issueNumber}`,
-        `<!DOCTYPE html><html><head><meta charset="utf-8"></head>
-<body style="margin:0;padding:24px;font-family:-apple-system,sans-serif;font-size:15px;line-height:1.6;color:#333;">
-<p style="margin:0;">The fix for issue #${issueNumber} has been applied and will be live shortly.</p>
-<br>
-<p style="margin:0;font-weight:600;">What was done:</p>
-${applied.map(a => `<p style="margin:0;padding-left:20px;">&bull; ${a}</p>`).join('\n')}
-${failed.length > 0 ? `<br><p style="margin:0;color:#c00;">Skipped: ${failed.join('; ')}</p>` : ''}
-</body></html>`
-      );
-    } catch { /* best effort */ }
+    const reader = await getReader();
+    await sendReaderFixOwnerEmail({
+      issueNumber,
+      reader: { ...reader, show: reader.show || planData.submitter.show || null },
+      summary: planData.plan.summary,
+      changes: applied,
+      skipped: failed,
+      how: planData.isSystematic ? 'systematic' : 'approved',
+      partial: failed.length > 0,
+    });
   }
 
-  // 7. Send thank-you to submitter. Persisted plans are PII-redacted
-  // (submitter.email is null by construction — see generate-remediation-plan.js),
-  // so recover the submitter from the GitHub issue's DIAGNOSIS_JSON at
-  // execute time. Recovery MUST stay below the plan-file write above so the
-  // email never re-enters the committed JSON. Systematic plans skip the
-  // thank-you — the parent spot fix already sent one for the same report.
+  // 7. Send thank-you to submitter. Systematic plans skip it: the parent spot
+  // fix already sent one for the same report.
   if (planData.isSystematic) {
     console.log('Systematic plan — skipping submitter thank-you (parent plan covers it)');
     return;
   }
   if (!planData.submitter.email && applied.length > 0) {
-    const recovered = await fetchSubmitterFromIssue(issueNumber);
-    if (recovered) {
-      planData.submitter = { ...planData.submitter, ...recovered };
+    const recovered = await getReader();
+    if (recovered.email) {
+      planData.submitter = {
+        ...planData.submitter,
+        name: recovered.name || 'Anonymous',
+        email: recovered.email,
+        show: recovered.show || planData.submitter.show,
+      };
       console.log('Submitter recovered from issue DIAGNOSIS_JSON');
     }
   }
@@ -687,16 +691,16 @@ ${failed.length > 0 ? `<br><p style="margin:0;color:#c00;">Skipped: ${failed.joi
         subject,
         html
       );
-      console.log(`Thank-you sent to ${planData.submitter.email}`);
+      console.log('Thank-you sent to submitter');
     } catch { /* best effort */ }
   }
 }
 
-// Recover submitter contact info from the GitHub issue's embedded
-// DIAGNOSIS_JSON. The persisted plan file is PII-redacted, so this is the
-// only source of the submitter's email at execute time. "504-systematic"
-// style ids resolve to their parent issue via parseInt.
-async function fetchSubmitterFromIssue(issueNumber) {
+// Read the GitHub issue's embedded DIAGNOSIS_JSON (reader name, email, show,
+// original message). The persisted plan file is PII-redacted, so this is the
+// only source of them at execute time. "504-systematic" style ids resolve to
+// their parent issue via parseInt. Returns null when unavailable.
+async function fetchDiagnosisFromIssue(issueNumber) {
   const ghIssue = parseInt(issueNumber);
   const token = process.env.GH_TOKEN || process.env.GITHUB_TOKEN;
   if (isNaN(ghIssue) || !token) return null;
@@ -724,12 +728,7 @@ async function fetchSubmitterFromIssue(issueNumber) {
     const issueBody = JSON.parse(body).body || '';
     const m = issueBody.match(/<!-- DIAGNOSIS_JSON\n([\s\S]*?)\nDIAGNOSIS_JSON -->/);
     if (!m) return null;
-    const diagnosis = JSON.parse(m[1]);
-    return {
-      name: diagnosis.submitterName || 'Anonymous',
-      email: diagnosis.submitterEmail || null,
-      show: diagnosis.submitterShow || null,
-    };
+    return JSON.parse(m[1]);
   } catch {
     return null;
   }
