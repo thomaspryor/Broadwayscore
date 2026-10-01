@@ -1,31 +1,54 @@
 {
-  "updatedAt": "2026-10-01T18:21:53.373Z",
-  "processed": 13,
-  "failed": 2,
-  "successRate": "86.7%",
+  "updatedAt": "2026-10-01T18:28:06.730Z",
+  "processed": 104,
+  "failed": 46,
+  "successRate": "69.3%",
   "tierBreakdown": {
-    "playwright": 9,
-    "amp": 0,
+    "playwright": 71,
+    "amp": 1,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 1,
+    "scrapingdog": 14,
+    "scrapingbee": 7,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 16
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
-      "t": "2026-10-01T18:20:48.116Z",
+      "t": "2026-10-01T17:51:38.789Z",
       "event": "bb-session",
-      "session": "96d0769f",
-      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+      "session": "dedceb31",
+      "url": "http://www.publictheater.org/"
     },
     {
-      "t": "2026-10-01T18:20:49.066Z",
+      "t": "2026-10-01T17:51:56.645Z",
+      "event": "bb-session",
+      "session": "3041b438",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-10-01T18:02:35.141Z",
+      "event": "bb-session",
+      "session": "20e4e286",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-10-01T18:02:35.642Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-01T18:02:53.115Z",
+      "event": "bb-session",
+      "session": "9d3562fd",
+      "url": "https://www.nytimes.com/2026/06/15/theater/jessie-buckley-romeo-and-juliet-strea"
+    },
+    {
+      "t": "2026-10-01T18:02:53.614Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
     }
   ]
 }
