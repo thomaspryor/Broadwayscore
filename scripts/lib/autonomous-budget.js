@@ -37,6 +37,7 @@
 'use strict';
 
 const { DEFAULT_CAPS } = require('./opening-night-budget.js');
+const { CLAUDE_SONNET, CLAUDE_OPUS } = require('./models.js');
 
 // Per-card envelopes. maxUSD/maxWallMin are hard per-attempt kill limits the
 // executor enforces cooperatively; estUSD/estAttempt2USD drive admission.
@@ -77,8 +78,8 @@ const DEFAULTS = Object.freeze({
 // ── Model policy ────────────────────────────────────────────────────────────
 
 const MODELS = Object.freeze({
-  attempt1: 'claude-sonnet-5',
-  attempt2Content: 'claude-opus-4-8',
+  attempt1: CLAUDE_SONNET,
+  attempt2Content: CLAUDE_OPUS,
 });
 
 // Tier-2 data-card classes whose diff can DELETE existing review data, not
@@ -97,8 +98,12 @@ const FORBIDDEN_MODEL_RE = /fable|mythos/i;
 // $/MTok (input, output) by model family — for ledgering raw-API calls
 // (triage) whose responses carry token counts but no cost field. Matched by
 // substring so date-suffixed ids ("claude-sonnet-5-2026…") still price.
+// First match wins: generation-specific rows sit above the family fallbacks,
+// which carry the older (4.x / sonnet-5 / opus-4-8) list prices.
 // claude CLI calls don't need this: they report total_cost_usd directly.
 const MODEL_PRICES = Object.freeze([
+  Object.freeze({ re: /opus-5-5/i, inUSD: 4, outUSD: 20 }),
+  Object.freeze({ re: /sonnet-5-5/i, inUSD: 2, outUSD: 10 }),
   Object.freeze({ re: /opus/i, inUSD: 5, outUSD: 25 }),
   Object.freeze({ re: /sonnet/i, inUSD: 3, outUSD: 15 }),
   Object.freeze({ re: /haiku/i, inUSD: 1, outUSD: 5 }),

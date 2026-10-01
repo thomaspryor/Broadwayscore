@@ -26,6 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { pickModel } = require('./autonomous-budget.js');
+const { CLAUDE_SONNET, CLAUDE_OPUS } = require('./models.js');
 
 const QUEUE_PATH = path.join(__dirname, '..', '..', 'data', 'audit', 'autonomous-queue.json');
 
@@ -42,8 +43,8 @@ const MODEL_HINT_RE = /^\s*model\s*:\s*(opus|sonnet|haiku)\b/im;
 // might return in the future that isn't in this table yet — a stale table
 // must not silently downgrade a card that was actually sized for Opus.
 const SHORT_ALIAS = Object.freeze({
-  'claude-opus-4-8': 'opus',
-  'claude-sonnet-5': 'sonnet',
+  [CLAUDE_OPUS]: 'opus',
+  [CLAUDE_SONNET]: 'sonnet',
 });
 
 function explicitModelHint(task, card) {
