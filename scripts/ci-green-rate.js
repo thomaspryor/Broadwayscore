@@ -45,7 +45,7 @@ const core = require('./lib/ci-green-rate.js');
 
 const REPO_ROOT = path.join(__dirname, '..');
 const LEDGER_PATH = path.join(REPO_ROOT, 'data', 'audit', 'ci-green-rate.jsonl');
-const JQ = '.workflow_runs | map({databaseId: .id, headSha: .head_sha, createdAt: .created_at, updatedAt: .updated_at, runStartedAt: .run_started_at, conclusion: .conclusion, status: .status})';
+const JQ = '{total: .total_count, runs: (.workflow_runs | map({databaseId: .id, headSha: .head_sha, createdAt: .created_at, updatedAt: .updated_at, runStartedAt: .run_started_at, conclusion: .conclusion, status: .status}))}';
 
 function usage() {
   return [
@@ -98,6 +98,7 @@ function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execF
   const sinceDate = core.windowStartDate(days, now);
   const runs = [];
   let truncated = false;
+  let total = null;
   const env = { ...process.env };
   delete env.GH_REPO; // belt-and-braces: the path is explicit, but never let an override leak into gh
   for (let page = 1; page <= maxPages; page++) {
@@ -109,11 +110,19 @@ function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execF
       maxBuffer: 16 * 1024 * 1024,
       stdio: ['ignore', 'pipe', 'pipe'],
     });
-    const rows = JSON.parse(stdout);
-    if (!Array.isArray(rows)) throw new Error('unexpected gh api payload (not an array after --jq)');
+    const parsed = JSON.parse(stdout);
+    const rows = parsed && parsed.runs;
+    if (!Array.isArray(rows)) throw new Error('unexpected gh api payload (no runs array after --jq)');
+    if (Number.isFinite(parsed.total)) total = parsed.total;
     runs.push(...rows);
-    if (rows.length < core.DEFAULTS.perPage) break;
+    // Stop on GitHub's own total_count, not on a short page: a page can come
+    // back short mid-window (BRO-4465: 39 of 250 runs scored as a confident
+    // 35.9%), and stopping there silently truncates the window.
+    if (rows.length === 0 || (total !== null ? runs.length >= total : rows.length < core.DEFAULTS.perPage)) break;
     if (page === maxPages) truncated = true;
+  }
+  if (!truncated && total !== null && runs.length < total) {
+    throw new Error(`incomplete fetch: got ${runs.length} of ${total} runs (short API page) — refusing a partial-window verdict`);
   }
   return { runs, truncated };
 }
