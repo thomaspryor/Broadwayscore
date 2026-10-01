@@ -92,9 +92,9 @@ function adjudicationSidedWithStars(data) {
   const hist = Array.isArray(data.adjudicationHistory) ? data.adjudicationHistory : [];
   const last = hist.length ? hist[hist.length - 1] : null;
   if (last && typeof last.sidedWith === 'string') {
-    return /^(originalScore|stars?|original rating)$/i.test(last.sidedWith.trim());
+    return /^(originalScore|stars?|aggregatorStars|original rating|rating|aggregator)$/i.test(last.sidedWith.trim());
   }
-  return /^Auto-adjudicated \([^)]*sided with (originalScore|stars?|original rating)\)/i
+  return /^Auto-adjudicated \([^)]*sided with (originalScore|stars?|aggregatorStars|original rating|rating|aggregator)\)/i
     .test(data.adjudicationNote || '');
 }
 
@@ -157,7 +157,10 @@ function detectBandFromReviewFile(data) {
           band: { fraction, floor: band.floor, ceiling: band.ceiling },
           starsRaw: raw,
           kind: 'star',
-          highReliability: isHighReliabilityStar(data),
+          // BRO-4499: a generic-pattern star the existing LLM read contradicts
+          // must not pin a rescore to its band (Mincemeat's junk "1/5" -> 0-30).
+          highReliability: isHighReliabilityStar(data)
+            && !isUncorroboratedGenericStar(data, fraction * 100),
         };
       }
     }

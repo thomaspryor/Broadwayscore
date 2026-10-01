@@ -714,7 +714,8 @@ function getBestScore(data, opts = {}) {
     // Chicago Tribune review into a 40. The star is the same one P0.5 ignores
     // below (isUncorroboratedGenericStar), so the two paths stay consistent.
     const staleStarBasis = adjudicationSidedWithStars(data)
-      && isUncorroboratedGenericStar(data, Number(data.originalScoreNormalized));
+      && typeof data.originalScoreNormalized === 'number'
+      && isUncorroboratedGenericStar(data, data.originalScoreNormalized);
     if (!hasVerifiedStarScore && !outsideAnchoredBand && !staleStarBasis) {
       return { score: data.adjudicatedScore, source: 'adjudicated' };
     }
@@ -1185,7 +1186,7 @@ function getBestScore(data, opts = {}) {
   // or cross-attributed it from a different show's roundup row.
   if (data.aggregatorStars && isKnownStarOutlet && aggregatorStarsCorroboratedByFullText(data)) {
     const parsed = parseOriginalScore(data.aggregatorStars, data.outletId);
-    if (parsed !== null) {
+    if (parsed !== null && !isUncorroboratedGenericStar(data, parsed)) {
       inc('aggregatorStarsFallback');
       return { score: parsed, source: 'aggregatorStars-fallback' };
     }

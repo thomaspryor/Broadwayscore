@@ -18,6 +18,7 @@ const {
   isGenericPatternStar,
   isUncorroboratedGenericStar,
   adjudicationSidedWithStars,
+  detectBandFromReviewFile,
 } = require('../../scripts/lib/star-reliability.js');
 const { getBestScore } = require('../../scripts/lib/rebuild-helpers.js');
 const { buildUserPrompt } = require('../../scripts/lib/adjudication-prompt.js');
@@ -70,7 +71,24 @@ describe('isUncorroboratedGenericStar', () => {
   });
 });
 
+describe('detectBandFromReviewFile (write-time anchoring)', () => {
+  test('an uncorroborated generic star no longer pins the rescore band as high-reliability', () => {
+    const r = detectBandFromReviewFile(mincemeat());
+    assert.ok(r && r.band);
+    assert.equal(r.highReliability, false);
+  });
+  test('a corroborated or dedicated-extractor star keeps high-reliability', () => {
+    assert.equal(detectBandFromReviewFile(mincemeat({ llmScore: { score: 25, confidence: 'high' } })).highReliability, true);
+    assert.equal(detectBandFromReviewFile(mincemeat({ originalScoreSource: 'json-ld', scoreSource: 'json-ld' })).highReliability, true);
+  });
+});
+
 describe('adjudicationSidedWithStars', () => {
+  test('covers the wording variants seen in the corpus', () => {
+    for (const w of ['aggregatorStars', 'rating', 'aggregator', 'stars', 'originalScore']) {
+      assert.equal(adjudicationSidedWithStars({ adjudicationHistory: [{ sidedWith: w }] }), true, w);
+    }
+  });
   test('structured sidedWith wins', () => {
     assert.equal(adjudicationSidedWithStars(mincemeat()), true);
     assert.equal(adjudicationSidedWithStars({ adjudicationHistory: [{ sidedWith: 'llm' }], adjudicationNote: NOTE }), false);
@@ -95,6 +113,16 @@ describe('getBestScore on the Mincemeat-shaped record', () => {
   test('works with the star only on aggregatorStars (relay slot)', () => {
     const r = getBestScore(mincemeat({ originalScore: undefined, adjudicatedScore: undefined }), { stats: {} });
     assert.equal(r.score, 67);
+  });
+  test('a null originalScoreNormalized is not read as a 0-point star', () => {
+    const r = getBestScore(mincemeat({ originalScoreNormalized: null }), { stats: {} });
+    assert.equal(r.score, 40);
+    assert.equal(r.source, 'adjudicated');
+  });
+  test('the last-resort aggregatorStars fallback cannot re-ingest the junk star', () => {
+    const r = getBestScore(mincemeat({ ensembleData: undefined, adjudicatedScore: undefined, llmScore: { score: 67, confidence: 'medium' } }), { stats: {} });
+    // no ensemble data and no other score field: unscored (null), not a fabricated 20
+    assert.equal(r, null);
   });
   test('a human override still wins over everything', () => {
     assert.deepEqual(getBestScore(mincemeat({ humanReviewScore: 90 }), { stats: {} }), { score: 90, source: 'human-review' });
