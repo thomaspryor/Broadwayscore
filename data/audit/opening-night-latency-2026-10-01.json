@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-01T19:36:27.258Z",
+  "generatedAt": "2026-10-01T23:57:03.848Z",
   "date": "2026-10-01",
   "logFile": "/home/runner/work/Broadwayscore/Broadwayscore/data/audit/stage-latency.jsonl",
-  "entryCount": 237400,
+  "entryCount": 247039,
   "shows": [
     {
       "showId": "game-of-thrones-the-mad-king-regional-2026",
@@ -3565,7 +3565,7 @@
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1928405,
+        "scored-to-rebuilt": 1924620,
         "rebuilt-to-deployed": 2423541726
       },
       "reviews_over_15min": 0,
@@ -3874,7 +3874,7 @@
     },
     {
       "showId": "paddington-the-musical-west-end-2025",
-      "reviewCount": 26,
+      "reviewCount": 25,
       "median_e2e_ms": 2482717169,
       "p90_e2e_ms": 2482717177,
       "per_stage_median_ms": {
@@ -6095,13 +6095,13 @@
     },
     {
       "showId": "man-to-man-west-end-2026",
-      "reviewCount": 37,
+      "reviewCount": 38,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 2568287,
+        "scored-to-rebuilt": 1891839,
         "rebuilt-to-deployed": 1456091000
       },
       "reviews_over_15min": 0,
@@ -9859,13 +9859,13 @@
     },
     {
       "showId": "arias-with-a-twist-off-broadway-2026",
-      "reviewCount": 8,
+      "reviewCount": 9,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1422234,
+        "scored-to-rebuilt": 1753571,
         "rebuilt-to-deployed": 56100518
       },
       "reviews_over_15min": 0,
@@ -9889,13 +9889,13 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "reviewCount": 19,
+      "reviewCount": 20,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 400475,
+        "scored-to-rebuilt": 346286,
         "rebuilt-to-deployed": 73674965
       },
       "reviews_over_15min": 0,
@@ -10090,13 +10090,13 @@
     },
     {
       "showId": "twenty-thousand-streets-off-west-end-2026",
-      "reviewCount": 9,
+      "reviewCount": 11,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 3262827,
+        "scored-to-rebuilt": 3257390,
         "rebuilt-to-deployed": 56100512
       },
       "reviews_over_15min": 0,
@@ -10165,13 +10165,13 @@
     },
     {
       "showId": "for-colored-girls-who-have-considered-suicide-when-the-rainbow-is-enuf-off-west-end-2026",
-      "reviewCount": 5,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 913215,
+        "scored-to-rebuilt": 910762,
         "rebuilt-to-deployed": 51579220
       },
       "reviews_over_15min": 0,
@@ -10690,13 +10690,13 @@
     },
     {
       "showId": "the-turn-of-the-screw-off-west-end-2026",
-      "reviewCount": 4,
+      "reviewCount": 5,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1137797,
+        "scored-to-rebuilt": 1135382,
         "rebuilt-to-deployed": 19087905
       },
       "reviews_over_15min": 0,
@@ -11335,13 +11335,13 @@
     },
     {
       "showId": "a-small-and-quiet-light-off-west-end-2026",
-      "reviewCount": 3,
+      "reviewCount": 8,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 1100972,
+        "scored-to-rebuilt": 2036171,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11350,13 +11350,13 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
-      "reviewCount": 1,
+      "reviewCount": 6,
       "median_e2e_ms": null,
       "p90_e2e_ms": null,
       "per_stage_median_ms": {
         "first-seen-to-collected": null,
         "collected-to-scored": null,
-        "scored-to-rebuilt": 455360,
+        "scored-to-rebuilt": 103366,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
@@ -11372,6 +11372,156 @@
         "first-seen-to-collected": null,
         "collected-to-scored": null,
         "scored-to-rebuilt": 744179,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "two-girls-off-broadway-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "act-of-god-off-west-end-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": null,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "maybe-happy-ending-tour-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1809502,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "jersey-boys-tour-2026",
+      "reviewCount": 3,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 1803288,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "ectoplasm-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 2090278,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "crazy-mama-a-true-story-of-love-and-madness-off-broadway-2026",
+      "reviewCount": 5,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 2079443,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-invention-of-love-off-broadway-2026",
+      "reviewCount": 13,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 2074343,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-first-year-off-west-end-2026",
+      "reviewCount": 4,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 2017936,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "the-secret-circus-musical-off-broadway-2026",
+      "reviewCount": 1,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 805558,
+        "rebuilt-to-deployed": null
+      },
+      "reviews_over_15min": 0,
+      "reviews_over_60min": 0,
+      "slowest_reviews": []
+    },
+    {
+      "showId": "one-flew-over-the-cuckoos-nest-west-end-2026",
+      "reviewCount": 11,
+      "median_e2e_ms": null,
+      "p90_e2e_ms": null,
+      "per_stage_median_ms": {
+        "first-seen-to-collected": null,
+        "collected-to-scored": null,
+        "scored-to-rebuilt": 522511,
         "rebuilt-to-deployed": null
       },
       "reviews_over_15min": 0,
