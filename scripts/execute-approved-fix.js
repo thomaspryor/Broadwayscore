@@ -21,7 +21,8 @@
  *                       (scripts/lib/review-field-edit.js; BRO-4216)
  *
  * Env vars:
- *   ISSUE_NUMBER       - GitHub issue number
+ *   ISSUE_NUMBER       - GitHub issue number (reader feedback), or bro-N[-x] for
+ *                        a session-authored plan (CLOUD.md; no owner email)
  *   ANTHROPIC_API_KEY  - For any scripts that need it
  *   RESEND_API_KEY     - For confirmation emails
  *   OWNER_EMAIL        - Tom's email
