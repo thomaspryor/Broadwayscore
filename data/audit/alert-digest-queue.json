@@ -10,5 +10,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-01T13:58:14.880Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:whos-afraid-of-virginia-woolf-west-end-2026",
+    "title": "Shipped review too short to verify on Who’s Afraid of Virginia Woolf?",
+    "description": "thestage/Dave Fargnoli (thestage--dave-fargnoli.json) SHIPPED with fullText too short to assess title mention (36 chars — paywall stub?): https://www.thestage.co.uk/reviews/whos-afraid-of-virginia-woolf-review-sohoplace-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T14:40:07.513Z"
+  },
+  {
+    "conditionKey": "broadcast-gate:checklist:the-standard-of-living-west-end-2026,whos-afraid-of-virginia-woolf-west-end-2026",
+    "title": "Opening Night Broadcast Blocked — Checklist Errors",
+    "description": "Automated broadcast halted: opening night checklist found errors for pending shows.\nCheck /tmp/checklist-*.json or re-run with force_broadcast=true to override.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Shows",
+        "value": "the-standard-of-living-west-end-2026,whos-afraid-of-virginia-woolf-west-end-2026"
+      }
+    ],
+    "queuedAt": "2026-10-01T14:40:08.485Z"
   }
 ]

@@ -304,7 +304,44 @@ function evaluateLlmYearMisdate({ review, show, isMultiProductionTitle }) {
   return { corrected: new Date(shifted).toISOString().slice(0, 10), original: review.publishDate };
 }
 
+/**
+ * Date the wrongProduction date guards should read for a review (BRO-4473).
+ *
+ * ensemble-scorer fills a MISSING publishDate with the model's guess
+ * (dateSource 'llm-scoring'). A guess is never evidence a review belongs to
+ * another production: WAOVW West End 2026 (opened 2026-10-01) got a review
+ * dated 2024-10-01 (2y early) and the guards stamped wrongProduction +
+ * contentTier invalid. evaluateLlmYearMisdate cannot help (skips revival
+ * titles, shifts only +1y). So when the date is an LLM guess that sits BEFORE
+ * the pre-window AND the text was fetched inside the run window, the fetch
+ * date is the best evidence of "when this review exists": use it instead.
+ * Content-based production checks still decide revival contamination.
+ * Any non-llm dateSource (page, URL, JSON-LD, archive) is returned untouched.
+ *
+ * @param {object} review - review-text JSON
+ * @param {object} show - shows.json record
+ * @returns {{ publishDate: string|undefined, substituted: boolean, original?: string }}
+ */
+function guardPublishDate(review, show) {
+  const orig = review && review.publishDate;
+  const keep = { publishDate: orig, substituted: false };
+  if (!review || !show || review.dateSource !== 'llm-scoring' || !orig) return keep;
+  const m = String(orig).match(/^(\d{4})-(\d{2})-(\d{2})/);
+  if (!m) return keep;
+  const DAY = 86400000;
+  const pd = Date.UTC(+m[1], +m[2] - 1, +m[3]);
+  const fetched = Date.parse(review.textFetchedAt || review.firstSeenAt || '');
+  const earliestStr = earliestShowDate(show);
+  if (Number.isNaN(fetched) || !earliestStr) return keep;
+  const winStart = Date.parse(earliestStr) - UK_DAYS_BEFORE_PREVIEW * DAY;
+  const winEnd = show.closingDate ? Date.parse(show.closingDate) + DAYS_AFTER_CLOSE * DAY : Infinity;
+  if (Number.isNaN(winStart) || pd >= winStart) return keep;
+  if (fetched < winStart || fetched > winEnd) return keep;
+  return { publishDate: new Date(fetched).toISOString().slice(0, 10), substituted: true, original: orig };
+}
+
 module.exports = {
+  guardPublishDate,
   evaluateLlmYearMisdate,
   evaluateDateGuard,
   evaluateDatelessRevivalGuard,

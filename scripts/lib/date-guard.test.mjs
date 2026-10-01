@@ -204,3 +204,43 @@ test('evaluateDateGuard: a date OUTSIDE every declared priorRun is still flagged
     assert.equal(evaluateLlmYearMisdate({ review: { publishDate: '2024-02-29', dateSource: 'llm-scoring', textFetchedAt: '2025-03-05T00:00:00Z' }, show: s, isMultiProductionTitle: false }), null);
   });
 }
+
+// BRO-4473: an LLM-guessed publishDate must never be the sole basis for a
+// wrongProduction stamp, revival title or not.
+{
+  const { guardPublishDate } = require('./date-guard.js');
+  const show = { previewsStartDate: '2026-09-02', openingDate: '2026-10-01', closingDate: '2027-01-30' };
+  const review = { publishDate: '2024-10-01', dateSource: 'llm-scoring', textFetchedAt: '2026-10-01T13:36:00Z' };
+
+  test('guardPublishDate: revival title, llm-scoring date 2y early, fetched in window -> fetch date, no wrongProduction', () => {
+    // Raw guess trips the guard (the bug)...
+    assert.equal(evaluateDateGuard({ pubDate: new Date('2024-10-01'), show, outletId: 'west-end-best-friend' }).flag, true);
+    // ...the guard-facing date does not.
+    const g = guardPublishDate(review, show);
+    assert.equal(g.substituted, true);
+    assert.equal(g.publishDate, '2026-10-01');
+    assert.equal(evaluateDateGuard({ pubDate: new Date(g.publishDate), show, outletId: 'west-end-best-friend' }).flag, false);
+    assert.equal(evaluatePreWindowInclusion({ pubDate: new Date(g.publishDate), showEarliest: new Date('2026-09-02'), isFlexCategory: true }).exclude, false);
+  });
+
+  test('guardPublishDate: real (non-llm) dates are never replaced', () => {
+    for (const dateSource of ['url', 'json-ld', 'page', undefined, 'llm-scoring-year-corrected']) {
+      const g = guardPublishDate({ ...review, dateSource }, show);
+      assert.equal(g.substituted, false, String(dateSource));
+      assert.equal(g.publishDate, '2024-10-01');
+    }
+  });
+
+  test('guardPublishDate: no substitution when fetch is outside window, missing, or date already in window', () => {
+    assert.equal(guardPublishDate({ ...review, textFetchedAt: '2025-01-01T00:00:00Z' }, show).substituted, false);
+    assert.equal(guardPublishDate({ ...review, textFetchedAt: '2027-06-01T00:00:00Z' }, show).substituted, false);
+    assert.equal(guardPublishDate({ publishDate: '2024-10-01', dateSource: 'llm-scoring' }, show).substituted, false);
+    assert.equal(guardPublishDate({ ...review, publishDate: '2026-09-20' }, show).substituted, false);
+    assert.equal(guardPublishDate(review, {}).substituted, false);
+  });
+
+  test('guardPublishDate: falls back to firstSeenAt', () => {
+    const { textFetchedAt, ...rest } = review;
+    assert.equal(guardPublishDate({ ...rest, firstSeenAt: '2026-10-02T00:00:00Z' }, show).publishDate, '2026-10-02');
+  });
+}
