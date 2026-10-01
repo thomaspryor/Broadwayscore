@@ -60,9 +60,10 @@ const PUSH_WITH_RETRY_SH = path.join(__dirname, '..', '..', 'scripts', 'lib', 'p
 // npm ci. Components, each sourced rather than guessed:
 //   569s  Checkout at fetch-depth 300 — measured on run 33410708893 (2026-08-31,
 //         the cancelled run BRO-2627 cites), same action and same repo size.
-//   480s  setup-playwright — its own composite action's hard `timeout` ceiling
-//         (.github/actions/setup-playwright, "Install Playwright browsers"), so
-//         this is a true upper bound, not an average.
+//   500s  setup-playwright — its own composite action's hard ceiling
+//         (.github/actions/setup-playwright, "Install Playwright browsers"):
+//         2 attempts x (220s timeout + 15s kill grace) + 30s dpkg recovery
+//         (BRO-4480 retry), so this is a true upper bound, not an average.
 //   366s  everything else (setup-node, npm ci, checkout-core-data, the
 //         missing-secrets guard, the ledger commit). Deliberately reuses the
 //         whole non-Playbill bucket measured on that run even though this job
@@ -70,7 +71,7 @@ const PUSH_WITH_RETRY_SH = path.join(__dirname, '..', '..', 'scripts', 'lib', 'p
 //         gone — so the number stays conservative while remaining sourced.
 // The sweep's own cost is bounded by --time-budget-min instead, and the persist
 // step's by pushStepWorstCaseSec(); both are checked separately below.
-const MEASURED_FIXED_COST_SEC = 569 + 480 + 366;
+const MEASURED_FIXED_COST_SEC = 569 + 500 + 366;
 // Require at least 15% slack between the fixed cost + the step's budget and
 // the job's declared ceiling — catches a future timeout-minutes cut or a
 // --time-budget-min raise that quietly re-creates a tight-budget flake,
