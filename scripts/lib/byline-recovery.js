@@ -26,6 +26,13 @@ const NOISE_TOKENS = new Set([
   'the', 'by', 'staff', 'team', 'editor', 'editors', 'reviewed', 'review',
   'reviews', 'written', 'posted', 'updated', 'published', 'guest', 'contributor',
   'standard', 'unknown', 'anonymous', 'view', 'posts', 'admin', 'correspondent',
+  // NYT/aggregator page labels ("Critic's Pick", "Critics Pick"; BRO-4485).
+  'critic', 'critics', "critic's", 'critic’s', 'pick', 'share', 'article',
+  // Page chrome and outlet words seen as bylines in reviews.json ("Read more
+  // articles by …", "National Theatre", "York Magazine"); no real critic
+  // name in the corpus contains any of them.
+  'read', 'more', 'sign', 'up', 'opinion', 'section', 'desk', 'score', 'world',
+  'theatre', 'theater', 'magazine', 'news', 'articles',
 ]);
 
 /**

@@ -24,6 +24,8 @@
 // found"), and we need none of it: every call here is a GoTrue admin/verify or
 // a PostgREST request, all plain HTTP. Node 18+ has global fetch.
 
+import { runPlanSharesChecks } from './lib/plan-shares-roundtrip.mjs';
+
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
 const SERVICE = process.env.SUPABASE_SERVICE_ROLE_KEY;
@@ -329,6 +331,14 @@ async function main() {
     });
     check('watchlist: showtime clears', wClear.ok && wClear.json?.[0]?.curtain_time === null,
       `PATCH status=${wClear.status}`);
+
+    // ── SHARED PLANS (20261001_plan_shares.sql, BRO-4481) ──
+    // Runs while A's SHOW_ID row still has its past 2026-09-11 date and only an
+    // older review, so it doubles as the "past, unlogged plan stays private"
+    // case. Skips itself until the migration is applied.
+    await runPlanSharesChecks({
+      rest, check, anonKey: ANON, userA, tokenA, tokenB, pastUnloggedShowId: SHOW_ID,
+    });
 
     // ── LISTS ──
     const lIns = await rest('POST', 'lists', tokenA, { user_id: userA.id, name: 'Round-trip list' });

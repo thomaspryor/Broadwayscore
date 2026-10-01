@@ -162,3 +162,12 @@ test('update-show-status.js Check 2d actually calls the gate', () => {
     'the Check 2d flip must be gated on announcedBlock'
   );
 });
+
+test('typeForListedShow: types a listed row only when its title says what it is; never guesses', () => {
+  const { typeForListedShow } = require('../../scripts/lib/announced-promotion.js');
+  assert.equal(typeForListedShow({ title: 'Cranford' }, 'upcoming'), null, 'no signal: stays empty for the validator to flag');
+  assert.equal(typeForListedShow({ title: 'The Outsiders' }, 'closed'), null);
+  assert.equal(typeForListedShow({ title: 'Copperfield! The New Musical' }, 'open'), 'musical');
+  assert.equal(typeForListedShow({ title: 'Cranford' }, 'announced'), null);
+  assert.equal(typeForListedShow({ title: 'Cranford', type: 'musical' }, 'upcoming'), null);
+});

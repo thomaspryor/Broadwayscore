@@ -178,12 +178,15 @@ Notes:
   {
     "name": "Tom",
     "showBooked": true, "showUnbooked": true,
-    "entries": [{ "show_id": "wicked-2003", "planned_date": "2026-10-18", "logged": false }],
-    "unbookedOrder": ["maybe-happy-ending-2024", "..."]
+    "entries": [
+      { "show_id": "wicked-2003", "planned_date": "2026-10-18", "logged": false },
+      { "show_id": "maybe-happy-ending-2024", "planned_date": null, "logged": false }
+    ]
   }
   ```
   - `entries`: the owner's watchlist rows with `planned_date IS NULL OR planned_date >= current_date - 2` **or** whose past date is already logged. `logged` = a review for that show exists with `date_seen >= planned_date` or with no `date_seen` (the iOS `classifyWatchlistEntry` rule). This is the only fact read from `reviews`, and only as a boolean. Cap 300 rows. `[CHANGED: needed for parity with the app's buckets — structure]`
   - Ordered by `created_at DESC` (the owner's watchlist order); `created_at` itself is not returned.
+  - A section switched off is filtered in the function too, so its rows never leave the database. *(As built, 2026-10-01.)*
 - Never selects `curtain_time`, `time_slot`, `user_id`, `id`, `created_at`, review rows, or anything from `profiles`.
 - The precise booked/unbooked split happens in `selectSharedPlans` (§3.3), because "today" depends on the show's venue timezone, which the database doesn't know.
 
@@ -191,7 +194,7 @@ Notes:
 
 **Rollback:** revert app code first, confirm live, then land a `DROP` migration (not a hand-run DROP, or the schema verifier fails forever). `[CHANGED: structure]`
 
-**SQL test loop** `[CHANGED: avoid a land → dispatch → wait loop per SQL fix — structure]`: develop the migration against a throwaway local Postgres (`postgres:15` with stub `auth.uid()` / `profiles` / `watchlist` / `reviews`), with a test script covering every bucket rule, trigger and grant. Then the CI round-trip (`test-ugc-roundtrip.yml` pattern) runs the same cases against the real project after apply.
+**SQL test loop** `[CHANGED: avoid a land → dispatch → wait loop per SQL fix — structure]`: develop the migration against a throwaway local Postgres (PostgreSQL 16 via `scripts/test-plan-shares-sql.sh`, with stub `auth.uid()` / `profiles` / `watchlist` / `reviews`), with a test script covering every bucket rule, trigger and grant. Then the CI round-trip (`test-ugc-roundtrip.yml` pattern) runs the same cases against the real project after apply.
 
 ### 3.3 Web: viewer page `/plans/[token]`
 
@@ -222,6 +225,7 @@ New files:
 ### 3.6 Owner UI
 
 **Web**
+- **Client contract (as built):** create with an upsert (`on_conflict=user_id`) that always includes `display_name` (Postgres checks NOT NULL before resolving the conflict); change settings with PATCH; never send `token`; call `get_shared_plans` with POST (it is VOLATILE so PostgREST refuses GET and the token never sits in a URL).
 - `src/hooks/usePlanShare.ts`: `share` (current row or null), `ensure({ displayName, showBooked, showUnbooked })` → URL, `update(patch)`, `rotate()` → URL (via existing `supabaseRestRpc`). Stop sharing is `update({ enabled: false })`. Returns URLs built from `BASE_URL`. The iOS hook exposes the same method names. `[CHANGED: one method set on both platforms; follows useUserLists.shareList returning a URL — design P2-e]`
 - `src/components/user/SharePlansModal.tsx` on the shared `Modal`. Counts come from `selectSharedPlans` run on the owner's own watchlist + reviews.
 - `src/lib/share-link.ts`: `shareOrCopy({ title, text, url })` → `'shared' | 'copied' | 'cancelled'`. Migrate **both** existing inline copies (ListsTab share, `BeatTheCriticsClient.tsx:440`) in the same change. `[CHANGED: design P2-f]`

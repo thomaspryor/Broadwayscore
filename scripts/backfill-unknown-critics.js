@@ -200,7 +200,6 @@ function updateReviewFile(filePath, dir, oldFile, outletId, criticName, data) {
   return { renamed: true, newFile };
 }
 
-module.exports = { updateReviewFile };
 
 // --- Phase A: Outlet resolution (local, no HTTP) ---
 function phaseA(unknownOutlets) {
@@ -275,18 +274,76 @@ function phaseA(unknownOutlets) {
 }
 
 // --- Phase B: Critic enrichment (HTTP fetch) ---
+//
+// BRO-4485. Phase B used to take unknownCritics.slice(0, limit) in directory
+// order with no memory of attempts, so each 4x-daily run re-fetched the same
+// head of the list and ~1,155 Unknown reviews were never reached (the NYT
+// Degenerates review sat Unknown with "By Helen Shaw" on the page). It also
+// deleted the --unknown file whenever a named file existed, which can drop a
+// scored review when the named sibling is flagged (the #27 pattern).
+//
+// Now: flagged/locked/manual files are skipped, open shows come first, every
+// attempt is stamped (criticBackfillAttempt) and a file is not retried for
+// CRITIC_RETRY_DAYS, and every write goes through review-file-writer's
+// applyPageByline (plausible name, not an outlet name, not a credited
+// creative, not an aggregator URL, no sibling with this URL/critic, rename at
+// once). Nothing is ever deleted here.
+const CRITIC_RETRY_DAYS = 14;
+// A fetch error says nothing about the page (scraper outage, credits out),
+// so it cools down for a day, not two weeks, and a run stops after this many
+// in a row instead of stamping its whole batch.
+const FETCH_ERROR_RETRY_DAYS = 1;
+const MAX_CONSECUTIVE_FETCH_ERRORS = 10;
+
+/**
+ * Pure: which Unknown-critic entries to try this run, in order.
+ * Open/previews shows first, then never-attempted, then oldest attempt.
+ */
+function orderCriticCandidates(entries, { openShowIds = new Set(), now = Date.now(), retryDays = CRITIC_RETRY_DAYS } = {}) {
+  const eligible = entries.filter(u => {
+    const d = u.data || {};
+    if (d.wrongProduction || d.duplicateOf || d._locked === true || d.criticNameManual) return false;
+    const attempt = d.criticBackfillAttempt;
+    const at = attempt && Date.parse(attempt.at);
+    if (!at) return true;
+    const days = attempt.result === 'fetch-error' ? FETCH_ERROR_RETRY_DAYS : retryDays;
+    return at <= now - days * 24 * 3600 * 1000;
+  });
+  const lastAt = u => (u.data.criticBackfillAttempt && Date.parse(u.data.criticBackfillAttempt.at)) || 0;
+  return eligible.sort((a, b) => {
+    const ao = openShowIds.has(a.dir) ? 0 : 1;
+    const bo = openShowIds.has(b.dir) ? 0 : 1;
+    if (ao !== bo) return ao - bo;
+    return lastAt(a) - lastAt(b);
+  });
+}
+
+function loadOpenShowIds() {
+  try {
+    const raw = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
+    const shows = Array.isArray(raw) ? raw : (raw.shows || []);
+    return new Set(shows.filter(x => x.status === 'open' || x.status === 'previews').map(x => x.id));
+  } catch { return new Set(); }
+}
+
+function stampAttempt(u, result) {
+  if (dryRun) return;
+  u.data.criticBackfillAttempt = { at: new Date().toISOString(), result };
+  const r = safeWriteReview(u.filePath, u.data);
+  if (r && r.lockedSkipped) lockedSkipCount++;
+}
+
 async function phaseB(unknownCritics) {
   console.log('\n=== PHASE B: Critic Enrichment ===');
-  const toProcess = limit ? unknownCritics.slice(0, limit) : unknownCritics;
-  console.log(`Found ${unknownCritics.length} files with unknown critic, processing ${toProcess.length}`);
+  const { applyPageByline } = require('./lib/review-file-writer');
+  const { extractArticleTextFromUrl } = require('./lib/article-extractor');
+  const ordered = orderCriticCandidates(unknownCritics, { openShowIds: loadOpenShowIds() });
+  const toProcess = limit ? ordered.slice(0, limit) : ordered;
+  console.log(`Found ${unknownCritics.length} files with unknown critic, ${ordered.length} due (not flagged, not tried in ${CRITIC_RETRY_DAYS}d), processing ${toProcess.length}`);
 
-  let bylineResolved = 0;
-  let httpResolved = 0;
-  let failedNoAuthor = 0;
-  let failedError = 0;
-  let duplicatesRemoved = 0;
-  let renamed = 0;
-  let skippedNoUrl = 0;
+  const counts = { applied: 0, refused: 0, noAuthor: 0, fetchError: 0, skippedHttp: 0 };
+  const refusals = {};
+  let consecutiveFetchErrors = 0;
 
   for (let i = 0; i < toProcess.length; i++) {
     if (timeBudget.exceeded()) {
@@ -294,115 +351,79 @@ async function phaseB(unknownCritics) {
       break;
     }
     const u = toProcess[i];
-    let critic = null;
-    let method = '';
+    const tryName = (critic, method, pageText = null) => {
+      try {
+        return applyPageByline(u.filePath, u.data, { showId: u.dir, criticName: critic, source: method, pageText, dryRun });
+      } catch (e) {
+        return { applied: false, reason: `error:${e.message.slice(0, 60)}` };
+      }
+    };
+    const report = (res, critic, method) => {
+      if (res.applied) {
+        counts.applied++;
+        if (counts.applied <= 40 || i % 100 === 0) {
+          console.log(`  [${i + 1}] ${dryRun ? 'WOULD NAME' : 'NAMED'} (${method}): ${u.dir}/${u.file} → ${critic}${res.newPath ? ` (${path.basename(res.newPath)})` : ''}`);
+        }
+        return;
+      }
+      counts.refused++;
+      refusals[res.reason] = (refusals[res.reason] || 0) + 1;
+      stampAttempt(u, `refused:${res.reason}`);
+      if (counts.refused <= 20) console.log(`  [${i + 1}] REFUSED ${res.reason}: ${u.dir}/${u.file} ← "${critic}"`);
+    };
 
-    // Strategy 1: Use existing extractedByline from source file
+    // Strategy 1: a byline the collector already read off this page.
+    // Strategy 1b: re-run extraction against the stored fullText (BRO-171:
+    // talkinbroadway prints "Theatre Review by <Name> - <date>" in the body).
+    // A stored name the guards refuse falls through to a fresh page fetch.
+    let stored = null;
     if (u.data.extractedByline && u.data.extractedByline !== 'Unknown' && !isRejectName(u.data.extractedByline)) {
-      critic = u.data.extractedByline;
-      method = 'extractedByline';
-      bylineResolved++;
-    }
-
-    // Strategy 1b: re-run extraction against the fullText we already stored
-    // (BRO-171). Some outlets (e.g. talkinbroadway's "Theatre Review by
-    // <Name> - <date>") print the byline in the article body itself, which
-    // gather already captured — no HTTP fetch needed to recover it.
-    if (!critic && u.data.fullText) {
+      stored = { critic: u.data.extractedByline, method: 'extractedByline' };
+    } else if (u.data.fullText) {
       const fromText = extractAuthorFromHtml(u.data.fullText, u.data.fullText, { url: u.url });
-      if (fromText && !isRejectName(fromText)) {
-        critic = fromText;
-        method = 'stored-text';
-        bylineResolved++;
-      }
+      if (fromText && !isRejectName(fromText)) stored = { critic: fromText, method: 'stored-text' };
+    }
+    if (stored) {
+      const res = tryName(stored.critic, stored.method);
+      if (res.applied || skipHttp) { report(res, stored.critic, stored.method); continue; }
     }
 
-    // Strategy 2: Fetch HTML via scraper infrastructure (Bright Data → ScrapingBee → Playwright)
-    if (!critic && !skipHttp && u.url) {
-      const result = await fetchHtml(u.url);
-
-      if (result.html) {
-        critic = extractAuthorFromHtml(result.html, null, { url: u.url });
-        if (critic && isRejectName(critic)) {
-          critic = null; // Reject outlet names, metadata artifacts, etc.
-        }
-        if (critic) {
-          method = 'http-fetch';
-          httpResolved++;
-        } else {
-          failedNoAuthor++;
-        }
-      } else {
-        failedError++;
+    // Strategy 2: fetch the page (Bright Data → ScrapingBee → Playwright).
+    if (skipHttp) { counts.skippedHttp++; continue; }
+    const result = await fetchHtml(u.url);
+    await new Promise(r => setTimeout(r, 1000));
+    if (!result.html) {
+      counts.fetchError++;
+      consecutiveFetchErrors++;
+      stampAttempt(u, 'fetch-error');
+      if (consecutiveFetchErrors >= MAX_CONSECUTIVE_FETCH_ERRORS) {
+        console.log(`\n  ⛔ ${consecutiveFetchErrors} fetch errors in a row — scraper likely down; stopping Phase B (${toProcess.length - i - 1} file(s) left for the next run).`);
+        break;
       }
-
-      // Rate limit: 1 request/second (scraper infrastructure is heavier than bare fetch)
-      await new Promise(r => setTimeout(r, 1000));
-    } else if (!critic && skipHttp) {
-      skippedNoUrl++;
       continue;
     }
+    consecutiveFetchErrors = 0;
+    let text = null;
+    try { text = extractArticleTextFromUrl(result.html, u.url) || null; } catch { text = null; }
+    let critic = extractAuthorFromHtml(result.html, text || '', { url: u.url });
+    if (critic && isRejectName(critic)) critic = null;
 
     if (!critic) {
-      if (i < 5 || i % 200 === 0) {
-        console.log(`  [${i+1}/${toProcess.length}] no author: ${u.outletId} ${u.url.slice(0, 60)}`);
-      }
+      counts.noAuthor++;
+      stampAttempt(u, 'no-author');
+      if (i < 5 || i % 200 === 0) console.log(`  [${i + 1}/${toProcess.length}] no author: ${u.outletId} ${u.url.slice(0, 60)}`);
       continue;
     }
-
-    // Store provenance
-    if (method === 'http-fetch') {
-      u.data.criticEnrichedFrom = 'html-extraction';
-    }
-
-    // Update file
-    const result = updateReviewFile(u.filePath, u.dir, u.file, null, critic, u.data);
-
-    if (result.duplicate) {
-      duplicatesRemoved++;
-      if (!dryRun) {
-        // Honor _locked on the duplicate-delete path (ship-check P0 2026-04-29).
-        const u1 = safeUnlinkReview(u.filePath);
-        if (u1.lockedSkipped) {
-          lockedSkipCount++;
-          console.log(`  [${i+1}] LOCKED-SKIP: ${u.dir}/${u.file} would be a duplicate of ${result.newFile} but is _locked — kept`);
-          continue;
-        }
-      }
-      if (duplicatesRemoved <= 10) {
-        console.log(`  [${i+1}] DUPE: ${u.dir}/${u.file} → ${result.newFile} already exists`);
-      }
-      continue;
-    }
-
-    if (result.renamed) renamed++;
-
-    if (i < 20 || i % 100 === 0) {
-      const action = result.renamed ? 'RENAME' : 'UPDATE';
-      console.log(`  [${i+1}] ${action} (${method}): ${u.dir}/${u.file} → ${critic}`);
-    }
-
-    // Checkpoint every 50 files
-    if (!dryRun && (bylineResolved + httpResolved) % 50 === 0 && (bylineResolved + httpResolved) > 0) {
-      console.log(`  ... checkpoint: ${bylineResolved + httpResolved} resolved so far`);
-    }
+    report(tryName(critic, 'http-fetch', text), critic, 'http-fetch');
   }
 
-  const totalResolved = bylineResolved + httpResolved;
   console.log(`\nPhase B Results${dryRun ? ' (DRY RUN)' : ''}:`);
-  console.log(`  From extractedByline: ${bylineResolved}`);
-  console.log(`  From HTTP fetch: ${httpResolved}`);
-  console.log(`  Total resolved: ${totalResolved}`);
-  console.log(`  Renamed: ${renamed}`);
-  console.log(`  Duplicates removed: ${duplicatesRemoved}`);
-  console.log(`  Failed - no author: ${failedNoAuthor}`);
-  console.log(`  Failed - error: ${failedError}`);
-  if (skippedNoUrl) console.log(`  Skipped (--skip-http): ${skippedNoUrl}`);
-  if (toProcess.length > 0) {
-    console.log(`  Success rate: ${(totalResolved / toProcess.length * 100).toFixed(1)}%`);
-  }
-
-  return { bylineResolved, httpResolved, totalResolved, renamed, duplicatesRemoved };
+  console.log(`  Named: ${counts.applied}`);
+  console.log(`  Refused by guards: ${counts.refused} ${JSON.stringify(refusals)}`);
+  console.log(`  No author on page: ${counts.noAuthor}`);
+  console.log(`  Fetch errors: ${counts.fetchError}`);
+  if (counts.skippedHttp) console.log(`  Skipped (--skip-http): ${counts.skippedHttp}`);
+  return counts;
 }
 
 // --- Main ---
@@ -429,6 +450,8 @@ async function main() {
   await cleanupScraper();
   console.log('\nDone.');
 }
+
+module.exports = { updateReviewFile, orderCriticCandidates, CRITIC_RETRY_DAYS, FETCH_ERROR_RETRY_DAYS };
 
 if (require.main === module) {
   main()
