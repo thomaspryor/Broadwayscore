@@ -1,9 +1,11 @@
 name: LLM Ensemble Score Reviews
 
 # Separate concurrency groups per rescore_reason allow parallel scoring of disjoint file sets.
-# Default group "scoring-reviews" serializes regular runs; "scoring-reviews-{reason}" for targeted rescores.
+# Default group "scoring-reviews" serializes regular (scheduled/bulk) runs; "scoring-reviews-{reason}" for
+# targeted rescores; "scoring-reviews-show-{id}" for any show-targeted dispatch (ingest-urls, opening night)
+# so it never queues behind the 350-min scheduled batch (BRO-4466). Guarded by tests/unit/scoring-concurrency-lane.test.mjs.
 concurrency:
-  group: scoring-reviews${{ inputs.rescore_reason && format('-{0}', inputs.rescore_reason) || '' }}
+  group: scoring-reviews${{ inputs.rescore_reason && format('-{0}', inputs.rescore_reason) || (inputs.show_id && format('-show-{0}', inputs.show_id)) || '' }}
   cancel-in-progress: false
 
 on:
