@@ -23,7 +23,7 @@ const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-gu
 const { countByShow, isStuckInPreviews, openSignalFromReviews, openSignalFromDiscovery, chooseOpeningDateBackfill, estimatePressNight } = require('./lib/opening-signal');
 const { previewsFallbackOpening, PREVIEWS_FALLBACK_GRACE_DAYS } = require('./lib/opening-date-fallback');
 const { openingDateSourceHint } = require('./lib/opening-date-sources');
-const { decideAnnouncedPromotion, blockAnnouncedCatchUp } = require('./lib/announced-promotion');
+const { decideAnnouncedPromotion, blockAnnouncedCatchUp, typeForListedShow } = require('./lib/announced-promotion');
 const { decidePrematurePreviews } = require('./lib/premature-previews');
 const showsWriteGuard = require('./lib/shows-write-guard');
 
@@ -908,6 +908,16 @@ async function updateShowStatuses() {
     // Check 3: Flag shows that might need attention (but don't change them)
     if (show.status === 'open' && !show.closingDate) {
       // These are open-ended runs - no action needed
+    }
+
+    // A row listed with any status but 'announced' needs a type
+    // (validate-market-expansion.js). Stubs promoted out of 'announced' by
+    // Check 2e / 2d, or dated by a venue-listing backfill, never got one
+    // (46 rows, 2026-10-01): give them the shared title rule's type.
+    const listedType = typeForListedShow(show, (changes.status && changes.status.to) || show.status);
+    if (listedType) {
+      changes.type = { from: 'null', to: listedType };
+      if (!dryRun) show.type = listedType;
     }
 
     if (Object.keys(changes).length > 0) {

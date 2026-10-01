@@ -387,3 +387,13 @@ test('parseSpektrixEvents carries the account genre labels', () => {
   const rows = parseSpektrixEvents([{ id: 'a', name: 'A', firstInstanceDateTime: '2026-10-01T19:30:00', lastInstanceDateTime: '2026-10-20T19:30:00', attribute_Genre: 'Musicals', attribute_Season: 'Autumn' }]);
   assert.equal(rows[0].genre, 'Musicals');
 });
+
+test('datedBackfillFor carries a type only when the venue genre label says what the show is', () => {
+  const { datedBackfillFor } = require('../../scripts/promote-owe-venue-candidates.js');
+  const base = { title: 'Cranford', venue: 'Orange Tree Theatre', category: 'off-west-end', source: 'venue-page:orange-tree-theatre', listingFirstDate: '2026-11-03', listingLastDate: '2027-01-16', listingPerformanceCount: 78 };
+  const row = { id: 'cranford-off-west-end-2026', title: 'Cranford', status: 'announced' };
+  assert.equal(datedBackfillFor({ ...base, listingGenre: 'Classical Play' }, row).type, 'play');
+  assert.equal(datedBackfillFor({ ...base, listingGenre: 'Musicals' }, row).type, 'musical');
+  assert.equal(datedBackfillFor(base, row).type, undefined, 'no label: no type');
+  assert.equal(datedBackfillFor({ ...base, listingGenre: 'Classical Play' }, { ...row, type: 'musical' }).type, undefined, 'never overwrites');
+});
