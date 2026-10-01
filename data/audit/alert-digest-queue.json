@@ -2716,42 +2716,6 @@
     "queuedAt": "2026-09-30T06:48:26.110Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:la-boheme-off-broadway-2026",
-    "title": "Review gap — \"La Bohème\" missing 5 cited review(s)",
-    "description": "La Bohème (la-boheme-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=la-boheme-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T07:43:36.684Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
-    "title": "Review gap — \"The Invention of Love\" missing 5 cited review(s)",
-    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T07:43:36.756Z"
-  },
-  {
-    "conditionKey": "review-gap:opening-window:three-men-in-a-boat-off-west-end-2026",
-    "title": "Review gap — \"Three Men in a Boat\" missing 8 cited review(s)",
-    "description": "Three Men in a Boat (three-men-in-a-boat-off-west-end-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=three-men-in-a-boat-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-09-30T07:43:36.778Z"
-  },
-  {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Validate market expansion",
     "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36718890201",
@@ -3626,5 +3590,65 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-01T07:55:23.299Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:hay-fever-west-end-2026",
+    "title": "Review gap — \"Hay Fever\" missing 12 cited review(s)",
+    "description": "Hay Fever (hay-fever-west-end-2026): 12 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=hay-fever-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T09:45:45.692Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:jena-friedman-motherfucker-off-broadway-2026",
+    "title": "Review gap — \"Jena Friedman: Motherfucker\" missing 5 cited review(s)",
+    "description": "Jena Friedman: Motherfucker (jena-friedman-motherfucker-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=jena-friedman-motherfucker-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T09:45:45.707Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:la-boheme-off-broadway-2026",
+    "title": "Review gap — \"La Bohème\" missing 6 cited review(s)",
+    "description": "La Bohème (la-boheme-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=la-boheme-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T09:45:45.712Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-invention-of-love-off-broadway-2026",
+    "title": "Review gap — \"The Invention of Love\" missing 5 cited review(s)",
+    "description": "The Invention of Love (the-invention-of-love-off-broadway-2026): 5 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-invention-of-love-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T09:45:45.774Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:three-men-in-a-boat-off-west-end-2026",
+    "title": "Review gap — \"Three Men in a Boat\" missing 8 cited review(s)",
+    "description": "Three Men in a Boat (three-men-in-a-boat-off-west-end-2026): 8 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=three-men-in-a-boat-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-01T09:45:45.794Z"
   }
 ]

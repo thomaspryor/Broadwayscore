@@ -1,52 +1,42 @@
 {
-  "generatedAt": "2026-09-30T23:40:58.617Z",
+  "generatedAt": "2026-10-01T09:48:15.735Z",
   "phase": "done",
   "days": 21,
-  "shows": 72,
+  "shows": 66,
   "sources": {
     "theatermania": {
-      "queries": 46,
-      "listed": 20,
+      "queries": 42,
+      "listed": 18,
       "errors": 0
     },
     "whatsonstage": {
-      "queries": 26,
-      "listed": 11,
+      "queries": 24,
+      "listed": 9,
       "errors": 0
     },
     "nysr": {
-      "queries": 1,
-      "listed": 0,
-      "errors": 1
+      "queries": 42,
+      "listed": 12,
+      "errors": 0
+    },
+    "newyorktheater": {
+      "queries": 42,
+      "listed": 5,
+      "errors": 0
     },
     "nytimes": {
       "queries": 4,
       "listed": 3,
       "errors": 0
+    },
+    "theatre-reviews": {
+      "queries": 24,
+      "listed": 25,
+      "errors": 0
     }
   },
-  "listingTruncated": true,
-  "listed": 34,
-  "ingested": [
-    {
-      "showId": "very-blue-light-off-broadway-2026",
-      "url": "https://www.theatermania.com/news/review-very-blue-light-an-awkward-reunion-in-the-desert_1853648/",
-      "ok": true
-    },
-    {
-      "showId": "chewing-gum-dreams-off-west-end-2026",
-      "url": "https://www.whatsonstage.com/news/chewing-gum-dreams-at-theatre503-review_1731562/",
-      "ok": false,
-      "error": "spawnSync node ETIMEDOUT"
-    }
-  ],
-  "missing": [
-    {
-      "source": "whatsonstage",
-      "showId": "the-turn-of-the-screw-off-west-end-2026",
-      "outletId": "whatsonstage",
-      "url": "https://www.whatsonstage.com/news/the-turn-of-the-screw-at-arcola-theatre-and-on-tour-review_1732158/",
-      "date": "2026-09-21"
-    }
-  ]
+  "listingTruncated": false,
+  "listed": 72,
+  "ingested": [],
+  "missing": []
 }
