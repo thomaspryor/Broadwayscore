@@ -719,6 +719,7 @@ function parseVenueListingHtml(venue, html, { todayIso = new Date().toISOString(
     ...(r.firstDate ? { listingFirstDate: r.firstDate } : {}),
     ...(r.lastDate ? { listingLastDate: r.lastDate } : {}),
     ...(typeof r.performanceCount === 'number' ? { listingPerformanceCount: r.performanceCount } : {}),
+    ...(r.genre ? { listingGenre: r.genre } : {}),
     ...(r.url ? { listingUrl: absoluteUrl(r.url, venue.url) } : {}),
     // OvationTix only returns performances still on sale, so its first date
     // is the NEXT performance, not the first one (ship-check 2026-09-29: Elf

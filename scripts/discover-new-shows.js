@@ -139,6 +139,7 @@ for (const t of Object.values(BROADWAY_THEATERS)) {
   for (const alias of t.aliases || []) BROADWAY_HOUSE_NAMES.add(normalizeBroadwayVenue(alias));
 }
 const { classifyShow } = require('./lib/classify-show');
+const { titleSaysMusical } = require('./lib/title-says-musical');
 const { scrapePlaybillOBData, checkSilentRot } = require('./lib/playbill-ob-schedule');
 const { scrapePlaybillBroadwayData, checkSilentRot: checkBroadwaySilentRot, titleCaseFromAllCaps } = require('./lib/playbill-broadway-schedule');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
@@ -1453,7 +1454,7 @@ function oweCandidatesFromDatedListing(cfg, rows) {
     if (shouldExcludeVenueShow(title)) continue;
     seen.add(title.toLowerCase());
     const listing = {};
-    for (const k of ['listingFirstDate', 'listingLastDate', 'listingPerformanceCount', 'listingUrl', 'listingFirstDateIsNext', 'listingLastDateIsHorizon', 'listingEvidence']) {
+    for (const k of ['listingFirstDate', 'listingLastDate', 'listingPerformanceCount', 'listingUrl', 'listingFirstDateIsNext', 'listingLastDateIsHorizon', 'listingEvidence', 'listingGenre']) {
       if (r[k] !== undefined) listing[k] = r[k];
     }
     out.push({
@@ -3107,9 +3108,10 @@ async function discoverShows() {
       // IBDB classification is authoritative (from the production page itself)
       detectedType = show.ibdbShowType;
       confidence = 'high';
-    } else if (/[-–—:]\s*the\s+musical\b|:\s*a\s+(new\s+)?musical\b/i.test(show.title)) {
-      // Title suffix like "Dog Man - The Musical" or "Show: A New Musical"
-      // Avoids false positives like "The Musical Comedy Murders of 1940"
+    } else if (titleSaysMusical(show.title)) {
+      // Title suffix like "Dog Man - The Musical", "Show: A New Musical" or
+      // "Death Note The Musical" (lib/title-says-musical.js); avoids false
+      // positives like "The Musical Comedy Murders of 1940".
       detectedType = 'musical';
       confidence = 'medium';
     } else if (isPlay) {

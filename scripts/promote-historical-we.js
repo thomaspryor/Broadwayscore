@@ -18,6 +18,7 @@
 
 'use strict';
 
+const { titleSaysMusical } = require('./lib/title-says-musical');
 const fs = require('fs');
 const path = require('path');
 
@@ -102,7 +103,7 @@ function buildShowEntry(candidate, venueVocabulary) {
     // promote-we-aggregator-candidates.js / promote-ob-venue-candidates.js
     // (BRO-3716 — a null type here would reproduce that exact CI-red
     // incident the next time this script runs).
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
+    type: titleSaysMusical(candidate.title) ? 'musical' : 'play',
     tags: ['historical'],
     season: candidate.season,
     discoverySource: 'historical-backfill',

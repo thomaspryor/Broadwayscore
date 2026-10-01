@@ -371,3 +371,19 @@ test('BRO-4433 main: a confirmed dated duplicate dates its undated row (null fie
   const md = datedBackfillFor({ ...pjc, title: 'Private Jones - Relaxed Performance' }, { id: 'private-jones-off-west-end-2026', title: 'Private Jones', status: 'announced' });
   assert.equal(md.title, undefined);
 });
+
+test("type comes from the venue's genre label when it names one, else the title", () => {
+  const { showTypeFor } = require('../../scripts/lib/title-says-musical.js');
+  assert.equal(showTypeFor('Jimmy', 'Drama'), 'play');
+  assert.equal(showTypeFor('Some Show', 'Musicals'), 'musical');                 // Park Theatre's genre
+  assert.equal(showTypeFor('Some Show', 'Musical - star casting'), 'musical');   // Young Vic's genre
+  assert.equal(showTypeFor('Father Christmas', "Christmas Shows; Children's Show"), 'play');
+  assert.equal(showTypeFor('Death Note The Musical', null), 'musical');
+  const entry = buildOffWestEndVenueShowEntry({ title: 'Some Show', venue: 'Park Theatre', category: 'off-west-end', source: 'venue-page:park-theatre', listingFirstDate: '2026-11-01', listingLastDate: '2026-12-01', listingGenre: 'Musicals' }, buildVenueVocabulary([]), { now: NOW });
+  assert.equal(entry.type, 'musical');
+});
+
+test('parseSpektrixEvents carries the account genre labels', () => {
+  const rows = parseSpektrixEvents([{ id: 'a', name: 'A', firstInstanceDateTime: '2026-10-01T19:30:00', lastInstanceDateTime: '2026-10-20T19:30:00', attribute_Genre: 'Musicals', attribute_Season: 'Autumn' }]);
+  assert.equal(rows[0].genre, 'Musicals');
+});
