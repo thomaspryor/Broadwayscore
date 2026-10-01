@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T23:21:25.648Z",
+  "generatedAt": "2026-10-01T23:30:07.550Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,28 +12,28 @@
       "status": "open",
       "slug": "hay-fever-west-end",
       "thumbnail": "/images/shows/hay-fever-west-end-2026/thumbnail.jpg",
-      "siteScore": null,
-      "liveScore": 57,
-      "scoreDrift": null,
-      "belowThreshold": true,
-      "reviewsNeeded": 4,
+      "siteScore": 71.62,
+      "liveScore": 72,
+      "scoreDrift": 0.37999999999999545,
+      "belowThreshold": false,
+      "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 1,
-      "t1": 0,
-      "t2": 1,
-      "t3": 0,
-      "positive": 0,
-      "mixed": 1,
+      "total": 5,
+      "t1": 1,
+      "t2": 2,
+      "t3": 2,
+      "positive": 3,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
-          "T1:0/3",
-          "T2:0/2",
-          "hi-conf:0/6"
+          "5/8 total",
+          "T1:1/3",
+          "T2:1/2",
+          "hi-conf:2/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 2,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -87,10 +87,6 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
-        },
-        {
-          "name": "WhatsOnStage",
-          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -103,6 +99,18 @@
           "t3": 0,
           "p": 0,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-01T23:30:07.550Z",
+          "rc": 5,
+          "s": 71.62,
+          "t1": 1,
+          "t2": 2,
+          "t3": 2,
+          "p": 3,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
