@@ -9,7 +9,7 @@ const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIE
 const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities, cleanText } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
-const { isUncorroboratedGenericStar, adjudicationSidedWithStars } = require('./star-reliability');
+const { isUncorroboratedGenericStar, adjudicationSidedWithStars, adjudicationContradictsRecordStar } = require('./star-reliability');
 
 // Low-reliability star EXTRACTION sources — automated CSS/generic pattern matches
 // that often read the wrong element (pagination, dates, sidebars). The LLM may
@@ -713,9 +713,12 @@ function getBestScore(data, opts = {}) {
     // star. A generic-pattern "1/5" the ensemble contradicts turned a rave
     // Chicago Tribune review into a 40. The star is the same one P0.5 ignores
     // below (isUncorroboratedGenericStar), so the two paths stay consistent.
-    const staleStarBasis = adjudicationSidedWithStars(data)
+    const uncorroboratedStarBasis = adjudicationSidedWithStars(data)
       && typeof data.originalScoreNormalized === 'number'
       && isUncorroboratedGenericStar(data, data.originalScoreNormalized);
+    // Same rule when the record's own trusted star contradicts the adjudication
+    // that claims to follow it.
+    const staleStarBasis = uncorroboratedStarBasis || adjudicationContradictsRecordStar(data);
     if (!hasVerifiedStarScore && !outsideAnchoredBand && !staleStarBasis) {
       return { score: data.adjudicatedScore, source: 'adjudicated' };
     }

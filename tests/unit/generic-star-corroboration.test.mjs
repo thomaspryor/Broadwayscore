@@ -19,6 +19,7 @@ const {
   isUncorroboratedGenericStar,
   adjudicationSidedWithStars,
   detectBandFromReviewFile,
+  adjudicationContradictsRecordStar,
 } = require('../../scripts/lib/star-reliability.js');
 const { getBestScore } = require('../../scripts/lib/rebuild-helpers.js');
 const { buildUserPrompt } = require('../../scripts/lib/adjudication-prompt.js');
@@ -80,6 +81,31 @@ describe('detectBandFromReviewFile (write-time anchoring)', () => {
   test('a corroborated or dedicated-extractor star keeps high-reliability', () => {
     assert.equal(detectBandFromReviewFile(mincemeat({ llmScore: { score: 25, confidence: 'high' } })).highReliability, true);
     assert.equal(detectBandFromReviewFile(mincemeat({ originalScoreSource: 'json-ld', scoreSource: 'json-ld' })).highReliability, true);
+  });
+});
+
+describe('adjudicationContradictsRecordStar (cousins: Dolls House Part 2, Waverly Gallery)', () => {
+  const dolls = (over = {}) => ({
+    outletId: 'theater-life', originalScore: '4/5 stars', originalScoreNormalized: 80,
+    originalScoreSource: 'text-footer-corrected', scoreSource: 'text-footer-corrected',
+    llmScore: { score: 78, confidence: 'high' }, ensembleData: { needsReview: false }, fullText: 'x'.repeat(400),
+    adjudicatedScore: 40, adjudicationNote: NOTE, adjudicationHistory: [{ sidedWith: 'originalScore' }], ...over,
+  });
+  test('adjudication that claims the star but sits in another bucket than the record star is contradicted', () => {
+    assert.equal(adjudicationContradictsRecordStar(dolls()), true);
+  });
+  test('in-band placement, no star, or a low-reliability star are left to the other guards', () => {
+    assert.equal(adjudicationContradictsRecordStar(dolls({ adjudicatedScore: 78 })), false);
+    assert.equal(adjudicationContradictsRecordStar(dolls({ originalScoreNormalized: null })), false);
+    assert.equal(adjudicationContradictsRecordStar(dolls({ originalScoreSource: 'numeric-stars', scoreSource: 'numeric-stars' })), false);
+  });
+  test('an adjudication that sided with the text/LLM is never second-guessed here', () => {
+    assert.equal(adjudicationContradictsRecordStar(dolls({ adjudicationHistory: [{ sidedWith: 'llm' }] })), false);
+  });
+  test('getBestScore ships the record star (80), not the contradicting 40', () => {
+    const r = getBestScore(dolls(), { stats: {} });
+    assert.equal(r.score, 80);
+    assert.equal(r.source, 'originalScore-priority0');
   });
 });
 

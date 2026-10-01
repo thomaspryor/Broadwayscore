@@ -82,6 +82,30 @@ function isUncorroboratedGenericStar(data, starScore) {
   return bucket(starScore) !== bucket(llm);
 }
 
+// How far a star-sided adjudication may sit from the record's own trusted star
+// before its stated basis is considered false. A star step is 20 points and a
+// star band ~10 wide, so 12 tolerates in-band placement only.
+const STAR_SIDED_TOLERANCE = 12;
+
+/**
+ * True when an adjudication says it sided with the star but the record's own
+ * trusted star says something else (BRO-4499 cousins: a-dolls-house-part-2
+ * Theater Life, record 4/5 = 80, adjudicated 40 on an invented "2/5").
+ * Only trusted stars count (a low-reliability or generic-pattern star is the
+ * other guard's job), and the adjudicated score must sit in a different bucket.
+ */
+function adjudicationContradictsRecordStar(data) {
+  if (!adjudicationSidedWithStars(data)) return false;
+  const star = data.originalScoreNormalized;
+  const adj = data.adjudicatedScore;
+  if (typeof star !== 'number' || typeof adj !== 'number' || !(star > 0)) return false;
+  const src = data.originalScoreSource || data.scoreSource;
+  if (src && LOW_RELIABILITY_EXTRACTION.has(src)) return false;
+  if (Math.abs(adj - star) <= STAR_SIDED_TOLERANCE) return false;
+  const bucket = (x) => (x >= 70 ? 'positive' : x <= 40 ? 'negative' : 'mixed');
+  return bucket(adj) !== bucket(star);
+}
+
 /**
  * True when an auto-adjudication says it sided with the star rating. Reads the
  * structured sidedWith on the last adjudicationHistory entry first, and falls
@@ -242,6 +266,7 @@ module.exports = {
   isGenericPatternStar,
   isUncorroboratedGenericStar,
   adjudicationSidedWithStars,
+  adjudicationContradictsRecordStar,
   detectBandFromReviewFile,
   shouldUseAnchoredMode,
 };
