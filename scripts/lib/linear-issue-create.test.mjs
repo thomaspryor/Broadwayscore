@@ -115,18 +115,22 @@ test('createLinearIssue: a parked High issue reaches the Linear client at Medium
   const fs = require('fs');
   const linearClient = require('./linear-client.js');
   const { LEDGER_PATH } = require('./intake-breaker.js');
-  const ledgerBefore = fs.existsSync(LEDGER_PATH) ? fs.readFileSync(LEDGER_PATH) : null;
+  const title = `bro-4487-clamp-test-${process.pid}-${Date.now()}`;
   const realGetTeam = linearClient.getTeam;
   linearClient.getTeam = async () => ({ id: 'team-1', states: { nodes: STATES } });
   let sent = null;
   try {
     const client = { createIssue: async (input) => { sent = input; return { identifier: 'BRO-0', id: 'i' }; } };
-    await createLinearIssue({ title: 'Alert: x', description: 'body', park: 'auto-filed parked for triage', priority: 2, client });
+    await createLinearIssue({ title, description: 'body', park: 'auto-filed parked for triage', priority: 2, client });
   } finally {
     linearClient.getTeam = realGetTeam;
-    // recordCreated() appends to the real intake ledger; never leave a test row behind (BRO-2656).
-    if (ledgerBefore === null) { try { fs.unlinkSync(LEDGER_PATH); } catch { /* absent */ } }
-    else fs.writeFileSync(LEDGER_PATH, ledgerBefore);
+    // recordCreated() appends to the real intake ledger; remove only this
+    // test's own row (BRO-2656), never a whole-file restore that could drop a
+    // concurrent real filer's row.
+    if (fs.existsSync(LEDGER_PATH)) {
+      const kept = fs.readFileSync(LEDGER_PATH, 'utf8').split('\n').filter((line) => !line.includes(title));
+      fs.writeFileSync(LEDGER_PATH, kept.join('\n'));
+    }
   }
   assert.equal(sent.priority, 3);
   assert.equal(sent.stateId, 'backlog-1');

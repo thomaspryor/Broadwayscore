@@ -103,6 +103,9 @@ function pickStateForMode(states, mode) {
 // unset, linear-watchdog-source.js's priorityOf() falls back to the title,
 // so an unset field must be pinned to Medium or the prefix re-promotes it.
 const PARKED_MAX_PRIORITY = 3;
+// Stamped into a clamped issue's description. Consumers that select on the
+// filer's ORIGINAL High intent (friction-fix-eligibility.js) read it back.
+const PARKED_CLAMP_MARKER = 'Priority: filed at Medium because it is parked.';
 
 /**
  * PURE. The priority a new issue is actually filed at. Dispatched issues keep
@@ -171,7 +174,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     console.warn(`[linear-issue-create] parked issue filed at Medium, not P0/P1 (BRO-4487): "${title}"`);
   }
   const clampNote = filed.clamped
-    ? '\n\nPriority: filed at Medium because it is parked. A P0/P1 must be dispatched at creation (BRO-4487); re-file with --dispatch if it needs urgent work.'
+    ? `\n\n${PARKED_CLAMP_MARKER} A P0/P1 must be dispatched at creation (BRO-4487); re-file with --dispatch if it needs urgent work.`
     : '';
   const finalDescription =
     disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${description || ''}`.trim() : (description || '');
@@ -215,5 +218,5 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
 
 module.exports = {
   createLinearIssue, pickStateForMode, isUsageLimitExceeded, USAGE_LIMIT_MESSAGE,
-  effectiveCreatePriority, PARKED_MAX_PRIORITY,
+  effectiveCreatePriority, PARKED_MAX_PRIORITY, PARKED_CLAMP_MARKER,
 };

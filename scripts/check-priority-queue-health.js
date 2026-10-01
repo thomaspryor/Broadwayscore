@@ -21,16 +21,18 @@ const fs = require('fs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const linear = require('./lib/linear-client');
 const { assessPriorityQueue, formatSummary } = require('./lib/priority-queue-health');
+const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 
 const USAGE = 'Usage: node scripts/check-priority-queue-health.js [--json] [--alert]';
 const MAX_PAGES = 40; // 250 × 40 = 10,000 open issues; the board holds ~2,000
+const ALERT_KEY = 'priority-queue:overdue';
 
 // Non-archived, non-terminal issues of every priority (the total is part of
 // the verdict — see the lib header). includeArchived deliberately omitted.
 const OPEN_ISSUES_QUERY = `query($teamKey: String!, $after: String) {
   issues(first: 250, after: $after, filter: {
     team: { key: { eq: $teamKey } },
-    state: { type: { nin: ["completed", "canceled", "duplicate"] } }
+    state: { type: { nin: ${JSON.stringify(TERMINAL_STATE_TYPES)} } }
   }) {
     pageInfo { hasNextPage endCursor }
     nodes { identifier title priority createdAt state { type } }
@@ -71,12 +73,16 @@ async function main(argv = process.argv.slice(2)) {
     try { fs.appendFileSync(process.env.GITHUB_STEP_SUMMARY, `### P0/P1 queue\n${summary}\n`); } catch { /* summary is cosmetic */ }
   }
 
-  if (argv.includes('--alert') && !result.healthy) {
+  if (argv.includes('--alert') && result.healthy) {
+    const { resolveCondition } = require('./lib/owner-alert-router.js');
+    resolveCondition(ALERT_KEY, { reason: 'no P0 older than 24h and no P1 older than 7d' });
+  } else if (argv.includes('--alert')) {
     const { routeAlert } = require('./lib/owner-alert-router.js');
     const list = result.oldestP0.map((i) => `- ${i.identifier} (${Math.round(i.ageHours / 24)}d): ${i.title}`).join('\n');
     await routeAlert({
-      conditionKey: 'priority-queue:overdue',
-      title: `P0/P1 queue overdue: ${result.p0Overdue} P0 older than 24h, ${result.p1Overdue} P1 older than 7d`,
+      conditionKey: ALERT_KEY,
+      // Title must not start with "P0"/"P1": priorityOf() would read that prefix as a priority.
+      title: `Overdue P0/P1 queue: ${result.p0Overdue} P0 older than 24h, ${result.p1Overdue} P1 older than 7d`,
       description: `${summary}\n\nOldest overdue P0s:\n${list || '(none)'}`,
       severity: 'warning',
       disposition: 'digest',
