@@ -204,6 +204,56 @@ function findSentRecord(sentShows, showId, market) {
   return null;
 }
 
+/**
+ * Cross-check alertable 'draft-stuck' shows against Resend before paging
+ * (BRO-4474). The tracker is only as fresh as the reconciler's last good poll,
+ * so a send the reconciler missed paged the owner for an email they had sent.
+ *
+ *   live 'sent'    -> dropped from the result (not a missed broadcast)
+ *   live 'deleted' -> relabelled 'draft-unknown'. Resend reaps SENT broadcasts
+ *                     (~24h), so a 404 on a draft we last saw unsent is the
+ *                     ambiguous case, and must get the "verify in Resend first,
+ *                     do not re-send" text, never "open the draft and send it"
+ *                     at a URL that no longer exists.
+ *   anything else, an error, or out of time -> unchanged (pages as before).
+ *
+ * `fetchStatus(draftId)` resolves to a Resend status string or null on error.
+ * `deadlineMs` bounds the WHOLE pass: the sweep runs under a 2-minute step
+ * timeout and writes its snapshot and pages only afterwards, so a slow Resend
+ * must never cost the day's pages. Returns { missed, confirmedSent, notes }.
+ */
+async function applyLiveBroadcastStatus(missed, sentShows, fetchStatus, { deadlineMs = 30_000, now = Date.now } = {}) {
+  const shows = sentShows || {};
+  const stop = now() + deadlineMs;
+  const drop = new Set();
+  const relabel = new Set();
+  const confirmedSent = [];
+  const notes = [];
+  for (const m of missed) {
+    if (!m.alertable || m.state !== 'draft-stuck') continue;
+    const draftId = (shows[m.id] || {}).draftId;
+    if (!draftId) continue;
+    const remaining = stop - now();
+    if (remaining <= 0) { notes.push(`${m.id}: live check skipped (time budget spent)`); continue; }
+    let timer;
+    const status = await Promise.race([
+      Promise.resolve().then(() => fetchStatus(draftId)).catch(() => null),
+      new Promise((r) => { timer = setTimeout(() => r(null), remaining); }),
+    ]);
+    clearTimeout(timer);
+    if (status === 'sent') { drop.add(m.id); confirmedSent.push(m.id); }
+    else if (status === 'deleted') relabel.add(m.id);
+    else if (status == null) notes.push(`${m.id}: live check failed or timed out; paging on tracker state`);
+  }
+  return {
+    missed: missed
+      .filter((m) => !drop.has(m.id))
+      .map((m) => (relabel.has(m.id) ? { ...m, state: 'draft-unknown' } : m)),
+    confirmedSent,
+    notes,
+  };
+}
+
 /** Kept for callers that only need the boolean. */
 function hasCompletedBroadcast(sentShows, showId) {
   return classifyShowBroadcastState(sentShows, showId) === 'sent';
@@ -347,6 +397,7 @@ module.exports = {
   classifyShowBroadcastState,
   sentOnSiblingRecord,
   findSentRecord,
+  applyLiveBroadcastStatus,
   wasCoveredByWeeklyRoundup,
   daysSinceOpening,
   hasCompletedBroadcast,
