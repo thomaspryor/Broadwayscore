@@ -164,3 +164,42 @@ test('extractJsonLdTheaterEvents sees @graph-wrapped events', async () => {
   assert.deepEqual(names({ '@context': 'https://schema.org', '@graph': [EVENT] }), ['Hamlet']);
   assert.deepEqual(names({ '@graph': [EVENT, ARRAY_TYPED] }), ['Hamlet', 'Macbeth']);
 });
+
+// BRO-4484: the staging merge is three-way and honours prunes, so a writer
+// that rewrote an unparsable file as a mutation of [] would prune every row
+// at push time. Both updateStaging helpers refuse instead.
+test('BRO-4484: updateStaging (OB and OWE) refuses to rewrite a staging file it cannot parse; a missing file is empty', () => {
+  const require = createRequire(import.meta.url);
+  const ob = require('./venue-listing-discover.js');
+  const owe = require('./owe-venue-staging.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4484-staging-'));
+  try {
+    for (const [name, updateStaging] of [['ob', ob.updateStaging], ['owe', owe.updateStaging]]) {
+      const file = path.join(dir, `${name}.json`);
+      const corrupt = '[\n<<<<<<< HEAD\n  {"candidateHash": "a"}\n';
+      fs.writeFileSync(file, corrupt);
+      const origError = console.error;
+      const errors = [];
+      console.error = (...a) => errors.push(a.join(' '));
+      let called = false;
+      try {
+        updateStaging((cur) => { called = true; return [...cur, { candidateHash: 'new' }]; }, file);
+      } finally {
+        console.error = origError;
+      }
+      assert.equal(called, false, `${name}: mutateFn must not run on an unparsable file`);
+      assert.equal(fs.readFileSync(file, 'utf8'), corrupt, `${name}: the file is left untouched`);
+      assert.ok(errors.some((e) => e.includes('refusing to rewrite')), `${name}: refusal is loud`);
+
+      fs.writeFileSync(file, '{"not":"an array"}');
+      updateStaging((cur) => [...cur, { candidateHash: 'new' }], file);
+      assert.equal(fs.readFileSync(file, 'utf8'), '{"not":"an array"}', `${name}: a non-array is not rewritten either`);
+
+      const missing = path.join(dir, `${name}-missing.json`);
+      updateStaging((cur) => [...cur, { candidateHash: 'new' }], missing);
+      assert.deepEqual(JSON.parse(fs.readFileSync(missing, 'utf8')), [{ candidateHash: 'new' }], `${name}: a missing file is a genuine empty list`);
+    }
+  } finally {
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
