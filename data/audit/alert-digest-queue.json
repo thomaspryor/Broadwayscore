@@ -411,5 +411,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-01T20:10:02.186Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4485-unknown-byline-upgrade",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4485-unknown-byline-upgrade",
+    "description": "land.yml did not land land/bro-4485-unknown-byline-upgrade: the unit-tests-node gate went red at d2921c3969. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36921194150",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4485-unknown-byline-upgrade"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "d2921c396909e8d322fb399278c70e685001d5a5"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36921194150"
+      }
+    ],
+    "queuedAt": "2026-10-01T20:53:34.253Z"
   }
 ]
