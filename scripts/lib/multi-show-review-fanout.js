@@ -641,6 +641,7 @@ function unsplitArticle(filePath, data, reviewTextsDir, ownShowId) {
     const sameArticle = !!data.url && child.url
       && multiShowSplitGroup({ ...child, multiShowSplitChild: true }) === multiShowSplitGroup(data);
     if (child._locked === true || child.manualContentTier || child.humanReviewScore != null) continue;
+    if (child.isRoundupArticle === true || child.wrongProduction === true || child.duplicateOf) continue;
     if (child.multiShowSplitChild !== true || child.multiShowSplitParentShowId !== ownShowId) {
       // Already holds the whole article unsplit (re-ingested under its show):
       // mark it joint too, text unchanged.
