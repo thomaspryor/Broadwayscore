@@ -34,6 +34,7 @@ const { execFileSync } = require('child_process');
 
 const STATE_DIR = path.join(process.env.TMPDIR || os.tmpdir(), 'bsc-compact-state');
 const MAX_CHARS = 6000;          // keep the restored context small: it is re-read on every step
+const MAX_AGE_MS = 6 * 60 * 60 * 1000; // a checkpoint older than this is stale (compaction and restore are seconds apart)
 const KEEP_PROMPTS = 3;          // first prompt (the goal) + the last two
 const KEEP_EDITS = 40;
 const KEEP_BASH = 8;
@@ -125,11 +126,15 @@ function uniqueTail(arr, n) {
   return out;
 }
 
-/** Render the checkpoint as markdown, capped at MAX_CHARS. */
+/**
+ * Render the checkpoint as markdown, capped at MAX_CHARS. Sections are ordered
+ * most-durable first (ask, cards, git, evidence) so the cap, when it bites,
+ * drops whole trailing lines of the least important section (commands).
+ */
 function renderState(facts, git, now = new Date()) {
   const lines = [];
   lines.push(`# Compaction checkpoint (${now.toISOString().slice(0, 16)}Z, written automatically before context was compacted)`);
-  lines.push('Treat this as the authoritative record of what was asked and what already happened; do not redo listed work.');
+  lines.push('A snapshot of this session before its history was summarised. Use it to avoid repeating finished steps and to keep the original ask in view. It is not proof: prefer the current files and git state over this list, and re-verify anything that matters, especially after a revert or a change of task.');
   const prompts = facts.prompts.length <= KEEP_PROMPTS ? facts.prompts
     : [facts.prompts[0], ...facts.prompts.slice(-(KEEP_PROMPTS - 1))];
   if (prompts.length) {
@@ -143,6 +148,11 @@ function renderState(facts, git, now = new Date()) {
     if (git.lastCommit) lines.push(`- last commit: ${git.lastCommit}`);
     if (git.status.length) lines.push(`- uncommitted: ${git.status.join(' | ')}`);
   }
+  const ev = uniqueTail(facts.evidence, KEEP_EVIDENCE);
+  if (ev.length) {
+    lines.push('', '## Status lines the session wrote earlier (claims, not verification)');
+    for (const e of ev) lines.push(`- ${truncate(e, 300)}`);
+  }
   const edits = uniqueTail(facts.edits, KEEP_EDITS);
   if (edits.length) {
     lines.push('', `## Files edited this session (${edits.length} most recent, unique)`);
@@ -153,19 +163,50 @@ function renderState(facts, git, now = new Date()) {
     lines.push('', '## Last commands run');
     for (const c of bash) lines.push(`- \`${truncate(c, CMD_CHARS)}\``);
   }
-  const ev = uniqueTail(facts.evidence, KEEP_EVIDENCE);
-  if (ev.length) {
-    lines.push('', '## Evidence and status lines already produced');
-    for (const e of ev) lines.push(`- ${truncate(e, 300)}`);
-  }
   let out = lines.join('\n');
-  if (out.length > MAX_CHARS) out = out.slice(0, MAX_CHARS - 20) + '\n…(truncated)';
+  if (out.length > MAX_CHARS) {
+    const cut = out.lastIndexOf('\n', MAX_CHARS - 20);
+    out = out.slice(0, cut > 0 ? cut : MAX_CHARS - 20) + '\n…(truncated)';
+  }
   return out;
 }
 
-function statePath(sessionId) {
-  const safe = String(sessionId || 'unknown').replace(/[^A-Za-z0-9_.-]/g, '_').slice(0, 120);
-  return path.join(STATE_DIR, `${safe}.md`);
+/**
+ * One state file per transcript, not per session_id: a subagent's PreCompact may
+ * carry its parent's session_id, and its transcript lives at
+ * <session>/subagents/agent-<id>.jsonl, so the transcript basename is the
+ * distinguishing key when it is present. Falls back to session_id alone.
+ */
+const safeKey = (s) => String(s).replace(/[^A-Za-z0-9_.-]/g, '_');
+
+function statePath(sessionId, transcriptPath) {
+  const sid = safeKey(sessionId || 'unknown');
+  const base = transcriptPath ? safeKey(path.basename(String(transcriptPath)).replace(/\.jsonl$/, '')) : '';
+  const key = (base && base !== sid ? `${sid}__${base}` : sid).slice(0, 160);
+  return path.join(STATE_DIR, `${key}.md`);
+}
+
+/**
+ * Exact (session + transcript) first, then the plain session file, then the
+ * newest file written for this session, preferring a main transcript's over a
+ * subagent's. The last case covers a restore whose input omits transcript_path.
+ */
+function findStateFile(sessionId, transcriptPath) {
+  const exact = statePath(sessionId, transcriptPath);
+  if (fs.existsSync(exact)) return exact;
+  const sid = safeKey(sessionId || 'unknown');
+  const bySession = path.join(STATE_DIR, `${sid}.md`);
+  if (fs.existsSync(bySession)) return bySession;
+  let names = [];
+  try { names = fs.readdirSync(STATE_DIR).filter(f => f.startsWith(`${sid}__`) && f.endsWith('.md')); } catch { return null; }
+  if (!names.length) return null;
+  const rank = (f) => {
+    let mtime = 0;
+    try { mtime = fs.statSync(path.join(STATE_DIR, f)).mtimeMs; } catch { /* vanished */ }
+    return { f, sub: f.includes('__agent-') ? 1 : 0, mtime };
+  };
+  const best = names.map(rank).sort((a, b) => a.sub - b.sub || b.mtime - a.mtime)[0];
+  return path.join(STATE_DIR, best.f);
 }
 
 function writeCheckpoint(input) {
@@ -175,15 +216,29 @@ function writeCheckpoint(input) {
   const git = input.cwd ? gitSnapshot(input.cwd) : null;
   const md = renderState(facts, git);
   fs.mkdirSync(STATE_DIR, { recursive: true });
-  const p = statePath(input.session_id);
-  fs.writeFileSync(p, md);
+  const p = statePath(input.session_id, input.transcript_path);
+  const tmp = `${p}.${process.pid}.tmp`;
+  fs.writeFileSync(tmp, md);
+  fs.renameSync(tmp, p); // atomic: a concurrent restore never reads a half-written file
   return p;
 }
 
+/**
+ * Restore consumes the file: a checkpoint is injected once, right after the
+ * compaction that wrote it, and can never resurface stale on a later compaction
+ * or a different task. Files older than MAX_AGE_MS are ignored for the same reason.
+ */
 function restoreCheckpoint(input) {
-  const p = statePath(input.session_id);
-  if (!fs.existsSync(p)) return null;
-  const md = fs.readFileSync(p, 'utf8');
+  const p = findStateFile(input.session_id, input.transcript_path);
+  if (!p) return null;
+  let md = null;
+  try {
+    const ageMs = Date.now() - fs.statSync(p).mtimeMs;
+    if (ageMs <= MAX_AGE_MS) md = fs.readFileSync(p, 'utf8');
+  } finally {
+    try { fs.unlinkSync(p); } catch { /* already gone */ }
+  }
+  if (!md) return null;
   return {
     hookSpecificOutput: {
       hookEventName: 'SessionStart',
@@ -214,7 +269,7 @@ function main(argv) {
   return 0;
 }
 
-module.exports = { parseTranscript, renderState, statePath, writeCheckpoint, restoreCheckpoint, STATE_DIR, MAX_CHARS };
+module.exports = { parseTranscript, renderState, statePath, findStateFile, writeCheckpoint, restoreCheckpoint, STATE_DIR, MAX_CHARS };
 
 if (require.main === module) {
   let code = 0;

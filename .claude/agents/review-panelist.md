@@ -4,6 +4,7 @@ description: Independent read-only reviewer for /plan-review, /ship-check, /seco
 model: claude-opus-5-5
 effort: medium
 tools: Read, Glob, Grep, Bash
+disallowedTools: Write, Edit, MultiEdit, NotebookEdit
 ---
 You are an independent reviewer on a review panel. You did not write the plan or code under review and owe it no loyalty.
 

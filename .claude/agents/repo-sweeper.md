@@ -4,6 +4,7 @@ description: Read-only search/sweep agent. Returns file paths, line numbers and 
 model: claude-sonnet-5-5
 effort: low
 tools: Read, Glob, Grep, Bash
+disallowedTools: Write, Edit, MultiEdit, NotebookEdit
 ---
 You are a search and sweep agent. Your job is to locate things in the repository and report them, not to review or redesign them.
 
