@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T17:09:50.481Z",
+  "generatedAt": "2026-10-01T22:21:01.599Z",
   "windowDays": 45,
   "showsScanned": 114,
   "gaps": [
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=school-girls-or-the-african-mean-girls-play-2026",
       "firstSeen": "2026-09-29T06:59:42.774Z",
-      "fileAgeHours": 58.168413055555554,
+      "fileAgeHours": 63.35469777777778,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 40.0540225
+      "nonTerminalAgeHours": 45.24044388888889
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -37,9 +37,9 @@
       "recoveryCount": 1,
       "fix": "node scripts/ingest-review-from-url.js --show=cosi-fan-tutte-off-broadway-2026 --url=/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA_ck9qgVrJI837gwjrGU-vybX08Xoxs_Izf5RcaUmrP6KmbEkfQBtTwbcb9qyJm_DJXgLH4VC81mSAUDwaOPvU --outlet=independent   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T11:13:40.183Z",
-      "fileAgeHours": 29.93587861111111,
+      "fileAgeHours": 35.122188055555554,
       "gapSeenAt": "2026-09-30T14:36:19.168Z",
-      "nonTerminalAgeHours": 26.558698055555556
+      "nonTerminalAgeHours": 31.745119444444445
     },
     {
       "showId": "twenty-thousand-streets-off-west-end-2026",
@@ -57,9 +57,29 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=twenty-thousand-streets-off-west-end-2026 --url=https://www.thestage.co.uk/reviews/twenty-thousand-streets-under-the-sky-review --outlet=thestage   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T17:49:36.013Z",
-      "fileAgeHours": 23.337051388888888,
+      "fileAgeHours": 28.523366111111113,
       "gapSeenAt": "2026-10-01T09:45:54.215Z",
-      "nonTerminalAgeHours": 7.398962777777778
+      "nonTerminalAgeHours": 12.585384166666667
+    },
+    {
+      "showId": "the-first-year-off-west-end-2026",
+      "title": "The First Year",
+      "openingDate": null,
+      "file": "guardian--unknown.json",
+      "outletId": "guardian",
+      "tier": 1,
+      "type": "empty-body",
+      "url": "https://www.theguardian.com/stage/2026/sep/28/the-first-year-of-the-gaza-genocide-in-the-media-review-new-diorama-theatre-london",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=the-first-year-off-west-end-2026 --url=https://www.theguardian.com/stage/2026/sep/28/the-first-year-of-the-gaza-genocide-in-the-media-review-new-diorama-theatre-london --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-01T17:15:34.846Z",
+      "fileAgeHours": 5.090431111111111,
+      "gapSeenAt": "2026-10-01T22:21:01.598Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -74,9 +94,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFV2lmVVdCz_FAnxpbkdT0laEhC-CQ-GYdueUSFpNnHAyl6jiFCYcnDmLoQT_XeFwvUMH1G-niwO9E0lWrESc5UKmT2Rw_qzEnWYLffLMtIYgqnIGQCJbIfba-nQTex_bfvPhSqr30ptZ5SVbHKYHN3y3kF2ZDXfr4aNASjO12xNdWA2agtXqIVoHxSFvP0Lvo8lupX-PHEVSnQpE7dU --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:34:19.900Z",
-      "fileAgeHours": 43.591699444444444,
+      "fileAgeHours": 48.77807861111111,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 40.0540225
+      "nonTerminalAgeHours": 45.24044388888889
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -94,9 +114,29 @@
       "recoveryCount": 2,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFW3fajLyWSsaMVGbF1waB9K9oVoINubxdhvdb4vtkRj7tH-PNlO_ypaz-kVXcD_mLxKacqDSKkFMezJ5D2a05lxvbHyAYGYB-_-F4hFjnmm5NEmBuKAnzJ6DibPD4crfLodTratehtKcBNzbDiPo0ntENTis3z6FPRwcthknjr39MxqgEIbsWBx9ILix0yHXVBetm4xOpTz4ye4fhNQ --outlet=tennessean   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:40:48.734Z",
-      "fileAgeHours": 43.48369,
+      "fileAgeHours": 48.670069166666664,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 40.0540225
+      "nonTerminalAgeHours": 45.24044388888889
+    },
+    {
+      "showId": "degenerates-off-broadway-2026",
+      "title": "Degenerates",
+      "openingDate": "2026-09-29",
+      "file": "lighting-and-sound-america--unknown.json",
+      "outletId": "lighting-and-sound-america",
+      "tier": 2,
+      "type": "empty-body",
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-HFPRX1",
+      "recovery": {
+        "attempted": false,
+        "reason": "circuit-breaker:daily-global-cap"
+      },
+      "recoveryCount": 0,
+      "fix": "node scripts/ingest-review-from-url.js --show=degenerates-off-broadway-2026 --url=http://www.lightingandsoundamerica.com/news/story.asp?ID=-HFPRX1 --outlet=lighting-and-sound-america   # run LOCALLY (cookie jar lives on the Mac)",
+      "firstSeen": "2026-10-01T17:16:34.239Z",
+      "fileAgeHours": 5.074103611111111,
+      "gapSeenAt": "2026-10-01T22:21:01.598Z",
+      "nonTerminalAgeHours": 0
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -111,9 +151,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 122.2559425,
+      "fileAgeHours": 127.44234222222222,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 119.439225
+      "nonTerminalAgeHours": 124.6256463888889
     },
     {
       "showId": "a-slow-fire-off-west-end-2026",
@@ -128,9 +168,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=a-slow-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T11:13:07.795Z",
-      "fileAgeHours": 53.94515555555556,
+      "fileAgeHours": 59.131568333333334,
       "gapSeenAt": "2026-09-29T12:07:43.506Z",
-      "nonTerminalAgeHours": 53.035270833333335
+      "nonTerminalAgeHours": 58.221692222222224
     },
     {
       "showId": "burning-leaves-off-broadway-2026",
@@ -146,9 +186,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=burning-leaves-off-broadway-2026",
       "firstSeen": "2026-09-30T14:32:12.902Z",
-      "fileAgeHours": 26.6270825,
+      "fileAgeHours": 31.813500833333332,
       "gapSeenAt": "2026-10-01T02:44:11.346Z",
-      "nonTerminalAgeHours": 14.4275375
+      "nonTerminalAgeHours": 19.613958888888888
     },
     {
       "showId": "chewing-gum-dreams-off-west-end-2026",
@@ -166,9 +206,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=chewing-gum-dreams-off-west-end-2026 --url=https://www.theguardian.com/stage/2026/sep/16/chewing-gum-dreams-review-theatre503-michaela-coel --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T22:10:33.519Z",
-      "fileAgeHours": 18.98802277777778,
+      "fileAgeHours": 24.17444111111111,
       "gapSeenAt": "2026-09-30T23:32:31.684Z",
-      "nonTerminalAgeHours": 17.621888055555555
+      "nonTerminalAgeHours": 22.808309444444443
     },
     {
       "showId": "the-turn-of-the-screw-off-west-end-2026",
@@ -186,27 +226,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "fire-fire-off-west-end-2026",
-      "title": "Fire Fire",
-      "openingDate": "2026-09-09",
-      "file": "daily-mail--unknown.json",
-      "outletId": "daily-mail",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://www.dailymail.com/news/article-16127687/Peaky-Blinders-Downton-Abbey-filmed-fire.html",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.dailymail.com/news/article-16127687/Peaky-Blinders-Downton-Abbey-filmed-fire.html --outlet=daily-mail   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-01T15:51:33.772Z",
-      "fileAgeHours": 1.3046305555555555,
-      "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 5.186421388888889
     },
     {
       "showId": "fire-fire-off-west-end-2026",
@@ -224,29 +244,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.theguardian.com/music/2026/sep/23/fire-in-my-mouth-review-royal-festival-hall-wolfe-alsop-philharmonia --outlet=guardian   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-01T15:51:32.710Z",
-      "fileAgeHours": 1.3049258333333333,
+      "fileAgeHours": 6.491357222222222,
       "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "fire-fire-off-west-end-2026",
-      "title": "Fire Fire",
-      "openingDate": "2026-09-09",
-      "file": "observer--unknown.json",
-      "outletId": "observer",
-      "tier": 1,
-      "type": "empty-body",
-      "url": "https://observer.co.uk/style/restaurants/article/new-kid-in-town-the-fire-and-friendship-behind-this-years-hottest-opening",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://observer.co.uk/style/restaurants/article/new-kid-in-town-the-fire-and-friendship-behind-this-years-hottest-opening --outlet=observer   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-01T15:51:34.026Z",
-      "fileAgeHours": 1.3045602777777778,
-      "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 5.186421388888889
     },
     {
       "showId": "fire-fire-off-west-end-2026",
@@ -264,29 +264,9 @@
       "recoveryCount": 0,
       "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-01T15:51:33.268Z",
-      "fileAgeHours": 1.3047708333333334,
+      "fileAgeHours": 6.491202222222222,
       "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 0
-    },
-    {
-      "showId": "imitations-off-west-end-2026",
-      "title": "Imitations",
-      "openingDate": "2026-09-15",
-      "file": "british-theatre--unknown.json",
-      "outletId": "british-theatre",
-      "tier": 2,
-      "type": "empty-body",
-      "url": "https://www.britishtheatreguide.info/reviews/imitations-riverside-studi-26030",
-      "recovery": {
-        "attempted": false,
-        "reason": "circuit-breaker:daily-global-cap"
-      },
-      "recoveryCount": 0,
-      "fix": "node scripts/ingest-review-from-url.js --show=imitations-off-west-end-2026 --url=https://www.britishtheatreguide.info/reviews/imitations-riverside-studi-26030 --outlet=british-theatre   # run LOCALLY (cookie jar lives on the Mac)",
-      "firstSeen": "2026-10-01T15:43:33.447Z",
-      "fileAgeHours": 1.4380597222222222,
-      "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 5.186421388888889
     }
   ],
   "contradictions": []
