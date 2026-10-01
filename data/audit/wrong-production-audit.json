@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-01T23:21:18.609Z",
+  "timestamp": "2026-10-01T23:29:57.774Z",
   "stats": {
-    "totalReviews": 45763,
+    "totalReviews": 45766,
     "alreadyFlagged": 18682,
     "dateGuardCatches": 261,
     "directorMismatch": 1196,
     "tvFilmSignals": 1328,
-    "londonSignals": 1247,
+    "londonSignals": 1248,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
-    "noPublishDate": 4135
+    "noPublishDate": 4137
   },
   "findings": [
     {
@@ -45345,6 +45345,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "guardian--emma-john.json",
+      "score": 74,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
       "findings": [
@@ -45360,6 +45361,20 @@
       "file": "guardian--unknown.json",
       "publishDate": "2026-09-28",
       "url": "https://www.theguardian.com/stage/2026/sep/28/christine-baranski-richard-e-grant-interview-hay-fever-wyndhams-theatre-sex-scenes-parties",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "theupcoming--emilia-gould.json",
+      "score": 79,
+      "publishDate": "2026-10-02",
+      "url": "https://www.theupcoming.co.uk/2026/10/02/hay-fever-at-wyndhams-theatre-theatre-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
