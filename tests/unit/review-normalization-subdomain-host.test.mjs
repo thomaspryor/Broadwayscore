@@ -98,6 +98,18 @@ describe('bare-base fallback still works for hosts with no subdomain', () => {
   });
 });
 
+describe('gather-reviews no-match fallback (cousin: hostname.split(".")[0] minting)', () => {
+  const { fallbackOutletIdFromHost } = require('../../scripts/gather-reviews.js');
+  test('mints from the registrable label, not the subdomain', () => {
+    assert.equal(fallbackOutletIdFromHost('someblog.substack.com'), 'someblog');
+    assert.equal(fallbackOutletIdFromHost('zzq-unregistered-blog.com'), 'zzq-unregistered-blog');
+  });
+  test('never mints a registered outlet id the resolver declined', () => {
+    assert.equal(fallbackOutletIdFromHost('losangeles.timeout.com'), 'unknown');
+    assert.equal(fallbackOutletIdFromHost('news.yahoo.com'), 'unknown');
+  });
+});
+
 describe('outlet-mismatch heal never relabels onto a syndication portal', () => {
   test('AP review on news.yahoo.com is not moved to Yahoo', () => {
     const data = {
