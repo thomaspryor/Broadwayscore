@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T17:55:36.563Z",
+  "generatedAt": "2026-10-01T18:32:54.445Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1388,25 +1388,23 @@
       "status": "open",
       "slug": "whos-afraid-of-virginia-woolf-west-end",
       "thumbnail": "/images/shows/whos-afraid-of-virginia-woolf-west-end-2026/thumbnail.webp",
-      "siteScore": 83.21,
-      "liveScore": 83,
-      "scoreDrift": -0.20999999999999375,
+      "siteScore": 85.37,
+      "liveScore": 85,
+      "scoreDrift": -0.37000000000000455,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 17,
+      "total": 19,
       "t1": 7,
-      "t2": 4,
-      "t3": 6,
-      "positive": 15,
+      "t2": 5,
+      "t3": 7,
+      "positive": 17,
       "mixed": 1,
       "negative": 1,
       "readiness": {
-        "ready": false,
-        "reasons": [
-          "hi-conf:5/6"
-        ],
-        "highConfidence": 5,
+        "ready": true,
+        "reasons": [],
+        "highConfidence": 7,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1416,7 +1414,7 @@
       },
       "broadcast": {
         "state": "waiting",
-        "detail": "Not yet broadcast-ready"
+        "detail": "Ready — awaiting send"
       },
       "missingT1": [
         {
@@ -1590,6 +1588,18 @@
           "m": 1,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-01T18:32:54.445Z",
+          "rc": 19,
+          "s": 85.37,
+          "t1": 7,
+          "t2": 5,
+          "t3": 7,
+          "p": 17,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -1603,23 +1613,23 @@
       "status": "open",
       "slug": "the-standard-of-living-west-end",
       "thumbnail": "/images/shows/the-standard-of-living-west-end-2026/thumbnail.webp",
-      "siteScore": 67.57,
-      "liveScore": 68,
-      "scoreDrift": 0.4300000000000068,
+      "siteScore": 68.67,
+      "liveScore": 69,
+      "scoreDrift": 0.3299999999999983,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 21,
+      "total": 23,
       "t1": 9,
       "t2": 5,
-      "t3": 7,
-      "positive": 10,
-      "mixed": 9,
+      "t3": 9,
+      "positive": 11,
+      "mixed": 10,
       "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 10,
+        "highConfidence": 12,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1913,6 +1923,18 @@
           "t3": 7,
           "p": 10,
           "m": 9,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-01T18:32:54.445Z",
+          "rc": 23,
+          "s": 68.67,
+          "t1": 9,
+          "t2": 5,
+          "t3": 9,
+          "p": 11,
+          "m": 10,
           "n": 2,
           "bc": "waiting"
         }
