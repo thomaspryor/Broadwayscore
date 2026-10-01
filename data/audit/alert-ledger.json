@@ -140,7 +140,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -150,7 +150,8 @@
       "lastSurfacedAt": "2026-09-25T02:52:48.085Z",
       "notifyCount": 119,
       "cardId": null,
-      "linearIdentifier": "BRO-3030"
+      "linearIdentifier": "BRO-3030",
+      "resolvedAt": "2026-10-01T16:47:42.064Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -3783,7 +3784,7 @@
       "resolvedAt": "2026-09-21T05:25:34.434Z"
     },
     "test-yml:red:Unit Tests:3dc02b6a": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
       "firstSeen": "2026-09-20T20:06:05.351Z",
@@ -3792,7 +3793,9 @@
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
-      "linearIdentifier": "BRO-4410"
+      "linearIdentifier": "BRO-4410",
+      "resolvedAt": "2026-10-01T16:47:43.950Z",
+      "resolveReason": "job-green"
     },
     "test-yml:red:E2E Tests:9455d1f4": {
       "status": "resolved",
@@ -8185,6 +8188,24 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 4
+    },
+    "test-yml:red:E2E Tests:fd6209b2": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "main test.yml red: E2E Tests / Setup Playwright",
+      "firstSeen": "2026-10-01T16:47:43.960Z",
+      "lastSeen": "2026-10-01T16:47:43.960Z",
+      "lastNotifiedAt": "2026-10-01T16:47:43.960Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4477",
+      "dispatch": {
+        "requestedAt": "2026-10-01T16:47:43.960Z",
+        "mode": "dispatch-at-filing",
+        "runId": "36892886642",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36892886642"
+      }
     }
   }
 }
