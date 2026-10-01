@@ -1,21 +1,39 @@
 {
-  "updatedAt": "2026-10-01T05:26:25.272Z",
-  "processed": 198,
-  "failed": 158,
-  "successRate": "55.6%",
+  "updatedAt": "2026-10-01T05:57:57.720Z",
+  "processed": 262,
+  "failed": 214,
+  "successRate": "55.0%",
   "tierBreakdown": {
-    "playwright": 115,
+    "playwright": 138,
     "amp": 1,
     "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 25,
+    "scrapingdog": 30,
     "scrapingbee": 18,
-    "brightdata": 10,
+    "brightdata": 12,
     "archiveToday": 0,
-    "archive": 34
+    "archive": 72
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-10-01T02:44:38.266Z",
+      "event": "bb-session",
+      "session": "a426f34f",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-10-01T02:44:49.138Z",
+      "event": "bb-session",
+      "session": "0c84c513",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-01T02:58:20.998Z",
+      "event": "bb-session",
+      "session": "398cabcf",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
     {
       "t": "2026-10-01T02:58:21.909Z",
       "event": "bb-cookie-inject",
@@ -92,41 +110,6 @@
       "t": "2026-10-01T03:37:28.366Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
-    },
-    {
-      "t": "2026-10-01T05:03:09.353Z",
-      "event": "bb-session",
-      "session": "c8ee4c31",
-      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
-    },
-    {
-      "t": "2026-10-01T05:03:28.871Z",
-      "event": "bb-session",
-      "session": "bbf27fc3",
-      "url": "https://events.newyorkfamily.com/event/the-secret-circus-musical/"
-    },
-    {
-      "t": "2026-10-01T05:05:29.119Z",
-      "event": "bb-session",
-      "session": "89530fb2",
-      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
-    },
-    {
-      "t": "2026-10-01T05:05:49.691Z",
-      "event": "bb-session",
-      "session": "9c593c3b",
-      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
-    },
-    {
-      "t": "2026-10-01T05:08:25.885Z",
-      "event": "bb-session",
-      "session": "45c09029",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-10-01T05:08:26.787Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
     }
   ]
 }
