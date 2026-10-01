@@ -134,6 +134,10 @@ const EXEMPT_NEVER_CI = {
   // machine. A RECHECK-AFTER acceptance probe for autonomous-acceptance-
   // recheck.js, same pattern as the entries above.
   'verify-watchdog-claim-loop-gone.test.mjs': 'task-1564',
+  // BRO-4467: asserts comparative-rescore stopped re-scoring the same groups
+  // every chain run, from the live data/llm-scoring-runs.json. Needs post-fix
+  // run history, so it is a RECHECK-AFTER probe, never run by CI.
+  'verify-comparative-no-repeat.test.mjs': 'BRO-4467',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
