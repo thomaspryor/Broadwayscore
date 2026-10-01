@@ -138,6 +138,10 @@ const EXEMPT_NEVER_CI = {
   // every chain run, from the live data/llm-scoring-runs.json. Needs post-fix
   // run history, so it is a RECHECK-AFTER probe, never run by CI.
   'verify-comparative-no-repeat.test.mjs': 'BRO-4467',
+  // BRO-4486: asserts the NYT Degenerates rescore and the star re-anchoring
+  // happened, from live review files. Red until the enrich + scoring crons
+  // act, so it is a RECHECK-AFTER probe, never run by CI.
+  'verify-bro-4486-recheck.test.mjs': 'BRO-4486',
 };
 
 const EXEMPT_KNOWN_BROKEN = {
