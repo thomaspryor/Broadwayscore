@@ -136,16 +136,18 @@ function blockAnnouncedCatchUp(show, announcedDecision, pressNight, now = new Da
 
 /**
  * A type for a row that is (or is becoming) listed with a status other than
- * 'announced' but has none: validate-market-expansion.js requires one there,
- * and Check 2e / a dated-listing backfill can move a stub out of 'announced'
- * without ever typing it (46 rows on 2026-10-01 turned Data Validation red).
- * The shared title rule, defaulting to 'play' as discovery does.
- * @returns {string|null} the type to set, or null when none is needed
+ * 'announced' but has none (validate-market-expansion.js requires one;
+ * Check 2e and a dated-listing backfill can move a stub out of 'announced'
+ * untyped: 46 rows on 2026-10-01). Only when the title says so
+ * (knownShowType): guessing 'play' would mistype circus, dance and regional
+ * musicals ("The Outsiders") permanently and silence the validator, which is
+ * the only thing pointing at them.
+ * @returns {string|null} the type to set, or null
  */
 function typeForListedShow(show, finalStatus) {
   if (!show || show.type || !finalStatus || finalStatus === 'announced') return null;
-  const { showTypeFor } = require('./title-says-musical');
-  return showTypeFor(show.title, null);
+  const { knownShowType } = require('./title-says-musical');
+  return knownShowType(show.title, null);
 }
 
 module.exports = {
