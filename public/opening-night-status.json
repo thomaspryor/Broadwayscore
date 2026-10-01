@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T10:43:44.055Z",
+  "generatedAt": "2026-10-01T11:30:04.437Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1253,27 +1253,27 @@
       "slug": "whos-afraid-of-virginia-woolf-west-end",
       "thumbnail": "/images/shows/whos-afraid-of-virginia-woolf-west-end-2026/thumbnail.webp",
       "siteScore": null,
-      "liveScore": 90,
+      "liveScore": 88,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 6,
+      "reviewsNeeded": 2,
       "siteFileExists": true,
-      "total": 1,
+      "total": 3,
       "t1": 0,
-      "t2": 0,
+      "t2": 2,
       "t3": 1,
-      "positive": 1,
+      "positive": 3,
       "mixed": 0,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "3/8 total",
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1374,6 +1374,18 @@
           "t2": 0,
           "t3": 1,
           "p": 1,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-01T11:30:04.437Z",
+          "rc": 3,
+          "s": 88,
+          "t1": 0,
+          "t2": 2,
+          "t3": 1,
+          "p": 3,
           "m": 0,
           "n": 0,
           "bc": "waiting"
