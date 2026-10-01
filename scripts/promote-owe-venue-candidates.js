@@ -133,6 +133,7 @@ const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { loadStaging, updateStaging, mergeCandidates, writeStagingCandidates, STAGING_PATH } = require('./lib/owe-venue-staging');
 const { resolveOutletFromUrl, loadOutletRegistry } = require('./lib/review-normalization');
 const { stripHtml } = require('./lib/article-extractor');
+const { showTypeFor } = require('./lib/title-says-musical');
 const { decideVenueListingPromotion } = require('./lib/ob-cross-validation');
 const { OWE_VENUE_CONFIGS } = require('./lib/venue-listing-discover');
 
@@ -761,7 +762,7 @@ function buildOffWestEndVenueShowEntry(candidate, venueVocabulary, options = {})
     market: marketForCategory('off-west-end'),
     type: status === 'announced'
       ? null
-      : (VALID_SHOW_TYPES.has(candidate.type) ? candidate.type : (/\bmusical\b/i.test(normalizedTitle) ? 'musical' : 'play')),
+      : (VALID_SHOW_TYPES.has(candidate.type) ? candidate.type : showTypeFor(normalizedTitle, candidate.listingGenre)),
     discoverySource: evidenceBacked ? AUDIT_EVIDENCE_SOURCE : (candidate.source || candidate.discoverySource || 'venue-page'),
     discoveredAt: candidate.discoveredAt || now.toISOString(),
     // Provisional — no cross-source corroboration beyond the venue's own

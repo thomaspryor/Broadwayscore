@@ -403,6 +403,19 @@ function extractDatedCards(doc, venue, { todayIso } = {}) {
  */
 const RUN_BLOCK_GAP_DAYS = 30;
 
+// The account's own genre labels for an event ("Musicals", "Musical - star
+// casting", "Children's Show", "Drama"), joined: every Spektrix attribute whose
+// name says genre/type/category/artform. Lets the promoter type a row from
+// the box office instead of guessing from the title.
+const SPEKTRIX_GENRE_ATTR_RE = /^attribute_(?:genre\d*|type|category|eventtype|webeventtype|taaartform|primaryartform|additionalgenreortype)$/i;
+function spektrixGenreText(e) {
+  const vals = Object.keys(e || {})
+    .filter(k => SPEKTRIX_GENRE_ATTR_RE.test(k))
+    .map(k => e[k])
+    .filter(v => typeof v === 'string' && v.trim());
+  return vals.length ? [...new Set(vals.map(v => v.trim()))].join('; ') : null;
+}
+
 /** Sorted ISO days → [{first, last, count}] blocks split at gaps over RUN_BLOCK_GAP_DAYS. */
 function runBlocks(daysList) {
   const days = daysList.filter(Boolean).sort();
@@ -462,7 +475,7 @@ function parseSpektrixEvents(payload, opts = {}) {
       performanceCount = block ? block.count : 0;
       if (block && blocks.length > 1) { firstDate = block.first; lastDate = block.last; }
     }
-    rows.push({ title: cleanListingTitle(e.name), firstDate, lastDate, performanceCount, url: e.webUrl || null });
+    rows.push({ title: cleanListingTitle(e.name), firstDate, lastDate, performanceCount, url: e.webUrl || null, genre: spektrixGenreText(e) });
   }
   // An event whose instances were all cancelled (or none published) is not
   // on sale as a run.

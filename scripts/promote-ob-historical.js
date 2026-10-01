@@ -28,6 +28,7 @@
 
 'use strict';
 
+const { titleSaysMusical } = require('./lib/title-says-musical');
 const fs = require('fs');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
@@ -120,7 +121,7 @@ function buildShowEntry(r, venueVocabulary) {
     // in promote-we-aggregator-candidates.js / promote-ob-venue-candidates.js
     // (BRO-3716 — a null type here would reproduce that exact CI-red
     // incident the next time this script runs).
-    type: /\bmusical\b/i.test(r.title || '') ? 'musical' : 'play',
+    type: titleSaysMusical(r.title) ? 'musical' : 'play',
     discoverySource: 'historical-backfill',
     discoveredAt: new Date().toISOString(),
     playbillUrl: r.playbillUrl || null,
