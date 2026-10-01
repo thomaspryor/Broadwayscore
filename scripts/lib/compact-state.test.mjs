@@ -24,7 +24,7 @@ function sampleTranscript() {
     assistant([tool('Write', { file_path: 'scripts/lib/new-helper.js', content: 'x' })]),
     assistant([tool('Edit', { file_path: 'src/components/ShowImage.tsx', old_string: 'b', new_string: 'c' })]),
     assistant([{ type: 'text', text: 'Done.\nEXECUTED: npx tsc --noEmit — 0 errors\nVERIFY: node scripts/x.js' }]),
-    line({ type: 'assistant', isSidechain: true, message: { content: [tool('Edit', { file_path: 'SIDECHAIN.md' })] } }),
+    line({ type: 'assistant', isSidechain: true, message: { content: [tool('Edit', { file_path: 'SIDECHAIN.md' })] } }), // subagent transcripts flag every line; kept
     user('now also check the London rows'),
     user('Another Claude session sent a message:\n<agent-message from="abc">[Subagent hand-back] report text</agent-message>'),
     user('[SYSTEM NOTIFICATION - NOT USER INPUT]\nThis is an automated background-task event'),
@@ -33,10 +33,10 @@ function sampleTranscript() {
   ].join('');
 }
 
-test('parseTranscript keeps the owner prompts, edits, commands, evidence and cards; drops system blocks and sidechains', () => {
+test('parseTranscript keeps the owner prompts, edits, commands, evidence and cards; drops injected blocks; keeps sidechain lines (subagent transcripts)', () => {
   const f = parseTranscript(sampleTranscript());
   assert.deepEqual(f.prompts, ['Fix the BRO-4321 image bug on the show page', 'now also check the London rows']);
-  assert.deepEqual(f.edits, ['src/components/ShowImage.tsx', 'scripts/lib/new-helper.js', 'src/components/ShowImage.tsx']);
+  assert.deepEqual(f.edits, ['src/components/ShowImage.tsx', 'scripts/lib/new-helper.js', 'src/components/ShowImage.tsx', 'SIDECHAIN.md']);
   assert.deepEqual(f.bash, ['grep -rn ShowImage src/ | head']);
   assert.deepEqual(f.evidence, ['EXECUTED: npx tsc --noEmit — 0 errors', 'VERIFY: node scripts/x.js']);
   assert.deepEqual(f.cards, ['BRO-4321']);
