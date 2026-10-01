@@ -37,6 +37,7 @@
  *   --email       best-effort "went live" digest notification
  */
 
+const { showTypeFor } = require('./lib/title-says-musical');
 const path = require('path');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
 const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
@@ -228,7 +229,7 @@ function buildWestEndAggregatorShowEntry(candidate, venueVocabulary) {
     // correct guess in the overwhelming majority of cases — plays outnumber
     // musicals ~2:1 in shows.json, and this heuristic already only fires
     // when "musical" is absent from the title.
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
+    type: showTypeFor(candidate.title, candidate.listingGenre),
     discoverySource: `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — WET/LBO reviews auto-ingest via the existing per-show
