@@ -488,5 +488,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-01T22:20:58.132Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4492-types",
+    "title": "Landing blocked: resolve red on land/bro-4492-types",
+    "description": "land.yml did not land land/bro-4492-types: the resolve gate went red at f98f96c0e8. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/bro-4492-types\" is neither a local branch nor on origin (attempts 0, 1.8s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36932202405",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4492-types"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "f98f96c0e8ead44205dc9e97f6d5c04d7e566355"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36932202405"
+      }
+    ],
+    "queuedAt": "2026-10-01T22:29:33.347Z"
   }
 ]
