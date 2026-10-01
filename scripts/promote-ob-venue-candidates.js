@@ -41,6 +41,7 @@
  *   - Promotion log is JSONL append-only for audit trail
  */
 
+const { showTypeFor } = require('./lib/title-says-musical');
 const fs = require('fs');
 const path = require('path');
 const { loadStaging, writeStagingCandidates, updateStaging } = require('./lib/venue-listing-discover');
@@ -574,7 +575,7 @@ function buildOffBroadwayAggregatorShowEntry(candidate) {
     // only exempts type when status==='announced'. A null type on a
     // status='open' show fails CI (BRO-3716 was this exact bug, hit first
     // via the west-end sibling of this function).
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
+    type: showTypeFor(candidate.title, candidate.listingGenre),
     discoverySource: `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
@@ -631,7 +632,7 @@ function buildRegionalShowEntry(candidate) {
     // above (BRO-3716) — regional isn't in validate-market-expansion.js's
     // gated markets today, but there's no reason to leave a known-bad
     // pattern in a third copy of it.
-    type: /\bmusical\b/i.test(candidate.title || '') ? 'musical' : 'play',
+    type: showTypeFor(candidate.title, candidate.listingGenre),
     discoverySource: `aggregator-roundup:${candidate.source}`,
     discoveredAt: candidate.discoveredAt,
     // Provisional — reviews auto-ingest via the PV/BWW matchers now that the
