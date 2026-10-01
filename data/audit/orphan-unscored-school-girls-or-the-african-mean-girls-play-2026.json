@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "school-girls-or-the-african-mean-girls-play-2026",
   "openingDate": "2026-09-28",
-  "detectedAt": "2026-10-01T13:42:15.680Z",
+  "detectedAt": "2026-10-01T14:08:39.132Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -28,9 +28,9 @@
       "criticName": "Charles Isherwood",
       "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-beauty-pageant-dreams-on-broadway-cc0aa5c3",
       "fullTextLen": 548,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
       "humanReviewScore": null,
       "adjudicatedScore": null,
       "originalScore": null,
@@ -41,9 +41,9 @@
     }
   ],
   "orphanCount": 2,
-  "dispatchableOrphanCount": 2,
-  "blockedOrphanCount": 0,
+  "dispatchableOrphanCount": 1,
+  "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-10-01T14:08:39.132Z"
 }
