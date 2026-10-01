@@ -1,32 +1,31 @@
 {
-  "updatedAt": "2026-10-01T17:54:02.200Z",
-  "processed": 47,
-  "failed": 23,
-  "successRate": "67.1%",
+  "updatedAt": "2026-10-01T18:21:53.373Z",
+  "processed": 13,
+  "failed": 2,
+  "successRate": "86.7%",
   "tierBreakdown": {
-    "playwright": 25,
-    "amp": 1,
+    "playwright": 9,
+    "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 12,
-    "scrapingbee": 3,
-    "brightdata": 2,
+    "scrapingdog": 1,
+    "scrapingbee": 1,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 1
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 1,
   "recentActivity": [
     {
-      "t": "2026-10-01T17:51:38.789Z",
+      "t": "2026-10-01T18:20:48.116Z",
       "event": "bb-session",
-      "session": "dedceb31",
-      "url": "http://www.publictheater.org/"
+      "session": "96d0769f",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
     },
     {
-      "t": "2026-10-01T17:51:56.645Z",
-      "event": "bb-session",
-      "session": "3041b438",
-      "url": "http://www.publictheater.org/"
+      "t": "2026-10-01T18:20:49.066Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
