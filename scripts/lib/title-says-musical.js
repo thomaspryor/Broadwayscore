@@ -17,6 +17,9 @@
 function titleSaysMusical(title) {
   const t = String(title || '').trim();
   if (!/(?<![-\w])musical\b/i.test(t)) return false;
+  // The original discovery rule, kept whole: "Dog Man - The Musical Live",
+  // "Hadestown: A Musical Experience".
+  if (/[-–—:]\s*the\s+musical\b|:\s*a\s+(new\s+)?musical\b/i.test(t)) return true;
   // Ends in "musical" / "musical comedy": "Death Note The Musical",
   // "Musical Hell: A New Musical", "Monsters A Killer New Musical Comedy".
   if (/\bmusical(?:\s+comedy)?\W*$/i.test(t)) return true;

@@ -12,7 +12,8 @@ test('titles ending in "musical" are musicals; a leading "Musical" is not', () =
     'Dog Man - The Musical', 'Show: A New Musical', 'Heathers the Musical', 'Singfeld! A Musical About Nothing',
     'Friends The Musical Parody', 'Kinky Boots The Musical - UK Tour', 'Death Note The Musical in Concert', 'Musical',
     'Musical Hell: A New Musical', 'The Musical of Musicals (The Musical!)', 'Our Sinatra: A Musical Celebration',
-    'Midnight - A New Original Musical by Todrick Hall', 'Heated Rivalry: The Unauthorized Musical Parody', 'Grayson the Musical: A First Look']) {
+    'Midnight - A New Original Musical by Todrick Hall', 'Heated Rivalry: The Unauthorized Musical Parody', 'Grayson the Musical: A First Look',
+    'Dog Man - The Musical Live', 'Hadestown: A Musical Experience']) {
     assert.equal(titleSaysMusical(t), true, t);
   }
   for (const t of ['The Musical Comedy Murders of 1940', 'Jimmy', 'Musical Chairs at Midnight', 'An Evening of Musical Theatre',
