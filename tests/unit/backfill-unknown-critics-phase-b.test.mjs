@@ -15,7 +15,7 @@ import path from 'node:path';
 import os from 'node:os';
 import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
-const { orderCriticCandidates, CRITIC_RETRY_DAYS } = require('../../scripts/backfill-unknown-critics');
+const { orderCriticCandidates, CRITIC_RETRY_DAYS, FETCH_ERROR_RETRY_DAYS } = require('../../scripts/backfill-unknown-critics');
 const { applyPageByline, pageBylineRefusal } = require('../../scripts/lib/review-file-writer');
 
 const NOW = Date.parse('2026-10-01T12:00:00Z');
@@ -40,6 +40,14 @@ describe('orderCriticCandidates', () => {
       e('s', 'old--unknown.json', { criticBackfillAttempt: { at: daysAgo(CRITIC_RETRY_DAYS + 1), result: 'no-author' } }),
     ];
     assert.deepEqual(orderCriticCandidates(list, { now: NOW }).map(x => x.file), ['old--unknown.json']);
+  });
+
+  test(`a fetch error cools down for ${FETCH_ERROR_RETRY_DAYS} day, not ${CRITIC_RETRY_DAYS} (scraper outage must not park the backlog)`, () => {
+    const list = [
+      e('s', 'fetch--unknown.json', { criticBackfillAttempt: { at: daysAgo(FETCH_ERROR_RETRY_DAYS + 0.5), result: 'fetch-error' } }),
+      e('s', 'noauthor--unknown.json', { criticBackfillAttempt: { at: daysAgo(FETCH_ERROR_RETRY_DAYS + 0.5), result: 'no-author' } }),
+    ];
+    assert.deepEqual(orderCriticCandidates(list, { now: NOW }).map(x => x.file), ['fetch--unknown.json']);
   });
 
   test('flagged, locked and hand-set files are never candidates', () => {
@@ -105,6 +113,8 @@ describe('applyPageByline', () => {
     assert.equal(pageBylineRefusal(t.fp('whatsonstage--unknown.json'), t.read('whatsonstage--unknown.json'), { showId: t.show, criticName: 'Alun Hood' }), 'rotating-byline-unconfirmed');
     const t2 = setup({ 'whatsonstage--unknown.json': { outletId: 'whatsonstage', criticName: 'Unknown', url, fullText: 'Alun Hood. Mark Rylance leads a lively Tartuffe.' } });
     assert.equal(pageBylineRefusal(t2.fp('whatsonstage--unknown.json'), t2.read('whatsonstage--unknown.json'), { showId: t2.show, criticName: 'Alun Hood' }), null);
+    // ...or the article text extracted on this same fetch.
+    assert.equal(pageBylineRefusal(t.fp('whatsonstage--unknown.json'), t.read('whatsonstage--unknown.json'), { showId: t.show, criticName: 'Alun Hood', pageText: 'By Alun Hood. Rylance is superb.' }), null);
   });
 
   test('a flagged file is never named and nothing is deleted when a named file exists', () => {

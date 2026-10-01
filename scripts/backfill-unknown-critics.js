@@ -289,18 +289,25 @@ function phaseA(unknownOutlets) {
 // creative, not an aggregator URL, no sibling with this URL/critic, rename at
 // once). Nothing is ever deleted here.
 const CRITIC_RETRY_DAYS = 14;
+// A fetch error says nothing about the page (scraper outage, credits out),
+// so it cools down for a day, not two weeks, and a run stops after this many
+// in a row instead of stamping its whole batch.
+const FETCH_ERROR_RETRY_DAYS = 1;
+const MAX_CONSECUTIVE_FETCH_ERRORS = 10;
 
 /**
  * Pure: which Unknown-critic entries to try this run, in order.
  * Open/previews shows first, then never-attempted, then oldest attempt.
  */
 function orderCriticCandidates(entries, { openShowIds = new Set(), now = Date.now(), retryDays = CRITIC_RETRY_DAYS } = {}) {
-  const cutoff = now - retryDays * 24 * 3600 * 1000;
   const eligible = entries.filter(u => {
     const d = u.data || {};
     if (d.wrongProduction || d.duplicateOf || d._locked === true || d.criticNameManual) return false;
-    const at = d.criticBackfillAttempt && Date.parse(d.criticBackfillAttempt.at);
-    return !(at && at > cutoff);
+    const attempt = d.criticBackfillAttempt;
+    const at = attempt && Date.parse(attempt.at);
+    if (!at) return true;
+    const days = attempt.result === 'fetch-error' ? FETCH_ERROR_RETRY_DAYS : retryDays;
+    return at <= now - days * 24 * 3600 * 1000;
   });
   const lastAt = u => (u.data.criticBackfillAttempt && Date.parse(u.data.criticBackfillAttempt.at)) || 0;
   return eligible.sort((a, b) => {
@@ -336,6 +343,7 @@ async function phaseB(unknownCritics) {
 
   const counts = { applied: 0, refused: 0, noAuthor: 0, fetchError: 0, skippedHttp: 0 };
   const refusals = {};
+  let consecutiveFetchErrors = 0;
 
   for (let i = 0; i < toProcess.length; i++) {
     if (timeBudget.exceeded()) {
@@ -343,41 +351,62 @@ async function phaseB(unknownCritics) {
       break;
     }
     const u = toProcess[i];
-    let critic = null;
-    let method = '';
+    const tryName = (critic, method, pageText = null) => {
+      try {
+        return applyPageByline(u.filePath, u.data, { showId: u.dir, criticName: critic, source: method, pageText, dryRun });
+      } catch (e) {
+        return { applied: false, reason: `error:${e.message.slice(0, 60)}` };
+      }
+    };
+    const report = (res, critic, method) => {
+      if (res.applied) {
+        counts.applied++;
+        if (counts.applied <= 40 || i % 100 === 0) {
+          console.log(`  [${i + 1}] ${dryRun ? 'WOULD NAME' : 'NAMED'} (${method}): ${u.dir}/${u.file} → ${critic}${res.newPath ? ` (${path.basename(res.newPath)})` : ''}`);
+        }
+        return;
+      }
+      counts.refused++;
+      refusals[res.reason] = (refusals[res.reason] || 0) + 1;
+      stampAttempt(u, `refused:${res.reason}`);
+      if (counts.refused <= 20) console.log(`  [${i + 1}] REFUSED ${res.reason}: ${u.dir}/${u.file} ← "${critic}"`);
+    };
 
     // Strategy 1: a byline the collector already read off this page.
-    if (u.data.extractedByline && u.data.extractedByline !== 'Unknown' && !isRejectName(u.data.extractedByline)) {
-      critic = u.data.extractedByline;
-      method = 'extractedByline';
-    }
-
     // Strategy 1b: re-run extraction against the stored fullText (BRO-171:
     // talkinbroadway prints "Theatre Review by <Name> - <date>" in the body).
-    if (!critic && u.data.fullText) {
+    // A stored name the guards refuse falls through to a fresh page fetch.
+    let stored = null;
+    if (u.data.extractedByline && u.data.extractedByline !== 'Unknown' && !isRejectName(u.data.extractedByline)) {
+      stored = { critic: u.data.extractedByline, method: 'extractedByline' };
+    } else if (u.data.fullText) {
       const fromText = extractAuthorFromHtml(u.data.fullText, u.data.fullText, { url: u.url });
-      if (fromText && !isRejectName(fromText)) {
-        critic = fromText;
-        method = 'stored-text';
-      }
+      if (fromText && !isRejectName(fromText)) stored = { critic: fromText, method: 'stored-text' };
+    }
+    if (stored) {
+      const res = tryName(stored.critic, stored.method);
+      if (res.applied || skipHttp) { report(res, stored.critic, stored.method); continue; }
     }
 
     // Strategy 2: fetch the page (Bright Data → ScrapingBee → Playwright).
-    if (!critic) {
-      if (skipHttp) { counts.skippedHttp++; continue; }
-      const result = await fetchHtml(u.url);
-      await new Promise(r => setTimeout(r, 1000));
-      if (!result.html) {
-        counts.fetchError++;
-        stampAttempt(u, 'fetch-error');
-        continue;
+    if (skipHttp) { counts.skippedHttp++; continue; }
+    const result = await fetchHtml(u.url);
+    await new Promise(r => setTimeout(r, 1000));
+    if (!result.html) {
+      counts.fetchError++;
+      consecutiveFetchErrors++;
+      stampAttempt(u, 'fetch-error');
+      if (consecutiveFetchErrors >= MAX_CONSECUTIVE_FETCH_ERRORS) {
+        console.log(`\n  ⛔ ${consecutiveFetchErrors} fetch errors in a row — scraper likely down; stopping Phase B (${toProcess.length - i - 1} file(s) left for the next run).`);
+        break;
       }
-      let text = null;
-      try { text = extractArticleTextFromUrl(result.html, u.url) || null; } catch { text = null; }
-      critic = extractAuthorFromHtml(result.html, text || '', { url: u.url });
-      if (critic && isRejectName(critic)) critic = null;
-      method = 'http-fetch';
+      continue;
     }
+    consecutiveFetchErrors = 0;
+    let text = null;
+    try { text = extractArticleTextFromUrl(result.html, u.url) || null; } catch { text = null; }
+    let critic = extractAuthorFromHtml(result.html, text || '', { url: u.url });
+    if (critic && isRejectName(critic)) critic = null;
 
     if (!critic) {
       counts.noAuthor++;
@@ -385,19 +414,7 @@ async function phaseB(unknownCritics) {
       if (i < 5 || i % 200 === 0) console.log(`  [${i + 1}/${toProcess.length}] no author: ${u.outletId} ${u.url.slice(0, 60)}`);
       continue;
     }
-
-    const res = applyPageByline(u.filePath, u.data, { showId: u.dir, criticName: critic, source: method, dryRun });
-    if (res.applied) {
-      counts.applied++;
-      if (counts.applied <= 40 || i % 100 === 0) {
-        console.log(`  [${i + 1}] ${dryRun ? 'WOULD NAME' : 'NAMED'} (${method}): ${u.dir}/${u.file} → ${critic}${res.newPath ? ` (${path.basename(res.newPath)})` : ''}`);
-      }
-    } else {
-      counts.refused++;
-      refusals[res.reason] = (refusals[res.reason] || 0) + 1;
-      stampAttempt(u, `refused:${res.reason}`);
-      if (counts.refused <= 20) console.log(`  [${i + 1}] REFUSED ${res.reason}: ${u.dir}/${u.file} ← "${critic}"`);
-    }
+    report(tryName(critic, 'http-fetch', text), critic, 'http-fetch');
   }
 
   console.log(`\nPhase B Results${dryRun ? ' (DRY RUN)' : ''}:`);
@@ -434,7 +451,7 @@ async function main() {
   console.log('\nDone.');
 }
 
-module.exports = { updateReviewFile, orderCriticCandidates, CRITIC_RETRY_DAYS };
+module.exports = { updateReviewFile, orderCriticCandidates, CRITIC_RETRY_DAYS, FETCH_ERROR_RETRY_DAYS };
 
 if (require.main === module) {
   main()

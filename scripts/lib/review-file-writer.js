@@ -1273,7 +1273,8 @@ function shouldUpgradeUnknownByline(filepath, existing, ctx) {
   if (!input || input.bylineFromOwnPage !== true || !input.url) return false;
   const { canonicalReviewUrl } = require('./review-url-clusters');
   if (!existing || !existing.url || canonicalReviewUrl(existing.url) !== canonicalReviewUrl(input.url)) return false;
-  return pageBylineRefusal(filepath, existing, ctx) === null;
+  const pageText = input.fields && typeof input.fields.fullText === 'string' ? input.fields.fullText : null;
+  return pageBylineRefusal(filepath, existing, { ...ctx, pageText }) === null;
 }
 
 // Outlets whose pages carry other critics' bylines in recirc widgets, so the
@@ -1305,8 +1306,11 @@ function pageBylineRefusal(filepath, existing, ctx) {
   const urlOutlet = resolveOutletFromUrl(existing.url);
   if (urlOutlet && urlOutlet.outletId && normalizeOutlet(urlOutlet.outletId) !== outletId) return 'url-other-outlet';
   if (ROTATING_BYLINE_OUTLETS.has(outletId)) {
-    const text = String(existing.fullText || '').toLowerCase();
-    if (!text.includes(String(criticName).toLowerCase())) return 'rotating-byline-unconfirmed';
+    // The article body (this fetch's extracted text, or the stored copy) must
+    // carry the name; a recirc-widget byline is outside the body.
+    const name = String(criticName).toLowerCase();
+    const bodies = [ctx.pageText, existing.fullText].map(t => String(t || '').toLowerCase());
+    if (!bodies.some(t => t.includes(name))) return 'rotating-byline-unconfirmed';
   }
   const show = _getShowById(showId);
   if (show && evaluateCreditedPersonAsCritic(show, criticName).match) return 'credited-creative';
@@ -1334,8 +1338,8 @@ function pageBylineRefusal(filepath, existing, ctx) {
  * hold the file (backfill-unknown-critics.js) rather than an incoming write.
  * @returns {{ applied: boolean, reason?: string, newPath?: string }}
  */
-function applyPageByline(filepath, existing, { showId, criticName, source, dryRun = false }) {
-  const reason = pageBylineRefusal(filepath, existing, { showId, criticName });
+function applyPageByline(filepath, existing, { showId, criticName, source, pageText = null, dryRun = false }) {
+  const reason = pageBylineRefusal(filepath, existing, { showId, criticName, pageText });
   if (reason) return { applied: false, reason };
   const named = path.join(path.dirname(filepath), generateReviewFilename(normalizeOutlet(existing.outletId || path.basename(filepath).split('--')[0]), criticName));
   if (dryRun) return { applied: true, newPath: named };
