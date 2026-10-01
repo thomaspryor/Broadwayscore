@@ -848,6 +848,28 @@ function shouldPreserveExclusionFlagsOnUrlRecovery(data) {
   return { wrongProduction };
 }
 
+// BRO-4476: the UK-URL / UK-outlet auto-clear is a cross-market heuristic. It
+// must not outrank evidence that the review is about a different run or city:
+// an Edinburgh Fringe review on The Stage (UK URL) was cleared onto a London
+// entry and scored 80. PRE_WINDOW_DAYS (60) is too loose for this path, so it
+// uses its own tighter 14-day window before the show's earliest date.
+const UK_CLEAR_PRE_RUN_DAYS = 14;
+const NON_LONDON_CITY_RE = /(?:^|[^a-z])(?:edinburgh|fringe|assembly[- ]rooms|summerhall|pleasance|underbelly|gilded[- ]balloon|traverse|king'?s[- ]theatre[- ]edinburgh|glasgow|manchester|birmingham|liverpool|leeds|bristol|brighton|sheffield|newcastle|nottingham|cardiff|belfast|dublin|chichester)(?:[^a-z]|$)/i;
+
+function isPreRunForUkClear(publishDate, showEarliestDate) {
+  if (!publishDate || !showEarliestDate) return false;
+  const rd = parseDate(publishDate);
+  const sd = showEarliestDate instanceof Date ? showEarliestDate : new Date(showEarliestDate);
+  if (!rd || isNaN(rd.getTime()) || isNaN(sd.getTime())) return false;
+  return (sd.getTime() - rd.getTime()) > UK_CLEAR_PRE_RUN_DAYS * 86400000;
+}
+
+function namesNonLondonCity(data) {
+  let slug = '';
+  try { slug = new URL(data.url).pathname.replace(/[\/_-]+/g, ' '); } catch { slug = ''; }
+  return NON_LONDON_CITY_RE.test(slug);
+}
+
 /**
  * Decide whether the rebuild's UK/dual-market outlet auto-clear path should
  * strip wrongProduction from a London-market show reviewed by a UK or
@@ -888,6 +910,8 @@ function shouldPreserveExclusionFlagsOnUrlRecovery(data) {
  * @param {boolean} ctx.isDateMismatch - review predates the show's earliest date by more than PRE_WINDOW_DAYS
  * @param {boolean} ctx.isShowListingUrl - URL is a listing/aggregate page, not a dated review
  * @param {boolean} ctx.cvBlocksClear - cvBlocksUkWrongProductionAutoClear(data.contentVerification)
+ * @param {string|Date} [ctx.showEarliestDate] - show's earliest date; a publishDate more than
+ *   UK_CLEAR_PRE_RUN_DAYS before it refuses the clear (BRO-4476)
  * @returns {boolean}
  */
 function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
@@ -907,6 +931,8 @@ function shouldAutoClearWrongProductionUkDualMarket(data, ctx = {}) {
   // Concrete incident: the-car-man-west-end-2026/north-west-end--natalia-prucnal.json.
   if (hasAdjudicatedNote(data)) return false;
   if (ctx.isDateMismatch) return false;
+  if (isPreRunForUkClear(data.publishDate, ctx.showEarliestDate)) return false;
+  if (namesNonLondonCity(data)) return false;
 
   // Outer gate: outlet must be UK-URL or dual/UK-market. Inner gate: UK URL
   // or specifically registry-region 'london' (dual-market outlets alone are
@@ -969,6 +995,9 @@ function shouldAutoClearStaleLondonOutletCrossMarket(data, ctx = {}) {
 }
 
 module.exports = {
+  UK_CLEAR_PRE_RUN_DAYS,
+  isPreRunForUkClear,
+  namesNonLondonCity,
   DATE_ONLY_AUTO_REASONS,
   REVIEW_LAG_GRACE_DAYS,
   ADJUDICATED_NOTE_PREFIX,

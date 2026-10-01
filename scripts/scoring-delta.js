@@ -1074,6 +1074,7 @@ function decideInclusion(review, show, guards) {
           || isEvergreenListingUrl(review.url);
         wrongProductionCleared = autoClear.shouldAutoClearWrongProductionUkDualMarket(review, {
           isLondonMarketShow: isLondonMarket(show?.category),
+          showEarliestDate: show?.earliestDate,
           isUkUrl,
           outletIsDualOrUk,
           outletIsLondonRegion,

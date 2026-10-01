@@ -24,6 +24,7 @@ const __dirnameCompat = path.dirname(fileURLToPath(import.meta.url));
 const require = createRequire(import.meta.url);
 const {
   shouldAutoClearWrongProduction,
+  shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearWrongShow,
   shouldAutoClearWrongProductionUrlYear,
   shouldAutoClearWrongShowUkUrl,
@@ -1575,5 +1576,42 @@ describe('no exported shouldAutoClear* predicate may go unwired (dead-code guard
         + `flag-wrong-production-by-date.js: ${unwired.join(', ')}. A predicate with unit `
         + 'tests but no caller is dead code masquerading as tested production logic (#1193).',
     );
+  });
+});
+
+// BRO-4476: Edinburgh Fringe review on a UK URL must not auto-clear onto a London entry.
+describe('shouldAutoClearWrongProductionUkDualMarket pre-run / non-London guards (BRO-4476)', () => {
+  const base = { wrongProduction: true, url: 'https://www.thestage.co.uk/reviews/x-review-london', publishDate: '2026-09-30' };
+  const ctx = { isLondonMarketShow: true, isUkUrl: true, outletIsDualOrUk: true, showEarliestDate: '2026-09-30' };
+  it('still clears a UK-URL review inside the run window', () => {
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(base, ctx), true);
+  });
+  it('clears a review only days before previews', () => {
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket({ ...base, publishDate: '2026-09-20' }, ctx), true);
+  });
+  it('refuses when publishDate is >14d before the earliest date', () => {
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket({ ...base, publishDate: '2026-08-14' }, ctx), false);
+  });
+  it('refuses when the URL names Edinburgh / assembly rooms', () => {
+    const d = { ...base, url: 'https://www.thestage.co.uk/reviews/x-review-assembly-rooms-music-hall-edinburgh' };
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(d, ctx), false);
+  });
+  it('does not match city names inside other words', () => {
+    const d = { ...base, url: 'https://www.thestage.co.uk/reviews/the-fringebenefits-review' };
+    assert.strictEqual(shouldAutoClearWrongProductionUkDualMarket(d, ctx), true);
+  });
+});
+
+describe('isPreRunForUkClear / namesNonLondonCity helpers (BRO-4476, shared with flag-wrong-production-by-date)', () => {
+  const { isPreRunForUkClear, namesNonLondonCity } = require('../../scripts/lib/wrong-production-autoclear.js');
+  it('pre-run boundary is 14 days', () => {
+    assert.strictEqual(isPreRunForUkClear('2026-09-16', '2026-09-30'), false);
+    assert.strictEqual(isPreRunForUkClear('2026-09-15', '2026-09-30'), true);
+    assert.strictEqual(isPreRunForUkClear(null, '2026-09-30'), false);
+  });
+  it('flags non-London city slugs only', () => {
+    assert.strictEqual(namesNonLondonCity({ url: 'https://x.com/theatre/review-edinburgh-fringe' }), true);
+    assert.strictEqual(namesNonLondonCity({ url: 'https://x.com/theatre/review-soho-theatre' }), false);
+    assert.strictEqual(namesNonLondonCity({ url: 'not a url' }), false);
   });
 });
