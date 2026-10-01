@@ -162,3 +162,11 @@ test('update-show-status.js Check 2d actually calls the gate', () => {
     'the Check 2d flip must be gated on announcedBlock'
   );
 });
+
+test('typeForListedShow: a listed row with no type gets the shared title rule; announced or typed rows are left alone', () => {
+  const { typeForListedShow } = require('../../scripts/lib/announced-promotion.js');
+  assert.equal(typeForListedShow({ title: 'Cranford' }, 'upcoming'), 'play');
+  assert.equal(typeForListedShow({ title: 'Copperfield! The New Musical' }, 'open'), 'musical');
+  assert.equal(typeForListedShow({ title: 'Cranford' }, 'announced'), null);
+  assert.equal(typeForListedShow({ title: 'Cranford', type: 'musical' }, 'upcoming'), null);
+});

@@ -134,7 +134,22 @@ function blockAnnouncedCatchUp(show, announcedDecision, pressNight, now = new Da
   return null;
 }
 
+/**
+ * A type for a row that is (or is becoming) listed with a status other than
+ * 'announced' but has none: validate-market-expansion.js requires one there,
+ * and Check 2e / a dated-listing backfill can move a stub out of 'announced'
+ * without ever typing it (46 rows on 2026-10-01 turned Data Validation red).
+ * The shared title rule, defaulting to 'play' as discovery does.
+ * @returns {string|null} the type to set, or null when none is needed
+ */
+function typeForListedShow(show, finalStatus) {
+  if (!show || show.type || !finalStatus || finalStatus === 'announced') return null;
+  const { showTypeFor } = require('./title-says-musical');
+  return showTypeFor(show.title, null);
+}
+
 module.exports = {
+  typeForListedShow,
   decideAnnouncedPromotion,
   blockAnnouncedCatchUp,
   ANNOUNCED_PROMOTE_MAX_STALE_DAYS,
