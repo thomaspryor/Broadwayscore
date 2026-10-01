@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4486",
   "planId": "34b94b88-12fe-4534-9bcf-7fd6e0827ba2",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-01T21:00:00.000Z",
   "submitter": {
     "name": null,
@@ -39,5 +39,23 @@
         "description": "3-star review scored above the 3-star band"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-01T21:20:09.351Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "monte-cristo-the-york-theatre-company-off-broadway-2026/nysr--david-finkle.json humanReviewNote: null -> \"NYSR page shows 3/5 (★★★☆☆); the extracted rating was wrongly cleared as 'no evidence in text'. LLM read 75, capped at the 3-star band ceiling 70 (BRO-4486).\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "monte-cristo-the-york-theatre-company-off-broadway-2026/nysr--david-finkle.json humanReviewScoreProvisional: null -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "monte-cristo-the-york-theatre-company-off-broadway-2026/nysr--david-finkle.json humanReviewScore: null -> 70"
+    }
+  ]
 }
