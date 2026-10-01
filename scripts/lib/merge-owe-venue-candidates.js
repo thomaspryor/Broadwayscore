@@ -17,11 +17,14 @@
  * derived from title+venue exactly as owe-venue-staging.js's candidateHash()
  * (owe-candidate-hash.js, write-free) would stamp it — a hand row and discovery's row for the same show dedupe.
  *
- * KNOWN LIMITATION: pure key union, no tombstone — a row the promoter pruned
- * that remote still carries comes back for a cycle and is pruned again next
- * run (skip-duplicate against shows.json). Accepted for the same reason as
- * the OB file: a transiently reappearing row is categorically better than a
- * row silently lost.
+ * Removals (BRO-4484): given the common-ancestor `base` (every push-path
+ * caller supplies one to a three-argument merger), a row the promoter pruned
+ * stays pruned even when main moved mid-run, and a row another writer pruned
+ * is not re-added by a stale copy, as long as the side that kept it never
+ * edited it. Without a base it is the original pure union (a pruned row
+ * reappears for one cycle). Before this, a mid-run move of main unioned the
+ * prune away and push-content-survival.js rejected every push attempt as
+ * REVERTED (2026-09-29/30 scheduled runs). Rules live in the factory.
  */
 'use strict';
 
