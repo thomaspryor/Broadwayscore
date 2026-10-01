@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-01T11:29:57.450Z",
+  "timestamp": "2026-10-01T11:38:21.818Z",
   "stats": {
-    "totalReviews": 45629,
-    "alreadyFlagged": 18656,
+    "totalReviews": 45636,
+    "alreadyFlagged": 18658,
     "dateGuardCatches": 259,
     "directorMismatch": 1193,
     "tvFilmSignals": 1321,
-    "londonSignals": 1246,
+    "londonSignals": 1247,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
-    "noPublishDate": 4111
+    "noPublishDate": 4118
   },
   "findings": [
     {
@@ -45147,19 +45147,6 @@
       ]
     },
     {
-      "showId": "hay-fever-west-end-2026",
-      "file": "theatre-weekly--unknown.json",
-      "publishDate": "2026-09-28",
-      "url": "https://theatreweekly.com/first-look-production-images-released-for-christine-baranski-and-richard-e-grant-in-hay-fever/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"wyndham\""
-        }
-      ]
-    },
-    {
       "showId": "head-over-heels-2018",
       "file": "nytimes--ben-brantley.json",
       "score": 42,
@@ -59891,6 +59878,32 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"new york theatre workshop\""
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "liamodell--liam-odell.json",
+      "publishDate": null,
+      "url": "https://liamodell.com/2026/10/01/whos-afraid-of-virginia-woolf-review-soho-place-london-about-cast-running-time-gillian-anderson-billy-crudup-josh-dylan-phoebe-horn/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "timeout-london--andrzej-lukowski.json",
+      "publishDate": null,
+      "url": "https://www.timeout.com/london/news/whos-afraid-of-virginia-woolf-review-sohoplace-gillian-anderson-100126",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
