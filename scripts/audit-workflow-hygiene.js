@@ -28,7 +28,10 @@
  *     these inline commits run. Without identity, `git commit` fails with
  *     "fatal: empty ident name" (task #659, discover-regional-serp-reviews.yml).
  *
- * (e) PIPEFAIL-DEAD-ECHO: within a single `run:` block that sets `pipefail`
+ * (e) DEAD-EXIT-CODE-CAPTURE (widened by BRO-4480 to any `VAR=$?`/`echo $?` in
+ *     any run: block, workflows AND .github/actions, since bash -e is the GHA
+ *     default — see findPipefailDeadExitCodeEcho). Original scope: within a
+ *     single `run:` block that sets `pipefail`
  *     (e.g. `set -o pipefail`), a bare `echo $?` (or `echo "$?" >`) is dead
  *     code. GHA's default shell is `bash -eo pipefail` — when a `set -o
  *     pipefail` pipeline earlier in the SAME step fails, `-e` aborts the step
@@ -186,7 +189,8 @@
  *   # hygiene-playwright-ok: <reason>      — skip playwright check for this workflow
  *   # hygiene-push-ok: <reason>            — skip push-with-retry check for this workflow
  *   # hygiene-git-identity-ok: <reason>    — skip git-identity check for this workflow
- *   # hygiene-echo-exitcode-ok: <reason>   — skip pipefail-dead-echo check for this workflow
+ *   # hygiene-echo-exitcode-ok: <reason>   — skip dead-exit-code-capture check for this file
+ *   # hygiene-exitcode-ok: <reason>        — skip it for ONE capture line (rule e, BRO-4480)
  *   # hygiene-core-data-push-ok: <reason>  — skip core-data-push check for this workflow
  *   # hygiene-dead-commit-ok: <reason>     — skip dead-commit-step check for this workflow
  *   # hygiene-push-timeout-ok: <reason>    — skip short-push-timeout check for this workflow
@@ -718,6 +722,15 @@ async function main() {
       const hits = findRunIdKeyedCaches(fs.readFileSync(full, 'utf8'));
       if (hits.length) violations.runIdKeyedCache.push({ file: label, hits });
     }
+    // Rule (e) for composite actions (BRO-4480: the dead exit-code capture
+    // that hid an 8-minute install hang lived in actions/setup-playwright).
+    // Workflows are covered in the per-file loop below.
+    for (const { label, full } of targets.filter((t) => t.label.startsWith('actions/'))) {
+      const raw = fs.readFileSync(full, 'utf8');
+      if (raw.includes('hygiene-echo-exitcode-ok:')) continue;
+      const hits = findPipefailDeadExitCodeEcho(raw);
+      if (hits.length) violations.echoExitcode.push({ file: label, hits });
+    }
   }
 
   // Degrade rule (g) alone on a format change in push-core-data/action.yml
@@ -777,7 +790,7 @@ async function main() {
       }
     }
 
-    // ── Rule (e): pipefail + bare `echo $?` (dead exit-code capture) ──────────
+    // ── Rule (e): dead exit-code capture under bash -e (BRO-4480 widened) ────
     if (!raw.includes('hygiene-echo-exitcode-ok:')) {
       const hits = findPipefailDeadExitCodeEcho(raw);
       if (hits.length > 0) {
@@ -984,19 +997,20 @@ async function main() {
   }
 
   if (violations.echoExitcode.length) {
-    console.error('── (e) pipefail + bare `echo $?` (dead exit-code capture) ────────────');
-    console.error('GHA runs `bash -eo pipefail`: if the pipefail\'d pipeline earlier in this');
-    console.error('step fails, `-e` aborts the step right there — a later bare `echo $?` never');
-    console.error('runs, so the exit-code file is never written (task #663, #667).\n');
+    console.error('── (e) dead exit-code capture (`VAR=$?` / `echo $?`) under bash -e ─────');
+    console.error('GHA runs every run: block under `bash -e`: if the command on the line before');
+    console.error('fails, the step aborts right there and the capture never runs, so the');
+    console.error('error report / exit-code file it feeds is never produced (#663, #667, BRO-4480).\n');
     for (const { file, hits } of violations.echoExitcode) {
       console.error(`  • ${file}`);
       for (const h of hits) console.error(`      line ${h.lineNum}: ${h.text}`);
     }
-    console.error('\nFix: guard the pipeline with `|| EC=$?` and echo the captured variable:');
+    console.error('\nFix: guard the command with `|| EC=$?` and use the captured variable:');
     console.error(`      EC=0
       cmd | tee /tmp/out.txt || EC=$?
       echo "$EC" > /tmp/exitcode.txt`);
-    console.error("Exempt (legitimate): add  # hygiene-echo-exitcode-ok: <reason>  anywhere in the file.\n");
+    console.error("Exempt one line (e.g. inside a function only ever called as `fn || ...`): add  # hygiene-exitcode-ok: <reason>  on the capture line.");
+    console.error("Exempt a whole file: add  # hygiene-echo-exitcode-ok: <reason>  anywhere in it.\n");
   }
 
   if (violations.coreDataPush.length) {

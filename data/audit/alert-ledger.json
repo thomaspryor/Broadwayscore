@@ -395,13 +395,13 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-09-30T18:03:06.385Z",
+      "lastSeen": "2026-10-01T18:29:37.148Z",
       "lastNotifiedAt": "2026-09-25T17:20:35.163Z",
       "lastSurfacedAt": "2026-09-25T17:20:35.163Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -1359,17 +1359,17 @@
       "silentRefires": 6
     },
     "cron-health:Daily Data Health Check (digest snapshot carrier)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-19T12:31:28.109Z",
-      "lastSeen": "2026-09-08T15:48:29.058Z",
-      "lastNotifiedAt": "2026-09-08T15:48:29.058Z",
-      "notifyCount": 5,
+      "lastSeen": "2026-10-01T17:50:34.601Z",
+      "lastNotifiedAt": "2026-10-01T17:50:34.601Z",
+      "lastSurfacedAt": "2026-10-01T17:50:34.601Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-14T17:23:03.915Z"
+      "linearIdentifier": null
     },
     "cron-health-chronic:Refresh Show Score (opening-night)": {
       "status": "resolved",
@@ -1504,13 +1504,13 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-09-30T17:23:56.550Z",
+      "lastSeen": "2026-10-01T17:50:37.011Z",
       "lastNotifiedAt": "2026-09-28T19:06:26.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-2864",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1539,17 +1539,17 @@
       "resolvedAt": "2026-09-28T19:06:30.562Z"
     },
     "cron-health:Opening Night Checklist": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "🚨 Critical cron stale, self-heal failed: Opening Night Checklist",
       "firstSeen": "2026-08-23T12:24:33.125Z",
-      "lastSeen": "2026-09-10T15:38:37.491Z",
-      "lastNotifiedAt": "2026-09-10T15:38:37.491Z",
-      "notifyCount": 3,
+      "lastSeen": "2026-10-01T17:50:34.609Z",
+      "lastNotifiedAt": "2026-10-01T17:50:34.609Z",
+      "lastSurfacedAt": "2026-10-01T17:50:34.609Z",
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null,
-      "resolvedAt": "2026-09-15T16:01:30.223Z"
+      "linearIdentifier": null
     },
     "health-check:Quality: coverageExpectation drift": {
       "status": "open",
@@ -1580,13 +1580,13 @@
       "disposition": "digest",
       "title": "Scrape WestEndTheatre has stopped updating (54 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-09-30T18:03:06.391Z",
+      "lastSeen": "2026-10-01T18:29:37.155Z",
       "lastNotifiedAt": "2026-09-25T17:20:35.168Z",
       "lastSurfacedAt": "2026-09-25T17:20:35.168Z",
       "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "arm-yield:outlet:nysr": {
       "status": "resolved",
@@ -1630,13 +1630,12 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-09-30T17:23:56.544Z",
-      "lastNotifiedAt": "2026-09-24T16:18:57.029Z",
+      "lastSeen": "2026-10-01T17:50:34.702Z",
+      "lastNotifiedAt": "2026-10-01T17:50:34.702Z",
       "lastSurfacedAt": null,
-      "notifyCount": 5,
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-3656",
-      "silentRefires": 6
+      "linearIdentifier": "BRO-3656"
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -4730,13 +4729,13 @@
       "disposition": "digest",
       "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Validate market expansion",
       "firstSeen": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-01T17:19:18.339Z",
+      "lastSeen": "2026-10-01T18:22:02.870Z",
       "lastNotifiedAt": "2026-10-01T14:48:22.612Z",
       "lastSurfacedAt": "2026-10-01T14:48:22.612Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -7587,13 +7586,13 @@
       "disposition": "digest",
       "title": "Unverified revival on The Standard Of Living",
       "firstSeen": "2026-09-30T06:48:26.108Z",
-      "lastSeen": "2026-10-01T16:29:12.272Z",
+      "lastSeen": "2026-10-01T18:34:28.569Z",
       "lastNotifiedAt": "2026-09-30T06:48:26.108Z",
       "lastSurfacedAt": "2026-09-30T06:48:26.108Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 18
+      "silentRefires": 20
     },
     "backstop:tru-off-west-end-2026/london-theatre--unknown.json": {
       "status": "open",
@@ -7739,13 +7738,13 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on The Standard Of Living",
       "firstSeen": "2026-09-30T18:06:57.454Z",
-      "lastSeen": "2026-10-01T16:29:12.264Z",
+      "lastSeen": "2026-10-01T18:34:28.501Z",
       "lastNotifiedAt": "2026-09-30T18:06:57.454Z",
       "lastSurfacedAt": "2026-09-30T18:06:57.454Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 16
+      "silentRefires": 18
     },
     "opening-night-remediation-exhausted-explicit-ratings:the-standard-of-living-west-end-2026:telegraph": {
       "status": "open",
@@ -7779,13 +7778,13 @@
       "disposition": "digest",
       "title": "Content mismatch on The Standard Of Living",
       "firstSeen": "2026-09-30T18:21:25.633Z",
-      "lastSeen": "2026-10-01T16:29:12.268Z",
+      "lastSeen": "2026-10-01T18:34:28.505Z",
       "lastNotifiedAt": "2026-09-30T18:21:25.633Z",
       "lastSurfacedAt": "2026-09-30T18:21:25.633Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 15
+      "silentRefires": 17
     },
     "land:land/bro-4434-code-only-main": {
       "status": "open",
@@ -8067,13 +8066,13 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Who’s Afraid of Virginia Woolf?",
       "firstSeen": "2026-10-01T13:26:44.402Z",
-      "lastSeen": "2026-10-01T16:29:11.262Z",
+      "lastSeen": "2026-10-01T18:34:27.704Z",
       "lastNotifiedAt": "2026-10-01T13:26:44.402Z",
       "lastSurfacedAt": "2026-10-01T13:26:44.402Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 7
     },
     "opening-night-remediation-exhausted-empty-cast:motherfucker-off-broadway-2026": {
       "status": "open",
@@ -8141,13 +8140,13 @@
       "disposition": "digest",
       "title": "Shipped review too short to verify on Who’s Afraid of Virginia Woolf?",
       "firstSeen": "2026-10-01T14:40:07.513Z",
-      "lastSeen": "2026-10-01T16:29:11.258Z",
+      "lastSeen": "2026-10-01T18:34:27.700Z",
       "lastNotifiedAt": "2026-10-01T14:40:07.513Z",
       "lastSurfacedAt": "2026-10-01T14:40:07.513Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 6
     },
     "broadcast-gate:checklist:the-standard-of-living-west-end-2026,whos-afraid-of-virginia-woolf-west-end-2026": {
       "status": "open",
@@ -8155,13 +8154,13 @@
       "requestedDisposition": "human",
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-10-01T14:40:08.483Z",
-      "lastSeen": "2026-10-01T16:29:12.388Z",
+      "lastSeen": "2026-10-01T18:34:28.670Z",
       "lastNotifiedAt": "2026-10-01T14:40:08.483Z",
       "lastSurfacedAt": "2026-10-01T14:40:08.483Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 6
     },
     "backstop:cosi-fan-tutte-off-broadway-2026/independent--unknown.json": {
       "status": "open",

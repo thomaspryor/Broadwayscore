@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-01T17:26:39.205Z",
+  "timestamp": "2026-10-01T18:41:00.499Z",
   "stats": {
-    "totalReviews": 45739,
-    "alreadyFlagged": 18670,
-    "dateGuardCatches": 260,
+    "totalReviews": 45740,
+    "alreadyFlagged": 18671,
+    "dateGuardCatches": 261,
     "directorMismatch": 1195,
     "tvFilmSignals": 1327,
-    "londonSignals": 1245,
+    "londonSignals": 1246,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
-    "noPublishDate": 4141
+    "noPublishDate": 4136
   },
   "findings": [
     {
@@ -10877,6 +10877,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "gang-of-three-off-west-end-2026",
+      "file": "artsdesk--unknown.json",
+      "score": 90,
+      "publishDate": "2025-05-08",
+      "url": "https://theartsdesk.com/theatre/gang-three-kings-head-theatre-three-old-labour-ghosts-resurrected-entertain-and-educate",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 511d before show (2025-05-08 vs 2026-10-01)"
         }
       ]
     },
@@ -45302,6 +45316,20 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
+      "file": "artsdesk--helen-hawkins.json",
+      "score": 57,
+      "publishDate": "2026-10-01",
+      "url": "https://theartsdesk.com/theatre/hay-fever-wyndhams-review-noel-cowards-100-year-old-comedy-begins-show-its-age",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
       "file": "guardian--unknown.json",
       "publishDate": "2026-09-28",
       "url": "https://www.theguardian.com/stage/2026/sep/28/christine-baranski-richard-e-grant-interview-hay-fever-wyndhams-theatre-sex-scenes-parties",
@@ -56036,6 +56064,7 @@
     {
       "showId": "the-guy-who-didnt-like-musicals-west-end-2026",
       "file": "whatsonstage--sonny-waheed.json",
+      "score": 57,
       "publishDate": "2026-05-18",
       "url": "https://www.whatsonstage.com/news/starkids-the-guy-who-didnt-like-musicals-west-end-review_1721249/",
       "findings": [

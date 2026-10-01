@@ -213,6 +213,64 @@ jobs:
   });
 });
 
+describe('findPipefailDeadExitCodeEcho widened (rule e, BRO-4480)', () => {
+  const wrap = (body, indent = '          ') => `
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Run
+        run: |
+${body.split('\n').map((l) => indent + l).join('\n')}
+`;
+  test('the BRO-4480 shape: bare `timeout ... cmd` then `status=$?`, no pipefail — flagged', () => {
+    const v = findPipefailDeadExitCodeEcho(wrap('timeout 480 "${cmd[@]}" > "$log" 2>&1\nstatus=$?'));
+    assert.strictEqual(v.length, 1);
+    assert.match(v[0].prev, /timeout 480/);
+  });
+  test('composite action.yml run: blocks are scanned the same way', () => {
+    const raw = `
+runs:
+  using: composite
+  steps:
+    - name: Install
+      shell: bash
+      run: |
+        npx playwright install
+        status=$?
+`;
+    assert.strictEqual(findPipefailDeadExitCodeEcho(raw).length, 1);
+  });
+  test('guarded forms are reachable and NOT flagged: `|| status=$?`, `||`/`&&` on the previous line, `!`, control flow', () => {
+    for (const body of [
+      'status=0\ncmd || status=$?',
+      'cmd || true\nrc=$?',
+      'a && b\nrc=$?',
+      '! cmd\nrc=$?',
+      'if cmd; then\n  rc=$?\nfi',
+      'cmd\n# a comment\nfi\nrc=$?',
+    ]) assert.deepStrictEqual(findPipefailDeadExitCodeEcho(wrap(body)), [], body);
+  });
+  test('`set +e` turns the rule off until `set -e` turns errexit back on', () => {
+    assert.deepStrictEqual(findPipefailDeadExitCodeEcho(wrap('set +e\ncmd\nrc=$?')), []);
+    assert.strictEqual(findPipefailDeadExitCodeEcho(wrap('set +e\ncmd\nrc=$?\nset -euo pipefail\ncmd2\nrc2=$?')).length, 1);
+  });
+  test('`\\` continuations: the previous LOGICAL line is checked', () => {
+    assert.strictEqual(findPipefailDeadExitCodeEcho(wrap('timeout 60 \\\n  git fetch origin\nrc=$?')).length, 1);
+    assert.deepStrictEqual(findPipefailDeadExitCodeEcho(wrap('timeout 60 \\\n  git fetch origin || rc=$?\nrc2=$?')), []);
+  });
+  test('quoted / braced / export / declare capture spellings are all caught; unrelated echo is not', () => {
+    for (const c of ['RC="$?"', 'rc=${?}', 'export RC=$?', 'declare -i rc=$?', 'echo "$?" > f']) {
+      assert.strictEqual(findPipefailDeadExitCodeEcho(wrap(`cmd\n${c}`)).length, 1, c);
+    }
+    assert.deepStrictEqual(findPipefailDeadExitCodeEcho(wrap('cmd\necho $HOME')), []);
+  });
+  test('function bodies are scanned; a per-line `# hygiene-exitcode-ok:` exempts one capture', () => {
+    assert.strictEqual(findPipefailDeadExitCodeEcho(wrap('f() {\n  local rc\n  cmd\n  rc=$?\n}')).length, 1);
+    assert.deepStrictEqual(findPipefailDeadExitCodeEcho(wrap('f() {\n  cmd\n  rc=$?  # hygiene-exitcode-ok: only called as f || x\n}')), []);
+  });
+});
+
 describe('findBareAuditDirectoryGlobs (rule n, BRO-3990)', () => {
   test('bare `git add data/audit/` with no basename is flagged', () => {
     const raw = `
