@@ -20,7 +20,7 @@ import { createRequire } from 'module';
 const require = createRequire(import.meta.url);
 const here = dirname(fileURLToPath(import.meta.url));
 const root = join(here, '../..');
-const { CLAUDE_SONNET } = require('../../scripts/lib/models.js');
+const { SCORING_SONNET: CLAUDE_SONNET } = require('../../scripts/lib/models.js');
 
 const PRODUCTION_SCORING_FILES = [
   'scripts/llm-scoring/index.ts',
@@ -33,7 +33,7 @@ const PRODUCTION_SCORING_FILES = [
 const DEAD_MODELS = ['claude-sonnet-4-20250514'];
 
 describe('scoring model is not EOL', () => {
-  test('models.js CLAUDE_SONNET is the expected current model', () => {
+  test('models.js SCORING_SONNET is the expected current model', () => {
     assert.equal(CLAUDE_SONNET, 'claude-sonnet-4-6');
   });
 
@@ -42,7 +42,7 @@ describe('scoring model is not EOL', () => {
       const src = readFileSync(join(root, rel), 'utf8');
       for (const dead of DEAD_MODELS) {
         assert.ok(!src.includes(dead),
-          `${rel} references retired model ${dead} — use models.js CLAUDE_SONNET (${CLAUDE_SONNET})`);
+          `${rel} references retired model ${dead} — use models.js SCORING_SONNET (${CLAUDE_SONNET})`);
       }
     });
 
