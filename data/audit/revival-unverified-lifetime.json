@@ -1,10 +1,12 @@
 {
-  "updatedAt": "2026-09-30T17:44:13.583Z",
-  "scanned": 2216,
-  "showsWithViolations": 52,
-  "totalViolations": 52,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "updatedAt": "2026-10-01T14:11:41.834Z",
+  "scanned": 2240,
+  "showsWithViolations": 53,
+  "totalViolations": 53,
+  "newSinceLastRun": 1,
+  "newViolationKeys": [
+    "degenerates-off-broadway-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -50,6 +52,7 @@
     "christmas-carol-goes-wrong-west-end-2026",
     "pre-existing-condition-off-broadway-2026",
     "tru-off-west-end-2026",
+    "degenerates-off-broadway-2026",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
     "becoming-hamlet-off-broadway-2026",
     "school-pictures-off-broadway-2026",
@@ -452,6 +455,15 @@
       "title": "Tru",
       "openingDate": "2026-09-27",
       "message": "tru-off-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "degenerates-off-broadway-2026",
+      "title": "Degenerates",
+      "openingDate": "2026-09-29",
+      "message": "degenerates-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
