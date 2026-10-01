@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-01T19:23:38.999Z",
+  "generatedAt": "2026-10-01T20:00:27.688Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -886,23 +886,23 @@
       "status": "open",
       "slug": "flamenc-oh-off-west-end",
       "thumbnail": "/images/shows/flamenc-oh-off-west-end-2026/thumbnail.webp",
-      "siteScore": 80.14,
-      "liveScore": 80,
-      "scoreDrift": -0.14000000000000057,
+      "siteScore": 75.17,
+      "liveScore": 75,
+      "scoreDrift": -0.1700000000000017,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 4,
+      "total": 5,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 3,
       "positive": 3,
-      "mixed": 1,
+      "mixed": 2,
       "negative": 0,
       "readiness": {
         "ready": false,
         "reasons": [
-          "4/8 total",
+          "5/8 total",
           "T1:0/3",
           "T2:0/2",
           "hi-conf:2/6"
@@ -1009,6 +1009,18 @@
           "t3": 3,
           "p": 3,
           "m": 1,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-01T20:00:27.688Z",
+          "rc": 5,
+          "s": 75.17,
+          "t1": 0,
+          "t2": 2,
+          "t3": 3,
+          "p": 3,
+          "m": 2,
           "n": 0,
           "bc": "waiting"
         }
@@ -1404,9 +1416,9 @@
       "status": "open",
       "slug": "whos-afraid-of-virginia-woolf-west-end",
       "thumbnail": "/images/shows/whos-afraid-of-virginia-woolf-west-end-2026/thumbnail.webp",
-      "siteScore": 85.37,
-      "liveScore": 85,
-      "scoreDrift": -0.37000000000000455,
+      "siteScore": 85.76,
+      "liveScore": 86,
+      "scoreDrift": 0.23999999999999488,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1609,6 +1621,18 @@
           "t": "2026-10-01T18:32:54.445Z",
           "rc": 19,
           "s": 85.37,
+          "t1": 7,
+          "t2": 5,
+          "t3": 7,
+          "p": 17,
+          "m": 1,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-01T20:00:27.688Z",
+          "rc": 19,
+          "s": 85.76,
           "t1": 7,
           "t2": 5,
           "t3": 7,
