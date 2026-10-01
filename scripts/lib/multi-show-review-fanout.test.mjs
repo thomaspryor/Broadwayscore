@@ -708,3 +708,28 @@ test('an ordinary url upgrade keeps an enriched byline (only a stale-slot move r
   createOrMergeReviewFile(GB, { outletId: 'guardian', outlet: 'The Guardian', criticName: 'Arifa Akbar', url: 'https://www.theguardian.com/stage/2026/sep/17/golden-boy-review-almeida', source: 'submit-review-form', fields: {} }, { reviewTextsDir: dir });
   assert.equal(JSON.parse(fs.readFileSync(file, 'utf8')).criticName, 'Arifa Akbar');
 });
+
+test('stale-slot isNonReview: wrongShow + wrong_content moves, wrongShow alone blocks', () => {
+  const { isStaleNonReviewSlot } = require('./review-slot-guards.js');
+  const rec = { url: 'https://www.westendbestfriend.co.uk/news/some-news-post', isNonReview: true, wrongShow: true, criticName: 'Unknown' };
+  const review = 'https://www.westendbestfriend.co.uk/news/review-golden-boy-almeida-theatre';
+  assert.equal(isStaleNonReviewSlot({ ...rec, incompleteReason: 'wrong_content' }, review), true);
+  assert.equal(isStaleNonReviewSlot(rec, review), false);
+});
+
+test('a split parent never takes a whole article the fan-out cannot act on', () => {
+  const { createOrMergeReviewFile } = require('./review-file-writer.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro4431-splitswap-'));
+  const hs = VULTURE_SHOWS[0].id;
+  fs.mkdirSync(path.join(dir, hs));
+  const p = path.join(dir, hs, 'vulture--sara-holdren.json');
+  const section = `Jacob Ming-Trent in How Shakespeare Saved My Life, at the Public Theater. ${filler('solo show', 12)}`;
+  // Whole article: same lede, then unrelated prose naming no other tracked
+  // show -> neither a re-trim nor an undo is possible.
+  const whole = section + ' ' + filler('epilogue', 30);
+  fs.writeFileSync(p, JSON.stringify({ showId: hs, outletId: 'vulture', outlet: 'Vulture', criticName: 'Sara Holdren', url: 'https://www.vulture.com/x.html',
+    publishDate: '2026-09-28', contentTier: 'complete', fullText: section, multiShowSplitProcessed: '2026-09-30T00:00:00Z', multiShowSplitParent: true,
+    multiShowSplitChildShowIds: [VULTURE_SHOWS[1].id], multiShowSplitTextLength: section.length }, null, 2));
+  createOrMergeReviewFile(hs, { outletId: 'vulture', outlet: 'Vulture', criticName: 'Sara Holdren', url: 'https://www.vulture.com/x.html', source: 'submit-review-form', replaceBadBody: true, fields: { fullText: whole } }, { reviewTextsDir: dir });
+  assert.equal(JSON.parse(fs.readFileSync(p, 'utf8')).fullText, section);
+});
