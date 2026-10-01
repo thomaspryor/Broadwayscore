@@ -1,19 +1,20 @@
 {
-  "generatedAt": "2026-10-01T09:48:25.758Z",
+  "generatedAt": "2026-10-01T17:12:40.728Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 194,
-  "clean": 192,
+  "checked": 201,
+  "clean": 199,
   "defective": 2,
   "byType": {
-    "unreachable": 2
+    "score-drift": 1,
+    "unreachable": 1
   },
   "shows": [
     {
-      "showId": "spandex-off-broadway-2026",
-      "title": "Spandex",
-      "openingDate": "2026-09-19",
+      "showId": "alice-in-wonderland-off-broadway-2026",
+      "title": "Alice in Wonderland",
+      "openingDate": "2026-09-26",
       "ok": false,
       "defects": [
         {
@@ -26,19 +27,19 @@
       "deployedCount": null
     },
     {
-      "showId": "gimme-a-sign-off-broadway-2026",
-      "title": "Gimme a Sign!",
-      "openingDate": "2026-09-17",
+      "showId": "the-standard-of-living-west-end-2026",
+      "title": "The Standard Of Living",
+      "openingDate": "2026-09-29",
       "ok": false,
       "defects": [
         {
-          "type": "unreachable",
-          "detail": "HTTP 404"
+          "type": "score-drift",
+          "detail": "deployed cs 68.09 vs local 69.04 (Δ0.95)"
         }
       ],
       "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
+      "localCount": 21,
+      "deployedCount": 21
     }
   ]
 }

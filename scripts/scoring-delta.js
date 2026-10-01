@@ -1074,6 +1074,7 @@ function decideInclusion(review, show, guards) {
           || isEvergreenListingUrl(review.url);
         wrongProductionCleared = autoClear.shouldAutoClearWrongProductionUkDualMarket(review, {
           isLondonMarketShow: isLondonMarket(show?.category),
+          showEarliestDate: show?.earliestDate,
           isUkUrl,
           outletIsDualOrUk,
           outletIsLondonRegion,
@@ -1450,6 +1451,10 @@ function main() {
         // in this list even though decideInclusion now calls it, which would have
         // reopened the exact #1163 blind spot this comparison block exists to close.
         && (baseline.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '') === (working.__priorRunLib?.shouldAutoClearWrongProductionUkDualMarket?.toString() || '')
+        // BRO-4476: helpers the predicate calls (14d window, city regex) — a constant/regex-only edit leaves the predicate source identical.
+        && (baseline.__priorRunLib?.isPreRunForUkClear?.toString() || '') === (working.__priorRunLib?.isPreRunForUkClear?.toString() || '')
+        && (baseline.__priorRunLib?.namesNonLondonCity?.toString() || '') === (working.__priorRunLib?.namesNonLondonCity?.toString() || '')
+        && String(baseline.__priorRunLib?.UK_CLEAR_PRE_RUN_DAYS) === String(working.__priorRunLib?.UK_CLEAR_PRE_RUN_DAYS)
         // BRO-3338: the 6 predicates decideInclusion's inPreOpeningGuardLoop
         // block + URL-year block now replay. Skipping any one of these here
         // is EXACTLY the #1163/#1190 blind spot documented above, one level
