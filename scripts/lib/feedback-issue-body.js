@@ -3,9 +3,10 @@
 // nothing here may carry the reader's name, email or message (BRO-4453). They
 // live in the private store (scripts/lib/feedback-submitter-store.js), keyed by
 // the submissionId that DIAGNOSIS_JSON carries. Moved out of the workflow YAML
-// so tests/unit/feedback-issue-body.test.mjs can prove that.
+// so tests/unit/feedback-submitter-store.test.mjs can prove that.
 
-const { redactDiagnosis, submissionKey, scrubPublicText } = require('./feedback-submitter-store.js');
+const { redactDiagnosis, submissionKey, scrubPublicText, scrubForPublic } = require('./feedback-submitter-store.js');
+const { redactEmails } = require('./pii-scan.js');
 
 const PRIVATE_NOTE = '_Reader name, email and message are kept in the private data repo (feedback-submitters.json), keyed by the submission id below._';
 
@@ -22,44 +23,47 @@ function buildPublicDiagnosisPayload({ diagnosis, submission, resolvedShow, show
   });
 }
 
-// `reader` is the store entry ({name, email, message}); used only to scrub.
+// `reader` is the store entry ({name, email, show, message}), used only to
+// scrub LLM prose. Structured fields (show ids, slugs) are never name-scrubbed.
 function buildBugDiagnosisBody({ item, submission, diagnosis, payload, showIds, reader }) {
-  return scrubPublicText([
-    `## Bug Report: ${item.summary}`,
+  const d = scrubForPublic(diagnosis, reader, false);
+  const summary = scrubPublicText(item.summary, reader);
+  return redactEmails([
+    `## Bug Report: ${summary}`,
     `**Show:** ${(submission && submission.show) || 'N/A'} | **Priority:** ${item.priority}`,
     PRIVATE_NOTE,
     '',
     `## What's Happening`,
-    diagnosis.whatsHappening,
+    d.whatsHappening,
     '',
     `## What I Found`,
-    ...(diagnosis.findings || []).map((f) => `- ${f}`),
+    ...(d.findings || []).map((f) => `- ${f}`),
     '',
     `## Proposed Fix`,
-    diagnosis.proposedFix,
-    `**Confidence:** ${diagnosis.confidence} | **Type:** ${diagnosis.fixType}`,
-    `**Files:** ${(diagnosis.relevantFiles || []).join(', ')}`,
+    d.proposedFix,
+    `**Confidence:** ${d.confidence} | **Type:** ${d.fixType}`,
+    `**Files:** ${(d.relevantFiles || []).join(', ')}`,
     ...(showIds.length > 1 ? [`**Shows referenced:** ${showIds.join(', ')} (auto-fix will attempt all of them)`] : []),
     '',
     '---',
     `*Auto-diagnosed by feedback pipeline*`,
     '',
     `<!-- DIAGNOSIS_JSON`,
-    JSON.stringify(redactDiagnosis(payload)),
+    JSON.stringify(scrubForPublic(redactDiagnosis(payload), reader)),
     `DIAGNOSIS_JSON -->`,
-  ].join('\n'), reader);
+  ].join('\n'));
 }
 
 // Issue titles carry the LLM summary, so they get the same scrub.
 function buildIssueTitle(prefix, summary, reader) {
-  return scrubPublicText(`${prefix}${String(summary || 'no summary').substring(0, 60)}`, reader);
+  return `${prefix}${scrubPublicText(summary || 'no summary', reader).substring(0, 60)}`;
 }
 
 // Content requests and reports whose diagnosis failed.
 function buildNeedsReviewBody({ item, submission, contentActions = [], dispatchableCount = 0, isContentRequest, reader }) {
   const willAutoDispatch = isContentRequest && dispatchableCount > 0;
   const id = submissionKey(submission);
-  return scrubPublicText([
+  return redactEmails([
     willAutoDispatch
       ? `Content-addition request from user feedback — routed to ${dispatchableCount} workflow dispatch(es) below (task #722). No manual action needed unless a dispatch fails.`
       : isContentRequest
@@ -67,17 +71,17 @@ function buildNeedsReviewBody({ item, submission, contentActions = [], dispatcha
       : `Auto-diagnosis failed for this feedback submission — review manually.`,
     '',
     `**Show:** ${(submission && submission.show) || 'N/A'} | **Priority:** ${item.priority || 'unknown'}`,
-    `**Summary:** ${item.summary || 'no summary'}`,
+    `**Summary:** ${scrubPublicText(item.summary || 'no summary', reader)}`,
     PRIVATE_NOTE,
     ...(id ? [`**Submission id:** \`${id}\``] : []),
     ...(contentActions.length
       ? ['', '**Routing:**', ...contentActions.map((a) =>
           a.workflow
             ? `- \`${a.kind}\` → \`${a.workflow}\` (${JSON.stringify(a.inputs || {})})`
-            : `- \`${a.kind}\` — unroutable: ${a.reason || 'no reason given'}`
+            : `- \`${a.kind}\` — unroutable: ${scrubPublicText(a.reason || 'no reason given', reader)}`
         )]
       : []),
-  ].join('\n'), reader);
+  ].join('\n'));
 }
 
 function buildDuplicateComment({ submission, reason, date = new Date().toISOString().split('T')[0] }) {

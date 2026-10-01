@@ -295,12 +295,12 @@ function generateSummary(submissions, categorized, bugDiagnoses = [], spamFlagge
     summary.push('');
     highPriority.forEach((item) => {
       const sub = submissions[item.submissionNumber - 1];
-      summary.push(`### ${item.category}: ${item.summary}`);
+      summary.push(`### ${item.category}: ${submitterStore.scrubPublicText(item.summary, sub)}`);
       summary.push('');
       summary.push(`**Submission id**: ${submissionId(sub) || 'unknown'}`);
       if (sub.show) summary.push(`**Show**: ${sub.show}`);
       summary.push('');
-      summary.push(`**Recommended Action**: ${item.recommendedAction}`);
+      summary.push(`**Recommended Action**: ${submitterStore.scrubPublicText(item.recommendedAction, sub)}`);
       summary.push('');
       summary.push('---');
       summary.push('');
@@ -319,15 +319,15 @@ function generateSummary(submissions, categorized, bugDiagnoses = [], spamFlagge
 
     items.forEach((item) => {
       const sub = item.submission;
-      summary.push(`**${item.priority} Priority**: ${item.summary}`);
+      summary.push(`**${item.priority} Priority**: ${submitterStore.scrubPublicText(item.summary, sub)}`);
       summary.push('');
       summary.push(`- **Submission id**: ${submissionId(sub) || 'unknown'}`);
       if (sub.show) summary.push(`- **Show**: ${sub.show}`);
-      summary.push(`- **Action**: ${item.recommendedAction}`);
+      summary.push(`- **Action**: ${submitterStore.scrubPublicText(item.recommendedAction, sub)}`);
 
       const diag = bugDiagnoses.find(d => d.item.submissionNumber === item.submissionNumber && d.diagnosis);
       if (diag) {
-        summary.push(`- **Diagnosis**: ${diag.diagnosis.summary} (${diag.diagnosis.confidence} confidence) — see separate bug-diagnosis issue`);
+        summary.push(`- **Diagnosis**: ${submitterStore.scrubPublicText(diag.diagnosis.summary, sub)} (${diag.diagnosis.confidence} confidence) — see separate bug-diagnosis issue`);
       }
 
       summary.push('');
@@ -558,7 +558,7 @@ async function main() {
         // script only plans — it never dispatches directly, so it can't
         // itself confirm the dispatch landed; say "will dispatch" not "did."
         console.log(
-          `Content request (no diagnosis): ${item.summary}\n` +
+          `Content request (no diagnosis): ${submitterStore.scrubPublicText(item.summary, sub)}\n` +
           `  actions: ${contentActions.map((a) => a.kind).join(', ') || 'none'}` +
           (dispatchable.length
             ? ` → ${dispatchable.length} action(s) will be dispatched by the workflow step`
@@ -586,11 +586,11 @@ async function main() {
       if (diagnosisAttempts >= MAX_DIAGNOSES) continue;
       diagnosisAttempts++;
 
-      console.log(`Diagnosing: ${item.summary}`);
+      console.log(`Diagnosing: ${submitterStore.scrubPublicText(item.summary, sub)}`);
       try {
         const diagnosis = await diagnoseBug(sub.message, sub.show || null, sub.category || null);
         bugDiagnoses.push({ item, submission: sub, diagnosis });
-        console.log(`  ${diagnosis.confidence} confidence: ${diagnosis.summary}`);
+        console.log(`  ${diagnosis.confidence} confidence: ${submitterStore.scrubPublicText(diagnosis.summary, sub)}`);
       } catch (err) {
         console.error(`  Diagnosis failed: ${err.message}`);
         bugDiagnoses.push({ item, submission: sub, diagnosis: null });

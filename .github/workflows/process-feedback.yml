@@ -63,7 +63,11 @@ jobs:
       # near the end of the job retries if this one fails. Both run only when
       # process-feedback.js actually added a reader to the store.
       - name: Push reader details to private core data
+        id: store_push
         if: always() && steps.process.outputs.submitter_store_changed == 'true'
+        # A failure here must not stop issue creation; the retry push below
+        # and the loud check after it cover it.
+        continue-on-error: true
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
@@ -82,11 +86,16 @@ jobs:
       - name: Create Bug Diagnosis Issues
         if: ${{ !cancelled() && steps.process.outcome == 'success' && (steps.process.outputs.has_submissions == 'true' || steps.process.outputs.has_pending_diagnoses == 'true') }}
         uses: actions/github-script@v7
+        env:
+          STORE_PUSH_OUTCOME: ${{ steps.store_push.outcome }}
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const fs = require('fs');
             const PENDING_PATH = 'data/audit/pending-bug-diagnoses.json';
+            if (process.env.STORE_PUSH_OUTCOME === 'failure') {
+              core.warning('Reader store push failed; auto-fix runs dispatched now will not find reader details until the retry push lands (thank-you emails may be skipped).');
+            }
             const RUN_REPORT_PATH = 'data/audit/feedback-run-report.json';
 
             // --- Owner run-report enrichment (2026-08-05, GH #543) ---------
@@ -514,11 +523,23 @@ jobs:
       # this is the last chance before the submissions are marked processed
       # below, after which the reader's details would exist nowhere.
       - name: Push reader details to private core data (retry)
+        id: store_push_retry
         if: always() && steps.process.outputs.submitter_store_changed == 'true'
+        continue-on-error: true
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
           message: 'data: feedback submitter store (process-feedback retry)'
+
+      # Both pushes failed: the reader's name/email/message exist only on this
+      # runner, and the public files below are redacted. Fail the job (the
+      # failure notification emails the owner) instead of losing them quietly.
+      # The store file is printed nowhere: Actions logs are public.
+      - name: Fail loudly if reader details never reached the private repo
+        if: always() && steps.store_push_retry.outcome == 'failure'
+        run: |
+          echo "::error::Reader contact details for this run's feedback could not be pushed to the private core-data repo (both attempts failed). Thank-you and owner reader-fix emails for these reports will have no reader details."
+          exit 1
 
       - name: Commit tracking file
         if: always()

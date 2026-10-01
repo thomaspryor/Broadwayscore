@@ -26,7 +26,7 @@ const STORE_PATH = path.join(__dirname, '../../data/feedback-submitters.json');
 // case and keeps the file from growing forever.
 const RETENTION_DAYS = 365;
 
-// The four DIAGNOSIS_JSON fields that identify the reader. Nothing else in a
+// The three DIAGNOSIS_JSON fields that identify the reader. Nothing else in a
 // diagnosis is personal: show ids, the LLM summary and findings are about the
 // site, not the person.
 const PII_DIAGNOSIS_FIELDS = ['submitterName', 'submitterEmail', 'originalMessage'];
@@ -128,21 +128,24 @@ function hydrateDiagnosis(diag, store) {
   };
 }
 
-function scrubDeep(value, reader) {
-  if (typeof value === 'string') return scrubPublicText(value, reader);
-  if (Array.isArray(value)) return value.map((v) => scrubDeep(v, reader));
+// Keys whose values are LLM-written prose that can quote the reader. Only
+// these get the name/message scrub; every other string (show ids, slugs,
+// titles, workflow inputs) is routing data and gets the email scrub alone, so
+// a reader called "Mary" can never turn mary-poppins-2006 into
+// [reader]-poppins-2006.
+const PROSE_KEYS = new Set(['summary', 'whatsHappening', 'findings', 'proposedFix', 'recommendedAction', 'reason']);
+
+function scrubForPublic(value, reader, prose = false) {
+  if (typeof value === 'string') return prose ? scrubPublicText(value, reader) : redactEmails(value);
+  if (Array.isArray(value)) return value.map((v) => scrubForPublic(v, reader, prose));
   if (value && typeof value === 'object') {
     const out = {};
-    for (const [k, v] of Object.entries(value)) out[k] = scrubDeep(v, reader);
+    for (const [k, v] of Object.entries(value)) out[k] = scrubForPublic(v, reader, prose || PROSE_KEYS.has(k));
     return out;
   }
   return value;
 }
 
-// process-feedback.js's write of data/audit/pending-bug-diagnoses.json. That
-// file is committed to the PUBLIC repo whenever an entry is left over for the
-// next run, so it gets redacted submissions; the reader's details go to the
-// store, which the workflow pushes to the private repo.
 function writePendingWithPrivateReaders(entries, { pendingPath, storePath = STORE_PATH, now = Date.now() } = {}) {
   let storeChanged = false;
   if (entries.length > 0) {
@@ -154,12 +157,12 @@ function writePendingWithPrivateReaders(entries, { pendingPath, storePath = STOR
       storeChanged = true;
     }
   }
-  // The diagnosis and item are LLM text that can quote the reader, so every
-  // string in the entry is scrubbed too, not just the submission.
+  // The diagnosis and item are LLM text that can quote the reader, so their
+  // prose is scrubbed too, not just the submission.
   const publicEntries = entries.map((d) => {
     if (!d || !d.submission) return d;
-    const reader = { name: d.submission.name, message: d.submission.message };
-    return scrubDeep({ ...d, submission: redactSubmission(d.submission) }, reader);
+    const reader = { name: d.submission.name, message: d.submission.message, show: d.submission.show };
+    return scrubForPublic({ ...d, submission: redactSubmission(d.submission) }, reader);
   });
   fs.writeFileSync(pendingPath, JSON.stringify(publicEntries, null, 2) + '\n');
   return { storeChanged, publicEntries };
@@ -167,22 +170,26 @@ function writePendingWithPrivateReaders(entries, { pendingPath, storePath = STOR
 
 const escapeRe = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
 
-// Last line of defence before text goes into a public issue, comment or log.
-// The body builders never insert reader fields, but LLM-written text (summary,
-// findings, whatsHappening) can quote the reader ("Jane at jane@x.com says").
-// Strips every real email address, the reader's name (whole word) and any
-// verbatim copy of their message.
+// Scrubs one piece of LLM prose before it goes into a public issue, comment,
+// file or log. The builders never insert reader fields, but the model can
+// quote the reader ("Jane Quigley at jane@x.com says ..."). Order matters: the
+// message goes first (its raw and JSON-escaped forms), because replacing the
+// name or an email inside it first would stop the verbatim match. The name is
+// scrubbed only when it is a full name (two or more words) and not part of the
+// show title: a lone first name identifies nobody and collides with titles
+// ("Annie", "Mary Poppins").
 function scrubPublicText(text, reader = {}) {
-  let out = redactEmails(String(text ?? ''));
-  const name = clean(reader.name);
-  if (name && name.trim().length >= 3 && name.trim().toLowerCase() !== 'anonymous') {
-    out = out.replace(new RegExp(`(^|[^\\p{L}])${escapeRe(name.trim())}(?![\\p{L}])`, 'giu'), '$1[reader]');
+  let out = String(text ?? '');
+  const message = clean(reader.message) && reader.message.trim();
+  if (message && message.length >= 20) {
+    for (const form of [message, JSON.stringify(message).slice(1, -1)]) out = out.split(form).join('[reader message]');
   }
-  const message = clean(reader.message);
-  if (message && message.trim().length >= 20) {
-    out = out.split(message.trim()).join('[reader message]');
+  const name = clean(reader.name) && reader.name.trim();
+  const show = String(reader.show || '').toLowerCase();
+  if (name && /\s/.test(name) && name.toLowerCase() !== 'anonymous' && !show.includes(name.toLowerCase())) {
+    out = out.replace(new RegExp(`(^|[^\\p{L}])${escapeRe(name)}(?![\\p{L}])`, 'giu'), '$1[reader]');
   }
-  return out;
+  return redactEmails(out);
 }
 
 function parseDiagnosisJson(issueBody) {
@@ -195,7 +202,12 @@ function parseDiagnosisJson(issueBody) {
 function loadIssueDiagnosis(issueBody, { store, storePath } = {}) {
   const diag = parseDiagnosisJson(issueBody);
   if (!diag) return null;
-  return hydrateDiagnosis(diag, store || loadStore(storePath));
+  const s = store || loadStore(storePath);
+  if (diag.submissionId && !lookupSubmitter(s, diag.submissionId) && !diag.submitterEmail) {
+    // Ids only: this lands in public Actions logs.
+    console.log(`Reader details for submission ${diag.submissionId} are not in feedback-submitters.json (store push lagging or pruned); continuing without them`);
+  }
+  return hydrateDiagnosis(diag, s);
 }
 
 module.exports = {
@@ -213,6 +225,7 @@ module.exports = {
   redactDiagnosis,
   hydrateDiagnosis,
   scrubPublicText,
+  scrubForPublic,
   writePendingWithPrivateReaders,
   parseDiagnosisJson,
   loadIssueDiagnosis,

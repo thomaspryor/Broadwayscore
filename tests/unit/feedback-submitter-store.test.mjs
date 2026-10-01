@@ -124,11 +124,13 @@ test('recordSubmitter keeps the first storedAt and skips submissions with nothin
   assert.equal(store.recordSubmitter(s, { name: 'No Id' }), null);
 });
 
-test('scrubPublicText leaves ordinary text alone and ignores Anonymous/short names', () => {
+test('scrubPublicText scrubs full names only, never a lone first name or one inside the show title', () => {
   assert.equal(store.scrubPublicText('Hamilton closing date', { name: 'Anonymous' }), 'Hamilton closing date');
-  assert.equal(store.scrubPublicText('Al is at the theatre', { name: 'Al' }), 'Al is at the theatre');
-  assert.equal(store.scrubPublicText('Jane said hi', { name: 'jane' }), '[reader] said hi');
-  assert.equal(store.scrubPublicText('Janet said hi', { name: 'Jane' }), 'Janet said hi');
+  assert.equal(store.scrubPublicText('Jane said hi', { name: 'Jane' }), 'Jane said hi');
+  assert.equal(store.scrubPublicText('jane quigley said hi', { name: 'Jane Quigley' }), '[reader] said hi');
+  assert.equal(store.scrubPublicText('Jane Quigleys said hi', { name: 'Jane Quigley' }), 'Jane Quigleys said hi');
+  assert.equal(store.scrubPublicText('Annie Warbucks page is wrong', { name: 'Annie Warbucks', show: 'Annie Warbucks' }), 'Annie Warbucks page is wrong');
+  assert.equal(store.scrubPublicText('a (b) c', { name: 'O(b) Smith' }), 'a (b) c');
 });
 
 test('pending-diagnoses write: public file redacted, reader in the private store, leftovers keep their reader', () => {
@@ -151,6 +153,51 @@ test('pending-diagnoses write: public file redacted, reader in the private store
   const empty = store.writePendingWithPrivateReaders([], { pendingPath, storePath });
   assert.equal(empty.storeChanged, false);
   assert.equal(fs.readFileSync(pendingPath, 'utf8'), '[]\n');
+});
+
+test('a reader whose name matches a show never corrupts ids, slugs, titles or routing inputs', () => {
+  const mary = { _date: 'm1', name: 'Mary', email: 'mary@gmail.com', show: 'Mary Poppins', message: 'Mary Poppins has the wrong opening date listed here.' };
+  const s = store.emptyStore();
+  store.recordSubmitter(s, mary);
+  const submission = store.redactSubmission(mary);
+  const reader = store.lookupSubmitter(s, 'm1');
+  const showIds = ['mary-poppins-2006'];
+  const payload = body.buildPublicDiagnosisPayload({ diagnosis: { ...DIAGNOSIS, summary: 'Mary Poppins date' }, submission, resolvedShow: { id: 'mary-poppins-2006', slug: 'mary-poppins' }, showIds });
+  const text = body.buildBugDiagnosisBody({ item: { summary: 'Mary Poppins date', priority: 'Low' }, submission, diagnosis: DIAGNOSIS, payload, showIds, reader });
+  const diag = store.parseDiagnosisJson(text);
+  assert.equal(diag.showId, 'mary-poppins-2006');
+  assert.equal(diag.showSlug, 'mary-poppins');
+  assert.equal(diag.submitterShow, 'Mary Poppins');
+  assert.match(text, /## Bug Report: Mary Poppins date/);
+
+  // Content request for a show whose title is the reader's (full) name.
+  const annie = { _date: 'a1', name: 'Annie Warbucks', email: 'aw@yahoo.com', show: 'Annie Warbucks', message: 'please add Annie Warbucks to the site' };
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'fann-'));
+  const { publicEntries } = store.writePendingWithPrivateReaders([
+    { item: { summary: 'Add Annie Warbucks', contentRequest: true }, submission: annie, diagnosis: null, contentActions: [{ kind: 'missing-show', workflow: 'add-requested-show.yml', inputs: { title: 'Annie Warbucks' } }] },
+  ], { pendingPath: path.join(dir, 'p.json'), storePath: path.join(dir, 's.json') });
+  assert.equal(publicEntries[0].submission.show, 'Annie Warbucks');
+  assert.equal(publicEntries[0].contentActions[0].inputs.title, 'Annie Warbucks');
+  assert.equal(publicEntries[0].contentActions[0].workflow, 'add-requested-show.yml');
+});
+
+test('message scrub still works when the message contains the name, an email, quotes or newlines', () => {
+  const reader = { name: 'Jane Quigley', show: 'Hamilton', message: 'Hi, Jane Quigley here (jane.quigley@gmail.com).\nThe "zebra marquee" is wrong.' };
+  const prose = `Reader wrote: ${reader.message} -- and in JSON: ${JSON.stringify(reader.message)}`;
+  const out = store.scrubPublicText(prose, reader);
+  assert.ok(!out.includes('zebra'), out);
+  assert.equal(firstRealEmail(out), null);
+  assert.ok(!/Jane Quigley/.test(out));
+  // Through the full body builder, message quoted inside the diagnosis JSON.
+  const s = store.emptyStore();
+  store.recordSubmitter(s, { _date: 'q1', ...reader, email: 'jane.quigley@gmail.com' });
+  const submission = { _date: 'q1', show: 'Hamilton' };
+  const diagnosis = { ...DIAGNOSIS, findings: [`Reader said: ${reader.message}`] };
+  const payload = body.buildPublicDiagnosisPayload({ diagnosis, submission, resolvedShow: null, showIds: ['hamilton-2015'] });
+  const text = body.buildBugDiagnosisBody({ item: { summary: 'x', priority: 'Low' }, submission, diagnosis, payload, showIds: ['hamilton-2015'], reader: store.lookupSubmitter(s, 'q1') });
+  assert.ok(!text.includes('zebra'), text);
+  assert.equal(firstRealEmail(text), null);
+  assert.ok(store.parseDiagnosisJson(text), 'DIAGNOSIS_JSON stays parseable');
 });
 
 // Source guard: the public issue step must never interpolate the raw
