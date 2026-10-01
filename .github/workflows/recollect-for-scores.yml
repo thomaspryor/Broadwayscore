@@ -107,7 +107,9 @@ jobs:
             # Excluded: guardian (stars from API not HTML), usatoday (no stars in HTML)
             # Excluded: theater-life, london-theatre (no stars in HTML)
             # Excluded: nydailynews, rollingstone (no star ratings)
-            OUTLETS="timeout,timeout-london,ew,standard,independent,culturesauce,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic,broadwayworld,theatre-weekly,radio-times,london-box-office,all-that-dazzles-uk,i-paper,the-express,city-am,times-uk,financialtimes"
+            # nysr (BRO-4486): its stars sit in the intro <p class="text-xl">,
+            # which body extraction drops, so only the HTML carries them.
+            OUTLETS="timeout,timeout-london,ew,standard,independent,culturesauce,nysr,whatsonstage,telegraph,thestage,nypost,daily-mail,artsdesk,one-minute-critic,broadwayworld,theatre-weekly,radio-times,london-box-office,all-that-dazzles-uk,i-paper,the-express,city-am,times-uk,financialtimes"
           else
             OUTLETS="$OUTLETS_INPUT"
           fi
