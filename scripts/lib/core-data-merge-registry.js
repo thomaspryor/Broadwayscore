@@ -918,8 +918,9 @@ const CORE_DATA_MERGE_REGISTRY = [
     // apiFallbackSafe files (owe-last-promotion-ids.json, owe-promotion-
     // log.jsonl); a MANAGED file without apiFallbackMerge would turn that
     // commit into a mixed-safety bundle (audit-push-retry-budgets.js, the
-    // BRO-2435 shape) and drop it to the slow path. The merger is 2-arg and
-    // fast-path-shaped, so the Git Data API fallback may run it.
+    // BRO-2435 shape) and drop it to the slow path. The merger is fast-path-
+    // shaped (three-arg since BRO-4484: the API fallback passes it the
+    // entry-base blob), so the Git Data API fallback may run it.
     // ROLLBACK: revert this entry AND the PUSH_RECONCILE_MERGED_JSON env on
     // that promoter step together (ship-check adversarial review 2026-09-29):
     // the env alone leaves a MANAGED entry with no reconcile pass; the entry

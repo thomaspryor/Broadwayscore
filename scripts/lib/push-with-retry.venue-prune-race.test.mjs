@@ -19,7 +19,13 @@ import { createRequire } from 'node:module';
 const HERE = path.dirname(fileURLToPath(import.meta.url));
 const PUSH = path.join(HERE, 'push-with-retry.sh');
 const FILE = 'data/audit/owe-venue-candidates.json';
-const ENV = { ...process.env, GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' };
+// Throwaway repos only: drop inherited GIT_DIR/GIT_INDEX_FILE/... (a hook
+// context would point them at the real repo) and the developer's git config.
+const ENV = {
+  ...Object.fromEntries(Object.entries(process.env).filter(([k]) => !k.startsWith('GIT_'))),
+  GIT_CONFIG_GLOBAL: '/dev/null',
+  GIT_CONFIG_NOSYSTEM: '1',
+  GIT_AUTHOR_NAME: 't', GIT_AUTHOR_EMAIL: 't@t', GIT_COMMITTER_NAME: 't', GIT_COMMITTER_EMAIL: 't@t' };
 
 const git = (cwd, ...args) => execFileSync('git', args, { cwd, env: ENV, encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }).trim();
 const row = (title, extra = {}) => ({ title, venue: 'Park Theatre', source: 'venue-page:park-theatre', candidateHash: `h-${title}`, ...extra });

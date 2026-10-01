@@ -56,7 +56,12 @@
 // A row edited on the side that kept it (re-staged with fresh evidence)
 // wins over the other side's removal; it comes back once and the next prune
 // re-derives the verdict. "Unchanged" compares rows with sorted keys, so a
-// writer that reorders fields is not an edit.
+// writer that reorders fields is not an edit. Only delete-vs-edit is
+// three-way: on a shared key ours still wins. On a push retry, ours already
+// carries rows an earlier attempt merged in that the base predates; if
+// another writer pruned one meanwhile it returns for one cycle (self-heals).
+// A writer must never rewrite a file it could not parse (that would read as
+// "pruned every row"): both updateStaging helpers refuse to (BRO-4484).
 //
 // Before this, the merge was a pure key union: on 2026-09-29/30 the OWE
 // promoter's pruned staging file was unioned back to its pre-prune content
