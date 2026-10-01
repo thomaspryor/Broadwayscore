@@ -73,7 +73,10 @@ function parseTranscript(text) {
     let o;
     try { o = JSON.parse(line); } catch { continue; }
     const m = o && o.message;
-    if (!m || o.isSidechain) continue;
+    // No isSidechain filter: a main transcript never carries sidechain lines (subagent
+    // turns live in subagents/*.jsonl), and a subagent transcript flags EVERY line, so
+    // filtering would hand a compacting subagent an empty checkpoint (found 2026-10-01).
+    if (!m) continue;
     if (o.type === 'user') {
       const c = m.content;
       const texts = typeof c === 'string' ? [c]
