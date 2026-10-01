@@ -29,9 +29,9 @@ The owner taps **Share** on the watchlist (web: My Shows → Watchlist; iOS: To 
 | Link behaviour | Live: one link, always current; can be turned off or reset |
 | What viewers can do (V1) | Tap through to show pages; add a booked date to their calendar |
 | Sign-up nudge for viewers | V2 |
-| Hide individual shows from the share | **Pending owner answer.** Recommended for V1 (§2.1); default V1 |
+| Hide individual shows from the share | V2 (owner, 2026-10-01) |
 
-**Out of V1:** "I'm interested" taps, per-show notes, opening the link inside the iOS app, sign-up nudge, view counts for the owner, link expiry, follower/friend graph.
+**Out of V1:** hiding individual shows, "I'm interested" taps, per-show notes, opening the link inside the iOS app, sign-up nudge, view counts for the owner, link expiry, follower/friend graph.
 
 ### Relation to the existing diary-sharing spec
 
@@ -74,7 +74,7 @@ Share text: "My theater plans on Broadway Scorecard" + URL. The preview card doe
 
 Toggles and name save on change.
 
-**Hide a show from my shared plans (recommended for V1, pending owner answer).** One extra item in the existing per-show menu on the watchlist (web entry menu, iOS long-press menu): "Hide from shared plans" / "Show in shared plans". A hidden show never leaves the database for viewers. The sheet shows "2 hidden" with a link to un-hide. `[CHANGED: pre-mortem showed date + venue + the show page's weekly schedule pins down roughly when the owner is out, and the live link keeps broadcasting every new booking; per-show hiding is the cheapest control that doesn't undo the owner's "live link" choice — pre-mortem]`
+**Hiding individual shows is V2** (owner decision 2026-10-01). The pre-mortem showed that date + venue + the show page's weekly schedule roughly pins down when the owner is out, and the live link keeps showing every new booking. The owner accepted that for V1; the controls are the section toggles, stop and reset.
 
 ### 2.2 Viewer: the plans page
 
@@ -95,7 +95,7 @@ Toggles and name save on change.
 **What's included** — the same rules the owner's own app uses (`lib/watchlist-slot.ts` in the iOS app), so the friend's page matches the owner's To Watch tab: `[CHANGED: first draft used "planned_date is null" for Want to see, which dropped re-booked and already-seen shows that the app files under Not Yet Booked — structure]`
 - **Booked** = watchlist shows with a date of today or later, **today being the date at the show's venue** (New York for Broadway, London for the West End), not the viewer's. `[CHANGED: viewer-local filtering hid tonight's NYC show from a friend in Tokyo — structure]`
 - **Want to see** = watchlist shows with no date, plus shows whose past date is already logged in the diary (the app's "not-booked" rule). Closed shows are left out: a friend can't join them.
-- **Left out entirely:** past dates that haven't been logged yet (the owner's private "to be rated" list), hidden shows, curtain times, ratings, review text, user id, email, avatar.
+- **Left out entirely:** past dates that haven't been logged yet (the owner's private "to be rated" list), curtain times, ratings, review text, user id, email, avatar.
 - **Not included in V1:** future-dated diary entries (reviews with a future "date seen"). Both apps list these under Upcoming in the diary/Watched view (iOS `app/(tabs)/watched.tsx:334`, web `MyShowsClient.tsx:439`), but not on the To Watch shelf, which is what this page mirrors. They're rare (import back-dating), and exposing review rows from a public function widens what it touches. Revisit if the owner logs plans that way. `[CHANGED: considered and declined — structure raised it]`
 
 **States**
@@ -111,7 +111,7 @@ Toggles and name save on change.
 ### 2.3 Privacy rules (product level)
 
 - The sheet says it plainly: anyone with the link sees which shows and which days.
-- Dates are shown, times are not. Hidden shows are never sent.
+- Dates are shown, times are not.
 - The name shown is the owner's choice. The page never shows the full Google/Apple profile name unless they type it.
 - The link is unguessable (122-bit random token), not indexed, and can be stopped or reset at once.
 - The token is scrubbed from every analytics tool, and session recording is off on the page (§3.5). `[CHANGED: PostHog autocapture, session replay, GA, Vercel Analytics and Sentry all record full URLs, so the token would have landed in five third-party dashboards — pre-mortem, structure]`
@@ -137,7 +137,6 @@ CREATE TABLE plan_shares (
   show_booked      BOOLEAN NOT NULL DEFAULT true,
   show_unbooked    BOOLEAN NOT NULL DEFAULT true,
   display_name     TEXT NOT NULL CHECK (char_length(btrim(display_name)) BETWEEN 1 AND 30),
-  hidden_show_ids  TEXT[] NOT NULL DEFAULT '{}' CHECK (cardinality(hidden_show_ids) <= 500),  -- only if owner approves per-show hiding
   created_at       TIMESTAMPTZ NOT NULL DEFAULT now(),
   updated_at       TIMESTAMPTZ NOT NULL DEFAULT now()
 );
@@ -183,7 +182,7 @@ Notes:
     "unbookedOrder": ["maybe-happy-ending-2024", "..."]
   }
   ```
-  - `entries`: the owner's watchlist rows (minus `hidden_show_ids`) with `planned_date IS NULL OR planned_date >= current_date - 2` **or** whose past date is already logged. `logged` = a review for that show exists with `date_seen >= planned_date` or with no `date_seen` (the iOS `classifyWatchlistEntry` rule). This is the only fact read from `reviews`, and only as a boolean. Cap 300 rows. `[CHANGED: needed for parity with the app's buckets — structure]`
+  - `entries`: the owner's watchlist rows with `planned_date IS NULL OR planned_date >= current_date - 2` **or** whose past date is already logged. `logged` = a review for that show exists with `date_seen >= planned_date` or with no `date_seen` (the iOS `classifyWatchlistEntry` rule). This is the only fact read from `reviews`, and only as a boolean. Cap 300 rows. `[CHANGED: needed for parity with the app's buckets — structure]`
   - Ordered by `created_at DESC` (the owner's watchlist order); `created_at` itself is not returned.
 - Never selects `curtain_time`, `time_slot`, `user_id`, `id`, `created_at`, review rows, or anything from `profiles`.
 - The precise booked/unbooked split happens in `selectSharedPlans` (§3.3), because "today" depends on the show's venue timezone, which the database doesn't know.
@@ -218,21 +217,21 @@ New files:
 
 - `src/lib/analytics/redact-url.ts`: `redactSharedPlanUrl(url)` turns `/plans/<anything>` into `/plans/:token` in absolute URLs, paths and referrers. Wired into every tool `AnalyticsWrapper.tsx` starts: PostHog `before_send` (rewrites `$current_url`, `$pathname`, `$referrer`, `$initial_*`), Vercel `<Analytics beforeSend>`, GA `page_location`/`page_referrer`, Sentry `beforeSend` (request URL + breadcrumbs). Session recording is stopped on `/plans/*` (`posthog.stopSessionRecording()` on mount). `[CHANGED: pre-mortem primary scenario]`
 - **Prevention test:** a unit test feeds a sample event through each configured hook and fails if the 32-hex token survives anywhere. A grep test fails if `AnalyticsWrapper.tsx` gains a new analytics init that doesn't route through the redactor.
-- Events (dual-fire `track()` + `captureEvent()`): owner `plans_share_enabled`, `plans_shared` (native-sheet / copy), `plans_share_stopped`, `plans_link_reset`, `plans_show_hidden`; viewer `plans_page_viewed` (fired on mount: link-preview crawlers don't run JavaScript, so there's no bot inflation and no undercount of people who read without scrolling), `plans_show_tapped`, `plans_calendar_added` (google / ics). `[CHANGED: the first draft gated views on scroll, undercounting the main V2 metric — structure]`
+- Events (dual-fire `track()` + `captureEvent()`): owner `plans_share_enabled`, `plans_shared` (native-sheet / copy), `plans_share_stopped`, `plans_link_reset`; viewer `plans_page_viewed` (fired on mount: link-preview crawlers don't run JavaScript, so there's no bot inflation and no undercount of people who read without scrolling), `plans_show_tapped`, `plans_calendar_added` (google / ics). `[CHANGED: the first draft gated views on scroll, undercounting the main V2 metric — structure]`
 
 ### 3.6 Owner UI
 
 **Web**
-- `src/hooks/usePlanShare.ts`: `share` (current row or null), `ensure({ displayName, showBooked, showUnbooked })` → URL, `update(patch)`, `rotate()` → URL (via existing `supabaseRestRpc`), `setHidden(showId, hidden)`. Stop sharing is `update({ enabled: false })`. Returns URLs built from `BASE_URL`. The iOS hook exposes the same method names. `[CHANGED: one method set on both platforms; follows useUserLists.shareList returning a URL — design P2-e]`
+- `src/hooks/usePlanShare.ts`: `share` (current row or null), `ensure({ displayName, showBooked, showUnbooked })` → URL, `update(patch)`, `rotate()` → URL (via existing `supabaseRestRpc`). Stop sharing is `update({ enabled: false })`. Returns URLs built from `BASE_URL`. The iOS hook exposes the same method names. `[CHANGED: one method set on both platforms; follows useUserLists.shareList returning a URL — design P2-e]`
 - `src/components/user/SharePlansModal.tsx` on the shared `Modal`. Counts come from `selectSharedPlans` run on the owner's own watchlist + reviews.
 - `src/lib/share-link.ts`: `shareOrCopy({ title, text, url })` → `'shared' | 'copied' | 'cancelled'`. Migrate **both** existing inline copies (ListsTab share, `BeatTheCriticsClient.tsx:440`) in the same change. `[CHANGED: design P2-f]`
-- Mounted in the Watchlist tab header of `MyShowsClient.tsx` (already behind `userAccounts`). "Hide from shared plans" goes into the existing entry menu, if approved.
+- Mounted in the Watchlist tab header of `MyShowsClient.tsx` (already behind `userAccounts`).
 
 **iOS** (`BroadwayScorecard-app`)
 - `lib/shared-plans-select.ts`: port of `selectSharedPlans` with a header naming the web source, same as the app's other ports. Reuses `lib/watchlist-slot.ts` for the logged rule.
 - `hooks/usePlanShare.ts`: same methods against the app's Supabase client.
 - `components/user/SharePlansSheet.tsx`: bottom sheet in the `PlannedDateSheet` style. Share via `Share.share({ url, message }, { subject })`.
-- Header button in `app/(tabs)/to-watch.tsx`; "Hide from shared plans" in the existing long-press menu (if approved).
+- Header button in `app/(tabs)/to-watch.tsx`.
 - Gated by a new `planSharing` flag in `app.json` `extra.features` (read by `lib/feature-flags.ts`). It ships off; turning it on is a one-line OTA after the web-first trial (§3.8). `[CHANGED: an OTA on the production channel reaches every app user at once — user impact, structure]`
 - **No universal-link change.** `/plans/*` stays out of the AASA file until the app has a screen for it.
 
@@ -240,7 +239,7 @@ New files:
 
 | Layer | Test |
 |---|---|
-| SQL (local Postgres, then CI round-trip) | Share creation mints a token; client-written token ignored on insert and update; rotate works only for the owner and only for `authenticated`; anon can't call rotate; RPC returns NULL for disabled / rotated / malformed / both-sections-off; payload has no `curtain_time`, `user_id`, `created_at` keys; hidden shows absent; logged rule matches `watchlist-slot` fixtures; other users can't read or write the row |
+| SQL (local Postgres, then CI round-trip) | Share creation mints a token; client-written token ignored on insert and update; rotate works only for the owner and only for `authenticated`; anon can't call rotate; RPC returns NULL for disabled / rotated / malformed / both-sections-off; payload has no `curtain_time`, `user_id`, `created_at` keys; logged rule matches `watchlist-slot` fixtures; other users can't read or write the row |
 | Pure libs | `selectSharedPlans` (venue timezone, logged rule, closed shows, toggles, counts), `redactSharedPlanUrl` + the hooks test, `shareOrCopy` (shared / AbortError / missing / throws), date formatting, `buildPlannedShowEvent` all-day + companions |
 | Route | `/api/calendar.ics`: all-day served with env unset; timed still 404 with env unset |
 | Web UI | Playwright fixture for `/plans/[token]` (populated, empty, not shared, 503) and the owner modal; `/visual-qa` at 375 and 1280 px |
@@ -261,6 +260,7 @@ Each step can be reverted on its own. Steps 2–3 do nothing without step 1, and
 ### 3.9 V2 backlog
 
 - Sign-up nudge for viewers, measured against `plans_page_viewed`.
+- Hide individual shows from the share (owner chose V2; pre-mortem's main privacy control). Store as `plan_shares.hidden_show_ids TEXT[]`, filtered inside `get_shared_plans`, with a "Hide from shared plans" item in each platform's existing per-show menu.
 - "Viewed N times this week" for the owner (pre-mortem suggestion).
 - Optional link expiry / booked-date horizon.
 - `/plans/*` universal link with an in-app screen.
@@ -273,7 +273,7 @@ Each step can be reverted on its own. Steps 2–3 do nothing without step 1, and
 
 | Risk | Mitigation |
 |---|---|
-| Forwarded link becomes a standing feed of when the owner is out | Plain warning, date only, per-show hide (pending), instant stop/reset |
+| Forwarded link becomes a standing feed of when the owner is out | Plain warning, date only, section toggles, instant stop/reset; per-show hide in V2 |
 | Token leaks through analytics or session replays | `redactSharedPlanUrl` in all five tools, replay off on the route, hook test |
 | Stopped share still served from a cache | `no-store` fetch in the loader, `force-dynamic` page and preview, live-header smoke check |
 | Friend's page disagrees with the owner's app | One selection rule, ported to iOS, shared parity fixture |
@@ -305,4 +305,4 @@ Each step can be reverted on its own. Steps 2–3 do nothing without step 1, and
 
 **Declined:** dropping the custom preview card (GPT): the card is what makes a shared link read as an invitation in iMessage. Optimistic locking for web+iOS edits of the same row (GPT): one owner, last write wins is acceptable. Future-dated diary entries in Booked (structure): see §2.2.
 
-**Effort:** first draft ≈ 3 sessions. Revised ≈ 4 (database + tests 1, viewer page + preview + calendar + redaction 1.5, web owner 0.5, iOS 1). Per-show hiding adds about a quarter session across both platforms.
+**Effort:** first draft ≈ 3 sessions. Revised ≈ 4 (database + tests 1, viewer page + preview + calendar + redaction 1.5, web owner 0.5, iOS 1). Per-show hiding deferred to V2 by the owner.
