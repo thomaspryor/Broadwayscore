@@ -119,12 +119,45 @@ function fetchRuns({ repo, workflow, branch, days, maxPages, now }, exec = execF
     // back short mid-window (BRO-4465: 39 of 250 runs scored as a confident
     // 35.9%), and stopping there silently truncates the window.
     if (rows.length === 0 || (total !== null ? runs.length >= total : rows.length < core.DEFAULTS.perPage)) break;
-    if (page === maxPages) truncated = true;
+    // GitHub serves at most 1000 results for a filtered list: past that it is
+    // the page cap, not a short page.
+    if (page === maxPages || page * core.DEFAULTS.perPage >= 1000) { truncated = true; break; }
   }
-  if (!truncated && total !== null && runs.length < total) {
-    throw new Error(`incomplete fetch: got ${runs.length} of ${total} runs (short API page) — refusing a partial-window verdict`);
+  const unique = new Set(runs.map((r) => r && r.databaseId)).size;
+  if (!truncated && total !== null && unique < total) {
+    throw new Error(`incomplete fetch: got ${unique} of ${total} runs (short API page) — refusing a partial-window verdict`);
   }
   return { runs, truncated };
+}
+
+const uniqueCount = (f) => new Set(f.runs.map((r) => r && r.databaseId)).size;
+
+/**
+ * BRO-4465: the runs API has returned partial windows WITH a matching
+ * total_count (2026-10-01: 39 of 250 runs at 7d, 48 of ~1000 at 30d), so one
+ * read cannot be trusted. Read twice; if the reads agree, use them. If not,
+ * read a third time and keep the fullest read — a bad read only ever drops
+ * runs (ids are deduped), so the largest one is the closest to the truth.
+ * A read that throws 'incomplete fetch' counts as a failed read; non-fetch
+ * errors (rate limit, auth) propagate immediately.
+ */
+function fetchStable(fetchOpts, exec = execFileSync, warn = () => {}) {
+  const reads = [];
+  let lastErr;
+  const attempt = () => {
+    try { reads.push(fetchRuns(fetchOpts, exec)); } catch (err) {
+      if (!/incomplete fetch/.test(String(err && err.message))) throw err;
+      lastErr = err;
+    }
+  };
+  attempt();
+  attempt();
+  if (reads.length === 2 && uniqueCount(reads[0]) === uniqueCount(reads[1])) return reads[0];
+  attempt();
+  if (!reads.length) throw lastErr;
+  const best = reads.reduce((a, b) => (uniqueCount(b) > uniqueCount(a) ? b : a));
+  warn(`ci-green-rate: runs API reads disagreed (${reads.map(uniqueCount).join(', ')} runs) — using the fullest read (${uniqueCount(best)})`);
+  return best;
 }
 
 /**
@@ -158,7 +191,8 @@ function main(argv, deps = {}) {
   }
   let fetched;
   try {
-    fetched = fetchRuns({ repo, workflow: opts.workflow, branch: opts.branch, days: opts.days, maxPages: opts.maxPages, now }, exec);
+    const fetchOpts = { repo, workflow: opts.workflow, branch: opts.branch, days: opts.days, maxPages: opts.maxPages, now };
+    fetched = fetchStable(fetchOpts, exec, error);
   } catch (err) {
     const stderr = String((err && err.stderr) || '').trim();
     const msg = `${err && err.message ? err.message : err}${stderr ? ` — ${stderr.slice(0, 300)}` : ''}`;
@@ -193,4 +227,4 @@ if (require.main === module) {
   process.exit(main(process.argv.slice(2)));
 }
 
-module.exports = { main, fetchRuns, resolveRepo, readLedger, LEDGER_PATH };
+module.exports = { main, fetchRuns, fetchStable, resolveRepo, readLedger, LEDGER_PATH };

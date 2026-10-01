@@ -251,7 +251,7 @@ test('CLI fetchRuns paginates until total_count, and flags the page cap as trunc
   const cli = require('../ci-green-rate.js');
   const full = Array.from({ length: 100 }, (_, i) => run(i + 1, 'success'));
   const calls = [];
-  const exec = (_gh, args) => { calls.push(args[1]); return JSON.stringify({ total: 201, runs: calls.length < 3 ? full : [run(200, 'success')] }); };
+  const exec = (_gh, args) => { calls.push(args[1]); return JSON.stringify({ total: 201, runs: calls.length < 3 ? full.map((r, i) => ({ ...r, databaseId: calls.length * 1000 + i })) : [run(200, 'success')] }); };
   const r = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, exec);
   assert.equal(calls.length, 3);
   assert.equal(r.runs.length, 201);
@@ -280,6 +280,53 @@ test('BRO-4465: a short page mid-window keeps paging, and an incomplete fetch is
   const out = [];
   assert.equal(cli.main(['--days', '7'], { log: (l) => out.push(l), error: () => {}, repo: 'thomaspryor/Broadwayscore', ledgerRows: [], now: NOW, exec: stuck, record: () => { throw new Error('must not record'); } }), 2);
   assert.match(out.join('\n'), /^CI-GREEN-RATE: n\/a over 7d — gh api fetch failed, no verdict$/m);
+});
+
+test('BRO-4465: one transient short read is retried once and then scores the full window', () => {
+  const cli = require('../ci-green-rate.js');
+  const full = Array.from({ length: 50 }, (_, i) => run(i + 1, 'success'));
+  let calls = 0;
+  // First fetch: 39 of 50 then an empty page (incomplete). Retry: complete.
+  const exec = () => { calls++; if (calls === 1) return JSON.stringify({ total: 50, runs: full.slice(0, 39) }); if (calls === 2) return JSON.stringify({ total: 50, runs: [] }); return JSON.stringify({ total: 50, runs: full }); };
+  const out = [];
+  assert.equal(cli.main(['--days', '7', '--min', '80'], { log: (l) => out.push(l), error: () => {}, repo: 'thomaspryor/Broadwayscore', ledgerRows: [], now: NOW, exec }), 0);
+  assert.match(out.join('\n'), /green 50 \/ red 0, 50 runs/);
+});
+
+test('BRO-4465: a partial read with a self-consistent total_count is outvoted by the fuller reads', () => {
+  const cli = require('../ci-green-rate.js');
+  const full = Array.from({ length: 250 }, (_, i) => ({ ...run(i + 1, 'success'), databaseId: 5000 + i }));
+  const partial = full.slice(0, 39);
+  // Read 1 lies consistently (total 39, 39 rows); reads 2 and 3 are complete.
+  let calls = 0;
+  const pageOf = (rows, page) => rows.slice((page - 1) * 100, page * 100);
+  const exec = (_gh, args) => {
+    const page = Number(/[?&]page=(\d+)/.exec(args[1])[1]);
+    if (page === 1) calls++;
+    const rows = calls === 1 ? partial : full;
+    return JSON.stringify({ total: rows.length, runs: pageOf(rows, page) });
+  };
+  const warns = [];
+  const r = cli.fetchStable({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, exec, (w) => warns.push(w));
+  assert.equal(r.runs.length, 250);
+  assert.equal(calls, 3);
+  assert.match(warns.join('\n'), /reads disagreed \(39, 250, 250 runs\)/);
+  // Two agreeing reads cost exactly two fetches and no warning.
+  calls = 1; // make every following read "full"
+  const quiet = [];
+  const ok = cli.fetchStable({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 7, maxPages: 10, now: NOW }, exec, (w) => quiet.push(w));
+  assert.equal(ok.runs.length, 250);
+  assert.equal(calls, 3);
+  assert.deepEqual(quiet, []);
+});
+
+test('BRO-4465: the 1000-result API ceiling is the page cap (truncated), not a short page', () => {
+  const cli = require('../ci-green-rate.js');
+  let id = 0;
+  const exec = () => JSON.stringify({ total: 1500, runs: Array.from({ length: 100 }, () => run(++id, 'success')) });
+  const r = cli.fetchRuns({ repo: 'thomaspryor/Broadwayscore', workflow: 'test.yml', branch: 'main', days: 60, maxPages: 20, now: NOW }, exec);
+  assert.equal(r.truncated, true);
+  assert.equal(r.runs.length, 1000);
 });
 
 test('formatReport ends with the verdict line and never says "fixed"', () => {
