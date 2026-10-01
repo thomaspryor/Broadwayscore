@@ -52,8 +52,10 @@ function showTypeFor(title, listingGenre) {
 function knownShowType(title, listingGenre) {
   const g = String(listingGenre || '').replace(/\bnon[\s-]*musicals?\b/gi, '');
   if (/(?<![-\w])musicals?\b/i.test(g) || titleSaysMusical(title)) return 'musical';
-  // Only a label that names a play counts as one; "Opera", "Dance",
-  // "Comedy", "Children's Show" leave the type unknown.
+  // Only a label that names a play counts as one. "Opera", "Dance",
+  // "Comedy", "Children's Show" leave the type unknown, also when a generic
+  // "Theatre" category sits beside them ("Dance; Theatre").
+  if (/\b(?:opera|dance|ballet|comedy|stand.?up|cabaret|music|concert|circus|magic|children|family|cinema|film|talk)\b/i.test(g)) return null;
   if (/\b(?:plays?|drama|new writing|revival|theatre|theater)\b/i.test(g)) return 'play';
   return null;
 }

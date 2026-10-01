@@ -39,5 +39,8 @@ test('showTypeFor: venue genre label first, then the title', () => {
   assert.equal(knownShowType('X', 'Dance'), null);
   assert.equal(knownShowType('X', "Children's Show"), null);
   assert.equal(knownShowType('X', 'Theatre'), 'play');
+  assert.equal(knownShowType('Swan Lake', 'Dance; Theatre'), null);
+  assert.equal(knownShowType('X', 'Opera; Theatre'), null);
+  assert.equal(knownShowType('X', 'Drama; Plays/Drama'), 'play');
   assert.equal(knownShowType('X', 'Musicals'), 'musical');
 });
