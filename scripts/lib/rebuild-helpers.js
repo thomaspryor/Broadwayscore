@@ -9,6 +9,7 @@ const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIE
 const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities, cleanText } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
+const { isUncorroboratedGenericStar, adjudicationSidedWithStars } = require('./star-reliability');
 
 // Low-reliability star EXTRACTION sources — automated CSS/generic pattern matches
 // that often read the wrong element (pagination, dates, sidebars). The LLM may
@@ -708,10 +709,18 @@ function getBestScore(data, opts = {}) {
     const disputesStar = /^Auto-adjudicated \([^)]*sided with llm\)/.test(data.adjudicationNote || '');
     const outsideAnchoredBand = !!(anchoredBand && typeof anchoredBand.floor === 'number' && !disputesStar
       && (data.adjudicatedScore < anchoredBand.floor - 2 || data.adjudicatedScore > anchoredBand.ceiling + 2));
-    if (!hasVerifiedStarScore && !outsideAnchoredBand) {
+    // BRO-4499: an adjudication that sided with the star is only as good as the
+    // star. A generic-pattern "1/5" the ensemble contradicts turned a rave
+    // Chicago Tribune review into a 40. The star is the same one P0.5 ignores
+    // below (isUncorroboratedGenericStar), so the two paths stay consistent.
+    const staleStarBasis = adjudicationSidedWithStars(data)
+      && isUncorroboratedGenericStar(data, Number(data.originalScoreNormalized));
+    if (!hasVerifiedStarScore && !outsideAnchoredBand && !staleStarBasis) {
       return { score: data.adjudicatedScore, source: 'adjudicated' };
     }
-    inc(outsideAnchoredBand ? 'adjudicationSkippedOutsideStarBand' : 'adjudicationSkippedExplicitStars');
+    inc(outsideAnchoredBand ? 'adjudicationSkippedOutsideStarBand'
+      : staleStarBasis ? 'adjudicationSkippedUncorroboratedStar'
+        : 'adjudicationSkippedExplicitStars');
   }
 
   // P0.4: anchored-v6 / llm-v6 (Phase B Sprint 3, 2026-05-16)
@@ -955,6 +964,13 @@ function getBestScore(data, opts = {}) {
         parsed = reparsedOriginal;
       } else {
         parsed = normalizedFromExtraction ?? reparsedOriginal;
+      }
+      // BRO-4499: a generic free-text "X/5" match that the ensemble contradicts
+      // across a bucket boundary is not a rating. Ignore it (like the ambiguous
+      // originalScore above) and let P1+ score the review from its text.
+      if (parsed !== null && isUncorroboratedGenericStar(data, parsed)) {
+        inc('skippedUncorroboratedGenericStar');
+        parsed = null;
       }
       if (parsed !== null) {
         const llm = data.llmScore && data.llmScore.score;
