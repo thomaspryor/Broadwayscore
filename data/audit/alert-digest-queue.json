@@ -2752,39 +2752,6 @@
     "queuedAt": "2026-09-30T07:43:36.778Z"
   },
   {
-    "conditionKey": "opening-night-drift:tru-off-west-end-2026",
-    "title": "Opening night drift: Tru (tru-off-west-end-2026)",
-    "description": "Review counts do not reconcile for Tru (tru-off-west-end-2026): local review-texts=22, reviews.json aggregate=18, live production=18, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36703634711",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "Tru (tru-off-west-end-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=22, aggregate=18, live=18, drift=4",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-09-27",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36703634711)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-09-30T10:40:38.895Z"
-  },
-  {
     "conditionKey": "test-yml:data-validation-red",
     "title": "Data audits failing (non-blocking): Run BRO-1397 prior-run former-cast sweep (needs review-texts), Validate market expansion",
     "description": "Corpus-state audits in test.yml Data Validation failed. They no longer decide main's color (BRO-3425). Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36718890201",
@@ -3511,39 +3478,6 @@
     "queuedAt": "2026-09-30T23:40:58.615Z"
   },
   {
-    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
-    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=4, reviews.json aggregate=0, live production=n/a, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
-    "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36797381932",
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "Show",
-        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
-        "inline": false
-      },
-      {
-        "name": "Counts",
-        "value": "local=4, aggregate=0, live=n/a, drift=4",
-        "inline": false
-      },
-      {
-        "name": "Opening",
-        "value": "2026-09-26",
-        "inline": false
-      },
-      {
-        "name": "Run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36797381932)",
-        "inline": false
-      }
-    ],
-    "queuedAt": "2026-10-01T00:43:26.377Z"
-  },
-  {
     "conditionKey": "corpus-drift:sibling-title-misroute",
     "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
     "description": "check-corpus-drift.js audit \"sibling-title-misroute\" (node scripts/audit-sibling-title-misroute.js --strict) has been drifting. Latest output:\n\n    the-book-of-mormon-west-end-2024  hollywood-reporter--georg-szalai.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-book-of-mormon-west-end-2024  newsday--linda-winer.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-book-of-mormon-west-end-2024  nydailynews--unknown.json  (cross-market: US-only outlet \"nydailynews\" reviewing WE show)\n    the-cherry-orchard-west-end-2026  nydailynews--unknown.json  (cross-market: US-only outlet \"nydailynews\" reviewing WE show)\n    the-cherry-orchard-west-end-2026  thewrap--unknown.json  (cross-market: US-only outlet \"thewrap\" reviewing WE show)\n    the-cherry-orchard-west-end-2026  timeout--unknown.json  (cross-market: Broadway URL pattern: /\\/newyork\\//i)\n    the-great-gatsby-tour-2026  newjerseystage--adam-f-cohen.json  (tour: review date is outside every tour of this title)\n    the-great-gatsby-tour-2026  theater-pizzazz--adam-cohen.json  (tour: review date is outside every tour of this title)\n    the-great-gatsby-tour-2026  theatermania--david-gordon.json  (tour: review date is outside every tour of this title)\n    the-misanthrope-west-end-2026  theatermania--david-finkle.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-notebook-tour-2025  observer--david-cote.json  (tour: review date is outside every tour of this title)\n    the-phantom-of-the-opera-tour-2025  deadline--greg-evans.json  (tour: review date is outside every tour of this title)\n    the-phantom-of-the-opera-tour-2025  nytimes--juan-a-ramirez.json  (tour: review date is outside every tour of this title)\n    the-phantom-of-the-opera-tour-2025  nytimes--unknown.json  (tour: review date is outside every tour of this title)\n    the-phantom-of-the-opera-west-end-1986  variety--unknown.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-play-that-goes-wrong-west-end-2021  chicagotribune--chris-jones.json  (cross-market: US-only outlet \"chicagotribune\" reviewing WE show)\n    the-play-that-goes-wrong-west-end-2021  variety--frank-rizzo.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    the-producers-west-end-2025  deadline--unknown.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    titanique-west-end-2024  cititour--brian-scott-lipton.json  (cross-market: US-only outlet \"cititour\" reviewing WE show)\n    titanique-west-end-2024  nypost--johnny-oleksinski.json  (cross-market: US-only outlet \"nypost\" reviewing WE show)\n    titanique-west-end-2024  the-queer-review--james-kleinmann.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    titanique-west-end-2024  thewrap--robert-hofler.json  (cross-market: US-only outlet \"thewrap\" reviewing WE show)\n    titanique-west-end-2024  wsj--charles-isherwood.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  chicagotribune--chris-jones.json  (cross-market: US-only outlet \"chicagotribune\" reviewing WE show)\n    to-kill-a-mockingbird-west-end-2026  dailybeast--tim-teeman.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  hollywood-reporter--abbey-white.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  hollywood-reporter--david-rooney.json  (cross-market: Broadway URL pattern: /-broadway[\\.\\-\\/]/i)\n    to-kill-a-mockingbird-west-end-2026  latimes--charles-mcnulty.json  (cross-market: Broadway URL pattern: /broadway-review/i)\n    to-kill-a-mockingbird-west-end-2026  newsday--elisabeth-vincentelli.json  (cross-market: Broadway URL pattern: /broadway-review/i)\n    to-kill-a-mockingbird-west-end-2026  newsday--elysa-gardner.json  (cross-market: Broadway URL pattern: /broadway-review/i)\n    to-kill-a-mockingbird-west-end-2026  nydailynews--chris-jones.json  (cross-market: US-only outlet \"nydailynews\" reviewing WE show)\n    to-kill-a-mockingbird-west-end-2026  thewrap--thom-geier.json  (cross-market: US-only outlet \"thewrap\" reviewing WE show)\n    water-for-elephants-tour-2025  observer--david-cote.json  (tour: review date is outside every tour of this title)\n    wicked-west-end-2021  timeout--david-cote.json  (cross-market: Broadway URL pattern: /newyork\\.timeout\\.com/i)\n\n✗ STRICT: 3 sibling-title misroute(s) NOT in baseline (/home/runner/work/Broadwayscore/Broadwayscore/data/audit/sibling-title-misroute-baseline.json):\n    [reroute] arcadia-west-end-2026 -> arcadia-duke-of-yorks-west-end-2026  timeout-london--unknown.json  (sibling opening 1d from publishDate vs current 148d)\n    [reroute] going-bacharach-the-songs-of-an-icon-return-off-broadway-2026 -> going-bacharach-the-songs-of-an-icon-off-broadway-2026  nysr--elysa-gardner.json  (sibling opening 1d from publishDate vs current 246d)\n    [reroute] lost-in-del-valle-return-off-broadway-2026 -> lost-in-del-valle-off-broadway-2026  vulture--kendall-dupre.json  (sibling opening 6d from publishDate vs current 161d)\n  Verify by hand, then either fix the file or run --update-baseline once it's a confirmed, deliberately-unfixed FP.",
@@ -3614,5 +3548,71 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-01T02:43:05.403Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:tru-off-west-end-2026",
+    "title": "Opening night drift: Tru (tru-off-west-end-2026)",
+    "description": "Review counts do not reconcile for Tru (tru-off-west-end-2026): local review-texts=22, reviews.json aggregate=19, live production=19, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36827143144",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "Tru (tru-off-west-end-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=22, aggregate=19, live=19, drift=3",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-09-27",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36827143144)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-01T06:54:59.300Z"
+  },
+  {
+    "conditionKey": "opening-night-drift:the-secret-circus-musical-off-broadway-2026",
+    "title": "Opening night drift: The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
+    "description": "Review counts do not reconcile for The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): local review-texts=4, reviews.json aggregate=0, live production=n/a, drift=4 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36827143144",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Show",
+        "value": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026)",
+        "inline": false
+      },
+      {
+        "name": "Counts",
+        "value": "local=4, aggregate=0, live=n/a, drift=4",
+        "inline": false
+      },
+      {
+        "name": "Opening",
+        "value": "2026-09-26",
+        "inline": false
+      },
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/36827143144)",
+        "inline": false
+      }
+    ],
+    "queuedAt": "2026-10-01T06:54:59.314Z"
   }
 ]
