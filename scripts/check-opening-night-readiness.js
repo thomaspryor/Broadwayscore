@@ -249,7 +249,7 @@ async function runChecks() {
   }
 
   // 7. Wrong-production pre-scores
-  const reviewTextsDir = path.join(DATA_DIR, 'data', 'review-texts', SHOW_ID);
+  const reviewTextsDir = path.join(require('./lib/review-texts-dir').resolveReviewTextsDir(), SHOW_ID);
   if (fs.existsSync(reviewTextsDir)) {
     const files = fs.readdirSync(reviewTextsDir).filter(f => f.endsWith('.json'));
     const wrongProd = [];

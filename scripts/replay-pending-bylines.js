@@ -157,8 +157,11 @@ function isPendingDrainEligible(show, closedWithin = 0, today = new Date()) {
   return isRecentlyLive(show, pendingDrainLivenessOptions(closedWithin, today));
 }
 
-const PENDING_ROOT = path.join(__dirname, '../data/review-texts/_pending');
-const REVIEW_TEXTS_ROOT = path.join(__dirname, '../data/review-texts');
+// Shared resolver: a plain (non-git) data/review-texts goes stale (BRO-4500: replay
+// reported "no _pending" mid-opening while the live clone had files).
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const REVIEW_TEXTS_ROOT = resolveReviewTextsDir();
+const PENDING_ROOT = path.join(REVIEW_TEXTS_ROOT, '_pending');
 
 function listOperaShowIds() {
   const showsPath = path.join(__dirname, '../data/shows.json');
