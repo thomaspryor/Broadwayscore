@@ -1,105 +1,94 @@
 {
-  "runDate": "2026-10-01T18:23:10.409Z",
+  "runDate": "2026-10-01T18:58:16.430Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "school-girls-or-the-african-mean-girls-play-2026,whos-afraid-of-virginia-woolf-west-end-2026,the-standard-of-living-west-end-2026,degenerates-off-broadway-2026",
+    "showFilter": "hay-fever-west-end-2026,creation-stories-and-all-the-important-importants-off-broadway-2026,jena-friedman-motherfucker-off-broadway-2026,flamenc-oh-off-west-end-2026,motherfucker-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 13,
+    "processed": 9,
     "failed": 2,
     "skipped": 0,
-    "successRate": "86.7%"
+    "successRate": "81.8%"
   },
   "tierBreakdown": {
-    "playwright": 9,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 1,
-    "brightdata": 1,
+    "scrapingdog": 3,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 12,
-    "tier1Success": 10,
+    "tier1Attempts": 11,
+    "tier1Success": 8,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 1,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
-    "tier1_9Success": 2,
-    "tier2Attempts": 2,
-    "tier2Success": 2,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
-    "tier3_6Attempts": 1,
+    "tier1_9Attempts": 3,
+    "tier1_9Success": 3,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 7,
-    "tier4Success": 1,
+    "tier4Attempts": 5,
+    "tier4Success": 0,
     "totalFailed": 2,
-    "scrapingBeePageCredits": 11,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 1,
-    "browserbaseMinutesUsed": 0.2,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "whos-afraid-of-virginia-woolf-west-end-2026/thereviewshub--unknown.json",
-    "whos-afraid-of-virginia-woolf-west-end-2026/readaboutstuff--unknown.json",
-    "whos-afraid-of-virginia-woolf-west-end-2026/theatreboard--unknown.json",
-    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
-    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
-    "the-standard-of-living-west-end-2026/afridiziak-theatre-news--unknown.json",
-    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
-    "the-standard-of-living-west-end-2026/a-youngish-perspective--unknown.json",
-    "the-standard-of-living-west-end-2026/daily-mail--unknown.json",
-    "school-girls-or-the-african-mean-girls-play-2026/nytg--unknown.json",
-    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
-    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
+    "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
+    "flamenc-oh-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+    "hay-fever-west-end-2026/artsdesk--helen-hawkins.json",
+    "hay-fever-west-end-2026/bestoftheatre--unknown.json",
+    "hay-fever-west-end-2026/telegraph--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+    "motherfucker-off-broadway-2026/sohoplayhouse--the-guardian.json",
+    "motherfucker-off-broadway-2026/ticketsmarter--unknown.json"
   ],
   "failed": [
-    "whos-afraid-of-virginia-woolf-west-end-2026/thestage--dave-fargnoli.json",
-    "the-standard-of-living-west-end-2026/theupcoming--unknown.json"
+    "flamenc-oh-off-west-end-2026/thereviewshub--unknown.json",
+    "motherfucker-off-broadway-2026/ticketwarehouse--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "whos-afraid-of-virginia-woolf-west-end-2026/thereviewshub--unknown.json",
-      "whos-afraid-of-virginia-woolf-west-end-2026/readaboutstuff--unknown.json",
-      "whos-afraid-of-virginia-woolf-west-end-2026/theatreboard--unknown.json",
-      "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
-      "the-standard-of-living-west-end-2026/afridiziak-theatre-news--unknown.json",
-      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
-      "the-standard-of-living-west-end-2026/a-youngish-perspective--unknown.json",
-      "school-girls-or-the-african-mean-girls-play-2026/nytg--unknown.json"
+      "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
+      "flamenc-oh-off-west-end-2026/the-spy-in-the-stalls--unknown.json",
+      "hay-fever-west-end-2026/artsdesk--helen-hawkins.json",
+      "hay-fever-west-end-2026/bestoftheatre--unknown.json",
+      "hay-fever-west-end-2026/telegraph--unknown.json",
+      "motherfucker-off-broadway-2026/sohoplayhouse--the-guardian.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
-      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+      "motherfucker-off-broadway-2026/ticketsmarter--unknown.json"
     ],
-    "scrapingbee": [
-      "the-standard-of-living-west-end-2026/daily-mail--unknown.json"
-    ],
-    "brightdata": [
-      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
