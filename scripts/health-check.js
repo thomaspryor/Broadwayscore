@@ -248,8 +248,6 @@ const AUTO_FIX_PLAYBOOK = [
     humanFallback: 'NYT Critics Picks list is out of date. Runs Mon/Wed/Fri — stale >3 days means the workflow is failing.' },
   { match: /^Freshness: video-reviews\.json$/, urgency: 'this-week', workflow: 'weekly-video-reviews.yml',
     humanFallback: 'Video reviews data is out of date. Runs Mondays — stale >2 weeks means the workflow is failing.' },
-  { match: /^Freshness: social-pulse\/_meta\.json$/, urgency: 'this-week', workflow: 'update-social-pulse.yml',
-    humanFallback: 'Social Scorecard data is out of date. Runs Mondays — powers /trending pages. Stale >2 weeks means the workflow is failing.' },
   // No `workflow` — there's no automated fix, this just needs a human to look
   // at the scoring workflow's polling. 'this-week' (not fix-now): a batch
   // between 12-48h in flight is within the vendor's normal turnaround, not an
@@ -480,7 +478,6 @@ const FRESHNESS_CHECKS = [
   { file: 'cast-changes.json', field: 'lastUpdated', warnH: 72, errorH: 120, hint: 'Check update-cast-changes workflow in Actions tab (runs Wed+Sat)' },
   { file: 'nyt-critics-picks.json', field: '_meta.lastUpdated', warnH: 72, errorH: 120, hint: 'Check nyt-critics-picks workflow in Actions tab (runs Mon/Wed/Fri)' },
   { file: 'video-reviews.json', field: '_meta.generatedAt', warnH: 192, errorH: 336, hint: 'Check weekly-video-reviews workflow in Actions tab (runs Monday)' },
-  { file: 'social-pulse/_meta.json', field: 'lastUpdated', warnH: 192, errorH: 336, hint: 'Check update-social-pulse workflow in Actions tab (runs Monday); powers /trending' },
   // Tony odds — only relevant April–June. Large thresholds so stale off-season files don't false-alarm.
   { file: 'tony-win-probabilities.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — GoldDerby scraper may have failed', seasonMonths: [4, 5, 6] },
   { file: 'tony-polymarket-odds.json', field: '_meta.lastUpdated', warnH: 36, errorH: 72, hint: 'Check update-tony-awards workflow — Polymarket scraper may have failed or returned 0 categories', seasonMonths: [4, 5, 6] },
@@ -795,55 +792,6 @@ function checkSync() {
       status,
       message: `${gaps.length} open show(s) have audience data on a source that didn't link — ${top}`,
       hint: `Add an override for the flagged show: ${knob}; then re-run that source's scraper.`,
-    };
-  }));
-
-  // B2b: Per-show social-pulse freshness. The `Freshness: social-pulse/_meta.json`
-  // check above only proves the WORKFLOW ran — it can't see a still-running show
-  // whose own file silently stopped refreshing (the update-social-pulse fetcher
-  // can skip individual shows on partial failures). And a show whose status flips
-  // away from open/previews leaves a frozen file forever. Both surfaced the School
-  // Girls incident (file stuck at a 2026-04-13 fetch for 6+ weeks). We flag any
-  // currently-running Broadway/West End show whose public .social.json is older
-  // than the consumer staleness window (14 days, mirrors MAX_SOCIAL_PULSE_AGE_DAYS
-  // in src/lib/data-social-pulse.ts) — those would be hidden from the show page +
-  // /trending by the display guards, i.e. silently disappear from users.
-  results.push(runCheck('Sync: social-pulse per-show freshness', () => {
-    const STALE_DAYS = 14;
-    const shows = readJSON(path.join(DATA_DIR, 'shows.json'));
-    const showList = shows.shows || Object.values(shows).filter(s => s && s.id);
-    // Match the fetcher's scope (scripts/lib/list-running-shows.js): running
-    // (open/previews) shows in the Broadway or West End markets. Off-Broadway is
-    // out of scope for the social pipeline, so its missing files aren't gaps.
-    const inScope = showList.filter(s =>
-      (s.status === 'open' || s.status === 'previews') &&
-      (isBroadwayCategory(s) || s.category === 'west-end'));
-    const pulseDir = path.join(__dirname, '..', 'public', 'data', 'shows');
-
-    const stale = [];
-    for (const show of inScope) {
-      const f = path.join(pulseDir, `${show.id}.social.json`);
-      if (!fs.existsSync(f)) continue; // no file yet = cold-start, handled elsewhere
-      let u;
-      try { u = readJSON(f).u; } catch { continue; }
-      const ageH = hoursAgo(u);
-      if (ageH / 24 > STALE_DAYS) {
-        stale.push({ title: show.title, days: Math.round(ageH / 24) });
-      }
-    }
-
-    if (stale.length === 0) {
-      return { name: 'Sync: social-pulse per-show freshness', status: 'pass', message: `${inScope.length} running BW/WE shows — no stale social-pulse files` };
-    }
-    stale.sort((a, b) => b.days - a.days);
-    const sample = stale.slice(0, 5).map(s => `${s.title} (${s.days}d)`).join(', ');
-    // A running show going stale is a real silent failure → warn (error if widespread).
-    const status = stale.length > 5 ? 'error' : 'warn';
-    return {
-      name: 'Sync: social-pulse per-show freshness',
-      status,
-      message: `${stale.length} running show(s) with social-pulse >${STALE_DAYS}d stale: ${sample}`,
-      hint: 'update-social-pulse ran but skipped these shows, or their status changed leaving a frozen file. Re-run: gh workflow run update-social-pulse.yml. They are currently hidden from show pages + /trending by the staleness guard.',
     };
   }));
 
@@ -2190,7 +2138,6 @@ function checkCronHealth() {
     { workflow: 'update-cast-changes.yml', maxHours: 120, name: 'Update Cast Changes' },
     { workflow: 'weekly-nyt-critics-picks.yml', maxHours: 72, name: 'NYT Critics Picks' },
     { workflow: 'weekly-video-reviews.yml', maxHours: 192, name: 'Weekly Video Reviews' },
-    { workflow: 'update-social-pulse.yml', maxHours: 192, name: 'Update Social Pulse' },
     // 6-hourly; 24h = four missed runs. If this goes dark the evidence layer
     // (roundup-anchored selection + missing-show candidates) silently stops.
     { workflow: 'audit-reverse-discovery.yml', maxHours: 24, name: 'Reverse Discovery' },

@@ -258,8 +258,6 @@ const PLAIN_HEALTH = [
   [/^Data: tour automation stopped reporting/, () => 'A national-tour job has stopped running'],
   [/^Data: running-tour discovery failed/, () => 'Finding running national tours stopped working'],
   [/^Deploy: production freshness/, () => 'Site updates not reaching the live site'],
-  // health-check.js: stale files are hidden from show pages + /trending.
-  [/^Sync: social-pulse per-show freshness/, () => 'Social buzz hidden on some show pages (out of date)'],
   [/^Quality: outlet domain moves/, () => 'A review outlet moved to a new web address'],
   [/^Data quality: cross-outlet attribution drift/, () => 'Some reviews may be credited to the wrong outlet'],
   [/^Data quality: cv-wrongproduction lifetime sweep/, () => 'A review may belong to a different production'],
@@ -544,8 +542,8 @@ function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOver
 //
 // Honesty rules (adversarial review of the first cut):
 //   - Visitor WARNINGS are shown with their plain description too; some of
-//     them hide content from visitors (stale social buzz is hidden from show
-//     pages and /trending). A warning-only day is "mostly OK", never "OK".
+//     them hide content from visitors (e.g. a stale data file whose consumer
+//     has a staleness guard). A warning-only day is "mostly OK", never "OK".
 //   - Any "being fixed" claim is per ROW, from that row's verified execution
 //     state (same vocabulary as AUTOFIX_STATE_LABEL above): only a
 //     liveness-checked 'in-progress' row may be called "being worked on"; a

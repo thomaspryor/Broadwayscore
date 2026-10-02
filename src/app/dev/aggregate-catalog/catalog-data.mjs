@@ -17,8 +17,6 @@ export const CATALOG = [
     entries: [
       { path: '/audience-buzz', label: 'Audience Buzz — Broadway', why: 'Broadway shows ranked by aggregated audience grade (A+ to F)', focus: ['Sortable table column treatment', 'Grade-band grouping cards below', 'Audience grade badge styling'] },
       { path: '/west-end/audience-buzz', label: 'Audience Buzz — West End', why: 'West End equivalent of /audience-buzz', focus: ['Market label and breadcrumb', 'Subset of audience sources for WE', 'Color/typography parity with Broadway version'] },
-      { path: '/trending', label: 'Trending — Broadway (social)', why: 'Broadway shows ranked by social media buzz tier', focus: ['Tier badges (Buzzing/Rising/Steady/Troubled)', 'Per-platform breakdown row layout'] },
-      { path: '/west-end/trending', label: 'Trending — West End', why: 'WE trending counterpart', focus: ['Market parity with Broadway trending'] },
       { path: '/box-office', label: 'Box Office Scorecard', why: 'Weekly grosses + all-time leaderboard tables', focus: ['Two-table layout (this week + all-time)', 'Currency formatting', 'Capacity % column treatment', 'WoW/YoY arrows'] },
     ],
   },

@@ -84,12 +84,12 @@ test('buildOwnerView: review-queue items count as decisions, de-duplicated again
 
 // Codex P1-3: a visitor warning is never an all-clear.
 test('buildOwnerView/renderOwnerTopBlock: visitor warnings show at the top with their plain description', () => {
-  const health = { errors: [{ name: 'Main: red streak' }], warns: [{ name: 'Sync: social-pulse per-show freshness' }] };
+  const health = { errors: [{ name: 'Main: red streak' }], warns: [{ name: 'Deploy: production freshness' }] };
   const v = buildOwnerView({ health, autofixRows: [] });
   assert.equal(v.siteState, 'minor');
   const html = renderOwnerTopBlock(v, {});
   assert.match(html, /Site mostly OK\. 1 minor issue visitors could notice/);
-  assert.match(html, /Social buzz hidden on some show pages/);
+  assert.match(html, /Site updates not reaching the live site/);
   assert.match(html, /no automatic fix confirmed/);
   assert.doesNotMatch(html, /working normally|tidied up automatically/);
 });
