@@ -912,7 +912,7 @@ function ListModal({
                   <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isPublic ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
                 </button>
               </div>
-              <p className="text-xs text-gray-500 -mt-1">Anyone with the link can see this list, your name and your profile photo</p>
+              <p className="text-xs text-gray-500 -mt-1">Anyone can see a public list, along with your name and profile photo</p>
               {isPublic && list?.share_slug && (
                 <p className="text-xs text-brand mt-1 truncate">
                   {typeof window !== 'undefined' ? `${window.location.origin}/list/${list.share_slug}` : `/list/${list.share_slug}`}

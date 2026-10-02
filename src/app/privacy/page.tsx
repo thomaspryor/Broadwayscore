@@ -77,9 +77,9 @@ export default function PrivacyPage() {
             <div>
               <h3 className={h3}>Lists</h3>
               <p>
-                Lists are private when you create them. If you make a list public, anyone with its link can see
-                the list, the shows and notes on it, and your display name and profile photo. The link preview
-                shown by messaging apps and social networks includes your display name.
+                Lists are private when you create them. A public list can be seen by anyone, including people you never
+                sent the link to: the list, the shows and notes on it, and your display name and profile photo.
+                The link preview shown by messaging apps and social networks includes your display name.
               </p>
             </div>
             <div>
