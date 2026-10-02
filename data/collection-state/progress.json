@@ -407,7 +407,8 @@
     "death-of-a-salesman-2022/independent--sophie-thompson.json",
     "death-of-a-salesman-2022/playbill--unknown.json",
     "1776-2022/nytimes--jesse-green.json",
-    "1776-2022/broadway-and-me--janice-c-simpson.json"
+    "1776-2022/broadway-and-me--janice-c-simpson.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -460,7 +461,6 @@
     "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
     "whos-afraid-of-virginia-woolf-west-end-2026/thestage--dave-fargnoli.json",
     "the-standard-of-living-west-end-2026/theupcoming--unknown.json",
-    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
     "midnight-off-broadway-2026/broadwayworld--unknown.json",
     "midnight-off-broadway-2026/chicagotribune--unknown.json",
     "midnight-off-broadway-2026/eventsfy--unknown.json",
@@ -710,7 +710,12 @@
     "cost-of-living-2022/newyorker--conde-nast.json",
     "into-the-woods-2022/newyorker--alexandra-schwartz.json",
     "the-kite-runner-2022/newyorker--elisabeth-vincentelli.json",
-    "the-kite-runner-2022/theater-life--paulanne-simmons.json"
+    "the-kite-runner-2022/theater-life--paulanne-simmons.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "cosi-fan-tutte-off-broadway-2026/independent--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json",
+    "macbeth-off-broadway-2026/woman-around-town--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1135,11 +1140,12 @@
       "kpop-2022/broadway-and-me--janice-c-simpson.json",
       "kimberly-akimbo-2022/nytimes--jesse-green.json",
       "death-of-a-salesman-2022/broadwayworld--unknown.json",
-      "1776-2022/broadway-and-me--janice-c-simpson.json"
+      "1776-2022/broadway-and-me--janice-c-simpson.json",
+      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-10-01T17:22:24.281Z",
-  "lastProcessed": "the-kite-runner-2022/theater-life--paulanne-simmons.json",
+  "lastProcessed": "macbeth-off-broadway-2026/woman-around-town--unknown.json",
   "log": [
     {
       "t": "2026-10-01T17:51:38.789Z",
@@ -1277,9 +1283,55 @@
       "t": "2026-10-01T21:26:32.216Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-02T00:33:38.752Z",
+      "event": "bb-session",
+      "session": "02b90dc6",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-02T00:33:39.572Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-02T00:39:08.458Z",
+      "event": "bb-session",
+      "session": "d6046120",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T00:39:09.309Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-02T00:39:27.839Z",
+      "event": "bb-session",
+      "session": "4f6daaf4",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T00:39:28.729Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-02T00:41:53.981Z",
+      "event": "bb-session",
+      "session": "b813a315",
+      "url": "https://womanaroundtown.com/sections/playing-around/under-the-covens-eye-the-met"
+    },
+    {
+      "t": "2026-10-02T00:42:18.055Z",
+      "event": "bb-session",
+      "session": "70d81d09",
+      "url": "https://womanaroundtown.com/sections/playing-around/under-the-covens-eye-the-met"
     }
   ],
   "recoveredAfterFailure": [
-    "motherfucker-off-broadway-2026/ticketsmarter--unknown.json"
+    "motherfucker-off-broadway-2026/ticketsmarter--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
   ]
 }
