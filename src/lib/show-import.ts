@@ -274,12 +274,15 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
 
   const entries: RawImportEntry[] = [];
   const today = new Date().toISOString().split('T')[0];
+  // Same contract as the Show Score path: a skipped row is counted and told
+  // to the user, never dropped silently.
+  let skipped = 0;
 
   for (const entry of parsed.data.diaryEntries) {
     // A hand-edited or partial export can carry entries without a show;
     // skip them instead of failing the whole import on a TypeError.
     // Check types too: a non-string title would crash title matching later.
-    if (typeof entry?.show?.name !== 'string' || !entry.show.name) continue;
+    if (typeof entry?.show?.name !== 'string' || !entry.show.name) { skipped++; continue; }
     const date = typeof entry.date === 'string' && entry.date ? entry.date.split('T')[0] : null;
     const hasRating = typeof entry.rating === 'number' && entry.rating > 0;
     const venue = entry.production?.theater?.name;
@@ -302,7 +305,7 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
   for (const list of Array.isArray(parsed.data.lists) ? parsed.data.lists : []) {
     const listName = typeof list?.name === 'string' ? list.name : undefined;
     for (const show of Array.isArray(list?.shows) ? list.shows : []) {
-      if (typeof show?.name !== 'string' || !show.name) continue;
+      if (typeof show?.name !== 'string' || !show.name) { skipped++; continue; }
       entries.push({
         title: show.name,
         venue: null,
@@ -317,5 +320,8 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
     }
   }
 
-  return { entries, notices: [] };
+  const notices = skipped
+    ? [`${skipped} ${skipped === 1 ? 'entry' : 'entries'} in the file had no readable show name and ${skipped === 1 ? 'was' : 'were'} skipped.`]
+    : [];
+  return { entries, notices };
 }

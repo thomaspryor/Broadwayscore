@@ -40,8 +40,10 @@ test('malformed rows are skipped and the good ones still import', async () => {
       lists: [{ name: 'Want', shows: [{ name: 'Maybe Happy Ending' }, {}] }, { name: 'Broken' }],
     },
   });
-  const { entries } = await acquireFromMezzanine(fileOf(exportJson));
+  const { entries, notices } = await acquireFromMezzanine(fileOf(exportJson));
   assert.deepEqual(entries.map((e) => e.title), ['Hadestown', 'Oh, Mary!', 'Maybe Happy Ending']);
+  // The showless diary row and the empty list show are told to the user.
+  assert.deepEqual(notices, ['2 entries in the file had no readable show name and were skipped.']);
   assert.equal(entries[0].date, '2024-05-01');
   assert.equal(entries[0].rating, 4.5);
   assert.equal(entries[1].date, null);
@@ -59,12 +61,20 @@ test('rows with non-string fields are skipped or blanked, never passed through',
       lists: [{ name: 9, shows: [{ name: { en: 'Wicked' } }, { name: 'Wicked' }] }],
     },
   });
-  const { entries } = await acquireFromMezzanine(fileOf(exportJson));
+  const { entries, notices } = await acquireFromMezzanine(fileOf(exportJson));
   assert.deepEqual(entries.map((e) => e.title), ['Cabaret', 'Wicked']);
+  assert.deepEqual(notices, ['2 entries in the file had no readable show name and were skipped.']);
   const cabaret = entries[0];
   assert.equal(cabaret.rating, null, 'a string rating is not a rating');
   assert.equal(cabaret.reviewText, null);
   assert.equal(cabaret.venue, null);
   assert.equal(cabaret.mezzShowId, undefined);
   assert.equal(entries[1].listName, undefined);
+});
+
+test('a clean export carries no skip notice, and one bad row reads in the singular', async () => {
+  const clean = JSON.stringify({ data: { diaryEntries: [{ show: { name: 'Hadestown' }, rating: 4, date: '2024-05-01' }] } });
+  assert.deepEqual((await acquireFromMezzanine(fileOf(clean))).notices, []);
+  const oneBad = JSON.stringify({ data: { diaryEntries: [{ show: { name: 'Hadestown' } }, { show: {} }] } });
+  assert.deepEqual((await acquireFromMezzanine(fileOf(oneBad))).notices, ['1 entry in the file had no readable show name and was skipped.']);
 });
