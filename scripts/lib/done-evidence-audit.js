@@ -581,6 +581,9 @@ function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResu
         // BRO-4523: structured flag so open-card-closer can bounce In Review
         // cards without matching on the detail text above.
         openCheckFails: true,
+        // The real failure text, for the bounce comment (detail above is the
+        // generic digest wording).
+        failDetail: evidence.detail || null,
       };
     }
     return {

@@ -18,6 +18,11 @@ const BOUNCE_MARKER = '<!-- open-card-closer:bounce -->';
 const CLOSE_MARKER = '<!-- open-card-closer:close -->';
 const CLOSABLE_AUDIT_STATES = new Set(['In Review', 'In Progress']);
 const TERMINAL_TYPES = new Set(['completed', 'canceled']);
+// Cards in these CURRENT states may be auto-closed (re-read state, not the
+// audit row's). Paused covers RECHECK-AFTER cards whose recheck passed.
+const CLOSABLE_CARD_STATES = new Set(['In Review', 'In Progress', 'Paused']);
+// linear-watchdog-source only re-dispatches P0/P1 (Linear priority 1-2).
+const BOUNCEABLE_PRIORITIES = new Set([1, 2]);
 const HOLD_LABELS = new Set(['awaiting-owner', 'blocked']);
 const BRO_ID = /^BRO-\d+$/;
 
@@ -56,9 +61,10 @@ function ledgerPassIds(ledgerRows, now) {
  * @param {object[]} o.ledgerRows recheck-ledger rows
  * @param {(id:string)=>object|null} o.getCard fresh read: {state,stateType,updatedAt,comments:[{body,createdAt}],labels:[string]}
  * @param {number} o.now epoch ms
+ * @param {Set<string>} [o.skipIds] cards not to close (recently refused by the Done gate)
  * @returns {{id:string, action:'close'|'bounce'|'skip', reason:string, detail?:string}[]}
  */
-function planOpenCardActions({ auditRows, ledgerRows, getCard, now }) {
+function planOpenCardActions({ auditRows, ledgerRows, getCard, now, skipIds = new Set() }) {
   const plan = [];
   const seen = new Set();
   const closeIds = new Set();
@@ -86,6 +92,8 @@ function planOpenCardActions({ auditRows, ledgerRows, getCard, now }) {
     seen.add(id);
     const g = gate(id);
     if (g.skip) { plan.push({ id, action: 'skip', reason: g.skip }); continue; }
+    if (!CLOSABLE_CARD_STATES.has(g.card.state)) { plan.push({ id, action: 'skip', reason: `state ${g.card.state} is not closable` }); continue; }
+    if (skipIds.has(id)) { plan.push({ id, action: 'skip', reason: 'Done gate refused it recently' }); continue; }
     plan.push({ id, action: 'close', reason: 'its own check passes on main and the card has been idle >=24h' });
   }
   for (const [id, row] of [...bounceRows].sort((a, b) => a[0].localeCompare(b[0]))) {
@@ -93,22 +101,23 @@ function planOpenCardActions({ auditRows, ledgerRows, getCard, now }) {
     const g = gate(id);
     if (g.skip) { plan.push({ id, action: 'skip', reason: g.skip }); continue; }
     if (g.card.state !== 'In Review') { plan.push({ id, action: 'skip', reason: `no longer In Review (${g.card.state})` }); continue; }
+    if (!BOUNCEABLE_PRIORITIES.has(Number(g.card.priority))) { plan.push({ id, action: 'skip', reason: 'not P0/P1, the watchdog would never re-dispatch it' }); continue; }
     const n = countBounces(g.card);
     if (n >= MAX_BOUNCES) { plan.push({ id, action: 'skip', reason: `bounce cap reached (${n}/${MAX_BOUNCES})` }); continue; }
-    plan.push({ id, action: 'bounce', reason: `In Review but its own check fails on main (bounce ${n + 1}/${MAX_BOUNCES})`, detail: row.detail || '' });
+    plan.push({ id, action: 'bounce', reason: `In Review but its own check fails on main (bounce ${n + 1}/${MAX_BOUNCES})`, detail: row.failDetail || '' });
   }
   return plan;
 }
 
 function buildCloseComment(reason) {
-  return `${CLOSE_MARKER}\nAuto-closed (BRO-4523): ${reason}. The Done gate re-ran the card's evidence on fresh main before accepting this.`;
+  return `${CLOSE_MARKER}\nAuto-closed (BRO-4523): ${reason}. The Done gate checked the card's evidence (acceptance command and/or PR-EVIDENCE) before accepting this.`;
 }
 
 function buildBounceComment({ cmd, detail, n }) {
-  return `${BOUNCE_MARKER}\nBounced to Todo (BRO-4523, bounce ${n}/${MAX_BOUNCES}): this card sat In Review for >=24h but its own check fails on main${cmd ? ` (\`${cmd}\`)` : ''}${detail ? `: ${detail}` : ''}. Re-dispatching a worker to land the fix and run the check on main before reporting done.`;
+  return `${BOUNCE_MARKER}\nBounced to Todo (BRO-4523, bounce ${n}/${MAX_BOUNCES}): this card sat In Review for >=24h but its own check fails on main${cmd ? ` (\`${cmd}\`)` : ''}${detail ? `: ${String(detail).slice(0, 600)}` : ''}. Re-dispatching a worker to land the fix and run the check on main before reporting done.`;
 }
 
 module.exports = {
-  IDLE_MS, MAX_BOUNCES, BOUNCE_MARKER, CLOSE_MARKER,
+  IDLE_MS, MAX_BOUNCES, CLOSABLE_CARD_STATES, BOUNCE_MARKER, CLOSE_MARKER,
   lastActivityMs, countBounces, ledgerPassIds, planOpenCardActions, buildCloseComment, buildBounceComment,
 };

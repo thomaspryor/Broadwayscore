@@ -143,7 +143,7 @@ jobs:
     # explicit capped-step sum this comment tracks; 210 keeps real margin
     # above the new total, still nowhere near GitHub Actions' 360-min hard
     # job ceiling.
-    timeout-minutes: 210
+    timeout-minutes: 240 # 210 + 29 for the BRO-4523 open-card-closer steps (12 + 17)
     permissions:
       contents: write
       issues: write
@@ -737,7 +737,7 @@ jobs:
         # lint-allow-swallow: acts on Linear only; its report is committed
         # below and a crash here must not block the later commit+push steps.
         continue-on-error: true
-        timeout-minutes: 20
+        timeout-minutes: 12
         env:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

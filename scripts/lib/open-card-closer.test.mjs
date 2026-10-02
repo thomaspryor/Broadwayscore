@@ -7,7 +7,7 @@ const m = require('./open-card-closer.js');
 const now = Date.parse('2026-10-02T14:00:00Z');
 const old = '2026-10-01T00:00:00Z';
 const fresh = '2026-10-02T12:00:00Z';
-const mk = (o = {}) => ({ state: 'In Review', stateType: 'started', updatedAt: old, comments: [], labels: [], ...o });
+const mk = (o = {}) => ({ state: 'In Review', stateType: 'started', priority: 2, updatedAt: old, comments: [], labels: [], ...o });
 const run = (auditRows, cards, ledgerRows = []) =>
   m.planOpenCardActions({ auditRows, ledgerRows, getCard: (id) => cards[id] ?? null, now });
 
@@ -80,4 +80,18 @@ test('escalatedModel: P0 and bounced cards -> opus, others null', () => {
 test('buildLinearSeed tells the worker to run the card check on main', () => {
   const { buildLinearSeed } = require('./linear-dispatch.js');
   assert.match(buildLinearSeed({ identifier: 'BRO-1', title: 't', description: 'd' }), /run the issue's own check .* against main/);
+});
+
+test('bounce skipped for P2+ cards; close skipped for Todo state and recently-refused ids', () => {
+  const p = run([{ id: 'BRO-1', verdict: 'UNVERIFIABLE', state: 'In Review', openCheckFails: true }], { 'BRO-1': mk({ priority: 3 }) });
+  assert.match(p[0].reason, /P0\/P1/);
+  const rows = [{ id: 'BRO-2', verdict: 'STUCK', state: 'In Review' }, { id: 'BRO-3', verdict: 'STUCK', state: 'In Review' }];
+  const q = m.planOpenCardActions({ auditRows: rows, ledgerRows: [], now, skipIds: new Set(['BRO-3']), getCard: (id) => (id === 'BRO-2' ? mk({ state: 'Todo' }) : mk()) });
+  assert.deepEqual(q.map((x) => x.action), ['skip', 'skip']);
+});
+
+test('open-card check failure carries failDetail for the bounce comment', () => {
+  const { classifyCard } = require('./done-evidence-audit.js');
+  const r = classifyCard({ card: { id: 'BRO-5', name: 'n', state: 'In Review' }, cmd: 'node --test x', runResult: { status: 'fail', detail: 'AssertionError boom' } });
+  assert.match(r.failDetail, /AssertionError boom/);
 });

@@ -21,6 +21,9 @@ const AUDIT = path.join(__dirname, '..', 'data', 'audit', 'done-evidence-audit.j
 const LEDGER = path.join(__dirname, '..', 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
 const REPORT = path.join(__dirname, '..', 'data', 'audit', 'open-card-closer.json');
 const MAX_WRITES = 40;
+// Stop writing before the workflow step's timeout-minutes (12) can kill us.
+const WRITE_BUDGET_MS = 9 * 60000;
+const REFUSAL_COOLDOWN_MS = 7 * 24 * 3600 * 1000;
 
 function readJsonl(p) {
   if (!fs.existsSync(p)) return [];
@@ -54,20 +57,30 @@ async function main(argv = process.argv.slice(2)) {
       const i = await getIssue(id);
       if (!i) continue;
       cards[id] = {
-        state: i.state && i.state.name, stateType: i.state && i.state.type, updatedAt: i.updatedAt,
+        priority: i.priority, state: i.state && i.state.name, stateType: i.state && i.state.type, updatedAt: i.updatedAt,
         comments: (i.comments && i.comments.nodes) || [],
         labels: ld.issueLabelNames(i),
       };
     } catch (e) { console.error(`[open-card-closer] could not read ${id}: ${e.message}`); }
   }
 
-  const plan = planner.planOpenCardActions({ auditRows: audit.results, ledgerRows, getCard: (id) => cards[id] || null, now: Date.now() });
+  // Cards the Done gate refused in the last 7 days are not retried daily.
+  const skipIds = new Set();
+  try {
+    const prev = JSON.parse(fs.readFileSync(REPORT, 'utf8'));
+    for (const e of prev.entries || []) {
+      if (e.action === 'close' && !e.applied && /refused/.test(e.result || '') && Date.now() - Date.parse(prev.generatedAt) < REFUSAL_COOLDOWN_MS) skipIds.add(e.id);
+    }
+  } catch { /* no previous report */ }
+  const plan = planner.planOpenCardActions({ auditRows: audit.results, ledgerRows, getCard: (id) => cards[id] || null, now: Date.now(), skipIds });
   const rowById = new Map(audit.results.map((r) => [r.id, r]));
   const out = [];
+  const started = Date.now();
   let writes = 0;
+  const save = () => fs.writeFileSync(REPORT, JSON.stringify({ generatedAt: new Date(started).toISOString(), apply, entries: out }, null, 2) + '\n');
   for (const p of plan) {
     const entry = { ...p, applied: false };
-    if (p.action !== 'skip' && apply && writes < MAX_WRITES) {
+    if (p.action !== 'skip' && apply && writes < MAX_WRITES && Date.now() - started < WRITE_BUDGET_MS) {
       writes++;
       if (p.action === 'close') {
         const r = brainUpdate(p.id, 'Done', planner.buildCloseComment(p.reason));
@@ -80,10 +93,11 @@ async function main(argv = process.argv.slice(2)) {
       }
     }
     out.push(entry);
+    if (entry.applied || entry.result) save(); // record each write immediately
     if (p.action !== 'skip') console.error(`[open-card-closer] ${apply ? (entry.result || 'capped') : 'dry-run'} ${p.action} ${p.id}: ${p.reason}`);
   }
   const counts = out.reduce((a, e) => { const k = e.applied ? e.result.split(' ')[0] : e.action; a[k] = (a[k] || 0) + 1; return a; }, {});
-  fs.writeFileSync(REPORT, JSON.stringify({ generatedAt: new Date().toISOString(), apply, counts, entries: out }, null, 2) + '\n');
+  fs.writeFileSync(REPORT, JSON.stringify({ generatedAt: new Date(started).toISOString(), apply, counts, entries: out }, null, 2) + '\n');
   console.error(`[open-card-closer] ${JSON.stringify(counts)}`);
 }
 
