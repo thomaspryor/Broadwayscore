@@ -248,6 +248,8 @@ on:
       - 'scripts/backfill-unknown-critics.js'
       # tests/unit/build-ob-venues.test.mjs
       - 'scripts/build-ob-venues.js'
+      # scripts/lib/stuck-card-closer.test.mjs (BRO-4523 CLI exit-code tests)
+      - 'scripts/close-stuck-verified-cards.js'
       # tests/unit/detect-venue-transfers.test.mjs
       - 'scripts/detect-venue-transfers.js'
       # tests/unit/promote-historical-auto.test.mjs
