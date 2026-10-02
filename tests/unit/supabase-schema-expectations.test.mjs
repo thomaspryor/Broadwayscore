@@ -5,6 +5,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import path from 'node:path';
+import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
 const { deriveExpectations } = require('../../scripts/lib/supabase-schema-expectations.js');
@@ -79,4 +82,22 @@ CREATE TABLE real_table (id int);
 ` }]);
   assert.ok(!r.expected.has('table:phantom'));
   assert.ok(r.expected.has('table:real_table'));
+});
+
+// push_tokens is owned by the iOS repo (BroadwayScorecard-app), whose
+// 20260812094500 migration dropped "Anon can insert push tokens" because it let
+// any signed-in user attach a device token to another account. Web migrations
+// only mirror that state for verify-schema. A web migration that "restores" the
+// open policy to turn verify-schema green re-opens the hole (nearly shipped
+// 2026-10-02, BRO-4525); this pins the mirrored set to the iOS one.
+test('real web migrations expect exactly the iOS-owned push_tokens policies', () => {
+  const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../supabase/migrations');
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.sql')).sort()
+    .map((name) => ({ name, sql: fs.readFileSync(path.join(dir, name), 'utf8') }));
+  const r = deriveExpectations(files);
+  const pushPolicies = [...r.expected.keys()].filter((k) => k.startsWith('policy:push_tokens:')).sort();
+  assert.deepEqual(pushPolicies, [
+    'policy:push_tokens:push_tokens_claim_update',
+    'policy:push_tokens:push_tokens_owner_insert',
+  ]);
 });
