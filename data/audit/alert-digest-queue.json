@@ -387,5 +387,76 @@
       }
     ],
     "queuedAt": "2026-10-02T16:45:14.682Z"
+  },
+  {
+    "conditionKey": "cron-health:Weekly Grosses",
+    "title": "🚨 Critical cron stale, self-heal failed: Weekly Grosses",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37039045328",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37039045328)"
+      }
+    ],
+    "queuedAt": "2026-10-02T17:13:10.141Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:scoring-audit",
+    "title": "Scoring Audit has stopped updating (190 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since null, 190 days ago. It has never before gone quiet for more than null day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 30d, from 0 productive day(s) / 0 item(s) between 2026-03-26 and 2026-10-02.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": null
+      },
+      {
+        "name": "Silent for",
+        "value": "190 days (threshold 30)"
+      }
+    ],
+    "queuedAt": "2026-10-02T17:56:37.435Z"
+  },
+  {
+    "conditionKey": "arm-yield:workflow:scrape-westendtheatre",
+    "title": "Scrape WestEndTheatre has stopped updating (61 days)",
+    "description": "A scheduled job that keeps the site up to date has stopped succeeding. Nothing new since 2026-08-02, 61 days ago. It has never before gone quiet for more than 20 day(s), so this is not its normal rhythm. Nothing is fixing this automatically — it needs a look.\n\n(Detail: threshold 22d, from 4 productive day(s) / 4 item(s) between 2026-06-14 and 2026-08-02.)",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Last yield",
+        "value": "2026-08-02"
+      },
+      {
+        "name": "Silent for",
+        "value": "61 days (threshold 22)"
+      }
+    ],
+    "queuedAt": "2026-10-02T17:56:37.443Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-hay-fever-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Hay Fever",
+    "description": "west-end-best-friend/Cara Brazier (west-end-best-friend--cara-brazier.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 1d of opening, likely correct production] This is a well-written review of Hay Fever at Wyndham — https://www.westendbestfriend.co.uk/news/review-hay-fever-wyndhams-theatre",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-02T18:01:30.314Z"
   }
 ]

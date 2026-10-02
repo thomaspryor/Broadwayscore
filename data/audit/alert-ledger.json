@@ -405,13 +405,13 @@
       "disposition": "digest",
       "title": "Scoring Audit has stopped updating (190 days)",
       "firstSeen": "2026-08-03T13:05:40.014Z",
-      "lastSeen": "2026-10-01T18:29:37.148Z",
-      "lastNotifiedAt": "2026-09-25T17:20:35.163Z",
-      "lastSurfacedAt": "2026-09-25T17:20:35.163Z",
-      "notifyCount": 5,
+      "incidentOpenedAt": "2026-08-03T13:05:40.014Z",
+      "lastSeen": "2026-10-02T17:56:37.434Z",
+      "lastNotifiedAt": "2026-10-02T17:56:37.434Z",
+      "lastSurfacedAt": "2026-10-02T17:56:37.434Z",
+      "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6
+      "linearIdentifier": null
     },
     "scheduled-email-count:2026-08-02": {
       "status": "open",
@@ -1518,13 +1518,14 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Weekly Orchestrator",
       "firstSeen": "2026-08-21T12:33:44.570Z",
-      "lastSeen": "2026-10-01T17:50:37.011Z",
+      "lastSeen": "2026-10-02T17:13:10.244Z",
       "lastNotifiedAt": "2026-09-28T19:06:26.167Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-2864",
-      "silentRefires": 3
+      "silentRefires": 4,
+      "incidentOpenedAt": "2026-08-21T12:33:44.570Z"
     },
     "opening-night-placeholder-synopsis-paranormal-activity-2026": {
       "status": "open",
@@ -1592,15 +1593,15 @@
     "arm-yield:workflow:scrape-westendtheatre": {
       "status": "open",
       "disposition": "digest",
-      "title": "Scrape WestEndTheatre has stopped updating (54 days)",
+      "title": "Scrape WestEndTheatre has stopped updating (61 days)",
       "firstSeen": "2026-08-24T13:26:25.716Z",
-      "lastSeen": "2026-10-01T18:29:37.155Z",
-      "lastNotifiedAt": "2026-09-25T17:20:35.168Z",
-      "lastSurfacedAt": "2026-09-25T17:20:35.168Z",
-      "notifyCount": 2,
+      "incidentOpenedAt": "2026-08-24T13:26:25.716Z",
+      "lastSeen": "2026-10-02T17:56:37.443Z",
+      "lastNotifiedAt": "2026-10-02T17:56:37.443Z",
+      "lastSurfacedAt": "2026-10-02T17:56:37.443Z",
+      "notifyCount": 3,
       "cardId": null,
-      "linearIdentifier": null,
-      "silentRefires": 6
+      "linearIdentifier": null
     },
     "arm-yield:outlet:nysr": {
       "status": "resolved",
@@ -1644,12 +1645,14 @@
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Commercial Friday Refresh",
       "firstSeen": "2026-08-25T12:35:43.960Z",
-      "lastSeen": "2026-10-01T17:50:34.702Z",
+      "lastSeen": "2026-10-02T17:13:10.236Z",
       "lastNotifiedAt": "2026-10-01T17:50:34.702Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
-      "linearIdentifier": "BRO-3656"
+      "linearIdentifier": "BRO-3656",
+      "incidentOpenedAt": "2026-08-25T12:35:43.960Z",
+      "silentRefires": 1
     },
     "push-ledger-revert:claude/ios-session-behavior-review-zadpk1:c10b785d0b45": {
       "status": "open",
@@ -1811,30 +1814,30 @@
       "resolvedAt": "2026-08-31T18:34:22.303Z"
     },
     "cron-health-chronic:Daily Data Health Check (digest snapshot carrier)": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Daily Data Health Check (digest snapshot carrier)",
       "firstSeen": "2026-08-28T21:38:46.942Z",
-      "lastSeen": "2026-09-13T15:26:04.662Z",
-      "lastNotifiedAt": "2026-09-09T15:43:54.093Z",
-      "notifyCount": 3,
+      "incidentOpenedAt": "2026-10-02T17:13:10.248Z",
+      "lastSeen": "2026-10-02T17:13:10.248Z",
+      "lastNotifiedAt": "2026-10-02T17:13:10.248Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-2529",
-      "silentRefires": 4,
-      "resolvedAt": "2026-09-14T17:23:03.918Z"
+      "linearIdentifier": "BRO-4521"
     },
     "cron-health-chronic:Opening Night Checklist": {
-      "status": "resolved",
+      "status": "open",
       "disposition": "auto",
       "title": "Cron stale 3+ consecutive days: Opening Night Checklist",
       "firstSeen": "2026-08-28T21:38:50.527Z",
-      "lastSeen": "2026-09-14T17:23:02.667Z",
-      "lastNotifiedAt": "2026-09-13T15:26:04.665Z",
-      "notifyCount": 3,
+      "incidentOpenedAt": "2026-10-02T17:13:20.733Z",
+      "lastSeen": "2026-10-02T17:13:20.733Z",
+      "lastNotifiedAt": "2026-10-02T17:13:20.733Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": "BRO-2865",
-      "silentRefires": 1,
-      "resolvedAt": "2026-09-15T16:01:30.224Z"
+      "linearIdentifier": "BRO-4522"
     },
     "express-retry-still-thin:matilda-the-musical-theatre-row-off-broadway-2026": {
       "status": "open",
@@ -7637,13 +7640,13 @@
       "disposition": "digest",
       "title": "Pre-opening publishDate on Who’s Afraid of Virginia Woolf?",
       "firstSeen": "2026-09-30T06:48:24.639Z",
-      "lastSeen": "2026-10-02T16:45:13.703Z",
+      "lastSeen": "2026-10-02T18:01:29.484Z",
       "lastNotifiedAt": "2026-09-30T06:48:24.639Z",
       "lastSurfacedAt": "2026-09-30T06:48:24.639Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8,
+      "silentRefires": 9,
       "incidentOpenedAt": "2026-09-30T06:48:24.639Z"
     },
     "opening-night-revival-unverified-the-standard-of-living-west-end-2026": {
@@ -8223,13 +8226,13 @@
       "disposition": "digest",
       "title": "Shipped review too short to verify on Who’s Afraid of Virginia Woolf?",
       "firstSeen": "2026-10-01T14:40:07.513Z",
-      "lastSeen": "2026-10-02T16:45:13.699Z",
+      "lastSeen": "2026-10-02T18:01:29.480Z",
       "lastNotifiedAt": "2026-10-01T14:40:07.513Z",
       "lastSurfacedAt": "2026-10-01T14:40:07.513Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 20,
+      "silentRefires": 21,
       "incidentOpenedAt": "2026-10-01T14:40:07.513Z"
     },
     "broadcast-gate:checklist:the-standard-of-living-west-end-2026,whos-afraid-of-virginia-woolf-west-end-2026": {
@@ -8275,13 +8278,13 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on Who’s Afraid of Virginia Woolf?",
       "firstSeen": "2026-10-01T19:05:05.866Z",
-      "lastSeen": "2026-10-02T16:45:13.694Z",
+      "lastSeen": "2026-10-02T18:01:29.475Z",
       "lastNotifiedAt": "2026-10-01T19:05:05.866Z",
       "lastSurfacedAt": "2026-10-01T19:05:05.866Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 13,
+      "silentRefires": 14,
       "incidentOpenedAt": "2026-10-01T19:05:05.866Z"
     },
     "opening-night-cv-wrongproduction-unhandled-flamenc-oh-off-west-end-2026": {
@@ -8392,14 +8395,14 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Hay Fever",
       "firstSeen": "2026-10-01T23:57:01.897Z",
-      "lastSeen": "2026-10-02T16:45:14.552Z",
+      "lastSeen": "2026-10-02T18:01:30.323Z",
       "lastNotifiedAt": "2026-10-01T23:57:01.897Z",
       "lastSurfacedAt": "2026-10-01T23:57:01.897Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
       "incidentOpenedAt": "2026-10-01T23:57:01.897Z",
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "land:land/bro-4486-recheck-3": {
       "status": "open",
@@ -8741,13 +8744,13 @@
       "title": "Auto-remediation gave up on hay-fever-west-end-2026",
       "firstSeen": "2026-10-02T14:43:34.753Z",
       "incidentOpenedAt": "2026-10-02T14:43:34.753Z",
-      "lastSeen": "2026-10-02T16:45:14.556Z",
+      "lastSeen": "2026-10-02T18:01:30.327Z",
       "lastNotifiedAt": "2026-10-02T14:43:34.753Z",
       "lastSurfacedAt": "2026-10-02T14:43:34.753Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-remediation-exhausted-explicit-ratings:hay-fever-west-end-2026:guardian": {
       "status": "open",
@@ -8755,13 +8758,13 @@
       "title": "Auto-remediation gave up on hay-fever-west-end-2026",
       "firstSeen": "2026-10-02T14:43:34.759Z",
       "incidentOpenedAt": "2026-10-02T14:43:34.759Z",
-      "lastSeen": "2026-10-02T16:45:14.562Z",
+      "lastSeen": "2026-10-02T18:01:30.334Z",
       "lastNotifiedAt": "2026-10-02T14:43:34.759Z",
       "lastSurfacedAt": "2026-10-02T14:43:34.759Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-remediation-exhausted-explicit-ratings:hay-fever-west-end-2026:timeout-london": {
       "status": "open",
@@ -8769,13 +8772,13 @@
       "title": "Auto-remediation gave up on hay-fever-west-end-2026",
       "firstSeen": "2026-10-02T14:43:34.764Z",
       "incidentOpenedAt": "2026-10-02T14:43:34.764Z",
-      "lastSeen": "2026-10-02T16:45:14.566Z",
+      "lastSeen": "2026-10-02T18:01:30.338Z",
       "lastNotifiedAt": "2026-10-02T14:43:34.764Z",
       "lastSurfacedAt": "2026-10-02T14:43:34.764Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-fulltext-mentions-show:short:hay-fever-west-end-2026": {
       "status": "open",
@@ -8783,13 +8786,13 @@
       "title": "Shipped review too short to verify on Hay Fever",
       "firstSeen": "2026-10-02T15:46:22.572Z",
       "incidentOpenedAt": "2026-10-02T15:46:22.572Z",
-      "lastSeen": "2026-10-02T16:45:14.548Z",
+      "lastSeen": "2026-10-02T18:01:30.319Z",
       "lastNotifiedAt": "2026-10-02T15:46:22.572Z",
       "lastSurfacedAt": "2026-10-02T15:46:22.572Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026,whos-afraid-of-virginia-woolf-west-end-2026": {
       "status": "open",
@@ -8798,9 +8801,37 @@
       "title": "Opening Night Broadcast Blocked — Checklist Errors",
       "firstSeen": "2026-10-02T16:45:14.679Z",
       "incidentOpenedAt": "2026-10-02T16:45:14.679Z",
-      "lastSeen": "2026-10-02T16:45:14.679Z",
+      "lastSeen": "2026-10-02T18:01:30.450Z",
       "lastNotifiedAt": "2026-10-02T16:45:14.679Z",
       "lastSurfacedAt": "2026-10-02T16:45:14.679Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "cron-health:Weekly Grosses": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "🚨 Critical cron stale, self-heal failed: Weekly Grosses",
+      "firstSeen": "2026-10-02T17:13:10.138Z",
+      "incidentOpenedAt": "2026-10-02T17:13:10.138Z",
+      "lastSeen": "2026-10-02T17:13:10.138Z",
+      "lastNotifiedAt": "2026-10-02T17:13:10.138Z",
+      "lastSurfacedAt": "2026-10-02T17:13:10.138Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-cv-wrongproduction-unhandled-hay-fever-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Unhandled CV.wrongProduction on Hay Fever",
+      "firstSeen": "2026-10-02T18:01:30.313Z",
+      "incidentOpenedAt": "2026-10-02T18:01:30.313Z",
+      "lastSeen": "2026-10-02T18:01:30.313Z",
+      "lastNotifiedAt": "2026-10-02T18:01:30.313Z",
+      "lastSurfacedAt": "2026-10-02T18:01:30.313Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
