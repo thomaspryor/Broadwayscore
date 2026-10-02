@@ -106,7 +106,7 @@ test('resolveModel: fable is never auto-selected (no triage, no hint, or hint te
 });
 
 // BRO-4523: Linear cards had no layer-3 path (notionId:null), so every one ran on Sonnet.
-const { linearEscalationModel, countRecentLinearOpusLaunches, linearOpusDailyCap } = require('./bsc-next-model.js');
+const { linearEscalationModel, countRecentLinearOpusLaunches, countPriorLaunches, pickLinearModel, linearOpusDailyCap } = require('./bsc-next-model.js');
 
 test('linearEscalationModel: P0 or a prior "Dispatched" comment escalates to opus; a first-run P1 stays on sonnet', () => {
   const dispatched = { body: 'Dispatched 46f3f8b6 to linear:BRO-1-x at 2026-09-29T19:37:37.296Z (headless)' };
@@ -138,6 +138,8 @@ test('countRecentLinearOpusLaunches: counts only linear opus launch rows inside 
     { event: 'launch', taskId: '1234', model: 'opus', ts: '2026-10-02T11:00:00Z' }, // task-list dispatch
     { event: 'job-done', taskId: 'linear:BRO-5', model: 'opus', ts: '2026-10-02T11:00:00Z' },
     { event: 'launch', taskId: 'linear:BRO-6', model: 'opus', ts: 'garbage' },
+    { event: 'launch', taskId: 'linear:BRO-7', model: 'opus', ts: '2026-10-02T11:00:00Z', unverified: true }, // never ran
+    { event: 'launch', taskId: 'linear:BRO-8', model: 'opus', ts: '2026-10-02T11:00:00Z', remapped: true }, // same session renumbered
     null,
   ];
   assert.equal(countRecentLinearOpusLaunches(rows, now), 2);
@@ -150,4 +152,37 @@ test('linearOpusDailyCap: env override, 0 allowed (Opus off), junk falls back to
   assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: '0' }), 0);
   assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: 'lots' }), 6);
   assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: '-1' }), 6);
+});
+
+// A worker that crashed never posts "Dispatched"; the ledger launch row is the
+// only trace of that attempt, and it must still count as a retry.
+test('countPriorLaunches: real launches of this card only', () => {
+  const rows = [
+    { event: 'launch', taskId: 'linear:BRO-9', model: 'sonnet' },
+    { event: 'launch', taskId: 'linear:BRO-9', model: 'sonnet', unverified: true },
+    { event: 'launch', taskId: 'linear:BRO-9', model: 'sonnet', remapped: true },
+    { event: 'launch', taskId: 'linear:BRO-99', model: 'sonnet' },
+    { event: 'job-done', taskId: 'linear:BRO-9' },
+    null,
+  ];
+  assert.equal(countPriorLaunches(rows, 'linear:BRO-9'), 1);
+  assert.equal(countPriorLaunches(undefined, 'linear:BRO-9'), 0);
+});
+
+test('pickLinearModel: flag, then hint, then escalation; a crashed earlier run escalates', () => {
+  const now = Date.parse('2026-10-02T12:00:00Z');
+  const p1 = { priority: 2, description: 'fix it', comments: { nodes: [] } };
+  const crashed = [{ event: 'launch', taskId: 'linear:BRO-9', model: 'sonnet', ts: '2026-10-01T09:00:00Z' }];
+  const base = { taskId: 'linear:BRO-9', nowMs: now, env: {} };
+  assert.deepEqual(pickLinearModel({ ...base, explicitFlag: 'haiku', issue: p1, readEntries: () => crashed }), { model: 'haiku', reason: '--model flag' });
+  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Sonnet\nx' }, readEntries: () => crashed }).model, 'sonnet');
+  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: p1, readEntries: () => [] }).model, 'sonnet');
+  const retry = pickLinearModel({ ...base, explicitFlag: null, issue: p1, readEntries: () => crashed });
+  assert.equal(retry.model, 'opus');
+  assert.match(retry.reason, /retry after 1 prior/);
+  // ledger unreadable: no retry signal and the cap counts as reached
+  const broken = pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => { throw new Error('EIO'); } });
+  assert.equal(broken.model, 'sonnet');
+  // the env cap is honoured
+  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'sonnet');
 });
