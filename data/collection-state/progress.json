@@ -441,7 +441,8 @@
     "thelma-and-louise-a-new-musical-off-west-end-2026/broadwayworld--stephi-wild.json",
     "the-lost-boys-2026/broadwayworld--unknown.json",
     "operation-mincemeat-2025/new-york-city-theatre--unknown.json",
-    "hadestown-2019/the-knockturnal--justin-rodriguez.json"
+    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -470,7 +471,6 @@
     "romeo-and-juliet-off-broadway-2026/nytimes--charles-isherwood.json",
     "romeo-and-juliet-off-broadway-2026/express-uk--neil-norman.json",
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--alix-cohen.json",
-    "small-off-broadway-2026/culturesauce--thom-geier.json",
     "small-off-broadway-2026/washpost--unknown.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
     "the-maids-off-broadway-2026/nydailynews--unknown.json",
@@ -761,7 +761,12 @@
     "conflicted-off-broadway-2026/slantmagazine--justin-clark.json",
     "chewing-gum-dreams-off-west-end-2026/guardian--arifa-akbar.json",
     "electra-persona-west-end-2026/nytimes--houman-barekat.json",
-    "as-you-like-it-globe-west-end-2026/theupcoming--michael-higgs.json"
+    "as-you-like-it-globe-west-end-2026/theupcoming--michael-higgs.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "cosi-fan-tutte-off-broadway-2026/independent--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json",
+    "macbeth-off-broadway-2026/woman-around-town--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1040,7 +1045,8 @@
       "call-me-izzy-2025/theater-life--david-sheward.json",
       "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
       "the-picture-of-dorian-gray-2025/theater-life--paulanne-simmons.json",
-      "mystic-pizza-regional-2025/wmscradio--cupor1.json"
+      "mystic-pizza-regional-2025/wmscradio--cupor1.json",
+      "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json"
     ],
     "scrapingbee": [
       "the-hungry-ghost-off-west-end-2026/timeout-london--unknown.json",
@@ -1122,7 +1128,8 @@
       "beetlejuice-2022/san-francisco-chronicle--lily-janiak.json",
       "company-2021/theatrely--andrew-martini.json",
       "trouble-in-mind-2021/broadwayworld--unknown.json",
-      "thelma-and-louise-a-new-musical-off-west-end-2026/broadwayworld--stephi-wild.json"
+      "thelma-and-louise-a-new-musical-off-west-end-2026/broadwayworld--stephi-wild.json",
+      "this-is-rambert-west-end-2026/voice-magazine--moni-fernandez.json"
     ],
     "brightdata": [
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
@@ -1224,11 +1231,13 @@
       "diana-the-musical-2021/nytimes--jesse-green.json",
       "diana-the-musical-2021/broadwayworld--aa-cristi.json",
       "diana-the-musical-2021/playbill--unknown.json",
-      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
+      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--alix-cohen.json"
     ]
   },
   "startTime": "2026-10-01T17:22:24.281Z",
-  "lastProcessed": "book-of-mormon-2011/northjerseycom--robert-feldberg.json",
+  "lastProcessed": "conflicted-off-broadway-2026/slantmagazine--justin-clark.json",
   "log": [
     {
       "t": "2026-10-01T17:51:38.789Z",
@@ -1476,12 +1485,47 @@
       "event": "bb-session",
       "session": "3d654443",
       "url": "https://metro.co.uk/2026/09/16/fire-emblem-fortunes-weave-review-bigger-better-e"
+    },
+    {
+      "t": "2026-10-02T02:03:12.889Z",
+      "event": "bb-session",
+      "session": "f41848bc",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-10-02T02:03:33.238Z",
+      "event": "bb-session",
+      "session": "fa7c1d0c",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-10-02T02:05:53.660Z",
+      "event": "bb-session",
+      "session": "63eeaa90",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T02:05:54.486Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-02T02:06:12.752Z",
+      "event": "bb-session",
+      "session": "d37b2151",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T02:06:13.524Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
     "motherfucker-off-broadway-2026/ticketsmarter--unknown.json",
     "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
     "the-last-ship-west-end-2026/ground--unknown.json",
-    "hadestown-2019/the-knockturnal--justin-rodriguez.json"
+    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json"
   ]
 }
