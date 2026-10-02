@@ -100,6 +100,13 @@ interface ShowHeroRedesignProps {
   /** Precomputed cross-show ranks for the hero rank line. Null = feature-gated off
    *  OR no rankable data. */
   ranks: ShowRanks | null;
+  /** "2024–2025" for a national tour whose own dates are unknown; the date line
+   *  shows "reviewed <years>" instead. Computed server-side because this
+   *  component's reviews are narrowed to reviewScore (no publishDate). */
+  tourReviewYears?: string | null;
+  /** Server-rendered ShowTrustLines (tour parent, tryout transfer, tour stops),
+   *  shared with the legacy header so the redesign keeps those links. */
+  trustLines?: React.ReactNode;
 }
 
 // ─── Suspense wrapper (useSearchParams requires it for static prerender) ──
@@ -126,6 +133,8 @@ function Inner({
   isWestEnd,
   isOffBroadway,
   ranks,
+  tourReviewYears,
+  trustLines,
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
@@ -431,6 +440,10 @@ function Inner({
           <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
             {show.title}
           </h1>
+          {/* A tour shares its Broadway parent's title and poster; say which one this is. */}
+          {show.category === 'tour' && (
+            <p className="text-sm lg:text-base font-semibold text-sky-300" data-testid="tour-subtitle">National Tour</p>
+          )}
           <div className="text-sm text-gray-400 space-y-0.5 pt-0.5">
             <p>
               {venueLink ? (
@@ -442,8 +455,9 @@ function Inner({
               )}
               {show.runtime ? <span> · {show.runtime}</span> : null}
             </p>
-            <DateLine show={show} />
+            <DateLine show={show} tourReviewYears={tourReviewYears ?? null} />
           </div>
+          {trustLines ? <div className="pt-1" data-testid="hero-trust-lines">{trustLines}</div> : null}
 
           {/* Desktop-only inline score block — lives INSIDE the right column,
               alongside title/meta. Mobile renders dual cards in a separate
@@ -761,7 +775,7 @@ function Inner({
 
 // ─── Sub-components ──────────────────────────────────────────────────────
 
-function DateLine({ show }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> }) {
+function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; tourReviewYears: string | null }) {
   // One hierarchy step below the venue line (text-sm gray-300) so the two
   // stacked rows read as place → metadata instead of two identical gray lines.
   const dateClass = 'text-xs text-gray-500';
@@ -772,7 +786,9 @@ function DateLine({ show }: { show: ComputedShowWithReviews<Pick<ComputedReview,
   // into inline branches (task #951).
   const durationSuffix = getHeroDurationSuffix(show);
   const durationText = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
-  const segments = getShowDateLineSegments(show, durationText);
+  const segments: Array<{ text: string; emphasize?: boolean }> = getShowDateLineSegments(show, durationText);
+  // Matches the legacy header: a tour with no dates of its own says when it was reviewed.
+  if (tourReviewYears) segments.push({ text: `reviewed ${tourReviewYears}` });
   if (segments.length === 0) return null;
 
   return (
