@@ -480,6 +480,22 @@ test('regional feeder venues classify as category regional (2026-07-08)', () => 
   assert.equal(classifyVenueMarket('New Art Theatre'), 'off-broadway');
 });
 
+test('wider LORT houses classify regional, by company or hall name (BRO-4509)', () => {
+  const { classifyVenueMarket, feederVenueCity } = require('./aggregator-candidate-extract.js');
+  assert.equal(feederVenueCity('Huntington Theatre Company'), 'Boston, MA');
+  assert.equal(feederVenueCity("Huntington's Calderwood Pavilion"), 'Boston, MA');
+  assert.equal(feederVenueCity('Goodspeed Opera House'), 'East Haddam, CT');
+  assert.equal(feederVenueCity('Trinity Rep'), 'Providence, RI');
+  assert.equal(feederVenueCity('Northlight Theatre'), 'Evanston, IL');
+  assert.equal(feederVenueCity('Pasadena Playhouse'), 'Pasadena, CA');
+  assert.equal(feederVenueCity('Laguna Playhouse'), 'Laguna Beach, CA');
+  assert.equal(feederVenueCity('Victory Gardens Theater'), 'Chicago, IL');
+  // NYC houses with a shared word stay off-broadway
+  assert.equal(classifyVenueMarket('Trinity Church'), 'off-broadway');
+  assert.equal(classifyVenueMarket('Laura Pels Theatre'), 'off-broadway');
+  assert.equal(classifyVenueMarket('Playhouse 46'), 'off-broadway');
+});
+
 test('UK feeder venues classify as category regional (card #1405, 2026-08-13)', () => {
   const { classifyVenueMarket, feederVenueCity } = require('./aggregator-candidate-extract.js');
   assert.equal(classifyVenueMarket('Royal Shakespeare Theatre, Stratford-upon-Avon'), 'regional');
