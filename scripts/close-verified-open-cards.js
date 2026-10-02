@@ -16,6 +16,7 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync } = require('child_process');
 const planner = require('./lib/open-card-closer');
+const { hasHelpFlag } = require('./lib/cli-help');
 
 const AUDIT = path.join(__dirname, '..', 'data', 'audit', 'done-evidence-audit.json');
 const LEDGER = path.join(__dirname, '..', 'data', 'audit', 'autonomous-recheck-ledger.jsonl');
@@ -36,6 +37,7 @@ function brainUpdate(id, state, comment) {
 }
 
 async function main(argv = process.argv.slice(2)) {
+  if (hasHelpFlag(argv)) { console.log('Usage: node scripts/close-verified-open-cards.js [--apply]\n  Dry-run by default; --apply closes/bounces cards per data/audit/done-evidence-audit.json.\n  Kill switch: OPEN_CARD_CLOSER_KILL_SWITCH=true'); return; }
   if (process.env.OPEN_CARD_CLOSER_KILL_SWITCH === 'true') { console.error('[open-card-closer] kill switch set — skipping'); return; }
   const apply = argv.includes('--apply');
   if (!fs.existsSync(AUDIT)) { console.error('[open-card-closer] no done-evidence-audit.json — nothing to do'); return; }
