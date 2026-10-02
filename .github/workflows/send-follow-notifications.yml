@@ -69,14 +69,13 @@ jobs:
         if: steps.check.outputs.has_followers == 'true'
         run: node scripts/detect-show-changes.js
 
-      - name: Detect social pulse tier transitions (BRO-770)
-        # Runs AFTER detect-show-changes.js, not as a step in
-        # update-social-pulse.yml: detect-show-changes.js merges pending
-        # digest entries by change type (see its comment) so an
-        # undelivered tier entry queued here survives a later run's
-        # structural-change detection for the same show.
-        if: steps.check.outputs.has_followers == 'true'
-        run: node scripts/detect-social-tier-changes.js
+      # The "Detect social pulse tier transitions (BRO-770)" step that ran
+      # here was removed 2026-10-02 (BRO-4507): Social Buzz is retired and
+      # update-social-pulse.yml no longer refreshes tiers, so emailing
+      # followers from frozen tier data would be wrong. The
+      # data/audit/social-tier-transitions.json entry in the commit loop
+      # below stays (core-data-merge-registry.js registers it as this
+      # workflow's single-writer file; the drift test wants a writer).
 
       - name: Send notifications
         if: steps.check.outputs.has_followers == 'true'

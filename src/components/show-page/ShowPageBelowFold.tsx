@@ -15,7 +15,6 @@ import BizBuzzCard from '@/components/BizBuzzCard';
 import WhereItRanks from '@/components/show-page/WhereItRanks';
 import ShowtimesCard from '@/components/ShowtimesCard';
 import ShowFAQSection, { type ShowFAQ } from '@/components/show-page/ShowFAQSection';
-import SocialPulseCard from '@/components/show-page/SocialPulseCard';
 import TheaterScorecardCard from '@/components/TheaterScorecardCard';
 import SeatingGuidanceCard from '@/components/SeatingGuidanceCard';
 import LotteryRushCard from '@/components/LotteryRushCard';
@@ -44,7 +43,6 @@ import type { ShowRanks } from '@/lib/data-show-ranks';
 import type { BoxOfficeHistoryStats } from '@/lib/data-grosses-history';
 import type { ShowTonyInfo } from '@/lib/data-tony-noms';
 import type { TodayTixShowtimeData } from '@/lib/data-showtimes';
-import type { SocialPulsePayload } from '@/components/show-page/SocialPulseCard';
 
 export interface ShowPageBelowFoldProps {
   // Narrowed to drop criticScore.reviews — this chunk (and WhereItRanks, which it
@@ -71,7 +69,6 @@ export interface ShowPageBelowFoldProps {
   currentMonday: string;
   showtimeIds: TodayTixShowtimeData | undefined;
   sortedTicketLinks: TicketLinkData[];
-  socialPulse: SocialPulsePayload | null;
   // Narrowed to the fields the two theater cards actually render. The full
   // Theater carries `allShows: ComputedShow[]` — every production ever staged at
   // the venue, each with its own criticScore.reviews — which this client boundary
@@ -139,7 +136,6 @@ export default function ShowPageBelowFold({
   currentMonday,
   showtimeIds,
   sortedTicketLinks,
-  socialPulse,
   theater,
   lotteryRush,
   castChangesData,
@@ -277,10 +273,6 @@ export default function ShowPageBelowFold({
           the loader's ErrorBoundary can render it standalone when this chunk
           fails — see ShowFAQSection.tsx for why that matters. */}
       <ShowFAQSection faqs={faqs} />
-
-      {/* Socials Scorecard — weekly X+TikTok+Instagram mention tiering */}
-      <div id="social-buzz" className="scroll-mt-20" />
-      <SocialPulseCard sp={socialPulse} />
 
       {/* Theater Scorecard */}
       <div id="theater-scorecard" className="scroll-mt-20" />

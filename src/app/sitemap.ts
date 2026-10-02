@@ -438,18 +438,6 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       priority: 0.85,
     },
     {
-      url: `${BASE_URL}/trending`,
-      lastModified: ctx.latestDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
-      url: `${BASE_URL}/west-end/trending`,
-      lastModified: ctx.latestDate,
-      changeFrequency: 'weekly' as const,
-      priority: 0.9,
-    },
-    {
       url: `${BASE_URL}/audience-buzz`,
       lastModified: ctx.showsDate,
       changeFrequency: 'weekly' as const,

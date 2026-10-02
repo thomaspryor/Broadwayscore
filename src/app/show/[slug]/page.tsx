@@ -52,7 +52,6 @@ import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 import ShowHeroRedesign from '@/components/show-page/ShowHeroRedesign';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
 import { RedesignOn, RedesignOff } from '@/components/show-page/RedesignGate';
-import { getSocialPulse } from '@/lib/data-social-pulse';
 import { getShowRanks } from '@/lib/data-show-ranks';
 import { getBrowseSlug } from '@/lib/browse-slugs';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
@@ -305,11 +304,6 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const consensus = getCriticConsensus(show.id);
   const lotteryRush = getLotteryRush(show.id);
   const showSchedule = getShowSchedule(show.id);
-  // Social buzz is only meaningful for currently-running shows. getSocialPulse
-  // already suppresses stale fetches; this status gate additionally hides the
-  // card for upcoming/closed shows (whose files are frozen and never refresh).
-  const socialPulse =
-    show.status === 'open' || show.status === 'previews' ? getSocialPulse(show.id) : null;
   // Cross-show ranks. Flag-gated for safe rollout — toggle in Vercel env
   // (NEXT_PUBLIC_FEATURES=showRanks). O(1) lookup after the module-scope
   // index is built on first call. 'all' format slice powers the hero rank
@@ -1124,7 +1118,6 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           currentMonday={currentMonday}
           showtimeIds={showtimeIds}
           sortedTicketLinks={sortedTicketLinks}
-          socialPulse={socialPulse}
           theater={theater && {
             name: theater.name,
             slug: theater.slug,
