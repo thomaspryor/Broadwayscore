@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-02T14:40:16.988Z",
+  "generatedAt": "2026-10-02T14:51:55.667Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -9,7 +9,7 @@
       "category": "off-broadway",
       "type": "play",
       "openingDate": "2026-10-02",
-      "status": "upcoming",
+      "status": "open",
       "slug": "a-thousand-natural-shocks-off-broadway",
       "thumbnail": null,
       "siteScore": null,
@@ -553,27 +553,27 @@
       "status": "open",
       "slug": "creation-stories-and-all-the-important-importants-off-broadway",
       "thumbnail": "/images/shows/creation-stories-and-all-the-important-importants-off-broadway-2026/thumbnail.webp",
-      "siteScore": 63.87,
+      "siteScore": 63.84,
       "liveScore": 64,
-      "scoreDrift": 0.13000000000000256,
+      "scoreDrift": 0.1599999999999966,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 6,
+      "total": 7,
       "t1": 2,
       "t2": 3,
-      "t3": 1,
+      "t3": 2,
       "positive": 2,
-      "mixed": 3,
+      "mixed": 4,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "6/12 total",
+          "7/12 total",
           "T1:2/3",
-          "hi-conf:4/8"
+          "hi-conf:5/8"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -981,6 +981,18 @@
           "m": 3,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-02T14:51:55.667Z",
+          "rc": 7,
+          "s": 63.84,
+          "t1": 2,
+          "t2": 3,
+          "t3": 2,
+          "p": 2,
+          "m": 4,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -1374,9 +1386,9 @@
       "status": "open",
       "slug": "flamenc-oh-off-west-end",
       "thumbnail": "/images/shows/flamenc-oh-off-west-end-2026/thumbnail.webp",
-      "siteScore": 66.11,
+      "siteScore": 66.3,
       "liveScore": 66,
-      "scoreDrift": -0.10999999999999943,
+      "scoreDrift": -0.29999999999999716,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1528,6 +1540,18 @@
           "t": "2026-10-02T07:20:25.245Z",
           "rc": 6,
           "s": 66.11,
+          "t1": 0,
+          "t2": 3,
+          "t3": 3,
+          "p": 2,
+          "m": 4,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-02T14:51:55.667Z",
+          "rc": 6,
+          "s": 66.3,
           "t1": 0,
           "t2": 3,
           "t3": 3,
@@ -2806,7 +2830,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-10-05",
-      "status": "open",
+      "status": "previews",
       "slug": "affluenza-off-west-end",
       "thumbnail": "/images/shows/affluenza-off-west-end-2026/thumbnail.jpg",
       "daysUntil": 3,
