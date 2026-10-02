@@ -1,18 +1,18 @@
 {
-  "updatedAt": "2026-10-02T16:03:30.096Z",
-  "processed": 43,
-  "failed": 17,
-  "successRate": "71.7%",
+  "updatedAt": "2026-10-02T16:16:11.600Z",
+  "processed": 336,
+  "failed": 252,
+  "successRate": "57.1%",
   "tierBreakdown": {
-    "playwright": 20,
-    "amp": 0,
-    "browserbase": 2,
+    "playwright": 162,
+    "amp": 1,
+    "browserbase": 7,
     "directCookies": 0,
-    "scrapingdog": 9,
-    "scrapingbee": 3,
-    "brightdata": 0,
+    "scrapingdog": 35,
+    "scrapingbee": 50,
+    "brightdata": 15,
     "archiveToday": 0,
-    "archive": 8
+    "archive": 87
   },
   "browserbaseSessions": 4,
   "recentActivity": [
@@ -39,6 +39,61 @@
       "event": "bb-session",
       "session": "bd8c962b",
       "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-10-02T13:03:23.767Z",
+      "event": "bb-session",
+      "session": "58550fb1",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-02T13:03:24.231Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-02T13:03:41.757Z",
+      "event": "bb-session",
+      "session": "0ee194cc",
+      "url": "https://www.nytimes.com/2026/08/25/theater/paranormal-activity-review-broadway.h"
+    },
+    {
+      "t": "2026-10-02T13:03:42.239Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-02T13:05:35.413Z",
+      "event": "bb-session",
+      "session": "0563d039",
+      "url": "https://www.thestage.co.uk/reviews/disruption-review-at-the-park-theatre-london-"
+    },
+    {
+      "t": "2026-10-02T13:05:35.930Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-10-02T13:06:51.785Z",
+      "event": "bb-session",
+      "session": "f732522d",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-10-02T13:06:52.280Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-02T13:07:01.673Z",
+      "event": "bb-session",
+      "session": "023fd51e",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-10-02T13:07:02.189Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
     }
   ]
 }
