@@ -29,7 +29,8 @@
  * Usage:
  *   node scripts/discover-regional-serp-reviews.js [--show=ID] [--dry-run]
  *
- * Cost: one SERP query per show (~7 shows in the pool = 7 queries). Bright
+ * Cost: one SERP query per show (~50 in the pool since tours joined, 30
+ * regional + 20 tour, as of 2026-10; the full run takes ~3 min). Bright
  * Data is the default primary provider (see url-discovery.js), so ScrapingBee
  * usage should stay near zero. The workflow sets SERP_SB_MAX_CALLS_PER_RUN to
  * bound worst-case batch-wide SERP cost — SB_CREDIT_BUDGET only bounds the
@@ -43,7 +44,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { serpQuery } = require('./lib/url-discovery');
-const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange } = require('./lib/regional-serp-discovery');
+const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour } = require('./lib/regional-serp-discovery');
 const { urlLooksLikeReview } = require('./lib/review-guards');
 const { _parseDomain, lookupOutletForHost } = require('./lib/outlet-canonicalize');
 const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
@@ -184,9 +185,15 @@ async function processShow(show) {
     }
     // Cross-market / wrong-production hard-marker check (same guard collect-outlet-reviews.js
     // and gather-reviews.js's SERP path rely on) — cheap, synchronous, no network cost.
-    const validation = validateSerpCandidate({ show, candidate: { url, title: r.title } });
+    const candidate = { url, title: r.title, snippet: r.description };
+    const validation = validateSerpCandidate({ show, candidate });
     if (!validation.ok) {
       console.log(`  · rejected by validateSerpCandidate (${validation.reason}): ${url}`);
+      skippedNotReview++;
+      continue;
+    }
+    if (!tourCandidateIsTour(show, candidate)) {
+      console.log(`  · rejected (tour candidate without tour marker): ${url}`);
       skippedNotReview++;
       continue;
     }
@@ -249,7 +256,7 @@ async function main() {
   const shows = selectRegionalShows();
   console.log(`Regional SERP discovery — ${shows.length} show(s) in pool${dryRun ? ' (dry-run)' : ''}`);
   if (shows.length === 0) {
-    console.log(showFilter ? `No regional show found matching --show=${showFilter}` : 'No regional shows in the discovery window.');
+    console.log(showFilter ? `No regional/tour show found matching --show=${showFilter}` : 'No regional or tour shows in the discovery window.');
     return;
   }
 
