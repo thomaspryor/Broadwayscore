@@ -1,33 +1,21 @@
 {
-  "updatedAt": "2026-10-02T22:56:33.561Z",
-  "processed": 231,
-  "failed": 156,
-  "successRate": "59.7%",
+  "updatedAt": "2026-10-02T23:27:39.714Z",
+  "processed": 272,
+  "failed": 195,
+  "successRate": "58.2%",
   "tierBreakdown": {
-    "playwright": 142,
+    "playwright": 164,
     "amp": 1,
-    "browserbase": 7,
+    "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 25,
-    "scrapingbee": 21,
-    "brightdata": 6,
+    "scrapingdog": 27,
+    "scrapingbee": 23,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 41
+    "archive": 54
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 5,
   "recentActivity": [
-    {
-      "t": "2026-10-02T20:30:11.464Z",
-      "event": "bb-session",
-      "session": "12657c76",
-      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
-    },
-    {
-      "t": "2026-10-02T20:55:23.043Z",
-      "event": "bb-session",
-      "session": "0f6f2feb",
-      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
-    },
     {
       "t": "2026-10-02T20:55:23.896Z",
       "event": "bb-cookie-inject",
@@ -129,6 +117,17 @@
       "t": "2026-10-02T22:46:05.639Z",
       "event": "bb-cookie-inject",
       "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-02T23:14:54.711Z",
+      "event": "bb-session",
+      "session": "5370748a",
+      "url": "https://www.thetimes.co.uk/money/tax/article/proof-students-loans-misled-terms-5"
+    },
+    {
+      "t": "2026-10-02T23:14:55.097Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.co.uk"
     }
   ]
 }
