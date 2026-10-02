@@ -1,123 +1,27 @@
 {
   "processed": [
-    "topdog-underdog-regional-2026/theatermania--david-gordon.json",
-    "topdog-underdog-regional-2026/broadwayworld--richard-sasanow.json",
-    "topdog-underdog-regional-2026/dailybeast--tim-teeman.json",
-    "north-by-northwest-regional-2026/broadwayworld--richard-sasanow.json",
-    "oh-mary-tour-2026/broadwayworld--richard-sasanow.json",
-    "the-front-page-regional-2026/huffpost--unknown.json",
-    "begin-again-regional-2026/theatermania--unknown.json",
-    "begin-again-regional-2026/broadwayworld--richard-sasanow.json",
-    "the-score-regional-2026/wsj--charles-isherwood.json",
-    "purpose-regional-2026/broadwayworld--richard-sasanow.json",
-    "the-score-regional-2026/one-minute-critic--teniola-ayoola.json",
-    "the-score-regional-2026/stageandcinema--unknown.json",
-    "the-visit-regional-2026/deadline--greg-evans.json",
-    "the-humanities-regional-2026/chicagotribune--chris-jones.json",
-    "wild-child-regional-2026/broadwayworld--richard-sasanow.json",
-    "the-getaway-driver-regional-2026/deadline--greg-evans.json",
-    "the-cook-regional-2026/broadwayworld--richard-sasanow.json",
-    "the-getaway-driver-regional-2026/broadwayworld--richard-sasanow.json"
+    "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
+    "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json"
   ],
   "failed": [
-    "the-score-regional-2026/nytimes--unknown.json",
-    "purpose-regional-2026/deadline--greg-evans.json",
-    "the-visit-regional-2026/albany-times-union--unknown.json",
-    "the-visit-regional-2026/berkshire-eagle--unknown.json",
-    "the-visit-regional-2026/curtainup--unknown.json"
+    "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
-      "the-front-page-regional-2026/huffpost--unknown.json",
-      "the-score-regional-2026/one-minute-critic--teniola-ayoola.json",
-      "the-score-regional-2026/stageandcinema--unknown.json"
+      "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
+      "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/purpose-regional-2026/deadline--greg-evans.json",
-      "data/review-texts/the-visit-regional-2026/deadline--greg-evans.json",
-      "the-visit-regional-2026/deadline--greg-evans.json",
-      "data/review-texts/the-getaway-driver-regional-2026/deadline--greg-evans.json",
-      "the-getaway-driver-regional-2026/deadline--greg-evans.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "topdog-underdog-regional-2026/broadwayworld--richard-sasanow.json",
-      "north-by-northwest-regional-2026/broadwayworld--richard-sasanow.json",
-      "oh-mary-tour-2026/broadwayworld--richard-sasanow.json",
-      "begin-again-regional-2026/broadwayworld--richard-sasanow.json",
-      "purpose-regional-2026/broadwayworld--richard-sasanow.json",
-      "the-getaway-driver-regional-2026/broadwayworld--richard-sasanow.json"
-    ],
-    "brightdata": [
-      "topdog-underdog-regional-2026/theatermania--david-gordon.json",
-      "topdog-underdog-regional-2026/dailybeast--tim-teeman.json",
-      "begin-again-regional-2026/theatermania--unknown.json",
-      "the-humanities-regional-2026/chicagotribune--chris-jones.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "the-score-regional-2026/wsj--charles-isherwood.json",
-      "wild-child-regional-2026/broadwayworld--richard-sasanow.json",
-      "the-visit-regional-2026/albany-times-union--unknown.json",
-      "the-cook-regional-2026/broadwayworld--richard-sasanow.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-10-02T06:28:36.817Z",
-  "lastProcessed": "the-getaway-driver-regional-2026/broadwayworld--richard-sasanow.json",
-  "log": [
-    {
-      "t": "2026-10-02T06:31:42.846Z",
-      "event": "bb-session",
-      "session": "50625cdc",
-      "url": "https://www.nytimes.com/2026/09/16/theater/in-wanted-outlaw-sisters-pass-for-whi"
-    },
-    {
-      "t": "2026-10-02T06:31:43.726Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-02T06:32:02.423Z",
-      "event": "bb-session",
-      "session": "ce276f56",
-      "url": "https://www.nytimes.com/2026/09/16/theater/in-wanted-outlaw-sisters-pass-for-whi"
-    },
-    {
-      "t": "2026-10-02T06:32:03.296Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-02T06:32:27.943Z",
-      "event": "bb-session",
-      "session": "5555a1a2",
-      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
-    },
-    {
-      "t": "2026-10-02T06:32:43.509Z",
-      "event": "bb-session",
-      "session": "c196af2f",
-      "url": "https://www.wsj.com/articles/the-score-review-brian-cox-is-bach-1a10d858"
-    },
-    {
-      "t": "2026-10-02T06:32:44.409Z",
-      "event": "bb-cookie-inject",
-      "domain": "wsj.com"
-    },
-    {
-      "t": "2026-10-02T06:34:40.773Z",
-      "event": "bb-session",
-      "session": "764ef302",
-      "url": "https://deadline.com/2024/11/beatles-64-review-martin-scorsese-produces-new-take"
-    },
-    {
-      "t": "2026-10-02T06:40:45.091Z",
-      "event": "bb-session",
-      "session": "6e973d47",
-      "url": "https://deadline.com/2025/02/jennifer-coolidge-pete-davidson-in-riff-raff-my-dea"
-    }
-  ]
+  "startTime": "2026-10-02T07:09:40.635Z",
+  "lastProcessed": "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json",
+  "log": []
 }
