@@ -7,6 +7,7 @@ const {
   CLOSER_MARKER,
   cardTestPath,
   mentionsCard,
+  commitIsForCard,
   planCandidates,
   futureRecheckAfter,
   decideClosure,
@@ -83,6 +84,14 @@ const issue = (over) => ({
 });
 const commits = [{ sha: 'aaa111', message: 'unrelated change' }, { sha: 'bbb222bbb222ccc', message: 'BRO-1: the fix' }];
 
+test('commitIsForCard reads the subject and Refs/Fixes/Closes trailers only', () => {
+  assert.ok(commitIsForCard('BRO-1: the fix\n\nbody', 'BRO-1'));
+  assert.ok(commitIsForCard('fix the gap\n\nwhy\n\nRefs: BRO-1', 'BRO-1'));
+  // A body that cites the card as context is not the card's own landing.
+  assert.ok(!commitIsForCard('excerpt-validation: generic nouns\n\nThe BRO-1 corpus sweep flagged it.', 'BRO-1'));
+  assert.ok(!commitIsForCard('', 'BRO-1'));
+});
+
 test('decideClosure closes an idle card whose own commit touched its test', () => {
   assert.deepEqual(decideClosure({ candidate, issue: issue(), commits, nowMs: NOW }), { close: true, sha: 'bbb222bbb222ccc' });
 });
@@ -98,6 +107,7 @@ test('decideClosure refuses every unsafe case', () => {
   assert.equal(r({}, [{ sha: 'a', message: 'BRO-10: other card' }]), 'no-commit-naming-card-touched-test');
   assert.equal(r({}, []), 'no-commit-naming-card-touched-test');
   assert.equal(r({}, [{ sha: 'a', message: 'Revert "BRO-1: fix"\n\nThis reverts commit abc.' }]), 'no-commit-naming-card-touched-test');
+  assert.equal(r({}, [{ sha: 'a', message: 'other work\n\nThe BRO-1 sweep found this.' }]), 'no-commit-naming-card-touched-test');
   // In Progress needs 72h of quiet, not 24h.
   const ip = { ...candidate, state: 'In Progress' };
   assert.equal(r({ state: { name: 'In Progress' }, updatedAt: iso(NOW - 2 * DAY), comments: [] }, commits, ip), 'recent-activity');
@@ -135,5 +145,17 @@ test('CLI refuses --git-repo on a shallow clone instead of reporting every card 
   } finally {
     console.error = err;
     fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('CLI exits 3 with a recorded error when the audit cannot be read', async () => {
+  const { main } = require('../close-stuck-verified-cards.js');
+  const linear = { graphql: () => { throw new Error('must not reach Linear'); } };
+  const err = console.error;
+  console.error = () => {};
+  try {
+    assert.equal(await main([], { linear, noWrite: true, commitsTouching: async () => [], auditPath: '/nonexistent/audit.json' }), 3);
+  } finally {
+    console.error = err;
   }
 });

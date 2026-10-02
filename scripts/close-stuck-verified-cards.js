@@ -14,7 +14,8 @@
  * data-health-check.yml). Output: data/audit/stuck-card-closer.json.
  * Closes through linear-brain.js, so the Done gate re-runs the check on a
  * fresh origin/main checkout. Exit 0 on success (including nothing to do and
- * a stale audit), 3 when Linear or GitHub could not be read.
+ * a stale audit), 2 for a shallow --git-repo, 3 when the audit, Linear or
+ * GitHub could not be read.
  * Kill switch: STUCK_CARD_CLOSER_KILL_SWITCH=1 (or true).
  */
 
@@ -31,6 +32,9 @@ const AUDIT = path.join(REPO, 'data', 'audit', 'done-evidence-audit.json');
 const OUT = path.join(REPO, 'data', 'audit', 'stuck-card-closer.json');
 const MAX_CLOSES_PER_RUN = 10;
 const TIME_BUDGET_MS = 18 * 60 * 1000;
+// One close re-runs the card's check through the Done gate; never start one
+// that could outlive the workflow step (25 min) if it hits its own timeout.
+const CLOSE_TIMEOUT_MS = 5 * 60 * 1000;
 const GH_REPO = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
 const USAGE = 'Usage: node scripts/close-stuck-verified-cards.js [--apply] [--git-repo <path>] [--only BRO-N]';
 
@@ -82,23 +86,39 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const apply = argv.includes('--apply');
   const only = argValue(argv, '--only');
   const gitRepo = argValue(argv, '--git-repo');
-  // A shallow clone hides older landing commits, so every card would read as
-  // "no commit" and the report would quietly understate what can close.
-  if (gitRepo && !deps.commitsTouching
-      && execFileSync('git', ['-C', gitRepo, 'rev-parse', '--is-shallow-repository'], { encoding: 'utf8' }).trim() === 'true') {
-    console.error(`[close-stuck-verified-cards] --git-repo ${gitRepo} is a shallow clone; drop --git-repo to use the GitHub API`);
-    return 2;
-  }
   const nowMs = Date.now();
   const startMs = nowMs;
-  const linear = deps.linear || require('./lib/linear-client.js');
-  const commitsTouching = deps.commitsTouching || (gitRepo ? gitCommitsTouching(gitRepo) : apiCommitsTouching());
-  const report = JSON.parse(fs.readFileSync(deps.auditPath || AUDIT, 'utf8'));
-
-  const plan = planCandidates(report, nowMs);
-  const out = { generatedAt: new Date(nowMs).toISOString(), apply, auditGeneratedAt: report.generatedAt || null, counts: {}, rows: [] };
+  const out = { generatedAt: new Date(nowMs).toISOString(), apply, auditGeneratedAt: null, counts: {}, rows: [] };
   const count = (k) => { out.counts[k] = (out.counts[k] || 0) + 1; };
   const write = () => { if (!deps.noWrite) fs.writeFileSync(deps.outPath || OUT, `${JSON.stringify(out, null, 2)}\n`); };
+  const fail = (code, msg) => {
+    console.error(`[close-stuck-verified-cards] ${msg}`);
+    out.error = msg;
+    write();
+    return code;
+  };
+
+  // A shallow clone hides older landing commits, so every card would read as
+  // "no commit" and the report would quietly understate what can close.
+  if (gitRepo && !deps.commitsTouching) {
+    let shallow;
+    try {
+      shallow = execFileSync('git', ['-C', gitRepo, 'rev-parse', '--is-shallow-repository'], { encoding: 'utf8' }).trim();
+    } catch (err) {
+      return fail(3, `--git-repo ${gitRepo} is not readable: ${err.message.split('\n')[0]}`);
+    }
+    if (shallow === 'true') return fail(2, `--git-repo ${gitRepo} is a shallow clone; drop --git-repo to use the GitHub API`);
+  }
+  let report;
+  try {
+    report = JSON.parse(fs.readFileSync(deps.auditPath || AUDIT, 'utf8'));
+  } catch (err) {
+    return fail(3, `could not read the done-evidence audit: ${err.message.split('\n')[0]}`);
+  }
+  out.auditGeneratedAt = report.generatedAt || null;
+  const linear = deps.linear || require('./lib/linear-client.js');
+  const commitsTouching = deps.commitsTouching || (gitRepo ? gitCommitsTouching(gitRepo) : apiCommitsTouching());
+  const plan = planCandidates(report, nowMs);
 
   if (plan.error) {
     console.log(`[close-stuck-verified-cards] ${plan.error}; nothing to do`);
@@ -138,20 +158,23 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       continue;
     }
     if (closed >= MAX_CLOSES_PER_RUN) { count('over-run-cap'); continue; }
+    if (TIME_BUDGET_MS - (Date.now() - startMs) < CLOSE_TIMEOUT_MS) { count('over-time-budget'); continue; }
     const comment = buildClosureComment({ candidate, sha: decision.sha, auditGeneratedAt: report.generatedAt });
     const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', candidate.id, '--state', 'Done', '--comment', comment],
-      { cwd: REPO, encoding: 'utf8', timeout: 300000 });
+      { cwd: REPO, encoding: 'utf8', timeout: CLOSE_TIMEOUT_MS });
     if (r.status === 0) {
       closed++;
       count('closed');
       console.log(`closed ${candidate.id} (commit ${decision.sha.slice(0, 9)})`);
       out.rows.push({ id: candidate.id, state: candidate.state, action: 'closed', sha: decision.sha });
+      write(); // a killed step must not lose the record of a close that already happened
     } else {
       const why = r.status === 5 ? 'gate-refused' : 'close-failed';
       count(why);
       const tail = (r.stderr || r.stdout || '').trim().split('\n').slice(-2).join(' ').slice(0, 300);
       console.error(`${why} for ${candidate.id}: ${tail}`);
       out.rows.push({ id: candidate.id, state: candidate.state, action: why, reason: tail });
+      write();
     }
   }
   console.log(`[close-stuck-verified-cards] candidates ${candidates.length}; ${apply ? `closed ${closed}; ` : ''}${JSON.stringify(out.counts)}`);
