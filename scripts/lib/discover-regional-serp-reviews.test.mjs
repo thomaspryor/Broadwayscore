@@ -39,6 +39,12 @@ test('long-running tour gets a rolling window; regional keeps the shared window'
   assert.equal(r.dateMin.toISOString().slice(0, 10), '2026-06-04');
   const closed = buildDiscoveryDateRange({ ...longTour, closingDate: '2026-09-01' }, now);
   assert.equal(closed.dateMax.toISOString().slice(0, 10), '2026-10-01');
+  const longClosed = { ...longTour, status: 'closed', closingDate: '2025-09-14' };
+  const lc = buildDiscoveryDateRange(longClosed, now);
+  assert.ok(lc.dateMin <= lc.dateMax, 'long-closed tour must not get an inverted range');
+  const day = (r) => [r.dateMin, r.dateMax].map((d) => d.toISOString().slice(0, 10));
+  assert.deepEqual(day(lc), day(calculateDateWindow(longClosed)));
   const reg = { ...regional, openingDate: '2026-09-10' };
-  assert.deepEqual(buildDiscoveryDateRange(reg, now), calculateDateWindow(reg));
+  // calculateDateWindow reads the wall clock itself, so compare to the day.
+  assert.deepEqual(day(buildDiscoveryDateRange(reg, now)), day(calculateDateWindow(reg)));
 });

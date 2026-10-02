@@ -171,7 +171,12 @@ function buildDiscoveryDateRange(show, now = new Date()) {
   const ends = [now.getTime() + 30 * day];
   if (show.closingDate) ends.push(new Date(show.closingDate).getTime() + 30 * day);
   const dateMin = base.dateMin && base.dateMin > lookback ? base.dateMin : lookback;
-  return { dateMin, dateMax: new Date(Math.min(...ends)) };
+  const dateMax = new Date(Math.min(...ends));
+  // A tour that closed more than ~150 days ago would invert the range (a paid
+  // SERP call that can only return nothing); search its shared window instead,
+  // as closed regional shows do.
+  if (dateMax < dateMin) return base;
+  return { dateMin, dateMax };
 }
 
 function ingestUrl(showId, url, outletId) {
