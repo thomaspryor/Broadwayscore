@@ -29,7 +29,8 @@
  * Usage:
  *   node scripts/discover-regional-serp-reviews.js [--show=ID] [--dry-run]
  *
- * Cost: one SERP query per show (~7 shows in the pool = 7 queries). Bright
+ * Cost: one SERP query per show (~50 in the pool since tours joined, 30
+ * regional + 20 tour, as of 2026-10; the full run takes ~3 min). Bright
  * Data is the default primary provider (see url-discovery.js), so ScrapingBee
  * usage should stay near zero. The workflow sets SERP_SB_MAX_CALLS_PER_RUN to
  * bound worst-case batch-wide SERP cost — SB_CREDIT_BUDGET only bounds the
