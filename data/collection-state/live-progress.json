@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-02T18:23:09.622Z",
-  "processed": 15,
-  "failed": 8,
-  "successRate": "65.2%",
+  "updatedAt": "2026-10-02T19:56:17.189Z",
+  "processed": 20,
+  "failed": 9,
+  "successRate": "69.0%",
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 14,
     "amp": 0,
-    "browserbase": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 3,
+    "scrapingdog": 4,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 2
   },
-  "browserbaseSessions": 4,
+  "browserbaseSessions": 2,
   "recentActivity": [
     {
       "t": "2026-10-02T17:49:26.365Z",
@@ -70,6 +70,23 @@
     },
     {
       "t": "2026-10-02T18:20:52.027Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-02T19:47:29.284Z",
+      "event": "bb-session",
+      "session": "4ebd2d7d",
+      "url": "https://www.thereviewshub.com/yllana-flamenc-oh-peacock-theatre-london/"
+    },
+    {
+      "t": "2026-10-02T19:52:59.834Z",
+      "event": "bb-session",
+      "session": "ba4dd466",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-02T19:53:00.186Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     }

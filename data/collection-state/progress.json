@@ -14,7 +14,12 @@
     "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
     "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
     "school-girls-or-the-african-mean-girls-play-2026/pages-on-stages--unknown.json",
-    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json"
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+    "tru-off-west-end-2026/guardian--mark-lawson.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -24,7 +29,8 @@
     "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
     "whos-afraid-of-virginia-woolf-west-end-2026/thestage--dave-fargnoli.json",
     "the-standard-of-living-west-end-2026/thestage--james-graham.json",
-    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -39,27 +45,33 @@
       "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
       "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
       "school-girls-or-the-african-mean-girls-play-2026/pages-on-stages--unknown.json",
-      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json"
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "tru-off-west-end-2026/guardian--mark-lawson.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [
-      "data/review-texts/hay-fever-west-end-2026/times-uk--dominic-maxwell.json"
+      "data/review-texts/hay-fever-west-end-2026/times-uk--dominic-maxwell.json",
+      "data/review-texts/flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json"
     ],
     "directCookies": [],
     "scrapingdog": [
       "jena-friedman-motherfucker-off-broadway-2026/ticketsmarter--unknown.json",
       "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
-      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
     ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
     "archive": [
-      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json"
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-10-02T17:44:38.642Z",
-  "lastProcessed": "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+  "lastProcessed": "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json",
   "log": [
     {
       "t": "2026-10-02T17:49:26.365Z",
@@ -117,6 +129,26 @@
       "t": "2026-10-02T18:20:52.027Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-02T19:47:29.284Z",
+      "event": "bb-session",
+      "session": "4ebd2d7d",
+      "url": "https://www.thereviewshub.com/yllana-flamenc-oh-peacock-theatre-london/"
+    },
+    {
+      "t": "2026-10-02T19:52:59.834Z",
+      "event": "bb-session",
+      "session": "ba4dd466",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-02T19:53:00.186Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
   ]
 }
