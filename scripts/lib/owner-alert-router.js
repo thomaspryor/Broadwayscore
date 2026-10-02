@@ -158,14 +158,18 @@ const ESCALATION_NOTIFY_THRESHOLD = 14;
 // BRO-4487 — an 'auto' alert is a CONDITION, not a task. Measured 2026-10-01:
 // 476 machine-filed High/Urgent cards ever, 71 completed; 25 open cards whose
 // condition had already resolved; 88 of 154 resolved conditions cleared
-// within 3 days. So a plain 'auto' call (no dispatchAtFiling, no fileNow) is
-// now a digest line first, and files ONE card only once the same incident has
-// stayed open DEFERRED_AUTO_FILE_AFTER_HOURS. "Same incident" = seen again
-// within INCIDENT_GAP_RESET_HOURS of the previous sighting and not resolved
-// in between (incidentOpenedAt resets on either; firstSeen does not, which is
-// why it cannot be the clock).
+// within 3 days. A caller that re-checks a STABLE condition on a regular
+// schedule can opt in with `deferFilingHours`: its 'auto' call is a digest
+// line first and files ONE card only once the same incident has stayed open
+// that long. Opt-in, not the default (ship-check, 2026-10-02): one-shot keys
+// (per-sha, per-day), sparse callers, Mac-local callers whose digest queue
+// nobody reads, and urgent opening-night alerts must keep filing at once.
+// "Same incident" = seen again within INCIDENT_GAP_RESET_HOURS of the
+// previous sighting and not resolved in between (incidentOpenedAt resets on
+// either; firstSeen does not, which is why it cannot be the clock). The gap
+// tolerates one missed daily run.
 const DEFERRED_AUTO_FILE_AFTER_HOURS = 72;
-const INCIDENT_GAP_RESET_HOURS = 48;
+const INCIDENT_GAP_RESET_HOURS = 96;
 
 /**
  * PURE. When did the CURRENT incident of this condition open? A condition
@@ -181,10 +185,10 @@ function currentIncidentOpenedAt(existing, nowMs) {
 }
 
 /** PURE. Has a deferred 'auto' incident been open long enough to file its card? */
-function deferredAutoIsDue(existing, nowMs) {
+function deferredAutoIsDue(existing, nowMs, fileAfterHours = DEFERRED_AUTO_FILE_AFTER_HOURS) {
   if (!existing || !existing.deferredAuto || existing.linearIdentifier) return false;
   const opened = Date.parse(currentIncidentOpenedAt(existing, nowMs));
-  return Number.isFinite(opened) && (nowMs - opened) / 3600000 >= DEFERRED_AUTO_FILE_AFTER_HOURS;
+  return Number.isFinite(opened) && (nowMs - opened) / 3600000 >= fileAfterHours;
 }
 
 // BRO-3030 pre-mortem P0 — the condition families that may NEVER be quieted.
@@ -315,12 +319,12 @@ function hoursSince(iso) {
 // lastSurfacedAt only advances on a call that actually puts something in the
 // digest (a promote/resurface notice, or a plain pre-threshold line) — see
 // where routeAlert() sets result.lastSurfacedAt below.
-function decideDigestEscalation({ conditionKey, existing, notifyCount, now, threshold = ESCALATION_NOTIFY_THRESHOLD, resurfaceHours = DEFAULT_COOLDOWN_HOURS, deferredAuto = false }) {
+function decideDigestEscalation({ conditionKey, existing, notifyCount, now, threshold = ESCALATION_NOTIFY_THRESHOLD, resurfaceHours = DEFAULT_COOLDOWN_HOURS, deferredAuto = false, fileAfterHours = DEFERRED_AUTO_FILE_AFTER_HOURS }) {
   const alreadyTracked = !!(existing && existing.linearIdentifier);
   if (!alreadyTracked) {
     // BRO-4487: a deferred 'auto' condition files its card once the incident
     // has been open DEFERRED_AUTO_FILE_AFTER_HOURS, whatever the count.
-    if (deferredAuto && deferredAutoIsDue({ ...existing, deferredAuto: true }, now)) return { action: 'promote', reason: 'age' };
+    if (deferredAuto && deferredAutoIsDue({ ...existing, deferredAuto: true }, now, fileAfterHours)) return { action: 'promote', reason: 'age' };
     return { action: notifyCount > threshold ? 'promote' : 'normal' };
   }
   // BRO-3030 pre-mortem P0: paid-usage families are never silenced. They are
@@ -469,10 +473,19 @@ function logDispatchAttempt({ conditionKey, title, ok, error }) {
 // exactly as it did before this rail existed. `searchIssuesFn` is an
 // injectable seam (tests stub linear-client.js's export) — production always
 // resolves to the real linearClient.searchIssues.
-async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient.searchIssues } = {}) {
+async function findLinearDuplicate(conditionKey, { searchIssuesFn = linearClient.searchIssues, title = null } = {}) {
   try {
     const match = await searchIssuesFn(conditionKey);
-    return { matched: !!match, identifier: match ? match.identifier : null };
+    if (match) return { matched: true, identifier: match.identifier };
+    // BRO-4487: a deferred condition reaches its filing age on the same day
+    // digest-autofix may file its own "BSC Daily: ..." card for the same row,
+    // and that card carries no conditionKey. An OPEN issue with this exact
+    // title is the same tracker.
+    if (title) {
+      const byTitle = await searchIssuesFn(title);
+      if (byTitle && String(byTitle.title || '').trim() === String(title).trim()) return { matched: true, identifier: byTitle.identifier };
+    }
+    return { matched: false, identifier: null };
   } catch (err) {
     console.error(`[alert-router] Linear dedupe check failed for "${conditionKey}" (failing open — filing as before): ${err.message}`);
     return { matched: false, identifier: null, error: err.message };
@@ -793,7 +806,7 @@ async function routeAlert(opts) {
     model,
     verify,
     dispatchAtFiling,
-    fileNow,
+    deferFilingHours,
   } = opts || {};
 
   if (!conditionKey) throw new Error('routeAlert requires a stable conditionKey');
@@ -806,16 +819,23 @@ async function routeAlert(opts) {
   const existing = ledger.conditions[conditionKey];
   const now = new Date().toISOString();
   const nowMs = Date.parse(now);
-  // BRO-4487: see DEFERRED_AUTO_FILE_AFTER_HOURS. dispatchAtFiling cards are
-  // worked within minutes (red-first), and fileNow is for callers that must
-  // get a card back on this call (the e2e canary), so neither is deferred.
-  const deferAuto = disposition === 'auto' && !dispatchAtFiling && !fileNow;
+  // BRO-4487: opt-in only (see DEFERRED_AUTO_FILE_AFTER_HOURS). dispatchAtFiling
+  // cards are worked within minutes (red-first) and are never deferred.
+  const fileAfterHours = Number(deferFilingHours);
+  const deferAuto = disposition === 'auto' && !dispatchAtFiling && Number.isFinite(fileAfterHours) && fileAfterHours > 0;
   const incidentOpenedAt = currentIncidentOpenedAt(existing, nowMs);
+  // A new incident of a deferred condition must not inherit the previous
+  // incident's tracker: resolveCondition() keeps linearIdentifier, so without
+  // this a recurrence reads as "already tracked" and never gets a card
+  // (ship-check P0). The old tracker may be closed or swept; if it is still
+  // open, the duplicate check at filing time finds it again.
+  const staleTracker = deferAuto && !!(existing && existing.linearIdentifier) && incidentOpenedAt === now;
+  const existingForDecision = staleTracker ? { ...existing, linearIdentifier: null } : existing;
 
   // A deferred incident that has reached its filing age must get past the
   // cooldown short-circuit below, or the default 168h cooldown would hold
   // the card back a full week (second-opinion blocker, BRO-4487).
-  const deferredDue = deferAuto && deferredAutoIsDue(existing, nowMs);
+  const deferredDue = deferAuto && deferredAutoIsDue(existingForDecision, nowMs, fileAfterHours);
   if (existing && existing.status === 'open' && hoursSince(existing.lastNotifiedAt) < cooldownHours && !deferredDue) {
     existing.lastSeen = now;
     existing.incidentOpenedAt = incidentOpenedAt;
@@ -850,8 +870,8 @@ async function routeAlert(opts) {
   if (effectiveDisposition === 'digest') {
     digestNotifyCount = (existing?.notifyCount || 0) + 1;
     digestDecision = decideDigestEscalation({
-      conditionKey, notifyCount: digestNotifyCount, now: Date.now(), deferredAuto: deferAuto,
-      existing: existing ? { ...existing, incidentOpenedAt } : existing,
+      conditionKey, notifyCount: digestNotifyCount, now: Date.now(), deferredAuto: deferAuto, fileAfterHours,
+      existing: existingForDecision ? { ...existingForDecision, incidentOpenedAt } : existingForDecision,
     });
     if (digestDecision.action === 'promote') {
       effectiveDisposition = 'auto';
@@ -873,7 +893,7 @@ async function routeAlert(opts) {
   // call within cooldownHours hits the ledger-cooldown short-circuit above
   // instead of re-querying Linear every time.
   if (effectiveDisposition === 'auto') {
-    const linearDup = await findLinearDuplicate(conditionKey);
+    const linearDup = await findLinearDuplicate(conditionKey, deferAuto ? { title } : {});
     if (linearDup.matched) {
       console.log(`[alert-router] conditionKey ${conditionKey} already tracked as ${linearDup.identifier} — not double-filing`);
       // BRO-3030 ship-check catch (Bug 2): a promoted-from-digest call that
@@ -955,10 +975,10 @@ async function routeAlert(opts) {
         // below) instead of repeating in full every day.
         queueDigestLine({
           title: ageEscalation
-            ? `${title} — still happening after ${Math.round(DEFERRED_AUTO_FILE_AFTER_HOURS / 24)} days`
+            ? `${title} — still happening after ${Math.round(fileAfterHours / 24)} days`
             : `${title} — escalated after ${digestNotifyCount} notifications`,
           description: ageEscalation
-            ? `Filed ${dispatch.linearIdentifier}: this has been happening for ${Math.round(DEFERRED_AUTO_FILE_AFTER_HOURS / 24)}+ days without clearing.\n\n${description}`
+            ? `Filed ${dispatch.linearIdentifier}: this has been happening for ${Math.round(fileAfterHours / 24)}+ days without clearing.\n\n${description}`
             : `Filed ${dispatch.linearIdentifier} for owner triage after ${digestNotifyCount} repeats with no tracker.\n\n${description}`,
           severity, conditionKey, url, decision: true, fields,
         });
@@ -1039,7 +1059,7 @@ async function routeAlert(opts) {
     cardId: result.cardId !== undefined ? result.cardId : (existing?.cardId || null),
     // Filed-tracker identity survives in the ledger so the cooldown
     // short-circuit (top of function) keeps reporting it on silent refires.
-    linearIdentifier: result.linearIdentifier !== undefined ? result.linearIdentifier : (existing?.linearIdentifier || null),
+    linearIdentifier: result.linearIdentifier !== undefined ? result.linearIdentifier : (staleTracker ? null : (existing?.linearIdentifier || null)),
     ...carriedRedFirstFields(existing),
     ...(result.dispatch ? { dispatch: result.dispatch } : {}),
   };

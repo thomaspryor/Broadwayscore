@@ -562,6 +562,7 @@ const OWNER_FIX_STATUS = {
   'card-failed': 'not being fixed automatically yet',
   'parked': 'automatic fixes kept failing; not being fixed automatically',
   'no-live-session': 'fix attempt not confirmed (no live session found)',
+  'watching': 'being watched; a fix is queued if it is still here after 3 days',
 };
 
 function findAutofixRow(row, autofixRows) {

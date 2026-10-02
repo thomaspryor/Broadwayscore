@@ -4691,6 +4691,9 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
             hint: entry.humanAction,
             severity: r.status === 'error' ? 'error' : 'warning',
             disposition: 'auto',
+            // BRO-4487: a stable, daily-checked condition. File its card only
+            // once it has persisted 3 days; most health rows clear sooner.
+            deferFilingHours: 72,
             fields: [{ name: 'Check', value: r.name }],
           });
           dispatchedCards[r.name] = result;

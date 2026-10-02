@@ -82,8 +82,6 @@ async function testFullChain() {
       'Safe to ignore; auto-archived at the end of the run.',
     severity: 'error',
     disposition: 'auto',
-    // The canary proves the filing path, so it must file on this call (BRO-4487 defers plain 'auto').
-    fileNow: true,
     cardAction: 'Investigate',
   });
 
@@ -126,8 +124,6 @@ async function testDedup() {
       'Safe to ignore; auto-archived at the end of the run.',
     severity: 'error',
     disposition: 'auto',
-    // The canary proves the filing path, so it must file on this call (BRO-4487 defers plain 'auto').
-    fileNow: true,
   });
   if (first.action !== 'auto' || !first.dispatchOk || !first.linearIdentifier) {
     throw new Error(`dedup test: first call did not dispatch cleanly — ${JSON.stringify(first)}`);
@@ -139,8 +135,6 @@ async function testDedup() {
     description: 'second fire — should be silent (no new issue)',
     severity: 'error',
     disposition: 'auto',
-    // The canary proves the filing path, so it must file on this call (BRO-4487 defers plain 'auto').
-    fileNow: true,
   });
   if (second.action !== 'silent' || second.linearIdentifier !== first.linearIdentifier) {
     throw new Error(

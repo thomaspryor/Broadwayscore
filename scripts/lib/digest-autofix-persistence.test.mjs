@@ -37,10 +37,10 @@ test('applyPersistenceGate: a condition present for 3+ days is filed', () => {
   assert.equal(plan[0].state, 'needs-card');
 });
 
-test('applyPersistenceGate: a 48h+ gap restarts the clock', () => {
+test('applyPersistenceGate: a 96h+ gap restarts the clock', () => {
   const plan = [row('BSC Daily: Flappy thing')];
   const key = persistenceKey(plan[0]);
-  const seen = applyPersistenceGate(plan, { [key]: { firstSeen: iso(200 * H), lastSeen: iso(60 * H) } }, NOW);
+  const seen = applyPersistenceGate(plan, { [key]: { firstSeen: iso(300 * H), lastSeen: iso(100 * H) } }, NOW);
   assert.equal(plan[0].state, 'watching');
   assert.equal(seen[key].firstSeen, new Date(NOW).toISOString());
 });

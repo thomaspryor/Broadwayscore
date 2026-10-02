@@ -345,9 +345,6 @@ test('alert(): a second launch-failure inside the cooldown is suppressed, and th
       title: 'monitor pass FAILED (test)',
       description: 'test',
       disposition: 'auto',
-      // This test is about WHERE cooldown state lands, on the card-filing path;
-      // plain 'auto' would defer to the digest first (BRO-4487).
-      fileNow: true,
       cooldownHours: 3,
     };
     const first = await launcher.alert(opts);

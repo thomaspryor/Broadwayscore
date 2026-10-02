@@ -204,7 +204,7 @@ const OPEN_TASK_SUBJECT_RE = /^(?:Fix: )?BSC Daily: (.+)$/;
 // with count tokens normalized so "(438/250 reqs)" and "(1048/250 reqs)" are
 // one condition while "web_unlocker2" vs "serp_api1" stay distinct.
 const PERSIST_BEFORE_FILING_HOURS = 72;
-const SEEN_GAP_RESET_HOURS = 48;
+const SEEN_GAP_RESET_HOURS = 96; // tolerates one missed daily digest run
 const SEEN_PRUNE_AFTER_DAYS = 14;
 const DIGEST_SEEN_PATH = process.env.DIGEST_AUTOFIX_SEEN_PATH
   || path.join(require('os').homedir(), '.broadwayscore-state', 'digest-autofix-seen.json');
