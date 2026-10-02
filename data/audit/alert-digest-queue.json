@@ -559,5 +559,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-02T19:28:59.373Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4523-review-fixes",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4523-review-fixes",
+    "description": "land.yml did not land land/bro-4523-review-fixes: the unit-tests-node gate went red at 56c7c432a4. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37058519311",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4523-review-fixes"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "56c7c432a47cb23116d27b0051ceb33067148cc2"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37058519311"
+      }
+    ],
+    "queuedAt": "2026-10-02T20:37:22.057Z"
   }
 ]
