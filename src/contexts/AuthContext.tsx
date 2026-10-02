@@ -269,9 +269,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     trackUgc('account_deleted');
-    // The auth user is already gone, so the server half of signOut answers
-    // 4xx; supabase-js still clears the local session in that case.
-    await client.auth.signOut().catch(() => {});
+    // Deleting the auth user already revoked its sessions server-side. A
+    // global signOut would hit /logout for a user that no longer exists, get
+    // a 4xx, and instrumentedFetch would report it as an error on every
+    // successful deletion, so only clear the local session.
+    await client.auth.signOut({ scope: 'local' }).catch(() => {});
     setAnalyticsUser(null);
     setUser(null);
     setProfile(null);
