@@ -1,138 +1,79 @@
 {
-  "runDate": "2026-10-02T06:42:20.339Z",
+  "runDate": "2026-10-02T07:11:10.122Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "the-snow-goose-regional-2026,the-getaway-driver-regional-2026,the-score-regional-2026,purpose-regional-2026,the-cook-regional-2026,begin-again-regional-2026,the-visit-regional-2026,wild-child-regional-2026,north-by-northwest-regional-2026,the-front-page-regional-2026,the-humanities-regional-2026,topdog-underdog-regional-2026,oh-mary-tour-2026",
+    "showFilter": "flamenc-oh-off-west-end-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 18,
-    "failed": 5,
+    "processed": 2,
+    "failed": 1,
     "skipped": 0,
-    "successRate": "78.3%"
+    "successRate": "66.7%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 2,
     "amp": 0,
-    "browserbase": 5,
+    "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
-    "scrapingbee": 6,
-    "brightdata": 4,
+    "scrapingbee": 0,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 4
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 7,
-    "tier1Success": 4,
-    "ampAttempts": 1,
-    "ampSuccess": 1,
-    "tier1_5Attempts": 6,
-    "tier1_5Success": 3,
-    "tier1_9Attempts": 4,
-    "tier1_9Success": 1,
-    "tier2Attempts": 12,
-    "tier2Success": 7,
-    "tier3Attempts": 7,
-    "tier3Success": 5,
-    "tier3_6Attempts": 1,
+    "tier1Attempts": 3,
+    "tier1Success": 3,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
+    "tier1_9Success": 0,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
-    "tier4Success": 1,
-    "totalFailed": 4,
-    "scrapingBeePageCredits": 37,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
+    "totalFailed": 1,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 6,
-    "browserbaseMinutesUsed": 2.2,
-    "urlDiscoveryAttempts": 1,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "topdog-underdog-regional-2026/theatermania--david-gordon.json",
-    "topdog-underdog-regional-2026/broadwayworld--richard-sasanow.json",
-    "topdog-underdog-regional-2026/dailybeast--tim-teeman.json",
-    "north-by-northwest-regional-2026/broadwayworld--richard-sasanow.json",
-    "oh-mary-tour-2026/broadwayworld--richard-sasanow.json",
-    "the-front-page-regional-2026/huffpost--unknown.json",
-    "begin-again-regional-2026/theatermania--unknown.json",
-    "begin-again-regional-2026/broadwayworld--richard-sasanow.json",
-    "the-score-regional-2026/wsj--charles-isherwood.json",
-    "purpose-regional-2026/broadwayworld--richard-sasanow.json",
-    "the-score-regional-2026/one-minute-critic--teniola-ayoola.json",
-    "the-score-regional-2026/stageandcinema--unknown.json",
-    "the-visit-regional-2026/deadline--greg-evans.json",
-    "the-humanities-regional-2026/chicagotribune--chris-jones.json",
-    "wild-child-regional-2026/broadwayworld--richard-sasanow.json",
-    "the-getaway-driver-regional-2026/deadline--greg-evans.json",
-    "the-cook-regional-2026/broadwayworld--richard-sasanow.json",
-    "the-getaway-driver-regional-2026/broadwayworld--richard-sasanow.json"
+    "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
+    "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json"
   ],
   "failed": [
-    "the-score-regional-2026/nytimes--unknown.json",
-    "purpose-regional-2026/deadline--greg-evans.json",
-    "the-visit-regional-2026/albany-times-union--unknown.json",
-    "the-visit-regional-2026/berkshire-eagle--unknown.json",
-    "the-visit-regional-2026/curtainup--unknown.json"
+    "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json"
   ],
   "tierDetails": {
     "playwright": [
-      "the-front-page-regional-2026/huffpost--unknown.json",
-      "the-score-regional-2026/one-minute-critic--teniola-ayoola.json",
-      "the-score-regional-2026/stageandcinema--unknown.json"
+      "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
+      "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json"
     ],
     "amp": [],
-    "browserbase": [
-      "data/review-texts/purpose-regional-2026/deadline--greg-evans.json",
-      "data/review-texts/the-visit-regional-2026/deadline--greg-evans.json",
-      "the-visit-regional-2026/deadline--greg-evans.json",
-      "data/review-texts/the-getaway-driver-regional-2026/deadline--greg-evans.json",
-      "the-getaway-driver-regional-2026/deadline--greg-evans.json"
-    ],
+    "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
-    "scrapingbee": [
-      "topdog-underdog-regional-2026/broadwayworld--richard-sasanow.json",
-      "north-by-northwest-regional-2026/broadwayworld--richard-sasanow.json",
-      "oh-mary-tour-2026/broadwayworld--richard-sasanow.json",
-      "begin-again-regional-2026/broadwayworld--richard-sasanow.json",
-      "purpose-regional-2026/broadwayworld--richard-sasanow.json",
-      "the-getaway-driver-regional-2026/broadwayworld--richard-sasanow.json"
-    ],
-    "brightdata": [
-      "topdog-underdog-regional-2026/theatermania--david-gordon.json",
-      "topdog-underdog-regional-2026/dailybeast--tim-teeman.json",
-      "begin-again-regional-2026/theatermania--unknown.json",
-      "the-humanities-regional-2026/chicagotribune--chris-jones.json"
-    ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "the-score-regional-2026/wsj--charles-isherwood.json",
-      "wild-child-regional-2026/broadwayworld--richard-sasanow.json",
-      "the-visit-regional-2026/albany-times-union--unknown.json",
-      "the-cook-regional-2026/broadwayworld--richard-sasanow.json"
-    ]
+    "archive": []
   },
-  "failuresByOutlet": {
-    "The Berkshire Eagle": {
-      "count": 1,
-      "domain": "berkshireeagle.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
