@@ -1,14 +1,6 @@
 {
   "entries": [
     {
-      "showId": "schtick-a-pole-in-it-off-broadway-2026",
-      "market": "broadway",
-      "queuedAt": "2026-09-28T17:21:36.528Z",
-      "dueAt": "2026-09-29T09:21:36.528Z",
-      "attempted": true,
-      "attemptedAt": "2026-09-29T14:23:57.994Z"
-    },
-    {
       "showId": "the-pass-off-west-end-2026",
       "market": "west-end",
       "queuedAt": "2026-09-29T15:40:48.548Z",
@@ -155,6 +147,42 @@
       "market": "west-end",
       "queuedAt": "2026-10-01T15:53:27.631Z",
       "dueAt": "2026-10-02T07:53:27.631Z",
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "hay-fever-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-02T00:17:28.864Z",
+      "dueAt": "2026-10-02T01:17:28.864Z",
+      "offsetHours": 1,
+      "outletIds": [
+        "telegraph"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "hay-fever-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-02T00:17:28.864Z",
+      "dueAt": "2026-10-02T03:17:28.864Z",
+      "offsetHours": 3,
+      "outletIds": [
+        "telegraph"
+      ],
+      "attempted": false
+    },
+    {
+      "kind": "truncated-t1-refetch",
+      "showId": "hay-fever-west-end-2026",
+      "market": "west-end",
+      "queuedAt": "2026-10-02T00:17:28.864Z",
+      "dueAt": "2026-10-02T12:17:28.864Z",
+      "offsetHours": 12,
+      "outletIds": [
+        "telegraph"
+      ],
       "attempted": false
     }
   ]
