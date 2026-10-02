@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-02T15:32:11.156Z",
+  "generated": "2026-10-02T16:30:44.626Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 19,
+  "count": 20,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -135,6 +135,13 @@
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
       "field": "duplicateOf"
+    },
+    {
+      "showId": "eureka-day-2024",
+      "loserFile": "theatermania--pete-hempstead.json",
+      "targetFile": "theatermania--zachary-stewart.json",
+      "reason": "orphaned-duplicate-heal: theatermania--zachary-stewart.json was flagged invalid after theatermania--pete-hempstead.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
