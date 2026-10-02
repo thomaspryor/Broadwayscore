@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-02T00:28:43.149Z",
-    "completedAt": "2026-10-02T00:28:45.175Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "36945871934",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-02T00:32:10.567Z",
-    "completedAt": "2026-10-02T00:32:13.162Z",
-    "totalReviews": 46195,
-    "processed": 0,
-    "skipped": 46194,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3638,
-      "output": 102,
-      "total": 11007
-    },
-    "costUsd": 0.0128506,
-    "runId": "36946250479",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-02T00:32:14.428Z",
     "completedAt": "2026-10-02T00:32:15.834Z",
     "totalReviews": 0,
@@ -272216,6 +272184,44 @@
     },
     "costUsd": 0,
     "runId": "37030282679",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-02T16:02:17.077Z",
+    "completedAt": "2026-10-02T16:02:28.301Z",
+    "totalReviews": 46281,
+    "processed": 0,
+    "skipped": 46277,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 13955,
+      "output": 383,
+      "total": 37611
+    },
+    "costUsd": 0.0485262,
+    "runId": "37030724778",
+    "errorDetails": [
+      {
+        "showId": "what-the-animals-say-off-west-end-2026",
+        "outletId": "timeout-london",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-02T16:02:30.500Z",
+    "completedAt": "2026-10-02T16:02:32.850Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37030724778",
     "errorDetails": []
   }
 ]
