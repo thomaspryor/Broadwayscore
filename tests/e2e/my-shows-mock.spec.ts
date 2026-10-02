@@ -1,4 +1,5 @@
-import { test, expect, type Page } from '@playwright/test';
+import { type Page } from '@playwright/test';
+import { test, expect, MOCK_TODAY } from './helpers/ugc-test';
 import { switchToListView } from './helpers/mock-helpers';
 import { filterNonCriticalErrors } from './helpers/console-errors';
 
@@ -526,6 +527,8 @@ test.describe('My Shows — Visual Regression', () => {
   test('diary list view at 390px', async ({ page }) => {
     await page.setViewportSize({ width: 390, height: 844 });
     await goToMock(page);
+    // Diary defaults to grid; without this the "list" baseline was a second grid one.
+    await switchToListView(page);
     await expect(content(page)).toHaveScreenshot('my-shows-diary-list-390.png', {
       animations: 'disabled',
     });
@@ -551,6 +554,8 @@ test.describe('My Shows — Visual Regression', () => {
   test('diary list view at 1440px', async ({ page }) => {
     await page.setViewportSize({ width: 1440, height: 900 });
     await goToMock(page);
+    // Diary defaults to grid; without this the "list" baseline was a second grid one.
+    await switchToListView(page);
     await expect(content(page)).toHaveScreenshot('my-shows-diary-list-1440.png', {
       animations: 'disabled',
     });
@@ -566,13 +571,13 @@ test.describe('Date picker — touch commit-on-close', () => {
   test('mid-wheel change does not commit; picked date lands on close', async ({ page, isMobile }) => {
     test.skip(!isMobile, 'coarse-pointer (staging) path only');
     await goToMock(page, 'watchlist');
-    const result = await page.evaluate(async () => {
+    // `today` is passed in: page.evaluate runs in the browser and can't see MOCK_TODAY.
+    const result = await page.evaluate(async (today) => {
       const panel = document.querySelector('[role="tabpanel"]')!;
       const nb = Array.from(panel.querySelectorAll('h3')).find(h => /Not yet booked/i.test(h.textContent || ''))?.parentElement;
       const input = nb?.querySelector('input[type="date"]') as HTMLInputElement | null;
       if (!input) return { error: 'no input' };
       const setter = Object.getOwnPropertyDescriptor(window.HTMLInputElement.prototype, 'value')!.set!;
-      const today = new Date().toISOString().split('T')[0];
       // A today-commit would MOVE this undated entry out of Not-yet-booked
       // (today sorts as Upcoming) — card count dropping is the discriminator
       // the old per-change-commit code fails on.
@@ -588,7 +593,7 @@ test.describe('Date picker — touch commit-on-close', () => {
       input.dispatchEvent(new Event('focusout', { bubbles: true }));
       await new Promise(r => setTimeout(r, 700));
       return { committedMidWheel, landedOnClose: /Sep 21/.test(panel.textContent || '') };
-    });
+    }, MOCK_TODAY);
     expect(result.committedMidWheel ?? false, 'date committed while wheel still open').toBe(false);
     expect(result.landedOnClose, 'picked date did not land after closing the wheel').toBe(true);
   });

@@ -9,7 +9,8 @@
 # test file with ON_ERROR_STOP so the first failed t.ok()/t.fails() exits 1.
 #
 # Usage:
-#   bash scripts/test-plan-shares-sql.sh <migration.sql> <test.sql>
+#   bash scripts/test-plan-shares-sql.sh <migration.sql> [<later-migration.sql> ...] <test.sql>
+#   (migrations apply in the order given; the LAST argument is the test file)
 #   bash scripts/test-plan-shares-sql.sh --self-test        # harness sanity check
 #   bash scripts/test-plan-shares-sql.sh --self-test-fail   # must exit 1
 #
@@ -41,11 +42,14 @@ case "${1:-}" in
   ""|-h|--help) sed -n '2,20p' "$0"; exit 2 ;;
 esac
 if [ "$MODE" = "run" ]; then
-  MIGRATION="${1:?migration file}"
-  TESTS="${2:?test file}"
-  [ -f "$MIGRATION" ] || { echo "missing $MIGRATION" >&2; exit 2; }
+  [ $# -ge 2 ] || { echo "usage: $0 <migration.sql> [...] <test.sql>" >&2; exit 2; }
+  MIGRATIONS=()
+  for f in "${@:1:$#-1}"; do
+    [ -f "$f" ] || { echo "missing $f" >&2; exit 2; }
+    MIGRATIONS+=("$(cd "$(dirname "$f")" && pwd)/$(basename "$f")")
+  done
+  TESTS="${!#}"
   [ -f "$TESTS" ] || { echo "missing $TESTS" >&2; exit 2; }
-  MIGRATION="$(cd "$(dirname "$MIGRATION")" && pwd)/$(basename "$MIGRATION")"
   TESTS="$(cd "$(dirname "$TESTS")" && pwd)/$(basename "$TESTS")"
 fi
 
@@ -89,11 +93,15 @@ if [ "$MODE" = "self-test-fail" ]; then
   exit 0  # unreachable when the harness works: ON_ERROR_STOP exits 3 above
 fi
 
-echo "-- applying $(basename "$MIGRATION")"
-run_sql < "$MIGRATION"
+for m in "${MIGRATIONS[@]}"; do
+  echo "-- applying $(basename "$m")"
+  run_sql < "$m"
+done
 # Migrations must be re-runnable (apply-migration.yml may be dispatched twice).
-echo "-- re-applying $(basename "$MIGRATION") (idempotency)"
-run_sql < "$MIGRATION"
+for m in "${MIGRATIONS[@]}"; do
+  echo "-- re-applying $(basename "$m") (idempotency)"
+  run_sql < "$m"
+done
 
 PARITY_JSON="{}"
 [ -f "$PARITY" ] && PARITY_JSON="$(cat "$PARITY")"

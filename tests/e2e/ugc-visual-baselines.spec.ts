@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/ugc-test';
 import { VIEWPORTS, goToMock, goToRatingEditor } from './helpers/mock-helpers';
 
 /**

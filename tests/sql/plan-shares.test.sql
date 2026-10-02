@@ -161,6 +161,20 @@ SELECT t.ok(public.get_shared_plans('abc') IS NULL, 'malformed token → NULL');
 SELECT t.ok(public.get_shared_plans(upper(current_setting('t.token_a'))) IS NULL, 'uppercase token → NULL');
 SELECT t.ok(public.get_shared_plans('0123456789abcdef0123456789abcdef') IS NULL, 'unknown token → NULL');
 
+-- PostgREST runs a GET RPC in a READ ONLY transaction and lets a VOLATILE
+-- function run there, so VOLATILE alone never kept the token out of URLs
+-- (live round-trip caught it, 2026-10-01). A GET must fail with 25006, which
+-- PostgREST answers with HTTP 405, even for a valid token.
+BEGIN TRANSACTION READ ONLY;
+DO $$
+BEGIN
+  PERFORM public.get_shared_plans(current_setting('t.token_a'));
+  RAISE EXCEPTION 'ASSERTION FAILED: get_shared_plans answered inside a read-only transaction (PostgREST GET)';
+EXCEPTION WHEN SQLSTATE '25006' THEN
+  RAISE NOTICE 'ok - read-only transaction (PostgREST GET) is refused with SQLSTATE 25006 (HTTP 405)';
+END $$;
+COMMIT;
+
 -- -------------------------------------------------------- section toggles ----
 RESET ROLE;
 UPDATE public.plan_shares SET show_booked = false;
@@ -234,4 +248,4 @@ SELECT t.ok(NOT has_function_privilege('authenticated', 'public.plan_shares_guar
 SELECT t.ok(NOT has_table_privilege('authenticated', 'public.plan_shares', 'TRUNCATE'),
             'grant check: authenticated cannot TRUNCATE plan_shares');
 SELECT t.ok((SELECT provolatile FROM pg_proc WHERE proname = 'get_shared_plans') = 'v',
-            'get_shared_plans is VOLATILE, so PostgREST refuses GET (token stays out of request logs)');
+            'get_shared_plans is VOLATILE (never cached; GET is refused by its read-only check, tested above)');
