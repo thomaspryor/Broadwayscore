@@ -3160,25 +3160,26 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-10-02T10:29:46.138Z",
+      "lastSeen": "2026-10-02T12:48:56.727Z",
       "lastNotifiedAt": "2026-10-02T10:29:46.138Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.138Z",
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-4515"
+      "linearIdentifier": "BRO-4515",
+      "silentRefires": 1
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "auto",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-02T10:29:50.841Z",
+      "lastSeen": "2026-10-02T12:48:56.737Z",
       "lastNotifiedAt": "2026-10-01T23:30:22.081Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.081Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 2,
+      "silentRefires": 3,
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z"
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
@@ -3431,12 +3432,13 @@
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
       "incidentOpenedAt": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-02T10:29:50.845Z",
+      "lastSeen": "2026-10-02T12:48:56.740Z",
       "lastNotifiedAt": "2026-10-02T10:29:50.845Z",
       "lastSurfacedAt": "2026-10-02T10:29:50.845Z",
       "notifyCount": 7,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3557,13 +3559,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-10-02T10:29:50.852Z",
+      "lastSeen": "2026-10-02T12:48:56.745Z",
       "lastNotifiedAt": "2026-10-01T23:31:28.180Z",
       "lastSurfacedAt": "2026-10-01T23:31:28.180Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2,
+      "silentRefires": 3,
       "incidentOpenedAt": "2026-09-18T16:10:40.527Z"
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
@@ -3835,13 +3837,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-10-02T10:29:46.131Z",
+      "lastSeen": "2026-10-02T12:48:56.720Z",
       "lastNotifiedAt": "2026-10-01T23:30:22.064Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.064Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2,
+      "silentRefires": 3,
       "incidentOpenedAt": "2026-09-20T21:49:42.154Z"
     },
     "test-yml:red:Data Validation:4d6399a6": {
@@ -4208,13 +4210,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-10-02T10:29:46.123Z",
+      "lastSeen": "2026-10-02T12:48:56.712Z",
       "lastNotifiedAt": "2026-10-01T23:30:22.054Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.054Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2,
+      "silentRefires": 3,
       "incidentOpenedAt": "2026-09-21T09:41:19.072Z"
     },
     "test-yml:red:E2E Tests:c58b7c79": {
@@ -5787,12 +5789,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-10-02T10:29:46.106Z",
+      "lastSeen": "2026-10-02T12:48:56.698Z",
       "lastNotifiedAt": "2026-10-02T10:29:46.106Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.106Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5851,12 +5854,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-02T10:29:46.114Z",
+      "lastSeen": "2026-10-02T12:48:56.704Z",
       "lastNotifiedAt": "2026-10-02T10:29:46.114Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.114Z",
       "notifyCount": 4,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -6321,13 +6325,13 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on creation stories and all the important importants",
       "firstSeen": "2026-09-29T08:38:22.324Z",
-      "lastSeen": "2026-10-02T05:45:32.541Z",
+      "lastSeen": "2026-10-02T12:43:41.488Z",
       "lastNotifiedAt": "2026-09-29T08:38:22.324Z",
       "lastSurfacedAt": "2026-09-29T08:38:22.324Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 11,
+      "silentRefires": 12,
       "incidentOpenedAt": "2026-09-29T08:38:22.324Z"
     },
     "land:land/bro-4332-stale-rescore": {
@@ -7927,13 +7931,13 @@
       "disposition": "digest",
       "title": "Placeholder synopsis on A Thousand Natural Shocks",
       "firstSeen": "2026-09-30T19:26:23.659Z",
-      "lastSeen": "2026-10-02T05:45:35.762Z",
+      "lastSeen": "2026-10-02T12:43:45.985Z",
       "lastNotifiedAt": "2026-09-30T19:26:23.659Z",
       "lastSurfacedAt": "2026-09-30T19:26:23.659Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6,
+      "silentRefires": 7,
       "incidentOpenedAt": "2026-09-30T19:26:23.659Z"
     },
     "land:land/bro-4431-coverage": {
@@ -8386,14 +8390,14 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Hay Fever",
       "firstSeen": "2026-10-01T23:57:01.897Z",
-      "lastSeen": "2026-10-02T05:45:29.356Z",
+      "lastSeen": "2026-10-02T12:43:37.524Z",
       "lastNotifiedAt": "2026-10-01T23:57:01.897Z",
       "lastSurfacedAt": "2026-10-01T23:57:01.897Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
       "incidentOpenedAt": "2026-10-01T23:57:01.897Z",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4486-recheck-3": {
       "status": "open",
@@ -8505,12 +8509,13 @@
       "title": "Content mismatch on Kramer/Fauci",
       "firstSeen": "2026-10-02T05:45:29.336Z",
       "incidentOpenedAt": "2026-10-02T05:45:29.336Z",
-      "lastSeen": "2026-10-02T05:45:29.336Z",
+      "lastSeen": "2026-10-02T12:43:37.506Z",
       "lastNotifiedAt": "2026-10-02T05:45:29.336Z",
       "lastSurfacedAt": "2026-10-02T05:45:29.336Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:kramerfauci-st-anns-off-broadway-2026": {
       "status": "open",
@@ -8518,12 +8523,13 @@
       "title": "Pre-opening publishDate on Kramer/Fauci",
       "firstSeen": "2026-10-02T05:45:29.341Z",
       "incidentOpenedAt": "2026-10-02T05:45:29.341Z",
-      "lastSeen": "2026-10-02T05:45:29.341Z",
+      "lastSeen": "2026-10-02T12:43:37.511Z",
       "lastNotifiedAt": "2026-10-02T05:45:29.341Z",
       "lastSurfacedAt": "2026-10-02T05:45:29.341Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-revival-unverified-kramerfauci-st-anns-off-broadway-2026": {
       "status": "open",
@@ -8531,12 +8537,13 @@
       "title": "Unverified revival on Kramer/Fauci",
       "firstSeen": "2026-10-02T05:45:29.346Z",
       "incidentOpenedAt": "2026-10-02T05:45:29.346Z",
-      "lastSeen": "2026-10-02T05:45:29.346Z",
+      "lastSeen": "2026-10-02T12:43:37.516Z",
       "lastNotifiedAt": "2026-10-02T05:45:29.346Z",
       "lastSurfacedAt": "2026-10-02T05:45:29.346Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-slug-mismatch-kramerfauci-st-anns-off-broadway-2026": {
       "status": "open",
@@ -8544,12 +8551,13 @@
       "title": "Review URL cross-show mismatch on Kramer/Fauci",
       "firstSeen": "2026-10-02T05:45:29.351Z",
       "incidentOpenedAt": "2026-10-02T05:45:29.351Z",
-      "lastSeen": "2026-10-02T05:45:29.351Z",
+      "lastSeen": "2026-10-02T12:43:37.520Z",
       "lastNotifiedAt": "2026-10-02T05:45:29.351Z",
       "lastSurfacedAt": "2026-10-02T05:45:29.351Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:creation-stories-and-all-the-important-importants-off-broadway-2026": {
       "status": "open",
@@ -8557,12 +8565,13 @@
       "title": "Shipped review missing publishDate on creation stories and all the important importants",
       "firstSeen": "2026-10-02T05:45:32.546Z",
       "incidentOpenedAt": "2026-10-02T05:45:32.546Z",
-      "lastSeen": "2026-10-02T05:45:32.546Z",
+      "lastSeen": "2026-10-02T12:43:41.492Z",
       "lastNotifiedAt": "2026-10-02T05:45:32.546Z",
       "lastSurfacedAt": "2026-10-02T05:45:32.546Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-4509-tour-serp": {
       "status": "open",
@@ -8654,6 +8663,19 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4514"
+    },
+    "opening-night-remediation-exhausted-empty-cast:flamenc-oh-off-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on flamenc-oh-off-west-end-2026",
+      "firstSeen": "2026-10-02T12:43:42.981Z",
+      "incidentOpenedAt": "2026-10-02T12:43:42.981Z",
+      "lastSeen": "2026-10-02T12:43:42.981Z",
+      "lastNotifiedAt": "2026-10-02T12:43:42.981Z",
+      "lastSurfacedAt": "2026-10-02T12:43:42.981Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
     }
   }
 }
