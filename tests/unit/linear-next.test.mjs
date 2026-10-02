@@ -717,6 +717,17 @@ test('buildLinearSeed: includes the workspace title convention when project is s
   assert.match(seed, /Data·/);
 });
 
+test('buildLinearSeed: done means landed on main and the card check passed there (BRO-4535)', () => {
+  const seed = buildLinearSeed({ identifier: 'BRO-1', title: 'T', description: 'd', url: 'u', model: 'sonnet', project: null });
+  assert.match(seed, /land the change on main yourself/);
+  assert.match(seed, /land\/<name>/);
+  assert.match(seed, /push-with-retry\.sh/);
+  assert.match(seed, /VERIFY: line, or the command under "## Acceptance criteria"/);
+  assert.match(seed, /if it has none, write a safe-form one/);
+  assert.match(seed, /into --verification/);
+  assert.match(seed, /--status=done only when that check passed on main/);
+});
+
 test('buildDispatchComment: reports the ref, timestamp, and mode', () => {
   const msg = buildDispatchComment({ ref: 'workspace:42', ts: '2026-08-12T12:00:00.000Z', mode: 'cmux' });
   assert.equal(msg, 'Dispatched to workspace:42 at 2026-08-12T12:00:00.000Z (cmux)');
