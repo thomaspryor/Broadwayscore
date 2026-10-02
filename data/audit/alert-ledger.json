@@ -72,38 +72,42 @@
       "disposition": "auto",
       "title": "BSC Daily: Audience coverage: open-show gaps",
       "firstSeen": "2026-07-24T07:50:35.242Z",
-      "lastSeen": "2026-10-01T13:57:48.153Z",
+      "lastSeen": "2026-10-02T13:15:07.648Z",
       "lastNotifiedAt": "2026-09-27T12:30:26.842Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": "3b6637c5-416f-8101-ba5f-dda540f78b96",
       "linearIdentifier": "BRO-3700",
-      "silentRefires": 3
+      "silentRefires": 4,
+      "incidentOpenedAt": "2026-07-24T07:50:35.242Z"
     },
     "health-check:Sync: baseline drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-09-30T13:04:06.023Z",
+      "lastSeen": "2026-10-02T13:15:07.656Z",
       "lastNotifiedAt": "2026-09-30T13:04:06.023Z",
       "lastSurfacedAt": null,
       "notifyCount": 8,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
-      "linearIdentifier": "BRO-3164"
+      "linearIdentifier": "BRO-3164",
+      "incidentOpenedAt": "2026-07-24T07:50:35.775Z",
+      "silentRefires": 1
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-10-01T13:57:48.163Z",
+      "lastSeen": "2026-10-02T13:15:07.665Z",
       "lastNotifiedAt": "2026-09-30T13:04:08.049Z",
       "lastSurfacedAt": null,
       "notifyCount": 9,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
       "linearIdentifier": "BRO-3081",
-      "silentRefires": 1
+      "silentRefires": 2,
+      "incidentOpenedAt": "2026-07-24T07:50:36.268Z"
     },
     "opening-night-sla:pages-stuck": {
       "status": "resolved",
@@ -158,13 +162,14 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: star-vs-score mismatch",
       "firstSeen": "2026-07-27T08:00:24.727Z",
-      "lastSeen": "2026-10-01T13:57:48.160Z",
+      "lastSeen": "2026-10-02T13:15:07.660Z",
       "lastNotifiedAt": "2026-09-28T14:32:41.015Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-3978",
-      "silentRefires": 2
+      "silentRefires": 3,
+      "incidentOpenedAt": "2026-07-27T08:00:24.727Z"
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
@@ -225,13 +230,14 @@
       "disposition": "auto",
       "title": "BSC Daily: Workflow repeat-failure: Check Corpus Drift",
       "firstSeen": "2026-07-28T07:42:01.446Z",
-      "lastSeen": "2026-10-01T13:57:48.150Z",
+      "lastSeen": "2026-10-02T13:15:07.644Z",
       "lastNotifiedAt": "2026-09-28T14:32:29.014Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": "3ab637c5-416f-81a8-88d5-ed8d048a32f4",
       "linearIdentifier": "BRO-447",
-      "silentRefires": 1
+      "silentRefires": 2,
+      "incidentOpenedAt": "2026-07-28T07:42:01.446Z"
     },
     "t1-coverage:new-gaps-24h": {
       "status": "open",
@@ -293,10 +299,11 @@
       "disposition": "digest",
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-01T13:58:14.879Z",
-      "lastNotifiedAt": "2026-10-01T13:58:14.879Z",
-      "lastSurfacedAt": "2026-10-01T13:58:14.879Z",
-      "notifyCount": 23,
+      "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
+      "lastSeen": "2026-10-02T13:16:15.695Z",
+      "lastNotifiedAt": "2026-10-02T13:16:15.695Z",
+      "lastSurfacedAt": "2026-10-02T13:16:15.695Z",
+      "notifyCount": 24,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -456,13 +463,14 @@
       "disposition": "auto",
       "title": "BSC Daily: Sync: cast coverage",
       "firstSeen": "2026-08-05T07:41:41.804Z",
-      "lastSeen": "2026-10-01T13:57:48.157Z",
+      "lastSeen": "2026-10-02T13:15:07.652Z",
       "lastNotifiedAt": "2026-09-27T12:30:27.728Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": "3b3637c5-416f-8197-91e3-e6b68252159b",
       "linearIdentifier": "BRO-4171",
-      "silentRefires": 3
+      "silentRefires": 4,
+      "incidentOpenedAt": "2026-08-05T07:41:41.804Z"
     },
     "backstop:crazysexycool-regional-2026/washpost--thomas-floyd.json": {
       "status": "open",
@@ -736,13 +744,14 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: outlet domain moves",
       "firstSeen": "2026-08-11T07:57:54.489Z",
-      "lastSeen": "2026-10-01T13:57:48.173Z",
+      "lastSeen": "2026-10-02T13:15:07.673Z",
       "lastNotifiedAt": "2026-09-27T12:30:27.950Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": "3b9637c5-416f-81bd-965b-ddfceefeae77",
       "linearIdentifier": "BRO-2263",
-      "silentRefires": 3
+      "silentRefires": 4,
+      "incidentOpenedAt": "2026-08-11T07:57:54.489Z"
     },
     "health-check:Quality: outlet invalid-content rate": {
       "status": "open",
@@ -3021,13 +3030,14 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: DMARC deliverability",
       "firstSeen": "2026-09-15T12:12:15.198Z",
-      "lastSeen": "2026-10-01T13:57:48.166Z",
+      "lastSeen": "2026-10-02T13:15:07.669Z",
       "lastNotifiedAt": "2026-09-30T13:04:10.136Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-4093",
-      "silentRefires": 1
+      "silentRefires": 2,
+      "incidentOpenedAt": "2026-09-15T12:12:15.198Z"
     },
     "health-check:Digest: content-invariant check": {
       "status": "open",
@@ -7684,7 +7694,7 @@
       "linearIdentifier": "BRO-4420"
     },
     "provider-spend:attribution-gap:brightdata": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "Untracked brightdata spend: ledger explains only 36%, 80% of billed",
       "firstSeen": "2026-09-30T13:04:35.419Z",
@@ -7694,7 +7704,9 @@
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4423",
-      "silentRefires": 1
+      "silentRefires": 1,
+      "resolvedAt": "2026-10-02T13:16:15.702Z",
+      "resolveReason": "attributedPct 90%, 88% through 2026-10-01"
     },
     "opening-night-remediation-exhausted-t1-missing:the-standard-of-living-west-end-2026": {
       "status": "open",
@@ -8203,12 +8215,14 @@
       "disposition": "digest",
       "title": "Affiliate revenue: Payout economics — anomaly",
       "firstSeen": "2026-10-01T13:56:33.074Z",
-      "lastSeen": "2026-10-01T13:56:33.074Z",
+      "lastSeen": "2026-10-02T13:13:59.210Z",
       "lastNotifiedAt": "2026-10-01T13:56:33.074Z",
       "lastSurfacedAt": "2026-10-01T13:56:33.074Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "incidentOpenedAt": "2026-10-01T13:56:33.074Z",
+      "silentRefires": 1
     },
     "broadcast:never-sent:school-girls-or-the-african-mean-girls-play-2026": {
       "status": "open",
@@ -8719,6 +8733,19 @@
       "lastSeen": "2026-10-02T13:05:59.515Z",
       "lastNotifiedAt": "2026-10-02T13:05:59.515Z",
       "lastSurfacedAt": "2026-10-02T13:05:59.515Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "priority-queue:overdue": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Overdue P0/P1 queue: 56 P0 older than 24h, 805 P1 older than 7d",
+      "firstSeen": "2026-10-02T13:15:40.706Z",
+      "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
+      "lastSeen": "2026-10-02T13:15:40.706Z",
+      "lastNotifiedAt": "2026-10-02T13:15:40.706Z",
+      "lastSurfacedAt": "2026-10-02T13:15:40.706Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
