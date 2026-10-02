@@ -1,12 +1,66 @@
 {
-  "generatedAt": "2026-10-02T00:47:11.151Z",
+  "generatedAt": "2026-10-02T02:58:20.802Z",
   "summary": {
-    "total": 8,
-    "high": 2,
-    "medium": 3,
-    "low": 3
+    "total": 16,
+    "high": 6,
+    "medium": 5,
+    "low": 5
   },
   "collisions": [
+    {
+      "url": "https://www.broadwayworld.com/san-francisco/article/Review-BEETLEJUICE-at-Golden-Gate-Theatre-20221219",
+      "normalizedUrl": "https://broadwayworld.com/san-francisco/article/review-beetlejuice-at-golden-gate-theatre-20221219",
+      "candidates": [
+        {
+          "showId": "beetlejuice-2022",
+          "file": "broadwayworld--linda-hodges.json",
+          "publishDate": null,
+          "openingDate": "2022-04-08",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        },
+        {
+          "showId": "beetlejuice-tour-2022",
+          "file": "broadwayworld--linda-hodges.json",
+          "publishDate": null,
+          "openingDate": "2022-12-01",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadwayworld"
+        }
+      ],
+      "suggestedWinner": "beetlejuice-tour-2022",
+      "reason": "Only one candidate has score/fullText",
+      "confidence": "medium"
+    },
+    {
+      "url": "https://www.broadwayworld.com/cleveland/article/Review-BEETLEJUICE-THE-MUSICAL-at-Connon-Place-20230114",
+      "normalizedUrl": "https://broadwayworld.com/cleveland/article/review-beetlejuice-the-musical-at-connon-place-20230114",
+      "candidates": [
+        {
+          "showId": "beetlejuice-2022",
+          "file": "broadwayworld--roy-berko.json",
+          "publishDate": null,
+          "openingDate": "2022-04-08",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        },
+        {
+          "showId": "beetlejuice-tour-2022",
+          "file": "broadwayworld--roy-berko.json",
+          "publishDate": null,
+          "openingDate": "2022-12-01",
+          "hasScore": false,
+          "hasFullText": true,
+          "outletId": "broadwayworld"
+        }
+      ],
+      "suggestedWinner": "beetlejuice-tour-2022",
+      "reason": "Only one candidate has score/fullText",
+      "confidence": "medium"
+    },
     {
       "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
       "normalizedUrl": "https://timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
@@ -114,6 +168,168 @@
       "suggestedWinner": "giant-royal-court-off-west-end-2024",
       "reason": "publishDate 2024-09-26 is 1 days from giant-royal-court-off-west-end-2024 but also 2 days from giant-west-end-2025",
       "confidence": "medium"
+    },
+    {
+      "url": "https://www.broadwayworld.com/rhode-island/article/Review-LIFE-OF-PI-at-Providence-Performing-Arts-Center-20250212",
+      "normalizedUrl": "https://broadwayworld.com/rhode-island/article/review-life-of-pi-at-providence-performing-arts-center-20250212",
+      "candidates": [
+        {
+          "showId": "life-of-pi-2023",
+          "file": "broadwayworld--christopher-verleger.json",
+          "publishDate": null,
+          "openingDate": "2023-03-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        },
+        {
+          "showId": "life-of-pi-tour-2024",
+          "file": "broadwayworld--christopher-verleger.json",
+          "publishDate": "2025-02-12",
+          "openingDate": "2024-12-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadwayworld"
+        }
+      ],
+      "suggestedWinner": "life-of-pi-tour-2024",
+      "reason": "publishDate 2025-02-12 is 67+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-LIFE-OF-PI-at-The-Kennedy-Center-20241222",
+      "normalizedUrl": "https://broadwayworld.com/washington-dc/article/review-life-of-pi-at-the-kennedy-center-20241222",
+      "candidates": [
+        {
+          "showId": "life-of-pi-2023",
+          "file": "broadwayworld--dara-homer.json",
+          "publishDate": null,
+          "openingDate": "2023-03-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        },
+        {
+          "showId": "life-of-pi-tour-2024",
+          "file": "broadwayworld--dara-homer.json",
+          "publishDate": "2024-12-22",
+          "openingDate": "2024-12-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadwayworld"
+        }
+      ],
+      "suggestedWinner": "life-of-pi-tour-2024",
+      "reason": "publishDate 2024-12-22 is 15 days from life-of-pi-tour-2024 opening (2024-12-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.broadwayworld.com/pittsburgh/article/Review-LIFE-OF-PI-Is-Existentialist-Magic-at-Benedum-Center-20250130",
+      "normalizedUrl": "https://broadwayworld.com/pittsburgh/article/review-life-of-pi-is-existentialist-magic-at-benedum-center-20250130",
+      "candidates": [
+        {
+          "showId": "life-of-pi-2023",
+          "file": "broadwayworld--greg-kerestan.json",
+          "publishDate": null,
+          "openingDate": "2023-03-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        },
+        {
+          "showId": "life-of-pi-tour-2024",
+          "file": "broadwayworld--greg-kerestan.json",
+          "publishDate": "2025-01-30",
+          "openingDate": "2024-12-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadwayworld"
+        }
+      ],
+      "suggestedWinner": "life-of-pi-tour-2024",
+      "reason": "publishDate 2025-01-30 is 54 days from life-of-pi-tour-2024 opening (2024-12-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.broadwayworld.com/cleveland/article/Review-LIFE-OF-PI-at-Connor-PalaceKey-Bank-Series-20250110",
+      "normalizedUrl": "https://broadwayworld.com/cleveland/article/review-life-of-pi-at-connor-palacekey-bank-series-20250110",
+      "candidates": [
+        {
+          "showId": "life-of-pi-2023",
+          "file": "broadwayworld--roy-berko.json",
+          "publishDate": null,
+          "openingDate": "2023-03-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        },
+        {
+          "showId": "life-of-pi-tour-2024",
+          "file": "broadwayworld--roy-berko.json",
+          "publishDate": "2025-01-10",
+          "openingDate": "2024-12-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadwayworld"
+        }
+      ],
+      "suggestedWinner": "life-of-pi-tour-2024",
+      "reason": "publishDate 2025-01-10 is 34 days from life-of-pi-tour-2024 opening (2024-12-07)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.broadwayworld.com/louisville/article/Review-LIFE-OF-PI-at-The-Aronoff-Center-20250207",
+      "normalizedUrl": "https://broadwayworld.com/louisville/article/review-life-of-pi-at-the-aronoff-center-20250207",
+      "candidates": [
+        {
+          "showId": "life-of-pi-2023",
+          "file": "broadwayworld--taylor-clemons.json",
+          "publishDate": null,
+          "openingDate": "2023-03-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        },
+        {
+          "showId": "life-of-pi-tour-2024",
+          "file": "broadwayworld--taylor-clemons.json",
+          "publishDate": "2025-02-07",
+          "openingDate": "2024-12-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadwayworld"
+        }
+      ],
+      "suggestedWinner": "life-of-pi-tour-2024",
+      "reason": "publishDate 2025-02-07 is 62+ days from all openings; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.broadwayworld.com/baltimore/article/Review-THE-LIFE-OF-PI-at-The-Hippodrome-20241211",
+      "normalizedUrl": "https://broadwayworld.com/baltimore/article/review-the-life-of-pi-at-the-hippodrome-20241211",
+      "candidates": [
+        {
+          "showId": "life-of-pi-2023",
+          "file": "broadwayworld--timoth-david-copney.json",
+          "publishDate": null,
+          "openingDate": "2023-03-30",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        },
+        {
+          "showId": "life-of-pi-tour-2024",
+          "file": "broadwayworld--timoth-david-copney.json",
+          "publishDate": "2024-12-11",
+          "openingDate": "2024-12-07",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadwayworld"
+        }
+      ],
+      "suggestedWinner": "life-of-pi-tour-2024",
+      "reason": "publishDate 2024-12-11 is 4 days from life-of-pi-tour-2024 opening (2024-12-07)",
+      "confidence": "high"
     },
     {
       "url": "https://aroundthetownchicago.com/theatre-reviews/little-bear-ridge-road/",
