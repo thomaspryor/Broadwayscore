@@ -341,6 +341,9 @@ const AUTOFIX_STATE_LABEL = {
   'card-filed': ['\u23f3', 'tracker filed \u2014 dispatches on the next automated pass'],
   'card-failed': ['\u26a0\ufe0f', 'tracker filing FAILED \u2014 nothing is working on this yet; retries tomorrow'],
   'acknowledged': ['\u2139\ufe0f', 'already tracked with a known resolve-by date \u2014 no new card needed'],
+  // BRO-4487: first seen under 3 days ago. Most of these clear on their own
+  // (88 of 154 resolved alert conditions did within 3 days), so no card yet.
+  'watching': ['\u{1f440}', 'being watched \u2014 a fix card is filed if it is still here after 3 days'],
   // Attempt-memory (task #843): same fixed content failed twice unchanged —
   // never redispatched blind, needs a human look at the card itself.
   'parked': ['\u23f8\ufe0f', 'kept failing the same way \u2014 parked, needs a manual look'],

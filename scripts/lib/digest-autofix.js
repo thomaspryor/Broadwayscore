@@ -194,6 +194,56 @@ const MAX_FOLD_PER_CONDITION = 20;
 
 const OPEN_TASK_SUBJECT_RE = /^(?:Fix: )?BSC Daily: (.+)$/;
 
+// BRO-4487: a digest row is filed as a card only after it has been present for
+// PERSIST_BEFORE_FILING_HOURS. Measured 2026-10-01: 320 digest-autofix cards
+// filed, 15 ever completed, 271 open across 243 distinct conditions; most
+// conditions clear by themselves within days. Rows younger than that render
+// as 'watching'. First/last sightings live in a machine-local file (this runs
+// from the Mac's morning digest; a tracked file there dirties the shared
+// checkout), keyed by the row's conditionKey when it has one, else its title
+// with count tokens normalized so "(438/250 reqs)" and "(1048/250 reqs)" are
+// one condition while "web_unlocker2" vs "serp_api1" stay distinct.
+const PERSIST_BEFORE_FILING_HOURS = 72;
+const SEEN_GAP_RESET_HOURS = 48;
+const SEEN_PRUNE_AFTER_DAYS = 14;
+const DIGEST_SEEN_PATH = process.env.DIGEST_AUTOFIX_SEEN_PATH
+  || path.join(require('os').homedir(), '.broadwayscore-state', 'digest-autofix-seen.json');
+
+/** PURE. Stable identity for a plan row across days. */
+function persistenceKey(row) {
+  if (row && row.conditionKey) return `ck:${row.conditionKey}`;
+  const title = String((row && (row.title || row.name)) || '');
+  const batch = (title.match(/\(batch \d+\)\s*$/) || [''])[0];
+  const body = batch ? title.slice(0, -batch.length) : title;
+  return `t:${body.replace(/(?<![\w])\d+(?:[.,]\d+)*(?![\w])/g, 'N').replace(/\s+/g, ' ').trim().toLowerCase()}${batch ? ` ${batch.trim()}` : ''}`;
+}
+
+/**
+ * PURE. Records today's sightings and holds back 'needs-card' rows whose
+ * condition is younger than PERSIST_BEFORE_FILING_HOURS (state -> 'watching').
+ * A row unseen for SEEN_GAP_RESET_HOURS starts over. Mutates plan row states;
+ * returns the updated sightings map (old entries pruned).
+ */
+function applyPersistenceGate(plan, seen, nowMs) {
+  const next = {};
+  for (const [k, v] of Object.entries(seen || {})) {
+    const last = Date.parse(v && v.lastSeen);
+    if (Number.isFinite(last) && (nowMs - last) / 86400000 <= SEEN_PRUNE_AFTER_DAYS) next[k] = v;
+  }
+  const nowIso = new Date(nowMs).toISOString();
+  for (const row of plan || []) {
+    const key = persistenceKey(row);
+    const prev = next[key];
+    const prevLast = Date.parse(prev && prev.lastSeen);
+    const continuing = prev && Number.isFinite(prevLast) && (nowMs - prevLast) / 3600000 <= SEEN_GAP_RESET_HOURS;
+    const firstSeen = continuing ? prev.firstSeen : nowIso;
+    next[key] = { firstSeen, lastSeen: nowIso };
+    const ageHours = (nowMs - Date.parse(firstSeen)) / 3600000;
+    if (row.state === 'needs-card' && ageHours < PERSIST_BEFORE_FILING_HOURS) row.state = 'watching';
+  }
+  return next;
+}
+
 // Which open task (pending/in_progress) already covers this health issue?
 // Family-key compared (BRO-232 S4), not literal substring: a task filed
 // under one prefix variant ("BSC Daily: Cron failed: X") now also covers a
@@ -940,6 +990,7 @@ function reconcileDigestOutcomes(digestLedgerEntries, tasksById, dispatchLedgerE
 function runAutofix({
   plan, cap = DISPATCH_CAP, dryRun = false, log = () => {}, loadTasksFn = null,
   ledgerPath = DIGEST_LEDGER_PATH, dispatchLedgerEntriesFn = null, now = new Date(),
+  seenPath = DIGEST_SEEN_PATH,
   dispatchFn = dispatchDetached,
   // BRO-3412: shared defaults imported from scripts/backlog-drain.js
   // (DEFAULT_CONCURRENCY_CAP=2, DEFAULT_SPEND_THRESHOLD_USD=12) rather than
@@ -969,6 +1020,23 @@ function runAutofix({
     let budget = Math.max(0, Math.min(cap, concurrencyCap));
     for (const row of plan) if (row.state === 'queued' && budget > 0) { row.state = 'dispatched'; budget--; }
     return plan;
+  }
+
+  // 0. BRO-4487 persistence gate: a condition gets a card only once it has
+  //    been present PERSIST_BEFORE_FILING_HOURS. Fail-soft: an unreadable or
+  //    unwritable sightings file degrades to "file as before", never blocks
+  //    the digest. Under node:test the REAL sightings file is never touched
+  //    (same rule as owner-alert-router's saveLedger guard): tests that want
+  //    the gate pass their own seenPath.
+  const gateUsesRealFile = seenPath === DIGEST_SEEN_PATH;
+  if (!(gateUsesRealFile && process.env.NODE_TEST_CONTEXT)) try {
+    let seen = {};
+    try { seen = JSON.parse(require('fs').readFileSync(seenPath, 'utf8')); } catch { seen = {}; }
+    const updated = applyPersistenceGate(plan, seen, now.getTime());
+    require('fs').mkdirSync(path.dirname(seenPath), { recursive: true });
+    require('fs').writeFileSync(seenPath, JSON.stringify(updated, null, 1));
+  } catch (err) {
+    log(`[digest-autofix] WARN persistence gate skipped: ${String(err.message).slice(0, 120)}`);
   }
 
   // 1. File missing trackers (dedup already done in planAutofix). BRO-286:
@@ -1210,6 +1278,7 @@ function runAutofix({
 module.exports = {
   planAutofix, runAutofix, matchOpenTask, buildCardNotes, isRowAcknowledged, DISPATCH_CAP,
   DIGEST_LEDGER_PATH, reconcileDigestOutcomes, isDispatchResolved, findMyJob, readJsonlLedger, appendJsonlLedger,
+  persistenceKey, applyPersistenceGate, PERSIST_BEFORE_FILING_HOURS, DIGEST_SEEN_PATH,
   fileCard, syncTasks, dispatchDetached, familyDisplayName, rowFamilyKey,
   splitOnShowSuffix, MAX_FOLD_PER_CONDITION,
 };

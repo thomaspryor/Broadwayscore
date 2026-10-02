@@ -67,6 +67,7 @@ jobs:
           git config --local user.email "github-actions[bot]@users.noreply.github.com"
           git config --local user.name "github-actions[bot]"
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           # Skip on a manual dry-run — the monitor still regenerates this file
           # locally (part (a) of the goal needs a FRESH scan every check, dry

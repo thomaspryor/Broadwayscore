@@ -327,9 +327,14 @@ function findMissingLedgerCommits(workflowYamlText, routerCallerScripts = new Se
       );
     }
 
-    if (DIGEST_DISPOSITION_RE.test(body) && !jobStagesFile(job.lines, DIGEST_QUEUE_FILE)) {
+    // BRO-4487: every router caller can write the digest queue now, not just
+    // disposition:'digest' — a plain 'auto' alert is a digest line until it
+    // has been open 3 days, and 'human' downgrades to 'digest' off the
+    // page-worthy list. A job that stages the ledger but not the queue marks
+    // the alert "notified" while its only visible line dies with the runner.
+    if ((callsRouter || DIGEST_DISPOSITION_RE.test(body)) && !jobStagesFile(job.lines, DIGEST_QUEUE_FILE)) {
       violations.push(
-        `job '${job.name}' uses disposition:'digest' but no step stages data/audit/${DIGEST_QUEUE_FILE} for commit in this job`
+        `job '${job.name}' calls routeAlert()/resolveCondition() but no step stages data/audit/${DIGEST_QUEUE_FILE} for commit in this job`
       );
     }
   }

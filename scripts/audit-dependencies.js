@@ -435,10 +435,12 @@ async function runAlerts({ findings, expiringSoon, allowlist, router, runContext
     // duplicate) must NAME the tracker it is deferring to. The router only
     // records a condition as notified after a successful dispatch, so a
     // silent result with no identifier means the ledger claims a card that
-    // nothing can point at — loud, not green (ship-check finding).
+    // nothing can point at — loud, not green (ship-check finding). A
+    // `deferred` result (BRO-4487: plain 'auto' waits out its incident age
+    // before filing) is the router working as designed, not a failure.
     const failed = result.dispatchOk === false
       || (result.action === 'auto' && !result.linearIdentifier)
-      || (result.action === 'silent' && !result.linearIdentifier);
+      || (result.action === 'silent' && !result.linearIdentifier && !result.deferred);
     if (failed) {
       alertDispatchFailed = true;
       log(`[alert] dispatch failed for ${conditionKey}: ${result.dispatchError || 'no tracker identifier returned'}`);

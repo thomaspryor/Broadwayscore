@@ -254,6 +254,7 @@ jobs:
           # makes a rebase refuse pre-flight and forces the clobber-prone
           # merge path in push-with-retry.sh (BRO-3662).
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
 
           if git diff --staged --quiet; then

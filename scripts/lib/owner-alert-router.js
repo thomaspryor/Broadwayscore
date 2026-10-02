@@ -155,6 +155,38 @@ const DEFAULT_COOLDOWN_HOURS = 168; // 7 days
 // filed against: no open condition should sit past notifyCount 14 untracked.
 const ESCALATION_NOTIFY_THRESHOLD = 14;
 
+// BRO-4487 — an 'auto' alert is a CONDITION, not a task. Measured 2026-10-01:
+// 476 machine-filed High/Urgent cards ever, 71 completed; 25 open cards whose
+// condition had already resolved; 88 of 154 resolved conditions cleared
+// within 3 days. So a plain 'auto' call (no dispatchAtFiling, no fileNow) is
+// now a digest line first, and files ONE card only once the same incident has
+// stayed open DEFERRED_AUTO_FILE_AFTER_HOURS. "Same incident" = seen again
+// within INCIDENT_GAP_RESET_HOURS of the previous sighting and not resolved
+// in between (incidentOpenedAt resets on either; firstSeen does not, which is
+// why it cannot be the clock).
+const DEFERRED_AUTO_FILE_AFTER_HOURS = 72;
+const INCIDENT_GAP_RESET_HOURS = 48;
+
+/**
+ * PURE. When did the CURRENT incident of this condition open? A condition
+ * that was resolved, never seen, or not seen for INCIDENT_GAP_RESET_HOURS
+ * starts a new incident now.
+ */
+function currentIncidentOpenedAt(existing, nowMs) {
+  const nowIso = new Date(nowMs).toISOString();
+  if (!existing || existing.status !== 'open') return nowIso;
+  const lastSeenMs = Date.parse(existing.lastSeen || '');
+  if (!Number.isFinite(lastSeenMs) || (nowMs - lastSeenMs) / 3600000 > INCIDENT_GAP_RESET_HOURS) return nowIso;
+  return existing.incidentOpenedAt || existing.firstSeen || nowIso;
+}
+
+/** PURE. Has a deferred 'auto' incident been open long enough to file its card? */
+function deferredAutoIsDue(existing, nowMs) {
+  if (!existing || !existing.deferredAuto || existing.linearIdentifier) return false;
+  const opened = Date.parse(currentIncidentOpenedAt(existing, nowMs));
+  return Number.isFinite(opened) && (nowMs - opened) / 3600000 >= DEFERRED_AUTO_FILE_AFTER_HOURS;
+}
+
 // BRO-3030 pre-mortem P0 — the condition families that may NEVER be quieted.
 //
 // The escalation above is "notify to threshold, file a tracker, then stop
@@ -283,9 +315,12 @@ function hoursSince(iso) {
 // lastSurfacedAt only advances on a call that actually puts something in the
 // digest (a promote/resurface notice, or a plain pre-threshold line) — see
 // where routeAlert() sets result.lastSurfacedAt below.
-function decideDigestEscalation({ conditionKey, existing, notifyCount, now, threshold = ESCALATION_NOTIFY_THRESHOLD, resurfaceHours = DEFAULT_COOLDOWN_HOURS }) {
+function decideDigestEscalation({ conditionKey, existing, notifyCount, now, threshold = ESCALATION_NOTIFY_THRESHOLD, resurfaceHours = DEFAULT_COOLDOWN_HOURS, deferredAuto = false }) {
   const alreadyTracked = !!(existing && existing.linearIdentifier);
   if (!alreadyTracked) {
+    // BRO-4487: a deferred 'auto' condition files its card once the incident
+    // has been open DEFERRED_AUTO_FILE_AFTER_HOURS, whatever the count.
+    if (deferredAuto && deferredAutoIsDue({ ...existing, deferredAuto: true }, now)) return { action: 'promote', reason: 'age' };
     return { action: notifyCount > threshold ? 'promote' : 'normal' };
   }
   // BRO-3030 pre-mortem P0: paid-usage families are never silenced. They are
@@ -758,6 +793,7 @@ async function routeAlert(opts) {
     model,
     verify,
     dispatchAtFiling,
+    fileNow,
   } = opts || {};
 
   if (!conditionKey) throw new Error('routeAlert requires a stable conditionKey');
@@ -769,15 +805,29 @@ async function routeAlert(opts) {
   const ledger = loadLedger();
   const existing = ledger.conditions[conditionKey];
   const now = new Date().toISOString();
+  const nowMs = Date.parse(now);
+  // BRO-4487: see DEFERRED_AUTO_FILE_AFTER_HOURS. dispatchAtFiling cards are
+  // worked within minutes (red-first), and fileNow is for callers that must
+  // get a card back on this call (the e2e canary), so neither is deferred.
+  const deferAuto = disposition === 'auto' && !dispatchAtFiling && !fileNow;
+  const incidentOpenedAt = currentIncidentOpenedAt(existing, nowMs);
 
-  if (existing && existing.status === 'open' && hoursSince(existing.lastNotifiedAt) < cooldownHours) {
+  // A deferred incident that has reached its filing age must get past the
+  // cooldown short-circuit below, or the default 168h cooldown would hold
+  // the card back a full week (second-opinion blocker, BRO-4487).
+  const deferredDue = deferAuto && deferredAutoIsDue(existing, nowMs);
+  if (existing && existing.status === 'open' && hoursSince(existing.lastNotifiedAt) < cooldownHours && !deferredDue) {
     existing.lastSeen = now;
+    existing.incidentOpenedAt = incidentOpenedAt;
     existing.silentRefires = (existing.silentRefires || 0) + 1;
     persistLedger(ledger);
     // linearIdentifier survives the cooldown path so consumers (health-check's
     // digest line) keep telling the truth about WHERE the tracker lives on
     // every silent refire, not just the first rail-2 short-circuit.
-    return { action: 'silent', conditionKey, cardId: existing.cardId || null, linearIdentifier: existing.linearIdentifier || null };
+    return {
+      action: 'silent', conditionKey, cardId: existing.cardId || null, linearIdentifier: existing.linearIdentifier || null,
+      ...(existing.deferredAuto && !existing.linearIdentifier ? { deferred: true } : {}),
+    };
   }
 
   // Page-worthy gate (card #611): 'human' only actually pages if conditionKey
@@ -785,7 +835,7 @@ async function routeAlert(opts) {
   // downgraded to 'digest' — the caller's requested disposition is honored in
   // spirit (the owner is still told, just not by immediate email).
   const pageGated = disposition === 'human' && !isPageWorthy(conditionKey);
-  let effectiveDisposition = pageGated ? 'digest' : disposition;
+  let effectiveDisposition = pageGated ? 'digest' : (deferAuto ? 'digest' : disposition);
   if (pageGated) {
     console.log(`[alert-router] disposition 'human' requested for "${conditionKey}" ("${title}") is not on the page-worthy allowlist — routed to the morning digest instead. Add it to scripts/lib/page-worthy-alerts.js if this should page immediately.`);
   }
@@ -799,7 +849,10 @@ async function routeAlert(opts) {
   let digestNotifyCount = null;
   if (effectiveDisposition === 'digest') {
     digestNotifyCount = (existing?.notifyCount || 0) + 1;
-    digestDecision = decideDigestEscalation({ conditionKey, existing, notifyCount: digestNotifyCount, now: Date.now() });
+    digestDecision = decideDigestEscalation({
+      conditionKey, notifyCount: digestNotifyCount, now: Date.now(), deferredAuto: deferAuto,
+      existing: existing ? { ...existing, incidentOpenedAt } : existing,
+    });
     if (digestDecision.action === 'promote') {
       effectiveDisposition = 'auto';
       promotedFromDigest = true;
@@ -840,6 +893,8 @@ async function routeAlert(opts) {
         disposition: effectiveDisposition,
         title,
         firstSeen: existing?.firstSeen || now,
+        incidentOpenedAt,
+        ...(deferAuto ? { deferredAuto: true } : {}),
         lastSeen: now,
         lastNotifiedAt: now,
         // See decideDigestEscalation()'s header: only advance this when we
@@ -861,6 +916,11 @@ async function routeAlert(opts) {
   // New incident: first time, or reoccurred after resolveCondition() /
   // cooldown expiry. Dispatch per effective disposition.
   const result = { action: effectiveDisposition, conditionKey };
+  // BRO-4487: an 'auto' request that is still waiting out its incident age.
+  // Callers that check for a filed tracker (audit-dependencies, health-check)
+  // read this to say "watching" instead of "dispatch failed".
+  if (deferAuto && effectiveDisposition === 'digest') result.deferred = true;
+  const ageEscalation = promotedFromDigest && digestDecision && digestDecision.reason === 'age';
   if (pageGated) result.requestedDisposition = disposition;
   let notifyOk = true;
   if (effectiveDisposition === 'auto') {
@@ -894,8 +954,12 @@ async function routeAlert(opts) {
         // reminder only, see decideDigestEscalation()'s 'resurface' branch
         // below) instead of repeating in full every day.
         queueDigestLine({
-          title: `${title} — escalated after ${digestNotifyCount} notifications`,
-          description: `Filed ${dispatch.linearIdentifier} for owner triage after ${digestNotifyCount} repeats with no tracker.\n\n${description}`,
+          title: ageEscalation
+            ? `${title} — still happening after ${Math.round(DEFERRED_AUTO_FILE_AFTER_HOURS / 24)} days`
+            : `${title} — escalated after ${digestNotifyCount} notifications`,
+          description: ageEscalation
+            ? `Filed ${dispatch.linearIdentifier}: this has been happening for ${Math.round(DEFERRED_AUTO_FILE_AFTER_HOURS / 24)}+ days without clearing.\n\n${description}`
+            : `Filed ${dispatch.linearIdentifier} for owner triage after ${digestNotifyCount} repeats with no tracker.\n\n${description}`,
           severity, conditionKey, url, decision: true, fields,
         });
         result.lastSurfacedAt = now;
@@ -963,6 +1027,8 @@ async function routeAlert(opts) {
     ...(pageGated ? { requestedDisposition: disposition } : {}),
     title,
     firstSeen: existing?.firstSeen || now,
+    incidentOpenedAt,
+    ...(deferAuto ? { deferredAuto: true } : {}),
     lastSeen: now,
     lastNotifiedAt: now,
     // See decideDigestEscalation()'s header: this is a SEPARATE clock from
@@ -1072,6 +1138,10 @@ module.exports = {
   loadLedger,
   headStandsAlone,
   decideDigestEscalation,
+  currentIncidentOpenedAt,
+  deferredAutoIsDue,
+  DEFERRED_AUTO_FILE_AFTER_HOURS,
+  INCIDENT_GAP_RESET_HOURS,
   isNeverQuietCondition,
   NEVER_QUIET_CONDITION_RE,
   ESCALATION_NOTIFY_THRESHOLD,

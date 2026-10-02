@@ -4707,7 +4707,11 @@ async function sendEmailDigest(results, history, workflowSummary, autoFixResults
         const urgency = URGENCY_LABELS[r._escalatedUrgency || (entry ? entry.urgency : 'low')] || URGENCY_LABELS['low'];
         const dispatch = dispatchedCards[r.name];
         const instruction = dispatch
-          ? (dispatch.action === 'silent'
+          ? (dispatch.deferred
+              // BRO-4487: plain 'auto' alerts wait out their incident age
+              // before a card is filed; say so instead of claiming a tracker.
+              ? `${entry.humanAction} — being watched; a card is filed if this is still happening after 3 days.`
+              : dispatch.action === 'silent'
               // Rail 2 (task #1341): a Linear-deduped condition never filed a
               // Notion card — say where the tracker actually lives, or the
               // owner goes hunting for an Action Queue card that doesn't exist.

@@ -272,7 +272,7 @@ test('routeAlert: disposition=auto skips filing when Linear already tracks the c
       conditionKey: 'test:linear-dup',
       title: 'Test alert',
       description: 'Something needs attention.',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(result.action, 'silent');
     assert.equal(result.cardId, null);
@@ -295,8 +295,8 @@ test('routeAlert: a Linear-deduped condition still gets ledger-cooldown protecti
     linearSearchIssuesImpl: async () => ({ identifier: 'BRO-778', title: 'Already tracked' }),
   });
   try {
-    await router.routeAlert({ conditionKey: 'test:linear-dup-cooldown', title: 't', description: 'd', disposition: 'auto' });
-    await router.routeAlert({ conditionKey: 'test:linear-dup-cooldown', title: 't', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:linear-dup-cooldown', title: 't', description: 'd', disposition: 'auto', fileNow: true });
+    await router.routeAlert({ conditionKey: 'test:linear-dup-cooldown', title: 't', description: 'd', disposition: 'auto', fileNow: true });
     assert.equal(calls.linearSearchIssues.length, 1, 'the 2nd call must be caught by the top-of-function ledger cooldown, not re-hit Linear');
     assert.equal(calls.createLinearIssue.length, 0);
   } finally {
@@ -314,10 +314,10 @@ test('routeAlert: rail-2 dedupe keeps the tracker reference — a Linear match m
     linearSearchIssuesImpl: async () => (++searchCalls === 1 ? null : { identifier: 'BRO-999', title: 'Now tracked' }),
   });
   try {
-    const first = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', cooldownHours: 0 });
+    const first = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', fileNow: true, cooldownHours: 0 });
     assert.equal(first.linearIdentifier, 'BRO-999', 'filing must surface the created issue identifier');
     assert.equal(first.cardId, null, 'no Notion card exists on the Linear path');
-    const second = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', cooldownHours: 0 });
+    const second = await router.routeAlert({ conditionKey: 'test:cardid-preserved', title: 't', description: 'd', disposition: 'auto', fileNow: true, cooldownHours: 0 });
     assert.equal(second.action, 'silent');
     assert.equal(second.linearIdentifier, 'BRO-999');
     const ledger = router.loadLedger();
@@ -332,8 +332,8 @@ test('routeAlert: the cooldown short-circuit carries linearIdentifier on every s
     linearSearchIssuesImpl: async () => ({ identifier: 'BRO-779', title: 'Already tracked' }),
   });
   try {
-    await router.routeAlert({ conditionKey: 'test:cooldown-linear-id', title: 't', description: 'd', disposition: 'auto' });
-    const second = await router.routeAlert({ conditionKey: 'test:cooldown-linear-id', title: 't', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:cooldown-linear-id', title: 't', description: 'd', disposition: 'auto', fileNow: true });
+    const second = await router.routeAlert({ conditionKey: 'test:cooldown-linear-id', title: 't', description: 'd', disposition: 'auto', fileNow: true });
     assert.equal(second.action, 'silent');
     assert.equal(second.linearIdentifier, 'BRO-779', 'the 2nd+ silent call must surface WHERE the tracker lives, not just that it exists');
   } finally {
@@ -353,7 +353,7 @@ test('routeAlert: a Linear API failure FAILS OPEN — files the card as before, 
       conditionKey: 'test:linear-outage',
       title: 'Test alert',
       description: 'Something needs attention.',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(result.action, 'auto');
     assert.equal(result.linearIdentifier, 'BRO-999', 'the issue must still be filed — a Linear DEDUPE outage must never suppress the filing attempt');
@@ -386,7 +386,7 @@ test("routeAlert: a filed card's notes embed a greppable [conditionKey:...] mark
     },
   });
   try {
-    await router.routeAlert({ conditionKey: 'test:marker-check', title: 't', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:marker-check', title: 't', description: 'd', disposition: 'auto', fileNow: true });
   } finally {
     restore();
   }
@@ -435,7 +435,7 @@ test('routeAlert: new incident with disposition=auto dispatches exactly one card
       conditionKey: 'test:new-incident',
       title: 'Test alert',
       description: 'Something needs attention.',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(result.action, 'auto');
     assert.equal(result.linearIdentifier, 'BRO-999');
@@ -475,7 +475,7 @@ test('routeAlert: disposition=auto creates the Linear issue via the injectable c
       title: 'Real chokepoint wiring check',
       description: 'Something needs attention.',
       severity: 'error',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(result.action, 'auto');
     assert.equal(result.cardId, null, 'no Notion card — Linear is the only tracker');
@@ -519,7 +519,7 @@ test('routeAlert (BRO-2656): the real chokepoint call never writes to the produc
       title: 'BRO-2656 ledger isolation check',
       description: 'Must not touch the real intake ledger.',
       severity: 'error',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
   } finally {
     restore();
@@ -538,7 +538,7 @@ test('routeAlert: a failed card dispatch is NOT recorded as notified — retries
       conditionKey: 'test:dispatch-fails',
       title: 'Test alert',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(first.dispatchOk, false);
     // The real underlying error must be propagated, not just a boolean —
@@ -556,7 +556,7 @@ test('routeAlert: a failed card dispatch is NOT recorded as notified — retries
       conditionKey: 'test:dispatch-fails',
       title: 'Test alert',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(second.action, 'auto');
     assert.equal(calls.createLinearIssue.length, 2);
@@ -593,7 +593,7 @@ test('routeAlert: a USAGE_LIMIT_EXCEEDED dispatch failure pages the owner, unlik
       conditionKey: 'test:usage-limit-exceeded',
       title: 'Test alert',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(result.dispatchOk, false);
     assert.equal(result.usageLimitExceeded, true);
@@ -631,7 +631,7 @@ test('routeAlert: an ordinary (non-cap) dispatch failure does NOT page the owner
       conditionKey: 'test:ordinary-dispatch-failure',
       title: 'Test alert',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(result.dispatchOk, false);
     assert.equal(result.usageLimitExceeded, undefined);
@@ -657,7 +657,7 @@ test('routeAlert: repeated USAGE_LIMIT_EXCEEDED failures across many conditionKe
     // with its own conditionKey, all trying to auto-dispatch while the cap is
     // hit — plus the SAME conditionKey retried on a later call.
     for (const key of ['test:storm-a', 'test:storm-b', 'test:storm-c', 'test:storm-a']) {
-      await router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto' });
+      await router.routeAlert({ conditionKey: key, title: 't', description: 'd', disposition: 'auto', fileNow: true });
     }
     assert.equal(calls.createLinearIssue.length, 4, 'every failing dispatch attempt still retries (unchanged contract)');
     assert.equal(calls.sendAlert.length, 1, 'only the FIRST failure escalates — the cooldown suppresses the rest');
@@ -673,13 +673,13 @@ test('routeAlert: re-fire of an open incident within cooldown is silent (no seco
       conditionKey: 'test:refire',
       title: 'Test alert',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     const second = await router.routeAlert({
       conditionKey: 'test:refire',
       title: 'Test alert',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(second.action, 'silent');
     // Only the first call actually dispatched a card.
@@ -700,7 +700,7 @@ test('routeAlert: resolveCondition then re-fire notifies again immediately (stat
       conditionKey: 'test:state-change',
       title: 'Test alert',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     const resolved = router.resolveCondition('test:state-change');
     assert.equal(resolved, true);
@@ -709,7 +709,7 @@ test('routeAlert: resolveCondition then re-fire notifies again immediately (stat
       conditionKey: 'test:state-change',
       title: 'Test alert',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(third.action, 'auto');
     // Both the original incident and the reoccurrence dispatched cards.
@@ -970,7 +970,7 @@ test('routeAlert: rejects a missing conditionKey', async () => {
   const { router, restore } = loadRouterWithFakes();
   try {
     await assert.rejects(
-      () => router.routeAlert({ title: 'x', disposition: 'auto' }),
+      () => router.routeAlert({ title: 'x', disposition: 'auto', fileNow: true }),
       /conditionKey/
     );
   } finally {
@@ -985,7 +985,7 @@ test('deleteCondition: hard-removes an open condition; no-op on an unknown key',
       conditionKey: 'test:to-delete',
       title: 'x',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.ok(router.loadLedger().conditions['test:to-delete']);
 
@@ -1007,8 +1007,8 @@ test('readDispatchAttempts: records both successes and failures, independent of 
     createLinearIssueImpl: () => { throw new Error("Cannot find module '@notionhq/client'"); },
   });
   try {
-    await router.routeAlert({ conditionKey: 'test:attempt-a', title: 'a', description: 'd', disposition: 'auto' });
-    await router.routeAlert({ conditionKey: 'test:attempt-b', title: 'b', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:attempt-a', title: 'a', description: 'd', disposition: 'auto', fileNow: true });
+    await router.routeAlert({ conditionKey: 'test:attempt-b', title: 'b', description: 'd', disposition: 'auto', fileNow: true });
 
     const attempts = router.readDispatchAttempts({ days: 7 });
     assert.equal(attempts.length, 2);
@@ -1026,7 +1026,7 @@ test('readDispatchAttempts: records both successes and failures, independent of 
 test('readDispatchAttempts: a successful dispatch is also logged (ok=true)', async () => {
   const { router, restore } = loadRouterWithFakes();
   try {
-    await router.routeAlert({ conditionKey: 'test:attempt-ok', title: 'ok', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:attempt-ok', title: 'ok', description: 'd', disposition: 'auto', fileNow: true });
     const attempts = router.readDispatchAttempts({ days: 7 });
     assert.equal(attempts.length, 1);
     assert.equal(attempts[0].ok, true);
@@ -1091,7 +1091,7 @@ test('local ledger: cooldown holds across a git checkout that wipes the tracked 
       conditionKey: 'on-monitor-launch-failed-2026-07-31',
       title: 'monitor pass FAILED for tao-of-glass-west-end-2026',
       description: 'launch attempt failed',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
       cooldownHours: 3,
     };
     const first = await router.routeAlert(opts);
@@ -1125,7 +1125,7 @@ test('tracked ledger: the same git checkout wipe re-fires the alert (the bug bei
       conditionKey: 'on-monitor-launch-failed-2026-07-31',
       title: 'monitor pass FAILED for tao-of-glass-west-end-2026',
       description: 'launch attempt failed',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
       cooldownHours: 3,
     };
     await router.routeAlert(opts);
@@ -1196,7 +1196,7 @@ test('local ledger seeds from the committed CI ledger on first use (no cooldown 
       conditionKey: 'ci-condition',
       title: 'already notified by CI',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
       cooldownHours: 3,
     });
     assert.equal(result.action, 'silent', 'CI already notified this inside the cooldown');
@@ -1227,7 +1227,7 @@ test('an unwritable ledger path does not throw — the alert still dispatches, l
       conditionKey: 'test:unwritable-ledger',
       title: 'Test alert',
       description: 'desc',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
     });
     assert.equal(result.action, 'auto', 'the card was still dispatched');
     assert.equal(calls.createLinearIssue.length, 1);
@@ -1923,7 +1923,7 @@ test('routeAlert: dispatchAtFiling files in DISPATCH mode — no PARKED sentinel
       conditionKey: 'test-yml:red:Unit Tests:deadbeef',
       title: 'main test.yml red: Unit Tests / Run unit tests — "t"',
       description: 'main is red.',
-      disposition: 'auto',
+      disposition: 'auto', fileNow: true,
       verify: { line: 'VERIFY: `node scripts/run-unit-tests.js`', note: null },
       dispatchAtFiling: { runId: '424242', runUrl: 'https://github.com/x/y/actions/runs/424242' },
     });
@@ -1949,7 +1949,7 @@ test('routeAlert: dispatchAtFiling files in DISPATCH mode — no PARKED sentinel
 test('routeAlert: without dispatchAtFiling the router still parks (every other auto alert is unchanged)', async () => {
   const { router, calls, restore } = loadRouterWithFakes();
   try {
-    const result = await router.routeAlert({ conditionKey: 'test:still-parked', title: 't', description: 'd', disposition: 'auto' });
+    const result = await router.routeAlert({ conditionKey: 'test:still-parked', title: 't', description: 'd', disposition: 'auto', fileNow: true });
     assert.equal(result.dispatch, undefined);
     assert.ok(calls.createLinearIssue[0].park);
     assert.equal(calls.createLinearIssue[0].dispatch, undefined);
@@ -2006,7 +2006,7 @@ test('patchCondition only touches OPEN conditions and resolveCondition records t
   const { router, restore } = loadRouterWithFakes();
   try {
     assert.equal(router.patchCondition('test:missing', { absentRunIds: ['1'] }), false);
-    await router.routeAlert({ conditionKey: 'test:patch', title: 't', description: 'd', disposition: 'auto' });
+    await router.routeAlert({ conditionKey: 'test:patch', title: 't', description: 'd', disposition: 'auto', fileNow: true });
     assert.ok(router.patchCondition('test:patch', { absentRunIds: ['1'] }));
     assert.deepEqual(router.loadLedger().conditions['test:patch'].absentRunIds, ['1']);
     assert.ok(router.resolveCondition('test:patch', { reason: 'stale-signature' }));
@@ -2014,6 +2014,98 @@ test('patchCondition only touches OPEN conditions and resolveCondition records t
     assert.equal(cond.status, 'resolved');
     assert.equal(cond.resolveReason, 'stale-signature');
     assert.equal(router.patchCondition('test:patch', { absentRunIds: [] }), false, 'closed → no-op');
+  } finally {
+    restore();
+  }
+});
+
+// ── BRO-4487: plain 'auto' alerts are digest lines first; one card only after 3 days open ──
+const HOUR = 3600 * 1000;
+const isoAgo = (h) => new Date(Date.now() - h * HOUR).toISOString();
+
+test('currentIncidentOpenedAt / deferredAutoIsDue: incident clock resets on resolve or a 48h gap', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const now = Date.now();
+    const nowIso = new Date(now).toISOString();
+    assert.equal(router.currentIncidentOpenedAt(undefined, now), nowIso, 'never seen: new incident');
+    assert.equal(router.currentIncidentOpenedAt({ status: 'resolved', incidentOpenedAt: isoAgo(100), lastSeen: isoAgo(1) }, now), nowIso, 'resolved: new incident');
+    assert.equal(router.currentIncidentOpenedAt({ status: 'open', incidentOpenedAt: isoAgo(100), lastSeen: isoAgo(50) }, now), nowIso, 'not seen for 50h: new incident');
+    const opened = isoAgo(80);
+    assert.equal(router.currentIncidentOpenedAt({ status: 'open', incidentOpenedAt: opened, lastSeen: isoAgo(5) }, now), opened);
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1) }, now), true);
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(71), lastSeen: isoAgo(1) }, now), false, 'under 72h');
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1), linearIdentifier: 'BRO-1' }, now), false, 'already carded');
+    assert.equal(router.deferredAutoIsDue({ status: 'open', incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1) }, now), false, 'not a deferred condition');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: plain auto files NO card on first sighting; it queues a digest line and is marked deferred', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const r = await router.routeAlert({ conditionKey: 'test:defer', title: 'Thing broke', description: 'd', disposition: 'auto' });
+    assert.equal(r.action, 'digest');
+    assert.equal(r.deferred, true);
+    assert.equal(calls.createLinearIssue.length, 0);
+    assert.ok(router.peekDigestQueue().some((l) => l.conditionKey === 'test:defer'));
+    const cond = router.loadLedger().conditions['test:defer'];
+    assert.equal(cond.deferredAuto, true);
+    assert.ok(cond.incidentOpenedAt);
+    const again = await router.routeAlert({ conditionKey: 'test:defer', title: 'Thing broke', description: 'd', disposition: 'auto' });
+    assert.equal(again.action, 'silent');
+    assert.equal(again.deferred, true, 'a silent refire of a waiting condition says it is deferred, not missing a tracker');
+    assert.equal(calls.createLinearIssue.length, 0);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a deferred condition still open after 72h files exactly one card, even inside the 168h cooldown', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'test:defer-due', title: 'Thing broke', description: 'd', disposition: 'auto' });
+    router.patchCondition('test:defer-due', { incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1), lastNotifiedAt: isoAgo(24) });
+    const r = await router.routeAlert({ conditionKey: 'test:defer-due', title: 'Thing broke', description: 'd', disposition: 'auto' });
+    assert.equal(r.action, 'auto');
+    assert.equal(r.linearIdentifier, 'BRO-999');
+    assert.equal(calls.createLinearIssue.length, 1);
+    assert.ok(calls.createLinearIssue[0].park, 'the late card is parked, same as before');
+    assert.ok(router.peekDigestQueue().some((l) => /still happening after 3 days/.test(l.title)));
+    const after = await router.routeAlert({ conditionKey: 'test:defer-due', title: 'Thing broke', description: 'd', disposition: 'auto' });
+    assert.equal(after.action, 'silent');
+    assert.equal(after.linearIdentifier, 'BRO-999');
+    assert.equal(calls.createLinearIssue.length, 1, 'no second card');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a deferred condition that went quiet for 48h+ restarts its clock instead of filing', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'test:defer-gap', title: 't', description: 'd', disposition: 'auto' });
+    router.patchCondition('test:defer-gap', { incidentOpenedAt: isoAgo(200), lastSeen: isoAgo(60), lastNotifiedAt: isoAgo(200) });
+    const r = await router.routeAlert({ conditionKey: 'test:defer-gap', title: 't', description: 'd', disposition: 'auto' });
+    assert.equal(calls.createLinearIssue.length, 0);
+    assert.equal(r.deferred, true);
+    const opened = Date.parse(router.loadLedger().conditions['test:defer-gap'].incidentOpenedAt);
+    assert.ok(Date.now() - opened < HOUR, 'incident clock restarted');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: fileNow and dispatchAtFiling still file on the first call', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const a = await router.routeAlert({ conditionKey: 'test:now', title: 't', description: 'd', disposition: 'auto', fileNow: true });
+    const b = await router.routeAlert({ conditionKey: 'test-yml:red:x:1', title: 't', description: 'd', disposition: 'auto', dispatchAtFiling: { runId: '1' } });
+    assert.equal(a.action, 'auto');
+    assert.equal(b.action, 'auto');
+    assert.equal(a.deferred, undefined);
+    assert.equal(calls.createLinearIssue.length, 2);
   } finally {
     restore();
   }
