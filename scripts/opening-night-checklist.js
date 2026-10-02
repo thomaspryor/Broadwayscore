@@ -35,7 +35,7 @@ const REVIEWS_FILE = path.join(DATA_DIR, 'reviews.json');
 const CRITIC_CONSENSUS_FILE = path.join(DATA_DIR, 'critic-consensus.json');
 const DRIFT_STATE_FILE = path.join(DATA_DIR, 'audit', 'drift-state.json');
 const HISTORY_FILE = path.join(DATA_DIR, 'audit', 'opening-night-history.json');
-const REVIEW_TEXTS_ROOT = path.join(DATA_DIR, 'review-texts');
+const REVIEW_TEXTS_ROOT = require('./lib/review-texts-dir').resolveReviewTextsDir();
 
 // ---------------------------------------------------------------------------
 // CLI args
