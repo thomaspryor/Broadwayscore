@@ -97,6 +97,7 @@ test('decideClosure refuses every unsafe case', () => {
   assert.equal(r({ comments: [{ body: `${CLOSER_MARKER}.`, createdAt: iso(NOW - 3 * DAY) }] }), 'closer-already-tried');
   assert.equal(r({}, [{ sha: 'a', message: 'BRO-10: other card' }]), 'no-commit-naming-card-touched-test');
   assert.equal(r({}, []), 'no-commit-naming-card-touched-test');
+  assert.equal(r({}, [{ sha: 'a', message: 'Revert "BRO-1: fix"\n\nThis reverts commit abc.' }]), 'no-commit-naming-card-touched-test');
   // In Progress needs 72h of quiet, not 24h.
   const ip = { ...candidate, state: 'In Progress' };
   assert.equal(r({ state: { name: 'In Progress' }, updatedAt: iso(NOW - 2 * DAY), comments: [] }, commits, ip), 'recent-activity');

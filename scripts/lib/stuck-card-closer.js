@@ -115,7 +115,8 @@ function decideClosure({ candidate, issue, commits, nowMs }) {
   if (futureRecheckAfter([issue.description, ...comments.map((c) => c.body)], nowMs)) {
     return { close: false, reason: 'recheck-after-pending' };
   }
-  const own = (commits || []).find((c) => mentionsCard(c.message, candidate.id));
+  // A revert names the card too, but it undoes the fix rather than landing it.
+  const own = (commits || []).find((c) => !/^Revert\b/.test(String(c.message || '').trim()) && mentionsCard(c.message, candidate.id));
   if (!own) return { close: false, reason: 'no-commit-naming-card-touched-test' };
   return { close: true, sha: own.sha };
 }
