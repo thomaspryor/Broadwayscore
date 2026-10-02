@@ -6,7 +6,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange } = require('../discover-regional-serp-reviews.js');
+const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange } = require('./regional-serp-discovery.js');
 const { calculateDateWindow } = require('./url-discovery.js');
 
 const regional = { id: 'purpose-regional-2026', title: 'Purpose', market: 'regional', status: 'open', venue: 'Huntington Theatre Company (Calderwood Pavilion), Boston, MA' };
