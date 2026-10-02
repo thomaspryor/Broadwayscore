@@ -20,6 +20,7 @@ const ALLOWED = new Set([
   'tags', 'images', 'synopsis', 'theaterAddress', 'ticketLinks', 'cast', 'creativeTeam',
   'ibdbRevivalChecked', 'runtime', 'intermissions', 'ageRecommendation', 'discoverySource',
   'provisional', 'tourOf', 'tourScheduleSlug', 'tourLaunchEvidence', 'statusSource',
+  'closingDateSource', 'closingDateUpdatedAt', 'discoveredAt',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];
@@ -38,8 +39,9 @@ function marketShapeProblem(shows, show) {
   }
   if (show.category === 'regional') {
     if (show.market !== 'regional') return 'add-show: category "regional" needs market "regional"';
-    if (!/-regional(-|$)/.test(show.id)) return 'add-show: regional id must contain "-regional-<year>"';
-    if (!/,\s*[A-Z]{2}$/.test(show.venue)) return `add-show: regional venue "${show.venue}" must read "Theater, City, ST"`;
+    if (!/-regional(-|$)/.test(show.id)) return 'add-show: regional id must contain "-regional"';
+    // "Theater, City, ST" (US) or "Theater, Town" (UK feeder venues).
+    if (!/^[^,]+,\s*[^,]+/.test(show.venue)) return `add-show: regional venue "${show.venue}" must read "Theater, City, ST"`;
   }
   if (show.category === 'tour') {
     if (show.market !== 'tour') return 'add-show: category "tour" needs market "tour"';
@@ -47,7 +49,7 @@ function marketShapeProblem(shows, show) {
     if (show.venue !== 'North American Tour') return 'add-show: tour venue must be "North American Tour"';
     const parent = shows.find(s => s.id === show.tourOf);
     if (!parent) return `add-show: tourOf "${show.tourOf}" not found`;
-    if ((parent.category || 'broadway') !== 'broadway') return `add-show: tourOf "${show.tourOf}" must be a broadway show`;
+    if (parent.category !== 'broadway') return `add-show: tourOf "${show.tourOf}" must be a broadway show`;
   }
   return null;
 }

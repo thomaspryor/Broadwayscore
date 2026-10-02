@@ -71,6 +71,8 @@ test('adds a well-formed regional entry', () => {
   const shows = [];
   assert.equal(applyAddShow(shows, { show: regional() }).ok, true);
   assert.equal(shows[0].provisional, true);
+  const uk = { ...regional(), id: 'y-regional-2026', slug: 'y-regional-2026', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon' };
+  assert.equal(applyAddShow(shows, { show: uk }).ok, true);
 });
 test('refuses malformed regional entries', () => {
   assert.equal(applyAddShow([], { show: { ...regional(), market: 'broadway' } }).ok, false);
