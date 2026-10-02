@@ -64,6 +64,12 @@ test('namedNonReviewReason: seventh wave — OWE opening ticketing/listing hosts
   assert.equal(namedNonReviewReason('https://www.westendtheatre.com/reviews/cats/'), null);
 });
 
+test('classifyReviewUrl: NYTG /theatre-news/ cast announcements are news, /reviews/ stays ok', () => {
+  const { classifyReviewUrl } = require('./non-review-url-patterns.js');
+  assert.deepEqual(classifyReviewUrl('https://www.newyorktheatreguide.com/theatre-news/news/cast-set-for-creation-stories-and-all-the-important-importants-off-broadway'), { ok: false, reason: 'news-article' });
+  assert.equal(classifyReviewUrl('https://www.newyorktheatreguide.com/reviews/creation-stories-and-all-the-important-importants-off-broadway-review').ok, true);
+});
+
 test('classifyReviewUrl: host-scoped ticket pages blocked, real review shapes stay ok', () => {
   const { classifyReviewUrl } = require('./non-review-url-patterns.js');
   // WET /NNNNNN/shows/… show pages and LBO root ticket slugs are listings.

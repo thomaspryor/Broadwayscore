@@ -220,6 +220,11 @@ const NAMED_NON_REVIEW_URL_PATTERNS = [
   // the-infinite-wrench-off-broadway-2025 82, the-house-of-the-negro-insane 49);
   // its reviews live under /reviews/. The rest: 0 live reviews each.
   { host: /(^|\.)newyorktheatreguide\.com$/, path: /^\/show\//, reason: 'ticketing-listing' },
+  // NYTG /theatre-news/ is news (cast announcements); its reviews live under /reviews/.
+  // creation-stories-off-broadway-2026: a flagged nytg--unknown.json holding a
+  // /theatre-news/news/cast-set-for-... url blocked Caroline Cao's real review
+  // (stale-flag-on-existing-file) for hours on opening night, 2026-10-01.
+  { host: /(^|\.)newyorktheatreguide\.com$/, path: /^\/theatre-news\//, reason: 'news-article' },
   { host: /(^|\.)gigantic\.com$/, reason: 'ticketing-reseller' },
   { host: /(^|\.)concordtheatricals\.com$/, reason: 'licensing-listing' },
   { host: /(^|\.)abouttheartists\.com$/, reason: 'production-database-listing' },
