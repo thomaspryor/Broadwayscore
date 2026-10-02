@@ -728,6 +728,44 @@ jobs:
             bash scripts/lib/push-with-retry.sh 25 main
           fi
 
+      # BRO-4523: act on the audit's STUCK label. Cards whose own check passes
+      # on main sat open for weeks because nothing read the label. REPORT-ONLY
+      # until the owner approves real closes (add --apply then); the report
+      # lists which cards would close and why the rest were left. Rules:
+      # scripts/lib/stuck-card-closer.js. Same shadow-mode reasoning as the
+      # audit step above: a crash here must never block the commits after it.
+      - name: Stuck verified card closer
+        if: always()
+        # lint-allow-swallow: report-only telemetry; the committed report's
+        # generatedAt shows a missed day, and the audit it reads is already
+        # watched by the digest's 36h freshness row.
+        continue-on-error: true
+        timeout-minutes: 25
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          STUCK_CARD_CLOSER_KILL_SWITCH: ${{ vars.STUCK_CARD_CLOSER_KILL_SWITCH }}
+        run: node scripts/close-stuck-verified-cards.js
+
+      - name: Commit stuck card closer report
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 17
+        env:
+          PUSH_DEADLINE_SEC: '900'
+          PUSH_API_FALLBACK_AFTER_ATTEMPTS: '3'
+          GIT_NET_TIMEOUT_SEC: '30'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add data/audit/stuck-card-closer.json 2>/dev/null || true
+          if git diff --staged --quiet; then
+            echo "No stuck card closer changes"
+          else
+            git commit -m "data: Update stuck card closer report [skip ci]"
+            bash scripts/lib/push-with-retry.sh 25 main
+          fi
+
       # Cross-outlet attribution drift check (card #1550, Notion 3bd637c5-416f-81b0):
       # audit-cross-outlet-attributions.test.mjs's four acceptance assertions were
       # only CI-gated when someone edited the audited script itself (test.yml

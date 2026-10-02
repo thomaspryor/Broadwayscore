@@ -104,3 +104,50 @@ test('resolveModel: fable is never auto-selected (no triage, no hint, or hint te
   // fable only reachable via the explicit flag layer
   assert.equal(resolveModel({ explicitFlag: 'fable', task: task2, card: null, notionId: null, queuePath: '/nonexistent/queue.json' }), 'fable');
 });
+
+// BRO-4523: Linear cards had no layer-3 path (notionId:null), so every one ran on Sonnet.
+const { linearEscalationModel, countRecentLinearOpusLaunches, linearOpusDailyCap } = require('./bsc-next-model.js');
+
+test('linearEscalationModel: P0 or a prior "Dispatched" comment escalates to opus; a first-run P1 stays on sonnet', () => {
+  const dispatched = { body: 'Dispatched 46f3f8b6 to linear:BRO-1-x at 2026-09-29T19:37:37.296Z (headless)' };
+  assert.equal(linearEscalationModel({ issue: { priority: 2, comments: { nodes: [] } }, recentOpusLaunches: 0, cap: 6 }).model, 'sonnet');
+  assert.equal(linearEscalationModel({ issue: { priority: 1, comments: { nodes: [] } }, recentOpusLaunches: 0, cap: 6 }).model, 'opus');
+  assert.equal(linearEscalationModel({ issue: { priority: 2, comments: { nodes: [dispatched] } }, recentOpusLaunches: 0, cap: 6 }).model, 'opus');
+  // a comment that merely mentions dispatching mid-sentence is not a prior attempt
+  assert.equal(linearEscalationModel({ issue: { priority: 2, comments: { nodes: [{ body: 'Not yet Dispatched anywhere' }] } }, recentOpusLaunches: 0, cap: 6 }).model, 'sonnet');
+  // missing comments / missing issue never throw and never escalate
+  assert.equal(linearEscalationModel({ issue: { priority: 3 }, recentOpusLaunches: 0, cap: 6 }).model, 'sonnet');
+  assert.equal(linearEscalationModel({ issue: null, recentOpusLaunches: 0, cap: 6 }).model, 'sonnet');
+});
+
+test('linearEscalationModel: over the rolling cap falls back to sonnet and says why', () => {
+  const r = linearEscalationModel({ issue: { priority: 1, comments: { nodes: [] } }, recentOpusLaunches: 6, cap: 6 });
+  assert.equal(r.model, 'sonnet');
+  assert.match(r.reason, /cap reached \(6\/6/);
+  // an unreadable ledger is passed in as Infinity by the caller: fail toward sonnet
+  assert.equal(linearEscalationModel({ issue: { priority: 1 }, recentOpusLaunches: Infinity, cap: 6 }).model, 'sonnet');
+});
+
+test('countRecentLinearOpusLaunches: counts only linear opus launch rows inside the 24h window', () => {
+  const now = Date.parse('2026-10-02T12:00:00Z');
+  const rows = [
+    { event: 'launch', taskId: 'linear:BRO-1', model: 'opus', ts: '2026-10-02T11:00:00Z' },
+    { event: 'launch', taskId: 'linear:BRO-2', model: 'opus', ts: '2026-10-01T12:30:00Z' },
+    { event: 'launch', taskId: 'linear:BRO-3', model: 'opus', ts: '2026-10-01T11:00:00Z' }, // >24h old
+    { event: 'launch', taskId: 'linear:BRO-4', model: 'sonnet', ts: '2026-10-02T11:00:00Z' },
+    { event: 'launch', taskId: '1234', model: 'opus', ts: '2026-10-02T11:00:00Z' }, // task-list dispatch
+    { event: 'job-done', taskId: 'linear:BRO-5', model: 'opus', ts: '2026-10-02T11:00:00Z' },
+    { event: 'launch', taskId: 'linear:BRO-6', model: 'opus', ts: 'garbage' },
+    null,
+  ];
+  assert.equal(countRecentLinearOpusLaunches(rows, now), 2);
+  assert.equal(countRecentLinearOpusLaunches(undefined, now), 0);
+});
+
+test('linearOpusDailyCap: env override, 0 allowed (Opus off), junk falls back to the default', () => {
+  assert.equal(linearOpusDailyCap({}), 6);
+  assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: '10' }), 10);
+  assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: '0' }), 0);
+  assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: 'lots' }), 6);
+  assert.equal(linearOpusDailyCap({ LINEAR_OPUS_DAILY_CAP: '-1' }), 6);
+});

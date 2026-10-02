@@ -96,7 +96,7 @@ const { launchCmuxSession, makeSeedProcessProbe } = require('./lib/cmux-launch.j
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const cmuxws = require('./lib/cmux-workspaces.js');
 const { buildAutoTitle, projectOf } = require('./lib/workspace-naming.js');
-const { resolveModel } = require('./lib/bsc-next-model.js');
+const { resolveModel, explicitModelHint, countRecentLinearOpusLaunches, linearEscalationModel, linearOpusDailyCap } = require('./lib/bsc-next-model.js');
 // The shared guard/gate lib (task #1303 plan review item 2) — see that
 // file's header for the DispatchGuardTask shape these expect.
 const {
@@ -489,7 +489,16 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // ...}) — reused as-is (an issue description carries the same "Model: Opus"
   // hint-line convention a Notion card's notes would) rather than
   // re-implementing the same 3 resolution layers for Linear.
-  const model = resolveModel({ explicitFlag: explicitModel, task: { description: issue.description }, card: null, notionId: null });
+  let model = resolveModel({ explicitFlag: explicitModel, task: { description: issue.description }, card: null, notionId: null });
+  // BRO-4523: no flag and no hint → the Linear escalation rule (P0 or retry
+  // → Opus, under a rolling daily cap) instead of the dead Notion triage path.
+  if (explicitModel === null && !explicitModelHint({ description: issue.description }, null)) {
+    let recent = 0;
+    try { recent = countRecentLinearOpusLaunches(readLedgerEntriesFn(), Date.now()); } catch { recent = Infinity; }
+    const pick = linearEscalationModel({ issue, recentOpusLaunches: recent, cap: linearOpusDailyCap() });
+    model = pick.model;
+    console.log(`[linear-next] model: ${model} (${pick.reason})`);
+  }
   const project = projectOf({ tags: ld.issueLabelNames(issue).join(','), category: null, subject: issue.title });
   // BRO-3652 (owner escalation 2026-09-16, "no more fire-and-forget
   // dispatches"): the supervised headless path is the DEFAULT. bsc-runner

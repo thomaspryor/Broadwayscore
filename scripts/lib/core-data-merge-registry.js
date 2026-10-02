@@ -510,6 +510,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-09-15 (BRO-3426): same writer (scripts/audit-done-evidence.js:69), same invoking step and same `git add` line as audit/done-evidence-audit.json above — both files are written by the same run and staged together. One READER: scripts/lib/digest-snapshots.js:128 registers it as the `doneEvidence` SNAPSHOTS row, which scripts/send-morning-digest.js renders; reading never conflicts with the API fallback\'s ours-wins semantics. Same full-overwrite (not append-only) shape and the same residual local-vs-CI clobber risk accepted for the same reason.',
     note: 'the {generatedAt, bannerText, items, moreCount} view model send-morning-digest.js renders as the "Done-evidence audit" block',
   },
+  {
+    file: 'audit/stuck-card-closer.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-10-02 (BRO-4523): sole WRITER scripts/close-stuck-verified-cards.js (fs.writeFileSync, whole document), invoked only by data-health-check.yml\'s "Stuck verified card closer" step; the same workflow\'s "Commit stuck card closer report" step is the only git-add of the path. No readers. Full-overwrite report regenerated each run, so the API fallback\'s ours-wins semantics cannot lose history. Same residual local-vs-CI clobber risk accepted for audit/done-evidence-audit.json above, on the same grounds. (This script is also the first READER of audit/done-evidence-audit.json; it reads it from the runner disk in the same job, not from main.)',
+    note: 'per-card would-close/closed/left verdicts for open cards the done-evidence audit labelled STUCK',
+  },
   // BRO-2699 (2026-09-07): outlet-registry-baseline-maintenance.yml's daily
   // cron exists specifically to keep these two baseline files current so
   // test.yml's "Audit outlet-registry gaps" --strict gate doesn't flap red
