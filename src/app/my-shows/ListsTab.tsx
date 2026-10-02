@@ -179,13 +179,16 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
           onAddShow={(showId) => handleAddToList(activeListId, showId)}
           onRemoveShow={(showId) => handleRemoveFromList(activeListId, showId)}
           onShare={async () => {
+            // Sharing a private list makes it public; say so, since the page shows the owner's name.
+            const madePublic = !activeList.is_public;
             const url = await shareList(activeListId);
             if (url) {
+              const note = madePublic ? ' This list is now public and shows your name.' : '';
               try {
                 await navigator.clipboard.writeText(url);
-                showToast?.('Link copied!', 'success');
+                showToast?.(`Link copied!${note}`, 'success');
               } catch {
-                showToast?.(url, 'info');
+                showToast?.(`${url}${note}`, 'info');
               }
             } else {
               showToast?.('Failed to share list.', 'error');
@@ -909,7 +912,7 @@ function ListModal({
                   <span className={`absolute top-0.5 w-5 h-5 bg-white rounded-full shadow transition-transform ${isPublic ? 'translate-x-[22px]' : 'translate-x-0.5'}`} />
                 </button>
               </div>
-              <p className="text-xs text-gray-500 -mt-1">Anyone with the link can view this list</p>
+              <p className="text-xs text-gray-500 -mt-1">Anyone with the link can see this list, your name and your profile photo</p>
               {isPublic && list?.share_slug && (
                 <p className="text-xs text-brand mt-1 truncate">
                   {typeof window !== 'undefined' ? `${window.location.origin}/list/${list.share_slug}` : `/list/${list.share_slug}`}

@@ -94,8 +94,37 @@ Deno.serve(async (req) => {
 
     await deleteRows(base, auth, 'lists', 'user_id', userId);
     await deleteRows(base, auth, 'watchlist', 'user_id', userId);
+
+    // Review photos (iOS app) are files in the private diary-photos bucket at
+    // {userId}/{reviewId}/{photoId}.jpg. Their user_review_photos rows cascade
+    // from reviews, but the files don't, so remove them while the rows still
+    // say where they are. A 404 means the photos table isn't in this project.
+    const photosRes = await fetch(`${base}/rest/v1/user_review_photos?user_id=eq.${userId}&select=storage_path`, { headers: auth });
+    if (photosRes.status !== 404) {
+      if (!photosRes.ok) throw new Error(`fetch photos failed: ${photosRes.status}`);
+      const photos: { storage_path: string }[] = await photosRes.json();
+      // Only paths under the caller's own folder, so a bad row can never
+      // remove someone else's file.
+      const paths = photos.map((p) => p.storage_path).filter((p) => p.startsWith(`${userId}/`));
+      for (let i = 0; i < paths.length; i += 1000) {
+        const res = await fetch(`${base}/storage/v1/object/diary-photos`, {
+          method: 'DELETE',
+          headers: auth,
+          body: JSON.stringify({ prefixes: paths.slice(i, i + 1000) }),
+        });
+        if (!res.ok) throw new Error(`delete photos failed: ${res.status}`);
+      }
+    }
+
     await deleteRows(base, auth, 'reviews', 'user_id', userId);
     await deleteRows(base, auth, 'push_tokens', 'user_id', userId);
+    // Import and search logs hold the caller's pasted titles and queries.
+    // user_show_stubs stays: those rows are shared catalog entries other
+    // users' lists can point at, and they carry no personal content.
+    await deleteRows(base, auth, 'unmatched_imports', 'user_id', userId);
+    await deleteRows(base, auth, 'import_fetch_log', 'user_id', userId);
+    await deleteRows(base, auth, 'mezzanine_search_log', 'user_id', userId);
+    // plan_shares cascades from profiles.
     await deleteRows(base, auth, 'profiles', 'id', userId);
 
     const deleteUserRes = await fetch(`${base}/auth/v1/admin/users/${userId}`, {

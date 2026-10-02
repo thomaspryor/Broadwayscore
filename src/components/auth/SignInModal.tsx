@@ -1,5 +1,6 @@
 'use client';
 
+import Link from 'next/link';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 
 type SignInContext = 'rating' | 'watchlist' | 'generic';
@@ -76,8 +77,10 @@ export default function SignInModal({ isOpen, onClose, onSignIn, context = 'gene
         </div>
 
         {/* Footer */}
-        <p className="mt-5 text-center text-[11px] text-gray-600 leading-relaxed">
-          By signing in, you agree to our Terms of Service and Privacy Policy.
+        <p className="mt-5 text-center text-[11px] text-gray-500 leading-relaxed">
+          You&apos;ll also get occasional show alert emails; unsubscribe anytime. By signing in, you agree to our{' '}
+          <Link href="/terms" target="_blank" className="underline hover:text-gray-300">Terms</Link> and{' '}
+          <Link href="/privacy" target="_blank" className="underline hover:text-gray-300">Privacy Policy</Link>.
         </p>
       </div>
     </Modal>

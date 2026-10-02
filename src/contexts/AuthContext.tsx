@@ -27,6 +27,12 @@ interface AuthContextValue {
   signIn: (provider: 'google' | 'apple', source?: string) => void;
   signOut: () => void;
   /**
+   * Permanently delete the signed-in account and everything it saved (the
+   * delete-account edge function), then sign out. Resolves true on success;
+   * on failure the user stays signed in and the error is reported.
+   */
+  deleteAccount: () => Promise<boolean>;
+  /**
    * Show sign-in modal. `context` picks the headline; `source` names the
    * button that asked (e.g. 'show_bookmark') so the funnel shows which entry
    * points bring sign-ups.
@@ -245,6 +251,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null);
   }, []);
 
+  const deleteAccount = useCallback(async (): Promise<boolean> => {
+    const client = getSupabaseClient();
+    if (!client) return false;
+
+    trackUgc('account_delete_started');
+    // The function answers 200 with {ok:false} for handled failures, so
+    // check the body, not only the transport error.
+    const { data, error } = await client.functions.invoke('delete-account', { body: {} });
+    const body = (data ?? null) as { ok?: boolean; error?: string } | null;
+    if (error || body?.ok !== true) {
+      reportUgcError('auth.delete_account', {
+        message: error?.message || body?.error || 'no ok in response',
+        code: body?.error || 'delete_failed',
+      });
+      return false;
+    }
+
+    trackUgc('account_deleted');
+    // The auth user is already gone, so the server half of signOut answers
+    // 4xx; supabase-js still clears the local session in that case.
+    await client.auth.signOut().catch(() => {});
+    setAnalyticsUser(null);
+    setUser(null);
+    setProfile(null);
+    return true;
+  }, []);
+
   const showSignIn = useCallback((context: ModalContext = 'generic', source?: string) => {
     const src = source || context;
     setModalContext(context);
@@ -272,6 +305,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         isAuthenticated: !!user,
         signIn,
         signOut,
+        deleteAccount,
         showSignIn,
       }}
     >
@@ -294,6 +328,7 @@ const DEFAULT_AUTH: AuthContextValue = {
   isAuthenticated: false,
   signIn: () => {},
   signOut: () => {},
+  deleteAccount: async () => false,
   showSignIn: () => {},
 };
 

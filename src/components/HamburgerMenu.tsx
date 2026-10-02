@@ -12,6 +12,7 @@ interface HamburgerMenuProps {
   email?: string;
   onSignIn?: () => void;
   onSignOut?: () => void;
+  onDeleteAccount?: () => void;
 }
 
 export default function HamburgerMenu({
@@ -20,6 +21,7 @@ export default function HamburgerMenu({
   email,
   onSignIn,
   onSignOut,
+  onDeleteAccount,
 }: HamburgerMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -162,6 +164,18 @@ export default function HamburgerMenu({
                   >
                     Sign Out
                   </button>
+                  {onDeleteAccount && (
+                    <button
+                      type="button"
+                      onClick={() => {
+                        close();
+                        onDeleteAccount();
+                      }}
+                      className="w-full text-left px-5 py-2 text-xs text-gray-500 hover:text-score-skip hover:bg-white/[0.02] transition-colors"
+                    >
+                      Delete account
+                    </button>
+                  )}
                 </div>
               )}
             </nav>
