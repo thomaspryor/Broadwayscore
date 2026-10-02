@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "school-girls-or-the-african-mean-girls-play-2026",
   "openingDate": "2026-09-28",
-  "detectedAt": "2026-10-02T21:17:49.405Z",
+  "detectedAt": "2026-10-02T21:26:35.163Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "josh-at-the-movies--unknown.json",
+      "outletId": "josh-at-the-movies",
+      "criticName": "Unknown",
+      "url": "https://joshatthemovies.com/2026/10/02/theater-review-school-girls-or-the-african-mean-girls-play/",
+      "fullTextLen": 6537,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
     {
       "file": "nydailynews--chris-jones.json",
       "outletId": "nydailynews",
@@ -40,8 +57,8 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
   "lastDispatch": "suppressed-cooldown",
