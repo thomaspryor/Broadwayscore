@@ -443,11 +443,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           { label: show.title },
         ]} />
 
-        {/* Redesigned mobile header — feature-flagged. v2 (Broadway Radar–inspired) lives
-            entirely inside ShowHeroRedesign; the legacy block below is kept only for the
-            unflagged path and for sm: viewports. See memory/feedback_show_page_redesign_v2_decisions.md.
-            RedesignOn/RedesignOff live in 'use client' so the demo-flag check runs both
-            during build (with the demo source-rewrite) and at hydration (without it). */}
+        {/* Redesigned header. v2 (Broadway Radar–inspired) lives entirely inside
+            ShowHeroRedesign; showPageRedesign launched on prod with userAccounts
+            (2026-10-02, BRO-4525), so the legacy block below only renders if the
+            flag is turned back off. See memory/feedback_show_page_redesign_v2_decisions.md. */}
         <RedesignOn>
           <div className="mb-6">
             <ShowHeroRedesign
@@ -469,9 +468,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
           </div>
         </RedesignOn>
 
-        {/* Metacritic-style Header: Poster + Title/Score integrated. Rendered only
-            when the redesign is off; visual-regression.spec.ts asserts on this id
-            in the prod build (where the flag is false). */}
+        {/* Metacritic-style Header: Poster + Title/Score integrated. Legacy layout,
+            rendered only when showPageRedesign is off (kept as the rollback path). */}
         <RedesignOff>
         <div className="card p-5 sm:p-6 mb-6" data-testid="show-header-card">
           <div className="flex gap-4 sm:gap-6">
@@ -796,9 +794,8 @@ export default async function ShowPage({ params }: { params: { slug: string } })
             </Suspense>
           </div>
 
-          {/* Rating on the legacy (redesign-off) layout is handled by ShowHeroRedesign
-              in the flipped layout; the unflagged path ships without the UGC widget
-              (userAccounts is off whenever showPageRedesign is off — combined flip). */}
+          {/* The rating widget lives in ShowHeroRedesign; this legacy layout has none,
+              so turning showPageRedesign off also hides rating on show pages. */}
         </div>
         </RedesignOff>
 

@@ -313,10 +313,11 @@ check_demo_flags() {
     return
   fi
   # Keep in sync with DEMO_FEATURES in src/config/feature-flags.ts.
-  # awards/awardScoreV2 launched 2026-05-17 — removed now that their getters
-  # return true unconditionally. Re-add any flag here if you put it back in
+  # awards/awardScoreV2 (launched 2026-05-17) and userAccounts/showPageRedesign
+  # (launched 2026-10-02, BRO-4525) were removed once their getters returned
+  # true unconditionally. Re-add any flag here if you put it back in
   # DEMO_FEATURES.
-  local DEMO_FLAGS="theaterScorecard|showPageRedesign|userAccounts|showtimes"
+  local DEMO_FLAGS="theaterScorecard|showtimes"
   local VIOLATIONS="" f
   for f in $(grep -rlE "featureFlags\.(${DEMO_FLAGS})" src/ 2>/dev/null || true); do
     # Check if file has 'use client' directive
