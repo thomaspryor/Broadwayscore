@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T06:37:41.488Z",
+  "timestamp": "2026-10-02T07:20:16.808Z",
   "stats": {
-    "totalReviews": 45804,
-    "alreadyFlagged": 18691,
+    "totalReviews": 45805,
+    "alreadyFlagged": 18698,
     "dateGuardCatches": 262,
-    "directorMismatch": 1194,
-    "tvFilmSignals": 1329,
+    "directorMismatch": 1195,
+    "tvFilmSignals": 1330,
     "londonSignals": 1251,
     "offBroadwaySignals": 507,
     "yearMismatch": 106,
-    "noPublishDate": 4147
+    "noPublishDate": 4128
   },
   "findings": [
     {
@@ -10321,6 +10321,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "file": "everything-theatre--alan-fitter.json",
+      "score": 56,
+      "publishDate": "2026-10-02",
+      "url": "https://everything-theatre.co.uk/2026/10/review-flamenc-oh-peacock-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -21962,6 +21976,20 @@
       "score": 92,
       "publishDate": "May 5, 2024",
       "url": "https://twi-ny.com/2024/05/05/oh-mary/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "broadwayworld--erinmarie-reiter.json",
+      "score": 87,
+      "publishDate": "2026-10-01",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-Broadway-San-Diego-20261001",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
