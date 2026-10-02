@@ -1,135 +1,71 @@
 {
-  "updatedAt": "2026-10-02T06:13:38.708Z",
-  "processed": 496,
-  "failed": 324,
-  "successRate": "60.5%",
+  "updatedAt": "2026-10-02T06:41:38.728Z",
+  "processed": 18,
+  "failed": 5,
+  "successRate": "78.3%",
   "tierBreakdown": {
-    "playwright": 251,
-    "amp": 1,
-    "browserbase": 4,
+    "playwright": 3,
+    "amp": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 52,
-    "scrapingbee": 86,
-    "brightdata": 29,
+    "scrapingdog": 0,
+    "scrapingbee": 6,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 89
+    "archive": 4
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 6,
   "recentActivity": [
     {
-      "t": "2026-10-02T00:54:38.704Z",
+      "t": "2026-10-02T06:31:42.846Z",
       "event": "bb-session",
-      "session": "7e0d778f",
-      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+      "session": "50625cdc",
+      "url": "https://www.nytimes.com/2026/09/16/theater/in-wanted-outlaw-sisters-pass-for-whi"
     },
     {
-      "t": "2026-10-02T00:54:39.195Z",
+      "t": "2026-10-02T06:31:43.726Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-02T06:32:02.423Z",
+      "event": "bb-session",
+      "session": "ce276f56",
+      "url": "https://www.nytimes.com/2026/09/16/theater/in-wanted-outlaw-sisters-pass-for-whi"
+    },
+    {
+      "t": "2026-10-02T06:32:03.296Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-02T06:32:27.943Z",
+      "event": "bb-session",
+      "session": "5555a1a2",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-10-02T06:32:43.509Z",
+      "event": "bb-session",
+      "session": "c196af2f",
+      "url": "https://www.wsj.com/articles/the-score-review-brian-cox-is-bach-1a10d858"
+    },
+    {
+      "t": "2026-10-02T06:32:44.409Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
     },
     {
-      "t": "2026-10-02T01:00:41.992Z",
+      "t": "2026-10-02T06:34:40.773Z",
       "event": "bb-session",
-      "session": "39889f93",
-      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+      "session": "764ef302",
+      "url": "https://deadline.com/2024/11/beatles-64-review-martin-scorsese-produces-new-take"
     },
     {
-      "t": "2026-10-02T01:01:00.378Z",
+      "t": "2026-10-02T06:40:45.091Z",
       "event": "bb-session",
-      "session": "1348485e",
-      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
-    },
-    {
-      "t": "2026-10-02T01:01:28.091Z",
-      "event": "bb-session",
-      "session": "fcc4ead2",
-      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
-    },
-    {
-      "t": "2026-10-02T01:01:39.091Z",
-      "event": "bb-session",
-      "session": "d157082a",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
-    {
-      "t": "2026-10-02T01:03:08.445Z",
-      "event": "bb-session",
-      "session": "15928cef",
-      "url": "https://www.dailymail.com/news/article-16127687/Peaky-Blinders-Downton-Abbey-fil"
-    },
-    {
-      "t": "2026-10-02T01:03:18.867Z",
-      "event": "bb-session",
-      "session": "b05f41a1",
-      "url": "https://www.dailymail.com/news/article-16127687/Peaky-Blinders-Downton-Abbey-fil"
-    },
-    {
-      "t": "2026-10-02T01:04:28.843Z",
-      "event": "bb-session",
-      "session": "bbc7aff5",
-      "url": "https://ground.news/article/fire-emblem-fortunes-weave-is-equal-parts-vast-and-c"
-    },
-    {
-      "t": "2026-10-02T01:05:12.095Z",
-      "event": "bb-session",
-      "session": "3d654443",
-      "url": "https://metro.co.uk/2026/09/16/fire-emblem-fortunes-weave-review-bigger-better-e"
-    },
-    {
-      "t": "2026-10-02T04:54:58.215Z",
-      "event": "bb-session",
-      "session": "c126f808",
-      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
-    },
-    {
-      "t": "2026-10-02T04:55:18.893Z",
-      "event": "bb-session",
-      "session": "e71972dc",
-      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
-    },
-    {
-      "t": "2026-10-02T04:57:24.362Z",
-      "event": "bb-session",
-      "session": "9bec6029",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-10-02T04:57:25.205Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-02T04:57:43.595Z",
-      "event": "bb-session",
-      "session": "bd6d53ed",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-10-02T04:57:44.392Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-02T06:11:04.701Z",
-      "event": "bb-session",
-      "session": "5c96564a",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-10-02T06:11:05.427Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
-    },
-    {
-      "t": "2026-10-02T06:11:23.125Z",
-      "event": "bb-session",
-      "session": "dc58a374",
-      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
-    },
-    {
-      "t": "2026-10-02T06:11:23.770Z",
-      "event": "bb-cookie-inject",
-      "domain": "talkinbroadway.com"
+      "session": "6e973d47",
+      "url": "https://deadline.com/2025/02/jennifer-coolidge-pete-davidson-in-riff-raff-my-dea"
     }
   ]
 }
