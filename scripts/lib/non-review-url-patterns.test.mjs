@@ -424,3 +424,16 @@ test('BRO-4386: allowNonReviewUrl human override survives rebuild predicate', ()
   const { isNamedNonReviewUrlRecord } = require('./review-guards.js');
   assert.ok(!isNamedNonReviewUrlRecord({ url: 'https://www.bestoftheatre.co.uk/cats', source: 'submit-review-form', allowNonReviewUrl: true }));
 });
+
+test('BRO-4455: ticket resellers / listings / PR firm from the creation-stories census are not review candidates', () => {
+  const { classifyReviewUrl } = require('./non-review-url-patterns.js');
+  for (const url of [
+    'https://omdkc.com/first-look-photos-released-of-lct3s-creation-stories/',
+    'https://nyc-shows.brooklynvegan.com/events/2026/10/1/creation-stories-tickets',
+    'https://www.topstartickets.com/Event/Creation-Stories-Tickets',
+    'https://www.ticketsales.com/creation-stories-tickets/event/7225055',
+    'http://www.viagogo.dk/Billets-de-theatre/Theatre-et-Cabaret/Creation-Stories-Billets/E-161464547',
+    'https://www.tennesseetickets.com/Events/8095092/Creation-Stories-Tickets',
+  ]) assert.equal(classifyReviewUrl(url).ok, false, url);
+  assert.equal(classifyReviewUrl('https://www.vulture.com/article/yes-its-tough-to-be-a-playwright-creation-stories.html').ok, true);
+});
