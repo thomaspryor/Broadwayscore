@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T00:04:40.269Z",
+  "timestamp": "2026-10-02T02:20:29.343Z",
   "stats": {
-    "totalReviews": 45765,
-    "alreadyFlagged": 18682,
+    "totalReviews": 45775,
+    "alreadyFlagged": 18687,
     "dateGuardCatches": 261,
     "directorMismatch": 1196,
-    "tvFilmSignals": 1328,
-    "londonSignals": 1249,
-    "offBroadwaySignals": 506,
+    "tvFilmSignals": 1329,
+    "londonSignals": 1251,
+    "offBroadwaySignals": 507,
     "yearMismatch": 103,
-    "noPublishDate": 4135
+    "noPublishDate": 4133
   },
   "findings": [
     {
@@ -5966,6 +5966,20 @@
     },
     {
       "showId": "chewing-gum-dreams-off-west-end-2026",
+      "file": "guardian--arifa-akbar.json",
+      "score": null,
+      "publishDate": "2026-09-16",
+      "url": "https://www.theguardian.com/stage/2026/sep/16/chewing-gum-dreams-review-theatre503-michaela-coel",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "chewing-gum-dreams-off-west-end-2026",
       "file": "thereviewshub--richard-maguire.json",
       "score": 90,
       "publishDate": "2026-09-17",
@@ -7273,7 +7287,7 @@
     },
     {
       "showId": "darkling-off-west-end-2026",
-      "file": "london-theatre--unknown.json",
+      "file": "london-theatre--matt-wolf.json",
       "score": 63,
       "publishDate": "2026-09-16",
       "url": "https://www.londontheatre.co.uk/reviews/darkling-review-bush-theatre",
@@ -8105,7 +8119,7 @@
     },
     {
       "showId": "deep-heat-rivalry-off-west-end-2026",
-      "file": "london-theatre--unknown.json",
+      "file": "london-theatre--emily-godwin.json",
       "score": 86,
       "publishDate": "2026-09-17",
       "url": "https://www.londontheatre.co.uk/reviews/deep-heat-rivalry-review-the-other-palace",
@@ -25441,7 +25455,7 @@
     },
     {
       "showId": "shit-meet-fan-off-broadway-2024",
-      "file": "exeunt-magazine--read-more-articles-by-nicole-serratore.json",
+      "file": "exeunt-magazine--nicole-serratore.json",
       "score": 42,
       "publishDate": "2024-11-19",
       "url": "https://exeuntnyc.com/reviews/shit-meet-fan-at-mcc-theater/",
@@ -26954,7 +26968,7 @@
     },
     {
       "showId": "stereophonic-off-broadway-2023",
-      "file": "exeunt-magazine--read-more-articles-by-loren-noveck.json",
+      "file": "exeunt-magazine--loren-noveck.json",
       "score": 67,
       "publishDate": "2023-10-30",
       "url": "https://exeuntnyc.com/reviews/review-stereophonic-at-playwrights-horizons/",
@@ -42312,7 +42326,7 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
-      "file": "seatplan--unknown.json",
+      "file": "seatplan--stuart-james.json",
       "score": 89,
       "publishDate": "2026-08-12",
       "url": "https://seatplan.com/london/news/death-note-the-musical-review-barbican-theatre-london/",
@@ -42368,7 +42382,7 @@
     },
     {
       "showId": "death-note-the-musical-west-end-2026",
-      "file": "theatreandtonic--unknown.json",
+      "file": "theatreandtonic--emmie-newitt.json",
       "score": 95,
       "publishDate": "2026-08-12",
       "url": "https://theatreandtonic.co.uk/blog/death-note-the-musical-barbican-theatre-review",
@@ -42542,6 +42556,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "degenerates-off-broadway-2026",
+      "file": "lighting-and-sound-america--david-barbour.json",
+      "publishDate": null,
+      "url": "http://www.lightingandsoundamerica.com/news/story.asp?ID=-HFPRX1",
+      "findings": [
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"public theater\""
         }
       ]
     },
@@ -42756,7 +42783,7 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
-      "file": "afridiziak-theatre-news--unknown.json",
+      "file": "afridiziak-theatre-news--althyr-pivatto.json",
       "score": 92,
       "publishDate": "2026-09-03",
       "url": "https://www.afridiziak.com/reviews/electra-persona/",
@@ -42812,7 +42839,7 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
-      "file": "city-am--unknown.json",
+      "file": "city-am--steve-dinneen.json",
       "score": 43,
       "publishDate": "2026-09-04",
       "url": "https://www.cityam.com/electra-persona-at-the-national-theatre-review-a-dull-mash-up-of-sophocles-and-bergman/",
@@ -42923,7 +42950,7 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
-      "file": "londontheatre1--unknown.json",
+      "file": "londontheatre1--john-groves.json",
       "score": 60,
       "publishDate": "2026-09-02",
       "url": "https://www.londontheatre1.com/reviews/electra-persona-national-theatre/",
@@ -43047,7 +43074,7 @@
     },
     {
       "showId": "electra-persona-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--james-humphrey.json",
       "score": 77,
       "publishDate": "2026-09-02",
       "url": "https://www.theupcoming.co.uk/2026/09/02/electra-persona-at-the-national-theatre-theatre-review/",
@@ -43588,6 +43615,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
+        }
+      ]
+    },
+    {
+      "showId": "fire-fire-off-west-end-2026",
+      "file": "guardian--unknown.json",
+      "score": null,
+      "publishDate": "2026-09-23",
+      "url": "https://www.theguardian.com/music/2026/sep/23/fire-in-my-mouth-review-royal-festival-hall-wolfe-alsop-philharmonia",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
@@ -57410,7 +57451,7 @@
     },
     {
       "showId": "the-play-that-goes-wrong-2017",
-      "file": "huffpost--huffington-post-steven-suskin.json",
+      "file": "huffpost--steven-suskin.json",
       "score": 91,
       "publishDate": "2017-04-02",
       "url": "https://www.huffpost.com/entry/58e00fdee4b0d804fbbb7394",
@@ -59923,6 +59964,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "what-the-animals-say-off-west-end-2026",
+      "file": "edinburgischedramaturgie--unknown.json",
+      "publishDate": "2026-09-22",
+      "url": "https://edinburgischedramaturgie.wordpress.com/2026/09/22/harry-burton-translates-what-the-animals-say/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
