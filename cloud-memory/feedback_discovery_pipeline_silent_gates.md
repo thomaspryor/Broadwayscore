@@ -1149,3 +1149,6 @@ BroadwayWorld UK published its review of `catarina-and-the-beauty-of-killing-fas
 
 ## Edinburgh Fringe → London transfer: UK-URL auto-clear re-includes pre-run reviews (2026-10-01, BRO-4476)
 flamenc-oh-off-west-end-2026 (Peacock, previews 9/30): The Stage's Aug 14 Edinburgh review got wrongProduction auto-cleared by rebuild "UK URL on London show" (thestage.co.uk is UK, so it passed), and theatreinedinburgh (Aug 25) was never flagged. Both scored on the London entry while 7 sibling Edinburgh files stayed flagged. Check: any London show whose run follows a Fringe run — scan prod rv for URLs/dates naming edinburgh/assembly/fringe. Data fix: set wrongProduction + wrongProductionReason (the reason field blocks the auto-clear).
+
+## ingest-urls.yml back-to-back dispatches silently drop URLs (2026-10-01, Hay Fever)
+Concurrency group `ingest-urls-<show_id>` with cancel-in-progress:false still keeps only ONE pending run: a 3rd dispatch while #1 runs and #2 pends CANCELS #2 (City AM run 36939848230 cancelled). **How to apply:** put every URL for a show in ONE dispatch (newline-separated); after multiple dispatches, check each conclusion, re-dispatch any `cancelled`.
