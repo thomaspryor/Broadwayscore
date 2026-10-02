@@ -590,6 +590,66 @@
     "queuedAt": "2026-10-02T20:37:22.057Z"
   },
   {
+    "conditionKey": "review-gap:opening-window:alice-in-wonderland-off-broadway-2026",
+    "title": "Review gap — \"Alice in Wonderland\" missing 13 cited review(s)",
+    "description": "Alice in Wonderland (alice-in-wonderland-off-broadway-2026): 13 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=alice-in-wonderland-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-02T21:17:32.605Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:flamenc-oh-off-west-end-2026",
+    "title": "Review gap — \"Flamenc Oh!!\" missing 1 cited review(s)",
+    "description": "Flamenc Oh!! (flamenc-oh-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=flamenc-oh-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-02T21:17:32.633Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:school-girls-or-the-african-mean-girls-play-2026",
+    "title": "Review gap — \"School Girls; Or, The African Mean Girls Play\" missing 4 cited review(s)",
+    "description": "School Girls; Or, The African Mean Girls Play (school-girls-or-the-african-mean-girls-play-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=school-girls-or-the-african-mean-girls-play-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-02T21:17:32.693Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
+    "title": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
+    "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-02T21:17:32.728Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:the-standard-of-living-west-end-2026",
+    "title": "Review gap — \"The Standard Of Living\" missing 2 cited review(s)",
+    "description": "The Standard Of Living (the-standard-of-living-west-end-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-standard-of-living-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-02T21:17:32.732Z"
+  },
+  {
     "conditionKey": "opening-night-drift:tru-off-west-end-2026",
     "title": "Opening night drift: Tru (tru-off-west-end-2026)",
     "description": "Review counts do not reconcile for Tru (tru-off-west-end-2026): local review-texts=22, reviews.json aggregate=19, live production=19, drift=3 (threshold 2). The grace window has passed, so this is not deploy lag or a rebuild in flight.",
