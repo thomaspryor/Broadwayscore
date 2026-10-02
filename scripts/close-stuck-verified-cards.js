@@ -82,6 +82,13 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   const apply = argv.includes('--apply');
   const only = argValue(argv, '--only');
   const gitRepo = argValue(argv, '--git-repo');
+  // A shallow clone hides older landing commits, so every card would read as
+  // "no commit" and the report would quietly understate what can close.
+  if (gitRepo && !deps.commitsTouching
+      && execFileSync('git', ['-C', gitRepo, 'rev-parse', '--is-shallow-repository'], { encoding: 'utf8' }).trim() === 'true') {
+    console.error(`[close-stuck-verified-cards] --git-repo ${gitRepo} is a shallow clone; drop --git-repo to use the GitHub API`);
+    return 2;
+  }
   const nowMs = Date.now();
   const startMs = nowMs;
   const linear = deps.linear || require('./lib/linear-client.js');

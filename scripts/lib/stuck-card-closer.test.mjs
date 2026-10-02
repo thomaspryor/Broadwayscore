@@ -109,3 +109,30 @@ test('buildClosureComment carries the marker and no gate-evidence keywords', () 
   assert.match(body, /bbb222bbb222/);
   assert.doesNotMatch(body, /VERIFY:|PR-EVIDENCE:|^Dispatched/m);
 });
+
+test('CLI refuses --git-repo on a shallow clone instead of reporting every card as uncommitted', async () => {
+  const { execFileSync } = require('node:child_process');
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'closer-shallow-'));
+  const git = (...a) => execFileSync('git', a, { cwd: dir, encoding: 'utf8' });
+  git('init', '-q', 'full');
+  for (const n of [1, 2]) {
+    fs.writeFileSync(path.join(dir, 'full', 'f.txt'), String(n));
+    git('-C', 'full', 'add', 'f.txt');
+    git('-C', 'full', '-c', 'user.email=t@t', '-c', 'user.name=t', 'commit', '-q', '-m', `c${n}`);
+  }
+  git('clone', '-q', '--depth', '1', `file://${path.join(dir, 'full')}`, 'shallow');
+  const { main } = require('../close-stuck-verified-cards.js');
+  const linear = { graphql: () => { throw new Error('must not reach Linear'); } };
+  const noWrite = true;
+  const err = console.error;
+  console.error = () => {};
+  try {
+    assert.equal(await main(['--git-repo', path.join(dir, 'shallow')], { linear, noWrite, auditPath: '/nonexistent' }), 2);
+  } finally {
+    console.error = err;
+    fs.rmSync(dir, { recursive: true, force: true });
+  }
+});
