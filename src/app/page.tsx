@@ -285,6 +285,7 @@ export default function HomePage() {
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
     { title: 'Top Box Office This Week', shows: topBoxOfficeList, viewAllHref: '/box-office' },
     { title: 'Most Sold Out', shows: mostSoldOutList, viewAllHref: '/box-office' },
+    { title: 'Shows Starting Soon', shows: startingSoonList, viewAllHref: '/browse/upcoming-broadway-shows', minCount: 1 },
     { title: 'Best of the West End', shows: bestWestEndList, viewAllHref: '/west-end' },
     // Pre-Broadway tryouts — differentiating coverage nobody else aggregates;
     // lower-shelf placement per user (2026-07-12). Closed tryouts included by
@@ -296,7 +297,6 @@ export default function HomePage() {
     { title: 'Perfect for Date Night', shows: dateNightShowsList, viewAllHref: '/browse/broadway-shows-for-date-night' },
     { title: 'Great for Kids', shows: kidsShowsList, viewAllHref: '/browse/broadway-shows-for-kids' },
     { title: 'Jukebox Musicals', shows: jukeboxMusicalsList, viewAllHref: '/browse/jukebox-musicals-on-broadway' },
-    { title: 'Shows Starting Soon', shows: startingSoonList, viewAllHref: '/browse/upcoming-broadway-shows', minCount: 1 },
     { title: 'Closing Soon', shows: closingSoonShowsList, viewAllHref: '/browse/broadway-shows-closing-soon' },
   ];
 
