@@ -195,6 +195,15 @@ function removeCheckout(co) {
   try { fs.rmSync(co.dir, { recursive: true, force: true }); } catch { /* best effort */ }
 }
 
+// node --test prints a summary line `# pass N` (TAP, the default when piped)
+// or `ℹ pass N` (spec). True only when that line says 0; no summary line at
+// all (an unusual reporter) stays a pass, so this never fails a real check.
+const PASS_SUMMARY_RE = /^(?:#|ℹ)\s*pass\s+(\d+)\s*$/gm;
+function zeroPassingTests(output) {
+  const counts = [...String(output || '').matchAll(PASS_SUMMARY_RE)].map((m) => Number(m[1]));
+  return counts.length > 0 && counts[counts.length - 1] === 0;
+}
+
 /**
  * Run one card's acceptance command in `cwd`.
  * @param {string} cwd - the fresh checkout (or any directory, for tests)
@@ -241,7 +250,13 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
   let last = null;
   for (let attempt = 1; attempt <= maxAttempts; attempt++) {
     try {
-      execFileSync(argv[0], argv.slice(1), { cwd, stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs, encoding: 'utf8', env });
+      const out = execFileSync(argv[0], argv.slice(1), { cwd, stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs, encoding: 'utf8', env });
+      // BRO-4523: a test file whose tests all skip (a missing env var, a
+      // guard on CI) exits 0 having proven nothing. Counting that as pass let
+      // the done-evidence audit call a card STUCK and the Done gate accept it.
+      if (argv.includes('--test') && zeroPassingTests(out)) {
+        return { status: 'unverifiable', detail: 'ran no passing tests (all skipped or none ran)' };
+      }
       return { status: 'pass', detail: attempt > 1 ? 'passed on retry (first run flaked)' : null };
     } catch (err) {
       // Exit 3 is the repo convention for "cannot verify" (infrastructure
@@ -274,4 +289,4 @@ function runVerify(cwd, cmd, { attempts = 2, timeoutMs = CHECK_TIMEOUT_MS, prepa
   return { status: 'fail', detail: last };
 }
 
-module.exports = { makeFreshCheckout, removeCheckout, runVerify, shouldCloneAfterFetchFailure, DEFAULT_REPO, CHECK_TIMEOUT_MS };
+module.exports = { makeFreshCheckout, removeCheckout, runVerify, zeroPassingTests, shouldCloneAfterFetchFailure, DEFAULT_REPO, CHECK_TIMEOUT_MS };

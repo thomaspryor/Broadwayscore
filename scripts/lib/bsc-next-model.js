@@ -134,13 +134,31 @@ function linearOpusDailyCap(env = process.env) {
   return Number.isInteger(n) && n >= 0 ? n : LINEAR_OPUS_DAILY_CAP_DEFAULT;
 }
 
+// A launch row that never ran a worker (`unverified`: the launch failed) or
+// that only renumbers a live workspace (`remapped`) is not an attempt.
+function isRealLaunch(e) {
+  return !!e && e.event === 'launch' && !e.unverified && !e.remapped;
+}
+
 function countRecentLinearOpusLaunches(entries, nowMs, windowMs = LINEAR_OPUS_WINDOW_MS) {
   let n = 0;
   for (const e of Array.isArray(entries) ? entries : []) {
-    if (!e || e.event !== 'launch' || e.model !== 'opus') continue;
+    if (!isRealLaunch(e) || e.model !== 'opus') continue;
     if (!String(e.taskId || '').startsWith('linear:')) continue;
     const ts = Date.parse(e.ts);
     if (Number.isFinite(ts) && ts <= nowMs && nowMs - ts < windowMs) n++;
+  }
+  return n;
+}
+
+// Earlier worker runs of this card from the dispatch ledger. A worker that
+// crashed or timed out never posts its "Dispatched" comment (linear-next.js
+// returns before reportDispatchOnIssue on a failed headless run), so the
+// comment count alone misses exactly the retries that most need Opus.
+function countPriorLaunches(entries, taskId) {
+  let n = 0;
+  for (const e of Array.isArray(entries) ? entries : []) {
+    if (isRealLaunch(e) && e.taskId === taskId) n++;
   }
   return n;
 }
@@ -150,11 +168,13 @@ function countRecentLinearOpusLaunches(entries, nowMs, windowMs = LINEAR_OPUS_WI
  * @param {object} opts.issue - Linear issue ({ priority, comments: { nodes } })
  * @param {number} opts.recentOpusLaunches - from countRecentLinearOpusLaunches
  * @param {number} opts.cap - from linearOpusDailyCap
+ * @param {number} [opts.priorLaunches] - from countPriorLaunches
  * @returns {{ model: 'opus'|'sonnet', reason: string }}
  */
-function linearEscalationModel({ issue, recentOpusLaunches, cap }) {
+function linearEscalationModel({ issue, recentOpusLaunches, cap, priorLaunches = 0 }) {
   const comments = (issue && issue.comments && issue.comments.nodes) || [];
-  const priorDispatches = comments.filter((c) => c && PRIOR_DISPATCH_RE.test(String(c.body || '').trim())).length;
+  const priorComments = comments.filter((c) => c && PRIOR_DISPATCH_RE.test(String(c.body || '').trim())).length;
+  const priorDispatches = Math.max(priorComments, priorLaunches || 0);
   const isP0 = !!issue && issue.priority === 1;
   if (!isP0 && priorDispatches === 0) return { model: 'sonnet', reason: 'first attempt, not P0' };
   const why = isP0 ? 'P0' : `retry after ${priorDispatches} prior dispatch(es)`;
@@ -162,7 +182,24 @@ function linearEscalationModel({ issue, recentOpusLaunches, cap }) {
   return { model: 'opus', reason: why };
 }
 
+/**
+ * The whole Linear dispatch model choice, in resolution order: --model flag,
+ * a "Model:" hint line on the card, then the escalation rule above. Reading
+ * the ledger can fail; then the cap counts as reached (Sonnet, the safe side).
+ * @returns {{ model: string, reason: string }}
+ */
+function pickLinearModel({ explicitFlag, issue, taskId, readEntries, nowMs = Date.now(), env = process.env }) {
+  if (typeof explicitFlag === 'string') return { model: explicitFlag, reason: '--model flag' };
+  const hint = explicitModelHint({ description: issue && issue.description }, null);
+  if (hint) return { model: hint, reason: 'Model: hint on the card' };
+  let entries = null;
+  try { entries = readEntries(); } catch { entries = null; }
+  const recentOpusLaunches = entries ? countRecentLinearOpusLaunches(entries, nowMs) : Infinity;
+  const priorLaunches = entries ? countPriorLaunches(entries, taskId) : 0;
+  return linearEscalationModel({ issue, recentOpusLaunches, cap: linearOpusDailyCap(env), priorLaunches });
+}
+
 module.exports = {
   QUEUE_PATH, MODEL_HINT_RE, SHORT_ALIAS, explicitModelHint, triageSizeFor, modelForSize, resolveModel,
-  LINEAR_OPUS_DAILY_CAP_DEFAULT, linearOpusDailyCap, countRecentLinearOpusLaunches, linearEscalationModel,
+  LINEAR_OPUS_DAILY_CAP_DEFAULT, linearOpusDailyCap, countRecentLinearOpusLaunches, countPriorLaunches, linearEscalationModel, pickLinearModel,
 };
