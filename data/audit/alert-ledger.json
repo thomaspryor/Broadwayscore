@@ -3154,25 +3154,26 @@
       "disposition": "digest",
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-10-01T23:30:22.073Z",
+      "lastSeen": "2026-10-02T00:57:14.265Z",
       "lastNotifiedAt": "2026-10-01T02:18:46.234Z",
       "lastSurfacedAt": "2026-10-01T02:18:46.234Z",
       "notifyCount": 14,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "auto",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-01T23:30:22.081Z",
+      "lastSeen": "2026-10-02T00:57:14.274Z",
       "lastNotifiedAt": "2026-10-01T23:30:22.081Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.081Z",
       "notifyCount": 15,
       "cardId": null,
-      "linearIdentifier": "BRO-4501"
+      "linearIdentifier": "BRO-4501",
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3423,13 +3424,13 @@
       "disposition": "digest",
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-01T23:31:28.176Z",
+      "lastSeen": "2026-10-02T00:57:14.277Z",
       "lastNotifiedAt": "2026-10-01T02:18:46.248Z",
       "lastSurfacedAt": "2026-10-01T02:18:46.248Z",
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3550,12 +3551,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-10-01T23:31:28.180Z",
+      "lastSeen": "2026-10-02T00:57:14.281Z",
       "lastNotifiedAt": "2026-10-01T23:31:28.180Z",
       "lastSurfacedAt": "2026-10-01T23:31:28.180Z",
       "notifyCount": 9,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3826,12 +3828,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-10-01T23:30:22.064Z",
+      "lastSeen": "2026-10-02T00:57:14.258Z",
       "lastNotifiedAt": "2026-10-01T23:30:22.064Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.064Z",
       "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4186,12 +4189,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-10-01T23:30:22.054Z",
+      "lastSeen": "2026-10-02T00:57:14.250Z",
       "lastNotifiedAt": "2026-10-01T23:30:22.054Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.054Z",
       "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5742,13 +5746,13 @@
       "disposition": "digest",
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-10-01T23:30:22.040Z",
+      "lastSeen": "2026-10-02T00:57:14.236Z",
       "lastNotifiedAt": "2026-10-01T02:18:46.203Z",
       "lastSurfacedAt": "2026-10-01T02:18:46.203Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5806,13 +5810,13 @@
       "disposition": "digest",
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-01T23:30:22.046Z",
+      "lastSeen": "2026-10-02T00:57:14.243Z",
       "lastNotifiedAt": "2026-10-01T02:18:46.212Z",
       "lastSurfacedAt": "2026-10-01T02:18:46.212Z",
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
