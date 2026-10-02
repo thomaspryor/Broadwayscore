@@ -229,20 +229,33 @@ test('buildZombieResetSummary: names the identifier, job, and reason', () => {
 });
 
 // ── sweepLinearStartedZombies (I/O wrapper, everything injected) ───────────
+// BRO-4510: verify-driven. Decision-table cases live in
+// scripts/lib/linear-started-zombie-sweep-verify.test.mjs; these cover the
+// wrapper: ledger rows, caps, kill switch, budget, dry-run, re-check.
 
 function tmpStatePaths() {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bsc-reconcile-linear-zombie-'));
   return { statePath: path.join(dir, 'state.json'), ledgerPath: path.join(dir, 'ledger.jsonl') };
 }
 
-function harness({ entries = [], issues = {}, worktrees = {}, live = new Set(), resetEnabled = false, maxResetsPerDay = 10 } = {}) {
+const CMD = 'node --test scripts/lib/foo.test.mjs';
+const DESC = `Fix\n\n## Acceptance criteria\n\nVERIFY: ${CMD}\n`;
+const startedIssue2 = (title, comments = [], description = DESC) => ({ title, description, state: { type: 'started' }, comments: { nodes: comments } });
+
+function harness({ entries = [], issues = {}, worktrees = {}, live = new Set(), maxResetsPerDay = 10, maxDonesPerDay = 30, verifyStatus = 'pass', verifyDetail = null, commitOnMain = true, applyOk = true, extra = {} } = {}) {
   const { statePath, ledgerPath } = tmpStatePaths();
   const reported = [];
-  const reportedBack = [];
+  const applied = [];
+  const verified = [];
   const deps = {
     readLedgerEntriesFn: () => entries,
     getIssueFn: async (identifier) => issues[identifier] || null,
-    reportBackFn: async (identifier, summary) => { reportedBack.push({ identifier, summary }); },
+    makeCheckoutFn: () => ({ wt: '/tmp/fake-checkout', sha: 'abcdef1234567', prepared: true }),
+    removeCheckoutFn: () => {},
+    cleanCheckoutFn: () => {},
+    runVerifyFn: (_co, cmd) => { verified.push(cmd); return { status: verifyStatus, detail: verifyDetail }; },
+    commitOnMainFn: () => commitOnMain,
+    applyFn: (args) => { applied.push(args); return applyOk ? { ok: true, status: 0, stderr: '' } : { ok: false, status: 5, stderr: 'REFUSED' }; },
     gitStatusFn: (cwd) => (worktrees[cwd] ? (worktrees[cwd].dirty ? 'M file' : '') : null),
     gitAheadCountFn: (cwd) => (worktrees[cwd] ? (worktrees[cwd].aheadCount ?? 0) : null),
     existsFn: (cwd) => Boolean(worktrees[cwd] && worktrees[cwd].exists),
@@ -253,175 +266,157 @@ function harness({ entries = [], issues = {}, worktrees = {}, live = new Set(), 
     statePath,
     ledgerPath,
     maxResetsPerDay,
-    resetEnabled,
+    maxDonesPerDay,
+    ...extra,
   };
-  return { deps, reported, reportedBack, statePath, ledgerPath };
+  return { deps, reported, applied, verified, statePath, ledgerPath };
 }
 
 const candidateEntries = (identifier, jobId, cwd, spawnedTs = '2026-09-01T00:00:00.000Z') => ([
   { event: JOB_EVENTS.SPAWNED, taskId: `linear:${identifier}`, jobId, cwd, ts: spawnedTs },
   { event: JOB_EVENTS.DONE, taskId: `linear:${identifier}`, jobId, ts: '2026-09-01T01:00:00.000Z' },
 ]);
+const readRows = (p) => fs.readFileSync(p, 'utf8').trim().split('\n').map((l) => JSON.parse(l));
 
-test('sweepLinearStartedZombies: worktree-gone refuses, ledgers a card-fail, never calls reportBackFn', async () => {
-  const entries = candidateEntries('BRO-1', 'job-1', '/wt/gone');
-  const { deps, reported, reportedBack } = harness({
-    entries,
-    issues: { 'BRO-1': { title: 'X', state: { type: 'started' }, comments: { nodes: [] } } },
-    worktrees: {},
-  });
-  const { sweepLinearStartedZombies } = require('../bsc-reconcile.js');
-  const out = await sweepLinearStartedZombies({ dryRun: false, deps });
-  assert.equal(out.refused.length, 1);
-  assert.equal(out.refused[0].reason, 'worktree-gone');
-  assert.equal(reportedBack.length, 0);
-  assert.ok(reported.some((r) => r.kind === 'linear-zombie-refused'));
-  const ledgerLines = fs.readFileSync(deps.ledgerPath, 'utf8').trim().split('\n');
-  assert.equal(ledgerLines.length, 1);
-  const row = JSON.parse(ledgerLines[0]);
-  assert.equal(row.event, 'card-fail');
-  assert.ok(row.ts, 'every ledger row must carry ts or checkPark silently drops it');
-});
-
-test('sweepLinearStartedZombies: reset path calls reportBackFn ONLY when the kill switch is on', async () => {
-  const entries = candidateEntries('BRO-2', 'job-2', '/wt/clean');
-  const { deps, reportedBack } = harness({
-    entries,
-    issues: { 'BRO-2': { title: 'Y', state: { type: 'started' }, comments: { nodes: [] } } },
-    worktrees: { '/wt/clean': { exists: true, dirty: false, aheadCount: 0 } },
-    resetEnabled: false,
+test('sweep: worktree-gone + VERIFY passes -> closes Done through the CLI path with the marker comment', async () => {
+  const { deps, applied, ledgerPath } = harness({
+    entries: candidateEntries('BRO-1', 'job-1', '/wt/gone'),
+    issues: { 'BRO-1': startedIssue2('X') },
   });
   const out = await sweepLinearStartedZombies({ dryRun: false, deps });
-  assert.equal(out.reset.length, 1, 'still counted as a would-reset decision');
-  assert.equal(reportedBack.length, 0, 'kill switch off -> no real write');
-
-  const { deps: deps2, reportedBack: reportedBack2 } = harness({
-    entries,
-    issues: { 'BRO-2': { title: 'Y', state: { type: 'started' }, comments: { nodes: [] } } },
-    worktrees: { '/wt/clean': { exists: true, dirty: false, aheadCount: 0 } },
-    resetEnabled: true,
-  });
-  await sweepLinearStartedZombies({ dryRun: false, deps: deps2 });
-  assert.equal(reportedBack2.length, 1);
-  assert.equal(reportedBack2[0].identifier, 'BRO-2');
+  assert.equal(out.done.length, 1);
+  assert.equal(applied.length, 1);
+  assert.equal(applied[0].action, 'done');
+  assert.ok(applied[0].comment.includes(ZOMBIE_RESET_MARKER));
+  const row = readRows(ledgerPath)[0];
+  assert.deepEqual([row.event, row.action], ['card-pass', 'done']);
+  assert.ok(row.ts);
 });
 
-test('sweepLinearStartedZombies: TOCTOU re-check refuses the write when the issue changed between the first read and the write', async () => {
-  // Simulates a human (or another machine) resolving the issue in the tiny
-  // window between this sweep's decision and its write — the SECOND
-  // getIssueFn call (the re-check, right before reportBackFn) sees the
-  // issue has already left 'started'.
-  const entries = candidateEntries('BRO-10', 'job-10', '/wt/clean10');
-  const { statePath, ledgerPath } = tmpStatePaths();
-  const reportedBack = [];
-  const reported = [];
-  let getIssueCalls = 0;
-  const deps = {
-    readLedgerEntriesFn: () => entries,
-    getIssueFn: async () => {
-      getIssueCalls++;
-      return getIssueCalls === 1
-        ? { title: 'T', state: { type: 'started' }, comments: { nodes: [] } }
-        : { title: 'T', state: { type: 'completed' }, comments: { nodes: [] } };
-    },
-    reportBackFn: async (identifier, summary) => { reportedBack.push({ identifier, summary }); },
-    gitStatusFn: () => '',
-    gitAheadCountFn: () => 0,
-    existsFn: () => true,
-    hasLiveLeaseFn: () => false,
-    hasLiveProcessFn: () => false,
-    reportFn: (line) => reported.push(line),
-    nowFn: () => Date.now(),
-    statePath,
-    ledgerPath,
-    resetEnabled: true,
+test('sweep: FAIL is leave on the first tick (verify-fail row), Todo on the second', async () => {
+  const entries = candidateEntries('BRO-2', 'job-2', '/wt/gone2');
+  const issues = { 'BRO-2': startedIssue2('Y') };
+  const first = harness({ entries, issues, verifyStatus: 'fail', verifyDetail: 'assertion failed' });
+  const out1 = await sweepLinearStartedZombies({ dryRun: false, deps: first.deps });
+  assert.equal(out1.left[0].reason, 'verify-failed-first-strike');
+  assert.equal(first.applied.length, 0);
+  assert.equal(readRows(first.ledgerPath)[0].event, 'verify-fail');
+
+  const second = harness({ entries, issues, verifyStatus: 'fail', verifyDetail: 'assertion failed' });
+  fs.copyFileSync(first.ledgerPath, second.ledgerPath);
+  const out2 = await sweepLinearStartedZombies({ dryRun: false, deps: second.deps });
+  assert.equal(out2.todo.length, 1);
+  assert.equal(second.applied[0].action, 'todo');
+});
+
+test('sweep: no safe-form VERIFY -> leave, command never run, card-leave row for the digest', async () => {
+  const { deps, applied, verified, ledgerPath } = harness({
+    entries: candidateEntries('BRO-3', 'job-3', '/wt/gone3'),
+    issues: { 'BRO-3': startedIssue2('Z', [], 'no criteria') },
+  });
+  const out = await sweepLinearStartedZombies({ dryRun: false, deps });
+  assert.equal(out.left[0].reason, 'no-safe-verify');
+  assert.equal(verified.length, 0);
+  assert.equal(applied.length, 0);
+  assert.equal(readRows(ledgerPath)[0].event, 'card-leave');
+});
+
+test('sweep: kill switch LINEAR_ZOMBIE_SWEEP_DISABLED does nothing at all', async () => {
+  const { deps, applied, verified, ledgerPath } = harness({
+    entries: candidateEntries('BRO-4', 'job-4', '/wt/gone4'),
+    issues: { 'BRO-4': startedIssue2('K') },
+    extra: { disabled: true },
+  });
+  const out = await sweepLinearStartedZombies({ dryRun: false, deps });
+  assert.equal(out.ran, false);
+  assert.equal(applied.length + verified.length, 0);
+  assert.equal(fs.existsSync(ledgerPath), false);
+});
+
+test('sweep: a CLI refusal (Done gate exit 5) is ledgered as card-fail and never counted', async () => {
+  const { deps, reported, ledgerPath, statePath } = harness({
+    entries: candidateEntries('BRO-5', 'job-5', '/wt/gone5'),
+    issues: { 'BRO-5': startedIssue2('R') },
+    applyOk: false,
+  });
+  await sweepLinearStartedZombies({ dryRun: false, deps });
+  assert.equal(readRows(ledgerPath)[0].reason, 'apply-failed:done');
+  assert.ok(reported.some((r) => r.kind === 'linear-zombie-reset-failed'));
+  assert.equal(JSON.parse(fs.readFileSync(statePath, 'utf8')).doneCount, 0);
+});
+
+test('sweep: re-check AFTER the command refuses the write when a person commented meanwhile', async () => {
+  const entries = candidateEntries('BRO-10', 'job-10', '/wt/gone10');
+  let calls = 0;
+  const { deps, applied, reported } = harness({ entries });
+  deps.getIssueFn = async () => {
+    calls++;
+    return calls === 1
+      ? startedIssue2('T')
+      : startedIssue2('T', [{ createdAt: new Date().toISOString(), body: 'wait, I am on this' }]);
   };
   await sweepLinearStartedZombies({ dryRun: false, deps });
-  assert.equal(getIssueCalls, 2, 'must re-fetch immediately before writing, not just once at the top');
-  assert.equal(reportedBack.length, 0, 'the stale decision must never reach reportBackFn');
+  assert.equal(calls, 2, 'must re-fetch after the command, immediately before writing');
+  assert.equal(applied.length, 0);
   assert.ok(reported.some((r) => r.kind === 'linear-zombie-reset-stale'));
 });
 
-test('sweepLinearStartedZombies: daily reset cap stops further resets once reached', async () => {
-  const entries = [
-    ...candidateEntries('BRO-3', 'job-3', '/wt/a'),
-    ...candidateEntries('BRO-4', 'job-4', '/wt/b'),
-  ];
-  const { deps, reportedBack, statePath } = harness({
-    entries,
-    issues: {
-      'BRO-3': { title: 'A', state: { type: 'started' }, comments: { nodes: [] } },
-      'BRO-4': { title: 'B', state: { type: 'started' }, comments: { nodes: [] } },
-    },
-    worktrees: {
-      '/wt/a': { exists: true, dirty: false, aheadCount: 0 },
-      '/wt/b': { exists: true, dirty: false, aheadCount: 0 },
-    },
-    resetEnabled: true,
-    maxResetsPerDay: 1,
-  });
-  await sweepLinearStartedZombies({ dryRun: false, deps });
-  assert.equal(reportedBack.length, 1, 'cap of 1/day must stop the second reset in the SAME tick');
+test('sweep: daily Done cap and per-tick verify budget both stop further work', async () => {
+  const entries = [...candidateEntries('BRO-3', 'job-3', '/wt/a'), ...candidateEntries('BRO-4', 'job-4', '/wt/b')];
+  const issues = { 'BRO-3': startedIssue2('A'), 'BRO-4': startedIssue2('B') };
+  const capped = harness({ entries, issues, maxDonesPerDay: 1 });
+  await sweepLinearStartedZombies({ dryRun: false, deps: capped.deps });
+  assert.equal(capped.applied.length, 1, 'cap of 1/day stops the second close in the SAME tick');
+
+  const budget = harness({ entries, issues, extra: { maxVerifiesPerTick: 1 } });
+  const out = await sweepLinearStartedZombies({ dryRun: false, deps: budget.deps });
+  assert.equal(budget.verified.length, 1);
+  assert.equal(out.carried, 1, 'the unchecked card carries to the next tick');
+  assert.equal(JSON.parse(fs.readFileSync(budget.statePath, 'utf8')).lastRunTs, null, 'a budget-limited tick must not start the 6h cadence clock');
 });
 
-test('sweepLinearStartedZombies: dry-run never calls reportBackFn or writes the ledger', async () => {
-  const entries = candidateEntries('BRO-5', 'job-5', '/wt/clean5');
-  const { deps, reportedBack, ledgerPath } = harness({
-    entries,
-    issues: { 'BRO-5': { title: 'Z', state: { type: 'started' }, comments: { nodes: [] } } },
-    worktrees: { '/wt/clean5': { exists: true, dirty: false, aheadCount: 0 } },
-    resetEnabled: true,
+test('sweep: dry-run decides (runs VERIFY) but never applies or writes the ledger', async () => {
+  const { deps, applied, verified, ledgerPath } = harness({
+    entries: candidateEntries('BRO-5', 'job-5', '/wt/gone5'),
+    issues: { 'BRO-5': startedIssue2('Z') },
   });
   const out = await sweepLinearStartedZombies({ dryRun: true, deps });
-  assert.equal(out.reset.length, 1);
-  assert.equal(reportedBack.length, 0);
+  assert.equal(out.done.length, 1);
+  assert.equal(verified.length, 1);
+  assert.equal(applied.length, 0);
   assert.equal(fs.existsSync(ledgerPath), false, 'dry-run must not create the ledger file at all');
 });
 
-test('sweepLinearStartedZombies: park suppresses the repeated digest line once checkPark trips (2 EXISTING unchanged failures)', async () => {
-  // Matches attempt-memory.js's own contract (same one scripts/linear-drain-
-  // parked.js already relies on): checkPark parks once maxFailures (2)
-  // PRIOR occurrences are already on the ledger — so occurrence 1 and 2
-  // still report (0 and then 1 prior rows exist at decision time), and only
-  // occurrence 3 (2 prior rows now exist) goes silent.
+test('sweep: refusals still ledger card-fail and the digest line goes silent once parked (2 prior unchanged failures)', async () => {
+  // Same checkPark contract scripts/linear-drain-parked.js relies on. A tiny
+  // real delay between runs keeps genuinely distinct rows from sharing a ms
+  // timestamp (readLinearZombieLedger dedupes exact lines for merge=union).
   const entries = candidateEntries('BRO-6', 'job-6', '/wt/gone6');
-  // Real sweep ticks for the SAME card are 6h apart (the cadence gate), so
-  // two real card-fail rows can never share a millisecond timestamp in
-  // production — but three synchronous test calls easily do, which would
-  // make readLinearZombieLedger's exact-line dedup (added for a DIFFERENT
-  // reason: merge=union can duplicate a row's exact bytes) collapse three
-  // genuinely distinct occurrences into one. A tiny real delay between calls
-  // is the correct fix here, not weakening the dedup guard.
+  const fresh = [{ createdAt: new Date().toISOString(), body: 'I am looking at this' }];
   const runOnce = async (ledgerPath) => {
-    const { deps, reported } = harness({
-      entries,
-      issues: { 'BRO-6': { title: 'P', state: { type: 'started' }, comments: { nodes: [] } } },
-      worktrees: {},
-    });
+    const { deps, reported } = harness({ entries, issues: { 'BRO-6': startedIssue2('P', fresh) } });
     if (ledgerPath) deps.ledgerPath = ledgerPath;
-    await sweepLinearStartedZombies({ dryRun: false, deps });
+    const out = await sweepLinearStartedZombies({ dryRun: false, deps });
     await new Promise((resolve) => setTimeout(resolve, 2));
-    return { reported, ledgerPath: deps.ledgerPath };
+    return { reported, ledgerPath: deps.ledgerPath, out };
   };
   const first = await runOnce();
-  assert.ok(first.reported.some((r) => r.kind === 'linear-zombie-refused'), 'occurrence 1 reports (0 prior rows)');
+  assert.equal(first.out.refused[0].reason, 'human-comment-recent');
+  assert.ok(first.reported.some((r) => r.kind === 'linear-zombie-refused'));
   const second = await runOnce(first.ledgerPath);
-  assert.ok(second.reported.some((r) => r.kind === 'linear-zombie-refused'), 'occurrence 2 reports (1 prior row — not parked yet)');
+  assert.ok(second.reported.some((r) => r.kind === 'linear-zombie-refused'));
   const third = await runOnce(first.ledgerPath);
-  assert.ok(!third.reported.some((r) => r.kind === 'linear-zombie-refused'), 'occurrence 3 stays silent (2 prior rows — now parked)');
+  assert.ok(!third.reported.some((r) => r.kind === 'linear-zombie-refused'), 'occurrence 3 stays silent');
 });
 
-test('sweepLinearStartedZombies: a stale candidate (state moved on since the ledger scan) is skipped, not refused', async () => {
-  const entries = candidateEntries('BRO-7', 'job-7', '/wt/gone7');
-  const { deps, reported, reportedBack } = harness({
-    entries,
+test('sweep: a stale candidate (state moved on since the ledger scan) is skipped, not refused', async () => {
+  const { deps, reported, applied } = harness({
+    entries: candidateEntries('BRO-7', 'job-7', '/wt/gone7'),
     issues: { 'BRO-7': { title: 'S', state: { type: 'completed' }, comments: { nodes: [] } } },
-    worktrees: {},
   });
   const out = await sweepLinearStartedZombies({ dryRun: false, deps });
-  assert.equal(out.refused.length, 0);
-  assert.equal(out.reset.length, 0);
-  assert.equal(reportedBack.length, 0);
+  assert.equal(out.refused.length + out.done.length + out.todo.length + out.left.length, 0);
+  assert.equal(applied.length, 0);
   assert.equal(reported.length, 0);
 });
 

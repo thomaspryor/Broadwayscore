@@ -820,23 +820,23 @@ function sweepUntrackedInProgress({ dryRun = false, deps = {} } = {}) {
 // 'started' state (linear-watchdog-source.js's ineligibleReason refuses to
 // ever re-dispatch a started-type issue) with no write-back and no
 // visibility. See scripts/lib/linear-started-zombie-sweep.js's header for
-// the full mechanism and why "worktree already gone" is the EXPECTED
-// dominant case, not a bug.
+// the mechanism and why "worktree already gone" is the EXPECTED case.
 //
-// Fail-closed by construction (this card's own title): every unknown/
-// ambiguous signal refuses rather than resets. The one genuinely
-// state-changing action (moving a real Linear issue to Backlog) is kept
-// behind an explicit opt-in kill switch, LINEAR_ZOMBIE_RESET_ENABLED=1 —
-// detection/refusal/park bookkeeping runs unconditionally and is the low-
-// risk half of this sweep; actually resetting a card is the only action
-// that moves real production state, so it stays off until a dry run against
-// real data has been reviewed (same "prove it before it's live" posture as
-// BSC_RECONCILE_RETRY/WE_GAP_INGEST/DEPLOY_GATE_DISABLED elsewhere in this
-// codebase).
+// BRO-4510: decided from the card's own VERIFY command, not "reset to
+// Backlog" (linear-started-zombie-sweep-verify.js has the rules). Default ON;
+// kill switch LINEAR_ZOMBIE_SWEEP_DISABLED=1 (same convention as
+// DEPLOY_GATE_DISABLED). Every tick is bounded: at most
+// LINEAR_ZOMBIE_MAX_VERIFIES_PER_TICK commands run, inside a wall-clock
+// budget, and the rest carry to the next tick — this runs inside the 5-minute
+// reconcile tick, which must never stall orphan detection behind it.
 const LINEAR_ZOMBIE_SWEEP_STATE_PATH = path.join(REPO, 'data', 'audit', 'linear-zombie-sweep-state.json');
 const LINEAR_ZOMBIE_LEDGER_PATH = path.join(REPO, 'data', 'audit', 'bsc-reconcile-linear-zombie-ledger.jsonl');
 const LINEAR_ZOMBIE_SWEEP_INTERVAL_MS = 6 * 3600 * 1000; // Linear fetches cost quota — no need for 5-min cadence
-const LINEAR_ZOMBIE_MAX_RESETS_PER_DAY = 10;
+const LINEAR_ZOMBIE_MAX_RESETS_PER_DAY = 10; // Todo moves (each one buys a paid re-dispatch)
+const LINEAR_ZOMBIE_MAX_DONES_PER_DAY = 30;
+const LINEAR_ZOMBIE_MAX_VERIFIES_PER_TICK = 6;
+const LINEAR_ZOMBIE_TICK_BUDGET_MS = 4 * 60 * 1000;
+const LINEAR_ZOMBIE_VERIFY_TIMEOUT_MS = 90 * 1000;
 
 // Exact-duplicate lines are dropped, and that is load-bearing rather than
 // tidiness — same fix, same reason, as scripts/linear-drain-parked.js's own
@@ -874,21 +874,43 @@ function appendLinearZombieLedger(entry, ledgerPath = LINEAR_ZOMBIE_LEDGER_PATH)
   fs.appendFileSync(ledgerPath, JSON.stringify({ ts: new Date().toISOString(), ...entry }) + '\n');
 }
 
-function readLinearZombieResetCount(statePath, today) {
+function readLinearZombieDayCounts(statePath, today) {
   try {
     const state = JSON.parse(fs.readFileSync(statePath, 'utf8'));
-    return state && state.resetDay === today ? (state.resetCount || 0) : 0;
-  } catch { return 0; }
+    return state && state.resetDay === today
+      ? { todo: state.resetCount || 0, done: state.doneCount || 0 }
+      : { todo: 0, done: 0 };
+  } catch { return { todo: 0, done: 0 }; }
 }
 
+const ZOMBIE_BUDGET_EXHAUSTED = Symbol('zombie-verify-budget-exhausted');
+
 async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
+  const verifyLib = require('./lib/linear-started-zombie-sweep-verify.js');
   const {
     readLedgerEntriesFn = ledger.readEntries,
     getIssueFn = (identifier) => require('./lib/linear-client.js').getIssue(identifier),
-    // Imported call, not a spawned CLI — cmdReport is exported by
-    // linear-session.js for exactly this kind of in-process reuse.
-    reportBackFn = (identifier, summary) =>
-      require('./linear-session.js').cmdReport({ issue: identifier, status: 'paused', summary }),
+    // Shared fresh origin/main checkout, created lazily on the first command
+    // that actually needs to run and removed in `finally`.
+    makeCheckoutFn = () => require('./lib/acceptance-check-core.js').makeFreshCheckout({ repo: REPO, prefix: 'zombie-verify-' }),
+    removeCheckoutFn = (co) => require('./lib/acceptance-check-core.js').removeCheckout(co),
+    runVerifyFn = (co, cmd) => require('./lib/acceptance-check-core.js').runVerify(co.wt, cmd, {
+      attempts: 1, timeoutMs: LINEAR_ZOMBIE_VERIFY_TIMEOUT_MS, prepared: co.prepared,
+    }),
+    // A command can write files; reset the shared checkout between cards.
+    cleanCheckoutFn = (co) => {
+      try {
+        execFileSync('git', ['-C', co.wt, 'reset', '--hard', '-q'], { stdio: 'ignore' });
+        execFileSync('git', ['-C', co.wt, 'clean', '-fdq'], { stdio: 'ignore' });
+      } catch { /* best effort */ }
+    },
+    commitOnMainFn = (co, identifier) => {
+      try {
+        const out = execFileSync('git', ['-C', co.standalone ? co.wt : REPO, 'log', co.sha || 'origin/main', '-1', '--format=%h', '-P', `--grep=${verifyLib.commitGrepPattern(identifier)}`], { encoding: 'utf8' });
+        return out.trim() !== '';
+      } catch { return false; }
+    },
+    applyFn = (args) => verifyLib.applyZombieAction(args, { cwd: REPO }),
     gitStatusFn = (cwd) => {
       try { return execFileSync('git', ['-C', cwd, 'status', '--porcelain'], { encoding: 'utf8' }).trim(); }
       catch { return null; } // null = "could not verify" -> caller treats as unsafe, never as clean
@@ -908,119 +930,160 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
     statePath = LINEAR_ZOMBIE_SWEEP_STATE_PATH,
     ledgerPath = LINEAR_ZOMBIE_LEDGER_PATH,
     maxResetsPerDay = LINEAR_ZOMBIE_MAX_RESETS_PER_DAY,
-    resetEnabled = process.env.LINEAR_ZOMBIE_RESET_ENABLED === '1',
+    maxDonesPerDay = LINEAR_ZOMBIE_MAX_DONES_PER_DAY,
+    maxVerifiesPerTick = LINEAR_ZOMBIE_MAX_VERIFIES_PER_TICK,
+    tickBudgetMs = LINEAR_ZOMBIE_TICK_BUDGET_MS,
+    disabled = process.env.LINEAR_ZOMBIE_SWEEP_DISABLED === '1',
   } = deps;
+
+  const result = { ran: false, checked: 0, done: [], todo: [], left: [], refused: [], carried: 0 };
+  if (disabled) return result;
 
   let state = null;
   try { state = JSON.parse(fs.readFileSync(statePath, 'utf8')); } catch { /* first run */ }
   if (!dryRun && state && Number.isFinite(Date.parse(state.lastRunTs))
     && nowFn() - Date.parse(state.lastRunTs) < LINEAR_ZOMBIE_SWEEP_INTERVAL_MS) {
-    return { ran: false, checked: 0, reset: [], refused: [] };
+    return result;
   }
+  result.ran = true;
 
   const entries = readLedgerEntriesFn();
   const candidates = linearZombie.findJobDoneLinearCandidates(entries);
   const zombieLedgerEntries = readLinearZombieLedger(ledgerPath);
   const today = linearZombie.zombieLocalDay(nowFn());
-  let resetsToday = dryRun ? 0 : readLinearZombieResetCount(statePath, today);
+  const counts = dryRun ? { todo: 0, done: 0 } : readLinearZombieDayCounts(statePath, today);
+  const startedAt = nowFn();
+  let verifies = 0;
+  let checkout = null;
+  let carried = false;
 
-  const reset = [];
-  const refused = [];
-  let checked = 0;
-
-  for (const cand of candidates) {
-    let issue;
-    try { issue = await getIssueFn(cand.identifier); } catch (e) {
-      reportFn({ kind: 'linear-zombie-fetch-error', identifier: cand.identifier, detail: e.message });
-      continue;
-    }
-    if (!issue || !issue.state || issue.state.type !== 'started') continue; // stale — already resolved
-    checked++;
-
-    let worktree = { exists: false };
-    let live = false;
-    if (existsFn(cand.cwd)) {
-      const status = gitStatusFn(cand.cwd);
-      const aheadCount = gitAheadCountFn(cand.cwd);
-      worktree = { exists: true, dirty: status !== '', error: status === null || aheadCount === null, aheadCount };
-      live = Boolean(hasLiveLeaseFn(cand.cwd) || hasLiveProcessFn(cand.cwd));
-    }
-
-    const decision = linearZombie.decideZombieReset({ issue, spawnedTs: cand.spawnedTs, worktree, live });
-    if (decision.action === 'skip') continue;
-
-    const contentHash = linearZombie.computeZombieContentHash({ title: issue.title, jobId: cand.jobId });
-
-    if (decision.action === 'reset') {
-      reset.push({ identifier: cand.identifier, jobId: cand.jobId, reason: decision.reason });
-      if (dryRun) continue;
-      if (!resetEnabled) {
-        reportFn({ kind: 'linear-zombie-reset-disabled', identifier: cand.identifier, detail: 'would reset (LINEAR_ZOMBIE_RESET_ENABLED not set) — refusing, no state changed' });
-        continue;
-      }
-      if (resetsToday >= maxResetsPerDay) {
-        reportFn({ kind: 'linear-zombie-reset-capped', identifier: cand.identifier, detail: `daily reset cap (${maxResetsPerDay}) reached` });
-        continue;
-      }
-      // TOCTOU re-check (ship-check finding): the decision above was made
-      // against a snapshot fetched at the TOP of this loop iteration — the
-      // window between that fetch and the write below is normally
-      // sub-second, but a human or another machine acting on this exact
-      // issue in that window is exactly the case this sweep must never act
-      // through. Re-fetch fresh and re-run the SAME predicate; only a
-      // decision that is STILL 'reset' against the freshest available view
-      // gets written — same "re-read is the last word, never the stale
-      // snapshot" posture as sweepUntrackedInProgress's flipFn above.
-      let freshIssue;
-      try { freshIssue = await getIssueFn(cand.identifier); } catch (e) {
+  try {
+    for (const cand of candidates) {
+      let issue;
+      try { issue = await getIssueFn(cand.identifier); } catch (e) {
         reportFn({ kind: 'linear-zombie-fetch-error', identifier: cand.identifier, detail: e.message });
         continue;
       }
-      const freshDecision = linearZombie.decideZombieReset({ issue: freshIssue, spawnedTs: cand.spawnedTs, worktree, live });
-      if (freshDecision.action !== 'reset') {
-        reportFn({ kind: 'linear-zombie-reset-stale', identifier: cand.identifier, detail: `re-check before write found "${freshDecision.action}: ${freshDecision.reason}" — something changed since the first read, refusing this tick` });
-        continue;
-      }
-      const summary = linearZombie.buildZombieResetSummary({ identifier: cand.identifier, jobId: cand.jobId, reason: decision.reason });
-      try {
-        // NOTE for any future caller of reportBackFn/cmdReport: this ALWAYS
-        // passes status:'paused', which never reaches cmdReport's Done-gate
-        // (scripts/linear-session.js's `if (args.status === 'done')`
-        // branch) — that branch can process.exit(5) on refusal, which a
-        // plain try/catch here cannot intercept, and an uncaught exit would
-        // kill this entire 5-min launchd tick mid-run, taking every OTHER
-        // sweep in main() down with it. Never change this call to pass
-        // status:'done'.
-        await reportBackFn(cand.identifier, summary);
-      } catch (e) {
-        reportFn({ kind: 'linear-zombie-reset-failed', identifier: cand.identifier, detail: e.message });
-        continue;
-      }
-      appendLinearZombieLedger({ event: 'card-pass', cardId: cand.identifier, contentHash }, ledgerPath);
-      resetsToday++;
-      reportFn({ kind: 'linear-zombie-reset', identifier: cand.identifier, jobId: cand.jobId, reason: decision.reason, detail: `${cand.identifier} reset to Backlog — job ${cand.jobId} finished with no write-back (${decision.reason})` });
-      continue;
-    }
+      if (!issue || !issue.state || issue.state.type !== 'started') continue; // stale — already resolved
+      result.checked++;
 
-    // action === 'refuse'
-    refused.push({ identifier: cand.identifier, reason: decision.reason });
-    if (dryRun) continue;
-    const wasParked = linearZombie.isZombieResetParked(cand.identifier, { ledgerEntries: zombieLedgerEntries, contentHash }).parked;
-    appendLinearZombieLedger({ event: 'card-fail', cardId: cand.identifier, contentHash, reason: decision.reason }, ledgerPath);
-    // Suppress the repeated digest line once already parked (2 unchanged
-    // refusals in a row) — still refuses, still ledgers, just stops nagging
-    // the same permanently-stuck card every 6h tick forever.
-    if (!wasParked) reportFn({ kind: 'linear-zombie-refused', identifier: cand.identifier, reason: decision.reason, detail: `${cand.identifier} stuck 'started' with a finished job and no write-back — refused: ${decision.reason}` });
+      let worktree = { exists: false };
+      let live = false;
+      if (existsFn(cand.cwd)) {
+        const status = gitStatusFn(cand.cwd);
+        const aheadCount = gitAheadCountFn(cand.cwd);
+        worktree = { exists: true, dirty: status !== '', error: status === null || aheadCount === null, aheadCount };
+        live = Boolean(hasLiveLeaseFn(cand.cwd) || hasLiveProcessFn(cand.cwd));
+      }
+
+      // The verify result is memoised per card so the post-verify re-check
+      // below re-runs the WHOLE decision on a fresh issue read without
+      // re-running the (minutes-long) command.
+      let verifyMemo = null;
+      const runVerifyOnce = (cmd) => {
+        if (verifyMemo) return verifyMemo;
+        if (!dryRun && (verifies >= maxVerifiesPerTick || nowFn() - startedAt > tickBudgetMs)) throw ZOMBIE_BUDGET_EXHAUSTED;
+        if (!checkout) checkout = makeCheckoutFn();
+        else cleanCheckoutFn(checkout);
+        verifies++;
+        verifyMemo = runVerifyFn(checkout, cmd) || { status: 'unverifiable' };
+        return verifyMemo;
+      };
+      const decide = (iss) => verifyLib.decideZombieAction({
+        issue: iss,
+        spawnedTs: cand.spawnedTs,
+        worktree,
+        live,
+        nowMs: nowFn(),
+        runVerifyFn: runVerifyOnce,
+        commitOnMainFn: () => commitOnMainFn(checkout, cand.identifier),
+        priorTodoResets: verifyLib.countPriorTodoResets(zombieLedgerEntries, cand.identifier),
+        priorVerifyFails: verifyLib.countVerifyFails(zombieLedgerEntries, cand.identifier, cand.jobId),
+      });
+
+      let decision;
+      try { decision = decide(issue); } catch (e) {
+        if (e === ZOMBIE_BUDGET_EXHAUSTED) { carried = true; result.carried++; continue; } // next tick
+        reportFn({ kind: 'linear-zombie-verify-error', identifier: cand.identifier, detail: String(e && e.message).slice(0, 200) });
+        continue;
+      }
+      if (decision.action === 'skip') continue;
+
+      const contentHash = linearZombie.computeZombieContentHash({ title: issue.title, jobId: cand.jobId });
+      const row = { cardId: cand.identifier, jobId: cand.jobId, contentHash };
+
+      if (decision.action === 'done' || decision.action === 'todo') {
+        const bucket = decision.action === 'done' ? result.done : result.todo;
+        bucket.push({ identifier: cand.identifier, jobId: cand.jobId, reason: decision.reason, cmd: decision.cmd });
+        if (dryRun) continue;
+        const cap = decision.action === 'done' ? maxDonesPerDay : maxResetsPerDay;
+        if (counts[decision.action] >= cap) {
+          reportFn({ kind: 'linear-zombie-reset-capped', identifier: cand.identifier, detail: `daily ${decision.action} cap (${cap}) reached` });
+          continue;
+        }
+        // Re-check AFTER the command ran: it can take minutes, so a person
+        // acting on the card in that window must still win. Same decision on a
+        // fresh read (verify result memoised); only a still-identical action
+        // is written.
+        let freshIssue;
+        try { freshIssue = await getIssueFn(cand.identifier); } catch (e) {
+          reportFn({ kind: 'linear-zombie-fetch-error', identifier: cand.identifier, detail: e.message });
+          continue;
+        }
+        const fresh = decide(freshIssue);
+        if (fresh.action !== decision.action) {
+          reportFn({ kind: 'linear-zombie-reset-stale', identifier: cand.identifier, detail: `re-check before write found "${fresh.action}: ${fresh.reason}" — something changed since the first read, refusing this tick` });
+          continue;
+        }
+        const comment = verifyLib.buildZombieActionComment({ action: decision.action, identifier: cand.identifier, jobId: cand.jobId, cmd: decision.cmd, sha: checkout && checkout.sha });
+        const applied = applyFn({ action: decision.action, identifier: cand.identifier, comment });
+        if (!applied.ok) {
+          appendLinearZombieLedger({ event: 'card-fail', ...row, reason: `apply-failed:${decision.action}`, detail: applied.stderr }, ledgerPath);
+          reportFn({ kind: 'linear-zombie-reset-failed', identifier: cand.identifier, detail: `${decision.action} refused/failed (exit ${applied.status}): ${applied.stderr}` });
+          continue;
+        }
+        appendLinearZombieLedger({ event: 'card-pass', action: decision.action, ...row }, ledgerPath);
+        counts[decision.action]++;
+        reportFn({ kind: decision.action === 'done' ? 'linear-zombie-done' : 'linear-zombie-reset', identifier: cand.identifier, jobId: cand.jobId, reason: decision.reason, detail: `${cand.identifier} ${decision.action === 'done' ? 'closed Done' : 'moved to Todo'} — job ${cand.jobId} finished with no write-back (${decision.reason})` });
+        continue;
+      }
+
+      if (decision.action === 'leave') {
+        result.left.push({ identifier: cand.identifier, reason: decision.reason });
+        if (dryRun) continue;
+        // 'card-leave' feeds the queue-health digest line (no safe VERIFY ->
+        // a person has to look); 'verify-fail' is the first strike toward Todo.
+        appendLinearZombieLedger({ event: decision.reason === 'verify-failed-first-strike' ? 'verify-fail' : 'card-leave', ...row, reason: decision.reason }, ledgerPath);
+        continue;
+      }
+
+      // action === 'refuse'
+      result.refused.push({ identifier: cand.identifier, reason: decision.reason });
+      if (dryRun) continue;
+      const wasParked = linearZombie.isZombieResetParked(cand.identifier, { ledgerEntries: zombieLedgerEntries, contentHash }).parked;
+      appendLinearZombieLedger({ event: 'card-fail', ...row, reason: decision.reason }, ledgerPath);
+      // Suppress the repeated digest line once already parked (2 unchanged
+      // refusals in a row) — still refuses, still ledgers, just stops nagging
+      // the same permanently-stuck card every 6h tick forever.
+      if (!wasParked) reportFn({ kind: 'linear-zombie-refused', identifier: cand.identifier, reason: decision.reason, detail: `${cand.identifier} stuck 'started' with a finished job and no write-back — refused: ${decision.reason}` });
+    }
+  } finally {
+    if (checkout) { try { removeCheckoutFn(checkout); } catch { /* temp dir cleanup only */ } }
   }
 
+  // A budget-limited tick must not start the 6h cadence clock: the carried
+  // cards get the next 5-minute tick.
   if (!dryRun) {
     try {
       fs.mkdirSync(path.dirname(statePath), { recursive: true });
-      fs.writeFileSync(statePath, JSON.stringify({ lastRunTs: new Date(nowFn()).toISOString(), resetDay: today, resetCount: resetsToday }, null, 2));
+      fs.writeFileSync(statePath, JSON.stringify({
+        lastRunTs: carried ? (state && state.lastRunTs) || null : new Date(nowFn()).toISOString(),
+        resetDay: today, resetCount: counts.todo, doneCount: counts.done,
+      }, null, 2));
     } catch { /* state write must never fail the sweep */ }
   }
 
-  return { ran: true, checked, reset, refused };
+  return result;
 }
 
 // ── Flagless-resume sweep (task #985) ───────────────────────────────────────
@@ -1456,7 +1519,7 @@ async function main() {
   // BRO-3925: Linear-'started' zombie sweep, same best-effort isolation.
   try {
     const linearZombieSweep = await sweepLinearStartedZombies({ dryRun: DRY });
-    if (linearZombieSweep.ran) console.log(`[bsc-reconcile] linear-zombies checked=${linearZombieSweep.checked} reset=${linearZombieSweep.reset.length} refused=${linearZombieSweep.refused.length}${DRY ? ' (dry-run)' : ''}`);
+    if (linearZombieSweep.ran) console.log(`[bsc-reconcile] linear-zombies checked=${linearZombieSweep.checked} done=${linearZombieSweep.done.length} todo=${linearZombieSweep.todo.length} left=${linearZombieSweep.left.length} refused=${linearZombieSweep.refused.length} carried=${linearZombieSweep.carried}${DRY ? ' (dry-run)' : ''}`);
   } catch (e) {
     console.error(`[bsc-reconcile] linear-zombie sweep crashed (non-fatal): ${e.message}`);
   }
@@ -1556,4 +1619,4 @@ if (require.main === module) {
   main().catch(err => { console.error('bsc-reconcile crashed:', err); process.exit(1); });
 }
 
-module.exports = { main, runRedFirstPassBounded, RED_FIRST_TIMEOUT_MS, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS, sweepLinearStartedZombies, LINEAR_ZOMBIE_SWEEP_STATE_PATH, LINEAR_ZOMBIE_LEDGER_PATH, LINEAR_ZOMBIE_MAX_RESETS_PER_DAY, readLinearZombieLedger };
+module.exports = { main, runRedFirstPassBounded, RED_FIRST_TIMEOUT_MS, retriesInLast24h, reconcileTaskSessions, reconcileStalledTasks, reconcileFlaglessSessions, reconcileCardDrift, redispatchArgv, stallRedispatchArgv, STALL_EVENT, STALL_COOLDOWN_MS, MAX_STALL_ATTEMPTS_PER_TASK, USAGE, REPORT_PATH, MAX_RETRIES_PER_TICK, MAX_RETRIES_PER_DAY, MAX_REDISPATCH_PER_TICK, MAX_REVIVE_PER_TICK, collectTimeoutResumeCandidates, MAX_RESUME_PER_TASK, RESUME_LOOKBACK_MS, sweepUntrackedInProgress, UNTRACKED_SWEEP_STATE_PATH, stripOwnParkNote, UNTRACKED_MARKER, OUTCOME_PARK_MARKER, sweepOrphanedJobs, GRACE_MS, sweepLinearStartedZombies, LINEAR_ZOMBIE_SWEEP_STATE_PATH, LINEAR_ZOMBIE_LEDGER_PATH, LINEAR_ZOMBIE_MAX_RESETS_PER_DAY, LINEAR_ZOMBIE_MAX_DONES_PER_DAY, readLinearZombieLedger };
