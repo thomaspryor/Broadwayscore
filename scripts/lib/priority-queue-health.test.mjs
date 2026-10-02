@@ -57,3 +57,19 @@ test('formatSummary reads as one plain sentence', () => {
   assert.equal(formatSummary(r), '1 P0 open (1 older than 24h, oldest 3d); 1 P1 open (1 older than 7d); 2 open issues of any priority.');
   assert.match(formatSummary(assessPriorityQueue([], NOW)), /^0 P0 open; 0 P1 open/);
 });
+
+// ── BRO-4510: started-zombie sweep leftovers ──
+test('summarizeZombieLeftovers: latest row per card; card-pass and closed cards drop out', async () => {
+  const { createRequire } = await import('node:module');
+  const { summarizeZombieLeftovers, formatZombieLeftovers } = createRequire(import.meta.url)('./priority-queue-health.js');
+  const rows = [
+    { ts: '2026-10-01T00:00:00Z', cardId: 'BRO-1', event: 'card-leave', reason: 'no-safe-verify' },
+    { ts: '2026-10-02T00:00:00Z', cardId: 'BRO-1', event: 'card-pass', action: 'done' },
+    { ts: '2026-10-01T00:00:00Z', cardId: 'BRO-2', event: 'card-fail', reason: 'human-comment-recent' },
+    { ts: '2026-10-01T00:00:00Z', cardId: 'BRO-3', event: 'card-leave', reason: 'no-safe-verify' },
+  ];
+  const s = summarizeZombieLeftovers(rows, ['BRO-1', 'BRO-2']);
+  assert.deepEqual(s.cards, ['BRO-2']);
+  assert.match(formatZombieLeftovers(s), /1 cards left for a person \(human-comment-recent 1\): BRO-2/);
+  assert.match(formatZombieLeftovers(summarizeZombieLeftovers([], [])), /no cards left/);
+});

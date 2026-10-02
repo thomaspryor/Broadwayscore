@@ -79,4 +79,28 @@ function formatSummary(r) {
   return `${p0Part}; ${r.p1Open} P1 open (${r.p1Overdue} older than 7d); ${r.totalOpen} open issues of any priority.`;
 }
 
-module.exports = { assessPriorityQueue, formatSummary, P0_MAX_AGE_HOURS, P1_MAX_AGE_HOURS };
+// BRO-4510: started-zombie sweep leftovers. A card the sweep could not decide
+// (no safe VERIFY, unrunnable VERIFY, first FAIL strike, or a refusal) needs a
+// person; its LATEST ledger row says why. A later card-pass clears it, and
+// `openIdentifiers` (the cards still open on the board) drops resolved ones.
+function summarizeZombieLeftovers(ledgerRows, openIdentifiers) {
+  const latest = new Map();
+  for (const r of ledgerRows || []) {
+    if (!r || !r.cardId || !r.ts) continue;
+    const prev = latest.get(r.cardId);
+    if (!prev || r.ts >= prev.ts) latest.set(r.cardId, r);
+  }
+  const open = openIdentifiers ? new Set(openIdentifiers) : null;
+  const stuck = [...latest.values()].filter((r) => r.event !== 'card-pass' && (!open || open.has(r.cardId)));
+  const byReason = {};
+  for (const r of stuck) byReason[r.reason || r.event] = (byReason[r.reason || r.event] || 0) + 1;
+  return { count: stuck.length, byReason, cards: stuck.map((r) => r.cardId).sort() };
+}
+
+function formatZombieLeftovers(s) {
+  if (!s.count) return 'Started-zombie sweep: no cards left undecided.';
+  const reasons = Object.entries(s.byReason).sort((a, b) => b[1] - a[1]).map(([k, n]) => `${k} ${n}`).join(', ');
+  return `Started-zombie sweep: ${s.count} cards left for a person (${reasons}): ${s.cards.slice(0, 8).join(', ')}${s.cards.length > 8 ? ', ...' : ''}`;
+}
+
+module.exports = { assessPriorityQueue, formatSummary, summarizeZombieLeftovers, formatZombieLeftovers, P0_MAX_AGE_HOURS, P1_MAX_AGE_HOURS };
