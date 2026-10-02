@@ -967,5 +967,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-02T05:45:32.546Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4509-tour-serp",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4509-tour-serp",
+    "description": "land.yml did not land land/bro-4509-tour-serp: the unit-tests-node gate went red at 3fe037f238. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36975428941",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4509-tour-serp"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "3fe037f238e1093fb6f507dae4c5667c506376e9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36975428941"
+      }
+    ],
+    "queuedAt": "2026-10-02T07:20:04.222Z"
   }
 ]
