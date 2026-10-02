@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-02T00:45:52.812Z",
+  "runDate": "2026-10-02T02:57:16.135Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,46 +11,46 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 435,
-    "failed": 314,
+    "processed": 449,
+    "failed": 320,
     "skipped": 0,
-    "successRate": "58.1%"
+    "successRate": "58.4%"
   },
   "tierBreakdown": {
-    "playwright": 219,
+    "playwright": 227,
     "amp": 1,
-    "browserbase": 3,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 41,
-    "scrapingbee": 79,
-    "brightdata": 16,
+    "scrapingdog": 51,
+    "scrapingbee": 82,
+    "brightdata": 19,
     "archiveToday": 0,
-    "archive": 79
+    "archive": 82
   },
   "statistics": {
-    "tier1Attempts": 93,
-    "tier1Success": 58,
-    "ampAttempts": 0,
-    "ampSuccess": 0,
-    "tier1_5Attempts": 0,
-    "tier1_5Success": 0,
-    "tier1_9Attempts": 34,
-    "tier1_9Success": 18,
-    "tier2Attempts": 86,
-    "tier2Success": 70,
-    "tier3Attempts": 36,
-    "tier3Success": 25,
-    "tier3_6Attempts": 23,
+    "tier1Attempts": 96,
+    "tier1Success": 33,
+    "ampAttempts": 1,
+    "ampSuccess": 1,
+    "tier1_5Attempts": 10,
+    "tier1_5Success": 4,
+    "tier1_9Attempts": 72,
+    "tier1_9Success": 39,
+    "tier2Attempts": 41,
+    "tier2Success": 15,
+    "tier3Attempts": 53,
+    "tier3Success": 26,
+    "tier3_6Attempts": 46,
     "tier3_6Success": 0,
-    "tier4Attempts": 119,
-    "tier4Success": 56,
-    "totalFailed": 100,
-    "scrapingBeePageCredits": 200,
+    "tier4Attempts": 102,
+    "tier4Success": 12,
+    "totalFailed": 254,
+    "scrapingBeePageCredits": 195,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 40,
-    "urlDiscoverySuccess": 1,
+    "browserbaseSessionsUsed": 10,
+    "browserbaseMinutesUsed": 3.2,
+    "urlDiscoveryAttempts": 137,
+    "urlDiscoverySuccess": 3,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -488,7 +488,21 @@
     "trouble-in-mind-2021/broadwaynews--charles-isherwood.json",
     "diana-the-musical-2021/nytimes--jesse-green.json",
     "diana-the-musical-2021/broadwayworld--aa-cristi.json",
-    "diana-the-musical-2021/playbill--unknown.json"
+    "diana-the-musical-2021/playbill--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+    "the-last-ship-west-end-2026/ground--unknown.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/bestoftheatre--cecil-glover.json",
+    "thelma-and-louise-a-new-musical-off-west-end-2026/broadwayworld--stephi-wild.json",
+    "the-lost-boys-2026/broadwayworld--unknown.json",
+    "operation-mincemeat-2025/new-york-city-theatre--unknown.json",
+    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+    "small-off-broadway-2026/culturesauce--thom-geier.json",
+    "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
+    "whos-afraid-of-virginia-woolf-2020/deadline--unknown.json",
+    "whos-afraid-of-virginia-woolf-2020/playbill--mark-peikert.json",
+    "whos-afraid-of-virginia-woolf-2020/theater-mirror--theater-mirror.json",
+    "west-side-story-2020/broadwayworld--michael-dale.json"
   ],
   "failed": [
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -517,7 +531,6 @@
     "romeo-and-juliet-off-broadway-2026/nytimes--charles-isherwood.json",
     "romeo-and-juliet-off-broadway-2026/express-uk--neil-norman.json",
     "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--alix-cohen.json",
-    "small-off-broadway-2026/culturesauce--thom-geier.json",
     "small-off-broadway-2026/washpost--unknown.json",
     "the-maids-off-broadway-2026/ew--unknown.json",
     "the-maids-off-broadway-2026/nydailynews--unknown.json",
@@ -532,7 +545,6 @@
     "public-charge-off-broadway-2026/talkinbroadway--unknown.json",
     "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
     "bigfoot-off-broadway-2026/whatsonstage--unknown.json",
-    "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "silver-manhattan-off-broadway-2026/theatermania--unknown.json",
     "pen-pals-off-broadway-2025/theater-life--paulanne-simmons.json",
     "the-lonely-few-off-broadway-2024/queerty--charlie-grey.json",
@@ -541,7 +553,6 @@
     "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
     "whos-afraid-of-virginia-woolf-west-end-2026/thestage--dave-fargnoli.json",
     "the-standard-of-living-west-end-2026/theupcoming--unknown.json",
-    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
     "midnight-off-broadway-2026/broadwayworld--unknown.json",
     "midnight-off-broadway-2026/chicagotribune--unknown.json",
     "midnight-off-broadway-2026/eventsfy--unknown.json",
@@ -553,7 +564,6 @@
     "long-days-journey-into-night-2016/whatsonstage--sarah-crompton.json",
     "table-17-off-west-end-2026/londonlivinglarge--london-living-large.json",
     "the-first-year-off-west-end-2026/guardian--unknown.json",
-    "the-last-ship-west-end-2026/ground--unknown.json",
     "catarina-and-the-beauty-of-killing-fascists-west-end-2026/londonlivinglarge--unknown.json",
     "the-invention-of-love-off-broadway-2026/theater-life--unknown.json",
     "darkling-off-west-end-2026/thestage--holly-omahony.json",
@@ -612,7 +622,6 @@
     "mj-2022/nydailynews--karu-f-daniels.json",
     "six-2021/whatsonstage--alex-wood.json",
     "hadestown-2019/broadwaynews--charles-isherwood.json",
-    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
     "hadestown-2019/theater-life--isa-goldberg.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
     "harry-potter-2021/front-row-center--tulis-mccall.json",
@@ -743,7 +752,6 @@
     "the-producers-west-end-2025/thestage--paul-vale.json",
     "call-me-izzy-2025/theater-life--david-sheward.json",
     "real-women-have-curves-2025/talkinbroadway--kimberly-ramirez.json",
-    "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
     "the-last-five-years-2025/hypable--unknown.json",
     "the-picture-of-dorian-gray-2025/theater-life--paulanne-simmons.json",
     "redwood-2025/juiceph--wanggo-gallaga.json",
@@ -804,7 +812,19 @@
     "the-lehman-trilogy-2021/observer--jesse-green.json",
     "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
     "is-this-a-room-2021/hollywood-reporter--angie-han.json",
-    "lackawanna-blues-2021/broadway-and-me--janice-c-simpson.json"
+    "lackawanna-blues-2021/broadway-and-me--janice-c-simpson.json",
+    "blood-of-my-blood-west-end-2026/broadwayworld--stephi-wild.json",
+    "blood-of-my-blood-west-end-2026/express-uk--neela-debnath.json",
+    "hay-fever-west-end-2026/telegraph--dominic-cavendish.json",
+    "conflicted-off-broadway-2026/slantmagazine--justin-clark.json",
+    "chewing-gum-dreams-off-west-end-2026/guardian--arifa-akbar.json",
+    "electra-persona-west-end-2026/nytimes--houman-barekat.json",
+    "as-you-like-it-globe-west-end-2026/theupcoming--michael-higgs.json",
+    "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+    "back-to-the-future-west-end-2021/british-theatre--douglas-mayo.json",
+    "waitress-2021/abc-news--mark-kennedy.json",
+    "pass-over-2021/broadway-and-me--janice-c-simpson.json",
+    "whos-afraid-of-virginia-woolf-2020/times-uk--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1026,7 +1046,15 @@
       "macbeth-2022/timeout--adam-feldman.json",
       "american-buffalo-2022/timeout--adam-feldman.json",
       "skeleton-crew-2022/timeout--adam-feldman.json",
-      "clydes-2021/nysr--steven-suskin.json"
+      "clydes-2021/nysr--steven-suskin.json",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/bestoftheatre--cecil-glover.json",
+      "operation-mincemeat-2025/new-york-city-theatre--unknown.json",
+      "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+      "cold-war-choir-practice-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
+      "waitress-2021/abc-news--mark-kennedy.json",
+      "whos-afraid-of-virginia-woolf-2020/playbill--mark-peikert.json",
+      "whos-afraid-of-virginia-woolf-2020/theater-mirror--theater-mirror.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -1034,7 +1062,8 @@
     "browserbase": [
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/fire-fire-off-west-end-2026/metro-uk--brooke-ivey-johnson.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -1078,7 +1107,17 @@
       "call-me-izzy-2025/theater-life--david-sheward.json",
       "john-proctor-is-the-villain-2025/new-statesman--emily-lawford.json",
       "the-picture-of-dorian-gray-2025/theater-life--paulanne-simmons.json",
-      "mystic-pizza-regional-2025/wmscradio--cupor1.json"
+      "mystic-pizza-regional-2025/wmscradio--cupor1.json",
+      "the-bathroom-attendant-off-broadway-2026/stagebuddy--unknown.json",
+      "bigfoot-off-broadway-2026/theater-life--paulanne-simmons.json",
+      "pen-pals-off-broadway-2025/theater-life--paulanne-simmons.json",
+      "the-lonely-few-off-broadway-2024/theater-life--paulanne-simmons.json",
+      "cabaret-2024/theater-life--paulanne-simmons.json",
+      "just-for-us-2023/theater-life--paulanne-simmons.json",
+      "new-york-new-york-2023/theater-life--paulanne-simmons.json",
+      "the-kite-runner-2022/theater-life--paulanne-simmons.json",
+      "american-buffalo-2022/theater-life--david-sheward.json",
+      "mrs-doubtfire-2021/theater-life--paulanne-simmons.json"
     ],
     "scrapingbee": [
       "the-hungry-ghost-off-west-end-2026/timeout-london--unknown.json",
@@ -1159,7 +1198,10 @@
       "beetlejuice-2022/broadwayworld--linda-hodges.json",
       "beetlejuice-2022/san-francisco-chronicle--lily-janiak.json",
       "company-2021/theatrely--andrew-martini.json",
-      "trouble-in-mind-2021/broadwayworld--unknown.json"
+      "trouble-in-mind-2021/broadwayworld--unknown.json",
+      "thelma-and-louise-a-new-musical-off-west-end-2026/broadwayworld--stephi-wild.json",
+      "this-is-rambert-west-end-2026/voice-magazine--moni-fernandez.json",
+      "west-side-story-2020/broadwayworld--michael-dale.json"
     ],
     "brightdata": [
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
@@ -1177,7 +1219,10 @@
       "beetlejuice-tour-2022/boston-globe--james-sullivan.json",
       "american-buffalo-2022/theatermania--kenji-fujishima.json",
       "birthday-candles-2022/vulture--helen-shaw.json",
-      "birthday-candles-2022/theatermania--christian-lewis.json"
+      "birthday-candles-2022/theatermania--christian-lewis.json",
+      "the-lost-boys-2026/broadwayworld--unknown.json",
+      "clydes-2021/timeout--adam-feldman.json",
+      "whos-afraid-of-virginia-woolf-2020/deadline--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1259,34 +1304,114 @@
       "trouble-in-mind-2021/broadwaynews--charles-isherwood.json",
       "diana-the-musical-2021/nytimes--jesse-green.json",
       "diana-the-musical-2021/broadwayworld--aa-cristi.json",
-      "diana-the-musical-2021/playbill--unknown.json"
+      "diana-the-musical-2021/playbill--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+      "small-off-broadway-2026/culturesauce--thom-geier.json",
+      "david-copperfield-59e59-theaters-off-broadway-2026/theater-life--alix-cohen.json"
     ]
   },
   "failuresByOutlet": {
-    "oklahomatickets": {
-      "count": 1,
-      "domain": "oklahomatickets.com",
+    "BroadwayWorld": {
+      "count": 2,
+      "domain": "broadwayworld.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Guardian": {
+    "The Telegraph": {
       "count": 1,
-      "domain": "theguardian.com",
+      "domain": "telegraph.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
     "The Stage": {
-      "count": 3,
+      "count": 13,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Times (UK)": {
+    "Londontheatredirect": {
+      "count": 1,
+      "domain": "londontheatredirect.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Guardian": {
       "count": 2,
-      "domain": "thetimes.co.uk",
+      "domain": "theguardian.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Times (UK)": {
+      "count": 5,
+      "domain": "thetimes.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Reviews Hub": {
+      "count": 1,
+      "domain": "thereviewshub.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Times": {
+      "count": 1,
+      "domain": "unknown",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Broadway News": {
+      "count": 2,
+      "domain": "broadway.news",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "NorthJersey.com": {
+      "count": 1,
+      "domain": "northjersey.com",
+      "hasCredentials": true,
+      "isPaywalled": true,
+      "isKnownBlocked": false
+    },
+    "Woman Around Town": {
+      "count": 1,
+      "domain": "womanaroundtown.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Public Theater": {
+      "count": 1,
+      "domain": "publictheater.org",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Click Liverpool": {
+      "count": 1,
+      "domain": "facebook.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "Daily Echo": {
+      "count": 1,
+      "domain": "facebook.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "here": {
+      "count": 1,
+      "domain": "u7061146.ct.sendgrid.net",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1312,6 +1437,13 @@
       "isPaywalled": true,
       "isKnownBlocked": false
     },
+    "amNewYork": {
+      "count": 1,
+      "domain": "amny.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "Observer": {
       "count": 4,
       "domain": "theguardian.com",
@@ -1334,7 +1466,7 @@
       "isKnownBlocked": false
     },
     "Broadway & Me": {
-      "count": 2,
+      "count": 3,
       "domain": "broadwayandme.blogspot.com",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -1343,13 +1475,6 @@
     "Cititour": {
       "count": 1,
       "domain": "cititour.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Broadway News": {
-      "count": 1,
-      "domain": "bway.ly",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1364,9 +1489,19 @@
   },
   "urlDiscoveries": [
     {
-      "reviewId": "one-flew-over-the-cuckoos-nest-west-end-2026/whatsonstage--maygan-forbes.json",
-      "oldUrl": "https://www.whatsonstage.com/news/aaron-pierre-olivia-williams-and-jason-pennycooke-reflect-on-race-power-and-control-in-one-flew-over-the-cuckoos-nest-at-the-old-vic_1718567/",
-      "newUrl": "https://www.whatsonstage.com/news/one-flew-over-the-cuckoos-nest-at-the-old-vic-review_1718322/"
+      "reviewId": "thelma-and-louise-a-new-musical-off-west-end-2026/bestoftheatre--cecil-glover.json",
+      "oldUrl": "https://www.bestoftheatre.co.uk/blog/post/thelma-louise-young-vic-production-images",
+      "newUrl": "https://www.bestoftheatre.co.uk/blog/post/first-trailer-for-thelma-and-louise-at-the-young-vic"
+    },
+    {
+      "reviewId": "glengarry-glen-ross-west-end-2026/times-uk--ann-treneman.json",
+      "oldUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0",
+      "newUrl": "https://www.thetimes.com/culture/theatre-dance/article/glengarry-glen-ross-without-men-its-not-just-putting-lipstick-on-mamet-sjc0ff8h0?eafs_enabled=false"
+    },
+    {
+      "reviewId": "waitress-2021/abc-news--mark-kennedy.json",
+      "oldUrl": "http://abcnews.go.com/Entertainment/wireStory/review-broadways-waitress-recipe-success-38642316",
+      "newUrl": "https://apnews.com/article/sara-bareilles-waitress-movie-4cba676cacf3459820b0bd5aebad7e56"
     }
   ]
 }
