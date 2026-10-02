@@ -48,7 +48,7 @@
 const fs = require('fs');
 const path = require('path');
 const { decideOrphanGate } = require('./lib/orphan-test-gate.js');
-const { MANIFESTS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex, testReferenceRegex } = require('./lib/test-manifest.js');
+const { MANIFESTS, NODE_RUNNABLE_TEST_EXTENSIONS, testFileRegex, testReferenceRegex, validateManifest } = require('./lib/test-manifest.js');
 
 const ROOT = path.resolve(__dirname, '..');
 const TESTS_DIR = path.join(ROOT, 'tests', 'unit');
@@ -269,6 +269,24 @@ function collectReferencedTests() {
   return referenced;
 }
 
+// Manifest hygiene (BRO-4525). CI's test-manifest-integrity test refuses an
+// unsorted, duplicated or dangling manifest entry, but this audit is what a
+// session runs after registering a test, and it answered "All N registered"
+// for an entry inserted out of order. Cloud sessions don't install
+// scripts/hooks/pre-commit (the hook that auto-sorts), so a land run was the
+// first thing to notice. Scoped like the orphan list: with --scope-stdin a
+// problem blocks only when its manifest is part of this push.
+function checkManifests(root = ROOT, changedFiles) {
+  const blocking = [];
+  const informational = [];
+  for (const manifest of MANIFESTS) {
+    const { errors } = validateManifest(path.join(root, manifest), root);
+    const inScope = !changedFiles || changedFiles.includes(manifest);
+    for (const error of errors) (inScope ? blocking : informational).push({ manifest, error });
+  }
+  return { blocking, informational };
+}
+
 function main() {
   // --list-exempt prints REPO-RELATIVE PATHS of decay candidates, one per line,
   // for the decayed-exemption check in CI (`for f in $(...); run; if pass: fail`).
@@ -343,6 +361,7 @@ function main() {
     .filter(f => f.name in EXEMPT_NEVER_CI)
     .map(f => ({ file: f.rel, notion: EXEMPT_NEVER_CI[f.name] }));
   const { blocking, informational } = decideOrphanGate({ orphans, changedFiles: scope });
+  const manifestGate = checkManifests(ROOT, scope);
 
   if (json) {
     console.log(JSON.stringify({
@@ -353,6 +372,8 @@ function main() {
       informational: informational.map(f => f.rel),
       exemptKnownBroken,
       exemptNeverCi,
+      manifestProblems: manifestGate.blocking,
+      manifestInformational: manifestGate.informational,
     }, null, 2));
   } else if (blocking.length > 0) {
     console.error(`❌ ${blocking.length} orphan test file(s) — not referenced in any .github/workflows/*.yml:`);
@@ -370,10 +391,19 @@ function main() {
   } else if (informational.length > 0) {
     console.log(`✅ ${files.length - informational.length} of ${files.length} unit test files registered in CI — ${informational.length} pre-existing orphan(s) elsewhere in the repo not touched by this push (not blocking):`);
     for (const f of informational) console.log(`  ${f.rel}`);
-  } else {
+  } else if (manifestGate.blocking.length === 0) {
     console.log(`✅ All ${files.length} unit test files registered in CI (${exemptKnownBroken.length} known-broken exempt, ${exemptNeverCi.length} never-CI exempt)`);
   }
-  process.exit(blocking.length > 0 ? 1 : 0);
+  if (!json && manifestGate.blocking.length > 0) {
+    console.error(`❌ ${manifestGate.blocking.length} test manifest problem(s):`);
+    for (const p of manifestGate.blocking) console.error(`  ${p.manifest}: ${p.error}`);
+    console.error('Fix ordering and duplicates: node scripts/lib/test-manifest.js --fix');
+  }
+  if (!json && manifestGate.informational.length > 0) {
+    console.log(`(${manifestGate.informational.length} manifest problem(s) in manifests this push doesn't touch, not blocking:)`);
+    for (const p of manifestGate.informational) console.log(`  ${p.manifest}: ${p.error}`);
+  }
+  process.exit(blocking.length > 0 || manifestGate.blocking.length > 0 ? 1 : 0);
 }
 
 // Guarded so `require()`-ing this file from a test (CLAUDE.md rule 15) doesn't
@@ -390,6 +420,7 @@ module.exports = {
   // exemption list) is exactly the kind of drift-prone duplicate this file's
   // own MANIFESTS comment (scripts/lib/test-manifest.js) warns against.
   collectReferencedTests,
+  checkManifests,
   EXEMPT_KNOWN_BROKEN,
   EXEMPT_NEVER_CI,
 };
