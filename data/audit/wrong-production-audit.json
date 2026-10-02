@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-02T07:20:16.808Z",
+  "timestamp": "2026-10-02T08:08:38.764Z",
   "stats": {
-    "totalReviews": 45805,
+    "totalReviews": 45809,
     "alreadyFlagged": 18698,
     "dateGuardCatches": 262,
-    "directorMismatch": 1195,
-    "tvFilmSignals": 1330,
+    "directorMismatch": 1199,
+    "tvFilmSignals": 1331,
     "londonSignals": 1251,
     "offBroadwaySignals": 507,
     "yearMismatch": 106,
@@ -21990,6 +21990,63 @@
       "score": 87,
       "publishDate": "2026-10-01",
       "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-Broadway-San-Diego-20261001",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "hartford-courant--christopher-arnott.json",
+      "publishDate": "2026-09-21",
+      "url": "https://www.courant.com/2026/09/21/theater-review-tour-premiere-of-freaky-farce-oh-mary-lives-up-to-the-hype-at-the-bushnell/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        },
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "josh-at-the-movies--unknown.json",
+      "publishDate": "2026-09-25",
+      "url": "https://joshatthemovies.com/2026/09/25/theater-review-oh-mary/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.sandiegouniontribune.com/2026/10/01/review-buckle-your-seat-belts-for-a-wild-oh-mary-ride-at-the-civic-theatre/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "timesofsandiego--drew-sitton-times-of-san-diego.json",
+      "publishDate": "2026-10-01",
+      "url": "https://timesofsandiego.com/arts/2026/10/01/oh-mary-san-diego-national-tour/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
