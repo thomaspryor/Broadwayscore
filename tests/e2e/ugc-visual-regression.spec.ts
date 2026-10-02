@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect } from './helpers/ugc-test';
 
 /**
  * Visual regression tests for UGC (User-Generated Content) components.
