@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-02T06:51:16.627Z",
+  "timestamp": "2026-10-02T07:20:16.808Z",
   "stats": {
-    "totalReviews": 45804,
+    "totalReviews": 45805,
     "alreadyFlagged": 18698,
     "dateGuardCatches": 262,
     "directorMismatch": 1195,
-    "tvFilmSignals": 1329,
+    "tvFilmSignals": 1330,
     "londonSignals": 1251,
     "offBroadwaySignals": 507,
     "yearMismatch": 106,
@@ -10321,6 +10321,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "file": "everything-theatre--alan-fitter.json",
+      "score": 56,
+      "publishDate": "2026-10-02",
+      "url": "https://everything-theatre.co.uk/2026/10/review-flamenc-oh-peacock-theatre/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
         }
       ]
     },
@@ -21973,7 +21987,7 @@
     {
       "showId": "oh-mary-tour-2026",
       "file": "broadwayworld--erinmarie-reiter.json",
-      "score": null,
+      "score": 87,
       "publishDate": "2026-10-01",
       "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-Broadway-San-Diego-20261001",
       "findings": [
