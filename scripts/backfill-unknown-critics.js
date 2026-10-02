@@ -302,7 +302,8 @@ const MAX_CONSECUTIVE_FETCH_ERRORS = 10;
 
 /**
  * Pure: which Unknown-critic entries to try this run, in order.
- * Open/previews shows first, then never-attempted, then oldest attempt.
+ * Verbatim-name junk bylines first (no fetch), then open/previews shows,
+ * then never-attempted, then oldest attempt.
  */
 function orderCriticCandidates(entries, { openShowIds = new Set(), now = Date.now(), retryDays = CRITIC_RETRY_DAYS } = {}) {
   const eligible = entries.filter(u => {
@@ -315,7 +316,11 @@ function orderCriticCandidates(entries, { openShowIds = new Set(), now = Date.no
     return at <= now - days * 24 * 3600 * 1000;
   });
   const lastAt = u => (u.data.criticBackfillAttempt && Date.parse(u.data.criticBackfillAttempt.at)) || 0;
+  // BRO-4502: junk bylines that carry the real name verbatim cost no fetch,
+  // so they go first; behind ~1,150 Unknowns at 150/run they waited days.
+  const verbatim = u => (nameFromJunkCriticName(u.data.criticName) ? 0 : 1);
   return eligible.sort((a, b) => {
+    if (verbatim(a) !== verbatim(b)) return verbatim(a) - verbatim(b);
     const ao = openShowIds.has(a.dir) ? 0 : 1;
     const bo = openShowIds.has(b.dir) ? 0 : 1;
     if (ao !== bo) return ao - bo;
