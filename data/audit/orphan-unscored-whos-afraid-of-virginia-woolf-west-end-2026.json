@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
   "openingDate": "2026-09-30",
-  "detectedAt": "2026-10-02T18:15:30.037Z",
+  "detectedAt": "2026-10-02T21:03:51.651Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "theatreandtonic--eleanor-bywater.json",
-      "outletId": "theatreandtonic",
-      "criticName": "Eleanor Bywater",
-      "url": "https://theatreandtonic.co.uk/blog/whos-afraid-of-virginia-woolf-at-sohoplace-review",
-      "fullTextLen": 5902,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "theatreboard--unknown.json",
       "outletId": "theatreboard",
@@ -38,29 +21,12 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
-    },
-    {
-      "file": "theatremonkey--unknown.json",
-      "outletId": "theatremonkey",
-      "criticName": "Unknown",
-      "url": "https://www.theatremonkey.com/show/whos-afraid-of-virginia-woolf/",
-      "fullTextLen": 1968,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": "input_validation_failed:body_too_short",
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
