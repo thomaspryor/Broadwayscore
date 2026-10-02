@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T04:46:49.307Z",
+  "timestamp": "2026-10-02T04:55:57.220Z",
   "stats": {
     "totalReviews": 45778,
-    "alreadyFlagged": 18693,
+    "alreadyFlagged": 18687,
     "dateGuardCatches": 262,
     "directorMismatch": 1194,
     "tvFilmSignals": 1329,
     "londonSignals": 1251,
     "offBroadwaySignals": 507,
-    "yearMismatch": 105,
-    "noPublishDate": 4120
+    "yearMismatch": 106,
+    "noPublishDate": 4122
   },
   "findings": [
     {
@@ -20323,6 +20323,19 @@
       ]
     },
     {
+      "showId": "moulin-rouge-the-musical-west-end-2021",
+      "file": "nytg--gillian-russo.json",
+      "publishDate": "2022-09-29",
+      "url": "https://www.newyorktheatreguide.com/theatre-news/news/moulin-rouge-the-musical-leads-including-aaron-tveit-to-depart-broadway-production",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2019 (2x) more than 2022 (0x). 2019 matches production: moulin-rouge-2019"
+        }
+      ]
+    },
+    {
       "showId": "mr-saturday-night-2022",
       "file": "amny--matt-windman.json",
       "score": 42,
@@ -31307,7 +31320,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "all-that-dazzles-uk--all-that-dazzles.json",
-      "score": 57,
+      "score": 60,
       "publishDate": "2026-09-24",
       "url": "https://www.allthatdazzles.co.uk/post/review-the-last-ship-theatre-royal-drury-lane",
       "findings": [
@@ -31326,7 +31339,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "telegraph--dominic-cavendish.json",
-      "score": 55,
+      "score": 56,
       "publishDate": "2026-09-23",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/the-last-ship-review-sting-theatre-royal-drury-lane/",
       "findings": [
@@ -33632,7 +33645,7 @@
     {
       "showId": "the-standard-of-living-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 57,
+      "score": 56,
       "publishDate": "2026-09-29",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
       "findings": [
@@ -44260,7 +44273,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "london-box-office--stuart-king.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "2026-09-16",
       "url": "https://www.londonboxoffice.co.uk/news/post/golden-boy-almeida-theatre-review",
       "findings": [
@@ -44315,7 +44328,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-09-18",
       "url": "https://playsinternational.org.uk/golden-boy-almeida-theatre/",
       "findings": [
@@ -48736,7 +48749,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "broadwayworld--franco-milazzo.json",
-      "score": 78,
+      "score": 80,
       "publishDate": "2026-09-13",
       "url": "https://www.broadwayworld.com/westend/article/Review-MAN-TO-MAN-Royal-Court-20260913",
       "findings": [
@@ -49012,7 +49025,7 @@
     {
       "showId": "man-to-man-west-end-2026",
       "file": "the-recs--unknown.json",
-      "score": 78,
+      "score": 79,
       "publishDate": "2026-09-13",
       "url": "https://therecs.co.uk/man-to-man/",
       "findings": [
@@ -56615,7 +56628,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 61,
+      "score": 59,
       "publishDate": "2026-09-24",
       "url": "https://www.timeout.com/london/news/review-the-last-ship-theatre-royal-drury-lane-sting-092426",
       "findings": [
@@ -56629,7 +56642,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "west-end-wilma--westendwilma.json",
-      "score": 58,
+      "score": 60,
       "publishDate": "2026-09-24",
       "url": "https://westendwilma.com/review-the-last-ship-musical-london/",
       "findings": [
@@ -60133,7 +60146,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "file": "standard--nick-curtis.json",
-      "score": 81,
+      "score": 82,
       "publishDate": "2026-03-20",
       "url": "https://www.standard.co.uk/culture/theatre/who-s-afraid-of-virginia-woolf-review-b1299111.html",
       "findings": [
@@ -60147,7 +60160,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 97,
+      "score": 93,
       "publishDate": "2026-10-01",
       "url": "https://www.timeout.com/london/news/whos-afraid-of-virginia-woolf-review-sohoplace-gillian-anderson-100126",
       "findings": [
