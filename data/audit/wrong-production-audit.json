@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T18:09:50.652Z",
+  "timestamp": "2026-10-02T21:26:48.100Z",
   "stats": {
-    "totalReviews": 45880,
-    "alreadyFlagged": 18705,
+    "totalReviews": 45896,
+    "alreadyFlagged": 18704,
     "dateGuardCatches": 263,
     "directorMismatch": 1200,
     "tvFilmSignals": 1331,
-    "londonSignals": 1258,
+    "londonSignals": 1260,
     "offBroadwaySignals": 507,
     "yearMismatch": 105,
-    "noPublishDate": 4131
+    "noPublishDate": 4137
   },
   "findings": [
     {
@@ -21230,7 +21230,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "times-uk--clive-davis.json",
-      "score": 78,
+      "score": 77,
       "publishDate": "October 19th, 2022",
       "url": "https://www.thetimes.co.uk/article/my-neighbour-totoro-review-animated-whimsy-takes-to-the-stage-with-aplomb-b28sv8dnl",
       "findings": [
@@ -21244,6 +21244,7 @@
     {
       "showId": "my-neighbour-totoro-west-end-2025",
       "file": "times-uk--quentin-letts.json",
+      "score": 73,
       "publishDate": "2022-10-22",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/my-neighbour-totoro-review-a-monster-hit-86zjsjqcz",
       "findings": [
@@ -40976,6 +40977,19 @@
     },
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
+      "file": "londonlivinglarge--london-living-large.json",
+      "publishDate": "2026-09-22",
+      "url": "https://www.londonlivinglarge.com/2026/09/catarina-and-beauty-of-killing-fascists.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"dorfman\""
+        }
+      ]
+    },
+    {
+      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "londontheatre1--chris-omaweng.json",
       "score": 74,
       "publishDate": "2026-09-21",
@@ -45607,6 +45621,20 @@
       "score": 56,
       "publishDate": "2026-10-02",
       "url": "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "times-uk--dominic-maxwell.json",
+      "score": null,
+      "publishDate": "2026-10-01",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
