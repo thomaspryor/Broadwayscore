@@ -15,8 +15,9 @@
  * a test that existed before the card was filed passes vacuously):
  *   - the command must be exactly `node --test <one test file>`, and no other
  *     audited card may share it, so the test is this card's own;
- *   - a commit on main whose message names the card must have touched that
- *     test file after the card was created, so the work demonstrably landed;
+ *   - a commit on main naming the card in its subject (or a Refs/Fixes/Closes
+ *     trailer) must have touched that test file after the card was created,
+ *     and must not be a revert, so the work demonstrably landed;
  *   - the card must be idle (24h In Review, 72h In Progress) so a live
  *     worker is never pre-empted;
  *   - a RECHECK-AFTER date still in the future means the author asked for
@@ -49,6 +50,17 @@ function escapeRe(s) {
 function mentionsCard(message, identifier) {
   if (!message || !identifier) return false;
   return new RegExp(`(?<![A-Za-z0-9-])${escapeRe(identifier)}(?![0-9])`).test(message);
+}
+
+// The commit is FOR this card only when the card is in its subject line
+// (164 of 166 card-naming commits on main, 2026-10-02) or in a Refs/Fixes/
+// Closes trailer. A body that merely cites another card ("the BRO-1397 sweep
+// flagged ...") is context, not the landing.
+const CARD_TRAILER_RE = /^(?:Refs|Fixes|Closes|Linear)\s*:/i;
+function commitIsForCard(message, identifier) {
+  const lines = String(message || '').trim().split('\n');
+  if (mentionsCard(lines[0], identifier)) return true;
+  return lines.slice(1).some((l) => CARD_TRAILER_RE.test(l.trim()) && mentionsCard(l, identifier));
 }
 
 /**
@@ -115,7 +127,8 @@ function decideClosure({ candidate, issue, commits, nowMs }) {
   if (futureRecheckAfter([issue.description, ...comments.map((c) => c.body)], nowMs)) {
     return { close: false, reason: 'recheck-after-pending' };
   }
-  const own = (commits || []).find((c) => mentionsCard(c.message, candidate.id));
+  // A revert names the card too, but it undoes the fix rather than landing it.
+  const own = (commits || []).find((c) => !/^Revert\b/.test(String(c.message || '').trim()) && commitIsForCard(c.message, candidate.id));
   if (!own) return { close: false, reason: 'no-commit-naming-card-touched-test' };
   return { close: true, sha: own.sha };
 }
@@ -126,7 +139,7 @@ function buildClosureComment({ candidate, sha, auditGeneratedAt }) {
     '',
     `This card's own check, \`${candidate.cmd}\`, passed on main in the done-evidence audit of ${auditGeneratedAt}.`,
     `Commit ${String(sha).slice(0, 12)} names this card and changed ${candidate.testPath} after the card was filed, so the work landed.`,
-    'The Done gate re-ran the check on a fresh copy of main before this close.',
+    'The close went through the Done gate, which runs the check again on a fresh copy of main.',
     'If the problem is still happening, reopen the card and say what you saw.',
   ].join('\n');
 }
@@ -137,6 +150,7 @@ module.exports = {
   CLOSER_MARKER,
   cardTestPath,
   mentionsCard,
+  commitIsForCard,
   planCandidates,
   futureRecheckAfter,
   decideClosure,

@@ -6,7 +6,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { runVerify } = require('./acceptance-check-core.js');
+const { runVerify, zeroPassingTests } = require('./acceptance-check-core.js');
 
 function tmpCheckout() {
   return fs.mkdtempSync(path.join(os.tmpdir(), 'acceptance-check-core-test-'));
@@ -57,6 +57,33 @@ test('BRO-3446: a command whose path DOES exist still runs and can pass', () => 
   } finally {
     fs.rmSync(cwd, { recursive: true, force: true });
   }
+});
+
+// BRO-4523: a test file whose every test skips exits 0 and proved nothing.
+test('BRO-4523: a test file whose tests all skip is unverifiable, not pass', () => {
+  const cwd = tmpCheckout();
+  try {
+    fs.mkdirSync(path.join(cwd, 'tests/unit'), { recursive: true });
+    fs.writeFileSync(
+      path.join(cwd, 'tests/unit/skipped.test.mjs'),
+      "import test from 'node:test';\ntest('needs a key', { skip: 'no key' }, () => {});\n",
+    );
+    const out = runVerify(cwd, 'node --test tests/unit/skipped.test.mjs', { attempts: 1 });
+    assert.equal(out.status, 'unverifiable');
+    assert.match(out.detail, /no passing tests/);
+  } finally {
+    fs.rmSync(cwd, { recursive: true, force: true });
+  }
+});
+
+test('BRO-4523: zeroPassingTests reads the last summary line, either reporter', () => {
+  assert.equal(zeroPassingTests('# tests 1\n# pass 0\n# skipped 1\n'), true);
+  assert.equal(zeroPassingTests('ℹ tests 2\nℹ pass 0\nℹ skipped 2\n'), true);
+  assert.equal(zeroPassingTests('# tests 3\n# pass 3\n'), false);
+  assert.equal(zeroPassingTests('# Subtest: x\n# pass 0\n# pass 4\n'), false);
+  // no summary at all (custom reporter, non-node command): never downgraded
+  assert.equal(zeroPassingTests('all good\n'), false);
+  assert.equal(zeroPassingTests(''), false);
 });
 
 // BRO-4241: only the shallow clone's "can't deepen" failure falls back to a
