@@ -199,7 +199,9 @@
     "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
     "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
     "hole-off-west-end-2026/broadwayworld--unknown.json",
-    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json"
+    "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "burning-leaves-off-broadway-2026/stagelightmagazine--unknown.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -328,7 +330,18 @@
     "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
     "grease-the-immersive-movie-musical-off-west-end-2026/thestage--oliver-jones.json",
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-    "the-gruffalo-west-end-2026/waterstones--unknown.json"
+    "the-gruffalo-west-end-2026/waterstones--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--michael-major.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -447,7 +460,9 @@
       "cat-cohen-broad-strokes-off-broadway-2026/nyc-theatre-addict--michael-higgins.json",
       "hungry-women-off-broadway-2026/melissamaney--unknown.json",
       "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
-      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json"
+      "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "burning-leaves-off-broadway-2026/stagelightmagazine--unknown.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -457,7 +472,8 @@
       "data/review-texts/flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -511,7 +527,8 @@
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
       "schmigadoon-2026/thewrap--robert-hofler.json",
       "operation-mincemeat-2025/chicagotribune--unknown.json",
-      "hamilton-west-end-2021/variety--kj-yossman.json"
+      "hamilton-west-end-2021/variety--kj-yossman.json",
+      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -556,7 +573,7 @@
     ]
   },
   "startTime": "2026-10-02T17:44:38.642Z",
-  "lastProcessed": "the-oresteia-west-end-2026/broadwayworld--alexander-cohen.json",
+  "lastProcessed": "la-boheme-off-broadway-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-10-02T17:49:26.365Z",
@@ -734,6 +751,46 @@
       "event": "bb-session",
       "session": "e3842889",
       "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-10-02T22:36:07.771Z",
+      "event": "bb-session",
+      "session": "e9c66a4a",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-02T22:36:28.047Z",
+      "event": "bb-session",
+      "session": "58fbe128",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-02T22:40:01.013Z",
+      "event": "bb-session",
+      "session": "53e4c58e",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-02T22:41:51.474Z",
+      "event": "bb-session",
+      "session": "fcc97024",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T22:41:52.343Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-02T22:42:10.760Z",
+      "event": "bb-session",
+      "session": "997705bc",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T22:42:11.598Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
