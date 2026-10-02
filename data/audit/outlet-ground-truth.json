@@ -1,8 +1,8 @@
 {
-  "generatedAt": "2026-10-02T09:24:15.643Z",
+  "generatedAt": "2026-10-02T16:26:43.810Z",
   "phase": "done",
   "days": 21,
-  "shows": 64,
+  "shows": 66,
   "sources": {
     "theatermania": {
       "queries": 40,
@@ -10,8 +10,8 @@
       "errors": 0
     },
     "whatsonstage": {
-      "queries": 24,
-      "listed": 7,
+      "queries": 26,
+      "listed": 8,
       "errors": 0
     },
     "nysr": {
@@ -30,18 +30,19 @@
       "errors": 0
     },
     "theatre-reviews": {
-      "queries": 24,
-      "listed": 27,
+      "queries": 26,
+      "listed": 35,
       "errors": 0
     }
   },
   "listingTruncated": false,
-  "listed": 73,
+  "listed": 82,
   "ingested": [
     {
-      "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
-      "url": "https://www.nytimes.com/2026/10/02/theater/creation-stories-and-all-the-important-importants-review.html",
-      "ok": true
+      "showId": "a-small-and-quiet-light-off-west-end-2026",
+      "url": "https://www.whatsonstage.com/news/a-small-and-quiet-light-at-chichesters-minerva-theatre-review_1730164/",
+      "ok": false,
+      "error": "spawnSync node ETIMEDOUT"
     }
   ],
   "missing": []
