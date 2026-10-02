@@ -285,6 +285,10 @@ export default function HomePage() {
     { title: 'Rush Tickets Available', shows: rushShowsList, viewAllHref: '/rush' },
     { title: 'Top Box Office This Week', shows: topBoxOfficeList, viewAllHref: '/box-office' },
     { title: 'Most Sold Out', shows: mostSoldOutList, viewAllHref: '/box-office' },
+    // Time-sensitive (previews/opening-soon) — keep near the top. Moved to
+    // second-from-bottom in #825, owner asked to move it back here (#966,
+    // 2026-10-02): burying it below evergreen shelves undersells shows that
+    // just opened for sale.
     { title: 'Shows Starting Soon', shows: startingSoonList, viewAllHref: '/browse/upcoming-broadway-shows', minCount: 1 },
     { title: 'Best of the West End', shows: bestWestEndList, viewAllHref: '/west-end' },
     // Pre-Broadway tryouts — differentiating coverage nobody else aggregates;
