@@ -921,6 +921,22 @@ test('dispatchDetached: --allow-automation-parked is appended only for linear id
   });
 });
 
+// BRO-4535: the parked drain's session-parked cards get only this flag.
+test('dispatchDetached: --allow-session-parked is appended only for linear ids, only when opted in (BRO-4535)', () => {
+  const fakeChild = { unref: () => {} };
+  withChildProcessStubs({ spawnImpl: () => fakeChild }, (calls, mod) => {
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowSessionParked: true });
+    assert.match(calls.spawn[0][1][1], /--id BRO-9 --headless --no-detach --allow-session-parked/);
+    assert.doesNotMatch(calls.spawn[0][1][1], /--allow-automation-parked|--allow-autofix-filed/);
+
+    mod.dispatchDetached('linear:BRO-9', () => {}, 0, null, { allowAutomationParked: true });
+    assert.doesNotMatch(calls.spawn[1][1][1], /--allow-session-parked/);
+
+    mod.dispatchDetached(7, () => {}, 0, null, { allowSessionParked: true });
+    assert.doesNotMatch(calls.spawn[2][1][1], /--allow-session-parked/);
+  });
+});
+
 // Cross-module pin (BRO-2499 code-review finding): the canary half already had
 // one (autofix-canary.test.mjs runs isAutofixFiledTitle over a real
 // canaryCardTitle), but "BSC Daily:" was two independent string literals — this
@@ -1007,7 +1023,19 @@ test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2
     // function in comments, which is not a call site.
     const calls = src.match(/(?:dispatchDetached|dispatchFn)\([\s\S]+?\);/g) || [];
     assert.ok(calls.length > 0, `${rel} binds/invokes dispatchDetached but no call site parsed`);
-    for (const call of calls) {
+    for (const rawCall of calls) {
+      // BRO-4535: the drain also unparks technically-parked P0/P1 session
+      // cards. Those carry no autofix marker, so only the PARKED waiver
+      // (--allow-session-parked) applies and its call passes `dispatchOpts`.
+      // Pin the exact ternary: auto-filed cards must still get both waivers.
+      let call = rawCall;
+      if (/,\s*dispatchOpts\s*\)\s*;$/.test(rawCall)) {
+        assert.match(src, /const sessionParked = !isAutoFiledParked\(issue\);/,
+          `${rel}: dispatchOpts must branch on !isAutoFiledParked(issue)`);
+        const m = src.match(/dispatchOpts\s*=\s*sessionParked\s*\?\s*\{\s*allowSessionParked:\s*true\s*\}\s*:\s*(\{[^}]*\})/);
+        assert.ok(m, `${rel}: dispatchOpts must be sessionParked ? { allowSessionParked: true } : { ...waivers }`);
+        call = m[1];
+      }
       assert.match(call, /allowAutofixFiled:\s*true/,
         `${rel} dispatches without the BRO-2499 waiver — autofixFiledIssueGuard refuses it inside the detached child, and silently (the caller journals "attempted" either way): ${call}`);
       // BRO-3060: same class of bug, the OTHER guard. allowAutofixFiled alone

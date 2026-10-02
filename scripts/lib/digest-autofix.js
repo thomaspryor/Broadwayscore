@@ -727,6 +727,9 @@ function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
   // --allow-automation-parked doc comment for why --force/--allow-human-gated
   // are each too broad to use here instead).
   const parkedArg = linearMatch && opts && opts.allowAutomationParked ? ' --allow-automation-parked' : '';
+  // opts.allowSessionParked (BRO-4535): the parked drain's session-parked
+  // cards; linear-next.js re-verifies it with isDrainableSessionParked.
+  const sessionParkedArg = linearMatch && opts && opts.allowSessionParked ? ' --allow-session-parked' : '';
   // --no-detach (BRO-3652, Codex review): this helper already detaches via
   // `sh -c … exec node` with stdio on the advertised log. linear-next.js now
   // detaches by DEFAULT, which would make that node re-exec a grandchild and
@@ -736,7 +739,7 @@ function dispatchDetached(taskId, log, delaySec = 0, model = null, opts = {}) {
   // explicit flag keeps the contract exactly as it was. bsc-next.js does not
   // take the flag, so it is Linear-lane only.
   const detachArg = linearMatch ? ' --no-detach' : '';
-  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${detachArg}${modelArg}${autofixArg}${parkedArg}`;
+  const cmd = `sleep ${Math.max(0, Math.floor(delaySec))} && exec node "$1" --id ${id} --headless${detachArg}${modelArg}${autofixArg}${parkedArg}${sessionParkedArg}`;
   const child = spawn('sh', ['-c', cmd, 'sh', scriptPath],
     { cwd: REPO, detached: true, stdio: ['ignore', logFd, logFd] });
   child.unref();
