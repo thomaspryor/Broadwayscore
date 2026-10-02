@@ -46,3 +46,25 @@ test('malformed rows are skipped and the good ones still import', async () => {
   assert.equal(entries[0].rating, 4.5);
   assert.equal(entries[1].date, null);
 });
+
+// A non-string title used to reach normTitle in ImportShows and throw
+// "t.toLowerCase is not a function" into the UI and analytics.
+test('rows with non-string fields are skipped or blanked, never passed through', async () => {
+  const exportJson = JSON.stringify({
+    data: {
+      diaryEntries: [
+        { show: { name: 42, id: 'm2' }, rating: 4, date: '2024-05-01' },
+        { show: { name: 'Cabaret', id: 7 }, rating: '5', date: '2024-05-03', review: { text: 'x' }, production: { theater: { name: ['x'] } } },
+      ],
+      lists: [{ name: 9, shows: [{ name: { en: 'Wicked' } }, { name: 'Wicked' }] }],
+    },
+  });
+  const { entries } = await acquireFromMezzanine(fileOf(exportJson));
+  assert.deepEqual(entries.map((e) => e.title), ['Cabaret', 'Wicked']);
+  const cabaret = entries[0];
+  assert.equal(cabaret.rating, null, 'a string rating is not a rating');
+  assert.equal(cabaret.reviewText, null);
+  assert.equal(cabaret.venue, null);
+  assert.equal(cabaret.mezzShowId, undefined);
+  assert.equal(entries[1].listName, undefined);
+});

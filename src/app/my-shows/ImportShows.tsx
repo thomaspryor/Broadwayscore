@@ -663,7 +663,7 @@ export default function ImportShows({
                   <span className="text-sm font-bold text-white">Show Score</span>
                 </div>
                 <p className="text-xs text-gray-500 mb-2">
-                  Paste your public profile link — your reviews and ratings import directly. No password needed.
+                  Paste your public profile link and your reviews and ratings import directly. No password needed.
                   Find it on show-score.com: tap your profile picture, then copy the page address.
                 </p>
                 <div className="flex gap-2">
@@ -735,10 +735,10 @@ export default function ImportShows({
                   "is it adding 37 shows, or 8?"). */}
               <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm mb-2">
                 <span className="text-green-400">{selectedDiary.length + selectedWatchlist.length} selected to import</span>
-                {skippedOwnedCount > 0 && <span className="text-gray-400">{skippedOwnedCount} skipped — already in your shows</span>}
+                {skippedOwnedCount > 0 && <span className="text-gray-400">{skippedOwnedCount} skipped (already in your shows)</span>}
                 {untickedCount > 0 && (
                   <span className="text-gray-400">
-                    {untickedCount} not selected — {untickedEntries.slice(0, 3).map(e => e.sourceTitle).join(', ')}
+                    {untickedCount} not selected: {untickedEntries.slice(0, 3).map(e => e.sourceTitle).join(', ')}
                     {untickedCount > 3 ? ` +${untickedCount - 3} more` : ''}
                   </span>
                 )}
@@ -751,7 +751,7 @@ export default function ImportShows({
                 Imported ratings are private until you choose to share them.
                 {source === 'show-score' && ' Show Score scores convert to the nearest half-star.'}
                 {selectedDiary.filter(e => !e.sourceDate).length > 0 &&
-                  ` ${selectedDiary.filter(e => !e.sourceDate).length} of your reviews have no date — they'll land in a "No date" section where you can add one.`}
+                  ` ${selectedDiary.filter(e => !e.sourceDate).length} of your reviews have no date. They'll land in a "No date" section where you can add one.`}
               </p>
 
               {/* Date-mismatch rows: own section, with the WHY and a way out
@@ -760,11 +760,11 @@ export default function ImportShows({
               {dateSuspectRows.length > 0 && (
                 <div className="mb-4">
                   <h4 className="text-xs font-bold text-yellow-500 uppercase tracking-wider mb-1">
-                    Not selected — date mismatch ({dateSuspectRows.length})
+                    Not selected: date mismatch ({dateSuspectRows.length})
                   </h4>
                   <p className="text-xs text-gray-500 mb-2">
                     The date you logged falls outside this production&apos;s run, so we didn&apos;t
-                    auto-select it — you may have seen a different production (a tour or revival)
+                    auto-select it. You may have seen a different production (a tour or revival)
                     of the same title. Tick the box to import into the matched production anyway,
                     or use &quot;Find the production I saw&quot; to pick the right one.
                   </p>
@@ -788,7 +788,7 @@ export default function ImportShows({
               {diaryRows.length > 0 && (
                 <div className="mb-4">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Diary — {diaryRows.filter(({ entry }) => entry.selected).length} of {diaryRows.length} selected
+                    Diary · {diaryRows.filter(({ entry }) => entry.selected).length} of {diaryRows.length} selected
                   </h4>
                   <div className="space-y-1 max-h-48 sm:max-h-[40vh] overflow-y-auto">
                     {diaryRows.map(({ entry, idx }) => (
@@ -802,7 +802,7 @@ export default function ImportShows({
               {watchlistRows.length > 0 && (
                 <div className="mb-4">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Watchlist — {watchlistRows.filter(({ entry }) => entry.selected).length} of {watchlistRows.length} selected
+                    Watchlist · {watchlistRows.filter(({ entry }) => entry.selected).length} of {watchlistRows.length} selected
                   </h4>
                   <div className="space-y-1 max-h-32 sm:max-h-[30vh] overflow-y-auto">
                     {watchlistRows.map(({ entry, idx }) => (
@@ -859,7 +859,7 @@ export default function ImportShows({
               {unmatchedRows.length > 0 && (
                 <div className="mt-5 text-left">
                   <h4 className="text-xs font-bold text-gray-500 uppercase tracking-wider mb-2">
-                    Not imported — {unmatchedRows.length} show{unmatchedRows.length === 1 ? '' : 's'} we couldn&apos;t find on Broadway Scorecard
+                    Not imported: {unmatchedRows.length} show{unmatchedRows.length === 1 ? '' : 's'} we couldn&apos;t find on Broadway Scorecard
                   </h4>
                   <ul className="space-y-1 max-h-40 overflow-y-auto text-sm text-gray-300">
                     {unmatchedRows.map(({ entry, idx }) => (
@@ -955,7 +955,7 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
               <span className="text-gray-600"> · you logged {formatDateSeen(entry.sourceDate)}</span>
             )}
             {entry.alreadyOwned && (
-              <span className="text-gray-600"> · already in your shows{entry.selected ? ' — will add another viewing' : ''}</span>
+              <span className="text-gray-600"> · already in your shows{entry.selected ? ', will add another viewing' : ''}</span>
             )}
             {entry.dateSuspect && (
               <span className="text-yellow-600"> · date is outside this run</span>
@@ -1005,7 +1005,7 @@ function ImportEntryRow({ entry, index, onToggle, liveResolve, onFindIt, onPickC
                   onClick={() => onPickCandidate?.(index, fic)}
                   className="block w-full text-left text-xs text-gray-300 hover:text-white hover:bg-white/5 rounded px-1.5 py-1"
                 >
-                  {title}{venue ? ` — ${venue}` : ''}{year ? ` (${year})` : ''}
+                  {title}{venue ? ` · ${venue}` : ''}{year ? ` (${year})` : ''}
                   {isCatalog && <span className="text-gray-500"> · on Broadway Scorecard</span>}
                   {ratingsCount > 0 && <span className="text-gray-500"> · {ratingsCount} ratings</span>}
                   {city && <span className="text-gray-500"> · {city}</span>}

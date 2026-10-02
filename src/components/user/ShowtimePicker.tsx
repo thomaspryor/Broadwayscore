@@ -177,17 +177,17 @@ function CompactShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear,
       className={`showtime-compact flex items-center gap-0.5 mt-1 transition-opacity ${responsiveOnly ? 'sm:hidden' : ''} ${saving ? 'opacity-50 pointer-events-none' : ''}`}
       onClick={e => e.stopPropagation()}
     >
-      <button type="button" disabled={darkMatinee} className={iconBtn(timeSlot === 'matinee', darkMatinee)} onClick={(e) => { e.preventDefault(); onPick('matinee'); }} aria-label={darkMatinee ? 'Matinee (none scheduled this day)' : `Matinee${timeSlot === 'matinee' ? ' (selected)' : ''}`} title={darkMatinee ? 'No matinee scheduled this day' : `Matinee${timeSlot === 'matinee' && curtainTime ? ` — ${timeLabel}` : ''}`}>
+      <button type="button" disabled={darkMatinee} className={iconBtn(timeSlot === 'matinee', darkMatinee)} onClick={(e) => { e.preventDefault(); onPick('matinee'); }} aria-label={darkMatinee ? 'Matinee (none scheduled this day)' : `Matinee${timeSlot === 'matinee' ? ' (selected)' : ''}`} title={darkMatinee ? 'No matinee scheduled this day' : `Matinee${timeSlot === 'matinee' && curtainTime ? ` at ${timeLabel}` : ''}`}>
         <SunIcon />
       </button>
-      <button type="button" disabled={darkEvening} className={iconBtn(timeSlot === 'evening', darkEvening)} onClick={(e) => { e.preventDefault(); onPick('evening'); }} aria-label={darkEvening ? 'Evening (none scheduled this day)' : `Evening${timeSlot === 'evening' ? ' (selected)' : ''}`} title={darkEvening ? 'No evening performance scheduled this day' : `Evening${timeSlot === 'evening' && curtainTime ? ` — ${timeLabel}` : ''}`}>
+      <button type="button" disabled={darkEvening} className={iconBtn(timeSlot === 'evening', darkEvening)} onClick={(e) => { e.preventDefault(); onPick('evening'); }} aria-label={darkEvening ? 'Evening (none scheduled this day)' : `Evening${timeSlot === 'evening' ? ' (selected)' : ''}`} title={darkEvening ? 'No evening performance scheduled this day' : `Evening${timeSlot === 'evening' && curtainTime ? ` at ${timeLabel}` : ''}`}>
         <MoonIcon />
       </button>
       <DatePickerButton
         type="time"
         value={timeSlot === 'custom' && curtainTime ? curtainTime.slice(0, 5) : ''}
         onChange={(val) => { if (val) onSave({ time_slot: 'custom', curtain_time: `${val}:00` }); }}
-        ariaLabel={`Custom showtime${timeSlot === 'custom' ? ` (selected${curtainTime ? ` — ${timeLabel}` : ''})` : ''}`}
+        ariaLabel={`Custom showtime${timeSlot === 'custom' ? ` (selected${curtainTime ? ` at ${timeLabel}` : ''})` : ''}`}
         wrapClassName="relative inline-block"
         className={iconBtn(timeSlot === 'custom', false)}
       >

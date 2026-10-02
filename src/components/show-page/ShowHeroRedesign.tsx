@@ -568,7 +568,7 @@ function Inner({
             <svg className="w-4 h-4 shrink-0" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
-            <span className="text-xs sm:text-sm font-semibold">{onWatchlist ? 'On your list' : hasRating ? 'See it again' : 'Want to See'}</span>
+            <span className="text-xs sm:text-sm font-semibold">{onWatchlist ? 'On your list' : hasRating && !isClosed ? 'See it again' : 'Want to See'}</span>
           </button>
           <button
             type="button"

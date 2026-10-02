@@ -249,7 +249,7 @@ export default function MyShowsClient() {
       trackUgc('rating_deleted', { show_id: showId, source: 'my_shows' });
       showToast?.('Rating deleted.', 'info');
     } catch {
-      showToast?.('Delete failed — please try again.', 'error');
+      showToast?.('Delete failed. Please try again.', 'error');
     }
   }, [effectiveDeleteReview, showToast, reviews]);
   const effectiveRemoveFromWatchlist = isMockMode ? mockRemoveFromWatchlist : removeFromWatchlist;
@@ -260,7 +260,7 @@ export default function MyShowsClient() {
       await effectiveRemoveFromWatchlist(showId);
       showToast?.(successMessage, 'info');
     } catch {
-      showToast?.('Could not remove — please try again.', 'error');
+      showToast?.('Could not remove. Please try again.', 'error');
     }
   }, [effectiveRemoveFromWatchlist, showToast]);
   const effectiveUpdatePlannedDate = isMockMode ? mockUpdatePlannedDate : updatePlannedDate;
@@ -310,7 +310,7 @@ export default function MyShowsClient() {
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
-      if (!updated) throw new Error('This rating no longer exists — it may have been deleted elsewhere.');
+      if (!updated) throw new Error('This rating no longer exists. It may have been deleted elsewhere.');
     } else {
       const { error } = await supabaseRestInsert('reviews', {
         user_id: user.id,
@@ -572,7 +572,7 @@ export default function MyShowsClient() {
           <div className="text-left space-y-2.5 mb-7 mx-auto max-w-xs">
             <div className="flex items-start gap-2.5 text-sm text-gray-300">
               <span className="text-[#FFD700]" aria-hidden="true">★</span>
-              <span>Rate every show you see — half-stars, dates, private notes</span>
+              <span>Rate every show you see, with half-stars, dates and private notes</span>
             </div>
             <div className="flex items-start gap-2.5 text-sm text-gray-300">
               <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-brand" fill="currentColor" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
@@ -967,14 +967,14 @@ export default function MyShowsClient() {
                     <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider">To Be Rated</h3>
                     <span className="text-xs text-gray-500">{toBeRatedEntries.length} {toBeRatedEntries.length === 1 ? 'entry' : 'entries'}</span>
                   </div>
-                  <p className="text-xs text-gray-500 mb-3">You saw these shows — how were they?</p>
+                  <p className="text-xs text-gray-500 mb-3">You saw these shows. How were they?</p>
                   <div className="space-y-2">
                     {toBeRatedEntries.map(entry => (
                       <ToBeRatedCard
                         key={`rate-${entry.id}`}
                         entry={entry}
                         show={showMap[entry.show_id]}
-                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed — no rating needed.')}
+                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed. No rating needed.')}
                         onRate={openRatingEditor}
                       />
                     ))}
@@ -1134,7 +1134,7 @@ export default function MyShowsClient() {
                             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                               {year}
                               {year === 'No date' && (
-                                <span className="normal-case font-normal tracking-normal text-gray-600"> — edit a show to add when you saw it</span>
+                                <span className="normal-case font-normal tracking-normal text-gray-600"> (edit a show to add when you saw it)</span>
                               )}
                             </h3>
                             <span className="text-xs text-gray-500">{reviewsByYear[year].length} {reviewsByYear[year].length === 1 ? 'entry' : 'entries'}</span>
@@ -1343,7 +1343,7 @@ export default function MyShowsClient() {
                         key={`wl-rate-${entry.id}`}
                         entry={entry}
                         show={showMap[entry.show_id]}
-                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed — no rating needed.')}
+                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed. No rating needed.')}
                         onRate={openRatingEditor}
                       />
                     ))}
@@ -2232,7 +2232,7 @@ function ToBeRatedCard({ entry, show, onRemove, onRate }: { entry: WatchlistEntr
         </div>
       </div>
       {/* Didn't go / sold tickets — remove without opening the show page */}
-      <RowRemoveButton onRemove={onRemove} label={`Remove ${title} — didn't see it`} />
+      <RowRemoveButton onRemove={onRemove} label={`Remove ${title}, didn't see it`} />
     </div>
   );
 }

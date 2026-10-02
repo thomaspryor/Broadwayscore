@@ -172,7 +172,7 @@ interface ShowScoreProxyResponse {
 export const SHOW_SCORE_ERROR_COPY: Record<string, string> = {
   invalid_slug: "That doesn't look like a Show Score profile link. Paste your profile URL, e.g. show-score.com/member/your-name.",
   unauthorized: 'Please sign in again and retry.',
-  rate_limited: "You've hit the import limit for now — try again in an hour.",
+  rate_limited: "You've hit the import limit for now. Try again in an hour.",
   not_found: "We couldn't find that Show Score member. Check the profile link and try again.",
   upstream_blocked: 'Show Score is blocking our importer right now. Try again in a few hours.',
   internal: 'Something went wrong on our side. Try again in a few minutes.',
@@ -222,8 +222,8 @@ export async function acquireFromShowScore(profileInput: string): Promise<Import
 
   const notices: string[] = [];
   if (data.unparsed) notices.push(`${data.unparsed} review(s) had no readable rating and were skipped.`);
-  if (data.truncated) notices.push('This profile has more than 1,000 reviews — only the most recent 1,000 were fetched.');
-  if (data.incomplete) notices.push(`Show Score stopped responding partway — only ${entries.length} review(s) were fetched. You can re-run the import later to pick up the rest.`);
+  if (data.truncated) notices.push('This profile has more than 1,000 reviews, so only the most recent 1,000 were fetched.');
+  if (data.incomplete) notices.push(`Show Score stopped responding partway, so only ${entries.length} review(s) were fetched. You can re-run the import later to pick up the rest.`);
   return { entries, notices };
 }
 
@@ -278,28 +278,31 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
   for (const entry of parsed.data.diaryEntries) {
     // A hand-edited or partial export can carry entries without a show;
     // skip them instead of failing the whole import on a TypeError.
-    if (!entry?.show?.name) continue;
+    // Check types too: a non-string title would crash title matching later.
+    if (typeof entry?.show?.name !== 'string' || !entry.show.name) continue;
     const date = typeof entry.date === 'string' && entry.date ? entry.date.split('T')[0] : null;
-    const hasRating = !!(entry.rating && entry.rating > 0);
+    const hasRating = typeof entry.rating === 'number' && entry.rating > 0;
+    const venue = entry.production?.theater?.name;
     // Unrated future entries are plans, not viewings → watchlist.
     const isFuture = date !== null && date > today;
     entries.push({
       title: entry.show.name,
-      venue: entry.production?.theater?.name || null,
+      venue: typeof venue === 'string' && venue ? venue : null,
       // Mezzanine ratings are already 1–5 half-star; sanitize defensively.
       rating: hasRating ? sanitizeRating(entry.rating as number) || null : null,
       sourceScore: null,
       date,
-      reviewText: entry.review || null,
+      reviewText: typeof entry.review === 'string' && entry.review ? entry.review : null,
       kind: !hasRating && isFuture ? 'watchlist' : 'diary',
       ...(!hasRating && isFuture ? { listName: 'Upcoming', fromDiary: true } : {}),
-      ...(entry.show.id ? { mezzShowId: entry.show.id } : {}),
+      ...(typeof entry.show.id === 'string' && entry.show.id ? { mezzShowId: entry.show.id } : {}),
     });
   }
 
   for (const list of Array.isArray(parsed.data.lists) ? parsed.data.lists : []) {
+    const listName = typeof list?.name === 'string' ? list.name : undefined;
     for (const show of Array.isArray(list?.shows) ? list.shows : []) {
-      if (!show?.name) continue;
+      if (typeof show?.name !== 'string' || !show.name) continue;
       entries.push({
         title: show.name,
         venue: null,
@@ -308,8 +311,8 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
         date: null,
         reviewText: null,
         kind: 'watchlist',
-        listName: list.name,
-        ...(show.id ? { mezzShowId: show.id } : {}),
+        listName,
+        ...(typeof show.id === 'string' && show.id ? { mezzShowId: show.id } : {}),
       });
     }
   }

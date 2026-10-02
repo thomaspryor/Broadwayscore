@@ -60,7 +60,7 @@ test('describeSupabaseOp names REST, RPC, auth and functions calls', () => {
   assert.equal(ugc.describeSupabaseOp(`${base}/rest/v1/rpc/reorder_list_items`, 'POST'), 'rpc reorder_list_items');
   assert.equal(ugc.describeSupabaseOp(`${base}/auth/v1/token?grant_type=refresh_token`, 'POST'), 'auth token');
   assert.equal(ugc.describeSupabaseOp(`${base}/functions/v1/delete-account`, 'POST'), 'functions delete-account');
-  assert.equal(ugc.describeSupabaseOp('https://broadwayscorecard.com/data/shows.json'), null);
+  assert.equal(ugc.describeSupabaseOp('https://broadwayscorecard.com/show/hamilton'), null);
 });
 
 test('sentryWorthy keeps session-lifecycle and offline noise out of Sentry', () => {

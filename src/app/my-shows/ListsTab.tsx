@@ -214,7 +214,7 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
             // Persist in background
             reorderList(activeListId, itemIds, positions).catch(() => {
               setListItems(previousItems);
-              showToast?.('Reorder failed — reverted.', 'error');
+              showToast?.('Reorder failed, so the old order is back.', 'error');
             });
           }}
         />

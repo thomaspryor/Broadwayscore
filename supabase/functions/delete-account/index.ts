@@ -70,6 +70,23 @@ async function deleteRows(base: string, auth: Record<string, string>, table: str
   if (!res.ok) throw new Error(`delete ${table} failed: ${res.status}`);
 }
 
+/** Read every row a PostgREST query matches. A response holds at most the
+ *  project's max-rows (1000 by default), so page until an empty page instead
+ *  of trusting that number. `order` must be stable; no matching row may be
+ *  deleted while paging. Returns null when the table doesn't exist (404). */
+async function selectAll<T>(base: string, auth: Record<string, string>, table: string, query: string, order: string): Promise<T[] | null> {
+  const rows: T[] = [];
+  for (let offset = 0; ; ) {
+    const res = await fetch(`${base}/rest/v1/${table}?${query}&order=${order}&limit=1000&offset=${offset}`, { headers: auth });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`fetch ${table} failed: ${res.status}`);
+    const page: T[] = await res.json();
+    if (page.length === 0) return rows;
+    rows.push(...page);
+    offset += page.length;
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders(req) });
   if (req.method !== 'POST') return json(req, { ok: false, error: 'internal' }, 405);
@@ -85,9 +102,8 @@ Deno.serve(async (req) => {
   try {
     // list_items references lists.id, not the user directly — resolve the
     // caller's list ids first so their items are cleaned up before the lists.
-    const listsRes = await fetch(`${base}/rest/v1/lists?user_id=eq.${userId}&select=id`, { headers: auth });
-    if (!listsRes.ok) throw new Error(`fetch lists failed: ${listsRes.status}`);
-    const lists: { id: string }[] = await listsRes.json();
+    const lists = await selectAll<{ id: string }>(base, auth, 'lists', `user_id=eq.${userId}&select=id`, 'id');
+    if (lists === null) throw new Error('fetch lists failed: 404');
     for (const { id } of lists) {
       await deleteRows(base, auth, 'list_items', 'list_id', id);
     }
@@ -99,22 +115,10 @@ Deno.serve(async (req) => {
     // {userId}/{reviewId}/{photoId}.jpg. Their user_review_photos rows cascade
     // from reviews, but the files don't, so remove them while the rows still
     // say where they are. A 404 means the photos table isn't in this project.
-    // PostgREST caps a response at 1000 rows, so page through. Offset paging
-    // is stable here: no photo row is removed until the reviews delete below.
-    const photos: { storage_path: string }[] = [];
-    let photosTableMissing = false;
-    for (let offset = 0; ; offset += 1000) {
-      const photosRes = await fetch(
-        `${base}/rest/v1/user_review_photos?user_id=eq.${userId}&select=storage_path&order=storage_path&limit=1000&offset=${offset}`,
-        { headers: auth },
-      );
-      if (photosRes.status === 404) { photosTableMissing = true; break; }
-      if (!photosRes.ok) throw new Error(`fetch photos failed: ${photosRes.status}`);
-      const page: { storage_path: string }[] = await photosRes.json();
-      photos.push(...page);
-      if (page.length < 1000) break;
-    }
-    if (!photosTableMissing) {
+    // No photo row is removed until the reviews delete below, so paging is
+    // stable.
+    const photos = await selectAll<{ storage_path: string }>(base, auth, 'user_review_photos', `user_id=eq.${userId}&select=storage_path`, 'storage_path');
+    if (photos !== null) {
       // Only paths under the caller's own folder, so a bad row can never
       // remove someone else's file.
       const paths = photos.map((p) => p.storage_path).filter((p) => p.startsWith(`${userId}/`));

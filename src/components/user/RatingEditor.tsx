@@ -274,7 +274,7 @@ export default function RatingEditor({
           <svg className="w-3.5 h-3.5 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
             <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01M5.07 19h13.86a2 2 0 001.74-3L13.74 4a2 2 0 00-3.48 0L3.33 16a2 2 0 001.74 3z" />
           </svg>
-          <span>{error} Your note wasn&apos;t lost — tap Retry.</span>
+          <span>{error} Your note wasn&apos;t lost. Tap Retry.</span>
         </div>
       )}
 

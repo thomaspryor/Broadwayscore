@@ -25,15 +25,20 @@ export default function HamburgerMenu({
 }: HamburgerMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const close = useCallback(() => setIsOpen(false), []);
   const triggerRef = useRef<HTMLButtonElement>(null);
+  // Every way out (Escape, backdrop, close button, a menu item) parks focus
+  // on the trigger before the panel unmounts, so keyboard users don't land
+  // on <body>.
+  const close = useCallback(() => {
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  }, []);
 
-  // For items that open a modal (sign in, delete account): park focus on the
-  // trigger before the menu unmounts, so the modal captures a live element
-  // and Cancel returns focus there instead of to <body>.
+  // For items that open a modal (sign in, delete account): close first so
+  // the modal captures the trigger as its return target and Cancel goes
+  // back there.
   const closeInto = (action?: () => void) => {
     close();
-    triggerRef.current?.focus();
     action?.();
   };
 
