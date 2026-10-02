@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T06:37:41.488Z",
+  "timestamp": "2026-10-02T06:51:16.627Z",
   "stats": {
     "totalReviews": 45804,
-    "alreadyFlagged": 18691,
+    "alreadyFlagged": 18698,
     "dateGuardCatches": 262,
-    "directorMismatch": 1194,
+    "directorMismatch": 1195,
     "tvFilmSignals": 1329,
     "londonSignals": 1251,
     "offBroadwaySignals": 507,
     "yearMismatch": 106,
-    "noPublishDate": 4147
+    "noPublishDate": 4128
   },
   "findings": [
     {
@@ -21962,6 +21962,20 @@
       "score": 92,
       "publishDate": "May 5, 2024",
       "url": "https://twi-ny.com/2024/05/05/oh-mary/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
+        }
+      ]
+    },
+    {
+      "showId": "oh-mary-tour-2026",
+      "file": "broadwayworld--erinmarie-reiter.json",
+      "score": null,
+      "publishDate": "2026-10-01",
+      "url": "https://www.broadwayworld.com/san-diego/article/Review-OH-MARY-at-Broadway-San-Diego-20261001",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
