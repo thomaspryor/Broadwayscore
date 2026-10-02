@@ -450,7 +450,9 @@
     "whos-afraid-of-virginia-woolf-2020/theater-mirror--theater-mirror.json",
     "west-side-story-2020/broadwayworld--michael-dale.json",
     "hay-fever-west-end-2026/telegraph--dominic-cavendish.json",
-    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json"
+    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/vulture--sara-holdren.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/culturesauce--thom-geier.json"
   ],
   "failed": [
     "fish-off-broadway-2026/pages-on-stages--mason-pilevsky.json",
@@ -779,7 +781,12 @@
     "the-urmetazoan-off-west-end-2026/thestage--holly-omahony.json",
     "the-urmetazoan-off-west-end-2026/thestage--the-stage.json",
     "the-urmetazoan-off-west-end-2026/theupcoming--unknown.json",
-    "table-17-off-west-end-2026/bachtrack--unknown.json"
+    "table-17-off-west-end-2026/bachtrack--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "cosi-fan-tutte-off-broadway-2026/independent--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1011,7 +1018,8 @@
       "waitress-2021/abc-news--mark-kennedy.json",
       "whos-afraid-of-virginia-woolf-2020/playbill--mark-peikert.json",
       "whos-afraid-of-virginia-woolf-2020/theater-mirror--theater-mirror.json",
-      "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json"
+      "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/culturesauce--thom-geier.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -1181,7 +1189,8 @@
       "the-lost-boys-2026/broadwayworld--unknown.json",
       "clydes-2021/timeout--adam-feldman.json",
       "whos-afraid-of-virginia-woolf-2020/deadline--unknown.json",
-      "hay-fever-west-end-2026/telegraph--dominic-cavendish.json"
+      "hay-fever-west-end-2026/telegraph--dominic-cavendish.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/vulture--sara-holdren.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1270,7 +1279,7 @@
     ]
   },
   "startTime": "2026-10-01T17:22:24.281Z",
-  "lastProcessed": "table-17-off-west-end-2026/bachtrack--unknown.json",
+  "lastProcessed": "macbeth-off-broadway-2026/talkclassical--unknown.json",
   "log": [
     {
       "t": "2026-10-01T17:51:38.789Z",
@@ -1541,6 +1550,28 @@
       "event": "bb-session",
       "session": "9d7b6331",
       "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+    },
+    {
+      "t": "2026-10-02T03:34:37.637Z",
+      "event": "bb-session",
+      "session": "fe214a6e",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T03:34:38.566Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-02T03:34:54.620Z",
+      "event": "bb-session",
+      "session": "041b4043",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T03:34:55.620Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
