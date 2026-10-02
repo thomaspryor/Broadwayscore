@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T02:59:09.836Z",
+  "timestamp": "2026-10-02T03:12:04.506Z",
   "stats": {
     "totalReviews": 45776,
-    "alreadyFlagged": 18687,
+    "alreadyFlagged": 18691,
     "dateGuardCatches": 261,
-    "directorMismatch": 1196,
+    "directorMismatch": 1194,
     "tvFilmSignals": 1329,
-    "londonSignals": 1251,
+    "londonSignals": 1250,
     "offBroadwaySignals": 507,
     "yearMismatch": 103,
-    "noPublishDate": 4134
+    "noPublishDate": 4131
   },
   "findings": [
     {
@@ -5967,7 +5967,7 @@
     {
       "showId": "chewing-gum-dreams-off-west-end-2026",
       "file": "guardian--arifa-akbar.json",
-      "score": null,
+      "score": 81,
       "publishDate": "2026-09-16",
       "url": "https://www.theguardian.com/stage/2026/sep/16/chewing-gum-dreams-review-theatre503-michaela-coel",
       "findings": [
@@ -37154,20 +37154,6 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-2020",
-      "file": "deadline--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://deadline.com/2020/03/whos-afraid-of-virginia-woolf-starring-laurie-metcalf-rupert-everett-cancels-broadway-run-1202889354/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-2020",
       "file": "nytg--unknown.json",
       "score": 87,
       "publishDate": null,
@@ -37182,20 +37168,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"anthony page\" from whos-afraid-of-virginia-woolf-2005"
-        }
-      ]
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-2020",
-      "file": "playbill--mark-peikert.json",
-      "score": null,
-      "publishDate": "2020-03-21",
-      "url": "https://playbill.com/article/broadway-revival-of-whos-afraid-of-virginia-woolf-starring-laurie-metcalf-and-rupert-everett-has-closed",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"edward albee\" from whos-afraid-of-virginia-woolf-1976"
         }
       ]
     },
@@ -43616,20 +43588,6 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"almeida\""
-        }
-      ]
-    },
-    {
-      "showId": "fire-fire-off-west-end-2026",
-      "file": "guardian--unknown.json",
-      "score": null,
-      "publishDate": "2026-09-23",
-      "url": "https://www.theguardian.com/music/2026/sep/23/fire-in-my-mouth-review-royal-festival-hall-wolfe-alsop-philharmonia",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"barbican\""
         }
       ]
     },
