@@ -2,7 +2,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 
-const dir = new URL('../data/audit/', import.meta.url);
+const dir = new URL('../../data/audit/', import.meta.url);
 const load = (f) => JSON.parse(fs.readFileSync(new URL(f, dir), 'utf8'));
 
 test('daily baseline has cost data or a documented error', () => {
