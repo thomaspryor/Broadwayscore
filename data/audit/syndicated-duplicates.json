@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-02T02:15:45.339Z",
+  "generatedAt": "2026-10-02T02:54:39.808Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 94,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Marilyn Stasio",
+      "showId": "the-curious-incident-of-the-dog-in-the-nighttime-2014",
+      "primaryOutlet": "variety",
+      "secondaryOutlet": "boston-herald",
+      "primaryFile": "variety--marilyn-stasio.json",
+      "secondaryFile": "boston-herald--marilyn-stasio.json",
+      "similarity": 94,
+      "primaryScore": 91,
+      "secondaryScore": 92,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
