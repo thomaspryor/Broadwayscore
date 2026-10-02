@@ -251,18 +251,35 @@ interface MezzExport {
   };
 }
 
+/**
+ * Shown for any file that isn't a readable Mezzanine export. One fixed string
+ * on purpose: JSON.parse's own message quotes a slice of the file, and the
+ * thrown message is both shown on screen and sent as import_failed's
+ * error_message, so it must never carry the user's file content.
+ */
+export const MEZZANINE_FILE_ERROR =
+  'That file doesn\u2019t look like a Mezzanine export. In Mezzanine, go to Settings, then Export Data, choose JSON, and pick that file here.';
+
 /** Parse a Mezzanine JSON export (Settings → Export Data → JSON). */
 export async function acquireFromMezzanine(file: File): Promise<ImportAcquireResult> {
-  const parsed: MezzExport = JSON.parse(await file.text());
-  if (!parsed.data?.diaryEntries) {
-    throw new Error('Invalid Mezzanine export — missing data.diaryEntries');
+  let parsed: MezzExport;
+  try {
+    parsed = JSON.parse(await file.text());
+  } catch {
+    throw new Error(MEZZANINE_FILE_ERROR);
+  }
+  if (!Array.isArray(parsed?.data?.diaryEntries)) {
+    throw new Error(MEZZANINE_FILE_ERROR);
   }
 
   const entries: RawImportEntry[] = [];
   const today = new Date().toISOString().split('T')[0];
 
   for (const entry of parsed.data.diaryEntries) {
-    const date = entry.date ? entry.date.split('T')[0] : null;
+    // A hand-edited or partial export can carry entries without a show;
+    // skip them instead of failing the whole import on a TypeError.
+    if (!entry?.show?.name) continue;
+    const date = typeof entry.date === 'string' && entry.date ? entry.date.split('T')[0] : null;
     const hasRating = !!(entry.rating && entry.rating > 0);
     // Unrated future entries are plans, not viewings → watchlist.
     const isFuture = date !== null && date > today;
@@ -280,8 +297,9 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
     });
   }
 
-  for (const list of parsed.data.lists || []) {
-    for (const show of list.shows) {
+  for (const list of Array.isArray(parsed.data.lists) ? parsed.data.lists : []) {
+    for (const show of Array.isArray(list?.shows) ? list.shows : []) {
+      if (!show?.name) continue;
       entries.push({
         title: show.name,
         venue: null,

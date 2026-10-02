@@ -21,12 +21,12 @@ export default function HeaderHamburger() {
   if (!featureFlags.userAccounts) return null;
 
   const handleDelete = async () => {
-    const ok = await deleteAccount();
-    if (ok) {
+    const result = await deleteAccount();
+    if (result === 'deleted') {
       showToast('Your account has been deleted.', 'info');
       router.push('/');
     }
-    return ok;
+    return result;
   };
 
   return (

@@ -18,6 +18,8 @@ import {
 
 type ModalContext = 'rating' | 'watchlist' | 'generic';
 
+export type DeleteAccountResult = 'deleted' | 'session_expired' | 'failed';
+
 interface AuthContextValue {
   user: { id: string; email: string } | null;
   profile: UserProfile | null;
@@ -28,10 +30,11 @@ interface AuthContextValue {
   signOut: () => void;
   /**
    * Permanently delete the signed-in account and everything it saved (the
-   * delete-account edge function), then sign out. Resolves true on success;
-   * on failure the user stays signed in and the error is reported.
+   * delete-account edge function), then sign out. Resolves 'deleted' on
+   * success. On failure the user stays signed in and the error is reported;
+   * 'session_expired' means the server refused the sign-in token.
    */
-  deleteAccount: () => Promise<boolean>;
+  deleteAccount: () => Promise<DeleteAccountResult>;
   /**
    * Show sign-in modal. `context` picks the headline; `source` names the
    * button that asked (e.g. 'show_bookmark') so the funnel shows which entry
@@ -251,9 +254,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setProfile(null);
   }, []);
 
-  const deleteAccount = useCallback(async (): Promise<boolean> => {
+  const deleteAccount = useCallback(async (): Promise<DeleteAccountResult> => {
     const client = getSupabaseClient();
-    if (!client) return false;
+    if (!client) return 'failed';
 
     trackUgc('account_delete_started');
     // The function answers 200 with {ok:false} for handled failures, so
@@ -261,11 +264,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data, error } = await client.functions.invoke('delete-account', { body: {} });
     const body = (data ?? null) as { ok?: boolean; error?: string } | null;
     if (error || body?.ok !== true) {
+      // 401 from the functions gateway (bad or expired JWT) or the function's
+      // own 'unauthorized': the user has to sign in again before retrying.
+      const status = (error as { context?: { status?: number } } | null)?.context?.status;
+      const expired = status === 401 || body?.error === 'unauthorized';
       reportUgcError('auth.delete_account', {
         message: error?.message || body?.error || 'no ok in response',
-        code: body?.error || 'delete_failed',
+        code: expired ? 'session_expired' : body?.error || 'delete_failed',
+        status,
       });
-      return false;
+      return expired ? 'session_expired' : 'failed';
     }
 
     trackUgc('account_deleted');
@@ -276,7 +284,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     setAnalyticsUser(null);
     setUser(null);
     setProfile(null);
-    return true;
+    return 'deleted';
   }, []);
 
   const showSignIn = useCallback((context: ModalContext = 'generic', source?: string) => {
@@ -329,7 +337,7 @@ const DEFAULT_AUTH: AuthContextValue = {
   isAuthenticated: false,
   signIn: () => {},
   signOut: () => {},
-  deleteAccount: async () => false,
+  deleteAccount: async () => 'failed',
   showSignIn: () => {},
 };
 

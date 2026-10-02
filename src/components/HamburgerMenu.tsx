@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
 import { saveReturnUrl } from '@/lib/deferred-auth';
@@ -26,6 +26,16 @@ export default function HamburgerMenu({
   const [isOpen, setIsOpen] = useState(false);
 
   const close = useCallback(() => setIsOpen(false), []);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+
+  // For items that open a modal (sign in, delete account): park focus on the
+  // trigger before the menu unmounts, so the modal captures a live element
+  // and Cancel returns focus there instead of to <body>.
+  const closeInto = (action?: () => void) => {
+    close();
+    triggerRef.current?.focus();
+    action?.();
+  };
 
   // Close on Escape
   useEffect(() => {
@@ -48,6 +58,7 @@ export default function HamburgerMenu({
           desktop-only (three 44px targets don't fit a phone header; owner
           report, 2026-07-17). The menu carries My Shows / Sign in either way. */}
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
         className="p-1.5 sm:p-2 shrink-0 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
@@ -122,8 +133,7 @@ export default function HamburgerMenu({
                     type="button"
                     onClick={() => {
                       saveReturnUrl('/my-shows');
-                      close();
-                      onSignIn?.();
+                      closeInto(onSignIn);
                     }}
                     className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-brand/20 border border-brand/30 rounded-lg hover:bg-brand/30 transition-colors"
                   >
@@ -167,10 +177,7 @@ export default function HamburgerMenu({
                   {onDeleteAccount && (
                     <button
                       type="button"
-                      onClick={() => {
-                        close();
-                        onDeleteAccount();
-                      }}
+                      onClick={() => closeInto(onDeleteAccount)}
                       className="w-full text-left px-5 py-2.5 text-sm text-gray-400 hover:text-score-skip hover:bg-white/[0.02] transition-colors"
                     >
                       Delete account

@@ -99,10 +99,22 @@ Deno.serve(async (req) => {
     // {userId}/{reviewId}/{photoId}.jpg. Their user_review_photos rows cascade
     // from reviews, but the files don't, so remove them while the rows still
     // say where they are. A 404 means the photos table isn't in this project.
-    const photosRes = await fetch(`${base}/rest/v1/user_review_photos?user_id=eq.${userId}&select=storage_path`, { headers: auth });
-    if (photosRes.status !== 404) {
+    // PostgREST caps a response at 1000 rows, so page through. Offset paging
+    // is stable here: no photo row is removed until the reviews delete below.
+    const photos: { storage_path: string }[] = [];
+    let photosTableMissing = false;
+    for (let offset = 0; ; offset += 1000) {
+      const photosRes = await fetch(
+        `${base}/rest/v1/user_review_photos?user_id=eq.${userId}&select=storage_path&order=storage_path&limit=1000&offset=${offset}`,
+        { headers: auth },
+      );
+      if (photosRes.status === 404) { photosTableMissing = true; break; }
       if (!photosRes.ok) throw new Error(`fetch photos failed: ${photosRes.status}`);
-      const photos: { storage_path: string }[] = await photosRes.json();
+      const page: { storage_path: string }[] = await photosRes.json();
+      photos.push(...page);
+      if (page.length < 1000) break;
+    }
+    if (!photosTableMissing) {
       // Only paths under the caller's own folder, so a bad row can never
       // remove someone else's file.
       const paths = photos.map((p) => p.storage_path).filter((p) => p.startsWith(`${userId}/`));

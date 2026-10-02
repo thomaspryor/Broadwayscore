@@ -81,6 +81,11 @@ test('safeReturnPath only allows same-site paths', () => {
   assert.equal(safeReturnPath('//evil.example/x'), '/');
   assert.equal(safeReturnPath('https://evil.example/'), '/');
   assert.equal(safeReturnPath('/\\evil.example'), '/');
+  // The URL parser drops tab/CR/LF, turning these into "//evil.example".
+  assert.equal(safeReturnPath('/\t/evil.example'), '/');
+  assert.equal(safeReturnPath('/\n/evil.example'), '/');
+  assert.equal(safeReturnPath('/\r/evil.example'), '/');
+  assert.equal(new URL('/\t/evil.example', 'https://broadwayscorecard.com').host, 'evil.example');
   assert.equal(safeReturnPath('javascript:alert(1)'), '/');
   assert.equal(safeReturnPath(''), '/');
   assert.equal(safeReturnPath(null), '/');

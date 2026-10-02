@@ -399,7 +399,7 @@ export default function ImportShows({
     try {
       await matchAndPreview(await acquireFromShowScore(profileInput), 'show-score');
     } catch (err) {
-      const message = err instanceof Error ? err.message : 'Import failed — try again.';
+      const message = err instanceof Error ? err.message : 'Import failed. Try again.';
       trackUgc('import_failed', { source: 'show-score', error_message: message.slice(0, 200) });
       setError(message);
       setStep('source');

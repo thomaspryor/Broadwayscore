@@ -58,3 +58,13 @@ test('a 404 from the admin user delete counts as already deleted', () => {
   const tail = fnSource.slice(at, at + 600);
   assert.match(tail, /status !== 404/, 'admin user delete must tolerate 404 so retries can finish');
 });
+
+// PostgREST returns at most 1000 rows per request, so a single photo lookup
+// left files behind in storage for anyone past 1000 photos (BRO-4525).
+test('the review photo lookup pages past the 1000-row response cap', () => {
+  const at = fnSource.indexOf('/rest/v1/user_review_photos');
+  assert.ok(at > 0, 'photo lookup not found');
+  const call = fnSource.slice(at, at + 200);
+  assert.match(call, /limit=1000&offset=\$\{offset\}/, 'photo lookup must page with limit+offset');
+  assert.match(call, /order=/, 'offset paging needs a stable order');
+});

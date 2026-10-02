@@ -2,12 +2,13 @@
 
 import { useState } from 'react';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
+import type { DeleteAccountResult } from '@/contexts/AuthContext';
 
 interface DeleteAccountDialogProps {
   isOpen: boolean;
   onClose: () => void;
-  /** Resolves true once the account is gone; false leaves the dialog open with an error. */
-  onConfirm: () => Promise<boolean>;
+  /** 'deleted' closes the dialog; anything else leaves it open with an error. */
+  onConfirm: () => Promise<DeleteAccountResult>;
 }
 
 /**
@@ -17,21 +18,21 @@ interface DeleteAccountDialogProps {
  */
 export default function DeleteAccountDialog({ isOpen, onClose, onConfirm }: DeleteAccountDialogProps) {
   const [deleting, setDeleting] = useState(false);
-  const [failed, setFailed] = useState(false);
+  const [failed, setFailed] = useState<Exclude<DeleteAccountResult, 'deleted'> | null>(null);
 
   const close = () => {
     if (deleting) return;
-    setFailed(false);
+    setFailed(null);
     onClose();
   };
 
   const confirm = async () => {
     setDeleting(true);
-    setFailed(false);
-    const ok = await onConfirm().catch(() => false);
+    setFailed(null);
+    const result = await onConfirm().catch((): DeleteAccountResult => 'failed');
     setDeleting(false);
-    if (ok) onClose();
-    else setFailed(true);
+    if (result === 'deleted') onClose();
+    else setFailed(result);
   };
 
   return (
@@ -55,7 +56,9 @@ export default function DeleteAccountDialog({ isOpen, onClose, onConfirm }: Dele
 
         {failed && (
           <div role="alert" className="mt-4 px-3 py-2 rounded-lg bg-score-skip/10 border border-score-skip/20 text-xs text-score-skip">
-            Something went wrong and we couldn&apos;t finish deleting your account. Please try again.
+            {failed === 'session_expired'
+              ? 'Your sign-in has expired. Sign out, sign back in, then try again.'
+              : 'Something went wrong and we couldn\u2019t finish deleting your account. Please try again.'}
           </div>
         )}
 

@@ -277,6 +277,8 @@ export default function MyShowsClient() {
   const handlePlannedDateChange = useCallback(async (showId: string, date: string | null) => {
     try {
       await effectiveUpdatePlannedDate(showId, date);
+      // The picker closes silently, so confirm the write (UX audit, BRO-3175).
+      showToast?.(date ? 'Date saved.' : 'Date cleared.', 'success');
     } catch {
       showToast?.('Failed to save date.', 'error');
     }
@@ -1389,7 +1391,7 @@ function RowRemoveButton({ onRemove, label }: { onRemove: () => void; label: str
       type="button"
       onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirm(true); }}
       aria-label={label}
-      className="relative z-[2] inline-flex items-center justify-center flex-shrink-0 p-1.5 rounded-full text-gray-600 hover:text-red-400 transition-colors pointer-events-auto"
+      className="relative z-[2] inline-flex items-center justify-center flex-shrink-0 p-1.5 rounded-full text-score-skip/80 hover:text-score-skip transition-colors pointer-events-auto"
     >
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -1443,7 +1445,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmDelete(true); }}
-          className="relative z-[1] inline-flex items-center justify-center p-1 rounded-full text-gray-600 hover:text-red-400 transition-colors"
+          className="relative z-[1] inline-flex items-center justify-center p-1 rounded-full text-score-skip/80 hover:text-score-skip transition-colors"
           aria-label="Delete rating"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1524,13 +1526,13 @@ function UpcomingGridCard({ href, posterUrl, date, title, onRemove }: { href: st
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
       <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
         <div className="aspect-[2/3] bg-surface-overlay">
-          <Poster url={posterUrl} iconClass="text-3xl" />
+          <Poster url={posterUrl} iconClass="text-3xl" title={title} />
         </div>
         {/* Remove button — hidden on mobile, visible on hover on desktop */}
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
+          className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-score-skip/80 hover:text-score-skip opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
           aria-label="Remove from upcoming"
         >
           {confirmRemove ? 'Remove?' : (
@@ -1568,9 +1570,20 @@ function CardLinkOrDiv({ href, className, children, ariaLabel }: { href: string 
 /** Poster image that degrades to the 🎭 placeholder when the URL is missing
  *  OR fails to load — a stored poster path that 404s otherwise renders as a
  *  broken-image icon in the diary grid (owner report, 2026-07-14). */
-function Poster({ url, iconClass = 'text-3xl' }: { url: string | null | undefined; iconClass?: string }) {
+function Poster({ url, iconClass = 'text-3xl', title }: { url: string | null | undefined; iconClass?: string; title?: string }) {
   const [broken, setBroken] = useState(false);
   if (!url || broken) {
+    // Grid cards are poster-only, so a show with no poster was an anonymous
+    // 🎭 tile. Grid callers pass the title so the placeholder names the show
+    // (UX audit, BRO-3861). List rows already print the title beside it.
+    if (title) {
+      return (
+        <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 px-2 text-gray-600">
+          <span className={iconClass} aria-hidden="true">🎭</span>
+          <span className="text-xs font-semibold text-gray-300 text-center leading-snug line-clamp-3 break-words">{title}</span>
+        </div>
+      );
+    }
     return <div className={`w-full h-full flex items-center justify-center text-gray-600 ${iconClass}`}>🎭</div>;
   }
   // eslint-disable-next-line @next/next/no-img-element
@@ -1593,7 +1606,7 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
       <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
         <div className="aspect-[2/3] bg-surface-overlay">
-          <Poster url={show?.posterUrl} iconClass="text-3xl" />
+          <Poster url={show?.posterUrl} iconClass="text-3xl" title={title} />
         </div>
         {/* Written-note preview on hover (desktop) — grid view otherwise hides
             the note entirely (owner request, 2026-07-13) */}
@@ -1654,7 +1667,7 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
           <button
             type="button"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmDelete ? onDelete() : setConfirmDelete(true); }}
-            className={`absolute top-2 right-2 z-[2] flex items-center justify-center rounded-full ${confirmDelete ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100 focus-visible:opacity-100'} transition-opacity`}
+            className={`absolute top-2 right-2 z-[2] flex items-center justify-center rounded-full ${confirmDelete ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-score-skip/80 hover:text-score-skip opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100 focus-visible:opacity-100'} transition-opacity`}
             aria-label="Delete rating"
           >
             {confirmDelete ? 'Delete?' : (
@@ -1728,7 +1741,7 @@ function WatchlistCard({ entry, show, onDateChange, onShowtimeChange, onRemove, 
     <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden" data-watchlist-future-dated={isFutureDated}>
       <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
         <div className="aspect-[2/3] bg-surface-overlay relative">
-          <Poster url={show?.posterUrl} iconClass="text-3xl" />
+          <Poster url={show?.posterUrl} iconClass="text-3xl" title={title} />
           {/* Poster badges live TOP-LEFT: the rate strip owns the bottom and
               the trash owns the top-right (owner, 2026-07-20) */}
           {isClosingSoon && (
@@ -2008,7 +2021,7 @@ function WatchlistListItem({ entry, show, onDateChange, onShowtimeChange, onRemo
             <button
               type="button"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(true); }}
-              className="relative z-[1] inline-flex items-center justify-center p-1 text-gray-600 hover:text-red-400 transition-colors"
+              className="relative z-[1] inline-flex items-center justify-center p-1 text-score-skip/80 hover:text-score-skip transition-colors"
               aria-label="Remove from watchlist"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
