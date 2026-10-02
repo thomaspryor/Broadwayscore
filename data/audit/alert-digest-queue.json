@@ -387,5 +387,22 @@
       }
     ],
     "queuedAt": "2026-10-02T16:45:14.682Z"
+  },
+  {
+    "conditionKey": "cron-health:Weekly Grosses",
+    "title": "🚨 Critical cron stale, self-heal failed: Weekly Grosses",
+    "description": "Self-heal redispatch did not bring this cron back to healthy. See the run log for the mapped workflow file and last-success timestamp.",
+    "severity": "critical",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37039045328",
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "Run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37039045328)"
+      }
+    ],
+    "queuedAt": "2026-10-02T17:13:10.141Z"
   }
 ]
