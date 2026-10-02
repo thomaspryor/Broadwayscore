@@ -304,6 +304,7 @@ test('sweep: FAIL is leave on the first tick (verify-fail row), Todo on the seco
 
   const second = harness({ entries, issues, verifyStatus: 'fail', verifyDetail: 'assertion failed' });
   fs.copyFileSync(first.ledgerPath, second.ledgerPath);
+  second.deps.nowFn = () => Date.now() + 7 * 3600 * 1000; // next 6h tick, not a carry re-run
   const out2 = await sweepLinearStartedZombies({ dryRun: false, deps: second.deps });
   assert.equal(out2.todo.length, 1);
   assert.equal(second.applied[0].action, 'todo');
@@ -372,7 +373,17 @@ test('sweep: daily Done cap and per-tick verify budget both stop further work', 
   const out = await sweepLinearStartedZombies({ dryRun: false, deps: budget.deps });
   assert.equal(budget.verified.length, 1);
   assert.equal(out.carried, 1, 'the unchecked card carries to the next tick');
-  assert.equal(JSON.parse(fs.readFileSync(budget.statePath, 'utf8')).lastRunTs, null, 'a budget-limited tick must not start the 6h cadence clock');
+  const st = JSON.parse(fs.readFileSync(budget.statePath, 'utf8'));
+  assert.equal(st.lastRunTs, null, 'a budget-limited tick must not start the 6h cadence clock');
+  assert.deepEqual(st.cycleDone, ['BRO-3'], 'decided cards are remembered so the next tick resumes after them');
+
+  // Next tick resumes at BRO-4 instead of re-verifying BRO-3 forever.
+  const resume = harness({ entries, issues, extra: { maxVerifiesPerTick: 1, statePath: budget.statePath } });
+  const out2 = await sweepLinearStartedZombies({ dryRun: false, deps: resume.deps });
+  assert.deepEqual(resume.verified.length, 1);
+  assert.equal(out2.carried, 0);
+  assert.equal(JSON.parse(fs.readFileSync(budget.statePath, 'utf8')).cycleDone.length, 0, 'finished cycle clears the cursor');
+  assert.ok(JSON.parse(fs.readFileSync(budget.statePath, 'utf8')).lastRunTs, 'finished cycle starts the cadence clock');
 });
 
 test('sweep: dry-run decides (runs VERIFY) but never applies or writes the ledger', async () => {

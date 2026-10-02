@@ -35,6 +35,7 @@ const HUMAN_FRESH_MS = 24 * 3600 * 1000;
 // A FAIL must be seen on this many consecutive sweep ticks (same dispatch)
 // before a card is moved to Todo: one FAIL can be a flaky/partial checkout.
 const FAILS_BEFORE_TODO = 2;
+const FAIL_STRIKE_MIN_GAP_MS = 3600 * 1000;
 // Todo moves per card across ALL dispatches — stops Todo -> redispatch ->
 // DONE-without-report -> Todo cycles (the park hash is per-jobId so it
 // cannot catch these).
@@ -86,8 +87,21 @@ function countPriorTodoResets(ledgerEntries, cardId) {
   return (ledgerEntries || []).filter((e) => e && e.cardId === cardId && e.event === 'card-pass' && e.action === 'todo').length;
 }
 
-function countVerifyFails(ledgerEntries, cardId, jobId) {
-  return (ledgerEntries || []).filter((e) => e && e.cardId === cardId && e.event === 'verify-fail' && e.jobId === jobId).length;
+// Consecutive FAIL strikes for this dispatch: the trailing run of 'verify-fail'
+// rows, broken by any other row for the same card+job (a pass / leave in
+// between resets the streak). Only strikes at least FAIL_STRIKE_MIN_GAP_MS old
+// count, so a budget carry that re-verifies the same card minutes later cannot
+// turn one flaky FAIL into the second strike.
+function countVerifyFails(ledgerEntries, cardId, jobId, nowMs = Date.now()) {
+  const rows = (ledgerEntries || []).filter((e) => e && e.cardId === cardId && e.jobId === jobId);
+  let n = 0;
+  for (let i = rows.length - 1; i >= 0; i--) {
+    if (rows[i].event !== 'verify-fail') break;
+    const at = Date.parse(rows[i].ts);
+    if (Number.isFinite(at) && nowMs - at < FAIL_STRIKE_MIN_GAP_MS) continue; // too recent to be a separate strike
+    n++;
+  }
+  return n;
 }
 
 /**
@@ -112,6 +126,9 @@ function decideZombieAction({
 
   const thread = scanThreadSinceSpawn(issue, spawnedTs, nowMs);
   if (thread.reported) return { action: 'skip', reason: 'already-reported' };
+  // The newest comments are the ones a truncated page hides (fresh human hold,
+  // session report, our own marker): no state change on an incomplete thread.
+  if (thread.truncated) return { action: 'refuse', reason: 'comment-history-truncated' };
   if (thread.ownReset) return { action: 'refuse', reason: 'own-reset-attempt-unconfirmed' };
   if (thread.humanFresh) return { action: 'refuse', reason: 'human-comment-recent' };
 
@@ -136,7 +153,6 @@ function decideZombieAction({
   }
   if (result.status !== 'fail') return { action: 'leave', reason: 'verify-unverifiable', cmd, detail: result.detail };
   if (ENV_FAILURE_RE.test(result.detail || '')) return { action: 'leave', reason: 'verify-env-failure', cmd, detail: result.detail };
-  if (thread.truncated) return { action: 'refuse', reason: 'comment-history-truncated', cmd };
   if (priorVerifyFails + 1 < FAILS_BEFORE_TODO) return { action: 'leave', reason: 'verify-failed-first-strike', cmd, detail: result.detail };
   if (priorTodoResets >= MAX_TODO_RESETS_PER_CARD) return { action: 'refuse', reason: 'reset-loop', cmd };
   return { action: 'todo', reason: 'verify-fails-on-main', cmd, detail: result.detail };
@@ -174,5 +190,6 @@ module.exports = {
   applyZombieAction,
   HUMAN_FRESH_MS,
   FAILS_BEFORE_TODO,
+  FAIL_STRIKE_MIN_GAP_MS,
   MAX_TODO_RESETS_PER_CARD,
 };

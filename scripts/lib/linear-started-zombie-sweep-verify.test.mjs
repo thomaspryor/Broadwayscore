@@ -114,9 +114,9 @@ test('todo loop guard: two prior Todo resets -> refuse reset-loop', () => {
   assert.equal(out.reason, 'reset-loop');
 });
 
-test('truncated thread refuses a Todo but still allows a proven Done', () => {
+test('truncated thread refuses both Done and Todo (newest comments are the hidden ones)', () => {
   const many = Array.from({ length: 50 }, (_, i) => ({ createdAt: `2026-08-01T00:00:${String(i).padStart(2, '0')}.000Z`, body: 'old' }));
-  assert.equal(decideZombieAction(base({ issue: issue(many) })).action, 'done');
+  assert.equal(decideZombieAction(base({ issue: issue(many) })).reason, 'comment-history-truncated');
   assert.equal(decideZombieAction(base({ issue: issue(many), runVerifyFn: run('fail', 'x'), priorVerifyFails: 1 })).reason, 'comment-history-truncated');
 });
 
@@ -148,6 +148,15 @@ test('ledger counters: Todo resets by card across jobs; verify-fails per dispatc
   ];
   assert.equal(countPriorTodoResets(rows, 'BRO-1'), 2);
   assert.equal(countVerifyFails(rows, 'BRO-1', 'b'), 1);
+});
+
+test('verify-fail strikes must be consecutive and at least an hour apart', () => {
+  const H = 3600 * 1000;
+  const now = Date.parse('2026-09-10T12:00:00.000Z');
+  const row = (event, agoMs) => ({ event, cardId: 'BRO-1', jobId: 'j', ts: new Date(now - agoMs).toISOString() });
+  assert.equal(countVerifyFails([row('verify-fail', 5 * 60 * 1000)], 'BRO-1', 'j', now), 0, 'a fail from the last carry tick is not a prior strike');
+  assert.equal(countVerifyFails([row('verify-fail', 7 * H)], 'BRO-1', 'j', now), 1);
+  assert.equal(countVerifyFails([row('verify-fail', 14 * H), row('card-leave', 7 * H)], 'BRO-1', 'j', now), 0, 'an intervening non-fail row resets the streak');
 });
 
 test('write-back comments carry the marker; applyZombieAction shells the CLI, never --force, and reports exit 5', () => {

@@ -956,15 +956,19 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
   let verifies = 0;
   let checkout = null;
   let carried = false;
+  // Cards already decided earlier in a budget-carried cycle: a carried tick
+  // must resume after them, not re-run the same head of the list forever.
+  const cycleDone = new Set((state && Array.isArray(state.cycleDone)) ? state.cycleDone : []);
 
   try {
     for (const cand of candidates) {
+      if (!dryRun && cycleDone.has(cand.identifier)) continue;
       let issue;
       try { issue = await getIssueFn(cand.identifier); } catch (e) {
         reportFn({ kind: 'linear-zombie-fetch-error', identifier: cand.identifier, detail: e.message });
         continue;
       }
-      if (!issue || !issue.state || issue.state.type !== 'started') continue; // stale — already resolved
+      if (!issue || !issue.state || issue.state.type !== 'started') { cycleDone.add(cand.identifier); continue; } // stale — already resolved
       result.checked++;
 
       let worktree = { exists: false };
@@ -980,12 +984,14 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
       // below re-runs the WHOLE decision on a fresh issue read without
       // re-running the (minutes-long) command.
       let verifyMemo = null;
+      let verifyMemoCmd = null;
       const runVerifyOnce = (cmd) => {
-        if (verifyMemo) return verifyMemo;
+        if (verifyMemo && verifyMemoCmd === cmd) return verifyMemo;
         if (!dryRun && (verifies >= maxVerifiesPerTick || nowFn() - startedAt > tickBudgetMs)) throw ZOMBIE_BUDGET_EXHAUSTED;
         if (!checkout) checkout = makeCheckoutFn();
         else cleanCheckoutFn(checkout);
         verifies++;
+        verifyMemoCmd = cmd;
         verifyMemo = runVerifyFn(checkout, cmd) || { status: 'unverifiable' };
         return verifyMemo;
       };
@@ -998,7 +1004,7 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
         runVerifyFn: runVerifyOnce,
         commitOnMainFn: () => commitOnMainFn(checkout, cand.identifier),
         priorTodoResets: verifyLib.countPriorTodoResets(zombieLedgerEntries, cand.identifier),
-        priorVerifyFails: verifyLib.countVerifyFails(zombieLedgerEntries, cand.identifier, cand.jobId),
+        priorVerifyFails: verifyLib.countVerifyFails(zombieLedgerEntries, cand.identifier, cand.jobId, nowFn()),
       });
 
       let decision;
@@ -1007,6 +1013,7 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
         reportFn({ kind: 'linear-zombie-verify-error', identifier: cand.identifier, detail: String(e && e.message).slice(0, 200) });
         continue;
       }
+      cycleDone.add(cand.identifier);
       if (decision.action === 'skip') continue;
 
       const contentHash = linearZombie.computeZombieContentHash({ title: issue.title, jobId: cand.jobId });
@@ -1031,7 +1038,7 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
           continue;
         }
         const fresh = decide(freshIssue);
-        if (fresh.action !== decision.action) {
+        if (fresh.action !== decision.action || fresh.cmd !== decision.cmd) {
           reportFn({ kind: 'linear-zombie-reset-stale', identifier: cand.identifier, detail: `re-check before write found "${fresh.action}: ${fresh.reason}" — something changed since the first read, refusing this tick` });
           continue;
         }
@@ -1078,6 +1085,7 @@ async function sweepLinearStartedZombies({ dryRun = false, deps = {} } = {}) {
       fs.mkdirSync(path.dirname(statePath), { recursive: true });
       fs.writeFileSync(statePath, JSON.stringify({
         lastRunTs: carried ? (state && state.lastRunTs) || null : new Date(nowFn()).toISOString(),
+        cycleDone: carried ? [...cycleDone] : [],
         resetDay: today, resetCount: counts.todo, doneCount: counts.done,
       }, null, 2));
     } catch { /* state write must never fail the sweep */ }
