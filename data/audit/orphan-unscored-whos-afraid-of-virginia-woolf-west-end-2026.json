@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
   "openingDate": "2026-09-30",
-  "detectedAt": "2026-10-02T21:40:43.621Z",
+  "detectedAt": "2026-10-02T22:56:37.370Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "sierz-co-uk--unknown.json",
-      "outletId": "sierz-co-uk",
-      "criticName": "Unknown",
-      "url": "https://sierz.co.uk/reviews/whos-afraid-of-virginia-woolf-sohoplace/",
-      "fullTextLen": 6055,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
     {
       "file": "theatreboard--unknown.json",
       "outletId": "theatreboard",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }

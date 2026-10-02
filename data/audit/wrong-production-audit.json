@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T21:26:48.100Z",
+  "timestamp": "2026-10-02T22:56:49.181Z",
   "stats": {
-    "totalReviews": 45896,
+    "totalReviews": 45898,
     "alreadyFlagged": 18704,
     "dateGuardCatches": 263,
     "directorMismatch": 1200,
-    "tvFilmSignals": 1331,
+    "tvFilmSignals": 1332,
     "londonSignals": 1260,
-    "offBroadwaySignals": 507,
+    "offBroadwaySignals": 508,
     "yearMismatch": 105,
-    "noPublishDate": 4137
+    "noPublishDate": 4135
   },
   "findings": [
     {
@@ -3606,6 +3606,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"episode 7\""
+        }
+      ]
+    },
+    {
+      "showId": "broadway-magic-hour-off-broadway-2026",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "publishDate": "2026-09-28",
+      "url": "https://t2conline.com/broadway-magic-hour-conjures-something-rarer-than-illusion-shared-joy/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "OFF_BROADWAY_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review mentions off-Broadway venue: \"new world stages\""
         }
       ]
     },
@@ -24757,7 +24775,7 @@
     },
     {
       "showId": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
-      "file": "wbur--unknown.json",
+      "file": "wbur--jacquinn-sinclair.json",
       "score": 87,
       "publishDate": "2026-08-25",
       "url": "https://www.wbur.org/news/2026/08/25/american-repertory-theater-rhinoceros-review",
@@ -29098,7 +29116,7 @@
     },
     {
       "showId": "the-book-of-mormon-west-end-2024",
-      "file": "thestage--unknown.json",
+      "file": "thestage--mark-shenton.json",
       "score": 64,
       "publishDate": "2013-03-22",
       "url": "https://www.thestage.co.uk/reviews/the-book-of-mormon-review-at-prince-of-wales-theatre",
@@ -40881,7 +40899,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "broadwayworld--gary-naylor.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2026-09-22",
       "url": "https://www.broadwayworld.com/westend/article/Review-CATERINA-AND-THE-BEAUTY-OF-KILLING-FASCISTS-National-Theatre-20260922",
       "findings": [
@@ -40978,6 +40996,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "londonlivinglarge--london-living-large.json",
+      "score": 93,
       "publishDate": "2026-09-22",
       "url": "https://www.londonlivinglarge.com/2026/09/catarina-and-beauty-of-killing-fascists.html",
       "findings": [
@@ -45521,7 +45540,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "guardian--emma-john.json",
-      "score": 61,
+      "score": 59,
       "publishDate": "2026-10-02",
       "url": "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
       "findings": [
@@ -45632,7 +45651,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": null,
+      "score": 64,
       "publishDate": "2026-10-01",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl",
       "findings": [
