@@ -27,7 +27,7 @@ interface AuthContextValue {
   isAuthenticated: boolean;
   /** `source` names the entry point for analytics (e.g. 'my_shows'). */
   signIn: (provider: 'google' | 'apple', source?: string) => void;
-  signOut: () => void;
+  signOut: () => Promise<void>;
   /**
    * Permanently delete the signed-in account and everything it saved (the
    * delete-account edge function), then sign out. Resolves 'deleted' on
@@ -336,7 +336,7 @@ const DEFAULT_AUTH: AuthContextValue = {
   loading: false,
   isAuthenticated: false,
   signIn: () => {},
-  signOut: () => {},
+  signOut: async () => {},
   deleteAccount: async () => 'failed',
   showSignIn: () => {},
 };

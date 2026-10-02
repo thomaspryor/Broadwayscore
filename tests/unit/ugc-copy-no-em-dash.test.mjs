@@ -14,14 +14,24 @@ const require = createRequire(import.meta.url);
 const ts = require('typescript');
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '../..');
 
-// The signed-in feature surface: My Shows, account UI, imports.
+// The signed-in feature surface: My Shows, account UI, imports, the menu and
+// header, the rating hero on show pages and the diary page.
 const SCOPE = [
   'src/app/my-shows',
+  'src/app/diary-show',
   'src/components/user',
   'src/components/auth',
+  'src/components/show-page/ShowHeroRedesign.tsx',
+  'src/components/HamburgerMenu.tsx',
+  'src/components/HeaderHamburger.tsx',
+  'src/components/HeaderUserIcon.tsx',
   'src/contexts/AuthContext.tsx',
   'src/lib/show-import.ts',
 ];
+
+// JSX text keeps HTML entities undecoded, so &mdash; would slip past a
+// character check.
+const EM_DASH = /—|&mdash;|&#8212;|&#x2014;/i;
 
 function files(rel) {
   const abs = path.join(root, rel);
@@ -31,8 +41,8 @@ function files(rel) {
     .map((f) => path.join(abs, f));
 }
 
-// Strings passed to console.* or new Error(...) inside a catch-and-log never
-// reach the screen; everything else might.
+// Strings passed straight to console.* never reach the screen. Everything
+// else might, thrown Error messages included (the rating editor shows them).
 function isConsoleArg(node) {
   for (let p = node.parent; p; p = p.parent) {
     if (ts.isCallExpression(p)) {
@@ -49,7 +59,7 @@ export function emDashesIn(file) {
   const visit = (node) => {
     const literal = ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node) || ts.isTemplateHead(node)
       || ts.isTemplateMiddle(node) || ts.isTemplateTail(node) || ts.isJsxText(node);
-    if (literal && node.text.includes('—') && !isConsoleArg(node)) {
+    if (literal && EM_DASH.test(node.text) && !isConsoleArg(node)) {
       const { line } = src.getLineAndCharacterOfPosition(node.getStart(src));
       hits.push(`${path.relative(root, file)}:${line + 1}: ${node.text.trim().slice(0, 80)}`);
     }
@@ -59,16 +69,21 @@ export function emDashesIn(file) {
   return hits;
 }
 
-test('the scanner sees JSX text and literals but not comments', () => {
-  const tmp = path.join(fs.mkdtempSync(path.join(fs.realpathSync('/tmp'), 'emdash-')), 'x.tsx');
+test('the scanner sees JSX text, entities and literals but not comments', (t) => {
+  const dir = fs.mkdtempSync(path.join(fs.realpathSync('/tmp'), 'emdash-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const tmp = path.join(dir, 'x.tsx');
   fs.writeFileSync(tmp, [
     '// comment — fine',
     'const a = <p>Bad — copy</p>;',
     "const b = 'also — bad';",
     'const c = `t — ${a}`;',
     "console.warn('log — fine');",
+    'const d = <p>Entity &mdash; bad</p>;',
+    "const e = 'escape \\u2014 bad';",
+    "throw new Error('shown — bad');",
   ].join('\n'));
-  assert.deepEqual(emDashesIn(tmp).map((h) => h.split(':')[1]), ['2', '3', '4']);
+  assert.deepEqual(emDashesIn(tmp).map((h) => h.split(':')[1]), ['2', '3', '4', '6', '7', '8']);
 });
 
 test('no em dash in on-screen copy for accounts and My Shows', () => {

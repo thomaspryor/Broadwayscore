@@ -299,7 +299,7 @@ function Inner({
       if (authLoading) {
         // Session still restoring for an already-signed-in user — don't bounce
         // them to sign-in; surface a retryable error in the editor instead.
-        throw new Error('Still restoring your session — tap Retry in a moment.');
+        throw new Error('Still restoring your session. Tap Retry in a moment.');
       }
       // Gate at Save — persist the full draft, then sign in. The editor stays
       // open behind the sign-in modal ('auth-gated'), so cancelling sign-in
@@ -319,7 +319,7 @@ function Inner({
       if (error) throw new Error(error.message);
       // PostgREST returns 200 + [] when the filter matched nothing (e.g. the
       // review was deleted in another tab) — that's a failed save, not success.
-      if (!updated) throw new Error('This rating no longer exists — it may have been deleted elsewhere.');
+      if (!updated) throw new Error('This rating no longer exists. It may have been deleted elsewhere.');
       showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     } else {
       const { error } = await supabaseRestInsert('reviews', {
@@ -749,10 +749,10 @@ function Inner({
           (CLAUDE.md card #228, task #90). See getTicketCtaNote for why 'closed'
           checks status alone. */}
       {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
-        <p className="text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
+        <p className="text-xs text-gray-500">This show has closed. Tickets are no longer available.</p>
       )}
       {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
-        <p className="text-xs text-gray-500">Tickets not yet on sale — check back closer to opening.</p>
+        <p className="text-xs text-gray-500">Tickets aren&apos;t on sale yet. Check back closer to opening.</p>
       )}
       </div>{/* /action cluster */}
     </div>

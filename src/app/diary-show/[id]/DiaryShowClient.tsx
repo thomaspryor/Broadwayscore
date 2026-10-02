@@ -93,7 +93,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
   const handleSaveReview = useCallback(async (data: RatingEditorSaveData) => {
     if (!user) {
       if (authLoading) {
-        throw new Error('Still restoring your session — tap Retry in a moment.');
+        throw new Error('Still restoring your session. Tap Retry in a moment.');
       }
       saveDraft(data);
       showSignIn('rating', 'diary');
@@ -108,7 +108,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
-      if (!updated) throw new Error('This rating no longer exists — it may have been deleted elsewhere.');
+      if (!updated) throw new Error('This rating no longer exists. It may have been deleted elsewhere.');
       showToast?.('Rating updated.', 'success');
     } else {
       const { error } = await supabaseRestInsert('reviews', {
@@ -176,7 +176,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
 
       {/* Honest empty state — no critic coverage, never a broken-looking page */}
       <div className="card px-4 py-3 mb-6 text-sm text-gray-400">
-        We don&apos;t have critic reviews for this production — it&apos;s outside Broadway Scorecard&apos;s coverage area.
+        We don&apos;t have critic reviews for this production. It&apos;s outside Broadway Scorecard&apos;s coverage area.
       </div>
 
       <div className="card px-4 py-4 mb-4">

@@ -17,7 +17,7 @@ export async function generateMetadata({ params }: { params: { id: string } }): 
   return {
     // Root layout's title template already appends " | Broadway Scorecard".
     title: show.title,
-    description: `${show.title}${show.venue ? ` at ${show.venue}` : ''} — track your rating on Broadway Scorecard.`,
+    description: `${show.title}${show.venue ? ` at ${show.venue}` : ''}. Track your rating on Broadway Scorecard.`,
     // Diary-only pages are low-content and near-duplicate at scale — keep
     // them out of search results.
     robots: { index: false, follow: false },

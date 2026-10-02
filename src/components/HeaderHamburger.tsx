@@ -29,6 +29,14 @@ export default function HeaderHamburger() {
     return result;
   };
 
+  // An expired session can't authorize the delete. Clear it and reopen sign-in;
+  // signIn saves the current page, so the user lands back where they were.
+  const handleSignInAgain = async () => {
+    setConfirmDelete(false);
+    await signOut();
+    showSignIn('generic', 'delete_account_reauth');
+  };
+
   return (
     <>
       <HamburgerMenu
@@ -43,6 +51,7 @@ export default function HeaderHamburger() {
         isOpen={confirmDelete}
         onClose={() => setConfirmDelete(false)}
         onConfirm={handleDelete}
+        onSignInAgain={handleSignInAgain}
       />
     </>
   );

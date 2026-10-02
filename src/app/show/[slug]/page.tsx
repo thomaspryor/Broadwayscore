@@ -919,10 +919,10 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                   rage-clicked the empty space (CLAUDE.md card #228, task #90).
                   See getTicketCtaNote for why 'closed' checks status alone. */}
               {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
-                <p className="w-full text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
+                <p className="w-full text-xs text-gray-500">This show has closed. Tickets are no longer available.</p>
               )}
               {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
-                <p className="w-full text-xs text-gray-500">Tickets not yet on sale — check back closer to opening.</p>
+                <p className="w-full text-xs text-gray-500">Tickets aren&apos;t on sale yet. Check back closer to opening.</p>
               )}
 
               {/* Lottery/Rush — subdued style, not a revenue link */}
