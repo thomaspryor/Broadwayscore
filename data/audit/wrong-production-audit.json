@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T16:48:45.920Z",
+  "timestamp": "2026-10-02T17:51:37.136Z",
   "stats": {
-    "totalReviews": 45879,
+    "totalReviews": 45880,
     "alreadyFlagged": 18705,
-    "dateGuardCatches": 262,
+    "dateGuardCatches": 263,
     "directorMismatch": 1200,
     "tvFilmSignals": 1331,
-    "londonSignals": 1257,
+    "londonSignals": 1258,
     "offBroadwaySignals": 507,
     "yearMismatch": 105,
-    "noPublishDate": 4133
+    "noPublishDate": 4132
   },
   "findings": [
     {
@@ -21238,6 +21238,19 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 576d before show (October 19th, 2022 vs 2024-05-17)"
+        }
+      ]
+    },
+    {
+      "showId": "my-neighbour-totoro-west-end-2025",
+      "file": "times-uk--quentin-letts.json",
+      "publishDate": "2022-10-22",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/my-neighbour-totoro-review-a-monster-hit-86zjsjqcz",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 573d before show (2022-10-22 vs 2024-05-17)"
         }
       ]
     },
@@ -45603,6 +45616,20 @@
       ]
     },
     {
+      "showId": "hay-fever-west-end-2026",
+      "file": "west-end-wilma--unknown.json",
+      "score": 77,
+      "publishDate": "2026-10-02",
+      "url": "https://westendwilma.com/review-hay-fever-wyndhams-theatre/?utm_source=rss&utm_medium=rss&utm_campaign=review-hay-fever-wyndhams-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
       "showId": "head-over-heels-2018",
       "file": "nytimes--ben-brantley.json",
       "score": 42,
@@ -60342,7 +60369,7 @@
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 93,
+      "score": 95,
       "publishDate": "2026-10-01",
       "url": "https://www.timeout.com/london/news/whos-afraid-of-virginia-woolf-review-sohoplace-gillian-anderson-100126",
       "findings": [
