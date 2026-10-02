@@ -70,6 +70,19 @@ describe('nameFromJunkCriticName', () => {
   });
 });
 
+describe('orderCriticCandidates', () => {
+  const { orderCriticCandidates } = require('../../scripts/backfill-unknown-critics');
+  test('verbatim-name junk goes ahead of open-show Unknowns (no fetch needed)', () => {
+    const e = (dir, criticName) => ({ dir, file: `${dir}.json`, data: { criticName, url: `https://x.com/${dir}` } });
+    const out = orderCriticCandidates([
+      e('open-unknown', 'Unknown'),
+      e('closed-admin', 'Sam - Admin'),
+      e('closed-exeunt', 'Read more articles by Carol Rocamora'),
+    ], { openShowIds: new Set(['open-unknown']) });
+    assert.deepEqual(out.map(x => x.dir), ['closed-exeunt', 'open-unknown', 'closed-admin']);
+  });
+});
+
 function setup(files, show = 'bro-4502-junk-show') {
   const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'bro-4502-junk-'));
   const showDir = path.join(dir, show);
