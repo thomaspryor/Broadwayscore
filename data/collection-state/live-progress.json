@@ -1,19 +1,31 @@
 {
-  "updatedAt": "2026-10-02T07:10:27.260Z",
-  "processed": 2,
-  "failed": 1,
-  "successRate": "66.7%",
+  "updatedAt": "2026-10-02T07:40:29.602Z",
+  "processed": 14,
+  "failed": 6,
+  "successRate": "70.0%",
   "tierBreakdown": {
-    "playwright": 2,
+    "playwright": 8,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 4,
     "scrapingbee": 0,
     "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 2
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 1,
+  "recentActivity": [
+    {
+      "t": "2026-10-02T07:36:55.709Z",
+      "event": "bb-session",
+      "session": "ab8bfa92",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-02T07:36:56.231Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }

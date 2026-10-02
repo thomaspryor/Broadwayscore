@@ -1,27 +1,70 @@
 {
   "processed": [
     "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
-    "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json"
+    "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/ticketsmarter--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/ticketwarehouse--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
   ],
   "failed": [
-    "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json"
+    "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "midnight-off-broadway-2026/broadwayworld--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
-      "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json"
+      "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/ticketwarehouse--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
+    "scrapingdog": [
+      "jena-friedman-motherfucker-off-broadway-2026/ticketsmarter--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/showify--unknown.json"
+    ],
     "scrapingbee": [],
     "brightdata": [],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
+    ]
   },
   "startTime": "2026-10-02T07:09:40.635Z",
-  "lastProcessed": "flamenc-oh-off-west-end-2026/everything-theatre--unknown.json",
-  "log": []
+  "lastProcessed": "midnight-off-broadway-2026/broadwayworld--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-02T07:36:55.709Z",
+      "event": "bb-session",
+      "session": "ab8bfa92",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-02T07:36:56.231Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    }
+  ]
 }
