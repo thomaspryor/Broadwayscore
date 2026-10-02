@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T12:47:52.480Z",
+  "timestamp": "2026-10-02T14:40:09.579Z",
   "stats": {
-    "totalReviews": 45837,
-    "alreadyFlagged": 18700,
+    "totalReviews": 45845,
+    "alreadyFlagged": 18702,
     "dateGuardCatches": 262,
-    "directorMismatch": 1199,
+    "directorMismatch": 1200,
     "tvFilmSignals": 1331,
-    "londonSignals": 1252,
+    "londonSignals": 1257,
     "offBroadwaySignals": 507,
     "yearMismatch": 106,
-    "noPublishDate": 4144
+    "noPublishDate": 4134
   },
   "findings": [
     {
@@ -36133,6 +36133,20 @@
     },
     {
       "showId": "water-for-elephants-tour-2025",
+      "file": "ludwig-van-toronto--paula-citron.json",
+      "score": 87,
+      "publishDate": "2025-10-08T10:39:26-04:00",
+      "url": "https://www.ludwig-van.com/toronto/2026/07/14/scrutiny-mirvishs-water-elephants-marvel-creative-staging-design-direction/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"jessica stone\" from water-for-elephants-2024"
+        }
+      ]
+    },
+    {
+      "showId": "water-for-elephants-tour-2025",
       "file": "revue--marin-heinritz.json",
       "score": 86,
       "publishDate": "2025-10-10",
@@ -45455,9 +45469,37 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
+      "file": "all-that-dazzles-uk--sam-woodward.json",
+      "score": 97,
+      "publishDate": "2026-10-02",
+      "url": "https://www.allthatdazzles.co.uk/post/review-hay-fever-wyndham-s-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "broadwayworld--aliya-al-hassan.json",
+      "score": 58,
+      "publishDate": "2026-10-02",
+      "url": "https://www.broadwayworld.com/article/Review-HAY-FEVER-Starring-Christine-Baranski-Richard-E-Grant-20261002",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
       "file": "guardian--emma-john.json",
-      "score": 60,
-      "publishDate": null,
+      "score": 61,
+      "publishDate": "2026-10-02",
       "url": "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
       "findings": [
         {
@@ -45482,10 +45524,52 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
+      "file": "independent--alice-saville.json",
+      "score": 55,
+      "publishDate": "2026-10-02",
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/hay-fever-review-richard-e-grant-christine-baranski-b3060249.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
       "file": "jonathan-baz--unknown.json",
       "score": 93,
       "publishDate": null,
       "url": "https://www.jonathanbaz.com/2026/10/hay-fever-review.html",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "london-theatre--olivia-rook.json",
+      "score": 72,
+      "publishDate": "2026-10-02",
+      "url": "https://www.londontheatre.co.uk/reviews/hay-fever-review-christine-baranski-richard-e-grant-noel-coward",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "loureviews--louise-penn.json",
+      "score": 85,
+      "publishDate": "2026-10-02",
+      "url": "https://loureviews.blog/2026/10/02/play-review-hay-fever-at-wyndhams-theatre/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
@@ -45512,7 +45596,7 @@
       "showId": "hay-fever-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
       "score": 56,
-      "publishDate": null,
+      "publishDate": "2026-10-02",
       "url": "https://www.timeout.com/london/news/hay-fever-review-richard-e-grant-noel-coward-100126",
       "findings": [
         {
