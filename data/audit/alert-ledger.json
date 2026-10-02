@@ -8316,12 +8316,14 @@
       "disposition": "auto",
       "title": "Scheduled sender delivered MORE THAN ONCE on 2026-09-30: reddit-post-ready",
       "firstSeen": "2026-10-01T20:04:50.804Z",
-      "lastSeen": "2026-10-01T20:04:50.804Z",
+      "lastSeen": "2026-10-02T19:44:08.192Z",
       "lastNotifiedAt": "2026-10-01T20:04:50.804Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": "BRO-4483"
+      "linearIdentifier": "BRO-4483",
+      "incidentOpenedAt": "2026-10-01T20:04:50.804Z",
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-explicit-ratings:whos-afraid-of-virginia-woolf-west-end-2026:guardian": {
       "status": "open",
@@ -8887,6 +8889,19 @@
       "cardId": null,
       "linearIdentifier": null,
       "silentRefires": 1
+    },
+    "scheduled-email-count:2026-10-01": {
+      "status": "open",
+      "disposition": "auto",
+      "title": "Scheduled sender delivered MORE THAN ONCE on 2026-10-01: reddit-post-ready",
+      "firstSeen": "2026-10-02T19:44:08.200Z",
+      "incidentOpenedAt": "2026-10-02T19:44:08.200Z",
+      "lastSeen": "2026-10-02T19:44:08.200Z",
+      "lastNotifiedAt": "2026-10-02T19:44:08.200Z",
+      "lastSurfacedAt": null,
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": "BRO-4526"
     }
   }
 }
