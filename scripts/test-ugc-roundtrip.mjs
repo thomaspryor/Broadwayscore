@@ -25,6 +25,7 @@
 // a PostgREST request, all plain HTTP. Node 18+ has global fetch.
 
 import { runPlanSharesChecks } from './lib/plan-shares-roundtrip.mjs';
+import { checkRedirect } from './lib/auth-redirect-allowlist.mjs';
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -193,6 +194,7 @@ async function main() {
   // allowlist (or Google/Apple aren't enabled), the sign-in popup fails silently.
   // Informational (doesn't fail the run) — surfaces config gaps the round-trip
   // otherwise can't see.
+  const SIGN_IN_CALLBACKS = ['https://broadwayscorecard.com/auth/callback', 'https://demo.broadwayscorecard.com/auth/callback'];
   const projectRef = process.env.SUPABASE_PROJECT_REF || (URL ? new global.URL(URL).hostname.split('.')[0] : '');
   if (process.env.SUPABASE_ACCESS_TOKEN && projectRef) {
     try {
@@ -204,9 +206,11 @@ async function main() {
       const providers = ['google', 'apple'].filter(p => cfg[`external_${p}_enabled`]);
       console.log(`auth config: site_url=${cfg.site_url} | providers=[${providers.join(',') || 'NONE'}]`);
       console.log(`auth redirect allowlist: ${allow || '(empty)'}`);
-      for (const host of ['broadwayscorecard.com', 'demo.broadwayscorecard.com']) {
-        const ok = allow.includes(host);
-        console.log(`  ${ok ? '✓' : '⚠'} ${host} ${ok ? 'in' : 'NOT in'} redirect allowlist${ok ? '' : ' → OAuth sign-in will fail on this domain'}`);
+      // The app sends `${window.location.origin}/auth/callback` (AuthContext).
+      for (const callback of SIGN_IN_CALLBACKS) {
+        const r = checkRedirect(callback, { siteUrl: cfg.site_url, allowList: allow });
+        const how = r.via === 'site_url' ? 'same host as site_url' : r.entry;
+        console.log(`  ${r.allowed ? '✓' : '⚠'} ${callback} ${r.allowed ? `allowed (${how})` : 'NOT allowed → sign-in on this domain lands on site_url instead'}`);
       }
       if (!providers.includes('google') || !providers.includes('apple')) {
         console.log('  ⚠ Google and/or Apple OAuth not enabled — the only sign-in methods.');
@@ -219,7 +223,7 @@ async function main() {
     // This is the automatable slice of "does the Google/Apple button work" — it
     // exercises the provider-side client config without completing a real login
     // (which needs a human credential + defeating bot-detection). Informational.
-    const redirectTo = 'https://demo.broadwayscorecard.com/auth/callback';
+    for (const redirectTo of SIGN_IN_CALLBACKS)
     for (const [p, okHost] of [['google', 'accounts.google.com'], ['apple', 'appleid.apple.com']]) {
       try {
         const authUrl = `${URL}/auth/v1/authorize?provider=${p}&redirect_to=${encodeURIComponent(redirectTo)}`;
@@ -229,7 +233,7 @@ async function main() {
         const reachedProvider = finalUrl.includes(okHost);
         const err = /redirect_uri_mismatch|invalid_client|unauthorized_client|error=|access blocked|400\. that.?s an error/.test(finalUrl + ' ' + body);
         const ok = reachedProvider && !err;
-        console.log(`  ${ok ? '✓' : '⚠'} ${p} OAuth: ${ok ? `reaches ${okHost} (client config accepted)` : `did NOT cleanly reach ${okHost} → ${finalUrl.slice(0, 90)}`}`);
+        console.log(`  ${ok ? '✓' : '⚠'} ${p} OAuth via ${new global.URL(redirectTo).hostname}: ${ok ? `reaches ${okHost} (client config accepted)` : `did NOT cleanly reach ${okHost} → ${finalUrl.slice(0, 90)}`}`);
       } catch (e) { console.log(`  (${p} OAuth probe skipped: ${e.message})`); }
     }
     console.log('');
