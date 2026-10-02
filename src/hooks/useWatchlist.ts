@@ -1,7 +1,7 @@
 'use client';
 
-import { useState, useCallback, useEffect } from 'react';
-import { track } from '@vercel/analytics';
+import { useState, useCallback, useEffect, useRef } from 'react';
+import { trackUgc } from '@/lib/ugc-analytics';
 import { getSupabaseClient } from '@/lib/supabase';
 import { supabaseRestInsert, supabaseRestDelete, supabaseRestUpdate } from '@/lib/supabase-rest';
 import type { WatchlistEntry } from '@/types/user';
@@ -56,6 +56,8 @@ function invalidateWatchlistCache(): void {
 
 export function useWatchlist(userId: string | null) {
   const [watchlist, setWatchlist] = useState<WatchlistEntry[]>([]);
+  const watchlistRef = useRef(watchlist);
+  watchlistRef.current = watchlist;
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -116,7 +118,7 @@ export function useWatchlist(userId: string | null) {
       const { error: err } = await supabaseRestInsert('watchlist', { user_id: userId, show_id: showId });
       if (err) throw new Error(err.message);
 
-      track('watchlist_add', { show_id: showId });
+      trackUgc('watchlist_add', { show_id: showId });
 
       // Later fresh mounts must refetch, not read a cache missing this show.
       invalidateWatchlistCache();
@@ -141,7 +143,9 @@ export function useWatchlist(userId: string | null) {
     }
   }, [userId]);
 
-  const removeFromWatchlist = useCallback(async (showId: string): Promise<void> => {
+  // reason 'rated': saving a rating clears the watchlist entry unconditionally,
+  // usually a no-op delete, so only a real removal is counted.
+  const removeFromWatchlist = useCallback(async (showId: string, reason: 'user' | 'rated' = 'user'): Promise<void> => {
     if (!userId) return;
 
     setError(null);
@@ -149,7 +153,9 @@ export function useWatchlist(userId: string | null) {
       const { error: err } = await supabaseRestDelete('watchlist', `user_id=eq.${userId}&show_id=eq.${showId}`);
       if (err) throw new Error(err.message);
 
-      track('watchlist_remove', { show_id: showId });
+      if (reason === 'user' || watchlistRef.current.some(w => w.show_id === showId)) {
+        trackUgc('watchlist_remove', { show_id: showId, reason });
+      }
 
       // Later fresh mounts must refetch, not read a cache still holding this show.
       invalidateWatchlistCache();

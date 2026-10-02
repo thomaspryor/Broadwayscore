@@ -1,4 +1,5 @@
 import { createClient, type SupabaseClient } from '@supabase/supabase-js';
+import { instrumentedFetch } from './ugc-analytics';
 
 /**
  * Supabase client singleton for browser use.
@@ -53,6 +54,9 @@ export function getSupabaseClient(): SupabaseClient | null {
         detectSessionInUrl: true,
         lock: simpleLock,
       },
+      // Every REST/auth/functions call reports its failures (ugc-analytics.ts),
+      // including the ones a call site handles quietly.
+      global: { fetch: instrumentedFetch },
     });
   }
 

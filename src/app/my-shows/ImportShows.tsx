@@ -3,6 +3,7 @@
 import { useState, useCallback, useMemo, useRef } from 'react';
 import type Fuse from 'fuse.js';
 import { supabaseRestInsert } from '@/lib/supabase-rest';
+import { trackUgc } from '@/lib/ugc-analytics';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import {
   acquireFromMezzanine,
@@ -353,6 +354,11 @@ export default function ImportShows({
     setEntries(matched);
     setNotices(acquired.notices);
     setStep('preview');
+    trackUgc('import_previewed', {
+      source: sourceId,
+      rows: matched.length,
+      unmatched: unmatchedRows.length,
+    });
 
     // Fire-and-forget: don't await, don't block the preview step on this.
     // Mock mode (Playwright QA) must not feed fixture titles to the nightly
@@ -380,7 +386,9 @@ export default function ImportShows({
     try {
       await matchAndPreview(await acquireFromMezzanine(file), 'mezzanine');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to parse file');
+      const message = err instanceof Error ? err.message : 'Failed to parse file';
+      trackUgc('import_failed', { source: 'mezzanine', error_message: message.slice(0, 200) });
+      setError(message);
       setStep('source');
     }
   }, [matchAndPreview]);
@@ -391,7 +399,9 @@ export default function ImportShows({
     try {
       await matchAndPreview(await acquireFromShowScore(profileInput), 'show-score');
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Import failed — try again.');
+      const message = err instanceof Error ? err.message : 'Import failed — try again.';
+      trackUgc('import_failed', { source: 'show-score', error_message: message.slice(0, 200) });
+      setError(message);
       setStep('source');
     }
   }, [matchAndPreview, profileInput]);
@@ -589,8 +599,16 @@ export default function ImportShows({
 
     setImportStats({ imported, skipped, errors });
     setStep('done');
+    trackUgc('import_completed', {
+      source,
+      imported,
+      skipped,
+      errors,
+      ratings_selected: selectedDiary.length - unratedDiary.length,
+      watchlist_selected: allWatchlistEntries.length,
+    });
     if (imported > 0) onImportComplete();
-  }, [selectedDiary, selectedWatchlist, userId, onImportComplete]);
+  }, [selectedDiary, selectedWatchlist, userId, onImportComplete, source]);
 
   // Reset on close
   const handleClose = () => {

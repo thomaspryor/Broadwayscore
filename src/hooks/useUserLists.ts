@@ -11,6 +11,7 @@ import {
   supabaseRestRpc,
 } from '@/lib/supabase-rest';
 import type { UserList, ListItem } from '@/types/user';
+import { trackUgc } from '@/lib/ugc-analytics';
 
 const MAX_LISTS = 50;
 const MAX_ITEMS_PER_LIST = 200;
@@ -125,6 +126,7 @@ export function useUserLists(userId: string | null) {
       if (err) throw new Error(err.message);
       const newList: UserList = { ...(data as UserList), item_count: 0, preview_show_ids: [], all_show_ids: [] };
       setLists(prev => [newList, ...prev]);
+      trackUgc('list_created', { list_id: newList.id, is_ranked: newList.is_ranked, has_description: !!newList.description, list_count: lists.length + 1 });
       return newList;
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to create list';
@@ -154,6 +156,7 @@ export function useUserLists(userId: string | null) {
       setLists(prev => prev.map(l =>
         l.id === listId ? { ...l, ...payload, updated_at: new Date().toISOString() } : l
       ));
+      trackUgc('list_updated', { list_id: listId, fields: Object.keys(payload).sort().join(',') });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to update list';
       setError(msg);
@@ -171,6 +174,7 @@ export function useUserLists(userId: string | null) {
 
       // Optimistic update
       setLists(prev => prev.filter(l => l.id !== listId));
+      trackUgc('list_deleted', { list_id: listId });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to delete list';
       setError(msg);
@@ -221,6 +225,7 @@ export function useUserLists(userId: string | null) {
           updated_at: new Date().toISOString(),
         };
       }));
+      trackUgc('list_item_added', { list_id: listId, show_id: showId, item_count: (list?.item_count || 0) + 1 });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to add to list';
       setError(msg);
@@ -251,6 +256,7 @@ export function useUserLists(userId: string | null) {
         }
         return { ...l, item_count: Math.max(0, (l.item_count || 0) - 1), preview_show_ids: previews, all_show_ids: allIds };
       }));
+      trackUgc('list_item_removed', { list_id: listId, show_id: showId });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to remove from list';
       setError(msg);
@@ -274,6 +280,7 @@ export function useUserLists(userId: string | null) {
       });
 
       if (err) throw new Error(err.message);
+      trackUgc('list_reordered', { list_id: listId, items_moved: itemIds.length });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to reorder list';
       setError(msg);
@@ -290,6 +297,7 @@ export function useUserLists(userId: string | null) {
     // If already public with a slug, just return the URL
     if (list.is_public && list.share_slug) {
       const url = `${window.location.origin}/list/${list.share_slug}`;
+      trackUgc('list_shared', { list_id: listId, was_public: true, item_count: list.item_count || 0 });
       return url;
     }
 
@@ -309,6 +317,7 @@ export function useUserLists(userId: string | null) {
         l.id === listId ? { ...l, is_public: true, share_slug: slug, updated_at: new Date().toISOString() } : l
       ));
 
+      trackUgc('list_shared', { list_id: listId, was_public: false, item_count: list.item_count || 0 });
       return `${window.location.origin}/list/${slug}`;
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to share list';
@@ -338,6 +347,7 @@ export function useUserLists(userId: string | null) {
       setLists(prev => prev.map(l =>
         l.id === listId ? { ...l, ...payload, updated_at: new Date().toISOString() } : l
       ));
+      trackUgc('list_visibility_changed', { list_id: listId, is_public: isPublic });
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to update list visibility';
       setError(msg);

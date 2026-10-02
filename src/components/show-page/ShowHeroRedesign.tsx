@@ -31,7 +31,7 @@
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { track } from '@vercel/analytics';
+import { trackUgc } from '@/lib/ugc-analytics';
 import {
   ScoreBadge,
   ScoreBreakdownBar,
@@ -218,7 +218,7 @@ function Inner({
     if (hasExecutedPending.current) return;
     if (!isAuthenticated && !authLoading) {
       saveDraft(autoRateStars != null ? { rating: autoRateStars } : {});
-      showSignIn('rating');
+      showSignIn('rating', 'show_rate_link');
     } else {
       // Always a FRESH panel (append), seeded with the ?stars= hint — consistent
       // with the rate button. Editing an existing rating is ?edit=1 / the pencil.
@@ -252,7 +252,7 @@ function Inner({
         returnUrl: window.location.pathname,
         timestamp: Date.now(),
       });
-      showSignIn('watchlist');
+      showSignIn('watchlist', 'show_want_to_see');
       return;
     }
     try {
@@ -305,7 +305,7 @@ function Inner({
       // open behind the sign-in modal ('auth-gated'), so cancelling sign-in
       // loses nothing; completing it lets the pending-action effect resume.
       saveDraft(data);
-      showSignIn('rating');
+      showSignIn('rating', 'show_rating_save');
       return 'auth-gated';
     }
     if (data.reviewId) {
@@ -320,7 +320,6 @@ function Inner({
       // PostgREST returns 200 + [] when the filter matched nothing (e.g. the
       // review was deleted in another tab) — that's a failed save, not success.
       if (!updated) throw new Error('This rating no longer exists — it may have been deleted elsewhere.');
-      track('rating_submitted', { show_id: show.id, rating: data.rating, has_review_text: !!data.reviewText, is_edit: true });
       showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     } else {
       const { error } = await supabaseRestInsert('reviews', {
@@ -331,7 +330,6 @@ function Inner({
         date_seen: data.dateSeen || null,
       });
       if (error) throw new Error(error.message);
-      track('rating_submitted', { show_id: show.id, rating: data.rating, has_review_text: !!data.reviewText, is_edit: false });
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
       // Watchlist = shows you WANT to see. Rating a show means you've seen it,
       // so drop any watchlist entry (owner rule 2026-07-12 — replaces the old
@@ -339,12 +337,12 @@ function Inner({
       // itself already saved.
       // Unconditional: isWatchlisted reads this instance's async-loaded state and
       // can be stale on fast deep-link saves; deleting a non-existent row is a
-      // harmless no-op (slight watchlist_remove analytics noise accepted).
-      try { await removeFromWatchlist(show.id); } catch { /* rating saved; watchlist cleanup is best-effort */ }
+      // harmless no-op ('rated' keeps it out of the watchlist_remove count).
+      try { await removeFromWatchlist(show.id, 'rated'); } catch { /* rating saved; watchlist cleanup is best-effort */ }
     }
     await getReviewsForShow(show.id);
     invalidateRatingsCache();
-  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, isWatchlisted, removeFromWatchlist, saveDraft]);
+  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, removeFromWatchlist, saveDraft]);
 
   const handleRateSaved = useCallback(() => {
     setRatePanelOpen(false);
@@ -364,6 +362,7 @@ function Inner({
     if (!editingReview) return;
     try {
       await deleteReview(editingReview.id);
+      trackUgc('rating_deleted', { show_id: show.id, source: 'show_page' });
       showToast?.('Rating deleted.', 'info');
       await getReviewsForShow(show.id);
       invalidateRatingsCache();
@@ -694,6 +693,7 @@ function Inner({
           onSaved={handleRateSaved}
           onCancel={handleCancelRate}
           onDelete={editingReview ? handleDeleteRating : undefined}
+          analytics={{ source: 'show_page', showId: show.id }}
         />
       )}
 

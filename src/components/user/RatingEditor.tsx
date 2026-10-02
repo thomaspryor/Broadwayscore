@@ -6,6 +6,7 @@ import StarRating from './StarRating';
 import { sanitizeRating } from '@/lib/rating';
 import DatePickerButton from './DatePickerButton';
 import { localToday } from '@/lib/date-utils';
+import { trackUgc } from '@/lib/ugc-analytics';
 
 export interface RatingEditorSaveData {
   rating: number;
@@ -41,6 +42,8 @@ interface RatingEditorProps {
   onDelete?: () => void;
   /** Force a presentation; default 'auto' = bottom-sheet on mobile, inline card on desktop. */
   presentation?: 'auto' | 'inline' | 'modal';
+  /** Where the editor was opened from + which show; drives rating_* analytics events. */
+  analytics?: { source: string; showId: string };
 }
 
 const MAX_CHARS = 2000;
@@ -65,6 +68,7 @@ export default function RatingEditor({
   onCancel,
   onDelete,
   presentation = 'auto',
+  analytics,
 }: RatingEditorProps) {
   const today = localToday();
   // Cap only at today. Do NOT cap at the show's closing date: users log return
@@ -122,6 +126,19 @@ export default function RatingEditor({
     return () => mq.removeEventListener('change', onChange);
   }, []);
 
+  // Fire once per open, keyed on the values at mount.
+  const analyticsRef = useRef({ analytics, mode, initialRating });
+  useEffect(() => {
+    const a = analyticsRef.current;
+    if (!a.analytics) return;
+    trackUgc('rating_editor_opened', {
+      show_id: a.analytics.showId,
+      source: a.analytics.source,
+      mode: a.mode,
+      initial_rating: a.initialRating || null,
+    });
+  }, []);
+
   const charsRemaining = MAX_CHARS - reviewText.length;
   const isOverLimit = charsRemaining < 0;
 
@@ -142,13 +159,34 @@ export default function RatingEditor({
         setSaving(false);
         return;
       }
+      if (analytics) {
+        trackUgc('rating_submitted', {
+          show_id: analytics.showId,
+          source: analytics.source,
+          mode,
+          rating: sanitizeRating(rating),
+          has_review_text: !!reviewText.trim(),
+          review_length: reviewText.trim().length,
+          has_date_seen: !!dateSeen,
+          is_edit: !!reviewId,
+        });
+      }
       onSaved();
     } catch (e) {
       // Failed save keeps the editor open with the typed text intact.
-      setError(e instanceof Error && e.message ? e.message : 'Could not save. Please try again.');
+      const message = e instanceof Error && e.message ? e.message : 'Could not save. Please try again.';
+      if (analytics) {
+        trackUgc('rating_save_failed', {
+          show_id: analytics.showId,
+          source: analytics.source,
+          mode,
+          error_message: message.slice(0, 200),
+        });
+      }
+      setError(message);
       setSaving(false);
     }
-  }, [saving, isOverLimit, rating, reviewText, dateSeen, reviewId, onSave, onSaved]);
+  }, [saving, isOverLimit, rating, reviewText, dateSeen, reviewId, onSave, onSaved, analytics, mode]);
 
   const content = (
     <div data-testid="rating-editor" className="overflow-hidden">

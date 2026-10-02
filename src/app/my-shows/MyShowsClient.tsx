@@ -12,6 +12,7 @@ import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import StarRating from '@/components/user/StarRating';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
+import { trackUgc } from '@/lib/ugc-analytics';
 import { stubRowFromCandidate, type MezzanineCandidate } from '@/lib/mezzanine-search';
 import SharedDatePicker from '@/components/user/DatePickerButton';
 import ShowtimePicker from '@/components/user/ShowtimePicker';
@@ -241,15 +242,27 @@ export default function MyShowsClient() {
   // Shared delete handler — deleteReview rethrows on failure (Phase 2), so a
   // bare `await` in an onClick would be an unhandled rejection with no feedback.
   const handleDeleteReviewWithToast = useCallback(async (reviewId: string) => {
+    const showId = reviews.find(r => r.id === reviewId)?.show_id;
     try {
       await effectiveDeleteReview(reviewId);
       invalidateRatingsCache(); // browse-card ★chips must not outlive the rating
+      trackUgc('rating_deleted', { show_id: showId, source: 'my_shows' });
       showToast?.('Rating deleted.', 'info');
     } catch {
       showToast?.('Delete failed — please try again.', 'error');
     }
-  }, [effectiveDeleteReview, showToast]);
+  }, [effectiveDeleteReview, showToast, reviews]);
   const effectiveRemoveFromWatchlist = isMockMode ? mockRemoveFromWatchlist : removeFromWatchlist;
+  // Same rethrow-and-toast shape: a failed remove used to reject unhandled
+  // inside the row's onClick, leaving the row in place with no explanation.
+  const handleRemoveFromWatchlist = useCallback(async (showId: string, successMessage: string) => {
+    try {
+      await effectiveRemoveFromWatchlist(showId);
+      showToast?.(successMessage, 'info');
+    } catch {
+      showToast?.('Could not remove — please try again.', 'error');
+    }
+  }, [effectiveRemoveFromWatchlist, showToast]);
   const effectiveUpdatePlannedDate = isMockMode ? mockUpdatePlannedDate : updatePlannedDate;
   const effectiveUpdatePerformance = isMockMode ? mockUpdatePerformance : updatePerformance;
 
@@ -578,7 +591,7 @@ export default function MyShowsClient() {
                 const btn = e.currentTarget as HTMLButtonElement;
                 btn.disabled = true;
                 setTimeout(() => { btn.disabled = false; }, 4000);
-                signIn('google');
+                signIn('google', 'my_shows');
               }}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-gray-800 font-semibold text-sm rounded-lg hover:bg-gray-100 transition-colors"
             >
@@ -598,7 +611,7 @@ export default function MyShowsClient() {
                 const btn = e.currentTarget as HTMLButtonElement;
                 btn.disabled = true;
                 setTimeout(() => { btn.disabled = false; }, 4000);
-                signIn('apple');
+                signIn('apple', 'my_shows');
               }}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-black text-white font-semibold text-sm rounded-lg border border-white/20 hover:bg-surface-raised transition-colors"
             >
@@ -729,6 +742,7 @@ export default function MyShowsClient() {
           onSave={handleInlineRatingSave}
           onSaved={() => setRatingTarget(null)}
           onCancel={() => setRatingTarget(null)}
+          analytics={{ source: 'my_shows', showId: ratingTarget.id }}
         />
       )}
 
@@ -958,7 +972,7 @@ export default function MyShowsClient() {
                         key={`rate-${entry.id}`}
                         entry={entry}
                         show={showMap[entry.show_id]}
-                        onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed — no rating needed.', 'info'); }}
+                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed — no rating needed.')}
                         onRate={openRatingEditor}
                       />
                     ))}
@@ -1005,7 +1019,7 @@ export default function MyShowsClient() {
                               )}
                             </div>
                             <RowRemoveButton
-                              onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from watchlist.', 'info'); }}
+                              onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from watchlist.')}
                               label={`Remove ${entryTitle} from watchlist`}
                             />
                           </div>
@@ -1031,7 +1045,7 @@ export default function MyShowsClient() {
                             posterUrl={entryShow?.posterUrl ?? undefined}
                             date={entryFormattedDate}
                             title={entryShow?.title || entry.show_id}
-                            onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from watchlist.', 'info'); }}
+                            onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from watchlist.')}
                           />
                         );
                       })}
@@ -1182,7 +1196,7 @@ export default function MyShowsClient() {
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                     onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                    onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                    onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                     onRate={openRatingEditor}
                   />
                 ))}
@@ -1200,7 +1214,7 @@ export default function MyShowsClient() {
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                     onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                    onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                    onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                     onRate={openRatingEditor}
                   />
                 ))}
@@ -1226,7 +1240,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1246,7 +1260,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1276,7 +1290,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1294,7 +1308,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1327,7 +1341,7 @@ export default function MyShowsClient() {
                         key={`wl-rate-${entry.id}`}
                         entry={entry}
                         show={showMap[entry.show_id]}
-                        onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed — no rating needed.', 'info'); }}
+                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed — no rating needed.')}
                         onRate={openRatingEditor}
                       />
                     ))}

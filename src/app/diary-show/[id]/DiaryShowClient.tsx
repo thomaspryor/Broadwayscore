@@ -73,7 +73,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
     if (!isAuthenticated) {
       hasHandledQueryParam.current = true;
       saveDraft({});
-      showSignIn('rating');
+      showSignIn('rating', 'diary');
       return;
     }
     if (wantsEdit && !reviewsSynced) return; // wait for latestReview to resolve
@@ -96,7 +96,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
         throw new Error('Still restoring your session — tap Retry in a moment.');
       }
       saveDraft(data);
-      showSignIn('rating');
+      showSignIn('rating', 'diary');
       return 'auth-gated';
     }
     if (data.reviewId) {
@@ -224,6 +224,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
           onSave={handleSaveReview}
           onSaved={handleRateSaved}
           onCancel={handleCancelRate}
+          analytics={{ source: 'diary_page', showId: show.id }}
         />
       )}
     </div>

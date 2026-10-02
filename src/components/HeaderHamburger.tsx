@@ -18,7 +18,7 @@ export default function HeaderHamburger() {
       isAuthenticated={isAuthenticated}
       profile={profile}
       email={user?.email}
-      onSignIn={() => showSignIn('generic')}
+      onSignIn={() => showSignIn('generic', 'menu')}
       onSignOut={signOut}
     />
   );

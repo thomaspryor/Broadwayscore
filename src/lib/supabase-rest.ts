@@ -8,6 +8,7 @@
  */
 
 import { getSupabaseClient } from './supabase';
+import { instrumentedFetch, reportUgcError } from './ugc-analytics';
 
 const SUPABASE_URL = process.env.NEXT_PUBLIC_SUPABASE_URL || '';
 const ANON_KEY = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || '';
@@ -39,6 +40,14 @@ async function getAccessToken(): Promise<string | null> {
   return session?.access_token ?? null;
 }
 
+const NO_SESSION_MESSAGE = 'No valid session. Please sign in again.';
+
+/** The request never left the browser: the session expired or was revoked. */
+function noSession(op: string): RestResult<never> {
+  reportUgcError(op, { message: NO_SESSION_MESSAGE, code: 'no_session' });
+  return { data: null, error: { message: NO_SESSION_MESSAGE } };
+}
+
 function headers(accessToken: string, prefer?: string): Record<string, string> {
   const h: Record<string, string> = {
     'apikey': ANON_KEY,
@@ -56,10 +65,10 @@ export async function supabaseRestInsert<T = Record<string, unknown>>(
 ): Promise<RestResult<T>> {
   const accessToken = await getAccessToken();
   if (!accessToken) {
-    return { data: null, error: { message: 'No valid session. Please sign in again.' } };
+    return noSession(`insert ${table}`);
   }
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}`, {
+  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}`, {
     method: 'POST',
     headers: headers(accessToken, 'return=representation'),
     body: JSON.stringify(row),
@@ -85,12 +94,12 @@ export async function supabaseRestUpsert(
 ): Promise<RestResult> {
   const accessToken = await getAccessToken();
   if (!accessToken) {
-    return { data: null, error: { message: 'No valid session. Please sign in again.' } };
+    return noSession(`insert ${table}`);
   }
 
   const resolution = opts?.ignoreDuplicates ? 'ignore-duplicates' : 'merge-duplicates';
   const conflictParam = onConflict ? `?on_conflict=${encodeURIComponent(onConflict)}` : '';
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}${conflictParam}`, {
+  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}${conflictParam}`, {
     method: 'POST',
     headers: headers(accessToken, `return=representation,resolution=${resolution}`),
     body: JSON.stringify(row),
@@ -113,10 +122,10 @@ export async function supabaseRestUpdate<T = Record<string, unknown>>(
 ): Promise<RestResult<T>> {
   const accessToken = await getAccessToken();
   if (!accessToken) {
-    return { data: null, error: { message: 'No valid session. Please sign in again.' } };
+    return noSession(`update ${table}`);
   }
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
+  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
     method: 'PATCH',
     headers: headers(accessToken, 'return=representation'),
     body: JSON.stringify(updates),
@@ -138,12 +147,12 @@ export async function supabaseRestDelete(
 ): Promise<RestResult> {
   const accessToken = await getAccessToken();
   if (!accessToken) {
-    return { data: null, error: { message: 'No valid session. Please sign in again.' } };
+    return noSession(`delete ${table}`);
   }
 
   // return=minimal: no caller reads the deleted rows, and representation would
   // force PostgREST to serialize every cascaded row back over the wire.
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
+  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}?${filters}`, {
     method: 'DELETE',
     headers: headers(accessToken, 'return=minimal'),
   });
@@ -163,10 +172,10 @@ export async function supabaseRestRpc<T = unknown>(
 ): Promise<RestResult<T>> {
   const accessToken = await getAccessToken();
   if (!accessToken) {
-    return { data: null, error: { message: 'No valid session. Please sign in again.' } };
+    return noSession(`rpc ${fn}`);
   }
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
+  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/rpc/${fn}`, {
     method: 'POST',
     headers: headers(accessToken),
     body: JSON.stringify(args),
@@ -188,10 +197,10 @@ export async function supabaseRestSelect<T = Record<string, unknown>>(
 ): Promise<RestResult<T[]>> {
   const accessToken = await getAccessToken();
   if (!accessToken) {
-    return { data: null, error: { message: 'No valid session. Please sign in again.' } };
+    return noSession(`select ${table}`);
   }
 
-  const res = await fetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
+  const res = await instrumentedFetch(`${SUPABASE_URL}/rest/v1/${table}?${params}`, {
     method: 'GET',
     headers: headers(accessToken),
   });

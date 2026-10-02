@@ -7,16 +7,31 @@ import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
 import { signInWithAppleSDK } from '@/lib/apple-auth';
+import {
+  trackUgc,
+  reportUgcError,
+  setAnalyticsUser,
+  markSignInStarted,
+  markSignInFailed,
+  markSignInCompleted,
+} from '@/lib/ugc-analytics';
+
+type ModalContext = 'rating' | 'watchlist' | 'generic';
 
 interface AuthContextValue {
   user: { id: string; email: string } | null;
   profile: UserProfile | null;
   loading: boolean;
   isAuthenticated: boolean;
-  signIn: (provider: 'google' | 'apple') => void;
+  /** `source` names the entry point for analytics (e.g. 'my_shows'). */
+  signIn: (provider: 'google' | 'apple', source?: string) => void;
   signOut: () => void;
-  /** Show sign-in modal with context */
-  showSignIn: (context?: 'rating' | 'watchlist' | 'generic') => void;
+  /**
+   * Show sign-in modal. `context` picks the headline; `source` names the
+   * button that asked (e.g. 'show_bookmark') so the funnel shows which entry
+   * points bring sign-ups.
+   */
+  showSignIn: (context?: ModalContext, source?: string) => void;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -33,7 +48,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [loading, setLoading] = useState(true);
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalContext, setModalContext] = useState<'rating' | 'watchlist' | 'generic'>('generic');
+  const [modalContext, setModalContext] = useState<ModalContext>('generic');
+  const [modalSource, setModalSource] = useState<string>('generic');
   const [signInLoading, setSignInLoading] = useState(false);
 
   // Initialize auth state on mount
@@ -46,6 +62,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Get existing session
     client.auth.getSession().then(({ data: { session } }) => {
+      setAnalyticsUser(session?.user?.id ?? null);
       if (session?.user) {
         setUser({ id: session.user.id, email: session.user.email || '' });
         loadProfile(session.user.id);
@@ -61,6 +78,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const { data: { subscription } } = client.auth.onAuthStateChange((event, session) => {
       if (event === 'SIGNED_IN' && session?.user) {
         setUser({ id: session.user.id, email: session.user.email || '' });
+        setAnalyticsUser(session.user.id);
+        // No-op unless a sign-in was started on this device (SIGNED_IN also
+        // fires for restored sessions and tab refocus).
+        markSignInCompleted(session.user);
         // IMPORTANT: Do NOT await Supabase queries here.
         // _notifyAllSubscribers awaits this callback during initialize(),
         // but getSession() awaits initializePromise — creating a deadlock.
@@ -75,6 +96,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         // Pending action execution handled by consuming components
         // (e.g. ShowHeroRedesign reads and clears the pending action)
       } else if (event === 'SIGNED_OUT') {
+        setAnalyticsUser(null);
         setUser(null);
         setProfile(null);
       }
@@ -133,6 +155,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         .single();
 
       if (upsertErr) {
+        // The failed response is already counted by instrumentedFetch; this
+        // names it so a missing-profile bug is findable by op.
         // eslint-disable-next-line no-console
         console.error('[Auth] Profile upsert failed:', upsertErr.message);
       }
@@ -140,14 +164,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setProfile(data as UserProfile);
       }
     } catch (e) {
+      reportUgcError('auth.ensure_profile', { message: e instanceof Error ? e.message : String(e), code: 'exception' });
       // eslint-disable-next-line no-console
       console.error('[Auth] ensureProfile error:', e);
     }
   };
 
-  const signIn = useCallback(async (provider: 'google' | 'apple') => {
+  const signIn = useCallback(async (provider: 'google' | 'apple', source: string = 'unknown') => {
     const client = getSupabaseClient();
     if (!client) return;
+    markSignInStarted(provider, source);
 
     if (provider === 'apple') {
       // Apple: use JS SDK + signInWithIdToken (bypasses GoTrue code exchange)
@@ -179,7 +205,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         clearReturnUrl();
       } catch (err) {
         setSignInLoading(false);
-        // User closed popup or Apple error — not a crash
+        // User closed popup or Apple error — not a crash. The SDK rejects
+        // with { error: 'popup_closed_by_user' } on a plain cancel.
+        const raw = (err as { error?: string })?.error
+          || (err instanceof Error ? err.message : String(err));
+        const cancelled = /popup_closed|cancel/i.test(raw);
+        markSignInFailed('apple', source, cancelled ? 'cancelled' : raw);
+        if (!cancelled) reportUgcError('auth.apple_sign_in', { message: raw, code: 'apple' });
         // eslint-disable-next-line no-console
         console.error('[Auth] Apple sign-in error:', err);
       }
@@ -188,32 +220,48 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     // Google: standard OAuth redirect flow
     saveReturnUrl();
-    client.auth.signInWithOAuth({
+    const { error } = await client.auth.signInWithOAuth({
       provider,
       options: {
         redirectTo: `${window.location.origin}/auth/callback`,
       },
     });
+    if (error) {
+      // Never navigated away: without this the modal spinner runs forever.
+      setSignInLoading(false);
+      markSignInFailed('google', source, error.message);
+      reportUgcError('auth.google_sign_in', { message: error.message, code: 'oauth_start' });
+    }
   }, []);
 
   const signOut = useCallback(async () => {
     const client = getSupabaseClient();
     if (!client) return;
 
+    trackUgc('sign_out');
     await client.auth.signOut();
+    setAnalyticsUser(null);
     setUser(null);
     setProfile(null);
   }, []);
 
-  const showSignIn = useCallback((context: 'rating' | 'watchlist' | 'generic' = 'generic') => {
+  const showSignIn = useCallback((context: ModalContext = 'generic', source?: string) => {
+    const src = source || context;
     setModalContext(context);
+    setModalSource(src);
     setModalOpen(true);
+    trackUgc('sign_in_prompt_shown', { context, source: src });
   }, []);
 
   const handleModalSignIn = useCallback((provider: 'google' | 'apple') => {
     if (provider !== 'apple') setSignInLoading(true);
-    signIn(provider);
-  }, [signIn]);
+    signIn(provider, modalSource);
+  }, [signIn, modalSource]);
+
+  const handleModalClose = useCallback(() => {
+    setModalOpen(false);
+    trackUgc('sign_in_prompt_dismissed', { context: modalContext, source: modalSource });
+  }, [modalContext, modalSource]);
 
   return (
     <AuthContext.Provider
@@ -230,7 +278,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       {children}
       <SignInModal
         isOpen={modalOpen}
-        onClose={() => setModalOpen(false)}
+        onClose={handleModalClose}
         onSignIn={handleModalSignIn}
         context={modalContext}
         loading={signInLoading}
