@@ -714,5 +714,34 @@
       }
     ],
     "queuedAt": "2026-10-02T20:57:38.066Z"
+  },
+  {
+    "conditionKey": "land:land/ugc-soft-launch",
+    "title": "Landing blocked: lint-workflows red on land/ugc-soft-launch",
+    "description": "land.yml did not land land/ugc-soft-launch: the lint-workflows gate went red at 5c1e95cc96. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37064931608",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/ugc-soft-launch"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "5c1e95cc96f4d7d7311f3475ccc1644347d6258e"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37064931608"
+      }
+    ],
+    "queuedAt": "2026-10-02T21:38:36.473Z"
   }
 ]
