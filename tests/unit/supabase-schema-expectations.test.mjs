@@ -101,3 +101,15 @@ test('real web migrations expect exactly the iOS-owned push_tokens policies', ()
     'policy:push_tokens:push_tokens_owner_insert',
   ]);
 });
+
+// apply-migration.yml applies ONE file by name, so a later file that drops the
+// open policy doesn't protect against someone applying an earlier file that
+// creates it. A merge of main on 2026-10-02 silently brought the deleted
+// 20261002_push_tokens_insert_policy.sql back and the test above still passed.
+test('no web migration after the iOS fix re-creates the open push_tokens insert policy', () => {
+  const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../supabase/migrations');
+  const offenders = fs.readdirSync(dir)
+    .filter((f) => f.endsWith('.sql') && f >= '20260812')
+    .filter((f) => /create\s+policy\s+"Anon can insert push tokens"/i.test(fs.readFileSync(path.join(dir, f), 'utf8')));
+  assert.deepEqual(offenders, []);
+});
