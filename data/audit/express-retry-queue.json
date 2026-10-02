@@ -147,7 +147,8 @@
       "market": "west-end",
       "queuedAt": "2026-10-01T15:53:27.631Z",
       "dueAt": "2026-10-02T07:53:27.631Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-02T13:14:59.560Z"
     },
     {
       "kind": "truncated-t1-refetch",
@@ -189,7 +190,10 @@
       "outletIds": [
         "telegraph"
       ],
-      "attempted": false
+      "attempted": true,
+      "skipped": true,
+      "skipReason": "no-truncated-t1",
+      "attemptedAt": "2026-10-02T13:14:59.560Z"
     }
   ]
 }
