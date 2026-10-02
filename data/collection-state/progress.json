@@ -179,12 +179,13 @@
     "hungry-women-off-broadway-2026/melissamaney--unknown.json",
     "rosie-odonnell-common-knowledge-off-broadway-2026/show-score--unknown.json",
     "midnight-at-the-never-get-west-end-2026/theatreboard--unknown.json",
-    "hole-off-west-end-2026/broadwayworld--unknown.json"
+    "hole-off-west-end-2026/broadwayworld--unknown.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/broadwayworld--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
     "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
-    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
     "midnight-off-broadway-2026/broadwayworld--unknown.json",
@@ -321,7 +322,17 @@
     "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
     "grease-the-immersive-movie-musical-off-west-end-2026/thestage--oliver-jones.json",
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
-    "the-gruffalo-west-end-2026/waterstones--unknown.json"
+    "the-gruffalo-west-end-2026/waterstones--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--michael-major.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -429,7 +440,8 @@
       "data/review-texts/purpose-regional-2026/deadline--greg-evans.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -473,7 +485,8 @@
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
       "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json",
       "cleansed-off-west-end-2026/broadwayworld--alexander-cohen.json",
-      "hole-off-west-end-2026/broadwayworld--unknown.json"
+      "hole-off-west-end-2026/broadwayworld--unknown.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [
       "the-score-regional-2026/wsj--charles-isherwood.json",
@@ -526,11 +539,12 @@
       "the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json",
       "the-enormous-crocodile-west-end-2026/broadwayworld--christiana-rose.json",
       "cat-cohen-broad-strokes-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "hungry-women-off-broadway-2026/melissamaney--unknown.json"
+      "hungry-women-off-broadway-2026/melissamaney--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
     ]
   },
   "startTime": "2026-10-02T07:09:40.635Z",
-  "lastProcessed": "hole-off-west-end-2026/broadwayworld--unknown.json",
+  "lastProcessed": "la-boheme-off-broadway-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-10-02T07:36:55.709Z",
@@ -731,6 +745,72 @@
       "event": "bb-session",
       "session": "74cdd4d7",
       "url": "https://www.facebook.com/RoyalNottingham/posts/choose-life-choose-trainspotting-"
+    },
+    {
+      "t": "2026-10-02T12:57:54.931Z",
+      "event": "bb-session",
+      "session": "a4567f15",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-02T12:58:15.366Z",
+      "event": "bb-session",
+      "session": "fccecee8",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-02T12:58:36.718Z",
+      "event": "bb-session",
+      "session": "71eb5a42",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-02T12:58:37.569Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-02T13:03:06.302Z",
+      "event": "bb-session",
+      "session": "38dcbb27",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-10-02T13:03:26.950Z",
+      "event": "bb-session",
+      "session": "dffff2aa",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-10-02T13:03:51.415Z",
+      "event": "bb-session",
+      "session": "45869770",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-02T13:06:19.292Z",
+      "event": "bb-session",
+      "session": "aeb0bf69",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T13:06:20.195Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-02T13:06:38.582Z",
+      "event": "bb-session",
+      "session": "ef8c5241",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T13:06:39.436Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
   ]
 }

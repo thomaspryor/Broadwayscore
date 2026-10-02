@@ -3160,26 +3160,26 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-10-02T12:48:56.727Z",
+      "lastSeen": "2026-10-02T13:05:23.120Z",
       "lastNotifiedAt": "2026-10-02T10:29:46.138Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.138Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
       "disposition": "auto",
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-02T12:48:56.737Z",
+      "lastSeen": "2026-10-02T13:05:23.127Z",
       "lastNotifiedAt": "2026-10-01T23:30:22.081Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.081Z",
       "notifyCount": 15,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 3,
+      "silentRefires": 4,
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z"
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
@@ -3432,13 +3432,13 @@
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
       "incidentOpenedAt": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-02T12:48:56.740Z",
+      "lastSeen": "2026-10-02T13:05:23.131Z",
       "lastNotifiedAt": "2026-10-02T10:29:50.845Z",
       "lastSurfacedAt": "2026-10-02T10:29:50.845Z",
       "notifyCount": 7,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3559,13 +3559,13 @@
       "disposition": "digest",
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-10-02T12:48:56.745Z",
+      "lastSeen": "2026-10-02T13:05:23.134Z",
       "lastNotifiedAt": "2026-10-01T23:31:28.180Z",
       "lastSurfacedAt": "2026-10-01T23:31:28.180Z",
       "notifyCount": 9,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3,
+      "silentRefires": 4,
       "incidentOpenedAt": "2026-09-18T16:10:40.527Z"
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
@@ -3837,13 +3837,13 @@
       "disposition": "digest",
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-10-02T12:48:56.720Z",
+      "lastSeen": "2026-10-02T13:05:23.114Z",
       "lastNotifiedAt": "2026-10-01T23:30:22.064Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.064Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3,
+      "silentRefires": 4,
       "incidentOpenedAt": "2026-09-20T21:49:42.154Z"
     },
     "test-yml:red:Data Validation:4d6399a6": {
@@ -4210,13 +4210,13 @@
       "disposition": "digest",
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-10-02T12:48:56.712Z",
+      "lastSeen": "2026-10-02T13:05:23.107Z",
       "lastNotifiedAt": "2026-10-01T23:30:22.054Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.054Z",
       "notifyCount": 11,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3,
+      "silentRefires": 4,
       "incidentOpenedAt": "2026-09-21T09:41:19.072Z"
     },
     "test-yml:red:E2E Tests:c58b7c79": {
@@ -5789,13 +5789,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-10-02T12:48:56.698Z",
+      "lastSeen": "2026-10-02T13:05:23.089Z",
       "lastNotifiedAt": "2026-10-02T10:29:46.106Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.106Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5854,13 +5854,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-02T12:48:56.704Z",
+      "lastSeen": "2026-10-02T13:05:23.096Z",
       "lastNotifiedAt": "2026-10-02T10:29:46.114Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.114Z",
       "notifyCount": 4,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -7649,13 +7649,14 @@
       "disposition": "digest",
       "title": "Pre-opening publishDate on Who’s Afraid of Virginia Woolf?",
       "firstSeen": "2026-09-30T06:48:24.639Z",
-      "lastSeen": "2026-09-30T23:55:30.809Z",
+      "lastSeen": "2026-10-02T13:05:59.382Z",
       "lastNotifiedAt": "2026-09-30T06:48:24.639Z",
       "lastSurfacedAt": "2026-09-30T06:48:24.639Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4,
+      "incidentOpenedAt": "2026-09-30T06:48:24.639Z"
     },
     "opening-night-revival-unverified-the-standard-of-living-west-end-2026": {
       "status": "open",
@@ -7775,26 +7776,28 @@
       "disposition": "auto",
       "title": "Security exception for decompress ends on 2026-10-15 — extend or fix (GHSA-mp2f-45pm-3cg9)",
       "firstSeen": "2026-09-30T17:32:02.568Z",
-      "lastSeen": "2026-10-01T13:53:34.226Z",
+      "lastSeen": "2026-10-02T13:06:31.414Z",
       "lastNotifiedAt": "2026-09-30T17:32:02.568Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4441",
-      "silentRefires": 1
+      "silentRefires": 2,
+      "incidentOpenedAt": "2026-09-30T17:32:02.568Z"
     },
     "dependency-audit:expiring:GHSA-hrh2-vp3x-79xf": {
       "status": "open",
       "disposition": "auto",
       "title": "Security exception for decompress ends on 2026-10-15 — extend or fix (GHSA-hrh2-vp3x-79xf)",
       "firstSeen": "2026-09-30T17:32:22.098Z",
-      "lastSeen": "2026-10-01T13:53:34.232Z",
+      "lastSeen": "2026-10-02T13:06:31.420Z",
       "lastNotifiedAt": "2026-09-30T17:32:22.098Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4442",
-      "silentRefires": 1
+      "silentRefires": 2,
+      "incidentOpenedAt": "2026-09-30T17:32:22.098Z"
     },
     "land:land/bro-4430-coverage-date-url-slot": {
       "status": "resolved",
@@ -8224,13 +8227,14 @@
       "disposition": "digest",
       "title": "Shipped review too short to verify on Who’s Afraid of Virginia Woolf?",
       "firstSeen": "2026-10-01T14:40:07.513Z",
-      "lastSeen": "2026-10-01T23:57:01.879Z",
+      "lastSeen": "2026-10-02T13:05:59.375Z",
       "lastNotifiedAt": "2026-10-01T14:40:07.513Z",
       "lastSurfacedAt": "2026-10-01T14:40:07.513Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 15
+      "silentRefires": 16,
+      "incidentOpenedAt": "2026-10-01T14:40:07.513Z"
     },
     "broadcast-gate:checklist:the-standard-of-living-west-end-2026,whos-afraid-of-virginia-woolf-west-end-2026": {
       "status": "open",
@@ -8275,13 +8279,14 @@
       "disposition": "digest",
       "title": "Unhandled CV.wrongProduction on Who’s Afraid of Virginia Woolf?",
       "firstSeen": "2026-10-01T19:05:05.866Z",
-      "lastSeen": "2026-10-01T23:57:01.874Z",
+      "lastSeen": "2026-10-02T13:05:59.371Z",
       "lastNotifiedAt": "2026-10-01T19:05:05.866Z",
       "lastSurfacedAt": "2026-10-01T19:05:05.866Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 8
+      "silentRefires": 9,
+      "incidentOpenedAt": "2026-10-01T19:05:05.866Z"
     },
     "opening-night-cv-wrongproduction-unhandled-flamenc-oh-off-west-end-2026": {
       "status": "open",
@@ -8314,13 +8319,14 @@
       "disposition": "digest",
       "title": "Auto-remediation gave up on whos-afraid-of-virginia-woolf-west-end-2026",
       "firstSeen": "2026-10-01T20:10:02.186Z",
-      "lastSeen": "2026-10-01T23:57:01.888Z",
+      "lastSeen": "2026-10-02T13:05:59.388Z",
       "lastNotifiedAt": "2026-10-01T20:10:02.186Z",
       "lastSurfacedAt": "2026-10-01T20:10:02.186Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7,
+      "incidentOpenedAt": "2026-10-01T20:10:02.186Z"
     },
     "land:land/bro-4485-unknown-byline-upgrade": {
       "status": "resolved",
@@ -8673,6 +8679,46 @@
       "lastSeen": "2026-10-02T12:43:42.981Z",
       "lastNotifiedAt": "2026-10-02T12:43:42.981Z",
       "lastSurfacedAt": "2026-10-02T12:43:42.981Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-explicit-ratings:whos-afraid-of-virginia-woolf-west-end-2026:times-uk": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on whos-afraid-of-virginia-woolf-west-end-2026",
+      "firstSeen": "2026-10-02T13:05:59.392Z",
+      "incidentOpenedAt": "2026-10-02T13:05:59.392Z",
+      "lastSeen": "2026-10-02T13:05:59.392Z",
+      "lastNotifiedAt": "2026-10-02T13:05:59.392Z",
+      "lastSurfacedAt": "2026-10-02T13:05:59.392Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "opening-night-remediation-exhausted-explicit-ratings:whos-afraid-of-virginia-woolf-west-end-2026:timeout-london": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Auto-remediation gave up on whos-afraid-of-virginia-woolf-west-end-2026",
+      "firstSeen": "2026-10-02T13:05:59.397Z",
+      "incidentOpenedAt": "2026-10-02T13:05:59.397Z",
+      "lastSeen": "2026-10-02T13:05:59.397Z",
+      "lastNotifiedAt": "2026-10-02T13:05:59.397Z",
+      "lastSurfacedAt": "2026-10-02T13:05:59.397Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "broadcast-gate:checklist:whos-afraid-of-virginia-woolf-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Opening Night Broadcast Blocked — Checklist Errors",
+      "firstSeen": "2026-10-02T13:05:59.515Z",
+      "incidentOpenedAt": "2026-10-02T13:05:59.515Z",
+      "lastSeen": "2026-10-02T13:05:59.515Z",
+      "lastNotifiedAt": "2026-10-02T13:05:59.515Z",
+      "lastSurfacedAt": "2026-10-02T13:05:59.515Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
