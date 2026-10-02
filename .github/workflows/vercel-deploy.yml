@@ -232,6 +232,28 @@ jobs:
             exit 1
           fi
           echo "✓ No demo-only flags leaked to production"
+          echo "DEMO_FLAGS=$DEMO_FLAGS" >> "$GITHUB_ENV"
+
+      - name: Guard — Supabase public env present once accounts are live
+        run: |
+          # Once userAccounts leaves DEMO_FEATURES it is on for every prod visitor, and
+          # the client bundle bakes in these two values at build time. Without them the
+          # sign-in modal and rating editor still render, but every action fails
+          # (BRO-4525). Fail the deploy instead of shipping that.
+          if [[ ",$DEMO_FLAGS," == *",userAccounts,"* ]]; then
+            echo "userAccounts is demo-only; Supabase env not required on prod"
+            exit 0
+          fi
+          MISSING=""
+          for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY; do
+            grep -Eq "^${v}=\"?[^\"[:space:]]" .vercel/.env.production.local 2>/dev/null || MISSING="$MISSING $v"
+          done
+          if [ -n "$MISSING" ]; then
+            echo "::error::userAccounts is live on prod but these are empty in the Vercel production env:$MISSING"
+            echo "::error::Add them in Vercel (Production) or put userAccounts back in DEMO_FEATURES."
+            exit 1
+          fi
+          echo "✓ Supabase public env present for live accounts"
 
       - name: Restore Next.js build + prebuild artifacts cache
         uses: actions/cache/restore@v5
