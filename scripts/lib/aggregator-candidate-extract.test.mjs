@@ -494,6 +494,22 @@ test('wider LORT houses classify regional, by company or hall name (BRO-4509)', 
   assert.equal(classifyVenueMarket('Trinity Church'), 'off-broadway');
   assert.equal(classifyVenueMarket('Laura Pels Theatre'), 'off-broadway');
   assert.equal(classifyVenueMarket('Playhouse 46'), 'off-broadway');
+  assert.equal(classifyVenueMarket('David Geffen Hall'), 'off-broadway');
+  // Hall names resolve to their company
+  assert.equal(feederVenueCity('The Huntington, Huntington Avenue Theatre'), 'Boston, MA');
+  assert.equal(feederVenueCity('Wurtele Thrust Stage'), 'Minneapolis, MN');
+  assert.equal(feederVenueCity('Bagley Wright Theater'), 'Seattle, WA');
+  assert.equal(feederVenueCity('Wyly Theatre'), 'Dallas, TX');
+  assert.equal(feederVenueCity('Goodspeeds Terris Theatre'), 'East Haddam, CT');
+  assert.equal(feederVenueCity('Long Wharf Theatre'), 'New Haven, CT');
+  assert.equal(feederVenueCity('Yale Repertory Theatre'), 'New Haven, CT');
+  assert.equal(feederVenueCity('Geffen Playhouse'), 'Los Angeles, CA');
+  assert.equal(feederVenueCity('Guthrie Theater'), 'Minneapolis, MN');
+  // Denver: company and own halls are regional; the Buell (touring house) is not
+  assert.equal(feederVenueCity('Denver Center Theatre Company'), 'Denver, CO');
+  assert.equal(feederVenueCity('Wolf Theatre, Denver Center for the Performing Arts'), 'Denver, CO');
+  assert.equal(classifyVenueMarket('Buell Theatre, Denver Center for the Performing Arts'), 'off-broadway');
+  assert.equal(classifyVenueMarket('Denver Center for the Performing Arts'), 'off-broadway');
 });
 
 test('UK feeder venues classify as category regional (card #1405, 2026-08-13)', () => {

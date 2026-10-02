@@ -1045,8 +1045,8 @@ const REGIONAL_FEEDER_VENUES = [
   // decide"). The NYT fall 2026 preview listed 12 reviewed runs at houses this
   // table missed, so their roundups classified off-broadway and never promoted.
   // None of these patterns matches any existing non-regional venue in shows.json.
-  { re: /\bhuntington theat(?:re|er)(?: company)?\b|\bcalderwood pavilion\b/i, city: 'Boston, MA', domain: 'huntingtontheatre.org' },
-  { re: /\bgoodspeed\b/i, city: 'East Haddam, CT', domain: 'goodspeed.org' },
+  { re: /\bhuntington (?:avenue )?theat(?:re|er)(?: company)?\b|\bcalderwood pavilion\b/i, city: 'Boston, MA', domain: 'huntingtontheatre.org' },
+  { re: /\bgoodspeeds?\b|\bterris theat(?:re|er)\b/i, city: 'East Haddam, CT', domain: 'goodspeed.org' },
   { re: /\btrinity rep(?:ertory)?\b/i, city: 'Providence, RI', domain: 'trinityrep.com' },
   { re: /\blong wharf\b/i, city: 'New Haven, CT', domain: 'longwharf.org' },
   { re: /\byale rep(?:ertory)?\b/i, city: 'New Haven, CT', domain: 'yalerep.org' },
@@ -1055,10 +1055,13 @@ const REGIONAL_FEEDER_VENUES = [
   { re: /\bpasadena playhouse\b/i, city: 'Pasadena, CA', domain: 'pasadenaplayhouse.org' },
   { re: /\bgeffen playhouse\b/i, city: 'Los Angeles, CA', domain: 'geffenplayhouse.org' },
   { re: /\blaguna playhouse\b/i, city: 'Laguna Beach, CA', domain: 'lagunaplayhouse.com' },
-  { re: /\bguthrie theat(?:re|er)\b/i, city: 'Minneapolis, MN', domain: 'guthrietheater.org' },
-  { re: /\bseattle rep(?:ertory)?\b/i, city: 'Seattle, WA', domain: 'seattlerep.org' },
-  { re: /\bdallas theat(?:re|er) center\b/i, city: 'Dallas, TX', domain: 'dallastheatercenter.org' },
-  { re: /\bdenver center\b/i, city: 'Denver, CO', domain: 'denvercenter.org' },
+  { re: /\bguthrie theat(?:re|er)\b|\bwurtele thrust stage\b/i, city: 'Minneapolis, MN', domain: 'guthrietheater.org' },
+  { re: /\bseattle rep(?:ertory)?\b|\bbagley wright theat(?:re|er)\b/i, city: 'Seattle, WA', domain: 'seattlerep.org' },
+  { re: /\bdallas theat(?:re|er) center\b|\bwyly theat(?:re|er)\b/i, city: 'Dallas, TX', domain: 'dallastheatercenter.org' },
+  // Denver: the company and its own halls only. A bare "Denver Center (for the
+  // Performing Arts)" also covers the Buell, DCPA's touring Broadway house, so a
+  // national-tour stop would wrongly promote as a regional production.
+  { re: /\b(?:denver center|dcpa) theat(?:re|er) company\b|\b(?:wolf|space|singleton|kilstrom) theat(?:re|er)\b.*\b(?:denver|dcpa)\b|\b(?:denver|dcpa)\b.*\b(?:wolf|space|singleton|kilstrom) theat(?:re|er)\b/i, city: 'Denver, CO', domain: 'denvercenter.org' },
   // UK feeder venues (added 2026-08-13, card #1405): Game of Thrones: The Mad
   // King (RSC, world premiere) sat 3 days with reviews-but-no-shows.json-entry
   // because this table was US-only — classifyVenueMarket() fell through to
