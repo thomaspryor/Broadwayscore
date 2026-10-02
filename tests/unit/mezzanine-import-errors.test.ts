@@ -65,11 +65,51 @@ test('rows with non-string fields are skipped or blanked, never passed through',
   assert.deepEqual(entries.map((e) => e.title), ['Cabaret', 'Wicked']);
   assert.deepEqual(notices, ['2 entries in the file had no readable show name and were skipped.']);
   const cabaret = entries[0];
-  assert.equal(cabaret.rating, null, 'a string rating is not a rating');
+  // A numeric string rating and a numeric id were accepted before the type
+  // guards existed; a hand-edited file must not lose them now.
+  assert.equal(cabaret.rating, 5);
+  assert.equal(cabaret.kind, 'diary');
   assert.equal(cabaret.reviewText, null);
   assert.equal(cabaret.venue, null);
-  assert.equal(cabaret.mezzShowId, undefined);
+  assert.equal(cabaret.mezzShowId, '7');
   assert.equal(entries[1].listName, undefined);
+});
+
+test('ratings that are not a usable number import as unrated', async () => {
+  const exportJson = JSON.stringify({
+    data: {
+      diaryEntries: [
+        { show: { name: 'A' }, rating: 'great', date: '2024-05-01' },
+        { show: { name: 'B' }, rating: '  ', date: '2024-05-01' },
+        { show: { name: 'C' }, rating: 0, date: '2024-05-01' },
+        { show: { name: 'D' }, rating: -2, date: '2024-05-01' },
+        { show: { name: 'E' }, rating: '4.5', date: '2024-05-01' },
+        { show: { name: 'F' }, rating: 9, date: '2024-05-01' },
+      ],
+    },
+  });
+  const { entries } = await acquireFromMezzanine(fileOf(exportJson));
+  assert.deepEqual(entries.map((e) => e.rating), [null, null, null, null, 4.5, 5]);
+});
+
+// An unreadable date used to be stored as-is, and because 'garbage' sorts
+// after every real date an unrated row filed itself as a future plan.
+test('an unreadable or impossible date is dropped, so the row stays in the diary', async () => {
+  const exportJson = JSON.stringify({
+    data: {
+      diaryEntries: [
+        { show: { name: 'Garbage' }, rating: null, date: 'garbage' },
+        { show: { name: 'Feb 31' }, rating: null, date: '2026-02-31' },
+        { show: { name: 'Far future' }, rating: null, date: '2999-01-01T00:00:00Z' },
+      ],
+    },
+  });
+  const { entries } = await acquireFromMezzanine(fileOf(exportJson));
+  assert.deepEqual(entries.map((e) => [e.title, e.date, e.kind]), [
+    ['Garbage', null, 'diary'],
+    ['Feb 31', null, 'diary'],
+    ['Far future', '2999-01-01', 'watchlist'],
+  ]);
 });
 
 test('a clean export carries no skip notice, and one bad row reads in the singular', async () => {

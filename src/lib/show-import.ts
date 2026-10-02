@@ -9,6 +9,7 @@
  */
 import { getSupabaseClient } from '@/lib/supabase';
 import { sanitizeRating } from '@/lib/rating';
+import { isIsoCalendarDate, localToday } from '@/lib/date-utils';
 
 /** One seen-show / want-to-see entry, normalized across sources. */
 export interface RawImportEntry {
@@ -231,9 +232,11 @@ export async function acquireFromShowScore(profileInput: string): Promise<Import
 // Mezzanine
 // ---------------------------------------------------------------------------
 
+// Typed as what a file can actually hold, not what a clean export holds: the
+// guards below narrow from these, so a hand-edited value can't slip past them.
 interface MezzEntry {
-  show: { name: string; id: string };
-  rating: number | null;
+  show: { name: string; id?: string | number };
+  rating: number | string | null;
   date: string | null;
   review: string | null;
   production?: { theater?: { name: string; location?: string } };
@@ -247,8 +250,15 @@ interface MezzExport {
     // underlying Mezzanine Show objects as diaryEntries' `show.id`, but
     // unconfirmed against a real list export, so this must degrade to the
     // pre-existing title-only behavior (undefined) rather than assume shape.
-    lists: { name: string; shows: { name: string; id?: string }[] }[];
+    lists: { name: string; shows: { name: string; id?: string | number }[] }[];
   };
+}
+
+/** Mezzanine show ids may be strings or numbers; anything else is ignored. */
+function mezzShowIdOf(id: unknown): { mezzShowId?: string } {
+  if (typeof id === 'string' && id) return { mezzShowId: id };
+  if (typeof id === 'number' && Number.isFinite(id)) return { mezzShowId: String(id) };
+  return {};
 }
 
 /**
@@ -273,7 +283,9 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
   }
 
   const entries: RawImportEntry[] = [];
-  const today = new Date().toISOString().split('T')[0];
+  // The user's own date, not UTC: from ~8pm ET a show planned for tomorrow
+  // would otherwise compare equal to "today" and import as already seen.
+  const today = localToday();
   // Same contract as the Show Score path: a skipped row is counted and told
   // to the user, never dropped silently.
   let skipped = 0;
@@ -283,22 +295,31 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
     // skip them instead of failing the whole import on a TypeError.
     // Check types too: a non-string title would crash title matching later.
     if (typeof entry?.show?.name !== 'string' || !entry.show.name) { skipped++; continue; }
-    const date = typeof entry.date === 'string' && entry.date ? entry.date.split('T')[0] : null;
-    const hasRating = typeof entry.rating === 'number' && entry.rating > 0;
+    // An unreadable date is dropped, never stored or compared: 'garbage' sorts
+    // after any real date, so it would file the row as a future plan.
+    const day = typeof entry.date === 'string' ? entry.date.split('T')[0] : '';
+    const date = isIsoCalendarDate(day) ? day : null;
+    // Real exports carry numbers; a numeric string ("4.5") from a hand-edited
+    // file was accepted before the type guards and still is.
+    const ratingValue = typeof entry.rating === 'string' && entry.rating.trim() ? Number(entry.rating) : entry.rating;
+    // Mezzanine ratings are already 1–5 half-star; sanitize defensively.
+    const rating = typeof ratingValue === 'number' && Number.isFinite(ratingValue) && ratingValue > 0
+      ? sanitizeRating(ratingValue) || null
+      : null;
+    const hasRating = rating !== null;
     const venue = entry.production?.theater?.name;
     // Unrated future entries are plans, not viewings → watchlist.
     const isFuture = date !== null && date > today;
     entries.push({
       title: entry.show.name,
       venue: typeof venue === 'string' && venue ? venue : null,
-      // Mezzanine ratings are already 1–5 half-star; sanitize defensively.
-      rating: hasRating ? sanitizeRating(entry.rating as number) || null : null,
+      rating,
       sourceScore: null,
       date,
       reviewText: typeof entry.review === 'string' && entry.review ? entry.review : null,
       kind: !hasRating && isFuture ? 'watchlist' : 'diary',
       ...(!hasRating && isFuture ? { listName: 'Upcoming', fromDiary: true } : {}),
-      ...(typeof entry.show.id === 'string' && entry.show.id ? { mezzShowId: entry.show.id } : {}),
+      ...mezzShowIdOf(entry.show.id),
     });
   }
 
@@ -315,7 +336,7 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
         reviewText: null,
         kind: 'watchlist',
         listName,
-        ...(typeof show.id === 'string' && show.id ? { mezzShowId: show.id } : {}),
+        ...mezzShowIdOf(show.id),
       });
     }
   }
