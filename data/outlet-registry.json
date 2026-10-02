@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-02T22:55:50.082Z",
+    "lastUpdated": "2026-10-02T23:04:08.671Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11706,6 +11706,14 @@
         "chicagoonstage"
       ],
       "domain": "chicagoonstage.com"
+    },
+    "wernerstheatrereviews": {
+      "displayName": "Wernerstheatrereviews",
+      "tier": 3,
+      "aliases": [
+        "wernerstheatrereviews"
+      ],
+      "domain": "wernerstheatrereviews.wordpress.com"
     }
   },
   "_aliasIndex": {
