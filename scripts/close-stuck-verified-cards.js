@@ -15,7 +15,7 @@
  * Closes through linear-brain.js, so the Done gate re-runs the check on a
  * fresh origin/main checkout. Exit 0 on success (including nothing to do and
  * a stale audit), 3 when Linear or GitHub could not be read.
- * Kill switch: STUCK_CARD_CLOSER_KILL_SWITCH=1.
+ * Kill switch: STUCK_CARD_CLOSER_KILL_SWITCH=1 (or true).
  */
 
 'use strict';
@@ -75,8 +75,8 @@ function apiCommitsTouching() {
 
 async function main(argv = process.argv.slice(2), deps = {}) {
   if (hasHelpFlag(argv)) { console.log(USAGE); return 0; }
-  if (process.env.STUCK_CARD_CLOSER_KILL_SWITCH === '1') {
-    console.log('[close-stuck-verified-cards] STUCK_CARD_CLOSER_KILL_SWITCH=1, skipping');
+  if (['1', 'true'].includes(process.env.STUCK_CARD_CLOSER_KILL_SWITCH)) {
+    console.log('[close-stuck-verified-cards] STUCK_CARD_CLOSER_KILL_SWITCH set, skipping');
     return 0;
   }
   const apply = argv.includes('--apply');
