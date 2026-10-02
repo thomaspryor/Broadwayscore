@@ -51,6 +51,7 @@ const normalization = require('./lib/review-normalization');
 const { extractAuthorFromHtml, isValidAuthorName, cleanAuthorName } = require('./lib/content-quality');
 const { resolveOutletFromUrl, getOutletDisplayName } = require('./lib/review-normalization');
 const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
+const { isJunkCriticName, nameFromJunkCriticName } = require('./lib/byline-recovery');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
@@ -77,6 +78,7 @@ const REJECT_NAMES = new Set([
 
 function isRejectName(name) {
   if (!name || name.length < 4) return true;
+  if (isJunkCriticName(name)) return true;
   if (REJECT_NAMES.has(name.toLowerCase())) return true;
   if (/^(the |a |an )/i.test(name) && !name.includes(' ')) return true;
   if (name.includes(',') && name.split(',').length > 2) return true;
@@ -120,7 +122,10 @@ function scanReviewFiles() {
           unknownOutlets.push(entry);
         }
 
-        if ((!data.criticName || data.criticName === 'Unknown') && data.url) {
+        // BRO-4502: a junk byline ("Read more articles by X", "Sam - Admin",
+        // "nick730") is as unnamed as Unknown; Phase B re-reads it through the
+        // same guarded applyPageByline path.
+        if ((!data.criticName || data.criticName === 'Unknown' || isJunkCriticName(data.criticName)) && data.url) {
           unknownCritics.push(entry);
         }
       } catch {}
@@ -339,7 +344,7 @@ async function phaseB(unknownCritics) {
   const { extractArticleTextFromUrl } = require('./lib/article-extractor');
   const ordered = orderCriticCandidates(unknownCritics, { openShowIds: loadOpenShowIds() });
   const toProcess = limit ? ordered.slice(0, limit) : ordered;
-  console.log(`Found ${unknownCritics.length} files with unknown critic, ${ordered.length} due (not flagged, not tried in ${CRITIC_RETRY_DAYS}d), processing ${toProcess.length}`);
+  console.log(`Found ${unknownCritics.length} files with unknown or junk critic, ${ordered.length} due (not flagged, not tried in ${CRITIC_RETRY_DAYS}d), processing ${toProcess.length}`);
 
   const counts = { applied: 0, refused: 0, noAuthor: 0, fetchError: 0, skippedHttp: 0 };
   const refusals = {};
@@ -371,6 +376,13 @@ async function phaseB(unknownCritics) {
       stampAttempt(u, `refused:${res.reason}`);
       if (counts.refused <= 20) console.log(`  [${i + 1}] REFUSED ${res.reason}: ${u.dir}/${u.file} ← "${critic}"`);
     };
+
+    // Strategy 0 (BRO-4502): the junk byline carries the real name verbatim
+    // ("Read more articles by Carol Rocamora"). No fetch: the page would only
+    // repeat it, and a refusal here (e.g. a named sibling already exists)
+    // would not change on a refetch.
+    const fromJunk = nameFromJunkCriticName(u.data.criticName);
+    if (fromJunk) { report(tryName(fromJunk, 'junk-byline'), fromJunk, 'junk-byline'); continue; }
 
     // Strategy 1: a byline the collector already read off this page.
     // Strategy 1b: re-run extraction against the stored fullText (BRO-171:

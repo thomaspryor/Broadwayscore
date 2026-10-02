@@ -73,8 +73,16 @@ describe('same-brand-word-across-TLDs base collisions (task #1254 class, BRO-247
   const CROSS_TLD = [
     { base: 'dancemagazine', a: ['https://dancemagazine.com/x', 'dance-magazine'], b: ['https://dancemagazine.co.uk/x', 'dance-informa-uk'] },
     { base: 'independent', a: ['https://independent.com/x', 'santa-barbara-independent'], b: ['https://www.independent.co.uk/x', 'independent'] },
-    { base: 'boston', a: ['https://boston.com/x', 'boston-com'], b: ['https://boston.edgemedianetwork.com/x', 'edge-boston'] },
+    { base: 'donshewey', a: ['https://donshewey.com/x', 'donshewey'], b: ['https://donshewey.substack.com/x', 'another-eye-opens'] },
   ];
+  // BRO-4502: boston.com vs boston.edgemedianetwork.com used to sit here, but
+  // a subdomain's first label is not its brand: the index now keys
+  // boston.edgemedianetwork.com under "edgemedianetwork", so "boston" belongs
+  // to boston.com alone and Edge Boston still resolves by its full host.
+  test('a subdomain host no longer claims its first label as a bare base (boston)', () => {
+    assert.strictEqual(resolveOutletFromUrl('https://boston/x')?.outletId, 'boston-com');
+    assert.strictEqual(resolveOutletFromUrl('https://boston.edgemedianetwork.com/x')?.outletId, 'edge-boston');
+  });
 
   test('the bare brand base resolves to NO outlet (genuinely ambiguous)', () => {
     for (const { base } of CROSS_TLD) {

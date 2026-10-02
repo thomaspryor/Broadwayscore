@@ -125,6 +125,8 @@ function publisherDomainCorrection(data, { ignoreDuplicateOf = false, ignoreReje
   let host;
   try { host = new URL(data.url).hostname.replace(/^www\./, '').toLowerCase(); } catch { return null; }
   if ([...ARCHIVE_HOSTS].some((h) => host === h || host.endsWith('.' + h))) return null;
+  // News portals (AP copy on news.yahoo.com) never name the publisher (BRO-4502).
+  if (require('./review-normalization').isSyndicationPortalHost(host)) return null;
   const { isCrossOutletUrl, resolveOutletFromUrl } = require('./review-normalization');
   if (!isCrossOutletUrl(current, data.url)) return null;
   const owner = resolveOutletFromUrl(data.url);

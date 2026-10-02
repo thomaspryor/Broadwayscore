@@ -66,6 +66,66 @@ function isPlausiblePersonName(name) {
   return true;
 }
 
+// A stored criticName that is page chrome, a CMS account handle, an outlet or
+// venue name, or a truncated/mashed capture rather than a byline (BRO-4502:
+// ~45 reviews on the site showed these). Treated like "Unknown" by
+// backfill-unknown-critics.js Phase B, which re-reads the page through
+// review-file-writer's guarded applyPageByline. STRICT on purpose: a match
+// costs a page fetch, and a pattern that caught a real first-name-only
+// blogger ("Ross") or a co-author byline ("Sara Holdren and Jesse David Fox")
+// would put a real name up for replacement.
+const OUTLET_THEN_PAREN_NAME_RE = /^[^()]*\b(Post|Times|News|Magazine|Journal|Review|Tribune|Herald|Guardian|Telegraph|Daily|Weekly)\s\(([A-Z][a-z]+(?:\s[A-Z][\w.'’-]+)+)\)$/;
+const JUNK_CRITIC_NAME_PATTERNS = [
+  /^read more articles by\s+\S/i,           // Exeunt author-box link text
+  /^view (more posts|my complete)\b/i,      // WordPress / Blogger profile links
+  /^\S+\s+-\s+admin$/i,                     // "Sam - Admin"
+  /admin\d*$/i,                             // "LALadmin", "OperaWireAdmin2"
+  /^[a-z]+\d+$/,                            // account handles: "nick730", "helena6"
+  /^guest author$/i,
+  /^(national theatre|york magazine|london theatre direct)$/i,
+  /\s[Tt]heat(re|er)(\s+[A-Z]{2})?$/,       // venue names: "Morris Theatre DC", "J. Friedman Theatre"
+  /\s(and|on|sitting)$/,                    // cut mid-phrase: "Shanxi Radio and", "Deirdre Donovan on"
+  /\s[A-Z][’']$/,                           // cut mid-surname: "Holly O'"
+  // Outlet label, then the byline in parens: "Huffington Post (Steven Suskin)".
+  // Outlet-first only; name-first "Peter Marks (The Washington Post)" and
+  // "Bee (UK)" are real bylines.
+  OUTLET_THEN_PAREN_NAME_RE,
+  /,\s*([a-z]+\s+)?editor$/i,               // "Laura Hackett, Fiction Editor"
+  /[a-z]{4,}[A-Z][a-z]{4,}/,                // two names run together: "ArgenEdward"
+  /\.\s+special to\b/i,                     // "Matt Windman. Special to AmNewYork"
+];
+
+/**
+ * True when a stored criticName is junk that should be re-read from the page.
+ * @param {*} name
+ * @returns {boolean}
+ */
+function isJunkCriticName(name) {
+  if (!name || typeof name !== 'string') return false;
+  const s = name.trim();
+  return JUNK_CRITIC_NAME_PATTERNS.some((re) => re.test(s));
+}
+
+/**
+ * The real name inside a junk criticName when the junk carries it verbatim
+ * ("Read more articles by Carol Rocamora" -> "Carol Rocamora",
+ * "Huffington Post (Steven Suskin)" -> "Steven Suskin"), else null.
+ * Only for prefixes that wrap exactly one author's name; the result must
+ * still pass isPlausiblePersonName.
+ * @param {*} name
+ * @returns {string|null}
+ */
+function nameFromJunkCriticName(name) {
+  if (!name || typeof name !== 'string') return null;
+  const s = name.trim();
+  const prefixed = s.match(/^read more articles by\s+(.+)$/i);
+  // "Huffington Post (Steven Suskin)": outlet label with the byline in parens.
+  const paren = !prefixed && s.match(OUTLET_THEN_PAREN_NAME_RE);
+  const candidate = prefixed ? prefixed[1].trim() : paren ? paren[2].trim() : null;
+  if (!candidate) return null;
+  return isPlausiblePersonName(candidate) ? candidate : null;
+}
+
 /**
  * Given the critic names found on the SAME-URL sibling files of an "Unknown"
  * review, return the single recoverable name — or null when there is no
@@ -351,6 +411,9 @@ function resolveCriticName(normalizedCriticName, recoveredName) {
 
 module.exports = {
   isPlausiblePersonName,
+  isJunkCriticName,
+  nameFromJunkCriticName,
+  JUNK_CRITIC_NAME_PATTERNS,
   pickRecoveredName,
   recoverBylineForEntry,
   resolveCriticName,

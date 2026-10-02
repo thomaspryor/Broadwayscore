@@ -635,6 +635,7 @@ tests/unit/is-test-email.test.mjs
 tests/unit/isr-config.test.mjs
 tests/unit/json-conflict-marker.test.mjs
 tests/unit/json-write-guard.test.mjs
+tests/unit/junk-critic-name-backfill.test.mjs
 tests/unit/landed-but-open-merge-direction.test.mjs
 tests/unit/landed-but-open-reconciler.test.mjs
 tests/unit/late-star-anchor.test.mjs
@@ -877,6 +878,7 @@ tests/unit/review-guards-cv-defer.test.mjs
 tests/unit/review-guards-syndication-dedup.test.mjs
 tests/unit/review-guards.test.mjs
 tests/unit/review-ingestion-gap.test.mjs
+tests/unit/review-normalization-subdomain-host.test.mjs
 tests/unit/review-normalization.maybeUpgradeUrl.test.mjs
 tests/unit/review-output-guard.test.mjs
 tests/unit/review-pullquotes.test.mjs

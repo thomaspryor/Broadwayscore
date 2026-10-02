@@ -1451,7 +1451,11 @@ function buildDomainToOutletIndex() {
       if (!outletData.domain) continue;
       const entry = { outletId, displayName: outletData.displayName };
       const fullHost = outletData.domain.replace(/^www\./, '').toLowerCase();
-      const domainBase = fullHost.split('.')[0];
+      // Identity label of the registrable domain, not the first label: a
+      // subdomain host (newyork.edgemedianetwork.com, news.abs-cbn.com) must
+      // not claim its subdomain word ("newyork", "news") as a bare base
+      // (BRO-4502).
+      const domainBase = registrableDomain(fullHost).split('.')[0];
       _claimDomain(fullHost, entry, domainBase);
       if (!_baseToHosts.has(domainBase)) _baseToHosts.set(domainBase, new Set());
       _baseToHosts.get(domainBase).add(fullHost);
@@ -1473,6 +1477,10 @@ function buildDomainToOutletIndex() {
     for (const [domainBase, hosts] of _baseToHosts) {
       if (hosts.size !== 1) continue; // cross-TLD brand collision — leave ambiguous
       const fullHost = [...hosts][0];
+      // A subdomain outlet (abcnews.go.com, yonkerstribune.typepad.com) is
+      // not the brand of its parent domain: it claims no bare base, or
+      // go.com would resolve to ABC News (BRO-4502 ship-check).
+      if (registrableDomain(fullHost) !== fullHost) continue;
       const winner = _domainToOutletCache.get(fullHost);
       if (winner) _claimDomain(domainBase, winner, domainBase);
     }
@@ -1485,11 +1493,15 @@ function buildDomainToOutletIndex() {
       const entry = { outletId, displayName: outletData.displayName };
       for (const alias of outletData.domainAliases) {
         const aliasHost = alias.replace(/^www\./, '').toLowerCase();
-        const aliasBase = aliasHost.split('.')[0];
+        const aliasBase = registrableDomain(aliasHost).split('.')[0];
         if (!_domainToOutletCache.has(aliasHost)) {
           _domainToOutletCache.set(aliasHost, entry);
         }
-        if (!_domainToOutletCache.has(aliasBase)) {
+        // Same rule as pass 1b: only a registrable alias host claims a bare
+        // base, and never one pass 1a saw on 2+ hosts (left ambiguous).
+        if (registrableDomain(aliasHost) === aliasHost
+            && !(_baseToHosts.has(aliasBase) && _baseToHosts.get(aliasBase).size > 1)
+            && !_domainToOutletCache.has(aliasBase)) {
           _domainToOutletCache.set(aliasBase, entry);
         }
       }
@@ -1497,6 +1509,34 @@ function buildDomainToOutletIndex() {
   }
 
   return _domainToOutletCache;
+}
+
+// News portals whose hosts carry other publishers' copy (wire stories,
+// partner feeds); a URL there never identifies the outlet. Shared with
+// outlet-mismatch-heal.js so the heal and the resolver agree.
+const SYNDICATION_PORTAL_HOSTS = Object.freeze(['yahoo.com', 'msn.com', 'aol.com']);
+function isSyndicationPortalHost(hostname) {
+  const h = String(hostname || '').toLowerCase().replace(/\.+$/, '').replace(/^www\./, '');
+  return SYNDICATION_PORTAL_HOSTS.some((p) => h === p || h.endsWith('.' + p));
+}
+
+/**
+ * The registrable part of a (www-stripped, lowercased) host: the identity
+ * label plus its public suffix. example.com, example.co.uk, and on a blog
+ * platform the publication itself (someone.substack.com). A host equal to
+ * its registrable domain has no subdomain.
+ */
+function registrableDomain(hostname) {
+  const { platformSuffixOf, multipartSuffixOf } = require('./host-suffix-lists');
+  // Unlisted country suffixes of the common shape (com.ph, org.sg) count as
+  // multi-part too, or mb.com.ph would be keyed under the bare base "com".
+  const ccSecondLevel = hostname.match(/\.((?:co|com|org|net|ac|gov|edu)\.[a-z]{2})$/);
+  const suffix = platformSuffixOf(hostname) || multipartSuffixOf(hostname)
+    || (ccSecondLevel && ccSecondLevel[1])
+    || hostname.slice(hostname.lastIndexOf('.') + 1);
+  if (hostname === suffix || !hostname.endsWith('.' + suffix)) return hostname;
+  const head = hostname.slice(0, -(suffix.length + 1));
+  return head.slice(head.lastIndexOf('.') + 1) + '.' + suffix;
 }
 
 /**
@@ -1514,12 +1554,28 @@ function resolveOutletFromUrl(url) {
 
   try {
     const parsedUrl = new URL(url);
-    const hostname = parsedUrl.hostname.replace(/^www\./, '').toLowerCase();
+    const hostname = parsedUrl.hostname.replace(/\.+$/, '').replace(/^www\./, '').toLowerCase();
     const domainBase = hostname.split('.')[0];
+    // News portals republish wire/partner copy under their own domain, so the
+    // host never names the publisher (BRO-4502: AP reviews on news.yahoo.com).
+    if (isSyndicationPortalHost(hostname)) return null;
 
     // Path-aware overrides for shared-domain outlets (before domain lookup)
     // timeout.com hosts both Time Out New York and Time Out London under different paths
     const urlPath = parsedUrl.pathname.toLowerCase();
+    // City subdomains (newyork.timeout.com, london.timeout.com) are the same
+    // Time Out editions as the /newyork and /london paths (BRO-4502: these
+    // used to fall to the bare first-label fallback, so "newyork" hit
+    // newyork.edgemedianetwork.com's bare base and 22 Time Out NY reviews
+    // resolved to Edge New York).
+    if (hostname.endsWith('.timeout.com')) {
+      const city = hostname.slice(0, -'.timeout.com'.length);
+      if (city === 'newyork' || city === 'new-york' || city === 'ny') return { outletId: 'timeout', displayName: 'Time Out New York' };
+      if (city === 'london' || city === 'uk') return { outletId: 'timeout-london', displayName: 'Time Out London' };
+      // Any other city edition (losangeles., hongkong.) or a non-edition host
+      // (media.timeout.com) is neither registered outlet.
+      return null;
+    }
     if (hostname === 'timeout.com' || hostname === 'timeout.co.uk') {
       const edition = timeoutEditionForPath(hostname, urlPath);
       if (edition === 'timeout-london') return { outletId: 'timeout-london', displayName: 'Time Out London' };
@@ -1536,17 +1592,28 @@ function resolveOutletFromUrl(url) {
       return domainIndex.get(hostname);
     }
 
-    // Try domain base without TLD
-    if (domainIndex.has(domainBase)) {
+    // Try parent hosts before any bare-base guess: chicago.example.com ->
+    // example.com. Stops at the registrable domain (never looks up "com" or
+    // "co.uk").
+    const registrable = registrableDomain(hostname);
+    let parent = hostname;
+    while (parent !== registrable && parent.includes('.')) {
+      parent = parent.slice(parent.indexOf('.') + 1);
+      if (domainIndex.has(parent)) return domainIndex.get(parent);
+    }
+
+    // Bare first-label fallback (domain base without TLD) ONLY when the host
+    // has no subdomain, so example.net still finds example.com's outlet. For a
+    // subdomain host the first label is the subdomain, not the brand: BRO-4502
+    // newyork.timeout.com -> "newyork" -> Edge New York's bare base.
+    if (hostname === registrable && domainIndex.has(domainBase)) {
       return domainIndex.get(domainBase);
     }
 
-    // Try stripping common subdomains: blog.example.com -> example.com
+    // Generic subdomains (blog.example.net) get the same bare-base fallback
+    // as their registrable domain, which is what they are an alias of.
     const withoutSub = hostname.replace(/^(blog|news|review|reviews|arts|entertainment)\./i, '');
-    if (withoutSub !== hostname) {
-      if (domainIndex.has(withoutSub)) {
-        return domainIndex.get(withoutSub);
-      }
+    if (withoutSub !== hostname && withoutSub === registrable) {
       const subBase = withoutSub.split('.')[0];
       if (domainIndex.has(subBase)) {
         return domainIndex.get(subBase);
@@ -2583,6 +2650,7 @@ module.exports = {
   outletOwnsUrlDomainIgnoringPath,
   isCrossOutletUrl,
   WIRE_SERVICE_OUTLETS,
+  isSyndicationPortalHost,
   clearDomainCache,
   getOutletAliases,
   isProfileUrl,
