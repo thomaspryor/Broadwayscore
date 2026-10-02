@@ -1,48 +1,5 @@
 [
   {
-    "startedAt": "2026-10-01T16:37:35.257Z",
-    "completedAt": "2026-10-01T16:37:37.386Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "36892972944",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-01T16:40:59.331Z",
-    "completedAt": "2026-10-01T16:41:13.726Z",
-    "totalReviews": 46095,
-    "processed": 0,
-    "skipped": 46089,
-    "errors": 2,
-    "tokensUsed": {
-      "input": 20175,
-      "output": 598,
-      "total": 52761
-    },
-    "costUsd": 0.08324939999999999,
-    "runId": "36893439354",
-    "errorDetails": [
-      {
-        "showId": "jena-friedman-motherfucker-off-broadway-2026",
-        "outletId": "thecomedybureau",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-secret-circus-musical-off-broadway-2026",
-        "outletId": "flopbox",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-01T16:41:15.751Z",
     "completedAt": "2026-10-01T16:41:17.756Z",
     "totalReviews": 0,
@@ -320019,6 +319976,38 @@
     },
     "costUsd": 0,
     "runId": "36945525237",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-02T00:28:38.464Z",
+    "completedAt": "2026-10-02T00:28:41.082Z",
+    "totalReviews": 46195,
+    "processed": 0,
+    "skipped": 46194,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3638,
+      "output": 107,
+      "total": 11014
+    },
+    "costUsd": 0.012920599999999999,
+    "runId": "36945871934",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-02T00:28:43.149Z",
+    "completedAt": "2026-10-02T00:28:45.175Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "36945871934",
     "errorDetails": []
   }
 ]
