@@ -1,26 +1,26 @@
 {
-  "generatedAt": "2026-10-01T17:12:25.835Z",
+  "generatedAt": "2026-10-02T02:12:22.363Z",
   "phase": "done",
   "days": 21,
-  "shows": 70,
+  "shows": 64,
   "sources": {
     "theatermania": {
-      "queries": 43,
-      "listed": 18,
+      "queries": 40,
+      "listed": 17,
       "errors": 0
     },
     "whatsonstage": {
-      "queries": 27,
-      "listed": 9,
+      "queries": 24,
+      "listed": 7,
       "errors": 0
     },
     "nysr": {
-      "queries": 43,
-      "listed": 12,
+      "queries": 40,
+      "listed": 13,
       "errors": 0
     },
     "newyorktheater": {
-      "queries": 43,
+      "queries": 40,
       "listed": 5,
       "errors": 0
     },
@@ -30,13 +30,19 @@
       "errors": 0
     },
     "theatre-reviews": {
-      "queries": 27,
-      "listed": 36,
+      "queries": 24,
+      "listed": 27,
       "errors": 0
     }
   },
   "listingTruncated": false,
-  "listed": 83,
-  "ingested": [],
+  "listed": 72,
+  "ingested": [
+    {
+      "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
+      "url": "https://nystagereview.com/2026/10/01/creation-stories-and-all-the-important-importants-a-magical-drama-about-a-wanna-be-mama/",
+      "ok": true
+    }
+  ],
   "missing": []
 }
