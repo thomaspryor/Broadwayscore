@@ -73,6 +73,8 @@ const MANIFEST_FILES = MANIFESTS.map((m) => path.join(ROOT, m));
 // that as "decay" would turn a success into a red main. Keep this map tiny and
 // only for tests whose correct home is a scheduled recheck, not the test suite.
 const EXEMPT_NEVER_CI = {
+  // BRO-4491 acceptance-command shim; re-imports the CI-registered tests/unit copy.
+  'ccusage-baseline.test.mjs': 'BRO-4491',
   // Deferred-effect acceptance probe (task #695, card 3ae637c5-416f-81bb):
   // asserts a 7-day provider-spend streak, EXPECTED to fail until the ledger
   // accumulates history. Run by autonomous-acceptance-recheck.js at its
