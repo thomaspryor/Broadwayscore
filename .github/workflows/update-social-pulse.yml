@@ -1,11 +1,12 @@
 name: Update Social Pulse
 
+# RETIRED 2026-10-02 (BRO-4507, owner decision after the BRO-4327
+# measurement: 50 card clicks per 53,244 show-page views in 90 days). The
+# show-page card and the /trending pages no longer read this workflow's
+# output, so the weekly schedule is gone. The pipeline is kept intact and
+# dispatchable by hand in case the feature is ever revived; nothing on the
+# site or in the daily digest depends on it running.
 on:
-  schedule:
-    # Monday 06:00 UTC (1 AM EST) — deliberately Monday, NOT Sunday. The
-    # Sunday cron storm (rebuild at 04:00, audience scrapers 12:00–16:00)
-    # could race this workflow. Monday is empty.
-    - cron: '0 6 * * 1'
   workflow_dispatch:
     inputs:
       show:

@@ -73,6 +73,7 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           # alert-router-attempts.jsonl (BRO-3671/BRO-3662): logDispatchAttempt()
           # rewrites this TRACKED file on every dispatch attempt; unstaged, it
           # makes a rebase refuse pre-flight and forces the clobber-prone merge

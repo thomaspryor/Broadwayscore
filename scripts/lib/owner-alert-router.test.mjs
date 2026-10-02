@@ -2018,3 +2018,135 @@ test('patchCondition only touches OPEN conditions and resolveCondition records t
     restore();
   }
 });
+
+// ── BRO-4487: opt-in deferFilingHours — a digest line first, one card only once the incident is old enough ──
+const HOUR = 3600 * 1000;
+const isoAgo = (h) => new Date(Date.now() - h * HOUR).toISOString();
+const DEFER = { disposition: 'auto', deferFilingHours: 72 };
+
+test('currentIncidentOpenedAt / deferredAutoIsDue: incident clock resets on resolve or a 96h gap', () => {
+  const { router, restore } = loadRouterWithFakes();
+  try {
+    const now = Date.now();
+    const nowIso = new Date(now).toISOString();
+    assert.equal(router.INCIDENT_GAP_RESET_HOURS, 96, 'tolerates one missed daily run');
+    assert.equal(router.currentIncidentOpenedAt(undefined, now), nowIso, 'never seen: new incident');
+    assert.equal(router.currentIncidentOpenedAt({ status: 'resolved', incidentOpenedAt: isoAgo(100), lastSeen: isoAgo(1) }, now), nowIso, 'resolved: new incident');
+    assert.equal(router.currentIncidentOpenedAt({ status: 'open', incidentOpenedAt: isoAgo(200), lastSeen: isoAgo(100) }, now), nowIso, 'not seen for 100h: new incident');
+    const opened = isoAgo(80);
+    assert.equal(router.currentIncidentOpenedAt({ status: 'open', incidentOpenedAt: opened, lastSeen: isoAgo(50) }, now), opened, 'a 50h gap (one missed day) keeps the incident');
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1) }, now), true);
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(71), lastSeen: isoAgo(1) }, now), false, 'under 72h');
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(25), lastSeen: isoAgo(1) }, now, 24), true, 'caller-chosen age');
+    assert.equal(router.deferredAutoIsDue({ status: 'open', deferredAuto: true, incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1), linearIdentifier: 'BRO-1' }, now), false, 'already carded');
+    assert.equal(router.deferredAutoIsDue({ status: 'open', incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1) }, now), false, 'not a deferred condition');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: plain auto (no deferFilingHours) still files on the first call, as before', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const a = await router.routeAlert({ conditionKey: 'test:now', title: 't', description: 'd', disposition: 'auto' });
+    const b = await router.routeAlert({ conditionKey: 'test-yml:red:x:1', title: 't', description: 'd', ...DEFER, dispatchAtFiling: { runId: '1' } });
+    assert.equal(a.action, 'auto');
+    assert.equal(b.action, 'auto', 'dispatchAtFiling is never deferred');
+    assert.equal(a.deferred, undefined);
+    assert.equal(calls.createLinearIssue.length, 2);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: an opted-in auto files NO card on first sighting; it queues a digest line and is marked deferred', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    const r = await router.routeAlert({ conditionKey: 'test:defer', title: 'Thing broke', description: 'd', ...DEFER });
+    assert.equal(r.action, 'digest');
+    assert.equal(r.deferred, true);
+    assert.equal(calls.createLinearIssue.length, 0);
+    assert.ok(router.peekDigestQueue().some((l) => l.conditionKey === 'test:defer'));
+    const cond = router.loadLedger().conditions['test:defer'];
+    assert.equal(cond.deferredAuto, true);
+    assert.ok(cond.incidentOpenedAt);
+    const again = await router.routeAlert({ conditionKey: 'test:defer', title: 'Thing broke', description: 'd', ...DEFER });
+    assert.equal(again.action, 'silent');
+    assert.equal(again.deferred, true, 'a silent refire of a waiting condition says it is deferred, not missing a tracker');
+    assert.equal(calls.createLinearIssue.length, 0);
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a deferred condition still open after 72h files exactly one card, even inside the 168h cooldown', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'test:defer-due', title: 'Thing broke', description: 'd', ...DEFER });
+    router.patchCondition('test:defer-due', { incidentOpenedAt: isoAgo(73), lastSeen: isoAgo(1), lastNotifiedAt: isoAgo(24) });
+    const r = await router.routeAlert({ conditionKey: 'test:defer-due', title: 'Thing broke', description: 'd', ...DEFER });
+    assert.equal(r.action, 'auto');
+    assert.equal(r.linearIdentifier, 'BRO-999');
+    assert.equal(calls.createLinearIssue.length, 1);
+    assert.ok(calls.createLinearIssue[0].park, 'the late card is parked, same as before');
+    assert.ok(router.peekDigestQueue().some((l) => /still happening after 3 days/.test(l.title)));
+    const after = await router.routeAlert({ conditionKey: 'test:defer-due', title: 'Thing broke', description: 'd', ...DEFER });
+    assert.equal(after.action, 'silent');
+    assert.equal(after.linearIdentifier, 'BRO-999');
+    assert.equal(calls.createLinearIssue.length, 1, 'no second card');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a deferred condition that went quiet for 96h+ restarts its clock instead of filing', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'test:defer-gap', title: 't', description: 'd', ...DEFER });
+    router.patchCondition('test:defer-gap', { incidentOpenedAt: isoAgo(300), lastSeen: isoAgo(100), lastNotifiedAt: isoAgo(300) });
+    const r = await router.routeAlert({ conditionKey: 'test:defer-gap', title: 't', description: 'd', ...DEFER });
+    assert.equal(calls.createLinearIssue.length, 0);
+    assert.equal(r.deferred, true);
+    const opened = Date.parse(router.loadLedger().conditions['test:defer-gap'].incidentOpenedAt);
+    assert.ok(Date.now() - opened < HOUR, 'incident clock restarted');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: a recurrence of a deferred condition does not inherit the old incident\'s tracker (ship-check P0)', async () => {
+  const { router, calls, restore } = loadRouterWithFakes();
+  try {
+    await router.routeAlert({ conditionKey: 'test:recur', title: 'Recurs', description: 'd', ...DEFER });
+    router.patchCondition('test:recur', { incidentOpenedAt: isoAgo(80), lastSeen: isoAgo(1), lastNotifiedAt: isoAgo(24) });
+    const first = await router.routeAlert({ conditionKey: 'test:recur', title: 'Recurs', description: 'd', ...DEFER });
+    assert.equal(first.linearIdentifier, 'BRO-999');
+    router.resolveCondition('test:recur');
+    // New incident: stale BRO-999 must not make it read as tracked.
+    const reopened = await router.routeAlert({ conditionKey: 'test:recur', title: 'Recurs', description: 'd', ...DEFER });
+    assert.equal(reopened.deferred, true);
+    assert.equal(router.loadLedger().conditions['test:recur'].linearIdentifier, null, 'old tracker dropped for the new incident');
+    router.patchCondition('test:recur', { incidentOpenedAt: isoAgo(80), lastSeen: isoAgo(1), lastNotifiedAt: isoAgo(24) });
+    const due = await router.routeAlert({ conditionKey: 'test:recur', title: 'Recurs', description: 'd', ...DEFER });
+    assert.equal(due.action, 'auto');
+    assert.equal(calls.createLinearIssue.length, 2, 'the recurrence got its own card');
+  } finally {
+    restore();
+  }
+});
+
+test('routeAlert: when a deferred condition comes due, an OPEN issue with the exact same title counts as its tracker', async () => {
+  const { router, calls, restore } = loadRouterWithFakes({
+    linearSearchIssuesImpl: async (term) => (term === 'BSC Daily: Thing' ? { identifier: 'BRO-555', title: 'BSC Daily: Thing' } : null),
+  });
+  try {
+    await router.routeAlert({ conditionKey: 'health-check:Thing', title: 'BSC Daily: Thing', description: 'd', ...DEFER });
+    router.patchCondition('health-check:Thing', { incidentOpenedAt: isoAgo(80), lastSeen: isoAgo(1), lastNotifiedAt: isoAgo(24) });
+    const r = await router.routeAlert({ conditionKey: 'health-check:Thing', title: 'BSC Daily: Thing', description: 'd', ...DEFER });
+    assert.equal(r.action, 'silent');
+    assert.equal(r.linearIdentifier, 'BRO-555');
+    assert.equal(calls.createLinearIssue.length, 0, 'no duplicate of the digest-autofix card');
+  } finally {
+    restore();
+  }
+});

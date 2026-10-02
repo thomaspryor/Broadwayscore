@@ -135,7 +135,7 @@ jobs:
           # same has_changes-gating class as audit-aggregator-gap.yml's
           # digest-queue comment above.
           ALERT_STATE_CHANGED=false
-          if [ -n "$(git status --porcelain data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null)" ]; then
+          if [ -n "$(git status --porcelain data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null)" ]; then
             ALERT_STATE_CHANGED=true
             echo "Changes detected in alert-ledger.json / alert-router-attempts.jsonl (alert cooldown state)"
           fi
@@ -161,7 +161,7 @@ jobs:
           # every-attempt tracked file — unstaged, it makes a rebase refuse
           # pre-flight and forces push-with-retry.sh onto its clobber-prone
           # merge path) must ride this commit too.
-          bash scripts/lib/git-add-existing.sh data/audit/guard-escalation-state.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+          bash scripts/lib/git-add-existing.sh data/audit/guard-escalation-state.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
 
           SUMMARY=$(node -e "const d=require('./data/audit/review-count-drift.json'); const s=d.summary; console.log(s.showsOverThreshold + ' show(s) over suppression threshold, reviews.json ' + (s.reviewsJsonAgeHours ?? '?') + 'h old')")
 

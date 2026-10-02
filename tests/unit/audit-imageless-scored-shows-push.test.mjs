@@ -46,7 +46,9 @@ const workflowPath = path.join(repoRoot, '.github', 'workflows', 'audit-imageles
 const workflowText = fs.readFileSync(workflowPath, 'utf8');
 
 const LEDGER_FILE = 'data/audit/imageless-scored-shows.json';
-const TELEMETRY_FILES = ['data/audit/alert-ledger.json', 'data/audit/alert-router-attempts.jsonl'];
+// alert-digest-queue.json joined in BRO-4487: every routeAlert caller can
+// queue a digest line, so alert-ledger-commit-check.js now requires it too.
+const TELEMETRY_FILES = ['data/audit/alert-ledger.json', 'data/audit/alert-digest-queue.json', 'data/audit/alert-router-attempts.jsonl'];
 const ALL_STAGED = [LEDGER_FILE, ...TELEMETRY_FILES];
 
 test('registry: imageless-scored-shows.json is apiFallbackSafe with the required provenance fields', () => {

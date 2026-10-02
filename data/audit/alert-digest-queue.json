@@ -849,5 +849,63 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-02T02:08:57.154Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4286-mun0u1wb",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-4286-mun0u1wb",
+    "description": "land.yml did not land land/job/linear-BRO-4286-mun0u1wb: the rebase gate went red at cada578e9c. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36961114508",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4286-mun0u1wb"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "cada578e9cf860b984b0046de26350b199cfedf3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36961114508"
+      }
+    ],
+    "queuedAt": "2026-10-02T03:43:24.624Z"
+  },
+  {
+    "conditionKey": "land:land/shows-starting-soon-move-up",
+    "title": "Landing blocked: resolve red on land/shows-starting-soon-move-up",
+    "description": "land.yml did not land land/shows-starting-soon-move-up: the resolve gate went red at 33ecab9521. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/shows-starting-soon-move-up\" is neither a local branch nor on origin (attempts 0, 0.7s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36960942295",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/shows-starting-soon-move-up"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "33ecab9521f26d023c91503bc465bfb2bad64bea"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36960942295"
+      }
+    ],
+    "queuedAt": "2026-10-02T04:06:41.495Z"
   }
 ]

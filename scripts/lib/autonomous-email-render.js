@@ -258,8 +258,6 @@ const PLAIN_HEALTH = [
   [/^Data: tour automation stopped reporting/, () => 'A national-tour job has stopped running'],
   [/^Data: running-tour discovery failed/, () => 'Finding running national tours stopped working'],
   [/^Deploy: production freshness/, () => 'Site updates not reaching the live site'],
-  // health-check.js: stale files are hidden from show pages + /trending.
-  [/^Sync: social-pulse per-show freshness/, () => 'Social buzz hidden on some show pages (out of date)'],
   [/^Quality: outlet domain moves/, () => 'A review outlet moved to a new web address'],
   [/^Data quality: cross-outlet attribution drift/, () => 'Some reviews may be credited to the wrong outlet'],
   [/^Data quality: cv-wrongproduction lifetime sweep/, () => 'A review may belong to a different production'],
@@ -343,6 +341,9 @@ const AUTOFIX_STATE_LABEL = {
   'card-filed': ['\u23f3', 'tracker filed \u2014 dispatches on the next automated pass'],
   'card-failed': ['\u26a0\ufe0f', 'tracker filing FAILED \u2014 nothing is working on this yet; retries tomorrow'],
   'acknowledged': ['\u2139\ufe0f', 'already tracked with a known resolve-by date \u2014 no new card needed'],
+  // BRO-4487: first seen under 3 days ago. Most of these clear on their own
+  // (88 of 154 resolved alert conditions did within 3 days), so no card yet.
+  'watching': ['\u{1f440}', 'being watched \u2014 a fix card is filed if it is still here after 3 days'],
   // Attempt-memory (task #843): same fixed content failed twice unchanged —
   // never redispatched blind, needs a human look at the card itself.
   'parked': ['\u23f8\ufe0f', 'kept failing the same way \u2014 parked, needs a manual look'],
@@ -544,8 +545,8 @@ function renderHealthDigestBlock(health, autofixRows = null, loopDeadMessageOver
 //
 // Honesty rules (adversarial review of the first cut):
 //   - Visitor WARNINGS are shown with their plain description too; some of
-//     them hide content from visitors (stale social buzz is hidden from show
-//     pages and /trending). A warning-only day is "mostly OK", never "OK".
+//     them hide content from visitors (e.g. a stale data file whose consumer
+//     has a staleness guard). A warning-only day is "mostly OK", never "OK".
 //   - Any "being fixed" claim is per ROW, from that row's verified execution
 //     state (same vocabulary as AUTOFIX_STATE_LABEL above): only a
 //     liveness-checked 'in-progress' row may be called "being worked on"; a
@@ -561,6 +562,7 @@ const OWNER_FIX_STATUS = {
   'card-failed': 'not being fixed automatically yet',
   'parked': 'automatic fixes kept failing; not being fixed automatically',
   'no-live-session': 'fix attempt not confirmed (no live session found)',
+  'watching': 'being watched; a fix is queued if it is still here after 3 days',
 };
 
 function findAutofixRow(row, autofixRows) {

@@ -73,7 +73,7 @@ jobs:
           [ "$DRY_RUN" = "true" ] && exit 0
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          for f in data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl; do
+          for f in data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl; do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
           if git diff --staged --quiet; then

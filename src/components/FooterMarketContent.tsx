@@ -47,7 +47,6 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
             <h4 className="text-sm font-semibold text-white uppercase tracking-wide mb-3">By Audience</h4>
             <ul className="space-y-2 text-sm text-gray-400">
               <li><Link href="/browse/west-end-shows-for-kids" className="hover:text-white transition-colors">Shows for Kids</Link></li>
-              <li><Link href="/west-end/trending" className="hover:text-white transition-colors">Trending Shows</Link></li>
               <li><Link href="/west-end/audience-buzz" className="hover:text-white transition-colors">Audience Buzz</Link></li>
               <li><Link href="/west-end/theater" className="hover:text-white transition-colors">West End Theatres</Link></li>
               <li><Link href="/west-end/discount-tickets" className="hover:text-white transition-colors">Discount Tickets</Link></li>
@@ -131,7 +130,6 @@ export default function FooterMarketContent({ totalReviews, featureFlags }: Foot
               {featureFlags.goldLists && <li><Link href="/lists" className="hover:text-white transition-colors">Gold Lists</Link></li>}
               {featureFlags.boxOffice && <li><Link href="/box-office" className="hover:text-white transition-colors">Box Office Scorecard</Link></li>}
               {featureFlags.commercial && <li><Link href="/biz-buzz" className="hover:text-white transition-colors">Commercial Scorecard</Link></li>}
-              <li><Link href="/trending" className="hover:text-white transition-colors">Trending Shows</Link></li>
               <li><Link href="/audience-buzz" className="hover:text-white transition-colors">AudienceGrade</Link></li>
               <li><Link href="/broadway-theaters-map" className="hover:text-white transition-colors">Theater Map</Link></li>
               {marketId === 'off-broadway' && <li><Link href="/off-broadway/theater" className="hover:text-white transition-colors">Off-Broadway Theatres</Link></li>}

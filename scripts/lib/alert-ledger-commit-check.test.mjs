@@ -91,6 +91,7 @@ jobs:
       - name: Commit other stuff
         run: |
           git add data/audit/some-other-file.json
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           git commit -m 'x'
 `;
@@ -108,6 +109,7 @@ jobs:
       - name: Commit
         run: |
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           git commit -m 'x'
 `;
@@ -184,7 +186,7 @@ jobs:
           node -e "require('./scripts/lib/owner-alert-router.js').resolveCondition('x')"
       - name: Commit
         run: |
-          for f in data/audit/foo.json data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl
+          for f in data/audit/foo.json data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl
           do
             [ -e "$f" ] && git add "$f" || echo "skip (absent): $f"
           done
@@ -204,6 +206,7 @@ jobs:
       - name: Commit
         run: |
           # git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           git commit -m 'x'
 `;
@@ -244,6 +247,7 @@ jobs:
           git add \\
             data/video-reviews.json \\
             data/audit/alert-ledger.json \\
+            data/audit/alert-digest-queue.json \\
             data/audit/alert-router-attempts.jsonl \\
             public/images/video-reviews/
 
@@ -265,6 +269,7 @@ jobs:
           bash scripts/lib/git-add-existing.sh \\
             data/audit/some-other-file.json \\
             data/audit/another-file.json \\
+            data/audit/alert-digest-queue.json \\
             data/audit/alert-router-attempts.jsonl
           git commit -m 'x'
 `;
@@ -347,10 +352,11 @@ test('flags a job whose only "staging" is a commented-out git add line', () => {
 
 test('flags routeAlert in one job when the commit happens in a DIFFERENT job', () => {
   const violations = findMissingLedgerCommits(OTHER_JOB_COMMIT_FIXTURE);
-  // Two rules fire, because the alerting job stages NEITHER file: the ledger
-  // and (BRO-3662) the router attempts log. Both must name the alerting job —
-  // the committer job's staging is in the wrong job and must not excuse it.
-  assert.equal(violations.length, 2);
+  // Three rules fire, because the alerting job stages none of the files: the
+  // ledger, (BRO-3662) the router attempts log, and (BRO-4487) the digest
+  // queue. All must name the alerting job — the committer job's staging is in
+  // the wrong job and must not excuse it.
+  assert.equal(violations.length, 3);
   for (const v of violations) assert.match(v, /job 'alerter'/);
   assert.ok(violations.some(v => /alert-ledger\.json/.test(v)));
   assert.ok(violations.some(v => /alert-router-attempts\.jsonl/.test(v)));
@@ -389,6 +395,7 @@ jobs:
       - name: Commit
         run: |
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git commit -m 'x'
 `;
 
@@ -618,7 +625,7 @@ jobs:
           git commit -m 'x'
 `;
   const violations = findMissingLedgerCommits(fixture, ROUTER_CALLER_SCRIPTS);
-  assert.equal(violations.length, 2);
+  assert.equal(violations.length, 3, 'ledger, attempts log and digest queue (BRO-4487)');
   for (const v of violations) assert.match(v, /job 'broken'/);
 });
 
@@ -635,6 +642,7 @@ jobs:
       - name: Commit
         run: |
           git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
           git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           git commit -m 'x'
 `;
@@ -756,7 +764,7 @@ jobs:
           git commit -m 'x'
 `;
   const violations = findMissingLedgerCommits(fixture);
-  assert.equal(violations.length, 2);
+  assert.equal(violations.length, 3, 'ledger, attempts log and digest queue (BRO-4487)');
 });
 
 // Regression (ship-check/Codex adversarial review): `-A`/`.` must be the
@@ -781,5 +789,5 @@ jobs:
           git commit -m 'x'
 `;
   const violations = findMissingLedgerCommits(fixture);
-  assert.equal(violations.length, 2);
+  assert.equal(violations.length, 3, 'ledger, attempts log and digest queue (BRO-4487)');
 });

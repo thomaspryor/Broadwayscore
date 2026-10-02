@@ -85,7 +85,7 @@ Because :00 / :17 / :37 fire every hour, the largest possible distance from a su
 | 06:00 | Mon | process-review-formspree.yml | Formspree review submissions |
 | 06:00 | Mon | check-cutoff-freshness.yml | cutoff freshness check |
 | 06:00 | Mon | audit-aggregator-coverage.yml | aggregator coverage audit |
-| 06:00 | Mon | update-social-pulse.yml | social pulse update |
+| 06:00 | Mon | update-social-pulse.yml | retired 2026-10-02 (BRO-4507): schedule removed, dispatch-only |
 | 06:00 | Mon,Thu | fetch-all-image-formats.yml | image format fetch |
 | 06:00 | Wed | backfill-cast.yml | cast backfill |
 | 06:00 | Wed | update-show-status.yml | weekly deep status pass |

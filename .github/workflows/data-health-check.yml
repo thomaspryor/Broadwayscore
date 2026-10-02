@@ -321,6 +321,17 @@ jobs:
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
         run: node scripts/check-priority-queue-health.js --alert
 
+      # BRO-4487: cancel auto-filed alert cards whose condition has cleared in
+      # the ledger (untouched backlog cards filed for exactly that condition
+      # only; see scripts/lib/resolved-alert-card-sweep.js). Max 25 per run.
+      - name: Cancel alert cards whose condition cleared
+        # lint-allow-swallow: optional board cleanup; a failure only leaves stale cards open for the next run and must not block the health snapshot commit below
+        if: always()
+        continue-on-error: true
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/sweep-resolved-alert-cards.js --apply
+
       # Scraping Cost System v2 truth layer (owner-approved 2026-07-30):
       # daily billing-API reconciliation. continue-on-error because a crash
       # here must not block the health snapshot commit below — a stuck

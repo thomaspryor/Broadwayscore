@@ -170,7 +170,7 @@ jobs:
           # too, every run starts with a cold ledger and the 7-day cooldown
           # never actually holds across runs (same bug class as BRO-2441 /
           # audit-time-bomb-tests.yml, caught there by an adversarial review).
-          git add data/audit/alert-ledger.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json data/audit/alert-router-attempts.jsonl 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No ledger changes"
           else
