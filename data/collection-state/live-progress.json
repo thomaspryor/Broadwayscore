@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-02T19:56:17.189Z",
-  "processed": 20,
-  "failed": 9,
-  "successRate": "69.0%",
+  "updatedAt": "2026-10-02T20:33:28.207Z",
+  "processed": 81,
+  "failed": 26,
+  "successRate": "75.7%",
   "tierBreakdown": {
-    "playwright": 14,
+    "playwright": 45,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 4,
     "directCookies": 0,
-    "scrapingdog": 4,
-    "scrapingbee": 0,
-    "brightdata": 0,
+    "scrapingdog": 14,
+    "scrapingbee": 7,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-02T17:49:26.365Z",
@@ -89,6 +89,35 @@
       "t": "2026-10-02T19:53:00.186Z",
       "event": "bb-cookie-inject",
       "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-02T20:14:41.199Z",
+      "event": "bb-session",
+      "session": "1cf50046",
+      "url": "https://www.wsj.com/articles/the-score-review-brian-cox-is-bach-1a10d858"
+    },
+    {
+      "t": "2026-10-02T20:14:42.034Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-02T20:20:59.360Z",
+      "event": "bb-session",
+      "session": "282d8b90",
+      "url": "https://newspaper.dailymail.com/edition/showbiz/theatre/472292/nicely-ripped-jos"
+    },
+    {
+      "t": "2026-10-02T20:30:01.385Z",
+      "event": "bb-session",
+      "session": "60257315",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-02T20:30:11.464Z",
+      "event": "bb-session",
+      "session": "12657c76",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
     }
   ]
 }
