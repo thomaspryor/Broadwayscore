@@ -296,6 +296,10 @@ const CENSUS_JUNK_DOMAINS = new Set([
   'nycitycenter.queue-it.net', 'click.icptrack.com', 'r20.rs6.net', 'us.cisionone.cision.com',
   'pr-optout.com', 'da.feedsportal.com', 'terripaddock.com', 'everythingimmersive.com',
   'localwineevents.com', 'broadwaystars.com', 'paddingtonthemusical.lnk.to',
+  // BRO-4455 (creation stories census gap): ticket resellers, event listings and the
+  // LCT3 press-release PR firm that the SERP census counted as 'uncovered reviews'.
+  'topstartickets.com', 'ticketsales.com', 'tennesseetickets.com', 'viagogo.com', 'viagogo.dk',
+  'nyc-shows.brooklynvegan.com', 'omdkc.com',
   // venue / production marketing pages
   'nationaltheatre.org', 'signaturetheatre.org', 'noelcowardtheatre.co.uk', 'bushtheatre.co.uk',
   'atctheatre.com', 'lyric.co.uk', 'parktheatre.co.uk', 'southwarkplayhouse.co.uk',
