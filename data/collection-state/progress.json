@@ -106,12 +106,14 @@
     "oh-mary-2024/cititour--unknown.json",
     "oh-mary-2024/one-minute-critic--matthew-wexler.json",
     "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
-    "hadestown-west-end-2024/columbus-dispatch--unknown.json"
+    "hadestown-west-end-2024/columbus-dispatch--unknown.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/broadwayworld--unknown.json",
+    "degenerates-off-broadway-2026/thewrap--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
     "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
-    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
     "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
     "midnight-off-broadway-2026/broadwayworld--unknown.json",
@@ -171,7 +173,17 @@
     "the-devil-wears-prada-west-end-2024/city-am--adam-bloodworth.json",
     "oh-mary-2024/queerty--jude-cramer.json",
     "hadestown-west-end-2024/deadline--unknown.json",
-    "hadestown-west-end-2024/ew--unknown.json"
+    "hadestown-west-end-2024/ew--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--michael-major.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -231,7 +243,8 @@
       "data/review-texts/purpose-regional-2026/deadline--greg-evans.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--unknown.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -262,12 +275,15 @@
       "heated-rivalry-the-unauthorized-musical-parody-off-broadway-2026/theatrely--emily-wyrwa.json",
       "oh-mary-2024/broadwaynews--brittani-samuel.json",
       "oh-mary-2024/cititour--unknown.json",
-      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json"
+      "the-great-gatsby-2024/broadwaynews--brittani-samuel.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/broadwayworld--unknown.json"
     ],
     "brightdata": [
       "the-score-regional-2026/wsj--charles-isherwood.json",
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json",
-      "electra-persona-west-end-2026/vocaleyes--unknown.json"
+      "electra-persona-west-end-2026/vocaleyes--unknown.json",
+      "degenerates-off-broadway-2026/thewrap--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -302,7 +318,7 @@
     ]
   },
   "startTime": "2026-10-02T07:09:40.635Z",
-  "lastProcessed": "hadestown-west-end-2024/columbus-dispatch--unknown.json",
+  "lastProcessed": "la-boheme-off-broadway-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-10-02T07:36:55.709Z",
@@ -445,6 +461,49 @@
       "t": "2026-10-02T11:37:02.370Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-02T11:48:17.855Z",
+      "event": "bb-session",
+      "session": "c819463f",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-02T11:48:40.414Z",
+      "event": "bb-session",
+      "session": "9d638059",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-02T11:49:22.348Z",
+      "event": "bb-session",
+      "session": "25a870a0",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-02T11:49:22.723Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-02T11:54:12.114Z",
+      "event": "bb-session",
+      "session": "f5a6cab3",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-02T11:56:17.189Z",
+      "event": "bb-session",
+      "session": "d65bd361",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T11:56:17.589Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
+  ],
+  "recoveredAfterFailure": [
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json"
   ]
 }
