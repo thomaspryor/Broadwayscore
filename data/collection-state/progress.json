@@ -816,7 +816,11 @@
     "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
     "a-christmas-carol-2019/broadwayworld--michael-dale.json",
     "linda-vista-2019/theater-news-online--joe-dziemianowicz.json",
-    "the-great-society-2019/theater-news-online--jeremy-gerard.json"
+    "the-great-society-2019/theater-news-online--jeremy-gerard.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "cosi-fan-tutte-off-broadway-2026/independent--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1350,7 +1354,7 @@
     ]
   },
   "startTime": "2026-10-01T17:22:24.281Z",
-  "lastProcessed": "creation-stories-and-all-the-important-importants-off-broadway-2026/nytg--caroline-cao.json",
+  "lastProcessed": "macbeth-off-broadway-2026/talkclassical--unknown.json",
   "log": [
     {
       "t": "2026-10-01T17:51:38.789Z",
@@ -1598,6 +1602,40 @@
       "event": "bb-session",
       "session": "3d654443",
       "url": "https://metro.co.uk/2026/09/16/fire-emblem-fortunes-weave-review-bigger-better-e"
+    },
+    {
+      "t": "2026-10-02T04:54:58.215Z",
+      "event": "bb-session",
+      "session": "c126f808",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-10-02T04:55:18.893Z",
+      "event": "bb-session",
+      "session": "e71972dc",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-10-02T04:57:24.362Z",
+      "event": "bb-session",
+      "session": "9bec6029",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T04:57:25.205Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-02T04:57:43.595Z",
+      "event": "bb-session",
+      "session": "bd6d53ed",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-02T04:57:44.392Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ],
   "recoveredAfterFailure": [
