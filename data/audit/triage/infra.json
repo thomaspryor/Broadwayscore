@@ -1,7 +1,7 @@
 {
   "system": "infra",
   "status": "error",
-  "lastChecked": "2026-09-28T14:32:26.971Z",
+  "lastChecked": "2026-10-02T13:15:05.899Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -14,12 +14,12 @@
     {
       "name": "Infra: worktree GC log stale",
       "status": "error",
-      "message": "worktree-gc.log has no line in the last 85.3h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
+      "message": "worktree-gc.log has no line in the last 24.1h (launchd runs gc-merged-worktrees.sh hourly) — the only automatic disk brake may have stopped firing."
     },
     {
       "name": "Infra: notion-schedule-coupling audit",
       "status": "warn",
-      "message": "5 live schedule(s) still reference the frozen Notion mirror (1d ago)"
+      "message": "5 live schedule(s) still reference the frozen Notion mirror (23h ago)"
     }
   ]
 }

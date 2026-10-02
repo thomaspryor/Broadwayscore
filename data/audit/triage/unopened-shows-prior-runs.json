@@ -1,9 +1,9 @@
 {
-  "generatedAt": "2026-10-01T14:11:26.778Z",
+  "generatedAt": "2026-10-02T13:30:54.372Z",
   "linearIssue": "BRO-80",
-  "scannedShows": 3254,
-  "flaggedShows": 64,
-  "flaggedFiles": 218,
+  "scannedShows": 3281,
+  "flaggedShows": 65,
+  "flaggedFiles": 220,
   "readmissionRiskFiles": 0,
   "readmissionRisks": [],
   "unevaluatedFiles": 0,
@@ -11,7 +11,7 @@
   "unreadableFiles": 0,
   "byVerdict": {
     "likely-contamination": 31,
-    "needs-human-review": 32,
+    "needs-human-review": 33,
     "likely-single-prior-run": 1
   },
   "shows": [
@@ -2115,7 +2115,7 @@
       "showId": "blood-of-my-blood-west-end-2026",
       "title": "Blood of my Blood",
       "market": "west-end",
-      "status": "upcoming",
+      "status": "previews",
       "venue": "Royal Court",
       "previewsStartDate": "2026-10-01",
       "openingDate": "2026-10-07",
@@ -2732,7 +2732,7 @@
       "showId": "robin-hood-and-the-merry-mandem-off-west-end-2026",
       "title": "Robin Hood and the Merry Mandem",
       "market": "west-end",
-      "status": "announced",
+      "status": "upcoming",
       "venue": "Theatre Royal Stratford East",
       "previewsStartDate": "2026-11-21",
       "openingDate": null,
@@ -3275,6 +3275,60 @@
       ]
     },
     {
+      "showId": "gang-of-three-off-west-end-2026",
+      "title": "Gang Of Three",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "King's Head Theatre",
+      "previewsStartDate": "2026-10-01",
+      "openingDate": null,
+      "verdict": "likely-single-prior-run",
+      "reasoning": "2 premature-scored review(s) cluster within a 0-day window (single run pattern), 0 already flagged. 2/2 review texts mention the show's own venue (\"King's Head Theatre\") — supports same-venue return.",
+      "stats": {
+        "count": 2,
+        "distinctYears": [
+          2025
+        ],
+        "spanDays": 0,
+        "flaggedCount": 0,
+        "venueMentionCount": 2
+      },
+      "suggestedPriorRun": {
+        "venue": "King's Head Theatre",
+        "reviewDateRangeStart": "2025-05-08",
+        "reviewDateRangeEnd": "2025-05-08",
+        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
+      },
+      "reviews": [
+        {
+          "file": "artsdesk--unknown.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
+          "outletId": "artsdesk",
+          "criticName": "Unknown",
+          "publishDate": "2025-05-08",
+          "url": "https://theartsdesk.com/theatre/gang-three-kings-head-theatre-three-old-labour-ghosts-resurrected-entertain-and-educate",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        },
+        {
+          "file": "london-box-office--stuart-king.json",
+          "readmissionRisk": "still-excluded-after-open",
+          "beforeReason": "prematureForUnopenedShow",
+          "afterReason": "preWindowDate",
+          "outletId": "london-box-office",
+          "criticName": "Stuart King",
+          "publishDate": "2025-05-08",
+          "url": "https://www.londonboxoffice.co.uk/news/post/gang-of-three-review",
+          "wrongProduction": false,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
       "showId": "the-snowman-west-end-2026",
       "title": "The Snowman",
       "market": "west-end",
@@ -3350,7 +3404,7 @@
       "showId": "desire-under-the-elms-off-west-end-2026",
       "title": "Desire Under the Elms",
       "market": "west-end",
-      "status": "announced",
+      "status": "upcoming",
       "venue": "Almeida Theatre",
       "previewsStartDate": "2026-11-10",
       "openingDate": null,
@@ -3998,7 +4052,7 @@
       "showId": "bull-off-west-end-2026",
       "title": "Bull",
       "market": "west-end",
-      "status": "announced",
+      "status": "previews",
       "venue": "Park Theatre",
       "previewsStartDate": "2026-09-30",
       "openingDate": null,
@@ -4106,7 +4160,7 @@
       "showId": "king-lear-2-off-west-end-2026",
       "title": "King Lear 2",
       "market": "west-end",
-      "status": "announced",
+      "status": "upcoming",
       "venue": "Orange Tree Theatre",
       "previewsStartDate": "2027-02-15",
       "openingDate": null,
@@ -4283,47 +4337,6 @@
       ]
     },
     {
-      "showId": "gang-of-three-off-west-end-2026",
-      "title": "Gang Of Three",
-      "market": "west-end",
-      "status": "upcoming",
-      "venue": "King's Head Theatre",
-      "previewsStartDate": "2026-10-01",
-      "openingDate": null,
-      "verdict": "likely-single-prior-run",
-      "reasoning": "1 premature-scored review(s) cluster within a 0-day window (single run pattern), 0 already flagged. 1/1 review texts mention the show's own venue (\"King's Head Theatre\") — supports same-venue return.",
-      "stats": {
-        "count": 1,
-        "distinctYears": [
-          2025
-        ],
-        "spanDays": 0,
-        "flaggedCount": 0,
-        "venueMentionCount": 1
-      },
-      "suggestedPriorRun": {
-        "venue": "King's Head Theatre",
-        "reviewDateRangeStart": "2025-05-08",
-        "reviewDateRangeEnd": "2025-05-08",
-        "note": "reviewDateRange is derived from review publish dates, NOT the run's real opening/closing dates — confirm actual dates via Playbill/IBDB before declaring show.priorRuns."
-      },
-      "reviews": [
-        {
-          "file": "london-box-office--stuart-king.json",
-          "readmissionRisk": "still-excluded-after-open",
-          "beforeReason": "prematureForUnopenedShow",
-          "afterReason": "preWindowDate",
-          "outletId": "london-box-office",
-          "criticName": "Stuart King",
-          "publishDate": "2025-05-08",
-          "url": "https://www.londonboxoffice.co.uk/news/post/gang-of-three-review",
-          "wrongProduction": false,
-          "wrongShow": false,
-          "evaluationError": null
-        }
-      ]
-    },
-    {
       "showId": "hound-of-the-baskervilles-off-west-end-2026",
       "title": "Hound of the Baskervilles",
       "market": "west-end",
@@ -4353,6 +4366,42 @@
           "criticName": "Hugh Wooldridge",
           "publishDate": "2017-12-12",
           "url": "https://www.londonboxoffice.co.uk/news/post/review-hound-baskervilles",
+          "wrongProduction": true,
+          "wrongShow": false,
+          "evaluationError": null
+        }
+      ]
+    },
+    {
+      "showId": "measure-for-measure-off-west-end-2026",
+      "title": "Measure for Measure",
+      "market": "west-end",
+      "status": "previews",
+      "venue": "Riverside Studios",
+      "previewsStartDate": "2026-09-29",
+      "openingDate": null,
+      "verdict": "needs-human-review",
+      "reasoning": "Only 1 premature-scored review and its text doesn't mention the show's own venue (\"Riverside Studios\") — too little evidence to call this a prior run on its own; read the review before deciding.",
+      "stats": {
+        "count": 1,
+        "distinctYears": [
+          2019
+        ],
+        "spanDays": 0,
+        "flaggedCount": 1,
+        "venueMentionCount": 0
+      },
+      "suggestedPriorRun": null,
+      "reviews": [
+        {
+          "file": "london-box-office--justin-murray.json",
+          "readmissionRisk": "durably-excluded",
+          "beforeReason": "wrongProduction",
+          "afterReason": "wrongProduction",
+          "outletId": "london-box-office",
+          "criticName": "Justin Murray",
+          "publishDate": "2019-11-20",
+          "url": "https://www.londonboxoffice.co.uk/news/post/review-measure-for-measure-rsc",
           "wrongProduction": true,
           "wrongShow": false,
           "evaluationError": null
