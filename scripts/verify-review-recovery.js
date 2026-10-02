@@ -81,7 +81,11 @@ if (!showId) {
 // Use cwd so the script works from the main repo even when the file lives in a worktree.
 // data/review-texts is a git submodule/separate repo that only exists in the main checkout.
 const ROOT = process.cwd();
-const REVIEW_TEXTS_DIR = path.join(ROOT, 'data', 'review-texts', showId);
+// Resolved via the shared helper: a plain (non-git) data/review-texts copy goes stale
+// (BRO-4500: 3 files vs 15 in the live clone mid-opening) and must not be trusted.
+const { resolveReviewTextsDir } = require('./lib/review-texts-dir');
+const REVIEW_TEXTS_ROOT = resolveReviewTextsDir(process.env, ROOT);
+const REVIEW_TEXTS_DIR = path.join(REVIEW_TEXTS_ROOT, showId);
 const REVIEWS_JSON = path.join(ROOT, 'data', 'reviews.json');
 const BASE_URL = 'https://broadwayscorecard.com';
 
@@ -107,6 +111,7 @@ function info(msg) { if (verbose) console.log(`    ${msg}`); }
 // ── Check 0: Directory exists ───────────────────────────────────────────────
 
 console.log(`\n${BOLD}Verifying review recovery: ${showId}${RESET}`);
+console.log(`  review-texts root: ${REVIEW_TEXTS_ROOT}`);
 console.log(`${'─'.repeat(60)}\n`);
 
 if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
@@ -131,7 +136,7 @@ if (!fs.existsSync(REVIEW_TEXTS_DIR)) {
 let localCopyStale = null; // null = unknown/unchecked, true/false = checked
 const freshnessCheckApplies = !process.env.CI && !preMerge;
 if (freshnessCheckApplies) {
-  const rtRoot = path.join(ROOT, 'data', 'review-texts');
+  const rtRoot = REVIEW_TEXTS_ROOT;
   try {
     const { execFileSync } = require('child_process');
     const git = (args, timeout = 20000) => execFileSync('git', ['-C', rtRoot, ...args], { encoding: 'utf8', timeout, stdio: ['ignore', 'pipe', 'pipe'] });
@@ -140,7 +145,7 @@ if (freshnessCheckApplies) {
     // gitignored, so every diff is empty) and certify a false "current".
     const top = fs.realpathSync(git(['rev-parse', '--show-toplevel']).trim());
     if (top !== fs.realpathSync(rtRoot)) {
-      throw new Error('data/review-texts is not its own git clone');
+      throw new Error(`${rtRoot} is not its own git clone`);
     }
     git(['fetch', '--quiet', 'origin', 'main']);
     const differing = git(['diff', '--name-only', 'origin/main', '--', showId]).trim().split('\n').filter(Boolean);

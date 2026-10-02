@@ -31,7 +31,7 @@ const results = {
 
 for (const item of audit.reviews) {
   // Find the review-text file
-  const showDir = path.join(__dirname, '../data/review-texts', item.showId);
+  const showDir = path.join(require('./lib/review-texts-dir').resolveReviewTextsDir(), item.showId);
   let textData = null;
   let textFile = null;
 
