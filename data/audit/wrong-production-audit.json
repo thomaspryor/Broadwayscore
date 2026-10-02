@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T15:36:49.457Z",
+  "timestamp": "2026-10-02T16:35:14.626Z",
   "stats": {
-    "totalReviews": 45849,
-    "alreadyFlagged": 18703,
+    "totalReviews": 45879,
+    "alreadyFlagged": 18705,
     "dateGuardCatches": 262,
     "directorMismatch": 1200,
     "tvFilmSignals": 1331,
     "londonSignals": 1257,
     "offBroadwaySignals": 507,
-    "yearMismatch": 106,
-    "noPublishDate": 4130
+    "yearMismatch": 105,
+    "noPublishDate": 4133
   },
   "findings": [
     {
@@ -3738,18 +3738,13 @@
     {
       "showId": "buena-vista-social-club-off-broadway-2023",
       "file": "theater-pizzazz--carol-rocamora.json",
-      "publishDate": null,
+      "publishDate": "2023-12-14",
       "url": "https://www.theaterpizzazz.com/buena-vista-social-club/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
-        },
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2025 (3x) more than 2023 (0x). 2025 matches production: buena-vista-social-club-2025"
         }
       ]
     },
@@ -45582,7 +45577,7 @@
       "showId": "hay-fever-west-end-2026",
       "file": "theupcoming--emilia-gould.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2026-10-01",
       "url": "https://www.theupcoming.co.uk/2026/10/02/hay-fever-at-wyndhams-theatre-theatre-review/",
       "findings": [
         {
