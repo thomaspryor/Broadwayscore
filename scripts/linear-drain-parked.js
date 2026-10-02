@@ -14,11 +14,17 @@
  * Each run:
  *   1. Lists open Linear issues (with descriptions).
  *   2. Selects up to DISPATCH_CAP candidates via
- *      scripts/lib/linear-drain-parked.js's selectDrainCandidates — an
- *      auto-filed marker in the body, still sitting in Backlog, AND
- *      carrying a safe-form backticked acceptance-criteria command
- *      (linear-next.js's own verify-gate requirement — this drain never
- *      passes --allow-unverifiable).
+ *      scripts/lib/linear-drain-parked.js's selectDrainCandidates, highest
+ *      priority first (P0 before P1, then oldest). Eligible: still in
+ *      Backlog/Todo, carrying a safe-form backticked acceptance-criteria
+ *      command (linear-next.js's own verify-gate requirement; this drain
+ *      never passes --allow-unverifiable), AND either an auto-filed marker
+ *      in the body or (BRO-4535) a P0/P1 card a session parked for a
+ *      technical reason a headless worker can handle
+ *      (isDrainableSessionParked: no owner hold in the PARKED line, no other
+ *      headless blocker). Session-parked cards dispatch with
+ *      --allow-session-parked, which linear-next re-verifies on the fresh
+ *      issue before waiving the PARKED sentinel.
  *   3. Dispatches each via digest-autofix.js's dispatchDetached() — the
  *      SAME detached `node scripts/linear-next.js --id X --headless` spawn
  *      (`--headless` is linear-next's default since BRO-3652; still a valid alias)
@@ -58,9 +64,9 @@
  * N children that would each individually refuse.
  *
  * Usage:
- *   node scripts/linear-drain-parked.js               dispatch up to 3 eligible parked issues
+ *   node scripts/linear-drain-parked.js               dispatch up to 6 eligible parked issues
  *   node scripts/linear-drain-parked.js --dry-run      preview selection, no dispatch/ledger writes
- *   node scripts/linear-drain-parked.js --cap N        override the per-run dispatch cap (default 3)
+ *   node scripts/linear-drain-parked.js --cap N        override the per-run dispatch cap (default 6)
  *   --help, -h   show this message, do nothing else
  *
  * Wiring: NOT a data-health-check.yml step — the runner has no `claude`
@@ -68,8 +74,11 @@
  * dispatch runs on the Mac side via its own launchd tick (scripts/launchd/
  * com.broadwayscore.linear-drain-parked.plist), mirroring backlog-drain.js's
  * own launchd cadence rather than folding into send-morning-digest.js. That
- * agent was BOOTSTRAPPED 2026-09-08 (BRO-3060) and ticks 10:30/14:30/18:30
- * ET; before that it had never executed once, which is how 126 auto-filed
+ * agent was BOOTSTRAPPED 2026-09-08 (BRO-3060) and ticks every 2h from
+ * 08:30 to 22:30 local (BRO-4535; was 10:30/14:30/18:30). Usage cap: at most
+ * DRAIN_CONCURRENCY_CAP (4) live workers and DAILY_DISPATCH_CAP (20) drain
+ * dispatches per rolling 24h, counted from this drain's own ledger (fails
+ * closed when the ledger can't be read). Before that it had never executed once, which is how 126 auto-filed
  * issues accumulated with no dispatch-ledger row at all. Check liveness with
  * `launchctl print gui/$(id -u)/com.broadwayscore.linear-drain-parked`, not
  * by reading the plist — ~/Library/LaunchAgents/ holds the installed copy
@@ -84,7 +93,7 @@
  *
  * The gate it replaced ("go red if eligible candidates pile up past one
  * dispatch cap") was dead on arrival: the workflow ran --dry-run with no
- * --cap, :445 below passes `limit: cap` with cap = DISPATCH_CAP = 3, and
+ * --cap, :445 below passes `limit: cap` with cap = DISPATCH_CAP (then 3), and
  * lib/linear-drain-parked.js:85 slices to that limit — so the count it
  * compared against 3 could never exceed 3. The workflow now passes
  * `--cap 1000` so the printed count is the real backlog depth.
@@ -94,7 +103,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectDrainCandidates, isAutoFiledParked, hasSafeVerifyCommand } = require('./lib/linear-drain-parked.js');
+const { selectDrainCandidates, isAutoFiledParked, isDrainEligible } = require('./lib/linear-drain-parked.js');
 const { checkPark, computeContentHash } = require('./lib/attempt-memory.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const dispatchReconcile = require('./lib/dispatch-reconcile.js');
@@ -108,14 +117,22 @@ const dispatchReconcile = require('./lib/dispatch-reconcile.js');
 // below) — not a shared cross-drain budget.
 const {
   computeSpendCircuitBreaker, computeConcurrency,
-  DEFAULT_CONCURRENCY_CAP, DEFAULT_SPEND_THRESHOLD_USD,
+  DEFAULT_SPEND_THRESHOLD_USD,
 } = require('./lib/backlog-drain.js');
 
 require('./lib/load-env').loadEnv();
 
 const REPO = '/Users/tompryor/Broadwayscore';
 const LEDGER_PATH = path.join(REPO, 'data', 'audit', 'linear-drain-parked-ledger.jsonl');
-const DISPATCH_CAP = 3;
+const DISPATCH_CAP = 6;
+// BRO-4535: this drain's own fleet ceiling, raised from backlog-drain.js's
+// shared DEFAULT_CONCURRENCY_CAP (2) once it also took technically-parked
+// P0/P1 session cards. Local on purpose: the other drains keep 2.
+const DRAIN_CONCURRENCY_CAP = 4;
+// The owner's usage cap: at most this many dispatches in any rolling 24h,
+// counted from this drain's own ledger (strict read, fails closed).
+const DAILY_DISPATCH_CAP = 20;
+const DAY_MS = 24 * 60 * 60 * 1000;
 // A dispatch's spawn (or its resolved outcome) is expected well inside this
 // window — past it with no job-spawned event at all, the detached child was
 // refused before it ever reached bsc-runner (same reasoning as
@@ -483,7 +500,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // for issues this drain would never touch anyway.
   const parkedIds = new Set();
   for (const iss of issues) {
-    if (!iss || !iss.identifier || !isAutoFiledParked(iss) || !hasSafeVerifyCommand(iss)) continue;
+    if (!iss || !iss.identifier || !isDrainEligible(iss)) continue;
     const hash = computeIssueContentHash(iss);
     const park = checkPark(effectiveLedgerEntries, iss.identifier, hash);
     if (park.parked) {
@@ -538,7 +555,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // instead of an unconditional call.
   let budget = candidates.length;
   if (!dryRun) {
-    const concurrencyCap = Number.isFinite(deps.concurrencyCap) ? deps.concurrencyCap : DEFAULT_CONCURRENCY_CAP;
+    const concurrencyCap = Number.isFinite(deps.concurrencyCap) ? deps.concurrencyCap : DRAIN_CONCURRENCY_CAP;
+    const dailyCap = Number.isFinite(deps.dailyCap) ? deps.dailyCap : DAILY_DISPATCH_CAP;
+    let dailyLeft = 0;
     const spendThresholdUSD = Number.isFinite(deps.spendThresholdUSD) ? deps.spendThresholdUSD : DEFAULT_SPEND_THRESHOLD_USD;
     let concurrency = { atCap: true, alive: null, cap: concurrencyCap, aliveTaskIds: [] };
     let breaker = { halt: true, reason: 'guard computation failed — failing closed, no dispatch this run', spentUSD: null, completions: null, thresholdUSD: spendThresholdUSD };
@@ -550,6 +569,10 @@ async function main(argv = process.argv.slice(2), deps = {}) {
           .map(e => `linear:${e.identifier}`));
       concurrency = computeConcurrency(dispatchedTaskIds, freshDispatchLedgerEntries, concurrencyCap);
       breaker = computeSpendCircuitBreaker(freshOwnLedgerEntries, { thresholdUSD: spendThresholdUSD });
+      const dayAgo = now.getTime() - DAY_MS;
+      const lastDay = freshOwnLedgerEntries.filter((e) => e && e.event === 'drain-parked-dispatch' && Date.parse(e.ts) > dayAgo).length;
+      dailyLeft = Math.max(0, dailyCap - lastDay);
+      if (!dailyLeft) log(`[linear-drain-parked] daily cap reached (${lastDay}/${dailyCap} dispatches in the last 24h) — nothing dispatched this run`);
     } catch (e) {
       log(`[linear-drain-parked] WARN spend/concurrency guard computation failed (failing CLOSED — no dispatch this run): ${e.message}`);
     }
@@ -559,11 +582,9 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     if (breaker.halt) {
       log(`[linear-drain-parked] ${breaker.reason}`);
     }
-    // NOTE: DEFAULT_CONCURRENCY_CAP (2) < DISPATCH_CAP (3) — even with zero
-    // concurrent jobs, budget maxes at 2, not 3 at the defaults. DISPATCH_CAP
-    // is not dead: it still bounds a run once concurrencyCap is raised (an
-    // owner call, not this card's — neither default is touched here).
-    budget = breaker.halt ? 0 : Math.min(candidates.length, Math.max(0, concurrencyCap - concurrency.alive));
+    // Budget = the smallest of: candidates (already <= DISPATCH_CAP), free
+    // concurrency slots, and what is left of the rolling 24h cap.
+    budget = breaker.halt ? 0 : Math.min(candidates.length, Math.max(0, concurrencyCap - concurrency.alive), dailyLeft);
   }
 
   const dispatched = [];
@@ -599,11 +620,17 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // this every dispatch this drain ever attempted was refused inside the
       // detached child (discovered live, 2026-09-08: all 3 of this run's
       // candidates were refused before this fix).
-      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, { allowAutofixFiled: true, allowAutomationParked: true });
+      // Session-parked cards (BRO-4535) get only --allow-session-parked:
+      // they were never filed by automation, so the autofix-filed and
+      // automation-parked waivers above do not apply to them.
+      const sessionParked = !isAutoFiledParked(issue);
+      const dispatchOpts = sessionParked ? { allowSessionParked: true } : { allowAutofixFiled: true, allowAutomationParked: true };
+      dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, dispatchOpts);
       budget--;
       appendLedgerFn({
         event: 'drain-parked-dispatch', identifier: issue.identifier, title: issue.title,
         contentHash: computeIssueContentHash(issue),
+        ...(sessionParked ? { sessionParked: true, priority: issue.priority } : {}),
       }, ledgerPath);
       dispatched.push(issue.identifier);
     } catch (e) {
@@ -631,6 +658,6 @@ if (require.main === module) {
 
 module.exports = {
   parseArgs, readLedger, appendLedger, recentlyAttempted, main, USAGE,
-  LEDGER_PATH, DISPATCH_CAP, RETRY_COOLDOWN_MS, ORPHAN_TIMEOUT_H,
+  LEDGER_PATH, DISPATCH_CAP, DRAIN_CONCURRENCY_CAP, DAILY_DISPATCH_CAP, RETRY_COOLDOWN_MS, ORPHAN_TIMEOUT_H,
   computeIssueContentHash, findMyJob, reconcileOutcomes, isDispatchResolved,
 };

@@ -218,6 +218,25 @@ function isAutomationParked(notes) {
   return hasAutofixFiledMarker(n) || ALERT_ROUTER_PARKED_RE.test(n);
 }
 
+// BRO-4535: a session that wrote "PARKED: <reason>" by hand is usually waiting
+// on something a headless worker can supply itself (a rule-18 review, a
+// worktree, a monitor window), and nothing ever came back to unpark it. Those
+// cards may go to the drain. Default-deny: EVERY PARKED line must name a
+// technical reason from the allowlist and none may name an owner hold, so an
+// ambiguous or unfamiliar reason stays parked. Only the sentinel lines are
+// read, never the card body, so a card that merely discusses "approval" in
+// passing is judged on its park reason alone.
+const OWNER_HOLD_PARK_RE = /owner|go-ahead|approv|policy|human|judg|decision|design call|taste|manual|credits|sequenced|strongest model|do not dispatch|don't dispatch|not auto-dispatch|blind-dispatch|unattended|this session|superseded|blocked|decid|deliberately|picking between|choose between|owned by|lands? first|after .*reset|simulator|interactive|by-hand|by hand/i;
+const TECHNICAL_PARK_RE = /rule.?18|second-opinion|plan-review|worktree|mid-window|monitor (pass|window)|next (working )?(session|pass)|scoring-delta|review-texts checkout|swap at|cloud (session|container)|classifier/i;
+const PARK_REASON_LINES_RE = /^\s*PARKED\s*:(.*)$/gim;
+
+function isDrainableSessionParked(notes) {
+  const n = String(notes || '');
+  if (isAutomationParked(n)) return false;
+  const reasons = [...n.matchAll(PARK_REASON_LINES_RE)].map((m) => m[1].trim());
+  return reasons.length > 0 && reasons.every((r) => r && TECHNICAL_PARK_RE.test(r) && !OWNER_HOLD_PARK_RE.test(r));
+}
+
 function classifyHeadlessDispatchability(card = {}, opts = {}) {
   const subject = String(card.subject || '');
   const notes = String(card.notes != null ? card.notes : (card.description || ''));
@@ -326,6 +345,9 @@ module.exports = {
   UI_PATH_RE,
   UI_CARD_CLASS_RE,
   isAutomationParked,
+  isDrainableSessionParked,
+  OWNER_HOLD_PARK_RE,
+  TECHNICAL_PARK_RE,
   // Exported so a test can assert this array holds the SHARED owner-judgment
   // regex object rather than a fourth handwritten copy (task #1154).
   OWNER_DECISION_RES,
