@@ -60,7 +60,20 @@ const {
   WIRE_SERVICE_OUTLETS,
   outletOwnsUrlDomainIgnoringPath,
 } = require('./lib/review-normalization');
-const { resolveUrlEditionOutletId } = require('./lib/outlet-canonicalize');
+const { resolveUrlEditionOutletId, provisionalOutletIdFromHost } = require('./lib/outlet-canonicalize');
+// BRO-4502: the no-registry-match fallbacks below mint from the registrable
+// label (someblog.substack.com -> someblog), never the first label
+// (news.yahoo.com -> "news"). When resolveOutletFromUrl already said "no
+// outlet" for a host, a minted id that IS a registered outlet would override
+// that call (losangeles.timeout.com -> "timeout", Time Out New York), so it
+// becomes 'unknown' instead.
+function fallbackOutletIdFromHost(hostname) {
+  const id = provisionalOutletIdFromHost(hostname);
+  // Exact registry key: isRegisteredOutlet normalizes fuzzily
+  // ('stagedoorjoe' -> 'stagedtheatre').
+  const registry = require('./lib/review-normalization').loadOutletRegistry();
+  return id && !(registry && registry.outlets && registry.outlets[id]) ? id : 'unknown';
+}
 const { findSiblingUrlOwner } = require('./lib/review-url-collision');
 const { verifyProduction, quickDateCheck, getShowData } = require('./lib/production-verifier');
 const { shouldFillDefaultCritic } = require('./lib/critic-fill-rules');
@@ -818,7 +831,7 @@ async function fetchShowScorePaginatedReviews(showPageUrl, initialHtml, showId, 
             // Fallback: use domain base as both ID and name
             try {
               const hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
-              outletId = hostname.split('.')[0];
+              outletId = fallbackOutletIdFromHost(hostname);
               outletName = outletId;
             } catch {
               outletId = 'unknown';
@@ -1576,7 +1589,7 @@ function extractShowScoreReviews(html, showId, showTitle) {
                   // Fallback: use domain base
                   try {
                     const hostname = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase();
-                    outletId = hostname.split('.')[0];
+                    outletId = fallbackOutletIdFromHost(hostname);
                     outletName = outletId;
                   } catch {
                     outletId = 'unknown';
@@ -1716,7 +1729,7 @@ function extractShowScoreReviews(html, showId, showTitle) {
           // Fallback: use domain base
           try {
             const hostname = new URL(url).hostname.replace(/^www\./, '').toLowerCase();
-            const domainBase = hostname.split('.')[0];
+            const domainBase = fallbackOutletIdFromHost(hostname);
             outletId = domainBase;
             outlet = domainBase.charAt(0).toUpperCase() + domainBase.slice(1);
           } catch {
@@ -4381,7 +4394,7 @@ async function gatherReviewsForShow(showId, aggregatorsOnly = false, options = {
             // Never use literal "Unknown" - use the domain so the review is attributable
             try {
               const hostname = new URL(review.url).hostname.replace(/^www\./, '').toLowerCase();
-              const domainBase = hostname.split('.')[0];
+              const domainBase = fallbackOutletIdFromHost(hostname);
               outletId = domainBase;
               outletDisplayName = domainBase; // Will be displayed as-is (e.g., "culturesauce")
             } catch {
@@ -6124,6 +6137,7 @@ if (require.main === module) {
 }
 
 module.exports = {
+  fallbackOutletIdFromHost,
   searchDTLI,
   searchShowScore,
   searchBWWRoundup,

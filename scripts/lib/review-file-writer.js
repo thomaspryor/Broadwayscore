@@ -1291,9 +1291,14 @@ function pageBylineRefusal(filepath, existing, ctx) {
   const { showId, criticName } = ctx;
   if (!existing || existing.criticNameManual || existing._locked === true) return 'locked-or-manual';
   if (existing.wrongProduction || existing.duplicateOf) return 'flagged';
-  if (!/--unknown\.json$/.test(path.basename(filepath))) return 'not-unknown-file';
-  if (existing.criticName && !/^unknown$/i.test(String(existing.criticName).trim())) return 'already-named';
-  const { isPlausiblePersonName } = require('./byline-recovery');
+  const { isPlausiblePersonName, isJunkCriticName } = require('./byline-recovery');
+  // BRO-4502: a file stored under a junk byline ("Read more articles by X",
+  // "Sam - Admin") is as unnamed as an --unknown file, and gets the same
+  // guarded rename. A real stored name is never replaced.
+  const junkNamed = isJunkCriticName(existing.criticName);
+  if (!junkNamed && !/--unknown\.json$/.test(path.basename(filepath))) return 'not-unknown-file';
+  if (!junkNamed && existing.criticName && !/^unknown$/i.test(String(existing.criticName).trim())) return 'already-named';
+  if (isJunkCriticName(criticName)) return 'implausible-name';
   const { isValidAuthorName } = require('./content-quality');
   if (!isPlausiblePersonName(criticName) || !isValidAuthorName(criticName)) return 'implausible-name';
   if (isOutletRegistryName(criticName)) return 'outlet-name';
@@ -1377,6 +1382,7 @@ function _mergeIntoExisting(filepath, existing, ctx) {
   // collector's 1B-iii enrichment does, so no "named --unknown" file is left
   // for the rebuild's rename/merge to act on.
   const bylineUpgrade = shouldUpgradeUnknownByline(filepath, existing, { showId, input, criticName });
+  const priorCriticName = existing.criticName;
   if (bylineUpgrade) {
     existing.criticName = criticName;
     existing.criticEnrichedFrom = `writer:${input.source || 'unknown-source'}`;
@@ -1743,7 +1749,9 @@ function _mergeIntoExisting(filepath, existing, ctx) {
       // Never leave a named --unknown file behind (the rebuild's rename/merge
       // is the #27 drop path): put the byline back and keep the rest.
       console.warn(`  ⚠ Rename of ${path.basename(filepath)} skipped (${(rename && rename.skipped) || 'unknown'}); byline not applied`);
-      existing.criticName = 'Unknown';
+      // Restore what the file held ('Unknown', or a BRO-4502 junk byline that
+      // still matches its filename).
+      existing.criticName = priorCriticName || 'Unknown';
       delete existing.criticEnrichedFrom;
       safeWriteReview(filepath, existing, { merge: false });
     }

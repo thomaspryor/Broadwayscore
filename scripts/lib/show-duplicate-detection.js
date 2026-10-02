@@ -37,6 +37,21 @@ function canonicalVenue(show) {
     .trim();
 }
 
+// Same venue, allowing one name to be the other plus ONLY a room suffix:
+// "SoHo Playhouse" vs "Soho Playhouse Main Stage", "New World Stages" vs
+// "New World Stages Stage 5" (Jena Friedman: Motherfucker dup, BRO-4503). The
+// suffix must be generic room words / a number / a single letter, so a
+// different house that merely starts the same ("Park" / "Park Avenue Armory")
+// never matches. Stricter-by-suffix cousin of retire-show-action.js sameHouse().
+const ROOM_WORDS = new Set(['main', 'stage', 'studio', 'theatre', 'theater', 'house', 'hall', 'room', 'space', 'upstairs', 'downstairs']);
+function sameVenueOrRoom(va, vb) {
+  if (!va || !vb || va === 'tba' || vb === 'tba') return false;
+  if (va === vb) return true;
+  const [short, long] = va.length <= vb.length ? [va, vb] : [vb, va];
+  if (!long.startsWith(`${short} `)) return false;
+  return long.slice(short.length).trim().split(/\s+/).every((w) => ROOM_WORDS.has(w) || /^\d+$|^[a-z]$/.test(w));
+}
+
 function runStart(show) {
   return show.previewsStartDate || show.openingDate || null;
 }
@@ -104,7 +119,7 @@ function findTitleFragmentDupes(shows) {
       const a = shows[i];
       const b = shows[j];
       const v = canonicalVenue(a);
-      if (!v || v === 'tba' || v !== canonicalVenue(b)) continue;
+      if (!sameVenueOrRoom(v, canonicalVenue(b))) continue;
       if (!datesOverlap(a, b)) continue;
       if (isStrictTitleSubset(a, b)) {
         dupes.push({
@@ -288,6 +303,7 @@ module.exports = {
   ticketIdentityKeys,
   isDeclaredTransferPair,
   canonicalVenue,
+  sameVenueOrRoom,
   isColonSegmentTitle,
   isStrictTitleSubset,
   datesOverlap,

@@ -1270,6 +1270,8 @@ on:
       # (colocated *.test.mjs runs in the lib glob). Without these a solo edit
       # triggers ZERO CI.
       - 'scripts/audit-duplicate-shows.js'
+      # BRO-4503: root-level test (not in the lib glob), manifest-registered.
+      - 'scripts/audit-duplicate-shows.test.mjs'
       # Baseline-diff (task #1675, mirrors #1665/#1666 entries above): a solo
       # edit to any of these three needs CI — without this entry a
       # --update-baseline commit touching only the JSON (or a lib-only fix)

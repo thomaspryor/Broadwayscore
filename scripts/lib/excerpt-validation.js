@@ -446,7 +446,17 @@ function excerptMentionsFormerCast(excerpt, context) {
   // to this call site previously split on hyphens, so a hyphenated former
   // cast member's surname alone (common in UK/West End casts) could never
   // match here even though it was correctly collected above.
-  const excerptWords = nameTokens(excerpt);
+  //
+  // Only capitalized excerpt words count: a person's name in a pull quote is
+  // capitalized, an ordinary word in running prose is not. A file-local token
+  // like "see" or "show" (split from a capitalized phrase near a role name)
+  // otherwise matched "...in which to see this brilliant show!" on
+  // the-enormous-crocodile-west-end-2026 (BRO-4492).
+  const excerptWords = excerpt
+    .replace(/[^\p{L}\s'-]/gu, ' ')
+    .split(/\s+/)
+    .filter(w => /^\p{Lu}/u.test(w))
+    .flatMap(w => nameTokens(w));
   for (const entry of formerTokens) {
     if (entry.includes(' ')) {
       // Multi-word phrase (3-word candidate, kept atomic) — substring match.

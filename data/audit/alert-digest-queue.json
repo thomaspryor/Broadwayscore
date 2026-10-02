@@ -701,5 +701,117 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-01T23:57:01.897Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4486-recheck-3",
+    "title": "Landing blocked: resolve red on land/bro-4486-recheck-3",
+    "description": "land.yml did not land land/bro-4486-recheck-3: the resolve gate went red at 2f2990402e. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/bro-4486-recheck-3\" is neither a local branch nor on origin (attempts 0, 0.6s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36941516633",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4486-recheck-3"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "2f2990402e3ecbc533f436ba3e1bf84547c8ae06"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36941516633"
+      }
+    ],
+    "queuedAt": "2026-10-02T00:04:02.868Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4492-former-cast",
+    "title": "Landing blocked: resolve red on land/bro-4492-former-cast",
+    "description": "land.yml did not land land/bro-4492-former-cast: the resolve gate went red at 6975f07e1e. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/bro-4492-former-cast\" is neither a local branch nor on origin (attempts 0, 1.6s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36941599459",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4492-former-cast"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "6975f07e1eec2a32620cd3dcdd95f20ec4a395c9"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36941599459"
+      }
+    ],
+    "queuedAt": "2026-10-02T00:06:01.921Z"
+  },
+  {
+    "conditionKey": "feedback-outcomes:2026-10-01T21:35:43.983002+00:00",
+    "title": "Feedback: 1 submission(s), all handled automatically",
+    "description": "1 message from users came in. All of them are being handled automatically. Nothing needs you.\n\nOperation Mincemeat (Broadway) — Running the auto-fix-feedback-bug.yml workflow. You will get another email when it is live on the site.\n  They wrote: \"Please fix the tabulation for Chris Jones’ review and overall CriticScore for Mince, the individual revive should’ve be SCOREd at a 90/100 not a 40/100, meanwhile the CriticScore should be tabulated at an 81 not a 76.\"\n  Full details and who sent it: https://github.com/thomaspryor/Broadwayscore/issues/965",
+    "severity": "info",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36944562567",
+    "decision": true,
+    "decisionPrompt": "Receipt only — every message in this run was handled automatically. Nothing to fix.",
+    "model": null,
+    "fields": [
+      {
+        "name": "Submissions",
+        "value": "1"
+      },
+      {
+        "name": "Need you",
+        "value": "0"
+      },
+      {
+        "name": "Pipeline status",
+        "value": "success"
+      }
+    ],
+    "queuedAt": "2026-10-02T00:11:41.309Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4500-muq6o49r",
+    "title": "Landing blocked: unit-tests-node red on land/job/linear-BRO-4500-muq6o49r",
+    "description": "land.yml did not land land/job/linear-BRO-4500-muq6o49r: the unit-tests-node gate went red at 42613e97c7. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36943156363",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4500-muq6o49r"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "42613e97c79c446361239a669738fa56f3a9624c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36943156363"
+      }
+    ],
+    "queuedAt": "2026-10-02T00:23:17.357Z"
   }
 ]

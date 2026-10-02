@@ -129,6 +129,23 @@ describe('excerptMentionsFormerCast', () => {
     assert.strictEqual(res.mentionsFormerCast, false);
   });
 
+  it('only matches a former-cast token written as a capitalized word in the excerpt', () => {
+    // Second live false positive on the same file (2026-10-01): a phrase like
+    // "Must See Show" near a role name made "see" a token, which matched the
+    // lowercase verb in "...in which to see this brilliant show!". A name in
+    // a pull quote is capitalized; an ordinary word in running prose is not.
+    const reviewData = {
+      publishDate: '2022-04-01',
+      fullText: 'Truly See as Atticus Finch watches. Rafe Spall plays Atticus Finch.',
+    };
+    const ctx = { show: SHOW, reviewDate: '2022-04-01', reviewData };
+    assert.strictEqual(
+      excerptMentionsFormerCast('The Gielgud is the perfect venue in which to see this brilliant show!', ctx).mentionsFormerCast,
+      false
+    );
+    assert.strictEqual(excerptMentionsFormerCast('Spall is superb.', ctx).mentionsFormerCast, true);
+  });
+
   it('does not flag a director/writer inferred from a "directed by X" credit line even when missing from show.creativeTeam', () => {
     // Live false positive on the-enormous-crocodile-west-end-2026, whose
     // show.creativeTeam is [] — the guard has no structured way to know
