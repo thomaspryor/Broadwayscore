@@ -578,6 +578,9 @@ function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResu
         evidence: EVIDENCE.UNKNOWN,
         detail: 'still open and its check does not pass yet — expected for unfinished work, not a defect',
         channels: [],
+        // BRO-4523: structured flag so open-card-closer can bounce In Review
+        // cards without matching on the detail text above.
+        openCheckFails: true,
       };
     }
     return {

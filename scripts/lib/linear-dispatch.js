@@ -82,6 +82,7 @@ function buildIssueQuery() {
       priority
       url
       completedAt
+      updatedAt
       state { id name type }
       project { name }
       labels(first: 20) { nodes { id name } }
@@ -163,6 +164,20 @@ const PRIORITY_LABELS = { 0: 'None', 1: 'Urgent', 2: 'High', 3: 'Medium', 4: 'Lo
 function priorityLabel(issue) {
   const p = Number(issue && issue.priority);
   return PRIORITY_LABELS[p] || 'None';
+}
+
+// BRO-4523: size-based escalation died with the Notion retirement (linear-next
+// passed notionId:null to resolveModel, so every dispatch ran on the base
+// model). Urgent (P0) cards and cards the open-card closer already bounced back
+// from In Review (a worker reported done and the check still failed) get the
+// stronger model. An explicit --model flag or a "Model:" hint line still wins;
+// the caller applies this only beneath those.
+function escalatedModel(issue) {
+  if (Number(issue && issue.priority) === 1) return 'opus';
+  const { BOUNCE_MARKER } = require('./open-card-closer.js');
+  const comments = (issue && issue.comments && issue.comments.nodes) || [];
+  if (comments.some((c) => c && typeof c.body === 'string' && c.body.includes(BOUNCE_MARKER))) return 'opus';
+  return null;
 }
 
 // Stable sort (Array.prototype.sort is stable per spec since Node 11) so
@@ -337,6 +352,8 @@ function buildLinearSeed({ identifier, title, description, url, model, project, 
       : null,
     ``,
     `When you are done (or blocked), report the outcome by running: node scripts/linear-session.js report --issue=${identifier} --status=<done|in-review|paused|blocked> --summary="..." [--key-files="a,b"] [--verification="..."]. That posts the comment AND moves the issue's state in one step, in the one format the dispatcher can recognise later — reportedOutcomeGuard reads it to stop a second worker being dispatched onto work you already finished (BRO-2543), so a hand-rolled commentCreate is not equivalent. Do not leave it silently sitting in "In Progress" with no comment — that is how work goes untracked. If you cannot finish, report --status=blocked with what is blocking it; that deliberately leaves the state as-is rather than guessing at "In Review", and keeps the issue re-dispatchable.`,
+    ``,
+    `Before reporting done: land the change on main, run the issue's own check (the VERIFY: / acceptance command) against main, and paste its output in the report's --verification. A card whose check has not been run on main is reported in-review at best; one whose check fails is not done (BRO-4523).`,
     ``,
     `Start by confirming your understanding and a short plan, then proceed.`,
   ].filter((v) => v !== null).join('\n');
@@ -1084,6 +1101,7 @@ module.exports = {
   sortedCommentBodies,
   priorityRank,
   priorityLabel,
+  escalatedModel,
   sortIssuesByPriority,
   issueLabelNames,
   hasMacOnlyLabel,
