@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-02T04:46:56.060Z",
+  "generatedAt": "2026-10-02T04:56:03.137Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -549,28 +549,28 @@
       "status": "open",
       "slug": "creation-stories-and-all-the-important-importants-off-broadway",
       "thumbnail": "/images/shows/creation-stories-and-all-the-important-importants-off-broadway-2026/thumbnail.webp",
-      "siteScore": 47.44,
-      "liveScore": 47,
-      "scoreDrift": -0.4399999999999977,
+      "siteScore": 51.47,
+      "liveScore": 51,
+      "scoreDrift": -0.46999999999999886,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 3,
+      "total": 4,
       "t1": 1,
-      "t2": 1,
+      "t2": 2,
       "t3": 1,
       "positive": 0,
-      "mixed": 2,
+      "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "3/12 total",
+          "4/12 total",
           "T1:1/3",
-          "T2:1/3",
-          "hi-conf:2/8"
+          "T2:2/3",
+          "hi-conf:3/8"
         ],
-        "highConfidence": 2,
+        "highConfidence": 3,
         "thresholds": {
           "minReviews": 12,
           "minT1": 3,
@@ -688,10 +688,6 @@
         {
           "name": "The Daily Beast",
           "isDualMarket": false
-        },
-        {
-          "name": "New York Theatre Guide",
-          "isDualMarket": true
         },
         {
           "name": "New York Theater",
@@ -944,6 +940,18 @@
           "t3": 1,
           "p": 0,
           "m": 2,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-02T04:56:03.137Z",
+          "rc": 4,
+          "s": 51.47,
+          "t1": 1,
+          "t2": 2,
+          "t3": 1,
+          "p": 0,
+          "m": 3,
           "n": 1,
           "bc": "waiting"
         }
@@ -1501,9 +1509,9 @@
       "status": "open",
       "slug": "whos-afraid-of-virginia-woolf-west-end",
       "thumbnail": "/images/shows/whos-afraid-of-virginia-woolf-west-end-2026/thumbnail.webp",
-      "siteScore": 83.39,
-      "liveScore": 83,
-      "scoreDrift": -0.39000000000000057,
+      "siteScore": 83.56,
+      "liveScore": 84,
+      "scoreDrift": 0.4399999999999977,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -1757,6 +1765,18 @@
           "m": 3,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-02T04:56:03.137Z",
+          "rc": 21,
+          "s": 83.56,
+          "t1": 8,
+          "t2": 6,
+          "t3": 7,
+          "p": 17,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -1770,9 +1790,9 @@
       "status": "open",
       "slug": "the-standard-of-living-west-end",
       "thumbnail": "/images/shows/the-standard-of-living-west-end-2026/thumbnail.webp",
-      "siteScore": 67.82,
+      "siteScore": 68.01,
       "liveScore": 68,
-      "scoreDrift": 0.18000000000000682,
+      "scoreDrift": -0.010000000000005116,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2159,6 +2179,18 @@
           "t": "2026-10-02T04:46:56.060Z",
           "rc": 24,
           "s": 67.82,
+          "t1": 9,
+          "t2": 5,
+          "t3": 10,
+          "p": 12,
+          "m": 10,
+          "n": 2,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-02T04:56:03.137Z",
+          "rc": 24,
+          "s": 68.01,
           "t1": 9,
           "t2": 5,
           "t3": 10,
