@@ -26,6 +26,7 @@ drop policy if exists "Anon can insert push tokens" on public.push_tokens;
 drop policy if exists "push_tokens_owner_insert" on public.push_tokens;
 drop policy if exists "push_tokens_owner_update" on public.push_tokens;
 drop policy if exists "Users can update their own tokens" on public.push_tokens;
+drop policy if exists "push_tokens_claim_update" on public.push_tokens;
 
 create policy "push_tokens_owner_insert"
   on public.push_tokens

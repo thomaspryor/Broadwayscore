@@ -148,7 +148,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
   const marketDetail = [show.city, marketLabel(show.category)].filter(Boolean).join(' · ');
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-16">
+    <div className="ph-mask max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-16">
       <Link href="/my-shows" className="text-sm text-gray-500 hover:text-white transition-colors inline-flex items-center gap-1 mb-4">
         ← My Shows
       </Link>

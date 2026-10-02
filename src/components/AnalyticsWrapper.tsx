@@ -66,6 +66,9 @@ export default function AnalyticsWrapper() {
             person_profiles: 'identified_only',
             // Inputs stay visible for UX debugging, except textareas (private
             // rating notes, list descriptions, feedback) and email/password.
+            // Displayed personal text (My Shows, diary, the menu's name,
+            // saved notes) carries the recorder's default `ph-mask` class;
+            // the privacy page promises both, so keep them in step.
             session_recording: {
               maskAllInputs: false,
               maskInputOptions: { password: true, email: true, textarea: true },

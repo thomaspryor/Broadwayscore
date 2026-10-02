@@ -55,7 +55,7 @@ export default function DeleteAccountDialog({ isOpen, onClose, onConfirm }: Dele
 
         {failed && (
           <div role="alert" className="mt-4 px-3 py-2 rounded-lg bg-score-skip/10 border border-score-skip/20 text-xs text-score-skip">
-            Something went wrong and your account was not deleted. Please try again.
+            Something went wrong and we couldn&apos;t finish deleting your account. Please try again.
           </div>
         )}
 

@@ -849,7 +849,7 @@ function YourRatingInline({
             </button>
           </div>
           {review.review_text && (
-            <p className="text-sm text-gray-400 italic leading-snug line-clamp-4">
+            <p className="ph-mask text-sm text-gray-400 italic leading-snug line-clamp-4">
               {`\u201C${review.review_text}\u201D`}
             </p>
           )}

@@ -89,7 +89,7 @@ export default function UnsubscribeClient() {
       <p className="text-gray-400 mb-2">
         You&apos;ll stop receiving opening night email alerts from {siteName}.
       </p>
-      <p className="text-gray-500 text-sm mb-8">
+      <p className="ph-mask text-gray-500 text-sm mb-8">
         {email}
       </p>
       <div className="flex flex-col sm:flex-row gap-3 justify-center">

@@ -48,3 +48,13 @@ test('exemptions are not also deleted (stale exemption)', () => {
     assert.ok(!fnSource.includes(`deleteRows(base, auth, '${t}'`), `${t} is exempt but delete-account deletes it`);
   }
 });
+
+// A retry after a deletion whose response was lost finds the auth user
+// already gone. The Admin API answers 404, and treating that as a failure
+// left the user unable to ever finish deleting (BRO-4525).
+test('a 404 from the admin user delete counts as already deleted', () => {
+  const at = fnSource.indexOf('/auth/v1/admin/users/');
+  assert.ok(at > 0, 'admin user delete not found');
+  const tail = fnSource.slice(at, at + 600);
+  assert.match(tail, /status !== 404/, 'admin user delete must tolerate 404 so retries can finish');
+});

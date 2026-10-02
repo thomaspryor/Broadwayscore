@@ -269,10 +269,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
 
     trackUgc('account_deleted');
-    // Deleting the auth user already revoked its sessions server-side. A
-    // global signOut would hit /logout for a user that no longer exists, get
-    // a 4xx, and instrumentedFetch would report it as an error on every
-    // successful deletion, so only clear the local session.
+    // Deleting the auth user already revoked its sessions server-side, so
+    // only this device's session needs clearing. auth-js still calls /logout
+    // and gets a 403 for the deleted user; reportUgcError ignores that.
     await client.auth.signOut({ scope: 'local' }).catch(() => {});
     setAnalyticsUser(null);
     setUser(null);

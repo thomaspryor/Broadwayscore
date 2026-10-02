@@ -62,7 +62,7 @@ export default function HamburgerMenu({
               className="sm:hidden w-7 h-7 rounded-full border border-white/20"
             />
           ) : (
-            <span className="sm:hidden w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-xs">
+            <span className="ph-mask sm:hidden w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-xs">
               {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
             </span>
           )
@@ -109,12 +109,12 @@ export default function HamburgerMenu({
                         className="w-10 h-10 rounded-full border border-white/10"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-sm">
+                      <div className="ph-mask w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-sm">
                         {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-white truncate">{profile?.display_name || email || 'Signed In'}</p>
+                      <p className="ph-mask text-sm font-semibold text-white truncate">{profile?.display_name || email || 'Signed In'}</p>
                     </div>
                   </div>
                 ) : (
@@ -171,7 +171,7 @@ export default function HamburgerMenu({
                         close();
                         onDeleteAccount();
                       }}
-                      className="w-full text-left px-5 py-2 text-xs text-gray-500 hover:text-score-skip hover:bg-white/[0.02] transition-colors"
+                      className="w-full text-left px-5 py-2.5 text-sm text-gray-400 hover:text-score-skip hover:bg-white/[0.02] transition-colors"
                     >
                       Delete account
                     </button>

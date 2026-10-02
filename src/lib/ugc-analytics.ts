@@ -117,6 +117,16 @@ export interface UgcErrorInfo {
 // PostgREST "0 rows for .single()" (loadProfile on a brand-new user) is an
 // expected outcome, not a failure.
 const IGNORED_CODES = new Set(['PGRST116']);
+// auth-js counts these /logout answers as a finished sign-out: the session was
+// already expired or revoked, or the account was just deleted (every
+// successful account deletion ends with one).
+const LOGOUT_DONE_STATUSES = new Set([401, 403, 404]);
+
+/** Outcomes that look like errors on the wire but aren't failures. */
+export function ignoredUgcError(op: string, info: UgcErrorInfo): boolean {
+  if (info.code && IGNORED_CODES.has(info.code)) return true;
+  return op === 'auth logout' && info.status != null && LOGOUT_DONE_STATUSES.has(info.status);
+}
 // Reported to PostHog (counted) but not Sentry: user-side or already handled.
 const QUIET_CODES = new Set(['network', 'no_session', '23505']);
 const SENTRY_THROTTLE_MS = 60_000;
@@ -135,7 +145,7 @@ export function sentryWorthy(op: string, info: UgcErrorInfo): boolean {
 
 export function reportUgcError(op: string, info: UgcErrorInfo, extra: UgcProps = {}): void {
   if (typeof window === 'undefined') return;
-  if (info.code && IGNORED_CODES.has(info.code)) return;
+  if (ignoredUgcError(op, info)) return;
   const code = info.code ?? (info.status != null ? String(info.status) : 'error');
   phCapture('ugc_error', clean({
     op,

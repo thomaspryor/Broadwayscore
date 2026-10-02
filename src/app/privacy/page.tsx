@@ -113,8 +113,9 @@ export default function PrivacyPage() {
             <p>
               On the website we record about one in ten visits as a session replay (clicks, scrolling and page
               changes) to find bugs and confusing screens. Replays hide what you type into password, email and
-              multi-line text fields such as reviews and notes. Text typed into other fields, such as search
-              boxes, can appear in a replay.
+              multi-line text fields such as reviews and notes. They also hide the text on your My Shows and
+              diary pages, your name in the menu, and your notes on show pages. Text typed into other fields,
+              such as search boxes, can appear in a replay.
             </p>
             <p>
               When you&apos;re signed in, analytics events and error reports carry your account ID. App error

@@ -649,7 +649,7 @@ export default function MyShowsClient() {
   }
 
   return (
-    <div data-testid="my-shows-content" className="max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12">
+    <div data-testid="my-shows-content" className="ph-mask max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12">
       {/* Header — flex-wrap lets the opened Add-show search take a full row on
           mobile (basis-full) instead of squeezing beside the title. */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-2">

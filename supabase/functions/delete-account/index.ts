@@ -131,7 +131,12 @@ Deno.serve(async (req) => {
       method: 'DELETE',
       headers: auth,
     });
-    if (!deleteUserRes.ok) throw new Error(`delete auth user failed: ${deleteUserRes.status}`);
+    // 404 means an earlier attempt already removed the auth user (its
+    // response was lost); everything above is idempotent, so a retry
+    // finishes the job instead of failing forever.
+    if (!deleteUserRes.ok && deleteUserRes.status !== 404) {
+      throw new Error(`delete auth user failed: ${deleteUserRes.status}`);
+    }
 
     return json(req, { ok: true });
   } catch (e) {

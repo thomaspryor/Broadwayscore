@@ -137,6 +137,30 @@ test('instrumentedFetch reports network failures but not aborts, and rethrows bo
   }
 });
 
+// Every successful account deletion ends with a /logout for a user that no
+// longer exists. auth-js treats the 403 as signed out; counting it as a
+// ugc_error would put one fake failure on every deletion (BRO-4525).
+test('instrumentedFetch ignores the logout answers auth-js treats as signed out', async () => {
+  const realFetch = globalThis.fetch;
+  let status = 403;
+  globalThis.fetch = (async () => new Response('{"msg":"User not found"}', { status, headers: { 'content-type': 'application/json' } })) as typeof fetch;
+  try {
+    for (status of [401, 403, 404]) {
+      const res = await ugc.instrumentedFetch('https://abc.supabase.co/auth/v1/logout?scope=local', { method: 'POST' });
+      assert.equal(res.status, status);
+    }
+    assert.equal(captured.filter((c) => c.event === 'ugc_error').length, 0);
+    // A server error on logout is still a real failure.
+    status = 500;
+    await ugc.instrumentedFetch('https://abc.supabase.co/auth/v1/logout', { method: 'POST' });
+    assert.equal(captured.filter((c) => c.event === 'ugc_error').length, 1);
+  } finally {
+    globalThis.fetch = realFetch;
+  }
+  assert.equal(ugc.ignoredUgcError('select profiles', { message: 'x', code: 'PGRST116', status: 406 }), true);
+  assert.equal(ugc.ignoredUgcError('auth token', { message: 'x', status: 403 }), false, 'only logout is exempt');
+});
+
 test('events fired before PostHog loads wait in the outbox and keep their original time', () => {
   g.posthog = undefined;
   ugc.trackUgc('rating_submitted', { show_id: 'hamilton', rating: 4.5, has_review_text: undefined });
