@@ -20,7 +20,7 @@
 const fs = require('fs');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const linear = require('./lib/linear-client');
-const { assessPriorityQueue, formatSummary } = require('./lib/priority-queue-health');
+const { assessPriorityQueue, formatSummary, summarizeZombieLeftovers, formatZombieLeftovers } = require('./lib/priority-queue-health');
 const { TERMINAL_STATE_TYPES } = require('./lib/linear-state-types.js');
 
 const USAGE = 'Usage: node scripts/check-priority-queue-health.js [--json] [--alert]';
@@ -63,8 +63,17 @@ async function main(argv = process.argv.slice(2)) {
   const result = { ...assessPriorityQueue(fetched.issues, Date.now()), truncated: fetched.truncated };
   const summary = `${formatSummary(result)}${result.truncated ? ' (count truncated: a floor, not exact)' : ''}`;
 
-  if (argv.includes('--json')) console.log(JSON.stringify(result, null, 2));
+  // BRO-4510: cards the started-zombie sweep could not decide on its own.
+  let zombieLine = '';
+  try {
+    const { readLinearZombieLedger } = require('./bsc-reconcile.js');
+    const open = fetched.issues.map((i) => i.identifier);
+    zombieLine = formatZombieLeftovers(summarizeZombieLeftovers(readLinearZombieLedger(), open));
+  } catch { /* digest line is advisory */ }
+
+  if (argv.includes('--json')) console.log(JSON.stringify({ ...result, zombieLeftovers: zombieLine }, null, 2));
   else {
+    if (zombieLine) console.log(zombieLine);
     console.log(`P0/P1 queue: ${summary}`);
     for (const i of result.oldestP0) console.log(`  overdue P0 ${i.identifier} (${Math.round(i.ageHours / 24)}d): ${i.title}`);
   }
