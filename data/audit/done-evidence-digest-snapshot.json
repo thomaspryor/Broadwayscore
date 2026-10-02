@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-01T14:01:33.923Z",
-  "bannerText": "86/100 Done(14d) verified on main · 1 FAILED · 0 vacuous · 39 stuck-but-done — PARTIAL RUN: 117 checks not re-run (ran out of time), 20 GitHub lookups failed, so these numbers understate the board",
+  "generatedAt": "2026-10-02T13:20:17.166Z",
+  "bannerText": "88/112 Done(14d) verified on main · 2 FAILED · 1 vacuous · 53 stuck-but-done — PARTIAL RUN: 88 checks not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
-      "title": "FAILED BRO-4272 — Opening night: roundup-listed reviews not auto-ingested (Culture Sauce, Guardian, Chicago Tribune added by hand)",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/roundup-parser.test.mjs",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4272/opening-night-roundup-listed-reviews-not-auto-ingested-culture-sauce"
+      "title": "FAILED BRO-4474 — Missed-broadcast alert fires for sent emails: reconciler 429s on duplicate polls",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/missed-broadcasts.test.js",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4474/missed-broadcast-alert-fires-for-sent-emails-reconciler-429s-on"
     },
     {
-      "title": "STUCK BRO-205 — P1: 6 scraper callers treat conflict skips as benign — the silent-veto class beyond the gap audit",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-205/p1-6-scraper-callers-treat-conflict-skips-as-benign-the-silent-veto"
+      "title": "FAILED BRO-4355 — Untracked scrapingdog spend: ledger explains only 43%, 13% of billed",
+      "detail": "OPEN: scrapingdog attributedPct 2026-09-30=82%, 2026-10-01=74% (threshold 80% on each of the last 2 days)",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4355/untracked-scrapingdog-spend-ledger-explains-only-43percent-13percent"
     },
     {
-      "title": "STUCK BRO-199 — Newsletter closing lede announced a future final performance as present-tense news",
+      "title": "STUCK BRO-127 — Arm PUSH_VIA_API_FALLBACK on a real caller + verify in production",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-199/newsletter-closing-lede-announced-a-future-final-performance-as"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-127/arm-push-via-api-fallback-on-a-real-caller-verify-in-production"
     },
     {
-      "title": "STUCK BRO-187 — Review-coverage systemic fixes: junk census candidates, extraction rot, babysitter remediation loop (Pass/Disruption/Vessel)",
+      "title": "STUCK BRO-115 — Backfill 259 excerpt-only unscored reviews (122 shows) unlocked by #501 fix",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-187/review-coverage-systemic-fixes-junk-census-candidates-extraction-rot"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-115/backfill-259-excerpt-only-unscored-reviews-122-shows-unlocked-by-501"
     },
     {
-      "title": "STUCK BRO-178 — Image fetch: run cleanup on the throw path (try/finally in processOneShow)",
+      "title": "STUCK BRO-111 — P1: URL-change invariant gap — stale wrongProduction/CV survives maybeUpgradeUrl (112-file class)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-178/image-fetch-run-cleanup-on-the-throw-path-tryfinally-in-processoneshow"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-111/p1-url-change-invariant-gap-stale-wrongproductioncv-survives"
     },
     {
-      "title": "STUCK BRO-177 — Broadway edition has the same subject/card-order mismatch class fixed for WE: broadwayOpenings renders shows.json order",
+      "title": "STUCK BRO-109 — Extend audit-run-budget-coverage.js to catch script→lib-helper budget-threading gaps",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-177/broadway-edition-has-the-same-subjectcard-order-mismatch-class-fixed"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-109/extend-audit-run-budget-coveragejs-to-catch-scriptlib-helper-budget"
     },
     {
-      "title": "STUCK BRO-176 — Exclusion-reason census: nothing consumes explainExclusion's rule names — attribute corpus drift to a rule",
+      "title": "STUCK BRO-91 — Triage 30 late-add-flagged shows corpus-wide (detectLateAdd output)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-176/exclusion-reason-census-nothing-consumes-explainexclusions-rule-names"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-91/triage-30-late-add-flagged-shows-corpus-wide-detectlateadd-output"
     },
     {
-      "title": "STUCK BRO-171 — Recover 545 Unknown-critic bylines via generalized page/text extraction",
+      "title": "STUCK BRO-90 — Census/ledger leaks junk + duplicate outletIds (buy-tickets-directly, the-la-times)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-171/recover-545-unknown-critic-bylines-via-generalized-pagetext-extraction"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-90/censusledger-leaks-junk-duplicate-outletids-buy-tickets-directly-the"
     }
   ],
-  "moreCount": 32
+  "moreCount": 48
 }
