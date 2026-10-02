@@ -743,5 +743,17 @@
       }
     ],
     "queuedAt": "2026-10-02T21:38:36.473Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:hay-fever-west-end-2026",
+    "title": "Content mismatch on Hay Fever",
+    "description": "times-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED but fullText never mentions 'Hay Fever' (2854 chars): https://www.thetimes.com/culture/theatre-dance/article/hay-fever-review-west-end-richard-e-grant-d6qdnnzpl\n⚠️  thestage/Tom Wicker (thestage--the-stage.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/hay-fever-review-wyndhams-theatre-london-noel-coward-christine-baranski-richard-e-grant",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-02T23:02:09.506Z"
   }
 ]
