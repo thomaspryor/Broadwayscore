@@ -23,6 +23,9 @@
  *   6. Ingest survivors via ingest-review-from-url.js (same guard chain as the
  *      /submit-review form — operatorTrust:false, subject to all content guards).
  *
+ * National tours (market 'tour') are searched too, with "{title}" national
+ * tour review in place of the city (BRO-4509).
+ *
  * Usage:
  *   node scripts/discover-regional-serp-reviews.js [--show=ID] [--dry-run]
  *
@@ -125,15 +128,33 @@ function resolveRegisteredOutlet(url) {
   return lookupOutletForHost(domain, { exactOnly: true });
 }
 
-function selectRegionalShows() {
-  const showsData = require(path.join(ROOT, 'data', 'shows.json'));
-  return showsData.shows.filter((s) => {
-    if (s.market !== 'regional') return false;
-    if (showFilter) return s.id === showFilter;
+// National tours (market 'tour') join the pool: their review corpus is the same
+// kind of local tour-stop coverage, and before BRO-4509 nothing searched for it
+// (oh-mary-tour-2026 and maybe-happy-ending-tour-2026 sat at 0 reviews).
+const DISCOVERY_MARKETS = new Set(['regional', 'tour']);
+
+function selectDiscoveryShows(shows, filter) {
+  return shows.filter((s) => {
+    if (!DISCOVERY_MARKETS.has(s.market)) return false;
+    if (filter) return s.id === filter;
     if (s.status === 'open' || s.status === 'previews') return true;
     const age = Math.min(ageInDays(s.closingDate), s.closingDate ? Infinity : ageInDays(s.openingDate));
     return age <= POOL_WINDOW_DAYS;
   });
+}
+
+function selectRegionalShows() {
+  const showsData = require(path.join(ROOT, 'data', 'shows.json'));
+  return selectDiscoveryShows(showsData.shows, showFilter);
+}
+
+// A tour's venue is "North American Tour" (no city) and its reviews come from
+// whichever city it is playing, so the query names the tour instead of a city.
+// Returns null when no query can be built (regional show with no parsable city).
+function buildDiscoveryQuery(show) {
+  if (show.market === 'tour') return `"${show.title}" national tour review`;
+  const city = cityFromVenue(show.venue);
+  return city ? `"${show.title}" review ${city}` : null;
 }
 
 function ingestUrl(showId, url, outletId) {
@@ -159,13 +180,12 @@ function ingestUrl(showId, url, outletId) {
 }
 
 async function processShow(show) {
-  const city = cityFromVenue(show.venue);
-  if (!city) {
+  const query = buildDiscoveryQuery(show);
+  if (!query) {
     console.log(`⚠️  ${show.id}: could not parse city from venue "${show.venue}" — skipping`);
     return { showId: show.id, skipped: 'no-city' };
   }
 
-  const query = `"${show.title}" review ${city}`;
   console.log(`\n${show.id} — query: ${query}`);
 
   const dateRange = calculateDateWindow(show);
@@ -308,7 +328,11 @@ async function main() {
   }
 }
 
-main().catch((e) => {
-  console.error('Regional SERP discovery failed:', e.stack || e.message);
-  process.exit(1);
-});
+if (require.main === module) {
+  main().catch((e) => {
+    console.error('Regional SERP discovery failed:', e.stack || e.message);
+    process.exit(1);
+  });
+}
+
+module.exports = { selectDiscoveryShows, buildDiscoveryQuery };
