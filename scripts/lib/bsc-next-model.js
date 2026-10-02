@@ -112,4 +112,57 @@ function resolveModel({ explicitFlag, task, card, notionId, queuePath = QUEUE_PA
   return modelForSize(triageSizeFor(notionId, queuePath));
 }
 
-module.exports = { QUEUE_PATH, MODEL_HINT_RE, SHORT_ALIAS, explicitModelHint, triageSizeFor, modelForSize, resolveModel };
+// BRO-4523 (owner 2026-10-02, "are we using the right model for each
+// card?"): Linear dispatches pass notionId:null, so layer 3 (the Notion
+// triage size) never fires for them and every Linear card ran on Sonnet,
+// however urgent or however many times a Sonnet worker had already failed
+// it. This is the Linear stand-in for layer 3, applied only when no explicit
+// flag or hint decided: a P0 card, or a card that already carries a
+// "Dispatched ..." comment (a re-run after a prior worker failed to close
+// it), gets Opus. Same retry rule digest-autofix.js already uses
+// (`attempt >= 2 ? 'opus'`). A rolling 24h cap on Opus Linear launches
+// keeps a backlog drain from spending the week's allowance on Opus; over
+// the cap the card falls back to Sonnet rather than waiting.
+const LINEAR_OPUS_DAILY_CAP_DEFAULT = 6;
+const LINEAR_OPUS_WINDOW_MS = 24 * 60 * 60 * 1000;
+const PRIOR_DISPATCH_RE = /^Dispatched\b/;
+
+function linearOpusDailyCap(env = process.env) {
+  const raw = env.LINEAR_OPUS_DAILY_CAP;
+  if (raw === undefined || raw === '') return LINEAR_OPUS_DAILY_CAP_DEFAULT;
+  const n = Number(raw);
+  return Number.isInteger(n) && n >= 0 ? n : LINEAR_OPUS_DAILY_CAP_DEFAULT;
+}
+
+function countRecentLinearOpusLaunches(entries, nowMs, windowMs = LINEAR_OPUS_WINDOW_MS) {
+  let n = 0;
+  for (const e of Array.isArray(entries) ? entries : []) {
+    if (!e || e.event !== 'launch' || e.model !== 'opus') continue;
+    if (!String(e.taskId || '').startsWith('linear:')) continue;
+    const ts = Date.parse(e.ts);
+    if (Number.isFinite(ts) && ts <= nowMs && nowMs - ts < windowMs) n++;
+  }
+  return n;
+}
+
+/**
+ * @param {object} opts
+ * @param {object} opts.issue - Linear issue ({ priority, comments: { nodes } })
+ * @param {number} opts.recentOpusLaunches - from countRecentLinearOpusLaunches
+ * @param {number} opts.cap - from linearOpusDailyCap
+ * @returns {{ model: 'opus'|'sonnet', reason: string }}
+ */
+function linearEscalationModel({ issue, recentOpusLaunches, cap }) {
+  const comments = (issue && issue.comments && issue.comments.nodes) || [];
+  const priorDispatches = comments.filter((c) => c && PRIOR_DISPATCH_RE.test(String(c.body || '').trim())).length;
+  const isP0 = !!issue && issue.priority === 1;
+  if (!isP0 && priorDispatches === 0) return { model: 'sonnet', reason: 'first attempt, not P0' };
+  const why = isP0 ? 'P0' : `retry after ${priorDispatches} prior dispatch(es)`;
+  if (recentOpusLaunches >= cap) return { model: 'sonnet', reason: `${why}, but Opus cap reached (${recentOpusLaunches}/${cap} in 24h)` };
+  return { model: 'opus', reason: why };
+}
+
+module.exports = {
+  QUEUE_PATH, MODEL_HINT_RE, SHORT_ALIAS, explicitModelHint, triageSizeFor, modelForSize, resolveModel,
+  LINEAR_OPUS_DAILY_CAP_DEFAULT, linearOpusDailyCap, countRecentLinearOpusLaunches, linearEscalationModel,
+};
