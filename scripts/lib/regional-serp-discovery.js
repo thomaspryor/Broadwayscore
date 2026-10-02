@@ -50,23 +50,37 @@ function buildDiscoveryQuery(show) {
 // The shared window caps at openingDate + 180, which for a tour that has been
 // on the road a year means every weekly search re-scans a frozen, long-past
 // window and never sees reviews from the cities it plays now. Tours get a
-// rolling window instead: the last TOUR_LOOKBACK_DAYS, never before the
-// shared window's start, never past closingDate + 30.
+// rolling window instead: the TOUR_LOOKBACK_DAYS before its anchor (today, or
+// closingDate for a tour that has already closed, so its final months stay
+// searchable for the whole pool window), never before the shared window's
+// start, ending anchor + 30. A tour with no openingDate (no shared window)
+// still gets this bounded range instead of an unbounded search.
 const TOUR_LOOKBACK_DAYS = 120;
 function buildDiscoveryDateRange(show, now = new Date()) {
   const base = calculateDateWindow(show);
-  if (show.market !== 'tour' || !base) return base;
+  if (show.market !== 'tour') return base;
   const day = 24 * 60 * 60 * 1000;
-  const lookback = new Date(now.getTime() - TOUR_LOOKBACK_DAYS * day);
-  const ends = [now.getTime() + 30 * day];
-  if (show.closingDate) ends.push(new Date(show.closingDate).getTime() + 30 * day);
-  const dateMin = base.dateMin && base.dateMin > lookback ? base.dateMin : lookback;
-  const dateMax = new Date(Math.min(...ends));
-  // A tour that closed more than ~150 days ago would invert the range (a paid
-  // SERP call that can only return nothing); search its shared window instead,
-  // as closed regional shows do.
+  const closed = show.closingDate ? new Date(show.closingDate) : null;
+  const anchor = closed && !isNaN(closed) && closed < now ? closed : now;
+  const lookback = new Date(anchor.getTime() - TOUR_LOOKBACK_DAYS * day);
+  const dateMin = base && base.dateMin && base.dateMin > lookback ? base.dateMin : lookback;
+  const dateMax = new Date(anchor.getTime() + 30 * day);
   if (dateMax < dateMin) return base;
   return { dateMin, dateMax };
 }
 
-module.exports = { DISCOVERY_MARKETS, selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, cityFromVenue };
+// The tour query ("<title>" national tour review) also matches the original
+// Broadway run's reviews, which belong to the Broadway show, not the tour.
+// Reject a tour candidate that points at Broadway/New York and never mentions
+// a tour. A plain "Review: <title>" from a tour-stop paper (no marker either
+// way) still passes; the date window and validateSerpCandidate cover the rest.
+const TOUR_MARKER = /\btour(s|ing|ed)?\b|national[-\s]tour/i;
+const BROADWAY_MARKER = /\bbroadway\b|\bnew[-\s]york\b|\bnyc\b|nytimes\.com/i;
+function tourCandidateIsTour(show, candidate) {
+  if (show.market !== 'tour') return true;
+  const text = `${candidate.url || ''} ${candidate.title || ''} ${candidate.snippet || candidate.description || ''}`;
+  if (TOUR_MARKER.test(text)) return true;
+  return !BROADWAY_MARKER.test(text);
+}
+
+module.exports = { DISCOVERY_MARKETS, selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, cityFromVenue };

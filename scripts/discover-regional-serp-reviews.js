@@ -43,7 +43,7 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { serpQuery } = require('./lib/url-discovery');
-const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange } = require('./lib/regional-serp-discovery');
+const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour } = require('./lib/regional-serp-discovery');
 const { urlLooksLikeReview } = require('./lib/review-guards');
 const { _parseDomain, lookupOutletForHost } = require('./lib/outlet-canonicalize');
 const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
@@ -184,9 +184,15 @@ async function processShow(show) {
     }
     // Cross-market / wrong-production hard-marker check (same guard collect-outlet-reviews.js
     // and gather-reviews.js's SERP path rely on) — cheap, synchronous, no network cost.
-    const validation = validateSerpCandidate({ show, candidate: { url, title: r.title } });
+    const candidate = { url, title: r.title, snippet: r.description };
+    const validation = validateSerpCandidate({ show, candidate });
     if (!validation.ok) {
       console.log(`  · rejected by validateSerpCandidate (${validation.reason}): ${url}`);
+      skippedNotReview++;
+      continue;
+    }
+    if (!tourCandidateIsTour(show, candidate)) {
+      console.log(`  · rejected (tour candidate without tour marker): ${url}`);
       skippedNotReview++;
       continue;
     }
@@ -249,7 +255,7 @@ async function main() {
   const shows = selectRegionalShows();
   console.log(`Regional SERP discovery — ${shows.length} show(s) in pool${dryRun ? ' (dry-run)' : ''}`);
   if (shows.length === 0) {
-    console.log(showFilter ? `No regional show found matching --show=${showFilter}` : 'No regional shows in the discovery window.');
+    console.log(showFilter ? `No regional/tour show found matching --show=${showFilter}` : 'No regional or tour shows in the discovery window.');
     return;
   }
 
