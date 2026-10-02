@@ -502,6 +502,15 @@ const CORE_DATA_MERGE_REGISTRY = [
     note: 'full shadow-mode verdict report written by scripts/audit-done-evidence.js — one entry per Done(14d)/In Review/In Progress card, rewritten whole each run',
   },
   {
+    file: 'audit/open-card-closer.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-10-02 (BRO-4523): sole WRITER is scripts/close-verified-open-cards.js (full overwrite of the whole document on every action and at the end), invoked only by data-health-check.yml\'s "Close verified open cards / bounce failing In Review cards" step, which is also the only step that git-adds it ("Commit open-card-closer report"). Sole READER is the same script, which reads the previous copy to skip cards the Done gate refused in the last 7 days. The workflow declares concurrency group data-health-check with cancel-in-progress false, so CI runs queue. Same disposable-telemetry class and residual local-vs-CI clobber risk as audit/done-evidence-audit.json above: a lost write only means a refused card is retried one extra day.',
+    note: 'per-run record of cards the open-card closer closed, bounced or skipped (BRO-4523)',
+  },
+  {
     file: 'audit/done-evidence-digest-snapshot.json',
     surface: 'public-repo',
     status: 'single-writer',
