@@ -157,6 +157,23 @@ function buildDiscoveryQuery(show) {
   return city ? `"${show.title}" review ${city}` : null;
 }
 
+// The shared window caps at openingDate + 180, which for a tour that has been
+// on the road a year means every weekly search re-scans a frozen, long-past
+// window and never sees reviews from the cities it plays now. Tours get a
+// rolling window instead: the last TOUR_LOOKBACK_DAYS, never before the
+// shared window's start, never past closingDate + 30.
+const TOUR_LOOKBACK_DAYS = 120;
+function buildDiscoveryDateRange(show, now = new Date()) {
+  const base = calculateDateWindow(show);
+  if (show.market !== 'tour' || !base) return base;
+  const day = 24 * 60 * 60 * 1000;
+  const lookback = new Date(now.getTime() - TOUR_LOOKBACK_DAYS * day);
+  const ends = [now.getTime() + 30 * day];
+  if (show.closingDate) ends.push(new Date(show.closingDate).getTime() + 30 * day);
+  const dateMin = base.dateMin && base.dateMin > lookback ? base.dateMin : lookback;
+  return { dateMin, dateMax: new Date(Math.min(...ends)) };
+}
+
 function ingestUrl(showId, url, outletId) {
   if (dryRun) {
     console.log(`  [dry-run] would ingest ${outletId}: ${url}`);
@@ -188,7 +205,7 @@ async function processShow(show) {
 
   console.log(`\n${show.id} — query: ${query}`);
 
-  const dateRange = calculateDateWindow(show);
+  const dateRange = buildDiscoveryDateRange(show);
   const results = await serpQuery(query, { nbResults: 10, dateRange, preferSpeed: false });
 
   if (results === null || results === undefined) {
@@ -335,4 +352,4 @@ if (require.main === module) {
   });
 }
 
-module.exports = { selectDiscoveryShows, buildDiscoveryQuery };
+module.exports = { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange };

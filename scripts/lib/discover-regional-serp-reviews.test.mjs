@@ -6,7 +6,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { selectDiscoveryShows, buildDiscoveryQuery } = require('../discover-regional-serp-reviews.js');
+const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange } = require('../discover-regional-serp-reviews.js');
+const { calculateDateWindow } = require('./url-discovery.js');
 
 const regional = { id: 'purpose-regional-2026', title: 'Purpose', market: 'regional', status: 'open', venue: 'Huntington Theatre Company (Calderwood Pavilion), Boston, MA' };
 const tour = { id: 'oh-mary-tour-2026', title: 'Oh, Mary!', market: 'tour', status: 'open', venue: 'North American Tour' };
@@ -28,4 +29,16 @@ test('regional query keeps the city form; tour query names the tour', () => {
   assert.equal(buildDiscoveryQuery(regional), '"Purpose" review Boston');
   assert.equal(buildDiscoveryQuery(tour), '"Oh, Mary!" national tour review');
   assert.equal(buildDiscoveryQuery(noCity), null);
+});
+
+test('long-running tour gets a rolling window; regional keeps the shared window', () => {
+  const now = new Date('2026-10-02T00:00:00Z');
+  const longTour = { ...tour, id: 'book-of-mormon-tour-2022', openingDate: '2022-08-31' };
+  const r = buildDiscoveryDateRange(longTour, now);
+  assert.equal(r.dateMax.toISOString().slice(0, 10), '2026-11-01');
+  assert.equal(r.dateMin.toISOString().slice(0, 10), '2026-06-04');
+  const closed = buildDiscoveryDateRange({ ...longTour, closingDate: '2026-09-01' }, now);
+  assert.equal(closed.dateMax.toISOString().slice(0, 10), '2026-10-01');
+  const reg = { ...regional, openingDate: '2026-09-10' };
+  assert.deepEqual(buildDiscoveryDateRange(reg, now), calculateDateWindow(reg));
 });
