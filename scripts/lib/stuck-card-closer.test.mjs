@@ -12,6 +12,9 @@ const {
   futureRecheckAfter,
   decideClosure,
   buildClosureComment,
+  closeRunStopReason,
+  MAX_CLOSES_PER_RUN,
+  MAX_REFUSALS_PER_RUN,
 } = require('./stuck-card-closer.js');
 
 const NOW = Date.parse('2026-10-02T18:00:00Z');
@@ -158,4 +161,64 @@ test('CLI exits 3 with a recorded error when the audit cannot be read', async ()
   } finally {
     console.error = err;
   }
+});
+
+test('closeRunStopReason: time is the limiter, refusals trip the breaker, the ceiling is a backstop', () => {
+  const ok = { closed: 0, refused: 0, remainingMs: 10 * 60e3, closeTimeoutMs: 5 * 60e3 };
+  assert.equal(closeRunStopReason(ok), null);
+  // Far past the old flat 10: quick checks keep closing while time remains.
+  assert.equal(closeRunStopReason({ ...ok, closed: 25 }), null);
+  assert.equal(closeRunStopReason({ ...ok, closed: MAX_CLOSES_PER_RUN }), 'over-run-cap');
+  assert.equal(closeRunStopReason({ ...ok, refused: MAX_REFUSALS_PER_RUN - 1 }), null);
+  assert.equal(closeRunStopReason({ ...ok, refused: MAX_REFUSALS_PER_RUN }), 'refusal-breaker');
+  assert.equal(closeRunStopReason({ ...ok, remainingMs: 4 * 60e3 }), 'over-time-budget');
+});
+
+test('CLI --apply closes past 10 and stops after repeated Done-gate refusals', async () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const { main } = require('../close-stuck-verified-cards.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'closer-apply-'));
+  const ids = Array.from({ length: 20 }, (_, i) => `BRO-${100 + i}`);
+  const auditPath = path.join(dir, 'audit.json');
+  const outPath = path.join(dir, 'out.json');
+  const now = Date.now();
+  fs.writeFileSync(auditPath, JSON.stringify({
+    generatedAt: new Date(now - 3600e3).toISOString(),
+    results: ids.map((id) => row({ id, cmd: `node --test scripts/lib/${id.toLowerCase()}.test.mjs` })),
+  }));
+  const linear = {
+    graphql: async (_q, { id }) => ({ issue: {
+      identifier: id, state: { name: 'In Review', type: 'started' },
+      createdAt: new Date(now - 10 * DAY).toISOString(), updatedAt: new Date(now - 3 * DAY).toISOString(),
+      description: 'x', comments: { nodes: [] },
+    } }),
+  };
+  const commitsTouching = async (testPath) => {
+    const id = testPath.match(/(bro-\d+)/)[1].toUpperCase();
+    return [{ sha: 'abc123abc123', message: `${id}: the fix` }];
+  };
+  // The Done gate accepts the first 12 cards, then refuses everything.
+  const spawned = [];
+  const spawn = (_node, args) => {
+    spawned.push(args[2]);
+    return spawned.length <= 12 ? { status: 0, stdout: '' } : { status: 5, stderr: 'REFUSED' };
+  };
+  const log = console.log;
+  const err = console.error;
+  console.log = () => {};
+  console.error = () => {};
+  try {
+    assert.equal(await main(['--apply'], { linear, commitsTouching, spawn, auditPath, outPath }), 0);
+  } finally {
+    console.log = log;
+    console.error = err;
+  }
+  const out = JSON.parse(fs.readFileSync(outPath, 'utf8'));
+  fs.rmSync(dir, { recursive: true, force: true });
+  assert.equal(out.counts.closed, 12);
+  assert.equal(out.counts['gate-refused'], MAX_REFUSALS_PER_RUN);
+  assert.equal(out.counts['refusal-breaker'], 20 - 12 - MAX_REFUSALS_PER_RUN);
+  assert.equal(spawned.length, 12 + MAX_REFUSALS_PER_RUN);
 });

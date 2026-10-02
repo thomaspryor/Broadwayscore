@@ -729,14 +729,17 @@ jobs:
           fi
 
       # BRO-4523: act on the audit's STUCK label. Cards whose own check passes
-      # on main sat open for weeks because nothing read the label. REPORT-ONLY
-      # until the owner approves real closes (add --apply then); the report
-      # lists which cards would close and why the rest were left. Rules:
-      # scripts/lib/stuck-card-closer.js. Same shadow-mode reasoning as the
-      # audit step above: a crash here must never block the commits after it.
+      # on main sat open for weeks because nothing read the label. Closing is
+      # owner-approved (BRO-4535, 2026-10-02): each close goes through
+      # linear-brain's Done gate, which re-runs the check on a fresh
+      # origin/main, and the run stops at the time budget, 3 gate refusals or
+      # 50 closes. The report lists what closed and why the rest were left.
+      # Rules: scripts/lib/stuck-card-closer.js. Same shadow-mode reasoning as
+      # the audit step above: a crash here must never block the commits after
+      # it. Kill switch: repo variable STUCK_CARD_CLOSER_KILL_SWITCH=1.
       - name: Stuck verified card closer
         if: always()
-        # lint-allow-swallow: report-only telemetry; the committed report's
+        # lint-allow-swallow: best-effort closer; the committed report's
         # generatedAt shows a missed day, and the audit it reads is already
         # watched by the digest's 36h freshness row.
         continue-on-error: true
@@ -745,7 +748,7 @@ jobs:
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           STUCK_CARD_CLOSER_KILL_SWITCH: ${{ vars.STUCK_CARD_CLOSER_KILL_SWITCH }}
-        run: node scripts/close-stuck-verified-cards.js
+        run: node scripts/close-stuck-verified-cards.js --apply
 
       - name: Commit stuck card closer report
         if: always()

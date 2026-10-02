@@ -5,7 +5,8 @@
  * why they are strict: scripts/lib/stuck-card-closer.js.
  *
  *   node scripts/close-stuck-verified-cards.js                report only
- *   node scripts/close-stuck-verified-cards.js --apply        close eligible cards (max 10 per run)
+ *   node scripts/close-stuck-verified-cards.js --apply        close eligible cards until the time budget
+ *                                                             runs out, 3 Done-gate refusals, or 50 closes
  *   node scripts/close-stuck-verified-cards.js --git-repo P   read commit history from a local clone
  *                                                             instead of the GitHub API
  *   node scripts/close-stuck-verified-cards.js --only BRO-N   consider just one card
@@ -25,12 +26,11 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync, execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { planCandidates, decideClosure, buildClosureComment } = require('./lib/stuck-card-closer.js');
+const { planCandidates, decideClosure, buildClosureComment, closeRunStopReason } = require('./lib/stuck-card-closer.js');
 
 const REPO = path.join(__dirname, '..');
 const AUDIT = path.join(REPO, 'data', 'audit', 'done-evidence-audit.json');
 const OUT = path.join(REPO, 'data', 'audit', 'stuck-card-closer.json');
-const MAX_CLOSES_PER_RUN = 10;
 const TIME_BUDGET_MS = 18 * 60 * 1000;
 // One close re-runs the card's check through the Done gate; never start one
 // that could outlive the workflow step (25 min) if it hits its own timeout.
@@ -129,6 +129,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   Object.assign(out.counts, Object.fromEntries(Object.entries(plan.skipped).map(([k, v]) => [`skip:${k}`, v])));
   const candidates = only ? plan.candidates.filter((c) => c.id === only) : plan.candidates;
   let closed = 0;
+  let refused = 0;
   let exitCode = 0;
 
   for (const candidate of candidates) {
@@ -157,8 +158,8 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       out.rows.push({ id: candidate.id, state: candidate.state, action: 'would-close', sha: decision.sha });
       continue;
     }
-    if (closed >= MAX_CLOSES_PER_RUN) { count('over-run-cap'); continue; }
-    if (TIME_BUDGET_MS - (Date.now() - startMs) < CLOSE_TIMEOUT_MS) { count('over-time-budget'); continue; }
+    const stop = closeRunStopReason({ closed, refused, remainingMs: TIME_BUDGET_MS - (Date.now() - startMs), closeTimeoutMs: CLOSE_TIMEOUT_MS });
+    if (stop) { count(stop); continue; }
     const comment = buildClosureComment({ candidate, sha: decision.sha, auditGeneratedAt: report.generatedAt });
     const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', candidate.id, '--state', 'Done', '--comment', comment],
       { cwd: REPO, encoding: 'utf8', timeout: CLOSE_TIMEOUT_MS });
@@ -170,6 +171,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       write(); // a killed step must not lose the record of a close that already happened
     } else {
       const why = r.status === 5 ? 'gate-refused' : 'close-failed';
+      refused++;
       count(why);
       const tail = (r.stderr || r.stdout || '').trim().split('\n').slice(-2).join(' ').slice(0, 300);
       console.error(`${why} for ${candidate.id}: ${tail}`);
