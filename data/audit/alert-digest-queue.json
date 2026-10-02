@@ -701,5 +701,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-01T23:57:01.897Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4486-recheck-3",
+    "title": "Landing blocked: resolve red on land/bro-4486-recheck-3",
+    "description": "land.yml did not land land/bro-4486-recheck-3: the resolve gate went red at 2f2990402e. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/bro-4486-recheck-3\" is neither a local branch nor on origin (attempts 0, 0.6s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/36941516633",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4486-recheck-3"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "2f2990402e3ecbc533f436ba3e1bf84547c8ae06"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36941516633"
+      }
+    ],
+    "queuedAt": "2026-10-02T00:04:02.868Z"
   }
 ]
