@@ -1041,6 +1041,24 @@ const REGIONAL_FEEDER_VENUES = [
   { re: /\bpaper mill playhouse\b/i, city: 'Millburn, NJ', domain: 'papermill.org' },
   { re: /\balliance theatre\b|\bcoca-?cola stage\b/i, city: 'Atlanta, GA', domain: 'alliancetheatre.org' },
   { re: /\b(?:center theatre group|ahmanson|mark taper)\b/i, city: 'Los Angeles, CA', domain: 'centertheatregroup.org' },
+  // Wider LORT houses (BRO-4509, owner 2026-10-02: "let the number of reviews
+  // decide"). The NYT fall 2026 preview listed 12 reviewed runs at houses this
+  // table missed, so their roundups classified off-broadway and never promoted.
+  // None of these patterns matches any existing non-regional venue in shows.json.
+  { re: /\bhuntington theat(?:re|er)(?: company)?\b|\bcalderwood pavilion\b/i, city: 'Boston, MA', domain: 'huntingtontheatre.org' },
+  { re: /\bgoodspeed\b/i, city: 'East Haddam, CT', domain: 'goodspeed.org' },
+  { re: /\btrinity rep(?:ertory)?\b/i, city: 'Providence, RI', domain: 'trinityrep.com' },
+  { re: /\blong wharf\b/i, city: 'New Haven, CT', domain: 'longwharf.org' },
+  { re: /\byale rep(?:ertory)?\b/i, city: 'New Haven, CT', domain: 'yalerep.org' },
+  { re: /\bnorthlight theat(?:re|er)\b/i, city: 'Evanston, IL', domain: 'northlight.org' },
+  { re: /\bvictory gardens\b/i, city: 'Chicago, IL', domain: 'victorygardens.org' },
+  { re: /\bpasadena playhouse\b/i, city: 'Pasadena, CA', domain: 'pasadenaplayhouse.org' },
+  { re: /\bgeffen playhouse\b/i, city: 'Los Angeles, CA', domain: 'geffenplayhouse.org' },
+  { re: /\blaguna playhouse\b/i, city: 'Laguna Beach, CA', domain: 'lagunaplayhouse.com' },
+  { re: /\bguthrie theat(?:re|er)\b/i, city: 'Minneapolis, MN', domain: 'guthrietheater.org' },
+  { re: /\bseattle rep(?:ertory)?\b/i, city: 'Seattle, WA', domain: 'seattlerep.org' },
+  { re: /\bdallas theat(?:re|er) center\b/i, city: 'Dallas, TX', domain: 'dallastheatercenter.org' },
+  { re: /\bdenver center\b/i, city: 'Denver, CO', domain: 'denvercenter.org' },
   // UK feeder venues (added 2026-08-13, card #1405): Game of Thrones: The Mad
   // King (RSC, world premiere) sat 3 days with reviews-but-no-shows.json-entry
   // because this table was US-only — classifyVenueMarket() fell through to

@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-02T03:12:04.506Z",
+  "timestamp": "2026-10-02T04:46:49.307Z",
   "stats": {
-    "totalReviews": 45776,
-    "alreadyFlagged": 18691,
-    "dateGuardCatches": 261,
+    "totalReviews": 45778,
+    "alreadyFlagged": 18693,
+    "dateGuardCatches": 262,
     "directorMismatch": 1194,
     "tvFilmSignals": 1329,
-    "londonSignals": 1250,
+    "londonSignals": 1251,
     "offBroadwaySignals": 507,
-    "yearMismatch": 103,
-    "noPublishDate": 4131
+    "yearMismatch": 105,
+    "noPublishDate": 4120
   },
   "findings": [
     {
@@ -10327,7 +10327,7 @@
     {
       "showId": "flamenc-oh-off-west-end-2026",
       "file": "london-box-office--eve-jawara.json",
-      "score": 88,
+      "score": 70,
       "publishDate": "2026-10-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/flamenc-oh-peacock-theatre-review",
       "findings": [
@@ -21785,6 +21785,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (2x) more than 2024 (1x). 2026 matches production: oh-mary-tour-2026"
         }
       ]
     },
@@ -30590,6 +30595,11 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (6x) more than 2016 (0x). 2026 matches production: the-front-page-regional-2026"
         }
       ]
     },
@@ -33622,7 +33632,7 @@
     {
       "showId": "the-standard-of-living-west-end-2026",
       "file": "times-uk--dominic-maxwell.json",
-      "score": 68,
+      "score": 57,
       "publishDate": "2026-09-29",
       "url": "https://www.thetimes.com/culture/theatre-dance/article/the-standard-of-living-review-mxq2c5hnx",
       "findings": [
@@ -40857,7 +40867,7 @@
     {
       "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 17,
+      "score": 15,
       "publishDate": "2026-09-25",
       "url": "https://playsinternational.org.uk/catarina-and-the-beauty-of-killing-fascists-dorfman-national-theatre/",
       "findings": [
@@ -44305,7 +44315,7 @@
     {
       "showId": "golden-boy-off-west-end-2026",
       "file": "plays-international--unknown.json",
-      "score": 87,
+      "score": 81,
       "publishDate": "2026-09-18",
       "url": "https://playsinternational.org.uk/golden-boy-almeida-theatre/",
       "findings": [
@@ -45345,7 +45355,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "guardian--emma-john.json",
-      "score": 74,
+      "score": 60,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
       "findings": [
@@ -56326,6 +56336,20 @@
     },
     {
       "showId": "the-inheritance-2019",
+      "file": "broadwayworld--michael-dale.json",
+      "score": 91,
+      "publishDate": "2019-11-18",
+      "url": "https://www.broadwayworld.com/article/BWW-Review-In-Matthew-Lopezs-Exhilarating-THE-INHERITANCE-Gay-Men-Strive-For-Generational-Connection-20191118",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"young vic\""
+        }
+      ]
+    },
+    {
+      "showId": "the-inheritance-2019",
       "file": "curtainup--charles-wright.json",
       "score": 78,
       "publishDate": null,
@@ -56605,7 +56629,7 @@
     {
       "showId": "the-last-ship-west-end-2026",
       "file": "west-end-wilma--westendwilma.json",
-      "score": 65,
+      "score": 58,
       "publishDate": "2026-09-24",
       "url": "https://westendwilma.com/review-the-last-ship-musical-london/",
       "findings": [
@@ -60108,8 +60132,22 @@
     },
     {
       "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "standard--nick-curtis.json",
+      "score": 81,
+      "publishDate": "2026-03-20",
+      "url": "https://www.standard.co.uk/culture/theatre/who-s-afraid-of-virginia-woolf-review-b1299111.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 185d before show (2026-03-20 vs 2026-09-21)"
+        }
+      ]
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
       "file": "timeout-london--andrzej-lukowski.json",
-      "score": 95,
+      "score": 97,
       "publishDate": "2026-10-01",
       "url": "https://www.timeout.com/london/news/whos-afraid-of-virginia-woolf-review-sohoplace-gillian-anderson-100126",
       "findings": [

@@ -60,3 +60,36 @@ test('priorRunOf refuses an earlier run with no openingDate', () => {
   assert.equal(applyAddShow(shows, { show: base(), priorRunOf: 'old' }).ok, false);
   assert.equal(shows.length, 1);
 });
+
+const regional = () => ({ id: 'x-regional-2026', title: 'X', slug: 'x-regional-2026', venue: 'Old Globe Theatre, San Diego, CA',
+  status: 'open', type: 'musical', category: 'regional', market: 'regional', openingDate: '2026-09-18', tags: ['regional'], provisional: true });
+const parent = { id: 'p-2024', slug: 'p-2024', category: 'broadway', market: 'broadway' };
+const tour = () => ({ id: 'p-tour-2026', title: 'P', slug: 'p-tour-2026', venue: 'North American Tour', status: 'open', type: 'play',
+  category: 'tour', market: 'tour', tourOf: 'p-2024', tourScheduleSlug: 'p', tourLaunchEvidence: 'NYT + Tours To You', provisional: true });
+
+test('adds a well-formed regional entry', () => {
+  const shows = [];
+  assert.equal(applyAddShow(shows, { show: regional() }).ok, true);
+  assert.equal(shows[0].provisional, true);
+  const uk = { ...regional(), id: 'y-regional-2026', slug: 'y-regional-2026', venue: 'Royal Shakespeare Theatre, Stratford-upon-Avon' };
+  assert.equal(applyAddShow(shows, { show: uk }).ok, true);
+});
+test('refuses malformed regional entries', () => {
+  assert.equal(applyAddShow([], { show: { ...regional(), market: 'broadway' } }).ok, false);
+  assert.equal(applyAddShow([], { show: { ...regional(), id: 'x-2026', slug: 'x-2026' } }).ok, false);
+  assert.equal(applyAddShow([], { show: { ...regional(), venue: 'Old Globe Theatre' } }).ok, false);
+  assert.equal(applyAddShow([], { show: { ...regional(), tourOf: 'p-2024' } }).ok, false);
+  assert.equal(applyAddShow([], { show: { ...base(), market: 'regional' } }).ok, false);
+});
+test('adds a tour linked to an existing broadway parent', () => {
+  const shows = [{ ...parent }];
+  assert.equal(applyAddShow(shows, { show: tour() }).ok, true);
+  assert.equal(shows[1].tourOf, 'p-2024');
+});
+test('refuses malformed tour entries', () => {
+  assert.equal(applyAddShow([], { show: tour() }).ok, false); // parent missing
+  assert.equal(applyAddShow([{ ...parent, category: 'regional' }], { show: tour() }).ok, false);
+  assert.equal(applyAddShow([{ ...parent }], { show: { ...tour(), venue: 'Shubert Theatre' } }).ok, false);
+  assert.equal(applyAddShow([{ ...parent }], { show: { ...tour(), market: 'broadway' } }).ok, false);
+  assert.equal(applyAddShow([{ ...parent }], { show: { ...tour(), id: 'p-2026', slug: 'p-2026' } }).ok, false);
+});

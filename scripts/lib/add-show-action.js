@@ -19,10 +19,40 @@ const ALLOWED = new Set([
   'openingDate', 'closingDate', 'previewsStartDate', 'openingDateSource', 'isRevival',
   'tags', 'images', 'synopsis', 'theaterAddress', 'ticketLinks', 'cast', 'creativeTeam',
   'ibdbRevivalChecked', 'runtime', 'intermissions', 'ageRecommendation', 'discoverySource',
+  'provisional', 'tourOf', 'tourScheduleSlug', 'tourLaunchEvidence', 'statusSource',
+  'closingDateSource', 'closingDateUpdatedAt', 'discoveredAt',
 ]);
 const ID_RE = /^[a-z0-9][a-z0-9-]*$/;
 const STATUSES = ['upcoming', 'announced', 'previews', 'open', 'closed'];
-const CATEGORIES = ['off-broadway', 'broadway', 'west-end', 'off-west-end'];
+const CATEGORIES = ['off-broadway', 'broadway', 'west-end', 'off-west-end', 'regional', 'tour'];
+const TOUR_ONLY = ['tourOf', 'tourScheduleSlug', 'tourLaunchEvidence'];
+
+// regional/tour entries have their own shape (feedback_regional_show_add_runbook,
+// tour-entry.js buildTourEntry); validate-data.js blocks the build on a broken
+// one, so refuse it here before CI writes it.
+function marketShapeProblem(shows, show) {
+  if (show.category !== 'tour' && TOUR_ONLY.some(f => show[f] !== undefined)) {
+    return `add-show: ${TOUR_ONLY.join('/')} only belong on category "tour"`;
+  }
+  if ((show.market === 'regional' || show.market === 'tour') && show.category !== show.market) {
+    return `add-show: market "${show.market}" needs category "${show.market}"`;
+  }
+  if (show.category === 'regional') {
+    if (show.market !== 'regional') return 'add-show: category "regional" needs market "regional"';
+    if (!/-regional(-|$)/.test(show.id)) return 'add-show: regional id must contain "-regional"';
+    // "Theater, City, ST" (US) or "Theater, Town" (UK feeder venues).
+    if (!/^[^,]+,\s*[^,]+/.test(show.venue)) return `add-show: regional venue "${show.venue}" must read "Theater, City, ST"`;
+  }
+  if (show.category === 'tour') {
+    if (show.market !== 'tour') return 'add-show: category "tour" needs market "tour"';
+    if (!/-tour-\d{4}$/.test(show.id)) return 'add-show: tour id must end "-tour-<year>"';
+    if (show.venue !== 'North American Tour') return 'add-show: tour venue must be "North American Tour"';
+    const parent = shows.find(s => s.id === show.tourOf);
+    if (!parent) return `add-show: tourOf "${show.tourOf}" not found`;
+    if (parent.category !== 'broadway') return `add-show: tourOf "${show.tourOf}" must be a broadway show`;
+  }
+  return null;
+}
 
 function applyAddShow(shows, action) {
   const show = action && action.show;
@@ -33,6 +63,8 @@ function applyAddShow(shows, action) {
   if (!ID_RE.test(show.id) || !ID_RE.test(show.slug)) return { ok: false, reason: 'add-show: id/slug must be lowercase-kebab' };
   if (!STATUSES.includes(show.status)) return { ok: false, reason: `add-show: bad status "${show.status}"` };
   if (!CATEGORIES.includes(show.category)) return { ok: false, reason: `add-show: bad category "${show.category}"` };
+  const shape = marketShapeProblem(shows, show);
+  if (shape) return { ok: false, reason: shape };
   if (sanitizeVenueForWrite(show.venue) === null) return { ok: false, reason: `add-show: venue "${show.venue}" is a placeholder` };
   if (shows.some(s => s.id === show.id)) return { ok: false, reason: `add-show: id "${show.id}" already exists` };
   if (shows.some(s => s.slug === show.slug)) return { ok: false, reason: `add-show: slug "${show.slug}" already exists` };
