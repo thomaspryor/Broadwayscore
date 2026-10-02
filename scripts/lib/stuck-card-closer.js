@@ -133,6 +133,27 @@ function decideClosure({ candidate, issue, commits, nowMs }) {
   return { close: true, sha: own.sha };
 }
 
+// How many cards one run may close. The real limiter is time: every close
+// re-runs the card's check through the Done gate on a fresh origin/main
+// checkout, so quick checks close many cards per run and slow ones few. The
+// count ceiling only bounds the damage if the closer itself has a bug.
+const MAX_CLOSES_PER_RUN = 50;
+// The closer and the Done gate read the same check. When the gate keeps
+// refusing what the closer picked, they disagree, and closing more on that
+// run would be guessing. Stop and let the report show it.
+const MAX_REFUSALS_PER_RUN = 3;
+
+/**
+ * Why the apply loop must stop before the next close, or null to go on.
+ * @param {{closed:number, refused:number, remainingMs:number, closeTimeoutMs:number}} s
+ */
+function closeRunStopReason({ closed, refused, remainingMs, closeTimeoutMs }) {
+  if (refused >= MAX_REFUSALS_PER_RUN) return 'refusal-breaker';
+  if (closed >= MAX_CLOSES_PER_RUN) return 'over-run-cap';
+  if (remainingMs < closeTimeoutMs) return 'over-time-budget';
+  return null;
+}
+
 function buildClosureComment({ candidate, sha, auditGeneratedAt }) {
   return [
     `${CLOSER_MARKER}.`,
@@ -147,6 +168,8 @@ function buildClosureComment({ candidate, sha, auditGeneratedAt }) {
 module.exports = {
   MAX_REPORT_AGE_MS,
   IDLE_MS_BY_STATE,
+  MAX_CLOSES_PER_RUN,
+  MAX_REFUSALS_PER_RUN,
   CLOSER_MARKER,
   cardTestPath,
   mentionsCard,
@@ -155,4 +178,5 @@ module.exports = {
   futureRecheckAfter,
   decideClosure,
   buildClosureComment,
+  closeRunStopReason,
 };
