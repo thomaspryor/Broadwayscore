@@ -103,6 +103,11 @@ async function main() {
     skipped,
   };
   console.log(JSON.stringify(out, null, 2));
+  if (resume) {
+    // The routine prompt says "new branch"; .claude/CLOUD.md says pick.resume
+    // overrides that. Repeat it where a skimming worker will see it.
+    console.error(`[cloud-worker-pick] RESUME ${pick.identifier}: follow pick.resume.instructions (land ref ${resume.ref}), not a new branch.`);
+  }
 }
 
 main().catch((err) => {
