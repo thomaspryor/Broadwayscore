@@ -6,6 +6,23 @@
   "windowDays": 7,
   "orphans": [
     {
+      "file": "axs--unknown.json",
+      "outletId": "axs",
+      "criticName": "Unknown",
+      "url": "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets",
+      "fullTextLen": 1120,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
+    {
       "file": "ticketsmarter--unknown.json",
       "outletId": "ticketsmarter",
       "criticName": "Unknown",
@@ -23,10 +40,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
+  "orphanCount": 2,
+  "dispatchableOrphanCount": 1,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatch": "suppressed-cooldown",
   "lastDispatchAt": null
 }
