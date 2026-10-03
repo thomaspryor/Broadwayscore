@@ -36,6 +36,9 @@ function getAudienceGrade(score) {
   return { grade: 'F', label: 'Loathing It', color: '#6b7280', textColor: '#fff', tooltip: 'Very poor reception' };
 }
 
+// "Reviews from YYYY" on closed-show archive cards. Same rule as
+// scripts/generate-homepage-archive.js; separate from engine.ts's open-show
+// caveat (getReviewAgeYear), which never applies to closed shows.
 function getReviewYearNote(show, showReviews) {
   if (!show.openingDate || !showReviews || showReviews.length < 3) return undefined;
   const openYear = new Date(show.openingDate).getFullYear();

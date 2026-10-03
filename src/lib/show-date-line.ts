@@ -155,28 +155,43 @@ export function getReviewPublishYears(
 }
 
 /**
- * "Most reviews from N years ago" caveat under the critic score for
- * long-running open shows. Shared by both heroes so the redesign can't
- * silently drop it again (BRO-4525: the redesign shipped to demo without it).
+ * The year most of an open show's reviews date from, when that is 10+ years
+ * ago; null otherwise. Single rule behind the "most reviews are old" caveat on
+ * both heroes (getReviewAgeNote) and the list cards (engine.ts reviewYearNote),
+ * so a show page and its card can't disagree (BRO-4525: the cards kept the old
+ * openingDate math and still said "Most reviews from 1952" for The Mousetrap).
  *
- * N comes from the reviews' own publish years (the year a strict majority of
+ * Counts from the reviews' own publish years (the year a strict majority of
  * them were published by), not openingDate. West End re-entries and shows
  * re-reviewed after a reopening carry reviews decades newer than the original
  * opening: counting from openingDate told readers The Mousetrap's reviews were
- * 74 years old when most are from 2021. Needs 3+ dated reviews and 10+ years.
- * Callers pass only shows that display a critic score.
+ * 74 years old when most are from 2021. Needs 3+ dated reviews. Callers pass
+ * only shows that display a critic score.
+ */
+export function getReviewAgeYear(
+  show: Pick<ShowDateLineInput, 'status'>,
+  reviews: ReadonlyArray<{ publishDate?: string | null }> | null | undefined,
+  now: Date = new Date()
+): number | null {
+  if (show.status === 'closed') return null;
+  const years = getReviewPublishYears(reviews).sort((a, b) => a - b);
+  if (years.length < 3) return null;
+  // Upper median: more than half the reviews are from this year or earlier.
+  const majorityYear = years[Math.floor(years.length / 2)];
+  if (now.getUTCFullYear() - majorityYear < 10) return null;
+  return majorityYear;
+}
+
+/**
+ * Hero wording of getReviewAgeYear: "Most reviews from N years ago" under the
+ * critic score. Shared by both heroes so the redesign can't silently drop it
+ * again (BRO-4525: the redesign shipped to demo without it).
  */
 export function getReviewAgeNote(
   show: Pick<ShowDateLineInput, 'status'>,
   reviews: ReadonlyArray<{ publishDate?: string | null }> | null | undefined,
   now: Date = new Date()
 ): string | null {
-  if (show.status === 'closed') return null;
-  const years = getReviewPublishYears(reviews).sort((a, b) => a - b);
-  if (years.length < 3) return null;
-  // Upper median: more than half the reviews are from this year or earlier.
-  const majorityYear = years[Math.floor(years.length / 2)];
-  const yearsAgo = now.getUTCFullYear() - majorityYear;
-  if (yearsAgo < 10) return null;
-  return `Most reviews from ${yearsAgo} years ago`;
+  const year = getReviewAgeYear(show, reviews, now);
+  return year === null ? null : `Most reviews from ${now.getUTCFullYear() - year} years ago`;
 }
