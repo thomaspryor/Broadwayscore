@@ -177,7 +177,8 @@
     "the-importance-of-being-oscar-off-west-end-2026/thesetheatrethoughts--thesetheatrethoughts.json",
     "the-enormous-crocodile-west-end-2026/afridiziak-theatre-news--ronke-lawal.json",
     "les-miserables-arena-concert-spectacular-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-    "the-car-man-west-end-2026/balletcoforum--unknown.json"
+    "the-car-man-west-end-2026/balletcoforum--unknown.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -316,7 +317,17 @@
     "the-car-man-west-end-2026/guardian--ammar-kalia.json",
     "the-enormous-crocodile-west-end-2026/third-coast-review--unknown.json",
     "loves-labours-lost-globe-west-end-2026/thestage--dave-fargnoli.json",
-    "the-car-man-west-end-2026/thestage--dave-fargnoli.json"
+    "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
+    "midnight-off-broadway-2026/broadwayworld--michael-major.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -415,7 +426,8 @@
       "tao-of-glass-west-end-2026/north-west-end--michelle-knight.json",
       "the-importance-of-being-oscar-off-west-end-2026/british-theatre--keith-mckenna.json",
       "the-importance-of-being-oscar-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-      "the-car-man-west-end-2026/balletcoforum--unknown.json"
+      "the-car-man-west-end-2026/balletcoforum--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [
       "data/review-texts/fire-fire-off-west-end-2026/variety--jay-weissberg.json",
@@ -426,7 +438,8 @@
     "browserbase": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -526,7 +539,7 @@
     ]
   },
   "startTime": "2026-10-03T08:40:40.034Z",
-  "lastProcessed": "the-car-man-west-end-2026/thestage--dave-fargnoli.json",
+  "lastProcessed": "la-boheme-off-broadway-2026/thestage--the-stage.json",
   "log": [
     {
       "t": "2026-10-03T10:03:21.821Z",
@@ -688,6 +701,58 @@
       "event": "bb-session",
       "session": "16919035",
       "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-10-03T12:25:39.304Z",
+      "event": "bb-session",
+      "session": "b39968a3",
+      "url": "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets"
+    },
+    {
+      "t": "2026-10-03T12:25:57.668Z",
+      "event": "bb-session",
+      "session": "d9f980b4",
+      "url": "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets"
+    },
+    {
+      "t": "2026-10-03T12:27:10.564Z",
+      "event": "bb-session",
+      "session": "8ce2222c",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-03T12:27:29.591Z",
+      "event": "bb-session",
+      "session": "32856350",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-03T12:31:36.087Z",
+      "event": "bb-session",
+      "session": "9dc41982",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-03T12:33:23.559Z",
+      "event": "bb-session",
+      "session": "69b83914",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-03T12:33:24.350Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-03T12:33:42.078Z",
+      "event": "bb-session",
+      "session": "a8c82488",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-03T12:33:42.684Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
