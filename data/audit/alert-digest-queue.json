@@ -327,5 +327,89 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-03T13:03:46.563Z"
+  },
+  {
+    "conditionKey": "opening-night-fulltext-mentions-show:short:what-the-animals-say-off-west-end-2026",
+    "title": "Shipped review too short to verify on What The Animals Say",
+    "description": "thestage/Sam Marlowe (thestage--sam-marlowe.json) SHIPPED with fullText too short to assess title mention (0 chars — paywall stub?): https://www.thestage.co.uk/reviews/what-the-animals-say-review-finborough-theatre-london",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T13:28:17.541Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-what-the-animals-say-off-west-end-2026",
+    "title": "Placeholder synopsis on What The Animals Say",
+    "description": "synopsis for what-the-animals-say-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T13:28:17.548Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:affluenza-off-west-end-2026",
+    "title": "Auto-remediation gave up on affluenza-off-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"affluenza-off-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T13:28:18.789Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:franz-and-marie-west-end-2026",
+    "title": "Auto-remediation gave up on franz-and-marie-west-end-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"franz-and-marie-west-end-2026\",\"category\":\"off-west-end\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T13:28:18.799Z"
+  },
+  {
+    "conditionKey": "opening-night-remediation-exhausted-empty-cast:soon-off-broadway-2026",
+    "title": "Auto-remediation gave up on soon-off-broadway-2026",
+    "description": "empty-cast keeps failing after 2 automatic attempt(s) in 24h. Remaining fix: backfill-cast-web.yml {\"show_filter\":\"soon-off-broadway-2026\",\"category\":\"off-broadway\",\"force\":\"true\"}",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T13:28:18.805Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-measure-for-measure-off-west-end-2026",
+    "title": "Placeholder synopsis on Measure for Measure",
+    "description": "synopsis for measure-for-measure-off-west-end-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T13:28:19.079Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-torera-off-broadway-2026",
+    "title": "Placeholder synopsis on Torera",
+    "description": "synopsis for torera-off-broadway-2026 is empty — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T13:28:21.694Z"
   }
 ]

@@ -86,6 +86,8 @@ on:
       # listed above.
       - 'scripts/check-vercel-build-guard.js'
       - 'scripts/check-corpus-drift.js'
+      # tests/unit/serp-review-acceptance.test.mjs requires scan-serp-adoptions.js (BRO-4546)
+      - 'scripts/scan-serp-adoptions.js'
       # BRO-4215: required by scripts/lib/check-attribution-gap-clear.test.mjs
       - 'scripts/check-attribution-gap-clear.js'
       # BRO-3375: same gap shape — a top-level scripts/ file outside the
