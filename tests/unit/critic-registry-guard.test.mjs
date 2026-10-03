@@ -10,11 +10,9 @@ import assert from 'node:assert';
 import fs from 'fs';
 import path from 'path';
 import os from 'os';
-import { fileURLToPath } from 'url';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const __dirname = path.dirname(fileURLToPath(import.meta.url));
 // Hermetic fixture registry (BRO-4550): the live data/critic-registry.json is
 // rebuilt by bots, and on 2026-10-03 peter-marks gained "variety" in
 // knownOutlets, silently turning the first case below red on main.
@@ -40,6 +38,7 @@ describe('Guard G: Critic-registry misattribution detection', () => {
   });
 
   after(() => {
+    delete process.env.BSC_CRITIC_REGISTRY_PATH;
     fs.rmSync(tmpDir, { recursive: true, force: true });
   });
 
