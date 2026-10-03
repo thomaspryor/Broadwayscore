@@ -1,32 +1,103 @@
 {
-  "updatedAt": "2026-10-03T16:18:34.720Z",
-  "processed": 199,
-  "failed": 120,
-  "successRate": "62.4%",
+  "updatedAt": "2026-10-03T16:53:29.261Z",
+  "processed": 258,
+  "failed": 181,
+  "successRate": "58.8%",
   "tierBreakdown": {
     "playwright": 126,
     "amp": 4,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 27,
-    "scrapingbee": 15,
-    "brightdata": 3,
+    "scrapingdog": 37,
+    "scrapingbee": 16,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 82
+    "archive": 10
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 7,
   "recentActivity": [
     {
       "t": "2026-10-03T16:15:57.136Z",
       "event": "bb-session",
-      "session": "b457089c",
-      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+      "session": "63c04e66",
+      "url": "http://www.publictheater.org/"
     },
     {
-      "t": "2026-10-03T16:16:16.103Z",
+      "t": "2026-10-03T16:30:50.232Z",
       "event": "bb-session",
-      "session": "dd9c22f3",
-      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+      "session": "336f27d6",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
+    },
+    {
+      "t": "2026-10-03T16:30:50.615Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-03T16:31:02.604Z",
+      "event": "bb-session",
+      "session": "029500aa",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235179126"
+    },
+    {
+      "t": "2026-10-03T16:31:02.964Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-03T16:33:03.623Z",
+      "event": "bb-session",
+      "session": "653f668a",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-03T16:33:03.943Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-03T16:33:14.315Z",
+      "event": "bb-session",
+      "session": "55de39e9",
+      "url": "https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916"
+    },
+    {
+      "t": "2026-10-03T16:33:14.668Z",
+      "event": "bb-cookie-inject",
+      "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-03T16:39:20.465Z",
+      "event": "bb-session",
+      "session": "1b599fd5",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-03T16:39:20.904Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-03T16:39:29.786Z",
+      "event": "bb-session",
+      "session": "e46a1f40",
+      "url": "https://www.wsj.com/articles/book-of-mormon-broadway-review-2011"
+    },
+    {
+      "t": "2026-10-03T16:39:30.130Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-03T16:46:58.257Z",
+      "event": "bb-session",
+      "session": "2b53a9a4",
+      "url": "https://www.thestage.co.uk/reviews/the-mousetrap-review-at-st-martins-theatre-lo"
+    },
+    {
+      "t": "2026-10-03T16:46:58.638Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
