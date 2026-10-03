@@ -14,6 +14,7 @@ Notion update no longer counts as a close-out in any gate (BRO-4274). Never use 
 **Session start** (one of):
 - New work: `node scripts/linear-brain.js create "<title>" --dispatch|--park "<reason>" --notes "...## Acceptance criteria\n<safe-form command>"`. Output the URL.
 - Dispatched onto an existing issue: `node scripts/linear-session.js claim --issue=BRO-N`.
+- Pick the worker model at filing with `--model opus|sonnet` (stamps a `Model:` line the Mac dispatcher reads). Opus: multi-file, architectural, adversarial debugging. Sonnet: mechanical, single-file, data fixes. Opus picks count toward the 6-a-day Opus cap; a retried card escalates to Opus whatever the line says. Omitted: Opus for P0s and retries, else Sonnet.
 Keep the BRO-N from that output; it is the session's card (there is no "list In Progress" search).
 
 **During:** new discoveries get their own issue (`linear-brain.js create ... --park`), batched, only if not fixable now. `linear-brain.js find "<phrase>"` returns the first open issue matching a title/body phrase (dedup check before filing).

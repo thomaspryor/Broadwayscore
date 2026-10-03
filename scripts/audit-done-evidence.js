@@ -61,7 +61,9 @@ const {
 const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptance-check-core.js');
 const { fetchDoneEvidenceCandidates, selectCandidates, DONE_WINDOW_DAYS } = require('./lib/done-evidence-source.js');
 const { resolveEvidenceUrl, parseEvidenceUrl, pathPredatesCard, pathNeverExisted } = require('./lib/done-evidence-remote.js');
-const { classifyCard, summarize, doneTally, buildDigestSnapshot, isNonProbativeCommand, adjudicateMisArmed, VERDICTS } = require('./lib/done-evidence-audit.js');
+const { classifyCard, summarize, doneTally, buildDigestSnapshot, isNonProbativeCommand, adjudicateMisArmed, VERDICTS,
+  isTimeoutResult, rotationOffset, priorSlowIds, demoteSlowChecks, nextSlowIds,
+  nextSlowSince } = require('./lib/done-evidence-audit.js');
 // extractCheckPaths, NOT card-premises-auditor's extractCheckFilePaths. The
 // latter is deliberately narrowed to the two forms BRO-3076's vacuous-check
 // rule covers (`node --test`, `test -f`), so a card armed with the generic
@@ -260,17 +262,26 @@ async function main(argv = process.argv.slice(2)) {
   // on the same day sweeps the same order.
   const ordered = selectCandidates(fetched.cards);
   const dayOfYear = Math.floor((Date.now() - Date.UTC(new Date().getUTCFullYear(), 0, 0)) / 86400000);
-  const offset = ordered.length ? (dayOfYear % ordered.length) : 0;
+  // Golden-ratio stride, not +1/day: at +1/day the ~100 cards the budget
+  // never reaches stayed unreached for months (sweep-order block in
+  // lib/done-evidence-audit.js).
+  const offset = rotationOffset(dayOfYear, ordered.length);
   const candidates = [...ordered.slice(offset), ...ordered.slice(0, offset)].slice(0, limit);
   console.error(`[done-evidence] ${candidates.length} candidate card(s) (Done ${DONE_WINDOW_DAYS}d + In Review + In Progress)`);
 
   // Evidence extraction is pure and cheap — do it for every card up front so
   // the plan is fully known before any checkout or network call.
-  const planned = candidates.map((card) => {
+  const plannedRaw = candidates.map((card) => {
     const prRef = extractPrRef([card.notes, ...(card.comments || [])].join('\n\n'));
     const gate = evaluateVerifiability(card.notes, card.comments);
     return { card, prRef, cmd: gate.cmd || null };
   });
+  // Checks that hit the 60s kill last run go last, so they stop eating the
+  // budget every day before the cards behind them are reached.
+  let prevReport = null;
+  try { prevReport = JSON.parse(fs.readFileSync(REPORT_PATH, 'utf8')); } catch { /* first run or unreadable: no demotion */ }
+  const { ordered: planned, demoted: demotedSlow } = demoteSlowChecks(plannedRaw, priorSlowIds(prevReport, Date.parse(generatedAt)));
+  if (demotedSlow.length) console.error(`[done-evidence] ${demotedSlow.length} slow check(s) moved to the end of the sweep: ${demotedSlow.join(', ')}`);
 
   if (dryRun) {
     for (const p of planned) {
@@ -323,6 +334,8 @@ async function main(argv = process.argv.slice(2)) {
   // run. Recording it is what lets the next person tune the budget from data
   // instead of guessing, and what will show it growing as the board grows.
   const durations = [];
+  const ranIds = new Set();
+  const timedOutIds = [];
   try {
     for (const { card, prRef, cmd } of planned) {
       const outOfTime = Date.now() > deadline - MIN_REMAINING_MS_TO_START;
@@ -453,7 +466,11 @@ async function main(argv = process.argv.slice(2)) {
         misArmed,
       });
       const ms = Date.now() - cardStart;
-      if (runResult) durations.push({ id: card.id, cmd, ms });
+      if (runResult) {
+        durations.push({ id: card.id, cmd, ms });
+        ranIds.add(card.id);
+        if (isTimeoutResult(runResult)) timedOutIds.push(card.id);
+      }
       results.push({ ...verdict, ms });
     }
   } finally {
@@ -468,6 +485,7 @@ async function main(argv = process.argv.slice(2)) {
 
   const counts = summarize(results);
   const tally = doneTally(results);
+  const slowDemoted = nextSlowIds({ demoted: demotedSlow, ran: ranIds, timedOut: timedOutIds });
   const report = {
     generatedAt,
     shadow: true,
@@ -478,6 +496,10 @@ async function main(argv = process.argv.slice(2)) {
     notReRun: notRun,
     unresolvedProbes,
     sweepOffset: offset,
+    slowDemoted,
+    slowDemotedSince: nextSlowSince({
+      ids: slowDemoted, prevSince: prevReport && prevReport.slowDemotedSince, ran: ranIds, nowIso: generatedAt,
+    }),
     elapsedMs: Date.now() - startedAt,
     timeBudgetMs,
     slowestChecks: slowest,
