@@ -105,6 +105,10 @@ interface ShowHeroRedesignProps {
    *  shows "reviewed <years>" instead. Computed server-side because this
    *  component's reviews are narrowed to reviewScore (no publishDate). */
   tourReviewYears?: string | null;
+  /** "Most reviews from N years ago" caveat (getReviewAgeNote), null when it
+   *  doesn't apply. Computed server-side for the same reason as tourReviewYears,
+   *  and shared with the legacy hero so both show it for the same shows. */
+  reviewAgeNote?: string | null;
   /** Server-rendered ShowTrustLines (tour parent, tryout transfer, tour stops),
    *  shared with the legacy header so the redesign keeps those links. */
   trustLines?: React.ReactNode;
@@ -135,6 +139,7 @@ function Inner({
   isOffBroadway,
   ranks,
   tourReviewYears,
+  reviewAgeNote,
   trustLines,
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
@@ -188,6 +193,15 @@ function Inner({
   const tier = score !== null ? getScoreTier(score, show.category) : null;
   const isClosed = show.status === 'closed';
   const isPreviews = show.status === 'previews' || show.status === 'upcoming';
+
+  // Mobile score cards. Two side by side leave ~50px for the text next to the
+  // badge on a phone, so "Recommended" ran past the card border (BRO-4525).
+  // Below sm the pair stacks badge over text; one card or sm+ stays a row.
+  const dualScoreCards = !!(hasAudience && audienceGrade);
+  const scoreCardLayout = dualScoreCards
+    ? 'flex-col items-center text-center gap-2 sm:flex-row sm:text-left sm:gap-3'
+    : 'items-center gap-3';
+  const scoreCardTextClass = dualScoreCards ? 'min-w-0 w-full sm:w-auto sm:flex-1' : 'min-w-0 flex-1';
 
   // ─── Effects ───────────────────────────────────────────────────────────
 
@@ -477,6 +491,11 @@ function Inner({
                     Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
                   </p>
                   <HeroRankLine ranks={ranks} market={show.category} />
+                  {reviewAgeNote && (
+                    <p className="text-xs text-gray-500 mt-1 leading-snug" data-testid="hero-review-age-note">
+                      {reviewAgeNote}
+                    </p>
+                  )}
                 </div>
               </a>
               {hasAudience && audienceGrade && (
@@ -500,10 +519,10 @@ function Inner({
       {!hasEnoughCriticReviews ? (
         <AwaitingCard show={show} reviewCount={reviewCount} />
       ) : (
-        <div className={`lg:hidden grid gap-2.5 ${hasAudience && audienceGrade ? 'grid-cols-2' : 'grid-cols-1'}`}>
-          <a href="#critic-reviews" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
+        <div className={`lg:hidden grid gap-2.5 ${dualScoreCards ? 'grid-cols-2' : 'grid-cols-1'}`}>
+          <a href="#critic-reviews" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
             <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
-            <div className="min-w-0 flex-1">
+            <div className={scoreCardTextClass}>
               {tier && (
                 <p className="text-xs sm:text-sm font-bold leading-tight break-normal" style={{ color: tier.color }}>
                   {tier.label}
@@ -514,15 +533,15 @@ function Inner({
               </p>
             </div>
           </a>
-          {hasAudience && audienceGrade && (
-            <a href="#audience" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
+          {dualScoreCards && (
+            <a href="#audience" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
               <div
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center flex-shrink-0 text-3xl font-extrabold"
                 style={{ background: audienceGrade.color, color: audienceGrade.textColor }}
               >
                 {audienceGrade.grade}
               </div>
-              <div className="min-w-0 flex-1">
+              <div className={scoreCardTextClass}>
                 <p className="text-xs sm:text-sm font-bold leading-tight break-normal" style={{ color: audienceGrade.color }}>
                   {audienceGrade.label}
                 </p>
@@ -542,6 +561,14 @@ function Inner({
           Critic Reviews" in the score block above. */}
       {hasEnoughCriticReviews && (
         <HeroRankLine ranks={ranks} market={show.category} className="lg:hidden -mt-1" />
+      )}
+
+      {/* Mobile-only review-age caveat for long-running shows (desktop renders
+          it inline in the score block above). */}
+      {hasEnoughCriticReviews && reviewAgeNote && (
+        <p className="lg:hidden -mt-1 text-xs text-gray-500 leading-snug" data-testid="hero-review-age-note-mobile">
+          {reviewAgeNote}
+        </p>
       )}
 
       {/* Distribution bar — both modes; spans full width under the header. */}
