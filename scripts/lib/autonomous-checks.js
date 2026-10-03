@@ -158,9 +158,13 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   const testFiles = new Set();
   const tsxTestFiles = new Set();
   const addMjs = f => (tsxManifest.has(f) ? tsxTestFiles : testFiles).add(f);
+  // Every caller builds changedFiles from `git diff --name-only`, which also
+  // lists paths the branch DELETED. A deleted test or script must not become
+  // a check: `node --test`/`node --check` on a missing path exits 1, which
+  // refuses a branch whose only sin is removing a dead file.
   for (const f of files) {
-    if (/\.test\.mjs$/.test(f)) { addMjs(f); continue; }
-    if (/\.test\.ts$/.test(f)) { tsxTestFiles.add(f); continue; }
+    if (/\.test\.mjs$/.test(f)) { if (existsFn(f)) addMjs(f); continue; }
+    if (/\.test\.ts$/.test(f)) { if (existsFn(f)) tsxTestFiles.add(f); continue; }
     // Colocated test convention: scripts/lib/x.js → scripts/lib/x.test.mjs
     // (or scripts/lib/x.ts → scripts/lib/x.test.ts, checked first — a .ts
     // source is exactly the case whose colocated test needs tsx to run).
@@ -176,7 +180,7 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   // colocated test, and "it parses" is the cheapest true statement we can
   // make about one. Never a substitute for a test — an addition to it.
   if (tier === 3) {
-    for (const f of files.filter(f => /^scripts\/.*\.(js|mjs|cjs)$/.test(f) && !/\.test\.m?js$/.test(f)).sort()) {
+    for (const f of files.filter(f => /^scripts\/.*\.(js|mjs|cjs)$/.test(f) && !/\.test\.m?js$/.test(f) && existsFn(f)).sort()) {
       add(`node --check ${f}`, ['node', '--check', f]);
     }
   }
