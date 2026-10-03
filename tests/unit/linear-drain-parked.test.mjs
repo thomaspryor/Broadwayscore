@@ -1062,6 +1062,17 @@ describe('main: session-parked dispatch and daily cap (BRO-4535)', () => {
     assert.strictEqual(rows.find((r) => r.identifier === 'BRO-8').sessionParked, undefined);
   });
 
+  test('a session card that quotes the alert-router marker in its body still gets the session waiver', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const calls = [];
+    const d = SESSION_BODY.replace('X.', 'The tracker said "Auto-filed by owner-alert-router" but no PARKED line carries it.');
+    const result = await main([], baseDeps([sessionIssue({ identifier: 'BRO-9', priority: 1, description: d })], {
+      dispatchFn: (taskId, _log, _delay, _model, opts) => { calls.push([taskId, opts]); },
+    }));
+    assert.deepStrictEqual(result.dispatched, ['BRO-9']);
+    assert.deepStrictEqual(calls[0], ['linear:BRO-9', { allowSessionParked: true }]);
+  });
+
   test('a full 24h budget dispatches nothing', async () => {
     delete process.env.LINEAR_NEXT_DISABLED;
     assert.strictEqual(DAILY_DISPATCH_CAP, 20);
