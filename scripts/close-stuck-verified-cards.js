@@ -26,7 +26,10 @@ const fs = require('fs');
 const path = require('path');
 const { spawnSync, execFileSync } = require('child_process');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { planCandidates, decideClosure, buildClosureComment, closeRunStopReason } = require('./lib/stuck-card-closer.js');
+const {
+  planCandidates, decideClosure, buildClosureComment, closeRunStopReason,
+  decideBounce, buildBounceComment, MAX_BOUNCES, MAX_BOUNCES_PER_RUN,
+} = require('./lib/stuck-card-closer.js');
 
 const REPO = path.join(__dirname, '..');
 const AUDIT = path.join(REPO, 'data', 'audit', 'done-evidence-audit.json');
@@ -132,7 +135,52 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   let refused = 0;
   let exitCode = 0;
 
-  for (const candidate of candidates) {
+  // Bounces first: each is one Linear write with no re-run of the check, so
+  // ten of them cost seconds, while closes spend the time budget.
+  const bounces = only ? plan.bounces.filter((b) => b.id === only) : plan.bounces;
+  let bounced = 0;
+  for (const candidate of bounces) {
+    let issue;
+    try {
+      const data = await linear.graphql(ISSUE_QUERY, { id: candidate.id });
+      issue = data && data.issue ? { ...data.issue, comments: (data.issue.comments && data.issue.comments.nodes) || [] } : null;
+    } catch (err) {
+      console.error(`[close-stuck-verified-cards] could not read ${candidate.id}: ${err.message}`);
+      out.rows.push({ id: candidate.id, action: 'read-failed', reason: err.message.slice(0, 200) });
+      exitCode = 3;
+      break;
+    }
+    const decision = decideBounce({ candidate, issue, nowMs });
+    if (!decision.bounce) {
+      count(`bounce:${decision.reason}`);
+      out.rows.push({ id: candidate.id, state: candidate.state, action: decision.reason === 'bounce-exhausted' ? 'bounce-exhausted' : 'leave', reason: decision.reason });
+      continue;
+    }
+    if (!apply) {
+      count('would-bounce');
+      console.log(`would bounce ${candidate.id} to Todo (check fails on main; bounce ${decision.priorBounces + 1} of ${MAX_BOUNCES})`);
+      out.rows.push({ id: candidate.id, state: candidate.state, action: 'would-bounce' });
+      continue;
+    }
+    if (bounced >= MAX_BOUNCES_PER_RUN) { count('bounce:over-run-cap'); continue; }
+    const comment = buildBounceComment({ candidate, priorBounces: decision.priorBounces, auditGeneratedAt: report.generatedAt });
+    const r = (deps.spawn || spawnSync)('node', [path.join(__dirname, 'linear-brain.js'), 'update', candidate.id, '--state', 'Todo', '--comment', comment],
+      { cwd: REPO, encoding: 'utf8', timeout: CLOSE_TIMEOUT_MS });
+    if (r.status === 0) {
+      bounced++;
+      count('bounced');
+      console.log(`bounced ${candidate.id} to Todo`);
+      out.rows.push({ id: candidate.id, state: candidate.state, action: 'bounced' });
+    } else {
+      count('bounce-failed');
+      const tail = (r.stderr || r.stdout || '').trim().split('\n').slice(-2).join(' ').slice(0, 300);
+      console.error(`bounce-failed for ${candidate.id}: ${tail}`);
+      out.rows.push({ id: candidate.id, state: candidate.state, action: 'bounce-failed', reason: tail });
+    }
+    write();
+  }
+
+  for (const candidate of exitCode ? [] : candidates) {
     if (Date.now() - startMs > TIME_BUDGET_MS) { count('over-time-budget'); continue; }
     let issue;
     let commits;
@@ -179,7 +227,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       write();
     }
   }
-  console.log(`[close-stuck-verified-cards] candidates ${candidates.length}; ${apply ? `closed ${closed}; ` : ''}${JSON.stringify(out.counts)}`);
+  console.log(`[close-stuck-verified-cards] candidates ${candidates.length}, bounces ${bounces.length}; ${apply ? `closed ${closed}, bounced ${bounced}; ` : ''}${JSON.stringify(out.counts)}`);
   write();
   return exitCode;
 }

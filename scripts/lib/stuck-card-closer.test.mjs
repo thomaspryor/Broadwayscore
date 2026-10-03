@@ -15,6 +15,11 @@ const {
   closeRunStopReason,
   MAX_CLOSES_PER_RUN,
   MAX_REFUSALS_PER_RUN,
+  BOUNCE_MARKER,
+  MAX_BOUNCES,
+  MAX_BOUNCES_PER_RUN,
+  decideBounce,
+  buildBounceComment,
 } = require('./stuck-card-closer.js');
 
 const NOW = Date.parse('2026-10-02T18:00:00Z');
@@ -221,4 +226,95 @@ test('CLI --apply closes past 10 and stops after repeated Done-gate refusals', a
   assert.equal(out.counts['gate-refused'], MAX_REFUSALS_PER_RUN);
   assert.equal(out.counts['refusal-breaker'], 20 - 12 - MAX_REFUSALS_PER_RUN);
   assert.equal(spawned.length, 12 + MAX_REFUSALS_PER_RUN);
+});
+
+// ── bounce: In Review cards whose own check fails go back to Todo ──────────
+
+const failRow = (over = {}) => ({
+  id: 'BRO-7', state: 'In Review', verdict: 'UNVERIFIABLE', cmd: 'node --test scripts/lib/bro-7.test.mjs',
+  openCheckFails: true, failDetail: 'exit 1: 2 failing', channels: [], ...over,
+});
+
+test('planCandidates lists only flagged In Review rows as bounces', () => {
+  const plan = planCandidates({ generatedAt: iso(NOW - 3600e3), results: [
+    failRow(),
+    failRow({ id: 'BRO-8', state: 'In Progress' }),
+    failRow({ id: 'BRO-9', openCheckFails: undefined }),
+    failRow({ id: 'BRO-10', cmd: null }),
+  ] }, NOW);
+  assert.deepEqual(plan.bounces.map((b) => b.id), ['BRO-7']);
+  assert.equal(plan.bounces[0].failDetail, 'exit 1: 2 failing');
+});
+
+test('decideBounce sends an idle failing card back, and gives up after MAX_BOUNCES', () => {
+  const cand = { id: 'BRO-7', state: 'In Review', cmd: 'node --test x.test.mjs' };
+  const iss = (over = {}) => ({ state: { name: 'In Review' }, updatedAt: iso(NOW - 2 * DAY), description: 'x', comments: [], ...over });
+  const d = (over) => decideBounce({ candidate: cand, issue: over === null ? null : iss(over), nowMs: NOW });
+  assert.deepEqual(d({}), { bounce: true, priorBounces: 0 });
+  assert.equal(d(null).reason, 'issue-not-found');
+  assert.equal(d({ state: { name: 'Todo' } }).reason, 'state-changed-since-audit');
+  assert.equal(d({ updatedAt: iso(NOW - 3600e3) }).reason, 'recent-activity');
+  assert.equal(d({ description: 'RECHECK-AFTER: 2026-10-09' }).reason, 'recheck-after-pending');
+  const old = (n) => Array.from({ length: n }, () => ({ body: `${BOUNCE_MARKER} (1 of 2).`, createdAt: iso(NOW - 5 * DAY) }));
+  assert.deepEqual(d({ comments: old(MAX_BOUNCES - 1) }), { bounce: true, priorBounces: MAX_BOUNCES - 1 });
+  assert.equal(d({ comments: old(MAX_BOUNCES) }).reason, 'bounce-exhausted');
+});
+
+test('buildBounceComment carries the marker and count, and no gate-evidence keywords', () => {
+  const body = buildBounceComment({ candidate: { cmd: 'node --test x.test.mjs', failDetail: 'exit 1' }, priorBounces: 1, auditGeneratedAt: 'T' });
+  assert.ok(body.startsWith(`${BOUNCE_MARKER} (2 of ${MAX_BOUNCES})`));
+  assert.match(body, /exit 1/);
+  assert.doesNotMatch(body, /VERIFY:|PR-EVIDENCE:|^Dispatched|PARKED:/m);
+});
+
+test('CLI --apply moves failing In Review cards to Todo, capped per run; dry run only reports', async () => {
+  const fs = require('node:fs');
+  const os = require('node:os');
+  const path = require('node:path');
+  const { main } = require('../close-stuck-verified-cards.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'closer-bounce-'));
+  const ids = Array.from({ length: MAX_BOUNCES_PER_RUN + 3 }, (_, i) => `BRO-${300 + i}`);
+  const auditPath = path.join(dir, 'audit.json');
+  const outPath = path.join(dir, 'out.json');
+  const now = Date.now();
+  fs.writeFileSync(auditPath, JSON.stringify({
+    generatedAt: new Date(now - 3600e3).toISOString(),
+    results: ids.map((id) => failRow({ id, cmd: `node --test scripts/lib/${id.toLowerCase()}.test.mjs` })),
+  }));
+  const exhausted = ids[0];
+  const linear = {
+    graphql: async (_q, { id }) => ({ issue: {
+      identifier: id, state: { name: 'In Review', type: 'started' },
+      createdAt: new Date(now - 10 * DAY).toISOString(), updatedAt: new Date(now - 3 * DAY).toISOString(),
+      description: 'x',
+      comments: { nodes: id === exhausted
+        ? Array.from({ length: MAX_BOUNCES }, () => ({ body: BOUNCE_MARKER, createdAt: new Date(now - 4 * DAY).toISOString() }))
+        : [] },
+    } }),
+  };
+  const run = async (argv) => {
+    const spawned = [];
+    const spawn = (_node, args) => { spawned.push(args.slice(1, 5)); return { status: 0, stdout: '' }; };
+    const log = console.log;
+    const err = console.error;
+    console.log = () => {};
+    console.error = () => {};
+    try {
+      assert.equal(await main(argv, { linear, commitsTouching: async () => [], spawn, auditPath, outPath }), 0);
+    } finally {
+      console.log = log;
+      console.error = err;
+    }
+    return { spawned, out: JSON.parse(fs.readFileSync(outPath, 'utf8')) };
+  };
+  const dry = await run([]);
+  assert.equal(dry.spawned.length, 0);
+  assert.equal(dry.out.counts['would-bounce'], ids.length - 1);
+  const live = await run(['--apply']);
+  fs.rmSync(dir, { recursive: true, force: true });
+  assert.equal(live.out.counts.bounced, MAX_BOUNCES_PER_RUN);
+  assert.equal(live.out.counts['bounce:bounce-exhausted'], 1);
+  assert.equal(live.out.counts['bounce:over-run-cap'], ids.length - 1 - MAX_BOUNCES_PER_RUN);
+  assert.ok(live.spawned.every((a) => a[0] === 'update' && a[2] === '--state' && a[3] === 'Todo'));
+  assert.equal(live.out.rows.find((r) => r.id === exhausted).action, 'bounce-exhausted');
 });

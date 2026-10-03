@@ -90,6 +90,19 @@ test('no PR-EVIDENCE and no runnable command -> UNVERIFIABLE, not an accusation'
   assert.equal(r.evidence, EVIDENCE.UNKNOWN);
 });
 
+test('In Review + its own check fails -> still UNVERIFIABLE, but flagged for the stuck-card closer to send back (BRO-4535)', () => {
+  const r = classifyCard({ card: openCard({ state: 'In Review' }), cmd: 'node --test tests/unit/x.test.mjs', runResult: FAIL });
+  assert.equal(r.verdict, VERDICTS.UNVERIFIABLE);
+  assert.equal(r.openCheckFails, true);
+  assert.match(r.failDetail, /Could not find/);
+  // In Progress is unfinished by its own account: no flag, no field at all.
+  const ip = classifyCard({ card: openCard(), cmd: 'node --test tests/unit/x.test.mjs', runResult: FAIL });
+  assert.equal('openCheckFails' in ip, false);
+  // A check that could not run is not a failure.
+  const cannot = classifyCard({ card: openCard({ state: 'In Review' }), cmd: 'node --test tests/unit/x.test.mjs', runResult: CANNOT });
+  assert.equal('openCheckFails' in cannot, false);
+});
+
 // ── the asymmetry: the single most load-bearing rule in the classifier ─────
 
 test('an OPEN card whose check fails is NOT reported as a defect — 28 of 28 such live failures were just unwritten test files', () => {
