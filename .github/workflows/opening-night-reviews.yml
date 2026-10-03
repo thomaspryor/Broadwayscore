@@ -166,11 +166,20 @@ jobs:
             const want = (process.env.WANT || "").split(",").filter(Boolean);
             console.log(showsNeedingGather(runs, want).join(","));
           ')
-          NEEDED_AGG=$(GATHER_RUNS="$RUNS" WANT='${{ steps.find.outputs.gather_agg }}' node -e '
-            const { showsNeedingGather } = require("./scripts/lib/gather-idempotency.js");
+          # BRO-2269: also skip aggregators-only gather for a show with an in-flight
+          # TARGETED poller (same aggregator layer, same repos = duplicate + push
+          # race). Fail-open: a failed poller listing passes everything through.
+          POLLER_RUNS=$(gh run list --workflow=opening-night-poller.yml --json status,displayTitle,createdAt --limit 100 2>/dev/null || echo '[]')
+          NEEDED_AGG=$(GATHER_RUNS="$RUNS" POLLER_RUNS="$POLLER_RUNS" WANT='${{ steps.find.outputs.gather_agg }}' node -e '
+            const { showsNeedingAggregatorGather } = require("./scripts/lib/gather-idempotency.js");
             const runs = JSON.parse(process.env.GATHER_RUNS || "[]");
+            let pollers = [];
+            try { pollers = JSON.parse(process.env.POLLER_RUNS || "[]"); } catch (e) { console.error("::warning::poller run list unparseable, skipping poller dedup"); }
             const want = (process.env.WANT || "").split(",").filter(Boolean);
-            console.log(showsNeedingGather(runs, want).join(","));
+            const needed = showsNeedingAggregatorGather(runs, pollers, want);
+            const dropped = want.filter((id) => !needed.includes(id));
+            if (dropped.length) console.error("Aggregators-only gather skipped (gather or targeted poller already in flight): " + dropped.join(","));
+            console.log(needed.join(","));
           ')
           echo "needed_full=$NEEDED_FULL" >> $GITHUB_OUTPUT
           echo "needed_agg=$NEEDED_AGG" >> $GITHUB_OUTPUT
