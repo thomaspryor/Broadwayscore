@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-03T01:16:07.449Z",
+  "timestamp": "2026-10-03T02:26:26.534Z",
   "stats": {
     "totalReviews": 45899,
-    "alreadyFlagged": 18711,
+    "alreadyFlagged": 18715,
     "dateGuardCatches": 263,
-    "directorMismatch": 1200,
+    "directorMismatch": 1202,
     "tvFilmSignals": 1333,
     "londonSignals": 1260,
     "offBroadwaySignals": 508,
     "yearMismatch": 105,
-    "noPublishDate": 4128
+    "noPublishDate": 4120
   },
   "findings": [
     {
@@ -7749,6 +7749,20 @@
     },
     {
       "showId": "death-of-a-salesman-2012",
+      "file": "theatrely--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theatrely.com/post/watch-andre-de-shields-sharon-d-clarke-more-explain-death-of-a-salesman-in-10-seconds-or-less",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"miranda cromwell\" from death-of-a-salesman-2022"
+        }
+      ]
+    },
+    {
+      "showId": "death-of-a-salesman-2012",
       "file": "timeout--david-cote.json",
       "score": 98,
       "publishDate": "2012-03-15T20:42:51-04:00",
@@ -11373,6 +11387,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 3525d before show (2017-02-26 vs 2026-10-22)"
+        }
+      ]
+    },
+    {
+      "showId": "glengarry-glen-ross-1984",
+      "file": "theatermania--unknown.json",
+      "score": null,
+      "publishDate": null,
+      "url": "https://www.theatermania.com/news/glengarry-glen-ross-with-al-pacino-possibly-aiming-for-broadway_58187/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"daniel sullivan\" from glengarry-glen-ross-2012"
         }
       ]
     },
@@ -57038,7 +57066,7 @@
     },
     {
       "showId": "the-lion-king-west-end-2021",
-      "file": "fairypoweredproductions--unknown.json",
+      "file": "fairypoweredproductions--claire-roderick.json",
       "score": 81,
       "publishDate": "2026-09-26",
       "url": "https://fairypoweredproductions.com/the-lion-king-review-4/",
@@ -58398,7 +58426,7 @@
     },
     {
       "showId": "the-standard-of-living-west-end-2026",
-      "file": "london-theatre--unknown.json",
+      "file": "london-theatre--marianka-swain.json",
       "score": 85,
       "publishDate": "2026-09-30",
       "url": "https://www.londontheatre.co.uk/reviews/the-standard-of-living-review-theatre-royal-haymarket",
@@ -58412,7 +58440,7 @@
     },
     {
       "showId": "the-standard-of-living-west-end-2026",
-      "file": "thewestendshows--thewestendshowsco-uk.json",
+      "file": "thewestendshows--matt-atkinson.json",
       "publishDate": "2026-09-22",
       "url": "https://www.thewestendshows.co.uk/the-standard-of-living-opens-at-theatre-royal-haymarket/",
       "findings": [
@@ -58425,7 +58453,7 @@
     },
     {
       "showId": "the-story-west-end-2026",
-      "file": "afridiziak-theatre-news--unknown.json",
+      "file": "afridiziak-theatre-news--christina-nicole.json",
       "score": 89,
       "publishDate": "2026-09-04",
       "url": "https://www.afridiziak.com/reviews/the-story-by-tracey-scott-wilson-national-theatre/",
@@ -58523,7 +58551,7 @@
     },
     {
       "showId": "the-story-west-end-2026",
-      "file": "fringereview--unknown.json",
+      "file": "fringereview--simon-jenner.json",
       "score": 77,
       "publishDate": "2026-09-11",
       "url": "https://fringereview.co.uk/review/fringereview-uk/2026/the-story/",
@@ -58743,7 +58771,7 @@
     },
     {
       "showId": "the-story-west-end-2026",
-      "file": "theupcoming--unknown.json",
+      "file": "theupcoming--emilia-gould.json",
       "score": 75,
       "publishDate": "2026-09-04",
       "url": "https://www.theupcoming.co.uk/2026/09/04/the-story-at-the-national-theatre-theatre-review/",
