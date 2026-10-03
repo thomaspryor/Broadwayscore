@@ -1030,7 +1030,7 @@ function shouldDeferCvWrongShow(reviewData) {
  * A high-confidence non-preview verdict (interview, obituary, listicle...) stays
  * actionable since those are identifiable from the head.
  */
-function isCvVerdictFromPartialWindow(cv, fullText) {
+function isCvVerdictFromPartialWindow(cv, fullText, review = null) {
   if (!cv || cv.wrongArticle !== true) return false;
   // wrongProduction evidence (different show named in the head) is not a
   // truncation artifact; only the "is this an evaluation at all" call is.
@@ -1041,9 +1041,11 @@ function isCvVerdictFromPartialWindow(cv, fullText) {
   // part of the piece (>1.5x); anything less confident only needs to be cut off.
   const minLen = cv.confidence === 'high' ? CV_WINDOW_CHARS * 1.5 : CV_WINDOW_CHARS;
   if (len > minLen) return true;
-  // BRO-4563: the collector marks a verdict it judged on a cut-off fetch
-  // (isCvVerdictFromTruncatedFetch); rebuild sees only the stored cv.
-  return cv.truncatedFetch === true;
+  // BRO-4563: a verdict judged on a cut-off fetch. The collector stamps it;
+  // with the review record the test also runs here, because the reverify
+  // scripts replace the whole cv object and would drop the stamp.
+  if (cv.truncatedFetch === true) return true;
+  return !!review && isCvVerdictFromTruncatedFetch(cv, review.fullText || review.wrongFullText || '', review.url);
 }
 
 // The verifier's own words saying the text it saw stops short.
@@ -1067,6 +1069,10 @@ function isCvVerdictFromTruncatedFetch(cv, text, url) {
   const said = [...(Array.isArray(cv.issues) ? cv.issues : []), cv.reasoning || ''].join(' ');
   if (cv.truncated !== true && !CV_TRUNCATION_TEXT.test(said)) return false;
   if (stripLeadingJsonBlob(text || '').length >= CV_WINDOW_CHARS) return false;
+  // A roundup, a year-in-review or a /reviews/ section page is not one review.
+  let pathname;
+  try { pathname = new URL(String(url || '')).pathname; } catch { return false; }
+  if (/roundup|year-in-review|best-of|(?:^|\/)reviews?\/?$/i.test(pathname)) return false;
   // Same "this URL is a review page" test as the classifier's RC2 guard
   // (flagged-recovery.js shouldSkipNonReviewStamp). Lazy: avoids a load cycle.
   return require('./flagged-recovery').looksLikeReviewUrl(String(url || ''));

@@ -72,6 +72,7 @@ test('launch roundups with words before "Tour" count; overseas legs still do not
     'Review-Roundup-OPERATION-MINCEMEAT-Launches-North-American-Leg-of-World-Tour-20260930',
     'Review-Roundup-JERSEY-BOYS-Launches-20th-Anniversary-Tour-20260101',
     'Review-Roundup-MAYBE-HAPPY-ENDING-Launches-North-American-Tour-20260930',
+    'Review-Roundup-X-National-Tour-with-Asian-American-Cast-20260930',
   ]) assert.equal(isNationalTourRoundupSlug(s), true, s);
   for (const s of [
     'Review-Roundup-SIX-Launches-Australian-Tour-20260101',
@@ -86,6 +87,8 @@ test('roundupDateFromSlug reads the -YYYYMMDD tail only', () => {
   assert.equal(roundupDateFromSlug('https://www.broadwayworld.com/article/Review-Roundup-X-Launches-North-American-Leg-of-World-Tour-20260930'), '2026-09-30');
   assert.equal(roundupDateFromSlug('Review-Roundup-X-Tour-20260930/?utm=1'), '2026-09-30');
   assert.equal(roundupDateFromSlug('Review-Roundup-X-Tour'), null);
+  assert.equal(roundupDateFromSlug('Review-Roundup-X-Tour-20260230'), null, 'not a calendar date');
+  assert.equal(roundupDateFromSlug('Review-Roundup-X-Tour-20261399'), null);
   assert.equal(roundupDateFromSlug(''), null);
   assert.equal(roundupDateFromSlug(null), null);
 });
@@ -132,6 +135,24 @@ test('a roundup and a Tours To You row for one show merge into the schedule row 
     assert.equal(row.roundupUrl, roundupUrl);
     assert.equal(row.roundupSeen, '2026-10-01T00:00:00Z');
     assert.equal(read().length, 1);
+
+    // The owner was asked about the roundup row: the merged row isn't asked again.
+    fs.writeFileSync(file, JSON.stringify([{ ...roundup, firstSeen: '2026-10-01T00:00:00Z', notifiedAt: '2026-10-01T01:00:00Z' }]));
+    recordTourCandidates(file, [sched], '2026-10-02T00:00:00Z');
+    [row] = read();
+    assert.equal(row.notifiedAt, '2026-10-01T01:00:00Z');
+    assert.equal(row.roundupUrl, roundupUrl);
+
+    // A roundup whose tour was already created belongs to that earlier tour:
+    // a later schedule row starts fresh, without it.
+    fs.writeFileSync(file, JSON.stringify([{ ...roundup, firstSeen: '2024-10-01T00:00:00Z', notifiedAt: '2024-10-01T01:00:00Z', createdTourId: 'operation-mincemeat-tour-2024' }]));
+    recordTourCandidates(file, [sched], '2026-10-02T00:00:00Z');
+    [row] = read();
+    assert.equal(row.source, 'tourstoyou');
+    assert.equal(row.roundupUrl, undefined);
+    assert.equal(row.createdTourId, undefined);
+    assert.equal(row.notifiedAt, undefined);
+    assert.equal(row.firstSeen, '2026-10-02T00:00:00Z');
   } finally {
     fs.rmSync(dir, { recursive: true, force: true, maxRetries: 3 });
   }

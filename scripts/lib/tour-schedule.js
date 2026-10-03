@@ -401,7 +401,7 @@ function statedClosedRanges(source) {
  * @param {string} scheduleHtml Tours To You page
  * @param {string} wikiText Wikipedia raw wikitext of the show's article
  * @param {Date} [now]
- * @param {{seenAt?: string, segmentStart?: string}} [opts] when the roundup for a new tour was first seen, or the first engagement of a tour found running
+ * @param {{seenAt?: string, segmentStart?: string, roundupDate?: string}} [opts] when the roundup for a new tour was first seen, or the first engagement of a tour found running; roundupDate is the BWW roundup's slug date (BRO-4563)
  * @returns {{write: {openingDate?: string, closingDate?: string}, notes: string[], problem?: string}}
  */
 function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = {}) {

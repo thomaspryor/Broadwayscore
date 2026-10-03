@@ -306,3 +306,8 @@ test('roman numerals: Henry IV and Henry VI no longer match each other', () => {
   assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-HENRY-VI-Off-Broadway-20260301', ROMAN_SHOWS)?.show.id, 'henry-vi-a-trilogy-in-two-parts-off-broadway-2026');
   assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-HENRY-IV-Opens-on-Broadway-20031120', ROMAN_SHOWS)?.show.id, 'henry-iv-2003');
 });
+
+test('roman numerals: a kept numeral does not lift a short single-word title past the gate', () => {
+  const shows = [{ id: 'life-x-3-2003', title: 'Life (x) 3', status: 'closed', openingDate: '2003-12-01', category: 'broadway' }];
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-Malcolm-X-Opera-Brings-a-Life-to-the-Met-20260401', shows), null);
+});

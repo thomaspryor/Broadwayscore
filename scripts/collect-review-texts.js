@@ -5373,7 +5373,7 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       if (data.contentVerification.truncatedFetch) {
         // The fetch stopped after the lede of a /review/ page and the verifier
         // said so itself: a truncated review, not a non-review (BRO-4563).
-        data.textQuality = 'truncated';
+        // Keep the text; classifyContentTier below sets its tier.
         console.log(`    ⚠ LLM: "not a review" (${artType}, ${artConf}) judged on a cut-off fetch of a review URL — kept as truncated, not invalidated`);
       } else if (artConf === 'high' && data.fullText) {
         if (alreadyScored) {

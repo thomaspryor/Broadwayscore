@@ -90,6 +90,17 @@ test('"not a review" judged on a cut-off fetch of a /review/ URL is a truncation
   assert.equal(cv.isCvVerdictFromPartialWindow({ ...verdict, truncatedFetch: true }, lede), true);
   assert.equal(cv.isCvVerdictFromPartialWindow(verdict, lede), false);
   assert.equal(cv.isCvVerdictFromPartialWindow({ ...verdict, articleType: 'interview', truncatedFetch: true }, lede), false);
+  // A reverify replaces the cv object and drops the stamp: with the record,
+  // rebuild re-derives it (fullText, or wrongFullText when the collector nulled it).
+  assert.equal(cv.isCvVerdictFromPartialWindow(verdict, lede, { url, fullText: lede }), true);
+  assert.equal(cv.isCvVerdictFromPartialWindow(verdict, null, { url, fullText: null, wrongFullText: lede }), true);
+  assert.equal(cv.isCvVerdictFromPartialWindow(verdict, lede, { url: 'https://www.baltimoresun.com/2026/09/17/tour-opens/', fullText: lede }), false);
+  // A roundup, year-in-review or /reviews/ section page is not one review.
+  for (const u of [
+    'https://www.baltimoresun.com/2026/09/17/maybe-happy-ending-review-roundup/',
+    'https://www.baltimoresun.com/2026/12/30/theater-year-in-review/',
+    'https://www.baltimoresun.com/entertainment/theater/reviews/',
+  ]) assert.equal(cv.isCvVerdictFromTruncatedFetch(verdict, lede, u), false, u);
 });
 
 test('the collector stamps truncatedFetch and keeps the text instead of invalidating (BRO-4563)', async () => {

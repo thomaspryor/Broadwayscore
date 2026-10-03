@@ -1443,7 +1443,10 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     // supporting token. The HOLIDAY INN regression that motivated the
     // title-token switch is fixed without lowering this gate because
     // "Holiday Inn" has 2 tokens [holiday, inn], not 1.
-    if (tokens.length === 1 && tokens[0].length < 5) continue;
+    // A kept Roman numeral is not a supporting token: "Life (x) 3" as
+    // [life, x] stays gated like [life] (BRO-4563).
+    const words = tokens.filter(t => !_SHORT_ROMAN_NUMERALS.has(t));
+    if (words.length <= 1 && (words[0] || '').length < 5) continue;
     let matchedTokens = 0;
     let score = 0;       // sum of matched-token-length squared
     let totalLen = 0;

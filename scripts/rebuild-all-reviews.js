@@ -2121,7 +2121,7 @@ const crossShowFingerprints = new Map();
         // the isNonReview/rejectionReason family instead.
         const cvIsPureNonReview = cvWrongArticleFamily(cv) === 'nonReview';
         // BRO-4429: verdict formed from the 2500-char head of a longer article is advisory.
-        const cvPartialWindow = isCvVerdictFromPartialWindow(cv, d.fullText);
+        const cvPartialWindow = isCvVerdictFromPartialWindow(cv, d.fullText, d);
         if (cvPartialWindow && cv.wrongArticle === true) stats.cvPartialWindowAdvisory = (stats.cvPartialWindowAdvisory || 0) + 1;
         if (cvIsPureNonReview && !cvPartialWindow && !ensembleSaysReview && d.isNonReview !== true && !cvNonReviewHumanCleared(d) && !skipLondon && !d.allowEarlyDate && !d.allowCrossMarket) {
           // CV outlet-style override (S3-T5): defer for known long-biographical
@@ -2227,7 +2227,7 @@ showDirs.forEach(showId => {
           // #651: pure non-review (wrongArticle without wrongProduction) routes to
           // isNonReview, not wrongShow — see the matching non-upcoming pass above.
           const uCvIsPureNonReview = cvWrongArticleFamily(ucv) === 'nonReview';
-          if (uCvIsPureNonReview && !isCvVerdictFromPartialWindow(ucv, ud.fullText) && !uEnsembleSaysReview && ud.isNonReview !== true && !cvNonReviewHumanCleared(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket) {
+          if (uCvIsPureNonReview && !isCvVerdictFromPartialWindow(ucv, ud.fullText, ud) && !uEnsembleSaysReview && ud.isNonReview !== true && !cvNonReviewHumanCleared(ud) && !ud.allowEarlyDate && !ud.allowCrossMarket) {
             // CV outlet-style override (S3-T5 followup): defer for known long-biographical
             // outlets even on upcoming-show path. Long-biographical previews share the same
             // FP class as opening-day reviews (e.g., NY Sun biographical lead on an upcoming show).
@@ -2970,7 +2970,7 @@ showDirs.forEach(showId => {
           // Skip London/UK auto-promotion UNLESS LLM confidence is high (high-confidence
           // wrongArticle means the fetched text is genuinely for a different show/venue)
           const skipWsForLondon = isLondonMarket(showCat) && isUkOutletUrl(data.url) && wpConfidence !== 'high';
-          const cvPartialWindow = isCvVerdictFromPartialWindow(cv, data.fullText);
+          const cvPartialWindow = isCvVerdictFromPartialWindow(cv, data.fullText, data);
           if (cvPartialWindow) stats.cvPartialWindowAdvisory = (stats.cvPartialWindowAdvisory || 0) + 1;
           // #651 mirror (BRO-4429): the pre-pass routes a pure not-a-review
           // verdict (wrongArticle without wrongProduction) to the isNonReview

@@ -116,7 +116,9 @@ async function main() {
     // (recordTourCandidates); its date confirms the launch when Wikipedia is
     // silent (BRO-4563).
     const roundupUrl = found ? (c.roundupUrl || null) : c.url;
-    const roundupDate = roundupUrl ? (roundupDateFromSlug(roundupUrl) || String((found ? c.roundupSeen : c.firstSeen) || '').slice(0, 10) || null) : null;
+    // Only the publication date in the slug: when the job first saw a roundup
+    // says nothing about when the tour launched (a backfilled old roundup).
+    const roundupDate = roundupUrl ? roundupDateFromSlug(roundupUrl) : null;
     const decision = scheduleUrl
       ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart, roundupDate } : { seenAt: c.firstSeen || c.lastSeen, roundupDate })
       : { write: {}, notes: [], problem: 'no Tours To You page found for this title' };
