@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-03T16:18:58.605Z",
+  "generated": "2026-10-03T18:00:11.630Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 19,
+  "count": 20,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -134,6 +134,13 @@
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "wicked-2003",
+      "loserFile": "newyorker--unknown.json",
+      "targetFile": "newyorker--john-lahr.json",
+      "reason": "orphaned-duplicate-heal: newyorker--john-lahr.json was flagged invalid after newyorker--unknown.json was pointed at it",
       "field": "duplicateOf"
     }
   ]
