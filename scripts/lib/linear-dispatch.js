@@ -1047,6 +1047,8 @@ function buildOpenIssuesWithDescriptionsQuery() {
         description
         priority
         url
+        createdAt
+        updatedAt
         state { name type }
       }
       pageInfo { hasNextPage endCursor }
