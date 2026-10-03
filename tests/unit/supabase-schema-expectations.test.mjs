@@ -131,6 +131,37 @@ ${body}
 $$;
 `;
 
+test('dollar tags with digits ($b2$) are hashed like $$ bodies', () => {
+  const sql = 'CREATE FUNCTION f() RETURNS int LANGUAGE sql AS $b2$ SELECT 1 $b2$;';
+  assert.deepEqual(extractFunctionBodies(sql), [{ name: 'f', hash: hashBody('SELECT 1') }]);
+});
+
+test("E'..\\'..' strings and $ inside identifiers do not hide a later function", () => {
+  const esc = "SELECT E'it\\'s -- x'; CREATE FUNCTION g() RETURNS int LANGUAGE sql AS $$ SELECT 1 $$;";
+  assert.equal(extractFunctionBodies(esc).length, 1);
+  const ident = 'CREATE TABLE t$a$ (id int); CREATE FUNCTION h() RETURNS int LANGUAGE sql AS $$ SELECT 1 $$;';
+  assert.equal(extractFunctionBodies(ident).length, 1);
+});
+
+test('hash is ASCII-whitespace only so JS and Postgres agree (NBSP is content)', () => {
+  assert.notEqual(hashBody(' SELECT 1'), hashBody('SELECT 1'));
+  assert.notEqual(hashBody('SELECT　1'), hashBody('SELECT 1'));
+});
+
+test('live catalog query normalizes with the same ASCII rule (no [[:space:]])', () => {
+  const { LIVE_CATALOG_QUERY } = require('../../scripts/lib/supabase-schema-expectations.js');
+  assert.ok(LIVE_CATALOG_QUERY.includes("'[ \\t\\n\\r\\f\\v]+'"));
+  assert.ok(!LIVE_CATALOG_QUERY.includes('[[:space:]]'));
+  assert.ok(LIVE_CATALOG_QUERY.includes("btrim(regexp_replace(p.prosrc"));
+});
+
+test('coverage guard: a function whose dollar body cannot be hashed errors loud', () => {
+  // Single-quoted body in a file that also uses a dollar quote: no hash attaches.
+  const sql = "CREATE FUNCTION k() RETURNS int LANGUAGE sql AS 'SELECT 1'; DO $$ BEGIN NULL; END $$;";
+  const r = deriveExpectations([{ name: 'k.sql', sql }]);
+  assert.ok(r.errors.some((e) => e.includes('function k has no body hash')));
+});
+
 test('later migration redefining a function body replaces the expected hash', () => {
   const r = deriveExpectations([
     { name: 'a.sql', sql: fnSql('BEGIN RETURN 1; END;') },

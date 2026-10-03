@@ -38,20 +38,26 @@ const SKIP_ANNOTATION = /--\s*verify-schema:\s*skip/;
 // then line comments (often contain apostrophes — "don't" — that would
 // otherwise open a phantom string literal), then block comments, then strings.
 function stripNoise(sql) {
-  let out = sql.replace(/\$([A-Za-z_]*)\$[\s\S]*?\$\1\$/g, "''");
+  let out = sql.replace(/\$([A-Za-z_][A-Za-z0-9_]*)?\$[\s\S]*?\$\1\$/g, "''");
   out = out.replace(/--[^\n]*/g, '');
   out = out.replace(/\/\*[\s\S]*?\*\//g, '');
   out = out.replace(/'(?:[^']|'')*'/g, "''");
   return out;
 }
 
+function stripComments(sql) {
+  return sql.replace(/--[^\n]*/g, '').replace(/\/\*[\s\S]*?\*\//g, '');
+}
+
 // Whitespace-collapsed md5 of a function body. The live catalog applies the
 // same normalization in SQL (see LIVE_CATALOG_QUERY), so reformatting a body
-// never reads as drift but any real edit does.
+// never reads as drift but any real edit does. ASCII-only on BOTH sides on
+// purpose: JS .trim() and Postgres [[:space:]] (locale-aware) would otherwise
+// disagree about NBSP / BOM / ideographic space and false-fail forever.
 function hashBody(body) {
   return crypto
     .createHash('md5')
-    .update(body.replace(/[ \t\n\r\f\v]+/g, ' ').trim(), 'utf8')
+    .update(body.replace(/[ \t\n\r\f\v]+/g, ' ').replace(/^ | $/g, ''), 'utf8')
     .digest('hex');
 }
 
@@ -74,10 +80,13 @@ function extractFunctionBodies(sql) {
       const end = sql.indexOf('*/', i + 2);
       i = end === -1 ? sql.length : end + 2;
     } else if (sql[i] === "'") {
-      const lit = /^'(?:[^']|'')*'/.exec(sql.slice(i));
+      // E'...' strings honor backslash escapes (E'it\'s'); plain strings do not.
+      const isEscape = /(?:^|[^\w$])[Ee]$/.test(head);
+      const litRe = isEscape ? /^'(?:[^'\\]|\\[\s\S]|'')*'/ : /^'(?:[^']|'')*'/;
+      const lit = litRe.exec(sql.slice(i));
       head += "''";
       i += lit ? lit[0].length : 1;
-    } else if ((m = /^\$([A-Za-z_]*)\$/.exec(rest))) {
+    } else if (!/[\w$]$/.test(head) && (m = /^\$(?:[A-Za-z_][A-Za-z0-9_]*)?\$/.exec(rest))) {
       const close = sql.indexOf(m[0], i + m[0].length);
       if (close === -1) break;
       const body = sql.slice(i + m[0].length, close);
@@ -248,6 +257,20 @@ function deriveExpectations(files) {
       const entry = expected.get(keyFor('function', fn));
       if (entry && entry.file === name) entry.bodyHash = hash;
     }
+    // Coverage guard: a function declared here whose dollar-quoted body the
+    // extractor could not hash would silently fall back to existence-only (the
+    // incident class). Fail loud instead of escaping. Overloads share one hash
+    // slot (the last definition wins), so keep new functions to unique names.
+    if (/\$(?:[A-Za-z_][A-Za-z0-9_]*)?\$/.test(stripComments(sql))) {
+      for (const obj of expected.values()) {
+        if (obj.kind === 'function' && obj.file === name && !obj.bodyHash) {
+          errors.push(
+            `${name}: function ${obj.name} has no body hash — extractFunctionBodies could not read its ` +
+              `dollar-quoted body; extend supabase-schema-expectations.js`
+          );
+        }
+      }
+    }
     // A migration the parser can't see into would silently escape
     // verification — the exact failure class this module exists to close.
     if (!sawAssertion && expected.size === before) {
@@ -261,14 +284,17 @@ function deriveExpectations(files) {
 }
 
 // Single catalog snapshot query; returns rows of {kind, name} matching keyFor().
-const LIVE_CATALOG_QUERY = `
+// The function hash mirrors hashBody(): ASCII-only whitespace collapse (the \t
+// \n escapes are interpreted by the regex engine, hence String.raw) and a
+// space-only btrim.
+const LIVE_CATALOG_QUERY = String.raw`
 SELECT 'table' AS kind, tablename AS name, NULL AS hash FROM pg_tables WHERE schemaname = 'public'
 UNION ALL SELECT 'view', viewname, NULL FROM pg_views WHERE schemaname = 'public'
 UNION ALL SELECT 'column', table_name || '.' || column_name, NULL FROM information_schema.columns WHERE table_schema = 'public'
 UNION ALL SELECT 'constraint', rel.relname || ':' || conname, NULL FROM pg_constraint c JOIN pg_class rel ON rel.oid = c.conrelid JOIN pg_namespace n ON n.oid = c.connamespace WHERE n.nspname = 'public'
 UNION ALL SELECT 'index', indexname, NULL FROM pg_indexes WHERE schemaname = 'public'
 UNION ALL SELECT 'policy', tablename || ':' || policyname, NULL FROM pg_policies WHERE schemaname = 'public'
-UNION ALL SELECT 'function', p.proname, md5(btrim(regexp_replace(p.prosrc, '[[:space:]]+', ' ', 'g'))) FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace WHERE n.nspname = 'public'
+UNION ALL SELECT 'function', p.proname, md5(btrim(regexp_replace(p.prosrc, '[ \t\n\r\f\v]+', ' ', 'g'), ' ')) FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace WHERE n.nspname = 'public'
 UNION ALL SELECT 'trigger', c.relname || ':' || t.tgname, NULL FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND NOT t.tgisinternal
 `.trim();
 
