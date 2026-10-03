@@ -1321,8 +1321,13 @@ const _SLUG_STOPWORDS = new Set([
  *    Parody". Titles without these separators (e.g. "Cabaret at the Kit
  *    Kat Club") are used in full.
  *  - Normalize apostrophes/punctuation, lowercase, dedupe.
- *  - Filter out stopwords + tokens <3 chars.
+ *  - Filter out stopwords + tokens <3 chars, except short Roman numerals.
+ *    "Richard II" must keep "ii": as [richard] alone it matched the BWW
+ *    slug "Review-Roundup-Richard-E-Grant-...-in-HAY-FEVER" (the actor's
+ *    name) and out-scored Hay Fever (BRO-4563); "Henry IV" as [henry]
+ *    matched any Henry VI slug.
  */
+const _SHORT_ROMAN_NUMERALS = new Set(['v', 'x', 'ii', 'iv', 'vi', 'ix', 'xi', 'xv', 'xx']);
 function _tokenizeTitleText(text) {
   return text
     .toLowerCase()
@@ -1331,7 +1336,7 @@ function _tokenizeTitleText(text) {
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
     .split(/\s+/)
-    .filter(t => t.length >= 3 && !_SLUG_STOPWORDS.has(t));
+    .filter(t => (t.length >= 3 || _SHORT_ROMAN_NUMERALS.has(t)) && !_SLUG_STOPWORDS.has(t));
 }
 
 function _showDistinctiveTokens(show) {
@@ -1438,7 +1443,10 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     // supporting token. The HOLIDAY INN regression that motivated the
     // title-token switch is fixed without lowering this gate because
     // "Holiday Inn" has 2 tokens [holiday, inn], not 1.
-    if (tokens.length === 1 && tokens[0].length < 5) continue;
+    // A kept Roman numeral is not a supporting token: "Life (x) 3" as
+    // [life, x] stays gated like [life] (BRO-4563).
+    const words = tokens.filter(t => !_SHORT_ROMAN_NUMERALS.has(t));
+    if (words.length <= 1 && (words[0] || '').length < 5) continue;
     let matchedTokens = 0;
     let score = 0;       // sum of matched-token-length squared
     let totalLen = 0;
