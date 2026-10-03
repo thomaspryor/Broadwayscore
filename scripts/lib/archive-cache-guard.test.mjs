@@ -401,3 +401,20 @@ test('scrape-london-box-office-roundups.js (BRO-2565): the shared read/write val
   assert.match(between, /if\s*\(\s*archiveFresh\s*&&\s*!DRY_RUN\s*\)\s*fs\.unlinkSync\(archivePath\)/,
     'a cache-hit that fails re-validation must purge the poisoned file (BRO-2549 read-path pattern), not just skip silently for up to 14 more days — but never during --dry-run, which promises to write nothing');
 });
+
+test('makeArchiveShowChecker: a page saved under one show id but about another show fails (BRO-4563)', () => {
+  const { makeArchiveShowChecker } = require('./archive-cache-guard.js');
+  const shows = [
+    { id: 'richard-ii-off-west-end-2026', title: 'Richard II', category: 'off-west-end' },
+    { id: 'hay-fever-west-end-2026', title: 'Hay Fever', category: 'west-end' },
+  ];
+  const check = makeArchiveShowChecker(shows);
+  const page = t => `<html><head><title>${t}</title></head><body></body></html>`;
+  const hayFever = page('Review Roundup: Richard E. Grant & Christine Baranski in HAY FEVER, UK / West End | BroadwayWorld');
+  const bad = check(hayFever, 'richard-ii-off-west-end-2026');
+  assert.ok(bad, 'the Hay Fever roundup must not pass as Richard II');
+  assert.strictEqual(bad.ok, false);
+  assert.strictEqual(check(hayFever, 'hay-fever-west-end-2026'), null, 'the same page passes for its own show');
+  assert.strictEqual(check(page('Review Roundup: RICHARD II at the Bridge Theatre, UK / West End | BroadwayWorld'), 'richard-ii-off-west-end-2026'), null);
+  assert.strictEqual(check(hayFever, 'not-in-shows-json'), null, 'an id with no show is left to the caller');
+});
