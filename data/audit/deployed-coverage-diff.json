@@ -1,34 +1,19 @@
 {
-  "generatedAt": "2026-10-03T07:27:05.743Z",
+  "generatedAt": "2026-10-03T13:04:16.709Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 212,
-  "clean": 210,
-  "defective": 2,
+  "clean": 211,
+  "defective": 1,
   "byType": {
-    "unreachable": 2
+    "unreachable": 1
   },
   "shows": [
     {
-      "showId": "spandex-off-broadway-2026",
-      "title": "Spandex",
-      "openingDate": "2026-09-19",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "gimme-a-sign-off-broadway-2026",
-      "title": "Gimme a Sign!",
-      "openingDate": "2026-09-17",
+      "showId": "alice-in-wonderland-off-broadway-2026",
+      "title": "Alice in Wonderland",
+      "openingDate": "2026-09-26",
       "ok": false,
       "defects": [
         {
