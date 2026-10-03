@@ -117,7 +117,11 @@ function computeCriticScore(showReviews) {
 }
 
 // ===========================================
-// reviewYearNote (mirrors engine.ts)
+// reviewYearNote: "Reviews from YYYY" on closed-show archive cards.
+// Separate from engine.ts's open-show caveat (getReviewAgeYear in
+// src/lib/show-date-line.ts), which never applies to closed shows. For a
+// closed show the opening year matches the reviews' majority year in 322
+// of 329 archive entries (BRO-4525 check); the rest are bad publishDates.
 // ===========================================
 function getReviewYearNote(show, showReviews) {
   if (!show.openingDate || !showReviews || showReviews.length < 3) return undefined;

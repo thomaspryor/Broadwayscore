@@ -31,6 +31,7 @@ import {
 } from '@/config/scoring';
 import { getRegistryTier } from './outlet-id-mapper';
 import { getMarketDate } from './date-utils';
+import { getReviewAgeYear } from './show-date-line';
 import { isOperaShow } from './show-market';
 import { stripInlineMarkdown } from './formatting';
 
@@ -774,15 +775,11 @@ export function computeShowData(
 
   const confidence = assessConfidence(criticScore, null, normalizedStatus);
 
-  // Compute review age note for shows where reviews are from a past year (open shows only)
-  let reviewYearNote: string | null = null;
-  if (normalizedStatus !== 'closed' && show.openingDate && showReviews.length >= 3) {
-    const openYear = new Date(show.openingDate).getFullYear();
-    const currentYear = new Date().getFullYear();
-    if (currentYear - openYear >= 10) {
-      reviewYearNote = `Most reviews from ${openYear}`;
-    }
-  }
+  // List-card caveat when most of an open show's reviews are 10+ years old.
+  // Same rule as the show page hero (getReviewAgeYear), from the scored reviews'
+  // own publish years rather than openingDate.
+  const reviewAgeYear = getReviewAgeYear({ status: normalizedStatus }, criticScore?.reviews);
+  const reviewYearNote = reviewAgeYear === null ? null : `Most reviews from ${reviewAgeYear}`;
 
   return {
     id: show.id,
