@@ -726,6 +726,103 @@ function buildDigestSnapshot(report, { maxItems = MAX_DIGEST_ITEMS } = {}) {
   };
 }
 
+// ── sweep order ───────────────────────────────────────────────────────────
+// The CI sweep runs under a time budget and skips whatever it has not reached
+// when the budget runs out. Measured 2026-09-30..10-02: 88-136 of ~256 cards
+// went un-run every day, and five checks (`node scripts/run-unit-tests.js`
+// cards) hit the 60s kill EVERY day, burning ~5 of the 10 budget minutes to
+// learn nothing. Two fixes, both pure so tests require() them:
+//   1. A check that timed out last run, or was demoted and never reached, goes
+//      to the END of the plan. It still runs whenever the budget allows, and a
+//      run that finishes under the timeout drops it from the list again.
+//   2. The start offset jumps by a golden-ratio stride each day instead of by
+//      one card, so the tail that ran out of budget today is near the front
+//      within a day or two instead of ~150 days later.
+
+const TIMEOUT_DETAIL_RE = /killed by SIG\w+ after \d+ms \(timeout/;
+// spawnSync's own timeout error reaches runVerify's generic `fail` tail
+// instead (see ENVIRONMENT_FAILURE_PATTERNS above), so it counts too.
+const SPAWN_TIMEOUT_RE = /\bETIMEDOUT\b/;
+
+/** True when a verify run was killed by the timeout (no verdict). */
+function isTimeoutResult(runResult) {
+  if (!runResult) return false;
+  const detail = runResult.detail || '';
+  if (runResult.status === 'unverifiable') return TIMEOUT_DETAIL_RE.test(detail);
+  return runResult.status === 'fail' && SPAWN_TIMEOUT_RE.test(detail);
+}
+
+/**
+ * Day-indexed start offset into a list of n cards. Weyl sequence on the golden
+ * ratio: consecutive days land far apart, and every offset region is visited
+ * evenly for any n (a fixed integer stride cycles early when it shares a
+ * factor with n).
+ */
+function rotationOffset(dayOfYear, n) {
+  if (!Number.isFinite(n) || n <= 0) return 0;
+  const frac = (Number(dayOfYear) * 0.6180339887498949) % 1;
+  return Math.min(n - 1, Math.floor(frac * n));
+}
+
+// A demoted check that never gets reached (the tail past the time budget, or a
+// card with no run result) would otherwise stay at the back for good. After
+// this many days without an actual run it rejoins the normal rotation.
+const SLOW_DEMOTION_MAX_DAYS = 7;
+
+/**
+ * Card ids to demote this run, from the previous report: its carried
+ * `slowDemoted` list plus any row whose check timed out (older reports carry
+ * only the rows). A carried id whose `slowDemotedSince` stamp is older than
+ * SLOW_DEMOTION_MAX_DAYS is dropped; a missing stamp counts as fresh.
+ */
+function priorSlowIds(prevReport, nowMs = Date.now()) {
+  const ids = new Set();
+  if (!prevReport || typeof prevReport !== 'object') return ids;
+  const since = (prevReport.slowDemotedSince && typeof prevReport.slowDemotedSince === 'object')
+    ? prevReport.slowDemotedSince : {};
+  const maxAgeMs = SLOW_DEMOTION_MAX_DAYS * 24 * 60 * 60 * 1000;
+  for (const id of Array.isArray(prevReport.slowDemoted) ? prevReport.slowDemoted : []) {
+    const t = Date.parse(since[id]);
+    if (Number.isFinite(t) && nowMs - t > maxAgeMs) continue;
+    ids.add(id);
+  }
+  for (const row of Array.isArray(prevReport.results) ? prevReport.results : []) {
+    if (row && row.id && (TIMEOUT_DETAIL_RE.test(row.detail || '') || SPAWN_TIMEOUT_RE.test(row.detail || ''))) ids.add(row.id);
+  }
+  return ids;
+}
+
+/** Stable reorder: items whose card id is in slowIds move to the end. */
+function demoteSlowChecks(planned, slowIds) {
+  const fast = [];
+  const slow = [];
+  for (const p of planned) ((p && p.card && slowIds.has(p.card.id)) ? slow : fast).push(p);
+  return { ordered: [...fast, ...slow], demoted: slow.map((p) => p.card.id) };
+}
+
+/**
+ * Ids to carry into the next report: checks that timed out this run, plus
+ * demoted checks this run never reached (so they stay at the back instead of
+ * bouncing to the front every other day and timing out again).
+ */
+function nextSlowIds({ demoted = [], ran = new Set(), timedOut = [] }) {
+  const out = new Set(timedOut);
+  for (const id of demoted) if (!ran.has(id)) out.add(id);
+  return [...out].sort();
+}
+
+/**
+ * When each carried id was first demoted without running since: an id that
+ * ran this run (it timed out again) or is new restarts at nowIso; an id that
+ * was skipped keeps its earlier stamp so priorSlowIds can expire it.
+ */
+function nextSlowSince({ ids = [], prevSince = {}, ran = new Set(), nowIso }) {
+  const prev = (prevSince && typeof prevSince === 'object') ? prevSince : {};
+  const out = {};
+  for (const id of ids) out[id] = (!ran.has(id) && prev[id]) ? prev[id] : nowIso;
+  return out;
+}
+
 module.exports = {
   VERDICTS,
   EVIDENCE,
@@ -743,6 +840,13 @@ module.exports = {
   MIS_ARMED,
   adjudicateMisArmed,
   evaluatePrEvidence,
+  isTimeoutResult,
+  rotationOffset,
+  priorSlowIds,
+  demoteSlowChecks,
+  nextSlowIds,
+  nextSlowSince,
+  SLOW_DEMOTION_MAX_DAYS,
   evaluateVerifyRun,
   combineEvidence,
   classifyCard,

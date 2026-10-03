@@ -37,6 +37,7 @@ const { LinearClient } = require('./linear');
 const { resolveDisposition } = require('./card-disposition');
 const { checkIntake, recordCreated, ENFORCE } = require('./intake-breaker');
 const { TITLE_PRIORITY_RE } = require('./linear-watchdog-source');
+const { stampModelHint } = require('./bsc-next-model');
 
 const USAGE_LIMIT_MESSAGE =
   'Linear issue creation refused: USAGE_LIMIT_EXCEEDED — the workspace is at (or near) the ' +
@@ -130,19 +131,23 @@ function effectiveCreatePriority({ priority, mode, title }) {
  * @param {string} [p.park] reason, required with park, >= MIN_PARK_REASON_LENGTH chars
  * @param {number} [p.priority] Linear priority 0-4
  * @param {string} [p.projectId]
+ * @param {'opus'|'sonnet'} [p.model] the filer's model pick; stamped as a
+ *   "Model: Opus|Sonnet" line that linear-next.js reads (bsc-next-model.js
+ *   pickLinearModel). Invalid or conflicting values throw before any API call.
  * @param {{createIssue: Function}} [p.client] injected Linear client for the
  *   create mutation (linear.js's LinearClient shape) — tests pass a stub;
  *   production defaults to a LinearClient wired to linear-client.js's
  *   retry-aware graphql() (BRO-374/BRO-375).
  * @returns {Promise<{issue: object, mode: 'dispatch'|'park', stateName: string}>}
  */
-async function createLinearIssue({ title, description, dispatch, park, priority, projectId, client }) {
+async function createLinearIssue({ title, description, dispatch, park, priority, projectId, model, client }) {
   const disposition = resolveDisposition({ dispatch, park });
   if (!disposition.ok) {
     const err = new Error(disposition.message);
     err.dispositionReason = disposition.reason;
     throw err;
   }
+  const body = model == null ? (description || '') : stampModelHint(description, model);
 
   // Storm breaker (flow audit 2026-08-12: real intake 34.3/day vs burn-down
   // 5.7/day, and NOTHING bounded creation anywhere). Sized above a normal day,
@@ -177,7 +182,7 @@ async function createLinearIssue({ title, description, dispatch, park, priority,
     ? `\n\n${PARKED_CLAMP_MARKER} A P0/P1 must be dispatched at creation (BRO-4487); re-file with --dispatch if it needs urgent work.`
     : '';
   const finalDescription =
-    disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${description || ''}`.trim() : (description || '');
+    disposition.mode === 'park' ? `PARKED: ${disposition.reason}${clampNote}\n\n${body}`.trim() : body;
 
   // Built lazily (not at module load) so requiring this file never reads
   // LINEAR_API_KEY or touches the network — only a real create attempt does.
