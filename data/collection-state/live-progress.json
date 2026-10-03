@@ -1,55 +1,43 @@
 {
-  "updatedAt": "2026-10-03T13:09:24.376Z",
-  "processed": 197,
-  "failed": 149,
-  "successRate": "56.9%",
+  "updatedAt": "2026-10-03T13:25:09.741Z",
+  "processed": 57,
+  "failed": 23,
+  "successRate": "71.3%",
   "tierBreakdown": {
-    "playwright": 108,
-    "amp": 4,
-    "browserbase": 6,
+    "playwright": 31,
+    "amp": 1,
+    "browserbase": 2,
     "directCookies": 0,
-    "scrapingdog": 25,
-    "scrapingbee": 23,
-    "brightdata": 1,
+    "scrapingdog": 12,
+    "scrapingbee": 6,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 9
   },
-  "browserbaseSessions": 5,
+  "browserbaseSessions": 3,
   "recentActivity": [
     {
-      "t": "2026-10-03T12:48:44.347Z",
+      "t": "2026-10-03T13:14:05.347Z",
       "event": "bb-session",
-      "session": "a6810003",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
+      "session": "30e10e47",
+      "url": "https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-revie"
     },
     {
-      "t": "2026-10-03T12:48:53.689Z",
-      "event": "bb-session",
-      "session": "cbdd20df",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-10-03T12:49:44.041Z",
-      "event": "bb-session",
-      "session": "4c606e36",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-10-03T12:49:53.328Z",
-      "event": "bb-session",
-      "session": "b808b37a",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review/"
-    },
-    {
-      "t": "2026-10-03T12:50:46.311Z",
-      "event": "bb-session",
-      "session": "07c7427c",
-      "url": "https://www.wsj.com/arts-culture/books/auslander-review-the-lives-of-outsiders-a"
-    },
-    {
-      "t": "2026-10-03T12:50:47.181Z",
+      "t": "2026-10-03T13:14:06.246Z",
       "event": "bb-cookie-inject",
-      "domain": "wsj.com"
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-03T13:21:51.803Z",
+      "event": "bb-session",
+      "session": "1939adac",
+      "url": "http://www.publictheater.org/"
+    },
+    {
+      "t": "2026-10-03T13:22:10.840Z",
+      "event": "bb-session",
+      "session": "f2735c5d",
+      "url": "http://www.publictheater.org/"
     }
   ]
 }
