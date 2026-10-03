@@ -34,7 +34,7 @@ const RESUME_INSTRUCTIONS = (ref, run) => [
   'Step 3 claim is a no-op on it. Do NOT start a new branch.',
   'First run the card\'s verify command (pick.verify) on up-to-date origin/main: if it already passes, the work landed another way, so skip to step 7.',
   `Check it out: git worktree remove --force .claude/worktrees/resume 2>/dev/null; git fetch origin ${ref} && git worktree add --detach .claude/worktrees/resume FETCH_HEAD.`,
-  `Read why Land refused run ${run.id}${run.url ? ` (${run.url})` : ''}: its failed jobs' annotations (gh api repos/${REPO}/check-runs/<job id>/annotations) or the job log.`,
+  `Read why Land refused run ${run.id}${run.url ? ` (${run.url})` : ''}: list its failed jobs (gh api repos/${REPO}/actions/runs/${run.id}/jobs --jq '.jobs[] | select(.conclusion=="failure") | .id'), then each job's annotations (gh api repos/${REPO}/check-runs/<job id>/annotations) or log (gh api repos/${REPO}/actions/jobs/<job id>/logs).`,
   'Fix it there (merge origin/main first if it conflicts), then push to the SAME ref:',
   `git push origin HEAD:refs/heads/${ref}`,
   'Follow that Land run to its verdict in this same turn: wait until the ref disappears (landed) or the run fails (fix and push again). Never end the turn while it runs.',
