@@ -73,7 +73,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
     if (!isAuthenticated) {
       hasHandledQueryParam.current = true;
       saveDraft({});
-      showSignIn('rating');
+      showSignIn('rating', 'diary');
       return;
     }
     if (wantsEdit && !reviewsSynced) return; // wait for latestReview to resolve
@@ -93,10 +93,10 @@ function Inner({ show }: { show: DiaryShowDetail }) {
   const handleSaveReview = useCallback(async (data: RatingEditorSaveData) => {
     if (!user) {
       if (authLoading) {
-        throw new Error('Still restoring your session — tap Retry in a moment.');
+        throw new Error('Still restoring your session. Tap Retry in a moment.');
       }
       saveDraft(data);
-      showSignIn('rating');
+      showSignIn('rating', 'diary');
       return 'auth-gated';
     }
     if (data.reviewId) {
@@ -108,7 +108,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
-      if (!updated) throw new Error('This rating no longer exists — it may have been deleted elsewhere.');
+      if (!updated) throw new Error('This rating no longer exists. It may have been deleted elsewhere.');
       showToast?.('Rating updated.', 'success');
     } else {
       const { error } = await supabaseRestInsert('reviews', {
@@ -148,7 +148,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
   const marketDetail = [show.city, marketLabel(show.category)].filter(Boolean).join(' · ');
 
   return (
-    <div className="max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-16">
+    <div className="ph-mask max-w-2xl mx-auto px-4 sm:px-6 pt-6 sm:pt-8 pb-16">
       <Link href="/my-shows" className="text-sm text-gray-500 hover:text-white transition-colors inline-flex items-center gap-1 mb-4">
         ← My Shows
       </Link>
@@ -176,7 +176,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
 
       {/* Honest empty state — no critic coverage, never a broken-looking page */}
       <div className="card px-4 py-3 mb-6 text-sm text-gray-400">
-        We don&apos;t have critic reviews for this production — it&apos;s outside Broadway Scorecard&apos;s coverage area.
+        We don&apos;t have critic reviews for this production. It&apos;s outside Broadway Scorecard&apos;s coverage area.
       </div>
 
       <div className="card px-4 py-4 mb-4">
@@ -224,6 +224,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
           onSave={handleSaveReview}
           onSaved={handleRateSaved}
           onCancel={handleCancelRate}
+          analytics={{ source: 'diary_page', showId: show.id }}
         />
       )}
     </div>

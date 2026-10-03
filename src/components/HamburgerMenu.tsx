@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import Link from 'next/link';
 import { featureFlags } from '@/config/feature-flags';
 import { saveReturnUrl } from '@/lib/deferred-auth';
@@ -12,6 +12,7 @@ interface HamburgerMenuProps {
   email?: string;
   onSignIn?: () => void;
   onSignOut?: () => void;
+  onDeleteAccount?: () => void;
 }
 
 export default function HamburgerMenu({
@@ -20,10 +21,26 @@ export default function HamburgerMenu({
   email,
   onSignIn,
   onSignOut,
+  onDeleteAccount,
 }: HamburgerMenuProps) {
   const [isOpen, setIsOpen] = useState(false);
 
-  const close = useCallback(() => setIsOpen(false), []);
+  const triggerRef = useRef<HTMLButtonElement>(null);
+  // Every way out (Escape, backdrop, close button, a menu item) parks focus
+  // on the trigger before the panel unmounts, so keyboard users don't land
+  // on <body>.
+  const close = useCallback(() => {
+    setIsOpen(false);
+    triggerRef.current?.focus();
+  }, []);
+
+  // For items that open a modal (sign in, delete account): close first so
+  // the modal captures the trigger as its return target and Cancel goes
+  // back there.
+  const closeInto = (action?: () => void) => {
+    close();
+    action?.();
+  };
 
   // Close on Escape
   useEffect(() => {
@@ -46,6 +63,7 @@ export default function HamburgerMenu({
           desktop-only (three 44px targets don't fit a phone header; owner
           report, 2026-07-17). The menu carries My Shows / Sign in either way. */}
       <button
+        ref={triggerRef}
         type="button"
         onClick={() => setIsOpen(true)}
         className="p-1.5 sm:p-2 shrink-0 flex items-center justify-center text-gray-400 hover:text-white transition-colors"
@@ -60,7 +78,7 @@ export default function HamburgerMenu({
               className="sm:hidden w-7 h-7 rounded-full border border-white/20"
             />
           ) : (
-            <span className="sm:hidden w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-xs">
+            <span className="ph-mask sm:hidden w-7 h-7 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-xs">
               {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
             </span>
           )
@@ -107,12 +125,12 @@ export default function HamburgerMenu({
                         className="w-10 h-10 rounded-full border border-white/10"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-sm">
+                      <div className="ph-mask w-10 h-10 rounded-full bg-brand/20 flex items-center justify-center text-brand font-bold text-sm">
                         {(profile?.display_name || email || '?').charAt(0).toUpperCase()}
                       </div>
                     )}
                     <div className="min-w-0">
-                      <p className="text-sm font-semibold text-white truncate">{profile?.display_name || email || 'Signed In'}</p>
+                      <p className="ph-mask text-sm font-semibold text-white truncate">{profile?.display_name || email || 'Signed In'}</p>
                     </div>
                   </div>
                 ) : (
@@ -120,8 +138,7 @@ export default function HamburgerMenu({
                     type="button"
                     onClick={() => {
                       saveReturnUrl('/my-shows');
-                      close();
-                      onSignIn?.();
+                      closeInto(onSignIn);
                     }}
                     className="w-full flex items-center justify-center gap-2 px-4 py-2.5 text-sm font-semibold text-white bg-brand/20 border border-brand/30 rounded-lg hover:bg-brand/30 transition-colors"
                   >
@@ -162,6 +179,15 @@ export default function HamburgerMenu({
                   >
                     Sign Out
                   </button>
+                  {onDeleteAccount && (
+                    <button
+                      type="button"
+                      onClick={() => closeInto(onDeleteAccount)}
+                      className="w-full text-left px-5 py-2.5 text-sm text-gray-400 hover:text-score-skip hover:bg-white/[0.02] transition-colors"
+                    >
+                      Delete account
+                    </button>
+                  )}
                 </div>
               )}
             </nav>

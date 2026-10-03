@@ -53,7 +53,7 @@ export default function ShowPageWatchlistButton({
         returnUrl: window.location.pathname,
         timestamp: Date.now(),
       });
-      showSignIn('watchlist');
+      showSignIn('watchlist', 'show_watchlist');
       return;
     }
     setLoading(true);

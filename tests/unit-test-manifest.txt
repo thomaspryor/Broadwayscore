@@ -323,6 +323,7 @@ tests/unit/audit-workflow-hygiene-core-data-push.test.mjs
 tests/unit/audit-workflow-hygiene-dead-commit.test.mjs
 tests/unit/audit-workflow-hygiene-push-timeout.test.mjs
 tests/unit/audit-workflow-hygiene-run-shorthand.test.mjs
+tests/unit/auth-redirect-allowlist.test.mjs
 tests/unit/award-category-canonical.test.mjs
 tests/unit/award-score-link-slug.test.mjs
 tests/unit/awards-person-winner-pairing.test.mjs
@@ -489,6 +490,7 @@ tests/unit/dedupe-same-url-bylines-classA-skip.test.mjs
 tests/unit/dedupe-same-url-bylines-double-clear.test.mjs
 tests/unit/dedupe-same-url-bylines-stale-canonical-recurrence.test.mjs
 tests/unit/dedupe-same-url-bylines-stale-canonical.test.mjs
+tests/unit/delete-account-coverage.test.mjs
 tests/unit/detect-syndicated-duplicates-locked.test.mjs
 tests/unit/detect-venue-transfers.test.mjs
 tests/unit/diary-grid-delete-affordance.test.mjs
@@ -857,6 +859,7 @@ tests/unit/reddit-grosses.test.mjs
 tests/unit/reddit-scraper-ci.test.mjs
 tests/unit/regression-guards.test.mjs
 tests/unit/rename-show-id.test.mjs
+tests/unit/replay-masking.test.mjs
 tests/unit/rescore-actionable-depth.test.mjs
 tests/unit/rescore-flagging.test.mjs
 tests/unit/rescore-lifecycle.test.mjs
@@ -971,6 +974,7 @@ tests/unit/show-proof-rage-clicks.test.mjs
 tests/unit/show-score-archive-pagination.test.mjs
 tests/unit/show-score-pagination-regex.test.mjs
 tests/unit/show-score-profile-parser.test.mjs
+tests/unit/show-trust-lines-parity.test.mjs
 tests/unit/shows-write-guard.test.mjs
 tests/unit/sibling-matchers-diacritics.test.mjs
 tests/unit/silent-failure-logging.test.mjs
@@ -1041,6 +1045,7 @@ tests/unit/trainspotting-review-fetch.test.mjs
 tests/unit/transfer-detection.test.mjs
 tests/unit/transition-inventory-complete.test.mjs
 tests/unit/ttl-cache.test.mjs
+tests/unit/ugc-copy-no-em-dash.test.mjs
 tests/unit/ugc-e2e-clock-pin.test.mjs
 tests/unit/update-show-status-publish-gate.test.mjs
 tests/unit/url-change-invariant.test.mjs

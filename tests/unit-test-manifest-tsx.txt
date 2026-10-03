@@ -30,6 +30,7 @@ tests/unit/llm-cost-cache.test.ts
 tests/unit/llm-scoring-stale-roundup-flag.test.mjs
 tests/unit/london-hub-routing.test.ts
 tests/unit/markets-consistency.test.ts
+tests/unit/mezzanine-import-errors.test.ts
 tests/unit/middleware-slug-redirects.test.mjs
 tests/unit/multi-show-detector-punct-boundary.test.mjs
 tests/unit/name-slug-redirects.test.ts
@@ -64,9 +65,11 @@ tests/unit/stats-season-windows.test.mjs
 tests/unit/stats-theater-completion.test.mjs
 tests/unit/stats-venue-match.test.mjs
 tests/unit/strip-inline-markdown.test.ts
+tests/unit/test-fixture-host.test.ts
 tests/unit/ticket-click-tracking.test.ts
 tests/unit/ticket-links-hidden-fallback.test.ts
 tests/unit/tier-config-consistency.test.ts
 tests/unit/tony-season-groups.test.ts
 tests/unit/tour-display.test.ts
 tests/unit/tour-links.test.ts
+tests/unit/ugc-analytics.test.ts

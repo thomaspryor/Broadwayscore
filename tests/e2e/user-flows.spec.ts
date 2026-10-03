@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, type Page } from '@playwright/test';
 import { filterNonCriticalErrors } from './helpers/console-errors';
 
 /**
@@ -45,128 +45,98 @@ test.describe('My Shows Page (Unauthenticated)', () => {
   });
 });
 
+const signInDialog = (page: Page) => page.getByRole('dialog', { name: 'Sign in' });
+
+/**
+ * Opens the sign-in modal the way a signed-out visitor would: the header pill
+ * on desktop, the hamburger menu on phones (the header pill is hidden below
+ * `sm`). Role queries match the accessible name case-insensitively, so copy
+ * casing ("Sign in" in the header, "Sign In" in the menu) can't turn these
+ * into silent skips again: the old `button[aria-label="Sign In"]` selector
+ * never matched the real "Sign in" button, so every run skipped.
+ * Returns false when accounts are not live on this host.
+ */
+async function openSignInModal(page: Page): Promise<boolean> {
+  const signIn = page.getByRole('button', { name: /^sign in$/i });
+  if ((await signIn.count()) === 0) {
+    const menu = page.getByRole('button', { name: 'Open menu' });
+    if ((await menu.count()) === 0) return false;
+    await menu.first().click();
+  }
+  if ((await signIn.count()) === 0) return false;
+  await signIn.first().click();
+  await expect(signInDialog(page)).toBeVisible({ timeout: 5000 });
+  return true;
+}
+
 test.describe('Sign-In Modal', () => {
-  test('header user icon triggers sign-in modal', async ({ page }) => {
+  test.beforeEach(async ({ page }) => {
     await page.goto('/');
     await page.waitForLoadState('networkidle');
+  });
 
-    // Find the user icon button in the header
-    const userButton = page.locator('button[aria-label="Sign In"], a[aria-label="My Shows"]');
-
-    if ((await userButton.count()) === 0) {
+  test('header or menu Sign in opens the modal with Google and Apple', async ({ page }) => {
+    if (!(await openSignInModal(page))) {
       test.skip(true, 'User accounts feature not enabled');
       return;
     }
-
-    // If it's a button (not authenticated), click it
-    const tagName = await userButton.first().evaluate(el => el.tagName);
-    if (tagName === 'BUTTON') {
-      await userButton.first().click();
-
-      // Sign-in modal should appear
-      await expect(page.locator('text=Continue with Google')).toBeVisible({ timeout: 5000 });
-
-      // Should have Apple option (enabled or coming soon)
-      const appleButton = page.locator('button:has-text("Apple")');
-      await expect(appleButton).toBeVisible();
-    }
+    const dialog = signInDialog(page);
+    await expect(dialog.getByRole('button', { name: /continue with google/i })).toBeVisible();
+    await expect(dialog.getByRole('button', { name: /apple/i })).toBeVisible();
   });
 
   test('sign-in modal closes on Escape', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-
-    const userButton = page.locator('button[aria-label="Sign In"]');
-    if ((await userButton.count()) === 0) {
-      test.skip(true, 'User accounts not enabled or already authenticated');
+    if (!(await openSignInModal(page))) {
+      test.skip(true, 'User accounts feature not enabled');
       return;
     }
-
-    await userButton.first().click();
-    await expect(page.locator('text=Continue with Google')).toBeVisible({ timeout: 5000 });
-
-    // Press Escape
     await page.keyboard.press('Escape');
-
-    // Modal should be gone
-    await expect(page.locator('text=Continue with Google')).not.toBeVisible({ timeout: 3000 });
+    await expect(signInDialog(page)).toBeHidden({ timeout: 3000 });
   });
 
   test('sign-in modal closes on backdrop click', async ({ page }) => {
-    await page.goto('/');
-    await page.waitForLoadState('networkidle');
-
-    const userButton = page.locator('button[aria-label="Sign In"]');
-    if ((await userButton.count()) === 0) {
-      test.skip(true, 'User accounts not enabled');
+    if (!(await openSignInModal(page))) {
+      test.skip(true, 'User accounts feature not enabled');
       return;
     }
-
-    await userButton.first().click();
-    await expect(page.locator('text=Continue with Google')).toBeVisible({ timeout: 5000 });
-
-    // Click backdrop (the dark overlay)
-    await page.locator('.backdrop-blur-sm').click({ position: { x: 10, y: 10 } });
-
-    await expect(page.locator('text=Continue with Google')).not.toBeVisible({ timeout: 3000 });
+    // Scoped to the dialog: the homepage explainer pill also carries
+    // .backdrop-blur-sm, so a bare class selector trips strict mode.
+    await signInDialog(page).locator('.backdrop-blur-sm').click({ position: { x: 10, y: 10 } });
+    await expect(signInDialog(page)).toBeHidden({ timeout: 3000 });
   });
 });
 
 test.describe('Show Page Rating Section', () => {
-  test('show page has Your Rating section when feature enabled', async ({ page }) => {
+  test('Want to See asks a signed-out visitor to sign in', async ({ page }) => {
     await page.goto(`/show/${SHOW_SLUG}`);
     await page.waitForLoadState('networkidle');
 
-    const ratingSection = page.locator('text=Your Rating');
-
-    if ((await ratingSection.count()) === 0) {
+    const wantToSee = page.getByRole('button', { name: /want to see/i });
+    if ((await wantToSee.count()) === 0) {
       test.skip(true, 'User accounts feature not enabled');
       return;
     }
-
-    // Star rating should be visible
-    await expect(ratingSection).toBeVisible();
+    await wantToSee.first().click();
+    await expect(signInDialog(page)).toBeVisible({ timeout: 5000 });
   });
 
-  test('clicking stars triggers sign-in for unauthenticated users', async ({ page }) => {
+  test('Rate it opens the editor and Save asks a signed-out visitor to sign in', async ({ page }) => {
     await page.goto(`/show/${SHOW_SLUG}`);
     await page.waitForLoadState('networkidle');
 
-    const ratingSection = page.locator('text=Your Rating');
-    if ((await ratingSection.count()) === 0) {
+    const rateIt = page.getByRole('button', { name: /^rate it$/i });
+    if ((await rateIt.count()) === 0) {
       test.skip(true, 'User accounts feature not enabled');
       return;
     }
+    await rateIt.first().click();
+    const editor = page.locator('[data-testid="rating-editor"]');
+    await expect(editor).toBeVisible({ timeout: 5000 });
 
-    // Find star buttons (they're SVGs inside the StarRating component)
-    const stars = page.locator('[aria-label*="star"], [role="button"]').filter({ hasText: /★|☆/ });
-
-    // If there are clickable star elements, click one
-    if ((await stars.count()) > 0) {
-      await stars.first().click();
-
-      // Should trigger sign-in modal
-      const modal = page.locator('text=Continue with Google');
-      if ((await modal.count()) > 0) {
-        await expect(modal).toBeVisible({ timeout: 5000 });
-      }
-    }
-  });
-
-  test('watchlist button is visible on show page', async ({ page }) => {
-    await page.goto(`/show/${SHOW_SLUG}`);
-    await page.waitForLoadState('networkidle');
-
-    // Check for watchlist button
-    const watchlistBtn = page.locator('button:has-text("Watchlist"), [aria-label*="watchlist"], [aria-label*="Watchlist"]');
-
-    if ((await watchlistBtn.count()) === 0) {
-      // Feature might not be enabled
-      test.skip(true, 'Watchlist feature not visible');
-      return;
-    }
-
-    await expect(watchlistBtn.first()).toBeVisible();
+    // Visitors rate first; sign-in is asked at Save, with the draft kept.
+    await editor.getByRole('button', { name: '4 stars' }).click();
+    await editor.getByRole('button', { name: 'Save' }).click();
+    await expect(signInDialog(page)).toBeVisible({ timeout: 5000 });
   });
 
   test('date picker uses native input (not showPicker)', async ({ page }) => {
@@ -288,11 +258,12 @@ test.describe('My Shows Page Layout', () => {
 });
 
 test.describe('Show Page - No Layout Overflow', () => {
-  test('star ratings do not overflow their container on mobile', async ({ page }) => {
-    // Only relevant on mobile viewport
+  // The old version keyed on `[class*="flex-shrink-0"][class*="flex-col"]`,
+  // which only ever matched the legacy header's poster column, so it never
+  // looked at stars and went red the day the redesigned hero replaced it.
+  test('show page and rating stars fit a phone screen', async ({ page }) => {
     const viewport = page.viewportSize();
     if (!viewport || viewport.width > 500) {
-      // Desktop test — skip overflow check
       test.skip(true, 'Only relevant on mobile viewport');
       return;
     }
@@ -300,21 +271,28 @@ test.describe('Show Page - No Layout Overflow', () => {
     await page.goto(`/show/${SHOW_SLUG}`);
     await page.waitForLoadState('networkidle');
 
-    // Check all star rating containers don't overflow
-    const ratingContainers = page.locator('[class*="flex-shrink-0"][class*="flex-col"]');
-    const count = await ratingContainers.count();
-    // A selector drift silently dropping count to 0 must fail loudly, not
-    // pass having checked nothing (sibling of the test-red incident fixed
-    // in my-shows-functional.spec.ts, 2026-07-21).
-    expect(count).toBeGreaterThan(0);
+    // Runs on every host and layout, so this test never passes having checked nothing.
+    const sideScroll = await page.evaluate(
+      () => document.documentElement.scrollWidth - document.documentElement.clientWidth,
+    );
+    expect(sideScroll).toBeLessThanOrEqual(0);
 
-    for (let i = 0; i < Math.min(count, 5); i++) {
-      const container = ratingContainers.nth(i);
-      const box = await container.boundingBox();
-      if (!box) continue;
+    const rateIt = page.getByRole('button', { name: /^rate it$/i });
+    if ((await rateIt.count()) === 0) return; // accounts not live on this host
+    await rateIt.first().click();
+    const editor = page.locator('[data-testid="rating-editor"]');
+    await expect(editor).toBeVisible({ timeout: 5000 });
 
-      // Container should not exceed reasonable width (120px for a rating column)
-      expect(box.width).toBeLessThan(120);
+    const stars = editor.getByRole('radiogroup', { name: 'Star rating' }).getByRole('button');
+    await expect(stars).toHaveCount(5);
+    const editorBox = await editor.boundingBox();
+    expect(editorBox).not.toBeNull();
+    for (let i = 0; i < 5; i++) {
+      const box = await stars.nth(i).boundingBox();
+      expect(box).not.toBeNull();
+      expect(box!.x).toBeGreaterThanOrEqual(editorBox!.x);
+      expect(box!.x + box!.width).toBeLessThanOrEqual(editorBox!.x + editorBox!.width);
+      expect(box!.x + box!.width).toBeLessThanOrEqual(viewport.width);
     }
   });
 });

@@ -9,9 +9,12 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { extractRunBlocks, REFERENCE_REGEX } = require('./audit-orphan-tests.js');
+const { extractRunBlocks, REFERENCE_REGEX, checkManifests } = require('./audit-orphan-tests.js');
 
 // BRO-111: REFERENCE_REGEX used to exclude dots from its match class, so a
 // dotted test filename (review-normalization.maybeUpgradeUrl.test.mjs) only
@@ -89,4 +92,43 @@ test('a run: block correctly includes a blank line inside the block without endi
   const extracted = extractRunBlocks(yaml);
   assert.equal(extracted.includes('before.test.mjs'), true);
   assert.equal(extracted.includes('after.test.mjs'), true);
+});
+
+// BRO-4525: a manifest entry inserted out of alphabetical order passed this
+// audit ("All N registered") and only failed in the land run's
+// test-manifest-integrity test. checkManifests() runs the same validator, and
+// with --scope-stdin a problem blocks only when its manifest is in the push.
+function tempRepo() {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'orphan-manifest-'));
+  fs.mkdirSync(path.join(root, 'tests/unit'), { recursive: true });
+  for (const f of ['a.test.mjs', 'b.test.mjs']) fs.writeFileSync(path.join(root, 'tests/unit', f), '');
+  return root;
+}
+const NODE_MANIFEST = 'tests/unit-test-manifest.txt';
+const forManifest = (list) => list.filter((p) => p.manifest === NODE_MANIFEST);
+
+test('an unsorted manifest blocks when unscoped or when the push touches it', () => {
+  const root = tempRepo();
+  fs.writeFileSync(path.join(root, NODE_MANIFEST), 'tests/unit/b.test.mjs\ntests/unit/a.test.mjs\n');
+  for (const scope of [undefined, [NODE_MANIFEST]]) {
+    const { blocking, informational } = checkManifests(root, scope);
+    assert.match(forManifest(blocking).map((p) => p.error).join('\n'), /not sorted/);
+    assert.deepEqual(forManifest(informational), []);
+  }
+});
+
+test('an unsorted manifest outside the push is informational only', () => {
+  const root = tempRepo();
+  fs.writeFileSync(path.join(root, NODE_MANIFEST), 'tests/unit/b.test.mjs\ntests/unit/a.test.mjs\n');
+  const { blocking, informational } = checkManifests(root, ['src/unrelated.ts']);
+  assert.deepEqual(blocking, []);
+  assert.match(forManifest(informational).map((p) => p.error).join('\n'), /not sorted/);
+});
+
+test('a sorted manifest of existing files reports nothing', () => {
+  const root = tempRepo();
+  fs.writeFileSync(path.join(root, NODE_MANIFEST), 'tests/unit/a.test.mjs\ntests/unit/b.test.mjs\n');
+  const { blocking, informational } = checkManifests(root);
+  assert.deepEqual(forManifest(blocking), []);
+  assert.deepEqual(forManifest(informational), []);
 });

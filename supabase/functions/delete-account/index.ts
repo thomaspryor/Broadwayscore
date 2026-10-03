@@ -70,6 +70,23 @@ async function deleteRows(base: string, auth: Record<string, string>, table: str
   if (!res.ok) throw new Error(`delete ${table} failed: ${res.status}`);
 }
 
+/** Read every row a PostgREST query matches. A response holds at most the
+ *  project's max-rows (1000 by default), so page until an empty page instead
+ *  of trusting that number. `order` must be stable; no matching row may be
+ *  deleted while paging. Returns null when the table doesn't exist (404). */
+async function selectAll<T>(base: string, auth: Record<string, string>, table: string, query: string, order: string): Promise<T[] | null> {
+  const rows: T[] = [];
+  for (let offset = 0; ; ) {
+    const res = await fetch(`${base}/rest/v1/${table}?${query}&order=${order}&limit=1000&offset=${offset}`, { headers: auth });
+    if (res.status === 404) return null;
+    if (!res.ok) throw new Error(`fetch ${table} failed: ${res.status}`);
+    const page: T[] = await res.json();
+    if (page.length === 0) return rows;
+    rows.push(...page);
+    offset += page.length;
+  }
+}
+
 Deno.serve(async (req) => {
   if (req.method === 'OPTIONS') return new Response('ok', { headers: corsHeaders(req) });
   if (req.method !== 'POST') return json(req, { ok: false, error: 'internal' }, 405);
@@ -85,24 +102,57 @@ Deno.serve(async (req) => {
   try {
     // list_items references lists.id, not the user directly — resolve the
     // caller's list ids first so their items are cleaned up before the lists.
-    const listsRes = await fetch(`${base}/rest/v1/lists?user_id=eq.${userId}&select=id`, { headers: auth });
-    if (!listsRes.ok) throw new Error(`fetch lists failed: ${listsRes.status}`);
-    const lists: { id: string }[] = await listsRes.json();
+    const lists = await selectAll<{ id: string }>(base, auth, 'lists', `user_id=eq.${userId}&select=id`, 'id');
+    if (lists === null) throw new Error('fetch lists failed: 404');
     for (const { id } of lists) {
       await deleteRows(base, auth, 'list_items', 'list_id', id);
     }
 
     await deleteRows(base, auth, 'lists', 'user_id', userId);
     await deleteRows(base, auth, 'watchlist', 'user_id', userId);
+
+    // Review photos (iOS app) are files in the private diary-photos bucket at
+    // {userId}/{reviewId}/{photoId}.jpg. Their user_review_photos rows cascade
+    // from reviews, but the files don't, so remove them while the rows still
+    // say where they are. A 404 means the photos table isn't in this project.
+    // No photo row is removed until the reviews delete below, so paging is
+    // stable.
+    const photos = await selectAll<{ storage_path: string }>(base, auth, 'user_review_photos', `user_id=eq.${userId}&select=storage_path`, 'storage_path');
+    if (photos !== null) {
+      // Only paths under the caller's own folder, so a bad row can never
+      // remove someone else's file.
+      const paths = photos.map((p) => p.storage_path).filter((p) => p.startsWith(`${userId}/`));
+      for (let i = 0; i < paths.length; i += 1000) {
+        const res = await fetch(`${base}/storage/v1/object/diary-photos`, {
+          method: 'DELETE',
+          headers: auth,
+          body: JSON.stringify({ prefixes: paths.slice(i, i + 1000) }),
+        });
+        if (!res.ok) throw new Error(`delete photos failed: ${res.status}`);
+      }
+    }
+
     await deleteRows(base, auth, 'reviews', 'user_id', userId);
     await deleteRows(base, auth, 'push_tokens', 'user_id', userId);
+    // Import and search logs hold the caller's pasted titles and queries.
+    // user_show_stubs stays: those rows are shared catalog entries other
+    // users' lists can point at, and they carry no personal content.
+    await deleteRows(base, auth, 'unmatched_imports', 'user_id', userId);
+    await deleteRows(base, auth, 'import_fetch_log', 'user_id', userId);
+    await deleteRows(base, auth, 'mezzanine_search_log', 'user_id', userId);
+    // plan_shares cascades from profiles.
     await deleteRows(base, auth, 'profiles', 'id', userId);
 
     const deleteUserRes = await fetch(`${base}/auth/v1/admin/users/${userId}`, {
       method: 'DELETE',
       headers: auth,
     });
-    if (!deleteUserRes.ok) throw new Error(`delete auth user failed: ${deleteUserRes.status}`);
+    // 404 means an earlier attempt already removed the auth user (its
+    // response was lost); everything above is idempotent, so a retry
+    // finishes the job instead of failing forever.
+    if (!deleteUserRes.ok && deleteUserRes.status !== 404) {
+      throw new Error(`delete auth user failed: ${deleteUserRes.status}`);
+    }
 
     return json(req, { ok: true });
   } catch (e) {

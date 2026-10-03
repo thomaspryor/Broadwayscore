@@ -51,9 +51,24 @@ export function clearPendingAction(): void {
   }
 }
 
+/**
+ * Only same-site paths ("/show/x?tab=y"). Rejects "//evil.com", "/\\evil.com"
+ * and absolute URLs, so the post-sign-in redirect can never leave the site.
+ * Also rejects control characters: the URL parser strips tab/CR/LF, so
+ * "/\t/evil.com" would otherwise navigate to "//evil.com".
+ */
+// eslint-disable-next-line no-control-regex
+const CONTROL_CHARS = /[\u0000-\u001F\u007F]/;
+
+export function safeReturnPath(url: string | null | undefined): string {
+  if (!url || !url.startsWith('/') || url.startsWith('//') || url.includes('\\') || CONTROL_CHARS.test(url)) return '/';
+  return url;
+}
+
 export function saveReturnUrl(url?: string): void {
   try {
-    localStorage.setItem(RETURN_URL_KEY, url || window.location.pathname);
+    const current = window.location.pathname + window.location.search;
+    localStorage.setItem(RETURN_URL_KEY, safeReturnPath(url || current));
   } catch {
     // localStorage not available
   }
@@ -61,7 +76,7 @@ export function saveReturnUrl(url?: string): void {
 
 export function getReturnUrl(): string {
   try {
-    return localStorage.getItem(RETURN_URL_KEY) || '/';
+    return safeReturnPath(localStorage.getItem(RETURN_URL_KEY));
   } catch {
     return '/';
   }

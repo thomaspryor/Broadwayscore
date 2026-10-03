@@ -71,7 +71,7 @@ export default function ShowPageAddToListButton({ showId }: ShowPageAddToListBut
         returnUrl: window.location.pathname,
         timestamp: Date.now(),
       });
-      showSignIn('generic');
+      showSignIn('generic', 'show_add_to_list');
       return;
     }
     setOpen(prev => !prev);

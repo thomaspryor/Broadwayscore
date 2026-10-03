@@ -1,4 +1,5 @@
 import type { PerformanceEvent } from './types';
+import { isIsoCalendarDate } from '@/lib/date-utils';
 
 /**
  * The shared codec. `/api/calendar.ics`, the Add-to-Calendar buttons, and
@@ -40,7 +41,7 @@ export function decodeEventParams(qs: URLSearchParams): PerformanceEvent | null 
   const showUrl = qs.get('u')?.trim();
 
   if (!showId || !title || !date || !showUrl) return null;
-  if (!/^\d{4}-\d{2}-\d{2}$/.test(date) || !isRealDate(date)) return null;
+  if (!isIsoCalendarDate(date)) return null;
   if (title.length > MAX_TITLE) return null;
   if (!isHttpUrl(showUrl)) return null;
 
@@ -80,13 +81,6 @@ export function decodeEventParams(qs: URLSearchParams): PerformanceEvent | null 
   if (joinUrl) ev.joinUrl = joinUrl;
   if (companions?.length) ev.companions = companions;
   return ev;
-}
-
-/** Rejects 2026-02-31 and friends, which the regex alone happily accepts. */
-function isRealDate(date: string): boolean {
-  const [y, m, d] = date.split('-').map(Number);
-  const dt = new Date(Date.UTC(y, m - 1, d));
-  return dt.getUTCFullYear() === y && dt.getUTCMonth() === m - 1 && dt.getUTCDate() === d;
 }
 
 /** http/https only — a javascript: or data: URL here would land in a calendar event. */

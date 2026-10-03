@@ -78,7 +78,7 @@ export default function ShowPageBookmark({ showId, size = 'md' }: ShowPageBookma
         returnUrl: window.location.pathname,
         timestamp: Date.now(),
       });
-      showSignIn('watchlist');
+      showSignIn('watchlist', 'show_bookmark');
       return;
     }
     setLoading(true);
