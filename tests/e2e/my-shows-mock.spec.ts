@@ -632,10 +632,10 @@ test.describe('My Shows — Import preview', () => {
     await expect(page.getByRole('heading', { name: 'Review Import' })).toBeVisible();
     // The "not selected" chip must NAME the shows, not just count them —
     // a bare count sent the owner scrolling a 98-row list (2026-07-21).
-    await expect(page.getByText('2 not selected — Come From Away, Hadestown')).toBeVisible();
+    await expect(page.getByText('2 not selected: Come From Away, Hadestown')).toBeVisible();
     // Date-mismatch rows live in their OWN section with the why + a way out.
-    await expect(page.getByRole('heading', { name: 'Not selected — date mismatch (2)' })).toBeVisible();
-    await expect(page.getByText(/you may have seen a different production/)).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Not selected: date mismatch (2)' })).toBeVisible();
+    await expect(page.getByText(/You may have seen a different production/)).toBeVisible();
     await expect(page.getByRole('button', { name: 'Find the production I saw' })).toHaveCount(2);
     // Rows carry the match context: market + year + venue + logged date.
     await expect(page.getByText(/Broadway 2017 · Gerald Schoenfeld Theatre · you logged Jun 1, 2005/)).toBeVisible();
