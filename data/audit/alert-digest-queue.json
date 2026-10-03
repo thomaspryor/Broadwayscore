@@ -411,5 +411,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-03T13:28:21.694Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-4549-musgfkx2",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-4549-musgfkx2",
+    "description": "land.yml did not land land/job/linear-BRO-4549-musgfkx2: the rebase gate went red at 8b9c85fe87. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-4549-musgfkx2 @ 8b9c85fe87 (origin/land/job/linear-BRO-4549-musgfkx2) → origin/main @ a84d922458 REFUSED: rebase: branch would not rebase cleanly onto origin/main @ a84d922458: Rebasing (1/1) error: could not apply 8b9c85fe87e... test: pin critic registry fixture in Guard G test (BRO-4549) hint: Resolve all conflicts manually, mark them as resolved with hint: \"git add/rm Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37128242651",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-4549-musgfkx2"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "8b9c85fe87eea1e26604fe9c40cabe57a9b6c397"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37128242651"
+      }
+    ],
+    "queuedAt": "2026-10-03T14:33:15.292Z"
   }
 ]
