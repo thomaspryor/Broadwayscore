@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-03T18:44:40.318Z",
+  "generated": "2026-10-03T18:56:18.099Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 20,
+  "count": 19,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -15,13 +15,6 @@
       "loserFile": "guardian--charles-isherwood.json",
       "targetFile": "guardian--adrian-horton.json",
       "reason": "orphaned-duplicate-heal: guardian--adrian-horton.json was flagged invalid after guardian--charles-isherwood.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "camelot-2023",
-      "loserFile": "observer--unknown.json",
-      "targetFile": "observer--david-cote.json",
-      "reason": "orphaned-duplicate-heal: observer--david-cote.json was flagged invalid after observer--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
