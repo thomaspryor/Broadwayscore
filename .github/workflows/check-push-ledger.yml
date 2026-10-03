@@ -169,6 +169,7 @@ jobs:
           # Classify rather than print a bare rc. 403/auth is NOT a measurement.
           # Censoring keys on the timeout rc only: a push that finished at 90.5s is
           # a real (slow) measurement.
+          # NB: classify() assigns _rc/_ms/_op/_tag/_log as globals; callers must not reuse those names.
           classify() {
             _rc="$1"; _ms="$2"; _op="$3"; _tag="$4"; _log="$5"
             if [ "$_rc" = "124" ] || [ "$_rc" = "137" ]; then
@@ -218,7 +219,7 @@ jobs:
 
           probe_push() {  # $1 = n, $2 = arm
             _ref="${REF_PREFIX}-$1"
-            _tag="n=$1|arm=$2|commits=$(git rev-list --count HEAD)|shallow=$(git rev-parse --is-shallow-repository)"
+            ptag="n=$1|arm=$2|commits=$(git rev-list --count HEAD)|shallow=$(git rev-parse --is-shallow-repository)"
             if [ "$2" = "fetched" ]; then
               timed_fetch "n=$1|arm=fetched-prefetch" "/tmp/pf.$1" || return
               mk_commit
@@ -232,7 +233,7 @@ jobs:
             # push-with-retry.sh by hand.
             timeout -k 10 "$CAP" git push --progress origin "HEAD:${_ref}" >"/tmp/push.$1" 2>&1
             rc=$?; e=$(date +%s%3N)
-            classify "$rc" "$((e - s))" push-real "$_tag" "/tmp/push.$1"
+            classify "$rc" "$((e - s))" push-real "$ptag" "/tmp/push.$1"
             # Delete whatever the push rc was: a killed push may have created it.
             timeout -k 10 "$DEL_CAP" git push origin --delete "${_ref}" >"/tmp/del.$1" 2>&1
             echo "PROBE|op=delete|n=$1|rc=$?"
