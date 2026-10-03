@@ -997,6 +997,9 @@ on:
       # tests/unit/ (runs in the node --test batch); path-listed so a solo
       # edit triggers CI.
       - 'tests/unit/push-with-retry-abort-preserves-head.test.mjs'
+      # BRO-2129: stale local origin ref must not make foreign lines count as ours
+      # in the content-survival check (refine_entry_base).
+      - 'tests/unit/push-content-survival-false-positive.test.mjs'
       # #394: no-op-rebase root-cause fix (explicit-destination fetch + progress
       # assertion). Pure predicate in push-rebase-progress.js (colocated .test.mjs
       # runs in the scripts/lib/*.test.mjs glob); bash integration reproduces the
