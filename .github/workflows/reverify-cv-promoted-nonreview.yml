@@ -72,7 +72,7 @@ jobs:
           echo "cleared=$CLEARED" >> "$GITHUB_OUTPUT"
 
       - name: Push to private repo
-        if: !inputs.dry_run
+        if: ${{ !inputs.dry_run }}
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}
