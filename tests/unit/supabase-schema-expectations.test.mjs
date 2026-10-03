@@ -113,3 +113,81 @@ test('no web migration after the iOS fix re-creates the open push_tokens insert 
     .filter((f) => /create\s+policy\s+"Anon can insert push tokens"/i.test(fs.readFileSync(path.join(dir, f), 'utf8')));
   assert.deepEqual(offenders, []);
 });
+
+// ── function body drift (UGC roundtrip page, Oct 2026) ─────────────────────
+// A body-only CREATE OR REPLACE FUNCTION migration leaves the function's
+// existence unchanged, so the existence check passed while the migration was
+// unapplied. The verifier now also compares a hash of the latest body.
+const {
+  extractFunctionBodies,
+  hashBody,
+  diffFunctionBodies,
+} = require('../../scripts/lib/supabase-schema-expectations.js');
+
+const fnSql = (body, name = 'my_fn') => `
+CREATE OR REPLACE FUNCTION public.${name}(p int) RETURNS int
+LANGUAGE plpgsql AS $$
+${body}
+$$;
+`;
+
+test('later migration redefining a function body replaces the expected hash', () => {
+  const r = deriveExpectations([
+    { name: 'a.sql', sql: fnSql('BEGIN RETURN 1; END;') },
+    { name: 'b.sql', sql: fnSql('BEGIN RETURN 2; END;') },
+  ]);
+  const entry = r.expected.get('function:my_fn');
+  assert.equal(entry.file, 'b.sql');
+  assert.equal(entry.bodyHash, hashBody('BEGIN RETURN 2; END;'));
+});
+
+test('diffFunctionBodies flags a live body that is still the old migration', () => {
+  const r = deriveExpectations([
+    { name: 'a.sql', sql: fnSql('BEGIN RETURN 1; END;') },
+    { name: 'b.sql', sql: fnSql('BEGIN RETURN 2; END;') },
+  ]);
+  const stale = [{ kind: 'function', name: 'my_fn', hash: hashBody('BEGIN RETURN 1; END;') }];
+  const fresh = [{ kind: 'function', name: 'my_fn', hash: hashBody('BEGIN RETURN 2; END;') }];
+  assert.deepEqual(diffFunctionBodies(r.expected, stale).map((o) => o.file), ['b.sql']);
+  assert.equal(diffFunctionBodies(r.expected, fresh).length, 0);
+});
+
+test('whitespace-only reformatting is not drift', () => {
+  assert.equal(hashBody('BEGIN\n  RETURN   1;\r\nEND;\n'), hashBody('BEGIN RETURN 1; END;'));
+});
+
+test('overloads: expected hash only needs to match one live overload', () => {
+  const r = deriveExpectations([{ name: 'a.sql', sql: fnSql('SELECT 2') }]);
+  const rows = [
+    { kind: 'function', name: 'my_fn', hash: hashBody('SELECT 1') },
+    { kind: 'function', name: 'my_fn', hash: hashBody('SELECT 2') },
+  ];
+  assert.equal(diffFunctionBodies(r.expected, rows).length, 0);
+});
+
+test('a missing function is the existence check\'s job, not drift', () => {
+  const r = deriveExpectations([{ name: 'a.sql', sql: fnSql('SELECT 1') }]);
+  assert.equal(diffFunctionBodies(r.expected, []).length, 0);
+});
+
+test('commented-out and string-embedded CREATE FUNCTION do not register', () => {
+  const sql = `
+-- CREATE FUNCTION ghost() RETURNS int AS $$ SELECT 1 $$;
+/* CREATE FUNCTION ghost2() RETURNS int AS $$ SELECT 1 $$; */
+COMMENT ON FUNCTION real_fn() IS 'CREATE FUNCTION ghost3() AS';
+${fnSql('SELECT 9', 'real_fn')}`;
+  assert.deepEqual(extractFunctionBodies(sql).map((f) => f.name), ['real_fn']);
+});
+
+test('real migrations: get_shared_plans expects the refuse-GET body from 20261002', () => {
+  const dir = path.join(path.dirname(fileURLToPath(import.meta.url)), '../../supabase/migrations');
+  const files = fs.readdirSync(dir).filter((f) => f.endsWith('.sql')).sort()
+    .map((name) => ({ name, sql: fs.readFileSync(path.join(dir, name), 'utf8') }));
+  const entry = deriveExpectations(files).expected.get('function:get_shared_plans');
+  assert.ok(entry, 'get_shared_plans should be expected');
+  assert.match(entry.file, /^20261002_plan_shares_refuse_get/);
+  assert.ok(entry.bodyHash, 'body hash should be captured');
+  const old = files.find((f) => f.name.startsWith('20261001_plan_shares'));
+  const oldHash = extractFunctionBodies(old.sql).find((f) => f.name === 'get_shared_plans').hash;
+  assert.notEqual(entry.bodyHash, oldHash);
+});

@@ -12,12 +12,22 @@
 // escape verification. A migration that genuinely creates nothing checkable
 // (pure GRANT/COMMENT/data fix) opts out with a `-- verify-schema: skip` line.
 //
-// Deliberately existence-only: it proves a migration was APPLIED (the failure
-// class), not that every predicate/body matches. DROP-only statements remove
-// prior expectations so superseding migrations (e.g. the fantasy security
-// fixes) don't assert objects they themselves deleted.
+// Existence-only for tables, columns, indexes, policies, constraints, views and
+// triggers: it proves a migration was APPLIED (the failure class), not that every
+// predicate matches. DROP-only statements remove prior expectations so
+// superseding migrations (e.g. the fantasy security fixes) don't assert objects
+// they themselves deleted.
+//
+// Functions are the exception. A `CREATE OR REPLACE FUNCTION` migration often
+// changes only a body, so "the function exists" is true both before and after
+// the migration is applied. That let 20261002_plan_shares_refuse_get.sql sit
+// merged but unapplied while the nightly UGC roundtrip paged the owner (Oct
+// 2026). Each function with a dollar-quoted body therefore also carries a hash
+// of its latest body, compared with the hash of the live pg_proc.prosrc.
 
 'use strict';
+
+const crypto = require('crypto');
 
 const SKIP_ANNOTATION = /--\s*verify-schema:\s*skip/;
 
@@ -32,6 +42,57 @@ function stripNoise(sql) {
   out = out.replace(/--[^\n]*/g, '');
   out = out.replace(/\/\*[\s\S]*?\*\//g, '');
   out = out.replace(/'(?:[^']|'')*'/g, "''");
+  return out;
+}
+
+// Whitespace-collapsed md5 of a function body. The live catalog applies the
+// same normalization in SQL (see LIVE_CATALOG_QUERY), so reformatting a body
+// never reads as drift but any real edit does.
+function hashBody(body) {
+  return crypto
+    .createHash('md5')
+    .update(body.replace(/[ \t\n\r\f\v]+/g, ' ').trim(), 'utf8')
+    .digest('hex');
+}
+
+// Returns [{name, hash}] for every `CREATE [OR REPLACE] FUNCTION name(...)
+// ... AS $tag$ body $tag$` in the file, in source order. Walks the raw text
+// (not stripNoise output) because the body is exactly what stripNoise throws
+// away. Comments and string literals outside the body are skipped so a
+// commented-out CREATE FUNCTION cannot register.
+function extractFunctionBodies(sql) {
+  const out = [];
+  let head = '';
+  let i = 0;
+  while (i < sql.length) {
+    const rest = sql.slice(i, i + 200);
+    let m;
+    if (rest.startsWith('--')) {
+      const nl = sql.indexOf('\n', i);
+      i = nl === -1 ? sql.length : nl;
+    } else if (rest.startsWith('/*')) {
+      const end = sql.indexOf('*/', i + 2);
+      i = end === -1 ? sql.length : end + 2;
+    } else if (sql[i] === "'") {
+      const lit = /^'(?:[^']|'')*'/.exec(sql.slice(i));
+      head += "''";
+      i += lit ? lit[0].length : 1;
+    } else if ((m = /^\$([A-Za-z_]*)\$/.exec(rest))) {
+      const close = sql.indexOf(m[0], i + m[0].length);
+      if (close === -1) break;
+      const body = sql.slice(i + m[0].length, close);
+      const fn = /\bCREATE\s+(?:OR\s+REPLACE\s+)?FUNCTION\s+("[^"]+"|[\w.]+)\s*\(/i.exec(head);
+      if (fn) out.push({ name: unquoteIdent(fn[1]), hash: hashBody(body) });
+      head += "''";
+      i = close + m[0].length;
+    } else if (sql[i] === ';') {
+      head = '';
+      i += 1;
+    } else {
+      head += sql[i];
+      i += 1;
+    }
+  }
   return out;
 }
 
@@ -180,6 +241,13 @@ function deriveExpectations(files) {
       if (!stmt.trim()) continue;
       if (parseStatement(stmt, name, expected)) sawAssertion = true;
     }
+    // Attach the latest in-file body hash. `add` replaced any older entry, so
+    // an entry whose file is this one is this file's definition; a later file
+    // that redefines the function without a dollar body drops the hash.
+    for (const { name: fn, hash } of extractFunctionBodies(sql)) {
+      const entry = expected.get(keyFor('function', fn));
+      if (entry && entry.file === name) entry.bodyHash = hash;
+    }
     // A migration the parser can't see into would silently escape
     // verification — the exact failure class this module exists to close.
     if (!sawAssertion && expected.size === before) {
@@ -194,14 +262,14 @@ function deriveExpectations(files) {
 
 // Single catalog snapshot query; returns rows of {kind, name} matching keyFor().
 const LIVE_CATALOG_QUERY = `
-SELECT 'table' AS kind, tablename AS name FROM pg_tables WHERE schemaname = 'public'
-UNION ALL SELECT 'view', viewname FROM pg_views WHERE schemaname = 'public'
-UNION ALL SELECT 'column', table_name || '.' || column_name FROM information_schema.columns WHERE table_schema = 'public'
-UNION ALL SELECT 'constraint', rel.relname || ':' || conname FROM pg_constraint c JOIN pg_class rel ON rel.oid = c.conrelid JOIN pg_namespace n ON n.oid = c.connamespace WHERE n.nspname = 'public'
-UNION ALL SELECT 'index', indexname FROM pg_indexes WHERE schemaname = 'public'
-UNION ALL SELECT 'policy', tablename || ':' || policyname FROM pg_policies WHERE schemaname = 'public'
-UNION ALL SELECT 'function', p.proname FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace WHERE n.nspname = 'public'
-UNION ALL SELECT 'trigger', c.relname || ':' || t.tgname FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND NOT t.tgisinternal
+SELECT 'table' AS kind, tablename AS name, NULL AS hash FROM pg_tables WHERE schemaname = 'public'
+UNION ALL SELECT 'view', viewname, NULL FROM pg_views WHERE schemaname = 'public'
+UNION ALL SELECT 'column', table_name || '.' || column_name, NULL FROM information_schema.columns WHERE table_schema = 'public'
+UNION ALL SELECT 'constraint', rel.relname || ':' || conname, NULL FROM pg_constraint c JOIN pg_class rel ON rel.oid = c.conrelid JOIN pg_namespace n ON n.oid = c.connamespace WHERE n.nspname = 'public'
+UNION ALL SELECT 'index', indexname, NULL FROM pg_indexes WHERE schemaname = 'public'
+UNION ALL SELECT 'policy', tablename || ':' || policyname, NULL FROM pg_policies WHERE schemaname = 'public'
+UNION ALL SELECT 'function', p.proname, md5(btrim(regexp_replace(p.prosrc, '[[:space:]]+', ' ', 'g'))) FROM pg_proc p JOIN pg_namespace n ON n.oid = p.pronamespace WHERE n.nspname = 'public'
+UNION ALL SELECT 'trigger', c.relname || ':' || t.tgname, NULL FROM pg_trigger t JOIN pg_class c ON c.oid = t.tgrelid JOIN pg_namespace n ON n.oid = c.relnamespace WHERE n.nspname = 'public' AND NOT t.tgisinternal
 `.trim();
 
 function diffAgainstLive(expected, liveRows) {
@@ -213,11 +281,34 @@ function diffAgainstLive(expected, liveRows) {
   return missing;
 }
 
+// Functions that exist live but whose body hash matches none of the live
+// overloads of that name: the migration declaring the current body was never
+// applied (or the function was edited by hand). Overloads share a proname, so
+// the expected hash only has to match one live row.
+function diffFunctionBodies(expected, liveRows) {
+  const liveHashes = new Map();
+  for (const r of liveRows) {
+    if (r.kind !== 'function') continue;
+    if (!liveHashes.has(r.name)) liveHashes.set(r.name, new Set());
+    liveHashes.get(r.name).add(r.hash);
+  }
+  const drifted = [];
+  for (const obj of expected.values()) {
+    if (obj.kind !== 'function' || !obj.bodyHash) continue;
+    const hashes = liveHashes.get(obj.name);
+    if (hashes && !hashes.has(obj.bodyHash)) drifted.push(obj);
+  }
+  return drifted;
+}
+
 module.exports = {
   deriveExpectations,
   diffAgainstLive,
+  diffFunctionBodies,
   LIVE_CATALOG_QUERY,
   // exported for tests
   stripNoise,
   parseStatement,
+  extractFunctionBodies,
+  hashBody,
 };
