@@ -1,20 +1,19 @@
 {
-  "generatedAt": "2026-10-03T17:58:41.976Z",
+  "generatedAt": "2026-10-03T20:31:43.202Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 219,
-  "clean": 216,
-  "defective": 3,
+  "clean": 217,
+  "defective": 2,
   "byType": {
-    "score-drift": 2,
-    "unreachable": 1
+    "unreachable": 2
   },
   "shows": [
     {
-      "showId": "alice-in-wonderland-off-broadway-2026",
-      "title": "Alice in Wonderland",
-      "openingDate": "2026-09-26",
+      "showId": "spandex-off-broadway-2026",
+      "title": "Spandex",
+      "openingDate": "2026-09-19",
       "ok": false,
       "defects": [
         {
@@ -27,34 +26,19 @@
       "deployedCount": null
     },
     {
-      "showId": "hay-fever-west-end-2026",
-      "title": "Hay Fever",
-      "openingDate": "2026-10-01",
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 67.56 vs local 67.82 (Δ0.26)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "title": "Who’s Afraid of Virginia Woolf?",
-      "openingDate": "2026-09-30",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.04 vs local 83.93 (Δ0.11)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 27,
-      "deployedCount": 27
+      "localCount": 0,
+      "deployedCount": null
     }
   ]
 }

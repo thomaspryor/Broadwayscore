@@ -507,18 +507,6 @@
     "queuedAt": "2026-10-03T17:55:46.052Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:what-the-animals-say-off-west-end-2026",
-    "title": "Review gap — \"What The Animals Say\" missing 1 cited review(s)",
-    "description": "What The Animals Say (what-the-animals-say-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=what-the-animals-say-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-03T17:55:46.078Z"
-  },
-  {
     "conditionKey": "ux-walkthrough:high-priority",
     "title": "UX walkthrough: high-priority finding(s) filed",
     "description": "- [2/3] Feedback after action is below the fold. 'Date saved' confirmation in 'mobile__ios_date_wheel_sim' requires scrolling to notice.",
@@ -603,5 +591,29 @@
       }
     ],
     "queuedAt": "2026-10-03T19:06:05.803Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:measure-for-measure-off-west-end-2026",
+    "title": "Review gap — \"Measure for Measure\" missing 15 cited review(s)",
+    "description": "Measure for Measure (measure-for-measure-off-west-end-2026): 15 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=measure-for-measure-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T20:31:28.607Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:twenty-thousand-streets-off-west-end-2026",
+    "title": "Review gap — \"Twenty Thousand Streets\" missing 7 cited review(s)",
+    "description": "Twenty Thousand Streets (twenty-thousand-streets-off-west-end-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=twenty-thousand-streets-off-west-end-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T20:31:28.682Z"
   }
 ]
