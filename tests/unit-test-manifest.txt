@@ -652,6 +652,7 @@ tests/unit/linear-acceptance-extraction.test.mjs
 tests/unit/linear-brain-cancel-gate.test.mjs
 tests/unit/linear-brain-done-gate.test.mjs
 tests/unit/linear-brain-duplicate-gate.test.mjs
+tests/unit/linear-brain-model-flag.test.mjs
 tests/unit/linear-brain-reopen-warning.test.mjs
 tests/unit/linear-cap.test.mjs
 tests/unit/linear-client-archived-issue.test.mjs
@@ -701,10 +702,13 @@ tests/unit/mezzanine-override-collision-auditor.test.mjs
 tests/unit/mezzanine-search-classify.test.mjs
 tests/unit/mezzanine-sibling-year-gate.test.mjs
 tests/unit/mobile-shows.test.mjs
+tests/unit/mobile-watchlist-delete-icon.test.mjs
+tests/unit/mobile-watchlist-grid-feedback.test.mjs
 tests/unit/model-default-guard.test.mjs
 tests/unit/model-table-single-source.test.mjs
 tests/unit/multi-critic-serp.test.mjs
 tests/unit/multi-show-splitter.test.mjs
+tests/unit/my-shows-grid-poster-title.test.mjs
 tests/unit/mystic-pizza-show-existence.test.mjs
 tests/unit/name-slug-redirects.test.mjs
 tests/unit/new-show-image-trigger.test.mjs
@@ -1085,6 +1089,7 @@ tests/unit/video-review-guards.test.mjs
 tests/unit/visual-qa-flag-awareness.test.mjs
 tests/unit/watchlist-delete-icon-contrast.test.mjs
 tests/unit/watchlist-grid-remove-affordance.test.mjs
+tests/unit/watchlist-time-icons-size.test.mjs
 tests/unit/we-aggregator-dedup-rejections.test.mjs
 tests/unit/we-gap-reference.test.mjs
 tests/unit/we-gate-proving.test.mjs

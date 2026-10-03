@@ -106,7 +106,7 @@ test('resolveModel: fable is never auto-selected (no triage, no hint, or hint te
 });
 
 // BRO-4523: Linear cards had no layer-3 path (notionId:null), so every one ran on Sonnet.
-const { linearEscalationModel, countRecentLinearOpusLaunches, countPriorLaunches, pickLinearModel, linearOpusDailyCap } = require('./bsc-next-model.js');
+const { linearEscalationModel, countRecentLinearOpusLaunches, countPriorLaunches, pickLinearModel, linearOpusDailyCap, stampModelHint } = require('./bsc-next-model.js');
 
 test('linearEscalationModel: P0 or a prior "Dispatched" comment escalates to opus; a first-run P1 stays on sonnet', () => {
   const dispatched = { body: 'Dispatched 46f3f8b6 to linear:BRO-1-x at 2026-09-29T19:37:37.296Z (headless)' };
@@ -175,7 +175,10 @@ test('pickLinearModel: flag, then hint, then escalation; a crashed earlier run e
   const crashed = [{ event: 'launch', taskId: 'linear:BRO-9', model: 'sonnet', ts: '2026-10-01T09:00:00Z' }];
   const base = { taskId: 'linear:BRO-9', nowMs: now, env: {} };
   assert.deepEqual(pickLinearModel({ ...base, explicitFlag: 'haiku', issue: p1, readEntries: () => crashed }), { model: 'haiku', reason: '--model flag' });
-  assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Sonnet\nx' }, readEntries: () => crashed }).model, 'sonnet');
+  // a card's Model: hint does not survive a failed run: the retry escalates
+  const hintRetry = pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, description: 'Model: Sonnet\nx' }, readEntries: () => crashed });
+  assert.equal(hintRetry.model, 'opus');
+  assert.match(hintRetry.reason, /overrides Model: sonnet/);
   assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: p1, readEntries: () => [] }).model, 'sonnet');
   const retry = pickLinearModel({ ...base, explicitFlag: null, issue: p1, readEntries: () => crashed });
   assert.equal(retry.model, 'opus');
@@ -185,4 +188,45 @@ test('pickLinearModel: flag, then hint, then escalation; a crashed earlier run e
   assert.equal(broken.model, 'sonnet');
   // the env cap is honoured
   assert.equal(pickLinearModel({ ...base, explicitFlag: null, issue: { ...p1, priority: 1 }, readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } }).model, 'sonnet');
+});
+
+test('pickLinearModel: a Model: hint picked at filing', () => {
+  const now = Date.parse('2026-10-02T12:00:00Z');
+  const base = { taskId: 'linear:BRO-9', nowMs: now, env: {}, explicitFlag: null };
+  const card = (priority, description, comments = []) => ({ priority, description, comments: { nodes: comments } });
+  // opus hint on a first attempt, under the cap
+  const o = pickLinearModel({ ...base, issue: card(2, 'x\n\nModel: Opus'), readEntries: () => [] });
+  assert.deepEqual(o, { model: 'opus', reason: 'Model: opus on the card' });
+  // opus hint counts against the same daily cap
+  const capped = pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => [], env: { LINEAR_OPUS_DAILY_CAP: '0' } });
+  assert.equal(capped.model, 'sonnet');
+  assert.match(capped.reason, /Model: opus on the card, but Opus cap reached \(0\/0/);
+  // unreadable ledger: the cap counts as reached, and the reason says why
+  const broken = pickLinearModel({ ...base, issue: card(2, 'Model: Opus'), readEntries: () => { throw new Error('EIO'); } });
+  assert.equal(broken.model, 'sonnet');
+  assert.match(broken.reason, /ledger unreadable/);
+  // a P0 the filer judged easy runs on Sonnet the first time
+  assert.deepEqual(pickLinearModel({ ...base, issue: card(1, 'Model: Sonnet'), readEntries: () => [] }), { model: 'sonnet', reason: 'Model: sonnet on the card' });
+  // haiku hint maps to sonnet (no haiku workers)
+  assert.equal(pickLinearModel({ ...base, issue: card(2, 'Model: haiku'), readEntries: () => [] }).model, 'sonnet');
+  // a prior Dispatched comment counts as a retry, same as a ledger launch
+  const viaComment = pickLinearModel({ ...base, issue: card(2, 'Model: Sonnet', [{ body: 'Dispatched to worker' }]), readEntries: () => [] });
+  assert.equal(viaComment.model, 'opus');
+  assert.match(viaComment.reason, /overrides Model: sonnet/);
+});
+
+test('stampModelHint: appends one Model: line, refuses conflicts and bad values', () => {
+  assert.equal(stampModelHint('notes here', 'Opus'), 'notes here\n\nModel: Opus');
+  assert.equal(stampModelHint('', 'sonnet'), 'Model: Sonnet');
+  assert.equal(stampModelHint(null, 'sonnet'), 'Model: Sonnet');
+  assert.equal(stampModelHint('a\nModel: opus\n', 'opus'), 'a\nModel: opus\n');
+  assert.throws(() => stampModelHint('Model: Sonnet', 'opus'), /conflicts with --model opus/);
+  assert.throws(() => stampModelHint('x', 'gpt'), /model must be one of opus\|sonnet/);
+  assert.throws(() => stampModelHint('x', true), /model must be one of/);
+  assert.throws(() => stampModelHint('x', 'haiku'), /model must be one of/);
+  // A haiku line already runs on sonnet, so --model sonnet agrees with it.
+  assert.equal(stampModelHint('Model: Haiku', 'sonnet'), 'Model: Haiku');
+  assert.throws(() => stampModelHint('Model: Haiku', 'opus'), /conflicts with --model opus/);
+  // the stamped line is read back by the dispatcher
+  assert.equal(explicitModelHint({ description: stampModelHint('x', 'opus') }, null), 'opus');
 });
