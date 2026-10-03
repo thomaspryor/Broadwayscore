@@ -1,8 +1,16 @@
 {
-  "timestamp": "2026-10-03T10:01:13.803Z",
-  "totalDrifted": 8,
+  "timestamp": "2026-10-03T11:11:35.000Z",
+  "totalDrifted": 10,
   "threshold": 20,
   "reviews": [
+    {
+      "showId": "ragtime-1998",
+      "outlet": "Vulture",
+      "critic": null,
+      "oldScore": 80,
+      "newScore": 62,
+      "delta": 18
+    },
     {
       "showId": "paranormal-activity-chicago-regional-2025",
       "outlet": "BroadwayWorld",
@@ -10,6 +18,14 @@
       "oldScore": 58,
       "newScore": 75,
       "delta": 17
+    },
+    {
+      "showId": "camelot-2023",
+      "outlet": "Observer",
+      "critic": null,
+      "oldScore": 35,
+      "newScore": 51,
+      "delta": 16
     },
     {
       "showId": "working-girl-la-jolla-regional-2025",
@@ -52,19 +68,19 @@
       "delta": 12
     },
     {
+      "showId": "all-my-sons-2019",
+      "outlet": "The Daily Beast",
+      "critic": "Tim Teeman",
+      "oldScore": 60,
+      "newScore": 71,
+      "delta": 11
+    },
+    {
       "showId": "black-swan-regional-2026",
       "outlet": "Metrmag",
       "critic": "Kevin T. Baldwin",
       "oldScore": 66,
       "newScore": 77,
-      "delta": 11
-    },
-    {
-      "showId": "three-tall-women-2018",
-      "outlet": "The Hollywood Reporter",
-      "critic": "David Rooney",
-      "oldScore": 91,
-      "newScore": 80,
       "delta": 11
     }
   ]
