@@ -28,6 +28,7 @@ const ledger = require('./dispatch-ledger.js');
 const { shouldRefuseDispatch, isLeaseLive } = require('./worktree-gc-reclaim.js');
 const { classifyHeadlessJobResult } = require('./headless-wrapup-block.js');
 const { detectJobLanding } = require('./headless-unlanded-detection.js');
+const { killedTasksLedgerFields } = require('./headless-background-task-guard.js');
 
 // Hardcoded for the same reason as dispatch-ledger.js: callers routinely run
 // from inside worktrees, and leases/logs must be one canonical set.
@@ -417,6 +418,10 @@ async function runJob(opts) {
     // plain success even when the ledger recorded BLOCKED/STOPPED_SHORT/
     // STRANDED — this rides the classified outcome on `out` too (see below).
     let headlessOutcome = null;
+    // BRO-2741: teardown-killed background tasks ride the terminal ledger rows
+    // so a job-done hiding one is auditable. Record-only: see the guard module
+    // header for why this must not change the outcome.
+    const killedFields = killedTasksLedgerFields(res.killedTasks);
     if (res.ok) {
       // BRO-3442: an exit-0 job is not automatically job-done — classify what
       // the session's own final text actually said before trusting it.
@@ -426,10 +431,10 @@ async function runJob(opts) {
       const classified = classifyHeadlessJobResult({ resultText: res.resultText, sessionId: res.sessionId, cwd });
       if (classified.outcome === 'blocked') {
         headlessOutcome = 'blocked';
-        ledger.appendEntry({ event: ledger.JOB_EVENTS.BLOCKED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason });
+        ledger.appendEntry({ event: ledger.JOB_EVENTS.BLOCKED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason, ...killedFields });
       } else if (classified.outcome === 'stopped-short') {
         headlessOutcome = 'stopped-short';
-        ledger.appendEntry({ event: ledger.JOB_EVENTS.STOPPED_SHORT, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason });
+        ledger.appendEntry({ event: ledger.JOB_EVENTS.STOPPED_SHORT, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, reason: classified.reason, ...killedFields });
       } else {
         // 'clean' — a THIS SESSION: CLOSE ME|IDLE with no BLOCKED reason.
         // Still not automatically DONE: reuse the same SHA-ancestry check
@@ -445,10 +450,10 @@ async function runJob(opts) {
         const landing = (cwd && cwd !== REPO) ? detectJobLanding({ cwd }) : { status: 'unknown' };
         if (landing.status === 'unlanded') {
           headlessOutcome = 'stranded';
-          ledger.appendEntry({ event: ledger.JOB_EVENTS.STRANDED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, sha: landing.sha });
+          ledger.appendEntry({ event: ledger.JOB_EVENTS.STRANDED, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, sha: landing.sha, ...killedFields });
         } else {
           headlessOutcome = 'done';
-          ledger.appendEntry({ event: ledger.JOB_EVENTS.DONE, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD });
+          ledger.appendEntry({ event: ledger.JOB_EVENTS.DONE, taskId, jobId, sessionId: res.sessionId, costUSD: res.costUSD, ...killedFields });
         }
       }
     } else {
@@ -472,7 +477,7 @@ async function runJob(opts) {
         detail: (res.errorDetail || '').slice(0, 300),
       });
     }
-    out = { ok: res.ok, jobId, stage: res.stage, headlessOutcome, exitSignal: res.exitSignal || null, sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
+    out = { ok: res.ok, jobId, stage: res.stage, headlessOutcome, exitSignal: res.exitSignal || null, killedBackgroundTasks: killedFields.killedBackgroundTasks || [], sessionId: res.sessionId, resultText: res.resultText, logFile, cwd, keptWorktree: false };
     return out;
   } finally {
     // finally runs after the return expression is evaluated but before the
