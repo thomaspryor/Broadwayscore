@@ -1040,12 +1040,42 @@ function isCvVerdictFromPartialWindow(cv, fullText) {
   // A high-confidence verdict needs the window to have missed a substantial
   // part of the piece (>1.5x); anything less confident only needs to be cut off.
   const minLen = cv.confidence === 'high' ? CV_WINDOW_CHARS * 1.5 : CV_WINDOW_CHARS;
-  return len > minLen;
+  if (len > minLen) return true;
+  // BRO-4563: the collector marks a verdict it judged on a cut-off fetch
+  // (isCvVerdictFromTruncatedFetch); rebuild sees only the stored cv.
+  return cv.truncatedFetch === true;
+}
+
+// The verifier's own words saying the text it saw stops short.
+const CV_TRUNCATION_TEXT = /\btruncat|\bcut off\b|\bcuts off\b|\bpaywall|\bonly the (?:lede|lead|opening|first paragraph|byline)|\bbody (?:is )?missing\b|\breview content (?:appears to be |is )?missing\b/i;
+
+/**
+ * BRO-4563: a "not a review" verdict (wrongArticle) on a fetch that stopped
+ * after the lede is a truncation artifact, not a judgement of the article.
+ * Baltimore Sun's Maybe Happy Ending tour review (URL ".../maybe-happy-ending-
+ * review/") came back as 1,952 chars of lede; the verifier said "news" at high
+ * confidence while also saying the text was "severely truncated", and the
+ * collector nulled a real review. True only when all hold: the verdict is a
+ * head-ambiguous type (news/preview/feature/other) with no wrongProduction,
+ * the verifier itself says the text is cut off, the whole stored text is
+ * shorter than the verifier window (it saw everything there was), and the URL
+ * path names the page a review.
+ */
+function isCvVerdictFromTruncatedFetch(cv, text, url) {
+  if (!cv || cv.wrongArticle !== true || cv.wrongProduction === true) return false;
+  if (!HEAD_AMBIGUOUS_ARTICLE_TYPES.has(cv.articleType)) return false;
+  const said = [...(Array.isArray(cv.issues) ? cv.issues : []), cv.reasoning || ''].join(' ');
+  if (cv.truncated !== true && !CV_TRUNCATION_TEXT.test(said)) return false;
+  if (stripLeadingJsonBlob(text || '').length >= CV_WINDOW_CHARS) return false;
+  // Same "this URL is a review page" test as the classifier's RC2 guard
+  // (flagged-recovery.js shouldSkipNonReviewStamp). Lazy: avoids a load cycle.
+  return require('./flagged-recovery').looksLikeReviewUrl(String(url || ''));
 }
 
 module.exports = {
   CV_WINDOW_CHARS,
   isCvVerdictFromPartialWindow,
+  isCvVerdictFromTruncatedFetch,
   verifyContent,
   heuristicVerify,
   quickValidityCheck,

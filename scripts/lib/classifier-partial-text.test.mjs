@@ -64,6 +64,43 @@ test('CV verdict from the 2500-char head of a longer article is partial-window',
   assert.equal(cv.isCvVerdictFromPartialWindow({ wrongArticle: true, articleType: 'preview', confidence: 'high' }, 'w '.repeat(1500)), false);
 });
 
+test('"not a review" judged on a cut-off fetch of a /review/ URL is a truncation artifact (BRO-4563)', () => {
+  // Baltimore Sun, Maybe Happy Ending tour, 2026-09-17: 1,952 chars of lede.
+  const verdict = {
+    wrongArticle: true, wrongProduction: false, articleType: 'news', articleTypeConfidence: 'high', confidence: 'high', truncated: false,
+    issues: ['Article is not a review — it is a news/announcement piece about the national tour debut', 'Text is severely truncated at 1952 characters; the substantive review content appears to be missing'],
+    reasoning: 'The text ends immediately after the lede and is heavily truncated.',
+  };
+  const lede = "Baltimore's theater scene benefits once again with the national tour debut of Maybe Happy Ending. ".repeat(19);
+  const url = 'https://www.baltimoresun.com/2026/09/17/maybe-happy-ending-review/';
+  assert.ok(lede.length < cv.CV_WINDOW_CHARS);
+  assert.equal(cv.isCvVerdictFromTruncatedFetch(verdict, lede, url), true);
+  assert.equal(cv.isCvVerdictFromTruncatedFetch({ ...verdict, issues: ['news piece'], reasoning: 'announcement', truncated: true }, lede, url), true, 'the truncated flag alone counts');
+  // Any one condition missing: the verdict stands.
+  assert.equal(cv.isCvVerdictFromTruncatedFetch({ ...verdict, issues: ['news piece'], reasoning: 'announcement' }, lede, url), false, 'verifier did not say it was cut off');
+  assert.equal(cv.isCvVerdictFromTruncatedFetch(verdict, lede, 'https://www.baltimoresun.com/2026/09/17/maybe-happy-ending-tour-opens/'), false, 'URL does not say review');
+  assert.equal(cv.isCvVerdictFromTruncatedFetch(verdict, lede, 'https://www.reviewjournal.com/2026/09/17/maybe-happy-ending-tour/'), false, 'review in the host is not the path');
+  assert.equal(cv.isCvVerdictFromTruncatedFetch(verdict, 'w '.repeat(2000), url), false, 'the verifier saw a full window');
+  assert.equal(cv.isCvVerdictFromTruncatedFetch({ ...verdict, articleType: 'interview' }, lede, url), false, 'an interview is clear from the head');
+  assert.equal(cv.isCvVerdictFromTruncatedFetch({ ...verdict, wrongProduction: true }, lede, url), false);
+  assert.equal(cv.isCvVerdictFromTruncatedFetch({ ...verdict, wrongArticle: false }, lede, url), false);
+  assert.equal(cv.isCvVerdictFromTruncatedFetch(verdict, lede, 'not a url'), false);
+  assert.equal(cv.isCvVerdictFromTruncatedFetch(null, lede, url), false);
+  // Rebuild sees the collector's stamp through the partial-window check.
+  assert.equal(cv.isCvVerdictFromPartialWindow({ ...verdict, truncatedFetch: true }, lede), true);
+  assert.equal(cv.isCvVerdictFromPartialWindow(verdict, lede), false);
+  assert.equal(cv.isCvVerdictFromPartialWindow({ ...verdict, articleType: 'interview', truncatedFetch: true }, lede), false);
+});
+
+test('the collector stamps truncatedFetch and keeps the text instead of invalidating (BRO-4563)', async () => {
+  const fs = await import('node:fs');
+  const src = fs.readFileSync(new URL('../collect-review-texts.js', import.meta.url), 'utf8');
+  assert.match(src, /isCvVerdictFromTruncatedFetch\(contentVerification, cleanedText, data\.url \|\| review\.url\) \? \{ truncatedFetch: true \}/);
+  const branch = src.indexOf('if (data.contentVerification.truncatedFetch) {');
+  const nulling = src.indexOf("data.incompleteReason = 'non_review';");
+  assert.ok(branch > 0 && nulling > branch, 'the truncated-fetch branch runs before the non-review nulling');
+});
+
 test('classifier sample includes the region where the show is discussed', () => {
   const history = 'The history of the Paris Opera house is long and storied. '.repeat(60);
   const middle = 'Les Miserables Arena Concert Spectacular is thrilling; the staging soars. '.repeat(10);

@@ -110,7 +110,7 @@ const { extractArticleText: extractArticleTextFromHtml } = require('./lib/articl
 const { cleanText, stripTrailingJunk, TRAILING_JUNK_PATTERNS, hasStrippableConsentLayer } = require('./lib/text-cleaning');
 
 // LLM-based content verification
-const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash } = require('./lib/content-verifier');
+const { verifyContent, quickValidityCheck, resolveCvMarket, contentHash, isCvVerdictFromTruncatedFetch } = require('./lib/content-verifier');
 const { isLongRunningProduction: _isLongRunner } = require('./lib/long-runner-registry');
 
 // Content quality detection (garbage/invalid content filter)
@@ -5332,6 +5332,10 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
       // just in the LLM prompt hint. Reverify scripts already persist this
       // via `...result` spreads — this keeps the main ingestion path in sync.
       urlYearConflict: contentVerification.urlYearConflict || null,
+      // BRO-4563: a "not a review" verdict on a fetch cut off after the lede
+      // of a /review/ URL. Rebuild reads this as advisory
+      // (isCvVerdictFromPartialWindow), the collector below keeps the text.
+      ...(isCvVerdictFromTruncatedFetch(contentVerification, cleanedText, data.url || review.url) ? { truncatedFetch: true } : {}),
       verifiedAt: new Date().toISOString(),
       // Stamp the hash over cleanedText (what's about to be stored as
       // data.fullText a few lines up), NOT contentVerification.contentHash —
@@ -5366,7 +5370,12 @@ async function updateReviewJson(review, text, validation, archivePath, method, a
     if (contentVerification.wrongArticle) {
       const artConf = contentVerification.articleTypeConfidence || 'medium';
       const artType = contentVerification.articleType || 'unknown';
-      if (artConf === 'high' && data.fullText) {
+      if (data.contentVerification.truncatedFetch) {
+        // The fetch stopped after the lede of a /review/ page and the verifier
+        // said so itself: a truncated review, not a non-review (BRO-4563).
+        data.textQuality = 'truncated';
+        console.log(`    ⚠ LLM: "not a review" (${artType}, ${artConf}) judged on a cut-off fetch of a review URL — kept as truncated, not invalidated`);
+      } else if (artConf === 'high' && data.fullText) {
         if (alreadyScored) {
           // Don't destroy an already-scored review — flag for human review instead
           data.needsReview = true;
