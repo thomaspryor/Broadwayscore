@@ -14,6 +14,11 @@
  *      slug, so a film/TV page sharing the token is refused
  *   4. a quoted work in the result title that CONTAINS the show title but is
  *      longer ("Wonder Woman 1984") is a different work
+ *   5. (BRO-4546) review-slug downgrade: when the URL being replaced has a
+ *      review token in its path and the candidate has none, the swap trades a
+ *      review for news/profile/box-office copy from the same outlet (173 files
+ *      measured 2026-10-03, e.g. THR "the-outsiders-broadway-review" ->
+ *      "business-news/broadway-box-office-..."). Needs `previousUrl`.
  *
  * Consumers: url-discovery.js discoverCorrectUrl, scan-serp-adoptions.js.
  */
@@ -49,6 +54,14 @@ function coreTitleTokens(showTitle) {
   return norm(showTitle).replace(/^(the|a|an) /, '').split(' ').filter(Boolean);
 }
 
+// Path tokens that mark a URL as a review (BRO-4546). "treview" = Variety's
+// legacy /review/ + "theatre review" concatenations seen in the corpus.
+const REVIEW_PATH_TOKEN_RE = /(^|[^a-z])(t?reviews?|reviewed)(?=[^a-z]|$)/i;
+
+function hasReviewPathToken(url) {
+  try { return REVIEW_PATH_TOKEN_RE.test(new URL(url).pathname); } catch { return false; }
+}
+
 function hostOf(url) {
   try { return new URL(url).hostname.toLowerCase().replace(/^www\./, ''); } catch { return ''; }
 }
@@ -75,10 +88,11 @@ function longerQuotedWork(rawTitle, showTitle) {
 }
 
 /**
- * @param {{url: string, title?: string, snippet?: string, showTitle: string}} c
+ * @param {{url: string, title?: string, snippet?: string, showTitle: string, previousUrl?: string}} c
+ *   previousUrl: the URL this candidate would replace (omit when there is none)
  * @returns {{ok: boolean, reason: string|null}}
  */
-function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle } = {}) {
+function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle, previousUrl } = {}) {
   let pathname = '';
   try { pathname = new URL(url).pathname; } catch { return { ok: false, reason: 'unparseable-url' }; }
   const cls = classifyReviewUrl(url);
@@ -92,6 +106,10 @@ function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle } = {
     if (re.test(pathname) && !(exemptHosts && exemptHosts.has(host))) {
       return { ok: false, reason: `non-review-path:${reason}` };
     }
+  }
+
+  if (previousUrl && previousUrl !== url && hasReviewPathToken(previousUrl) && !hasReviewPathToken(url)) {
+    return { ok: false, reason: 'review-slug-downgrade' };
   }
 
   const quoted = longerQuotedWork(title, showTitle);
@@ -119,4 +137,4 @@ function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle } = {
   return { ok: true, reason: null };
 }
 
-module.exports = { evaluateSerpAcceptance, longerQuotedWork, SERP_NON_REVIEW_PATHS, PODCAST_OUTLET_HOSTS };
+module.exports = { evaluateSerpAcceptance, hasReviewPathToken, longerQuotedWork, SERP_NON_REVIEW_PATHS, PODCAST_OUTLET_HOSTS };

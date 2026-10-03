@@ -1387,7 +1387,9 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     }
 
     // BRO-4409: non-review shapes / different work sharing a title token.
-    const acceptance = evaluateSerpAcceptance({ url, title: result.title, snippet: result.snippet, showTitle: showInfo.title });
+    // BRO-4546: previousUrl refuses swapping a review-slugged URL for a
+    // non-review article from the same outlet (box-office/news/profile).
+    const acceptance = evaluateSerpAcceptance({ url, title: result.title, snippet: result.snippet, showTitle: showInfo.title, previousUrl: review.url });
     if (!acceptance.ok) {
       log(`    ✗ SERP acceptance (${acceptance.reason}): ${url.substring(0, 80)}`);
       continue;

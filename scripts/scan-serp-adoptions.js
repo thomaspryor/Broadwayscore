@@ -5,7 +5,11 @@
  * scan-serp-adoptions.js — corpus sweep for BRO-4409. Re-evaluates every
  * review file whose url was adopted by SERP rediscovery (urlDiscoveryMethod
  * google-serp*, scrapingdog*, wrongUrl-serp-retry) with the current
- * evaluateSerpAcceptance predicate.
+ * evaluateSerpAcceptance predicate, including the review-slug-downgrade check
+ * against data.previousUrl (BRO-4546). A downgrade a human/LLM audit confirmed
+ * benign (the new URL serves the same critic's review) carries
+ * serpDowngradeVerifiedUrl === url and is exempt from that one check; a later
+ * url change makes the stamp stale automatically.
  *
  *   node scripts/scan-serp-adoptions.js [--root=DIR] [--fix]
  *
@@ -31,7 +35,8 @@ const SERP_METHOD_RE = /^(google-serp|scrapingdog|wrongUrl-serp)/;
 function evaluateFile(data, showTitle) {
   if (!data || !SERP_METHOD_RE.test(data.urlDiscoveryMethod || '')) return null;
   if (!data.url) return null;
-  return evaluateSerpAcceptance({ url: data.url, showTitle });
+  const previousUrl = data.serpDowngradeVerifiedUrl === data.url ? undefined : data.previousUrl;
+  return evaluateSerpAcceptance({ url: data.url, showTitle, previousUrl });
 }
 
 function main() {
@@ -74,7 +79,7 @@ function main() {
         urlDiscoveryMethod: REVERTED_METHOD,
         serpRejectedUrls: [...new Set([...(r.prevRejected || []), r.url])],
         urlRevertedAt: new Date().toISOString(),
-        urlRevertReason: `BRO-4409: ${r.reason}`,
+        urlRevertReason: `serp-acceptance: ${r.reason}`,
       }, { preserveFields: new Set(AGGREGATOR_FIELDS) });
       if (out) { state = 'REVERTED '; reverted++; }
     }
