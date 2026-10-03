@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-03T02:43:33.501Z",
+  "generated": "2026-10-03T04:48:40.952Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 21,
+  "count": 20,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -130,13 +130,6 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "topdog-underdog-2022",
-      "loserFile": "nysr--unknown.json",
-      "targetFile": "nysr--sandy-macdonald.json",
-      "reason": "orphaned-duplicate-heal: nysr--sandy-macdonald.json was flagged invalid after nysr--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
       "showId": "torch-song-2018",
       "loserFile": "variety--matt-windman.json",
       "targetFile": "variety--marilyn-stasio.json",
@@ -144,10 +137,10 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "topdog-underdog-2022",
-      "loserFile": "nysr--unknown.json",
-      "targetFile": "nysr--sandy-macdonald.json",
-      "reason": "orphaned-duplicate-heal: nysr--sandy-macdonald.json was flagged invalid after nysr--unknown.json was pointed at it (duplicateTextOf)",
+      "showId": "the-lightning-thief-2019",
+      "loserFile": "front-row-center--sarah-downs.json",
+      "targetFile": "slantmagazine--aaron-riccio.json",
+      "reason": "orphaned-duplicate-heal: slantmagazine--aaron-riccio.json was flagged invalid after front-row-center--sarah-downs.json was pointed at it (duplicateTextOf)",
       "field": "duplicateTextOf"
     }
   ]

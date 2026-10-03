@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-03T02:46:35.796Z",
+  "timestamp": "2026-10-03T04:52:02.423Z",
   "stats": {
     "totalReviews": 45898,
-    "alreadyFlagged": 18722,
+    "alreadyFlagged": 18724,
     "dateGuardCatches": 263,
     "directorMismatch": 1202,
-    "tvFilmSignals": 1333,
+    "tvFilmSignals": 1334,
     "londonSignals": 1260,
     "offBroadwaySignals": 508,
     "yearMismatch": 105,
-    "noPublishDate": 4106
+    "noPublishDate": 4103
   },
   "findings": [
     {
@@ -8442,10 +8442,10 @@
     },
     {
       "showId": "diana-the-musical-2021",
-      "file": "observer--david-cote.json",
-      "score": 19,
-      "publishDate": "November 17, 2021",
-      "url": "https://observer.com/2021/11/diana-the-musical-tacky-tribute-to-a-great-woman/",
+      "file": "nytimes--jesse-green.json",
+      "score": 25,
+      "publishDate": "2021-11-17T19:32:08-05:00",
+      "url": "https://www.nytimes.com/2021/11/17/theater/diana-the-musical-review.html?smid=tw-nyttheater&smtyp=cur",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8456,10 +8456,10 @@
     },
     {
       "showId": "diana-the-musical-2021",
-      "file": "playbill--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://playbill.com/article/read-the-reviews-for-diana-the-musical-on-broadway",
+      "file": "observer--david-cote.json",
+      "score": 19,
+      "publishDate": "November 17, 2021",
+      "url": "https://observer.com/2021/11/diana-the-musical-tacky-tribute-to-a-great-woman/",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -8988,6 +8988,20 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"lyttelton\""
+        }
+      ]
+    },
+    {
+      "showId": "electra-persona-west-end-2026",
+      "file": "nytimes--houman-barekat.json",
+      "score": 62,
+      "publishDate": "2026-09-03",
+      "url": "https://www.nytimes.com/2026/09/03/theater/electra-persona-national-theatre-cate-blanchett-nina-hoss-review.html",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
