@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-03T04:52:02.423Z",
+  "timestamp": "2026-10-03T07:35:03.007Z",
   "stats": {
-    "totalReviews": 45898,
+    "totalReviews": 45902,
     "alreadyFlagged": 18724,
     "dateGuardCatches": 263,
     "directorMismatch": 1202,
-    "tvFilmSignals": 1334,
+    "tvFilmSignals": 1336,
     "londonSignals": 1260,
     "offBroadwaySignals": 508,
     "yearMismatch": 105,
-    "noPublishDate": 4103
+    "noPublishDate": 4106
   },
   "findings": [
     {
@@ -10369,6 +10369,19 @@
     },
     {
       "showId": "flamenc-oh-off-west-end-2026",
+      "file": "a-youngish-perspective--unknown.json",
+      "publishDate": "2026-10-02",
+      "url": "https://ayoungishperspective.co.uk/2026/10/02/review-flamenc-oh/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
       "file": "everything-theatre--alan-fitter.json",
       "score": 56,
       "publishDate": "2026-10-02",
@@ -10387,6 +10400,19 @@
       "score": 70,
       "publishDate": "2026-10-01",
       "url": "https://www.londonboxoffice.co.uk/news/post/flamenc-oh-peacock-theatre-review",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "file": "londontheatredirect--london-theatre-direct-limited.json",
+      "publishDate": null,
+      "url": "https://www.londontheatredirect.com/dance/flamenc-oh-tickets",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
