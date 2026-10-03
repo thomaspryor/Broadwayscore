@@ -109,7 +109,8 @@
     "water-for-elephants-tour-2025/wypr--rob-sivak.json",
     "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
     "heathers-the-musical-off-broadway-2025/one-minute-critic--matthew-wexler.json",
-    "operation-mincemeat-2025/chicagotribune--unknown.json"
+    "operation-mincemeat-2025/chicagotribune--unknown.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -166,7 +167,19 @@
     "heathers-the-musical-off-broadway-2025/west-end-best-friend--unknown.json",
     "operation-mincemeat-2025/thereviewshub--mike-wells.json",
     "operation-mincemeat-2025/londontheatre1--unknown.json",
-    "operation-mincemeat-2025/whatsonstage--alex-wood.json"
+    "operation-mincemeat-2025/whatsonstage--alex-wood.json",
+    "midnight-off-broadway-2026/broadwayworld--michael-major.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
+    "human-things-off-broadway-2026/deadline--glenn-garner.json",
+    "human-things-off-broadway-2026/talkinbroadway--unknown.json",
+    "la-boheme-off-broadway-2026/opera--unknown.json",
+    "la-boheme-off-broadway-2026/thestage--the-stage.json",
+    "cosi-fan-tutte-off-broadway-2026/independent--unknown.json",
+    "macbeth-off-broadway-2026/talkclassical--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -225,7 +238,8 @@
       "paddington-the-musical-west-end-2025/west-end-wilma--unknown.json",
       "the-phantom-of-the-opera-tour-2025/theatreboard--unknown.json",
       "water-for-elephants-tour-2025/wypr--rob-sivak.json",
-      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json"
+      "amaze-magic-off-broadway-2025/timeout--adam-feldman.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [
       "data/review-texts/fire-fire-off-west-end-2026/variety--jay-weissberg.json"
@@ -233,7 +247,8 @@
     "browserbase": [
       "data/review-texts/man-to-man-west-end-2026/deadline--katie-campione.json",
       "data/review-texts/man-to-man-west-end-2026/deadline--pete-hammond.json",
-      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json"
+      "data/review-texts/burlesque-west-end-2026/times-uk--clive-davis.json",
+      "data/review-texts/human-things-off-broadway-2026/deadline--glenn-garner.json"
     ],
     "directCookies": [],
     "scrapingdog": [
@@ -300,7 +315,7 @@
     ]
   },
   "startTime": "2026-10-03T08:40:40.034Z",
-  "lastProcessed": "operation-mincemeat-2025/whatsonstage--alex-wood.json",
+  "lastProcessed": "macbeth-off-broadway-2026/talkclassical--unknown.json",
   "log": [
     {
       "t": "2026-10-03T10:03:21.821Z",
@@ -417,6 +432,34 @@
       "event": "bb-session",
       "session": "189802b8",
       "url": "https://www.whatsonstage.com/tags/operation-mincemeat/"
+    },
+    {
+      "t": "2026-10-03T11:28:56.474Z",
+      "event": "bb-session",
+      "session": "def86d9e",
+      "url": "https://deadline.com/2026/10/ben-affleck-used-ai-lots-of-things-animals-12371451"
+    },
+    {
+      "t": "2026-10-03T11:30:54.689Z",
+      "event": "bb-session",
+      "session": "61dd0649",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-03T11:30:55.611Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
+    },
+    {
+      "t": "2026-10-03T11:31:13.957Z",
+      "event": "bb-session",
+      "session": "45e737f1",
+      "url": "https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913"
+    },
+    {
+      "t": "2026-10-03T11:31:14.811Z",
+      "event": "bb-cookie-inject",
+      "domain": "talkinbroadway.com"
     }
   ]
 }
