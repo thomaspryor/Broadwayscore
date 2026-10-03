@@ -2,7 +2,7 @@
   "version": 1,
   "showId": "school-girls-or-the-african-mean-girls-play-2026",
   "openingDate": "2026-09-28",
-  "detectedAt": "2026-10-03T13:00:59.304Z",
+  "detectedAt": "2026-10-03T13:09:23.955Z",
   "windowDays": 7,
   "orphans": [
     {
@@ -11,6 +11,23 @@
       "criticName": "Chris Jones",
       "url": "https://www.nydailynews.com/2026/09/28/school-girls-african-mean-girls-play-review-broadway/",
       "fullTextLen": 4343,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "complete",
+      "eligibilityReason": null
+    },
+    {
+      "file": "totaltheater1--unknown.json",
+      "outletId": "totaltheater1",
+      "criticName": "Unknown",
+      "url": "https://totaltheater1.wordpress.com/2026/10/01/school-girls-or-the-african-mean-girls-play-3/",
+      "fullTextLen": 4680,
       "dispatchActionable": true,
       "skipReason": null,
       "rescoreBlockedReason": null,
@@ -40,10 +57,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 2,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-03T13:00:59.304Z"
+  "lastDispatch": "suppressed-cooldown",
+  "lastDispatchAt": null
 }
