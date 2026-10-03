@@ -14,7 +14,9 @@ import {
   getShowDateLineSegments,
   formatDateLineString,
   getHeroDurationSuffix,
+  getReviewAgeNote,
 } from '../../src/lib/show-date-line';
+import { readFileSync } from 'node:fs';
 
 test('formatShowDate: hides invalid/pre-1950 input instead of echoing raw ISO', () => {
   assert.equal(formatShowDate(null), '');
@@ -144,4 +146,33 @@ test('emphasize flag marks the closing segment for the amber-highlight treatment
   });
   const closing = segs.find((s) => s.kind === 'closing');
   assert.equal(closing.emphasize, true);
+});
+
+const NOW = new Date('2026-10-03T12:00:00Z');
+
+test('getReviewAgeNote: long-running open show (Wicked-like) gets the caveat', () => {
+  assert.equal(
+    getReviewAgeNote({ status: 'open', openingDate: '2003-10-30' }, 25, NOW),
+    'Most reviews from 23 years ago'
+  );
+});
+
+test('getReviewAgeNote: exactly 10 years qualifies, 9 does not', () => {
+  assert.equal(getReviewAgeNote({ status: 'open', openingDate: '2016-04-01' }, 5, NOW), 'Most reviews from 10 years ago');
+  assert.equal(getReviewAgeNote({ status: 'open', openingDate: '2017-04-01' }, 5, NOW), null);
+});
+
+test('getReviewAgeNote: closed shows, thin review counts and missing/invalid dates get nothing', () => {
+  assert.equal(getReviewAgeNote({ status: 'closed', openingDate: '2003-10-30' }, 25, NOW), null);
+  assert.equal(getReviewAgeNote({ status: 'open', openingDate: '2003-10-30' }, 2, NOW), null);
+  assert.equal(getReviewAgeNote({ status: 'open', openingDate: null }, 25, NOW), null);
+  assert.equal(getReviewAgeNote({ status: 'open', openingDate: 'not-a-date' }, 25, NOW), null);
+});
+
+test('both heroes render the review-age caveat via the shared helper (redesign once dropped it)', () => {
+  for (const file of ['src/app/show/[slug]/page.tsx', 'src/components/show-page/ShowHeroRedesign.tsx']) {
+    const src = readFileSync(new URL(`../../${file}`, import.meta.url), 'utf8');
+    assert.match(src, /getReviewAgeNote\(show, reviewCount\)/, `${file} must call getReviewAgeNote`);
+    assert.doesNotMatch(src, /Most reviews from \{/, `${file} must not hand-roll the caveat text`);
+  }
 });

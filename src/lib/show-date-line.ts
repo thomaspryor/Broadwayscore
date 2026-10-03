@@ -133,3 +133,22 @@ export function getShowDateLineSegments(
 export function formatDateLineString(segments: DateLineSegment[]): string {
   return segments.map((s) => s.text).join(' · ');
 }
+
+/**
+ * "Most reviews from N years ago" caveat under the critic score for
+ * long-running open shows (10+ years since opening, 3+ reviews). Shared by
+ * both heroes so the redesign can't silently drop it again (BRO-4525: the
+ * redesign shipped to demo without it). Year math is UTC, like formatShowDate.
+ */
+export function getReviewAgeNote(
+  show: Pick<ShowDateLineInput, 'status' | 'openingDate'>,
+  reviewCount: number,
+  now: Date = new Date()
+): string | null {
+  if (!show.openingDate || show.status === 'closed') return null;
+  const opened = new Date(show.openingDate);
+  if (isNaN(opened.getTime())) return null;
+  const yearsAgo = now.getUTCFullYear() - opened.getUTCFullYear();
+  if (yearsAgo < 10 || reviewCount < 3) return null;
+  return `Most reviews from ${yearsAgo} years ago`;
+}

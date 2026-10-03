@@ -41,7 +41,7 @@ import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorCl
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration } from '@/lib/date-utils';
-import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
+import { getShowDateLineSegments, getHeroDurationSuffix, getReviewAgeNote, formatShowDate as formatDate } from '@/lib/show-date-line';
 import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
 import { sortTicketLinks } from '@/lib/ticket-utils';
@@ -617,13 +617,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                         )}
                         {/* Review age note for long-running shows */}
                         {(() => {
-                          if (!show.openingDate || show.status === 'closed') return null;
-                          const openYear = new Date(show.openingDate).getFullYear();
-                          const yearsAgo = new Date().getFullYear() - openYear;
-                          if (yearsAgo < 10 || reviewCount < 3) return null;
+                          const reviewAgeNote = getReviewAgeNote(show, reviewCount);
+                          if (!reviewAgeNote) return null;
                           return (
                             <p className="text-[10px] sm:text-xs text-gray-500 mt-1 leading-snug">
-                              Most reviews from {yearsAgo} years ago
+                              {reviewAgeNote}
                             </p>
                           );
                         })()}

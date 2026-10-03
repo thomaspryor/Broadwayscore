@@ -66,7 +66,7 @@ import { getOptimizedImageUrl } from '@/lib/images';
 import { getCurrencySymbol } from '@/lib/market-utils';
 import { isOperaShow } from '@/lib/show-market';
 import { getBroadwayDuration } from '@/lib/date-utils';
-import { getShowDateLineSegments, getHeroDurationSuffix, formatShowDate as formatDate } from '@/lib/show-date-line';
+import { getShowDateLineSegments, getHeroDurationSuffix, getReviewAgeNote, formatShowDate as formatDate } from '@/lib/show-date-line';
 import type { ComputedShowWithReviews, ComputedReview } from '@/lib/engine';
 
 // The same slugify @/lib/data-core re-exports, imported from its pure home so
@@ -184,6 +184,7 @@ function Inner({
 
   const score = show.criticScore?.score ?? null;
   const reviewCount = show.criticScore?.reviewCount ?? 0;
+  const reviewAgeNote = getReviewAgeNote(show, reviewCount);
   const criticReviewsForBar = show.criticScore?.reviews ?? [];
   const tier = score !== null ? getScoreTier(score, show.category) : null;
   const isClosed = show.status === 'closed';
@@ -477,6 +478,11 @@ function Inner({
                     Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
                   </p>
                   <HeroRankLine ranks={ranks} market={show.category} />
+                  {reviewAgeNote && (
+                    <p className="text-xs text-gray-500 mt-1 leading-snug" data-testid="hero-review-age-note">
+                      {reviewAgeNote}
+                    </p>
+                  )}
                 </div>
               </a>
               {hasAudience && audienceGrade && (
@@ -542,6 +548,14 @@ function Inner({
           Critic Reviews" in the score block above. */}
       {hasEnoughCriticReviews && (
         <HeroRankLine ranks={ranks} market={show.category} className="lg:hidden -mt-1" />
+      )}
+
+      {/* Mobile-only review-age caveat for long-running shows (desktop renders
+          it inline in the score block above). */}
+      {hasEnoughCriticReviews && reviewAgeNote && (
+        <p className="lg:hidden -mt-1 text-xs text-gray-500 leading-snug" data-testid="hero-review-age-note-mobile">
+          {reviewAgeNote}
+        </p>
       )}
 
       {/* Distribution bar — both modes; spans full width under the header. */}
