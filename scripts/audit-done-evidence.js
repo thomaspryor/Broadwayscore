@@ -92,7 +92,8 @@ const VERIFY_TIMEOUT_MS = 60000;
 // matters when a FAILED verdict is the output. Here a failure on an OPEN card
 // is discarded as uninformative anyway, so the retry would double the run
 // cost to protect a verdict that is mostly thrown away. Done cards, where the
-// verdict does accuse, are re-attempted explicitly below.
+// verdict does accuse, are re-attempted explicitly below, and so are In
+// Review cards, where a failure sends the card back to a worker (BRO-4535).
 const VERIFY_ATTEMPTS = 1;
 const DONE_VERIFY_ATTEMPTS = 2;
 // Never START a check with less than this left. A command begun at the buzzer
@@ -368,7 +369,9 @@ async function main(argv = process.argv.slice(2)) {
         runResult = null;
       } else if (cmd && !vacuous && checkout && checkout.prepared && !outOfTime) {
         runResult = runVerify(checkout.wt, cmd, {
-          attempts: card.state === 'Done' ? DONE_VERIFY_ATTEMPTS : VERIFY_ATTEMPTS,
+          // In Review gets the retry too: a failure there sends the card back to
+          // a worker, so a flaky test must not be enough to do it.
+          attempts: card.state === 'Done' || card.state === 'In Review' ? DONE_VERIFY_ATTEMPTS : VERIFY_ATTEMPTS,
           timeoutMs: VERIFY_TIMEOUT_MS,
         });
       } else if (cmd && !vacuous) {

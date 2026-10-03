@@ -578,6 +578,12 @@ function classifyCard({ card, prRef = null, ancestry = null, cmd = null, runResu
         evidence: EVIDENCE.UNKNOWN,
         detail: 'still open and its check does not pass yet — expected for unfinished work, not a defect',
         channels: [],
+        // In Review means the worker said it was finished. A failing check
+        // there is a claim that did not hold, so the stuck-card closer sends
+        // it back to a worker (BRO-4535). Still not reported as a defect.
+        ...(base.state === 'In Review' && evidence.channels.includes('verify-command')
+          ? { openCheckFails: true, failDetail: evidence.detail || null }
+          : {}),
       };
     }
     return {
