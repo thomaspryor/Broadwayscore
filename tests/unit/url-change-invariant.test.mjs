@@ -662,6 +662,21 @@ describe('identity-based wrongAttribution survives a URL change (BRO-4551)', () 
     assert.equal(merged.wrongAttribution, undefined);
   });
 
+  test('restores the flag onto a fresh replacement record that omits it', () => {
+    const existing = marksFile();
+    const merged = { showId: existing.showId, outletId: 'variety', criticName: 'Peter Marks', url: NEW_URL };
+    applyUrlChangeInvariant(existing, merged);
+    assert.equal(merged.wrongAttribution, true);
+    assert.match(merged.wrongAttributionReason, /WashPost critic/);
+  });
+
+  test('article-level "SERP misattribution: URL is actually by X" still clears', () => {
+    const existing = { ...marksFile(), wrongAttributionReason: 'SERP misattribution: URL is actually by Roma Torre' };
+    const merged = { ...existing, url: NEW_URL };
+    applyUrlChangeInvariant(existing, merged);
+    assert.equal(merged.wrongAttribution, undefined);
+  });
+
   test('clears when the critic identity changes with the url', () => {
     const existing = marksFile();
     const merged = { ...existing, url: NEW_URL, criticName: 'Naveen Kumar' };

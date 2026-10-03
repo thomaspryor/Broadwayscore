@@ -136,7 +136,7 @@ const WP_FIELDS = new Set([
 // reverted mj-2022 variety--peter-marks to a variety.com URL, the invariant
 // wiped wrongAttribution (leaving an orphaned reason), the row became
 // includable and leaked `variety` into Peter Marks' knownOutlets.
-const IDENTITY_ATTRIBUTION_REASON = /misattribut|\bcritic, not\b|^Typo of /i;
+const IDENTITY_ATTRIBUTION_REASON = /\bcritic, not\b|^Typo of /i;
 function _preservesIdentityAttribution(existing, merged) {
   if (!existing || existing.wrongAttribution !== true) return false;
   if (typeof existing.wrongAttributionReason !== 'string'
@@ -305,10 +305,16 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
     || (_noteStartsWith(existing, AUTO_DATE_WP_PREFIXES) && !publishDateWillClear)
     || (_reasonIsDateOnly(existing) && !publishDateWillClear && mergedHasPublishDate);
   const preserveIdentityAttribution = _preservesIdentityAttribution(existing, merged);
+  if (preserveIdentityAttribution) {
+    // Replacement-style writers hand us a fresh record that omits the verdict.
+    for (const f of ['wrongAttribution', 'wrongAttributionReason']) {
+      if (merged[f] === undefined) merged[f] = existing[f];
+    }
+  }
   const cleared = [];
   for (const field of URL_DERIVED_FIELDS) {
     if (preserveFields && preserveFields.has(field)) continue;
-    if (preserveIdentityAttribution && (field === 'wrongAttribution' || field === 'wrongAttributionReason')) continue;
+    if (preserveIdentityAttribution && field === 'wrongAttribution') continue;
     if (preserveDateBasedWp && WP_FIELDS.has(field)) continue;
     if (field === 'publishDate') {
       if (!publishDateWillClear) continue;
