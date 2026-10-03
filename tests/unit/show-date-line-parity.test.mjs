@@ -15,6 +15,7 @@ import {
   formatDateLineString,
   getHeroDurationSuffix,
   getReviewAgeNote,
+  getReviewAgeYear,
   getReviewPublishYears,
 } from '../../src/lib/show-date-line';
 import { readFileSync } from 'node:fs';
@@ -223,4 +224,17 @@ test('both heroes render one shared review-age value (the redesign once dropped 
     assert.doesNotMatch(src, /Most reviews from \{/, `${file} must not hand-roll the caveat text`);
   }
   assert.doesNotMatch(hero, /getReviewAgeNote\(/, 'the redesign has no publishDate; it must use the prop');
+});
+
+test('getReviewAgeYear: the year behind the list-card note, same rule as the hero', () => {
+  assert.equal(getReviewAgeYear({ status: 'open' }, dated('2003-10-31', '2003-10-31', '2003-11-01', '2004-01-10'), NOW), 2003);
+  assert.equal(getReviewAgeYear({ status: 'open' }, dated('2021-05-18', '2021-05-19', '2021-06-01'), NOW), null);
+  assert.equal(getReviewAgeYear({ status: 'closed' }, dated('2003-10-31', '2003-10-31', '2003-11-01'), NOW), null);
+});
+
+test('list cards use the shared review-age rule, not openingDate (Mousetrap card said "1952")', () => {
+  const engine = readFileSync(new URL('../../src/lib/engine.ts', import.meta.url), 'utf8');
+  assert.match(engine, /const reviewAgeYear = getReviewAgeYear\(\{ status: normalizedStatus \}, criticScore\?\.reviews\)/);
+  assert.match(engine, /reviewYearNote = reviewAgeYear === null \? null : `Most reviews from \$\{reviewAgeYear\}`/);
+  assert.doesNotMatch(engine, /openYear/, 'engine.ts must not count review age from openingDate');
 });
