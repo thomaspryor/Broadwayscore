@@ -120,7 +120,9 @@ function hasSrcChange(files) {
 
 /**
  * changedFiles → ordered check commands (argv arrays, ALWAYS exec'd with
- * shell=false). existsFn is injected for testability.
+ * shell=false). existsFn is injected for testability; it gates both colocated
+ * test lookups AND the changed path itself, so it must answer against the
+ * post-change tree (a path the branch deleted yields no check).
  *
  * @param {string[]} changedFiles
  * @param {(relPath:string)=>boolean} existsFn
@@ -406,7 +408,10 @@ function runSafeChecks(o) {
     // colocated test, no type/lint/build trigger, and used to reach the
     // owner's inbox wearing a green PASS badge with an empty check list
     // (ship-check finding). Tier 1 is unaffected — a docs-only diff having
-    // nothing to run is the normal, correct case there.
+    // nothing to run is the normal, correct case there. A tier-3 diff that
+    // only DELETES scripts lands here too (deleted paths get no check): land's
+    // merged-tree test floor clears it, but with LAND_SKIP_MERGED_TREE_TESTS=1
+    // or on the autonomous run/merge paths it stays refused, by design.
     const substantive = (changedFiles || []).map(String).filter(f => !INERT_RE.test(f));
     if (tier === 3 && substantive.length) {
       results.push({
