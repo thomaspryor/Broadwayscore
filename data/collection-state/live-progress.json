@@ -1,32 +1,21 @@
 {
-  "updatedAt": "2026-10-03T17:58:03.308Z",
-  "processed": 338,
-  "failed": 261,
-  "successRate": "56.4%",
+  "updatedAt": "2026-10-03T18:09:39.480Z",
+  "processed": 342,
+  "failed": 12,
+  "successRate": "96.6%",
   "tierBreakdown": {
-    "playwright": 162,
+    "playwright": 166,
     "amp": 4,
     "browserbase": 3,
     "directCookies": 0,
     "scrapingdog": 40,
     "scrapingbee": 39,
-    "brightdata": 7,
+    "brightdata": 1,
     "archiveToday": 0,
     "archive": 23
   },
-  "browserbaseSessions": 21,
+  "browserbaseSessions": 1,
   "recentActivity": [
-    {
-      "t": "2026-10-03T16:46:58.257Z",
-      "event": "bb-session",
-      "session": "2b53a9a4",
-      "url": "https://www.thestage.co.uk/reviews/the-mousetrap-review-at-st-martins-theatre-lo"
-    },
-    {
-      "t": "2026-10-03T16:46:58.638Z",
-      "event": "bb-cookie-inject",
-      "domain": "thestage.co.uk"
-    },
     {
       "t": "2026-10-03T17:00:42.728Z",
       "event": "bb-session",
@@ -130,6 +119,17 @@
       "t": "2026-10-03T17:57:00.325Z",
       "event": "bb-cookie-inject",
       "domain": "variety.com"
+    },
+    {
+      "t": "2026-10-03T18:08:22.645Z",
+      "event": "bb-session",
+      "session": "21244201",
+      "url": "https://www.thestage.co.uk/review-round-ups/the-standard-of-living-by-james-grah"
+    },
+    {
+      "t": "2026-10-03T18:08:23.621Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
