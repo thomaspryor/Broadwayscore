@@ -1,7 +1,117 @@
 {
-  "generatedAt": "2026-10-03T13:18:13.701Z",
+  "generatedAt": "2026-10-03T13:59:24.020Z",
   "lookbackDays": 3,
   "shows": [
+    {
+      "id": "what-the-animals-say-off-west-end-2026",
+      "title": "What The Animals Say",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-02",
+      "status": "open",
+      "slug": "what-the-animals-say-off-west-end",
+      "thumbnail": "/images/shows/what-the-animals-say-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 60,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 1,
+      "siteFileExists": true,
+      "total": 2,
+      "t1": 1,
+      "t2": 0,
+      "t3": 1,
+      "positive": 0,
+      "mixed": 2,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "2/8 total",
+          "T1:0/3",
+          "T2:1/2",
+          "hi-conf:0/6"
+        ],
+        "highConfidence": 0,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-03T13:59:24.020Z",
+          "rc": 2,
+          "s": 60,
+          "t1": 1,
+          "t2": 0,
+          "t3": 1,
+          "p": 0,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        }
+      ]
+    },
     {
       "id": "a-thousand-natural-shocks-off-broadway-2026",
       "title": "A Thousand Natural Shocks",
@@ -379,6 +489,120 @@
         {
           "name": "The Tennessean",
           "isDualMarket": false
+        }
+      ]
+    },
+    {
+      "id": "measure-for-measure-off-west-end-2026",
+      "title": "Measure for Measure",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-02",
+      "status": "open",
+      "slug": "measure-for-measure-off-west-end",
+      "thumbnail": "/images/shows/measure-for-measure-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 77,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 1,
+      "siteFileExists": true,
+      "total": 2,
+      "t1": 0,
+      "t2": 1,
+      "t3": 1,
+      "positive": 2,
+      "mixed": 0,
+      "negative": 0,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "2/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:2/6"
+        ],
+        "highConfidence": 2,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-03T13:59:24.020Z",
+          "rc": 2,
+          "s": 77,
+          "t1": 0,
+          "t2": 1,
+          "t3": 1,
+          "p": 2,
+          "m": 0,
+          "n": 0,
+          "bc": "waiting"
         }
       ]
     },
@@ -1087,6 +1311,120 @@
           "t3": 4,
           "p": 4,
           "m": 4,
+          "n": 1,
+          "bc": "waiting"
+        }
+      ]
+    },
+    {
+      "id": "bull-off-west-end-2026",
+      "title": "Bull",
+      "market": "west-end",
+      "category": "off-west-end",
+      "type": "play",
+      "openingDate": "2026-10-01",
+      "status": "open",
+      "slug": "bull-off-west-end",
+      "thumbnail": "/images/shows/bull-off-west-end-2026/thumbnail.jpg",
+      "siteScore": null,
+      "liveScore": 47,
+      "scoreDrift": null,
+      "belowThreshold": true,
+      "reviewsNeeded": 2,
+      "siteFileExists": true,
+      "total": 1,
+      "t1": 0,
+      "t2": 1,
+      "t3": 0,
+      "positive": 0,
+      "mixed": 0,
+      "negative": 1,
+      "readiness": {
+        "ready": false,
+        "reasons": [
+          "1/8 total",
+          "T1:0/3",
+          "T2:0/2",
+          "hi-conf:1/6"
+        ],
+        "highConfidence": 1,
+        "thresholds": {
+          "minReviews": 8,
+          "minT1": 3,
+          "minT2": 2,
+          "minHiConf": 6
+        }
+      },
+      "broadcast": {
+        "state": "waiting",
+        "detail": "Not yet broadcast-ready"
+      },
+      "missingT1": [
+        {
+          "name": "The Guardian",
+          "isDualMarket": true
+        },
+        {
+          "name": "Observer",
+          "isDualMarket": true
+        },
+        {
+          "name": "Financial Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Telegraph",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Times (UK)",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Independent",
+          "isDualMarket": true
+        },
+        {
+          "name": "Daily Mail",
+          "isDualMarket": true
+        },
+        {
+          "name": "The Stage",
+          "isDualMarket": true
+        }
+      ],
+      "missingT2": [
+        {
+          "name": "The New York Times",
+          "isDualMarket": true
+        },
+        {
+          "name": "Variety",
+          "isDualMarket": true
+        },
+        {
+          "name": "BroadwayWorld",
+          "isDualMarket": true
+        },
+        {
+          "name": "New York Theatre Guide",
+          "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
+        }
+      ],
+      "timeline": [
+        {
+          "t": "2026-10-03T13:59:24.020Z",
+          "rc": 1,
+          "s": 47,
+          "t1": 0,
+          "t2": 1,
+          "t3": 0,
+          "p": 0,
+          "m": 0,
           "n": 1,
           "bc": "waiting"
         }
@@ -2086,7 +2424,7 @@
       "category": "off-west-end",
       "type": "play",
       "openingDate": "2026-10-05",
-      "status": "previews",
+      "status": "open",
       "slug": "affluenza-off-west-end",
       "thumbnail": "/images/shows/affluenza-off-west-end-2026/thumbnail.jpg",
       "daysUntil": 2,
@@ -2139,6 +2477,45 @@
       "status": "previews",
       "slug": "soon-off-broadway",
       "thumbnail": "/images/shows/soon-off-broadway-2026/thumbnail.jpg",
+      "daysUntil": 2,
+      "readinessChecks": {
+        "wrongProduction": {
+          "pass": true,
+          "detail": "No pre-existing score files"
+        },
+        "dtliSlug": {
+          "pass": false,
+          "detail": "No DTLI slug mapped — run discover-dtli-slugs.js"
+        },
+        "bwwRoundup": {
+          "pass": null,
+          "detail": "Not yet archived — bww-rr-discover.js will auto-fetch within minutes of publication",
+          "warn": true
+        },
+        "talkingBroadway": {
+          "pass": null,
+          "detail": "Not yet archived — tb-direct-url.js will discover at poll time",
+          "warn": true
+        }
+      },
+      "readinessSummary": {
+        "failures": 2,
+        "warnings": 2,
+        "unknowns": 4,
+        "total": 7
+      },
+      "preflight": false
+    },
+    {
+      "id": "torera-off-broadway-2026",
+      "title": "Torera",
+      "market": "broadway",
+      "category": "off-broadway",
+      "type": "play",
+      "openingDate": "2026-10-05",
+      "status": "upcoming",
+      "slug": "torera-off-broadway",
+      "thumbnail": null,
       "daysUntil": 2,
       "readinessChecks": {
         "wrongProduction": {
