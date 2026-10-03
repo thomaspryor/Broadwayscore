@@ -45,3 +45,15 @@ test('thresholds mirror scoring-delta (0 T1 / 5 total)', () => {
   assert.equal(DEFAULT_GATE_THRESHOLDS.maxT1Flips, 0);
   assert.equal(DEFAULT_GATE_THRESHOLDS.maxTotalFlips, 5);
 });
+
+test('BRO-2833: unmeasurable delta (flips:0 + drift / cannotAutoVerify) → blocked', () => {
+  for (const scoringDelta of [
+    { flips: 0, t1Flips: 0, reason: 'data-input-drift', cannotAutoVerify: true },
+    { flips: 0, t1Flips: 0, dataInputDrift: true },
+    { flips: 0, t1Flips: 0, cannotAutoVerify: true },
+  ]) {
+    const r = assessBatchClearGate({ enableAllowed: true, scoringDelta });
+    assert.equal(r.proceed, false);
+    assert.equal(r.reason, 'scoring-delta-cannot-verify');
+  }
+});

@@ -55,6 +55,11 @@ function assessBatchClearGate({ enableAllowed, scoringDelta, thresholds = DEFAUL
   if (!scoringDelta) {
     return { proceed: false, reason: 'scoring-delta-not-run', checks };
   }
+  // BRO-2833: a drifted registry (or a touched rebuild loop) has no flip count
+  // at all — flips:0 there means "not measured", never "clean".
+  if (scoringDelta.dataInputDrift || scoringDelta.cannotAutoVerify || scoringDelta.reason === 'data-input-drift') {
+    return { proceed: false, reason: 'scoring-delta-cannot-verify', checks };
+  }
   if ((scoringDelta.t1Flips || 0) > thresholds.maxT1Flips) {
     return { proceed: false, reason: 'scoring-delta-t1-flip', checks };
   }
