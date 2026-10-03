@@ -124,7 +124,8 @@ Batch related sparks into ONE issue rather than one per spark; four findings of
 the same class are one piece of work, not four.
 
 For each spark that survives all three tests, create a **Linear** issue via
-`node scripts/linear-brain.js create "<spark title>" --park "<why it needs its own session>" --notes "..."`
+`node scripts/linear-brain.js create "<spark title>" --park "<why it needs its own session>" --model opus|sonnet --notes "..."`
+(`--model`: Opus for multi-file, architectural or hard-to-debug work; Sonnet for mechanical single-file or data fixes. The worker reads it at dispatch.)
 (`--dispatch` instead of `--park` for P0/P1; `--priority 1|2|3`). Notion is
 retired: its create exits 6, so never use `notion-brain.js`.
 - **Notes:** Self-contained handoff using this structure:

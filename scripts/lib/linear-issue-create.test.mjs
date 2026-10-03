@@ -137,3 +137,35 @@ test('createLinearIssue: a parked High issue reaches the Linear client at Medium
   assert.match(sent.description, /^PARKED: /);
   assert.match(sent.description, /filed at Medium because it is parked/);
 });
+
+test('createLinearIssue: model stamps a Model: line the dispatcher reads; a conflict is refused before any API call', async () => {
+  const fs = require('fs');
+  const linearClient = require('./linear-client.js');
+  const { LEDGER_PATH } = require('./intake-breaker.js');
+  const { explicitModelHint } = require('./bsc-next-model.js');
+  const title = `bro-4535-model-test-${process.pid}-${Date.now()}`;
+  const realGetTeam = linearClient.getTeam;
+  let teamCalls = 0;
+  linearClient.getTeam = async () => { teamCalls += 1; return { id: 'team-1', states: { nodes: STATES } }; };
+  let sent = null;
+  try {
+    const client = { createIssue: async (input) => { sent = input; return { identifier: 'BRO-0', id: 'i' }; } };
+    await createLinearIssue({ title, description: 'body', park: 'needs triage', priority: 3, model: 'opus', client });
+    assert.match(sent.description, /\n\nModel: Opus$/);
+    assert.equal(explicitModelHint({ description: sent.description }, null), 'opus');
+    teamCalls = 0;
+    sent = null;
+    await assert.rejects(
+      createLinearIssue({ title: `${title}-b`, description: 'Model: Sonnet', park: 'needs triage first', model: 'opus', client }),
+      /conflicts with --model opus/,
+    );
+    assert.equal(teamCalls, 0);
+    assert.equal(sent, null);
+  } finally {
+    linearClient.getTeam = realGetTeam;
+    if (fs.existsSync(LEDGER_PATH)) {
+      const kept = fs.readFileSync(LEDGER_PATH, 'utf8').split('\n').filter((line) => !line.includes(title));
+      fs.writeFileSync(LEDGER_PATH, kept.join('\n'));
+    }
+  }
+});
