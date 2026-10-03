@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-02T13:20:17.166Z",
-  "bannerText": "88/112 Done(14d) verified on main · 2 FAILED · 1 vacuous · 53 stuck-but-done — PARTIAL RUN: 88 checks not re-run (ran out of time), so these numbers understate the board",
+  "generatedAt": "2026-10-03T12:10:20.237Z",
+  "bannerText": "71/76 Done(14d) verified on main · 2 FAILED · 0 vacuous · 87 stuck-but-done — PARTIAL RUN: 1 check not re-run (ran out of time), 20 GitHub lookups failed, so these numbers understate the board",
   "items": [
     {
       "title": "FAILED BRO-4474 — Missed-broadcast alert fires for sent emails: reconciler 429s on duplicate polls",
@@ -9,39 +9,39 @@
     },
     {
       "title": "FAILED BRO-4355 — Untracked scrapingdog spend: ledger explains only 43%, 13% of billed",
-      "detail": "OPEN: scrapingdog attributedPct 2026-09-30=82%, 2026-10-01=74% (threshold 80% on each of the last 2 days)",
+      "detail": "OPEN: scrapingdog attributedPct 2026-10-01=74%, 2026-10-02=100% (threshold 80% on each of the last 2 days)",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4355/untracked-scrapingdog-spend-ledger-explains-only-43percent-13percent"
     },
     {
-      "title": "STUCK BRO-127 — Arm PUSH_VIA_API_FALLBACK on a real caller + verify in production",
+      "title": "STUCK BRO-2127 — Guard CV-promoted reverify clears + adjudicate 11 same-URL records individually",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-127/arm-push-via-api-fallback-on-a-real-caller-verify-in-production"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2127/guard-cv-promoted-reverify-clears-adjudicate-11-same-url-records"
     },
     {
-      "title": "STUCK BRO-115 — Backfill 259 excerpt-only unscored reviews (122 shows) unlocked by #501 fix",
+      "title": "STUCK BRO-2071 — BRO-232 S4: digest-autofix queue hygiene — row-family key, decision routing, digest split",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-115/backfill-259-excerpt-only-unscored-reviews-122-shows-unlocked-by-501"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2071/bro-232-s4-digest-autofix-queue-hygiene-row-family-key-decision"
     },
     {
-      "title": "STUCK BRO-111 — P1: URL-change invariant gap — stale wrongProduction/CV survives maybeUpgradeUrl (112-file class)",
+      "title": "STUCK BRO-2061 — Generalize evaluatePerShowCommitDecision into update-show-status.yml's discovery gate",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-111/p1-url-change-invariant-gap-stale-wrongproductioncv-survives"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2061/generalize-evaluatepershowcommitdecision-into-update-show-statusymls"
     },
     {
-      "title": "STUCK BRO-109 — Extend audit-run-budget-coverage.js to catch script→lib-helper budget-threading gaps",
+      "title": "STUCK BRO-2042 — P1: headless dispatch lane has almost no completion telemetry — 67 launches, 4 job-done, so reliability is unmeasurable",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-109/extend-audit-run-budget-coveragejs-to-catch-scriptlib-helper-budget"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2042/p1-headless-dispatch-lane-has-almost-no-completion-telemetry-67"
     },
     {
-      "title": "STUCK BRO-91 — Triage 30 late-add-flagged shows corpus-wide (detectLateAdd output)",
+      "title": "STUCK BRO-2030 — Build-owner v4: BRO-286 pre-verified FAIL + plan-completion map + un-staled digest render tests",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-91/triage-30-late-add-flagged-shows-corpus-wide-detectlateadd-output"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2030/build-owner-v4-bro-286-pre-verified-fail-plan-completion-map-un-staled"
     },
     {
-      "title": "STUCK BRO-90 — Census/ledger leaks junk + duplicate outletIds (buy-tickets-directly, the-la-times)",
+      "title": "STUCK BRO-2011 — P1: found-outlet-ids masks 88 unscored+blockedReviewUrl files corpus-wide (29 outlets incl. Telegraph, The Stage, Playbill)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-90/censusledger-leaks-junk-duplicate-outletids-buy-tickets-directly-the"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2011/p1-found-outlet-ids-masks-88-unscoredblockedreviewurl-files-corpus"
     }
   ],
-  "moreCount": 48
+  "moreCount": 81
 }
