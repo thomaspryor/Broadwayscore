@@ -4804,13 +4804,13 @@
       "title": "Data audits failing (non-blocking): Audit review contamination",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-03T21:03:34.648Z",
+      "lastSeen": "2026-10-03T21:40:16.742Z",
       "lastNotifiedAt": "2026-10-03T19:09:36.892Z",
       "lastSurfacedAt": "2026-10-03T19:09:36.892Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 6
+      "silentRefires": 7
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -9407,6 +9407,19 @@
       "lastSeen": "2026-10-03T20:31:28.681Z",
       "lastNotifiedAt": "2026-10-03T20:31:28.681Z",
       "lastSurfacedAt": "2026-10-03T20:31:28.681Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-2311-bypass-test": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-2311-bypass-test",
+      "firstSeen": "2026-10-03T21:45:07.832Z",
+      "incidentOpenedAt": "2026-10-03T21:45:07.832Z",
+      "lastSeen": "2026-10-03T21:45:07.832Z",
+      "lastNotifiedAt": "2026-10-03T21:45:07.832Z",
+      "lastSurfacedAt": "2026-10-03T21:45:07.832Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
