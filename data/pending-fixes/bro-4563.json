@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4563",
   "planId": "d0b5bf60-d06f-4ff4-9f82-df41b247805d",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-03T22:01:32.574Z",
   "submitter": {
     "name": null,
@@ -96,5 +96,43 @@
         "description": "The not_a_review rejection came from the same truncated-fetch verdict."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-03T22:41:17.749Z",
+  "results": [
+    {
+      "action": "add-show",
+      "ok": true,
+      "msg": "shows.json: added operation-mincemeat-tour-2026"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json wrongShowManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json wrongShow: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json nonReviewManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json isNonReview: true -> false"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json wrongArticleManualClear: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json rejectionReason: \"not_a_review\" -> null"
+    }
+  ]
 }
