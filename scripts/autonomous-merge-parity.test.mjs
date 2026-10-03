@@ -47,7 +47,10 @@ test('executor and approve tap plan checks with the SAME function object', () =>
 });
 
 test('same diff + same tier → identical check plan on both sides', () => {
-  const exists = f => f === 'scripts/lib/outlet-canonicalize.test.mjs';
+  // Every path a diff touches exists (callers check the post-change tree), so
+  // tier-3 `node --check` entries are part of what both sides must agree on.
+  const touched = new Set(DIFFS.flat());
+  const exists = f => f === 'scripts/lib/outlet-canonicalize.test.mjs' || touched.has(f);
   for (const tier of [1, 3]) {
     for (const files of DIFFS) {
       const fromExecutor = executor.decideChecks(files, exists, { tier });

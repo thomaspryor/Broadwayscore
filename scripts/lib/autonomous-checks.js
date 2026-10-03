@@ -120,7 +120,9 @@ function hasSrcChange(files) {
 
 /**
  * changedFiles → ordered check commands (argv arrays, ALWAYS exec'd with
- * shell=false). existsFn is injected for testability.
+ * shell=false). existsFn is injected for testability; it gates both colocated
+ * test lookups AND the changed path itself, so it must answer against the
+ * post-change tree (a path the branch deleted yields no check).
  *
  * @param {string[]} changedFiles
  * @param {(relPath:string)=>boolean} existsFn
@@ -158,9 +160,13 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   const testFiles = new Set();
   const tsxTestFiles = new Set();
   const addMjs = f => (tsxManifest.has(f) ? tsxTestFiles : testFiles).add(f);
+  // Every caller builds changedFiles from `git diff --name-only`, which also
+  // lists paths the branch DELETED. A deleted test or script must not become
+  // a check: `node --test`/`node --check` on a missing path exits 1, which
+  // refuses a branch whose only sin is removing a dead file.
   for (const f of files) {
-    if (/\.test\.mjs$/.test(f)) { addMjs(f); continue; }
-    if (/\.test\.ts$/.test(f)) { tsxTestFiles.add(f); continue; }
+    if (/\.test\.mjs$/.test(f)) { if (existsFn(f)) addMjs(f); continue; }
+    if (/\.test\.ts$/.test(f)) { if (existsFn(f)) tsxTestFiles.add(f); continue; }
     // Colocated test convention: scripts/lib/x.js → scripts/lib/x.test.mjs
     // (or scripts/lib/x.ts → scripts/lib/x.test.ts, checked first — a .ts
     // source is exactly the case whose colocated test needs tsx to run).
@@ -176,7 +182,7 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   // colocated test, and "it parses" is the cheapest true statement we can
   // make about one. Never a substitute for a test — an addition to it.
   if (tier === 3) {
-    for (const f of files.filter(f => /^scripts\/.*\.(js|mjs|cjs)$/.test(f) && !/\.test\.m?js$/.test(f)).sort()) {
+    for (const f of files.filter(f => /^scripts\/.*\.(js|mjs|cjs)$/.test(f) && !/\.test\.m?js$/.test(f) && existsFn(f)).sort()) {
       add(`node --check ${f}`, ['node', '--check', f]);
     }
   }
@@ -402,7 +408,10 @@ function runSafeChecks(o) {
     // colocated test, no type/lint/build trigger, and used to reach the
     // owner's inbox wearing a green PASS badge with an empty check list
     // (ship-check finding). Tier 1 is unaffected — a docs-only diff having
-    // nothing to run is the normal, correct case there.
+    // nothing to run is the normal, correct case there. A tier-3 diff that
+    // only DELETES scripts lands here too (deleted paths get no check): land's
+    // merged-tree test floor clears it, but with LAND_SKIP_MERGED_TREE_TESTS=1
+    // or on the autonomous run/merge paths it stays refused, by design.
     const substantive = (changedFiles || []).map(String).filter(f => !INERT_RE.test(f));
     if (tier === 3 && substantive.length) {
       results.push({
