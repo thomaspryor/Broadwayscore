@@ -788,6 +788,8 @@ on:
       - 'scripts/check-push-ledger.js'
       - 'tests/unit/push-ledger.test.mjs'
       - '.github/workflows/check-push-ledger.yml'
+      # BRO-2827: probe-shape structural test (tests/unit/ node --test batch, globbed); path-listed so a solo edit triggers CI.
+      - 'tests/unit/push-latency-probe-shape.test.mjs'
       # BRO-2304: content-equivalence fallback (checkContentSurvived) added to
       # check-push-ledger.js — reuses scripts/lib/push-content-survival.js
       # (already covered by the scripts/lib/** glob above) via a new optional
