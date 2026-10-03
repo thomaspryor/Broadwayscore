@@ -15,17 +15,28 @@ import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const REGISTRY_PATH = path.join(__dirname, '..', '..', 'data', 'critic-registry.json');
+// Hermetic fixture registry (BRO-4550): the live data/critic-registry.json is
+// rebuilt by bots, and on 2026-10-03 peter-marks gained "variety" in
+// knownOutlets, silently turning the first case below red on main.
+const FIXTURE_REGISTRY = {
+  critics: {
+    'peter-marks': { displayName: 'Peter Marks', primaryOutlet: 'washpost', knownOutlets: ['washpost'], totalReviews: 281, isFreelancer: false },
+    'adam-feldman': { displayName: 'Adam Feldman', primaryOutlet: 'timeout', knownOutlets: ['timeout'], totalReviews: 500, isFreelancer: true },
+  },
+};
 
-const hasRegistry = fs.existsSync(REGISTRY_PATH);
-
-describe('Guard G: Critic-registry misattribution detection', { skip: !hasRegistry && 'no critic-registry.json' }, () => {
+describe('Guard G: Critic-registry misattribution detection', () => {
   let createOrMergeReviewFile;
   let tmpDir;
 
   before(() => {
-    ({ createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer'));
     tmpDir = fs.mkdtempSync(path.join(os.tmpdir(), 'guard-g-test-'));
+    // The writer resolves the registry path at module load, so the env var
+    // must be set BEFORE the require below.
+    const registryPath = path.join(tmpDir, 'critic-registry.json');
+    fs.writeFileSync(registryPath, JSON.stringify(FIXTURE_REGISTRY));
+    process.env.BSC_CRITIC_REGISTRY_PATH = registryPath;
+    ({ createOrMergeReviewFile } = require('../../scripts/lib/review-file-writer'));
   });
 
   after(() => {
