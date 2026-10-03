@@ -27,7 +27,7 @@ const { execFileSync } = require('child_process');
 const OUTLET_SCORING_FIELDS = ['tier', 'cvStyle', 'isDualMarket', 'region', 'market', 'starScale'];
 // Resolution fields: a change re-routes raw outlet strings at rebuild without
 // touching any stored outletId, so review counts under-report them.
-const OUTLET_RESOLUTION_FIELDS = ['aliases', 'domain', 'domainAliases'];
+const OUTLET_RESOLUTION_FIELDS = ['displayName', 'aliases', 'domain', 'domainAliases'];
 
 const sig = (v) => JSON.stringify(v === undefined ? null : v);
 
@@ -58,10 +58,17 @@ function compareOutletRegistry(baseReg, workReg, reviewCounts = {}) {
     changes.push({ outletId: id, fields, reviews, significant: reviews > 0 || resolutionChange });
   }
   const added = Object.keys(work).filter(id => !(id in base));
+  // An added outlet that claims a name an existing outlet already answers to
+  // takes it over at lookup time (Map.set overwrites), re-routing reviews.
+  const nameKeys = (id, o) => [id, o.displayName, ...(o.aliases || []), o.domain, ...(o.domainAliases || [])]
+    .filter(Boolean).map(x => String(x).toLowerCase());
+  const claimed = new Set();
+  for (const id of Object.keys(base)) for (const k of nameKeys(id, base[id])) claimed.add(k);
+  const takeovers = added.filter(id => nameKeys(id, work[id]).some(k => claimed.has(k)));
   const removed = Object.keys(base).filter(id => !(id in work));
-  const significant = removed.length > 0 || changes.some(c => c.significant);
+  const significant = removed.length > 0 || takeovers.length > 0 || changes.some(c => c.significant);
   const status = changes.length || added.length || removed.length ? 'changed' : 'unchanged';
-  return { status, significant, changes, added, removed };
+  return { status, significant, changes, added, removed, takeovers };
 }
 
 /** Raw-content comparison for a file we can only hash (critic-registry). */
@@ -131,7 +138,9 @@ function formatDataInputReport(report) {
         lines.push(`  - ${c.outletId} (${c.reviews} reviews${c.significant ? '' : ', not significant'}): ${desc}`);
       }
       if (i.added && i.added.length) lines.push(`  + added outlets: ${i.added.slice(0, 20).join(', ')}${i.added.length > 20 ? ' …' : ''}`);
+      if (i.takeovers && i.takeovers.length) lines.push(`  ! added outlets claiming an existing outlet's name/alias/domain: ${i.takeovers.slice(0, 20).join(', ')}`);
       if (i.removed && i.removed.length) lines.push(`  - removed outlets: ${i.removed.slice(0, 20).join(', ')}${i.removed.length > 20 ? ' …' : ''}`);
+      if (i.name.startsWith('data/critic-registry.json') && i.significant) lines.push('  (if the working copy is merely stale, re-run scripts/setup-local-data.sh to resync it from the private core-data repo)');
     } else if (i.status === 'unobservable') {
       lines.push(`[scoring-delta] CANNOT-OBSERVE: ${i.name} could not be compared against its baseline.`);
     }

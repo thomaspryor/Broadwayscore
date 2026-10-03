@@ -43,6 +43,15 @@ test('removed outlet is significant; added outlet alone is not', () => {
   assert.equal(added.significant, false);
 });
 
+test('displayName change and alias takeover by an added outlet are significant', () => {
+  const dn = reg({ nyt: { tier: 1, aliases: ['NYT'], displayName: 'X' }, blog: { tier: 3 } });
+  assert.equal(lib.compareOutletRegistry(base, dn, {}).significant, true);
+  const take = reg({ ...base.outlets, usurper: { tier: 3, aliases: ['nyt'] } });
+  const r = lib.compareOutletRegistry(base, take, {});
+  assert.deepEqual(r.takeovers, ['usurper']);
+  assert.equal(r.significant, true);
+});
+
 test('automation metadata is ignored', () => {
   const work = reg({ nyt: { tier: 1, aliases: ['NYT'], regionInferredAt: 'now' }, blog: { tier: 3 } });
   assert.equal(lib.compareOutletRegistry(base, work, { nyt: 5 }).status, 'unchanged');

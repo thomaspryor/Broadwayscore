@@ -1366,7 +1366,7 @@ function main() {
 
   if (!inclusionDiff && !scoreValueDiff && !dataFlagDiff) {
     if (dataInputDrift) {
-      log('[scoring-delta] ⚠️  No watched code/flag diff, BUT a scoring data input changed (above) — not a clean result. Exiting 2.');
+      log('[scoring-delta] ⚠️  SCORING DELTA — significant change detected: no watched code/flag diff, BUT a scoring data input changed (above). BEFORE MERGING: measure the affected reviews by hand. Exiting 2.');
       if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'data-input-drift', cannotAutoVerify: true, dataInputs: dataInputReport.inputs }));
       process.exit(2);
     }
@@ -1597,7 +1597,7 @@ function main() {
       process.exit(2);
     }
     if (dataInputDrift) {
-      log('[scoring-delta] ⚠️  Replay found nothing, but a scoring data input changed (above) — not a clean result. Exiting 2.');
+      log('[scoring-delta] ⚠️  SCORING DELTA — significant change detected: replay found nothing, BUT a scoring data input changed (above). BEFORE MERGING: measure the affected reviews by hand. Exiting 2.');
       if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'data-input-drift', cannotAutoVerify: true, dataInputs: dataInputReport.inputs }));
       process.exit(2);
     }
@@ -1840,10 +1840,12 @@ function main() {
         scoreChanged: scoreFlips.slice(0, 100),
       },
       cannotAutoVerify,
+      dataInputDrift,
+      dataInputs: dataInputReport.inputs,
       rebuildLoopTouchedSites: cannotAutoVerify ? rebuildLoopTouch.sites : undefined,
     }, null, 2));
   } else {
-    const significant = cannotAutoVerify || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD;
+    const significant = cannotAutoVerify || dataInputDrift || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD;
     const header = cannotAutoVerify
       ? '🛑 SCORING DELTA — rebuild-all-reviews.js exclusion loop touched, CANNOT AUTO-VERIFY'
       : (significant ? '⚠️  SCORING DELTA — significant change detected' : '✅ scoring delta — minor change');
