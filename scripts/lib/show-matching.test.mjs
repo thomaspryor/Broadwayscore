@@ -311,3 +311,17 @@ test('roman numerals: a kept numeral does not lift a short single-word title pas
   const shows = [{ id: 'life-x-3-2003', title: 'Life (x) 3', status: 'closed', openingDate: '2003-12-01', category: 'broadway' }];
   assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-Malcolm-X-Opera-Brings-a-Life-to-the-Met-20260401', shows), null);
 });
+
+test('roman numerals: page-title checks keep the numeral too (BRO-4563 cached Hay Fever page)', () => {
+  const { titleWordsMatch, titleWordsMatchWithConfidence, validateRoundupPageTitle } = require('./show-matching.js');
+  const hayFever = 'Review Roundup: Richard E. Grant & Christine Baranski in HAY FEVER, UK / West End | BroadwayWorld';
+  const page = t => `<html><head><title>${t}</title></head><body></body></html>`;
+  assert.equal(validateRoundupPageTitle(page(hayFever), 'Richard II', 'off-west-end', []).ok, false);
+  assert.equal(titleWordsMatchWithConfidence('Richard II', hayFever).matched, false);
+  assert.equal(titleWordsMatch('Richard II', hayFever), false);
+  const real = 'Review Roundup: RICHARD II at the Bridge Theatre, UK / West End | BroadwayWorld';
+  assert.equal(validateRoundupPageTitle(page(real), 'Richard II', 'off-west-end', []).ok, true);
+  assert.equal(titleWordsMatchWithConfidence('Richard II', real).matched, true);
+  assert.equal(titleWordsMatchWithConfidence('Henry V', 'Review Roundup: HENRY VIII at Shakespeare\'s Globe').matched, false);
+  assert.equal(titleWordsMatchWithConfidence('Henry V', 'Review Roundup: HENRY V at the Donmar').matched, true);
+});

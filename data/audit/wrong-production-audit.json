@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-03T21:05:25.018Z",
+  "timestamp": "2026-10-03T22:53:57.372Z",
   "stats": {
     "totalReviews": 46083,
-    "alreadyFlagged": 18692,
+    "alreadyFlagged": 18693,
     "dateGuardCatches": 268,
     "directorMismatch": 1206,
     "tvFilmSignals": 1335,
     "londonSignals": 1265,
     "offBroadwaySignals": 506,
-    "yearMismatch": 103,
-    "noPublishDate": 4274
+    "yearMismatch": 104,
+    "noPublishDate": 4270
   },
   "findings": [
     {
@@ -1310,6 +1310,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "american-buffalo-2022",
+      "file": "hollywood-reporter--lovia-gyarkye.json",
+      "score": 87,
+      "publishDate": "April 14th, 2022",
+      "url": "https://www.hollywoodreporter.com/lifestyle/arts/american-buffalo-david-mamet-1235130707/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2008 (2x) more than 2022 (0x). 2008 matches production: american-buffalo-2008"
         }
       ]
     },

@@ -239,3 +239,14 @@ for (const venue of OWE_VENUE_CONFIGS) {
     assert.deepEqual(parseVenueListingHtml(venue, ''), []);
   });
 }
+
+test('slugToTitle keeps Roman numerals upper case (BRO-4563 "Richard Ii")', () => {
+  const { slugToTitle, extractByRegex } = require('../../scripts/lib/venue-listing-discover.js');
+  assert.equal(slugToTitle('richard-ii'), 'Richard II');
+  assert.equal(slugToTitle('henry-viii'), 'Henry VIII');
+  assert.equal(slugToTitle('indian-princesses'), 'Indian Princesses');
+  assert.equal(slugToTitle('mix-tape'), 'Mix Tape', 'an ordinary word is not shouted');
+  assert.equal(slugToTitle('9-to-5'), '9 To 5');
+  const html = '<a href="/whats-on/richard-ii/">x</a><a href="/whats-on/the-seagull/">y</a>';
+  assert.deepEqual(extractByRegex(html, { name: 't', linkPattern: /\/whats-on\/[a-z]/ }), ['Richard II', 'The Seagull']);
+});
