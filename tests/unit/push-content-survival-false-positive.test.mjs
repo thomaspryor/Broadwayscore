@@ -53,15 +53,15 @@ test(`stale local origin ref + main churn does not flag foreign lines as reverte
     const churner = path.join(tmp, 'churner');
     const nums = Array.from({ length: 40 }, (_, i) => i + 1).join('\n') + '\n';
 
-    sh(`git init -q --bare "${origin}"`, tmp);
+    sh(`git init -q --bare -b main "${origin}"`, tmp);
     sh(`git init -q "${seed}"`, tmp);
     sh('git branch -M main', seed);
     fs.writeFileSync(path.join(seed, 'a.js'), nums);
     fs.writeFileSync(path.join(seed, 'b.mjs'), nums);
     sh('git add -A && git commit -qm base', seed);
     sh(`git push -q "${origin}" main`, seed);
-    sh(`git clone -q "${origin}" runner`, tmp);
-    sh(`git clone -q "${origin}" churner`, tmp);
+    sh(`git clone -q -b main "${origin}" runner`, tmp);
+    sh(`git clone -q -b main "${origin}" churner`, tmp);
 
     // M1 lands on main; the runner pulls it into its branch but its
     // refs/remotes/origin/main is left at the pre-M1 commit (stale).
@@ -85,6 +85,10 @@ test(`stale local origin ref + main churn does not flag foreign lines as reverte
     edit(runner, 'b.mjs', '5', '5-edited');
     sh('git commit -qam "our edit"', runner);
 
+    // Repo-local hooksPath: a global core.hooksPath (CI/husky) would otherwise
+    // silently stop this fixture's hook from running.
+    sh(`git config core.hooksPath "${origin}/hooks"`, origin);
+
     // Churn landing right after our push, rewriting another line of b.mjs.
     fs.writeFileSync(path.join(origin, 'hooks', 'post-receive'), `#!/usr/bin/env bash
 cat >/dev/null
@@ -92,7 +96,8 @@ if [ ! -f "${tmp}/churned" ]; then
   touch "${tmp}/churned"
   unset GIT_DIR GIT_QUARANTINE_PATH GIT_OBJECT_DIRECTORY GIT_ALTERNATE_OBJECT_DIRECTORIES
   cd "${churner}" && git pull -q --rebase origin main && sed -i.bak -e 's/^35$/35-churn/' -e 's/^30-m1$/30-m1-churn/' b.mjs && rm -f b.mjs.bak \\
-    && git commit -qam churn && git push -q origin main
+    && git commit -qam churn && git push -q origin main \\
+    || echo "churn failed" >> "${tmp}/churn.log"
 fi
 `, { mode: 0o755 });
 
@@ -101,13 +106,14 @@ fi
     assert.doesNotMatch(out, /\[content-survival\] FAILED/, out);
     assert.equal(r.status, 0, out);
 
+    assert.ok(fs.existsSync(`${tmp}/churned`), 'post-receive churn hook never ran\n' + out);
     const finalB = sh('git show main:b.mjs', origin);
     const finalA = sh('git show main:a.js', origin);
     assert.match(finalB, /^5-edited$/m);
     assert.match(finalA, /^20-edited$/m);
-    assert.match(finalB, fastForward ? /^30-m1-churn$/m : /^30-m2$/m, 'foreign content must be untouched');
+    assert.match(finalB, fastForward ? /^30-m1-churn$/m : /^30-m2$/m, 'foreign content must be untouched: ' + (fs.existsSync(`${tmp}/churn.log`) ? fs.readFileSync(`${tmp}/churn.log`, 'utf8') : 'churn ran'));
   } finally {
-    fs.rmSync(tmp, { recursive: true, force: true });
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 5, retryDelay: 100 });
   }
 });
 }
