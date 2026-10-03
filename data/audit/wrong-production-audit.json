@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-03T16:23:18.226Z",
+  "timestamp": "2026-10-03T18:04:50.886Z",
   "stats": {
-    "totalReviews": 46057,
-    "alreadyFlagged": 18676,
+    "totalReviews": 46063,
+    "alreadyFlagged": 18677,
     "dateGuardCatches": 268,
     "directorMismatch": 1206,
-    "tvFilmSignals": 1333,
-    "londonSignals": 1264,
+    "tvFilmSignals": 1335,
+    "londonSignals": 1265,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
     "noPublishDate": 4283
@@ -10337,6 +10337,20 @@
       "score": 82,
       "publishDate": "2026-10-02",
       "url": "https://ayoungishperspective.co.uk/2026/10/02/review-flamenc-oh/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "file": "all-that-dazzles-uk--sam-woodward.json",
+      "score": 58,
+      "publishDate": "2026-10-03",
+      "url": "https://www.allthatdazzles.co.uk/post/review-flamenc-oh-peacock-theatre",
       "findings": [
         {
           "type": "TV_FILM_SIGNAL",
@@ -37415,6 +37429,20 @@
       ]
     },
     {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "file": "london-unattached--jeanne-horak.json",
+      "score": 90,
+      "publishDate": "2026-10-02",
+      "url": "https://www.london-unattached.com/whos-afraid-of-virginia-woolf-sohoplace/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
       "showId": "wicked-2003",
       "file": "variety--charles-isherwood.json",
       "score": 57,
@@ -45560,6 +45588,20 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
+      "file": "adventuresintheatreland--julie-fisher-sheher.json",
+      "score": 78,
+      "publishDate": "2026-10-02",
+      "url": "https://www.adventuresintheatreland.com/post/hay-fever-wyndham-s-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
       "file": "all-that-dazzles-uk--sam-woodward.json",
       "score": 97,
       "publishDate": "2026-10-02",
@@ -45589,7 +45631,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "guardian--emma-john.json",
-      "score": 59,
+      "score": 61,
       "publishDate": "2026-10-02",
       "url": "https://www.theguardian.com/stage/2026/oct/02/hay-fever-review-richard-e-grant-christine-baranski-wyndhams-theatre-london",
       "findings": [
@@ -45686,6 +45728,20 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "theatre-weekly--greg-stewart.json",
+      "score": 67,
+      "publishDate": "2026-10-01",
+      "url": "https://theatreweekly.com/review-hay-fever-at-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "theatre-weekly--unknown.json",
       "publishDate": "2026-10-01",
       "url": "https://theatreweekly.com/review-hay-fever-at-wyndhams-theatre/",
       "findings": [
@@ -51870,19 +51926,6 @@
       "score": 39,
       "publishDate": "2026-06-26",
       "url": "https://www.telegraph.co.uk/theatre/what-to-see/pride-the-national-theatre-review/",
-      "findings": [
-        {
-          "type": "LONDON_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Mentions London venue: \"dorfman\""
-        }
-      ]
-    },
-    {
-      "showId": "pride-west-end-2026",
-      "file": "timeout--ghenet-pinderhughes-randall.json",
-      "publishDate": "2026-06-26",
-      "url": "https://www.westendtheatre.com/359178/news/reviews/pride-national-theatre-reviews/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
