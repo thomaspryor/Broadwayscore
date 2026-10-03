@@ -93,80 +93,67 @@ jobs:
           title: 'Check Push Ledger Failed'
           severity: 'warning'
 
-  # ── Diag — push latency (BRO-2373) ──────────────────────────────────────────
-  # TEMPORARY. Delete this job once BRO-2373 is closed; it answers one question
-  # and then has no reason to exist.
+  # ── Diag — push latency (BRO-2373, reshaped by BRO-2827) ────────────────────
+  # TEMPORARY. Delete this job once BRO-2373 is closed.
   #
-  # WHAT IT IS FOR. ~150 pushes/day exhaust their retries across 36 workflows.
-  # Every failing attempt burns exactly GIT_NET_TIMEOUT_SEC=90 and, now that
-  # git_push passes --progress, emits ZERO progress output — while a SUCCEEDING
-  # push in the same environment prints all four phases. So the 90s is spent
-  # BEFORE git's first progress line: not pack CPU, not pack transfer. In run
-  # 33743302929 even a non-fast-forward REJECTION, which the client decides from
-  # the ref advertisement without sending an object, took 49s.
+  # WHAT IT IS FOR. ~150 pushes/day exhaust their retries across 36 workflows;
+  # every failing attempt burns GIT_NET_TIMEOUT_SEC=90 with ZERO --progress output.
   #
-  # Off-runner that same work is fast. Measured 2026-09-03 from a depth-1 clone
-  # of this repo against this remote (1030 refs), packet-traced:
-  #     git push --dry-run   1s   1315 inbound packets, 3 sent, no "git> shallow"
-  #     real push            2s   1321 inbound packets, 7 sent, sends "git> shallow"
-  # The dry run receives 1315 of the real push's 1321 inbound packets, so it
-  # exercises the full advertisement; it skips only 4 client packets afterwards,
-  # and the real push measured above covers those. Ref count, advertisement size
-  # and shallow negotiation are therefore all exonerated OFF-RUNNER. This job
-  # exists to find out whether they are also fast ON a runner.
+  # WHY IT WAS RESHAPED (BRO-2827). The first version measured a depth-1 clone and
+  # `git push --dry-run`. Neither is the failing shape: --dry-run stops after the
+  # ref advertisement, and the failing workflows run DEEPENED shallow clones
+  # (depth-1 checkout + a bounded `--shallow-since` fetch, see
+  # scripts/lib/shallow-fetch-args.js). A depth-1 REAL push was measured at 1s
+  # off-runner, so the variable has to be the deepened shape, the runner, or both.
   #
-  # WHY IT IS NOT IN push-with-retry.sh. If the pre-pack phase is the slow thing,
-  # an unguarded probe there burns the same 45-90s out of PUSH_DEADLINE_SEC.
-  # Several callers run the undersized 240s/7-retry default (run 33743302929 gave
-  # up after 2 attempts), so that would turn a diagnostic into an outage.
+  # WHAT IT MEASURES NOW, in this order:
+  #   1. COLD: the timed deepening fetch (first network op after checkout).
+  #   2. A/B x4 in ABBA order: a REAL push of one probe commit to a unique scratch
+  #      ref, with arm=nofetch (push straight away) or arm=fetched (bounded fetch
+  #      right before the push), then delete the scratch ref.
+  # The probe commit is made on FETCH_HEAD, like the real callers' rebased commit.
   #
-  # SAFETY. This job never writes. `git push --dry-run` was packet-traced this
-  # session: it sends no ref-update commands and no pack, and the remote ref was
-  # byte-identical before and after. continue-on-error keeps a probe hiccup from
-  # reddening the ledger job above.
+  # ALREADY RETIRED BY MEASUREMENT, do not re-test: handshake/DNS/TLS, ref
+  # advertisement/count, pack CPU/transfer, depth-1 shallow-push negotiation.
+  #
+  # LIMITS, stated so nobody over-reads a green run: pushes go to a NEW
+  # refs/heads/probe/* ref, so main's branch-protection/update-hook path is not
+  # exercised. A fast result here exonerates the transport and the deepened
+  # shallow graft, not main-specific server-side checks.
+  #
+  # SAFETY. It writes only refs/heads/probe/push-latency-<run_id>-*, deleted inline
+  # and again by an `if: always()` sweep step (a push killed at the cap may already
+  # have created its ref). GITHUB_TOKEN pushes trigger no workflows, and every
+  # `on: push` workflow is filtered to main/staging/land/**. continue-on-error
+  # keeps a probe hiccup from reddening the ledger job.
   push-latency-probe:
     runs-on: ubuntu-latest
-    # Worst case is 5 network ops x the 120s cap = 600s. At 6 minutes the job was
-    # killed mid-loop and the later replicates never printed, which is the silent
-    # half of a measurement job.
-    timeout-minutes: 15
+    # Worst case: 3 fetches x 90s + 4 pushes x 90s + 4 deletes x 45s, plus
+    # `timeout -k 10` per op, plus the verify. Under 20 min; 25 for slack.
+    timeout-minutes: 25
     continue-on-error: true
-    # Explicit, even though it matches the workflow default, because the value is
-    # load-bearing and not obvious: git push --dry-run contacts git-receive-pack,
-    # and GitHub 403s that endpoint for a read-only token. `contents: read` would
-    # not make this probe safer, it would make it silently measure an auth
-    # rejection instead of the write path. Safety comes from --dry-run sending no
-    # ref-update and no pack (packet-traced), not from withholding the permission.
+    # Own group so a slow probe cannot delay or replace the ledger check cron.
+    concurrency:
+      group: push-latency-probe
+      cancel-in-progress: false
+    # `contents: read` would make the probe silently measure a 403 on
+    # git-receive-pack instead of the write path.
     permissions:
       contents: write
     steps:
-      - name: Checkout (shallow, matching the failing workflows)
+      - name: Checkout (depth-1, deepened below like the failing workflows)
         uses: actions/checkout@v5
         with:
           ref: main
           fetch-depth: 1
 
-      - name: Measure read path and write path
+      - name: Measure deepened-shallow real push (A/B fetch)
         run: |
-          # `set +e` is REQUIRED, not stylistic. GitHub runs a `run:` block as
-          # `bash -e {0}` by DEFAULT, so omitting `set -e` does not get you
-          # errexit-off — it gets you errexit-on. Observed in run 33754219678:
-          # the step died `##[error]Process completed with exit code 1` the
-          # instant a dry-run returned rc=1 (an ordinary non-fast-forward
-          # rejection, because main moved between replicates), losing the
-          # remaining measurements AND the closing note.
-          #
-          # That failure mode is backwards for this job specifically: a SLOW
-          # REJECTION is the single most valuable sample it can take — run
-          # 33743302929's 49s rejection is the whole reason this probe exists —
-          # and errexit was throwing exactly those away while keeping the fast
-          # rc=0 ones. The surviving output looked clean, which is how it nearly
-          # passed unnoticed.
+          # `set +e` is REQUIRED: `run:` is `bash -e` by default, and a slow
+          # rejection is the most valuable sample this job can take.
           set +e
 
-          # Self-expiry. "TEMPORARY" in a comment is not enforcement, and this
-          # runs 72x/day. Past the date the job no-ops until someone renews it
-          # deliberately, so a forgotten probe cannot run forever.
+          # Self-expiry: past the date the job no-ops until renewed deliberately.
           if [ "$(date -u +%Y%m%d)" -gt "20261101" ]; then
             echo "PROBE|expired — delete this job, or bump the date if BRO-2373 is still open"
             exit 0
@@ -174,78 +161,106 @@ jobs:
 
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          echo "PROBE|shallow=$(git rev-parse --is-shallow-repository)|commits=$(git rev-list --count HEAD)"
 
-          # One local commit so the write-path probe has something to offer.
-          # Never pushed for real — see SAFETY above.
-          date -u +%FT%TZ > .push-latency-probe.txt
-          git add -f .push-latency-probe.txt
-          git commit -q -m "probe (never pushed)"
+          CAP=90   # = prod GIT_NET_TIMEOUT_SEC
+          DEL_CAP=45
+          REF_PREFIX="refs/heads/probe/push-latency-${GITHUB_RUN_ID}"
 
-          # Classify rather than print a bare rc. An expired or read-only token
-          # makes GitHub 403 the receive-pack advertisement in well under a
-          # second, which without this reads as "the write path is fast on-runner"
-          # — the exact wrong conclusion for BRO-2373. rc=1 is an ordinary
-          # non-fast-forward rejection and IS a valid measurement; rc=128 is a
-          # transport/auth error and is NOT. When in doubt the stderr is printed.
+          # Classify rather than print a bare rc. 403/auth is NOT a measurement.
+          # Censoring keys on the timeout rc only: a push that finished at 90.5s is
+          # a real (slow) measurement.
           classify() {
             _rc="$1"; _ms="$2"; _op="$3"; _tag="$4"; _log="$5"
-            if [ "$_rc" = "124" ] || [ "$_rc" = "137" ] || [ "$_ms" -ge 120000 ]; then
+            if [ "$_rc" = "124" ] || [ "$_rc" = "137" ]; then
               echo "PROBE|op=$_op|$_tag|CENSORED|rc=$_rc|ms=$_ms"
+              sed 's/^/PROBE|stderr| /' "$_log" 2>/dev/null | head -12
               return
             fi
             case "$_rc" in
               0) echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=0|verdict=ok" ;;
               1) if grep -qiE 'denied|forbidden|403|authenticat|not authorized' "$_log" 2>/dev/null; then
                    echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=1|verdict=AUTH-NOT-A-MEASUREMENT"
-                   sed 's/^/PROBE|stderr| /' "$_log" 2>/dev/null | head -12
                  else
                    echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=1|verdict=rejected-valid-measurement"
-                 fi ;;
+                 fi
+                 sed 's/^/PROBE|stderr| /' "$_log" 2>/dev/null | head -12 ;;
               *) echo "PROBE|op=$_op|$_tag|ms=$_ms|rc=$_rc|verdict=ERROR-NOT-A-MEASUREMENT"
                  sed 's/^/PROBE|stderr| /' "$_log" 2>/dev/null | head -12 ;;
             esac
           }
 
-          # COLD sample first, before any other network op touches github.com.
-          # The hypothesis is that the 90s sits in handshake/advertisement, which
-          # is exactly what a warmed DNS/TLS path hides — so the very first
-          # measurement of the run is the most informative one in it.
-          s=$(date +%s%3N)
-          # hygiene-push-ok: --dry-run contacts git-receive-pack to time the
-          # write-path advertisement and sends nothing. Packet-traced: zero
-          # ref-update commands, zero pack. Routing a measurement through
-          # push-with-retry.sh would measure push-with-retry.sh, not the wall.
-          # NOTE: this annotation is FILE-WIDE, so rule (c) is now silenced for
-          # the whole workflow. Any future `git push` added to the check job above
-          # will NOT be caught by the hygiene guard — route it through
-          # push-with-retry.sh by hand.
-          timeout -k 10 120 git push --dry-run --progress origin HEAD:main >/tmp/dry.cold 2>&1
-          rc=$?; e=$(date +%s%3N)
-          classify "$rc" "$((e - s))" push-dry-run "sample=COLD" /tmp/dry.cold
+          # Same derivation push-with-retry.sh uses, and the same fail-CLOSED
+          # fallback: repoDepthArgs() fails open to [], which on a shallow clone
+          # is a bare unbounded fetch (the 2 GB / 300s case).
+          deepen_args() {
+            _a=$(node -e "const a=require('./scripts/lib/shallow-fetch-args.js').repoDepthArgs({repoRoot:process.cwd()});console.log(a.join(' '))" 2>/dev/null)
+            [ -n "$_a" ] && echo "$_a" || echo "--deepen=200"
+          }
 
-          # Then warm replicates. n=1 is uninterpretable against a baseline
-          # censored at 90s. These are NOT independent of the cold sample or of
-          # each other — same runner, warmed path — so read them as a warm-state
-          # distribution, not as three draws.
-          for i in 1 2; do
+          # Timed bounded fetch; leaves the new tip in FETCH_HEAD.
+          timed_fetch() {  # $1 = tag, $2 = log
             s=$(date +%s%3N)
-            timeout -k 10 120 git ls-remote origin >/tmp/lsr.$i 2>/tmp/lsr.err.$i
+            # shellcheck disable=SC2046
+            timeout -k 10 "$CAP" git fetch --progress $(deepen_args) origin main >"$2" 2>&1
             rc=$?; e=$(date +%s%3N)
-            classify "$rc" "$((e - s))" ls-remote "sample=warm$i|refs=$(wc -l < /tmp/lsr.$i)" /tmp/lsr.err.$i
+            classify "$rc" "$((e - s))" deepen-fetch "$1" "$2"
+            return $rc
+          }
 
+          # Probe commit on top of FETCH_HEAD (the callers push a commit rebased
+          # onto the freshly fetched tip).
+          mk_commit() {
+            git checkout -q --detach FETCH_HEAD 2>/dev/null
+            date -u +%FT%TZ > .push-latency-probe.txt
+            git add -f .push-latency-probe.txt
+            git commit -q -m "probe (scratch ref, deleted)"
+          }
+
+          probe_push() {  # $1 = n, $2 = arm
+            _ref="${REF_PREFIX}-$1"
+            _tag="n=$1|arm=$2|commits=$(git rev-list --count HEAD)|shallow=$(git rev-parse --is-shallow-repository)"
+            if [ "$2" = "fetched" ]; then
+              timed_fetch "n=$1|arm=fetched-prefetch" "/tmp/pf.$1" || return
+              mk_commit
+            fi
             s=$(date +%s%3N)
-            timeout -k 10 120 git push --dry-run --progress origin HEAD:main >/tmp/dry.$i 2>&1
+            # hygiene-push-ok: scratch-ref push to time the real write path.
+            # Routing a measurement through push-with-retry.sh would measure
+            # push-with-retry.sh, not the wall. NOTE: this annotation is FILE-WIDE
+            # (audit-workflow-hygiene.js rule c), so any future `git push` added to
+            # the check job above will NOT be caught; route it through
+            # push-with-retry.sh by hand.
+            timeout -k 10 "$CAP" git push --progress origin "HEAD:${_ref}" >"/tmp/push.$1" 2>&1
             rc=$?; e=$(date +%s%3N)
-            classify "$rc" "$((e - s))" push-dry-run "sample=warm$i" /tmp/dry.$i
+            classify "$rc" "$((e - s))" push-real "$_tag" "/tmp/push.$1"
+            # Delete whatever the push rc was: a killed push may have created it.
+            timeout -k 10 "$DEL_CAP" git push origin --delete "${_ref}" >"/tmp/del.$1" 2>&1
+            echo "PROBE|op=delete|n=$1|rc=$?"
+          }
+
+          echo "PROBE|start|shallow=$(git rev-parse --is-shallow-repository)|commits=$(git rev-list --count HEAD)|args=$(deepen_args)"
+
+          # COLD sample first: the deepening fetch is the first network op after
+          # checkout, so it is the one that sees a not-yet-warm path.
+          timed_fetch "sample=COLD" /tmp/cold.fetch || { echo "PROBE|abort|cold fetch failed, deepened shape not established"; exit 0; }
+          echo "PROBE|deepened|commits=$(git rev-list --count FETCH_HEAD)"
+          mk_commit
+
+          # ABBA order cancels warm-up/order effects between the arms.
+          probe_push 1 nofetch
+          probe_push 2 fetched
+          probe_push 3 fetched
+          probe_push 4 nofetch
+          exit 0
+
+      - name: Sweep scratch refs (always)
+        if: always()
+        run: |
+          set +e
+          refs=$(timeout -k 10 90 git ls-remote --heads origin 'refs/heads/probe/push-latency-*' | awk '{print $2}')
+          for r in $refs; do
+            timeout -k 10 45 git push origin --delete "$r" >/dev/null 2>&1
           done
-
-          # KNOWN GAP, stated rather than left for a reader to trip over: the dry
-          # run does not send the "git> shallow" line a real push sends. Measured
-          # off-runner, dry-run received 1315 inbound packets and sent 3, while a
-          # real push received 1321 and sent 7 — so the dry run covers the whole
-          # advertisement and skips 4 SENT packets. Both were fast off-runner, but
-          # if the cost lives in server-side shallow-graft handling this probe
-          # reads fast and exonerates the write path wrongly.
-          echo "PROBE|note=dry-run omits the git> shallow line (4 sent packets; inbound 1315 vs 1321)"
+          left=$(timeout -k 10 90 git ls-remote --heads origin 'refs/heads/probe/push-latency-*' | wc -l)
+          if [ "$left" != "0" ]; then echo "PROBE|LEAK|scratch refs remaining=$left"; else echo "PROBE|sweep clean"; fi
           exit 0
