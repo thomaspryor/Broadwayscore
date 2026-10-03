@@ -740,10 +740,16 @@ function buildDigestSnapshot(report, { maxItems = MAX_DIGEST_ITEMS } = {}) {
 //      within a day or two instead of ~150 days later.
 
 const TIMEOUT_DETAIL_RE = /killed by SIG\w+ after \d+ms \(timeout/;
+// spawnSync's own timeout error reaches runVerify's generic `fail` tail
+// instead (see ENVIRONMENT_FAILURE_PATTERNS above), so it counts too.
+const SPAWN_TIMEOUT_RE = /\bETIMEDOUT\b/;
 
 /** True when a verify run was killed by the timeout (no verdict). */
 function isTimeoutResult(runResult) {
-  return !!runResult && runResult.status === 'unverifiable' && TIMEOUT_DETAIL_RE.test(runResult.detail || '');
+  if (!runResult) return false;
+  const detail = runResult.detail || '';
+  if (runResult.status === 'unverifiable') return TIMEOUT_DETAIL_RE.test(detail);
+  return runResult.status === 'fail' && SPAWN_TIMEOUT_RE.test(detail);
 }
 
 /**
@@ -768,7 +774,7 @@ function priorSlowIds(prevReport) {
   if (!prevReport || typeof prevReport !== 'object') return ids;
   for (const id of Array.isArray(prevReport.slowDemoted) ? prevReport.slowDemoted : []) ids.add(id);
   for (const row of Array.isArray(prevReport.results) ? prevReport.results : []) {
-    if (row && row.id && TIMEOUT_DETAIL_RE.test(row.detail || '')) ids.add(row.id);
+    if (row && row.id && (TIMEOUT_DETAIL_RE.test(row.detail || '') || SPAWN_TIMEOUT_RE.test(row.detail || ''))) ids.add(row.id);
   }
   return ids;
 }

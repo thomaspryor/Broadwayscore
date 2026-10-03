@@ -846,10 +846,12 @@ const {
 
 const TIMEOUT_DETAIL = 'check killed by SIGTERM after 60000ms (timeout — no verdict)';
 
-test('isTimeoutResult: only an unverifiable timeout kill counts', () => {
+test('isTimeoutResult: an unverifiable timeout kill or a spawn ETIMEDOUT fail counts', () => {
   assert.equal(isTimeoutResult({ status: 'unverifiable', detail: TIMEOUT_DETAIL }), true);
   assert.equal(isTimeoutResult({ status: 'fail', detail: TIMEOUT_DETAIL }), false);
   assert.equal(isTimeoutResult({ status: 'unverifiable', detail: 'checkout not prepared' }), false);
+  assert.equal(isTimeoutResult({ status: 'fail', detail: 'spawnSync /bin/sh ETIMEDOUT' }), true);
+  assert.equal(isTimeoutResult({ status: 'pass', detail: 'spawnSync /bin/sh ETIMEDOUT' }), false);
   assert.equal(isTimeoutResult(null), false);
 });
 
