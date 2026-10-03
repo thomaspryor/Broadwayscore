@@ -212,6 +212,11 @@ function overflowProbeScript() {
       // `truncate` puts overflow:hidden on the element + text-overflow:ellipsis.
       const selfEllipsis = cs.textOverflow === 'ellipsis' && (cs.overflowX === 'hidden' || cs.overflowX === 'clip');
       if (selfEllipsis) continue;
+      // Same for multi-line truncation: Tailwind `line-clamp-N` sets
+      // -webkit-line-clamp and draws the ellipsis on the last line, so the
+      // overflow is the design (e.g. 2-line titles under poster cards).
+      const lineClamp = cs.webkitLineClamp || cs.getPropertyValue('-webkit-line-clamp');
+      if (lineClamp && lineClamp !== 'none') continue;
 
       // Skip if the immediate parent is a scroll container (overflow-x:auto/scroll)
       // — that's a carousel/scroller pattern where content > viewport is the design.
@@ -273,8 +278,24 @@ function overflowProbeScript() {
   return `(${PROBE.toString()})()`;
 }
 
+// Cloud sandboxes ship one preinstalled Chromium at /opt/pw-browsers/chromium
+// (PLAYWRIGHT_SKIP_BROWSER_DOWNLOAD=1, `playwright install` not allowed), which
+// may not match the headless-shell build this repo's Playwright version asks
+// for. Launch normally; if that build is missing, fall back to the
+// preinstalled browser instead of failing the whole sweep (BRO-4481).
+const PREINSTALLED_CHROMIUM = process.env.PW_CHROMIUM_EXECUTABLE || '/opt/pw-browsers/chromium';
+async function launchChromium() {
+  try {
+    return await chromium.launch();
+  } catch (e) {
+    if (!/Executable doesn't exist/.test(String(e?.message)) || !existsSync(PREINSTALLED_CHROMIUM)) throw e;
+    console.log(`[visual-qa] bundled Chromium build missing — using ${PREINSTALLED_CHROMIUM}`);
+    return chromium.launch({ executablePath: PREINSTALLED_CHROMIUM });
+  }
+}
+
 async function captureScreenshots({ url, paths, branch, outDir, elements }) {
-  const browser = await chromium.launch();
+  const browser = await launchChromium();
   const screenshots = [];
   const elementCrops = [];
   const overflowReport = [];

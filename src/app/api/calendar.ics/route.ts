@@ -1,5 +1,6 @@
 import { NextRequest } from 'next/server';
 import { buildIcs, decodeEventParams } from '@/lib/calendar';
+import { isCalendarExportAllowed } from '@/lib/calendar-route-gate';
 
 /**
  * GET /api/calendar.ics?<event params> → a downloadable calendar file.
@@ -14,7 +15,10 @@ import { buildIcs, decodeEventParams } from '@/lib/calendar';
  * would evaluate to false-but-unenforced and the route would in practice be open
  * to anyone in production the day it merged. It gates on a server-readable env
  * var instead. Set CALENDAR_EXPORT_ENABLED=1 in the environments where the
- * feature is live; everywhere else this 404s as though it did not exist.
+ * feature is live; everywhere else TIMED events 404 as though the route did not
+ * exist. All-day events (no `t` param) are always served — they carry no
+ * timezone for that gate to protect, and Shared Plans needs them in production
+ * (BRO-4481). The rule lives in src/lib/calendar-route-gate.ts.
  */
 
 // Node runtime, not edge: nothing here needs edge, and the OG route next door
@@ -28,8 +32,6 @@ function disabled() {
 }
 
 export async function GET(request: NextRequest) {
-  if (process.env.CALENDAR_EXPORT_ENABLED !== '1') return disabled();
-
   const ev = decodeEventParams(request.nextUrl.searchParams);
   // decodeEventParams validates and fails closed. Serving a file built from a
   // half-parsed date writes a wrong-day event into somebody's real calendar,
@@ -40,6 +42,8 @@ export async function GET(request: NextRequest) {
       headers: { 'Cache-Control': 'no-store' },
     });
   }
+
+  if (!isCalendarExportAllowed(ev)) return disabled();
 
   const ics = buildIcs(ev, { generatedAt: Date.now() });
 

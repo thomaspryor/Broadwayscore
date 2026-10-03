@@ -1,5 +1,6 @@
 import type { PerformanceEvent } from './types';
 import { isIsoCalendarDate } from '@/lib/date-utils';
+import { SITE_URL } from '@/lib/site-url';
 
 /**
  * The shared codec. `/api/calendar.ics`, the Add-to-Calendar buttons, and
@@ -12,6 +13,8 @@ import { isIsoCalendarDate } from '@/lib/date-utils';
 const MAX_TITLE = 200;
 const MAX_LOCATION = 200;
 const MAX_COMPANIONS = 10;
+// Companions are share display names (plan_shares.display_name, 1–30 chars).
+const MAX_COMPANION = 30;
 
 export function encodeEventParams(ev: PerformanceEvent): URLSearchParams {
   const p = new URLSearchParams();
@@ -43,7 +46,10 @@ export function decodeEventParams(qs: URLSearchParams): PerformanceEvent | null 
   if (!showId || !title || !date || !showUrl) return null;
   if (!isIsoCalendarDate(date)) return null;
   if (title.length > MAX_TITLE) return null;
-  if (!isHttpUrl(showUrl)) return null;
+  // Our own pages only. The route serves all-day files with no flag
+  // (Shared Plans, BRO-4481), so without this anyone could mint a
+  // broadwayscorecard.com .ics that carries a link to any site.
+  if (!isSiteUrl(showUrl)) return null;
 
   // showId is interpolated RAW into `UID:bsc-<id>@domain` — UID is not a TEXT
   // property, so it is not escaped like SUMMARY/LOCATION are. A CRLF in it
@@ -68,12 +74,13 @@ export function decodeEventParams(qs: URLSearchParams): PerformanceEvent | null 
   if (location.length > MAX_LOCATION) return null;
 
   const joinUrl = qs.get('j')?.trim() || undefined;
-  if (joinUrl !== undefined && !isHttpUrl(joinUrl)) return null;
+  if (joinUrl !== undefined && !isSiteUrl(joinUrl)) return null;
 
   const companionsRaw = qs.get('c')?.trim();
   const companions = companionsRaw
     ? companionsRaw.split('|').map(c => c.trim()).filter(Boolean).slice(0, MAX_COMPANIONS)
     : undefined;
+  if (companions?.some(c => c.length > MAX_COMPANION)) return null;
 
   // Optional keys are omitted rather than set to undefined, so a decoded event
   // deep-equals the one that produced it and callers can spread it safely.
@@ -83,11 +90,14 @@ export function decodeEventParams(qs: URLSearchParams): PerformanceEvent | null 
   return ev;
 }
 
-/** http/https only — a javascript: or data: URL here would land in a calendar event. */
-function isHttpUrl(value: string): boolean {
+/**
+ * An http(s) URL on this site's origin (SITE_URL). Also rules out javascript:
+ * and data: URLs, which would otherwise land in a calendar event.
+ */
+function isSiteUrl(value: string): boolean {
   try {
     const u = new URL(value);
-    return u.protocol === 'http:' || u.protocol === 'https:';
+    return (u.protocol === 'http:' || u.protocol === 'https:') && u.origin === new URL(SITE_URL).origin;
   } catch {
     return false;
   }

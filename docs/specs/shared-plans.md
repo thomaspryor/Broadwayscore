@@ -106,7 +106,7 @@ Toggles and name save on change.
 | Unknown token, sharing stopped, or link reset | One identical "This list isn't being shared right now" page. `noindex`. HTTP 404. |
 | Database unreachable | "Couldn't load these plans. Try again in a minute." HTTP 503, not a 404, so a blip doesn't look like the owner turned sharing off. `[CHANGED: error path was unspecified — Gemini, GPT]` |
 
-**Link preview (iMessage/WhatsApp card):** title "Tom's theater plans", description "3 booked · 7 want to see" (same counts as the page), image with the name and up to 4 posters. Built from the token on the server; nothing on it comes from URL parameters.
+**Link preview (iMessage/WhatsApp card):** title "Tom's theater plans", description "3 upcoming · 7 not yet booked" (same counts and section names as the page), image with the name and up to 4 posters. Built from the token on the server; nothing on it comes from URL parameters.
 
 ### 2.3 Privacy rules (product level)
 
@@ -162,7 +162,7 @@ GRANT EXECUTE ON FUNCTION public.rotate_plan_share_token() TO authenticated;
 
 Notes:
 - One row per user. "Live" means the row points at the user's watchlist; nothing is copied.
-- Stop sharing = `enabled = false`. Re-enabling keeps the same link unless the owner resets it.
+- Stop sharing = `enabled = false`. Sharing again after a stop mints a new link (`ensure` calls `rotate_plan_share_token`), so the stopped link stays dead for whoever had it. `[CHANGED 2026-10-03: ship-check — the old "re-enabling keeps the same link" quietly revived a link the owner had been told no longer works]`
 - `watchlist` and `profiles` RLS are untouched.
 - `display_name` is copied into `plan_shares` at creation and is `NOT NULL`, so the public function never reads `profiles` at all. `[CHANGED: removes the profile-name fallback and the "A friend" spam-looking state — user impact; simplifies the function]`
 - Light brand guard at write time: the owner UIs refuse names containing "broadway scorecard" or "scorecard" (case-insensitive); the database CHECK only enforces length. `[CHANGED: a name is printed on a branded preview card — structure]`

@@ -18,6 +18,8 @@ import SharedDatePicker from '@/components/user/DatePickerButton';
 import ShowtimePicker from '@/components/user/ShowtimePicker';
 import AddToCalendarButtons from '@/components/user/AddToCalendarButtons';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
+import { selectSharedPlans, toSharedEntries, type PlanShowLike } from '@/lib/shared-plans/select';
+import { CardLinkOrDiv, Poster, UpcomingGridCard, UpcomingListRow, ViewModeToggle, bookabilityLabel, type ViewMode } from '@/components/user/upcoming-cards';
 import { localToday, formatShowDate } from '@/lib/date-utils';
 
 import { useToastSafe } from '@/components/ui/Toast';
@@ -32,10 +34,19 @@ const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
   loading: () => <div className="text-center py-12 text-gray-500">Loading lists...</div>,
 });
 
+const SharePlansModal = dynamic(() => import('@/components/user/SharePlansModal'), { ssr: false });
+
+function ShareIcon() {
+  return (
+    <svg className="w-4 h-4 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+      <path strokeLinecap="round" strokeLinejoin="round" d="M4 12v7a2 2 0 002 2h12a2 2 0 002-2v-7M16 6l-4-4-4 4M12 2v14" />
+    </svg>
+  );
+}
+
 type Tab = 'diary' | 'watchlist' | 'lists';
 type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';
 type WatchlistSort = 'added-desc' | 'alphabetical' | 'closing-soon';
-type ViewMode = 'grid' | 'list';
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -162,7 +173,7 @@ export default function MyShowsClient() {
   const [showMap, setShowMap] = useState<ShowMap>({});
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
-  const { user, isAuthenticated, loading: authLoading, signIn } = useAuth();
+  const { user, profile, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { reviews: realReviews, getAllReviews, deleteReview, loading: reviewsLoading } = useUserReviews(user?.id || null);
   const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, updatePerformance, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
   // Count-only lists instance for the tab badge (ListsTab owns its own full
@@ -539,6 +550,22 @@ export default function MyShowsClient() {
   // the tab renders (review finding, 2026-07-20).
   const visibleWatchlistCount = upcomingBookedWatchlist.length + unbookedWatchlist.length + seenToRateWatchlist.length;
 
+  // Shared Plans (BRO-4481): the sheet's counts come from the same rule the
+  // friend's page uses, so the numbers can't disagree.
+  const [sharePlansOpen, setSharePlansOpen] = useState(false);
+  // Not gated on a non-empty watchlist: an owner who empties it must still
+  // reach Stop sharing / Reset for a link that is out there (ship-check).
+  const canSharePlans = isMockMode || !!user;
+  const sharePlansCounts = useMemo(() => {
+    const entries = toSharedEntries(watchlist, reviews);
+    const shows = new Map<string, PlanShowLike>();
+    for (const e of entries) {
+      const s = showMap[e.show_id];
+      if (s) shows.set(e.show_id, { id: s.id, category: s.category, status: s.status });
+    }
+    return selectSharedPlans({ showBooked: true, showUnbooked: true, entries }, shows, Date.now()).counts;
+  }, [watchlist, reviews, showMap]);
+
   // While mock mode is initializing (useEffect hasn't fired yet), show loading
   const hasMockParam = searchParams.get('mock') === '1';
 
@@ -847,6 +874,17 @@ export default function MyShowsClient() {
               <option value="rating-desc">Top Rated</option>
             </select>
           )}
+          {activeTab === 'watchlist' && canSharePlans && (
+            <button
+              type="button"
+              onClick={() => setSharePlansOpen(true)}
+              className="btn btn-secondary text-xs h-8 px-3 gap-1.5"
+              data-testid="share-plans-open"
+            >
+              <ShareIcon />
+              Share
+            </button>
+          )}
           {activeTab === 'watchlist' && (
             <select
               value={watchlistSort}
@@ -860,30 +898,11 @@ export default function MyShowsClient() {
             </select>
           )}
           {/* Grid / List toggle */}
-          <div className="inline-flex items-stretch flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-8">
-            <button
-              type="button"
-              onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'grid')}
-              className={`inline-flex items-center justify-center w-8 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
-              aria-label="Grid view"
-              aria-pressed={(activeTab === 'diary' ? diaryView : watchlistView) === 'grid'}
-            >
-              <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'list')}
-              className={`inline-flex items-center justify-center w-8 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
-              aria-label="List view"
-              aria-pressed={(activeTab === 'diary' ? diaryView : watchlistView) === 'list'}
-            >
-              <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
+          <ViewModeToggle
+            value={activeTab === 'diary' ? diaryView : watchlistView}
+            onChange={mode => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', mode)}
+            size="desktop"
+          />
         </div>
         )}
       </div>
@@ -905,6 +924,17 @@ export default function MyShowsClient() {
               <option value="rating-desc">Top Rated</option>
             </select>
           )}
+          {activeTab === 'watchlist' && canSharePlans && (
+            <button
+              type="button"
+              onClick={() => setSharePlansOpen(true)}
+              className="btn btn-secondary text-sm h-11 px-3 gap-1.5 mr-auto"
+              data-testid="share-plans-open-mobile"
+            >
+              <ShareIcon />
+              Share
+            </button>
+          )}
           {activeTab === 'watchlist' && (
             <select
               value={watchlistSort}
@@ -920,30 +950,11 @@ export default function MyShowsClient() {
           {/* Grid / List toggle — h-11 (44px): the global mobile tap-target rule
               inflates the buttons to 44px anyway, and a shorter container left
               the icons visually low (owner report, 2026-07-17). */}
-          <div className="inline-flex items-stretch flex-shrink-0 rounded overflow-hidden bg-white/[0.04] border border-white/10 h-11">
-            <button
-              type="button"
-              onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'grid')}
-              className={`inline-flex items-center justify-center w-11 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
-              aria-label="Grid view"
-              aria-pressed={(activeTab === 'diary' ? diaryView : watchlistView) === 'grid'}
-            >
-              <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zm10 0a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
-              </svg>
-            </button>
-            <button
-              type="button"
-              onClick={() => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', 'list')}
-              className={`inline-flex items-center justify-center w-11 h-full outline-none transition-colors ${(activeTab === 'diary' ? diaryView : watchlistView) === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
-              aria-label="List view"
-              aria-pressed={(activeTab === 'diary' ? diaryView : watchlistView) === 'list'}
-            >
-              <svg className="w-4 h-4 block shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M4 6h16M4 12h16M4 18h16" />
-              </svg>
-            </button>
-          </div>
+          <ViewModeToggle
+            value={activeTab === 'diary' ? diaryView : watchlistView}
+            onChange={mode => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', mode)}
+            size="mobile"
+          />
         </div>
       )}
 
@@ -996,35 +1007,21 @@ export default function MyShowsClient() {
                         const entryTitle = entryShow?.title || entry.show_id;
                         const entrySlug = entryShow?.slug || entry.show_id;
                         const entryHref = getShowHref(entrySlug, entryShow?.diaryOnly);
-                        const daysUntil = entry.planned_date
-                          ? Math.ceil((new Date(entry.planned_date + 'T00:00:00').getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24))
-                          : null;
-                        const entryFormattedDate = entry.planned_date
-                          ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { weekday: 'short', month: 'short', day: 'numeric' })
-                          : null;
                         return (
-                          <div key={`wl-${entry.id}`} className="relative flex items-center gap-3 px-3 sm:px-5 py-2.5 sm:py-3 rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors">
-                            {entryHref && <Link href={entryHref} className="absolute inset-0 z-0" aria-label={`View ${entryTitle}`} />}
-                            <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
-                              <Poster url={entryShow?.posterUrl} iconClass="text-xl" />
-                            </div>
-                            <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
-                              <h4 className="font-bold text-white text-base truncate">{entryTitle}</h4>
-                              {entryShow?.venue && <p className="text-sm text-gray-500 truncate">{entryShow.venue}</p>}
-                            </div>
-                            <div className="relative z-[1] flex-shrink-0 text-right pointer-events-none">
-                              {entryFormattedDate && <p className="text-sm font-medium text-amber-400">{entryFormattedDate}</p>}
-                              {daysUntil !== null && daysUntil > 0 && (
-                                <p className="text-xs text-gray-500 mt-0.5">
-                                  {daysUntil === 1 ? 'Tomorrow' : `${daysUntil}d`}
-                                </p>
-                              )}
-                            </div>
-                            <RowRemoveButton
-                              onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from watchlist.')}
-                              label={`Remove ${entryTitle} from watchlist`}
-                            />
-                          </div>
+                          <UpcomingListRow
+                            key={`wl-${entry.id}`}
+                            href={entryHref}
+                            posterUrl={entryShow?.posterUrl}
+                            title={entryTitle}
+                            venue={entryShow?.venue}
+                            plannedDate={entry.planned_date}
+                            actions={
+                              <RowRemoveButton
+                                onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from watchlist.')}
+                                label={`Remove ${entryTitle} from watchlist`}
+                              />
+                            }
+                          />
                         );
                       })}
                       {upcomingReviews.map(review => (
@@ -1361,6 +1358,18 @@ export default function MyShowsClient() {
           <ListsTab userId={user?.id || null} showMap={showMap} isMockMode={isMockMode} createTrigger={createListTrigger} />
         </div>
       )}
+
+      {sharePlansOpen && (
+        <SharePlansModal
+          isOpen
+          onClose={() => setSharePlansOpen(false)}
+          userId={isMockMode ? 'mock' : (user?.id ?? '')}
+          profileName={isMockMode ? 'Tom Mock' : (profile?.display_name ?? null)}
+          counts={sharePlansCounts}
+          mock={isMockMode}
+          showToast={showToast}
+        />
+      )}
     </div>
   );
 }
@@ -1514,81 +1523,6 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
   );
 }
 
-function UpcomingGridCard({ href, posterUrl, date, title, onRemove }: { href: string | null; posterUrl?: string; date: string | null; title: string; onRemove: () => void }) {
-  const [confirmRemove, setConfirmRemove] = useState(false);
-  useEffect(() => {
-    if (!confirmRemove) return;
-    const timer = setTimeout(() => setConfirmRemove(false), 4000);
-    return () => clearTimeout(timer);
-  }, [confirmRemove]);
-
-  return (
-    <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
-        <div className="aspect-[2/3] bg-surface-overlay">
-          <Poster url={posterUrl} iconClass="text-3xl" title={title} />
-        </div>
-        {/* Remove button — hidden on mobile, visible on hover on desktop */}
-        <button
-          type="button"
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-score-skip/80 hover:text-score-skip opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
-          aria-label="Remove from upcoming"
-        >
-          {confirmRemove ? 'Remove?' : (
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-          )}
-        </button>
-      </CardLinkOrDiv>
-      {date && (
-        <div className="px-2 py-1.5 text-center">
-          <p className="text-xs font-medium text-amber-400 truncate">{date}</p>
-        </div>
-      )}
-    </div>
-  );
-}
-
-
-/** Wraps card content in a Link when href is set, plain div otherwise. In
- *  practice getShowHref() always returns a URL now (diary-only shows link to
- *  /diary-show/[id]) — this is defensive for a future caller that passes null.
- *  ariaLabel is required whenever children include their own labelled
- *  buttons (Edit/Delete/Remove) — without it, an unlabelled anchor's
- *  accessible name is computed FROM those descendants' text, so a query for
- *  e.g. "Edit rating" matches this whole-card link too (test-red incident,
- *  2026-07-21). */
-function CardLinkOrDiv({ href, className, children, ariaLabel }: { href: string | null; className?: string; children: ReactNode; ariaLabel?: string }) {
-  if (href) {
-    return <Link href={href} className={className} aria-label={ariaLabel}>{children}</Link>;
-  }
-  return <div className={className}>{children}</div>;
-}
-
-/** Poster image that degrades to the 🎭 placeholder when the URL is missing
- *  OR fails to load — a stored poster path that 404s otherwise renders as a
- *  broken-image icon in the diary grid (owner report, 2026-07-14). */
-function Poster({ url, iconClass = 'text-3xl', title }: { url: string | null | undefined; iconClass?: string; title?: string }) {
-  const [broken, setBroken] = useState(false);
-  if (!url || broken) {
-    // Grid cards are poster-only, so a show with no poster was an anonymous
-    // 🎭 tile. Grid callers pass the title so the placeholder names the show
-    // (UX audit, BRO-3861). List rows already print the title beside it.
-    if (title) {
-      return (
-        <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 px-2 text-gray-600">
-          <span className={iconClass} aria-hidden="true">🎭</span>
-          <span className="text-xs font-semibold text-gray-300 text-center leading-snug line-clamp-3 break-words">{title}</span>
-        </div>
-      );
-    }
-    return <div className={`w-full h-full flex items-center justify-center text-gray-600 ${iconClass}`}>🎭</div>;
-  }
-  // eslint-disable-next-line @next/next/no-img-element
-  return <img src={url} alt="" className="w-full h-full object-cover" onError={() => setBroken(true)} />;
-}
 
 function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview; show?: ShowLookup; onDelete?: () => void; onRate?: (show: { id: string; title: string }, opts: { reviewId: string; initialRating: number; initialReviewText: string | null; initialDateSeen: string | null }) => void }) {
   const router = useRouter();
@@ -1839,33 +1773,6 @@ function WatchlistCard({ entry, show, onDateChange, onShowtimeChange, onRemove, 
 }
 
 /** Render mini star icons for grid cards (filled, half, empty — or filled-only) */
-/**
- * Bookability label for watchlist entries — without it a watchlist full of
- * announced/closed shows "looks like a lot I could book, but can't actually
- * yet" (owner, 2026-07-20). Returns null for open/previews shows (bookable —
- * no label needed; Closing Soon is handled separately).
- */
-function bookabilityLabel(show?: ShowLookup): { text: string; cls: string } | null {
-  if (!show) return null;
-  if (show.status === 'closed') {
-    return { text: 'Closed', cls: 'bg-gray-600/90 text-white' };
-  }
-  if (show.status === 'open' || show.status === 'previews') {
-    return { text: show.status === 'previews' ? 'In Previews' : 'Open', cls: 'bg-status-open/90 text-black' };
-  }
-  if (show.status === 'upcoming' || show.status === 'announced') {
-    if (show.ticketsOnSale) {
-      return { text: 'Tix on sale', cls: 'bg-status-open/90 text-black' };
-    }
-    const start = show.previewDate || show.openingDate;
-    const text = start
-      ? `Opens ${formatShowDate(start, { month: 'short', day: 'numeric' })}`
-      : 'Not yet open';
-    return { text, cls: 'bg-blue-500/80 text-white' };
-  }
-  return null;
-}
-
 function MiniStars({ rating, size = 'sm', filledOnly = false }: { rating: number; size?: 'sm' | 'md' | 'lg'; filledOnly?: boolean }) {
   const uid = useId();
   // NOTE: w-4.5/h-4.5 are NOT in the Tailwind spacing scale — they compile to
@@ -2214,8 +2121,11 @@ function ToBeRatedCard({ entry, show, onRemove, onRate }: { entry: WatchlistEntr
           )}
         </div>
         <div className="relative z-[2] flex-shrink-0 pointer-events-auto">
-          {/* sm stars on mobile (stacked row has room), md on desktop */}
-          <span className="sm:hidden">
+          {/* sm stars on mobile (stacked row has room), md on desktop.
+              star-compact, as on the WatchlistCard rate strip: five
+              44px-minimum buttons were 228px wide and clipped in the 178px
+              column at 360px (visual-qa overflow probe, 2026-10-02). */}
+          <span className="sm:hidden star-compact">
             <StarRating
               rating={null}
               onRatingChange={handleStarRate}

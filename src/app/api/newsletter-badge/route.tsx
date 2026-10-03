@@ -1,4 +1,5 @@
 import { ImageResponse } from '@vercel/og';
+import { interFontOption } from '@/lib/og-fonts';
 import { NextRequest } from 'next/server';
 
 export const runtime = 'edge';
@@ -66,70 +67,14 @@ const AWARD_TEXT = '#ffffff';
 // width/height to the nominal CSS `size`, so this only affects pixel density.
 const RENDER_SCALE = 2;
 
-// The newsletter body is set in Inter (generate.mjs loads it from Google
-// Fonts; the site uses next/font Inter) and the pre-PNG badge <div>
-// inherited it. @vercel/og inherits nothing — with no `fonts` option it
-// silently falls back to its bundled Noto Sans, so the PNG switch
-// (BRO-1392) changed the score digits' typeface without anyone noticing.
-// Owner spotted it in the 2026-09-20 weekly round-up, the first newsletter
-// generated after that change. Load Inter so the badge matches the site's
-// canonical ScoreBadge and the surrounding email copy.
-//
-// WOFF, not WOFF2 — satori, which @vercel/og renders through, cannot parse
-// WOFF2. Pinned to an exact @fontsource version so a CDN "latest" republish
-// can never silently change the badge typeface again.
-const INTER_URLS: ReadonlyArray<{ weight: 700 | 800; url: string }> = [
-  { weight: 700, url: 'https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/files/inter-latin-700-normal.woff' },
-  { weight: 800, url: 'https://cdn.jsdelivr.net/npm/@fontsource/inter@5.0.16/files/inter-latin-800-normal.woff' },
-];
-
-// Module scope: an edge isolate reuses this across invocations, so a warm
-// instance pays the fetch once. Never rejects — a font-CDN blip must degrade
-// to the old default-font render, never 500 a badge that an already-sent
-// email is pointing at.
-// Hard ceiling on the CDN fetch. Without it a HANGING (as opposed to
-// failing) jsdelivr blocks the badge until the platform's own limit, and
-// because the pending promise is module-cached every concurrent request in
-// that isolate hangs with it — a failure mode the pre-PNG <div> could not
-// have (QA review, 2026-09-20).
-const FONT_FETCH_TIMEOUT_MS = 1500;
-
-type InterFont = { name: 'Inter'; data: ArrayBuffer; weight: 700 | 800; style: 'normal' };
-let interPromise: Promise<InterFont[]> | null = null;
-function loadInter(): Promise<InterFont[]> {
-  if (!interPromise) {
-    interPromise = Promise.all(
-      INTER_URLS.map(({ weight, url }) =>
-        fetch(url, { signal: AbortSignal.timeout(FONT_FETCH_TIMEOUT_MS) })
-          .then((r) => (r.ok ? r.arrayBuffer() : null))
-          .then((data): InterFont | null => (data ? { name: 'Inter', data, weight, style: 'normal' } : null))
-          .catch(() => null)
-      )
-    ).then((fonts) => {
-      const loaded = fonts.filter((f): f is InterFont => f !== null);
-      // Cache only a COMPLETE load. Clearing on anything less means the next
-      // request retries, instead of this isolate serving the wrong thing
-      // until it recycles. Caching a partial load was the original form and
-      // it was wrong: with only the 800 file the score badge silently
-      // re-renders at ~800 — precisely the weight drift this change exists
-      // to fix — with no retry and no signal (QA review, 2026-09-20).
-      if (loaded.length !== INTER_URLS.length) interPromise = null;
-      return loaded;
-    });
-  }
-  return interPromise;
-}
-
-// Spread into ImageResponse's options. Both weights ship because the three
-// badge shapes did NOT share one: the pre-PNG <div>s were font-weight:700 for
-// the score badge and the award ring, but 800 for the Social Buzz rank box.
-// Registering only one weight would make satori synthesize the other, which
-// is how the score badge ended up at 800 in the first place.
-async function interFontOption() {
-  const fonts = await loadInter();
-  if (fonts.length === 0) return {};
-  return { fonts };
-}
+// The newsletter body is set in Inter; @vercel/og inherits no font, so the
+// badge loads it explicitly (src/lib/og-fonts.ts, shared with the link-preview
+// images). Both weights ship because the three badge shapes did NOT share one:
+// the pre-PNG <div>s were font-weight:700 for the score badge and the award
+// ring, but 800 for the Social Buzz rank box. Registering only one weight would
+// make satori synthesize the other, which is how the score badge ended up at
+// 800 in the first place.
+const BADGE_WEIGHTS = [700, 800] as const;
 
 const FONT_FAMILY = 'Inter, sans-serif';
 
@@ -181,7 +126,7 @@ export async function GET(request: NextRequest) {
           {label}
         </div>
       ),
-      { width: px, height: px, ...(await interFontOption()) }
+      { width: px, height: px, ...(await interFontOption(BADGE_WEIGHTS)) }
     );
   }
 
@@ -220,7 +165,7 @@ export async function GET(request: NextRequest) {
           {label}
         </div>
       ),
-      { width: px, height: px, ...(await interFontOption()) }
+      { width: px, height: px, ...(await interFontOption(BADGE_WEIGHTS)) }
     );
   }
 
@@ -272,6 +217,6 @@ export async function GET(request: NextRequest) {
         {label}
       </div>
     ),
-    { width: px, height: px, ...(await interFontOption()) }
+    { width: px, height: px, ...(await interFontOption(BADGE_WEIGHTS)) }
   );
 }

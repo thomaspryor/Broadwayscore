@@ -35,25 +35,42 @@ export interface PlannedEntrySource {
   curtain_time: string | null;
 }
 
+export interface PlannedEventOptions {
+  /**
+   * Build an all-day event when there is no curtain time. Off by default: in
+   * the owner's own diary an all-day event isn't the "Add to Calendar" the
+   * showtime picker promises. Shared Plans turns it on, because friends only
+   * ever see the date (owner decision, BRO-4481).
+   */
+  allDay?: boolean;
+  /** People going; the calendar builders put them in the event description. */
+  companions?: string[];
+}
+
 /**
  * Builds the calendar event for a planned watchlist entry, or null when
- * there isn't enough to build one. Requires BOTH a date and a curtain time —
- * an all-day event with no showtime isn't the "Add to Calendar" the picker
- * promises, so the caller should not render the buttons without one either.
+ * there isn't enough to build one. Requires a date, and a curtain time unless
+ * `options.allDay` is set.
  */
-export function buildPlannedShowEvent(show: PlannedShowSource, entry: PlannedEntrySource): PerformanceEvent | null {
-  if (!entry.planned_date || !entry.curtain_time) return null;
+export function buildPlannedShowEvent(
+  show: PlannedShowSource,
+  entry: PlannedEntrySource,
+  options: PlannedEventOptions = {},
+): PerformanceEvent | null {
+  if (!entry.planned_date) return null;
+  if (!entry.curtain_time && !options.allDay) return null;
   const href = show.diaryOnly ? `/diary-show/${show.slug}` : `/show/${show.slug}`;
   return {
     showId: show.id,
     title: show.title,
     date: entry.planned_date,
-    time: entry.curtain_time.slice(0, 5),
+    time: entry.curtain_time ? entry.curtain_time.slice(0, 5) : null,
     tz: resolveTimeZone(show.category),
     durationMin: typeof show.runtimeMin === 'number' && show.runtimeMin > 0
       ? show.runtimeMin + CURTAIN_BUFFER_MIN
       : resolveDurationMin(show.runtime ?? null),
     location: show.theaterAddress || show.venue || '',
     showUrl: `${BASE_URL}${href}`,
+    ...(options.companions?.length ? { companions: options.companions } : {}),
   };
 }

@@ -1,9 +1,14 @@
 import { ImageResponse } from '@vercel/og';
+import { interFontOption } from '@/lib/og-fonts';
 import { NextRequest } from 'next/server';
 import { getMarketMinReviews } from '@/lib/market-utils';
 import { getGoldThreshold } from '@/config/score-buckets';
 
 export const runtime = 'edge';
+
+// Inter, like the site (src/lib/og-fonts.ts) — without it every card here
+// rendered in @vercel/og's bundled Noto Sans. Every weight the cards use.
+const OG_WEIGHTS = [400, 600, 700, 800] as const;
 
 // Score tier colors — canonical values from scripts/lib/brand-colors.js.
 // Inlined here because this route runs on Edge (no CommonJS imports). If these
@@ -86,6 +91,7 @@ async function generateShowOG(
     (
       <div
         style={{
+          fontFamily: 'Inter',
           height: '100%',
           width: '100%',
           display: 'flex',
@@ -243,7 +249,7 @@ async function generateShowOG(
                     color: '#6b7280',
                   }}
                 >
-                  {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
+                  {`${reviewCount} Critic ${reviewCount === 1 ? 'Review' : 'Reviews'}`}
                 </div>
               </div>
             </div>
@@ -278,6 +284,7 @@ async function generateShowOG(
     {
       width: 1200,
       height: 630,
+      ...(await interFontOption(OG_WEIGHTS)),
     }
   );
 }
@@ -293,6 +300,7 @@ async function generateBrowseOG(
     (
       <div
         style={{
+          fontFamily: 'Inter',
           height: '100%',
           width: '100%',
           display: 'flex',
@@ -430,6 +438,7 @@ async function generateBrowseOG(
     {
       width: 1200,
       height: 630,
+      ...(await interFontOption(OG_WEIGHTS)),
     }
   );
 }
@@ -441,6 +450,7 @@ async function generateHomeOG(posters: string[]) {
     (
       <div
         style={{
+          fontFamily: 'Inter',
           height: '100%',
           width: '100%',
           display: 'flex',
@@ -561,6 +571,7 @@ async function generateHomeOG(posters: string[]) {
     {
       width: 1200,
       height: 630,
+      ...(await interFontOption(OG_WEIGHTS)),
     }
   );
 }
@@ -570,6 +581,7 @@ async function generateListOG(title: string, count: number, creator: string, ran
     (
       <div
         style={{
+          fontFamily: 'Inter',
           height: '100%',
           width: '100%',
           display: 'flex',
@@ -627,7 +639,10 @@ async function generateListOG(title: string, count: number, creator: string, ran
               marginTop: '16px',
             }}
           >
-            by {creator}
+            {/* One string, not "by {creator}": two text nodes in a <div>
+                make satori throw mid-stream, so every shared-list preview
+                came out as an empty 200 (found 2026-10-02, BRO-4481). */}
+            {`by ${creator}`}
           </div>
         )}
 
@@ -676,6 +691,7 @@ async function generateListOG(title: string, count: number, creator: string, ran
     {
       width: 1200,
       height: 630,
+      ...(await interFontOption(OG_WEIGHTS)),
     }
   );
 }
@@ -685,6 +701,7 @@ async function generateDefaultOG() {
     (
       <div
         style={{
+          fontFamily: 'Inter',
           height: '100%',
           width: '100%',
           display: 'flex',
@@ -734,6 +751,7 @@ async function generateDefaultOG() {
     {
       width: 1200,
       height: 630,
+      ...(await interFontOption(OG_WEIGHTS)),
     }
   );
 }

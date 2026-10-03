@@ -5,7 +5,8 @@
  * score-skip token (design-system.md: status danger = score-skip).
  *
  * watchlist-delete-icon-contrast.test.mjs covers the watchlist grid card;
- * this sweeps every remove/delete button in MyShowsClient so a new one
+ * this sweeps every remove/delete button in MyShowsClient (and the shared
+ * upcoming-cards) so a new one
  * cannot ship gray.
  */
 
@@ -16,7 +17,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const SOURCE = readFileSync(join(ROOT, 'src/app/my-shows/MyShowsClient.tsx'), 'utf8');
+// UpcomingGridCard lives in upcoming-cards.tsx (BRO-4481), shared with Shared Plans.
+const SOURCE = ['src/app/my-shows/MyShowsClient.tsx', 'src/components/user/upcoming-cards.tsx']
+  .map((f) => readFileSync(join(ROOT, f), 'utf8'))
+  .join('\n');
 
 /** Opening-tag text of every <button> whose aria-label starts Delete/Remove. */
 function destructiveButtons() {

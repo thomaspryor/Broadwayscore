@@ -16,6 +16,8 @@ import { SortableContext, verticalListSortingStrategy, useSortable } from '@dnd-
 import { CSS } from '@dnd-kit/utilities';
 import { Modal, ShowSearchDropdown } from '@/components/show-cards';
 import { useClickOutside } from '@/hooks/useClickOutside';
+import { SITE_URL } from '@/lib/site-url';
+import { shareOrCopy } from '@/lib/share-link';
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -184,12 +186,11 @@ export default function ListsTab({ userId, showMap, isMockMode, createTrigger = 
             const url = await shareList(activeListId);
             if (url) {
               const note = madePublic ? ' This list is now public and shows your name.' : '';
-              try {
-                await navigator.clipboard.writeText(url);
-                showToast?.(`Link copied!${note}`, 'success');
-              } catch {
-                showToast?.(`${url}${note}`, 'info');
-              }
+              // Native share sheet on phones, clipboard on desktop.
+              const outcome = await shareOrCopy({ title: activeList.name, text: activeList.name, url });
+              if (outcome === 'copied') showToast?.(`Link copied!${note}`, 'success');
+              else if (outcome === 'failed') showToast?.(`${url}${note}`, 'info');
+              else if (outcome === 'shared' && note) showToast?.(note.trim(), 'info');
             } else {
               showToast?.('Failed to share list.', 'error');
             }
@@ -915,7 +916,7 @@ function ListModal({
               <p className="text-xs text-gray-500 -mt-1">Anyone can see a public list, along with your name and profile photo</p>
               {isPublic && list?.share_slug && (
                 <p className="text-xs text-brand mt-1 truncate">
-                  {typeof window !== 'undefined' ? `${window.location.origin}/list/${list.share_slug}` : `/list/${list.share_slug}`}
+                  {`${SITE_URL}/list/${list.share_slug}`}
                 </p>
               )}
             </div>

@@ -11,7 +11,7 @@ import {
   weekdayIndexMonFirst,
 } from '../../src/lib/data-showtimes';
 import { buildPlannedShowEvent } from '../../src/lib/calendar-event';
-import { addDaysToYyyymmdd } from '../../src/lib/calendar';
+import { addDaysToYyyymmdd, buildIcs, buildGoogleCalendarUrl } from '../../src/lib/calendar';
 import scheduleData from '../../data/show-schedules.json';
 
 test('mondayOfWeekYyyymmdd finds the Monday for any day of the week', () => {
@@ -136,6 +136,32 @@ test('buildPlannedShowEvent falls back to venue when there is no theaterAddress,
   assert.equal(ev!.location, 'Some Theatre');
   assert.equal(ev!.tz, 'Europe/London');
   assert.equal(ev!.durationMin, 165); // 150 parsed + 15 buffer
+});
+
+test('buildPlannedShowEvent allDay: no curtain time gives an all-day event (Shared Plans)', () => {
+  const ev = buildPlannedShowEvent(SHOW, { planned_date: '2026-10-18', curtain_time: null }, { allDay: true, companions: ['Tom'] });
+  assert.equal(ev!.time, null);
+  assert.equal(ev!.date, '2026-10-18');
+  assert.deepEqual(ev!.companions, ['Tom']);
+  // Still null without a date.
+  assert.equal(buildPlannedShowEvent(SHOW, { planned_date: null, curtain_time: null }, { allDay: true }), null);
+  // An existing curtain time still wins over all-day.
+  assert.equal(buildPlannedShowEvent(SHOW, { planned_date: '2026-10-18', curtain_time: '20:00:00' }, { allDay: true })!.time, '20:00');
+  // No companions key at all when none are given (keeps existing event shapes unchanged).
+  assert.equal('companions' in buildPlannedShowEvent(SHOW, { planned_date: '2026-10-18', curtain_time: null }, { allDay: true })!, false);
+});
+
+test('all-day Shared Plans event: one 🎭 in the title, companion in the description, VALUE=DATE in the .ics', () => {
+  const ev = buildPlannedShowEvent(SHOW, { planned_date: '2026-10-18', curtain_time: null }, { allDay: true, companions: ['Tom'] })!;
+  const ics = buildIcs(ev, { generatedAt: Date.UTC(2026, 9, 1) });
+  const summary = ics.split('\r\n').find(l => l.startsWith('SUMMARY:'))!;
+  assert.equal(summary, 'SUMMARY:🎭 Wicked');
+  assert.match(ics, /DTSTART;VALUE=DATE:20261018/);
+  assert.match(ics, /DTEND;VALUE=DATE:20261019/);
+  assert.match(ics.replace(/\r\n /g, ''), /Tom/);
+  const google = new URL(buildGoogleCalendarUrl(ev));
+  assert.equal(google.searchParams.get('text'), '🎭 Wicked');
+  assert.match(google.searchParams.get('dates') ?? '', /^20261018\/20261019$/);
 });
 
 test('buildPlannedShowEvent routes diary-only shows to /diary-show', () => {

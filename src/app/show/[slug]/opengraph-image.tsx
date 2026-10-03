@@ -1,5 +1,6 @@
 import { ImageResponse } from 'next/og';
 import { pngToOgJpegResponse } from '@/lib/og-jpeg';
+import { interFontOption } from '@/lib/og-fonts';
 import { getShowBySlug, getHotShowSlugs } from '@/lib/data-core';
 import { isCategoryEnabled } from '@/lib/markets';
 import { getScoreTier } from '@/components/show-cards';
@@ -96,6 +97,7 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
     ? 'linear-gradient(135deg, #DAA520 0%, #FFD700 30%, #FFF0A0 50%, #FFD700 70%, #DAA520 100%)'
     : tierStyle?.bg;
 
+  const fontOption = await interFontOption([700]);
   return pngToOgJpegResponse(new ImageResponse(
     (
       <div
@@ -104,6 +106,7 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
           height: '100%',
           display: 'flex',
           position: 'relative',
+          fontFamily: 'Inter',
           background: '#0f0f14',
         }}
       >
@@ -152,11 +155,12 @@ export default async function OGImage({ params }: { params: { slug: string } }) 
         )}
       </div>
     ),
-    size
+    { ...size, ...fontOption }
   ));
 }
 
-function fallbackImage(): Promise<Response> {
+async function fallbackImage(): Promise<Response> {
+  const fontOption = await interFontOption([800]);
   return pngToOgJpegResponse(new ImageResponse(
     (
       <div
@@ -168,6 +172,7 @@ function fallbackImage(): Promise<Response> {
           justifyContent: 'center',
           background: '#0f0f14',
           color: '#ffffff',
+          fontFamily: 'Inter',
           fontSize: 72,
           fontWeight: 800,
           letterSpacing: '-0.03em',
@@ -176,6 +181,6 @@ function fallbackImage(): Promise<Response> {
         Broadway Scorecard
       </div>
     ),
-    size
+    { ...size, ...fontOption }
   ));
 }

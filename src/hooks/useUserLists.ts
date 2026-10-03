@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
+import { SITE_URL } from '@/lib/site-url';
 import {
   supabaseRestInsert,
   supabaseRestUpdate,
@@ -296,7 +297,7 @@ export function useUserLists(userId: string | null) {
 
     // If already public with a slug, just return the URL
     if (list.is_public && list.share_slug) {
-      const url = `${window.location.origin}/list/${list.share_slug}`;
+      const url = `${SITE_URL}/list/${list.share_slug}`;
       trackUgc('list_shared', { list_id: listId, was_public: true, item_count: list.item_count || 0 });
       return url;
     }
@@ -318,7 +319,7 @@ export function useUserLists(userId: string | null) {
       ));
 
       trackUgc('list_shared', { list_id: listId, was_public: false, item_count: list.item_count || 0 });
-      return `${window.location.origin}/list/${slug}`;
+      return `${SITE_URL}/list/${slug}`;
     } catch (e) {
       const msg = e instanceof Error ? e.message : 'Failed to share list';
       setError(msg);

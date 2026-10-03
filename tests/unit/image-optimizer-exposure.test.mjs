@@ -96,7 +96,7 @@ test('no AVIF files are served from public/ (the optimizer must never be handed 
   );
 });
 
-test('/_next/image has exactly one consumer in src/, and it is the OG route', () => {
+test('/_next/image consumers in src/ are the OG routes, and nothing else', () => {
   const hits = [];
   const walk = (dir) => {
     for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
@@ -113,11 +113,19 @@ test('/_next/image has exactly one consumer in src/, and it is the OG route', ()
   walk(path.join(ROOT, 'src'));
 
   assert.deepEqual(
-    hits.sort(), ['src/app/show/[slug]/opengraph-image.tsx'],
+    // src/lib/og-image.ts: the Shared Plans preview card (BRO-4481). It only
+    // forwards same-origin /images/** paths (isSameOriginImagePath, tested below).
+    hits.sort(), ['src/app/show/[slug]/opengraph-image.tsx', 'src/lib/og-image.ts'],
     'A new consumer of the Next image optimizer changes the exposure assessment for '
     + 'GHSA-2xp9-vwfh-vxw4: today the only caller passes same-origin /images/** paths, which is '
     + 'why the remotePatterns scoping above is sufficient. If a component now renders '
     + 'attacker-influenced or third-party image URLs through it, re-read that allowlist entry in '
     + 'scripts/audit-dependencies.js before updating this list.',
   );
+});
+
+test('the og-image helper only forwards same-origin /images/** paths to the optimizer', () => {
+  const src = fs.readFileSync(path.join(ROOT, 'src/lib/og-image.ts'), 'utf8');
+  assert.match(src, /if \(!isSameOriginImagePath\(imagePath\)\) return null;/,
+    'fetchImageDataUri must refuse anything but /images/** before building the /_next/image URL');
 });

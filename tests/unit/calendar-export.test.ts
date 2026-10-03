@@ -231,6 +231,12 @@ test('the param codec round-trips and fails closed on bad input', () => {
     'd=2026-09-11&s=x&n=T&u=https://a.com&t=25:00',
     'd=2026-09-11&s=x&n=T&u=https://a.com&m=0',
     's=x&n=T&u=https://a.com',                     // missing date
+    // Off-site links (BRO-4481 ship-check): the route must not mint a
+    // broadwayscorecard.com .ics that points somewhere else.
+    'd=2026-09-11&s=x&n=T&u=https://evil.example/login',
+    'd=2026-09-11&s=x&n=T&u=https://broadwayscorecard.com.evil.example/x',
+    'd=2026-09-11&s=x&n=T&u=https://broadwayscorecard.com/show/x&j=https://evil.example/',
+    `d=2026-09-11&s=x&n=T&u=https://broadwayscorecard.com/show/x&c=${'a'.repeat(31)}`,
   ];
   for (const q of bad) {
     assert.equal(decodeEventParams(new URLSearchParams(q)), null, `should reject: ${q}`);

@@ -3,7 +3,10 @@
 import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
+import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
+import { isSharedPlansPath, posthogBeforeSend, sentryScrub, vercelBeforeSend } from '@/lib/analytics/redact-url';
+import { gaInitScript } from '@/lib/analytics/ga-init-script';
 import { applyAnalyticsUser, flushUgcOutbox } from '@/lib/ugc-analytics';
 
 interface SentryEvent {
@@ -25,6 +28,30 @@ const SENTRY_DSN = process.env.NEXT_PUBLIC_SENTRY_DSN;
 const POSTHOG_KEY = 'phc_xVenlxA1HzyJz0Yjlj3UkF9JVLCPe86Td6vQEK41SF7';
 
 export default function AnalyticsWrapper() {
+  // Shared Plans privacy (BRO-4481): /plans/<token> is a private link. Every
+  // tool below sends through src/lib/analytics/redact-url.ts. On each
+  // navigation — client-side ones included, which the init options can't
+  // see — replay is stopped on a plans page and GA is switched off there
+  // (and back on elsewhere). Links OUT of a plans page load a new document
+  // (src/app/plans/[token]/layout.tsx → PlansLeaveByDocument): a client-side
+  // navigation made GA send the plans URL as page_referrer, and it also means
+  // Back re-enters plans as a document, never through the router.
+  const pathname = usePathname();
+  useEffect(() => {
+    if (!pathname) return;
+    try {
+      const onPlans = isSharedPlansPath(pathname);
+      if (onPlans) {
+        (window as unknown as { posthog?: { stopSessionRecording?: () => void } }).posthog?.stopSessionRecording?.();
+      }
+      if (GA_MEASUREMENT_ID) {
+        (window as unknown as Record<string, unknown>)[`ga-disable-${GA_MEASUREMENT_ID}`] = onPlans;
+      }
+    } catch {
+      // analytics must never break navigation
+    }
+  }, [pathname]);
+
   // Owner tagging — Real Users analytics lens.
   // ?bwsc-owner=1 once per device persists localStorage.bwsc-owner='true'.
   // Tagged sessions stay in topline counts (Vercel + GA + PostHog) but can be
@@ -74,6 +101,10 @@ export default function AnalyticsWrapper() {
               maskInputOptions: { password: true, email: true, textarea: true },
               sampleRate: 0.1,
             },
+            // Shared Plans privacy (BRO-4481): no replay of a plans page, and
+            // every event's URLs/properties go through the token redactor.
+            disable_session_recording: isSharedPlansPath(window.location.pathname),
+            before_send: posthogBeforeSend,
             loaded: (ph) => {
               if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
             },
@@ -180,8 +211,9 @@ export default function AnalyticsWrapper() {
                 f.filename &&
                 /broadwayscorecard\.(com|vercel\.app)/.test(f.filename)
               );
-              return hasOurCode ? event : null;
+              return hasOurCode ? sentryScrub(event) : null;
             },
+            beforeBreadcrumb: sentryScrub,
           });
           applyAnalyticsUser();
         }
@@ -208,23 +240,17 @@ export default function AnalyticsWrapper() {
 
   return (
     <>
-      <Analytics />
-      <SpeedInsights />
+      <Analytics beforeSend={vercelBeforeSend} />
+      <SpeedInsights beforeSend={vercelBeforeSend} />
       {GA_MEASUREMENT_ID && (
         <>
           <Script
             src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}
             strategy="lazyOnload"
           />
+          {/* Owner tagging + Shared Plans privacy live in gaInitScript (tested). */}
           <Script id="gtag-init" strategy="lazyOnload">
-            {`
-              window.dataLayer = window.dataLayer || [];
-              function gtag(){dataLayer.push(arguments);}
-              gtag('js', new Date());
-              var __bwscOwner = false;
-              try { __bwscOwner = localStorage.getItem('bwsc-owner') === 'true'; } catch (e) {}
-              gtag('config', '${GA_MEASUREMENT_ID}', __bwscOwner ? { traffic_type: 'internal' } : {});
-            `}
+            {gaInitScript(GA_MEASUREMENT_ID)}
           </Script>
         </>
       )}
