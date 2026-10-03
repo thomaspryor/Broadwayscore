@@ -15,14 +15,28 @@
 
 // "...-Launches-North-AMERICAN-Tour-...", "...-Embarks-on-National-Tour-...",
 // "...-on-Tour-...", "...-US-Tour-...". Anchored to slug words so a title word
-// like "Tourist" or "Detour" doesn't count.
-const TOUR_SLUG_RE = /(?:^|-)(?:north-american|national|us|first-national|touring)-tour(?:-|$)|(?:^|-)on-tour(?:-|$)|(?:^|-)tour-(?:launch(?:es)?|kicks-off|opens|begins)(?:-|$)/i;
-// A UK or West End tour is not the North American tour.
-const UK_SLUG_RE = /(?:^|-)(?:uk|uk-and-ireland|uk-ireland|west-end)(?:-|$)/i;
+// like "Tourist" or "Detour" doesn't count. Also a few words between the
+// launch or the continent and "Tour": "...-Launches-North-American-Leg-of-
+// World-Tour-..." (Operation Mincemeat, 2026-09-30) and "...-Launches-20th-
+// Anniversary-Tour-..." (Jersey Boys) were missed (BRO-4563).
+const TOUR_SLUG_RE = /(?:^|-)(?:north-american|national|us|first-national|touring)-tour(?:-|$)|(?:^|-)on-tour(?:-|$)|(?:^|-)tour-(?:launch(?:es)?|kicks-off|opens|begins)(?:-|$)|(?:^|-)(?:north-american|launch(?:es)?)(?:-[a-z0-9]+){0,4}-tour(?:-|$)/i;
+// A UK, West End or other overseas tour is not the North American tour.
+// No "asian": "...-National-Tour-with-Asian-American-Cast-..." is a US tour.
+const UK_SLUG_RE = /(?:^|-)(?:uk|uk-and-ireland|uk-ireland|west-end|ireland|australia|australian|new-zealand|asia|europe|european|international)(?:-|$)/i;
 
 function isNationalTourRoundupSlug(slug) {
   const s = String(slug || '').split(/[?#]/)[0];
   return TOUR_SLUG_RE.test(s) && !UK_SLUG_RE.test(s);
+}
+
+/** A BWW roundup's publication date from its slug tail (-YYYYMMDD), or null. */
+function roundupDateFromSlug(slugOrUrl) {
+  const m = String(slugOrUrl || '').split(/[?#]/)[0].match(/-(\d{4})(\d{2})(\d{2})\/?$/);
+  if (!m) return null;
+  const iso = `${m[1]}-${m[2]}-${m[3]}`;
+  // Round-trip so a non-date like 20260230 (which Date rolls to March 2) is refused.
+  const d = new Date(`${iso}T00:00:00Z`);
+  return !Number.isNaN(d.getTime()) && d.toISOString().slice(0, 10) === iso ? iso : null;
 }
 
 /**
@@ -58,8 +72,31 @@ function recordTourCandidates(file, candidates, now = new Date().toISOString()) 
   try { rows = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { rows = []; }
   if (!Array.isArray(rows)) rows = [];
   const byId = new Map(rows.map(r => [r.broadwayShowId, r]));
+  const fromSchedule = r => !!r && r.source === 'tourstoyou';
   for (const c of candidates) {
     let prev = byId.get(c.broadwayShowId);
+    // A BWW roundup and a Tours To You listing of one show are two sources
+    // for the same tour, not two tours: keep the schedule row and carry the
+    // roundup on it, so create-tour-entries.js can use the roundup to confirm
+    // the launch when Wikipedia hasn't caught up (BRO-4563). Before this the
+    // two overwrote each other on every run and the roundup was lost.
+    // A roundup row whose tour was already created belongs to that earlier
+    // tour: a schedule row arriving later is a new tour and starts fresh,
+    // without the old roundup as launch evidence.
+    if (prev && fromSchedule(c) && !fromSchedule(prev) && prev.createdTourId) prev = undefined;
+    if (prev && fromSchedule(prev) !== fromSchedule(c)) {
+      const schedule = fromSchedule(c) ? c : prev;
+      const roundup = fromSchedule(c)
+        ? { roundupUrl: prev.roundupUrl || prev.url, roundupSeen: prev.roundupSeen || prev.firstSeen || now }
+        : { roundupUrl: c.url, roundupSeen: prev.roundupUrl === c.url ? (prev.roundupSeen || now) : now };
+      const keep = fromSchedule(prev) && !(prev.slug && schedule.slug && prev.slug !== schedule.slug) ? prev : {};
+      // The owner was already asked about this tour from the roundup: don't ask again.
+      const asked = !fromSchedule(prev) && prev.notifiedAt ? { notifiedAt: prev.notifiedAt } : {};
+      const row = { ...keep, ...asked, ...schedule, ...roundup, firstSeen: keep.firstSeen || now, lastSeen: now };
+      if (!schedule.ambiguous) delete row.ambiguous;
+      byId.set(c.broadwayShowId, row);
+      continue;
+    }
     // A different roundup for the same show is a later tour (BRO-4262): start
     // it fresh, or the first tour's firstSeen/createdTourId/notifiedAt would
     // hide it for good. The same roundup seen again keeps notifiedAt, so the
@@ -91,4 +128,4 @@ function openTourCandidates(rows, shows) {
   });
 }
 
-module.exports = { isNationalTourRoundupSlug, tourCandidateFor, recordTourCandidates, openTourCandidates };
+module.exports = { isNationalTourRoundupSlug, roundupDateFromSlug, tourCandidateFor, recordTourCandidates, openTourCandidates };
