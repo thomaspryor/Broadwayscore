@@ -15,6 +15,7 @@ import {
   formatDateLineString,
   getHeroDurationSuffix,
   getReviewAgeNote,
+  getReviewPublishYears,
 } from '../../src/lib/show-date-line';
 import { readFileSync } from 'node:fs';
 
@@ -149,30 +150,69 @@ test('emphasize flag marks the closing segment for the amber-highlight treatment
 });
 
 const NOW = new Date('2026-10-03T12:00:00Z');
+const dated = (...dates) => dates.map((publishDate) => ({ publishDate }));
 
-test('getReviewAgeNote: long-running open show (Wicked-like) gets the caveat', () => {
+test('getReviewPublishYears: reads ISO, year-month and prose dates; skips undated', () => {
+  assert.deepEqual(
+    getReviewPublishYears([
+      { publishDate: '2003-10-31' },
+      { publishDate: '2015-07' },
+      { publishDate: 'November 20, 2025' },
+      { publishDate: '' },
+      { publishDate: null },
+      {},
+    ]),
+    [2003, 2015, 2025]
+  );
+  assert.deepEqual(getReviewPublishYears(undefined), []);
+});
+
+test('getReviewAgeNote: long-running show reviewed at opening (Wicked-like) gets the caveat', () => {
   assert.equal(
-    getReviewAgeNote({ status: 'open', openingDate: '2003-10-30' }, 25, NOW),
+    getReviewAgeNote({ status: 'open' }, dated('2003-10-31', '2003-10-31', '2003-11-01', '2004-01-10'), NOW),
     'Most reviews from 23 years ago'
   );
 });
 
+test('getReviewAgeNote: counts from review dates, not openingDate (Mousetrap West End re-entry)', () => {
+  // the-mousetrap-west-end-2021 has openingDate 1952 but its reviews are from the
+  // 2021 reopening; the old openingDate math said "74 years ago".
+  assert.equal(getReviewAgeNote({ status: 'open' }, dated('2021-05-18', '2021-05-19', '2021-06-01'), NOW), null);
+});
+
+test('getReviewAgeNote: uses the year a majority of reviews were published by', () => {
+  // 2 old + 2 recent: no majority is 10+ years old.
+  assert.equal(getReviewAgeNote({ status: 'open' }, dated('1987-01-01', '1987-02-01', '2023-01-01', '2024-01-01'), NOW), null);
+  // 3 old + 2 recent: majority from 1987.
+  assert.equal(
+    getReviewAgeNote({ status: 'open' }, dated('1987-01-01', '1987-02-01', '1988-03-01', '2023-01-01', '2024-01-01'), NOW),
+    'Most reviews from 38 years ago'
+  );
+});
+
 test('getReviewAgeNote: exactly 10 years qualifies, 9 does not', () => {
-  assert.equal(getReviewAgeNote({ status: 'open', openingDate: '2016-04-01' }, 5, NOW), 'Most reviews from 10 years ago');
-  assert.equal(getReviewAgeNote({ status: 'open', openingDate: '2017-04-01' }, 5, NOW), null);
+  assert.equal(getReviewAgeNote({ status: 'open' }, dated('2016-04-01', '2016-04-02', '2016-04-03'), NOW), 'Most reviews from 10 years ago');
+  assert.equal(getReviewAgeNote({ status: 'open' }, dated('2017-04-01', '2017-04-02', '2017-04-03'), NOW), null);
 });
 
-test('getReviewAgeNote: closed shows, thin review counts and missing/invalid dates get nothing', () => {
-  assert.equal(getReviewAgeNote({ status: 'closed', openingDate: '2003-10-30' }, 25, NOW), null);
-  assert.equal(getReviewAgeNote({ status: 'open', openingDate: '2003-10-30' }, 2, NOW), null);
-  assert.equal(getReviewAgeNote({ status: 'open', openingDate: null }, 25, NOW), null);
-  assert.equal(getReviewAgeNote({ status: 'open', openingDate: 'not-a-date' }, 25, NOW), null);
+test('getReviewAgeNote: closed shows and fewer than 3 dated reviews get nothing', () => {
+  const old = dated('2003-10-31', '2003-10-31', '2003-11-01');
+  assert.equal(getReviewAgeNote({ status: 'closed' }, old, NOW), null);
+  assert.equal(getReviewAgeNote({ status: 'open' }, dated('2003-10-31', '2003-10-31', '', 'n/a'), NOW), null);
+  assert.equal(getReviewAgeNote({ status: 'open' }, [], NOW), null);
+  assert.equal(getReviewAgeNote({ status: 'open' }, undefined, NOW), null);
 });
 
-test('both heroes render the review-age caveat via the shared helper (redesign once dropped it)', () => {
-  for (const file of ['src/app/show/[slug]/page.tsx', 'src/components/show-page/ShowHeroRedesign.tsx']) {
-    const src = readFileSync(new URL(`../../${file}`, import.meta.url), 'utf8');
-    assert.match(src, /getReviewAgeNote\(show, reviewCount\)/, `${file} must call getReviewAgeNote`);
+test('both heroes render one shared review-age value (the redesign once dropped it)', () => {
+  const page = readFileSync(new URL('../../src/app/show/[slug]/page.tsx', import.meta.url), 'utf8');
+  const hero = readFileSync(new URL('../../src/components/show-page/ShowHeroRedesign.tsx', import.meta.url), 'utf8');
+  // Computed once on the server, only for shows that display a critic score.
+  assert.match(page, /const reviewAgeNote = showTBD \? null : getReviewAgeNote\(/);
+  assert.match(page, /reviewAgeNote=\{reviewAgeNote\}/, 'page.tsx must pass the note to ShowHeroRedesign');
+  assert.match(page, /\{reviewAgeNote &&/, 'legacy hero must render the shared note');
+  assert.match(hero, /\{reviewAgeNote\}/, 'ShowHeroRedesign must render the note prop');
+  for (const [file, src] of [['page.tsx', page], ['ShowHeroRedesign.tsx', hero]]) {
     assert.doesNotMatch(src, /Most reviews from \{/, `${file} must not hand-roll the caveat text`);
   }
+  assert.doesNotMatch(hero, /getReviewAgeNote\(/, 'the redesign has no publishDate; it must use the prop');
 });

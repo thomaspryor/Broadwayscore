@@ -399,6 +399,9 @@ export default async function ShowPage({ params }: { params: { slug: string } })
       || show.status === 'previews' || show.status === 'upcoming',
     { scorePublicSince: show.scorePublicSince, coverageState: show.cov?.state, coverageAcked: show.coverageAcked },
   );
+  // Computed here from the full review list (showForHero strips publishDate)
+  // and shared by both heroes, so they always agree on whether it shows.
+  const reviewAgeNote = showTBD ? null : getReviewAgeNote(show, show.criticScore?.reviews);
   const roundedScore = score ? Math.round(score) : null;
   const sentiment = score ? getSentimentLabel(score, show.category) : null;
   const scoreColorClass = (!showTBD && roundedScore !== null)
@@ -454,6 +457,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               audienceCount={totalAudienceCount}
               hasAudience={hasAudience}
               hasEnoughCriticReviews={!showTBD}
+              reviewAgeNote={reviewAgeNote}
               sortedTicketLinks={sortedTicketLinks}
               lotteryRush={lotteryRush ?? null}
               isWestEnd={isWestEnd}
@@ -616,15 +620,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
                           <HeroRankLine ranks={ranks} market={show.category} />
                         )}
                         {/* Review age note for long-running shows */}
-                        {(() => {
-                          const reviewAgeNote = getReviewAgeNote(show, reviewCount);
-                          if (!reviewAgeNote) return null;
-                          return (
-                            <p className="text-[10px] sm:text-xs text-gray-500 mt-1 leading-snug">
-                              {reviewAgeNote}
-                            </p>
-                          );
-                        })()}
+                        {reviewAgeNote && (
+                          <p className="text-[10px] sm:text-xs text-gray-500 mt-1 leading-snug">
+                            {reviewAgeNote}
+                          </p>
+                        )}
                       </div>
                     </div>
                     {/* Review breakdown bar (desktop only — mobile version is rendered full-width below the flex row) */}
