@@ -764,15 +764,28 @@ function rotationOffset(dayOfYear, n) {
   return Math.min(n - 1, Math.floor(frac * n));
 }
 
+// A demoted check that never gets reached (the tail past the time budget, or a
+// card with no run result) would otherwise stay at the back for good. After
+// this many days without an actual run it rejoins the normal rotation.
+const SLOW_DEMOTION_MAX_DAYS = 7;
+
 /**
  * Card ids to demote this run, from the previous report: its carried
  * `slowDemoted` list plus any row whose check timed out (older reports carry
- * only the rows).
+ * only the rows). A carried id whose `slowDemotedSince` stamp is older than
+ * SLOW_DEMOTION_MAX_DAYS is dropped; a missing stamp counts as fresh.
  */
-function priorSlowIds(prevReport) {
+function priorSlowIds(prevReport, nowMs = Date.now()) {
   const ids = new Set();
   if (!prevReport || typeof prevReport !== 'object') return ids;
-  for (const id of Array.isArray(prevReport.slowDemoted) ? prevReport.slowDemoted : []) ids.add(id);
+  const since = (prevReport.slowDemotedSince && typeof prevReport.slowDemotedSince === 'object')
+    ? prevReport.slowDemotedSince : {};
+  const maxAgeMs = SLOW_DEMOTION_MAX_DAYS * 24 * 60 * 60 * 1000;
+  for (const id of Array.isArray(prevReport.slowDemoted) ? prevReport.slowDemoted : []) {
+    const t = Date.parse(since[id]);
+    if (Number.isFinite(t) && nowMs - t > maxAgeMs) continue;
+    ids.add(id);
+  }
   for (const row of Array.isArray(prevReport.results) ? prevReport.results : []) {
     if (row && row.id && (TIMEOUT_DETAIL_RE.test(row.detail || '') || SPAWN_TIMEOUT_RE.test(row.detail || ''))) ids.add(row.id);
   }
@@ -798,6 +811,18 @@ function nextSlowIds({ demoted = [], ran = new Set(), timedOut = [] }) {
   return [...out].sort();
 }
 
+/**
+ * When each carried id was first demoted without running since: an id that
+ * ran this run (it timed out again) or is new restarts at nowIso; an id that
+ * was skipped keeps its earlier stamp so priorSlowIds can expire it.
+ */
+function nextSlowSince({ ids = [], prevSince = {}, ran = new Set(), nowIso }) {
+  const prev = (prevSince && typeof prevSince === 'object') ? prevSince : {};
+  const out = {};
+  for (const id of ids) out[id] = (!ran.has(id) && prev[id]) ? prev[id] : nowIso;
+  return out;
+}
+
 module.exports = {
   VERDICTS,
   EVIDENCE,
@@ -820,6 +845,8 @@ module.exports = {
   priorSlowIds,
   demoteSlowChecks,
   nextSlowIds,
+  nextSlowSince,
+  SLOW_DEMOTION_MAX_DAYS,
   evaluateVerifyRun,
   combineEvidence,
   classifyCard,

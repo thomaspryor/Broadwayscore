@@ -62,7 +62,8 @@ const { makeFreshCheckout, removeCheckout, runVerify } = require('./lib/acceptan
 const { fetchDoneEvidenceCandidates, selectCandidates, DONE_WINDOW_DAYS } = require('./lib/done-evidence-source.js');
 const { resolveEvidenceUrl, parseEvidenceUrl, pathPredatesCard, pathNeverExisted } = require('./lib/done-evidence-remote.js');
 const { classifyCard, summarize, doneTally, buildDigestSnapshot, isNonProbativeCommand, adjudicateMisArmed, VERDICTS,
-  isTimeoutResult, rotationOffset, priorSlowIds, demoteSlowChecks, nextSlowIds } = require('./lib/done-evidence-audit.js');
+  isTimeoutResult, rotationOffset, priorSlowIds, demoteSlowChecks, nextSlowIds,
+  nextSlowSince } = require('./lib/done-evidence-audit.js');
 // extractCheckPaths, NOT card-premises-auditor's extractCheckFilePaths. The
 // latter is deliberately narrowed to the two forms BRO-3076's vacuous-check
 // rule covers (`node --test`, `test -f`), so a card armed with the generic
@@ -279,7 +280,7 @@ async function main(argv = process.argv.slice(2)) {
   // budget every day before the cards behind them are reached.
   let prevReport = null;
   try { prevReport = JSON.parse(fs.readFileSync(REPORT_PATH, 'utf8')); } catch { /* first run or unreadable: no demotion */ }
-  const { ordered: planned, demoted: demotedSlow } = demoteSlowChecks(plannedRaw, priorSlowIds(prevReport));
+  const { ordered: planned, demoted: demotedSlow } = demoteSlowChecks(plannedRaw, priorSlowIds(prevReport, Date.parse(generatedAt)));
   if (demotedSlow.length) console.error(`[done-evidence] ${demotedSlow.length} slow check(s) moved to the end of the sweep: ${demotedSlow.join(', ')}`);
 
   if (dryRun) {
@@ -484,6 +485,7 @@ async function main(argv = process.argv.slice(2)) {
 
   const counts = summarize(results);
   const tally = doneTally(results);
+  const slowDemoted = nextSlowIds({ demoted: demotedSlow, ran: ranIds, timedOut: timedOutIds });
   const report = {
     generatedAt,
     shadow: true,
@@ -494,7 +496,10 @@ async function main(argv = process.argv.slice(2)) {
     notReRun: notRun,
     unresolvedProbes,
     sweepOffset: offset,
-    slowDemoted: nextSlowIds({ demoted: demotedSlow, ran: ranIds, timedOut: timedOutIds }),
+    slowDemoted,
+    slowDemotedSince: nextSlowSince({
+      ids: slowDemoted, prevSince: prevReport && prevReport.slowDemotedSince, ran: ranIds, nowIso: generatedAt,
+    }),
     elapsedMs: Date.now() - startedAt,
     timeBudgetMs,
     slowestChecks: slowest,

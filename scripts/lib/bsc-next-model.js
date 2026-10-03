@@ -243,7 +243,8 @@ function stampModelHint(description, model) {
   if (!FILING_MODELS.includes(m)) throw new Error(`model must be one of ${FILING_MODELS.join('|')}, got "${model}"`);
   const text = description || '';
   const existing = explicitModelHint({ description: text }, null);
-  if (existing === m) return text;
+  // pickLinearModel runs a haiku hint on sonnet, so the two agree here.
+  if (existing === m || (existing === 'haiku' && m === 'sonnet')) return text;
   if (existing) throw new Error(`the notes already say "Model: ${existing}", which conflicts with --model ${m}`);
   const line = `Model: ${m[0].toUpperCase()}${m.slice(1)}`;
   return text ? `${text.replace(/\s+$/, '')}\n\n${line}` : line;

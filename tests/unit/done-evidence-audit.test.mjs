@@ -842,6 +842,8 @@ const {
   priorSlowIds,
   demoteSlowChecks,
   nextSlowIds,
+  nextSlowSince,
+  SLOW_DEMOTION_MAX_DAYS,
 } = require('../../scripts/lib/done-evidence-audit.js');
 
 const TIMEOUT_DETAIL = 'check killed by SIGTERM after 60000ms (timeout — no verdict)';
@@ -882,6 +884,38 @@ test('nextSlowIds: a demoted check stays demoted until it runs under the timeout
   const ids = nextSlowIds({ demoted: ['B', 'D'], ran: new Set(['D', 'E']), timedOut: ['E'] });
   assert.deepEqual(ids, ['B', 'E']);
   assert.deepEqual(nextSlowIds({}), []);
+});
+
+test('priorSlowIds: a carried id demoted more than SLOW_DEMOTION_MAX_DAYS ago rejoins the rotation', () => {
+  const now = Date.parse('2026-10-10T07:00:00Z');
+  const day = 24 * 60 * 60 * 1000;
+  const ids = priorSlowIds({
+    slowDemoted: ['OLD', 'FRESH', 'NOSTAMP', 'BADSTAMP'],
+    slowDemotedSince: {
+      OLD: new Date(now - (SLOW_DEMOTION_MAX_DAYS + 1) * day).toISOString(),
+      FRESH: new Date(now - (SLOW_DEMOTION_MAX_DAYS - 1) * day).toISOString(),
+      BADSTAMP: 'not a date',
+    },
+    // A timed-out row in the last report is fresh evidence, even for OLD.
+    results: [{ id: 'ROW', detail: TIMEOUT_DETAIL }],
+  }, now);
+  assert.deepEqual([...ids].sort(), ['BADSTAMP', 'FRESH', 'NOSTAMP', 'ROW']);
+});
+
+test('nextSlowSince: skipped ids keep their stamp, ran or new ids restart it', () => {
+  const nowIso = '2026-10-10T07:00:00.000Z';
+  const since = nextSlowSince({
+    ids: ['SKIPPED', 'RAN_AGAIN', 'NEW'],
+    prevSince: { SKIPPED: '2026-10-01T07:00:00.000Z', RAN_AGAIN: '2026-10-01T07:00:00.000Z' },
+    ran: new Set(['RAN_AGAIN']),
+    nowIso,
+  });
+  assert.deepEqual(since, {
+    SKIPPED: '2026-10-01T07:00:00.000Z',
+    RAN_AGAIN: nowIso,
+    NEW: nowIso,
+  });
+  assert.deepEqual(nextSlowSince({ ids: ['A'], prevSince: null, nowIso }), { A: nowIso });
 });
 
 test('rotationOffset: in range, and consecutive days jump far apart', () => {

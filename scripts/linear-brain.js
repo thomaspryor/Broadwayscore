@@ -50,6 +50,8 @@ Usage:
           Opus cap, and a card that failed before still moves up to Opus).
           Opus: multi-file, architectural, adversarial debugging. Sonnet:
           mechanical, single-file, data fixes. Anything else → exit 2.
+          Only a Model line in the description counts; one in a comment
+          is ignored.
   find:   prints {"identifier": "BRO-N", ...} for the first OPEN issue whose
           title or body contains the term, or null. Sync-callable dedup seam
           for digest-autofix's fileCard (BRO-286) — filing the same

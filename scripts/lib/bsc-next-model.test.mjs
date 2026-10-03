@@ -224,6 +224,9 @@ test('stampModelHint: appends one Model: line, refuses conflicts and bad values'
   assert.throws(() => stampModelHint('x', 'gpt'), /model must be one of opus\|sonnet/);
   assert.throws(() => stampModelHint('x', true), /model must be one of/);
   assert.throws(() => stampModelHint('x', 'haiku'), /model must be one of/);
+  // A haiku line already runs on sonnet, so --model sonnet agrees with it.
+  assert.equal(stampModelHint('Model: Haiku', 'sonnet'), 'Model: Haiku');
+  assert.throws(() => stampModelHint('Model: Haiku', 'opus'), /conflicts with --model opus/);
   // the stamped line is read back by the dispatcher
   assert.equal(explicitModelHint({ description: stampModelHint('x', 'opus') }, null), 'opus');
 });
