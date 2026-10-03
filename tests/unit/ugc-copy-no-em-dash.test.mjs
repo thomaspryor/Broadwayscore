@@ -90,3 +90,62 @@ test('no em dash in on-screen copy for accounts and My Shows', () => {
   const hits = SCOPE.flatMap(files).flatMap(emDashesIn);
   assert.deepEqual(hits, [], `use a comma, colon, period or parentheses instead:\n${hits.join('\n')}`);
 });
+
+// The browser tests for these screens assert on the copy itself. Once the copy
+// lost its em dashes, a spec still expecting one can never pass: the sweep
+// above left two such assertions in my-shows-mock.spec.ts and test-ugc.yml
+// went red on them. Only text matchers count, so an em dash in a test title,
+// a comment or seeded fixture data is fine.
+const E2E_SCOPE = /^(my-shows-|ugc-|diary-|rating-editor|user-flows)[\w-]*\.spec\.ts$/;
+const TEXT_MATCHERS = new Set([
+  'getByText', 'getByRole', 'getByLabel', 'getByPlaceholder', 'getByTitle', 'getByAltText',
+  'filter', 'toHaveText', 'toContainText', 'toHaveAccessibleName', 'toHaveValue',
+]);
+
+export function expectedEmDashesIn(file) {
+  const src = ts.createSourceFile(file, fs.readFileSync(file, 'utf8'), ts.ScriptTarget.Latest, true, ts.ScriptKind.TS);
+  const hits = [];
+  const scanArgs = (node) => {
+    const text = ts.isRegularExpressionLiteral(node) || ts.isStringLiteral(node) || ts.isNoSubstitutionTemplateLiteral(node)
+      || ts.isTemplateHead(node) || ts.isTemplateMiddle(node) || ts.isTemplateTail(node) ? node.text : null;
+    if (text !== null && EM_DASH.test(text)) {
+      const { line } = src.getLineAndCharacterOfPosition(node.getStart(src));
+      hits.push(`${path.relative(root, file)}:${line + 1}: ${text.trim().slice(0, 80)}`);
+    }
+    ts.forEachChild(node, scanArgs);
+  };
+  const visit = (node) => {
+    if (ts.isCallExpression(node) && ts.isPropertyAccessExpression(node.expression)
+      && TEXT_MATCHERS.has(node.expression.name.text)) {
+      node.arguments.forEach(scanArgs);
+    }
+    ts.forEachChild(node, visit);
+  };
+  visit(src);
+  return hits;
+}
+
+test('the e2e scanner flags em dashes in text matchers only', (t) => {
+  const dir = fs.mkdtempSync(path.join(fs.realpathSync('/tmp'), 'emdash-e2e-'));
+  t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const tmp = path.join(dir, 'x.spec.ts');
+  fs.writeFileSync(tmp, [
+    "test('title — fine', async () => {",
+    "  await expect(page.getByText('2 not selected — A')).toBeVisible();",
+    "  await expect(page.getByRole('heading', { name: 'X — Y' })).toBeVisible();",
+    "  await expect(row).toHaveText(/a — b/);",
+    "  const seed = { title: 'Fixture — fine' };",
+    "  // comment — fine",
+    "  await expect(page.getByText('no dash here')).toBeVisible();",
+    '});',
+  ].join('\n'));
+  assert.deepEqual(expectedEmDashesIn(tmp).map((h) => h.split(':')[1]), ['2', '3', '4']);
+});
+
+test('no browser test for these screens expects an em dash', () => {
+  const dir = path.join(root, 'tests/e2e');
+  const specs = fs.readdirSync(dir).filter((f) => E2E_SCOPE.test(f)).map((f) => path.join(dir, f));
+  assert.ok(specs.length >= 5, `expected the My Shows and UGC specs, found ${specs.length}`);
+  const hits = specs.flatMap(expectedEmDashesIn);
+  assert.deepEqual(hits, [], `the screen copy has no em dashes, so these assertions can never pass:\n${hits.join('\n')}`);
+});
