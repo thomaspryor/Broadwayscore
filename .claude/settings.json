@@ -1,8 +1,7 @@
 {
-  "_comment_spend": "Spend efficiency (BRO spend review 2026-10-01, plan-review pass recorded). env: hold every session to a 200k context window and compact at 200k instead of running to 600-780k in the 1M variants; 71% of Sep cloud cost came from sessions past 400k, re-read on every step. effortLevel: Opus 5.5 default is medium; /effort or --effort still raises it per session (do NOT use CLAUDE_CODE_EFFORT_LEVEL, it would override /effort). This file is read by cloud sessions, Mac interactive sessions and Mac headless jobs (they run in repo worktrees; strippedEnv in scripts/lib/claude-cli.js never forwards shell vars), so it is the single source for these knobs. Revert = delete these three keys.",
+  "_comment_spend": "Spend efficiency (BRO spend review 2026-10-01, plan-review pass recorded). env: compact at 320k instead of running to 600-780k in the 1M variants (owner-approved 2026-10-03: the earlier 200k cap with 1M disabled left only ~80k of work room above ~85k of fixed setup, so autocompact thrashed); 71% of Sep cloud cost came from sessions past 400k, re-read on every step. effortLevel: Opus 5.5 default is medium; /effort or --effort still raises it per session (do NOT use CLAUDE_CODE_EFFORT_LEVEL, it would override /effort). This file is read by cloud sessions, Mac interactive sessions and Mac headless jobs (they run in repo worktrees; strippedEnv in scripts/lib/claude-cli.js never forwards shell vars), so it is the single source for these knobs. Revert = delete these two keys. Keep the window well above 2x the fixed setup cost or autocompact thrashes.",
   "env": {
-    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "200000",
-    "CLAUDE_CODE_DISABLE_1M_CONTEXT": "1"
+    "CLAUDE_CODE_AUTO_COMPACT_WINDOW": "320000"
   },
   "effortLevel": "medium",
   "_comment": "Project-scoped Claude Code config. Loaded by cloud apps (iOS, Mac, web) that can't reach the user's ~/.claude/. Each project hook script begins with a self-skip preamble: if ~/.claude/hooks/<basename> exists (local CLI), the project copy exits 0 and the user-level master fires. On cloud sandboxes ~/.claude/hooks/ does not exist, so the project copy runs. See .claude/CLOUD.md.",
