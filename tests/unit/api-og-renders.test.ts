@@ -14,6 +14,7 @@ import { NextRequest } from 'next/server';
 // route's JSX compiles to React.createElement with no React import in scope.
 (globalThis as { React?: typeof React }).React = React;
 const routeP = import('../../src/app/api/og/route');
+const badgeP = import('../../src/app/api/newsletter-badge/route');
 
 const CASES: Record<string, string> = {
   list: 'type=list&title=My%20List&count=5&creator=Tom&ranked=1',
@@ -32,6 +33,19 @@ for (const [name, qs] of Object.entries(CASES)) {
     const body = new Uint8Array(await res.arrayBuffer());
     assert.ok(body.length > 1000, `${name}: body is ${body.length} bytes`);
     // PNG signature
+    assert.deepEqual(Array.from(body.slice(0, 4)), [0x89, 0x50, 0x4e, 0x47]);
+  });
+}
+
+// The newsletter score/rank badge is the other @vercel/og route with no
+// network dependency; same empty-200 failure mode.
+for (const [name, qs] of Object.entries({ 'badge score': 'score=82', 'badge rank': 'kind=rank&tier=gold&pos=3' })) {
+  test(`/api/newsletter-badge ${name} renders a non-empty PNG`, async () => {
+    const { GET } = await badgeP;
+    const res = await GET(new NextRequest(`https://broadwayscorecard.com/api/newsletter-badge?${qs}`));
+    assert.equal(res.status, 200);
+    const body = new Uint8Array(await res.arrayBuffer());
+    assert.ok(body.length > 200, `${name}: body is ${body.length} bytes`);
     assert.deepEqual(Array.from(body.slice(0, 4)), [0x89, 0x50, 0x4e, 0x47]);
   });
 }
