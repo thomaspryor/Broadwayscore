@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-02T23:04:08.671Z",
+    "lastUpdated": "2026-10-03T12:59:49.857Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -5614,7 +5614,10 @@
         "ign-laura-prudom"
       ],
       "accessModel": "free",
-      "domain": "ign.com"
+      "domain": "ign.com",
+      "region": "london",
+      "regionInferredBy": "backfillMissingOutletRegions (BRO-133)",
+      "regionInferredAt": "2026-10-03T12:59:49.856Z"
     },
     "journal-inquirer": {
       "displayName": "Journal Inquirer",
