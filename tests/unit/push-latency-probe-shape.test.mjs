@@ -35,6 +35,11 @@ describe('push-latency-probe shape (BRO-2827)', () => {
     assert.match(code, /set \+e/);
     assert.match(code, /20261101/);
   });
+  it('freezes the deepen args once (no per-fetch recompute) and never reports a failed sweep as clean', () => {
+    assert.match(code, /DEEPEN="\$\(deepen_args\)"/);
+    assert.equal((code.match(/\$\(deepen_args\)/g) || []).length, 1);
+    assert.match(code, /SWEEP-UNVERIFIED/);
+  });
   it('uses its own concurrency group and a timeout that fits the worst case', () => {
     assert.match(code, /group: push-latency-probe/);
     assert.match(code, /timeout-minutes: 25/);

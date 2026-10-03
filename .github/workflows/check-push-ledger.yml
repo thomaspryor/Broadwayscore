@@ -193,16 +193,21 @@ jobs:
           # Same derivation push-with-retry.sh uses, and the same fail-CLOSED
           # fallback: repoDepthArgs() fails open to [], which on a shallow clone
           # is a bare unbounded fetch (the 2 GB / 300s case).
+          # Computed ONCE, before COLD, and reused: repoDepthArgs anchors on the
+          # oldest local commit, so recomputing after each fetch would reach another
+          # 30 min further back every time and make the samples incomparable.
           deepen_args() {
             _a=$(node -e "const a=require('./scripts/lib/shallow-fetch-args.js').repoDepthArgs({repoRoot:process.cwd()});console.log(a.join(' '))" 2>/dev/null)
             [ -n "$_a" ] && echo "$_a" || echo "--deepen=200"
           }
 
+          DEEPEN="$(deepen_args)"
+
           # Timed bounded fetch; leaves the new tip in FETCH_HEAD.
           timed_fetch() {  # $1 = tag, $2 = log
             s=$(date +%s%3N)
             # shellcheck disable=SC2046
-            timeout -k 10 "$CAP" git fetch --progress $(deepen_args) origin main >"$2" 2>&1
+            timeout -k 10 "$CAP" git fetch --progress $DEEPEN origin main >"$2" 2>&1
             rc=$?; e=$(date +%s%3N)
             classify "$rc" "$((e - s))" deepen-fetch "$1" "$2"
             return $rc
@@ -211,7 +216,7 @@ jobs:
           # Probe commit on top of FETCH_HEAD (the callers push a commit rebased
           # onto the freshly fetched tip).
           mk_commit() {
-            git checkout -q --detach FETCH_HEAD 2>/dev/null
+            git checkout -q --detach FETCH_HEAD || { echo "PROBE|abort|checkout FETCH_HEAD failed"; return 1; }
             date -u +%FT%TZ > .push-latency-probe.txt
             git add -f .push-latency-probe.txt
             git commit -q -m "probe (scratch ref, deleted)"
@@ -219,11 +224,12 @@ jobs:
 
           probe_push() {  # $1 = n, $2 = arm
             _ref="${REF_PREFIX}-$1"
-            ptag="n=$1|arm=$2|commits=$(git rev-list --count HEAD)|shallow=$(git rev-parse --is-shallow-repository)"
             if [ "$2" = "fetched" ]; then
               timed_fetch "n=$1|arm=fetched-prefetch" "/tmp/pf.$1" || return
-              mk_commit
+              mk_commit || return
             fi
+            # Tag AFTER the prefetch so commits= describes the clone being pushed from.
+            ptag="n=$1|arm=$2|commits=$(git rev-list --count HEAD)|shallow=$(git rev-parse --is-shallow-repository)"
             s=$(date +%s%3N)
             # hygiene-push-ok: scratch-ref push to time the real write path.
             # Routing a measurement through push-with-retry.sh would measure
@@ -239,15 +245,19 @@ jobs:
             echo "PROBE|op=delete|n=$1|rc=$?"
           }
 
-          echo "PROBE|start|shallow=$(git rev-parse --is-shallow-repository)|commits=$(git rev-list --count HEAD)|args=$(deepen_args)"
+          echo "PROBE|start|shallow=$(git rev-parse --is-shallow-repository)|commits=$(git rev-list --count HEAD)|args=$DEEPEN"
 
           # COLD sample first: the deepening fetch is the first network op after
           # checkout, so it is the one that sees a not-yet-warm path.
           timed_fetch "sample=COLD" /tmp/cold.fetch || { echo "PROBE|abort|cold fetch failed, deepened shape not established"; exit 0; }
           echo "PROBE|deepened|commits=$(git rev-list --count FETCH_HEAD)"
-          mk_commit
+          mk_commit || exit 0
 
-          # ABBA order cancels warm-up/order effects between the arms.
+          # ABBA order cancels warm-up/order effects between the arms. The pause
+          # keeps n=1 (nofetch) from being a push one second after the COLD fetch;
+          # it is still the closest-to-fetch nofetch sample, so read n=1 and n=4
+          # separately rather than pooling them blindly.
+          sleep 30
           probe_push 1 nofetch
           probe_push 2 fetched
           probe_push 3 fetched
@@ -258,10 +268,14 @@ jobs:
         if: always()
         run: |
           set +e
-          refs=$(timeout -k 10 90 git ls-remote --heads origin 'refs/heads/probe/push-latency-*' | awk '{print $2}')
-          for r in $refs; do
+          # Capture ls-remote's rc before piping: a failed listing must not read as "clean".
+          timeout -k 10 90 git ls-remote --heads origin 'refs/heads/probe/push-latency-*' >/tmp/sweep.1 2>&1
+          if [ $? -ne 0 ]; then echo "PROBE|SWEEP-UNVERIFIED|listing failed"; exit 0; fi
+          for r in $(awk '{print $2}' /tmp/sweep.1); do
             timeout -k 10 45 git push origin --delete "$r" >/dev/null 2>&1
           done
-          left=$(timeout -k 10 90 git ls-remote --heads origin 'refs/heads/probe/push-latency-*' | wc -l)
+          timeout -k 10 90 git ls-remote --heads origin 'refs/heads/probe/push-latency-*' >/tmp/sweep.2 2>&1
+          if [ $? -ne 0 ]; then echo "PROBE|SWEEP-UNVERIFIED|re-listing failed"; exit 0; fi
+          left=$(wc -l < /tmp/sweep.2)
           if [ "$left" != "0" ]; then echo "PROBE|LEAK|scratch refs remaining=$left"; else echo "PROBE|sweep clean"; fi
           exit 0
