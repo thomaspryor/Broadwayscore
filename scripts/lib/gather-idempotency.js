@@ -24,7 +24,7 @@
  * opening-night-reviews.yml.
  */
 
-const { isActiveRun, RUN_NAME_SEPARATOR } = require('./poller-idempotency');
+const { isActiveRun, RUN_NAME_SEPARATOR, findInFlightTargetedPollerForShow } = require('./poller-idempotency');
 
 /**
  * Parse the show-id list out of a gather-reviews run's displayTitle.
@@ -78,4 +78,41 @@ function showsNeedingGather(runs, showIds) {
   return out;
 }
 
-module.exports = { gatherRunShowIds, gatherCoversShow, showsNeedingGather };
+// opening-night-poller.yml's job timeout is 100 min (see its timeout-minutes);
+// a "targeted poller" older than this is stuck/orphaned, not working, and must
+// not suppress gather forever.
+const POLLER_MAX_AGE_MS = 100 * 60 * 1000;
+
+/**
+ * Aggregators-only variant of showsNeedingGather (BRO-2269). Additionally drops
+ * shows that have an active TARGETED opening-night-poller run, because that
+ * poller already runs the same aggregator layer inline and commits to the same
+ * review-texts/core-data repos: a concurrent aggregators-only gather for the
+ * same show is pure duplicate work and a git-rebase race (BRO-735 issues
+ * #5/#9/#15-17).
+ *
+ * Deliberately NOT applied to FULL gathers: the poller does not run the
+ * per-outlet SERP pass, so skipping a full gather would lose coverage. Auto
+ * pollers are ignored too (they cover every show and run ~60-90 min, which
+ * would starve gather, see opening-night-poller.yml concurrency note, BRO-4273).
+ * Poller runs older than POLLER_MAX_AGE_MS (by createdAt, when present) are
+ * treated as stuck and don't block.
+ *
+ * @param {Array} gatherRuns  gh run list --workflow=gather-reviews.yml JSON
+ * @param {Array} pollerRuns  gh run list --workflow=opening-night-poller.yml JSON
+ * @param {string[]} showIds
+ * @param {{now?: number}} [opts]
+ * @returns {string[]}
+ */
+function showsNeedingAggregatorGather(gatherRuns, pollerRuns, showIds, opts = {}) {
+  const now = opts.now ?? Date.now();
+  const fresh = (Array.isArray(pollerRuns) ? pollerRuns : []).filter((r) => {
+    const created = r && r.createdAt ? Date.parse(r.createdAt) : NaN;
+    return Number.isNaN(created) || now - created <= POLLER_MAX_AGE_MS;
+  });
+  return showsNeedingGather(gatherRuns, showIds).filter(
+    (id) => !findInFlightTargetedPollerForShow(fresh, id),
+  );
+}
+
+module.exports = { gatherRunShowIds, gatherCoversShow, showsNeedingGather, showsNeedingAggregatorGather, POLLER_MAX_AGE_MS };
