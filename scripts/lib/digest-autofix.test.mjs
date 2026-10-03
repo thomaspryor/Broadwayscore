@@ -1030,8 +1030,8 @@ test('every repo-wide dispatchDetached call site passes allowAutofixFiled (BRO-2
       // Pin the exact ternary: auto-filed cards must still get both waivers.
       let call = rawCall;
       if (/,\s*dispatchOpts\s*\)\s*;$/.test(rawCall)) {
-        assert.match(src, /const sessionParked = !isAutoFiledParked\(issue\);/,
-          `${rel}: dispatchOpts must branch on !isAutoFiledParked(issue)`);
+        assert.match(src, /const sessionParked = isSessionParkedDrainable\(issue\);/,
+          `${rel}: dispatchOpts must branch on isSessionParkedDrainable(issue)`);
         const m = src.match(/dispatchOpts\s*=\s*sessionParked\s*\?\s*\{\s*allowSessionParked:\s*true\s*\}\s*:\s*(\{[^}]*\})/);
         assert.ok(m, `${rel}: dispatchOpts must be sessionParked ? { allowSessionParked: true } : { ...waivers }`);
         call = m[1];

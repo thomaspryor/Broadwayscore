@@ -6,8 +6,16 @@
  * linear-drain-parked.js, bsc-next.js) runs on the owner's Mac. When the Mac
  * is asleep or off, urgent cards wait. A scheduled cloud routine fires a fresh
  * session every few hours; this picks the card it works, using the same
- * guards the Mac dispatchers use, so the cloud never takes a card the Mac
- * would refuse.
+ * card-text guards the Mac dispatchers use (priority, state, safe VERIFY,
+ * headless blockers).
+ *
+ * NOT applied here: the Mac's dispatch-ledger guards (attempt memory, spend
+ * breaker, per-card retry limits). The ledger lives on the Mac. What keeps a
+ * cloud worker from looping on one card is the routine prompt: the worker
+ * claims the card first (linear-session.js claim), which moves it to a started
+ * state, so the next firing's state filter skips it. A card that fails ends
+ * In Review or Blocked, never back in Todo, unless the stuck-card closer
+ * bounces it (at most MAX_BOUNCES times).
  *
  * WHY THESE RULES:
  *   - P0/P1 only, highest first then oldest: the owner asked for urgent-card

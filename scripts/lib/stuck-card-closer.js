@@ -153,6 +153,10 @@ function decideClosure({ candidate, issue, commits, nowMs }) {
 function decideBounce({ candidate, issue, nowMs }) {
   if (!issue) return { bounce: false, reason: 'issue-not-found' };
   if ((issue.state && issue.state.name) !== 'In Review') return { bounce: false, reason: 'state-changed-since-audit' };
+  // Only send back cards an automatic worker will pick up from Todo (the
+  // watchdog and the cloud worker take P0/P1 with no headless blocker).
+  // Anything else would sit in Todo looking unstarted; leave it In Review.
+  if (![1, 2].includes(Number(issue.priority))) return { bounce: false, reason: 'no-auto-worker' };
   const comments = Array.isArray(issue.comments) ? issue.comments : [];
   const lastActivity = Math.max(
     Date.parse(issue.updatedAt) || 0,
@@ -161,6 +165,10 @@ function decideBounce({ candidate, issue, nowMs }) {
   if (nowMs - lastActivity < IDLE_MS_BY_STATE['In Review']) return { bounce: false, reason: 'recent-activity' };
   if (futureRecheckAfter([issue.description, ...comments.map((c) => c.body)], nowMs)) {
     return { bounce: false, reason: 'recheck-after-pending' };
+  }
+  const { classifyHeadlessDispatchability } = require('./headless-dispatchability.js');
+  if (classifyHeadlessDispatchability({ subject: issue.title || '', notes: issue.description || '' }).blockers.length) {
+    return { bounce: false, reason: 'no-auto-worker' };
   }
   const priorBounces = comments.filter((c) => String(c.body || '').includes(BOUNCE_MARKER)).length;
   if (priorBounces >= MAX_BOUNCES) return { bounce: false, reason: 'bounce-exhausted' };
