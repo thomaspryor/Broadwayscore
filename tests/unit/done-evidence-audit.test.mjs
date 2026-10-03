@@ -832,3 +832,70 @@ test('BRO-3476: the banner names the mis-armed cards, not just how many', () => 
   const many = buildDigestSnapshot({ generatedAt: 'x', results: ['a', 'b', 'c', 'd', 'e'].map(mk) });
   assert.match(many.bannerText, /5 mis-armed, needs re-arming \(a, b, c, \+2 more\)/);
 });
+
+// ── sweep order (BRO-4535 follow-up) ─────────────────────────────────────
+// Measured 2026-09-30..10-02: 88-136 of ~256 cards un-run per day; the same
+// five `run-unit-tests.js` checks hit the 60s kill every day.
+const {
+  isTimeoutResult,
+  rotationOffset,
+  priorSlowIds,
+  demoteSlowChecks,
+  nextSlowIds,
+} = require('../../scripts/lib/done-evidence-audit.js');
+
+const TIMEOUT_DETAIL = 'check killed by SIGTERM after 60000ms (timeout — no verdict)';
+
+test('isTimeoutResult: only an unverifiable timeout kill counts', () => {
+  assert.equal(isTimeoutResult({ status: 'unverifiable', detail: TIMEOUT_DETAIL }), true);
+  assert.equal(isTimeoutResult({ status: 'fail', detail: TIMEOUT_DETAIL }), false);
+  assert.equal(isTimeoutResult({ status: 'unverifiable', detail: 'checkout not prepared' }), false);
+  assert.equal(isTimeoutResult(null), false);
+});
+
+test('priorSlowIds: carried list plus timed-out rows from an older report', () => {
+  const ids = priorSlowIds({
+    slowDemoted: ['BRO-1'],
+    results: [
+      { id: 'BRO-2', detail: TIMEOUT_DETAIL },
+      { id: 'BRO-3', detail: 'exit 1' },
+    ],
+  });
+  assert.deepEqual([...ids].sort(), ['BRO-1', 'BRO-2']);
+  assert.equal(priorSlowIds(null).size, 0);
+  assert.equal(priorSlowIds({}).size, 0);
+});
+
+test('demoteSlowChecks: stable, slow cards move to the end, nothing dropped', () => {
+  const plan = ['A', 'B', 'C', 'D'].map((id) => ({ card: { id } }));
+  const { ordered, demoted } = demoteSlowChecks(plan, new Set(['B', 'D']));
+  assert.deepEqual(ordered.map((p) => p.card.id), ['A', 'C', 'B', 'D']);
+  assert.deepEqual(demoted, ['B', 'D']);
+  assert.equal(demoteSlowChecks(plan, new Set()).ordered.length, 4);
+});
+
+test('nextSlowIds: a demoted check stays demoted until it runs under the timeout', () => {
+  // B demoted and never reached -> stays; D demoted, ran fast -> released;
+  // E timed out this run -> added.
+  const ids = nextSlowIds({ demoted: ['B', 'D'], ran: new Set(['D', 'E']), timedOut: ['E'] });
+  assert.deepEqual(ids, ['B', 'E']);
+  assert.deepEqual(nextSlowIds({}), []);
+});
+
+test('rotationOffset: in range, and consecutive days jump far apart', () => {
+  const n = 256;
+  for (let d = 0; d < 400; d++) {
+    const o = rotationOffset(d, n);
+    assert.ok(Number.isInteger(o) && o >= 0 && o < n);
+  }
+  // The old +1/day stride needed ~n days to bring the tail forward. Within any
+  // 7 consecutive days the golden-ratio start lands in at least 5 of 8 equal
+  // slices of the list.
+  for (let start = 1; start < 360; start += 13) {
+    const slices = new Set();
+    for (let d = start; d < start + 7; d++) slices.add(Math.floor(rotationOffset(d, n) / (n / 8)));
+    assert.ok(slices.size >= 5, `days ${start}..${start + 6} hit only ${slices.size} slices`);
+  }
+  assert.equal(rotationOffset(5, 0), 0);
+  assert.equal(rotationOffset(5, 1), 0);
+});
