@@ -1,12 +1,13 @@
 {
-  "generatedAt": "2026-10-03T13:04:16.709Z",
+  "generatedAt": "2026-10-03T17:58:41.976Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 212,
-  "clean": 211,
-  "defective": 1,
+  "checked": 219,
+  "clean": 216,
+  "defective": 3,
   "byType": {
+    "score-drift": 2,
     "unreachable": 1
   },
   "shows": [
@@ -24,6 +25,36 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "title": "Hay Fever",
+      "openingDate": "2026-10-01",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 67.56 vs local 67.82 (Δ0.26)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27
+    },
+    {
+      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
+      "title": "Who’s Afraid of Virginia Woolf?",
+      "openingDate": "2026-09-30",
+      "ok": false,
+      "defects": [
+        {
+          "type": "score-drift",
+          "detail": "deployed cs 84.04 vs local 83.93 (Δ0.11)"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 27,
+      "deployedCount": 27
     }
   ]
 }
