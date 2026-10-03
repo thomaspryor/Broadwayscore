@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-03T02:39:40.319Z",
+  "runDate": "2026-10-03T04:44:09.085Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,45 +11,45 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 421,
-    "failed": 272,
+    "processed": 451,
+    "failed": 299,
     "skipped": 0,
-    "successRate": "60.8%"
+    "successRate": "60.1%"
   },
   "tierBreakdown": {
-    "playwright": 211,
+    "playwright": 226,
     "amp": 1,
     "browserbase": 8,
     "directCookies": 0,
-    "scrapingdog": 40,
-    "scrapingbee": 91,
-    "brightdata": 22,
+    "scrapingdog": 43,
+    "scrapingbee": 97,
+    "brightdata": 25,
     "archiveToday": 0,
-    "archive": 82
+    "archive": 89
   },
   "statistics": {
-    "tier1Attempts": 86,
+    "tier1Attempts": 92,
     "tier1Success": 35,
     "ampAttempts": 1,
     "ampSuccess": 1,
-    "tier1_5Attempts": 10,
-    "tier1_5Success": 3,
-    "tier1_9Attempts": 50,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 54,
     "tier1_9Success": 23,
-    "tier2Attempts": 54,
-    "tier2Success": 27,
-    "tier3Attempts": 49,
-    "tier3Success": 28,
-    "tier3_6Attempts": 32,
+    "tier2Attempts": 46,
+    "tier2Success": 18,
+    "tier3Attempts": 54,
+    "tier3Success": 30,
+    "tier3_6Attempts": 37,
     "tier3_6Success": 0,
-    "tier4Attempts": 77,
-    "tier4Success": 22,
-    "totalFailed": 229,
+    "tier4Attempts": 79,
+    "tier4Success": 25,
+    "totalFailed": 251,
     "scrapingBeePageCredits": 198,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 10,
-    "browserbaseMinutesUsed": 3.4,
-    "urlDiscoveryAttempts": 127,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 135,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -474,7 +474,37 @@
     "company-2021/theatrely--andrew-martini.json",
     "clydes-2021/playbill--marc-j-franklin.json",
     "trouble-in-mind-2021/broadwayworld--unknown.json",
-    "trouble-in-mind-2021/playbill--marc-j-franklin.json"
+    "trouble-in-mind-2021/playbill--marc-j-franklin.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+    "the-story-west-end-2026/theupcoming--emilia-gould.json",
+    "electra-persona-west-end-2026/nytimes--houman-barekat.json",
+    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+    "kimberly-akimbo-2022/nytimes--jesse-green.json",
+    "death-of-a-salesman-2022/broadwayworld--team-bww.json",
+    "death-of-a-salesman-2022/playbill--leah-putnam.json",
+    "trouble-in-mind-2021/broadwaynews--charles-isherwood.json",
+    "diana-the-musical-2021/nytimes--jesse-green.json",
+    "diana-the-musical-2021/broadwayworld--aa-cristi.json",
+    "diana-the-musical-2021/playbill--unknown.json",
+    "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+    "whos-afraid-of-virginia-woolf-2020/playbill--mark-peikert.json",
+    "grand-horizons-2020/broadwaynews--charles-isherwood.json",
+    "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
+    "the-sound-inside-2019/theater-scene--joel-benjamin.json",
+    "the-lightning-thief-2019/front-row-center--sarah-downs.json",
+    "the-rose-tattoo-2019/nyt-theater--jonathan-mandell.json",
+    "linda-vista-2019/nyt-theater--jonathan-mandell.json",
+    "linda-vista-2019/broadwaynews--unknown.json",
+    "linda-vista-2019/timeout--adam-feldman.json",
+    "linda-vista-2019/playbill--andrew-gans.json",
+    "the-great-society-2019/front-row-center--kathleen-campion.json",
+    "the-great-society-2019/nysr--elysa-gardner.json",
+    "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
+    "the-height-of-the-storm-2019/front-row-center--kathleen-campion.json",
+    "betrayal-2019/telegraph--dominic-cavendish.json",
+    "sea-wall-a-life-2019/theatermania--adam-feldman.json",
+    "moulin-rouge-2019/billboard--mary-j-dimeglio.json",
+    "frankie-and-johnny-in-the-clair-de-lune-2019/theatermania--zachary-stewart.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -538,7 +568,6 @@
     "six-2021/whatsonstage--alex-wood.json",
     "little-shop-of-horrors-off-broadway-2019/wsj--charles-isherwood.json",
     "hadestown-2019/broadwaynews--charles-isherwood.json",
-    "hadestown-2019/the-knockturnal--justin-rodriguez.json",
     "the-play-that-goes-wrong-off-broadway-2019/stagezine--dan-dwyer.json",
     "the-play-that-goes-wrong-off-broadway-2019/talkinbroadway--unknown.json",
     "magic-mike-live-west-end-2021/telegraph--dominic-cavendish.json",
@@ -603,7 +632,6 @@
     "grease-the-immersive-movie-musical-off-west-end-2026/thestage--oliver-jones.json",
     "trainspotting-the-musical-west-end-2026/daily-echo--unknown.json",
     "the-gruffalo-west-end-2026/waterstones--unknown.json",
-    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
     "human-things-off-broadway-2026/deadline--glenn-garner.json",
     "the-first-year-off-west-end-2026/theatreandtonic--emmie-newitt.json",
     "fire-fire-off-west-end-2026/dailyinfo--unknown.json",
@@ -736,7 +764,6 @@
     "the-collaboration-2022/hollywood-reporter--david-rooney.json",
     "a-beautiful-noise-the-neil-diamond-musical-2022/milwaukee-journal-sentinel--jim-higgins.json",
     "kpop-2022/broadway-and-me--janice-c-simpson.json",
-    "kimberly-akimbo-2022/nytimes--jesse-green.json",
     "1776-2022/nytimes--jesse-green.json",
     "1776-2022/broadway-and-me--janice-c-simpson.json",
     "the-kite-runner-2022/theater-life--paulanne-simmons.json",
@@ -748,7 +775,37 @@
     "plaza-suite-2022/broadway-and-me--janice-c-simpson.json",
     "mrs-doubtfire-2021/theater-life--paulanne-simmons.json",
     "slave-play-2021/standard--nick-curtis.json",
-    "clydes-2021/nysr--steven-suskin.json"
+    "clydes-2021/nysr--steven-suskin.json",
+    "toc-toc-off-broadway-2026/laguiacultural--unknown.json",
+    "the-score-regional-2026/nytimes--derrick-bryson-taylor.json",
+    "chewing-gum-dreams-off-west-end-2026/guardian--arifa-akbar.json",
+    "fire-fire-off-west-end-2026/observer--unknown.json",
+    "fire-fire-off-west-end-2026/chiswickcalendar--unknown.json",
+    "fire-fire-off-west-end-2026/ground--unknown.json",
+    "fire-fire-off-west-end-2026/islingtontribune--unknown.json",
+    "fire-fire-off-west-end-2026/metro-uk--brooke-ivey-johnson.json",
+    "fire-fire-off-west-end-2026/sunday-express--unknown.json",
+    "the-notebook-tour-2025/newyorker--niela-orr.json",
+    "and-juliet-tour-2024/broadwayworld--timoth-david-copney.json",
+    "and-juliet-tour-2024/the-rapidian--john-kissane.json",
+    "the-outsiders-2024/wsj--diane-cole.json",
+    "act-of-god-off-west-end-2026/london-box-office--stuart-king.json",
+    "diana-the-musical-2021/nbcnews--liz-shannon-miller.json",
+    "the-lehman-trilogy-2021/thestage--nicole-serratore.json",
+    "is-this-a-room-2021/hollywood-reporter--angie-han.json",
+    "back-to-the-future-west-end-2021/timeout--adam-feldman.json",
+    "whos-afraid-of-virginia-woolf-2020/times-uk--unknown.json",
+    "grand-horizons-2020/theater-news-online--brian-scott-lipton.json",
+    "a-soldiers-play-2020/theater-life--isa-goldberg.json",
+    "jagged-little-pill-2019/theater-news-online--joe-dziemianowicz.json",
+    "tina-2019/newyorker--conde-nast.json",
+    "linda-vista-2019/theater-news-online--joe-dziemianowicz.json",
+    "the-great-society-2019/theater-news-online--jeremy-gerard.json",
+    "the-height-of-the-storm-2019/theater-news-online--david-cote.json",
+    "the-height-of-the-storm-2019/theater-news-online--jeremy-gerard.json",
+    "betrayal-2019/thestage--natasha-tripney.json",
+    "betrayal-2019/independent--paul-taylor.json",
+    "sea-wall-a-life-2019/hollywood-reporter--david-rooney.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -962,7 +1019,22 @@
       "skeleton-crew-2022/nytimes--jesse-green.json",
       "skeleton-crew-2022/timeout--adam-feldman.json",
       "clydes-2021/nysr--steven-suskin.json",
-      "clydes-2021/playbill--marc-j-franklin.json"
+      "clydes-2021/playbill--marc-j-franklin.json",
+      "electra-persona-west-end-2026/nytimes--houman-barekat.json",
+      "hadestown-2019/the-knockturnal--justin-rodriguez.json",
+      "kimberly-akimbo-2022/nytimes--jesse-green.json",
+      "death-of-a-salesman-2022/playbill--leah-putnam.json",
+      "diana-the-musical-2021/playbill--unknown.json",
+      "whos-afraid-of-virginia-woolf-2020/playbill--mark-peikert.json",
+      "the-lightning-thief-2019/front-row-center--sarah-downs.json",
+      "the-rose-tattoo-2019/nyt-theater--jonathan-mandell.json",
+      "linda-vista-2019/nyt-theater--jonathan-mandell.json",
+      "linda-vista-2019/timeout--adam-feldman.json",
+      "the-great-society-2019/front-row-center--kathleen-campion.json",
+      "the-great-society-2019/nysr--elysa-gardner.json",
+      "the-height-of-the-storm-2019/nyt-theater--jonathan-mandell.json",
+      "the-height-of-the-storm-2019/front-row-center--kathleen-campion.json",
+      "moulin-rouge-2019/billboard--mary-j-dimeglio.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
@@ -1018,7 +1090,10 @@
       "cabaret-2024/theater-life--paulanne-simmons.json",
       "just-for-us-2023/theater-life--paulanne-simmons.json",
       "new-york-new-york-2023/theater-life--paulanne-simmons.json",
-      "death-of-a-salesman-2022/forbes--hal-rubenstein.json"
+      "death-of-a-salesman-2022/forbes--hal-rubenstein.json",
+      "the-kite-runner-2022/theater-life--paulanne-simmons.json",
+      "american-buffalo-2022/theater-life--david-sheward.json",
+      "mrs-doubtfire-2021/theater-life--paulanne-simmons.json"
     ],
     "scrapingbee": [
       "the-secret-circus-musical-off-broadway-2026/broadwayworld--unknown.json",
@@ -1111,7 +1186,13 @@
       "beetlejuice-2022/broadwayworld--linda-hodges.json",
       "beetlejuice-2022/broadwayworld--roy-berko.json",
       "company-2021/theatrely--andrew-martini.json",
-      "trouble-in-mind-2021/broadwayworld--unknown.json"
+      "trouble-in-mind-2021/broadwayworld--unknown.json",
+      "death-of-a-salesman-2022/broadwayworld--team-bww.json",
+      "trouble-in-mind-2021/broadwaynews--charles-isherwood.json",
+      "diana-the-musical-2021/broadwayworld--aa-cristi.json",
+      "grand-horizons-2020/broadwaynews--charles-isherwood.json",
+      "jagged-little-pill-2019/broadwaynews--charles-isherwood.json",
+      "linda-vista-2019/broadwaynews--unknown.json"
     ],
     "brightdata": [
       "in-honor-of-jean-michel-basquiat-off-broadway-2026/broadwayworld--fred-mason.json",
@@ -1135,7 +1216,10 @@
       "american-buffalo-2022/theatermania--kenji-fujishima.json",
       "birthday-candles-2022/vulture--helen-shaw.json",
       "birthday-candles-2022/theatermania--christian-lewis.json",
-      "company-2021/nytimes--jesse-green.json"
+      "company-2021/nytimes--jesse-green.json",
+      "whos-afraid-of-virginia-woolf-2020/deadline--greg-evans.json",
+      "sea-wall-a-life-2019/theatermania--adam-feldman.json",
+      "frankie-and-johnny-in-the-clair-de-lune-2019/theatermania--zachary-stewart.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1220,12 +1304,19 @@
       "birthday-candles-2022/chicagotribune--chris-jones.json",
       "birthday-candles-2022/dailybeast--tim-teeman.json",
       "mrs-doubtfire-2021/theater-life--paulanne-simmons.json",
-      "trouble-in-mind-2021/playbill--marc-j-franklin.json"
+      "trouble-in-mind-2021/playbill--marc-j-franklin.json",
+      "the-story-west-end-2026/theupcoming--emilia-gould.json",
+      "the-lonely-few-off-broadway-2024/theater-life--paulanne-simmons.json",
+      "diana-the-musical-2021/nytimes--jesse-green.json",
+      "a-soldiers-play-2020/theater-life--isa-goldberg.json",
+      "the-sound-inside-2019/theater-scene--joel-benjamin.json",
+      "linda-vista-2019/playbill--andrew-gans.json",
+      "betrayal-2019/telegraph--dominic-cavendish.json"
     ]
   },
   "failuresByOutlet": {
     "The Stage": {
-      "count": 12,
+      "count": 8,
       "domain": "thestage.co.uk",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -1238,9 +1329,9 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "The Reviews Hub": {
-      "count": 1,
-      "domain": "thereviewshub.com",
+    "The Guardian": {
+      "count": 2,
+      "domain": "theguardian.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1252,8 +1343,15 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
-    "BroadwayWorld": {
+    "The Reviews Hub": {
       "count": 1,
+      "domain": "thereviewshub.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "BroadwayWorld": {
+      "count": 2,
       "domain": "unknown",
       "hasCredentials": false,
       "isPaywalled": false,
@@ -1273,6 +1371,13 @@
       "isPaywalled": false,
       "isKnownBlocked": false
     },
+    "The Rapidian": {
+      "count": 1,
+      "domain": "therapidian.org",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
     "Broadway News": {
       "count": 2,
       "domain": "broadway.news",
@@ -1285,13 +1390,6 @@
       "domain": "northjersey.com",
       "hasCredentials": true,
       "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "Village Voice": {
-      "count": 1,
-      "domain": "blogs.villagevoice.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
       "isKnownBlocked": false
     },
     "Woman Around Town": {
@@ -1311,13 +1409,6 @@
     "Daily Echo": {
       "count": 1,
       "domain": "facebook.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Guardian": {
-      "count": 1,
-      "domain": "theguardian.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
@@ -1363,20 +1454,6 @@
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": true
-    },
-    "Broadway & Me": {
-      "count": 4,
-      "domain": "broadwayandme.blogspot.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "San Francisco Chronicle": {
-      "count": 1,
-      "domain": "datebook.sfchronicle.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
     }
   },
   "urlDiscoveries": []
