@@ -1,43 +1,133 @@
 {
-  "updatedAt": "2026-10-03T13:28:53.682Z",
-  "processed": 197,
-  "failed": 150,
-  "successRate": "56.8%",
+  "updatedAt": "2026-10-03T13:41:46.838Z",
+  "processed": 235,
+  "failed": 191,
+  "successRate": "55.2%",
   "tierBreakdown": {
-    "playwright": 31,
-    "amp": 1,
-    "browserbase": 2,
+    "playwright": 130,
+    "amp": 4,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 12,
-    "scrapingbee": 6,
-    "brightdata": 0,
+    "scrapingdog": 25,
+    "scrapingbee": 27,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 9
+    "archive": 56
   },
-  "browserbaseSessions": 0,
+  "browserbaseSessions": 10,
   "recentActivity": [
     {
-      "t": "2026-10-03T13:14:05.347Z",
-      "event": "bb-session",
-      "session": "30e10e47",
-      "url": "https://www.nytimes.com/2017/04/02/theater/review-the-play-that-goes-wrong-revie"
+      "t": "2026-10-03T11:25:45.010Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     },
     {
-      "t": "2026-10-03T13:14:06.246Z",
+      "t": "2026-10-03T11:31:28.171Z",
+      "event": "bb-session",
+      "session": "0152eac7",
+      "url": "https://www.thestage.co.uk/reviews/the-mousetrap-review-at-st-martins-theatre-lo"
+    },
+    {
+      "t": "2026-10-03T11:31:29.021Z",
       "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "domain": "thestage.co.uk"
     },
     {
-      "t": "2026-10-03T13:21:51.803Z",
+      "t": "2026-10-03T11:54:41.885Z",
       "event": "bb-session",
-      "session": "1939adac",
-      "url": "http://www.publictheater.org/"
+      "session": "7c5a84d9",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
     },
     {
-      "t": "2026-10-03T13:22:10.840Z",
+      "t": "2026-10-03T11:55:03.588Z",
       "event": "bb-session",
-      "session": "f2735c5d",
-      "url": "http://www.publictheater.org/"
+      "session": "16919035",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-10-03T12:09:21.386Z",
+      "event": "bb-session",
+      "session": "2a74423c",
+      "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/"
+    },
+    {
+      "t": "2026-10-03T12:16:00.478Z",
+      "event": "bb-session",
+      "session": "258ab150",
+      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
+    },
+    {
+      "t": "2026-10-03T12:16:11.998Z",
+      "event": "bb-session",
+      "session": "f322efda",
+      "url": "https://deadline.com/2026/09/blue-man-group-broadway-holiday-show-1237110780/"
+    },
+    {
+      "t": "2026-10-03T12:18:19.487Z",
+      "event": "bb-session",
+      "session": "f2fc8645",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/the-story-review-hectorin"
+    },
+    {
+      "t": "2026-10-03T12:18:20.475Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-03T12:21:45.504Z",
+      "event": "bb-session",
+      "session": "b36b55ce",
+      "url": "https://www.thestage.co.uk/reviews/disruption-review-at-the-park-theatre-london-"
+    },
+    {
+      "t": "2026-10-03T12:21:46.374Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-10-03T12:24:44.821Z",
+      "event": "bb-session",
+      "session": "5d37fc56",
+      "url": "https://northernartsreview.co.uk/north-east/review-mary-shelley-at-peoples-theat"
+    },
+    {
+      "t": "2026-10-03T12:25:04.377Z",
+      "event": "bb-session",
+      "session": "7a11739c",
+      "url": "https://northernartsreview.co.uk/north-east/review-mary-shelley-at-peoples-theat"
+    },
+    {
+      "t": "2026-10-03T12:26:39.635Z",
+      "event": "bb-session",
+      "session": "70d78d20",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-10-03T12:26:40.597Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-03T12:27:57.478Z",
+      "event": "bb-session",
+      "session": "e534f0c9",
+      "url": "https://www.newyorker.com/goings-on-about-town/just-in-time"
+    },
+    {
+      "t": "2026-10-03T12:27:58.525Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
+    },
+    {
+      "t": "2026-10-03T12:32:21.406Z",
+      "event": "bb-session",
+      "session": "27d000a3",
+      "url": "https://www.newyorker.com/goings-on-about-town/maybe-happy-ending-12-02-24"
+    },
+    {
+      "t": "2026-10-03T12:32:22.332Z",
+      "event": "bb-cookie-inject",
+      "domain": "newyorker.com"
     }
   ]
 }
