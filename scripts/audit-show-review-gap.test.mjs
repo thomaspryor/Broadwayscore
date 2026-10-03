@@ -151,6 +151,20 @@ test('acceptSerpCensusResult rejects non-review and wrong-show noise from the sa
   assert.equal(acceptSerpCensusResult(wrongShow, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO }), null);
 });
 
+// BRO-4540: "A Thousand Natural Shocks" (Headwall, LIC) census accepted a
+// different play ("Natural Shocks") and novel pages because urlMatchesShow
+// tolerates one missing token on 3+ token titles.
+test('acceptSerpCensusResult rejects different works sharing most title tokens (BRO-4540)', () => {
+  const show = { id: 'a-thousand-natural-shocks-off-broadway-2026', title: 'A Thousand Natural Shocks' };
+  const info = { creativeNames: [] };
+  const acc = (url, title = '') => acceptSerpCensusResult({ url, title, snippet: '' }, { show, showInfo: info });
+  assert.equal(acc('https://exeuntnyc.com/reviews/review-natural-shocks-wp-theater/', 'Review: Natural Shocks'), null);
+  assert.equal(acc('https://www.theaterscene.net/plays/solo-plays/natural-shocks/victor-gluck/'), null);
+  assert.equal(acc('https://reactormag.com/book-review-a-thousand-natural-shocks-by-omar-hussain/'), null);
+  assert.equal(acc('https://www.amazon.com/Thousand-Natural-Shocks-Omar-Hussain/dp/B0DJG1P9GY'), null);
+  assert.ok(acc('https://www.example-theater-blog.com/review-a-thousand-natural-shocks-secret-theatre/'), 'real review still accepted');
+});
+
 test('acceptSerpCensusResult returns null for a missing/empty url', () => {
   assert.equal(acceptSerpCensusResult({ title: 'no url here' }, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO }), null);
   assert.equal(acceptSerpCensusResult(null, { show: TRAINSPOTTING_SHOW, showInfo: TRAINSPOTTING_SHOW_INFO }), null);
