@@ -14,7 +14,10 @@
  *   node scripts/scan-serp-adoptions.js [--root=DIR] [--fix] [--reason=PREFIX]
  *
  * --reason limits reporting and --fix to rejects whose reason starts with
- * PREFIX (e.g. --reason=review-slug-downgrade).
+ * PREFIX (e.g. --reason=review-slug-downgrade). For that class, audit the
+ * stored text FIRST and stamp serpDowngradeVerifiedUrl on files whose current
+ * url serves the critic's review: --fix blacklists the current url
+ * (serpRejectedUrls) and does not check the restored url is live (BRO-4546).
  *
  * A reject is REPAIRED when reverted to a previousUrl that itself passes the
  * predicate (--fix does this via updateFileUrlWithInvariant, aggregator fields
@@ -34,6 +37,10 @@ const { AGGREGATOR_FIELDS } = require('./lib/rediscovery-candidate');
 
 const REVERTED_METHOD = 'serp-rejected-non-review';
 const SERP_METHOD_RE = /^(google-serp|scrapingdog|wrongUrl-serp)/;
+
+function normUrl(u) {
+  return String(u || '').trim().replace(/^https?:\/\/(www\.)?/i, '').replace(/[?#].*$/, '').replace(/\/+$/, '').toLowerCase();
+}
 
 function evaluateFile(data, showTitle) {
   if (!data || !SERP_METHOD_RE.test(data.urlDiscoveryMethod || '')) return null;
@@ -58,6 +65,7 @@ function main() {
 
   let scanned = 0;
   const rejects = [];
+  const urlOwners = new Map();
   for (const dir of fs.readdirSync(root)) {
     const d = path.join(root, dir);
     if (!fs.statSync(d).isDirectory() || dir.startsWith('_')) continue;
@@ -66,6 +74,8 @@ function main() {
       const fp = path.join(d, f);
       let data;
       try { data = JSON.parse(fs.readFileSync(fp, 'utf8')); } catch { continue; }
+      const nu = normUrl(data && data.url);
+      if (nu) (urlOwners.get(nu) || urlOwners.set(nu, []).get(nu)).push(`${dir}/${f}`);
       const res = evaluateFile(data, titleById.get(data.showId || dir));
       if (!res) continue;
       scanned++;
@@ -77,7 +87,10 @@ function main() {
   let contained = 0;
   let reverted = 0;
   for (const r of rejects) {
-    const prevOk = !!r.prev && evaluateSerpAcceptance({ url: r.prev, showTitle: r.title }).ok;
+    // BRO-4546: a previousUrl another file (other production, show or critic)
+    // already holds is a collision, not a restorable review url.
+    const prevOwners = (urlOwners.get(normUrl(r.prev)) || []).filter(x => x !== r.rel);
+    const prevOk = !!r.prev && prevOwners.length === 0 && evaluateSerpAcceptance({ url: r.prev, showTitle: r.title }).ok;
     let state = 'REJECT   ';
     if (fix && prevOk) {
       const out = updateFileUrlWithInvariant(r.fp, r.prev, {
@@ -98,4 +111,4 @@ function main() {
 }
 
 if (require.main === module) main();
-module.exports = { evaluateFile, REVERTED_METHOD, SERP_METHOD_RE };
+module.exports = { evaluateFile, normUrl, REVERTED_METHOD, SERP_METHOD_RE };
