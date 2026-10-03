@@ -34,7 +34,7 @@ const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { tourAutomationMode } = require('./lib/tour-automation-mode');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
-const { openTourCandidates, recordTourCandidates } = require('./lib/tour-roundup-candidate');
+const { openTourCandidates, recordTourCandidates, roundupDateFromSlug } = require('./lib/tour-roundup-candidate');
 const { decideTourDates } = require('./lib/tour-schedule');
 const { buildTourEntry } = require('./lib/tour-entry');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
@@ -112,14 +112,20 @@ async function main() {
     const { url: scheduleUrl, html } = await fetchSchedule(probe, found ? async () => '' : fetchPage);
     let wiki = '';
     try { wiki = await fetchWikiText(parent.title); } catch (e) { console.log(`  wikipedia failed: ${e.message}`); }
+    // A schedule row may carry the BWW roundup seen for the same show
+    // (recordTourCandidates); its date confirms the launch when Wikipedia is
+    // silent (BRO-4563).
+    const roundupUrl = found ? (c.roundupUrl || null) : c.url;
+    // Only the publication date in the slug: when the job first saw a roundup
+    // says nothing about when the tour launched (a backfilled old roundup).
+    const roundupDate = roundupUrl ? roundupDateFromSlug(roundupUrl) : null;
     const decision = scheduleUrl
-      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart } : { seenAt: c.firstSeen || c.lastSeen })
+      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart, roundupDate } : { seenAt: c.firstSeen || c.lastSeen, roundupDate })
       : { write: {}, notes: [], problem: 'no Tours To You page found for this title' };
-    const roundupUrl = found ? null : c.url;
     const built = buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds });
     if (built.skip) console.log(`  stays a suggestion: ${built.skip}`);
     else console.log(`  ${write ? 'creating' : 'would create'} ${built.entry.id} (${built.entry.openingDate}..${built.entry.closingDate || 'running'})`);
-    results.push({ candidate: c.broadwayShowId, roundupUrl, scheduleUrl, notes: decision.notes, skip: built.skip || null, entry: built.entry || null });
+    results.push({ candidate: c.broadwayShowId, roundupUrl, scheduleUrl, notes: decision.notes, launchSource: decision.launchSource || null, skip: built.skip || null, entry: built.entry || null });
   }
 
   const created = [];
@@ -130,7 +136,7 @@ async function main() {
       // Re-check under the write lock: another run may have added it, or a
       // tour of the title may have been added or reopened meanwhile.
       if (snapshot.shows.some(s => s.id === r.entry.id)) continue;
-      const recheck = buildTourEntry({ parent: snapshot.shows.find(s => s.id === r.candidate), shows: snapshot.shows, decision: { write: { openingDate: r.entry.openingDate, closingDate: r.entry.closingDate }, notes: r.notes }, roundupUrl: r.roundupUrl, scheduleUrl: r.scheduleUrl, retiredIds });
+      const recheck = buildTourEntry({ parent: snapshot.shows.find(s => s.id === r.candidate), shows: snapshot.shows, decision: { write: { openingDate: r.entry.openingDate, closingDate: r.entry.closingDate }, notes: r.notes, launchSource: r.launchSource }, roundupUrl: r.roundupUrl, scheduleUrl: r.scheduleUrl, retiredIds });
       if (recheck.skip) { console.log(`  ${r.entry.id} skipped under lock: ${recheck.skip}`); continue; }
       snapshot.shows.push(r.entry);
       created.push(r.entry.id);

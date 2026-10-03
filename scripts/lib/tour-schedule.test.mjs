@@ -121,6 +121,36 @@ test('a new tour is matched only near when its roundup was seen', () => {
   assert.match(decideTourDates({ id: null }, html, wiki, NOW).problem, /no schedule segment/, 'no seenAt, no guess');
 });
 
+test('a BWW launch roundup dated near the first stop confirms the launch when Wikipedia is silent (BRO-4563)', () => {
+  // Operation Mincemeat: Tours To You from 2026-09-20, BWW roundup 2026-09-30, Wikipedia silent.
+  const html = page([
+    row('Durham, NC', 'DPAC', 'September 20-27, 2026'),
+    row('Washington, DC', 'National Theatre', 'September 29–October 11, 2026'),
+    row('Boston, MA', 'Emerson Colonial', 'October 13-25, 2026'),
+  ]);
+  const blank = { id: null, title: 'Operation Mincemeat', openingDate: null, closingDate: null };
+  // Found running on Tours To You (segmentStart), roundup carried on the row.
+  const found = decideTourDates(blank, html, '', NOW, { segmentStart: '2026-09-20', roundupDate: '2026-09-30' });
+  assert.deepEqual(found.write, { openingDate: '2026-09-20' });
+  assert.equal(found.launchSource, 'bww-roundup');
+  assert.ok(found.notes.some(n => /confirmed by the BroadwayWorld roundup dated 2026-09-30/.test(n)), found.notes.join(' | '));
+  // A roundup row (seenAt = when the landing job saw it, days later).
+  const seen = decideTourDates(blank, html, '', NOW, { seenAt: '2026-10-04T00:00:00Z', roundupDate: '2026-09-30' });
+  assert.equal(seen.write.openingDate, '2026-09-20');
+  assert.equal(seen.launchSource, 'bww-roundup');
+  // No roundup date: unchanged, Wikipedia is still required.
+  assert.deepEqual(decideTourDates(blank, html, '', NOW, { segmentStart: '2026-09-20' }).write, {});
+  assert.equal(decideTourDates(blank, html, '', NOW, { segmentStart: '2026-09-20' }).launchSource, null);
+  // A roundup far from the first stop is about something else.
+  assert.deepEqual(decideTourDates(blank, html, '', NOW, { segmentStart: '2026-09-20', roundupDate: '2026-12-15' }).write, {});
+  assert.deepEqual(decideTourDates(blank, html, '', NOW, { segmentStart: '2026-09-20', roundupDate: '2026-09-01' }).write, {});
+  assert.match(decideTourDates(blank, html, '', NOW, { seenAt: '2026-10-04', roundupDate: '2026-12-15' }).problem, /no schedule segment/);
+  // Wikipedia naming the launch still wins and is reported as such.
+  const wiki = decideTourDates(blank, html, 'The North American tour began on September 20, 2026 in Durham', NOW, { segmentStart: '2026-09-20', roundupDate: '2026-09-30' });
+  assert.equal(wiki.write.openingDate, '2026-09-20');
+  assert.equal(wiki.launchSource, 'wikipedia');
+});
+
 test('a stray mention of the last stop date does not close a tour', () => {
   const html = page([
     row('Baltimore, MD', 'Hippodrome', 'December 7-14, 2024'),

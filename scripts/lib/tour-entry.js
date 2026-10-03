@@ -56,6 +56,10 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
   if (retiredIds && retiredIds.has(id)) return { skip: `id ${id} is retired` };
 
   const close = decision.write.closingDate || null;
+  // What confirmed the launch beside the schedule (BRO-4563): Wikipedia, or a
+  // BWW launch roundup when Wikipedia hasn't caught up.
+  const byRoundup = decision.launchSource === 'bww-roundup';
+  const second = byRoundup ? 'BroadwayWorld roundup' : 'Wikipedia';
   const entry = {
     id,
     title: parent.title,
@@ -74,13 +78,13 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
     ...(roundupUrl
       ? { discoverySource: 'aggregator-roundup:bww-tour-roundup', tourLaunchEvidence: `BroadwayWorld national-tour roundup ${roundupUrl}` }
       // Found running on Tours To You (tour-discovery.js, BRO-4325).
-      : { discoverySource: 'tour-schedule:tourstoyou', tourLaunchEvidence: `Tours To You schedule ${scheduleUrl}, launch confirmed by Wikipedia` }),
-    statusSource: `auto-created ${today} (BRO-4262): ${scheduleUrl || 'Tours To You'} + Wikipedia; ${decision.notes.join('; ')}`,
-    openingDateSource: 'tourstoyou+wikipedia',
+      : { discoverySource: 'tour-schedule:tourstoyou', tourLaunchEvidence: `Tours To You schedule ${scheduleUrl}, launch confirmed by ${second}` }),
+    statusSource: `auto-created ${today} (BRO-4262): ${scheduleUrl || 'Tours To You'} + ${second}; ${decision.notes.join('; ')}`,
+    openingDateSource: byRoundup ? 'tourstoyou+bww-roundup' : 'tourstoyou+wikipedia',
     // The page the dates came from: numbered pages (the-book-of-mormon-1) are
     // other tours, so the daily date job must not guess from the title.
     ...(scheduleSlugOf(scheduleUrl) ? { tourScheduleSlug: scheduleSlugOf(scheduleUrl) } : {}),
-    ...(close ? { closingDateSource: 'tourstoyou+wikipedia', closingDateUpdatedAt: today } : {}),
+    ...(close ? { closingDateSource: byRoundup ? 'tourstoyou' : 'tourstoyou+wikipedia', closingDateUpdatedAt: today } : {}),
     images: { hero: null, thumbnail: null, poster: null },
   };
   Object.assign(entry, tourInheritance(entry, parent) || {});

@@ -281,3 +281,33 @@ test('location-preposition: a non-prepositioned occurrence anywhere keeps the ma
   const r = matchSlugToShow('did-critics-cheer-the-revival-of-chicago', LOC_SHOWS);
   assert.equal(r && r.show.id, 'chicago-1996', '"of-chicago" is not a location preposition — Chicago must still match');
 });
+
+// BRO-4563: "Richard II" tokenized to [richard] (the numeral was dropped as a
+// <3-char token), so an actor's name in a roundup slug routed Hay Fever's
+// reviews to Richard II. Short Roman numerals are now required title tokens.
+const ROMAN_SHOWS = [
+  { id: 'richard-ii-off-west-end-2026', title: 'Richard Ii', status: 'open', openingDate: '2026-09-10', category: 'off-west-end' },
+  { id: 'hay-fever-west-end-2026', title: 'Hay Fever', status: 'open', openingDate: '2026-10-01', category: 'west-end' },
+  { id: 'henry-iv-2003', title: 'Henry IV', status: 'closed', openingDate: '2003-11-20', category: 'broadway' },
+  { id: 'henry-vi-a-trilogy-in-two-parts-off-broadway-2026', title: 'Henry VI: A Trilogy in Two Parts', status: 'open', openingDate: '2026-03-01', category: 'off-broadway' },
+];
+
+test('roman numerals: an actor named Richard does not route a Hay Fever roundup to Richard II', () => {
+  const r = matchBwwRoundupSlugToShow('Review-Roundup-Richard-E-Grant-Christine-Baranski-in-HAY-FEVER-20261002', ROMAN_SHOWS);
+  assert.equal(r && r.show.id, 'hay-fever-west-end-2026');
+});
+
+test('roman numerals: a Richard II roundup still matches Richard II', () => {
+  const r = matchBwwRoundupSlugToShow('Review-Roundup-RICHARD-II-Opens-at-the-Bridge-Theatre-20260912', ROMAN_SHOWS);
+  assert.equal(r && r.show.id, 'richard-ii-off-west-end-2026');
+});
+
+test('roman numerals: Henry IV and Henry VI no longer match each other', () => {
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-HENRY-VI-Off-Broadway-20260301', ROMAN_SHOWS)?.show.id, 'henry-vi-a-trilogy-in-two-parts-off-broadway-2026');
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-HENRY-IV-Opens-on-Broadway-20031120', ROMAN_SHOWS)?.show.id, 'henry-iv-2003');
+});
+
+test('roman numerals: a kept numeral does not lift a short single-word title past the gate', () => {
+  const shows = [{ id: 'life-x-3-2003', title: 'Life (x) 3', status: 'closed', openingDate: '2003-12-01', category: 'broadway' }];
+  assert.equal(matchBwwRoundupSlugToShow('Review-Roundup-Malcolm-X-Opera-Brings-a-Life-to-the-Met-20260401', shows), null);
+});

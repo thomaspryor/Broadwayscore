@@ -206,6 +206,21 @@ function segmentLaunch(seg, wikiText) {
   return row ? row.start : null;
 }
 
+// A BroadwayWorld national-tour roundup is published after the launch press
+// night: from a few days before the first engagement (an early press
+// performance) to ROUNDUP_LAUNCH_DAYS after it. Inside that window it confirms
+// the schedule's first engagement as the launch when Wikipedia hasn't caught
+// up yet, the usual case for a tour a few weeks old (Operation Mincemeat:
+// Tours To You from 2026-09-20, BWW "Launches North American Leg" roundup
+// 2026-09-30, Wikipedia silent; BRO-4563).
+const ROUNDUP_LAUNCH_DAYS = 45;
+function roundupConfirmsLaunch(seg, roundupDate) {
+  if (!seg || !roundupDate) return false;
+  const at = new Date(`${String(roundupDate).slice(0, 10)}T00:00:00Z`).getTime();
+  if (Number.isNaN(at)) return false;
+  return at >= seg.start.getTime() - 3 * DAY && at <= seg.start.getTime() + ROUNDUP_LAUNCH_DAYS * DAY;
+}
+
 // Tour text about another country's production is never evidence for a
 // North American launch ("the Australian tour opened ... 14 March 2026").
 const FOREIGN_PRODUCTION = /\b(uk|united kingdom|british|west end|england|scotland|ireland|irish|australia|australian|new zealand|germany|german|japan|japanese|korea|korean|china|chinese|europe|european|international)\b/i;
@@ -310,7 +325,7 @@ function wikiNamesLaunchCity(wikiText, row) {
  * - A tour found running (segmentStart): the segment starting then.
  * No match = null, never a guess.
  */
-function pickSegment(segments, tour, wikiText, { seenAt, segmentStart } = {}) {
+function pickSegment(segments, tour, wikiText, { seenAt, segmentStart, roundupDate } = {}) {
   const tours = segments.filter(s => s.rows.length > 1);
   const launch = tour && tour.openingDate ? new Date(`${String(tour.openingDate).slice(0, 10)}T00:00:00Z`) : null;
   if (launch && !Number.isNaN(launch.getTime())) {
@@ -332,7 +347,14 @@ function pickSegment(segments, tour, wikiText, { seenAt, segmentStart } = {}) {
   const seen = seenAt ? new Date(seenAt) : null;
   if (!seen || Number.isNaN(seen.getTime())) return null;
   const near = named.filter(x => x.launch <= new Date(seen.getTime() + 7 * DAY) && x.launch >= new Date(seen.getTime() - 120 * DAY));
-  return near.length === 1 ? near[0].s : null;
+  if (near.length === 1) return near[0].s;
+  // No Wikipedia-named launch near the roundup: the one segment the roundup's
+  // own date confirms (BRO-4563).
+  if (near.length === 0 && roundupDate) {
+    const hit = tours.filter(s => roundupConfirmsLaunch(s, roundupDate));
+    return hit.length === 1 ? hit[0] : null;
+  }
+  return null;
 }
 
 /**
@@ -379,7 +401,7 @@ function statedClosedRanges(source) {
  * @param {string} scheduleHtml Tours To You page
  * @param {string} wikiText Wikipedia raw wikitext of the show's article
  * @param {Date} [now]
- * @param {{seenAt?: string, segmentStart?: string}} [opts] when the roundup for a new tour was first seen, or the first engagement of a tour found running
+ * @param {{seenAt?: string, segmentStart?: string, roundupDate?: string}} [opts] when the roundup for a new tour was first seen, or the first engagement of a tour found running; roundupDate is the BWW roundup's slug date (BRO-4563)
  * @returns {{write: {openingDate?: string, closingDate?: string}, notes: string[], problem?: string}}
  */
 function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = {}) {
@@ -390,11 +412,15 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
   if (!seg) return { write: {}, notes: [`${segments.length} segment(s), none matches this tour`], problem: 'no schedule segment matches this tour' };
 
   const write = {};
-  const launch = segmentLaunch(seg, wikiText);
+  const wikiLaunch = segmentLaunch(seg, wikiText);
+  const roundupLaunch = !wikiLaunch && roundupConfirmsLaunch(seg, opts.roundupDate) ? seg.start : null;
+  const launch = wikiLaunch || roundupLaunch;
+  const launchSource = wikiLaunch ? 'wikipedia' : roundupLaunch ? 'bww-roundup' : null;
   const notes = [`segment ${iso(seg.start)}..${iso(seg.end)} (${seg.rows.length} engagements)`];
   if (!tour.openingDate) {
     if (launch) write.openingDate = iso(launch);
     else notes.push('no engagement date in this segment is named by Wikipedia; launch left unset');
+    if (roundupLaunch) notes.push(`launch ${iso(roundupLaunch)} confirmed by the BroadwayWorld roundup dated ${String(opts.roundupDate).slice(0, 10)} (Wikipedia silent)`);
   } else if (launch && Math.abs(new Date(`${tour.openingDate}T00:00:00Z`) - launch) / DAY > 14) {
     notes.push(`stored launch ${tour.openingDate} differs from ${iso(launch)} by >14 days`);
   }
@@ -417,7 +443,7 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
     else if (separateTourStarted) write.closingDate = iso(seg.end);
     else notes.push(`last listed stop ended ${iso(seg.end)} but nothing confirms the tour closed; left open`);
   }
-  return { write, notes };
+  return { write, notes, launchSource };
 }
 
 /** Tours To You slug guesses for a title ("MJ" is listed as mj-the-musical). */
@@ -439,6 +465,8 @@ module.exports = {
   wikiNamesLaunchCity,
   wikiNamesClosingMonth,
   decideTourDates,
+  roundupConfirmsLaunch,
+  ROUNDUP_LAUNCH_DAYS,
   statedClosedRanges,
   scheduleSlugs,
   wikiNames,
