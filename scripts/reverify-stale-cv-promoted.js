@@ -41,6 +41,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { audit } = require('./audit-stale-cv-hash');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { assessClearSafety } = require('./lib/reverify-clear-guards');
+const { selectCvPromotedNonReview, planClear } = require('./lib/cv-promoted-nonreview-selector');
 
 const USAGE = `reverify-stale-cv-promoted.js — re-verify reviews excluded by a CV-promoted
 flag (wrongShow / wrongProduction / isNonReview) whose stored contentHash no longer
@@ -52,6 +53,9 @@ Usage:
   node scripts/reverify-stale-cv-promoted.js             process all findings
   node scripts/reverify-stale-cv-promoted.js --limit=20  smoke-test a subset
   node scripts/reverify-stale-cv-promoted.js --dry-run   verify only, write nothing
+  node scripts/reverify-stale-cv-promoted.js --cv-promoted-nonreview --opened-since=2026-07-01
+                                                         select CV-promoted isNonReview files (any hash state)
+                                                         on shows opened since the date instead of stale-hash findings
   node scripts/reverify-stale-cv-promoted.js --help, -h  print this usage and exit
 
 Makes live LLM verification calls and writes review files — never blind-clears.
@@ -108,9 +112,20 @@ async function main() {
   const showById = {};
   for (const s of showsData.shows) showById[s.id] = s;
 
-  const { findings } = audit();
+  let findings;
+  if (args.includes('--cv-promoted-nonreview')) {
+    const sinceArg = args.find(a => a.startsWith('--opened-since='));
+    const openedSince = sinceArg ? sinceArg.split('=')[1] : undefined;
+    if (sinceArg && !/^\d{4}-\d{2}-\d{2}$/.test(openedSince)) {
+      console.error(`--opened-since must be YYYY-MM-DD, got "${openedSince}"`);
+      process.exit(1);
+    }
+    findings = selectCvPromotedNonReview(REVIEW_TEXTS_DIR, showsData.shows, { openedSince });
+  } else {
+    ({ findings } = audit());
+  }
   const todo = findings.slice(0, Number.isFinite(limit) ? limit : findings.length);
-  console.log(`${findings.length} stale-hash CV-promoted findings; processing ${todo.length}${dryRun ? ' (DRY RUN)' : ''}\n`);
+  console.log(`${findings.length} CV-promoted findings; processing ${todo.length}${dryRun ? ' (DRY RUN)' : ''}\n`);
 
   const stats = { cleared: 0, confirmed: 0, protected: 0, skippedNoText: 0, errors: 0, refused: 0, refusalsByCode: {} };
 
@@ -224,8 +239,14 @@ async function main() {
         // entirely, which is how low-confidence verdicts reached live reviews. The
         // inner check below is kept as defence in depth so this branch stays correct
         // even if a caller reaches it without the central gate.
-        if (clean && (data.wrongShow || data.wrongProduction)) {
-          const wantsFullClear = Boolean(data.wrongProduction);
+        // All-or-none across flag families (BRO-4552): a partial clear stamps an
+        // override that strands the still-flagged remainder. See planClear().
+        const plan = planClear(data, result, clean);
+        if (plan.heldBack) {
+          console.log(`  (clean but a flag family is below the high-confidence bar — clearing none; hash still corrected)`);
+        }
+        if (plan.clearWrong) {
+          const wantsFullClear = !plan.wrongShowOnly;
           if (result.confidence === 'high') {
             clearWrongProductionFlags(data, {
               source: 'reverify-stale-cv-promoted.js',
@@ -248,8 +269,7 @@ async function main() {
         // audit-stale-cv-hash.js runs — while isNonReview stayed true and the
         // review stayed excluded forever, permanently invisible). Gated on high
         // confidence to match isNonReviewDemotedByFreshCV's own bar (review-guards.js).
-        const articleConfidence = result.articleTypeConfidence || result.confidence;
-        if (clean && data.isNonReview && articleConfidence === 'high') {
+        if (plan.clearNonReview) {
           data.isNonReview = false;
           // null, not delete — neither field has a CLEAR_BREADCRUMBS entry, so
           // a delete is silently reverted by safeWriteReview's merge-mode
@@ -259,8 +279,6 @@ async function main() {
           data.nonReviewOverride = `reverify-stale-cv-promoted.js: ${result.reasoning || 'stored fullText re-verified clean (task #1404 stale-hash sweep)'}`;
           data.nonReviewOverrideAt = new Date().toISOString();
           didClear = true;
-        } else if (clean && data.isNonReview) {
-          console.log(`  (clean but articleTypeConfidence=${articleConfidence} — leaving isNonReview flagged; hash still corrected)`);
         }
 
         if (didClear) data.clearedFlagsBeforeRecovery = preClearFlagState;

@@ -44,12 +44,49 @@ function _normOpts(opts = {}) {
   };
 }
 
+// BRO-4146: per-process miss/write report for CI diagnosis. Repeated shows
+// were re-paying full SERP cost with a restored cache, and gather job logs are
+// too long to read the per-query "SERP cache hit" lines. When
+// SERP_CACHE_REPORT_DIR is set, the process writes a small JSON summary there
+// on exit (hits, misses, writes, the most-missed queries, and how many misses
+// were queries this same process had already written).
+const REPORT_DIR = process.env.SERP_CACHE_REPORT_DIR || '';
+const _missCounts = new Map();
+const _written = new Set();
+let _missAfterWrite = 0;
+const _reportKey = (query, opts) => JSON.stringify([String(query || '').trim().toLowerCase(), _normOpts(opts)]);
+
 function get(query, opts = {}) {
-  return _cache.get(query, _normOpts(opts));
+  const hit = _cache.get(query, _normOpts(opts));
+  if (!hit && REPORT_DIR) {
+    const k = _reportKey(query, opts);
+    _missCounts.set(k, (_missCounts.get(k) || 0) + 1);
+    if (_written.has(k)) _missAfterWrite++;
+  }
+  return hit;
 }
 
 function set(query, opts, value) {
   _cache.set(query, _normOpts(opts), value);
+  if (REPORT_DIR && value !== null && value !== undefined) _written.add(_reportKey(query, opts));
+}
+
+if (REPORT_DIR) {
+  process.on('exit', () => {
+    try {
+      const fs = require('fs');
+      const path = require('path');
+      fs.mkdirSync(REPORT_DIR, { recursive: true });
+      const top = [..._missCounts.entries()].sort((a, b) => b[1] - a[1]).slice(0, 25);
+      fs.writeFileSync(path.join(REPORT_DIR, `serp-report-${path.basename(process.argv[1] || 'node')}-${process.pid}.json`), JSON.stringify({
+        script: path.basename(process.argv[1] || ''),
+        ...stats(),
+        distinctMissed: _missCounts.size,
+        missAfterWrite: _missAfterWrite,
+        topMisses: top.map(([k, n]) => ({ n, key: JSON.parse(k) })),
+      }));
+    } catch { /* diagnostics only */ }
+  });
 }
 
 function stats() {
