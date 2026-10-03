@@ -134,3 +134,19 @@ test('resume prefers higher priority, then older card, and the newest refusal pe
   assert.equal(r.issue.identifier, 'BRO-400');
   assert.equal(r.ref, 'land/bro-400-new');
 });
+
+test('a cancelled run is an eviction from the landing slot, not a refusal', () => {
+  assert.equal(findResumeCard([startedCard()], [landRef()], { nowMs: NOW }).kind, 'refused');
+  assert.equal(findResumeCard([startedCard()], [landRef({}, { conclusion: 'cancelled' })], { nowMs: NOW }).kind, 'evicted');
+});
+
+test('stops resuming a ref after MAX_LAND_RUNS runs, and while a dispatched Land run is in flight', () => {
+  const { MAX_LAND_RUNS } = require('./cloud-worker-pick.js');
+  assert.equal(findResumeCard([startedCard()], [landRef({}, { attempts: MAX_LAND_RUNS })], { nowMs: NOW }), null);
+  assert.equal(findResumeCard([startedCard()], [landRef({}, { attempts: MAX_LAND_RUNS - 1 })], { nowMs: NOW }).ref, 'land/bro-100-fix');
+  assert.equal(findResumeCard([startedCard()], [landRef()], { nowMs: NOW, landDispatchInFlight: true }), null);
+});
+
+test('a sibling ref with no Land run yet blocks resume for that card', () => {
+  assert.equal(findResumeCard([startedCard()], [landRef(), landRef({ ref: 'land/bro-100-new', sha: 'ddd', lastRun: null })], { nowMs: NOW }), null);
+});

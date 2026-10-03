@@ -44,7 +44,13 @@
  * a headless worker (safe VERIFY, no headless blocker). The quiet period
  * leaves a live Mac or cloud session room to fix its own refusal; the window
  * keeps long-abandoned refs out. A card with any ref still landing (queued,
- * running, or a tip pushed after its last run) is left alone.
+ * running, a tip pushed after its last run, or a ref with no run yet) is left
+ * alone, and so is every card while a dispatched Land run is in flight
+ * (dispatched runs report head_branch main, so they can't be tied to a ref).
+ * A ref that has been through MAX_LAND_RUNS runs is not resumed again: the
+ * same card would otherwise win every firing ahead of fresh work. A
+ * `cancelled` run is an eviction from the shared landing slot (CLOUD.md
+ * Landing), so its resume kind is 'evicted': re-run, nothing to fix.
  *
  * Pure functions only. The CLI is scripts/cloud-worker-pick.js.
  */
@@ -56,6 +62,7 @@ const IDLE_MS = 6 * HOUR_MS;
 const PRIORITIES = new Set([1, 2]);
 const STRANDED_MS = 90 * 60 * 1000;
 const RESUME_WINDOW_MS = 7 * 24 * HOUR_MS;
+const MAX_LAND_RUNS = 6;
 const LAND_REF_CARD_RE = /(?:^|[^a-z0-9])bro-(\d+)(?![0-9])/i;
 
 /** Why a headless worker can't finish this card (no safe VERIFY, or a headless blocker), or null. */
@@ -129,12 +136,14 @@ function resumableCardsByNumber(issues) {
 
 /**
  * @param {Array<object>} issues - open Linear issues
- * @param {Array<{ref:string, sha:string, lastRun:?{status:string, conclusion:?string, headSha:string, updatedAt:string, id:number, url?:string}}>} landRefs
- *   remote land/ refs with the latest Land run on each (null when none ran)
- * @param {{nowMs:number}} opts
- * @returns {{ issue: object, ref: string, sha: string, lastRun: object }|null}
+ * @param {Array<{ref:string, sha:string, lastRun:?{status:string, conclusion:?string, headSha:string, updatedAt:string, id:number, url?:string, attempts?:number}}>} landRefs
+ *   remote land/ refs with the latest Land run on each (null when none ran);
+ *   attempts is how many Land runs the ref has had
+ * @param {{nowMs:number, landDispatchInFlight?:boolean}} opts
+ * @returns {{ issue: object, ref: string, sha: string, lastRun: object, kind: 'refused'|'evicted' }|null}
  */
-function findResumeCard(issues, landRefs, { nowMs }) {
+function findResumeCard(issues, landRefs, { nowMs, landDispatchInFlight = false }) {
+  if (landDispatchInFlight) return null;
   const { priorityRank } = require('./linear-dispatch.js');
   const { issueNumber } = require('./linear-drain-parked.js');
   const cards = resumableCardsByNumber(issues);
@@ -151,16 +160,17 @@ function findResumeCard(issues, landRefs, { nowMs }) {
     const cardMs = Date.parse(iss.updatedAt);
     if (!Number.isFinite(cardMs) || nowMs - cardMs < IDLE_MS) continue;
     if (headlessUnfitReason(iss)) continue;
-    // Still landing: a run queued or in progress, or a tip pushed after the last run.
-    if (refs.some((r) => r.lastRun && (r.lastRun.status !== 'completed' || r.lastRun.headSha !== r.sha))) continue;
+    // Still landing: no run yet, a run queued or in progress, or a tip pushed after the last run.
+    if (refs.some((r) => !r.lastRun || r.lastRun.status !== 'completed' || r.lastRun.headSha !== r.sha)) continue;
     const refused = refs
-      .filter((r) => r.lastRun && r.lastRun.conclusion !== 'success')
+      .filter((r) => r.lastRun.conclusion !== 'success' && !(Number(r.lastRun.attempts) >= MAX_LAND_RUNS))
       .map((r) => ({ r, ms: Date.parse(r.lastRun.updatedAt) }))
       .filter(({ ms }) => Number.isFinite(ms) && nowMs - ms >= STRANDED_MS && nowMs - ms <= RESUME_WINDOW_MS)
       .sort((a, b) => b.ms - a.ms);
     if (!refused.length) continue;
     const { r } = refused[0];
-    candidates.push({ issue: iss, ref: r.ref.replace(/^refs\/heads\//, ''), sha: r.sha, lastRun: r.lastRun });
+    const kind = r.lastRun.conclusion === 'cancelled' ? 'evicted' : 'refused';
+    candidates.push({ issue: iss, ref: r.ref.replace(/^refs\/heads\//, ''), sha: r.sha, lastRun: r.lastRun, kind });
   }
   candidates.sort((a, b) => (priorityRank(a.issue) - priorityRank(b.issue))
     || (issueNumber(a.issue.identifier) - issueNumber(b.issue.identifier)));
@@ -168,6 +178,6 @@ function findResumeCard(issues, landRefs, { nowMs }) {
 }
 
 module.exports = {
-  IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS,
+  IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS,
   skipReason, pickCloudCard, landRefCardNumber, resumableCardsByNumber, findResumeCard,
 };
