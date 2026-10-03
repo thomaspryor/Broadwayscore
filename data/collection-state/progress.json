@@ -694,7 +694,14 @@
     "plaza-suite-2022/broadway-and-me--janice-c-simpson.json",
     "mrs-doubtfire-2021/theater-life--paulanne-simmons.json",
     "slave-play-2021/standard--nick-curtis.json",
-    "clydes-2021/nysr--steven-suskin.json"
+    "clydes-2021/nysr--steven-suskin.json",
+    "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json",
+    "the-urmetazoan-off-west-end-2026/datathistle--unknown.json",
+    "the-urmetazoan-off-west-end-2026/thestage--holly-omahony.json",
+    "the-urmetazoan-off-west-end-2026/thestage--the-stage.json",
+    "the-urmetazoan-off-west-end-2026/theupcoming--unknown.json",
+    "table-17-off-west-end-2026/bachtrack--unknown.json",
+    "table-17-off-west-end-2026/londonlivinglarge--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1171,7 +1178,7 @@
     ]
   },
   "startTime": "2026-10-02T17:44:38.642Z",
-  "lastProcessed": "trouble-in-mind-2021/playbill--marc-j-franklin.json",
+  "lastProcessed": "table-17-off-west-end-2026/londonlivinglarge--unknown.json",
   "log": [
     {
       "t": "2026-10-02T17:49:26.365Z",
@@ -1452,6 +1459,30 @@
       "t": "2026-10-03T00:52:50.682Z",
       "event": "bb-login-uncertain",
       "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-03T03:15:08.387Z",
+      "event": "bb-session",
+      "session": "bea7e943",
+      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+    },
+    {
+      "t": "2026-10-03T03:15:27.879Z",
+      "event": "bb-session",
+      "session": "a5ee8374",
+      "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+    },
+    {
+      "t": "2026-10-03T03:16:39.874Z",
+      "event": "bb-session",
+      "session": "b1892988",
+      "url": "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-20"
+    },
+    {
+      "t": "2026-10-03T03:16:48.068Z",
+      "event": "bb-session",
+      "session": "dbc98cda",
+      "url": "https://www.londonlivinglarge.com/2026/09/table-17-kiln-theatre-sep-17-oct-24-20"
     }
   ],
   "recoveredAfterFailure": [
