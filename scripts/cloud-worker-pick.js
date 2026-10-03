@@ -29,7 +29,8 @@ if (hasHelpFlag(process.argv)) {
 require('./lib/load-env').loadEnv();
 
 const REPO = 'thomaspryor/broadwayscore';
-const DISPATCH_LAND = (ref) => `echo '{"ref":"main","inputs":{"branch":"${ref}"}}' | gh api -X POST repos/${REPO}/actions/workflows/land.yml/dispatches --input -`;
+// Same call land-retry-cancelled.js makes; re-running keeps the run id, so the next pick sees its result.
+const RERUN_LAND = (run) => `gh api -X POST repos/${REPO}/actions/runs/${run.id}/rerun-failed-jobs`;
 const RESUME_INSTRUCTIONS = (ref, run, kind) => [
   kind === 'evicted'
     ? `RESUME, not a new card: this card is already yours (In Progress) and its landing ${ref} was evicted from the shared landing slot (run ${run.id} cancelled), not refused.`
@@ -37,7 +38,7 @@ const RESUME_INSTRUCTIONS = (ref, run, kind) => [
   'Step 3 claim is a no-op on it. Do NOT start a new branch.',
   'First run the card\'s verify command (pick.verify) on up-to-date origin/main: if it already passes, the work landed another way, so skip to step 7.',
   ...(kind === 'evicted' ? [
-    `Nothing to fix: re-run Land on the same ref with ${DISPATCH_LAND(ref)} (MCP fallback: run workflow land.yml on main with input branch=${ref}).`,
+    `Nothing to fix: re-run its cancelled jobs with ${RERUN_LAND(run)} (MCP fallback: re-run the failed jobs of run ${run.id}).`,
   ] : [
   `Check it out: git worktree remove --force .claude/worktrees/resume 2>/dev/null; git fetch origin ${ref} && git worktree add --detach .claude/worktrees/resume FETCH_HEAD.`,
   `Read why Land refused run ${run.id}${run.url ? ` (${run.url})` : ''}: list its failed jobs (gh api repos/${REPO}/actions/runs/${run.id}/jobs --jq '.jobs[] | select(.conclusion=="failure") | .id'), then each job's annotations (gh api repos/${REPO}/check-runs/<job id>/annotations) or log (gh api repos/${REPO}/actions/jobs/<job id>/logs).`,
@@ -60,7 +61,7 @@ function listLandRefs() {
 function latestLandRun(ref) {
   const { execFileSync } = require('child_process');
   const out = execFileSync('gh', ['api', `repos/${REPO}/actions/runs?branch=${encodeURIComponent(ref)}&per_page=1`,
-    '--jq', '.total_count as $n | .workflow_runs[0] // empty | {id, status, conclusion, headSha: .head_sha, updatedAt: .updated_at, url: .html_url, attempts: $n}'],
+    '--jq', '.total_count as $n | .workflow_runs[0] // empty | {id, status, conclusion, headSha: .head_sha, updatedAt: .updated_at, url: .html_url, attempts: $n, runAttempt: .run_attempt}'],
   { encoding: 'utf8', timeout: 60_000 }).trim();
   return out ? JSON.parse(out) : null;
 }

@@ -47,10 +47,12 @@
  * running, a tip pushed after its last run, or a ref with no run yet) is left
  * alone, and so is every card while a dispatched Land run is in flight
  * (dispatched runs report head_branch main, so they can't be tied to a ref).
- * A ref that has been through MAX_LAND_RUNS runs is not resumed again: the
- * same card would otherwise win every firing ahead of fresh work. A
- * `cancelled` run is an eviction from the shared landing slot (CLOUD.md
- * Landing), so its resume kind is 'evicted': re-run, nothing to fix.
+ * A ref that has been through MAX_LAND_RUNS runs, or whose last run has been
+ * re-run that many times, is not resumed again: the same card would otherwise
+ * win every firing ahead of fresh work. A `cancelled` run is an eviction from
+ * the shared landing slot (CLOUD.md Landing). land-retry-cancelled.yml re-runs
+ * those within minutes, so one still cancelled here was declined by it; its
+ * resume kind is 'evicted': re-run the same run, nothing to fix.
  *
  * Pure functions only. The CLI is scripts/cloud-worker-pick.js.
  */
@@ -163,7 +165,8 @@ function findResumeCard(issues, landRefs, { nowMs, landDispatchInFlight = false 
     // Still landing: no run yet, a run queued or in progress, or a tip pushed after the last run.
     if (refs.some((r) => !r.lastRun || r.lastRun.status !== 'completed' || r.lastRun.headSha !== r.sha)) continue;
     const refused = refs
-      .filter((r) => r.lastRun.conclusion !== 'success' && !(Number(r.lastRun.attempts) >= MAX_LAND_RUNS))
+      .filter((r) => r.lastRun.conclusion !== 'success'
+        && !(Number(r.lastRun.attempts) >= MAX_LAND_RUNS) && !(Number(r.lastRun.runAttempt) >= MAX_LAND_RUNS))
       .map((r) => ({ r, ms: Date.parse(r.lastRun.updatedAt) }))
       .filter(({ ms }) => Number.isFinite(ms) && nowMs - ms >= STRANDED_MS && nowMs - ms <= RESUME_WINDOW_MS)
       .sort((a, b) => b.ms - a.ms);

@@ -144,6 +144,7 @@ test('stops resuming a ref after MAX_LAND_RUNS runs, and while a dispatched Land
   const { MAX_LAND_RUNS } = require('./cloud-worker-pick.js');
   assert.equal(findResumeCard([startedCard()], [landRef({}, { attempts: MAX_LAND_RUNS })], { nowMs: NOW }), null);
   assert.equal(findResumeCard([startedCard()], [landRef({}, { attempts: MAX_LAND_RUNS - 1 })], { nowMs: NOW }).ref, 'land/bro-100-fix');
+  assert.equal(findResumeCard([startedCard()], [landRef({}, { conclusion: 'cancelled', runAttempt: MAX_LAND_RUNS })], { nowMs: NOW }), null);
   assert.equal(findResumeCard([startedCard()], [landRef()], { nowMs: NOW, landDispatchInFlight: true }), null);
 });
 
