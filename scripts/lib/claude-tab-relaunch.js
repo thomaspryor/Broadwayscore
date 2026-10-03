@@ -215,7 +215,7 @@ function defaultDeps() {
     killFn: (pid, sig) => process.kill(pid, sig),
     sessionsFn: (workspaceId) => cmuxws.run(['sessions', '--agent', 'claude', '--workspace', workspaceId, '--json', '--all']),
     workspaceIdFn: (ref) => {
-      const j = JSON.parse(cmuxws.run(['workspace', 'list', '--json']));
+      const j = JSON.parse(cmuxws.run(['workspace', 'list', '--json'], { retryTimeouts: cmuxws.LIST_RETRY_TIMEOUTS }));
       const w = (j.workspaces || []).find(x => x.ref === ref);
       return w ? { id: w.id, cwd: w.current_directory || null } : null;
     },

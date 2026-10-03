@@ -1,8 +1,16 @@
 {
-  "generatedAt": "2026-10-03T09:31:16.768Z",
+  "generatedAt": "2026-10-03T15:22:19.130Z",
   "thresholdHours": 24,
   "cooldownHours": 12,
   "escalateAfterAttempts": 3,
   "maxDispatchesPerRun": 5,
-  "flagged": []
+  "flagged": [
+    {
+      "firstFlaggedAt": "2026-10-03T15:22:19.130Z",
+      "dispatchAttempts": 1,
+      "lastDispatchedAt": "2026-10-03T15:22:19.130Z",
+      "id": "merrily-we-roll-along-1981",
+      "title": "Merrily We Roll Along"
+    }
+  ]
 }
