@@ -33,6 +33,7 @@ const path = require('path');
 const { pickRerouteTarget, buildShowKeywordSet, findShowKeywordInText, buildMultiProdYearGuard } = require('./lib/review-guards');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { clearWrongProductionFlags } = require('./lib/wrong-production-clear');
+const { crossMarketDateGate, stripBypassFlags } = require('./lib/reroute-stamp-policy');
 // BRO-4204 audit S6-T2: a cross-market move needs a dual-market outlet URL AND
 // the review naming the target production's venue/director (or a human
 // crossMarketRerouteApproved breadcrumb). Year proximity alone put 37 London
@@ -133,8 +134,18 @@ function crossMarketGuardAllows(showId, file, data, targetShow) {
   });
   if (!verdict.allow) {
     console.log(`cross-market-skip: ${showId}/${file} ${verdict.reason}`);
+    return false;
   }
-  return verdict.allow;
+  // BRO-2272: ID/year proximity + naming is not enough; the review must also be
+  // dated inside the target's window (a human-approved file is exempt).
+  if (data.crossMarketRerouteApproved !== true) {
+    const dateVerdict = crossMarketDateGate(data, targetShow);
+    if (!dateVerdict.ok) {
+      console.log(`cross-market-skip: ${showId}/${file} ${dateVerdict.reason}`);
+      return false;
+    }
+  }
+  return true;
 }
 
 // ─── Safety classifier (mirrors audit-reroute-backlog.js) ───
@@ -501,6 +512,7 @@ if (MODE === 'execute') {
         });
         sourceData.reroutedFrom = sourceShowId;
         sourceData.reroutedAt = sourceData.routedAt;
+        stripBypassFlags(sourceData);
       } else {
         clearWrongProductionFlags(sourceData, { source: 'migrate-reroute-backlog.js', reason: sourceData.routedReason });
       }
@@ -508,7 +520,9 @@ if (MODE === 'execute') {
       // Stamp allowEarlyDate for distance >= 2 to prevent the early-date guard
       // from re-flagging at the target. Distance 0-1 are close enough that
       // date guards at the target should still apply normally.
-      if (distance >= 2) {
+      // Never for a cross-market move (BRO-2272): the flag bypasses the date
+      // guard, and the date-window gate already vouched for the review.
+      if (distance >= 2 && !CROSS_MARKET) {
         sourceData.allowEarlyDate = true;
       }
 
