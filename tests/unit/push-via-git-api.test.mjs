@@ -485,6 +485,46 @@ exec "$@"
   }
 });
 
+// BRO-2810: the data-health-check run 33922438634 log showed "push failed for
+// a non-race reason (attempt 1):" with NOTHING after it. The cause was the
+// rc=124 timeout above, but a genuinely silent non-timeout failure (rc!=124,
+// empty stderr) must ALSO never print a blank reason: it has to name the rc and
+// say git wrote nothing, or the next incident is undiagnosable again.
+test('BRO-2810: a non-timeout push failure with EMPTY stderr still logs the rc and an explicit empty-output note', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+
+    const binDir = installTimeoutShim(tmp, `#!/bin/bash
+shift 2
+shift
+for a in "$@"; do
+  if [ "$a" = "push" ]; then
+    exit 7         # silent failure: no stdout, no stderr, not a timeout
+  fi
+done
+exec "$@"
+`);
+
+    const res = await spawnScriptWithEnv(['main', baseSha, '3'], runnerDir, {
+      PATH: `${binDir}:${process.env.PATH}`,
+    });
+
+    assert.notEqual(res.code, 0, 'a silent non-race push failure must fail');
+    assert.match(res.stderr, /push failed for a non-race reason \(attempt 1, rc=7\):/, 'rc missing from the error header');
+    assert.match(res.stderr, /git wrote nothing to stderr — rc=7/, 'empty error body was not explained');
+    assert.doesNotMatch(res.stderr, /TIMED OUT/, 'rc=7 was misclassified as a timeout');
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
 test('BRO-2823: a push that LANDS server-side but is then killed (rc=124) does not mint an empty no-op commit on the retry', async () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-'));
   try {
