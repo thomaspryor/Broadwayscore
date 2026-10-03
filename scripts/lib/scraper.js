@@ -180,21 +180,20 @@ function _isNeverIdleDomain(url) {
 // host (whatsonstage /reviews/ -> /news/, westendtheatre /category/reviews/ ->
 // /category/news/reviews/, britishtheatreguide /reviews/index -> /reviews?q=index).
 // Every provider returned the real page and verifyFetchedUrl rejected all of
-// them, burning an SD + BD + SB credit per call (BRO-2763). This is an exact
-// host + path-prefix allowlist, NOT a general same-host tolerance: for article
-// URLs a same-host canonical change is the wrong-page signal the guard exists for.
-const SAME_HOST_INDEX_REDIRECTS = [
-  { host: 'whatsonstage.com', pathPrefix: '/reviews' },
-  { host: 'westendtheatre.com', pathPrefix: '/category/reviews' },
-  { host: 'britishtheatreguide.info', pathPrefix: '/reviews' },
-];
+// them, burning an SD + BD + SB credit per call (BRO-2763). EXACT paths only:
+// britishtheatreguide.info publishes articles at /reviews/<slug>, so any prefix
+// or depth rule would switch the wrong-page guard off for real review URLs.
+const SAME_HOST_INDEX_REDIRECTS = {
+  'whatsonstage.com': ['/reviews'],
+  'westendtheatre.com': ['/category/reviews'],
+  'britishtheatreguide.info': ['/reviews', '/reviews/index'],
+};
 
 function _isSameHostIndexRedirect(expectedUrl) {
   try {
     const u = new URL(expectedUrl);
-    const host = u.hostname.replace(/^www\./, '');
-    const path = u.pathname.replace(/\/$/, '');
-    return SAME_HOST_INDEX_REDIRECTS.some(r => r.host === host && (path === r.pathPrefix || path.startsWith(r.pathPrefix + '/')) && path.split('/').length <= r.pathPrefix.split('/').length + 1);
+    const paths = SAME_HOST_INDEX_REDIRECTS[u.hostname.replace(/^www\./, '')];
+    return !!paths && paths.includes(u.pathname.replace(/\/$/, ''));
   } catch { return false; }
 }
 
@@ -1117,7 +1116,6 @@ function pageChainOrder(flags) {
  * @param {string} url
  * @param {object} [options]
  * @param {boolean} [options.skipVerify] - skip the canonical/url_mismatch guard
- * @param {boolean} [options.allowSameHostRedirect] - accept a same-host canonical path change
  * @param {boolean} [options.preferPlaywright]
  * @param {string} [options.playwrightWaitForSelector]
  * @returns {Promise<{content: string, format: string, source: string}>}
@@ -1148,7 +1146,7 @@ async function fetchPage(url, options = {}) {
       console.log(`  ✅ Success (${source}, ${result.format})`);
       return result;
     }
-    const vr = verifyFetchedUrl(result.content, url, { allowSameHostRedirect: options.allowSameHostRedirect });
+    const vr = verifyFetchedUrl(result.content, url);
     if (vr.verified) {
       console.log(`  ✅ Success (${source}, ${result.format})`);
       return result;
@@ -1591,12 +1589,11 @@ const CATEGORY_DRIFT_HOSTS = new Set(['show-score.com']);
  *
  * @param {string} html - The fetched HTML content
  * @param {string} expectedUrl - The URL that was requested
- * @param {{ allowSameHostRedirect?: boolean }} [opts] - allowSameHostRedirect:
- *   accept a canonical that differs in path but stays on the same host. Also
- *   applied automatically for the SAME_HOST_INDEX_REDIRECTS listing pages.
+ *   Exact listing URLs in SAME_HOST_INDEX_REDIRECTS may canonicalise to another
+ *   path on the same host; every other same-host path change is a mismatch.
  * @returns {{ verified: boolean, reason?: string, actual?: string }}
  */
-function verifyFetchedUrl(html, expectedUrl, opts = {}) {
+function verifyFetchedUrl(html, expectedUrl) {
   if (!html || !expectedUrl) return { verified: false, reason: 'missing_input' };
 
   // 1. Homepage title detection — high-risk outlets return homepage with 200
@@ -1684,7 +1681,7 @@ function verifyFetchedUrl(html, expectedUrl, opts = {}) {
       }
       if (domainMatchesExpected(expHost, actHost)) return { verified: true };
     } else {
-      if (opts.allowSameHostRedirect || _isSameHostIndexRedirect(expectedUrl)) {
+      if (_isSameHostIndexRedirect(expectedUrl)) {
         return { verified: true, reason: 'same_host_redirect' };
       }
       // Same host: tolerate a path-suffix redirect, where the CMS resolves a short/

@@ -28,25 +28,23 @@ test('same-host index redirects verify (the three BRO-2763 URLs)', () => {
 });
 
 test('article URLs on the same hosts are still guarded', () => {
-  const r = s.verifyFetchedUrl(
-    page('https://www.whatsonstage.com/theatre/other-show-review_123.html'),
-    'https://www.whatsonstage.com/theatre/some-show-review_456.html');
-  assert.equal(r.verified, false);
-  assert.equal(r.reason, 'url_mismatch');
-  // deep paths under an allowlisted prefix are not index pages
-  const deep = s.verifyFetchedUrl(page('https://www.westendtheatre.com/other/'), 'https://www.westendtheatre.com/category/reviews/a/b/c/');
-  assert.equal(deep.verified, false);
+  const guarded = [
+    ['https://www.whatsonstage.com/theatre/some-show-review_456.html', 'https://www.whatsonstage.com/theatre/other-show-review_123.html'],
+    ['https://www.whatsonstage.com/reviews/some-article', 'https://www.whatsonstage.com/news/x'],
+    ['https://www.britishtheatreguide.info/reviews/archduke-royal-court-the-25696', 'https://www.britishtheatreguide.info/reviews/other-show-99999'],
+    ['https://www.britishtheatreguide.info/reviews/archduke-royal-court-the-25696', 'https://www.britishtheatreguide.info/'],
+    ['https://www.westendtheatre.com/category/reviews/a/', 'https://www.westendtheatre.com/other/'],
+    ['https://www.westendtheatre.com/category/reviews-foo/', 'https://www.westendtheatre.com/other/'],
+  ];
+  for (const [req, canon] of guarded) {
+    const r = s.verifyFetchedUrl(page(canon), req);
+    assert.equal(r.verified, false, req);
+    assert.equal(r.reason, 'url_mismatch');
+  }
 });
 
-test('unlisted hosts still reject same-host drift unless opted in', () => {
-  const html = page('https://example.com/b');
-  assert.equal(s.verifyFetchedUrl(html, 'https://example.com/a').verified, false);
-  assert.equal(s.verifyFetchedUrl(html, 'https://example.com/a', { allowSameHostRedirect: true }).verified, true);
-});
-
-test('cross-host canonical is never tolerated by the flag', () => {
-  const r = s.verifyFetchedUrl(page('https://evil.example/a'), 'https://example.com/a', { allowSameHostRedirect: true });
-  assert.equal(r.verified, false);
+test('unlisted hosts still reject same-host drift', () => {
+  assert.equal(s.verifyFetchedUrl(page('https://example.com/b'), 'https://example.com/a').verified, false);
 });
 
 test('never-idle domains are registered for domcontentloaded', () => {
