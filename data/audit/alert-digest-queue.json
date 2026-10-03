@@ -132,18 +132,6 @@
     "queuedAt": "2026-10-02T16:20:26.825Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026",
-    "title": "Review gap — \"Elf Lyons: The Woman on the Edge\" missing 2 cited review(s)",
-    "description": "Elf Lyons: The Woman on the Edge (elf-lyons-the-woman-on-the-edge-off-broadway-2026): 2 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=elf-lyons-the-woman-on-the-edge-off-broadway-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-02T16:20:26.830Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:gimme-a-sign-off-broadway-2026",
     "title": "Review gap — \"Gimme a Sign!\" missing 1 cited review(s)",
     "description": "Gimme a Sign! (gimme-a-sign-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=gimme-a-sign-off-broadway-2026 --checkpoint --ingest-missing",
@@ -614,18 +602,6 @@
     "queuedAt": "2026-10-02T21:17:32.633Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:school-girls-or-the-african-mean-girls-play-2026",
-    "title": "Review gap — \"School Girls; Or, The African Mean Girls Play\" missing 4 cited review(s)",
-    "description": "School Girls; Or, The African Mean Girls Play (school-girls-or-the-african-mean-girls-play-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=school-girls-or-the-african-mean-girls-play-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-02T21:17:32.693Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:the-secret-circus-musical-off-broadway-2026",
     "title": "Review gap — \"The Secret Circus Musical\" missing 1 cited review(s)",
     "description": "The Secret Circus Musical (the-secret-circus-musical-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=the-secret-circus-musical-off-broadway-2026 --checkpoint --ingest-missing",
@@ -755,6 +731,30 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-02T23:02:34.978Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:a-thousand-natural-shocks-off-broadway-2026",
+    "title": "Review gap — \"A Thousand Natural Shocks\" missing 7 cited review(s)",
+    "description": "A Thousand Natural Shocks (a-thousand-natural-shocks-off-broadway-2026): 7 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=a-thousand-natural-shocks-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T01:04:31.464Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:motherfucker-off-broadway-2026",
+    "title": "Review gap — \"Motherfucker\" missing 1 cited review(s)",
+    "description": "Motherfucker (motherfucker-off-broadway-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=motherfucker-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T01:04:31.540Z"
   },
   {
     "conditionKey": "corpus-drift:cv-flag-contradiction",

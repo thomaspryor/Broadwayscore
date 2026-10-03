@@ -1,20 +1,19 @@
 {
-  "generatedAt": "2026-10-02T21:18:01.021Z",
+  "generatedAt": "2026-10-03T01:08:06.809Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
-  "checked": 213,
-  "clean": 211,
+  "checked": 212,
+  "clean": 210,
   "defective": 2,
   "byType": {
-    "score-drift": 1,
-    "unreachable": 1
+    "unreachable": 2
   },
   "shows": [
     {
-      "showId": "alice-in-wonderland-off-broadway-2026",
-      "title": "Alice in Wonderland",
-      "openingDate": "2026-09-26",
+      "showId": "spandex-off-broadway-2026",
+      "title": "Spandex",
+      "openingDate": "2026-09-19",
       "ok": false,
       "defects": [
         {
@@ -27,19 +26,19 @@
       "deployedCount": null
     },
     {
-      "showId": "catarina-and-the-beauty-of-killing-fascists-west-end-2026",
-      "title": "Catarina and the Beauty of Killing Fascists",
-      "openingDate": "2026-09-21",
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 64.48 vs local 63.67 (Δ0.81)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 24,
-      "deployedCount": 25
+      "localCount": 0,
+      "deployedCount": null
     }
   ]
 }
