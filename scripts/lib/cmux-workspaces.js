@@ -45,7 +45,9 @@ function cmuxAvailable() {
 // was applied and re-sending cannot double-apply it. A timeout is the
 // opposite — the command may well have landed and only the reply was lost —
 // which is exactly why timeouts (and refused connections) are re-thrown to
-// the caller's existing degraded path instead of being retried here.
+// the caller's existing degraded path instead of being retried here. The one
+// exception is opt-in: a caller that KNOWS its command is a read passes
+// `retryTimeouts` (see RUN_RETRY_BUDGET_MS below, BRO-3413).
 //
 // The timeout is new too: this call sits inside a 5-min launchd tick, and a
 // wedged socket previously blocked it indefinitely, silently disabling the
@@ -89,7 +91,49 @@ function _resetRunWarnings() { warnedMessages.clear(); }
 // closeWorkspace injection points). The ladder below is the riskiest logic in
 // the module and execFileSync is otherwise impossible to drive from a test
 // without spawning real processes against a live socket.
-function run(args, { execFn = execFileSync, logFn = console.error } = {}) {
+// Timeout retry (BRO-3413) — OPT-IN, never inferred from argv. The header
+// above explains why run() does not retry timeouts by default: a mutating
+// command may have landed with only its reply lost. A pure READ has no such
+// hazard, and the read-only listing wrappers below (listWorkspaces,
+// listWorkspacesWithCwd) are what the dispatch path depends on: cmux
+// list-workspaces was measured at 15s / 10s / 0.16s on three consecutive
+// calls under ~30 sessions of socket contention, so one slow call aborted a
+// whole dispatch (linear-next, the morning digest's auto-fix). Callers pass
+// `retryTimeouts: N` only for commands they know are reads. Matching argv here
+// instead was rejected in review: a future `workspace list-…` mutation or a
+// reordered argv could silently cross into the retrying set.
+//
+// The retry is bounded by TOTAL elapsed time, not just attempt count: a
+// wedged socket costs the full RUN_TIMEOUT_MS per attempt, and bsc-reconcile
+// lists several times inside one 5-min launchd tick. No new attempt starts
+// once RUN_RETRY_BUDGET_MS has passed, so the worst case is roughly one
+// budget plus one RUN_TIMEOUT_MS. cmux's own "Command timed out" fires at
+// ~15s, so the contention case still gets all its attempts.
+const RUN_RETRY_BUDGET_MS = 45_000;
+const RUN_RETRY_BACKOFF_MS = [1000, 2000]; // + up to 1s jitter each
+
+function sleepMs(ms) {
+  try { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); } catch { /* no SAB: skip the pause, still retry */ }
+}
+
+function run(args, { retryTimeouts = 0, sleepFn = sleepMs, nowFn = Date.now, ...opts } = {}) {
+  const start = nowFn();
+  for (let retry = 0; ; retry++) {
+    try {
+      const out = runOnce(args, opts);
+      if (retry > 0) {
+        warnOnce(opts.logFn || console.error, `[cmux] \`${args.join(' ')}\` timed out and succeeded on retry ${retry} — socket contention (BRO-3413).`, `cmux:timeout-recovered:${args[0]}`);
+      }
+      return out;
+    } catch (e) {
+      if (retry >= retryTimeouts || classifyCmuxError(e) !== 'timeout' || nowFn() - start >= RUN_RETRY_BUDGET_MS) throw e;
+      const base = RUN_RETRY_BACKOFF_MS[Math.min(retry, RUN_RETRY_BACKOFF_MS.length - 1)];
+      sleepFn(base + Math.floor(Math.random() * 1000));
+    }
+  }
+}
+
+function runOnce(args, { execFn = execFileSync, logFn = console.error } = {}) {
   const base = { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: RUN_TIMEOUT_MS };
   let firstAuthError = null;
 
@@ -309,11 +353,15 @@ function assertValidWorkspaceRef(ref) {
 
 // ── socket wrappers ─────────────────────────────────────────────────────────
 
+// Read-only listings opt in to run()'s timeout retry (BRO-3413): 3 attempts.
+// Exported so other read-only listing callers use the same setting.
+const LIST_RETRY_TIMEOUTS = 2;
+
 // `runFn` is a test-only seam (same idiom as run()'s own execFn injection)
 // so the anomaly-logging wiring below is covered end-to-end, not just via
 // parseWorkspacesWithFailures in isolation.
 function listWorkspaces({ runFn = run } = {}) {
-  const { workspaces, rawLineCount, parseFailures } = parseWorkspacesWithFailures(runFn(['list-workspaces']));
+  const { workspaces, rawLineCount, parseFailures } = parseWorkspacesWithFailures(runFn(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS }));
   if (parseFailures > 0) {
     // NEVER throw here (BRO-2995 plan-review finding, second-opinion agent):
     // cmux-launch.js's launchCmuxSessionInner (the fleet's actual dispatch
@@ -350,7 +398,7 @@ function listWorkspaces({ runFn = run } = {}) {
 }
 
 function listWorkspacesWithCwd() {
-  return parseWorkspacesJson(run(['workspace', 'list', '--json']));
+  return parseWorkspacesJson(run(['workspace', 'list', '--json'], { retryTimeouts: LIST_RETRY_TIMEOUTS }));
 }
 
 function closeWorkspace(ref) {
@@ -710,7 +758,7 @@ function pruneDone(opts = {}) {
 }
 
 module.exports = {
-  CMUX, cmuxAvailable, run, _resetRunWarnings,
+  CMUX, cmuxAvailable, run, _resetRunWarnings, LIST_RETRY_TIMEOUTS, RUN_RETRY_BUDGET_MS,
   parseWorkspaces, parseWorkspacesJson, parseWorkspacesWithFailures, isDoneTitle, hasRunningClaude, hasLiveClaude,
   hasClaudeChrome, isNotFoundError, isValidWorkspaceRef, assertValidWorkspaceRef,
   listWorkspaces, listWorkspacesWithCwd, closeWorkspace, sendToWorkspace, claudeMidTurnIn, claudeAliveIn,

@@ -24,7 +24,7 @@ const path = require('path');
 const { execFileSync } = require('child_process');
 // Done-marker detection is a known bug class (cmux prepends activity glyphs
 // before ✅) — reuse the hardened predicate instead of reimplementing it.
-const { isDoneTitle } = require('./cmux-workspaces.js');
+const { isDoneTitle, run: cmuxRun, LIST_RETRY_TIMEOUTS } = require('./cmux-workspaces.js');
 const { isNeedsYouTitle } = require('./needs-you-snapshot.js');
 const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 
@@ -251,7 +251,7 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
   // 3. Automated cmux sessions still open (and duplicate dispatches).
   try {
     if (fs.existsSync(CMUX_BIN)) {
-      digest.stuck.workspaces = parseWorkspaces(run(CMUX_BIN, ['list-workspaces']));
+      digest.stuck.workspaces = parseWorkspaces(cmuxRun(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS }));
     }
   } catch (err) {
     digest.errors.push(`couldn't reach cmux (${String(err.message).slice(0, 80)})`);

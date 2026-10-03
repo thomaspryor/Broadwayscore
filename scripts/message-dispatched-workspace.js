@@ -17,6 +17,7 @@ const { parseWorkspaceListing, resolveWorkspaceForTask } = require('./lib/dispat
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
 const { cmuxSpawnEnv } = require('./lib/cmux-socket-auth.js');
+const cmuxws = require('./lib/cmux-workspaces.js');
 const CMUX = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
 function usage() {
@@ -69,7 +70,14 @@ function main() {
   if (!taskId) usage();
   if (!status && !message) usage();
 
-  const listing = cmux(['list-workspaces']);
+  // Read-only, so it goes through the shared timeout retry (BRO-3413).
+  let listing;
+  try {
+    listing = cmuxws.run(['list-workspaces'], { retryTimeouts: cmuxws.LIST_RETRY_TIMEOUTS });
+  } catch (err) {
+    console.error(`cmux list-workspaces failed: ${err.message}`);
+    process.exit(1);
+  }
   const liveWorkspaces = parseWorkspaceListing(listing);
   const resolved = resolveWorkspaceForTask(taskId, readEntries(), liveWorkspaces);
 
