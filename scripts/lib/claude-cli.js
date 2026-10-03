@@ -666,7 +666,10 @@ function runClaudeCli(opts) {
         sessionNotified = true;
       }
       if (ev.usage) usageTotal = addUsage(usageTotal, ev.usage);
-      if (ev.result) resultEvent = ev.result;
+      // One run can emit several result events (a background-task notification
+      // starts a new turn). Only kills after the FINAL result are teardown
+      // kills, so a new result discards any recorded before it.
+      if (ev.result) { resultEvent = ev.result; killedTasks.clear(); }
       if (ev.taskStart) taskStarts.set(ev.taskStart.id, ev.taskStart);
       // A kill before any result is the worker's own cleanup, not abandonment.
       if (ev.killedTaskId && resultEvent && !killedTasks.has(ev.killedTaskId)) {

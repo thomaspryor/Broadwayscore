@@ -24,13 +24,15 @@
 const MAX_TASKS = 10;
 const MAX_DESC = 80;
 // Advisory only: the CI/land waits that dominate healthy teardown kills.
+// Descriptions are raw command lines; never persist an inline credential.
+const SECRET_RE = /\b[A-Za-z0-9_]*(?:KEY|TOKEN|SECRET|PASSWORD|PASSWD)[A-Za-z0-9_]*=\S+/gi;
 const WAIT_RE = /wait-for-run|\bwait(ing)?\b|\bpoll(ing)?\b|\bwatch\b|land\.yml|land\.js|merge-worktree-to-main/i;
 
 function summarizeKilledTasks(killedTasks) {
   if (!Array.isArray(killedTasks)) return [];
   return killedTasks.slice(0, MAX_TASKS).map((t) => {
     const raw = t && typeof t.description === 'string' ? t.description : '';
-    const description = raw ? raw.replace(/\s+/g, ' ').trim().slice(0, MAX_DESC) : null;
+    const description = raw ? raw.replace(SECRET_RE, '[redacted]').replace(/\s+/g, ' ').trim().slice(0, MAX_DESC) : null;
     return {
       id: (t && t.id) || 'unknown',
       description,

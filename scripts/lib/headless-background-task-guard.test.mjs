@@ -86,3 +86,18 @@ test('ledger fragment carries the full count even when the summary is capped', (
   assert.equal(f.killedBackgroundTaskCount, 12);
   assert.equal(f.killedBackgroundTasks.length, MAX_TASKS);
 });
+
+test('a kill between two result events is mid-session, not teardown (BRO-2741 review)', async () => {
+  // Background-task notifications start new turns, so one run can emit several
+  // result events. Only kills after the FINAL result count.
+  const r = await run([START, RESULT, KILLED, RESULT]);
+  assert.deepEqual(r.killedTasks, []);
+  const r2 = await run([START, RESULT, KILLED, RESULT, KILLED]);
+  assert.equal(r2.killedTasks.length, 1);
+});
+
+test('inline credentials in a task description are redacted before reaching the ledger', () => {
+  const [t] = summarizeKilledTasks([{ id: 'a', description: 'OPENAI_API_KEY=sk-abc123 node x.js --token=zzz', backgrounded: true }]);
+  assert.ok(!/sk-abc123|zzz/.test(t.description), t.description);
+  assert.match(t.description, /\[redacted\] node x\.js/);
+});
