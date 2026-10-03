@@ -525,6 +525,14 @@ function urlMatchesShow(href, tokens) {
   } catch { return false; }
 }
 
+const BOOK_HOST_RE = /(^|\.)(amazon\.[a-z.]+|goodreads\.com|bookbrowse\.com|hardcover\.app|bestthrillerbooks\.com|barnesandnoble\.com|kirkusreviews\.com|publishersweekly\.com|bookshop\.org|storygraph\.com)$/i;
+function isBookPageUrl(href) {
+  try {
+    const x = new URL(href);
+    return BOOK_HOST_RE.test(x.hostname) || /(^|[\/\-_])(book-review|books?|novel)([\/\-_]|$)/i.test(x.pathname);
+  } catch { return false; }
+}
+
 // Pure per-result acceptance decision for the SERP review census (#371 —
 // Soundsphere/JonathanBaz class). Given one raw SERP hit, decides whether it
 // counts as a discovered review URL for this show, applying the SAME
@@ -543,6 +551,19 @@ function acceptSerpCensusResult(sr, { show, showInfo }) {
   if (!u || !isReviewUrl(u)) return null;
   const tokens = titleTokens(show.title);
   if (!urlMatchesShow(u, tokens)) return null;
+  // Different-work guard (BRO-4540). urlMatchesShow tolerates ONE missing token
+  // on 3+ token titles (slug truncation), which on an un-scoped SERP query lets
+  // a different work through: "A Thousand Natural Shocks" -> ['thousand',
+  // 'natural','shocks'] accepted Lauren Gunderson's "Natural Shocks" URLs. For
+  // the census, require EVERY title token in the URL path or in the SERP
+  // title/snippet, and drop book-review/bookstore pages (the same title also
+  // names novels).
+  if (tokens.length >= 3) {
+    const segs = new Set(new URL(u).pathname.toLowerCase().split(/[\/\-_.\s]+/).filter(Boolean));
+    const hay = new Set(titleTokens(`${sr.title || ''} ${sr.snippet || ''}`));
+    if (!tokens.every(t => segs.has(t) || hay.has(t))) return null;
+  }
+  if (isBookPageUrl(u)) return null;
   // Stale-production guard (#872). The naive census arm runs WITHOUT the
   // after:/before: window on purpose (undated blog posts are exactly what it
   // exists to catch), which lets long-running titles drag their own history
