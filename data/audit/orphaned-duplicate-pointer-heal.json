@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-03T18:00:11.630Z",
+  "generated": "2026-10-03T18:08:37.092Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 20,
+  "count": 21,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -103,6 +103,13 @@
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "loserFile": "british-theatre--unknown.json",
+      "targetFile": "british-theatre--keith-mckenna.json",
+      "reason": "orphaned-duplicate-heal: british-theatre--keith-mckenna.json was flagged invalid after british-theatre--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
       "loserFile": "times-uk--susie-goldsbrough.json",
       "targetFile": "times-uk--clive-davis.json",
       "reason": "orphaned-duplicate-heal: times-uk--clive-davis.json was flagged invalid after times-uk--susie-goldsbrough.json was pointed at it",
@@ -137,11 +144,11 @@
       "field": "duplicateOf"
     },
     {
-      "showId": "wicked-2003",
-      "loserFile": "newyorker--unknown.json",
-      "targetFile": "newyorker--john-lahr.json",
-      "reason": "orphaned-duplicate-heal: newyorker--john-lahr.json was flagged invalid after newyorker--unknown.json was pointed at it",
-      "field": "duplicateOf"
+      "showId": "the-importance-of-being-oscar-off-west-end-2026",
+      "loserFile": "british-theatre--unknown.json",
+      "targetFile": "british-theatre--keith-mckenna.json",
+      "reason": "orphaned-duplicate-heal: british-theatre--keith-mckenna.json was flagged invalid after british-theatre--unknown.json was pointed at it (duplicateTextOf)",
+      "field": "duplicateTextOf"
     }
   ]
 }
