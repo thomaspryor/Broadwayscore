@@ -64,10 +64,10 @@ jobs:
           set -o pipefail
           case "$LIMIT" in *[!0-9]*) echo "limit must be digits"; exit 1;; esac
           case "$OPENED_SINCE" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;; *) echo "bad opened_since"; exit 1;; esac
-          ARGS="--cv-promoted-nonreview --opened-since=${OPENED_SINCE}"
-          [ -n "$LIMIT" ] && ARGS="$ARGS --limit=$LIMIT"
-          [ "$DRY_RUN" = "true" ] && ARGS="$ARGS --dry-run"
-          node scripts/reverify-stale-cv-promoted.js $ARGS 2>&1 | tee /tmp/reverify.log
+          ARGS=(--cv-promoted-nonreview "--opened-since=${OPENED_SINCE}")
+          [ -n "$LIMIT" ] && ARGS+=("--limit=$LIMIT")
+          [ "$DRY_RUN" = "true" ] && ARGS+=(--dry-run)
+          node scripts/reverify-stale-cv-promoted.js "${ARGS[@]}" 2>&1 | tee /tmp/reverify.log
           CLEARED=$(grep -c '>>> CLEARED' /tmp/reverify.log || true)
           echo "cleared=$CLEARED" >> "$GITHUB_OUTPUT"
 
