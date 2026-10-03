@@ -10,7 +10,7 @@ const require = createRequire(import.meta.url);
 const checks = require('./autonomous-checks.js');
 const {
   decideChecks, cardCheckArgv, checksEnv, isUiDiff, hasSrcChange,
-  prepareCheckWorkdir, resolveInstallRoot, runSafeChecks, BUILD_TIMEOUT_MS, BUILD_ENV,
+  prepareCheckWorkdir, resolveInstallRoot, runSafeChecks, readTsxManifest, BUILD_TIMEOUT_MS, BUILD_ENV,
 } = checks;
 
 const never = () => false;
@@ -116,6 +116,64 @@ test('a real colocated .test.ts fixture is auto-derived and actually passes unde
   });
   const byName = Object.fromEntries(results.map(r => [r.name, r]));
   assert.ok(byName['colocated-tests-tsx'], 'the real filesystem colocated .test.ts must be auto-derived');
+  assert.equal(byName['colocated-tests-tsx'].pass, true, byName['colocated-tests-tsx'].detail);
+  fs.rmSync(dir, { recursive: true, force: true });
+});
+
+// BRO-4525: a `.test.mjs` that imports a `.ts` module is listed in
+// tests/unit-test-manifest-tsx.txt, and test.yml runs it under tsx. The land
+// gauntlet ran it with plain `node --test` and refused the landing with
+// ERR_UNKNOWN_FILE_EXTENSION (Node 20). The manifest now picks the runner.
+test('a changed .test.mjs listed in the tsx manifest runs under tsx; an unlisted one under node', () => {
+  const tsxManifest = new Set(['tests/unit/uses-ts.test.mjs']);
+  const out = decideChecks(['tests/unit/uses-ts.test.mjs', 'tests/unit/plain.test.mjs'], never, { tier: 3, tsxManifest });
+  const byName = Object.fromEntries(out.map(c => [c.name, c]));
+  assert.deepEqual(byName['colocated-tests-tsx'].argv, ['npx', 'tsx', '--test', 'tests/unit/uses-ts.test.mjs']);
+  assert.deepEqual(byName['colocated-tests'].argv, ['node', '--test', 'tests/unit/plain.test.mjs']);
+});
+
+test('a colocated .test.mjs listed in the tsx manifest runs under tsx', () => {
+  const exists = f => f === 'scripts/lib/foo.test.mjs';
+  const tsxManifest = new Set(['scripts/lib/foo.test.mjs']);
+  const out = decideChecks(['scripts/lib/foo.js'], exists, { tier: 3, tsxManifest });
+  assert.deepEqual(names(out).filter(n => n.startsWith('colocated')), ['colocated-tests-tsx']);
+});
+
+test('readTsxManifest reads the real manifest and is empty when the file is missing', () => {
+  const real = readTsxManifest(path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..'));
+  assert.ok(real.size > 10, `expected the repo's tsx manifest, got ${real.size} entries`);
+  assert.ok([...real].some(f => f.endsWith('.test.mjs')), 'the manifest lists .test.mjs files that need tsx');
+  const empty = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-nomanifest-'));
+  assert.equal(readTsxManifest(empty).size, 0);
+  fs.rmSync(empty, { recursive: true, force: true });
+});
+
+// Real execution: the fixture's .ts uses an enum, which plain node rejects on
+// every version (Node 20: unknown .ts extension; Node 22+: enum is not
+// strippable), so a pass proves runSafeChecks read the manifest from cwd and
+// ran the test under tsx.
+test('runSafeChecks reads the tsx manifest from cwd and the test actually passes under tsx (BRO-4525)', () => {
+  const gitCommonDir = execFileSync('git', ['rev-parse', '--git-common-dir'], { encoding: 'utf8' }).trim();
+  const repoRoot = path.dirname(path.resolve(gitCommonDir));
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-tsx-mjs-'));
+  fs.mkdirSync(path.join(dir, 'tests', 'unit'), { recursive: true });
+  fs.mkdirSync(path.join(dir, 'src'), { recursive: true });
+  fs.writeFileSync(path.join(dir, 'src', 'flag.ts'), 'enum E { A = 1 }\nexport const x = E.A;\n');
+  fs.writeFileSync(path.join(dir, 'tests', 'unit', 'flag.test.mjs'), [
+    "import { test } from 'node:test';",
+    "import assert from 'node:assert/strict';",
+    "import { x } from '../../src/flag.ts';",
+    "test('enum value', () => { assert.equal(x, 1); });",
+    '',
+  ].join('\n'));
+  fs.writeFileSync(path.join(dir, 'tests', 'unit-test-manifest-tsx.txt'), 'tests/unit/flag.test.mjs\n');
+
+  const results = runSafeChecks({
+    cwd: dir, changedFiles: ['tests/unit/flag.test.mjs'], isSafeCheckCommand: () => false, tier: 3, prepareFrom: repoRoot,
+  });
+  const byName = Object.fromEntries(results.map(r => [r.name, r]));
+  assert.equal(byName['colocated-tests'], undefined, 'a tsx-manifest test must never go to plain node --test');
+  assert.ok(byName['colocated-tests-tsx'], 'the tsx-manifest .test.mjs must be routed to the tsx batch');
   assert.equal(byName['colocated-tests-tsx'].pass, true, byName['colocated-tests-tsx'].detail);
   fs.rmSync(dir, { recursive: true, force: true });
 });
