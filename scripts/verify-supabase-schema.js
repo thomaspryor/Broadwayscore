@@ -25,6 +25,7 @@ const path = require('path');
 const {
   deriveExpectations,
   diffAgainstLive,
+  diffFunctionBodies,
   LIVE_CATALOG_QUERY,
 } = require('./lib/supabase-schema-expectations');
 
@@ -103,10 +104,21 @@ async function main() {
 
   const liveRows = await queryLiveCatalog();
   const missing = diffAgainstLive(expected, liveRows);
+  const drifted = diffFunctionBodies(expected, liveRows);
+  const bodiesChecked = [...expected.values()].filter((o) => o.bodyHash).length;
 
-  if (missing.length === 0) {
-    console.log(`✓ all ${expected.size} expected objects exist in prod`);
+  if (missing.length === 0 && drifted.length === 0) {
+    console.log(`✓ all ${expected.size} expected objects exist in prod (${bodiesChecked} function bodies match)`);
     return;
+  }
+
+  // A body-only CREATE OR REPLACE FUNCTION never changes what exists, so it
+  // would pass the existence check while unapplied (UGC roundtrip page, Oct 2026).
+  for (const { name, file } of drifted) {
+    console.error(`::error::function body drift: ${name} in prod differs from the latest definition in ${file}`);
+    console.error(
+      `::error::apply it: gh workflow run apply-migration.yml -f migration=supabase/migrations/${file} -f confirm=APPLY`
+    );
   }
 
   const byMigration = {};
