@@ -161,6 +161,43 @@ function _isPlaywrightFirstDomain(url) {
   } catch { return false; }
 }
 
+// --- Domains whose pages never reach networkidle (BRO-2763) ---
+// Ad/analytics-heavy WordPress sites: Playwright's default networkidle wait
+// times out at 30s on every call. domcontentloaded is enough for them.
+const NEVER_IDLE_DOMAINS = new Set([
+  'westendtheatre.com',
+  'britishtheatreguide.info',
+]);
+
+function _isNeverIdleDomain(url) {
+  try {
+    return NEVER_IDLE_DOMAINS.has(new URL(url).hostname.replace(/^www\./, ''));
+  } catch { return false; }
+}
+
+// --- Listing/index pages whose canonical legitimately differs (BRO-2763) ---
+// A requested section index can canonicalise to a sibling path on the SAME
+// host (whatsonstage /reviews/ -> /news/, westendtheatre /category/reviews/ ->
+// /category/news/reviews/, britishtheatreguide /reviews/index -> /reviews?q=index).
+// Every provider returned the real page and verifyFetchedUrl rejected all of
+// them, burning an SD + BD + SB credit per call (BRO-2763). This is an exact
+// host + path-prefix allowlist, NOT a general same-host tolerance: for article
+// URLs a same-host canonical change is the wrong-page signal the guard exists for.
+const SAME_HOST_INDEX_REDIRECTS = [
+  { host: 'whatsonstage.com', pathPrefix: '/reviews' },
+  { host: 'westendtheatre.com', pathPrefix: '/category/reviews' },
+  { host: 'britishtheatreguide.info', pathPrefix: '/reviews' },
+];
+
+function _isSameHostIndexRedirect(expectedUrl) {
+  try {
+    const u = new URL(expectedUrl);
+    const host = u.hostname.replace(/^www\./, '');
+    const path = u.pathname.replace(/\/$/, '');
+    return SAME_HOST_INDEX_REDIRECTS.some(r => r.host === host && (path === r.pathPrefix || path.startsWith(r.pathPrefix + '/')) && path.split('/').length <= r.pathPrefix.split('/').length + 1);
+  } catch { return false; }
+}
+
 /**
  * Check if an actual domain matches the expected domain, accounting for
  * subdomains (amp.nytimes.com vs nytimes.com) and known alias groups
@@ -1068,6 +1105,23 @@ function pageChainOrder(flags) {
   return order;
 }
 
+/**
+ * Fetch a page through the provider chain (see pageChainOrder).
+ *
+ * RETURNS `{ content, format, source }` — NOT `{ html }` / `{ body }`. Read
+ * `result.content` (string), `result.format` ('html' | 'markdown' | ...) and
+ * `result.source` (tier label). Reading r.html/r.body yields undefined, which
+ * looked like "length 0 = blocked" for six opening-night passes (BRO-2763).
+ * Throws Error('All scraping methods failed') when every tier misses.
+ *
+ * @param {string} url
+ * @param {object} [options]
+ * @param {boolean} [options.skipVerify] - skip the canonical/url_mismatch guard
+ * @param {boolean} [options.allowSameHostRedirect] - accept a same-host canonical path change
+ * @param {boolean} [options.preferPlaywright]
+ * @param {string} [options.playwrightWaitForSelector]
+ * @returns {Promise<{content: string, format: string, source: string}>}
+ */
 async function fetchPage(url, options = {}) {
   url = require('./review-url-entity-decode').decodeUrlEntities(unwrapRedirectUrl(url)); // BRO-4403
   const preferPlaywright = options.preferPlaywright || false;
@@ -1094,7 +1148,7 @@ async function fetchPage(url, options = {}) {
       console.log(`  ✅ Success (${source}, ${result.format})`);
       return result;
     }
-    const vr = verifyFetchedUrl(result.content, url);
+    const vr = verifyFetchedUrl(result.content, url, { allowSameHostRedirect: options.allowSameHostRedirect });
     if (vr.verified) {
       console.log(`  ✅ Success (${source}, ${result.format})`);
       return result;
@@ -1173,7 +1227,7 @@ async function fetchPage(url, options = {}) {
       const label = isPublicSite ? 'public site' : 'complex site';
       console.log(`  → Using Playwright (${label})...`);
       const raw = await fetchWithPlaywright(url, {
-        fast: isPublicSite,
+        fast: isPublicSite || _isNeverIdleDomain(url),
         playwrightWaitForSelector: options.playwrightWaitForSelector,
       });
       if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
@@ -1249,7 +1303,7 @@ async function fetchPage(url, options = {}) {
     // tier is "everything else failed" fallback, no specific selector.
     'playwright-last': async (fallbackFrom) => {
       console.log('  → Trying Playwright (last resort)...');
-      const raw = await fetchWithPlaywright(url);
+      const raw = await fetchWithPlaywright(url, { fast: _isNeverIdleDomain(url) });
       if (raw && raw.content && _isChallengeOrGarbage(raw.content)) {
         console.log(`  ⚠️  Playwright returned challenge/garbage (${raw.content.length} bytes)`);
       } else if (raw) {
@@ -1537,9 +1591,12 @@ const CATEGORY_DRIFT_HOSTS = new Set(['show-score.com']);
  *
  * @param {string} html - The fetched HTML content
  * @param {string} expectedUrl - The URL that was requested
+ * @param {{ allowSameHostRedirect?: boolean }} [opts] - allowSameHostRedirect:
+ *   accept a canonical that differs in path but stays on the same host. Also
+ *   applied automatically for the SAME_HOST_INDEX_REDIRECTS listing pages.
  * @returns {{ verified: boolean, reason?: string, actual?: string }}
  */
-function verifyFetchedUrl(html, expectedUrl) {
+function verifyFetchedUrl(html, expectedUrl, opts = {}) {
   if (!html || !expectedUrl) return { verified: false, reason: 'missing_input' };
 
   // 1. Homepage title detection — high-risk outlets return homepage with 200
@@ -1627,6 +1684,9 @@ function verifyFetchedUrl(html, expectedUrl) {
       }
       if (domainMatchesExpected(expHost, actHost)) return { verified: true };
     } else {
+      if (opts.allowSameHostRedirect || _isSameHostIndexRedirect(expectedUrl)) {
+        return { verified: true, reason: 'same_host_redirect' };
+      }
       // Same host: tolerate a path-suffix redirect, where the CMS resolves a short/
       // partial slug to its full canonical article (e.g. didtheylikeit.com resolves
       // /shows/the-gin-game/ to /shows/the-gin-game-review/). Requires same directory
@@ -1783,6 +1843,8 @@ module.exports = {
   getScraperStats,
   isPlaywrightMissingBrowserError,
   verifyFetchedUrl,
+  SAME_HOST_INDEX_REDIRECTS,
+  NEVER_IDLE_DOMAINS,
   recordUrlMismatch,
   unwrapRedirectUrl,
   get sbCreditsLow() { return _sbCreditsLow; },
