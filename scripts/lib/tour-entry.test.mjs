@@ -30,6 +30,20 @@ test('closed tour gets status closed and closing provenance', () => {
   assert.equal(entry.closingDateSource, 'tourstoyou+wikipedia');
 });
 
+test('a launch confirmed by the BWW roundup says so in its provenance (BRO-4563)', () => {
+  const decision = { write: { openingDate: '2026-09-20' }, notes: ['segment 2026-09-20..2027-06-01'], launchSource: 'bww-roundup' };
+  const { entry } = buildTourEntry({ parent, shows: [parent], decision, roundupUrl: 'https://bww/r-20260930', scheduleUrl: 'https://tourstoyou.org/shows/kimberly-akimbo/', now: NOW });
+  assert.equal(entry.id, 'kimberly-akimbo-tour-2026');
+  assert.equal(entry.openingDateSource, 'tourstoyou+bww-roundup');
+  assert.equal(entry.discoverySource, 'aggregator-roundup:bww-tour-roundup');
+  assert.match(entry.statusSource, /\+ BroadwayWorld roundup;/);
+  assert.equal(entry.tourScheduleSlug, 'kimberly-akimbo');
+  const closed = buildTourEntry({ parent, shows: [parent], decision: { ...decision, write: { openingDate: '2026-09-20', closingDate: '2026-09-27' } }, roundupUrl: 'u', now: NOW }).entry;
+  assert.equal(closed.closingDateSource, 'tourstoyou');
+  // Wikipedia-confirmed (or legacy decisions without launchSource) are unchanged.
+  assert.equal(buildTourEntry({ parent, shows: [parent], decision: ok, roundupUrl: 'u', now: NOW }).entry.openingDateSource, 'tourstoyou+wikipedia');
+});
+
 test('stays a suggestion without a confirmed launch, with a problem, or while another tour is open', () => {
   assert.match(buildTourEntry({ parent, shows: [parent], decision: { write: {}, notes: [] }, roundupUrl: 'u', now: NOW }).skip, /no launch/);
   assert.match(buildTourEntry({ parent, shows: [parent], decision: { write: {}, notes: [], problem: 'zero engagements' }, roundupUrl: 'u', now: NOW }).skip, /zero engagements/);
