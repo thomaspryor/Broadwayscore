@@ -11,8 +11,8 @@ on:
       dry_run:
         description: 'Verify only, write and push nothing'
         required: false
-        default: 'true'
-        type: string
+        default: true
+        type: boolean
       limit:
         description: 'Max files to process (blank = all)'
         required: false
@@ -57,11 +57,13 @@ jobs:
         id: run
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
-          DRY_RUN: ${{ inputs.dry_run }}
+          DRY_RUN: ${{ inputs.dry_run && 'true' || 'false' }}
           LIMIT: ${{ inputs.limit }}
           OPENED_SINCE: ${{ inputs.opened_since }}
         run: |
           set -o pipefail
+          case "$LIMIT" in *[!0-9]*) echo "limit must be digits"; exit 1;; esac
+          case "$OPENED_SINCE" in [0-9][0-9][0-9][0-9]-[0-9][0-9]-[0-9][0-9]) ;; *) echo "bad opened_since"; exit 1;; esac
           ARGS="--cv-promoted-nonreview --opened-since=${OPENED_SINCE}"
           [ -n "$LIMIT" ] && ARGS="$ARGS --limit=$LIMIT"
           [ "$DRY_RUN" = "true" ] && ARGS="$ARGS --dry-run"
@@ -70,7 +72,7 @@ jobs:
           echo "cleared=$CLEARED" >> "$GITHUB_OUTPUT"
 
       - name: Push to private repo
-        if: inputs.dry_run != 'true'
+        if: !inputs.dry_run
         uses: ./.github/actions/push-review-texts
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

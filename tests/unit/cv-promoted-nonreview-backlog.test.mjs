@@ -58,3 +58,37 @@ test('reverify script wires the selector flag', () => {
   assert.match(src, /--cv-promoted-nonreview/);
   assert.match(src, /selectCvPromotedNonReview\(/);
 });
+
+const { planClear, alreadyReverified } = require('../../scripts/lib/cv-promoted-nonreview-selector.js');
+const high = { confidence: 'high', articleTypeConfidence: 'high' };
+
+test('planClear: clean high verdict clears isNonReview and wrongShow together', () => {
+  const p = planClear({ ...base, wrongShow: true }, high, true);
+  assert.deepEqual([p.clearWrong, p.wrongShowOnly, p.clearNonReview], [true, true, true]);
+});
+
+test('planClear: wrongProduction file gets the full clear', () => {
+  const p = planClear({ ...base, wrongProduction: true }, high, true);
+  assert.deepEqual([p.clearWrong, p.wrongShowOnly, p.clearNonReview], [true, false, true]);
+});
+
+test('planClear: medium article confidence clears NOTHING (no stranding partial clear)', () => {
+  const p = planClear({ ...base, wrongShow: true }, { confidence: 'high', articleTypeConfidence: 'medium' }, true);
+  assert.deepEqual([p.clearWrong, p.clearNonReview, p.heldBack], [false, false, true]);
+});
+
+test('planClear: not clean clears nothing; isNonReview-only works', () => {
+  assert.equal(planClear(base, high, false).clearNonReview, false);
+  assert.equal(planClear(base, high, true).clearNonReview, true);
+  assert.equal(planClear({ wrongShow: true }, { confidence: 'high' }, true).clearWrong, true);
+});
+
+test('selector skips files already re-verified from stored text', () => {
+  const dir = fixture();
+  fs.writeFileSync(path.join(dir, 'new-show-2026', 'a--b.json'),
+    JSON.stringify({ ...base, contentVerification: { reverifiedFrom: 'stored-fullText' } }));
+  assert.equal(alreadyReverified({ contentVerification: { reverifiedFrom: 'stored-fullText' } }), true);
+  const got = selectCvPromotedNonReview(dir, shows, { openedSince: '2026-07-01' }).map(f => f.file);
+  assert.ok(!got.includes('a--b.json') || !got.some(f => f === 'a--b.json' && false));
+  assert.deepEqual(got, ['wrongshow.json']);
+});

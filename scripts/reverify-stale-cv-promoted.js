@@ -41,7 +41,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { audit } = require('./audit-stale-cv-hash');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { assessClearSafety } = require('./lib/reverify-clear-guards');
-const { selectCvPromotedNonReview } = require('./lib/cv-promoted-nonreview-selector');
+const { selectCvPromotedNonReview, planClear } = require('./lib/cv-promoted-nonreview-selector');
 
 const USAGE = `reverify-stale-cv-promoted.js — re-verify reviews excluded by a CV-promoted
 flag (wrongShow / wrongProduction / isNonReview) whose stored contentHash no longer
@@ -239,8 +239,14 @@ async function main() {
         // entirely, which is how low-confidence verdicts reached live reviews. The
         // inner check below is kept as defence in depth so this branch stays correct
         // even if a caller reaches it without the central gate.
-        if (clean && (data.wrongShow || data.wrongProduction)) {
-          const wantsFullClear = Boolean(data.wrongProduction);
+        // All-or-none across flag families (BRO-4552): a partial clear stamps an
+        // override that strands the still-flagged remainder. See planClear().
+        const plan = planClear(data, result, clean);
+        if (plan.heldBack) {
+          console.log(`  (clean but a flag family is below the high-confidence bar — clearing none; hash still corrected)`);
+        }
+        if (plan.clearWrong) {
+          const wantsFullClear = !plan.wrongShowOnly;
           if (result.confidence === 'high') {
             clearWrongProductionFlags(data, {
               source: 'reverify-stale-cv-promoted.js',
@@ -263,8 +269,7 @@ async function main() {
         // audit-stale-cv-hash.js runs — while isNonReview stayed true and the
         // review stayed excluded forever, permanently invisible). Gated on high
         // confidence to match isNonReviewDemotedByFreshCV's own bar (review-guards.js).
-        const articleConfidence = result.articleTypeConfidence || result.confidence;
-        if (clean && data.isNonReview && articleConfidence === 'high') {
+        if (plan.clearNonReview) {
           data.isNonReview = false;
           // null, not delete — neither field has a CLEAR_BREADCRUMBS entry, so
           // a delete is silently reverted by safeWriteReview's merge-mode
@@ -274,8 +279,6 @@ async function main() {
           data.nonReviewOverride = `reverify-stale-cv-promoted.js: ${result.reasoning || 'stored fullText re-verified clean (task #1404 stale-hash sweep)'}`;
           data.nonReviewOverrideAt = new Date().toISOString();
           didClear = true;
-        } else if (clean && data.isNonReview) {
-          console.log(`  (clean but articleTypeConfidence=${articleConfidence} — leaving isNonReview flagged; hash still corrected)`);
         }
 
         if (didClear) data.clearedFlagsBeforeRecovery = preClearFlagState;

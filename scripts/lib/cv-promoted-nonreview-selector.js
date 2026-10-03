@@ -54,6 +54,7 @@ function selectCvPromotedNonReview(reviewTextsDir, shows, { openedSince } = {}) 
       let d;
       try { d = JSON.parse(fs.readFileSync(path.join(dir, file), 'utf8')); } catch { continue; }
       if (!isCvPromotedNonReviewCandidate(d)) continue;
+      if (alreadyReverified(d)) continue;
       out.push({
         showId: show.id,
         file,
@@ -70,7 +71,38 @@ function selectCvPromotedNonReview(reviewTextsDir, shows, { openedSince } = {}) 
   return out;
 }
 
+/**
+ * All-or-none clear plan for one re-verified file (BRO-4552 review blocker):
+ * clearing wrongShow/wrongProduction while isNonReview stays set would stamp a
+ * permanent override (wrongProductionOverride/wrongShowOverride) that removes the
+ * file from every future selection, stranding it excluded. So when a file carries
+ * several flag families, clear them only if EVERY one is clearable.
+ */
+function planClear(data, result, clean) {
+  const none = { clearWrong: false, wrongShowOnly: false, clearNonReview: false, heldBack: false };
+  const hasWrong = Boolean(data.wrongShow || data.wrongProduction);
+  if (!clean || (!hasWrong && !data.isNonReview)) return none;
+  const articleConfidence = result.articleTypeConfidence || result.confidence;
+  const wrongOk = !hasWrong || result.confidence === 'high';
+  const nonReviewOk = !data.isNonReview || articleConfidence === 'high';
+  if (!(wrongOk && nonReviewOk)) return { ...none, heldBack: true };
+  return {
+    clearWrong: hasWrong,
+    wrongShowOnly: !data.wrongProduction,
+    clearNonReview: Boolean(data.isNonReview),
+    heldBack: false,
+  };
+}
+
+// Files already re-verified from stored text keep isNonReview when refused; skip
+// them so a --limit batch moves on instead of re-paying for the same first N files.
+function alreadyReverified(d) {
+  return d?.contentVerification?.reverifiedFrom === 'stored-fullText';
+}
+
 module.exports = {
+  planClear,
+  alreadyReverified,
   CV_PROMOTED_NON_REVIEW_PREFIX,
   isCvPromotedNonReviewCandidate,
   selectCvPromotedNonReview,
