@@ -1,12 +1,12 @@
 {
-  "timestamp": "2026-10-03T16:13:35.453Z",
+  "timestamp": "2026-10-03T16:23:18.226Z",
   "stats": {
     "totalReviews": 46057,
-    "alreadyFlagged": 18684,
+    "alreadyFlagged": 18676,
     "dateGuardCatches": 268,
-    "directorMismatch": 1205,
+    "directorMismatch": 1206,
     "tvFilmSignals": 1333,
-    "londonSignals": 1263,
+    "londonSignals": 1264,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
     "noPublishDate": 4283
@@ -3757,6 +3757,20 @@
       "score": 89,
       "publishDate": "2023-12-14",
       "url": "https://www.theaterpizzazz.com/buena-vista-social-club/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"saheem ali\" from buena-vista-social-club-2025"
+        }
+      ]
+    },
+    {
+      "showId": "buena-vista-social-club-tour-2026",
+      "file": "broadwayworld--michael-rabice.json",
+      "score": 75,
+      "publishDate": "2026-09-17",
+      "url": "https://www.broadwayworld.com/buffalo/article/Review-BUENA-VISTA-SOCIAL-CLUB-at-Sheas-Buffalo-Theatre-20260917",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -50597,6 +50611,20 @@
       "score": 77,
       "publishDate": "2026-08-18",
       "url": "https://www.jacktheladmag.com/theatre-reviews/now-you-see-me-live",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
+      "showId": "now-you-see-me-live-west-end-2026",
+      "file": "jonathan-baz--unknown.json",
+      "score": 81,
+      "publishDate": null,
+      "url": "http://www.jonathanbaz.com/2026/08/now-you-see-me-live-review.html",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
