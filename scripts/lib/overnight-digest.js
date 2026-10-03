@@ -28,7 +28,6 @@ const { isDoneTitle, run: cmuxRun, LIST_RETRY_TIMEOUTS } = require('./cmux-works
 const { isNeedsYouTitle } = require('./needs-you-snapshot.js');
 const { shallowFetchArgs } = require('./shallow-fetch-args.js');
 
-const { cmuxSpawnEnv } = require('./cmux-socket-auth.js');
 const CMUX_BIN = '/Applications/cmux.app/Contents/Resources/bin/cmux';
 
 function esc(s) {
@@ -172,17 +171,14 @@ function gatherDigest({ repo, hours = 24, skipFetch = false } = {}) {
   // timeoutMs param: worktree-scan git calls run up to ~3× per worktree ×
   // ~20 worktrees — cap them at 5s each so a wedged repo can't stall the
   // morning email for minutes (codex ship-check). Coarse calls keep 30s.
-  // Only cmux gets the socket credential (BRO-2959). This same helper also
-  // shells out to git and gh, and handing those children a plaintext password
-  // they have no use for widens the secret's blast radius for nothing
-  // (ship-check finding), so the credential is scoped to the one binary that
-  // actually authenticates with it.
+  // git/gh only. The cmux listing goes through cmux-workspaces' run() (socket
+  // credential + auth ladder + read-only timeout retry, BRO-3413), so this
+  // helper never hands the socket password to a child (BRO-2959).
   const run = (cmd, args, cwd, timeoutMs = 30000) => execFileSync(cmd, args, {
     cwd: cwd || repo,
     encoding: 'utf8',
     timeout: timeoutMs,
     stdio: ['ignore', 'pipe', 'pipe'],
-    env: cmd === CMUX_BIN ? cmuxSpawnEnv(process.env) : process.env,
   });
 
   // 1. What landed on origin/main (fetch first so we see CI's commits, not

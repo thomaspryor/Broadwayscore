@@ -897,13 +897,16 @@ test('hasRunningClaude: column-exact — no substring false positives', () => {
   });
 
   test('BRO-3413: exhaustion throws the last timeout after 1 + retryTimeouts attempts', () => {
+    _resetRunWarnings();
     const last = cmuxTimeoutErr();
     const { calls, execFn } = scripted([timeoutErr(), timeoutErr(), last, 'never']);
     assert.throws(() => run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn, logFn: quiet, sleepFn: noSleep }), (e) => e === last);
     assert.equal(calls.length, 1 + LIST_RETRY_TIMEOUTS);
+    _resetRunWarnings(); // exhaustion latches retries off for the process
   });
 
   test('BRO-3413: no new attempt starts once the total time budget is spent', () => {
+    _resetRunWarnings();
     let now = 0;
     let calls = 0;
     // Wedged socket: every call burns the full Node-side timeout.
@@ -911,6 +914,7 @@ test('hasRunningClaude: column-exact — no substring false positives', () => {
     assert.throws(() => run(['list-workspaces'], { retryTimeouts: 5, execFn, logFn: quiet, sleepFn: (ms) => { now += ms; }, nowFn: () => now }));
     assert.equal(calls, 2, 'second attempt starts at ~31s (< budget); a third would start at ~62s (> budget)');
     assert.ok(now < RUN_RETRY_BUDGET_MS + 30_000 + 3000);
+    _resetRunWarnings();
   });
 
   test('BRO-3413: a non-timeout failure on a listing is not retried', () => {
@@ -924,5 +928,35 @@ test('hasRunningClaude: column-exact — no substring false positives', () => {
     let seen;
     listWorkspaces({ runFn: (args, opts) => { seen = opts; return LIST_SAMPLE; } });
     assert.equal(seen?.retryTimeouts, LIST_RETRY_TIMEOUTS);
+  });
+}
+
+{
+  const { run, LIST_RETRY_TIMEOUTS, RUN_RETRY_BUDGET_MS } = require('./cmux-workspaces.js');
+  const timeoutErr = () => Object.assign(new Error('spawnSync /x/cmux ETIMEDOUT'), { code: 'ETIMEDOUT', stderr: '' });
+  const quiet = () => {};
+
+  test('BRO-3413: a retry never runs past the total budget (subprocess timeout capped to what is left)', () => {
+    _resetRunWarnings();
+    let now = 0;
+    const timeouts = [];
+    // First attempt burns 38s; the retry may only get what remains of 45s.
+    const execFn = (bin, args, opts) => { timeouts.push(opts.timeout); if (timeouts.length === 1) { now += 38_000; throw timeoutErr(); } return 'ok'; };
+    const out = run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn, logFn: quiet, sleepFn: (ms) => { now += ms; }, nowFn: () => now });
+    assert.equal(out, 'ok');
+    assert.equal(timeouts[0], 30_000);
+    assert.ok(timeouts[1] <= RUN_RETRY_BUDGET_MS - 38_000 && timeouts[1] >= 5_000, `retry timeout capped, got ${timeouts[1]}`);
+  });
+
+  test('BRO-3413: once a call exhausts its retries on timeouts, later calls in the process do not retry', () => {
+    _resetRunWarnings();
+    let calls = 0;
+    const alwaysTimeout = () => { calls++; throw timeoutErr(); };
+    assert.throws(() => run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn: alwaysTimeout, logFn: quiet, sleepFn: () => {} }));
+    assert.equal(calls, 1 + LIST_RETRY_TIMEOUTS);
+    calls = 0;
+    assert.throws(() => run(['list-workspaces'], { retryTimeouts: LIST_RETRY_TIMEOUTS, execFn: alwaysTimeout, logFn: quiet, sleepFn: () => {} }));
+    assert.equal(calls, 1, 'latched off: single attempt');
+    _resetRunWarnings();
   });
 }

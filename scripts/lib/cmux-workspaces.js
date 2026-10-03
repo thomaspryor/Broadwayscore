@@ -85,7 +85,7 @@ function warnOnce(logFn, message, key = message) {
 
 // Test-only: the once-per-process guard is module state, so each test needs a
 // clean slate or only the first one would ever observe a warning.
-function _resetRunWarnings() { warnedMessages.clear(); }
+function _resetRunWarnings() { warnedMessages.clear(); retryLatchedOff = false; }
 
 // `execFn` is a test-only seam (same idiom as this file's listWorkspaces/
 // closeWorkspace injection points). The ladder below is the riskiest logic in
@@ -105,36 +105,55 @@ function _resetRunWarnings() { warnedMessages.clear(); }
 //
 // The retry is bounded by TOTAL elapsed time, not just attempt count: a
 // wedged socket costs the full RUN_TIMEOUT_MS per attempt, and bsc-reconcile
-// lists several times inside one 5-min launchd tick. No new attempt starts
-// once RUN_RETRY_BUDGET_MS has passed, so the worst case is roughly one
-// budget plus one RUN_TIMEOUT_MS. cmux's own "Command timed out" fires at
-// ~15s, so the contention case still gets all its attempts.
+// lists several times inside one 5-min launchd tick. Every retry's own
+// subprocess timeout is capped at what is left of RUN_RETRY_BUDGET_MS, and no
+// retry starts with less than RUN_RETRY_MIN_ATTEMPT_MS left, so one call
+// never runs past max(RUN_TIMEOUT_MS, RUN_RETRY_BUDGET_MS). cmux's own
+// "Command timed out" fires at ~15s, so the contention case still gets all
+// its attempts.
+//
+// And once a retried call has EXHAUSTED its budget on timeouts, the socket is
+// wedged rather than busy: later calls in the same process fall straight back
+// to a single attempt instead of paying the budget again each time (review
+// finding: four reconcile sweeps x a full budget would overrun the tick, and
+// every retry adds load to the very socket that is struggling).
 const RUN_RETRY_BUDGET_MS = 45_000;
+const RUN_RETRY_MIN_ATTEMPT_MS = 5_000;
 const RUN_RETRY_BACKOFF_MS = [1000, 2000]; // + up to 1s jitter each
+let retryLatchedOff = false;
 
 function sleepMs(ms) {
   try { Atomics.wait(new Int32Array(new SharedArrayBuffer(4)), 0, 0, ms); } catch { /* no SAB: skip the pause, still retry */ }
 }
 
 function run(args, { retryTimeouts = 0, sleepFn = sleepMs, nowFn = Date.now, ...opts } = {}) {
-  const start = nowFn();
+  const maxRetries = retryLatchedOff ? 0 : retryTimeouts;
+  const deadline = nowFn() + RUN_RETRY_BUDGET_MS;
+  let timeoutMs = RUN_TIMEOUT_MS;
   for (let retry = 0; ; retry++) {
     try {
-      const out = runOnce(args, opts);
+      const out = runOnce(args, { ...opts, timeoutMs });
       if (retry > 0) {
-        warnOnce(opts.logFn || console.error, `[cmux] \`${args.join(' ')}\` timed out and succeeded on retry ${retry} — socket contention (BRO-3413).`, `cmux:timeout-recovered:${args[0]}`);
+        // Reports what was observed, not a cause: a daemon stall/restart looks
+        // the same from here as contention.
+        warnOnce(opts.logFn || console.error, `[cmux] \`${args.join(' ')}\` timed out and succeeded on retry ${retry} (BRO-3413).`, `cmux:timeout-recovered:${args.join(' ')}`);
       }
       return out;
     } catch (e) {
-      if (retry >= retryTimeouts || classifyCmuxError(e) !== 'timeout' || nowFn() - start >= RUN_RETRY_BUDGET_MS) throw e;
+      if (classifyCmuxError(e) !== 'timeout') throw e;
+      if (retry >= maxRetries) { if (maxRetries > 0) retryLatchedOff = true; throw e; }
       const base = RUN_RETRY_BACKOFF_MS[Math.min(retry, RUN_RETRY_BACKOFF_MS.length - 1)];
-      sleepFn(base + Math.floor(Math.random() * 1000));
+      const pause = base + Math.floor(Math.random() * 1000);
+      if (deadline - nowFn() - pause < RUN_RETRY_MIN_ATTEMPT_MS) { retryLatchedOff = true; throw e; }
+      sleepFn(pause);
+      timeoutMs = Math.min(RUN_TIMEOUT_MS, deadline - nowFn());
+      if (timeoutMs < RUN_RETRY_MIN_ATTEMPT_MS) { retryLatchedOff = true; throw e; }
     }
   }
 }
 
-function runOnce(args, { execFn = execFileSync, logFn = console.error } = {}) {
-  const base = { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: RUN_TIMEOUT_MS };
+function runOnce(args, { execFn = execFileSync, logFn = console.error, timeoutMs = RUN_TIMEOUT_MS } = {}) {
+  const base = { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], timeout: timeoutMs };
   let firstAuthError = null;
 
   try {
