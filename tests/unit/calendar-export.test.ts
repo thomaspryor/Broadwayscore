@@ -180,6 +180,12 @@ test('UID excludes the date so a reschedule updates instead of duplicating', () 
   assert.equal(uid(ics()).trim(), 'bsc-wicked-2003@broadwayscorecard.com');
 });
 
+test('all-day (Shared Plans) UIDs carry the date: two plans for one show are two events', () => {
+  const uid = (s: string) => s.match(/^UID:(.+)$/m)![1].trim();
+  assert.equal(uid(ics({ time: null })), 'bsc-wicked-2003-2026-09-11@broadwayscorecard.com');
+  assert.notEqual(uid(ics({ time: null })), uid(ics({ time: null, date: '2026-11-01' })));
+});
+
 test('SEQUENCE differs for two exports inside the same second', () => {
   // Plain unix seconds collide on a double-click, and RFC 5545 clients may
   // treat an equal SEQUENCE as a no-op rather than an update.
