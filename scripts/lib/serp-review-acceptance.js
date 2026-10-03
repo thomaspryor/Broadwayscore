@@ -14,6 +14,11 @@
  *      slug, so a film/TV page sharing the token is refused
  *   4. a quoted work in the result title that CONTAINS the show title but is
  *      longer ("Wonder Woman 1984") is a different work
+ *   5. (BRO-4546) review-slug downgrade: when the URL being replaced has a
+ *      review token in its path and the candidate has none, the swap trades a
+ *      review for news/profile/box-office copy from the same outlet (173 files
+ *      measured 2026-10-03, e.g. THR "the-outsiders-broadway-review" ->
+ *      "business-news/broadway-box-office-..."). Needs `previousUrl`.
  *
  * Consumers: url-discovery.js discoverCorrectUrl, scan-serp-adoptions.js.
  */
@@ -49,8 +54,44 @@ function coreTitleTokens(showTitle) {
   return norm(showTitle).replace(/^(the|a|an) /, '').split(' ').filter(Boolean);
 }
 
+// Path tokens that mark a URL as a review (BRO-4546). "treview" = Variety's
+// legacy /review/ + "theatre review" concatenations seen in the corpus.
+const REVIEW_PATH_TOKEN_RE = /(^|[^a-z])(t?reviews?|reviewed)(?=[^a-z]|$)/i;
+
+function hasReviewPathToken(url) {
+  try { return REVIEW_PATH_TOKEN_RE.test(new URL(url).pathname); } catch { return false; }
+}
+
 function hostOf(url) {
   try { return new URL(url).hostname.toLowerCase().replace(/^www\./, ''); } catch { return ''; }
+}
+
+// Outlet identity for the downgrade check: subdomains (theater.nytimes,
+// au.variety, archive.nytimes) and renamed domains are the same outlet.
+const OUTLET_DOMAIN_ALIASES = { 'huffingtonpost.com': 'huffpost.com' };
+function outletDomain(url) {
+  const labels = hostOf(url).split('.');
+  const n = /^(co|com|org|net|ac|gov)\.[a-z]{2}$/.test(labels.slice(-2).join('.')) ? 3 : 2;
+  const base = labels.slice(-n).join('.');
+  return OUTLET_DOMAIN_ALIASES[base] || base;
+}
+
+// Singular "review" only: "reviews" headlines are critics' roundups.
+const REVIEW_TITLE_RE = /\breview\b/i;
+
+/**
+ * Only a same-outlet, review-shaped previous URL is a baseline worth
+ * protecting: an aggregator/roundup or other-host URL in review.url (wrong
+ * content, fabricated entry) must not veto a correct slugless review. A SERP
+ * title that itself says "Review" (Vulture "Theater Review: Disaster! ...")
+ * is positive evidence that outranks the slug.
+ */
+function isReviewSlugDowngrade(url, previousUrl, title) {
+  if (!previousUrl || previousUrl === url) return false;
+  if (outletDomain(previousUrl) !== outletDomain(url)) return false;
+  if (!hasReviewPathToken(previousUrl) || hasReviewPathToken(url)) return false;
+  if (!classifyReviewUrl(previousUrl).ok) return false;
+  return !REVIEW_TITLE_RE.test(String(title || ''));
 }
 
 /**
@@ -75,10 +116,32 @@ function longerQuotedWork(rawTitle, showTitle) {
 }
 
 /**
- * @param {{url: string, title?: string, snippet?: string, showTitle: string}} c
+ * The URL a discovery would replace, IF it is trusted enough to protect
+ * (BRO-4546). A file flagged as pointing at the wrong article (wrongUrl,
+ * wrongShow, wrongProduction, showNotMentioned, fabricated, roundup,
+ * contentVerification.wrongArticle) carries a known-bad url: its review slug
+ * must not veto the correct slugless replacement (nysr, FT, New Yorker...).
+ * wrong_content / no_url are fetch failures, not wrong-article verdicts, so
+ * their url stays the baseline (the reason-recovery path behind the 173
+ * downgrades measured 2026-10-03).
+ * @param {object} review
+ * @returns {string|undefined}
+ */
+function downgradeBaselineUrl(review) {
+  if (!review || !review.url) return undefined;
+  if (review.wrongUrl || review.wrongShow || review.wrongProduction || review.showNotMentioned
+    || review.fabricatedEntry || review.isRoundupArticle
+    || (review.contentVerification && review.contentVerification.wrongArticle === true)
+    || review.incompleteReason === 'stale_wrong_production') return undefined;
+  return review.url;
+}
+
+/**
+ * @param {{url: string, title?: string, snippet?: string, showTitle: string, previousUrl?: string}} c
+ *   previousUrl: the URL this candidate would replace (omit when there is none)
  * @returns {{ok: boolean, reason: string|null}}
  */
-function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle } = {}) {
+function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle, previousUrl } = {}) {
   let pathname = '';
   try { pathname = new URL(url).pathname; } catch { return { ok: false, reason: 'unparseable-url' }; }
   const cls = classifyReviewUrl(url);
@@ -92,6 +155,10 @@ function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle } = {
     if (re.test(pathname) && !(exemptHosts && exemptHosts.has(host))) {
       return { ok: false, reason: `non-review-path:${reason}` };
     }
+  }
+
+  if (isReviewSlugDowngrade(url, previousUrl, title)) {
+    return { ok: false, reason: 'review-slug-downgrade' };
   }
 
   const quoted = longerQuotedWork(title, showTitle);
@@ -119,4 +186,4 @@ function evaluateSerpAcceptance({ url, title = '', snippet = '', showTitle } = {
   return { ok: true, reason: null };
 }
 
-module.exports = { evaluateSerpAcceptance, longerQuotedWork, SERP_NON_REVIEW_PATHS, PODCAST_OUTLET_HOSTS };
+module.exports = { evaluateSerpAcceptance, downgradeBaselineUrl, hasReviewPathToken, isReviewSlugDowngrade, longerQuotedWork, SERP_NON_REVIEW_PATHS, PODCAST_OUTLET_HOSTS };

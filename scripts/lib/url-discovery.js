@@ -22,7 +22,7 @@ const { isLondonMarket } = require('./venue-classification');
 const { urlLooksLikeReview, isSluglessReviewUrl } = require('./review-guards');
 const { resolveOutletFromUrlIfPathInformed } = require('./review-normalization');
 const { validateSerpCandidate } = require('./serp-candidate-validator');
-const { evaluateSerpAcceptance } = require('./serp-review-acceptance');
+const { evaluateSerpAcceptance, downgradeBaselineUrl } = require('./serp-review-acceptance');
 const { isTimeOutLondonListing } = require('./timeout-london-url');
 const { isBlockedReviewUrl } = require('./domain-filters');
 const { recordBdCall, recordSdCall, recordSbCall } = require('./bd-telemetry');
@@ -1387,7 +1387,10 @@ async function discoverCorrectUrl(review, scrapingBeeKey, options = {}) {
     }
 
     // BRO-4409: non-review shapes / different work sharing a title token.
-    const acceptance = evaluateSerpAcceptance({ url, title: result.title, snippet: result.snippet, showTitle: showInfo.title });
+    // BRO-4546: previousUrl refuses swapping a review-slugged URL for a
+    // non-review article from the same outlet (box-office/news/profile).
+    // Known-bad urls (wrong-article flags) are not a baseline.
+    const acceptance = evaluateSerpAcceptance({ url, title: result.title, snippet: result.snippet, showTitle: showInfo.title, previousUrl: downgradeBaselineUrl(review) });
     if (!acceptance.ok) {
       log(`    ✗ SERP acceptance (${acceptance.reason}): ${url.substring(0, 80)}`);
       continue;
