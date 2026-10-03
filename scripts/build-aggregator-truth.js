@@ -16,6 +16,7 @@
 const fs = require('fs');
 const path = require('path');
 const { JSDOM } = require('jsdom');
+const { makeArchiveShowChecker } = require('./lib/archive-cache-guard');
 
 // Paths
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
@@ -32,6 +33,22 @@ const FLAGS_PATH = path.join(__dirname, '../data/aggregator-truth-flags.json');
 function loadShows() {
   const data = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8'));
   return data.shows;
+}
+
+let _archiveShowChecker = null;
+
+/**
+ * An archive is saved under a show id, but the page may be another show's
+ * (BRO-4563: the Hay Fever roundup counted as 8 Richard II reviews). A
+ * wrong-show page comes back with hasArchive:false so determineFlags and
+ * audit-aggregator-coverage.js treat the show as having no archive instead of
+ * comparing against a wrong count.
+ */
+function wrongShowArchive(html, showId) {
+  if (!_archiveShowChecker) _archiveShowChecker = makeArchiveShowChecker(loadShows());
+  const check = _archiveShowChecker(html, showId);
+  if (!check) return null;
+  return { reviewCount: null, hasArchive: false, error: 'wrong-show', reason: check.reason, pageTitle: check.pageTitle };
 }
 
 /**
@@ -78,6 +95,8 @@ function extractShowScoreCount(showId) {
 
   try {
     const html = fs.readFileSync(archivePath, 'utf8');
+    const wrongShow = wrongShowArchive(html, showId);
+    if (wrongShow) return wrongShow;
 
     // Check if it's a valid show page (not a redirect or error page)
     if (html.includes('NYC Theatre Reviews and Tickets</title>') && !html.includes('(Broadway)')) {
@@ -136,6 +155,8 @@ function extractDTLICount(showId) {
 
   try {
     const html = fs.readFileSync(archivePath, 'utf8');
+    const wrongShow = wrongShowArchive(html, showId);
+    if (wrongShow) return wrongShow;
 
     // Method 1: Extract from thumb images (thumb-N.png)
     // These represent up/meh/down counts
@@ -188,6 +209,8 @@ function extractBWWCount(showId) {
 
   try {
     const html = fs.readFileSync(archivePath, 'utf8');
+    const wrongShow = wrongShowArchive(html, showId);
+    if (wrongShow) return wrongShow;
 
     // Method 1: Count BlogPosting entries (newer format)
     const blogPostingMatches = html.match(/"@type":\s*"BlogPosting"/g);

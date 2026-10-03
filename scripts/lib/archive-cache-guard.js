@@ -1,7 +1,7 @@
 'use strict';
 
 const fs = require('fs');
-const { validateRoundupPageTitle, isPunctuationFalsePositive } = require('./show-matching');
+const { validateRoundupPageTitle, isPunctuationFalsePositive, buildSiblingCategoriesFromShows } = require('./show-matching');
 
 /**
  * The one place "is this archive's category/title acceptable" gets decided —
@@ -80,4 +80,28 @@ function readCachedArchiveIfValid(archivePath, maxAgeDays, show, siblingCategori
   return { valid: false, purged: true, check };
 }
 
-module.exports = { readCachedArchiveIfValid, checkArchiveCategory };
+/**
+ * For readers that take an archive by show id and count or parse it without
+ * re-fetching (build-aggregator-truth.js). The file name is only the id it was
+ * saved under: the Hay Fever roundup sat in
+ * bww-roundups/richard-ii-off-west-end-2026.html and counted as 8 Richard II
+ * reviews (BRO-4563). Runs checkArchiveCategory() against that id's show.
+ *
+ * @param {Array<{id:string,title:string,category:string}>} shows
+ * @returns {(html: string, showId: string) => object|null} the failing check
+ *   (validateRoundupPageTitle() shape), or null when the page passes or the id
+ *   is not in shows.
+ */
+function makeArchiveShowChecker(shows) {
+  const byId = {};
+  for (const s of shows) if (s && s.id) byId[s.id] = s;
+  const siblings = buildSiblingCategoriesFromShows(shows);
+  return (html, showId) => {
+    const show = byId[showId];
+    if (!show) return null;
+    const check = checkArchiveCategory(html, show, siblings[showId]);
+    return check.ok ? null : check;
+  };
+}
+
+module.exports = { readCachedArchiveIfValid, checkArchiveCategory, makeArchiveShowChecker };
