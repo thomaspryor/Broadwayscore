@@ -586,7 +586,9 @@ async function fetchViaHtml(outletId, domain, outletEntry, cutoff) {
   for (const listingUrl of candidates) {
     try {
       console.log(`  [html] Fetching ${listingUrl}`);
-      const html = await fetchPage(listingUrl, { timeout: 20000 });
+      const result = await fetchPage(listingUrl, { timeout: 20000 });
+      // fetchPage returns {content, format, source}, never a bare string
+      const html = result && typeof result === 'object' ? result.content : result;
       if (!html || html.length < 500) continue;
 
       const items = extractListingUrls(html, domain);
