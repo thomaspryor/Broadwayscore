@@ -605,6 +605,7 @@ const OWE_VENUE_CONFIGS = [
  * Pure: no fetch, no IO. Fixture-testable.
  */
 const { foldDiacritics } = require('./title-match');
+const { ROMAN_NUMERALS } = require('./title-display-case');
 const {
   parseOvationTixBundle,
   parseTribeEvents,
@@ -773,11 +774,19 @@ function extractByLink(doc, venue) {
     if (!slug || slug.length < 3) continue;
     if (seen.has(slug)) continue;
     seen.add(slug);
-    // Capitalize: "indian-princesses" → "Indian Princesses"
-    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    const title = slugToTitle(slug);
     titles.push(title);
   }
   return titles;
+}
+
+/**
+ * "indian-princesses" → "Indian Princesses", "richard-ii" → "Richard II".
+ * Plain capitalising stored "Richard Ii" as the show title (BRO-4563).
+ */
+function slugToTitle(slug) {
+  return slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())
+    .replace(/\b[a-z]+\b/gi, w => (ROMAN_NUMERALS.has(w.toLowerCase()) ? w.toUpperCase() : w));
 }
 
 /**
@@ -803,7 +812,7 @@ function extractByRegex(html, venue) {
     if (!slug || slug.length < 3) continue;
     if (seen.has(slug)) continue;
     seen.add(slug);
-    const title = slug.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+    const title = slugToTitle(slug);
     titles.push(title);
   }
   return titles;
@@ -1093,6 +1102,7 @@ module.exports = {
   extractByLink,
   extractBySelector,
   extractByRegex,
+  slugToTitle,
   extractJsonLdTheaterEvents,
   writeStagingCandidates,
   writeStaging,

@@ -747,6 +747,14 @@ function loadShows() {
 // Prevents wrong-show contamination from Google search results and fuzzy URL routing
 // ---------------------------------------------------------------------------
 
+// Short Roman numerals survive the "<3 chars" token filters below and in
+// _tokenizeTitleText. "Richard II" as [richard] matched the page "Review
+// Roundup: Richard E. Grant ... in HAY FEVER" on the actor's name, so the
+// Hay Fever roundup was cached under Richard II and passed the archive audit
+// (BRO-4563); "Henry IV" as [henry] matched any Henry VI page.
+const _SHORT_ROMAN_NUMERALS = new Set(['v', 'x', 'ii', 'iv', 'vi', 'ix', 'xi', 'xv', 'xx']);
+const _isTitleToken = w => w.length > 2 || _SHORT_ROMAN_NUMERALS.has(w);
+
 const TITLE_GENERIC_WORDS = new Set([
   'the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival',
   'comedy', 'drama', 'about', 'and', 'of', 'in', 'on', 'at', 'for', 'to',
@@ -805,7 +813,7 @@ function titleWordsMatch(showTitle, candidateText) {
     .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
   let showSlugWords = showTitleLower.split(/[\s,]+/)
     .map(normalizeWord)
-    .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+    .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
 
   // If pre-colon part has no meaningful words, use the FULL title including subtitle
   // (e.g., "All Out: Comedy About Ambition" → "ambition" is the only distinctive word)
@@ -813,7 +821,7 @@ function titleWordsMatch(showTitle, candidateText) {
     const fullTitleLower = showTitle.toLowerCase().replace(/^the\s+/, '').trim();
     showSlugWords = fullTitleLower.split(/[\s,:()]+/)
       .map(normalizeWord)
-      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+      .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
   }
 
   // Deduplicate to prevent double-counting (e.g., "Man to Man" → ["man","man"] → ["man"])
@@ -908,13 +916,13 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
   const showTitleLower = showTitle.toLowerCase()
     .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
   let words = showTitleLower.split(/[\s,]+/)
-    .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+    .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
 
   // Full-title fallback if pre-colon part has no meaningful words
   if (words.length === 0) {
     const fullTitleLower = showTitle.toLowerCase().replace(/^the\s+/, '').trim();
     words = fullTitleLower.split(/[\s,:()]+/)
-      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
+      .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
   }
 
   // Deduplicate to prevent double-counting (e.g., "Man to Man" → ["man","man"] → ["man"])
@@ -1325,9 +1333,9 @@ const _SLUG_STOPWORDS = new Set([
  *    "Richard II" must keep "ii": as [richard] alone it matched the BWW
  *    slug "Review-Roundup-Richard-E-Grant-...-in-HAY-FEVER" (the actor's
  *    name) and out-scored Hay Fever (BRO-4563); "Henry IV" as [henry]
- *    matched any Henry VI slug.
+ *    matched any Henry VI slug. (_SHORT_ROMAN_NUMERALS is defined above
+ *    titleWordsMatch, which keeps them for the same reason.)
  */
-const _SHORT_ROMAN_NUMERALS = new Set(['v', 'x', 'ii', 'iv', 'vi', 'ix', 'xi', 'xv', 'xx']);
 function _tokenizeTitleText(text) {
   return text
     .toLowerCase()

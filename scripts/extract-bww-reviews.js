@@ -10,6 +10,8 @@ const path = require('path');
 const { normalizeOutlet: canonicalNormalizeOutlet, getOutletDisplayName, normalizePublishDate } = require('./lib/review-normalization');
 const { parseArticleBodyReviews } = require('./lib/bww-roundup-parser');
 const { invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
+const { checkArchiveCategory } = require('./lib/archive-cache-guard');
+const { buildSiblingCategoriesByTitle } = require('./lib/show-matching');
 
 const bwwDir = path.join(__dirname, '../data/aggregator-archive/bww-roundups');
 
@@ -214,11 +216,26 @@ console.error('Extracting BWW Review Roundup reviews:\n');
 const allReviews = [];
 let wrongProdCount = 0;
 let unknownOutletCount = 0;
+let wrongShowArchiveCount = 0;
+const siblingCategoriesById = buildSiblingCategoriesByTitle(showsBySlug);
 
 for (const file of files.sort()) {
   const filePath = path.join(bwwDir, file);
   const showId = file.replace('.html', '');
   const show = showsBySlug[showId];
+
+  // An archive is keyed by showId but nothing guarantees its content: the
+  // Hay Fever roundup was cached as richard-ii-off-west-end-2026.html
+  // (BRO-4563). Same page-title check as the scraper's cache read and
+  // audit-aggregator-archive-integrity.js.
+  if (show) {
+    const check = checkArchiveCategory(fs.readFileSync(filePath, 'utf8'), show, siblingCategoriesById[showId]);
+    if (!check.ok) {
+      console.error(`${showId}: SKIPPED, page is not this show (${check.reason}: "${(check.pageTitle || '').slice(0, 80)}")`);
+      wrongShowArchiveCount++;
+      continue;
+    }
+  }
 
   const { reviews, method } = extractReviewsFromFile(filePath, showId);
 
@@ -245,6 +262,7 @@ for (const file of files.sort()) {
 console.error(`\nTotal reviews extracted: ${allReviews.length}`);
 if (wrongProdCount > 0) console.error(`  Wrong-production flagged: ${wrongProdCount}`);
 if (unknownOutletCount > 0) console.error(`  Unknown outlets flagged: ${unknownOutletCount}`);
+if (wrongShowArchiveCount > 0) console.error(`  Wrong-show archives skipped: ${wrongShowArchiveCount}`);
 
 // Output JSON to stdout
 console.log(JSON.stringify(allReviews, null, 2));
