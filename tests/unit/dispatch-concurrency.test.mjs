@@ -49,7 +49,17 @@ test('still dedups against active gather runs and fails open on bad poller input
   assert.deepEqual(showsNeedingAggregatorGather([], undefined, ['a-2026'], { now: NOW }), ['a-2026']);
 });
 
-test('FULL gather dedup is unchanged: a targeted poller does not suppress it', () => {
+test('a run with no createdAt is treated as fresh (blocks)', () => {
+  const noTs = { status: 'in_progress', displayTitle: 'Opening Night Poller — a-2026' };
+  assert.deepEqual(showsNeedingAggregatorGather([], [noTs], ['a-2026'], { now: NOW }), []);
+});
+
+test('poller queue wait counts toward age but stays inside the cap (healthy 75-min run queued 30 min still blocks)', () => {
+  assert.deepEqual(showsNeedingAggregatorGather([], [poller('a-2026', 'in_progress', 105)], ['a-2026'], { now: NOW }), []);
+});
+
+test('FULL gather dedup ignores pollers: showsNeedingGather takes no poller input', () => {
+  assert.equal(showsNeedingGather.length, 2);
   assert.deepEqual(showsNeedingGather([], ['a-2026']), ['a-2026']);
 });
 

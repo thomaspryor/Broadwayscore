@@ -78,10 +78,11 @@ function showsNeedingGather(runs, showIds) {
   return out;
 }
 
-// opening-night-poller.yml's job timeout is 100 min (see its timeout-minutes);
-// a "targeted poller" older than this is stuck/orphaned, not working, and must
-// not suppress gather forever.
-const POLLER_MAX_AGE_MS = 100 * 60 * 1000;
+// gh's createdAt includes time spent queued behind the per-show concurrency
+// group, so the cap must cover queue wait (<= one 100-min run) + the poller's own
+// 100-min job timeout (opening-night-poller.yml timeout-minutes). A "targeted
+// poller" older than this is stuck/orphaned and must not suppress gather forever.
+const POLLER_MAX_AGE_MS = 200 * 60 * 1000;
 
 /**
  * Aggregators-only variant of showsNeedingGather (BRO-2269). Additionally drops
@@ -95,8 +96,10 @@ const POLLER_MAX_AGE_MS = 100 * 60 * 1000;
  * per-outlet SERP pass, so skipping a full gather would lose coverage. Auto
  * pollers are ignored too (they cover every show and run ~60-90 min, which
  * would starve gather, see opening-night-poller.yml concurrency note, BRO-4273).
- * Poller runs older than POLLER_MAX_AGE_MS (by createdAt, when present) are
- * treated as stuck and don't block.
+ * Poller runs older than POLLER_MAX_AGE_MS (by createdAt) are treated as stuck
+ * and don't block; a run with no parseable createdAt is treated as fresh.
+ * This is best-effort dedup (check-then-dispatch is not atomic), not mutual
+ * exclusion; push-with-retry.sh remains the safety net for true collisions.
  *
  * @param {Array} gatherRuns  gh run list --workflow=gather-reviews.yml JSON
  * @param {Array} pollerRuns  gh run list --workflow=opening-night-poller.yml JSON

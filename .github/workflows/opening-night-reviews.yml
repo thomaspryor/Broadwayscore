@@ -173,9 +173,13 @@ jobs:
           NEEDED_AGG=$(GATHER_RUNS="$RUNS" POLLER_RUNS="$POLLER_RUNS" WANT='${{ steps.find.outputs.gather_agg }}' node -e '
             const { showsNeedingAggregatorGather } = require("./scripts/lib/gather-idempotency.js");
             const runs = JSON.parse(process.env.GATHER_RUNS || "[]");
-            const pollers = JSON.parse(process.env.POLLER_RUNS || "[]");
+            let pollers = [];
+            try { pollers = JSON.parse(process.env.POLLER_RUNS || "[]"); } catch (e) { console.error("::warning::poller run list unparseable, skipping poller dedup"); }
             const want = (process.env.WANT || "").split(",").filter(Boolean);
-            console.log(showsNeedingAggregatorGather(runs, pollers, want).join(","));
+            const needed = showsNeedingAggregatorGather(runs, pollers, want);
+            const dropped = want.filter((id) => !needed.includes(id));
+            if (dropped.length) console.error("Aggregators-only gather skipped (gather or targeted poller already in flight): " + dropped.join(","));
+            console.log(needed.join(","));
           ')
           echo "needed_full=$NEEDED_FULL" >> $GITHUB_OUTPUT
           echo "needed_agg=$NEEDED_AGG" >> $GITHUB_OUTPUT
