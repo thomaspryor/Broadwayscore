@@ -11,7 +11,10 @@
  * serpDowngradeVerifiedUrl === url and is exempt from that one check; a later
  * url change makes the stamp stale automatically.
  *
- *   node scripts/scan-serp-adoptions.js [--root=DIR] [--fix]
+ *   node scripts/scan-serp-adoptions.js [--root=DIR] [--fix] [--reason=PREFIX]
+ *
+ * --reason limits reporting and --fix to rejects whose reason starts with
+ * PREFIX (e.g. --reason=review-slug-downgrade).
  *
  * A reject is REPAIRED when reverted to a previousUrl that itself passes the
  * predicate (--fix does this via updateFileUrlWithInvariant, aggregator fields
@@ -43,6 +46,8 @@ function main() {
   const args = process.argv.slice(2);
   const fix = args.includes('--fix');
   const rootArg = args.find(a => a.startsWith('--root='));
+  const reasonArg = args.find(a => a.startsWith('--reason='));
+  const reasonPrefix = reasonArg ? reasonArg.slice(9) : '';
   const root = rootArg ? rootArg.slice(7) : path.join(process.cwd(), 'data/review-texts');
   const shows = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/shows.json'), 'utf8')).shows;
   const titleById = new Map(shows.map(s => [s.id, s.title]));
@@ -64,7 +69,7 @@ function main() {
       const res = evaluateFile(data, titleById.get(data.showId || dir));
       if (!res) continue;
       scanned++;
-      if (!res.ok) rejects.push({ fp, rel: `${dir}/${f}`, url: data.url, prev: data.previousUrl, reason: res.reason, prevRejected: Array.isArray(data.serpRejectedUrls) ? data.serpRejectedUrls : [], title: titleById.get(data.showId || dir), live: live.has(liveKey(data)) });
+      if (!res.ok && res.reason.startsWith(reasonPrefix)) rejects.push({ fp, rel: `${dir}/${f}`, url: data.url, prev: data.previousUrl, reason: res.reason, prevRejected: Array.isArray(data.serpRejectedUrls) ? data.serpRejectedUrls : [], title: titleById.get(data.showId || dir), live: live.has(liveKey(data)) });
     }
   }
 
