@@ -6,13 +6,11 @@
  * reviews' publish years is the honest stand-in: "reviewed 2022–2025".
  */
 
+import { getReviewPublishYears } from './show-date-line';
+
 /** "2022–2025", "2024", or null when no review carries a readable year. */
 export function getTourReviewYears(reviews: ReadonlyArray<{ publishDate?: string | null }> | undefined): string | null {
-  const years: number[] = [];
-  for (const r of reviews || []) {
-    const m = String(r.publishDate || '').match(/\b(19|20)\d{2}\b/);
-    if (m) years.push(Number(m[0]));
-  }
+  const years = getReviewPublishYears(reviews);
   if (years.length === 0) return null;
   const lo = Math.min(...years);
   const hi = Math.max(...years);

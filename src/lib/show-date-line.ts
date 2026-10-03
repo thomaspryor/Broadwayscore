@@ -10,6 +10,9 @@
  * half. Without the fallback a show with a known first-preview AND closing
  * date showed neither the start nor a "Running since" line (owner reports on
  * The Pass and the-magicians-table-off-west-end-2026, 2026-08-02/03).
+ *
+ * Also home to the hero's "Most reviews from N years ago" caveat
+ * (getReviewAgeNote), for the same both-heroes-must-agree reason.
  */
 
 import { getOperaDurationSuffix } from './show-market';
@@ -132,4 +135,48 @@ export function getShowDateLineSegments(
 /** Plain-text join both heroes must produce identically for the same show. */
 export function formatDateLineString(segments: DateLineSegment[]): string {
   return segments.map((s) => s.text).join(' · ');
+}
+
+/**
+ * Publish years of a show's reviews, skipping any review without a readable
+ * year. publishDate is ISO for nearly all reviews but some are "2015-07" or
+ * prose ("November 20, 2025"), so this pulls the 4-digit year out of the
+ * string instead of trusting Date parsing (which is also timezone-free).
+ */
+export function getReviewPublishYears(
+  reviews: ReadonlyArray<{ publishDate?: string | null }> | null | undefined
+): number[] {
+  const years: number[] = [];
+  for (const r of reviews || []) {
+    const m = String(r.publishDate || '').match(/\b(19|20)\d{2}\b/);
+    if (m) years.push(Number(m[0]));
+  }
+  return years;
+}
+
+/**
+ * "Most reviews from N years ago" caveat under the critic score for
+ * long-running open shows. Shared by both heroes so the redesign can't
+ * silently drop it again (BRO-4525: the redesign shipped to demo without it).
+ *
+ * N comes from the reviews' own publish years (the year a strict majority of
+ * them were published by), not openingDate. West End re-entries and shows
+ * re-reviewed after a reopening carry reviews decades newer than the original
+ * opening: counting from openingDate told readers The Mousetrap's reviews were
+ * 74 years old when most are from 2021. Needs 3+ dated reviews and 10+ years.
+ * Callers pass only shows that display a critic score.
+ */
+export function getReviewAgeNote(
+  show: Pick<ShowDateLineInput, 'status'>,
+  reviews: ReadonlyArray<{ publishDate?: string | null }> | null | undefined,
+  now: Date = new Date()
+): string | null {
+  if (show.status === 'closed') return null;
+  const years = getReviewPublishYears(reviews).sort((a, b) => a - b);
+  if (years.length < 3) return null;
+  // Upper median: more than half the reviews are from this year or earlier.
+  const majorityYear = years[Math.floor(years.length / 2)];
+  const yearsAgo = now.getUTCFullYear() - majorityYear;
+  if (yearsAgo < 10) return null;
+  return `Most reviews from ${yearsAgo} years ago`;
 }

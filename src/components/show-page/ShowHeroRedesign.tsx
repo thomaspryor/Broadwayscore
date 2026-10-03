@@ -105,6 +105,10 @@ interface ShowHeroRedesignProps {
    *  shows "reviewed <years>" instead. Computed server-side because this
    *  component's reviews are narrowed to reviewScore (no publishDate). */
   tourReviewYears?: string | null;
+  /** "Most reviews from N years ago" caveat (getReviewAgeNote), null when it
+   *  doesn't apply. Computed server-side for the same reason as tourReviewYears,
+   *  and shared with the legacy hero so both show it for the same shows. */
+  reviewAgeNote?: string | null;
   /** Server-rendered ShowTrustLines (tour parent, tryout transfer, tour stops),
    *  shared with the legacy header so the redesign keeps those links. */
   trustLines?: React.ReactNode;
@@ -135,6 +139,7 @@ function Inner({
   isOffBroadway,
   ranks,
   tourReviewYears,
+  reviewAgeNote,
   trustLines,
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
@@ -477,6 +482,11 @@ function Inner({
                     Based on {reviewCount} Critic {reviewCount === 1 ? 'Review' : 'Reviews'}
                   </p>
                   <HeroRankLine ranks={ranks} market={show.category} />
+                  {reviewAgeNote && (
+                    <p className="text-xs text-gray-500 mt-1 leading-snug" data-testid="hero-review-age-note">
+                      {reviewAgeNote}
+                    </p>
+                  )}
                 </div>
               </a>
               {hasAudience && audienceGrade && (
@@ -542,6 +552,14 @@ function Inner({
           Critic Reviews" in the score block above. */}
       {hasEnoughCriticReviews && (
         <HeroRankLine ranks={ranks} market={show.category} className="lg:hidden -mt-1" />
+      )}
+
+      {/* Mobile-only review-age caveat for long-running shows (desktop renders
+          it inline in the score block above). */}
+      {hasEnoughCriticReviews && reviewAgeNote && (
+        <p className="lg:hidden -mt-1 text-xs text-gray-500 leading-snug" data-testid="hero-review-age-note-mobile">
+          {reviewAgeNote}
+        </p>
       )}
 
       {/* Distribution bar — both modes; spans full width under the header. */}
