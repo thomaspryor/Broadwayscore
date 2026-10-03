@@ -190,6 +190,14 @@ test('getReviewAgeNote: uses the year a majority of reviews were published by', 
   );
 });
 
+test('getReviewAgeNote: undated reviews are left out of the majority, not counted as recent', () => {
+  // 3 dated (old) + 2 undated: the dated majority decides.
+  assert.equal(
+    getReviewAgeNote({ status: 'open' }, dated('2003-10-31', '2003-11-01', '2004-01-10', '', 'TBD'), NOW),
+    'Most reviews from 23 years ago'
+  );
+});
+
 test('getReviewAgeNote: exactly 10 years qualifies, 9 does not', () => {
   assert.equal(getReviewAgeNote({ status: 'open' }, dated('2016-04-01', '2016-04-02', '2016-04-03'), NOW), 'Most reviews from 10 years ago');
   assert.equal(getReviewAgeNote({ status: 'open' }, dated('2017-04-01', '2017-04-02', '2017-04-03'), NOW), null);
