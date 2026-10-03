@@ -17,6 +17,10 @@
  *      loop's own definition of "hard enough to escalate".
  *   4. sonnet floor — no triage data (card never triaged, or queue missing).
  *
+ * Linear dispatch (linear-next.js) uses pickLinearModel() below instead: flag,
+ * then retry escalation, then the filer's "Model:" line (capped), then P0 →
+ * Opus. The filer's line is written by linear-brain.js create --model.
+ *
  * Fable/Mythos is excluded from every hint/triage path: MODEL_HINT_RE has no
  * fable alternative, and pickModel() itself throws on a forbidden tier — only
  * an explicit --model fable flag (layer 1) can select it.
@@ -116,8 +120,8 @@ function resolveModel({ explicitFlag, task, card, notionId, queuePath = QUEUE_PA
 // card?"): Linear dispatches pass notionId:null, so layer 3 (the Notion
 // triage size) never fires for them and every Linear card ran on Sonnet,
 // however urgent or however many times a Sonnet worker had already failed
-// it. This is the Linear stand-in for layer 3, applied only when no explicit
-// flag or hint decided: a P0 card, or a card that already carries a
+// it. This is the Linear stand-in for layer 3 (see pickLinearModel for how
+// it combines with the flag and the filer's Model: line): a P0 card, or a card that already carries a
 // "Dispatched ..." comment (a re-run after a prior worker failed to close
 // it), gets Opus. Same retry rule digest-autofix.js already uses
 // (`attempt >= 2 ? 'opus'`). A rolling 24h cap on Opus Linear launches
@@ -172,34 +176,81 @@ function countPriorLaunches(entries, taskId) {
  * @returns {{ model: 'opus'|'sonnet', reason: string }}
  */
 function linearEscalationModel({ issue, recentOpusLaunches, cap, priorLaunches = 0 }) {
-  const comments = (issue && issue.comments && issue.comments.nodes) || [];
-  const priorComments = comments.filter((c) => c && PRIOR_DISPATCH_RE.test(String(c.body || '').trim())).length;
-  const priorDispatches = Math.max(priorComments, priorLaunches || 0);
+  const priorDispatches = countPriorDispatches(issue, priorLaunches);
   const isP0 = !!issue && issue.priority === 1;
   if (!isP0 && priorDispatches === 0) return { model: 'sonnet', reason: 'first attempt, not P0' };
-  const why = isP0 ? 'P0' : `retry after ${priorDispatches} prior dispatch(es)`;
-  if (recentOpusLaunches >= cap) return { model: 'sonnet', reason: `${why}, but Opus cap reached (${recentOpusLaunches}/${cap} in 24h)` };
+  const why = isP0 && priorDispatches === 0 ? 'P0' : `retry after ${priorDispatches} prior dispatch(es)`;
+  if (recentOpusLaunches >= cap) return { model: 'sonnet', reason: `${why}, but ${capNote(recentOpusLaunches, cap)}` };
   return { model: 'opus', reason: why };
 }
 
+// Earlier dispatches of a card: its "Dispatched ..." comments or its ledger
+// launches, whichever is larger (a crashed run leaves a launch, no comment).
+function countPriorDispatches(issue, priorLaunches = 0) {
+  const comments = (issue && issue.comments && issue.comments.nodes) || [];
+  const priorComments = comments.filter((c) => c && PRIOR_DISPATCH_RE.test(String(c.body || '').trim())).length;
+  return Math.max(priorComments, priorLaunches || 0);
+}
+
+function capNote(recentOpusLaunches, cap) {
+  return Number.isFinite(recentOpusLaunches)
+    ? `Opus cap reached (${recentOpusLaunches}/${cap} in 24h)`
+    : 'dispatch ledger unreadable, so the Opus cap counts as reached';
+}
+
 /**
- * The whole Linear dispatch model choice, in resolution order: --model flag,
- * a "Model:" hint line on the card, then the escalation rule above. Reading
- * the ledger can fail; then the cap counts as reached (Sonnet, the safe side).
+ * The whole Linear dispatch model choice:
+ *   1. --model flag: absolute.
+ *   2. a retry (prior dispatches > 0) always takes the escalation rule, whatever
+ *      the card says: re-running a failed card on the same model is the
+ *      failure BRO-4523 fixed.
+ *   3. a "Model:" line the filer stamped (linear-brain.js create --model):
+ *      opus counts against the same 24h Opus cap as escalation, so a filer
+ *      cannot bypass it; sonnet (or haiku: there are no haiku workers) is
+ *      honored on the first attempt, even on a P0 the filer judged easy.
+ *   4. otherwise the escalation rule (P0 → Opus within the cap).
+ * Reading the ledger can fail; then the cap counts as reached (Sonnet, the
+ * safe side) and the reason says so.
+ * Mac dispatch only (linear-next.js). The cloud worker routine has no model
+ * choice, and bsc-next.js resolveModel() is the legacy Notion path.
  * @returns {{ model: string, reason: string }}
  */
 function pickLinearModel({ explicitFlag, issue, taskId, readEntries, nowMs = Date.now(), env = process.env }) {
   if (typeof explicitFlag === 'string') return { model: explicitFlag, reason: '--model flag' };
-  const hint = explicitModelHint({ description: issue && issue.description }, null);
-  if (hint) return { model: hint, reason: 'Model: hint on the card' };
   let entries = null;
   try { entries = readEntries(); } catch { entries = null; }
   const recentOpusLaunches = entries ? countRecentLinearOpusLaunches(entries, nowMs) : Infinity;
   const priorLaunches = entries ? countPriorLaunches(entries, taskId) : 0;
-  return linearEscalationModel({ issue, recentOpusLaunches, cap: linearOpusDailyCap(env), priorLaunches });
+  const cap = linearOpusDailyCap(env);
+  const escalation = linearEscalationModel({ issue, recentOpusLaunches, cap, priorLaunches });
+  const hint = explicitModelHint({ description: issue && issue.description }, null);
+  if (!hint) return escalation;
+  if (countPriorDispatches(issue, priorLaunches) > 0) return { ...escalation, reason: `${escalation.reason} (overrides Model: ${hint} on the card)` };
+  if (hint === 'opus') {
+    if (recentOpusLaunches >= cap) return { model: 'sonnet', reason: `Model: opus on the card, but ${capNote(recentOpusLaunches, cap)}` };
+    return { model: 'opus', reason: 'Model: opus on the card' };
+  }
+  return { model: 'sonnet', reason: `Model: ${hint} on the card` };
+}
+
+// The line linear-brain.js create --model appends to a new card's description.
+// Throws when the description already carries a Model: line that disagrees
+// (MODEL_HINT_RE takes the first match, so a second line would be ignored).
+const FILING_MODELS = Object.freeze(['opus', 'sonnet']);
+
+function stampModelHint(description, model) {
+  const m = String(model || '').trim().toLowerCase();
+  if (!FILING_MODELS.includes(m)) throw new Error(`model must be one of ${FILING_MODELS.join('|')}, got "${model}"`);
+  const text = description || '';
+  const existing = explicitModelHint({ description: text }, null);
+  if (existing === m) return text;
+  if (existing) throw new Error(`the notes already say "Model: ${existing}", which conflicts with --model ${m}`);
+  const line = `Model: ${m[0].toUpperCase()}${m.slice(1)}`;
+  return text ? `${text.replace(/\s+$/, '')}\n\n${line}` : line;
 }
 
 module.exports = {
   QUEUE_PATH, MODEL_HINT_RE, SHORT_ALIAS, explicitModelHint, triageSizeFor, modelForSize, resolveModel,
-  LINEAR_OPUS_DAILY_CAP_DEFAULT, linearOpusDailyCap, countRecentLinearOpusLaunches, countPriorLaunches, linearEscalationModel, pickLinearModel,
+  LINEAR_OPUS_DAILY_CAP_DEFAULT, linearOpusDailyCap, countRecentLinearOpusLaunches, countPriorLaunches, linearEscalationModel, countPriorDispatches, pickLinearModel,
+  FILING_MODELS, stampModelHint,
 };

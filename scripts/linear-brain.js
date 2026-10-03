@@ -6,7 +6,8 @@
  *
  * Usage:
  *   node scripts/linear-brain.js create "Issue title" --notes "description" \
- *     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
+ *     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \
+ *     [--model opus|sonnet]
  *
  * --dispatch or --park "<reason>" is REQUIRED — there is no default
  * disposition. Neither given → exit 2, usage message names both.
@@ -35,7 +36,8 @@ const USAGE = `linear-brain.js — file a Linear issue through the one creation 
 
 Usage:
   node scripts/linear-brain.js create "Issue title" --notes "description" \\
-    [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>]
+    [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
+    [--model opus|sonnet]
   node scripts/linear-brain.js find "search term"
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
     [--force "<reason ≥10 chars>"] [--duplicate-of <BRO-N>] [--cancel-reason "<reason ≥20 chars>"]
@@ -43,6 +45,11 @@ Usage:
   node scripts/linear-brain.js --probe [--timeout-ms N]
 
   create: --dispatch or --park "<reason>" is REQUIRED. Neither given → exit 2.
+          --model stamps "Model: Opus|Sonnet" on the card; the worker that
+          picks it up uses that model (Opus picks count against the daily
+          Opus cap, and a card that failed before still moves up to Opus).
+          Opus: multi-file, architectural, adversarial debugging. Sonnet:
+          mechanical, single-file, data fixes. Anything else → exit 2.
   find:   prints {"identifier": "BRO-N", ...} for the first OPEN issue whose
           title or body contains the term, or null. Sync-callable dedup seam
           for digest-autofix's fileCard (BRO-286) — filing the same
@@ -642,6 +649,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       park: args.park,
       priority: args.priority !== undefined ? Number(args.priority) : undefined,
       projectId: args['project-id'],
+      model: args.model,
     });
     console.log(JSON.stringify(result.issue, null, 2));
     // Board-neutral marker (S1-T5, notion→linear cutover). Emitted BEFORE the
@@ -677,6 +685,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       if (warning) console.error(`\n${warning}\n`);
     } catch (e) {
       console.error(`[linear-brain] acceptance-arming check failed (issue was still created): ${e.message}`);
+    }
+    // One-line nudge (owner 2026-10-03: the filer knows best how hard a card
+    // is). Advisory only: without it the dispatcher's P0/retry rule decides.
+    if (args.model === undefined) {
+      console.error('[linear-brain] tip: add --model opus|sonnet to pick the worker model for this card (default: Opus for P0s and retries, else Sonnet)');
     }
   } catch (err) {
     console.error(`\n❌ ${err.message}\n`);
