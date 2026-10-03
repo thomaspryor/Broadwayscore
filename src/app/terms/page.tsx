@@ -31,7 +31,7 @@ export default function TermsOfServicePage() {
   return (
     <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16">
       <h1 className="text-3xl sm:text-4xl font-bold text-white mb-2">Terms of Service</h1>
-      <p className="text-sm text-gray-500 mb-10">Last updated: April 15, 2026</p>
+      <p className="text-sm text-gray-500 mb-10">Last updated: October 2, 2026</p>
 
       <div className="prose prose-invert prose-gray max-w-none space-y-8 text-gray-300 leading-relaxed">
 
@@ -215,6 +215,34 @@ export default function TermsOfServicePage() {
               scoring methodology through systematic observation, extraction, or analysis
             </li>
           </ul>
+        </section>
+
+        {/* 4a. Accounts and Your Content */}
+        <section>
+          <h2 className="text-xl font-semibold text-white">4a. Accounts and Your Content</h2>
+          <p>
+            You don&apos;t need an account to use the Site. If you create one to rate shows, write reviews, or build
+            watchlists and lists, you must be at least 13 years old, and you are responsible for activity on your
+            account. Keep your sign-in method secure and tell us through the{' '}
+            <Link href="/feedback" className={linkClass}>feedback page</Link> if you think someone else has used it.
+          </p>
+          <p>
+            You keep ownership of the ratings, reviews, notes and lists you create. Most of it is visible only to
+            you. When you make something public, such as a shared list, you give us a non-exclusive, royalty-free
+            license to host, display and link to it, with your display name and profile photo, for as long as it
+            stays public. You can make it private or delete it at any time.
+          </p>
+          <p>
+            Don&apos;t post content that is unlawful, harassing, hateful or sexually explicit, that infringes
+            someone else&apos;s rights, that impersonates another person, or that is spam or advertising. We may
+            remove content or suspend accounts that break these Terms.
+          </p>
+          <p>
+            You can delete your account at any time from the website menu or the app&apos;s Settings screen. This
+            permanently removes your account and the content saved with it. Our{' '}
+            <Link href="/privacy" className={linkClass}>Privacy Policy</Link> explains what we collect and how
+            deletion works.
+          </p>
         </section>
 
         {/* 5. Intellectual Property */}

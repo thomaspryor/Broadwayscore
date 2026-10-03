@@ -46,7 +46,7 @@ export default function HeaderUserIcon() {
   return (
     <button
       type="button"
-      onClick={() => { saveReturnUrl('/my-shows'); showSignIn('generic'); }}
+      onClick={() => { saveReturnUrl('/my-shows'); showSignIn('generic', 'header'); }}
       className="hidden sm:flex items-center shrink-0 gap-1.5 px-3.5 py-1.5 rounded-lg text-gray-300 hover:text-white bg-white/10 border border-white/15 hover:bg-white/15 hover:border-white/25 transition-colors text-sm font-semibold"
       aria-label="Sign in"
     >

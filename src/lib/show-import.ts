@@ -9,6 +9,7 @@
  */
 import { getSupabaseClient } from '@/lib/supabase';
 import { sanitizeRating } from '@/lib/rating';
+import { isIsoCalendarDate, localToday } from '@/lib/date-utils';
 
 /** One seen-show / want-to-see entry, normalized across sources. */
 export interface RawImportEntry {
@@ -172,7 +173,7 @@ interface ShowScoreProxyResponse {
 export const SHOW_SCORE_ERROR_COPY: Record<string, string> = {
   invalid_slug: "That doesn't look like a Show Score profile link. Paste your profile URL, e.g. show-score.com/member/your-name.",
   unauthorized: 'Please sign in again and retry.',
-  rate_limited: "You've hit the import limit for now — try again in an hour.",
+  rate_limited: "You've hit the import limit for now. Try again in an hour.",
   not_found: "We couldn't find that Show Score member. Check the profile link and try again.",
   upstream_blocked: 'Show Score is blocking our importer right now. Try again in a few hours.',
   internal: 'Something went wrong on our side. Try again in a few minutes.',
@@ -222,8 +223,8 @@ export async function acquireFromShowScore(profileInput: string): Promise<Import
 
   const notices: string[] = [];
   if (data.unparsed) notices.push(`${data.unparsed} review(s) had no readable rating and were skipped.`);
-  if (data.truncated) notices.push('This profile has more than 1,000 reviews — only the most recent 1,000 were fetched.');
-  if (data.incomplete) notices.push(`Show Score stopped responding partway — only ${entries.length} review(s) were fetched. You can re-run the import later to pick up the rest.`);
+  if (data.truncated) notices.push('This profile has more than 1,000 reviews, so only the most recent 1,000 were fetched.');
+  if (data.incomplete) notices.push(`Show Score stopped responding partway, so only ${entries.length} review(s) were fetched. You can re-run the import later to pick up the rest.`);
   return { entries, notices };
 }
 
@@ -231,9 +232,11 @@ export async function acquireFromShowScore(profileInput: string): Promise<Import
 // Mezzanine
 // ---------------------------------------------------------------------------
 
+// Typed as what a file can actually hold, not what a clean export holds: the
+// guards below narrow from these, so a hand-edited value can't slip past them.
 interface MezzEntry {
-  show: { name: string; id: string };
-  rating: number | null;
+  show: { name: string; id?: string | number };
+  rating: number | string | null;
   date: string | null;
   review: string | null;
   production?: { theater?: { name: string; location?: string } };
@@ -247,41 +250,83 @@ interface MezzExport {
     // underlying Mezzanine Show objects as diaryEntries' `show.id`, but
     // unconfirmed against a real list export, so this must degrade to the
     // pre-existing title-only behavior (undefined) rather than assume shape.
-    lists: { name: string; shows: { name: string; id?: string }[] }[];
+    lists: { name: string; shows: { name: string; id?: string | number }[] }[];
   };
 }
 
+/** Mezzanine show ids may be strings or numbers; anything else is ignored. */
+function mezzShowIdOf(id: unknown): { mezzShowId?: string } {
+  if (typeof id === 'string' && id) return { mezzShowId: id };
+  if (typeof id === 'number' && Number.isFinite(id)) return { mezzShowId: String(id) };
+  return {};
+}
+
+/**
+ * Shown for any file that isn't a readable Mezzanine export. One fixed string
+ * on purpose: JSON.parse's own message quotes a slice of the file, and the
+ * thrown message is both shown on screen and sent as import_failed's
+ * error_message, so it must never carry the user's file content.
+ */
+export const MEZZANINE_FILE_ERROR =
+  'That file doesn\u2019t look like a Mezzanine export. In Mezzanine, go to Settings, then Export Data, choose JSON, and pick that file here.';
+
 /** Parse a Mezzanine JSON export (Settings → Export Data → JSON). */
 export async function acquireFromMezzanine(file: File): Promise<ImportAcquireResult> {
-  const parsed: MezzExport = JSON.parse(await file.text());
-  if (!parsed.data?.diaryEntries) {
-    throw new Error('Invalid Mezzanine export — missing data.diaryEntries');
+  let parsed: MezzExport;
+  try {
+    parsed = JSON.parse(await file.text());
+  } catch {
+    throw new Error(MEZZANINE_FILE_ERROR);
+  }
+  if (!Array.isArray(parsed?.data?.diaryEntries)) {
+    throw new Error(MEZZANINE_FILE_ERROR);
   }
 
   const entries: RawImportEntry[] = [];
-  const today = new Date().toISOString().split('T')[0];
+  // The user's own date, not UTC: from ~8pm ET a show planned for tomorrow
+  // would otherwise compare equal to "today" and import as already seen.
+  const today = localToday();
+  // Same contract as the Show Score path: a skipped row is counted and told
+  // to the user, never dropped silently.
+  let skipped = 0;
 
   for (const entry of parsed.data.diaryEntries) {
-    const date = entry.date ? entry.date.split('T')[0] : null;
-    const hasRating = !!(entry.rating && entry.rating > 0);
+    // A hand-edited or partial export can carry entries without a show;
+    // skip them instead of failing the whole import on a TypeError.
+    // Check types too: a non-string title would crash title matching later.
+    if (typeof entry?.show?.name !== 'string' || !entry.show.name) { skipped++; continue; }
+    // An unreadable date is dropped, never stored or compared: 'garbage' sorts
+    // after any real date, so it would file the row as a future plan.
+    const day = typeof entry.date === 'string' ? entry.date.split('T')[0] : '';
+    const date = isIsoCalendarDate(day) ? day : null;
+    // Real exports carry numbers; a numeric string ("4.5") from a hand-edited
+    // file was accepted before the type guards and still is.
+    const ratingValue = typeof entry.rating === 'string' && entry.rating.trim() ? Number(entry.rating) : entry.rating;
+    // Mezzanine ratings are already 1–5 half-star; sanitize defensively.
+    const rating = typeof ratingValue === 'number' && Number.isFinite(ratingValue) && ratingValue > 0
+      ? sanitizeRating(ratingValue) || null
+      : null;
+    const hasRating = rating !== null;
+    const venue = entry.production?.theater?.name;
     // Unrated future entries are plans, not viewings → watchlist.
     const isFuture = date !== null && date > today;
     entries.push({
       title: entry.show.name,
-      venue: entry.production?.theater?.name || null,
-      // Mezzanine ratings are already 1–5 half-star; sanitize defensively.
-      rating: hasRating ? sanitizeRating(entry.rating as number) || null : null,
+      venue: typeof venue === 'string' && venue ? venue : null,
+      rating,
       sourceScore: null,
       date,
-      reviewText: entry.review || null,
+      reviewText: typeof entry.review === 'string' && entry.review ? entry.review : null,
       kind: !hasRating && isFuture ? 'watchlist' : 'diary',
       ...(!hasRating && isFuture ? { listName: 'Upcoming', fromDiary: true } : {}),
-      ...(entry.show.id ? { mezzShowId: entry.show.id } : {}),
+      ...mezzShowIdOf(entry.show.id),
     });
   }
 
-  for (const list of parsed.data.lists || []) {
-    for (const show of list.shows) {
+  for (const list of Array.isArray(parsed.data.lists) ? parsed.data.lists : []) {
+    const listName = typeof list?.name === 'string' ? list.name : undefined;
+    for (const show of Array.isArray(list?.shows) ? list.shows : []) {
+      if (typeof show?.name !== 'string' || !show.name) { skipped++; continue; }
       entries.push({
         title: show.name,
         venue: null,
@@ -290,11 +335,14 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
         date: null,
         reviewText: null,
         kind: 'watchlist',
-        listName: list.name,
-        ...(show.id ? { mezzShowId: show.id } : {}),
+        listName,
+        ...mezzShowIdOf(show.id),
       });
     }
   }
 
-  return { entries, notices: [] };
+  const notices = skipped
+    ? [`${skipped} ${skipped === 1 ? 'entry' : 'entries'} in the file had no readable show name and ${skipped === 1 ? 'was' : 'were'} skipped.`]
+    : [];
+  return { entries, notices };
 }

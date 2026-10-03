@@ -10,6 +10,14 @@ export function localToday(): string {
   return new Date(d.getTime() - offsetMs).toISOString().split('T')[0];
 }
 
+/** True only for a real YYYY-MM-DD date. The regex alone accepts 2026-02-31. */
+export function isIsoCalendarDate(value: string): boolean {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(value)) return false;
+  const [y, m, d] = value.split('-').map(Number);
+  const dt = new Date(Date.UTC(y, m - 1, d));
+  return dt.getUTCFullYear() === y && dt.getUTCMonth() === m - 1 && dt.getUTCDate() === d;
+}
+
 /**
  * Get today's date (YYYY-MM-DD) in the market's local timezone.
  * Opening dates are calendar dates in ET (Broadway/OB) or London (WE/OWE).

@@ -163,7 +163,9 @@ function CompactShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear,
   darkEvening: boolean;
 }) {
   const iconBtn = (active: boolean, dark: boolean) =>
-    `w-4 h-4 flex items-center justify-center rounded transition-colors ${
+    // w-5 + 14px glyphs: the 12px glyphs were unreadable on mobile cards
+    // (UX audit, BRO-3221). Four buttons still fit a ~90px grid card.
+    `w-5 h-5 flex items-center justify-center rounded transition-colors ${
       dark ? 'text-gray-700 cursor-not-allowed' : active ? 'bg-amber-400/20 text-amber-300' : 'text-gray-500 hover:text-gray-300'
     }`;
   const timeLabel = curtainTime
@@ -175,17 +177,17 @@ function CompactShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear,
       className={`showtime-compact flex items-center gap-0.5 mt-1 transition-opacity ${responsiveOnly ? 'sm:hidden' : ''} ${saving ? 'opacity-50 pointer-events-none' : ''}`}
       onClick={e => e.stopPropagation()}
     >
-      <button type="button" disabled={darkMatinee} className={iconBtn(timeSlot === 'matinee', darkMatinee)} onClick={(e) => { e.preventDefault(); onPick('matinee'); }} aria-label={darkMatinee ? 'Matinee (none scheduled this day)' : `Matinee${timeSlot === 'matinee' ? ' (selected)' : ''}`} title={darkMatinee ? 'No matinee scheduled this day' : `Matinee${timeSlot === 'matinee' && curtainTime ? ` — ${timeLabel}` : ''}`}>
+      <button type="button" disabled={darkMatinee} className={iconBtn(timeSlot === 'matinee', darkMatinee)} onClick={(e) => { e.preventDefault(); onPick('matinee'); }} aria-label={darkMatinee ? 'Matinee (none scheduled this day)' : `Matinee${timeSlot === 'matinee' ? ' (selected)' : ''}`} title={darkMatinee ? 'No matinee scheduled this day' : `Matinee${timeSlot === 'matinee' && curtainTime ? ` at ${timeLabel}` : ''}`}>
         <SunIcon />
       </button>
-      <button type="button" disabled={darkEvening} className={iconBtn(timeSlot === 'evening', darkEvening)} onClick={(e) => { e.preventDefault(); onPick('evening'); }} aria-label={darkEvening ? 'Evening (none scheduled this day)' : `Evening${timeSlot === 'evening' ? ' (selected)' : ''}`} title={darkEvening ? 'No evening performance scheduled this day' : `Evening${timeSlot === 'evening' && curtainTime ? ` — ${timeLabel}` : ''}`}>
+      <button type="button" disabled={darkEvening} className={iconBtn(timeSlot === 'evening', darkEvening)} onClick={(e) => { e.preventDefault(); onPick('evening'); }} aria-label={darkEvening ? 'Evening (none scheduled this day)' : `Evening${timeSlot === 'evening' ? ' (selected)' : ''}`} title={darkEvening ? 'No evening performance scheduled this day' : `Evening${timeSlot === 'evening' && curtainTime ? ` at ${timeLabel}` : ''}`}>
         <MoonIcon />
       </button>
       <DatePickerButton
         type="time"
         value={timeSlot === 'custom' && curtainTime ? curtainTime.slice(0, 5) : ''}
         onChange={(val) => { if (val) onSave({ time_slot: 'custom', curtain_time: `${val}:00` }); }}
-        ariaLabel={`Custom showtime${timeSlot === 'custom' ? ` (selected${curtainTime ? ` — ${timeLabel}` : ''})` : ''}`}
+        ariaLabel={`Custom showtime${timeSlot === 'custom' ? ` (selected${curtainTime ? ` at ${timeLabel}` : ''})` : ''}`}
         wrapClassName="relative inline-block"
         className={iconBtn(timeSlot === 'custom', false)}
       >
@@ -202,7 +204,7 @@ function CompactShowtimePicker({ timeSlot, curtainTime, onPick, onSave, onClear,
 
 function SunIcon() {
   return (
-    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <circle cx="12" cy="12" r="4" />
       <path strokeLinecap="round" d="M12 2v2m0 16v2M4.93 4.93l1.41 1.41m11.32 11.32l1.41 1.41M2 12h2m16 0h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41" />
     </svg>
@@ -211,7 +213,7 @@ function SunIcon() {
 
 function MoonIcon() {
   return (
-    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z" />
     </svg>
   );
@@ -219,7 +221,7 @@ function MoonIcon() {
 
 function ClockIcon() {
   return (
-    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <circle cx="12" cy="12" r="9" />
       <path strokeLinecap="round" strokeLinejoin="round" d="M12 7v5l3 3" />
     </svg>
@@ -228,7 +230,7 @@ function ClockIcon() {
 
 function ClearIcon() {
   return (
-    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
       <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
     </svg>
   );

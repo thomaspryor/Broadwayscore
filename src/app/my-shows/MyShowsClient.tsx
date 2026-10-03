@@ -12,6 +12,7 @@ import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import StarRating from '@/components/user/StarRating';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
+import { trackUgc } from '@/lib/ugc-analytics';
 import { stubRowFromCandidate, type MezzanineCandidate } from '@/lib/mezzanine-search';
 import SharedDatePicker from '@/components/user/DatePickerButton';
 import ShowtimePicker from '@/components/user/ShowtimePicker';
@@ -241,15 +242,27 @@ export default function MyShowsClient() {
   // Shared delete handler — deleteReview rethrows on failure (Phase 2), so a
   // bare `await` in an onClick would be an unhandled rejection with no feedback.
   const handleDeleteReviewWithToast = useCallback(async (reviewId: string) => {
+    const showId = reviews.find(r => r.id === reviewId)?.show_id;
     try {
       await effectiveDeleteReview(reviewId);
       invalidateRatingsCache(); // browse-card ★chips must not outlive the rating
+      trackUgc('rating_deleted', { show_id: showId, source: 'my_shows' });
       showToast?.('Rating deleted.', 'info');
     } catch {
-      showToast?.('Delete failed — please try again.', 'error');
+      showToast?.('Delete failed. Please try again.', 'error');
     }
-  }, [effectiveDeleteReview, showToast]);
+  }, [effectiveDeleteReview, showToast, reviews]);
   const effectiveRemoveFromWatchlist = isMockMode ? mockRemoveFromWatchlist : removeFromWatchlist;
+  // Same rethrow-and-toast shape: a failed remove used to reject unhandled
+  // inside the row's onClick, leaving the row in place with no explanation.
+  const handleRemoveFromWatchlist = useCallback(async (showId: string, successMessage: string) => {
+    try {
+      await effectiveRemoveFromWatchlist(showId);
+      showToast?.(successMessage, 'info');
+    } catch {
+      showToast?.('Could not remove. Please try again.', 'error');
+    }
+  }, [effectiveRemoveFromWatchlist, showToast]);
   const effectiveUpdatePlannedDate = isMockMode ? mockUpdatePlannedDate : updatePlannedDate;
   const effectiveUpdatePerformance = isMockMode ? mockUpdatePerformance : updatePerformance;
 
@@ -264,6 +277,8 @@ export default function MyShowsClient() {
   const handlePlannedDateChange = useCallback(async (showId: string, date: string | null) => {
     try {
       await effectiveUpdatePlannedDate(showId, date);
+      // The picker closes silently, so confirm the write (UX audit, BRO-3175).
+      showToast?.(date ? 'Date saved.' : 'Date cleared.', 'success');
     } catch {
       showToast?.('Failed to save date.', 'error');
     }
@@ -295,7 +310,7 @@ export default function MyShowsClient() {
         updated_at: new Date().toISOString(),
       });
       if (error) throw new Error(error.message);
-      if (!updated) throw new Error('This rating no longer exists — it may have been deleted elsewhere.');
+      if (!updated) throw new Error('This rating no longer exists. It may have been deleted elsewhere.');
     } else {
       const { error } = await supabaseRestInsert('reviews', {
         user_id: user.id,
@@ -557,7 +572,7 @@ export default function MyShowsClient() {
           <div className="text-left space-y-2.5 mb-7 mx-auto max-w-xs">
             <div className="flex items-start gap-2.5 text-sm text-gray-300">
               <span className="text-[#FFD700]" aria-hidden="true">★</span>
-              <span>Rate every show you see — half-stars, dates, private notes</span>
+              <span>Rate every show you see, with half-stars, dates and private notes</span>
             </div>
             <div className="flex items-start gap-2.5 text-sm text-gray-300">
               <svg className="w-4 h-4 mt-0.5 flex-shrink-0 text-brand" fill="currentColor" viewBox="0 0 24 24"><path d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" /></svg>
@@ -578,7 +593,7 @@ export default function MyShowsClient() {
                 const btn = e.currentTarget as HTMLButtonElement;
                 btn.disabled = true;
                 setTimeout(() => { btn.disabled = false; }, 4000);
-                signIn('google');
+                signIn('google', 'my_shows');
               }}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-gray-800 font-semibold text-sm rounded-lg hover:bg-gray-100 transition-colors"
             >
@@ -598,7 +613,7 @@ export default function MyShowsClient() {
                 const btn = e.currentTarget as HTMLButtonElement;
                 btn.disabled = true;
                 setTimeout(() => { btn.disabled = false; }, 4000);
-                signIn('apple');
+                signIn('apple', 'my_shows');
               }}
               className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-black text-white font-semibold text-sm rounded-lg border border-white/20 hover:bg-surface-raised transition-colors"
             >
@@ -636,7 +651,7 @@ export default function MyShowsClient() {
   }
 
   return (
-    <div data-testid="my-shows-content" className="max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12">
+    <div data-testid="my-shows-content" className="ph-mask max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12">
       {/* Header — flex-wrap lets the opened Add-show search take a full row on
           mobile (basis-full) instead of squeezing beside the title. */}
       <div className="flex flex-wrap items-center justify-between gap-3 mb-2">
@@ -729,6 +744,7 @@ export default function MyShowsClient() {
           onSave={handleInlineRatingSave}
           onSaved={() => setRatingTarget(null)}
           onCancel={() => setRatingTarget(null)}
+          analytics={{ source: 'my_shows', showId: ratingTarget.id }}
         />
       )}
 
@@ -951,14 +967,14 @@ export default function MyShowsClient() {
                     <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider">To Be Rated</h3>
                     <span className="text-xs text-gray-500">{toBeRatedEntries.length} {toBeRatedEntries.length === 1 ? 'entry' : 'entries'}</span>
                   </div>
-                  <p className="text-xs text-gray-500 mb-3">You saw these shows — how were they?</p>
+                  <p className="text-xs text-gray-500 mb-3">You saw these shows. How were they?</p>
                   <div className="space-y-2">
                     {toBeRatedEntries.map(entry => (
                       <ToBeRatedCard
                         key={`rate-${entry.id}`}
                         entry={entry}
                         show={showMap[entry.show_id]}
-                        onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed — no rating needed.', 'info'); }}
+                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed. No rating needed.')}
                         onRate={openRatingEditor}
                       />
                     ))}
@@ -1005,7 +1021,7 @@ export default function MyShowsClient() {
                               )}
                             </div>
                             <RowRemoveButton
-                              onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from watchlist.', 'info'); }}
+                              onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from watchlist.')}
                               label={`Remove ${entryTitle} from watchlist`}
                             />
                           </div>
@@ -1031,7 +1047,7 @@ export default function MyShowsClient() {
                             posterUrl={entryShow?.posterUrl ?? undefined}
                             date={entryFormattedDate}
                             title={entryShow?.title || entry.show_id}
-                            onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from watchlist.', 'info'); }}
+                            onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from watchlist.')}
                           />
                         );
                       })}
@@ -1118,7 +1134,7 @@ export default function MyShowsClient() {
                             <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
                               {year}
                               {year === 'No date' && (
-                                <span className="normal-case font-normal tracking-normal text-gray-600"> — edit a show to add when you saw it</span>
+                                <span className="normal-case font-normal tracking-normal text-gray-600"> (edit a show to add when you saw it)</span>
                               )}
                             </h3>
                             <span className="text-xs text-gray-500">{reviewsByYear[year].length} {reviewsByYear[year].length === 1 ? 'entry' : 'entries'}</span>
@@ -1182,7 +1198,7 @@ export default function MyShowsClient() {
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                     onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                    onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                    onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                     onRate={openRatingEditor}
                   />
                 ))}
@@ -1200,7 +1216,7 @@ export default function MyShowsClient() {
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                     onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                    onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                    onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                     onRate={openRatingEditor}
                   />
                 ))}
@@ -1226,7 +1242,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1246,7 +1262,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1276,7 +1292,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1294,7 +1310,7 @@ export default function MyShowsClient() {
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
                           onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed from Watchlist.', 'info'); }}
+                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1327,7 +1343,7 @@ export default function MyShowsClient() {
                         key={`wl-rate-${entry.id}`}
                         entry={entry}
                         show={showMap[entry.show_id]}
-                        onRemove={async () => { await effectiveRemoveFromWatchlist(entry.show_id); showToast?.('Removed — no rating needed.', 'info'); }}
+                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed. No rating needed.')}
                         onRate={openRatingEditor}
                       />
                     ))}
@@ -1375,7 +1391,7 @@ function RowRemoveButton({ onRemove, label }: { onRemove: () => void; label: str
       type="button"
       onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirm(true); }}
       aria-label={label}
-      className="relative z-[2] inline-flex items-center justify-center flex-shrink-0 p-1.5 rounded-full text-gray-600 hover:text-red-400 transition-colors pointer-events-auto"
+      className="relative z-[2] inline-flex items-center justify-center flex-shrink-0 p-1.5 rounded-full text-score-skip/80 hover:text-score-skip transition-colors pointer-events-auto"
     >
       <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
         <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
@@ -1429,7 +1445,7 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmDelete(true); }}
-          className="relative z-[1] inline-flex items-center justify-center p-1 rounded-full text-gray-600 hover:text-red-400 transition-colors"
+          className="relative z-[1] inline-flex items-center justify-center p-1 rounded-full text-score-skip/80 hover:text-score-skip transition-colors"
           aria-label="Delete rating"
         >
           <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -1510,13 +1526,13 @@ function UpcomingGridCard({ href, posterUrl, date, title, onRemove }: { href: st
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
       <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
         <div className="aspect-[2/3] bg-surface-overlay">
-          <Poster url={posterUrl} iconClass="text-3xl" />
+          <Poster url={posterUrl} iconClass="text-3xl" title={title} />
         </div>
         {/* Remove button — hidden on mobile, visible on hover on desktop */}
         <button
           type="button"
           onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
+          className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-score-skip/80 hover:text-score-skip opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
           aria-label="Remove from upcoming"
         >
           {confirmRemove ? 'Remove?' : (
@@ -1554,9 +1570,20 @@ function CardLinkOrDiv({ href, className, children, ariaLabel }: { href: string 
 /** Poster image that degrades to the 🎭 placeholder when the URL is missing
  *  OR fails to load — a stored poster path that 404s otherwise renders as a
  *  broken-image icon in the diary grid (owner report, 2026-07-14). */
-function Poster({ url, iconClass = 'text-3xl' }: { url: string | null | undefined; iconClass?: string }) {
+function Poster({ url, iconClass = 'text-3xl', title }: { url: string | null | undefined; iconClass?: string; title?: string }) {
   const [broken, setBroken] = useState(false);
   if (!url || broken) {
+    // Grid cards are poster-only, so a show with no poster was an anonymous
+    // 🎭 tile. Grid callers pass the title so the placeholder names the show
+    // (UX audit, BRO-3861). List rows already print the title beside it.
+    if (title) {
+      return (
+        <div className="w-full h-full flex flex-col items-center justify-center gap-1.5 px-2 text-gray-600">
+          <span className={iconClass} aria-hidden="true">🎭</span>
+          <span className="text-xs font-semibold text-gray-300 text-center leading-snug line-clamp-3 break-words">{title}</span>
+        </div>
+      );
+    }
     return <div className={`w-full h-full flex items-center justify-center text-gray-600 ${iconClass}`}>🎭</div>;
   }
   // eslint-disable-next-line @next/next/no-img-element
@@ -1579,7 +1606,7 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
     <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
       <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
         <div className="aspect-[2/3] bg-surface-overlay">
-          <Poster url={show?.posterUrl} iconClass="text-3xl" />
+          <Poster url={show?.posterUrl} iconClass="text-3xl" title={title} />
         </div>
         {/* Written-note preview on hover (desktop) — grid view otherwise hides
             the note entirely (owner request, 2026-07-13) */}
@@ -1640,7 +1667,7 @@ function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview;
           <button
             type="button"
             onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmDelete ? onDelete() : setConfirmDelete(true); }}
-            className={`absolute top-2 right-2 z-[2] flex items-center justify-center rounded-full ${confirmDelete ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-gray-400 hover:text-red-400 opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100 focus-visible:opacity-100'} transition-opacity`}
+            className={`absolute top-2 right-2 z-[2] flex items-center justify-center rounded-full ${confirmDelete ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-score-skip/80 hover:text-score-skip opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100 focus-visible:opacity-100'} transition-opacity`}
             aria-label="Delete rating"
           >
             {confirmDelete ? 'Delete?' : (
@@ -1714,7 +1741,7 @@ function WatchlistCard({ entry, show, onDateChange, onShowtimeChange, onRemove, 
     <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden" data-watchlist-future-dated={isFutureDated}>
       <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
         <div className="aspect-[2/3] bg-surface-overlay relative">
-          <Poster url={show?.posterUrl} iconClass="text-3xl" />
+          <Poster url={show?.posterUrl} iconClass="text-3xl" title={title} />
           {/* Poster badges live TOP-LEFT: the rate strip owns the bottom and
               the trash owns the top-right (owner, 2026-07-20) */}
           {isClosingSoon && (
@@ -1994,7 +2021,7 @@ function WatchlistListItem({ entry, show, onDateChange, onShowtimeChange, onRemo
             <button
               type="button"
               onClick={(e) => { e.preventDefault(); e.stopPropagation(); setConfirmRemove(true); }}
-              className="relative z-[1] inline-flex items-center justify-center p-1 text-gray-600 hover:text-red-400 transition-colors"
+              className="relative z-[1] inline-flex items-center justify-center p-1 text-score-skip/80 hover:text-score-skip transition-colors"
               aria-label="Remove from watchlist"
             >
               <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
@@ -2205,7 +2232,7 @@ function ToBeRatedCard({ entry, show, onRemove, onRate }: { entry: WatchlistEntr
         </div>
       </div>
       {/* Didn't go / sold tickets — remove without opening the show page */}
-      <RowRemoveButton onRemove={onRemove} label={`Remove ${title} — didn't see it`} />
+      <RowRemoveButton onRemove={onRemove} label={`Remove ${title}, didn't see it`} />
     </div>
   );
 }

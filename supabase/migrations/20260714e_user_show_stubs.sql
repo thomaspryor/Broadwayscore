@@ -31,8 +31,10 @@ CREATE INDEX IF NOT EXISTS idx_user_show_stubs_mezz_prod_id
 
 -- RLS: signed-in users can create a stub for a show they just picked from
 -- live search; SELECT is public — stub cards/pages render for signed-out
--- visitors the same as any other diary-only show (display metadata only, no
--- PII beyond created_by which no read policy exposes).
+-- visitors the same as any other diary-only show. NOTE: the public read
+-- policy covers every column, so created_by (an account id) is readable by
+-- anon. Hiding it needs a column grant, which first needs both clients to
+-- insert with return=minimal (BRO-4525 follow-up).
 ALTER TABLE user_show_stubs ENABLE ROW LEVEL SECURITY;
 
 CREATE POLICY "insert own show stub" ON user_show_stubs

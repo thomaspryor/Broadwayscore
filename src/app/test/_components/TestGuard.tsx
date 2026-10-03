@@ -3,6 +3,7 @@
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { featureFlags } from '@/config/feature-flags';
+import { isTestFixtureHost } from '@/lib/test-fixture-host';
 
 // Test-fixture access gate.
 //
@@ -16,13 +17,16 @@ import { featureFlags } from '@/config/feature-flags';
 // Local dev/build against a /test/* route (or its Playwright specs) needs
 // `userAccounts` in NEXT_PUBLIC_FEATURES or this silently redirects to home —
 // use `npm run dev:ugc` / `npm run build:ugc` (test-red incident, 2026-07-21).
+//
+// The flag alone stops being a gate once accounts launch on prod, so the
+// fixtures also require a local or demo host (isTestFixtureHost, BRO-4525).
 
 export function TestGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
   const [allowed, setAllowed] = useState<boolean | null>(null);
 
   useEffect(() => {
-    if (featureFlags.userAccounts) {
+    if (featureFlags.userAccounts && isTestFixtureHost(window.location.hostname)) {
       setAllowed(true);
     } else {
       setAllowed(false);

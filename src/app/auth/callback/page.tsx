@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
 import { getReturnUrl, clearReturnUrl } from '@/lib/deferred-auth';
+import { markSignInFailed, reportUgcError } from '@/lib/ugc-analytics';
 
 /**
  * OAuth callback handler.
@@ -28,6 +29,17 @@ export default function AuthCallbackPage() {
     const urlErrorDesc = params.get('error_description') || hashParams.get('error_description');
 
     if (urlError) {
+      // Backing out of Google's consent screen is a choice, not a failure:
+      // send them back where they were instead of a "Sign-in failed" page.
+      if (urlError === 'access_denied') {
+        markSignInFailed('google', null, 'cancelled');
+        const returnUrl = getReturnUrl();
+        clearReturnUrl();
+        window.location.replace(returnUrl);
+        return;
+      }
+      markSignInFailed('google', null, urlError);
+      reportUgcError('auth.callback', { message: `${urlError}: ${urlErrorDesc || ''}`, code: urlError });
       setErrorDetail(`${urlError}: ${urlErrorDesc || 'Unknown error'}`);
       setError(true);
       return;
@@ -35,6 +47,7 @@ export default function AuthCallbackPage() {
 
     const client = getSupabaseClient();
     if (!client) {
+      reportUgcError('auth.callback', { message: 'Supabase client not available', code: 'no_client' });
       setErrorDetail('Supabase client not available — env vars may be missing');
       setError(true);
       return;
@@ -76,7 +89,11 @@ export default function AuthCallbackPage() {
     // Timeout after 10s
     const timeout = setTimeout(() => {
       clearInterval(pollInterval);
-      setErrorDetail('Timed out waiting for auth. Hash present: ' + (hash.length > 1 ? 'yes (' + hash.substring(0, 60) + '...)' : 'no'));
+      // Never echo the hash: it holds the access token.
+      const hashPresent = hash.length > 1;
+      markSignInFailed('google', null, 'timeout');
+      reportUgcError('auth.callback', { message: `Timed out waiting for session (hash present: ${hashPresent})`, code: 'timeout' });
+      setErrorDetail(`Timed out waiting for sign-in to finish (token ${hashPresent ? 'received' : 'missing'}).`);
       setError(true);
     }, 10000);
 

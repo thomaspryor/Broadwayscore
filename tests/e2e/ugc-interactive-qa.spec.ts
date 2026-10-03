@@ -400,3 +400,36 @@ test.describe('Desktop layout (1440px)', () => {
     expect(opacityAfter, 'Edit icons not visible on card hover').toBe('1');
   });
 });
+
+// ═══════════════════════════════════════════════════════════════
+// SECTION 4: Menu keyboard focus
+// Catches: closing the account menu dropping focus to <body> (BRO-4525)
+// ═══════════════════════════════════════════════════════════════
+
+test.describe('Menu focus (390px)', () => {
+  test.beforeEach(async ({ page }) => {
+    await page.setViewportSize({ width: 390, height: 844 });
+  });
+
+  const ways: Record<string, (page: Page) => Promise<void>> = {
+    // A keyboard user presses Escape from inside the panel.
+    Escape: async (page) => {
+      await page.getByRole('button', { name: 'Close menu' }).focus();
+      await page.keyboard.press('Escape');
+    },
+    'the close button': (page) => page.getByRole('button', { name: 'Close menu' }).click(),
+    'the backdrop': (page) => page.mouse.click(10, 400),
+  };
+
+  for (const [name, closeMenu] of Object.entries(ways)) {
+    test(`closing with ${name} returns focus to the menu button`, async ({ page }) => {
+      await goToMock(page);
+      const trigger = page.getByRole('button', { name: 'Open menu' }).first();
+      await trigger.click();
+      await expect(page.getByRole('button', { name: 'Close menu' })).toBeVisible();
+      await closeMenu(page);
+      await expect(page.getByRole('button', { name: 'Close menu' })).toHaveCount(0);
+      await expect(trigger).toBeFocused();
+    });
+  }
+});

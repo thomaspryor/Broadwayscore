@@ -31,7 +31,7 @@
 import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { useSearchParams } from 'next/navigation';
-import { track } from '@vercel/analytics';
+import { trackUgc } from '@/lib/ugc-analytics';
 import {
   ScoreBadge,
   ScoreBreakdownBar,
@@ -100,6 +100,13 @@ interface ShowHeroRedesignProps {
   /** Precomputed cross-show ranks for the hero rank line. Null = feature-gated off
    *  OR no rankable data. */
   ranks: ShowRanks | null;
+  /** "2024–2025" for a national tour whose own dates are unknown; the date line
+   *  shows "reviewed <years>" instead. Computed server-side because this
+   *  component's reviews are narrowed to reviewScore (no publishDate). */
+  tourReviewYears?: string | null;
+  /** Server-rendered ShowTrustLines (tour parent, tryout transfer, tour stops),
+   *  shared with the legacy header so the redesign keeps those links. */
+  trustLines?: React.ReactNode;
 }
 
 // ─── Suspense wrapper (useSearchParams requires it for static prerender) ──
@@ -126,6 +133,8 @@ function Inner({
   isWestEnd,
   isOffBroadway,
   ranks,
+  tourReviewYears,
+  trustLines,
 }: ShowHeroRedesignProps) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
   const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
@@ -218,7 +227,7 @@ function Inner({
     if (hasExecutedPending.current) return;
     if (!isAuthenticated && !authLoading) {
       saveDraft(autoRateStars != null ? { rating: autoRateStars } : {});
-      showSignIn('rating');
+      showSignIn('rating', 'show_rate_link');
     } else {
       // Always a FRESH panel (append), seeded with the ?stars= hint — consistent
       // with the rate button. Editing an existing rating is ?edit=1 / the pencil.
@@ -252,7 +261,7 @@ function Inner({
         returnUrl: window.location.pathname,
         timestamp: Date.now(),
       });
-      showSignIn('watchlist');
+      showSignIn('watchlist', 'show_want_to_see');
       return;
     }
     try {
@@ -299,13 +308,13 @@ function Inner({
       if (authLoading) {
         // Session still restoring for an already-signed-in user — don't bounce
         // them to sign-in; surface a retryable error in the editor instead.
-        throw new Error('Still restoring your session — tap Retry in a moment.');
+        throw new Error('Still restoring your session. Tap Retry in a moment.');
       }
       // Gate at Save — persist the full draft, then sign in. The editor stays
       // open behind the sign-in modal ('auth-gated'), so cancelling sign-in
       // loses nothing; completing it lets the pending-action effect resume.
       saveDraft(data);
-      showSignIn('rating');
+      showSignIn('rating', 'show_rating_save');
       return 'auth-gated';
     }
     if (data.reviewId) {
@@ -319,8 +328,7 @@ function Inner({
       if (error) throw new Error(error.message);
       // PostgREST returns 200 + [] when the filter matched nothing (e.g. the
       // review was deleted in another tab) — that's a failed save, not success.
-      if (!updated) throw new Error('This rating no longer exists — it may have been deleted elsewhere.');
-      track('rating_submitted', { show_id: show.id, rating: data.rating, has_review_text: !!data.reviewText, is_edit: true });
+      if (!updated) throw new Error('This rating no longer exists. It may have been deleted elsewhere.');
       showToast?.(<>Updated in <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
     } else {
       const { error } = await supabaseRestInsert('reviews', {
@@ -331,7 +339,6 @@ function Inner({
         date_seen: data.dateSeen || null,
       });
       if (error) throw new Error(error.message);
-      track('rating_submitted', { show_id: show.id, rating: data.rating, has_review_text: !!data.reviewText, is_edit: false });
       showToast?.(<>Added to <a href="/my-shows" className="underline hover:text-white/90">My Ratings &amp; Reviews</a></>, 'success');
       // Watchlist = shows you WANT to see. Rating a show means you've seen it,
       // so drop any watchlist entry (owner rule 2026-07-12 — replaces the old
@@ -339,12 +346,12 @@ function Inner({
       // itself already saved.
       // Unconditional: isWatchlisted reads this instance's async-loaded state and
       // can be stale on fast deep-link saves; deleting a non-existent row is a
-      // harmless no-op (slight watchlist_remove analytics noise accepted).
-      try { await removeFromWatchlist(show.id); } catch { /* rating saved; watchlist cleanup is best-effort */ }
+      // harmless no-op ('rated' keeps it out of the watchlist_remove count).
+      try { await removeFromWatchlist(show.id, 'rated'); } catch { /* rating saved; watchlist cleanup is best-effort */ }
     }
     await getReviewsForShow(show.id);
     invalidateRatingsCache();
-  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, isWatchlisted, removeFromWatchlist, saveDraft]);
+  }, [user, authLoading, show.id, getReviewsForShow, showToast, showSignIn, removeFromWatchlist, saveDraft]);
 
   const handleRateSaved = useCallback(() => {
     setRatePanelOpen(false);
@@ -364,6 +371,7 @@ function Inner({
     if (!editingReview) return;
     try {
       await deleteReview(editingReview.id);
+      trackUgc('rating_deleted', { show_id: show.id, source: 'show_page' });
       showToast?.('Rating deleted.', 'info');
       await getReviewsForShow(show.id);
       invalidateRatingsCache();
@@ -432,6 +440,10 @@ function Inner({
           <h1 className="text-2xl lg:text-4xl font-extrabold tracking-tight leading-tight text-white">
             {show.title}
           </h1>
+          {/* A tour shares its Broadway parent's title and poster; say which one this is. */}
+          {show.category === 'tour' && (
+            <p className="text-sm lg:text-base font-semibold text-sky-300" data-testid="tour-subtitle">National Tour</p>
+          )}
           <div className="text-sm text-gray-400 space-y-0.5 pt-0.5">
             <p>
               {venueLink ? (
@@ -443,8 +455,9 @@ function Inner({
               )}
               {show.runtime ? <span> · {show.runtime}</span> : null}
             </p>
-            <DateLine show={show} />
+            <DateLine show={show} tourReviewYears={tourReviewYears ?? null} />
           </div>
+          {trustLines ? <div className="pt-1" data-testid="hero-trust-lines">{trustLines}</div> : null}
 
           {/* Desktop-only inline score block — lives INSIDE the right column,
               alongside title/meta. Mobile renders dual cards in a separate
@@ -569,7 +582,7 @@ function Inner({
             <svg className="w-4 h-4 shrink-0" fill={onWatchlist ? 'currentColor' : 'none'} viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
               <path strokeLinecap="round" strokeLinejoin="round" d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z" />
             </svg>
-            <span className="text-xs sm:text-sm font-semibold">{onWatchlist ? 'On your list' : 'Want to See'}</span>
+            <span className="text-xs sm:text-sm font-semibold">{onWatchlist ? 'On your list' : hasRating && !isClosed ? 'See it again' : 'Want to See'}</span>
           </button>
           <button
             type="button"
@@ -694,6 +707,7 @@ function Inner({
           onSaved={handleRateSaved}
           onCancel={handleCancelRate}
           onDelete={editingReview ? handleDeleteRating : undefined}
+          analytics={{ source: 'show_page', showId: show.id }}
         />
       )}
 
@@ -749,10 +763,10 @@ function Inner({
           (CLAUDE.md card #228, task #90). See getTicketCtaNote for why 'closed'
           checks status alone. */}
       {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'closed' && (
-        <p className="text-xs text-gray-500">This show has closed — tickets are no longer available.</p>
+        <p className="text-xs text-gray-500">This show has closed. Tickets are no longer available.</p>
       )}
       {getTicketCtaNote(show.status, show.ticketLinks, sortedTicketLinks) === 'announced-not-on-sale' && (
-        <p className="text-xs text-gray-500">Tickets not yet on sale — check back closer to opening.</p>
+        <p className="text-xs text-gray-500">Tickets aren&apos;t on sale yet. Check back closer to opening.</p>
       )}
       </div>{/* /action cluster */}
     </div>
@@ -761,7 +775,7 @@ function Inner({
 
 // ─── Sub-components ──────────────────────────────────────────────────────
 
-function DateLine({ show }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> }) {
+function DateLine({ show, tourReviewYears }: { show: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>>; tourReviewYears: string | null }) {
   // One hierarchy step below the venue line (text-sm gray-300) so the two
   // stacked rows read as place → metadata instead of two identical gray lines.
   const dateClass = 'text-xs text-gray-500';
@@ -772,7 +786,9 @@ function DateLine({ show }: { show: ComputedShowWithReviews<Pick<ComputedReview,
   // into inline branches (task #951).
   const durationSuffix = getHeroDurationSuffix(show);
   const durationText = durationSuffix ? getBroadwayDuration(show.openingDate, durationSuffix) : null;
-  const segments = getShowDateLineSegments(show, durationText);
+  const segments: Array<{ text: string; emphasize?: boolean }> = getShowDateLineSegments(show, durationText);
+  // Matches the legacy header: a tour with no dates of its own says when it was reviewed.
+  if (tourReviewYears) segments.push({ text: `reviewed ${tourReviewYears}` });
   if (segments.length === 0) return null;
 
   return (
@@ -849,7 +865,7 @@ function YourRatingInline({
             </button>
           </div>
           {review.review_text && (
-            <p className="text-sm text-gray-400 italic leading-snug line-clamp-4">
+            <p className="ph-mask text-sm text-gray-400 italic leading-snug line-clamp-4">
               {`\u201C${review.review_text}\u201D`}
             </p>
           )}

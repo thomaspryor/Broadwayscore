@@ -4,6 +4,7 @@ import { Analytics } from '@vercel/analytics/react';
 import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { useEffect } from 'react';
+import { applyAnalyticsUser, flushUgcOutbox } from '@/lib/ugc-analytics';
 
 interface SentryEvent {
   exception?: { values?: Array<{ stacktrace?: { frames?: Array<{ filename?: string }> } }> };
@@ -13,6 +14,8 @@ declare global {
   interface Window {
     Sentry?: {
       init: (config: Record<string, unknown>) => void;
+      captureException?: (e: unknown, ctx?: Record<string, unknown>) => void;
+      setUser?: (user: { id: string } | null) => void;
     };
   }
 }
@@ -61,7 +64,16 @@ export default function AnalyticsWrapper() {
             capture_pageleave: true,
             enable_heatmaps: false,
             person_profiles: 'identified_only',
-            session_recording: { maskAllInputs: false, sampleRate: 0.1 },
+            // Inputs stay visible for UX debugging, except textareas (private
+            // rating notes, list descriptions, feedback) and email/password.
+            // Displayed personal text (My Shows, diary, the menu's name,
+            // saved notes) carries the recorder's default `ph-mask` class;
+            // the privacy page promises both, so keep them in step.
+            session_recording: {
+              maskAllInputs: false,
+              maskInputOptions: { password: true, email: true, textarea: true },
+              sampleRate: 0.1,
+            },
             loaded: (ph) => {
               if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();
             },
@@ -79,6 +91,10 @@ export default function AnalyticsWrapper() {
         // Always expose on window — even if already loaded from a prior render.
         // TicketLink and other components use window.posthog.capture() for native events.
         (window as unknown as Record<string, unknown>).posthog = posthog;
+        // Auth may have resolved before PostHog finished its idle-time load,
+        // and sign-in/rating events fired before now are waiting to be sent.
+        applyAnalyticsUser();
+        flushUgcOutbox();
       }).catch(() => {
         // Blocked import (ad blocker / network) — window.posthog stays undefined.
         // Every consumer (TicketButtonsAB, ProGateContext, TicketLink,
@@ -122,10 +138,11 @@ export default function AnalyticsWrapper() {
         if (typeof SentrySDK !== 'undefined') {
           SentrySDK.init({
             dsn: SENTRY_DSN,
+            environment: window.location.hostname === 'demo.broadwayscorecard.com' ? 'demo' : 'production',
             sampleRate: 1.0,
             tracesSampleRate: 0.1,
             allowUrls: [
-              /https?:\/\/(www\.)?broadwayscorecard\.com/,
+              /https?:\/\/(www\.|demo\.)?broadwayscorecard\.com/,
               /https?:\/\/broadwayscorecard-.*\.vercel\.app/,
             ],
             denyUrls: [
@@ -166,6 +183,7 @@ export default function AnalyticsWrapper() {
               return hasOurCode ? event : null;
             },
           });
+          applyAnalyticsUser();
         }
       };
       document.head.appendChild(script);
