@@ -1,16 +1,16 @@
 {
-  "generatedAt": "2026-10-02T13:20:12.843Z",
+  "generatedAt": "2026-10-03T12:10:12.816Z",
   "shadow": true,
-  "checkoutSha": "49127850744eca1e8254038a7ed69f68e9c2722d",
-  "totalCandidates": 1713,
+  "checkoutSha": "8ee955eadf09556efe30b56e3b56855bc0792ae2",
+  "totalCandidates": 1712,
   "eligibleCandidates": 53,
   "checked": 30,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 22,
+    "pass": 21,
     "fail": 0,
-    "unverifiable": 8
+    "unverifiable": 9
   },
   "alreadyDone": [
     {
@@ -47,12 +47,6 @@
       "id": "BRO-4153",
       "name": "P2: timeout.com domain collision — London Time Out reviews resolve to NYC \"timeout\" outlet",
       "verifyCmd": "node --test scripts/lib/timeout-london-attribution.test.mjs",
-      "detail": null
-    },
-    {
-      "id": "BRO-4137",
-      "name": "P1 SYSTEMIC: six wrong conclusions in one session all had one shape — a self-designed search returned nothing and I reported nothing as the answer; require a positive control before any absence claim",
-      "verifyCmd": "node --test tests/unit/absence-claim-control.test.mjs",
       "detail": null
     },
     {
@@ -152,7 +146,7 @@
       "id": "BRO-4410",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 147041ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 146161ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4165",
@@ -161,10 +155,16 @@
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/land-rebase-classify.test.mjs"
     },
     {
+      "id": "BRO-4137",
+      "name": "P1 SYSTEMIC: six wrong conclusions in one session all had one shape — a self-designed search returned nothing and I reported nothing as the answer; require a positive control before any absence claim",
+      "verifyCmd": "node --test tests/unit/absence-claim-control.test.mjs",
+      "detail": "ran no passing tests (all skipped or none ran)"
+    },
+    {
       "id": "BRO-4063",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 100975ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 101892ms (timeout — no verdict)"
     },
     {
       "id": "BRO-3429",
