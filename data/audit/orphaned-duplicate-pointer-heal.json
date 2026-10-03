@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-03T18:08:37.092Z",
+  "generated": "2026-10-03T18:44:40.318Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 21,
+  "count": 20,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -15,6 +15,13 @@
       "loserFile": "guardian--charles-isherwood.json",
       "targetFile": "guardian--adrian-horton.json",
       "reason": "orphaned-duplicate-heal: guardian--adrian-horton.json was flagged invalid after guardian--charles-isherwood.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "camelot-2023",
+      "loserFile": "observer--unknown.json",
+      "targetFile": "observer--david-cote.json",
+      "reason": "orphaned-duplicate-heal: observer--david-cote.json was flagged invalid after observer--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -103,13 +110,6 @@
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "loserFile": "british-theatre--unknown.json",
-      "targetFile": "british-theatre--keith-mckenna.json",
-      "reason": "orphaned-duplicate-heal: british-theatre--keith-mckenna.json was flagged invalid after british-theatre--unknown.json was pointed at it",
-      "field": "duplicateOf"
-    },
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
       "loserFile": "times-uk--susie-goldsbrough.json",
       "targetFile": "times-uk--clive-davis.json",
       "reason": "orphaned-duplicate-heal: times-uk--clive-davis.json was flagged invalid after times-uk--susie-goldsbrough.json was pointed at it",
@@ -142,13 +142,6 @@
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "the-importance-of-being-oscar-off-west-end-2026",
-      "loserFile": "british-theatre--unknown.json",
-      "targetFile": "british-theatre--keith-mckenna.json",
-      "reason": "orphaned-duplicate-heal: british-theatre--keith-mckenna.json was flagged invalid after british-theatre--unknown.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
