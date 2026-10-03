@@ -128,6 +128,22 @@ const WP_FIELDS = new Set([
   ...WRONG_PRODUCTION_PROVENANCE_FIELDS,
 ]);
 
+// BRO-4551. wrongAttribution is URL-derived when it says "this ARTICLE has a
+// different author" (BRO-4430) but identity-derived when it says "this
+// critic/outlet PAIR is impossible" (a WaPo staff critic filed under Variety,
+// a byline typo of another critic). The latter is a verdict on the file's
+// (criticName, outletId) key, which a URL swap does not change: BRO-4546
+// reverted mj-2022 variety--peter-marks to a variety.com URL, the invariant
+// wiped wrongAttribution (leaving an orphaned reason), the row became
+// includable and leaked `variety` into Peter Marks' knownOutlets.
+const IDENTITY_ATTRIBUTION_REASON = /misattribut|\bcritic, not\b|^Typo of /i;
+function _preservesIdentityAttribution(existing, merged) {
+  if (!existing || existing.wrongAttribution !== true) return false;
+  if (typeof existing.wrongAttributionReason !== 'string'
+    || !IDENTITY_ATTRIBUTION_REASON.test(existing.wrongAttributionReason)) return false;
+  return existing.criticName === merged.criticName && existing.outletId === merged.outletId;
+}
+
 function _noteStartsWith(existing, prefixes) {
   const note = existing && existing.wrongProductionNote;
   return typeof note === 'string' && prefixes.some((p) => note.startsWith(p));
@@ -288,9 +304,11 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
   const preserveDateBasedWp = _noteStartsWith(existing, MANUAL_WP_PREFIXES)
     || (_noteStartsWith(existing, AUTO_DATE_WP_PREFIXES) && !publishDateWillClear)
     || (_reasonIsDateOnly(existing) && !publishDateWillClear && mergedHasPublishDate);
+  const preserveIdentityAttribution = _preservesIdentityAttribution(existing, merged);
   const cleared = [];
   for (const field of URL_DERIVED_FIELDS) {
     if (preserveFields && preserveFields.has(field)) continue;
+    if (preserveIdentityAttribution && (field === 'wrongAttribution' || field === 'wrongAttributionReason')) continue;
     if (preserveDateBasedWp && WP_FIELDS.has(field)) continue;
     if (field === 'publishDate') {
       if (!publishDateWillClear) continue;
@@ -561,4 +579,5 @@ module.exports = {
   NEW_ERA_FETCH_FIELDS,
   URL_DERIVED_FIELDS,
   DATE_BASED_WP_PREFIXES,
+  IDENTITY_ATTRIBUTION_REASON,
 };

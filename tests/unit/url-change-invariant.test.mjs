@@ -632,3 +632,40 @@ describe('updateFileUrlWithInvariant — cross-outlet refusal', () => {
     fs.rmSync(dir, { recursive: true, force: true });
   });
 });
+
+// BRO-4551: mj-2022 variety--peter-marks. BRO-4546 reverted the url to a
+// variety.com review slug; the invariant wiped wrongAttribution (identity
+// verdict: WaPo critic filed under Variety) and the row leaked `variety` into
+// the critic registry.
+describe('identity-based wrongAttribution survives a URL change (BRO-4551)', () => {
+  const marksFile = () => ({
+    showId: 'mj-2022', outletId: 'variety', criticName: 'Peter Marks',
+    url: 'https://au.variety.com/2025/music/news/mj-the-musical-sydney-preview-tickets-20180/',
+    wrongAttribution: true,
+    wrongAttributionReason: 'Peter Marks is WashPost critic, not Variety; SERP misattribution',
+  });
+  const NEW_URL = 'https://variety.com/2022/legit/reviews/mj-the-musical-review-broadway-1235175916/';
+
+  test('keeps wrongAttribution + reason when critic/outlet unchanged', () => {
+    const existing = marksFile();
+    const merged = { ...existing, url: NEW_URL };
+    const r = applyUrlChangeInvariant(existing, merged);
+    assert.equal(merged.wrongAttribution, true);
+    assert.match(merged.wrongAttributionReason, /WashPost critic/);
+    assert.ok(!r.cleared.includes('wrongAttribution'));
+  });
+
+  test('still clears an article-derived wrongAttribution (BRO-4430 recovery)', () => {
+    const existing = { ...marksFile(), wrongAttributionReason: 'Byline on this article is a different author' };
+    const merged = { ...existing, url: NEW_URL };
+    applyUrlChangeInvariant(existing, merged);
+    assert.equal(merged.wrongAttribution, undefined);
+  });
+
+  test('clears when the critic identity changes with the url', () => {
+    const existing = marksFile();
+    const merged = { ...existing, url: NEW_URL, criticName: 'Naveen Kumar' };
+    applyUrlChangeInvariant(existing, merged);
+    assert.equal(merged.wrongAttribution, undefined);
+  });
+});
