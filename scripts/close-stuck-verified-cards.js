@@ -43,9 +43,9 @@ const USAGE = 'Usage: node scripts/close-stuck-verified-cards.js [--apply] [--gi
 
 const ISSUE_QUERY = `query($id: String!) {
   issue(id: $id) {
-    identifier createdAt updatedAt description
+    identifier title priority createdAt updatedAt description
     state { name type }
-    comments(first: 100) { nodes { body createdAt } }
+    comments(first: 250) { nodes { body createdAt } }
   }
 }`;
 
@@ -139,16 +139,20 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // ten of them cost seconds, while closes spend the time budget.
   const bounces = only ? plan.bounces.filter((b) => b.id === only) : plan.bounces;
   let bounced = 0;
+  // Bounces get a third of the time budget so a slow Linear can't eat the
+  // closes, and a failed read skips that one card instead of the whole run.
   for (const candidate of bounces) {
+    if (Date.now() - startMs > TIME_BUDGET_MS / 3) { count('bounce:over-time-budget'); continue; }
     let issue;
     try {
       const data = await linear.graphql(ISSUE_QUERY, { id: candidate.id });
       issue = data && data.issue ? { ...data.issue, comments: (data.issue.comments && data.issue.comments.nodes) || [] } : null;
     } catch (err) {
       console.error(`[close-stuck-verified-cards] could not read ${candidate.id}: ${err.message}`);
+      count('bounce:read-failed');
       out.rows.push({ id: candidate.id, action: 'read-failed', reason: err.message.slice(0, 200) });
       exitCode = 3;
-      break;
+      continue;
     }
     const decision = decideBounce({ candidate, issue, nowMs });
     if (!decision.bounce) {
@@ -180,7 +184,7 @@ async function main(argv = process.argv.slice(2), deps = {}) {
     write();
   }
 
-  for (const candidate of exitCode ? [] : candidates) {
+  for (const candidate of candidates) {
     if (Date.now() - startMs > TIME_BUDGET_MS) { count('over-time-budget'); continue; }
     let issue;
     let commits;
