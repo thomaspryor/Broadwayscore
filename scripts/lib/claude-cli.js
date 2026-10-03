@@ -424,7 +424,17 @@ function parseStreamLine(line) {
   if (!t) return null;
   let j;
   try { j = JSON.parse(t); } catch { return null; }
-  const out = { type: j.type || null, sessionId: j.session_id || null, usage: null, result: null };
+  const out = { type: j.type || null, sessionId: j.session_id || null, usage: null, result: null, taskStart: null, killedTaskId: null };
+  // BRO-2741: background-task lifecycle rows. patch.status is NESTED:
+  //   {"type":"system","subtype":"task_updated","task_id":"byh99e9v5","patch":{"status":"killed",...}}
+  // Keyed on patch.status, never on the mere presence of a patch: the same
+  // subtype carries ordinary transitions that must not be flagged.
+  if (j.type === 'system' && j.subtype === 'task_started' && j.task_id) {
+    out.taskStart = { id: j.task_id, description: typeof j.description === 'string' ? j.description : null, backgrounded: j.is_backgrounded === true };
+  }
+  if (j.type === 'system' && j.subtype === 'task_updated' && j.patch && j.patch.status === 'killed') {
+    out.killedTaskId = j.task_id || j.uuid || 'unknown';
+  }
   if (j.type === 'assistant' && j.message && j.message.usage) out.usage = j.message.usage;
   if (j.type === 'result') {
     out.result = {
@@ -568,7 +578,7 @@ function runClaudeCli(opts) {
     // exitSignal (BRO-3053) defaults alongside exitCode so every result has the
     // field present-and-null rather than sometimes-undefined — a consumer can
     // then test `r.exitSignal === 'SIGKILL'` without a truthiness dance.
-    exitCode: null, exitSignal: null, pid: null, usage: null, costUSD: null, costEstimated: false, errorDetail: null,
+    exitCode: null, exitSignal: null, pid: null, killedTasks: [], usage: null, costUSD: null, costEstimated: false, errorDetail: null,
     ...r, durationMs: Date.now() - started,
   });
 
@@ -625,6 +635,10 @@ function runClaudeCli(opts) {
     let sessionNotified = false;
     let usageTotal = null;
     let resultEvent = null;
+    // BRO-2741: background tasks the harness killed AFTER the result event
+    // (teardown kills). Recorded only; ok/stage are never changed by this.
+    const taskStarts = new Map();
+    const killedTasks = new Map();
     let timedOut = false;
     let settled = false;
     let graceTimer = null;
@@ -653,6 +667,12 @@ function runClaudeCli(opts) {
       }
       if (ev.usage) usageTotal = addUsage(usageTotal, ev.usage);
       if (ev.result) resultEvent = ev.result;
+      if (ev.taskStart) taskStarts.set(ev.taskStart.id, ev.taskStart);
+      // A kill before any result is the worker's own cleanup, not abandonment.
+      if (ev.killedTaskId && resultEvent && !killedTasks.has(ev.killedTaskId)) {
+        const st = taskStarts.get(ev.killedTaskId);
+        killedTasks.set(ev.killedTaskId, { id: ev.killedTaskId, description: st ? st.description : null, backgrounded: st ? st.backgrounded : false });
+      }
     };
 
     child.stdout.on('data', (d) => {
@@ -748,6 +768,7 @@ function runClaudeCli(opts) {
         ok: true, stage: null, pid, exitCode: code,
         resultText: resultEvent.resultText, sessionId: resultEvent.sessionId || sessionId,
         usage: resultEvent.usage || usageTotal, ...cost,
+        killedTasks: [...killedTasks.values()],
       }));
     });
 
