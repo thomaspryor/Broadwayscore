@@ -124,7 +124,9 @@ function hasSrcChange(files) {
  *
  * @param {string[]} changedFiles
  * @param {(relPath:string)=>boolean} existsFn
- * @param {{tier?:number, buildCheck?:boolean}} [opts]
+ * @param {{tier?:number, buildCheck?:boolean, tsxManifest?:Set<string>}} [opts]
+ *   tsxManifest: repo-relative paths listed in tests/unit-test-manifest-tsx.txt
+ *   (see readTsxManifest); a `.test.mjs` in it runs under tsx.
  * @returns {{name:string, argv:string[], timeoutMs?:number, build?:boolean}[]}
  */
 // Paths whose content cannot change site or data behavior. A diff made only of
@@ -132,7 +134,7 @@ function hasSrcChange(files) {
 const INERT_RE = /^(tests|docs|memory)\/|\.test\.m?js$/;
 
 function decideChecks(changedFiles, existsFn, opts = {}) {
-  const { tier = 1, buildCheck = true } = opts;
+  const { tier = 1, buildCheck = true, tsxManifest = new Set() } = opts;
   const files = (changedFiles || []).map(String);
   const checks = [];
   const seen = new Set();
@@ -150,10 +152,14 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
   // batches (mirrors test.yml's own unit-test-manifest.txt vs
   // unit-test-manifest-tsx.txt split) so a diff mixing `.test.mjs` and
   // `.test.ts` colocated tests runs each under the loader that understands it.
+  // BRO-4525: a `.test.mjs` that imports a `.ts` module is listed in
+  // unit-test-manifest-tsx.txt and test.yml runs it under tsx; plain node 20
+  // dies on it with ERR_UNKNOWN_FILE_EXTENSION, so the manifest decides.
   const testFiles = new Set();
   const tsxTestFiles = new Set();
+  const addMjs = f => (tsxManifest.has(f) ? tsxTestFiles : testFiles).add(f);
   for (const f of files) {
-    if (/\.test\.mjs$/.test(f)) { testFiles.add(f); continue; }
+    if (/\.test\.mjs$/.test(f)) { addMjs(f); continue; }
     if (/\.test\.ts$/.test(f)) { tsxTestFiles.add(f); continue; }
     // Colocated test convention: scripts/lib/x.js → scripts/lib/x.test.mjs
     // (or scripts/lib/x.ts → scripts/lib/x.test.ts, checked first — a .ts
@@ -161,7 +167,7 @@ function decideChecks(changedFiles, existsFn, opts = {}) {
     const colocatedTs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.ts');
     const colocatedMjs = f.replace(/\.(js|mjs|ts|tsx)$/, '.test.mjs');
     if (colocatedTs !== f && existsFn(colocatedTs)) tsxTestFiles.add(colocatedTs);
-    else if (colocatedMjs !== f && existsFn(colocatedMjs)) testFiles.add(colocatedMjs);
+    else if (colocatedMjs !== f && existsFn(colocatedMjs)) addMjs(colocatedMjs);
   }
   if (testFiles.size) add('colocated-tests', ['node', '--test', ...[...testFiles].sort()]);
   if (tsxTestFiles.size) add('colocated-tests-tsx', ['npx', 'tsx', '--test', ...[...tsxTestFiles].sort()]);
@@ -343,6 +349,18 @@ function prepareCheckWorkdir(workdir, repoRoot) {
   return linked;
 }
 
+/**
+ * The tsx unit-test manifest under `cwd` as a Set of repo-relative paths
+ * (empty when the file is missing). test.yml and land-gauntlet.sh run every
+ * file it lists with `npx tsx --test`; decideChecks follows the same split.
+ */
+function readTsxManifest(cwd) {
+  let text;
+  try { text = fs.readFileSync(path.join(cwd, 'tests/unit-test-manifest-tsx.txt'), 'utf8'); }
+  catch { return new Set(); }
+  return new Set(text.split('\n').map(l => l.trim()).filter(l => l && !l.startsWith('#')));
+}
+
 // ── The runner ──────────────────────────────────────────────────────────────
 
 /**
@@ -357,6 +375,7 @@ function prepareCheckWorkdir(workdir, repoRoot) {
  * @param {number} [o.tier]
  * @param {boolean} [o.buildCheck]
  * @param {(relPath:string)=>boolean} [o.existsFn]
+ * @param {Set<string>} [o.tsxManifest] - defaults to readTsxManifest(cwd)
  * @param {string|null} [o.prepareFrom] - repo root to fill node_modules/data from
  * @returns {{name:string, pass:boolean, detail?:string}[]}
  */
@@ -368,7 +387,8 @@ function runSafeChecks(o) {
   const existsFn = o.existsFn || (f => fs.existsSync(path.join(cwd, f)));
   const results = [];
 
-  const checks = decideChecks(changedFiles, existsFn, { tier, buildCheck });
+  const tsxManifest = o.tsxManifest || readTsxManifest(cwd);
+  const checks = decideChecks(changedFiles, existsFn, { tier, buildCheck, tsxManifest });
   if (checkableDone) {
     const cardArgv = cardCheckArgv(checkableDone, isSafeCheckCommand);
     if (cardArgv) checks.push({ name: `card-check (${checkableDone})`, argv: cardArgv });
@@ -429,6 +449,7 @@ module.exports = {
   checksEnv,
   tierOf,
   decideChecks,
+  readTsxManifest,
   cardCheckArgv,
   tokenizeCheckCommand,
   isUiDiff,
