@@ -35,12 +35,14 @@ function runHook(sessionId, state) {
     // linear-brain.js prints ISSUE-UPDATED on stderr (scripts/linear-brain.js).
     tool_response: { stdout: '{}', stderr: `ISSUE-UPDATED: BRO-9999 — state=${state} — commented` },
   });
-  const r = spawnSync('bash', [HOOK], { input, encoding: 'utf8' });
-  assert.equal(r.status, 0, r.stderr);
-  const wrote = existsSync(sentinel);
-  const body = wrote ? readFileSync(sentinel, 'utf8').trim() : null;
-  rmSync(sentinel, { force: true });
-  return { wrote, body };
+  try {
+    const r = spawnSync('bash', [HOOK], { input, encoding: 'utf8' });
+    assert.equal(r.status, 0, r.stderr);
+    const wrote = existsSync(sentinel);
+    return { wrote, body: wrote ? readFileSync(sentinel, 'utf8').trim() : null };
+  } finally {
+    rmSync(sentinel, { force: true });
+  }
 }
 
 for (const state of [...TERMINAL_NAMES, 'In Progress']) {
