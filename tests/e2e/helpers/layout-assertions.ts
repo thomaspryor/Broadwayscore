@@ -217,3 +217,54 @@ export async function assertNoHorizontalOverflow(page: Page): Promise<void> {
     `Horizontal overflow: scrollWidth ${scrollWidth} > viewport ${viewport.width}`
   ).toBeLessThanOrEqual(viewport.width);
 }
+
+/**
+ * Assert every text run inside each matched box stays within that box's
+ * padding edge. Measures the rendered text (Range client rects), not the
+ * element boxes: a block <p> keeps its own box inside the card while a long
+ * unbreakable word paints past it, which is how "Recommended" spilled out of
+ * the redesigned hero's phone score cards (BRO-4525) with no layout or
+ * horizontal-overflow assertion noticing.
+ *
+ * Horizontal only, measured against each box's own padding edge. Text a box
+ * is meant to clip (truncate, overflow:hidden descendants, sr-only spans)
+ * would be reported, so point it at boxes whose text should all be visible.
+ * Text under visibility:hidden is skipped. Wait for webfonts first, since a
+ * fallback font of a different width gives a different answer.
+ */
+export async function assertTextInsideBoxes(boxes: Locator, tolerance = 1): Promise<void> {
+  const count = await boxes.count();
+  expect(count, 'assertTextInsideBoxes matched no boxes; the selector drifted').toBeGreaterThan(0);
+  const failures: string[] = [];
+  let checked = 0;
+  for (let i = 0; i < count; i++) {
+    const box = boxes.nth(i);
+    if (!(await box.isVisible())) continue;
+    checked++;
+    failures.push(
+      ...(await box.evaluate((el, tol) => {
+        const r = el.getBoundingClientRect();
+        const cs = getComputedStyle(el);
+        const left = r.left + parseFloat(cs.paddingLeft);
+        const right = r.right - parseFloat(cs.paddingRight);
+        const out: string[] = [];
+        const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT);
+        let node: Node | null;
+        while ((node = walker.nextNode())) {
+          const text = node.textContent?.trim();
+          if (!text) continue;
+          if (node.parentElement && getComputedStyle(node.parentElement).visibility === 'hidden') continue;
+          const range = document.createRange();
+          range.selectNodeContents(node);
+          for (const rect of Array.from(range.getClientRects())) {
+            if (rect.right > right + tol) out.push(`"${text}" runs ${Math.round(rect.right - right)}px past the right edge`);
+            if (rect.left < left - tol) out.push(`"${text}" runs ${Math.round(left - rect.left)}px past the left edge`);
+          }
+        }
+        return out;
+      }, tolerance))
+    );
+  }
+  expect(checked, 'assertTextInsideBoxes found no visible boxes to check').toBeGreaterThan(0);
+  expect(failures, 'Text painted outside its box').toEqual([]);
+}

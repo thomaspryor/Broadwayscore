@@ -194,6 +194,15 @@ function Inner({
   const isClosed = show.status === 'closed';
   const isPreviews = show.status === 'previews' || show.status === 'upcoming';
 
+  // Mobile score cards. Two side by side leave ~50px for the text next to the
+  // badge on a phone, so "Recommended" ran past the card border (BRO-4525).
+  // Below sm the pair stacks badge over text; one card or sm+ stays a row.
+  const dualScoreCards = !!(hasAudience && audienceGrade);
+  const scoreCardLayout = dualScoreCards
+    ? 'flex-col items-center text-center gap-2 sm:flex-row sm:text-left sm:gap-3'
+    : 'items-center gap-3';
+  const scoreCardTextClass = dualScoreCards ? 'min-w-0 w-full sm:w-auto sm:flex-1' : 'min-w-0 flex-1';
+
   // ─── Effects ───────────────────────────────────────────────────────────
 
   // Load on auth
@@ -510,10 +519,10 @@ function Inner({
       {!hasEnoughCriticReviews ? (
         <AwaitingCard show={show} reviewCount={reviewCount} />
       ) : (
-        <div className={`lg:hidden grid gap-2.5 ${hasAudience && audienceGrade ? 'grid-cols-2' : 'grid-cols-1'}`}>
-          <a href="#critic-reviews" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
+        <div className={`lg:hidden grid gap-2.5 ${dualScoreCards ? 'grid-cols-2' : 'grid-cols-1'}`}>
+          <a href="#critic-reviews" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
             <ScoreBadge score={score} reviewCount={reviewCount} category={show.category} size="lg" showCrown />
-            <div className="min-w-0 flex-1">
+            <div className={scoreCardTextClass}>
               {tier && (
                 <p className="text-xs sm:text-sm font-bold leading-tight break-normal" style={{ color: tier.color }}>
                   {tier.label}
@@ -524,15 +533,15 @@ function Inner({
               </p>
             </div>
           </a>
-          {hasAudience && audienceGrade && (
-            <a href="#audience" className="card p-3 sm:p-4 flex items-center gap-3 hover:bg-surface-overlay transition-colors">
+          {dualScoreCards && (
+            <a href="#audience" className={`card p-3 sm:p-4 flex ${scoreCardLayout} hover:bg-surface-overlay transition-colors`}>
               <div
                 className="w-16 h-16 sm:w-20 sm:h-20 rounded-xl flex items-center justify-center flex-shrink-0 text-3xl font-extrabold"
                 style={{ background: audienceGrade.color, color: audienceGrade.textColor }}
               >
                 {audienceGrade.grade}
               </div>
-              <div className="min-w-0 flex-1">
+              <div className={scoreCardTextClass}>
                 <p className="text-xs sm:text-sm font-bold leading-tight break-normal" style={{ color: audienceGrade.color }}>
                   {audienceGrade.label}
                 </p>
