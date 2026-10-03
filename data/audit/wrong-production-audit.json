@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-03T09:39:42.590Z",
+  "timestamp": "2026-10-03T11:24:45.734Z",
   "stats": {
-    "totalReviews": 45911,
-    "alreadyFlagged": 18726,
-    "dateGuardCatches": 263,
+    "totalReviews": 46030,
+    "alreadyFlagged": 18748,
+    "dateGuardCatches": 262,
     "directorMismatch": 1202,
     "tvFilmSignals": 1336,
     "londonSignals": 1261,
     "offBroadwaySignals": 508,
-    "yearMismatch": 105,
-    "noPublishDate": 4104
+    "yearMismatch": 104,
+    "noPublishDate": 4218
   },
   "findings": [
     {
@@ -231,6 +231,20 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 1085d before show (2023-11-23 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-delicate-balance-1996",
+      "file": "timeout--unknown.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.timeout.com/newyork/blog/how-wrong-were-the-critics-when-a-delicate-balance-opened-on-broadway",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"pam mackinnon\" from a-delicate-balance-2014"
         }
       ]
     },
@@ -6976,20 +6990,6 @@
       ]
     },
     {
-      "showId": "cyrano-de-bergerac-2012",
-      "file": "usatoday--elysa-gardner.json",
-      "score": 75,
-      "publishDate": "October 26, 2012",
-      "url": "https://www.usatoday.com/story/life/theater/2012/10/26/cyrano-de-bergerac-broadway-review/1659353/",
-      "findings": [
-        {
-          "type": "YEAR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions year 2026 (2x) more than 2012 (0x). 2026 matches production: cyrano-de-bergerac-west-end-2026"
-        }
-      ]
-    },
-    {
       "showId": "cyrano-de-bergerac-west-end-2026",
       "file": "artsdesk--rachel-halliburton.json",
       "score": 81,
@@ -11428,20 +11428,6 @@
           "type": "DATE_GUARD",
           "severity": "HIGH",
           "detail": "Published 3525d before show (2017-02-26 vs 2026-10-22)"
-        }
-      ]
-    },
-    {
-      "showId": "glengarry-glen-ross-1984",
-      "file": "theatermania--unknown.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.theatermania.com/news/glengarry-glen-ross-with-al-pacino-possibly-aiming-for-broadway_58187/",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"daniel sullivan\" from glengarry-glen-ross-2012"
         }
       ]
     },
@@ -35385,7 +35371,7 @@
     },
     {
       "showId": "tru-off-west-end-2026",
-      "file": "south-london--unknown.json",
+      "file": "south-london--michael-holland.json",
       "score": 77,
       "publishDate": "2026-09-28",
       "url": "https://southlondon.co.uk/area/southwark/review-tru-at-menier-chocolate-factory/",
@@ -35404,7 +35390,7 @@
     },
     {
       "showId": "tru-off-west-end-2026",
-      "file": "stagedtheatre--unknown.json",
+      "file": "stagedtheatre--karen-jemison.json",
       "score": 63,
       "publishDate": "2026-09-27",
       "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/tru-menier-chocolate-factory",
@@ -45706,7 +45692,7 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
-      "file": "radio-times--unknown.json",
+      "file": "radio-times--olivia-garrett.json",
       "score": 89,
       "publishDate": null,
       "url": "https://www.radiotimes.com/going-out/going-out-reviews/hay-fever-review/",
@@ -46677,20 +46663,6 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
-        }
-      ]
-    },
-    {
-      "showId": "illinoise-2024",
-      "file": "nyt-theater--jonathan-mandell.json",
-      "score": 87,
-      "publishDate": "March 7th, 2024",
-      "url": "https://newyorktheater.me/2024/03/07/illinoise-review/",
-      "findings": [
-        {
-          "type": "DATE_GUARD",
-          "severity": "MEDIUM",
-          "detail": "Published 48d before show (March 7th, 2024 vs 2024-04-24)"
         }
       ]
     },
@@ -59188,7 +59160,7 @@
     },
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "file": "guardian--unknown.json",
+      "file": "guardian--arifa-akbar.json",
       "score": 39,
       "publishDate": null,
       "url": "https://www.theguardian.com/stage/2026/sep/17/thelma-and-louise-review-young-vic-london-musical",
@@ -59285,7 +59257,7 @@
     },
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "file": "stagedtheatre--unknown.json",
+      "file": "stagedtheatre--karen-jemison.json",
       "score": 79,
       "publishDate": "2026-09-17",
       "url": "https://stagedtheatre.co.uk/blogs/theatre-reviews/thelma-and-louise-the-young-vic",
@@ -59327,7 +59299,7 @@
     },
     {
       "showId": "thelma-and-louise-a-new-musical-off-west-end-2026",
-      "file": "theatreandtonic--unknown.json",
+      "file": "theatreandtonic--penny-walshe.json",
       "score": 85,
       "publishDate": "2026-09-17",
       "url": "https://theatreandtonic.co.uk/blog/thelma-and-louise-at-the-young-vic-review",

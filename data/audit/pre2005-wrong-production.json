@@ -1,12 +1,12 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-03T09:35:34.545Z",
+    "generatedAt": "2026-10-03T11:19:37.630Z",
     "description": "Pre-2005 wrong-production audit results",
-    "totalFlagged": 96,
+    "totalFlagged": 95,
     "highConfidence": 8,
-    "mediumConfidence": 88,
+    "mediumConfidence": 87,
     "lowConfidence": 0,
-    "reassignable": 41
+    "reassignable": 40
   },
   "results": [
     {
@@ -1126,6 +1126,21 @@
       "textSnippet": "The fabulously clever Stephen Sondheim-James Lapine Into the Woods, first seen in 1986, is so damn clever that it raises a question answered farther down in this enthusiastically positive review. The "
     },
     {
+      "showId": "m-butterfly-1988",
+      "showTitle": "M. Butterfly",
+      "showYear": 1988,
+      "file": "amny--matt-windman.json",
+      "outlet": "amNewYork",
+      "criticName": "Matt Windman",
+      "publishDate": null,
+      "confidence": "medium",
+      "suggestedShowId": null,
+      "signals": [
+        "modern references: hamilton"
+      ],
+      "textSnippet": " Hwang's 1988 Tony-winning play is a critical-minded drama dissecting race relations, gender roles and international affairs - and also a gripping thriller full of sex, spying and disguises. Its serio"
+    },
+    {
       "showId": "the-mystery-of-edwin-drood-1985",
       "showTitle": "The Mystery of Edwin Drood",
       "showYear": 1985,
@@ -1187,21 +1202,6 @@
         "modern references: hamilton"
       ],
       "textSnippet": "ASTAGE representation of Dracula is a challenge not so much to modern performers as to the modern audience. It comes to us with a stake through its heart, beyond real revival although capable of usefu"
-    },
-    {
-      "showId": "home-1970",
-      "showTitle": "Home",
-      "showYear": 1970,
-      "file": "nbcny--robert-kahn.json",
-      "outlet": "NBC New York",
-      "criticName": "Robert Kahn",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": null,
-      "signals": [
-        "modern references: twitter"
-      ],
-      "textSnippet": "\"Fun Home\" is a delicate portrait of family dysfunction that has only gotten richer in the 18 months since it premiered at The Public Theater.\n\nMany members of the Off-Broadway cast return for the Cir"
     },
     {
       "showId": "democracy-2004",
@@ -1418,25 +1418,6 @@
         "year 1972 in text matches revival jesus-christ-superstar-1971"
       ],
       "textSnippet": "Andrew Lloyd Webber and Tim Rice’s “Jesus Christ Superstar” is remembered with deep affection by a wide cross-section of Americans of a certain age, even many who’ve never been avid theatergoers. Fans"
-    },
-    {
-      "showId": "glengarry-glen-ross-1984",
-      "showTitle": "Glengarry Glen Ross",
-      "showYear": 1984,
-      "file": "theatermania--unknown.json",
-      "outlet": "TheaterMania",
-      "criticName": "Unknown",
-      "publishDate": null,
-      "confidence": "medium",
-      "suggestedShowId": "glengarry-glen-ross-2012",
-      "signals": [
-        "revival text signals: revived, new production",
-        "year 2012 in text matches revival glengarry-glen-ross-2012",
-        "year 2013 in text matches revival glengarry-glen-ross-2012",
-        "year 2005 in text matches revival glengarry-glen-ross-2005",
-        "no publishDate + revival signals + revivals exist"
-      ],
-      "textSnippet": "A new production of David Mamet’s Pulitzer Prize-winning drama, Glengarry Glen Ross, starring Oscar and Tony Award winner Al Pacino, is aiming for a Broadway run during the 2012-2013 season, according"
     },
     {
       "showId": "sunday-in-the-park-with-george-1984",
