@@ -233,6 +233,11 @@ jobs:
     strategy:
       matrix: ${{ fromJson(needs.prepare.outputs.matrix) }}
       fail-fast: false  # Don't cancel other batches if one fails
+    env:
+      # BRO-4146: serp-cache.js writes a per-process hit/miss report here; it rides
+      # the shard artifact and merge-serp-cache prints it (shard logs are too long
+      # to read the per-query cache lines).
+      SERP_CACHE_REPORT_DIR: /tmp/serp-shard-out
     steps:
       - name: Checkout
         uses: actions/checkout@v5
@@ -433,15 +438,15 @@ jobs:
       - name: Upload SERP cache shard
         if: always()
         run: |
-          [ -d /tmp/bd-serp-cache ] || { echo "No SERP cache dir"; exit 0; }
           mkdir -p /tmp/serp-shard-out
+          [ -d /tmp/bd-serp-cache ] || { echo "No SERP cache dir"; exit 0; }
           tar -C /tmp -cf /tmp/serp-shard-out/serp-cache.tar bd-serp-cache
       - name: Upload SERP cache shard artifact
         if: always()
         uses: actions/upload-artifact@v5
         with:
           name: serp-cache-${{ github.run_id }}-${{ github.run_attempt }}-${{ matrix.batch_id }}
-          path: /tmp/serp-shard-out/serp-cache.tar
+          path: /tmp/serp-shard-out/
           retention-days: 1
           if-no-files-found: ignore
           overwrite: true
@@ -488,7 +493,10 @@ jobs:
           mkdir -p /tmp/bd-serp-cache
           shopt -s nullglob
           n=0
-          for t in /tmp/serp-shards/*/serp-cache.tar; do
+          # find, not a */ glob: download-artifact puts a lone matching artifact
+          # straight into the path with no per-artifact subdir ("Merged 0" on
+          # 2026-10-02 with one shard).
+          for t in $(find /tmp/serp-shards -name serp-cache.tar 2>/dev/null); do
             d=$(mktemp -d)
             tar -C "$d" -xf "$t"
             if [ -d "$d/bd-serp-cache" ]; then
@@ -500,6 +508,9 @@ jobs:
           expired=$(find /tmp/bd-serp-cache -type f -mmin +1440 | wc -l)
           find /tmp/bd-serp-cache -type f -mmin +1440 -delete
           echo "Merged $n shard cache(s); dropped $expired expired; $(find /tmp/bd-serp-cache -type f | wc -l) entries kept"
+          for r in $(find /tmp/serp-shards -name 'serp-report-*.json' 2>/dev/null); do
+            echo "== $(basename "$r")"; head -c 6000 "$r"; echo
+          done
       # hygiene-cache-runid-ok: see the restore step above; same key, same reason.
       - name: Save merged SERP cache
         uses: actions/cache/save@v5
