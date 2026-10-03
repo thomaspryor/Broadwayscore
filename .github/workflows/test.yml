@@ -1804,6 +1804,9 @@ on:
       # to scoring-delta.js — same root-level scripts/*.test.mjs registration
       # requirement as the entry above.
       - 'scripts/scoring-delta-rebuild-loop-touch.test.mjs'
+      # BRO-2833: registry-drift guard (no green exit while a scoring data input differs).
+      - 'scripts/scoring-delta-data-inputs.test.mjs'
+      - 'scripts/lib/scoring-delta-data-inputs.js'
       - 'scripts/test-opening-night-fixes.js'
       - 'scripts/audit-slug-match-routing.js'
       - 'scripts/apply-slug-misroute-whitelist.js'

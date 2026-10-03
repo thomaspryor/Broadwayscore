@@ -75,6 +75,7 @@ const { isLongRunningProduction } = require('./lib/long-runner-registry');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const dataInputs = require('./lib/scoring-delta-data-inputs');
 
 const USAGE = `scoring-delta.js — mandatory local verification for scoring/exclusion logic changes.
 
@@ -1351,9 +1352,26 @@ function main() {
   const changedReviewFiles = detectDataFlagChanges();
   const dataFlagDiff = changedReviewFiles.size > 0;
 
+  // BRO-2833: data inputs the git-name selection above cannot see (registry
+  // edits). Drift here must never fall into the green "nothing to check" exit.
+  let dataInputReport;
+  try {
+    dataInputReport = dataInputs.inspectDataInputs({ repoRoot: REPO_ROOT, baseRef: BASE_REF });
+  } catch (e) {
+    // Fail closed: an inspection error is "cannot observe", never "no drift".
+    dataInputReport = { inputs: [{ name: `data inputs (inspector error: ${e.message})`, status: 'unobservable', significant: false }], significant: false, unobservable: [`data inputs (inspector error: ${e.message})`] };
+  }
+  for (const line of dataInputs.formatDataInputReport(dataInputReport)) log(line);
+  const dataInputDrift = dataInputReport.significant;
+
   if (!inclusionDiff && !scoreValueDiff && !dataFlagDiff) {
-    log('[scoring-delta] ✅ No changes to inclusion, score-value, or review-texts flag files vs ' + BASE_REF + ' — nothing to check.');
-    if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'no-diff' }));
+    if (dataInputDrift) {
+      log('[scoring-delta] ⚠️  No watched code/flag diff, BUT a scoring data input changed (above) — not a clean result. Exiting 2.');
+      if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'data-input-drift', cannotAutoVerify: true, dataInputs: dataInputReport.inputs }));
+      process.exit(2);
+    }
+    log('[scoring-delta] ✅ No changes to inclusion, score-value, or review-texts flag files vs ' + BASE_REF + ' — nothing to check (' + dataInputs.describeCoverage(dataInputReport) + ').');
+    if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'no-diff', unobservableInputs: dataInputReport.unobservable }));
     process.exit(0);
   }
 
@@ -1578,7 +1596,12 @@ function main() {
       }
       process.exit(2);
     }
-    log('[scoring-delta] ✅ Nothing meaningful to replay — decisions identical.');
+    if (dataInputDrift) {
+      log('[scoring-delta] ⚠️  Replay found nothing, but a scoring data input changed (above) — not a clean result. Exiting 2.');
+      if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'data-input-drift', cannotAutoVerify: true, dataInputs: dataInputReport.inputs }));
+      process.exit(2);
+    }
+    log('[scoring-delta] ✅ Nothing meaningful to replay — decisions identical (' + dataInputs.describeCoverage(dataInputReport) + ').');
     if (OUT_JSON) console.log(JSON.stringify({ flips: 0, t1Flips: 0, shows: 0, reason: 'decisions-identical' }));
     process.exit(0);
   }
@@ -1895,7 +1918,7 @@ function main() {
     }
   }
 
-  process.exit((cannotAutoVerify || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD) ? 2 : 0);
+  process.exit((cannotAutoVerify || dataInputDrift || totalFlips > TOTAL_FLIP_THRESHOLD || t1Flips > T1_FLIP_THRESHOLD) ? 2 : 0);
 }
 
 module.exports = { decideInclusion, FLAG_FIELDS, findLogExclusionSites, parseUnifiedHunks, computeTouchedSites, detectRebuildLoopTouch };
