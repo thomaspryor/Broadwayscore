@@ -878,5 +878,41 @@
       }
     ],
     "queuedAt": "2026-10-03T01:13:13.770Z"
+  },
+  {
+    "conditionKey": "opening-night-cv-wrongproduction-unhandled-affluenza-off-west-end-2026",
+    "title": "Unhandled CV.wrongProduction on Affluenza",
+    "description": "monstagigz/Unknown (monstagigz--unknown.json) SHIPPED with CV.wrongProduction=true (low confidence) and no clear flag; reasoning: [OVERRIDE: review within 6d of opening, likely correct production] This is a genuine theater review with critical assess — https://monstagigz.com/2026/09/29/theatre-review-affluenza-starring-noah-schnapp-at-riverside-studios-hammersmith/",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T02:03:31.716Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-affluenza-off-west-end-2026",
+    "title": "Placeholder synopsis on Affluenza",
+    "description": "synopsis for affluenza-off-west-end-2026 is too thin (48 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T02:03:31.996Z"
+  },
+  {
+    "conditionKey": "opening-night-placeholder-synopsis-soon-off-broadway-2026",
+    "title": "Placeholder synopsis on Soon",
+    "description": "synopsis for soon-off-broadway-2026 is too thin (109 chars, min 120) — write a specific 2-3 sentence synopsis from the show's press materials",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-03T02:03:33.499Z"
   }
 ]
