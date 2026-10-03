@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-03T07:35:03.007Z",
+  "timestamp": "2026-10-03T08:03:57.226Z",
   "stats": {
-    "totalReviews": 45902,
-    "alreadyFlagged": 18724,
+    "totalReviews": 45903,
+    "alreadyFlagged": 18725,
     "dateGuardCatches": 263,
     "directorMismatch": 1202,
     "tvFilmSignals": 1336,
-    "londonSignals": 1260,
+    "londonSignals": 1261,
     "offBroadwaySignals": 508,
     "yearMismatch": 105,
-    "noPublishDate": 4106
+    "noPublishDate": 4105
   },
   "findings": [
     {
@@ -10370,6 +10370,7 @@
     {
       "showId": "flamenc-oh-off-west-end-2026",
       "file": "a-youngish-perspective--unknown.json",
+      "score": 82,
       "publishDate": "2026-10-02",
       "url": "https://ayoungishperspective.co.uk/2026/10/02/review-flamenc-oh/",
       "findings": [
@@ -45695,6 +45696,20 @@
       "score": 85,
       "publishDate": "2026-10-02",
       "url": "https://loureviews.blog/2026/10/02/play-review-hay-fever-at-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
+      "file": "radio-times--unknown.json",
+      "score": 89,
+      "publishDate": "2026-10-02",
+      "url": "https://www.radiotimes.com/going-out/going-out-reviews/hay-fever-review/",
       "findings": [
         {
           "type": "LONDON_SIGNAL",
