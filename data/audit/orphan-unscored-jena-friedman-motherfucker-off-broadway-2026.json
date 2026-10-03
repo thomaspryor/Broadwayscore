@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "jena-friedman-motherfucker-off-broadway-2026",
   "openingDate": "2026-10-01",
-  "detectedAt": "2026-10-03T00:52:48.107Z",
+  "detectedAt": "2026-10-03T01:14:01.442Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "axs--unknown.json",
-      "outletId": "axs",
-      "criticName": "Unknown",
-      "url": "https://www.axs.com/events/1630006/jena-friedman-motherfucker-tickets",
-      "fullTextLen": 1120,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
     {
       "file": "ticketsmarter--unknown.json",
       "outletId": "ticketsmarter",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
