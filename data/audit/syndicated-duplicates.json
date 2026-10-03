@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-03T20:34:43.192Z",
+  "generatedAt": "2026-10-03T21:00:34.943Z",
   "threshold": 50,
   "summary": {
-    "totalSyndicatedPairs": 0,
-    "newlyFlagged": 0,
+    "totalSyndicatedPairs": 1,
+    "newlyFlagged": 1,
     "alreadyFlagged": 0,
-    "criticsAffected": 0,
-    "showsAffected": 0,
-    "avgSimilarity": 0,
-    "avgScoreDiff": 0
+    "criticsAffected": 1,
+    "showsAffected": 1,
+    "avgSimilarity": 87,
+    "avgScoreDiff": 1
   },
   "syndicationPairs": [
     {
@@ -96,7 +96,20 @@
       "count": 0
     }
   ],
-  "flagged": [],
+  "flagged": [
+    {
+      "critic": "Simon Jenner",
+      "showId": "what-the-animals-say-off-west-end-2026",
+      "primaryOutlet": "fringereview",
+      "secondaryOutlet": "viewfromthegods",
+      "primaryFile": "fringereview--simon-jenner.json",
+      "secondaryFile": "viewfromthegods--simon-jenner.json",
+      "similarity": 87,
+      "primaryScore": 88,
+      "secondaryScore": 89,
+      "scoreDiff": 1
+    }
+  ],
   "authorMismatches": [
     {
       "showId": "birthday-candles-2022",
