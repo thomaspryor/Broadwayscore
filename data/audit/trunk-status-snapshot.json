@@ -1,105 +1,22 @@
 {
-  "generatedAt": "2026-10-02T13:31:19.104Z",
+  "generatedAt": "2026-10-03T12:34:26.970Z",
   "workflow": "test.yml",
   "branch": "main",
-  "latestRunHeadSha": "3bd3d1003bc98d0f5dcabb3545fc7b2a6f14601e",
-  "state": "RED",
-  "consecutiveFailures": 24,
-  "consecutiveSuccesses": 0,
-  "greenSince": null,
-  "greenForHours": null,
+  "latestRunHeadSha": "0e00ce91d4efef91672683aed0544f566e0f0f10",
+  "state": "GREEN",
+  "consecutiveFailures": 0,
+  "consecutiveSuccesses": 57,
+  "greenSince": "2026-10-01T16:43:37Z",
+  "greenForHours": 43.84721388888889,
   "greenDurationIsFloor": false,
-  "redSince": "2026-09-08T22:57:49Z",
-  "redForHours": 566.5583622222222,
+  "redSince": null,
+  "redForHours": null,
   "redDurationIsFloor": false,
-  "lastSuccessAt": "2026-09-08T22:40:07Z",
-  "latestFailedRunId": "34768131977",
-  "latestFailedRunUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/34768131977",
-  "decidedRuns": 100,
-  "failingJobs": [
-    {
-      "name": "Data Validation",
-      "steps": [
-        "Audit flag-vs-CV contradictions",
-        "Run self-contradictory-clear drain acceptance test (needs review-texts)",
-        "Audit critic-outlet affinities",
-        "Audit outlet-registry gaps"
-      ]
-    },
-    {
-      "name": "Unit Tests",
-      "steps": [
-        "Run scripts/lib tests (visual-qa transcript-scan etc.)"
-      ]
-    },
-    {
-      "name": "Test Summary",
-      "steps": [
-        "Check results"
-      ]
-    }
-  ],
-  "failingPaths": [
-    {
-      "path": "scripts/audit-self-contradictory-clears.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/audit-self-contradictory-clear-drained.test.mjs",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 1 - no zero-score-impact self-contradictory-clear remains undrained (BRO-185)"
-    },
-    {
-      "path": "scripts/audit-contradicted-flag-basis.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/audit-verifier-wiring.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/audit-broadway-category-predicate.js",
-      "job": "Data Validation",
-      "step": "UNKNOWN STEP",
-      "evidence": "##[error]Process completed with exit code 1."
-    },
-    {
-      "path": "scripts/lib/aggregator-outlet-refinement.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 116 - the four laundering domains still resolve to aggregator outlets (guard is live)"
-    },
-    {
-      "path": "scripts/lib/audit-ledger-merge-attrs.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 257 - REGRESSION: every real tracked data/audit/*.jsonl ledger is either merge=union or a documented exemption"
-    },
-    {
-      "path": "scripts/lib/doubled-market-ids.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 2621 - the live corpus has zero unallowlisted doubled-market ids"
-    },
-    {
-      "path": "scripts/lib/dummy-helper.test.mjs",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "not ok 1 - foo returns the contracted value"
-    },
-    {
-      "path": "scripts/merge-worktree-to-main.sh",
-      "job": "Unit Tests",
-      "step": "UNKNOWN STEP",
-      "evidence": "❌ post-merge test floor failed — scroll up to the 'post-merge test floor: FAILED (...)' line for the gate's own reason, which distinguishes a NEW-since-origin/main scripts/lib/ colocated test failure "
-    }
-  ],
-  "topFailingJob": "Unit Tests"
+  "lastSuccessAt": "2026-10-03T11:22:31Z",
+  "latestFailedRunId": null,
+  "latestFailedRunUrl": null,
+  "decidedRuns": 97,
+  "failingJobs": [],
+  "failingPaths": [],
+  "topFailingJob": null
 }
