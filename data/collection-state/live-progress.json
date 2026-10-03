@@ -1,19 +1,66 @@
 {
-  "updatedAt": "2026-10-03T08:50:27.886Z",
-  "processed": 8,
-  "failed": 7,
-  "successRate": "53.3%",
+  "updatedAt": "2026-10-03T10:37:09.716Z",
+  "processed": 67,
+  "failed": 28,
+  "successRate": "70.5%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 32,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
-    "scrapingbee": 0,
+    "scrapingdog": 12,
+    "scrapingbee": 6,
     "brightdata": 1,
     "archiveToday": 0,
-    "archive": 2
+    "archive": 14
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 6,
+  "recentActivity": [
+    {
+      "t": "2026-10-03T10:03:21.821Z",
+      "event": "bb-session",
+      "session": "a913d39d",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-03T10:03:22.714Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-03T10:19:58.205Z",
+      "event": "bb-session",
+      "session": "36a2e5bb",
+      "url": "https://www.wsj.com/articles/the-score-review-brian-cox-is-bach-1a10d858"
+    },
+    {
+      "t": "2026-10-03T10:19:59.103Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-03T10:31:16.720Z",
+      "event": "bb-session",
+      "session": "fd4f582e",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-03T10:31:36.754Z",
+      "event": "bb-session",
+      "session": "c1316f71",
+      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-03T10:34:46.987Z",
+      "event": "bb-session",
+      "session": "80552851",
+      "url": "http://www.curtainup.com/visitwtf14.html"
+    },
+    {
+      "t": "2026-10-03T10:35:07.298Z",
+      "event": "bb-session",
+      "session": "230ac18b",
+      "url": "http://www.curtainup.com/visitwtf14.html"
+    }
+  ]
 }
