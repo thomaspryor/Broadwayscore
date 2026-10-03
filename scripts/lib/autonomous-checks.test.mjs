@@ -15,12 +15,13 @@ const {
 
 const never = () => false;
 const always = () => true;
+const present = (...paths) => f => paths.includes(f);
 const names = list => list.map(c => c.name);
 
 // ── decideChecks: tier 1 (unchanged behavior) ───────────────────────────────
 
 test('tier 1: colocated tests + tsc only, never lint or build', () => {
-  const exists = f => f === 'scripts/lib/foo.test.mjs';
+  const exists = present('scripts/lib/foo.test.mjs', 'tests/unit/bar.test.mjs');
   const out = decideChecks(['scripts/lib/foo.js', 'tests/unit/bar.test.mjs', 'src/lib/x.ts'], exists);
   assert.deepEqual(names(out), ['colocated-tests', 'tsc']);
   assert.deepEqual(out[0].argv, ['node', '--test', 'scripts/lib/foo.test.mjs', 'tests/unit/bar.test.mjs']);
@@ -52,14 +53,14 @@ test('tier 3: buildCheck:false drops only the build', () => {
 });
 
 test('tier 3: a scripts/ diff yields colocated tests + node --check, no lint/build', () => {
-  const exists = f => f === 'scripts/lib/foo.test.mjs';
+  const exists = present('scripts/lib/foo.test.mjs', 'scripts/lib/foo.js', 'scripts/bare.js');
   const out = decideChecks(['scripts/lib/foo.js', 'scripts/bare.js'], exists, { tier: 3 });
   assert.deepEqual(names(out), ['colocated-tests', 'node --check scripts/bare.js', 'node --check scripts/lib/foo.js']);
   assert.deepEqual(out[1].argv, ['node', '--check', 'scripts/bare.js']);
 });
 
 test('tier 3: a test file is not double-run through node --check', () => {
-  const out = decideChecks(['scripts/lib/foo.test.mjs'], never, { tier: 3 });
+  const out = decideChecks(['scripts/lib/foo.test.mjs'], always, { tier: 3 });
   assert.deepEqual(names(out), ['colocated-tests']);
 });
 
@@ -126,7 +127,7 @@ test('a real colocated .test.ts fixture is auto-derived and actually passes unde
 // ERR_UNKNOWN_FILE_EXTENSION (Node 20). The manifest now picks the runner.
 test('a changed .test.mjs listed in the tsx manifest runs under tsx; an unlisted one under node', () => {
   const tsxManifest = new Set(['tests/unit/uses-ts.test.mjs']);
-  const out = decideChecks(['tests/unit/uses-ts.test.mjs', 'tests/unit/plain.test.mjs'], never, { tier: 3, tsxManifest });
+  const out = decideChecks(['tests/unit/uses-ts.test.mjs', 'tests/unit/plain.test.mjs'], always, { tier: 3, tsxManifest });
   const byName = Object.fromEntries(out.map(c => [c.name, c]));
   assert.deepEqual(byName['colocated-tests-tsx'].argv, ['npx', 'tsx', '--test', 'tests/unit/uses-ts.test.mjs']);
   assert.deepEqual(byName['colocated-tests'].argv, ['node', '--test', 'tests/unit/plain.test.mjs']);
@@ -178,10 +179,32 @@ test('runSafeChecks reads the tsx manifest from cwd and the test actually passes
   fs.rmSync(dir, { recursive: true, force: true });
 });
 
+// `git diff --name-only` lists the paths a branch deleted. A deleted test or
+// script must not become a check: node --test / node --check on a missing path
+// exits 1 and refuses a branch whose only change is removing a dead file
+// (0832d4845 deleted og-image-size-contract.test.mjs; bbd0c54cb deleted a
+// one-off sweep script).
+test('a deleted .test.mjs, .test.ts or tier-3 script yields no check on that file', () => {
+  const tsxManifest = new Set(['tests/unit/gone-tsx.test.mjs']);
+  const deleted = ['scripts/lib/gone.test.mjs', 'tests/unit/gone-tsx.test.mjs', 'scripts/gone-sweep.js'];
+  assert.deepEqual(decideChecks(deleted, never, { tier: 3, tsxManifest }), []);
+  assert.deepEqual(decideChecks(deleted, never, { tier: 1, tsxManifest }), []);
+  // A deleted .ts still earns the project-wide tsc (its importers can break),
+  // but never a test run of the missing file itself.
+  assert.deepEqual(names(decideChecks(['scripts/lib/gone.test.ts'], never, { tier: 3 })), ['tsc']);
+});
+
+test('a diff mixing a deleted test with a surviving one runs only the survivor', () => {
+  const out = decideChecks(['scripts/lib/gone.test.mjs', 'scripts/lib/kept.test.mjs', 'scripts/gone.js', 'scripts/kept.js'],
+    present('scripts/lib/kept.test.mjs', 'scripts/kept.js'), { tier: 3 });
+  assert.deepEqual(names(out), ['colocated-tests', 'node --check scripts/kept.js']);
+  assert.deepEqual(out[0].argv, ['node', '--test', 'scripts/lib/kept.test.mjs']);
+});
+
 test('tier 1 never gains the tier-3 checks for the same diff', () => {
   const files = ['src/components/Foo.tsx', 'scripts/bare.js'];
-  const t1 = names(decideChecks(files, never, { tier: 1 }));
-  const t3 = names(decideChecks(files, never, { tier: 3 }));
+  const t1 = names(decideChecks(files, present('scripts/bare.js'), { tier: 1 }));
+  const t3 = names(decideChecks(files, present('scripts/bare.js'), { tier: 3 }));
   assert.deepEqual(t1, ['tsc']);
   assert.ok(t3.includes('next build') && t3.includes('node --check scripts/bare.js'));
 });

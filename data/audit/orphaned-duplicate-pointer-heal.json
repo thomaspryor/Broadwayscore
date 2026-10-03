@@ -1,8 +1,15 @@
 {
-  "generated": "2026-10-03T01:11:37.483Z",
+  "generated": "2026-10-03T02:23:04.325Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 19,
+  "count": 20,
   "orphans": [
+    {
+      "showId": "a-little-night-music-2009",
+      "loserFile": "variety--unknown.json",
+      "targetFile": "variety--ben-brantley.json",
+      "reason": "orphaned-duplicate-heal: variety--ben-brantley.json was flagged invalid after variety--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
     {
       "showId": "all-my-sons-2019",
       "loserFile": "vulture--jesse-green.json",

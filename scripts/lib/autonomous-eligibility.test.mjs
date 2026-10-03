@@ -531,8 +531,10 @@ test('tier3: allow-implies-checkable invariant over a representative path set', 
     'tests/foo.test.mjs',
     'scripts/bsc-next.js', 'scripts/bsc-next.test.mjs',
   ];
-  const existsFn = () => false; // no colocated-test fallback — check the file's OWN extension coverage
   for (const p of REPRESENTATIVE_PATHS) {
+    // The edited file itself exists (decideChecks skips deleted paths), but
+    // no colocated test does — check the file's OWN extension coverage.
+    const existsFn = f => f === p;
     assert.equal(isCodePathAllowed(p), true, `expected ${p} to be allowed`);
     const checks = decideChecks([p], existsFn, { tier: 3 });
     assert.ok(checks.length > 0, `${p} is allowed but decideChecks(tier 3) produced no checks`);
@@ -540,8 +542,8 @@ test('tier3: allow-implies-checkable invariant over a representative path set', 
 });
 
 test('tier3: refused unverifiable scripts/ paths would ALSO produce no checks (confirms the gate is necessary)', () => {
-  const existsFn = () => false;
   for (const p of ['scripts/foo.py', 'scripts/lib/bar.sh', 'scripts/lib/config.json']) {
+    const existsFn = f => f === p;
     assert.equal(isCodePathAllowed(p), false, p);
     const checks = decideChecks([p], existsFn, { tier: 3 });
     assert.equal(checks.length, 0, `${p} unexpectedly produced a check — gate may be over-restrictive`);

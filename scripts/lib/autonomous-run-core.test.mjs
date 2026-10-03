@@ -105,7 +105,7 @@ test('content failures may escalate; infra and unknown never do', () => {
 // ── decideChecks ────────────────────────────────────────────────────────────
 
 test('colocated tests found via convention; changed tests run directly; ts triggers tsc', () => {
-  const exists = f => f === 'scripts/lib/foo.test.mjs';
+  const exists = f => f === 'scripts/lib/foo.test.mjs' || f === 'tests/unit/bar.test.mjs';
   const checks = decideChecks(['scripts/lib/foo.js', 'tests/unit/bar.test.mjs', 'src/lib/x.ts'], exists);
   const testCheck = checks.find(c => c.name === 'colocated-tests');
   assert.ok(testCheck);

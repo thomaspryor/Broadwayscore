@@ -322,7 +322,8 @@ const TIER3_EXCLUDED_FILES = new Set([
 // (#454). Gating the extension here means such a card is never planned at
 // all, so nothing is spent trying. src/ is unrestricted: any src/ change
 // (any extension) trips `next lint` + `next build` in decideChecks, so it's
-// checkable regardless of extension.
+// checkable regardless of extension. "Checkable" assumes the path survives
+// the diff: decideChecks skips a path the branch deleted.
 const SCRIPTS_CHECKABLE_EXT_RE = /\.(js|mjs|cjs|ts|tsx)$/;
 
 function isCodePathAllowed(file) {
