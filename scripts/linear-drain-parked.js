@@ -103,7 +103,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { selectDrainCandidates, isAutoFiledParked, isDrainEligible } = require('./lib/linear-drain-parked.js');
+const { selectDrainCandidates, isAutoFiledParked, isDrainEligible, isSessionParkedDrainable } = require('./lib/linear-drain-parked.js');
 const { checkPark, computeContentHash } = require('./lib/attempt-memory.js');
 const dispatchLedger = require('./lib/dispatch-ledger.js');
 const dispatchReconcile = require('./lib/dispatch-reconcile.js');
@@ -622,8 +622,11 @@ async function main(argv = process.argv.slice(2), deps = {}) {
       // candidates were refused before this fix).
       // Session-parked cards (BRO-4535) get only --allow-session-parked:
       // they were never filed by automation, so the autofix-filed and
-      // automation-parked waivers above do not apply to them.
-      const sessionParked = !isAutoFiledParked(issue);
+      // automation-parked waivers above do not apply to them. Chosen by the
+      // same predicate that made the card eligible: isAutoFiledParked matches
+      // the alert-router marker anywhere in the body, so a session card that
+      // merely quotes it would otherwise get the wrong waiver and be refused.
+      const sessionParked = isSessionParkedDrainable(issue);
       const dispatchOpts = sessionParked ? { allowSessionParked: true } : { allowAutofixFiled: true, allowAutomationParked: true };
       dispatchFn(`linear:${issue.identifier}`, log, dispatched.length * 45, null, dispatchOpts);
       budget--;
