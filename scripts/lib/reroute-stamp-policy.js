@@ -16,23 +16,28 @@
  *      guards, so stamping them is what made the wrong move permanent.
  */
 
-const { evaluateDatePlausibility } = require('./date-plausibility');
+const { earliestShowDate } = require('./date-guard');
 const { parseDate } = require('./date-utils');
 
+const DAYS_BEFORE_START_GRACE = 60; // matches Path B in migrate-reroute-backlog.js
 const DAYS_AFTER_CLOSING_GRACE = 180;
 
 /**
+ * Fails closed: a missing/guessed publishDate or a target with no start date
+ * is "no corroboration", not a pass. priorRuns/tourLegs are deliberately not
+ * honored: they would vouch for a different run of the same show.
  * @returns {{ ok: boolean, reason: string|null }}
  */
 function crossMarketDateGate(review, targetShow) {
   if (!review || !targetShow) return { ok: false, reason: 'no-review-or-target' };
   const pub = parseDate(review.publishDate);
   if (!pub) return { ok: false, reason: 'no-publish-date' };
+  if (review.dateSource === 'llm-scoring') return { ok: false, reason: 'publish-date-llm-guessed' };
 
-  // Strip the bypass/flag fields: the moved review is judged on its date alone.
-  const probe = { publishDate: review.publishDate, dateSource: review.dateSource };
-  const plaus = evaluateDatePlausibility({ review: probe, show: targetShow });
-  if (plaus.implausible) return { ok: false, reason: `publish-date-${plaus.daysBefore}d-before-target-window` };
+  const start = parseDate(earliestShowDate(targetShow));
+  if (!start) return { ok: false, reason: 'target-has-no-start-date' };
+  const daysBefore = Math.round((start.getTime() - pub.getTime()) / 86400000);
+  if (daysBefore > DAYS_BEFORE_START_GRACE) return { ok: false, reason: `publish-date-${daysBefore}d-before-target-window` };
 
   const closing = parseDate(targetShow.closingDate);
   if (closing) {
@@ -42,7 +47,8 @@ function crossMarketDateGate(review, targetShow) {
   return { ok: true, reason: null };
 }
 
-const BYPASS_FLAGS = ['allowEarlyDate', 'allowLateDate', 'wrongProductionOverride'];
+const BYPASS_FLAGS = ['allowEarlyDate', 'allowLateDate', 'wrongProductionOverride',
+  'wrongProductionOverrideReason', 'wrongProductionOverrideSetAt', 'wrongProductionOverrideSetBy'];
 
 /** Remove every date/wrongProduction bypass flag from a file about to be moved cross-market. */
 function stripBypassFlags(data) {
@@ -50,4 +56,4 @@ function stripBypassFlags(data) {
   return data;
 }
 
-module.exports = { crossMarketDateGate, stripBypassFlags, BYPASS_FLAGS, DAYS_AFTER_CLOSING_GRACE };
+module.exports = { crossMarketDateGate, stripBypassFlags, BYPASS_FLAGS };

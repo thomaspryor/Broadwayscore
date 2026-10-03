@@ -46,6 +46,14 @@ test('an existing allowEarlyDate on the review does not rescue an early date', (
   assert.equal(g.ok, false);
 });
 
+test('LLM-guessed publishDate is refused even when it looks in-window', () => {
+  assert.equal(crossMarketDateGate({ publishDate: '2026-05-12', dateSource: 'llm-scoring' }, AVFTB_2026).ok, false);
+});
+
+test('target with no start date is refused (no lower bound to check)', () => {
+  assert.equal(crossMarketDateGate({ publishDate: '2026-05-12' }, { id: 'x' }).ok, false);
+});
+
 test('stripBypassFlags removes every bypass flag, nothing else', () => {
   const d = { allowEarlyDate: true, allowLateDate: true, wrongProductionOverride: true, keep: 1 };
   stripBypassFlags(d);
