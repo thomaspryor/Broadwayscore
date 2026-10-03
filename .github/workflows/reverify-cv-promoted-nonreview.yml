@@ -83,3 +83,10 @@ jobs:
         if: always()
         run: |
           { echo "## CV-promoted isNonReview re-verify"; echo '```'; tail -40 /tmp/reverify.log 2>/dev/null; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
+      - name: Notify on failure
+        if: failure()
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Re-verify CV-promoted isNonReview Failed'
+          severity: 'warning'
