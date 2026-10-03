@@ -1,87 +1,21 @@
 {
-  "updatedAt": "2026-10-03T18:09:39.480Z",
-  "processed": 342,
-  "failed": 12,
-  "successRate": "96.6%",
+  "updatedAt": "2026-10-03T18:31:32.402Z",
+  "processed": 377,
+  "failed": 292,
+  "successRate": "56.4%",
   "tierBreakdown": {
-    "playwright": 166,
+    "playwright": 178,
     "amp": 4,
-    "browserbase": 3,
+    "browserbase": 6,
     "directCookies": 0,
-    "scrapingdog": 40,
-    "scrapingbee": 39,
-    "brightdata": 1,
+    "scrapingdog": 43,
+    "scrapingbee": 48,
+    "brightdata": 10,
     "archiveToday": 0,
-    "archive": 23
+    "archive": 33
   },
-  "browserbaseSessions": 1,
+  "browserbaseSessions": 30,
   "recentActivity": [
-    {
-      "t": "2026-10-03T17:00:42.728Z",
-      "event": "bb-session",
-      "session": "813aa2f0",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-10-03T17:01:01.040Z",
-      "event": "bb-session",
-      "session": "b1c00bec",
-      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
-    },
-    {
-      "t": "2026-10-03T17:04:03.205Z",
-      "event": "bb-session",
-      "session": "4b43a230",
-      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
-    },
-    {
-      "t": "2026-10-03T17:04:29.371Z",
-      "event": "bb-session",
-      "session": "86a673a4",
-      "url": "https://www.facebook.com/OfficialLondonTheatre/posts/-take-a-peek-at-the-product"
-    },
-    {
-      "t": "2026-10-03T17:19:10.384Z",
-      "event": "bb-session",
-      "session": "a69b2c2b",
-      "url": "https://www.radiotimes.com/tv/drama/tom-ellis-cia-heartbreaking-truth-exclusive-"
-    },
-    {
-      "t": "2026-10-03T17:34:25.469Z",
-      "event": "bb-session",
-      "session": "b2c610eb",
-      "url": "https://www.hollywoodreporter.com/lifestyle/arts/all-my-sons-theater-review-brya"
-    },
-    {
-      "t": "2026-10-03T17:35:28.664Z",
-      "event": "bb-session",
-      "session": "eda0b4a4",
-      "url": "https://www.dailymail.com/tvshowbiz/article-15314889/amp/Breaking-Dad-Bryan-Cran"
-    },
-    {
-      "t": "2026-10-03T17:35:38.001Z",
-      "event": "bb-session",
-      "session": "534a90c8",
-      "url": "https://www.dailymail.com/tvshowbiz/article-15314889/amp/Breaking-Dad-Bryan-Cran"
-    },
-    {
-      "t": "2026-10-03T17:53:53.716Z",
-      "event": "bb-session",
-      "session": "b907bb5f",
-      "url": "https://www.amny.com/entertainment/elf-the-musical-broadway-review-2024/"
-    },
-    {
-      "t": "2026-10-03T17:54:03.664Z",
-      "event": "bb-session",
-      "session": "894a14c1",
-      "url": "https://www.amny.com/entertainment/elf-the-musical-broadway-review-2024/"
-    },
-    {
-      "t": "2026-10-03T17:55:24.673Z",
-      "event": "bb-session",
-      "session": "f88f6061",
-      "url": "https://variety.com/2024/legit/reviews/romeo-juliet-broadway-review-kit-connor-r"
-    },
     {
       "t": "2026-10-03T17:55:25.070Z",
       "event": "bb-cookie-inject",
@@ -121,15 +55,78 @@
       "domain": "variety.com"
     },
     {
-      "t": "2026-10-03T18:08:22.645Z",
+      "t": "2026-10-03T17:59:19.338Z",
       "event": "bb-session",
-      "session": "21244201",
-      "url": "https://www.thestage.co.uk/review-round-ups/the-standard-of-living-by-james-grah"
+      "session": "d5d9cca0",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/14/left-on-tenth-review-jul"
     },
     {
-      "t": "2026-10-03T18:08:23.621Z",
+      "t": "2026-10-03T17:59:19.753Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-03T17:59:26.523Z",
+      "event": "bb-session",
+      "session": "acc59fe6",
+      "url": "https://www.washingtonpost.com/theater-dance/2024/11/14/left-on-tenth-review-jul"
+    },
+    {
+      "t": "2026-10-03T17:59:26.889Z",
+      "event": "bb-cookie-inject",
+      "domain": "washingtonpost.com"
+    },
+    {
+      "t": "2026-10-03T18:01:45.616Z",
+      "event": "bb-session",
+      "session": "4ab059b1",
+      "url": "https://www.wsj.com/articles/the-roommate-review-on-broadway-an-odd-couple-in-io"
+    },
+    {
+      "t": "2026-10-03T18:01:46.026Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-03T18:05:30.722Z",
+      "event": "bb-session",
+      "session": "024d175c",
+      "url": "https://www.thestage.co.uk/reviews/starlight-express-review-troubadour-wembley-p"
+    },
+    {
+      "t": "2026-10-03T18:05:31.021Z",
       "event": "bb-cookie-inject",
       "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-10-03T18:07:38.901Z",
+      "event": "bb-session",
+      "session": "5dbc3f48",
+      "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/"
+    },
+    {
+      "t": "2026-10-03T18:16:16.914Z",
+      "event": "bb-session",
+      "session": "2592b61d",
+      "url": "https://observer.com/2024/04/stereophonic-broadway-review/"
+    },
+    {
+      "t": "2026-10-03T18:16:24.754Z",
+      "event": "bb-session",
+      "session": "b76759a4",
+      "url": "https://observer.com/2024/04/stereophonic-broadway-review/"
+    },
+    {
+      "t": "2026-10-03T18:18:15.537Z",
+      "event": "bb-session",
+      "session": "284253be",
+      "url": "https://deadline.com/feature/broadway-show-reviews-spring-2024-1235866317/"
+    },
+    {
+      "t": "2026-10-03T18:18:26.850Z",
+      "event": "bb-session",
+      "session": "4ae24cd8",
+      "url": "http://www.hollywoodreporter.com/review/wiz-live-tv-review-845725"
     }
   ]
 }
