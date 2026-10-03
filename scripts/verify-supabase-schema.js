@@ -116,8 +116,10 @@ async function main() {
   // would pass the existence check while unapplied (UGC roundtrip page, Oct 2026).
   for (const { name, file } of drifted) {
     console.error(`::error::function body drift: ${name} in prod differs from the latest definition in ${file}`);
+    // Re-applies the whole file: check it is idempotent, or reconcile by hand
+    // if prod's body was hotfixed on purpose.
     console.error(
-      `::error::apply it: gh workflow run apply-migration.yml -f migration=supabase/migrations/${file} -f confirm=APPLY`
+      `::error::re-apply or reconcile: gh workflow run apply-migration.yml -f migration=supabase/migrations/${file} -f confirm=APPLY`
     );
   }
 
