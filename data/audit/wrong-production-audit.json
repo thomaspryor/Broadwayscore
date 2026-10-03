@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-03T15:06:19.815Z",
+  "timestamp": "2026-10-03T16:13:35.453Z",
   "stats": {
-    "totalReviews": 46040,
-    "alreadyFlagged": 18678,
-    "dateGuardCatches": 266,
+    "totalReviews": 46057,
+    "alreadyFlagged": 18684,
+    "dateGuardCatches": 268,
     "directorMismatch": 1205,
     "tvFilmSignals": 1333,
-    "londonSignals": 1262,
+    "londonSignals": 1263,
     "offBroadwaySignals": 506,
     "yearMismatch": 103,
-    "noPublishDate": 4286
+    "noPublishDate": 4283
   },
   "findings": [
     {
@@ -215,6 +215,17 @@
     {
       "showId": "a-christmas-carol-west-end-2026",
       "file": "thestage--holly-o.json",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 1813d before show (2021-11-25 vs 2026-11-12)"
+        }
+      ]
+    },
+    {
+      "showId": "a-christmas-carol-west-end-2026",
+      "file": "thestage--natasha-tripney.json",
       "findings": [
         {
           "type": "DATE_GUARD",
@@ -21537,7 +21548,7 @@
     {
       "showId": "my-sons-a-queer-but-what-can-you-do-west-end-2026",
       "file": "whatsonstage--charlotte-vickers.json",
-      "score": 82,
+      "score": 81,
       "publishDate": "February 2nd, 2023",
       "url": "https://www.whatsonstage.com/london-theatre/reviews/my-sons-a-queer-but-what-can-you-do-ambassadors_58267.html",
       "findings": [
@@ -37629,7 +37640,7 @@
     },
     {
       "showId": "1536-west-end-2026",
-      "file": "thestage--holly-o.json",
+      "file": "thestage--holly-omahony.json",
       "score": 86,
       "publishDate": "2026-05-13",
       "url": "https://www.thestage.co.uk/reviews/1536-review-ambassadors-theatre-london-ava-pickett",
@@ -45660,9 +45671,22 @@
     },
     {
       "showId": "hay-fever-west-end-2026",
+      "file": "theatre-weekly--greg-stewart.json",
+      "publishDate": "2026-10-01",
+      "url": "https://theatreweekly.com/review-hay-fever-at-wyndhams-theatre/",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"wyndham\""
+        }
+      ]
+    },
+    {
+      "showId": "hay-fever-west-end-2026",
       "file": "theupcoming--emilia-gould.json",
       "score": 79,
-      "publishDate": null,
+      "publishDate": "2026-10-01",
       "url": "https://www.theupcoming.co.uk/2026/10/02/hay-fever-at-wyndhams-theatre-theatre-review/",
       "findings": [
         {
@@ -46645,6 +46669,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"park avenue armory\""
+        }
+      ]
+    },
+    {
+      "showId": "illinoise-2024",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 79,
+      "publishDate": "March 7th, 2024",
+      "url": "https://newyorktheater.me/2024/04/24/illinoise-opens-on-broadway/",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "MEDIUM",
+          "detail": "Published 48d before show (March 7th, 2024 vs 2024-04-24)"
         }
       ]
     },

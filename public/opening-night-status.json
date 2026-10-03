@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-03T15:06:28.426Z",
+  "generatedAt": "2026-10-03T16:13:42.530Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -12,9 +12,9 @@
       "status": "open",
       "slug": "what-the-animals-say-off-west-end",
       "thumbnail": "/images/shows/what-the-animals-say-off-west-end-2026/thumbnail.jpg",
-      "siteScore": 72.5,
-      "liveScore": 73,
-      "scoreDrift": 0.5,
+      "siteScore": 71.98,
+      "liveScore": 72,
+      "scoreDrift": 0.01999999999999602,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -31,9 +31,9 @@
           "3/8 total",
           "T1:0/3",
           "T2:1/2",
-          "hi-conf:0/6"
+          "hi-conf:1/6"
         ],
-        "highConfidence": 0,
+        "highConfidence": 1,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -126,6 +126,18 @@
           "t": "2026-10-03T15:06:28.426Z",
           "rc": 3,
           "s": 72.5,
+          "t1": 1,
+          "t2": 1,
+          "t3": 1,
+          "p": 1,
+          "m": 2,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-03T16:13:42.530Z",
+          "rc": 3,
+          "s": 71.98,
           "t1": 1,
           "t2": 1,
           "t3": 1,
@@ -640,18 +652,18 @@
       "status": "open",
       "slug": "hay-fever-west-end",
       "thumbnail": "/images/shows/hay-fever-west-end-2026/thumbnail.jpg",
-      "siteScore": 67.53,
-      "liveScore": 68,
-      "scoreDrift": 0.46999999999999886,
+      "siteScore": 67.18,
+      "liveScore": 67,
+      "scoreDrift": -0.18000000000000682,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 24,
+      "total": 25,
       "t1": 8,
-      "t2": 6,
+      "t2": 7,
       "t3": 10,
       "positive": 11,
-      "mixed": 12,
+      "mixed": 13,
       "negative": 1,
       "readiness": {
         "ready": true,
@@ -860,6 +872,18 @@
           "m": 12,
           "n": 1,
           "bc": "waiting"
+        },
+        {
+          "t": "2026-10-03T16:13:42.530Z",
+          "rc": 25,
+          "s": 67.18,
+          "t1": 8,
+          "t2": 7,
+          "t3": 10,
+          "p": 11,
+          "m": 13,
+          "n": 1,
+          "bc": "waiting"
         }
       ]
     },
@@ -1018,10 +1042,6 @@
         },
         {
           "name": "Slant Magazine",
-          "isDualMarket": false
-        },
-        {
-          "name": "Lighting & Sound America",
           "isDualMarket": false
         },
         {
@@ -1351,22 +1371,22 @@
       "slug": "bull-off-west-end",
       "thumbnail": "/images/shows/bull-off-west-end-2026/thumbnail.jpg",
       "siteScore": null,
-      "liveScore": 47,
+      "liveScore": 61,
       "scoreDrift": null,
       "belowThreshold": true,
-      "reviewsNeeded": 2,
+      "reviewsNeeded": 1,
       "siteFileExists": true,
-      "total": 1,
+      "total": 2,
       "t1": 0,
-      "t2": 1,
+      "t2": 2,
       "t3": 0,
-      "positive": 0,
+      "positive": 1,
       "mixed": 0,
       "negative": 1,
       "readiness": {
         "ready": false,
         "reasons": [
-          "1/8 total",
+          "2/8 total",
           "T1:0/3",
           "T2:0/2",
           "hi-conf:1/6"
@@ -1444,6 +1464,18 @@
           "t2": 1,
           "t3": 0,
           "p": 0,
+          "m": 0,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-03T16:13:42.530Z",
+          "rc": 2,
+          "s": 61,
+          "t1": 0,
+          "t2": 2,
+          "t3": 0,
+          "p": 1,
           "m": 0,
           "n": 1,
           "bc": "waiting"
@@ -2050,23 +2082,23 @@
       "status": "open",
       "slug": "whos-afraid-of-virginia-woolf-west-end",
       "thumbnail": "/images/shows/whos-afraid-of-virginia-woolf-west-end-2026/thumbnail.webp",
-      "siteScore": 83.58,
+      "siteScore": 83.86,
       "liveScore": 84,
-      "scoreDrift": 0.4200000000000017,
+      "scoreDrift": 0.14000000000000057,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 25,
+      "total": 26,
       "t1": 8,
-      "t2": 8,
+      "t2": 9,
       "t3": 9,
-      "positive": 21,
+      "positive": 22,
       "mixed": 3,
       "negative": 1,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 11,
+        "highConfidence": 13,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2363,6 +2395,18 @@
           "t2": 8,
           "t3": 9,
           "p": 21,
+          "m": 3,
+          "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-03T16:13:42.530Z",
+          "rc": 26,
+          "s": 83.86,
+          "t1": 8,
+          "t2": 9,
+          "t3": 9,
+          "p": 22,
           "m": 3,
           "n": 1,
           "bc": "waiting"
