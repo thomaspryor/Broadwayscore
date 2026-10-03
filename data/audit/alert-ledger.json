@@ -72,13 +72,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Audience coverage: open-show gaps",
       "firstSeen": "2026-07-24T07:50:35.242Z",
-      "lastSeen": "2026-10-02T13:15:07.648Z",
+      "lastSeen": "2026-10-03T12:05:31.433Z",
       "lastNotifiedAt": "2026-09-27T12:30:26.842Z",
       "lastSurfacedAt": null,
       "notifyCount": 5,
       "cardId": "3b6637c5-416f-8101-ba5f-dda540f78b96",
       "linearIdentifier": "BRO-3700",
-      "silentRefires": 4,
+      "silentRefires": 5,
       "incidentOpenedAt": "2026-07-24T07:50:35.242Z"
     },
     "health-check:Sync: baseline drift": {
@@ -86,27 +86,27 @@
       "disposition": "auto",
       "title": "BSC Daily: Sync: baseline drift",
       "firstSeen": "2026-07-24T07:50:35.775Z",
-      "lastSeen": "2026-10-02T13:15:07.656Z",
+      "lastSeen": "2026-10-03T12:05:31.441Z",
       "lastNotifiedAt": "2026-09-30T13:04:06.023Z",
       "lastSurfacedAt": null,
       "notifyCount": 8,
       "cardId": "3b8637c5-416f-8197-8600-fc247b284a3e",
       "linearIdentifier": "BRO-3164",
       "incidentOpenedAt": "2026-07-24T07:50:35.775Z",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: corpus drift": {
       "status": "open",
       "disposition": "auto",
       "title": "BSC Daily: Quality: corpus drift",
       "firstSeen": "2026-07-24T07:50:36.268Z",
-      "lastSeen": "2026-10-02T13:15:07.665Z",
+      "lastSeen": "2026-10-03T12:05:31.454Z",
       "lastNotifiedAt": "2026-09-30T13:04:08.049Z",
       "lastSurfacedAt": null,
       "notifyCount": 9,
       "cardId": "3b6637c5-416f-8198-a033-eca6dcc6e7d7",
       "linearIdentifier": "BRO-3081",
-      "silentRefires": 2,
+      "silentRefires": 3,
       "incidentOpenedAt": "2026-07-24T07:50:36.268Z"
     },
     "opening-night-sla:pages-stuck": {
@@ -162,25 +162,28 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: star-vs-score mismatch",
       "firstSeen": "2026-07-27T08:00:24.727Z",
-      "lastSeen": "2026-10-02T13:15:07.660Z",
+      "lastSeen": "2026-10-03T12:05:31.445Z",
       "lastNotifiedAt": "2026-09-28T14:32:41.015Z",
       "lastSurfacedAt": null,
       "notifyCount": 6,
       "cardId": null,
       "linearIdentifier": "BRO-3978",
-      "silentRefires": 3,
+      "silentRefires": 4,
       "incidentOpenedAt": "2026-07-27T08:00:24.727Z"
     },
     "health-check:Credits: ScrapingBee": {
       "status": "open",
-      "disposition": "auto",
+      "disposition": "digest",
       "title": "BSC Daily: Credits: ScrapingBee",
       "firstSeen": "2026-07-27T08:00:25.454Z",
-      "lastSeen": "2026-09-05T02:22:02.287Z",
-      "lastNotifiedAt": "2026-09-05T02:22:02.287Z",
-      "notifyCount": 3,
+      "incidentOpenedAt": "2026-10-03T12:05:31.427Z",
+      "deferredAuto": true,
+      "lastSeen": "2026-10-03T12:05:31.427Z",
+      "lastNotifiedAt": "2026-10-03T12:05:31.427Z",
+      "lastSurfacedAt": "2026-10-03T12:05:31.427Z",
+      "notifyCount": 4,
       "cardId": "3b2637c5-416f-814a-b349-fce0da6c1ce4",
-      "linearIdentifier": "BRO-2721"
+      "linearIdentifier": null
     },
     "health-check:Credits: Bright Data": {
       "status": "open",
@@ -300,10 +303,10 @@
       "title": "Scraping spend over budget",
       "firstSeen": "2026-08-01T07:38:45.313Z",
       "incidentOpenedAt": "2026-08-01T07:38:45.313Z",
-      "lastSeen": "2026-10-02T13:16:15.695Z",
-      "lastNotifiedAt": "2026-10-02T13:16:15.695Z",
-      "lastSurfacedAt": "2026-10-02T13:16:15.695Z",
-      "notifyCount": 24,
+      "lastSeen": "2026-10-03T12:06:20.812Z",
+      "lastNotifiedAt": "2026-10-03T12:06:20.812Z",
+      "lastSurfacedAt": "2026-10-03T12:06:20.812Z",
+      "notifyCount": 25,
       "cardId": null,
       "linearIdentifier": "BRO-3030"
     },
@@ -463,13 +466,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Sync: cast coverage",
       "firstSeen": "2026-08-05T07:41:41.804Z",
-      "lastSeen": "2026-10-02T13:15:07.652Z",
+      "lastSeen": "2026-10-03T12:05:31.437Z",
       "lastNotifiedAt": "2026-09-27T12:30:27.728Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": "3b3637c5-416f-8197-91e3-e6b68252159b",
       "linearIdentifier": "BRO-4171",
-      "silentRefires": 4,
+      "silentRefires": 5,
       "incidentOpenedAt": "2026-08-05T07:41:41.804Z"
     },
     "backstop:crazysexycool-regional-2026/washpost--thomas-floyd.json": {
@@ -745,13 +748,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: outlet domain moves",
       "firstSeen": "2026-08-11T07:57:54.489Z",
-      "lastSeen": "2026-10-02T13:15:07.673Z",
+      "lastSeen": "2026-10-03T12:05:31.463Z",
       "lastNotifiedAt": "2026-09-27T12:30:27.950Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": "3b9637c5-416f-81bd-965b-ddfceefeae77",
       "linearIdentifier": "BRO-2263",
-      "silentRefires": 4,
+      "silentRefires": 5,
       "incidentOpenedAt": "2026-08-11T07:57:54.489Z"
     },
     "health-check:Quality: outlet invalid-content rate": {
@@ -3037,13 +3040,13 @@
       "disposition": "auto",
       "title": "BSC Daily: Quality: DMARC deliverability",
       "firstSeen": "2026-09-15T12:12:15.198Z",
-      "lastSeen": "2026-10-02T13:15:07.669Z",
+      "lastSeen": "2026-10-03T12:05:31.458Z",
       "lastNotifiedAt": "2026-09-30T13:04:10.136Z",
       "lastSurfacedAt": null,
       "notifyCount": 3,
       "cardId": null,
       "linearIdentifier": "BRO-4093",
-      "silentRefires": 2,
+      "silentRefires": 3,
       "incidentOpenedAt": "2026-09-15T12:12:15.198Z"
     },
     "health-check:Digest: content-invariant check": {
@@ -3177,12 +3180,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-10-03T11:51:42.156Z",
+      "lastSeen": "2026-10-03T12:13:42.164Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.156Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.138Z",
       "notifyCount": 16,
       "cardId": null,
-      "linearIdentifier": "BRO-4515"
+      "linearIdentifier": "BRO-4515",
+      "silentRefires": 1
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3190,13 +3194,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-03T11:51:42.166Z",
+      "lastSeen": "2026-10-03T12:13:42.173Z",
       "lastNotifiedAt": "2026-10-03T00:42:06.549Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.081Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-4501",
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3448,12 +3452,13 @@
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
       "incidentOpenedAt": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-03T11:51:42.170Z",
+      "lastSeen": "2026-10-03T12:13:42.178Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.170Z",
       "lastSurfacedAt": "2026-10-03T11:51:42.170Z",
       "notifyCount": 8,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3575,13 +3580,13 @@
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
       "incidentOpenedAt": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-10-03T11:51:42.176Z",
+      "lastSeen": "2026-10-03T12:13:42.182Z",
       "lastNotifiedAt": "2026-10-03T00:42:06.558Z",
       "lastSurfacedAt": "2026-10-03T00:42:06.558Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3853,13 +3858,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-10-03T11:51:42.146Z",
+      "lastSeen": "2026-10-03T12:13:42.155Z",
       "lastNotifiedAt": "2026-10-03T00:42:06.532Z",
       "lastSurfacedAt": "2026-10-03T00:42:06.532Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4226,13 +4231,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-10-03T11:51:42.138Z",
+      "lastSeen": "2026-10-03T12:13:42.147Z",
       "lastNotifiedAt": "2026-10-03T00:42:06.523Z",
       "lastSurfacedAt": "2026-10-03T00:42:06.523Z",
       "notifyCount": 12,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 2
+      "silentRefires": 3
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -5803,12 +5808,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-10-03T11:51:42.121Z",
+      "lastSeen": "2026-10-03T12:13:42.133Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.121Z",
       "lastSurfacedAt": "2026-10-03T11:51:42.121Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5867,12 +5873,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-03T11:51:42.129Z",
+      "lastSeen": "2026-10-03T12:13:42.139Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.129Z",
       "lastSurfacedAt": "2026-10-03T11:51:42.129Z",
       "notifyCount": 5,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -7798,13 +7805,13 @@
       "disposition": "auto",
       "title": "Security exception for decompress ends on 2026-10-15 — extend or fix (GHSA-mp2f-45pm-3cg9)",
       "firstSeen": "2026-09-30T17:32:02.568Z",
-      "lastSeen": "2026-10-02T13:06:31.414Z",
+      "lastSeen": "2026-10-03T11:59:56.841Z",
       "lastNotifiedAt": "2026-09-30T17:32:02.568Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4441",
-      "silentRefires": 2,
+      "silentRefires": 3,
       "incidentOpenedAt": "2026-09-30T17:32:02.568Z"
     },
     "dependency-audit:expiring:GHSA-hrh2-vp3x-79xf": {
@@ -7812,13 +7819,13 @@
       "disposition": "auto",
       "title": "Security exception for decompress ends on 2026-10-15 — extend or fix (GHSA-hrh2-vp3x-79xf)",
       "firstSeen": "2026-09-30T17:32:22.098Z",
-      "lastSeen": "2026-10-02T13:06:31.420Z",
+      "lastSeen": "2026-10-03T11:59:56.848Z",
       "lastNotifiedAt": "2026-09-30T17:32:22.098Z",
       "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": "BRO-4442",
-      "silentRefires": 2,
+      "silentRefires": 3,
       "incidentOpenedAt": "2026-09-30T17:32:22.098Z"
     },
     "land:land/bro-4430-coverage-date-url-slot": {
@@ -8229,14 +8236,14 @@
       "disposition": "digest",
       "title": "Affiliate revenue: Payout economics — anomaly",
       "firstSeen": "2026-10-01T13:56:33.074Z",
-      "lastSeen": "2026-10-02T13:13:59.210Z",
+      "lastSeen": "2026-10-03T12:04:23.111Z",
       "lastNotifiedAt": "2026-10-01T13:56:33.074Z",
       "lastSurfacedAt": "2026-10-01T13:56:33.074Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
       "incidentOpenedAt": "2026-10-01T13:56:33.074Z",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "broadcast:never-sent:school-girls-or-the-african-mean-girls-play-2026": {
       "status": "resolved",
@@ -8427,14 +8434,14 @@
       "disposition": "digest",
       "title": "Shipped review missing publishDate on Hay Fever",
       "firstSeen": "2026-10-01T23:57:01.897Z",
-      "lastSeen": "2026-10-02T23:18:11.234Z",
+      "lastSeen": "2026-10-03T12:20:20.789Z",
       "lastNotifiedAt": "2026-10-01T23:57:01.897Z",
       "lastSurfacedAt": "2026-10-01T23:57:01.897Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
       "incidentOpenedAt": "2026-10-01T23:57:01.897Z",
-      "silentRefires": 12
+      "silentRefires": 13
     },
     "land:land/bro-4486-recheck-3": {
       "status": "open",
@@ -8761,13 +8768,13 @@
     "priority-queue:overdue": {
       "status": "open",
       "disposition": "digest",
-      "title": "Overdue P0/P1 queue: 56 P0 older than 24h, 805 P1 older than 7d",
+      "title": "Overdue P0/P1 queue: 55 P0 older than 24h, 796 P1 older than 7d",
       "firstSeen": "2026-10-02T13:15:40.706Z",
       "incidentOpenedAt": "2026-10-02T13:15:40.706Z",
-      "lastSeen": "2026-10-02T13:15:40.706Z",
-      "lastNotifiedAt": "2026-10-02T13:15:40.706Z",
-      "lastSurfacedAt": "2026-10-02T13:15:40.706Z",
-      "notifyCount": 1,
+      "lastSeen": "2026-10-03T12:05:54.818Z",
+      "lastNotifiedAt": "2026-10-03T12:05:54.818Z",
+      "lastSurfacedAt": "2026-10-03T12:05:54.818Z",
+      "notifyCount": 2,
       "cardId": null,
       "linearIdentifier": null
     },
@@ -8862,13 +8869,13 @@
       "title": "Unhandled CV.wrongProduction on Hay Fever",
       "firstSeen": "2026-10-02T18:01:30.313Z",
       "incidentOpenedAt": "2026-10-02T18:01:30.313Z",
-      "lastSeen": "2026-10-02T23:18:11.225Z",
+      "lastSeen": "2026-10-03T12:20:20.780Z",
       "lastNotifiedAt": "2026-10-02T18:01:30.313Z",
       "lastSurfacedAt": "2026-10-02T18:01:30.313Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 5
+      "silentRefires": 6
     },
     "opening-night-remediation-exhausted-t1-missing:creation-stories-and-all-the-important-importants-off-broadway-2026": {
       "status": "open",
@@ -8985,13 +8992,13 @@
       "title": "Content mismatch on Hay Fever",
       "firstSeen": "2026-10-02T23:02:34.978Z",
       "incidentOpenedAt": "2026-10-02T23:02:34.978Z",
-      "lastSeen": "2026-10-02T23:18:11.229Z",
+      "lastSeen": "2026-10-03T12:20:20.785Z",
       "lastNotifiedAt": "2026-10-02T23:02:34.978Z",
       "lastSurfacedAt": "2026-10-02T23:02:34.978Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-3683-see-it-again-test": {
       "status": "open",
@@ -9080,9 +9087,24 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-03T11:51:42.151Z",
-      "lastSeen": "2026-10-03T11:51:42.151Z",
+      "lastSeen": "2026-10-03T12:13:42.160Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.151Z",
       "lastSurfacedAt": "2026-10-03T11:51:42.151Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null,
+      "silentRefires": 1
+    },
+    "broadcast-gate:checklist:hay-fever-west-end-2026": {
+      "status": "open",
+      "disposition": "digest",
+      "requestedDisposition": "human",
+      "title": "Opening Night Broadcast Blocked — Checklist Errors",
+      "firstSeen": "2026-10-03T12:20:20.910Z",
+      "incidentOpenedAt": "2026-10-03T12:20:20.910Z",
+      "lastSeen": "2026-10-03T12:20:20.910Z",
+      "lastNotifiedAt": "2026-10-03T12:20:20.910Z",
+      "lastSurfacedAt": "2026-10-03T12:20:20.910Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null
