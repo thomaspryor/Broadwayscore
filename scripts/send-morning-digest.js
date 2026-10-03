@@ -56,6 +56,7 @@ for (const envPath of [path.join(REPO, '.env'), '/Users/tompryor/Broadwayscore/.
 
 const { readAllSnapshots, describeProblems, readFreshnessReport, summarizeFreshnessHighSeverity, summarizeClosingSoon, readSyncRefused, SYNC_REFUSED_READ_FAILED } = require('./lib/digest-snapshots.js');
 const { renderTrunkDigestLine } = require('./lib/trunk-status.js');
+const { renderClaudeSpendDigestLine } = require('./lib/claude-session-spend.js');
 const {
   esc,
   renderHealthDigestBlock,
@@ -248,6 +249,21 @@ function localDispatchWatchdogLeakMessage() {
   if (!Number.isFinite(ageH) || ageH > 3) return null; // stale/unparseable heartbeat — unknown, not an alarm
   const holds = Array.isArray(hb.holds) ? hb.holds : [];
   return holds.find(h => String(h).startsWith(LAUNCHER_LEAK_HOLD_PREFIX)) || null;
+}
+
+// BRO-3026: Claude Code spend line. Runs the read-only forecaster over the last
+// 14 days of local transcripts (--no-write: the digest never touches the
+// snapshot). Fail-soft: any error omits the line — unknown, not zero.
+function localClaudeSpendLine() {
+  try {
+    const { execFileSync } = require('child_process');
+    const out = execFileSync(process.execPath, [path.join(REPO, 'scripts', 'forecast-claude-spend.js'), '--json', '--no-write', '--days=14'],
+      { encoding: 'utf8', timeout: 60000, maxBuffer: 16 * 1024 * 1024 });
+    return renderClaudeSpendDigestLine(JSON.parse(out).dailyUsd);
+  } catch (err) {
+    console.error(`[digest] WARN claude spend line skipped: ${String(err.message).slice(0, 120)}`);
+    return null;
+  }
 }
 
 function localRunnerHealthMessage() {
@@ -461,7 +477,7 @@ function buildSubject({ health = null, autofixRows = null, awaitingOwner = null,
 // Sections render via the SAME exported block renderers the old email used —
 // identical visual output for the parts the owner kept, none of the loop
 // parts. `changes` is overnight-digest.js's pre-rendered HTML block (or null).
-function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, now = new Date() } = {}) {
+function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, claudeSpendLine = null, now = new Date() } = {}) {
   const dateLabel = new Intl.DateTimeFormat('en-US', {
     timeZone: 'America/New_York', weekday: 'long', month: 'long', day: 'numeric',
   }).format(now);
@@ -581,6 +597,9 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
   const watchdogLeakMsg = localDispatchWatchdogLeakMessage();
   if (watchdogLeakMsg) {
     parts.push(`<p style="font-size:12px;color:#b91c1c;margin:0 0 12px;">⚠️ ${esc(watchdogLeakMsg)}</p>`);
+  }
+  if (claudeSpendLine) {
+    parts.push(`<p style="font-size:12px;color:#666;margin:0 0 12px;">${esc(claudeSpendLine)}</p>`);
   }
   if (problemsNote) {
     parts.push(`<p style="font-size:13px;color:#b45309;margin:0 0 12px;">⚠️ ${esc(problemsNote)}</p>`);
@@ -713,7 +732,7 @@ function buildHtml({ sections = {}, problemsNote = null, changesHtml = null, stu
 // would not have caught that, which is exactly what happened (renderer unit
 // buttons per the 2026-08-02 owner mandate — autofix runs in main().)
 function composeDigestEmail({
-  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, now = new Date(),
+  sections, problemsNote = null, changesHtml = null, stuckCount = 0, autofixRows = null, overnightLine = null, inflow = null, drainThroughputLine = null, claudeSpendLine = null, now = new Date(),
   dispatchSecret = process.env.APPROVAL_HMAC_SECRET, dispatchConfigPath = DISPATCH_CONFIG_PATH,
 } = {}) {
   // Digest v3 (owner mandate 2026-08-02, his FIFTH escalation): no Fix-this
@@ -745,7 +764,7 @@ function composeDigestEmail({
   }
 
   const subject = buildSubject({ health: sections.health, autofixRows, awaitingOwner: sections.awaitingOwner, needsYou: sections.needsYou, inReviewBacklog: sections.inReviewBacklog, now });
-  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, now });
+  const html = buildHtml({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, claudeSpendLine, now });
   return { subject, html };
 }
 
@@ -1274,7 +1293,7 @@ async function main() {
   } catch { /* optional */ }
 
   const now = new Date();
-  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, now });
+  const { subject, html } = composeDigestEmail({ sections, problemsNote, changesHtml, stuckCount, autofixRows, overnightLine, inflow, drainThroughputLine, claudeSpendLine: localClaudeSpendLine(), now });
 
   // Card #670/#1641: pre-send content check. Never blocks the SEND itself
   // (the digest must always send — a broken invariant check must not turn

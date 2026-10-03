@@ -15,9 +15,10 @@
  * touch broadcast endpoints or Resend audiences, and it REFUSES to run
  * without an explicit recipient.
  *
- * Usage numbers: ledger estimates by default; if ANTHROPIC_ADMIN_KEY is set
- * the account-level Admin API replaces them (actual USD + spend limit),
- * with the loop's own ledger share broken out. Both paths fail soft.
+ * Usage numbers: ledger estimates only. The former Anthropic Admin API path
+ * (ANTHROPIC_ADMIN_KEY) was deleted in BRO-3026: the key was never set, so it
+ * implied account-level coverage that did not exist. Real Claude Code spend
+ * lives in send-morning-digest.js via scripts/forecast-claude-spend.js.
  */
 
 'use strict';
@@ -156,37 +157,6 @@ async function generatePlainLanguageText(item) {
     const text = (res.json.content || []).filter(b => b.type === 'text').map(b => b.text).join('');
     const clean = sanitizePlainLanguageText(text);
     return clean || null;
-  } catch {
-    return null;
-  }
-}
-
-// ── Admin API (real account numbers) — fail-soft ────────────────────────────
-
-async function fetchAdminUsage() {
-  const key = process.env.ANTHROPIC_ADMIN_KEY;
-  if (!key) return null;
-  const headers = { 'x-api-key': key, 'anthropic-version': '2023-06-01' };
-  const since = new Date(Date.now() - 7 * 24 * 3600 * 1000).toISOString();
-  try {
-    const cost = await httpsJson('GET',
-      `https://api.anthropic.com/v1/organizations/cost_report?starting_at=${encodeURIComponent(since)}&bucket_width=1d`, headers);
-    if (cost.status !== 200 || !cost.json) return null;
-    // Walk the report defensively: sum every numeric amount field found in
-    // the buckets (the report schema has shifted; exactness matters less
-    // than never crashing the morning email).
-    let usd = 0;
-    const walk = (node) => {
-      if (Array.isArray(node)) return node.forEach(walk);
-      if (node && typeof node === 'object') {
-        for (const [k, v] of Object.entries(node)) {
-          if (k === 'amount' && Number.isFinite(parseFloat(v))) usd += parseFloat(v);
-          else walk(v);
-        }
-      }
-    };
-    walk(cost.json.data || cost.json.results || []);
-    return { actualUSD7d: Math.round(usd * 100) / 100, spendLimitUSD: null };
   } catch {
     return null;
   }
@@ -489,7 +459,7 @@ async function main() {
     console.error(`[email] WARN could not read parked cards: ${String(err.message).slice(0, 120)}`);
   }
 
-  const admin = await fetchAdminUsage();
+  const admin = null; // Admin API path removed (BRO-3026); renderUsageBlock falls back to ledger stats
   // "What changed while you slept" — owner request 2026-07-22. Fails soft:
   // a broken source becomes a "couldn't check" line inside the block.
   let digest = null;
@@ -635,4 +605,4 @@ if (require.main === module) {
   main().catch(err => { console.error(`[email] fatal: ${err.message}`); process.exit(1); });
 }
 
-module.exports = { fetchAdminUsage, latestEvidenceByCard, MAX_EMAIL_ITEMS, MAX_ATTACHMENTS, MAX_ATTACH_BYTES };
+module.exports = { latestEvidenceByCard, MAX_EMAIL_ITEMS, MAX_ATTACHMENTS, MAX_ATTACH_BYTES };

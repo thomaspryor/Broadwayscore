@@ -863,7 +863,7 @@ function renderItem(item) {
   </div>`;
 }
 
-// stats = usageStats() from autonomous-ledger; admin = fetchAdminUsage()
+// stats = usageStats() from autonomous-ledger; admin = null (Admin API path removed, BRO-3026)
 // result or null; config = { weeklyUSD } (never defaulted).
 function renderUsageBlock(stats, admin, config = {}) {
   const rows = [];
@@ -972,7 +972,7 @@ function renderSummaryLine(data) {
  *   runSkipped: string|null (run-skip ledger note — auth expiry etc.)
  *   executorSkipped: string|null (#476 — "executor skipped (monitor night): N deferred")
  *   queueSummary: summarizeQueue() result|null (0-planned skip breakdown)
- *   stats: usageStats() result · admin: fetchAdminUsage() result|null
+ *   stats: usageStats() result · admin: always null (Admin API path removed, BRO-3026)
  *   config: { weeklyUSD } · lastRunNote: string|null · awaitingTotal: number
  *
  * Layout (card #409 reformat): one-line summary → any urgent banner → items
