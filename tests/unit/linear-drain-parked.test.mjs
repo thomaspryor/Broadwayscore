@@ -20,6 +20,8 @@ const {
   isAutoFiledParked,
   hasSafeVerifyCommand,
   selectDrainCandidates,
+  isSessionParkedDrainable,
+  isDrainEligible,
 } = require(path.join(REPO, 'scripts', 'lib', 'linear-drain-parked.js'));
 
 const {
@@ -27,6 +29,7 @@ const {
   recentlyAttempted,
   main,
   DISPATCH_CAP,
+  DAILY_DISPATCH_CAP,
   RETRY_COOLDOWN_MS,
   ORPHAN_TIMEOUT_H,
   computeIssueContentHash,
@@ -143,11 +146,11 @@ describe('selectDrainCandidates', () => {
     assert.deepStrictEqual(selectDrainCandidates(null), []);
   });
 
-  test('default limit matches DISPATCH_CAP (3 per run)', () => {
-    assert.strictEqual(DISPATCH_CAP, 3);
-    const issues = ['BRO-1', 'BRO-2', 'BRO-3', 'BRO-4'].map((identifier) => issue({ identifier }));
-    const selected = selectDrainCandidates(issues); // no limit passed — uses this module's own default of 3
-    assert.strictEqual(selected.length, 3);
+  test('default limit matches DISPATCH_CAP (6 per run)', () => {
+    assert.strictEqual(DISPATCH_CAP, 6);
+    const issues = Array.from({ length: 7 }, (_, i) => issue({ identifier: `BRO-${i + 1}` }));
+    const selected = selectDrainCandidates(issues); // no limit passed — uses this module's own default of 6
+    assert.strictEqual(selected.length, DISPATCH_CAP);
   });
 });
 
@@ -601,7 +604,7 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
 
   test('a bare --cap with no value (or a non-numeric one) falls back to DISPATCH_CAP instead of silently selecting nothing', async () => {
     delete process.env.LINEAR_NEXT_DISABLED;
-    const issues = ['BRO-1', 'BRO-2', 'BRO-3', 'BRO-4'].map((identifier) => issue({ identifier }));
+    const issues = Array.from({ length: DISPATCH_CAP + 1 }, (_, i) => issue({ identifier: `BRO-${i + 1}` }));
     for (const argv of [['--cap'], ['--cap', 'not-a-number'], ['--cap', '0'], ['--cap', '-1']]) {
       const warnings = [];
       const dispatchedTaskIds = [];
@@ -612,11 +615,10 @@ describe('main() — kill switch and dispatch wiring, fully injected (no live I/
         appendLedger: () => {},
         dispatchLedgerEntries: () => [], // BRO-3454: explicit, not the real-shared-ledger fallback
         log: (m) => warnings.push(m),
-        // BRO-3454: this test is about --cap parsing/fallback, not the new
-        // concurrency ceiling — held well above DISPATCH_CAP so it can't
-        // become the limiting factor here (DEFAULT_CONCURRENCY_CAP=2 would
-        // otherwise cap dispatch at 2, below the DISPATCH_CAP=3 this test
-        // asserts on).
+        // BRO-3454: this test is about --cap parsing/fallback, not the
+        // concurrency ceiling, so it is held above DISPATCH_CAP and can't
+        // become the limiting factor (the drain's own cap is 4, below the
+        // DISPATCH_CAP=6 this test asserts on).
         concurrencyCap: DISPATCH_CAP + 1,
       });
       assert.strictEqual(result.dispatched.length, DISPATCH_CAP, `argv=${JSON.stringify(argv)}`);
@@ -873,7 +875,7 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
       'reconcile must have recorded the cost on the own ledger (usd field wiring)');
   });
 
-  test('neither guard tripped — dispatches normally up to min(DISPATCH_CAP, DEFAULT_CONCURRENCY_CAP)', async () => {
+  test('neither guard tripped — dispatches normally up to min(DISPATCH_CAP, DRAIN_CONCURRENCY_CAP)', async () => {
     delete process.env.LINEAR_NEXT_DISABLED;
     const dispatchedTaskIds = [];
     const result = await main([], {
@@ -986,5 +988,130 @@ describe('main() — BRO-3454 spend circuit breaker + concurrency ceiling', () =
         assert.deepStrictEqual(result.dispatched, ['BRO-1'], 'ENOENT must not be treated as a guard-computation failure');
       });
     });
+  });
+});
+
+// BRO-4535: technically-parked P0/P1 session cards join the drain, most urgent
+// first, under a rolling 24h cap that fails closed.
+const SESSION_BODY = `PARKED: needs a rule-18 second-opinion before the edit\n\n## Problem\nX.\n\n## Acceptance criteria\n${SAFE_CMD} passes.`;
+function sessionIssue(overrides = {}) {
+  return issue({ title: 'Fix the thing', description: SESSION_BODY, priority: 2, ...overrides });
+}
+
+describe('session-parked eligibility (BRO-4535)', () => {
+  test('a P0/P1 card parked for a technical reason with a safe check is eligible', () => {
+    assert.strictEqual(isSessionParkedDrainable(sessionIssue({ priority: 1 })), true);
+    assert.strictEqual(isDrainEligible(sessionIssue({ priority: 2 })), true);
+  });
+  test('P2 and below, and missing priority, stay parked', () => {
+    for (const priority of [3, 4, 0, undefined]) {
+      assert.strictEqual(isDrainEligible(sessionIssue({ priority })), false, `priority=${priority}`);
+    }
+  });
+  test('an owner hold stays parked', () => {
+    const d = SESSION_BODY.replace('needs a rule-18 second-opinion before the edit', 'needs owner approval');
+    assert.strictEqual(isDrainEligible(sessionIssue({ description: d })), false);
+  });
+  test('a card that also needs visual QA stays parked (only the PARKED blocker is waived downstream)', () => {
+    const d = SESSION_BODY.replace('X.', 'Edit src/components/show-cards/ScoreBadge.tsx.');
+    assert.strictEqual(isDrainEligible(sessionIssue({ description: d })), false);
+  });
+  test('no safe check, or an in-progress state, is not eligible', () => {
+    assert.strictEqual(isDrainEligible(sessionIssue({ description: 'PARKED: needs a worktree\n\nno check here' })), false);
+    assert.strictEqual(isDrainEligible(sessionIssue({ state: { name: 'In Progress', type: 'started' } })), false);
+  });
+  test('a card with no PARKED line at all is not this drain\'s job', () => {
+    assert.strictEqual(isDrainEligible(sessionIssue({ description: SESSION_BODY.replace(/^PARKED:.*\n/, '') })), false);
+  });
+  test('selection is P0, then P1, then auto-filed (no priority), each oldest first', () => {
+    const picked = selectDrainCandidates([
+      issue({ identifier: 'BRO-1' }),
+      sessionIssue({ identifier: 'BRO-50', priority: 2 }),
+      sessionIssue({ identifier: 'BRO-90', priority: 1 }),
+      sessionIssue({ identifier: 'BRO-60', priority: 1 }),
+      sessionIssue({ identifier: 'BRO-40', priority: 2 }),
+    ]).map((i) => i.identifier);
+    assert.deepStrictEqual(picked, ['BRO-60', 'BRO-90', 'BRO-40', 'BRO-50', 'BRO-1']);
+  });
+});
+
+describe('main: session-parked dispatch and daily cap (BRO-4535)', () => {
+  const baseDeps = (issues, extra = {}) => ({
+    listOpenIssuesWithDescriptions: async () => issues,
+    readLedger: () => [],
+    appendLedger: () => {},
+    dispatchLedgerEntries: () => [],
+    log: () => {},
+    ...extra,
+  });
+
+  test('session-parked cards dispatch with only allowSessionParked; the ledger row records it with the priority', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const calls = [];
+    const rows = [];
+    const result = await main([], baseDeps([sessionIssue({ identifier: 'BRO-7', priority: 1 }), issue({ identifier: 'BRO-8' })], {
+      dispatchFn: (taskId, _log, _delay, _model, opts) => { calls.push([taskId, opts]); },
+      appendLedger: (row) => { rows.push(row); },
+    }));
+    assert.deepStrictEqual(result.dispatched, ['BRO-7', 'BRO-8']);
+    assert.deepStrictEqual(calls[0], ['linear:BRO-7', { allowSessionParked: true }]);
+    assert.deepStrictEqual(calls[1], ['linear:BRO-8', { allowAutofixFiled: true, allowAutomationParked: true }]);
+    const r7 = rows.find((r) => r.identifier === 'BRO-7');
+    assert.strictEqual(r7.sessionParked, true);
+    assert.strictEqual(r7.priority, 1);
+    assert.strictEqual(rows.find((r) => r.identifier === 'BRO-8').sessionParked, undefined);
+  });
+
+  test('a session card that quotes the alert-router marker in its body still gets the session waiver', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const calls = [];
+    const d = SESSION_BODY.replace('X.', 'The tracker said "Auto-filed by owner-alert-router" but no PARKED line carries it.');
+    const result = await main([], baseDeps([sessionIssue({ identifier: 'BRO-9', priority: 1, description: d })], {
+      dispatchFn: (taskId, _log, _delay, _model, opts) => { calls.push([taskId, opts]); },
+    }));
+    assert.deepStrictEqual(result.dispatched, ['BRO-9']);
+    assert.deepStrictEqual(calls[0], ['linear:BRO-9', { allowSessionParked: true }]);
+  });
+
+  test('a full 24h budget dispatches nothing', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    assert.strictEqual(DAILY_DISPATCH_CAP, 20);
+    const recent = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const full = Array.from({ length: DAILY_DISPATCH_CAP }, (_, i) => ({
+      ts: recent, event: 'drain-parked-dispatch', identifier: `BRO-${1000 + i}`,
+    }));
+    const calls = [];
+    const result = await main([], baseDeps([issue({ identifier: 'BRO-1' })], {
+      readLedger: () => full,
+      concurrencyCap: 100,
+      dispatchFn: (taskId) => { calls.push(taskId); },
+    }));
+    assert.deepStrictEqual(result.dispatched, []);
+    assert.deepStrictEqual(calls, []);
+  });
+
+  test('rows older than 24h do not count against the cap', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const old = new Date(Date.now() - 25 * 60 * 60 * 1000).toISOString();
+    const stale = Array.from({ length: DAILY_DISPATCH_CAP }, (_, i) => ({
+      ts: old, event: 'drain-parked-dispatch', identifier: `BRO-${1000 + i}`,
+    }));
+    const result = await main([], baseDeps([issue({ identifier: 'BRO-1' })], {
+      readLedger: () => stale,
+      concurrencyCap: 100,
+      dispatchFn: () => {},
+    }));
+    assert.deepStrictEqual(result.dispatched, ['BRO-1']);
+  });
+
+  test('a partly used budget dispatches only what is left', async () => {
+    delete process.env.LINEAR_NEXT_DISABLED;
+    const recent = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+    const used = Array.from({ length: DAILY_DISPATCH_CAP - 2 }, (_, i) => ({
+      ts: recent, event: 'drain-parked-dispatch', identifier: `BRO-${1000 + i}`,
+    }));
+    const issues = Array.from({ length: 5 }, (_, i) => issue({ identifier: `BRO-${i + 1}` }));
+    const result = await main([], baseDeps(issues, { readLedger: () => used, concurrencyCap: 100, dispatchFn: () => {} }));
+    assert.strictEqual(result.dispatched.length, 2);
   });
 });

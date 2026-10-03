@@ -36,6 +36,13 @@ const IDLE_MS_BY_STATE = { 'In Review': 24 * HOUR_MS, 'In Progress': 72 * HOUR_M
 const CARD_TEST_RE = /^node --test (\S+\.test\.(?:mjs|cjs|js))$/;
 const RECHECK_AFTER_RE = /RECHECK-AFTER:\s*(\d{4}-\d{2}-\d{2})/g;
 const CLOSER_MARKER = 'AUTO-CLOSED by stuck-card-closer';
+// In Review cards whose own check FAILS on main go back to Todo for another
+// worker (BRO-4535). Each bounce leaves this marker; after MAX_BOUNCES the
+// card is reported instead, because a third failure means the check or the
+// card needs a person, and another worker would just burn the same budget.
+const BOUNCE_MARKER = 'BOUNCED by stuck-card-closer';
+const MAX_BOUNCES = 2;
+const MAX_BOUNCES_PER_RUN = 10;
 
 function cardTestPath(cmd) {
   const m = CARD_TEST_RE.exec(String(cmd || '').trim());
@@ -91,7 +98,12 @@ function planCandidates(report, nowMs) {
     if (cmdUse.get(r.cmd) > 1) { skip('command-shared-with-another-card'); continue; }
     candidates.push({ id: r.id, state: r.state, cmd: r.cmd, testPath });
   }
-  return { candidates, skipped };
+  // The audit stamps openCheckFails only on In Review cards whose own VERIFY
+  // command failed twice on main (done-evidence-audit.js classifyCard).
+  const bounces = results
+    .filter((r) => r && r.openCheckFails && r.state === 'In Review' && r.cmd)
+    .map((r) => ({ id: r.id, state: r.state, cmd: r.cmd, failDetail: r.failDetail || null }));
+  return { candidates, skipped, bounces };
 }
 
 function futureRecheckAfter(texts, nowMs) {
@@ -133,6 +145,68 @@ function decideClosure({ candidate, issue, commits, nowMs }) {
   return { close: true, sha: own.sha };
 }
 
+/**
+ * Decide whether a failing In Review card goes back to a worker.
+ * Returns { bounce: true, priorBounces } or { bounce: false, reason }.
+ * 'bounce-exhausted' is reported, never acted on.
+ */
+function decideBounce({ candidate, issue, nowMs }) {
+  if (!issue) return { bounce: false, reason: 'issue-not-found' };
+  if ((issue.state && issue.state.name) !== 'In Review') return { bounce: false, reason: 'state-changed-since-audit' };
+  // Only send back cards an automatic worker will pick up from Todo (the
+  // watchdog and the cloud worker take P0/P1 with no headless blocker).
+  // Anything else would sit in Todo looking unstarted; leave it In Review.
+  if (![1, 2].includes(Number(issue.priority))) return { bounce: false, reason: 'no-auto-worker' };
+  const comments = Array.isArray(issue.comments) ? issue.comments : [];
+  const lastActivity = Math.max(
+    Date.parse(issue.updatedAt) || 0,
+    ...comments.map((c) => Date.parse(c.createdAt) || 0),
+  );
+  if (nowMs - lastActivity < IDLE_MS_BY_STATE['In Review']) return { bounce: false, reason: 'recent-activity' };
+  if (futureRecheckAfter([issue.description, ...comments.map((c) => c.body)], nowMs)) {
+    return { bounce: false, reason: 'recheck-after-pending' };
+  }
+  const { classifyHeadlessDispatchability } = require('./headless-dispatchability.js');
+  if (classifyHeadlessDispatchability({ subject: issue.title || '', notes: issue.description || '' }).blockers.length) {
+    return { bounce: false, reason: 'no-auto-worker' };
+  }
+  const priorBounces = comments.filter((c) => String(c.body || '').includes(BOUNCE_MARKER)).length;
+  if (priorBounces >= MAX_BOUNCES) return { bounce: false, reason: 'bounce-exhausted' };
+  return { bounce: true, priorBounces };
+}
+
+function buildBounceComment({ candidate, priorBounces, auditGeneratedAt }) {
+  return [
+    `${BOUNCE_MARKER} (${priorBounces + 1} of ${MAX_BOUNCES}).`,
+    '',
+    `This card is In Review, but its own check, \`${candidate.cmd}\`, failed twice on main in the done-evidence audit of ${auditGeneratedAt}.`,
+    candidate.failDetail ? `What failed: ${String(candidate.failDetail).slice(0, 500)}` : null,
+    'Moved back to Todo so a worker picks it up again. Done means the fix is on main and this check passes there.',
+    `After ${MAX_BOUNCES} bounces the closer stops moving this card and reports it instead.`,
+  ].filter((l) => l !== null).join('\n');
+}
+
+// How many cards one run may close. The real limiter is time: every close
+// re-runs the card's check through the Done gate on a fresh origin/main
+// checkout, so quick checks close many cards per run and slow ones few. The
+// count ceiling only bounds the damage if the closer itself has a bug.
+const MAX_CLOSES_PER_RUN = 50;
+// The closer and the Done gate read the same check. When the gate keeps
+// refusing what the closer picked, they disagree, and closing more on that
+// run would be guessing. Stop and let the report show it.
+const MAX_REFUSALS_PER_RUN = 3;
+
+/**
+ * Why the apply loop must stop before the next close, or null to go on.
+ * @param {{closed:number, refused:number, remainingMs:number, closeTimeoutMs:number}} s
+ */
+function closeRunStopReason({ closed, refused, remainingMs, closeTimeoutMs }) {
+  if (refused >= MAX_REFUSALS_PER_RUN) return 'refusal-breaker';
+  if (closed >= MAX_CLOSES_PER_RUN) return 'over-run-cap';
+  if (remainingMs < closeTimeoutMs) return 'over-time-budget';
+  return null;
+}
+
 function buildClosureComment({ candidate, sha, auditGeneratedAt }) {
   return [
     `${CLOSER_MARKER}.`,
@@ -147,7 +221,12 @@ function buildClosureComment({ candidate, sha, auditGeneratedAt }) {
 module.exports = {
   MAX_REPORT_AGE_MS,
   IDLE_MS_BY_STATE,
+  MAX_CLOSES_PER_RUN,
+  MAX_REFUSALS_PER_RUN,
   CLOSER_MARKER,
+  BOUNCE_MARKER,
+  MAX_BOUNCES,
+  MAX_BOUNCES_PER_RUN,
   cardTestPath,
   mentionsCard,
   commitIsForCard,
@@ -155,4 +234,7 @@ module.exports = {
   futureRecheckAfter,
   decideClosure,
   buildClosureComment,
+  decideBounce,
+  buildBounceComment,
+  closeRunStopReason,
 };

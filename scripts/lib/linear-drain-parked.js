@@ -75,19 +75,48 @@ function hasSafeVerifyCommand(issue) {
   return !!evaluateVerifiability(issue.description || '').cmd;
 }
 
+// Session-parked P0/P1 cards (BRO-4535, owner-approved): a session wrote
+// "PARKED: <reason>" and nothing ever unparked it. Only cards whose every park
+// reason is technical (needs a review, a worktree, a monitor window) qualify;
+// isDrainableSessionParked holds the owner-hold deny list. Lower priorities
+// stay parked: the owner asked for P0/P1 throughput, not the whole board.
+const SESSION_PARKED_PRIORITIES = new Set([1, 2]);
+
+// Also requires every OTHER headless blocker (visual-qa, async wait, owner
+// decision) to be absent: linear-next.js --allow-session-parked waives only
+// the PARKED sentinel, so a card failing those would just be refused inside
+// the detached child and burn a drain slot.
+// Lazy: headless-dispatchability.js requires this module for AUTO_FILED_MARKER.
+function isSessionParkedDrainable(issue) {
+  if (!issue || !issue.state || !PARKED_STATE_TYPES.has(issue.state.type)) return false;
+  if (!SESSION_PARKED_PRIORITIES.has(Number(issue.priority))) return false;
+  const hd = require('./headless-dispatchability.js');
+  if (!hd.isDrainableSessionParked(issue.description || '')) return false;
+  const { blockers } = hd.classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description || '' });
+  return blockers.every((b) => b.code === hd.BLOCKERS.PARKED_SENTINEL);
+}
+
+// Everything this drain may pick up: alert-router trackers (any priority, as
+// before) plus technically-parked P0/P1 session cards, each with a safe VERIFY.
+function isDrainEligible(issue) {
+  if (!issue || !hasSafeVerifyCommand(issue)) return false;
+  return isAutoFiledParked(issue) || isSessionParkedDrainable(issue);
+}
+
 /**
- * Pure selection: parked + auto-filed + verifiable issues, oldest (lowest
- * issue number) first, excluding anything the caller already attempted
- * recently, capped at `limit`.
- * @param {Array<object>} issues - Linear issues ({identifier, description, state})
+ * Pure selection: drain-eligible issues, most urgent Linear priority first,
+ * then oldest (lowest issue number), excluding anything the caller already
+ * attempted recently, capped at `limit`.
+ * @param {Array<object>} issues - Linear issues ({identifier, description, priority, state})
  * @param {object} [opts]
- * @param {number} [opts.limit]
+ * @param {number} [opts.limit] - defaults to 6, the CLI's DISPATCH_CAP
  * @param {Set<string>} [opts.alreadyAttempted] - identifiers to skip
  */
-function selectDrainCandidates(issues, { limit = 3, alreadyAttempted = new Set() } = {}) {
+function selectDrainCandidates(issues, { limit = 6, alreadyAttempted = new Set() } = {}) {
+  const { priorityRank } = require('./linear-dispatch.js');
   return (Array.isArray(issues) ? issues : [])
-    .filter((iss) => iss && isAutoFiledParked(iss) && hasSafeVerifyCommand(iss) && !alreadyAttempted.has(iss.identifier))
-    .sort((a, b) => issueNumber(a.identifier) - issueNumber(b.identifier))
+    .filter((iss) => iss && isDrainEligible(iss) && !alreadyAttempted.has(iss.identifier))
+    .sort((a, b) => (priorityRank(a) - priorityRank(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)))
     .slice(0, Math.max(0, limit));
 }
 
@@ -98,5 +127,7 @@ module.exports = {
   issueNumber,
   isAutoFiledParked,
   hasSafeVerifyCommand,
+  isSessionParkedDrainable,
+  isDrainEligible,
   selectDrainCandidates,
 };

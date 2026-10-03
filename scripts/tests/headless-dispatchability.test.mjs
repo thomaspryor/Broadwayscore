@@ -22,6 +22,7 @@ const {
   looksLikeUiPath,
   uiPathsIn,
   isAutomationParked,
+  isDrainableSessionParked,
 } = require(path.join(REPO, 'scripts', 'lib', 'headless-dispatchability.js'));
 
 const codes = (r) => r.blockers.map(b => b.code);
@@ -348,5 +349,36 @@ describe('PARKED sentinel — the repo\'s own do-not-dispatch marker', () => {
         `classifier and exported regex disagree on: ${JSON.stringify(notes)}`,
       );
     }
+  });
+});
+
+// BRO-4535: session-parked cards whose park reason is technical may be drained;
+// owner holds never. A false unpark of an owner hold is the worst case, so the
+// deny list wins over the allow list.
+describe('isDrainableSessionParked (BRO-4535)', () => {
+  test('a technical park reason (rule-18 review, worktree, monitor window) is drainable', () => {
+    assert.strictEqual(isDrainableSessionParked('PARKED: needs a rule-18 second-opinion before editing workflows\n\nbody'), true);
+    assert.strictEqual(isDrainableSessionParked('PARKED: needs its own worktree'), true);
+    assert.strictEqual(isDrainableSessionParked('PARKED: mid-window, re-check on the next monitor pass'), true);
+  });
+  test('owner holds are never drainable, even when they also name a technical reason', () => {
+    assert.strictEqual(isDrainableSessionParked('PARKED: needs owner go-ahead'), false);
+    assert.strictEqual(isDrainableSessionParked('PARKED: needs a rule-18 review and an owner decision'), false);
+    assert.strictEqual(isDrainableSessionParked('PARKED: worktree ready but blocked on policy approval'), false);
+  });
+  test('every PARKED line must be technical', () => {
+    assert.strictEqual(isDrainableSessionParked('PARKED: needs a worktree\nPARKED: owner taste call'), false);
+  });
+  test('no PARKED line, an empty reason, or an unknown reason is not drainable', () => {
+    assert.strictEqual(isDrainableSessionParked('just a card body'), false);
+    assert.strictEqual(isDrainableSessionParked('PARKED:'), false);
+    assert.strictEqual(isDrainableSessionParked('PARKED: waiting'), false);
+    assert.strictEqual(isDrainableSessionParked(''), false);
+    assert.strictEqual(isDrainableSessionParked(undefined), false);
+  });
+  test('automation-parked cards belong to the auto-filed path, never this one', () => {
+    const autoParked = 'PARKED: Auto-filed by owner-alert-router (condition: x); parked for triage. needs a worktree';
+    assert.strictEqual(isAutomationParked(autoParked), true);
+    assert.strictEqual(isDrainableSessionParked(autoParked), false);
   });
 });

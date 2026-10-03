@@ -3,12 +3,14 @@
 <plist version="1.0">
 <dict>
     <!-- Linear-side drain for parked, auto-filed issues (BRO-293, BRO-286
-         Phase 2 completion). Ticks 3x/day (10:30/14:30/18:30 ET — offset
-         30min from backlog-drain.plist's 10/14/18 so the two never spawn
-         detached children in the same worktree-lock window) and runs
-         scripts/linear-drain-parked.js, which dispatches up to 3 parked
-         issues owner-alert-router.js auto-filed through linear-next.js's
-         own --headless path (full guard stack: kill switch, idempotency,
+         Phase 2 completion). Ticks every 2h, 08:30 to 22:30 ET (BRO-4535; was
+         10:30/14:30/18:30. Still on the half hour, offset from
+         backlog-drain.plist's 10/14/18 so the two never spawn detached
+         children in the same worktree-lock window) and runs
+         scripts/linear-drain-parked.js, which dispatches up to 6 parked
+         issues (auto-filed, or session-parked P0/P1 with a technical park
+         reason; at most 4 live and 20 per day) through linear-next.js's
+         own headless path (full guard stack: kill switch, idempotency,
          terminal-state, dead-dispatch, verify gate).
 
          Not wired into data-health-check.yml: the CI runner has no `claude`
@@ -78,7 +80,19 @@
     <array>
         <dict>
             <key>Hour</key>
+            <integer>8</integer>
+            <key>Minute</key>
+            <integer>30</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
             <integer>10</integer>
+            <key>Minute</key>
+            <integer>30</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>12</integer>
             <key>Minute</key>
             <integer>30</integer>
         </dict>
@@ -90,7 +104,25 @@
         </dict>
         <dict>
             <key>Hour</key>
+            <integer>16</integer>
+            <key>Minute</key>
+            <integer>30</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
             <integer>18</integer>
+            <key>Minute</key>
+            <integer>30</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>20</integer>
+            <key>Minute</key>
+            <integer>30</integer>
+        </dict>
+        <dict>
+            <key>Hour</key>
+            <integer>22</integer>
             <key>Minute</key>
             <integer>30</integer>
         </dict>
