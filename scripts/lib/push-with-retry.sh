@@ -914,6 +914,49 @@ if [ -n "$SCRIPT_ENTRY_HEAD" ] && git rev-parse --verify --quiet "origin/$PULL_B
   SCRIPT_ENTRY_BASE="$(git merge-base "$SCRIPT_ENTRY_HEAD" "origin/$PULL_BRANCH" 2>/dev/null || true)"
 fi
 
+# BRO-2129: SCRIPT_ENTRY_BASE above is computed from the LOCAL origin ref with no
+# fetch (a fetch here would run before the shallow-depth bounding and spend
+# GIT_NET_TIMEOUT_SEC at entry on every depth-1 caller). When that ref is stale
+# (job worktrees, long-lived checkouts), the merge-base is an old ancestor, so
+# base..HEAD also contains foreign main commits already merged into the branch.
+# push-content-survival.js then treats those foreign lines as "ours" and, once
+# main churn rewrites them, reports reverted/superseded for content that was
+# never ours — and the retry loop (reset -> rebase drops the commit as
+# already-upstream -> "Everything up-to-date") repeats that verdict on every
+# attempt. Called right after the retry loop's own bounded fetch has refreshed
+# origin/$PULL_BRANCH (no extra network). Moves the base FORWARD only and never
+# to empty/our own commit: an empty base would disable the survival check, API
+# fallback and reconcile (all gate on non-empty), and a base equal to a tip that
+# already contains SCRIPT_ENTRY_HEAD (an earlier attempt really pushed) would make
+# the check vacuous.
+refine_entry_base() {
+  [ -n "$SCRIPT_ENTRY_BASE" ] && [ -n "$SCRIPT_ENTRY_HEAD" ] || return 0
+  local ref="${1:-origin/$PULL_BRANCH}" new_base
+  # Our commit already on origin (earlier attempt pushed): the fork point is no
+  # longer derivable from origin, keep the entry base.
+  git merge-base --is-ancestor "$SCRIPT_ENTRY_HEAD" "$ref" 2>/dev/null && return 0
+  new_base="$(git merge-base "$SCRIPT_ENTRY_HEAD" "$ref" 2>/dev/null || true)"
+  [ -n "$new_base" ] && [ "$new_base" != "$SCRIPT_ENTRY_BASE" ] || return 0
+  git merge-base --is-ancestor "$SCRIPT_ENTRY_BASE" "$new_base" 2>/dev/null || return 0
+  echo "  content-survival base advanced ${SCRIPT_ENTRY_BASE:0:12} -> ${new_base:0:12} (stale local origin/$PULL_BRANCH at entry; BRO-2129)"
+  SCRIPT_ENTRY_BASE="$new_base"
+}
+
+# Same refinement for a first-attempt push that succeeds as a fast-forward and so
+# never reaches the post-fetch call site: the remote's pre-push tip is then an
+# ancestor of HEAD (already present locally), so a cheap ls-remote names it
+# without any object transfer. Called once, before the first push. Tip not in
+# local history (the push will be rejected and the loop's fetch path refines
+# instead), ls-remote failure or timeout: no-op.
+refine_entry_base_from_remote_tip() {
+  local tip ls_timeout=10
+  [ "$GIT_NET_TIMEOUT_SEC" -lt "$ls_timeout" ] && ls_timeout="$GIT_NET_TIMEOUT_SEC"
+  tip="$(_timeout "$ls_timeout" git -c http.lowSpeedLimit=1000 -c "http.lowSpeedTime=${GIT_LOW_SPEED_TIME}" \
+    ls-remote origin "refs/heads/$PULL_BRANCH" 2>/dev/null | awk 'NR==1{print $1}')" || tip=""
+  [ -n "$tip" ] && git cat-file -e "${tip}^{commit}" 2>/dev/null || return 0
+  refine_entry_base "$tip"
+}
+
 # Task #1847: is the Git Data API fallback (below) eligible for THIS run at
 # all? Shared by both the early-trigger break (inside the retry loop) and the
 # full-exhaustion fallback block, so the two can't drift onto different
@@ -1706,6 +1749,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
   # remaining retry AND the Git Data API fallback. Same reason the fetch path's
   # explicit_fetch_rc/fetch_start (line ~1333) are bare too.
   push_start=$SECONDS
+  [ "$i" -eq 1 ] && refine_entry_base_from_remote_tip
   if git_push_traced origin "$BRANCH"; then
     if verify_content_survived; then
       echo "Push succeeded on attempt $i"
@@ -2108,6 +2152,7 @@ for i in $(seq 1 "$MAX_RETRIES"); do
     # fresh base (not just a loud no-op abort). Local, fail-open.
     if [ -n "$FETCHED_REMOTE_SHA" ]; then
       git update-ref "refs/remotes/origin/$PULL_BRANCH" "$FETCHED_REMOTE_SHA" 2>/dev/null || true
+      refine_entry_base
     fi
   fi
 
