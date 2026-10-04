@@ -277,6 +277,8 @@ function crosspostSubreddit(show, broadwayTitles) {
  */
 function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLookup = () => null, forceShowId = null }) {
   const already = (drafts && drafts.drafts) || {};
+  // One id, an array, or "a,b,c": the owner can ask for several redrafts at once.
+  const forced = forceShowId ? new Set([].concat(forceShowId).flatMap(x => String(x).split(',')).map(x => x.trim()).filter(Boolean)) : null;
   // Broadway productions that are current, upcoming, or opened in the last
   // 5 years: a 1990s revival doesn't make a Globe Shakespeare r/Broadway news.
   const recentYear = Number(String(today).slice(0, 4)) - 5;
@@ -288,8 +290,8 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
   for (const show of shows) {
     const market = marketOf(show);
     if (!SUBREDDIT_BY_MARKET[market]) continue;
-    if (forceShowId) {
-      if (show.id !== forceShowId) continue;
+    if (forced) {
+      if (!forced.has(show.id)) continue;
     } else {
       const prev = already[show.id];
       // An existing draft is left alone, unless its LLM call failed, or it is
@@ -915,6 +917,14 @@ function applyPostedDetection(drafts, posts) {
   return out;
 }
 
+/**
+ * A redraft whose LLM calls all failed falls back to the plain template. That
+ * must not replace a voiced draft the owner hasn't posted yet: keep the old one.
+ */
+function keepPreviousDraft(prev, source) {
+  return !!prev && prev.status === 'ready' && source === 'template' && !!prev.source && prev.source !== 'template';
+}
+
 /** Drafts the email should show today: ready, not posted, not stale. */
 function activeDrafts(drafts, nowMs) {
   return Object.values((drafts && drafts.drafts) || {})
@@ -924,6 +934,7 @@ function activeDrafts(drafts, nowMs) {
 }
 
 module.exports = {
+  keepPreviousDraft,
   SUBREDDIT_BY_MARKET,
   MIN_REVIEWS,
   audienceSourceNames,
