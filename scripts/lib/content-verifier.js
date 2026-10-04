@@ -267,7 +267,10 @@ function callOpenAI(prompt) {
 /**
  * Call Claude Sonnet — ~$0.003/review (most expensive, last resort)
  */
-function callAnthropic(model) {
+// opts.timeoutMs (BRO-4603): abort the request (no late reply, no socket left
+// open) after that long. Unset = no timeout, the behaviour every existing
+// caller relies on.
+function callAnthropic(model, { timeoutMs } = {}) {
   return function (prompt) {
     const apiKey = process.env.ANTHROPIC_API_KEY;
     if (!apiKey) throw new Error('ANTHROPIC_API_KEY not set');
@@ -303,6 +306,7 @@ function callAnthropic(model) {
         });
       });
       req.on('error', reject);
+      if (timeoutMs) req.setTimeout(timeoutMs, () => req.destroy(new Error(`Anthropic: no reply in ${Math.round(timeoutMs / 1000)}s`)));
       req.write(body);
       req.end();
     });
