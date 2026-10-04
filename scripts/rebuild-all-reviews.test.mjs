@@ -119,3 +119,39 @@ test('wiring: the getBestScore-null call site and the post-loop flush loop both 
     'a loop over stats.byShow must flush each show\'s buffered exclusions via writeShowExclusionsFile(...)'
   );
 });
+
+// BRO-938 — "CV pre-pass promotes wrongProduction through temporal override".
+// The card feared the rebuild's CV pre-pass (which copies cv.wrongProduction to
+// the top level) would undo the temporal override. It cannot: the override runs
+// at CV write time (content-verifier.js) and stores confidence 'low', and the
+// pre-pass only promotes high/medium rows plus 'low' rows with a strong
+// different-show signal (which the override itself refuses to veto). These
+// tests pin both halves so the ordering cannot drift.
+const { applyTemporalOverrides, hasStrongDifferentShowSignal } = require('./lib/review-guards.js');
+
+test('BRO-938: a wrongProduction verdict inside the opening window is stored as low confidence, which the pre-pass ignores', () => {
+  const issues = ['mentions a different staging'];
+  const reasoning = 'venue differs';
+  const r = applyTemporalOverrides(true, false, 'high', '2026-04-10', '2026-04-14', { issues, reasoning });
+  assert.equal(r.wpConfidence, 'low');
+  const eligible = r.wpConfidence === 'high' || r.wpConfidence === 'medium'
+    || (r.wpConfidence === 'low' && hasStrongDifferentShowSignal(issues, reasoning));
+  assert.equal(eligible, false);
+});
+
+test('BRO-938: a definitive different-show verdict is NOT downgraded by the override (promotion is intended)', () => {
+  const issues = ['This is a completely different show'];
+  const reasoning = 'completely different show, not this production';
+  assert.equal(hasStrongDifferentShowSignal(issues, reasoning), true);
+  const r = applyTemporalOverrides(true, false, 'high', '2026-04-10', '2026-04-14', { issues, reasoning });
+  assert.equal(r.wpConfidence, 'high');
+});
+
+test('BRO-938 wiring: the CV pre-pass still skips confidence other than high/medium/strong-low', () => {
+  const source = fs.readFileSync(new URL('./rebuild-all-reviews.js', import.meta.url), 'utf8');
+  assert.match(
+    source,
+    /const cv = d\.contentVerification;[\s\S]{0,900}?if \(cv\.confidence !== 'high' && cv\.confidence !== 'medium' && !cvLowButStrong\) continue;/,
+    'pre-pass must skip low-confidence CV rows (the temporal-override output) unless cvLowButStrong'
+  );
+});
