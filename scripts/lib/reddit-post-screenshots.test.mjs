@@ -4,7 +4,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { clipRect, cleanCut, MAX_ASPECT, captureShowImages } = require('./reddit-post-screenshots.js');
+const { clipRect, cleanCut, MAX_ASPECT, captureShowImages, SHOTS } = require('./reddit-post-screenshots.js');
 
 test('a short card is padded and kept whole', () => {
   const c = clipRect({ x: 16, y: 100, width: 398, height: 300 }, 430);
@@ -55,4 +55,56 @@ test('captureShowImages never throws: a broken browser gives no images', async (
   const out = await captureShowImages('http://example.invalid', '/tmp/x-shots', { chromium, log: m => logs.push(m) });
   assert.deepEqual(out, []);
   assert.match(logs.join('\n'), /screenshots skipped \(no browser here\)/);
+});
+
+// BRO-4613: a stand-in browser that records styles added/removed and screenshots taken.
+function fakeBrowser({ missing = [], failing = [] } = {}) {
+  const styles = new Map();
+  const shots = [];
+  let n = 0;
+  const el = sel => ({
+    first: () => el(sel),
+    count: async () => (missing.includes(sel) ? 0 : 1),
+    waitFor: async () => { if (failing.includes(sel) || missing.includes(sel)) throw new Error(`waitFor timeout ${sel}`); },
+    scrollIntoViewIfNeeded: async () => {},
+    evaluate: async () => ({ box: { x: 0, y: 0, width: 430, height: 300 }, blocks: [] }),
+  });
+  const page = {
+    goto: async () => {}, waitForTimeout: async () => {}, evaluate: async () => {},
+    locator: el,
+    addStyleTag: async ({ content }) => { const id = n++; styles.set(id, content); return { evaluate: async () => styles.delete(id) }; },
+    screenshot: async ({ path }) => { shots.push({ path, live: [...styles.values()] }); },
+  };
+  const chromium = { launch: async () => ({ newContext: async () => ({ newPage: async () => page }), close: async () => {} }) };
+  return { chromium, styles, shots };
+}
+
+test('SHOTS: scorecard, compact review list, audience card (optional)', () => {
+  assert.deepEqual(SHOTS.map(s => s.name), ['scorecard.png', 'reviews.png', 'audience.png']);
+  const reviews = SHOTS.find(s => s.name === 'reviews.png');
+  assert.match(reviews.css, /p\.leading-snug/, 'pull quotes hidden so many rows fit');
+  assert.equal(SHOTS.find(s => s.name === 'audience.png').optional, true);
+});
+
+test('a page without an audience card still gets the other two images', async () => {
+  const audience = SHOTS.find(s => s.name === 'audience.png').selector;
+  const fb = fakeBrowser({ missing: [audience] });
+  const logs = [];
+  const out = await captureShowImages('http://x', '/tmp/x-shots', { chromium: fb.chromium, log: m => logs.push(m) });
+  assert.deepEqual(out.map(o => o.name), ['scorecard.png', 'reviews.png']);
+  assert.match(logs.join('\n'), /audience\.png skipped \(not on this page\)/);
+});
+
+test('a shot css applies to that shot only, and is removed even when the shot fails', async () => {
+  const reviews = SHOTS.find(s => s.name === 'reviews.png');
+  const ok = fakeBrowser();
+  await captureShowImages('http://x', '/tmp/x-shots', { chromium: ok.chromium, log: () => {} });
+  const live = Object.fromEntries(ok.shots.map(s => [s.path.split('/').pop(), s.live]));
+  assert.ok(live['reviews.png'].includes(reviews.css));
+  assert.ok(!live['audience.png'].includes(reviews.css), 'review css leaked into the audience shot');
+
+  const bad = fakeBrowser({ failing: [reviews.selector] });
+  const out = await captureShowImages('http://x', '/tmp/x-shots', { chromium: bad.chromium, log: () => {} });
+  assert.deepEqual(out.map(o => o.name), ['scorecard.png', 'audience.png']);
+  assert.ok(![...bad.styles.values()].includes(reviews.css), 'review css left on the page after a failure');
 });
