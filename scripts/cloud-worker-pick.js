@@ -5,7 +5,7 @@
  * nothing. Selection rules and their reasons: scripts/lib/cloud-worker-pick.js.
  *
  * Usage:
- *   node scripts/cloud-worker-pick.js           JSON: { pick, eligible, skipped }
+ *   node scripts/cloud-worker-pick.js           JSON: { pick, eligible, skipped, historySkipped }
  *
  * `pick` is null when nothing is eligible; the worker then ends with no
  * changes. Exit 0 on a completed pick (null or not), 1 when Linear can't be read.
@@ -74,20 +74,52 @@ function landDispatchInFlight() {
   return Number(out) > 0;
 }
 
-/** Stranded landing to resume, or null. Never throws: resume is best-effort. */
+/** Stranded landings to resume, best first. Never throws: resume is best-effort. */
 function findResume(issues, nowMs) {
-  const { findResumeCard, landRefCardNumber, resumableCardsByNumber } = require('./lib/cloud-worker-pick.js');
+  const { findResumeCandidates, landRefCardNumber, resumableCardsByNumber } = require('./lib/cloud-worker-pick.js');
   try {
     // Only refs naming a started P0/P1 card need a run lookup (one API call each).
     const cards = resumableCardsByNumber(issues);
     const refs = listLandRefs().filter((r) => cards.has(landRefCardNumber(r.ref)));
     for (const r of refs) r.lastRun = latestLandRun(r.ref);
-    if (!refs.length) return null;
-    return findResumeCard(issues, refs, { nowMs, landDispatchInFlight: landDispatchInFlight() });
+    if (!refs.length) return [];
+    return findResumeCandidates(issues, refs, { nowMs, landDispatchInFlight: landDispatchInFlight() });
   } catch (err) {
     console.error(`[cloud-worker-pick] resume check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
-    return null;
+    return [];
   }
+}
+
+// Comment reads per firing (one Linear call each). Past this, take the next card unchecked.
+const MAX_HISTORY_CHECKS = 15;
+
+/**
+ * First candidate an earlier worker didn't pause on (BRO-4574). Counts each skip
+ * in `historySkipped`. A failed comment read keeps the card: pause memory is advisory.
+ */
+async function firstUnpaused(queue, nowMs, historySkipped) {
+  const { getIssue } = require('./lib/linear-client.js');
+  const { pausedHistorySkipReason } = require('./lib/cloud-worker-pick.js');
+  for (let i = 0; i < queue.length; i++) {
+    if (i >= MAX_HISTORY_CHECKS) {
+      console.error(`[cloud-worker-pick] ${MAX_HISTORY_CHECKS} history checks used; ${queue[i].issue.identifier} taken unchecked`);
+      return queue[i];
+    }
+    let reason = null;
+    try {
+      const full = await getIssue(queue[i].issue.identifier);
+      const nodes = full && full.comments ? full.comments.nodes : [];
+      // getIssue reads 50 comments; past that the latest report may be cut off.
+      if (nodes.length >= 50) console.error(`[cloud-worker-pick] ${queue[i].issue.identifier}: 50+ comments, pause history may be incomplete`);
+      reason = pausedHistorySkipReason(nodes, nowMs);
+    } catch (err) {
+      console.error(`[cloud-worker-pick] history check skipped for ${queue[i].issue.identifier}: ${err && err.message ? err.message.split('\n')[0] : err}`);
+    }
+    if (!reason) return queue[i];
+    historySkipped[reason] = (historySkipped[reason] || 0) + 1;
+    console.error(`[cloud-worker-pick] skip ${queue[i].issue.identifier}: ${reason}`);
+  }
+  return null;
 }
 
 async function main() {
@@ -96,9 +128,15 @@ async function main() {
   const { pickCloudCard } = require('./lib/cloud-worker-pick.js');
   const issues = await listOpenIssuesWithDescriptions();
   const nowMs = Date.now();
-  const resume = findResume(issues, nowMs);
-  const { pick: fresh, eligible, skipped } = pickCloudCard(issues, { nowMs });
-  const pick = resume ? resume.issue : fresh;
+  const { ordered, eligible, skipped } = pickCloudCard(issues, { nowMs });
+  const queue = [
+    ...findResume(issues, nowMs).map((r) => ({ issue: r.issue, resume: r })),
+    ...ordered.map((iss) => ({ issue: iss, resume: null })),
+  ];
+  const historySkipped = {};
+  const chosen = await firstUnpaused(queue, nowMs, historySkipped);
+  const pick = chosen && chosen.issue;
+  const resume = chosen && chosen.resume;
   const out = {
     pick: pick && {
       identifier: pick.identifier,
@@ -119,6 +157,8 @@ async function main() {
     eligible,
     open: issues.length,
     skipped,
+    // Resume candidates and eligible cards passed over for an earlier pause.
+    historySkipped,
   };
   console.log(JSON.stringify(out, null, 2));
   if (resume) {

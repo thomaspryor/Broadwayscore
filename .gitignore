@@ -152,6 +152,12 @@ data/archives/
 # Generated show lookup for My Shows page (regenerated at build time)
 public/data/show-lookup.json
 
+# Commercial scorecard export (scripts/generate-commercial-export.js). The
+# scorecard is unreleased on prod (owner, 2026-10-04); anything under public/
+# ships whatever the commercial flag says, so these must never be committed.
+public/data/commercial.json
+public/data/commercial.csv
+
 # Generated actor-slug manifest for Tony nominees page (regenerated at build time
 # from data/cast/* — replaces dynamic process.cwd() reads that bloated NFT bundle)
 data/actor-slugs.json

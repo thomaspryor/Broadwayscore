@@ -371,12 +371,13 @@ async function buildCoreShard(ctx: DateContext): Promise<MetadataRoute.Sitemap> 
       changeFrequency: 'weekly' as const,
       priority: 0.8,
     },
-    {
+    // /biz is a 404 while the commercial scorecard is unreleased.
+    ...(featureFlags.commercial ? [{
       url: `${BASE_URL}/biz`,
       lastModified: ctx.showsDate,
       changeFrequency: 'weekly' as const,
       priority: 0.7,
-    },
+    }] : []),
     {
       url: `${BASE_URL}/discount-tickets`,
       lastModified: ctx.showsDate,

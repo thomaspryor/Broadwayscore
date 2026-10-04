@@ -119,3 +119,69 @@ test('common-phrase prefixes are not variants ("One Day \u2013 The Musical" is n
   assert.equal(textMentionsTitle(`Theatre review: Just For One Day, Shaftesbury.${FILLER}`, 'One Day \u2013 The Musical'), null);
   assert.ok(textMentionsTitle(`One Day: The Musical opens.${FILLER}`, 'One Day \u2013 The Musical'));
 });
+
+// BRO-4584: a Phantom tour review that says only "Phantom" was flagged
+// showNotMentioned and never scored. Short names come from the curated
+// show-short-names.json, never from a generic first-word rule.
+test('curated short name: "Phantom" mentions The Phantom of the Opera only', () => {
+  const text = `If you have lived here long enough, you have probably seen a touring Phantom. Isaiah Bailey gives a Phantom who is not all posture.${FILLER}`;
+  assert.equal(textMentionsTitle(text, 'The Phantom of the Opera'), 'phantom');
+  assert.equal(validateShowMentioned(text, 'The Phantom of the Opera', 'the-phantom-of-the-opera-tour-2025').valid, true);
+  // Same text, unrelated show: "Phantom" is not a mention of it.
+  assert.equal(textMentionsTitle(text, 'Love Never Dies'), null);
+  assert.equal(validateShowMentioned(text, 'Love Never Dies', 'love-never-dies-2025').valid, false);
+});
+
+test('short names apply to every production title form and subtitles', () => {
+  assert.ok(buildShowTitleVariants('Les Mis\u00e9rables').includes('les miz'));
+  assert.ok(buildShowTitleVariants('Les Miserables').includes('les mis'));
+  assert.ok(buildShowTitleVariants('Harry Potter And The Cursed Child: Both Parts').includes('cursed child'));
+  // includePrefix:false (base-token count in validateContentMentionsShow) keeps them out.
+  assert.ok(!buildShowTitleVariants('The Phantom of the Opera', { includePrefix: false }).includes('phantom'));
+});
+
+test('no bare first-name short names ("Joseph" matched reviews of Joseph Charlton\'s Anna X)', () => {
+  assert.equal(textMentionsTitle(`Joseph Charlton's play Anna X opens.${FILLER}`, 'Joseph and the Amazing Technicolor Dreamcoat'), null);
+});
+
+test('no generic "The Musical" strip: only curated titles lose the suffix', () => {
+  assert.ok(buildShowTitleVariants('Kinky Boots The Musical').includes('kinky boots'));
+  assert.ok(!buildShowTitleVariants('MJ The Musical').includes('mj'));
+  assert.ok(!buildShowTitleVariants('Ghost The Musical').includes('ghost'));
+  assert.ok(!buildShowTitleVariants('Motown The Musical').includes('motown'));
+  assert.equal(textMentionsTitle(`The ghost of her mother haunts this Hamlet.${FILLER}`, 'Ghost The Musical'), null);
+});
+
+test('idioms are not short names', () => {
+  assert.equal(textMentionsTitle(`A funny thing happened on the way to the theatre.${FILLER}`, 'A Funny Thing Happened on the Way to the Forum'), null);
+  assert.equal(textMentionsTitle(`She rides the streetcar home.${FILLER}`, 'A Streetcar Named Desire'), null);
+  assert.equal(textMentionsTitle(`How to succeed as an actor.${FILLER}`, 'How to Succeed in Business Without Really Trying'), null);
+});
+
+test('show-short-names.json loads, normalizes, and every value is at least 4 chars', () => {
+  const { loadShortNames } = require('./show-title-variants.js');
+  const raw = JSON.parse(readFileSync(join(__dirname, 'show-short-names.json'), 'utf8'));
+  const map = loadShortNames(raw);
+  assert.deepEqual(map.get('phantom of the opera'), ['phantom']);
+  for (const [k, vals] of map) for (const v of vals) assert.ok(v.length >= 4, `${k}: "${v}" is too short to ever match`);
+  assert.deepEqual([...loadShortNames({ shortNames: { 'The Foo': ['Foo Bar!'] } })], [['foo', ['foo bar']]]);
+});
+
+// BRO-4584 cousin: 2-3 letter titles never passed validateShowMentioned, so
+// Tru (West End) reviews were all flagged showNotMentioned and never scored.
+test('curated 2-3 letter titles count when written as a proper noun twice', () => {
+  const { textMentionsShortTitle } = require('./show-title-variants.js');
+  const tru = `Jay Presson Allen's Tru returns. As TRU, the actor holds the room; Tru is lonely.${FILLER}`;
+  assert.equal(textMentionsShortTitle(tru, 'Tru'), 'tru');
+  assert.equal(validateShowMentioned(tru, 'Tru', 'tru-off-west-end-2026').valid, true);
+  // One proper-noun hit is not enough; lowercase prose never counts.
+  assert.equal(textMentionsShortTitle(`While Tru is an intimate portrait.${FILLER}`, 'Tru'), null);
+  assert.equal(textMentionsShortTitle(`Ink stains, ink spills, ink everywhere.${FILLER}`.toLowerCase(), 'Ink'), null);
+  assert.equal(textMentionsShortTitle(`Inkwell and Wittgenstein.${FILLER}`, 'Ink'), null);
+});
+
+test('common-word short titles are not on the proper-noun list', () => {
+  const { textMentionsShortTitle } = require('./show-title-variants.js');
+  const text = `Act One drags. Act Two soars. Red lights. Red curtains. Art Garfunkel. Art Deco. Six actors. Six songs.${FILLER}`;
+  for (const t of ['The Act', 'Act', 'Red', 'Art', 'Six', 'SIX', 'Big', 'Ann']) assert.equal(textMentionsShortTitle(text, t), null, t);
+});

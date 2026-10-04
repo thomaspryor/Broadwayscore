@@ -36,18 +36,6 @@
     "queuedAt": "2026-10-04T15:49:45.381Z"
   },
   {
-    "conditionKey": "review-gap:opening-window:bull-off-west-end-2026",
-    "title": "Review gap — \"Bull\" missing 4 cited review(s)",
-    "description": "Bull (bull-off-west-end-2026): 4 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=bull-off-west-end-2026 --checkpoint --ingest-missing",
-    "severity": "warning",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [],
-    "queuedAt": "2026-10-04T15:49:45.389Z"
-  },
-  {
     "conditionKey": "review-gap:opening-window:flamenc-oh-off-west-end-2026",
     "title": "Review gap — \"Flamenc Oh!!\" missing 1 cited review(s)",
     "description": "Flamenc Oh!! (flamenc-oh-off-west-end-2026): 1 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=flamenc-oh-off-west-end-2026 --checkpoint --ingest-missing",
@@ -134,7 +122,7 @@
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-04T16:37:59.381Z"
+    "queuedAt": "2026-10-04T16:57:13.919Z"
   },
   {
     "conditionKey": "review-gap:opening-window:twenty-thousand-streets-off-west-end-2026",
@@ -146,7 +134,7 @@
     "decisionPrompt": null,
     "model": null,
     "fields": [],
-    "queuedAt": "2026-10-04T16:37:59.466Z"
+    "queuedAt": "2026-10-04T16:57:14.010Z"
   },
   {
     "conditionKey": "land:land/bro-4584-short-names",
@@ -176,5 +164,63 @@
       }
     ],
     "queuedAt": "2026-10-04T16:37:01.421Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4575-header-guard",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4575-header-guard",
+    "description": "land.yml did not land land/bro-4575-header-guard: the unit-tests-node gate went red at a1c680e2a5. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37217674731",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4575-header-guard"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "a1c680e2a5dbdbea009cdc4b6e75a24b21306d08"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37217674731"
+      }
+    ],
+    "queuedAt": "2026-10-04T17:10:42.157Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4593-land-preflight",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4593-land-preflight",
+    "description": "land.yml did not land land/bro-4593-land-preflight: the unit-tests-node gate went red at e35d0ba6de. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37218745967",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4593-land-preflight"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e35d0ba6deef49f3489aea1f5766394b2ffa56a4"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37218745967"
+      }
+    ],
+    "queuedAt": "2026-10-04T17:24:00.112Z"
   }
 ]

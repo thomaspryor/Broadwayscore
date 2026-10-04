@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-04T16:41:16.274Z",
+  "generatedAt": "2026-10-04T17:44:22.461Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 217,
-  "clean": 215,
-  "defective": 2,
+  "clean": 214,
+  "defective": 3,
   "byType": {
-    "unreachable": 2
+    "unreachable": 3
   },
   "shows": [
     {
-      "showId": "alice-in-wonderland-off-broadway-2026",
-      "title": "Alice in Wonderland",
-      "openingDate": "2026-09-26",
+      "showId": "slam-frank-off-broadway-2026",
+      "title": "Slam Frank",
+      "openingDate": "2026-10-04",
       "ok": false,
       "defects": [
         {
@@ -26,9 +26,24 @@
       "deployedCount": null
     },
     {
-      "showId": "savage-and-simon-says-a-double-bill-off-west-end-2026",
-      "title": "Savage & Simon Says: A Double Bill",
-      "openingDate": "2026-09-24",
+      "showId": "spandex-off-broadway-2026",
+      "title": "Spandex",
+      "openingDate": "2026-09-19",
+      "ok": false,
+      "defects": [
+        {
+          "type": "unreachable",
+          "detail": "HTTP 404"
+        }
+      ],
+      "missingFromProd": [],
+      "localCount": 0,
+      "deployedCount": null
+    },
+    {
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
         {

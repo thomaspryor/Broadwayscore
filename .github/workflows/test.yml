@@ -42,6 +42,10 @@ on:
       # covered by scripts/lib/**, but a solo edit to the wrapper would
       # otherwise trigger ZERO CI — the exact gap task #1745 documents.
       - 'scripts/check-missed-broadcasts.js'
+      # scripts/deploy-now.js must call scripts/lib/prod-held-flags-guard.js before
+      # `vercel build --prod` (BRO-4525); prod-held-flags-guard.test.mjs checks
+      # that, but a solo edit dropping the call would otherwise trigger ZERO CI.
+      - 'scripts/deploy-now.js'
       # scripts/cmux-auth-stall-watchdog.js (BRO-4056) is the I/O wrapper for
       # scripts/lib/cmux-auth-stall.js (covered by the glob above) — a solo
       # edit to the wrapper (e.g. the read-screen/rename loop) would otherwise

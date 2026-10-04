@@ -1,13 +1,24 @@
 {
-  "lastUpdated": "2026-09-27T17:35:23.160Z",
+  "lastUpdated": "2026-10-04T17:21:05.839Z",
   "ratingThreshold": 20,
   "jaccardThreshold": 0.6,
-  "count": 59,
+  "count": 84,
   "flagged": [
+    {
+      "mezzName": "The Great Gatsby",
+      "theater": "London Coliseum",
+      "ratingsCount": 3387,
+      "mYear": 2025,
+      "ourShowId": "the-great-gatsby-tour-2026",
+      "ourTitle": "The Great Gatsby",
+      "ourYear": 2026,
+      "jaccard": 1,
+      "objectId": "EXqybb68DU"
+    },
     {
       "mezzName": "The Curious Case of Benjamin Button",
       "theater": "Ambassadors Theatre",
-      "ratingsCount": 2447,
+      "ratingsCount": 2448,
       "mYear": 2024,
       "ourShowId": "the-curious-case-of-benjamin-button-off-broadway-2026",
       "ourTitle": "The Curious Case of Benjamin Button",
@@ -16,9 +27,53 @@
       "objectId": "4fCQSjiBdq"
     },
     {
+      "mezzName": "Harry Potter and the Cursed Child, Part One",
+      "theater": "Palace Theatre",
+      "ratingsCount": 1713,
+      "mYear": 2016,
+      "ourShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "ourTitle": "Harry Potter and the Cursed Child",
+      "ourYear": null,
+      "jaccard": 0.67,
+      "objectId": "wp5ifu0FOG"
+    },
+    {
+      "mezzName": "Harry Potter and the Cursed Child, Part Two",
+      "theater": "Palace Theatre",
+      "ratingsCount": 1676,
+      "mYear": 2016,
+      "ourShowId": "harry-potter-and-the-cursed-child-one-part-west-end-2026",
+      "ourTitle": "Harry Potter and the Cursed Child",
+      "ourYear": null,
+      "jaccard": 0.67,
+      "objectId": "yzb3JVKcma"
+    },
+    {
+      "mezzName": "The Choir of Man",
+      "theater": "The Arts at Marble Arch",
+      "ratingsCount": 1549,
+      "mYear": 2022,
+      "ourShowId": "the-choir-of-man-marble-arch-off-west-end-2026",
+      "ourTitle": "The Choir of Man",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "e8Zl45NhYa"
+    },
+    {
+      "mezzName": "Mrs Doubtfire",
+      "theater": "Shaftesbury Theatre",
+      "ratingsCount": 1393,
+      "mYear": 2023,
+      "ourShowId": "mrs-doubtfire-tour-2025",
+      "ourTitle": "Mrs. Doubtfire",
+      "ourYear": 2025,
+      "jaccard": 1,
+      "objectId": "EwoWnDAcBZ"
+    },
+    {
       "mezzName": "Just For One Day",
       "theater": "Shaftesbury Theatre",
-      "ratingsCount": 1084,
+      "ratingsCount": 1087,
       "mYear": 2025,
       "ourShowId": "one-day-the-musical-west-end-2026",
       "ourTitle": "One Day – The Musical",
@@ -27,9 +82,31 @@
       "objectId": "SCnQAOSEFa"
     },
     {
+      "mezzName": "Shucked",
+      "theater": "Regent's Park Open Air Theatre",
+      "ratingsCount": 727,
+      "mYear": 2025,
+      "ourShowId": "shucked-tour-2024",
+      "ourTitle": "Shucked",
+      "ourYear": 2024,
+      "jaccard": 1,
+      "objectId": "GZrc5rTYwp"
+    },
+    {
+      "mezzName": "Richard II",
+      "theater": "The Bridge Theatre",
+      "ratingsCount": 647,
+      "mYear": 2025,
+      "ourShowId": "richard-ii-off-west-end-2026",
+      "ourTitle": "Richard Ii",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "nwmcpkryBE"
+    },
+    {
       "mezzName": "Romeo and Juliet",
       "theater": "Tom Stoppard Theatre",
-      "ratingsCount": 583,
+      "ratingsCount": 585,
       "mYear": 2024,
       "ourShowId": "romeo-and-juliet-off-broadway-2026",
       "ourTitle": "Romeo and Juliet",
@@ -73,7 +150,7 @@
     {
       "mezzName": "Macbeth",
       "theater": "Harold Pinter Theatre",
-      "ratingsCount": 328,
+      "ratingsCount": 329,
       "mYear": 2024,
       "ourShowId": "macbeth-off-broadway-2026",
       "ourTitle": "Macbeth",
@@ -84,7 +161,7 @@
     {
       "mezzName": "A Midsummer Night's Dream",
       "theater": "The Bridge Theatre",
-      "ratingsCount": 324,
+      "ratingsCount": 328,
       "mYear": 2025,
       "ourShowId": "a-midsummer-nights-dream-unicorn-off-west-end-2026",
       "ourTitle": "A Midsummer Night's Dream - Unicorn",
@@ -104,26 +181,70 @@
       "objectId": "CppYuGhmEt"
     },
     {
-      "mezzName": "Sylvia (Musical)",
-      "theater": "Old Vic Theatre",
+      "mezzName": "Elektra",
+      "theater": "Tom Stoppard Theatre",
       "ratingsCount": 281,
-      "mYear": 2023,
-      "ourShowId": "sylvia-off-west-end-2026",
-      "ourTitle": "Sylvia",
+      "mYear": 2025,
+      "ourShowId": "elektra-off-broadway-2026",
+      "ourTitle": "Elektra",
       "ourYear": null,
       "jaccard": 1,
-      "objectId": "VMH1NRg79N"
+      "objectId": "iXGzPnIbgw"
+    },
+    {
+      "mezzName": "Arcadia",
+      "theater": "Tom Stoppard Theatre",
+      "ratingsCount": 272,
+      "mYear": 2026,
+      "ourShowId": "arcadia-duke-of-yorks-west-end-2026",
+      "ourTitle": "Arcadia",
+      "ourYear": 2026,
+      "jaccard": 1,
+      "objectId": "BOv8LN51mE"
     },
     {
       "mezzName": "The Seagull",
       "theater": "Barbican Theatre",
-      "ratingsCount": 223,
+      "ratingsCount": 224,
       "mYear": 2025,
       "ourShowId": "the-seagull-globe-off-west-end-2026",
       "ourTitle": "The Seagull",
       "ourYear": null,
       "jaccard": 1,
       "objectId": "0ieMiOedJD"
+    },
+    {
+      "mezzName": "The Choir of Man",
+      "theater": "The Arts at Marble Arch",
+      "ratingsCount": 219,
+      "mYear": 2021,
+      "ourShowId": "the-choir-of-man-marble-arch-off-west-end-2026",
+      "ourTitle": "The Choir of Man",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "Zsdb95rHZR"
+    },
+    {
+      "mezzName": "My Master Builder",
+      "theater": "Wyndham's Theatre",
+      "ratingsCount": 219,
+      "mYear": 2025,
+      "ourShowId": "the-master-builder-off-west-end-2026",
+      "ourTitle": "The Master Builder",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "9RbYb7AEz0"
+    },
+    {
+      "mezzName": "A Midsummer Night's Dream",
+      "theater": "Barbican Theatre",
+      "ratingsCount": 190,
+      "mYear": 2024,
+      "ourShowId": "a-midsummer-nights-dream-unicorn-off-west-end-2026",
+      "ourTitle": "A Midsummer Night's Dream - Unicorn",
+      "ourYear": null,
+      "jaccard": 0.75,
+      "objectId": "8v6BKffnKV"
     },
     {
       "mezzName": "Annie",
@@ -137,17 +258,6 @@
       "objectId": "0RbvRtLbxM"
     },
     {
-      "mezzName": "A Midsummer Night's Dream",
-      "theater": "Barbican Theatre",
-      "ratingsCount": 188,
-      "mYear": 2024,
-      "ourShowId": "a-midsummer-nights-dream-unicorn-off-west-end-2026",
-      "ourTitle": "A Midsummer Night's Dream - Unicorn",
-      "ourYear": null,
-      "jaccard": 0.75,
-      "objectId": "8v6BKffnKV"
-    },
-    {
       "mezzName": "2:22 A Ghost Story",
       "theater": "Lyric Theatre",
       "ratingsCount": 178,
@@ -157,6 +267,17 @@
       "ourYear": null,
       "jaccard": 1,
       "objectId": "I7VaeamRkP"
+    },
+    {
+      "mezzName": "Hell’s Kitchen",
+      "theater": "The Public - Newman Theater",
+      "ratingsCount": 172,
+      "mYear": 2023,
+      "ourShowId": "hells-kitchen-tour-2025",
+      "ourTitle": "Hell's Kitchen",
+      "ourYear": 2025,
+      "jaccard": 1,
+      "objectId": "PsTr43eP3c"
     },
     {
       "mezzName": "2:22 A Ghost Story",
@@ -181,15 +302,15 @@
       "objectId": "vsoUZh20Jj"
     },
     {
-      "mezzName": "Christmas Carol Goes Wrong",
-      "theater": "Apollo Theatre",
+      "mezzName": "Wendy & Peter Pan",
+      "theater": "Barbican Theatre",
       "ratingsCount": 161,
       "mYear": 2025,
-      "ourShowId": "christmas-carol-goes-wrong-west-end-2026",
-      "ourTitle": "Christmas Carol Goes Wrong",
+      "ourShowId": "peter-pan-west-end-2026",
+      "ourTitle": "Peter Pan",
       "ourYear": null,
-      "jaccard": 1,
-      "objectId": "jkC9NmSu7H"
+      "jaccard": 0.67,
+      "objectId": "mOp9yVVTLH"
     },
     {
       "mezzName": "Othello",
@@ -205,7 +326,7 @@
     {
       "mezzName": "2:22 A Ghost Story",
       "theater": "Gielgud Theatre",
-      "ratingsCount": 142,
+      "ratingsCount": 143,
       "mYear": 2021,
       "ourShowId": "222-a-ghost-story-off-broadway-2026",
       "ourTitle": "2:22 - A Ghost Story",
@@ -216,7 +337,7 @@
     {
       "mezzName": "Much Ado About Nothing",
       "theater": "Shakespeare's Globe Theatre",
-      "ratingsCount": 140,
+      "ratingsCount": 143,
       "mYear": 2022,
       "ourShowId": "much-ado-about-nothing-off-west-end-2026",
       "ourTitle": "Much Ado About Nothing",
@@ -249,7 +370,7 @@
     {
       "mezzName": "A View from the Bridge",
       "theater": "Theatre Royal Haymarket",
-      "ratingsCount": 123,
+      "ratingsCount": 124,
       "mYear": 2024,
       "ourShowId": "a-view-from-the-bridge-off-broadway-2026",
       "ourTitle": "A View from the Bridge",
@@ -269,6 +390,17 @@
       "objectId": "vk1bBrvASz"
     },
     {
+      "mezzName": "Jesus Christ Superstar",
+      "theater": "Barbican Theatre",
+      "ratingsCount": 119,
+      "mYear": 2019,
+      "ourShowId": "jesus-christ-superstar-off-west-end-2026",
+      "ourTitle": "Jesus Christ Superstar",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "MhJPNA4qGV"
+    },
+    {
       "mezzName": "A Christmas Carol",
       "theater": "Old Vic Theatre",
       "ratingsCount": 117,
@@ -282,13 +414,35 @@
     {
       "mezzName": "Jack and the Beanstalk",
       "theater": "London Palladium",
-      "ratingsCount": 115,
+      "ratingsCount": 116,
       "mYear": 2022,
       "ourShowId": "jack-and-the-beanstalk-off-west-end-2026",
       "ourTitle": "Jack and The Beanstalk",
       "ourYear": null,
       "jaccard": 1,
       "objectId": "goK1ieIYGT"
+    },
+    {
+      "mezzName": "Peter Pan",
+      "theater": "London Palladium",
+      "ratingsCount": 115,
+      "mYear": 2023,
+      "ourShowId": "peter-pan-west-end-2026",
+      "ourTitle": "Peter Pan",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "0FjPjsllOE"
+    },
+    {
+      "mezzName": "Richard II",
+      "theater": "Astor Place",
+      "ratingsCount": 113,
+      "mYear": 2025,
+      "ourShowId": "richard-ii-off-west-end-2026",
+      "ourTitle": "Richard Ii",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "N5A7XLBuKi"
     },
     {
       "mezzName": "Macbeth",
@@ -304,7 +458,7 @@
     {
       "mezzName": "A Christmas Carol",
       "theater": "Old Vic Theatre",
-      "ratingsCount": 105,
+      "ratingsCount": 106,
       "mYear": 2024,
       "ourShowId": "a-christmas-carol-west-end-2026",
       "ourTitle": "A Christmas Carol",
@@ -322,6 +476,28 @@
       "ourYear": 2026,
       "jaccard": 1,
       "objectId": "3XBmw3uRHg"
+    },
+    {
+      "mezzName": "The Nutcracker",
+      "theater": "London Coliseum",
+      "ratingsCount": 96,
+      "mYear": 2021,
+      "ourShowId": "nutcracker-west-end-2026",
+      "ourTitle": "Nutcracker",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "y65tIZ3HT7"
+    },
+    {
+      "mezzName": "Death Note",
+      "theater": "Lyric Theatre",
+      "ratingsCount": 82,
+      "mYear": 2023,
+      "ourShowId": "death-note-the-musical-off-west-end-2027",
+      "ourTitle": "Death Note The Musical",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "4LITktxigc"
     },
     {
       "mezzName": "Spring Awakening",
@@ -344,6 +520,39 @@
       "ourYear": null,
       "jaccard": 1,
       "objectId": "NJNd0KZQA3"
+    },
+    {
+      "mezzName": "Romeo and Juliet",
+      "theater": "Almeida Theatre",
+      "ratingsCount": 80,
+      "mYear": 2023,
+      "ourShowId": "romeo-and-juliet-west-end-2027",
+      "ourTitle": "Romeo & Juliet",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "KSHeOyGY1u"
+    },
+    {
+      "mezzName": "King Lear",
+      "theater": "Wyndham's Theatre",
+      "ratingsCount": 80,
+      "mYear": 2023,
+      "ourShowId": "king-lear-2-off-west-end-2026",
+      "ourTitle": "King Lear 2",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "DNHZRzvzSi"
+    },
+    {
+      "mezzName": "King Lear",
+      "theater": "The Shed - Kenneth C. Griffin Theater",
+      "ratingsCount": 76,
+      "mYear": 2024,
+      "ourShowId": "king-lear-2-off-west-end-2026",
+      "ourTitle": "King Lear 2",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "RB6QUN2O1Q"
     },
     {
       "mezzName": "Much Ado About Nothing",
@@ -381,7 +590,7 @@
     {
       "mezzName": "Othello",
       "theater": "National Theatre - Lyttelton",
-      "ratingsCount": 69,
+      "ratingsCount": 70,
       "mYear": 2022,
       "ourShowId": "othello-bedlam-off-broadway-2026",
       "ourTitle": "Othello (Bedlam)",
@@ -405,11 +614,33 @@
       "theater": "Donmar Warehouse",
       "ratingsCount": 68,
       "mYear": 2024,
-      "ourShowId": "the-cherry-orchard-west-end-2026",
+      "ourShowId": "the-cherry-orchard-riverside-studios-off-west-end-2026",
       "ourTitle": "The Cherry Orchard",
       "ourYear": 2026,
       "jaccard": 1,
       "objectId": "ebaTrleHQu"
+    },
+    {
+      "mezzName": "King Lear",
+      "theater": "Almeida Theatre",
+      "ratingsCount": 68,
+      "mYear": 2024,
+      "ourShowId": "king-lear-2-off-west-end-2026",
+      "ourTitle": "King Lear 2",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "FmXmUJG1tG"
+    },
+    {
+      "mezzName": "Death Note",
+      "theater": "London Palladium",
+      "ratingsCount": 63,
+      "mYear": 2023,
+      "ourShowId": "death-note-the-musical-off-west-end-2027",
+      "ourTitle": "Death Note The Musical",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "FCO6SQIRye"
     },
     {
       "mezzName": "A Midsummer Night's Dream",
@@ -427,11 +658,33 @@
       "theater": "St. Ann's Warehouse",
       "ratingsCount": 59,
       "mYear": 2025,
-      "ourShowId": "the-cherry-orchard-west-end-2026",
+      "ourShowId": "the-cherry-orchard-riverside-studios-off-west-end-2026",
       "ourTitle": "The Cherry Orchard",
       "ourYear": 2026,
       "jaccard": 1,
       "objectId": "K9Aa9cdX0t"
+    },
+    {
+      "mezzName": "The Life",
+      "theater": "New York City Center - Mainstage",
+      "ratingsCount": 58,
+      "mYear": 2022,
+      "ourShowId": "life-of-pi-tour-2024",
+      "ourTitle": "Life of Pi",
+      "ourYear": 2024,
+      "jaccard": 1,
+      "objectId": "UZDfDh4zRB"
+    },
+    {
+      "mezzName": "The Railway Children",
+      "theater": "King’s Cross Theatre",
+      "ratingsCount": 57,
+      "mYear": 2015,
+      "ourShowId": "the-railway-children-off-west-end-2026",
+      "ourTitle": "The Railway Children",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "8G3opGKox8"
     },
     {
       "mezzName": "An Oak Tree",
@@ -445,17 +698,6 @@
       "objectId": "dJ8ZSvCzMT"
     },
     {
-      "mezzName": "The Railway Children",
-      "theater": "King’s Cross Theatre",
-      "ratingsCount": 56,
-      "mYear": 2015,
-      "ourShowId": "the-railway-children-off-west-end-2026",
-      "ourTitle": "The Railway Children",
-      "ourYear": null,
-      "jaccard": 1,
-      "objectId": "8G3opGKox8"
-    },
-    {
       "mezzName": "2:22 A Ghost Story",
       "theater": "Noël Coward Theatre",
       "ratingsCount": 55,
@@ -465,6 +707,17 @@
       "ourYear": null,
       "jaccard": 1,
       "objectId": "3t6hFC0xSy"
+    },
+    {
+      "mezzName": "Jesus Christ Superstar",
+      "theater": "Theatre Royal Drury Lane",
+      "ratingsCount": 54,
+      "mYear": 2026,
+      "ourShowId": "jesus-christ-superstar-off-west-end-2026",
+      "ourTitle": "Jesus Christ Superstar",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "cvxLDCGtUH"
     },
     {
       "mezzName": "A Christmas Carol",
@@ -511,17 +764,6 @@
       "objectId": "X1GdkHPvID"
     },
     {
-      "mezzName": "A Ghost in Your Ear",
-      "theater": "Hampstead Theatre - Downstairs",
-      "ratingsCount": 42,
-      "mYear": 2025,
-      "ourShowId": "a-ghost-in-your-ear-off-broadway-2026",
-      "ourTitle": "A Ghost In Your Ear",
-      "ourYear": 2026,
-      "jaccard": 1,
-      "objectId": "6RS3tCNjvm"
-    },
-    {
       "mezzName": "The Visitors (Jane Harrison)",
       "theater": "Perelman Performing Arts Center (PAC NYC)",
       "ratingsCount": 39,
@@ -566,6 +808,17 @@
       "objectId": "E2YInuhSw1"
     },
     {
+      "mezzName": "This Is Not A Drill",
+      "theater": "The Theater at St. Jean",
+      "ratingsCount": 30,
+      "mYear": 2025,
+      "ourShowId": "this-is-not-not-a-drill-off-broadway-2026",
+      "ourTitle": "This Is Not Not a Drill",
+      "ourYear": 2026,
+      "jaccard": 1,
+      "objectId": "cb06dRS5lF"
+    },
+    {
       "mezzName": "Othello",
       "theater": "Lyric Hammersmith",
       "ratingsCount": 30,
@@ -588,17 +841,6 @@
       "objectId": "bzwhgrfrCn"
     },
     {
-      "mezzName": "Hole!",
-      "theater": "Soho Theatre",
-      "ratingsCount": 28,
-      "mYear": 2026,
-      "ourShowId": "hole-off-broadway-2026",
-      "ourTitle": "Hole!",
-      "ourYear": null,
-      "jaccard": 1,
-      "objectId": "XrtISCDH7j"
-    },
-    {
       "mezzName": "Feeling Afraid As If Something Terrible Is Going To Happen",
       "theater": "Bush Theatre",
       "ratingsCount": 28,
@@ -608,6 +850,17 @@
       "ourYear": null,
       "jaccard": 1,
       "objectId": "QuavjDhEdP"
+    },
+    {
+      "mezzName": "An Act of God",
+      "theater": "Studio 54",
+      "ratingsCount": 27,
+      "mYear": 2015,
+      "ourShowId": "act-of-god-off-west-end-2026",
+      "ourTitle": "Act of God",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "lqgDVSXa9r"
     },
     {
       "mezzName": "A Christmas Carol",
@@ -621,15 +874,15 @@
       "objectId": "BN5YLtzGQo"
     },
     {
-      "mezzName": "School Pictures",
-      "theater": "Playwrights Horizons - Peter Jay Sharp Theater",
-      "ratingsCount": 24,
-      "mYear": 2023,
-      "ourShowId": "school-pictures-off-broadway-2026",
-      "ourTitle": "School Pictures",
+      "mezzName": "Jane Eyre",
+      "theater": "Lincoln Center - David Geffen Hall",
+      "ratingsCount": 23,
+      "mYear": 2026,
+      "ourShowId": "jane-eyre-rose-kingston-off-west-end-2026",
+      "ourTitle": "Jane Eyre",
       "ourYear": null,
       "jaccard": 1,
-      "objectId": "rz65hdEq3G"
+      "objectId": "8E5lCKiYUf"
     },
     {
       "mezzName": "Julius Caesar",
@@ -645,13 +898,35 @@
     {
       "mezzName": "Miss Saigon",
       "theater": "Prince Edward Theatre",
-      "ratingsCount": 22,
+      "ratingsCount": 23,
       "mYear": 2027,
       "ourShowId": "miss-saigon-west-end-2026",
       "ourTitle": "Miss Saigon",
       "ourYear": 2027,
       "jaccard": 1,
       "objectId": "B1ZcVBisrp"
+    },
+    {
+      "mezzName": "Peter Pan",
+      "theater": "Phoenix Theatre",
+      "ratingsCount": 22,
+      "mYear": 2024,
+      "ourShowId": "peter-pan-west-end-2026",
+      "ourTitle": "Peter Pan",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "Gt92JeU5vL"
+    },
+    {
+      "mezzName": "Little Dancer",
+      "theater": "Theatre Royal Drury Lane",
+      "ratingsCount": 20,
+      "mYear": 2025,
+      "ourShowId": "little-dancer-off-west-end-2027",
+      "ourTitle": "Little Dancer",
+      "ourYear": null,
+      "jaccard": 1,
+      "objectId": "iQHjL9UKLB"
     }
   ]
 }

@@ -23,7 +23,7 @@ import { getMarketMinReviews } from './market-utils';
 import { isHomepageNotable, isAcclaimedKnownPropertyRevival, notabilityRank, NOTABILITY_THRESHOLDS, type NotabilitySignals } from './homepage-notability';
 import { getShowCommercial } from './data-commercial';
 import { getShowAwards } from './data-awards';
-import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig } from '@/config/browse-pages';
+import { BROWSE_PAGES, BrowsePageConfig, BrowseFilterContext, getAllBrowseSlugs as getBrowseSlugsFromConfig, getBrowsePageConfig } from '@/config/browse-pages';
 import { slugify as urlSlugify } from '../../scripts/lib/url-slug';
 import { stubTheaterName, HIDDEN_LONDON_IDS } from '../../scripts/lib/page-name-sources';
 import { resolveNameRedirect, type SlugRedirectMap } from './slug-redirects';
@@ -1170,7 +1170,7 @@ export function getAllBestOfCategories(): BestOfCategory[] {
  * Get filtered and sorted shows for a browse page
  */
 export function getBrowseList(slug: string): BrowseList | undefined {
-  const config = BROWSE_PAGES[slug];
+  const config = getBrowsePageConfig(slug); // undefined while the page's requiresFeature flag is off
   if (!config) return undefined;
 
   const allShows = config.source === 'west-end' ? getWestEndShows()

@@ -314,7 +314,12 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const ranksByFormat = featureFlags.showRanks && (show.type === 'musical' || show.type === 'play')
     ? getShowRanks(show.id, { format: show.type })
     : null;
-  const commercial = getShowCommercial(show.slug);
+  // The commercial scorecard is unreleased (owner, 2026-10-04). Load its data
+  // only when the flag is on: ShowPageBelowFold is a client component, so
+  // anything passed to it lands in the page's RSC payload even when its
+  // section is hidden. Gating the render alone leaked capitalization and
+  // recoupment figures into every Broadway show page's source.
+  const commercial = featureFlags.commercial ? getShowCommercial(show.slug) : undefined;
   const sortedTicketLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
   const castFile = getShowCastFile(show.id);
@@ -377,7 +382,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   const currentMonday = getScheduleCurrentMonday();
   const showtimeIds = getShowShowtimeIds(show.id);
   const castTonyMap = featureFlags.castPages ? getShowCastTonyMap(show.id) : {};
-  const recoupmentTrend = getRecoupmentTrend(show.slug);
+  const recoupmentTrend = featureFlags.commercial ? getRecoupmentTrend(show.slug) : 'unknown';
   const venueSlug = show.venue ? slugify(show.venue) : null;
   const PRINCIPAL_ROLES = /^(director|co-director|book|music|lyrics|playwright|composer|lyricist|book writer|co-writer|author|translator|adaptation|english lyrics)/i;
   const creativePrincipals = featureFlags.creativePages && show.creativeTeam
