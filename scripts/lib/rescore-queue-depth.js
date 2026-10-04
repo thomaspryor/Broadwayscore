@@ -30,10 +30,12 @@ const path = require('path');
 const { listShowDirs } = require('./list-show-dirs');
 const { isScoreable } = require('./is-scoreable');
 const { isBlockedFromRescore } = require('./rescore-lifecycle');
+const { showContext } = require('./scoring-queue-counts');
 
 /**
  * @param {string} reviewTextsDir - path to data/review-texts
- * @param {Map<string,string>} titleById - showId -> title, for isScoreable's wrongShow override
+ * @param {Map<string,Object|string>} titleById - showId -> shows.json record (loadShowsById), or a bare
+ *   title. isScoreable's guards need category/status/type, not just the title (BRO-4563)
  * @returns {{totalFlagged:number, notScoreable:number, blocked:number, unblocked:number, byReasonUnblocked:Object<string,number>}}
  */
 function computeRescoreQueueDepth(reviewTextsDir, titleById) {
@@ -62,7 +64,7 @@ function computeRescoreQueueDepth(reviewTextsDir, titleById) {
       if (data.needsRescore !== true) continue;
       totalFlagged++;
 
-      const show = titleById.get(showDir) ? { title: titleById.get(showDir) } : undefined;
+      const show = showContext(titleById.get(showDir));
       if (!isScoreable(data, show, fp)) {
         notScoreable++;
         continue;

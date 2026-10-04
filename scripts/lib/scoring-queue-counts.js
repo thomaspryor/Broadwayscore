@@ -266,6 +266,19 @@ function loadShowsById(showsPath = path.join('data', 'shows.json')) {
   return map;
 }
 
+/**
+ * ctx.show from a map value that is either the shows.json record (preferred)
+ * or a bare title string (older callers and fixtures). A title alone hides
+ * category/status/type from the guards (BRO-4563).
+ *
+ * @param {Object|string|undefined} v
+ * @returns {Object|undefined}
+ */
+function showContext(v) {
+  if (v == null || v === '') return undefined;
+  return typeof v === 'string' ? { title: v } : v;
+}
+
 module.exports = {
   UNSCORED_SKIP,
   unscoredSkipReason,
@@ -275,4 +288,5 @@ module.exports = {
   isActionableEmergencyRetry,
   countScoringQueues,
   loadShowsById,
+  showContext,
 };
