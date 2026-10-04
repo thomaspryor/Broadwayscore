@@ -615,8 +615,8 @@ test.describe('My Shows — Import preview', () => {
     // visual baselines stay importer-free.
     await page.goto(`${MOCK_URL}&importer=1`);
     await waitForMockData(page);
-    await page.getByText('Import from Show Score or Mezzanine').click();
-    await page.locator('input[type="file"]').setInputFiles({
+    await page.getByText('Import from Show Score, Mezzanine or Theatr').click();
+    await page.locator('input[type="file"][accept=".json"]').setInputFiles({
       name: 'mezz-export.json',
       mimeType: 'application/json',
       buffer: Buffer.from(JSON.stringify(fixture)),
