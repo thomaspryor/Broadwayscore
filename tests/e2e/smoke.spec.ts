@@ -55,7 +55,8 @@ test.describe('Post-deploy smoke tests', () => {
     expect(visibleText).toMatch(/\d{2}/);
 
     // Reviews section exists
-    const reviewContent = page.locator('text=review').first();
+    // Visible only: the hero's "Based on N Critic Reviews" line is desktop-only.
+    const reviewContent = page.locator('text=review').filter({ visible: true }).first();
     await expect(reviewContent).toBeVisible({ timeout: 5000 });
 
     // No rendering bugs
@@ -67,18 +68,25 @@ test.describe('Post-deploy smoke tests', () => {
   // breaks the client (bad Supabase env, CSP blocking the auth script, a
   // hydration error in the header) would leave the button dead or missing
   // while every page above still renders. Open the sign-in modal; never
-  // submit it.
-  test('signed-out visitor can open the sign-in options', async ({ page }) => {
-    await page.goto('/show/wicked');
-    await expect(page.locator('h1')).toBeVisible({ timeout: 15000 });
+  // submit it. Phones get their own pass: below sm (640px) the header button is
+  // hidden and Sign In sits in the menu. The deploy runs chromium only, so the
+  // width is set here instead of relying on the mobile project.
+  for (const width of [1280, 390]) {
+    test(`signed-out visitor can open the sign-in options at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto('/show/wicked');
+      await expect(page.locator('h1')).toBeVisible({ timeout: 15000 });
 
-    const signIn = page.getByRole('button', { name: 'Sign in', exact: true });
-    await expect(signIn).toBeVisible({ timeout: 15000 });
-    await signIn.click();
+      const phone = width < 640;
+      if (phone) await page.getByRole('button', { name: 'Open menu' }).click();
+      const signIn = page.getByRole('button', { name: phone ? 'Sign In' : 'Sign in', exact: true });
+      await expect(signIn).toBeVisible({ timeout: 15000 });
+      await signIn.click();
 
-    await expect(page.getByRole('button', { name: 'Continue with Google' })).toBeVisible({ timeout: 10000 });
-    await expect(page.getByRole('button', { name: 'Continue with Apple' })).toBeVisible();
-  });
+      await expect(page.getByRole('button', { name: 'Continue with Google' })).toBeVisible({ timeout: 10000 });
+      await expect(page.getByRole('button', { name: 'Continue with Apple' })).toBeVisible();
+    });
+  }
 
   test('best-of page renders ranked show list', async ({ page }) => {
     await page.goto('/best/musicals');
@@ -141,10 +149,23 @@ test.describe('Post-deploy smoke tests', () => {
   test('commercial scorecard stays unreleased', async ({ request, baseURL }) => {
     test.skip(/demo\./.test(baseURL ?? ''), 'demo turns every flag on');
 
-    for (const p of ['/biz']) {
+    for (const p of ['/biz', '/browse/biggest-broadway-flops']) {
       const res = await request.get(p, { maxRedirects: 0 });
       expect(res.status(), `${p} should be a 404 while commercial is unreleased`).toBe(404);
     }
+
+    // The show page once shipped capitalization and recoupment figures in its
+    // RSC payload while the section itself was hidden. Object keys only
+    // ("key": in the payload), so a review that says "capitalization" does
+    // not trip it; recoupmentTrend is always passed, as "unknown" when off.
+    const showHtml = await (await request.get('/show/wicked')).text();
+    expect(showHtml).not.toMatch(/\\?"(capitalization|weeklyRunningCost|recoupedDate)\\?":|\\?"recoupmentTrend\\?":\\?"(?!unknown)/);
+
+    expect(await (await request.get('/llms.txt')).text()).not.toContain('Commercial Scorecard');
+    expect(await (await request.get('/sitemap/0.xml')).text()).not.toMatch(/\/biz</);
+    // Related-page links to the flops list go with it.
+    expect(await (await request.get('/browse/longest-running-broadway-shows')).text())
+      .not.toContain('/browse/biggest-broadway-flops');
   });
 
   test('audience buzz page renders scores', async ({ page }) => {
