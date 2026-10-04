@@ -865,10 +865,28 @@ jobs:
         timeout-minutes: 2
         run: node scripts/audit-fulltext-mentions-show-lifetime.js
 
+      # BRO-4603: the daily LLM pass the gate below (and review-write-guard.js)
+      # always assumed existed. Asks Opus, through content-verifier's own
+      # prompt, about each unverified suspect and writes
+      # data/audit/wrong-article-adjudicated.json (committed by "Commit lifetime
+      # sweep snapshots"). A 'same-show' verdict clears that exact text; a
+      # 'wrong-article' verdict keeps the gate red as CONFIRMED. Never edits
+      # review data. Capped at 30 suspects/run, 60s per call; ~15 min worst case
+      # inside the 210-min job ceiling. Until 2026-10-04 nothing ran this, so
+      # the gate failed whenever new reviews landed (22 unverified that day).
+      - name: wrong-article LLM adjudication (Opus, capped)
+        if: always()
+        continue-on-error: true
+        timeout-minutes: 15
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+        run: node scripts/audit-wrong-article.js --adjudicate --max=30
+
       # BRO-4383: NOT shadow mode. A scored review whose text is a different
       # article (2 reached the live site) is a correctness bug, so an
       # unverified suspect (no cast/creative/venue evidence, title named <=1x,
-      # no Opus verdict in data/audit/wrong-article-verified.json) fails the step.
+      # no Opus verdict in data/audit/wrong-article-verified.json or
+      # data/audit/wrong-article-adjudicated.json) fails the step.
       - name: wrong-article audit (fails on unverified suspects)
         if: always()
         timeout-minutes: 3
@@ -933,6 +951,7 @@ jobs:
           git add data/audit/slug-mismatch-lifetime.json 2>/dev/null || true
           git add data/audit/roundup-url-mismatch-lifetime.json 2>/dev/null || true
           git add data/audit/revival-unverified-lifetime.json 2>/dev/null || true
+          git add data/audit/wrong-article-adjudicated.json 2>/dev/null || true
           if git diff --staged --quiet; then
             echo "No lifetime sweep snapshot changes"
           else
