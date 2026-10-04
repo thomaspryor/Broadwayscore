@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-04T11:46:29.615Z",
+  "timestamp": "2026-10-04T12:14:24.871Z",
   "stats": {
     "totalReviews": 46119,
     "alreadyFlagged": 18720,
     "dateGuardCatches": 268,
-    "directorMismatch": 1213,
+    "directorMismatch": 1217,
     "tvFilmSignals": 1337,
     "londonSignals": 1266,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4234
+    "noPublishDate": 4230
   },
   "findings": [
     {
@@ -22609,6 +22609,58 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "boston-globe--unknown.json",
+      "publishDate": "2026-09-24",
+      "url": "https://www.bostonglobe.com/2026/09/24/metro/review-ri-operation-mincemeat-review-providence/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "broadwayworld--rachel-weinberg.json",
+      "publishDate": "2026-10-01",
+      "url": "https://www.broadwayworld.com/chicago/article/Review-OPERATION-MINCEMEAT-National-Tour-Presented-by-Broadway-In-Chicago-20261001",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "rachelweinbergreviews--unknown.json",
+      "publishDate": "2026-10-01",
+      "url": "https://rachelweinbergreviews.com/2026/10/01/review-operation-mincemeat-tour-presented-by-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "third-coast-review--unknown.json",
+      "publishDate": "2026-10-01",
+      "url": "https://thirdcoastreview.com/stages/2026/10/01/review-broadway-in-chicagos-operation-mincemeat",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
         }
       ]
     },
