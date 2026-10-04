@@ -84,6 +84,9 @@ test('SHOTS: scorecard, compact review list, audience card (optional)', () => {
   const reviews = SHOTS.find(s => s.name === 'reviews.png');
   assert.match(reviews.css, /p\.leading-snug/, 'pull quotes hidden so many rows fit');
   assert.equal(SHOTS.find(s => s.name === 'audience.png').optional, true);
+  // Placeholders ("Audience data will be added", "Reviews coming after press night") never match.
+  assert.match(SHOTS.find(s => s.name === 'audience.png').selector, /audience-scorecard-heading/);
+  assert.match(reviews.selector, /:has\(article\)/);
 });
 
 test('a page without an audience card still gets the other two images', async () => {

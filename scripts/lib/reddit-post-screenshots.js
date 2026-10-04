@@ -34,14 +34,17 @@ const PAD = 12; // breathing room around the card, CSS px
 const SHOTS = [
   { name: 'scorecard.png', selector: '[data-testid="show-hero-redesign"], [data-testid="show-header-card"]', label: 'Score card' },
   {
-    name: 'reviews.png', selector: '#critic-reviews', label: 'Critic reviews',
+    // :has(article): before press night the section is a "Reviews coming" placeholder.
+    name: 'reviews.png', selector: '#critic-reviews:has(article)', label: 'Critic reviews',
     // The owner posts the review list, many rows to one image. Each pull
     // quote is 4-6 lines at phone width, so with quotes only one review fit.
     // Rows are plain <article>s here (the .review-card class is not on every
     // page), and the Sort row is a page control, not content.
     css: '#critic-reviews article [class*="pl-24"], #critic-reviews article p.leading-snug, #critic-reviews div:has(> button):not(:has(article)) { display: none !important; }',
   },
-  { name: 'audience.png', selector: '#audience + section', label: 'Audience grade', optional: true },
+  // The real card only (AudienceBuzzCard). In previews the same slot holds an
+  // "Audience data will be added" placeholder, which is not worth posting.
+  { name: 'audience.png', selector: 'section[aria-labelledby="audience-scorecard-heading"]', label: 'Audience grade', optional: true },
 ];
 
 /**
