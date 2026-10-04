@@ -817,11 +817,12 @@ jobs:
         if: steps.check.outputs.pending_shows != ''
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          PENDING: ${{ steps.check.outputs.pending_shows }}
         run: |
-          IFS=',' read -ra SHOWS <<< "${{ steps.check.outputs.pending_shows }}"
-          for SHOW in "${SHOWS[@]}"; do
-            node scripts/generate-critic-consensus.js --show="$SHOW" || true
-          done
+          # One call for the whole list (--shows=a,b, BRO-4595): one shows.json
+          # load and one consensus-file write instead of one per show.
+          PENDING="${PENDING//[[:space:]]/}"
+          node scripts/generate-critic-consensus.js --shows="$PENDING" || true
 
       - name: Generate mobile data (pre-computed scores for email)
         if: steps.check.outputs.pending_shows != ''

@@ -58,6 +58,7 @@ scripts/bsc-prune.test.mjs
 scripts/bsc-reconcile-reopen-idempotency.test.mjs
 scripts/bsc-reconcile.test.mjs
 scripts/check-cross-outlet-attribution-drift.test.mjs
+scripts/check-header-overflow.test.mjs
 scripts/check-linear-drain-health.test.mjs
 scripts/check-linear-drain-throughput.test.mjs
 scripts/check-provider-spend.test.mjs
@@ -134,6 +135,7 @@ scripts/lib/migrate-reroute-backlog.test.mjs
 scripts/lib/notion-outcome-history.test.mjs
 scripts/lib/opening-night-scored-check.test.mjs
 scripts/lib/owner-alert-router.test.mjs
+scripts/lib/parse-show-list-arg.test.mjs
 scripts/lib/pre-send-banner.test.mjs
 scripts/lib/prod-held-flags-guard.test.mjs
 scripts/lib/prune-closeable.test.mjs
