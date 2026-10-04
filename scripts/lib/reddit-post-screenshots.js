@@ -40,7 +40,7 @@ const SHOTS = [
     // quote is 4-6 lines at phone width, so with quotes only one review fit.
     // Rows are plain <article>s here (the .review-card class is not on every
     // page), and the Sort row is a page control, not content.
-    css: '#critic-reviews article [class*="pl-24"], #critic-reviews article p.leading-snug, #critic-reviews div:has(> button):not(:has(article)) { display: none !important; }',
+    css: '#critic-reviews article [class*="pl-24"], #critic-reviews article p.leading-snug, #critic-reviews div:has(> button):not(:has(article)):not(article *) { display: none !important; }',
   },
   // The real card only (AudienceBuzzCard). In previews the same slot holds an
   // "Audience data will be added" placeholder, which is not worth posting.

@@ -2,6 +2,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import fs from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const { clipRect, cleanCut, MAX_ASPECT, captureShowImages, SHOTS } = require('./reddit-post-screenshots.js');
@@ -87,6 +88,21 @@ test('SHOTS: scorecard, compact review list, audience card (optional)', () => {
   // Placeholders ("Audience data will be added", "Reviews coming after press night") never match.
   assert.match(SHOTS.find(s => s.name === 'audience.png').selector, /audience-scorecard-heading/);
   assert.match(reviews.selector, /:has\(article\)/);
+});
+
+// The selectors and hide rules lean on site markup. A component change would
+// not crash the capture, it would silently drop an image or bring the quotes
+// back, so fail here instead.
+test('site markup still carries what the screenshot selectors rely on', () => {
+  const read = p => fs.readFileSync(new URL(`../../${p}`, import.meta.url), 'utf8');
+  const page = read('src/app/show/[slug]/page.tsx');
+  const list = read('src/components/ReviewsList.tsx');
+  const audience = read('src/components/AudienceBuzzCard.tsx');
+  assert.match(page, /id="critic-reviews"/);
+  assert.match(list, /<article\b/, 'review rows are <article>s');
+  assert.match(list, /<p className="[^"]*\bleading-snug\b/, 'pull quote <p> has leading-snug');
+  assert.match(list, /className="pl-24\b/, 'byline row has pl-24');
+  assert.match(audience, /aria-labelledby="audience-scorecard-heading"/);
 });
 
 test('a page without an audience card still gets the other two images', async () => {
