@@ -164,6 +164,11 @@ function isActionableEmergencyRetry(data, ctx) {
 function countScoringQueues(baseDir, options) {
   const opts = options || {};
   const showTitles = opts.showTitles || new Map();
+  // Full shows.json records by id. The scorer passes the whole record to
+  // isScoreable() (category/status/type matter to review-guards); a { title }
+  // stub here would count every tour production's review as not scoreable,
+  // and the count must agree with the selection (BRO-4563).
+  const showsById = opts.showsById || new Map();
   const counts = {
     unscored: 0,
     rescore: 0,
@@ -213,8 +218,9 @@ function countScoringQueues(baseDir, options) {
       }
       counts.scanned++;
 
-      const title = data.showId ? showTitles.get(data.showId) : undefined;
-      const ctx = { show: title ? { title } : undefined, showTitle: title, filePath };
+      const record = data.showId ? showsById.get(data.showId) : undefined;
+      const title = data.showId ? (showTitles.get(data.showId) || (record && record.title)) : undefined;
+      const ctx = { show: record || (title ? { title } : undefined), showTitle: title, filePath };
 
       const skip = unscoredSkipReason(data, ctx);
       if (skip === null) {

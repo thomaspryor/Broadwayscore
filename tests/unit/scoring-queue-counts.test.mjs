@@ -328,3 +328,39 @@ describe('isCapsuleReview', () => {
     assert.equal(isCapsuleReview(null), false);
   });
 });
+
+describe('countScoringQueues — the full show record reaches isScoreable (BRO-4563)', () => {
+  test('a tour production\'s own review counts as work only when the counter sees the show is a tour', () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'scoring-queue-tour-'));
+    try {
+      const dir = path.join(tmp, 'a-test-show-tour-2026');
+      fs.mkdirSync(dir);
+      const review = scoreableFile({
+        showId: 'a-test-show-tour-2026',
+        outletId: 'baltimoresun',
+        fullText: "Baltimore's theater scene benefits once again with the national tour debut of A Test Show. " + REVIEW_BODY,
+        textFetchedAt: '2026-10-04T01:41:12.047Z',
+      });
+      fs.writeFileSync(path.join(dir, 'baltimoresun--a-critic.json'), JSON.stringify(review));
+      const tour = { id: 'a-test-show-tour-2026', title: 'A Test Show', category: 'tour', status: 'open', openingDate: '2026-09-15' };
+      const showTitles = new Map([[tour.id, tour.title]]);
+      // The old title-only stub: the tour wording reads as contamination.
+      const stub = countScoringQueues(tmp, { showTitles });
+      assert.equal(stub.unscored, 0);
+      assert.equal(stub.unscoredResidue[UNSCORED_SKIP.NOT_SCOREABLE], 1);
+      // The full record, as the scorer now passes it: real work.
+      const full = countScoringQueues(tmp, { showTitles, showsById: new Map([[tour.id, tour]]) });
+      assert.equal(full.unscored, 1);
+    } finally {
+      fs.rmSync(tmp, { recursive: true, force: true });
+    }
+  });
+
+  test('the scorer and the counter both build the show from the full shows.json record', () => {
+    const src = fs.readFileSync(new URL('../../scripts/llm-scoring/index.ts', import.meta.url), 'utf8');
+    assert.match(src, /const showFor = \(d: any\)[^;]*showRecords\.get\(d\.showId\)/);
+    assert.doesNotMatch(src, /return title \? \{ title \} : undefined;/);
+    const cli = fs.readFileSync(new URL('../../scripts/count-scoring-queue.js', import.meta.url), 'utf8');
+    assert.match(cli, /countScoringQueues\(reviewTextsDir, \{ showTitles, showsById \}\)/);
+  });
+});

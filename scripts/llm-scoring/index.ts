@@ -332,13 +332,27 @@ function loadShowPriority(): Map<string, ShowPriorityInfo> {
  * Load show ID → title mapping for quality checks.
  * assessTextQuality needs the human-readable title to validate show mentions.
  */
-function loadShowTitles(): Map<string, string> {
+function loadShowTitles(records: Map<string, Record<string, any>> = loadShowRecords()): Map<string, string> {
   const map = new Map<string, string>();
+  for (const [id, show] of records) map.set(id, show.title);
+  return map;
+}
+
+/**
+ * Full shows.json records by id, for isScoreable(). The guards behind it
+ * (review-guards.js isIncludableForRebuild) read category / status / type,
+ * not just the title: a { title } stub made every tour production's own
+ * review look like tour contamination, so the Baltimore Sun review of the
+ * Maybe Happy Ending tour and 40 other tour reviews were never selected
+ * (BRO-4563).
+ */
+function loadShowRecords(): Map<string, Record<string, any>> {
+  const map = new Map<string, Record<string, any>>();
   try {
     const shows = JSON.parse(fs.readFileSync(SHOWS_JSON_PATH, 'utf-8'));
     for (const show of (shows.shows || shows)) {
       if (show.id && show.title) {
-        map.set(show.id, show.title);
+        map.set(show.id, show);
       }
     }
   } catch {
@@ -1026,11 +1040,10 @@ async function main(): Promise<void> {
   // Pre-load show titles so isScoreable() can activate the wrongShow stale-flag
   // override (predicate needs show.title; falls back safely when undefined).
   // Reused later for assessTextQuality (line ~870). Notion 34e637c5-416f-8121.
-  const showTitles = loadShowTitles();
-  const showFor = (d: any): { title: string } | undefined => {
-    const title = d.showId ? showTitles.get(d.showId) : undefined;
-    return title ? { title } : undefined;
-  };
+  const showRecords = loadShowRecords();
+  const showTitles = loadShowTitles(showRecords);
+  const showFor = (d: any): Record<string, any> | undefined =>
+    (d.showId ? showRecords.get(d.showId) : undefined);
 
   // Context object the shared queue predicates need (scripts/lib/scoring-queue-counts.js).
   const queueCtx = (f: { path: string; data: any }) => ({
