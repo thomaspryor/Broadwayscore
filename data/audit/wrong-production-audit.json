@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-04T19:02:51.628Z",
+  "timestamp": "2026-10-04T19:13:59.858Z",
   "stats": {
-    "totalReviews": 46171,
-    "alreadyFlagged": 18737,
+    "totalReviews": 46204,
+    "alreadyFlagged": 18738,
     "dateGuardCatches": 269,
-    "directorMismatch": 1219,
-    "tvFilmSignals": 1337,
-    "londonSignals": 1269,
+    "directorMismatch": 1226,
+    "tvFilmSignals": 1338,
+    "londonSignals": 1270,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4238
+    "noPublishDate": 4243
   },
   "findings": [
     {
@@ -12062,6 +12062,24 @@
     },
     {
       "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "file": "aislesay--david-spencer.json",
+      "publishDate": "2026-02-01",
+      "url": "https://aislesay.com/going-bacharach-songs-of-an-icon/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david zippel\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
       "file": "cititour--brian-scott-lipton.json",
       "score": 75,
       "publishDate": null,
@@ -12100,10 +12118,46 @@
     },
     {
       "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "file": "nitelifeexchange-com--nitelife-exchange.json",
+      "publishDate": "2026-01-13",
+      "url": "https://nitelifeexchange.com/going-bacharach-the-songs-of-an-icon-a-sparkling-gem-of-a-revue/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david zippel\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
       "file": "nysr--david-finkle.json",
       "score": 71,
       "publishDate": "2026-01-13",
       "url": "https://nystagereview.com/2026/01/12/going-bacharach-mishandling-an-icons-songs/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"david zippel\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"adrian galante\" from going-bacharach-the-songs-of-an-icon-return-off-broadway-2026"
+        }
+      ]
+    },
+    {
+      "showId": "going-bacharach-the-songs-of-an-icon-off-broadway-2026",
+      "file": "theater-scene--victor-gluck.json",
+      "publishDate": "2026-01-17",
+      "url": "http://www.theaterscene.net/musicals/offbway/going-bachararch-the-songs-of-an-icon/victor-gluck/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -22646,6 +22700,19 @@
       "score": 95,
       "publishDate": "2026-10-01",
       "url": "https://www.broadwayworld.com/chicago/article/Review-OPERATION-MINCEMEAT-National-Tour-Presented-by-Broadway-In-Chicago-20261001",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"robert hastie\" from operation-mincemeat-2025"
+        }
+      ]
+    },
+    {
+      "showId": "operation-mincemeat-tour-2026",
+      "file": "picksinsix--ed-tracy.json",
+      "publishDate": "2026-10-02",
+      "url": "https://www.conversationswithedtracy.com/picksinsix/2026/10/2/picksinsix-review-operation-mincemeat-broadway-in-chicago",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -34009,6 +34076,19 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-snow-goose-regional-2026",
+      "file": "hartford-courant--christopher-arnott.json",
+      "publishDate": "2026-09-18",
+      "url": "https://www.courant.com/2026/09/18/theater-review-world-premiere-of-the-snow-goose-flies-off-course-at-goodspeed-opera-house/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
@@ -58665,6 +58745,19 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"bam\""
+        }
+      ]
+    },
+    {
+      "showId": "the-score-regional-2026",
+      "file": "broadwayworld--peter-rouleau.json",
+      "publishDate": "2026-09-17",
+      "url": "https://www.broadwayworld.com/washington-dc/article/Review-THE-SCORE-at-Sidney-Harman-Hall-20260917",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Mentions London venue: \"royal court\""
         }
       ]
     },
