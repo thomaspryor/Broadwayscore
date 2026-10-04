@@ -1,6 +1,6 @@
 {
   "issueNumber": "bro-4627",
-  "planId": "73d5bbb7-cd53-45af-8d93-529cdc8295f9",
+  "planId": "b551cf0e-09d2-4a7f-9abd-1d35e089fd37",
   "status": "pending",
   "submitter": {
     "name": null,
@@ -10,7 +10,8 @@
     "summary": "BRO-4623 part 4: add commercial entries for 11 Broadway productions that had none (Gutenberg!, The Shark Is Broken, Grey House, The Hills of California, Left on Tenth, Elf, The Last Five Years, John Proctor Is the Villain, Beaches, Other Desert Cities, Billy Crystal's 860).",
     "steps": [
       "Gutenberg! recouped its $6.75M capitalization (Broadway News, Deadline, Playbill, Jan 2024).",
-      "The others announced no recoupment and most never reported a capitalization, so they are TBD with recouped=false (closed) or null (running), and no Flop/Fizzle guess."
+      "The others announced no recoupment and most never reported a capitalization, so they are TBD with no Flop/Fizzle guess. Closed runs get recouped=false; Elf (a holiday limited run with record grosses, outcome never reported) and the two running shows get recouped=null (unknown).",
+      "Entries citing Broadway News' recoupment list link to it."
     ],
     "riskLevel": "low",
     "actions": [
@@ -71,6 +72,11 @@
               "type": "trade",
               "url": "https://playbill.com/article/grey-house-cuts-broadway-run-short",
               "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
+              "date": null
             }
           ]
         },
@@ -88,6 +94,11 @@
               "type": "trade",
               "url": "https://playbill.com/article/manhattan-theatre-club-joins-producing-team-for-broadways-the-hills-of-california-adds-title-to-subscriber-season",
               "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
+              "date": null
             }
           ]
         },
@@ -104,6 +115,11 @@
             {
               "type": "trade",
               "url": "https://playbill.com/article/left-on-tenth-leaves-broadway-february-2",
+              "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
               "date": null
             }
           ]
@@ -139,6 +155,11 @@
               "type": "trade",
               "url": "https://playbill.com/production/the-last-five-years-broadway-hudson-theatre-2025",
               "date": null
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
+              "date": null
             }
           ]
         },
@@ -156,6 +177,11 @@
               "type": "trade",
               "url": "https://deadline.com/2025/09/broadway-box-office-john-proctor-is-the-villain-1236513171/",
               "date": "2025-09-08"
+            },
+            {
+              "type": "trade",
+              "url": "https://www.broadwaynews.com/tag/recoupment/",
+              "date": null
             }
           ]
         },

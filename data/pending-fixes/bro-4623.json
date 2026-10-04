@@ -1,6 +1,6 @@
 {
   "issueNumber": "bro-4623",
-  "planId": "e548ecc9-dffa-436e-bce3-4f33f577b087",
+  "planId": "1c93a413-586f-4f7c-aeba-634db5227ae8",
   "status": "pending",
   "submitter": {
     "name": null,
@@ -10,8 +10,8 @@
     "summary": "BRO-4623 part 1: fix three wrong recoupment outcomes in the commercial scorecard (Purpose recouped Jun 2026 but was labelled Fizzle; Every Brilliant Thing recouped May 2026 but was TBD with no capitalization; Ragtime was marked recouped with no report, Broadway Journal says about half repaid). Each corrected entry is locked with humanReviewedDesignation.",
     "steps": [
       "Purpose: Deadline/Broadway News/Playbill (Jun 2026) report recoupment of the $5.25M capitalization about nine months after closing, via operating profit plus the NY State Broadway tax credit.",
-      "Every Brilliant Thing: Deadline/Playbill/Variety (May 2026) report recoupment of the $5.75M capitalization in the week ending May 3, 2026; closed Aug 9, 2026 as a limited run.",
-      "Ragtime: no recoupment report exists; the quoted Playbill sentence is not in any Playbill Ragtime article. Broadway Journal (May 6, 2026) says it had repaid about half of backers' stakes. LCT production with enhancement money, so Nonprofit with recouped unknown."
+      "Every Brilliant Thing: Deadline and Playbill (May 2026) report recoupment of the $5.75M capitalization in the week ending May 3, 2026; closed Aug 9, 2026 as a limited run.",
+      "Ragtime: no recoupment report exists; the quoted Playbill sentence is not in any Playbill Ragtime article. Broadway Journal (May 6, 2026) says it had repaid about half of backers' stakes. LCT production with enhancement money, so Nonprofit with recouped unknown. Its 2026 Best Revival of a Musical Tony and Aug 16 closing are from Broadway.com/Playbill (extension and closing coverage)."
     ],
     "riskLevel": "low",
     "actions": [
@@ -221,7 +221,7 @@
         "showId": "every-brilliant-thing",
         "field": "notes",
         "oldValue": "Starring Daniel Radcliffe, currently in previews at Hudson Theatre. Passed $1M in grosses per trade press reports despite winter weather challenges.",
-        "newValue": "Daniel Radcliffe solo play at the Hudson Theatre (opened Mar 12, 2026; closed Aug 9, 2026). Recouped its $5.75M capitalization in the week ending May 3, 2026, less than two months after opening (Deadline, Playbill, Variety).",
+        "newValue": "Daniel Radcliffe solo play at the Hudson Theatre (opened Mar 12, 2026; closed Aug 9, 2026). Recouped its $5.75M capitalization in the week ending May 3, 2026, less than two months after opening (Deadline, Playbill).",
         "description": "every-brilliant-thing: notes (recouped May 2026 per Deadline/Playbill)"
       },
       {
