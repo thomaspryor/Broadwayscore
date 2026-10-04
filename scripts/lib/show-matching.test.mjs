@@ -325,3 +325,40 @@ test('roman numerals: page-title checks keep the numeral too (BRO-4563 cached Ha
   assert.equal(titleWordsMatchWithConfidence('Henry V', 'Review Roundup: HENRY VIII at Shakespeare\'s Globe').matched, false);
   assert.equal(titleWordsMatchWithConfidence('Henry V', 'Review Roundup: HENRY V at the Donmar').matched, true);
 });
+
+test('two-letter title words and numbers are required too (BRO-4563 cousins)', () => {
+  const { titleWordsMatch, titleWordsMatchWithConfidence, validateRoundupPageTitle } = require('./show-matching.js');
+  const page = t => `<html><head><title>${t}</title></head><body></body></html>`;
+  const theLife = 'Review Roundup: THE LIFE at the Southwark Playhouse | BroadwayWorld';
+  assert.equal(validateRoundupPageTitle(page(theLife), 'Life of Pi', 'broadway', []).ok, false);
+  assert.equal(titleWordsMatchWithConfidence('Life of Pi', theLife).matched, false);
+  assert.equal(titleWordsMatch('Life of Pi', theLife), false);
+  const real = 'Review Roundup: LIFE OF PI on Broadway | BroadwayWorld';
+  assert.equal(validateRoundupPageTitle(page(real), 'Life of Pi', 'broadway', []).ok, true);
+  assert.equal(titleWordsMatch('Life of Pi', real), true);
+  assert.equal(titleWordsMatchWithConfidence('Life of Pi', real).matched, true);
+
+  // A kept short token never trips the short-title guard by itself: the real
+  // Richard II page title carries "| BroadwayWorld", an extra word.
+  const r2 = 'Review Roundup: RICHARD II at the Bridge Theatre, UK / West End | BroadwayWorld';
+  assert.equal(titleWordsMatch('Richard II', r2), true);
+  assert.equal(titleWordsMatch('Richard II', 'Review Roundup: RICHARD III at the Old Vic'), false);
+  // Long titles do not need the short word: headlines drop "Dr. Seuss'".
+  assert.equal(titleWordsMatch("Dr. Seuss' How the Grinch Stole Christmas!", 'How the Grinch Stole Christmas! The Musical returns'), true);
+  // The short word only narrows: "Mr." plus one shared word is no match.
+  assert.equal(titleWordsMatch('Mr. Saturday Night', 'Saturday Night Fever on Broadway'), false);
+  assert.equal(titleWordsMatch('Mr. Saturday Night', 'Review Roundup: MR. SATURDAY NIGHT on Broadway'), true);
+  const fever = 'Review Roundup: SATURDAY NIGHT FEVER | BroadwayWorld';
+  assert.equal(titleWordsMatchWithConfidence('Mr. Saturday Night', fever).matched, false);
+  assert.equal(validateRoundupPageTitle(page(fever), 'Mr. Saturday Night', 'broadway', []).ok, false);
+  const mrSat = 'Review Roundup: MR. SATURDAY NIGHT Opens on Broadway | BroadwayWorld';
+  assert.equal(validateRoundupPageTitle(page(mrSat), 'Mr. Saturday Night', 'broadway', []).ok, true);
+
+  const shows = [
+    { id: 'the-39-steps-2008', title: 'The 39 Steps', category: 'broadway', openingDate: '2008-01-15' },
+    { id: 'hay-fever-west-end-2026', title: 'Hay Fever', category: 'west-end', openingDate: '2026-10-01' },
+  ];
+  assert.equal(matchSlugToShow('review-roundup-steps-at-the-park', shows), null);
+  const hit = matchSlugToShow('review-roundup-the-39-steps', shows);
+  assert.equal(hit && (hit.show ? hit.show.id : hit.id), 'the-39-steps-2008');
+});
