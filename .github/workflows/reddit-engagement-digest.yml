@@ -21,6 +21,11 @@ on:
         required: false
         default: 'false'
         type: boolean
+      resend_shows:
+        description: 'Comma-separated show ids: redraft these and email them again with screenshots. Skips the digest and all other drafts; posted ones are never resent. Empty = normal run.'
+        required: false
+        default: ''
+        type: string
 
 concurrency:
   group: reddit-engagement-digest
@@ -28,6 +33,9 @@ concurrency:
 
 jobs:
   digest:
+    # A resend dispatch is about a few named drafts only; running the digest
+    # too would write a snapshot the 06:00 run overwrites unread (see above).
+    if: ${{ github.event_name == 'schedule' || inputs.resend_shows == '' }}
     runs-on: ubuntu-latest
     # Was 10 — the fallback chain (Reddit OAuth dormant, Bright Data refuses
     # reddit.com, unauthenticated JSON hard-403s) pushes nearly every call
@@ -135,8 +143,9 @@ jobs:
   draft-opening-posts:
     runs-on: ubuntu-latest
     # Was 10. BRO-4597 added Playwright setup (worst case ~8 min, see
-    # setup-playwright) and a 4-minute screenshot budget in the email step.
-    timeout-minutes: 20
+    # setup-playwright) and a 4-minute screenshot budget in the email step
+    # (90s per show on a resend, so 5 shows need ~8).
+    timeout-minutes: 25
     permissions:
       contents: write
 
@@ -165,10 +174,15 @@ jobs:
         env:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          RESEND_SHOWS: ${{ inputs.resend_shows }}
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="--dry-run"
+          fi
+          if [ -n "$RESEND_SHOWS" ]; then
+            [[ "$RESEND_SHOWS" =~ ^[a-z0-9-]+(,[a-z0-9-]+)*$ ]] || { echo "::error::resend_shows must be comma-separated show ids"; exit 1; }
+            ARGS="$ARGS --show=$RESEND_SHOWS"
           fi
           node scripts/draft-reddit-opening-posts.js $ARGS
 
@@ -186,10 +200,15 @@ jobs:
       - name: Email new Reddit drafts
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          RESEND_SHOWS: ${{ inputs.resend_shows }}
         run: |
           ARGS=""
           if [ "${{ inputs.dry_run }}" = "true" ]; then
             ARGS="--dry-run"
+          fi
+          # Validated in the draft step, which runs first.
+          if [ -n "$RESEND_SHOWS" ]; then
+            ARGS="$ARGS --resend=$RESEND_SHOWS"
           fi
           node scripts/send-reddit-post-email.js $ARGS
 

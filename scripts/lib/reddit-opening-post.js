@@ -917,6 +917,14 @@ function applyPostedDetection(drafts, posts) {
   return out;
 }
 
+/**
+ * A redraft whose LLM calls all failed falls back to the plain template. That
+ * must not replace a voiced draft the owner hasn't posted yet: keep the old one.
+ */
+function keepPreviousDraft(prev, source) {
+  return !!prev && prev.status === 'ready' && source === 'template' && !!prev.source && prev.source !== 'template';
+}
+
 /** Drafts the email should show today: ready, not posted, not stale. */
 function activeDrafts(drafts, nowMs) {
   return Object.values((drafts && drafts.drafts) || {})
@@ -926,6 +934,7 @@ function activeDrafts(drafts, nowMs) {
 }
 
 module.exports = {
+  keepPreviousDraft,
   SUBREDDIT_BY_MARKET,
   MIN_REVIEWS,
   audienceSourceNames,

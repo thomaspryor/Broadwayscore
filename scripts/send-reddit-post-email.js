@@ -95,7 +95,8 @@ async function main() {
   let due;
   if (RESEND.length) {
     const r = resendEmails(drafts, RESEND);
-    for (const sk of r.skipped) console.log(`Not resending ${sk.showId}: ${sk.reason}`);
+    // A typo in the dispatch input should show on the run, not pass as green.
+    for (const sk of r.skipped) console.log(`${sk.reason === 'already posted' ? '' : '::warning::'}Not resending ${sk.showId}: ${sk.reason}`);
     due = r.due;
   } else {
     due = dueEmails(drafts, Date.now());
@@ -116,7 +117,10 @@ async function main() {
     // them by hand (BRO-4597). Never blocks the email: no images on failure,
     // and none once the run's screenshot budget is spent (the job has a
     // hard timeout, and a killed job would re-send everything unstamped).
-    const withinBudget = Date.now() - started < SCREENSHOT_BUDGET_MS;
+    // A resend is a handful of shows the owner asked for by name: give each
+    // its images (the job timeout allows for this; see the workflow).
+    const budget = RESEND.length ? Math.max(SCREENSHOT_BUDGET_MS, RESEND.length * 90_000) : SCREENSHOT_BUDGET_MS;
+    const withinBudget = Date.now() - started < budget;
     const shots = NO_SCREENSHOTS || !withinBudget ? [] : await captureShowImages(draft.url, path.join(os.tmpdir(), 'reddit-post-images', draft.showId));
     let images = [];
     let attachments = [];

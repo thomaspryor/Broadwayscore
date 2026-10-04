@@ -292,6 +292,13 @@ test('forceShowId takes several shows at once ("a,b" or an array)', () => {
   assert.deepEqual(ids('s2'), ['s2']);
 });
 
+test('a redraft that fell back to the template never replaces an unposted voiced draft', () => {
+  assert.equal(lib.keepPreviousDraft({ status: 'ready', source: 'claude-sonnet-5-5' }, 'template'), true);
+  assert.equal(lib.keepPreviousDraft({ status: 'ready', source: 'claude-sonnet-5-5' }, 'gpt-5.4'), false, 'a new voiced draft wins');
+  assert.equal(lib.keepPreviousDraft({ status: 'ready', source: 'template' }, 'template'), false, 'template over template is fine (fresh numbers)');
+  assert.equal(lib.keepPreviousDraft(undefined, 'template'), false, 'a first draft always saves');
+});
+
 test('reddit email subjects classify as their own sender, not the opening digest', () => {
   const d = { showTitle: 'Delirium', score: 87, subreddit: 'Broadway' };
   assert.equal(mail.buildSubject(d, 'new'), 'Reddit post ready: Delirium (87/100) for r/Broadway');

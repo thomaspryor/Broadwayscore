@@ -217,7 +217,15 @@ async function main() {
   console.log(`${TODAY}: ${candidates.length} opening(s) to draft${FORCE_SHOW ? ` (forced ${FORCE_SHOW})` : ''}`);
 
   for (const c of candidates) {
+    const prevDraft = drafts.drafts[c.show.id];
+    // --show on a posted draft would pay for text nobody will use, and the
+    // stored text would no longer match what went up.
+    if (prevDraft && prevDraft.status === 'posted') { console.log(`  ${c.show.id}: already posted, not redrafting`); continue; }
     const { draft, source, problems } = await writeDraft(c.facts, examples);
+    if (lib.keepPreviousDraft(prevDraft, source)) {
+      console.log(`  ${c.show.id}: LLM failed (${problems.join("; ").slice(0, 200) || "no LLM run"}); keeping the earlier ${prevDraft.source} draft`);
+      continue;
+    }
     const entry = {
       showId: c.show.id,
       showTitle: c.show.title,
