@@ -868,7 +868,7 @@ jobs:
         # path fell back to the synopsis in the Critics' Take slot even with
         # a full set of scored reviews (Fear of 13, 21 reviews, no take).
         #
-        # Dispatches update-critic-consensus.yml per show rather than calling
+        # Dispatches update-critic-consensus.yml rather than calling
         # generate-critic-consensus.js inline here — critic-consensus.json is
         # registered 'single-writer' in scripts/lib/core-data-merge-registry.js
         # (only update-critic-consensus.yml writes it) and is NOT in
@@ -878,23 +878,46 @@ jobs:
         # opening-night-broadcast.yml's twice-daily call to the same script),
         # so writing the file inline here would raise a real, frequent
         # lost-update race between concurrent BW/WE poller pushes. Dispatching
-        # the queued workflow instead (concurrency: group: update-critic-
-        # consensus, cancel-in-progress: false) keeps the single-writer
-        # invariant intact and reuses the exact single-show remediation path
+        # the queued workflow instead keeps the single-writer invariant intact
+        # and reuses the remediation path
         # opening-night-checks/critics-take-present.check.js already declares
-        # for the same gap (task #389) — see that workflow's --show input.
+        # for the same gap (task #389) — see that workflow's `show` input.
         # Async by design: the take lands on a later deploy, not this one.
+        #
+        # BRO-4595: ONE dispatch carrying the whole polled list, never one per
+        # show. update-critic-consensus.yml runs under `concurrency: group:
+        # update-critic-consensus, cancel-in-progress: false`, which GitHub
+        # resolves as one RUNNING run plus one PENDING run: every further
+        # dispatch into the group cancels the previously pending one. The
+        # per-show loop this replaced dispatched 58 runs on 2026-10-04 (poller
+        # run 37208094284) and 56 of them were cancelled, so 56 shows never
+        # had a take regenerated. The generator takes the list as --shows=a,b
+        # (scripts/lib/parse-show-list-arg.js); the workflow's max_shows
+        # default (200) is above any plausible per-night batch, and the
+        # generator logs any requested IDs the cap did not reach.
+        # Residual supersession is accepted, not eliminated: the BW and WE
+        # pollers run in parallel and each dispatch once; the orchestrator
+        # dispatches per-show pollers (opening-night-orchestrator.yml, the
+        # single-show branch of its dispatch step, ~L649); remediation
+        # dispatches {show, force:'true'} (scripts/lib/opening-night-
+        # remediation.js dispatchWorkflow, ~L566); and rebuild-reviews.yml
+        # (~L959) dispatches a whole scan when nothing is active. Two of those
+        # arriving while a batch is pending can still cancel that batch. That
+        # is tolerable because this poller re-finds the same shows on every
+        # ~15-min cycle for the whole 2-day lookback (find step above), so a
+        # cancelled batch is re-dispatched on the next run and the gap
+        # self-heals; the Sunday whole scan is the backstop after that.
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SHOWS: ${{ steps.find.outputs.shows }}
         run: |
-          SHOWS="${{ steps.find.outputs.shows }}"
-          IFS=',' read -ra SHOW_ARRAY <<< "$SHOWS"
-          for SHOW_ID in "${SHOW_ARRAY[@]}"; do
-            SHOW_ID="$(echo "$SHOW_ID" | xargs)"
-            [ -z "$SHOW_ID" ] && continue
-            echo "Dispatching Critics' Take generation: $SHOW_ID"
-            gh workflow run update-critic-consensus.yml -f show="$SHOW_ID" || echo "::warning::Critics' Take dispatch failed for $SHOW_ID"
-          done
+          SHOWS="${SHOWS//[[:space:]]/}"
+          if [ -z "$SHOWS" ]; then
+            echo "No shows to dispatch Critics' Take generation for"
+            exit 0
+          fi
+          echo "Dispatching Critics' Take generation once for: $SHOWS"
+          gh workflow run update-critic-consensus.yml -f show="$SHOWS" || echo "::warning::Critics' Take dispatch failed for $SHOWS"
         continue-on-error: true
         timeout-minutes: 2
 

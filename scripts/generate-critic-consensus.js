@@ -13,6 +13,11 @@ import Anthropic from '@anthropic-ai/sdk';
 // with opening-night-checks/critics-take-present.check.js so the check cannot
 // demand a consensus this script is coded to refuse (task #389).
 import { MIN_SCORED_REVIEWS, isConsensusEligible } from './lib/critic-consensus-eligibility.js';
+// --shows=a,b / --show=a filter (BRO-4595). List form lets the opening-night
+// poller dispatch update-critic-consensus.yml ONCE for every polled show; its
+// concurrency group keeps a single pending run, so per-show dispatches were
+// cancelling each other (56 of 58 lost on 2026-10-04).
+import { parseShowListArg, describeShowFilter } from './lib/parse-show-list-arg.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -202,15 +207,24 @@ async function main() {
   const force = process.argv.includes('--force');
   const cleanupOrphans = process.argv.includes('--cleanup-orphans');
 
-  // Parse --show=X filter (single-show mode for opening night, etc.)
-  const showArg = process.argv.find(a => a.startsWith('--show='));
-  const showFilter = showArg ? showArg.split('=')[1].replace(/['"]/g, '') : null;
+  // Parse --shows=a,b / --show=a filter: Set of requested ids, or null for a
+  // whole scan (single-show mode for opening-night remediation; list mode for
+  // the poller's one-dispatch-per-cycle batch, BRO-4595).
+  const showFilter = parseShowListArg(process.argv.slice(2));
 
   // Parse --max-shows=N cap (cost control)
   const maxShowsArg = process.argv.find(a => a.startsWith('--max-shows='));
   const maxShows = maxShowsArg ? parseInt(maxShowsArg.split('=')[1], 10) : 0; // 0 = unlimited
 
-  if (showFilter) console.log(`🎯 Single-show mode: ${showFilter}\n`);
+  const filterDesc = describeShowFilter(showFilter);
+  if (filterDesc) console.log(`🎯 ${filterDesc}\n`);
+  if (showFilter && showFilter.size === 0) {
+    // A filter flag with no usable IDs is a no-op: return before the final
+    // write so push-core-data has nothing to commit and no deploy is
+    // dispatched for a run that changed nothing.
+    console.log('Nothing to do — exiting without touching the consensus file.');
+    return;
+  }
   if (maxShows > 0) console.log(`📊 Max shows cap: ${maxShows}\n`);
 
   let processedCount = 0;
@@ -219,6 +233,12 @@ async function main() {
 
   // Build show ID set for existence checks
   const showIdSet = new Set(showsData.shows.map(s => s.id));
+  if (showFilter) {
+    const unknown = [...showFilter].filter(id => !showIdSet.has(id));
+    if (unknown.length) {
+      console.warn(`⚠️  ${unknown.length} requested show id(s) not in shows.json (skipped): ${unknown.join(', ')}`);
+    }
+  }
   const showStatusMap = {};
   for (const s of showsData.shows) {
     showStatusMap[s.id] = s.status;
@@ -243,16 +263,27 @@ async function main() {
     }
   }
 
-  for (const show of showsData.shows) {
+  for (let i = 0; i < showsData.shows.length; i++) {
+    const show = showsData.shows[i];
     const showId = show.id;
     const showTitle = show.title;
 
-    // --show filter: skip non-matching shows
-    if (showFilter && showId !== showFilter) continue;
+    // --shows/--show filter: skip shows not in the requested set
+    if (showFilter && !showFilter.has(showId)) continue;
 
     // Max shows cap: stop after N generations
     if (maxShows > 0 && processedCount >= maxShows) {
       console.log(`\n⚠️  Reached max-shows cap (${maxShows}). Stopping.`);
+      if (showFilter) {
+        // Name what the cap dropped so a truncated batch is visible in the run
+        // log instead of silently losing shows (BRO-4595).
+        // "Not evaluated", not "dropped": some of these would have been
+        // skipped anyway (below the review floor, no texts, unchanged).
+        const unreached = showsData.shows.slice(i).filter(s => showFilter.has(s.id)).map(s => s.id);
+        if (unreached.length) {
+          console.warn(`⚠️  ${unreached.length} requested show(s) not evaluated because the cap was reached first: ${unreached.join(', ')}`);
+        }
+      }
       break;
     }
 
