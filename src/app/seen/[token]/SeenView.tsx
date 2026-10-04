@@ -5,7 +5,7 @@ import Link from 'next/link';
 import MiniStars from '@/components/user/Stars';
 import { PosterGridCard, SectionBand, UpcomingListRow, ViewModeToggle, type ViewMode } from '@/components/user/upcoming-cards';
 import { trackSharedDiary } from '@/lib/shared-diary/events';
-import { diarySummary, diaryTitle, type SharedDiaryView } from '@/lib/shared-diary/view-model';
+import { diarySummary, diaryTitle, type SeenEntryView, type SharedDiaryView } from '@/lib/shared-diary/view-model';
 
 /**
  * Display-only view of someone's shared theater diary (BRO-4566). Built from
@@ -14,6 +14,14 @@ import { diarySummary, diaryTitle, type SharedDiaryView } from '@/lib/shared-dia
  * iOS-style list rows, the grid/list switch. Everything is resolved on the
  * server; this fetches nothing.
  */
+/** Everything a grid card shows, for screen readers: the link wraps it all. */
+function entryLabel(e: SeenEntryView): string {
+  const parts = [`View ${e.title}`];
+  if (e.dateLabel) parts.push(`seen ${e.dateLabel}`);
+  if (e.rating > 0) parts.push(`${e.rating} out of 5 stars`);
+  return parts.join(', ');
+}
+
 export default function SeenView({ view }: { view: SharedDiaryView }) {
   const [mode, setMode] = useState<ViewMode>('grid');
   const empty = view.groups.length === 0;
@@ -57,7 +65,7 @@ export default function SeenView({ view }: { view: SharedDiaryView }) {
           const id = `diary-${g.year ?? 'undated'}`;
           return (
             <section key={id} className="mb-8" aria-labelledby={id} data-testid="diary-year">
-              <SectionBand as="h2" id={id} title={g.year ?? 'No date'} count={g.entries.length} noun="show" />
+              <SectionBand as="h2" id={id} title={g.year ?? 'No date'} count={g.entries.length} />
               {mode === 'grid' ? (
                 <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                   {g.entries.map((e, i) => (
@@ -67,9 +75,9 @@ export default function SeenView({ view }: { view: SharedDiaryView }) {
                         posterUrl={e.posterUrl}
                         date={e.dateLabel}
                         title={e.title}
-                        ariaLabel={`View ${e.title}`}
+                        ariaLabel={entryLabel(e)}
                         meta={
-                          <div className="mt-1.5 flex justify-center gap-0.5 min-h-[18px]" aria-label={`${e.rating} out of 5 stars`} role="img">
+                          <div className="mt-1.5 flex justify-center gap-0.5 min-h-[18px]" aria-hidden="true">
                             {e.rating > 0 && <MiniStars rating={e.rating} size="md" filledOnly />}
                           </div>
                         }

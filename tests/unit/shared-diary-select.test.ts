@@ -103,3 +103,27 @@ test('out-of-order rows still give one band per year, newest first, undated last
   assert.deepEqual(view.groups[0].entries.map(e => e.date), ['2025-06-01', '2025-01-02']);
   assert.deepEqual(view.groups[1].entries.map(e => e.date), ['2024-12-30', '2024-05-01']);
 });
+
+test('release 1: notes never enter the view, even with showText on', async () => {
+  const { NOTES_ON_PAGE } = await import('../../src/lib/shared-diary/view-model');
+  assert.equal(NOTES_ON_PAGE, false);
+  const view = buildSharedDiaryView(payload([{ show_id: 'wicked', date_seen: '2025-01-02', rating: 4, text: 'SECRET' }], true), SHOWS, NOW);
+  assert.ok(!JSON.stringify(view).includes('SECRET'));
+});
+
+test('ownerDiaryPayload matches get_shared_diary: rows up to UTC today, same order, 1,000 cap', async () => {
+  const { ownerDiaryPayload, DIARY_SHARE_CAP } = await import('../../src/lib/shared-diary/select');
+  const reviews = Array.from({ length: DIARY_SHARE_CAP + 5 }, (_, i) => ({
+    id: `r${i}`, show_id: i % 2 ? 'wicked' : 'gypsy', rating: 4,
+    date_seen: new Date(Date.UTC(2020, 0, 1) + i * 86_400_000).toISOString(), created_at: '2020-01-01',
+  }));
+  reviews.push({ id: 'future', show_id: 'hamilton', rating: 5, date_seen: '2026-10-05T00:00:00Z', created_at: '2026-01-01' });
+  reviews.push({ id: 'utc-today', show_id: 'six-we', rating: 5, date_seen: '2026-10-04', created_at: '2026-01-01' });
+  const p = ownerDiaryPayload(reviews, NOW);
+  assert.equal(p.capped, true);
+  assert.equal(p.entries.length, DIARY_SHARE_CAP);
+  assert.equal(p.entries[0].show_id, 'six-we', 'UTC today is returned (the page then applies venue-local today)');
+  assert.ok(!p.entries.some(e => e.show_id === 'hamilton'), 'future rows are plans');
+  assert.ok(p.entries.every(e => e.date_seen === null || e.date_seen.length === 10), 'timestamps trimmed to dates');
+  assert.equal(ownerDiaryPayload(reviews.slice(0, 3), NOW).capped, false);
+});

@@ -45,6 +45,14 @@ export interface SharedDiaryView {
   recentPosters: string[];
 }
 
+/**
+ * Release 1 shows dates and stars only. Notes stay out of the view even when
+ * the owner's row has show_text on (another client could set it first):
+ * everything in the view is serialised into the page's HTML. Release 2 (the
+ * notes switch, Sprint D) turns this on.
+ */
+export const NOTES_ON_PAGE = false;
+
 export function buildSharedDiaryView(
   payload: SharedDiaryPayload,
   shows: ReadonlyMap<string, DiaryShow>,
@@ -67,7 +75,7 @@ export function buildSharedDiaryView(
       date: e.date,
       dateLabel: e.date ? formatShowDate(e.date, { month: 'short', day: 'numeric' }) : null,
       rating: e.rating,
-      text: e.text,
+      text: NOTES_ON_PAGE ? e.text : null,
     });
   }
   const recentPosters: string[] = [];

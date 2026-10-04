@@ -103,3 +103,22 @@ export function toSharedDiaryEntries(
       return e;
     });
 }
+
+/** Rows get_shared_diary() returns at most (c_cap in 20261004_diary_shares.sql). */
+export const DIARY_SHARE_CAP = 1000;
+
+/**
+ * The payload the owner's link would return right now, built from the
+ * owner's own reviews: same rows (undated, or dated up to UTC today), same
+ * order, same cap. Feed it to selectSharedDiary for the share sheet's count,
+ * so it matches the friend page past 1,000 entries too.
+ */
+export function ownerDiaryPayload(
+  reviews: Parameters<typeof toSharedDiaryEntries>[0],
+  nowMs: number,
+): Pick<SharedDiaryPayload, 'capped' | 'entries'> {
+  const utcToday = new Date(nowMs).toISOString().slice(0, 10);
+  const rows = toSharedDiaryEntries(reviews.map(r => ({ ...r, date_seen: r.date_seen ? r.date_seen.slice(0, 10) : null })))
+    .filter(e => e.date_seen === null || e.date_seen <= utcToday);
+  return { capped: rows.length > DIARY_SHARE_CAP, entries: rows.slice(0, DIARY_SHARE_CAP) };
+}
