@@ -372,5 +372,7 @@ test('reddit email: screenshots section and refreshed-numbers note', () => {
   assert.match(html, /phone width/);
   assert.match(html, /now 12 reviews and 38\/100 \(was 9 and 36\)/);
   const same = mail.buildHtml({ ...d, previousReviewCount: 12, previousScore: 38 }, 'reminder');
-  assert.ok(!/updated the numbers/.test(same), 'no update note when nothing moved');
+  assert.ok(!/updated them/.test(same), 'no update note when nothing moved');
+  const unknown = mail.buildHtml({ ...d, previousReviewCount: undefined }, 'reminder');
+  assert.ok(!/undefined/.test(unknown) && !/updated them/.test(unknown), 'no note without the old numbers');
 });

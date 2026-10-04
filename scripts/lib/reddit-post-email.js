@@ -41,8 +41,11 @@ function textBlock(s) {
  * saved straight to Photos for the Reddit post.
  */
 function buildHtml(d, kind, images = []) {
-  const moved = kind === 'reminder' && d.refreshedAt && (d.previousReviewCount !== d.reviewCount || d.previousScore !== d.score)
-    ? ` More reviews came in, so I updated the numbers: now ${esc(d.reviewCount)} reviews and ${esc(d.score)}/100 (was ${esc(d.previousReviewCount)} and ${esc(d.previousScore)}).`
+  // Only when both old numbers are known: an older draft without them would
+  // print "was undefined".
+  const known = [d.previousReviewCount, d.previousScore, d.reviewCount, d.score].every(Number.isFinite);
+  const moved = kind === 'reminder' && d.refreshedAt && known && (d.previousReviewCount !== d.reviewCount || d.previousScore !== d.score)
+    ? ` The numbers moved since the first email, so I updated them: now ${esc(d.reviewCount)} reviews and ${esc(d.score)}/100 (was ${esc(d.previousReviewCount)} and ${esc(d.previousScore)}).`
     : '';
   const intro = kind === 'reminder'
     ? `Reviews for ${esc(d.showTitle)} are still fresh. Here's the draft again in case yesterday got away from you.${moved} This is the last nudge for this one.`
