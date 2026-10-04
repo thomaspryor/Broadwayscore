@@ -151,3 +151,95 @@ test('stops resuming a ref after MAX_LAND_RUNS runs, and while a dispatched Land
 test('a sibling ref with no Land run yet blocks resume for that card', () => {
   assert.equal(findResumeCard([startedCard()], [landRef(), landRef({ ref: 'land/bro-100-new', sha: 'ddd', lastRun: null })], { nowMs: NOW }), null);
 });
+
+// Pause memory (BRO-4574): the first two live firings each took a card an
+// earlier worker had already paused on (one with a VERIFY the cloud can't run,
+// one held for an owner decision), so both would have won every firing.
+const { pausedHistorySkipReason, findResumeCandidates, RECENT_PAUSE_MS } = require('./cloud-worker-pick.js');
+const at = (msAgo) => new Date(NOW - msAgo).toISOString();
+const report = (status, text, msAgo) => ({ body: `**Session report (${status})**\n\n${text}`, createdAt: at(msAgo) });
+
+test('a VERIFY that runs the whole unit suite is not cloud-runnable', () => {
+  const desc = '## Acceptance criteria\n`node scripts/run-unit-tests.js` passes.';
+  assert.equal(skipReason(issue({ description: desc }), NOW), 'verify-not-cloud-runnable');
+  const { pick, skipped } = pickCloudCard([issue({ description: desc }), issue({ identifier: 'BRO-200' })], { nowMs: NOW });
+  assert.equal(pick.identifier, 'BRO-200');
+  assert.equal(skipped['verify-not-cloud-runnable'], 1);
+});
+
+test('pickCloudCard returns every eligible card in pick order', () => {
+  const { ordered } = pickCloudCard([
+    issue({ identifier: 'BRO-50', priority: 2 }),
+    issue({ identifier: 'BRO-900', priority: 1 }),
+    issue({ identifier: 'BRO-60', priority: 3 }),
+  ], { nowMs: NOW });
+  assert.deepEqual(ordered.map((i) => i.identifier), ['BRO-900', 'BRO-50']);
+});
+
+test('a pause waiting on the owner holds the card until someone comments after it', () => {
+  const held = report('paused', 'Not landed: needs an owner decision on the prod flip.', 10 * 24 * 3600 * 1000);
+  assert.equal(pausedHistorySkipReason([held], NOW), 'awaiting-owner');
+  assert.equal(pausedHistorySkipReason([report('paused', 'Held for owner sign-off.', 1000)], NOW), 'awaiting-owner');
+  // Machine comments after it are not an answer.
+  const receipt = { body: 'Dispatched e391967e to linear:BRO-1 at x (headless)', createdAt: at(1000) };
+  const fixer = { body: 'Auto-corrected 2026-10-04 by the stuck-card closer', createdAt: at(900) };
+  assert.equal(pausedHistorySkipReason([receipt, held, fixer], NOW), 'awaiting-owner');
+  // A human reply after it releases the hold; an old pause then counts for nothing.
+  const reply = { body: 'Approved, go ahead and flip it.', createdAt: at(1000) };
+  assert.equal(pausedHistorySkipReason([held, reply], NOW), null);
+});
+
+test('any pause younger than RECENT_PAUSE_MS skips the card; older ones and other reports do not', () => {
+  const recent = report('paused', 'VERIFY times out in the cloud.', RECENT_PAUSE_MS - 60_000);
+  assert.equal(pausedHistorySkipReason([recent], NOW), 'recently-paused');
+  assert.equal(pausedHistorySkipReason([report('paused', 'VERIFY times out.', RECENT_PAUSE_MS + 60_000)], NOW), null);
+  // Only the latest report counts, whatever order the comments arrive in.
+  assert.equal(pausedHistorySkipReason([report('done', 'Landed.', 1000), recent], NOW), null);
+  assert.equal(pausedHistorySkipReason([report('in-review', 'Landed.', 5 * RECENT_PAUSE_MS), recent], NOW), 'recently-paused');
+  assert.equal(pausedHistorySkipReason([], NOW), null);
+  assert.equal(pausedHistorySkipReason(undefined, NOW), null);
+  // Quoting a report mid-comment is not a report.
+  assert.equal(pausedHistorySkipReason([{ body: 'see **Session report (paused)** above', createdAt: at(1000) }], NOW), null);
+});
+
+test('findResumeCandidates lists every resumable card, best first; findResumeCard is its head', () => {
+  const cards = [startedCard({ identifier: 'BRO-300' }), startedCard({ identifier: 'BRO-100' })];
+  const refs = [landRef(), landRef({ ref: 'land/bro-300-fix', sha: 'eee' }, { headSha: 'eee' })];
+  assert.deepEqual(findResumeCandidates(cards, refs, { nowMs: NOW }).map((c) => c.issue.identifier), ['BRO-100', 'BRO-300']);
+  assert.equal(findResumeCard(cards, refs, { nowMs: NOW }).issue.identifier, 'BRO-100');
+  assert.deepEqual(findResumeCandidates(cards, refs, { nowMs: NOW, landDispatchInFlight: true }), []);
+});
+
+test('owner hold: DECISION NEEDED and named-owner wording hold, negated mentions do not', () => {
+  const WEEK = 7 * 24 * 60 * 60 * 1000;
+  const hold = (text) => pausedHistorySkipReason([report('paused', text, WEEK)], NOW);
+  assert.equal(hold('DECISION NEEDED: flip the prod flag? Option A ...'), 'awaiting-owner');
+  assert.equal(hold('Paused pending the owner.'), 'awaiting-owner');
+  assert.equal(hold('Waiting on Thomas to approve.'), 'awaiting-owner');
+  // A week-old pause that says the owner is NOT the blocker falls to the 72h rule (expired).
+  assert.equal(hold('Paused: CI flaky. Owner decision not required.'), null);
+  assert.equal(hold('Not an owner decision; technical blocker.'), null);
+  assert.equal(hold('No DECISION NEEDED here, retry later.'), null);
+  // One negated and one real mention: the real one holds.
+  assert.equal(hold('Not an owner call on the CSS. But DECISION NEEDED: go live?'), 'awaiting-owner');
+});
+
+test('owner hold expires after AWAITING_OWNER_MAX_MS', () => {
+  const { AWAITING_OWNER_MAX_MS } = require('./cloud-worker-pick.js');
+  const text = 'Blocked on owner decision.';
+  assert.equal(pausedHistorySkipReason([report('paused', text, AWAITING_OWNER_MAX_MS - 60_000)], NOW), 'awaiting-owner');
+  assert.equal(pausedHistorySkipReason([report('paused', text, AWAITING_OWNER_MAX_MS + 60_000)], NOW), null);
+});
+
+test('machine comments after a pause do not release an owner hold; a human checkbox reply does', () => {
+  const held = report('paused', 'Blocked on owner decision.', 10_000);
+  const after = (body) => ({ body, createdAt: at(1000) });
+  for (const body of [
+    '[auto-fix-attempted:fail]\n\ndetails',
+    '**Re-arm (auto, BRO-3395):** the existing acceptance-criteria command was vacuous.',
+    'Dispatched to linear:BRO-1 at 2026-10-03T00:00:00Z (headless)',
+    'Dispatched e391967e to linear:BRO-1 at 2026-10-03T00:00:00Z',
+    '[red-first follow-up] filed',
+  ]) assert.equal(pausedHistorySkipReason([held, after(body)], NOW), 'awaiting-owner', body);
+  assert.equal(pausedHistorySkipReason([held, after('[x] done, approved')], NOW), 'recently-paused');
+});

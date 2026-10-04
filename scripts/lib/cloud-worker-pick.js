@@ -54,6 +54,17 @@
  * those within minutes, so one still cancelled here was declined by it; its
  * resume kind is 'evicted': re-run the same run, nothing to fix.
  *
+ * PAUSE MEMORY (BRO-4574): the card text above can't tell whether a worker
+ * already tried this card and stopped. Seen on the first two live firings
+ * (2026-10-04): one took a card whose fix was already on main but whose VERIFY
+ * (the whole unit suite) can't pass from the cloud, the next resumed a card
+ * held for an owner decision; both paused, and both would have won again six
+ * hours later. So the CLI reads each candidate's comments in pick order and
+ * pausedHistorySkipReason skips a card whose latest session report is a pause
+ * waiting on the owner (until someone comments after it, or for at most
+ * AWAITING_OWNER_MAX_MS), or any pause less than RECENT_PAUSE_MS old. A VERIFY the cloud can't run is a card-text rule
+ * (CLOUD_UNRUNNABLE_VERIFY_RE, in headlessUnfitReason).
+ *
  * Pure functions only. The CLI is scripts/cloud-worker-pick.js.
  */
 
@@ -66,12 +77,34 @@ const STRANDED_MS = 90 * 60 * 1000;
 const RESUME_WINDOW_MS = 7 * 24 * HOUR_MS;
 const MAX_LAND_RUNS = 6;
 const LAND_REF_CARD_RE = /(?:^|[^a-z0-9])bro-(\d+)(?![0-9])/i;
+const RECENT_PAUSE_MS = 72 * HOUR_MS;
+// The whole unit suite: 17 tests fail in a cloud container for reasons unrelated
+// to any card, and the Done gate's 90s budget can't run it (BRO-4265, 2026-10-04).
+const CLOUD_UNRUNNABLE_VERIFY_RE = /^node\s+scripts\/run-unit-tests\.js\s*$/;
+// A paused report that names the owner's call as the blocker.
+// Comments automation posts on its own: dispatch receipts (linear-dispatch.js
+// buildDispatchComment, with or without a correlation id), auto-corrections,
+// tag markers like [auto-fix-attempted:fail] (auto-fix-friction-card.js) and
+// acceptance re-arms (enrich-card-acceptance.js). One of these after a pause
+// is not an answer to it. Tags need 3+ letters so a human "[x] approved" counts.
+const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Auto-corrected |Auto-reset |\[[a-z][a-z0-9 -]{2,}(?::[a-z0-9-]+)?\]|\*\*Re-arm \(auto\b)/i;
+const AWAITING_OWNER_RE = /\bowner(?:'s)?\s+(?:decision|approval|sign[- ]?off|go[- ]ahead|judg(?:e)?ment|call)\b|\b(?:waiting|wait|held|hold|pending|blocked)\s+(?:on|for)\s+(?:the\s+|an?\s+)?(?:owner|thomas)\b|\bpending\s+(?:the\s+)?owner\b|\bneeds?\s+(?:an?\s+|the\s+)?owner\b|\bDECISION NEEDED\b/gi;
+// "not an owner decision", "no DECISION NEEDED", "owner decision not required".
+const OWNER_NEGATED_BEFORE_RE = /\b(?:not|no|without)\s+(?:an?\s+|the\s+|any\s+)?$/i;
+const OWNER_NEGATED_AFTER_RE = /^\s*(?:is\s+|was\s+)?(?:not|no\s+longer)\s+(?:required|needed)\b/i;
+// An owner hold still gets one more worker after this long, so a card the
+// owner never answers in Linear (or a misread report) can't wait forever.
+const AWAITING_OWNER_MAX_MS = 14 * 24 * HOUR_MS;
 
 /** Why a headless worker can't finish this card (no safe VERIFY, or a headless blocker), or null. */
 function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
   const hd = require('./headless-dispatchability.js');
   const drain = require('./linear-drain-parked.js');
   if (!drain.hasSafeVerifyCommand(issue)) return 'no-safe-verify';
+  const { evaluateVerifiability } = require('./verify-gate.js');
+  if (CLOUD_UNRUNNABLE_VERIFY_RE.test(String(evaluateVerifiability(issue.description || '').cmd || '').trim())) {
+    return 'verify-not-cloud-runnable';
+  }
   const { blockers } = hd.classifyHeadlessDispatchability({ subject: issue.title, notes: issue.description || '' });
   const blocking = blockers.filter((b) => !(allowParkedSentinel && b.code === hd.BLOCKERS.PARKED_SENTINEL));
   return blocking.length ? `blocker-${blocking[0].code}` : null;
@@ -108,7 +141,40 @@ function pickCloudCard(issues, { nowMs }) {
     else eligible.push(iss);
   }
   eligible.sort((a, b) => (priorityRank(a) - priorityRank(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)));
-  return { pick: eligible[0] || null, eligible: eligible.length, skipped };
+  return { pick: eligible[0] || null, ordered: eligible, eligible: eligible.length, skipped };
+}
+
+/**
+ * Why an earlier worker's pause should keep this card out of the pick, or null.
+ * @param {Array<{body:string, createdAt:string}>} comments - the card's comments, any order
+ * @param {number} nowMs
+ * @returns {'awaiting-owner'|'recently-paused'|null}
+ */
+function pausedHistorySkipReason(comments, nowMs) {
+  const { parseSessionReportStatus } = require('./linear-session-reporting.js');
+  const sorted = (Array.isArray(comments) ? comments : [])
+    .filter((c) => c && Number.isFinite(Date.parse(c.createdAt)))
+    .sort((a, b) => Date.parse(b.createdAt) - Date.parse(a.createdAt));
+  const idx = sorted.findIndex((c) => parseSessionReportStatus(c.body) != null);
+  if (idx < 0) return null;
+  const report = sorted[idx];
+  if (parseSessionReportStatus(report.body) !== 'paused') return null;
+  // A comment after the pause (the owner's answer, a human note) re-opens it to the idle rule.
+  const answered = sorted.slice(0, idx).some((c) => !MACHINE_COMMENT_RE.test(String(c.body || '').trim()));
+  const ageMs = nowMs - Date.parse(report.createdAt);
+  if (!answered && ageMs < AWAITING_OWNER_MAX_MS && namesOwnerHold(report.body)) return 'awaiting-owner';
+  return ageMs < RECENT_PAUSE_MS ? 'recently-paused' : null;
+}
+
+/** True when a paused report names the owner's call as its blocker (a negated mention doesn't count). */
+function namesOwnerHold(text) {
+  const body = String(text || '');
+  for (const m of body.matchAll(AWAITING_OWNER_RE)) {
+    const before = body.slice(Math.max(0, m.index - 30), m.index);
+    const after = body.slice(m.index + m[0].length, m.index + m[0].length + 40);
+    if (!OWNER_NEGATED_BEFORE_RE.test(before) && !OWNER_NEGATED_AFTER_RE.test(after)) return true;
+  }
+  return false;
 }
 
 /** Card number named by a land ref ('land/bro-2311-x' -> 2311), or null. */
@@ -142,10 +208,10 @@ function resumableCardsByNumber(issues) {
  *   remote land/ refs with the latest Land run on each (null when none ran);
  *   attempts is how many Land runs the ref has had
  * @param {{nowMs:number, landDispatchInFlight?:boolean}} opts
- * @returns {{ issue: object, ref: string, sha: string, lastRun: object, kind: 'refused'|'evicted' }|null}
+ * @returns {Array<{ issue: object, ref: string, sha: string, lastRun: object, kind: 'refused'|'evicted' }>} best first
  */
-function findResumeCard(issues, landRefs, { nowMs, landDispatchInFlight = false }) {
-  if (landDispatchInFlight) return null;
+function findResumeCandidates(issues, landRefs, { nowMs, landDispatchInFlight = false }) {
+  if (landDispatchInFlight) return [];
   const { priorityRank } = require('./linear-dispatch.js');
   const { issueNumber } = require('./linear-drain-parked.js');
   const cards = resumableCardsByNumber(issues);
@@ -177,10 +243,16 @@ function findResumeCard(issues, landRefs, { nowMs, landDispatchInFlight = false 
   }
   candidates.sort((a, b) => (priorityRank(a.issue) - priorityRank(b.issue))
     || (issueNumber(a.issue.identifier) - issueNumber(b.issue.identifier)));
-  return candidates[0] || null;
+  return candidates;
+}
+
+/** The first of findResumeCandidates, or null. */
+function findResumeCard(issues, landRefs, opts) {
+  return findResumeCandidates(issues, landRefs, opts)[0] || null;
 }
 
 module.exports = {
-  IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS,
-  skipReason, pickCloudCard, landRefCardNumber, resumableCardsByNumber, findResumeCard,
+  IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
+  skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  findResumeCandidates, findResumeCard,
 };
