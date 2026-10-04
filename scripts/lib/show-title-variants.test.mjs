@@ -144,9 +144,18 @@ test('no bare first-name short names ("Joseph" matched reviews of Joseph Charlto
   assert.equal(textMentionsTitle(`Joseph Charlton's play Anna X opens.${FILLER}`, 'Joseph and the Amazing Technicolor Dreamcoat'), null);
 });
 
-test('trailing "The Musical" is dropped only when the rest is distinctive', () => {
+test('no generic "The Musical" strip: only curated titles lose the suffix', () => {
   assert.ok(buildShowTitleVariants('Kinky Boots The Musical').includes('kinky boots'));
   assert.ok(!buildShowTitleVariants('MJ The Musical').includes('mj'));
+  assert.ok(!buildShowTitleVariants('Ghost The Musical').includes('ghost'));
+  assert.ok(!buildShowTitleVariants('Motown The Musical').includes('motown'));
+  assert.equal(textMentionsTitle(`The ghost of her mother haunts this Hamlet.${FILLER}`, 'Ghost The Musical'), null);
+});
+
+test('idioms are not short names', () => {
+  assert.equal(textMentionsTitle(`A funny thing happened on the way to the theatre.${FILLER}`, 'A Funny Thing Happened on the Way to the Forum'), null);
+  assert.equal(textMentionsTitle(`She rides the streetcar home.${FILLER}`, 'A Streetcar Named Desire'), null);
+  assert.equal(textMentionsTitle(`How to succeed as an actor.${FILLER}`, 'How to Succeed in Business Without Really Trying'), null);
 });
 
 test('show-short-names.json loads, normalizes, and every value is at least 4 chars', () => {

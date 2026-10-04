@@ -149,14 +149,11 @@ function buildShowTitleVariants(title, opts = {}) {
       const after = folded.slice(commaIdx + 1).trim().toLowerCase();
       if (/^(a|an|the|or)\s/.test(after)) addPrefix(folded.slice(0, commaIdx));
     }
-    // Trailing "The Musical" with no separator ("Kinky Boots The Musical",
-    // "Moulin Rouge! The Musical"): reviews write the bare title.
-    const noMusical = full.replace(/ the musical$/, '');
-    if (noMusical !== full) addPrefix(noMusical);
     // Curated short names (show-short-names.json): "Phantom" for The Phantom
-    // of the Opera, "Les Miz", "Joseph". Looked up by every title form built so
-    // far, so a subtitled title ("Harry Potter and the Cursed Child: Both
-    // Parts") still finds its base title's entry.
+    // of the Opera, "Les Miz". Looked up by every title form built so far, so
+    // a subtitled title ("Harry Potter and the Cursed Child: Both Parts")
+    // still finds its base title's entry. Deliberately no generic rule (first
+    // word, trailing "The Musical"): those made "ghost" and "motown" variants.
     for (const v of [...out]) {
       const shorts = SHORT_NAMES.get(v.replace(/^the /, ''));
       if (shorts) for (const s of shorts) out.add(s);
