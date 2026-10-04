@@ -86,7 +86,9 @@ export default function PrivacyPage() {
               <h3 className={h3}>Imported history</h3>
               <p>
                 If you import your theatre history, you either paste the address of your public Show Score
-                profile (we read the reviews shown on it) or upload the export file from Mezzanine. We save the
+                profile (we read the reviews shown on it), upload the export file from Mezzanine, or upload
+                screenshots from Theatr. Theatr screenshots are sent to our AI provider, Anthropic, to read the
+                show names and dates, and are not stored by us. We save the
                 ratings and dates that match shows in our catalog. When a title doesn&apos;t match, we record
                 the title and our search for it so we can add missing shows. If you add a show that isn&apos;t
                 in our catalog, its title and details become part of our public catalog.
@@ -162,6 +164,7 @@ export default function PrivacyPage() {
               <li>Vercel hosts the website and provides basic page analytics.</li>
               <li>Google Analytics and PostHog provide usage analytics and session replays.</li>
               <li>Sentry collects error reports.</li>
+              <li>Anthropic reads Theatr screenshots you upload to import your history.</li>
               <li>Formspree receives email sign-ups and form submissions, and Resend sends our emails.</li>
               <li>Expo delivers app notifications and app updates.</li>
               <li>Impact runs affiliate tracking for ticket links.</li>

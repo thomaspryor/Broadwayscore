@@ -346,3 +346,209 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
     : [];
   return { entries, notices };
 }
+
+// ---------------------------------------------------------------------------
+// Theatr (screenshots)
+// ---------------------------------------------------------------------------
+// Theatr has no data export, and its profile pages and API need a Theatr
+// login, so the user uploads screenshots of Profile → Collection → Attended /
+// Interested and the theatr-screenshot-import edge function reads them.
+
+/** Mirror of the theatr-screenshot-import edge function's response contract
+ *  (supabase/functions/theatr-screenshot-import/index.ts — single-channel:
+ *  always HTTP 200 with ok:false for handled failures). */
+interface TheatrScreenshotResponse {
+  ok: boolean;
+  error?: 'invalid_images' | 'too_many_images' | 'unauthorized' | 'rate_limited' | 'busy' | 'not_configured' | 'internal';
+  entries?: TheatrRow[];
+  unreadableImages?: number;
+  dropped?: number;
+}
+
+export const THEATR_ERROR_COPY: Record<string, string> = {
+  invalid_images: 'One of those files couldn’t be read as a screenshot. Pick PNG or JPEG screenshots and try again.',
+  too_many_images: 'Too many screenshots in one go. Try again with fewer.',
+  unauthorized: 'Please sign in again and retry.',
+  rate_limited: "You've hit the import limit for now. Try again in an hour.",
+  busy: 'Theatr import is very busy today. Try again tomorrow.',
+  not_configured: 'Theatr import isn’t available right now. Try again later.',
+  internal: 'Something went wrong reading your screenshots. Try again in a few minutes.',
+  no_shows: 'We couldn’t find any shows in those screenshots. In Theatr, open Profile, then Collection, then Attended (or Interested), and screenshot the list.',
+};
+
+/** Most screenshots per import; sent to the edge function in batches. */
+export const THEATR_MAX_SCREENSHOTS = 30;
+/** Must not exceed MAX_IMAGES_PER_CALL in the edge function's normalize.mjs. */
+const THEATR_BATCH_SIZE = 6;
+const THEATR_CONCURRENCY = 2;
+/** Claude reads images at up to ~1568px on the long edge; anything larger is
+ *  wasted upload. */
+const THEATR_MAX_EDGE = 1568;
+
+/** Downscale a screenshot to a JPEG the edge function accepts. */
+async function screenshotToJpegBase64(file: File): Promise<{ mediaType: string; data: string }> {
+  const bitmap = await createImageBitmap(file);
+  try {
+    const scale = Math.min(1, THEATR_MAX_EDGE / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.max(1, Math.round(bitmap.width * scale));
+    canvas.height = Math.max(1, Math.round(bitmap.height * scale));
+    const ctx = canvas.getContext('2d');
+    if (!ctx) throw new Error(THEATR_ERROR_COPY.invalid_images);
+    ctx.drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const dataUrl = canvas.toDataURL('image/jpeg', 0.85);
+    return { mediaType: 'image/jpeg', data: dataUrl.slice(dataUrl.indexOf(',') + 1) };
+  } finally {
+    bitmap.close();
+  }
+}
+
+export interface TheatrRow {
+  title: string;
+  venue: string | null;
+  date: string | null;
+  list: 'attended' | 'interested';
+}
+
+/**
+ * Collapse rows repeated across overlapping screenshots, keeping screenshot
+ * order. Same rule as the edge function's per-batch pass (normalize.mjs) and
+ * the iOS app's lib/theatr-import.ts: one row per list + title + date, and an
+ * undated Attended row folds into a dated row for the same title (its date
+ * was just cropped off), so it can't race the dated copy into the watchlist.
+ */
+export function mergeTheatrRows(rows: TheatrRow[]): TheatrRow[] {
+  const out: TheatrRow[] = [];
+  const byKey = new Map<string, TheatrRow>();
+  const titleKey = (r: TheatrRow) => `${r.list}|${r.title.toLowerCase()}`;
+  const datedTitles = new Set(rows.filter((r) => r.list === 'attended' && r.date).map(titleKey));
+  for (const r of rows) {
+    const undatedDup = r.list === 'attended' && !r.date && datedTitles.has(titleKey(r));
+    const key = undatedDup ? null : `${titleKey(r)}|${r.date || ''}`;
+    const prev = key ? byKey.get(key) : out.find((o) => titleKey(o) === titleKey(r) && o.date);
+    if (prev) {
+      if (!prev.venue && r.venue) prev.venue = r.venue;
+      continue;
+    }
+    if (!key) continue; // dated copy not reached yet: it will carry the row
+    const copy = { ...r };
+    byKey.set(key, copy);
+    out.push(copy);
+  }
+  return out;
+}
+
+/** Split a list into consecutive batches of `size`. */
+export function chunk<T>(items: T[], size: number): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
+  return out;
+}
+
+/**
+ * Map Theatr rows onto the shared import contract. Theatr reactions are
+ * like / mixed / dislike, not star ratings, so attended shows carry no rating
+ * and land in To Be Rated (the importer files unrated diary rows as dated
+ * watchlist rows) rather than getting a guessed score.
+ */
+export function theatrRowsToEntries(rows: TheatrRow[]): RawImportEntry[] {
+  return rows.map((r) => r.list === 'attended'
+    ? { title: r.title, venue: r.venue, rating: null, sourceScore: null, date: r.date, reviewText: null, kind: 'diary' as const }
+    : { title: r.title, venue: r.venue, rating: null, sourceScore: null, date: null, reviewText: null, kind: 'watchlist' as const, listName: 'Interested' });
+}
+
+/** Preview notices for a finished Theatr read. */
+export function theatrNotices(
+  entries: RawImportEntry[],
+  counts: { picked: number; failedScreenshots: number; unreadable: number },
+): string[] {
+  const notices: string[] = [];
+  if (counts.picked > THEATR_MAX_SCREENSHOTS) {
+    notices.push(`Only the first ${THEATR_MAX_SCREENSHOTS} screenshots were read. Run the import again for the rest.`);
+  }
+  if (counts.failedScreenshots > 0) {
+    notices.push(`${counts.failedScreenshots} screenshot(s) couldn\u2019t be read this time, so some shows may be missing. You can import them again later.`);
+  }
+  if (counts.unreadable > 0) {
+    notices.push(`${counts.unreadable} image(s) didn\u2019t look like a Theatr collection and were skipped.`);
+  }
+  const attended = entries.filter((e) => e.kind === 'diary');
+  if (attended.length > 0) {
+    notices.push('Theatr reactions aren\u2019t star ratings, so seen shows import to To Be Rated, where you can rate them.');
+  }
+  const undated = attended.filter((e) => !e.date).length;
+  if (undated > 0) {
+    notices.push(`${undated} seen show(s) had no readable date and will land on your watchlist instead. You can rate them from there.`);
+  }
+  return notices;
+}
+
+/** Error code for a failed functions.invoke: the gateway's own 401 (expired
+ *  session, verify_jwt) must read as "sign in again", not "try later". */
+function invokeErrorCode(error: unknown): string {
+  const status = (error as { context?: { status?: number } } | null)?.context?.status;
+  return status === 401 ? 'unauthorized' : 'internal';
+}
+
+/** Read Theatr screenshots via the theatr-screenshot-import function.
+ *  Throws Error with user-ready copy when nothing usable came back. */
+export async function acquireFromTheatrScreenshots(
+  files: File[],
+  onProgress?: (done: number, total: number) => void,
+): Promise<ImportAcquireResult> {
+  if (files.length === 0) throw new Error(THEATR_ERROR_COPY.no_shows);
+  const supabase = getSupabaseClient();
+  if (!supabase) throw new Error(THEATR_ERROR_COPY.unauthorized);
+
+  const picked = files.slice(0, THEATR_MAX_SCREENSHOTS);
+  const batches = chunk(picked, THEATR_BATCH_SIZE);
+  // Indexed by batch so the merge sees rows in screenshot order, whichever
+  // batch finishes first.
+  const rowsByBatch: TheatrRow[][] = batches.map(() => []);
+  let unreadable = 0;
+  let failedScreenshots = 0;
+  let firstError: string | null = null;
+  let done = 0;
+  onProgress?.(0, picked.length);
+
+  const runBatch = async (batchIndex: number) => {
+    const batch = batches[batchIndex];
+    // One unreadable file must not sink the other screenshots in its batch.
+    const encoded = await Promise.allSettled(batch.map(screenshotToJpegBase64));
+    const images = encoded.flatMap((r) => (r.status === 'fulfilled' ? [r.value] : []));
+    failedScreenshots += batch.length - images.length;
+    if (images.length < batch.length && !firstError) firstError = 'invalid_images';
+    try {
+      if (images.length === 0) return;
+      const { data, error } = await supabase.functions.invoke<TheatrScreenshotResponse>('theatr-screenshot-import', {
+        body: { images },
+      });
+      if (error || !data) throw new Error(invokeErrorCode(error));
+      if (!data.ok) throw new Error(data.error || 'internal');
+      rowsByBatch[batchIndex] = data.entries || [];
+      unreadable += data.unreadableImages || 0;
+    } catch (err) {
+      failedScreenshots += images.length;
+      const code = err instanceof Error ? err.message : 'internal';
+      if (!firstError || firstError === 'invalid_images') firstError = code;
+    } finally {
+      done += batch.length;
+      onProgress?.(done, picked.length);
+    }
+  };
+
+  // Small worker pool: each batch is one model call (~10-30s), so running two
+  // at once halves the wait without tripping the per-hour call cap.
+  let next = 0;
+  await Promise.all(Array.from({ length: Math.min(THEATR_CONCURRENCY, batches.length) }, async () => {
+    while (next < batches.length) await runBatch(next++);
+  }));
+
+  const merged = mergeTheatrRows(rowsByBatch.flat());
+  if (merged.length === 0) {
+    const code = firstError || 'no_shows';
+    throw new Error(THEATR_ERROR_COPY[code] || THEATR_ERROR_COPY.internal);
+  }
+  const entries = theatrRowsToEntries(merged);
+  return { entries, notices: theatrNotices(entries, { picked: files.length, failedScreenshots, unreadable }) };
+}

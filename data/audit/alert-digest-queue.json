@@ -155,5 +155,17 @@
       }
     ],
     "queuedAt": "2026-10-04T22:27:39.724Z"
+  },
+  {
+    "conditionKey": "review-gap:opening-window:slam-frank-off-broadway-2026",
+    "title": "Review gap — \"Slam Frank\" missing 6 cited review(s)",
+    "description": "Slam Frank (slam-frank-off-broadway-2026): 6 review(s) already cited by aggregators are not yet collected. node scripts/audit-show-review-gap.js --show=slam-frank-off-broadway-2026 --checkpoint --ingest-missing",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-04T22:50:25.332Z"
   }
 ]

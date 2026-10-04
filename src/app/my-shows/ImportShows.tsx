@@ -2,13 +2,15 @@
 
 import { useState, useCallback, useMemo, useRef } from 'react';
 import type Fuse from 'fuse.js';
-import { supabaseRestInsert } from '@/lib/supabase-rest';
+import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import {
   acquireFromMezzanine,
   acquireFromShowScore,
+  acquireFromTheatrScreenshots,
   mergeDiaryShows,
+  THEATR_MAX_SCREENSHOTS,
   type ImportAcquireResult,
   type RawImportEntry,
 } from '@/lib/show-import';
@@ -111,7 +113,7 @@ type FindItCandidate =
 
 type LiveResolveState = { status: 'searching' } | { status: 'results'; candidates: FindItCandidate[] } | { status: 'empty' } | { status: 'error'; message: string };
 
-type ImportSourceId = 'mezzanine' | 'show-score';
+type ImportSourceId = 'mezzanine' | 'show-score' | 'theatr';
 type ImportStep = 'closed' | 'source' | 'matching' | 'preview' | 'importing' | 'done';
 
 interface ImportShowsProps {
@@ -119,6 +121,20 @@ interface ImportShowsProps {
   existingReviewShowIds: Set<string>;
   existingWatchlistShowIds: Set<string>;
   onImportComplete: () => void;
+}
+
+/** A seen-but-unrated show the user already had on their watchlist (saved
+ *  before they went) hits the watchlist unique key on insert. Give that row
+ *  the date seen so it moves to To Be Rated, instead of leaving it undated in
+ *  To Watch. Never overwrites a date the user already set. */
+async function dateExistingWatchlistRow(userId: string, showId: string, dateSeen: string | null): Promise<boolean> {
+  if (!dateSeen) return false;
+  const { data, error } = await supabaseRestUpdate(
+    'watchlist',
+    `user_id=eq.${encodeURIComponent(userId)}&show_id=eq.${encodeURIComponent(showId)}&planned_date=is.null`,
+    { planned_date: dateSeen },
+  );
+  return !error && !!data;
 }
 
 export default function ImportShows({
@@ -135,6 +151,8 @@ export default function ImportShows({
   const [importStats, setImportStats] = useState({ imported: 0, skipped: 0, errors: 0 });
   const [error, setError] = useState<string | null>(null);
   const fileInputRef = useRef<HTMLInputElement>(null);
+  const theatrInputRef = useRef<HTMLInputElement>(null);
+  const [theatrProgress, setTheatrProgress] = useState<{ done: number; total: number } | null>(null);
   const fuseRef = useRef<Fuse<SearchShow> | null>(null);
   const showsRef = useRef<SearchShow[]>([]);
 
@@ -393,6 +411,27 @@ export default function ImportShows({
     }
   }, [matchAndPreview]);
 
+  const handleTheatrSelect = useCallback(async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const files = Array.from(e.target.files || []);
+    // Clear immediately so re-picking the same screenshots still fires change.
+    e.target.value = '';
+    if (files.length === 0) return;
+    setStep('matching');
+    setError(null);
+    setTheatrProgress({ done: 0, total: Math.min(files.length, THEATR_MAX_SCREENSHOTS) });
+    try {
+      const acquired = await acquireFromTheatrScreenshots(files, (done, total) => setTheatrProgress({ done, total }));
+      await matchAndPreview(acquired, 'theatr');
+    } catch (err) {
+      const message = err instanceof Error ? err.message : 'Import failed. Try again.';
+      trackUgc('import_failed', { source: 'theatr', error_message: message.slice(0, 200) });
+      setError(message);
+      setStep('source');
+    } finally {
+      setTheatrProgress(null);
+    }
+  }, [matchAndPreview]);
+
   const handleShowScoreFetch = useCallback(async () => {
     setStep('matching');
     setError(null);
@@ -587,8 +626,9 @@ export default function ImportShows({
           ...(entry.sourceDate && { planned_date: entry.sourceDate }),
         });
         if (insertErr) {
-          if (insertErr.code === '23505') skipped++;
-          else errors++;
+          if (insertErr.code !== '23505') errors++;
+          else if (await dateExistingWatchlistRow(userId, entry.match.id, entry.sourceDate)) imported++;
+          else skipped++;
         } else {
           imported++;
         }
@@ -619,6 +659,7 @@ export default function ImportShows({
     setError(null);
     setImportStats({ imported: 0, skipped: 0, errors: 0 });
     if (fileInputRef.current) fileInputRef.current.value = '';
+    if (theatrInputRef.current) theatrInputRef.current.value = '';
   };
 
   if (step === 'closed') {
@@ -631,7 +672,7 @@ export default function ImportShows({
         <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
           <path strokeLinecap="round" strokeLinejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12" />
         </svg>
-        Import from Show Score or Mezzanine
+        Import from Show Score, Mezzanine or Theatr
       </button>
     );
   }
@@ -643,7 +684,7 @@ export default function ImportShows({
         <div className="flex items-center justify-between px-5 py-4 border-b border-white/10">
           <h3 className="text-base font-bold text-white">
             {step === 'source' && 'Import your shows'}
-            {step === 'matching' && (source === 'show-score' ? 'Fetching your profile...' : 'Matching shows...')}
+            {step === 'matching' && (source === 'show-score' ? 'Fetching your profile...' : source === 'theatr' ? 'Reading screenshots...' : 'Matching shows...')}
             {step === 'preview' && 'Review Import'}
             {step === 'importing' && 'Importing...'}
             {step === 'done' && 'Import Complete'}
@@ -713,6 +754,39 @@ export default function ImportShows({
                 </label>
               </div>
 
+              <div className="flex items-center gap-3">
+                <div className="flex-1 h-px bg-white/10" />
+                <span className="text-xs text-gray-600">or</span>
+                <div className="flex-1 h-px bg-white/10" />
+              </div>
+
+              {/* Theatr — no export exists, so we read screenshots */}
+              <div>
+                <div className="flex items-center gap-2 mb-1">
+                  <span className="text-lg">📸</span>
+                  <span className="text-sm font-bold text-white">Theatr</span>
+                </div>
+                <p className="text-xs text-gray-500 mb-2">
+                  Theatr has no export, so upload screenshots instead. In the app: Profile → Collection → Attended
+                  (and Interested), then screenshot the list as you scroll. Up to {THEATR_MAX_SCREENSHOTS} screenshots.
+                  We only read the show names and dates; the images aren&apos;t saved.
+                </p>
+                <label className="btn-secondary text-sm gap-2 cursor-pointer inline-flex items-center">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                  </svg>
+                  Choose Screenshots
+                  <input
+                    ref={theatrInputRef}
+                    type="file"
+                    accept="image/png,image/jpeg,image/webp"
+                    multiple
+                    onChange={(e) => { setSource('theatr'); handleTheatrSelect(e); }}
+                    className="hidden"
+                  />
+                </label>
+              </div>
+
               {error && <p className="text-sm text-red-400">{error}</p>}
             </div>
           )}
@@ -722,7 +796,11 @@ export default function ImportShows({
             <div className="text-center py-12">
               <div className="animate-spin w-8 h-8 border-2 border-white/20 border-t-brand rounded-full mx-auto mb-4" />
               <p className="text-sm text-gray-400">
-                {source === 'show-score' ? 'Fetching and matching your Show Score reviews...' : 'Matching your shows...'}
+                {source === 'show-score'
+                  ? 'Fetching and matching your Show Score reviews...'
+                  : source === 'theatr' && theatrProgress && theatrProgress.done < theatrProgress.total
+                    ? `Reading your screenshots (${theatrProgress.done} of ${theatrProgress.total})...`
+                    : 'Matching your shows...'}
               </p>
             </div>
           )}
@@ -750,8 +828,10 @@ export default function ImportShows({
               <p className="text-xs text-gray-600 mb-4">
                 Imported ratings are private until you choose to share them.
                 {source === 'show-score' && ' Show Score scores convert to the nearest half-star.'}
-                {selectedDiary.filter(e => !e.sourceDate).length > 0 &&
-                  ` ${selectedDiary.filter(e => !e.sourceDate).length} of your reviews have no date. They'll land in a "No date" section where you can add one.`}
+                {/* Rated rows only: unrated ones import to the watchlist, not the
+                    Diary's "No date" section. */}
+                {selectedDiary.filter(e => !e.sourceDate && e.sourceRating).length > 0 &&
+                  ` ${selectedDiary.filter(e => !e.sourceDate && e.sourceRating).length} of your reviews have no date. They'll land in a "No date" section where you can add one.`}
               </p>
 
               {/* Date-mismatch rows: own section, with the WHY and a way out
