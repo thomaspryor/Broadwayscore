@@ -67,6 +67,7 @@ scripts/check-provider-spend.test.mjs
 scripts/check-rebuild-staleness.test.mjs
 scripts/check-review-count-drift.test.mjs
 scripts/check-seo-health.test.mjs
+scripts/check-signin-redirects.test.mjs
 scripts/clear-stale-roundup-flags.test.mjs
 scripts/cloud-memory-sync.test.mjs
 scripts/cmux-auth-stall-watchdog.test.mjs
@@ -92,6 +93,7 @@ scripts/import-notion-to-linear.test.mjs
 scripts/ingest-dmarc-reports.test.mjs
 scripts/ingest-review-from-url.test.mjs
 scripts/ingest-urls.test.mjs
+scripts/lib/account-metrics.test.mjs
 scripts/lib/affiliate-anomaly.test.mjs
 scripts/lib/affiliate-link-contract.test.mjs
 scripts/lib/archive-cache-guard.test.mjs

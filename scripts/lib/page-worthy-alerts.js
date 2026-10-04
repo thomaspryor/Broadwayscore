@@ -91,6 +91,19 @@ const PAGE_WORTHY_PREFIXES = [
   // until the owner acts, so it cannot re-fire on its own; the router's
   // per-key cooldown dedups too. All other renewal signals go to the digest.
   'cookie-renew:needs-human:',
+
+  // check-signin-redirects.mjs (BRO-4615, accounts live since 2026-10-04): the
+  // daily synthetic click on "Continue with Google" / "Continue with Apple"
+  // no longer reaches the provider's sign-in page, so nobody can sign in that
+  // way. The usual fix is in the Google Cloud / Apple Developer / Supabase
+  // consoles, which only the owner can reach. One key per provider (suffix
+  // google|apple). Pages only on a definite failure after two tries; a flaky
+  // run (timeout, 429/5xx, browser error) is "inconclusive" and neither pages
+  // nor resolves. Resolved by the next passing run. The softer PostHog
+  // signals (ugc:signin-stalled, ugc:save-failures, ugc:error-spike from
+  // account-metrics.js) stay digest-tier: abandoned sign-ins and offline
+  // phones make them noisy at a handful of sign-ups a day.
+  'ugc:signin-redirect-broken:',
 ];
 
 const PAGE_WORTHY_CONDITION_KEYS = new Set([

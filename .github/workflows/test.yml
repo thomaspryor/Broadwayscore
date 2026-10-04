@@ -58,6 +58,11 @@ on:
       # trigger ZERO CI, the same gap task #1745 documents.
       - 'scripts/cmux-auth-stall-watchdog.js'
       - 'scripts/cmux-auth-stall-watchdog.test.mjs'
+      # BRO-4615: daily Google/Apple sign-in redirect check and its I/O runner
+      # for scripts/lib/account-metrics.js (lib is covered by the glob above).
+      - 'scripts/check-signin-redirects.mjs'
+      - 'scripts/check-signin-redirects.test.mjs'
+      - 'scripts/account-metrics.js'
       # scripts/audit-we-closing-dates.js (BRO-1158) is the I/O orchestrator for
       # scripts/lib/{we-closing-date-extract,we-closing-date-classify,westend-slug-discovery}.js
       # (all covered by the scripts/lib/** glob above). A solo edit to the

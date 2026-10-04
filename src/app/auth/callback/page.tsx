@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
 import { getReturnUrl, clearReturnUrl } from '@/lib/deferred-auth';
-import { markSignInFailed, reportUgcError } from '@/lib/ugc-analytics';
+import { markPageLeaving, markSignInFailed, reportUgcError } from '@/lib/ugc-analytics';
 
 /**
  * OAuth callback handler.
@@ -35,6 +35,7 @@ export default function AuthCallbackPage() {
         markSignInFailed('google', null, 'cancelled');
         const returnUrl = getReturnUrl();
         clearReturnUrl();
+        markPageLeaving();
         window.location.replace(returnUrl);
         return;
       }
@@ -61,6 +62,9 @@ export default function AuthCallbackPage() {
       const returnUrl = getReturnUrl();
       clearReturnUrl();
       setTimeout(() => {
+        // The profile fetch AuthContext started is still in flight; the
+        // navigation cancels it, which is not a failure.
+        markPageLeaving();
         window.location.href = returnUrl;
       }, 100);
     };

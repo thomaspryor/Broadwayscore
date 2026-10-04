@@ -1,5 +1,8 @@
 'use client';
 
+import { useEffect } from 'react';
+import { reportPageCrash } from '@/lib/ugc-analytics';
+
 export default function Error({
   error,
   reset,
@@ -7,6 +10,8 @@ export default function Error({
   error: Error & { digest?: string };
   reset: () => void;
 }) {
+  useEffect(() => { reportPageCrash(error, 'page'); }, [error]);
+
   return (
     <div className="min-h-[60vh] flex flex-col items-center justify-center px-4 text-center">
       <h1 className="text-6xl font-bold text-amber-500 mb-4">Oops</h1>

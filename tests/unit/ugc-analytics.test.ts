@@ -28,6 +28,10 @@ g.window = globalThis;
 g.location = { pathname: '/my-shows', search: '' };
 g.sessionStorage = new MemStorage();
 g.localStorage = new MemStorage();
+// Page lifecycle listeners (beforeunload / pagehide / pageshow), fired by hand.
+const windowListeners: Record<string, Array<() => void>> = {};
+g.addEventListener = (type: string, fn: () => void) => { (windowListeners[type] ||= []).push(fn); };
+const fireWindowEvent = (type: string) => { for (const fn of windowListeners[type] || []) fn(); };
 
 let captured: Captured[] = [];
 let sentryCalls: { err: Error; ctx: Record<string, unknown> }[] = [];
@@ -140,6 +144,49 @@ test('instrumentedFetch reports network failures but not aborts, and rethrows bo
   } finally {
     globalThis.fetch = realFetch;
   }
+});
+
+// The OAuth callback navigates away while AuthContext's profile fetch is in
+// flight; the browser kills it with a plain TypeError, not an AbortError.
+// Before BRO-4615 that logged two ugc_error "select profiles" per sign-up.
+test('instrumentedFetch does not report requests the browser cancels because the page is navigating away', async () => {
+  const realFetch = globalThis.fetch;
+  try {
+    globalThis.fetch = (async () => { throw new TypeError('Failed to fetch'); }) as typeof fetch;
+    // First call installs the lifecycle listeners and is a real failure.
+    await assert.rejects(ugc.instrumentedFetch('https://abc.supabase.co/rest/v1/profiles?select=*'), TypeError);
+    assert.equal(captured.filter((c) => c.event === 'ugc_error').length, 1, 'offline while staying on the page is reported');
+
+    captured = [];
+    fireWindowEvent('beforeunload');
+    await assert.rejects(ugc.instrumentedFetch('https://abc.supabase.co/rest/v1/profiles?select=*'), /Failed to fetch/);
+    assert.equal(captured.length, 0, 'a request killed by navigation is not a failure');
+
+    // A back/forward-cache restore makes the page live again.
+    fireWindowEvent('pageshow');
+    await assert.rejects(ugc.instrumentedFetch('https://abc.supabase.co/rest/v1/profiles?select=*'), TypeError);
+    assert.equal(captured.filter((c) => c.event === 'ugc_error').length, 1, 'reported again after pageshow');
+
+    // The scripted redirect on /auth/callback marks it explicitly.
+    captured = [];
+    ugc.markPageLeaving();
+    await assert.rejects(ugc.instrumentedFetch('https://abc.supabase.co/rest/v1/profiles?select=*'), TypeError);
+    assert.equal(captured.length, 0);
+  } finally {
+    fireWindowEvent('pageshow');
+    globalThis.fetch = realFetch;
+  }
+});
+
+test('reportPageCrash sends page_crash to PostHog and the original Error to Sentry', () => {
+  const err = Object.assign(new Error('Cannot read properties of undefined'), { digest: 'abc123' });
+  ugc.reportPageCrash(err, 'page');
+  const ev = captured.find((c) => c.event === 'page_crash');
+  assert.equal(ev?.props.boundary, 'page');
+  assert.equal(ev?.props.digest, 'abc123');
+  assert.equal(ev?.props.path, '/my-shows');
+  assert.equal(sentryCalls.length, 1);
+  assert.equal(sentryCalls[0].err, err);
 });
 
 // Every successful account deletion ends with a /logout for a user that no

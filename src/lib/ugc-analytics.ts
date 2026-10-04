@@ -177,6 +177,29 @@ export function reportUgcError(op: string, info: UgcErrorInfo, extra: UgcProps =
   }
 }
 
+/**
+ * A page crash caught by app/error.tsx or app/global-error.tsx. React error
+ * boundaries swallow the error, so Sentry's global handlers never see it and
+ * a crash left no trace at all (BRO-4615). PostHog `page_crash` counts it;
+ * Sentry gets the original Error (its stack is in our bundle, so beforeSend
+ * keeps it). PostHog/Sentry redact private-share paths at send time.
+ */
+export function reportPageCrash(error: Error & { digest?: string }, boundary: 'page' | 'root'): void {
+  if (typeof window === 'undefined') return;
+  phCapture('page_crash', clean({
+    boundary,
+    error_name: error?.name || 'Error',
+    error_message: String(error?.message || '').slice(0, 200),
+    digest: error?.digest,
+    path: window.location.pathname,
+  }));
+  try {
+    window.Sentry?.captureException?.(error, { tags: { error_boundary: boundary }, extra: { digest: error?.digest ?? null } });
+  } catch {
+    // never throw from an error page
+  }
+}
+
 /** "POST /rest/v1/reviews?x=y" → "insert reviews"; rpc/auth/functions likewise. */
 export function describeSupabaseOp(url: string, method = 'GET'): string | null {
   let path: string;
@@ -208,15 +231,45 @@ function urlOf(input: RequestInfo | URL): string {
   return input.url;
 }
 
+// A full-page navigation kills in-flight requests, and the browser rejects them
+// as a plain network TypeError ("Failed to fetch" / "Load failed"), not an
+// AbortError. The OAuth callback redirects while AuthContext is still loading
+// the profile, so without this every sign-up logged a false ugc_error.
+// The window is bounded: a beforeunload that doesn't navigate (a cancelled
+// prompt, a mailto: link) must not hide real failures for the rest of the visit.
+const LEAVING_WINDOW_MS = 10_000;
+let leavingSince = 0;
+let leaveListenersInstalled = false;
+
+/** Call right before a scripted navigation (location.href / replace). */
+export function markPageLeaving(): void {
+  leavingSince = Date.now();
+}
+
+export function pageIsLeaving(): boolean {
+  return leavingSince > 0 && Date.now() - leavingSince < LEAVING_WINDOW_MS;
+}
+
+function installLeaveListeners(): void {
+  if (leaveListenersInstalled || typeof window === 'undefined' || typeof window.addEventListener !== 'function') return;
+  leaveListenersInstalled = true;
+  window.addEventListener('beforeunload', markPageLeaving);
+  window.addEventListener('pagehide', markPageLeaving);
+  // Back/forward cache restore: the page is live again.
+  window.addEventListener('pageshow', () => { leavingSince = 0; });
+}
+
 /** Drop-in fetch for Supabase traffic that reports failures, then behaves exactly like fetch. */
 export const instrumentedFetch: typeof fetch = async (input, init) => {
+  installLeaveListeners();
   const op = describeSupabaseOp(urlOf(input), methodOf(input, init));
   let res: Response;
   try {
     res = await fetch(input, init);
   } catch (e) {
-    // Aborts are caller-initiated (unmount, superseded request), not failures.
-    const aborted = e instanceof DOMException && e.name === 'AbortError';
+    // Aborts are caller-initiated (unmount, superseded request), not failures;
+    // so is a request the browser cancelled because the page is navigating away.
+    const aborted = (e instanceof DOMException && e.name === 'AbortError') || pageIsLeaving();
     if (op && !aborted) reportUgcError(op, { message: e instanceof Error ? e.message : String(e), code: 'network' });
     throw e;
   }

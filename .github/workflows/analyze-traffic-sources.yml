@@ -77,7 +77,7 @@ jobs:
         env:
           RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
           OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
-        run: node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md --summary=traffic-analysis/traffic-sources-summary.md --metrics=traffic-analysis/traffic-metrics.json --dashboard-url=https://broadwayscorecard.com/admin/traffic --run-url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+        run: node scripts/email-traffic-report.js --report=traffic-analysis/traffic-sources-report.md --summary=traffic-analysis/traffic-sources-summary.md --metrics=traffic-analysis/traffic-metrics.json --dashboard-url=https://broadwayscorecard.com/admin/traffic --accounts=/tmp/core-data-checkout/analytics/account-dashboard.json --run-url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
 
       # The script writes traffic-history.json ONLY when every history query
       # succeeded, so a failed Monday never overwrites good history. The
