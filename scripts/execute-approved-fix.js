@@ -46,7 +46,7 @@ const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
 const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
-const { commercialFileErrors } = require('./lib/commercial-record-checks.js');
+const { commercialRecordErrors } = require('./lib/commercial-record-checks.js');
 const { unretireId } = require('./lib/retired-show-ids.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
@@ -111,7 +111,7 @@ function output(key, value) {
   }
 }
 
-function runValidation(changedFiles) {
+function runValidation(changedFiles, touchedCommercialKeys = []) {
   // Targeted validation: check that each modified data file is valid JSON
   // with expected structure. Full validate-data.js catches pre-existing
   // review-text quality issues (garbage outlets, etc.) that are unrelated
@@ -127,9 +127,14 @@ function runValidation(changedFiles) {
     'data/commercial.json': (data) => {
       if (!data?.shows || !data?._meta) throw new Error('Missing shows or _meta');
       // The same per-record rules validate-data.js enforces, so a plan cannot
-      // push what the site build then rejects (BRO-4623).
+      // push what the site build then rejects (BRO-4623). Only the records
+      // this plan touched: like the rest of this targeted check, a problem
+      // some other writer left elsewhere must not block every approved fix.
       const showsData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
-      const problems = commercialFileErrors(data, showsData.shows || showsData);
+      const bySlug = new Map((showsData.shows || showsData).filter(s => s && s.slug).map(s => [s.slug, s]));
+      const problems = [...new Set(touchedCommercialKeys)]
+        .filter(k => data.shows[k])
+        .flatMap(k => commercialRecordErrors(k, data.shows[k], { showRecord: bySlug.get(k), allRecords: data.shows }));
       if (problems.length) throw new Error(`commercial rules: ${problems.slice(0, 5).join('; ')}`);
     },
     'data/audience-buzz.json': (data) => {
@@ -642,7 +647,11 @@ async function main() {
     const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'add-commercial-entry': 'commercial.json' };
     const changedFiles = [...new Set(dataTouching.map(a => a.file || IMPLIED_FILE[a.type] || null).filter(Boolean))];
     console.log('\nRunning validation...');
-    if (!runValidation(changedFiles)) {
+    const touchedCommercialKeys = dataTouching
+      .filter(a => a.type === 'add-commercial-entry' || a.file === 'commercial.json')
+      .map(a => a.slug || a.showSlug || a.showId)
+      .filter(Boolean);
+    if (!runValidation(changedFiles, touchedCommercialKeys)) {
       console.error('Validation failed — rolling back');
       rollbackDataFiles(coreSnapshot);
 
