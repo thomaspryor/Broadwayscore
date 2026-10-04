@@ -1,20 +1,19 @@
 {
-  "generatedAt": "2026-10-04T17:00:13.620Z",
+  "generatedAt": "2026-10-04T17:11:04.820Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 217,
-  "clean": 210,
-  "defective": 7,
+  "clean": 214,
+  "defective": 3,
   "byType": {
-    "score-drift": 4,
     "unreachable": 3
   },
   "shows": [
     {
-      "showId": "alice-in-wonderland-off-broadway-2026",
-      "title": "Alice in Wonderland",
-      "openingDate": "2026-09-26",
+      "showId": "slam-frank-off-broadway-2026",
+      "title": "Slam Frank",
+      "openingDate": "2026-10-04",
       "ok": false,
       "defects": [
         {
@@ -27,9 +26,9 @@
       "deployedCount": null
     },
     {
-      "showId": "savage-and-simon-says-a-double-bill-off-west-end-2026",
-      "title": "Savage & Simon Says: A Double Bill",
-      "openingDate": "2026-09-24",
+      "showId": "spandex-off-broadway-2026",
+      "title": "Spandex",
+      "openingDate": "2026-09-19",
       "ok": false,
       "defects": [
         {
@@ -42,64 +41,19 @@
       "deployedCount": null
     },
     {
-      "showId": "hay-fever-west-end-2026",
-      "title": "Hay Fever",
-      "openingDate": "2026-10-01",
+      "showId": "gimme-a-sign-off-broadway-2026",
+      "title": "Gimme a Sign!",
+      "openingDate": "2026-09-17",
       "ok": false,
       "defects": [
         {
-          "type": "score-drift",
-          "detail": "deployed cs 67.45 vs local 67.23 (Δ0.22)"
+          "type": "unreachable",
+          "detail": "HTTP 404"
         }
       ],
       "missingFromProd": [],
-      "localCount": 31,
-      "deployedCount": 31
-    },
-    {
-      "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
-      "title": "Who’s Afraid of Virginia Woolf?",
-      "openingDate": "2026-09-30",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 84.35 vs local 83.76 (Δ0.59)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 29,
-      "deployedCount": 29
-    },
-    {
-      "showId": "the-standard-of-living-west-end-2026",
-      "title": "The Standard Of Living",
-      "openingDate": "2026-09-29",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 69.18 vs local 68.92 (Δ0.26)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 28,
-      "deployedCount": 28
-    },
-    {
-      "showId": "bloodsport-after-helen-of-troy-off-west-end-2026",
-      "title": "BLOODSPORT: After Helen of Troy",
-      "openingDate": "2026-09-13",
-      "ok": false,
-      "defects": [
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 73.61 vs local 73.49 (Δ0.12)"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 29,
-      "deployedCount": 29
+      "localCount": 0,
+      "deployedCount": null
     }
   ]
 }

@@ -234,6 +234,12 @@ jobs:
           echo "✓ No demo-only flags leaked to production"
           echo "DEMO_FLAGS=$DEMO_FLAGS" >> "$GITHUB_ENV"
 
+      - name: Guard — no owner-held features in production
+        # PROD_HELD_FEATURES in src/config/feature-flags.ts lists features the owner
+        # has not released (BRO-4525: commercial). Fails before the build when the
+        # pulled production env enables one; an empty list passes.
+        run: node scripts/lib/prod-held-flags-guard.js .vercel/.env.production.local
+
       - name: Guard — Supabase public env present once accounts are live
         run: |
           # Once userAccounts leaves DEMO_FEATURES it is on for every prod visitor, and
