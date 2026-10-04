@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-04T21:51:08.282Z",
+  "timestamp": "2026-10-04T22:09:38.962Z",
   "stats": {
-    "totalReviews": 46216,
-    "alreadyFlagged": 18744,
+    "totalReviews": 46215,
+    "alreadyFlagged": 18747,
     "dateGuardCatches": 269,
-    "directorMismatch": 1227,
-    "tvFilmSignals": 1338,
-    "londonSignals": 1270,
-    "offBroadwaySignals": 507,
+    "directorMismatch": 1226,
+    "tvFilmSignals": 1339,
+    "londonSignals": 1272,
+    "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4242
+    "noPublishDate": 4237
   },
   "findings": [
     {
@@ -10385,6 +10385,24 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"peacock\""
+        }
+      ]
+    },
+    {
+      "showId": "flamenc-oh-off-west-end-2026",
+      "file": "bestoftheatre--louise-penn.json",
+      "publishDate": "2026-10-04",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-flamenc-oh-peacock-theatre",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"peacock\""
+        },
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
         }
       ]
     },
@@ -22260,24 +22278,6 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
-        }
-      ]
-    },
-    {
-      "showId": "oh-mary-tour-2026",
-      "file": "theatrely--emily-wyrwa.json",
-      "publishDate": null,
-      "url": "https://www.theatrely.com/post/oh-mary-a-first-rate-first-lady-campsterpiece-review",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"sam pinkleton\" from oh-mary-2024"
-        },
-        {
-          "type": "OFF_BROADWAY_SIGNAL",
-          "severity": "MEDIUM",
-          "detail": "Review mentions off-Broadway venue: \"lucille lortel\""
         }
       ]
     },
@@ -40964,6 +40964,19 @@
       ]
     },
     {
+      "showId": "bull-off-west-end-2026",
+      "file": "bestoftheatre--cindy-marcolina.json",
+      "publishDate": "2026-10-04",
+      "url": "https://www.bestoftheatre.co.uk/blog/post/review-roundup-bull-park-theatre",
+      "findings": [
+        {
+          "type": "LONDON_SIGNAL",
+          "severity": "MEDIUM",
+          "detail": "Review appears to be about a London/West End production"
+        }
+      ]
+    },
+    {
       "showId": "burlesque-west-end-2026",
       "file": "city-am--adam-bloodworth.json",
       "score": 78,
@@ -46096,7 +46109,7 @@
     {
       "showId": "hay-fever-west-end-2026",
       "file": "readaboutstuff--unknown.json",
-      "score": 78,
+      "score": 82,
       "publishDate": "2026-10-04",
       "url": "https://readaboutstuff.com/2026/10/04/review-hay-fever-wyndhams-theatre-london/",
       "findings": [

@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-04T19:22:37.169Z",
+    "lastUpdated": "2026-10-04T22:08:23.100Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11790,6 +11790,14 @@
         "newtownbee"
       ],
       "domain": "newtownbee.com"
+    },
+    "thepoplarreview": {
+      "displayName": "Thepoplarreview",
+      "tier": 3,
+      "aliases": [
+        "thepoplarreview"
+      ],
+      "domain": "thepoplarreview.substack.com"
     }
   },
   "_aliasIndex": {
