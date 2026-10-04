@@ -31,11 +31,12 @@ const FEEDBACK_EDITABLE_FIELDS = {
   // field was listed as "recoupmentSource", a name commercial.json has never
   // used, so a sourced recoupment fix was impossible (BRO-4623).
   // humanReviewedDesignation locks a hand-checked designation against
-  // apply-commercial-pending.js's LLM auto-apply.
+  // apply-commercial-pending.js's LLM auto-apply. nonprofitOrg pairs with a
+  // Nonprofit designation (validate-data.js checks it against the venue).
   'commercial.json': [
     'designation', 'capitalization', 'weeklyRunningCost',
     'capitalizationSource', 'notes', 'recouped', 'recoupedDate',
-    'recoupedSource', 'sources', 'humanReviewedDesignation',
+    'recoupedSource', 'sources', 'humanReviewedDesignation', 'nonprofitOrg',
   ],
   'audience-buzz.json': ['title'],
   // Only auto-fix-feedback-bug.js's append-winner path handles this file —

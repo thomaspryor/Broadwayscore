@@ -246,7 +246,9 @@ function executeDataEdit(action) {
     const idx = shows.findIndex(s => s.id === showId);
     if (idx === -1) return { ok: false, reason: `Show "${showId}" not found in shows.json` };
 
-    const currentVal = shows[idx][field];
+    // JSON plans cannot say `undefined`: an absent field is written as
+    // oldValue null, so compare it as null (BRO-4623).
+    const currentVal = shows[idx][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       return { ok: false, reason: `${field}: current value doesn't match expected (data changed since plan was created)` };
     }
@@ -291,7 +293,7 @@ function executeDataEdit(action) {
     const slug = action.showSlug || showId;
     if (!data.shows?.[slug]) return { ok: false, reason: `No commercial entry for "${slug}"` };
 
-    const currentVal = data.shows[slug][field];
+    const currentVal = data.shows[slug][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       return { ok: false, reason: `commercial.json:${field}: value changed since plan` };
     }
@@ -303,7 +305,7 @@ function executeDataEdit(action) {
   } else if (file === 'audience-buzz.json') {
     if (!data.shows?.[showId]) return { ok: false, reason: `No audience-buzz entry for "${showId}"` };
 
-    const currentVal = data.shows[showId][field];
+    const currentVal = data.shows[showId][field] ?? null;
     if (JSON.stringify(currentVal) !== JSON.stringify(oldValue)) {
       return { ok: false, reason: `audience-buzz.json:${field}: value changed since plan` };
     }
