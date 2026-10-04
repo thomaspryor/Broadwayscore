@@ -38,8 +38,13 @@ const addDays = (d: string, n: number) => new Date(Date.parse(`${d}T00:00:00Z`) 
 export function stopForReview(stops: TourStop[], publishDate: string | null | undefined): TourStop | null {
   if (!publishDate) return null;
   const d = publishDate.slice(0, 10);
-  const running = stops.find(s => s.start <= d && d <= addDays(s.end, 3));
-  if (running) return running;
+  // The stop actually playing wins: stops are usually 1-3 days apart, so the
+  // grace window alone would file a new city's opening-night reviews under
+  // the city before (code review, BRO-4601).
+  const playing = stops.find(s => s.start <= d && d <= s.end);
+  if (playing) return playing;
+  const justClosed = stops.find(s => s.end < d && d <= addDays(s.end, 3));
+  if (justClosed) return justClosed;
   const started = stops.filter(s => s.start <= d);
   return started.length ? started[started.length - 1] : null;
 }

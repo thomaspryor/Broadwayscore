@@ -28,6 +28,15 @@ test('between stops there is no now, only next; after the last there is neither'
   assert.deepEqual(getTourNowNext(stops, '2026-12-01'), { now: null, next: null });
 });
 
+test('an opening-night review goes to the new city, not the one that just closed', () => {
+  // San Diego closes Oct 4, Las Vegas opens Oct 6: Oct 7 is inside San Diego's
+  // grace window but Las Vegas is playing.
+  assert.equal(stopForReview(stops, '2026-10-07')?.city, 'Las Vegas, NV');
+  assert.equal(stopForReview(stops, '2026-10-06')?.city, 'Las Vegas, NV');
+  // Oct 5, between the two: the closing-weekend review stays in San Diego.
+  assert.equal(stopForReview(stops, '2026-10-05')?.city, 'San Diego, CA');
+});
+
 test('a review is filed under the stop playing on its publish date', () => {
   assert.equal(stopForReview(stops, '2026-10-01')?.city, 'San Diego, CA');
   // A closing-weekend review published up to 3 days after the stop ended.
