@@ -1,47 +1,47 @@
 {
-  "generatedAt": "2026-10-03T12:10:20.237Z",
-  "bannerText": "71/76 Done(14d) verified on main · 2 FAILED · 0 vacuous · 87 stuck-but-done — PARTIAL RUN: 1 check not re-run (ran out of time), 20 GitHub lookups failed, so these numbers understate the board",
+  "generatedAt": "2026-10-04T13:01:15.854Z",
+  "bannerText": "113/120 Done(14d) verified on main · 3 FAILED · 3 vacuous · 58 stuck-but-done",
   "items": [
+    {
+      "title": "FAILED BRO-3221 — UX audit: On mobile watchlist cards, the icons indicating the time of day (matinee, evening, etc.) are too small to be l",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/watchlist-time-icons-size.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3221/ux-audit-on-mobile-watchlist-cards-the-icons-indicating-the-time-of"
+    },
+    {
+      "title": "FAILED BRO-2538 — push-with-retry.sh Git Data API fallback disqualifier evaluates the merge-accumulated diff, not the job's own diff — fires almost always under real contention",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/push-with-retry.fallback-eligibility-diff.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-2538/push-with-retrysh-git-data-api-fallback-disqualifier-evaluates-the"
+    },
     {
       "title": "FAILED BRO-4474 — Missed-broadcast alert fires for sent emails: reconciler 429s on duplicate polls",
       "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/missed-broadcasts.test.js",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-4474/missed-broadcast-alert-fires-for-sent-emails-reconciler-429s-on"
     },
     {
-      "title": "FAILED BRO-4355 — Untracked scrapingdog spend: ledger explains only 43%, 13% of billed",
-      "detail": "OPEN: scrapingdog attributedPct 2026-10-01=74%, 2026-10-02=100% (threshold 80% on each of the last 2 days)",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4355/untracked-scrapingdog-spend-ledger-explains-only-43percent-13percent"
+      "title": "STUCK BRO-4152 — P1: Theatre Record still drops recoverable Daily Mail reviews (single-word titles, title-match misses, stub-text merges)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4152/p1-theatre-record-still-drops-recoverable-daily-mail-reviews-single"
     },
     {
-      "title": "STUCK BRO-2127 — Guard CV-promoted reverify clears + adjudicate 11 same-URL records individually",
+      "title": "STUCK BRO-4128 — P1: maybeUpgradeUrl swaps a scored paywall review URL for an outlet review-round-up page, wiping score (The Stage / The Last Ship)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2127/guard-cv-promoted-reverify-clears-adjudicate-11-same-url-records"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4128/p1-maybeupgradeurl-swaps-a-scored-paywall-review-url-for-an-outlet"
     },
     {
-      "title": "STUCK BRO-2071 — BRO-232 S4: digest-autofix queue hygiene — row-family key, decision routing, digest split",
+      "title": "STUCK BRO-4099 — P1: one show's status/closingDate contradiction blocks ALL Vercel deploys (Slam Frank closed w/ future closingDate)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2071/bro-232-s4-digest-autofix-queue-hygiene-row-family-key-decision"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4099/p1-one-shows-statusclosingdate-contradiction-blocks-all-vercel-deploys"
     },
     {
-      "title": "STUCK BRO-2061 — Generalize evaluatePerShowCommitDecision into update-show-status.yml's discovery gate",
+      "title": "STUCK BRO-4052 — Submission bot said 'added' but Golden Boy Daily Mail review never reached site (issue #908 follow-up)",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2061/generalize-evaluatepershowcommitdecision-into-update-show-statusymls"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-4052/submission-bot-said-added-but-golden-boy-daily-mail-review-never"
     },
     {
-      "title": "STUCK BRO-2042 — P1: headless dispatch lane has almost no completion telemetry — 67 launches, 4 job-done, so reliability is unmeasurable",
+      "title": "STUCK BRO-3961 — main CI red: Test Suite failing pre-existing (audit-venue-write-guard baseline + BRO-2462 dispatch-stall test), unrelated to BRO-3920",
       "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2042/p1-headless-dispatch-lane-has-almost-no-completion-telemetry-67"
-    },
-    {
-      "title": "STUCK BRO-2030 — Build-owner v4: BRO-286 pre-verified FAIL + plan-completion map + un-staled digest render tests",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2030/build-owner-v4-bro-286-pre-verified-fail-plan-completion-map-un-staled"
-    },
-    {
-      "title": "STUCK BRO-2011 — P1: found-outlet-ids masks 88 unscored+blockedReviewUrl files corpus-wide (29 outlets incl. Telegraph, The Stage, Playbill)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-2011/p1-found-outlet-ids-masks-88-unscoredblockedreviewurl-files-corpus"
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3961/main-ci-red-test-suite-failing-pre-existing-audit-venue-write-guard"
     }
   ],
-  "moreCount": 81
+  "moreCount": 56
 }
