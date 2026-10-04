@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-04T07:20:15.066Z",
+  "runDate": "2026-10-04T07:30:51.362Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -28,28 +28,28 @@
     "archive": 107
   },
   "statistics": {
-    "tier1Attempts": 11,
-    "tier1Success": 2,
-    "ampAttempts": 1,
-    "ampSuccess": 1,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
+    "ampAttempts": 0,
+    "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 6,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 8,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 10,
-    "tier3Success": 3,
-    "tier3_6Attempts": 6,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 12,
-    "tier4Success": 3,
-    "totalFailed": 67,
-    "scrapingBeePageCredits": 1,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 56,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 62,
+    "urlDiscoveryAttempts": 56,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -1512,63 +1512,6 @@
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ]
   },
-  "failuresByOutlet": {
-    "The Berkshire Eagle": {
-      "count": 1,
-      "domain": "berkshireeagle.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "CurtainUp": {
-      "count": 1,
-      "domain": "curtainup.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Belleville News-Democrat": {
-      "count": 1,
-      "domain": "bnd.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "London Theatre": {
-      "count": 1,
-      "domain": "londontheatre.co.uk",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Newsday": {
-      "count": 2,
-      "domain": "newsday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "HuffPost": {
-      "count": 1,
-      "domain": "huffpost.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "ABC News": {
-      "count": 1,
-      "domain": "abcnews.go.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "USA Today": {
-      "count": 1,
-      "domain": "usatoday.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
