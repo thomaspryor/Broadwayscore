@@ -71,9 +71,11 @@ function opensQuote(value) {
 function featuresFromEnvFile(envText) {
   const values = [];
   envText.split(/\r?\n/).forEach((line, i) => {
-    if (!line.trim() || /^\s*#/.test(line)) return;
+    // Next's dotenv reads a lone \r as a line break; vercel pull escapes them.
+    if (line.includes('\r')) throw new Error(`line ${i + 1} has a bare carriage return, so a value may span lines this guard can't check`);
     const parts = line.split(UNESCAPED_BREAKS);
-    if (!KEY_LINE.test(parts[0])) throw new Error(`line ${i + 1} is not a KEY=value line, so a value may span lines this guard can't check`);
+    const head = parts[0];
+    if (head.trim() && !/^\s*#/.test(head) && !KEY_LINE.test(head)) throw new Error(`line ${i + 1} is not a KEY=value line, so a value may span lines this guard can't check`);
     // Each part after a U+2028/U+2029 can start a line for Next's dotenv. A
     // NEXT_PUBLIC_FEATURES value read from one runs to the end of the physical
     // line, which can only over-report.

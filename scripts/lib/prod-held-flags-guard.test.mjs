@@ -80,6 +80,10 @@ const ENV_FIXTURES = [
   ['NEXT_PUBLIC_FEATURES=\u2028"commercial"\n', 'held'],
   ['NEXT_PUBLIC_FEATURES="westEnd\u2029commercial"\n', 'held'],
   ['A=1\u2028NEXT_PUBLIC_FEATURES=\n"commercial"\n', 'refused'],
+  ['# note\u2028NEXT_PUBLIC_FEATURES=commercial\n', 'held'],
+  // A lone \r is a line break to Next's dotenv; vercel pull escapes it.
+  ['A="x"\u2028NEXT_PUBLIC_FEATURES=commercial\rB=2\n', 'refused'],
+  ['# note\rNEXT_PUBLIC_FEATURES=commercial\n', 'refused'],
   // Real vercel pull output: header, sorted KEY="value" lines, raw $ and a
   // trailing backslash in other keys. Must not be refused.
   ['# Created by Vercel CLI\nA_URL="https://x.test/?a=$b"\nNEXT_PUBLIC_FEATURES="westEnd,userAccounts"\nWIN_PATH="C:\\dir\\"\n', 'clean'],
@@ -111,6 +115,7 @@ test('the guard never passes a file either real env loader would enable commerci
       const buildDir = path.join(process.cwd(), 'node_modules/vercel/dist/commands/build');
       const src = fs.readFileSync(path.join(buildDir, 'index.js'), 'utf8');
       const name = (src.match(/var import_dotenv = __toESM\\((\\w+)\\(\\)/) || [])[1];
+      if (!/\`\\.env\\.\\$\\{target\\}\\.local\`[\\s\\S]{0,200}?import_dotenv\\.default\\.config\\(/.test(src)) throw new Error('vercel build no longer loads .vercel/.env.<target>.local with import_dotenv');
       // The chunk that exports it, matched on the local binding (\`a\` or \`a as name\`).
       let exported, chunk;
       for (const m of name ? src.matchAll(/import \\{([^}]*)\\} from "([^"]+)"/g) : []) {
@@ -207,10 +212,17 @@ test('both prod deploy paths run the guard before vercel build --prod', () => {
 });
 
 // A shell grep of the pulled file misses duplicate lines, `export` and escaped \n
-// (the demo-flag step did, until BRO-4525). Every prod-env flag check uses this parser.
-test('vercel-deploy.yml reads NEXT_PUBLIC_FEATURES only through the guard parser', () => {
+// (the demo-flag step did, until BRO-4525), so NEXT_PUBLIC_FEATURES is read only
+// with this parser. Each line touching the pulled file must be a known reader.
+test('vercel-deploy.yml reads the pulled env file only in known ways', () => {
   const wf = read('.github/workflows/vercel-deploy.yml');
-  const shellReads = wf.split('\n').filter(l => !/^\s*#/.test(l) && /\b(grep|sed|awk|cut)\b/.test(l) && l.includes('NEXT_PUBLIC_FEATURES'));
-  assert.deepEqual(shellReads, [], 'parse the pulled env file with featuresFromEnvFile instead');
-  assert.ok(codeLine(wf, 'g.featuresFromEnvFile(') > 0, 'the demo-flag step uses featuresFromEnvFile');
+  const known = [
+    "g.featuresFromEnvFile(require('fs').readFileSync('.vercel/.env.production.local'", // demo-flag step
+    "console.error('::error::.env.production.local: '",
+    'node scripts/lib/prod-held-flags-guard.js .vercel/.env.production.local',
+    'grep -Eq "^${v}=', // Supabase step: NEXT_PUBLIC_SUPABASE_URL/ANON_KEY only
+  ];
+  const unknown = wf.split('\n').filter(l => !/^\s*#/.test(l) && l.includes('.env.production.local') && !known.some(k => l.includes(k)));
+  assert.deepEqual(unknown, [], 'read NEXT_PUBLIC_FEATURES with featuresFromEnvFile; add other readers here once checked');
+  assert.match(wf, /for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY; do/);
 });

@@ -221,7 +221,6 @@ jobs:
               console.error('::error::.env.production.local: ' + e.message);
               process.exit(1);
             }
-            console.error('Production flags: ' + value);
             console.log(g.heldFeaturesEnabled(value, process.argv[1].split(',')).join(' '));
           " "$DEMO_FLAGS")
 
