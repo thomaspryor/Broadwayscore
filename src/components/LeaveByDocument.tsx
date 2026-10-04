@@ -4,14 +4,14 @@ import { useEffect } from 'react';
 import { documentNavigationFor } from '@/lib/analytics/leave-by-document';
 
 /**
- * Mounted by src/app/plans/[token]/layout.tsx. Turns every same-site link
- * click on a plans page (header, footer, show cards, error/not-found pages)
- * into a document load; see src/lib/analytics/leave-by-document.ts for why.
+ * Mounted by PrivateShareLayout (every private share route: /plans, /seen).
+ * Turns every same-site link click on a share page (header, footer, show
+ * cards, error/not-found pages) into a document load; see src/lib/analytics/leave-by-document.ts for why.
  * Capture phase + preventDefault: Next's <Link> skips its router push when
  * the event is already defaultPrevented. React handlers still run, so the
  * page's click analytics are unaffected.
  */
-export default function PlansLeaveByDocument() {
+export default function LeaveByDocument() {
   useEffect(() => {
     const onClick = (e: MouseEvent) => {
       const a = (e.target as Element | null)?.closest?.('a[href]') as HTMLAnchorElement | null;

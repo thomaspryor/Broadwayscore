@@ -1,6 +1,5 @@
-import { ImageResponse } from 'next/og';
 import { pngToOgJpegResponse } from '@/lib/og-jpeg';
-import { interFontOption } from '@/lib/og-fonts';
+import { renderGenericShareCard } from '@/lib/share-links/og-card';
 import { loadSharedPlansView } from '@/lib/shared-plans/load-view';
 import { PLANS_OG_SIZE, renderPlansCard } from '@/lib/shared-plans/og-card';
 
@@ -19,17 +18,5 @@ const CACHE = 'public, max-age=600, s-maxage=600';
 
 export default async function PlansOGImage({ params }: { params: { token: string } }) {
   const data = await loadSharedPlansView(params.token);
-  if (data.status !== 'ok') return generic();
-  return pngToOgJpegResponse(await renderPlansCard(data.view), CACHE);
-}
-
-async function generic(): Promise<Response> {
-  return pngToOgJpegResponse(new ImageResponse(
-    (
-      <div style={{ width: '100%', height: '100%', display: 'flex', alignItems: 'center', justifyContent: 'center', background: '#0f0f14', color: '#ffffff', fontSize: 72, fontWeight: 800, letterSpacing: '-0.03em', fontFamily: 'Inter' }}>
-        Broadway Scorecard
-      </div>
-    ),
-    { ...PLANS_OG_SIZE, ...(await interFontOption([800])) },
-  ), CACHE);
+  return pngToOgJpegResponse(data.status === 'ok' ? await renderPlansCard(data.view) : await renderGenericShareCard(), CACHE);
 }

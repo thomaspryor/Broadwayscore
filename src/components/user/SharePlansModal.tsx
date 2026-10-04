@@ -5,8 +5,9 @@ import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { usePlanShare } from '@/hooks/usePlanShare';
 import { shareOrCopy } from '@/lib/share-link';
 import { trackSharedPlans } from '@/lib/shared-plans/events';
-import { defaultShareName, SHARE_NAME_MAX, validateShareName } from '@/lib/shared-plans/share-url';
+import { defaultShareName, validateShareName } from '@/lib/shared-plans/share-url';
 import { plansTitle } from '@/lib/shared-plans/view-model';
+import ShareLinkPanel from './ShareLinkPanel';
 
 /**
  * Owner sheet for Shared Plans (BRO-4481, docs/specs/shared-plans.md §2.1):
@@ -30,7 +31,6 @@ export default function SharePlansModal({ isOpen, onClose, userId, profileName, 
   const [showUnbooked, setShowUnbooked] = useState(true);
   const [name, setName] = useState('');
   const [busy, setBusy] = useState(false);
-  const [confirmReset, setConfirmReset] = useState(false);
 
   // Seed the form from the saved share, or from the profile for a first share.
   useEffect(() => {
@@ -103,7 +103,6 @@ export default function SharePlansModal({ isOpen, onClose, userId, profileName, 
     setBusy(true);
     const next = await rotate();
     setBusy(false);
-    setConfirmReset(false);
     if (next) {
       trackSharedPlans({ name: 'plans_link_reset', props: {} });
       showToast?.('New link ready. The old one no longer works.', 'success');
@@ -128,53 +127,22 @@ export default function SharePlansModal({ isOpen, onClose, userId, profileName, 
           <SectionToggle label="Not yet booked" hint="On your watchlist, no date yet" count={counts.unbooked} checked={showUnbooked} onChange={on => setSection('unbooked', on)} />
         </fieldset>
 
-        <label className="block mb-5">
-          <span className="block text-xs font-semibold uppercase tracking-wide text-gray-300 mb-1.5">Your name on the page</span>
-          <input
-            type="text"
-            value={name}
-            maxLength={SHARE_NAME_MAX + 5}
-            onChange={e => setName(e.target.value)}
-            onBlur={saveName}
-            className="search-input"
-            placeholder="e.g. Tom"
-            aria-invalid={!!nameError}
-            aria-describedby="share-name-help"
-          />
-          <span id="share-name-help" className={`block text-xs mt-1 ${nameError && name ? 'text-score-skip' : 'text-gray-500'}`}>
-            {nameError && name ? nameError : `Friends see “${plansTitle(name.trim() || 'Tom')}”.`}
-          </span>
-        </label>
-
-        {error && <p className="text-xs text-score-skip mb-3" role="alert">Something went wrong: {error}</p>}
-
-        <button type="button" onClick={handleShare} disabled={!canShare} className="btn btn-primary w-full disabled:opacity-50 disabled:cursor-not-allowed" data-testid="share-plans-share">
-          {busy ? 'Working…' : 'Share link'}
-        </button>
-
-        {live && url && (
-          <div className="mt-5 pt-4 border-t border-white/10 space-y-3" data-testid="share-plans-live">
-            <div className="flex items-center justify-between gap-3">
-              <span className="text-xs text-status-open font-semibold uppercase tracking-wide">Sharing is on</span>
-              <a href={url} target="_blank" rel="noopener noreferrer" className="ph-no-capture text-sm text-brand hover:text-brand-light underline underline-offset-2">Preview</a>
-            </div>
-            {confirmReset ? (
-              <div className="card p-3">
-                <p className="text-sm text-gray-300 mb-3">Anyone with the old link will lose access.</p>
-                <div className="flex gap-2">
-                  <button type="button" onClick={handleReset} disabled={busy} className="btn btn-secondary text-sm">Reset link</button>
-                  <button type="button" onClick={() => setConfirmReset(false)} className="btn btn-ghost text-sm">Cancel</button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex flex-wrap gap-2">
-                <button type="button" onClick={() => setConfirmReset(true)} disabled={busy} className="btn btn-secondary text-sm">Reset link</button>
-                <button type="button" onClick={handleStop} disabled={busy} className="btn btn-secondary text-sm" data-testid="share-plans-stop">Stop sharing</button>
-              </div>
-            )}
-            <p className="text-xs text-gray-500">Previews already sent in chats stay visible there.</p>
-          </div>
-        )}
+        <ShareLinkPanel
+          testIdPrefix="share-plans"
+          name={name}
+          nameError={nameError}
+          onNameChange={setName}
+          onNameBlur={saveName}
+          titleFor={plansTitle}
+          error={error}
+          busy={busy}
+          canShare={canShare}
+          onShare={handleShare}
+          live={live}
+          url={url}
+          onReset={handleReset}
+          onStop={handleStop}
+        />
       </div>
     </Modal>
   );

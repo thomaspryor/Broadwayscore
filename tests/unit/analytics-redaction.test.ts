@@ -10,30 +10,38 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { gaInitScript } from '../../src/lib/analytics/ga-init-script';
 import {
-  isSharedPlansPath, posthogBeforeSend, redactDeep, redactSharedPlanUrl, sentryScrub, vercelBeforeSend,
+  isPrivateSharePath, posthogBeforeSend, redactDeep, redactPrivateShareUrl, sentryScrub, vercelBeforeSend,
 } from '../../src/lib/analytics/redact-url';
 
 const TOKEN = '3f9c2a7be1d04c58a6f0e9b2c4d81a77';
 
-test('redactSharedPlanUrl: absolute URLs, paths, query and hash', () => {
-  assert.equal(redactSharedPlanUrl(`https://broadwayscorecard.com/plans/${TOKEN}`), 'https://broadwayscorecard.com/plans/:token');
-  assert.equal(redactSharedPlanUrl(`/plans/${TOKEN}`), '/plans/:token');
-  assert.equal(redactSharedPlanUrl(`/plans/${TOKEN}?utm_source=imessage#x`), '/plans/:token?utm_source=imessage#x');
-  assert.equal(redactSharedPlanUrl(`/plans/${TOKEN}/opengraph-image`), '/plans/:token/opengraph-image');
-  assert.equal(redactSharedPlanUrl(`clicked <a href="/plans/${TOKEN}">`), 'clicked <a href="/plans/:token">');
-  assert.equal(redactSharedPlanUrl(redactSharedPlanUrl(`/plans/${TOKEN}`)), '/plans/:token', 'idempotent');
+test('redactPrivateShareUrl: absolute URLs, paths, query and hash', () => {
+  assert.equal(redactPrivateShareUrl(`https://broadwayscorecard.com/plans/${TOKEN}`), 'https://broadwayscorecard.com/plans/:token');
+  assert.equal(redactPrivateShareUrl(`/plans/${TOKEN}`), '/plans/:token');
+  assert.equal(redactPrivateShareUrl(`/plans/${TOKEN}?utm_source=imessage#x`), '/plans/:token?utm_source=imessage#x');
+  assert.equal(redactPrivateShareUrl(`/plans/${TOKEN}/opengraph-image`), '/plans/:token/opengraph-image');
+  assert.equal(redactPrivateShareUrl(`clicked <a href="/plans/${TOKEN}">`), 'clicked <a href="/plans/:token">');
+  assert.equal(redactPrivateShareUrl(redactPrivateShareUrl(`/plans/${TOKEN}`)), '/plans/:token', 'idempotent');
 });
 
-test('redactSharedPlanUrl leaves everything else alone', () => {
+test('redactPrivateShareUrl leaves everything else alone', () => {
   for (const s of ['https://broadwayscorecard.com/show/wicked', '/payment-plans/x', '/my-shows?tab=watchlist', 'plans', '/plansomething/x']) {
-    assert.equal(redactSharedPlanUrl(s), s);
+    assert.equal(redactPrivateShareUrl(s), s);
   }
 });
 
-test('isSharedPlansPath', () => {
-  assert.ok(isSharedPlansPath(`/plans/${TOKEN}`));
-  assert.ok(!isSharedPlansPath('/show/plans'));
-  assert.ok(!isSharedPlansPath('/plansx'));
+test('redactPrivateShareUrl covers the diary link (/seen) the same way', () => {
+  assert.equal(redactPrivateShareUrl(`https://broadwayscorecard.com/seen/${TOKEN}`), 'https://broadwayscorecard.com/seen/:token');
+  assert.equal(redactPrivateShareUrl(`/seen/${TOKEN}?utm_source=x`), '/seen/:token?utm_source=x');
+  assert.equal(redactPrivateShareUrl(`/sign-in?next=%2Fseen%2F${TOKEN}`), '/sign-in?next=%2Fseen%2F%3Atoken');
+  assert.ok(isPrivateSharePath(`/seen/${TOKEN}`));
+  assert.ok(!isPrivateSharePath('/seenx'));
+});
+
+test('isPrivateSharePath', () => {
+  assert.ok(isPrivateSharePath(`/plans/${TOKEN}`));
+  assert.ok(!isPrivateSharePath('/show/plans'));
+  assert.ok(!isPrivateSharePath('/plansx'));
 });
 
 test('posthogBeforeSend scrubs every property, nested too', () => {
@@ -69,8 +77,8 @@ test('sentryScrub scrubs request URL and breadcrumbs', () => {
 });
 
 test('percent-encoded plans paths are redacted too', () => {
-  assert.equal(redactSharedPlanUrl(`/sign-in?next=%2Fplans%2F${TOKEN}`), '/sign-in?next=%2Fplans%2F%3Atoken');
-  assert.equal(redactSharedPlanUrl(`sms:?body=https%3A%2F%2Fbroadwayscorecard.com%2Fplans%2F${TOKEN}%3Futm%3Dx`),
+  assert.equal(redactPrivateShareUrl(`/sign-in?next=%2Fplans%2F${TOKEN}`), '/sign-in?next=%2Fplans%2F%3Atoken');
+  assert.equal(redactPrivateShareUrl(`sms:?body=https%3A%2F%2Fbroadwayscorecard.com%2Fplans%2F${TOKEN}%3Futm%3Dx`),
     'sms:?body=https%3A%2F%2Fbroadwayscorecard.com%2Fplans%2F%3Atoken%3Futm%3Dx');
 });
 
@@ -121,7 +129,7 @@ const wrapper = readFileSync(join(__dirname, '..', '..', 'src', 'components', 'A
 
 test('wiring: every analytics tool in AnalyticsWrapper routes through the redactor', () => {
   assert.match(wrapper, /before_send:\s*posthogBeforeSend/, 'PostHog before_send');
-  assert.match(wrapper, /disable_session_recording:\s*isSharedPlansPath\(/, 'PostHog replay off on /plans');
+  assert.match(wrapper, /disable_session_recording:\s*isPrivateSharePath\(/, 'PostHog replay off on /plans');
   assert.match(wrapper, /<Analytics\s+beforeSend=\{vercelBeforeSend\}/, 'Vercel Analytics');
   assert.match(wrapper, /<SpeedInsights\s+beforeSend=\{vercelBeforeSend\}/, 'Speed Insights');
   assert.match(wrapper, /return hasOurCode \? sentryScrub\(event\) : null/, 'Sentry beforeSend');
@@ -144,4 +152,15 @@ test('isAuthCallbackPath: replay stays off on the OAuth return page (BRO-4525)',
   assert.equal(isAuthCallbackPath('/auth/callback'), true);
   assert.equal(isAuthCallbackPath('/auth/apple-callback'), false);
   assert.equal(isAuthCallbackPath('/my-shows'), false);
+});
+
+test('OAuth tokens in a URL hash or query are scrubbed (BRO-4525)', async () => {
+  const { redactPrivateShareUrl, sentryScrub } = await import('../../src/lib/analytics/redact-url');
+  const url = 'https://broadwayscorecard.com/auth/callback#access_token=eyJhbGciOi.abc&expires_in=3600&refresh_token=r3fr35h&provider_token=pt&provider_refresh_token=prt&type=bearer';
+  const out = redactPrivateShareUrl(url);
+  for (const secret of ['eyJhbGciOi', 'r3fr35h', '=pt&', '=prt&']) assert.ok(!out.includes(secret), `${secret} leaked: ${out}`);
+  assert.match(out, /access_token=:redacted/);
+  assert.match(out, /expires_in=3600/, 'non-secret params stay');
+  // and through a payload walker, as Sentry sends it
+  assert.ok(!JSON.stringify(sentryScrub({ request: { url } })).includes('r3fr35h'));
 });
