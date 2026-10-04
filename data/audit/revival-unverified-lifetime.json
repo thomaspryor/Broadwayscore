@@ -1,10 +1,13 @@
 {
-  "updatedAt": "2026-10-03T12:34:20.428Z",
-  "scanned": 2264,
+  "updatedAt": "2026-10-04T13:11:30.811Z",
+  "scanned": 2268,
   "showsWithViolations": 53,
   "totalViolations": 53,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "newSinceLastRun": 2,
+  "newViolationKeys": [
+    "the-book-of-mormon-west-end-2024",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026"
+  ],
   "violationKeys": [
     "the-lost-boys-2026",
     "schmigadoon-2026",
@@ -25,6 +28,7 @@
     "the-play-that-goes-wrong-west-end-2021",
     "the-devil-wears-prada-west-end-2024",
     "my-neighbour-totoro-west-end-2025",
+    "the-book-of-mormon-west-end-2024",
     "the-lion-king-west-end-2021",
     "mamma-mia-west-end-2021",
     "moulin-rouge-the-musical-west-end-2021",
@@ -34,7 +38,6 @@
     "cabaret-at-the-kit-kat-club-west-end-2021",
     "operation-mincemeat-west-end-2024",
     "death-note-the-musical-west-end-2026",
-    "a-month-in-the-country-west-end-2026",
     "the-story-west-end-2026",
     "how-shakespeare-saved-my-life-off-broadway-2026",
     "paranormal-activity-2026",
@@ -48,11 +51,11 @@
     "the-standard-of-living-west-end-2026",
     "darkling-off-west-end-2026",
     "christmas-carol-goes-wrong-west-end-2026",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026",
     "pre-existing-condition-off-broadway-2026",
     "tru-off-west-end-2026",
     "degenerates-off-broadway-2026",
     "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026",
-    "becoming-hamlet-off-broadway-2026",
     "school-pictures-off-broadway-2026",
     "lost-in-del-valle-return-off-broadway-2026",
     "beetlejuice-tour-2026",
@@ -137,7 +140,7 @@
       "showId": "the-outsiders-2024",
       "title": "The Outsiders",
       "openingDate": "2024-04-11",
-      "message": "the-outsiders-2024 review text mentions \"revival\" 67x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-outsiders-2024 review text mentions \"revival\" 61x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -182,7 +185,7 @@
       "showId": "wicked-2003",
       "title": "Wicked",
       "openingDate": "2003-10-30",
-      "message": "wicked-2003 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "wicked-2003 review text mentions \"revival\" 6x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -228,6 +231,15 @@
       "title": "My Neighbour Totoro",
       "openingDate": "2025-03-08",
       "message": "my-neighbour-totoro-west-end-2025 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "title": "The Book of Mormon",
+      "openingDate": "2013-03-21",
+      "message": "the-book-of-mormon-west-end-2024 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -309,15 +321,6 @@
       "title": "Death Note: The Musical",
       "openingDate": "2026-08-11",
       "message": "death-note-the-musical-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "a-month-in-the-country-west-end-2026",
-      "title": "A Month in the Country",
-      "openingDate": "2026-09-02",
-      "message": "a-month-in-the-country-west-end-2026 review text mentions \"revival\" 11x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -416,7 +419,7 @@
       "showId": "the-standard-of-living-west-end-2026",
       "title": "The Standard Of Living",
       "openingDate": "2026-09-29",
-      "message": "the-standard-of-living-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
+      "message": "the-standard-of-living-west-end-2026 review text mentions \"revival\" 4x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -435,6 +438,15 @@
       "title": "Christmas Carol Goes Wrong",
       "openingDate": null,
       "message": "christmas-carol-goes-wrong-west-end-2026 shares canonical title with another show in the same market but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "creation-stories-and-all-the-important-importants-off-broadway-2026",
+      "title": "creation stories and all the important importants",
+      "openingDate": "2026-10-01",
+      "message": "creation-stories-and-all-the-important-importants-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
@@ -471,15 +483,6 @@
       "title": "Rhinoceros",
       "openingDate": "2026-08-24",
       "message": "rhinoceros-starring-paul-giamatti-and-john-turturro-regional-2026 review text mentions \"revival\" 5x but isRevival is not true — verify and set isRevival if this is a revival",
-      "violations": [
-        {}
-      ]
-    },
-    {
-      "showId": "becoming-hamlet-off-broadway-2026",
-      "title": "Becoming Hamlet",
-      "openingDate": "2026-09-11",
-      "message": "becoming-hamlet-off-broadway-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]
