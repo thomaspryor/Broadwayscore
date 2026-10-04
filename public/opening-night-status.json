@@ -1,5 +1,5 @@
 {
-  "generatedAt": "2026-10-04T14:52:36.503Z",
+  "generatedAt": "2026-10-04T15:45:09.854Z",
   "lookbackDays": 3,
   "shows": [
     {
@@ -1388,23 +1388,23 @@
       "status": "open",
       "slug": "hay-fever-west-end",
       "thumbnail": "/images/shows/hay-fever-west-end-2026/thumbnail.jpg",
-      "siteScore": 68.27,
-      "liveScore": 68,
-      "scoreDrift": -0.269999999999996,
+      "siteScore": 67.23,
+      "liveScore": 67,
+      "scoreDrift": -0.23000000000000398,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
-      "total": 29,
-      "t1": 8,
+      "total": 30,
+      "t1": 9,
       "t2": 8,
       "t3": 13,
       "positive": 13,
       "mixed": 15,
-      "negative": 1,
+      "negative": 2,
       "readiness": {
         "ready": true,
         "reasons": [],
-        "highConfidence": 14,
+        "highConfidence": 15,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -1419,10 +1419,6 @@
       "missingT1": [
         {
           "name": "Observer",
-          "isDualMarket": true
-        },
-        {
-          "name": "Daily Mail",
           "isDualMarket": true
         }
       ],
@@ -1655,6 +1651,18 @@
           "p": 13,
           "m": 15,
           "n": 1,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-04T15:45:09.854Z",
+          "rc": 30,
+          "s": 67.23,
+          "t1": 9,
+          "t2": 8,
+          "t3": 13,
+          "p": 13,
+          "m": 15,
+          "n": 2,
           "bc": "waiting"
         }
       ]
@@ -2244,6 +2252,10 @@
         {
           "name": "New York Theatre Guide",
           "isDualMarket": true
+        },
+        {
+          "name": "WhatsOnStage",
+          "isDualMarket": true
         }
       ],
       "timeline": [
@@ -2699,9 +2711,9 @@
       "status": "open",
       "slug": "flamenc-oh-off-west-end",
       "thumbnail": "/images/shows/flamenc-oh-off-west-end-2026/thumbnail.webp",
-      "siteScore": 69.17,
+      "siteScore": 69.45,
       "liveScore": 69,
-      "scoreDrift": -0.1700000000000017,
+      "scoreDrift": -0.45000000000000284,
       "belowThreshold": false,
       "reviewsNeeded": 0,
       "siteFileExists": true,
@@ -2717,9 +2729,9 @@
         "reasons": [
           "T1:0/3",
           "T2:0/2",
-          "hi-conf:4/6"
+          "hi-conf:5/6"
         ],
-        "highConfidence": 4,
+        "highConfidence": 5,
         "thresholds": {
           "minReviews": 8,
           "minT1": 3,
@@ -2924,6 +2936,18 @@
           "t": "2026-10-04T14:18:44.842Z",
           "rc": 9,
           "s": 69.17,
+          "t1": 0,
+          "t2": 3,
+          "t3": 6,
+          "p": 4,
+          "m": 5,
+          "n": 0,
+          "bc": "waiting"
+        },
+        {
+          "t": "2026-10-04T15:45:09.854Z",
+          "rc": 9,
+          "s": 69.45,
           "t1": 0,
           "t2": 3,
           "t3": 6,
