@@ -1,11 +1,11 @@
 # Share my theater diary (BRO-4566)
 
-**Status:** Revised after `/plan-review` (6 reviewers, 2026-10-03). Changes are marked `[CHANGED: reason — source]`. Two owner questions open (§0). Builds on Shared Plans (BRO-4481, `docs/specs/shared-plans.md`), which is live.
+**Status:** Revised after `/plan-review` (6 reviewers, 2026-10-03). Changes are marked `[CHANGED: reason — source]`. Owner decisions recorded in §0 (2026-10-04). Builds on Shared Plans (BRO-4481, `docs/specs/shared-plans.md`), which is live.
 
-## 0. Open owner questions
+## 0. Owner decisions
 
-1. **The notes box is labelled "Private Notes"** on the website and in the app (`RatingEditor.tsx:244`, app `rate/[showId].tsx:532`). One switch publishes every note at once, including old and imported ones. Proposed: keep the single switch (owner's ask) but (a) turning it on shows "23 of your 112 entries have notes" with a Preview before confirming, and (b) while it is on, the notes box label reads "Notes (shown on your diary link)" on web; iOS gets the same label with Sprint 5. Alternative: a per-note "show on my link" tick (uses the unused `visibility` column), safer but more taps. `[CHANGED: pre-mortem P0, user impact, structure]`
-2. **Ramp:** ship dates + stars first (switch hidden), owner uses the link for a day, then the notes switch as a small second release. `[CHANGED: smallest first increment — structure]`
+1. **The notes box is labelled "Private Notes"** on the website and in the app (`RatingEditor.tsx:244`, app `rate/[showId].tsx:532`). One switch publishes every note at once, including old and imported ones. Proposed: keep the single switch (owner's ask) but (a) turning it on shows "23 of your 112 entries have notes" with a Preview before confirming, and (b) while it is on, the notes box label reads "Notes (shown on your diary link)" on web; iOS gets the same label with Sprint 5. Alternative was a per-note "show on my link" tick. **Decided 2026-10-04: the single switch with these safeguards (owner: "A").** `[CHANGED: pre-mortem P0, user impact, structure]`
+2. **Ramp:** ship dates + stars first (switch hidden), owner uses the link for a day, then the notes switch as a small second release. **Adopted** (owner chose A "as the second release after dates and stars"). `[CHANGED: smallest first increment — structure]`
 
 ## 1. Brief
 
