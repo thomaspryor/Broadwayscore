@@ -2,43 +2,9 @@
   "version": 1,
   "showId": "what-the-animals-say-off-west-end-2026",
   "openingDate": "2026-10-02",
-  "detectedAt": "2026-10-04T16:48:01.442Z",
+  "detectedAt": "2026-10-04T16:54:39.219Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "londonpubtheatres--jessica-steans-gail.json",
-      "outletId": "londonpubtheatres",
-      "criticName": "Jessica Steans-Gail",
-      "url": "https://www.londonpubtheatres.com/review-what-the-animals-say-by-david-ireland-at-finborough-theatre-29-september-24-october-2026",
-      "fullTextLen": 3651,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "complete",
-      "eligibilityReason": null
-    },
-    {
-      "file": "reviewsgate--william-russell.json",
-      "outletId": "reviewsgate",
-      "criticName": "William Russell",
-      "url": "https://www.reviewsgate.co.uk/all-reviews/what-the-animals-say-by-david-ireland-the-finborough-theatre-118-finborough-road-london-sw10-until-24-october-2026",
-      "fullTextLen": 2471,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
     {
       "file": "timeout-london--unknown.json",
       "outletId": "timeout-london",
@@ -57,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 3,
-  "dispatchableOrphanCount": 2,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "ok",
-  "lastDispatchAt": "2026-10-04T16:48:01.442Z"
+  "lastDispatch": "suppressed-no-actionable-orphans",
+  "lastDispatchAt": null
 }
