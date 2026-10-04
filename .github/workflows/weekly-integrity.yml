@@ -243,6 +243,18 @@ jobs:
           node scripts/check-score-integrity.js
           echo "score_issues=$(cat data/audit/score-integrity.json | jq '.totalIssues')" >> $GITHUB_OUTPUT
 
+      - name: Published score vs model reading audit (BRO-4596)
+        # Report only: prints total / baselined / new findings so a rise is
+        # visible in the run log. continue-on-error so it can never fail the
+        # integrity run; an empty review-texts checkout exits 2 (not "0 found").
+        # Baseline: data/audit/score-vs-models-baseline.json (--write-baseline).
+        continue-on-error: true
+        timeout-minutes: 10
+        run: |
+          set -o pipefail
+          node scripts/audit-score-vs-models.js 2>&1 | tee /tmp/score-vs-models.txt
+          { echo '### Published score vs model reading'; echo '```'; head -45 /tmp/score-vs-models.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
+
       - name: Tier-skip drift audit (scraping cost v3, S1-T4)
         # continue-on-error (ship-check finding): this step does LIVE network
         # recovery probes against external domains — a single SD outage or

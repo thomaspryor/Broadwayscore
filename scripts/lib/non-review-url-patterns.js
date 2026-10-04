@@ -408,7 +408,10 @@ const LISTING_PAGE_URL_PATTERNS = [
   { host: /(^|\.)theatermania\.com$/, path: /^\/shows\//i, reason: 'show-listing-page' },
   // Show Score catalog/show pages (its per-critic review records are captured
   // from the aggregator page itself, never cited at these paths).
-  { host: /(^|\.)show-score\.com$/, path: /^\/(broadway-shows|off-broadway-shows|shows)\//i, reason: 'show-listing-page' },
+  { host: /(^|\.)show-score\.com$/, path: /^\/(broadway-shows|off-broadway-shows|shows)\//i, reason: 'show-listing-page' },  // Express UK section index (BRO-4596): four Neil Norman rows carried this URL
+  // and a score read off a text-pattern star. Real Express reviews sit under
+  // /entertainment/theatre/<id>/<slug>, so anchor the path to the bare section.
+  { host: /(^|\.)express\.co\.uk$/, path: /^\/entertainment\/theatre\/?$/i, reason: 'section-index-page' },
 ];
 
 /**

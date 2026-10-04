@@ -153,6 +153,9 @@ const EXPECTED_REJECTION_REASONS = [
   // is the right answer forever; counting it as an unresolved conflict re-arms
   // the chronic hourly alarm on every show that legitimately has one.
   'cross-market',
+  // The URL is a section/index page, not an article (BRO-4596,
+  // review-file-writer.js listing-page guard). Refusing it is permanent.
+  'listing-page-url',
   // A caller's onMerge hook aborted the merge (review-file-writer.js:752).
   // The caller decided not to write; that is its prerogative, not a data
   // disagreement. Lower-cased here because classifyIngestSkip lower-cases the
@@ -285,6 +288,9 @@ function describeSkip(showId, url, { reason, detail }) {
   }
   if (reason === 'cross-market') {
     return `${showId}: ${url} was refused by the cross-market guard — expected rejection, no action needed unless this outlet really does cover this market (then fix its region in data/outlet-registry.json).`;
+  }
+  if (reason === 'listing-page-url') {
+    return `${showId}: ${url} is a section or index page, not an article, so it was refused. Expected rejection: find the outlet's own article URL for this review and ingest that instead.`;
   }
   if (reason === 'onmerge-aborted') {
     return `${showId}: ${url} — the calling script's onMerge hook aborted the write. Expected rejection: the caller decided not to merge, no action needed here.`;

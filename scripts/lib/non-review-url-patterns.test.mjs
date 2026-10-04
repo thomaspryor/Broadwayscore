@@ -437,3 +437,11 @@ test('BRO-4455: ticket resellers / listings / PR firm from the creation-stories 
   ]) assert.equal(classifyReviewUrl(url).ok, false, url);
   assert.equal(classifyReviewUrl('https://www.vulture.com/article/yes-its-tough-to-be-a-playwright-creation-stories.html').ok, true);
 });
+
+test('BRO-4596: express.co.uk theatre section index is a listing page, real articles are not', () => {
+  const { listingPageUrlReason } = require('./non-review-url-patterns.js');
+  assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/theatre'), 'section-index-page');
+  assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/theatre/'), 'section-index-page');
+  assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/theatre/1769203/Operation-Mincemeat-musical-review-London-2023-Fortune-theatre-dates-tickets'), null);
+  assert.equal(listingPageUrlReason('https://www.express.co.uk/entertainment/films'), null);
+});

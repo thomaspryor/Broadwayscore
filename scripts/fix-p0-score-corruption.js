@@ -21,6 +21,7 @@ const path = require('path');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 const { KNOWN_STAR_OUTLETS, OUTLET_EXTRACTORS, publishesNoCriticRating } = require('./lib/score-extractors');
 const { listShowDirs } = require('./lib/list-show-dirs');
+const { invalidateStarSidedAdjudication } = require('./lib/star-reliability');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const WEST_END_ONLY = !process.argv.includes('--all-markets');
@@ -158,6 +159,7 @@ for (const show of shows) {
           data.originalScore = null;
           data.originalScoreCleared = true;
           data.originalScoreClearedReason = 'outlet-publishes-no-critic-rating (tier 1d)';
+          invalidateStarSidedAdjudication(data, data.originalScoreClearedReason);
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         }
         console.log(`${DRY_RUN ? '[DRY] ' : ''}[T1d] ${show}/${file}: ${data.outletId} "${data.originalScore || data.previousOriginalScore}" discarded (outlet publishes no critic rating)`);
@@ -179,6 +181,7 @@ for (const show of shows) {
           data.originalScore = null;
           data.originalScoreCleared = true;
           data.originalScoreClearedReason = `extraction-no-evidence-in-text (tier 1.5, was ${scoreSource})`;
+          invalidateStarSidedAdjudication(data, data.originalScoreClearedReason);
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         }
         console.log(`${DRY_RUN ? '[DRY] ' : ''}[T1.5] ${show}/${file}: ${scoreSource} "${data.originalScore || data.previousOriginalScore}" cleared (no text evidence)`);
