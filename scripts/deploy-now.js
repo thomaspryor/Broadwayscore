@@ -23,6 +23,7 @@
 const { execSync } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const { main: checkHeldFeatures } = require('./lib/prod-held-flags-guard');
 
 const REPO_ROOT = path.resolve(__dirname, '..');
 
@@ -101,6 +102,9 @@ function deploy() {
     stdio: 'inherit',
     env,
   });
+
+  // Same check vercel-deploy.yml runs: refuse while prod env enables an owner-held feature.
+  if (checkHeldFeatures([], env) !== 0) fail('Production env enables an owner-held feature (see above). Not deploying.');
 
   console.log('\n→ vercel build --prod (this is the slow step, ~60-90s)...');
   execSync(`npx --yes vercel build --prod --token="${token}"`, {

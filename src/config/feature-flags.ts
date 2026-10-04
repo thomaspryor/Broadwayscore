@@ -19,6 +19,12 @@ const enabledFeatures = new Set(
 // userAccounts and showPageRedesign launched 2026-10-02 (BRO-4525) and left this set.
 const DEMO_FEATURES = new Set(['showtimes']);
 
+// Features the owner has held back from production. Both prod deploy paths
+// (vercel-deploy.yml, scripts/deploy-now.js) run scripts/lib/prod-held-flags-guard.js
+// and refuse to build while NEXT_PUBLIC_FEATURES enables one of these.
+// Releasing one means removing it here. BRO-4525: commercial is not to be released.
+export const PROD_HELD_FEATURES = new Set(['commercial']);
+
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;
   return window.location.hostname === 'demo.broadwayscorecard.com';
