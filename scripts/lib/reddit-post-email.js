@@ -26,6 +26,26 @@ function dueEmails(drafts, nowMs) {
   return out;
 }
 
+/**
+ * The owner asked for specific drafts again ("resend the unposted ones from
+ * the last week"). Sent as fresh 'new' emails whatever their age or earlier
+ * stamps; a posted, missing or incomplete draft is never resent.
+ * Returns { due: [{draft, kind}], skipped: [{showId, reason}] }.
+ */
+function resendEmails(drafts, ids) {
+  const all = (drafts && drafts.drafts) || {};
+  const due = [];
+  const skipped = [];
+  for (const id of new Set(ids)) {
+    const d = all[id];
+    if (!d) skipped.push({ showId: id, reason: 'no draft' });
+    else if (d.status !== 'ready') skipped.push({ showId: id, reason: d.status === 'posted' ? 'already posted' : `status ${d.status}` });
+    else if (!isComplete(d)) skipped.push({ showId: id, reason: 'incomplete draft' });
+    else due.push({ draft: d, kind: 'new' });
+  }
+  return { due, skipped };
+}
+
 function buildSubject(d, kind) {
   const lead = kind === 'reminder' ? 'Still ready to post' : 'Reddit post ready';
   return `${lead}: ${d.showTitle} (${d.score}/100) for r/${d.subreddit}`;
@@ -89,4 +109,4 @@ function buildHtml(d, kind, images = []) {
 </body></html>`;
 }
 
-module.exports = { dueEmails, buildSubject, buildHtml, REMIND_AFTER_HOURS };
+module.exports = { resendEmails, dueEmails, buildSubject, buildHtml, REMIND_AFTER_HOURS };
