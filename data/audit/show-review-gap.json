@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-04T19:06:54.776Z",
-  "windowDays": 1095,
-  "targets": 389,
-  "auditedThisRun": 23,
-  "carriedForward": 600,
+  "generatedAt": "2026-10-04T20:09:17.422Z",
+  "windowDays": 21,
+  "targets": 4,
+  "auditedThisRun": 4,
+  "carriedForward": 619,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
-    "withGap": 345,
-    "missingCurrentRun": 588,
+    "withGap": 349,
+    "missingCurrentRun": 609,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 834,
+    "totalFlaggedMisses": 848,
     "totalRecoverable": 4,
     "totalRecovered": 8,
-    "priorProductionCitations": 2843
+    "priorProductionCitations": 2852
   },
   "results": [
     {
@@ -2009,13 +2009,241 @@
       "status": "open",
       "category": "off-west-end",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "aggregatorListedUrls": [
+        "https://www.thereviewshub.com/a-small-and-quiet-light-orange-tree-theatre-london/",
+        "https://sierz.co.uk/reviews/a-small-and-quiet-light-orange-tree-theatre/",
+        "https://www.timeout.com/london/theatre/a-small-and-quiet-light",
+        "https://viewfromthegods.co.uk/2026/09/29/a-small-and-quiet-light-orange-tree-richmond-co-uk/",
+        "https://www.broadwayworld.com/westend/article/Review-A-SMALL-AND-QUIET-LIGHT-Orange-Tree-Theatre-20260929",
+        "https://playsinternational.org.uk/a-small-and-quiet-light-orange-tree-theatre/",
+        "https://everything-theatre.co.uk/2026/09/review-a-small-and-quiet-light-orange-tree-theatre/",
+        "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light/",
+        "https://www.cft.org.uk/news/full-company-and-extra-seats-for-a-small-and-quiet-light",
+        "https://www.allthatdazzles.co.uk/post/review-a-small-and-quiet-light-minerva-theatre---orange-tree-theatre",
+        "https://fringereview.co.uk/review/fringereview-uk/2026/a-small-and-quiet-light/",
+        "https://theatreweekly.com/review-a-small-and-quiet-light-at-the-orange-tree-theatre/",
+        "https://rolandcat.substack.com/p/review-a-small-and-quiet-light-orange",
+        "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light-on-screen/",
+        "https://www.londontheatre1.com/reviews/a-small-and-quiet-light-orange-tree-theatre/",
+        "https://theatreandtonic.co.uk/blog/a-small-and-quiet-light-minerva-theatre-chichester-review",
+        "https://www.londonlivinglarge.com/2026/09/a-small-and-quiet-light-orange-tree.html",
+        "https://theatresoutheast.com/a-small-and-quiet-light-minerva-theatre-chichester-review/",
+        "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester",
+        "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/",
+        "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/",
+        "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/",
+        "https://www.uktw.co.uk/Tour/Play/a-small-and-quiet-light/T01948657515/",
+        "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901",
+        "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
+        "https://www.nickhernbooks.co.uk/a-small-and-quiet-light"
+      ],
+      "dirFiles": 24,
+      "dirClean": 12,
+      "inReviewsJson": 15,
+      "missing": [
+        {
+          "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light/",
+          "host": "orangetreetheatre.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light-on-screen/",
+          "host": "orangetreetheatre.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester",
+          "host": "theguardian.com",
+          "knownOutletId": "guardian",
+          "serpCensus": true
+        },
+        {
+          "url": "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/",
+          "host": "regionalartsjunkies.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/",
+          "host": "thespyinthestalls.com",
+          "knownOutletId": "the-spy-in-the-stalls",
+          "serpCensus": true
+        },
+        {
+          "url": "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/",
+          "host": "susanelkin.co.uk",
+          "knownOutletId": "susanelkin",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.uktw.co.uk/Tour/Play/a-small-and-quiet-light/T01948657515/",
+          "host": "uktw.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901",
+          "host": "visitsoutheastengland.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.nickhernbooks.co.uk/a-small-and-quiet-light",
+          "host": "nickhernbooks.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "theartsdesk.com",
+          "count": 1
+        },
+        {
+          "host": "theatrecat.com",
+          "count": 1
+        },
+        {
+          "host": "whatsonstage.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://www.timeout.com/london/theatre/a-small-and-quiet-light",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.timeout.com/london/theatre/a-small-and-quiet-light"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://viewfromthegods.co.uk/2026/09/29/a-small-and-quiet-light-orange-tree-richmond-co-uk/",
+          "host": "viewfromthegods.co.uk",
+          "knownOutletId": "viewfromthegods",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "viewfromthegods--simon-jenner.json",
+              "flag": "clean",
+              "urlInDir": "https://viewfromthegods.co.uk/2026/09/29/a-small-and-quiet-light-orange-tree-richmond-co-uk/?utm_source=rss&utm_medium=rss&utm_campaign=a-small-and-quiet-light-orange-tree-richmond-co-uk"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.cft.org.uk/news/full-company-and-extra-seats-for-a-small-and-quiet-light",
+          "host": "cft.org.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "cft--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.cft.org.uk/news/full-company-and-extra-seats-for-a-small-and-quiet-light"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.allthatdazzles.co.uk/post/review-a-small-and-quiet-light-minerva-theatre---orange-tree-theatre",
+          "host": "allthatdazzles.co.uk",
+          "knownOutletId": "all-that-dazzles-uk",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "all-that-dazzles-uk--all-that-dazzles.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.allthatdazzles.co.uk/post/review-a-small-and-quiet-light-minerva-theatre---orange-tree-theatre"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.londontheatre1.com/reviews/a-small-and-quiet-light-orange-tree-theatre/",
+          "host": "londontheatre1.com",
+          "knownOutletId": "londontheatre1",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "londontheatre1--unknown.json",
+              "flag": "duplicate",
+              "urlInDir": "https://www.londontheatre1.com/reviews/a-small-and-quiet-light-orange-tree-theatre/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatreandtonic.co.uk/blog/a-small-and-quiet-light-minerva-theatre-chichester-review",
+          "host": "theatreandtonic.co.uk",
+          "knownOutletId": "theatreandtonic",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatreandtonic--emmie-newitt.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatreandtonic.co.uk/blog/a-small-and-quiet-light-minerva-theatre-chichester-review"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://theatresoutheast.com/a-small-and-quiet-light-minerva-theatre-chichester-review/",
+          "host": "theatresoutheast.com",
+          "knownOutletId": "theatre-south-east",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "theatre-south-east--mike-linane.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://theatresoutheast.com/a-small-and-quiet-light-minerva-theatre-chichester-review/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 0,
@@ -2049,27 +2277,473 @@
             "passive": true
           }
         },
-        "allSourcesFailed": false
+        "allSourcesFailed": false,
+        "currentRunRows": 0,
+        "corroborated": 0,
+        "perSource": {}
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"A Small And Quiet Light\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"A Small And Quiet Light\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"A Small And Quiet Light\" review orange",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "A Small And Quiet Light Orange Tree Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "A Small And Quiet Light Orange Tree Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "A Small And Quiet Light Orange Tree Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 9,
+            "error": null
+          }
+        ],
+        "queriesOk": 5,
+        "queriesTotal": 5,
+        "resultCount": 26,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 9,
+        "byReason": {
+          "roundup-page": 2,
+          "non-review-host": 7
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light/",
+          "host": "orangetreetheatre.co.uk",
+          "outletId": "orangetreetheatre",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light/ matches a kno"
+        },
+        {
+          "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light-on-screen/",
+          "host": "orangetreetheatre.co.uk",
+          "outletId": "orangetreetheatre",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light-on-screen/ mat"
+        },
+        {
+          "url": "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester",
+          "host": "theguardian.com",
+          "outletId": "guardian",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/",
+          "host": "regionalartsjunkies.co.uk",
+          "outletId": "regionalartsjunkies",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/",
+          "host": "thespyinthestalls.com",
+          "outletId": "the-spy-in-the-stalls",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/",
+          "host": "susanelkin.co.uk",
+          "outletId": "susanelkin"
+        },
+        {
+          "url": "https://www.uktw.co.uk/Tour/Play/a-small-and-quiet-light/T01948657515/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw"
+        },
+        {
+          "url": "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901",
+          "host": "visitsoutheastengland.com",
+          "outletId": "visitsoutheastengland"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
+          "host": "thestage.co.uk",
+          "outletId": "thestage"
+        },
+        {
+          "url": "https://www.nickhernbooks.co.uk/a-small-and-quiet-light",
+          "host": "nickhernbooks.co.uk",
+          "outletId": "nickhernbooks"
+        }
+      ],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "orangetreetheatre.co.uk",
+            "outlet": "orangetreetheatre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light/"
+          },
+          {
+            "outletId": "orangetreetheatre.co.uk",
+            "outlet": "orangetreetheatre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light-on-screen/"
+          },
+          {
+            "outletId": "guardian",
+            "outlet": "guardian",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester"
+          },
+          {
+            "outletId": "regionalartsjunkies.co.uk",
+            "outlet": "regionalartsjunkies.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/"
+          },
+          {
+            "outletId": "the-spy-in-the-stalls",
+            "outlet": "the-spy-in-the-stalls",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/"
+          },
+          {
+            "outletId": "susanelkin",
+            "outlet": "susanelkin",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/"
+          },
+          {
+            "outletId": "uktw.co.uk",
+            "outlet": "uktw.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/Tour/Play/a-small-and-quiet-light/T01948657515/"
+          },
+          {
+            "outletId": "visitsoutheastengland.com",
+            "outlet": "visitsoutheastengland.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre"
+          },
+          {
+            "outletId": "nickhernbooks.co.uk",
+            "outlet": "nickhernbooks.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.nickhernbooks.co.uk/a-small-and-quiet-light"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/a-small-and-quiet-light"
+          },
+          {
+            "outletId": "viewfromthegods",
+            "outlet": "viewfromthegods",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://viewfromthegods.co.uk/2026/09/29/a-small-and-quiet-light-orange-tree-richmond-co-uk/"
+          },
+          {
+            "outletId": "cft.org.uk",
+            "outlet": "cft.org.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.cft.org.uk/news/full-company-and-extra-seats-for-a-small-and-quiet-light"
+          },
+          {
+            "outletId": "all-that-dazzles-uk",
+            "outlet": "all-that-dazzles-uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.allthatdazzles.co.uk/post/review-a-small-and-quiet-light-minerva-theatre---orange-tree-theatre"
+          },
+          {
+            "outletId": "londontheatre1",
+            "outlet": "londontheatre1",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.londontheatre1.com/reviews/a-small-and-quiet-light-orange-tree-theatre/"
+          },
+          {
+            "outletId": "theatreandtonic",
+            "outlet": "theatreandtonic",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatreandtonic.co.uk/blog/a-small-and-quiet-light-minerva-theatre-chichester-review"
+          },
+          {
+            "outletId": "theatre-south-east",
+            "outlet": "theatre-south-east",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://theatresoutheast.com/a-small-and-quiet-light-minerva-theatre-chichester-review/"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.thereviewshub.com/a-small-and-quiet-light-orange-tree-theatre-london/",
+            "outletId": "thereviewshub.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://sierz.co.uk/reviews/a-small-and-quiet-light-orange-tree-theatre/",
+            "outletId": "sierz.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-A-SMALL-AND-QUIET-LIGHT-Orange-Tree-Theatre-20260929",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/a-small-and-quiet-light-orange-tree-theatre/",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://everything-theatre.co.uk/2026/09/review-a-small-and-quiet-light-orange-tree-theatre/",
+            "outletId": "everything-theatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://fringereview.co.uk/review/fringereview-uk/2026/a-small-and-quiet-light/",
+            "outletId": "fringereview.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://theatreweekly.com/review-a-small-and-quiet-light-at-the-orange-tree-theatre/",
+            "outletId": "theatreweekly.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://rolandcat.substack.com/p/review-a-small-and-quiet-light-orange",
+            "outletId": "rolandcat.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.londonlivinglarge.com/2026/09/a-small-and-quiet-light-orange-tree.html",
+            "outletId": "londonlivinglarge.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light/",
+            "outletId": "orangetreetheatre.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light-on-screen/",
+            "outletId": "orangetreetheatre.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester",
+            "outletId": "guardian",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/",
+            "outletId": "regionalartsjunkies.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/",
+            "outletId": "the-spy-in-the-stalls",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/",
+            "outletId": "susanelkin",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/Tour/Play/a-small-and-quiet-light/T01948657515/",
+            "outletId": "uktw.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901",
+            "outletId": "visitsoutheastengland.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.nickhernbooks.co.uk/a-small-and-quiet-light",
+            "outletId": "nickhernbooks.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/a-small-and-quiet-light",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://viewfromthegods.co.uk/2026/09/29/a-small-and-quiet-light-orange-tree-richmond-co-uk/",
+            "outletId": "viewfromthegods",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.cft.org.uk/news/full-company-and-extra-seats-for-a-small-and-quiet-light",
+            "outletId": "cft.org.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-a-small-and-quiet-light-minerva-theatre---orange-tree-theatre",
+            "outletId": "all-that-dazzles-uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/a-small-and-quiet-light-orange-tree-theatre/",
+            "outletId": "londontheatre1",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://theatreandtonic.co.uk/blog/a-small-and-quiet-light-minerva-theatre-chichester-review",
+            "outletId": "theatreandtonic",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://theatresoutheast.com/a-small-and-quiet-light-minerva-theatre-chichester-review/",
+            "outletId": "theatre-south-east",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          }
+        ],
         "censusSchema": 2,
-        "liveCount": 0,
-        "candidateCount": 0
+        "liveCount": 9,
+        "candidateCount": 25
       },
-      "computedAt": "2026-10-04T17:44:10.242Z"
+      "computedAt": "2026-10-04T20:09:17.422Z"
     },
     {
       "showId": "a-thousand-natural-shocks-off-broadway-2026",
@@ -8267,34 +8941,302 @@
       "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [],
-      "aggregatorListedUrls": [],
-      "dirFiles": 0,
-      "dirClean": 0,
-      "inReviewsJson": 0,
-      "missing": [],
-      "dirOnly": [],
-      "flaggedMisses": [],
+      "aggregatorListedUrls": [
+        "https://exeuntnyc.com/reviews/review-arias-with-a-twist-at-here-arts-center/",
+        "https://www.offoffonline.com/offoffonline/2026/9/21/arias-with-a-twist",
+        "https://www.theatermania.com/news/the-goddess-returns-joey-arias-gets-his-twist-back_1852943/",
+        "https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
+        "https://thefrontrowcenter.com/2026/09/arias-with-a-twist/",
+        "https://nitelifeexchange.com/arias-with-a-twist-joey-arias-and-basil-twist-perform-at-here-arts-center-from-thursday-september-17-sunday-november-1/",
+        "https://theaterpizzazz.com/arias-with-a-twist-extraordinary/",
+        "https://donshewey.com/theater_reviews/arias_with_a_twist.html",
+        "https://gaycitynews.com/arias-with-a-twist-handcrafted-theatrical-fantasia/",
+        "https://www.amny.com/entertainment/arias-with-a-twist-returns-18-years-later/",
+        "https://exeuntnyc.com/reviews/review-arias-with-a-twist-at-here-arts-center/attachment/2026-09-13-arias-with-a-twist-tandem-otter-prod-here-arts-rt-480-copy/",
+        "https://www.theaterscene.net/multimedia/arias-with-a-twist/karen-karin-rosenberg/",
+        "https://www.newyorker.com/magazine/2026/10/05/more-sunshine-with-joey-arias-and-basil-twist"
+      ],
+      "dirFiles": 14,
+      "dirClean": 13,
+      "inReviewsJson": 13,
+      "missing": [
+        {
+          "url": "https://www.amny.com/entertainment/arias-with-a-twist-returns-18-years-later/",
+          "host": "amny.com",
+          "knownOutletId": "amny",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2026/10/05/more-sunshine-with-joey-arias-and-basil-twist",
+          "host": "newyorker.com",
+          "knownOutletId": "newyorker",
+          "serpCensus": true
+        }
+      ],
+      "dirOnly": [
+        {
+          "host": "blogcritics.org",
+          "count": 1
+        },
+        {
+          "host": "broadwayworld.com",
+          "count": 1
+        },
+        {
+          "host": "stageandcinema.com",
+          "count": 1
+        },
+        {
+          "host": "theatrely.com",
+          "count": 1
+        }
+      ],
+      "flaggedMisses": [
+        {
+          "url": "https://nitelifeexchange.com/arias-with-a-twist-joey-arias-and-basil-twist-perform-at-here-arts-center-from-thursday-september-17-sunday-november-1/",
+          "host": "nitelifeexchange.com",
+          "knownOutletId": "nitelifeexchange-com",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "nitelifeexchange-com--nitelife-exchange.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://nitelifeexchange.com/arias-with-a-twist-joey-arias-and-basil-twist-perform-at-here-arts-center-from-thursday-september-17-sunday-november-1/"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Arias with a Twist\" Off-Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Arias with a Twist\" Off-Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Arias with a Twist\" review here",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Arias with a Twist\" Twist review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Arias with a Twist HERE Arts Center review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Arias with a Twist HERE Arts Center review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Arias with a Twist HERE Arts Center review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 6,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 13,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 33,
+        "byReason": {
+          "non-review-host": 23,
+          "aggregator-internal-nav": 6,
+          "venue-production-page": 1,
+          "census-junk-host": 1,
+          "merch-store": 2
+        }
       },
       "dedupedVariants": [],
+      "ingestResults": [
+        {
+          "url": "https://www.amny.com/entertainment/arias-with-a-twist-returns-18-years-later/",
+          "host": "amny.com",
+          "outletId": "amny",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.newyorker.com/magazine/2026/10/05/more-sunshine-with-joey-arias-and-basil-twist",
+          "host": "newyorker.com",
+          "outletId": "newyorker",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
-        "suppressedMissing": [],
-        "candidates": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "amny",
+            "outlet": "amny",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.amny.com/entertainment/arias-with-a-twist-returns-18-years-later/"
+          },
+          {
+            "outletId": "nitelifeexchange-com",
+            "outlet": "nitelifeexchange-com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://nitelifeexchange.com/arias-with-a-twist-joey-arias-and-basil-twist-perform-at-here-arts-center-from-thursday-september-17-sunday-november-1/"
+          }
+        ],
+        "suppressedMissing": [
+          {
+            "outletId": "newyorker",
+            "outlet": "newyorker",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.newyorker.com/magazine/2026/10/05/more-sunshine-with-joey-arias-and-basil-twist"
+          }
+        ],
+        "candidates": [
+          {
+            "url": "https://exeuntnyc.com/reviews/review-arias-with-a-twist-at-here-arts-center/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.offoffonline.com/offoffonline/2026/9/21/arias-with-a-twist",
+            "outletId": "offoffonline.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.theatermania.com/news/the-goddess-returns-joey-arias-gets-his-twist-back_1852943/",
+            "outletId": "theatermania.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.vulture.com/article/reviews-how-shakespeare-saved-my-life-arias-with-a-twist.html",
+            "outletId": "vulture.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://thefrontrowcenter.com/2026/09/arias-with-a-twist/",
+            "outletId": "thefrontrowcenter.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://theaterpizzazz.com/arias-with-a-twist-extraordinary/",
+            "outletId": "theaterpizzazz.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://donshewey.com/theater_reviews/arias_with_a_twist.html",
+            "outletId": "donshewey.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://gaycitynews.com/arias-with-a-twist-handcrafted-theatrical-fantasia/",
+            "outletId": "gaycitynews.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://exeuntnyc.com/reviews/review-arias-with-a-twist-at-here-arts-center/attachment/2026-09-13-arias-with-a-twist-tandem-otter-prod-here-arts-rt-480-copy/",
+            "outletId": "exeuntnyc.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.theaterscene.net/multimedia/arias-with-a-twist/karen-karin-rosenberg/",
+            "outletId": "theaterscene.net",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.amny.com/entertainment/arias-with-a-twist-returns-18-years-later/",
+            "outletId": "amny",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.newyorker.com/magazine/2026/10/05/more-sunshine-with-joey-arias-and-basil-twist",
+            "outletId": "newyorker",
+            "state": "SUPPRESSED",
+            "reason": "ci-unfetchable",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://nitelifeexchange.com/arias-with-a-twist-joey-arias-and-basil-twist-perform-at-here-arts-center-from-thursday-september-17-sunday-november-1/",
+            "outletId": "nitelifeexchange-com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          }
+        ],
         "censusSchema": 2,
-        "liveCount": 0,
-        "candidateCount": 0
+        "liveCount": 9,
+        "candidateCount": 12
       },
-      "computedAt": "2026-10-04T17:44:10.242Z"
+      "computedAt": "2026-10-04T20:09:17.422Z"
     },
     {
       "showId": "armory-public-tours-off-broadway-2026",
@@ -18525,49 +19467,211 @@
       "openingDate": "2026-10-01",
       "status": "open",
       "category": "off-west-end",
-      "aggregatorArticles": [],
+      "aggregatorArticles": [
+        "https://www.broadwayworld.com/article/Review-Roundup-BULL-DURHAM-at-Paper-Mill-Playhouse-20251022",
+        "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-TITUS-ANDRONICUS-Off-Broadway-Starring-Patrick-Page-20260329",
+        "https://www.broadwayworld.com/article/Review-Roundup-Alliance-Theatres-BULL-DURHAM--Updating-Live-20140918",
+        "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604"
+      ],
       "aggregatorListedUrls": [
-        "https://www.londonboxoffice.co.uk/news/post/bull-park-theatre-review"
+        "https://www.nytimes.com/2025/10/22/theater/bull-durham-review-stage-musical.html",
+        "https://nystagereview.com/2025/10/14/bull-durham-film-to-stage-transfer-hits-a-homer/",
+        "https://1minutecritic.com/bull-durham-paper-mill-playhouse-review/",
+        "https://essexnewsdaily.com/arts/review-paper-mill-hits-it-out-of-the-park-with-new-bull-durham-musical",
+        "https://www.njarts.net/love-and-baseball-bull-durham-returns-in-musical-form-at-paper-mill-playhouse-in-millburn/",
+        "https://www.nj.com/entertainment/2025/10/bull-durham-is-a-movie-to-musical-hit-at-paper-mill-review.html",
+        "http://www.nytimes.com/2014/09/17/theater/bull-durham-a-musical-adaptation-of-the-1988-movie.html",
+        "http://variety.com/2014/legit/reviews/atlanta-theater-review-bull-durham-the-musical-1201305637/",
+        "http://www.atlantaintownpaper.com/2014/09/theatre-review-bull-durham-alliance/",
+        "https://www.londonboxoffice.co.uk/news/post/bull-park-theatre-review",
+        "https://www.londontheatre1.com/reviews/bull-park-theatre/",
+        "https://ayoungishperspective.co.uk/2026/10/04/review-bull/",
+        "https://www.broadwayworld.com/westend/article/Review-BULL-Park-Theatre-20261002",
+        "https://www.alledinburghtheatre.com/bull-fight-mythography-collective-macrobert-arts-centre-summerhall-edfringe-2026-review/",
+        "https://rolandcat.substack.com/p/review-bull-park-theatre",
+        "https://www.deafinitelytheatre.co.uk/event/bull",
+        "https://www.britishtheatreguide.info/reviews/bull-birmingham-rep-26016",
+        "https://playsinternational.org.uk/bull-park-theatre/",
+        "https://limpingchicken.com/2026/09/21/review-bull-by-deafinitely-theatre-a-gripping-exploration-of-bullying-abuse-and-the-destruction-it-leaves-behind/",
+        "https://www.allthatdazzles.co.uk/post/review-bull-birmingham-rep---park-theatre",
+        "https://www.birmingham-rep.co.uk/whats-on/bull/",
+        "https://www.timeout.com/london/theatre/bull-2",
+        "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+        "https://www.whatsonlive.co.uk/birmingham/news/review-bull-by-deafinitely-theatre/66122",
+        "https://www.thestage.co.uk/reviews/bull"
       ],
       "dirFiles": 22,
       "dirClean": 9,
       "inReviewsJson": 9,
-      "missing": [],
+      "missing": [
+        {
+          "url": "https://www.nytimes.com/2025/10/22/theater/bull-durham-review-stage-musical.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://nystagereview.com/2025/10/14/bull-durham-film-to-stage-transfer-hits-a-homer/",
+          "host": "nystagereview.com",
+          "knownOutletId": "nysr",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1minutecritic.com/bull-durham-paper-mill-playhouse-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://essexnewsdaily.com/arts/review-paper-mill-hits-it-out-of-the-park-with-new-bull-durham-musical",
+          "host": "essexnewsdaily.com",
+          "knownOutletId": "essexnewsdaily",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.njarts.net/love-and-baseball-bull-durham-returns-in-musical-form-at-paper-mill-playhouse-in-millburn/",
+          "host": "njarts.net",
+          "knownOutletId": "njarts",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2025/10/bull-durham-is-a-movie-to-musical-hit-at-paper-mill-review.html",
+          "host": "nj.com",
+          "knownOutletId": "njcom",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.nytimes.com/2014/09/17/theater/bull-durham-a-musical-adaptation-of-the-1988-movie.html",
+          "host": "nytimes.com",
+          "knownOutletId": "nytimes",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://variety.com/2014/legit/reviews/atlanta-theater-review-bull-durham-the-musical-1201305637/",
+          "host": "variety.com",
+          "knownOutletId": "variety",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "http://www.atlantaintownpaper.com/2014/09/theatre-review-bull-durham-alliance/",
+          "host": "atlantaintownpaper.com",
+          "knownOutletId": "atlanta-intown",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.birmingham-rep.co.uk/whats-on/bull/",
+          "host": "birmingham-rep.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+          "host": "uktw.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.whatsonlive.co.uk/birmingham/news/review-bull-by-deafinitely-theatre/66122",
+          "host": "whatsonlive.co.uk",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/bull",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
+          "serpCensus": true
+        }
+      ],
       "dirOnly": [
-        {
-          "host": "ayoungishperspective.co.uk",
-          "count": 1
-        },
-        {
-          "host": "allthatdazzles.co.uk",
-          "count": 1
-        },
-        {
-          "host": "britishtheatreguide.info",
-          "count": 1
-        },
-        {
-          "host": "broadwayworld.com",
-          "count": 1
-        },
         {
           "host": "liamodell.com",
           "count": 1
-        },
-        {
-          "host": "londontheatre1.com",
-          "count": 1
-        },
-        {
-          "host": "playsinternational.org.uk",
-          "count": 1
-        },
-        {
-          "host": "rolandcat.substack.com",
-          "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.alledinburghtheatre.com/bull-fight-mythography-collective-macrobert-arts-centre-summerhall-edfringe-2026-review/",
+          "host": "alledinburghtheatre.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "alledinburghtheatre--hugh-simpson.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.alledinburghtheatre.com/bull-fight-mythography-collective-macrobert-arts-centre-summerhall-edfringe-2026-review/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.deafinitelytheatre.co.uk/event/bull",
+          "host": "deafinitelytheatre.co.uk",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "deafinitelytheatre--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.deafinitelytheatre.co.uk/event/bull"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://limpingchicken.com/2026/09/21/review-bull-by-deafinitely-theatre-a-gripping-exploration-of-bullying-abuse-and-the-destruction-it-leaves-behind/",
+          "host": "limpingchicken.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "limpingchicken--rebecca-a-withey.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://limpingchicken.com/2026/09/21/review-bull-by-deafinitely-theatre-a-gripping-exploration-of-bullying-abuse-and-the-destruction-it-leaves-behind/"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.timeout.com/london/theatre/bull-2",
+          "host": "timeout.com",
+          "knownOutletId": "timeout-london",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "timeout-london--unknown.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://www.timeout.com/london/theatre/bull-2"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": {
         "rowCount": 1,
@@ -18612,17 +19716,253 @@
         }
       },
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Bull\" West End review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Bull\" West End review 2026",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Bull Park Theatre review",
+            "page": 0,
+            "geo": "gb",
+            "ok": true,
+            "results": 9,
+            "accepted": 5,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Bull Park Theatre review",
+            "page": 1,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Bull Park Theatre review",
+            "page": 2,
+            "geo": "gb",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          }
+        ],
+        "queriesOk": 4,
+        "queriesTotal": 4,
+        "resultCount": 16,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 0,
-        "byReason": {}
+        "count": 1195,
+        "byReason": {
+          "roundup-page": 3,
+          "non-review-host": 75,
+          "aggregator-internal-nav": 868,
+          "census-junk-host": 1,
+          "not-http-url": 228,
+          "aggregator-section-root": 20
+        }
       },
       "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-BULL-DURHAM-at-Paper-Mill-Playhouse-20251022",
+          "publishDate": "2025-10-22"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-TITUS-ANDRONICUS-Off-Broadway-Starring-Patrick-Page-20260329",
+          "publishDate": "2026-03-29"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Alliance-Theatres-BULL-DURHAM--Updating-Live-20140918",
+          "publishDate": "2014-09-18"
+        },
+        {
+          "url": "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+          "publishDate": "2025-06-04"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.nytimes.com/2025/10/22/theater/bull-durham-review-stage-musical.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://nystagereview.com/2025/10/14/bull-durham-film-to-stage-transfer-hits-a-homer/",
+          "host": "nystagereview.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://1minutecritic.com/bull-durham-paper-mill-playhouse-review/",
+          "host": "1minutecritic.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://essexnewsdaily.com/arts/review-paper-mill-hits-it-out-of-the-park-with-new-bull-durham-musical",
+          "host": "essexnewsdaily.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.njarts.net/love-and-baseball-bull-durham-returns-in-musical-form-at-paper-mill-playhouse-in-millburn/",
+          "host": "njarts.net",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.nj.com/entertainment/2025/10/bull-durham-is-a-movie-to-musical-hit-at-paper-mill-review.html",
+          "host": "nj.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.nytimes.com/2014/09/17/theater/bull-durham-a-musical-adaptation-of-the-1988-movie.html",
+          "host": "nytimes.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://variety.com/2014/legit/reviews/atlanta-theater-review-bull-durham-the-musical-1201305637/",
+          "host": "variety.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "http://www.atlantaintownpaper.com/2014/09/theatre-review-bull-durham-alliance/",
+          "host": "atlantaintownpaper.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [
+        {
+          "url": "https://www.birmingham-rep.co.uk/whats-on/bull/",
+          "host": "birmingham-rep.co.uk",
+          "outletId": "birmingham-rep",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://www.birmingham-rep.co.uk/whats-on/bull/ matches a known non-review doma"
+        },
+        {
+          "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"uktw\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
+        },
+        {
+          "url": "https://www.whatsonlive.co.uk/birmingham/news/review-bull-by-deafinitely-theatre/66122",
+          "host": "whatsonlive.co.uk",
+          "outletId": "whatsonlive",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"whatsonlive\" (not in registry) — onboard to outlet-registry.json after revie"
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/bull",
+          "host": "thestage.co.uk",
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+        }
+      ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "complete",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "birmingham-rep.co.uk",
+            "outlet": "birmingham-rep.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.birmingham-rep.co.uk/whats-on/bull/"
+          },
+          {
+            "outletId": "uktw.co.uk",
+            "outlet": "uktw.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/"
+          },
+          {
+            "outletId": "whatsonlive.co.uk",
+            "outlet": "whatsonlive.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.whatsonlive.co.uk/birmingham/news/review-bull-by-deafinitely-theatre/66122"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/bull"
+          },
+          {
+            "outletId": "alledinburghtheatre.com",
+            "outlet": "alledinburghtheatre.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.alledinburghtheatre.com/bull-fight-mythography-collective-macrobert-arts-centre-summerhall-edfringe-2026-review/"
+          },
+          {
+            "outletId": "deafinitelytheatre.co.uk",
+            "outlet": "deafinitelytheatre.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.deafinitelytheatre.co.uk/event/bull"
+          },
+          {
+            "outletId": "limpingchicken.com",
+            "outlet": "limpingchicken.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://limpingchicken.com/2026/09/21/review-bull-by-deafinitely-theatre-a-gripping-exploration-of-bullying-abuse-and-the-destruction-it-leaves-behind/"
+          },
+          {
+            "outletId": "timeout-london",
+            "outlet": "timeout-london",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.timeout.com/london/theatre/bull-2"
+          }
+        ],
         "suppressedMissing": [],
         "candidates": [
           {
@@ -18630,13 +19970,111 @@
             "outletId": "londonboxoffice.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-02T02:08:56.885Z"
+          },
+          {
+            "url": "https://www.londontheatre1.com/reviews/bull-park-theatre/",
+            "outletId": "londontheatre1.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://ayoungishperspective.co.uk/2026/10/04/review-bull/",
+            "outletId": "ayoungishperspective.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/westend/article/Review-BULL-Park-Theatre-20261002",
+            "outletId": "broadwayworld.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://rolandcat.substack.com/p/review-bull-park-theatre",
+            "outletId": "rolandcat.substack.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.britishtheatreguide.info/reviews/bull-birmingham-rep-26016",
+            "outletId": "britishtheatreguide.info",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://playsinternational.org.uk/bull-park-theatre/",
+            "outletId": "playsinternational.org.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.allthatdazzles.co.uk/post/review-bull-birmingham-rep---park-theatre",
+            "outletId": "allthatdazzles.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.birmingham-rep.co.uk/whats-on/bull/",
+            "outletId": "birmingham-rep.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+            "outletId": "uktw.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.whatsonlive.co.uk/birmingham/news/review-bull-by-deafinitely-theatre/66122",
+            "outletId": "whatsonlive.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/bull",
+            "outletId": "thestage",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.alledinburghtheatre.com/bull-fight-mythography-collective-macrobert-arts-centre-summerhall-edfringe-2026-review/",
+            "outletId": "alledinburghtheatre.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.deafinitelytheatre.co.uk/event/bull",
+            "outletId": "deafinitelytheatre.co.uk",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://limpingchicken.com/2026/09/21/review-bull-by-deafinitely-theatre-a-gripping-exploration-of-bullying-abuse-and-the-destruction-it-leaves-behind/",
+            "outletId": "limpingchicken.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.timeout.com/london/theatre/bull-2",
+            "outletId": "timeout-london",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
           }
         ],
         "censusSchema": 2,
-        "liveCount": 1,
-        "candidateCount": 1
+        "liveCount": 8,
+        "candidateCount": 16
       },
-      "computedAt": "2026-10-04T17:44:10.242Z"
+      "computedAt": "2026-10-04T20:09:17.422Z"
     },
     {
       "showId": "burlesque-west-end-2026",
@@ -109696,7 +111134,17 @@
         "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
         "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/",
         "https://www.hollywoodreporter.com/lifestyle/arts/purpose-review-phylicia-rashad-1236166923/",
-        "https://www.newyorker.com/magazine/2025/03/31/vanya-and-purpose-theatre-review"
+        "https://www.newyorker.com/magazine/2025/03/31/vanya-and-purpose-theatre-review",
+        "https://www.broadwayworld.com/boston/article/Review-A-Play-With-PURPOSE-20261004",
+        "https://www.metrmag.com/latest-reviews/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma-review",
+        "https://www.atlanta-theater.com/shows/alliance-theatre/purpose",
+        "https://www.bostonglobe.com/2026/09/17/arts/purpose-huntington/",
+        "https://www.metrmag.com/upcoming-shows/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma",
+        "https://baystatebanner.com/2026/10/01/purpose-presents-powerful-complicated-family-dynamics/",
+        "https://www.theatermirror.net/huntingtons-purpose-lacks-a-sense-of-purpose/",
+        "https://artsfuse.org/334471/theater-review-legacy-turns-toxic-in-branden-jacobs-jenkinss-purpose/",
+        "https://thepoplarreview.substack.com/p/purpose-at-the-huntington-theatres",
+        "https://www.boston-theater.com/shows/calderwood-pavilion/purpose"
       ],
       "dirFiles": 17,
       "dirClean": 4,
@@ -109862,40 +111310,163 @@
           "knownOutletId": "newyorker",
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.broadwayworld.com/boston/article/Review-A-Play-With-PURPOSE-20261004",
+          "host": "broadwayworld.com",
+          "knownOutletId": "broadwayworld",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.theatermirror.net/huntingtons-purpose-lacks-a-sense-of-purpose/",
+          "host": "theatermirror.net",
+          "knownOutletId": "theater-mirror",
+          "serpCensus": true
+        },
+        {
+          "url": "https://artsfuse.org/334471/theater-review-legacy-turns-toxic-in-branden-jacobs-jenkinss-purpose/",
+          "host": "artsfuse.org",
+          "knownOutletId": "artsfuse",
+          "serpCensus": true
+        },
+        {
+          "url": "https://thepoplarreview.substack.com/p/purpose-at-the-huntington-theatres",
+          "host": "thepoplarreview.substack.com",
+          "knownOutletId": null,
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.boston-theater.com/shows/calderwood-pavilion/purpose",
+          "host": "boston-theater.com",
+          "knownOutletId": null,
+          "serpCensus": true
         }
       ],
       "dirOnly": [
-        {
-          "host": "baystatebanner.com",
-          "count": 1
-        },
-        {
-          "host": "bostonglobe.com",
-          "count": 1
-        },
-        {
-          "host": "metrmag.com",
-          "count": 1
-        },
         {
           "host": "stageandcinema.com",
           "count": 1
         }
       ],
-      "flaggedMisses": [],
+      "flaggedMisses": [
+        {
+          "url": "https://www.atlanta-theater.com/shows/alliance-theatre/purpose",
+          "host": "atlanta-theater.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "atlanta-theater--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.atlanta-theater.com/shows/alliance-theatre/purpose"
+            }
+          ],
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.metrmag.com/upcoming-shows/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma",
+          "host": "metrmag.com",
+          "knownOutletId": "metrmag",
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "metrmag--unknown.json",
+              "flag": "clean",
+              "urlInDir": "https://www.metrmag.com/upcoming-shows/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma"
+            }
+          ],
+          "serpCensus": true
+        }
+      ],
       "citedNoUrl": [],
       "weReference": null,
       "serpCensus": {
-        "ran": false,
-        "reason": "cooldown"
+        "ran": true,
+        "complete": true,
+        "query": "\"Purpose\" Broadway review 2026",
+        "queryStatus": [
+          {
+            "arm": "primary",
+            "query": "\"Purpose\" Broadway review 2026",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped1",
+            "query": "\"Purpose\" review huntington",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 9,
+            "accepted": 3,
+            "error": null
+          },
+          {
+            "arm": "scoped2",
+            "query": "\"Purpose\" Jacobs-Jenkins review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 0,
+            "error": null
+          },
+          {
+            "arm": "naive-p0",
+            "query": "Purpose Huntington Theatre Company (Calderwood Pavilion), Boston, MA review",
+            "page": 0,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 2,
+            "error": null
+          },
+          {
+            "arm": "naive-p1",
+            "query": "Purpose Huntington Theatre Company (Calderwood Pavilion), Boston, MA review",
+            "page": 1,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          },
+          {
+            "arm": "naive-p2",
+            "query": "Purpose Huntington Theatre Company (Calderwood Pavilion), Boston, MA review",
+            "page": 2,
+            "geo": "us",
+            "ok": true,
+            "results": 10,
+            "accepted": 1,
+            "error": null
+          }
+        ],
+        "queriesOk": 6,
+        "queriesTotal": 6,
+        "resultCount": 10,
+        "error": null
       },
       "candidatesRejected": {
-        "count": 395,
+        "count": 425,
         "byReason": {
-          "aggregator-internal-nav": 305,
+          "non-review-host": 64,
+          "aggregator-internal-nav": 306,
           "not-http-url": 46,
           "aggregator-section-root": 8,
-          "non-review-host": 36
+          "non-review-path": 1
         }
       },
       "dedupedVariants": [],
@@ -110049,32 +111620,197 @@
           "reason": "prior-run"
         }
       ],
-      "ingestResults": [],
-      "ingestSkippedByCap": [],
-      "recoveryResults": [
+      "ingestResults": [
         {
-          "url": "https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
-          "host": "deadline.com",
-          "file": "deadline--greg-evans.json",
-          "recovered": false,
-          "skipped": false,
+          "url": "https://www.broadwayworld.com/boston/article/Review-A-Play-With-PURPOSE-20261004",
+          "host": "broadwayworld.com",
+          "outletId": "broadwayworld",
           "provisional": false,
-          "starFallback": false,
-          "reason": "Refusing to ingest — https://deadline.com/feature/broadway-show-reviews-2024-2025-season-1236284911/",
-          "recoveryCount": 1,
-          "uncited": true
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.theatermirror.net/huntingtons-purpose-lacks-a-sense-of-purpose/",
+          "host": "theatermirror.net",
+          "outletId": "theater-mirror",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://artsfuse.org/334471/theater-review-legacy-turns-toxic-in-branden-jacobs-jenkinss-purpose/",
+          "host": "artsfuse.org",
+          "outletId": "artsfuse",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://thepoplarreview.substack.com/p/purpose-at-the-huntington-theatres",
+          "host": "thepoplarreview.substack.com",
+          "outletId": "thepoplarreview",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.boston-theater.com/shows/calderwood-pavilion/purpose",
+          "host": "boston-theater.com",
+          "outletId": "boston-theater",
+          "provisional": true,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
         }
       ],
+      "ingestSkippedByCap": [],
       "censusVerdict": {
-        "verdict": "no-census-yet",
-        "missing": [],
+        "verdict": "incomplete",
+        "missing": [
+          {
+            "outletId": "broadwayworld",
+            "outlet": "broadwayworld",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.broadwayworld.com/boston/article/Review-A-Play-With-PURPOSE-20261004"
+          },
+          {
+            "outletId": "theater-mirror",
+            "outlet": "theater-mirror",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatermirror.net/huntingtons-purpose-lacks-a-sense-of-purpose/"
+          },
+          {
+            "outletId": "artsfuse",
+            "outlet": "artsfuse",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://artsfuse.org/334471/theater-review-legacy-turns-toxic-in-branden-jacobs-jenkinss-purpose/"
+          },
+          {
+            "outletId": "thepoplarreview.substack.com",
+            "outlet": "thepoplarreview.substack.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://thepoplarreview.substack.com/p/purpose-at-the-huntington-theatres"
+          },
+          {
+            "outletId": "boston-theater.com",
+            "outlet": "boston-theater.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.boston-theater.com/shows/calderwood-pavilion/purpose"
+          },
+          {
+            "outletId": "atlanta-theater.com",
+            "outlet": "atlanta-theater.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.atlanta-theater.com/shows/alliance-theatre/purpose"
+          },
+          {
+            "outletId": "metrmag",
+            "outlet": "metrmag",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.metrmag.com/upcoming-shows/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma"
+          }
+        ],
         "suppressedMissing": [],
-        "candidates": [],
+        "candidates": [
+          {
+            "url": "https://www.metrmag.com/latest-reviews/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma-review",
+            "outletId": "metrmag.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.bostonglobe.com/2026/09/17/arts/purpose-huntington/",
+            "outletId": "bostonglobe.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://baystatebanner.com/2026/10/01/purpose-presents-powerful-complicated-family-dynamics/",
+            "outletId": "baystatebanner.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.broadwayworld.com/boston/article/Review-A-Play-With-PURPOSE-20261004",
+            "outletId": "broadwayworld",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.theatermirror.net/huntingtons-purpose-lacks-a-sense-of-purpose/",
+            "outletId": "theater-mirror",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://artsfuse.org/334471/theater-review-legacy-turns-toxic-in-branden-jacobs-jenkinss-purpose/",
+            "outletId": "artsfuse",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://thepoplarreview.substack.com/p/purpose-at-the-huntington-theatres",
+            "outletId": "thepoplarreview.substack.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.boston-theater.com/shows/calderwood-pavilion/purpose",
+            "outletId": "boston-theater.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.atlanta-theater.com/shows/alliance-theatre/purpose",
+            "outletId": "atlanta-theater.com",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.metrmag.com/upcoming-shows/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma",
+            "outletId": "metrmag",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          }
+        ],
         "censusSchema": 2,
-        "liveCount": 0,
-        "candidateCount": 0
+        "liveCount": 3,
+        "candidateCount": 10
       },
-      "computedAt": "2026-10-04T17:44:10.242Z"
+      "computedAt": "2026-10-04T20:09:17.422Z"
     },
     {
       "showId": "queen-versailles-2025",
