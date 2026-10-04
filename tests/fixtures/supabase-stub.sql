@@ -23,12 +23,13 @@ CREATE SCHEMA auth;
 GRANT USAGE ON SCHEMA auth TO anon, authenticated;
 GRANT USAGE ON SCHEMA public TO anon, authenticated, service_role;
 
--- email / created_at / raw_user_meta_data / deleted_at are the real GoTrue
+-- email / email_confirmed_at / created_at / raw_user_meta_data / deleted_at are the real GoTrue
 -- columns 20261004b_welcome_emails.sql reads; defaults keep older tests'
 -- id-only inserts working.
 CREATE TABLE auth.users (
   id UUID PRIMARY KEY,
   email TEXT,
+  email_confirmed_at TIMESTAMPTZ DEFAULT now(),
   created_at TIMESTAMPTZ NOT NULL DEFAULT now(),
   raw_user_meta_data JSONB NOT NULL DEFAULT '{}'::jsonb,
   deleted_at TIMESTAMPTZ

@@ -88,13 +88,15 @@ test('kill switch blocks sends (null, empty and malformed all count as off)', as
       sendFrom,
       claim: async () => { claimed = true; return true; },
       release: async () => {},
-      send: async () => { sent = true; },
+      send: async () => { sent = true; return OK; },
     });
     assert.equal(r.status, 'off', `sendFrom=${sendFrom}`);
     assert.equal(claimed, false);
     assert.equal(sent, false);
   }
 });
+
+const OK = { statusCode: 200, body: '{"id":"re_123"}' };
 
 function fakeStore() {
   const claims = new Set();
@@ -108,30 +110,97 @@ function fakeStore() {
 test('once-only: an already-claimed account is refused and not sent', async () => {
   const store = fakeStore();
   const sends = [];
-  const deps = { sendFrom: '2026-10-05T00:00:00Z', ...store, send: async (u) => { sends.push(u.id); } };
+  const deps = { sendFrom: '2026-10-05T00:00:00Z', ...store, send: async (u) => { sends.push(u.id); return OK; } };
   const user = { id: 'u1', email: EMAIL };
   assert.equal((await w.sendWelcomeOnce(user, deps)).status, 'sent');
   assert.equal((await w.sendWelcomeOnce(user, deps)).status, 'already-sent');
   // Two overlapping runs racing on the same account: only one wins the claim.
   const store2 = fakeStore();
   const sends2 = [];
-  const deps2 = { sendFrom: '2026-10-05T00:00:00Z', ...store2, send: async (u) => { sends2.push(u.id); } };
+  const deps2 = { sendFrom: '2026-10-05T00:00:00Z', ...store2, send: async (u) => { sends2.push(u.id); return OK; } };
   const results = await Promise.all([w.sendWelcomeOnce(user, deps2), w.sendWelcomeOnce(user, deps2)]);
   assert.deepEqual(results.map(r => r.status).sort(), ['already-sent', 'sent']);
   assert.deepEqual(sends, ['u1']);
   assert.deepEqual(sends2, ['u1']);
 });
 
-test('a failed send releases the claim and rethrows, so a later run retries', async () => {
+test('a retryable failure (5xx, 429, network) releases the claim and throws, so a later run retries', async () => {
+  for (const res of [{ statusCode: 500, body: 'oops' }, { statusCode: 429, body: 'slow down' }, { statusCode: 0, body: 'request error: ECONNRESET' }]) {
+    const store = fakeStore();
+    const user = { id: 'u2', email: EMAIL };
+    await assert.rejects(
+      w.sendWelcomeOnce(user, { sendFrom: '2026-10-05T00:00:00Z', ...store, send: async () => res }),
+      new RegExp(`HTTP ${res.statusCode}`),
+    );
+    assert.equal(store.claims.has('u2'), false, `claim released after HTTP ${res.statusCode}`);
+    const r = await w.sendWelcomeOnce(user, { sendFrom: '2026-10-05T00:00:00Z', ...store, send: async () => OK });
+    assert.equal(r.status, 'sent');
+  }
+});
+
+test('a thrown send (unexpected error) also releases the claim', async () => {
   const store = fakeStore();
-  const user = { id: 'u2', email: EMAIL };
   await assert.rejects(
-    w.sendWelcomeOnce(user, { sendFrom: '2026-10-05T00:00:00Z', ...store, send: async () => { throw new Error('HTTP 500'); } }),
-    /HTTP 500/,
+    w.sendWelcomeOnce({ id: 'u3', email: EMAIL }, { sendFrom: '2026-10-05T00:00:00Z', ...store, send: async () => { throw new Error('boom'); } }),
+    /boom/,
   );
-  assert.equal(store.claims.has('u2'), false);
-  const r = await w.sendWelcomeOnce(user, { sendFrom: '2026-10-05T00:00:00Z', ...store, send: async () => {} });
+  assert.equal(store.claims.has('u3'), false);
+});
+
+test('409 invalid_idempotent_request means it already went out: counted as sent, claim kept', async () => {
+  const store = fakeStore();
+  const recorded = [];
+  const r = await w.sendWelcomeOnce({ id: 'u4', email: EMAIL }, {
+    sendFrom: '2026-10-05T00:00:00Z', ...store,
+    send: async () => ({ statusCode: 409, body: '{"name":"invalid_idempotent_request"}' }),
+    recordSent: async (id, rid) => recorded.push([id, rid]),
+  });
   assert.equal(r.status, 'sent');
+  assert.equal(store.claims.has('u4'), true);
+  assert.deepEqual(recorded, [['u4', null]]);
+});
+
+test('409 concurrent_idempotent_requests keeps the claim and does not throw', async () => {
+  const store = fakeStore();
+  const r = await w.sendWelcomeOnce({ id: 'u5', email: EMAIL }, {
+    sendFrom: '2026-10-05T00:00:00Z', ...store,
+    send: async () => ({ statusCode: 409, body: '{"name":"concurrent_idempotent_requests"}' }),
+  });
+  assert.equal(r.status, 'in-flight');
+  assert.equal(store.claims.has('u5'), true);
+});
+
+test('a permanent rejection (422) keeps the claim, records a redacted reason, never retries', async () => {
+  const store = fakeStore();
+  const reasons = [];
+  const r = await w.sendWelcomeOnce({ id: 'u6', email: EMAIL }, {
+    sendFrom: '2026-10-05T00:00:00Z', ...store,
+    send: async () => ({ statusCode: 422, body: `{"message":"Invalid \`to\` field: ${EMAIL}"}` }),
+    recordRejected: async (id, reason) => reasons.push(reason),
+  });
+  assert.equal(r.status, 'rejected');
+  assert.equal(store.claims.has('u6'), true);
+  assert.equal(reasons.length, 1);
+  assert.ok(!reasons[0].includes(EMAIL), 'reason must not carry the address');
+  assert.ok(reasons[0].includes('[email]'));
+  const again = await w.sendWelcomeOnce({ id: 'u6', email: EMAIL }, { sendFrom: '2026-10-05T00:00:00Z', ...store, send: async () => OK });
+  assert.equal(again.status, 'already-sent');
+});
+
+test('a successful send records the Resend id', async () => {
+  const store = fakeStore();
+  const recorded = [];
+  await w.sendWelcomeOnce({ id: 'u7', email: EMAIL }, {
+    sendFrom: '2026-10-05T00:00:00Z', ...store, send: async () => OK,
+    recordSent: async (id, rid) => recorded.push([id, rid]),
+  });
+  assert.deepEqual(recorded, [['u7', 're_123']]);
+});
+
+test('redactEmails strips addresses, including Apple relay ones', () => {
+  assert.equal(w.redactEmails('to abc.def@privaterelay.appleid.com failed'), 'to [email] failed');
+  assert.equal(w.redactEmails('<x+y@example.co.uk>'), '<[email]>');
+  assert.equal(w.redactEmails('no address here'), 'no address here');
 });
 
 test('windowStart: later of the switch time and the max-age cutoff', () => {

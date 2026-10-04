@@ -16,6 +16,7 @@
 const {
   FONT, escapeHtml, siteNameForMarket, buildSocialRowHtml,
 } = require('./email-templates');
+const { classifyResendResponse } = require('./discord-notify');
 
 // ── THE ON/OFF SWITCH ──────────────────────────────────────────────────────
 // null = sending OFF (nothing is sent, the cron run exits immediately).
@@ -192,33 +193,77 @@ function sendAllowance({ sentLast24h, dailyCap = DAILY_CAP, perRunCap = PER_RUN_
   return Math.max(0, Math.min(perRunCap, left));
 }
 
+// What a Resend POST /emails response means for the claim.
+//   'sent'      2xx, or 409 invalid_idempotent_request (this key already
+//               delivered; the body differs, e.g. the profile name changed).
+//   'in-flight' 409 concurrent_idempotent_requests: another request with this
+//               key is mid-send. Keep the claim; that request delivers.
+//   'rejected'  400/403/422: Resend refuses this message for good (bad address,
+//               domain problem). Retrying cannot help: keep the claim, record
+//               why, alert once.
+//   'retry'     429, 5xx, network error: release the claim so a later run
+//               retries; the Idempotency-Key stops a double delivery.
+function resendOutcome(statusCode, body) {
+  const c = classifyResendResponse(statusCode, body);
+  if (c === 'sent' || c === 'duplicate') return 'sent';
+  if (c === 'in-flight') return 'in-flight';
+  if ([400, 403, 422].includes(statusCode)) return 'rejected';
+  return 'retry';
+}
+
+// Strips anything shaped like an email address from text bound for logs or
+// alerts (Resend's error bodies can echo the recipient).
+function redactEmails(text) {
+  return String(text == null ? '' : text).replace(/[^\s"'<>@,;:()]+@[^\s"'<>@,;:()]+\.[A-Za-z]{2,}/g, '[email]');
+}
+
 /**
  * Sends one account its welcome email, at most once.
  *
- * deps.claim(userId)   → true when this caller won the durable claim (a row
- *                        in public.welcome_emails keyed by user id), false when
- *                        the account already has one. Must be atomic.
- * deps.release(userId) → removes the claim after a failed send, so a later run
- *                        retries. Safe because deps.send carries a Resend
- *                        Idempotency-Key per account: a retry of a send that in
- *                        fact went through is dropped by Resend, not delivered.
- * deps.send(user)      → performs the send; throws on failure.
+ * deps.claim(userId)        → true when this caller won the durable claim (a
+ *                             row in public.welcome_emails keyed by user id),
+ *                             false when the account already has one. Atomic.
+ * deps.release(userId)      → removes the claim after a retryable failure, so
+ *                             a later run retries. Safe because deps.send
+ *                             carries a per-account Resend Idempotency-Key.
+ * deps.send(user)           → performs the POST; resolves { statusCode, body }
+ *                             (statusCode 0 for a network error). Never throws
+ *                             for an HTTP status.
+ * deps.recordSent(userId, resendId) / deps.recordRejected(userId, reason)
+ *                           → bookkeeping on the claimed row (optional).
  *
- * Returns { status: 'sent' | 'already-sent' | 'off' }. Rethrows a send error
- * after releasing the claim.
+ * Returns { status: 'sent' | 'already-sent' | 'in-flight' | 'rejected' | 'off',
+ * detail? }. Throws (after releasing the claim) on a retryable failure.
  */
-async function sendWelcomeOnce(user, { sendFrom, claim, release, send }) {
+async function sendWelcomeOnce(user, { sendFrom, claim, release, send, recordSent, recordRejected }) {
   if (!parseSendFrom(sendFrom)) return { status: 'off' };
   if (!user || !user.id || !user.email) throw new Error('sendWelcomeOnce: user needs id and email');
   const won = await claim(user.id);
   if (!won) return { status: 'already-sent' };
+  let res;
   try {
-    await send(user);
+    res = await send(user);
   } catch (err) {
     await release(user.id);
     throw err;
   }
-  return { status: 'sent' };
+  const statusCode = res ? res.statusCode : 0;
+  const body = res ? res.body : '';
+  const outcome = resendOutcome(statusCode, body);
+  if (outcome === 'sent') {
+    let id = null;
+    try { id = JSON.parse(body).id || null; } catch { /* non-JSON 2xx */ }
+    if (recordSent) await recordSent(user.id, id);
+    return { status: 'sent' };
+  }
+  if (outcome === 'in-flight') return { status: 'in-flight' };
+  const detail = redactEmails(`HTTP ${statusCode}: ${String(body).slice(0, 300)}`);
+  if (outcome === 'rejected') {
+    if (recordRejected) await recordRejected(user.id, detail);
+    return { status: 'rejected', detail };
+  }
+  await release(user.id);
+  throw new Error(detail);
 }
 
 function idempotencyKeyFor(userId) {
@@ -242,5 +287,7 @@ module.exports = {
   windowStart,
   sendAllowance,
   sendWelcomeOnce,
+  resendOutcome,
+  redactEmails,
   idempotencyKeyFor,
 };

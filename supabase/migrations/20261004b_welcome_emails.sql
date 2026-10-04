@@ -24,8 +24,14 @@
 CREATE TABLE IF NOT EXISTS public.welcome_emails (
   user_id UUID PRIMARY KEY REFERENCES auth.users(id) ON DELETE CASCADE,
   sent_at TIMESTAMPTZ NOT NULL DEFAULT now(),
-  resend_id TEXT
+  resend_id TEXT,
+  -- Set when Resend refused the message for good (400/403/422). The row stays,
+  -- so the account is never retried; the owner gets one alert.
+  failed_reason TEXT
 );
+
+-- Re-run safety for a project where an earlier draft of this table exists.
+ALTER TABLE public.welcome_emails ADD COLUMN IF NOT EXISTS failed_reason TEXT;
 
 ALTER TABLE public.welcome_emails ENABLE ROW LEVEL SECURITY;
 REVOKE ALL ON public.welcome_emails FROM anon, authenticated;
@@ -33,7 +39,7 @@ GRANT SELECT, INSERT, UPDATE, DELETE ON public.welcome_emails TO service_role;
 
 CREATE INDEX IF NOT EXISTS welcome_emails_sent_at_idx ON public.welcome_emails (sent_at);
 
--- Accounts created at or after p_since that have an email and no welcome_emails
+-- Accounts created at or after p_since that have a confirmed email and no welcome_emails
 -- row yet, oldest first. display_name falls back to the OAuth metadata name
 -- when the profiles row has none (or has not been created yet).
 CREATE OR REPLACE FUNCTION public.welcome_email_candidates(p_since TIMESTAMPTZ, p_limit INTEGER)
@@ -55,6 +61,9 @@ AS $$
    WHERE w.user_id IS NULL
      AND u.created_at >= p_since
      AND COALESCE(u.email, '') <> ''
+     -- OAuth sign-ins arrive confirmed; this keeps a future email/password or
+     -- magic-link sign-up from getting mail before the address is verified.
+     AND u.email_confirmed_at IS NOT NULL
      AND u.deleted_at IS NULL
    ORDER BY u.created_at
    LIMIT GREATEST(p_limit, 0);

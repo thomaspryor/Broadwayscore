@@ -1,0 +1,90 @@
+name: Send Welcome Emails
+
+# One-time welcome email for new accounts (BRO-4620). The script does the work
+# and holds every safety rule (once per account via public.welcome_emails,
+# per-run and daily caps, transactional sends only); see the header of
+# scripts/send-welcome-emails.js.
+#
+# ON/OFF lives in code, not here: WELCOME_EMAIL_SEND_FROM in
+# scripts/lib/welcome-email.js. While it is null every scheduled run exits in
+# about a second without touching Supabase or Resend.
+#
+# Manual modes (workflow_dispatch):
+#   dry-run    read-only; with preview_since, shows who WOULD get the email had
+#              sending been switched on at that time (never sends, never claims)
+#   test-send  one email to delivered@resend.dev (Resend's test sink), no DB
+#   run        same as the schedule
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: 'run | dry-run | test-send'
+        required: true
+        default: 'dry-run'
+        type: choice
+        options: [dry-run, test-send, run]
+      preview_since:
+        description: 'dry-run only: ISO time to preview as if sending had been switched on then'
+        required: false
+        type: string
+
+permissions:
+  contents: read
+
+# Overlapping runs are already safe (the claim is a primary-key insert), but
+# queueing keeps the daily-cap count from racing.
+concurrency:
+  group: send-welcome-emails
+  cancel-in-progress: false
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v5
+
+      # Plain setup-node, not ./.github/actions/setup-node: that action runs
+      # npm ci, and this script needs only Node built-ins and in-repo files.
+      # Skipping the install keeps the every-15-min run to seconds.
+      - uses: actions/setup-node@v5
+        with:
+          node-version: '20'
+
+      - name: Send welcome emails
+        env:
+          NEXT_PUBLIC_SUPABASE_URL: ${{ secrets.NEXT_PUBLIC_SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          # Inputs arrive via env, never interpolated into the script body.
+          MODE: ${{ inputs.mode || 'run' }}
+          PREVIEW_SINCE: ${{ inputs.preview_since }}
+        run: |
+          set -euo pipefail
+          case "$MODE" in
+            run)       node scripts/send-welcome-emails.js ;;
+            test-send) node scripts/send-welcome-emails.js --test-send ;;
+            dry-run)
+              if [ -n "$PREVIEW_SINCE" ]; then
+                node scripts/send-welcome-emails.js --dry-run "--preview-since=$PREVIEW_SINCE"
+              else
+                node scripts/send-welcome-emails.js --dry-run
+              fi ;;
+            *) echo "::error::unknown mode $MODE"; exit 1 ;;
+          esac
+
+      - name: Notify on failure
+        # Scheduled runs only: the script already alerts on send failures with
+        # per-day dedup; this covers checkout/setup failures it never sees.
+        if: failure() && github.event_name == 'schedule'
+        uses: ./.github/actions/notify-failure
+        with:
+          title: 'Send Welcome Emails Failed'
+          severity: 'warning'
+          discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
+          resend_api_key: ${{ secrets.RESEND_API_KEY }}
+          owner_email: ${{ secrets.OWNER_EMAIL }}

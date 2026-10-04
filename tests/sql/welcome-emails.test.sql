@@ -9,6 +9,8 @@ INSERT INTO auth.users (id, email, created_at, raw_user_meta_data, deleted_at) V
   ('33333333-3333-3333-3333-333333333333', 'abc@privaterelay.appleid.com', now() - interval '30 minutes', '{}', NULL),
   ('44444444-4444-4444-4444-444444444444', NULL,                 now() - interval '20 minutes', '{}', NULL),
   ('55555555-5555-5555-5555-555555555555', 'gone@example.com',   now() - interval '10 minutes', '{}', now());
+INSERT INTO auth.users (id, email, email_confirmed_at, created_at) VALUES
+  ('66666666-6666-6666-6666-666666666666', 'unconfirmed@example.com', NULL, now() - interval '5 minutes');
 INSERT INTO public.profiles (id, display_name) VALUES
   ('11111111-1111-1111-1111-111111111111', 'Old Timer'),
   ('22222222-2222-2222-2222-222222222222', ''),
@@ -33,7 +35,7 @@ RESET ROLE;
 -- ------------------------------------------------------ service role path ----
 SET ROLE service_role;
 SELECT t.ok((SELECT count(*) FROM public.welcome_email_candidates(now() - interval '1 day', 10)) = 2,
-            'candidates: only recent accounts with an email and not deleted (old, no-email, deleted excluded)');
+            'candidates: only recent accounts with a confirmed email and not deleted (old, no-email, unconfirmed, deleted excluded)');
 SELECT t.ok((SELECT array_agg(id ORDER BY created_at) FROM public.welcome_email_candidates(now() - interval '1 day', 10))
               = ARRAY['22222222-2222-2222-2222-222222222222'::uuid, '33333333-3333-3333-3333-333333333333'::uuid],
             'candidates oldest first; Apple private relay address included');

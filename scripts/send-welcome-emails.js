@@ -39,7 +39,7 @@
 'use strict';
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { postJSON, sleep, buildFromAddress, buildReplyToAddress } = require('./lib/email-templates');
+const { sleep, buildFromAddress, buildReplyToAddress } = require('./lib/email-templates');
 const { sendAlert } = require('./lib/discord-notify');
 const db = require('./lib/supabase-service-rest');
 const welcome = require('./lib/welcome-email');
@@ -67,20 +67,33 @@ function label(user) {
   return `user ${String(user.id).slice(0, 8)}`;
 }
 
+// Resolves { statusCode, body }; statusCode 0 on a network error. Never throws
+// for an HTTP status: welcome.sendWelcomeOnce decides what each one means.
 async function resendSend(user, apiKey) {
   const { subject, html, text } = welcome.buildWelcomeEmail({ displayName: user.display_name, email: user.email });
-  return postJSON('https://api.resend.com/emails', {
-    from: buildFromAddress('broadway'),
-    reply_to: buildReplyToAddress(),
-    to: [user.email],
-    subject,
-    html,
-    text,
-    tags: [{ name: 'category', value: 'welcome' }],
-  }, {
-    Authorization: `Bearer ${apiKey}`,
-    'Idempotency-Key': welcome.idempotencyKeyFor(user.id),
-  });
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        Authorization: `Bearer ${apiKey}`,
+        'Idempotency-Key': welcome.idempotencyKeyFor(user.id),
+      },
+      body: JSON.stringify({
+        from: buildFromAddress('broadway'),
+        reply_to: buildReplyToAddress(),
+        to: [user.email],
+        subject,
+        html,
+        text,
+        tags: [{ name: 'category', value: 'welcome' }],
+      }),
+      signal: AbortSignal.timeout(30000),
+    });
+    return { statusCode: res.status, body: await res.text() };
+  } catch (err) {
+    return { statusCode: 0, body: `request error: ${err.message}` };
+  }
 }
 
 async function captureSent(userId) {
@@ -106,7 +119,9 @@ async function testSend() {
   if (!apiKey) throw new Error('RESEND_API_KEY not set');
   const fake = { id: `test-${Date.now()}`, email: TEST_SINK, display_name: 'Ada Lovelace' };
   const res = await resendSend(fake, apiKey);
-  console.log(`Test send to ${TEST_SINK} accepted by Resend: id=${res && res.id}`);
+  const outcome = welcome.resendOutcome(res.statusCode, res.body);
+  console.log(`Test send to ${TEST_SINK}: HTTP ${res.statusCode} -> ${outcome} ${welcome.redactEmails(res.body).slice(0, 200)}`);
+  if (outcome !== 'sent') throw new Error(`test send not accepted (HTTP ${res.statusCode})`);
 }
 
 async function main() {
@@ -147,56 +162,77 @@ async function main() {
 
   let sent = 0;
   const failures = [];
+  const rejected = [];
   for (const user of candidates.slice(0, allowance)) {
+    const rowFilter = `user_id=eq.${encodeURIComponent(user.id)}`;
     try {
       const r = await welcome.sendWelcomeOnce(user, {
         sendFrom: welcome.WELCOME_EMAIL_SEND_FROM,
         claim: async (id) => (await db.insertIgnoreDuplicates('welcome_emails', { user_id: id })).length === 1,
-        release: async (id) => db.deleteRows('welcome_emails', `user_id=eq.${encodeURIComponent(id)}`),
-        send: async (u) => {
-          const res = await resendSend(u, apiKey);
-          if (res && res.id) {
-            await db.updateRows('welcome_emails', `user_id=eq.${encodeURIComponent(u.id)}`, { resend_id: res.id })
-              .catch(err => console.warn(`  could not record resend_id for ${label(u)}: ${err.message}`));
-          }
+        release: async () => db.deleteRows('welcome_emails', rowFilter),
+        send: (u) => resendSend(u, apiKey),
+        recordSent: async (id, resendId) => {
+          if (!resendId) return;
+          await db.updateRows('welcome_emails', rowFilter, { resend_id: resendId })
+            .catch(err => console.warn(`  could not record resend_id for ${label(user)}: ${welcome.redactEmails(err.message)}`));
+        },
+        recordRejected: async (id, reason) => {
+          await db.updateRows('welcome_emails', rowFilter, { failed_reason: reason })
+            .catch(err => console.warn(`  could not record failed_reason for ${label(user)}: ${welcome.redactEmails(err.message)}`));
         },
       });
       if (r.status === 'sent') {
         sent++;
         console.log(`  Sent to ${label(user)}`);
         await captureSent(user.id);
+      } else if (r.status === 'rejected') {
+        rejected.push({ id: user.id, error: r.detail });
+        console.error(`  REJECTED by Resend for ${label(user)} (kept as done, will not retry): ${r.detail}`);
       } else {
         console.log(`  Skipped ${label(user)}: ${r.status}`);
       }
     } catch (err) {
-      failures.push({ id: String(user.id).slice(0, 8), error: String(err.message).slice(0, 200) });
-      console.error(`  FAILED ${label(user)}: ${err.message}`);
+      const msg = welcome.redactEmails(err.message).slice(0, 300);
+      failures.push({ id: user.id, error: msg });
+      console.error(`  FAILED ${label(user)} (claim released, next run retries): ${msg}`);
     }
     await sleep(250);
   }
 
-  console.log(`Done: ${sent} sent, ${failures.length} failed`);
+  console.log(`Done: ${sent} sent, ${rejected.length} rejected, ${failures.length} failed`);
+  // Rejected: one alert per account, ever (Resend dedups the key for 24h and
+  // the account is never retried, so it cannot come back after that).
+  for (const f of rejected) {
+    await sendAlert({
+      title: 'Welcome email rejected by Resend',
+      description: `Resend refused the welcome email for user ${String(f.id).slice(0, 8)}; it will not be retried. ${f.error}`,
+      severity: 'error',
+      email: true,
+      idempotencyKey: `welcome-email-rejected/${f.id}`,
+    });
+  }
+  // Retryable failures: at most one alert per day, however many runs fail.
   if (failures.length) {
     await sendAlert({
       title: 'Welcome email send failed',
-      description: `${failures.length} welcome email(s) failed to send. The claims were released, so the next run (15 min) retries. First error: ${failures[0].error}`,
+      description: `${failures.length} welcome email(s) failed with a retryable error. The claims were released, so the next run (15 min) retries. First error: ${failures[0].error}`,
       severity: 'error',
       email: true,
-      fields: failures.slice(0, 5).map(f => ({ name: `user ${f.id}`, value: f.error })),
-      idempotencyKey: `welcome-email-failed/${new Date().toISOString().slice(0, 13)}`,
+      fields: failures.slice(0, 5).map(f => ({ name: `user ${String(f.id).slice(0, 8)}`, value: f.error })),
+      idempotencyKey: `welcome-email-failed/${new Date().toISOString().slice(0, 10)}`,
     });
-    process.exitCode = 1;
   }
+  if (failures.length || rejected.length) process.exitCode = 1;
 }
 
 main().catch(async (err) => {
-  console.error('Fatal error:', err.message);
+  console.error('Fatal error:', welcome.redactEmails(err.message));
   // Manual dry runs and test sends report in their own log; only the
   // scheduled real run pages the owner.
   const manual = process.argv.some(a => a === '--dry-run' || a === '--test-send' || a.startsWith('--preview-since'));
   if (!manual) await sendAlert({
     title: 'Welcome email job crashed',
-    description: `send-welcome-emails.js stopped before sending: ${String(err.message).slice(0, 300)}`,
+    description: `send-welcome-emails.js stopped before sending: ${welcome.redactEmails(err.message).slice(0, 300)}`,
     severity: 'error',
     email: true,
     // One alert per day at most: a paused Supabase project would otherwise
