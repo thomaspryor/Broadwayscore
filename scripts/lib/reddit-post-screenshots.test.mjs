@@ -83,7 +83,8 @@ function fakeBrowser({ missing = [], failing = [] } = {}) {
 test('SHOTS: scorecard, compact review list, audience card (optional)', () => {
   assert.deepEqual(SHOTS.map(s => s.name), ['scorecard.png', 'reviews.png', 'audience.png']);
   const reviews = SHOTS.find(s => s.name === 'reviews.png');
-  assert.match(reviews.css, /p\.leading-snug/, 'pull quotes hidden so many rows fit');
+  assert.match(reviews.css, /\[class\*="pl-24"\] > p/, 'pull quotes hidden so many rows fit');
+  assert.doesNotMatch(reviews.css, /\[class\*="pl-24"\]\s*[,{]/, 'the whole indented block would also hide the "earlier run" tag');
   assert.equal(SHOTS.find(s => s.name === 'audience.png').optional, true);
   // Placeholders ("Audience data will be added", "Reviews coming after press night") never match.
   assert.match(SHOTS.find(s => s.name === 'audience.png').selector, /audience-scorecard-heading/);
@@ -101,7 +102,8 @@ test('site markup still carries what the screenshot selectors rely on', () => {
   assert.match(page, /id="critic-reviews"/);
   assert.match(list, /<article\b/, 'review rows are <article>s');
   assert.match(list, /<p className="[^"]*\bleading-snug\b/, 'pull quote <p> has leading-snug');
-  assert.match(list, /className="pl-24\b/, 'byline row has pl-24');
+  assert.match(list, /className="pl-24\b/, 'quote + byline block has pl-24');
+  assert.match(list, /priorRunLabel && \(\s*<span/, '"earlier run" tag is a <span>, so the > p / > div rules keep it');
   assert.match(audience, /aria-labelledby="audience-scorecard-heading"/);
 });
 

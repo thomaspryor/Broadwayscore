@@ -9,7 +9,7 @@
  *
  *   scorecard.png  the top card: title, score, verdict, breakdown
  *   reviews.png    the Critic Scorecard bar plus a compact list of reviews
- *                  (pull quotes hidden: score, outlet, critic, date per row)
+ *                  (quotes and bylines hidden: score, outlet, date per row)
  *   audience.png   the Audience Scorecard: grade plus every audience source
  *                  (skipped when the show has no audience card yet)
  *
@@ -38,9 +38,11 @@ const SHOTS = [
     name: 'reviews.png', selector: '#critic-reviews:has(article)', label: 'Critic reviews',
     // The owner posts the review list, many rows to one image. Each pull
     // quote is 4-6 lines at phone width, so with quotes only one review fit.
-    // Rows are plain <article>s here (the .review-card class is not on every
-    // page), and the Sort row is a page control, not content.
-    css: '#critic-reviews article [class*="pl-24"], #critic-reviews article p.leading-snug, #critic-reviews div:has(> button):not(:has(article)):not(article *) { display: none !important; }',
+    // The indented block under each row (ReviewsList.tsx, pl-24) holds the
+    // quote <p> and the byline/Full Review row <div>; both go. Its "earlier
+    // run" tag is a <span> and stays, so an old review never reads as current.
+    // The Sort row is a page control, not content.
+    css: '#critic-reviews article [class*="pl-24"] > p, #critic-reviews article [class*="pl-24"] > div, #critic-reviews div:has(> button):not(:has(article)):not(article *) { display: none !important; }',
   },
   // The real card only (AudienceBuzzCard). In previews the same slot holds an
   // "Audience data will be added" placeholder, which is not worth posting.
