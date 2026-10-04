@@ -137,3 +137,15 @@ describe('normalizeExtraction', () => {
     }
   });
 });
+
+describe('normalizeExtraction merge rule', () => {
+  it('folds an undated attended copy into the dated one in either order', () => {
+    for (const rows of [
+      [{ title: 'Six', venue: null, date: null, list: 'attended' }, { title: 'Six', venue: 'Lena Horne', date: '2024-04-01', list: 'attended' }],
+      [{ title: 'Six', venue: null, date: '2024-04-01', list: 'attended' }, { title: 'six', venue: 'Lena Horne', date: null, list: 'attended' }],
+    ]) {
+      const { entries } = normalizeExtraction({ entries: rows }, TODAY);
+      assert.deepStrictEqual(entries.map(e => e.date), ['2024-04-01']);
+    }
+  });
+});

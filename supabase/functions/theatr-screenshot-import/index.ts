@@ -124,13 +124,23 @@ async function countRows(base: string, auth: Record<string, string>, filter: str
   return parseInt(range.split('/')[1], 10) || 0;
 }
 
-/** Insert-first, count-after (same as show-score-proxy): a failed insert or
- *  count fails CLOSED, and concurrent batches each see one another. */
+/** Count-first, then log only allowed calls. Unlike show-score-proxy's
+ *  insert-first pattern, refused calls must NOT leave a row: the global daily
+ *  count would otherwise let one user's refused retries lock everyone out.
+ *  Concurrent calls can overshoot a cap by a call or two, which is fine for a
+ *  spend ceiling. Any failed count or insert fails CLOSED (throw → 500). */
 async function checkAndLogRateLimit(userId: string, imageCount: number): Promise<'ok' | 'rate_limited' | 'busy'> {
   const base = Deno.env.get('SUPABASE_URL');
   const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!base || !key) throw new Error('missing service credentials');
   const auth = { apikey: key, Authorization: `Bearer ${key}` };
+
+  const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+  if (await countRows(base, auth, `user_id=eq.${userId}&created_at=gte.${hourAgo}`) >= MAX_CALLS_PER_HOUR) {
+    return 'rate_limited';
+  }
+  const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  if (await countRows(base, auth, `created_at=gte.${dayAgo}`) >= MAX_CALLS_PER_DAY) return 'busy';
 
   const insertRes = await fetch(`${base}/rest/v1/theatr_screenshot_log`, {
     method: 'POST',
@@ -138,13 +148,6 @@ async function checkAndLogRateLimit(userId: string, imageCount: number): Promise
     body: JSON.stringify({ user_id: userId, image_count: imageCount }),
   });
   if (!insertRes.ok) throw new Error(`rate-limit log insert failed: ${insertRes.status}`);
-
-  const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-  if (await countRows(base, auth, `user_id=eq.${userId}&created_at=gte.${hourAgo}`) > MAX_CALLS_PER_HOUR) {
-    return 'rate_limited';
-  }
-  const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
-  if (await countRows(base, auth, `created_at=gte.${dayAgo}`) > MAX_CALLS_PER_DAY) return 'busy';
   return 'ok';
 }
 
