@@ -9,7 +9,19 @@
     "operation-mincemeat-tour-2026/third-coast-review--unknown.json",
     "operation-mincemeat-tour-2026/boston-globe--unknown.json",
     "operation-mincemeat-tour-2026/broadwayworld--unknown.json",
-    "hay-fever-west-end-2026/everything-theatre--unknown.json"
+    "hay-fever-west-end-2026/everything-theatre--unknown.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
   ],
   "failed": [
     "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
@@ -86,7 +98,14 @@
       "carrie-1988/backstage--erik-haagensen.json",
       "operation-mincemeat-tour-2026/rachelweinbergreviews--unknown.json",
       "operation-mincemeat-tour-2026/third-coast-review--unknown.json",
-      "hay-fever-west-end-2026/everything-theatre--unknown.json"
+      "hay-fever-west-end-2026/everything-theatre--unknown.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -94,12 +113,14 @@
     "scrapingdog": [
       "red-riding-hood-off-broadway-2026/showify--unknown.json",
       "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
-      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json"
     ],
     "scrapingbee": [],
     "brightdata": [
       "operation-mincemeat-tour-2026/boston-globe--unknown.json",
-      "operation-mincemeat-tour-2026/broadwayworld--unknown.json"
+      "operation-mincemeat-tour-2026/broadwayworld--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -109,7 +130,7 @@
     ]
   },
   "startTime": "2026-10-04T09:05:45.004Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+  "lastProcessed": "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json",
   "log": [
     {
       "t": "2026-10-04T11:48:56.398Z",
@@ -145,6 +166,29 @@
       "event": "bb-session",
       "session": "c58031b4",
       "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-04T12:40:55.949Z",
+      "event": "bb-session",
+      "session": "c044db62",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-04T12:41:16.237Z",
+      "event": "bb-session",
+      "session": "6b8819ce",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-04T12:45:14.385Z",
+      "event": "bb-session",
+      "session": "7b4fb071",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-04T12:45:15.279Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
