@@ -218,6 +218,13 @@ async function main() {
 
   const filterDesc = describeShowFilter(showFilter);
   if (filterDesc) console.log(`🎯 ${filterDesc}\n`);
+  if (showFilter && showFilter.size === 0) {
+    // A filter flag with no usable IDs is a no-op: return before the final
+    // write so push-core-data has nothing to commit and no deploy is
+    // dispatched for a run that changed nothing.
+    console.log('Nothing to do — exiting without touching the consensus file.');
+    return;
+  }
   if (maxShows > 0) console.log(`📊 Max shows cap: ${maxShows}\n`);
 
   let processedCount = 0;
@@ -270,9 +277,11 @@ async function main() {
       if (showFilter) {
         // Name what the cap dropped so a truncated batch is visible in the run
         // log instead of silently losing shows (BRO-4595).
+        // "Not evaluated", not "dropped": some of these would have been
+        // skipped anyway (below the review floor, no texts, unchanged).
         const unreached = showsData.shows.slice(i).filter(s => showFilter.has(s.id)).map(s => s.id);
         if (unreached.length) {
-          console.warn(`⚠️  ${unreached.length} requested show(s) not reached because of the cap: ${unreached.join(', ')}`);
+          console.warn(`⚠️  ${unreached.length} requested show(s) not evaluated because the cap was reached first: ${unreached.join(', ')}`);
         }
       }
       break;

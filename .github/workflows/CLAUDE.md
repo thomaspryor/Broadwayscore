@@ -432,7 +432,7 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Triggers for regeneration (any one):** 3+ new reviews, 3+ full-text upgrades, 2+ reviews removed, or 8+ pt mean score drift. Fingerprints (`reviewCount`, `fullTextCount`, `meanScore`) tracked per show.
 - **Options:** `force` (regenerate all), `max_shows` (default 200, cost control)
 - **Concurrency:** `update-critic-consensus` group (queued, not cancelled)
-- **Script:** `scripts/generate-critic-consensus.js` (`--shows=a,b` batch mode — the `show` input accepts a comma-separated list, how opening-night-poller.yml dispatches once per poll cycle (BRO-4595); `--show=X` is a list-accepting alias for single-show remediation; `--max-shows=N` cap, `--force`, `--cleanup-orphans`)
+- **Script:** `scripts/generate-critic-consensus.js` (`--shows=a,b` batch mode, fed by the `show` input which accepts a comma-separated list so opening-night-poller.yml dispatches once per poll cycle (BRO-4595); `--show=X` is a list-accepting alias used by single-show remediation; `--max-shows=N` cap, `--force`, `--cleanup-orphans`)
 - **Data:** `data/critic-consensus.json` (gitignored, synced via push-core-data to private repo)
 - **Requires:** ANTHROPIC_API_KEY, REVIEW_TEXTS_TOKEN
 - **Chain:** scoring → rebuild → consensus (rebuild dispatches consensus when scoring doesn't fire)

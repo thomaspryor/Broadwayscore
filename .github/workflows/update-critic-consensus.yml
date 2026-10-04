@@ -77,9 +77,11 @@ jobs:
           # a list-accepting alias, so single-ID callers are unchanged.
           # Whitespace is stripped so a hand-typed "a, b" does not split into
           # two argv words on the unquoted $ARGS below.
-          # The max_shows default (200) must stay above the largest plausible
-          # per-night batch (58 on 2026-10-04): the cap counts generations
-          # only, and the generator logs any requested IDs it did not reach.
+          # The max_shows default (200) applies to workflow_dispatch runs
+          # (inputs are empty on the Sunday schedule, which runs uncapped)
+          # and must stay above the largest plausible per-night batch (58 on
+          # 2026-10-04): the cap counts generations only, and the generator
+          # logs any requested IDs it did not get to evaluate.
           SHOW="${SHOW//[[:space:]]/}"
           if [ -n "$SHOW" ]; then
             ARGS="$ARGS --shows=$SHOW"

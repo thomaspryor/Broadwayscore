@@ -83,9 +83,10 @@ describe('opening-night-poller.yml fast path dispatches update-critic-consensus.
     // Scope the assertions to this one step: other steps in the same job
     // legitimately loop `for SHOW_ID in` over the polled list.
     const start = workflow.indexOf("- name: Generate Critics' Take (fast_path)");
-    const end = workflow.indexOf('- name: Audit recovery state', start);
-    assert.ok(start > -1 && end > start, 'Generate Critics\' Take step must exist and precede the recovery audit');
-    const step = workflow.slice(start, end);
+    assert.ok(start > -1, 'Generate Critics\' Take step must exist');
+    // The step ends where the next step begins, whatever that step is called.
+    const next = workflow.indexOf('\n      - name:', start + 1);
+    const step = workflow.slice(start, next > -1 ? next : undefined);
     // One dispatch carrying the whole comma-separated list (BRO-4595). The
     // workflow's concurrency group keeps one running + one pending run, so a
     // per-show fan-out cancels all but two of its own dispatches.
