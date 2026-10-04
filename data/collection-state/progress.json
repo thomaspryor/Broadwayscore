@@ -536,7 +536,9 @@
     "hughie-2016/wnyc--jennifer-vanasco.json",
     "the-humans-2016/broadwayworld--michael-dale.json",
     "the-humans-2016/towleroad--naveen-kumar.json",
-    "tru-off-west-end-2026/guardian--mark-lawson.json"
+    "tru-off-west-end-2026/guardian--mark-lawson.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -1015,7 +1017,14 @@
     "the-urmetazoan-off-west-end-2026/datathistle--unknown.json",
     "the-urmetazoan-off-west-end-2026/thestage--holly-omahony.json",
     "the-urmetazoan-off-west-end-2026/thestage--the-stage.json",
-    "table-17-off-west-end-2026/bachtrack--unknown.json"
+    "table-17-off-west-end-2026/bachtrack--unknown.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+    "midnight-off-broadway-2026/broadwayworld--michael-major.json",
+    "midnight-off-broadway-2026/chicagotribune--unknown.json",
+    "midnight-off-broadway-2026/eventsfy--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/vulture--unknown.json",
+    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
+    "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1278,7 +1287,9 @@
       "hughie-2016/financialtimes--max-mcguinness.json",
       "hughie-2016/wnyc--jennifer-vanasco.json",
       "the-humans-2016/towleroad--naveen-kumar.json",
-      "tru-off-west-end-2026/guardian--mark-lawson.json"
+      "tru-off-west-end-2026/guardian--mark-lawson.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json"
     ],
     "amp": [
       "data/review-texts/fire-fire-off-west-end-2026/variety--jay-weissberg.json",
@@ -1552,7 +1563,7 @@
     ]
   },
   "startTime": "2026-10-03T08:40:40.034Z",
-  "lastProcessed": "table-17-off-west-end-2026/bachtrack--unknown.json",
+  "lastProcessed": "the-secret-circus-musical-off-broadway-2026/donyc--unknown.json",
   "log": [
     {
       "t": "2026-10-03T14:27:45.098Z",
@@ -1906,6 +1917,18 @@
       "event": "bb-session",
       "session": "1e9b2876",
       "url": "https://bachtrack.com/concert-event/the-haunted-keyboard-chelsea-table-stage-20-"
+    },
+    {
+      "t": "2026-10-04T01:54:58.145Z",
+      "event": "bb-session",
+      "session": "90fc3d88",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
+    },
+    {
+      "t": "2026-10-04T01:55:18.471Z",
+      "event": "bb-session",
+      "session": "1150c36c",
+      "url": "https://donyc.com/events/2026/9/27/the-secret-circus-musical-tickets"
     }
   ],
   "recoveredAfterFailure": [
