@@ -8,7 +8,10 @@
  * and clipped to at most 4:5 (portrait), which the app shows uncropped.
  *
  *   scorecard.png  the top card: title, score, verdict, breakdown
- *   reviews.png    the Critic Scorecard bar plus the top review cards
+ *   reviews.png    the Critic Scorecard bar plus a compact list of reviews
+ *                  (quotes and bylines hidden: score, outlet, date per row)
+ *   audience.png   the Audience Scorecard: grade plus every audience source
+ *                  (skipped when the show has no audience card yet)
  *
  * clipRect() is pure and tested; captureShowImages() drives Playwright and
  * never throws: a failed capture returns [] and the email goes out without
@@ -25,9 +28,25 @@ const SCALE = 3; // 1290px-wide PNGs, the iPhone's own screenshot width
 const MAX_ASPECT = 1.25; // height / width; Reddit's feed shows up to 4:5 uncropped
 const PAD = 12; // breathing room around the card, CSS px
 
+// css: injected for that shot only, removed before the next one.
+// optional: the card is often absent (previews, too few audience reviews), so
+// a miss is skipped at once instead of waiting out the visibility timeout.
 const SHOTS = [
   { name: 'scorecard.png', selector: '[data-testid="show-hero-redesign"], [data-testid="show-header-card"]', label: 'Score card' },
-  { name: 'reviews.png', selector: '#critic-reviews', label: 'Critic reviews' },
+  {
+    // :has(article): before press night the section is a "Reviews coming" placeholder.
+    name: 'reviews.png', selector: '#critic-reviews:has(article)', label: 'Critic reviews',
+    // The owner posts the review list, many rows to one image. Each pull
+    // quote is 4-6 lines at phone width, so with quotes only one review fit.
+    // The indented block under each row (ReviewsList.tsx, pl-24) holds the
+    // quote <p> and the byline/Full Review row <div>; both go. Its "earlier
+    // run" tag is a <span> and stays, so an old review never reads as current.
+    // The Sort row is a page control, not content.
+    css: '#critic-reviews article [class*="pl-24"] > p, #critic-reviews article [class*="pl-24"] > div, #critic-reviews div:has(> button):not(:has(article)):not(article *) { display: none !important; }',
+  },
+  // The real card only (AudienceBuzzCard). In previews the same slot holds an
+  // "Audience data will be added" placeholder, which is not worth posting.
+  { name: 'audience.png', selector: 'section[aria-labelledby="audience-scorecard-heading"]', label: 'Audience grade', optional: true },
 ];
 
 /**
@@ -105,7 +124,13 @@ async function captureShowImages(url, outDir, { chromium = null, executablePath 
     const out = [];
     for (const shot of SHOTS) {
       const el = page.locator(shot.selector).first();
+      let style = null;
       try {
+        if (shot.optional && (await el.count()) === 0) {
+          log(`  screenshot ${shot.name} skipped (not on this page)`);
+          continue;
+        }
+        if (shot.css) style = await page.addStyleTag({ content: shot.css });
         await el.waitFor({ state: 'visible', timeout: 15_000 });
         await el.scrollIntoViewIfNeeded();
         await page.waitForTimeout(400);
@@ -128,6 +153,8 @@ async function captureShowImages(url, outDir, { chromium = null, executablePath 
         out.push({ file, name: shot.name, label: shot.label });
       } catch (e) {
         log(`  screenshot ${shot.name} skipped (${e.message.split('\n')[0]})`);
+      } finally {
+        if (style) await style.evaluate(n => n.remove()).catch(() => {});
       }
     }
     return out;
