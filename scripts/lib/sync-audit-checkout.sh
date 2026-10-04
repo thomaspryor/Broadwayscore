@@ -213,8 +213,14 @@ union_restore_ledger() {
     const { lines: extra, dropped } = stripTornTrailingLine(saved);
     if (dropped !== null) console.log(`[${tag}]   dropped a torn trailing line from the saved copy of ${target}`);
     const { merged, stats } = unionLedgerLines(base, extra);
-    if (!unionIsSafe({ mergedCount: merged.length, baseCount: base.length, extraCount: stats.extraUnique })) {
-      console.error(`::error::[${tag}] union of ${target} would shrink it (${merged.length} < max(${base.length}, ${stats.extraUnique})) — refusing`);
+    // Independent of unionLedgerLines: distinct saved rows counted here (BRO-3917:
+    // raw saved line count false-tripped on duplicate rows), plus a true
+    // superset check so a future bug in the union itself is still caught.
+    const extraDistinct = new Set(extra.filter((l) => l !== "")).size;
+    const mergedSet = new Set(merged);
+    const lostRow = base.some((l) => !mergedSet.has(l)) || extra.some((l) => l !== "" && !mergedSet.has(l));
+    if (lostRow || !unionIsSafe({ mergedCount: merged.length, baseCount: base.length, extraCount: extraDistinct })) {
+      console.error(`::error::[${tag}] union of ${target} would shrink it (${merged.length} < max(${base.length}, ${extraDistinct})${lostRow ? ", row missing from union" : ""}) — refusing`);
       process.exit(1);
     }
     // Atomic write: a partial write here would leave a ledger that neither
