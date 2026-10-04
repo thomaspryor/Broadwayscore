@@ -109,3 +109,18 @@ test('BRO-4563: a tour production\'s own review is not tour contamination', () =
   assert.notEqual(explainExclusion(review, tour, '/nonexistent/maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json'), 'tourContaminationInText');
   assert.equal(explainExclusion({ ...review, showId: broadway.id }, broadway, '/nonexistent/maybe-happy-ending-2024/baltimoresun--luke-parker.json'), 'tourContaminationInText');
 });
+
+test('BRO-4563: a special engagement\'s own tour wording is exempt in every caller, not just two', () => {
+  const { tourContextForShow } = require('./excerpt-validation.js');
+  const { contaminationKindsNeeded } = require('./contamination-allow-signal.js');
+  const intro = 'The national tour of this concert staging stops at the Beacon Theatre for one week only, and it is a delight.';
+  const special = { id: 'x-special-2026', title: 'X In Concert', type: 'special', category: 'off-broadway', status: 'open', openingDate: '2026-05-01' };
+  const tour = { id: 'x-tour-2026', title: 'X', category: 'tour', status: 'open', openingDate: '2026-05-01' };
+  const plain = { id: 'x-2026', title: 'X', category: 'broadway', status: 'open', openingDate: '2026-05-01' };
+  assert.equal(isTourReviewExcerpt(intro, tourContextForShow(special)).isTourReview, false);
+  assert.equal(isTourReviewExcerpt(intro, tourContextForShow(plain)).isTourReview, true);
+  // The allow-signal backfill asks the same question through the same context.
+  assert.deepEqual(contaminationKindsNeeded({ fullText: intro }, tour), []);
+  assert.deepEqual(contaminationKindsNeeded({ fullText: intro }, special), []);
+  assert.deepEqual(contaminationKindsNeeded({ fullText: intro }, plain), ['tour']);
+});

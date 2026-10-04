@@ -757,7 +757,7 @@ const _SHORT_ROMAN_NUMERALS = new Set(['v', 'x', 'ii', 'iv', 'vi', 'ix', 'xi', '
 // matched "THE LIFE at the Southwark Playhouse". Function words ("of", "in",
 // "me", "la"...) stay out, and so do words headlines drop or respell ("Dr.
 // Seuss'", "Jr.", "Ok"/"Okay"). Two-character numbers ("The 39 Steps") count.
-const _SHORT_DISTINCT_WORDS = new Set(['pi', 'mj', 'mr', 'oh', 'oz']);
+const _SHORT_DISTINCT_WORDS = new Set(['pi', 'mr', 'oh', 'oz']);
 const _isTitleToken = w => w.length > 2 || _SHORT_ROMAN_NUMERALS.has(w) || _SHORT_DISTINCT_WORDS.has(w)
   || (w.length === 2 && /\d/.test(w));
 
@@ -979,8 +979,13 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
   }
 
   if (_missingShortTitleToken(shortWords, words, candidateLower)) {
-    const missingWords = shortWords.filter(w => !matchesAsWholeWord(w, candidateLower));
-    return { matched: false, confidence: 0, matchCount: 0, threshold: words.length, words, missingWords };
+    // Report every title word, so callers see the real count and what is
+    // missing: page-validator then rejects it as a short-title partial match
+    // ("missing [pi]") rather than as "ZERO words from title appear".
+    const all = [...words, ...shortWords];
+    const matchedWords = all.filter(w => matchesAsWholeWord(w, candidateLower));
+    const missingWords = all.filter(w => !matchesAsWholeWord(w, candidateLower));
+    return { matched: false, confidence: 0, matchCount: matchedWords.length, threshold: all.length, words: all, matchedWords, missingWords, reason: 'missing-short-token' };
   }
 
   // Single meaningful word — moderate confidence at best
@@ -1488,7 +1493,9 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     // "Holiday Inn" has 2 tokens [holiday, inn], not 1.
     // A kept short token (Roman numeral, "pi", "39") is not a supporting
     // token: "Life (x) 3" as [life, x] stays gated like [life] (BRO-4563).
-    // Every token must still match below, so keeping one only narrows.
+    // Every token must still match below. Titles whose only long word sat
+    // after a short one ("Oh, Hello", "Oh, Brother!") had no tokens at all
+    // and were unmatchable; they now match when both words are in the slug.
     const words = tokens.filter(t => t.length > 2);
     if (words.length <= 1 && (words[0] || '').length < 5) continue;
     let matchedTokens = 0;
