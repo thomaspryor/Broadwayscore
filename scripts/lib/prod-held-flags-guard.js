@@ -21,33 +21,41 @@ const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const FLAGS_FILE = path.join(REPO_ROOT, 'src', 'config', 'feature-flags.ts');
 const DEFAULT_ENV_FILE = path.join(REPO_ROOT, '.vercel', '.env.production.local');
 
-const unquote = s => s.trim().replace(/^['"]|['"]$/g, '').trim();
-
 // Throws when the declaration is missing, so a rename can't silently turn the
 // guard off. An empty list is valid: that is what releasing the last held
 // feature looks like.
 function parseHeldFeatures(src) {
   const m = src.match(/\bPROD_HELD_FEATURES\b(?:\s*:[^=]+)?\s*=\s*new\s+Set(?:<[^>]*>)?\(\s*\[([^\]]*)\]\s*\)/);
   if (!m) throw new Error('PROD_HELD_FEATURES declaration not found in src/config/feature-flags.ts');
-  return [...m[1].matchAll(/['"]([^'"]+)['"]/g)].map(x => x[1]);
+  const held = [...m[1].matchAll(/['"]([^'"]+)['"]/g)].map(x => x[1]);
+  // heldFeaturesEnabled matches identifier tokens only; any other name could never match.
+  const bad = held.filter(f => !/^[A-Za-z0-9_]+$/.test(f));
+  if (bad.length) throw new Error(`PROD_HELD_FEATURES has names the guard cannot match: ${bad.join(', ')}`);
+  return held;
 }
 
-// The NEXT_PUBLIC_FEATURES value from a dotenv file's text ('' when absent).
-// `vercel pull` writes KEY="value" lines; an `export ` prefix, an inline
-// `# comment` after an unquoted value, and repeated keys (last wins, as in
-// dotenv) are tolerated so a format change can't hide the value.
+// The text Next.js could read as NEXT_PUBLIC_FEATURES: everything after the
+// last `NEXT_PUBLIC_FEATURES=` line (dotenv: last wins; `export ` allowed),
+// plus any following lines up to the next KEY= line, in case a quoted value
+// spans lines. Deliberately loose: heldFeaturesEnabled tokenizes it, so stray
+// quotes, escapes or comments can only over-report a held name, never hide one.
 function featuresFromEnvFile(envText) {
-  const lines = envText.split(/\r?\n/).filter(l => /^\s*(?:export\s+)?NEXT_PUBLIC_FEATURES\s*=/.test(l));
-  if (!lines.length) return '';
-  const raw = lines[lines.length - 1].replace(/^[^=]*=/, '').trim();
-  const quoted = raw.match(/^(['"])(.*?)\1/);
-  return quoted ? quoted[2].trim() : raw.replace(/\s+#.*$/, '').trim();
+  const lines = envText.split(/\r?\n/);
+  const isKey = l => /^\s*(?:export\s+)?[A-Za-z_][A-Za-z0-9_]*\s*=/.test(l);
+  let start = -1;
+  lines.forEach((l, i) => { if (/^\s*(?:export\s+)?NEXT_PUBLIC_FEATURES\s*=/.test(l)) start = i; });
+  if (start < 0) return '';
+  const value = [lines[start].replace(/^[^=]*=/, '')];
+  for (let i = start + 1; i < lines.length && !isKey(lines[i]); i++) value.push(lines[i]);
+  return value.join('\n').trim();
 }
 
-// Held features named in a comma-separated NEXT_PUBLIC_FEATURES value.
+// Held features named in a NEXT_PUBLIC_FEATURES value. Splits on every
+// character that can't be part of a feature name (commas, quotes, spaces,
+// backslashes, #), so formatting can't hide a held name.
 function heldFeaturesEnabled(featuresValue, held) {
-  const on = new Set(String(featuresValue || '').split(',').map(unquote).filter(Boolean));
-  return held.filter(f => on.has(f));
+  const tokens = new Set(String(featuresValue || '').split(/[^A-Za-z0-9_]+/).filter(Boolean));
+  return held.filter(f => tokens.has(f));
 }
 
 function main(argv = [], env = process.env) {
@@ -58,10 +66,13 @@ function main(argv = [], env = process.env) {
     return 1;
   }
   // The build sees the pulled file and, for deploy-now.js, the caller's shell env too.
-  const enabled = new Set([
-    ...heldFeaturesEnabled(featuresFromEnvFile(fs.readFileSync(envPath, 'utf8')), held),
-    ...heldFeaturesEnabled(env.NEXT_PUBLIC_FEATURES, held),
-  ]);
+  const values = [featuresFromEnvFile(fs.readFileSync(envPath, 'utf8')), env.NEXT_PUBLIC_FEATURES || ''];
+  // dotenv-expand could turn $VAR into a held name this check can't see; refuse instead.
+  if (values.some(v => v.includes('$'))) {
+    console.error('::error::NEXT_PUBLIC_FEATURES uses $ variable expansion, which this guard cannot check. Set it to a literal comma-separated list.');
+    return 1;
+  }
+  const enabled = new Set(values.flatMap(v => heldFeaturesEnabled(v, held)));
   if (enabled.size) {
     for (const f of enabled) {
       console.error(`::error::Production NEXT_PUBLIC_FEATURES enables '${f}', which the owner has held back (PROD_HELD_FEATURES in src/config/feature-flags.ts).`);

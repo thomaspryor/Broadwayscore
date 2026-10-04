@@ -2,7 +2,8 @@
 // owner-held features (BRO-4525: commercial) out of production deploys.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync, mkdirSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -32,20 +33,65 @@ test('typed and double-quoted declarations parse', () => {
   assert.deepEqual(parseHeldFeatures(src), ['a', 'b']);
 });
 
-test('NEXT_PUBLIC_FEATURES is read from a pulled env file, quoted or not', () => {
-  assert.equal(featuresFromEnvFile('VERCEL="1"\nNEXT_PUBLIC_FEATURES="westEnd,commercial"\n'), 'westEnd,commercial');
-  assert.equal(featuresFromEnvFile("NEXT_PUBLIC_FEATURES='commercial'"), 'commercial');
-  assert.equal(featuresFromEnvFile('NEXT_PUBLIC_FEATURES=westEnd'), 'westEnd');
-  assert.equal(featuresFromEnvFile('OTHER=1\n'), '');
-  assert.equal(featuresFromEnvFile('export NEXT_PUBLIC_FEATURES="commercial"'), 'commercial');
-  assert.equal(featuresFromEnvFile('NEXT_PUBLIC_FEATURES=westEnd,commercial # held'), 'westEnd,commercial');
-  assert.equal(featuresFromEnvFile('NEXT_PUBLIC_FEATURES="westEnd" # note'), 'westEnd');
-  assert.equal(featuresFromEnvFile('NEXT_PUBLIC_FEATURES="westEnd"\r\nNEXT_PUBLIC_FEATURES="commercial"\r\n'), 'commercial');
+test('held names the tokenizer could never match are rejected', () => {
+  assert.throws(() => parseHeldFeatures("export const PROD_HELD_FEATURES = new Set(['biz-v2']);"), /cannot match/);
 });
 
-test('held features are matched as whole items only', () => {
+const heldIn = (envText) => heldFeaturesEnabled(featuresFromEnvFile(envText), ['commercial']);
+
+// [env file text, whether Next.js's own parser turns commercial on]. The second
+// value is checked against @next/env below, so a wrong expectation fails too.
+const ENV_FIXTURES = [
+  ['VERCEL="1"\nNEXT_PUBLIC_FEATURES="westEnd,commercial"\n', true],
+  ["NEXT_PUBLIC_FEATURES='commercial'", true],
+  ['NEXT_PUBLIC_FEATURES=westEnd', false],
+  ['OTHER=1\n', false],
+  ['export NEXT_PUBLIC_FEATURES="commercial"', true],
+  ['NEXT_PUBLIC_FEATURES=westEnd,commercial # held', true],
+  ['NEXT_PUBLIC_FEATURES="westEnd" # note', false],
+  ['NEXT_PUBLIC_FEATURES="westEnd"\r\nNEXT_PUBLIC_FEATURES="commercial"\r\n', true],
+  ['NEXT_PUBLIC_FEATURES="commercial"\nNEXT_PUBLIC_FEATURES="westEnd"\n', false],
+  ['NEXT_PUBLIC_FEATURES="a\\"b,commercial"', true],
+  ['NEXT_PUBLIC_FEATURES="x" ,commercial', true],
+  ['NEXT_PUBLIC_FEATURES="westEnd,\ncommercial"\nVERCEL="1"\n', true],
+  ['NEXT_PUBLIC_FEATURES="westEnd"\nZ_NOTE="commercial"\n', false],
+];
+
+test('a held feature in the pulled env file is found however the line is formatted', () => {
+  assert.equal(featuresFromEnvFile('OTHER=1\n'), '');
+  for (const [text, on] of ENV_FIXTURES) {
+    assert.deepEqual(heldIn(text), on ? ['commercial'] : [], JSON.stringify(text));
+  }
+});
+
+test('the guard never misses what Next.js itself would enable (checked with @next/env)', () => {
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'held-flags-next-'));
+  const dirs = ENV_FIXTURES.map(([text], i) => {
+    const d = path.join(dir, String(i));
+    mkdirSync(d);
+    writeFileSync(path.join(d, '.env.production.local'), text);
+    return d;
+  });
+  // A child process, because loadEnvConfig rewrites process.env.
+  const script = `const { loadEnvConfig } = require('@next/env');
+    const out = JSON.parse(process.argv[1]).map(d => {
+      const v = loadEnvConfig(d, false, { info() {}, error() {} }, true).combinedEnv.NEXT_PUBLIC_FEATURES || '';
+      return v.split(',').map(s => s.trim()).includes('commercial');
+    });
+    console.log(JSON.stringify(out));`;
+  const env = { ...process.env };
+  delete env.NEXT_PUBLIC_FEATURES;
+  const nextSees = JSON.parse(execFileSync(process.execPath, ['-e', script, JSON.stringify(dirs)], { cwd: ROOT, env, encoding: 'utf8' }));
+  ENV_FIXTURES.forEach(([text, on], i) => {
+    assert.equal(nextSees[i], on, `fixture expectation vs @next/env: ${JSON.stringify(text)}`);
+    if (nextSees[i]) assert.deepEqual(heldIn(text), ['commercial'], `guard missed: ${JSON.stringify(text)}`);
+  });
+});
+
+test('held features are matched as whole names only', () => {
   assert.deepEqual(heldFeaturesEnabled('westEnd, commercial ', ['commercial']), ['commercial']);
   assert.deepEqual(heldFeaturesEnabled('commercialX,biz', ['commercial']), []);
+  assert.deepEqual(heldFeaturesEnabled('commercial_x', ['commercial']), []);
   assert.deepEqual(heldFeaturesEnabled(undefined, ['commercial']), []);
 });
 
@@ -62,6 +108,7 @@ test('main(): fails on a held flag in the env file or the shell, passes otherwis
     assert.equal(main([clean], {}), 0);
     assert.equal(main([clean], { NEXT_PUBLIC_FEATURES: 'commercial' }), 1);
     assert.equal(main([path.join(dir, 'missing.env')], {}), 1);
+    assert.equal(main([clean], { NEXT_PUBLIC_FEATURES: '${HELD}' }), 1);
   } finally {
     Object.assign(console, quiet);
   }
