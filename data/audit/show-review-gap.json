@@ -1,14 +1,14 @@
 {
-  "generatedAt": "2026-10-04T20:09:17.422Z",
+  "generatedAt": "2026-10-04T20:17:05.003Z",
   "windowDays": 21,
-  "targets": 4,
-  "auditedThisRun": 4,
-  "carriedForward": 619,
+  "targets": 2,
+  "auditedThisRun": 2,
+  "carriedForward": 621,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 349,
-    "missingCurrentRun": 609,
+    "missingCurrentRun": 606,
     "totalCitedNoUrl": 0,
     "totalFlaggedMisses": 848,
     "totalRecoverable": 4,
@@ -2032,13 +2032,13 @@
         "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/",
         "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/",
         "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/",
+        "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
         "https://www.uktw.co.uk/Tour/Play/a-small-and-quiet-light/T01948657515/",
         "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901",
-        "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
         "https://www.nickhernbooks.co.uk/a-small-and-quiet-light"
       ],
-      "dirFiles": 24,
-      "dirClean": 12,
+      "dirFiles": 27,
+      "dirClean": 15,
       "inReviewsJson": 15,
       "missing": [
         {
@@ -2054,27 +2054,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester",
-          "host": "theguardian.com",
-          "knownOutletId": "guardian",
-          "serpCensus": true
-        },
-        {
-          "url": "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/",
-          "host": "regionalartsjunkies.co.uk",
-          "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/",
-          "host": "thespyinthestalls.com",
-          "knownOutletId": "the-spy-in-the-stalls",
-          "serpCensus": true
-        },
-        {
           "url": "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/",
           "host": "susanelkin.co.uk",
           "knownOutletId": "susanelkin",
+          "serpCensus": true
+        },
+        {
+          "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
+          "host": "thestage.co.uk",
+          "knownOutletId": "thestage",
           "serpCensus": true
         },
         {
@@ -2087,12 +2075,6 @@
           "url": "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901",
           "host": "visitsoutheastengland.com",
           "knownOutletId": null,
-          "serpCensus": true
-        },
-        {
-          "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
-          "host": "thestage.co.uk",
-          "knownOutletId": "thestage",
           "serpCensus": true
         },
         {
@@ -2377,62 +2359,47 @@
           "reason": "Refusing to ingest — https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light-on-screen/ mat"
         },
         {
-          "url": "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester",
-          "host": "theguardian.com",
-          "outletId": "guardian",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/",
-          "host": "regionalartsjunkies.co.uk",
-          "outletId": "regionalartsjunkies",
-          "provisional": true,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        },
-        {
-          "url": "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/",
-          "host": "thespyinthestalls.com",
-          "outletId": "the-spy-in-the-stalls",
-          "provisional": false,
-          "ok": true,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": null
-        }
-      ],
-      "ingestSkippedByCap": [
-        {
           "url": "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/",
           "host": "susanelkin.co.uk",
-          "outletId": "susanelkin"
-        },
-        {
-          "url": "https://www.uktw.co.uk/Tour/Play/a-small-and-quiet-light/T01948657515/",
-          "host": "uktw.co.uk",
-          "outletId": "uktw"
-        },
-        {
-          "url": "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901",
-          "host": "visitsoutheastengland.com",
-          "outletId": "visitsoutheastengland"
+          "outletId": "susanelkin",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
         },
         {
           "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
           "host": "thestage.co.uk",
-          "outletId": "thestage"
+          "outletId": "thestage",
+          "provisional": false,
+          "ok": true,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": null
+        },
+        {
+          "url": "https://www.uktw.co.uk/Tour/Play/a-small-and-quiet-light/T01948657515/",
+          "host": "uktw.co.uk",
+          "outletId": "uktw",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "⚠️  provisional outlet \"uktw\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
+        }
+      ],
+      "ingestSkippedByCap": [
+        {
+          "url": "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901",
+          "host": "visitsoutheastengland.com",
+          "outletId": "visitsoutheastengland"
         },
         {
           "url": "https://www.nickhernbooks.co.uk/a-small-and-quiet-light",
@@ -2458,32 +2425,18 @@
             "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light-on-screen/"
           },
           {
-            "outletId": "guardian",
-            "outlet": "guardian",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester"
-          },
-          {
-            "outletId": "regionalartsjunkies.co.uk",
-            "outlet": "regionalartsjunkies.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/"
-          },
-          {
-            "outletId": "the-spy-in-the-stalls",
-            "outlet": "the-spy-in-the-stalls",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/"
-          },
-          {
             "outletId": "susanelkin",
             "outlet": "susanelkin",
             "critic": "Unknown",
             "stars": null,
             "url": "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/"
+          },
+          {
+            "outletId": "thestage",
+            "outlet": "thestage",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre"
           },
           {
             "outletId": "uktw.co.uk",
@@ -2498,13 +2451,6 @@
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901"
-          },
-          {
-            "outletId": "thestage",
-            "outlet": "thestage",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre"
           },
           {
             "outletId": "nickhernbooks.co.uk",
@@ -2620,6 +2566,24 @@
             "firstSeenAt": "2026-10-04T20:09:17.422Z"
           },
           {
+            "url": "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/",
+            "outletId": "regionalartsjunkies.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/",
+            "outletId": "thespyinthestalls.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
             "url": "https://orangetreetheatre.co.uk/whats-on/a-small-and-quiet-light/",
             "outletId": "orangetreetheatre.co.uk",
             "state": "GAP",
@@ -2634,29 +2598,15 @@
             "firstSeenAt": "2026-10-04T20:09:17.422Z"
           },
           {
-            "url": "https://www.theguardian.com/stage/2026/aug/31/a-small-and-quiet-light-review-minerva-theatre-chichester",
-            "outletId": "guardian",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T20:09:17.422Z"
-          },
-          {
-            "url": "https://regionalartsjunkies.co.uk/directory-what_s_on/event/a-small-and-quiet-light-minerva-theatre-chichester-festival-theatre/",
-            "outletId": "regionalartsjunkies.co.uk",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T20:09:17.422Z"
-          },
-          {
-            "url": "https://thespyinthestalls.com/2026/08/a-small-and-quiet-light/",
-            "outletId": "the-spy-in-the-stalls",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T20:09:17.422Z"
-          },
-          {
             "url": "https://susanelkin.co.uk/articles/a-small-and-quiet-light-susan-elkin-reviews/",
             "outletId": "susanelkin",
+            "state": "GAP",
+            "reason": "sla-breach",
+            "firstSeenAt": "2026-10-04T20:09:17.422Z"
+          },
+          {
+            "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
+            "outletId": "thestage",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-04T20:09:17.422Z"
@@ -2671,13 +2621,6 @@
           {
             "url": "https://www.visitsoutheastengland.com/events/a-small-and-quiet-light-p2792901",
             "outletId": "visitsoutheastengland.com",
-            "state": "GAP",
-            "reason": "sla-breach",
-            "firstSeenAt": "2026-10-04T20:09:17.422Z"
-          },
-          {
-            "url": "https://www.thestage.co.uk/reviews/a-small-and-quiet-light-review-minerva-chichester-festival-theatre-orange-tree-theatre",
-            "outletId": "thestage",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-04T20:09:17.422Z"
@@ -2740,10 +2683,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 9,
+        "liveCount": 12,
         "candidateCount": 25
       },
-      "computedAt": "2026-10-04T20:09:17.422Z"
+      "computedAt": "2026-10-04T20:17:05.003Z"
     },
     {
       "showId": "a-thousand-natural-shocks-off-broadway-2026",
@@ -19493,10 +19436,11 @@
         "https://www.britishtheatreguide.info/reviews/bull-birmingham-rep-26016",
         "https://playsinternational.org.uk/bull-park-theatre/",
         "https://limpingchicken.com/2026/09/21/review-bull-by-deafinitely-theatre-a-gripping-exploration-of-bullying-abuse-and-the-destruction-it-leaves-behind/",
+        "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
         "https://www.allthatdazzles.co.uk/post/review-bull-birmingham-rep---park-theatre",
         "https://www.birmingham-rep.co.uk/whats-on/bull/",
+        "https://liamodell.com/2026/09/17/bull-review-deafinitely-theatre-mike-bartlett-birmingham-rep-home-manchester-park-theatre-london/",
         "https://www.timeout.com/london/theatre/bull-2",
-        "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
         "https://www.whatsonlive.co.uk/birmingham/news/review-bull-by-deafinitely-theatre/66122",
         "https://www.thestage.co.uk/reviews/bull"
       ],
@@ -19568,14 +19512,14 @@
           "priorRunSource": "aggregator-article-date"
         },
         {
-          "url": "https://www.birmingham-rep.co.uk/whats-on/bull/",
-          "host": "birmingham-rep.co.uk",
+          "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+          "host": "uktw.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
         {
-          "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
-          "host": "uktw.co.uk",
+          "url": "https://www.birmingham-rep.co.uk/whats-on/bull/",
+          "host": "birmingham-rep.co.uk",
           "knownOutletId": null,
           "serpCensus": true
         },
@@ -19592,12 +19536,7 @@
           "serpCensus": true
         }
       ],
-      "dirOnly": [
-        {
-          "host": "liamodell.com",
-          "count": 1
-        }
-      ],
+      "dirOnly": [],
       "flaggedMisses": [
         {
           "url": "https://www.alledinburghtheatre.com/bull-fight-mythography-collective-macrobert-arts-centre-summerhall-edfringe-2026-review/",
@@ -19747,7 +19686,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 5,
             "error": null
           },
           {
@@ -19757,24 +19696,24 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 2,
             "error": null
           }
         ],
         "queriesOk": 4,
         "queriesTotal": 4,
-        "resultCount": 16,
+        "resultCount": 17,
         "error": null
       },
       "candidatesRejected": {
-        "count": 1195,
+        "count": 1193,
         "byReason": {
           "roundup-page": 3,
-          "non-review-host": 75,
-          "aggregator-internal-nav": 868,
-          "census-junk-host": 1,
+          "non-review-host": 73,
           "not-http-url": 228,
-          "aggregator-section-root": 20
+          "aggregator-internal-nav": 868,
+          "aggregator-section-root": 20,
+          "census-junk-host": 1
         }
       },
       "dedupedVariants": [],
@@ -19854,18 +19793,6 @@
       ],
       "ingestResults": [
         {
-          "url": "https://www.birmingham-rep.co.uk/whats-on/bull/",
-          "host": "birmingham-rep.co.uk",
-          "outletId": "birmingham-rep",
-          "provisional": true,
-          "ok": false,
-          "noop": false,
-          "conflict": false,
-          "conflictReason": null,
-          "unclassified": false,
-          "reason": "Refusing to ingest — https://www.birmingham-rep.co.uk/whats-on/bull/ matches a known non-review doma"
-        },
-        {
           "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
           "host": "uktw.co.uk",
           "outletId": "uktw",
@@ -19876,6 +19803,18 @@
           "conflictReason": null,
           "unclassified": false,
           "reason": "⚠️  provisional outlet \"uktw\" (not in registry) — onboard to outlet-registry.json after review.\nArti"
+        },
+        {
+          "url": "https://www.birmingham-rep.co.uk/whats-on/bull/",
+          "host": "birmingham-rep.co.uk",
+          "outletId": "birmingham-rep",
+          "provisional": true,
+          "ok": false,
+          "noop": false,
+          "conflict": false,
+          "conflictReason": null,
+          "unclassified": false,
+          "reason": "Refusing to ingest — https://www.birmingham-rep.co.uk/whats-on/bull/ matches a known non-review doma"
         },
         {
           "url": "https://www.whatsonlive.co.uk/birmingham/news/review-bull-by-deafinitely-theatre/66122",
@@ -19907,18 +19846,18 @@
         "verdict": "incomplete",
         "missing": [
           {
-            "outletId": "birmingham-rep.co.uk",
-            "outlet": "birmingham-rep.co.uk",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://www.birmingham-rep.co.uk/whats-on/bull/"
-          },
-          {
             "outletId": "uktw.co.uk",
             "outlet": "uktw.co.uk",
             "critic": "Unknown",
             "stars": null,
             "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/"
+          },
+          {
+            "outletId": "birmingham-rep.co.uk",
+            "outlet": "birmingham-rep.co.uk",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.birmingham-rep.co.uk/whats-on/bull/"
           },
           {
             "outletId": "whatsonlive.co.uk",
@@ -20014,15 +19953,21 @@
             "firstSeenAt": "2026-10-04T20:09:17.422Z"
           },
           {
-            "url": "https://www.birmingham-rep.co.uk/whats-on/bull/",
-            "outletId": "birmingham-rep.co.uk",
+            "url": "https://liamodell.com/2026/09/17/bull-review-deafinitely-theatre-mike-bartlett-birmingham-rep-home-manchester-park-theatre-london/",
+            "outletId": "liamodell.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T20:17:05.003Z"
+          },
+          {
+            "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
+            "outletId": "uktw.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-04T20:09:17.422Z"
           },
           {
-            "url": "https://www.uktw.co.uk/London/Park-Theatre/Play/Bull/L01489751573/",
-            "outletId": "uktw.co.uk",
+            "url": "https://www.birmingham-rep.co.uk/whats-on/bull/",
+            "outletId": "birmingham-rep.co.uk",
             "state": "GAP",
             "reason": "sla-breach",
             "firstSeenAt": "2026-10-04T20:09:17.422Z"
@@ -20071,10 +20016,10 @@
           }
         ],
         "censusSchema": 2,
-        "liveCount": 8,
-        "candidateCount": 16
+        "liveCount": 9,
+        "candidateCount": 17
       },
-      "computedAt": "2026-10-04T20:09:17.422Z"
+      "computedAt": "2026-10-04T20:17:05.003Z"
     },
     {
       "showId": "burlesque-west-end-2026",
