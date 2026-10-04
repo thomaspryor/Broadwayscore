@@ -1,27 +1,5 @@
 [
   {
-    "startedAt": "2026-10-03T23:49:56.823Z",
-    "completedAt": "2026-10-03T23:49:57.032Z",
-    "totalReviews": 24,
-    "processed": 0,
-    "skipped": 23,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37162800933",
-    "errorDetails": [
-      {
-        "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
-        "outletId": "broadwaylog",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-03T23:49:58.881Z",
     "completedAt": "2026-10-03T23:50:04.248Z",
     "totalReviews": 2,
@@ -323185,6 +323163,38 @@
     },
     "costUsd": 0,
     "runId": "37197828220",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T11:17:51.989Z",
+    "completedAt": "2026-10-04T11:17:54.720Z",
+    "totalReviews": 46545,
+    "processed": 0,
+    "skipped": 46544,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3638,
+      "output": 109,
+      "total": 11025
+    },
+    "costUsd": 0.0129331,
+    "runId": "37198066211",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T11:17:56.755Z",
+    "completedAt": "2026-10-04T11:17:58.844Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37198066211",
     "errorDetails": []
   }
 ]
