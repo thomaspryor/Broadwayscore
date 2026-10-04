@@ -18,6 +18,7 @@ const fnSource = fs.readFileSync(path.join(root, 'supabase/functions/delete-acco
 const EXEMPT = {
   user_show_stubs: 'shared catalog rows other users can point at; no personal content',
   plan_shares: 'ON DELETE CASCADE from profiles, which delete-account removes',
+  diary_shares: 'ON DELETE CASCADE from profiles, which delete-account removes',
 };
 
 function userOwnedTables() {
@@ -34,7 +35,7 @@ function userOwnedTables() {
 
 test('migrations declare the per-user tables this guard is meant to see', () => {
   const owned = userOwnedTables();
-  for (const t of ['unmatched_imports', 'import_fetch_log', 'mezzanine_search_log', 'user_show_stubs', 'plan_shares']) {
+  for (const t of ['unmatched_imports', 'import_fetch_log', 'mezzanine_search_log', 'user_show_stubs', 'plan_shares', 'diary_shares']) {
     assert.ok(owned.has(t), `parser no longer finds ${t}; fix the regex before trusting the next test`);
   }
 });

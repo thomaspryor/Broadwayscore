@@ -243,7 +243,10 @@ SELECT t.ok(NOT has_function_privilege('anon', 'public.rotate_plan_share_token()
             'grant check: anon has no EXECUTE on rotate');
 SELECT t.ok(has_function_privilege('anon', 'public.get_shared_plans(text)', 'EXECUTE'),
             'grant check: anon can EXECUTE get_shared_plans');
-SELECT t.ok(NOT has_function_privilege('authenticated', 'public.plan_shares_guard()', 'EXECUTE'),
+-- Whichever function the trigger runs (plan_shares_guard until
+-- 20261004_diary_shares.sql replaced it with the shared share_token_guard).
+SELECT t.ok(NOT has_function_privilege('authenticated',
+              (SELECT tg.tgfoid FROM pg_trigger tg WHERE tg.tgname = 'plan_shares_guard'), 'EXECUTE'),
             'grant check: nobody can call the guard directly');
 SELECT t.ok(NOT has_table_privilege('authenticated', 'public.plan_shares', 'TRUNCATE'),
             'grant check: authenticated cannot TRUNCATE plan_shares');

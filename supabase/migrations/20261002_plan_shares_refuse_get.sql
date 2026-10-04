@@ -1,3 +1,6 @@
+-- AFTER 20261004_diary_shares.sql: do not re-apply this file on its own. It
+-- would recreate plan_shares_guard() and repoint the plans trigger back to
+-- it; re-apply 20261004_diary_shares.sql afterwards if you ever must.
 -- get_shared_plans(): refuse GET for real (BRO-4481 follow-up).
 --
 -- 20261001_plan_shares.sql relied on VOLATILE to make PostgREST refuse GET, so
