@@ -33,6 +33,7 @@
 const fs = require('fs');
 const path = require('path');
 const { searchAllPosts, collectCommentsFromPosts, getStats } = require('./lib/reddit-api');
+const { computeProductionWindow, isPostInProductionWindow } = require('./lib/production-window');
 const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandidate, refreshStaleSortKey, isOwnerComment, isRedditFresh } = require('./lib/reddit-post-filters');
 
 // A single roundup/megathread can hold hundreds of comments about dozens of
@@ -200,7 +201,9 @@ function classifyPost(post, showTitle) {
  * Search with multiple strategies to capture audience reactions
  * Prioritizes audience posts, excludes industry posts, includes neutral as fallback
  */
-async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '', previewsStartDate = null, isOpera = false } = {}) {
+async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { category = '', previewsStartDate = null, isOpera = false, show = null } = {}) {
+  // BRO-30: scope to this production's run window when the title has siblings.
+  const prodWindow = show ? computeProductionWindow(show, showsData.shows) : null;
   const cleanTitle = showTitle.replace(/[()]/g, '').trim();
   const isWestEnd = isLondonMarket(category);
   const isOffBroadway = category === 'off-broadway';
@@ -256,6 +259,11 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
 
         // Filter out pre-preview posts — only audience reactions from people who could have seen it
         if (earliestPostDate && post.created_utc && post.created_utc < earliestPostDate) {
+          filteredByDate++;
+          continue;
+        }
+
+        if (show && !isPostInProductionWindow(post, show, prodWindow)) {
           filteredByDate++;
           continue;
         }
@@ -359,6 +367,7 @@ async function collectShowComments(show) {
         category: show.category,
         previewsStartDate: show.previewsStartDate || show.previewDate || null,
         isOpera: (show.type || '') === 'opera',
+        show,
       });
     } catch (e) {
       console.error(`  Search failed in r/${subreddit}: ${e.message}`);
