@@ -19,7 +19,7 @@ const ENV = {
   GIT_CONFIG_GLOBAL: '/dev/null', GIT_CONFIG_NOSYSTEM: '1',
 };
 const tmps = [];
-test.after(() => { for (const d of tmps) fs.rmSync(d, { recursive: true, force: true }); });
+test.after(() => { for (const d of tmps) fs.rmSync(d, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }); });
 
 function sh(cwd, cmd) {
   const r = spawnSync('bash', ['-c', cmd], { cwd, env: ENV, encoding: 'utf8' });
