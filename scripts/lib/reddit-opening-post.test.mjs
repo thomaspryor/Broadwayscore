@@ -270,6 +270,28 @@ test('reddit email: one new email per complete draft, one reminder after 20h, th
   assert.ok(html.includes('submit?a=1&amp;b=2'));
 });
 
+test('resend: listed unposted drafts go out again whatever their age; posted, missing, broken never do', () => {
+  const base = { status: 'ready', title: 't', body: 'b', subreddit: 'Broadway', submitUrl: 'https://a', showTitle: 'X', score: 80 };
+  const drafts = { drafts: {
+    old: { ...base, showId: 'old', createdAt: '2026-09-20T06:00:00Z', emailedAt: '2026-09-20T06:01:00Z', reminderAt: '2026-09-21T06:00:00Z' },
+    posted: { ...base, showId: 'posted', status: 'posted' },
+    broken: { status: 'ready', showId: 'broken' },
+  } };
+  const r = mail.resendEmails(drafts, ['old', 'old', 'posted', 'gone', 'broken']);
+  assert.deepEqual(r.due.map(x => `${x.draft.showId}:${x.kind}`), ['old:new'], 'once, as a fresh email');
+  assert.deepEqual(r.skipped.map(x => `${x.showId}:${x.reason}`), ['posted:already posted', 'gone:no draft', 'broken:incomplete draft']);
+  assert.deepEqual(mail.resendEmails(null, ['a']).due, []);
+});
+
+test('forceShowId takes several shows at once ("a,b" or an array)', () => {
+  const shows = ['s1', 's2', 's3'].map(id => ({ id, title: id, category: 'west-end', openingDate: '2026-09-27', status: 'open' }));
+  const slims = new Map(shows.map(x => [x.id, slim({ cs: 80, n: 30 })]));
+  const ids = f => lib.selectCandidates({ shows, slims, drafts: { drafts: {} }, peersByMarket: {}, today: '2026-09-29', forceShowId: f }).map(c => c.show.id).sort();
+  assert.deepEqual(ids('s1, s3'), ['s1', 's3']);
+  assert.deepEqual(ids(['s2']), ['s2']);
+  assert.deepEqual(ids('s2'), ['s2']);
+});
+
 test('reddit email subjects classify as their own sender, not the opening digest', () => {
   const d = { showTitle: 'Delirium', score: 87, subreddit: 'Broadway' };
   assert.equal(mail.buildSubject(d, 'new'), 'Reddit post ready: Delirium (87/100) for r/Broadway');
