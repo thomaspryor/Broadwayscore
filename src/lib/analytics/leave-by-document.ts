@@ -9,7 +9,7 @@
  * through gaInitScript, which redacts a plans referrer before GA's first hit,
  * and Back returns to a separate document that disables GA again on load.
  *
- * Pure decision so it is unit-tested; PlansLeaveByDocument applies it.
+ * Pure decision so it is unit-tested; LeaveByDocument applies it.
  */
 export interface LinkClick {
   href: string | null;

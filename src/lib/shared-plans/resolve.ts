@@ -46,7 +46,8 @@ export interface CatalogShow {
 export interface ResolveDeps<S extends CatalogShow = CatalogShow> {
   getShow(id: string): S | undefined;
   getDiaryShow(id: string): DiaryShowDetail | null;
-  getStub(id: string): Promise<DiaryShowDetail | null>;
+  /** Batched: one call for every id the first two steps missed. */
+  getStubs(ids: readonly string[]): Promise<Map<string, DiaryShowDetail>>;
 }
 
 export async function resolvePlanShows<S extends CatalogShow>(
@@ -56,7 +57,24 @@ export async function resolvePlanShows<S extends CatalogShow>(
   const out = new Map<string, PlanShow>();
   const unique = Array.from(new Set(ids));
 
-  await Promise.all(unique.map(async id => {
+  const fromDiary = (id: string, diary: DiaryShowDetail) => out.set(id, {
+    id,
+    title: diary.title,
+    href: `/diary-show/${diary.slug}`,
+    posterUrl: diary.posterUrl,
+    venue: diary.venue,
+    category: diary.category,
+    // Catalog-only shows carry no run status; treat as not closed.
+    status: null,
+    bookability: null,
+    calendar: {
+      id, title: diary.title, slug: diary.slug, diaryOnly: true,
+      category: diary.category, venue: diary.venue,
+    },
+  });
+
+  const missing: string[] = [];
+  for (const id of unique) {
     const show = deps.getShow(id);
     if (show) {
       out.set(id, {
@@ -80,27 +98,20 @@ export async function resolvePlanShows<S extends CatalogShow>(
           venue: show.venue, theaterAddress: show.theaterAddress ?? null, runtime: show.runtime ?? null,
         },
       });
-      return;
+      continue;
     }
-    const diary = deps.getDiaryShow(id) || await deps.getStub(id).catch(() => null);
-    if (diary) {
-      out.set(id, {
-        id,
-        title: diary.title,
-        href: `/diary-show/${diary.slug}`,
-        posterUrl: diary.posterUrl,
-        venue: diary.venue,
-        category: diary.category,
-        // Catalog-only shows carry no run status; treat as not closed.
-        status: null,
-        bookability: null,
-        calendar: {
-          id, title: diary.title, slug: diary.slug, diaryOnly: true,
-          category: diary.category, venue: diary.venue,
-        },
-      });
+    const diary = deps.getDiaryShow(id);
+    if (diary) fromDiary(id, diary);
+    else missing.push(id);
+  }
+
+  if (missing.length) {
+    const stubs = await deps.getStubs(missing).catch(() => new Map<string, DiaryShowDetail>());
+    for (const id of missing) {
+      const stub = stubs.get(id);
+      if (stub) fromDiary(id, stub);
     }
-  }));
+  }
 
   return out;
 }

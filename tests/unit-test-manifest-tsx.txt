@@ -16,6 +16,7 @@ tests/unit/commercial-unreleased.test.mjs
 tests/unit/creative-role-mapping.test.ts
 tests/unit/data-cast-history.test.ts
 tests/unit/data-reviews-critic-grouping.test.ts
+tests/unit/diary-show-stubs.test.ts
 tests/unit/eeat-entity-consolidation.test.mjs
 tests/unit/email-gate-conversion.test.mjs
 tests/unit/email-gate-copy-version.test.mjs
@@ -46,6 +47,7 @@ tests/unit/opera-ensemble-scoreability.test.ts
 tests/unit/page-weight-catalog-scale.test.ts
 tests/unit/parse-runtime-parity.test.ts
 tests/unit/prior-runs-scoreability.test.ts
+tests/unit/private-share-routes.test.ts
 tests/unit/promo-sunset-fallback.test.ts
 tests/unit/robots-api-disallow.test.ts
 tests/unit/score-breakdown-tier.test.ts
@@ -53,6 +55,9 @@ tests/unit/scoring-parity.test.ts
 tests/unit/seo-regional-country.test.mjs
 tests/unit/seo-show-schema-uk-address.test.mjs
 tests/unit/share-link.test.ts
+tests/unit/share-og-card.test.ts
+tests/unit/shared-diary-load.test.ts
+tests/unit/shared-diary-select.test.ts
 tests/unit/shared-plans-load.test.ts
 tests/unit/shared-plans-resolve.test.ts
 tests/unit/shared-plans-select.test.ts

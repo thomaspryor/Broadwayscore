@@ -35,15 +35,12 @@ const stubs: Record<string, DiaryShowDetail> = {
 const deps = {
   getShow: (id: string) => catalog[id],
   getDiaryShow: (id: string) => diary[id] ?? null,
-  getStub: async (id: string) => {
-    if (id === 'stub-lookup-throws-mz9') throw new Error('supabase down');
-    return stubs[id] ?? null;
-  },
+  getStubs: async (ids: readonly string[]) => new Map(ids.filter(id => stubs[id]).map(id => [id, stubs[id]] as const)),
 };
 
 test('resolves each source and drops unknown ids', async () => {
   const out = await resolvePlanShows(
-    ['wicked-2003', 'hamlet-west-end-2026', 'small-play-ob-2019', 'fresh-import-mz1234', 'deleted-show-1999', 'stub-lookup-throws-mz9'],
+    ['wicked-2003', 'hamlet-west-end-2026', 'small-play-ob-2019', 'fresh-import-mz1234', 'deleted-show-1999'],
     deps,
   );
   assert.deepEqual(Array.from(out.keys()).sort(), ['fresh-import-mz1234', 'hamlet-west-end-2026', 'small-play-ob-2019', 'wicked-2003']);
@@ -84,4 +81,22 @@ test('duplicate ids resolve once', async () => {
   const out = await resolvePlanShows(['wicked-2003', 'wicked-2003'], { ...deps, getShow: (id: string) => { calls++; return catalog[id]; } });
   assert.equal(out.size, 1);
   assert.equal(calls, 1);
+});
+
+test('stub lookups are one batched call for every id the catalog missed, and a failure drops only those', async () => {
+  const calls: string[][] = [];
+  const out = await resolvePlanShows(
+    ['wicked-2003', 'fresh-import-mz1234', 'small-play-ob-2019', 'gone-mz1', 'gone-mz2'],
+    { ...deps, getStubs: async ids => { calls.push([...ids]); return deps.getStubs(ids); } },
+  );
+  assert.deepEqual(calls, [['fresh-import-mz1234', 'gone-mz1', 'gone-mz2']]);
+  assert.ok(out.has('fresh-import-mz1234'));
+  const down = await resolvePlanShows(['wicked-2003', 'fresh-import-mz1234'], { ...deps, getStubs: async () => { throw new Error('supabase down'); } });
+  assert.deepEqual(Array.from(down.keys()), ['wicked-2003']);
+});
+
+test('no stub call when the catalog knows every id', async () => {
+  let called = false;
+  await resolvePlanShows(['wicked-2003', 'small-play-ob-2019'], { ...deps, getStubs: async () => { called = true; return new Map(); } });
+  assert.equal(called, false);
 });
