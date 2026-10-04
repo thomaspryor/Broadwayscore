@@ -23,10 +23,24 @@ const repo = path.join(scratch, 'repo');
 fs.mkdirSync(path.join(repo, 'data'), { recursive: true });
 fs.cpSync(path.join(REPO_ROOT, 'scripts', 'lib'), path.join(repo, 'scripts', 'lib'), { recursive: true });
 spawnSync('git', ['init', '-q', repo]);
+// No background housekeeping in the scratch repo, so nothing writes
+// .git/objects after the last test.
+for (const [k, v] of [['gc.auto', '0'], ['gc.autoDetach', 'false'], ['maintenance.auto', 'false']]) {
+  spawnSync('git', ['-C', repo, 'config', k, v]);
+}
 const git = (...a) => spawnSync('git', ['-C', repo, '-c', 'user.name=t', '-c', 'user.email=t@t', ...a], { encoding: 'utf8' });
 git('add', '-A');
 git('commit', '-q', '-m', 'fixture');
-test.after(() => fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 }));
+// Best-effort: every assertion has run by now. A land run failed here with all
+// subtests ok on "ENOTEMPTY: rmdir .../repo/.git/objects" (2026-10-04); a
+// leftover temp dir is not a test failure.
+test.after(() => {
+  try {
+    fs.rmSync(scratch, { recursive: true, force: true, maxRetries: 20, retryDelay: 100 });
+  } catch (e) {
+    console.warn(`[infra-plan-review-gate-bypass] scratch cleanup left ${scratch}: ${e.code || e.message}`);
+  }
+});
 
 const GATED = 'scripts/lib/review-gate.mjs';
 const patcher = path.join(scratch, 'patch-hook.py');
