@@ -409,5 +409,34 @@
       }
     ],
     "queuedAt": "2026-10-04T18:03:03.350Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-2904-muu5pw6j",
+    "title": "Landing blocked: race red on land/job/linear-BRO-2904-muu5pw6j",
+    "description": "land.yml did not land land/job/linear-BRO-2904-muu5pw6j: the race gate went red at 1e80fbf40b. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-2904-muu5pw6j @ 1e80fbf40b (origin/land/job/linear-BRO-2904-muu5pw6j) → origin/main @ f0d26c0a9b [land] attempt 1/3: rebased onto f0d26c0a9b, 3 file(s) changed — running checks [land] verified-base: main moved d04f8f34cf → f0d26c0a9b across 536 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data)  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37225092565",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-2904-muu5pw6j"
+      },
+      {
+        "name": "gate",
+        "value": "race"
+      },
+      {
+        "name": "tip",
+        "value": "1e80fbf40b6b58aad06e0a324b2068b820a844ef"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37225092565"
+      }
+    ],
+    "queuedAt": "2026-10-04T19:09:25.862Z"
   }
 ]
