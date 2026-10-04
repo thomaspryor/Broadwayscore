@@ -894,3 +894,20 @@ test('BRO-3045: a matching correlationId whose launch is NOT yet finished stays 
   const comment = { body: 'Dispatched deadbeef to workspace:9 at 2026-09-08T03:30:00.000Z (tab)', createdAt: '2026-09-08T03:30:01.000Z' };
   assert.equal(dispatchCommentIsOurFinishedLaunch(comment, 'linear:BRO-11', entries), false);
 });
+
+// BRO-4623: Linear backslash-escapes markdown punctuation in stored
+// descriptions, so a bracketed marker never matched and the pending-review
+// digest filed a new issue every day.
+test('findOpenIssueForTerm matches a bracketed marker Linear stored escaped', async () => {
+  const { findOpenIssueForTerm } = await import('./linear-dispatch.js');
+  const stored = [
+    { identifier: 'BRO-1', title: 'Other', description: 'unrelated' },
+    { identifier: 'BRO-2', title: 'Commercial data: pending review', description: 'PARKED: digest\n\n\\[commercial-pending-review\\]\n\n## Pending' },
+  ];
+  assert.equal(findOpenIssueForTerm(stored, '[commercial-pending-review]')?.identifier, 'BRO-2');
+  assert.equal(findOpenIssueForTerm(
+    [{ identifier: 'BRO-3', title: 't', description: '\\[conditionKey:cron-health-chronic:Weekly Grosses\\]' }],
+    '[conditionKey:cron-health-chronic:Weekly Grosses]',
+  )?.identifier, 'BRO-3');
+  assert.equal(findOpenIssueForTerm(stored, '[not-there]'), null);
+});
