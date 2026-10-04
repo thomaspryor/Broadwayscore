@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-04T16:33:29.409Z",
-  "processed": 47,
-  "failed": 13,
-  "successRate": "78.3%",
+  "updatedAt": "2026-10-04T17:04:18.471Z",
+  "processed": 88,
+  "failed": 52,
+  "successRate": "62.9%",
   "tierBreakdown": {
-    "playwright": 30,
+    "playwright": 56,
     "amp": 0,
-    "browserbase": 2,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 7,
+    "scrapingdog": 16,
     "scrapingbee": 0,
-    "brightdata": 3,
+    "brightdata": 6,
     "archiveToday": 0,
-    "archive": 7
+    "archive": 11
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-04T16:24:26.794Z",
@@ -27,6 +27,28 @@
       "event": "bb-session",
       "session": "7d347947",
       "url": "https://deadline.com/2026/08/the-whisper-man-review-robert-de-niro-adam-scott-ne"
+    },
+    {
+      "t": "2026-10-04T16:42:58.868Z",
+      "event": "bb-session",
+      "session": "83bca988",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-10-04T16:42:59.833Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-04T16:52:19.202Z",
+      "event": "bb-session",
+      "session": "bc9b0fa3",
+      "url": "https://www.thestage.co.uk/reviews/the-mousetrap-review-at-st-martins-theatre-lo"
+    },
+    {
+      "t": "2026-10-04T16:52:20.170Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
     }
   ]
 }
