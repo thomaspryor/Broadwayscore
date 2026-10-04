@@ -446,6 +446,17 @@ const CORE_DATA_MERGE_REGISTRY = [
     verifiedBy: '2026-08-23: findWritingWorkflows() against real .github/workflows/*.yml — 1 writer (data-health-check.yml), group data-health-check.',
   },
   {
+    // BRO-4603: verdicts of the daily wrong-article LLM pass
+    // (audit-wrong-article.js --adjudicate). Only data-health-check.yml writes
+    // it; the manual baseline sessions edit is wrong-article-verified.json.
+    file: 'audit/wrong-article-adjudicated.json',
+    surface: 'public-repo',
+    status: 'single-writer',
+    apiFallbackSafe: true,
+    concurrencyGroup: 'data-health-check',
+    verifiedBy: '2026-10-04: new file, written only by data-health-check.yml "wrong-article LLM adjudication" step, committed by its "Commit lifetime sweep snapshots" step, group data-health-check.',
+  },
+  {
     file: 'audit/missed-broadcasts.json',
     surface: 'public-repo',
     status: 'single-writer',

@@ -367,6 +367,15 @@ async function callWithFallback(prompt) {
   return null; // All providers failed
 }
 
+async function callPinnedProvider({ name, call }, prompt) {
+  try {
+    return { text: await call(prompt), provider: name };
+  } catch (e) {
+    console.log(`    ${name} verify error: ${e.message}`);
+    return null;
+  }
+}
+
 // ============================================================
 // Main Verification
 // ============================================================
@@ -391,9 +400,11 @@ async function callWithFallback(prompt) {
  * @param {string} [params.url] - Review URL. Used to surface URL-year-vs-publishDate conflicts
  *   to the LLM (issue #4). Per CLAUDE.md rule 3 the URL year is not authoritative but it's a
  *   useful signal when publishDate disagrees by multiple years.
+ * @param {{name: string, call: (prompt: string) => Promise<string>}} [params.provider] - Pin one
+ *   model instead of the default provider chain (BRO-4603).
  * @returns {Object} { isValid, confidence, issues, truncated, wrongArticle, wrongProduction, isFilmTv, reasoning, verifiedBy, urlYearConflict }
  */
-async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, show }) {
+async function verifyContent({ scrapedText, excerpt, showTitle, outletName, criticName, openingDate, venue, market, publishDate, isLongRunningProduction, url, show, provider }) {
   // Judge the article, not a consent layer captured ahead of it: the prompt
   // shows only the first 2,500 chars, which for WhatsOnStage captures was
   // entirely IAB consent text (BRO-4185 A).
@@ -419,7 +430,11 @@ async function verifyContent({ scrapedText, excerpt, showTitle, outletName, crit
     tourLegs: show && show.tourLegs,
   });
 
-  const result = await callWithFallback(prompt);
+  // `provider` ({ name, call }) pins one model instead of the cheap-first
+  // chain — audit-wrong-article.js --adjudicate (BRO-4603) asks Opus about
+  // suspects the default chain already passed. A failed call returns null and
+  // falls to the heuristic below (verifiedBy 'heuristic'), never a fake verdict.
+  const result = provider ? await callPinnedProvider(provider, prompt) : await callWithFallback(prompt);
 
   if (!result) {
     // No LLM providers available — fall back to heuristics
@@ -1099,4 +1114,7 @@ module.exports = {
   // Promise<string>, and throws if its API key is unset.
   callGemini,
   callOpenAI,
+  // Factory: callAnthropic(modelId) -> prompt => Promise<string>. Pair with
+  // verifyContent's `provider` to pin a model (audit-wrong-article.js uses Opus).
+  callAnthropic,
 };
