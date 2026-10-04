@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-10-02T13:15:05.896Z",
+  "lastChecked": "2026-10-04T20:51:56.413Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,12 +9,12 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "43 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (46d, stamp overdue 44d); BRO-235: The Stage + pages-on-stages stub extraction (46d); P1: task-store-archive.js has no move-time age recheck for c (46d) [18 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "43 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (49d, stamp overdue 46d); BRO-235: The Stage + pages-on-stages stub extraction (49d); P1: task-store-archive.js has no move-time age recheck for c (48d) [18 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "37 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (70d); P1: headless-claude fallback for the opening-night monitor l (70d); P1: register review-census carriers (audit-aggregator-gap +  (70d) [25 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "37 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (73d); P1: headless-claude fallback for the opening-night monitor l (72d); P1: register review-census carriers (audit-aggregator-gap +  (72d) [25 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     },
     {
       "name": "Stuck work: paused P2/other cards",

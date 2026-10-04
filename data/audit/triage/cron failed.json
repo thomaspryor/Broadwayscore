@@ -1,20 +1,15 @@
 {
   "system": "cron failed",
   "status": "warn",
-  "lastChecked": "2026-10-02T13:15:05.895Z",
+  "lastChecked": "2026-10-04T20:51:56.412Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
   "details": [
     {
-      "name": "Cron failed: Update Show Status",
-      "status": "warn",
-      "message": "Last run inconclusive: cancelled (22h ago), no success in 36h"
-    },
-    {
       "name": "Cron failed: Weekly Grosses",
       "status": "warn",
-      "message": "Last run inconclusive: failure (19h ago), no success in 192h"
+      "message": "Last run inconclusive: failure (3d ago), no success in 192h"
     }
   ]
 }
