@@ -107,6 +107,22 @@ function adjudicationContradictsRecordStar(data) {
 }
 
 /**
+ * True when an adjudication says it sided with the star but the record holds no
+ * star at all now: no originalScore / normalized value / aggregatorStars /
+ * starRating / originalRating / previousOriginalScore. The star it relied on was
+ * invented by the adjudicator (BRO-4287 "invented a 2/5 stars") or was cleared
+ * later as a false extraction, so the verdict has no basis left. Live:
+ * take-me-out-2022 Theater Life, adjudicated 40 "sided with originalScore" with
+ * every model at 82-87 and no rating anywhere on the record.
+ */
+function adjudicationStarBasisGone(data) {
+  if (!adjudicationSidedWithStars(data)) return false;
+  const has = (v) => v !== null && v !== undefined && v !== '' && v !== 0;
+  return !(has(data.originalScore) || has(data.originalScoreNormalized) || has(data.aggregatorStars)
+    || has(data.starRating) || has(data.originalRating) || has(data.previousOriginalScore));
+}
+
+/**
  * True when an auto-adjudication says it sided with the star rating. Reads the
  * structured sidedWith on the last adjudicationHistory entry first, and falls
  * back to the note wording ('sided with originalScore' / 'sided with stars').
@@ -267,6 +283,7 @@ module.exports = {
   isUncorroboratedGenericStar,
   adjudicationSidedWithStars,
   adjudicationContradictsRecordStar,
+  adjudicationStarBasisGone,
   detectBandFromReviewFile,
   shouldUseAnchoredMode,
 };

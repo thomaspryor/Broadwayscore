@@ -9,7 +9,7 @@ const { BUCKET_SCORES, THUMB_SCORES, scoreToBucket, scoreToThumb, OUTLET_VERIFIE
 const { parseOriginalScore } = require('./score-parsers');
 const { decodeHtmlEntities, cleanText } = require('./text-cleaning');
 const { AGGREGATOR_SCORE_SOURCES: AGGREGATOR_SOURCES_SET } = require('./review-normalization');
-const { isUncorroboratedGenericStar, adjudicationSidedWithStars, adjudicationContradictsRecordStar } = require('./star-reliability');
+const { isUncorroboratedGenericStar, adjudicationSidedWithStars, adjudicationContradictsRecordStar, adjudicationStarBasisGone } = require('./star-reliability');
 
 // Low-reliability star EXTRACTION sources — automated CSS/generic pattern matches
 // that often read the wrong element (pagination, dates, sidebars). The LLM may
@@ -718,7 +718,8 @@ function getBestScore(data, opts = {}) {
       && isUncorroboratedGenericStar(data, data.originalScoreNormalized);
     // Same rule when the record's own trusted star contradicts the adjudication
     // that claims to follow it.
-    const staleStarBasis = uncorroboratedStarBasis || adjudicationContradictsRecordStar(data);
+    const staleStarBasis = uncorroboratedStarBasis || adjudicationContradictsRecordStar(data)
+      || adjudicationStarBasisGone(data);
     if (!hasVerifiedStarScore && !outsideAnchoredBand && !staleStarBasis) {
       return { score: data.adjudicatedScore, source: 'adjudicated' };
     }
