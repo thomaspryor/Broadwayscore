@@ -46,6 +46,10 @@ const INTERNAL_CATEGORIES = new Set([
 // "Push:") but which are about the work queue, not the site.
 const INTERNAL_CHECK_NAMES = new Set([
   'Data: undispatchable backlog cards',
+  'Data: undispatchable backlog cards (Linear)',      // BRO-3619
+  'Data: armed-but-vacuous card checks (Notion)',     // BRO-3619
+  'Data: armed-but-vacuous card checks (Linear)',     // BRO-3619
+  'Data: Linear card-verifiability report stale',     // BRO-3619
   'Data: cards the drain cannot finish unattended',
   'Push: Git Data API fallback usage (24h)',
 ]);
