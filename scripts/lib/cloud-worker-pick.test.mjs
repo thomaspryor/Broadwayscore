@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pickCloudCard, skipReason, IDLE_MS } = require('./cloud-worker-pick.js');
+const { pickCloudCard, skipReason, IDLE_MS, AUTOMATION_PARK_STALE_MS } = require('./cloud-worker-pick.js');
 
 const NOW = Date.parse('2026-10-03T12:00:00Z');
 const OLD = new Date(NOW - IDLE_MS - 60_000).toISOString();
@@ -52,6 +52,22 @@ test('takes a technically parked P0/P1 session card, refuses an owner hold', () 
   assert.equal(skipReason(tech, NOW), null);
   const hold = issue({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: waiting on owner go-ahead\n\n${BODY}` });
   assert.equal(skipReason(hold, NOW), 'parked-or-backlog');
+});
+
+test('takes a machine-filed parked card only once it has sat quiet for AUTOMATION_PARK_STALE_MS', () => {
+  const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
+  const recent = new Date(NOW - AUTOMATION_PARK_STALE_MS + 60 * 60_000).toISOString();
+  const backlog = { name: 'Backlog', type: 'backlog' };
+  const autofix = `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}`;
+  const router = `PARKED: Auto-filed by owner-alert-router (condition: backstop:some-show); parked for triage.\n\n${BODY}`;
+  assert.equal(skipReason(issue({ state: backlog, description: autofix, updatedAt: stale }), NOW), null);
+  assert.equal(skipReason(issue({ state: backlog, description: router, updatedAt: stale }), NOW), null);
+  assert.equal(skipReason(issue({ state: backlog, description: autofix, updatedAt: recent }), NOW), 'parked-or-backlog');
+  assert.equal(skipReason(issue({ state: backlog, description: autofix, updatedAt: stale, priority: 3 }), NOW), 'not-p0-p1');
+  assert.equal(skipReason(issue({ state: backlog, description: autofix.replace(SAFE_CMD, 'it looks right'), updatedAt: stale }), NOW), 'no-safe-verify');
+  assert.equal(skipReason(issue({ state: backlog, description: `${autofix}\n\nDECISION NEEDED: owner picks.`, updatedAt: stale }), NOW), 'blocker-OWNER_DECISION_GATE');
+  // A hand-written owner hold stays parked however old it is.
+  assert.equal(skipReason(issue({ state: backlog, description: `PARKED: waiting on owner go-ahead\n\n${BODY}`, updatedAt: stale }), NOW), 'parked-or-backlog');
 });
 
 test('empty board returns no pick', () => {
