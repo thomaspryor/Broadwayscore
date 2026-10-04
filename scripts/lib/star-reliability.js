@@ -139,6 +139,41 @@ function adjudicationSidedWithStars(data) {
 }
 
 /**
+ * Upstream half of the adjudication-basis guard (BRO-4596). The read-time
+ * guards above ignore a star-sided adjudication whose star is gone, but a star
+ * cleared by a script leaves previousOriginalScore behind, which the basis
+ * check counts as a star, so the dependent adjudicatedScore kept publishing.
+ * Every script that clears or relocates a record's star calls this right after.
+ *
+ * Drops adjudicatedScore only when the adjudication sided with the star (one
+ * that sided with the models stays valid), keeps the dropped value in
+ * adjudicatedScoreInvalidated for audit, and adds a history entry.
+ * Mutates `data`; returns true when something was dropped.
+ *
+ * @param {object} data - review-text record, star already cleared by the caller
+ * @param {string} reason - why the star was cleared (stored for audit)
+ * @returns {boolean}
+ */
+function invalidateStarSidedAdjudication(data, reason) {
+  if (!data || typeof data.adjudicatedScore !== 'number') return false;
+  if (!adjudicationSidedWithStars(data)) return false;
+  const at = new Date().toISOString();
+  data.adjudicatedScoreInvalidated = {
+    score: data.adjudicatedScore,
+    reason: reason || 'star cleared',
+    note: data.adjudicationNote || null,
+    at,
+  };
+  data.adjudicatedScore = null;
+  data.adjudicationNote = null;
+  data.adjudicationHistory = [
+    ...(Array.isArray(data.adjudicationHistory) ? data.adjudicationHistory : []),
+    { timestamp: at, invalidated: true, reason: data.adjudicatedScoreInvalidated.reason },
+  ];
+  return true;
+}
+
+/**
  * Detect a star or letter-grade band from a review-text file.
  *
  * Returns:
@@ -284,6 +319,7 @@ module.exports = {
   adjudicationSidedWithStars,
   adjudicationContradictsRecordStar,
   adjudicationStarBasisGone,
+  invalidateStarSidedAdjudication,
   detectBandFromReviewFile,
   shouldUseAnchoredMode,
 };
