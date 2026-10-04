@@ -471,6 +471,20 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     }
   }
 
+  // --- Guard: listing / section-index page (BRO-4596) ---
+  // A section page (express.co.uk/entertainment/theatre) is not a review. Four
+  // express-uk rows were created on one and scored off a text-pattern star.
+  // The read-time exclusion (review-guards 'listingPageUrl') already hides such
+  // a row; this stops it being written at all. Pattern-matched listings only:
+  // the bare-host case is left to the read side. Escape hatch: fields.allowNonReviewUrl.
+  if (input.url && fields.allowNonReviewUrl !== true) {
+    const listingReason = require('./non-review-url-patterns').listingPageUrlReason(input.url);
+    if (listingReason && listingReason !== 'bare-host') {
+      console.warn(`  ⛔ Skipping listing/section page: ${input.url} (${listingReason})`);
+      return { action: 'skipped', reason: `listing-page-url: ${listingReason}`, guardRefused: true };
+    }
+  }
+
   // --- Guard: aggregator URL on a real outlet (2026-08-09) ---
   // An aggregator-domain URL (theatre.reviews, show-score.com, stagedoor.com, …)
   // is a ROUNDUP page citing other outlets — not `outletId`'s own review. A file
