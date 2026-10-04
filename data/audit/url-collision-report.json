@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-04T06:48:43.568Z",
+  "generatedAt": "2026-10-04T06:59:36.036Z",
   "summary": {
     "total": 9,
     "high": 2,
-    "medium": 4,
-    "low": 3
+    "medium": 3,
+    "low": 4
   },
   "collisions": [
     {
@@ -16,7 +16,7 @@
           "file": "san-francisco-chronicle--lily-janiak.json",
           "publishDate": null,
           "openingDate": "2022-04-08",
-          "hasScore": false,
+          "hasScore": true,
           "hasFullText": false,
           "outletId": "san-francisco-chronicle"
         },
@@ -31,8 +31,8 @@
         }
       ],
       "suggestedWinner": "beetlejuice-tour-2022",
-      "reason": "Only one candidate has score/fullText",
-      "confidence": "medium"
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
     },
     {
       "url": "https://www.timeout.com/london/theatre/a-christmas-carol-goes-wrong-review",
