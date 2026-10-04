@@ -1,3 +1,6 @@
+-- AFTER 20261004_diary_shares.sql: do not re-apply this file on its own. It
+-- would recreate plan_shares_guard() and repoint the plans trigger back to
+-- it; re-apply 20261004_diary_shares.sql afterwards if you ever must.
 -- Shared Plans (BRO-4481; spec: docs/specs/shared-plans.md §3.1-3.2).
 --
 -- One live, login-free link per user showing their upcoming booked shows (date

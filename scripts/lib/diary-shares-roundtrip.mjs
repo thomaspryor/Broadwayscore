@@ -12,6 +12,13 @@ import { TOKEN_RE, isMissingRelation } from './plan-shares-roundtrip.mjs';
 export const DIARY_PAYLOAD_KEYS = ['capped', 'entries', 'name', 'showText'];
 export const DIARY_ENTRY_KEYS = ['date_seen', 'rating', 'show_id'];
 
+/** A show A reviews with a FUTURE date: a plan, which must never be listed. */
+export const FUTURE_REVIEW_SHOW = 'the-lion-king-1997';
+
+function isoDatePlus(base, days) {
+  return new Date(base.getTime() + days * 86_400_000).toISOString().slice(0, 10);
+}
+
 /** Problems with a public diary payload (empty = clean). `text` is allowed only when `allowText`. */
 export function diaryPayloadProblems(payload, { allowText = false, forbiddenText = [] } = {}) {
   const problems = [];
@@ -43,12 +50,18 @@ export function diaryPayloadProblems(payload, { allowText = false, forbiddenText
  */
 export async function runDiarySharesChecks(ctx) {
   const { rest, check, anonKey, userA, tokenA, tokenB, showId, noteText } = ctx;
+  const now = ctx.now || new Date();
 
   const probe = await rest('GET', 'diary_shares?select=user_id&limit=1', tokenA);
   if (isMissingRelation(probe)) {
     console.log('diary_shares: not in this project yet — skipped (apply supabase/migrations/20261004_diary_shares.sql)');
     return { skipped: true };
   }
+
+  const future = await rest('POST', 'reviews', tokenA, {
+    user_id: userA.id, show_id: FUTURE_REVIEW_SHOW, rating: 4, date_seen: isoDatePlus(now, 10),
+  });
+  const futureId = Array.isArray(future.json) ? future.json[0]?.id : null;
 
   const created = await rest('POST', 'diary_shares', tokenA, {
     user_id: userA.id, display_name: '  Roundtrip  ', token: '0'.repeat(32),
@@ -81,8 +94,12 @@ export async function runDiarySharesChecks(ctx) {
   const problems = diaryPayloadProblems(payload, { forbiddenText: [userA.id, noteText] });
   check('diary: with notes off, no note text and only the allowed fields', problems.length === 0, problems.join('; '));
   check('diary: the past review is listed', (payload?.entries || []).some(e => e.show_id === showId));
+  check('diary: a future-dated review (a plan) is not listed',
+    futureId !== null && !(payload?.entries || []).some(e => e.show_id === FUTURE_REVIEW_SHOW),
+    futureId === null ? `could not create the future review: HTTP ${future.status}` : '');
 
-  await rest('PATCH', `diary_shares?user_id=eq.${userA.id}`, tokenA, { show_text: true });
+  const notesOn = await rest('PATCH', `diary_shares?user_id=eq.${userA.id}`, tokenA, { show_text: true });
+  check('diary: owner can turn notes on', notesOn.ok && notesOn.json?.[0]?.show_text === true, `PATCH HTTP ${notesOn.status}`);
   const withNotes = (await rpc(anonKey, 'get_shared_diary', { p_token: tokenOld })).json;
   const noteRow = (withNotes?.entries || []).find(e => e.show_id === showId);
   check('diary: with notes on, the note comes through', noteRow?.text === noteText, `text=${JSON.stringify(noteRow?.text)}`);
@@ -105,5 +122,6 @@ export async function runDiarySharesChecks(ctx) {
 
   const del = await rest('DELETE', `diary_shares?user_id=eq.${userA.id}`, tokenA, null, 'return=minimal');
   check('diary: owner can delete the share', del.ok, `HTTP ${del.status}`);
+  if (futureId) await rest('DELETE', `reviews?id=eq.${futureId}&user_id=eq.${userA.id}`, tokenA, null, 'return=minimal');
   return { skipped: false };
 }

@@ -60,7 +60,9 @@ const diaryTests = join(root, 'tests/sql/diary-shares.test.sql');
 const shareMigrations = readdirSync(migDir)
   .filter((f) => f.endsWith('.sql'))
   .sort()
-  .filter((f) => /plan_shares|diary_shares|share_token_guard/.test(readFileSync(join(migDir, f), 'utf-8')))
+  // Match on SQL, not comments: a later migration that only MENTIONS these
+  // tables must not be applied onto the minimal stub.
+  .filter((f) => /plan_shares|diary_shares|share_token_guard/.test(readFileSync(join(migDir, f), 'utf-8').replace(/--[^\n]*/g, '')))
   .map((f) => join(migDir, f));
 
 test('diary_shares SQL assertions pass on a local Postgres', (t) => {

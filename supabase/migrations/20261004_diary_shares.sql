@@ -130,11 +130,17 @@ GRANT EXECUTE ON FUNCTION public.rotate_diary_share_token() TO authenticated;
 --   * per review row: show_id, date_seen, rating; `text` ONLY when show_text
 --     (the key is absent otherwise, so review_text never leaves the database),
 --     trimmed, empty dropped, cut to 4,000 characters.
---   * Rows: undated, or dated up to UTC tomorrow. The web server keeps only
---     dates before the VENUE's today (src/lib/shared-diary/select.ts); later
---     rows are plans, which this link never shows.
+--   * Rows: undated, or dated up to UTC today. The web server keeps only
+--     dates before the VENUE's today (src/lib/shared-diary/select.ts), and no
+--     venue's today is later than UTC today + 1, so nothing it shows is cut;
+--     later rows are plans, which this link never shows. The function pins
+--     timezone = UTC: current_date otherwise follows the caller's session
+--     TimeZone, which PostgREST lets a client set (Prefer: timezone=…).
 --   * reviews.visibility is ignored: no UI sets or reads it today. If a
 --     per-review privacy control ships, honour it here.
+--   * Known, tracked elsewhere: a user_show_stubs show_id joins to that
+--     table's anon-readable created_by (see 20260714e_user_show_stubs.sql,
+--     BRO-4525 follow-up); the plans link and public lists share it.
 -- Never selected: ids, user_id, visibility, timestamps, anything from profiles.
 -- PostgREST GET runs in a READ ONLY transaction and lets any function run
 -- there (20261002_plan_shares_refuse_get.sql), so the function refuses one
@@ -145,11 +151,12 @@ LANGUAGE plpgsql
 VOLATILE
 SECURITY DEFINER
 SET search_path = ''
+SET timezone = 'UTC'
 AS $$
 DECLARE
   v_share   public.diary_shares%ROWTYPE;
   v_entries JSONB;
-  v_count   INTEGER;
+  v_capped  BOOLEAN;
   c_cap     CONSTANT INTEGER := 1000;
 BEGIN
   IF current_setting('transaction_read_only') = 'on' THEN
@@ -169,44 +176,45 @@ BEGIN
     RETURN NULL;
   END IF;
 
-  WITH rows AS (
-    SELECT r.show_id, r.date_seen, r.rating, r.review_text, r.created_at
-      FROM public.reviews r
-     WHERE r.user_id = v_share.user_id
-       AND (r.date_seen IS NULL OR r.date_seen <= current_date + 1)
-     ORDER BY r.date_seen DESC NULLS LAST, r.created_at DESC
-     LIMIT c_cap + 1
-  ), numbered AS (
-    SELECT rows.*, row_number() OVER (ORDER BY date_seen DESC NULLS LAST, created_at DESC) AS n
-      FROM rows
-  )
-  SELECT coalesce(
-           jsonb_agg(
-             jsonb_build_object(
-               'show_id', show_id,
-               'date_seen', date_seen,
-               'rating', rating
-             )
-             -- The text key exists only when the owner shares notes.
-             || CASE
-                  WHEN v_share.show_text AND btrim(coalesce(review_text, '')) <> ''
-                  THEN jsonb_build_object('text', left(btrim(review_text), 4000))
-                  ELSE '{}'::jsonb
-                END
-             ORDER BY n
-           ) FILTER (WHERE n <= c_cap),
-           '[]'::jsonb),
-         count(*)
-    INTO v_entries, v_count
-    FROM numbered;
+  -- One ordering, with id as the final tiebreaker so bulk imports (same
+  -- created_at) keep a stable order and a stable set under the cap.
+  SELECT coalesce(jsonb_agg(
+           jsonb_build_object('show_id', r.show_id, 'date_seen', r.date_seen, 'rating', r.rating)
+           -- The text key exists only when the owner shares notes.
+           || CASE
+                WHEN v_share.show_text AND btrim(coalesce(r.review_text, '')) <> ''
+                THEN jsonb_build_object('text', left(btrim(r.review_text), 4000))
+                ELSE '{}'::jsonb
+              END
+           ORDER BY r.date_seen DESC NULLS LAST, r.created_at DESC, r.id DESC), '[]'::jsonb)
+    INTO v_entries
+    FROM (
+      SELECT * FROM public.reviews
+       WHERE user_id = v_share.user_id
+         AND (date_seen IS NULL OR date_seen <= current_date)
+       ORDER BY date_seen DESC NULLS LAST, created_at DESC, id DESC
+       LIMIT c_cap
+    ) r;
+
+  v_capped := EXISTS (
+    SELECT 1 FROM public.reviews
+     WHERE user_id = v_share.user_id
+       AND (date_seen IS NULL OR date_seen <= current_date)
+     OFFSET c_cap LIMIT 1
+  );
 
   RETURN jsonb_build_object(
     'name', v_share.display_name,
     'showText', v_share.show_text,
-    'capped', v_count > c_cap,
+    'capped', v_capped,
     'entries', v_entries
   );
 END;
 $$;
 REVOKE ALL ON FUNCTION public.get_shared_diary(TEXT) FROM PUBLIC;
 GRANT EXECUTE ON FUNCTION public.get_shared_diary(TEXT) TO anon, authenticated;
+
+-- Same caller-TimeZone exposure in get_shared_plans (its `current_date - 2`
+-- window widens by a day for a client in UTC-12). Pin it without touching
+-- its body.
+ALTER FUNCTION public.get_shared_plans(TEXT) SET timezone = 'UTC';

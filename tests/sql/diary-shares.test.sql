@@ -23,7 +23,7 @@ INSERT INTO public.reviews (user_id, show_id, rating, date_seen, review_text, cr
   ('11111111-1111-1111-1111-111111111111', 'wicked-2003',   5.0, current_date - 400, 'Second time, even better.', now() - interval '2 days'),
   ('11111111-1111-1111-1111-111111111111', 'hamilton-2015', 3.0, NULL, '   ', now() - interval '1 day'),
   ('11111111-1111-1111-1111-111111111111', 'six-2021',      4.0, current_date, 'Tonight!', now()),
-  ('11111111-1111-1111-1111-111111111111', 'chess-2025',    3.5, current_date + 1, 'Tomorrow (UTC slack)', now()),
+  ('11111111-1111-1111-1111-111111111111', 'chess-2025',    3.5, current_date + 1, 'Tomorrow: a plan', now()),
   ('11111111-1111-1111-1111-111111111111', 'ragtime-2025',  4.0, current_date + 30, 'A plan, not a diary entry', now()),
   ('11111111-1111-1111-1111-111111111111', 'gypsy-2024',    2.0, current_date - 5, repeat('x', 5000), now() - interval '5 days'),
   -- Owner B's row must never appear on A's link.
@@ -113,9 +113,10 @@ BEGIN
   PERFORM t.ok((p ->> 'capped')::boolean = false, 'not capped');
   SELECT array_agg(x ->> 'show_id' ORDER BY ord) INTO ids
     FROM jsonb_array_elements(e) WITH ORDINALITY AS a(x, ord);
-  PERFORM t.ok(ids = ARRAY['chess-2025', 'six-2021', 'gypsy-2024', 'wicked-2003', 'wicked-2003', 'hamilton-2015'],
-               'rows: newest first, undated last, up to UTC tomorrow; got ' || array_to_string(ids, ','));
-  PERFORM t.ok(NOT ('ragtime-2025' = ANY (ids)), 'a future-dated review (a plan) never leaves');
+  PERFORM t.ok(ids = ARRAY['six-2021', 'gypsy-2024', 'wicked-2003', 'wicked-2003', 'hamilton-2015'],
+               'rows: newest first, undated last, up to UTC today; got ' || array_to_string(ids, ','));
+  PERFORM t.ok(NOT ('ragtime-2025' = ANY (ids)) AND NOT ('chess-2025' = ANY (ids)),
+               'future-dated reviews (plans), even tomorrow, never leave');
   PERFORM t.ok(NOT ('smash-2025' = ANY (ids)), 'another user''s review never leaves');
   PERFORM t.ok(NOT EXISTS (SELECT 1 FROM jsonb_array_elements(e) x WHERE x ? 'text'),
                'with notes off, NO row carries a text key');
@@ -128,6 +129,16 @@ BEGIN
   PERFORM t.ok((SELECT (x ->> 'rating')::numeric FROM jsonb_array_elements(e) x WHERE x ->> 'show_id' = 'gypsy-2024') = 2.0,
                'rating comes through');
 END $$;
+
+-- A caller can't widen the window by setting their session time zone
+-- (PostgREST honours Prefer: timezone=…); the function pins UTC.
+SET timezone = 'Pacific/Kiritimati';
+SELECT t.ok(NOT (public.get_shared_diary(current_setting('t.token_a'))::text LIKE '%chess-2025%'),
+            'a UTC+14 session still gets nothing past UTC today');
+SET timezone = 'Etc/GMT+12';
+SELECT t.ok(NOT (public.get_shared_diary(current_setting('t.token_a'))::text LIKE '%chess-2025%'),
+            'a UTC-12 session too');
+RESET timezone;
 
 SELECT t.ok(public.get_shared_diary('not-a-token') IS NULL, 'malformed token -> NULL');
 SELECT t.ok(public.get_shared_diary('0123456789abcdef0123456789abcdef') IS NULL, 'unknown token -> NULL');
@@ -207,7 +218,7 @@ SELECT t.as_user(NULL);
 SELECT set_config('t.payload', public.get_shared_diary(current_setting('t.token_new'))::text, false) \gset
 SELECT t.ok(jsonb_array_length(current_setting('t.payload')::jsonb -> 'entries') = 1000, 'entries capped at 1,000');
 SELECT t.ok((current_setting('t.payload')::jsonb ->> 'capped')::boolean, 'capped flag set when there are more');
-SELECT t.ok((current_setting('t.payload')::jsonb -> 'entries' -> 0 ->> 'show_id') = 'chess-2025',
+SELECT t.ok((current_setting('t.payload')::jsonb -> 'entries' -> 0 ->> 'show_id') = 'six-2021',
             'the cap keeps the newest entries');
 
 -- ---------------------------------------------------------------- grants ----
@@ -216,3 +227,9 @@ SELECT t.ok(has_function_privilege('anon', 'public.get_shared_diary(text)', 'EXE
 SELECT t.ok(NOT has_function_privilege('anon', 'public.rotate_diary_share_token()', 'EXECUTE'), 'anon cannot call rotate');
 SELECT t.ok(has_function_privilege('authenticated', 'public.rotate_diary_share_token()', 'EXECUTE'), 'authenticated can rotate');
 SELECT t.ok(NOT has_function_privilege('anon', 'public.share_token_guard()', 'EXECUTE'), 'anon cannot call the guard');
+SELECT t.ok((SELECT 'TimeZone=UTC' = ANY (proconfig) FROM pg_proc WHERE proname = 'get_shared_plans'),
+            'get_shared_plans is pinned to UTC as well');
+-- The behavioural time-zone checks above only bite at some hours of the UTC
+-- day; this one bites always.
+SELECT t.ok((SELECT 'TimeZone=UTC' = ANY (proconfig) FROM pg_proc WHERE proname = 'get_shared_diary'),
+            'get_shared_diary is pinned to UTC');
