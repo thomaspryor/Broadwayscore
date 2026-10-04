@@ -15,7 +15,6 @@ const fs = require('fs');
 const path = require('path');
 const { AGGREGATOR_SCORE_SOURCES } = require('./lib/review-normalization');
 const { listShowDirs } = require('./lib/list-show-dirs');
-const { invalidateStarSidedAdjudication } = require('./lib/star-reliability');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const baseDir = path.join(__dirname, '..', 'data', 'review-texts');
@@ -40,7 +39,6 @@ for (const show of shows) {
 
         if (!DRY_RUN) {
           data.aggregatorStars = data.originalScore;
-          invalidateStarSidedAdjudication(data, 'aggregator score migrated out of originalScore');
           data.originalScore = null;
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         }

@@ -47,7 +47,6 @@
  */
 
 const { AGGREGATOR_SCORE_SOURCES } = require('./review-normalization');
-const { invalidateStarSidedAdjudication } = require('./star-reliability');
 
 /**
  * Decide which slot a freshly-extracted score belongs in, given:
@@ -136,7 +135,6 @@ function repairAggregatorContamination(data) {
     }
     data.originalScore = null;
     data.originalScoreNormalized = null;
-    invalidateStarSidedAdjudication(data, 'aggregator score repaired out of originalScore');
     if (
       data.originalScoreSource &&
       AGGREGATOR_SCORE_SOURCES.has(data.originalScoreSource)

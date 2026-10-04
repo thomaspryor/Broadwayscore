@@ -171,7 +171,6 @@ for (const show of shows) {
           data.originalScore = null;
           data.originalScoreCleared = true;
           data.originalScoreClearedReason = `aggregator-score-in-p0-slot (tier ${tier})`;
-          invalidateStarSidedAdjudication(data, data.originalScoreClearedReason);
           fs.writeFileSync(filePath, JSON.stringify(data, null, 2));
         }
         console.log(`${DRY_RUN ? '[DRY] ' : ''}[T${tier}] ${show}/${file}: ${scoreSource || source} "${data.originalScore || data.previousOriginalScore}" → aggregatorStars`);

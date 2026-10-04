@@ -119,7 +119,11 @@ function adjudicationStarBasisGone(data) {
   if (!adjudicationSidedWithStars(data)) return false;
   const has = (v) => v !== null && v !== undefined && v !== '' && v !== 0;
   return !(has(data.originalScore) || has(data.originalScoreNormalized) || has(data.aggregatorStars)
-    || has(data.starRating) || has(data.originalRating) || has(data.previousOriginalScore));
+    || has(data.starRating) || has(data.originalRating)
+    // previousOriginalScore is the audit copy a clearing script leaves behind
+    // (fix-p0-score-corruption.js); on a record flagged originalScoreCleared the
+    // star was judged false, so it is no basis (BRO-4596).
+    || (has(data.previousOriginalScore) && data.originalScoreCleared !== true));
 }
 
 /**
@@ -143,7 +147,7 @@ function adjudicationSidedWithStars(data) {
  * guards above ignore a star-sided adjudication whose star is gone, but a star
  * cleared by a script leaves previousOriginalScore behind, which the basis
  * check counts as a star, so the dependent adjudicatedScore kept publishing.
- * Every script that clears or relocates a record's star calls this right after.
+ * Scripts that DISCARD a record's star call this right after (relocations to aggregatorStars do not: that star can still be the basis).
  *
  * Drops adjudicatedScore only when the adjudication sided with the star (one
  * that sided with the models stays valid), keeps the dropped value in
