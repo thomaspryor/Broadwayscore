@@ -37,10 +37,15 @@ on:
         default: ''
 
 concurrency:
-  # A targeted run gets its own group (BRO-4592): in the shared group GitHub keeps
-  # only ONE pending run, so the hourly cron queued behind a running audit would
-  # silently replace a dispatched targeted run.
-  group: audit-aggregator-gap${{ inputs.show_ids && format('-targeted-{0}', github.run_id) || '' }}
+  # Targeted (show_ids) runs share this group on purpose (BRO-4592). This workflow
+  # is the single writer of data/audit/gap-audit-checkpoint.json and its siblings,
+  # which core-data-merge-registry.js registers as apiFallbackSafe BECAUSE of this
+  # group: two runs in parallel could push through the whole-file API fallback and
+  # let a stale run overwrite the other's checkpoint stamps. Cost of sharing: GitHub
+  # keeps one pending run, so a later cron tick can replace a queued targeted run.
+  # Runs last ~25 min against an hourly-ish cron, and the cron queue now puts live
+  # newest shows first, so the exposure is small. Verify a targeted dispatch started.
+  group: audit-aggregator-gap
   cancel-in-progress: false
 
 permissions:
@@ -186,7 +191,9 @@ jobs:
             if ! printf '%s' "$SHOW_IDS" | grep -Eq '^[a-z0-9][a-z0-9-]*(,[a-z0-9][a-z0-9-]*)*$'; then
               echo "::error::show_ids must be a comma-separated list of show ids"; exit 1
             fi
-            ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=35"
+            # Budget stays near the cron's 18: the commit + push below and the
+            # outlet ground-truth step need the same headroom inside the 60-min cap.
+            ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=20"
           fi
           if [ "$INCLUDE_CLOSED" = "true" ]; then
             ARGS="$ARGS --include-closed"
@@ -292,7 +299,7 @@ jobs:
           # A manual dispatch's window_days widens the audit (backfill) and
           # skips the 6h throttle; the hourly cron uses 21 days / 6h.
           GT_DAYS: ${{ github.event.inputs.window_days || '21' }}
-          GT_INTERVAL: ${{ github.event_name == 'workflow_dispatch' && '0' || '6' }}
+          GT_INTERVAL: ${{ github.event_name == 'workflow_dispatch' && !github.event.inputs.show_ids && '0' || '6' }}
         run: timeout 720 node scripts/audit-outlet-ground-truth.js --days="$GT_DAYS" --ingest --ingest-cap=12 --alert --min-interval-hours="$GT_INTERVAL" --time-budget-min=8
 
       # Date-independent backstop for a live show sitting on a discovered
