@@ -30,6 +30,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { hasHelpFlag } = require('./lib/cli-help');
 const { evaluateScoreVsModels, keyOf, DEFAULT_GAP } = require('./lib/score-vs-models');
 
 const ROOT = path.resolve(__dirname, '..');
@@ -70,6 +71,10 @@ function scan(root, { gap = DEFAULT_GAP, shows } = {}) {
 
 function main() {
   const argv = process.argv.slice(2);
+  if (hasHelpFlag(argv)) {
+    console.log('Usage: node scripts/audit-score-vs-models.js [--write-baseline] [--json] [--show=<id>] [--gap=N]\nReports published review scores that disagree with the model reading (read-only except --write-baseline).');
+    return;
+  }
   const get = (p) => (argv.find((a) => a.startsWith(p)) || '').slice(p.length);
   const gap = get('--gap=') ? parseFloat(get('--gap=')) : DEFAULT_GAP;
   const show = get('--show=') || null;
