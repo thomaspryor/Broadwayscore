@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-04T11:52:52.180Z",
-    "completedAt": "2026-10-04T11:52:53.906Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37200028107",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-04T11:56:30.233Z",
-    "completedAt": "2026-10-04T11:56:32.730Z",
-    "totalReviews": 46549,
-    "processed": 0,
-    "skipped": 46548,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 3638,
-      "output": 119,
-      "total": 11029
-    },
-    "costUsd": 0.0130881,
-    "runId": "37200248656",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-04T11:56:34.304Z",
     "completedAt": "2026-10-04T11:56:36.022Z",
     "totalReviews": 0,
@@ -299035,6 +299003,49 @@
     },
     "costUsd": 0,
     "runId": "37226811662",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T19:12:55.156Z",
+    "completedAt": "2026-10-04T19:15:18.620Z",
+    "totalReviews": 46648,
+    "processed": 23,
+    "skipped": 46616,
+    "errors": 2,
+    "tokensUsed": {
+      "input": 184678,
+      "output": 8346,
+      "total": 452299
+    },
+    "costUsd": 0.6944458499999999,
+    "runId": "37227194528",
+    "errorDetails": [
+      {
+        "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
+        "outletId": "patch",
+        "error": "input_validation_failed:body_too_short"
+      },
+      {
+        "showId": "repro-eco-tomorrow-is-now-off-broadway-2026",
+        "outletId": "stagebuddy",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-04T19:15:20.679Z",
+    "completedAt": "2026-10-04T19:15:22.780Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37227194528",
     "errorDetails": []
   }
 ]
