@@ -12,6 +12,7 @@
 import { useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { formatShowDate } from '@/lib/date-utils';
+import { catchEarlyImgError } from '@/lib/img-early-error';
 
 export type ViewMode = 'grid' | 'list';
 
@@ -50,7 +51,7 @@ export function Poster({ url, iconClass = 'text-3xl', title }: { url: string | n
     return <div className={`w-full h-full flex items-center justify-center text-gray-600 ${iconClass}`}>🎭</div>;
   }
   // eslint-disable-next-line @next/next/no-img-element
-  return <img src={url} alt="" className="w-full h-full object-cover" onError={() => setBroken(true)} />;
+  return <img src={url} alt="" className="w-full h-full object-cover" ref={catchEarlyImgError(() => setBroken(true))} onError={() => setBroken(true)} />;
 }
 
 /** The fields bookabilityLabel reads (a ShowLookup satisfies it). */

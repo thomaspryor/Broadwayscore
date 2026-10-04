@@ -2,6 +2,7 @@
 
 import { useState, useMemo, ReactNode } from 'react';
 import { getCdnSrcSet } from '@/lib/images';
+import { catchEarlyImgError } from '@/lib/img-early-error';
 
 interface ShowImageProps {
   /** Image URLs to try in order (nulls/undefined filtered out) */
@@ -64,6 +65,7 @@ export default function ShowImage({
       fetchPriority={priority ? 'high' : undefined}
       decoding={decoding}
       aria-hidden={ariaHidden}
+      ref={catchEarlyImgError(() => setFailedCount(prev => (validSources[prev] === currentSrc ? prev + 1 : prev)))}
       onError={() => setFailedCount(prev => prev + 1)}
     />
   );

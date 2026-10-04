@@ -7,6 +7,7 @@ import { featureFlags } from '@/config/feature-flags';
 import { getScoreColorClass } from '@/components/show-cards';
 import { getGoldThreshold } from '@/config/score-buckets';
 import { getReviewKey } from '../../scripts/lib/review-list-key';
+import { catchEarlyImgError } from '@/lib/img-early-error';
 
 interface Review {
   showId: string;
@@ -90,7 +91,7 @@ function OutletLogo({ outlet, outletId }: { outlet: string; outletId?: string })
           src={logoUrl}
           alt={`${outlet} logo`}
           className="w-6 h-6 object-contain"
-          onError={() => setImageError(true)}
+          ref={catchEarlyImgError(() => setImageError(true))} onError={() => setImageError(true)}
         />
       </div>
     );
