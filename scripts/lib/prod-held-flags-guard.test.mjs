@@ -2,7 +2,7 @@
 // owner-held features (BRO-4525: commercial) out of production deploys.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, rmSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
@@ -222,19 +222,47 @@ test('both prod deploy paths run the guard before vercel build --prod', () => {
 
 // A shell grep of the pulled file misses duplicate lines, `export` and escaped \n
 // (the demo-flag step did, until BRO-4525), so NEXT_PUBLIC_FEATURES is read only
-// with this parser. Each line touching the pulled file must be a known reader.
-test('vercel-deploy.yml reads the pulled env file only in known ways', () => {
+// with this parser. The guard also sees only its own step: a later step that
+// rewrites an env file the build loads (.env, .env.*, the pulled .vercel files,
+// another vercel pull) or sets NEXT_PUBLIC_FEATURES (step env:, $GITHUB_ENV)
+// would get past it. Every such line must be a known one.
+const touchesBuildEnv = l => /(^|[^\w.-])\.(env|vercel)\b|\bvercel\s+(env\s+)?pull\b|NEXT_PUBLIC_FEATURES|GITHUB_ENV/.test(l);
+const unknownEnvLines = (text, known = []) => text.split('\n').map(l => l.trim())
+  .filter(l => !l.startsWith('#') && touchesBuildEnv(l) && !known.includes(l));
+
+test('the workflow scan flags each way a later step could change what the build sees', () => {
+  const flagged = [
+    'echo X >> .env', 'cp a .env', 'cd .vercel', 'cat ./.vercel/x', 'source "$GITHUB_WORKSPACE/.vercel/x"',
+    'cat ${{ github.workspace }}/.vercel/x', 'npx vercel env pull', 'npx vercel pull --environment=preview',
+    'echo "NEXT_PUBLIC_FEATURES=commercial" >> "$GITHUB_ENV"', 'NEXT_PUBLIC_FEATURES: commercial',
+  ];
+  for (const l of flagged) assert.deepEqual(unknownEnvLines(l), [l], l);
+  for (const l of ['curl https://api.vercel.com/v6/deployments', 'node -e "console.log(process.env.X)"', 'echo "x=1" >> "$GITHUB_OUTPUT"']) {
+    assert.deepEqual(unknownEnvLines(l), [], l);
+  }
+});
+
+test('vercel-deploy.yml touches the build env only in known ways', () => {
   const wf = read('.github/workflows/vercel-deploy.yml');
-  // Whole lines, so nothing can be chained onto an allowed reader.
+  // Whole lines, so nothing can be chained onto an allowed one.
   const known = [
+    'run: npx vercel pull --yes --environment=production --token=$VERCEL_TOKEN',
     "value = g.featuresFromEnvFile(require('fs').readFileSync('.vercel/.env.production.local', 'utf8'));", // demo-flag step
     "console.error('::error::.env.production.local: ' + e.message);",
+    'echo "::error::Demo-only feature flags found in production NEXT_PUBLIC_FEATURES: $LEAKED"',
+    'echo "DEMO_FLAGS=$DEMO_FLAGS" >> "$GITHUB_ENV"',
     'run: node scripts/lib/prod-held-flags-guard.js .vercel/.env.production.local',
     'grep -Eq "^${v}=\\"?[^\\"[:space:]]" .vercel/.env.production.local 2>/dev/null || MISSING="$MISSING $v"', // Supabase step
     'run: rm -rf .vercel/output',
   ];
-  const unknown = wf.split('\n').map(l => l.trim())
-    .filter(l => !l.startsWith('#') && /\.env[.*]|(^|[^\w.-])\.vercel\b/.test(l) && !known.includes(l));
-  assert.deepEqual(unknown, [], 'read NEXT_PUBLIC_FEATURES with featuresFromEnvFile; add other readers here once checked');
+  assert.deepEqual(unknownEnvLines(wf, known), [], 'read NEXT_PUBLIC_FEATURES with featuresFromEnvFile; add other lines here once checked');
   assert.match(wf, /for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY; do/);
+  // Composite actions run inside the job too; none may touch the build env.
+  const actions = [...wf.matchAll(/uses:\s*\.\/(\.github\/actions\/[\w-]+)/g)].map(m => m[1]);
+  assert.ok(actions.length > 0, 'expected vercel-deploy.yml to use local composite actions');
+  for (const dir of new Set(actions)) {
+    const file = ['action.yml', 'action.yaml'].map(f => `${dir}/${f}`).find(f => existsSync(path.join(ROOT, f)));
+    assert.ok(file, `${dir} has no action.yml`);
+    assert.deepEqual(unknownEnvLines(read(file)), [], `${file} touches the build env`);
+  }
 });

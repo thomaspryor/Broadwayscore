@@ -78,12 +78,17 @@ test.describe('Post-deploy smoke tests', () => {
       await expect(page.locator('h1')).toBeVisible({ timeout: 15000 });
 
       const phone = width < 640;
-      if (phone) await page.getByRole('button', { name: 'Open menu' }).click();
       const signIn = page.getByRole('button', { name: phone ? 'Sign In' : 'Sign in', exact: true });
-      await expect(signIn).toBeVisible({ timeout: 15000 });
-      await signIn.click();
-
-      await expect(page.getByRole('button', { name: 'Continue with Google' })).toBeVisible({ timeout: 10000 });
+      const google = page.getByRole('button', { name: 'Continue with Google' });
+      // The header is server-rendered, so a click that lands before hydration
+      // does nothing. Retry the open until the modal shows. Open menu only ever
+      // opens, so clicking it again is safe.
+      await expect(async () => {
+        if (await google.isVisible()) return;
+        if (phone && !(await signIn.isVisible())) await page.getByRole('button', { name: 'Open menu' }).click({ timeout: 2000 });
+        await signIn.click({ timeout: 2000 });
+        await expect(google).toBeVisible({ timeout: 3000 });
+      }).toPass({ timeout: 30000 });
       await expect(page.getByRole('button', { name: 'Continue with Apple' })).toBeVisible();
     });
   }
