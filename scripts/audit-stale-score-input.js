@@ -61,23 +61,15 @@ function parseArgs(argv) {
   };
 }
 
-// Mirrors flag-rescore-needed.js's loadShowTitles — isScoreable's wrongShow
-// override and premature-review gate need status/date fields, not just title.
+// The whole shows.json record: isScoreable's wrongShow override and pre-opening
+// gate read status/dates, and the tour wording check reads category/type. A
+// hand-picked subset dropped category, so tour reviews counted as unscoreable
+// instead of being queued (BRO-4563).
 function loadShowTitles() {
   const map = new Map();
   const raw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
   for (const s of (raw.shows || raw)) {
-    if (s.id && s.title) {
-      map.set(s.id, {
-        title: s.title,
-        status: s.status,
-        previewDate: s.previewDate,
-        previewsStartDate: s.previewsStartDate,
-        openingDate: s.openingDate,
-        priorRuns: s.priorRuns,
-        tourLegs: s.tourLegs,
-      });
-    }
+    if (s.id && s.title) map.set(s.id, s);
   }
   return map;
 }

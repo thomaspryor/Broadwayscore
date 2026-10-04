@@ -403,3 +403,32 @@ describe('rescore counts and the shared show loader (BRO-4563)', () => {
     for (const c of calls) assert.match(c, /\{ show, showTitle: show && show\.title, filePath:/, `poller call without show: ${c.trim()}`);
   });
 });
+
+describe('no title-only show stubs reach the scoreability checks (BRO-4563)', () => {
+  test('showContext turns a title into a stub and passes a record through', () => {
+    const { showContext } = require('../../scripts/lib/scoring-queue-counts.js');
+    assert.equal(showContext(undefined), undefined);
+    assert.deepEqual(showContext('Suffs'), { title: 'Suffs' });
+    const rec = { id: 'suffs-tour-2025', title: 'Suffs', category: 'tour' };
+    assert.equal(showContext(rec), rec);
+  });
+
+  test('no script builds `x.get(id) ? { title: x.get(id) } : undefined` any more', () => {
+    // Each of these fed isScoreable / isStuckRescoreFlag / isIncludableForRebuild a
+    // title-only show, so a tour's own review read as tour contamination. Pass the
+    // shows.json record (loadShowsById / showContext) instead.
+    const root = new URL('../../scripts/', import.meta.url);
+    const hits = [];
+    const walk = (dir) => {
+      for (const e of fs.readdirSync(dir, { withFileTypes: true })) {
+        const p = path.join(dir, e.name);
+        if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p); continue; }
+        if (!/\.(js|ts|mjs|cjs)$/.test(e.name) || /\.test\./.test(e.name)) continue;
+        const src = fs.readFileSync(p, 'utf8');
+        if (/\?\s*\{\s*title:\s*[\w.]+\.get\([^)]*\)\s*\}\s*:\s*undefined/.test(src)) hits.push(path.relative(root.pathname, p));
+      }
+    };
+    walk(root.pathname);
+    assert.deepEqual(hits, []);
+  });
+});

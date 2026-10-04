@@ -59,7 +59,8 @@ const ALREADY_V6 = new Set(['anchored-v6', 'llm-v6']);
 const showsRaw = JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'shows.json'), 'utf8'));
 const showsArr = Array.isArray(showsRaw) ? showsRaw : (showsRaw.shows || []);
 const marketById = new Map(showsArr.map(s => [s.id, s.market || s.category]));
-const titleById = new Map(showsArr.map(s => [s.id, s.title]));
+// Records, not titles: the inclusion check reads category/status/type/dates (BRO-4563).
+const showById = new Map(showsArr.filter(s => s && s.id).map(s => [s.id, s]));
 
 let flagged = 0;
 let scanned = 0;
@@ -81,7 +82,7 @@ for (const f of glob.sync(path.join(ROOT, 'data', 'review-texts', '*', '*.json')
   if (d.humanReviewScore != null || d.adjudicatedScore != null) continue; // human/adjudicated wins
   const det = detectBandFromReviewFile(d);
   if (det && det.band) continue; // has a detectable star — Component 1's territory
-  const show = titleById.get(showId) ? { title: titleById.get(showId) } : undefined;
+  const show = showById.get(showId);
   if (!isIncludableForRebuild(d, show, f)) continue;
   byShow[showId] = (byShow[showId] || 0) + 1;
   flagged++;

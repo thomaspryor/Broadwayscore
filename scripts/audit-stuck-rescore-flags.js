@@ -29,6 +29,7 @@ const fs = require('fs');
 const path = require('path');
 const { listShowDirs } = require('./lib/list-show-dirs');
 const { isStuckRescoreFlag, isScoredButStillQueued } = require('./lib/stuck-rescore-flag');
+const { showContext } = require('./lib/scoring-queue-counts');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { parseMaxArgOrExit } = require('./lib/parse-max-arg.js');
@@ -51,11 +52,13 @@ function parseArgs(argv) {
   };
 }
 
+// Full records, not titles: with a title alone a tour's own review reads as
+// tour contamination, and --fix would clear its needsRescore (BRO-4563).
 function loadShowTitles() {
   const showsPath = path.join(ROOT, 'data', 'shows.json');
   const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   const arr = Array.isArray(raw) ? raw : (raw.shows || []);
-  return new Map(arr.map((s) => [s.id, s.title]));
+  return new Map(arr.filter((s) => s && s.id).map((s) => [s.id, s]));
 }
 
 // Pure-ish scan (reads files): returns the stuck list. Kept separate from I/O
@@ -81,7 +84,7 @@ function findStuck(reviewTextsDir, titleById) {
       }
       if (data.needsRescore !== true) continue;
       total++;
-      const show = titleById.get(showDir) ? { title: titleById.get(showDir) } : undefined;
+      const show = showContext(titleById.get(showDir));
       if (isStuckRescoreFlag(data, show, fp)) {
         stuck.push({
           path: fp,
