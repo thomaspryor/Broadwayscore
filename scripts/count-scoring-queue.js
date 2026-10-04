@@ -50,10 +50,11 @@ const reviewTextsDir = argVal('dir', path.join('data', 'review-texts'));
 const showsPath = argVal('shows', path.join('data', 'shows.json'));
 
 const showTitles = new Map();
+const showsById = new Map();
 try {
   const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   const list = Array.isArray(raw) ? raw : raw.shows || [];
-  for (const s of list) if (s && s.id && s.title) showTitles.set(s.id, s.title);
+  for (const s of list) if (s && s.id && s.title) { showTitles.set(s.id, s.title); showsById.set(s.id, s); }
 } catch (err) {
   // Titles feed content-quality's show-mention check, so a missing shows.json
   // shifts the counts rather than merely blurring them. Loud by default, and
@@ -69,7 +70,7 @@ try {
 
 let counts;
 try {
-  counts = countScoringQueues(reviewTextsDir, { showTitles });
+  counts = countScoringQueues(reviewTextsDir, { showTitles, showsById });
 } catch (err) {
   console.error(`ERROR: could not scan ${reviewTextsDir}: ${err.message}`);
   process.exit(1);

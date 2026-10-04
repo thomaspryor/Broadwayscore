@@ -24,25 +24,18 @@ if (require('./lib/cli-help').hasHelpFlag(process.argv.slice(2))) {
   process.exit(0);
 }
 
-// Build showId → { title } map so isScoreable can activate the wrongShow
-// stale-flag override (Notion 34e637c5-416f-8121).
+// Build showId → shows.json record so isScoreable sees what the rebuild sees
+// (wrongShow stale-flag override, Notion 34e637c5-416f-8121; BRO-4563).
 function loadShowTitles() {
   const map = new Map();
   try {
     const j = JSON.parse(fs.readFileSync(SHOWS_JSON, 'utf8'));
     for (const s of (j.shows || j)) {
-      if (s.id && s.title) map.set(s.id, {
-        title: s.title,
-        // Pre-opening temporal gate fields (isPrematureReviewForUnopenedShow):
-        // without these, isScoreable says includable for files the rebuild
-        // drops as skippedPrematurePreOpening — wasted rescore cycles.
-        status: s.status,
-        previewDate: s.previewDate,
-        previewsStartDate: s.previewsStartDate,
-        openingDate: s.openingDate,
-        priorRuns: s.priorRuns,
-        tourLegs: s.tourLegs,
-      });
+      // The whole record: isScoreable's guards read more than the title (the
+      // pre-opening gate reads status/dates/priorRuns/tourLegs, the tour
+      // wording check reads category/type). A hand-picked subset dropped
+      // category, so tour reviews read as tour contamination (BRO-4563).
+      if (s.id && s.title) map.set(s.id, s);
     }
   } catch { /* fall through — predicate fails safe to exclude wrongShow files */ }
   return map;
