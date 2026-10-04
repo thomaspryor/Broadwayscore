@@ -16,6 +16,7 @@ const { fetchPage, cleanup } = require('./lib/scraper');
 const { extractStatusFromHtml } = require('./lib/show-score-status');
 const { writeClosingDate, canWriteClosingDate } = require('./lib/closing-date-guard');
 const { loadShows, saveShows } = require('./lib/shows-write-guard');
+const { isNewRunTooFreshToClose } = require('./lib/showscore-closure-guard');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { isPlaceholderVenue } = require('./audit-placeholder-venues');
 
@@ -119,6 +120,10 @@ async function main() {
       changes.push(`status: previews → open`);
       if (!dryRun) show.status = 'open';
       statusChanges++;
+    } else if (show.status === 'open' && ssData.ssStatus === 'closed' &&
+               isNewRunTooFreshToClose(show, new Date().toISOString().slice(0, 10))) {
+      // Returning production: the ShowScore page is the earlier run's (BRO-4640)
+      console.log(`  ⚠️  ${show.id}: ShowScore says "Closed" but run is new or its TodayTix id is stale — NOT closing`);
     } else if (show.status === 'open' && ssData.ssStatus === 'closed') {
       changes.push(`status: open → closed`);
       if (!dryRun) {
