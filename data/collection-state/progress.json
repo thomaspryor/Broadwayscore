@@ -7,7 +7,10 @@
     "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "hay-fever-west-end-2026/jonathan-baz--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
-    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -16,15 +19,16 @@
     "hay-fever-west-end-2026/thestage--the-stage.json",
     "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
     "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
-    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json"
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "the-standard-of-living-west-end-2026/thestage--james-graham.json"
   ],
   "skipped": [],
   "tierBreakdown": {
     "playwright": [
       "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
-      "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
       "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
-      "hay-fever-west-end-2026/jonathan-baz--unknown.json"
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -43,8 +47,8 @@
       "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json"
     ]
   },
-  "startTime": "2026-10-04T18:55:23.189Z",
-  "lastProcessed": "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+  "startTime": "2026-10-04T16:02:28.991Z",
+  "lastProcessed": "the-standard-of-living-west-end-2026/thestage--james-graham.json",
   "log": [
     {
       "t": "2026-10-04T18:58:32.130Z",
@@ -69,6 +73,48 @@
       "event": "bb-session",
       "session": "e613f048",
       "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-04T18:59:43.733Z",
+      "event": "bb-session",
+      "session": "67c492e7",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-04T18:59:52.329Z",
+      "event": "bb-session",
+      "session": "ab6305a2",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-04T19:01:12.789Z",
+      "event": "bb-session",
+      "session": "7bff6d9f",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-04T19:01:32.746Z",
+      "event": "bb-session",
+      "session": "bdddbb62",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-04T19:06:00.220Z",
+      "event": "bb-session",
+      "session": "dd2634f7",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-04T19:06:21.923Z",
+      "event": "bb-session",
+      "session": "26644bfe",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-04T19:08:58.278Z",
+      "event": "bb-session",
+      "session": "3fc24e7c",
+      "url": "https://www.thestage.co.uk/review-round-ups/the-standard-of-living-by-james-grah"
     }
   ]
 }
