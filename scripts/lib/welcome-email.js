@@ -59,7 +59,8 @@ const STEPS = [
   },
 ];
 const BUTTON_LABEL = 'Open My Shows';
-const AFTER_BUTTON = 'Questions, bugs or ideas? Reply to this email. It comes straight to me.';
+const AFTER_BUTTON = "Accounts are brand new, and Broadway Scorecard is a labor of love, so please be patient with me while I smooth out the rough edges. If something breaks or looks wrong, reply to this email and tell me. It comes straight to me, and I'll fix it. Ideas are welcome too.";
+const SIGNATURE = 'Tom';
 
 // First word of the profile display name, or null when there is none.
 function firstNameFrom(displayName) {
@@ -126,7 +127,7 @@ function buildWelcomeEmailHtml({ displayName, email }) {
   </td></tr>
   <tr><td style="padding:0 0 20px;">
     <p style="margin:0 0 16px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.6;font-family:${FONT};">${escapeHtml(AFTER_BUTTON)}</p>
-    <p style="margin:0;font-size:15px;color:#ffffff;line-height:1.5;font-family:${FONT};">Thomas</p>
+    <p style="margin:0;font-size:15px;color:#ffffff;line-height:1.5;font-family:${FONT};">${escapeHtml(SIGNATURE)}</p>
     <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;font-family:${FONT};">${escapeHtml(siteNameForMarket(market))}</p>
   </td></tr>
   ${buildSocialRowHtml(market)}
@@ -153,7 +154,7 @@ function buildWelcomeEmailText({ displayName, email }) {
     '',
     AFTER_BUTTON,
     '',
-    'Thomas',
+    SIGNATURE,
     'Broadway Scorecard',
     '',
     '--',

@@ -45,14 +45,17 @@ test('escapes the name and the email', () => {
 test('contains all three steps, the button, sign-off and footer', () => {
   const { html, text } = w.buildWelcomeEmail({ displayName: 'Ada', email: EMAIL });
   for (const s of ["Rate the shows you've seen", 'Bring your history over', 'Keep a watchlist',
-    'Three ways to start', 'Open My Shows', 'Reply to this email. It comes straight to me.',
-    'Follow Broadway Scorecard']) {
+    'Three ways to start', 'Open My Shows', 'Accounts are brand new, and Broadway Scorecard is a labor of love',
+    'reply to this email and tell me. It comes straight to me', 'Ideas are welcome too.',
+    'Show Score, Mezzanine or Theatr?', 'Follow Broadway Scorecard']) {
     assert.ok(html.includes(s), `html missing: ${s}`);
   }
+  assert.ok(text.includes(`It comes straight to me, and I'll fix it. Ideas are welcome too.`));
+  assert.ok(!html.includes('Thomas') && !text.includes('Thomas'), 'sign-off is Tom');
   assert.ok(html.includes(`created a Broadway Scorecard account with ${EMAIL}.`));
   assert.ok(text.includes(`created a Broadway Scorecard account with ${EMAIL}.`));
   assert.ok(text.includes('THREE WAYS TO START'));
-  assert.ok(text.includes('\nThomas\nBroadway Scorecard\n'));
+  assert.ok(text.includes('\nTom\nBroadway Scorecard\n'));
 });
 
 test('button links to My Shows with welcome UTMs', () => {
