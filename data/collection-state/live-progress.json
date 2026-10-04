@@ -1,19 +1,55 @@
 {
-  "updatedAt": "2026-10-04T11:50:13.753Z",
-  "processed": 5,
-  "failed": 58,
-  "successRate": "7.9%",
+  "updatedAt": "2026-10-04T11:55:26.039Z",
+  "processed": 17,
+  "failed": 64,
+  "successRate": "21.0%",
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 11,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 3,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 3
   },
-  "browserbaseSessions": 0,
-  "recentActivity": []
+  "browserbaseSessions": 5,
+  "recentActivity": [
+    {
+      "t": "2026-10-04T11:48:56.398Z",
+      "event": "bb-session",
+      "session": "36005202",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-04T11:49:16.614Z",
+      "event": "bb-session",
+      "session": "5fd03e2d",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-04T11:51:49.714Z",
+      "event": "bb-session",
+      "session": "8172239d",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-04T11:51:50.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-04T11:54:42.669Z",
+      "event": "bb-session",
+      "session": "dd8db936",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-04T11:54:59.128Z",
+      "event": "bb-session",
+      "session": "c58031b4",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    }
+  ]
 }

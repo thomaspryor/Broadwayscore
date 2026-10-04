@@ -4,7 +4,19 @@
     "escape-to-margaritaville-2018/fox-news--unknown.json",
     "clybourne-park-2012/cbsnews--shania-russell.json",
     "clybourne-park-2012/village-voice--unknown.json",
-    "carrie-1988/backstage--erik-haagensen.json"
+    "carrie-1988/backstage--erik-haagensen.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+    "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+    "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
   ],
   "failed": [
     "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
@@ -64,7 +76,13 @@
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "faith-healer-2006/times-uk--unknown.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "a-thousand-natural-shocks-off-broadway-2026/zeffy--zeffy.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -72,20 +90,71 @@
       "escape-to-margaritaville-2018/fox-news--unknown.json",
       "clybourne-park-2012/cbsnews--shania-russell.json",
       "clybourne-park-2012/village-voice--unknown.json",
-      "carrie-1988/backstage--erik-haagensen.json"
+      "carrie-1988/backstage--erik-haagensen.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--raven-snook.json",
+      "how-shakespeare-saved-my-life-off-broadway-2026/timeout--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/broadway-baby--unknown.json",
+      "elf-lyons-the-woman-on-the-edge-off-broadway-2026/sohotheatre--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
-      "red-riding-hood-off-broadway-2026/showify--unknown.json"
+      "red-riding-hood-off-broadway-2026/showify--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
+    ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
+    ]
   },
   "startTime": "2026-10-04T09:05:45.004Z",
-  "lastProcessed": "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
-  "log": []
+  "lastProcessed": "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json",
+  "log": [
+    {
+      "t": "2026-10-04T11:48:56.398Z",
+      "event": "bb-session",
+      "session": "36005202",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-04T11:49:16.614Z",
+      "event": "bb-session",
+      "session": "5fd03e2d",
+      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
+    },
+    {
+      "t": "2026-10-04T11:51:49.714Z",
+      "event": "bb-session",
+      "session": "8172239d",
+      "url": "https://www.wsj.com/articles/school-girls-or-the-african-mean-girls-play-review-"
+    },
+    {
+      "t": "2026-10-04T11:51:50.694Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
+    },
+    {
+      "t": "2026-10-04T11:54:42.669Z",
+      "event": "bb-session",
+      "session": "dd8db936",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    },
+    {
+      "t": "2026-10-04T11:54:59.128Z",
+      "event": "bb-session",
+      "session": "c58031b4",
+      "url": "https://broadwaylog.app/shows/how-shakespeare-saved-my-life-2026"
+    }
+  ]
 }
