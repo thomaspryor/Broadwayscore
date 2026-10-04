@@ -753,7 +753,25 @@ function loadShows() {
 // Hay Fever roundup was cached under Richard II and passed the archive audit
 // (BRO-4563); "Henry IV" as [henry] matched any Henry VI page.
 const _SHORT_ROMAN_NUMERALS = new Set(['v', 'x', 'ii', 'iv', 'vi', 'ix', 'xi', 'xv', 'xx']);
-const _isTitleToken = w => w.length > 2 || _SHORT_ROMAN_NUMERALS.has(w);
+// Same gap for two-letter words that carry a title: "Life of Pi" as [life]
+// matched "THE LIFE at the Southwark Playhouse". Function words ("of", "in",
+// "me", "la"...) stay out, and so do words headlines drop or respell ("Dr.
+// Seuss'", "Jr.", "Ok"/"Okay"). Two-character numbers ("The 39 Steps") count.
+const _SHORT_DISTINCT_WORDS = new Set(['pi', 'mr', 'oh', 'oz']);
+const _isTitleToken = w => w.length > 2 || _SHORT_ROMAN_NUMERALS.has(w) || _SHORT_DISTINCT_WORDS.has(w)
+  || (w.length === 2 && /\d/.test(w));
+
+// The word matchers below only ever get narrower from a kept short token:
+// counts and thresholds run on the long words exactly as before, and when a
+// title has one or two long words, every short token must also be present
+// ("Richard II" is not "Richard III", "Life of Pi" is not "THE LIFE"). Longer
+// titles skip the check. A short token also never triggers the short-title
+// guard on its own: [richard, ii] once rejected the real "RICHARD II ... |
+// BroadwayWorld" page title over the extra word "broadwayworld" (BRO-4563).
+function _missingShortTitleToken(shortWords, longWords, candidateLower) {
+  return longWords.length > 0 && longWords.length <= 2
+    && shortWords.some(w => !matchesAsWholeWord(w, candidateLower));
+}
 
 const TITLE_GENERIC_WORDS = new Set([
   'the', 'a', 'an', 'new', 'musical', 'play', 'broadway', 'show', 'revival',
@@ -811,9 +829,11 @@ function titleWordsMatch(showTitle, candidateText) {
   const normalizeWord = w => w.normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/[^a-z0-9]/g, '');
   const showTitleLower = showTitle.toLowerCase()
     .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
-  let showSlugWords = showTitleLower.split(/[\s,]+/)
+  const titleTokens = showTitleLower.split(/[\s,]+/)
     .map(normalizeWord)
     .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
+  const shortWords = [...new Set(titleTokens.filter(w => w.length <= 2))];
+  let showSlugWords = titleTokens.filter(w => w.length > 2);
 
   // If pre-colon part has no meaningful words, use the FULL title including subtitle
   // (e.g., "All Out: Comedy About Ambition" → "ambition" is the only distinctive word)
@@ -821,7 +841,7 @@ function titleWordsMatch(showTitle, candidateText) {
     const fullTitleLower = showTitle.toLowerCase().replace(/^the\s+/, '').trim();
     showSlugWords = fullTitleLower.split(/[\s,:()]+/)
       .map(normalizeWord)
-      .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
+      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
   }
 
   // Deduplicate to prevent double-counting (e.g., "Man to Man" → ["man","man"] → ["man"])
@@ -841,6 +861,8 @@ function titleWordsMatch(showTitle, candidateText) {
     const rawTitle = normalizeWord(showTitleLower.split(/[\s,]+/)[0] || '');
     return rawTitle && rawTitle.length >= 3 && matchesAsWholeWord(rawTitle, candidateLower);
   }
+
+  if (_missingShortTitleToken(shortWords, showSlugWords, candidateLower)) return false;
 
   if (showSlugWords.length === 1) {
     // Single-word: word-boundary match to prevent partial matches
@@ -915,14 +937,20 @@ function titleWordsMatch(showTitle, candidateText) {
 function titleWordsMatchWithConfidence(showTitle, candidateText) {
   const showTitleLower = showTitle.toLowerCase()
     .replace(/^the\s+/, '').replace(/\s*[:(].*$/, '').trim();
-  let words = showTitleLower.split(/[\s,]+/)
+  // "Mr." reads as the short token "mr", not a three-letter word: as "mr." it
+  // only counted toward the threshold, so "SATURDAY NIGHT FEVER" passed for
+  // "Mr. Saturday Night" on two of three words.
+  const titleTokens = showTitleLower.split(/[\s,]+/)
+    .map(w => { const bare = w.replace(/\.$/, ''); return bare.length <= 2 && _isTitleToken(bare) ? bare : w; })
     .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
+  const shortWords = [...new Set(titleTokens.filter(w => w.length <= 2))];
+  let words = titleTokens.filter(w => w.length > 2);
 
   // Full-title fallback if pre-colon part has no meaningful words
   if (words.length === 0) {
     const fullTitleLower = showTitle.toLowerCase().replace(/^the\s+/, '').trim();
     words = fullTitleLower.split(/[\s,:()]+/)
-      .filter(w => _isTitleToken(w) && !TITLE_GENERIC_WORDS.has(w));
+      .filter(w => w.length > 2 && !TITLE_GENERIC_WORDS.has(w));
   }
 
   // Deduplicate to prevent double-counting (e.g., "Man to Man" → ["man","man"] → ["man"])
@@ -948,6 +976,16 @@ function titleWordsMatchWithConfidence(showTitle, candidateText) {
       (rawFirst.length >= 3 || /^\d+$/.test(rawFirst)) &&
       matchesAsWholeWord(rawFirst, candidateLower);
     return { matched, confidence: matched ? 0.3 : 0, matchCount: matched ? 1 : 0, threshold: 1, words: rawFirst ? [rawFirst] : [] };
+  }
+
+  if (_missingShortTitleToken(shortWords, words, candidateLower)) {
+    // Report every title word, so callers see the real count and what is
+    // missing: page-validator then rejects it as a short-title partial match
+    // ("missing [pi]") rather than as "ZERO words from title appear".
+    const all = [...words, ...shortWords];
+    const matchedWords = all.filter(w => matchesAsWholeWord(w, candidateLower));
+    const missingWords = all.filter(w => !matchesAsWholeWord(w, candidateLower));
+    return { matched: false, confidence: 0, matchCount: matchedWords.length, threshold: all.length, words: all, matchedWords, missingWords, reason: 'missing-short-token' };
   }
 
   // Single meaningful word — moderate confidence at best
@@ -1329,7 +1367,9 @@ const _SLUG_STOPWORDS = new Set([
  *    Parody". Titles without these separators (e.g. "Cabaret at the Kit
  *    Kat Club") are used in full.
  *  - Normalize apostrophes/punctuation, lowercase, dedupe.
- *  - Filter out stopwords + tokens <3 chars, except short Roman numerals.
+ *  - Filter out stopwords + tokens <3 chars, except short Roman numerals
+ *    and the other _isTitleToken shorts ("pi", "39": "The 39 Steps" as
+ *    [steps] matched a "Steps at the Park" slug).
  *    "Richard II" must keep "ii": as [richard] alone it matched the BWW
  *    slug "Review-Roundup-Richard-E-Grant-...-in-HAY-FEVER" (the actor's
  *    name) and out-scored Hay Fever (BRO-4563); "Henry IV" as [henry]
@@ -1344,7 +1384,7 @@ function _tokenizeTitleText(text) {
     .replace(/[^a-z0-9]+/g, ' ')
     .trim()
     .split(/\s+/)
-    .filter(t => (t.length >= 3 || _SHORT_ROMAN_NUMERALS.has(t)) && !_SLUG_STOPWORDS.has(t));
+    .filter(t => _isTitleToken(t) && !_SLUG_STOPWORDS.has(t));
 }
 
 function _showDistinctiveTokens(show) {
@@ -1451,9 +1491,12 @@ function _matchCleanedSlugAgainstShows(cleanedSlug, shows, options = {}) {
     // supporting token. The HOLIDAY INN regression that motivated the
     // title-token switch is fixed without lowering this gate because
     // "Holiday Inn" has 2 tokens [holiday, inn], not 1.
-    // A kept Roman numeral is not a supporting token: "Life (x) 3" as
-    // [life, x] stays gated like [life] (BRO-4563).
-    const words = tokens.filter(t => !_SHORT_ROMAN_NUMERALS.has(t));
+    // A kept short token (Roman numeral, "pi", "39") is not a supporting
+    // token: "Life (x) 3" as [life, x] stays gated like [life] (BRO-4563).
+    // Every token must still match below. Titles whose only long word sat
+    // after a short one ("Oh, Hello", "Oh, Brother!") had no tokens at all
+    // and were unmatchable; they now match when both words are in the slug.
+    const words = tokens.filter(t => t.length > 2);
     if (words.length <= 1 && (words[0] || '').length < 5) continue;
     let matchedTokens = 0;
     let score = 0;       // sum of matched-token-length squared

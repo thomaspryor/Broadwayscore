@@ -214,6 +214,11 @@ const INCLUSION_FILES = [
   // at both ingest time (collect-review-texts.js) and via this auto-clear,
   // but was not watched, so this gate would report "nothing to check".
   'scripts/lib/content-filters.js',
+  // Sixth (BRO-4563): isTourReviewExcerpt here is the tourContaminationInText
+  // exclusion in review-guards.js and the rebuild's tour layers. Its tour-
+  // production exemption changed real inclusion and this gate said "nothing
+  // to check".
+  'scripts/lib/excerpt-validation.js',
 ];
 
 // Phase B — score-source files. Changes here can keep a review included but

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
+import { noStoreFetch } from '@/lib/shared-plans/load';
 import { BASE_URL } from '@/lib/seo';
 import SharedListClient from './SharedListClient';
 
@@ -8,7 +9,8 @@ interface PageProps {
 }
 
 async function getListData(slug: string) {
-  const client = getServerSupabaseClient();
+  // Lists can be made private or deleted at any time; never serve a cached title/owner (BRO-4525).
+  const client = getServerSupabaseClient({ fetch: noStoreFetch });
   if (!client) return null;
 
   const { data: list } = await client

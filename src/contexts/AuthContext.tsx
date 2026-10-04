@@ -2,7 +2,7 @@
 
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from 'react';
 import { getSupabaseClient } from '@/lib/supabase';
-import { saveReturnUrl, clearReturnUrl } from '@/lib/deferred-auth';
+import { saveReturnUrl, clearReturnUrl, clearPendingAction } from '@/lib/deferred-auth';
 import { autoSubscribeOnSignIn } from '@/lib/auto-subscribe';
 import type { UserProfile } from '@/types/user';
 import SignInModal from '@/components/auth/SignInModal';
@@ -249,6 +249,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
     trackUgc('sign_out');
     await client.auth.signOut();
+    // A draft rating left by a signed-out visitor must not open for whoever signs in next on this device.
+    clearPendingAction();
     setAnalyticsUser(null);
     setUser(null);
     setProfile(null);

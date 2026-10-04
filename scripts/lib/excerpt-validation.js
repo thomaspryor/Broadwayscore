@@ -621,8 +621,13 @@ const TOUR_PRESENT_PATTERNS = [
 /**
  * One context object for every caller, so the collector and the rebuild give
  * the same verdict (BRO-4185 follow-up: the collector called with none).
+ * tourWordingExpected marks a show whose own reviews say "tour": a tour
+ * production (category 'tour', or a legacy 'tour-stop' entry) or a special
+ * engagement (type 'special'). Put such exemptions here, not at the callers:
+ * caller-side copies drifted apart (BRO-4563).
  * @param {{id?: string, title?: string, venue?: string, theater?: string,
- *          openingDate?: string, previewsStartDate?: string}|null} show
+ *          openingDate?: string, previewsStartDate?: string,
+ *          category?: string, status?: string, type?: string}|null} show
  */
 function tourContextForShow(show) {
   if (!show) return undefined;
@@ -633,6 +638,7 @@ function tourContextForShow(show) {
     currentShowTitle: show.title,
     currentShowVenue: show.venue || show.theater || null,
     currentShowYear: Number.isFinite(year) ? year : null,
+    tourWordingExpected: show.category === 'tour' || show.status === 'tour-stop' || show.type === 'special',
   };
 }
 
@@ -666,8 +672,10 @@ function tourMatchIsDiscounted(excerpt, index, matchText, context, isVenue) {
  *
  * @param {string} excerpt - The excerpt text
  * @param {{currentShowId?: string, currentShowTitle?: string,
- *          currentShowVenue?: string, currentShowYear?: number}} [context] -
- *   build it with tourContextForShow(show). With it, a match immediately
+ *          currentShowVenue?: string, currentShowYear?: number,
+ *          tourWordingExpected?: boolean}} [context] -
+ *   build it with tourContextForShow(show). With it, a tour production's or
+ *   special engagement's own review is never a tour review, a match immediately
  *   preceded by a DIFFERENT known show's title is a comparison lede, and a
  *   match at the show's own venue or next to an earlier year is not tour
  *   contamination.
@@ -675,6 +683,13 @@ function tourMatchIsDiscounted(excerpt, index, matchText, context, isVenue) {
  */
 function isTourReviewExcerpt(excerpt, context) {
   if (!excerpt) return { isTourReview: false };
+  // A tour production's own review says "national tour". Only the rebuild's
+  // fullText net skipped category 'tour'; the review-guards copy did not, so
+  // the Baltimore Sun review of the Maybe Happy Ending tour ("the national
+  // tour debut") stayed out of the rebuild after its flags were cleared, and
+  // the collector and allow-signal backfill flagged such reviews (BRO-4563).
+  // Special engagements were exempt in only two of the five callers.
+  if (context && context.tourWordingExpected) return { isTourReview: false, discounted: 'tour-wording-expected' };
 
   // Venue patterns: forward-tense carve-out does NOT apply, but own-venue and
   // earlier-year mentions are not a tour (11 to Midnight is AT the Orpheum;

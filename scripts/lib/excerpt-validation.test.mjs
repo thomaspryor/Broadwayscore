@@ -95,3 +95,32 @@ test('BRO-4185: a tour review naming the original Broadway year still trips', ()
   const pi = { currentShowId: 'life-of-pi-2023', currentShowTitle: 'Life of Pi', currentShowVenue: 'Gerald Schoenfeld Theatre', currentShowYear: 2023 };
   assert.equal(isTourReviewExcerpt('the 2012 film that earned director Ang Lee an Academy Award, this national tour of Life of Pi succeeds', pi).isTourReview, true);
 });
+
+test('BRO-4563: a tour production\'s own review is not tour contamination', () => {
+  const { tourContextForShow } = require('./excerpt-validation.js');
+  const { explainExclusion } = require('./review-guards.js');
+  const intro = "Baltimore's theater scene benefits once again with the national tour debut of Maybe Happy Ending at the Hippodrome";
+  const tour = { id: 'maybe-happy-ending-tour-2026', title: 'Maybe Happy Ending', category: 'tour', status: 'open', venue: 'North American Tour', openingDate: '2026-09-15' };
+  const broadway = { id: 'maybe-happy-ending-2024', title: 'Maybe Happy Ending', category: 'broadway', status: 'open', venue: 'Belasco Theatre', openingDate: '2024-11-12' };
+  assert.equal(isTourReviewExcerpt(intro, tourContextForShow(tour)).isTourReview, false);
+  assert.equal(isTourReviewExcerpt(intro, tourContextForShow(broadway)).isTourReview, true);
+  // The review-guards fullText net (the rebuild's inclusion check) agrees.
+  const review = { showId: tour.id, outletId: 'baltimoresun', outlet: 'The Baltimore Sun', url: 'https://www.baltimoresun.com/2026/09/17/maybe-happy-ending-review/', fullText: intro + '. '.repeat(5), textFetchedAt: '2026-10-04T01:41:12.047Z' };
+  assert.notEqual(explainExclusion(review, tour, '/nonexistent/maybe-happy-ending-tour-2026/baltimoresun--luke-parker.json'), 'tourContaminationInText');
+  assert.equal(explainExclusion({ ...review, showId: broadway.id }, broadway, '/nonexistent/maybe-happy-ending-2024/baltimoresun--luke-parker.json'), 'tourContaminationInText');
+});
+
+test('BRO-4563: a special engagement\'s own tour wording is exempt in every caller, not just two', () => {
+  const { tourContextForShow } = require('./excerpt-validation.js');
+  const { contaminationKindsNeeded } = require('./contamination-allow-signal.js');
+  const intro = 'The national tour of this concert staging stops at the Beacon Theatre for one week only, and it is a delight.';
+  const special = { id: 'x-special-2026', title: 'X In Concert', type: 'special', category: 'off-broadway', status: 'open', openingDate: '2026-05-01' };
+  const tour = { id: 'x-tour-2026', title: 'X', category: 'tour', status: 'open', openingDate: '2026-05-01' };
+  const plain = { id: 'x-2026', title: 'X', category: 'broadway', status: 'open', openingDate: '2026-05-01' };
+  assert.equal(isTourReviewExcerpt(intro, tourContextForShow(special)).isTourReview, false);
+  assert.equal(isTourReviewExcerpt(intro, tourContextForShow(plain)).isTourReview, true);
+  // The allow-signal backfill asks the same question through the same context.
+  assert.deepEqual(contaminationKindsNeeded({ fullText: intro }, tour), []);
+  assert.deepEqual(contaminationKindsNeeded({ fullText: intro }, special), []);
+  assert.deepEqual(contaminationKindsNeeded({ fullText: intro }, plain), ['tour']);
+});
