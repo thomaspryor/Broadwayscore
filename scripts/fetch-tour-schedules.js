@@ -26,7 +26,7 @@
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
-const { segmentTourRows, pickSegment, parseTourSchedule } = require('./lib/tour-schedule');
+const { segmentTourRows, pickSegment, parseTourSchedule, duplicateScheduleOf } = require('./lib/tour-schedule');
 const { fetchSchedule } = require('./lib/tours-to-you');
 
 const ROOT = path.join(__dirname, '..');
@@ -61,6 +61,10 @@ async function main() {
     const { url, html } = await fetchSchedule(tour);
     const stops = url ? tourStops(tour, html) : null;
     if (!stops) { failed++; console.log(`${tour.id}: no schedule (kept ${out.tours[tour.id] ? 'previous' : 'none'})`); continue; }
+    // Another show's table on this page (BRO-4601: Come From Away's page showed
+    // Operation Mincemeat's tour) must not become this tour's schedule.
+    const copyOf = duplicateScheduleOf(stops, out.tours, { exceptId: tour.id });
+    if (copyOf) { failed++; console.log(`::warning::${tour.id}: schedule duplicates ${copyOf}'s engagements; kept previous`); continue; }
     const prev = out.tours[tour.id];
     if (prev && prev.source === url && JSON.stringify(prev.stops) === JSON.stringify(stops)) { console.log(`${tour.id}: unchanged`); continue; }
     out.tours[tour.id] = { source: url, updatedAt: new Date().toISOString(), stops };

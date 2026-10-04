@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { parseDateRange, parseTourSchedule, segmentTourRows, decideTourDates, statedClosedRanges, scheduleSlugs } = require('./tour-schedule.js');
+const { parseDateRange, parseTourSchedule, segmentTourRows, decideTourDates, statedClosedRanges, scheduleSlugs, duplicateScheduleOf } = require('./tour-schedule.js');
 
 const iso = d => d.toISOString().slice(0, 10);
 const row = (city, venue, dates) => `<tr><td>${city}</td><td>${venue}</td><td>${dates}</td><td>2024-2025</td></tr>`;
@@ -63,6 +63,33 @@ test('launch needs Wikipedia; close needs a positive signal', () => {
   );
   const stated = html.replace('<p></p>', '<ul><li><span>North American Tour</span> (2024–2025)</li></ul>');
   assert.equal(decideTourDates({ ...tour, openingDate: '2024-12-07' }, stated, '', NOW).write.closingDate, '2025-01-26');
+});
+
+// BRO-4601: Tours To You keeps only recent rows, so its first listed
+// engagement is a launch only for a tour launching now, and only when the
+// caller opts in (create-tour-entries; never the daily date job).
+test('a fresh launch takes the first engagement only when opted in and near today', () => {
+  const fresh = page([
+    row('Providence, RI', 'PPAC', 'September 20-27, 2026'),
+    row('Boston, MA', 'Citizens Bank Opera House', 'September 29-October 11, 2026'),
+    row('Hartford, CT', 'The Bushnell', 'October 13-18, 2026'),
+  ]);
+  const tour = { id: null, title: 'X', openingDate: null, closingDate: null };
+  const on = decideTourDates(tour, fresh, '', NOW, { segmentStart: '2026-09-20', freshLaunchDays: 60 });
+  assert.deepEqual(on.write, { openingDate: '2026-09-20' });
+  assert.equal(on.launchSource, 'tourstoyou-fresh');
+  assert.deepEqual(decideTourDates(tour, fresh, '', NOW, { segmentStart: '2026-09-20' }).write, {}, 'off unless opted in');
+  const old = page([
+    row('Chicago, IL', 'Cadillac Palace', 'October 27-November 21, 2021'),
+    row('Detroit, MI', 'Fisher Theatre', 'November 24-December 19, 2021'),
+    row('Cleveland, OH', 'Connor Palace', 'January 5-30, 2022'),
+  ]);
+  const ancient = decideTourDates({ ...tour, id: 'x-tour-2021', openingDate: '2021-10-27' }, old, '', new Date('2022-01-10T00:00:00Z'), { freshLaunchDays: 60 });
+  assert.notEqual(ancient.launchSource, 'tourstoyou-fresh', 'stored launch is kept');
+  const stale = decideTourDates(tour, old, '', NOW, { segmentStart: '2021-10-27', freshLaunchDays: 60 });
+  assert.deepEqual(stale.write, {}, 'a segment that started years ago is never taken as the launch');
+  const two = page([row('Providence, RI', 'PPAC', 'September 20-27, 2026'), row('Boston, MA', 'Opera House', 'September 29-October 11, 2026')]);
+  assert.deepEqual(decideTourDates(tour, two, '', NOW, { segmentStart: '2026-09-20', freshLaunchDays: 60 }).write, {}, 'needs at least 3 engagements');
 });
 
 test('silence never closes: an empty or unparseable page is a problem, not a closing', () => {
@@ -188,4 +215,22 @@ test('an ended tour closes when Wikipedia says it ends in the last stop\'s month
   assert.equal(wikiNamesClosingMonth('The UK tour will end in August 2026.', new Date('2026-08-09T00:00:00Z')), false);
   const running = decideTourDates({ id: 'suffs-tour-2025', title: 'Suffs', openingDate: null, closingDate: null }, html, wiki, new Date('2026-08-01T00:00:00Z'));
   assert.equal(running.write.closingDate, undefined);
+});
+
+// BRO-4601: the Come From Away page carried Operation Mincemeat's 2026 table.
+test('duplicateScheduleOf finds another tour sharing three engagements', () => {
+  const mincemeat = { stops: [
+    { city: 'Providence, RI', venue: 'PPAC', start: '2026-09-20' },
+    { city: 'Chicago, IL', venue: 'CIBC Theatre', start: '2026-09-29' },
+    { city: 'Boston, MA', venue: 'Emerson Colonial Theatre', start: '2026-10-13' },
+  ] };
+  const rows = parseTourSchedule(page([
+    row('Providence, RI', 'PPAC', 'September 20-26, 2026'),
+    row('Chicago, IL', 'CIBC Theatre', 'September 29–October 11, 2026'),
+    row('Boston, MA', 'Emerson Colonial Theatre', 'October 13-25, 2026'),
+  ]));
+  assert.equal(duplicateScheduleOf(rows, { 'operation-mincemeat-tour-2026': mincemeat }), 'operation-mincemeat-tour-2026');
+  assert.equal(duplicateScheduleOf(rows, { 'operation-mincemeat-tour-2026': mincemeat }, { exceptId: 'operation-mincemeat-tour-2026' }), null, 'a tour never duplicates itself');
+  assert.equal(duplicateScheduleOf(rows.slice(0, 2), { m: mincemeat }), null, 'two shared stops can be chance');
+  assert.equal(duplicateScheduleOf(mincemeat.stops, { m: { stops: mincemeat.stops.map(s => ({ ...s, city: 'Elsewhere' })) } }), null, 'same venue name in another city is not shared');
 });

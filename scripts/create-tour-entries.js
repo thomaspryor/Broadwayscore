@@ -33,9 +33,15 @@ const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { tourAutomationMode } = require('./lib/tour-automation-mode');
+// A Tours To You tour whose first engagement is this close to today is
+// launching now, so that engagement is its launch (decideTourDates option).
+// 30, not 60: Harry Potter's page starts at Seattle on Aug 22 (43 days before
+// this was written) though the tour opened in Denver in May; a wider window
+// would have created it with that date (BRO-4601 report run).
+const FRESH_LAUNCH_DAYS = 30;
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { openTourCandidates, recordTourCandidates, roundupDateFromSlug } = require('./lib/tour-roundup-candidate');
-const { decideTourDates } = require('./lib/tour-schedule');
+const { decideTourDates, duplicateScheduleOf } = require('./lib/tour-schedule');
 const { buildTourEntry } = require('./lib/tour-entry');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 
@@ -48,6 +54,7 @@ const USAGE = `create-tour-entries.js — create national-tour entries from roun
   --write   write shows.json and mark candidates created (default: report only)
   --time-budget-min=N  stop cleanly after N minutes
   --no-discover  skip finding running tours on Tours To You
+  --only=ID,ID   only these candidates (Broadway parent ids), e.g. a first small batch
   TOUR_AUTOCREATE=off|report   kill switch / force report-only`;
 
 async function main() {
@@ -89,11 +96,18 @@ async function main() {
   const rows = JSON.parse(fs.readFileSync(CANDIDATES, 'utf8'));
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
   const byId = new Map(shows.map(s => [s.id, s]));
-  const open = openTourCandidates(rows, shows);
+  // --only: a small first batch (BRO-4601 plan review: 2 tours end to end
+  // before the rest; CLAUDE.md section 8).
+  const only = ((argv.find(a => a.startsWith('--only=')) || '').split('=')[1] || '').split(',').filter(Boolean);
+  const open = openTourCandidates(rows, shows).filter(c => !only.length || only.includes(c.broadwayShowId));
+  if (only.length) console.log(`--only: ${only.join(', ')}`);
   // A retired id must never come back (data/retired-show-ids.json, core-data).
   const retiredIds = { has: (id) => { try { return require('./lib/retired-show-ids').isRetiredId(id); } catch { return false; } } };
   console.log(`${open.length} open tour candidate(s)${write ? '' : ' (report only)'}`);
 
+  const tourSchedules = (() => {
+    try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'data', 'tour-schedules.json'), 'utf8')).tours || {}; } catch { return {}; }
+  })();
   const results = [];
   for (const c of open) {
     if (budget.exceeded()) { console.log(`Time budget reached; ${open.length - results.length} candidate(s) left for the next run`); break; }
@@ -120,8 +134,13 @@ async function main() {
     // says nothing about when the tour launched (a backfilled old roundup).
     const roundupDate = roundupUrl ? roundupDateFromSlug(roundupUrl) : null;
     const decision = scheduleUrl
-      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart, roundupDate } : { seenAt: c.firstSeen || c.lastSeen, roundupDate })
+      ? decideTourDates(probe, html, wiki, new Date(), found ? { segmentStart: c.segmentStart, roundupDate, freshLaunchDays: FRESH_LAUNCH_DAYS } : { seenAt: c.firstSeen || c.lastSeen, roundupDate })
       : { write: {}, notes: [], problem: 'no Tours To You page found for this title' };
+    // A page can carry another show's table (the Come From Away page showed
+    // Operation Mincemeat's 2026 tour, BRO-4601): never create a tour whose
+    // engagements are another tour's.
+    const copyOf = !decision.problem && duplicateScheduleOf(decision.segmentRows, tourSchedules);
+    if (copyOf) decision.problem = `schedule duplicates ${copyOf}'s engagements (wrong table on the Tours To You page?)`;
     const built = buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, retiredIds });
     if (built.skip) console.log(`  stays a suggestion: ${built.skip}`);
     else console.log(`  ${write ? 'creating' : 'would create'} ${built.entry.id} (${built.entry.openingDate}..${built.entry.closingDate || 'running'})`);

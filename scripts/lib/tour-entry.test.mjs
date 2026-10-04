@@ -36,7 +36,7 @@ test('a launch confirmed by the BWW roundup says so in its provenance (BRO-4563)
   assert.equal(entry.id, 'kimberly-akimbo-tour-2026');
   assert.equal(entry.openingDateSource, 'tourstoyou+bww-roundup');
   assert.equal(entry.discoverySource, 'aggregator-roundup:bww-tour-roundup');
-  assert.match(entry.statusSource, /\+ BroadwayWorld roundup;/);
+  assert.match(entry.statusSource, /launch confirmed by BroadwayWorld roundup;/);
   assert.equal(entry.tourScheduleSlug, 'kimberly-akimbo');
   const closed = buildTourEntry({ parent, shows: [parent], decision: { ...decision, write: { openingDate: '2026-09-20', closingDate: '2026-09-27' } }, roundupUrl: 'u', now: NOW }).entry;
   assert.equal(closed.closingDateSource, 'tourstoyou');
@@ -82,4 +82,15 @@ test('a new roundup for the same show starts a fresh candidate (later tour)', as
   assert.equal(row.createdTourId, undefined);
   assert.equal(row.notifiedAt, undefined);
   assert.equal(row.firstSeen, '2026-02-20');
+});
+
+// BRO-4601: a fresh Tours To You launch has one source and says so; it never
+// borrows the Wikipedia label (the validate-show-venue two-source exemption).
+test('a fresh Tours To You launch is labelled as the first listed engagement', () => {
+  const decision = { write: { openingDate: '2026-09-20' }, notes: ['segment 2026-09-20..2027-06-01'], launchSource: 'tourstoyou-fresh' };
+  const { entry } = buildTourEntry({ parent, shows: [parent], decision, scheduleUrl: 'https://tourstoyou.org/shows/kimberly-akimbo/', now: NOW });
+  assert.equal(entry.openingDateSource, 'tourstoyou-first-engagement');
+  assert.equal(entry.discoverySource, 'tour-schedule:tourstoyou');
+  assert.match(entry.tourLaunchEvidence, /first listed engagement of a tour launching now/);
+  assert.doesNotMatch(entry.tourLaunchEvidence + entry.statusSource, /Wikipedia/);
 });
