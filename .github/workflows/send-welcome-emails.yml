@@ -10,8 +10,10 @@ name: Send Welcome Emails
 # about a second without touching Supabase or Resend.
 #
 # Manual modes (workflow_dispatch):
-#   dry-run    read-only; with preview_since, shows who WOULD get the email had
-#              sending been switched on at that time (never sends, never claims)
+#   dry-run    read-only; with preview_since (UTC, e.g. 2026-10-04T00:00:00Z),
+#              shows who WOULD get the email had sending been switched on then.
+#              Accounts older than MAX_ACCOUNT_AGE_HOURS (20h) are left out,
+#              as in a real run. Never sends, never claims.
 #   test-send  one email to delivered@resend.dev (Resend's test sink), no DB
 #   run        same as the schedule
 
@@ -78,8 +80,10 @@ jobs:
           esac
 
       - name: Notify on failure
-        # Scheduled runs only: the script already alerts on send failures with
-        # per-day dedup; this covers checkout/setup failures it never sees.
+        # Scheduled runs only. The script pages the owner itself (sendAlert,
+        # per-day dedup). This step is severity 'warning', which notify-failure
+        # logs without emailing, so it never doubles those pages; it leaves a
+        # trace for checkout/setup failures the script never sees.
         if: failure() && github.event_name == 'schedule'
         uses: ./.github/actions/notify-failure
         with:

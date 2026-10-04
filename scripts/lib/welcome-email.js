@@ -27,8 +27,11 @@ const { classifyResendResponse } = require('./discord-notify');
 const WELCOME_EMAIL_SEND_FROM = null;
 
 // An account older than this is never emailed, even if it was missed (cron
-// outage, budget cap): a "welcome" a week late reads as spam.
-const MAX_ACCOUNT_AGE_DAYS = 3;
+// outage, budget cap). It also bounds retries: a failed send is retried only
+// while the account is younger than this, which keeps every retry inside
+// Resend's 24h Idempotency-Key window, so a send that went through but whose
+// response was lost can never be delivered a second time.
+const MAX_ACCOUNT_AGE_HOURS = 20;
 
 // Resend's free tier is 100 emails/day, shared with follow notifications and
 // owner alerts. Welcome emails take at most this many per rolling 24h and per run.
@@ -112,7 +115,7 @@ function buildWelcomeEmailHtml({ displayName, email }) {
   <tr><td style="padding:16px 0;">
     <table width="100%" cellpadding="0" cellspacing="0" bgcolor="#1a1a24" style="background-color:#1a1a24;background:#1a1a24;border-radius:12px;border:1px solid rgba(212,165,116,0.12);">
       <tr><td style="padding:16px 20px 2px;">
-        <p style="margin:0;font-size:11px;font-weight:600;color:rgba(212,165,116,0.6);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Three ways to start</p>
+        <p style="margin:0;font-size:11px;font-weight:600;color:rgba(212,165,116,0.85);text-transform:uppercase;letter-spacing:0.8px;font-family:${FONT};">Three ways to start</p>
       </td></tr>
       ${buildStepRowsHtml()}
       <tr><td style="padding-bottom:6px;"></td></tr>
@@ -124,11 +127,11 @@ function buildWelcomeEmailHtml({ displayName, email }) {
   <tr><td style="padding:0 0 20px;">
     <p style="margin:0 0 16px;font-size:15px;color:rgba(255,255,255,0.85);line-height:1.6;font-family:${FONT};">${escapeHtml(AFTER_BUTTON)}</p>
     <p style="margin:0;font-size:15px;color:#ffffff;line-height:1.5;font-family:${FONT};">Thomas</p>
-    <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.45);line-height:1.5;font-family:${FONT};">${escapeHtml(siteNameForMarket(market))}</p>
+    <p style="margin:0;font-size:13px;color:rgba(255,255,255,0.6);line-height:1.5;font-family:${FONT};">${escapeHtml(siteNameForMarket(market))}</p>
   </td></tr>
   ${buildSocialRowHtml(market)}
   <tr><td style="padding-top:20px;border-top:1px solid rgba(255,255,255,0.06);">
-    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.35);line-height:1.6;font-family:${FONT};">${escapeHtml(footerText(email))}</p>
+    <p style="margin:0;font-size:12px;color:rgba(255,255,255,0.55);line-height:1.6;font-family:${FONT};">${escapeHtml(footerText(email))}</p>
   </td></tr>
 </table>
 </td></tr></table>
@@ -170,19 +173,22 @@ function buildWelcomeEmail({ displayName, email }) {
 // ── Decision logic ─────────────────────────────────────────────────────────
 
 // Parses the switch. Returns a Date when sending is on, null when off.
-// A malformed value counts as OFF (fail closed), never as "send to everyone".
+// Only a full UTC timestamp ('2026-10-05T09:00:00Z') turns it on; anything
+// else (a bare date, a number, a time without Z) counts as OFF (fail closed),
+// never as "send to everyone".
+const SEND_FROM_FORMAT = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}(:\d{2}(\.\d{1,3})?)?Z$/;
 function parseSendFrom(sendFrom) {
-  if (sendFrom == null || sendFrom === '') return null;
+  if (typeof sendFrom !== 'string' || !SEND_FROM_FORMAT.test(sendFrom)) return null;
   const d = new Date(sendFrom);
   return Number.isNaN(d.getTime()) ? null : d;
 }
 
 // Earliest account creation time that may be emailed this run, or null when
 // sending is off. The later of the switch time and the max-age window.
-function windowStart({ sendFrom, now = new Date(), maxAgeDays = MAX_ACCOUNT_AGE_DAYS }) {
+function windowStart({ sendFrom, now = new Date(), maxAgeHours = MAX_ACCOUNT_AGE_HOURS }) {
   const from = parseSendFrom(sendFrom);
   if (!from) return null;
-  const oldest = new Date(now.getTime() - maxAgeDays * 86400000);
+  const oldest = new Date(now.getTime() - maxAgeHours * 3600000);
   return from > oldest ? from : oldest;
 }
 
@@ -196,18 +202,22 @@ function sendAllowance({ sentLast24h, dailyCap = DAILY_CAP, perRunCap = PER_RUN_
 // What a Resend POST /emails response means for the claim.
 //   'sent'      2xx, or 409 invalid_idempotent_request (this key already
 //               delivered; the body differs, e.g. the profile name changed).
-//   'in-flight' 409 concurrent_idempotent_requests: another request with this
-//               key is mid-send. Keep the claim; that request delivers.
-//   'rejected'  400/403/422: Resend refuses this message for good (bad address,
-//               domain problem). Retrying cannot help: keep the claim, record
-//               why, alert once.
-//   'retry'     429, 5xx, network error: release the claim so a later run
-//               retries; the Idempotency-Key stops a double delivery.
+//   'rejected'  422 naming the `to` field: Resend refuses THIS recipient for
+//               good. Retrying cannot help: keep the claim, record why, alert.
+//   'halt'      any other 4xx except 409/429 (unverified domain, bad from or
+//               reply_to, bad API key): our setup is broken, not the
+//               recipient. Release the claim, stop the run, alert. Treating
+//               these as per-recipient would mark every new account done.
+//   'retry'     429, 5xx, network error, or 409 concurrent_idempotent_requests
+//               (an earlier attempt with this key is still in progress):
+//               release the claim so a later run retries; the Idempotency-Key
+//               stops a double delivery.
 function resendOutcome(statusCode, body) {
   const c = classifyResendResponse(statusCode, body);
   if (c === 'sent' || c === 'duplicate') return 'sent';
-  if (c === 'in-flight') return 'in-flight';
-  if ([400, 403, 422].includes(statusCode)) return 'rejected';
+  if (c === 'in-flight') return 'retry';
+  if (statusCode === 422 && /`to`|"to"|\bto field\b|recipient/i.test(String(body || ''))) return 'rejected';
+  if (statusCode >= 400 && statusCode < 500 && statusCode !== 409 && statusCode !== 429) return 'halt';
   return 'retry';
 }
 
@@ -232,8 +242,9 @@ function redactEmails(text) {
  * deps.recordSent(userId, resendId) / deps.recordRejected(userId, reason)
  *                           → bookkeeping on the claimed row (optional).
  *
- * Returns { status: 'sent' | 'already-sent' | 'in-flight' | 'rejected' | 'off',
- * detail? }. Throws (after releasing the claim) on a retryable failure.
+ * Returns { status: 'sent' | 'already-sent' | 'rejected' | 'halt' | 'off',
+ * detail? }. 'halt' (claim released) means stop the run: our Resend setup is
+ * broken. Throws (after releasing the claim) on a retryable failure.
  */
 async function sendWelcomeOnce(user, { sendFrom, claim, release, send, recordSent, recordRejected }) {
   if (!parseSendFrom(sendFrom)) return { status: 'off' };
@@ -256,13 +267,13 @@ async function sendWelcomeOnce(user, { sendFrom, claim, release, send, recordSen
     if (recordSent) await recordSent(user.id, id);
     return { status: 'sent' };
   }
-  if (outcome === 'in-flight') return { status: 'in-flight' };
   const detail = redactEmails(`HTTP ${statusCode}: ${String(body).slice(0, 300)}`);
   if (outcome === 'rejected') {
     if (recordRejected) await recordRejected(user.id, detail);
     return { status: 'rejected', detail };
   }
   await release(user.id);
+  if (outcome === 'halt') return { status: 'halt', detail };
   throw new Error(detail);
 }
 
@@ -272,7 +283,7 @@ function idempotencyKeyFor(userId) {
 
 module.exports = {
   WELCOME_EMAIL_SEND_FROM,
-  MAX_ACCOUNT_AGE_DAYS,
+  MAX_ACCOUNT_AGE_HOURS,
   DAILY_CAP,
   PER_RUN_CAP,
   SUBJECT,

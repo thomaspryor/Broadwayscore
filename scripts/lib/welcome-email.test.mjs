@@ -82,7 +82,7 @@ test('kill switch: the committed default is OFF', () => {
 });
 
 test('kill switch blocks sends (null, empty and malformed all count as off)', async () => {
-  for (const sendFrom of [null, undefined, '', 'not-a-date']) {
+  for (const sendFrom of [null, undefined, '', 'not-a-date', '1', '2026-10-05', '2026-10-05T09:00:00', '2026-10-05 09:00:00Z', 1759654800000]) {
     let claimed = false; let sent = false;
     const r = await w.sendWelcomeOnce({ id: 'u1', email: EMAIL }, {
       sendFrom,
@@ -160,14 +160,32 @@ test('409 invalid_idempotent_request means it already went out: counted as sent,
   assert.deepEqual(recorded, [['u4', null]]);
 });
 
-test('409 concurrent_idempotent_requests keeps the claim and does not throw', async () => {
+test('409 concurrent_idempotent_requests is retried later (claim released, key protects)', async () => {
   const store = fakeStore();
-  const r = await w.sendWelcomeOnce({ id: 'u5', email: EMAIL }, {
+  await assert.rejects(w.sendWelcomeOnce({ id: 'u5', email: EMAIL }, {
     sendFrom: '2026-10-05T00:00:00Z', ...store,
     send: async () => ({ statusCode: 409, body: '{"name":"concurrent_idempotent_requests"}' }),
-  });
-  assert.equal(r.status, 'in-flight');
-  assert.equal(store.claims.has('u5'), true);
+  }), /HTTP 409/);
+  assert.equal(store.claims.has('u5'), false);
+});
+
+test('setup errors (403 domain, 422 on from/reply_to, 401 key) halt the run and release the claim', async () => {
+  for (const res of [
+    { statusCode: 403, body: '{"name":"validation_error","message":"The broadwayscorecard.com domain is not verified."}' },
+    { statusCode: 422, body: '{"name":"validation_error","message":"Invalid `reply_to` field."}' },
+    { statusCode: 422, body: '{"name":"validation_error","message":"Invalid `from` field."}' },
+    { statusCode: 401, body: '{"name":"missing_api_key"}' },
+  ]) {
+    const store = fakeStore();
+    const rejectedCalls = [];
+    const r = await w.sendWelcomeOnce({ id: 'u8', email: EMAIL }, {
+      sendFrom: '2026-10-05T00:00:00Z', ...store, send: async () => res,
+      recordRejected: async (id) => rejectedCalls.push(id),
+    });
+    assert.equal(r.status, 'halt', res.body);
+    assert.equal(store.claims.has('u8'), false, 'claim released so the account is retried once setup is fixed');
+    assert.deepEqual(rejectedCalls, []);
+  }
 });
 
 test('a permanent rejection (422) keeps the claim, records a redacted reason, never retries', async () => {
@@ -206,9 +224,13 @@ test('redactEmails strips addresses, including Apple relay ones', () => {
 test('windowStart: later of the switch time and the max-age cutoff', () => {
   const now = new Date('2026-10-10T00:00:00Z');
   // Switch flipped long ago: max-age window wins.
-  assert.equal(w.windowStart({ sendFrom: '2026-01-01T00:00:00Z', now, maxAgeDays: 3 }).toISOString(), '2026-10-07T00:00:00.000Z');
+  assert.equal(w.windowStart({ sendFrom: '2026-01-01T00:00:00Z', now, maxAgeHours: 20 }).toISOString(), '2026-10-09T04:00:00.000Z');
   // Switch flipped recently: accounts before the switch are excluded.
-  assert.equal(w.windowStart({ sendFrom: '2026-10-09T12:00:00Z', now, maxAgeDays: 3 }).toISOString(), '2026-10-09T12:00:00.000Z');
+  assert.equal(w.windowStart({ sendFrom: '2026-10-09T12:00:00Z', now, maxAgeHours: 20 }).toISOString(), '2026-10-09T12:00:00.000Z');
+});
+
+test('retry window stays inside Resend\'s 24h idempotency window', () => {
+  assert.ok(w.MAX_ACCOUNT_AGE_HOURS < 24);
 });
 
 test('sendAllowance respects the daily and per-run caps', () => {

@@ -163,6 +163,7 @@ async function main() {
   let sent = 0;
   const failures = [];
   const rejected = [];
+  let halted = null;
   for (const user of candidates.slice(0, allowance)) {
     const rowFilter = `user_id=eq.${encodeURIComponent(user.id)}`;
     try {
@@ -185,6 +186,10 @@ async function main() {
         sent++;
         console.log(`  Sent to ${label(user)}`);
         await captureSent(user.id);
+      } else if (r.status === 'halt') {
+        halted = r.detail;
+        console.error(`  STOPPING: Resend refused the send for a reason that is not about this recipient (claim released): ${r.detail}`);
+        break;
       } else if (r.status === 'rejected') {
         rejected.push({ id: user.id, error: r.detail });
         console.error(`  REJECTED by Resend for ${label(user)} (kept as done, will not retry): ${r.detail}`);
@@ -199,7 +204,16 @@ async function main() {
     await sleep(250);
   }
 
-  console.log(`Done: ${sent} sent, ${rejected.length} rejected, ${failures.length} failed`);
+  console.log(`Done: ${sent} sent, ${rejected.length} rejected, ${failures.length} failed${halted ? ', run stopped early' : ''}`);
+  if (halted) {
+    await sendAlert({
+      title: 'Welcome emails stopped: Resend setup problem',
+      description: `Resend refused a welcome email for a reason that points at our setup (domain, sender, API key), not the recipient. Nobody was marked as sent; every run retries and stops at the first refusal until this is fixed. ${halted}`,
+      severity: 'error',
+      email: true,
+      idempotencyKey: `welcome-email-halt/${new Date().toISOString().slice(0, 10)}`,
+    });
+  }
   // Rejected: one alert per account, ever (Resend dedups the key for 24h and
   // the account is never retried, so it cannot come back after that).
   for (const f of rejected) {
@@ -222,7 +236,7 @@ async function main() {
       idempotencyKey: `welcome-email-failed/${new Date().toISOString().slice(0, 10)}`,
     });
   }
-  if (failures.length || rejected.length) process.exitCode = 1;
+  if (failures.length || rejected.length || halted) process.exitCode = 1;
 }
 
 main().catch(async (err) => {
