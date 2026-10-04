@@ -24,6 +24,13 @@
  *     would also unpark (isSessionParkedDrainable). Every Mac dispatch moves
  *     its card to a started state (linear-next.js), so the state filter alone
  *     keeps the cloud off cards the Mac already holds.
+ *   - Machine-filed parked P0/P1 cards (digest-autofix, owner-alert-router)
+ *     once quiet for AUTOMATION_PARK_STALE_MS. Their PARKED line is a filer's
+ *     note ("runAutofix dispatches via linear-next separately"), not an owner
+ *     hold, and only the Mac ever dispatched them. Measured 2026-10-04: 281
+ *     such cards, idle 10 to 20+ days, because that same-pass dispatch never
+ *     happened and nothing retried it. Three days leaves the Mac drain and the
+ *     strict resolved-alert sweep their turn first.
  *   - Idle for IDLE_MS: a P0 filed minutes ago is usually being dispatched at
  *     creation by the session that filed it. Six hours gives that path, and
  *     the Mac watchdog, first claim.
@@ -99,6 +106,18 @@ const OWNER_NEGATED_AFTER_RE = /^\s*(?:is\s+|was\s+)?(?:not|no\s+longer)\s+(?:re
 // An owner hold still gets one more worker after this long, so a card the
 // owner never answers in Linear (or a misread report) can't wait forever.
 const AWAITING_OWNER_MAX_MS = 14 * 24 * HOUR_MS;
+const AUTOMATION_PARK_STALE_MS = 3 * 24 * HOUR_MS;
+
+/** A machine-filed parked P0/P1 card nobody has touched for AUTOMATION_PARK_STALE_MS. */
+function isStaleAutomationParked(issue, nowMs) {
+  const hd = require('./headless-dispatchability.js');
+  const type = issue && issue.state && issue.state.type;
+  if (type !== 'backlog' && type !== 'unstarted') return false;
+  if (!PRIORITIES.has(Number(issue.priority))) return false;
+  if (!hd.isAutomationParked(issue.description || '')) return false;
+  const updatedMs = Date.parse(issue.updatedAt);
+  return Number.isFinite(updatedMs) && nowMs - updatedMs >= AUTOMATION_PARK_STALE_MS;
+}
 
 /** Why a headless worker can't finish this card (no safe VERIFY, or a headless blocker), or null. */
 function headlessUnfitReason(issue, { allowParkedSentinel = false } = {}) {
@@ -119,7 +138,7 @@ function skipReason(issue, nowMs) {
   if (!issue || !issue.identifier) return 'malformed';
   if (!PRIORITIES.has(Number(issue.priority))) return 'not-p0-p1';
   const type = issue.state && issue.state.type;
-  const parkedDrainable = drain.isSessionParkedDrainable(issue);
+  const parkedDrainable = drain.isSessionParkedDrainable(issue) || isStaleAutomationParked(issue, nowMs);
   if (type !== 'unstarted' && !parkedDrainable) return type === 'backlog' ? 'parked-or-backlog' : `state-${type}`;
   const unfit = headlessUnfitReason(issue, { allowParkedSentinel: parkedDrainable });
   if (unfit) return unfit;
@@ -262,6 +281,6 @@ function findResumeCard(issues, landRefs, opts) {
 
 module.exports = {
   IDLE_MS, STRANDED_MS, RESUME_WINDOW_MS, MAX_LAND_RUNS, RECENT_PAUSE_MS, AWAITING_OWNER_MAX_MS,
-  skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
+  AUTOMATION_PARK_STALE_MS, isStaleAutomationParked, skipReason, pickCloudCard, pausedHistorySkipReason, landRefCardNumber, resumableCardsByNumber,
   findResumeCandidates, findResumeCard,
 };
