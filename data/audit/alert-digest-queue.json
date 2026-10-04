@@ -94,5 +94,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-04T15:49:45.494Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4566-diary-share",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4566-diary-share",
+    "description": "land.yml did not land land/bro-4566-diary-share: the unit-tests-node gate went red at 49026344a3. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37214075032",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4566-diary-share"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "49026344a3005565f89c77daf76f484a448fc595"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37214075032"
+      }
+    ],
+    "queuedAt": "2026-10-04T16:09:15.193Z"
   }
 ]
