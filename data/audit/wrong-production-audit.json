@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-04T17:17:18.612Z",
+  "timestamp": "2026-10-04T17:25:19.242Z",
   "stats": {
     "totalReviews": 46164,
-    "alreadyFlagged": 18729,
-    "dateGuardCatches": 268,
+    "alreadyFlagged": 18731,
+    "dateGuardCatches": 269,
     "directorMismatch": 1219,
     "tvFilmSignals": 1337,
     "londonSignals": 1269,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4238
+    "noPublishDate": 4236
   },
   "findings": [
     {
@@ -2067,6 +2067,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "arias-with-a-twist-off-broadway-2026",
+      "file": "donshewey--unknown.json",
+      "score": 88,
+      "publishDate": "2008-12-02",
+      "url": "https://donshewey.com/theater_reviews/arias_with_a_twist.html",
+      "findings": [
+        {
+          "type": "DATE_GUARD",
+          "severity": "HIGH",
+          "detail": "Published 6498d before show (2008-12-02 vs 2026-09-17)"
         }
       ]
     },
@@ -24620,7 +24634,8 @@
     {
       "showId": "purpose-regional-2026",
       "file": "baystatebanner--susan-saccoccia.json",
-      "publishDate": null,
+      "score": 87,
+      "publishDate": "2026-10-01",
       "url": "https://baystatebanner.com/2026/10/01/purpose-presents-powerful-complicated-family-dynamics/",
       "findings": [
         {
@@ -24633,6 +24648,7 @@
     {
       "showId": "purpose-regional-2026",
       "file": "metrmag--kevin-t.json",
+      "score": 91,
       "publishDate": null,
       "url": "https://www.metrmag.com/latest-reviews/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma-review",
       "findings": [
