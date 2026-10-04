@@ -92,7 +92,12 @@ test('evaluateLinearIssue: armed issue carries no reason', () => {
   assert.equal(r.name, 'Fix the thing');
   assert.equal(r.armed, true);
   assert.equal(r.reason, null);
-  assert.equal(r.ownerJudgment, false);
+  assert.equal(r.priority, null, 'no priority field fetched → null, not a made-up label');
+});
+
+test('evaluateLinearIssue: carries the Linear priority label (BRO-3619)', () => {
+  const r = evaluateLinearIssue({ identifier: 'BRO-7', title: 't', url: 'u', priority: 2, description: '' });
+  assert.equal(r.priority, 'High');
 });
 
 test('evaluateLinearIssue: prose-only description is refused with a reason', () => {

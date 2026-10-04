@@ -46,7 +46,7 @@ const { redactEmails } = require('./lib/pii-scan.js');
 // supersedes it here (both buckets, one fetch). The wrapper stays exported from the lib
 // for any other caller.
 const { findCardCheckPathDefects, isCheckPathCommand, auditCardCheckPaths, auditVacuousChecks, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
-const { sortedCommentBodies } = require('./lib/linear-dispatch.js');
+const { sortedCommentBodies, priorityLabel } = require('./lib/linear-dispatch.js');
 // Lazy-safe to require unconditionally — same reasoning as
 // enrich-card-acceptance.js: getApiKey() is only called inside an actual
 // graphql() call, so a Notion-only sweep never needs LINEAR_API_KEY set.
@@ -171,18 +171,17 @@ function writeReport(report, reportPath = REPORT_PATH) {
 
 // Pure (task #1830) — same evaluated shape evaluateCard() produces for a
 // Notion card ({id, name, url, priority, armed, ownerJudgment, reason, ...}),
-// so buildReport() works unchanged across both providers. priority/status are
-// null: Linear's priority is a raw int with its own remap
-// (linear-dispatch.js's priorityRank), not the Notion "P0 Now" string this
-// report's consumers print — not needed for the refused-count metric this
-// report exists to surface.
+// so buildReport() works unchanged across both providers. priority is
+// Linear's label ("Urgent", "High", ...) via linear-dispatch.js's
+// priorityLabel — BRO-3619: health-check.js's digest row prints it, and a
+// hard-coded null rendered every Linear card as "[?]".
 function evaluateLinearIssue(issue) {
   const gate = evaluateVerifiability(issue.description || '');
   return {
     id: issue.identifier,
     name: issue.title,
     url: issue.url,
-    priority: null,
+    priority: issue.priority == null ? null : priorityLabel(issue),
     status: (issue.state && issue.state.name) || null,
     category: null,
     tags: [],
