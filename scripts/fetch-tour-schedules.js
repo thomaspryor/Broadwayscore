@@ -38,6 +38,12 @@ const iso = d => d.toISOString().slice(0, 10);
 const PAUSE_MS = 6000;
 const sleep = ms => new Promise(r => setTimeout(r, ms));
 
+/** The tour's stored launch is within 14 days of these stops' first engagement. */
+function opensWith(tour, stops) {
+  if (!tour || !tour.openingDate || !stops.length) return false;
+  return Math.abs(Date.parse(stops[0].start) - Date.parse(String(tour.openingDate).slice(0, 10))) <= 14 * 86400000;
+}
+
 /** The stops of the segment that is this tour, or null. Pure. */
 function tourStops(tour, html) {
   const segment = pickSegment(segmentTourRows(parseTourSchedule(html)), tour, '');
@@ -64,7 +70,21 @@ async function main() {
     // Another show's table on this page (BRO-4601: Come From Away's page showed
     // Operation Mincemeat's tour) must not become this tour's schedule.
     const copyOf = duplicateScheduleOf(stops, out.tours, { exceptId: tour.id });
-    if (copyOf) { failed++; console.log(`::warning::${tour.id}: schedule duplicates ${copyOf}'s engagements; kept previous`); continue; }
+    if (copyOf) {
+      // The table belongs to the tour that opened with its first stop. If that
+      // is this tour, the other's saved schedule was the copy: drop it so the
+      // first-saved page can't lock the real tour out.
+      const other = shows.find(s => s.id === copyOf);
+      if (opensWith(tour, stops) && !opensWith(other, stops)) {
+        console.log(`::warning::${copyOf}: its saved schedule is ${tour.id}'s table; dropped`);
+        delete out.tours[copyOf];
+        changed++;
+      } else {
+        failed++;
+        console.log(`::warning::${tour.id}: schedule duplicates ${copyOf}'s engagements; kept previous`);
+        continue;
+      }
+    }
     const prev = out.tours[tour.id];
     if (prev && prev.source === url && JSON.stringify(prev.stops) === JSON.stringify(stops)) { console.log(`${tour.id}: unchanged`); continue; }
     out.tours[tour.id] = { source: url, updatedAt: new Date().toISOString(), stops };
@@ -81,4 +101,4 @@ async function main() {
 
 if (require.main === module) main().catch(e => { console.error(e); process.exit(1); });
 
-module.exports = { tourStops };
+module.exports = { tourStops, opensWith };

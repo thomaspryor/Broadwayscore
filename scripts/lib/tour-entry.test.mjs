@@ -9,7 +9,7 @@ const { openTourCandidates, tourCandidateFor } = require('./tour-roundup-candida
 const NOW = new Date('2026-09-28T00:00:00Z');
 const parent = { id: 'kimberly-akimbo-2022', title: 'Kimberly Akimbo', category: 'broadway', type: 'musical',
   images: { hero: '/images/shows/kimberly-akimbo-2022/hero.webp', thumbnail: '/images/shows/kimberly-akimbo-2022/thumbnail.webp', poster: '/images/shows/kimberly-akimbo-2022/poster.webp' }, synopsis: 'Story.' };
-const ok = { write: { openingDate: '2024-09-14' }, notes: ['segment 2024-09-14..2026-05-24'] };
+const ok = { write: { openingDate: '2024-09-14' }, notes: ['segment 2024-09-14..2026-05-24'], launchSource: 'wikipedia' };
 
 test('builds a provisional tour entry that inherits art, never the hero', () => {
   const { entry } = buildTourEntry({ parent, shows: [parent], decision: ok, roundupUrl: 'https://bww/x', scheduleUrl: 'https://t2y/x', now: NOW });
@@ -25,7 +25,7 @@ test('builds a provisional tour entry that inherits art, never the hero', () => 
 });
 
 test('closed tour gets status closed and closing provenance', () => {
-  const { entry } = buildTourEntry({ parent, shows: [parent], decision: { write: { openingDate: '2024-09-14', closingDate: '2026-05-24' }, notes: [] }, roundupUrl: 'u', now: NOW });
+  const { entry } = buildTourEntry({ parent, shows: [parent], decision: { write: { openingDate: '2024-09-14', closingDate: '2026-05-24' }, notes: [], launchSource: 'wikipedia' }, roundupUrl: 'u', now: NOW });
   assert.equal(entry.status, 'closed');
   assert.equal(entry.closingDateSource, 'tourstoyou+wikipedia');
 });
@@ -50,7 +50,8 @@ test('stays a suggestion without a confirmed launch, with a problem, or while an
   const running = { id: 'kimberly-akimbo-tour-2023', title: 'Kimberly Akimbo', category: 'tour', tourOf: parent.id, openingDate: '2023-01-01', closingDate: null };
   assert.match(buildTourEntry({ parent, shows: [parent, running], decision: ok, roundupUrl: 'u', now: NOW }).skip, /still open/);
   assert.match(buildTourEntry({ parent, shows: [parent, { id: 'kimberly-akimbo-tour-2024' }], decision: ok, roundupUrl: 'u', now: NOW }).skip, /already exists/);
-  assert.match(buildTourEntry({ parent, shows: [parent], decision: { write: { openingDate: '2027-01-01' }, notes: [] }, roundupUrl: 'u', now: NOW }).skip, /future/);
+  assert.match(buildTourEntry({ parent, shows: [parent], decision: { write: { openingDate: '2027-01-01' }, notes: [], launchSource: 'wikipedia' }, roundupUrl: 'u', now: NOW }).skip, /future/);
+  assert.match(buildTourEntry({ parent, shows: [parent], decision: { write: { openingDate: '2024-09-14' }, notes: [] }, roundupUrl: 'u', now: NOW }).skip, /unknown launch source/);
 });
 
 test('a second tour is a candidate once the first has closed; created rows drop out', () => {

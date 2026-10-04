@@ -53,7 +53,10 @@ function buildTourEntry({ parent, shows, decision, roundupUrl, scheduleUrl, reti
   if (!decision || decision.problem) return { skip: `dates: ${(decision && decision.problem) || 'no decision'}` };
   const launch = decision.write && decision.write.openingDate;
   if (!launch) return { skip: 'no launch date confirmed (by Wikipedia, a BWW roundup, or a fresh Tours To You launch)' };
-  const source = LAUNCH_SOURCES[decision.launchSource] || LAUNCH_SOURCES.wikipedia;
+  // An unknown source never borrows another's label (the Wikipedia one carries
+  // validate-show-venue's two-source exemption).
+  const source = LAUNCH_SOURCES[decision.launchSource];
+  if (!source) return { skip: `unknown launch source ${decision.launchSource}` };
   const today = now.toISOString().slice(0, 10);
   if (launch > today) return { skip: `launch ${launch} is in the future` };
 

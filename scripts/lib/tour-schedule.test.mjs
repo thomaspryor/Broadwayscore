@@ -88,6 +88,10 @@ test('a fresh launch takes the first engagement only when opted in and near toda
   assert.notEqual(ancient.launchSource, 'tourstoyou-fresh', 'stored launch is kept');
   const stale = decideTourDates(tour, old, '', NOW, { segmentStart: '2021-10-27', freshLaunchDays: 60 });
   assert.deepEqual(stale.write, {}, 'a segment that started years ago is never taken as the launch');
+  const elsewhere = 'The North American tour began at the Buell Theatre in Denver in May 2026. It later played Providence.';
+  assert.deepEqual(decideTourDates(tour, fresh, elsewhere, NOW, { segmentStart: '2026-09-20', freshLaunchDays: 60 }).write, {}, 'Wikipedia names another launch city: the page lost the opener');
+  const same = 'The North American tour began in Providence in September 2026.';
+  assert.equal(decideTourDates(tour, fresh, same, NOW, { segmentStart: '2026-09-20', freshLaunchDays: 60 }).write.openingDate, '2026-09-20');
   const two = page([row('Providence, RI', 'PPAC', 'September 20-27, 2026'), row('Boston, MA', 'Opera House', 'September 29-October 11, 2026')]);
   assert.deepEqual(decideTourDates(tour, two, '', NOW, { segmentStart: '2026-09-20', freshLaunchDays: 60 }).write, {}, 'needs at least 3 engagements');
 });

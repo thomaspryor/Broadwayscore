@@ -66,3 +66,11 @@ test('tourStops picks the segment matching the tour launch from a Tours To You t
   assert.equal(got[1].end, '2026-10-04');
   assert.equal(tourStops({ id: 'x-tour-2026', openingDate: '2026-09-19' }, ''), null);
 });
+
+test('opensWith: a duplicated table belongs to the tour that opened with its first stop', () => {
+  const { opensWith } = require('../../scripts/fetch-tour-schedules.js');
+  const table = [{ city: 'Providence, RI', venue: 'PPAC', start: '2026-09-20', end: '2026-09-26' }];
+  assert.equal(opensWith({ openingDate: '2026-09-20' }, table), true);
+  assert.equal(opensWith({ openingDate: '2017-03-12' }, table), false, 'the Broadway-era date of a page carrying a copied table');
+  assert.equal(opensWith(undefined, table), false);
+});

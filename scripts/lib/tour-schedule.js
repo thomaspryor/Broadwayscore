@@ -251,6 +251,17 @@ function launchSentences(wikiText) {
   return [...out];
 }
 
+/**
+ * Wikipedia's tour text names a launch, but not in this row's city: the page
+ * lost the real opener (Harry Potter: Tours To You starts at Seattle, the
+ * article says the tour began in Denver). Silence is not a contradiction.
+ */
+function wikiNamesOtherLaunch(wikiText, row) {
+  const city = String((row && row.city) || '').split(',')[0].trim().toLowerCase();
+  const sentences = launchSentences(proseOnly(wikiText));
+  return sentences.length > 0 && !sentences.some(s => s.toLowerCase().includes(city));
+}
+
 const LAUNCH_WORD = /\b(launch|premier|began|begin|start|kick(ed|s)? off|open(ed|s)? (in|at|on))/i;
 
 /**
@@ -423,6 +434,7 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
   // launch (Wicked's page starts in 2021, Hamilton's in Sept 2020).
   const freshLaunch = !wikiLaunch && !roundupLaunch && opts.freshLaunchDays > 0
     && seg.rows.length >= 3 && Math.abs(seg.start.getTime() - now.getTime()) <= opts.freshLaunchDays * DAY
+    && !wikiNamesOtherLaunch(wikiText, seg.rows[0])
     ? seg.start : null;
   const launch = wikiLaunch || roundupLaunch || freshLaunch;
   const launchSource = wikiLaunch ? 'wikipedia' : roundupLaunch ? 'bww-roundup' : freshLaunch ? 'tourstoyou-fresh' : null;
