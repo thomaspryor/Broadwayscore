@@ -935,8 +935,12 @@ jobs:
             exit 0
           fi
 
-          # Dedup: skip if consensus ran within the last hour
-          RECENT=$(gh run list --workflow=update-critic-consensus.yml --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
+          # Dedup: skip if consensus ran within the last hour. Only a run that
+          # actually succeeded counts: the workflow's concurrency group cancels
+          # surplus dispatches (56 of 58 on 2026-10-04, BRO-4595), and a
+          # cancelled run must not look like fresh coverage. Running/queued
+          # runs are handled by the check below.
+          RECENT=$(gh run list --workflow=update-critic-consensus.yml --status=success --limit=1 --json createdAt -q '.[0].createdAt' 2>/dev/null || echo "")
           if [ -n "$RECENT" ]; then
             RECENT_TS=$(date -d "$RECENT" +%s 2>/dev/null || date -jf "%Y-%m-%dT%H:%M:%SZ" "$RECENT" +%s 2>/dev/null || echo "0")
             NOW_TS=$(date +%s)
