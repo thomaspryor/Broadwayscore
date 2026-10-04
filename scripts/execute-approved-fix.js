@@ -45,6 +45,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
+const { applyAddCommercialEntry, commercialConsistencyProblems } = require('./lib/commercial-entry-action.js');
 const { unretireId } = require('./lib/retired-show-ids.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
@@ -124,6 +125,11 @@ function runValidation(changedFiles) {
     },
     'data/commercial.json': (data) => {
       if (!data?.shows || !data?._meta) throw new Error('Missing shows or _meta');
+      // validate-data.js's commercial rules, so a plan cannot publish a
+      // recouped=true without a date or a win/loss label that contradicts
+      // the recoupment flag (BRO-4623).
+      const problems = commercialConsistencyProblems(data);
+      if (problems.length) throw new Error(`commercial consistency: ${problems.slice(0, 5).join('; ')}`);
     },
     'data/audience-buzz.json': (data) => {
       if (!data?.shows) throw new Error('Missing shows key');
@@ -308,6 +314,15 @@ function executeDataEdit(action) {
   }
 
   return { ok: false, reason: `Unhandled file: ${file}` };
+}
+
+function executeAddCommercialEntry(action) {
+  const commercial = loadJsonFile('data/commercial.json');
+  const showsData = loadJsonFile('data/shows.json');
+  const shows = showsData.shows || showsData;
+  const result = applyAddCommercialEntry(commercial, shows, action);
+  if (result.ok) saveJsonFile('data/commercial.json', commercial);
+  return result;
 }
 
 function executeAddShow(action) {
@@ -591,6 +606,9 @@ async function main() {
       case 'retire-show':
         result = executeRetireShow(action);
         break;
+      case 'add-commercial-entry':
+        result = executeAddCommercialEntry(action);
+        break;
       case 'review-field-edit':
         result = executeReviewFieldEdit(action, { fixId: planData.planId || String(issueNumber), at: new Date().toISOString() });
         break;
@@ -614,11 +632,12 @@ async function main() {
   // 4. Validate if we made data changes. batch-transform mutates data files
   // too — it must NOT bypass validation (it previously did, so a bad bulk
   // transform had no rollback path).
-  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show');
+  const dataTouching = planData.plan.actions.filter(a => a.type === 'data-edit' || a.type === 'batch-transform' || a.type === 'add-show' || a.type === 'retire-show' || a.type === 'add-commercial-entry');
   const hasDataEdits = dataTouching.length > 0;
   if (hasDataEdits) {
-    // add-show / retire-show carry no `file`: they always write shows.json.
-    const changedFiles = [...new Set(dataTouching.map(a => a.file || ((a.type === 'add-show' || a.type === 'retire-show') ? 'shows.json' : null)).filter(Boolean))];
+    // add-show / retire-show / add-commercial-entry carry no `file`.
+    const IMPLIED_FILE = { 'add-show': 'shows.json', 'retire-show': 'shows.json', 'add-commercial-entry': 'commercial.json' };
+    const changedFiles = [...new Set(dataTouching.map(a => a.file || IMPLIED_FILE[a.type] || null).filter(Boolean))];
     console.log('\nRunning validation...');
     if (!runValidation(changedFiles)) {
       console.error('Validation failed — rolling back');
