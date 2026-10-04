@@ -1,19 +1,19 @@
 {
-  "generatedAt": "2026-10-04T10:25:26.902Z",
+  "generatedAt": "2026-10-04T15:49:45.268Z",
   "windowDays": 1095,
-  "targets": 393,
-  "auditedThisRun": 17,
-  "carriedForward": 588,
+  "targets": 405,
+  "auditedThisRun": 10,
+  "carriedForward": 598,
   "prunedStale": 0,
   "retentionDays": 395,
   "counts": {
     "withGap": 339,
     "missingCurrentRun": 581,
     "totalCitedNoUrl": 0,
-    "totalFlaggedMisses": 838,
+    "totalFlaggedMisses": 839,
     "totalRecoverable": 5,
     "totalRecovered": 9,
-    "priorProductionCitations": 2630
+    "priorProductionCitations": 2633
   },
   "results": [
     {
@@ -2955,7 +2955,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "a-walk-on-the-moon-off-broadway-2026",
@@ -3839,7 +3844,7 @@
       "showId": "affluenza-off-west-end-2026",
       "title": "Affluenza",
       "openingDate": "2026-10-05",
-      "status": "open",
+      "status": "previews",
       "category": "off-west-end",
       "aggregatorArticles": [],
       "aggregatorListedUrls": [],
@@ -3869,7 +3874,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T15:49:45.268Z"
     },
     {
       "showId": "after-all-these-years-off-broadway-2026",
@@ -6676,6 +6681,42 @@
         "candidateCount": 0
       },
       "computedAt": "2026-09-17T23:23:55.518Z"
+    },
+    {
+      "showId": "an-oak-tree-off-west-end-2026",
+      "title": "An Oak Tree",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-west-end",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-04T15:49:45.268Z"
     },
     {
       "showId": "anansi-the-spider-west-end-2026",
@@ -15455,6 +15496,117 @@
       "computedAt": "2026-09-02T22:17:45.717Z"
     },
     {
+      "showId": "blood-of-my-blood-west-end-2026",
+      "title": "Blood of my Blood",
+      "openingDate": "2026-10-07",
+      "status": "previews",
+      "category": "west-end",
+      "aggregatorArticles": [
+        "https://playbill.com/article/read-the-reviews-for-vampire-pop-opera-blood-love-off-broadway"
+      ],
+      "aggregatorListedUrls": [
+        "https://www.newyorktheatreguide.com/reviews/blood-love-off-broadway-review",
+        "https://1minutecritic.com/blood-love-vampire-musical-review/",
+        "https://www.theatermania.com/news/review-blood-love-a-surprisingly-enjoyable-vampire-pop-opera_1826531/"
+      ],
+      "dirFiles": 14,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/blood-love-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "knownOutletId": "nytg",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://1minutecritic.com/blood-love-vampire-musical-review/",
+          "host": "1minutecritic.com",
+          "knownOutletId": "one-minute-critic",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-blood-love-a-surprisingly-enjoyable-vampire-pop-opera_1826531/",
+          "host": "theatermania.com",
+          "knownOutletId": "theatermania",
+          "priorRun": true,
+          "priorRunSource": "aggregator-article-date"
+        }
+      ],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 93,
+        "byReason": {
+          "not-http-url": 20,
+          "non-review-host": 19,
+          "aggregator-internal-nav": 49,
+          "aggregator-section-root": 5
+        }
+      },
+      "dedupedVariants": [],
+      "priorRunArticles": [
+        {
+          "url": "https://playbill.com/article/read-the-reviews-for-vampire-pop-opera-blood-love-off-broadway",
+          "publishDate": "2026-03-04"
+        }
+      ],
+      "weIngestBlocked": [
+        {
+          "url": "https://www.newyorktheatreguide.com/reviews/blood-love-off-broadway-review",
+          "host": "newyorktheatreguide.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://1minutecritic.com/blood-love-vampire-musical-review/",
+          "host": "1minutecritic.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        },
+        {
+          "url": "https://www.theatermania.com/news/review-blood-love-a-surprisingly-enjoyable-vampire-pop-opera_1826531/",
+          "host": "theatermania.com",
+          "priorRun": true,
+          "reason": "prior-run"
+        }
+      ],
+      "ingestResults": [],
+      "ingestSkippedByCap": [],
+      "recoveryResults": [
+        {
+          "url": "https://www.express.co.uk/showbiz/tv-radio/2092873/outlander-blood-my-blood-review-prequel-series",
+          "host": "express.co.uk",
+          "file": "express-uk--neela-debnath.json",
+          "recovered": false,
+          "skipped": false,
+          "provisional": false,
+          "starFallback": false,
+          "reason": "filled text dated 2025-08-09 — outside production window, flagged wrongProduction",
+          "recoveryCount": 1,
+          "uncited": true
+        }
+      ],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-04T15:49:45.268Z"
+    },
+    {
       "showId": "bloodlove-off-broadway-2026",
       "title": "Blood/Love",
       "openingDate": "2026-03-03",
@@ -19121,7 +19273,12 @@
         "liveCount": 8,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "burlesque-west-end-2026",
@@ -27568,18 +27725,17 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 328,
+        "count": 327,
         "byReason": {
-          "non-review-host": 37,
-          "aggregator-internal-nav": 213,
-          "ticketing-listing": 1,
           "not-http-url": 62,
+          "non-review-host": 34,
+          "aggregator-internal-nav": 212,
           "aggregator-section-root": 6,
-          "roundup-page": 2,
+          "roundup-page": 6,
+          "venue-production-page": 1,
           "census-junk-host": 2,
-          "ticketing-reseller": 2,
           "non-review-path": 2,
-          "venue-production-page": 1
+          "ticketing-reseller": 2
         }
       },
       "dedupedVariants": [],
@@ -27611,7 +27767,7 @@
         "liveCount": 3,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-04T03:11:34.259Z"
+      "computedAt": "2026-10-04T15:49:45.268Z"
     },
     {
       "showId": "cult-of-love-2024",
@@ -33291,7 +33447,12 @@
         "liveCount": 11,
         "candidateCount": 13
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "incomplete:11:12",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "delirium-off-broadway-2026",
@@ -42414,7 +42575,12 @@
         "liveCount": 9,
         "candidateCount": 16
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "complete:1:1",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "floyd-collins-2025",
@@ -42773,7 +42939,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T15:49:45.268Z"
     },
     {
       "showId": "frieze-new-york-off-broadway-2026",
@@ -43509,7 +43675,12 @@
         "liveCount": 0,
         "candidateCount": 12
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "incomplete:0:1",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "garry-starr-classic-penguins-garrick-west-end-2026",
@@ -55979,7 +56150,12 @@
         "liveCount": 20,
         "candidateCount": 22
       },
-      "computedAt": "2026-10-04T03:11:34.259Z"
+      "computedAt": "2026-10-04T03:11:34.259Z",
+      "quarantine": {
+        "nextState": "incomplete:19:21",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "heart-of-rock-and-roll-2024",
@@ -66446,7 +66622,12 @@
         "liveCount": 0,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-04T03:11:34.259Z"
+      "computedAt": "2026-10-04T03:11:34.259Z",
+      "quarantine": {
+        "nextState": "incomplete:0:5",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "jesa-off-broadway-2026",
@@ -71892,7 +72073,12 @@
         "liveCount": 0,
         "candidateCount": 7
       },
-      "computedAt": "2026-10-04T03:11:34.259Z"
+      "computedAt": "2026-10-04T03:11:34.259Z",
+      "quarantine": {
+        "nextState": "incomplete:0:6",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "kyoto-off-broadway-2025",
@@ -92683,6 +92869,42 @@
       "computedAt": "2026-09-18T20:16:36.338Z"
     },
     {
+      "showId": "night-of-january-16th-off-broadway-2026",
+      "title": "Night of January 16th",
+      "openingDate": null,
+      "status": "upcoming",
+      "category": "off-broadway",
+      "aggregatorArticles": [],
+      "aggregatorListedUrls": [],
+      "dirFiles": 0,
+      "dirClean": 0,
+      "inReviewsJson": 0,
+      "missing": [],
+      "dirOnly": [],
+      "flaggedMisses": [],
+      "citedNoUrl": [],
+      "weReference": null,
+      "serpCensus": {
+        "ran": false,
+        "reason": "out-of-window"
+      },
+      "candidatesRejected": {
+        "count": 0,
+        "byReason": {}
+      },
+      "dedupedVariants": [],
+      "censusVerdict": {
+        "verdict": "no-census-yet",
+        "missing": [],
+        "suppressedMissing": [],
+        "candidates": [],
+        "censusSchema": 2,
+        "liveCount": 0,
+        "candidateCount": 0
+      },
+      "computedAt": "2026-10-04T15:49:45.268Z"
+    },
+    {
       "showId": "night-side-songs-off-broadway-2026",
       "title": "Night Side Songs",
       "openingDate": "2026-03-02",
@@ -106604,7 +106826,12 @@
         "liveCount": 0,
         "candidateCount": 1
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "purpose-2025",
@@ -115064,7 +115291,12 @@
         "liveCount": 17,
         "candidateCount": 22
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "complete:13:13",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "schtick-a-pole-in-it-off-broadway-2026",
@@ -118467,7 +118699,7 @@
         "liveCount": 0,
         "candidateCount": 0
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T15:49:45.268Z"
     },
     {
       "showId": "space-dogs-off-west-end-2026",
@@ -133896,7 +134128,7 @@
       "showId": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
       "title": "The Hairy Ape",
       "openingDate": "2026-10-04",
-      "status": "previews",
+      "status": "open",
       "category": "off-broadway",
       "aggregatorArticles": [
         "https://playbill.com/article/what-did-critics-think-of-bobby-cannavale-in-the-hairy-ape"
@@ -133910,12 +134142,13 @@
         "http://www.vulture.com/2017/03/theater-a-definitive-revival-of-oneills-the-hairy-ape.html",
         "https://www.washingtonpost.com/news/arts-and-entertainment/wp/2017/03/31/the-hairy-ape-with-bobby-cannavale-is-a-vision/",
         "https://www.show-score.com/off-broadway-shows/the-hairy-ape",
-        "https://www.backstage.com/magazine/article/hairy-ape-38879/",
+        "https://www.theatrereviews.com/tag/hairy-ape/",
         "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/",
+        "https://www.backstage.com/forums/callback-corner/hairy-ape-irish-repertory-theatre-nyc-epa-38881",
         "https://www.josephgilbert.net/the-hairy-ape-ovation-recommended/",
-        "https://www.londontheatre.co.uk/reviews/the-hairy-ape"
+        "https://stageagent.com/shows/play/22977/the-hairy-ape"
       ],
-      "dirFiles": 2,
+      "dirFiles": 3,
       "dirClean": 0,
       "inReviewsJson": 0,
       "missing": [
@@ -133961,15 +134194,15 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.backstage.com/magazine/article/hairy-ape-38879/",
-          "host": "backstage.com",
-          "knownOutletId": "backstage",
+          "url": "https://www.theatrereviews.com/tag/hairy-ape/",
+          "host": "theatrereviews.com",
+          "knownOutletId": "theatre-reviews-limited",
           "serpCensus": true
         },
         {
-          "url": "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/",
-          "host": "villagestar-revue.com",
-          "knownOutletId": null,
+          "url": "https://www.backstage.com/forums/callback-corner/hairy-ape-irish-repertory-theatre-nyc-epa-38881",
+          "host": "backstage.com",
+          "knownOutletId": "backstage",
           "serpCensus": true
         },
         {
@@ -133979,9 +134212,9 @@
           "serpCensus": true
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-hairy-ape",
-          "host": "londontheatre.co.uk",
-          "knownOutletId": "london-theatre",
+          "url": "https://stageagent.com/shows/play/22977/the-hairy-ape",
+          "host": "stageagent.com",
+          "knownOutletId": null,
           "serpCensus": true
         }
       ],
@@ -134024,6 +134257,24 @@
           ],
           "priorRun": true,
           "priorRunSource": "aggregator-article-date"
+        },
+        {
+          "url": "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/",
+          "host": "villagestar-revue.com",
+          "knownOutletId": null,
+          "recoverable": false,
+          "recoverableFile": null,
+          "recoverableOutletId": null,
+          "recoverableCritic": null,
+          "recoverableCount": 0,
+          "dirFlags": [
+            {
+              "file": "villagestar-revue--mark-dundas-wood.json",
+              "flag": "wrongProduction",
+              "urlInDir": "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/"
+            }
+          ],
+          "serpCensus": true
         }
       ],
       "citedNoUrl": [],
@@ -134090,23 +134341,23 @@
             "geo": "us",
             "ok": true,
             "results": 10,
-            "accepted": 3,
+            "accepted": 4,
             "error": null
           }
         ],
         "queriesOk": 6,
         "queriesTotal": 6,
-        "resultCount": 5,
+        "resultCount": 6,
         "error": null
       },
       "candidatesRejected": {
-        "count": 152,
+        "count": 151,
         "byReason": {
-          "non-review-host": 46,
-          "aggregator-internal-nav": 89,
           "not-http-url": 5,
+          "non-review-host": 45,
+          "aggregator-internal-nav": 90,
           "aggregator-section-root": 4,
-          "census-junk-host": 5,
+          "census-junk-host": 4,
           "non-review-path": 1,
           "static-asset": 2
         }
@@ -134164,22 +134415,22 @@
           "reason": "unknown-outlet-aggregator-host (show-score.com)"
         },
         {
-          "url": "https://www.backstage.com/magazine/article/hairy-ape-38879/",
-          "host": "backstage.com",
-          "outletId": "backstage",
+          "url": "https://www.theatrereviews.com/tag/hairy-ape/",
+          "host": "theatrereviews.com",
+          "outletId": "theatre-reviews-limited",
           "provisional": false,
-          "ok": false,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": null
         },
         {
-          "url": "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/",
-          "host": "villagestar-revue.com",
-          "outletId": "villagestar-revue",
-          "provisional": true,
+          "url": "https://www.backstage.com/forums/callback-corner/hairy-ape-irish-repertory-theatre-nyc-epa-38881",
+          "host": "backstage.com",
+          "outletId": "backstage",
+          "provisional": false,
           "ok": true,
           "noop": false,
           "conflict": false,
@@ -134200,16 +134451,16 @@
           "reason": "⚠️  provisional outlet \"josephgilbert\" (not in registry) — onboard to outlet-registry.json after rev"
         },
         {
-          "url": "https://www.londontheatre.co.uk/reviews/the-hairy-ape",
-          "host": "londontheatre.co.uk",
-          "outletId": "london-theatre",
-          "provisional": false,
-          "ok": false,
+          "url": "https://stageagent.com/shows/play/22977/the-hairy-ape",
+          "host": "stageagent.com",
+          "outletId": "stageagent",
+          "provisional": true,
+          "ok": true,
           "noop": false,
           "conflict": false,
           "conflictReason": null,
           "unclassified": false,
-          "reason": "⚠️  Domain collision on \"timeout.com\": keeping timeout, ignoring timeout-london\n  ⚠️  Domain collisi"
+          "reason": null
         }
       ],
       "ingestSkippedByCap": [],
@@ -134224,18 +134475,18 @@
             "url": "https://www.show-score.com/off-broadway-shows/the-hairy-ape"
           },
           {
+            "outletId": "theatre-reviews-limited",
+            "outlet": "theatre-reviews-limited",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+          },
+          {
             "outletId": "backstage",
             "outlet": "backstage",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.backstage.com/magazine/article/hairy-ape-38879/"
-          },
-          {
-            "outletId": "villagestar-revue.com",
-            "outlet": "villagestar-revue.com",
-            "critic": "Unknown",
-            "stars": null,
-            "url": "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/"
+            "url": "https://www.backstage.com/forums/callback-corner/hairy-ape-irish-repertory-theatre-nyc-epa-38881"
           },
           {
             "outletId": "josephgilbert.net",
@@ -134245,11 +134496,18 @@
             "url": "https://www.josephgilbert.net/the-hairy-ape-ovation-recommended/"
           },
           {
-            "outletId": "london-theatre",
-            "outlet": "london-theatre",
+            "outletId": "stageagent.com",
+            "outlet": "stageagent.com",
             "critic": "Unknown",
             "stars": null,
-            "url": "https://www.londontheatre.co.uk/reviews/the-hairy-ape"
+            "url": "https://stageagent.com/shows/play/22977/the-hairy-ape"
+          },
+          {
+            "outletId": "villagestar-revue.com",
+            "outlet": "villagestar-revue.com",
+            "critic": "Unknown",
+            "stars": null,
+            "url": "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/"
           }
         ],
         "suppressedMissing": [],
@@ -134262,18 +134520,18 @@
             "firstSeenAt": "2026-10-04T03:11:34.259Z"
           },
           {
-            "url": "https://www.backstage.com/magazine/article/hairy-ape-38879/",
+            "url": "https://www.theatrereviews.com/tag/hairy-ape/",
+            "outletId": "theatre-reviews-limited",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-04T15:49:45.268Z"
+          },
+          {
+            "url": "https://www.backstage.com/forums/callback-corner/hairy-ape-irish-repertory-theatre-nyc-epa-38881",
             "outletId": "backstage",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
-            "firstSeenAt": "2026-10-04T03:11:34.259Z"
-          },
-          {
-            "url": "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/",
-            "outletId": "villagestar-revue.com",
-            "state": "IN_FLIGHT",
-            "reason": "within-grace",
-            "firstSeenAt": "2026-10-04T03:11:34.259Z"
+            "firstSeenAt": "2026-10-04T15:49:45.268Z"
           },
           {
             "url": "https://www.josephgilbert.net/the-hairy-ape-ovation-recommended/",
@@ -134283,8 +134541,15 @@
             "firstSeenAt": "2026-10-04T03:11:34.259Z"
           },
           {
-            "url": "https://www.londontheatre.co.uk/reviews/the-hairy-ape",
-            "outletId": "london-theatre",
+            "url": "https://stageagent.com/shows/play/22977/the-hairy-ape",
+            "outletId": "stageagent.com",
+            "state": "IN_FLIGHT",
+            "reason": "within-grace",
+            "firstSeenAt": "2026-10-04T15:49:45.268Z"
+          },
+          {
+            "url": "https://villagestar-revue.com/facing-a-changed-audience-hairy-ape-returns-to-irish-rep-this-fall/",
+            "outletId": "villagestar-revue.com",
             "state": "IN_FLIGHT",
             "reason": "within-grace",
             "firstSeenAt": "2026-10-04T03:11:34.259Z"
@@ -134292,9 +134557,9 @@
         ],
         "censusSchema": 2,
         "liveCount": 0,
-        "candidateCount": 5
+        "candidateCount": 6
       },
-      "computedAt": "2026-10-04T03:11:34.259Z"
+      "computedAt": "2026-10-04T15:49:45.268Z"
     },
     {
       "showId": "the-harder-they-come-off-west-end-2026",
@@ -136918,7 +137183,12 @@
         "liveCount": 0,
         "candidateCount": 4
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "the-importance-of-being-oscar-off-west-end-2026",
@@ -148059,7 +148329,12 @@
         "liveCount": 17,
         "candidateCount": 21
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "complete:11:11",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "the-story-olivier-west-end-2026",
@@ -154892,7 +155167,12 @@
         "liveCount": 1,
         "candidateCount": 3
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "topdog-underdog-regional-2026",
@@ -155667,7 +155947,7 @@
         "liveCount": 1,
         "candidateCount": 2
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T15:49:45.268Z"
     },
     {
       "showId": "touch-off-broadway-2026",
@@ -157165,7 +157445,12 @@
         "liveCount": 0,
         "candidateCount": 14
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "turandot-off-broadway-2025",
@@ -164877,7 +165162,12 @@
         "liveCount": 4,
         "candidateCount": 15
       },
-      "computedAt": "2026-10-04T10:25:26.902Z"
+      "computedAt": "2026-10-04T10:25:26.902Z",
+      "quarantine": {
+        "nextState": "no-census-yet:0:0",
+        "since": "2026-10-04T15:49:45.320Z",
+        "lastAt": "2026-10-04T15:49:45.320Z"
+      }
     },
     {
       "showId": "white-rabbit-red-rabbit-west-end-2026",
@@ -165183,8 +165473,8 @@
       "category": "west-end",
       "aggregatorArticles": [
         "https://playbill.com/article/reviews-what-did-critics-think-of-geffen-playhouses-whos-afraid-of-virginia-woolf-starring-zachary-quinto-and-calista-flockhart",
-        "https://playbill.com/article/reviews-what-do-critics-think-of-u-k-revival-of-whos-afraid-of-virginia-woolf-starring-downton-abbeys-elizabeth-mcgovern",
         "https://playbill.com/article/what-do-critics-think-of-imelda-staunton-in-whos-afraid-of-virginia-woolf",
+        "https://playbill.com/article/reviews-what-do-critics-think-of-u-k-revival-of-whos-afraid-of-virginia-woolf-starring-downton-abbeys-elizabeth-mcgovern",
         "https://www.broadwayworld.com/article/Review-Roundup-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Opens-on-Broadway-All-the-Reviews-20121014",
         "https://www.broadwayworld.com/article/Review-Roundup-Zachary-Quinto-Calista-Flockhart-Graham-Phillips-Aimee-Carrero-in-Geffen-Playhouses-WHOS-AFRAID-OF-VIRGINIA-WOOLF-20220504"
       ],
@@ -165192,17 +165482,17 @@
         "https://www.latimes.com/entertainment-arts/story/2022-05-02/review-whos-afraid-of-virginia-woolf-edward-albee-geffen-playhouse",
         "https://www.independent.com/2022/05/02/review-whos-afraid-of-virginia-woolf-in-los-angeles/",
         "https://variety.com/2022/legit/reviews/edward-albee-whos-afraid-of-virginia-woolf-review-calista-flockhart-zachary-quinto-1235257488/",
-        "https://www.broadwayworld.com/article/Review-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Ustinov-Studio-Bath-20230119",
-        "https://www.theguardian.com/stage/2023/jan/19/whos-afraid-of-virginia-woolf-review-ustinov-studio-bath",
-        "https://www.telegraph.co.uk/theatre/what-to-see/afraid-virginia-woolf-theatre-royal-bath-review-elizabeth-mcgovern/",
-        "https://www.thetimes.co.uk/article/whos-afraid-of-virginia-woolf-review-dougray-scott-and-elizabeth-mcgovern-draw-blood-k0856kxn6",
-        "https://www.whatsonstage.com/bath-theatre/reviews/whos-afraid-of-virginia-woolf-ustinov-studio_58176.html",
         "http://www.theguardian.com/stage/2017/mar/09/whos-afraid-of-virginia-woolf-review-imelda-staunton-albee-conleth-hill-harold-pinter-theatre",
         "http://www.standard.co.uk/goingout/theatre/whos-afraid-of-virginia-woolf-theatre-review-this-modern-classic-still-feels-lethal-a3486086.html",
         "http://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/whos-afraid-of-virginia-woolf-review-harold-pinter-theatre-london-a7620511.html",
         "http://www.thestage.co.uk/reviews/2017/whos-afraid-virginia-woolf-review-starring-imelda-staunton-harold-pinter-theatre-london/",
         "http://www.timeout.com/london/theatre/whos-afraid-of-virginia-woolf",
         "http://variety.com/2017/legit/reviews/whos-afraid-of-virginia-woolf-review-imelda-staunton-1202005460/",
+        "https://www.broadwayworld.com/article/Review-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Ustinov-Studio-Bath-20230119",
+        "https://www.theguardian.com/stage/2023/jan/19/whos-afraid-of-virginia-woolf-review-ustinov-studio-bath",
+        "https://www.telegraph.co.uk/theatre/what-to-see/afraid-virginia-woolf-theatre-royal-bath-review-elizabeth-mcgovern/",
+        "https://www.thetimes.co.uk/article/whos-afraid-of-virginia-woolf-review-dougray-scott-and-elizabeth-mcgovern-draw-blood-k0856kxn6",
+        "https://www.whatsonstage.com/bath-theatre/reviews/whos-afraid-of-virginia-woolf-ustinov-studio_58176.html",
         "http://theater.nytimes.com/2012/10/15/theater/reviews/tracy-letts-in-whos-afraid-of-virginia-woolf.html",
         "http://www.huffingtonpost.com/huff-wires/20121014/us-theater-review-who-s-afraid-of-virginia-woolf/",
         "http://www.nydailynews.com/entertainment/music-arts/theater-review-afraid-virginia-woolf-article-1.1183362",
@@ -165211,14 +165501,15 @@
         "https://www.laartparty.com/review-geffen-playhouse-whos-afraid-of-virginia-woolf/",
         "http://stageraw.com/2022/05/03/whos-afraid-of-virginia-woolf/",
         "https://dailybruin.com/2022/05/02/theater-review-whos-afraid-of-virginia-woolf-leaves-audience-captivated-by-twisted-marriage",
-        "https://www.theguardian.com/stage/2026/oct/01/whos-afraid-of-virginia-woolf-review-gillian-anderson-billy-crudup-sohoplace-london",
         "https://www.timeout.com/london/news/whos-afraid-of-virginia-woolf-review-sohoplace-gillian-anderson-100126",
+        "https://www.theguardian.com/stage/2026/oct/01/whos-afraid-of-virginia-woolf-review-gillian-anderson-billy-crudup-sohoplace-london",
+        "https://www.londontheatre.co.uk/theatre-news/news/first-look-at-gillian-anderson-and-billy-crudup-in-whos-afraid-of-virginia-woolf",
         "https://www.allthatdazzles.co.uk/post/review-whos-afraid-of-virginia-woolf-sohoplace",
-        "https://lovelondonloveculture.com/2026/10/03/review-round-up-whos-afraid-of-virginia-woolf-sohoplace/",
-        "https://www.londontheatre.co.uk/reviews/whos-afraid-of-virginia-woolf-review-gillian-anderson-billy-crudup-marianne-elliott",
         "https://www.telegraph.co.uk/theatre/what-to-see/whos-afraid-of-virginia-woolf-review-gillian-anderson/",
         "https://www.whatsonstage.com/news/whos-afraid-of-virginia-woolf-review-gillian-anderson-and-billy-crudup-toe-to-toe-in-the-west-end_1734062/",
         "https://www.standard.co.uk/culture/theatre/who-s-afraid-of-virginia-woolf-review-b1299111.html",
+        "https://www.londontheatre.co.uk/reviews/whos-afraid-of-virginia-woolf-review-gillian-anderson-billy-crudup-marianne-elliott",
+        "https://lovelondonloveculture.com/2026/10/03/review-round-up-whos-afraid-of-virginia-woolf-sohoplace/",
         "https://www.thetimes.com/culture/theatre-dance/article/whos-afraid-of-virginia-woolf-review-5m3tkqdsw",
         "https://www.theupcoming.co.uk/2026/10/01/whos-afraid-of-virginia-woolf-at-soho-place-theatre-review/",
         "https://sierz.co.uk/reviews/whos-afraid-of-virginia-woolf-sohoplace/",
@@ -165227,14 +165518,14 @@
         "https://firstnightmagazine.com/2026/10/01/review-of-whos-afraid-of-virginia-woolf-soho-place-2026-billy-crudup-and-gillian-anderson-are-the-hottest-hot-mess-in-town/",
         "https://everything-theatre.co.uk/2026/10/review-whos-afraid-of-virginia-woolf-sohoplace/",
         "https://liamodell.com/2026/10/01/whos-afraid-of-virginia-woolf-review-soho-place-london-about-cast-running-time-gillian-anderson-billy-crudup-josh-dylan-phoebe-horn/",
-        "https://maryamphilpottblog.wordpress.com/2026/09/28/whos-afraid-of-virginia-woolf-sohoplace/",
-        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/whos-afraid-of-virginia-woolf-review-gillian-anderson-b3059677.html",
         "https://theatreandtonic.co.uk/blog/whos-afraid-of-virginia-woolf-at-sohoplace-review",
+        "https://www.londonboxoffice.co.uk/news/post/whos-afraid-of-virginia-woolf-soho-place-theatre-review",
+        "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/whos-afraid-of-virginia-woolf-review-gillian-anderson-b3059677.html",
         "https://www.thestage.co.uk/reviews/whos-afraid-of-virginia-woolf-review-sohoplace-london",
         "https://www.broadwayworld.com/westend/article/Review-WHOS-AFRAID-OF-VIRGINA-WOOLF-Starring-Gillian-Anderson-Billy-Crudup-20261001"
       ],
       "dirFiles": 52,
-      "dirClean": 28,
+      "dirClean": 30,
       "inReviewsJson": 27,
       "missing": [
         {
@@ -165334,11 +165625,11 @@
           "count": 1
         },
         {
-          "host": "dailymail.com",
+          "host": "maryamphilpottblog.wordpress.com",
           "count": 1
         },
         {
-          "host": "londonboxoffice.co.uk",
+          "host": "dailymail.com",
           "count": 1
         },
         {
@@ -165358,8 +165649,12 @@
           "count": 1
         },
         {
-          "host": "thereviewshub.com",
+          "host": "theatremonkey.com",
           "count": 1
+        },
+        {
+          "host": "thereviewshub.com",
+          "count": 2
         },
         {
           "host": "westendbestfriend.co.uk",
@@ -165408,8 +165703,7 @@
             "lbo-roundup"
           ],
           "weRefStars": 5,
-          "weRefStarsSource": "westendtheatre",
-          "serpCensus": true
+          "weRefStarsSource": "westendtheatre"
         }
       ],
       "citedNoUrl": [],
@@ -165471,7 +165765,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 7,
+            "accepted": 6,
             "error": null
           },
           {
@@ -165481,7 +165775,7 @@
             "geo": "gb",
             "ok": true,
             "results": 9,
-            "accepted": 1,
+            "accepted": 3,
             "error": null
           },
           {
@@ -165521,7 +165815,7 @@
             "geo": "gb",
             "ok": true,
             "results": 10,
-            "accepted": 5,
+            "accepted": 4,
             "error": null
           }
         ],
@@ -165531,16 +165825,15 @@
         "error": null
       },
       "candidatesRejected": {
-        "count": 956,
+        "count": 959,
         "byReason": {
-          "non-review-host": 105,
-          "aggregator-internal-nav": 696,
-          "ticketing-listing": 1,
           "not-http-url": 130,
+          "non-review-host": 106,
+          "aggregator-internal-nav": 697,
           "aggregator-section-root": 20,
-          "roundup-page": 2,
+          "roundup-page": 4,
           "census-junk-host": 1,
-          "ticket-seller-product-page": 1
+          "ticketing-listing": 1
         }
       },
       "dedupedVariants": [
@@ -165558,12 +165851,12 @@
           "publishDate": "2022-05-04"
         },
         {
-          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-u-k-revival-of-whos-afraid-of-virginia-woolf-starring-downton-abbeys-elizabeth-mcgovern",
-          "publishDate": "2023-01-19"
-        },
-        {
           "url": "https://playbill.com/article/what-do-critics-think-of-imelda-staunton-in-whos-afraid-of-virginia-woolf",
           "publishDate": "2017-03-15"
+        },
+        {
+          "url": "https://playbill.com/article/reviews-what-do-critics-think-of-u-k-revival-of-whos-afraid-of-virginia-woolf-starring-downton-abbeys-elizabeth-mcgovern",
+          "publishDate": "2023-01-19"
         },
         {
           "url": "https://www.broadwayworld.com/article/Review-Roundup-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Opens-on-Broadway-All-the-Reviews-20121014",
@@ -165684,6 +165977,30 @@
         "suppressedMissing": [],
         "candidates": [
           {
+            "url": "http://www.theguardian.com/stage/2017/mar/09/whos-afraid-of-virginia-woolf-review-imelda-staunton-albee-conleth-hill-harold-pinter-theatre",
+            "outletId": "theguardian.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-01T22:20:57.880Z"
+          },
+          {
+            "url": "http://www.standard.co.uk/goingout/theatre/whos-afraid-of-virginia-woolf-theatre-review-this-modern-classic-still-feels-lethal-a3486086.html",
+            "outletId": "standard.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-01T22:20:57.880Z"
+          },
+          {
+            "url": "http://www.thestage.co.uk/reviews/2017/whos-afraid-virginia-woolf-review-starring-imelda-staunton-harold-pinter-theatre-london/",
+            "outletId": "thestage.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-01T22:20:57.880Z"
+          },
+          {
+            "url": "http://www.timeout.com/london/theatre/whos-afraid-of-virginia-woolf",
+            "outletId": "timeout.com",
+            "state": "live",
+            "firstSeenAt": "2026-10-01T22:20:57.880Z"
+          },
+          {
             "url": "https://www.broadwayworld.com/article/Review-WHOS-AFRAID-OF-VIRGINIA-WOOLF-Ustinov-Studio-Bath-20230119",
             "outletId": "broadwayworld.com",
             "state": "live",
@@ -165714,25 +166031,7 @@
             "firstSeenAt": "2026-10-01T22:20:57.880Z"
           },
           {
-            "url": "http://www.theguardian.com/stage/2017/mar/09/whos-afraid-of-virginia-woolf-review-imelda-staunton-albee-conleth-hill-harold-pinter-theatre",
-            "outletId": "theguardian.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-01T22:20:57.880Z"
-          },
-          {
-            "url": "http://www.standard.co.uk/goingout/theatre/whos-afraid-of-virginia-woolf-theatre-review-this-modern-classic-still-feels-lethal-a3486086.html",
-            "outletId": "standard.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-01T22:20:57.880Z"
-          },
-          {
-            "url": "http://www.thestage.co.uk/reviews/2017/whos-afraid-virginia-woolf-review-starring-imelda-staunton-harold-pinter-theatre-london/",
-            "outletId": "thestage.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-01T22:20:57.880Z"
-          },
-          {
-            "url": "http://www.timeout.com/london/theatre/whos-afraid-of-virginia-woolf",
+            "url": "https://www.timeout.com/london/news/whos-afraid-of-virginia-woolf-review-sohoplace-gillian-anderson-100126",
             "outletId": "timeout.com",
             "state": "live",
             "firstSeenAt": "2026-10-01T22:20:57.880Z"
@@ -165744,20 +166043,14 @@
             "firstSeenAt": "2026-10-01T22:20:57.880Z"
           },
           {
-            "url": "https://www.timeout.com/london/news/whos-afraid-of-virginia-woolf-review-sohoplace-gillian-anderson-100126",
-            "outletId": "timeout.com",
+            "url": "https://www.londontheatre.co.uk/theatre-news/news/first-look-at-gillian-anderson-and-billy-crudup-in-whos-afraid-of-virginia-woolf",
+            "outletId": "londontheatre.co.uk",
             "state": "live",
-            "firstSeenAt": "2026-10-01T22:20:57.880Z"
+            "firstSeenAt": "2026-10-04T15:49:45.268Z"
           },
           {
             "url": "https://www.allthatdazzles.co.uk/post/review-whos-afraid-of-virginia-woolf-sohoplace",
             "outletId": "allthatdazzles.co.uk",
-            "state": "live",
-            "firstSeenAt": "2026-10-03T20:31:28.413Z"
-          },
-          {
-            "url": "https://www.londontheatre.co.uk/reviews/whos-afraid-of-virginia-woolf-review-gillian-anderson-billy-crudup-marianne-elliott",
-            "outletId": "londontheatre.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-03T20:31:28.413Z"
           },
@@ -165778,6 +166071,12 @@
             "outletId": "standard.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-01T22:20:57.880Z"
+          },
+          {
+            "url": "https://www.londontheatre.co.uk/reviews/whos-afraid-of-virginia-woolf-review-gillian-anderson-billy-crudup-marianne-elliott",
+            "outletId": "londontheatre.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-03T20:31:28.413Z"
           },
           {
             "url": "https://www.thetimes.com/culture/theatre-dance/article/whos-afraid-of-virginia-woolf-review-5m3tkqdsw",
@@ -165828,16 +166127,16 @@
             "firstSeenAt": "2026-10-03T20:31:28.413Z"
           },
           {
-            "url": "https://maryamphilpottblog.wordpress.com/2026/09/28/whos-afraid-of-virginia-woolf-sohoplace/",
-            "outletId": "maryamphilpottblog.wordpress.com",
-            "state": "live",
-            "firstSeenAt": "2026-10-03T20:31:28.413Z"
-          },
-          {
             "url": "https://theatreandtonic.co.uk/blog/whos-afraid-of-virginia-woolf-at-sohoplace-review",
             "outletId": "theatreandtonic.co.uk",
             "state": "live",
             "firstSeenAt": "2026-10-03T20:31:28.413Z"
+          },
+          {
+            "url": "https://www.londonboxoffice.co.uk/news/post/whos-afraid-of-virginia-woolf-soho-place-theatre-review",
+            "outletId": "londonboxoffice.co.uk",
+            "state": "live",
+            "firstSeenAt": "2026-10-04T15:49:45.268Z"
           },
           {
             "url": "https://www.thestage.co.uk/reviews/whos-afraid-of-virginia-woolf-review-sohoplace-london",
@@ -165870,7 +166169,7 @@
         "liveCount": 20,
         "candidateCount": 22
       },
-      "computedAt": "2026-10-04T03:11:34.259Z"
+      "computedAt": "2026-10-04T15:49:45.268Z"
     },
     {
       "showId": "why-i-stuck-a-flare-up-my-arse-for-england-soho-playhouse-off-broadway-2026",
