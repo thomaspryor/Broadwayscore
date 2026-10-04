@@ -10,6 +10,7 @@ import { isNonTheatricalGenre } from '@/lib/genre';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
 import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix, formatShowDate } from '@/lib/date-utils';
+import { shortCity } from '@/lib/tour-schedule';
 import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
 import { isOperaShow, OPERA_DURATION_SUFFIX, OPERA_MARKET_LABEL } from '@/lib/show-market';
 import ShowPageBookmark from '@/components/user/ShowPageBookmark';
@@ -154,6 +155,18 @@ const ShowListCard = memo(function ShowListCard({
     </span>
   ) : null;
 
+  // --- National tour: where it plays now and next (BRO-4601) ---
+  const tourNow = show.tourNowNext?.now;
+  const tourNext = show.tourNowNext?.next;
+  const shortDate = (d: string) => formatShowDate(d, { month: 'short', day: 'numeric' });
+  const tourLine = show.status === 'open' && (tourNow || tourNext) ? (
+    <p className="mt-1 text-xs text-gray-400 line-clamp-2" data-testid="tour-now-next">
+      {tourNow && <>Now in <span className="text-white">{shortCity(tourNow.city)}</span><span className="hidden sm:inline"> through {shortDate(tourNow.end)}</span></>}
+      {tourNow && tourNext && ' · '}
+      {tourNext && <>Next: {shortCity(tourNext.city)}, {shortDate(tourNext.start)}</>}
+    </p>
+  ) : null;
+
   // --- Info section content differs between default and compact ---
   const infoContent = isCompact ? (
     // Compact variant (Browse): different date formatting, performances support
@@ -207,6 +220,7 @@ const ShowListCard = memo(function ShowListCard({
         )}
         {ticketCta}
       </div>
+      {tourLine}
     </div>
   ) : (
     // Default variant (Home, OB, WE): formatOpeningDate style

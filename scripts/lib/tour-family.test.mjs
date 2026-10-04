@@ -83,11 +83,11 @@ test('isNotBroadway: tour language is fine for a tour target only', () => {
 
 test('tours inherit the parent archived thumbnail/poster and synopsis, never the hero or a remote URL', () => {
   const { tourInheritance, applyTourInheritance } = require('./tour-family.js');
-  const parent = { id: 'p', images: { hero: '/images/shows/p/hero.webp', thumbnail: '/images/shows/p/thumbnail.webp', poster: 'https://cdn.example.com/p.jpg' }, synopsis: 'Story.' };
+  const parent = { id: 'p', images: { hero: '/images/shows/p/hero.webp', thumbnail: '/images/shows/p/thumbnail.webp', poster: 'https://cdn.example.com/p.jpg' }, synopsis: 'Story.', runtime: '2h 30m' };
   const tour = { id: 't', category: 'tour', tourOf: 'p', images: { hero: null, thumbnail: null, poster: null } };
-  assert.deepEqual(tourInheritance(tour, parent), { images: { hero: null, thumbnail: '/images/shows/p/thumbnail.webp', poster: null }, synopsis: 'Story.' });
-  const own = { ...tour, images: { thumbnail: '/images/shows/t/thumbnail.webp' }, synopsis: 'Tour story.' };
-  assert.equal(tourInheritance(own, { ...parent, images: { thumbnail: '/images/shows/p/thumbnail.webp' } }), null, 'own art and synopsis win');
+  assert.deepEqual(tourInheritance(tour, parent), { images: { hero: null, thumbnail: '/images/shows/p/thumbnail.webp', poster: null }, synopsis: 'Story.', runtime: '2h 30m' });
+  const own = { ...tour, images: { thumbnail: '/images/shows/t/thumbnail.webp' }, synopsis: 'Tour story.', runtime: '2h 25m' };
+  assert.equal(tourInheritance(own, { ...parent, images: { thumbnail: '/images/shows/p/thumbnail.webp' } }), null, 'own art, synopsis and runtime win');
   assert.equal(tourInheritance({ id: 'b', category: 'broadway' }, parent), null);
   const shows = [parent, tour];
   assert.deepEqual(applyTourInheritance(shows), ['t']);

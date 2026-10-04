@@ -1,0 +1,55 @@
+// National-tour engagement schedule (BRO-4601). Pure helpers: no data imports,
+// so client components and tests can use them. The data comes from
+// data/tour-schedules.json (scripts/fetch-tour-schedules.js) via
+// data-tour-schedule.ts.
+
+export interface TourStop {
+  city: string;
+  venue: string;
+  /** YYYY-MM-DD */
+  start: string;
+  /** YYYY-MM-DD */
+  end: string;
+}
+
+export interface TourNowNext {
+  /** The engagement playing on `today`, if any. */
+  now: TourStop | null;
+  /** The next engagement to start after `today`. */
+  next: TourStop | null;
+}
+
+/** Where the tour is on `today` (YYYY-MM-DD) and where it goes next. */
+export function getTourNowNext(stops: TourStop[], today: string): TourNowNext {
+  const now = stops.find(s => s.start <= today && today <= s.end) ?? null;
+  const next = stops.find(s => s.start > today) ?? null;
+  return { now, next };
+}
+
+const DAY = 86400000;
+const addDays = (d: string, n: number) => new Date(Date.parse(`${d}T00:00:00Z`) + n * DAY).toISOString().slice(0, 10);
+
+/**
+ * The stop a review was written in, by its publish date: the engagement
+ * running that day, or one that ended up to 3 days before (a review of the
+ * closing weekend). Falls back to the latest stop that had started. Never
+ * reads the review URL (CLAUDE.md: no metadata from URLs).
+ */
+export function stopForReview(stops: TourStop[], publishDate: string | null | undefined): TourStop | null {
+  if (!publishDate) return null;
+  const d = publishDate.slice(0, 10);
+  const running = stops.find(s => s.start <= d && d <= addDays(s.end, 3));
+  if (running) return running;
+  const started = stops.filter(s => s.start <= d);
+  return started.length ? started[started.length - 1] : null;
+}
+
+/** "San Diego, CA" → "San Diego" for tight spaces. */
+export function shortCity(city: string): string {
+  return city.replace(/,\s*[A-Z]{2}$/, '');
+}
+
+/** Stable key for a stop: a tour can play the same city twice. */
+export function stopKey(s: TourStop): string {
+  return `${s.city}|${s.start}`;
+}

@@ -13,6 +13,17 @@ import BrowseListClient from '@/components/BrowseListClient';
 import HowThisWorks from '@/components/HowThisWorks';
 import type { BrowseShow } from '@/components/BrowseListClient';
 
+// "How This Works" default per market. The Broadway outlets (NYT, Vulture,
+// Variety) also review Off-Broadway; London and regional runs are reviewed by
+// other papers (BRO-4601). A page's own config.howItWorks wins.
+const HOW_IT_WORKS_BY_SOURCE: Partial<Record<string, string>> = {
+  broadway: 'Shows are ranked by CriticScore, a weighted average of reviews from dozens of outlets. Top-tier publications (NYT, Vulture, Variety) carry more weight than smaller outlets. Toggle to Audience mode to see letter grades based on audience sentiment from multiple sources.',
+  'west-end': 'Shows are ranked by CriticScore, a weighted average of reviews from UK critics at outlets like The Guardian, The Telegraph, Time Out, WhatsOnStage and The Stage. Major publications carry more weight than smaller outlets. Toggle to Audience mode to see letter grades based on audience sentiment from multiple sources.',
+  regional: 'Shows are ranked by CriticScore, a weighted average of reviews from local and national critics, from papers like The Washington Post and the Los Angeles Times to regional outlets. Major publications carry more weight than smaller outlets. Toggle to Audience mode to see letter grades where audiences have rated the production itself.',
+};
+HOW_IT_WORKS_BY_SOURCE['off-broadway'] = HOW_IT_WORKS_BY_SOURCE.broadway;
+HOW_IT_WORKS_BY_SOURCE['off-west-end'] = HOW_IT_WORKS_BY_SOURCE['west-end'];
+
 export function generateStaticParams() {
   return getAllBrowseSlugs().map((slug) => ({ slug }));
 }
@@ -273,13 +284,7 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
         {/* How This Works */}
         <HowThisWorks className="mt-8">
-          {config.howItWorks ? <p>{config.howItWorks}</p> : (
-            <p>
-              Shows are ranked by CriticScore, a weighted average of reviews from dozens of outlets.
-              Top-tier publications (NYT, Vulture, Variety) carry more weight than smaller outlets.
-              Toggle to Audience mode to see letter grades based on audience sentiment from multiple sources.
-            </p>
-          )}
+          <p>{config.howItWorks ?? HOW_IT_WORKS_BY_SOURCE[config.source ?? 'broadway'] ?? HOW_IT_WORKS_BY_SOURCE.broadway}</p>
         </HowThisWorks>
       </div>
     </>

@@ -40,7 +40,7 @@ import { getVideoReviews } from '@/lib/data-video-reviews';
 import { StatusBadge, FormatPill, ProductionPill, CategoryBadge, getScoreColorClass, getScoreTier, getScoreTextColorClass, ScoreBreakdownBar } from '@/components/show-cards';
 import { hasEnoughReviews, reviewsRemainingForScore, applyCoverageFloor } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
-import { getBroadwayDuration } from '@/lib/date-utils';
+import { getBroadwayDuration, formatShowDate } from '@/lib/date-utils';
 import { getShowDateLineSegments, getHeroDurationSuffix, getReviewAgeNote, formatShowDate as formatDate } from '@/lib/show-date-line';
 import TicketLink from '@/components/TicketLink';
 import TicketButtonsAB from '@/components/TicketButtonsAB';
@@ -58,6 +58,9 @@ import { getBrowseSlug } from '@/lib/browse-slugs';
 import HeroRankLine from '@/components/show-page/HeroRankLine';
 import { AwardsNavLink } from '@/components/AwardsNavLink';
 import { showFormatTitle, showFormatTextClass, showFormatPlural } from '@/lib/show-format';
+import { getTourSchedule, getTourScheduleSource } from '@/lib/data-tour-schedule';
+import { getTourNowNext, stopForReview, stopKey } from '@/lib/tour-schedule';
+import TourScheduleCard from '@/components/show-page/TourScheduleCard';
 
 // Group A: personalized, auth-dependent — ssr:false so they don't block
 // the pre-rendered HTML, Suspense prevents hydration mismatch.
@@ -359,14 +362,30 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // Passing the same full show object across all three boundaries tripled this
   // show's own review array in the RSC payload — 117 review objects inlined for
   // 39 real reviews on /show/hamilton. Card #962, follow-up to #419.
+  // National tour (BRO-4601): the city it plays now replaces the placeholder
+  // venue "North American Tour" in the hero and Quick Facts.
+  const tourStops = isTour ? getTourSchedule(show.id) : [];
+  const tourToday = new Date().toISOString().slice(0, 10);
+  const tourNowNext = tourStops.length ? getTourNowNext(tourStops, tourToday) : null;
+  const tourVenue = tourNowNext?.now
+    ? `Now in ${tourNowNext.now.city} · ${tourNowNext.now.venue}`
+    : tourNowNext?.next ? `Next: ${tourNowNext.next.city}, ${formatShowDate(tourNowNext.next.start, { month: 'short', day: 'numeric' })}` : null;
+  const tourReviewCounts: Record<string, number> = {};
+  for (const r of show.criticScore?.reviews ?? []) {
+    const stop = stopForReview(tourStops, r.publishDate);
+    if (stop) tourReviewCounts[stopKey(stop)] = (tourReviewCounts[stopKey(stop)] ?? 0) + 1;
+  }
+
   const showForHero: ComputedShowWithReviews<Pick<ComputedReview, 'reviewScore'>> = {
     ...show,
+    venue: tourVenue ?? show.venue,
     criticScore: show.criticScore
       ? { ...show.criticScore, reviews: show.criticScore.reviews.map(r => ({ reviewScore: r.reviewScore })) }
       : null,
   };
   const showForBelowFold: ComputedShowWithReviews<never> = {
     ...show,
+    venue: tourVenue ?? show.venue,
     criticScore: show.criticScore ? { ...show.criticScore, reviews: [] } : null,
   };
 
@@ -882,6 +901,7 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               outletSlug: getOutletSlugById(r.outletId) || undefined,
               criticSlug: r.criticName ? getCriticSlugByName(r.criticName) : null,
               priorRunLabel: show.priorRuns ? getPriorRunLabel(show.priorRuns, r.publishDate) : null,
+              stopLabel: tourStops.length ? (stopForReview(tourStops, r.publishDate)?.city ?? null) : null,
             }))} initialCount={5} category={show.category} />
 
             {/* Subtle in-card methodology link — explains how CriticScore is
@@ -922,6 +942,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
               Archived critic reviews for this production are being collected and will appear here as they&apos;re processed.
             </p>
           </section>
+        )}
+
+        {/* National tour: where it plays now, next, and every stop (BRO-4601). */}
+        {tourStops.length > 0 && (
+          <TourScheduleCard stops={tourStops} today={tourToday} reviewCounts={tourReviewCounts} source={getTourScheduleSource(show.id)} />
         )}
 
         {/* === SECTION ORDERING ===

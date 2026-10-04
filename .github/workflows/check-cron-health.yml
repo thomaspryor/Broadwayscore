@@ -98,6 +98,8 @@ jobs:
             # Notion 39c637c5-416f-8112). 36h = daily cadence + 12h cron-lag cushion.
             "commercial-pending-review-notify.yml|36|Commercial Pending Review Notify"
             "fetch-todaytix-showtimes.yml|36|Fetch TodayTix Showtimes"
+            # BRO-4601: tour Now/Next lines and Tour Schedule cards go stale if this dies.
+            "fetch-tour-schedules.yml|36|Fetch Tour Schedules"
             # BRO-4434: the npm advisory gate left test.yml (main = code only). Its
             # findings are Linear cards, and its own failure (exit 2/3) is a plain
             # red run that notify-failure(warning) never emails — this entry is what

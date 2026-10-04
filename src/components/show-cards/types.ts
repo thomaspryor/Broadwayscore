@@ -25,6 +25,8 @@ export interface ShowCardShow {
   isRevival?: boolean;
   season?: string;
   reviewYearNote?: string;
+  /** National tours: this build's current and next engagement (BRO-4601). */
+  tourNowNext?: import('@/lib/tour-schedule').TourNowNext | null;
   images?: { thumbnail?: string; poster?: string; hero?: string };
   criticScore?: { score?: number; reviewCount?: number; tier1Count?: number; tier2Count?: number };
   audienceCombinedScore: number | null;
