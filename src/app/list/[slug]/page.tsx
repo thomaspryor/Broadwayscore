@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { getServerSupabaseClient } from '@/lib/supabase-server';
-import { noStoreFetch } from '@/lib/shared-plans/load';
+import { noStoreFetch } from '@/lib/share-links/load';
 import { BASE_URL } from '@/lib/seo';
 import SharedListClient from './SharedListClient';
 
