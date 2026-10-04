@@ -2,9 +2,26 @@
   "version": 1,
   "showId": "whos-afraid-of-virginia-woolf-west-end-2026",
   "openingDate": "2026-09-30",
-  "detectedAt": "2026-10-04T13:07:29.564Z",
+  "detectedAt": "2026-10-04T14:18:28.804Z",
   "windowDays": 7,
   "orphans": [
+    {
+      "file": "ground--unknown.json",
+      "outletId": "ground",
+      "criticName": "Unknown",
+      "url": "https://ground.news/article/production-images-released-for-gillian-anderson-and-billy-crudup-in-whos-afraid-of-virginia-woolf-theatre-weekly",
+      "fullTextLen": 2685,
+      "dispatchActionable": true,
+      "skipReason": null,
+      "rescoreBlockedReason": null,
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
+    },
     {
       "file": "theatreboard--unknown.json",
       "outletId": "theatreboard",
@@ -21,12 +38,29 @@
       "llmScore": null,
       "contentTier": "truncated",
       "eligibilityReason": null
+    },
+    {
+      "file": "theatremonkey--unknown.json",
+      "outletId": "theatremonkey",
+      "criticName": "Unknown",
+      "url": "https://www.theatremonkey.com/show/whos-afraid-of-virginia-woolf/",
+      "fullTextLen": 672,
+      "dispatchActionable": false,
+      "skipReason": "terminal_text_gate_block",
+      "rescoreBlockedReason": "input_validation_failed:body_too_short",
+      "humanReviewScore": null,
+      "adjudicatedScore": null,
+      "originalScore": null,
+      "originalScoreNormalized": null,
+      "llmScore": null,
+      "contentTier": "truncated",
+      "eligibilityReason": null
     }
   ],
-  "orphanCount": 1,
-  "dispatchableOrphanCount": 0,
-  "blockedOrphanCount": 1,
+  "orphanCount": 3,
+  "dispatchableOrphanCount": 1,
+  "blockedOrphanCount": 2,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-no-actionable-orphans",
-  "lastDispatchAt": null
+  "lastDispatch": "ok",
+  "lastDispatchAt": "2026-10-04T14:18:28.804Z"
 }
