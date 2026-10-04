@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4584",
   "planId": "3918af6e-fe5b-4501-9882-6db21c197527",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-04T20:00:00.000Z",
   "submitter": {
     "name": null,
@@ -32,5 +32,18 @@
         "description": "Reason for the flag."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-04T20:03:53.528Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/financialtimes--julianna-barnaby.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "tru-off-west-end-2026/financialtimes--julianna-barnaby.json wrongAttributionReason: null -> \"BRO-4584: westendtheatre.com round-up text and writer filed as the Financial Times review; the FT review is financialtimes--sarah-hemming.json\""
+    }
+  ]
 }
