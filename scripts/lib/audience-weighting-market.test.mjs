@@ -27,3 +27,20 @@ test('inlined London check matches venue-classification.isLondonMarket', () => {
     assert.equal(r.weights.broadwayCom === 0, isLondonMarket(category), String(category));
   }
 });
+
+// BRO-4601: a tour or regional entry sharing a Broadway title got the Broadway
+// production's Broadway.com rating, and a tour got r/Broadway title chatter.
+test('broadwayCom is ignored for tours and regionals', () => {
+  for (const category of ['tour', 'regional']) {
+    const r = calculateCombinedScore(sources, { category });
+    assert.equal(r.score, 70, category);
+    assert.equal(r.weights.broadwayCom, 0, category);
+  }
+});
+
+test('reddit is ignored for tours but kept for regional world premieres', () => {
+  const withReddit = { mezzanine: { score: 70, reviewCount: 50 }, reddit: { score: 80, reviewCount: 200 } };
+  assert.equal(calculateCombinedScore(withReddit, { category: 'tour' }).weights.reddit, 0);
+  assert.ok(calculateCombinedScore(withReddit, { category: 'regional' }).weights.reddit > 0);
+  assert.ok(calculateCombinedScore(withReddit, { category: 'broadway' }).weights.reddit > 0);
+});
