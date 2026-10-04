@@ -31,9 +31,9 @@ MODEL: Opus (security-sensitive SQL).
   - VERIFY: applies twice cleanly in the harness (idempotency step)
 
 ### Task A-T3: Write the diary SQL tests
-- **Complexity:** M · **Depends on:** A-T1, A-T2 · **Parallel:** No
+- **Complexity:** M · **Depends on:** A-T2 · **Parallel:** No
 - **Files:** tests/sql/diary-shares.test.sql (new)
-- **Description:** token minted/frozen/rotated; client-chosen token ignored; RLS (other user, anon); grants; GET refused with 25006; future-dated rows absent; undated present; **`text` key absent when `show_text = false`** (key, not value); present and truncated when true; whitespace-only text omitted; cap + `capped`; order; `plan_shares` still guarded by `share_token_guard`.
+- **Description:** token minted/frozen/rotated; client-chosen token ignored; RLS (other user, anon); **another user's reviews never on A's link**; grants; GET refused with 25006; future-dated rows absent; undated present; **`text` key absent when `show_text = false`** (key, not value); present and truncated when true; whitespace-only text omitted; cap + `capped`; order; `plan_shares` still guarded by `share_token_guard`.
 - **Acceptance criteria:**
   - VERIFY: `bash scripts/test-sql-migration.sh supabase/migrations/20261001_plan_shares.sql supabase/migrations/20261002_plan_shares_refuse_get.sql supabase/migrations/20261004_diary_shares.sql tests/sql/diary-shares.test.sql` passes
   - VERIFY: the plans test file passes with the diary migration applied after it
@@ -46,7 +46,7 @@ MODEL: Opus (security-sensitive SQL).
 
 ### Task A-T5: Land and apply the migration
 - **Complexity:** S · **Depends on:** A-T3, A-T4 · **Parallel:** No
-- **Description:** land via `land/`, dispatch `apply-migration.yml` (`migration=supabase/migrations/20261004_diary_shares.sql`, `confirm=APPLY`) in the same sitting, then dispatch `test-ugc-roundtrip.yml`.
+- **Description:** land via `land/`, dispatch `apply-migration.yml` (`migration=supabase/migrations/20261004_diary_shares.sql`, `confirm=APPLY`) in the same sitting (one transaction: the plans trigger repoint and the guard DROP go together), then dispatch `test-ugc-roundtrip.yml`. Must be applied before any code that calls `get_shared_diary` lands (C-T6).
 - **Acceptance criteria:**
   - VERIFY: apply run succeeds; `verify-schema.yml` green; round-trip run shows the diary checks passing
 
@@ -92,11 +92,17 @@ MODEL: Opus.
 - **Acceptance criteria:**
   - VERIFY: unit tests incl. tonight's show (excluded), yesterday (included), undated, repeat viewings, capped
 
-### Task B-T7: /seen/[token] page, not-found, error, layout
-- **Complexity:** M · **Depends on:** B-T1, B-T2, B-T5, B-T6, **BRO-4558 landed** · **Parallel:** No
-- **Files:** src/app/seen/[token]/* (new), src/lib/shared-diary/load.ts (new), src/app/seen/[token]/SeenView.tsx (PosterGridCard + Stars footer; UpcomingListRow + Stars extra)
+### Task B-T7: /seen/[token] routes and loader
+- **Complexity:** M · **Depends on:** A-T5, B-T1, B-T2, B-T5, B-T6 · **Parallel:** No
+- **Files:** src/app/seen/[token]/{page,layout,not-found,error}.tsx (new), src/lib/shared-diary/load.ts (new)
 - **Acceptance criteria:**
   - VERIFY: unknown token → 404 page; malformed → 404; no DB → error page with working retry; response headers no-store
+
+### Task B-T7b: SeenView
+- **Complexity:** M · **Depends on:** B-T7, **BRO-4558 landed** · **Parallel:** No
+- **Files:** src/app/seen/[token]/SeenView.tsx (the grid card BRO-4558 lands in upcoming-cards.tsx (`PosterGridCard` on its branch) + `Stars` footer; `UpcomingListRow` + `Stars` extra), tests/unit-test-manifest-tsx.txt
+- **Acceptance criteria:**
+  - VERIFY: fixture renders year groups, undated last, empty diary message, capped note, catalog-only show links via getShowHref
 
 ### Task B-T8: Preview image for /seen
 - **Complexity:** S · **Depends on:** B-T3, B-T7 · **Parallel:** No
@@ -108,7 +114,7 @@ MODEL: Opus.
 - **Complexity:** S · **Depends on:** B-T7 · **Parallel:** No
 - **Files:** src/app/test/seen-fixture/page.tsx (new)
 - **Acceptance criteria:**
-  - VERIFY: `node scripts/visual-qa.mjs --paths /test/seen-fixture,/test/plans-fixture …` 0 overflow at 360–1440; plans fixture unchanged
+  - VERIFY: `node scripts/visual-qa.mjs --paths /test/seen-fixture,/test/plans-fixture …` 0 overflow at 360–1440; plans fixture unchanged; fixture covers empty, capped, undated, no-poster and long-name cases; owner approves the screenshots
 
 ## Sprint C: owner side, release 1 (dates + stars)
 MODEL: Opus.
@@ -148,7 +154,8 @@ MODEL: Opus.
 ### Task C-T6: Land, prod smoke, owner trial
 - **Complexity:** M · **Depends on:** B-T9, C-T4, C-T5 · **Parallel:** No
 - **Acceptance criteria:**
-  - VERIFY: prod `/seen/<unknown>` → 404 + noindex/no-referrer; GA leak check on `/seen/<token>` clean; owner shares their real diary and confirms
+  - VERIFY: prod `/seen/<unknown>` → 404 + noindex/no-referrer; robots.txt does not block `/seen/`; preview-image response headers checked; GA leak check on `/seen/<token>` clean
+  - Owner trial: card goes Paused with RECHECK-AFTER until the owner confirms
 
 ## Sprint D: notes switch, release 2
 MODEL: Opus.
@@ -156,13 +163,14 @@ MODEL: Opus.
 **Risks:** publishing private text.
 
 ### Task D-T1: Notes switch with count + Preview confirm
-- **Complexity:** M · **Depends on:** C-T6 · **Parallel:** No
+- **Complexity:** M · **Depends on:** C-T6, B-T6 · **Parallel:** No
+- **Note:** the preview of notes is rendered from the owner's own diary data on the client (the public RPC withholds text while the switch is off); the "N of M entries have notes" count uses `select.ts`. Confirm copy says the iPhone app's box still reads "Private Notes" until Sprint 5.
 - **Files:** ShareDiaryModal.tsx, useDiaryShare.ts
 - **Acceptance criteria:**
   - VERIFY: browser check: switch → confirm shows "N of M entries have notes" + Preview; cancel leaves `show_text` false
 
 ### Task D-T2: Notes in the friend page list view
-- **Complexity:** S · **Depends on:** D-T1 · **Parallel:** No
+- **Complexity:** S · **Depends on:** B-T7b · **Parallel:** Yes (the SQL already withholds text while the switch is off; D-T4 lands both)
 - **Files:** SeenView.tsx, upcoming-cards.tsx (relax the `note` guard)
 - **Acceptance criteria:**
   - VERIFY: fixture with notes: 3-line clamp + More; grid unchanged; no note text in the preview image
@@ -202,7 +210,7 @@ Sync:              ── A-T5 applied + BRO-4558 landed ── then B-T7…, C 
 - Imported notes can be long: truncated to 4,000 chars in SQL.
 
 ## Changes from Critique
-See `docs/specs/shared-diary.md` §5 (plan review, 6 reviewers) and the task-level review below.
+See `docs/specs/shared-diary.md` §5 for the 6-reviewer plan review. Task-level review (2026-10-04): A-T1 dropped; cross-user privacy test added to A-T3; B-T7 split (routes/loader vs SeenView) and given A-T5 as a dependency; D-T1 preview source and count rule specified; D-T2 parallel; robots.txt + preview-header checks moved into C-T6; owner trial → Paused/RECHECK-AFTER; tsx manifest listed for TS test tasks.
 
 ## Key Risks
 1. Private notes published by surprise → off in DB and UI, second release, count + preview confirm, relabelled box, key-absence SQL test.
