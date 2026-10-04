@@ -82,7 +82,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" 2>/dev/null && pwd)"
 # the branch that ships a newer script never defers to the older origin
 # copy (2026-09-20: a byte-compare did exactly that and the old copy merged
 # the WIP branch into the shared main checkout).
-MERGE_SCRIPT_VERSION=3
+MERGE_SCRIPT_VERSION=4
 # Runs BEFORE any lib is sourced: a detached copy (`git show origin/main:… >
 # /tmp/x.sh && bash /tmp/x.sh`) has no scripts/lib beside it, and an old
 # worktree's copy may lack libs a newer version needs — so the re-exec
@@ -263,6 +263,18 @@ prove_and_finish() {
     ( cd "$MAIN_DIR" 2>/dev/null || exit 0
       nohup node scripts/verify-merge-landed.js --sha="$landed_sha" --branch="$DEFAULT_BRANCH" --label="$BRANCH -> $DEFAULT_BRANCH (land/**)" --delays=120,480,900 </dev/null >>"$vlog" 2>&1 & )
     log "delayed re-verify scheduled (+2m/+8m/+15m against ${landed_sha:0:10}) — log: $vlog"
+  fi
+  # BRO-2884: a [skip ci] telemetry commit on the push tip gives a landing ZERO
+  # CI (GitHub reads only the tip commit). Prove a test.yml run covers the
+  # landed sha (it or a descendant); dispatch one when it does not. Non-fatal —
+  # the landing is already on main — but an UNCOVERED verdict is printed loudly.
+  # landed_sha is empty on rebased landings whose landings.jsonl row is late; the
+  # origin tip contains the landed patches, so it is a valid (descendant) probe.
+  local cov_sha="$landed_sha"
+  [ -n "$cov_sha" ] || cov_sha=$(g rev-parse "origin/$DEFAULT_BRANCH" 2>/dev/null || true)
+  if [ "${LAND_CI_COVERAGE_OFF:-}" != "1" ] && [ -n "$cov_sha" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/landing-ci-coverage.js" ]; then
+    echo "── CI-coverage check (BRO-2884) ──"
+    node "$SCRIPT_DIR/lib/landing-ci-coverage.js" --sha="$cov_sha" --cwd="$MAIN_DIR" --base="$fork" || echo "⚠ CI-COVERAGE not confirmed for ${cov_sha:0:10} — see above (LAND_CI_COVERAGE_OFF=1 disables)" >&2
   fi
   echo "LANDED: $BRANCH → ${landed_sha:-<rebased; sha in data/audit/landings.jsonl once its row lands>} in $(( $(date +%s) - t0 ))s${land_name:+ via $land_name}${run_url:+ ($run_url)} [proof: $proof]"
   exit 0
