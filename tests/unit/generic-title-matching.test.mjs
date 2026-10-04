@@ -2,17 +2,21 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import fs from 'node:fs';
 
 const require = createRequire(import.meta.url);
 const {
-  buildTokenDocFreq, isGenericTitle, checkGenericTitleCandidate,
+  buildTokenDocFreq, isGenericTitle, checkGenericTitleCandidate, _resetCachesForTest,
 } = require('../../scripts/lib/generic-title-matching.js');
 const { validateSerpCandidate } = require('../../scripts/lib/serp-candidate-validator.js');
 
-const raw = JSON.parse(fs.readFileSync('data/shows.json', 'utf8'));
-const shows = Array.isArray(raw) ? raw : raw.shows;
+// Hermetic corpus: "story"/"love" are common title tokens; the rest are distinctive.
+const shows = [
+  ...['West Side', 'Love', 'A Ghost', 'Toy', 'Fairy', 'Bear', 'Big Fish', 'True', 'Winters', 'Ghost', 'Untold'].map(w => ({ title: `${w} Story` })),
+  ...['Sweet', 'Crazy', 'First', 'Puppy', 'Brotherly', 'Young', 'Tough', 'Real', 'Endless', 'Lost'].map(w => ({ title: `${w} Love` })),
+  { title: 'Hamilton' }, { title: 'Wicked' }, { title: 'A Christmas Carol' }, { title: 'Christmas Spectacular' },
+];
 const df = buildTokenDocFreq(shows);
+_resetCachesForTest(df);
 
 const THE_STORY = {
   id: 'the-story-west-end-2026', title: 'The Story', category: 'west-end',

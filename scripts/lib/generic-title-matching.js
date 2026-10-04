@@ -134,7 +134,7 @@ function checkGenericTitleCandidate({ show, candidate, df }) {
   };
 }
 
-function _resetCachesForTest() { _dfCache = null; }
+function _resetCachesForTest(df = null) { _dfCache = df; }
 
 module.exports = {
   COMMON_TOKEN_MIN_TITLES, buildTokenDocFreq, isGenericTitle, findCorroboration,
