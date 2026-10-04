@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-04T11:50:50.166Z",
+  "runDate": "2026-10-04T12:05:23.827Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,38 +11,38 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 5,
+    "processed": 9,
     "failed": 58,
     "skipped": 0,
-    "successRate": "7.9%"
+    "successRate": "13.4%"
   },
   "tierBreakdown": {
-    "playwright": 4,
+    "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 2,
+    "tier1Success": 2,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 2,
+    "tier3Success": 2,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 56,
     "scrapingBeePageCredits": 0,
@@ -58,7 +58,11 @@
     "escape-to-margaritaville-2018/fox-news--unknown.json",
     "clybourne-park-2012/cbsnews--shania-russell.json",
     "clybourne-park-2012/village-voice--unknown.json",
-    "carrie-1988/backstage--erik-haagensen.json"
+    "carrie-1988/backstage--erik-haagensen.json",
+    "operation-mincemeat-tour-2026/rachelweinbergreviews--unknown.json",
+    "operation-mincemeat-tour-2026/third-coast-review--unknown.json",
+    "operation-mincemeat-tour-2026/boston-globe--unknown.json",
+    "operation-mincemeat-tour-2026/broadwayworld--unknown.json"
   ],
   "failed": [
     "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
@@ -125,7 +129,9 @@
       "escape-to-margaritaville-2018/fox-news--unknown.json",
       "clybourne-park-2012/cbsnews--shania-russell.json",
       "clybourne-park-2012/village-voice--unknown.json",
-      "carrie-1988/backstage--erik-haagensen.json"
+      "carrie-1988/backstage--erik-haagensen.json",
+      "operation-mincemeat-tour-2026/rachelweinbergreviews--unknown.json",
+      "operation-mincemeat-tour-2026/third-coast-review--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -134,7 +140,10 @@
       "red-riding-hood-off-broadway-2026/showify--unknown.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "operation-mincemeat-tour-2026/boston-globe--unknown.json",
+      "operation-mincemeat-tour-2026/broadwayworld--unknown.json"
+    ],
     "archiveToday": [],
     "archive": []
   },
