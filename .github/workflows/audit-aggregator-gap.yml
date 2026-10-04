@@ -31,9 +31,16 @@ on:
         description: 'Also audit closed shows — back-catalogue backfill (default true)'
         required: false
         default: 'true'
+      show_ids:
+        description: 'Targeted run: comma-separated show ids, audited in the order given with ingest + checkpoint (BRO-4592). Empty = normal back-catalogue grind.'
+        required: false
+        default: ''
 
 concurrency:
-  group: audit-aggregator-gap
+  # A targeted run gets its own group (BRO-4592): in the shared group GitHub keeps
+  # only ONE pending run, so the hourly cron queued behind a running audit would
+  # silently replace a dispatched targeted run.
+  group: audit-aggregator-gap${{ inputs.show_ids && format('-targeted-{0}', github.run_id) || '' }}
   cancel-in-progress: false
 
 permissions:
@@ -146,6 +153,7 @@ jobs:
           SERP_CENSUS_NAIVE_PAGES: ${{ vars.SERP_CENSUS_NAIVE_PAGES || '' }}
           SERP_GAP_CENSUS_DISABLED: ${{ vars.SERP_GAP_CENSUS_DISABLED || '' }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          SHOW_IDS: ${{ github.event.inputs.show_ids || '' }}
           # BRO-3717: this step's routeAlert() calls (review-gap:blast-radius-refused
           # and friends) are disposition='digest', which decideDigestEscalation() can
           # silently promote to 'auto' -> dispatchCard() -> createLinearIssue(),
@@ -171,6 +179,15 @@ jobs:
           # still pushing when the 40-min job cap hit (exit 143). 18 leaves the
           # commit ~17 min even after a slow-show overshoot (2026-06-07).
           ARGS="--window=$WINDOW --checkpoint --time-budget-min=18"
+          # Targeted run (BRO-4592): the newsletter workflows pass the exact featured
+          # shows. Value arrives via env (never interpolated into the script) and is
+          # validated, so a bad input fails loudly instead of auditing nothing.
+          if [ -n "$SHOW_IDS" ]; then
+            if ! printf '%s' "$SHOW_IDS" | grep -Eq '^[a-z0-9][a-z0-9-]*(,[a-z0-9][a-z0-9-]*)*$'; then
+              echo "::error::show_ids must be a comma-separated list of show ids"; exit 1
+            fi
+            ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=35"
+          fi
           if [ "$INCLUDE_CLOSED" = "true" ]; then
             ARGS="$ARGS --include-closed"
           fi
