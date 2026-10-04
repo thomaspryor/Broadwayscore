@@ -53,4 +53,30 @@ async function deleteRows(table, filters) {
   if (!res.ok) throw new Error(`deleteRows ${table}: HTTP ${res.status} ${await res.text().catch(() => '')}`);
 }
 
-module.exports = { selectRows, updateRows, deleteRows };
+/**
+ * INSERT one row, doing nothing if its primary key already exists
+ * (ON CONFLICT DO NOTHING). Returns the inserted rows: [row] when this call
+ * inserted it, [] when it already existed. Used as an atomic "claim".
+ */
+async function insertIgnoreDuplicates(table, row) {
+  const res = await fetch(`${baseUrl()}/rest/v1/${table}`, {
+    method: 'POST',
+    headers: headers('resolution=ignore-duplicates,return=representation'),
+    body: JSON.stringify(row),
+  });
+  if (!res.ok) throw new Error(`insertIgnoreDuplicates ${table}: HTTP ${res.status} ${await res.text().catch(() => '')}`);
+  return res.json();
+}
+
+/** Call a Postgres function through PostgREST (POST /rpc/<fn>). */
+async function rpc(fn, args) {
+  const res = await fetch(`${baseUrl()}/rest/v1/rpc/${fn}`, {
+    method: 'POST',
+    headers: headers(),
+    body: JSON.stringify(args || {}),
+  });
+  if (!res.ok) throw new Error(`rpc ${fn}: HTTP ${res.status} ${await res.text().catch(() => '')}`);
+  return res.json();
+}
+
+module.exports = { selectRows, updateRows, deleteRows, insertIgnoreDuplicates, rpc };
