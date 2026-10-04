@@ -20,6 +20,8 @@ const COMMON_TOKEN_MIN_TITLES = 10;
 const STRUCTURAL = new Set(['the', 'a', 'an', 'of', 'and', 'in', 'on', 'at', 'to', 'for', 'is', 'my', 'your']);
 const VENUE_GENERIC = new Set(['theatre', 'theater', 'stage', 'house', 'hall', 'center', 'centre', 'company', 'broadway', 'london', 'new york', 'west end']);
 
+const VENUE_WORDS = new Set(['theatre', 'theater', 'theatres', 'the', 'company', 'house', 'hall', 'centre', 'center']);
+
 const _DISABLED = String(process.env.GENERIC_TITLE_CORROBORATION || '').toLowerCase() === 'off';
 
 function norm(s) {
@@ -49,9 +51,10 @@ let _dfCache = null;
 function getTokenDocFreq() {
   if (!_dfCache) {
     try {
-      const raw = JSON.parse(fs.readFileSync(path.join(process.cwd(), 'data/shows.json'), 'utf8'));
+      const raw = JSON.parse(fs.readFileSync(path.join(__dirname, '../../data/shows.json'), 'utf8'));
       _dfCache = buildTokenDocFreq(Array.isArray(raw) ? raw : raw.shows);
     } catch (e) {
+      console.warn(`[generic-title-matching] shows.json unreadable (${e.message}); gate inactive`);
       _dfCache = new Map();
     }
   }
@@ -71,9 +74,12 @@ function hasPhrase(haystack, phrase) {
 
 function venueTerms(venue) {
   const out = new Set();
-  for (const seg of String(venue || '').split(/[(),\-–]/)) {
+  for (const seg of String(venue || '').split(/[(),\-–/]/)) {
     const n = norm(seg).replace(/^the /, '').trim();
     if (n.length >= 5 && !VENUE_GENERIC.has(n)) out.add(n);
+    // "Garrick Theatre" is reviewed as "at the Garrick": also accept the name sans generic words.
+    const core = n.split(' ').filter(w => !VENUE_WORDS.has(w)).join(' ');
+    if (core.length >= 5 && !VENUE_GENERIC.has(core)) out.add(core);
   }
   return [...out];
 }
@@ -113,6 +119,11 @@ function findCorroboration(show, text) {
 function checkGenericTitleCandidate({ show, candidate, df }) {
   if (_DISABLED || !show || !candidate || !show.title) return { ok: true };
   if (!isGenericTitle(show.title, df || getTokenDocFreq())) return { ok: true };
+  // Nothing to corroborate with (new/slug-only shows): accept the small
+  // contamination risk rather than silently under-collect (cf. url-discovery's
+  // canDisambiguateGenericTitle).
+  const hasPeople = (show.cast || []).length > 0 || (show.creativeNames || show.creativeTeam || []).length > 0;
+  if (!hasPeople) return { ok: true, signal: 'unverifiable' };
   const text = `${candidate.title || ''} ${candidate.snippet || ''} ${candidate.url || ''}`;
   const c = findCorroboration(show, text);
   if (c.signal) return { ok: true, signal: c.signal };

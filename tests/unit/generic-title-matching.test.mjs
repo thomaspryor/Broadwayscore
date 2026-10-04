@@ -67,12 +67,12 @@ test('The Story: corroboration filter rejects unrelated candidates and keeps rea
 });
 
 test('each signal (venue, cast, director) alone is sufficient', () => {
-  const only = (patch) => ({ id: 'x', title: 'The Story', category: 'west-end', venue: '', cast: [], creativeNames: [], ...patch });
+  const only = (patch) => ({ id: 'x', title: 'The Story', category: 'west-end', venue: '', cast: [{ name: 'Nobody Known' }], creativeNames: [], ...patch });
   const cand = (t) => c('https://example.com/the-story-review', 'The Story review', t);
   assert.equal(checkGenericTitleCandidate({ show: only({ venue: 'National Theatre (Olivier)' }), candidate: cand('at the Olivier'), df }).signal, 'venue');
   assert.equal(checkGenericTitleCandidate({ show: only({ cast: [{ name: 'Letitia Wright' }] }), candidate: cand('Letitia Wright shines'), df }).signal, 'cast');
   assert.equal(checkGenericTitleCandidate({ show: only({ creativeNames: ['Clint Dyer'] }), candidate: cand('directed by Clint Dyer'), df }).signal, 'creative');
-  assert.equal(checkGenericTitleCandidate({ show: only({ venue: 'National Theatre (Olivier)' }), candidate: cand('nothing relevant'), df }).ok, false);
+  assert.equal(checkGenericTitleCandidate({ show: only({ venue: 'National Theatre (Olivier)', cast: [{ name: 'Letitia Wright' }] }), candidate: cand('nothing relevant'), df }).ok, false);
 });
 
 test('non-generic titles are untouched', () => {
@@ -85,4 +85,12 @@ test('validateSerpCandidate wires the gate for a real shows.json generic title',
   assert.equal(bad.ok, false);
   assert.equal(bad.reason, 'generic-title-uncorroborated');
   assert.equal(validateSerpCandidate({ show: THE_STORY, candidate: REAL[0] }).ok, true);
+});
+
+test('venue-name core and slash-separated venues corroborate; no-people shows fail open', () => {
+  const cand = (t) => c('https://example.com/the-story-review', 'The Story review', t);
+  const show = (patch) => ({ id: 'x', title: 'The Story', category: 'west-end', cast: [{ name: 'Nobody Known' }], creativeNames: [], ...patch });
+  assert.equal(checkGenericTitleCandidate({ show: show({ venue: 'Garrick Theatre' }), candidate: cand('at the Garrick'), df }).signal, 'venue');
+  assert.equal(checkGenericTitleCandidate({ show: show({ venue: 'Roundabout Theatre Company/Laura Pels Theatre' }), candidate: cand('Laura Pels Theatre'), df }).signal, 'venue');
+  assert.equal(checkGenericTitleCandidate({ show: show({ cast: [], venue: 'Garrick Theatre' }), candidate: cand('unrelated'), df }).ok, true);
 });
