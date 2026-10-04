@@ -1,53 +1,5 @@
 [
   {
-    "startedAt": "2026-10-03T14:24:42.117Z",
-    "completedAt": "2026-10-03T14:24:49.057Z",
-    "totalReviews": 46463,
-    "processed": 0,
-    "skipped": 46457,
-    "errors": 3,
-    "tokensUsed": {
-      "input": 11833,
-      "output": 330,
-      "total": 34564
-    },
-    "costUsd": 0.06674605,
-    "runId": "37129299762",
-    "errorDetails": [
-      {
-        "showId": "jena-friedman-motherfucker-off-broadway-2026",
-        "outletId": "thecomedybureau",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "the-secret-circus-musical-off-broadway-2026",
-        "outletId": "flopbox",
-        "error": "input_validation_failed:body_too_short"
-      },
-      {
-        "showId": "lost-in-del-valle-return-off-broadway-2026",
-        "outletId": "sohoplayhouse",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-03T14:24:51.093Z",
-    "completedAt": "2026-10-03T14:24:53.147Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37129299762",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-03T14:28:34.797Z",
     "completedAt": "2026-10-03T14:28:41.858Z",
     "totalReviews": 46463,
@@ -323201,6 +323153,38 @@
     },
     "costUsd": 0,
     "runId": "37182808840",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T06:33:55.739Z",
+    "completedAt": "2026-10-04T06:33:58.215Z",
+    "totalReviews": 46537,
+    "processed": 0,
+    "skipped": 46536,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3638,
+      "output": 109,
+      "total": 11008
+    },
+    "costUsd": 0.012905599999999998,
+    "runId": "37183014265",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T06:34:00.202Z",
+    "completedAt": "2026-10-04T06:34:02.267Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37183014265",
     "errorDetails": []
   }
 ]
