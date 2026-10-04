@@ -657,5 +657,34 @@
     "model": null,
     "fields": [],
     "queuedAt": "2026-10-04T19:37:48.299Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-2884-muu5ozon",
+    "title": "Landing blocked: rebase red on land/job/linear-BRO-2884-muu5ozon",
+    "description": "land.yml did not land land/job/linear-BRO-2884-muu5ozon: the rebase gate went red at 3e8957b616. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/job/linear-BRO-2884-muu5ozon @ 3e8957b616 (origin/land/job/linear-BRO-2884-muu5ozon) → origin/main @ 8da785ec2e REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 8da785ec2e: Rebasing (1/4) error: could not apply d73a190d823... BRO-2884: landing CI-coverage guard (dispatch test.yml when skip-ci tip leaves a landing uncovered) hint: Resolve all conflicts manually, mark  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37227234287",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-2884-muu5ozon"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "3e8957b616d7cda80e5117a7eec4911788c50739"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37227234287"
+      }
+    ],
+    "queuedAt": "2026-10-04T19:45:07.217Z"
   }
 ]
