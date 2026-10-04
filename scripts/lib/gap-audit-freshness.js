@@ -14,6 +14,7 @@
  */
 
 const { inOpeningWindow } = require('./gap-reference-sources');
+const { showRecencyKey } = require('./collection-priority');
 
 // Shows opened within the last 7 days sort ahead of the back-catalogue grind.
 const OPENING_PRIORITY_WINDOW_DAYS = 7;
@@ -71,11 +72,24 @@ function checkpointTs(entry) {
 
 // Ordering for time-budgeted runs: opening-window shows first (reviews are
 // landing NOW), then least-recently-audited so the back-catalogue still grinds.
+//
+// Ties (above all the never-audited pile, which all share ts 0) break toward
+// live shows and then the newest opening. Without this the tie fell back to
+// shows.json file order: on 2026-10-04 Arias with a Twist (opened 9/23) and
+// Purpose (9/16) sat at queue positions 95 and 116 behind ~46 never-audited
+// open shows and 58 closed ones, were never audited, and shipped in the
+// 2026-09-28 newsletter with no review-completeness data at all (BRO-4592).
 function compareAuditPriority(a, b, checkpoint, now = Date.now()) {
   const wa = inOpeningPriorityWindow(a, now) ? 0 : 1;
   const wb = inOpeningPriorityWindow(b, now) ? 0 : 1;
   if (wa !== wb) return wa - wb;
-  return checkpointTs(checkpoint[a.id]) - checkpointTs(checkpoint[b.id]); // oldest / never-audited first
+  const byAge = checkpointTs(checkpoint[a.id]) - checkpointTs(checkpoint[b.id]); // oldest / never-audited first
+  if (byAge !== 0) return byAge;
+  const ca = a.status === 'closed' ? 1 : 0;
+  const cb = b.status === 'closed' ? 1 : 0;
+  if (ca !== cb) return ca - cb;
+  // Newest opening first. YYYY-MM-DD strings (or NO_DATE_SENTINEL) compare lexically.
+  return showRecencyKey(b).localeCompare(showRecencyKey(a));
 }
 
 module.exports = {

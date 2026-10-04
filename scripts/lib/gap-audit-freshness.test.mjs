@@ -102,3 +102,32 @@ test('outside the window, least-recently-audited order is preserved', () => {
   const sorted = [openedLastMonth, closedClean].sort((a, b) => compareAuditPriority(a, b, checkpoint, NOW));
   assert.equal(sorted[0].id, 'closed-clean');
 });
+
+// BRO-4592: Arias with a Twist (open, 11d old, never audited) sat behind ~100
+// never-audited back-catalogue shows because ties fell back to shows.json order.
+test('never-audited ties: live show ahead of closed, newest opening first (BRO-4592)', () => {
+  const arias = { id: 'arias', status: 'open', openingDate: iso(11 * DAY) };
+  const purpose = { id: 'purpose', status: 'open', openingDate: iso(18 * DAY) };
+  const oldClosed = { id: 'old-closed', status: 'closed', openingDate: iso(400 * DAY) };
+  const oldOpen = { id: 'old-open', status: 'open', openingDate: iso(300 * DAY) };
+  // Deliberately put the back-catalogue first, as in shows.json file order.
+  const queue = [oldClosed, oldOpen, purpose, arias];
+  queue.sort((a, b) => compareAuditPriority(a, b, {}, NOW));
+  assert.deepEqual(queue.map(s => s.id), ['arias', 'purpose', 'old-open', 'old-closed']);
+});
+
+test('audit age still wins over the new tie-break', () => {
+  const recentAudited = { id: 'recent', status: 'open', openingDate: iso(11 * DAY) };
+  const staleAudited = { id: 'stale', status: 'closed', openingDate: iso(400 * DAY) };
+  const checkpoint = {
+    stale: { at: new Date(NOW - 20 * DAY).toISOString() },
+    recent: { at: new Date(NOW - 1 * DAY).toISOString() },
+  };
+  assert.ok(compareAuditPriority(staleAudited, recentAudited, checkpoint, NOW) < 0);
+});
+
+test('undated shows sort last among ties without throwing', () => {
+  const undated = { id: 'undated', status: 'open' };
+  const dated = { id: 'dated', status: 'open', openingDate: iso(60 * DAY) };
+  assert.ok(compareAuditPriority(dated, undated, {}, NOW) < 0);
+});

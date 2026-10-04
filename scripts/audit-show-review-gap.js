@@ -21,7 +21,7 @@
  *     - Heated Rivalry: 4 listed, 3 ours
  *
  * Modes:
- *   --show=ID             one show only
+ *   --show=ID[,ID...]     one show, or a comma-separated list (audited in the order given)
  *   --window=14           every open show opened within N days (default 21)
  *   --fail-on-gap         exit 1 when any in-window show has missing URLs
  *   --dispatch-gather     gh workflow run gather-reviews.yml for each show
@@ -54,6 +54,7 @@ const { fetchPage, cleanup: scraperCleanup } = require('./lib/scraper');
 const { serpQuery, calculateDateWindow, getShowInfo, isGenericShowTitle, hasDisambiguator, canDisambiguateGenericTitle } = require('./lib/url-discovery');
 const { buildCensusPlan, isCensusPassComplete, shouldRunSerpCensus, DEFAULT_COOLDOWN_HOURS: SERP_CENSUS_DEFAULT_COOLDOWN_HOURS } = require('./lib/serp-review-census');
 const { showRecencyKey, NO_DATE_SENTINEL } = require('./lib/collection-priority');
+const { parseShowFilter, selectShowsById } = require('./lib/gap-audit-show-filter');
 const {
   provisionalOutletIdFromHost,
   sameOutletUrlVariant,
@@ -80,7 +81,7 @@ Usage:
   node scripts/audit-show-review-gap.js --window=21 --fail-on-gap   # CI
 
 Modes:
-  --show=ID             one show only
+  --show=ID[,ID...]     one show, or a comma-separated list (audited in the order given)
   --window=14            every open show opened within N days (default 21)
   --fail-on-gap          exit 1 when any in-window show has missing URLs
   --dispatch-gather      gh workflow run gather-reviews.yml for each show
@@ -134,7 +135,7 @@ const AUDIT_PATH = path.join(ROOT, 'data', 'audit', 'show-review-gap.json');
 const UNKNOWN_OUTLETS_PATH = path.join(ROOT, 'data', 'audit', 'unknown-aggregator-outlets.json');
 
 const args = process.argv.slice(2);
-const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1];
+const showFilter = args.find(a => a.startsWith('--show='))?.split('=')[1]; // one id or a,b,c
 const windowDays = parseInt(args.find(a => a.startsWith('--window='))?.split('=')[1] || '21', 10);
 // One-off catch-up lever (task #903 S5, 60-day verdict backfill): the SERP
 // census itself is normally scoped to inOpeningWindow's own 21-day default
@@ -1712,11 +1713,14 @@ async function main(argv = process.argv.slice(2)) {
   const allShows = loadShows();
   let targets;
   if (showFilter) {
-    targets = allShows.filter(s => s.id === showFilter);
-    if (targets.length === 0) {
-      console.error(`Show not found: ${showFilter}`);
-      process.exit(1);
-    }
+    let ids;
+    try { ids = parseShowFilter(showFilter); } catch (e) { console.error(e.message); process.exit(1); }
+    const sel = selectShowsById(allShows, ids);
+    if (sel.missing.length) console.error(`Show not found: ${sel.missing.join(', ')}`);
+    // Every requested id must exist: a typo in a dispatched id list would
+    // otherwise audit the rest and look like success.
+    if (sel.targets.length === 0 || sel.missing.length) process.exit(1);
+    targets = sel.targets;
   } else {
     targets = allShows.filter(isShowEligible);
   }

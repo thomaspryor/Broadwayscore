@@ -267,6 +267,27 @@ jobs:
           node scripts/newsletter/create-broadcast-draft.mjs "${{ steps.week.outputs.weekStart }}" \
             --audience="${{ github.event.inputs.audience == 'test' && 'test' || (github.event.inputs.edition == 'west-end' && 'west-end' || 'general') }}" --create
 
+      # BRO-4592: make sure the NEXT regen (Sunday newsletter-draft-refresh) sees
+      # complete reviews for every show this issue features. The hourly
+      # back-catalogue audit cannot be relied on to reach them (Arias with a Twist
+      # and Purpose shipped never audited, 2026-10-04), so dispatch a targeted
+      # audit with exactly the shows the draft displays a score for. Best effort,
+      # no waiting: the refresh runs ~20h later, and a failure here must never
+      # fail the draft. Dispatch only; nothing here can send to subscribers.
+      - name: Dispatch targeted review-gap audit for featured shows
+        if: success() && github.event.inputs.skipBroadcastDraft != 'true'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          IDS="$(node scripts/lib/newsletter-audit-targets.js "$NEWSLETTER_OUT_DIR/A-${{ steps.week.outputs.weekStart }}.meta.json" data/audit/gap-audit-checkpoint.json)"
+          if [ -z "$IDS" ]; then
+            echo "::notice::no featured shows to audit"
+            exit 0
+          fi
+          echo "Targeted audit: $IDS"
+          gh workflow run audit-aggregator-gap.yml -f show_ids="$IDS"
+
       # Persist the cross-issue de-dup state (data/newsletter-state.json). The
       # generator UPSERTs this week's mover/announced-closing IDs so next week's
       # run can suppress a slow-moving show (e.g. Fallen Angels) from being

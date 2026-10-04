@@ -31,8 +31,20 @@ on:
         description: 'Also audit closed shows — back-catalogue backfill (default true)'
         required: false
         default: 'true'
+      show_ids:
+        description: 'Targeted run: comma-separated show ids, audited in the order given with ingest + checkpoint (BRO-4592). Empty = normal back-catalogue grind.'
+        required: false
+        default: ''
 
 concurrency:
+  # Targeted (show_ids) runs share this group on purpose (BRO-4592). This workflow
+  # is the single writer of data/audit/gap-audit-checkpoint.json and its siblings,
+  # which core-data-merge-registry.js registers as apiFallbackSafe BECAUSE of this
+  # group: two runs in parallel could push through the whole-file API fallback and
+  # let a stale run overwrite the other's checkpoint stamps. Cost of sharing: GitHub
+  # keeps one pending run, so a later cron tick can replace a queued targeted run.
+  # Runs last ~25 min against an hourly-ish cron, and the cron queue now puts live
+  # newest shows first, so the exposure is small. Verify a targeted dispatch started.
   group: audit-aggregator-gap
   cancel-in-progress: false
 
@@ -146,6 +158,7 @@ jobs:
           SERP_CENSUS_NAIVE_PAGES: ${{ vars.SERP_CENSUS_NAIVE_PAGES || '' }}
           SERP_GAP_CENSUS_DISABLED: ${{ vars.SERP_GAP_CENSUS_DISABLED || '' }}
           GITHUB_REPOSITORY: ${{ github.repository }}
+          SHOW_IDS: ${{ github.event.inputs.show_ids || '' }}
           # BRO-3717: this step's routeAlert() calls (review-gap:blast-radius-refused
           # and friends) are disposition='digest', which decideDigestEscalation() can
           # silently promote to 'auto' -> dispatchCard() -> createLinearIssue(),
@@ -171,6 +184,17 @@ jobs:
           # still pushing when the 40-min job cap hit (exit 143). 18 leaves the
           # commit ~17 min even after a slow-show overshoot (2026-06-07).
           ARGS="--window=$WINDOW --checkpoint --time-budget-min=18"
+          # Targeted run (BRO-4592): the newsletter workflows pass the exact featured
+          # shows. Value arrives via env (never interpolated into the script) and is
+          # validated, so a bad input fails loudly instead of auditing nothing.
+          if [ -n "$SHOW_IDS" ]; then
+            if ! printf '%s' "$SHOW_IDS" | grep -Eq '^[a-z0-9][a-z0-9-]*(,[a-z0-9][a-z0-9-]*)*$'; then
+              echo "::error::show_ids must be a comma-separated list of show ids"; exit 1
+            fi
+            # Budget stays near the cron's 18: the commit + push below and the
+            # outlet ground-truth step need the same headroom inside the 60-min cap.
+            ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=20"
+          fi
           if [ "$INCLUDE_CLOSED" = "true" ]; then
             ARGS="$ARGS --include-closed"
           fi
@@ -275,7 +299,7 @@ jobs:
           # A manual dispatch's window_days widens the audit (backfill) and
           # skips the 6h throttle; the hourly cron uses 21 days / 6h.
           GT_DAYS: ${{ github.event.inputs.window_days || '21' }}
-          GT_INTERVAL: ${{ github.event_name == 'workflow_dispatch' && '0' || '6' }}
+          GT_INTERVAL: ${{ github.event_name == 'workflow_dispatch' && !github.event.inputs.show_ids && '0' || '6' }}
         run: timeout 720 node scripts/audit-outlet-ground-truth.js --days="$GT_DAYS" --ingest --ingest-cap=12 --alert --min-interval-hours="$GT_INTERVAL" --time-budget-min=8
 
       # Date-independent backstop for a live show sitting on a discovered
