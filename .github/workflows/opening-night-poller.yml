@@ -422,7 +422,7 @@ jobs:
                   // (isActionableRescore mirrors index.ts's --needs-rescore
                   // filter: text-gate blocks, cooldowns), so a stuck flag
                   // cannot force a rebuild + deploy on every poll.
-                  else if (hasScore && (isActionableRescore(d, { show, showTitle: show && show.title, filePath: path.join(dir, f) }) || isStaleScoreInput(d))) n++;
+                  else if (hasScore && (isActionableRescore(d, { show, showTitle: show && show.title, filePath: path.join(dir, f) }) || isStaleScoreInput(d, show, path.join(dir, f)))) n++;
                 } catch (_) {}
               }
               console.log(n);

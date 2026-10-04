@@ -70,11 +70,13 @@ const SURFACES = [
   },
 ];
 
+// Full records, not titles: the scoreability check reads category/status/type
+// (a tour's own review read as tour contamination with a title alone, BRO-4563).
 function loadShowTitles() {
   const showsPath = path.join(ROOT, 'data', 'shows.json');
   const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
   const arr = Array.isArray(raw) ? raw : (raw.shows || []);
-  return new Map(arr.map((s) => [s.id, s.title]));
+  return new Map(arr.filter((s) => s && s.id).map((s) => [s.id, s]));
 }
 
 async function loadData() {
