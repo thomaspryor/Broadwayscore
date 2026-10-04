@@ -182,37 +182,18 @@ try {
   }
   if (categoryFixed > 0) ok(`Auto-fixed ${categoryFixed} venue/category mismatches`);
 
-  // Auto-dedup: remove exact-title duplicates within the same London market.
+  // Auto-dedup: remove duplicate rows of the SAME London production (same
+  // title+category+venue, no conflicting year, not linked via priorRuns).
   // Runs AFTER venue-category fix so both entries have corrected categories.
-  // Only dedup shows with 0 reviews (safe — no data loss).
-  const titleKey = (s) => `${s.title}||${s.category}`;
-  const statusPriority = { open: 3, previews: 2, upcoming: 1, closed: 0 };
+  // Only dedup shows with 0 reviews (safe — no data loss). Title-only matching
+  // deleted distinct productions from prod (BRO-275) — see lib/london-deploy-dedup.js.
+  const { findLondonDuplicatesToRemove } = require('./lib/london-deploy-dedup');
   const reviewsData = JSON.parse(fs.readFileSync(REVIEWS_PATH, 'utf8'));
   const reviewsByShow = {};
   for (const r of (reviewsData.reviews || reviewsData || [])) {
     reviewsByShow[r.showId] = (reviewsByShow[r.showId] || 0) + 1;
   }
-  const seen = new Map();
-  const toRemove = new Set();
-  for (const show of shows) {
-    if (show.category !== 'west-end' && show.category !== 'off-west-end') continue;
-    const key = titleKey(show);
-    if (seen.has(key)) {
-      const prev = seen.get(key);
-      const prevReviews = reviewsByShow[prev.id] || 0;
-      const currReviews = reviewsByShow[show.id] || 0;
-      if (prevReviews === 0 || currReviews === 0) {
-        if (currReviews > prevReviews || (currReviews === prevReviews && (statusPriority[show.status] || 0) > (statusPriority[prev.status] || 0))) {
-          toRemove.add(prev.id);
-          seen.set(key, show);
-        } else {
-          toRemove.add(show.id);
-        }
-      }
-    } else {
-      seen.set(key, show);
-    }
-  }
+  const toRemove = findLondonDuplicatesToRemove(shows, reviewsByShow);
   if (toRemove.size > 0) {
     showsData.shows = shows.filter(s => !toRemove.has(s.id));
     shows = showsData.shows;
@@ -247,6 +228,28 @@ try {
   // Write shows.json if any fixes were applied
   if (orphansFixed > 0 || jpgUpgraded > 0 || categoryFixed > 0 || toRemove.size > 0 || refusalStripped > 0 || statusDateHealed > 0) {
     saveShows(showsData);
+  }
+
+  // Dead vercel.json show-redirect self-heal: a hardcoded /show/<a> → /show/<b>
+  // redirect runs before the middleware slug map, so a renamed/retired <b>
+  // turns <a> into a 404. Drop those rules for this build (the middleware map
+  // then resolves <a> if it can). See lib/dead-show-redirects.js (BRO-275).
+  try {
+    const { findDeadShowRedirects } = require('./lib/dead-show-redirects');
+    const vercelPath = path.join(__dirname, '..', 'vercel.json');
+    const slugMapPath = path.join(__dirname, '..', 'data', 'slug-redirects-compact.json');
+    const vercelRaw = fs.readFileSync(vercelPath, 'utf8');
+    const vercelCfg = JSON.parse(vercelRaw);
+    const slugMap = fs.existsSync(slugMapPath) ? JSON.parse(fs.readFileSync(slugMapPath, 'utf8')) : {};
+    const dead = findDeadShowRedirects(vercelCfg.redirects, new Set(shows.map(s => s.slug)), slugMap);
+    if (dead.length > 0) {
+      const deadSet = new Set(dead);
+      vercelCfg.redirects = vercelCfg.redirects.filter(r => !deadSet.has(r));
+      fs.writeFileSync(vercelPath, JSON.stringify(vercelCfg, null, 2) + (vercelRaw.endsWith('\n') ? '\n' : ''));
+      ok(`Dropped ${dead.length} vercel.json show redirect(s) to missing slugs: ${dead.map(r => `${r.source} → ${r.destination}`).join(', ')}`);
+    }
+  } catch (e) {
+    console.warn(`⚠️  Dead show-redirect check skipped: ${e.message}`);
   }
 
 } catch (e) {
