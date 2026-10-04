@@ -126,5 +126,34 @@
       }
     ],
     "queuedAt": "2026-10-04T22:21:46.144Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4620-welcome-email",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4620-welcome-email",
+    "description": "land.yml did not land land/bro-4620-welcome-email: the unit-tests-node gate went red at e74e0aac76. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37238032991",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4620-welcome-email"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e74e0aac76334b036b580671d68f8b10dab4646c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37238032991"
+      }
+    ],
+    "queuedAt": "2026-10-04T22:27:39.724Z"
   }
 ]
