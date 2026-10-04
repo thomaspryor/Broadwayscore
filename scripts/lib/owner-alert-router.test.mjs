@@ -746,6 +746,31 @@ test('routeAlert: disposition=human on a page-worthy conditionKey calls sendAler
   }
 });
 
+// BRO-4603: 'broadcast:deadline-draft:' and 'broadcast:owner-notification-failed:'
+// are allowlisted but their callers pass severity 'warning', which
+// discord-notify's actionable-only policy never emails — so they were logged
+// and dropped. An allowlisted human alert must be delivered as an emailable
+// severity whatever the caller tagged it.
+test('routeAlert: an allowlisted human alert tagged warning/info is still delivered (as error)', async () => {
+  for (const severity of ['warning', 'info', undefined]) {
+    const { router, calls, restore } = loadRouterWithFakes();
+    try {
+      const result = await router.routeAlert({
+        conditionKey: `broadcast:deadline-draft:show-${severity}`,
+        title: 'Check these before you press Send',
+        description: 'd',
+        ...(severity ? { severity } : {}),
+        disposition: 'human',
+      });
+      assert.equal(result.action, 'human');
+      assert.equal(calls.sendAlert.length, 1);
+      assert.ok(['error', 'critical'].includes(calls.sendAlert[0].severity), `severity ${severity} must be delivered as emailable, got ${calls.sendAlert[0].severity}`);
+    } finally {
+      restore();
+    }
+  }
+});
+
 test('routeAlert: disposition=human on a non-allowlisted conditionKey is downgraded to digest (card #611)', async () => {
   const { router, calls, restore } = loadRouterWithFakes();
   try {

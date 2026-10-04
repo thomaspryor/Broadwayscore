@@ -106,6 +106,13 @@ const PAGE_WORTHY_CONDITION_KEYS = new Set([
   // Mac is dead. It cannot go through the digest: the digest is what is missing.
   'mac:morning-digest-missing',
 
+  // Production feature down for real users (BRO-4603): signed-in users cannot
+  // sign in or save ratings, or can see data that is not theirs, and the
+  // self-heal did not fix it. test-ugc-roundtrip.yml routes this only when an
+  // urgent check failed (hardening checks are NOT_URGENT in
+  // scripts/test-ugc-roundtrip.mjs) and resolves it on the next green run.
+  'ugc-roundtrip:users-affected',
+
   // Category (owner-approved 2026-08-03, affiliate hardening session — "it's
   // our only revenue stream, I do want it really strong"): affiliate revenue
   // pipeline BROKEN. Only the checks that mean money is actively being lost
@@ -250,10 +257,9 @@ const PAGE_WORTHY_WORKFLOWS = new Set([
   // Sign-in is down until the owner restores the project from the Supabase
   // dashboard; nobody else holds that login.
   'restore-supabase.yml',
-  // Signed-in users' own data not saving, or visible to someone else. The
-  // workflow only requests email when an urgent check failed (see
-  // scripts/test-ugc-roundtrip.mjs `urgent: false` for hardening checks).
-  'test-ugc-roundtrip.yml',
+  // test-ugc-roundtrip.yml is deliberately NOT here: its page is the routed
+  // 'ugc-roundtrip:users-affected' key (PAGE_WORTHY_CONDITION_KEYS), which
+  // fires only for urgent checks and dedups per incident.
 ]);
 
 /** @param {string} workflowFile basename or path, e.g. 'vercel-deploy.yml' */

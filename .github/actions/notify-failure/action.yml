@@ -69,10 +69,16 @@ runs:
     - name: Page-worthiness policy
       id: policy
       uses: actions/github-script@v7
+      # Via env, not ${{ }} inside the script: this step runs for EVERY caller,
+      # and a title carrying a workflow input (e.g. a show id) with a backtick
+      # would otherwise break the script and leave `page` empty.
+      env:
+        NOTIFY_SEVERITY: ${{ inputs.severity }}
+        NOTIFY_TITLE: ${{ inputs.title }}
       with:
         script: |
-          const severity = `${{ inputs.severity }}`;
-          const title = `${{ inputs.title }}`;
+          const severity = process.env.NOTIFY_SEVERITY || '';
+          const title = process.env.NOTIFY_TITLE || '';
           if (severity !== 'critical') {
             core.setOutput('page', 'false');
             return;
