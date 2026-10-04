@@ -46,7 +46,9 @@ export function getBroadwayDuration(openingDate: string | null, suffix = 'on Bro
   const openDateStr = openingDate.slice(0, 10);
   const nowDateStr = now.toISOString().slice(0, 10);
   if (openDateStr > nowDateStr) return null;
-  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth());
+  // Whole months elapsed: Sept 19 to Oct 4 is not yet a month.
+  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth())
+    - (now.getDate() < open.getDate() ? 1 : 0);
   if (months < 1) return 'Just opened';
   if (months < 12) return `${months} month${months === 1 ? '' : 's'} ${suffix}`;
   const years = Math.floor(months / 12);

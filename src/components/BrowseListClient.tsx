@@ -272,7 +272,7 @@ export default function BrowseListClient({
                   isMixedStatus={isMixedStatus}
                   scoreMode={scoreMode}
                   showPerformances={hasPerformanceData}
-                  showLowReviewCount
+                  showReviewCount
                   showTicketLink
                 />
               </div>

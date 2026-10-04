@@ -29,8 +29,9 @@ export interface ShowListCardProps {
   rank?: number;
   /** Show performance count instead of duration (browse pages) */
   showPerformances?: boolean;
-  /** Show "N reviews" text for low review counts (browse pages) */
-  showLowReviewCount?: boolean;
+  /** Show "N reviews" under the critic score (browse pages): a 91 from 4
+   *  reviews and a 91 from 40 should not read the same. */
+  showReviewCount?: boolean;
   /** Show category badge (e.g. "Off-Bway") — use on pages that mix categories */
   showCategoryBadge?: boolean;
   /** Show format pill (Musical/Play) — defaults to true */
@@ -64,7 +65,7 @@ const ShowListCard = memo(function ShowListCard({
   variant = 'default',
   rank,
   showPerformances = false,
-  showLowReviewCount = false,
+  showReviewCount = false,
   showCategoryBadge = false,
   showFormatPill = true,
   isMixedStatus = false,
@@ -357,15 +358,16 @@ const ShowListCard = memo(function ShowListCard({
             category={category}
             tier1And2Count={t1t2}
           />
-          {showLowReviewCount && reviewCount > 0 && reviewCount <= 2 ? (
-            <span className="text-[9px] text-gray-500 whitespace-nowrap">
+          {showReviewCount && reviewCount > 0 && (
+            <span className="text-[10px] text-gray-400 whitespace-nowrap" data-testid="card-review-count">
               {reviewCount} review{reviewCount > 1 ? 's' : ''}
             </span>
-          ) : audienceGrade ? (
+          )}
+          {audienceGrade && (
             <div className={isCompact ? 'mt-0.5' : 'mt-1'}>
               <AudienceChip grade={audienceGrade} />
             </div>
-          ) : null}
+          )}
         </>
       )}
     </div>
