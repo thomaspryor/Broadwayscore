@@ -45,7 +45,7 @@
   "backstage.com": {
     "direct-cookies": {
       "skip": true,
-      "reason": "6 failures, 0 successes",
+      "reason": "5 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -175,7 +175,7 @@
   "charlotteledger.substack.com": {
     "playwright": {
       "skip": true,
-      "reason": "4 failures, 0 successes",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -193,18 +193,6 @@
     "scrapingbee": {
       "skip": true,
       "reason": "3 failures, 0 successes",
-      "addedAt": "2026-07-30"
-    }
-  },
-  "cleveland.com": {
-    "playwright": {
-      "skip": true,
-      "reason": "4 failures, 0 successes",
-      "addedAt": "2026-07-30"
-    },
-    "scrapingbee": {
-      "skip": true,
-      "reason": "4 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -228,7 +216,7 @@
   "courant.com": {
     "scrapingbee": {
       "skip": true,
-      "reason": "4 failures, 0 successes",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -288,24 +276,24 @@
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "8 failures, 0 successes",
+      "reason": "7 failures, 0 successes",
       "addedAt": "2026-09-27"
     }
   },
   "examiner.com": {
     "brightdata": {
       "skip": true,
-      "reason": "4 failures, 0 successes",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "playwright": {
       "skip": true,
-      "reason": "4 failures, 0 successes",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "4 failures, 0 successes",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -324,7 +312,7 @@
   "google.com": {
     "playwright": {
       "skip": true,
-      "reason": "BRO-4401: SERP pages never go to a headless browser. Until 2026-09-30 fetch-all-image-formats.yml had no browser, so every google.com/search fetch fell straight through to Scrapingdog/Bright Data; the first run with a browser (36655690883) hung 2.5h on one google.com/search page (consent wall / bot check, live chrome orphan at cleanup). Keep SERP fetches on the paid SERP-capable tiers.",
+      "reason": "5 failures, 0 successes",
       "addedAt": "2026-09-30"
     }
   },
@@ -455,12 +443,12 @@
   "newyorker.com": {
     "brightdata": {
       "skip": true,
-      "reason": "4 failures, 0 successes",
+      "reason": "3 failures, 0 successes",
       "addedAt": "2026-09-20"
     },
     "playwright": {
       "skip": true,
-      "reason": "8 failures, 0 successes",
+      "reason": "7 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -491,14 +479,14 @@
   "nystagereview.com": {
     "archive-cdx": {
       "skip": true,
-      "reason": "6 failures, 0 successes",
+      "reason": "5 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
   "nytimes.com": {
     "direct-cookies": {
       "skip": true,
-      "reason": "52 failures, 0 successes",
+      "reason": "50 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -667,7 +655,7 @@
     },
     "scrapingbee": {
       "skip": true,
-      "reason": "132 failures, 0 successes",
+      "reason": "124 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "scrapingdog": {
@@ -810,12 +798,12 @@
   "theguardian.com": {
     "archive-cdx": {
       "skip": true,
-      "reason": "23 failures, 0 successes",
+      "reason": "22 failures, 0 successes",
       "addedAt": "2026-07-30"
     },
     "archive-first": {
       "skip": true,
-      "reason": "26 failures, 0 successes",
+      "reason": "25 failures, 0 successes",
       "addedAt": "2026-07-30"
     }
   },
@@ -855,7 +843,7 @@
     },
     "playwright": {
       "skip": true,
-      "reason": "81 failures, 0 successes",
+      "reason": "77 failures, 0 successes",
       "addedAt": "2026-09-20"
     }
   },
