@@ -1,68 +1,66 @@
 {
-  "runDate": "2026-10-04T12:49:59.925Z",
+  "runDate": "2026-10-04T14:48:13.045Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hay-fever-west-end-2026,what-the-animals-say-off-west-end-2026,creation-stories-and-all-the-important-importants-off-broadway-2026,bull-off-west-end-2026,jena-friedman-motherfucker-off-broadway-2026,flamenc-oh-off-west-end-2026,a-thousand-natural-shocks-off-broadway-2026,measure-for-measure-off-west-end-2026",
+    "showFilter": "hay-fever-west-end-2026,what-the-animals-say-off-west-end-2026,creation-stories-and-all-the-important-importants-off-broadway-2026,bull-off-west-end-2026,jena-friedman-motherfucker-off-broadway-2026,flamenc-oh-off-west-end-2026,a-thousand-natural-shocks-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 11,
-    "failed": 6,
+    "processed": 9,
+    "failed": 5,
     "skipped": 0,
-    "successRate": "64.7%"
+    "successRate": "64.3%"
   },
   "tierBreakdown": {
-    "playwright": 6,
+    "playwright": 5,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 3,
     "scrapingbee": 0,
-    "brightdata": 2,
+    "brightdata": 1,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 15,
-    "tier1Success": 8,
+    "tier1Attempts": 13,
+    "tier1Success": 7,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 4,
+    "tier1_5Attempts": 0,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 7,
+    "tier1_9Attempts": 6,
     "tier1_9Success": 3,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 5,
-    "tier3Success": 2,
+    "tier3Attempts": 4,
+    "tier3Success": 1,
     "tier3_6Attempts": 3,
     "tier3_6Success": 0,
-    "tier4Attempts": 14,
-    "tier4Success": 1,
+    "tier4Attempts": 11,
+    "tier4Success": 0,
     "totalFailed": 5,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 4,
-    "browserbaseMinutesUsed": 2.7,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
     "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
-    "what-the-animals-say-off-west-end-2026/the-spy-in-the-stalls--thespyinthestalls.json",
-    "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
-    "flamenc-oh-off-west-end-2026/thelivereview--tanya-howard.json",
     "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
     "bull-off-west-end-2026/whatsonstage--unknown.json",
     "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
     "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
     "hay-fever-west-end-2026/jonathan-baz--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
   ],
@@ -71,13 +69,11 @@
     "hay-fever-west-end-2026/londontheatredirect--unknown.json",
     "hay-fever-west-end-2026/thestage--the-stage.json",
     "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
-    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
       "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
-      "flamenc-oh-off-west-end-2026/loureviews--louise-penn.json",
       "bull-off-west-end-2026/whatsonstage--unknown.json",
       "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
@@ -87,19 +83,16 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
-      "flamenc-oh-off-west-end-2026/thelivereview--tanya-howard.json",
+      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
       "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
       "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
     ],
     "scrapingbee": [],
     "brightdata": [
-      "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
-      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
+      "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json"
     ],
     "archiveToday": [],
-    "archive": [
-      "what-the-animals-say-off-west-end-2026/the-spy-in-the-stalls--thespyinthestalls.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
     "Londontheatredirect": {
