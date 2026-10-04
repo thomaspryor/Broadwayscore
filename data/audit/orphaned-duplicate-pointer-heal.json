@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-03T23:42:37.631Z",
+  "generated": "2026-10-03T23:59:49.471Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 20,
+  "count": 19,
   "orphans": [
     {
       "showId": "all-my-sons-2019",
@@ -135,13 +135,6 @@
       "targetFile": "variety--marilyn-stasio.json",
       "reason": "orphaned-duplicate-heal: variety--marilyn-stasio.json was flagged invalid after variety--matt-windman.json was pointed at it",
       "field": "duplicateOf"
-    },
-    {
-      "showId": "the-lightning-thief-2019",
-      "loserFile": "front-row-center--sarah-downs.json",
-      "targetFile": "slantmagazine--aaron-riccio.json",
-      "reason": "orphaned-duplicate-heal: slantmagazine--aaron-riccio.json was flagged invalid after front-row-center--sarah-downs.json was pointed at it (duplicateTextOf)",
-      "field": "duplicateTextOf"
     }
   ]
 }
