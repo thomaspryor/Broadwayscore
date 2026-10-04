@@ -38,6 +38,16 @@ test('rescheduled rows are skipped; New York runs split tours', () => {
   assert.equal(iso(segs[segs.length - 1].start), '2026-02-13');
 });
 
+test('footnote marks are stripped from city names (BRO-4601)', () => {
+  const html = page([
+    row('Chicago, IL ❖', 'CIBC Theatre', 'January 19-February 7, 2027'),
+    row('Dallas, TX †', 'Music Hall', 'February 9-21, 2027'),
+    row('Pueblo, CO *', 'Memorial Hall', 'February 24, 2027'),
+    row('Montréal, QC §', 'Place des Arts', 'March 2-7, 2027'),
+  ]);
+  assert.deepEqual(parseTourSchedule(html).map(r => r.city), ['Chicago, IL', 'Dallas, TX', 'Pueblo, CO', 'Montréal, QC']);
+});
+
 test('launch needs Wikipedia; close needs a positive signal', () => {
   const html = page([
     row('Baltimore, MD', 'Hippodrome', 'December 7-14, 2024'),

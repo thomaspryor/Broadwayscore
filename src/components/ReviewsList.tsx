@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useMemo, memo } from 'react';
+import { useState, useMemo, memo, Fragment } from 'react';
 import Link from 'next/link';
 import { getOutletLogoUrlById, getOutletConfigById } from '@/config/outlet-logos';
 import { featureFlags } from '@/config/feature-flags';
@@ -27,6 +27,9 @@ interface Review {
   // priorRuns window — e.g. "2022 Gielgud run" — so a since-departed cast
   // member's quote reads in context instead of as current casting (BRO-1397).
   priorRunLabel?: string | null;
+  // National tours: the city the tour was playing when this review ran
+  // (stopForReview, by publish date). Enables the "By City" sort (BRO-4601).
+  stopLabel?: string | null;
 }
 
 interface ReviewsListProps {
@@ -156,7 +159,7 @@ function ExternalLinkIcon({ className }: { className?: string }) {
   );
 }
 
-const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { review: Review; isLast: boolean; category?: string }) {
+const ReviewCard = memo(function ReviewCard({ review, isLast, category, hideStop }: { review: Review; isLast: boolean; category?: string; hideStop?: boolean }) {
   const goldMin = getGoldThreshold(category);
   let scoreLabel: string;
   if (review.reviewScore >= goldMin) scoreLabel = 'Critical Gold';
@@ -214,6 +217,14 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
             {review.priorRunLabel}
           </span>
         )}
+        {review.stopLabel && !hideStop && (
+          <span
+            className="inline-block mb-1 px-2 py-0.5 rounded-pill bg-surface-overlay text-[10px] font-bold uppercase tracking-[0.08em] text-gray-400"
+            title={`Reviewed during the tour's stop in ${review.stopLabel}`}
+          >
+            {review.stopLabel}
+          </span>
+        )}
         {review.quote && (
           <p className="text-sm sm:text-base text-gray-300 leading-snug mb-0.5">
             &ldquo;{review.quote}&rdquo;
@@ -256,7 +267,7 @@ const ReviewCard = memo(function ReviewCard({ review, isLast, category }: { revi
   );
 });
 
-type SortMode = 'score' | 'date';
+type SortMode = 'score' | 'date' | 'city';
 
 export default function ReviewsList({ reviews, initialCount = 5, category }: ReviewsListProps) {
   const [isExpanded, setIsExpanded] = useState(false);
@@ -270,8 +281,18 @@ export default function ReviewsList({ reviews, initialCount = 5, category }: Rev
         return db - da;
       });
     }
+    if (sortMode === 'city') {
+      // Most recent city first; reviews within a city keep score order.
+      const latest = new Map<string, string>();
+      for (const r of reviews) {
+        const k = r.stopLabel || '';
+        if ((r.publishDate || '') > (latest.get(k) || '')) latest.set(k, r.publishDate || '');
+      }
+      return [...reviews].sort((a, b) => (latest.get(b.stopLabel || '') || '').localeCompare(latest.get(a.stopLabel || '') || ''));
+    }
     return reviews; // already sorted by score from engine
   }, [reviews, sortMode]);
+  const hasStops = reviews.some(r => r.stopLabel);
 
   const shouldCollapse = sortedReviews.length > initialCount;
   const displayedReviews = shouldCollapse && !isExpanded
@@ -296,15 +317,30 @@ export default function ReviewsList({ reviews, initialCount = 5, category }: Rev
           >
             By Date
           </button>
+          {hasStops && (
+            <button
+              onClick={() => setSortMode('city')}
+              className={`font-medium transition-colors ${sortMode === 'city' ? 'text-white' : 'text-gray-500 hover:text-gray-300'}`}
+            >
+              By City
+            </button>
+          )}
         </div>
       )}
-      {displayedReviews.map((review) => (
-        <ReviewCard
-          key={getReviewKey(review)}
-          review={review}
-          isLast={false}
-          category={category}
-        />
+      {displayedReviews.map((review, i) => (
+        <Fragment key={getReviewKey(review)}>
+          {sortMode === 'city' && review.stopLabel !== displayedReviews[i - 1]?.stopLabel && (
+            <h3 className={`text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 ${i > 0 ? 'pt-3' : ''}`}>
+              {review.stopLabel || 'Other'}
+            </h3>
+          )}
+          <ReviewCard
+            review={review}
+            isLast={false}
+            category={category}
+            hideStop={sortMode === 'city'}
+          />
+        </Fragment>
       ))}
 
       {shouldCollapse && (

@@ -416,10 +416,12 @@ export default function ShowPageBelowFold({
               </div>
             ) : null;
           })()}
-          <div>
-            <dt className="text-gray-500">Runtime</dt>
-            <dd className="text-white mt-0.5">{show.runtime}</dd>
-          </div>
+          {show.runtime && (
+            <div>
+              <dt className="text-gray-500">Runtime</dt>
+              <dd className="text-white mt-0.5">{show.runtime}</dd>
+            </div>
+          )}
           {show.intermissions !== undefined && show.intermissions !== null && (
             <div>
               <dt className="text-gray-500">Intermissions</dt>
@@ -433,9 +435,12 @@ export default function ShowPageBelowFold({
             </div>
           )}
           <div className="sm:col-span-2">
-            <dt className="text-gray-500">{isWestEnd ? 'Theatre' : 'Theater'}</dt>
+            <dt className="text-gray-500">{isTour ? 'Where' : isWestEnd ? 'Theatre' : 'Theater'}</dt>
             <dd className="text-white mt-0.5">
-              {isWestEnd ? (
+              {/* A tour has no house: its venue is the current stop (or a placeholder), never a /theater page. */}
+              {isTour ? (
+                <span>{show.venue}</span>
+              ) : isWestEnd ? (
                 <Link href={`/west-end/theater/${venueSlug}`} className="hover:text-brand transition-colors">{show.venue}</Link>
               ) : isOffBroadway ? (
                 <span>{show.venue}</span>
