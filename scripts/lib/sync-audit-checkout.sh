@@ -213,8 +213,8 @@ union_restore_ledger() {
     const { lines: extra, dropped } = stripTornTrailingLine(saved);
     if (dropped !== null) console.log(`[${tag}]   dropped a torn trailing line from the saved copy of ${target}`);
     const { merged, stats } = unionLedgerLines(base, extra);
-    if (!unionIsSafe({ mergedCount: merged.length, baseCount: base.length, extraCount: extra.length })) {
-      console.error(`::error::[${tag}] union of ${target} would shrink it (${merged.length} < max(${base.length}, ${extra.length})) — refusing`);
+    if (!unionIsSafe({ mergedCount: merged.length, baseCount: base.length, extraCount: stats.extraUnique })) {
+      console.error(`::error::[${tag}] union of ${target} would shrink it (${merged.length} < max(${base.length}, ${stats.extraUnique})) — refusing`);
       process.exit(1);
     }
     // Atomic write: a partial write here would leave a ledger that neither
