@@ -113,11 +113,13 @@ test.describe('My Shows — Accessibility', () => {
     await expect(page.getByRole('combobox', { name: 'Sort watchlist' })).toBeVisible();
   });
 
-  test('star ratings have proper radiogroup role', async ({ page }) => {
+  test('To Be Rated posters are labeled rate links', async ({ page }) => {
     await goToMock(page);
-    const starGroups = page.getByRole('radiogroup', { name: 'Star rating' });
-    // 2 To Be Rated cards should each have a star rating group
-    expect(await starGroups.count()).toBeGreaterThanOrEqual(2);
+    // The app's design (BRO-4558): poster tiles that open the rating editor,
+    // no inline star rows.
+    const band = page.getByTestId('to-be-rated');
+    await expect(band.getByRole('link', { name: 'Rate Ragtime' })).toBeVisible();
+    await expect(band.getByRole('link', { name: 'Rate Chess' })).toBeVisible();
   });
 
   test('grid/list toggle buttons have aria-labels', async ({ page }) => {
@@ -133,10 +135,10 @@ test.describe('My Shows — Diary Sections', () => {
   test('To Be Rated section shows correct items', async ({ page }) => {
     await goToMock(page);
     await expect(page.getByRole('heading', { name: 'To Be Rated' })).toBeVisible();
-    await expect(page.getByText('You saw these shows')).toBeVisible();
-    // Ragtime and Chess are the to-be-rated items
-    await expect(page.getByRole('heading', { name: 'Ragtime', level: 4 })).toBeVisible();
-    await expect(page.getByRole('heading', { name: 'Chess', level: 4 })).toBeVisible();
+    // Ragtime and Chess are the to-be-rated items, named under their posters
+    const band = page.getByTestId('to-be-rated');
+    await expect(band.getByText('Ragtime', { exact: true })).toBeVisible();
+    await expect(band.getByText('Chess', { exact: true })).toBeVisible();
   });
 
   test('Upcoming section shows future watchlist items', async ({ page }) => {
@@ -148,10 +150,11 @@ test.describe('My Shows — Diary Sections', () => {
     await expect(page.getByRole('heading', { name: 'Smash', level: 4 })).toBeVisible();
   });
 
-  test('Past Shows section shows all rated shows', async ({ page }) => {
+  test('past shows list under year bands', async ({ page }) => {
     await goToMock(page);
     await switchToListView(page); // list-row UI — diary/watchlist default is grid (2026-07-17)
-    await expect(page.getByRole('heading', { name: 'Past Shows' })).toBeVisible();
+    // Year bands replace the old "Past Shows" header (app design, BRO-4558)
+    await expect(page.getByRole('heading', { name: /^20\d\d$/ }).first()).toBeVisible();
     // All 7 reviewed shows
     await expect(page.getByRole('heading', { name: 'Wicked', level: 4 })).toBeVisible();
     await expect(page.getByRole('heading', { name: 'Hamilton', level: 4 })).toBeVisible();
@@ -159,23 +162,16 @@ test.describe('My Shows — Diary Sections', () => {
     await expect(page.getByRole('heading', { name: 'Merrily We Roll Along', level: 4 })).toBeVisible();
   });
 
-  test('To Be Rated stars are interactive', async ({ page }) => {
+  test('To Be Rated poster opens the rating editor', async ({ page }) => {
     await goToMock(page);
-    // Click 4-star ON THE RAGTIME CARD — an unscoped .first() resolved to a
-    // different card's star row under parallel-run load order (flake fix,
-    // 2026-07-20).
-    const ragtimeCard = page.locator('div').filter({ has: page.getByRole('heading', { name: 'Ragtime', level: 4 }) }).filter({ has: page.getByRole('button', { name: '4 stars' }) }).last();
-    const fourStar = ragtimeCard.getByRole('button', { name: '4 stars' });
-    await expect(fourStar).toBeVisible();
-    // Click should navigate to show page with rate param
-    const [newPage] = await Promise.all([
-      page.waitForEvent('popup').catch(() => null),
-      fourStar.click(),
-    ]);
-    // Should navigate (URL will contain rate=1&stars=4)
-    await page.waitForURL(/rate=1/, { timeout: 5000 }).catch(() => {});
-    const url = page.url();
-    expect(url).toContain('/show/ragtime');
+    const rate = page.getByTestId('to-be-rated').getByRole('link', { name: 'Rate Ragtime' });
+    await expect(rate).toHaveAttribute('href', /\/show\/ragtime.*\?rate=1$/);
+    // The mock page rewrites its own URL (&tab=diary) right after load, and a
+    // click in that window is swallowed by the replace; retry the click.
+    await expect(async () => {
+      await rate.click();
+      await page.waitForURL(/\/show\/ragtime.*rate=1/, { timeout: 10000, waitUntil: 'commit' });
+    }).toPass({ timeout: 45000 });
   });
 
   test('venue is displayed in diary list view', async ({ page }) => {
@@ -309,24 +305,15 @@ test.describe('My Shows — View Toggle', () => {
     expect(classes).toContain('bg-white');
   });
 
-  test('trash icons are positioned top-right on grid cards', async ({ page }) => {
-    await goToMock(page, 'watchlist');
-    // Watchlist grid: trash icons must be in top-right corner of their parent
-    const trashButtons = page.locator('button[aria-label="Remove from watchlist"]');
-    const count = await trashButtons.count();
-    expect(count).toBeGreaterThan(0);
-    for (let i = 0; i < count; i++) {
-      const btn = trashButtons.nth(i);
-      if (!(await btn.isVisible())) continue;
-      const btnBox = await btn.boundingBox();
-      const parentBox = await btn.locator('..').boundingBox();
-      if (!btnBox || !parentBox) continue;
-      // Button should be near the right edge (within 16px of right side)
-      const rightOffset = (parentBox.x + parentBox.width) - (btnBox.x + btnBox.width);
-      expect(rightOffset, `trash icon ${i} should be near right edge`).toBeLessThan(16);
-      // Button should be near the top (within 16px of top)
-      const topOffset = btnBox.y - parentBox.y;
-      expect(topOffset, `trash icon ${i} should be near top edge`).toBeLessThan(16);
+  test('grid posters carry no corner buttons', async ({ page }) => {
+    // Owner, 2026-10-03 (BRO-4558): no delete/edit circles on posters;
+    // tapping a poster opens the show, where it can be removed.
+    for (const tab of ['diary', 'watchlist'] as const) {
+      await goToMock(page, tab);
+      await page.getByRole('button', { name: 'Grid view' }).click();
+      const cards = page.locator('[role="tabpanel"] .group\\/grid');
+      expect(await cards.count(), `${tab}: no grid cards`).toBeGreaterThan(0);
+      await expect(cards.locator('button'), `${tab}: buttons on a poster card`).toHaveCount(0);
     }
   });
 
@@ -390,42 +377,36 @@ test.describe('My Shows — Delete Flow', () => {
 test.describe('My Shows — Watchlist', () => {
   test('shows all 6 watchlist items', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Since the 2026-07-20 restructure, past-dated entries render as To Be
-    // Rated ROWS (no poster card): mock has 6 entries, 2 past-dated → 4
-    // poster cards + 2 rows, all 6 titles visible in list view.
+    // Mock has 6 entries, 2 past-dated. Past-dated ones sit in the To Be
+    // Rated poster band (BRO-4558, always a grid as in the app); the other 4
+    // are poster cards in grid view and titled rows in list view.
     const posters = page.locator('[role="tabpanel"] .aspect-\\[2\\/3\\]');
-    expect(await posters.count()).toBeGreaterThanOrEqual(4);
+    expect(await posters.count()).toBeGreaterThanOrEqual(6);
+    const band = page.getByTestId('to-be-rated');
     await expect(page.getByRole('heading', { name: 'To Be Rated' })).toBeVisible();
-    // Switch to list view to verify all titles are present
+    await expect(band.getByRole('link', { name: /^Rate / })).toHaveCount(2);
     await page.getByRole('button', { name: 'List view' }).click();
     const titles = page.locator('[role="tabpanel"] h4');
-    expect(await titles.count()).toBeGreaterThanOrEqual(6);
+    expect(await titles.count()).toBeGreaterThanOrEqual(4);
+    await expect(band.getByRole('link', { name: /^Rate / })).toHaveCount(2);
   });
 
   test('watchlist cards have a rate-strip of five stars', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Past-dated entries route to ToBeRatedCard's inline StarRating (no
-    // group/wl wrapper — that class only applies to WatchlistCard's flat
-    // alphabetical-list-view poster strip, per MyShowsClient.tsx's
-    // canRate/isFutureDated split). ToBeRatedCard also mounts BOTH a mobile
-    // (sm:hidden) and desktop (hidden sm:inline-flex) StarRating for the same
-    // entry — only one is actually visible per viewport, but both are
-    // present in the DOM, so an unfiltered `.first()` can land on the
-    // display:none copy and fail getByRole (which requires the accessibility
-    // tree, i.e. visible). `:visible` picks the one the current viewport
-    // actually renders.
-    const strips = page.locator('[role="tabpanel"] [role="radiogroup"]:visible');
+    // The rate strip lives on WatchlistCard for past-dated entries, which
+    // only render as poster cards in the flat A-Z view (the default split
+    // routes them to the To Be Rated band). It is hover-revealed at sm+, so
+    // assert presence, not visibility.
+    await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
+    const strips = page.locator('[role="tabpanel"] [role="radiogroup"][aria-label^="Rate "]');
     expect(await strips.count()).toBeGreaterThan(0);
-    await expect(strips.first().getByRole('button', { name: '5 stars' })).toBeAttached();
+    await expect(strips.first().getByRole('button', { name: '5 stars', includeHidden: true })).toBeAttached();
   });
 
-  test('watchlist cards have date picker', async ({ page }) => {
+  test('watchlist grid has no date buttons under the posters', async ({ page }) => {
     await goToMock(page, 'watchlist');
-    // Date picker buttons (Add date or actual dates)
-    const dateButtons = page.locator('text=Add date');
-    const existingDates = page.locator('text=Sep 15');
-    const totalDates = (await dateButtons.count()) + (await existingDates.count());
-    expect(totalDates).toBeGreaterThan(0);
+    const panel = page.locator('[role="tabpanel"]');
+    await expect(panel.getByRole('button', { name: /^(Add|Change) date$/ })).toHaveCount(0);
   });
 
   test('watchlist remove shows confirmation', async ({ page }) => {
@@ -473,13 +454,24 @@ test.describe('My Shows — Mobile Layout (390px)', () => {
     expect(bodyWidth).toBeLessThanOrEqual(390);
   });
 
-  test('To Be Rated stars use sm size on mobile (stacked under title)', async ({ page }) => {
+  test('To Be Rated is a 3-up poster grid on a full-width band', async ({ page }) => {
     await goToMock(page, 'diary');
-    // Stars stack UNDER the title at mobile (2026-07-12 design pass — the old
-    // side-by-side xs row crushed titles to one character), sized sm (20px).
-    const starBtn = page.getByRole('button', { name: '1 star' }).first();
-    await expect(starBtn).toHaveAttribute('style', /width:\s*20px/);
-    await expect(starBtn).toHaveAttribute('style', /height:\s*20px/);
+    // The app's design (BRO-4558): three posters per row at phone width, on
+    // an amber band that runs to the content edges.
+    const band = page.getByTestId('to-be-rated');
+    const links = band.getByRole('link', { name: /^Rate / });
+    expect(await links.count()).toBeGreaterThanOrEqual(2);
+    const [a, b] = [await links.nth(0).boundingBox(), await links.nth(1).boundingBox()];
+    expect(a && b && Math.abs(a.y - b.y) < 2).toBeTruthy();
+    // 390px viewport, 16px gutters → three columns of ~113px.
+    expect(a!.width).toBeGreaterThan(100);
+    expect(a!.width).toBeLessThan(125);
+    // The band paints out over the 16px gutters (border-image outset, which
+    // does not widen the layout), so it reaches the screen edges.
+    const outset = await band.evaluate(el => getComputedStyle(el).borderImageOutset);
+    expect(outset).toMatch(/^0(px)? 16px$/);
+    const bandBox = await band.boundingBox();
+    expect(Math.round(bandBox!.x)).toBe(16);
   });
 
   test('tab bar does not overflow on mobile', async ({ page }) => {

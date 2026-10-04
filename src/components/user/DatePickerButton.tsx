@@ -24,6 +24,8 @@ interface DatePickerButtonProps {
   children: ReactNode;
   /** Render a clear ✕ at the right edge when set and value is non-empty. */
   onClear?: () => void;
+  /** Blocks the trigger, the native input and the clear ✕ (e.g. while a save runs). */
+  disabled?: boolean;
 }
 
 /**
@@ -50,6 +52,7 @@ export default function DatePickerButton({
   wrapClassName = 'relative',
   children,
   onClear,
+  disabled = false,
 }: DatePickerButtonProps) {
   const inputRef = useRef<HTMLInputElement>(null);
   // Touch devices: iOS fires `change` with TODAY the moment the wheel opens
@@ -74,6 +77,7 @@ export default function DatePickerButton({
         data-1p-ignore
         data-lpignore="true"
         data-bwignore="true"
+        disabled={disabled}
         value={staged.current ?? value}
         onChange={e => {
           e.stopPropagation();
@@ -112,6 +116,7 @@ export default function DatePickerButton({
           }
         }}
         aria-label={ariaLabel}
+        disabled={disabled}
         className={className}
       >
         {children}
@@ -119,6 +124,7 @@ export default function DatePickerButton({
       {onClear && value && (
         <button
           type="button"
+          disabled={disabled}
           onClick={e => { e.preventDefault(); e.stopPropagation(); onClear(); }}
           aria-label="Clear date"
           className="absolute right-1.5 top-1/2 -translate-y-1/2 z-[2] p-1 rounded-full text-gray-500 hover:text-white transition-colors"

@@ -1,15 +1,14 @@
 /**
- * Watchlist grid/list remove-affordance parity test (UX audit #270): the
- * list view ('mobile__watchlist_list', WatchlistListItem) always renders its
- * remove button, but the grid view ('mobile__watchlist_grid', WatchlistCard)
- * used `hidden sm:flex` on its trash button — invisible below the sm
- * breakpoint with no hover-to-reveal on touch, so mobile grid users had no
- * remove affordance for the same watchlist entries list view exposed.
+ * Watchlist grid remove affordance. UX audit #270 once found the grid
+ * card's trash hidden on phones (`hidden sm:flex`), so mobile grid users
+ * had no way to remove an entry. The fix made it always visible, which on
+ * phones meant a 44px circle covering every poster.
  *
- * Regression guard: read the real WatchlistCard source (grid view) and
- * assert its remove button is never `hidden` and is visible at rest on
- * mobile (no sm: prefix gating it away), only hover/focus-revealed at sm+ —
- * the same treatment this card's own rate-star strip already uses.
+ * Owner, 2026-10-03 (BRO-4558): no buttons on the poster; remove by
+ * clicking into the show. Regression guard: watchlist and To Be Rated
+ * cards link to the show page, whose watchlist button removes the entry;
+ * list view keeps its inline remove. (diary-grid-delete-affordance.test.mjs
+ * guards that poster cards carry no buttons.)
  */
 
 import test from 'node:test';
@@ -19,7 +18,9 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const SOURCE = readFileSync(join(ROOT, 'src/app/my-shows/MyShowsClient.tsx'), 'utf8');
+const read = (f) => readFileSync(join(ROOT, f), 'utf8');
+const SOURCE = read('src/app/my-shows/MyShowsClient.tsx');
+const SHOW_PAGE_BUTTON = read('src/components/user/ShowPageWatchlistButton.tsx');
 
 /**
  * Isolate one top-level `function Name(...) { ... }` block. The prop
@@ -29,7 +30,7 @@ const SOURCE = readFileSync(join(ROOT, 'src/app/my-shows/MyShowsClient.tsx'), 'u
  */
 function extractFunctionBody(source, name) {
   const start = source.indexOf(`function ${name}(`);
-  assert.ok(start !== -1, `function ${name} not found in MyShowsClient.tsx`);
+  assert.ok(start !== -1, `function ${name} not found`);
   const parenListStart = source.indexOf('(', start);
 
   let parenDepth = 0;
@@ -55,43 +56,20 @@ function extractFunctionBody(source, name) {
   throw new Error(`unbalanced braces scanning function ${name} body`);
 }
 
-const watchlistCardSrc = extractFunctionBody(SOURCE, 'WatchlistCard');
-const watchlistListItemSrc = extractFunctionBody(SOURCE, 'WatchlistListItem');
+test('watchlist grid card opens the show page', () => {
+  const card = extractFunctionBody(SOURCE, 'WatchlistCard');
+  assert.match(card, /const href = getShowHref\(/);
+  assert.match(card, /href=\{href\}/);
+});
 
-/**
- * The trash button's className is `${confirmRemove ? '<confirm-state>' :
- * '<rest-state>'}` — pull the rest-state (else) branch specifically, since
- * that's what governs default visibility (unhovered, untapped).
- */
-function restStateClasses(src) {
-  const buttonMatch = src.match(
-    /confirmRemove \? onRemove\(\) : setConfirmRemove\(true\); \}\}\s*\n\s*className=\{`([^$]*)\$\{confirmRemove \? '([^']+)' : '([^']+)'\}/
-  );
-  assert.ok(buttonMatch, 'could not locate the grid remove button ternary className');
-  return { base: buttonMatch[1], restState: buttonMatch[3] };
-}
+test('To Be Rated card opens the show page rating flow', () => {
+  assert.match(extractFunctionBody(SOURCE, 'ToBeRatedSection'), /href=\{`\$\{href\}\?rate=1`\}/);
+});
 
-test('grid card remove button is defined and labeled', () => {
-  assert.match(watchlistCardSrc, /aria-label="Remove from watchlist"/);
+test('the show page watchlist button removes the entry', () => {
+  assert.match(SHOW_PAGE_BUTTON, /await removeFromWatchlist\(showId\)/);
 });
 
 test('list item remove button is defined and labeled', () => {
-  assert.match(watchlistListItemSrc, /aria-label="Remove from watchlist"/);
-});
-
-test('grid remove button is not hidden on mobile — visible affordance parity with list view', () => {
-  const { base, restState } = restStateClasses(watchlistCardSrc);
-  const allClasses = `${base} ${restState}`;
-  assert.doesNotMatch(allClasses, /\bhidden\b/, 'grid remove button must not use `hidden` — that removes it entirely on mobile with no hover fallback');
-});
-
-test('grid remove button is visible at rest (mobile) and only hover/focus-revealed at sm+', () => {
-  const { restState } = restStateClasses(watchlistCardSrc);
-  // Same pattern as the card's rate-star strip: opacity-100 by default
-  // (mobile has no hover), opacity-0 gated behind sm: and revealed on
-  // sm:group-hover or focus, so desktop keeps its hover-only chrome.
-  assert.match(restState, /(?:^|\s)opacity-100(?:\s|$)/, 'must be visible (opacity-100) at rest for mobile, which has no hover');
-  assert.match(restState, /sm:opacity-0/, 'must be hover-gated only at sm+ (desktop), not hidden outright');
-  assert.match(restState, /sm:group-hover\/wl:opacity-100/, 'must reveal on desktop hover via the group/wl pattern used elsewhere on this card');
-  assert.match(restState, /focus-visible:opacity-100/, 'must also reveal on keyboard focus, not just mouse hover — a sm:opacity-0 button with no focus-visible fallback is unreachable via keyboard on desktop');
+  assert.match(extractFunctionBody(SOURCE, 'WatchlistListItem'), /aria-label="Remove from watchlist"/);
 });

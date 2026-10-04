@@ -99,20 +99,6 @@ for (const vp of VIEWPORTS) {
       }).toPass({ timeout: 3000 });
     });
 
-    test('diary grid: delete button visible on desktop hover', async ({ page }) => {
-      // Grid delete is hidden on mobile (hidden sm:flex), hover-only on desktop
-      if (vp.name === 'mobile') return;
-
-      await goToMock(page, 'diary');
-      // Switch to grid view (diary defaults to list)
-      await page.getByRole('button', { name: 'Grid view' }).click();
-      await expect(page.getByRole('button', { name: 'Grid view' })).toHaveClass(/bg-white/, { timeout: 3000 });
-
-      // Grid delete button exists in DOM but is opacity-0 until hover
-      const deleteBtn = page.getByRole('button', { name: 'Delete rating' }).first();
-      await expect(deleteBtn).toBeAttached();
-    });
-
     // ─── Watchlist — Remove Flow (List View) ────────────────────
 
     test('watchlist list: remove confirmation shows and dismisses', async ({ page }) => {

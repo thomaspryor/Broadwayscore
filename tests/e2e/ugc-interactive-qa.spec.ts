@@ -21,6 +21,15 @@ async function goToMock(page: Page, tab: 'diary' | 'watchlist' = 'diary') {
   await page.waitForSelector('#tab-watchlist span', { timeout: 30000 });
 }
 
+/** Interactive rate stars on My Shows live on past-dated watchlist rows,
+ *  which list on their own in the A-Z view (To Be Rated became a poster
+ *  band with no inline stars, BRO-4558). */
+async function goToRateStars(page: Page) {
+  await goToMock(page, 'watchlist');
+  await page.getByRole('combobox', { name: 'Sort watchlist' }).selectOption('alphabetical');
+  await page.getByRole('button', { name: 'List view' }).click();
+}
+
 // ═══════════════════════════════════════════════════════════════
 // SECTION 1: Hover interaction checks
 // Catches: flicker, ghost elements, broken hover states
@@ -32,10 +41,10 @@ test.describe('Hover interactions — mobile (390px)', () => {
   });
 
   test('star rating hover does not create visual artifacts', async ({ page }) => {
-    await goToMock(page, 'diary');
+    await goToRateStars(page);
 
-    // Find all star rating buttons (the "To Be Rated" cards have interactive stars)
-    const starButtons = page.locator('button[aria-label*="star"]');
+    // Find all interactive star buttons (past-dated watchlist rows)
+    const starButtons = page.locator('[role="radiogroup"][aria-label="Star rating"] button[aria-label*="star"]');
     const count = await starButtons.count();
     expect(count).toBeGreaterThan(0);
 
@@ -63,12 +72,11 @@ test.describe('Hover interactions — mobile (390px)', () => {
   });
 
   test('star rating hover position is stable (no flicker)', async ({ page }) => {
-    await goToMock(page, 'diary');
+    await goToRateStars(page);
 
-    // Find the interactive star rating containers (To Be Rated section)
+    // Find the interactive star rating containers (past-dated watchlist rows)
     const starGroups = page.locator('[role="radiogroup"][aria-label="Star rating"]');
-    const groupCount = await starGroups.count();
-    if (groupCount === 0) return;
+    expect(await starGroups.count()).toBeGreaterThan(0);
 
     const starGroup = starGroups.first();
     const star3 = starGroup.locator('button[aria-label="3 stars"]');
@@ -286,78 +294,32 @@ test.describe('Layout consistency — mobile (390px)', () => {
     }
   });
 
-  test('grid "Add" card matches real card height', async ({ page }) => {
-    await goToMock(page, 'diary');
-
-    // Use Playwright actionable click (waits for attached/visible/stable)
-    // rather than synthesized DOM .click() which can race React hydration.
-    await page.getByRole('button', { name: 'Grid view' }).click();
-    await page.waitForTimeout(500);
-
-    const result = await page.evaluate(() => {
-      const addCard = document.querySelector('button[aria-label="Add a show to diary"]');
-      if (!addCard) return { found: false, diff: 0 };
-
-      const addHeight = addCard.getBoundingClientRect().height;
-      // Find a real grid card (previous sibling or parent's other children)
-      const parent = addCard.parentElement;
-      if (!parent) return { found: false, diff: 0 };
-
-      const siblings = Array.from(parent.children).filter(c => c !== addCard);
-      if (siblings.length === 0) return { found: false, diff: 0 };
-
-      const siblingHeight = (siblings[0] as HTMLElement).getBoundingClientRect().height;
-      return {
-        found: true,
-        addHeight: Math.round(addHeight),
-        siblingHeight: Math.round(siblingHeight),
-        diff: Math.abs(addHeight - siblingHeight),
-      };
-    });
-
-    if (result.found) {
-      expect(
-        result.diff,
-        `Add card height (${result.addHeight}px) differs from real card (${result.siblingHeight}px) by ${result.diff}px`
-      ).toBeLessThan(30);
+  test('grid "Add" card is exactly poster height', async ({ page }) => {
+    for (const tab of ['diary', 'watchlist'] as const) {
+      await goToMock(page, tab);
+      await page.getByRole('button', { name: 'Grid view' }).click();
+      // The owner wants the dashed card the size of a poster (2026-10-03);
+      // the grid used to stretch it to the tallest card in the row. The old
+      // version of this test looked up a label that no longer existed, so it
+      // never ran.
+      const add = page.getByRole('button', { name: tab === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist' });
+      await expect(add).toBeVisible();
+      const poster = add.locator('xpath=..').locator('.aspect-\\[2\\/3\\]').first();
+      const [a, p] = [await add.boundingBox(), await poster.boundingBox()];
+      expect(a && p, `${tab}: add card or sibling poster not found`).toBeTruthy();
+      expect(Math.abs(a!.height - p!.height), `${tab}: add ${a!.height}px vs poster ${p!.height}px`).toBeLessThanOrEqual(2);
+      expect(Math.abs(a!.y - p!.y), `${tab}: add card is not top-aligned with the poster`).toBeLessThanOrEqual(2);
     }
   });
 
-  test('no delete icons visible on diary grid cards at mobile width', async ({ page }) => {
+  test('diary grid posters have no delete button at mobile width', async ({ page }) => {
     await goToMock(page, 'diary');
-
-    // Use Playwright actionable click (waits for attached/visible/stable)
-    // rather than synthesized DOM .click() which can race React hydration.
     await page.getByRole('button', { name: 'Grid view' }).click();
-    await page.waitForTimeout(500);
-
-    // In the Past Shows grid, delete buttons should be hidden on mobile
-    const visibleDeleteBtns = await page.evaluate(() => {
-      const heading = Array.from(document.querySelectorAll('h3')).find(h => h.textContent?.includes('Past Shows'));
-      if (!heading) return { found: false, count: 0 };
-
-      const section = heading.closest('div');
-      if (!section) return { found: false, count: 0 };
-
-      const grid = section.querySelector('.grid');
-      if (!grid) return { found: false, count: 0 };
-
-      const deleteButtons = grid.querySelectorAll('button[aria-label="Delete rating"]');
-      let visibleCount = 0;
-      deleteButtons.forEach(btn => {
-        const style = getComputedStyle(btn);
-        if (style.display !== 'none') visibleCount++;
-      });
-
-      return { found: true, count: visibleCount };
-    });
-
-    if (visibleDeleteBtns.found) {
-      expect(
-        visibleDeleteBtns.count,
-        `${visibleDeleteBtns.count} delete buttons visible on diary grid at mobile width (should be hidden)`
-      ).toBe(0);
-    }
+    // Owner, 2026-10-03 (BRO-4558): the 44px trash circles covered the
+    // posters on phones; delete is on the show page (and list view).
+    const panel = page.locator('[role="tabpanel"]');
+    expect(await panel.locator('.grid a[aria-label^="View "]').count()).toBeGreaterThan(0);
+    await expect(panel.locator('.grid button[aria-label="Delete rating"]')).toHaveCount(0);
   });
 });
 

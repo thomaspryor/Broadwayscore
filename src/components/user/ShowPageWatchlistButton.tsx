@@ -3,9 +3,7 @@
 import { useEffect, useCallback, useState } from 'react';
 import Link from 'next/link';
 import WatchlistButton from './WatchlistButton';
-import DatePickerButton from './DatePickerButton';
-import ShowtimePicker from './ShowtimePicker';
-import AddToCalendarButtons from './AddToCalendarButtons';
+import WatchlistPlanCard from './WatchlistPlanCard';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import { useAuth } from '@/contexts/AuthContext';
 import { useWatchlist } from '@/hooks/useWatchlist';
@@ -29,7 +27,8 @@ interface ShowPageWatchlistButtonProps {
 
 /**
  * Self-contained watchlist button for the show page links row.
- * Handles auth, toggle, planned date, and "See Watchlist" link.
+ * Handles auth and the toggle; once watchlisted, WatchlistPlanCard below it
+ * holds the date, showtime, calendar and remove (same card as ShowHeroRedesign).
  */
 export default function ShowPageWatchlistButton({
   showId, title, slug, diaryOnly, category, venue, theaterAddress, runtime, runtimeMin,
@@ -76,10 +75,6 @@ export default function ShowPageWatchlistButton({
 
   const watched = isWatchlisted(showId);
   const watchlistEntry = watchlist.find(w => w.show_id === showId);
-  const watchlistDate = watchlistEntry?.planned_date || null;
-
-  const handleShowtimeSave = (fields: { time_slot: 'matinee' | 'evening' | 'custom' | null; curtain_time: string | null }) =>
-    updatePerformance(showId, fields).catch(() => showToast?.('Failed to save showtime.', 'error'));
 
   const event = watchlistEntry
     ? buildPlannedShowEvent(
@@ -89,41 +84,25 @@ export default function ShowPageWatchlistButton({
     : null;
 
   return (
-    <div className="flex flex-col gap-1">
+    <div className="flex flex-col gap-2">
       <div className="flex items-center gap-2 flex-shrink-0">
-        {watched && (
-          <DatePickerButton
-            value={watchlistDate || ''}
-            onChange={val => updatePlannedDate(showId, val || null).catch(() => showToast?.('Failed to save date.', 'error'))}
-            ariaLabel="Planned date"
-            className="flex items-center gap-1 text-xs text-gray-500 hover:text-gray-300 transition-colors min-h-[36px] px-2 -mx-2"
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-            </svg>
-            <span>
-              {watchlistDate
-                ? new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                : 'Add date'}
-            </span>
-          </DatePickerButton>
-        )}
         <WatchlistButton
           isWatchlisted={watched}
           onToggle={handleToggle}
           loading={loading}
         />
       </div>
-      {watched && watchlistDate && watchlistEntry && (
-        <ShowtimePicker
+      {watched && watchlistEntry && (
+        <WatchlistPlanCard
           showId={showId}
-          date={watchlistDate}
-          timeSlot={watchlistEntry.time_slot}
-          curtainTime={watchlistEntry.curtain_time}
-          onSave={handleShowtimeSave}
+          showTitle={title || showId}
+          entry={watchlistEntry}
+          event={event}
+          onDateChange={val => updatePlannedDate(showId, val).catch(() => showToast?.('Failed to save date.', 'error'))}
+          onShowtimeChange={fields => updatePerformance(showId, fields).catch(() => showToast?.('Failed to save showtime.', 'error'))}
+          onRemove={handleToggle}
         />
       )}
-      <AddToCalendarButtons event={event} />
     </div>
   );
 }

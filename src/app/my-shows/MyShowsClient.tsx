@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect, useMemo, useRef, useCallback, useId, type ReactNode } from 'react';
+import { useState, useEffect, useMemo, useRef, useCallback, type ReactNode } from 'react';
 import Link from 'next/link';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { featureFlags } from '@/config/feature-flags';
@@ -15,17 +15,17 @@ import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { stubRowFromCandidate, type MezzanineCandidate } from '@/lib/mezzanine-search';
 import SharedDatePicker from '@/components/user/DatePickerButton';
-import ShowtimePicker from '@/components/user/ShowtimePicker';
 import AddToCalendarButtons from '@/components/user/AddToCalendarButtons';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import { selectSharedPlans, toSharedEntries, type PlanShowLike } from '@/lib/shared-plans/select';
-import { CardLinkOrDiv, Poster, UpcomingGridCard, UpcomingListRow, ViewModeToggle, bookabilityLabel, type ViewMode } from '@/components/user/upcoming-cards';
+import { Poster, PosterGridCard, SectionBand, UpcomingListRow, ViewModeToggle, bookabilityLabel, formatPillDate, type ViewMode } from '@/components/user/upcoming-cards';
 import { localToday, formatShowDate } from '@/lib/date-utils';
 
 import { useToastSafe } from '@/components/ui/Toast';
 import type { UserReview, WatchlistEntry, ShowLookup } from '@/types/user';
 import dynamic from 'next/dynamic';
 import { ShowSearchDropdown } from '@/components/show-cards';
+import MiniStars from '@/components/user/Stars';
 const ImportShows = dynamic(() => import('./ImportShows'), { ssr: false });
 
 const ListsTab = dynamic(() => import('./ListsTab').catch(() => {
@@ -175,7 +175,7 @@ export default function MyShowsClient() {
 
   const { user, profile, isAuthenticated, loading: authLoading, signIn } = useAuth();
   const { reviews: realReviews, getAllReviews, deleteReview, loading: reviewsLoading, error: reviewsError } = useUserReviews(user?.id || null);
-  const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, updatePerformance, removeFromWatchlist, loading: watchlistLoading, error: watchlistError } = useWatchlist(user?.id || null);
+  const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, removeFromWatchlist, loading: watchlistLoading, error: watchlistError } = useWatchlist(user?.id || null);
   // Count-only lists instance for the tab badge (ListsTab owns its own full
   // CRUD instance; hook instances don't share state, so this fetches the list
   // rows once per page view — cheap, and the badge works without visiting the tab).
@@ -235,12 +235,6 @@ export default function MyShowsClient() {
       watchlist: prev.watchlist.map(w => w.show_id === showId ? { ...w, planned_date: date, time_slot: null, curtain_time: null } : w),
     } : prev);
   }, []);
-  const mockUpdatePerformance = useCallback(async (showId: string, fields: Partial<Pick<WatchlistEntry, 'planned_date' | 'time_slot' | 'curtain_time'>>) => {
-    setMockData(prev => prev ? {
-      ...prev,
-      watchlist: prev.watchlist.map(w => w.show_id === showId ? { ...w, ...fields } : w),
-    } : prev);
-  }, []);
   const mockAddToWatchlist = useCallback(async (showId: string) => {
     setMockData(prev => prev ? {
       ...prev,
@@ -275,7 +269,6 @@ export default function MyShowsClient() {
     }
   }, [effectiveRemoveFromWatchlist, showToast]);
   const effectiveUpdatePlannedDate = isMockMode ? mockUpdatePlannedDate : updatePlannedDate;
-  const effectiveUpdatePerformance = isMockMode ? mockUpdatePerformance : updatePerformance;
 
   // Just-added-from-search prompt: confirms the add and offers the planned
   // date IN PLACE — quick-add previously required finding the new entry on
@@ -295,15 +288,6 @@ export default function MyShowsClient() {
     }
   }, [effectiveUpdatePlannedDate, showToast]);
 
-  // Showtime tier (matinee/evening/custom) — same rethrow-and-toast shape as
-  // handlePlannedDateChange, kept separate because it writes different fields.
-  const handleShowtimeChange = useCallback(async (showId: string, fields: Pick<WatchlistEntry, 'time_slot' | 'curtain_time'>) => {
-    try {
-      await effectiveUpdatePerformance(showId, fields);
-    } catch {
-      showToast?.('Failed to save showtime.', 'error');
-    }
-  }, [effectiveUpdatePerformance, showToast]);
   const effectiveAddToWatchlist = isMockMode ? mockAddToWatchlist : addToWatchlist;
 
   // Save handler for the inline rating modal (diary-only shows). Simpler than
@@ -771,6 +755,9 @@ export default function MyShowsClient() {
           onSave={handleInlineRatingSave}
           onSaved={() => setRatingTarget(null)}
           onCancel={() => setRatingTarget(null)}
+          // Delete sits in the editor: grid cards show a pencil, not a trash
+          // can (owner, 2026-10-03, BRO-4558).
+          onDelete={ratingTarget.reviewId ? () => { handleDeleteReviewWithToast(ratingTarget.reviewId!); setRatingTarget(null); } : undefined}
           analytics={{ source: 'my_shows', showId: ratingTarget.id }}
         />
       )}
@@ -867,7 +854,7 @@ export default function MyShowsClient() {
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
               aria-label="Sort diary"
-              className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 h-8 text-gray-300"
+              className="toolbar-control"
             >
               <option value="date-desc">Newest</option>
               <option value="date-asc">Oldest</option>
@@ -878,7 +865,7 @@ export default function MyShowsClient() {
             <button
               type="button"
               onClick={() => setSharePlansOpen(true)}
-              className="btn btn-secondary text-xs h-8 px-3 gap-1.5"
+              className="toolbar-control"
               data-testid="share-plans-open"
             >
               <ShareIcon />
@@ -890,7 +877,7 @@ export default function MyShowsClient() {
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
               aria-label="Sort watchlist"
-              className="text-xs bg-white/5 border border-white/10 rounded px-2 py-1 h-8 text-gray-300"
+              className="toolbar-control"
             >
               <option value="added-desc">Recent</option>
               <option value="alphabetical">A-Z</option>
@@ -901,7 +888,6 @@ export default function MyShowsClient() {
           <ViewModeToggle
             value={activeTab === 'diary' ? diaryView : watchlistView}
             onChange={mode => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', mode)}
-            size="desktop"
           />
         </div>
         )}
@@ -911,13 +897,13 @@ export default function MyShowsClient() {
           Selects are 16px on mobile: anything smaller makes iOS Safari zoom
           the whole page on focus and stay zoomed (owner report, 2026-07-17). */}
       {activeTab !== 'lists' && (
-        <div className="flex sm:hidden items-center justify-end gap-1.5 py-1.5 mb-2">
+        <div className="flex sm:hidden items-center justify-end gap-2 py-1.5 mb-2">
           {activeTab === 'diary' && (
             <select
               value={diarySort}
               onChange={e => setDiarySort(e.target.value as DiarySort)}
               aria-label="Sort diary"
-              className="text-base bg-white/5 border border-white/10 rounded px-1.5 py-1 h-11 text-gray-300 max-w-[110px]"
+              className="toolbar-control"
             >
               <option value="date-desc">Newest</option>
               <option value="date-asc">Oldest</option>
@@ -928,7 +914,7 @@ export default function MyShowsClient() {
             <button
               type="button"
               onClick={() => setSharePlansOpen(true)}
-              className="btn btn-secondary text-sm h-11 px-3 gap-1.5 mr-auto"
+              className="toolbar-control mr-auto"
               data-testid="share-plans-open-mobile"
             >
               <ShareIcon />
@@ -940,20 +926,18 @@ export default function MyShowsClient() {
               value={watchlistSort}
               onChange={e => setWatchlistSort(e.target.value as WatchlistSort)}
               aria-label="Sort watchlist"
-              className="text-base bg-white/5 border border-white/10 rounded px-1.5 py-1 h-11 text-gray-300 max-w-[110px]"
+              className="toolbar-control"
             >
               <option value="added-desc">Recent</option>
               <option value="alphabetical">A-Z</option>
               <option value="closing-soon">Closing</option>
             </select>
           )}
-          {/* Grid / List toggle — h-11 (44px): the global mobile tap-target rule
-              inflates the buttons to 44px anyway, and a shorter container left
-              the icons visually low (owner report, 2026-07-17). */}
+          {/* Grid / List toggle — 44px like the other controls: the global
+              mobile tap-target rule inflates its buttons to 44px anyway. */}
           <ViewModeToggle
             value={activeTab === 'diary' ? diaryView : watchlistView}
             onChange={mode => pickView(activeTab === 'diary' ? 'diary' : 'watchlist', mode)}
-            size="mobile"
           />
         </div>
       )}
@@ -975,33 +959,17 @@ export default function MyShowsClient() {
             <>
               {/* To Be Rated — at top so users notice it */}
               {toBeRatedEntries.length > 0 && (
-                <div className="mb-8">
-                  <div className="flex items-center justify-between mb-1">
-                    <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider">To Be Rated</h3>
-                    <span className="text-xs text-gray-500">{toBeRatedEntries.length} {toBeRatedEntries.length === 1 ? 'entry' : 'entries'}</span>
-                  </div>
-                  <p className="text-xs text-gray-500 mb-3">You saw these shows. How were they?</p>
-                  <div className="space-y-2">
-                    {toBeRatedEntries.map(entry => (
-                      <ToBeRatedCard
-                        key={`rate-${entry.id}`}
-                        entry={entry}
-                        show={showMap[entry.show_id]}
-                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed. No rating needed.')}
-                        onRate={openRatingEditor}
-                      />
-                    ))}
-                  </div>
-                </div>
+                <ToBeRatedSection
+                  idPrefix="diary"
+                  entries={toBeRatedEntries}
+                  showMap={showMap}
+                />
               )}
 
               {/* Upcoming section — watchlist entries with future dates + reviews with future date_seen */}
               {(upcomingWatchlistEntries.length > 0 || upcomingReviews.length > 0) && (
-                <div className="mb-8">
-                  <div className="flex items-center justify-between mb-3">
-                    <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Upcoming</h3>
-                    <span className="text-xs text-gray-500">{upcomingWatchlistEntries.length + upcomingReviews.length} {(upcomingWatchlistEntries.length + upcomingReviews.length) === 1 ? 'entry' : 'entries'}</span>
-                  </div>
+                <section className="mb-8">
+                  <SectionBand title="Upcoming" count={upcomingWatchlistEntries.length + upcomingReviews.length} />
                   {diaryView === 'list' ? (
                     <div className="space-y-2">
                       {upcomingWatchlistEntries.map(entry => {
@@ -1036,26 +1004,22 @@ export default function MyShowsClient() {
                         const entryShow = showMap[entry.show_id];
                         const entrySlug = entryShow?.slug || entry.show_id;
                         const entryHref = getShowHref(entrySlug, entryShow?.diaryOnly);
-                        const entryFormattedDate = entry.planned_date
-                          ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-                          : null;
                         return (
-                          <UpcomingGridCard
+                          <PosterGridCard
                             key={`wl-grid-${entry.id}`}
                             href={entryHref}
-                            posterUrl={entryShow?.posterUrl ?? undefined}
-                            date={entryFormattedDate}
+                            posterUrl={entryShow?.posterUrl}
+                            date={entry.planned_date ? formatPillDate(entry.planned_date) : null}
                             title={entryShow?.title || entry.show_id}
-                            onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from watchlist.')}
                           />
                         );
                       })}
                       {upcomingReviews.map(review => (
-                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
+                        <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} />
                       ))}
                     </div>
                   )}
-                </div>
+                </section>
               )}
 
               {/* Past shows section — grouped by year (skipped when sorting by rating) */}
@@ -1064,13 +1028,8 @@ export default function MyShowsClient() {
                 if (diarySort === 'rating-desc') {
                   const hasOtherSections = upcomingReviews.length > 0 || upcomingWatchlistEntries.length > 0 || toBeRatedEntries.length > 0;
                   return (
-                    <div>
-                      {hasOtherSections && (
-                        <div className="flex items-center justify-between mb-3">
-                          <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">All Rated</h3>
-                          <span className="text-xs text-gray-500">{pastReviews.length} {pastReviews.length === 1 ? 'entry' : 'entries'}</span>
-                        </div>
-                      )}
+                    <section>
+                      {hasOtherSections && <SectionBand title="All Rated" count={pastReviews.length} />}
                       {diaryView === 'list' ? (
                         <div className="space-y-2">
                           {pastReviews.map(review => (
@@ -1084,7 +1043,7 @@ export default function MyShowsClient() {
                       ) : (
                         <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                           {pastReviews.map(review => (
-                            <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
+                            <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} showYear />
                           ))}
                           <AddShowCard context="diary" onOpen={() => {
                             const btn = document.querySelector<HTMLButtonElement>('[aria-label="Add a show to diary"], [aria-label="Rate a show"]');
@@ -1092,7 +1051,7 @@ export default function MyShowsClient() {
                           }} />
                         </div>
                       )}
-                    </div>
+                    </section>
                   );
                 }
 
@@ -1117,27 +1076,20 @@ export default function MyShowsClient() {
                 const hasOtherSections = upcomingReviews.length > 0 || upcomingWatchlistEntries.length > 0 || toBeRatedEntries.length > 0;
                 const showYearHeaders = diaryView === 'grid' || sortedYears.length > 1 || hasOtherSections;
 
+                // Year bands go straight under the sections above, as in the
+                // app: no separate "Past Shows" band on top of them (BRO-4558).
                 return (
-                  <>
-                    {hasOtherSections && (
-                      <div className="flex items-center justify-between mb-3">
-                        <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">Past Shows</h3>
-                        <span className="text-xs text-gray-500">{pastReviews.length} {pastReviews.length === 1 ? 'entry' : 'entries'}</span>
-                      </div>
-                    )}
-                    <div className="space-y-6">
+                  <div className="space-y-6">
                     {sortedYears.map((year, yearIdx) => (
-                      <div key={year}>
+                      <section key={year}>
                         {showYearHeaders && (
-                          <div className={`flex items-center justify-between mb-3${diaryView === 'list' && yearIdx > 0 ? ' pt-4 border-t border-white/[0.06]' : ''}`}>
-                            <h3 className="text-xs font-bold text-gray-500 uppercase tracking-wider">
-                              {year}
-                              {year === 'No date' && (
-                                <span className="normal-case font-normal tracking-normal text-gray-600"> (edit a show to add when you saw it)</span>
-                              )}
-                            </h3>
-                            <span className="text-xs text-gray-500">{reviewsByYear[year].length} {reviewsByYear[year].length === 1 ? 'entry' : 'entries'}</span>
-                          </div>
+                          <SectionBand
+                            title={year}
+                            count={reviewsByYear[year].length}
+                            hint={year === 'No date' && (
+                              <span className="normal-case font-normal tracking-normal text-gray-500"> (edit a show to add when you saw it)</span>
+                            )}
+                          />
                         )}
                         {diaryView === 'list' ? (
                           <div className="space-y-2">
@@ -1154,7 +1106,7 @@ export default function MyShowsClient() {
                         ) : (
                           <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                             {reviewsByYear[year].map(review => (
-                              <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} onDelete={() => handleDeleteReviewWithToast(review.id)} onRate={openRatingEditor} />
+                              <DiaryGridCard key={review.id} review={review} show={showMap[review.show_id]} />
                             ))}
                             {yearIdx === sortedYears.length - 1 && (
                               <AddShowCard context="diary" onOpen={() => {
@@ -1164,10 +1116,9 @@ export default function MyShowsClient() {
                             )}
                           </div>
                         )}
-                      </div>
+                      </section>
                     ))}
                   </div>
-                  </>
                 );
               })()}
             </>
@@ -1197,9 +1148,6 @@ export default function MyShowsClient() {
                     key={entry.id}
                     entry={entry}
                     show={showMap[entry.show_id]}
-                    onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                    onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                    onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                     onRate={openRatingEditor}
                   />
                 ))}
@@ -1216,7 +1164,6 @@ export default function MyShowsClient() {
                     entry={entry}
                     show={showMap[entry.show_id]}
                     onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                    onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
                     onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                     onRate={openRatingEditor}
                   />
@@ -1232,8 +1179,8 @@ export default function MyShowsClient() {
               {/* Upcoming — future planned dates at the TOP so a newly dated
                   show visibly moves up, not below the fold (owner, 2026-07-20) */}
               {upcomingBookedWatchlist.length > 0 && (
-                <div>
-                  <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Upcoming</h3>
+                <section>
+                  <SectionBand title="Upcoming" count={upcomingBookedWatchlist.length} />
                   {watchlistView === 'grid' ? (
                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
                       {upcomingBookedWatchlist.map(entry => (
@@ -1241,9 +1188,6 @@ export default function MyShowsClient() {
                           key={entry.id}
                           entry={entry}
                           show={showMap[entry.show_id]}
-                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1262,7 +1206,6 @@ export default function MyShowsClient() {
                           entry={entry}
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
                           onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
@@ -1275,14 +1218,14 @@ export default function MyShowsClient() {
                       )}
                     </div>
                   )}
-                </div>
+                </section>
               )}
 
               {/* Not yet booked section */}
               {unbookedWatchlist.length > 0 && (
-                <div>
+                <section data-testid="not-yet-booked">
                   {(upcomingBookedWatchlist.length > 0 || seenToRateWatchlist.length > 0) && (
-                    <h3 className="text-xs font-semibold text-gray-500 uppercase tracking-wider mb-3">Not yet booked</h3>
+                    <SectionBand title="Not yet booked" count={unbookedWatchlist.length} />
                   )}
                   {watchlistView === 'grid' ? (
                     <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
@@ -1291,9 +1234,6 @@ export default function MyShowsClient() {
                           key={entry.id}
                           entry={entry}
                           show={showMap[entry.show_id]}
-                          onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
-                          onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
                       ))}
@@ -1310,7 +1250,6 @@ export default function MyShowsClient() {
                           entry={entry}
                           show={showMap[entry.show_id]}
                           onDateChange={(date) => handlePlannedDateChange(entry.show_id, date)}
-                          onShowtimeChange={(fields) => handleShowtimeChange(entry.show_id, fields)}
                           onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed from Watchlist.')}
                           onRate={openRatingEditor}
                         />
@@ -1321,7 +1260,7 @@ export default function MyShowsClient() {
                       }} />
                     </div>
                   )}
-                </div>
+                </section>
               )}
 
               {/* Seen (past planned date, unrated) — mirror the Diary's To Be
@@ -1337,18 +1276,11 @@ export default function MyShowsClient() {
                       }} />
                     </div>
                   )}
-                  <h3 className="text-xs font-bold text-amber-400/80 uppercase tracking-wider mb-3">To Be Rated</h3>
-                  <div className="space-y-2">
-                    {seenToRateWatchlist.map(entry => (
-                      <ToBeRatedCard
-                        key={`wl-rate-${entry.id}`}
-                        entry={entry}
-                        show={showMap[entry.show_id]}
-                        onRemove={() => handleRemoveFromWatchlist(entry.show_id, 'Removed. No rating needed.')}
-                        onRate={openRatingEditor}
-                      />
-                    ))}
-                  </div>
+                  <ToBeRatedSection
+                    idPrefix="watchlist"
+                    entries={seenToRateWatchlist}
+                    showMap={showMap}
+                  />
                 </div>
               )}
             </div>
@@ -1358,7 +1290,7 @@ export default function MyShowsClient() {
 
       {/* Lists tab */}
       {activeTab === 'lists' && (
-        <div id="panel-lists" role="tabpanel" aria-labelledby="tab-lists">
+        <div id="panel-lists" role="tabpanel" aria-labelledby="tab-lists" className="pt-4 sm:pt-0">
           <ListsTab userId={user?.id || null} showMap={showMap} isMockMode={isMockMode} createTrigger={createListTrigger} />
         </div>
       )}
@@ -1528,124 +1460,59 @@ function DiaryCard({ review, show, onDelete, onRate }: { review: UserReview; sho
 }
 
 
-function DiaryGridCard({ review, show, onDelete, onRate }: { review: UserReview; show?: ShowLookup; onDelete?: () => void; onRate?: (show: { id: string; title: string }, opts: { reviewId: string; initialRating: number; initialReviewText: string | null; initialDateSeen: string | null }) => void }) {
-  const router = useRouter();
-  const [confirmDelete, setConfirmDelete] = useState(false);
-  useEffect(() => {
-    if (!confirmDelete) return;
-    const timer = setTimeout(() => setConfirmDelete(false), 4000);
-    return () => clearTimeout(timer);
-  }, [confirmDelete]);
+/**
+ * Past/upcoming rated show in the grid, the app's diary card (watched.tsx
+ * renderDiaryGridCard): date pill on the poster, gold stars, then the name.
+ * `showYear` puts the year in the pill when no year band says it (Top Rated
+ * sort's flat grid).
+ */
+function DiaryGridCard({ review, show, showYear = false }: { review: UserReview; show?: ShowLookup; showYear?: boolean }) {
   const title = show?.title || review.show_id;
   const slug = show?.slug || review.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
 
   return (
-    <div className="group/grid flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden">
-      <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
-        <div className="aspect-[2/3] bg-surface-overlay">
-          <Poster url={show?.posterUrl} iconClass="text-3xl" title={title} />
-        </div>
-        {/* Written-note preview on hover (desktop) — grid view otherwise hides
-            the note entirely (owner request, 2026-07-13) */}
-        {review.review_text && (
-          <div className="absolute inset-x-0 bottom-0 z-[1] hidden sm:block opacity-0 group-hover/grid:opacity-100 transition-opacity pointer-events-none">
-            <div className="bg-gradient-to-t from-black/95 via-black/80 to-transparent px-2.5 pt-10 pb-2.5">
-              <p className="text-xs text-gray-200 italic leading-snug line-clamp-4">{review.review_text}</p>
-            </div>
-          </div>
-        )}
-        {/* Fallback edit affordance for the (now unreachable in practice)
-            case where getShowHref() can't resolve a diary-only show's page —
-            href is null, and this inline modal is the only way to edit. */}
-        {!href && onRate && (
-          <button
-            type="button"
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); onRate({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen }); }}
-            className="absolute top-2 left-2 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full bg-black/70 text-gray-400 hover:text-white opacity-0 group-hover/grid:opacity-100 transition-opacity"
-            aria-label="Edit rating"
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-            </svg>
-          </button>
-        )}
-        {/* Edit + delete — hidden on mobile (tap opens the show page, which
-            has the pencil), hover-revealed on desktop. Edit added for parity
-            with list view (owner, 2026-07-19). */}
-        {/* Button (not Link): a Link here would NEST anchors inside
-            CardLinkOrDiv — invalid HTML that the parser splits on any
-            server-rendered path (code-review finding, 2026-07-19). */}
-        {(href || onRate) && (
-          <button
-            type="button"
-            onClick={(e) => {
-              e.preventDefault();
-              e.stopPropagation();
-              if (href) router.push(`${href}?edit=1`);
-              else onRate?.({ id: review.show_id, title }, { reviewId: review.id, initialRating: review.rating, initialReviewText: review.review_text, initialDateSeen: review.date_seen });
-            }}
-            className="absolute top-2 right-10 z-[2] w-7 h-7 hidden sm:flex items-center justify-center rounded-full bg-black/70 text-gray-400 hover:text-white opacity-0 group-hover/grid:opacity-100 focus-visible:opacity-100 transition-opacity"
-            aria-label="Edit rating"
-          >
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-            </svg>
-          </button>
-        )}
-        {/* Delete button — always visible on mobile (no hover), hover/focus-
-            revealed on desktop. List view's DiaryCard already renders delete
-            in-flow on mobile via actionIcons (md:hidden block); this grid
-            card's `hidden sm:flex` had no such fallback, leaving mobile grid
-            users with no way to delete a rating (parity fix, cousin of
-            WatchlistCard's #270 fix — same bug class, different tab).
-            The confirm state SAYS "Delete?" — a trash that merely turned red
-            didn't read as tap-again-to-confirm (owner, 2026-07-19). */}
-        {onDelete && (
-          <button
-            type="button"
-            onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmDelete ? onDelete() : setConfirmDelete(true); }}
-            className={`absolute top-2 right-2 z-[2] flex items-center justify-center rounded-full ${confirmDelete ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-score-skip/80 hover:text-score-skip opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100 focus-visible:opacity-100'} transition-opacity`}
-            aria-label="Delete rating"
-          >
-            {confirmDelete ? 'Delete?' : (
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-              </svg>
-            )}
-          </button>
-        )}
-      </CardLinkOrDiv>
-      {/* Stars below image — centered, filled only (Mezzanine-style), with the
-          date seen directly beneath (owner placement call, 2026-07-13) */}
-      <div className="px-2 py-1.5">
-        <div className="flex justify-center gap-0.5 min-h-[18px]">
+    <PosterGridCard
+      href={href}
+      posterUrl={show?.posterUrl}
+      date={review.date_seen ? formatPillDate(review.date_seen.slice(0, 10), { year: showYear }) : null}
+      title={title}
+      ariaLabel={`View ${title}`}
+      // No corner buttons: the show page edits or deletes the rating
+      // (owner, 2026-10-03).
+      meta={
+        <div className="mt-1.5 flex justify-center gap-0.5 min-h-[18px]">
           {review.rating > 0 && <MiniStars rating={review.rating} size="md" filledOnly />}
         </div>
-        {review.date_seen && (
-          <p className="mt-0.5 text-xs text-amber-400/80 text-center truncate">
-            {new Date(review.date_seen + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' })}
-          </p>
-        )}
-      </div>
-    </div>
+      }
+    >
+      {/* Written-note preview on hover (desktop) — grid view otherwise hides
+          the note entirely (owner request, 2026-07-13) */}
+      {review.review_text && (
+        <div className="absolute inset-x-0 bottom-0 z-[1] hidden sm:block opacity-0 group-hover/grid:opacity-100 transition-opacity pointer-events-none">
+          <div className="bg-gradient-to-t from-black/95 via-black/80 to-transparent px-2.5 pt-10 pb-2.5">
+            <p className="text-xs text-gray-200 italic leading-snug line-clamp-4">{review.review_text}</p>
+          </div>
+        </div>
+      )}
+    </PosterGridCard>
   );
 }
 
-function WatchlistCard({ entry, show, onDateChange, onShowtimeChange, onRemove, onRate }: {
+/**
+ * Watchlist poster card. Booked (future-dated) shows get the app's Upcoming
+ * card: the date pill with countdown ("Oct 9 · 3d") and no status badge, as
+ * to-watch.tsx renderUpcomingItem. Unbooked shows keep the status badge.
+ * Nothing under the name and no corner buttons (owner, 2026-10-03: the
+ * date and delete buttons were too big). Tapping opens the show page, whose
+ * plan card sets the date and showtime or removes it; list view still
+ * edits the date and calendar export inline (showtime lives on the show page).
+ */
+function WatchlistCard({ entry, show, onRate }: {
   entry: WatchlistEntry;
   show?: ShowLookup;
-  onDateChange: (date: string | null) => void;
-  onShowtimeChange: (fields: Pick<WatchlistEntry, 'time_slot' | 'curtain_time'>) => void;
-  onRemove: () => void;
   onRate: (show: { id: string; title: string }) => void;
 }) {
-  const [confirmRemove, setConfirmRemove] = useState(false);
-  useEffect(() => {
-    if (!confirmRemove) return;
-    const timer = setTimeout(() => setConfirmRemove(false), 4000);
-    return () => clearTimeout(timer);
-  }, [confirmRemove]);
   const title = show?.title || entry.show_id;
   const slug = show?.slug || entry.show_id;
   const href = getShowHref(slug, show?.diaryOnly);
@@ -1655,7 +1522,7 @@ function WatchlistCard({ entry, show, onDateChange, onShowtimeChange, onRemove, 
   // yet booked") also satisfy !isFutureDated, so that check alone offered a
   // star control for shows the user hasn't attended yet (dedupe of
   // #600/#615/#629/#716). Only reachable via the alphabetical flat-list view;
-  // the booked/unbooked split routes past-dated entries to ToBeRatedCard.
+  // the booked/unbooked split routes past-dated entries to To Be Rated.
   const canRate = !!entry.planned_date && !isFutureDated;
   const rateHref = href ? `${href}?rate=1` : null;
   const handleRateStars = (stars: number) => {
@@ -1669,137 +1536,61 @@ function WatchlistCard({ entry, show, onDateChange, onShowtimeChange, onRemove, 
     const fourWeeks = 28 * 24 * 60 * 60 * 1000;
     return closing.getTime() - now.getTime() < fourWeeks && closing > now;
   })();
-  const bookability = bookabilityLabel(show);
-
-  const formattedDate = entry.planned_date
-    ? new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-    : null;
+  // Booked shows carry no status badge (app: "TIX ON SALE on the Upcoming
+  // shelf is noise once you have tickets").
+  const badge = isFutureDated
+    ? null
+    : isClosingSoon ? { text: 'Closing Soon', cls: 'bg-amber-500/90 text-black' } : bookabilityLabel(show);
 
   return (
-    <div className="group/wl flex flex-col rounded-xl bg-white/[0.02] border border-white/[0.06] hover:border-white/10 hover:bg-white/[0.04] transition-colors overflow-hidden" data-watchlist-future-dated={isFutureDated}>
-      <CardLinkOrDiv href={href} className="relative" ariaLabel={`View ${title}`}>
-        <div className="aspect-[2/3] bg-surface-overlay relative">
-          <Poster url={show?.posterUrl} iconClass="text-3xl" title={title} />
-          {/* Poster badges live TOP-LEFT: the rate strip owns the bottom and
-              the trash owns the top-right (owner, 2026-07-20) */}
-          {isClosingSoon && (
-            <span className="absolute top-1.5 left-1.5 z-[2] px-1.5 py-0.5 text-[9px] font-bold uppercase bg-amber-500/90 text-black rounded">
-              Closing Soon
-            </span>
-          )}
-          {!isClosingSoon && bookability && (
-            <span className={`absolute top-1.5 left-1.5 z-[2] px-1.5 py-0.5 text-[9px] font-bold uppercase rounded ${bookability.cls}`}>
-              {bookability.text}
-            </span>
-          )}
-        </div>
+    <div className="contents" data-watchlist-future-dated={isFutureDated}>
+      <PosterGridCard
+        href={href}
+        posterUrl={show?.posterUrl}
+        date={entry.planned_date ? formatPillDate(entry.planned_date, { countdown: isFutureDated }) : null}
+        title={title}
+        ariaLabel={`View ${title}`}
+        badge={badge}
+      >
         {/* Rate strip — five tappable empty stars anchored to the poster
-            BOTTOM with the same gradient as every other rate affordance
-            (browse hover-to-rate, To-Be-Rated rows). Always visible on mobile
-            (no hover); hover/focus-revealed on sm+. Tapping star N deep-links
-            ?rate=1&stars=N; diary-only shows open the inline editor. The old
-            centered-on-hover stars + mobile lone-star "Rate" pill read as
-            inconsistent/confusing (owner, 2026-07-19). */}
+            bottom, for past-dated entries in the A-Z view. Always visible on
+            mobile (no hover); hover/focus-revealed on sm+. Tapping star N
+            deep-links ?rate=1&stars=N (owner, 2026-07-19). It covers the date
+            pill, which says nothing new for a show already seen. */}
         {canRate && (
-        <div
-          className="absolute inset-x-0 bottom-0 z-[1] flex justify-center bg-gradient-to-t from-black/85 to-transparent pt-4 pb-1.5 opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100 focus-within:opacity-100 transition-opacity"
-          // Scoped to star clicks — an unconditional preventDefault made the
-          // gradient band a navigation dead-zone (same guard as HoverRateStars).
-          onClick={(e) => {
-            if ((e.target as HTMLElement).closest('[role="radiogroup"]')) {
-              e.preventDefault();
-              e.stopPropagation();
-            }
-          }}
-        >
-          <span className="star-compact flex items-center" role="radiogroup" aria-label={`Rate ${title}`}>
-            {[1, 2, 3, 4, 5].map(i => (
-              <button
-                key={i}
-                type="button"
-                onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRateStars(i); }}
-                aria-label={`${i} star${i !== 1 ? 's' : ''}`}
-                className="p-0.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80"
-              >
-                {/* w-3.5 on mobile: five w-5 stars overflow the ~115px
-                    3-column cards at 390px (clipped edges, caught in visual QA) */}
-                <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none">
-                  <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="#FFD700" strokeWidth="1.5" strokeLinejoin="round" />
-                </svg>
-              </button>
-            ))}
-          </span>
-        </div>
+          <div
+            className="absolute inset-x-0 bottom-0 z-[3] flex justify-center bg-gradient-to-t from-black/85 to-transparent pt-4 pb-1.5 opacity-100 sm:opacity-0 sm:group-hover/grid:opacity-100 focus-within:opacity-100 transition-opacity"
+            // Scoped to star clicks — an unconditional preventDefault made the
+            // gradient band a navigation dead-zone (same guard as HoverRateStars).
+            onClick={(e) => {
+              if ((e.target as HTMLElement).closest('[role="radiogroup"]')) {
+                e.preventDefault();
+                e.stopPropagation();
+              }
+            }}
+          >
+            <span className="star-compact flex items-center" role="radiogroup" aria-label={`Rate ${title}`}>
+              {[1, 2, 3, 4, 5].map(i => (
+                <button
+                  key={i}
+                  type="button"
+                  onClick={(e) => { e.preventDefault(); e.stopPropagation(); handleRateStars(i); }}
+                  aria-label={`${i} star${i !== 1 ? 's' : ''}`}
+                  className="p-0.5 rounded focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-400/80"
+                >
+                  {/* w-3.5 on mobile: five w-5 stars overflow the ~115px
+                      3-column cards at 390px (clipped edges, caught in visual QA) */}
+                  <svg className="w-3.5 h-3.5 sm:w-5 sm:h-5" viewBox="0 0 24 24" fill="none">
+                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" fill="none" stroke="#FFD700" strokeWidth="1.5" strokeLinejoin="round" />
+                  </svg>
+                </button>
+              ))}
+            </span>
+          </div>
         )}
-        {/* Trash button to remove — always visible on mobile (no hover),
-            hover/focus-revealed on sm+, same treatment as this card's rate
-            strip above (there's no hover on touch, so `hidden sm:flex` left
-            grid-view mobile users with no remove affordance at all, unlike
-            list view's always-rendered button — parity fix, UX audit #270).
-            Rest-state tint is score-skip (red), not neutral gray, so the
-            destructive action reads as distinct from the calendar/star icons
-            on this same card, not just on its own hover (owner UX audit,
-            2026-08-02 — same score-skip convention as RatingEditor's delete). */}
-        <button
-          type="button"
-          onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-          className={`absolute top-2 right-2 z-[2] flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-score-skip/80 hover:text-score-skip opacity-100 sm:opacity-0 sm:group-hover/wl:opacity-100 focus-visible:opacity-100'} transition-opacity`}
-          aria-label="Remove from watchlist"
-        >
-          {confirmRemove ? 'Remove?' : (
-            <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-              <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-            </svg>
-          )}
-        </button>
-      </CardLinkOrDiv>
-      <div className="px-2 py-1.5">
-        <DatePickerButton
-          value={entry.planned_date || ''}
-          label={formattedDate || 'Add date'}
-          hasDate={!!formattedDate}
-          onChange={(val) => onDateChange(val || null)}
-        />
-        {entry.planned_date && (
-          <ShowtimePicker
-            showId={entry.show_id}
-            date={entry.planned_date}
-            timeSlot={entry.time_slot}
-            curtainTime={entry.curtain_time}
-            onSave={onShowtimeChange}
-            compact
-          />
-        )}
-        <AddToCalendarButtons event={buildPlannedShowEvent(show ?? { id: entry.show_id, title, slug }, entry)} compact />
-      </div>
+      </PosterGridCard>
     </div>
   );
-}
-
-/** Render mini star icons for grid cards (filled, half, empty — or filled-only) */
-function MiniStars({ rating, size = 'sm', filledOnly = false }: { rating: number; size?: 'sm' | 'md' | 'lg'; filledOnly?: boolean }) {
-  const uid = useId();
-  // NOTE: w-4.5/h-4.5 are NOT in the Tailwind spacing scale — they compile to
-  // nothing, the SVGs fall back to width:100% and flex-share the row, so star
-  // size varied with star count (mobile diary grid bug, 2026-07-17).
-  const starClass = size === 'lg' ? 'w-5 h-5 sm:w-6 sm:h-6' : size === 'md' ? 'w-[18px] h-[18px] sm:w-5 sm:h-5' : 'w-3.5 h-3.5';
-  const stars = [];
-  for (let i = 1; i <= 5; i++) {
-    if (i <= Math.floor(rating)) {
-      stars.push(<svg key={i} className={`${starClass} text-amber-400`} fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>);
-    } else if (i === Math.ceil(rating) && rating % 1 !== 0) {
-      stars.push(
-        <svg key={i} className={starClass} viewBox="0 0 20 20">
-          <defs><clipPath id={`${uid}-${i}`}><rect x="0" y="0" width="10" height="20" /></clipPath></defs>
-          <path className="text-gray-600" fill="currentColor" d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-          <path className="text-amber-400" fill="currentColor" clipPath={`url(#${uid}-${i})`} d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-        </svg>
-      );
-    } else if (!filledOnly) {
-      stars.push(<svg key={i} className={`${starClass} text-gray-600`} fill="currentColor" viewBox="0 0 20 20"><path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" /></svg>);
-    }
-  }
-  return <>{stars}</>;
 }
 
 /** My Shows presentation of the shared date-picker mechanics (SharedDatePicker). */
@@ -1826,11 +1617,10 @@ function DatePickerButton({ value, label, hasDate, onChange }: { value: string; 
   );
 }
 
-function WatchlistListItem({ entry, show, onDateChange, onShowtimeChange, onRemove, onRate }: {
+function WatchlistListItem({ entry, show, onDateChange, onRemove, onRate }: {
   entry: WatchlistEntry;
   show?: ShowLookup;
   onDateChange: (date: string | null) => void;
-  onShowtimeChange: (fields: Pick<WatchlistEntry, 'time_slot' | 'curtain_time'>) => void;
   onRemove: () => void;
   onRate: (show: { id: string; title: string }) => void;
 }) {
@@ -1892,15 +1682,8 @@ function WatchlistListItem({ entry, show, onDateChange, onShowtimeChange, onRemo
           hasDate={!!formattedDate}
           onChange={(val) => onDateChange(val || null)}
         />
-        {entry.planned_date && (
-          <ShowtimePicker
-            showId={entry.show_id}
-            date={entry.planned_date}
-            timeSlot={entry.time_slot}
-            curtainTime={entry.curtain_time}
-            onSave={onShowtimeChange}
-          />
-        )}
+        {/* No showtime picker here: Matinee/Evening/Custom live on the show
+            page only (owner, 2026-10-03: they pushed the list down). */}
         <AddToCalendarButtons event={buildPlannedShowEvent(show ?? { id: entry.show_id, title, slug }, entry)} />
         {/* Rate + Remove row — same tappable 5-star affordance as the grid
             strip and To-Be-Rated rows; the old '☆ Rate' text link was a
@@ -2093,61 +1876,49 @@ function AddShowSearch({
 }
 
 /** "To Be Rated" card with inline interactive stars */
-function ToBeRatedCard({ entry, show, onRemove, onRate }: { entry: WatchlistEntry; show?: ShowLookup; onRemove: () => void; onRate: (show: { id: string; title: string }, opts: { initialRating: number; suggestedDateSeen?: string | null }) => void }) {
-  const router = useRouter();
-  const title = show?.title || entry.show_id;
-  const slug = show?.slug || entry.show_id;
-  const href = getShowHref(slug, show?.diaryOnly);
-  const handleStarRate = (rating: number) => {
-    // The "Saw Jun 24" date the user already logged must follow them into the
-    // editor — defaulting to today lost it (owner report, 2026-07-17).
-    if (href) router.push(`${href}?rate=1&stars=${rating}`);
-    else onRate({ id: entry.show_id, title }, { initialRating: rating, suggestedDateSeen: entry.planned_date });
-  };
-
+/**
+ * To Be Rated, the app's design (watched.tsx toBeRatedSection): a full-width
+ * amber band, "TO BE RATED" + dot + count, and a poster grid. The pill shows
+ * the date the user planned to go ("Rate" with none); a tap opens the show
+ * page's rating editor, which carries that date over. A show they didn't
+ * see comes off via the show page's watchlist button or list view's remove
+ * (beta feedback 2026-08-02: otherwise a past-dated entry is stuck here
+ * forever). Always a grid, as in the app.
+ */
+function ToBeRatedSection({ entries, showMap, idPrefix }: {
+  entries: WatchlistEntry[];
+  showMap: Record<string, ShowLookup>;
+  idPrefix: string;
+}) {
   return (
-    <div className="relative flex items-center gap-3 px-3 sm:px-5 py-3 rounded-xl bg-amber-500/[0.03] border border-amber-500/10 hover:border-amber-500/20 hover:bg-amber-500/[0.06] transition-colors">
-      {href && <Link href={href} className="absolute inset-0 z-0" aria-label={`Rate ${title}`} />}
-      <div className="relative z-[1] flex-shrink-0 w-14 sm:w-16 aspect-square rounded-lg overflow-hidden bg-surface-overlay pointer-events-none">
-        <Poster url={show?.posterUrl} iconClass="text-xl" />
+    <section
+      aria-labelledby={`${idPrefix}-to-be-rated`}
+      data-testid="to-be-rated"
+      className="py-2 mb-8 band-bleed band-bleed-amber"
+    >
+      <div className="flex items-center gap-1.5 pb-2">
+        <h3 id={`${idPrefix}-to-be-rated`} className="text-xs font-bold text-amber-500 uppercase tracking-wider">To Be Rated</h3>
+        <span aria-hidden="true" className="w-1.5 h-1.5 rounded-full bg-amber-500" />
+        <span className="text-xs font-semibold text-amber-500">{entries.length}</span>
       </div>
-      {/* Mobile: stars stack UNDER the title so it stays legible (a side-by-side
-          row crushed titles to one character at 390px — 2026-07-12 design pass).
-          sm+: title and stars side by side as before. */}
-      <div className="flex-1 min-w-0 flex flex-col sm:flex-row sm:items-center gap-1.5 sm:gap-3">
-        <div className="relative z-[1] flex-1 min-w-0 pointer-events-none">
-          <h4 className="font-bold text-white text-base truncate">{title}</h4>
-          {show?.venue && <p className="text-sm text-gray-500 truncate">{show.venue}</p>}
-          {entry.planned_date && (
-            <p className="text-xs text-amber-400 mt-0.5 whitespace-nowrap">
-              Saw {new Date(entry.planned_date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}
-            </p>
-          )}
-        </div>
-        <div className="relative z-[2] flex-shrink-0 pointer-events-auto">
-          {/* sm stars on mobile (stacked row has room), md on desktop.
-              star-compact, as on the WatchlistCard rate strip: five
-              44px-minimum buttons were 228px wide and clipped in the 178px
-              column at 360px (visual-qa overflow probe, 2026-10-02). */}
-          <span className="sm:hidden star-compact">
-            <StarRating
-              rating={null}
-              onRatingChange={handleStarRate}
-              size="sm"
+      <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
+        {entries.map(entry => {
+          const show = showMap[entry.show_id];
+          const title = show?.title || entry.show_id;
+          const href = getShowHref(show?.slug || entry.show_id, show?.diaryOnly);
+          return (
+            <PosterGridCard
+              key={`rate-${entry.id}`}
+              href={`${href}?rate=1`}
+              posterUrl={show?.posterUrl}
+              date={entry.planned_date ? formatPillDate(entry.planned_date) : 'Rate'}
+              title={title}
+              ariaLabel={`Rate ${title}`}
             />
-          </span>
-          <span className="hidden sm:inline-flex">
-            <StarRating
-              rating={null}
-              onRatingChange={handleStarRate}
-              size="md"
-            />
-          </span>
-        </div>
+          );
+        })}
       </div>
-      {/* Didn't go / sold tickets — remove without opening the show page */}
-      <RowRemoveButton onRemove={onRemove} label={`Remove ${title}, didn't see it`} />
-    </div>
+    </section>
   );
 }
 
@@ -2183,18 +1954,15 @@ function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' |
     <button
       type="button"
       onClick={openAndReveal}
-      className="flex flex-col rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300 overflow-hidden"
+      // Poster-sized, top-aligned: the grid would otherwise stretch it to the
+      // tallest card in the row (name, stars, date controls), owner 2026-10-03.
+      className="self-start aspect-[2/3] flex flex-col items-center justify-center rounded-xl border-2 border-dashed border-white/10 hover:border-white/20 hover:bg-white/[0.03] transition-colors text-gray-500 hover:text-gray-300"
       aria-label={context === 'diary' ? 'Rate a new show' : 'Add a new show to watchlist'}
     >
-      {/* Placeholder area matching image aspect ratio */}
-      <div className="aspect-[2/3] flex flex-col items-center justify-center">
-        <svg className="w-8 h-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-          <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
-        </svg>
-        <span className="text-xs font-medium">{context === 'diary' ? 'Rate' : 'Add'}</span>
-      </div>
-      {/* Spacer matching content area below images on real cards */}
-      <div className="px-2 py-1.5">&nbsp;</div>
+      <svg className="w-8 h-8 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+        <path strokeLinecap="round" strokeLinejoin="round" d="M12 4v16m8-8H4" />
+      </svg>
+      <span className="text-xs font-medium">{context === 'diary' ? 'Rate' : 'Add'}</span>
     </button>
   );
 }

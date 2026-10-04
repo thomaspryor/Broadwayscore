@@ -14,19 +14,21 @@ import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
 const SOURCE = readFileSync(join(ROOT, 'src/app/my-shows/MyShowsClient.tsx'), 'utf8');
-// Poster and UpcomingGridCard moved here (BRO-4481) so Shared Plans reuses them.
+// Poster and PosterGridCard live here (BRO-4481, BRO-4558) so Shared Plans reuses them.
 const CARDS = readFileSync(join(ROOT, 'src/components/user/upcoming-cards.tsx'), 'utf8');
 
-test('every grid-size Poster names the show', () => {
+test('My Shows grid cards all go through the shared poster card', () => {
+  // BRO-4558: a hand-built grid Poster in MyShowsClient skips the name line.
   const gridPosters = SOURCE.match(/<Poster [^>]*iconClass="text-3xl"[^>]*\/>/g) || [];
-  // DiaryGridCard, WatchlistCard.
-  assert.ok(gridPosters.length >= 2, `expected at least 2 grid posters, found ${gridPosters.length}`);
-  for (const p of gridPosters) assert.match(p, /\btitle=\{title\}/, `grid poster without a title: ${p}`);
+  assert.equal(gridPosters.length, 0, `grid posters outside PosterGridCard: ${gridPosters.join(', ')}`);
+  const cards = SOURCE.match(/<PosterGridCard\b[\s\S]*?\btitle=\{title\}/g) || [];
+  // ToBeRatedSection, DiaryGridCard, WatchlistCard (+ Diary Upcoming).
+  assert.ok(cards.length >= 3, `expected at least 3 PosterGridCards with a title, found ${cards.length}`);
 });
 
-test('the Upcoming grid card prints the show name under the poster', () => {
-  const start = CARDS.indexOf('export function UpcomingGridCard(');
-  assert.ok(start !== -1, 'UpcomingGridCard not found');
+test('the poster grid card prints the show name under the poster', () => {
+  const start = CARDS.indexOf('export function PosterGridCard(');
+  assert.ok(start !== -1, 'PosterGridCard not found');
   const body = CARDS.slice(start, CARDS.indexOf('\nexport function ', start + 1));
   assert.match(body, /line-clamp-2[^>]*>\{title\}<\/p>/, 'title must render under the poster (iOS design)');
 });

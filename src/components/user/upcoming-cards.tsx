@@ -9,7 +9,7 @@
  * when we have existing ones"). The grid card and list row follow the iOS
  * app's Upcoming design (owner pick, 2026-10-03), so web and app match.
  */
-import { useEffect, useState, type ReactNode } from 'react';
+import { useState, type ReactNode } from 'react';
 import Link from 'next/link';
 import { formatShowDate } from '@/lib/date-utils';
 
@@ -99,59 +99,88 @@ export function PosterBadge({ badge }: { badge: { text: string; cls: string } | 
 }
 
 /**
- * Upcoming poster card, the iOS app's design (Watched → Diary → Upcoming,
- * owner pick 2026-10-03): the date in a dark pill over the bottom of the
- * poster and the show name under it, two lines max. `onRemove` adds the
- * owner's hover trash button; `badge` adds the Watchlist status pill;
- * `footer` renders under the name (e.g. Add to Calendar). Friends get it
- * without onRemove.
+ * Poster grid card, the iOS app's design (Watched → Diary, To Watch, owner
+ * picks 2026-10-03): the date in a dark pill over the bottom of the poster,
+ * then `meta` (e.g. the diary's gold stars), then the show name, two lines
+ * max with both lines reserved so rows line up. One card for every My Shows
+ * and Shared Plans grid (BRO-4558): Upcoming, To be rated, past shows.
+ * No corner buttons: tapping the poster opens the show, whose page edits or
+ * deletes the rating and removes it from the watchlist (owner, 2026-10-03:
+ * delete by clicking into it). `badge` is the top-left status pill;
+ * `children` extra poster overlays; `footer` controls under the name.
  */
-export function UpcomingGridCard({ href, posterUrl, date, title, onRemove, badge, footer }: {
+export function PosterGridCard({ href, posterUrl, date, title, ariaLabel, badge, meta, footer, children }: {
   href: string | null;
   posterUrl?: string | null;
   date: string | null;
   title: string;
-  onRemove?: () => void;
+  ariaLabel?: string;
   badge?: { text: string; cls: string } | null;
+  meta?: ReactNode;
   footer?: ReactNode;
+  children?: ReactNode;
 }) {
-  const [confirmRemove, setConfirmRemove] = useState(false);
-  useEffect(() => {
-    if (!confirmRemove) return;
-    const timer = setTimeout(() => setConfirmRemove(false), 4000);
-    return () => clearTimeout(timer);
-  }, [confirmRemove]);
-
   return (
-    <div className="group/grid flex flex-col">
-      <CardLinkOrDiv href={href} className="block" ariaLabel={date ? `View ${title}, ${date}` : `View ${title}`}>
+    <div className="group/grid flex flex-col min-w-0">
+      <CardLinkOrDiv href={href} className="block" ariaLabel={ariaLabel ?? (date ? `View ${title}, ${date}` : `View ${title}`)}>
         <div className="relative aspect-[2/3] rounded-xl overflow-hidden bg-surface-overlay">
           <Poster url={posterUrl} iconClass="text-3xl" />
           {badge !== undefined && <PosterBadge badge={badge} />}
+          {children}
           {date && (
-            <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-[1] px-1.5 py-0.5 rounded bg-black/45 text-xs font-bold text-white whitespace-nowrap">
+            // Width-bounded: a countdown pill ("Sep 20 · Tomorrow") is wider
+            // than a 104px card at 360px and would clip at both ends.
+            <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 z-[1] max-w-[calc(100%-8px)] truncate px-1.5 py-0.5 rounded bg-black/45 text-xs font-bold text-white whitespace-nowrap">
               {date}
             </span>
           )}
-          {/* Remove button — hidden on mobile, visible on hover on desktop */}
-          {onRemove && (
-            <button
-              type="button"
-              onClick={(e) => { e.preventDefault(); e.stopPropagation(); confirmRemove ? onRemove() : setConfirmRemove(true); }}
-              className={`absolute top-2 right-2 z-[2] hidden sm:flex items-center justify-center rounded-full ${confirmRemove ? 'h-7 px-2.5 bg-red-500/90 text-white text-xs font-bold opacity-100' : 'w-7 h-7 bg-black/70 text-score-skip/80 hover:text-score-skip opacity-0 group-hover/grid:opacity-100'} transition-opacity`}
-              aria-label="Remove from upcoming"
-            >
-              {confirmRemove ? 'Remove?' : (
-                <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16" />
-                </svg>
-              )}
-            </button>
-          )}
         </div>
-        <p className="mt-1.5 px-0.5 text-xs font-medium leading-[15px] min-h-[30px] text-gray-300 text-center line-clamp-2">{title}</p>
+        {meta}
+        <p className="mt-1.5 px-0.5 text-xs font-medium leading-[15px] min-h-[30px] text-gray-300 text-center line-clamp-2 break-words">{title}</p>
       </CardLinkOrDiv>
       {footer}
+    </div>
+  );
+}
+
+/** The Upcoming card: a PosterGridCard (the name Shared Plans imports). */
+export const UpcomingGridCard = PosterGridCard;
+
+/**
+ * The poster pill's date, as the app prints it: "Oct 9", "Oct 9, 2024" with
+ * `year`, and with `countdown` the days to go inside a week: "Oct 9 · 3d",
+ * "Oct 9 · Tomorrow", "Oct 9 · Today!" (to-watch.tsx).
+ */
+export function formatPillDate(date: string, opts: { year?: boolean; countdown?: boolean } = {}): string {
+  const label = new Date(date + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric', ...(opts.year ? { year: 'numeric' as const } : {}) });
+  if (!opts.countdown) return label;
+  const days = daysUntilDate(date);
+  if (days < 0 || days > 7) return label;
+  return `${label} · ${days === 0 ? 'Today!' : days === 1 ? 'Tomorrow' : `${days}d`}`;
+}
+
+/**
+ * Full-width section band, the app's section header (watched.tsx
+ * sectionHeaderRow): raised background, hairline top and bottom, bold
+ * uppercase title left, count right. Bleeds to the page edge through the
+ * page's px-4 sm:px-6 gutter, so it must sit in such a container.
+ */
+export function SectionBand({ title, count, noun = 'entry', id, as: Heading = 'h3', hint }: {
+  title: string;
+  count?: number;
+  noun?: 'entry' | 'show';
+  id?: string;
+  as?: 'h2' | 'h3';
+  hint?: ReactNode;
+}) {
+  const plural = noun === 'entry' ? 'entries' : 'shows';
+  return (
+    <div className="flex items-center justify-between gap-3 py-2 mb-3 band-bleed">
+      <Heading id={id} className="text-[13px] font-bold text-white uppercase tracking-wider min-w-0">
+        {title}
+        {hint}
+      </Heading>
+      {count !== undefined && <span className="flex-shrink-0 text-xs text-gray-500">{count} {count === 1 ? noun : plural}</span>}
     </div>
   );
 }
@@ -230,23 +259,17 @@ export function UpcomingListRow({ href, posterUrl, title, venue, plannedDate, no
  * mobile (h-11) rows; 'responsive' is the mobile size below `sm` and the
  * desktop size from `sm` up, for a page with a single header row (Shared Plans).
  */
-export function ViewModeToggle({ value, onChange, size = 'desktop' }: { value: ViewMode; onChange: (mode: ViewMode) => void; size?: 'desktop' | 'mobile' | 'responsive' }) {
-  // Phone sizes draw the outline as a ring (outside the box): a 1px border
-  // would leave 42px inside an h-11 box for buttons the mobile rule in
-  // globals.css holds at min-height 44px, clipping them (visual-qa overflow
-  // probe, 2026-10-02).
-  const box = {
-    mobile: 'h-11 ring-1 ring-white/10',
-    desktop: 'h-8 border border-white/10',
-    responsive: 'h-11 ring-1 ring-white/10 sm:h-8 sm:ring-0 sm:border sm:border-white/10',
-  }[size];
-  const btn = { mobile: 'w-11', desktop: 'w-8', responsive: 'w-11 sm:w-8' }[size];
+export function ViewModeToggle({ value, onChange }: { value: ViewMode; onChange: (mode: ViewMode) => void }) {
+  // Same height, radius, fill and inset outline as .toolbar-control, so it
+  // lines up with the Share button and sort select beside it (owner,
+  // 2026-10-03). The inset ring leaves the 44px phone buttons unclipped.
+  const btn = 'w-11 sm:w-9';
   return (
-    <div className={`inline-flex items-stretch flex-shrink-0 rounded overflow-hidden bg-white/[0.04] ${box}`}>
+    <div className="inline-flex items-stretch flex-shrink-0 h-11 sm:h-9 rounded-badge overflow-hidden bg-white/[0.06] ring-1 ring-inset ring-white/10">
       <button
         type="button"
         onClick={() => onChange('grid')}
-        className={`inline-flex items-center justify-center ${btn} h-full outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand transition-colors ${value === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+        className={`inline-flex items-center justify-center ${btn} h-full outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand transition-colors ${value === 'grid' ? 'bg-white/[0.15] text-white' : 'text-gray-400 hover:text-white'}`}
         aria-label="Grid view"
         aria-pressed={value === 'grid'}
       >
@@ -257,7 +280,7 @@ export function ViewModeToggle({ value, onChange, size = 'desktop' }: { value: V
       <button
         type="button"
         onClick={() => onChange('list')}
-        className={`inline-flex items-center justify-center ${btn} h-full outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand transition-colors ${value === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-500 hover:text-gray-300'}`}
+        className={`inline-flex items-center justify-center ${btn} h-full outline-none focus-visible:ring-2 focus-visible:ring-inset focus-visible:ring-brand transition-colors ${value === 'list' ? 'bg-white/[0.15] text-white' : 'text-gray-400 hover:text-white'}`}
         aria-label="List view"
         aria-pressed={value === 'list'}
       >

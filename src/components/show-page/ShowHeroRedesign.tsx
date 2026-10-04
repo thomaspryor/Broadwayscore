@@ -41,10 +41,8 @@ import {
   CategoryBadge,
   getScoreTier,
 } from '@/components/show-cards';
-import StarRating from '@/components/user/StarRating';
-import DatePickerButton from '@/components/user/DatePickerButton';
-import ShowtimePicker from '@/components/user/ShowtimePicker';
-import AddToCalendarButtons from '@/components/user/AddToCalendarButtons';
+import MiniStars from '@/components/user/Stars';
+import WatchlistPlanCard, { PlanRow, DateTile } from '@/components/user/WatchlistPlanCard';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import RatingEditor from '@/components/user/RatingEditor';
 import ShowImage from '@/components/ShowImage';
@@ -630,6 +628,21 @@ function Inner({
         </div>
       )}
 
+      {/* Your plans — date + showtime for a watchlisted show, edited in a
+          sheet. Replaced the caption's date link and 10px Matinee / Evening /
+          Custom chips (owner, 2026-10-03: "tiny and unprofessional"). */}
+      {userFeaturesEnabled && onWatchlist && watchlistEntry && (
+        <WatchlistPlanCard
+          showId={show.id}
+          showTitle={show.title}
+          entry={watchlistEntry}
+          event={plannedShowEvent}
+          onDateChange={(val) => updatePlannedDate(show.id, val).catch(() => showToast?.('Failed to save date.', 'error'))}
+          onShowtimeChange={(fields) => updatePerformance(show.id, fields).catch(() => showToast?.('Failed to save showtime.', 'error'))}
+          onRemove={handleWantToSee}
+        />
+      )}
+
       {/* Membership caption — one line gathering ALL list membership: the
           Watchlist link first (the "On your list" button is a TOGGLE and must
           not navigate), then custom lists. Owner design pick, 2026-07-19. */}
@@ -648,39 +661,6 @@ function Inner({
                 >
                   Watchlist
                 </Link>
-                {/* Planned date, visible AND editable in place — it was set
-                    on My Shows but invisible here (owner, 2026-07-20) */}
-                {' '}
-                <DatePickerButton
-                  value={watchlistDate || ''}
-                  onChange={(val) => updatePlannedDate(show.id, val || null).catch(() => showToast?.('Failed to save date.', 'error'))}
-                  ariaLabel="Planned date"
-                  wrapClassName="relative inline-block align-middle"
-                  className="inline-flex items-center gap-1 text-xs text-amber-400/90 hover:text-amber-300 transition-colors"
-                >
-                  <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                  </svg>
-                  <span>
-                    {watchlistDate
-                      ? `Seeing it ${new Date(watchlistDate + 'T00:00:00').toLocaleDateString('en-US', { month: 'short', day: 'numeric' })}`
-                      : 'Add date'}
-                  </span>
-                </DatePickerButton>
-                {watchlistDate && watchlistEntry && (
-                  <>
-                    {' '}
-                    <ShowtimePicker
-                      showId={show.id}
-                      date={watchlistDate}
-                      timeSlot={watchlistEntry.time_slot}
-                      curtainTime={watchlistEntry.curtain_time}
-                      onSave={(fields) => updatePerformance(show.id, fields).catch(() => showToast?.('Failed to save showtime.', 'error'))}
-                    />
-                  </>
-                )}
-                {' '}
-                <AddToCalendarButtons event={plannedShowEvent} />
               </>
             )}
             {onWatchlist && firstListContainingShow && ' · '}
@@ -853,58 +833,49 @@ function YourRatingInline({
   onEditReview: (review: UserReview) => void;
 }) {
   const isMulti = reviews.length > 1;
+  // Same row as WatchlistPlanCard (date tile, title, chevron) so a watched
+  // show and a planned show read as one design. The whole row opens the
+  // editor, which also holds Delete (owner, 2026-10-03).
   return (
-    <div className="card p-4 overflow-hidden">
-      {/* Eyebrow header — same treatment as CRITICS' TAKE above, so the hero
-          reads as a set of sections. Replaces the mid-card "Your rating" label
-          that trailed the stars; the date demotes to a 12px caption
-          (owner design pick "Option A", 2026-07-19). */}
-      <p className="text-xs font-bold uppercase tracking-[0.12em] text-gray-500 mb-2">
-        Your Rating
-      </p>
-      <div className="space-y-2.5">
+    <div className="space-y-2" data-testid="your-rating">
       {reviews.map((review, i) => (
-        <div key={review.id} className={i > 0 ? 'pt-2.5 border-t border-white/5 space-y-1' : 'space-y-1'}>
-          <div className="flex items-center gap-2.5 min-w-0">
-            <div className="flex-shrink-0">
-              <StarRating rating={review.rating} onRatingChange={() => {}} size="sm" readOnly hideLabel />
-            </div>
-            <span className="flex-shrink-0 text-sm font-bold text-amber-400 tabular-nums">
-              {review.rating.toFixed(1)}
-            </span>
-            {/* min-w-0 + truncate: the caption must SHRINK on narrow
-                viewports — nowrap without an overflow guard ran under the edit
-                pencil and off the card (owner report, 2026-07-17). */}
-            <div className="min-w-0 flex-1 text-xs text-gray-500 truncate">
-              {isMulti && (
-                <span className="text-gray-400">{i === 0 ? 'Latest' : 'Earlier'}</span>
-              )}
-              {review.date_seen && (
-                <span>{isMulti ? ' · ' : ''}Seen {formatDate(review.date_seen)}</span>
-              )}
-            </div>
-            <button
-              type="button"
-              onClick={() => onEditReview(review)}
-              className="flex-shrink-0 w-7 h-7 rounded-full bg-surface-overlay border border-white/10 text-gray-300 hover:text-white hover:border-white/20 transition-colors flex items-center justify-center"
-              aria-label={i === 0 ? 'Edit rating' : 'Edit this viewing'}
-            >
-              <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-              </svg>
-            </button>
-          </div>
+        <PlanRow
+          key={review.id}
+          onClick={() => onEditReview(review)}
+          tile={review.date_seen ? <DateTile date={review.date_seen} /> : <StarTile />}
+          title={
+            <>
+              {isMulti && <span className="text-gray-400 font-medium">{i === 0 ? 'Latest · ' : 'Earlier · '}</span>}
+              {review.date_seen ? `You saw it ${formatDate(review.date_seen)}` : 'Your rating'}
+            </>
+          }
+        >
+          <span className="flex items-center gap-2 mt-1">
+            {/* MiniStars draws plain SVGs: StarRating's read-only mode still renders
+                buttons, and a button inside this row's button is invalid HTML. */}
+            <MiniStars rating={review.rating} />
+            <span className="text-sm font-bold text-amber-400 tabular-nums">{review.rating.toFixed(1)}<span className="sr-only"> out of 5</span></span>
+          </span>
           {review.review_text && (
-            <p className="ph-mask text-sm text-gray-400 italic leading-snug line-clamp-4">
-              {`\u201C${review.review_text}\u201D`}
-            </p>
+            <span className="block mt-1">
+              <span className="ph-mask text-sm text-gray-400 italic leading-snug line-clamp-2">
+                {`\u201C${review.review_text}\u201D`}
+              </span>
+            </span>
           )}
-        </div>
+          <span className="sr-only">Edit</span>
+        </PlanRow>
       ))}
-      </div>
-      {/* avg-stars footer removed (owner, 2026-07-17: "not needed") */}
     </div>
   );
 }
 
-
+function StarTile() {
+  return (
+    <span className="flex-shrink-0 w-12 h-12 rounded-lg bg-amber-400/15 text-amber-300 flex items-center justify-center" aria-hidden="true">
+      <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
+        <path d="M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.196-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z" />
+      </svg>
+    </span>
+  );
+}

@@ -4,7 +4,7 @@ import { useEffect, useRef, useState, type MouseEvent } from 'react';
 import Link from 'next/link';
 import AddToCalendarButtons from '@/components/user/AddToCalendarButtons';
 import {
-  UpcomingGridCard, UpcomingListRow, ViewModeToggle, bookabilityLabel, type ViewMode,
+  SectionBand, UpcomingGridCard, UpcomingListRow, ViewModeToggle, bookabilityLabel, type ViewMode,
 } from '@/components/user/upcoming-cards';
 import { trackSharedPlans } from '@/lib/shared-plans/events';
 import { plansTitle, type BookedPlanView, type SharedPlansView as View } from '@/lib/shared-plans/view-model';
@@ -45,7 +45,7 @@ export default function SharedPlansView({ view }: { view: View }) {
     <div className="max-w-3xl mx-auto px-4 sm:px-6 pt-4 sm:pt-8 pb-12" data-testid="shared-plans">
       <header className="flex flex-wrap items-center justify-between gap-3 mb-6">
         <h1 className="text-2xl sm:text-3xl font-extrabold text-white">{plansTitle(view.name)}</h1>
-        {!empty && <ViewModeToggle value={mode} onChange={setMode} size="responsive" />}
+        {!empty && <ViewModeToggle value={mode} onChange={setMode} />}
       </header>
 
       {empty && (
@@ -58,7 +58,7 @@ export default function SharedPlansView({ view }: { view: View }) {
 
       {view.booked.length > 0 && (
         <section className="mb-8" aria-labelledby="plans-booked" data-testid="plans-booked" onClickCapture={onSectionClick('booked')}>
-          <SectionHeader id="plans-booked" title="Upcoming" count={view.booked.length} />
+          <SectionBand as="h2" id="plans-booked" title="Upcoming" count={view.booked.length} noun="show" />
           {mode === 'grid' ? (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {view.booked.map(p => (
@@ -94,7 +94,7 @@ export default function SharedPlansView({ view }: { view: View }) {
 
       {view.unbooked.length > 0 && (
         <section className="mb-8" aria-labelledby="plans-unbooked" data-testid="plans-unbooked" onClickCapture={onSectionClick('unbooked')}>
-          <SectionHeader id="plans-unbooked" title="Not yet booked" count={view.unbooked.length} />
+          <SectionBand as="h2" id="plans-unbooked" title="Not yet booked" count={view.unbooked.length} noun="show" />
           {mode === 'grid' ? (
             <div className="grid grid-cols-3 sm:grid-cols-4 gap-2">
               {view.unbooked.map(s => (
@@ -129,16 +129,6 @@ export default function SharedPlansView({ view }: { view: View }) {
           Make your own list on Broadway Scorecard
         </Link>
       </p>
-    </div>
-  );
-}
-
-/** Same section header as My Shows → Upcoming (title + count). */
-function SectionHeader({ id, title, count }: { id: string; title: string; count: number }) {
-  return (
-    <div className="flex items-center justify-between mb-3">
-      <h2 id={id} className="text-xs font-bold text-gray-500 uppercase tracking-wider">{title}</h2>
-      <span className="text-xs text-gray-500">{count} {count === 1 ? 'show' : 'shows'}</span>
     </div>
   );
 }

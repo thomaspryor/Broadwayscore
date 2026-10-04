@@ -9,6 +9,8 @@ import { useUserReviews } from '@/hooks/useUserReviews';
 import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { usePendingRatingDraft } from '@/hooks/usePendingRatingDraft';
 import { useToastSafe } from '@/components/ui/Toast';
+import { trackUgc } from '@/lib/ugc-analytics';
+import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
 import StarRating from '@/components/user/StarRating';
 import ShowImage from '@/components/ShowImage';
@@ -29,7 +31,7 @@ export default function DiaryShowClient({ show }: { show: DiaryShowDetail }) {
 
 function Inner({ show }: { show: DiaryShowDetail }) {
   const { user, isAuthenticated, loading: authLoading, showSignIn } = useAuth();
-  const { reviews, getReviewsForShow } = useUserReviews(user?.id || null);
+  const { reviews, getReviewsForShow, deleteReview } = useUserReviews(user?.id || null);
   const { showToast } = useToastSafe();
   const searchParams = useSearchParams();
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
@@ -123,6 +125,26 @@ function Inner({ show }: { show: DiaryShowDetail }) {
     }
     await getReviewsForShow(show.id);
   }, [user, authLoading, show.id, getReviewsForShow, showSignIn, showToast, saveDraft]);
+
+  // My Shows posters no longer carry a delete button (BRO-4558), so the rating
+  // editor here is the delete path for diary-only shows, same as the show page.
+  const handleDeleteRating = useCallback(async () => {
+    if (!editingReview) return;
+    try {
+      await deleteReview(editingReview.id);
+      trackUgc('rating_deleted', { show_id: show.id, source: 'diary_page' });
+      showToast?.('Rating deleted.', 'info');
+      await getReviewsForShow(show.id);
+      invalidateRatingsCache();
+    } catch (e) {
+      const detail = e instanceof Error ? e.message : 'Unknown error';
+      showToast?.(`Delete failed: ${detail}`, 'error');
+    } finally {
+      setRatePanelOpen(false);
+      setEditingReview(null);
+      setPendingDraft(null);
+    }
+  }, [editingReview, deleteReview, getReviewsForShow, show.id, showToast, setPendingDraft]);
 
   const handleRateClick = () => {
     setEditingReview(null);
@@ -224,6 +246,7 @@ function Inner({ show }: { show: DiaryShowDetail }) {
           onSave={handleSaveReview}
           onSaved={handleRateSaved}
           onCancel={handleCancelRate}
+          onDelete={editingReview ? handleDeleteRating : undefined}
           analytics={{ source: 'diary_page', showId: show.id }}
         />
       )}

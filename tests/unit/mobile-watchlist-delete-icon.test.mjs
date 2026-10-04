@@ -4,9 +4,7 @@
  * Every remove/delete button on the page now rests in the destructive
  * score-skip token (design-system.md: status danger = score-skip).
  *
- * watchlist-delete-icon-contrast.test.mjs covers the watchlist grid card;
- * this sweeps every remove/delete button in MyShowsClient (and the shared
- * upcoming-cards) so a new one
+ * This sweeps every remove/delete icon button in MyShowsClient so a new one
  * cannot ship gray.
  */
 
@@ -17,10 +15,9 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-// UpcomingGridCard lives in upcoming-cards.tsx (BRO-4481), shared with Shared Plans.
-const SOURCE = ['src/app/my-shows/MyShowsClient.tsx', 'src/components/user/upcoming-cards.tsx']
-  .map((f) => readFileSync(join(ROOT, f), 'utf8'))
-  .join('\n');
+// Poster grid cards carry no buttons at all (BRO-4558); see
+// diary-grid-delete-affordance.test.mjs.
+const SOURCE = readFileSync(join(ROOT, 'src/app/my-shows/MyShowsClient.tsx'), 'utf8');
 
 /** Opening-tag text of every <button> whose aria-label starts Delete/Remove. */
 function destructiveButtons() {
@@ -37,9 +34,8 @@ function destructiveButtons() {
 }
 
 test('finds every remove/delete button (guards the scan itself)', () => {
-  // RowRemoveButton, DiaryCard, UpcomingGridCard, DiaryGridCard,
-  // WatchlistCard, WatchlistListItem.
-  assert.ok(destructiveButtons().length >= 6, `expected at least 6, found ${destructiveButtons().length}`);
+  // RowRemoveButton, DiaryCard and WatchlistListItem.
+  assert.ok(destructiveButtons().length >= 3, `expected at least 3, found ${destructiveButtons().length}`);
 });
 
 test('every remove/delete icon rests in the destructive score-skip token', () => {

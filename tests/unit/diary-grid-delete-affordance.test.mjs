@@ -1,15 +1,13 @@
 /**
- * Diary grid/list delete-affordance parity test — cousin of the Watchlist
- * grid/list remove-affordance bug (#270). DiaryCard (list view) already
- * renders its delete button in-flow on mobile via `actionIcons`
- * (`md:hidden` block), but DiaryGridCard's own delete button used
- * `hidden sm:flex` — invisible on mobile with no hover fallback, so mobile
- * grid users had no way to delete a rating. Same bug shape, different tab.
+ * Diary grid delete affordance. UX audit #270 once found the grid card's
+ * delete hidden on phones (`hidden sm:flex`), leaving mobile grid users no
+ * way to delete a rating. The fix made it always visible, which on phones
+ * meant a 44px trash circle covering a third of every poster.
  *
- * Regression guard: read the real DiaryGridCard source (grid view) and
- * assert its delete button is never `hidden` and is visible at rest on
- * mobile, only hover/focus-revealed at sm+ — same treatment as
- * WatchlistCard's remove button.
+ * Owner, 2026-10-03 (BRO-4558): no buttons on the poster at all; delete by
+ * clicking into the show. Regression guard: poster grid cards render no
+ * buttons, the diary grid card links to the show page, and the show page's
+ * rating editor offers Delete. List view keeps its inline delete.
  */
 
 import test from 'node:test';
@@ -19,7 +17,10 @@ import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..', '..');
-const SOURCE = readFileSync(join(ROOT, 'src/app/my-shows/MyShowsClient.tsx'), 'utf8');
+const read = (f) => readFileSync(join(ROOT, f), 'utf8');
+const SOURCE = read('src/app/my-shows/MyShowsClient.tsx');
+const CARDS = read('src/components/user/upcoming-cards.tsx');
+const HERO = read('src/components/show-page/ShowHeroRedesign.tsx');
 
 /**
  * Isolate one top-level `function Name(...) { ... }` block. The prop
@@ -29,7 +30,7 @@ const SOURCE = readFileSync(join(ROOT, 'src/app/my-shows/MyShowsClient.tsx'), 'u
  */
 function extractFunctionBody(source, name) {
   const start = source.indexOf(`function ${name}(`);
-  assert.ok(start !== -1, `function ${name} not found in MyShowsClient.tsx`);
+  assert.ok(start !== -1, `function ${name} not found`);
   const parenListStart = source.indexOf('(', start);
 
   let parenDepth = 0;
@@ -55,35 +56,28 @@ function extractFunctionBody(source, name) {
   throw new Error(`unbalanced braces scanning function ${name} body`);
 }
 
-const diaryGridCardSrc = extractFunctionBody(SOURCE, 'DiaryGridCard');
-
-/**
- * The delete button's className is `${confirmDelete ? '<confirm-state>' :
- * '<rest-state>'}` — pull the rest-state (else) branch specifically, since
- * that's what governs default visibility (unhovered, untapped).
- */
-function restStateClasses(src) {
-  const buttonMatch = src.match(
-    /confirmDelete \? onDelete\(\) : setConfirmDelete\(true\); \}\}\s*\n\s*className=\{`([^$]*)\$\{confirmDelete \? '([^']+)' : '([^']+)'\}/
-  );
-  assert.ok(buttonMatch, 'could not locate the diary grid delete button ternary className');
-  return { base: buttonMatch[1], restState: buttonMatch[3] };
-}
-
-test('diary grid delete button is defined and labeled', () => {
-  assert.match(diaryGridCardSrc, /aria-label="Delete rating"/);
+test('poster grid cards carry no buttons on the poster', () => {
+  const grid = extractFunctionBody(CARDS, 'PosterGridCard');
+  assert.doesNotMatch(grid, /<button\b/, 'no corner delete/edit buttons on posters (owner, 2026-10-03)');
+  assert.doesNotMatch(grid, /onRemove|onEdit|onDelete/, 'PosterGridCard takes no remove/edit/delete handler');
+  for (const name of ['DiaryGridCard', 'WatchlistCard', 'ToBeRatedSection']) {
+    const body = extractFunctionBody(SOURCE, name);
+    assert.doesNotMatch(body, /aria-label=\{?["'`](?:Delete|Remove)/, `${name} must not put a delete/remove button on the poster`);
+  }
 });
 
-test('diary grid delete button is not hidden on mobile', () => {
-  const { base, restState } = restStateClasses(diaryGridCardSrc);
-  const allClasses = `${base} ${restState}`;
-  assert.doesNotMatch(allClasses, /\bhidden\b/, 'diary grid delete button must not use `hidden` — that removes it entirely on mobile with no hover fallback');
+test('diary grid card opens the show page', () => {
+  const card = extractFunctionBody(SOURCE, 'DiaryGridCard');
+  assert.match(card, /href=\{href\}/);
+  assert.match(card, /const href = getShowHref\(/);
 });
 
-test('diary grid delete button is visible at rest (mobile) and only hover/focus-revealed at sm+', () => {
-  const { restState } = restStateClasses(diaryGridCardSrc);
-  assert.match(restState, /(?:^|\s)opacity-100(?:\s|$)/, 'must be visible (opacity-100) at rest for mobile, which has no hover');
-  assert.match(restState, /sm:opacity-0/, 'must be hover-gated only at sm+ (desktop), not hidden outright');
-  assert.match(restState, /sm:group-hover\/grid:opacity-100/, 'must reveal on desktop hover via the group/grid pattern used elsewhere on this card');
-  assert.match(restState, /focus-visible:opacity-100/, 'must also reveal on keyboard focus, not just mouse hover');
+test('the show page rating editor offers Delete', () => {
+  assert.match(HERO, /onDelete=\{editingReview \? handleDeleteRating : undefined\}/,
+    'with no trash can on grid posters, the show page is where a rating gets deleted');
+  assert.match(HERO, /await deleteReview\(editingReview\.id\)/);
+});
+
+test('list view keeps its inline Delete rating', () => {
+  assert.match(extractFunctionBody(SOURCE, 'DiaryCard'), /aria-label="Delete rating"/);
 });

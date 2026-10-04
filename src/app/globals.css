@@ -94,6 +94,24 @@
 }
 
 @layer components {
+  /* Full-width section band (My Shows, Shared Plans; the iOS app's section
+     headers, BRO-4558). The fill and the top/bottom hairlines are a
+     border-image painted out over the page gutter; outset is paint-only, so
+     the band reaches the edges without widening its parent (negative margins
+     did, and tripped the overflow probe). Content stays on the column. */
+  .band-bleed {
+    --band-bg: theme('colors.surface.raised');
+    --band-line: rgb(255 255 255 / 0.05);
+    border-image: linear-gradient(to bottom, var(--band-line) 0 1px, var(--band-bg) 1px calc(100% - 1px), var(--band-line) calc(100% - 1px)) 0 fill / 0 / 0 1rem;
+  }
+  @media (min-width: 640px) {
+    .band-bleed { border-image-outset: 0 1.5rem; }
+  }
+  .band-bleed-amber {
+    --band-bg: rgb(245 158 11 / 0.06);
+    --band-line: rgb(245 158 11 / 0.15);
+  }
+
   /* Card component - more depth and polish */
   .card {
     @apply bg-surface-raised rounded-card shadow-card border border-white/5;
@@ -370,6 +388,26 @@
 
   .btn-active {
     @apply btn bg-brand text-white;
+  }
+
+  /* Toolbar controls (Share, sort select, grid/list toggle) share one look
+     so a row of them lines up: same height, radius, fill and outline
+     (owner, 2026-10-03: they were three heights and three styles). 44px on
+     phones, 36px from sm. The outline is an inset ring, so it never
+     shrinks the 44px tap area the mobile rule enforces. 16px text on phones
+     stops iOS Safari zooming the page when the select is focused. */
+  .toolbar-control {
+    @apply inline-flex items-center justify-center gap-1.5 h-11 sm:h-9 px-3 rounded-badge
+      bg-white/[0.06] ring-1 ring-inset ring-white/10 text-base sm:text-sm font-medium text-gray-200
+      hover:bg-white/10 hover:text-white transition-colors outline-none
+      focus-visible:ring-2 focus-visible:ring-brand;
+  }
+
+  select.toolbar-control {
+    @apply appearance-none pr-8 bg-no-repeat cursor-pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20' fill='%239ca3af'%3E%3Cpath fill-rule='evenodd' d='M5.23 7.21a.75.75 0 011.06.02L10 11.17l3.71-3.94a.75.75 0 111.08 1.04l-4.25 4.5a.75.75 0 01-1.08 0l-4.25-4.5a.75.75 0 01.02-1.06z' clip-rule='evenodd'/%3E%3C/svg%3E");
+    background-position: right 0.5rem center;
+    background-size: 1rem;
   }
 
   /* Filter pills - horizontal scroll on mobile */
