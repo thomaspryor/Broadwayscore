@@ -62,6 +62,14 @@ export function selectSharedDiary<T extends PlanShowLike>(
     if (note) withNotes++;
     entries.push({ show, date: e.date_seen, rating: e.rating, text: payload.showText ? note : null });
   }
+  // The function already orders rows this way; sorting again (stable, so its
+  // created_at/id tiebreak survives) keeps year bands whole if that drifts.
+  entries.sort((a, b) => {
+    if (a.date === b.date) return 0;
+    if (a.date === null) return 1;
+    if (b.date === null) return -1;
+    return a.date < b.date ? 1 : -1;
+  });
   return {
     entries,
     showsSeen: new Set(entries.map(e => e.show.id)).size,
