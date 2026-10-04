@@ -1,6 +1,6 @@
 {
   "_meta": {
-    "generatedAt": "2026-10-04T10:33:17.833Z",
+    "generatedAt": "2026-10-04T11:18:25.360Z",
     "windowDays": 3,
     "minChurn": 30,
     "degraded": false,
@@ -9,22 +9,22 @@
   "summary": {
     "minChurn": 30,
     "flaggedCount": 5,
-    "exemptCount": 26,
-    "coveredCount": 40,
-    "highChurnTracked": 71
+    "exemptCount": 27,
+    "coveredCount": 41,
+    "highChurnTracked": 73
   },
   "flagged": [
     {
       "path": "data/audit/guard-escalation-state.json",
-      "churn": 189
+      "churn": 194
     },
     {
       "path": "data/audit/orphaned-duplicate-pointer-heal.json",
-      "churn": 108
+      "churn": 110
     },
     {
       "path": "data/audit/tour-sweep.json",
-      "churn": 108
+      "churn": 110
     },
     {
       "path": "data/audit/pipeline-health/test.last-success",
@@ -32,37 +32,37 @@
     },
     {
       "path": "data/audit/validation-baseline.json",
-      "churn": 47
+      "churn": 49
     }
   ],
   "exempt": [
     {
       "path": "data/llm-scoring-runs.json",
-      "churn": 420
+      "churn": 425
     },
     {
       "path": "public/data/admin/critic-coverage.json",
-      "churn": 270
+      "churn": 278
     },
     {
       "path": "public/data/admin/locks.json",
-      "churn": 270
+      "churn": 278
     },
     {
       "path": "public/data/mobile-shows.json",
-      "churn": 270
+      "churn": 278
     },
     {
       "path": "data/audit/alert-ledger.json",
-      "churn": 261
+      "churn": 262
     },
     {
       "path": "public/data/stats-reviews.json",
-      "churn": 211
+      "churn": 216
     },
     {
       "path": "public/opening-night-status.json",
-      "churn": 108
+      "churn": 110
     },
     {
       "path": "public/data/shows/whos-afraid-of-virginia-woolf-west-end-2026.json",
@@ -74,43 +74,43 @@
     },
     {
       "path": "data/audit/alert-digest-queue.json",
-      "churn": 85
+      "churn": 86
+    },
+    {
+      "path": "public/data/shows/the-standard-of-living-west-end-2026.json",
+      "churn": 84
     },
     {
       "path": "public/data/shows/flamenc-oh-off-west-end-2026.json",
       "churn": 81
     },
     {
-      "path": "public/data/shows/the-standard-of-living-west-end-2026.json",
-      "churn": 78
-    },
-    {
       "path": "public/data/shows/school-girls-or-the-african-mean-girls-play-2026.json",
-      "churn": 76
+      "churn": 79
     },
     {
       "path": "public/data/shows/creation-stories-and-all-the-important-importants-off-broadway-2026.json",
-      "churn": 63
+      "churn": 64
     },
     {
       "path": "public/data/shows/degenerates-off-broadway-2026.json",
-      "churn": 55
+      "churn": 58
+    },
+    {
+      "path": "public/data/shows/what-the-animals-say-off-west-end-2026.json",
+      "churn": 49
     },
     {
       "path": "public/data/shows/bull-off-west-end-2026.json",
-      "churn": 43
+      "churn": 45
     },
     {
       "path": "public/data/shows/how-shakespeare-saved-my-life-off-broadway-2026.json",
       "churn": 43
     },
     {
-      "path": "public/data/shows/what-the-animals-say-off-west-end-2026.json",
-      "churn": 43
-    },
-    {
       "path": "public/data/shows/midnight-off-broadway-2026.json",
-      "churn": 41
+      "churn": 42
     },
     {
       "path": "public/data/shows/tru-off-west-end-2026.json",
@@ -125,86 +125,105 @@
       "churn": 38
     },
     {
-      "path": "public/data/shows/man-to-man-west-end-2026.json",
-      "churn": 36
-    },
-    {
       "path": "public/data/shows/a-small-and-quiet-light-off-west-end-2026.json",
       "churn": 35
     },
     {
+      "path": "public/data/shows/man-to-man-west-end-2026.json",
+      "churn": 34
+    },
+    {
       "path": "public/data/shows/golden-boy-off-west-end-2026.json",
-      "churn": 33
+      "churn": 31
     },
     {
       "path": "public/data/shows/million-dollar-quartet-off-west-end-2026.json",
       "churn": 31
+    },
+    {
+      "path": "public/data/shows/pre-existing-condition-off-broadway-2026.json",
+      "churn": 30
     }
   ],
   "covered": [
     {
       "path": "data/audit/scraper-spend-ledger.jsonl",
-      "churn": 536,
+      "churn": 540,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/stage-latency.jsonl",
-      "churn": 443,
+      "churn": 454,
       "mergeAttr": "union"
     },
     {
       "path": "data/audit/deploy-watermark.json",
-      "churn": 428,
+      "churn": 436,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/scoring-progress.json",
-      "churn": 425,
+      "churn": 431,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/cross-show-fingerprint-collisions.json",
-      "churn": 402,
+      "churn": 410,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/needs-human-review.json",
-      "churn": 402,
+      "churn": 410,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/rebuild-score-drift.json",
-      "churn": 402,
+      "churn": 410,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/opening-night-completeness-state.json",
-      "churn": 326,
+      "churn": 334,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-school-girls-or-the-african-mean-girls-play-2026.json",
-      "churn": 270,
+      "churn": 278,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/orphan-unscored-whos-afraid-of-virginia-woolf-west-end-2026.json",
-      "churn": 270,
+      "churn": 278,
       "mergeAttr": "ours"
     },
     {
       "path": "data/audit/verify-all-scored-state.json",
-      "churn": 270,
+      "churn": 278,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/live-progress.json",
-      "churn": 191,
+      "churn": 193,
       "mergeAttr": "ours"
     },
     {
       "path": "data/collection-state/progress.json",
-      "churn": 184,
+      "churn": 185,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pre2005-wrong-production.json",
+      "churn": 110,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/syndicated-duplicates.json",
+      "churn": 110,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/wrong-production-audit.json",
+      "churn": 110,
       "mergeAttr": "ours"
     },
     {
@@ -213,23 +232,8 @@
       "mergeAttr": "union"
     },
     {
-      "path": "data/audit/pre2005-wrong-production.json",
-      "churn": 108,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/syndicated-duplicates.json",
-      "churn": 108,
-      "mergeAttr": "ours"
-    },
-    {
-      "path": "data/audit/wrong-production-audit.json",
-      "churn": 108,
-      "mergeAttr": "ours"
-    },
-    {
       "path": "data/audit/pipeline-health/rebuild-reviews.last-success",
-      "churn": 93,
+      "churn": 94,
       "mergeAttr": "ours"
     },
     {
@@ -239,18 +243,18 @@
     },
     {
       "path": "data/audit/url-collision-report.json",
-      "churn": 43,
+      "churn": 45,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
+      "churn": 42,
       "mergeAttr": "ours"
     },
     {
       "path": "tests/unit-test-manifest.txt",
       "churn": 41,
       "mergeAttr": "union"
-    },
-    {
-      "path": "data/audit/pipeline-health/collect-review-texts.last-success",
-      "churn": 40,
-      "mergeAttr": "ours"
     },
     {
       "path": "data/audit/poller-backoff/creation-stories-and-all-the-important-importants-off-broadway-2026.json",
@@ -334,6 +338,11 @@
     },
     {
       "path": "data/audit/poller-backoff/burning-leaves-off-broadway-2026.json",
+      "churn": 32,
+      "mergeAttr": "ours"
+    },
+    {
+      "path": "data/audit/score-public-since.json",
       "churn": 32,
       "mergeAttr": "ours"
     },
