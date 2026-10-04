@@ -222,5 +222,34 @@
       }
     ],
     "queuedAt": "2026-10-04T17:24:00.112Z"
+  },
+  {
+    "conditionKey": "land:land/newsletter-gap-audit-priority",
+    "title": "Landing blocked: rebase red on land/newsletter-gap-audit-priority",
+    "description": "land.yml did not land land/newsletter-gap-audit-priority: the rebase gate went red at bc02465c85. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37222020950",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/newsletter-gap-audit-priority"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "bc02465c85c839da2ffa9e7e915d150a54fefe6b"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37222020950"
+      }
+    ],
+    "queuedAt": "2026-10-04T17:52:39.077Z"
   }
 ]
