@@ -4,39 +4,43 @@
  * Scrapes playbill.com/grosses for past weeks to populate grosses-history.json
  * with enough data for YoY comparisons (capacity YoY, ATP WoW/YoY).
  *
- * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19]
+ * Fetches through fetchPage() and parses with the same pure parser the weekly
+ * scraper uses (scripts/lib/parse-playbill-grosses.js, BRO-4623), so a
+ * backfilled week has exactly the field semantics of a weekly-scraped one:
+ * gross rounded to whole dollars, performances = Perfs + Previews, and
+ * seatsOffered only when it reproduces the published % Cap. (The Playwright
+ * table reader this replaced stored gross with cents and Perfs without
+ * previews, i.e. 0 for every week a show was in previews.) Recent gaps (the
+ * last 8 weeks) are filled by scrape-grosses.ts on its own; this script is for
+ * initial setup or extending the history range.
+ *
+ * Usage: npx tsx scripts/backfill-grosses-history.ts [--weeks 55] [--start-from 2025-01-19] [--dry-run]
  */
 
-import { chromium } from 'playwright';
 import * as fs from 'fs';
 import * as path from 'path';
 
 // Use shared show-matching library (260+ aliases, market filtering, era preference)
 const { matchTitleToShow } = require('./lib/show-matching');
-const { assertTableSchema, TableSchemaError } = require('./lib/table-schema-assertion');
-const { resolveGrossesHistoryColumns } = require('./lib/grosses-history-columns');
+const { fetchPage, cleanup: cleanupScraper } = require('./lib/scraper');
+const {
+  playbillGrossesUrl,
+  parsePlaybillGrossesHtml,
+  validatePlaybillGrosses,
+  isPlausibleRow,
+} = require('./lib/parse-playbill-grosses');
 
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
 const SHOWS_PATH = path.join(__dirname, '../data/shows.json');
-const PLAYBILL_URL = 'https://playbill.com/grosses';
-
-// Verified live 2026-08-12: <thead><th> = Show / This Week Gross / Diff $ /
-// Avg Ticket / Seats Sold / Perfs / % Cap / Diff % cap. Row extraction below
-// resolves these columns by label via resolveGrossesHistoryColumns (BRO-2375
-// — same column-drift class as #118) rather than assuming cells[0]/[1]/[3]/
-// [4]/[5]/[6] stay put if Playbill inserts or reorders a column.
-const TABLE_SCHEMA = { minCells: 7, expectedHeaders: ['Show', 'This Week Gross', 'Avg Ticket', 'Seats Sold', 'Perfs', '% Cap'] };
 
 interface HistoryEntry {
   gross: number | null;
   capacity: number | null;
   atp: number | null;
   attendance: number | null;
-  // Playbill (this backfill's source) does not expose seats-offered — it publishes
-  // "Seats Sold + Seats in Theatre" where the second value is nominal capacity,
-  // not per-week offered. BWW does expose the correct value. Keep the field
-  // optional here so backfill writes remain shape-compatible with the forward
-  // scraper's writes without inventing data. See scripts/scrape-grosses.ts.
+  // Seats in Theatre × (Perfs + Previews), only when that reproduces the
+  // published % Cap (see parse-playbill-grosses.js). Optional because older
+  // history rows were written without it.
   seatsOffered?: number | null;
   performances: number | null;
 }
@@ -80,30 +84,6 @@ function findMatchingSlug(title: string, weekDateStr: string): string | null {
   return show.slug;
 }
 
-// Parse currency string to number
-function parseCurrency(value: string): number | null {
-  if (!value || value === '-' || value === '') return null;
-  const cleaned = value.replace(/[$,]/g, '');
-  const num = parseFloat(cleaned);
-  return isNaN(num) ? null : num;
-}
-
-// Parse percentage string to number
-function parsePercentage(value: string): number | null {
-  if (!value || value === '-' || value === '') return null;
-  const cleaned = value.replace(/%/g, '');
-  const num = parseFloat(cleaned);
-  return isNaN(num) ? null : num;
-}
-
-// Parse number string
-function parseNumber(value: string): number | null {
-  if (!value || value === '-' || value === '') return null;
-  const cleaned = value.replace(/,/g, '');
-  const num = parseInt(cleaned, 10);
-  return isNaN(num) ? null : num;
-}
-
 // Load or initialize grosses history
 function loadHistory(): GrossesHistory {
   if (fs.existsSync(HISTORY_PATH)) {
@@ -140,11 +120,49 @@ function getWeekDates(numWeeks: number, startFrom?: string): string[] {
   return dates;
 }
 
+// One week: fetch, integrity-check (schema, requested week actually shown,
+// row grosses add up to the Week's Total), match. Throws on any problem so the
+// caller's retry loop handles it.
+async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, HistoryEntry>; matched: number; rows: number }> {
+  const url = playbillGrossesUrl(weekDate);
+  const page = await fetchPage(url);
+  const parsed = parsePlaybillGrossesHtml(page?.content || '');
+  if (parsed.schemaError) {
+    console.error(`::error::backfill-grosses-history: ${parsed.schemaError}`);
+  }
+  const problems: string[] = validatePlaybillGrosses(parsed, { expectedWeek: weekDate });
+  if (problems.length > 0) {
+    throw new Error(problems.join('; '));
+  }
+
+  const snapshot: Record<string, HistoryEntry> = {};
+  let matched = 0;
+  for (const row of parsed.rows) {
+    if (!isPlausibleRow(row)) {
+      console.warn(`  ⚠ Dropping "${row.show}" — implausible parsed values (atp=${row.atp}, perf=${row.performances}, cap=${row.capacityPct})`);
+      continue;
+    }
+    const slug = findMatchingSlug(row.show, weekDate);
+    if (!slug) continue;
+    snapshot[slug] = {
+      gross: row.gross,
+      capacity: row.capacityPct,
+      atp: row.atp,
+      attendance: row.attendance,
+      seatsOffered: row.seatsOffered,
+      performances: row.performances,
+    };
+    matched++;
+  }
+  return { snapshot, matched, rows: parsed.rows.length };
+}
+
 async function backfillHistory(): Promise<void> {
   // Parse args
   const args = process.argv.slice(2);
   let numWeeks = 55; // Default: ~1 year of data
   let startFrom: string | undefined;
+  const dryRun = args.includes('--dry-run');
 
   for (let i = 0; i < args.length; i++) {
     if (args[i] === '--weeks' && args[i + 1]) {
@@ -156,7 +174,7 @@ async function backfillHistory(): Promise<void> {
     }
   }
 
-  console.log(`Backfilling ${numWeeks} weeks of grosses history from Playbill...`);
+  console.log(`Backfilling ${numWeeks} weeks of grosses history from Playbill...${dryRun ? ' (DRY RUN)' : ''}`);
 
   loadShows();
   const history = loadHistory();
@@ -171,161 +189,65 @@ async function backfillHistory(): Promise<void> {
     return;
   }
 
-  const browser = await chromium.launch({ headless: true });
-  const context = await browser.newContext({
-    userAgent: 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36'
-  });
+  const save = () => {
+    if (dryRun) return;
+    history._meta.lastUpdated = new Date().toISOString();
+    fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
+  };
 
   let successCount = 0;
   let failCount = 0;
 
-  try {
-    for (const weekDate of weeksToDo) {
-      const MAX_RETRIES = 3;
-      let succeeded = false;
+  for (const weekDate of weeksToDo) {
+    const MAX_RETRIES = 3;
+    let succeeded = false;
+    console.log(`\nFetching week ${weekDate}...`);
 
-      for (let attempt = 1; attempt <= MAX_RETRIES && !succeeded; attempt++) {
-        const page = await context.newPage();
-
-        try {
-          const url = `${PLAYBILL_URL}?week=${weekDate}`;
-          if (attempt === 1) {
-            console.log(`\nFetching week ${weekDate}...`);
-          } else {
-            console.log(`  Retry ${attempt}/${MAX_RETRIES} for week ${weekDate}...`);
+    for (let attempt = 1; attempt <= MAX_RETRIES && !succeeded; attempt++) {
+      if (attempt > 1) console.log(`  Retry ${attempt}/${MAX_RETRIES} for week ${weekDate}...`);
+      try {
+        const { snapshot, matched, rows } = await scrapeWeek(weekDate);
+        if (matched > 0) {
+          history.weeks[weekDate] = snapshot;
+          console.log(`  ✓ ${matched}/${rows} shows matched for week ${weekDate}`);
+          successCount++;
+          succeeded = true;
+          // Save incrementally every 3 weeks
+          if (successCount % 3 === 0) {
+            save();
+            console.log(`  [Saved progress: ${Object.keys(history.weeks).length} weeks]`);
           }
-
-          await page.goto(url, { waitUntil: 'domcontentloaded', timeout: 30000 });
-
-          // Wait for the grosses table to appear (JS-rendered)
-          await page.waitForSelector('table tbody tr', { timeout: 20000 });
-
-          // Header schema check BEFORE processing rows — if Playbill shifted
-          // columns, every row would otherwise silently fail downstream instead
-          // of failing loud (task #1331).
-          let headerCells = await page.$$eval('table thead th', ths => ths.map(th => th.textContent?.trim() || ''));
-          if (headerCells.length === 0) {
-            headerCells = await page.$$eval('table tr', rows => {
-              const first = rows[0];
-              if (!first) return [];
-              return Array.from(first.querySelectorAll('th, td')).map(c => c.textContent?.trim() || '');
-            });
-          }
-          try {
-            assertTableSchema([headerCells], TABLE_SCHEMA);
-          } catch (err) {
-            if (err instanceof TableSchemaError) {
-              console.error(`::error::backfill-grosses-history: ${err.message}`);
-            }
-            throw err;
-          }
-
-          // Resolve column positions from the header row (BRO-2375) before
-          // extracting rows — $$eval serializes its callback to run in-page,
-          // so it can't close over the Node-side findColumnIndex import;
-          // indices are resolved here and passed in as a plain-data arg.
-          const columnIdx = resolveGrossesHistoryColumns(headerCells);
-
-          // Extract data from the table
-          const rowData = await page.$$eval('table tbody tr', (rows, idx) => {
-            return rows.map(row => {
-              const cells = row.querySelectorAll('td');
-              const maxIdx = Math.max(idx.showIdx, idx.grossIdx, idx.atpIdx, idx.seatsIdx, idx.perfsIdx, idx.capIdx);
-              if (cells.length <= maxIdx) return null;
-
-              // Show name + theater
-              const showCell = cells[idx.showIdx];
-              const showLink = showCell?.querySelector('a');
-              const showName = showLink?.textContent?.trim() || '';
-
-              // This Week Gross + Potential Gross
-              const grossText = cells[idx.grossIdx]?.textContent?.trim() || '';
-              const gross = grossText.split('\n')[0]?.trim() || '';
-
-              // Avg Ticket + Top Ticket
-              const atpText = cells[idx.atpIdx]?.textContent?.trim() || '';
-              const atp = atpText.split('\n')[0]?.replace(/\s+/g, ' ')?.trim()?.split(' ')[0] || '';
-
-              // Seats Sold + Seats in Theatre
-              const seatsText = cells[idx.seatsIdx]?.textContent?.trim() || '';
-              const seatsSold = seatsText.split('\n')[0]?.replace(/\s+/g, '')?.trim() || '';
-
-              // Perfs + Previews
-              const perfsText = cells[idx.perfsIdx]?.textContent?.trim() || '';
-              const perfs = perfsText.split('\n')[0]?.replace(/\s+/g, '')?.trim() || '';
-
-              // % Cap
-              const capText = cells[idx.capIdx]?.textContent?.trim() || '';
-
-              return { showName, gross, atp, seatsSold, perfs, capText };
-            }).filter(Boolean);
-          }, columnIdx);
-
-          const weekSnapshot: Record<string, HistoryEntry> = {};
-          let matched = 0;
-
-          for (const row of rowData) {
-            if (!row || !row.showName) continue;
-
-            const slug = findMatchingSlug(row.showName, weekDate);
-            if (slug) {
-              weekSnapshot[slug] = {
-                gross: parseCurrency(row.gross),
-                capacity: parsePercentage(row.capText),
-                atp: parseCurrency(row.atp),
-                attendance: parseNumber(row.seatsSold),
-                performances: parseNumber(row.perfs)
-              };
-              matched++;
-            }
-          }
-
-          if (matched > 0) {
-            history.weeks[weekDate] = weekSnapshot;
-            console.log(`  ✓ ${matched} shows matched for week ${weekDate}`);
-            successCount++;
-            succeeded = true;
-
-            // Save incrementally every 3 weeks
-            if (successCount % 3 === 0) {
-              history._meta.lastUpdated = new Date().toISOString();
-              fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
-              console.log(`  [Saved progress: ${Object.keys(history.weeks).length} weeks]`);
-            }
-          } else {
-            console.log(`  ⚠ No shows matched for week ${weekDate} (${rowData.length} rows found)`);
-            if (attempt === MAX_RETRIES) failCount++;
-          }
-
-        } catch (error: any) {
-          if (attempt === MAX_RETRIES) {
-            console.error(`  ✗ Failed for week ${weekDate} after ${MAX_RETRIES} attempts: ${error.message}`);
-            failCount++;
-          }
-        } finally {
-          await page.close();
+        } else {
+          console.log(`  ⚠ No shows matched for week ${weekDate} (${rows} rows found)`);
+          if (attempt === MAX_RETRIES) failCount++;
         }
-
-        // Delay between requests (longer on retry)
-        const delay = succeeded ? 2000 : (attempt < MAX_RETRIES ? 5000 : 2000);
-        await new Promise(resolve => setTimeout(resolve, delay));
+      } catch (error: any) {
+        console.warn(`  ⚠ Week ${weekDate} attempt ${attempt}: ${error.message}`);
+        if (attempt === MAX_RETRIES) {
+          console.error(`  ✗ Failed for week ${weekDate} after ${MAX_RETRIES} attempts`);
+          failCount++;
+        }
       }
+
+      // Delay between requests (longer on retry)
+      const delay = succeeded ? 2000 : (attempt < MAX_RETRIES ? 5000 : 2000);
+      await new Promise(resolve => setTimeout(resolve, delay));
     }
-  } finally {
-    await browser.close();
   }
 
   // Final save
-  history._meta.lastUpdated = new Date().toISOString();
-  fs.writeFileSync(HISTORY_PATH, JSON.stringify(history, null, 2) + '\n');
+  save();
 
   console.log(`\n=== Backfill Complete ===`);
   console.log(`Success: ${successCount}, Failed: ${failCount}`);
   console.log(`Total weeks in history: ${Object.keys(history.weeks).length}`);
-  console.log(`Saved to ${HISTORY_PATH}`);
+  console.log(dryRun ? '[DRY RUN] Nothing written.' : `Saved to ${HISTORY_PATH}`);
 }
 
-backfillHistory().catch((error) => {
-  console.error('Fatal error:', error);
-  process.exit(1);
-});
+backfillHistory()
+  .then(() => cleanupScraper())
+  .catch(async (error) => {
+    console.error('Fatal error:', error);
+    try { await cleanupScraper(); } catch { /* exiting anyway */ }
+    process.exit(1);
+  });
