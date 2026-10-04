@@ -13,12 +13,17 @@
 // mentions a push (a commit message, echo, grep pattern, heredoc body) is
 // never a push. Heredoc bodies and `#` comments are dropped before parsing.
 
+import path from 'node:path';
+
 const HEAD_MOVING = new Set(['commit', 'merge', 'rebase', 'reset', 'checkout', 'switch', 'cherry-pick', 'am', 'pull', 'revert', 'stash']);
 
 // git push options that consume the following word as their value.
 const PUSH_OPTS_WITH_VALUE = new Set(['-o', '--push-option', '--repo', '--receive-pack', '--exec']);
 // git global options (before the subcommand) that consume a value.
 const GIT_GLOBAL_WITH_VALUE = new Set(['-C', '-c', '--git-dir', '--work-tree', '--namespace', '--exec-path', '--config-env']);
+// Ways to point git at another repo that this parser does not follow: the push dir becomes unknown.
+const GIT_REPO_OPTS = /^--(git-dir|work-tree)(=|$)/;
+const GIT_REPO_ENV = /^(GIT_DIR|GIT_WORK_TREE)=/;
 
 /** Drop heredoc bodies: everything from the line after `<<TAG` / `<<-'TAG'` up to the line that is TAG. */
 function stripHeredocs(cmd) {
@@ -56,7 +61,8 @@ export function splitShellCommands(cmd) {
   };
   const endCommand = (sep) => {
     endWord();
-    if (words.length) commands.push({ words, sep });
+    // Paren boundaries are kept even when empty so callers can scope `cd` to a subshell.
+    if (words.length || sep === '(' || sep === ')') commands.push({ words, sep });
     words = [];
   };
   for (let i = 0; i < src.length; i++) {
@@ -133,7 +139,11 @@ export function parseRefspec(spec) {
 /**
  * Every `git push` in the command, in order:
  *   { gitC: [dirs from -C], cdDir: last `cd X` before it (or null), remote,
- *     refspecs: [{src,dst,force,isDelete}], deleteFlag, headMovedBefore }
+ *     refspecs: [{src,dst,force,isDelete}], deleteFlag, headMovedBefore,
+ *     dirUnknown }
+ * dirUnknown: the repo the push runs in cannot be worked out (pushd, a bare or
+ * `~`/`-`/`$VAR` cd, --git-dir/--work-tree, GIT_DIR=), so callers must not
+ * judge it against the session's own cwd.
  * headMovedBefore: a HEAD-moving git command (commit/merge/reset/…) runs
  * earlier in the same command string, so the repo state the push sees is not
  * the state a PreToolUse hook sees.
@@ -141,20 +151,45 @@ export function parseRefspec(spec) {
 export function parsePushCommand(cmd) {
   const pushes = [];
   let cdDir = null;
+  let dirUnknown = false;
   let headMoved = false;
-  for (const { words } of splitShellCommands(cmd)) {
+  const subshells = [];
+  for (const { words, sep } of splitShellCommands(cmd)) {
+    parseOne(words);
+    if (sep === '(') subshells.push({ cdDir, dirUnknown });
+    else if (sep === ')' && subshells.length) ({ cdDir, dirUnknown } = subshells.pop());
+  }
+  return pushes;
+
+  function parseOne(words) {
+    if (!words.length) return;
     let i = 0;
-    while (i < words.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[i])) i++; // FOO=bar prefixes
-    if (words[i] === 'cd') {
-      cdDir = words[i + 1] || null;
-      continue;
+    let envRepo = false;
+    for (; i < words.length && /^[A-Za-z_][A-Za-z0-9_]*=/.test(words[i]); i++) {
+      if (GIT_REPO_ENV.test(words[i])) envRepo = true; // FOO=bar prefixes
     }
-    if (!isGitWord(words[i] || '')) continue;
+    const head = words[i];
+    if (head === 'cd') {
+      const d = words[i + 1];
+      if (!d || d === '-' || d.startsWith('~') || d.includes('$')) dirUnknown = true;
+      else if (path.isAbsolute(d)) { cdDir = d; dirUnknown = false; }
+      else cdDir = cdDir ? path.join(cdDir, d) : d;
+      return;
+    }
+    if (head === 'pushd' || head === 'popd') {
+      dirUnknown = true;
+      return;
+    }
+    if (!isGitWord(head || '')) return;
     i++;
     const gitC = [];
+    let repoOpt = false;
     while (i < words.length && words[i].startsWith('-')) {
       const opt = words[i];
-      if (GIT_GLOBAL_WITH_VALUE.has(opt)) {
+      if (GIT_REPO_OPTS.test(opt)) repoOpt = true;
+      if (opt.includes('=')) {
+        i++;
+      } else if (GIT_GLOBAL_WITH_VALUE.has(opt)) {
         if (opt === '-C') gitC.push(words[i + 1]);
         i += 2;
       } else {
@@ -164,7 +199,7 @@ export function parsePushCommand(cmd) {
     const sub = words[i];
     if (sub !== 'push') {
       if (HEAD_MOVING.has(sub)) headMoved = true;
-      continue;
+      return;
     }
     i++;
     let deleteFlag = false;
@@ -176,7 +211,7 @@ export function parsePushCommand(cmd) {
         break;
       }
       if (w.startsWith('-')) {
-        if (w === '-d' || w === '--delete') deleteFlag = true;
+        if (w === '-d' || w === '--delete' || (/^-[A-Za-z]{2,}$/.test(w) && w.includes('d'))) deleteFlag = true; // -d, -df, -fd
         if (PUSH_OPTS_WITH_VALUE.has(w)) i++;
         continue;
       }
@@ -184,9 +219,8 @@ export function parsePushCommand(cmd) {
     }
     const [remote = null, ...specs] = positional;
     const refspecs = specs.map(parseRefspec).map((r) => (deleteFlag ? { ...r, isDelete: true } : r));
-    pushes.push({ gitC, cdDir, remote, refspecs, deleteFlag, headMovedBefore: headMoved });
+    pushes.push({ gitC, cdDir, remote, refspecs, deleteFlag, headMovedBefore: headMoved, dirUnknown: dirUnknown || envRepo || repoOpt });
   }
-  return pushes;
 }
 
 /** Refspecs in the command whose destination is a land/ branch (deletes excluded), with their push context. */

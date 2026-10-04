@@ -28,7 +28,13 @@ case "$input" in
   *) exit 0 ;;
 esac
 
-err=$(printf '%s' "$input" | timeout 90 node "$LIB" --hook 2>&1 >/dev/null)
+# Stock macOS has no `timeout`; fall back to gtimeout, then to no wrapper
+# (the settings.json hook timeout of 120s still bounds it).
+if command -v timeout >/dev/null 2>&1; then TO=(timeout 90)
+elif command -v gtimeout >/dev/null 2>&1; then TO=(gtimeout 90)
+else TO=()
+fi
+err=$(printf '%s' "$input" | "${TO[@]}" node "$LIB" --hook 2>&1 >/dev/null)
 rc=$?
 if [ "$rc" -eq 2 ]; then
   printf '%s\n' "$err" >&2

@@ -153,13 +153,20 @@ export function checkTestRegistration({ base, tip, cwd }) {
     });
     if (r.status === 1) {
       // exit 1 is also what a crash looks like: only parseable JSON blocks.
-      let blocking;
+      let report;
       try {
-        blocking = (JSON.parse(r.stdout).blocking || []).map((x) => (typeof x === 'string' ? x : x.file));
+        report = JSON.parse(r.stdout);
       } catch {
         return { status: 'skip', reason: 'audit-orphan-tests.js exited 1 without JSON (crashed)' };
       }
-      for (const f of blocking) problems.push(`${f} is not listed in any test manifest or workflow (add it to tests/unit-test-manifest.txt, sorted)`);
+      for (const x of report.blocking || []) {
+        const f = typeof x === 'string' ? x : x.file;
+        problems.push(`${f} is not listed in any test manifest or workflow (add it to tests/unit-test-manifest.txt, sorted)`);
+      }
+      // The audit also exits 1 on manifest problems (unsorted, duplicates) in manifests this branch touched.
+      for (const m of report.manifestProblems || []) {
+        problems.push(`${m.manifest}: ${m.error} (fix: node scripts/lib/test-manifest.js --fix)`);
+      }
     } else if (r.status !== 0) {
       return { status: 'skip', reason: `audit-orphan-tests.js exit ${r.status}` };
     }
@@ -183,12 +190,17 @@ function fetchBase(cwd) {
 
 /** Paths under tests/ (or the manifests) that differ from HEAD in the working tree, untracked included. */
 function testTreeDirty(cwd) {
-  const r = git(cwd, ['status', '--porcelain', '--untracked-files=all', '--', 'tests', 'scripts']);
-  return out(r)
-    .split('\n')
-    .filter(Boolean)
-    .map((l) => l.slice(3))
-    .filter((p) => TEST_FILE_RE.test(p) || MANIFEST_RE.test(p));
+  // The audit reads the working tree (tests, manifests and workflows), so any of
+  // those differing from HEAD means its verdict would not describe the pushed commit.
+  const r = git(cwd, ['status', '--porcelain', '-z', '--untracked-files=all', '--', 'tests', 'scripts', '.github/workflows']);
+  const entries = (r.stdout || '').split('\0').filter(Boolean); // no trim: the status column can start with a space
+  const paths = [];
+  for (let i = 0; i < entries.length; i++) {
+    const e = entries[i];
+    paths.push(e.slice(3));
+    if (e[0] === 'R' || e[0] === 'C') paths.push(entries[++i]); // -z: rename source follows as its own entry
+  }
+  return paths.filter((p) => TEST_FILE_RE.test(p) || MANIFEST_RE.test(p) || p.startsWith('.github/workflows/'));
 }
 
 export function blockMessage({ target, rebase, tests, base }) {
@@ -257,6 +269,14 @@ export function runHook({ command, cwd, env = process.env, seams = {} }) {
   const results = [];
   for (const t of targets) {
     const p = t.push;
+    if (p.dirUnknown) {
+      results.push({ decision: 'skip', reason: 'push directory not determinable (pushd, cd ~/-/$VAR, --git-dir, GIT_DIR=)' });
+      continue;
+    }
+    if (p.remote && p.remote !== 'origin') {
+      results.push({ decision: 'skip', reason: `remote ${p.remote} is not origin` });
+      continue;
+    }
     let dir = cwd;
     if (p.cdDir) dir = path.resolve(dir, p.cdDir);
     for (const c of p.gitC) dir = path.resolve(dir, c);
@@ -321,7 +341,7 @@ function main(argv) {
   if (argv.includes('--json')) process.stdout.write(JSON.stringify(v, null, 2) + '\n');
   else if (v.decision === 'block') process.stderr.write(v.message + '\n');
   else process.stdout.write(`land preflight: ${v.decision} (rebase ${v.detail.rebase.status}${v.detail.rebase.reason ? `: ${v.detail.rebase.reason}` : ''}; tests ${v.detail.tests.status}${v.detail.tests.reason ? `: ${v.detail.tests.reason}` : ''})\n`);
-  return v.decision === 'block' ? 1 : 0;
+  return v.decision === 'block' ? 3 : 0; // 3, not 1: a crash on load also exits 1
 }
 
 if (process.argv[1] && fs.realpathSync(process.argv[1]) === fileURLToPath(import.meta.url)) {

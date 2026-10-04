@@ -241,3 +241,60 @@ test('tests: an audit that crashes (exit 1, no JSON) skips instead of blocking w
   const r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d });
   assert.equal(r.status, 'skip', JSON.stringify(r));
 });
+
+test('parser: pushes into a repo the parser cannot locate are marked dirUnknown; -df is a delete; subshell cd is scoped', () => {
+  const one = (c) => parsePushCommand(c)[0];
+  for (const c of [
+    'pushd ../app && git push origin HEAD:land/x',
+    'git --git-dir=../app/.git push origin HEAD:land/x',
+    'git --work-tree ../app push origin HEAD:land/x',
+    'GIT_DIR=../app/.git git push origin HEAD:land/x',
+    'cd && git push origin HEAD:land/x',
+    'cd ~/app && git push origin HEAD:land/x',
+    'cd "$REPO" && git push origin HEAD:land/x',
+  ]) assert.equal(one(c).dirUnknown, true, c);
+  assert.equal(one('cd /abs/repo && git push origin HEAD:land/x').dirUnknown, false);
+  assert.equal(one('cd /abs/repo && git push origin HEAD:land/x').cdDir, '/abs/repo');
+  assert.equal(one('(cd /elsewhere && make) && git push origin HEAD:land/x').cdDir, null, 'subshell cd does not leak');
+  assert.deepEqual(landPushTargets('git push -df origin land/x'), []);
+  assert.deepEqual(landPushTargets('git push -fd origin land/x'), []);
+  assert.equal(landPushTargets('git push -f origin HEAD:land/x').length, 1);
+});
+
+test('hook: an unknown push dir or a non-origin remote is a skip, never judged against the session cwd', () => {
+  const { wt } = landFixture(); // wt conflicts with main, so judging it would block
+  assert.equal(runHook({ command: 'pushd /tmp && git push origin HEAD:land/feat', cwd: wt }).decision, 'skip');
+  assert.equal(runHook({ command: 'git --git-dir=/tmp/x/.git push origin HEAD:land/feat', cwd: wt }).decision, 'skip');
+  assert.equal(runHook({ command: 'git push fork HEAD:land/feat', cwd: wt }).decision, 'skip');
+  assert.equal(runHook({ command: 'git push origin HEAD:land/feat', cwd: wt }).decision, 'block', 'control');
+});
+
+test('tests: manifest problems the audit reports (unsorted manifest) block too', () => {
+  const d = auditRepo();
+  write(d, 'tests/unit/new.test.mjs', '');
+  write(d, 'tests/unit-test-manifest.txt', 'tests/unit/old.test.mjs\ntests/unit/new.test.mjs\ntests/unit/gone.test.mjs\n');
+  sh(d, 'git add -A && git commit -qm feat');
+  const r = checkTestRegistration({ base: 'main', tip: 'HEAD', cwd: d });
+  assert.equal(r.status, 'fail', JSON.stringify(r));
+  assert.match(r.problems.join('\n'), /unit-test-manifest\.txt: .*test-manifest\.js --fix/);
+});
+
+test('cli: a block exits 3 (distinct from a load crash, which exits 1)', () => {
+  const { wt } = landFixture();
+  const r = spawnSync('node', [path.join(ROOT, 'scripts/lib/land-preflight.mjs'), '--cwd', wt, '--tip', 'HEAD', '--base', 'origin/main', '--no-fetch', '--no-tests'], { env: ENV, encoding: 'utf8' });
+  assert.equal(r.status, 3, r.stderr);
+  sh(wt, 'git reset -q --soft origin/main && git commit -qm squashed');
+  const c = spawnSync('node', [path.join(ROOT, 'scripts/lib/land-preflight.mjs'), '--cwd', wt, '--tip', 'HEAD', '--base', 'origin/main', '--no-fetch', '--no-tests'], { env: ENV, encoding: 'utf8' });
+  assert.equal(c.status, 0, c.stderr);
+});
+
+test('hook wrapper: runs (and still blocks) with no `timeout` on PATH, like stock macOS', () => {
+  const { wt } = landFixture();
+  const bin = tmp();
+  for (const b of ['node', 'git', 'bash', 'cat', 'dirname']) {
+    const p = spawnSync('bash', ['-c', `command -v ${b}`], { encoding: 'utf8' }).stdout.trim();
+    fs.symlinkSync(p, path.join(bin, b));
+  }
+  const r = hook('git push origin HEAD:refs/heads/land/feat', wt, { PATH: bin });
+  assert.equal(r.status, 2, r.stderr);
+});
