@@ -194,6 +194,11 @@ jobs:
             # Budget stays near the cron's 18: the commit + push below and the
             # outlet ground-truth step need the same headroom inside the 60-min cap.
             ARGS="--show=$SHOW_IDS --checkpoint --ingest-missing --time-budget-min=20"
+            # A targeted run is an explicit "re-check these now". The SERP census
+            # cooldown would otherwise skip the census for any show it ran on
+            # recently, and with no aggregator URLs the entry is rewritten blank
+            # (no-census-yet), discarding the gaps the previous pass found.
+            export SERP_CENSUS_COOLDOWN_HOURS=0
           fi
           if [ "$INCLUDE_CLOSED" = "true" ]; then
             ARGS="$ARGS --include-closed"

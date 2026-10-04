@@ -1,21 +1,19 @@
 {
-  "generatedAt": "2026-10-04T19:07:49.648Z",
+  "generatedAt": "2026-10-04T20:17:21.898Z",
   "base": "https://broadwayscorecard.com",
   "daysChecked": 21,
   "skippedForBudget": 0,
   "checked": 217,
-  "clean": 213,
-  "defective": 4,
+  "clean": 215,
+  "defective": 2,
   "byType": {
-    "missing-from-prod": 1,
-    "score-drift": 1,
-    "unreachable": 3
+    "unreachable": 2
   },
   "shows": [
     {
-      "showId": "slam-frank-off-broadway-2026",
-      "title": "Slam Frank",
-      "openingDate": "2026-10-04",
+      "showId": "alice-in-wonderland-off-broadway-2026",
+      "title": "Alice in Wonderland",
+      "openingDate": "2026-09-26",
       "ok": false,
       "defects": [
         {
@@ -28,9 +26,9 @@
       "deployedCount": null
     },
     {
-      "showId": "spandex-off-broadway-2026",
-      "title": "Spandex",
-      "openingDate": "2026-09-19",
+      "showId": "savage-and-simon-says-a-double-bill-off-west-end-2026",
+      "title": "Savage & Simon Says: A Double Bill",
+      "openingDate": "2026-09-24",
       "ok": false,
       "defects": [
         {
@@ -41,42 +39,6 @@
       "missingFromProd": [],
       "localCount": 0,
       "deployedCount": null
-    },
-    {
-      "showId": "gimme-a-sign-off-broadway-2026",
-      "title": "Gimme a Sign!",
-      "openingDate": "2026-09-17",
-      "ok": false,
-      "defects": [
-        {
-          "type": "unreachable",
-          "detail": "HTTP 404"
-        }
-      ],
-      "missingFromProd": [],
-      "localCount": 0,
-      "deployedCount": null
-    },
-    {
-      "showId": "the-devil-wears-prada-west-end-2024",
-      "title": "The Devil Wears Prada",
-      "openingDate": "2024-12-05",
-      "ok": false,
-      "defects": [
-        {
-          "type": "missing-from-prod",
-          "detail": "1 scored outlet(s) absent from the deployed payload: express-uk"
-        },
-        {
-          "type": "score-drift",
-          "detail": "deployed cs 59.53 vs local 59.63 (Δ0.1)"
-        }
-      ],
-      "missingFromProd": [
-        "express-uk"
-      ],
-      "localCount": 27,
-      "deployedCount": 26
     }
   ]
 }

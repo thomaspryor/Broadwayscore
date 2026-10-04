@@ -39,6 +39,8 @@ const HUMAN_DECISION_FIELDS = [
   'wrongProductionManualClear', 'wrongArticleManualClear', 'wrongShowManualClear',
   'wrongProductionOverride',
   'urlManualOverride', 'urlManualOverrideNote', 'urlVerified',
+  // 'complete' only: a suppressing manualContentTier (invalid/stub/...) judges the
+  // OLD url's content and is cleared by applyUrlChangeInvariant (BRO-3122).
   'manualContentTier',
   'pullQuote',
   'designation', 'isCriticsPick',
