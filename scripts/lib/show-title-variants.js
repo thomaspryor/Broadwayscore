@@ -80,6 +80,22 @@ function normalizeForMention(s) {
     .trim();
 }
 
+/**
+ * Curated short names, normalized: Map<title without leading "the", string[]>.
+ * Data lives in show-short-names.json (BRO-4584: a Phantom tour review that
+ * says only "Phantom" was flagged showNotMentioned and never scored).
+ */
+function loadShortNames(raw) {
+  const map = new Map();
+  for (const [title, shorts] of Object.entries((raw && raw.shortNames) || {})) {
+    const key = normalizeForMention(title).replace(/^the /, '');
+    const vals = (Array.isArray(shorts) ? shorts : []).map(normalizeForMention).filter(Boolean);
+    if (key && vals.length) map.set(key, [...new Set([...(map.get(key) || []), ...vals])]);
+  }
+  return map;
+}
+const SHORT_NAMES = loadShortNames(require('./show-short-names.json'));
+
 // Separators that split a title from its subtitle. A comma also counts when
 // the prefix is multi-word ("Kiss Me, Kate" does NOT produce "kiss me" as a
 // standalone variant — see prefix rules below).
@@ -132,6 +148,18 @@ function buildShowTitleVariants(title, opts = {}) {
     if (commaIdx > 0) {
       const after = folded.slice(commaIdx + 1).trim().toLowerCase();
       if (/^(a|an|the|or)\s/.test(after)) addPrefix(folded.slice(0, commaIdx));
+    }
+    // Trailing "The Musical" with no separator ("Kinky Boots The Musical",
+    // "Moulin Rouge! The Musical"): reviews write the bare title.
+    const noMusical = full.replace(/ the musical$/, '');
+    if (noMusical !== full) addPrefix(noMusical);
+    // Curated short names (show-short-names.json): "Phantom" for The Phantom
+    // of the Opera, "Les Miz", "Joseph". Looked up by every title form built so
+    // far, so a subtitled title ("Harry Potter and the Cursed Child: Both
+    // Parts") still finds its base title's entry.
+    for (const v of [...out]) {
+      const shorts = SHORT_NAMES.get(v.replace(/^the /, ''));
+      if (shorts) for (const s of shorts) out.add(s);
     }
   }
   return [...out].filter(Boolean).sort((a, b) => b.length - a.length);
@@ -200,5 +228,6 @@ module.exports = {
   countVariant,
   findVariantSpans,
   textMentionsTitle,
+  loadShortNames,
   GENERIC_PREFIX_WORDS,
 };

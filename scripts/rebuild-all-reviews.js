@@ -46,6 +46,7 @@ function parseReviewFileText(raw) {
 const { decodeHtmlEntities, cleanText } = require('./lib/text-cleaning');
 const { buildOutletRegionMap, buildRegisteredOutletIds, evaluateForwardCrossMarketGuard, evaluateReverseLondonCrossMarketGuard, evaluateUrlPathCrossMarketGuard, outletIsUkSideSelfHealRegion, UK_MARKET_REGIONS, outletIsUkMarketRegion, buildCrossMarketCriticIndex, findSiblingInOtherMarket, classifyDualMarketNullUrl } = require('./lib/cross-market-guard');
 const { classifyContentTier, computeContentFingerprint } = require('./lib/content-quality');
+const { textMentionsTitle } = require('./lib/show-title-variants');
 const { applyPaywallTierOverride } = require('./lib/paywall-completeness');
 const { shouldDeferCvWrongShow, isCvVerdictFromPartialWindow, contentHash: cvContentHash } = require('./lib/content-verifier');
 const { classifyIncompleteReason } = require('./lib/incomplete-reason');
@@ -4360,7 +4361,10 @@ showDirs.forEach(showId => {
           const commaIdx = showTitle.indexOf(',');
           const commaShort = commaIdx > 0 ? showTitle.slice(0, commaIdx).trim() : '';
           const textLower = textToCheck.substring(0, 5000).toLowerCase();
-          if ((showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle)) || (commaShort.length >= 4 && textLower.includes(commaShort))) {
+          // Shared variants (scripts/lib/show-title-variants.js) add punctuation folding
+          // and curated short names ("Phantom" for The Phantom of the Opera, BRO-4584).
+          if ((showTitle.length >= 4 && textLower.includes(showTitle)) || (shortTitle.length >= 5 && textLower.includes(shortTitle)) || (commaShort.length >= 4 && textLower.includes(commaShort))
+              || (realTitle && textMentionsTitle(textToCheck.substring(0, 5000), realTitle))) {
             data.showNotMentioned = false;
             delete data._showNotMentionedDiscoveryAttempted;
             // Restore fullText from wrongFullText if it was nulled out
