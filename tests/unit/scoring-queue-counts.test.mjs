@@ -364,3 +364,42 @@ describe('countScoringQueues — the full show record reaches isScoreable (BRO-4
     assert.match(cli, /countScoringQueues\(reviewTextsDir, \{ showTitles, showsById \}\)/);
   });
 });
+
+describe('rescore counts and the shared show loader (BRO-4563)', () => {
+  const tour = { id: 'a-test-show-tour-2026', title: 'A Test Show', category: 'tour', status: 'open', openingDate: '2026-09-15' };
+  const tourReview = () => scoreableFile({
+    showId: tour.id,
+    outletId: 'baltimoresun',
+    fullText: "Baltimore's theater scene benefits once again with the national tour debut of A Test Show. " + REVIEW_BODY,
+    textFetchedAt: '2026-10-04T01:41:12.047Z',
+    llmScore: { score: 80 },
+    needsRescore: true,
+  });
+
+  test('a tour review queued for rescore is actionable only when the show record is passed', () => {
+    assert.equal(isActionableRescore(tourReview(), { filePath: '/x/a-test-show-tour-2026/b.json' }), false);
+    assert.equal(isActionableRescore(tourReview(), { show: tour, showTitle: tour.title, filePath: '/x/a-test-show-tour-2026/b.json' }), true);
+  });
+
+  test('loadShowsById returns full records, and an empty map for a missing file', () => {
+    const { loadShowsById } = require('../../scripts/lib/scoring-queue-counts.js');
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'shows-by-id-'));
+    try {
+      const p = path.join(tmp, 'shows.json');
+      fs.writeFileSync(p, JSON.stringify({ shows: [tour, { title: 'no id' }] }));
+      const m = loadShowsById(p);
+      assert.equal(m.size, 1);
+      assert.equal(m.get(tour.id).category, 'tour');
+      assert.equal(loadShowsById(path.join(tmp, 'missing.json')).size, 0);
+    } finally {
+      fs.rmSync(tmp, { recursive: true, force: true });
+    }
+  });
+
+  test('opening-night-poller passes the show record to every isActionableRescore call', () => {
+    const y = fs.readFileSync(new URL('../../.github/workflows/opening-night-poller.yml', import.meta.url), 'utf8');
+    const calls = y.split('\n').filter(l => l.includes('isActionableRescore(') && !l.includes('require('));
+    assert.ok(calls.length >= 2, 'expected both poller count blocks');
+    for (const c of calls) assert.match(c, /\{ show, showTitle: show && show\.title, filePath:/, `poller call without show: ${c.trim()}`);
+  });
+});

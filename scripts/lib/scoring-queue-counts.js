@@ -88,7 +88,9 @@ function commonSelectionSkipReason(data, ctx, options) {
 /**
  * @param {Object} data - review-text record
  * @param {Object} [ctx]
- * @param {Object} [ctx.show] - `{ title }`, for isScoreable's wrongShow stale-flag override
+ * @param {Object} [ctx.show] - the shows.json record (loadShowsById). isScoreable's
+ *   guards read category/status/type/dates, so a { title } stub misjudges tour
+ *   productions' reviews (BRO-4563)
  * @param {string} [ctx.showTitle] - show title, for content-quality's show-mention check
  * @param {string} [ctx.filePath]
  * @returns {string|null} a UNSCORED_SKIP reason, or null when this IS actionable work
@@ -155,6 +157,7 @@ function isActionableEmergencyRetry(data, ctx) {
  * @param {string} baseDir - path to data/review-texts
  * @param {Object} [options]
  * @param {Map<string,string>} [options.showTitles] - showId -> title
+ * @param {Map<string,Object>} [options.showsById] - showId -> shows.json record (loadShowsById)
  * @returns {{unscored:number, rescore:number, stale:number, emergency:number,
  *            scanned:number, malformed:number, unreadableDirs:number,
  *            unscoredResidue:Object<string,number>, unrecoverableSamples:string[]}}
@@ -246,6 +249,23 @@ function countScoringQueues(baseDir, options) {
   return counts;
 }
 
+/**
+ * shows.json records by id, for the ctx.show these predicates take. One loader
+ * for every caller (the scorer has its own typed copy in llm-scoring/index.ts),
+ * so none hand-picks a field subset again. Missing or unreadable file -> empty map.
+ *
+ * @param {string} [showsPath] - defaults to data/shows.json under the cwd
+ * @returns {Map<string,Object>}
+ */
+function loadShowsById(showsPath = path.join('data', 'shows.json')) {
+  const map = new Map();
+  try {
+    const raw = JSON.parse(fs.readFileSync(showsPath, 'utf8'));
+    for (const s of (Array.isArray(raw) ? raw : raw.shows || [])) if (s && s.id) map.set(s.id, s);
+  } catch { /* empty map: callers fall back to no show context */ }
+  return map;
+}
+
 module.exports = {
   UNSCORED_SKIP,
   unscoredSkipReason,
@@ -254,4 +274,5 @@ module.exports = {
   isActionableStale,
   isActionableEmergencyRetry,
   countScoringQueues,
+  loadShowsById,
 };
