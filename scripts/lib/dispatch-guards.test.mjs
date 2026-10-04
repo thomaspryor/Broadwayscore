@@ -13,7 +13,7 @@ import os from 'node:os';
 import path from 'node:path';
 
 const require = createRequire(import.meta.url);
-const { closedCardGuard, dispatchClaimGuard } = require('./dispatch-guards.js');
+const { closedCardGuard, dispatchClaimGuard, findLiveWorkspaceForTask, safeLedgerEntries } = require('./dispatch-guards.js');
 // BRO-2488: marketingProjectGuard lives in linear-dispatch.js, not this
 // file's GUARD_NAMES family — it's issue-shaped (needs issue.project), and
 // predispatch-queue-audit.js's runGuard() only ever simulates GUARD_NAMES
@@ -405,4 +405,34 @@ test('every resolvePathCheck() call in bsc-next.js and linear-next.js routes rep
         `${file}: "${call}" must route its repoRoot through resolveCanonicalRepoRoot(), not REPO directly (BRO-2647)`);
     }
   }
+});
+
+// BRO-2949: a renamed Crown succession tab no longer prefix-matches the task
+// subject; the ledger launch record's taskId must still flag it as a duplicate.
+test('findLiveWorkspaceForTask: ledger taskId catches a renamed successor the title prefix misses', () => {
+  const isDone = t => t.startsWith('✅');
+  const task = { id: 'linear:BRO-343', subject: 'BRO-343 P1 backlog triage + dispatch loop' };
+  const renamed = { ref: 'workspace:7', title: 'Crown v45 successor (watching the queue)' };
+  const other = { ref: 'workspace:8', title: 'Unrelated session' };
+  const launch = (ref, taskId, ts) => ({ event: 'launch', taskId, workspaceRef: ref, ts });
+  const ledger = [launch('workspace:7', 'linear:BRO-343', '2026-10-01T00:00:00Z'), launch('workspace:8', 'linear:BRO-1', '2026-10-01T00:00:01Z')];
+  // title-only (no ledger) misses it — the pre-fix behavior
+  assert.equal(findLiveWorkspaceForTask(task, [renamed, other], isDone), null);
+  assert.equal(findLiveWorkspaceForTask(task, [renamed, other], isDone, ledger).ref, 'workspace:7');
+  // numeric task id vs String launch taskId
+  assert.equal(findLiveWorkspaceForTask({ id: 343, subject: 'x' }, [renamed], isDone, [launch('workspace:7', '343', 't')]).ref, 'workspace:7');
+  // different task's launch on the ref: no match
+  assert.equal(findLiveWorkspaceForTask(task, [other], isDone, ledger), null);
+  // ✅-done title never counts, even with a matching launch
+  assert.equal(findLiveWorkspaceForTask(task, [{ ref: 'workspace:7', title: '✅ Crown v45' }], isDone, ledger), null);
+  // terminal row after the launch (ref later recycled/closed): reconciled, no match
+  const closed = [...ledger, { event: 'vanished', workspaceRef: 'workspace:7', taskId: 'linear:BRO-343', ts: '2026-10-02T00:00:00Z' }];
+  assert.equal(findLiveWorkspaceForTask(task, [renamed], isDone, closed), null);
+  // launch row without taskId must not match
+  assert.equal(findLiveWorkspaceForTask(task, [renamed], isDone, [{ event: 'launch', workspaceRef: 'workspace:7', ts: 't' }]), null);
+});
+
+test('safeLedgerEntries: a throwing read degrades to null (title-only dup-check)', () => {
+  assert.equal(safeLedgerEntries(() => { throw new Error('boom'); }), null);
+  assert.deepEqual(safeLedgerEntries(() => [1]), [1]);
 });
