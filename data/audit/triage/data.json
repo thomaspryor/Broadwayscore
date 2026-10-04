@@ -1,7 +1,7 @@
 {
   "system": "data",
   "status": "error",
-  "lastChecked": "2026-10-02T13:15:05.893Z",
+  "lastChecked": "2026-10-04T20:51:56.411Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "monitoring",
@@ -9,22 +9,22 @@
     {
       "name": "Data: OB closing candidates awaiting review",
       "status": "warn",
-      "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 11d)"
+      "message": "3 open Off-Broadway show(s) look closed per the weekly detector. Oldest: pied-a-terre-off-broadway-2026 (missing 13d)"
     },
     {
       "name": "Data: T1/T2 silent review gaps",
       "status": "warn",
-      "message": "14 discovered review(s) not reaching the composite score (5 T1). First: school-girls-or-the-african-mean-girls-play-2026 — nydailynews (unscored)"
+      "message": "10 discovered review(s) not reaching the composite score (3 T1). First: school-girls-or-the-african-mean-girls-play-2026 — nydailynews (unscored)"
     },
     {
-      "name": "Data: live show with zero critic reviews on site",
-      "status": "error",
-      "message": "2 live show(s) have discovered review URL(s) but NOTHING collected. First: purpose-regional-2026"
+      "name": "Data: uncollected live review strands",
+      "status": "warn",
+      "message": "31 discovered review URL(s) across 18 live show(s) were never fetched. First: moulin-rouge-the-musical-west-end-2021 (4 stranded)"
     },
     {
       "name": "Data: reviewed shows missing from shows.json",
       "status": "error",
-      "message": "3 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Tartuffe (Remixed)\" (wet-roundup — missing 19d) — 1 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
+      "message": "24 aggregator-reviewed show(s) not in the catalogue. Oldest: \"Tartuffe (Remixed)\" (wet-roundup — missing 22d) — 3 review-backed candidate(s) past 3d, so the daily promotion run has already had 3 chances at them."
     }
   ]
 }

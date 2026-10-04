@@ -1,12 +1,11 @@
 {
-  "updatedAt": "2026-10-04T13:11:30.811Z",
-  "scanned": 2268,
-  "showsWithViolations": 53,
-  "totalViolations": 53,
-  "newSinceLastRun": 2,
+  "updatedAt": "2026-10-04T21:12:41.355Z",
+  "scanned": 2277,
+  "showsWithViolations": 54,
+  "totalViolations": 54,
+  "newSinceLastRun": 1,
   "newViolationKeys": [
-    "the-book-of-mormon-west-end-2024",
-    "creation-stories-and-all-the-important-importants-off-broadway-2026"
+    "what-the-animals-say-off-west-end-2026"
   ],
   "violationKeys": [
     "the-lost-boys-2026",
@@ -48,6 +47,7 @@
     "tosca-off-broadway-2026",
     "the-smile-of-her-off-west-end-2026",
     "disruption-off-broadway-2026",
+    "what-the-animals-say-off-west-end-2026",
     "the-standard-of-living-west-end-2026",
     "darkling-off-west-end-2026",
     "christmas-carol-goes-wrong-west-end-2026",
@@ -411,6 +411,15 @@
       "title": "Disruption",
       "openingDate": "2026-08-02",
       "message": "disruption-off-broadway-2026 review text mentions \"revival\" 9x but isRevival is not true — verify and set isRevival if this is a revival",
+      "violations": [
+        {}
+      ]
+    },
+    {
+      "showId": "what-the-animals-say-off-west-end-2026",
+      "title": "What The Animals Say",
+      "openingDate": "2026-10-02",
+      "message": "what-the-animals-say-off-west-end-2026 review text mentions \"revival\" 3x but isRevival is not true — verify and set isRevival if this is a revival",
       "violations": [
         {}
       ]

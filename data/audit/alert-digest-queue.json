@@ -1,1 +1,43 @@
-[]
+[
+  {
+    "conditionKey": "opening-night-stale-upcoming-tag-slam-frank-off-broadway-2026",
+    "title": "Stale 'upcoming' tag on Slam Frank",
+    "description": "slam-frank-off-broadway-2026 is status=open but tags still include 'upcoming' — run: node scripts/fix-stale-upcoming-tags.js --show=slam-frank-off-broadway-2026 --apply",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-04T21:33:52.269Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4601-tour-schedule",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4601-tour-schedule",
+    "description": "land.yml did not land land/bro-4601-tour-schedule: the unit-tests-node gate went red at 99fd071627. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37234597024",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4601-tour-schedule"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "99fd071627a19569c7681bbad981d50ace3bd462"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37234597024"
+      }
+    ],
+    "queuedAt": "2026-10-04T21:35:11.699Z"
+  }
+]
