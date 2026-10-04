@@ -40,6 +40,9 @@ export interface BrowsePageConfig {
   hideRanks?: boolean;
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
+  /** Replaces the default "How This Works" text, which describes Broadway's
+   *  outlets (NYT, Vulture, Variety) and is wrong for other markets. */
+  howItWorks?: string;
   source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional' | 'tour'; // Data source (default: broadway)
   /** Feature flag the page's data belongs to. While that flag is off the page
    *  does not exist: getAllBrowseSlugs() omits it and getBrowsePageConfig()
@@ -323,6 +326,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     sort: 'score',
     source: 'tour',
     hideRanks: true, // a catalog of tours, not a ranking
+    howItWorks: 'Each tour\'s CriticScore is a weighted average of reviews by local critics in the cities it plays, from major papers like the Chicago Tribune to BroadwayWorld\'s city editions. Larger outlets carry more weight. Broadway reviews never count toward a tour\'s score. Toggle to Audience mode for letter grades, shown only where audiences have rated the touring production itself.',
     relatedPages: ['best-broadway-show-right-now', 'best-broadway-musicals', 'pre-broadway-out-of-town-shows'],
   },
 

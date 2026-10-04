@@ -45,8 +45,22 @@ const REDDIT_CALIBRATION_CAP = 95;
  * @param {object} [showInfo] - { closingDate?: string, status?: string }
  * @returns {boolean}
  */
+// Broadway.com lists only Broadway productions, so on a tour or regional entry
+// sharing a Broadway title its rating can only be the Broadway run's. The
+// Reddit scraper searches r/Broadway by title, which a national tour shares
+// with its parent: 6 tours carried the Broadway rating and Broadway Reddit
+// chatter, e.g. the Oh, Mary! tour's "A-" two weeks after launch (BRO-4601).
+// A regional world premiere has no Broadway twin, so its Reddit data stays.
+function isBroadwayComMarket(category) {
+  return !isLondonMarket(category) && category !== 'tour' && category !== 'regional';
+}
+function isRedditMarket(category) {
+  return category !== 'tour';
+}
+
 function isRedditEligible(reddit, showInfo) {
   if (!reddit || reddit.score == null) return false;
+  if (!isRedditMarket(showInfo?.category)) return false;
   // Manual contamination suppression: a generic/collision-prone title whose
   // Reddit sample was poisoned by roundup/megathread chatter can be flagged
   // `suppressed:true` to drop it from the combined score without deleting the
@@ -87,8 +101,9 @@ function calculateCombinedScore(sources, showInfo) {
     active.push({ name: 'theatr', score: sources.theatr.score, volume: sources.theatr.reviewCount });
   }
   // Broadway.com is US only: on a London show it can only be the Broadway
-  // production's rating (4 West End shows carried one, 2026-09-29).
-  if (sources.broadwayCom?.score != null && sources.broadwayCom.reviewCount > 0 && !isLondonMarket(showInfo?.category)) {
+  // production's rating (4 West End shows carried one, 2026-09-29). Same for
+  // tours and regionals (isBroadwayComMarket).
+  if (sources.broadwayCom?.score != null && sources.broadwayCom.reviewCount > 0 && isBroadwayComMarket(showInfo?.category)) {
     active.push({ name: 'broadwayCom', score: sources.broadwayCom.score, volume: sources.broadwayCom.reviewCount });
   }
   if (sources.seatplan?.score != null && sources.seatplan.reviewCount > 0) {
@@ -160,4 +175,4 @@ function getDesignation(score) {
   return 'Loathing';
 }
 
-module.exports = { calculateCombinedScore, getDesignation, isRedditEligible, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP, MIN_THEATR_VOTES };
+module.exports = { calculateCombinedScore, getDesignation, isRedditEligible, isBroadwayComMarket, isRedditMarket, MIN_REDDIT_ITEMS, REDDIT_RECENCY_YEARS, REDDIT_SCORE_CALIBRATION, REDDIT_CALIBRATION_CAP, MIN_THEATR_VOTES };
