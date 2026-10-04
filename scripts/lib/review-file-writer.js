@@ -471,20 +471,6 @@ function createOrMergeReviewFile(showId, input, options = {}) {
     }
   }
 
-  // --- Guard: listing / section-index page (BRO-4596) ---
-  // A section page (express.co.uk/entertainment/theatre) is not a review. Four
-  // express-uk rows were created on one and scored off a text-pattern star.
-  // The read-time exclusion (review-guards 'listingPageUrl') already hides such
-  // a row; this stops it being written at all. Pattern-matched listings only:
-  // the bare-host case is left to the read side. Escape hatch: fields.allowNonReviewUrl.
-  if (input.url && fields.allowNonReviewUrl !== true) {
-    const listingReason = require('./non-review-url-patterns').listingPageUrlReason(input.url);
-    if (listingReason && listingReason !== 'bare-host') {
-      console.warn(`  ⛔ Skipping listing/section page: ${input.url} (${listingReason})`);
-      return { action: 'skipped', reason: `listing-page-url: ${listingReason}`, guardRefused: true };
-    }
-  }
-
   // --- Guard: aggregator URL on a real outlet (2026-08-09) ---
   // An aggregator-domain URL (theatre.reviews, show-score.com, stagedoor.com, …)
   // is a ROUNDUP page citing other outlets — not `outletId`'s own review. A file
@@ -1004,6 +990,22 @@ function createOrMergeReviewFile(showId, input, options = {}) {
   // Use the refined outletId (not input.outlet) so URL-based disambiguation is respected —
   // e.g. after refinement, outletId='timeout-london' not 'timeout' for timeout.com/london URLs.
   const existing = findExistingReviewFile(showDir, outletId, criticName !== 'Unknown' ? criticName : null, input.url);
+
+  // --- Guard: listing / section-index page (BRO-4596) ---
+  // A section page (express.co.uk/entertainment/theatre) is not a review. Four
+  // express-uk rows were created on one and scored off a text-pattern star.
+  // The read-time exclusion (review-guards 'listingPageUrl') already hides such
+  // a row; this stops it being CREATED. Create-only: a re-merge into an existing
+  // file is left alone so a human-cleared record (listingPageUrlManualClear)
+  // can still be refreshed. Pattern-matched listings only: the bare-host case
+  // is left to the read side. Escape hatch: fields.allowNonReviewUrl.
+  if (input.url && fields.allowNonReviewUrl !== true && !(existing && existing.data) && !fs.existsSync(filepath)) {
+    const listingReason = require('./non-review-url-patterns').listingPageUrlReason(input.url);
+    if (listingReason && listingReason !== 'bare-host') {
+      console.warn(`  ⛔ Skipping listing/section page: ${input.url} (${listingReason})`);
+      return { action: 'skipped', reason: `listing-page-url: ${listingReason}`, guardRefused: true };
+    }
+  }
 
   if (existing && existing.data) {
     return _mergeIntoExisting(existing.path, existing.data, { showId, outletId, input, fields, criticName, dryRun, onMerge });

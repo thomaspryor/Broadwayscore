@@ -251,7 +251,8 @@ jobs:
         continue-on-error: true
         timeout-minutes: 10
         run: |
-          node scripts/audit-score-vs-models.js | tee /tmp/score-vs-models.txt
+          set -o pipefail
+          node scripts/audit-score-vs-models.js 2>&1 | tee /tmp/score-vs-models.txt
           { echo '### Published score vs model reading'; echo '```'; head -45 /tmp/score-vs-models.txt; echo '```'; } >> "$GITHUB_STEP_SUMMARY"
 
       - name: Tier-skip drift audit (scraping cost v3, S1-T4)

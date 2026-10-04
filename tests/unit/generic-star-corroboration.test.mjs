@@ -126,6 +126,9 @@ describe('adjudicationStarBasisGone (take-me-out-2022 Theater Life: adjudicated 
       assert.equal(adjudicationStarBasisGone(noStar(f)), false, JSON.stringify(f));
     }
   });
+  test('BRO-4596: a cleared record with a stale originalScoreNormalized has no basis either', () => {
+    assert.equal(adjudicationStarBasisGone(noStar({ originalScoreCleared: true, originalScoreNormalized: 40, previousOriginalScore: '2/5' })), true);
+  });
   test('an adjudication that sided with the text/thumbs is untouched', () => {
     assert.equal(adjudicationStarBasisGone(noStar({ adjudicationHistory: [{ sidedWith: 'thumbs' }], adjudicationNote: 'Auto-adjudicated (high confidence, sided with thumbs): x' })), false);
   });

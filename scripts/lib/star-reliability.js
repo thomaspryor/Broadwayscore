@@ -118,7 +118,9 @@ function adjudicationContradictsRecordStar(data) {
 function adjudicationStarBasisGone(data) {
   if (!adjudicationSidedWithStars(data)) return false;
   const has = (v) => v !== null && v !== undefined && v !== '' && v !== 0;
-  return !(has(data.originalScore) || has(data.originalScoreNormalized) || has(data.aggregatorStars)
+  // Older clearing runs nulled originalScore but left originalScoreNormalized behind.
+  const cleared = data.originalScoreCleared === true;
+  return !(has(data.originalScore) || (has(data.originalScoreNormalized) && !cleared) || has(data.aggregatorStars)
     || has(data.starRating) || has(data.originalRating)
     // previousOriginalScore is the audit copy a clearing script leaves behind
     // (fix-p0-score-corruption.js); on a record flagged originalScoreCleared the

@@ -35,6 +35,17 @@ test('fields.allowNonReviewUrl is the human escape hatch', () => {
   assert.notEqual(r.reason, 'listing-page-url: section-index-page');
 });
 
+test('create-only: a refresh of an existing (human-cleared) file on a listing-looking URL is not refused', () => {
+  const dir = path.join(reviewTextsDir, 'oliver-west-end-2024');
+  fs.mkdirSync(dir, { recursive: true });
+  const url = 'https://www.express.co.uk/entertainment/theatre';
+  fs.writeFileSync(path.join(dir, 'express-uk--neil-norman.json'),
+    JSON.stringify({ showId: 'oliver-west-end-2024', outletId: 'express-uk', outlet: 'Express UK', criticName: 'Neil Norman', url, listingPageUrlManualClear: true }));
+  const r = call(url);
+  assert.doesNotMatch(String(r.reason || ''), /^listing-page-url/);
+  fs.rmSync(path.join(dir, 'express-uk--neil-norman.json'));
+});
+
 test('a real express.co.uk article is not refused by this guard', () => {
   const r = call('https://www.express.co.uk/entertainment/theatre/1769203/Oliver-review-London-2024');
   assert.doesNotMatch(String(r.reason || ''), /^listing-page-url/);
