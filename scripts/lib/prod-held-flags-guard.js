@@ -33,9 +33,15 @@ function parseHeldFeatures(src) {
 }
 
 // The NEXT_PUBLIC_FEATURES value from a dotenv file's text ('' when absent).
+// `vercel pull` writes KEY="value" lines; an `export ` prefix, an inline
+// `# comment` after an unquoted value, and repeated keys (last wins, as in
+// dotenv) are tolerated so a format change can't hide the value.
 function featuresFromEnvFile(envText) {
-  const line = envText.split(/\r?\n/).find(l => /^\s*NEXT_PUBLIC_FEATURES\s*=/.test(l));
-  return line ? unquote(line.slice(line.indexOf('=') + 1)) : '';
+  const lines = envText.split(/\r?\n/).filter(l => /^\s*(?:export\s+)?NEXT_PUBLIC_FEATURES\s*=/.test(l));
+  if (!lines.length) return '';
+  const raw = lines[lines.length - 1].replace(/^[^=]*=/, '').trim();
+  const quoted = raw.match(/^(['"])(.*?)\1/);
+  return quoted ? quoted[2].trim() : raw.replace(/\s+#.*$/, '').trim();
 }
 
 // Held features named in a comma-separated NEXT_PUBLIC_FEATURES value.

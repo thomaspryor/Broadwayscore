@@ -37,6 +37,10 @@ test('NEXT_PUBLIC_FEATURES is read from a pulled env file, quoted or not', () =>
   assert.equal(featuresFromEnvFile("NEXT_PUBLIC_FEATURES='commercial'"), 'commercial');
   assert.equal(featuresFromEnvFile('NEXT_PUBLIC_FEATURES=westEnd'), 'westEnd');
   assert.equal(featuresFromEnvFile('OTHER=1\n'), '');
+  assert.equal(featuresFromEnvFile('export NEXT_PUBLIC_FEATURES="commercial"'), 'commercial');
+  assert.equal(featuresFromEnvFile('NEXT_PUBLIC_FEATURES=westEnd,commercial # held'), 'westEnd,commercial');
+  assert.equal(featuresFromEnvFile('NEXT_PUBLIC_FEATURES="westEnd" # note'), 'westEnd');
+  assert.equal(featuresFromEnvFile('NEXT_PUBLIC_FEATURES="westEnd"\r\nNEXT_PUBLIC_FEATURES="commercial"\r\n'), 'commercial');
 });
 
 test('held features are matched as whole items only', () => {
@@ -63,16 +67,22 @@ test('main(): fails on a held flag in the env file or the shell, passes otherwis
   }
 });
 
+// Line number of the first non-comment line containing `needle` (-1 if none),
+// so a comment that mentions a command can't satisfy or break the ordering check.
+function codeLine(text, needle) {
+  return text.split('\n').findIndex(l => !/^\s*(#|\/\/|\*|\/\*)/.test(l) && l.includes(needle));
+}
+
 test('both prod deploy paths run the guard before vercel build --prod', () => {
   const wf = read('.github/workflows/vercel-deploy.yml');
-  const wfGuard = wf.indexOf('prod-held-flags-guard.js');
+  const wfGuard = codeLine(wf, 'node scripts/lib/prod-held-flags-guard.js');
   assert.ok(wfGuard > 0, 'vercel-deploy.yml must run prod-held-flags-guard.js');
-  assert.ok(wfGuard > wf.indexOf('vercel pull'), 'guard runs after vercel pull');
-  assert.ok(wfGuard < wf.indexOf('vercel build --prod'), 'guard runs before vercel build --prod');
+  assert.ok(wfGuard > codeLine(wf, 'npx vercel pull --yes --environment=production'), 'guard runs after vercel pull');
+  assert.ok(wfGuard < codeLine(wf, 'npx vercel build --prod'), 'guard runs before vercel build --prod');
 
   const dn = read('scripts/deploy-now.js');
-  const dnGuard = dn.indexOf('checkHeldFeatures([]');
+  const dnGuard = codeLine(dn, 'checkHeldFeatures([], env)');
   assert.ok(dnGuard > 0, 'deploy-now.js must call the guard');
-  assert.ok(dnGuard > dn.indexOf('vercel pull'), 'deploy-now: guard after vercel pull');
-  assert.ok(dnGuard < dn.indexOf('vercel build --prod'), 'deploy-now: guard before vercel build --prod');
+  assert.ok(dnGuard > codeLine(dn, 'vercel pull --yes --environment=production'), 'deploy-now: guard after vercel pull');
+  assert.ok(dnGuard < codeLine(dn, 'vercel build --prod'), 'deploy-now: guard before vercel build --prod');
 });
