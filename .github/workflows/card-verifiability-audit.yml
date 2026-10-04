@@ -48,6 +48,14 @@ name: Card Verifiability Audit
 # Notion leg running too (not yet retired — Phase 1 of the CLAUDE.md rule 6
 # migration is still mid-flight per project memory); drop --source back to
 # implicit 'notion', or the whole Notion leg, once Notion stops taking cards.
+#
+# BRO-3619: the Linear AUDIT (not just the enrich leg) now runs here too, in
+# its own step. Before this nothing ever regenerated
+# data/audit/card-verifiability-linear.json on a schedule (last refresh was a
+# manual 09-15 run), and health-check.js never read it — so the 31 armed-but-
+# vacuous Linear cards BRO-3378 found had no digest row. health-check.js now
+# reads both reports' refused + vacuousChecks buckets, plus a >72h staleness
+# row for the Linear report so a broken refresh here is itself visible.
 
 on:
   schedule:
@@ -103,7 +111,8 @@ jobs:
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
           OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
-          # Unused at --source notion (the default both scripts run at here) —
+          # Used by the enrich call's Linear leg (--source both). Originally
+          # added while this step was Notion-only (unused at --source notion) —
           # linear-client.js's getApiKey() only throws inside an actual
           # graphql() call, which the Notion-only leg never makes. Included
           # anyway: its audit-secret-scan-always-trace marker (linear-client.js
@@ -117,17 +126,38 @@ jobs:
           node scripts/enrich-card-acceptance.js --from-report --source both --limit 25
           node scripts/audit-card-verifiability.js
 
+      # BRO-3619: separate step so a failing (retired) Notion leg above can't
+      # skip the Linear refresh, and vice versa. Runs after enrich so the
+      # committed report reflects post-enrichment state. --limit 5000 means
+      # "every open issue": the audit always fetches the whole backlog and
+      # --limit only slices it afterwards, in API order (the default 300
+      # would silently drop ~900 of ~1200 issues). Own timeout because each
+      # rate-limited Linear call can spend ~4min in retries; the re-check loop
+      # stops after its first 429, so this bounds the bulk fetch only. A
+      # timeout here fails the step (not the job): the commit step below
+      # still lands whatever did refresh, and Notify still fires.
+      - name: Audit Linear backlog
+        if: ${{ !cancelled() }}
+        timeout-minutes: 15
+        env:
+          LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
+        run: node scripts/audit-card-verifiability.js --source linear --limit 5000
+
       - name: Commit refreshed report
         if: always()
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add data/audit/card-verifiability.json
+          # Loop-and-skip (check-arm-yield.yml pattern): a report the audit
+          # never wrote must not make `git add` fail the whole commit.
+          for f in data/audit/card-verifiability.json data/audit/card-verifiability-linear.json; do
+            if [ -f "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
+          done
           if git diff --cached --quiet; then
             echo "No state change to commit"
             exit 0
           fi
-          git commit -m "audit: refresh card-verifiability report [skip ci]"
+          git commit -m "audit: refresh card-verifiability reports [skip ci]"
           bash scripts/lib/push-with-retry.sh 5 main
 
       - name: Notify on failure
@@ -138,7 +168,7 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Card Verifiability Audit Failed'
-          description: 'The audit/enrich/re-audit cycle for undispatchable backlog cards crashed — data/audit/card-verifiability.json may now be stale again, which is exactly the failure mode this workflow exists to prevent (card #796).'
+          description: 'The audit/enrich/re-audit cycle for undispatchable backlog cards crashed — data/audit/card-verifiability.json and/or card-verifiability-linear.json may now be stale again, which is exactly the failure mode this workflow exists to prevent (card #796, BRO-3619).'
           # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
           # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
           severity: 'warning'
