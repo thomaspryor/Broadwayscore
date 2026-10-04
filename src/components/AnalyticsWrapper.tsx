@@ -5,7 +5,7 @@ import { SpeedInsights } from '@vercel/speed-insights/next';
 import Script from 'next/script';
 import { usePathname } from 'next/navigation';
 import { useEffect } from 'react';
-import { isSharedPlansPath, posthogBeforeSend, sentryScrub, vercelBeforeSend } from '@/lib/analytics/redact-url';
+import { isAuthCallbackPath, isSharedPlansPath, posthogBeforeSend, sentryScrub, vercelBeforeSend } from '@/lib/analytics/redact-url';
 import { gaInitScript } from '@/lib/analytics/ga-init-script';
 import { applyAnalyticsUser, flushUgcOutbox } from '@/lib/ugc-analytics';
 
@@ -41,7 +41,7 @@ export default function AnalyticsWrapper() {
     if (!pathname) return;
     try {
       const onPlans = isSharedPlansPath(pathname);
-      if (onPlans) {
+      if (onPlans || isAuthCallbackPath(pathname)) {
         (window as unknown as { posthog?: { stopSessionRecording?: () => void } }).posthog?.stopSessionRecording?.();
       }
       if (GA_MEASUREMENT_ID) {
@@ -103,7 +103,7 @@ export default function AnalyticsWrapper() {
             },
             // Shared Plans privacy (BRO-4481): no replay of a plans page, and
             // every event's URLs/properties go through the token redactor.
-            disable_session_recording: isSharedPlansPath(window.location.pathname),
+            disable_session_recording: isSharedPlansPath(window.location.pathname) || isAuthCallbackPath(window.location.pathname),
             before_send: posthogBeforeSend,
             loaded: (ph) => {
               if (process.env.NODE_ENV === 'development') ph.opt_out_capturing();

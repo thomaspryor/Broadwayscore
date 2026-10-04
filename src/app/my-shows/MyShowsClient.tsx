@@ -174,8 +174,8 @@ export default function MyShowsClient() {
   const [showMapLoaded, setShowMapLoaded] = useState(false);
 
   const { user, profile, isAuthenticated, loading: authLoading, signIn } = useAuth();
-  const { reviews: realReviews, getAllReviews, deleteReview, loading: reviewsLoading } = useUserReviews(user?.id || null);
-  const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, updatePerformance, removeFromWatchlist, loading: watchlistLoading } = useWatchlist(user?.id || null);
+  const { reviews: realReviews, getAllReviews, deleteReview, loading: reviewsLoading, error: reviewsError } = useUserReviews(user?.id || null);
+  const { watchlist: realWatchlist, getWatchlist, addToWatchlist, updatePlannedDate, updatePerformance, removeFromWatchlist, loading: watchlistLoading, error: watchlistError } = useWatchlist(user?.id || null);
   // Count-only lists instance for the tab badge (ListsTab owns its own full
   // CRUD instance; hook instances don't share state, so this fetches the list
   // rows once per page view — cheap, and the badge works without visiting the tab).
@@ -962,7 +962,9 @@ export default function MyShowsClient() {
       {activeTab === 'diary' && (
         <div id="panel-diary" role="tabpanel" aria-labelledby="tab-diary">
           {reviews.length === 0 && upcomingWatchlistEntries.length === 0 && toBeRatedEntries.length === 0 ? (
-            <EmptyState
+            !isMockMode && (reviewsError || watchlistError) ? (
+              <LoadError onRetry={() => { getAllReviews(); getWatchlist(true); }} />
+            ) : <EmptyState
               icon="🎭"
               title="Your diary is empty"
               description="Start rating shows to build your personal theater diary!"
@@ -1177,7 +1179,9 @@ export default function MyShowsClient() {
       {activeTab === 'watchlist' && (
         <div id="panel-watchlist" role="tabpanel" aria-labelledby="tab-watchlist">
           {watchlist.length === 0 ? (
-            <EmptyState
+            !isMockMode && watchlistError ? (
+              <LoadError onRetry={() => { getWatchlist(true); }} />
+            ) : <EmptyState
               icon="📋"
               title="Your watchlist is empty"
               description="Add shows you want to see!"
@@ -2192,6 +2196,19 @@ function AddShowCard({ context, variant = 'grid', onOpen }: { context: 'diary' |
       {/* Spacer matching content area below images on real cards */}
       <div className="px-2 py-1.5">&nbsp;</div>
     </button>
+  );
+}
+
+// Shown instead of an empty state when the fetch failed, so an outage never reads
+// as "Your diary is empty" and nudges people to re-import or re-rate (BRO-4525).
+function LoadError({ onRetry }: { onRetry: () => void }) {
+  return (
+    <div className="text-center py-16" role="alert">
+      <div className="text-4xl mb-3">⚠️</div>
+      <h3 className="text-lg font-bold text-white mb-1">We couldn&apos;t load your shows</h3>
+      <p className="text-sm text-gray-400 mb-4">Your diary is safe. Check your connection and try again.</p>
+      <button type="button" onClick={onRetry} className="btn-primary text-sm">Try again</button>
+    </div>
   );
 }
 

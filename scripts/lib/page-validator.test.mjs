@@ -56,3 +56,10 @@ test('production-category mismatch check is case-insensitive on "on Broadway"', 
   assert.equal(result.valid, false);
   assert.match(result.reason, /production-category mismatch/);
 });
+
+test('BRO-4563: a page missing a title\'s short word is a short-title partial match, not "zero words"', async () => {
+  const html = '<html><head><title>Review Roundup: THE LIFE at the Southwark Playhouse | BroadwayWorld</title></head><body><h1>THE LIFE</h1></body></html>';
+  const result = await validatePageMatchesShow(html, 'Life of Pi', { category: 'off-west-end', skipLlm: true });
+  assert.equal(result.valid, false);
+  assert.match(result.reason, /short-title partial match: missing \[pi\]/);
+});
