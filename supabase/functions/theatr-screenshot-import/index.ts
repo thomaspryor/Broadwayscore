@@ -9,10 +9,11 @@
  *
  * Security model:
  * - verify_jwt ON (platform-enforced): signed-in users only.
- * - Per-user rate limit (MAX_CALLS_PER_HOUR) logged in import_fetch_log under
- *   slug RATE_SLUG and counted on that slug only, so it never eats into the
- *   Show Score import budget. Each call spends Anthropic API credit, so the
- *   cap is what keeps a looping client from running up the bill.
+ * - Per-user rate limit (MAX_CALLS_PER_HOUR) and a global daily ceiling
+ *   (MAX_CALLS_PER_DAY) via theatr_screenshot_log (service role). Each call
+ *   spends Anthropic API credit, so these caps are what keep a looping client,
+ *   or many of them, from running up the bill. A sibling table, not
+ *   import_fetch_log: show-score-proxy counts every row there per user.
  * - Images are size- and type-checked before any model call; the model's
  *   output is schema-constrained AND re-validated (normalize.mjs), since a
  *   screenshot can carry arbitrary text.
@@ -21,18 +22,22 @@
  * Error contract (single channel, same as show-score-proxy — the client
  * checks body.ok, never status): HTTP 200 with {ok:false, error:
  * 'invalid_images'|'too_many_images'|'unauthorized'|'rate_limited'|
- * 'not_configured'|'internal'} for all handled failures. Mirrored by
+ * 'busy'|'not_configured'|'internal'} for all handled failures. Mirrored by
  * TheatrScreenshotResponse in src/lib/show-import.ts (web) and
  * lib/show-import.ts (iOS app).
  */
-import Anthropic from 'npm:@anthropic-ai/sdk';
+// Pinned: the request uses beta fields (fallbacks), so an unreviewed SDK
+// release must not ride in on the next deploy.
+import Anthropic from 'npm:@anthropic-ai/sdk@0.131.0';
 import { validateImages, normalizeExtraction } from './normalize.mjs';
 
 const MODEL = 'claude-opus-5-5';
-const RATE_SLUG = 'theatr:screenshots';
 // Clients send at most 30 screenshots per import in batches of 6 (5 calls),
 // so 15 leaves room for a retry or two.
 const MAX_CALLS_PER_HOUR = 15;
+// Global spend ceiling: ~$0.05-0.10 per 6-image call, so 300/day caps a
+// runaway at roughly $30/day while covering ~60 full imports.
+const MAX_CALLS_PER_DAY = 300;
 
 const ALLOWED_ORIGINS = [
   'https://broadwayscorecard.com',
@@ -110,29 +115,37 @@ function userIdFromJwt(req: Request): string | null {
   }
 }
 
-/** Insert-first, count-after (same as show-score-proxy): a failed insert
- *  fails CLOSED, and concurrent batches each see one another in the count. */
-async function checkAndLogRateLimit(userId: string): Promise<boolean> {
+async function countRows(base: string, auth: Record<string, string>, filter: string): Promise<number> {
+  const res = await fetch(`${base}/rest/v1/theatr_screenshot_log?${filter}&select=id`, {
+    headers: { ...auth, Prefer: 'count=exact', Range: '0-0' },
+  });
+  if (!res.ok) throw new Error(`rate-limit count failed: ${res.status}`);
+  const range = res.headers.get('content-range') || '/0';
+  return parseInt(range.split('/')[1], 10) || 0;
+}
+
+/** Insert-first, count-after (same as show-score-proxy): a failed insert or
+ *  count fails CLOSED, and concurrent batches each see one another. */
+async function checkAndLogRateLimit(userId: string, imageCount: number): Promise<'ok' | 'rate_limited' | 'busy'> {
   const base = Deno.env.get('SUPABASE_URL');
   const key = Deno.env.get('SUPABASE_SERVICE_ROLE_KEY');
   if (!base || !key) throw new Error('missing service credentials');
   const auth = { apikey: key, Authorization: `Bearer ${key}` };
 
-  const insertRes = await fetch(`${base}/rest/v1/import_fetch_log`, {
+  const insertRes = await fetch(`${base}/rest/v1/theatr_screenshot_log`, {
     method: 'POST',
     headers: { ...auth, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ user_id: userId, slug: RATE_SLUG }),
+    body: JSON.stringify({ user_id: userId, image_count: imageCount }),
   });
   if (!insertRes.ok) throw new Error(`rate-limit log insert failed: ${insertRes.status}`);
 
-  const since = new Date(Date.now() - 60 * 60 * 1000).toISOString();
-  const countRes = await fetch(
-    `${base}/rest/v1/import_fetch_log?user_id=eq.${userId}&slug=eq.${encodeURIComponent(RATE_SLUG)}&created_at=gte.${since}&select=id`,
-    { headers: { ...auth, Prefer: 'count=exact', Range: '0-0' } },
-  );
-  const range = countRes.headers.get('content-range') || '/0';
-  const count = parseInt(range.split('/')[1], 10) || 0;
-  return count <= MAX_CALLS_PER_HOUR;
+  const hourAgo = new Date(Date.now() - 60 * 60 * 1000).toISOString();
+  if (await countRows(base, auth, `user_id=eq.${userId}&created_at=gte.${hourAgo}`) > MAX_CALLS_PER_HOUR) {
+    return 'rate_limited';
+  }
+  const dayAgo = new Date(Date.now() - 24 * 60 * 60 * 1000).toISOString();
+  if (await countRows(base, auth, `created_at=gte.${dayAgo}`) > MAX_CALLS_PER_DAY) return 'busy';
+  return 'ok';
 }
 
 Deno.serve(async (req) => {
@@ -152,8 +165,10 @@ Deno.serve(async (req) => {
       console.error('theatr-screenshot-import: ANTHROPIC_API_KEY is not set');
       return json(req, { ok: false, error: 'not_configured' });
     }
-    if (!(await checkAndLogRateLimit(userId))) {
-      return json(req, { ok: false, error: 'rate_limited' });
+    const limit = await checkAndLogRateLimit(userId, validated.images.length);
+    if (limit !== 'ok') {
+      if (limit === 'busy') console.error('theatr-screenshot-import: global daily cap reached');
+      return json(req, { ok: false, error: limit });
     }
 
     const client = new Anthropic({ apiKey });
