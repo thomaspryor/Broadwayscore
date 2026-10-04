@@ -6,7 +6,6 @@
  * data/pending-fixes review-field-edit plan (humanReviewScore + llmPullQuote).
  *
  *   node scripts/audit-shared-url-quote.js           # report
- *   node scripts/audit-shared-url-quote.js --gate    # exit 1 if any group
  */
 const fs = require('fs');
 const path = require('path');
@@ -39,4 +38,4 @@ for (const g of groups) {
   for (const r of g.records) console.log(`  ${r.showId}/${r.file}`);
 }
 console.log(`[audit-shared-url-quote] ${groups.length} shared-quote group(s) across ${records.length} records`);
-process.exit(process.argv.includes('--gate') && groups.length ? 1 : 0);
+// Report-only: some groups are legitimate rep/joint reviews, so this never gates.

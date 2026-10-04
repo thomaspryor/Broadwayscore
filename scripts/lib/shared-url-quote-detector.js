@@ -16,7 +16,7 @@ function articleKey(url) {
   try { u = new URL(url); } catch { return null; }
   const p = u.pathname.replace(/\/+$/, '');
   if (p.split('/').filter(Boolean).length < 1 || p.length < 8) return null;
-  return `${u.hostname.replace(/^www\./, '')}${p}`.toLowerCase();
+  return `${u.hostname.replace(/^www\./, '')}${p}${u.search}`.toLowerCase();
 }
 
 /**
@@ -38,7 +38,7 @@ function findSharedQuoteGroups(records) {
 }
 
 function baseSlug(showId) {
-  return String(showId).replace(/(-(?:off-broadway|off-off-broadway|bway|broadway|regional|tour|west-end|london))*-\d{4}$/, '');
+  return String(showId).replace(/(?:-(?:off-west-end|west-end|off-off-broadway|off-broadway|bway|broadway|regional|tour|london))*(?:-\d{4}(?:-\d+|-revival)?)?$/, '');
 }
 
 module.exports = { findSharedQuoteGroups, articleKey, normQuote, baseSlug };

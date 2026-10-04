@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { findSharedQuoteGroups, articleKey } = require('./shared-url-quote-detector.js');
+const { findSharedQuoteGroups, articleKey, baseSlug, normQuote } = require('./shared-url-quote-detector.js');
 
 const U = 'https://www.bloomberg.com/news/2011-04-26/stiller-sings-in-leaves-arianda-steals-yesterday-review.html';
 const Q = 'So go for Kanin’s savvy script and for one truly inspired comic performance.';
@@ -61,4 +61,27 @@ test('same show twice (two files, one url) is not a cross-show case', () => {
     { showId: 'a', url: U, llmPullQuote: Q },
   ]);
   assert.equal(g.length, 0);
+});
+
+test('baseSlug strips year and market suffixes in any order', () => {
+  assert.equal(baseSlug('x-off-west-end-2026'), 'x');
+  assert.equal(baseSlug('x-west-end-2026'), 'x');
+  assert.equal(baseSlug('x-west-end'), 'x');
+  assert.equal(baseSlug('cats-2016-2'), 'cats');
+  assert.equal(baseSlug('hamilton'), 'hamilton');
+});
+
+test('query string distinguishes articles; quote normalisation ignores curly quotes', () => {
+  assert.notEqual(articleKey('https://x.com/index.php?p=1'), articleKey('https://x.com/index.php?p=2'));
+  assert.equal(normQuote('Kanin\u2019s  script'), normQuote("Kanin's script"));
+});
+
+test('three-show column groups all three titles', () => {
+  const g = findSharedQuoteGroups([
+    { showId: 'a-2020', url: U, llmPullQuote: Q },
+    { showId: 'b-2020', url: U, llmPullQuote: Q },
+    { showId: 'c-2020', url: U, llmPullQuote: Q },
+  ]);
+  assert.equal(g.length, 1);
+  assert.equal(g[0].records.length, 3);
 });
