@@ -70,7 +70,7 @@ function makeSandbox() {
 }
 
 function hookEnv(sbx) {
-  return {
+  const env = {
     ...process.env, HOME: REAL_HOME, ESG_HEADLESS: '',
     ESG_DISPATCH_LEDGER: sbx.ledger,
     ESG_TASKS_DIR: sbx.tasks,
@@ -79,6 +79,11 @@ function hookEnv(sbx) {
     CMUX_BIN: path.join(sbx.dir, 'no-cmux'),
     DISPATCH_WATCHDOG_DISABLED: '',
   };
+  // Seams the hook honors when merely SET (even to ''), so they must be absent,
+  // not blanked: ESG_LIVE_TITLES='' means "cmux reachable, zero workspaces" and
+  // makes Gate P block; a set ESG_WT_STATUS fires Gate C's worktree footer rule.
+  for (const k of ['ESG_LIVE_TITLES', 'ESG_WT_STATUS', 'ESG_WT_DETAIL']) delete env[k];
+  return env;
 }
 
 // The hook lives in the owner's PRIVATE ~/.claude repo, which a CI runner does
@@ -194,25 +199,35 @@ test('Gate T surfaces a title for a task that only exists under archive/ (task-s
   }
 });
 
-test('BRO-3949: ambient seam env (tasks dir) cannot leak into the gate', { skip: skipIfNoHook }, () => {
-  // Gate T reads task titles from ESG_TASKS_DIR / ~/.claude/tasks/<list>. If the
-  // spawn inherited an ambient value, the hint text (and the verdict inputs)
-  // would depend on whatever other sessions have on this machine, which is the
-  // flake that made land.js's merged-tree-tests gate refuse landings. Plant a
-  // title in an ambient dir: the sandbox must hide it.
+test('BRO-3949: ambient hook seam env (live titles, worktree status, tasks dir) cannot leak into the gate', { skip: skipIfNoHook }, () => {
+  // Each of these, inherited from the machine/parent process, changes the hook's
+  // verdict: ESG_LIVE_TITLES='' makes Gate P block TITLED_MSG's DISPATCHED claim
+  // (zero live workspaces), ESG_WT_STATUS fires Gate C, ESG_TASKS_DIR changes
+  // Gate T's title hints. hookEnv() must strip/override all of them, which is
+  // what keeps land.js's merged-tree-tests gate deterministic under a busy shared
+  // machine. Mutation-checked: dropping any one override fails this test.
   const dirty = mkdtempSync(path.join(tmpdir(), 'esg-taskref-dirty-'));
-  const key = 'ESG_TASKS_DIR';
-  const saved = process.env[key];
+  const ambient = {
+    ESG_LIVE_TITLES: '',
+    ESG_WT_STATUS: 'unmerged',
+    ESG_WT_DETAIL: 'WORKTREE: 3 unmerged commit(s) vs main + 2 uncommitted file(s) — choose KEEP worktree',
+    ESG_TASKS_DIR: dirty,
+  };
+  const saved = {};
   try {
     writeFileSync(path.join(dirty, '9992.json'), JSON.stringify({
       id: '9992', subject: 'AMBIENT-LEAK-MARKER title that must stay invisible',
     }));
-    process.env[key] = dirty;
-    const { status, stderr } = runGate('Follow-up needed on #9992 before closing.');
-    assert.equal(status, 2);
-    assert.doesNotMatch(stderr, /AMBIENT-LEAK-MARKER/, 'ambient ESG_TASKS_DIR leaked into the gate');
+    for (const [k, v] of Object.entries(ambient)) { saved[k] = process.env[k]; process.env[k] = v; }
+    const pass = runGate(TITLED_MSG);
+    assert.equal(pass.status, 0, `ambient seam env leaked into the gate (exit ${pass.status})\nstderr:\n${pass.stderr}`);
+    const block = runGate('Follow-up needed on #9992 before closing.');
+    assert.equal(block.status, 2);
+    assert.doesNotMatch(block.stderr, /AMBIENT-LEAK-MARKER/, 'ambient ESG_TASKS_DIR leaked into the gate');
   } finally {
-    if (saved === undefined) delete process.env[key]; else process.env[key] = saved;
+    for (const k of Object.keys(ambient)) {
+      if (saved[k] === undefined) delete process.env[k]; else process.env[k] = saved[k];
+    }
     rmSync(dirty, { recursive: true, force: true });
   }
 });
