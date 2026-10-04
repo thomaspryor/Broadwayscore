@@ -134,18 +134,17 @@ test.describe('Post-deploy smoke tests', () => {
     expect(visibleText).not.toContain('NaN');
   });
 
-  test('biz page renders investment tracker', async ({ page }) => {
-    await page.goto('/biz');
+  // The commercial scorecard is unreleased (owner, 2026-10-04), so /biz must
+  // 404. This used to assert the page rendered an h1 and 500+ characters,
+  // which the 404 page also does, so it passed while checking nothing.
+  // Fails if someone turns the `commercial` flag on in the prod env.
+  test('commercial scorecard stays unreleased', async ({ request, baseURL }) => {
+    test.skip(/demo\./.test(baseURL ?? ''), 'demo turns every flag on');
 
-    const heading = page.locator('h1');
-    await expect(heading).toBeVisible({ timeout: 15000 });
-
-    // Has show data (table rows or show links)
-    const visibleText = await page.locator('body').innerText();
-    expect(visibleText.length).toBeGreaterThan(500);
-
-    expect(visibleText).not.toMatch(/\bundefined\b/);
-    expect(visibleText).not.toContain('NaN');
+    for (const p of ['/biz']) {
+      const res = await request.get(p, { maxRedirects: 0 });
+      expect(res.status(), `${p} should be a 404 while commercial is unreleased`).toBe(404);
+    }
   });
 
   test('audience buzz page renders scores', async ({ page }) => {

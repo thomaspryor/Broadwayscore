@@ -8,7 +8,8 @@
  * page's RSC payload), /browse/biggest-broadway-flops was public, and llms.txt
  * and the sitemap advertised /biz. These tests fail if a page starts loading
  * commercial data without the flag, or a browse page built on it ships ungated.
- * The post-deploy smoke test checks the same thing against the live site.
+ * They read source, so they cannot see every indirection; the post-deploy smoke
+ * test 'commercial scorecard stays unreleased' checks what the live site serves.
  */
 import test from 'node:test';
 import assert from 'node:assert/strict';
@@ -55,23 +56,42 @@ function walk(dir) {
   });
 }
 
+// Server-side readers of commercial.json that never emit commercial figures.
+// Anything else importing it must go through data-commercial's loaders.
+const COMMERCIAL_JSON_READERS = new Set([
+  'src/lib/data-commercial.ts',
+  'src/lib/data-tony-predictions.ts', // only drops "Tour Stop" shows from Tony eligibility
+]);
+
 test('pages only load commercial data behind featureFlags.commercial', () => {
   const src = readFileSync(path.join(ROOT, 'src/lib/data-commercial.ts'), 'utf8');
   // getSeason is a date helper, not commercial data.
-  const dataFns = [...src.matchAll(/^export function (\w+)/gm)].map((m) => m[1]).filter((n) => n !== 'getSeason');
+  const dataFns = [...src.matchAll(/^export (?:async )?(?:function|const) (\w+)/gm)]
+    .map((m) => m[1]).filter((n) => n !== 'getSeason');
   assert.ok(dataFns.includes('getShowCommercial'), 'data-commercial exports not found; update this guard');
-  const call = new RegExp(`\\b(${dataFns.join('|')})\\(`);
   const offenders = [];
-  for (const file of [...walk(path.join(ROOT, 'src/app')), ...walk(path.join(ROOT, 'src/components'))]) {
+  // src/lib too: a helper there that loads commercial data and is called from a
+  // page would otherwise slip past a scan of the page alone.
+  const files = ['src/app', 'src/components', 'src/lib'].flatMap((d) => walk(path.join(ROOT, d)));
+  for (const file of files) {
+    const rel = path.relative(ROOT, file);
+    if (rel === 'src/lib/data-commercial.ts') continue;
     const text = readFileSync(file, 'utf8');
+    if (/commercial\.json['"]/.test(text) && !COMMERCIAL_JSON_READERS.has(rel)) {
+      offenders.push(`${rel}: imports commercial.json directly`);
+    }
+    // Follow renamed imports (`getShowCommercial as gsc`) as well as the real names.
+    const names = new Set(dataFns);
+    for (const m of text.matchAll(/\b(\w+)\s+as\s+(\w+)/g)) if (names.has(m[1])) names.add(m[2]);
+    const call = new RegExp(`\\b(${[...names].join('|')})\\s*\\(`);
     if (!call.test(text)) continue;
     // A route that 404s while the flag is off may load whatever it likes.
     if (/if \(!featureFlags\.commercial\) notFound\(\);/.test(text)) continue;
     text.split('\n').forEach((line, i) => {
       if (call.test(line) && !/^\s*(\/\/|\*|import\b)/.test(line) && !line.includes('featureFlags.commercial')) {
-        offenders.push(`${path.relative(ROOT, file)}:${i + 1}: ${line.trim()}`);
+        offenders.push(`${rel}:${i + 1}: ${line.trim()}`);
       }
     });
   }
-  assert.deepEqual(offenders, [], `gate these calls on featureFlags.commercial:\n${offenders.join('\n')}`);
+  assert.deepEqual(offenders, [], `gate these on featureFlags.commercial:\n${offenders.join('\n')}`);
 });
