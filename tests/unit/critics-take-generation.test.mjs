@@ -9,16 +9,21 @@
  *     show page's decision function. Once a show clears the review-count
  *     floor, a missing consensus must render "coming soon", never silently
  *     fall back to the synopsis.
- *  2. The opening-night-poller.yml fast path now dispatches
- *     update-critic-consensus.yml --show=X per polled show after the inline
- *     rebuild — the orchestrator's fast path never went through
- *     rebuild-reviews.yml, the only place that previously auto-dispatched
- *     that workflow. Dispatch (not an inline generate-critic-consensus.js
- *     call) deliberately preserves critic-consensus.json's single-writer
- *     invariant (scripts/lib/core-data-merge-registry.js) — this fast path
- *     runs on a ~15-min cycle for both markets concurrently on a live
- *     opening night, so an inline write here would race concurrent BW/WE
- *     poller pushes with no reconciliation.
+ *  2. The opening-night-poller.yml fast path dispatches
+ *     update-critic-consensus.yml ONCE with every polled show as a
+ *     comma-separated `show` input after the inline rebuild — the
+ *     orchestrator's fast path never went through rebuild-reviews.yml, the
+ *     only place that previously auto-dispatched that workflow. Dispatch
+ *     (not an inline generate-critic-consensus.js call) deliberately
+ *     preserves critic-consensus.json's single-writer invariant
+ *     (scripts/lib/core-data-merge-registry.js) — this fast path runs on a
+ *     ~15-min cycle for both markets concurrently on a live opening night,
+ *     so an inline write here would race concurrent BW/WE poller pushes
+ *     with no reconciliation.
+ *     BRO-4595: it must be a SINGLE dispatch. The workflow's concurrency
+ *     group (cancel-in-progress: false) keeps one running plus one pending
+ *     run and cancels every other dispatch; a per-show loop sent 58 on
+ *     2026-10-04 and 56 were cancelled.
  *
  * Run: node --test tests/unit/critics-take-generation.test.mjs
  */
@@ -74,8 +79,19 @@ describe('opening-night-poller.yml fast path dispatches update-critic-consensus.
     assert.match(workflow, /Generate Critics' Take \(fast_path\)/);
   });
 
-  it('dispatches update-critic-consensus.yml per polled show, not an inline generator call', () => {
-    assert.match(workflow, /gh workflow run update-critic-consensus\.yml -f show="\$SHOW_ID"/);
+  it('dispatches update-critic-consensus.yml ONCE with every polled show, not per show and not an inline generator call', () => {
+    // Scope the assertions to this one step: other steps in the same job
+    // legitimately loop `for SHOW_ID in` over the polled list.
+    const start = workflow.indexOf("- name: Generate Critics' Take (fast_path)");
+    const end = workflow.indexOf('- name: Audit recovery state', start);
+    assert.ok(start > -1 && end > start, 'Generate Critics\' Take step must exist and precede the recovery audit');
+    const step = workflow.slice(start, end);
+    // One dispatch carrying the whole comma-separated list (BRO-4595). The
+    // workflow's concurrency group keeps one running + one pending run, so a
+    // per-show fan-out cancels all but two of its own dispatches.
+    assert.match(step, /gh workflow run update-critic-consensus\.yml -f show="\$SHOWS"/);
+    assert.doesNotMatch(step, /for SHOW_ID in/);
+    assert.doesNotMatch(step, /-f show="\$SHOW_ID"/);
     // Must NOT call the generator script directly from this job — that would
     // write data/critic-consensus.json outside its registered single writer.
     assert.doesNotMatch(workflow, /node scripts\/generate-critic-consensus\.js/);
