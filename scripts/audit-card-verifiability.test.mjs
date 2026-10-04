@@ -353,3 +353,33 @@ test('reconcileCheckDefectsBothBuckets: stops re-fetching after a rate-limit and
   assert.deepEqual(out.vacuous.map(c => c.id), ['BRO-1', 'BRO-2', 'BRO-3'], 'fail toward reporting');
   assert.deepEqual(out.missing, [], 'an unverified vacuous card must not leak into the missing-path bucket');
 });
+
+test('reconcileCheckDefectsBothBuckets: a batch fetcher replaces per-card fetches; misses fall back to getIssue (BRO-3619)', async () => {
+  const single = [];
+  const batches = [];
+  const initial = {
+    missing: [],
+    vacuous: ['BRO-1', 'BRO-2'].map(id => ({ id, name: id, url: id, cmd: 'test -f scripts/health-check.js', kind: 'test-f-satisfied' })),
+  };
+  const corrected = (id) => ({ identifier: id, description: '## Acceptance criteria\n`npx tsc --noEmit`', comments: { nodes: [] } });
+  const out = await reconcileCheckDefectsBothBuckets(initial, {
+    getIssues: async (ids) => { batches.push(ids); return [corrected('BRO-1')]; },
+    getIssue: async (id) => { single.push(id); return corrected(id); },
+    pathExistsOnOriginMain: () => true,
+  });
+  assert.deepEqual(batches, [['BRO-1', 'BRO-2']]);
+  assert.deepEqual(single, ['BRO-2'], 'only the card the batch missed is fetched singly');
+  assert.deepEqual(out.vacuous, []);
+});
+
+test('reconcileCheckDefectsBothBuckets: a rate-limited batch keeps every card flagged without per-card fetches (BRO-3619)', async () => {
+  const single = [];
+  const initial = { missing: [], vacuous: [{ id: 'BRO-1', name: 'a', url: 'u', cmd: 'test -f scripts/health-check.js', kind: 'test-f-satisfied' }] };
+  const out = await reconcileCheckDefectsBothBuckets(initial, {
+    getIssues: async () => { const e = new Error('429'); e.rateLimited = true; throw e; },
+    getIssue: async (id) => { single.push(id); return null; },
+    pathExistsOnOriginMain: () => true,
+  });
+  assert.deepEqual(single, []);
+  assert.deepEqual(out.vacuous.map(c => c.id), ['BRO-1']);
+});

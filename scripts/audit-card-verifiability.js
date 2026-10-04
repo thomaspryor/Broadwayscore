@@ -327,7 +327,24 @@ async function reconcileCheckDefectsBothBuckets({ missing, vacuous }, opts = {})
     if (!issueCache.has(id)) issueCache.set(id, Promise.resolve().then(() => baseGetIssue(id)));
     return issueCache.get(id);
   };
-  const sharedOpts = { ...opts, getIssue, rateLimitState: opts.rateLimitState || { hit: false } };
+  const rateLimitState = opts.rateLimitState || { hit: false };
+  // BRO-3619: prefetch the whole union in batches (~25 issues per round trip)
+  // so a full-backlog sweep's ~400 flagged cards cost ~20 requests, not ~400
+  // sequential ones that each 429-retry on the fleet-shared key. Only when no
+  // single-issue getIssue was injected (tests) or a batch fetcher was. Any
+  // card the batch didn't return falls through to getIssue as before.
+  const getIssues = opts.getIssues || (opts.getIssue ? null : require('./lib/linear-client.js').getIssuesWithComments);
+  if (getIssues) {
+    try {
+      for (const issue of await getIssues(union.map(c => c.id))) {
+        if (issue && issue.identifier) issueCache.set(issue.identifier, Promise.resolve(issue));
+      }
+    } catch (err) {
+      if (err && err.rateLimited) rateLimitState.hit = true;
+      (opts.log || (() => {}))(`[audit-card-verifiability] WARN batched comment re-fetch failed (${String(err.message).slice(0, 120)}) — ${rateLimitState.hit ? 'rate-limited, keeping every flagged card' : 'falling back to one fetch per card'}`);
+    }
+  }
+  const sharedOpts = { ...opts, getIssue, rateLimitState };
   const stillMissing = await reconcileCheckDefectsWithComments(union, auditCardCheckPaths, { ...sharedOpts, originallyFlaggedHere: c => missing.includes(c) });
   const stillVacuous = await reconcileCheckDefectsWithComments(union, auditVacuousChecks, { ...sharedOpts, originallyFlaggedHere: c => vacuous.includes(c) });
   return { missing: stillMissing, vacuous: stillVacuous };

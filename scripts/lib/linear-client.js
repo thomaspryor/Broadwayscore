@@ -283,6 +283,25 @@ async function getIssue(identifier) {
   return data.issue || null;
 }
 
+// BRO-3619: batched getIssue for description+comments only — see
+// linear-dispatch.js buildIssuesWithCommentsByNumberQuery. Takes BRO-N
+// identifiers (any team prefix other than teamKey's is ignored), returns the
+// issues Linear found; callers treat a missing identifier as "not fetched".
+async function getIssuesWithComments(identifiers, { teamKey = TEAM_KEY, batchSize = 25 } = {}) {
+  const prefix = `${teamKey}-`;
+  const numbers = [...new Set(identifiers
+    .filter(id => typeof id === 'string' && id.toUpperCase().startsWith(prefix))
+    .map(id => Number(id.slice(prefix.length)))
+    .filter(Number.isInteger))];
+  const out = [];
+  for (let i = 0; i < numbers.length; i += batchSize) {
+    const chunk = numbers.slice(i, i + batchSize);
+    const data = await graphql(linearDispatch.buildIssuesWithCommentsByNumberQuery(), { teamKey, numbers: chunk, first: chunk.length });
+    out.push(...((data.issues && data.issues.nodes) || []));
+  }
+  return out;
+}
+
 // Open (non-completed, non-canceled) issues for a team, priority-agnostic
 // ordering left to the caller (linear-dispatch.js's sortIssuesByPriority) —
 // this only fetches. Defaults to TEAM_KEY so callers rarely need to pass one.
@@ -683,6 +702,7 @@ module.exports = {
   listAllIssueTitles,
   listIssues,
   getIssue,
+  getIssuesWithComments,
   listOpenIssues,
   listOpenIssuesWithDescriptions,
   searchIssues,

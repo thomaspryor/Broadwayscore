@@ -91,6 +91,26 @@ function buildIssueQuery() {
   }`;
 }
 
+// BRO-3619: buildIssueQuery's description+comments for MANY issues in one
+// round trip, by issue number within a team. audit-card-verifiability.js's
+// comment re-check pass needed one getIssue per flagged card — 436 of them on
+// the full ~1700-issue backlog, each 429-retried for 60s on the fleet-shared
+// key, far past its workflow step's timeout. Comments capped at 50 like
+// buildIssueQuery; callers keep the batch small (<=25) to stay well inside
+// Linear's per-query complexity limit.
+function buildIssuesWithCommentsByNumberQuery() {
+  return `query($teamKey: String!, $numbers: [Float!]!, $first: Int!) {
+    issues(first: $first, filter: { team: { key: { eq: $teamKey } }, number: { in: $numbers } }) {
+      nodes {
+        identifier
+        title
+        description
+        comments(first: 50, orderBy: createdAt) { nodes { body createdAt } }
+      }
+    }
+  }`;
+}
+
 // Open (non-completed, non-canceled) issues for one team, newest-updated
 // first — priority ORDER is a caller-side pure sort (sortIssuesByPriority
 // below), not baked into the query, so the same fetch can serve both
@@ -1083,6 +1103,7 @@ module.exports = {
   buildIssueQuery,
   buildOpenIssuesQuery,
   buildOpenIssuesWithDescriptionsQuery,
+  buildIssuesWithCommentsByNumberQuery,
   findOpenIssueForTerm,
   buildCommentMutation,
   sortedCommentBodies,
