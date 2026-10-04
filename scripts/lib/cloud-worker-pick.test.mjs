@@ -71,6 +71,8 @@ test('takes a machine-filed parked card only once it has sat quiet for AUTOMATIO
   assert.equal(skipReason(issue({ state: backlog, description: `PARKED: waiting on owner go-ahead\n\n${BODY}`, updatedAt: stale }), NOW), 'parked-or-backlog');
   // An owner hold added on a later PARKED line under the machine line wins.
   assert.equal(skipReason(issue({ state: backlog, description: autofix.replace('\n\n', '\nPARKED: waiting on owner go-ahead\n\n'), updatedAt: stale }), NOW), 'parked-or-backlog');
+  // A later hold line that quotes the machine marker is still a hold.
+  assert.equal(skipReason(issue({ state: backlog, description: autofix.replace('\n\n', '\nPARKED: owner hold, leave Auto-filed by digest-autofix cards alone\n\n'), updatedAt: stale }), NOW), 'parked-or-backlog');
   // A later technical PARKED line does not block it.
   assert.equal(skipReason(issue({ state: backlog, description: autofix.replace('\n\n', '\nPARKED: needs a worktree\n\n'), updatedAt: stale }), NOW), null);
   // Exact boundary: quiet for exactly AUTOMATION_PARK_STALE_MS counts.

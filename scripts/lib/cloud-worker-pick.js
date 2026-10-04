@@ -119,8 +119,10 @@ function isStaleAutomationParked(issue, nowMs) {
   if (!hd.isAutomationParked(notes)) return false;
   // isAutomationParked reads only the leading machine line; a hold a person
   // added on a later PARKED line still keeps the card parked.
+  // Only the first PARKED line is the machine's; a later line that merely
+  // quotes the marker is still a person's hold.
   const extraHold = [...notes.matchAll(/^\s*PARKED\s*:(.*)$/gim)]
-    .some((m) => !MACHINE_PARK_LINE_RE.test(m[1]) && hd.OWNER_HOLD_PARK_RE.test(m[1]));
+    .some((m, i) => !(i === 0 && MACHINE_PARK_LINE_RE.test(m[1])) && hd.OWNER_HOLD_PARK_RE.test(m[1]));
   if (extraHold) return false;
   const updatedMs = Date.parse(issue.updatedAt);
   return Number.isFinite(updatedMs) && nowMs - updatedMs >= AUTOMATION_PARK_STALE_MS;
