@@ -17,8 +17,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
-const { isLondonMarket, isBroadwayCategory } = require('./lib/venue-classification');
+const { calculateCombinedScore, getDesignation, isBroadwayComMarket } = require('./lib/audience-weighting');
+const { isBroadwayCategory } = require('./lib/venue-classification');
 const { fetchPage } = require('./lib/scraper');
 const { loadAudienceBuzz, saveAudienceBuzz } = require('./lib/audience-buzz-write-guard');
 const {
@@ -271,7 +271,7 @@ function matchBroadwayComToShows(bcShows, ourShows) {
         if (isBroadway) return isBroadwayCategory(s);
         return s.category === 'off-broadway';
       });
-      const eligible = sameCategory.length > 0 ? sameCategory : started.filter(s => !isLondonMarket(s.category));
+      const eligible = sameCategory.length > 0 ? sameCategory : started.filter(s => isBroadwayComMarket(s.category));
       const best = eligible.sort((a, b) => (b.openingDate || '').localeCompare(a.openingDate || ''))[0];
       if (best) {
         matches.push({ bc, show: best, confidence: 'exact' });
@@ -302,7 +302,7 @@ function matchBroadwayComToShows(bcShows, ourShows) {
         if (isBroadway) return isBroadwayCategory(s);
         return s.category === 'off-broadway';
       });
-      const eligible = sameCategory.length > 0 ? sameCategory : prefixCandidates.filter(s => !isLondonMarket(s.category));
+      const eligible = sameCategory.length > 0 ? sameCategory : prefixCandidates.filter(s => isBroadwayComMarket(s.category));
       const best = eligible.sort((a, b) => (b.openingDate || '').localeCompare(a.openingDate || ''))[0];
       if (best) {
         matches.push({ bc, show: best, confidence: 'prefix' });
@@ -407,7 +407,9 @@ async function main() {
     let sitemapMatched = 0;
     for (const show of showsData.shows) {
       if (matchedIds.has(show.id)) continue; // Already matched via listing
-      if (isLondonMarket(show.category)) continue; // Broadway.com is US only
+      // Broadway.com lists Broadway shows only: a same-titled tour, regional or
+      // London entry would get the Broadway production's page (BRO-4601).
+      if (!isBroadwayComMarket(show.category)) continue;
 
       // Generate candidate slugs from show title
       const titleSlug = show.title.toLowerCase()
@@ -452,10 +454,10 @@ async function main() {
       if (listed.length > 0) { toProcess.push(...listed); continue; }
       // Not in listing/sitemap: try constructing the URL from the title directly
       const show = showsData.shows.find(s => s.id === wanted || s.slug === wanted);
-      if (show && isLondonMarket(show.category)) {
-        // Broadway.com is US only: a title-built URL for a West End id would
-        // pick up the Broadway production's rating.
-        console.log(`Show ${wanted} is a London-market show — skipping (Broadway.com is US only)`);
+      if (show && !isBroadwayComMarket(show.category)) {
+        // Broadway.com lists Broadway shows only: a title-built URL for a West
+        // End, tour or regional id would pick up the Broadway production's rating.
+        console.log(`Show ${wanted} is a ${show.category} show — skipping (Broadway.com lists Broadway only)`);
       } else if (show) {
         const titleSlug = show.title.toLowerCase()
           .replace(/['']/g, '')
@@ -473,12 +475,13 @@ async function main() {
     }
     console.log(`Filtered to show${showIdFilter.length > 1 ? 's' : ''}: ${showIdFilter.join(', ')} (${toProcess.length} matches)`);
   }
-  // Broadway.com is US only. Listing matches can still land on a London id
-  // (4 West End shows carried the Broadway production's rating, 2026-09-29).
-  const londonDropped = toProcess.filter(m => isLondonMarket(m.show.category));
-  if (londonDropped.length > 0) {
-    console.log(`Dropping ${londonDropped.length} London-market match(es): ${londonDropped.map(m => m.show.id).join(', ')}`);
-    toProcess = toProcess.filter(m => !isLondonMarket(m.show.category));
+  // Broadway.com lists Broadway only. Listing matches can still land on a
+  // London, tour or regional id (4 West End shows, 2026-09-29; 6 tours and
+  // 9 regionals, BRO-4601, carried the Broadway production's rating).
+  const wrongMarket = toProcess.filter(m => !isBroadwayComMarket(m.show.category));
+  if (wrongMarket.length > 0) {
+    console.log(`Dropping ${wrongMarket.length} non-Broadway match(es): ${wrongMarket.map(m => m.show.id).join(', ')}`);
+    toProcess = toProcess.filter(m => isBroadwayComMarket(m.show.category));
   }
   if (showLimit) {
     toProcess = toProcess.slice(0, showLimit);
