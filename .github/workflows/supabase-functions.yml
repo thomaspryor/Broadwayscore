@@ -58,6 +58,7 @@ jobs:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: node scripts/verify-supabase-schema.js
+      # paid-provider-ok: this step only copies the key into Supabase secrets; it never calls the API.
       - name: Push the Anthropic key theatr-screenshot-import reads
         # Source of truth stays in GitHub: a dedicated ANTHROPIC_API_KEY_THEATR
         # (own workspace + spend limit) when the owner adds one, else the shared
