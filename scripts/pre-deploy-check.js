@@ -241,7 +241,7 @@ try {
     const vercelRaw = fs.readFileSync(vercelPath, 'utf8');
     const vercelCfg = JSON.parse(vercelRaw);
     const slugMap = fs.existsSync(slugMapPath) ? JSON.parse(fs.readFileSync(slugMapPath, 'utf8')) : {};
-    const dead = findDeadShowRedirects(vercelCfg.redirects, new Set(shows.map(s => s.slug)), slugMap);
+    const dead = findDeadShowRedirects(vercelCfg.redirects, new Set(shows.map(s => s.slug)), slugMap, new Set(shows.map(s => s.id)));
     if (dead.length > 0) {
       const deadSet = new Set(dead);
       vercelCfg.redirects = vercelCfg.redirects.filter(r => !deadSet.has(r));

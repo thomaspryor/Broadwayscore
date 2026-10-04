@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const { findDeadShowRedirects } = require('./dead-show-redirects.js');
 
-const live = new Set(['the-choir-of-man-marble-arch-off-west-end', 'the-music-man-2022']);
+const live = new Set(['the-choir-of-man-marble-arch-off-west-end', 'the-choir-of-man-off-west-end', 'the-music-man-2022']);
 const map = { 'the-music-man': '~the-music-man-2022', 'the-choir-of-man-off-west-end-2026': 'the-choir-of-man-off-west-end' };
 
 test('flags only /show/ redirects whose destination is neither live nor a map key', () => {
@@ -18,4 +18,15 @@ test('flags only /show/ redirects whose destination is neither live nor a map ke
     { source: '/director/:path*', destination: '/creative/:path*' }, // not a show route
   ];
   assert.deepEqual(findDeadShowRedirects(redirects, live, map).map(r => r.source), ['/show/the-choir-of-man']);
+});
+
+test('map chains must end at a live slug; cycles and retired ends are dead; ids are alive', () => {
+  const m = { a: 'b', b: '~the-music-man-2022', c: 'retired-slug', d: 'e', e: 'd' };
+  const redirects = [
+    { source: '/show/1', destination: '/show/a' },
+    { source: '/show/2', destination: '/show/c' },
+    { source: '/show/3', destination: '/show/d' },
+    { source: '/show/4', destination: '/show/new-show-2026' },
+  ];
+  assert.deepEqual(findDeadShowRedirects(redirects, live, m, new Set(['new-show-2026'])).map(r => r.source), ['/show/2', '/show/3']);
 });

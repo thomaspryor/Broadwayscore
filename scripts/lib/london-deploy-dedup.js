@@ -15,9 +15,13 @@
  */
 const { normalizeVenueName } = require('./venue-classification');
 
+// Start year from dates, else the id's trailing -YYYY, so a row with no dates
+// is not a wildcard that matches every run at that venue.
 function startYear(show) {
   const d = show.openingDate || show.previewsStartDate;
-  return d ? String(d).slice(0, 4) : null;
+  if (d) return String(d).slice(0, 4);
+  const m = String(show.id || '').match(/-(\d{4})$/);
+  return m ? m[1] : null;
 }
 
 function linksTo(a, b) {

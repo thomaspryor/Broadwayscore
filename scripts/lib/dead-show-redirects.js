@@ -4,22 +4,33 @@
  * sends the visitor straight into a 404 (8 found 2026-10-04, BRO-275 — e.g.
  * /show/the-choir-of-man → a slug that no longer existed).
  *
- * A destination is alive when it is a live show slug or a key in the
- * generated slug-redirect map (which forwards it on). Parameterised
+ * A destination is alive when it is a live show slug/id, or a key in the
+ * generated slug-redirect map whose chain ends at a live slug. Parameterised
  * destinations (":slug") are left alone.
  */
-function isDeadShowRedirect(redirect, liveSlugs, slugRedirectMap) {
+function isDeadShowRedirect(redirect, liveSlugs, slugRedirectMap, liveIds) {
   const dest = redirect && redirect.destination;
   if (typeof dest !== 'string' || !dest.startsWith('/show/')) return false;
-  const target = dest.slice('/show/'.length).replace(/\/$/, '');
+  let target = dest.slice('/show/'.length).replace(/\/$/, '');
   if (!target || target.includes(':') || target.includes('/') || target.includes('(')) return false;
-  if (liveSlugs.has(target)) return false;
-  if (slugRedirectMap && Object.prototype.hasOwnProperty.call(slugRedirectMap, target.toLowerCase())) return false;
-  return true;
+  // Follow the generated map (A → B → C) to a live slug, guarding cycles. A
+  // key whose chain ends at a retired slug is still dead. Show ids count as
+  // alive because the prebuild regenerates an id → slug entry for every row,
+  // even if the committed map predates the row.
+  const seen = new Set();
+  while (true) {
+    if (liveSlugs.has(target) || (liveIds && liveIds.has(target))) return false;
+    if (seen.has(target)) return true;
+    seen.add(target);
+    const next = slugRedirectMap && Object.prototype.hasOwnProperty.call(slugRedirectMap, target.toLowerCase())
+      ? slugRedirectMap[target.toLowerCase()] : null;
+    if (typeof next !== 'string' || !next) return true;
+    target = next.replace(/^~/, '');
+  }
 }
 
-function findDeadShowRedirects(redirects, liveSlugs, slugRedirectMap) {
-  return (redirects || []).filter(r => isDeadShowRedirect(r, liveSlugs, slugRedirectMap));
+function findDeadShowRedirects(redirects, liveSlugs, slugRedirectMap, liveIds) {
+  return (redirects || []).filter(r => isDeadShowRedirect(r, liveSlugs, slugRedirectMap, liveIds));
 }
 
 module.exports = { isDeadShowRedirect, findDeadShowRedirects };

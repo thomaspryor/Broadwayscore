@@ -56,3 +56,9 @@ test('both sides reviewed: never removed', () => {
   const b = row('w-2', 'W', 'west-end', 'Apollo Theatre', 'closed', '2026-05-01');
   assert.deepEqual([...findLondonDuplicatesToRemove([a, b], { 'w-1': 2, 'w-2': 1 })], []);
 });
+
+test('a dateless row is not a wildcard: its id year must agree', () => {
+  const a = row('v-off-west-end-2025', 'V', 'off-west-end', 'Globe Theatre', 'closed', '2025-06-01');
+  const b = row('v-off-west-end-2026', 'V', 'off-west-end', 'Globe Theatre', 'announced', null);
+  assert.equal(isSameLondonProduction(a, b), false);
+});
