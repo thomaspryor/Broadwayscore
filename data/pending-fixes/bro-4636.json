@@ -1,6 +1,6 @@
 {
   "issueNumber": "bro-4636",
-  "planId": "eaf73325-2de1-4026-b981-fac86e33f9f6",
+  "planId": "ffc76cec-eaea-4d65-b7de-0fe0ded2fa42",
   "status": "pending",
   "submitter": {
     "name": null,
@@ -13,7 +13,7 @@
       "Boop: Variety and Deadline (Jun 2025) reported up to $26M; a July 2025 SEC Form D/A raised the maximum to $29M. The source line now says both.",
       "Cats: The Jellicle Ball: The Hollywood Reporter: 'capitalized for up to $18 million, according to securities filings'; transferred from PAC NYC to the Broadhurst, closed Aug 8, 2026 after winning three Tonys.",
       "Oedipus: final performance Feb 8, 2026 with a Studio 54 house record of $1,212,949 (Playbill). The $6.5M figure came from an AI research pass, not a cited filing.",
-      "Chess: closed early Jun 21, 2026 (Variety); producers said it will not recoup."
+      "Chess: closed early Jun 21, 2026 (Variety); producers said it will not recoup (Deadline, May 26, 2026). $15M per SEC Form D/A (Chess Champion LLC, Jan 5, 2026)."
     ],
     "riskLevel": "low",
     "actions": [
@@ -309,7 +309,7 @@
         "showId": "chess",
         "field": "recoupedSource",
         "oldValue": "Inferred: closed 31 days ago, no trade-press recoupment found",
-        "newValue": "Variety (2026): producers said the production will not recoup.",
+        "newValue": "Deadline (May 26, 2026): producers said the production will not recoup the investment.",
         "description": "chess: recoupedSource (stale note; inferred source line)"
       },
       {
@@ -319,7 +319,7 @@
         "showId": "chess",
         "field": "notes",
         "oldValue": "Revival with Lea Michele and Aaron Tveit. Selling out regularly at ~$1.3-1.8M/week gross. Break-even ~$1.1M. Qualified for $3M NY theater tax credit (first preview Oct 15, 2025, just before Oct 20 deadline). At ~$500K weekly profit, could recoup by closing (June 14, 2026). Original 1988 production was $6M.",
-        "newValue": "Revival with Lea Michele and Aaron Tveit. Closed early on Jun 21, 2026, timed to Lea Michele's exit and about three months ahead of plan; producers said it will not recoup (Variety). Capitalized at $15M per an SEC Form D/A. Qualified for the NY State theater tax credit.",
+        "newValue": "Revival with Lea Michele and Aaron Tveit. Closed early on Jun 21, 2026, timed to Lea Michele's exit and about three months ahead of plan (Variety); producers said it will not recoup (Deadline). Capitalized at $15M per an SEC Form D/A. Qualified for the NY State theater tax credit.",
         "description": "chess: notes (stale note; inferred source line)"
       },
       {
@@ -334,6 +334,16 @@
             "type": "trade",
             "url": "https://variety.com/2026/legit/news/chess-broadway-close-early-lea-michele-1236759038/",
             "date": null
+          },
+          {
+            "type": "trade",
+            "url": "https://deadline.com/2026/05/chess-closing-broadway-lea-michele-1236921116/",
+            "date": "2026-05-26"
+          },
+          {
+            "type": "sec",
+            "url": "https://www.sec.gov/Archives/edgar/data/2074648/000207464826000001/xslFormDX01/primary_doc.xml",
+            "date": "2026-01-05"
           }
         ],
         "description": "chess: sources (stale note; inferred source line)"
