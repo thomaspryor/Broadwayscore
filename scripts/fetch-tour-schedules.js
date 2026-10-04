@@ -22,6 +22,7 @@
  * could not be read, so a dead source shows up as a failed run.
  */
 
+// venue-write-guard-ok: writes data/tour-schedules.json stop objects (city/venue/dates of a tour engagement), never a shows.json venue.
 const fs = require('fs');
 const path = require('path');
 const { hasHelpFlag } = require('./lib/cli-help.js');

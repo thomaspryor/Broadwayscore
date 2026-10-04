@@ -36,7 +36,9 @@ function fetchText(url, redirects = 3) {
  * @returns {Promise<{url: string|null, html: string}>}
  */
 async function fetchSchedule(tour, fetchPage = null) {
-  for (const slug of scheduleSlugs(tour)) {
+  // scheduleSlugs returns at most 2 (the stored slug, or title and
+  // title-the-musical); the slice states that bound for audit-run-budget-coverage.
+  for (const slug of scheduleSlugs(tour).slice(0, 2)) {
     const url = `https://tourstoyou.org/shows/${slug}/`;
     let html = '';
     if (fetchPage) {
