@@ -1021,8 +1021,16 @@ async function routeAlert(opts) {
     // this is the field the resurface decision actually depends on).
     // notifyCount/lastSeen/lastNotifiedAt still advance normally below.
   } else if (effectiveDisposition === 'human') {
+    // effectiveDisposition 'human' means the key already passed the owner's
+    // page-worthy allowlist, so deliver it even if the caller tagged it
+    // 'warning'/'info'. sendEmailAlert's actionable-only policy drops those
+    // severities, and two allowlisted keys did exactly that (BRO-4603):
+    // 'broadcast:deadline-draft:' ("check these before you press Send") and
+    // 'broadcast:owner-notification-failed:' were logged and never emailed.
+    // Same two values as discord-notify.js EMAILABLE_SEVERITIES.
+    const deliverySeverity = severity === 'critical' || severity === 'error' ? severity : 'error';
     const delivered = await sendAlert({
-      title, description, severity, fields, url, email: true,
+      title, description, severity: deliverySeverity, fields, url, email: true,
       idempotencyKey: alertIdempotencyKey(conditionKey, cooldownHours, Date.now(),
         existing && existing.status === 'resolved' ? existing.resolvedAt || '' : ''),
     });

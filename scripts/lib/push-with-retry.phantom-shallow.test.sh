@@ -102,8 +102,10 @@ fi
 
 if grep -qx "$PHANTOM" "$SHALLOW_FILE" 2>/dev/null; then
   echo "FAIL[5]: phantom SHA still listed in .git/shallow after the push"; fail=1
+elif [ -e "$SHALLOW_FILE.lock" ]; then
+  echo "FAIL[5]: the heal left shallow.lock behind — every later shallow update in this repo would fail"; fail=1
 else
-  echo "PASS[5]: phantom SHA removed from .git/shallow"
+  echo "PASS[5]: phantom SHA removed from .git/shallow, no shallow.lock left behind"
 fi
 
 if [ "$code" -ne 0 ]; then

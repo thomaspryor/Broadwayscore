@@ -87,6 +87,50 @@ jobs:
               cooldownHours: 20,
             }).catch(e => console.error('Self-heal notice failed:', e.message));
 
+      # BRO-4603: the owner is emailed ONLY when signed-in users are hurt: the
+      # round-trip itself failed AND the self-heal could not run/recover or a
+      # failing check is urgent (sign-in, rating save/read-back, privacy).
+      # scripts/test-ugc-roundtrip.mjs writes `urgent`/`failed_checks`; a
+      # missing output counts as urgent. Routed (not notify-failure) so it
+      # notifies once per open incident: a time cooldown counted earlier
+      # non-urgent red runs as "already alerted" and could swallow a real one.
+      # The Oct 1-3 2026 emails were all one hardening check (GET refusal),
+      # now NOT_URGENT; such failures still fail this run and reach the digest.
+      - name: Page owner — signed-in users affected
+        if: >-
+          always() &&
+          (steps.rt1.outcome == 'failure' || steps.rt1.outcome == 'cancelled') &&
+          (steps.heal.outcome != 'success' || (steps.rt2.outcome != 'success' && steps.rt2.outputs.urgent != 'false'))
+        uses: actions/github-script@v7
+        env:
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          OWNER_EMAIL: ${{ secrets.OWNER_EMAIL }}
+          FAILED_CHECKS: ${{ steps.rt2.outputs.failed_checks || steps.rt1.outputs.failed_checks }}
+          HEAL_OUTCOME: ${{ steps.heal.outcome }}
+        with:
+          script: |
+            const { routeAlert } = require('./scripts/lib/owner-alert-router.js');
+            const runUrl = `https://github.com/${context.repo.owner}/${context.repo.repo}/actions/runs/${context.runId}`;
+            const failed = process.env.FAILED_CHECKS || (process.env.HEAL_OUTCOME !== 'success' ? 'the automatic database restore did not work' : 'see the run log');
+            const r = await routeAlert({
+              conditionKey: 'ugc-roundtrip:users-affected',
+              title: 'Urgent: signed-in users may be unable to save, or may see data that is not theirs',
+              description: `A live check of sign-in, saving or privacy failed and the automatic fix did not work. Failing checks: ${failed}. What to do: open a Claude Code session and paste this email. If a failing check mentions RLS, anonymous or another user, also ask it to switch sign-in off until it is fixed.`,
+              severity: 'critical',
+              disposition: 'human',
+              cooldownHours: 12,
+              url: runUrl,
+            }).catch(e => { console.error('::warning::users-affected alert failed: ' + e.message); return null; });
+            if (r && r.action !== 'human') console.error(`::warning::users-affected alert routed as '${r.action}', not an email — check 'ugc-roundtrip:users-affected' in scripts/lib/page-worthy-alerts.js`);
+
+      - name: Resolve users-affected incident
+        if: always() && (steps.rt1.outcome == 'success' || steps.rt2.outcome == 'success')
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const { resolveCondition } = require('./scripts/lib/owner-alert-router.js');
+            if (resolveCondition('ugc-roundtrip:users-affected', { reason: 'round-trip green' })) console.log('Resolved ugc-roundtrip:users-affected');
+
       - name: Fail job if not recovered
         if: steps.rt1.outcome == 'failure' && steps.rt2.outcome != 'success'
         run: |
@@ -122,20 +166,12 @@ jobs:
         # BRO-3707: a hang hitting the job's own timeout-minutes: 15 reports
         # conclusion "cancelled", not "failure" — a bare failure() here would
         # silently drop this critical alert.
-        #
-        # BRO-4603: email only when signed-in users are actually hurt — the
-        # round-trip itself failed (not e.g. the alert-state commit) AND either
-        # the self-heal could not run/recover or a failing check is urgent
-        # (sign-in, saving, privacy). scripts/test-ugc-roundtrip.mjs writes
-        # `urgent`/`failed_checks`; a missing output counts as urgent. The
-        # Oct 1-3 2026 emails were all one hardening check (GET refusal) that is
-        # now NOT_URGENT; such failures still fail this run and reach the digest.
+        # BRO-4603: any red run (e.g. the alert-state commit) reaches the digest;
+        # the owner page for users being affected is the routed step above.
         if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Signed-in users affected: UGC round-trip failed'
-          description: 'Sign-in, saving, or privacy checks for signed-in users failed against the live database, and the automatic restore did not fix it. Failing checks: ${{ steps.rt2.outputs.failed_checks || steps.rt1.outputs.failed_checks || ''see run log'' }}. If a check mentions RLS, anonymous or another user, someone may be able to see data that is not theirs.'
-          severity: 'critical'
-          email: ${{ (steps.rt1.outcome == 'failure' || steps.rt1.outcome == 'cancelled') && (steps.heal.outcome != 'success' || (steps.rt2.outcome != 'success' && steps.rt2.outputs.urgent != 'false')) && 'true' || 'false' }}
+          title: 'UGC Auth Round-trip Failed'
+          severity: 'warning'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}

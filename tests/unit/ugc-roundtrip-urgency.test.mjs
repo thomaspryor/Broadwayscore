@@ -13,7 +13,12 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import path from 'node:path';
+import { createRequire } from 'node:module';
 import { NOT_URGENT, summarizeFailures, githubOutputLines } from '../../scripts/lib/ugc-roundtrip-urgency.mjs';
+
+const require = createRequire(import.meta.url);
+const yaml = require('js-yaml');
+const { isPageWorthy } = require('../../scripts/lib/page-worthy-alerts.js');
 
 const REPO_ROOT = path.resolve(path.dirname(new URL(import.meta.url).pathname), '../..');
 const CHECK_FILES = [
@@ -76,7 +81,25 @@ test('the 2026-10-01 incident check is NOT urgent (it paged 5 times for a harden
 });
 
 test('no sign-in, saving or privacy check is marked NOT_URGENT', () => {
-  const MUST_STAY_URGENT = /^sign-in:|^rating: (saves|stored value|owner reads it back)|\bRLS\b|anonymous cannot|another user cannot|hidden|stays private|is not listed|stop sharing|old link dies|allowed fields|no ids or user|no note text|off by default/i;
+  const MUST_STAY_URGENT = /^sign-in:|^rating: (saves|stored value|owner reads it back|.*reads? back)|\bRLS\b|anonymous cannot|another user cannot|hidden|stays private|is not listed|stop sharing|old link dies|allowed fields|no ids or user|no note text|off by default/i;
   const offenders = scanChecks().filter((c) => c.notUrgent && MUST_STAY_URGENT.test(c.name)).map((c) => `${c.file}: ${c.name}`);
   assert.deepEqual(offenders, [], 'These checks protect sign-in, saving or privacy and must page when they fail — remove NOT_URGENT');
+});
+
+test('the workflow pages through the routed, page-worthy users-affected key, gated on urgency', () => {
+  const wf = yaml.load(fs.readFileSync(path.join(REPO_ROOT, '.github/workflows/test-ugc-roundtrip.yml'), 'utf8'));
+  const steps = wf.jobs.roundtrip.steps;
+  const page = steps.find((s) => String(s.with?.script || '').includes("'ugc-roundtrip:users-affected'") && /routeAlert/.test(s.with.script));
+  assert.ok(page, 'no routeAlert step for ugc-roundtrip:users-affected');
+  assert.equal(isPageWorthy('ugc-roundtrip:users-affected'), true, 'key must be on the page-worthy allowlist or the router downgrades it to the digest');
+  assert.match(page.if, /always\(\)/, 'must run after a failed rt2 step');
+  assert.match(page.if, /steps\.rt2\.outputs\.urgent != 'false'/);
+  assert.match(page.if, /steps\.rt1\.outcome == 'failure'/, 'a red alert-state commit with a green round-trip must not page');
+  const resolve = steps.find((s) => /resolveCondition\('ugc-roundtrip:users-affected'/.test(String(s.with?.script || '')));
+  assert.ok(resolve, 'the incident must resolve on the next green round-trip, or a later outage is deduped away');
+  const idx = (s) => steps.indexOf(s);
+  const commit = steps.find((s) => s.name === 'Commit alert state');
+  assert.ok(idx(page) < idx(commit) && idx(resolve) < idx(commit), 'ledger writes must precede the alert-state commit');
+  const notify = steps.find((s) => s.uses === './.github/actions/notify-failure');
+  assert.notEqual(notify.with.severity, 'critical', 'generic red runs go to the digest; the routed step is the only page');
 });

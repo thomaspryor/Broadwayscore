@@ -9,11 +9,13 @@
  * urgent and they must act.
  *
  * Every check is urgent unless its call site passes NOT_URGENT, so a new check
- * pages by default and only a deliberate opt-out goes quiet. Opt out for checks
- * where a failure leaves users' data saved and private: input validation,
- * token format, GET-vs-POST hardening, owner convenience actions. Never opt out
- * a sign-in, save/read-back, or visibility (RLS / anonymous / another user)
- * check. Non-urgent failures still fail the workflow and reach the digest.
+ * pages by default and only a deliberate opt-out goes quiet. Urgent means a
+ * signed-in user cannot sign in or save/read back a rating, or someone can see
+ * or change data that is not theirs. Opt out everything else: watchlist/list
+ * features, owner edit/delete/reset actions, input validation, token format,
+ * GET-vs-POST hardening. tests/unit/ugc-roundtrip-urgency.test.mjs refuses an
+ * opt-out on a sign-in, rating save/read-back or visibility check. Non-urgent
+ * failures still fail the workflow and reach the digest.
  */
 
 export const NOT_URGENT = Object.freeze({ urgent: false });
