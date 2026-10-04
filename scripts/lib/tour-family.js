@@ -101,7 +101,7 @@ function runningTourFor(show, shows, now = new Date()) {
 /**
  * What a tour borrows from its Broadway parent when it has nothing of its own
  * (BRO-4262): the parent's archived thumbnail and poster (key art is shared
- * across a show's productions) and its synopsis (same story). Never the hero:
+ * across a show's productions), its synopsis (same story) and its runtime. Never the hero:
  * that is usually a Broadway cast photo. Only local archived image paths are
  * copied, so a parent's unverified remote URL never spreads.
  * @returns {object|null} fields to set on the tour, or null when nothing is missing
@@ -118,6 +118,9 @@ function tourInheritance(tour, parent) {
   }
   if (Object.keys(images).length) patch.images = { hero: own.hero || null, ...own, ...images };
   if (!tour.synopsis && parent.synopsis) patch.synopsis = parent.synopsis;
+  // Same production on the road, same length: a tour page showed an empty
+  // Runtime for 20 of 21 tours (BRO-4601).
+  if (!tour.runtime && parent.runtime) patch.runtime = parent.runtime;
   return Object.keys(patch).length ? patch : null;
 }
 

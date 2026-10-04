@@ -28,6 +28,7 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { tourAutomationMode } = require('./lib/tour-automation-mode');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { decideTourDates, scheduleSlugs, parseTourSchedule } = require('./lib/tour-schedule');
+const { fetchText, fetchSchedule } = require('./lib/tours-to-you');
 const { writeClosingDate } = require('./lib/closing-date-guard');
 const { createShowsWriteGuard } = require('./lib/shows-write-guard');
 const { applyTourInheritance } = require('./lib/tour-family');
@@ -75,40 +76,6 @@ async function fetchWikiText(title) {
   return '';
 }
 
-/** Plain GET. Tours To You is a public WordPress site with no bot wall. */
-function fetchText(url, redirects = 3) {
-  return new Promise((resolve, reject) => {
-    https.get(url, { headers: { 'User-Agent': USER_AGENT }, timeout: 20000 }, (res) => {
-      // A renamed show page answers 301 (tourstoyou.org/shows/six/).
-      if ([301, 302, 307, 308].includes(res.statusCode) && res.headers.location && redirects > 0) {
-        res.resume();
-        return resolve(fetchText(new URL(res.headers.location, url).toString(), redirects - 1));
-      }
-      if (res.statusCode !== 200) { res.resume(); return reject(new Error(`HTTP ${res.statusCode}`)); }
-      let body = '';
-      res.on('data', (c) => { body += c; });
-      res.on('end', () => resolve(body));
-    }).on('error', reject).on('timeout', function () { this.destroy(new Error('timeout')); });
-  });
-}
-
-async function fetchSchedule(tour, fetchPage) {
-  for (const slug of scheduleSlugs(tour)) {
-    const url = `https://tourstoyou.org/shows/${slug}/`;
-    let html = '';
-    try {
-      const res = await fetchPage(url);
-      html = typeof res === 'string' ? res : (res && (res.html || res.content)) || '';
-    } catch (e) {
-      console.log(`  fetchPage failed for ${url}: ${e.message}; trying a plain GET`);
-    }
-    if (!parseTourSchedule(html).length) {
-      try { html = await fetchText(url); } catch (e) { console.log(`  plain GET failed for ${url}: ${e.message}`); }
-    }
-    if (parseTourSchedule(html).length) return { url, html };
-  }
-  return { url: null, html: '' };
-}
 
 async function main() {
   const argv = process.argv.slice(2);

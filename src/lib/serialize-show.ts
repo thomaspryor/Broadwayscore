@@ -1,5 +1,6 @@
 import { getAudienceBuzz, hasEnoughAudienceReviews, getAudienceGrade } from '@/lib/data-audience';
 import type { ShowCardShow } from '@/components/show-cards/types';
+import { getTourNowNextForShow } from '@/lib/data-tour-schedule';
 
 /**
  * Serialize a show for client components (ShowListCard, MiniShowCard).
@@ -65,6 +66,7 @@ export function serializeShowForClient(
     isRevival: show.isRevival ?? undefined,
     season: show.season ?? undefined,
     reviewYearNote: show.reviewYearNote ?? undefined,
+    tourNowNext: show.category === 'tour' ? getTourNowNextForShow(show.id) : undefined,
     images: show.images,
     criticScore: show.criticScore
       ? { score: show.criticScore.score, reviewCount: show.criticScore.reviewCount, tier1Count: show.criticScore.tier1Count, tier2Count: show.criticScore.tier2Count }
