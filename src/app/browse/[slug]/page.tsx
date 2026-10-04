@@ -273,11 +273,13 @@ export default function BrowsePage({ params }: { params: { slug: string } }) {
 
         {/* How This Works */}
         <HowThisWorks className="mt-8">
-          <p>
-            Shows are ranked by CriticScore, a weighted average of reviews from dozens of outlets.
-            Top-tier publications (NYT, Vulture, Variety) carry more weight than smaller outlets.
-            Toggle to Audience mode to see letter grades based on audience sentiment from multiple sources.
-          </p>
+          {config.howItWorks ? <p>{config.howItWorks}</p> : (
+            <p>
+              Shows are ranked by CriticScore, a weighted average of reviews from dozens of outlets.
+              Top-tier publications (NYT, Vulture, Variety) carry more weight than smaller outlets.
+              Toggle to Audience mode to see letter grades based on audience sentiment from multiple sources.
+            </p>
+          )}
         </HowThisWorks>
       </div>
     </>

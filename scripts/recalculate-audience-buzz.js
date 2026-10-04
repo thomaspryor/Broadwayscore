@@ -15,9 +15,8 @@
 
 const fs = require('fs');
 const path = require('path');
-const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
+const { calculateCombinedScore, getDesignation, isBroadwayComMarket, isRedditMarket } = require('./lib/audience-weighting');
 const { createAudienceBuzzWriteGuard } = require('./lib/audience-buzz-write-guard');
-const { isLondonMarket } = require('./lib/venue-classification');
 
 // Resolve data dir: --data-dir flag > DATA_DIR env > default
 const cliDataDir = process.argv.find(a => a.startsWith('--data-dir='));
@@ -55,15 +54,22 @@ for (const [showId, show] of Object.entries(audienceBuzz.shows)) {
   const oldScore = show.combinedScore;
   const showData = showMap[showId];
   const showInfo = showData ? { closingDate: showData.closingDate, status: showData.status, category: showData.category } : undefined;
-  // Broadway.com is US only; a London show's entry is the Broadway production's.
-  let droppedBroadwayCom = false;
-  if (show.sources?.broadwayCom && showData && isLondonMarket(showData.category)) {
-    console.log(`${showId}: dropping Broadway.com source (London show, score ${show.sources.broadwayCom.score})`);
+  // Broadway.com is Broadway only, and a tour shares its parent's Reddit
+  // title search: on the wrong market either source is the Broadway
+  // production's data (isBroadwayComMarket / isRedditMarket).
+  let droppedSource = false;
+  if (show.sources?.broadwayCom && showData && !isBroadwayComMarket(showData.category)) {
+    console.log(`${showId}: dropping Broadway.com source (${showData.category} show, score ${show.sources.broadwayCom.score})`);
     delete show.sources.broadwayCom;
-    droppedBroadwayCom = true;
+    droppedSource = true;
+  }
+  if (show.sources?.reddit && showData && !isRedditMarket(showData.category)) {
+    console.log(`${showId}: dropping Reddit source (${showData.category} show, score ${show.sources.reddit.score})`);
+    delete show.sources.reddit;
+    droppedSource = true;
   }
   const { score, weights } = calculateCombinedScore(show.sources, showInfo);
-  if (droppedBroadwayCom) {
+  if (droppedSource) {
     updated++;
     // It was the only qualifying source: don't leave its grade behind.
     if (score === null) { delete show.combinedScore; delete show.designation; delete show.weights; }

@@ -75,6 +75,8 @@ const MANIFEST_FILES = MANIFESTS.map((m) => path.join(ROOT, m));
 const EXEMPT_NEVER_CI = {
   // BRO-4491 acceptance-command shim; re-imports the CI-registered tests/unit copy.
   'ccusage-baseline.test.mjs': 'BRO-4491',
+  // BRO-3137 live-data acceptance check (data-state, would flap in CI).
+  'opening-night-express.test.mjs': 'BRO-3137',
   // Deferred-effect acceptance probe (task #695, card 3ae637c5-416f-81bb):
   // asserts a 7-day provider-spend streak, EXPECTED to fail until the ledger
   // accumulates history. Run by autonomous-acceptance-recheck.js at its

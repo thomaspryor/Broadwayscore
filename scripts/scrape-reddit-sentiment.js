@@ -40,7 +40,7 @@ const { isRoundupOrMegathread, buildAudienceSearchQueries, isRefreshStaleCandida
 // ONE post can contribute so no thread can dominate a show's sentiment sample.
 const MAX_COMMENTS_PER_POST = 40;
 const { classifyAllComments } = require('./lib/buzz-classifier');
-const { calculateCombinedScore, getDesignation } = require('./lib/audience-weighting');
+const { calculateCombinedScore, getDesignation, isRedditMarket } = require('./lib/audience-weighting');
 const { isLondonMarket } = require('./lib/venue-classification');
 const {
   loadAudienceBuzz,
@@ -88,6 +88,9 @@ const SUBREDDIT_WE = 'TheWestEnd';
 // eligibility threshold in scripts/lib/audience-weighting.js.
 const SUBREDDITS_OPERA = ['broadway', 'opera', 'classicalmusic'];
 function getSubreddits(show) {
+  // A national tour shares its Broadway parent's title, so an r/Broadway
+  // title search returns the Broadway run's chatter (BRO-4601).
+  if (!isRedditMarket(show.category)) return [];
   if ((show.type || '') === 'opera') return SUBREDDITS_OPERA;
   if (isLondonMarket(show.category)) return [SUBREDDIT_WE];
   // OB shows search r/Broadway (r/OffBroadway doesn't exist)
@@ -109,6 +112,10 @@ let audienceBuzz = loadAudienceBuzz();
 // Only assign data to the most recent production of each title.
 const mostRecentByTitle = {};
 for (const s of showsData.shows) {
+  // A tour never takes the title's Reddit data (getSubreddits), so it must not
+  // displace its Broadway parent as the newest production either, or the
+  // Broadway show stops getting Reddit updates once its tour launches (BRO-4601).
+  if (!isRedditMarket(s.category)) continue;
   const titleBase = s.title.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').replace(/\s*\(.*?\)\s*$/, '').trim();
   const existing = mostRecentByTitle[titleBase];
   if (!existing || (s.openingDate || '') > (existing.openingDate || '')) {
