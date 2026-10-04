@@ -22,7 +22,7 @@ on:
         default: 'false'
         type: boolean
       resend_shows:
-        description: 'Comma-separated show ids: redraft these and email them again with screenshots. Skips the digest and all other drafts; posted ones are never resent. Empty = normal run.'
+        description: 'Comma-separated show ids, no spaces: redraft these and email them again with screenshots. Skips the digest and all other drafts; posted ones are never resent; a failed redraft fails the run before any email. With dry_run, the email preview shows the old drafts. Empty = normal run.'
         required: false
         default: ''
         type: string

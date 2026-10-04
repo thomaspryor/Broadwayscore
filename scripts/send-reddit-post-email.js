@@ -144,6 +144,9 @@ async function main() {
       // A resend stamps both, so tomorrow's run doesn't follow it with a reminder.
       const stamps = RESEND.length ? { emailedAt: stamp, reminderAt: stamp } : { [kind === 'new' ? 'emailedAt' : 'reminderAt']: stamp };
       drafts.drafts[draft.showId] = { ...drafts.drafts[draft.showId], ...stamps };
+      // The resend is now the email the owner has: later "numbers moved"
+      // notes measure from it, not from the first one.
+      if (RESEND.length) for (const k of ['refreshedAt', 'previousReviewCount', 'previousScore']) delete drafts.drafts[draft.showId][k];
       // Stamp right away: a run killed later in the loop must not re-send this one.
       fs.writeFileSync(DRAFTS_PATH, JSON.stringify(drafts, null, 2) + '\n');
       console.log(`Sent: ${subject} (id ${res && res.id || '?'})`);
