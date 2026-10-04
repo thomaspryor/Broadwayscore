@@ -360,7 +360,7 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
 interface TheatrScreenshotResponse {
   ok: boolean;
   error?: 'invalid_images' | 'too_many_images' | 'unauthorized' | 'rate_limited' | 'busy' | 'not_configured' | 'internal';
-  entries?: Array<{ title: string; venue: string | null; date: string | null; list: 'attended' | 'interested' }>;
+  entries?: TheatrRow[];
   unreadableImages?: number;
   dropped?: number;
 }
@@ -403,17 +403,46 @@ async function screenshotToJpegBase64(file: File): Promise<{ mediaType: string; 
   }
 }
 
-/** Collapse rows repeated across batches (overlapping screenshots). Same key
- *  as the edge function's per-batch dedupe: list + lowercased title + date. */
-export function dedupeTheatrEntries<T extends { title: string; date: string | null; list: string; venue: string | null }>(rows: T[]): T[] {
-  const byKey = new Map<string, T>();
+export interface TheatrRow {
+  title: string;
+  venue: string | null;
+  date: string | null;
+  list: 'attended' | 'interested';
+}
+
+/**
+ * Collapse rows repeated across overlapping screenshots, keeping screenshot
+ * order. Same rule as the edge function's per-batch pass (normalize.mjs) and
+ * the iOS app's lib/theatr-import.ts: one row per list + title + date, and an
+ * undated Attended row folds into a dated row for the same title (its date
+ * was just cropped off), so it can't race the dated copy into the watchlist.
+ */
+export function mergeTheatrRows(rows: TheatrRow[]): TheatrRow[] {
+  const out: TheatrRow[] = [];
+  const byKey = new Map<string, TheatrRow>();
+  const titleKey = (r: TheatrRow) => `${r.list}|${r.title.toLowerCase()}`;
+  const datedTitles = new Set(rows.filter((r) => r.list === 'attended' && r.date).map(titleKey));
   for (const r of rows) {
-    const key = `${r.list}|${r.title.toLowerCase()}|${r.date || ''}`;
-    const prev = byKey.get(key);
-    if (!prev) byKey.set(key, { ...r });
-    else if (!prev.venue && r.venue) prev.venue = r.venue;
+    const undatedDup = r.list === 'attended' && !r.date && datedTitles.has(titleKey(r));
+    const key = undatedDup ? null : `${titleKey(r)}|${r.date || ''}`;
+    const prev = key ? byKey.get(key) : out.find((o) => titleKey(o) === titleKey(r) && o.date);
+    if (prev) {
+      if (!prev.venue && r.venue) prev.venue = r.venue;
+      continue;
+    }
+    if (!key) continue; // dated copy not reached yet: it will carry the row
+    const copy = { ...r };
+    byKey.set(key, copy);
+    out.push(copy);
   }
-  return Array.from(byKey.values());
+  return out;
+}
+
+/** Split a list into consecutive batches of `size`. */
+export function chunk<T>(items: T[], size: number): T[][] {
+  const out: T[][] = [];
+  for (let i = 0; i < items.length; i += size) out.push(items.slice(i, i + size));
+  return out;
 }
 
 /**
@@ -422,12 +451,43 @@ export function dedupeTheatrEntries<T extends { title: string; date: string | nu
  * and land in To Be Rated (the importer files unrated diary rows as dated
  * watchlist rows) rather than getting a guessed score.
  */
-export function theatrRowsToEntries(
-  rows: Array<{ title: string; venue: string | null; date: string | null; list: 'attended' | 'interested' }>,
-): RawImportEntry[] {
+export function theatrRowsToEntries(rows: TheatrRow[]): RawImportEntry[] {
   return rows.map((r) => r.list === 'attended'
     ? { title: r.title, venue: r.venue, rating: null, sourceScore: null, date: r.date, reviewText: null, kind: 'diary' as const }
     : { title: r.title, venue: r.venue, rating: null, sourceScore: null, date: null, reviewText: null, kind: 'watchlist' as const, listName: 'Interested' });
+}
+
+/** Preview notices for a finished Theatr read. */
+export function theatrNotices(
+  entries: RawImportEntry[],
+  counts: { picked: number; failedScreenshots: number; unreadable: number },
+): string[] {
+  const notices: string[] = [];
+  if (counts.picked > THEATR_MAX_SCREENSHOTS) {
+    notices.push(`Only the first ${THEATR_MAX_SCREENSHOTS} screenshots were read. Run the import again for the rest.`);
+  }
+  if (counts.failedScreenshots > 0) {
+    notices.push(`${counts.failedScreenshots} screenshot(s) couldn\u2019t be read this time, so some shows may be missing. You can import them again later.`);
+  }
+  if (counts.unreadable > 0) {
+    notices.push(`${counts.unreadable} image(s) didn\u2019t look like a Theatr collection and were skipped.`);
+  }
+  const attended = entries.filter((e) => e.kind === 'diary');
+  if (attended.length > 0) {
+    notices.push('Theatr reactions aren\u2019t star ratings, so seen shows import to To Be Rated, where you can rate them.');
+  }
+  const undated = attended.filter((e) => !e.date).length;
+  if (undated > 0) {
+    notices.push(`${undated} seen show(s) had no readable date and will land on your watchlist instead. You can rate them from there.`);
+  }
+  return notices;
+}
+
+/** Error code for a failed functions.invoke: the gateway's own 401 (expired
+ *  session, verify_jwt) must read as "sign in again", not "try later". */
+function invokeErrorCode(error: unknown): string {
+  const status = (error as { context?: { status?: number } } | null)?.context?.status;
+  return status === 401 ? 'unauthorized' : 'internal';
 }
 
 /** Read Theatr screenshots via the theatr-screenshot-import function.
@@ -441,35 +501,36 @@ export async function acquireFromTheatrScreenshots(
   if (!supabase) throw new Error(THEATR_ERROR_COPY.unauthorized);
 
   const picked = files.slice(0, THEATR_MAX_SCREENSHOTS);
-  const batches: File[][] = [];
-  for (let i = 0; i < picked.length; i += THEATR_BATCH_SIZE) batches.push(picked.slice(i, i + THEATR_BATCH_SIZE));
-
-  const rows: NonNullable<TheatrScreenshotResponse['entries']> = [];
+  const batches = chunk(picked, THEATR_BATCH_SIZE);
+  // Indexed by batch so the merge sees rows in screenshot order, whichever
+  // batch finishes first.
+  const rowsByBatch: TheatrRow[][] = batches.map(() => []);
   let unreadable = 0;
   let failedScreenshots = 0;
   let firstError: string | null = null;
   let done = 0;
   onProgress?.(0, picked.length);
 
-  const runBatch = async (batch: File[]) => {
+  const runBatch = async (batchIndex: number) => {
+    const batch = batches[batchIndex];
+    // One unreadable file must not sink the other screenshots in its batch.
+    const encoded = await Promise.allSettled(batch.map(screenshotToJpegBase64));
+    const images = encoded.flatMap((r) => (r.status === 'fulfilled' ? [r.value] : []));
+    failedScreenshots += batch.length - images.length;
+    if (images.length < batch.length && !firstError) firstError = 'invalid_images';
     try {
-      let images: { mediaType: string; data: string }[];
-      try {
-        images = await Promise.all(batch.map(screenshotToJpegBase64));
-      } catch {
-        throw new Error('invalid_images');
-      }
+      if (images.length === 0) return;
       const { data, error } = await supabase.functions.invoke<TheatrScreenshotResponse>('theatr-screenshot-import', {
         body: { images },
       });
-      if (error || !data) throw new Error('internal');
+      if (error || !data) throw new Error(invokeErrorCode(error));
       if (!data.ok) throw new Error(data.error || 'internal');
-      rows.push(...(data.entries || []));
+      rowsByBatch[batchIndex] = data.entries || [];
       unreadable += data.unreadableImages || 0;
     } catch (err) {
-      failedScreenshots += batch.length;
+      failedScreenshots += images.length;
       const code = err instanceof Error ? err.message : 'internal';
-      if (!firstError) firstError = code;
+      if (!firstError || firstError === 'invalid_images') firstError = code;
     } finally {
       done += batch.length;
       onProgress?.(done, picked.length);
@@ -480,33 +541,14 @@ export async function acquireFromTheatrScreenshots(
   // at once halves the wait without tripping the per-hour call cap.
   let next = 0;
   await Promise.all(Array.from({ length: Math.min(THEATR_CONCURRENCY, batches.length) }, async () => {
-    while (next < batches.length) await runBatch(batches[next++]);
+    while (next < batches.length) await runBatch(next++);
   }));
 
-  const deduped = dedupeTheatrEntries(rows);
-  if (deduped.length === 0) {
+  const merged = mergeTheatrRows(rowsByBatch.flat());
+  if (merged.length === 0) {
     const code = firstError || 'no_shows';
     throw new Error(THEATR_ERROR_COPY[code] || THEATR_ERROR_COPY.internal);
   }
-
-  const entries = theatrRowsToEntries(deduped);
-  const notices: string[] = [];
-  if (files.length > THEATR_MAX_SCREENSHOTS) {
-    notices.push(`Only the first ${THEATR_MAX_SCREENSHOTS} screenshots were read. Run the import again for the rest.`);
-  }
-  if (failedScreenshots > 0) {
-    notices.push(`${failedScreenshots} screenshot(s) couldn’t be read this time, so some shows may be missing. You can import them again later.`);
-  }
-  if (unreadable > 0) {
-    notices.push(`${unreadable} image(s) didn’t look like a Theatr collection and were skipped.`);
-  }
-  const attended = entries.filter((e) => e.kind === 'diary');
-  if (attended.length > 0) {
-    notices.push('Theatr reactions aren’t star ratings, so seen shows import to To Be Rated, where you can rate them.');
-  }
-  const undated = attended.filter((e) => !e.date).length;
-  if (undated > 0) {
-    notices.push(`${undated} seen show(s) had no readable date and will land on your watchlist instead. You can rate them from there.`);
-  }
-  return { entries, notices };
+  const entries = theatrRowsToEntries(merged);
+  return { entries, notices: theatrNotices(entries, { picked: files.length, failedScreenshots, unreadable }) };
 }

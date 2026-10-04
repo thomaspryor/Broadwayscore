@@ -62,7 +62,10 @@ function cleanText(v, maxLen) {
  * - nulls dates that aren't real calendar dates, predate 1900, or sit more
  *   than two years out (a misread year must not file a show into 2099)
  * - dedupes rows repeated across overlapping screenshots (same list, title
- *   and date), keeping the first, and fills a missing venue from the repeat
+ *   and date), keeping the first and filling a missing venue from the
+ *   repeat; an undated Attended row folds into a dated one for the same title
+ *   (its date was cropped off). Same rule as mergeTheatrRows on web
+ *   (src/lib/show-import.ts) and in the iOS app (lib/theatr-import.ts).
  *
  * @param {unknown} extraction  parsed structured output
  * @param {string} today        YYYY-MM-DD, injected for testability
@@ -73,7 +76,7 @@ export function normalizeExtraction(extraction, today) {
     ? /** @type {any} */ (extraction).entries
     : [];
   const maxYear = Number(today.slice(0, 4)) + 2;
-  const byKey = new Map();
+  const cleaned = [];
   let dropped = 0;
   for (const row of rows) {
     const title = cleanText(row?.title, MAX_TITLE_LEN);
@@ -87,14 +90,33 @@ export function normalizeExtraction(extraction, today) {
     // Interested rows are plans, not viewings: a date there is at most a
     // planned date, and Theatr doesn't show one, so anything read is noise.
     if (list === 'interested') date = null;
-    const venue = cleanText(row?.venue, MAX_VENUE_LEN);
-    const key = `${list}|${title.toLowerCase()}|${date || ''}`;
-    const prev = byKey.get(key);
+    cleaned.push({ title, venue: cleanText(row?.venue, MAX_VENUE_LEN), date, list });
+  }
+  return { entries: mergeTheatrRows(cleaned), dropped };
+}
+
+/**
+ * One row per list + title + date in first-seen order; an undated Attended
+ * row folds into a dated row for the same title.
+ * @param {{ title: string, venue: string|null, date: string|null, list: string }[]} rows
+ */
+export function mergeTheatrRows(rows) {
+  const out = [];
+  const byKey = new Map();
+  const titleKey = (r) => `${r.list}|${r.title.toLowerCase()}`;
+  const datedTitles = new Set(rows.filter((r) => r.list === 'attended' && r.date).map(titleKey));
+  for (const r of rows) {
+    const undatedDup = r.list === 'attended' && !r.date && datedTitles.has(titleKey(r));
+    const key = undatedDup ? null : `${titleKey(r)}|${r.date || ''}`;
+    const prev = key ? byKey.get(key) : out.find((o) => titleKey(o) === titleKey(r) && o.date);
     if (prev) {
-      if (!prev.venue && venue) prev.venue = venue;
+      if (!prev.venue && r.venue) prev.venue = r.venue;
       continue;
     }
-    byKey.set(key, { title, venue, date, list });
+    if (!key) continue; // the dated copy comes later and carries this row
+    const copy = { ...r };
+    byKey.set(key, copy);
+    out.push(copy);
   }
-  return { entries: [...byKey.values()], dropped };
+  return out;
 }

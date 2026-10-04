@@ -2,7 +2,7 @@
 
 import { useState, useCallback, useMemo, useRef } from 'react';
 import type Fuse from 'fuse.js';
-import { supabaseRestInsert } from '@/lib/supabase-rest';
+import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import {
@@ -121,6 +121,20 @@ interface ImportShowsProps {
   existingReviewShowIds: Set<string>;
   existingWatchlistShowIds: Set<string>;
   onImportComplete: () => void;
+}
+
+/** A seen-but-unrated show the user already had on their watchlist (saved
+ *  before they went) hits the watchlist unique key on insert. Give that row
+ *  the date seen so it moves to To Be Rated, instead of leaving it undated in
+ *  To Watch. Never overwrites a date the user already set. */
+async function dateExistingWatchlistRow(userId: string, showId: string, dateSeen: string | null): Promise<boolean> {
+  if (!dateSeen) return false;
+  const { data, error } = await supabaseRestUpdate(
+    'watchlist',
+    `user_id=eq.${encodeURIComponent(userId)}&show_id=eq.${encodeURIComponent(showId)}&planned_date=is.null`,
+    { planned_date: dateSeen },
+  );
+  return !error && !!data;
 }
 
 export default function ImportShows({
@@ -612,8 +626,9 @@ export default function ImportShows({
           ...(entry.sourceDate && { planned_date: entry.sourceDate }),
         });
         if (insertErr) {
-          if (insertErr.code === '23505') skipped++;
-          else errors++;
+          if (insertErr.code !== '23505') errors++;
+          else if (await dateExistingWatchlistRow(userId, entry.match.id, entry.sourceDate)) imported++;
+          else skipped++;
         } else {
           imported++;
         }
