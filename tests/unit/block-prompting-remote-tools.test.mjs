@@ -103,24 +103,32 @@ test('add_repo for any other repo passes', () => {
   assert.equal(run(addRepo('someoneelse', 'Broadwayscore')), 'pass');
 });
 
+test('list_sessions is denied for both server spellings (BRO-4635)', () => {
+  assert.equal(run(remote('list_sessions', { limit: 15, mine: true })), 'deny');
+  assert.equal(run(remote('list_sessions', {})), 'deny');
+  assert.equal(run({ tool_name: 'mcp__claude-code-remote__list_sessions', tool_input: {} }), 'deny');
+  assert.equal(run(remote('list_sessions', {}), { env: { REMOTE_TOOL_BLOCKER_DISABLE: '1' } }), 'pass');
+});
+
 test('unrelated tools, malformed input and the kill switch all pass', () => {
   assert.equal(run(remote('update_trigger', {})), 'pass');
   assert.equal(run(remote('subscribe_pr_activity', {})), 'pass');
+  for (const tool of ['get_session', 'list_events', 'create_session']) assert.equal(run(remote(tool, {})), 'pass', tool);
   assert.equal(run({ tool_name: 'Bash', tool_input: { command: 'ls' } }), 'pass');
   assert.equal(run('not json'), 'pass');
   assert.equal(run(remote('send_later', {}), { env: { REMOTE_TOOL_BLOCKER_DISABLE: '1' } }), 'pass');
 });
 
-test('settings.json routes exactly the three tools to this hook', () => {
+test('settings.json routes exactly the four tools to this hook', () => {
   const entries = SETTINGS.hooks.PreToolUse.filter((e) =>
     e.hooks.some((h) => h.command.includes('block-prompting-remote-tools.sh')));
   assert.equal(entries.length, 1);
   const re = new RegExp(`^(?:${entries[0].matcher})$`);
   for (const server of ['Claude_Code_Remote', 'claude-code-remote']) {
-    for (const tool of ['send_later', 'create_trigger', 'add_repo']) {
+    for (const tool of ['send_later', 'create_trigger', 'add_repo', 'list_sessions']) {
       assert.ok(re.test(`mcp__${server}__${tool}`), `${server}__${tool} should match`);
     }
-    for (const tool of ['update_trigger', 'delete_trigger', 'fire_trigger', 'subscribe_pr_activity', 'create_session']) {
+    for (const tool of ['update_trigger', 'delete_trigger', 'fire_trigger', 'subscribe_pr_activity', 'create_session', 'get_session', 'list_events']) {
       assert.ok(!re.test(`mcp__${server}__${tool}`), `${server}__${tool} should not match`);
     }
   }
