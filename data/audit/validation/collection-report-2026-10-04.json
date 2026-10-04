@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-04T06:58:36.231Z",
+  "runDate": "2026-10-04T07:41:00.011Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,21 +11,21 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 558,
-    "failed": 576,
+    "processed": 564,
+    "failed": 579,
     "skipped": 0,
-    "successRate": "49.2%"
+    "successRate": "49.3%"
   },
   "tierBreakdown": {
-    "playwright": 11,
+    "playwright": 13,
     "amp": 1,
     "browserbase": 15,
     "directCookies": 0,
     "scrapingdog": 56,
     "scrapingbee": 67,
-    "brightdata": 32,
+    "brightdata": 35,
     "archiveToday": 0,
-    "archive": 106
+    "archive": 107
   },
   "statistics": {
     "tier1Attempts": 0,
@@ -611,7 +611,13 @@
     "a-bronx-tale-2007/newsday--linda-winer.json",
     "a-bronx-tale-2007/huffpost--steven-suskin.json",
     "the-25th-annual-putnam-county-spelling-bee-2005/newsweek--lauren-giella.json",
-    "the-25th-annual-putnam-county-spelling-bee-2005/dailybeast--tim-teeman.json"
+    "the-25th-annual-putnam-county-spelling-bee-2005/dailybeast--tim-teeman.json",
+    "slaughterhouse-five-off-west-end-2026/partially-obstructed-view--unknown.json",
+    "a-ghost-in-your-ear-off-west-end-2026/partially-obstructed-view--unknown.json",
+    "beetlejuice-2022/san-francisco-chronicle--lily-janiak.json",
+    "amazing-grace-2015/usatoday--elysa-gardner.json",
+    "cyrano-de-bergerac-2012/usatoday--elysa-gardner.json",
+    "seascape-2005/nytimes--ben-brantley.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -1189,7 +1195,10 @@
     "anything-goes-2002/northjerseycom--robert-feldberg.json",
     "merrily-we-roll-along-1981/nydailynews--joe-dzieminaowicz.json",
     "on-the-twentieth-century-1978/abc-news--jennifer-farrar.json",
-    "home-1970/hollywood-reporter--david-rooney.json"
+    "home-1970/hollywood-reporter--david-rooney.json",
+    "hamilton-2015/belleville-news-democrat--mark-kennedy.json",
+    "american-psycho-off-west-end-2026/london-theatre--unknown.json",
+    "a-christmas-story-the-musical-2012/huffpost--mark-kennedy.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -1203,7 +1212,9 @@
       "eurydice-off-broadway-2026/timeout--raven-snook.json",
       "twelfth-night-2013/nypost--elisabeth-vincentelli.json",
       "evita-2012/nypost--elisabeth-vincentelli.json",
-      "the-25th-annual-putnam-county-spelling-bee-2005/newsweek--lauren-giella.json"
+      "the-25th-annual-putnam-county-spelling-bee-2005/newsweek--lauren-giella.json",
+      "slaughterhouse-five-off-west-end-2026/partially-obstructed-view--unknown.json",
+      "a-ghost-in-your-ear-off-west-end-2026/partially-obstructed-view--unknown.json"
     ],
     "browserbase": [
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
@@ -1382,7 +1393,10 @@
       "american-psycho-2016/usatoday--elysa-gardner.json",
       "operation-mincemeat-tour-2026/chicagotribune--unknown.json",
       "fool-for-love-2015/thewrap--robert-hofler.json",
-      "fool-for-love-2015/philadelphia-inquirer--toby-zinman.json"
+      "fool-for-love-2015/philadelphia-inquirer--toby-zinman.json",
+      "beetlejuice-2022/san-francisco-chronicle--lily-janiak.json",
+      "amazing-grace-2015/usatoday--elysa-gardner.json",
+      "cyrano-de-bergerac-2012/usatoday--elysa-gardner.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -1491,7 +1505,8 @@
       "on-your-feet-2015/minneapolis-star-tribune--mark-kennedy.json",
       "a-bronx-tale-2007/newsday--linda-winer.json",
       "a-bronx-tale-2007/huffpost--steven-suskin.json",
-      "the-25th-annual-putnam-county-spelling-bee-2005/dailybeast--tim-teeman.json"
+      "the-25th-annual-putnam-county-spelling-bee-2005/dailybeast--tim-teeman.json",
+      "seascape-2005/nytimes--ben-brantley.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
