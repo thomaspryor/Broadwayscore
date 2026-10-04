@@ -86,9 +86,13 @@ const CLOUD_UNRUNNABLE_VERIFY_RE = /^node\s+scripts\/run-unit-tests\.js\s*$/;
 // buildDispatchComment, with or without a correlation id), auto-corrections,
 // tag markers like [auto-fix-attempted:fail] (auto-fix-friction-card.js) and
 // acceptance re-arms (enrich-card-acceptance.js). One of these after a pause
-// is not an answer to it. Tags need 3+ letters so a human "[x] approved" counts.
-const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Auto-corrected |Auto-reset |\[[a-z][a-z0-9 -]{2,}(?::[a-z0-9-]+)?\]|\*\*Re-arm \(auto\b)/i;
-const AWAITING_OWNER_RE = /\bowner(?:'s)?\s+(?:decision|approval|sign[- ]?off|go[- ]ahead|judg(?:e)?ment|call)\b|\b(?:waiting|wait|held|hold|pending|blocked)\s+(?:on|for)\s+(?:the\s+|an?\s+)?(?:owner|thomas)\b|\bpending\s+(?:the\s+)?owner\b|\bneeds?\s+(?:an?\s+|the\s+)?owner\b|\bDECISION NEEDED\b/gi;
+// is not an answer to it.
+const MACHINE_COMMENT_RE = /^(?:Dispatched (?:[0-9a-f]+ )?to |Auto-corrected |Auto-reset |\*\*Re-arm \(auto\b)/i;
+// Machine tags are lowercase and hyphenated ([auto-fix-attempted:fail], [red-first follow-up]).
+// Case-sensitive, and not a markdown link, so "[x] approved", "[Approved] go ahead"
+// and "[the fix](url) looks right" still count as human answers.
+const MACHINE_TAG_RE = /^\[[a-z][a-z0-9 ]*-[a-z0-9 -]*(?::[a-z0-9-]+)?\](?!\()/;
+const AWAITING_OWNER_RE = /\bowner(?:'s)?\s+(?:decision|approval|sign[- ]?off|go[- ]ahead|judg(?:e)?ment|call)\b|\b(?:waiting|wait|held|hold|pending|blocked)\s+(?:on|for)\s+(?:the\s+|an?\s+)?(?:owner|thomas)\b(?!['\u2019]s)|\bpending\s+(?:the\s+)?owner\b(?!['\u2019]s)|\bneeds?\s+(?:an?\s+|the\s+)?owner\b(?!['\u2019]s)|\bDECISION NEEDED\b/gi;
 // "not an owner decision", "no DECISION NEEDED", "owner decision not required".
 const OWNER_NEGATED_BEFORE_RE = /\b(?:not|no|without)\s+(?:an?\s+|the\s+|any\s+)?$/i;
 const OWNER_NEGATED_AFTER_RE = /^\s*(?:is\s+|was\s+)?(?:not|no\s+longer)\s+(?:required|needed)\b/i;
@@ -160,10 +164,15 @@ function pausedHistorySkipReason(comments, nowMs) {
   const report = sorted[idx];
   if (parseSessionReportStatus(report.body) !== 'paused') return null;
   // A comment after the pause (the owner's answer, a human note) re-opens it to the idle rule.
-  const answered = sorted.slice(0, idx).some((c) => !MACHINE_COMMENT_RE.test(String(c.body || '').trim()));
+  const answered = sorted.slice(0, idx).some((c) => !isMachineComment(c.body));
   const ageMs = nowMs - Date.parse(report.createdAt);
   if (!answered && ageMs < AWAITING_OWNER_MAX_MS && namesOwnerHold(report.body)) return 'awaiting-owner';
   return ageMs < RECENT_PAUSE_MS ? 'recently-paused' : null;
+}
+
+function isMachineComment(body) {
+  const text = String(body || '').trim();
+  return MACHINE_COMMENT_RE.test(text) || MACHINE_TAG_RE.test(text);
 }
 
 /** True when a paused report names the owner's call as its blocker (a negated mention doesn't count). */
