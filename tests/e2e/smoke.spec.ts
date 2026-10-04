@@ -141,10 +141,23 @@ test.describe('Post-deploy smoke tests', () => {
   test('commercial scorecard stays unreleased', async ({ request, baseURL }) => {
     test.skip(/demo\./.test(baseURL ?? ''), 'demo turns every flag on');
 
-    for (const p of ['/biz']) {
+    for (const p of ['/biz', '/browse/biggest-broadway-flops']) {
       const res = await request.get(p, { maxRedirects: 0 });
       expect(res.status(), `${p} should be a 404 while commercial is unreleased`).toBe(404);
     }
+
+    // The show page once shipped capitalization and recoupment figures in its
+    // RSC payload while the section itself was hidden. Object keys only
+    // ("key": in the payload), so a review that says "capitalization" does
+    // not trip it; recoupmentTrend is always passed, as "unknown" when off.
+    const showHtml = await (await request.get('/show/wicked')).text();
+    expect(showHtml).not.toMatch(/\\?"(capitalization|weeklyRunningCost|recoupedDate)\\?":|\\?"recoupmentTrend\\?":\\?"(?!unknown)/);
+
+    expect(await (await request.get('/llms.txt')).text()).not.toContain('Commercial Scorecard');
+    expect(await (await request.get('/sitemap/0.xml')).text()).not.toMatch(/\/biz</);
+    // Related-page links to the flops list go with it.
+    expect(await (await request.get('/browse/longest-running-broadway-shows')).text())
+      .not.toContain('/browse/biggest-broadway-flops');
   });
 
   test('audience buzz page renders scores', async ({ page }) => {
