@@ -6,7 +6,7 @@ import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
-const { applyAddCommercialEntry, commercialConsistencyProblems } = require('./commercial-entry-action.js');
+const { applyAddCommercialEntry } = require('./commercial-entry-action.js');
 
 const shows = [
   { id: 'gutenberg-2023', slug: 'gutenberg', title: 'Gutenberg! The Musical!', category: 'broadway' },
@@ -23,7 +23,7 @@ test('adds a slug-keyed entry, canonicalizes designation, stamps review lock', (
   assert.equal(r.ok, true, r.reason);
   assert.equal(c.shows.gutenberg.designation, 'Easy Winner');
   assert.equal(c.shows.gutenberg.humanReviewedDesignation, true);
-  assert.equal(c.shows.gutenberg.firstAdded, '2026-10-04');
+  assert.equal(c.shows.gutenberg.firstAdded, '2026-10-04T00:00:00.000Z');
 });
 
 test('refuses a show id when the show has a slug (the ID-key duplicate class)', () => {
@@ -54,15 +54,16 @@ test('refuses unsourced entries, bad source types, unknown fields, bad numbers',
   assert.equal(applyAddCommercialEntry(fresh(), shows, { slug: 'grey-house', entry: { designation: 'TBD', sources: src, capitalization: '5M' } }).ok, false);
 });
 
-test('consistency check flags what validate-data.js would fail the build on', () => {
-  assert.deepEqual(commercialConsistencyProblems(fresh()), []);
-  const bad = { shows: {
-    a: { designation: 'Windfall', recouped: null },
-    b: { designation: 'Flop', recouped: true, recoupedDate: '2024-01' },
-    c: { designation: 'TBD', recouped: true },
-    d: { designation: 'flop', recouped: false },
-    e: { designation: 'TBD', sources: [{ type: 'other', url: 'https://x.y' }] },
-  } };
-  const p = commercialConsistencyProblems(bad);
-  for (const k of ['a:', 'b:', 'c:', 'd:', 'e:']) assert.ok(p.some(x => x.startsWith(k)), `expected a problem for ${k} in ${JSON.stringify(p)}`);
+test('a TBD entry is left unlocked so recoupment auto-apply and closure classification still reach it', () => {
+  const c = fresh();
+  const r = applyAddCommercialEntry(c, shows, { slug: 'grey-house', entry: { designation: 'TBD', recouped: false, sources: src } });
+  assert.equal(r.ok, true, r.reason);
+  assert.equal('humanReviewedDesignation' in c.shows['grey-house'], false);
+});
+
+test('runs the shared validate-data record rules (a nonprofitOrg that does not match the venue is refused)', () => {
+  const withVenue = shows.map(s => (s.slug === 'grey-house' ? { ...s, venue: 'Lyceum Theatre' } : s));
+  const r = applyAddCommercialEntry(fresh(), withVenue, { slug: 'grey-house', entry: { designation: 'Nonprofit', nonprofitOrg: 'Manhattan Theatre Club', sources: src } });
+  assert.equal(r.ok, false);
+  assert.match(r.reason, /nonprofitOrg/);
 });

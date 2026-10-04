@@ -18,12 +18,16 @@
  * - win/loss designations follow validate-data.js's citation policy: a win
  *   needs recouped=true with recoupedDate + recoupedSource + a sourced URL; a
  *   loss needs recouped=false with a sourced URL
- * - stamps humanReviewedDesignation so apply-commercial-pending.js does not
- *   overwrite a hand-checked designation with an LLM guess
+ * - stamps humanReviewedDesignation on a final (non-TBD) outcome so
+ *   apply-commercial-pending.js does not overwrite it with an LLM guess
+ * - runs the shared per-record rules (commercial-record-checks.js) that
+ *   validate-data.js enforces, so it cannot create a record the build rejects
  */
 
 const { canonicalDesignation } = require('./commercial-designations');
 const { VALID_SOURCE_TYPES } = require('./commercial-sources');
+const { isCommercialScope } = require('./commercial-scope');
+const { commercialRecordErrors } = require('./commercial-record-checks');
 
 const ALLOWED = new Set([
   'designation', 'recouped', 'recoupedDate', 'recoupedSource',
@@ -59,7 +63,7 @@ function applyAddCommercialEntry(commercial, shows, action, now = new Date().toI
   if (show.slug && show.slug !== slug) {
     return { ok: false, reason: `add-commercial-entry: "${slug}" is a show id; key by its slug "${show.slug}"` };
   }
-  if (show.category !== 'broadway') return { ok: false, reason: `add-commercial-entry: "${slug}" is ${show.category}, not broadway` };
+  if (!isCommercialScope(show)) return { ok: false, reason: `add-commercial-entry: "${slug}" is ${show.category}, outside the Broadway commercial scope` };
   if (commercial.shows[slug] || commercial.shows[show.id]) {
     return { ok: false, reason: `add-commercial-entry: "${slug}" already has a commercial entry (use data-edit)` };
   }
@@ -92,41 +96,21 @@ function applyAddCommercialEntry(commercial, shows, action, now = new Date().toI
     }
   }
 
-  commercial.shows[slug] = {
+  const record = {
     ...entry,
     designation,
-    humanReviewedDesignation: true,
-    firstAdded: now.slice(0, 10),
+    // Lock only a final, hand-checked outcome. humanReviewedDesignation makes
+    // apply-commercial-pending.js skip the whole entry (including a later
+    // trusted recoupment) and classify-stale-closure.js leave it alone, so a
+    // TBD entry stays unlocked for the automation to finish.
+    ...(designation === 'TBD' ? {} : { humanReviewedDesignation: true }),
+    firstAdded: now,
     lastUpdated: now,
   };
+  const problems = commercialRecordErrors(slug, record, { showRecord: show, allRecords: commercial.shows });
+  if (problems.length) return { ok: false, reason: `add-commercial-entry: ${problems[0]}` };
+  commercial.shows[slug] = record;
   return { ok: true, msg: `commercial.json: added ${slug} (${designation})` };
 }
 
-// Whole-file consistency check the plan runner applies after any commercial
-// edit, so an approved plan cannot publish what validate-data.js would fail
-// the site build on (its own commercial rules run only in test.yml, after
-// the push). Returns a list of problem strings; [] when clean.
-function commercialConsistencyProblems(commercial) {
-  const out = [];
-  for (const [key, rec] of Object.entries((commercial && commercial.shows) || {})) {
-    if (!rec || typeof rec !== 'object') { out.push(`${key}: not an object`); continue; }
-    if (rec.designation != null && canonicalDesignation(rec.designation) !== rec.designation) {
-      out.push(`${key}: non-canonical designation "${rec.designation}"`);
-    }
-    if (rec.recouped === true && !rec.recoupedDate) out.push(`${key}: recouped=true without recoupedDate`);
-    if (rec.recoupedDate != null && !RECOUPED_DATE_RE.test(rec.recoupedDate)) out.push(`${key}: recoupedDate "${rec.recoupedDate}" is not YYYY-MM or YYYY`);
-    if (['Miracle', 'Windfall', 'Easy Winner'].includes(rec.designation) && rec.recouped !== true) out.push(`${key}: ${rec.designation} with recouped=${JSON.stringify(rec.recouped)}`);
-    if (LOSS.has(rec.designation) && rec.recouped !== false) out.push(`${key}: ${rec.designation} with recouped=${JSON.stringify(rec.recouped)}`);
-    if (rec.sources !== undefined) {
-      if (!Array.isArray(rec.sources)) out.push(`${key}: sources is not an array`);
-      else rec.sources.forEach((s, i) => {
-        if (!s || typeof s.url !== 'string') out.push(`${key}: sources[${i}].url missing`);
-        else if (!VALID_SOURCE_TYPES.includes(s.type)) out.push(`${key}: sources[${i}].type "${s.type}"`);
-        else if (s.date != null && !SOURCE_DATE_RE.test(s.date)) out.push(`${key}: sources[${i}].date "${s.date}"`);
-      });
-    }
-  }
-  return out;
-}
-
-module.exports = { applyAddCommercialEntry, commercialConsistencyProblems, ALLOWED_ENTRY_FIELDS: ALLOWED };
+module.exports = { applyAddCommercialEntry, ALLOWED_ENTRY_FIELDS: ALLOWED };

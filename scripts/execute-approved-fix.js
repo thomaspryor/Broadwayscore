@@ -45,7 +45,8 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 const { pickEditableFields } = require('./lib/feedback-pipeline-fields.js');
 const { applyAddShow } = require('./lib/add-show-action.js');
 const { applyRetireShow } = require('./lib/retire-show-action.js');
-const { applyAddCommercialEntry, commercialConsistencyProblems } = require('./lib/commercial-entry-action.js');
+const { applyAddCommercialEntry } = require('./lib/commercial-entry-action.js');
+const { commercialFileErrors } = require('./lib/commercial-record-checks.js');
 const { unretireId } = require('./lib/retired-show-ids.js');
 const { applyReviewFieldEdit, resolveReviewPath, unexpectedChanges } = require('./lib/review-field-edit.js');
 const { safeWriteReview } = require('./lib/review-write-guard.js');
@@ -125,11 +126,11 @@ function runValidation(changedFiles) {
     },
     'data/commercial.json': (data) => {
       if (!data?.shows || !data?._meta) throw new Error('Missing shows or _meta');
-      // validate-data.js's commercial rules, so a plan cannot publish a
-      // recouped=true without a date or a win/loss label that contradicts
-      // the recoupment flag (BRO-4623).
-      const problems = commercialConsistencyProblems(data);
-      if (problems.length) throw new Error(`commercial consistency: ${problems.slice(0, 5).join('; ')}`);
+      // The same per-record rules validate-data.js enforces, so a plan cannot
+      // push what the site build then rejects (BRO-4623).
+      const showsData = JSON.parse(fs.readFileSync(path.join(ROOT, 'data/shows.json'), 'utf8'));
+      const problems = commercialFileErrors(data, showsData.shows || showsData);
+      if (problems.length) throw new Error(`commercial rules: ${problems.slice(0, 5).join('; ')}`);
     },
     'data/audience-buzz.json': (data) => {
       if (!data?.shows) throw new Error('Missing shows key');
