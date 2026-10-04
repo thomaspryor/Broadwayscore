@@ -55,7 +55,8 @@ test.describe('Post-deploy smoke tests', () => {
     expect(visibleText).toMatch(/\d{2}/);
 
     // Reviews section exists
-    const reviewContent = page.locator('text=review').first();
+    // Visible only: the hero's "Based on N Critic Reviews" line is desktop-only.
+    const reviewContent = page.locator('text=review').filter({ visible: true }).first();
     await expect(reviewContent).toBeVisible({ timeout: 5000 });
 
     // No rendering bugs
@@ -67,18 +68,25 @@ test.describe('Post-deploy smoke tests', () => {
   // breaks the client (bad Supabase env, CSP blocking the auth script, a
   // hydration error in the header) would leave the button dead or missing
   // while every page above still renders. Open the sign-in modal; never
-  // submit it.
-  test('signed-out visitor can open the sign-in options', async ({ page }) => {
-    await page.goto('/show/wicked');
-    await expect(page.locator('h1')).toBeVisible({ timeout: 15000 });
+  // submit it. Phones get their own pass: below sm (640px) the header button is
+  // hidden and Sign In sits in the menu. The deploy runs chromium only, so the
+  // width is set here instead of relying on the mobile project.
+  for (const width of [1280, 390]) {
+    test(`signed-out visitor can open the sign-in options at ${width}px`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 844 });
+      await page.goto('/show/wicked');
+      await expect(page.locator('h1')).toBeVisible({ timeout: 15000 });
 
-    const signIn = page.getByRole('button', { name: 'Sign in', exact: true });
-    await expect(signIn).toBeVisible({ timeout: 15000 });
-    await signIn.click();
+      const phone = width < 640;
+      if (phone) await page.getByRole('button', { name: 'Open menu' }).click();
+      const signIn = page.getByRole('button', { name: phone ? 'Sign In' : 'Sign in', exact: true });
+      await expect(signIn).toBeVisible({ timeout: 15000 });
+      await signIn.click();
 
-    await expect(page.getByRole('button', { name: 'Continue with Google' })).toBeVisible({ timeout: 10000 });
-    await expect(page.getByRole('button', { name: 'Continue with Apple' })).toBeVisible();
-  });
+      await expect(page.getByRole('button', { name: 'Continue with Google' })).toBeVisible({ timeout: 10000 });
+      await expect(page.getByRole('button', { name: 'Continue with Apple' })).toBeVisible();
+    });
+  }
 
   test('best-of page renders ranked show list', async ({ page }) => {
     await page.goto('/best/musicals');
