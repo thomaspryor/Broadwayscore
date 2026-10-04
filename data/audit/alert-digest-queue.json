@@ -589,35 +589,6 @@
     "queuedAt": "2026-10-04T19:17:04.177Z"
   },
   {
-    "conditionKey": "land:land/bro-4603-alerts",
-    "title": "Landing blocked: bash-integration red on land/bro-4603-alerts",
-    "description": "land.yml did not land land/bro-4603-alerts: the bash-integration gate went red at 488a274b25. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37225868423",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-4603-alerts"
-      },
-      {
-        "name": "gate",
-        "value": "bash-integration"
-      },
-      {
-        "name": "tip",
-        "value": "488a274b256b4fbbcacfb1afb22365cb5d40a77d"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37225868423"
-      }
-    ],
-    "queuedAt": "2026-10-04T19:16:58.415Z"
-  },
-  {
     "conditionKey": "land:land/bro-4601-tour-cards",
     "title": "Landing blocked: resolve red on land/bro-4601-tour-cards",
     "description": "land.yml did not land land/bro-4601-tour-cards: the resolve gate went red at 5f0597baf0. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/bro-4601-tour-cards\" is neither a local branch nor on origin (attempts 0, 0.4s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37226218697",
@@ -686,5 +657,34 @@
       }
     ],
     "queuedAt": "2026-10-04T19:45:07.217Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4603-alerts",
+    "title": "Landing blocked: unit-tests-node red on land/bro-4603-alerts",
+    "description": "land.yml did not land land/bro-4603-alerts: the unit-tests-node gate went red at e5f3827451. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37228089127",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4603-alerts"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "e5f3827451410aecab20453739e4700e16d449f3"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37228089127"
+      }
+    ],
+    "queuedAt": "2026-10-04T19:54:04.551Z"
   }
 ]
