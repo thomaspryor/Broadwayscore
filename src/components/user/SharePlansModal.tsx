@@ -72,6 +72,7 @@ export default function SharePlansModal({ isOpen, onClose, userId, profileName, 
     if (!canShare) return;
     setBusy(true);
     try {
+      const created = !live;
       const link = live && share?.display_name === name.trim() ? url : await ensure({ displayName: name, showBooked, showUnbooked });
       if (!link) { showToast?.('Couldn’t create your link. Try again.', 'error'); return; }
       if (!live) trackSharedPlans({ name: 'plans_share_enabled', props: { booked: showBooked, unbooked: showUnbooked } });
@@ -83,7 +84,11 @@ export default function SharePlansModal({ isOpen, onClose, userId, profileName, 
       }
       // Not the URL itself: toasts are page text, and session replay records
       // page text on /my-shows. Preview (excluded from replay) holds the link.
-      if (outcome === 'failed') showToast?.('Couldn’t copy the link. Open Preview and copy it from the address bar.', 'info');
+      if (outcome === 'failed') {
+        // iOS drops the share sheet when the tap waited on creating the link;
+        // the link exists now, so a second tap goes straight to the sheet.
+        showToast?.(created ? 'Your link is ready. Tap Share link again to send it.' : 'Couldn’t copy the link. Open Preview and copy it from the address bar.', 'info');
+      }
     } finally {
       setBusy(false);
     }

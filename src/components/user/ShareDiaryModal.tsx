@@ -3,6 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { useDiaryShare } from '@/hooks/useDiaryShare';
+import { usePlanShare } from '@/hooks/usePlanShare';
 import { shareOrCopy } from '@/lib/share-link';
 import { defaultShareName, validateShareName } from '@/lib/share-links/share-name';
 import { trackSharedDiary } from '@/lib/shared-diary/events';
@@ -28,14 +29,18 @@ interface Props {
 
 export default function ShareDiaryModal({ isOpen, onClose, userId, profileName, showsSeen, mock, showToast }: Props) {
   const { share, url, loading, error, ensure, update, rotate } = useDiaryShare(isOpen ? userId : null, { mock });
+  // A first diary share suggests the name already used on the plans link.
+  const { share: planShare } = usePlanShare(isOpen && !share ? userId : null, { mock });
   const [name, setName] = useState('');
+  const [nameTouched, setNameTouched] = useState(false);
   const [busy, setBusy] = useState(false);
 
-  // Seed the name from the saved share, or from the profile for a first share.
+  // Seed the name: the saved diary share, else the plans link's name, else
+  // the profile's first name. Stops once the owner types.
+  const suggestedName = share?.display_name ?? planShare?.display_name ?? defaultShareName(profileName);
   useEffect(() => {
-    if (share) setName(share.display_name);
-    else setName(n => n || defaultShareName(profileName));
-  }, [share, profileName]);
+    if (!nameTouched) setName(suggestedName);
+  }, [suggestedName, nameTouched]);
 
   const nameError = validateShareName(name);
   const live = !!share?.enabled;
@@ -50,7 +55,9 @@ export default function ShareDiaryModal({ isOpen, onClose, userId, profileName, 
     if (!canShare) return;
     setBusy(true);
     try {
-      const link = live && share?.display_name === name.trim() ? url : await ensure({ display_name: name });
+      const reuse = live && share?.display_name === name.trim();
+      const created = !live;
+      const link = reuse ? url : await ensure({ display_name: name });
       if (!link) { showToast?.('Couldn’t create your link. Try again.', 'error'); return; }
       if (!live) trackSharedDiary({ name: 'diary_share_enabled', props: { shows: showsSeen } });
       const outcome = await shareOrCopy({ title: 'My theater diary', text: 'My theater diary on Broadway Scorecard', url: link });
@@ -61,7 +68,11 @@ export default function ShareDiaryModal({ isOpen, onClose, userId, profileName, 
       }
       // Not the URL itself: toasts are page text, and session replay records
       // page text on /my-shows. Preview (excluded from replay) holds the link.
-      if (outcome === 'failed') showToast?.('Couldn’t copy the link. Open Preview and copy it from the address bar.', 'info');
+      if (outcome === 'failed') {
+        // iOS drops the share sheet when the tap waited on creating the link;
+        // the link exists now, so a second tap goes straight to the sheet.
+        showToast?.(created ? 'Your link is ready. Tap Share link again to send it.' : 'Couldn’t copy the link. Open Preview and copy it from the address bar.', 'info');
+      }
     } finally {
       setBusy(false);
     }
@@ -107,7 +118,7 @@ export default function ShareDiaryModal({ isOpen, onClose, userId, profileName, 
           testIdPrefix="share-diary"
           name={name}
           nameError={nameError}
-          onNameChange={setName}
+          onNameChange={n => { setNameTouched(true); setName(n); }}
           onNameBlur={saveName}
           titleFor={diaryTitle}
           error={error}

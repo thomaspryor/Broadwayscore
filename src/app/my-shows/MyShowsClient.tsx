@@ -18,7 +18,8 @@ import SharedDatePicker from '@/components/user/DatePickerButton';
 import AddToCalendarButtons from '@/components/user/AddToCalendarButtons';
 import { buildPlannedShowEvent } from '@/lib/calendar-event';
 import { selectSharedPlans, toSharedEntries, type PlanShowLike } from '@/lib/shared-plans/select';
-import { selectSharedDiary, toSharedDiaryEntries } from '@/lib/shared-diary/select';
+import { ownerDiaryPayload, selectSharedDiary } from '@/lib/shared-diary/select';
+import { getShowStubsByIds } from '@/lib/show-stubs';
 import { Poster, PosterGridCard, SectionBand, UpcomingListRow, ViewModeToggle, bookabilityLabel, formatPillDate, type ViewMode } from '@/components/user/upcoming-cards';
 import { localToday, formatShowDate } from '@/lib/date-utils';
 
@@ -83,38 +84,28 @@ function decodeShow(raw: Record<string, unknown>): ShowLookup {
 // error — those ids simply keep rendering degraded until the next resolver
 // pass regenerates diary-lookup.json.
 async function fetchShowStubs(ids: string[]): Promise<ShowMap> {
-  const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
-  const key = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
-  if (!url || !key || ids.length === 0) return {};
-  try {
-    const res = await fetch(
-      `${url}/rest/v1/user_show_stubs?id=in.(${ids.map(id => encodeURIComponent(id)).join(',')})&select=id,title,venue,category,opening_date,poster_url`,
-      { headers: { apikey: key, Authorization: `Bearer ${key}` } },
-    );
-    if (!res.ok) return {};
-    const rows: { id: string; title: string; venue: string | null; category: string; opening_date: string | null; poster_url: string | null }[] = await res.json();
-    const additions: ShowMap = {};
-    for (const r of rows) {
-      additions[r.id] = {
-        id: r.id,
-        title: r.title,
-        slug: r.id,
-        venue: r.venue || '',
-        type: 'play',
-        status: 'closed',
-        category: r.category,
-        previewDate: null,
-        openingDate: r.opening_date,
-        closingDate: null,
-        compositeScore: null,
-        posterUrl: r.poster_url,
-        diaryOnly: true,
-      };
-    }
-    return additions;
-  } catch {
-    return {};
-  }
+  // Batched and quoted (src/lib/show-stubs.ts): a big import no longer builds
+  // one over-long URL, and a failed batch drops only its own ids.
+  const stubs = await getShowStubsByIds(ids);
+  const additions: ShowMap = {};
+  stubs.forEach((r, id) => {
+    additions[id] = {
+      id,
+      title: r.title,
+      slug: id,
+      venue: r.venue || '',
+      type: 'play',
+      status: 'closed',
+      category: r.category ?? 'broadway',
+      previewDate: null,
+      openingDate: r.openingDate,
+      closingDate: null,
+      compositeScore: null,
+      posterUrl: r.posterUrl,
+      diaryOnly: true,
+    };
+  });
+  return additions;
 }
 
 // Diary-only shows (regional/international/historical, Mezzanine-sourced)
@@ -556,13 +547,14 @@ export default function MyShowsClient() {
   // Not gated on a non-empty diary, for the same reason as plans.
   const [shareDiaryOpen, setShareDiaryOpen] = useState(false);
   const shareDiaryShowsSeen = useMemo(() => {
-    const entries = toSharedDiaryEntries(reviews.map(r => ({ ...r, date_seen: r.date_seen ? r.date_seen.slice(0, 10) : null })));
+    const now = Date.now();
+    const payload = ownerDiaryPayload(reviews, now);
     const shows = new Map<string, PlanShowLike>();
-    for (const e of entries) {
+    for (const e of payload.entries) {
       const s = showMap[e.show_id];
       if (s) shows.set(e.show_id, { id: s.id, category: s.category, status: s.status });
     }
-    return selectSharedDiary({ showText: false, capped: false, entries }, shows, Date.now()).showsSeen;
+    return selectSharedDiary({ ...payload, showText: false }, shows, now).showsSeen;
   }, [reviews, showMap]);
 
   // While mock mode is initializing (useEffect hasn't fired yet), show loading
