@@ -359,6 +359,23 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
       delete merged.manualContentTier;
       cleared.push('manualContentTier');
     }
+    // Tier + reason classifyContentTier() stamped FROM that override
+    // ("Manual override (manualContentTier: X)") are derived state too: they
+    // survive via tierReason (not URL-derived by name) and via the fetch-first
+    // path's NEW_ERA_FETCH_FIELDS preserve, leaving a suppressing contentTier
+    // with its explanation gone.
+    if (cleared.includes('manualContentTier')) {
+      const MANUAL_TIER_REASON = /^Manual override \(manualContentTier:/;
+      const fromManual = ['tierReason', 'contentTierReason']
+        .some((f) => typeof merged[f] === 'string' && MANUAL_TIER_REASON.test(merged[f]));
+      if (fromManual) {
+        for (const f of ['tierReason', 'contentTierReason', 'contentTier']) {
+          if (merged[f] === undefined) continue;
+          delete merged[f];
+          if (!cleared.includes(f)) cleared.push(f);
+        }
+      }
+    }
   }
 
   // BRO-2740, second pass: provenance is cleared AS A UNIT with the flag, not

@@ -889,3 +889,13 @@ test('BRO-3122: replacement-style write (omits manualContentTier) records it in 
   quiet(() => applyUrlChangeInvariant(JANE_EYRE_PLACEHOLDER, m));
   assert.ok(m._urlChangedClear.cleared.includes('manualContentTier'));
 });
+
+test('BRO-3122: fetch-first path (NEW_ERA_FETCH_FIELDS preserved) does not strand contentTier stamped from the cleared manual override', () => {
+  const { NEW_ERA_FETCH_FIELDS } = require('./url-change-invariant.js');
+  const existing = { ...JANE_EYRE_PLACEHOLDER, tierReason: 'Manual override (manualContentTier: invalid)' };
+  const merged = { ...existing, url: SOUTHWARK_URL };
+  quiet(() => applyUrlChangeInvariant(existing, merged, { preserveFields: new Set(NEW_ERA_FETCH_FIELDS) }));
+  assert.equal(merged.manualContentTier, undefined);
+  assert.equal(merged.contentTier, undefined);
+  assert.equal(merged.tierReason, undefined);
+});
