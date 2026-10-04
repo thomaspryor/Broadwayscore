@@ -1,10 +1,10 @@
 {
-  "generatedAt": "2026-10-04T23:15:38.691Z",
+  "generatedAt": "2026-10-04T23:28:03.415Z",
   "summary": {
-    "total": 6,
-    "high": 2,
+    "total": 13,
+    "high": 8,
     "medium": 3,
-    "low": 1
+    "low": 2
   },
   "collisions": [
     {
@@ -141,6 +141,195 @@
       "suggestedWinner": "little-bear-ridge-road-2025",
       "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
       "confidence": "low"
+    },
+    {
+      "url": "/article/Review-MIDNIGHT-AT-THE-NEVER-GET-Menier-Chocolate-Factory-20260720",
+      "normalizedUrl": "/article/review-midnight-at-the-never-get-menier-chocolate-factory-20260720",
+      "candidates": [
+        {
+          "showId": "midnight-at-the-never-get-west-end-2026",
+          "file": "broadwayworld--persson-clementine-scott.json",
+          "publishDate": null,
+          "openingDate": "2026-07-20",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        },
+        {
+          "showId": "midnight-off-broadway-2026",
+          "file": "broadwayworld--persson-clementine-scott.json",
+          "publishDate": null,
+          "openingDate": "2026-09-27",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwayworld"
+        }
+      ],
+      "suggestedWinner": "midnight-off-broadway-2026",
+      "reason": "No publish dates available, cannot determine correct show; defaulting to most recent production",
+      "confidence": "low"
+    },
+    {
+      "url": "https://www.broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments/",
+      "normalizedUrl": "https://broadwaynews.com/the-broadway-review-purpose-investigates-the-messy-men-and-women-who-become-monuments",
+      "candidates": [
+        {
+          "showId": "purpose-2025",
+          "file": "broadwaynews--brittani-samuel.json",
+          "publishDate": "March 18, 2025",
+          "openingDate": "2025-03-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "broadwaynews"
+        },
+        {
+          "showId": "purpose-regional-2026",
+          "file": "broadwaynews--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-09-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "broadwaynews"
+        }
+      ],
+      "suggestedWinner": "purpose-2025",
+      "reason": "publishDate March 18, 2025 is 1 days from purpose-2025 opening (2025-03-17)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
+      "normalizedUrl": "https://newyorktheatreguide.com/reviews/purpose-broadway-review",
+      "candidates": [
+        {
+          "showId": "purpose-2025",
+          "file": "nytg--joe-dziemianowicz.json",
+          "publishDate": "March 17, 2025",
+          "openingDate": "2025-03-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "nytg"
+        },
+        {
+          "showId": "purpose-regional-2026",
+          "file": "nytg--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-09-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "nytg"
+        }
+      ],
+      "suggestedWinner": "purpose-2025",
+      "reason": "publishDate March 17, 2025 is 0 days from purpose-2025 opening (2025-03-17)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.theatrely.com/post/an-american-family-finding-its-purpose-review",
+      "normalizedUrl": "https://theatrely.com/post/an-american-family-finding-its-purpose-review",
+      "candidates": [
+        {
+          "showId": "purpose-2025",
+          "file": "theatrely--juan-a-ramirez.json",
+          "publishDate": "March 17, 2025",
+          "openingDate": "2025-03-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "theatrely"
+        },
+        {
+          "showId": "purpose-regional-2026",
+          "file": "theatrely--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-09-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "theatrely"
+        }
+      ],
+      "suggestedWinner": "purpose-2025",
+      "reason": "publishDate March 17, 2025 is 0 days from purpose-2025 opening (2025-03-17)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.thewrap.com/purpose-broadway-review-branden-jacobs-jenkins/",
+      "normalizedUrl": "https://thewrap.com/purpose-broadway-review-branden-jacobs-jenkins",
+      "candidates": [
+        {
+          "showId": "purpose-2025",
+          "file": "thewrap--robert-hofler.json",
+          "publishDate": "March 17, 2025",
+          "openingDate": "2025-03-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "thewrap"
+        },
+        {
+          "showId": "purpose-regional-2026",
+          "file": "thewrap--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-09-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "thewrap"
+        }
+      ],
+      "suggestedWinner": "purpose-2025",
+      "reason": "publishDate March 17, 2025 is 0 days from purpose-2025 opening (2025-03-17)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://www.timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
+      "normalizedUrl": "https://timeout.com/newyork/theater/purpose-broadway-review-phylicia-rashad-branden-jacobs-jenkins",
+      "candidates": [
+        {
+          "showId": "purpose-2025",
+          "file": "timeout--adam-feldman.json",
+          "publishDate": "March 17, 2025",
+          "openingDate": "2025-03-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "timeout"
+        },
+        {
+          "showId": "purpose-regional-2026",
+          "file": "timeout--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-09-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "timeout"
+        }
+      ],
+      "suggestedWinner": "purpose-2025",
+      "reason": "publishDate March 17, 2025 is 0 days from purpose-2025 opening (2025-03-17)",
+      "confidence": "high"
+    },
+    {
+      "url": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772/",
+      "normalizedUrl": "https://variety.com/2025/legit/reviews/purpose-review-broadway-1236339772",
+      "candidates": [
+        {
+          "showId": "purpose-2025",
+          "file": "variety--aramide-tinubu.json",
+          "publishDate": "March 17, 2025",
+          "openingDate": "2025-03-17",
+          "hasScore": true,
+          "hasFullText": true,
+          "outletId": "variety"
+        },
+        {
+          "showId": "purpose-regional-2026",
+          "file": "variety--unknown.json",
+          "publishDate": null,
+          "openingDate": "2026-09-16",
+          "hasScore": false,
+          "hasFullText": false,
+          "outletId": "variety"
+        }
+      ],
+      "suggestedWinner": "purpose-2025",
+      "reason": "publishDate March 17, 2025 is 0 days from purpose-2025 opening (2025-03-17)",
+      "confidence": "high"
     },
     {
       "url": "https://www.thedailybeast.com/review-stereophonic-makes-some-very-sweet-music-indeed/",
