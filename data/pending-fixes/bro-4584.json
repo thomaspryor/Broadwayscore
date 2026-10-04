@@ -1,49 +1,36 @@
 {
   "issueNumber": "bro-4584",
-  "planId": "b40ca4a1-d0fa-49eb-be41-22f9ede72a60",
-  "status": "partial",
-  "createdAt": "2026-10-04T18:30:00.000Z",
+  "planId": "3918af6e-fe5b-4501-9882-6db21c197527",
+  "status": "pending",
+  "createdAt": "2026-10-04T20:00:00.000Z",
   "submitter": {
     "name": null,
     "email": null
   },
   "plan": {
-    "summary": "BRO-4584 ship-check: the Tru (Menier) Financial Times slot has a second file holding the westendtheatre.com round-up text under the round-up writer's name. Its showNotMentioned flag was the only thing keeping it out; the curated short-title rule now clears that flag, so mark it a duplicate of the real FT review (Sarah Hemming) to keep FT from counting twice.",
+    "summary": "BRO-4584 ship-check: the Tru (Menier) Financial Times slot has a second file holding the westendtheatre.com round-up text under the round-up writer's name. Its showNotMentioned flag was the only thing keeping it out; the curated short-title rule now clears that flag, so flag it wrongAttribution (the real FT review is Sarah Hemming's). The earlier duplicateOf attempt (plan b40ca4a1) was refused by the write guard (duplicates must share a url) and left a stray duplicateReason, which the guard protects; it is inert without duplicateOf.",
     "steps": [
       "Url is the westendtheatre.com Tru round-up and the text is that round-up ('every critic agrees he's superb'); Julianna Barnaby writes for WestEndTheatre.com, not the FT. The real FT review is financialtimes--sarah-hemming.json (ft.com url, live on the show page).",
-      "Reason for the duplicate pointer."
+      "Reason for the flag."
     ],
     "riskLevel": "Low",
     "actions": [
       {
         "type": "review-field-edit",
         "file": "tru-off-west-end-2026/financialtimes--julianna-barnaby.json",
-        "field": "duplicateOf",
+        "field": "wrongAttribution",
         "oldValue": null,
-        "newValue": "financialtimes--sarah-hemming.json",
+        "newValue": true,
         "description": "Url is the westendtheatre.com Tru round-up and the text is that round-up ('every critic agrees he's superb'); Julianna Barnaby writes for WestEndTheatre.com, not the FT. The real FT review is financialtimes--sarah-hemming.json (ft.com url, live on the show page)."
       },
       {
         "type": "review-field-edit",
         "file": "tru-off-west-end-2026/financialtimes--julianna-barnaby.json",
-        "field": "duplicateReason",
+        "field": "wrongAttributionReason",
         "oldValue": null,
-        "newValue": "BRO-4584: westendtheatre.com round-up text filed in the FT slot under the round-up writer's name; the FT review is financialtimes--sarah-hemming.json",
-        "description": "Reason for the duplicate pointer."
+        "newValue": "BRO-4584: westendtheatre.com round-up text and writer filed as the Financial Times review; the FT review is financialtimes--sarah-hemming.json",
+        "description": "Reason for the flag."
       }
     ]
-  },
-  "executedAt": "2026-10-04T18:49:34.568Z",
-  "results": [
-    {
-      "action": "review-field-edit",
-      "ok": false,
-      "reason": "tru-off-west-end-2026/financialtimes--julianna-barnaby.json duplicateOf: write guard kept null"
-    },
-    {
-      "action": "review-field-edit",
-      "ok": true,
-      "msg": "tru-off-west-end-2026/financialtimes--julianna-barnaby.json duplicateReason: null -> \"BRO-4584: westendtheatre.com round-up text filed in the FT slot under the round-up writer's name; the FT review is financialtimes--sarah-hemming.json\""
-    }
-  ]
+  }
 }
