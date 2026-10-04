@@ -183,11 +183,25 @@ describe('recoupment-reconcile-gate', () => {
 
 describe('reconcile-recoupment-claims helpers', () => {
   describe('resolveSlug', () => {
-    it('prefers entry.slug over the pending key', () => {
-      assert.equal(resolveSlug('giant-2026', { slug: 'giant' }), 'giant');
+    const SHOWS = { shows: [
+      { id: 'giant-2026', slug: 'giant' },
+      { id: 'the-outsiders-2024', slug: 'the-outsiders' },
+      { id: 'hadestown-2019', slug: 'hadestown' },
+    ] };
+    it('prefers a real entry.slug over the pending key', () => {
+      assert.equal(resolveSlug('giant-2026', { slug: 'giant' }, SHOWS), 'giant');
     });
-    it('falls back to the pending key when slug is absent', () => {
-      assert.equal(resolveSlug('some-key', {}), 'some-key');
+    // BRO-4623: weekly run 37151980535 logged "the-outsiders-2024 (slug:
+    // the-outsiders-2024)" and wrote commercial.shows['the-outsiders-2024'].
+    it('never trusts an entry.slug that is really a show ID', () => {
+      assert.equal(resolveSlug('the-outsiders-2024', { slug: 'the-outsiders-2024' }, SHOWS), 'the-outsiders');
+      assert.equal(resolveSlug('hadestown-2019', { slug: 'hadestown-2019' }, SHOWS), 'hadestown');
+    });
+    it('maps an ID key with no slug field through shows.json', () => {
+      assert.equal(resolveSlug('giant-2026', {}, SHOWS), 'giant');
+    });
+    it('falls back to the pending key when nothing resolves', () => {
+      assert.equal(resolveSlug('some-key', {}, SHOWS), 'some-key');
     });
   });
 

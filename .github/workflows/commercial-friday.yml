@@ -117,6 +117,26 @@ jobs:
             node scripts/reconcile-recoupment-claims.js --time-budget-min=12
           fi
 
+      - name: Self-heal resurrected duplicate key pairs
+        if: inputs.dry_run != true
+        # BRO-4623: same step as commercial-weekly.yml. The strict gate below
+        # fails on an ID/slug duplicate key pair, and before this step only
+        # the Saturday weekly run healed them, so a pair written mid-week
+        # (RSS-poll apply, 2026-09-26/28) turned every Friday run red.
+        # --apply deletes only pairs whose ID entry adds nothing beyond
+        # notes/sources/research bookkeeping (values printed to the log).
+        # A conflicting pair is refused with exit 1: like a strict-gate
+        # failure, that blocks this week's commit and core-data push (the
+        # auto-apply/reconcile results are retried next run), and the
+        # sentinel below keeps the push blocked even if it is ever made
+        # always()-gated.
+        run: |
+          if ! node scripts/dedupe-commercial-id-keys.js --apply; then
+            echo "dedupe-commercial-id-keys refused a conflicting ID/slug pair — blocking core-data push" \
+              > "${RUNNER_TEMP:-/tmp}/.skip-push-core-data"
+            exit 1
+          fi
+
       - name: Commercial data strict gate (required)
         if: inputs.dry_run != true
         # S1-T5: hard gate — recouped:true entries with no citation, or

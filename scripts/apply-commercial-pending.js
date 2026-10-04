@@ -27,6 +27,7 @@ const COMMERCIAL_PATH = path.join(DATA_DIR, 'commercial.json');
 const PENDING_PATH = path.join(DATA_DIR, 'commercial-pending-review.json');
 const SHOWS_PATH = path.join(DATA_DIR, 'shows.json');
 const { isCommercialScope, resolveScopeShow } = require('./lib/commercial-scope');
+const { buildShowKeyIndex, resolveCommercialSlug } = require('./lib/commercial-slug-key');
 
 // CLI args
 const args = process.argv.slice(2);
@@ -61,7 +62,7 @@ Usage:
 `;
 const meetsConfidenceThreshold = (entry) => gate.meetsConfidenceThreshold(entry, MIN_CONFIDENCE);
 const hasRecoupedClaim = gate.hasRecoupedClaim;
-const isAutoApplyableClaim = (entry) => gate.isAutoApplyableClaim(entry, AUTO_APPLY_CLAIMS_FROM);
+const isAutoApplyableClaim = (entry, show) => gate.isAutoApplyableClaim(entry, AUTO_APPLY_CLAIMS_FROM, show);
 
 function main() {
   // --help/-h checked before any real work (cousin of #260/#263/#264/#266 — see scripts/lib/cli-help.js).
@@ -129,12 +130,14 @@ function main() {
 
   // Scope lookup — pending keys can be show IDs while entries carry slugs.
   let showsBySlug = {};
+  let showKeyIndex = buildShowKeyIndex([]);
   try {
     const allShows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows || [];
     for (const s of allShows) {
       if (s.slug) showsBySlug[s.slug] = s;
       if (s.id) showsBySlug[s.id] = s;
     }
+    showKeyIndex = buildShowKeyIndex(allShows);
   } catch {
     // shows.json unavailable — scope guard degrades to no-op rather than
     // blocking the apply pipeline.
@@ -168,26 +171,6 @@ function main() {
       continue;
     }
 
-    // Safety: never auto-apply recouped:true without human review, EXCEPT when
-    // a trusted scraper source + high confidence + trusted publisher domain all
-    // line up (see isAutoApplyableClaim). This is the Friday-pipeline hot path.
-    if (hasRecoupedClaim(entry) && !SINGLE_SHOW && !isAutoApplyableClaim(entry)) {
-      console.log(`  🛡️  "${showId}" — has recouped claim, requires manual review (use --show=${showId})`);
-      skipped++;
-      continue;
-    }
-    const isClaimAutoApply = hasRecoupedClaim(entry) && isAutoApplyableClaim(entry);
-    if (isClaimAutoApply) {
-      console.log(`  ✅ "${showId}" — auto-applying recouped claim from trusted source ${entry.detectedBy} @ ${entry.sourceHost}`);
-    }
-
-    // Honor human review: humanReviewedDesignation:true means an operator
-    // explicitly set the designation via Notion-card review and the apply
-    // pipeline must never overwrite it. Same convention as humanCorrected-
-    // ClosingDate in scripts/lib/closing-date-guard.js. Without this guard,
-    // a manual "Ragtime is enhancement-deal recouped" correction can be
-    // clobbered the next Saturday when deep-research returns a 'low'-conf
-    // contradicting result.
     // commercial.json is keyed by SLUG (memory: feedback_commercial_slug_keys)
     // while pending entries are keyed by show ID. Resolve via entry.slug so an
     // ID-keyed pending entry (e.g. appropriate-2023) updates the existing
@@ -197,16 +180,58 @@ function main() {
     // before falling back to showId. The bare `entry.slug || showId` fallback
     // created 13 ID-keyed duplicate entries (doubt-2024 next to doubt, ...)
     // that were invisible on /biz and had to be hand-merged (2026-07-19).
-    const resolvedShow = showsBySlug[showId];
-    const commercialKey = entry.slug || (resolvedShow && resolvedShow.slug) || showId;
-    if (commercialKey === showId && !(resolvedShow && resolvedShow.slug === showId)) {
-      console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by show ID (validate-data will flag)`);
+    // BRO-4623: entry.slug is NOT trusted either. deep-research wrote show
+    // IDs into it (queue -> target -> analysis.slug), and this line's old
+    // `entry.slug || ...` form published the-balusters-2026 and
+    // school-girls-or-the-african-mean-girls-play-2026 next to their slug
+    // entries (RSS-poll runs 2026-09-26 / 2026-09-28). The shared resolver
+    // only accepts a real slug, or maps a show ID to its slug.
+    const { slug: commercialKey, show: keyShow, resolved } = resolveCommercialSlug(showId, entry, showKeyIndex);
+
+    // Safety: never auto-apply recouped:true without human review, EXCEPT when
+    // a trusted scraper source + high confidence + trusted publisher domain all
+    // line up (see isAutoApplyableClaim). This is the Friday-pipeline hot path.
+    // The production check runs against keyShow, the show whose commercial.json
+    // key the claim is written to, not scopeShow (resolveScopeShow trusts
+    // entry.slug and strips -YYYY, so it can name a different production).
+    const claimAutoApplyable = hasRecoupedClaim(entry) && isAutoApplyableClaim(entry, keyShow);
+    if (hasRecoupedClaim(entry) && !SINGLE_SHOW && !claimAutoApplyable) {
+      console.log(`  🛡️  "${showId}" — has recouped claim, requires manual review (use --show=${showId})`);
+      skipped++;
+      continue;
     }
+    const isClaimAutoApply = claimAutoApplyable;
+    if (isClaimAutoApply) {
+      console.log(`  ✅ "${showId}" — auto-applying recouped claim from trusted source ${entry.detectedBy} @ ${entry.sourceHost}`);
+    }
+
+    if (!resolved) {
+      console.warn(`  ⚠️ "${showId}" — no slug resolvable from shows.json; keying by "${commercialKey}" (validate-data will flag)`);
+    }
+
+    // Honor human review: humanReviewedDesignation:true means an operator
+    // explicitly set the designation via Notion-card review and the apply
+    // pipeline must never overwrite it. Same convention as humanCorrected-
+    // ClosingDate in scripts/lib/closing-date-guard.js. Without this guard,
+    // a manual "Ragtime is enhancement-deal recouped" correction can be
+    // clobbered the next Saturday when deep-research returns a 'low'-conf
+    // contradicting result.
     const existing = commercial.shows[commercialKey];
     if (existing && existing.humanReviewedDesignation === true && !SINGLE_SHOW) {
       console.log(`  🔒 "${showId}" — humanReviewedDesignation:true, skipping auto-apply`);
       skipped++;
       continue;
+    }
+    // A verified recoupment contradicts a loss designation. An inferred
+    // classify-stale-closures Fizzle is reset to TBD by buildCommercialEntry;
+    // any other Fizzle/Flop stays for a human (BRO-4623 item 5).
+    if (isClaimAutoApply && gate.recoupClaimDesignationAction(existing) === 'block') {
+      console.log(`  🔒 "${showId}" — recoupment claim contradicts "${existing.designation}" (not an inferred stale-closure label), requires manual review`);
+      skipped++;
+      continue;
+    }
+    if (isClaimAutoApply && gate.recoupClaimDesignationAction(existing) === 'reset') {
+      console.log(`  ↺ "${showId}" — inferred "${existing.designation}" (classify-stale-closures) contradicted by recoupment; resetting designation to TBD`);
     }
 
     // If already exists, update rather than skip (merge new findings).

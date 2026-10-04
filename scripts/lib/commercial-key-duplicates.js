@@ -83,4 +83,47 @@ function conflictingFields(idEntry, slugEntry) {
     .filter((f) => !contained(f, idEntry[f], slugEntry[f]));
 }
 
-module.exports = { findDuplicateKeyPairs, conflictingFields, isModelStampedField };
+/**
+ * Fields an ID-keyed duplicate may disagree on and still be dropped in
+ * favour of its slug sibling WITHOUT --prefer-slug (BRO-4623 item 4).
+ *
+ * Every ID-keyed entry is, by construction, a write that went to the wrong
+ * key (commercial.json is slug-keyed; ID keys never render on /biz). When
+ * what it holds beyond the slug entry is only commentary or bookkeeping,
+ * the slug entry is the record of truth and deleting the ID key loses no
+ * published data. The 2026-10-03 weekly publish was blocked by exactly this
+ * shape: the-balusters-2026 and school-girls-or-the-african-mean-girls-
+ * play-2026 (both "Nonprofit" like their slug entries) differed only in an
+ * AI-written note, a source list and firstAdded. Their sources were NOT
+ * merged in: the-balusters-2026's list cites an unrelated company's SEC
+ * exhibit (ufpi-20260730xex99d1.htm), and appending AI notes would put
+ * duplicate prose on the public show page. The discarded values are printed
+ * by the caller, so the run log keeps them.
+ *
+ * Anything substantive (capitalization, recouped, recoupedDate,
+ * recoupedSource, a real designation, ...) still refuses, as before.
+ */
+const SELF_HEAL_FIELDS = new Set([
+  'notes', 'sources', 'firstAdded',
+  // deep-research attempt bookkeeping on a stub it wrote under the wrong key
+  'researchAttempts', 'lastResearchedAt', 'researchTrigger',
+]);
+
+/**
+ * @param {object} idEntry
+ * @param {object} slugEntry
+ * @param {string[]} [conflicts] - conflictingFields(idEntry, slugEntry), recomputed when omitted
+ * @returns {boolean} true when the pair can be resolved by keeping the slug entry as-is
+ */
+function isSelfHealablePair(idEntry, slugEntry, conflicts) {
+  const fields = conflicts || conflictingFields(idEntry, slugEntry);
+  if (fields.length === 0) return true;
+  return fields.every((f) => {
+    if (SELF_HEAL_FIELDS.has(f)) return true;
+    // A placeholder "TBD" on the ID key says nothing the slug entry lacks.
+    if (f === 'designation') return idEntry.designation === 'TBD' || idEntry.designation == null;
+    return false;
+  });
+}
+
+module.exports = { findDuplicateKeyPairs, conflictingFields, isModelStampedField, isSelfHealablePair, SELF_HEAL_FIELDS };

@@ -10,6 +10,7 @@ scripts/audit-duplicate-shows.test.mjs
 scripts/audit-errexit-unguarded-substitution.test.mjs
 scripts/audit-false-balance.test.mjs
 scripts/audit-fetch-timeouts.test.mjs
+scripts/audit-fetchpage-cleanup.test.mjs
 scripts/audit-flagged-file-contamination.test.mjs
 scripts/audit-help-flag-safety.test.mjs
 scripts/audit-notion-schedule-coupling.test.mjs
@@ -442,6 +443,7 @@ tests/unit/commercial-queue.test.mjs
 tests/unit/commercial-rss-poll-data-commit.test.mjs
 tests/unit/commercial-rss-poll-push-timeout.test.mjs
 tests/unit/commercial-rss-poll.test.mjs
+tests/unit/commercial-strict-gate-dedupe-order.test.mjs
 tests/unit/commercial-weekly-push-timeout.test.mjs
 tests/unit/commercial-write-guard.test.mjs
 tests/unit/compute-critic-score.test.mjs
