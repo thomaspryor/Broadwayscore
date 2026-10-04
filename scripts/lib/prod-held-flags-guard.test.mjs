@@ -234,7 +234,7 @@ test('vercel-deploy.yml reads the pulled env file only in known ways', () => {
     'run: rm -rf .vercel/output',
   ];
   const unknown = wf.split('\n').map(l => l.trim())
-    .filter(l => !l.startsWith('#') && /\.env[.*]|(^|[\s'"(=])\.vercel\b/.test(l) && !known.includes(l));
+    .filter(l => !l.startsWith('#') && /\.env[.*]|(^|[^\w.-])\.vercel\b/.test(l) && !known.includes(l));
   assert.deepEqual(unknown, [], 'read NEXT_PUBLIC_FEATURES with featuresFromEnvFile; add other readers here once checked');
   assert.match(wf, /for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY; do/);
 });
