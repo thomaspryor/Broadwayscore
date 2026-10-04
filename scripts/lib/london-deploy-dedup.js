@@ -10,10 +10,21 @@
  * two different Jane Eyre / Much Ado productions (BRO-275).
  *
  * A row pair is only a duplicate when it is plausibly the SAME production:
- * same normalized venue, no conflicting start year, and neither row declares
+ * compatible venue (unknown/TBA, or matching), no conflicting start year, and neither row declares
  * the other as a prior run / transfer.
  */
-const { normalizeVenueName } = require('./venue-classification');
+const { venuesMatch } = require('./deduplication');
+
+// Discovery stubs carry "TBA"/empty venues — that is the duplicate shape this
+// dedup was added for (the Krapp's Last Tape / Ursula stubs), so an unknown
+// venue is compatible with any venue. Known venues must match, via the shared
+// alias-aware venuesMatch, or after dropping a " - Main Theatre" room suffix.
+const isUnknownVenue = (v) => !v || /^\s*(tba|tbc|tbd)\s*$/i.test(v);
+const stripRoom = (v) => String(v).replace(/\s+[-–]\s+[^-–]+$/, '');
+function venuesCompatible(a, b) {
+  if (isUnknownVenue(a) || isUnknownVenue(b)) return true;
+  return venuesMatch(a, b) || venuesMatch(stripRoom(a), stripRoom(b));
+}
 
 // Start year from dates, else the id's trailing -YYYY, so a row with no dates
 // is not a wildcard that matches every run at that venue.
@@ -31,10 +42,10 @@ function linksTo(a, b) {
 
 function isSameLondonProduction(a, b) {
   if (!a || !b || a.id === b.id) return false;
-  if (a.title !== b.title || a.category !== b.category) return false;
+  if (String(a.title).trim().toLowerCase() !== String(b.title).trim().toLowerCase()) return false;
+  if (a.category !== b.category) return false;
   if (linksTo(a, b) || linksTo(b, a)) return false;
-  if (!a.venue || !b.venue) return false;
-  if (normalizeVenueName(a.venue) !== normalizeVenueName(b.venue)) return false;
+  if (!venuesCompatible(a.venue, b.venue)) return false;
   const ya = startYear(a);
   const yb = startYear(b);
   if (ya && yb && ya !== yb) return false;

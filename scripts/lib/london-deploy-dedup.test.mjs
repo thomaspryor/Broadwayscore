@@ -62,3 +62,15 @@ test('a dateless row is not a wildcard: its id year must agree', () => {
   const b = row('v-off-west-end-2026', 'V', 'off-west-end', 'Globe Theatre', 'announced', null);
   assert.equal(isSameLondonProduction(a, b), false);
 });
+
+test('a TBA discovery stub of the same run is a duplicate (the original Ursula/Krapp shape)', () => {
+  const a = row('unfortunate-off-west-end-2026', 'Unfortunate', 'off-west-end', 'The Other Palace - Main Theatre', 'open', '2026-01-10');
+  const b = row('unfortunate-west-end-2026', 'unfortunate', 'off-west-end', 'TBA', 'upcoming', null);
+  assert.deepEqual([...findLondonDuplicatesToRemove([a, b], {})], ['unfortunate-west-end-2026']);
+});
+
+test('room suffix and venue aliases still match', () => {
+  const a = row('u-1-2026', 'U', 'off-west-end', 'The Other Palace - Main Theatre', 'open', '2026-01-10');
+  const b = row('u-2-2026', 'U', 'off-west-end', 'The Other Palace', 'upcoming', null);
+  assert.equal(isSameLondonProduction(a, b), true);
+});

@@ -30,3 +30,13 @@ test('map chains must end at a live slug; cycles and retired ends are dead; ids 
   ];
   assert.deepEqual(findDeadShowRedirects(redirects, live, m, new Set(['new-show-2026'])).map(r => r.source), ['/show/2', '/show/3']);
 });
+
+test('a destination that is another live hardcoded redirect source is alive', () => {
+  const redirects = [
+    { source: '/show/la-traviata', destination: '/show/la-traviata-off-broadway' },
+    { source: '/show/la-traviata-off-broadway', destination: '/opera/la-traviata' },
+    { source: '/show/q', destination: '/show/r' },
+    { source: '/show/r', destination: '/show/gone' },
+  ];
+  assert.deepEqual(findDeadShowRedirects(redirects, live, {}).map(r => r.source), ['/show/q', '/show/r']);
+});

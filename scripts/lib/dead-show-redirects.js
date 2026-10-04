@@ -30,7 +30,19 @@ function isDeadShowRedirect(redirect, liveSlugs, slugRedirectMap, liveIds) {
 }
 
 function findDeadShowRedirects(redirects, liveSlugs, slugRedirectMap, liveIds) {
-  return (redirects || []).filter(r => isDeadShowRedirect(r, liveSlugs, slugRedirectMap, liveIds));
+  const list = redirects || [];
+  // A destination that is itself the source of another hardcoded redirect is
+  // alive while that redirect is alive (e.g. /show/la-traviata →
+  // /show/la-traviata-off-broadway → /opera/...). Iterate to a fixed point.
+  let dead = new Set(list.filter(r => isDeadShowRedirect(r, liveSlugs, slugRedirectMap, liveIds)));
+  for (let changed = true; changed;) {
+    changed = false;
+    const aliveSources = new Set(list.filter(r => !dead.has(r)).map(r => r.source));
+    for (const r of dead) {
+      if (aliveSources.has(r.destination.replace(/\/$/, ''))) { dead.delete(r); changed = true; }
+    }
+  }
+  return list.filter(r => dead.has(r));
 }
 
 module.exports = { isDeadShowRedirect, findDeadShowRedirects };

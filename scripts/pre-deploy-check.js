@@ -240,6 +240,14 @@ try {
     const slugMapPath = path.join(__dirname, '..', 'data', 'slug-redirects-compact.json');
     const vercelRaw = fs.readFileSync(vercelPath, 'utf8');
     const vercelCfg = JSON.parse(vercelRaw);
+    // Regenerate the map from the shows.json written above, so a rename since
+    // the last committed map can't make a working redirect look dead (prebuild
+    // regenerates it again later; this run is idempotent).
+    try {
+      require('child_process').execFileSync(process.execPath, [path.join(__dirname, 'build-slug-redirects.js')], { stdio: 'ignore' });
+    } catch (e) {
+      console.warn(`⚠️  build-slug-redirects.js failed (${e.message}) — dead-redirect check uses the committed map`);
+    }
     const slugMap = fs.existsSync(slugMapPath) ? JSON.parse(fs.readFileSync(slugMapPath, 'utf8')) : {};
     const dead = findDeadShowRedirects(vercelCfg.redirects, new Set(shows.map(s => s.slug)), slugMap, new Set(shows.map(s => s.id)));
     if (dead.length > 0) {
