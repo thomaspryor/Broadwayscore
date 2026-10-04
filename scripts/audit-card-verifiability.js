@@ -250,17 +250,34 @@ async function reconcileCheckDefectsWithComments(flagged, auditFn, opts = {}) {
     if (!cache.has(p)) cache.set(p, existsOnOriginMain(p, opts));
     return cache.get(p);
   };
+  // BRO-3619: once Linear rate-limits a re-fetch (linear-client already spent
+  // its ~4min retry budget on it), stop re-fetching — each further card would
+  // burn the same budget and a ~140-card full-backlog sweep would blow the
+  // workflow's timeout. Shared across both bucket passes via opts.
+  const rateLimit = opts.rateLimitState || { hit: false };
   const stillFlagged = [];
+  // Fail toward reporting when a card can't be re-fetched — but only into the
+  // bucket it was originally flagged in. The both-buckets caller passes the
+  // UNION to each pass, so pushing `card` unconditionally listed a vacuous card
+  // as missing-path too (and vice versa) on any fetch failure (BRO-3619).
+  const belongsHere = opts.originallyFlaggedHere || (() => true);
+  const keepUnverified = (card) => { if (belongsHere(card)) stillFlagged.push(card); };
   for (const card of flagged) {
+    if (rateLimit.hit) { keepUnverified(card); continue; }
     let issue;
     try {
       issue = await getIssue(card.id);
     } catch (err) {
-      log(`[audit-card-verifiability] WARN could not re-fetch ${card.id} with comments: ${String(err.message).slice(0, 120)}`);
-      stillFlagged.push(card); // fail toward reporting, never toward silently clearing
+      if (err && err.rateLimited) {
+        rateLimit.hit = true;
+        log(`[audit-card-verifiability] WARN Linear rate-limited re-fetching ${card.id} — skipping comment re-checks for the remaining flagged cards (reported as still flagged)`);
+      } else {
+        log(`[audit-card-verifiability] WARN could not re-fetch ${card.id} with comments: ${String(err.message).slice(0, 120)}`);
+      }
+      keepUnverified(card); // fail toward reporting, never toward silently clearing
       continue;
     }
-    if (!issue) { stillFlagged.push(card); continue; }
+    if (!issue) { keepUnverified(card); continue; }
     const gate = evaluateVerifiability(issue.description || '', sortedCommentBodies(issue));
     if (!gate.armed || !isCheckPathCommand(gate.cmd)) continue; // corrected away from a file-naming claim entirely
     const recheck = auditFn([{ id: card.id, name: card.name, url: card.url, cmd: gate.cmd }], existsFn);
@@ -310,9 +327,9 @@ async function reconcileCheckDefectsBothBuckets({ missing, vacuous }, opts = {})
     if (!issueCache.has(id)) issueCache.set(id, Promise.resolve().then(() => baseGetIssue(id)));
     return issueCache.get(id);
   };
-  const sharedOpts = { ...opts, getIssue };
-  const stillMissing = await reconcileCheckDefectsWithComments(union, auditCardCheckPaths, sharedOpts);
-  const stillVacuous = await reconcileCheckDefectsWithComments(union, auditVacuousChecks, sharedOpts);
+  const sharedOpts = { ...opts, getIssue, rateLimitState: opts.rateLimitState || { hit: false } };
+  const stillMissing = await reconcileCheckDefectsWithComments(union, auditCardCheckPaths, { ...sharedOpts, originallyFlaggedHere: c => missing.includes(c) });
+  const stillVacuous = await reconcileCheckDefectsWithComments(union, auditVacuousChecks, { ...sharedOpts, originallyFlaggedHere: c => vacuous.includes(c) });
   return { missing: stillMissing, vacuous: stillVacuous };
 }
 

@@ -335,3 +335,21 @@ test('attachMissingCheckPaths: populates BOTH buckets and never leaves vacuousCh
   assert.deepEqual(report.missingCheckPaths, []);
   assert.deepEqual(report.vacuousChecks, []);
 });
+
+test('reconcileCheckDefectsBothBuckets: stops re-fetching after a rate-limit and keeps the rest flagged (BRO-3619)', async () => {
+  const fetches = [];
+  const initial = {
+    missing: [],
+    vacuous: ['BRO-1', 'BRO-2', 'BRO-3'].map(id => ({ id, name: id, url: id, cmd: 'test -f scripts/health-check.js', kind: 'test-f-satisfied' })),
+  };
+  const getIssue = async (id) => {
+    fetches.push(id);
+    const err = new Error('Linear HTTP 429');
+    err.rateLimited = true;
+    throw err;
+  };
+  const out = await reconcileCheckDefectsBothBuckets(initial, { getIssue, pathExistsOnOriginMain: () => true });
+  assert.deepEqual(fetches, ['BRO-1'], 'one rate-limited fetch, then no more across either pass');
+  assert.deepEqual(out.vacuous.map(c => c.id), ['BRO-1', 'BRO-2', 'BRO-3'], 'fail toward reporting');
+  assert.deepEqual(out.missing, [], 'an unverified vacuous card must not leak into the missing-path bucket');
+});
