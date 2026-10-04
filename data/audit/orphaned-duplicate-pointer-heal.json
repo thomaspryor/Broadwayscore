@@ -1,8 +1,15 @@
 {
-  "generated": "2026-10-04T01:38:36.349Z",
+  "generated": "2026-10-04T02:48:01.478Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 19,
+  "count": 21,
   "orphans": [
+    {
+      "showId": "33-variations-2009",
+      "loserFile": "usatoday--unknown.json",
+      "targetFile": "usatoday--usa-today-staff.json",
+      "reason": "orphaned-duplicate-heal: usatoday--usa-today-staff.json was flagged invalid after usatoday--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
     {
       "showId": "all-my-sons-2019",
       "loserFile": "vulture--jesse-green.json",
@@ -36,6 +43,13 @@
       "loserFile": "guardian--jesse-oxfeld.json",
       "targetFile": "guardian--david-jays.json",
       "reason": "orphaned-duplicate-heal: guardian--david-jays.json was flagged invalid after guardian--jesse-oxfeld.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "liberation-2025",
+      "loserFile": "new-york-notebook--unknown.json",
+      "targetFile": "vulture--sandy-macdonald.json",
+      "reason": "orphaned-duplicate-heal: vulture--sandy-macdonald.json was flagged invalid after new-york-notebook--unknown.json was pointed at it",
       "field": "duplicateOf"
     },
     {
