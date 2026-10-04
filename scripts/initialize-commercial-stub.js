@@ -56,7 +56,9 @@ function makeStub() {
     weeklyRunningCost: null,
     recouped: false,
     recoupedSource: null,
-    notes: 'Auto-enrolled stub; awaiting model + curation.',
+    // notes render verbatim on /biz; a placeholder sentence there read as
+    // internal tooling (BRO-4623), and commercial-record-checks.js now rejects it.
+    notes: null,
     sources: [],
   };
 }

@@ -22,6 +22,14 @@ const VALID_COST_METHODOLOGIES = [
 const VALID_PRODUCTION_TYPES = ['original', 'tour-stop', 'return-engagement', 'international-transfer', 'International Transfer', 'enhancement'];
 const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
 
+// Fields /biz renders verbatim. weeklyRunningCostSource is not here: its
+// figures are estimates and the UI filters that line at render time.
+const PUBLIC_TEXT_FIELDS = ['notes', 'capitalizationSource', 'recoupedSource'];
+// Research-pipeline wording that reached the public page (BRO-4623): "SEC
+// filings (GPT Deep Research)", "Trade press / deep research synthesis",
+// "Auto-enrolled stub; awaiting model + curation", "Auto-designated ...".
+const INTERNAL_TEXT_RE = /\bGPT\b|\bdeep[ -]research\b|\bDR Batch\b|\bauto-(?:enrolled|designated)\b|\bawaiting model\b|\bresearch synthesis\b|\bLLM\b/i;
+
 /**
  * @param {string} showId - the commercial.json key (a shows.json slug)
  * @param {object} show - the commercial record
@@ -111,6 +119,21 @@ function commercialRecordErrors(showId, show, ctx = {}) {
   }
   if (LOSS_DESIGNATIONS.includes(show.designation) && show.recouped !== false) {
     out.push(`commercial.json: "${showId}" has designation "${show.designation}" but recouped=${JSON.stringify(show.recouped)} (policy: loss-designations require recouped=false with hard citation; demote to "Nonprofit" or "TBD" if outcome unknown)`);
+  }
+  // A loss designation is a final outcome ("closed without recouping"). On a
+  // show that is still running it is a guess shown as a result (two-strangers
+  // was a "Flop" while open, BRO-4623). Skipped without the shows.json record.
+  const runStatus = ctx.showRecord && ctx.showRecord.status;
+  if (LOSS_DESIGNATIONS.includes(show.designation) && runStatus && runStatus !== 'closed') {
+    out.push(`commercial.json: "${showId}" has designation "${show.designation}" but the show's status is "${runStatus}" (loss designations are for closed runs; use "TBD" until it closes)`);
+  }
+
+  // Public text must read as a citation, not as research-pipeline notes.
+  for (const field of PUBLIC_TEXT_FIELDS) {
+    const text = show[field];
+    if (typeof text === 'string' && INTERNAL_TEXT_RE.test(text)) {
+      out.push(`commercial.json: "${showId}" ${field} contains internal research wording ("${text.match(INTERNAL_TEXT_RE)[0]}"); /biz shows this field verbatim, so rewrite it as a public citation or set it to null`);
+    }
   }
 
   // nonprofitOrg must match the show's venue. Catches the inverse of the
@@ -248,4 +271,4 @@ function commercialFileErrors(data, showsList) {
   return out;
 }
 
-module.exports = { commercialRecordErrors, commercialFileErrors, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES };
+module.exports = { commercialRecordErrors, commercialFileErrors, VALID_COST_METHODOLOGIES, VALID_PRODUCTION_TYPES, INTERNAL_TEXT_RE, PUBLIC_TEXT_FIELDS };
