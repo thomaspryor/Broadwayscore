@@ -342,6 +342,25 @@ function applyUrlChangeInvariant(existing, merged, { fileLabel = '?', preserveFi
     cleared.push(field);
   }
 
+  // BRO-3122. A SUPPRESSING manual tier (invalid/stub/excerpt/truncated) is an
+  // adjudication of the OLD url's content. It survived the URL move (the field
+  // is not URL-derived by name), so a recovery job that repointed a flagged
+  // placeholder onto the real, not-yet-published review url planted a permanent
+  // suppressor there (jane-eyre-off-west-end-2026 london-box-office--phil-willmott,
+  // 2026-09-08). 'complete' is the opposite kind of override (operator-trusted
+  // text) and stays. Same carried-over rule as the loop above: a fresh value
+  // supplied by the incoming write survives.
+  if (!(preserveFields && preserveFields.has('manualContentTier'))
+    && typeof existing.manualContentTier === 'string'
+    && existing.manualContentTier !== 'complete') {
+    if (merged.manualContentTier === undefined) {
+      cleared.push('manualContentTier'); // omission
+    } else if (_valuesEqual(merged.manualContentTier, existing.manualContentTier)) {
+      delete merged.manualContentTier;
+      cleared.push('manualContentTier');
+    }
+  }
+
   // BRO-2740, second pass: provenance is cleared AS A UNIT with the flag, not
   // value-by-value. The loop above only deletes a field whose post-merge value
   // is IDENTICAL to the on-disk one — a deliberate rule, because a fresh value

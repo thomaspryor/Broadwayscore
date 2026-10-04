@@ -842,3 +842,50 @@ test('flip-flop between a named non-review url and a review url resolves to the 
   assert.equal(JSON.parse(fs.readFileSync(human, 'utf8')).url, news);
   fs.rmSync(reviewTextsDir, { recursive: true, force: true });
 });
+
+// BRO-3122: fixture mirrors jane-eyre-off-west-end-2026 london-box-office--phil-willmott
+// (deleted from the corpus after the incident), repointed by google-serp-reason-recovery.
+const JANE_EYRE_PLACEHOLDER = {
+  showId: 'jane-eyre-off-west-end-2026',
+  outletId: 'london-box-office',
+  outlet: 'London Box Office',
+  criticName: 'Phil Willmott',
+  url: 'https://www.londonboxoffice.co.uk/news/post/jane-eyre-review',
+  fullText: null,
+  wrongProduction: true,
+  wrongProductionReason: 'LBO roundup excerpt describes the Bristol Old Vic production',
+  manualContentTier: 'invalid',
+  contentTier: 'invalid',
+  aggregatorStars: 4,
+  originalScoreNormalized: 80,
+};
+const SOUTHWARK_URL = 'https://www.londonboxoffice.co.uk/news/post/review-jane-eyre-southwark-playhouse-elephant';
+
+test('BRO-3122: url-recovery onto a new url clears a suppressing manualContentTier (real updateFileUrlWithInvariant path)', () => {
+  const { updateFileUrlWithInvariant } = require('./url-change-invariant.js');
+  const dir = fs.mkdtempSync(path.join(os.tmpdir(), 'url-invariant-bro3122-'));
+  const file = makeFixture(dir, JANE_EYRE_PLACEHOLDER.showId, 'london-box-office--phil-willmott.json', JANE_EYRE_PLACEHOLDER);
+  const out = quiet(() => updateFileUrlWithInvariant(file, SOUTHWARK_URL, { urlDiscoveryMethod: 'google-serp-reason-recovery' }));
+  assert.equal(out.url, SOUTHWARK_URL);
+  assert.equal(out.manualContentTier, undefined);
+  assert.ok(out._urlChangedClear.cleared.includes('manualContentTier'));
+  const onDisk = JSON.parse(fs.readFileSync(file, 'utf8'));
+  assert.equal(onDisk.manualContentTier, undefined);
+  assert.equal(onDisk.wrongProduction, undefined);
+});
+
+test('BRO-3122: manualContentTier=complete (operator-trusted) survives a url change; a fresh incoming value survives too', () => {
+  const keep = { ...JANE_EYRE_PLACEHOLDER, manualContentTier: 'complete' };
+  const m1 = { ...keep, url: SOUTHWARK_URL };
+  quiet(() => applyUrlChangeInvariant(keep, m1));
+  assert.equal(m1.manualContentTier, 'complete');
+  const m2 = { ...JANE_EYRE_PLACEHOLDER, url: SOUTHWARK_URL, manualContentTier: 'stub' };
+  quiet(() => applyUrlChangeInvariant(JANE_EYRE_PLACEHOLDER, m2));
+  assert.equal(m2.manualContentTier, 'stub');
+});
+
+test('BRO-3122: replacement-style write (omits manualContentTier) records it in the breadcrumb', () => {
+  const m = { showId: 'x', outletId: 'london-box-office', url: SOUTHWARK_URL };
+  quiet(() => applyUrlChangeInvariant(JANE_EYRE_PLACEHOLDER, m));
+  assert.ok(m._urlChangedClear.cleared.includes('manualContentTier'));
+});
