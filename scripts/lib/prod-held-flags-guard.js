@@ -83,6 +83,9 @@ function featuresFromEnvFile(envText) {
     if (m[1] !== 'NEXT_PUBLIC_FEATURES') return;
     // The value runs on past any U+2028/U+2029 to the end of the line.
     const value = [m[2], ...rest].join(' ').trim();
+    // Next's dotenv lets whitespace (\n and U+2028 included) run from = to a quoted
+    // value on a later line. vercel pull writes an empty value as "".
+    if (!value) throw new Error(`line ${i + 1}: NEXT_PUBLIC_FEATURES has no value, so Next's dotenv may take one from a later line`);
     if (opensQuote(value)) throw new Error(`line ${i + 1}: NEXT_PUBLIC_FEATURES opens a quote it doesn't close, so its value may continue on later lines`);
     values.push(value);
   });

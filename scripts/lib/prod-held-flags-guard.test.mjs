@@ -86,6 +86,10 @@ const ENV_FIXTURES = [
   ['NEXT_PUBLIC_FEATURES="westEnd"\nZ="x"\u2028NEXT_PUBLIC_FEATURES\u2028=commercial\n', 'refused'],
   ['Z="x"\u2028NEXT_PUBLIC_FEATURES:\u2028commercial\n', 'refused'],
   ['NEXT_PUBLIC_FEATURES\u2028=commercial\n', 'refused'],
+  // An empty value lets Next's dotenv take a quoted value from a later line.
+  ['NEXT_PUBLIC_FEATURES=\n\u2028"commercial"\n', 'refused'],
+  ["# Created by Vercel CLI\nA=\"1\"\nNEXT_PUBLIC_FEATURES= \n \u2029'commercial'\nZ=\"2\"\n", 'refused'],
+  ['NEXT_PUBLIC_FEATURES=""\n', 'clean'],
   // A lone \r is a line break to Next's dotenv; vercel pull escapes it.
   ['A="x"\u2028NEXT_PUBLIC_FEATURES=commercial\rB=2\n', 'refused'],
   ['# note\rNEXT_PUBLIC_FEATURES=commercial\n', 'refused'],
@@ -230,7 +234,7 @@ test('vercel-deploy.yml reads the pulled env file only in known ways', () => {
     'run: rm -rf .vercel/output',
   ];
   const unknown = wf.split('\n').map(l => l.trim())
-    .filter(l => !l.startsWith('#') && /\.env\.production|\.vercel\//.test(l) && !known.includes(l));
+    .filter(l => !l.startsWith('#') && /\.env[.*]|(^|[\s'"(=])\.vercel\b/.test(l) && !known.includes(l));
   assert.deepEqual(unknown, [], 'read NEXT_PUBLIC_FEATURES with featuresFromEnvFile; add other readers here once checked');
   assert.match(wf, /for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY; do/);
 });
