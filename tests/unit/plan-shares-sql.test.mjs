@@ -52,3 +52,27 @@ test('plan_shares SQL assertions pass on a local Postgres', (t) => {
   assert.match(out, /all assertions passed/);
   assert.match(out, /refused with SQLSTATE 25006/, 'the read-only (GET) refusal assertion must have run');
 });
+
+// Shared Diary (BRO-4566): same harness, every share migration in order (the
+// diary migration also repoints plan_shares at the shared token guard, so it
+// needs the plans migrations under it).
+const diaryTests = join(root, 'tests/sql/diary-shares.test.sql');
+const shareMigrations = readdirSync(migDir)
+  .filter((f) => f.endsWith('.sql'))
+  .sort()
+  .filter((f) => /plan_shares|diary_shares|share_token_guard/.test(readFileSync(join(migDir, f), 'utf-8')))
+  .map((f) => join(migDir, f));
+
+test('diary_shares SQL assertions pass on a local Postgres', (t) => {
+  assert.ok(shareMigrations.some((f) => /20261004_diary_shares\.sql$/.test(f)), 'diary migration found');
+  if (!hasPostgres()) {
+    if (process.env.CI) assert.fail('no PostgreSQL server binaries on this CI runner; the SQL tests did not run');
+    t.skip('no local PostgreSQL server binaries (set PG_BIN to run)');
+    return;
+  }
+  const r = spawnSync('bash', [harness, ...shareMigrations, diaryTests], { encoding: 'utf-8', timeout: 240_000 });
+  const out = `${r.stdout}\n${r.stderr}`;
+  assert.equal(r.status, 0, `harness failed:\n${out.slice(-3000)}`);
+  assert.match(out, /all assertions passed/);
+  assert.match(out, /with notes off, NO row carries a text key/, 'the notes-privacy assertion must have run');
+});
