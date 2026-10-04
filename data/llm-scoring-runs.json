@@ -1,37 +1,5 @@
 [
   {
-    "startedAt": "2026-10-04T07:53:29.666Z",
-    "completedAt": "2026-10-04T07:53:45.722Z",
-    "totalReviews": 46538,
-    "processed": 0,
-    "skipped": 46532,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 26432,
-      "output": 857,
-      "total": 73586
-    },
-    "costUsd": 0.10672480000000001,
-    "runId": "37187018995",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-04T07:53:47.199Z",
-    "completedAt": "2026-10-04T07:53:48.881Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37187018995",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-04T08:03:42.512Z",
     "completedAt": "2026-10-04T08:03:47.948Z",
     "totalReviews": 46538,
@@ -298629,6 +298597,44 @@
     },
     "costUsd": 0,
     "runId": "37216680772",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T16:32:01.266Z",
+    "completedAt": "2026-10-04T16:32:59.032Z",
+    "totalReviews": 46578,
+    "processed": 5,
+    "skipped": 46561,
+    "errors": 1,
+    "tokensUsed": {
+      "input": 77260,
+      "output": 3291,
+      "total": 207285
+    },
+    "costUsd": 0.3098134,
+    "runId": "37216909978",
+    "errorDetails": [
+      {
+        "showId": "table-17-off-west-end-2026",
+        "outletId": "londontheatredirect",
+        "error": "input_validation_failed:body_too_short"
+      }
+    ]
+  },
+  {
+    "startedAt": "2026-10-04T16:33:01.107Z",
+    "completedAt": "2026-10-04T16:33:24.385Z",
+    "totalReviews": 10,
+    "processed": 10,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 28291,
+      "output": 2343,
+      "total": 30634
+    },
+    "costUsd": 0.0766631,
+    "runId": "37216909978",
     "errorDetails": []
   }
 ]
