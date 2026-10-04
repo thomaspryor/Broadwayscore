@@ -90,3 +90,16 @@ test('toSharedDiaryEntries orders like get_shared_diary and keeps the owner\'s o
   assert.equal(entries[2].text, 'n');
   assert.ok(!('text' in entries[1]), 'blank owner note becomes no text key');
 });
+
+test('out-of-order rows still give one band per year, newest first, undated last', () => {
+  const view = buildSharedDiaryView(payload([
+    { show_id: 'gypsy', date_seen: null, rating: 3 },
+    { show_id: 'wicked', date_seen: '2024-05-01', rating: 4 },
+    { show_id: 'hamilton', date_seen: '2025-01-02', rating: 5 },
+    { show_id: 'six-we', date_seen: '2024-12-30', rating: 2 },
+    { show_id: 'wicked', date_seen: '2025-06-01', rating: 4.5 },
+  ]), SHOWS, NOW);
+  assert.deepEqual(view.groups.map(g => g.year), ['2025', '2024', null]);
+  assert.deepEqual(view.groups[0].entries.map(e => e.date), ['2025-06-01', '2025-01-02']);
+  assert.deepEqual(view.groups[1].entries.map(e => e.date), ['2024-12-30', '2024-05-01']);
+});
