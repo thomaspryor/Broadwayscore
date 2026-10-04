@@ -8,6 +8,7 @@ const {
   reconcileMissingCheckPathsWithComments,
   reconcileVacuousChecksWithComments,
   reconcileCheckDefectsBothBuckets,
+  rearmRefusedFromComments,
 } = require('./audit-card-verifiability.js');
 
 test('evaluateCard: armed card carries no reason', () => {
@@ -387,4 +388,68 @@ test('reconcileCheckDefectsBothBuckets: a rate-limited batch keeps every card fl
   });
   assert.deepEqual(single, []);
   assert.deepEqual(out.vacuous.map(c => c.id), ['BRO-1']);
+});
+
+test('reconcileCheckDefectsBothBuckets: a status-only HTTP 429 (no rateLimited flag) also stops re-fetching (BRO-3619)', async () => {
+  const fetches = [];
+  const initial = { missing: [], vacuous: ['BRO-1', 'BRO-2'].map(id => ({ id, name: id, url: id, cmd: 'test -f scripts/health-check.js', kind: 'test-f-satisfied' })) };
+  const out = await reconcileCheckDefectsBothBuckets(initial, {
+    getIssue: async (id) => { fetches.push(id); const e = new Error('Linear API HTTP 429'); e.status = 429; throw e; },
+    pathExistsOnOriginMain: () => true,
+  });
+  assert.deepEqual(fetches, ['BRO-1']);
+  assert.deepEqual(out.vacuous.map(c => c.id), ['BRO-1', 'BRO-2']);
+});
+
+test('reconcileCheckDefectsBothBuckets: a card moved between buckets survives a rate limit hit later in pass 1 (BRO-3619)', async () => {
+  // BRO-9 (missing-path) is corrected by comment to a vacuous `test -f`; the
+  // fetch for BRO-10 then 429s. Pass 2 must still classify the already-
+  // fetched BRO-9 as vacuous instead of skipping it.
+  const initial = {
+    missing: [
+      { id: 'BRO-9', name: 'Phantom', url: 'u9', cmd: 'test -f docs/phantom.md', missingPaths: ['docs/phantom.md'] },
+      { id: 'BRO-10', name: 'Other', url: 'u10', cmd: 'test -f docs/other.md', missingPaths: ['docs/other.md'] },
+    ],
+    vacuous: [],
+  };
+  const getIssue = async (id) => {
+    if (id === 'BRO-10') { const e = new Error('429'); e.rateLimited = true; throw e; }
+    return { identifier: id, description: '## Acceptance criteria\n`test -f docs/phantom.md`', comments: { nodes: [{ body: 'VERIFY: test -f scripts/health-check.js', createdAt: '2026-09-03T00:00:00.000Z' }] } };
+  };
+  const out = await reconcileCheckDefectsBothBuckets(initial, { getIssue, pathExistsOnOriginMain: (p) => p === 'scripts/health-check.js' });
+  assert.deepEqual(out.vacuous.map(c => c.id), ['BRO-9']);
+  assert.deepEqual(out.missing.map(c => c.id), ['BRO-10']);
+});
+
+test('rearmRefusedFromComments: a correction comment arms a refused card; unfetched cards keep their verdict (BRO-3619)', async () => {
+  const issues = [
+    { identifier: 'BRO-1', title: 'a', url: 'u1', priority: 2, description: '## Acceptance criteria\nfeels better' },
+    { identifier: 'BRO-2', title: 'b', url: 'u2', priority: 3, description: '## Acceptance criteria\nfeels better' },
+    { identifier: 'BRO-3', title: 'c', url: 'u3', priority: 1, description: '## Acceptance criteria\n`npx tsc --noEmit`' },
+  ];
+  const evaluated = issues.map(evaluateLinearIssue);
+  assert.deepEqual(evaluated.map(e => e.armed), [false, false, true]);
+  const asked = [];
+  const res = await rearmRefusedFromComments(evaluated, issues, {
+    getIssues: async (ids) => { asked.push(...ids); return [{ identifier: 'BRO-1', description: issues[0].description, comments: { nodes: [{ body: 'VERIFY: npx tsc --noEmit', createdAt: '2026-10-01T00:00:00Z' }] } }]; },
+  });
+  assert.deepEqual(asked, ['BRO-1', 'BRO-2'], 'only refused cards are re-fetched');
+  assert.equal(res.incomplete, false);
+  assert.equal(evaluated[0].armed, true);
+  assert.equal(evaluated[0].priority, 'High', 'priority survives the re-evaluation');
+  assert.equal(evaluated[1].armed, false);
+});
+
+test('rearmRefusedFromComments: a failed batch is reported incomplete and keeps partial results', async () => {
+  const issues = [
+    { identifier: 'BRO-1', title: 'a', url: 'u1', description: 'nothing' },
+    { identifier: 'BRO-2', title: 'b', url: 'u2', description: 'nothing' },
+  ];
+  const evaluated = issues.map(evaluateLinearIssue);
+  const res = await rearmRefusedFromComments(evaluated, issues, {
+    getIssues: async () => { const e = new Error('429'); e.status = 429; e.partial = [{ identifier: 'BRO-1', description: '', comments: { nodes: [{ body: 'VERIFY: owner-judgment', createdAt: '2026-10-01T00:00:00Z' }] } }]; throw e; },
+  });
+  assert.equal(res.incomplete, true);
+  assert.equal(evaluated[0].armed, true);
+  assert.equal(evaluated[1].armed, false);
 });

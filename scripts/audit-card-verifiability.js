@@ -46,7 +46,11 @@ const { redactEmails } = require('./lib/pii-scan.js');
 // supersedes it here (both buckets, one fetch). The wrapper stays exported from the lib
 // for any other caller.
 const { findCardCheckPathDefects, isCheckPathCommand, auditCardCheckPaths, auditVacuousChecks, pathExistsOnOriginMain } = require('./lib/card-premises-auditor.js');
-const { sortedCommentBodies, priorityLabel } = require('./lib/linear-dispatch.js');
+const { sortedCommentBodies, priorityLabel, sortIssuesByPriority } = require('./lib/linear-dispatch.js');
+
+// BRO-3619: linear-client marks a GraphQL-body rate limit `rateLimited`, but a
+// real HTTP 429 that exhausted its retries carries only `status: 429`.
+const isRateLimitError = (err) => Boolean(err && (err.rateLimited || err.status === 429));
 // Lazy-safe to require unconditionally — same reasoning as
 // enrich-card-acceptance.js: getApiKey() is only called inside an actual
 // graphql() call, so a Notion-only sweep never needs LINEAR_API_KEY set.
@@ -176,7 +180,11 @@ function writeReport(report, reportPath = REPORT_PATH) {
 // priorityLabel — BRO-3619: health-check.js's digest row prints it, and a
 // hard-coded null rendered every Linear card as "[?]".
 function evaluateLinearIssue(issue) {
-  const gate = evaluateVerifiability(issue.description || '');
+  // Comments count when the issue carries them (BRO-3619: the refused-bucket
+  // re-check below fetches them) — linear-next's dispatch gate reads
+  // description + comments, so a card armed by a correction comment is
+  // dispatchable and must not be reported as refused.
+  const gate = evaluateVerifiability(issue.description || '', sortedCommentBodies(issue));
   return {
     id: issue.identifier,
     name: issue.title,
@@ -254,6 +262,11 @@ async function reconcileCheckDefectsWithComments(flagged, auditFn, opts = {}) {
   // burn the same budget and a ~140-card full-backlog sweep would blow the
   // workflow's timeout. Shared across both bucket passes via opts.
   const rateLimit = opts.rateLimitState || { hit: false };
+  // Cards whose issue is already in hand (the both-buckets caller's cache)
+  // are still classified after a rate limit — only NEW fetches stop. Else a
+  // card corrected from one bucket into the other in pass 1 would vanish
+  // from both when pass 2 skipped it (ship-check finding).
+  const alreadyFetched = opts.alreadyFetched || (() => false);
   const stillFlagged = [];
   // Fail toward reporting when a card can't be re-fetched — but only into the
   // bucket it was originally flagged in. The both-buckets caller passes the
@@ -262,12 +275,12 @@ async function reconcileCheckDefectsWithComments(flagged, auditFn, opts = {}) {
   const belongsHere = opts.originallyFlaggedHere || (() => true);
   const keepUnverified = (card) => { if (belongsHere(card)) stillFlagged.push(card); };
   for (const card of flagged) {
-    if (rateLimit.hit) { keepUnverified(card); continue; }
+    if (rateLimit.hit && !alreadyFetched(card.id)) { keepUnverified(card); continue; }
     let issue;
     try {
       issue = await getIssue(card.id);
     } catch (err) {
-      if (err && err.rateLimited) {
+      if (isRateLimitError(err)) {
         rateLimit.hit = true;
         log(`[audit-card-verifiability] WARN Linear rate-limited re-fetching ${card.id} — skipping comment re-checks for the remaining flagged cards (reported as still flagged)`);
       } else {
@@ -299,6 +312,25 @@ function reconcileMissingCheckPathsWithComments(flagged, opts = {}) {
 // vacuous forever, and any repair sweep would act on a card that is already fine.
 function reconcileVacuousChecksWithComments(flagged, opts = {}) {
   return reconcileCheckDefectsWithComments(flagged, auditVacuousChecks, opts);
+}
+
+// BRO-3619: batch-fetch issues (with comments) into a Map keyed by
+// identifier. getIssuesWithComments attaches whatever chunks DID land to a
+// thrown error as err.partial, so a late-chunk 429 keeps the earlier chunks.
+// Returns { error } — never throws — so callers decide how to degrade.
+async function prefetchIssues(getIssues, ids, cache) {
+  const put = (issues) => {
+    for (const issue of issues || []) {
+      if (issue && issue.identifier) cache.set(issue.identifier, Promise.resolve(issue));
+    }
+  };
+  try {
+    put(await getIssues(ids));
+    return { error: null };
+  } catch (err) {
+    put(err && err.partial);
+    return { error: err };
+  }
 }
 
 /**
@@ -334,26 +366,54 @@ async function reconcileCheckDefectsBothBuckets({ missing, vacuous }, opts = {})
   // card the batch didn't return falls through to getIssue as before.
   const getIssues = opts.getIssues || (opts.getIssue ? null : require('./lib/linear-client.js').getIssuesWithComments);
   if (getIssues) {
-    try {
-      for (const issue of await getIssues(union.map(c => c.id))) {
-        if (issue && issue.identifier) issueCache.set(issue.identifier, Promise.resolve(issue));
-      }
-    } catch (err) {
-      if (err && err.rateLimited) rateLimitState.hit = true;
-      (opts.log || (() => {}))(`[audit-card-verifiability] WARN batched comment re-fetch failed (${String(err.message).slice(0, 120)}) — ${rateLimitState.hit ? 'rate-limited, keeping every flagged card' : 'falling back to one fetch per card'}`);
+    const { error } = await prefetchIssues(getIssues, union.map(c => c.id), issueCache);
+    if (error) {
+      if (isRateLimitError(error)) rateLimitState.hit = true;
+      (opts.log || (() => {}))(`[audit-card-verifiability] WARN batched comment re-fetch failed (${String(error.message).slice(0, 120)}) — ${rateLimitState.hit ? 'rate-limited, keeping every unfetched flagged card' : 'falling back to one fetch per card'}`);
     }
   }
-  const sharedOpts = { ...opts, getIssue, rateLimitState };
+  const sharedOpts = { ...opts, getIssue, rateLimitState, alreadyFetched: (id) => issueCache.has(id) };
   const stillMissing = await reconcileCheckDefectsWithComments(union, auditCardCheckPaths, { ...sharedOpts, originallyFlaggedHere: c => missing.includes(c) });
   const stillVacuous = await reconcileCheckDefectsWithComments(union, auditVacuousChecks, { ...sharedOpts, originallyFlaggedHere: c => vacuous.includes(c) });
   return { missing: stillMissing, vacuous: stillVacuous };
 }
 
-async function runLinearAudit(limit) {
+// BRO-3619: the bulk fetch carries no comments (cheap ~1700-issue sweep), so
+// a card armed by a correction comment — which linear-next's dispatch gate
+// accepts — would sit in `refused` forever. Batch-fetch comments for just the
+// refused subset and re-evaluate in place. On failure the description-only
+// verdict stands (overstates refused, never hides one) and the report is
+// marked incomplete.
+async function rearmRefusedFromComments(evaluated, issues, opts = {}) {
+  const refusedIdx = evaluated.map((e, i) => (e.armed ? -1 : i)).filter(i => i >= 0);
+  if (!refusedIdx.length) return { incomplete: false };
+  const getIssues = opts.getIssues || require('./lib/linear-client.js').getIssuesWithComments;
+  const cache = new Map();
+  const { error } = await prefetchIssues(getIssues, refusedIdx.map(i => evaluated[i].id), cache);
+  if (error) console.error(`[audit-card-verifiability] WARN refused-bucket comment re-check incomplete (${String(error.message).slice(0, 120)}) — unfetched cards keep their description-only verdict`);
+  const byId = new Map(issues.map(i => [i.identifier, i]));
+  for (const i of refusedIdx) {
+    const p = cache.get(evaluated[i].id);
+    if (!p) continue;
+    const withComments = await p;
+    const base = byId.get(evaluated[i].id) || {};
+    evaluated[i] = evaluateLinearIssue({ ...base, ...withComments, priority: base.priority, url: base.url || withComments.url });
+  }
+  return { incomplete: Boolean(error) };
+}
+
+async function runLinearAudit(limit, opts = {}) {
   const issues = await fetchLinearOpenIssuesWithDescriptions();
   console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
-  const evaluated = issues.slice(0, limit).map(evaluateLinearIssue);
+  // Priority-first (BRO-3619): a --limit slice keeps the urgent end of the
+  // backlog, and refused[0] — the digest row's "First:" — is the most urgent.
+  const evaluated = sortIssuesByPriority(issues).slice(0, limit).map(evaluateLinearIssue);
+  const commentRecheck = await rearmRefusedFromComments(evaluated, issues, opts);
   const report = buildReport(evaluated);
+  // How many open issues exist vs how many this report evaluated, so a
+  // reader can tell a full sweep from a --limit sample (health-check.js).
+  report.fetchedTotal = issues.length;
+  if (commentRecheck.incomplete) report.commentRecheckIncomplete = true;
   const initial = findCardCheckPathDefects(evaluated, { log: console.error });
   const flaggedCount = initial.missing.length + initial.vacuous.length;
   if (flaggedCount) {
@@ -484,4 +544,6 @@ module.exports = {
   attachMissingCheckPaths, reconcileMissingCheckPathsWithComments,
   // BRO-3378: vacuous-check bucket — exported for unit coverage.
   reconcileVacuousChecksWithComments, reconcileCheckDefectsWithComments, reconcileCheckDefectsBothBuckets,
+  // BRO-3619: batched comment re-checks — exported for unit coverage.
+  rearmRefusedFromComments, prefetchIssues,
 };

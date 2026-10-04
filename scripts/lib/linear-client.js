@@ -287,6 +287,8 @@ async function getIssue(identifier) {
 // linear-dispatch.js buildIssuesWithCommentsByNumberQuery. Takes BRO-N
 // identifiers (any team prefix other than teamKey's is ignored), returns the
 // issues Linear found; callers treat a missing identifier as "not fetched".
+// A failing chunk rethrows with err.partial = the issues earlier chunks
+// already returned, so a late 429 doesn't throw away the work before it.
 async function getIssuesWithComments(identifiers, { teamKey = TEAM_KEY, batchSize = 25 } = {}) {
   const prefix = `${teamKey}-`;
   const numbers = [...new Set(identifiers
@@ -296,7 +298,13 @@ async function getIssuesWithComments(identifiers, { teamKey = TEAM_KEY, batchSiz
   const out = [];
   for (let i = 0; i < numbers.length; i += batchSize) {
     const chunk = numbers.slice(i, i + batchSize);
-    const data = await graphql(linearDispatch.buildIssuesWithCommentsByNumberQuery(), { teamKey, numbers: chunk, first: chunk.length });
+    let data;
+    try {
+      data = await graphql(linearDispatch.buildIssuesWithCommentsByNumberQuery(), { teamKey, numbers: chunk, first: chunk.length });
+    } catch (err) {
+      err.partial = out;
+      throw err;
+    }
     out.push(...((data.issues && data.issues.nodes) || []));
   }
   return out;

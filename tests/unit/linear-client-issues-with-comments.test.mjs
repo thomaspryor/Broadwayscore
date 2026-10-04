@@ -38,3 +38,16 @@ test('getIssuesWithComments makes no request for an empty/foreign list', async (
   assert.deepEqual(await getIssuesWithComments(['XYZ-1']), []);
   assert.equal(n, 0);
 });
+
+test('getIssuesWithComments: a failing later chunk rethrows with the earlier chunks on err.partial', async () => {
+  let call = 0;
+  global.fetch = async (_url, opts) => {
+    const { variables } = JSON.parse(opts.body);
+    if (call++ === 1) return { status: 400, ok: false, json: async () => ({ errors: [{ message: 'boom' }] }) };
+    return { json: async () => ({ data: { issues: { nodes: variables.numbers.map(n => ({ identifier: `BRO-${n}` })) } } }) };
+  };
+  await assert.rejects(getIssuesWithComments(['BRO-1', 'BRO-2', 'BRO-3'], { batchSize: 2 }), (err) => {
+    assert.deepEqual(err.partial.map(i => i.identifier), ['BRO-1', 'BRO-2']);
+    return true;
+  });
+});

@@ -102,3 +102,38 @@ test('every card-verifiability row is classified internal (work queue, not visit
   assert.equal(rows.length, 6);
   for (const r of rows) assert.equal(classifyHealthCheck(r.name), 'internal', r.name);
 });
+
+test('unreadable Linear report ({ readError }) warns instead of going silent', () => {
+  const rows = cardVerifiabilityBacklogResults(null, null, { readError: 'ENOENT' }, NOW);
+  assert.equal(rows.length, 1);
+  assert.equal(rows[0].name, 'Data: Linear card-verifiability report stale');
+  assert.match(rows[0].message, /could not be read \(ENOENT\)/);
+});
+
+test('a --limit sample or skipped comment re-checks is flagged on a fresh report', () => {
+  const sampled = cardVerifiabilityBacklogResults(null, null,
+    { generatedAt: FRESH, total: 300, fetchedTotal: 1687, refused: [], vacuousChecks: [] }, NOW);
+  assert.equal(sampled.length, 1);
+  assert.match(sampled[0].message, /covers only 300 of 1687 open issues/);
+  const incomplete = cardVerifiabilityBacklogResults(null, null,
+    { generatedAt: FRESH, total: 5, fetchedTotal: 5, commentRecheckIncomplete: true, refused: [], vacuousChecks: [] }, NOW);
+  assert.match(incomplete[0].message, /rate limit/);
+  assert.deepEqual(cardVerifiabilityBacklogResults(null, null,
+    { generatedAt: FRESH, total: 5, fetchedTotal: 5, refused: [], vacuousChecks: [] }, NOW), []);
+});
+
+test('null/garbage entries in any bucket never throw (a crash here would cost the whole digest)', () => {
+  const rows = cardVerifiabilityBacklogResults(
+    { total: 2, refused: [null, 'x', { name: 'real' }], vacuousChecks: [null] },
+    { humanGatedSkips: [null] },
+    { generatedAt: FRESH, refused: [null], vacuousChecks: [null, { id: 'BRO-1', polarity: 'never-fails' }] },
+    NOW,
+  );
+  assert.deepEqual(rows.map(r => r.name), ['Data: undispatchable backlog cards', 'Data: armed-but-vacuous card checks (Linear)']);
+  assert.match(rows[0].message, /^1 of 2 /);
+});
+
+test('missing report.total renders "?" not "undefined"', () => {
+  const rows = cardVerifiabilityBacklogResults({ refused: [{ name: 'a' }] }, null, undefined, NOW);
+  assert.match(rows[0].message, /^1 of \? /);
+});

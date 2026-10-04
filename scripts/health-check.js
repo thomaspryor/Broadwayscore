@@ -4165,8 +4165,8 @@ function silentGapBacklogResults(report) {
 // BRO-3619: the refused (!armed) row, shared by both providers. The Notion
 // row keeps its original name — scripts/lib/digest-audience.js keys on it.
 function refusedBacklogRow(report, provider) {
-  if (!report || !Array.isArray(report.refused) || report.refused.length === 0) return null;
-  const refused = report.refused;
+  const refused = (report && Array.isArray(report.refused)) ? report.refused.filter(c => c && typeof c === 'object') : [];
+  if (refused.length === 0) return null;
   const first = refused[0];
   // BRO-2570: turns "N refused" into "N cards, mostly one directory away
   // from armed" — actionable instead of opaque. Always derived from
@@ -4185,7 +4185,7 @@ function refusedBacklogRow(report, provider) {
   return {
     name: linear ? 'Data: undispatchable backlog cards (Linear)' : 'Data: undispatchable backlog cards',
     status: 'warn',
-    message: `${refused.length} of ${report.total} ${linear ? 'open Linear issue(s)' : 'pending/in-progress card(s)'} have no runnable acceptance-criteria command (${linear ? 'linear-next' : 'bsc-next'} would refuse them). First: [${first.priority || '?'}] ${linear && first.id ? `${first.id} ` : ''}${first.name}${kindSummary}`,
+    message: `${refused.length} of ${report.total ?? '?'} ${linear ? 'open Linear issue(s)' : 'pending/in-progress card(s)'} have no runnable acceptance-criteria command (${linear ? 'linear-next' : 'bsc-next'} would refuse them). First: [${first.priority || '?'}] ${linear && first.id ? `${first.id} ` : ''}${first.name}${kindSummary}`,
     hint: linear
       ? 'node scripts/enrich-card-acceptance.js --source linear drafts missing criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js --source linear after to confirm.'
       : 'node scripts/enrich-card-acceptance.js --from-report drafts missing criteria (or VERIFY: owner-judgment for human-only cards). Re-run node scripts/audit-card-verifiability.js after to confirm.',
@@ -4198,7 +4198,7 @@ function refusedBacklogRow(report, provider) {
 // a malformed command = never-passes). 31 Linear cards sat in this bucket
 // with no digest row until BRO-3395 hand-fixed them.
 function vacuousChecksRow(report, provider) {
-  const vacuous = (report && Array.isArray(report.vacuousChecks)) ? report.vacuousChecks : [];
+  const vacuous = (report && Array.isArray(report.vacuousChecks)) ? report.vacuousChecks.filter(c => c && typeof c === 'object') : [];
   if (vacuous.length === 0) return null;
   const linear = provider === 'linear';
   const neverFails = vacuous.filter(c => c.polarity === 'never-fails').length;
@@ -4216,20 +4216,29 @@ function vacuousChecksRow(report, provider) {
 
 // BRO-3619: the Linear report is refreshed by card-verifiability-audit.yml
 // (daily). Before this it went 19 days without a refresh with nothing
-// noticing, so a stale report is itself a row — otherwise a broken refresh
-// would freeze the two Linear rows above at old counts forever.
+// noticing, so a stale, unreadable or partial report is itself a row —
+// otherwise a broken refresh would freeze (or blank) the two Linear rows
+// above without a trace. The caller passes { readError } when the file
+// could not be read or parsed; undefined means "not supplied" (back-compat).
 const CARD_VERIFIABILITY_STALE_HOURS = 72;
-function linearReportFreshnessRow(linearReport, nowMs) {
+function linearReportHealthRow(linearReport, nowMs) {
   if (!linearReport) return null;
-  const t = Date.parse(linearReport.generatedAt);
-  const hours = Number.isFinite(t) ? (nowMs - t) / 3600000 : Infinity;
-  if (hours <= CARD_VERIFIABILITY_STALE_HOURS) return null;
-  return {
+  const row = (problem) => ({
     name: 'Data: Linear card-verifiability report stale',
     status: 'warn',
-    message: `data/audit/card-verifiability-linear.json is ${Number.isFinite(hours) ? `${hours.toFixed(0)}h old` : 'missing its generatedAt stamp'} (card-verifiability-audit.yml refreshes it daily) — the Linear undispatchable/vacuous counts in this digest may be out of date.`,
-    hint: 'Check card-verifiability-audit.yml run history; dispatch manually if the cron is stuck: gh workflow run card-verifiability-audit.yml.',
-  };
+    message: `data/audit/card-verifiability-linear.json ${problem} (card-verifiability-audit.yml refreshes it daily) — the Linear undispatchable/vacuous counts in this digest may be wrong or missing.`,
+    hint: 'Check card-verifiability-audit.yml run history ("Audit Linear backlog" step); dispatch manually if the cron is stuck: gh workflow run card-verifiability-audit.yml.',
+  });
+  if (linearReport.readError) return row(`could not be read (${String(linearReport.readError).slice(0, 80)})`);
+  const t = Date.parse(linearReport.generatedAt);
+  const hours = Number.isFinite(t) ? (nowMs - t) / 3600000 : Infinity;
+  if (hours > CARD_VERIFIABILITY_STALE_HOURS) return row(Number.isFinite(hours) ? `is ${hours.toFixed(0)}h old` : 'is missing its generatedAt stamp');
+  const partial = [];
+  if (Number.isFinite(linearReport.fetchedTotal) && Number.isFinite(linearReport.total) && linearReport.fetchedTotal > linearReport.total) {
+    partial.push(`covers only ${linearReport.total} of ${linearReport.fetchedTotal} open issues (--limit sample)`);
+  }
+  if (linearReport.commentRecheckIncomplete) partial.push('skipped some comment re-checks (Linear rate limit), so refused counts may overstate');
+  return partial.length ? row(partial.join('; and ')) : null;
 }
 
 function cardVerifiabilityBacklogResults(report, drainMetric, linearReport, nowMs = Date.now()) {
@@ -4239,7 +4248,7 @@ function cardVerifiabilityBacklogResults(report, drainMetric, linearReport, nowM
     vacuousChecksRow(report, 'notion'),
     refusedBacklogRow(linearReport, 'linear'),
     vacuousChecksRow(linearReport, 'linear'),
-    linearReportFreshnessRow(linearReport, nowMs),
+    linearReportHealthRow(linearReport, nowMs),
   ]) if (row) results.push(row);
   // Task #1004's sibling bucket: cards the drain scanned and skipped because an
   // UNATTENDED session structurally cannot finish them (owner visual-qa
@@ -4248,7 +4257,7 @@ function cardVerifiabilityBacklogResults(report, drainMetric, linearReport, nowM
   // that field is write-only and a MISCLASSIFIED card would be skipped silently
   // on every tick forever, its only trace a launchd log nobody reads — the exact
   // #689/#690 write-only class.
-  const gated = (drainMetric && Array.isArray(drainMetric.humanGatedSkips)) ? drainMetric.humanGatedSkips : [];
+  const gated = (drainMetric && Array.isArray(drainMetric.humanGatedSkips)) ? drainMetric.humanGatedSkips.filter(g => g && typeof g === 'object') : [];
   if (gated.length > 0) {
     const codes = [...new Set(gated.flatMap(g => g.codes || []))].join(', ');
     results.push({
@@ -5346,11 +5355,25 @@ async function main() {
       // others' rows through — one absent report must not silence another
       // bucket (BRO-3619 added the Linear report alongside the Notion one).
       const readAudit = (f) => { try { return JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit', f), 'utf8')); } catch { return null; } };
-      allResults.push(...cardVerifiabilityBacklogResults(
-        readAudit('card-verifiability.json'),
-        readAudit('backlog-drain-metric.json'),
-        readAudit('card-verifiability-linear.json'),
-      ));
+      // The Linear report is committed by the daily audit, so an unreadable
+      // one is a fault to surface, not "audit not yet run" (BRO-3619).
+      let linearReport;
+      try {
+        linearReport = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/audit/card-verifiability-linear.json'), 'utf8'));
+      } catch (err) {
+        linearReport = { readError: err.code || err.message };
+      }
+      // Guarded like the other report readers: a malformed report must cost
+      // these rows, never the whole digest.
+      try {
+        allResults.push(...cardVerifiabilityBacklogResults(
+          readAudit('card-verifiability.json'),
+          readAudit('backlog-drain-metric.json'),
+          linearReport,
+        ));
+      } catch (err) {
+        console.error(`[health-check] cardVerifiabilityBacklogResults failed: ${err.message}`);
+      }
     }
 
     try {

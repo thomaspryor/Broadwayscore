@@ -79,7 +79,14 @@ jobs:
     # also runs the Notion leg and both audit passes. 35 gives real margin
     # without needing a live-cost measurement against production Linear to
     # pin an exact number.
-    timeout-minutes: 35
+    #
+    # Raised 35->50 (BRO-3619): the job now also runs "Audit Linear backlog"
+    # (own 15-min step timeout). The first step gets its own 30-min timeout
+    # so a slow Notion/enrich leg fails ITSELF instead of eating the job
+    # budget and getting the whole job cancelled — a cancelled job skips the
+    # Linear step (!cancelled()) and the commit step's push. Measured: the
+    # first step runs ~8 min, the full-backlog Linear audit ~3.5 min.
+    timeout-minutes: 50
     steps:
       - uses: actions/checkout@v5
         with:
@@ -106,6 +113,7 @@ jobs:
       # POST-enrichment state (the number health-check.js's warn row is
       # keyed on) rather than the pre-enrichment count.
       - name: Audit, enrich, re-audit
+        timeout-minutes: 30
         env:
           NOTION_API_KEY: ${{ secrets.NOTION_API_KEY }}
           ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
@@ -150,7 +158,12 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Loop-and-skip (check-arm-yield.yml pattern): a report the audit
           # never wrote must not make `git add` fail the whole commit.
-          for f in data/audit/card-verifiability.json data/audit/card-verifiability-linear.json; do
+          # card-enrichment-log.jsonl (BRO-3619): enrich-card-acceptance.js
+          # appends a row per draft; it was never staged, so the dirty tracked
+          # file made push-with-retry's rebase refuse ("You have unstaged
+          # changes") on every retry — runs 36999684962 and 37197862198 failed
+          # their push that way — and every run's enrichment log rows were lost.
+          for f in data/audit/card-verifiability.json data/audit/card-verifiability-linear.json data/audit/card-enrichment-log.jsonl; do
             if [ -f "$f" ]; then git add "$f"; else echo "skip (absent): $f"; fi
           done
           if git diff --cached --quiet; then
