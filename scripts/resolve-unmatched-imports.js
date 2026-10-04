@@ -29,6 +29,7 @@ const { selectRows, updateRows, deleteRows } = require('./lib/supabase-service-r
 const { findProductionsForShow, findShowsByTitle, getObject, queryParse, sleep } = require('./lib/mezzanine-parse-client.js');
 const { productionToDiaryEntry, buildDiarySlug } = require('./lib/mezzanine-classify.js');
 const { normalizeTitle } = require('./lib/title-match.js');
+const { isStubIdClaimed, isStubStale } = require('./lib/stub-drain-guards.js');
 
 const args = process.argv.slice(2);
 const dryRun = args.includes('--dry-run');
@@ -145,6 +146,8 @@ async function drainStub(row, ctx) {
   if (ctx.existingMezzIds.has(row.mezz_prod_id)) {
     return { outcome: 'already-cataloged' }; // another row/import already added this production
   }
+  // A user-chosen id must never overwrite or shadow a real catalog entry.
+  if (isStubIdClaimed(row, ctx.usedSlugs)) return { outcome: 'already-cataloged' };
   const res = await queryParse('Production', {
     where: { objectId: row.mezz_prod_id },
     include: 'show,theater',
@@ -254,7 +257,8 @@ async function main() {
       try {
         const result = await drainStub(row, ctx);
         if (verbose) console.log(`  [stub ${row.id}] -> ${result.outcome}`);
-        if (result.outcome === 'resolved' || result.outcome === 'already-cataloged' || result.outcome === 'broadway-skip') {
+        const staleUnresolved = result.outcome === 'no-production' && isStubStale(row);
+        if (result.outcome === 'resolved' || result.outcome === 'already-cataloged' || result.outcome === 'broadway-skip' || staleUnresolved) {
           stats.stubsDrained++;
           if (!dryRun) stubIdsToDelete.push(row.id);
         } else {
