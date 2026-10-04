@@ -114,10 +114,18 @@ jobs:
         # (depth 1), so fetch a 10-day window (margin over the 3-day audit window)
         # instead of full history (130k+ commits). Best-effort: if the fetch fails,
         # the audit reports degraded:true and exits 0 — it never fails this job.
+        # BRO-4603: --shallow-since is the fetch known to leave a phantom
+        # .git/shallow entry (cloud-memory/feedback_shallow_since_poisons_git_shallow.md,
+        # first hit here 2026-07-28) that makes every later fetch die with
+        # "error in object: unshallow". Heal before and after so the deepen
+        # fallback and this job's later pushes keep working.
         run: |
+          source scripts/lib/heal-phantom-shallow.sh
+          heal_phantom_shallow || true
           git fetch --shallow-since="10 days ago" origin main \
-            || git fetch --deepen=4000 origin main \
+            || { heal_phantom_shallow || true; git fetch --deepen=4000 origin main; } \
             || echo "::warning::history deepen failed — churn-merge-coverage will run degraded"
+          heal_phantom_shallow || true
 
       - name: Run corpus-drift monitor
         # LINEAR_API_KEY (BRO-3535): routePerAuditAlerts() in check-corpus-drift.js
