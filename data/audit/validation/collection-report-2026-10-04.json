@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-04T23:15:03.835Z",
+  "runDate": "2026-10-04T23:27:15.848Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,10 +11,10 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 177,
-    "failed": 189,
+    "processed": 178,
+    "failed": 188,
     "skipped": 0,
-    "successRate": "48.4%"
+    "successRate": "48.6%"
   },
   "tierBreakdown": {
     "playwright": 111,
@@ -23,7 +23,7 @@
     "directCookies": 0,
     "scrapingdog": 28,
     "scrapingbee": 0,
-    "brightdata": 25,
+    "brightdata": 26,
     "archiveToday": 0,
     "archive": 19
   },
@@ -38,19 +38,19 @@
     "tier1_9Success": 0,
     "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 0,
-    "tier3Success": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 1,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
     "tier4Attempts": 0,
     "tier4Success": 0,
-    "totalFailed": 56,
+    "totalFailed": 55,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 0,
     "browserbaseMinutesUsed": 0,
     "urlDiscoveryAttempts": 56,
-    "urlDiscoverySuccess": 0,
+    "urlDiscoverySuccess": 1,
     "urlDiscoveryCapped": 0
   },
   "processed": [
@@ -230,7 +230,8 @@
     "clybourne-park-2012/backstage--les-spindle.json",
     "catch-me-if-you-can-2011/hollywood-reporter--unknown.json",
     "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
-    "tru-off-west-end-2026/guardian--mark-lawson.json"
+    "tru-off-west-end-2026/guardian--mark-lawson.json",
+    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -389,7 +390,6 @@
     "escape-to-margaritaville-2018/vulture--jesse-green.json",
     "farinelli-and-the-king-2017/observer--rex-reed.json",
     "indecent-2017/usatoday--elysa-gardner.json",
-    "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
     "tuck-everlasting-2016/usatoday--elysa-gardner.json",
     "eclipsed-2016/observer--rex-reed.json",
     "hedwig-and-the-angry-inch-2014/rollingstone--rob-sheffield.json",
@@ -605,7 +605,8 @@
       "the-real-ivanov-off-broadway-2026/broadwayworld--chloe-rabinowitz.json",
       "marlise-off-broadway-2026/broadwayworld--unknown.json",
       "the-pass-off-broadway-2026/broadwayworld--nicole-rosky.json",
-      "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json"
+      "horrible-histories-barmy-britain-the-best-bits-west-end-2026/ticketline--unknown.json",
+      "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json"
     ],
     "archiveToday": [],
     "archive": [
@@ -631,5 +632,11 @@
     ]
   },
   "failuresByOutlet": {},
-  "urlDiscoveries": []
+  "urlDiscoveries": [
+    {
+      "reviewId": "oh-hello-on-broadway-2016/rollingstone--alan-sepinwall.json",
+      "oldUrl": "https://www.rollingstone.com/culture/culture-news/oh-hello-on-broadway-review-nick-kroll-and-john-mulaney-nail-it-109464/",
+      "newUrl": "https://variety.com/2016/scene/news/nick-kroll-john-mulaney-oh-hello-broadway-opening-night-alan-alda-1201885270/"
+    }
+  ]
 }
