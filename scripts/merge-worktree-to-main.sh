@@ -561,7 +561,33 @@ fi
 # ancestor-check verify step below remains as defense in depth. See
 # scripts/lib/push-mutex.sh.
 push_mutex_acquire
-trap 'push_mutex_release; _mss_cleanup' EXIT
+# BRO-2904: restore OUR stash on EVERY exit, not only the call sites that
+# remember to call restore_stash first. A kill (the session's 10-minute tool cap,
+# a pruned tab: SIGTERM/SIGHUP) or a die() from a path with no explicit restore
+# used to leave "wt-integ-<pid>" on the shared stack: 13 of the 14 stashes on
+# the machine were this script's debris. The signal traps turn a signal into a
+# plain `exit`, so the EXIT trap (and its restore) always runs. STASHED is
+# cleared by restore_stash before it pops, so a restore that already ran (or
+# already failed and was reported) is never retried against a different
+# stash@{0}.
+_wt_exit_restore() {
+  local rc=$?
+  if [ "${STASHED:-0}" = 1 ]; then
+    if g rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
+      # A real merge conflict is live: popping on top of it is the task #888
+      # hazard. Leave the stash for the operator and say where it is.
+      echo "⚠ exiting mid-merge — NOT popping stash 'wt-integ-$$' (recover: git -C $MAIN_DIR stash list)" >&2
+    else
+      echo "⚠ exiting with our stash 'wt-integ-$$' outstanding — restoring it" >&2
+      restore_stash || echo "⚠ stash restore left conflicts — resolve in $MAIN_DIR (git -C $MAIN_DIR stash list)" >&2
+    fi
+  fi
+  return $rc
+}
+trap '_wt_exit_restore; push_mutex_release; _mss_cleanup' EXIT
+trap 'exit 130' INT
+trap 'exit 143' TERM
+trap 'exit 129' HUP
 
 # BRO-142 (generalized to REBASE_HEAD/CHERRY_PICK_HEAD/REVERT_HEAD by task
 # #1558): refuse to touch $MAIN_DIR if it already has an in-progress-operation
@@ -750,6 +776,7 @@ pop_stash_safely() {
 
 restore_stash() {
   [ "$STASHED" = 1 ] || return 0
+  STASHED=0   # BRO-2904: one attempt only; the EXIT trap must not pop again
   pop_stash_safely
 }
 
