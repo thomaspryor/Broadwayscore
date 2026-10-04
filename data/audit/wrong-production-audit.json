@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-04T23:20:46.910Z",
+  "timestamp": "2026-10-04T23:36:07.411Z",
   "stats": {
-    "totalReviews": 46219,
-    "alreadyFlagged": 18748,
+    "totalReviews": 46269,
+    "alreadyFlagged": 18751,
     "dateGuardCatches": 270,
-    "directorMismatch": 1226,
-    "tvFilmSignals": 1339,
+    "directorMismatch": 1232,
+    "tvFilmSignals": 1340,
     "londonSignals": 1272,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4237
+    "noPublishDate": 4284
   },
   "findings": [
     {
@@ -22019,6 +22019,20 @@
       ]
     },
     {
+      "showId": "oh-hello-on-broadway-2016",
+      "file": "rollingstone--margaret-sutherlin.json",
+      "score": 82,
+      "publishDate": "October 11, 2016",
+      "url": "https://www.rollingstone.com/culture/culture-news/oh-hello-on-broadway-review-nick-kroll-and-john-mulaney-nail-it-109464/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
       "showId": "oh-mary-2024",
       "file": "hollywood-reporter--david-rooney.json",
       "score": 91,
@@ -24740,6 +24754,20 @@
       "score": 91,
       "publishDate": null,
       "url": "https://www.metrmag.com/latest-reviews/purpose-by-branden-jacobs-jenkins-huntington-theatre-company-boston-ma-review",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phylicia rashad\" from purpose-2025"
+        }
+      ]
+    },
+    {
+      "showId": "purpose-regional-2026",
+      "file": "nytg--unknown.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -32235,10 +32263,62 @@
     },
     {
       "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--evan-henerson.json",
+      "score": 73,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/los-angeles/article/Review-THE-NOTEBOOK-at-Pantages-Theatre-20260113",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--michael-rabice.json",
+      "score": 71,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/buffalo/article/Review-THE-NOTEBOOK-at-Sheas-Buffalo-Theatre-20251008#:~:text=Where%20THE%20NOTEBOOK%20succeeds%20is,and%20unoffensive%2C%20is%20merely%20utilitarian.",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
       "file": "broadwayworld--roy-berko.json",
       "score": 78,
       "publishDate": "2025-09-14",
       "url": "https://www.broadwayworld.com/cleveland/article/Review-THE-NOTEBOOK-THE-MUSICAL-at-Connor-Place-Key-Bank-Broadway-Series-20250914",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael greif\" from the-notebook-2024"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"schele williams\" from the-notebook-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-notebook-tour-2025",
+      "file": "broadwayworld--steve-murray.json",
+      "score": 62,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/san-francisco/article/Review-THE-NOTEBOOK-at-Orpheum-Theatre-20260214",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -36498,9 +36578,9 @@
     {
       "showId": "water-for-elephants-tour-2025",
       "file": "broadwayworld--jeffrey-kare.json",
-      "score": 84,
+      "score": 85,
       "publishDate": null,
-      "url": null,
+      "url": "https://www.broadwayworld.com/raleigh/article/Review-WATER-FOR-ELEPHANTS-National-Tour-at-Durham-Performing-Arts-Center-20251217",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
