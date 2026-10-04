@@ -204,7 +204,8 @@ test('a template draft made after an LLM error is re-drafted next run', () => {
   const base = { status: 'ready', source: 'template' };
   const pick = d => lib.selectCandidates({ shows, slims, drafts: { drafts: { [show.id]: d } }, peersByMarket: {}, today: '2026-09-29' }).length;
   assert.equal(pick({ ...base, lintProblems: ['llm error: 529 overloaded'] }), 1);
-  assert.equal(pick({ ...base, lintProblems: ['title does not state the score 36'], emailedAt: '2026-09-29T06:00:00Z' }), 0, 'already emailed: left alone');
+  assert.equal(pick({ ...base, lintProblems: ['title does not state the score 36'], emailedAt: '2026-09-29T06:00:00Z' }), 1, 'emailed, reminder not sent: refreshed (BRO-4597)');
+  assert.equal(pick({ ...base, lintProblems: ['title does not state the score 36'], emailedAt: '2026-09-29T06:00:00Z', reminderAt: '2026-09-30T06:00:00Z' }), 0, 'reminder already sent: left alone');
   assert.equal(pick({ ...base, status: 'posted', lintProblems: ['llm error: x'] }), 0);
 });
 
@@ -217,7 +218,9 @@ test('an unsent draft is redrafted when its numbers go stale, kept when still ac
   assert.equal(pick(accurate), 0, 'still matches today');
   assert.equal(pick({ ...accurate, body: `${f.reviewCount - 1} reviews, ${f.buckets.rave + 1} raves.` }), 1, 'counts moved: redraft');
   assert.equal(pick({ ...accurate, body: 'Now #3 of 24 shows.' }), 1, 'stale rank: redraft');
-  assert.equal(pick({ ...accurate, body: 'Now #3 of 24 shows.', emailedAt: '2026-09-29T06:00:00Z' }), 0, 'already emailed: never redrafted');
+  assert.equal(pick({ ...accurate, body: 'Now #3 of 24 shows.', emailedAt: '2026-09-29T06:00:00Z' }), 1, 'emailed but unposted: refreshed before the reminder');
+  assert.equal(pick({ ...accurate, emailedAt: '2026-09-29T06:00:00Z' }), 0, 'emailed and still accurate: kept');
+  assert.equal(pick({ ...accurate, body: 'Now #3 of 24 shows.', emailedAt: '2026-09-29T06:00:00Z', reminderAt: '2026-09-30T06:00:00Z' }), 0, 'reminder sent: never redrafted');
 });
 
 test('pickRecentExamples takes the owner recent top roundup posts, newest window first', () => {
@@ -305,4 +308,80 @@ test('an unsent draft aimed at the old subreddit is redrafted; a crosspost count
   const html = mail.buildHtml({ ...d, market: 'off-broadway', score: 87, reviewCount: 7, title: 't', body: 'b', submitUrl: 'https://a', oldRedditSubmitUrl: 'https://b', crosspostSubmitUrl: 'https://c' }, 'new');
   assert.match(html, /r\/offbroadwayNYC/);
   assert.match(html, /Also post to r\/Broadway/);
+});
+
+// BRO-4597: the owner rewrote the first two drafts in first person ("I found
+// 11 reviews"), with the count in the title, the audience sites named and a
+// line about whether he has seen it. The template now writes that way.
+test('templateDraft speaks as the person who collected the reviews', () => {
+  const s = slim({ cs: 84.2, n: 11 });
+  s.au = { score: 85, sources: { mz: { c: 12 }, sp: { c: 40 }, rd: { c: 3 }, ss: { c: 0 } } };
+  const f = lib.buildFacts(show, s, []);
+  assert.deepEqual(f.audienceSources, ['Seatplan', 'Mezzanine', 'Reddit'], 'biggest first, empty sources dropped');
+  const t = lib.templateDraft(f);
+  assert.match(t.title, /^11 reviews are in for Trainspotting\. 84\/100/);
+  assert.match(t.body, /I found 11 reviews: /);
+  assert.match(t.body, /\(across Seatplan, Mezzanine, and Reddit\)/);
+  assert.match(t.body, /I haven't seen it yet\./);
+  assert.ok(!/That's a \d+\/100 for/.test(t.body), 'no detached analyst line');
+  assert.equal(t.personalLines.length, 2);
+  const r = lib.lintDraft(t, f);
+  assert.ok(r.ok, r.problems.join('; '));
+});
+
+test('templateDraft closer follows the shows-seen list, never claims more', () => {
+  const seen = lib.buildFacts(show, slim(), [], { seen: { seen: true, rating: 4, upcomingDate: null } });
+  const tix = lib.buildFacts(show, slim(), [], { seen: { seen: false, rating: null, upcomingDate: '2026-10-20' } });
+  assert.equal(seen.ownerStance, 'seen');
+  assert.equal(tix.ownerStance, 'has-tickets');
+  assert.match(lib.templateDraft(seen).body, /I saw this one\./);
+  assert.match(lib.templateDraft(tix).body, /I've got tickets/);
+  assert.deepEqual(lib.templateDraft(seen).personalLines, []);
+  const q = lib.buildFacts({ ...show, title: "Who's Afraid of Virginia Woolf?" }, slim(), []);
+  assert.match(lib.templateDraft(q).title, /Woolf\? \d+\/100/, 'no "Woolf?." double stop');
+  for (const f of [seen, tix]) { const r = lib.lintDraft(lib.templateDraft(f), f); assert.ok(r.ok, r.problems.join('; ')); }
+});
+
+test('no audience grade: the template says why instead of a grade', () => {
+  const s = slim();
+  s.au = { sources: {} };
+  const f = lib.buildFacts(show, s, []);
+  assert.equal(f.audienceGrade, null);
+  assert.match(lib.templateDraft(f).body, /No audience grade yet, since hardly any users have reviewed it/);
+});
+
+test('audienceSourceNames and ownerStance edge cases', () => {
+  assert.deepEqual(lib.audienceSourceNames(null), []);
+  assert.deepEqual(lib.audienceSourceNames({ sources: { zz: { c: 9 }, lb: { c: 2 } } }), ['London Box Office'], 'unknown keys dropped');
+  assert.equal(lib.ownerStance(null), 'not-seen');
+  assert.equal(lib.ownerStance({ seen: false, upcomingDate: null }), 'not-seen');
+});
+
+test('a refresh never takes a new opening\'s slot', () => {
+  const mk = id => ({ ...show, id, slug: id, title: id });
+  const shows = ['big', 'n1', 'n2'].map(mk);
+  const slims = new Map([['big', slim({ cs: 95, n: 30 })], ['n1', slim({ n: 9 })], ['n2', slim({ n: 9 })]]);
+  const stale = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: 'big 12/100', body: 'old', emailedAt: '2026-09-28T06:00:00Z' };
+  const picked = lib.selectCandidates({ shows, slims, drafts: { drafts: { big: stale } }, peersByMarket: {}, today: '2026-09-29' }).map(c => c.show.id);
+  assert.deepEqual(picked.sort(), ['n1', 'n2'], 'two new openings fill the run; the refresh waits');
+});
+
+test('the style guide carries both of the owner\'s hand-edited posts', () => {
+  assert.match(lib.STYLE_GUIDE, /THE VOICE TOM WANTS/);
+  assert.match(lib.STYLE_GUIDE, /Who's Afraid of Virginia Woolf\? 84\/100 from 24 critics/);
+  assert.match(lib.STYLE_GUIDE, /11 reviews are in for Creation Stories/);
+});
+
+test('reddit email: screenshots section and refreshed-numbers note', () => {
+  const d = { status: 'ready', title: 't 36/100', body: 'b', subreddit: 'TheWestEnd', submitUrl: 'https://www.reddit.com/r/TheWestEnd/submit', showTitle: 'Trainspotting', score: 38, reviewCount: 12, refreshedAt: '2026-09-30T06:00:00Z', previousReviewCount: 9, previousScore: 36 };
+  const noImg = mail.buildHtml(d, 'new');
+  assert.ok(!noImg.includes('cid:'), 'no image section without images');
+  const html = mail.buildHtml(d, 'reminder', [{ cid: 'shot1', label: 'Score card' }, { cid: 'shot2', label: 'Critic reviews' }]);
+  assert.ok(html.includes('src="cid:shot1"') && html.includes('src="cid:shot2"'));
+  assert.match(html, /phone width/);
+  assert.match(html, /now 12 reviews and 38\/100 \(was 9 and 36\)/);
+  const same = mail.buildHtml({ ...d, previousReviewCount: 12, previousScore: 38 }, 'reminder');
+  assert.ok(!/updated them/.test(same), 'no update note when nothing moved');
+  const unknown = mail.buildHtml({ ...d, previousReviewCount: undefined }, 'reminder');
+  assert.ok(!/undefined/.test(unknown) && !/updated them/.test(unknown), 'no note without the old numbers');
 });

@@ -134,7 +134,9 @@ jobs:
   # timeout can't drop the drafts.
   draft-opening-posts:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Was 10. BRO-4597 added Playwright setup (worst case ~8 min, see
+    # setup-playwright) and a 4-minute screenshot budget in the email step.
+    timeout-minutes: 20
     permissions:
       contents: write
 
@@ -169,6 +171,13 @@ jobs:
             ARGS="--dry-run"
           fi
           node scripts/draft-reddit-opening-posts.js $ARGS
+
+      # BRO-4597: the email carries phone-width screenshots of the show page
+      # (scripts/lib/reddit-post-screenshots.js). A failed install or capture
+      # only drops the images; the email still goes out.
+      - name: Setup Playwright
+        continue-on-error: true
+        uses: ./.github/actions/setup-playwright
 
       # BRO-4360: each new draft goes out as its own email (owner ask), plus
       # one reminder if still unposted a day later. Runs BEFORE the commit

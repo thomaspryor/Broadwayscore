@@ -58,6 +58,9 @@ on:
       # orchestrator itself — e.g. the classify-action switch statement — would
       # otherwise trigger ZERO CI, the same gap task #1745 documents.
       - 'scripts/audit-we-closing-dates.js'
+      # scripts/audit-score-vs-models.js (BRO-4596) is the CLI that
+      # scripts/lib/score-vs-models.test.mjs spawns (corrupt-baseline exit code).
+      - 'scripts/audit-score-vs-models.js'
       # scripts/audit-imageless-scored-shows.js is the I/O caller for
       # scripts/lib/image-trigger-guard.js (globbed above). BRO-2672's fan-out
       # bug lived in a per-show dispatch LOOP in this caller, not in the lib —
@@ -2150,6 +2153,9 @@ on:
       - '.claude/hooks/github-main-guard.sh'
       - '.claude/hooks/block-resend-broadcasts.sh'
       - '.claude/hooks/lib/strip-git-commit-noise.js'
+      # BRO-4593: land rebase + test-registration preflight; driven for real by
+      # tests/unit/land-preflight.test.mjs (rides 'tests/**' and 'scripts/lib/**').
+      - '.claude/hooks/pre-push-land-preflight.sh'
       - 'scripts/tests/cloud-settings-guards.test.mjs'
       - 'scripts/tests/cloud-infra-review-hooks.test.mjs'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'

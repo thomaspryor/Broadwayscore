@@ -118,8 +118,14 @@ function adjudicationContradictsRecordStar(data) {
 function adjudicationStarBasisGone(data) {
   if (!adjudicationSidedWithStars(data)) return false;
   const has = (v) => v !== null && v !== undefined && v !== '' && v !== 0;
-  return !(has(data.originalScore) || has(data.originalScoreNormalized) || has(data.aggregatorStars)
-    || has(data.starRating) || has(data.originalRating) || has(data.previousOriginalScore));
+  // Older clearing runs nulled originalScore but left originalScoreNormalized behind.
+  const cleared = data.originalScoreCleared === true;
+  return !(has(data.originalScore) || (has(data.originalScoreNormalized) && !cleared) || has(data.aggregatorStars)
+    || has(data.starRating) || has(data.originalRating)
+    // previousOriginalScore is the audit copy a clearing script leaves behind
+    // (fix-p0-score-corruption.js); on a record flagged originalScoreCleared the
+    // star was judged false, so it is no basis (BRO-4596).
+    || (has(data.previousOriginalScore) && data.originalScoreCleared !== true));
 }
 
 /**
@@ -136,6 +142,41 @@ function adjudicationSidedWithStars(data) {
   }
   return /^Auto-adjudicated \([^)]*sided with (originalScore|stars?|aggregatorStars|original rating|rating|aggregator)\)/i
     .test(data.adjudicationNote || '');
+}
+
+/**
+ * Upstream half of the adjudication-basis guard (BRO-4596). The read-time
+ * guards above ignore a star-sided adjudication whose star is gone, but a star
+ * cleared by a script leaves previousOriginalScore behind, which the basis
+ * check counts as a star, so the dependent adjudicatedScore kept publishing.
+ * Scripts that DISCARD a record's star call this right after (relocations to aggregatorStars do not: that star can still be the basis).
+ *
+ * Drops adjudicatedScore only when the adjudication sided with the star (one
+ * that sided with the models stays valid), keeps the dropped value in
+ * adjudicatedScoreInvalidated for audit, and adds a history entry.
+ * Mutates `data`; returns true when something was dropped.
+ *
+ * @param {object} data - review-text record, star already cleared by the caller
+ * @param {string} reason - why the star was cleared (stored for audit)
+ * @returns {boolean}
+ */
+function invalidateStarSidedAdjudication(data, reason) {
+  if (!data || typeof data.adjudicatedScore !== 'number') return false;
+  if (!adjudicationSidedWithStars(data)) return false;
+  const at = new Date().toISOString();
+  data.adjudicatedScoreInvalidated = {
+    score: data.adjudicatedScore,
+    reason: reason || 'star cleared',
+    note: data.adjudicationNote || null,
+    at,
+  };
+  data.adjudicatedScore = null;
+  data.adjudicationNote = null;
+  data.adjudicationHistory = [
+    ...(Array.isArray(data.adjudicationHistory) ? data.adjudicationHistory : []),
+    { timestamp: at, invalidated: true, reason: data.adjudicatedScoreInvalidated.reason },
+  ];
+  return true;
 }
 
 /**
@@ -284,6 +325,7 @@ module.exports = {
   adjudicationSidedWithStars,
   adjudicationContradictsRecordStar,
   adjudicationStarBasisGone,
+  invalidateStarSidedAdjudication,
   detectBandFromReviewFile,
   shouldUseAnchoredMode,
 };

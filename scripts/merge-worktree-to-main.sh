@@ -359,6 +359,23 @@ land_via_landing_branch() {
     log "push audits + tsc: run by scripts/hooks/pre-push on the land/** push below (range ${fork:0:10}..${tip:0:10})"
   fi
 
+  # Rebase preview (BRO-4593): land.yml runs a plain `git rebase` onto main,
+  # which drops merge commits — a conflict resolved inside a merge of main
+  # comes back and the run is refused ~30 min later. Predict it now. The test
+  # registration half of the check is left to scripts/hooks/pre-push's audits.
+  local preflight="$SCRIPT_DIR/lib/land-preflight.mjs"
+  if [ -f "$preflight" ] && command -v node >/dev/null 2>&1; then
+    # Exit 3 = would conflict. Anything else non-zero is the check itself
+    # failing (bad install, load error): warn and carry on, never block on it.
+    node "$preflight" --cwd "${src_dir:-$MAIN_DIR}" --tip "$tip" --base "origin/$DEFAULT_BRANCH" --target "$land_name" --no-fetch --no-tests
+    local preflight_rc=$?
+    if [ "$preflight_rc" -eq 3 ]; then
+      die "land rebase preview: $BRANCH would not rebase cleanly onto origin/$DEFAULT_BRANCH (see above) — fix on the branch and re-run"
+    elif [ "$preflight_rc" -ne 0 ]; then
+      log "land rebase preview could not run (exit $preflight_rc) — continuing without it"
+    fi
+  fi
+
   if [ "${DRY_RUN:-0}" = "1" ]; then
     echo "DRY_RUN=1 — floors done; would push ${tip:0:10} → origin/$land_name for land.yml. Nothing pushed."
     exit 0

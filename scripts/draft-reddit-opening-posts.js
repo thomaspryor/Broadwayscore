@@ -245,6 +245,14 @@ async function main() {
       for (const k of ['createdAt', 'emailedAt', 'reminderAt', 'status', 'postedAt', 'postedUrl', 'postedSubreddit', 'postedScore']) {
         if (prev[k] !== undefined) entry[k] = prev[k];
       }
+      // Already emailed: the reminder says the numbers moved since.
+      if (prev.emailedAt) {
+        entry.refreshedAt = new Date().toISOString();
+        // Keep the numbers from the email the owner actually got, across
+        // repeated refreshes.
+        entry.previousReviewCount = prev.previousReviewCount ?? prev.reviewCount;
+        entry.previousScore = prev.previousScore ?? prev.score;
+      }
     }
     drafts.drafts[c.show.id] = entry;
     console.log(`\n── r/${entry.subreddit} · ${entry.showTitle} (${source}${problems.length ? `, fell back: ${problems.join('; ')}` : ''})`);

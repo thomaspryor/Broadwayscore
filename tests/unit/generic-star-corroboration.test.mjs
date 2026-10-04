@@ -126,6 +126,9 @@ describe('adjudicationStarBasisGone (take-me-out-2022 Theater Life: adjudicated 
       assert.equal(adjudicationStarBasisGone(noStar(f)), false, JSON.stringify(f));
     }
   });
+  test('BRO-4596: a cleared record with a stale originalScoreNormalized has no basis either', () => {
+    assert.equal(adjudicationStarBasisGone(noStar({ originalScoreCleared: true, originalScoreNormalized: 40, previousOriginalScore: '2/5' })), true);
+  });
   test('an adjudication that sided with the text/thumbs is untouched', () => {
     assert.equal(adjudicationStarBasisGone(noStar({ adjudicationHistory: [{ sidedWith: 'thumbs' }], adjudicationNote: 'Auto-adjudicated (high confidence, sided with thumbs): x' })), false);
   });
@@ -208,5 +211,50 @@ describe('adjudication prompt labelling', () => {
   test('dedicated-extractor star on a known star outlet is still trusted', () => {
     const p = buildUserPrompt(review, { outletId: 'chicagotribune', originalScore: '3/5', originalScoreSource: 'unicode-stars', fullText: 'text' }, 'Show');
     assert.match(p, /### Original Rating\n3\/5/);
+  });
+});
+
+describe('BRO-4596: clearing a star must not leave its star-sided adjudication publishing', () => {
+  const { invalidateStarSidedAdjudication } = require('../../scripts/lib/star-reliability.js');
+  const cleared = (over = {}) => mincemeat({
+    originalScore: null, originalScoreNormalized: null, aggregatorStars: undefined,
+    originalScoreSource: undefined, scoreSource: 'llm-v6',
+    previousOriginalScore: '1/5', originalScoreCleared: true,
+    llmScore: { score: 82, confidence: 'high' }, ...over,
+  });
+
+  test('previousOriginalScore on an originalScoreCleared record is no basis', () => {
+    assert.equal(adjudicationStarBasisGone(cleared()), true);
+    assert.equal(adjudicationStarBasisGone(cleared({ originalScoreCleared: undefined })), false);
+    assert.equal(adjudicationStarBasisGone(cleared({ aggregatorStars: '4/5' })), false);
+  });
+
+  test('getBestScore no longer publishes the dependent adjudication of an already-cleared record', () => {
+    const r = getBestScore(cleared(), { stats: {} });
+    assert.notEqual(r && r.score, 40, JSON.stringify(r));
+  });
+
+  test('helper drops a star-sided adjudication, keeps an audit copy and history entry', () => {
+    const d = cleared();
+    assert.equal(invalidateStarSidedAdjudication(d, 'tier 1.5'), true);
+    assert.equal(d.adjudicatedScore, null);
+    assert.equal(d.adjudicatedScoreInvalidated.score, 40);
+    assert.equal(d.adjudicatedScoreInvalidated.reason, 'tier 1.5');
+    assert.equal(adjudicationSidedWithStars(d), false);
+    assert.equal(invalidateStarSidedAdjudication(d, 'again'), false);
+  });
+
+  test('helper leaves an adjudication that sided with the models', () => {
+    const d = cleared({ adjudicationHistory: [{ sidedWith: 'llm' }], adjudicationNote: 'Auto-adjudicated (high confidence, sided with llm): x' });
+    assert.equal(invalidateStarSidedAdjudication(d, 'x'), false);
+    assert.equal(d.adjudicatedScore, 40);
+    assert.equal(invalidateStarSidedAdjudication(null, 'x'), false);
+  });
+
+  test('every script that discards a star calls the helper', async () => {
+    const { readFileSync } = await import('node:fs');
+    for (const f of ['fix-p0-score-corruption.js', 'reconcile-source-scores.js']) {
+      assert.match(readFileSync(new URL(`../../scripts/${f}`, import.meta.url), 'utf8'), /invalidateStarSidedAdjudication\(/, f);
+    }
   });
 });
