@@ -17,5 +17,7 @@
     "Kinky Boots The Musical": ["Kinky Boots"],
     "CATS: The Jellicle Ball": ["Jellicle Ball"],
     "Fiddler on the Roof": ["Fiddler"]
-  }
+  },
+  "_properNounTitlesComment": "2-3 letter titles are too short for the normal mention check (it needs 4+ characters), so every review of them was flagged showNotMentioned. These count as mentioned when the exact title appears at least twice written as a proper noun ('Tru' or 'TRU', case-sensitive). Only titles that are not common words or first names: Art, Red, Six, Big, Ann, Act and Rex matched dozens of other shows' reviews in a corpus probe and are deliberately left out.",
+  "properNounTitles": ["Tru", "Ink", "Wit", "Bug", "Elf"]
 }

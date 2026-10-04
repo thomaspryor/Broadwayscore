@@ -94,7 +94,9 @@ function loadShortNames(raw) {
   }
   return map;
 }
-const SHORT_NAMES = loadShortNames(require('./show-short-names.json'));
+const SHORT_NAMES_RAW = require('./show-short-names.json');
+const SHORT_NAMES = loadShortNames(SHORT_NAMES_RAW);
+const PROPER_NOUN_TITLES = new Set((SHORT_NAMES_RAW.properNounTitles || []).map((t) => t.toLowerCase()));
 
 // Separators that split a title from its subtitle. A comma also counts when
 // the prefix is multi-word ("Kiss Me, Kate" does NOT produce "kiss me" as a
@@ -219,12 +221,28 @@ function textMentionsTitle(text, title, opts = {}) {
   return null;
 }
 
+/**
+ * Mention check for the curated 2-3 letter titles (show-short-names.json
+ * properNounTitles), which textMentionsTitle's 4-char minimum skips. Counts the
+ * title written as a proper noun ("Tru" or "TRU", case-sensitive, whole word);
+ * lowercase prose never counts. Titles not on the list return null.
+ * @returns {string|null} the lowercased title when it appears >= minHits times
+ */
+function textMentionsShortTitle(text, title, minHits = 2) {
+  const t = (title || '').trim().replace(/[.!?]+$/, '');
+  if (!text || !PROPER_NOUN_TITLES.has(t.toLowerCase())) return null;
+  const cap = t.charAt(0).toUpperCase() + t.slice(1).toLowerCase();
+  const re = new RegExp(`(?<![A-Za-z0-9])(?:${cap}|${t.toUpperCase()})(?![A-Za-z0-9])`, 'g');
+  return (text.match(re) || []).length >= minHits ? t.toLowerCase() : null;
+}
+
 module.exports = {
   normalizeForMention,
   buildShowTitleVariants,
   countVariant,
   findVariantSpans,
   textMentionsTitle,
+  textMentionsShortTitle,
   loadShortNames,
   GENERIC_PREFIX_WORDS,
 };

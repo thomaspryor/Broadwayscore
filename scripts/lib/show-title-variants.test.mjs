@@ -166,3 +166,22 @@ test('show-short-names.json loads, normalizes, and every value is at least 4 cha
   for (const [k, vals] of map) for (const v of vals) assert.ok(v.length >= 4, `${k}: "${v}" is too short to ever match`);
   assert.deepEqual([...loadShortNames({ shortNames: { 'The Foo': ['Foo Bar!'] } })], [['foo', ['foo bar']]]);
 });
+
+// BRO-4584 cousin: 2-3 letter titles never passed validateShowMentioned, so
+// Tru (West End) reviews were all flagged showNotMentioned and never scored.
+test('curated 2-3 letter titles count when written as a proper noun twice', () => {
+  const { textMentionsShortTitle } = require('./show-title-variants.js');
+  const tru = `Jay Presson Allen's Tru returns. As TRU, the actor holds the room; Tru is lonely.${FILLER}`;
+  assert.equal(textMentionsShortTitle(tru, 'Tru'), 'tru');
+  assert.equal(validateShowMentioned(tru, 'Tru', 'tru-off-west-end-2026').valid, true);
+  // One proper-noun hit is not enough; lowercase prose never counts.
+  assert.equal(textMentionsShortTitle(`While Tru is an intimate portrait.${FILLER}`, 'Tru'), null);
+  assert.equal(textMentionsShortTitle(`Ink stains, ink spills, ink everywhere.${FILLER}`.toLowerCase(), 'Ink'), null);
+  assert.equal(textMentionsShortTitle(`Inkwell and Wittgenstein.${FILLER}`, 'Ink'), null);
+});
+
+test('common-word short titles are not on the proper-noun list', () => {
+  const { textMentionsShortTitle } = require('./show-title-variants.js');
+  const text = `Act One drags. Act Two soars. Red lights. Red curtains. Art Garfunkel. Art Deco. Six actors. Six songs.${FILLER}`;
+  for (const t of ['The Act', 'Act', 'Red', 'Art', 'Six', 'SIX', 'Big', 'Ann']) assert.equal(textMentionsShortTitle(text, t), null, t);
+});

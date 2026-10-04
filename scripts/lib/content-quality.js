@@ -8,7 +8,7 @@
  * @module content-quality
  */
 
-const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle } = require('./show-title-variants');
+const { buildShowTitleVariants, normalizeForMention, countVariant, findVariantSpans, textMentionsTitle, textMentionsShortTitle } = require('./show-title-variants');
 
 /**
  * Patterns that indicate ad blocker messages
@@ -717,6 +717,13 @@ function validateShowMentioned(text, showTitle, showId) {
   }
 
   const lower = text.toLowerCase();
+
+  // Check 0: curated 2-3 letter titles ("Tru", "Ink") skip Check 1 and their ID
+  // words are too short for Check 2/3, so every review of them failed (BRO-4584).
+  const shortHit = textMentionsShortTitle(text, showTitle);
+  if (shortHit) {
+    return { valid: true, confidence: 'medium', reason: `Short show title "${shortHit}" found 2+ times as a proper noun` };
+  }
 
   // Check 1: Exact show title match
   if (showTitle && showTitle.length > 3) {
