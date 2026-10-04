@@ -2153,6 +2153,9 @@ on:
       - '.claude/hooks/github-main-guard.sh'
       - '.claude/hooks/block-resend-broadcasts.sh'
       - '.claude/hooks/lib/strip-git-commit-noise.js'
+      # BRO-4593: land rebase + test-registration preflight; driven for real by
+      # tests/unit/land-preflight.test.mjs (rides 'tests/**' and 'scripts/lib/**').
+      - '.claude/hooks/pre-push-land-preflight.sh'
       - 'scripts/tests/cloud-settings-guards.test.mjs'
       - 'scripts/tests/cloud-infra-review-hooks.test.mjs'
       - 'tests/fixtures/trunk-failed-log-2026-08-04.txt'
