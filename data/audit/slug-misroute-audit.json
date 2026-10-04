@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-09-27T18:05:54.595Z",
-  "totalScanned": 44775,
+  "generatedAt": "2026-10-04T18:03:03.244Z",
+  "totalScanned": 46553,
   "findings": [
     {
       "from": "an-ark-off-broadway-2026",
@@ -32,6 +32,40 @@
       "outOfScope": false,
       "warnings": [
         "to-year-far"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "an-ark-off-broadway-2026",
+      "to": "ian-mckellen-acting-shakespeare-1984",
+      "file": "culturesauce--thom-geier.json",
+      "slug": "Review-Roundup-AN-ARK-Starring-Ian-McKellen-20260123",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-AN-ARK-Starring-Ian-McKellen-20260123",
+      "fromTokens": "ark",
+      "toTokens": "ian|mckellen",
+      "articleYear": 2026,
+      "toYearGap": 42,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "An Ark",
+        "venue": "The Griffin Theater at The Shed",
+        "openingDate": "2026-01-09",
+        "status": "closed",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Ian McKellen: Acting Shakespeare",
+        "venue": "Walter Kerr Theatre",
+        "openingDate": "1984-01-19",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "to-year-far",
+        "from-also-full-match"
       ],
       "confirm": false
     },
@@ -343,6 +377,40 @@
     {
       "from": "annie-1977",
       "to": "whoopi-goldberg-1984",
+      "file": "lincoln-journal-star--unknown.json",
+      "slug": "Review-Roundup-What-Did-Critics-Think-of-Whoopi-Goldberg-in-ANNIE-20241215",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-What-Did-Critics-Think-of-Whoopi-Goldberg-in-ANNIE-20241215",
+      "fromTokens": "annie",
+      "toTokens": "whoopi|goldberg",
+      "articleYear": 2024,
+      "toYearGap": 40,
+      "fromYearGap": 47,
+      "fromShow": {
+        "title": "Annie",
+        "venue": "Neil Simon Theatre",
+        "openingDate": "1977-04-21",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Whoopi Goldberg",
+        "venue": "Lyceum Theatre",
+        "openingDate": "1984-10-24",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "to-year-far",
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "annie-1977",
+      "to": "whoopi-goldberg-1984",
       "file": "people--dave-quinn.json",
       "slug": "Review-Roundup-What-Did-Critics-Think-of-Whoopi-Goldberg-in-ANNIE-20241215",
       "source": "bww",
@@ -496,6 +564,138 @@
       "class": "C",
       "outOfScope": true,
       "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "bull-off-west-end-2026",
+      "to": "the-imaginary-invalid-2026",
+      "file": "exeunt-magazine--juliet-hindell.json",
+      "slug": "Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+      "fromTokens": "bull",
+      "toTokens": "imaginary|invalid",
+      "articleYear": 2025,
+      "toYearGap": 1,
+      "fromYearGap": 1,
+      "fromShow": {
+        "title": "Bull",
+        "venue": "Park Theatre",
+        "openingDate": "2026-10-01",
+        "status": "open",
+        "category": "off-west-end"
+      },
+      "toShow": {
+        "title": "The Imaginary Invalid",
+        "venue": "Todd Haimes Theatre",
+        "openingDate": "2026-10-22",
+        "status": "previews",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "bull-off-west-end-2026",
+      "to": "the-imaginary-invalid-2026",
+      "file": "nysr--david-finkle.json",
+      "slug": "Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+      "fromTokens": "bull",
+      "toTokens": "imaginary|invalid",
+      "articleYear": 2025,
+      "toYearGap": 1,
+      "fromYearGap": 1,
+      "fromShow": {
+        "title": "Bull",
+        "venue": "Park Theatre",
+        "openingDate": "2026-10-01",
+        "status": "open",
+        "category": "off-west-end"
+      },
+      "toShow": {
+        "title": "The Imaginary Invalid",
+        "venue": "Todd Haimes Theatre",
+        "openingDate": "2026-10-22",
+        "status": "previews",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "bull-off-west-end-2026",
+      "to": "the-imaginary-invalid-2026",
+      "file": "stagebuddy--elyse-trevers.json",
+      "slug": "Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+      "fromTokens": "bull",
+      "toTokens": "imaginary|invalid",
+      "articleYear": 2025,
+      "toYearGap": 1,
+      "fromYearGap": 1,
+      "fromShow": {
+        "title": "Bull",
+        "venue": "Park Theatre",
+        "openingDate": "2026-10-01",
+        "status": "open",
+        "category": "off-west-end"
+      },
+      "toShow": {
+        "title": "The Imaginary Invalid",
+        "venue": "Todd Haimes Theatre",
+        "openingDate": "2026-10-22",
+        "status": "previews",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "bull-off-west-end-2026",
+      "to": "the-imaginary-invalid-2026",
+      "file": "theater-pizzazz--ron-fassler.json",
+      "slug": "Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Red-Bull-Theaters-THE-IMAGINARY-INVALID-20250604",
+      "fromTokens": "bull",
+      "toTokens": "imaginary|invalid",
+      "articleYear": 2025,
+      "toYearGap": 1,
+      "fromYearGap": 1,
+      "fromShow": {
+        "title": "Bull",
+        "venue": "Park Theatre",
+        "openingDate": "2026-10-01",
+        "status": "open",
+        "category": "off-west-end"
+      },
+      "toShow": {
+        "title": "The Imaginary Invalid",
+        "venue": "Todd Haimes Theatre",
+        "openingDate": "2026-10-22",
+        "status": "previews",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
       "confirm": false
     },
     {
@@ -2006,9 +2206,9 @@
       "confirm": false
     },
     {
-      "from": "garry-starr-classic-penguins-off-broadway-2026",
+      "from": "garry-starr-classic-penguins-garrick-west-end-2026",
       "to": "garry-starr-classic-penguins-off-west-end-2026",
-      "file": "nysr--roma-torre.json",
+      "file": "theater-scene--deb-miller.json",
       "slug": "Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909",
       "source": "bww",
       "url": "https://www.broadwayworld.com/article/Review-Roundup-GARRY-STARR-CLASSIC-PENGUINS-20260909",
@@ -2019,10 +2219,10 @@
       "fromYearGap": 0,
       "fromShow": {
         "title": "Garry Starr: Classic Penguins",
-        "venue": "Studio Seaview",
-        "openingDate": "2026-09-08",
-        "status": "open",
-        "category": "off-broadway"
+        "venue": "Garrick Theatre",
+        "openingDate": "2026-02-01",
+        "status": "closed",
+        "category": "west-end"
       },
       "toShow": {
         "title": "Garry Starr Classic Penguins",
@@ -2753,6 +2953,72 @@
       "confirm": false
     },
     {
+      "from": "home-1970",
+      "to": "fun-home-2015",
+      "file": "hollywood-reporter--david-rooney.json",
+      "slug": "Review-Roundup-FUN-HOME-Opens-on-Broadway--Updating-LIVE-20150419",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-FUN-HOME-Opens-on-Broadway--Updating-LIVE-20150419",
+      "fromTokens": "home",
+      "toTokens": "fun|home",
+      "articleYear": 2015,
+      "toYearGap": 0,
+      "fromYearGap": 45,
+      "fromShow": {
+        "title": "Home",
+        "venue": "Morosco Theatre",
+        "openingDate": "1970-11-17",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Fun Home",
+        "venue": "Circle in the Square Theatre",
+        "openingDate": "2015-04-19",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "home-1970",
+      "to": "fun-home-2015",
+      "file": "nbcny--robert-kahn.json",
+      "slug": "Review-Roundup-FUN-HOME-Opens-on-Broadway--Updating-LIVE-20150419",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-FUN-HOME-Opens-on-Broadway--Updating-LIVE-20150419",
+      "fromTokens": "home",
+      "toTokens": "fun|home",
+      "articleYear": 2015,
+      "toYearGap": 0,
+      "fromYearGap": 45,
+      "fromShow": {
+        "title": "Home",
+        "venue": "Morosco Theatre",
+        "openingDate": "1970-11-17",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Fun Home",
+        "venue": "Circle in the Square Theatre",
+        "openingDate": "2015-04-19",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
       "from": "home-2024",
       "to": "a-free-man-of-color-2010",
       "file": "northjerseycom--robert-feldberg.json",
@@ -2944,516 +3210,6 @@
       "outOfScope": false,
       "warnings": [
         "to-year-far"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "amny--matt-windman.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "ap--mark-kennedy.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "chicagotribune--chris-jone.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.chicagotribune.com/entertainment/theater/broadway/sc-liaisons-broadway-review-ent-1031-20161030-column.html",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "dailybeast--tim-teeman.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "deadline--jeremy-gerard.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://deadline.com/2016/10/liaisons-dangereuses-liev-schreiber-review-1201844490/",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "guardian--alexis-soloski.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "https://www.theguardian.com/stage/2016/oct/30/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "newsday--linda-winer.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.newsday.com/entertainment/theater/schreiber-mcteer-play-with-fire-in-les-liaisons-dangereuses-1.12521474",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "njcom--christopher-kelly.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.nj.com/entertainment/index.ssf/2016/10/les_liaisons_dangereuses_liev_schreiber_broadway_r.html",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "nytimes--ben-brantley.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.nytimes.com/2016/10/31/theater/liaisons-dangereuses-review.html",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "telegraph--matt-wolf.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-theatre-new-york-review/",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "thewrap--robert-hofler.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.thewrap.com/les-liaisons-dangereuses-broadway-review-liev-schreiber-janet-mcteer-bring-old-blighty-to-france/",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "timeout--david-cote.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "https://www.timeout.com/newyork/blog/theater-review-les-liaisons-dangereuses-seduces-broadway-again-102816",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "variety--marilyn-stasio.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-2016",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "washpost--peter-marks.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "https://www.washingtonpost.com/entertainment/theater_dance/review-nyc-revival-of-les-liaisons-dangereuses-crackles/2016/10/30/3d47319e-9f06-11e6-8864-6f892cad0865_story.html",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Booth Theatre",
-        "openingDate": "2016-10-30",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
-      ],
-      "confirm": false
-    },
-    {
-      "from": "les-liaisons-dangereuses-west-end-2026",
-      "to": "nt-live-les-liaisons-dangereuses-off-west-end-2026",
-      "file": "telegraph--claire-allfree.json",
-      "slug": "Review-Roundup-LES-LIAISONS-DANGEREUSES-Opens-on-Broadway-Updating-LIVE-20161030",
-      "source": "bww",
-      "url": "http://www.telegraph.co.uk/theatre/what-to-see/les-liaisons-dangereuses-booth-theatre-new-york-review/",
-      "fromTokens": "les|liaisons|dangereuses",
-      "toTokens": "live|les|liaisons|dangereuses",
-      "articleYear": 2016,
-      "toYearGap": null,
-      "fromYearGap": 10,
-      "fromShow": {
-        "title": "Les Liaisons Dangereuses",
-        "venue": "Lyttelton Theatre",
-        "openingDate": "2026-04-01",
-        "status": "closed",
-        "category": "west-end"
-      },
-      "toShow": {
-        "title": "Nt Live Les Liaisons Dangereuses",
-        "venue": "Kiln Theatre",
-        "openingDate": null,
-        "status": "announced",
-        "category": "off-west-end"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [
-        "no-date",
-        "from-also-full-match"
       ],
       "confirm": false
     },
@@ -3706,6 +3462,72 @@
       "confirm": false
     },
     {
+      "from": "midnight-off-broadway-2026",
+      "to": "midnight-at-the-never-get-west-end-2026",
+      "file": "broadwayworld--michael-major.json",
+      "slug": "Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721",
+      "fromTokens": "midnight",
+      "toTokens": "midnight|never|get",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Midnight",
+        "venue": "Daryl Roth Theatre",
+        "openingDate": "2026-09-27",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Midnight at the Never Get",
+        "venue": "Menier Chocolate Factory",
+        "openingDate": "2026-07-20",
+        "status": "closed",
+        "category": "off-west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "midnight-off-broadway-2026",
+      "to": "midnight-at-the-never-get-west-end-2026",
+      "file": "whatsonstage--theo-bosanquet.json",
+      "slug": "Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-Ben-Platt-in-MIDNIGHT-AT-THE-NEVER-GET-at-The-Menier-Chocolate-Factory-20260721",
+      "fromTokens": "midnight",
+      "toTokens": "midnight|never|get",
+      "articleYear": 2026,
+      "toYearGap": 0,
+      "fromYearGap": 0,
+      "fromShow": {
+        "title": "Midnight",
+        "venue": "Daryl Roth Theatre",
+        "openingDate": "2026-09-27",
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Midnight at the Never Get",
+        "venue": "Menier Chocolate Factory",
+        "openingDate": "2026-07-20",
+        "status": "closed",
+        "category": "off-west-end"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
       "from": "mj-the-musical-west-end-2024",
       "to": "heart-of-rock-and-roll-2024",
       "file": "new-york-sun--elysa-gardner.json",
@@ -3728,471 +3550,6 @@
         "title": "The Heart of Rock and Roll",
         "venue": "James Earl Jones Theatre",
         "openingDate": "2024-04-22",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "amny--matt-windman.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "http://www.amny.com/entertainment/oh-hello-review-nick-kroll-john-mulaney-show-a-must-see-for-cranky-new-yorkers-1.12436926",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "ew--jesse-oxfeld.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "http://www.ew.com/article/2016/10/10/oh-hello-broadway-ew-stage-review",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "guardian--alexis-soloski.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "https://www.theguardian.com/stage/2016/oct/10/oh-hello-on-broadway-review-nick-kroll-john-mulaney",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "hollywood-reporter--frank-scheck.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "huffpost--steven-suskin.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "nbcny--dave-quinn.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "newsday--linda-winer.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "http://www.newsday.com/entertainment/theater/oh-hello-on-broadway-review-jokes-as-messy-as-his-hair-1.12435330",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "northjerseycom--robert-feldberg.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "http://www.northjersey.com/arts-and-entertainment/theater/cranky-old-pair-carries-on-theatrically-1.1675140",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "nydailynews--joe-dziemianowicz.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "http://www.nydailynews.com/entertainment/theater-arts/nick-kroll-john-mulaney-shaggy-side-splitter-article-1.2825462",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "nytimes--ben-brantley.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "http://www.nytimes.com/2016/10/11/theater/oh-hello-review-broadway.html",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "thewrap--robert-hofler.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "http://www.thewrap.com/oh-hello-on-broadway-review-a-comedy-central-skit-makes-the-jump-to-the-big-stage/",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "timeout--adam-feldman.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "https://www.timeout.com/newyork/blog/broadway-review-nick-kroll-and-john-mulaney-kvetch-up-a-comic-storm-in-oh-hello-101016",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "variety--marilyn-stasio.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "http://variety.com/2016/legit/reviews/oh-hello-on-broadway-review-1201883691/",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "vulture--jesse-green.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "http://www.vulture.com/2016/10/theater-review-oh-hello-on-broadway.html",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "class": "A",
-      "outOfScope": false,
-      "warnings": [],
-      "confirm": false
-    },
-    {
-      "from": "oh-hello-on-broadway-2016",
-      "to": "hello-dolly-2017",
-      "file": "washpost--peter-marks.json",
-      "slug": "Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "source": "bww",
-      "url": "https://www.broadwayworld.com/article/Review-Roundup-OH-HELLO-Opens-on-Broadway--Updating-Live-20161010",
-      "fromTokens": "",
-      "toTokens": "hello",
-      "articleYear": 2016,
-      "toYearGap": 1,
-      "fromYearGap": 0,
-      "fromShow": {
-        "title": "Oh, Hello on Broadway",
-        "venue": "Lyceum Theatre",
-        "openingDate": "2016-10-10",
-        "status": "closed",
-        "category": "broadway"
-      },
-      "toShow": {
-        "title": "Hello, Dolly!",
-        "venue": "Shubert Theatre",
-        "openingDate": "2017-04-20",
         "status": "closed",
         "category": "broadway"
       },
@@ -4297,6 +3654,39 @@
       "outOfScope": false,
       "warnings": [
         "to-year-far"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "proof-2026",
+      "to": "priscilla-queen-of-the-desert-off-broadway-2026",
+      "file": "680newscom--gloria-martin.json",
+      "slug": "Review-Roundup-PRISCILLA-in-Toronto-20101027",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-PRISCILLA-in-Toronto-20101027",
+      "fromTokens": "proof",
+      "toTokens": "priscilla",
+      "articleYear": 2010,
+      "toYearGap": null,
+      "fromYearGap": 16,
+      "fromShow": {
+        "title": "Proof",
+        "venue": "Booth Theatre",
+        "openingDate": "2026-04-16",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Priscilla, Queen of the Desert",
+        "venue": "Gallery Players",
+        "openingDate": null,
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "no-date"
       ],
       "confirm": false
     },
@@ -4422,6 +3812,39 @@
       "class": "A",
       "outOfScope": false,
       "warnings": [],
+      "confirm": false
+    },
+    {
+      "from": "proof-2026",
+      "to": "priscilla-queen-of-the-desert-off-broadway-2026",
+      "file": "the-globe-and-mail--kelly-nestruck.json",
+      "slug": "Review-Roundup-PRISCILLA-in-Toronto-20101027",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-PRISCILLA-in-Toronto-20101027",
+      "fromTokens": "proof",
+      "toTokens": "priscilla",
+      "articleYear": 2010,
+      "toYearGap": null,
+      "fromYearGap": 16,
+      "fromShow": {
+        "title": "Proof",
+        "venue": "Booth Theatre",
+        "openingDate": "2026-04-16",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "toShow": {
+        "title": "Priscilla, Queen of the Desert",
+        "venue": "Gallery Players",
+        "openingDate": null,
+        "status": "open",
+        "category": "off-broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "no-date"
+      ],
       "confirm": false
     },
     {
@@ -5392,6 +4815,171 @@
       "outOfScope": false,
       "warnings": [
         "to-year-far",
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "titus-andronicus-off-broadway-2026",
+      "to": "gary-a-sequel-to-titus-andronicus-2019",
+      "file": "amny--matt-windman.json",
+      "slug": "Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+      "source": "bww",
+      "url": "https://www.amny.com/news/titus-andronicus-theater-review-nyc/",
+      "fromTokens": "titus|andronicus",
+      "toTokens": "gary|sequel|titus|andronicus",
+      "articleYear": 2019,
+      "toYearGap": 0,
+      "fromYearGap": 7,
+      "fromShow": {
+        "title": "Titus Andronicus",
+        "venue": "Pershing Square Signature Center",
+        "openingDate": "2026-03-29",
+        "status": "closed",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Gary: A Sequel to Titus Andronicus",
+        "venue": "Booth Theatre",
+        "openingDate": "2019-04-21",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "titus-andronicus-off-broadway-2026",
+      "to": "gary-a-sequel-to-titus-andronicus-2019",
+      "file": "broadwayworld--michael-dale.json",
+      "slug": "Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+      "fromTokens": "titus|andronicus",
+      "toTokens": "gary|sequel|titus|andronicus",
+      "articleYear": 2019,
+      "toYearGap": 0,
+      "fromYearGap": 7,
+      "fromShow": {
+        "title": "Titus Andronicus",
+        "venue": "Pershing Square Signature Center",
+        "openingDate": "2026-03-29",
+        "status": "closed",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Gary: A Sequel to Titus Andronicus",
+        "venue": "Booth Theatre",
+        "openingDate": "2019-04-21",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "titus-andronicus-off-broadway-2026",
+      "to": "gary-a-sequel-to-titus-andronicus-2019",
+      "file": "dailybeast--tim-teeman.json",
+      "slug": "Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+      "fromTokens": "titus|andronicus",
+      "toTokens": "gary|sequel|titus|andronicus",
+      "articleYear": 2019,
+      "toYearGap": 0,
+      "fromYearGap": 7,
+      "fromShow": {
+        "title": "Titus Andronicus",
+        "venue": "Pershing Square Signature Center",
+        "openingDate": "2026-03-29",
+        "status": "closed",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Gary: A Sequel to Titus Andronicus",
+        "venue": "Booth Theatre",
+        "openingDate": "2019-04-21",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "titus-andronicus-off-broadway-2026",
+      "to": "gary-a-sequel-to-titus-andronicus-2019",
+      "file": "nysr--jesse-oxfeld.json",
+      "slug": "Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+      "source": "bww",
+      "url": "https://www.broadwayworld.com/article/Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+      "fromTokens": "titus|andronicus",
+      "toTokens": "gary|sequel|titus|andronicus",
+      "articleYear": 2019,
+      "toYearGap": 0,
+      "fromYearGap": 7,
+      "fromShow": {
+        "title": "Titus Andronicus",
+        "venue": "Pershing Square Signature Center",
+        "openingDate": "2026-03-29",
+        "status": "closed",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Gary: A Sequel to Titus Andronicus",
+        "venue": "Booth Theatre",
+        "openingDate": "2019-04-21",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
+        "from-also-full-match"
+      ],
+      "confirm": false
+    },
+    {
+      "from": "titus-andronicus-off-broadway-2026",
+      "to": "gary-a-sequel-to-titus-andronicus-2019",
+      "file": "timeout--adam-feldman.json",
+      "slug": "Review-Roundup-GARY-A-SEQUEL-TO-TITUS-ANDRONICUS-What-Do-The-Critics-Think-20190421",
+      "source": "bww",
+      "url": "https://www.timeout.com/newyork/news/theater-review-titus-andronicus-shakespeares-nastiest-tragedy-033026",
+      "fromTokens": "titus|andronicus",
+      "toTokens": "gary|sequel|titus|andronicus",
+      "articleYear": 2019,
+      "toYearGap": 0,
+      "fromYearGap": 7,
+      "fromShow": {
+        "title": "Titus Andronicus",
+        "venue": "Pershing Square Signature Center",
+        "openingDate": "2026-03-29",
+        "status": "closed",
+        "category": "off-broadway"
+      },
+      "toShow": {
+        "title": "Gary: A Sequel to Titus Andronicus",
+        "venue": "Booth Theatre",
+        "openingDate": "2019-04-21",
+        "status": "closed",
+        "category": "broadway"
+      },
+      "class": "A",
+      "outOfScope": false,
+      "warnings": [
         "from-also-full-match"
       ],
       "confirm": false
