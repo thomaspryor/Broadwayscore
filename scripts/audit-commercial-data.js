@@ -33,10 +33,7 @@ const HISTORY_MAX_ENTRIES = 52;
 // Constants
 // ============================================
 
-const VALID_DESIGNATIONS = [
-  'Miracle', 'Windfall', 'Easy Winner', 'Trickle',
-  'TBD', 'Fizzle', 'Flop', 'Nonprofit', 'Tour Stop',
-];
+const { VALID_DESIGNATIONS } = require('./lib/commercial-designations');
 
 const VALID_COST_METHODOLOGIES = [
   'reddit-standard', 'trade-reported', 'sec-filing',

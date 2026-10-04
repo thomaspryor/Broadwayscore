@@ -2,6 +2,7 @@
 // Tested by tests/unit/commercial-apply-gate.test.mjs.
 
 const { TRUSTED_RECOUPMENT_HOSTS } = require('./trusted-recoupment-domains');
+const { VALID_DESIGNATIONS, canonicalDesignation } = require('./commercial-designations');
 
 const CONFIDENCE_ORDER = { high: 3, medium: 2, low: 1 };
 
@@ -79,7 +80,7 @@ function buildCommercialEntry(entry, existing, opts = {}) {
   const result = isClaimAutoApply && existing ? { ...existing } : {};
   // cleanNullish() collapses "null"/"undefined"/"" sentinels to undefined so a
   // bad LLM field never overwrites an existing value or writes invalid data.
-  const designation = cleanNullish(entry.designation);
+  const designation = canonicalDesignation(cleanNullish(entry.designation));
   const capitalizationSource = cleanNullish(entry.capitalizationSource);
   const costMethodology = cleanNullish(entry.costMethodology);
   const recoupedDate = cleanNullish(entry.recoupedDate);
@@ -111,6 +112,8 @@ function buildCommercialEntry(entry, existing, opts = {}) {
 module.exports = {
   CONFIDENCE_ORDER,
   cleanNullish,
+  VALID_DESIGNATIONS,
+  canonicalDesignation,
   meetsConfidenceThreshold,
   hasRecoupedClaim,
   isReviewHold,

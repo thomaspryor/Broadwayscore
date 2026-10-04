@@ -26,6 +26,7 @@
 
 const path = require('path');
 const { createJsonWriteGuard } = require('./json-write-guard');
+const { canonicalDesignation } = require('./commercial-designations');
 
 const COMMERCIAL_PATH = path.join(__dirname, '..', '..', 'data', 'commercial.json');
 
@@ -38,6 +39,15 @@ function createCommercialWriteGuard(commercialPath) {
     recordsKey: 'shows',
     shape: 'map',
     metaKey: '_meta',
+    // Every writer funnels through here, so canonicalize designation casing
+    // ("flop" -> "Flop") once instead of trusting each script (BRO-4570).
+    // Unknown values are left as-is for validate-data.js to reject.
+    beforeWrite: (finalData) => {
+      for (const rec of Object.values(finalData.shows || {})) {
+        const canon = rec && canonicalDesignation(rec.designation);
+        if (canon) rec.designation = canon;
+      }
+    },
   });
 
   return {

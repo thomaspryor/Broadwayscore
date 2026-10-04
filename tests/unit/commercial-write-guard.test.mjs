@@ -94,3 +94,28 @@ describe('lock serializes real concurrent processes', () => {
     });
   });
 });
+
+describe('designation canonicalization on save (BRO-4570)', () => {
+  test('rewrites non-canonical casing and leaves unknown values for validation', () => {
+    seed({
+      _meta: {},
+      shows: {
+        titanique: { designation: 'Fizzle' },
+        hamilton: { designation: 'Miracle' },
+        odd: { designation: 'Mystery' },
+      },
+    });
+    const guard = createCommercialWriteGuard(commercialPath);
+    const data = guard.loadCommercial();
+    data.shows.titanique.designation = 'flop';
+    data.shows.newshow = { designation: ' easy_winner ' };
+    data.shows.odd.designation = 'bogus';
+    guard.saveCommercial(data);
+
+    const onDisk = JSON.parse(fs.readFileSync(commercialPath, 'utf8'));
+    assert.equal(onDisk.shows.titanique.designation, 'Flop');
+    assert.equal(onDisk.shows.newshow.designation, 'Easy Winner');
+    assert.equal(onDisk.shows.hamilton.designation, 'Miracle');
+    assert.equal(onDisk.shows.odd.designation, 'bogus');
+  });
+});

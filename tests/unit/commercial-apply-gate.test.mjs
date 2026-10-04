@@ -248,4 +248,35 @@ describe('commercial-apply-gate', () => {
       assert.equal(gate.cleanNullish(false), false);
     });
   });
+
+  describe('designation canonicalization (BRO-4570)', () => {
+    it('canonicalDesignation maps case/whitespace/underscore variants', () => {
+      assert.equal(gate.canonicalDesignation('flop'), 'Flop');
+      assert.equal(gate.canonicalDesignation(' easy winner '), 'Easy Winner');
+      assert.equal(gate.canonicalDesignation('TOUR_STOP'), 'Tour Stop');
+      assert.equal(gate.canonicalDesignation('bogus'), undefined);
+      assert.equal(gate.canonicalDesignation(null), undefined);
+    });
+
+    it('buildCommercialEntry writes the canonical spelling ("flop" -> "Flop")', () => {
+      const result = gate.buildCommercialEntry({ designation: 'flop', recouped: false }, null, {});
+      assert.equal(result.designation, 'Flop');
+    });
+
+    it('an unknown designation never overwrites the existing one on auto-apply', () => {
+      const result = gate.buildCommercialEntry(
+        { designation: 'bogus', recouped: true },
+        { designation: 'Windfall' },
+        { isClaimAutoApply: true },
+      );
+      assert.equal(result.designation, 'Windfall');
+    });
+
+    it('VALID_DESIGNATIONS matches the site type union', () => {
+      assert.deepEqual(gate.VALID_DESIGNATIONS, [
+        'Miracle', 'Windfall', 'Easy Winner', 'Trickle',
+        'TBD', 'Fizzle', 'Flop', 'Nonprofit', 'Tour Stop',
+      ]);
+    });
+  });
 });
