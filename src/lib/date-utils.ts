@@ -58,6 +58,42 @@ export function getBroadwayDuration(openingDate: string | null, suffix = 'on Bro
   return `${years}+ year${years === 1 ? '' : 's'} ${suffix}`;
 }
 
+const MONTH_ABBR = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+/**
+ * Run-age label for list cards. West End pages are all London, so there is no
+ * market suffix, and the label is anchored to the opening date instead of a
+ * rounded duration:
+ *   0 days: "Opened today" | 1: "Opened yesterday" | 2-13: "Opened 22 Sep"
+ *   14 days to under a year: "Opened Sep 2026" | a year or more: "Since 2019"
+ * Other markets keep getBroadwayDuration's "N months on Broadway" style.
+ * @param today - YYYY-MM-DD override for the West End branch (defaults to today in London); for tests
+ * @param suffix - overrides the market suffix for non-West-End markets (e.g. opera)
+ */
+export function getRunAgeLabel(
+  openingDate: string | null | undefined,
+  category?: string,
+  today: string = getMarketDate(category),
+  suffix?: string
+): string | null {
+  if (!openingDate) return null;
+  if (category !== 'west-end' && category !== 'off-west-end') {
+    return getBroadwayDuration(openingDate, suffix ?? getDurationSuffix(category));
+  }
+  const open = /^(\d{4})-(\d{2})-(\d{2})/.exec(openingDate);
+  const now = /^(\d{4})-(\d{2})-(\d{2})/.exec(today);
+  if (!open || !now) return null;
+  const [oy, om, od] = open.slice(1).map(Number);
+  const [ny, nm, nd] = now.slice(1).map(Number);
+  const days = Math.round((Date.UTC(ny, nm - 1, nd) - Date.UTC(oy, om - 1, od)) / 86400000);
+  if (days < 0) return null;
+  if (days === 0) return 'Opened today';
+  if (days === 1) return 'Opened yesterday';
+  if (days < 14) return `Opened ${od} ${MONTH_ABBR[om - 1]}`;
+  if (days < 365) return `Opened ${MONTH_ABBR[om - 1]} ${oy}`;
+  return `Since ${oy}`;
+}
+
 /**
  * Calculate run length between opening and closing dates for closed shows.
  * @param format - 'compact' returns "2+ years on Broadway", 'precise' returns "2 years, 3 months"

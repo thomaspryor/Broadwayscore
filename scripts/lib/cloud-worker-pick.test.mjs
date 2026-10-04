@@ -3,12 +3,13 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { pickCloudCard, skipReason, IDLE_MS } = require('./cloud-worker-pick.js');
+const { pickCloudCard, skipReason, IDLE_MS, AUTOMATION_PARK_STALE_MS } = require('./cloud-worker-pick.js');
 
 const NOW = Date.parse('2026-10-03T12:00:00Z');
 const OLD = new Date(NOW - IDLE_MS - 60_000).toISOString();
 const FRESH = new Date(NOW - 60_000).toISOString();
 const SAFE_CMD = '`node --test scripts/lib/example.test.mjs`';
+const STARTED_STATE = { name: 'In Progress', type: 'started' };
 const BODY = `## Problem\nX broke.\n\n## Acceptance criteria\n${SAFE_CMD} passes.`;
 
 function issue(over = {}) {
@@ -52,6 +53,47 @@ test('takes a technically parked P0/P1 session card, refuses an owner hold', () 
   assert.equal(skipReason(tech, NOW), null);
   const hold = issue({ state: { name: 'Backlog', type: 'backlog' }, description: `PARKED: waiting on owner go-ahead\n\n${BODY}` });
   assert.equal(skipReason(hold, NOW), 'parked-or-backlog');
+});
+
+test('takes a machine-filed parked card only once it has sat quiet for AUTOMATION_PARK_STALE_MS', () => {
+  const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
+  const recent = new Date(NOW - AUTOMATION_PARK_STALE_MS + 60 * 60_000).toISOString();
+  const backlog = { name: 'Backlog', type: 'backlog' };
+  const autofix = `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}`;
+  const router = `PARKED: Auto-filed by owner-alert-router (condition: backstop:some-show); parked for triage.\n\n${BODY}`;
+  assert.equal(skipReason(issue({ state: backlog, description: autofix, updatedAt: stale }), NOW), null);
+  assert.equal(skipReason(issue({ state: backlog, description: router, updatedAt: stale }), NOW), null);
+  assert.equal(skipReason(issue({ state: backlog, description: autofix, updatedAt: recent }), NOW), 'parked-or-backlog');
+  assert.equal(skipReason(issue({ state: backlog, description: autofix, updatedAt: stale, priority: 3 }), NOW), 'not-p0-p1');
+  assert.equal(skipReason(issue({ state: backlog, description: autofix.replace(SAFE_CMD, 'it looks right'), updatedAt: stale }), NOW), 'no-safe-verify');
+  assert.equal(skipReason(issue({ state: backlog, description: `${autofix}\n\nDECISION NEEDED: owner picks.`, updatedAt: stale }), NOW), 'blocker-OWNER_DECISION_GATE');
+  // A hand-written owner hold stays parked however old it is.
+  assert.equal(skipReason(issue({ state: backlog, description: `PARKED: waiting on owner go-ahead\n\n${BODY}`, updatedAt: stale }), NOW), 'parked-or-backlog');
+  // An owner hold added on a later PARKED line under the machine line wins.
+  assert.equal(skipReason(issue({ state: backlog, description: autofix.replace('\n\n', '\nPARKED: waiting on owner go-ahead\n\n'), updatedAt: stale }), NOW), 'parked-or-backlog');
+  // A later hold line that quotes the machine marker is still a hold.
+  assert.equal(skipReason(issue({ state: backlog, description: autofix.replace('\n\n', '\nPARKED: owner hold, leave Auto-filed by digest-autofix cards alone\n\n'), updatedAt: stale }), NOW), 'parked-or-backlog');
+  // A later technical PARKED line does not block it.
+  assert.equal(skipReason(issue({ state: backlog, description: autofix.replace('\n\n', '\nPARKED: needs a worktree\n\n'), updatedAt: stale }), NOW), null);
+  // Exact boundary: quiet for exactly AUTOMATION_PARK_STALE_MS counts.
+  assert.equal(skipReason(issue({ state: backlog, description: autofix, updatedAt: new Date(NOW - AUTOMATION_PARK_STALE_MS).toISOString() }), NOW), null);
+  // A started card is never treated as parked-drainable.
+  assert.equal(skipReason(issue({ state: STARTED_STATE, description: autofix, updatedAt: stale }), NOW), 'state-started');
+  // The router marker quoted in the body, with no leading PARKED line naming it, is a person's park.
+  assert.equal(skipReason(issue({ state: backlog, description: `PARKED: owner to decide\n\nSee Auto-filed by owner-alert-router cards.\n\n${BODY}`, updatedAt: stale }), NOW), 'parked-or-backlog');
+});
+
+test('within a priority, stale machine-filed cards go after Todo and session-parked cards', () => {
+  const stale = new Date(NOW - AUTOMATION_PARK_STALE_MS - 60_000).toISOString();
+  const backlog = { name: 'Backlog', type: 'backlog' };
+  const autofix = `PARKED: Auto-filed by digest-autofix; runAutofix dispatches via linear-next separately in the same pass.\n\n${BODY}`;
+  const { ordered } = pickCloudCard([
+    issue({ identifier: 'BRO-10', state: backlog, description: autofix, updatedAt: stale }),
+    issue({ identifier: 'BRO-900' }),
+    issue({ identifier: 'BRO-800', state: backlog, description: `PARKED: needs a rule-18 second-opinion before the edit\n\n${BODY}` }),
+    issue({ identifier: 'BRO-20', priority: 1, state: backlog, description: autofix, updatedAt: stale }),
+  ], { nowMs: NOW });
+  assert.deepEqual(ordered.map((i) => i.identifier), ['BRO-20', 'BRO-800', 'BRO-900', 'BRO-10']);
 });
 
 test('empty board returns no pick', () => {

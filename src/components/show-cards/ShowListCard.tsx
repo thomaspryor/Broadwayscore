@@ -9,7 +9,7 @@ import type { ScoreTier } from '@/components/show-cards';
 import { isNonTheatricalGenre } from '@/lib/genre';
 import { hasEnoughReviews } from '@/config/score-buckets';
 import { CURATED_HISTORICAL_SHOWS } from '@/config/scoring';
-import { getBroadwayDuration, getRunLength, formatOpeningDate, getDurationSuffix, formatShowDate } from '@/lib/date-utils';
+import { getRunAgeLabel, getRunLength, formatOpeningDate, getDurationSuffix, formatShowDate } from '@/lib/date-utils';
 import { shortCity } from '@/lib/tour-schedule';
 import { getMarketLabel, isLondonMarket } from '@/lib/market-utils';
 import { isOperaShow, OPERA_DURATION_SUFFIX, OPERA_MARKET_LABEL } from '@/lib/show-market';
@@ -186,12 +186,12 @@ const ShowListCard = memo(function ShowListCard({
         ) : (
           <>
             {show.status === 'open' && (() => {
-              const duration = getBroadwayDuration(show.openingDate, durationSuffix);
+              const duration = getRunAgeLabel(show.openingDate, category, undefined, durationSuffix);
               return duration ? <span>{duration}</span> : null;
             })()}
             {show.status === 'open' && show.closingDate && (
               <span className="text-amber-400">
-                {getBroadwayDuration(show.openingDate, durationSuffix) && '·'} Closes {formatShowDate(show.closingDate)}
+                {getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) && '·'} Closes {formatShowDate(show.closingDate)}
               </span>
             )}
             {(show.status === 'previews' || show.status === 'upcoming' || show.status === 'announced') && show.openingDate && (
@@ -239,7 +239,7 @@ const ShowListCard = memo(function ShowListCard({
         {show.isOffWestEnd && <CategoryBadge category="off-west-end" />}
         {!hideStatus && <StatusBadge status={show.status} />}
       </div>
-      <p className="text-sm text-gray-400 mt-2.5 truncate">
+      <p className="text-sm text-gray-400 mt-2.5 sm:truncate">
         {show.status === 'previews' || show.status === 'upcoming' ? (
           // Show BOTH dates when we have both — a previews start is real,
           // useful information, not a lesser substitute for opening night.
@@ -271,11 +271,11 @@ const ShowListCard = memo(function ShowListCard({
         ) : (
           <>
             {(() => {
-              const duration = getBroadwayDuration(show.openingDate, durationSuffix);
+              const duration = getRunAgeLabel(show.openingDate, category, undefined, durationSuffix);
               return duration ? <>{duration}</> : null;
             })()}
             {show.closingDate && (
-              <span className="text-amber-400">{getBroadwayDuration(show.openingDate, durationSuffix) ? ' · ' : ''}Closes {formatOpeningDate(show.closingDate)}</span>
+              <span className="text-amber-400">{getRunAgeLabel(show.openingDate, category, undefined, durationSuffix) ? ' · ' : ''}Closes {formatOpeningDate(show.closingDate)}</span>
             )}
           </>
         )}
