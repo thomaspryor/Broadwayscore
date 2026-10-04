@@ -36,6 +36,8 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 source "$SCRIPT_DIR/push-mutex.sh"
 # shellcheck source=scripts/lib/disk-floor-check.sh
 source "$SCRIPT_DIR/disk-floor-check.sh"
+# shellcheck source=scripts/lib/heal-phantom-shallow.sh
+source "$SCRIPT_DIR/heal-phantom-shallow.sh"
 ensure_disk_floor   # task #968: self-heal low-disk before the push that needs the space
 
 MAX_RETRIES=${1:-7}
@@ -450,6 +452,12 @@ _redact_creds() {
 # failure is diagnosable from its own log instead of requiring a fresh
 # incident. Success path is unaffected — no output beyond what callers already
 # print. Always cleans up its temp file, on both outcomes.
+#
+# BRO-4603: a phantom .git/shallow entry makes EVERY fetch fail instantly with
+# "error in object: unshallow <sha>", so retrying the same fetch can never
+# succeed (card-verifiability-audit run 36999684962 lost 5/5 attempts,
+# opening-night-express run 37190310392 lost 7/7). On that exact error, drop
+# the phantom entries (heal-phantom-shallow.sh) and retry this fetch once.
 _fetch_with_captured_stderr() {
   local errfile
   errfile=$(mktemp 2>/dev/null || echo "/tmp/push-retry-fetch-err.$$.$RANDOM")
@@ -458,6 +466,14 @@ _fetch_with_captured_stderr() {
   local rc=$?
   if [ "$rc" -ne 0 ] && [ -s "$errfile" ]; then
     echo "  fetch stderr: $(tail -c 800 "$errfile" | _redact_creds | tr '\n' ' ')"
+    if is_phantom_shallow_error "$(cat "$errfile" 2>/dev/null)" && heal_phantom_shallow; then
+      echo "  retrying the same fetch after the phantom-shallow heal"
+      git_fetch "$@" 2>"$errfile"
+      rc=$?
+      if [ "$rc" -ne 0 ] && [ -s "$errfile" ]; then
+        echo "  fetch stderr (after heal): $(tail -c 800 "$errfile" | _redact_creds | tr '\n' ' ')"
+      fi
+    fi
   fi
   rm -f "$errfile" 2>/dev/null || true
   return $rc
