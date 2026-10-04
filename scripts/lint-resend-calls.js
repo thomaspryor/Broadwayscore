@@ -50,6 +50,11 @@ const ALLOWLIST = new Set([
   // need to know what the reader sent in, their name, email address, etc."
   // Transactional to the owner only.
   'scripts/lib/owner-fix-email.js',
+  // One-time welcome email to each new account (BRO-4620). Owner sign-off
+  // 2026-10-04: "yes new accounts should get a welcome email." Transactional,
+  // one recipient per call, never the broadcasts API. Its failure alerts go
+  // through routeAlert, not this direct call.
+  'scripts/send-welcome-emails.js',
   // Grandfathered — not yet migrated (Sprint 2/3 targets). Remove each line as
   // it's migrated onto owner-alert-router.js.
   'scripts/sync-followers.js',

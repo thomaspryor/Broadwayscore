@@ -33,14 +33,14 @@
  *                                                       # (Resend's test sink), no database
  *
  * Env: NEXT_PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY, RESEND_API_KEY,
- *      OWNER_EMAIL (failure alerts)
+ *      OWNER_EMAIL (only if the alert router ever pages; welcome alerts are digest lines)
  */
 
 'use strict';
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { sleep, buildFromAddress, buildReplyToAddress } = require('./lib/email-templates');
-const { sendAlert } = require('./lib/discord-notify');
+const { routeAlert, resolveCondition } = require('./lib/owner-alert-router');
 const db = require('./lib/supabase-service-rest');
 const welcome = require('./lib/welcome-email');
 
@@ -205,37 +205,45 @@ async function main() {
   }
 
   console.log(`Done: ${sent} sent, ${rejected.length} rejected, ${failures.length} failed${halted ? ', run stopped early' : ''}`);
+  // Owner alerts go through the alert router as Daily Digest lines (welcome
+  // email trouble is not page-worthy). The router remembers each condition in
+  // data/audit/alert-ledger.json, which the workflow commits, so a condition
+  // is reported once per incident however many 15-minute runs hit it.
   if (halted) {
-    await sendAlert({
+    await routeAlert({
+      conditionKey: 'welcome-email:halt',
+      disposition: 'digest',
       title: 'Welcome emails stopped: Resend setup problem',
       description: `Resend refused a welcome email for a reason that points at our setup (domain, sender, API key), not the recipient. Nobody was marked as sent; every run retries and stops at the first refusal until this is fixed. ${halted}`,
+      hint: 'Check the Resend domain and API key, then watch the next Send Welcome Emails run.',
       severity: 'error',
-      email: true,
-      idempotencyKey: `welcome-email-halt/${new Date().toISOString().slice(0, 10)}`,
     });
+  } else {
+    resolveCondition('welcome-email:halt', { reason: 'a run completed without a Resend setup refusal' });
   }
-  // Rejected: one alert per account, ever (Resend dedups the key for 24h and
-  // the account is never retried, so it cannot come back after that).
+  // Rejected: one condition per account; the account is never retried.
   for (const f of rejected) {
-    await sendAlert({
+    await routeAlert({
+      conditionKey: `welcome-email:rejected:${String(f.id).slice(0, 8)}`,
+      disposition: 'digest',
       title: 'Welcome email rejected by Resend',
       description: `Resend refused the welcome email for user ${String(f.id).slice(0, 8)}; it will not be retried. ${f.error}`,
-      severity: 'error',
-      email: true,
-      idempotencyKey: `welcome-email-rejected/${f.id}`,
+      severity: 'warning',
     });
   }
-  // Retryable failures: at most one alert per day, however many runs fail.
   if (failures.length) {
-    await sendAlert({
+    await routeAlert({
+      conditionKey: 'welcome-email:failed',
+      disposition: 'digest',
       title: 'Welcome email send failed',
       description: `${failures.length} welcome email(s) failed with a retryable error. The claims were released, so the next run (15 min) retries. First error: ${failures[0].error}`,
       severity: 'error',
-      email: true,
       fields: failures.slice(0, 5).map(f => ({ name: `user ${String(f.id).slice(0, 8)}`, value: f.error })),
-      idempotencyKey: `welcome-email-failed/${new Date().toISOString().slice(0, 10)}`,
     });
+  } else {
+    resolveCondition('welcome-email:failed', { reason: 'a run completed with no retryable send failures' });
   }
+  resolveCondition('welcome-email:crash', { reason: 'a run completed without crashing' });
   if (failures.length || rejected.length || halted) process.exitCode = 1;
 }
 
@@ -244,14 +252,14 @@ main().catch(async (err) => {
   // Manual dry runs and test sends report in their own log; only the
   // scheduled real run pages the owner.
   const manual = process.argv.some(a => a === '--dry-run' || a === '--test-send' || a.startsWith('--preview-since'));
-  if (!manual) await sendAlert({
+  // The router reports a crash once per incident, so a paused Supabase
+  // project does not produce a line every 15 minutes.
+  if (!manual) await routeAlert({
+    conditionKey: 'welcome-email:crash',
+    disposition: 'digest',
     title: 'Welcome email job crashed',
     description: `send-welcome-emails.js stopped before sending: ${welcome.redactEmails(err.message).slice(0, 300)}`,
     severity: 'error',
-    email: true,
-    // One alert per day at most: a paused Supabase project would otherwise
-    // page every 15 minutes.
-    idempotencyKey: `welcome-email-crash/${new Date().toISOString().slice(0, 10)}`,
   }).catch(() => {});
   process.exit(1);
 });

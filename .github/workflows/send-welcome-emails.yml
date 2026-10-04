@@ -33,8 +33,9 @@ on:
         required: false
         type: string
 
+# write: the job commits the alert router's ledger (see the last step).
 permissions:
-  contents: read
+  contents: write
 
 # Overlapping runs are already safe (the claim is a primary-key insert), but
 # queueing keeps the daily-cap count from racing.
@@ -48,6 +49,8 @@ jobs:
     timeout-minutes: 5
     steps:
       - uses: actions/checkout@v5
+        with:
+          ref: main
 
       # Plain setup-node, not ./.github/actions/setup-node: that action runs
       # npm ci, and this script needs only Node built-ins and in-repo files.
@@ -79,11 +82,31 @@ jobs:
             *) echo "::error::unknown mode $MODE"; exit 1 ;;
           esac
 
+      # The script reports trouble through routeAlert() (Daily Digest lines,
+      # once per incident). The router's ledger and digest queue live only on
+      # this runner until committed, so commit them here or every run would
+      # look like a new incident and the digest would never see the line.
+      - name: Commit alert ledger
+        if: always()
+        run: |
+          echo "send-welcome-emails.js calls routeAlert( and resolveCondition( - staging the router ledger"
+          git config --local user.email "github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git add data/audit/alert-ledger.json 2>/dev/null || true
+          git add data/audit/alert-digest-queue.json 2>/dev/null || true
+          git add data/audit/alert-router-attempts.jsonl 2>/dev/null || true
+          if ! git diff --cached --quiet; then
+            git commit -m "data: Update welcome-email alert state [skip ci]"
+            bash scripts/lib/push-with-retry.sh
+          else
+            echo "No ledger changes to commit"
+          fi
+
       - name: Notify on failure
-        # Scheduled runs only. The script pages the owner itself (sendAlert,
-        # per-day dedup). This step is severity 'warning', which notify-failure
-        # logs without emailing, so it never doubles those pages; it leaves a
-        # trace for checkout/setup failures the script never sees.
+        # Scheduled runs only. The script reports its own failures to the
+        # Daily Digest. This step is severity 'warning', which notify-failure
+        # logs without emailing; it leaves a trace for checkout/setup failures
+        # the script never sees.
         if: failure() && github.event_name == 'schedule'
         uses: ./.github/actions/notify-failure
         with:
