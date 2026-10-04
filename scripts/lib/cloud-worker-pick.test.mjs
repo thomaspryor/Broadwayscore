@@ -241,5 +241,16 @@ test('machine comments after a pause do not release an owner hold; a human check
     'Dispatched e391967e to linear:BRO-1 at 2026-10-03T00:00:00Z',
     '[red-first follow-up] filed',
   ]) assert.equal(pausedHistorySkipReason([held, after(body)], NOW), 'awaiting-owner', body);
-  assert.equal(pausedHistorySkipReason([held, after('[x] done, approved')], NOW), 'recently-paused');
+  for (const body of ['[x] done, approved', '[Approved] go ahead', '[the fix](https://example.com) looks right', '[follow-up](https://example.com) is fine, ship it']) {
+    assert.equal(pausedHistorySkipReason([held, after(body)], NOW), 'recently-paused', body);
+  }
+});
+
+test("a possessive owner mention (the owner's Mac) is not an owner hold", () => {
+  for (const text of ["Paused: needs the owner's Mac for keychain access.", "Blocked on the owner's machine (no VERCEL_TOKEN in cloud)."]) {
+    assert.equal(pausedHistorySkipReason([report('paused', text, 10_000)], NOW), 'recently-paused', text);
+  }
+  for (const text of ["Waiting on the owner's approval.", 'Needs the owner to confirm the flip.', 'Pending owner.']) {
+    assert.equal(pausedHistorySkipReason([report('paused', text, 10_000)], NOW), 'awaiting-owner', text);
+  }
 });
