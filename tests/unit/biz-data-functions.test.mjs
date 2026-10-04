@@ -5,6 +5,8 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import { createRequire } from 'node:module';
+const { VALID_DESIGNATIONS } = createRequire(import.meta.url)('../../scripts/lib/commercial-designations');
 
 // Import the data functions
 // Note: We need to use dynamic import since data.ts has side effects
@@ -160,7 +162,7 @@ describe('Commercial data structure', () => {
 
   it('should have valid designation values', () => {
     const commercial = JSON.parse(fs.readFileSync(path.join(dataDir, 'commercial.json'), 'utf-8'));
-    const validDesignations = ['Miracle', 'Windfall', 'Trickle', 'Easy Winner', 'Fizzle', 'Flop', 'Nonprofit', 'TBD', 'Tour Stop'];
+    const validDesignations = VALID_DESIGNATIONS;
 
     for (const [slug, data] of Object.entries(commercial.shows)) {
       assert.ok(

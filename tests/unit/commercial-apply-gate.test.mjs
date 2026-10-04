@@ -4,6 +4,7 @@
 
 import { describe, it } from 'node:test';
 import assert from 'node:assert';
+import fs from 'node:fs';
 import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 
@@ -272,11 +273,21 @@ describe('commercial-apply-gate', () => {
       assert.equal(result.designation, 'Windfall');
     });
 
-    it('VALID_DESIGNATIONS matches the site type union', () => {
-      assert.deepEqual(gate.VALID_DESIGNATIONS, [
-        'Miracle', 'Windfall', 'Easy Winner', 'Trickle',
-        'TBD', 'Fizzle', 'Flop', 'Nonprofit', 'Tour Stop',
-      ]);
+    it('a missing/invalid designation keeps the existing one on a from-scratch rebuild', () => {
+      const result = gate.buildCommercialEntry(
+        { designation: 'bogus', recouped: true },
+        { designation: 'Miracle', notes: 'old' },
+        { isClaimAutoApply: false },
+      );
+      assert.equal(result.designation, 'Miracle');
+      assert.equal(result.notes, undefined, 'rebuild still drops other old fields');
+    });
+
+    it('VALID_DESIGNATIONS matches the CommercialDesignation union in src/config/commercial.ts', () => {
+      const src = fs.readFileSync(new URL('../../src/config/commercial.ts', import.meta.url), 'utf8');
+      const union = src.match(/export type CommercialDesignation =([^;]+);/)[1];
+      const fromTs = [...union.matchAll(/'([^']+)'/g)].map(m => m[1]);
+      assert.deepEqual([...gate.VALID_DESIGNATIONS].sort(), fromTs.sort());
     });
   });
 });

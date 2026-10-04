@@ -86,7 +86,17 @@ function buildCommercialEntry(entry, existing, opts = {}) {
   const recoupedDate = cleanNullish(entry.recoupedDate);
   const recoupedSource = cleanNullish(entry.recoupedSource);
   const notes = cleanNullish(entry.notes);
-  if (designation) result.designation = designation;
+  if (designation) {
+    result.designation = designation;
+  } else {
+    const raw = cleanNullish(entry.designation);
+    if (raw) console.warn(`  ⚠️  Rejected non-canonical designation "${raw}" (valid: ${VALID_DESIGNATIONS.join(', ')})`);
+    // Never wipe a known designation on a from-scratch rebuild because the
+    // pending entry's label was missing or invalid.
+    if (!result.designation && existing?.designation) {
+      result.designation = canonicalDesignation(existing.designation) || existing.designation;
+    }
+  }
   if (entry.capitalization != null) result.capitalization = entry.capitalization;
   if (capitalizationSource) result.capitalizationSource = capitalizationSource;
   if (entry.weeklyRunningCost != null) result.weeklyRunningCost = entry.weeklyRunningCost;
