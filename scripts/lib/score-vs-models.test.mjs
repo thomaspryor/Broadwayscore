@@ -5,6 +5,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
+import { spawnSync } from 'node:child_process';
 import fs from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
@@ -60,6 +61,18 @@ test('stays quiet when score and models agree, in the same bucket, or on a human
 test('keyOf changes when the published score changes', () => {
   const f = { showId: 's', file: 'a.json', source: 'x', score: 50 };
   assert.notEqual(keyOf(f), keyOf({ ...f, score: 80 }));
+});
+
+test('CLI: a corrupt baseline fails (exit 2) instead of reading as "everything new"; a missing one is fine', () => {
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'score-vs-models-cli-'));
+  fs.mkdirSync(path.join(root, 'show-a'));
+  fs.writeFileSync(path.join(root, 'show-a', 'ap--x.json'), JSON.stringify(legacy()));
+  const bad = path.join(root, 'bad-baseline.json');
+  fs.writeFileSync(bad, '{not json');
+  const run = (baseline) => spawnSync(process.execPath, [path.resolve('scripts/audit-score-vs-models.js')],
+    { env: { ...process.env, REVIEW_TEXTS_DIR: root, SCORE_VS_MODELS_BASELINE: baseline }, encoding: 'utf8' });
+  assert.equal(run(bad).status, 2);
+  assert.equal(run(path.join(root, 'absent.json')).status, 0);
 });
 
 test('scan walks a corpus dir and counts every json file', () => {

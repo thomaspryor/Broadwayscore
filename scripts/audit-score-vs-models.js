@@ -40,7 +40,12 @@ function loadBaselineKeys() {
   try {
     const d = JSON.parse(fs.readFileSync(baselinePath(), 'utf8'));
     return { present: true, keys: new Set(Array.isArray(d.keys) ? d.keys : []) };
-  } catch { return { present: false, keys: new Set() }; }
+  } catch (e) {
+    if (e && e.code === 'ENOENT') return { present: false, keys: new Set() };
+    // A corrupt baseline must not read as "no baseline" (everything new, silently).
+    console.error(`FAIL: baseline unreadable (${baselinePath()}): ${e.message}`);
+    process.exit(2);
+  }
 }
 
 /** Scan a review-texts root. Exported for the unit test. */
