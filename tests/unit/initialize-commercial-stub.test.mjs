@@ -40,7 +40,7 @@ test('makeStub returns the expected stub shape', () => {
     weeklyRunningCost: null,
     recouped: false,
     recoupedSource: null,
-    notes: 'Auto-enrolled stub; awaiting model + curation.',
+    notes: null,
     sources: [],
   });
 });

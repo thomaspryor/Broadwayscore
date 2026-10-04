@@ -28,6 +28,30 @@ test('outcome policy: win needs recouped=true, loss needs recouped=false, recoup
   assert.equal(e({ designation: 'TBD', recouped: true, recoupedDate: '2024/01' }).length, 1);
 });
 
+test('loss designation needs a closed run when the status is known', () => {
+  const rec = { designation: 'Flop', recouped: false };
+  assert.equal(commercialRecordErrors('k', rec, { showRecord: { slug: 'k', status: 'open' } }).length, 1);
+  assert.equal(commercialRecordErrors('k', rec, { showRecord: { slug: 'k', status: 'previews' } }).length, 1);
+  assert.equal(commercialRecordErrors('k', rec, { showRecord: { slug: 'k', status: 'closed' } }).length, 0);
+  assert.equal(commercialRecordErrors('k', rec, {}).length, 0);
+  assert.equal(commercialRecordErrors('k', { designation: 'TBD', recouped: false }, { showRecord: { slug: 'k', status: 'open' } }).length, 0);
+});
+
+test('public text fields reject research-pipeline wording', () => {
+  const e = (rec) => commercialRecordErrors('k', rec, {});
+  assert.equal(e({ capitalizationSource: 'SEC filings (GPT Deep Research)' }).length, 1);
+  assert.equal(e({ capitalizationSource: 'Trade press / deep research synthesis' }).length, 1);
+  assert.equal(e({ notes: 'Auto-enrolled stub; awaiting model + curation.' }).length, 1);
+  assert.equal(e({ recoupedSource: 'GPT DR Batch 3 consensus' }).length, 1);
+  assert.equal(e({ notes: 'Auto-designated from model output.' }).length, 1);
+  // Real citations and ordinary prose pass.
+  assert.equal(e({ capitalizationSource: 'Broadway Journal (Sep 2023): $19.5M' }).length, 0);
+  assert.equal(e({ notes: 'Researched by the cast; a synthesis of jazz and opera.' }).length, 0);
+  assert.equal(e({ recoupedSource: 'Deadline (Aug 2023): recouped its $16.5M capitalization' }).length, 0);
+  // weeklyRunningCostSource is filtered by the UI, not here.
+  assert.equal(e({ weeklyRunningCostSource: 'GPT estimate' }).length, 0);
+});
+
 test('nonprofitOrg is checked against the shows.json venue', () => {
   assert.equal(commercialRecordErrors('ragtime', { designation: 'Nonprofit', nonprofitOrg: 'Lincoln Center Theater' }, { showRecord: shows[1] }).length, 0);
   assert.equal(commercialRecordErrors('ragtime', { designation: 'Nonprofit', nonprofitOrg: 'Manhattan Theatre Club' }, { showRecord: shows[1] }).length, 1);
