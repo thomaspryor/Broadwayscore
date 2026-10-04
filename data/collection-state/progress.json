@@ -8,14 +8,21 @@
     "hay-fever-west-end-2026/jonathan-baz--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
     "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
-    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/theatreboard--unknown.json",
+    "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json",
+    "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "degenerates-off-broadway-2026/one-minute-critic--unknown.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
     "hay-fever-west-end-2026/londontheatredirect--unknown.json",
     "hay-fever-west-end-2026/thestage--the-stage.json",
     "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
-    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json"
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+    "the-standard-of-living-west-end-2026/thestage--james-graham.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -24,7 +31,10 @@
       "bull-off-west-end-2026/whatsonstage--unknown.json",
       "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
       "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
-      "hay-fever-west-end-2026/jonathan-baz--unknown.json"
+      "hay-fever-west-end-2026/jonathan-baz--unknown.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/theatreboard--unknown.json",
+      "degenerates-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "degenerates-off-broadway-2026/one-minute-critic--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
@@ -32,7 +42,9 @@
     "scrapingdog": [
       "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
       "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
-      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
+      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "scrapingbee": [],
     "brightdata": [
@@ -42,6 +54,19 @@
     "archive": []
   },
   "startTime": "2026-10-04T14:37:19.660Z",
-  "lastProcessed": "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
-  "log": []
+  "lastProcessed": "the-standard-of-living-west-end-2026/thestage--james-graham.json",
+  "log": [
+    {
+      "t": "2026-10-04T15:09:47.329Z",
+      "event": "bb-session",
+      "session": "8a54eb2f",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
+    },
+    {
+      "t": "2026-10-04T15:10:04.742Z",
+      "event": "bb-session",
+      "session": "0f2851bf",
+      "url": "https://www.londontheatredirect.com/fr/news/review-roundup-what-are-the-critics-"
+    }
+  ]
 }
