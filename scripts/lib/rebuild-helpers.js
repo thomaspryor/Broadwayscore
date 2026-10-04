@@ -1168,12 +1168,16 @@ function getBestScore(data, opts = {}) {
   // Previously gated behind scoreSource/thumb checks, but assignedScore in 1-100
   // means the review was validated (manually or by pipeline). contentTier=invalid
   // should prevent re-scoring (via isScoreable) but not exclude from reviews.json.
-  if (data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100) {
+  // BRO-4612: a bare placeholder 50 (no ensemble, no source, no original score) is
+  // not validation; it skips this rung and the bucket rung that merely echoes it.
+  const placeholderAssigned = isPlaceholderAssignedScore(data);
+  if (!placeholderAssigned && data.assignedScore && data.assignedScore >= 1 && data.assignedScore <= 100) {
     return { score: data.assignedScore, source: 'assignedScore' };
   }
 
   // P5: Bucket mapping
-  if (data.bucket && BUCKET_SCORES[data.bucket]) {
+  if (data.bucket && BUCKET_SCORES[data.bucket] &&
+      !(placeholderAssigned && BUCKET_SCORES[data.bucket] === data.assignedScore)) {
     return { score: BUCKET_SCORES[data.bucket], source: 'bucket' };
   }
 
@@ -1403,7 +1407,21 @@ function compareFilesForDedupPriority(a, b) {
   return String(a.file).localeCompare(String(b.file));
 }
 
+/**
+ * BRO-4612: legacy placeholder. assignedScore 50 with no ensemble provenance
+ * (ensembleData), no score source, no original score, and no model reading that
+ * itself equals 50. Edwin Drood AP and Illinoise TB published at 50 on this alone
+ * while the model read 76/78. Real ensemble 50s keep llmScore.score === 50.
+ */
+function isPlaceholderAssignedScore(data) {
+  if (!data || data.assignedScore !== 50) return false;
+  if (data.ensembleData || data.scoreSource || data.originalScore) return false;
+  if (data.llmScore && data.llmScore.score === 50) return false;
+  return true;
+}
+
 module.exports = {
+  isPlaceholderAssignedScore,
   isOnStarLadder,
   isUnambiguousRatingString,
   publishedRatingEvidence,
