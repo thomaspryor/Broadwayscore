@@ -1,24 +1,18 @@
 {
-  "generatedAt": "2026-10-04T13:01:07.248Z",
+  "generatedAt": "2026-10-04T20:57:29.162Z",
   "shadow": true,
-  "checkoutSha": "5c5ae508290eb40e70db1c5c699debbb0c66c7d4",
-  "totalCandidates": 1200,
-  "eligibleCandidates": 31,
-  "checked": 16,
+  "checkoutSha": "4d16353aa677bf1424a10a5042029cc550564705",
+  "totalCandidates": 1693,
+  "eligibleCandidates": 57,
+  "checked": 13,
   "truncated": true,
   "fetchError": null,
   "counts": {
-    "pass": 10,
+    "pass": 8,
     "fail": 0,
-    "unverifiable": 6
+    "unverifiable": 5
   },
   "alreadyDone": [
-    {
-      "id": "BRO-4525",
-      "name": "Soft launch: user accounts + show tracking/rating from demo to prod (launch-readiness audit + fixes)",
-      "verifyCmd": "npx tsx --test tests/unit/ugc-soft-launch-flags.test.mjs",
-      "detail": null
-    },
     {
       "id": "BRO-4386",
       "name": "Ticket-seller product pages (theatrebookings.com/play/*, bestoftheatre.co.uk/<slug>) ingested + scored as reviews",
@@ -66,12 +60,6 @@
       "name": "triage-review-gap.js reports ingested-but-excluded when outlet's only file is a different production",
       "verifyCmd": "node --test scripts/triage-review-gap.test.mjs",
       "detail": null
-    },
-    {
-      "id": "BRO-4069",
-      "name": "P2: ack-landed.js cannot acknowledge a card whose work landed BEFORE any dispatch on its ledger, so a session that re-dispatched an already-done card can never write a clean exit",
-      "verifyCmd": "node --test scripts/tests/ack-landed-already-landed.test.mjs",
-      "detail": null
     }
   ],
   "failing": [],
@@ -80,19 +68,19 @@
       "id": "BRO-4549",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"flags non-freelancer critic at wrong outlet\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 146018ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 146178ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4410",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"no off-Broadway venue-complex has an unlinked bare-form/keyword-overlap sub-venue slug\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 111342ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 106591ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4265",
       "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"verified TodayTix-gap shows carry a real Ticketmaster link\"",
       "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 80407ms (timeout — no verdict)"
+      "detail": "check killed by SIGTERM after 67356ms (timeout — no verdict)"
     },
     {
       "id": "BRO-4165",
@@ -105,12 +93,6 @@
       "name": "P1 SYSTEMIC: six wrong conclusions in one session all had one shape — a self-designed search returned nothing and I reported nothing as the answer; require a positive control before any absence claim",
       "verifyCmd": "node --test tests/unit/absence-claim-control.test.mjs",
       "detail": "ran no passing tests (all skipped or none ran)"
-    },
-    {
-      "id": "BRO-4063",
-      "name": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every scripts/ root file with the shred signature and no fold is in the frozen baseline\"",
-      "verifyCmd": "node scripts/run-unit-tests.js",
-      "detail": "check killed by SIGTERM after 45605ms (timeout — no verdict)"
     }
   ]
 }
