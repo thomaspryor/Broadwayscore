@@ -1,7 +1,7 @@
 {
   "_meta": {
     "description": "Canonical outlet registry - ALL scripts must use this for outlet normalization",
-    "lastUpdated": "2026-10-03T20:46:13.025Z",
+    "lastUpdated": "2026-10-04T10:35:13.115Z",
     "version": "2.1.0",
     "lastChange": "task #1844 follow-up: move mislabeled sundayexpress alias from express-uk to sunday-express + repoint metro-source aliasIndex entry from metro-uk to metrosource (real routing bugs found by adversarial review, not registry duplicates)"
   },
@@ -11752,6 +11752,14 @@
         "buzznews"
       ],
       "domain": "buzznews.net"
+    },
+    "marin-independent-journal": {
+      "displayName": "Marin Independent Journal",
+      "tier": 3,
+      "aliases": [
+        "marin-independent-journal"
+      ],
+      "domain": "marinij.com"
     }
   },
   "_aliasIndex": {
