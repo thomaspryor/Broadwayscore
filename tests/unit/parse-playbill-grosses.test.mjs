@@ -18,12 +18,35 @@ const {
   parsePlaybillGrossesHtml,
   validatePlaybillGrosses,
   isPlausibleRow,
+  weekTotalMismatch,
+  toHistoryEntry,
   findMissingHistoryWeeks,
+  findHistoryKey,
   historyHasWeek,
   latestPublishableWeek,
   isoWeekToMDY,
   playbillGrossesUrl,
 } = require('../../scripts/lib/parse-playbill-grosses.js');
+const { isSaneGrossesRow } = require('../../scripts/lib/parse-bww-grosses-row.js');
+
+// A one-table page in Playbill's markup: the 8 header labels and one <tr> per
+// entry of `rows` (each an object of cell HTML keyed by header label).
+const HEADERS = ['Show', 'This Week Gross', 'Diff $', 'Avg Ticket', 'Seats Sold', 'Perfs', '% Cap', 'Diff % cap'];
+const HAMILTON_CELLS = {
+  'Show': '<a><span class="data-value">Hamilton</span></a><span class="subtext">Richard Rodgers Theatre</span>',
+  'This Week Gross': '<span class="data-value">$2,541,403.00</span><span class="subtext"></span>',
+  'Diff $': '<span class="data-value">$354,375.00</span>',
+  'Avg Ticket': '<span class="data-value">$245.93</span><span class="subtext">$599.00</span>',
+  'Seats Sold': '<span class="data-value">10,334</span><span class="subtext">1,324</span>',
+  'Perfs': '<span class="data-value">8</span><span class="subtext">0</span>',
+  '% Cap': '<span class="data-value">97.56%</span>',
+  'Diff % cap': '<span class="data-value">-3.33%</span>',
+};
+function miniPage(rows, { options = '', total = '' } = {}) {
+  const head = HEADERS.map(h => `<th>${h}</th>`).join('');
+  const body = rows.map(cells => `<tr>${HEADERS.map(h => `<td data-label="${h}">${cells[h] ?? ''}</td>`).join('')}</tr>`).join('');
+  return `<select>${options}</select>${total}<table><thead>${head}</thead><tbody>${body}</tbody></table>`;
+}
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const FIXTURE = fs.readFileSync(
@@ -194,11 +217,80 @@ test('historyHasWeek matches the exact key or a nearby Monday key, nothing furth
   assert.equal(historyHasWeek([], '2026-07-12'), false);
 });
 
-test('latestPublishableWeek is the Sunday before today (the previous one on a Sunday)', () => {
+test('findHistoryKey returns the key that already holds the week, preferring the exact one', () => {
+  const keys = ['2026-06-22', '2026-07-06', '2026-07-12'];
+  assert.equal(findHistoryKey(keys, '2026-07-12'), '2026-07-12');
+  assert.equal(findHistoryKey(keys, '2026-07-05'), '2026-07-06'); // write here, not a new 07-05 key
+  assert.equal(findHistoryKey(keys, '2026-06-28'), null);
+  assert.equal(findHistoryKey(['2026-07-06', '2026-07-05'], '2026-07-05'), '2026-07-05');
+  assert.equal(findHistoryKey(keys, 'nope'), null);
+});
+
+test('toHistoryEntry is the one history shape for Playbill and BWW rows', () => {
+  assert.deepEqual(toHistoryEntry(byShow('Hamilton')), {
+    gross: 2541403, capacity: 97.56, atp: 245.93, attendance: 10334, seatsOffered: 10592, performances: 8,
+  });
+  const bwwRow = { gross: 1, capacityPct: 90, atp: 100, attendance: 900, performances: 8 };
+  assert.equal(toHistoryEntry(bwwRow).seatsOffered, null);
+});
+
+test('latestPublishableWeek is the newest Sunday whose figures are out (Monday 18:00 UTC)', () => {
   assert.equal(latestPublishableWeek(new Date('2026-10-04T22:00:00Z')), '2026-09-27'); // Sunday
-  assert.equal(latestPublishableWeek(new Date('2026-10-05T01:00:00Z')), '2026-10-04'); // Monday
+  assert.equal(latestPublishableWeek(new Date('2026-10-05T01:00:00Z')), '2026-09-27'); // Monday, not out yet
+  assert.equal(latestPublishableWeek(new Date('2026-10-05T17:59:00Z')), '2026-09-27');
+  assert.equal(latestPublishableWeek(new Date('2026-10-05T18:00:00Z')), '2026-10-04'); // Monday afternoon ET
   assert.equal(latestPublishableWeek(new Date('2026-10-06T15:00:00Z')), '2026-10-04'); // Tuesday cron
   assert.equal(latestPublishableWeek(new Date('2026-10-10T23:59:00Z')), '2026-10-04'); // Saturday
+});
+
+test('with no readable Diff $, neither prev-week figure is derived (even from a 0.00% cap diff)', () => {
+  const [h] = parsePlaybillGrossesHtml(miniPage([{
+    ...HAMILTON_CELLS,
+    'Diff $': '<span class="data-value">-</span>',
+    'Diff % cap': '<span class="data-value">0.00%</span>',
+  }])).rows;
+  assert.equal(h.grossDiff, null);
+  assert.equal(h.grossPrevWeek, null);
+  assert.equal(h.capacityPctPrevWeek, null);
+});
+
+test('a cell without a .data-value span reads its main figure without the subtext', () => {
+  const [h] = parsePlaybillGrossesHtml(miniPage([{
+    ...HAMILTON_CELLS,
+    'Seats Sold': '10,334 <span class="subtext">1,324</span>',
+  }])).rows;
+  assert.equal(h.attendance, 10334);
+  assert.equal(h.seatsInTheatre, 1324);
+});
+
+test('only an exact "Total" row is skipped, never a show whose title starts with Total', () => {
+  const title = (t) => ({ ...HAMILTON_CELLS, Show: `<a><span class="data-value">${t}</span></a>` });
+  const rows = parsePlaybillGrossesHtml(miniPage([title('Total Abandon'), title('Total'), title("Week's Total")])).rows;
+  assert.deepEqual(rows.map(r => r.show), ['Total Abandon']);
+});
+
+test('the week comes from the option text, with the ?week= value as a fallback', () => {
+  const p = parsePlaybillGrossesHtml(miniPage([HAMILTON_CELLS], {
+    options: '<option value="/somewhere-else" selected>2026-09-13</option><option value="https://playbill.com/grosses?week=2026-09-06">Sep 6</option>',
+  }));
+  assert.equal(p.weekEnding, '2026-09-13');
+  assert.deepEqual(p.availableWeeks, ['2026-09-13', '2026-09-06']);
+});
+
+test('a Week\'s Total the rows do not add up to fails validation unless the caller allows it', () => {
+  const page = miniPage([HAMILTON_CELLS], {
+    options: '<option selected>2026-09-13</option>',
+    total: '<div class="week-total"><span class="accent">$3,000,000.00</span></div>',
+  });
+  const p = parsePlaybillGrossesHtml(page);
+  assert.match(weekTotalMismatch(p), /sum to \$2541403 but Week's Total is \$3000000/);
+  assert.ok(validatePlaybillGrosses(p).some(x => /Week's Total/.test(x)));
+  assert.deepEqual(validatePlaybillGrosses(p, { allowTotalMismatch: true }), []);
+  assert.equal(weekTotalMismatch(parsed), null); // the real 9/13 page adds up
+});
+
+test('isPlausibleRow is the BWW parser\'s guard, not a copy of it', () => {
+  assert.equal(isPlausibleRow, isSaneGrossesRow);
 });
 
 test('week helpers', () => {

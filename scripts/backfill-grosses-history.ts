@@ -27,7 +27,9 @@ const {
   playbillGrossesUrl,
   parsePlaybillGrossesHtml,
   validatePlaybillGrosses,
+  weekTotalMismatch,
   isPlausibleRow,
+  toHistoryEntry,
   historyHasWeek,
 } = require('./lib/parse-playbill-grosses');
 
@@ -121,9 +123,11 @@ function getWeekDates(numWeeks: number, startFrom?: string): string[] {
   return dates;
 }
 
-// One week: fetch, integrity-check (schema, requested week actually shown,
-// row grosses add up to the Week's Total), match. Throws on any problem so the
-// caller's retry loop handles it.
+// One week: fetch, integrity-check (schema, requested week actually shown),
+// match. Throws on any problem so the caller's retry loop handles it. A row
+// sum that misses the Week's Total is logged, not fatal: some old Playbill
+// weeks print a total their own table does not add up to, and the rows are
+// still the best record of that week (see validatePlaybillGrosses).
 async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, HistoryEntry>; matched: number; rows: number }> {
   const url = playbillGrossesUrl(weekDate);
   const page = await fetchPage(url);
@@ -131,11 +135,14 @@ async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, 
   if (parsed.schemaError) {
     console.error(`::error::backfill-grosses-history: ${parsed.schemaError}`);
   }
-  const problems: string[] = validatePlaybillGrosses(parsed, { expectedWeek: weekDate });
+  const problems: string[] = validatePlaybillGrosses(parsed, { expectedWeek: weekDate, allowTotalMismatch: true });
   if (problems.length > 0) {
     throw new Error(problems.join('; '));
   }
-  if (parsed.weekTotalGross == null) {
+  const mismatch: string | null = weekTotalMismatch(parsed);
+  if (mismatch) {
+    console.warn(`::warning::backfill-grosses-history: ${url}: ${mismatch}; storing the rows as published.`);
+  } else if (parsed.weekTotalGross == null) {
     console.warn(`::warning::backfill-grosses-history: ${url} has no "Week's Total"; the row-sum checksum was skipped.`);
   }
 
@@ -148,14 +155,7 @@ async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, 
     }
     const slug = findMatchingSlug(row.show, weekDate);
     if (!slug) continue;
-    snapshot[slug] = {
-      gross: row.gross,
-      capacity: row.capacityPct,
-      atp: row.atp,
-      attendance: row.attendance,
-      seatsOffered: row.seatsOffered,
-      performances: row.performances,
-    };
+    snapshot[slug] = toHistoryEntry(row);
     matched++;
   }
   return { snapshot, matched, rows: parsed.rows.length };

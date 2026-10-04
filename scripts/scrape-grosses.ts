@@ -51,7 +51,9 @@ const {
   parsePlaybillGrossesHtml,
   validatePlaybillGrosses,
   isPlausibleRow,
+  toHistoryEntry,
   findMissingHistoryWeeks,
+  findHistoryKey,
   latestPublishableWeek,
   isoWeekToMDY,
 } = require('./lib/parse-playbill-grosses');
@@ -687,13 +689,12 @@ function warnMissingExpectedShows(matchedSlugs: string[]): void {
   );
   const closedExpected = EXPECTED_SHOWS.filter(s => closed.has(s) && !slugSet.has(s));
   if (closedExpected.length > 0) {
-    console.log(`  EXPECTED_SHOWS entries now closed in shows.json (not checked; prune them): ${closedExpected.join(', ')}`);
+    console.log(`  EXPECTED_SHOWS entries closed in shows.json (skipped): ${closedExpected.join(', ')}`);
   }
   const missing = EXPECTED_SHOWS.filter(s => !slugSet.has(s) && !closed.has(s));
   if (missing.length > 0) {
     console.error(`⚠ EXPECTED SHOWS MISSING from scraped data: ${missing.join(', ')}`);
-    console.error(`  This may indicate a show-matching alias bug or a show closure.`);
-    console.error(`  If a show has closed, remove it from EXPECTED_SHOWS in scrape-grosses.ts.`);
+    console.error(`  This may indicate a show-matching alias bug, or a closure not yet marked closed in shows.json.`);
   }
 }
 
@@ -726,7 +727,8 @@ function validateDropCount(
 // in previews that hasn't had any performances yet, a dark week).
 function validateCaptureRate(matchedSlugs: string[]): void {
   try {
-    const shows = loadShowsFromMatching();
+    if (!allShows) allShows = loadShowsFromMatching();
+    const shows = allShows || [];
     const expectedBroadway = shows.filter((s: { id: string; status?: string; category?: string }) => {
       const status = s.status;
       if (status !== 'open' && status !== 'previews') return false;
@@ -843,7 +845,9 @@ function getPrevWeekData(history: GrossesHistory, currentWeekISO: string, showSl
 function getYoYData(history: GrossesHistory, currentWeekISO: string, showSlug: string): HistoryEntry | null {
   const currentDate = new Date(currentWeekISO + 'T00:00:00Z');
   const yoyTarget = new Date(currentDate.getTime() - 364 * 24 * 60 * 60 * 1000); // 52 weeks
-  const yoyWeekKey = findClosestWeek(history, yoyTarget);
+  // 3 days for the same reason as getPrevWeekData: with 7, a missing
+  // year-ago week resolved to the week next to it and was published as YoY.
+  const yoyWeekKey = findClosestWeek(history, yoyTarget, 3);
 
   if (yoyWeekKey && history.weeks[yoyWeekKey]?.[showSlug]) {
     return history.weeks[yoyWeekKey][showSlug];
@@ -872,16 +876,25 @@ function matchRows(rows: BWWRowData[], pastWeekISO?: string, quiet: boolean = fa
   return { matched, unmatched };
 }
 
-function toHistoryEntry(row: BWWRowData): HistoryEntry {
-  return {
-    gross: row.gross,
-    capacity: row.capacityPct,
-    atp: row.atp,
-    attendance: row.attendance,
-    seatsOffered: row.seatsOffered,
-    performances: row.performances,
-  };
+// Store a week's snapshot under the key history already uses for that week
+// (a BWW-era Monday key), never as a second key beside it.
+function putHistoryWeek(history: GrossesHistory, weekISO: string, snapshot: Record<string, HistoryEntry>): string {
+  const key: string = findHistoryKey(Object.keys(history.weeks), weekISO) || weekISO;
+  if (key !== weekISO) console.log(`  History already holds week ${weekISO} as ${key}; replacing that entry.`);
+  history.weeks[key] = snapshot;
+  return key;
 }
+
+function snapshotOf(rows: MatchedRow[]): Record<string, HistoryEntry> {
+  const snapshot: Record<string, HistoryEntry> = {};
+  for (const row of rows) snapshot[row.slug] = toHistoryEntry(row);
+  return snapshot;
+}
+
+// Ends the run with exit code 1 after the reason has been logged. Thrown
+// rather than process.exit(1) so the runner still calls cleanupScraper(),
+// which prints the "[Scraper Summary]" spend line the cost report reads.
+class ScrapeAbort extends Error {}
 
 // Fill grosses-history.json weeks that earlier failed runs left empty
 // (BRO-4623), so prev-week and YoY lookups have no holes. Playbill only.
@@ -913,9 +926,7 @@ async function backfillMissingWeeks(history: GrossesHistory, result: ScrapeResul
       console.warn(`::warning::scrape-grosses: week ${week} matched only ${matched.length} shows (minimum ${MIN_SHOWS}); not backfilled.`);
       continue;
     }
-    const snapshot: Record<string, HistoryEntry> = {};
-    for (const row of matched) snapshot[row.slug] = toHistoryEntry(row);
-    history.weeks[week] = snapshot;
+    putHistoryWeek(history, week, snapshotOf(matched));
     filled.push(week);
     console.log(`  ✓ Backfilled ${week}: ${matched.length}/${weekResult.rows.length} shows matched` +
       (unmatched.length ? ` (unmatched: ${unmatched.join(', ')})` : ''));
@@ -992,7 +1003,7 @@ async function scrapeGrosses(): Promise<void> {
 
   if (!result || result.rows.length === 0) {
     console.error('All scraping tiers failed. No data written.');
-    process.exit(1);
+    throw new ScrapeAbort();
   }
 
   console.log(`\nScraped ${result.rows.length} rows via ${result.source}`);
@@ -1015,20 +1026,22 @@ async function scrapeGrosses(): Promise<void> {
   // grosses-history.json alone.
   const existingWeekISO = existingGrosses?.weekEnding ? parseWeekEndingToISO(existingGrosses.weekEnding) : null;
   const historyOnly = existingWeekISO != null && weekISO < existingWeekISO;
+  if (!WEEK_ARG && !validateWeekEnding(result.weekEnding)) {
+    // A source frozen on an old week used to "succeed" every run, rewriting
+    // the same week, so cron-health never saw it go stale. Fail instead,
+    // also when that old week is behind grosses.json (history-only path).
+    console.error(`::error::scrape-grosses: newest week from ${result.source} is ${weekISO}, more than 14 days old. Source looks frozen; nothing written.`);
+    throw new ScrapeAbort();
+  }
   if (historyOnly) {
     const msg = `Week ${weekISO} is older than grosses.json's ${existingWeekISO}: updating grosses-history.json only.`;
     // Expected with --week; without it every source is behind what we hold.
     console.log(WEEK_ARG ? msg : `::warning::scrape-grosses: ${msg} Every source is behind the stored week.`);
-  } else if (!validateWeekEnding(result.weekEnding) && !WEEK_ARG) {
-    // A source frozen on an old week used to "succeed" every run, rewriting
-    // the same week, so cron-health never saw it go stale. Fail instead.
-    console.error(`::error::scrape-grosses: newest week from ${result.source} is ${weekISO}, more than 14 days old. Source looks frozen; nothing written.`);
-    process.exit(1);
   }
 
   // Validate gross sanity
   if (!validateGrossSanity(result.rows)) {
-    process.exit(1);
+    throw new ScrapeAbort();
   }
 
   // Match shows to our database
@@ -1043,22 +1056,20 @@ async function scrapeGrosses(): Promise<void> {
 
   // Validate minimum match count
   if (!validateScrapedData(matchedCount)) {
-    process.exit(1);
+    throw new ScrapeAbort();
   }
 
   const history = loadHistory();
 
   if (historyOnly) {
     if (history.weeks[weekISO]) console.log(`Replacing existing history week ${weekISO} (${Object.keys(history.weeks[weekISO]).length} shows)`);
-    const snapshot: Record<string, HistoryEntry> = {};
-    for (const row of matchedRows) snapshot[row.slug] = toHistoryEntry(row);
-    history.weeks[weekISO] = snapshot;
+    const key = putHistoryWeek(history, weekISO, snapshotOf(matchedRows));
     history._meta.lastUpdated = new Date().toISOString();
     if (DRY_RUN) {
-      console.log(`\n[DRY RUN] Would write grosses-history.json week ${weekISO}: ${matchedCount} shows (${Object.keys(history.weeks).length} weeks stored). grosses.json untouched.`);
+      console.log(`\n[DRY RUN] Would write grosses-history.json week ${key}: ${matchedCount} shows (${Object.keys(history.weeks).length} weeks stored). grosses.json untouched.`);
     } else {
       writeJson(HISTORY_OUT_PATH, history);
-      console.log(`\nWrote grosses history week ${weekISO} to ${HISTORY_OUT_PATH} (${Object.keys(history.weeks).length} weeks stored). grosses.json untouched.`);
+      console.log(`\nWrote grosses history week ${key} to ${HISTORY_OUT_PATH} (${Object.keys(history.weeks).length} weeks stored). grosses.json untouched.`);
     }
     console.log(`\nScrape source: ${result.source}`);
     return;
@@ -1074,7 +1085,7 @@ async function scrapeGrosses(): Promise<void> {
 
   // Hard-fail if too many shows dropped vs previous week
   if (!validateDropCount(matchedCount, existingGrosses)) {
-    process.exit(1);
+    throw new ScrapeAbort();
   }
 
   // Build grosses data structure
@@ -1174,21 +1185,9 @@ async function scrapeGrosses(): Promise<void> {
 
   console.log(`  History enrichment: Gross YoY=${grossYoYCount}, ATP WoW=${atpWoWCount}, Capacity YoY=${capYoYCount}, ATP YoY=${atpYoYCount}`);
 
-  // Save current week snapshot to history
-  const currentSnapshot: Record<string, HistoryEntry> = {};
-  for (const [slug, data] of Object.entries(grossesData.shows)) {
-    if (data.thisWeek) {
-      currentSnapshot[slug] = {
-        gross: data.thisWeek.gross,
-        capacity: data.thisWeek.capacity,
-        atp: data.thisWeek.atp,
-        attendance: data.thisWeek.attendance,
-        seatsOffered: data.thisWeek.seatsOffered,
-        performances: data.thisWeek.performances
-      };
-    }
-  }
-  history.weeks[weekISO] = currentSnapshot;
+  // Save current week snapshot to history (the matched rows are exactly the
+  // shows given thisWeek above; enrichment does not touch the stored fields)
+  putHistoryWeek(history, weekISO, snapshotOf(matchedRows));
   history._meta.lastUpdated = new Date().toISOString();
 
   // Write files (unless dry-run)
@@ -1223,7 +1222,8 @@ async function scrapeGrosses(): Promise<void> {
 scrapeGrosses()
   .then(() => cleanupScraper())
   .catch(async (error) => {
-    console.error('Fatal error:', error);
+    // A ScrapeAbort's reason is already logged; anything else is unexpected.
+    if (!(error instanceof ScrapeAbort)) console.error('Fatal error:', error);
     try { await cleanupScraper(); } catch { /* exiting anyway */ }
     process.exit(1);
   });

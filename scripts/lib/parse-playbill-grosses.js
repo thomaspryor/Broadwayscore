@@ -16,7 +16,8 @@
  * week <select> lists every available week back to 1985). Layout verified
  * live 2026-10-04 (weeks 2026-09-06 .. 2026-09-27):
  *
- *   <option value="https://playbill.com/grosses?week=2026-09-13" selected>
+ *   <option value="https://playbill.com/grosses?week=2026-09-13" selected>2026-09-13</option>
+ *                            → week read from the option text (value as fallback)
  *   "Week's Total" .accent  → sum of every row's gross (used as a checksum)
  *   <thead><th> = Show | This Week Gross (Potential Gross) | Diff $ |
  *                 Avg Ticket (Top Ticket) | Seats Sold (Seats in Theatre) |
@@ -57,6 +58,14 @@
  */
 const cheerio = require('cheerio');
 const { assertTableSchema, TableSchemaError } = require('./table-schema-assertion');
+// Same value parsers and row sanity ranges as the BWW tiers, so both sources
+// read and reject values by one rule.
+const {
+  parseCurrency: parseMoney,
+  parsePercentage: parsePct,
+  parseNumber: parseCount,
+  isSaneGrossesRow,
+} = require('./parse-bww-grosses-row');
 
 const PLAYBILL_GROSSES_URL = 'https://playbill.com/grosses';
 
@@ -87,30 +96,6 @@ function playbillGrossesUrl(week) {
   return `${PLAYBILL_GROSSES_URL}?week=${week}`;
 }
 
-function parseMoney(value) {
-  if (value == null) return null;
-  const cleaned = String(value).replace(/[$,\s]/g, '');
-  if (!cleaned || cleaned === '-') return null;
-  const num = parseFloat(cleaned);
-  return Number.isFinite(num) ? num : null;
-}
-
-function parsePct(value) {
-  if (value == null) return null;
-  const cleaned = String(value).replace(/[%,\s]/g, '');
-  if (!cleaned || cleaned === '-') return null;
-  const num = parseFloat(cleaned);
-  return Number.isFinite(num) ? num : null;
-}
-
-function parseCount(value) {
-  if (value == null) return null;
-  const cleaned = String(value).replace(/[,\s]/g, '');
-  if (!cleaned || cleaned === '-') return null;
-  const num = parseInt(cleaned, 10);
-  return Number.isFinite(num) ? num : null;
-}
-
 const round2 = (n) => Math.round(n * 100) / 100;
 
 /** "2026-09-13" → "9/13/2026" (the unpadded M/D/YYYY form grosses.json uses). */
@@ -124,8 +109,11 @@ function cellParts($, td) {
   const $td = $(td);
   const main = $td.find('.data-value').first();
   const sub = $td.find('.subtext').first();
+  // Without a .data-value span, the main figure is the cell text minus the
+  // subtext; whole-cell text would glue "6,847" and "1,026" into one number.
+  const mainText = main.length ? main.text() : $td.clone().find('.subtext').remove().end().text();
   return {
-    main: (main.length ? main.text() : $td.text()).replace(/\s+/g, ' ').trim(),
+    main: mainText.replace(/\s+/g, ' ').trim(),
     sub: sub.length ? sub.text().replace(/\s+/g, ' ').trim() : '',
   };
 }
@@ -157,11 +145,14 @@ function parsePlaybillGrossesHtml(html) {
   const availableWeeks = [];
   let weekEnding = null;
   $('option').each((_i, el) => {
-    const value = $(el).attr('value') || '';
-    const m = value.match(/[?&]week=(\d{4}-\d{2}-\d{2})\b/);
-    if (!m) return;
-    availableWeeks.push(m[1]);
-    if (weekEnding === null && $(el).attr('selected') !== undefined) weekEnding = m[1];
+    // The week is the option's text ("2026-09-13"). The ?week= link in its
+    // value is only a fallback, should Playbill ever relabel the options.
+    const text = $(el).text().trim();
+    const fromValue = (($(el).attr('value') || '').match(/[?&]week=(\d{4}-\d{2}-\d{2})\b/) || [])[1];
+    const week = ISO_WEEK_RE.test(text) ? text : fromValue;
+    if (!week) return;
+    availableWeeks.push(week);
+    if (weekEnding === null && $(el).attr('selected') !== undefined) weekEnding = week;
   });
 
   let weekTotalGross = null;
@@ -211,7 +202,10 @@ function parsePlaybillGrossesHtml(html) {
 
     const showCell = cellParts($, tds[idx.show]);
     const show = showCell.main;
-    if (!show || /^total/i.test(show)) return;
+    // Playbill's table has no total row today (the total sits above it); only
+    // an exact "Total(s)" label is skipped, so a show whose title merely
+    // starts with "Total" is never dropped.
+    if (!show || /^(week'?s\s+)?totals?:?$/i.test(show)) return;
 
     const grossCell = cellParts($, tds[idx.gross]);
     const atpCell = cellParts($, tds[idx.atp]);
@@ -234,15 +228,17 @@ function parsePlaybillGrossesHtml(html) {
     // prior week at all; a real week-over-week change of exactly zero cents
     // does not happen. Both prev-week fields are null then, never "same as
     // this week". A 0.00% capacity diff alone is real (Ragtime at 100% two
-    // weeks running), so only the gross diff decides first-week status.
+    // weeks running), so only the gross diff decides first-week status, and
+    // with no readable gross diff neither prev-week field is derived.
     const firstWeek = grossDiff === 0;
+    const hasPrevWeek = grossDiff != null && !firstWeek;
     let grossPrevWeek = null;
-    if (!firstWeek && grossRaw != null && grossDiff != null) {
+    if (hasPrevWeek && grossRaw != null) {
       const prev = Math.round(grossRaw - grossDiff);
       grossPrevWeek = prev > 0 ? prev : null;
     }
     let capacityPctPrevWeek = null;
-    if (!firstWeek && capacityPct != null && capacityDiff != null) {
+    if (hasPrevWeek && capacityPct != null && capacityDiff != null) {
       const prev = round2(capacityPct - capacityDiff);
       capacityPctPrevWeek = prev > 0 ? prev : null;
     }
@@ -282,8 +278,16 @@ function parsePlaybillGrossesHtml(html) {
  * list of human-readable problems (empty = OK). Callers treat any problem as
  * "this page is not trustworthy" and fall through to the next source.
  *
+ * The Week's Total checksum holds for every week sampled from 2022 on, but
+ * some older Playbill weeks (e.g. 1999-06-06, 2015-11-01, 2020-03-08,
+ * 2021-09-19) print a total their own table does not add up to. A caller
+ * filling old history, where a page's rows are the best record there is, can
+ * pass `allowTotalMismatch` and get the mismatch back from weekTotalMismatch()
+ * to log instead. The weekly scraper never does: for a current week a
+ * mismatch means a dropped row and must fail loud.
+ *
  * @param {ReturnType<typeof parsePlaybillGrossesHtml>} parsed
- * @param {{ expectedWeek?: string }} [opts]
+ * @param {{ expectedWeek?: string, allowTotalMismatch?: boolean }} [opts]
  * @returns {string[]}
  */
 function validatePlaybillGrosses(parsed, opts = {}) {
@@ -296,27 +300,49 @@ function validatePlaybillGrosses(parsed, opts = {}) {
     problems.push(`requested week ${opts.expectedWeek} but page shows ${parsed.weekEnding}`);
   }
   if (parsed.rows.length === 0) problems.push('no data rows');
-  if (parsed.weekTotalGross != null && parsed.rows.length > 0) {
-    // Row grosses are rounded to whole dollars, so allow $1 per row of drift.
-    const sum = parsed.rows.reduce((acc, r) => acc + (r.gross || 0), 0);
-    if (Math.abs(sum - parsed.weekTotalGross) > parsed.rows.length) {
-      problems.push(`row grosses sum to $${sum} but Week's Total is $${parsed.weekTotalGross}`);
-    }
-  }
+  const mismatch = weekTotalMismatch(parsed);
+  if (mismatch && !opts.allowTotalMismatch) problems.push(mismatch);
   return problems;
 }
 
 /**
- * Same structural sanity ranges parse-bww-grosses-row.js applies to BWW rows
- * (ATP $15-$1000, 1-16 performances, 5-120% capacity). A row outside them
- * means a column was mis-read; the caller drops it loudly. Rows with no gross
- * (dark week) are always kept.
+ * The checksum problem, or null when the rows add up (or there is no total).
+ * Row grosses are rounded to whole dollars, so $1 per row of drift is allowed.
+ *
+ * @param {ReturnType<typeof parsePlaybillGrossesHtml>} parsed
+ * @returns {string|null}
  */
-function isPlausibleRow(row) {
-  if (!row || row.gross == null) return true;
-  return (row.atp == null || (row.atp >= 15 && row.atp <= 1000)) &&
-    (row.performances == null || (row.performances >= 1 && row.performances <= 16)) &&
-    (row.capacityPct == null || (row.capacityPct >= 5 && row.capacityPct <= 120));
+function weekTotalMismatch(parsed) {
+  if (!parsed || parsed.weekTotalGross == null || parsed.rows.length === 0) return null;
+  const sum = parsed.rows.reduce((acc, r) => acc + (r.gross || 0), 0);
+  if (Math.abs(sum - parsed.weekTotalGross) <= parsed.rows.length) return null;
+  return `row grosses sum to $${sum} but Week's Total is $${parsed.weekTotalGross}`;
+}
+
+/**
+ * The structural sanity ranges the BWW rows use (isSaneGrossesRow in
+ * parse-bww-grosses-row.js: ATP $15-$1000, 1-16 performances, 5-120%
+ * capacity). A row outside them means a column was mis-read; the caller
+ * drops it loudly. Rows with no gross (dark week) are always kept.
+ */
+const isPlausibleRow = isSaneGrossesRow;
+
+/**
+ * One grosses-history.json entry from a parsed row (Playbill or BWW: both
+ * use these field names). Every history writer goes through this, so a week
+ * has the same shape whichever path wrote it.
+ *
+ * @param {{ gross: number|null, capacityPct: number|null, atp: number|null, attendance: number|null, seatsOffered?: number|null, performances: number|null }} row
+ */
+function toHistoryEntry(row) {
+  return {
+    gross: row.gross,
+    capacity: row.capacityPct,
+    atp: row.atp,
+    attendance: row.attendance,
+    seatsOffered: row.seatsOffered ?? null,
+    performances: row.performances,
+  };
 }
 
 const DAY_MS = 24 * 60 * 60 * 1000;
@@ -351,35 +377,65 @@ function findMissingHistoryWeeks(historyKeys, availableWeeks, currentWeekISO, ma
 }
 
 /**
- * True when grosses-history.json already holds `week` under its own key or a
- * key within `toleranceDays` (the BWW-era Monday keys 2026-06-22, 06-29 and
- * 07-06 stand for the Sundays before them). Every writer that decides "is
- * this week missing?" uses this, so none of them adds a Sunday duplicate
- * next to a Monday key.
+ * The grosses-history.json key that already holds `week`: the week's own key,
+ * else the nearest key within `toleranceDays` (the BWW-era Monday keys
+ * 2026-06-22, 06-29 and 07-06 stand for the Sundays before them), else null.
+ * Weeks are 7 days apart, so a key that close is the same week. Writers store
+ * a week under this key when there is one, so none of them adds a Sunday
+ * duplicate next to a Monday key (calculate-recoupment.js sums every week,
+ * and data-commercial.ts picks weeks by position).
+ *
+ * @param {string[]} historyKeys
+ * @param {string} week - YYYY-MM-DD
+ * @param {number} [toleranceDays]
+ * @returns {string|null}
+ */
+function findHistoryKey(historyKeys, week, toleranceDays = 3) {
+  if (!ISO_WEEK_RE.test(week || '')) return null;
+  const keys = historyKeys || [];
+  if (keys.includes(week)) return week;
+  const ms = isoToMs(week);
+  let best = null;
+  let bestDiff = Infinity;
+  for (const k of keys) {
+    if (!ISO_WEEK_RE.test(k)) continue;
+    const diff = Math.abs(isoToMs(k) - ms);
+    if (diff <= toleranceDays * DAY_MS && diff < bestDiff) {
+      best = k;
+      bestDiff = diff;
+    }
+  }
+  return best;
+}
+
+/**
+ * True when grosses-history.json already holds `week` (see findHistoryKey).
  *
  * @param {string[]} historyKeys
  * @param {string} week - YYYY-MM-DD
  * @param {number} [toleranceDays]
  */
 function historyHasWeek(historyKeys, week, toleranceDays = 3) {
-  if (!ISO_WEEK_RE.test(week || '')) return false;
-  const ms = isoToMs(week);
-  return (historyKeys || []).some(k => ISO_WEEK_RE.test(k) && Math.abs(isoToMs(k) - ms) <= toleranceDays * DAY_MS);
+  return findHistoryKey(historyKeys, week, toleranceDays) !== null;
 }
 
+// The League's weekly figures come out on Monday afternoon US Eastern time.
+// 18:00 UTC Monday is taken as the point after which a week counts as out.
+const RELEASE_LAG_MS = (24 + 18) * 60 * 60 * 1000;
+
 /**
- * The newest week ending whose figures can already be published on `now`:
- * the most recent Sunday strictly before today (UTC). The League releases a
- * week's grosses the day after it ends, so on a Sunday the newest possible
- * week is the previous Sunday's.
+ * The newest week ending whose figures can already be out on `now`: the
+ * latest Sunday at least a day and 18 hours ago (released by Monday 18:00
+ * UTC). Before that on a Monday, and all of Sunday, it is the Sunday a week
+ * earlier, so an early run does not go looking for a week nobody has yet.
  *
  * @param {Date} now
  * @returns {string} YYYY-MM-DD
  */
 function latestPublishableWeek(now) {
-  const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
-  const back = d.getUTCDay() === 0 ? 7 : d.getUTCDay();
-  d.setUTCDate(d.getUTCDate() - back);
+  const t = new Date(now.getTime() - RELEASE_LAG_MS);
+  const d = new Date(Date.UTC(t.getUTCFullYear(), t.getUTCMonth(), t.getUTCDate()));
+  d.setUTCDate(d.getUTCDate() - d.getUTCDay());
   return d.toISOString().slice(0, 10);
 }
 
@@ -389,8 +445,11 @@ module.exports = {
   playbillGrossesUrl,
   parsePlaybillGrossesHtml,
   validatePlaybillGrosses,
+  weekTotalMismatch,
   isPlausibleRow,
+  toHistoryEntry,
   findMissingHistoryWeeks,
+  findHistoryKey,
   historyHasWeek,
   latestPublishableWeek,
   isoWeekToMDY,

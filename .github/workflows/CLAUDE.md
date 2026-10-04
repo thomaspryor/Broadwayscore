@@ -300,13 +300,13 @@ gh workflow run "Rebuild Reviews Data" -f reason="Post bulk import sync"
 - **Data source:** Playbill `playbill.com/grosses` first (League figures, static HTML via `fetchPage()`, parser `scripts/lib/parse-playbill-grosses.js`), BroadwayWorld `grosses.php` as fallback. BWW has served a Cloudflare challenge since 2026-09-23 (BRO-4623). All-time stats are still BWW-only (`grossescumulative`), `continue-on-error`, and carried forward unchanged when it fails.
 - **Self-healing history:** a Playbill run backfills any of the 8 weeks before the current one that are missing from `grosses-history.json` (`?week=YYYY-MM-DD`), so a failed week fills itself on the next run. `--week=YYYY-MM-DD` scrapes one week by hand; a week older than `grosses.json`'s only updates history.
 - **Fallback and staleness:** if Playbill is still on an older week than can be out (e.g. the Tuesday run before Playbill updates), the BWW tiers are tried for a newer week. A run whose newest week is more than 14 days old fails instead of rewriting the same week, so a frozen source shows up in cron health.
-- **Skips:** meant to skip when grosses.json already holds last Sunday's week (unless force=true), but the check compares zero-padded `date +%m/%d/%Y` with grosses.json's unpadded `M/D/YYYY`, so it only matches for two-digit months and days. Otherwise the Wednesday run repeats the scrape, which is harmless (same week rewritten).
+- **Skips:** when grosses.json already holds last Sunday's week (unless force=true), so the Wednesday run is a no-op after a good Tuesday. The check builds last Sunday as unpadded `M/D/YYYY` (`date +%-m/%-d/%Y`) to match grosses.json's `weekEnding`; it was zero-padded until BRO-4623 and so missed every single-digit month or day. A history gap that Tuesday's gap fill could not fetch then waits for the next Tuesday run.
 
 ## `backfill-grosses.yml`
 - **Runs:** Manual trigger only
 - **Does:** Scrapes Playbill for historical weekly grosses to populate `grosses-history.json`
 - **Options:** `weeks` (default 55), `start_from` (YYYY-MM-DD)
-- **Reliability:** Uses `domcontentloaded` (not `networkidle`), 3 retries per week
+- **Reliability:** Fetches each week through `fetchPage()` and parses with the shared Playbill parser, 3 retries per week. Weeks already in history (or under a nearby Monday key) are skipped. A row sum that misses the page's Week's Total is a `::warning::` here (some pre-2022 Playbill weeks do this), not a failure as in the weekly run.
 - **Script:** `scripts/backfill-grosses-history.ts`
 - **Note:** Only for initial setup or extending history range. Recent gaps (last 8 weeks) are filled by `weekly-grosses.yml` itself.
 

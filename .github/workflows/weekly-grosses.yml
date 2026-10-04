@@ -52,8 +52,10 @@ jobs:
       - name: Check if update needed (for Wednesday retry)
         id: check
         run: |
-          # Get the current week ending date (last Sunday)
-          CURRENT_WEEK=$(date -d "last sunday" +%m/%d/%Y 2>/dev/null || date -v-sun +%m/%d/%Y)
+          # Get the current week ending date (last Sunday), unpadded M/D/YYYY
+          # like grosses.json's weekEnding ("9/27/2026"); zero-padded never
+          # matched a single-digit month or day, so the skip rarely fired.
+          CURRENT_WEEK=$(date -d "last sunday" +%-m/%-d/%Y 2>/dev/null || date -v-sun +%-m/%-d/%Y)
           echo "current_week=$CURRENT_WEEK" >> $GITHUB_OUTPUT
 
           # Check if we already have this week's data
@@ -71,7 +73,7 @@ jobs:
             echo "skip=false" >> $GITHUB_OUTPUT
           fi
 
-      - name: Scrape BroadwayWorld grosses
+      - name: Scrape weekly grosses (Playbill, BroadwayWorld fallback)
         if: steps.check.outputs.skip != 'true'
         run: npx tsx scripts/scrape-grosses.ts
         env:
