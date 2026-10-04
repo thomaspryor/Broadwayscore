@@ -39,16 +39,17 @@ export function getMarketDate(category?: string): string {
  */
 export function getBroadwayDuration(openingDate: string | null, suffix = 'on Broadway'): string | null {
   if (!openingDate) return null;
-  const open = new Date(openingDate);
   const now = new Date();
   // Compare as date strings. Show "Just opened" starting on opening day
   // (the engine already gates status='open' to opening day in market-local time).
   const openDateStr = openingDate.slice(0, 10);
   const nowDateStr = now.toISOString().slice(0, 10);
   if (openDateStr > nowDateStr) return null;
-  // Whole months elapsed: Sept 19 to Oct 4 is not yet a month.
-  const months = (now.getFullYear() - open.getFullYear()) * 12 + (now.getMonth() - open.getMonth())
-    - (now.getDate() < open.getDate() ? 1 : 0);
+  // Whole months elapsed, both dates in UTC like the check above (the stored
+  // date is a calendar date): Sept 19 to Oct 4 is not yet a month.
+  const [oy, om, od] = openDateStr.split('-').map(Number);
+  const months = (now.getUTCFullYear() - oy) * 12 + (now.getUTCMonth() + 1 - om)
+    - (now.getUTCDate() < od ? 1 : 0);
   if (months < 1) return 'Just opened';
   if (months < 12) return `${months} month${months === 1 ? '' : 's'} ${suffix}`;
   const years = Math.floor(months / 12);
