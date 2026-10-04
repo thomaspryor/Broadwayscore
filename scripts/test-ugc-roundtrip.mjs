@@ -25,6 +25,7 @@
 // a PostgREST request, all plain HTTP. Node 18+ has global fetch.
 
 import { runPlanSharesChecks } from './lib/plan-shares-roundtrip.mjs';
+import { runDiarySharesChecks } from './lib/diary-shares-roundtrip.mjs';
 import { checkRedirect } from './lib/auth-redirect-allowlist.mjs';
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -342,6 +343,13 @@ async function main() {
     // case. Skips itself until the migration is applied.
     await runPlanSharesChecks({
       rest, check, anonKey: ANON, userA, tokenA, tokenB, pastUnloggedShowId: SHOW_ID,
+    });
+
+    // ── SHARED DIARY (20261004_diary_shares.sql, BRO-4566) ──
+    // A's review of SHOW_ID is dated 2024-11-15 and its note was edited to
+    // 'edited note' above. Skips itself until the migration is applied.
+    await runDiarySharesChecks({
+      rest, check, anonKey: ANON, userA, tokenA, tokenB, showId: SHOW_ID, noteText: 'edited note',
     });
 
     // ── LISTS ──

@@ -3187,13 +3187,13 @@
       "title": "Corpus drift: critic-outlet affinity anomalies vs data/critic-registry.json (baseline-diff)",
       "firstSeen": "2026-09-16T06:16:49.523Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.523Z",
-      "lastSeen": "2026-10-04T01:53:30.934Z",
+      "lastSeen": "2026-10-04T07:02:50.391Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.156Z",
       "lastSurfacedAt": "2026-10-02T10:29:46.138Z",
       "notifyCount": 16,
       "cardId": null,
       "linearIdentifier": "BRO-4515",
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "corpus-drift:duplicate-of-cleared-contradiction": {
       "status": "open",
@@ -3201,12 +3201,13 @@
       "title": "Corpus drift: a record carrying a live duplicateOf pointer AND a stale _duplicateOfCleared breadcrumb for the same url (zero-tolerance)",
       "firstSeen": "2026-09-16T06:16:49.526Z",
       "incidentOpenedAt": "2026-09-16T06:16:49.526Z",
-      "lastSeen": "2026-10-04T01:53:30.943Z",
+      "lastSeen": "2026-10-04T07:02:50.401Z",
       "lastNotifiedAt": "2026-10-04T01:53:30.943Z",
       "lastSurfacedAt": "2026-10-01T23:30:22.081Z",
       "notifyCount": 17,
       "cardId": null,
-      "linearIdentifier": "BRO-4501"
+      "linearIdentifier": "BRO-4501",
+      "silentRefires": 1
     },
     "opening-night-cv-wrongproduction-unhandled-in-honor-of-jean-michel-basquiat-off-broadway-2026": {
       "status": "open",
@@ -3458,13 +3459,13 @@
       "title": "Corpus drift: maybeUpgradeUrl() swapped a review URL for a PRIOR production of the same revived show (#1416)",
       "firstSeen": "2026-09-17T11:13:02.794Z",
       "incidentOpenedAt": "2026-09-17T11:13:02.794Z",
-      "lastSeen": "2026-10-04T01:53:30.948Z",
+      "lastSeen": "2026-10-04T07:02:50.405Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.170Z",
       "lastSurfacedAt": "2026-10-03T11:51:42.170Z",
       "notifyCount": 8,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "opening-night-publish-date-pre-opening:missing:thelma-and-louise-a-new-musical-off-west-end-2026": {
       "status": "open",
@@ -3586,12 +3587,13 @@
       "title": "Corpus drift: public/data/shows/{id}.json existing for an id no longer in shows.json",
       "firstSeen": "2026-09-18T16:10:40.527Z",
       "incidentOpenedAt": "2026-09-18T16:10:40.527Z",
-      "lastSeen": "2026-10-04T01:53:30.952Z",
+      "lastSeen": "2026-10-04T07:02:50.410Z",
       "lastNotifiedAt": "2026-10-04T01:53:30.952Z",
       "lastSurfacedAt": "2026-10-04T01:53:30.952Z",
       "notifyCount": 11,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "opening-night-remediation-exhausted-t1-missing:america-who-hurt-you-off-broadway-2026": {
       "status": "open",
@@ -3871,12 +3873,13 @@
       "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
       "firstSeen": "2026-09-20T21:49:42.154Z",
       "incidentOpenedAt": "2026-09-20T21:49:42.154Z",
-      "lastSeen": "2026-10-04T01:53:30.924Z",
+      "lastSeen": "2026-10-04T07:02:50.381Z",
       "lastNotifiedAt": "2026-10-04T01:53:30.924Z",
       "lastSurfacedAt": "2026-10-04T01:53:30.924Z",
       "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:Data Validation:4d6399a6": {
       "status": "resolved",
@@ -4243,12 +4246,13 @@
       "title": "Corpus drift: exclusion flag contradicted by its own content-verification pass (baseline-diff)",
       "firstSeen": "2026-09-21T09:41:19.072Z",
       "incidentOpenedAt": "2026-09-21T09:41:19.072Z",
-      "lastSeen": "2026-10-04T01:53:30.914Z",
+      "lastSeen": "2026-10-04T07:02:50.372Z",
       "lastNotifiedAt": "2026-10-04T01:53:30.914Z",
       "lastSurfacedAt": "2026-10-04T01:53:30.914Z",
       "notifyCount": 13,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "test-yml:red:E2E Tests:c58b7c79": {
       "status": "resolved",
@@ -4805,13 +4809,13 @@
       "title": "Data audits failing (non-blocking): Audit review contamination",
       "firstSeen": "2026-09-23T19:33:16.776Z",
       "incidentOpenedAt": "2026-09-23T19:33:16.776Z",
-      "lastSeen": "2026-10-04T04:16:04.741Z",
+      "lastSeen": "2026-10-04T07:06:15.784Z",
       "lastNotifiedAt": "2026-10-03T19:09:36.892Z",
       "lastSurfacedAt": "2026-10-03T19:09:36.892Z",
       "notifyCount": 10,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 17
+      "silentRefires": 18
     },
     "review-gap:opening-window:elf-lyons-the-woman-on-the-edge-off-broadway-2026": {
       "status": "open",
@@ -5822,13 +5826,13 @@
       "title": "Corpus drift: same-title-sibling review misrouted to the wrong production (baseline-diff)",
       "firstSeen": "2026-09-28T19:21:55.577Z",
       "incidentOpenedAt": "2026-09-28T19:21:55.577Z",
-      "lastSeen": "2026-10-04T01:53:30.899Z",
+      "lastSeen": "2026-10-04T07:02:50.357Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.121Z",
       "lastSurfacedAt": "2026-10-03T11:51:42.121Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "test-yml:red:Unit Tests:ee08ae2a": {
       "status": "resolved",
@@ -5887,13 +5891,13 @@
       "title": "Corpus drift: duplicate SHOW entries in shows.json (baseline-diff)",
       "firstSeen": "2026-09-28T19:48:00.401Z",
       "incidentOpenedAt": "2026-09-28T19:48:00.401Z",
-      "lastSeen": "2026-10-04T01:53:30.905Z",
+      "lastSeen": "2026-10-04T07:02:50.364Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.129Z",
       "lastSurfacedAt": "2026-10-03T11:51:42.129Z",
       "notifyCount": 5,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "land:land/bro-4236-prompt-blocker": {
       "status": "resolved",
@@ -8569,13 +8573,13 @@
       "title": "Content mismatch on Kramer/Fauci",
       "firstSeen": "2026-10-02T05:45:29.336Z",
       "incidentOpenedAt": "2026-10-02T05:45:29.336Z",
-      "lastSeen": "2026-10-03T21:23:02.618Z",
+      "lastSeen": "2026-10-04T07:00:43.938Z",
       "lastNotifiedAt": "2026-10-02T05:45:29.336Z",
       "lastSurfacedAt": "2026-10-02T05:45:29.336Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-publish-date-pre-opening:kramerfauci-st-anns-off-broadway-2026": {
       "status": "open",
@@ -8583,13 +8587,13 @@
       "title": "Pre-opening publishDate on Kramer/Fauci",
       "firstSeen": "2026-10-02T05:45:29.341Z",
       "incidentOpenedAt": "2026-10-02T05:45:29.341Z",
-      "lastSeen": "2026-10-03T21:23:02.623Z",
+      "lastSeen": "2026-10-04T07:00:43.943Z",
       "lastNotifiedAt": "2026-10-02T05:45:29.341Z",
       "lastSurfacedAt": "2026-10-02T05:45:29.341Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-revival-unverified-kramerfauci-st-anns-off-broadway-2026": {
       "status": "open",
@@ -8597,13 +8601,13 @@
       "title": "Unverified revival on Kramer/Fauci",
       "firstSeen": "2026-10-02T05:45:29.346Z",
       "incidentOpenedAt": "2026-10-02T05:45:29.346Z",
-      "lastSeen": "2026-10-03T21:23:02.627Z",
+      "lastSeen": "2026-10-04T07:00:43.949Z",
       "lastNotifiedAt": "2026-10-02T05:45:29.346Z",
       "lastSurfacedAt": "2026-10-02T05:45:29.346Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-slug-mismatch-kramerfauci-st-anns-off-broadway-2026": {
       "status": "open",
@@ -8611,13 +8615,13 @@
       "title": "Review URL cross-show mismatch on Kramer/Fauci",
       "firstSeen": "2026-10-02T05:45:29.351Z",
       "incidentOpenedAt": "2026-10-02T05:45:29.351Z",
-      "lastSeen": "2026-10-03T21:23:02.632Z",
+      "lastSeen": "2026-10-04T07:00:43.953Z",
       "lastNotifiedAt": "2026-10-02T05:45:29.351Z",
       "lastSurfacedAt": "2026-10-02T05:45:29.351Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 7
+      "silentRefires": 8
     },
     "opening-night-publish-date-pre-opening:missing:creation-stories-and-all-the-important-importants-off-broadway-2026": {
       "status": "open",
@@ -9050,13 +9054,13 @@
       "title": "Unhandled CV.wrongProduction on Affluenza",
       "firstSeen": "2026-10-03T02:03:31.715Z",
       "incidentOpenedAt": "2026-10-03T02:03:31.715Z",
-      "lastSeen": "2026-10-03T21:23:04.314Z",
+      "lastSeen": "2026-10-04T07:00:45.362Z",
       "lastNotifiedAt": "2026-10-03T02:03:31.715Z",
       "lastSurfacedAt": "2026-10-03T02:03:31.715Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-placeholder-synopsis-affluenza-off-west-end-2026": {
       "status": "open",
@@ -9064,13 +9068,13 @@
       "title": "Placeholder synopsis on Affluenza",
       "firstSeen": "2026-10-03T02:03:31.996Z",
       "incidentOpenedAt": "2026-10-03T02:03:31.996Z",
-      "lastSeen": "2026-10-03T21:23:04.323Z",
+      "lastSeen": "2026-10-04T07:00:45.680Z",
       "lastNotifiedAt": "2026-10-03T02:03:31.996Z",
       "lastSurfacedAt": "2026-10-03T02:03:31.996Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "opening-night-placeholder-synopsis-soon-off-broadway-2026": {
       "status": "open",
@@ -9078,13 +9082,13 @@
       "title": "Placeholder synopsis on Soon",
       "firstSeen": "2026-10-03T02:03:33.499Z",
       "incidentOpenedAt": "2026-10-03T02:03:33.499Z",
-      "lastSeen": "2026-10-03T21:23:04.341Z",
+      "lastSeen": "2026-10-04T07:00:47.086Z",
       "lastNotifiedAt": "2026-10-03T02:03:33.499Z",
       "lastSurfacedAt": "2026-10-03T02:03:33.499Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 3
+      "silentRefires": 4
     },
     "express-retry-still-thin:a-thousand-natural-shocks-off-broadway-2026": {
       "status": "open",
@@ -9105,13 +9109,13 @@
       "title": "Corpus drift: live reviews on look-alike/blocked hosts, look-alike registry aliases, or undecided provisional outlets",
       "firstSeen": "2026-10-03T11:51:42.151Z",
       "incidentOpenedAt": "2026-10-03T11:51:42.151Z",
-      "lastSeen": "2026-10-04T01:53:30.929Z",
+      "lastSeen": "2026-10-04T07:02:50.386Z",
       "lastNotifiedAt": "2026-10-03T11:51:42.151Z",
       "lastSurfacedAt": "2026-10-03T11:51:42.151Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 4
+      "silentRefires": 5
     },
     "broadcast-gate:checklist:hay-fever-west-end-2026": {
       "status": "open",
@@ -9243,13 +9247,13 @@
       "title": "Placeholder synopsis on Torera",
       "firstSeen": "2026-10-03T13:28:21.694Z",
       "incidentOpenedAt": "2026-10-03T13:28:21.694Z",
-      "lastSeen": "2026-10-03T21:23:05.788Z",
+      "lastSeen": "2026-10-04T07:00:47.092Z",
       "lastNotifiedAt": "2026-10-03T13:28:21.694Z",
       "lastSurfacedAt": "2026-10-03T13:28:21.694Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null,
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "test-yml:red:Unit Tests:d3418129": {
       "status": "resolved",
