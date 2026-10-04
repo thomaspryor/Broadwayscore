@@ -1,59 +1,5 @@
 [
   {
-    "startedAt": "2026-10-03T23:28:12.985Z",
-    "completedAt": "2026-10-03T23:28:16.398Z",
-    "totalReviews": 14,
-    "processed": 0,
-    "skipped": 13,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 4804,
-      "output": 149,
-      "total": 12959
-    },
-    "costUsd": 0.0296351,
-    "runId": "37161705881",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-03T23:28:18.351Z",
-    "completedAt": "2026-10-03T23:28:18.359Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37161705881",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-03T23:49:56.823Z",
-    "completedAt": "2026-10-03T23:49:57.032Z",
-    "totalReviews": 24,
-    "processed": 0,
-    "skipped": 23,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37162800933",
-    "errorDetails": [
-      {
-        "showId": "how-shakespeare-saved-my-life-off-broadway-2026",
-        "outletId": "broadwaylog",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
     "startedAt": "2026-10-03T23:49:58.881Z",
     "completedAt": "2026-10-03T23:50:04.248Z",
     "totalReviews": 2,
@@ -323172,24 +323118,8 @@
     "errorDetails": []
   },
   {
-    "startedAt": "2026-10-04T11:09:40.471Z",
-    "completedAt": "2026-10-04T11:09:59.733Z",
-    "totalReviews": 46545,
-    "processed": 3,
-    "skipped": 46541,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 21371,
-      "output": 1047,
-      "total": 55277
-    },
-    "costUsd": 0.10576435,
-    "runId": "37197612804",
-    "errorDetails": []
-  },
-  {
-    "startedAt": "2026-10-04T11:10:01.002Z",
-    "completedAt": "2026-10-04T11:10:02.435Z",
+    "startedAt": "2026-10-04T11:12:56.833Z",
+    "completedAt": "2026-10-04T11:12:56.851Z",
     "totalReviews": 0,
     "processed": 0,
     "skipped": 0,
@@ -323200,7 +323130,71 @@
       "total": 0
     },
     "costUsd": 0,
-    "runId": "37197612804",
+    "runId": "37197775525",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T11:13:44.521Z",
+    "completedAt": "2026-10-04T11:13:50.267Z",
+    "totalReviews": 46545,
+    "processed": 0,
+    "skipped": 46543,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 9352,
+      "output": 244,
+      "total": 25234
+    },
+    "costUsd": 0.0322362,
+    "runId": "37197828220",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T11:13:52.269Z",
+    "completedAt": "2026-10-04T11:13:54.345Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37197828220",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T11:17:51.989Z",
+    "completedAt": "2026-10-04T11:17:54.720Z",
+    "totalReviews": 46545,
+    "processed": 0,
+    "skipped": 46544,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3638,
+      "output": 109,
+      "total": 11025
+    },
+    "costUsd": 0.0129331,
+    "runId": "37198066211",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-04T11:17:56.755Z",
+    "completedAt": "2026-10-04T11:17:58.844Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37198066211",
     "errorDetails": []
   }
 ]
