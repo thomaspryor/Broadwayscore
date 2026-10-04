@@ -27,6 +27,7 @@ const { openingDateSourceHint } = require('./lib/opening-date-sources');
 const { decideAnnouncedPromotion, blockAnnouncedCatchUp, typeForListedShow } = require('./lib/announced-promotion');
 const { decidePrematurePreviews } = require('./lib/premature-previews');
 const showsWriteGuard = require('./lib/shows-write-guard');
+const { isNewRunTooFreshToClose } = require('./lib/showscore-closure-guard');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 
@@ -544,6 +545,9 @@ async function refreshShowScoreStatuses(data, updates, ttActiveIds) {
       if (ttActive) {
         // Hold On To Your Butts pattern — TodayTix still lists it, don't trust ShowScore
         console.log(`  ⚠️  ${show.title} (${cat}): ShowScore says "Closed" but TodayTix still active — NOT closing`);
+      } else if (isNewRunTooFreshToClose(show, new Date().toISOString().slice(0, 10))) {
+        // Returning production: the ShowScore page is the earlier run's (BRO-4640)
+        console.log(`  ⚠️  ${show.title} (${cat}): ShowScore says "Closed" but run opens/opened ${show.openingDate || show.previewsStartDate} — NOT closing`);
       } else {
         changes.push({
           field: 'status',
