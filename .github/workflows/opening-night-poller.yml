@@ -396,9 +396,12 @@ jobs:
               const fs = require('fs');
               const path = require('path');
               const { isStaleScoreInput } = require('./scripts/lib/rescore-flagging');
-              const { isActionableRescore } = require('./scripts/lib/scoring-queue-counts');
+              const { isActionableRescore, loadShowsById } = require('./scripts/lib/scoring-queue-counts');
               const dir = path.join('data', 'review-texts', '$SHOW_ID');
               if (!fs.existsSync(dir)) { console.log(0); process.exit(0); }
+              // Full record, not just filePath: a tour's own reviews say
+              // 'national tour', and the guard needs category to know (BRO-4563).
+              const show = loadShowsById().get('$SHOW_ID');
               let n = 0;
               for (const f of fs.readdirSync(dir)) {
                 // _blocklist.json and other _-prefixed files are show metadata,
@@ -419,7 +422,7 @@ jobs:
                   // (isActionableRescore mirrors index.ts's --needs-rescore
                   // filter: text-gate blocks, cooldowns), so a stuck flag
                   // cannot force a rebuild + deploy on every poll.
-                  else if (hasScore && (isActionableRescore(d, { filePath: path.join(dir, f) }) || isStaleScoreInput(d))) n++;
+                  else if (hasScore && (isActionableRescore(d, { show, showTitle: show && show.title, filePath: path.join(dir, f) }) || isStaleScoreInput(d))) n++;
                 } catch (_) {}
               }
               console.log(n);
@@ -704,12 +707,13 @@ jobs:
             node scripts/audit-stale-score-input.js --fix --show="$SHOW_ID" 2>&1 || true
             PENDING_RESCORE=$(SHOW_ID="$SHOW_ID" node -e "
               const fs = require('fs'); const path = require('path');
-              const { isActionableRescore } = require('./scripts/lib/scoring-queue-counts');
+              const { isActionableRescore, loadShowsById } = require('./scripts/lib/scoring-queue-counts');
               const dir = path.join('data', 'review-texts', process.env.SHOW_ID);
+              const show = loadShowsById().get(process.env.SHOW_ID);
               let n = 0;
               try { for (const f of fs.readdirSync(dir)) {
                 if (!f.endsWith('.json') || f.startsWith('_')) continue;
-                try { if (isActionableRescore(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')), { filePath: path.join(dir, f) })) n++; } catch (_) {}
+                try { if (isActionableRescore(JSON.parse(fs.readFileSync(path.join(dir, f), 'utf8')), { show, showTitle: show && show.title, filePath: path.join(dir, f) })) n++; } catch (_) {}
               } } catch (_) {}
               console.log(n);
             " 2>/dev/null || echo 0)
