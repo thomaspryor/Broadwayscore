@@ -553,7 +553,11 @@
     "twelfth-night-2013/nypost--elisabeth-vincentelli.json",
     "magicbird-2012/hollywood-reporter--david-rooney.json",
     "evita-2012/nypost--elisabeth-vincentelli.json",
-    "catch-me-if-you-can-2011/hollywood-reporter--unknown.json"
+    "catch-me-if-you-can-2011/hollywood-reporter--unknown.json",
+    "a-bronx-tale-2007/newsday--linda-winer.json",
+    "a-bronx-tale-2007/huffpost--steven-suskin.json",
+    "the-25th-annual-putnam-county-spelling-bee-2005/newsweek--lauren-giella.json",
+    "the-25th-annual-putnam-county-spelling-bee-2005/dailybeast--tim-teeman.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -1109,7 +1113,29 @@
     "ragtime-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/nydailynews--joe-dziemianowicz.json",
     "hamlet-2009/telegraph--charles-spencer.json",
-    "hamlet-2009/usatoday--elysa-gardner.json"
+    "hamlet-2009/usatoday--elysa-gardner.json",
+    "waiting-for-godot-2009/chicagotribune--chris-jones.json",
+    "the-norman-conquests-2009/nydailynews--joe-dziemianowicz.json",
+    "the-norman-conquests-2009/observer--rex-reed.json",
+    "next-to-normal-2009/broadwayworld--don-grigware.json",
+    "reasons-to-be-pretty-2009/usatoday--elysa-gardner.json",
+    "shrek-the-musical-2008/usatoday--elysa-gardner.json",
+    "all-my-sons-2008/usatoday--elysa-gardner.json",
+    "les-liaisons-dangereuses-2008/newsday--linda-winer.json",
+    "les-liaisons-dangereuses-2008/ap--mark-kennedy.json",
+    "les-liaisons-dangereuses-2008/broadwayworld--michael-dale.json",
+    "les-liaisons-dangereuses-2008/njcom--christopher-kelly.json",
+    "les-liaisons-dangereuses-2008/washpost--peter-marks.json",
+    "macbeth-2008/usatoday--elysa-gardner.json",
+    "come-back-little-sheba-2008/usatoday--elysa-gardner.json",
+    "the-little-mermaid-2008/nypost--clive-barnes.json",
+    "is-he-dead-2007/nypost--clive-barnes.json",
+    "inherit-the-wind-2007/nypost--clive-barnes.json",
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "anything-goes-2002/northjerseycom--robert-feldberg.json",
+    "merrily-we-roll-along-1981/nydailynews--joe-dzieminaowicz.json",
+    "on-the-twentieth-century-1978/abc-news--jennifer-farrar.json",
+    "home-1970/hollywood-reporter--david-rooney.json"
   ],
   "skipped": [],
   "tierBreakdown": {
@@ -1123,7 +1149,8 @@
       "kramerfauci-off-broadway-2026/theatlantic--talya-zax.json",
       "eurydice-off-broadway-2026/timeout--raven-snook.json",
       "twelfth-night-2013/nypost--elisabeth-vincentelli.json",
-      "evita-2012/nypost--elisabeth-vincentelli.json"
+      "evita-2012/nypost--elisabeth-vincentelli.json",
+      "the-25th-annual-putnam-county-spelling-bee-2005/newsweek--lauren-giella.json"
     ],
     "browserbase": [
       "data/review-texts/the-truth-a-comedy-by-florian-zeller-west-end-2026/radio-times--unknown.json",
@@ -1199,8 +1226,7 @@
       "a-small-and-quiet-light-off-west-end-2026/rolandcat--roviews.json",
       "electra-persona-west-end-2026/vocaleyes--unknown.json",
       "grangeville-off-broadway-2026/theatre-reviews-limited--david-roberts.json",
-      "flamenc-oh-off-west-end-2026/thelivereview--tanya-howard.json",
-      "american-buffalo-2022/theater-life--david-sheward.json"
+      "flamenc-oh-off-west-end-2026/thelivereview--tanya-howard.json"
     ],
     "scrapingbee": [
       "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
@@ -1409,14 +1435,17 @@
       "just-for-us-2023/theater-life--paulanne-simmons.json",
       "titanique-off-broadway-2022/cititour--brian-scott-lipton.json",
       "mrs-doubtfire-2021/theater-life--paulanne-simmons.json",
-      "on-your-feet-2015/minneapolis-star-tribune--mark-kennedy.json"
+      "on-your-feet-2015/minneapolis-star-tribune--mark-kennedy.json",
+      "a-bronx-tale-2007/newsday--linda-winer.json",
+      "a-bronx-tale-2007/huffpost--steven-suskin.json",
+      "the-25th-annual-putnam-county-spelling-bee-2005/dailybeast--tim-teeman.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ]
   },
   "startTime": "2026-10-03T08:40:40.034Z",
-  "lastProcessed": "hamlet-2009/usatoday--elysa-gardner.json",
+  "lastProcessed": "home-1970/hollywood-reporter--david-rooney.json",
   "log": [
     {
       "t": "2026-10-03T14:27:45.098Z",
@@ -1850,6 +1879,28 @@
       "t": "2026-10-04T06:22:49.442Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-04T06:31:06.940Z",
+      "event": "bb-session",
+      "session": "fe7e35b2",
+      "url": "http://www.northjersey.com/arts_entertainment/119458339_As_much_fun_as__Anything"
+    },
+    {
+      "t": "2026-10-04T06:31:11.381Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-04T06:31:30.594Z",
+      "event": "bb-session",
+      "session": "d91f266f",
+      "url": "http://www.northjersey.com/arts_entertainment/119458339_As_much_fun_as__Anything"
+    },
+    {
+      "t": "2026-10-04T06:31:34.894Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ],
   "recoveredAfterFailure": [

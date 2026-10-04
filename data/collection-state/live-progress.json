@@ -1,45 +1,21 @@
 {
-  "updatedAt": "2026-10-04T06:24:05.856Z",
-  "processed": 554,
-  "failed": 554,
-  "successRate": "50.0%",
+  "updatedAt": "2026-10-04T06:34:49.685Z",
+  "processed": 558,
+  "failed": 576,
+  "successRate": "49.2%",
   "tierBreakdown": {
-    "playwright": 10,
+    "playwright": 11,
     "amp": 1,
     "browserbase": 15,
     "directCookies": 0,
-    "scrapingdog": 57,
+    "scrapingdog": 56,
     "scrapingbee": 67,
     "brightdata": 32,
     "archiveToday": 0,
-    "archive": 103
+    "archive": 106
   },
-  "browserbaseSessions": 6,
+  "browserbaseSessions": 8,
   "recentActivity": [
-    {
-      "t": "2026-10-04T01:35:48.100Z",
-      "event": "bb-session",
-      "session": "d4f4aba7",
-      "url": "https://deadline.com/2025/03/operation-mincemeat-broadway-closing-date-123634765"
-    },
-    {
-      "t": "2026-10-04T01:40:03.136Z",
-      "event": "bb-session",
-      "session": "af24eb83",
-      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
-    },
-    {
-      "t": "2026-10-04T01:40:22.913Z",
-      "event": "bb-session",
-      "session": "f924fc51",
-      "url": "https://www.londontheatredirect.com/de/news/review-roundup-what-are-the-critics-"
-    },
-    {
-      "t": "2026-10-04T01:41:18.270Z",
-      "event": "bb-session",
-      "session": "ffe4f85e",
-      "url": "https://deadline.com/2026/09/wonder-man-most-watched-canceled-series-streaming-b"
-    },
     {
       "t": "2026-10-04T01:41:28.393Z",
       "event": "bb-session",
@@ -130,6 +106,28 @@
       "t": "2026-10-04T06:22:49.442Z",
       "event": "bb-cookie-inject",
       "domain": "usatoday.com"
+    },
+    {
+      "t": "2026-10-04T06:31:06.940Z",
+      "event": "bb-session",
+      "session": "fe7e35b2",
+      "url": "http://www.northjersey.com/arts_entertainment/119458339_As_much_fun_as__Anything"
+    },
+    {
+      "t": "2026-10-04T06:31:11.381Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
+    },
+    {
+      "t": "2026-10-04T06:31:30.594Z",
+      "event": "bb-session",
+      "session": "d91f266f",
+      "url": "http://www.northjersey.com/arts_entertainment/119458339_As_much_fun_as__Anything"
+    },
+    {
+      "t": "2026-10-04T06:31:34.894Z",
+      "event": "bb-login-uncertain",
+      "domain": "northjersey.com"
     }
   ]
 }
