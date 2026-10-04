@@ -68,5 +68,63 @@
       }
     ],
     "queuedAt": "2026-10-04T21:51:23.322Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4615-account-metrics",
+    "title": "Landing blocked: lint-workflows red on land/bro-4615-account-metrics",
+    "description": "land.yml did not land land/bro-4615-account-metrics: the lint-workflows gate went red at 69f1023812. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37237652394",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4615-account-metrics"
+      },
+      {
+        "name": "gate",
+        "value": "lint-workflows"
+      },
+      {
+        "name": "tip",
+        "value": "69f1023812a55c0ec74920f94fb6340f11c1066c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37237652394"
+      }
+    ],
+    "queuedAt": "2026-10-04T22:15:32.807Z"
+  },
+  {
+    "conditionKey": "land:land/theatr-import",
+    "title": "Landing blocked: unit-tests-node red on land/theatr-import",
+    "description": "land.yml did not land land/theatr-import: the unit-tests-node gate went red at 08162dc6eb. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37237742222",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/theatr-import"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "08162dc6ebf9f0a4ba68ffd3f64f985ee6e8d35f"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37237742222"
+      }
+    ],
+    "queuedAt": "2026-10-04T22:21:46.144Z"
   }
 ]
