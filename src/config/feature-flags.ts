@@ -16,7 +16,8 @@ const enabledFeatures = new Set(
 // Features auto-enabled on demo.broadwayscorecard.com (runtime check).
 // Uses getters so the check runs each time the flag is read (client-side).
 // CI: lint-feature-flags checks these are never referenced in server components.
-const DEMO_FEATURES = new Set(['userAccounts', 'showPageRedesign', 'showtimes']);
+// userAccounts and showPageRedesign launched 2026-10-02 (BRO-4525) and left this set.
+const DEMO_FEATURES = new Set(['showtimes']);
 
 function isDemo(): boolean {
   if (typeof window === 'undefined') return false;
@@ -82,8 +83,8 @@ export const featureFlags = {
   get tour() { return true; }, // launched 2026-09-28 — flag retained for cleanup
   get tonyPeople() { return has('tonyPeople'); },
   get sectionJumpLinks() { return has('sectionJumpLinks'); },
-  get userAccounts() { return has('userAccounts'); },
-  get showPageRedesign() { return has('showPageRedesign'); },
+  get userAccounts() { return true; }, // launched 2026-10-02 (BRO-4525), flag retained for cleanup
+  get showPageRedesign() { return true; }, // launched 2026-10-02 with userAccounts (BRO-4525), flag retained for cleanup
   get showtimes() { return true; }, // launched — flag retained for cleanup
   get theaterScorecard() { return true; }, // launched — flag retained for cleanup
   get fantasyLeague() { return true; }, // launched 2026-09-29 (BRO-4324, 2026-27 season) — flag retained for cleanup

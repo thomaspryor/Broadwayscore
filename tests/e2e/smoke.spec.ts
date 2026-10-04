@@ -63,6 +63,23 @@ test.describe('Post-deploy smoke tests', () => {
     expect(visibleText).not.toContain('NaN');
   });
 
+  // Accounts are live on prod (BRO-4525). A deploy that ships the flag but
+  // breaks the client (bad Supabase env, CSP blocking the auth script, a
+  // hydration error in the header) would leave the button dead or missing
+  // while every page above still renders. Open the sign-in modal; never
+  // submit it.
+  test('signed-out visitor can open the sign-in options', async ({ page }) => {
+    await page.goto('/show/wicked');
+    await expect(page.locator('h1')).toBeVisible({ timeout: 15000 });
+
+    const signIn = page.getByRole('button', { name: 'Sign in', exact: true });
+    await expect(signIn).toBeVisible({ timeout: 15000 });
+    await signIn.click();
+
+    await expect(page.getByRole('button', { name: 'Continue with Google' })).toBeVisible({ timeout: 10000 });
+    await expect(page.getByRole('button', { name: 'Continue with Apple' })).toBeVisible();
+  });
+
   test('best-of page renders ranked show list', async ({ page }) => {
     await page.goto('/best/musicals');
 

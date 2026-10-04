@@ -409,7 +409,7 @@ function Inner({
       ? null
       : `/theater/${slugify(show.venue)}`;
 
-  // Hide rating section + watchlist controls if userAccounts flag off (keeps demo-only gate).
+  // Hide rating section + watchlist controls if the userAccounts flag is turned off.
   const userFeaturesEnabled = featureFlags.userAccounts;
 
   return (
@@ -459,7 +459,7 @@ function Inner({
           {show.category === 'tour' && (
             <p className="text-sm lg:text-base font-semibold text-sky-300" data-testid="tour-subtitle">National Tour</p>
           )}
-          <div className="text-sm text-gray-400 space-y-0.5 pt-0.5">
+          <div className="text-sm text-gray-400 space-y-0.5 pt-0.5" data-testid="show-meta-line">
             <p>
               {venueLink ? (
                 <Link href={venueLink} className="text-gray-300 underline underline-offset-2 decoration-white/10 hover:text-brand transition-colors">
@@ -468,7 +468,9 @@ function Inner({
               ) : (
                 <span className="text-gray-300">{show.venue}</span>
               )}
-              {show.runtime ? <span> · {show.runtime}</span> : null}
+              {/* nowrap keeps "2h 45m" from splitting across lines at 390px
+                  (same pattern as the legacy show-meta-line). */}
+              {show.runtime ? <span className="whitespace-nowrap"> · {show.runtime}</span> : null}
             </p>
             <DateLine show={show} tourReviewYears={tourReviewYears ?? null} />
           </div>

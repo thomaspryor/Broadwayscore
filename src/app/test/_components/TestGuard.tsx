@@ -9,17 +9,15 @@ import { isTestFixtureHost } from '@/lib/test-fixture-host';
 //
 // Test fixtures are dev/preview-only — a production user landing on
 // /test/* should bounce to home. The gate previously lived in test/layout.tsx
-// as a server-side `redirect()`, but `featureFlags.userAccounts` is a demo
+// as a server-side `redirect()` while `featureFlags.userAccounts` was a demo
 // flag (depends on `window`), so the SSR check returned false unconditionally
-// and only worked on demo via the build-time source rewrite. Moving the gate
-// to a client component drops the source-rewrite dependency.
+// and only worked on demo via the build-time source rewrite. It stays a client
+// component because it reads window.location.hostname.
 //
-// Local dev/build against a /test/* route (or its Playwright specs) needs
-// `userAccounts` in NEXT_PUBLIC_FEATURES or this silently redirects to home —
-// use `npm run dev:ugc` / `npm run build:ugc` (test-red incident, 2026-07-21).
-//
-// The flag alone stops being a gate once accounts launch on prod, so the
-// fixtures also require a local or demo host (isTestFixtureHost, BRO-4525).
+// userAccounts launched on prod 2026-10-02 (BRO-4525), so the flag no longer
+// gates anything on its own: the host check (isTestFixtureHost) is what keeps
+// the fixtures off broadwayscorecard.com. They render on local dev/CI servers
+// and the demo site only.
 
 export function TestGuard({ children }: { children: React.ReactNode }) {
   const router = useRouter();
