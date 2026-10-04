@@ -4,6 +4,7 @@
 
 import { getBroadwayShows, getWestEndShows, getOffWestEndShows, getAllBrowseSlugs } from '@/lib/data-core';
 import { hasEnoughReviews } from '@/config/score-buckets';
+import { featureFlags } from '@/config/feature-flags';
 
 const BASE_URL = process.env.NEXT_PUBLIC_SITE_URL || 'https://broadwayscorecard.com';
 
@@ -83,8 +84,7 @@ ${browseSlugs.slice(0, 12).map(slug => {
 
 ### Data & Analytics
 - [Box Office Scorecard](${BASE_URL}/box-office): Weekly grosses, capacity, and all-time stats for every show
-- [Commercial Scorecard](${BASE_URL}/biz-buzz): Which shows make money - recoupment data, capitalization, designations
-- [AudienceGrade](${BASE_URL}/audience-buzz): What audiences think - Show Score, Mezzanine, Theatr, and Reddit ratings
+${featureFlags.commercial ? `- [Commercial Scorecard](${BASE_URL}/biz-buzz): Which shows make money - recoupment data, capitalization, designations\n` : ''}- [AudienceGrade](${BASE_URL}/audience-buzz): What audiences think - Show Score, Mezzanine, Theatr, and Reddit ratings
 
 ### Discount Tickets
 - [Best Value Tickets](${BASE_URL}/best-value): All discount options (lottery, rush, SRO) sorted by cheapest price

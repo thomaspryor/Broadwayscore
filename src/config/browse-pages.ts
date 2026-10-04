@@ -2,6 +2,7 @@
 // Defines all 17+ browse/landing pages for SEO
 
 import { ComputedShow } from '@/lib/engine';
+import { featureFlags } from '@/config/feature-flags';
 import type { AudienceBuzzData, ShowCommercial, ShowAwards, ShowGrosses } from '@/lib/data-types';
 // Single source of truth for the per-market minimum-reviews-to-show-a-score gate.
 // "Best …" pages rank by CriticScore, so they must only include shows that
@@ -40,6 +41,12 @@ export interface BrowsePageConfig {
   limit?: number;
   relatedPages: string[]; // Slugs of related browse pages
   source?: 'broadway' | 'west-end' | 'off-broadway' | 'off-west-end' | 'regional' | 'tour'; // Data source (default: broadway)
+  /** Feature flag the page's data belongs to. While that flag is off the page
+   *  does not exist: getAllBrowseSlugs() omits it and getBrowsePageConfig()
+   *  returns undefined, so static params, sitemap, RSS, related links and
+   *  guides all drop it. Required on any page that reads ctx.getShowCommercial
+   *  (tests/unit/commercial-unreleased.test.mjs enforces it). */
+  requiresFeature?: 'commercial';
   /** Optional function to group shows into sections with H2 headings.
    *  Returns a label for each show — shows with the same label are grouped together.
    *  Only applies when using the default/custom sort (client re-sorts lose groupings). */
@@ -883,6 +890,7 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
     metaTitle: 'Biggest Broadway Flops — Commercial Failures Ranked',
     metaDescription: 'Broadway\'s biggest commercial failures. Shows designated as Flops and Fizzles based on capitalization, run length, and recoupment data.',
     intro: 'Not every Broadway show is a hit. These productions were designated as commercial failures — either "Flops" (significant financial losses) or "Fizzles" (underperformers that failed to recoup their investment). Our designations are based on capitalization costs, run length, box office performance, and whether the show recouped its investment. Some of these shows were critical darlings that couldn\'t find an audience; others were panned by critics and audiences alike. Together, they tell the story of Broadway\'s high-risk economics, where even the most ambitious productions can fall short.',
+    requiresFeature: 'commercial',
     dataFilter: (show, ctx) => {
       const commercial = ctx.getShowCommercial(show.slug);
       if (!commercial) return false;
@@ -1221,12 +1229,17 @@ export const BROWSE_PAGES: Record<string, BrowsePageConfig> = {
   ...generateSeasonBrowsePages(),
 };
 
-// Get all browse page slugs for static generation
-export function getAllBrowseSlugs(): string[] {
-  return Object.keys(BROWSE_PAGES);
+function isBrowsePageReleased(config: BrowsePageConfig): boolean {
+  return !config.requiresFeature || featureFlags[config.requiresFeature];
 }
 
-// Get a specific browse page config
+// Get all browse page slugs for static generation
+export function getAllBrowseSlugs(): string[] {
+  return Object.keys(BROWSE_PAGES).filter(slug => isBrowsePageReleased(BROWSE_PAGES[slug]));
+}
+
+// Get a specific browse page config (undefined for a page whose flag is off)
 export function getBrowsePageConfig(slug: string): BrowsePageConfig | undefined {
-  return BROWSE_PAGES[slug];
+  const config = BROWSE_PAGES[slug];
+  return config && isBrowsePageReleased(config) ? config : undefined;
 }
