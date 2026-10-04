@@ -49,7 +49,37 @@ const HOOK_PATH = path.join(REAL_HOME, '.claude', 'hooks', 'exit-status-gate.sh'
 // of which exercise headless behavior), producing 3 false failures. Reset it
 // so the gate's cwd/env-independent default (non-headless) applies unless a
 // specific case opts in via extraEnv.
-const HOOK_ENV = { ...process.env, HOME: REAL_HOME, ESG_HEADLESS: '' };
+//
+// BRO-3949: the same inherit-everything env also let REAL ambient machine state
+// leak into the hook: the live dispatch ledger (Gate O/P read
+// Broadwayscore/data/audit/dispatch-ledger.jsonl and block "this session
+// dispatched 1152, it owns them until they land"), the live cmux workspace
+// list (Gate P/W), the real ~/.claude/tasks dir, and the shared log dir. On a
+// machine with concurrent sessions those are never in the state the fixtures
+// assume, so land.js's merged-tree-tests gate flaked and refused landings.
+// hookEnv() points every one of those seams at a private empty sandbox.
+// Built per call (not at import) so the regression test below can dirty
+// process.env first and prove the sandbox still wins.
+function makeSandbox() {
+  const dir = mkdtempSync(path.join(tmpdir(), 'esg-taskref-sbx-'));
+  const ledger = path.join(dir, 'dispatch-ledger.jsonl');
+  writeFileSync(ledger, '');
+  const tasks = path.join(dir, 'tasks');
+  mkdirSync(tasks, { recursive: true });
+  return { dir, ledger, tasks };
+}
+
+function hookEnv(sbx) {
+  return {
+    ...process.env, HOME: REAL_HOME, ESG_HEADLESS: '',
+    ESG_DISPATCH_LEDGER: sbx.ledger,
+    ESG_TASKS_DIR: sbx.tasks,
+    CLAUDE_LOG_DIR: path.join(sbx.dir, 'logs'),
+    // No cmux binary: Gate P degrades to skip, Gate W adds no title hints.
+    CMUX_BIN: path.join(sbx.dir, 'no-cmux'),
+    DISPATCH_WATCHDOG_DISABLED: '',
+  };
+}
 
 // The hook lives in the owner's PRIVATE ~/.claude repo, which a CI runner does
 // not check out — spawnSync('bash', [missing path]) exits 127, and every case
@@ -66,7 +96,8 @@ const skipIfNoHook = HOOK_PRESENT
   : `exit-status-gate.sh not present at ${HOOK_PATH} — hooks live in the private ~/.claude repo, absent on CI runners`;
 
 function runGate(lastAssistantMessage, extraEnv = {}) {
-  const dir = mkdtempSync(path.join(tmpdir(), 'esg-taskref-'));
+  const sbx = makeSandbox();
+  const dir = sbx.dir;
   const transcriptPath = path.join(dir, 'transcript.jsonl');
   // A minimal real user turn — enough for the hook's transcript walker to
   // establish turn boundaries; Gate T's scan runs unconditionally (like
@@ -82,7 +113,7 @@ function runGate(lastAssistantMessage, extraEnv = {}) {
   });
   try {
     const result = spawnSync('bash', [HOOK_PATH], {
-      input, encoding: 'utf8', env: { ...HOOK_ENV, ...extraEnv },
+      input, encoding: 'utf8', env: { ...hookEnv(sbx), ...extraEnv },
     });
     return { status: result.status, stderr: result.stderr || '' };
   } finally {
@@ -160,5 +191,28 @@ test('Gate T surfaces a title for a task that only exists under archive/ (task-s
     assert.match(stderr, /Archived task title for gate T lookup test/);
   } finally {
     rmSync(dir, { recursive: true, force: true });
+  }
+});
+
+test('BRO-3949: ambient seam env (tasks dir) cannot leak into the gate', { skip: skipIfNoHook }, () => {
+  // Gate T reads task titles from ESG_TASKS_DIR / ~/.claude/tasks/<list>. If the
+  // spawn inherited an ambient value, the hint text (and the verdict inputs)
+  // would depend on whatever other sessions have on this machine, which is the
+  // flake that made land.js's merged-tree-tests gate refuse landings. Plant a
+  // title in an ambient dir: the sandbox must hide it.
+  const dirty = mkdtempSync(path.join(tmpdir(), 'esg-taskref-dirty-'));
+  const key = 'ESG_TASKS_DIR';
+  const saved = process.env[key];
+  try {
+    writeFileSync(path.join(dirty, '9992.json'), JSON.stringify({
+      id: '9992', subject: 'AMBIENT-LEAK-MARKER title that must stay invisible',
+    }));
+    process.env[key] = dirty;
+    const { status, stderr } = runGate('Follow-up needed on #9992 before closing.');
+    assert.equal(status, 2);
+    assert.doesNotMatch(stderr, /AMBIENT-LEAK-MARKER/, 'ambient ESG_TASKS_DIR leaked into the gate');
+  } finally {
+    if (saved === undefined) delete process.env[key]; else process.env[key] = saved;
+    rmSync(dirty, { recursive: true, force: true });
   }
 });
