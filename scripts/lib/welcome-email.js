@@ -51,7 +51,7 @@ const STEPS = [
   },
   {
     title: 'Bring your history over',
-    body: 'Already log shows on Show Score or Mezzanine? Import them from My Shows and skip the typing.',
+    body: 'Already log shows on Show Score, Mezzanine or Theatr? Import them from My Shows and skip the typing.',
   },
   {
     title: 'Keep a watchlist',
