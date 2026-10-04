@@ -12,6 +12,10 @@ import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
+import { execFileSync } from 'node:child_process';
+import { readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
+
 const HERE = dirname(fileURLToPath(import.meta.url));
 const SCRIPT = join(HERE, 'merge-worktree-to-main.sh');
 const ENV = {
@@ -103,3 +107,136 @@ for (const sig of ['TERM', 'HUP', 'INT']) {
       rmSync(root, { recursive: true, force: true }); rmSync(marker, { force: true }); }
   });
 }
+
+// ── BRO-2884: landing CI-coverage guard (a [skip ci] tip must not leave a landing without CI) ──
+const require = createRequire(import.meta.url);
+const lib = require('./lib/landing-ci-coverage.js');
+const LIB_PATH = join(HERE, 'lib', 'landing-ci-coverage.js');
+const LAND_SCRIPT = SCRIPT;
+
+const gitq = (cwd, ...a) => execFileSync('git', a, { cwd, encoding: 'utf8' }).trim();
+
+// main: base <- merge M (code change) <- T ("data: audit telemetry update [skip ci]")
+function ciFixture() {
+  const dir = mkdtempSync(join(tmpdir(), 'bro2884-'));
+  gitq(dir, 'init', '-q', '-b', 'main');
+  gitq(dir, 'config', 'user.email', 't@t'); gitq(dir, 'config', 'user.name', 't');
+  writeFileSync(join(dir, 'a.txt'), 'a'); gitq(dir, 'add', '.'); gitq(dir, 'commit', '-qm', 'base');
+  gitq(dir, 'checkout', '-qb', 'wt');
+  mkdirSync(join(dir, 'scripts')); writeFileSync(join(dir, 'scripts', 'x.js'), 'x'); gitq(dir, 'add', '.'); gitq(dir, 'commit', '-qm', 'feat: change scripts');
+  gitq(dir, 'checkout', '-q', 'main');
+  gitq(dir, 'merge', '--no-ff', '-qm', 'merge wt', 'wt');
+  const M = gitq(dir, 'rev-parse', 'HEAD');
+  writeFileSync(join(dir, 'telemetry.json'), '{}'); gitq(dir, 'add', '.');
+  gitq(dir, 'commit', '-qm', 'data: audit telemetry update [skip ci]');
+  const T = gitq(dir, 'rev-parse', 'HEAD');
+  return { dir, M, T };
+}
+
+test('hasSkipCiMarker matches GitHub skip directives only', () => {
+  for (const m of ['x [skip ci]', 'x [ci skip]', 'x [no ci]', 'x\n\nskip-checks: true', 'X [SKIP CI]']) assert.ok(lib.hasSkipCiMarker(m), m);
+  for (const m of ['skip ci tests', 'fix: skipping ci', '', undefined]) assert.ok(!lib.hasSkipCiMarker(m), String(m));
+});
+
+test('findCoveringRun: descendant head_sha covers; unrelated/cancelled do not', () => {
+  const { dir, M, T } = ciFixture();
+  const anc = (a, b) => spawnSync('git', ['merge-base', '--is-ancestor', a, b], { cwd: dir }).status === 0;
+  assert.equal(lib.findCoveringRun([{ head_sha: T }], M, anc).head_sha, T);
+  assert.equal(lib.findCoveringRun([{ head_sha: M }], M, anc).head_sha, M);
+  assert.equal(lib.findCoveringRun([{ head_sha: T, conclusion: 'cancelled' }], M, anc), null);
+  assert.equal(lib.findCoveringRun([{ head_sha: gitq(dir, 'rev-parse', 'wt~1') }], M, anc), null, 'an older commit does not cover M');
+  assert.equal(lib.findCoveringRun([], M, anc), null);
+});
+
+test('ensureCoverage: skip-ci tip with no run → dispatches, dispatched run covers the merge', async () => {
+  const { dir, M, T } = ciFixture();
+  const anc = (a, b) => spawnSync('git', ['merge-base', '--is-ancestor', a, b], { cwd: dir }).status === 0;
+  const runs = []; let dispatched = 0;
+  const res = await lib.ensureCoverage({
+    sha: T, // landed tip IS the telemetry commit: the exact push-tip shape from the incident
+    listRuns: async () => runs, isAncestor: anc,
+    getMessage: s => gitq(dir, 'log', '-1', '--format=%B', s),
+    getChangedFiles: () => ['scripts/x.js'],
+    dispatch: async () => { dispatched++; runs.push({ head_sha: T, event: 'workflow_dispatch' }); },
+    sleep: async () => {}, waitSec: 30, pollSec: 15,
+  });
+  assert.equal(dispatched, 1);
+  assert.equal(res.status, 'dispatched-covered');
+  assert.ok(anc(M, res.run.head_sha), 'the merge commit is an ancestor of the covering run head_sha');
+});
+
+test('ensureCoverage: without dispatch the same shape is UNCOVERED (guards the guard)', async () => {
+  const { dir, M } = ciFixture();
+  const anc = (a, b) => spawnSync('git', ['merge-base', '--is-ancestor', a, b], { cwd: dir }).status === 0;
+  const res = await lib.ensureCoverage({
+    sha: M, listRuns: async () => [], isAncestor: anc,
+    getMessage: () => 'x [skip ci]', getChangedFiles: () => ['src/a.ts'],
+    dispatch: async () => {}, sleep: async () => {}, waitSec: 15, pollSec: 15,
+  });
+  assert.equal(res.status, 'uncovered');
+});
+
+test('ensureCoverage: data-only landing without skip marker needs no run', async () => {
+  const res = await lib.ensureCoverage({
+    sha: 'abc', listRuns: async () => [], isAncestor: () => false,
+    getMessage: () => 'data: x', getChangedFiles: () => ['data/audit/x.json'], pushPaths: ['src/**'],
+    dispatch: async () => assert.fail('must not dispatch'), sleep: async () => {},
+  });
+  assert.equal(res.status, 'not-required');
+});
+
+test('CLI end-to-end: merge M under skip-ci tip T, stub gh → dispatch → run head_sha has M as ancestor', () => {
+  const { dir, M, T } = ciFixture();
+  const stubDir = mkdtempSync(join(tmpdir(), 'bro2884-gh-'));
+  const state = join(stubDir, 'runs.json'); writeFileSync(state, '[]');
+  const gh = join(stubDir, 'gh');
+  writeFileSync(gh, `#!/usr/bin/env bash
+if [ "$1" = "api" ]; then cat "${state}"; exit 0; fi
+if [ "$1" = "workflow" ] && [ "$2" = "run" ]; then echo '[{"head_sha":"${T}","conclusion":null,"event":"workflow_dispatch","html_url":"https://example/run/1"}]' > "${state}"; exit 0; fi
+exit 1
+`);
+  chmodSync(gh, 0o755);
+  const r = spawnSync('node', [LIB_PATH, `--sha=${M}`, `--cwd=${dir}`, '--repo=o/r', '--wait-sec=15'], { encoding: 'utf8', env: { ...process.env, GH_BIN: gh } });
+  assert.equal(r.status, 0, r.stdout + r.stderr);
+  assert.match(r.stdout, /dispatched test\.yml on main/);
+  assert.match(r.stdout, /CI-COVERAGE: OK/);
+  const runs = JSON.parse(readFileSync(state, 'utf8'));
+  assert.equal(spawnSync('git', ['merge-base', '--is-ancestor', M, runs[0].head_sha], { cwd: dir }).status, 0);
+
+  // detection: a gh that creates nothing → UNCOVERED, exit 1
+  writeFileSync(gh, '#!/usr/bin/env bash\nif [ "$1" = "api" ]; then echo "[]"; exit 0; fi\nexit 0\n');
+  const bad = spawnSync('node', [LIB_PATH, `--sha=${M}`, `--cwd=${dir}`, '--repo=o/r', '--wait-sec=1'], { encoding: 'utf8', env: { ...process.env, GH_BIN: gh } });
+  assert.equal(bad.status, 1, bad.stdout);
+  assert.match(bad.stdout, /UNCOVERED/);
+});
+
+test('the landing script wires the coverage check into prove_and_finish', () => {
+  const src = readFileSync(LAND_SCRIPT, 'utf8');
+  const fn = src.slice(src.indexOf('prove_and_finish() {'));
+  const body = fn.slice(0, fn.indexOf('\n}\n'));
+  assert.match(body, /landing-ci-coverage\.js/);
+  assert.ok(body.indexOf('landing-ci-coverage.js') < body.indexOf('echo "LANDED:'), 'checked before LANDED is reported');
+  assert.ok(existsSync(LIB_PATH));
+});
+
+test('touchesCodePaths follows the workflow push paths, not a prefix guess', () => {
+  const wf = `on:\n  push:\n    branches: [main]\n    paths:\n      - 'src/**'\n      - 'scripts/lib/**'\n      # c\n      - 'scripts/one.js'\n  pull_request:\n    branches: [main]\n  schedule:\n    - cron: '0 6 * * *'\n`;
+  const pats = lib.pushPathsFromWorkflow(wf);
+  assert.deepEqual(pats, ['src/**', 'scripts/lib/**', 'scripts/one.js']);
+  assert.ok(lib.touchesCodePaths(['scripts/lib/a/b.js'], pats));
+  assert.ok(lib.touchesCodePaths(['scripts/one.js'], pats));
+  assert.ok(!lib.touchesCodePaths(['scripts/other.js', 'data/x.json'], pats), 'filtered script does not trigger an expensive dispatch');
+  assert.ok(lib.touchesCodePaths([], pats), 'unknown file list is treated as needing a run (resume path: fork == tip)');
+  assert.ok(lib.touchesCodePaths(['a'], []), 'unknown paths → safe direction');
+  const real = lib.pushPathsFromWorkflow(readFileSync(join(HERE, '..', '.github', 'workflows', 'test.yml'), 'utf8'));
+  assert.ok(real.includes('src/**') && real.includes('scripts/lib/**'), 'parses the real test.yml');
+});
+
+test('ensureCoverage: gh listing failure is unknown and never dispatches', async () => {
+  const res = await lib.ensureCoverage({
+    sha: 'abc', listRuns: async () => null, isAncestor: () => false,
+    getMessage: () => 'x [skip ci]', getChangedFiles: () => ['src/a.ts'],
+    dispatch: async () => assert.fail('must not dispatch on unknown'), sleep: async () => {},
+  });
+  assert.equal(res.status, 'unknown');
+});
