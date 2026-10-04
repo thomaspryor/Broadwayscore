@@ -134,7 +134,9 @@ jobs:
   # timeout can't drop the drafts.
   draft-opening-posts:
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    # Was 10. BRO-4597 added Playwright setup (worst case ~8 min, see
+    # setup-playwright) and a 4-minute screenshot budget in the email step.
+    timeout-minutes: 20
     permissions:
       contents: write
 

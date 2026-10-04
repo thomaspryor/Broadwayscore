@@ -240,9 +240,9 @@ function Inner({
   // ?rate=1 — auto-open rate panel (deferred-auth target for inline-stars CTAs)
   useEffect(() => {
     if (!autoRate || ratePanelOpen) return;
-    // The pending-action effect above runs first in the same commit and sets
-    // this ref synchronously when it consumed a draft for this show — without
-    // this guard, the stale ratePanelOpen=false read here would let us clobber
+    // The pending-action effect above runs first (the deep link is read after
+    // mount, so this runs a commit later) and sets this ref when it consumed a
+    // draft for this show — without this guard, a stale ratePanelOpen=false read here would let us clobber
     // the just-restored draft (typed note included) with a bare stars hint.
     if (hasExecutedPending.current) return;
     if (!isAuthenticated && !authLoading) {

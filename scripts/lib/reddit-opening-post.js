@@ -313,9 +313,11 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
     if (!forceShowId && prev && !isRetryableDraft(prev) && prev.subreddit === facts.subreddit && lintDraft(prev, facts).ok) continue; // unsent but still accurate
     // Off-West End shows only when they'd carry a post on their own.
     if (!forceShowId && market === 'off-west-end' && notability(facts) < 25) continue;
-    out.push({ show, facts, notability: notability(facts) });
+    out.push({ show, facts, notability: notability(facts), refresh: !!(prev && prev.emailedAt) });
   }
-  out.sort((a, b) => b.notability - a.notability);
+  // New openings first: a refresh of an already-emailed draft must never
+  // take a run's slot from a show the owner hasn't heard about yet.
+  out.sort((a, b) => (a.refresh - b.refresh) || (b.notability - a.notability));
   if (forceShowId) return out;
   const picked = [];
   let ob = 0;

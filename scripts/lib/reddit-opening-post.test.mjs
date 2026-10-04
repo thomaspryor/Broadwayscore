@@ -357,6 +357,15 @@ test('audienceSourceNames and ownerStance edge cases', () => {
   assert.equal(lib.ownerStance({ seen: false, upcomingDate: null }), 'not-seen');
 });
 
+test('a refresh never takes a new opening\'s slot', () => {
+  const mk = id => ({ ...show, id, slug: id, title: id });
+  const shows = ['big', 'n1', 'n2'].map(mk);
+  const slims = new Map([['big', slim({ cs: 95, n: 30 })], ['n1', slim({ n: 9 })], ['n2', slim({ n: 9 })]]);
+  const stale = { status: 'ready', source: 'claude', subreddit: 'TheWestEnd', title: 'big 12/100', body: 'old', emailedAt: '2026-09-28T06:00:00Z' };
+  const picked = lib.selectCandidates({ shows, slims, drafts: { drafts: { big: stale } }, peersByMarket: {}, today: '2026-09-29' }).map(c => c.show.id);
+  assert.deepEqual(picked.sort(), ['n1', 'n2'], 'two new openings fill the run; the refresh waits');
+});
+
 test('the style guide carries both of the owner\'s hand-edited posts', () => {
   assert.match(lib.STYLE_GUIDE, /THE VOICE TOM WANTS/);
   assert.match(lib.STYLE_GUIDE, /Who's Afraid of Virginia Woolf\? 84\/100 from 24 critics/);

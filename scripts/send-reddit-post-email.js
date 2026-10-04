@@ -37,6 +37,7 @@ const DEFAULT_RECIPIENT = 'thomas.pryor@gmail.com';
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const NO_SCREENSHOTS = args.includes('--no-screenshots');
+const SCREENSHOT_BUDGET_MS = 4 * 60_000; // all captures in one run; emails after that go without
 const SEND_TO = (args.find(a => a.startsWith('--send-to=')) || '').split('=')[1] || DEFAULT_RECIPIENT;
 
 const USAGE = `send-reddit-post-email.js: email each new Reddit opening-post draft on its own (BRO-4360).
@@ -60,7 +61,7 @@ function postJSON(url, body, headers = {}) {
       path: u.pathname + u.search,
       method: 'POST',
       headers: { 'Content-Type': 'application/json', 'Content-Length': Buffer.byteLength(data), ...headers },
-      timeout: 15000,
+      timeout: 45000, // two inline screenshots ride along (~350KB)
     }, res => {
       let chunks = '';
       res.on('data', c => chunks += c);
@@ -69,7 +70,7 @@ function postJSON(url, body, headers = {}) {
         try { resolve(JSON.parse(chunks)); } catch { resolve(chunks); }
       });
     });
-    req.on('timeout', () => { req.destroy(new Error('Resend request timed out after 15s')); });
+    req.on('timeout', () => { req.destroy(new Error('Resend request timed out after 45s')); });
     req.on('error', reject);
     req.write(data);
     req.end();
@@ -97,14 +98,26 @@ async function main() {
   }
 
   let failed = 0;
+  const started = Date.now();
   for (const { draft, kind } of due) {
     const subject = buildSubject(draft, kind);
     // Phone-shaped screenshots of the live page, so the owner doesn't take
-    // them by hand (BRO-4597). Never blocks the email: no images on failure.
-    const shots = NO_SCREENSHOTS ? [] : await captureShowImages(draft.url, path.join(os.tmpdir(), 'reddit-post-images', draft.showId));
-    const images = shots.map((sh, i) => ({ cid: `shot${i + 1}`, label: sh.label, filename: `${draft.showId}-${sh.name}`, file: sh.file }));
+    // them by hand (BRO-4597). Never blocks the email: no images on failure,
+    // and none once the run's screenshot budget is spent (the job has a
+    // hard timeout, and a killed job would re-send everything unstamped).
+    const withinBudget = Date.now() - started < SCREENSHOT_BUDGET_MS;
+    const shots = NO_SCREENSHOTS || !withinBudget ? [] : await captureShowImages(draft.url, path.join(os.tmpdir(), 'reddit-post-images', draft.showId));
+    let images = [];
+    let attachments = [];
+    try {
+      images = shots.map((sh, i) => ({ cid: `shot${i + 1}`, label: sh.label, filename: `${draft.showId}-${sh.name}`, file: sh.file }));
+      attachments = images.map(im => ({ filename: im.filename, content: fs.readFileSync(im.file).toString('base64'), content_id: im.cid }));
+    } catch (e) {
+      console.log(`  screenshots dropped for ${draft.showId} (${e.message})`);
+      images = [];
+      attachments = [];
+    }
     const html = buildHtml(draft, kind, images);
-    const attachments = images.map(im => ({ filename: im.filename, content: fs.readFileSync(im.file).toString('base64'), content_id: im.cid }));
     if (DRY_RUN) {
       console.log(`\nSubject: ${subject}\nRecipient: ${SEND_TO}\nImages: ${shots.map(sh => sh.file).join(', ') || 'none'}\n---HTML---\n${html}`);
       continue;
@@ -114,6 +127,8 @@ async function main() {
         { Authorization: `Bearer ${process.env.RESEND_API_KEY}` });
       const stamp = new Date().toISOString();
       drafts.drafts[draft.showId] = { ...drafts.drafts[draft.showId], [kind === 'new' ? 'emailedAt' : 'reminderAt']: stamp };
+      // Stamp right away: a run killed later in the loop must not re-send this one.
+      fs.writeFileSync(DRAFTS_PATH, JSON.stringify(drafts, null, 2) + '\n');
       console.log(`Sent: ${subject} (id ${res && res.id || '?'})`);
     } catch (e) {
       failed++;

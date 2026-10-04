@@ -96,7 +96,9 @@ async function captureShowImages(url, outDir, { chromium = null, executablePath 
     browser = await pw.launch({ executablePath });
     const ctx = await browser.newContext({ viewport: VIEWPORT, deviceScaleFactor: SCALE, colorScheme: 'dark', isMobile: true, hasTouch: true });
     const page = await ctx.newPage();
-    await page.goto(url, { waitUntil: 'networkidle', timeout: 60_000 });
+    // 'load', then wait for the card itself: analytics keep a page from ever
+    // going network-idle, which would burn the timeout for no images.
+    await page.goto(url, { waitUntil: 'load', timeout: 45_000 });
     // Cookie/consent banners and sticky bars would sit on top of the card.
     await page.addStyleTag({ content: '[role="dialog"], [data-testid*="cookie" i], [data-testid*="consent" i], [aria-label="Add to watchlist"], [aria-label="Remove from watchlist"], [aria-label^="Your rating"] { display: none !important; }' });
     await page.waitForTimeout(800);

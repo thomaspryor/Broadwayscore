@@ -248,8 +248,10 @@ async function main() {
       // Already emailed: the reminder says the numbers moved since.
       if (prev.emailedAt) {
         entry.refreshedAt = new Date().toISOString();
-        entry.previousReviewCount = prev.reviewCount;
-        entry.previousScore = prev.score;
+        // Keep the numbers from the email the owner actually got, across
+        // repeated refreshes.
+        entry.previousReviewCount = prev.previousReviewCount ?? prev.reviewCount;
+        entry.previousScore = prev.previousScore ?? prev.score;
       }
     }
     drafts.drafts[c.show.id] = entry;
