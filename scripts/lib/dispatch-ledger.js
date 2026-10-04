@@ -1681,7 +1681,7 @@ module.exports = {
   LEDGER_PATH, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
-  wrapperVouchesAlive, wrapperCheckDisabled, unreconciledLaunchForRef,
+  wrapperVouchesAlive, wrapperCheckDisabled, unreconciledLaunchForRef, lastByRef,
   failedLaunchEntries, foldJobs, openJobs,
   // isInfraDeadEntry/deadDispatchCapStatus were card #1233's v1 API. The v2
   // implementation (ba2a4f22d3f) replaced both with classifyDeadAttemptsForTask

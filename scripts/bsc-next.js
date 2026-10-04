@@ -193,7 +193,7 @@ const dispatchLedger = require('./lib/dispatch-ledger.js');
 // unchanged — every name still resolves to the same behavior, now sourced
 // from the shared lib. See dispatch-guards.js's header for the full rationale.
 const {
-  findLiveWorkspaceForTask, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
+  findLiveWorkspaceForTask, safeLedgerEntries, deadDispatchGuard, parkedGuard, staleOutcomeGuard,
   closedCardGuard,
   checkDeadDispatch, notionIdOf, evaluateVerifiability, classifyHeadlessDispatchability,
   HEADLESS_BLOCKERS, loadLinearMirrorMapping, linearMirrorGuard, liveLinearCounterpart,
@@ -1614,7 +1614,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // guard here (ship-check Codex blocker): refuse if an un-✅ tab matches.
     if (!args.force && cmuxAvailableFn()) {
       try {
-        const dupTab = findLiveWorkspaceForTask(task, listWorkspacesFn(), isDoneTitleFn);
+        const dupTab = findLiveWorkspaceForTask(task, listWorkspacesFn(), isDoneTitleFn, safeLedgerEntries(readLedgerEntriesFn));
         if (dupTab) {
           console.error(`[bsc-next] a live cmux workspace already matches task #${task.id}: ${dupTab.ref} "${dupTab.title}". Refusing headless duplicate (--force to override).`);
           process.exit(1);
@@ -1709,7 +1709,7 @@ function main(argv = process.argv.slice(2), deps = {}) {
     // Duplicate-dispatch guard (✅-marked twins never count as live).
     if (!args.force) {
       try {
-        const dup = findLiveWorkspaceForTask(task, workspaces || listWorkspacesFn(), isDoneTitleFn);
+        const dup = findLiveWorkspaceForTask(task, workspaces || listWorkspacesFn(), isDoneTitleFn, safeLedgerEntries(readLedgerEntriesFn));
         if (dup) {
           console.error(`[bsc-next] a live workspace already matches task #${task.id}: ${dup.ref}  "${dup.title}".`);
           console.error(`  Another session may be on this task. Check it (cmux read-screen --workspace ${dup.ref}),`);

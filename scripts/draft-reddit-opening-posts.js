@@ -216,8 +216,29 @@ async function main() {
   });
   console.log(`${TODAY}: ${candidates.length} opening(s) to draft${FORCE_SHOW ? ` (forced ${FORCE_SHOW})` : ''}`);
 
+  // --show is an owner request (a resend dispatch emails these right after):
+  // a show that could not be redrafted fails the step, so the email step
+  // never sends its old text as if it were fresh.
+  const forcedFailures = [];
+  if (FORCE_SHOW) {
+    const got = new Set(candidates.map(c => c.show.id));
+    for (const id of FORCE_SHOW.split(',').map(x => x.trim()).filter(Boolean)) {
+      if (!got.has(id)) forcedFailures.push(`${id}: not draftable (unknown id, unsupported market, or no score yet)`);
+    }
+  }
+
   for (const c of candidates) {
+    const prevDraft = drafts.drafts[c.show.id];
+    // --show on a posted draft would pay for text nobody will use, and the
+    // stored text would no longer match what went up.
+    if (prevDraft && prevDraft.status === 'posted') { console.log(`  ${c.show.id}: already posted, not redrafting`); continue; }
     const { draft, source, problems } = await writeDraft(c.facts, examples);
+    // Scheduled refreshes keep their old behavior (a template with fresh
+    // numbers beats a reminder with stale ones, BRO-4597).
+    if (FORCE_SHOW && lib.keepPreviousDraft(prevDraft, source)) {
+      forcedFailures.push(`${c.show.id}: LLM failed (${problems.join('; ').slice(0, 200) || 'no LLM run'}); kept the earlier ${prevDraft.source} draft`);
+      continue;
+    }
     const entry = {
       showId: c.show.id,
       showTitle: c.show.title,
@@ -274,11 +295,18 @@ async function main() {
 
   if (DRY_RUN) {
     console.log('\n(dry run: nothing saved)');
+    reportForcedFailures(forcedFailures);
     return;
   }
   fs.mkdirSync(path.dirname(DRAFTS_PATH), { recursive: true });
   fs.writeFileSync(DRAFTS_PATH, JSON.stringify(drafts, null, 2) + '\n');
   console.log(`\nSaved ${Object.keys(drafts.drafts).length} draft(s) to ${path.relative(ROOT, DRAFTS_PATH)}`);
+  reportForcedFailures(forcedFailures);
+}
+
+function reportForcedFailures(failures) {
+  for (const f of failures) console.log(`::error::${f}`);
+  if (failures.length) process.exitCode = 1;
 }
 
 if (require.main === module) {
