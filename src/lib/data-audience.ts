@@ -6,6 +6,7 @@ import type { AudienceBuzzDesignation, AudienceBuzzData } from './data-types';
 import audienceBuzzData from '../../data/audience-buzz.json';
 import showsData from '../../data/shows.json';
 import showScoreUrlsData from '../../data/show-score-urls.json';
+import { isBroadwayComMarket, isRedditMarket, calculateCombinedScore, getDesignation } from '../../scripts/lib/audience-weighting';
 
 // Re-export pure functions from lightweight module for backward compat
 export { getAudienceGrade, getAudienceGradeClasses, getTotalAudienceReviews, hasEnoughAudienceReviews, MIN_AUDIENCE_REVIEWS } from './audience-grade-utils';
@@ -21,7 +22,7 @@ interface AudienceBuzzFile {
 }
 
 const audienceBuzzRaw = audienceBuzzData as unknown as AudienceBuzzFile;
-const rawShows = showsData.shows as Array<{ id: string; slug: string }>;
+const rawShows = showsData.shows as Array<{ id: string; slug: string; category?: string }>;
 const showScoreUrls = (showScoreUrlsData as Record<string, unknown>).shows as Record<string, string> | undefined;
 
 /**
@@ -53,10 +54,34 @@ function stripSuppressedSources(buzz: AudienceBuzzData): AudienceBuzzData {
   return { ...buzz, sources: clean };
 }
 
+/**
+ * Drop sources that can only be another market's data: Broadway.com on a
+ * tour, regional or London show, Reddit on a tour (isBroadwayComMarket /
+ * isRedditMarket, shared with the scrapers and the blend). The scrape step can
+ * re-merge them into the file after the recompute nulls the grade, which left
+ * the Broadway run's review counts behind the tour's audience tiles (BRO-4601).
+ */
+function stripWrongMarketSources(buzz: AudienceBuzzData, category: string | undefined): AudienceBuzzData {
+  const sources = buzz.sources || {};
+  const drop = (key: string) => (key === 'broadwayCom' && !isBroadwayComMarket(category)) || (key === 'reddit' && !isRedditMarket(category));
+  if (!Object.keys(sources).some(k => sources[k] && drop(k))) return buzz;
+  const clean: Record<string, typeof sources[string]> = {};
+  for (const [key, data] of Object.entries(sources)) if (!drop(key)) clean[key] = data;
+  // The stored combinedScore was blended from the dropped sources: recompute.
+  const { score } = calculateCombinedScore(clean, { category });
+  return {
+    ...buzz,
+    sources: clean,
+    combinedScore: score as unknown as number,
+    designation: (score == null ? null : getDesignation(score)) as unknown as AudienceBuzzDesignation,
+  };
+}
+
 // Normalize once at module load so every accessor sees clean sources.
+const categoryById = new Map(rawShows.map(s => [s.id, s.category]));
 const normalizedShows: Record<string, AudienceBuzzData> = {};
 for (const [id, buzz] of Object.entries(audienceBuzzRaw.shows)) {
-  normalizedShows[id] = stripSuppressedSources(buzz);
+  normalizedShows[id] = stripSuppressedSources(stripWrongMarketSources(buzz, categoryById.get(id)));
 }
 const audienceBuzz: AudienceBuzzFile = { ...audienceBuzzRaw, shows: normalizedShows };
 
