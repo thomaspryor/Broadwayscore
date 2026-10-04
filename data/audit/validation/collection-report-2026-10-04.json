@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-04T12:05:23.827Z",
+  "runDate": "2026-10-04T12:17:18.632Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -12,37 +12,37 @@
   },
   "summary": {
     "processed": 9,
-    "failed": 58,
+    "failed": 64,
     "skipped": 0,
-    "successRate": "13.4%"
+    "successRate": "12.3%"
   },
   "tierBreakdown": {
     "playwright": 6,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
-    "scrapingdog": 1,
+    "scrapingdog": 3,
     "scrapingbee": 0,
     "brightdata": 2,
     "archiveToday": 0,
-    "archive": 0
+    "archive": 3
   },
   "statistics": {
-    "tier1Attempts": 2,
-    "tier1Success": 2,
+    "tier1Attempts": 0,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 1,
+    "tier2Attempts": 0,
     "tier2Success": 0,
-    "tier3Attempts": 2,
-    "tier3Success": 2,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 1,
+    "tier4Attempts": 0,
     "tier4Success": 0,
     "totalFailed": 56,
     "scrapingBeePageCredits": 0,
@@ -122,7 +122,13 @@
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
     "faith-healer-2006/times-uk--unknown.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "a-thousand-natural-shocks-off-broadway-2026/zeffy--zeffy.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/chortle--unknown.json",
+    "elf-lyons-the-woman-on-the-edge-off-broadway-2026/the-scotsman--david-hepburn.json",
+    "how-shakespeare-saved-my-life-off-broadway-2026/broadwaylog--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -137,7 +143,9 @@
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
-      "red-riding-hood-off-broadway-2026/showify--unknown.json"
+      "red-riding-hood-off-broadway-2026/showify--unknown.json",
+      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json",
+      "degenerates-off-broadway-2026/new-york-notebook--sandy-macdonald.json"
     ],
     "scrapingbee": [],
     "brightdata": [
@@ -145,7 +153,11 @@
       "operation-mincemeat-tour-2026/broadwayworld--unknown.json"
     ],
     "archiveToday": [],
-    "archive": []
+    "archive": [
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+      "school-girls-or-the-african-mean-girls-play-2026/wsj--charles-isherwood.json",
+      "school-girls-or-the-african-mean-girls-play-2026/one-minute-critic--emily-chackerian.json"
+    ]
   },
   "failuresByOutlet": {},
   "urlDiscoveries": []
