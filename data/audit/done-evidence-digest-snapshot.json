@@ -1,6 +1,6 @@
 {
-  "generatedAt": "2026-10-04T13:01:15.854Z",
-  "bannerText": "113/120 Done(14d) verified on main · 3 FAILED · 3 vacuous · 58 stuck-but-done",
+  "generatedAt": "2026-10-04T20:57:46.094Z",
+  "bannerText": "103/112 Done(14d) verified on main · 3 FAILED · 3 vacuous · 57 stuck-but-done — PARTIAL RUN: 1 check not re-run (ran out of time), so these numbers understate the board",
   "items": [
     {
       "title": "FAILED BRO-3221 — UX audit: On mobile watchlist cards, the icons indicating the time of day (matinee, evening, etc.) are too small to be l",
@@ -13,24 +13,9 @@
       "url": "https://linear.app/broadway-scorecard/issue/BRO-2538/push-with-retrysh-git-data-api-fallback-disqualifier-evaluates-the"
     },
     {
-      "title": "FAILED BRO-4474 — Missed-broadcast alert fires for sent emails: reconciler 429s on duplicate polls",
-      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: scripts/lib/missed-broadcasts.test.js",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4474/missed-broadcast-alert-fires-for-sent-emails-reconciler-429s-on"
-    },
-    {
-      "title": "STUCK BRO-4152 — P1: Theatre Record still drops recoverable Daily Mail reviews (single-word titles, title-match misses, stub-text merges)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4152/p1-theatre-record-still-drops-recoverable-daily-mail-reviews-single"
-    },
-    {
-      "title": "STUCK BRO-4128 — P1: maybeUpgradeUrl swaps a scored paywall review URL for an outlet review-round-up page, wiping score (The Stage / The Last Ship)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4128/p1-maybeupgradeurl-swaps-a-scored-paywall-review-url-for-an-outlet"
-    },
-    {
-      "title": "STUCK BRO-4099 — P1: one show's status/closingDate contradiction blocks ALL Vercel deploys (Slam Frank closed w/ future closingDate)",
-      "detail": "its own evidence holds on main — looks finished",
-      "url": "https://linear.app/broadway-scorecard/issue/BRO-4099/p1-one-shows-statusclosingdate-contradiction-blocks-all-vercel-deploys"
+      "title": "FAILED BRO-80 — Triage unopened shows carrying scored prior-run reviews — 55 shows / 250+ files (was \"6 shows\")",
+      "detail": "acceptance command names a path absent from this checkout, not evidence the fix broke: tests/unit/triage-unopened-shows.test.mjs",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-80/triage-unopened-shows-carrying-scored-prior-run-reviews-55-shows-250"
     },
     {
       "title": "STUCK BRO-4052 — Submission bot said 'added' but Golden Boy Daily Mail review never reached site (issue #908 follow-up)",
@@ -41,7 +26,22 @@
       "title": "STUCK BRO-3961 — main CI red: Test Suite failing pre-existing (audit-venue-write-guard baseline + BRO-2462 dispatch-stall test), unrelated to BRO-3920",
       "detail": "its own evidence holds on main — looks finished",
       "url": "https://linear.app/broadway-scorecard/issue/BRO-3961/main-ci-red-test-suite-failing-pre-existing-audit-venue-write-guard"
+    },
+    {
+      "title": "STUCK BRO-3868 — P1: digest-autofix-ledger loses rows on every sync — attempt-memory, opus escalation and BOTH zero-dispatch alarms read a file with no merge driver",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3868/p1-digest-autofix-ledger-loses-rows-on-every-sync-attempt-memory-opus"
+    },
+    {
+      "title": "STUCK BRO-3828 — BSC Daily: Stuck pipeline items (card #794)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3828/bsc-daily-stuck-pipeline-items-card-794"
+    },
+    {
+      "title": "STUCK BRO-3826 — BSC Daily: Data freshness: shows missing poster/synopsis/tickets (#795)",
+      "detail": "its own evidence holds on main — looks finished",
+      "url": "https://linear.app/broadway-scorecard/issue/BRO-3826/bsc-daily-data-freshness-shows-missing-postersynopsistickets-795"
     }
   ],
-  "moreCount": 56
+  "moreCount": 55
 }
