@@ -138,3 +138,10 @@ test('wiring: no analytics tool is initialised that this test does not know abou
     assert.ok(known.some(k => i.startsWith(k.replace('(', '')) || k.startsWith(i)), `unreviewed analytics init: ${i}`);
   }
 });
+
+test('isAuthCallbackPath: replay stays off on the OAuth return page (BRO-4525)', async () => {
+  const { isAuthCallbackPath } = await import('../../src/lib/analytics/redact-url');
+  assert.equal(isAuthCallbackPath('/auth/callback'), true);
+  assert.equal(isAuthCallbackPath('/auth/apple-callback'), false);
+  assert.equal(isAuthCallbackPath('/my-shows'), false);
+});

@@ -38,6 +38,11 @@ export function isSharedPlansPath(pathname: string): boolean {
   return pathname === '/plans' || pathname.startsWith('/plans/');
 }
 
+/** The OAuth return page carries live tokens in its hash; session replay stays off there (BRO-4525). */
+export function isAuthCallbackPath(pathname: string): boolean {
+  return pathname === '/auth/callback' || pathname.startsWith('/auth/callback/');
+}
+
 /**
  * Redact every string inside an analytics payload (event properties, Sentry
  * breadcrumbs, …). Payloads are small JSON-ish trees; depth is capped so a
