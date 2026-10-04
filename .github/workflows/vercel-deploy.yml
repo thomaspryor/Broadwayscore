@@ -209,24 +209,24 @@ jobs:
           ")
           echo "Demo-only flags: $DEMO_FLAGS"
 
-          # Read production NEXT_PUBLIC_FEATURES from pulled .vercel/.env.production.local
-          PROD_FEATURES=$(grep '^NEXT_PUBLIC_FEATURES=' .vercel/.env.production.local 2>/dev/null | cut -d= -f2- | tr -d '"' | tr -d '\n' || echo "")
-          echo "Production flags: $PROD_FEATURES"
-
-          LEAKED=""
-          IFS=',' read -ra DEMO_ARR <<< "$DEMO_FLAGS"
-          IFS=',' read -ra PROD_ARR <<< "$PROD_FEATURES"
-          for demo in "${DEMO_ARR[@]}"; do
-            for prod in "${PROD_ARR[@]}"; do
-              prod_clean=$(echo "$prod" | tr -d '[:space:]')
-              if [ "$demo" = "$prod_clean" ]; then
-                LEAKED="$LEAKED $demo"
-              fi
-            done
-          done
+          # Read production NEXT_PUBLIC_FEATURES from the pulled .vercel/.env.production.local
+          # with the held-features guard's parser, so duplicate lines, `export`, or an
+          # escaped \n can't hide a demo flag. An unreadable file fails the step.
+          LEAKED=$(node -e "
+            const g = require('./scripts/lib/prod-held-flags-guard');
+            let value;
+            try {
+              value = g.featuresFromEnvFile(require('fs').readFileSync('.vercel/.env.production.local', 'utf8'));
+            } catch (e) {
+              console.error('::error::.env.production.local: ' + e.message);
+              process.exit(1);
+            }
+            console.error('Production flags: ' + value);
+            console.log(g.heldFeaturesEnabled(value, process.argv[1].split(',')).join(' '));
+          " "$DEMO_FLAGS")
 
           if [ -n "$LEAKED" ]; then
-            echo "::error::Demo-only feature flags found in production NEXT_PUBLIC_FEATURES:$LEAKED"
+            echo "::error::Demo-only feature flags found in production NEXT_PUBLIC_FEATURES: $LEAKED"
             echo "::error::Remove them from Vercel production env vars before deploying."
             echo "::error::Demo flags should only be enabled on demo.broadwayscorecard.com (auto-enabled via DEMO_FEATURES set in feature-flags.ts)"
             exit 1

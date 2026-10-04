@@ -38,9 +38,13 @@ function parseHeldFeatures(src) {
 // `KEY=value`, `export KEY=value` or `KEY: value`: every form either env loader
 // accepts (see featuresFromEnvFile).
 const KEY_LINE = /^\s*(?:export\s+)?([\w.-]+)\s*(?:=|:\s)(.*)$/;
-// A line the Vercel CLI's loader (dotenv 4: plain KEY=value only) reads as setting
-// NEXT_PUBLIC_FEATURES.
-const SET_BY_VERCEL_LOADER = /^\s*NEXT_PUBLIC_FEATURES\s*=/m;
+// The Vercel CLI's loader (dotenv 4) splits on \n only and skips any line this
+// doesn't match whole, so this is exactly when it sets NEXT_PUBLIC_FEATURES.
+const VERCEL_LOADER_SETS = /^\s*NEXT_PUBLIC_FEATURES\s*=\s*(.*)?\s*$/;
+const setByVercelLoader = text => text.split('\n').some(line => VERCEL_LOADER_SETS.test(line));
+// Line breaks to Next's dotenv that `vercel pull` leaves raw inside a value (it
+// escapes only \n and \r), so a secret can hold one.
+const UNESCAPED_BREAKS = /[\u2028\u2029]/;
 // The repo's own env files `next build` reads for a production build.
 const NEXT_ENV_FILES = ['.env.production.local', '.env.local', '.env.production', '.env'];
 
@@ -68,12 +72,18 @@ function featuresFromEnvFile(envText) {
   const values = [];
   envText.split(/\r?\n/).forEach((line, i) => {
     if (!line.trim() || /^\s*#/.test(line)) return;
-    const m = line.match(KEY_LINE);
-    if (!m) throw new Error(`line ${i + 1} is not a KEY=value line, so a value may span lines this guard can't check`);
-    if (m[1] !== 'NEXT_PUBLIC_FEATURES') return;
-    const value = m[2].trim();
-    if (opensQuote(value)) throw new Error(`line ${i + 1}: NEXT_PUBLIC_FEATURES opens a quote it doesn't close, so its value may continue on later lines`);
-    values.push(value);
+    const parts = line.split(UNESCAPED_BREAKS);
+    if (!KEY_LINE.test(parts[0])) throw new Error(`line ${i + 1} is not a KEY=value line, so a value may span lines this guard can't check`);
+    // Each part after a U+2028/U+2029 can start a line for Next's dotenv. A
+    // NEXT_PUBLIC_FEATURES value read from one runs to the end of the physical
+    // line, which can only over-report.
+    parts.forEach((part, j) => {
+      const m = part.match(KEY_LINE);
+      if (!m || m[1] !== 'NEXT_PUBLIC_FEATURES') return;
+      const value = [m[2], ...parts.slice(j + 1)].join(' ').trim();
+      if (opensQuote(value)) throw new Error(`line ${i + 1}: NEXT_PUBLIC_FEATURES opens a quote it doesn't close, so its value may continue on later lines`);
+      values.push(value);
+    });
   });
   return values.join('\n');
 }
@@ -105,7 +115,7 @@ function main(argv = [], env = process.env, rootDir = REPO_ROOT) {
   }
   // `vercel build` loads the pulled file without overriding the shell; `next
   // build` falls back to the repo's own env files only when neither sets the key.
-  if (env.NEXT_PUBLIC_FEATURES === undefined && !SET_BY_VERCEL_LOADER.test(pulled)) {
+  if (env.NEXT_PUBLIC_FEATURES === undefined && !setByVercelLoader(pulled)) {
     const local = NEXT_ENV_FILES.filter(f => {
       const p = path.join(rootDir, f);
       return fs.existsSync(p) && fs.readFileSync(p, 'utf8').includes('NEXT_PUBLIC_FEATURES');

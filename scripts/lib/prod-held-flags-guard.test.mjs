@@ -73,6 +73,13 @@ const ENV_FIXTURES = [
   ['NEXT_PUBLIC_FEATURES="westEnd,\\"\nX=1,commercial"\n', 'refused'],
   ['NEXT_PUBLIC_FEATURES=\n"commercial"\n', 'refused'],
   ['NEXT_PUBLIC_FEATURES=commercial\nNOTE="\nNEXT_PUBLIC_FEATURES=westEnd\n"\n', 'refused'],
+  // U+2028/U+2029 end a line for Next's dotenv, and vercel pull leaves them raw
+  // in values. A secret holding one must not block deploys.
+  ['API_KEY="x\u2028y"\nNEXT_PUBLIC_FEATURES="westEnd"\n', 'clean'],
+  ["A='x'\u2028NEXT_PUBLIC_FEATURES=commercial\n", 'held'],
+  ['NEXT_PUBLIC_FEATURES=\u2028"commercial"\n', 'held'],
+  ['NEXT_PUBLIC_FEATURES="westEnd\u2029commercial"\n', 'held'],
+  ['A=1\u2028NEXT_PUBLIC_FEATURES=\n"commercial"\n', 'refused'],
   // Real vercel pull output: header, sorted KEY="value" lines, raw $ and a
   // trailing backslash in other keys. Must not be refused.
   ['# Created by Vercel CLI\nA_URL="https://x.test/?a=$b"\nNEXT_PUBLIC_FEATURES="westEnd,userAccounts"\nWIN_PATH="C:\\dir\\"\n', 'clean'],
@@ -88,8 +95,9 @@ test('the guard reads the pulled env file however NEXT_PUBLIC_FEATURES is format
 // process because they write process.env. If the CLI's loader can't be found,
 // the CLI changed how vercel build reads .vercel/.env.production.local:
 // re-check prod-held-flags-guard.js against the new loader before fixing this.
-test('the guard never passes a file either real env loader would enable commercial from', () => {
+test('the guard never passes a file either real env loader would enable commercial from', (t) => {
   const dir = mkdtempSync(path.join(os.tmpdir(), 'held-flags-loaders-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
   const dirs = ENV_FIXTURES.map(([text], i) => {
     const d = path.join(dir, String(i));
     mkdirSync(d);
@@ -103,9 +111,14 @@ test('the guard never passes a file either real env loader would enable commerci
       const buildDir = path.join(process.cwd(), 'node_modules/vercel/dist/commands/build');
       const src = fs.readFileSync(path.join(buildDir, 'index.js'), 'utf8');
       const name = (src.match(/var import_dotenv = __toESM\\((\\w+)\\(\\)/) || [])[1];
-      const from = name && [...src.matchAll(/import \\{([^}]*)\\} from "([^"]+)"/g)].find(m => new RegExp('\\\\b' + name + '\\\\b').test(m[1]));
-      if (!from) throw new Error('Vercel CLI env loader not found in commands/build/index.js');
-      const vercelDotenv = (await import(path.join(buildDir, from[2])))[name]();
+      // The chunk that exports it, matched on the local binding (\`a\` or \`a as name\`).
+      let exported, chunk;
+      for (const m of name ? src.matchAll(/import \\{([^}]*)\\} from "([^"]+)"/g) : []) {
+        const spec = m[1].split(',').map(x => x.trim().split(/\\s+as\\s+/)).find(x => x[x.length - 1] === name);
+        if (spec) { exported = spec[0]; chunk = m[2]; break; }
+      }
+      if (!chunk) throw new Error('Vercel CLI env loader not found in commands/build/index.js');
+      const vercelDotenv = (await import(path.join(buildDir, chunk)))[exported]();
       const { loadEnvConfig } = require('@next/env');
       const out = JSON.parse(process.argv[1]).map(d => {
         const text = fs.readFileSync(path.join(d, '.env.production.local'), 'utf8');
@@ -119,14 +132,13 @@ test('the guard never passes a file either real env loader would enable commerci
   const env = { ...process.env };
   delete env.NEXT_PUBLIC_FEATURES;
   delete env.NODE_ENV; // NODE_ENV=test makes @next/env skip .env.production.local
-  const seen = JSON.parse(execFileSync(process.execPath, ['-e', script, JSON.stringify(dirs)], { cwd: ROOT, env, encoding: 'utf8' }));
+  const seen = JSON.parse(execFileSync(process.execPath, ['-e', script, JSON.stringify(dirs)], { cwd: ROOT, env, encoding: 'utf8', timeout: 60_000 }));
   ENV_FIXTURES.forEach(([text], i) => {
     const { vercel, next } = seen[i];
     if (vercel || next) assert.notEqual(verdict(text), 'clean', `guard passed a file that enables commercial (vercel=${vercel}, next=${next}): ${JSON.stringify(text)}`);
   });
   // The fixtures must actually exercise both loaders.
   assert.ok(seen.some(s => s.vercel) && seen.some(s => s.next && !s.vercel), 'fixtures no longer cover both loaders');
-  rmSync(dir, { recursive: true, force: true });
 });
 
 test('held features are matched as whole names only', () => {
@@ -165,6 +177,9 @@ test('main(): fails on a held flag in the env file or the shell, passes otherwis
     assert.equal(main([unset], {}, localRoot), 1);
     assert.equal(main([unset], { NEXT_PUBLIC_FEATURES: 'westEnd' }, localRoot), 0);
     assert.equal(main([clean], {}, localRoot), 0);
+    // A line the Vercel loader rejects doesn't set the key, so the fallback still applies.
+    assert.equal(main([file('rejected.env', 'NEXT_PUBLIC_FEATURES="westEnd\u2028x"\n')], {}, localRoot), 1);
+    assert.equal(main([file('in-secret.env', 'A="x\u2028NEXT_PUBLIC_FEATURES=westEnd"\n')], {}, localRoot), 1);
   } finally {
     Object.assign(console, quiet);
     for (const d of [dir, emptyRoot, localRoot]) rmSync(d, { recursive: true, force: true });
@@ -189,4 +204,13 @@ test('both prod deploy paths run the guard before vercel build --prod', () => {
   assert.ok(dnGuard > 0, 'deploy-now.js must call the guard');
   assert.ok(dnGuard > codeLine(dn, 'vercel pull --yes --environment=production'), 'deploy-now: guard after vercel pull');
   assert.ok(dnGuard < codeLine(dn, 'vercel build --prod'), 'deploy-now: guard before vercel build --prod');
+});
+
+// A shell grep of the pulled file misses duplicate lines, `export` and escaped \n
+// (the demo-flag step did, until BRO-4525). Every prod-env flag check uses this parser.
+test('vercel-deploy.yml reads NEXT_PUBLIC_FEATURES only through the guard parser', () => {
+  const wf = read('.github/workflows/vercel-deploy.yml');
+  const shellReads = wf.split('\n').filter(l => !/^\s*#/.test(l) && /\b(grep|sed|awk|cut)\b/.test(l) && l.includes('NEXT_PUBLIC_FEATURES'));
+  assert.deepEqual(shellReads, [], 'parse the pulled env file with featuresFromEnvFile instead');
+  assert.ok(codeLine(wf, 'g.featuresFromEnvFile(') > 0, 'the demo-flag step uses featuresFromEnvFile');
 });
