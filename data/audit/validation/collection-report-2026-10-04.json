@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-04T06:35:30.206Z",
+  "runDate": "2026-10-04T06:47:46.872Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -28,28 +28,28 @@
     "archive": 106
   },
   "statistics": {
-    "tier1Attempts": 41,
-    "tier1Success": 4,
-    "ampAttempts": 1,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
+    "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 8,
-    "tier1_5Success": 2,
-    "tier1_9Attempts": 18,
+    "tier1_5Attempts": 0,
+    "tier1_5Success": 0,
+    "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 39,
-    "tier2Success": 3,
-    "tier3Attempts": 40,
-    "tier3Success": 22,
-    "tier3_6Attempts": 18,
+    "tier2Attempts": 0,
+    "tier2Success": 0,
+    "tier3Attempts": 0,
+    "tier3Success": 0,
+    "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 47,
-    "tier4Success": 1,
-    "totalFailed": 94,
-    "scrapingBeePageCredits": 51,
+    "tier4Attempts": 0,
+    "tier4Success": 0,
+    "totalFailed": 57,
+    "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 8,
-    "browserbaseMinutesUsed": 4.1,
-    "urlDiscoveryAttempts": 81,
+    "browserbaseSessionsUsed": 0,
+    "browserbaseMinutesUsed": 0,
+    "urlDiscoveryAttempts": 56,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
@@ -1497,112 +1497,6 @@
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
     ]
   },
-  "failuresByOutlet": {
-    "New York Post": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Observer": {
-      "count": 20,
-      "domain": "observer.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NBC New York": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Hollywood Reporter": {
-      "count": 2,
-      "domain": "hollywoodreporter.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": true
-    },
-    "ABC News": {
-      "count": 1,
-      "domain": "abcnews.go.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Newsday": {
-      "count": 2,
-      "domain": "newsday.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Albany Times-Union": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Telegraph": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "USA Today": {
-      "count": 1,
-      "domain": "usatoday.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    },
-    "BroadwayWorld": {
-      "count": 2,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "Associated Press": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NJ.com": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "The Washington Post": {
-      "count": 1,
-      "domain": "unknown",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "New York Daily News": {
-      "count": 1,
-      "domain": "nydailynews.com",
-      "hasCredentials": false,
-      "isPaywalled": false,
-      "isKnownBlocked": false
-    },
-    "NorthJersey.com": {
-      "count": 1,
-      "domain": "northjersey.com",
-      "hasCredentials": true,
-      "isPaywalled": true,
-      "isKnownBlocked": false
-    }
-  },
+  "failuresByOutlet": {},
   "urlDiscoveries": []
 }
