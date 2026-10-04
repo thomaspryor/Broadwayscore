@@ -436,3 +436,15 @@ test('safeLedgerEntries: a throwing read degrades to null (title-only dup-check)
   assert.equal(safeLedgerEntries(() => { throw new Error('boom'); }), null);
   assert.deepEqual(safeLedgerEntries(() => [1]), [1]);
 });
+
+// BRO-2949 wiring: every fresh-dispatch dup-check must hand the ledger to the
+// guard, or a renamed successor silently slips through again.
+test('fresh-dispatch callers pass the ledger to findLiveWorkspaceForTask', () => {
+  const root = path.join(path.dirname(new URL(import.meta.url).pathname), '..');
+  for (const [file, n] of [['bsc-next.js', 2], ['linear-next.js', 1]]) {
+    const src = fs.readFileSync(path.join(root, file), 'utf8');
+    const calls = src.match(/findLiveWorkspaceForTask\((?:task|pseudoTask),[^;\n]*;/g) || [];
+    assert.equal(calls.length, n, `${file}: expected ${n} call sites`);
+    for (const c of calls) assert.match(c, /safeLedgerEntries\(readLedgerEntriesFn\)/, `${file}: ${c}`);
+  }
+});

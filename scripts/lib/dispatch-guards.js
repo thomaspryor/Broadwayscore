@@ -118,6 +118,9 @@ const LINEAR_MAPPING_PATH = path.join(__dirname, '..', '..', 'data', 'linear-imp
 // ref-recycling safe (a terminal row, or a later launch of another task on the
 // same ref, stops the match). "Unreconciled" means no terminal row yet, not
 // proven alive — same strictness as the title match; --force bypasses both.
+// Known tradeoff: a ref recycled onto a non-dispatched tab with no terminal row
+// written yet reads as still owned; that false positive is fail-safe (the refusal
+// names the tab, --force bypasses) vs. the false negative that stacked 55 tabs.
 // ledgerEntries omitted/null => title-only, the pre-BRO-2949 behavior.
 function findLiveWorkspaceForTask(task, workspaces, isDone, ledgerEntries = null) {
   // titleMatchesSubject (dispatch-ledger.js) strips cmux's own activity-glyph
