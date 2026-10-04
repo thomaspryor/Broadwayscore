@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-04T11:26:46.537Z",
+  "runDate": "2026-10-04T11:38:51.942Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
+    "processed": 5,
     "failed": 58,
     "skipped": 0,
-    "successRate": "6.5%"
+    "successRate": "7.9%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
@@ -28,21 +28,21 @@
     "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 0,
-    "tier1Success": 0,
+    "tier1Attempts": 1,
+    "tier1Success": 1,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 0,
     "tier1_5Success": 0,
     "tier1_9Attempts": 0,
     "tier1_9Success": 0,
-    "tier2Attempts": 0,
+    "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 0,
+    "tier3Attempts": 1,
     "tier3Success": 0,
     "tier3_6Attempts": 0,
     "tier3_6Success": 0,
-    "tier4Attempts": 0,
+    "tier4Attempts": 1,
     "tier4Success": 0,
     "totalFailed": 56,
     "scrapingBeePageCredits": 0,
@@ -57,7 +57,8 @@
     "red-riding-hood-off-broadway-2026/showify--unknown.json",
     "escape-to-margaritaville-2018/fox-news--unknown.json",
     "clybourne-park-2012/cbsnews--shania-russell.json",
-    "clybourne-park-2012/village-voice--unknown.json"
+    "clybourne-park-2012/village-voice--unknown.json",
+    "carrie-1988/backstage--erik-haagensen.json"
   ],
   "failed": [
     "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json",
@@ -123,7 +124,8 @@
     "playwright": [
       "escape-to-margaritaville-2018/fox-news--unknown.json",
       "clybourne-park-2012/cbsnews--shania-russell.json",
-      "clybourne-park-2012/village-voice--unknown.json"
+      "clybourne-park-2012/village-voice--unknown.json",
+      "carrie-1988/backstage--erik-haagensen.json"
     ],
     "amp": [],
     "browserbase": [],
