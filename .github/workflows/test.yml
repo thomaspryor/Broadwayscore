@@ -1035,6 +1035,10 @@ on:
       # escalates to a wider one on the next retry instead of repeating it.
       # Path-listed so a solo edit triggers CI.
       - 'scripts/lib/push-with-retry.shallow-retry-escalation.test.sh'
+      # BRO-4603: phantom .git/shallow entry ("error in object: unshallow")
+      # self-heal. Own step below (.test.sh files are not globbed).
+      - 'scripts/lib/push-with-retry.phantom-shallow.test.sh'
+      - 'scripts/lib/heal-phantom-shallow.sh'
       - 'scripts/lib/shallow-fetch-args.js'
       # BRO-2538: a continue-on-error commit+push step that strands a
       # fallback-disqualified commit poisons every LATER commit+push-with-
@@ -4982,6 +4986,15 @@ jobs:
         # repeating the identical failing bound forever.
         if: always()  # independent suite — don't let an earlier red step skip it
         run: bash scripts/lib/push-with-retry.shallow-retry-escalation.test.sh
+
+      - name: Run push-with-retry phantom-shallow test (bash integration)
+        # BRO-4603: card-verifiability-audit run 36999684962 (5/5 attempts)
+        # and opening-night-express run 37190310392 (7/7) lost their pushes
+        # because a phantom .git/shallow entry made every fetch die with
+        # "error in object: unshallow <sha>". Real git: poisons a depth-1
+        # clone, asserts the heal removes only the phantom and the push lands.
+        if: always()  # independent suite — don't let an earlier red step skip it
+        run: bash scripts/lib/push-with-retry.phantom-shallow.test.sh
 
       - name: Run push-with-retry stranded-commit-cascade test (bash integration)
         # BRO-2538: data-health-check.yml run 33253487319 (2026-08-29) showed
