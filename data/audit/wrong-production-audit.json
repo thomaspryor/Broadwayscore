@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-04T02:40:29.226Z",
+  "timestamp": "2026-10-04T02:52:23.429Z",
   "stats": {
     "totalReviews": 46095,
-    "alreadyFlagged": 18702,
+    "alreadyFlagged": 18704,
     "dateGuardCatches": 268,
-    "directorMismatch": 1207,
+    "directorMismatch": 1211,
     "tvFilmSignals": 1336,
     "londonSignals": 1265,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4249
+    "noPublishDate": 4247
   },
   "findings": [
     {
@@ -22327,6 +22327,20 @@
       ]
     },
     {
+      "showId": "on-the-twentieth-century-1978",
+      "file": "nbcny--robert-kahn.json",
+      "score": 75,
+      "publishDate": null,
+      "url": "http://www.nbcnewyork.com/entertainment/the-scene/Roundabouts-Twentieth-Century-Revival-Has-a-Lotta-Locomotion-296289881.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"scott ellis\" from on-the-twentieth-century-2015"
+        }
+      ]
+    },
+    {
       "showId": "on-the-twentieth-century-2015",
       "file": "usatoday--elysa-gardner.json",
       "score": 97,
@@ -24598,6 +24612,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 2\""
+        }
+      ]
+    },
+    {
+      "showId": "ragtime-1998",
+      "file": "vulture--unknown.json",
+      "score": 62,
+      "publishDate": null,
+      "url": "https://www.vulture.com/article/theater-review-ragtime-musical-city-center-encores.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"lear debessonet\" from ragtime-2025"
         }
       ]
     },
@@ -28994,6 +29022,24 @@
       "score": 82,
       "publishDate": "2013-03-22",
       "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-the-book-of-mormon-merely-flirts-with-blasphemy-but-there-is-something-very-winning-8543751.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"trey parker\" from book-of-mormon-2011"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"casey nicholaw\" from book-of-mormon-2011"
+        }
+      ]
+    },
+    {
+      "showId": "the-book-of-mormon-west-end-2024",
+      "file": "independent--unknown.json",
+      "publishDate": null,
+      "url": "https://www.independent.co.uk/arts-entertainment/theatre-dance/reviews/theatre-review-the-book-of-mormon-lord-they-move-in-hilarious-ways-8547090.html",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
