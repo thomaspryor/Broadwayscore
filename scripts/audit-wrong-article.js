@@ -15,7 +15,7 @@
  *   node scripts/audit-wrong-article.js --list       # print unverified suspects as JSON
  *   node scripts/audit-wrong-article.js --record-verified   # merge ALL current suspects into the verified baseline
  *                                                    # (only after an Opus pass over --list)
- *   node scripts/audit-wrong-article.js --adjudicate [--max=N]   # the daily LLM pass (BRO-4603): asks
+ *   node scripts/audit-wrong-article.js --adjudicate [--max=N]   # the daily LLM pass (BRO-4603, default N=20): asks
  *                                                    # Opus via content-verifier about each unverified suspect,
  *                                                    # writes data/audit/wrong-article-adjudicated.json
  *
@@ -29,61 +29,70 @@ const path = require('path');
 const crypto = require('crypto');
 const { screenWrongArticle } = require('./lib/wrong-article-screen');
 const { isIncludableForRebuild } = require('./lib/review-guards');
-const { adjudicateSuspects, isClearedByAdjudication } = require('./lib/wrong-article-adjudicate');
+const { adjudicateSuspects, isClearedByAdjudication, describeConfirmed } = require('./lib/wrong-article-adjudicate');
 
 const ROOT = path.join(__dirname, '..');
 const TEXTS = process.env.REVIEW_TEXTS_DIR || path.join(ROOT, 'data', 'review-texts');
 const VERIFIED_PATH = path.join(ROOT, 'data', 'audit', 'wrong-article-verified.json');
 const ADJUDICATED_PATH = path.join(ROOT, 'data', 'audit', 'wrong-article-adjudicated.json');
-const DEFAULT_ADJUDICATE_MAX = 30;
-const CALL_TIMEOUT_MS = 60_000;
+// 20 x 40s = 13.3 min worst case, inside the workflow step's 15-minute cap.
+const DEFAULT_ADJUDICATE_MAX = 20;
+const CALL_TIMEOUT_MS = 40_000;
 
 function readJson(p) {
   try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return {}; }
 }
 
 async function runAdjudication(suspects, shows, argv) {
+  const maxArg = argv.find((a) => a.startsWith('--max='));
+  const parsedMax = maxArg ? Number(maxArg.slice(6)) : DEFAULT_ADJUDICATE_MAX;
+  const max = Number.isFinite(parsedMax) && parsedMax >= 0 ? Math.floor(parsedMax) : DEFAULT_ADJUDICATE_MAX;
+  if (max === 0) {
+    console.log('wrong-article adjudication: --max=0 — skipped.');
+    return 0;
+  }
   if (!process.env.ANTHROPIC_API_KEY) {
     console.log('wrong-article adjudication: ANTHROPIC_API_KEY not set — skipped (suspects stay unverified).');
     return 0;
   }
   const { verifyContent, callAnthropic, resolveCvMarket } = require('./lib/content-verifier');
+  const { isLongRunningProduction } = require('./lib/long-runner-registry');
   const { CLAUDE_OPUS } = require('./lib/models');
-  const maxArg = argv.find((a) => a.startsWith('--max='));
-  const max = maxArg ? Number(maxArg.slice(6)) || DEFAULT_ADJUDICATE_MAX : DEFAULT_ADJUDICATE_MAX;
-  const opus = callAnthropic(CLAUDE_OPUS);
-  // callAnthropic has no request timeout; one hung call must not eat the step.
-  const call = (prompt) => Promise.race([
-    opus(prompt),
-    new Promise((_, reject) => setTimeout(() => reject(new Error(`no reply in ${CALL_TIMEOUT_MS / 1000}s`)), CALL_TIMEOUT_MS).unref()),
-  ]);
-  const provider = { name: CLAUDE_OPUS, call };
+  const provider = { name: CLAUDE_OPUS, call: callAnthropic(CLAUDE_OPUS, { timeoutMs: CALL_TIMEOUT_MS }) };
   const verified = readJson(VERIFIED_PATH);
   const existing = readJson(ADJUDICATED_PATH);
   const pending = suspects.filter((s) => verified[s.file] !== s.hash);
-  const { adjudicated, attempted, counts } = await adjudicateSuspects({
+  const live = { ...existing };
+  const { attempted, counts } = await adjudicateSuspects({
     suspects: pending,
     shows,
     model: CLAUDE_OPUS,
     existing,
     max,
     readReview: (file) => { try { return JSON.parse(fs.readFileSync(path.join(TEXTS, file), 'utf8')); } catch { return null; } },
+    // Same argument mapping as collect-review-texts.js's verifyContent call.
     verify: ({ review, show }) => verifyContent({
       scrapedText: review.fullText,
+      excerpt: review.excerpt || null,
       showTitle: show.title,
-      criticName: review.criticName || null,
-      outletName: review.outlet || null,
+      criticName: review.criticName || review.critic || null,
+      outletName: review.outlet || review.outletId || null,
       url: review.url || null,
       venue: show.venue || null,
       openingDate: show.openingDate || null,
       publishDate: review.publishDate || null,
       market: resolveCvMarket(show),
+      isLongRunningProduction: isLongRunningProduction(show),
       show,
       provider,
     }),
     log: (line) => console.log(line),
+    // Persist after every verdict: a step timeout must not lose the run's work.
+    onEntry: (file, entry) => {
+      live[file] = entry;
+      fs.writeFileSync(ADJUDICATED_PATH, JSON.stringify(live, null, 2) + '\n');
+    },
   });
-  fs.writeFileSync(ADJUDICATED_PATH, JSON.stringify(adjudicated, null, 2) + '\n');
   console.log(`wrong-article adjudication: ${attempted} of ${pending.length} unverified suspect(s) asked (${CLAUDE_OPUS}): ${counts['same-show']} same-show, ${counts['wrong-article']} wrong-article, ${counts.unsure} unsure, ${counts.skipped} skipped → ${path.relative(ROOT, ADJUDICATED_PATH)}`);
   return 0;
 }
@@ -139,13 +148,18 @@ async function main(argv) {
     return 0;
   }
 
-  const unverified = suspects.filter((s) => verified[s.file] !== s.hash && !isClearedByAdjudication(adjudicated[s.file], s.hash));
-  const cleared = suspects.filter((s) => verified[s.file] !== s.hash && isClearedByAdjudication(adjudicated[s.file], s.hash)).length;
+  const unverified = [];
+  let cleared = 0;
+  for (const s of suspects) {
+    if (verified[s.file] === s.hash) continue;
+    if (isClearedByAdjudication(adjudicated[s.file], s.hash)) cleared++;
+    else unverified.push(s);
+  }
   console.log(`wrong-article audit: scanned ${scanned} included+scored, ${suspects.length} suspects, ${cleared} cleared by LLM adjudication, ${unverified.length} unverified`);
   if (argv.includes('--list')) console.log(JSON.stringify(unverified, null, 2));
   if (unverified.length) {
     const confirmed = unverified.filter((u) => adjudicated[u.file]?.hash === u.hash && adjudicated[u.file]?.verdict === 'wrong-article');
-    for (const u of confirmed) console.error(`  CONFIRMED WRONG ARTICLE ${u.file} (${u.show}): ${adjudicated[u.file].reason}`);
+    for (const u of confirmed) console.error(`  CONFIRMED WRONG ARTICLE ${u.file} (${u.show}): ${describeConfirmed(adjudicated[u.file])}`);
     for (const u of unverified.filter((x) => !confirmed.includes(x)).slice(0, 25)) console.error(`  UNVERIFIED ${u.file} (${u.show}, title x${u.titleMentions}, ${u.source}): ${u.head}`);
     console.error(confirmed.length
       ? 'Flag each CONFIRMED file wrongShow (data/pending-fixes plan, review-field-edit). UNVERIFIED ones get the LLM pass next run (--adjudicate).'
