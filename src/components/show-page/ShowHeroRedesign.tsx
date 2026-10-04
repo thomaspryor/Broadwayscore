@@ -28,9 +28,8 @@
  * resumed when the user lands back on this page authenticated.
  */
 
-import React, { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
-import { useSearchParams } from 'next/navigation';
 import { trackUgc } from '@/lib/ugc-analytics';
 import {
   ScoreBadge,
@@ -112,14 +111,24 @@ interface ShowHeroRedesignProps {
   trustLines?: React.ReactNode;
 }
 
-// ─── Suspense wrapper (useSearchParams requires it for static prerender) ──
+// The hero is server-rendered: it carries the page's <h1>, score and verdict.
+// Don't add useSearchParams here: on a static export it bails the whole
+// subtree out to client-side rendering, so the prerendered HTML (what search
+// engines and link previews read) shipped with no title or score (BRO-4597).
+// Deep-link params are read after mount instead (readDeepLink below).
 
 export default function ShowHeroRedesign(props: ShowHeroRedesignProps) {
-  return (
-    <Suspense fallback={null}>
-      <Inner {...props} />
-    </Suspense>
-  );
+  return <Inner {...props} />;
+}
+
+type DeepLink = { rate: boolean; stars: number | null; edit: boolean };
+
+function readDeepLink(search: string): DeepLink {
+  const params = new URLSearchParams(search);
+  const raw = params.get('stars') ? parseFloat(params.get('stars')!) : null;
+  // Untrusted input: ?stars=abc → NaN, ?stars=99 → out of range. Drop invalid values.
+  const stars = raw !== null && Number.isFinite(raw) && raw >= 0.5 && raw <= 5 ? raw : null;
+  return { rate: params.get('rate') === '1', stars, edit: params.get('edit') === '1' };
 }
 
 // ─── Inner ───────────────────────────────────────────────────────────────
@@ -145,7 +154,6 @@ function Inner({
   const { isWatchlisted, addToWatchlist, removeFromWatchlist, getWatchlist, updatePlannedDate, updatePerformance, watchlist } = useWatchlist(user?.id || null);
   const { lists, getLists } = useUserLists(user?.id || null);
   const { showToast } = useToastSafe();
-  const searchParams = useSearchParams();
 
   const [ratePanelOpen, setRatePanelOpen] = useState(false);
   const [editingReview, setEditingReview] = useState<UserReview | null>(null);
@@ -155,14 +163,13 @@ function Inner({
   // falls to <body>, stranding keyboard/screen-reader users (audit P2).
   const refocusRateBtn = () => requestAnimationFrame(() => rateBtnRef.current?.focus());
 
-  // ?rate=1 / ?stars=N / ?edit=1 deep-link helpers (kept compatible with /my-shows entry points)
-  const [autoRate] = useState(() => searchParams.get('rate') === '1');
-  const autoRateStarsRaw = searchParams.get('stars') ? parseFloat(searchParams.get('stars')!) : null;
-  // Untrusted input: ?stars=abc → NaN, ?stars=99 → out of range. Drop invalid values.
-  const autoRateStars = autoRateStarsRaw !== null && Number.isFinite(autoRateStarsRaw) && autoRateStarsRaw >= 0.5 && autoRateStarsRaw <= 5
-    ? autoRateStarsRaw
-    : null;
-  const [autoEditLatest] = useState(() => searchParams.get('edit') === '1');
+  // ?rate=1 / ?stars=N / ?edit=1 deep-link helpers (kept compatible with /my-shows entry points).
+  // Read once after mount so the prerendered HTML stays server-rendered.
+  const [deepLink, setDeepLink] = useState<DeepLink>({ rate: false, stars: null, edit: false });
+  useEffect(() => { setDeepLink(readDeepLink(window.location.search)); }, []);
+  const autoRate = deepLink.rate;
+  const autoRateStars = deepLink.stars;
+  const autoEditLatest = deepLink.edit;
 
   // ─── Derived state ─────────────────────────────────────────────────────
 

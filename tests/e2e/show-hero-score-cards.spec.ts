@@ -19,8 +19,7 @@ for (const width of [320, 360, 390, 640]) {
 
     test('labels and counts stay inside both cards', async ({ page }) => {
       await page.goto(SHOW, { waitUntil: 'domcontentloaded' });
-      // The redesign hero renders client-side (Suspense + useSearchParams), so
-      // it is absent from the static HTML. Wait for either hero before deciding.
+      // Wait for either hero before deciding which layout this deployment runs.
       const hero = page.getByTestId('show-hero-redesign');
       const legacyHero = page.getByTestId('show-header-card');
       await expect(hero.or(legacyHero).first()).toBeVisible();
