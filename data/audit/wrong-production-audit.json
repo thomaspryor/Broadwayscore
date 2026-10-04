@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-04T00:04:31.039Z",
+  "timestamp": "2026-10-04T01:42:58.749Z",
   "stats": {
-    "totalReviews": 46091,
-    "alreadyFlagged": 18695,
+    "totalReviews": 46095,
+    "alreadyFlagged": 18701,
     "dateGuardCatches": 268,
-    "directorMismatch": 1206,
-    "tvFilmSignals": 1335,
+    "directorMismatch": 1207,
+    "tvFilmSignals": 1336,
     "londonSignals": 1265,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4265
+    "noPublishDate": 4252
   },
   "findings": [
     {
@@ -31002,6 +31002,20 @@
     },
     {
       "showId": "the-glass-menagerie-2017",
+      "file": "nytimes--ben-brantley.json",
+      "score": 44,
+      "publishDate": "March 9, 2017",
+      "url": "https://www.nytimes.com/2017/03/09/theater/the-glass-menagerie-review.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"john tiffany\" from the-glass-menagerie-2013"
+        }
+      ]
+    },
+    {
+      "showId": "the-glass-menagerie-2017",
       "file": "timeout--david-cote.json",
       "score": 84,
       "publishDate": "March 9, 2017",
@@ -33319,6 +33333,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-prom-2018",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 72,
+      "publishDate": "2018-11-20",
+      "url": "https://newyorktheater.me/2018/11/19/the-prom-review-divas-hams-and-lesbians-in-broadway-satire/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv series\""
         }
       ]
     },
