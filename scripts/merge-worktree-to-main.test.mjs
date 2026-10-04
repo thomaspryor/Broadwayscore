@@ -82,11 +82,12 @@ for (const sig of ['TERM', 'HUP', 'INT']) {
     rmSync(marker, { force: true });
     // The audit step runs after the stash + merges and before the push: park there.
     const { root, repo } = fixture(`#!/usr/bin/env bash\ntouch ${marker}\nsleep 60\n`);
+    let child;
     try {
       chmodSync(join(repo, 'scripts/lib/run-push-audits.sh'), 0o755);
       appendFileSync(join(repo, 'tracked.txt'), 'daemon churn\n');
       const before = git(repo, 'status', '--porcelain');
-      const child = spawn('bash', [SCRIPT, 'feature-branch'], { cwd: repo, env: ENV, detached: true, stdio: 'ignore' });
+      child = spawn('bash', [SCRIPT, 'feature-branch'], { cwd: repo, env: ENV, detached: true, stdio: 'ignore' });
       const exited = new Promise((res) => child.on('exit', (code, signal) => res({ code, signal })));
       for (let i = 0; i < 300 && !existsSync(marker); i++) await new Promise((r) => setTimeout(r, 100));
       assert.ok(existsSync(marker), 'script never reached the audit step (fixture broken)');
@@ -97,6 +98,8 @@ for (const sig of ['TERM', 'HUP', 'INT']) {
       assert.equal(git(repo, 'stash', 'list').trim(), '', `stash abandoned after SIG${sig}`);
       assert.match(git(repo, 'status', '--porcelain'), /tracked\.txt/, 'stashed change not restored');
       assert.equal(before.includes('tracked.txt'), true);
-    } finally { rmSync(root, { recursive: true, force: true }); rmSync(marker, { force: true }); }
+    } finally {
+      try { process.kill(-child.pid, 'SIGKILL'); } catch { /* already gone */ }
+      rmSync(root, { recursive: true, force: true }); rmSync(marker, { force: true }); }
   });
 }

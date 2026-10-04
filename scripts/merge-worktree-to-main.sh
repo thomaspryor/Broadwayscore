@@ -141,7 +141,7 @@ source "$SCRIPT_DIR/lib/push-mutex.sh"
 source "$SCRIPT_DIR/lib/disk-floor-check.sh"
 ensure_disk_floor   # task #968: self-heal low-disk before the merge+push that needs the space
 
-die() { push_mutex_release; echo "❌ $*" >&2; exit 1; }
+die() { declare -F _wt_restore_outstanding >/dev/null && _wt_restore_outstanding; push_mutex_release; echo "❌ $*" >&2; exit 1; }   # BRO-2904: restore the stash BEFORE releasing the lock
 log() { echo "→ $*"; }
 
 # --- Parse args: optional branch, optional "-- files..." ---
@@ -570,18 +570,25 @@ push_mutex_acquire
 # cleared by restore_stash before it pops, so a restore that already ran (or
 # already failed and was reported) is never retried against a different
 # stash@{0}.
-_wt_exit_restore() {
-  local rc=$?
-  if [ "${STASHED:-0}" = 1 ]; then
+_wt_restore_outstanding() {
+  # A second signal must not cut a half-finished stash pop short.
+  trap '' INT TERM HUP
+  if [ "${STASHED:-0}" = 1 ] || [ "${RETRY_STASHED:-0}" = 1 ]; then
     if g rev-parse -q --verify MERGE_HEAD >/dev/null 2>&1; then
       # A real merge conflict is live: popping on top of it is the task #888
-      # hazard. Leave the stash for the operator and say where it is.
+      # hazard. Leave the stash(es) for the operator and say where they are.
       echo "⚠ exiting mid-merge — NOT popping stash 'wt-integ-$$' (recover: git -C $MAIN_DIR stash list)" >&2
     else
       echo "⚠ exiting with our stash 'wt-integ-$$' outstanding — restoring it" >&2
+      # The retry-scoped stash (BRO-2552) sits ABOVE the top-level one: pop it first.
+      if [ "${RETRY_STASHED:-0}" = 1 ]; then RETRY_STASHED=0; pop_stash_safely || true; fi
       restore_stash || echo "⚠ stash restore left conflicts — resolve in $MAIN_DIR (git -C $MAIN_DIR stash list)" >&2
     fi
   fi
+}
+_wt_exit_restore() {
+  local rc=$?
+  _wt_restore_outstanding
   return $rc
 }
 trap '_wt_exit_restore; push_mutex_release; _mss_cleanup' EXIT
@@ -1052,6 +1059,7 @@ else
       die "could not merge remote changes on retry:"$'\n'"$RETRY_MERGE_OUT"
     fi
     if [ "$RETRY_STASHED" = 1 ]; then
+      RETRY_STASHED=0   # BRO-2904: one attempt; the exit trap must not pop it again
       pop_stash_safely || die "retry-scoped stash pop conflicted on a non-auto-gen path after a CLEAN remote merge — resolve manually in $MAIN_DIR (git -C $MAIN_DIR stash list / stash show -p)"
     fi
   done
