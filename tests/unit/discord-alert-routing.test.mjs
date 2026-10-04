@@ -49,31 +49,18 @@ test('routing policy: only critical/error severities are emailable (the gate not
   assert.equal(shouldEmailAlert(undefined), false);
 });
 
-test('update-lottery-rush.yml: "Notify on failure" step actually routes to a real alert', () => {
+// BRO-4603 (owner, 2026-10-04: "I only want emails if they're really urgent
+// and need me to act on them"): a failed lottery/rush scrape is neither, so it
+// no longer emails. BRO-873's real requirement was that the failure be
+// owner-VISIBLE, and check-cron-health.yml (next test) keeps it visible in the
+// morning digest by keying staleness off the last SUCCESSFUL run. Which
+// workflows may email at all: scripts/lib/page-worthy-alerts.js
+// PAGE_WORTHY_WORKFLOWS, enforced by tests/unit/page-worthy-workflows.test.mjs.
+test('update-lottery-rush.yml: keeps a notify step but does not email the owner (BRO-4603)', () => {
   const workflow = loadWorkflow('.github/workflows/update-lottery-rush.yml');
   const step = findNotifyFailureStep(workflow);
   assert.ok(step, 'no step uses ./.github/actions/notify-failure — was it removed?');
-
-  const withBlock = step.with || {};
-  // notify-failure/action.yml gates its ENTIRE cooldown+send logic on
-  // `inputs.severity == 'critical'`. Anything else (including the historical
-  // default of unset -> 'low') is a silent no-op — this is the exact gap
-  // that let the April incident go unnoticed.
-  assert.equal(
-    withBlock.severity,
-    'critical',
-    'severity must be exactly \'critical\' or notify-failure/action.yml silently does nothing on failure'
-  );
-  // severity:'critical' alone reaches the cooldown-check step, but the actual
-  // "Send failure alert" step ALSO requires email:'true' to call sendAlert
-  // with email:true (severity is hardcoded to 'error' internally either way).
-  assert.equal(
-    String(withBlock.email),
-    'true',
-    'email must be \'true\' or the alert is computed but never delivered'
-  );
-  assert.ok(withBlock.resend_api_key, 'resend_api_key input missing — email delivery has no API key');
-  assert.ok(withBlock.owner_email, 'owner_email input missing — email delivery has no recipient');
+  assert.notEqual((step.with || {}).severity, 'critical', 'update-lottery-rush is not on the page-worthy list; its failures reach the digest via check-cron-health.yml');
 });
 
 test('check-cron-health.yml: update-lottery-rush staleness threshold matches its real twice-weekly cadence', () => {
@@ -95,14 +82,11 @@ test('check-cron-health.yml: update-lottery-rush staleness threshold matches its
   );
 });
 
-test('fetch-all-image-formats.yml (BRO-873 cousin): same silent-failure shape, now fixed the same way', () => {
+test('fetch-all-image-formats.yml (BRO-873 cousin): digest-visible via check-cron-health, no email (BRO-4603)', () => {
   const workflow = loadWorkflow('.github/workflows/fetch-all-image-formats.yml');
   const step = findNotifyFailureStep(workflow);
   assert.ok(step, 'no step uses ./.github/actions/notify-failure — was it removed?');
-
-  const withBlock = step.with || {};
-  assert.equal(withBlock.severity, 'critical', 'severity must be exactly \'critical\' to route anywhere');
-  assert.equal(String(withBlock.email), 'true', 'email must be \'true\' or the alert is never delivered');
+  assert.notEqual((step.with || {}).severity, 'critical', 'fetch-all-image-formats is not on the page-worthy list');
 
   const raw = fs.readFileSync(path.join(REPO_ROOT, '.github/workflows/check-cron-health.yml'), 'utf-8');
   const match = raw.match(/"fetch-all-image-formats\.yml\|(\d+)\|/);

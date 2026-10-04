@@ -611,8 +611,10 @@ jobs:
         with:
           title: 'Opening Night Express Failed — ${{ inputs.show_id }}'
           description: 'Express pipeline failed mid-run. Check logs. Manual workaround: cancel orchestrator, local rebuild, push data repo, gh workflow run vercel-deploy.yml'
-          severity: 'critical'
+          # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
+          # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
-          email: 'true'
+          email: 'false'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}

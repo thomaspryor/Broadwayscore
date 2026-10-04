@@ -3,16 +3,17 @@
 // not an opening-night / site-down / backup job is not owner-actionable, so
 // such callers must use min_consecutive_failures >= 2 (persistent breakage
 // still emails). A new critical+email caller must pick a side here.
+//
+// BRO-4603 tightened this: only workflows in page-worthy-alerts.js
+// PAGE_WORTHY_WORKFLOWS may page at all (tests/unit/page-worthy-workflows.test.mjs
+// pins the exact set). This test keeps its narrower BRO-4141 rule, now reading
+// the same list instead of a private copy.
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readdirSync, readFileSync } from 'node:fs';
+import { createRequire } from 'node:module';
 
-// Owner-approved categories (page-worthy-alerts.js header): opening-night
-// pipeline dead, production/user-facing down, data loss.
-const IMMEDIATE_PAGE_OK = new Set([
-  'opening-night-broadcast.yml', 'opening-night-orchestrator.yml', 'opening-night-poller.yml',
-  'opening-night-express.yml', 'restore-supabase.yml', 'test-ugc-roundtrip.yml', 'r2-cold-backup.yml',
-]);
+const { PAGE_WORTHY_WORKFLOWS: IMMEDIATE_PAGE_OK } = createRequire(import.meta.url)('./page-worthy-alerts.js');
 
 function criticalEmailCallers() {
   const dir = new URL('../../.github/workflows/', import.meta.url);
@@ -33,7 +34,7 @@ function criticalEmailCallers() {
 
 test('critical+email notify-failure callers page on one failure only if owner-approved', () => {
   const callers = criticalEmailCallers();
-  assert.ok(callers.length >= 8, `parser found only ${callers.length} callers — regex drifted?`);
+  assert.ok(callers.length >= 4, `parser found only ${callers.length} callers — regex drifted?`);
   const bad = callers.filter(c => c.min < 2 && !IMMEDIATE_PAGE_OK.has(c.file)).map(c => c.file);
   assert.deepEqual(bad, [], `add min_consecutive_failures: '2' (or justify in IMMEDIATE_PAGE_OK): ${bad.join(', ')}`);
 });

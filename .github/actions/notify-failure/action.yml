@@ -10,7 +10,11 @@ inputs:
     required: false
     default: ''
   severity:
-    description: '"critical" sends real-time email (if configured) + logs. Non-critical failures are aggregated in the BSC Daily email digest.'
+    description: >-
+      '"critical" sends a real-time email (if configured) ONLY for workflows listed in
+      scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS (BRO-4603); any other
+      value, or an unlisted workflow, never emails. Failures still reach the morning
+      digest via check-cron-health.yml / health-check.js.'
     required: false
     default: 'low'
   email:
@@ -46,17 +50,59 @@ inputs:
 outputs:
   suppressed:
     description: >-
-      'true' when the alert was suppressed (cooldown or consecutive-failure grace).
+      'true' whenever this call did not page: non-critical severity, a workflow
+      not on the page-worthy list, cooldown, or consecutive-failure grace.
       Gate follow-up steps (e.g. investigation dispatch) on this != 'true' so they
-      only fire when the failure actually paged.
-    value: ${{ steps.cooldown.outputs.suppressed }}
+      only fire when the failure actually paged. (Before BRO-4603 a non-critical
+      call left this EMPTY, so `!= 'true'` let investigate-alert.yml email anyway.)
+    value: ${{ steps.policy.outputs.page != 'true' && 'true' || steps.cooldown.outputs.suppressed }}
 
 runs:
   using: composite
   steps:
+    # BRO-4603: the owner's page-worthy policy runs FIRST, before the streak and
+    # cooldown branches below (streak mode returns early, so a check placed
+    # after it would never run for min_consecutive_failures callers). Only
+    # workflows in scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS may
+    # email; tests/unit/page-worthy-workflows.test.mjs keeps the YAML severities
+    # equal to that list. Fails OPEN (pages) if the policy file can't be read.
+    - name: Page-worthiness policy
+      id: policy
+      uses: actions/github-script@v7
+      with:
+        script: |
+          const severity = `${{ inputs.severity }}`;
+          const title = `${{ inputs.title }}`;
+          if (severity !== 'critical') {
+            core.setOutput('page', 'false');
+            return;
+          }
+          const ref = process.env.GITHUB_WORKFLOW_REF || '';
+          const fileMatch = ref.match(/\.github\/workflows\/([^@]+)/);
+          if (!fileMatch) {
+            console.log(`[Alert policy] could not read the workflow file from GITHUB_WORKFLOW_REF ('${ref}') — failing open (may page).`);
+            core.setOutput('page', 'true');
+            return;
+          }
+          const workflowFile = fileMatch[1];
+          let pageWorthy = true;
+          try {
+            pageWorthy = require('./scripts/lib/page-worthy-alerts.js').isPageWorthyWorkflow(workflowFile);
+          } catch (e) {
+            console.log(`[Alert policy] page-worthy-alerts.js unavailable (${e.message}) — failing open (may page).`);
+          }
+          if (!pageWorthy) {
+            const msg = `${workflowFile} is not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS) — no email. The morning digest reports this failure.`;
+            console.log(`[Alert policy] ${msg}`);
+            if (process.env.GITHUB_STEP_SUMMARY) {
+              require('fs').appendFileSync(process.env.GITHUB_STEP_SUMMARY, `\n> 🔕 **${title}** — ${msg}\n`);
+            }
+          }
+          core.setOutput('page', pageWorthy ? 'true' : 'false');
+
     - name: Check cooldown
       id: cooldown
-      if: inputs.severity == 'critical'
+      if: steps.policy.outputs.page == 'true'
       uses: actions/github-script@v7
       with:
         script: |
@@ -161,7 +207,7 @@ runs:
           }
 
     - name: Send failure alert
-      if: inputs.severity == 'critical' && steps.cooldown.outputs.suppressed != 'true'
+      if: steps.policy.outputs.page == 'true' && steps.cooldown.outputs.suppressed != 'true'
       uses: actions/github-script@v7
       env:
         RESEND_API_KEY: ${{ inputs.resend_api_key }}
