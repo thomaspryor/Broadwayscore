@@ -35,15 +35,30 @@ function textBlock(s) {
   return esc(s).replace(/\n/g, '<br>');
 }
 
-function buildHtml(d, kind) {
+/**
+ * images: [{ cid, label }] already attached to the email (see
+ * send-reddit-post-email.js). Shown inline so they can be long-pressed and
+ * saved straight to Photos for the Reddit post.
+ */
+function buildHtml(d, kind, images = []) {
+  const moved = kind === 'reminder' && d.refreshedAt && (d.previousReviewCount !== d.reviewCount || d.previousScore !== d.score)
+    ? ` More reviews came in, so I updated the numbers: now ${esc(d.reviewCount)} reviews and ${esc(d.score)}/100 (was ${esc(d.previousReviewCount)} and ${esc(d.previousScore)}).`
+    : '';
   const intro = kind === 'reminder'
-    ? `Reviews for ${esc(d.showTitle)} are still fresh. Here's the draft again in case yesterday got away from you. This is the last nudge for this one.`
+    ? `Reviews for ${esc(d.showTitle)} are still fresh. Here's the draft again in case yesterday got away from you.${moved} This is the last nudge for this one.`
     : `Reviews are in for ${esc(d.showTitle)}. Tap the button, give it a read, hit Post. These stop once your post shows up on Reddit.`;
+  const shots = images.length
+    ? `<div style="margin-top:18px;">
+      <div style="color:${TOKENS.text};font-size:14px;font-weight:700;">Screenshots for the post</div>
+      <div style="color:${TOKENS.textMuted};font-size:13px;line-height:1.5;margin:4px 0 10px 0;">Taken at phone width, so the Reddit app won't crop them. Press and hold to save, then add them as images in the post. They're attached too.</div>
+      ${images.map(im => `<div style="margin:0 0 12px 0;"><img src="cid:${esc(im.cid)}" alt="${esc(im.label)}" width="320" style="display:block;width:320px;max-width:100%;height:auto;border-radius:8px;border:1px solid ${TOKENS.borderSubtle};"></div>`).join('\n      ')}
+    </div>`
+    : '';
   const note = (label, text) => text
     ? `<div style="margin-top:12px;color:${TOKENS.textMuted};font-size:14px;line-height:1.5;"><strong style="color:${TOKENS.text};">${label}</strong> ${text}</div>`
     : '';
   const personal = (d.personalLines || []).length
-    ? note('Want it more personal?', `Paste one of these in, only if it's true:<br>${d.personalLines.map(l => `&bull; ${esc(l)}`).join('<br>')}`)
+    ? note('Different ending?', `Swap the last line for one of these, if it fits how you feel:<br>${d.personalLines.map(l => `&bull; ${esc(l)}`).join('<br>')}`)
     : '';
   const pushback = d.expectedPushback
     ? note('If someone says:', `${esc(d.expectedPushback)}<br><strong style="color:${TOKENS.text};">You could reply:</strong> ${esc(d.suggestedReply)}`)
@@ -63,6 +78,7 @@ function buildHtml(d, kind) {
       <div style="color:${TOKENS.text};font-size:16px;font-weight:700;line-height:1.35;">${esc(d.title)}</div>
       <div style="margin-top:10px;color:${TOKENS.text};font-size:15px;line-height:1.55;">${textBlock(d.body)}</div>
     </div>
+    ${shots}
     ${note('Why it should land:', esc(d.why))}
     ${pushback}
     ${personal}

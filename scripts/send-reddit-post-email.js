@@ -36,13 +36,17 @@ const DEFAULT_RECIPIENT = 'thomas.pryor@gmail.com';
 
 const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
+const NO_SCREENSHOTS = args.includes('--no-screenshots');
 const SEND_TO = (args.find(a => a.startsWith('--send-to=')) || '').split('=')[1] || DEFAULT_RECIPIENT;
 
 const USAGE = `send-reddit-post-email.js: email each new Reddit opening-post draft on its own (BRO-4360).
   --dry-run          print subjects + HTML, send and save nothing
-  --send-to=EMAIL    override recipient (default: owner)`;
+  --send-to=EMAIL    override recipient (default: owner)
+  --no-screenshots   skip the phone-width page screenshots`;
 
+const os = require('os');
 const { dueEmails, buildSubject, buildHtml } = require('./lib/reddit-post-email');
+const { captureShowImages } = require('./lib/reddit-post-screenshots');
 
 // ── Send ────────────────────────────────────────────────────────────────────
 
@@ -95,13 +99,18 @@ async function main() {
   let failed = 0;
   for (const { draft, kind } of due) {
     const subject = buildSubject(draft, kind);
-    const html = buildHtml(draft, kind);
+    // Phone-shaped screenshots of the live page, so the owner doesn't take
+    // them by hand (BRO-4597). Never blocks the email: no images on failure.
+    const shots = NO_SCREENSHOTS ? [] : await captureShowImages(draft.url, path.join(os.tmpdir(), 'reddit-post-images', draft.showId));
+    const images = shots.map((sh, i) => ({ cid: `shot${i + 1}`, label: sh.label, filename: `${draft.showId}-${sh.name}`, file: sh.file }));
+    const html = buildHtml(draft, kind, images);
+    const attachments = images.map(im => ({ filename: im.filename, content: fs.readFileSync(im.file).toString('base64'), content_id: im.cid }));
     if (DRY_RUN) {
-      console.log(`\nSubject: ${subject}\nRecipient: ${SEND_TO}\n---HTML---\n${html}`);
+      console.log(`\nSubject: ${subject}\nRecipient: ${SEND_TO}\nImages: ${shots.map(sh => sh.file).join(', ') || 'none'}\n---HTML---\n${html}`);
       continue;
     }
     try {
-      const res = await postJSON('https://api.resend.com/emails', { from: FROM, to: [SEND_TO], subject, html },
+      const res = await postJSON('https://api.resend.com/emails', { from: FROM, to: [SEND_TO], subject, html, ...(attachments.length ? { attachments } : {}) },
         { Authorization: `Bearer ${process.env.RESEND_API_KEY}` });
       const stamp = new Date().toISOString();
       drafts.drafts[draft.showId] = { ...drafts.drafts[draft.showId], [kind === 'new' ? 'emailedAt' : 'reminderAt']: stamp };

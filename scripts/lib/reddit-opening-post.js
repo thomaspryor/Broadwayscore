@@ -81,6 +81,34 @@ function audienceGradeLetter(score) {
   return 'F';
 }
 
+// Slim-file audience keys (generate-mobile-show-details.js KEY_MAP, plus ltd)
+// to the names the owner writes in posts ("across Mezzanine, Seatplan, ...").
+const AUDIENCE_SOURCE_NAMES = {
+  ss: 'Show Score', mz: 'Mezzanine', rd: 'Reddit', th: 'Theatr', bc: 'Broadway.com',
+  sp: 'Seatplan', lb: 'London Box Office', ltd: 'London Theatre Direct',
+};
+
+/** Audience sources with at least one review, biggest first. */
+function audienceSourceNames(au) {
+  if (!au || !au.sources) return [];
+  return Object.entries(au.sources)
+    .filter(([, s]) => s && Number(s.c) > 0)
+    .sort((a, b) => Number(b[1].c) - Number(a[1].c))
+    .map(([k]) => AUDIENCE_SOURCE_NAMES[k] || null)
+    .filter(Boolean);
+}
+
+/**
+ * What Tom can honestly say about his own plans, from data/shows-seen.json.
+ * 'seen' and 'has-tickets' are facts; 'not-seen' only means the show is not on
+ * the seen list, so drafts may say "haven't seen it yet" and nothing stronger.
+ */
+function ownerStance(seen) {
+  if (seen && seen.seen) return 'seen';
+  if (seen && seen.upcomingDate) return 'has-tickets';
+  return 'not-seen';
+}
+
 function audienceReviewCount(au) {
   if (!au || !au.sources) return 0;
   return Object.values(au.sources).reduce((n, s) => n + (Number(s && s.c) || 0), 0);
@@ -185,6 +213,8 @@ function buildFacts(show, slim, peers, { seen = null, crosspost = null } = {}) {
     buckets,
     audienceGrade,
     audienceCount: audienceGrade ? auCount : null,
+    audienceSources: audienceSourceNames(slim.au),
+    ownerStance: ownerStance(seen),
     consensus: slim.cn && slim.cn.t ? slim.cn.t : null,
     rankNote,
     rankPosition: rankNote ? rank.position : null,
@@ -218,6 +248,11 @@ function notability(facts) {
 function isRetryableDraft(d) {
   return !!d && d.status === 'ready' && d.source === 'template'
     && (d.lintProblems || []).some(p => String(p).startsWith('llm error'));
+}
+
+// Unposted and still due one more email (the first, or the reminder).
+function isRefreshable(d) {
+  return !!d && d.status === 'ready' && !d.reminderAt;
 }
 
 /**
@@ -257,10 +292,13 @@ function selectCandidates({ shows, slims, drafts, peersByMarket, today, seenLook
       if (show.id !== forceShowId) continue;
     } else {
       const prev = already[show.id];
-      // An existing draft is left alone, unless its LLM call failed, or it
-      // hasn't been emailed yet and no longer matches today's numbers (counts
-      // and ranks move as reviews land): then it is redrafted (see below).
-      if (prev && !isRetryableDraft(prev) && !(prev.status === 'ready' && !prev.emailedAt)) continue;
+      // An existing draft is left alone, unless its LLM call failed, or it is
+      // still unposted with its reminder not sent yet and no longer matches
+      // today's numbers (counts and ranks move as reviews land): then it is
+      // redrafted (see below), so the reminder email carries fresh numbers.
+      // The owner posted the first two with stale counts (Woolf drafted at 21
+      // reviews, 24 by the time they posted; BRO-4597).
+      if (prev && !isRetryableDraft(prev) && !isRefreshable(prev)) continue;
       if (!show.openingDate) continue;
       const age = daysBetween(show.openingDate, today);
       if (age < MIN_AGE_DAYS || age > MAX_AGE_DAYS) continue;
@@ -328,22 +366,76 @@ sees most things on Broadway, visits London often, and built Broadway Scorecard 
 West End Scorecard (a Rotten Tomatoes style aggregator of critic reviews). The
 post announces that reviews are in for a show that just opened.
 
-WHAT WORKED IN TOM'S REAL POSTS (upvotes in brackets):
+THE VOICE TOM WANTS (he rewrote the first two drafts by hand, Oct 2026; copy
+what he changed):
+- Tom collected these reviews himself, so he talks like it. First person:
+  "I found 11 reviews: 3 raves, 3 positive, 4 mixed, 1 negative." Never the
+  detached "it's an 84/100 across 21 reviews" or "That's a 68/100 for X".
+- The review count goes in the title next to the score: "84/100 from 24
+  critics!" or "11 reviews are in for X. 69/100, with ...". An exclamation
+  mark is fine when the news is good.
+- When there's an audience grade, say where it comes from, in plain words:
+  "Audiences are at an A- (across Mezzanine, Seatplan, London Theatre Direct,
+  and Reddit)." Use the names in audienceSources. With no grade, say why in
+  human terms: "No audience grade yet, since hardly any users have reviewed it
+  on any of the sites."
+- Quotes carry the post. Two or three short ones, each introduced plainly
+  ("Laura Collins-Hughes at the NYT called it ...", "Meanwhile Sara Holdren at
+  Vulture wrote ..."). Cut the analyst sentences around them: no "The
+  interesting part is how the critics split", no "The fans loved X. The
+  skeptics found Y." summary paragraph, no "Critics are split on ..., and it
+  mostly comes down to style."
+- Tom's own reaction is short and casual, even blunt: "Which I GET." He ends
+  with where he stands personally, then (optionally) one question to the sub.
+  ownerStance tells you what is true:
+    seen        -> he can mention he saw it (no opinion beyond OWNER HISTORY rating)
+    has-tickets -> he's going soon
+    not-seen    -> "I haven't seen this one yet" style, plus a feeling about
+                   whether he wants to go ("So I remain undecided on going to
+                   this one still." / "and am desperate to."). Pick the feeling
+                   that fits the reviews; Tom checks it before posting.
+- One question at most. He cut "Does the length feel earned, or do you start
+  checking your watch?" and kept just "Anyone seen it?".
+
+TOM'S TWO HAND-EDITED POSTS (the target voice; match the shape, not the facts):
+---
+TITLE: Reviews are in for Who's Afraid of Virginia Woolf? 84/100 from 24 critics!
+It opened at Soho Place with Gillian Anderson and Billy Crudup, and I found 13 raves, 7 positive, 3 mixed, and 1 negative review. Audiences are at an A- (across Mezzanine, Seatplan, London Theatre Direct, and Reddit).
+
+https://westendscorecard.com/show/whos-afraid-of-virginia-woolf-west-end
+
+The raves are all about the intensity. The Independent's Alice Saville wrote "If you want to be deeply, profoundly disturbed by a night at the theatre, there's no finer way to do it than this." The mixed ones are mostly about stamina and sameness. The Times wrote "There's so much to admire here, but too little range." Some also found the three-hour runtime a lot. Which I GET.
+
+So it sounds like a punishing evening, but the kind people seem to want. Anyone seen it?
+
+I've never seen this show somehow, and am desperate to.
+---
+TITLE: 11 reviews are in for Creation Stories and all the important importants. 69/100, with a NYT rave and a Vulture pan in the same pile
+I found 11 reviews: 3 raves, 3 positive, 4 mixed, 1 negative.
+
+Laura Collins-Hughes at the NYT called it a "haunted, surreally comic, tender heartbreaker of a play." Meanwhile Sara Holdren at Vulture wrote "Oh, the fallacy of thinking that just because something hurts, it is profound." Michael Sommers was one of the mixed reviews, saying stretches of the play "escaped me entirely."
+
+No audience grade yet, since hardly any users have reviewed it on any of the sites. So I remain undecided on going to this one still.
+
+https://broadwayscorecard.com/show/creation-stories-and-all-the-important-importants-off-broadway
+---
+
+WHAT WORKED IN TOM'S EARLIER POSTS (upvotes in brackets):
 - A title that leads with the show and the number, plus ONE hook that gives the
   number meaning: a record, a rank, a comparison, a surprise.
   "CATS scores 88/100. Highest-scoring Broadway musical revival on the site. Ever." [575]
   "Rocky Horror gets a 69. Not as high as they would have liked, but a number they'd appreciate" [346]
   "Reviews are in for Trainspotting the Musical. 36/100 from critics, the lowest critic score in the West End right now" [95 on r/TheWestEnd]
   "Reviews are in for Every Brilliant Thing! 80/100 and every single review is basically about Radcliffe" [226]
-- The body opens with the number and the breakdown in plain words:
-  "22 reviews, 16 raves, 5 positive, 1 mixed, zero negative."
+- The body opens with what Tom found, in plain words:
+  "I found 22 reviews: 16 raves, 5 positive, 1 mixed, zero negative."
 - One specific, interesting thing the critics agreed on (praised the lead but
   blamed the book, everyone mentions the set, a lone dissenter).
 - Audience grade next to the critics when it exists, and whether they agree.
 - A little personality: a wry aside, honest uncertainty, light humor.
 - Ends by asking the sub something real ("Anyone caught it in previews? Does
   that match what you saw?").
-- One link, at the very end, bare.
+- One link, bare, either right after the opening paragraph or at the very end.
 
 A FULL REAL POST OF TOM'S (95 upvotes, r/TheWestEnd). Match this energy and shape,
 not its facts:
@@ -377,7 +469,8 @@ WHAT GOT HIM DOWNVOTED OR PILED ON:
 
 VOICE:
 - Warm, curious, a bit nerdy about the data, genuinely into theater.
-- Short paragraphs. 80-170 words in the body. Contractions. Casual.
+- Short paragraphs. 80-160 words in the body. Contractions. Casual, first
+  person, like someone who read all the reviews and is telling friends.
 - In r/TheWestEnd Tom is a friendly visitor from NYC; don't fake British idiom.
 - At most one "lol" or "haha". Emoji: none, or one at most.
 
@@ -392,8 +485,9 @@ HARD RULES:
   "passion project", "must-see", "high marks", "the critics have spoken",
   "dive into", "delve", "journey", "navigate", "Absolutely!", or a dramatic
   "The big question? ..." fragment.
-- Do not claim Tom has seen the show unless OWNER HISTORY says seen=true. If
-  Tom has tickets, you may say they're going soon. Otherwise don't mention seeing it.
+- Do not claim Tom has seen the show unless ownerStance is "seen". If it is
+  "has-tickets", you may say he's going soon. If "not-seen", he may say he
+  hasn't seen it yet; never that he saw it.
 - Never invent Tom's plans, trips, dates, or opinions (no "planning to see it next
   month", no "the film, which I love"). The same goes for personalLines: write
   them as honest options Tom can pick only if true, e.g. "Would you see it?"
@@ -449,11 +543,11 @@ Write the post for r/${facts.subreddit}.
 Return JSON only, no prose around it:
 {
   "title": "post title, under 200 characters",
-  "body": "post body in Reddit markdown, ending with the link ${facts.url}",
+  "body": "post body in Reddit markdown, first person ('I found ...'), with the link ${facts.url} after the opening paragraph or at the end",
   "why": "one sentence: the hook you chose and why it should land",
   "expectedPushback": "one sentence: the most likely snarky or critical comment",
   "suggestedReply": "a short, friendly reply Tom could give to that comment, in Tom's voice",
-  "personalLines": ["2 optional one-line additions Tom could paste in to make it personal, e.g. whether they plan to see it. Must not claim Tom has seen it unless OWNER HISTORY says so."]
+  "personalLines": ["2 or 3 alternative closing lines in Tom's voice for where he stands (e.g. 'Still undecided on this one.', 'Now I'm desperate to see it.', 'Not sure this one's for me.'), so he can swap the body's closer. Must fit ownerStance; never claim he saw it unless it is 'seen'."]
 }`;
 }
 
@@ -705,20 +799,42 @@ function aOrAn(n) {
   return (s.startsWith('8') || s === '11' || s === '18') ? 'an' : 'a';
 }
 
+function aOrAnGrade(g) {
+  return /^[AEF]/.test(g) ? 'an' : 'a';
+}
+
+// " (across Mezzanine, Seatplan, and Reddit)", or "" with no named source.
+function audienceAcross(facts) {
+  const n = facts.audienceSources || [];
+  if (!n.length) return '';
+  const list = n.length === 1 ? n[0] : n.length === 2 ? `${n[0]} and ${n[1]}` : `${n.slice(0, -1).join(', ')}, and ${n[n.length - 1]}`;
+  return ` (across ${list})`;
+}
+
+// Tom's closer, only ever claiming what data/shows-seen.json supports.
+function stanceLine(facts) {
+  if (facts.ownerStance === 'seen') return 'I saw this one. Anyone else been yet?';
+  if (facts.ownerStance === 'has-tickets') return "I've got tickets, so I'll report back. Anyone seen it yet?";
+  return "I haven't seen it yet. Anyone been?";
+}
+
 function templateDraft(facts) {
   // Only the clean superlatives make a good title hook.
   const hook = facts.rankNote && !facts.rankNote.startsWith('#') ? `, the ${facts.rankNote}` : '';
-  const title = `Reviews are in for ${facts.title}: ${facts.score}/100 from critics${hook}`;
+  // "Virginia Woolf?" already ends the sentence: no "Woolf?." in the title.
+  const stop = /[.?!]$/.test(facts.title) ? '' : '.';
+  const title = `${facts.reviewCount} reviews are in for ${facts.title}${stop} ${facts.score}/100${hook}`;
   const lines = [];
-  lines.push(`${facts.title} opened ${facts.venue ? `at ${facts.venue} ` : ''}with ${aOrAn(facts.score)} ${facts.score}/100 critic score across ${facts.reviewCount} reviews. ${breakdownSentence(facts.buckets)}.`);
+  lines.push(`It opened${facts.venue ? ` at ${facts.venue}` : ''}, and I found ${facts.reviewCount} reviews: ${breakdownSentence(facts.buckets)}. That works out to ${aOrAn(facts.score)} ${facts.score}/100.`);
   const consensus = stripDashes(facts.consensus || '');
   // The consensus is the site's own summary: use it only if it passes the
   // same checks and quotes nobody (a quoted phrase would read as a critic quote).
   const quotesSomeone = quotedSpans(consensus).some(sp => normQuote(sp.text) !== normQuote(facts.title));
   if (consensus && !quotesSomeone && !BANNED.some(re => re.test(consensus)) && !factProblems('consensus', consensus, facts).length) lines.push(consensus);
-  if (facts.audienceGrade) lines.push(`Audiences have it at ${facts.audienceGrade} so far.`);
+  if (facts.audienceGrade) lines.push(`Audiences are at ${aOrAnGrade(facts.audienceGrade)} ${facts.audienceGrade}${audienceAcross(facts)}.`);
+  else lines.push('No audience grade yet, since hardly any users have reviewed it on any of the sites.');
   if (facts.loneDissenter) lines.push(`${facts.loneDissenter.outlet} is the lone holdout.`);
-  lines.push('Anyone caught it yet? Curious whether it matches what you saw in the room.');
+  lines.push(stanceLine(facts));
   lines.push(facts.url);
   return {
     title: stripDashes(title),
@@ -726,7 +842,9 @@ function templateDraft(facts) {
     why: 'Template fallback: plain roundup with the score, breakdown and critic consensus.',
     expectedPushback: 'Someone may say numbers can\'t capture theater.',
     suggestedReply: 'Totally fair, the number is just a quick way to see where critics landed. The reviews themselves are the fun part.',
-    personalLines: [],
+    personalLines: facts.ownerStance === 'not-seen'
+      ? ["I haven't seen it yet, and now I really want to.", 'Still undecided on going to this one.']
+      : [],
   };
 }
 
@@ -806,6 +924,8 @@ function activeDrafts(drafts, nowMs) {
 module.exports = {
   SUBREDDIT_BY_MARKET,
   MIN_REVIEWS,
+  audienceSourceNames,
+  ownerStance,
   MAX_AGE_DAYS,
   DRAFT_TTL_DAYS,
   STYLE_GUIDE,

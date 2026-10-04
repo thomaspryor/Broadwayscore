@@ -170,6 +170,13 @@ jobs:
           fi
           node scripts/draft-reddit-opening-posts.js $ARGS
 
+      # BRO-4597: the email carries phone-width screenshots of the show page
+      # (scripts/lib/reddit-post-screenshots.js). A failed install or capture
+      # only drops the images; the email still goes out.
+      - name: Setup Playwright
+        continue-on-error: true
+        uses: ./.github/actions/setup-playwright
+
       # BRO-4360: each new draft goes out as its own email (owner ask), plus
       # one reminder if still unposted a day later. Runs BEFORE the commit
       # that stamps emailedAt, so a failed commit can repeat an email but
