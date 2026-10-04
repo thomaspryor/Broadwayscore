@@ -20,6 +20,7 @@ const {
   adjudicationSidedWithStars,
   detectBandFromReviewFile,
   adjudicationContradictsRecordStar,
+  adjudicationStarBasisGone,
 } = require('../../scripts/lib/star-reliability.js');
 const { getBestScore } = require('../../scripts/lib/rebuild-helpers.js');
 const { buildUserPrompt } = require('../../scripts/lib/adjudication-prompt.js');
@@ -106,6 +107,34 @@ describe('adjudicationContradictsRecordStar (cousins: Dolls House Part 2, Waverl
     const r = getBestScore(dolls(), { stats: {} });
     assert.equal(r.score, 80);
     assert.equal(r.source, 'originalScore-priority0');
+  });
+});
+
+describe('adjudicationStarBasisGone (take-me-out-2022 Theater Life: adjudicated 40, models 82-87, no rating on record)', () => {
+  const noStar = (over = {}) => ({
+    outletId: 'theater-life', fullText: 'x'.repeat(400), scoreSource: 'llm-v6',
+    llmScore: { score: 84, confidence: 'high' }, ensembleData: { needsReview: false },
+    adjudicatedScore: 40, adjudicationNote: NOTE, adjudicationHistory: [{ sidedWith: 'originalScore' }], ...over,
+  });
+  test('sided with the star, but no rating anywhere on the record', () => {
+    assert.equal(adjudicationStarBasisGone(noStar()), true);
+    assert.equal(adjudicationStarBasisGone(noStar({ originalScore: null, originalScoreNormalized: null, aggregatorStars: '' })), true);
+  });
+  test('any surviving rating field keeps the adjudication', () => {
+    for (const f of [{ originalScore: '2/5 stars' }, { originalScoreNormalized: 40 }, { aggregatorStars: '2/5' },
+      { starRating: '2/5' }, { originalRating: 'C' }, { previousOriginalScore: '2/5' }]) {
+      assert.equal(adjudicationStarBasisGone(noStar(f)), false, JSON.stringify(f));
+    }
+  });
+  test('an adjudication that sided with the text/thumbs is untouched', () => {
+    assert.equal(adjudicationStarBasisGone(noStar({ adjudicationHistory: [{ sidedWith: 'thumbs' }], adjudicationNote: 'Auto-adjudicated (high confidence, sided with thumbs): x' })), false);
+  });
+  test('getBestScore drops it and scores the text (84), not the phantom-star 40', () => {
+    const stats = {};
+    const r = getBestScore(noStar(), { stats });
+    assert.equal(r.score, 84);
+    assert.notEqual(r.source, 'adjudicated');
+    assert.equal(stats.adjudicationSkippedUncorroboratedStar, 1);
   });
 });
 
