@@ -35,7 +35,7 @@ function userOwnedTables() {
 
 test('migrations declare the per-user tables this guard is meant to see', () => {
   const owned = userOwnedTables();
-  for (const t of ['unmatched_imports', 'import_fetch_log', 'mezzanine_search_log', 'user_show_stubs', 'plan_shares', 'diary_shares']) {
+  for (const t of ['unmatched_imports', 'import_fetch_log', 'mezzanine_search_log', 'theatr_screenshot_log', 'user_show_stubs', 'plan_shares', 'diary_shares']) {
     assert.ok(owned.has(t), `parser no longer finds ${t}; fix the regex before trusting the next test`);
   }
 });

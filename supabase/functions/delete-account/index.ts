@@ -140,6 +140,7 @@ Deno.serve(async (req) => {
     await deleteRows(base, auth, 'unmatched_imports', 'user_id', userId);
     await deleteRows(base, auth, 'import_fetch_log', 'user_id', userId);
     await deleteRows(base, auth, 'mezzanine_search_log', 'user_id', userId);
+    await deleteRows(base, auth, 'theatr_screenshot_log', 'user_id', userId);
     // plan_shares and diary_shares cascade from profiles.
     await deleteRows(base, auth, 'profiles', 'id', userId);
 
