@@ -1,5 +1,5 @@
 {
-  "asOf": "2026-10-01",
+  "asOf": "2026-10-02",
   "shadow": false,
   "checks": [
     {
@@ -30,19 +30,19 @@
       "key": "affiliate:zero-conversions",
       "label": "7-day zero-conversion ceiling",
       "verdict": "pass",
-      "reason": "11 conversions in trailing 7d"
+      "reason": "12 conversions in trailing 7d"
     },
     {
       "key": "affiliate:click-flow-collapse",
       "label": "Site ticket-click flow",
       "verdict": "pass",
-      "reason": "611/611 = 100% of peak, above the 20% floor"
+      "reason": "629/629 = 100% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:impact-click-collapse",
       "label": "Impact click ingestion",
       "verdict": "pass",
-      "reason": "656/741 = 89% of peak, above the 20% floor"
+      "reason": "577/741 = 78% of peak, above the 20% floor"
     },
     {
       "key": "affiliate:handoff-break",
@@ -64,5 +64,5 @@
     }
   ],
   "failingCount": 1,
-  "updatedAt": "2026-10-03T12:04:23.114Z"
+  "updatedAt": "2026-10-04T12:53:09.099Z"
 }
