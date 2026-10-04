@@ -58,6 +58,7 @@ scripts/bsc-prune.test.mjs
 scripts/bsc-reconcile-reopen-idempotency.test.mjs
 scripts/bsc-reconcile.test.mjs
 scripts/check-cross-outlet-attribution-drift.test.mjs
+scripts/check-header-overflow.test.mjs
 scripts/check-linear-drain-health.test.mjs
 scripts/check-linear-drain-throughput.test.mjs
 scripts/check-provider-spend.test.mjs
@@ -1128,4 +1129,3 @@ tests/unit/wrong-production-rebuild-guard.test.mjs
 tests/unit/wrong-production-setters-honor-manual-clear.test.mjs
 tests/unit/year-page-precursor-table-schema.test.mjs
 tests/unit/youtube-captions.test.mjs
-scripts/check-header-overflow.test.mjs

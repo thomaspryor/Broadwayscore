@@ -2518,6 +2518,8 @@ on:
       # CI. scripts/lib/test-yml-manifest-paths.test.mjs caught this the
       # moment the test file was registered in tests/unit-test-manifest.txt.
       - 'scripts/check-rebuild-staleness.test.mjs'
+      # BRO-4575: header-breakpoint pin (root-level scripts test, same shape).
+      - 'scripts/check-header-overflow.test.mjs'
       # Same shape, one day later (BRO-3219 landed the test; caught by the
       # BRO-2647 gate in Lint Workflows, which names the fix verbatim).
       # scripts/audit-flagged-file-contamination.test.mjs is registered in
