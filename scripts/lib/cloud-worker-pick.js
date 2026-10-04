@@ -107,6 +107,7 @@ const OWNER_NEGATED_AFTER_RE = /^\s*(?:is\s+|was\s+)?(?:not|no\s+longer)\s+(?:re
 // owner never answers in Linear (or a misread report) can't wait forever.
 const AWAITING_OWNER_MAX_MS = 14 * 24 * HOUR_MS;
 const AUTOMATION_PARK_STALE_MS = 3 * 24 * HOUR_MS;
+const MACHINE_PARK_LINE_RE = /Auto-filed by (?:digest-autofix|owner-alert-router)/;
 
 /** A machine-filed parked P0/P1 card nobody has touched for AUTOMATION_PARK_STALE_MS. */
 function isStaleAutomationParked(issue, nowMs) {
@@ -114,7 +115,13 @@ function isStaleAutomationParked(issue, nowMs) {
   const type = issue && issue.state && issue.state.type;
   if (type !== 'backlog' && type !== 'unstarted') return false;
   if (!PRIORITIES.has(Number(issue.priority))) return false;
-  if (!hd.isAutomationParked(issue.description || '')) return false;
+  const notes = issue.description || '';
+  if (!hd.isAutomationParked(notes)) return false;
+  // isAutomationParked reads only the leading machine line; a hold a person
+  // added on a later PARKED line still keeps the card parked.
+  const extraHold = [...notes.matchAll(/^\s*PARKED\s*:(.*)$/gim)]
+    .some((m) => !MACHINE_PARK_LINE_RE.test(m[1]) && hd.OWNER_HOLD_PARK_RE.test(m[1]));
+  if (extraHold) return false;
   const updatedMs = Date.parse(issue.updatedAt);
   return Number.isFinite(updatedMs) && nowMs - updatedMs >= AUTOMATION_PARK_STALE_MS;
 }
@@ -163,7 +170,11 @@ function pickCloudCard(issues, { nowMs }) {
     if (reason) skipped[reason] = (skipped[reason] || 0) + 1;
     else eligible.push(iss);
   }
-  eligible.sort((a, b) => (priorityRank(a) - priorityRank(b)) || (issueNumber(a.identifier) - issueNumber(b.identifier)));
+  // Within a priority, the old machine-filed backlog goes after cards a person
+  // filed or a session parked, so ~280 stale autofix cards can't starve them.
+  const machineTier = (iss) => (iss.state && iss.state.type === 'unstarted') || !isStaleAutomationParked(iss, nowMs) ? 0 : 1;
+  eligible.sort((a, b) => (priorityRank(a) - priorityRank(b)) || (machineTier(a) - machineTier(b))
+    || (issueNumber(a.identifier) - issueNumber(b.identifier)));
   return { pick: eligible[0] || null, ordered: eligible, eligible: eligible.length, skipped };
 }
 
