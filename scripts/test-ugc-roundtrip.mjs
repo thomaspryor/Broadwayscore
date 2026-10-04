@@ -27,6 +27,8 @@
 import { runPlanSharesChecks } from './lib/plan-shares-roundtrip.mjs';
 import { runDiarySharesChecks } from './lib/diary-shares-roundtrip.mjs';
 import { checkRedirect } from './lib/auth-redirect-allowlist.mjs';
+import { NOT_URGENT, summarizeFailures, githubOutputLines } from './lib/ugc-roundtrip-urgency.mjs';
+import { appendFileSync } from 'node:fs';
 
 const URL = process.env.NEXT_PUBLIC_SUPABASE_URL;
 const ANON = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
@@ -39,11 +41,20 @@ if (!URL || !ANON || !SERVICE) {
 
 const SHOW_ID = 'hamilton-2015'; // stable, always-present show
 const results = [];
+const outcomes = []; // {name, ok, urgent} — urgency decides whether a failure emails (BRO-4603)
 let failed = 0;
-function check(name, ok, detail = '') {
+/** opts.urgent === false (pass NOT_URGENT) marks a check whose failure leaves users' data saved and private. */
+function check(name, ok, detail = '', opts = {}) {
   results.push(`${ok ? '✓' : '✗'} ${name}${detail ? ` — ${detail}` : ''}`);
+  outcomes.push({ name, ok: !!ok, urgent: opts.urgent !== false });
   if (!ok) failed++;
   return ok;
+}
+
+/** Tells the workflow whether this failure is worth an owner email (urgent) and which checks failed. */
+function writeGithubOutput(summary) {
+  if (!process.env.GITHUB_OUTPUT) return;
+  try { appendFileSync(process.env.GITHUB_OUTPUT, githubOutputLines(summary).join('\n') + '\n'); } catch { /* best effort */ }
 }
 
 /** GoTrue admin call with the service-role key. */
@@ -291,13 +302,13 @@ async function main() {
     const upd = await rest('PATCH', `reviews?id=eq.${reviewId}&user_id=eq.${userA.id}`, tokenA, {
       rating: 5.0, review_text: 'edited note',
     });
-    check('rating: owner can edit', Array.isArray(upd.json) && upd.json[0]?.rating === 5.0);
+    check('rating: owner can edit', Array.isArray(upd.json) && upd.json[0]?.rating === 5.0, '', NOT_URGENT);
 
     // ── WATCHLIST ──
     const wIns = await rest('POST', 'watchlist', tokenA, { user_id: userA.id, show_id: SHOW_ID });
-    check('watchlist: add saves', wIns.status === 201);
+    check('watchlist: add saves', wIns.status === 201, '', NOT_URGENT);
     const wRead = await rest('GET', `watchlist?show_id=eq.${SHOW_ID}&select=*`, tokenA);
-    check('watchlist: reads back', wRead.ok && Array.isArray(wRead.json) && wRead.json.length >= 1);
+    check('watchlist: reads back', wRead.ok && Array.isArray(wRead.json) && wRead.json.length >= 1, '', NOT_URGENT);
     const wReadB = await rest('GET', `watchlist?show_id=eq.${SHOW_ID}&select=*`, tokenB);
     check('watchlist: RLS isolates it', Array.isArray(wReadB.json) && wReadB.json.length === 0);
 
@@ -311,31 +322,31 @@ async function main() {
     });
     check('watchlist: showtime columns save',
       wTime.ok && Array.isArray(wTime.json) && wTime.json[0]?.time_slot === 'evening',
-      `PATCH status=${wTime.status} body=${JSON.stringify(wTime.json)?.slice(0, 160)}`);
+      `PATCH status=${wTime.status} body=${JSON.stringify(wTime.json)?.slice(0, 160)}`, NOT_URGENT);
     check('watchlist: curtain_time reads back as a time',
       String(wTime.json?.[0]?.curtain_time ?? '').startsWith('20:00'),
-      `curtain_time=${wTime.json?.[0]?.curtain_time}`);
+      `curtain_time=${wTime.json?.[0]?.curtain_time}`, NOT_URGENT);
 
     // A time with no slot must be rejected by curtain_time_requires_slot.
     const wOrphan = await rest('PATCH', `watchlist?user_id=eq.${userA.id}&show_id=eq.${SHOW_ID}`, tokenA, {
       time_slot: null, curtain_time: '14:00:00',
     });
     check('watchlist: orphan curtain_time is rejected', !wOrphan.ok,
-      `expected a constraint violation, got status=${wOrphan.status}`);
+      `expected a constraint violation, got status=${wOrphan.status}`, NOT_URGENT);
 
     // An unknown slot must fail the enum CHECK.
     const wBadSlot = await rest('PATCH', `watchlist?user_id=eq.${userA.id}&show_id=eq.${SHOW_ID}`, tokenA, {
       time_slot: 'midnight',
     });
     check('watchlist: unknown time_slot is rejected', !wBadSlot.ok,
-      `expected a CHECK violation, got status=${wBadSlot.status}`);
+      `expected a CHECK violation, got status=${wBadSlot.status}`, NOT_URGENT);
 
     // Clearing both together is the "unset the time" path and must be allowed.
     const wClear = await rest('PATCH', `watchlist?user_id=eq.${userA.id}&show_id=eq.${SHOW_ID}`, tokenA, {
       time_slot: null, curtain_time: null,
     });
     check('watchlist: showtime clears', wClear.ok && wClear.json?.[0]?.curtain_time === null,
-      `PATCH status=${wClear.status}`);
+      `PATCH status=${wClear.status}`, NOT_URGENT);
 
     // ── SHARED PLANS (20261001_plan_shares.sql, BRO-4481) ──
     // Runs while A's SHOW_ID row still has its past 2026-09-11 date and only an
@@ -355,10 +366,10 @@ async function main() {
     // ── LISTS ──
     const lIns = await rest('POST', 'lists', tokenA, { user_id: userA.id, name: 'Round-trip list' });
     const listId = Array.isArray(lIns.json) ? lIns.json[0]?.id : null;
-    check('lists: create saves', lIns.status === 201 && !!listId);
+    check('lists: create saves', lIns.status === 201 && !!listId, '', NOT_URGENT);
     if (listId) {
       const liIns = await rest('POST', 'list_items', tokenA, { list_id: listId, show_id: SHOW_ID, position: 1000 });
-      check('lists: add show to list saves', liIns.status === 201);
+      check('lists: add show to list saves', liIns.status === 201, '', NOT_URGENT);
 
       // ── PUBLIC SHARING: private by default, then visible to ANON once shared ──
       const anonBefore = await rest('GET', `lists?id=eq.${listId}&select=id`, ANON);
@@ -368,18 +379,18 @@ async function main() {
       const slug = `rt-${listId.slice(0, 8)}`;
       const pub = await rest('PATCH', `lists?id=eq.${listId}&user_id=eq.${userA.id}`, tokenA,
         { is_public: true, share_slug: slug });
-      check('lists: owner can make public (share)', Array.isArray(pub.json) && pub.json[0]?.is_public === true);
+      check('lists: owner can make public (share)', Array.isArray(pub.json) && pub.json[0]?.is_public === true, '', NOT_URGENT);
 
       // The share page reads by slug with the anon key — exactly this call.
       const anonList = await rest('GET', `lists?share_slug=eq.${slug}&select=id,name,is_public`, ANON);
       check('lists: shared list visible to anonymous via slug',
-        anonList.ok && Array.isArray(anonList.json) && anonList.json.length === 1);
+        anonList.ok && Array.isArray(anonList.json) && anonList.json.length === 1, '', NOT_URGENT);
       const anonItems = await rest('GET', `list_items?list_id=eq.${listId}&select=show_id`, ANON);
       check('lists: shared list ITEMS visible to anonymous',
-        anonItems.ok && Array.isArray(anonItems.json) && anonItems.json.length >= 1);
+        anonItems.ok && Array.isArray(anonItems.json) && anonItems.json.length >= 1, '', NOT_URGENT);
       const anonProfile = await rest('GET', `profiles?id=eq.${userA.id}&select=display_name`, ANON);
       check('lists: sharer display name visible to anonymous (public-list owner policy)',
-        anonProfile.ok && Array.isArray(anonProfile.json) && anonProfile.json.length === 1);
+        anonProfile.ok && Array.isArray(anonProfile.json) && anonProfile.json.length === 1, '', NOT_URGENT);
 
       // Un-share → hidden again (the "make private" escape hatch actually hides it).
       await rest('PATCH', `lists?id=eq.${listId}&user_id=eq.${userA.id}`, tokenA, { is_public: false });
@@ -389,9 +400,9 @@ async function main() {
 
     // ── DELETE (rating) ──
     const del = await rest('DELETE', `reviews?id=eq.${reviewId}&user_id=eq.${userA.id}`, tokenA, null, 'return=minimal');
-    check('rating: owner can delete', del.ok, `HTTP ${del.status}`);
+    check('rating: owner can delete', del.ok, `HTTP ${del.status}`, NOT_URGENT);
     const gone = await rest('GET', `reviews?id=eq.${reviewId}&select=id`, tokenA);
-    check('rating: delete persists', Array.isArray(gone.json) && gone.json.length === 0);
+    check('rating: delete persists', Array.isArray(gone.json) && gone.json.length === 0, '', NOT_URGENT);
   } finally {
     // Always remove every user we created — cascades to their reviews/watchlist/lists.
     for (const u of created) {
@@ -402,7 +413,12 @@ async function main() {
   console.log(results.join('\n'));
   console.log('');
   if (failed) {
+    const summary = summarizeFailures(outcomes);
+    writeGithubOutput(summary);
     console.error(`❌ ${failed} check(s) FAILED — the signed-in round-trip is broken. NOT ready for users.`);
+    console.error(summary.urgent
+      ? `   URGENT (sign-in, saving, or privacy): ${summary.urgentNames.join('; ')}`
+      : '   None of the failures is urgent (users\' data still saves and stays private) — no owner email.');
     process.exit(1);
   }
   console.log(`✅ All ${results.length} checks passed — sign-in → save → persist → RLS isolation all work.`);
@@ -412,6 +428,7 @@ main().catch(e => {
   // A thrown error here (e.g. createUser/generateLink) usually means the project
   // itself is unreachable or auth is misconfigured — a hard NOT-ready signal.
   const cause = e.cause ? ` [cause: ${e.cause.code || ''} ${e.cause.message || ''}]` : '';
+  writeGithubOutput({ urgent: true, urgentNames: [`round-trip aborted: ${e.message}`], otherNames: [] });
   console.error(`❌ Round-trip aborted: ${e.message}${cause}`);
   console.error(e.stack?.split('\n').slice(1, 4).join('\n') || '');
   process.exit(1);

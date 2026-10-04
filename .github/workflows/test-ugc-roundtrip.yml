@@ -122,12 +122,20 @@ jobs:
         # BRO-3707: a hang hitting the job's own timeout-minutes: 15 reports
         # conclusion "cancelled", not "failure" — a bare failure() here would
         # silently drop this critical alert.
+        #
+        # BRO-4603: email only when signed-in users are actually hurt — the
+        # round-trip itself failed (not e.g. the alert-state commit) AND either
+        # the self-heal could not run/recover or a failing check is urgent
+        # (sign-in, saving, privacy). scripts/test-ugc-roundtrip.mjs writes
+        # `urgent`/`failed_checks`; a missing output counts as urgent. The
+        # Oct 1-3 2026 emails were all one hardening check (GET refusal) that is
+        # now NOT_URGENT; such failures still fail this run and reach the digest.
         if: failure() || cancelled()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'UGC Auth Round-trip Failed (self-heal did not recover)'
-          description: 'Signed-in save/read/RLS round-trip failed AND auto-restore did not fix it — user ratings may not be saving or may be leaking across accounts. Check the run log; may need a manual Supabase dashboard restore or a schema/RLS fix.'
+          title: 'Signed-in users affected: UGC round-trip failed'
+          description: 'Sign-in, saving, or privacy checks for signed-in users failed against the live database, and the automatic restore did not fix it. Failing checks: ${{ steps.rt2.outputs.failed_checks || steps.rt1.outputs.failed_checks || ''see run log'' }}. If a check mentions RLS, anonymous or another user, someone may be able to see data that is not theirs.'
           severity: 'critical'
-          email: 'true'
+          email: ${{ (steps.rt1.outcome == 'failure' || steps.rt1.outcome == 'cancelled') && (steps.heal.outcome != 'success' || (steps.rt2.outcome != 'success' && steps.rt2.outputs.urgent != 'false')) && 'true' || 'false' }}
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}

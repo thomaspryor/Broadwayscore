@@ -11,6 +11,8 @@
  * drives it against a fake PostgREST.
  */
 
+import { NOT_URGENT } from './ugc-roundtrip-urgency.mjs';
+
 export const TOKEN_RE = /^[a-f0-9]{32}$/;
 export const ENTRY_KEYS = ['logged', 'planned_date', 'show_id'];
 export const PAYLOAD_KEYS = ['entries', 'name', 'showBooked', 'showUnbooked'];
@@ -80,16 +82,16 @@ export async function runPlanSharesChecks(ctx) {
     user_id: userA.id, display_name: '  Roundtrip  ', token: '0'.repeat(32),
   });
   const row = Array.isArray(created.json) ? created.json[0] : null;
-  check('plans: owner creates a share', created.status === 201 && !!row, `HTTP ${created.status} ${created.ok ? '' : created.text.slice(0, 160)}`);
+  check('plans: owner creates a share', created.status === 201 && !!row, `HTTP ${created.status} ${created.ok ? '' : created.text.slice(0, 160)}`, NOT_URGENT);
   if (!row) return { skipped: false };
   const tokenOld = row.token;
-  check('plans: server mints the token (client value ignored)', TOKEN_RE.test(tokenOld) && tokenOld !== '0'.repeat(32), `token=${String(tokenOld).slice(0, 6)}…`);
-  check('plans: display name trimmed', row.display_name === 'Roundtrip', `display_name=${JSON.stringify(row.display_name)}`);
+  check('plans: server mints the token (client value ignored)', TOKEN_RE.test(tokenOld) && tokenOld !== '0'.repeat(32), `token=${String(tokenOld).slice(0, 6)}…`, NOT_URGENT);
+  check('plans: display name trimmed', row.display_name === 'Roundtrip', `display_name=${JSON.stringify(row.display_name)}`, NOT_URGENT);
 
   const patchTok = await rest('PATCH', `plan_shares?user_id=eq.${userA.id}`, tokenA, { token: 'f'.repeat(32) });
   const reread = await rest('GET', `plan_shares?user_id=eq.${userA.id}&select=token`, tokenA);
   check('plans: owner cannot overwrite the token', patchTok.ok && reread.json?.[0]?.token === tokenOld,
-    `PATCH HTTP ${patchTok.status}`);
+    `PATCH HTTP ${patchTok.status}`, NOT_URGENT);
 
   // The clients' save path: upsert on user_id carrying the name (migration's
   // CLIENT CONTRACT). Must succeed and must keep the token.
@@ -97,7 +99,7 @@ export async function runPlanSharesChecks(ctx) {
     { user_id: userA.id, display_name: 'Roundtrip', show_booked: true, show_unbooked: true },
     'return=representation,resolution=merge-duplicates');
   check('plans: client upsert succeeds and keeps the token',
-    upsert.ok && upsert.json?.[0]?.token === tokenOld, `HTTP ${upsert.status} ${upsert.ok ? '' : upsert.text.slice(0, 120)}`);
+    upsert.ok && upsert.json?.[0]?.token === tokenOld, `HTTP ${upsert.status} ${upsert.ok ? '' : upsert.text.slice(0, 120)}`, NOT_URGENT);
 
   const bRead = await rest('GET', `plan_shares?user_id=eq.${userA.id}&select=user_id`, tokenB);
   check('plans: RLS hides the share from another user', Array.isArray(bRead.json) && bRead.json.length === 0,
@@ -114,25 +116,25 @@ export async function runPlanSharesChecks(ctx) {
 
   const pub = await rpc(anonKey, 'get_shared_plans', { p_token: tokenOld });
   const payload = pub.json;
-  check('plans: anonymous reads the share via get_shared_plans', pub.ok && payload && typeof payload === 'object', `HTTP ${pub.status}`);
+  check('plans: anonymous reads the share via get_shared_plans', pub.ok && payload && typeof payload === 'object', `HTTP ${pub.status}`, NOT_URGENT);
   const problems = payloadProblems(payload, { forbiddenText: [userA.id, '19:00', 'evening', 'Roundtrip Test'] });
   check('plans: payload carries only the allowed fields', problems.length === 0, problems.join('; '));
   const ids = new Set((payload?.entries || []).map(e => e.show_id));
-  check('plans: booked and want-to-see rows present', ids.has(FUTURE_SHOW) && ids.has(UNDATED_SHOW), `ids=${[...ids].join(',')}`);
+  check('plans: booked and want-to-see rows present', ids.has(FUTURE_SHOW) && ids.has(UNDATED_SHOW), `ids=${[...ids].join(',')}`, NOT_URGENT);
   if (pastUnloggedShowId) {
     check('plans: a past, unlogged plan stays private', !ids.has(pastUnloggedShowId));
   }
 
   // VOLATILE ⇒ PostgREST refuses GET, so the token can't land in request logs.
   const viaGet = await rest('GET', `rpc/get_shared_plans?p_token=${tokenOld}`, anonKey);
-  check('plans: GET on get_shared_plans is refused (token stays out of URLs)', !viaGet.ok, `HTTP ${viaGet.status}`);
+  check('plans: GET on get_shared_plans is refused (token stays out of URLs)', !viaGet.ok, `HTTP ${viaGet.status}`, NOT_URGENT);
 
   const anonRotate = await rpc(anonKey, 'rotate_plan_share_token', {});
   check('plans: anonymous cannot rotate', !anonRotate.ok, `HTTP ${anonRotate.status}`);
 
   const rot = await rpc(tokenA, 'rotate_plan_share_token', {});
   const tokenNew = rot.json;
-  check('plans: owner can reset the link', rot.ok && TOKEN_RE.test(String(tokenNew)) && tokenNew !== tokenOld, `HTTP ${rot.status}`);
+  check('plans: owner can reset the link', rot.ok && TOKEN_RE.test(String(tokenNew)) && tokenNew !== tokenOld, `HTTP ${rot.status}`, NOT_URGENT);
   const oldDead = await rpc(anonKey, 'get_shared_plans', { p_token: tokenOld });
   check('plans: old link dies after reset', oldDead.ok && oldDead.json === null, `json=${JSON.stringify(oldDead.json)?.slice(0, 60)}`);
 
@@ -141,6 +143,6 @@ export async function runPlanSharesChecks(ctx) {
   check('plans: stop sharing hides it', stopped.ok && stopped.json === null);
 
   const del = await rest('DELETE', `plan_shares?user_id=eq.${userA.id}`, tokenA, null, 'return=minimal');
-  check('plans: owner can delete the share', del.ok, `HTTP ${del.status}`);
+  check('plans: owner can delete the share', del.ok, `HTTP ${del.status}`, NOT_URGENT);
   return { skipped: false };
 }
