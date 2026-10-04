@@ -73,19 +73,18 @@ function featuresFromEnvFile(envText) {
   envText.split(/\r?\n/).forEach((line, i) => {
     // Next's dotenv reads a lone \r as a line break; vercel pull escapes them.
     if (line.includes('\r')) throw new Error(`line ${i + 1} has a bare carriage return, so a value may span lines this guard can't check`);
-    const parts = line.split(UNESCAPED_BREAKS);
-    const head = parts[0];
-    if (head.trim() && !/^\s*#/.test(head) && !KEY_LINE.test(head)) throw new Error(`line ${i + 1} is not a KEY=value line, so a value may span lines this guard can't check`);
-    // Each part after a U+2028/U+2029 can start a line for Next's dotenv. A
-    // NEXT_PUBLIC_FEATURES value read from one runs to the end of the physical
-    // line, which can only over-report.
-    parts.forEach((part, j) => {
-      const m = part.match(KEY_LINE);
-      if (!m || m[1] !== 'NEXT_PUBLIC_FEATURES') return;
-      const value = [m[2], ...parts.slice(j + 1)].join(' ').trim();
-      if (opensQuote(value)) throw new Error(`line ${i + 1}: NEXT_PUBLIC_FEATURES opens a quote it doesn't close, so its value may continue on later lines`);
-      values.push(value);
-    });
+    // It also starts a new line after U+2028/U+2029 and reads them as spaces, so
+    // the key named after one could be set in forms this guard doesn't parse.
+    const [head, ...rest] = line.split(UNESCAPED_BREAKS);
+    if (rest.some(part => part.includes('NEXT_PUBLIC_FEATURES'))) throw new Error(`line ${i + 1} names NEXT_PUBLIC_FEATURES after a U+2028/U+2029 line separator`);
+    if (!head.trim() || /^\s*#/.test(head)) return;
+    const m = head.match(KEY_LINE);
+    if (!m) throw new Error(`line ${i + 1} is not a KEY=value line, so a value may span lines this guard can't check`);
+    if (m[1] !== 'NEXT_PUBLIC_FEATURES') return;
+    // The value runs on past any U+2028/U+2029 to the end of the line.
+    const value = [m[2], ...rest].join(' ').trim();
+    if (opensQuote(value)) throw new Error(`line ${i + 1}: NEXT_PUBLIC_FEATURES opens a quote it doesn't close, so its value may continue on later lines`);
+    values.push(value);
   });
   return values.join('\n');
 }

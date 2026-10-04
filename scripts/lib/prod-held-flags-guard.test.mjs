@@ -76,11 +76,16 @@ const ENV_FIXTURES = [
   // U+2028/U+2029 end a line for Next's dotenv, and vercel pull leaves them raw
   // in values. A secret holding one must not block deploys.
   ['API_KEY="x\u2028y"\nNEXT_PUBLIC_FEATURES="westEnd"\n', 'clean'],
-  ["A='x'\u2028NEXT_PUBLIC_FEATURES=commercial\n", 'held'],
+  ["A='x'\u2028NEXT_PUBLIC_FEATURES=commercial\n", 'refused'],
   ['NEXT_PUBLIC_FEATURES=\u2028"commercial"\n', 'held'],
   ['NEXT_PUBLIC_FEATURES="westEnd\u2029commercial"\n', 'held'],
   ['A=1\u2028NEXT_PUBLIC_FEATURES=\n"commercial"\n', 'refused'],
-  ['# note\u2028NEXT_PUBLIC_FEATURES=commercial\n', 'held'],
+  ['# note\u2028NEXT_PUBLIC_FEATURES=commercial\n', 'refused'],
+  // Next's dotenv also reads U+2028 as a space between a key and its = or :.
+  ['NEXT_PUBLIC_FEATURES="westEnd"\n# x\u2028NEXT_PUBLIC_FEATURES\u2028=commercial\n', 'refused'],
+  ['NEXT_PUBLIC_FEATURES="westEnd"\nZ="x"\u2028NEXT_PUBLIC_FEATURES\u2028=commercial\n', 'refused'],
+  ['Z="x"\u2028NEXT_PUBLIC_FEATURES:\u2028commercial\n', 'refused'],
+  ['NEXT_PUBLIC_FEATURES\u2028=commercial\n', 'refused'],
   // A lone \r is a line break to Next's dotenv; vercel pull escapes it.
   ['A="x"\u2028NEXT_PUBLIC_FEATURES=commercial\rB=2\n', 'refused'],
   ['# note\rNEXT_PUBLIC_FEATURES=commercial\n', 'refused'],
@@ -216,13 +221,16 @@ test('both prod deploy paths run the guard before vercel build --prod', () => {
 // with this parser. Each line touching the pulled file must be a known reader.
 test('vercel-deploy.yml reads the pulled env file only in known ways', () => {
   const wf = read('.github/workflows/vercel-deploy.yml');
+  // Whole lines, so nothing can be chained onto an allowed reader.
   const known = [
-    "g.featuresFromEnvFile(require('fs').readFileSync('.vercel/.env.production.local'", // demo-flag step
-    "console.error('::error::.env.production.local: '",
-    'node scripts/lib/prod-held-flags-guard.js .vercel/.env.production.local',
-    'grep -Eq "^${v}=', // Supabase step: NEXT_PUBLIC_SUPABASE_URL/ANON_KEY only
+    "value = g.featuresFromEnvFile(require('fs').readFileSync('.vercel/.env.production.local', 'utf8'));", // demo-flag step
+    "console.error('::error::.env.production.local: ' + e.message);",
+    'run: node scripts/lib/prod-held-flags-guard.js .vercel/.env.production.local',
+    'grep -Eq "^${v}=\\"?[^\\"[:space:]]" .vercel/.env.production.local 2>/dev/null || MISSING="$MISSING $v"', // Supabase step
+    'run: rm -rf .vercel/output',
   ];
-  const unknown = wf.split('\n').filter(l => !/^\s*#/.test(l) && l.includes('.env.production.local') && !known.some(k => l.includes(k)));
+  const unknown = wf.split('\n').map(l => l.trim())
+    .filter(l => !l.startsWith('#') && /\.env\.production|\.vercel\//.test(l) && !known.includes(l));
   assert.deepEqual(unknown, [], 'read NEXT_PUBLIC_FEATURES with featuresFromEnvFile; add other readers here once checked');
   assert.match(wf, /for v in NEXT_PUBLIC_SUPABASE_URL NEXT_PUBLIC_SUPABASE_ANON_KEY; do/);
 });
