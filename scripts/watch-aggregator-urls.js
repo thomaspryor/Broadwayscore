@@ -241,8 +241,9 @@ async function checkBwwRoundup(show) {
 // Codex reviewers, independently.)
 //
 // BRO-4209: a dispatch carrying a bww_roundup_url override is exempt from the
-// auto-run skip (the auto run never sees the override; per-show vs auto
-// concurrency groups differ, so no race). Same-show targeted runs still skip.
+// auto-run skip (the auto run never sees the override). The runs then execute
+// in parallel (different concurrency groups); accepted per BRO-4273, writes
+// rely on push-with-retry.sh. Same-show targeted runs still skip.
 //
 // --limit=50: opening nights with 8+ pollers per orchestrator iteration
 // can push active runs past index 20 once a few finish. limit=50 covers

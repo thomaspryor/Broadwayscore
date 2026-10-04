@@ -11,6 +11,9 @@
  *   run-name: Opening Night Poller — ${{ inputs.show_id || 'auto' }}
  * which surfaces as `displayTitle` on the gh run list JSON.
  *
+ * NOTE: since BRO-4209 an auto run only counts as coverage for dispatches
+ * WITHOUT an override URL; see findInFlightCoverage below.
+ *
  * A targeted poller (`— ${showId}`) covers exactly that show.
  * An "auto" poller (`— auto`) iterates ALL of today's openings — so it
  * covers any show the watcher might dispatch for. Both are treated as
@@ -112,7 +115,9 @@ function findInFlightPollerForShow(runs, showId) {
  * override, and on multi-show nights an auto poller is active for the whole
  * orchestrator loop (BRO-4209). Targeted runs use a per-show concurrency group,
  * so they cannot race the auto group; a same-show targeted run still skips
- * (the Joe Turner push-storm guard).
+ * (the Joe Turner push-storm guard). A targeted run does run in parallel with
+ * an auto run (different concurrency groups); that overlap is accepted per
+ * BRO-4273 and relies on push-with-retry.sh for concurrent writes.
  *
  * @param {Array} runs
  * @param {string} showId
