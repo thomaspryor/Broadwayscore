@@ -661,8 +661,10 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Deploy to Vercel Failed'
-          severity: 'critical'
-          email: 'true'
+          # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
+          # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
+          severity: 'warning'
+          email: 'false'
           # BRO-4141: one-off failures of this job are not owner-actionable; email
           # only when it keeps failing (streak mode re-pages every 4th failure after).
           min_consecutive_failures: '3'
@@ -748,15 +750,14 @@ jobs:
 
           # Fire exactly at 3 — the first-failure alert covers streak 1.
           # Streak 3 = ~15 min of broken deploys on the 5-min cron.
-          # BRO-4141: notify-failure itself now pages at streak 3 (with its own
-          # investigation), so this "still broken" escalation moves to 6 (~30 min).
-          if [ "$STREAK" -eq 6 ]; then
-            echo "Streak hit 6 — dispatching escalation alert"
-            gh workflow run investigate-alert.yml \
-              -f alert_type=vercel_deploy_fail \
-              -f alert_title="Deploy still broken: 6th consecutive failure (~30 min)" \
-              -f alert_context="{\"streak\":$STREAK,\"note\":\"Deploys have been failing for ~15 min across all parallel sessions. Check Actions tab.\"}" \
-              -f run_url="${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}"
+          # BRO-4603: vercel-deploy is not on the owner's page-worthy list
+          # (scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS), so the
+          # streak-6 escalation no longer dispatches investigate-alert.yml (which
+          # always emails). The site keeps serving the last good deploy; a broken
+          # deploy pipeline is fixed by a session, not the owner, and
+          # check-cron-health.yml's vercel-deploy check puts it in the digest.
+          if [ "$STREAK" -ge 6 ]; then
+            echo "::warning::Deploy failure streak is $STREAK (~$((STREAK * 5)) min) — not paging (BRO-4603); see check-cron-health.yml / the morning digest."
           else
             echo "Streak is $STREAK — no escalation needed"
           fi

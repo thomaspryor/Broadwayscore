@@ -217,4 +217,56 @@ function isPageWorthy(conditionKey) {
   return PAGE_WORTHY_PREFIXES.some((prefix) => conditionKey.startsWith(prefix));
 }
 
-module.exports = { PAGE_WORTHY_CONDITION_KEYS, PAGE_WORTHY_PREFIXES, isPageWorthy };
+/**
+ * Workflows whose own failure may email the owner through
+ * .github/actions/notify-failure (BRO-4603).
+ *
+ * notify-failure was the last open door: it called sendAlert() directly, so
+ * any workflow that wrote `severity: 'critical'` + `email: 'true'` paged the
+ * owner, bypassing everything above. 13 workflows did. Over 2026-10-01..04
+ * that sent the owner 8 "[CRITICAL]" emails and 1 "[Investigation]" email,
+ * none of which needed them (two push races, a health-check gate that needs
+ * an LLM pass, and a UGC hardening check a fix session closed on its own).
+ * Owner, 2026-10-04: "I only want emails if they're really urgent and need
+ * me to act on them."
+ *
+ * The action checks this list before its cooldown/streak logic and never
+ * emails for an unlisted workflow. The YAML must agree:
+ * tests/unit/page-worthy-workflows.test.mjs fails unless the set of
+ * workflows with a severity:'critical' notify-failure step equals this list,
+ * so adding a paging workflow means editing this file, the one the owner
+ * reads. Everything else fails quietly into the morning digest:
+ * check-cron-health.yml keys staleness off each scheduled job's last
+ * SUCCESSFUL run, and health-check.js reports repeat failures.
+ */
+const PAGE_WORTHY_WORKFLOWS = new Set([
+  // Meta: the morning digest is the owner's only daily channel. If the check
+  // that verifies it went out is itself broken, nothing else will say so.
+  'check-morning-digest-sent.yml',
+  // Category 2: opening-night pipeline dead on an opening night.
+  'opening-night-orchestrator.yml',
+  'opening-night-poller.yml',
+  'opening-night-broadcast.yml', // the subscriber email the owner sends by hand
+  // Sign-in is down until the owner restores the project from the Supabase
+  // dashboard; nobody else holds that login.
+  'restore-supabase.yml',
+  // Signed-in users' own data not saving, or visible to someone else. The
+  // workflow only requests email when an urgent check failed (see
+  // scripts/test-ugc-roundtrip.mjs `urgent: false` for hardening checks).
+  'test-ugc-roundtrip.yml',
+]);
+
+/** @param {string} workflowFile basename or path, e.g. 'vercel-deploy.yml' */
+function isPageWorthyWorkflow(workflowFile) {
+  if (!workflowFile) return false;
+  const base = String(workflowFile).split('@')[0].split('/').pop();
+  return PAGE_WORTHY_WORKFLOWS.has(base);
+}
+
+module.exports = {
+  PAGE_WORTHY_CONDITION_KEYS,
+  PAGE_WORTHY_PREFIXES,
+  PAGE_WORTHY_WORKFLOWS,
+  isPageWorthy,
+  isPageWorthyWorkflow,
+};

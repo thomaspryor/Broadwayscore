@@ -122,10 +122,12 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'R2 Cold Backup Failed'
-          # critical (not warning): notify-failure is a NO-OP for non-critical severities,
-          # so a warning-level backup failure would surface only in the daily digest.
-          # A backup you don't know is broken is not a backup.
-          severity: 'critical'
-          email: 'true'
+          # BRO-4603: warning, no email. A failed weekly backup is not data loss in
+          # progress and the owner cannot fix it; check-cron-health.yml keys
+          # staleness off the last SUCCESSFUL run (184h), so a failed Sunday run
+          # is in the morning digest within ~2 days. Paging list:
+          # scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS.
+          severity: 'warning'
+          email: 'false'
           resend_api_key: ${{ secrets.RESEND_API_KEY }}
           owner_email: ${{ secrets.OWNER_EMAIL }}

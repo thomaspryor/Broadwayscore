@@ -36,17 +36,11 @@ const WORKFLOWS_DIR = path.join(REPO_ROOT, '.github', 'workflows');
  * is just a backstop that should never fire in practice, and a bare
  * `if: failure()` Notify step is correct as-is.
  */
-const EXEMPT = new Map([
-  [
-    'vercel-deploy.yml / deploy / Notify on failure',
-    'Its Build and Deploy-to-Production steps already use the inline ' +
-      '`timeout <seconds> cmd` guard (the .github/workflows/CLAUDE.md ' +
-      'reference implementation) specifically so a hang becomes a real ' +
-      'failure(), not a job-timeout cancelled() — this Notify step is ' +
-      'correct without cancelled() (BRO-3707 investigation, confirmed not ' +
-      'vulnerable).',
-  ],
-]);
+// vercel-deploy.yml's entry was removed by BRO-4603: it is no longer
+// severity:'critical' (not on the owner's page-worthy list), so there is no
+// critical Notify step left to exempt. Its Build/Deploy steps still use the
+// inline `timeout <seconds> cmd` guard.
+const EXEMPT = new Map([]);
 
 function scan() {
   return findCriticalNotifySteps(WORKFLOWS_DIR, yaml.load);
@@ -54,13 +48,14 @@ function scan() {
 
 test('the scan actually finds severity:critical Notify-on-failure steps (guard against a vacuous pass)', () => {
   const found = scan();
-  // 12 fixed under BRO-3707 + 1 exempt (vercel-deploy.yml) at time of
-  // writing. Not pinned exactly — new critical workflows should self-
-  // register — but a drop near/at 0 means the matcher broke, not that every
-  // critical alert vanished.
+  // BRO-4603 cut the critical set to the owner's page-worthy list (6 at time
+  // of writing, see scripts/lib/page-worthy-alerts.js PAGE_WORTHY_WORKFLOWS;
+  // tests/unit/page-worthy-workflows.test.mjs pins the exact set). Not pinned
+  // here — a drop near/at 0 means the matcher broke, not that every critical
+  // alert vanished.
   assert.ok(
-    found.length >= 10,
-    `expected at least 10 severity:'critical' Notify-on-failure steps across ${WORKFLOWS_DIR}, found ${found.length} — the matcher (uses: ./.github/actions/notify-failure + with.severity == 'critical') or the workflow shape changed`
+    found.length >= 4,
+    `expected at least 4 severity:'critical' Notify-on-failure steps across ${WORKFLOWS_DIR}, found ${found.length} — the matcher (uses: ./.github/actions/notify-failure + with.severity == 'critical') or the workflow shape changed`
   );
 });
 

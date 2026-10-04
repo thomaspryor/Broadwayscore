@@ -459,7 +459,9 @@ jobs:
         uses: ./.github/actions/notify-failure
         with:
           title: 'Gather Reviews Failed (gather job)'
-          severity: 'critical'
+          # BRO-4603: warning — never emailed (no email input) and not on the
+          # owner's page-worthy list (scripts/lib/page-worthy-alerts.js).
+          severity: 'warning'
           discord_webhook: ${{ secrets.DISCORD_WEBHOOK_ALERTS }}
 
   # BRO-4146: fold every matrix shard's SERP cache into one entry saved AFTER all

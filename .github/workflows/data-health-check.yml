@@ -1446,8 +1446,10 @@ jobs:
         with:
           title: 'Daily Data Health Check Crashed'
           description: 'Health check script crashed — its digest snapshot may not have written, so tomorrow''s morning email won''t carry site-health data.'
-          severity: 'critical'
-          email: 'true'
+          # BRO-4603: not on the owner's page-worthy list (scripts/lib/page-worthy-alerts.js
+          # PAGE_WORTHY_WORKFLOWS) — failures reach the morning digest, never email.
+          severity: 'warning'
+          email: 'false'
           # BRO-4141: one-off failures of this job are not owner-actionable; email
           # only when it keeps failing (streak mode re-pages every 4th failure after).
           min_consecutive_failures: '2'
