@@ -60,8 +60,12 @@ printf '{"c":1}\n' > "$TMP/seed/other.json"
 gitc "$TMP/seed" add -A; gitc "$TMP/seed" commit -q -m concurrent-commit
 gitc "$TMP/seed" push -q "$TMP/origin.git" main 2>/dev/null
 
-# Precondition: the poisoned repo really fails the way production did.
-pre=$(gitc "$TMP/runner" fetch --deepen=3 origin main 2>&1); pre_rc=$?
+# Precondition: the poisoned repo really fails the way production did. The
+# fetch must reach back past the phantom: git 2.55 (the CI runners' version)
+# only answers "unshallow <sha>" for a client-shallow commit inside the
+# requested depth, so a --deepen=3 fetch succeeded there and this fixture read
+# as unpoisoned (land run 37225868423). Verified on 2.43 and 2.55.
+pre=$(gitc "$TMP/runner" fetch --deepen=20 origin main 2>&1); pre_rc=$?
 if [ "$pre_rc" -eq 0 ] || ! grep -q "error in object: unshallow" <<<"$pre"; then
   echo "FAIL[2]: fixture precondition — a fetch in the poisoned clone did not fail with 'error in object: unshallow' (rc=$pre_rc): $pre"
   echo "         ($(git --version)) The assertions below would be vacuous."
