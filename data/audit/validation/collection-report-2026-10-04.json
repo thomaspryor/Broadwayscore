@@ -1,5 +1,5 @@
 {
-  "runDate": "2026-10-04T23:05:08.113Z",
+  "runDate": "2026-10-04T23:15:03.835Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 300,
@@ -11,13 +11,13 @@
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 175,
-    "failed": 183,
+    "processed": 177,
+    "failed": 189,
     "skipped": 0,
-    "successRate": "48.9%"
+    "successRate": "48.4%"
   },
   "tierBreakdown": {
-    "playwright": 109,
+    "playwright": 111,
     "amp": 1,
     "browserbase": 6,
     "directCookies": 0,
@@ -228,7 +228,9 @@
     "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
     "chess-2025/times-square-chronicles--suzanna-bowling.json",
     "clybourne-park-2012/backstage--les-spindle.json",
-    "catch-me-if-you-can-2011/hollywood-reporter--unknown.json"
+    "catch-me-if-you-can-2011/hollywood-reporter--unknown.json",
+    "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+    "tru-off-west-end-2026/guardian--mark-lawson.json"
   ],
   "failed": [
     "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
@@ -413,7 +415,13 @@
     "the-little-mermaid-2008/nypost--clive-barnes.json",
     "is-he-dead-2007/nypost--clive-barnes.json",
     "inherit-the-wind-2007/nypost--clive-barnes.json",
-    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json"
+    "the-lieutenant-of-inishmore-2006/nypost--clive-barnes.json",
+    "the-urmetazoan-off-west-end-2026/timeout-london--unknown.json",
+    "the-urmetazoan-off-west-end-2026/datathistle--unknown.json",
+    "the-urmetazoan-off-west-end-2026/thestage--holly-omahony.json",
+    "the-urmetazoan-off-west-end-2026/thestage--the-stage.json",
+    "the-urmetazoan-off-west-end-2026/theupcoming--jim-compton.json",
+    "table-17-off-west-end-2026/bachtrack--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
@@ -525,7 +533,9 @@
       "jeeves-takes-charge-west-end-2026/londontheatredirect--keith-taylor.json",
       "jeeves-takes-charge-west-end-2026/stagedtheatre--karen-jemison.json",
       "chess-2025/times-square-chronicles--suzanna-bowling.json",
-      "clybourne-park-2012/backstage--les-spindle.json"
+      "clybourne-park-2012/backstage--les-spindle.json",
+      "whos-afraid-of-virginia-woolf-west-end-2026/theatremonkey--unknown.json",
+      "tru-off-west-end-2026/guardian--mark-lawson.json"
     ],
     "amp": [
       "data/review-texts/in-the-heights-off-broadway-2026/variety--david-rooney.json"
