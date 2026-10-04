@@ -103,7 +103,9 @@ function parseTourSchedule(html) {
       if (/♦/.test(decode(cells[2]))) continue;
       const range = parseDateRange(cells[2]);
       if (!range) continue;
-      const city = decode(cells[0]).replace(/\s*§\s*/g, '').trim();
+      // Footnote marks on the city ("Chicago, IL ❖", "Dallas, TX †", "Pueblo, CO *")
+      // are Tours To You's legend, not part of the name (BRO-4601).
+      const city = decode(cells[0]).replace(/\s*[§†‡❖◆✦*¤]+\s*/g, ' ').replace(/\s+/g, ' ').trim();
       const venue = decode(cells[1]);
       const key = `${city}|${venue}|${range.start.toISOString()}`;
       if (seen.has(key)) continue;
