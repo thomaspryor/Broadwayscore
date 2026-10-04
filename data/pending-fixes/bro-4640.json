@@ -1,0 +1,38 @@
+{
+  "issueNumber": "bro-4640",
+  "planId": "7b1c3f0e-5d2a-4c8b-9e61-0a4f2d9c6b13",
+  "status": "pending",
+  "createdAt": "2026-10-04T11:30:00.000Z",
+  "submitter": {
+    "name": null,
+    "email": null
+  },
+  "plan": {
+    "summary": "Slam Frank (Orpheum, opens 2026-10-04, runs to 2026-11-30 per Playbill and BroadwayWorld) was closed by a ShowScore 'Closed' read from the earlier run's page. Restore status previews and the announced closing date.",
+    "steps": [
+      "Set status closed -> previews on slam-frank-off-broadway-2026",
+      "Set closingDate null -> 2026-11-30 on slam-frank-off-broadway-2026"
+    ],
+    "riskLevel": "Low",
+    "actions": [
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "slam-frank-off-broadway-2026",
+        "field": "status",
+        "oldValue": "closed",
+        "newValue": "previews",
+        "description": "Playbill production page and Broadway.com list performances through Nov 2026; the ShowScore Closed was the prior run"
+      },
+      {
+        "type": "data-edit",
+        "file": "shows.json",
+        "showId": "slam-frank-off-broadway-2026",
+        "field": "closingDate",
+        "oldValue": null,
+        "newValue": "2026-11-30",
+        "description": "Previously stored closingDate 2026-11-30, cleared by the ShowScore closure; Playbill states the run goes through Nov 30"
+      }
+    ]
+  }
+}
