@@ -1063,6 +1063,7 @@ on:
       - 'scripts/merge-worktree-to-main.sh'
       - 'scripts/lib/push-mutex.sh'
       - 'scripts/lib/merge-worktree-to-main.checkout-fail.test.sh'
+      - 'scripts/merge-worktree-to-main.test.mjs'   # BRO-2904: stash restored on kill / any die()
       # Task #888: restore_stash()'s stash-pop-conflict fallback must never
       # blindly `checkout HEAD -- .` over a path that's the REAL subject of a
       # `git merge $BRANCH` conflict — proves the fallback only auto-resolves
@@ -5042,6 +5043,11 @@ jobs:
         if: always()  # independent suite — don't let an earlier red step skip it
         # `timeout 180` (not step timeout-minutes, which reports `cancelled` and skips failure alerts — workflows/CLAUDE.md): a hang is a named RED step (2026-09-23..24: 36 h of cancelled main runs). Normal runtime 1-4 s.
         run: timeout 180 bash scripts/lib/merge-worktree-to-main.checkout-fail.test.sh
+
+      - name: Run merge-worktree-to-main stash-restore test (BRO-2904)
+        # The script must restore its own wt-integ-<pid> stash on every exit (EXIT trap + INT/TERM/HUP traps), not only at call sites that remember restore_stash. Fails 3/4 against the pre-fix script.
+        if: always()  # independent suite
+        run: timeout 180 node --test scripts/merge-worktree-to-main.test.mjs
 
       - name: Run merge-worktree-to-main conflict-resolution regression test (task #888)
         # Task #888 (2026-08-02): while landing #732, restore_stash()'s
