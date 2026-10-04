@@ -1,10 +1,10 @@
 {
-  "updatedAt": "2026-10-04T04:49:08.322Z",
-  "processed": 545,
+  "updatedAt": "2026-10-04T05:23:39.282Z",
+  "processed": 547,
   "failed": 481,
-  "successRate": "53.1%",
+  "successRate": "53.2%",
   "tierBreakdown": {
-    "playwright": 5,
+    "playwright": 8,
     "amp": 1,
     "browserbase": 11,
     "directCookies": 0,
@@ -14,8 +14,19 @@
     "archiveToday": 0,
     "archive": 102
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 0,
   "recentActivity": [
+    {
+      "t": "2026-10-03T19:03:02.498Z",
+      "event": "bb-session",
+      "session": "14845f1f",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-10-03T19:03:03.552Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
     {
       "t": "2026-10-03T19:03:14.442Z",
       "event": "bb-session",
@@ -118,18 +129,6 @@
       "event": "bb-session",
       "session": "e17eed4b",
       "url": "https://www.hollywoodreporter.com/lifestyle/arts/the-outsiders-broadway-review-1"
-    },
-    {
-      "t": "2026-10-04T04:40:38.429Z",
-      "event": "bb-session",
-      "session": "f94fec9a",
-      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
-    },
-    {
-      "t": "2026-10-04T04:40:59.243Z",
-      "event": "bb-session",
-      "session": "10cd3e7f",
-      "url": "https://www.oklahomatickets.com/Events/Comedy-Tickets/Jena-Friedman-Motherfucker"
     }
   ]
 }
