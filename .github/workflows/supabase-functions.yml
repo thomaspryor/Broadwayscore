@@ -41,6 +41,10 @@ jobs:
           deno check supabase/functions/show-score-proxy/index.ts
           deno check supabase/functions/mezzanine-search/index.ts
           deno check supabase/functions/delete-account/index.ts
+          # Explicit --config: the repo-root package.json otherwise makes Deno
+          # look for npm: packages in a node_modules dir this job never installs.
+          deno check --config supabase/functions/theatr-screenshot-import/deno.json \
+            supabase/functions/theatr-screenshot-import/index.ts
       - name: Verify required schema exists in prod
         # The functions hard-depend on their rate-limit log tables (fail
         # closed without them). Checks are auto-derived from every file in
@@ -54,6 +58,23 @@ jobs:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
           SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
         run: node scripts/verify-supabase-schema.js
+      - name: Push the Anthropic key theatr-screenshot-import reads
+        # Source of truth stays in GitHub: a dedicated ANTHROPIC_API_KEY_THEATR
+        # (own workspace + spend limit) when the owner adds one, else the shared
+        # pipeline key. Idempotent; functions pick up secrets without a
+        # redeploy. After rotating the GitHub secret, dispatch this workflow,
+        # since it only runs on supabase/functions/** pushes. Fails loud when
+        # neither secret exists: the function would answer not_configured.
+        env:
+          SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+          SUPABASE_PROJECT_REF: ${{ secrets.SUPABASE_PROJECT_REF }}
+          THEATR_KEY: ${{ secrets.ANTHROPIC_API_KEY_THEATR || secrets.ANTHROPIC_API_KEY }}
+        run: |
+          if [ -z "$THEATR_KEY" ]; then
+            echo "::error::No ANTHROPIC_API_KEY_THEATR or ANTHROPIC_API_KEY secret, so Theatr screenshot import cannot work"
+            exit 1
+          fi
+          npx supabase secrets set "ANTHROPIC_API_KEY=$THEATR_KEY" --project-ref "$SUPABASE_PROJECT_REF"
       - name: Deploy edge functions
         env:
           SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
@@ -63,6 +84,8 @@ jobs:
           npx supabase functions deploy mezzanine-search \
             --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
           npx supabase functions deploy delete-account \
+            --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
+          npx supabase functions deploy theatr-screenshot-import \
             --project-ref "${{ secrets.SUPABASE_PROJECT_REF }}" --use-api
 
       - name: Notify on failure

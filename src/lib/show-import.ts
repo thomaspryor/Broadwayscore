@@ -359,7 +359,7 @@ export async function acquireFromMezzanine(file: File): Promise<ImportAcquireRes
  *  always HTTP 200 with ok:false for handled failures). */
 interface TheatrScreenshotResponse {
   ok: boolean;
-  error?: 'invalid_images' | 'too_many_images' | 'unauthorized' | 'rate_limited' | 'not_configured' | 'internal';
+  error?: 'invalid_images' | 'too_many_images' | 'unauthorized' | 'rate_limited' | 'busy' | 'not_configured' | 'internal';
   entries?: Array<{ title: string; venue: string | null; date: string | null; list: 'attended' | 'interested' }>;
   unreadableImages?: number;
   dropped?: number;
@@ -370,6 +370,7 @@ export const THEATR_ERROR_COPY: Record<string, string> = {
   too_many_images: 'Too many screenshots in one go. Try again with fewer.',
   unauthorized: 'Please sign in again and retry.',
   rate_limited: "You've hit the import limit for now. Try again in an hour.",
+  busy: 'Theatr import is very busy today. Try again tomorrow.',
   not_configured: 'Theatr import isn’t available right now. Try again later.',
   internal: 'Something went wrong reading your screenshots. Try again in a few minutes.',
   no_shows: 'We couldn’t find any shows in those screenshots. In Theatr, open Profile, then Collection, then Attended (or Interested), and screenshot the list.',
