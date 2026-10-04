@@ -22,6 +22,7 @@
  *   node scripts/send-reddit-post-email.js                 # send due emails
  *   node scripts/send-reddit-post-email.js --dry-run       # print, send nothing, save nothing
  *   node scripts/send-reddit-post-email.js --send-to=EMAIL # override recipient
+ *   node scripts/send-reddit-post-email.js --resend=a,b     # send these drafts again now
  */
 
 'use strict';
@@ -38,15 +39,18 @@ const args = process.argv.slice(2);
 const DRY_RUN = args.includes('--dry-run');
 const NO_SCREENSHOTS = args.includes('--no-screenshots');
 const SCREENSHOT_BUDGET_MS = 4 * 60_000; // all captures in one run; emails after that go without
+// Owner-requested resend: these drafts only, whatever their age or stamps.
+const RESEND = ((args.find(a => a.startsWith('--resend=')) || '').split('=')[1] || '').split(',').map(x => x.trim()).filter(Boolean);
 const SEND_TO = (args.find(a => a.startsWith('--send-to=')) || '').split('=')[1] || DEFAULT_RECIPIENT;
 
 const USAGE = `send-reddit-post-email.js: email each new Reddit opening-post draft on its own (BRO-4360).
   --dry-run          print subjects + HTML, send and save nothing
   --send-to=EMAIL    override recipient (default: owner)
-  --no-screenshots   skip the phone-width page screenshots`;
+  --no-screenshots   skip the phone-width page screenshots
+  --resend=ID,ID     send these unposted drafts again now (ignores age and earlier sends)`;
 
 const os = require('os');
-const { dueEmails, buildSubject, buildHtml } = require('./lib/reddit-post-email');
+const { dueEmails, resendEmails, buildSubject, buildHtml } = require('./lib/reddit-post-email');
 const { captureShowImages } = require('./lib/reddit-post-screenshots');
 
 // ── Send ────────────────────────────────────────────────────────────────────
@@ -88,8 +92,16 @@ async function main() {
     console.log(`No readable drafts file (${e.code || e.message}); nothing to send.`);
     return;
   }
-  const due = dueEmails(drafts, Date.now());
-  console.log(`${due.length} Reddit draft email(s) due`);
+  let due;
+  if (RESEND.length) {
+    const r = resendEmails(drafts, RESEND);
+    // A typo in the dispatch input should show on the run, not pass as green.
+    for (const sk of r.skipped) console.log(`${sk.reason === 'already posted' ? '' : '::warning::'}Not resending ${sk.showId}: ${sk.reason}`);
+    due = r.due;
+  } else {
+    due = dueEmails(drafts, Date.now());
+  }
+  console.log(`${due.length} Reddit draft email(s) ${RESEND.length ? 'to resend' : 'due'}`);
   if (!due.length) return;
 
   if (!DRY_RUN && !process.env.RESEND_API_KEY) {
@@ -105,7 +117,10 @@ async function main() {
     // them by hand (BRO-4597). Never blocks the email: no images on failure,
     // and none once the run's screenshot budget is spent (the job has a
     // hard timeout, and a killed job would re-send everything unstamped).
-    const withinBudget = Date.now() - started < SCREENSHOT_BUDGET_MS;
+    // A resend is a handful of shows the owner asked for by name: give each
+    // its images (the job timeout allows for this; see the workflow).
+    const budget = RESEND.length ? Math.max(SCREENSHOT_BUDGET_MS, RESEND.length * 90_000) : SCREENSHOT_BUDGET_MS;
+    const withinBudget = Date.now() - started < budget;
     const shots = NO_SCREENSHOTS || !withinBudget ? [] : await captureShowImages(draft.url, path.join(os.tmpdir(), 'reddit-post-images', draft.showId));
     let images = [];
     let attachments = [];
@@ -126,7 +141,12 @@ async function main() {
       const res = await postJSON('https://api.resend.com/emails', { from: FROM, to: [SEND_TO], subject, html, ...(attachments.length ? { attachments } : {}) },
         { Authorization: `Bearer ${process.env.RESEND_API_KEY}` });
       const stamp = new Date().toISOString();
-      drafts.drafts[draft.showId] = { ...drafts.drafts[draft.showId], [kind === 'new' ? 'emailedAt' : 'reminderAt']: stamp };
+      // A resend stamps both, so tomorrow's run doesn't follow it with a reminder.
+      const stamps = RESEND.length ? { emailedAt: stamp, reminderAt: stamp } : { [kind === 'new' ? 'emailedAt' : 'reminderAt']: stamp };
+      drafts.drafts[draft.showId] = { ...drafts.drafts[draft.showId], ...stamps };
+      // The resend is now the email the owner has: later "numbers moved"
+      // notes measure from it, not from the first one.
+      if (RESEND.length) for (const k of ['refreshedAt', 'previousReviewCount', 'previousScore']) delete drafts.drafts[draft.showId][k];
       // Stamp right away: a run killed later in the loop must not re-send this one.
       fs.writeFileSync(DRAFTS_PATH, JSON.stringify(drafts, null, 2) + '\n');
       console.log(`Sent: ${subject} (id ${res && res.id || '?'})`);
