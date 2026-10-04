@@ -41,25 +41,16 @@ const { isMissingOriginalScore } = require('./lib/star-score-mismatch');
 const { parseTimeBudgetMin, createRunBudget } = require('./lib/run-budget');
 const { listShowDirs } = require('./lib/list-show-dirs');
 
-// Build showId → { title } map so isScoreable can activate the wrongShow
-// stale-flag override (Notion 34e637c5-416f-8121).
+// showId → shows.json record so isScoreable sees what the rebuild sees: the
+// wrongShow stale-flag override (Notion 34e637c5-416f-8121), the pre-opening
+// gate (status/dates/priorRuns/tourLegs) and the tour wording check
+// (category/type). A hand-picked subset dropped category (BRO-4563).
 function loadShowTitles() {
   const map = new Map();
   try {
     const j = JSON.parse(fs.readFileSync(path.join(__dirname, '../data/shows.json'), 'utf8'));
     for (const s of (j.shows || j)) {
-      if (s.id && s.title) map.set(s.id, {
-        title: s.title,
-        // Pre-opening temporal gate fields (isPrematureReviewForUnopenedShow):
-        // without these, isScoreable says includable for files the rebuild
-        // drops as skippedPrematurePreOpening — wasted rescore cycles.
-        status: s.status,
-        previewDate: s.previewDate,
-        previewsStartDate: s.previewsStartDate,
-        openingDate: s.openingDate,
-        priorRuns: s.priorRuns,
-        tourLegs: s.tourLegs,
-      });
+      if (s.id && s.title) map.set(s.id, s);
     }
   } catch { /* fall through — predicate fails safe to exclude wrongShow files */ }
   return map;

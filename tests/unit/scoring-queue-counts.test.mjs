@@ -413,7 +413,7 @@ describe('no title-only show stubs reach the scoreability checks (BRO-4563)', ()
     assert.equal(showContext(rec), rec);
   });
 
-  test('no script builds `x.get(id) ? { title: x.get(id) } : undefined` any more', () => {
+  test('no script builds a title-only or hand-picked show for the scoreability checks', () => {
     // Each of these fed isScoreable / isStuckRescoreFlag / isIncludableForRebuild a
     // title-only show, so a tour's own review read as tour contamination. Pass the
     // shows.json record (loadShowsById / showContext) instead.
@@ -425,7 +425,12 @@ describe('no title-only show stubs reach the scoreability checks (BRO-4563)', ()
         if (e.isDirectory()) { if (e.name !== 'node_modules') walk(p); continue; }
         if (!/\.(js|ts|mjs|cjs)$/.test(e.name) || /\.test\./.test(e.name)) continue;
         const src = fs.readFileSync(p, 'utf8');
-        if (/\?\s*\{\s*title:\s*[\w.]+\.get\([^)]*\)\s*\}\s*:\s*undefined/.test(src)) hits.push(path.relative(root.pathname, p));
+        const stub = /\?\s*\{\s*title:\s*[\w.]+\.get\([^)]*\)\s*\}\s*:\s*undefined/.test(src);
+        // A hand-picked field subset is the same bug (it dropped category):
+        // `map.set(s.id, { title: s.title, status: ... })` feeding these checks.
+        const subset = /map\.set\(s\.id,\s*\{\s*title:\s*s\.title,/.test(src)
+          && /isScoreable|isIncludableForRebuild|isStuckRescoreFlag|isStaleScoreInput|unscoredSkipReason|isActionable/.test(src);
+        if (stub || subset) hits.push(path.relative(root.pathname, p));
       }
     };
     walk(root.pathname);
