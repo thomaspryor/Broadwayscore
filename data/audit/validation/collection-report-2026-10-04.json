@@ -1,85 +1,123 @@
 {
-  "runDate": "2026-10-04T15:42:11.573Z",
+  "runDate": "2026-10-04T19:06:23.678Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "red-riding-hood-off-broadway-2026,moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026,burning-leaves-off-broadway-2026,the-snow-goose-regional-2026,the-cook-regional-2026",
+    "showFilter": "hay-fever-west-end-2026,what-the-animals-say-off-west-end-2026,creation-stories-and-all-the-important-importants-off-broadway-2026,bull-off-west-end-2026,jena-friedman-motherfucker-off-broadway-2026,flamenc-oh-off-west-end-2026,a-thousand-natural-shocks-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 4,
-    "failed": 1,
+    "processed": 8,
+    "failed": 7,
     "skipped": 0,
-    "successRate": "80.0%"
+    "successRate": "53.3%"
   },
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 4,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 1,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 2,
     "archiveToday": 0,
     "archive": 2
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 2,
+    "tier1Attempts": 11,
+    "tier1Success": 6,
     "ampAttempts": 0,
     "ampSuccess": 0,
-    "tier1_5Attempts": 0,
+    "tier1_5Attempts": 4,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 2,
+    "tier1_9Attempts": 5,
     "tier1_9Success": 1,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 1,
-    "tier3Success": 0,
-    "tier3_6Attempts": 1,
+    "tier3Attempts": 5,
+    "tier3Success": 2,
+    "tier3_6Attempts": 3,
     "tier3_6Success": 0,
-    "tier4Attempts": 4,
+    "tier4Attempts": 11,
     "tier4Success": 2,
-    "totalFailed": 1,
+    "totalFailed": 6,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
-    "browserbaseSessionsUsed": 0,
-    "browserbaseMinutesUsed": 0,
-    "urlDiscoveryAttempts": 0,
+    "browserbaseSessionsUsed": 4,
+    "browserbaseMinutesUsed": 2.8,
+    "urlDiscoveryAttempts": 1,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
   "processed": [
-    "burning-leaves-off-broadway-2026/stagelightmagazine--unknown.json",
-    "moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026/localwineevents--unknown.json",
-    "red-riding-hood-off-broadway-2026/showify--unknown.json",
-    "the-cook-regional-2026/broadwayworld--steve-murray.json"
+    "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+    "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+    "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+    "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+    "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+    "hay-fever-west-end-2026/jonathan-baz--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
   ],
   "failed": [
-    "red-riding-hood-off-broadway-2026/kidsoutandabout--unknown.json"
+    "flamenc-oh-off-west-end-2026/thereviewshub--christine-stanton.json",
+    "bull-off-west-end-2026/whatsonstage--unknown.json",
+    "hay-fever-west-end-2026/londontheatredirect--unknown.json",
+    "hay-fever-west-end-2026/thestage--the-stage.json",
+    "hay-fever-west-end-2026/theupcoming--emilia-gould.json",
+    "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json",
+    "jena-friedman-motherfucker-off-broadway-2026/oklahomatickets--unknown.json"
   ],
   "tierDetails": {
     "playwright": [
-      "burning-leaves-off-broadway-2026/stagelightmagazine--unknown.json"
+      "what-the-animals-say-off-west-end-2026/reviewsgate--william-russell.json",
+      "what-the-animals-say-off-west-end-2026/timeout-london--unknown.json",
+      "creation-stories-and-all-the-important-importants-off-broadway-2026/one-minute-critic--matthew-wexler.json",
+      "hay-fever-west-end-2026/jonathan-baz--unknown.json"
     ],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [
-      "red-riding-hood-off-broadway-2026/showify--unknown.json"
+      "jena-friedman-motherfucker-off-broadway-2026/ticketx--unknown.json"
     ],
     "scrapingbee": [],
-    "brightdata": [],
+    "brightdata": [
+      "bull-off-west-end-2026/broadwayworld--cindy-marcolina.json",
+      "jena-friedman-motherfucker-off-broadway-2026/axs--unknown.json"
+    ],
     "archiveToday": [],
     "archive": [
-      "moonrise-a-theatrical-dinner-experience-at-paradise-club-off-broadway-2026/localwineevents--unknown.json",
-      "the-cook-regional-2026/broadwayworld--steve-murray.json"
+      "flamenc-oh-off-west-end-2026/londontheatredirect--london-theatre-direct-limited.json",
+      "jena-friedman-motherfucker-off-broadway-2026/thecomedybureau--unknown.json"
     ]
   },
-  "failuresByOutlet": {},
+  "failuresByOutlet": {
+    "Londontheatredirect": {
+      "count": 1,
+      "domain": "londontheatredirect.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "The Stage": {
+      "count": 1,
+      "domain": "thestage.co.uk",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    },
+    "oklahomatickets": {
+      "count": 1,
+      "domain": "oklahomatickets.com",
+      "hasCredentials": false,
+      "isPaywalled": false,
+      "isKnownBlocked": false
+    }
+  },
   "urlDiscoveries": []
 }
