@@ -71,6 +71,7 @@ async function runAdjudication(suspects, shows, argv) {
     max,
     readReview: (file) => { try { return JSON.parse(fs.readFileSync(path.join(TEXTS, file), 'utf8')); } catch { return null; } },
     // Same argument mapping as collect-review-texts.js's verifyContent call.
+    // venue-write-guard-ok: venue is prompt context for verifyContent, never written to data.
     verify: ({ review, show }) => verifyContent({
       scrapedText: review.fullText,
       excerpt: review.excerpt || null,
