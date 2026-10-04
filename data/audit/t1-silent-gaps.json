@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-10-03T23:39:18.049Z",
+  "generatedAt": "2026-10-04T03:11:52.809Z",
   "windowDays": 45,
-  "showsScanned": 131,
+  "showsScanned": 135,
   "gaps": [
     {
       "showId": "school-girls-or-the-african-mean-girls-play-2026",
@@ -17,9 +17,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=school-girls-or-the-african-mean-girls-play-2026",
       "firstSeen": "2026-09-29T06:59:42.774Z",
-      "fileAgeHours": 112.65933277777778,
+      "fileAgeHours": 116.20214944444444,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 94.54501361111112
+      "nonTerminalAgeHours": 98.08800222222222
     },
     {
       "showId": "school-girls-or-the-african-mean-girls-play-2026",
@@ -35,9 +35,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=school-girls-or-the-african-mean-girls-play-2026",
       "firstSeen": "2026-10-01T12:23:35.058Z",
-      "fileAgeHours": 59.261476944444446,
+      "fileAgeHours": 62.804293888888886,
       "gapSeenAt": "2026-10-03T23:39:18.049Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.5429886111111113
     },
     {
       "showId": "cosi-fan-tutte-off-broadway-2026",
@@ -52,9 +52,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=cosi-fan-tutte-off-broadway-2026 --url=/goto?url=CAESZwHrOzAVCX-UdB0BPVpxILU1p--M04NhSSNmWGF9CXhgwdpEIpkWRA_ck9qgVrJI837gwjrGU-vybX08Xoxs_Izf5RcaUmrP6KmbEkfQBtTwbcb9qyJm_DJXgLH4VC81mSAUDwaOPvU --outlet=independent   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-30T11:13:40.183Z",
-      "fileAgeHours": 84.42681555555555,
+      "fileAgeHours": 87.96966194444444,
       "gapSeenAt": "2026-09-30T14:36:19.168Z",
-      "nonTerminalAgeHours": 81.04968916666667
+      "nonTerminalAgeHours": 84.59267777777778
     },
     {
       "showId": "tru-off-west-end-2026",
@@ -72,7 +72,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-10-03T17:55:53.293Z",
-      "nonTerminalAgeHours": 5.723543333333334
+      "nonTerminalAgeHours": 9.266531944444445
     },
     {
       "showId": "golden-boy-off-west-end-2026",
@@ -88,9 +88,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=golden-boy-off-west-end-2026",
       "firstSeen": "2026-09-22T16:40:31.606Z",
-      "fileAgeHours": 270.97937777777776,
+      "fileAgeHours": 274.5223011111111,
       "gapSeenAt": "2026-10-03T23:39:18.049Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.5429886111111113
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -105,9 +105,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFV2lmVVdCz_FAnxpbkdT0laEhC-CQ-GYdueUSFpNnHAyl6jiFCYcnDmLoQT_XeFwvUMH1G-niwO9E0lWrESc5UKmT2Rw_qzEnWYLffLMtIYgqnIGQCJbIfba-nQTex_bfvPhSqr30ptZ5SVbHKYHN3y3kF2ZDXfr4aNASjO12xNdWA2agtXqIVoHxSFvP0Lvo8lupX-PHEVSnQpE7dU --outlet=broadwaynews   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:34:19.900Z",
-      "fileAgeHours": 98.08265972222222,
+      "fileAgeHours": 101.62559222222222,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 94.54501361111112
+      "nonTerminalAgeHours": 98.08800222222222
     },
     {
       "showId": "the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026",
@@ -125,9 +125,9 @@
       "recoveryCount": 2,
       "fix": "node scripts/ingest-review-from-url.js --show=the-body-of-mary-a-play-in-three-acts-of-god-off-broadway-2026 --url=/goto?url=CAESogEB6zswFW3fajLyWSsaMVGbF1waB9K9oVoINubxdhvdb4vtkRj7tH-PNlO_ypaz-kVXcD_mLxKacqDSKkFMezJ5D2a05lxvbHyAYGYB-_-F4hFjnmm5NEmBuKAnzJ6DibPD4crfLodTratehtKcBNzbDiPo0ntENTis3z6FPRwcthknjr39MxqgEIbsWBx9ILix0yHXVBetm4xOpTz4ye4fhNQ --outlet=tennessean   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T21:40:48.734Z",
-      "fileAgeHours": 97.97465055555556,
+      "fileAgeHours": 101.51758277777778,
       "gapSeenAt": "2026-09-30T01:06:36.000Z",
-      "nonTerminalAgeHours": 94.54501361111112
+      "nonTerminalAgeHours": 98.08800222222222
     },
     {
       "showId": "human-things-off-broadway-2026",
@@ -142,9 +142,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=human-things-off-broadway-2026 --url=https://www.talkinbroadway.com/allthatchat_new/d.php?id=2653913 --outlet=talkinbroadway   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-26T14:54:28.766Z",
-      "fileAgeHours": 176.74692,
+      "fileAgeHours": 180.28987027777777,
       "gapSeenAt": "2026-09-26T17:43:29.271Z",
-      "nonTerminalAgeHours": 173.93021611111112
+      "nonTerminalAgeHours": 177.47320472222222
     },
     {
       "showId": "million-dollar-quartet-off-west-end-2026",
@@ -160,9 +160,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=million-dollar-quartet-off-west-end-2026",
       "firstSeen": "2026-09-17T08:13:24.884Z",
-      "fileAgeHours": 399.4313486111111,
+      "fileAgeHours": 402.9743041666667,
       "gapSeenAt": "2026-10-03T23:39:18.049Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.5429886111111113
     },
     {
       "showId": "a-slow-fire-off-west-end-2026",
@@ -177,9 +177,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=a-slow-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/theatre-dance/article/a-slow-fire-review-jermyn-street-theatre-london-mh99wpp3s --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-09-29T11:13:07.795Z",
-      "fileAgeHours": 108.43613472222222,
+      "fileAgeHours": 111.9791025,
       "gapSeenAt": "2026-09-29T12:07:43.506Z",
-      "nonTerminalAgeHours": 107.52626194444444
+      "nonTerminalAgeHours": 111.06925055555556
     },
     {
       "showId": "jersey-boys-tour-2026",
@@ -195,9 +195,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=jersey-boys-tour-2026",
       "firstSeen": "2026-10-01T20:06:54.725Z",
-      "fileAgeHours": 51.53978277777778,
+      "fileAgeHours": 55.08275361111111,
       "gapSeenAt": "2026-10-02T09:21:24.837Z",
-      "nonTerminalAgeHours": 38.298114444444444
+      "nonTerminalAgeHours": 41.84110305555556
     },
     {
       "showId": "burning-leaves-off-broadway-2026",
@@ -213,9 +213,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=burning-leaves-off-broadway-2026",
       "firstSeen": "2026-09-30T14:32:12.902Z",
-      "fileAgeHours": 81.11808361111112,
+      "fileAgeHours": 84.66106888888889,
       "gapSeenAt": "2026-10-01T02:44:11.346Z",
-      "nonTerminalAgeHours": 68.91852861111111
+      "nonTerminalAgeHours": 72.46151722222223
     },
     {
       "showId": "the-turn-of-the-screw-off-west-end-2026",
@@ -233,7 +233,7 @@
       "firstSeen": null,
       "fileAgeHours": null,
       "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 54.490991111111114
+      "nonTerminalAgeHours": 58.03397972222222
     },
     {
       "showId": "fire-fire-off-west-end-2026",
@@ -248,9 +248,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=fire-fire-off-west-end-2026 --url=https://www.thetimes.com/culture/classical-opera/article/fire-in-my-mouth-marin-alsop-review-hdnsrp752 --outlet=times-uk   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-01T15:51:33.268Z",
-      "fileAgeHours": 55.795769722222225,
+      "fileAgeHours": 59.3387575,
       "gapSeenAt": "2026-10-01T17:09:50.481Z",
-      "nonTerminalAgeHours": 54.490991111111114
+      "nonTerminalAgeHours": 58.03397972222222
     },
     {
       "showId": "the-score-regional-2026",
@@ -266,9 +266,9 @@
       "recoveryCount": 0,
       "fix": "gh workflow run \"LLM Ensemble Score Reviews\" -f show_id=the-score-regional-2026",
       "firstSeen": "2026-10-02T05:43:42.424Z",
-      "fileAgeHours": 41.926560555555554,
+      "fileAgeHours": 45.46954861111111,
       "gapSeenAt": "2026-10-03T23:39:18.049Z",
-      "nonTerminalAgeHours": 0
+      "nonTerminalAgeHours": 3.5429886111111113
     },
     {
       "showId": "the-visit-regional-2026",
@@ -283,9 +283,9 @@
       "recoveryCount": 3,
       "fix": "node scripts/ingest-review-from-url.js --show=the-visit-regional-2026 --url=http://www.curtainup.com/visitwtf14.html --outlet=curtainup   # run LOCALLY (cookie jar lives on the Mac)",
       "firstSeen": "2026-10-02T06:13:33.238Z",
-      "fileAgeHours": 41.429112777777775,
+      "fileAgeHours": 44.97210111111111,
       "gapSeenAt": "2026-10-02T09:21:24.837Z",
-      "nonTerminalAgeHours": 38.298114444444444
+      "nonTerminalAgeHours": 41.84110305555556
     }
   ],
   "contradictions": []
