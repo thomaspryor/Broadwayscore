@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-04T07:07:32.293Z",
+  "timestamp": "2026-10-04T07:29:00.456Z",
   "stats": {
     "totalReviews": 46105,
-    "alreadyFlagged": 18712,
+    "alreadyFlagged": 18713,
     "dateGuardCatches": 268,
-    "directorMismatch": 1214,
+    "directorMismatch": 1215,
     "tvFilmSignals": 1337,
     "londonSignals": 1265,
     "offBroadwaySignals": 506,
     "yearMismatch": 104,
-    "noPublishDate": 4238
+    "noPublishDate": 4235
   },
   "findings": [
     {
@@ -25549,6 +25549,20 @@
           "type": "OFF_BROADWAY_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Review mentions off-Broadway venue: \"public theater\""
+        }
+      ]
+    },
+    {
+      "showId": "seascape-2005",
+      "file": "nytimes--ben-brantley.json",
+      "score": 89,
+      "publishDate": "November 22, 2005",
+      "url": "https://theater.nytimes.com/2005/11/22/theater/reviews/22seas.html",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"edward albee\" from seascape-1975"
         }
       ]
     },
