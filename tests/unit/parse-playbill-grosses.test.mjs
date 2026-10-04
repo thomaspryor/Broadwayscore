@@ -19,6 +19,8 @@ const {
   validatePlaybillGrosses,
   isPlausibleRow,
   findMissingHistoryWeeks,
+  historyHasWeek,
+  latestPublishableWeek,
   isoWeekToMDY,
   playbillGrossesUrl,
 } = require('../../scripts/lib/parse-playbill-grosses.js');
@@ -115,6 +117,16 @@ test('a missing header label fails loud with no rows', () => {
   assert.ok(validatePlaybillGrosses(p).some(x => /table schema/.test(x)));
 });
 
+test('a renamed "% Cap" column is a schema error, never read from "Diff % cap"', () => {
+  // "% cap" is a substring of "Diff % cap": a substring match would store the
+  // week-over-week diff (-3.33) as Hamilton's capacity.
+  const renamed = FIXTURE.replace(/data-cms-ai="0">% Cap\s*<\/a>/, 'data-cms-ai="0">Capacity</a>');
+  assert.notEqual(renamed, FIXTURE, 'fixture "% Cap" header not found');
+  const p = parsePlaybillGrossesHtml(renamed);
+  assert.match(p.schemaError, /% Cap/);
+  assert.equal(p.rows.length, 0);
+});
+
 test('columns are resolved by header label, so a reorder does not misassign values', () => {
   const html = `<table><thead>
     <th>% Cap</th><th>Show</th><th>Diff % cap</th><th>Perfs <span class="subtext">Previews</span></th>
@@ -171,6 +183,22 @@ test('findMissingHistoryWeeks treats a Monday-keyed BWW week as present', () => 
 test('findMissingHistoryWeeks only looks maxWeeks back', () => {
   const available = ['2026-09-27', '2026-09-20', '2026-09-13', '2026-09-06'];
   assert.deepEqual(findMissingHistoryWeeks([], available, '2026-09-27', 2), ['2026-09-13', '2026-09-20']);
+});
+
+test('historyHasWeek matches the exact key or a nearby Monday key, nothing further', () => {
+  const keys = ['2026-06-22', '2026-07-06', '2026-07-12'];
+  assert.equal(historyHasWeek(keys, '2026-07-12'), true);
+  assert.equal(historyHasWeek(keys, '2026-07-05'), true); // Monday key 07-06
+  assert.equal(historyHasWeek(keys, '2026-06-21'), true); // Monday key 06-22
+  assert.equal(historyHasWeek(keys, '2026-06-28'), false); // 6 days from 06-22
+  assert.equal(historyHasWeek([], '2026-07-12'), false);
+});
+
+test('latestPublishableWeek is the Sunday before today (the previous one on a Sunday)', () => {
+  assert.equal(latestPublishableWeek(new Date('2026-10-04T22:00:00Z')), '2026-09-27'); // Sunday
+  assert.equal(latestPublishableWeek(new Date('2026-10-05T01:00:00Z')), '2026-10-04'); // Monday
+  assert.equal(latestPublishableWeek(new Date('2026-10-06T15:00:00Z')), '2026-10-04'); // Tuesday cron
+  assert.equal(latestPublishableWeek(new Date('2026-10-10T23:59:00Z')), '2026-10-04'); // Saturday
 });
 
 test('week helpers', () => {

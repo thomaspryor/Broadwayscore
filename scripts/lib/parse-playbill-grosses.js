@@ -49,13 +49,14 @@
  *                  Diff % cap columns (this week minus diff), which is
  *                  what BWW published directly in its prev-week columns.
  *
- * Column positions are resolved from the header text via findColumnIndex
- * (BRO-2375 column-drift class) and the header is checked with
- * assertTableSchema before any row is read, so a Playbill layout change
- * fails loud instead of silently mis-assigning values.
+ * Column positions are resolved from the header text by EXACT label (BRO-2375
+ * column-drift class; exact because "% Cap" is a substring of "Diff % cap")
+ * and the header is checked with assertTableSchema before any row is read,
+ * so a Playbill layout change fails loud instead of silently mis-assigning
+ * values.
  */
 const cheerio = require('cheerio');
-const { assertTableSchema, TableSchemaError, findColumnIndex } = require('./table-schema-assertion');
+const { assertTableSchema, TableSchemaError } = require('./table-schema-assertion');
 
 const PLAYBILL_GROSSES_URL = 'https://playbill.com/grosses';
 
@@ -63,6 +64,20 @@ const TABLE_SCHEMA = {
   minCells: 8,
   expectedHeaders: ['Show', 'This Week Gross', 'Diff $', 'Avg Ticket', 'Seats Sold', 'Perfs', '% Cap', 'Diff % cap'],
 };
+
+// Column key → exact header label (the <th> link text, subtext excluded).
+const COLUMN_LABELS = {
+  show: 'Show',
+  gross: 'This Week Gross',
+  grossDiff: 'Diff $',
+  atp: 'Avg Ticket',
+  seats: 'Seats Sold',
+  perfs: 'Perfs',
+  cap: '% Cap',
+  capDiff: 'Diff % cap',
+};
+
+const normalizeLabel = (s) => String(s || '').trim().toLowerCase().replace(/\s+/g, ' ');
 
 const ISO_WEEK_RE = /^\d{4}-\d{2}-\d{2}$/;
 
@@ -155,7 +170,13 @@ function parsePlaybillGrossesHtml(html) {
   });
 
   const $table = $('table').filter((_i, el) => $(el).find('td[data-label]').length > 0).first();
-  const headerCells = $table.find('thead th').map((_i, el) => $(el).text().replace(/\s+/g, ' ').trim()).get();
+  // Main header label only: each <th> is "<a>Label</a><span class="subtext">
+  // Paired label</span>", and the subtext must not leak into the match.
+  const headerCells = $table.find('thead th').map((_i, el) => {
+    const $th = $(el).clone();
+    $th.find('.subtext').remove();
+    return $th.text().replace(/\s+/g, ' ').trim();
+  }).get();
 
   const result = { weekEnding, availableWeeks, weekTotalGross, headerCells, schemaError: null, rows: [] };
 
@@ -169,16 +190,19 @@ function parsePlaybillGrossesHtml(html) {
     throw err;
   }
 
-  const idx = {
-    show: findColumnIndex(headerCells, 'Show'),
-    gross: findColumnIndex(headerCells, 'This Week Gross'),
-    grossDiff: findColumnIndex(headerCells, 'Diff $'),
-    atp: findColumnIndex(headerCells, 'Avg Ticket'),
-    seats: findColumnIndex(headerCells, 'Seats Sold'),
-    perfs: findColumnIndex(headerCells, 'Perfs'),
-    cap: findColumnIndex(headerCells, '% Cap'),
-    capDiff: findColumnIndex(headerCells, 'Diff % cap'),
-  };
+  // Exact label match only. findColumnIndex falls back to a substring match,
+  // and assertTableSchema checks substrings too, so a renamed "% Cap" column
+  // would otherwise resolve to "Diff % cap" and store the week-over-week diff
+  // as capacity.
+  const exactIndex = (label) => headerCells.findIndex(h => normalizeLabel(h) === normalizeLabel(label));
+  const idx = {};
+  for (const [key, label] of Object.entries(COLUMN_LABELS)) {
+    idx[key] = exactIndex(label);
+    if (idx[key] === -1) {
+      result.schemaError = `column "${label}" not found (exact header match). Header row: ${JSON.stringify(headerCells)}`;
+      return result;
+    }
+  }
   const maxIdx = Math.max(...Object.values(idx));
 
   $table.find('tbody tr').each((_i, tr) => {
@@ -319,17 +343,44 @@ const isoToMs = (iso) => Date.parse(`${iso}T00:00:00Z`);
  */
 function findMissingHistoryWeeks(historyKeys, availableWeeks, currentWeekISO, maxWeeks, toleranceDays = 3) {
   if (!maxWeeks || maxWeeks <= 0) return [];
-  const keyMs = (historyKeys || []).filter(k => ISO_WEEK_RE.test(k)).map(isoToMs);
   const candidates = [...new Set((availableWeeks || []).filter(w => ISO_WEEK_RE.test(w) && w < currentWeekISO))]
     .sort()
     .reverse()
     .slice(0, maxWeeks);
-  return candidates
-    .filter(w => {
-      const ms = isoToMs(w);
-      return !keyMs.some(k => Math.abs(k - ms) <= toleranceDays * DAY_MS);
-    })
-    .sort();
+  return candidates.filter(w => !historyHasWeek(historyKeys, w, toleranceDays)).sort();
+}
+
+/**
+ * True when grosses-history.json already holds `week` under its own key or a
+ * key within `toleranceDays` (the BWW-era Monday keys 2026-06-22, 06-29 and
+ * 07-06 stand for the Sundays before them). Every writer that decides "is
+ * this week missing?" uses this, so none of them adds a Sunday duplicate
+ * next to a Monday key.
+ *
+ * @param {string[]} historyKeys
+ * @param {string} week - YYYY-MM-DD
+ * @param {number} [toleranceDays]
+ */
+function historyHasWeek(historyKeys, week, toleranceDays = 3) {
+  if (!ISO_WEEK_RE.test(week || '')) return false;
+  const ms = isoToMs(week);
+  return (historyKeys || []).some(k => ISO_WEEK_RE.test(k) && Math.abs(isoToMs(k) - ms) <= toleranceDays * DAY_MS);
+}
+
+/**
+ * The newest week ending whose figures can already be published on `now`:
+ * the most recent Sunday strictly before today (UTC). The League releases a
+ * week's grosses the day after it ends, so on a Sunday the newest possible
+ * week is the previous Sunday's.
+ *
+ * @param {Date} now
+ * @returns {string} YYYY-MM-DD
+ */
+function latestPublishableWeek(now) {
+  const d = new Date(Date.UTC(now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate()));
+  const back = d.getUTCDay() === 0 ? 7 : d.getUTCDay();
+  d.setUTCDate(d.getUTCDate() - back);
+  return d.toISOString().slice(0, 10);
 }
 
 module.exports = {
@@ -340,5 +391,7 @@ module.exports = {
   validatePlaybillGrosses,
   isPlausibleRow,
   findMissingHistoryWeeks,
+  historyHasWeek,
+  latestPublishableWeek,
   isoWeekToMDY,
 };

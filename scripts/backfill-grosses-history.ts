@@ -28,6 +28,7 @@ const {
   parsePlaybillGrossesHtml,
   validatePlaybillGrosses,
   isPlausibleRow,
+  historyHasWeek,
 } = require('./lib/parse-playbill-grosses');
 
 const HISTORY_PATH = path.join(__dirname, '../data/grosses-history.json');
@@ -134,6 +135,9 @@ async function scrapeWeek(weekDate: string): Promise<{ snapshot: Record<string, 
   if (problems.length > 0) {
     throw new Error(problems.join('; '));
   }
+  if (parsed.weekTotalGross == null) {
+    console.warn(`::warning::backfill-grosses-history: ${url} has no "Week's Total"; the row-sum checksum was skipped.`);
+  }
 
   const snapshot: Record<string, HistoryEntry> = {};
   let matched = 0;
@@ -180,8 +184,10 @@ async function backfillHistory(): Promise<void> {
   const history = loadHistory();
   const weekDates = getWeekDates(numWeeks, startFrom);
 
-  // Filter out weeks we already have
-  const weeksToDo = weekDates.filter(d => !history.weeks[d]);
+  // Filter out weeks we already have, including under a nearby key (the
+  // BWW-era Monday keys) so a Sunday duplicate is never written beside one.
+  const historyKeys = Object.keys(history.weeks);
+  const weeksToDo = weekDates.filter(d => !historyHasWeek(historyKeys, d));
   console.log(`${weekDates.length} total weeks, ${weeksToDo.length} need backfill (${weekDates.length - weeksToDo.length} already in history)`);
 
   if (weeksToDo.length === 0) {
