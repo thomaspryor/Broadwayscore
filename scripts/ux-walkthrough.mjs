@@ -724,7 +724,7 @@ async function captureMatrix({ browser, session, baseUrl, outDir }) {
       await pushShot(`${vp.label}__diary_grid`);
 
       // ── Import sheet — never opened by the matrix before card #239 ──
-      const importBtn = page.getByText('Import from Show Score or Mezzanine', { exact: true }).first();
+      const importBtn = page.getByText('Import from Show Score, Mezzanine or Theatr', { exact: true }).first();
       if (await importBtn.count() > 0) {
         await importBtn.click().catch(() => {});
         await page.waitForTimeout(500);
