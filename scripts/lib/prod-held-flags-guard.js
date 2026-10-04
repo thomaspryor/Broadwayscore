@@ -12,7 +12,8 @@
  * and does not run this.
  *
  * Usage: node scripts/lib/prod-held-flags-guard.js [path/to/.env.production.local]
- * Exit 0 = nothing held is enabled, 1 = held feature enabled or env file missing.
+ * Exit 0 = nothing held is enabled; 1 = held feature enabled, env file missing,
+ * or an env file this guard can't read with certainty.
  */
 const fs = require('fs');
 const path = require('path');
@@ -34,39 +35,88 @@ function parseHeldFeatures(src) {
   return held;
 }
 
-// The text Next.js could read as NEXT_PUBLIC_FEATURES: everything after the
-// last `NEXT_PUBLIC_FEATURES=` line (dotenv: last wins; `export ` allowed),
-// plus any following lines up to the next KEY= line, in case a quoted value
-// spans lines. Deliberately loose: heldFeaturesEnabled tokenizes it, so stray
-// quotes, escapes or comments can only over-report a held name, never hide one.
-function featuresFromEnvFile(envText) {
-  const lines = envText.split(/\r?\n/);
-  const isKey = l => /^\s*(?:export\s+)?[A-Za-z_][A-Za-z0-9_]*\s*=/.test(l);
-  let start = -1;
-  lines.forEach((l, i) => { if (/^\s*(?:export\s+)?NEXT_PUBLIC_FEATURES\s*=/.test(l)) start = i; });
-  if (start < 0) return '';
-  const value = [lines[start].replace(/^[^=]*=/, '')];
-  for (let i = start + 1; i < lines.length && !isKey(lines[i]); i++) value.push(lines[i]);
-  return value.join('\n').trim();
+// `KEY=value`, `export KEY=value` or `KEY: value`: every form either env loader
+// accepts (see featuresFromEnvFile).
+const KEY_LINE = /^\s*(?:export\s+)?([\w.-]+)\s*(?:=|:\s)(.*)$/;
+// A line the Vercel CLI's loader (dotenv 4: plain KEY=value only) reads as setting
+// NEXT_PUBLIC_FEATURES.
+const SET_BY_VERCEL_LOADER = /^\s*NEXT_PUBLIC_FEATURES\s*=/m;
+// The repo's own env files `next build` reads for a production build.
+const NEXT_ENV_FILES = ['.env.production.local', '.env.local', '.env.production', '.env'];
+
+// True when a quoted value has no closing quote on its own line (a backslash
+// escapes the quote, as in Next's dotenv), so the value could run onto later lines.
+function opensQuote(value) {
+  const q = value[0];
+  if (!['"', "'", '`'].includes(q)) return false;
+  for (let i = 1; i < value.length; i++) {
+    if (value[i] === '\\' && value[i + 1] === q) i++;
+    else if (value[i] === q) return false;
+  }
+  return true;
 }
 
-// Held features named in a NEXT_PUBLIC_FEATURES value. Splits on every
-// character that can't be part of a feature name (commas, quotes, spaces,
-// backslashes, #), so formatting can't hide a held name.
+// Every NEXT_PUBLIC_FEATURES value in an env file, joined. `vercel build` loads
+// the pulled file with the Vercel CLI's own dotenv 4 (one KEY=value per line, last
+// wins); Next's dotenv 16 also takes `export`, `KEY: value` and multi-line quotes.
+// Reading every matching line under either grammar can only over-report. Throws
+// on anything else: `vercel pull` writes one KEY="value" per line (newlines
+// escaped), so a line that isn't one, or a NEXT_PUBLIC_FEATURES quote left open,
+// means a value this guard can't see. Messages name line numbers only, never
+// values, since other keys hold secrets.
+function featuresFromEnvFile(envText) {
+  const values = [];
+  envText.split(/\r?\n/).forEach((line, i) => {
+    if (!line.trim() || /^\s*#/.test(line)) return;
+    const m = line.match(KEY_LINE);
+    if (!m) throw new Error(`line ${i + 1} is not a KEY=value line, so a value may span lines this guard can't check`);
+    if (m[1] !== 'NEXT_PUBLIC_FEATURES') return;
+    const value = m[2].trim();
+    if (opensQuote(value)) throw new Error(`line ${i + 1}: NEXT_PUBLIC_FEATURES opens a quote it doesn't close, so its value may continue on later lines`);
+    values.push(value);
+  });
+  return values.join('\n');
+}
+
+// Held features named in a NEXT_PUBLIC_FEATURES value. Escaped line breaks (\n,
+// \r) become separators, as both loaders turn them into real ones; then it splits
+// on every character that can't be part of a feature name (commas, quotes,
+// spaces, backslashes, #), so formatting can't hide a held name.
 function heldFeaturesEnabled(featuresValue, held) {
-  const tokens = new Set(String(featuresValue || '').split(/[^A-Za-z0-9_]+/).filter(Boolean));
+  const text = String(featuresValue || '').replace(/\\[nr]/g, ' ');
+  const tokens = new Set(text.split(/[^A-Za-z0-9_]+/).filter(Boolean));
   return held.filter(f => tokens.has(f));
 }
 
-function main(argv = [], env = process.env) {
+function main(argv = [], env = process.env, rootDir = REPO_ROOT) {
   const envPath = path.resolve(argv[0] || DEFAULT_ENV_FILE);
   const held = parseHeldFeatures(fs.readFileSync(FLAGS_FILE, 'utf8'));
   if (!fs.existsSync(envPath)) {
     console.error(`::error::${envPath} not found. Run vercel pull --environment=production first.`);
     return 1;
   }
+  const pulled = fs.readFileSync(envPath, 'utf8');
+  let fileValue;
+  try {
+    fileValue = featuresFromEnvFile(pulled);
+  } catch (e) {
+    console.error(`::error::${path.basename(envPath)} ${e.message}. Not deploying.`);
+    return 1;
+  }
+  // `vercel build` loads the pulled file without overriding the shell; `next
+  // build` falls back to the repo's own env files only when neither sets the key.
+  if (env.NEXT_PUBLIC_FEATURES === undefined && !SET_BY_VERCEL_LOADER.test(pulled)) {
+    const local = NEXT_ENV_FILES.filter(f => {
+      const p = path.join(rootDir, f);
+      return fs.existsSync(p) && fs.readFileSync(p, 'utf8').includes('NEXT_PUBLIC_FEATURES');
+    });
+    if (local.length) {
+      console.error(`::error::Production doesn't set NEXT_PUBLIC_FEATURES, so the build would take it from ${local.join(', ')}. Set it in the Vercel production env instead.`);
+      return 1;
+    }
+  }
   // The build sees the pulled file and, for deploy-now.js, the caller's shell env too.
-  const values = [featuresFromEnvFile(fs.readFileSync(envPath, 'utf8')), env.NEXT_PUBLIC_FEATURES || ''];
+  const values = [fileValue, env.NEXT_PUBLIC_FEATURES || ''];
   // dotenv-expand could turn $VAR into a held name this check can't see; refuse instead.
   if (values.some(v => v.includes('$'))) {
     console.error('::error::NEXT_PUBLIC_FEATURES uses $ variable expansion, which this guard cannot check. Set it to a literal comma-separated list.');

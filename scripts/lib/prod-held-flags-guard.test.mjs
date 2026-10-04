@@ -2,7 +2,7 @@
 // owner-held features (BRO-4525: commercial) out of production deploys.
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync, writeFileSync, mkdtempSync, mkdirSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync, mkdirSync, rmSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import os from 'node:os';
 import path from 'node:path';
@@ -37,55 +37,96 @@ test('held names the tokenizer could never match are rejected', () => {
   assert.throws(() => parseHeldFeatures("export const PROD_HELD_FEATURES = new Set(['biz-v2']);"), /cannot match/);
 });
 
-const heldIn = (envText) => heldFeaturesEnabled(featuresFromEnvFile(envText), ['commercial']);
+// 'held' (guard reports commercial), 'refused' (guard can't read the file with
+// certainty and fails), or 'clean'.
+function verdict(envText) {
+  try {
+    return heldFeaturesEnabled(featuresFromEnvFile(envText), ['commercial']).length ? 'held' : 'clean';
+  } catch {
+    return 'refused';
+  }
+}
 
-// [env file text, whether Next.js's own parser turns commercial on]. The second
-// value is checked against @next/env below, so a wrong expectation fails too.
+// [env file text, guard verdict]. The cross-check below runs every fixture
+// through both real loaders and fails if either enables commercial on a 'clean'.
 const ENV_FIXTURES = [
-  ['VERCEL="1"\nNEXT_PUBLIC_FEATURES="westEnd,commercial"\n', true],
-  ["NEXT_PUBLIC_FEATURES='commercial'", true],
-  ['NEXT_PUBLIC_FEATURES=westEnd', false],
-  ['OTHER=1\n', false],
-  ['export NEXT_PUBLIC_FEATURES="commercial"', true],
-  ['NEXT_PUBLIC_FEATURES=westEnd,commercial # held', true],
-  ['NEXT_PUBLIC_FEATURES="westEnd" # note', false],
-  ['NEXT_PUBLIC_FEATURES="westEnd"\r\nNEXT_PUBLIC_FEATURES="commercial"\r\n', true],
-  ['NEXT_PUBLIC_FEATURES="commercial"\nNEXT_PUBLIC_FEATURES="westEnd"\n', false],
-  ['NEXT_PUBLIC_FEATURES="a\\"b,commercial"', true],
-  ['NEXT_PUBLIC_FEATURES="x" ,commercial', true],
-  ['NEXT_PUBLIC_FEATURES="westEnd,\ncommercial"\nVERCEL="1"\n', true],
-  ['NEXT_PUBLIC_FEATURES="westEnd"\nZ_NOTE="commercial"\n', false],
+  ['VERCEL="1"\nNEXT_PUBLIC_FEATURES="westEnd,commercial"\n', 'held'],
+  ["NEXT_PUBLIC_FEATURES='commercial'", 'held'],
+  ['NEXT_PUBLIC_FEATURES=westEnd', 'clean'],
+  ['OTHER=1\n', 'clean'],
+  ['export NEXT_PUBLIC_FEATURES="commercial"', 'held'],
+  ['NEXT_PUBLIC_FEATURES: commercial', 'held'],
+  ['NEXT_PUBLIC_FEATURES=westEnd,commercial # held', 'held'],
+  ['NEXT_PUBLIC_FEATURES="westEnd" # note', 'clean'],
+  ['NEXT_PUBLIC_FEATURES="westEnd"\r\nNEXT_PUBLIC_FEATURES="commercial"\r\n', 'held'],
+  // Both loaders let the last line win; the guard counts every line.
+  ['NEXT_PUBLIC_FEATURES="commercial"\nNEXT_PUBLIC_FEATURES="westEnd"\n', 'held'],
+  ['NEXT_PUBLIC_FEATURES="a\\"b,commercial"', 'held'],
+  ['NEXT_PUBLIC_FEATURES="x" ,commercial', 'held'],
+  // vercel pull writes a newline inside a value as a literal \n (or \r).
+  ['NEXT_PUBLIC_FEATURES="westEnd,\\ncommercial"\n', 'held'],
+  ['NEXT_PUBLIC_FEATURES="westEnd,\\rcommercial"\n', 'held'],
+  ['NEXT_PUBLIC_FEATURES="westEnd"\nZ_NOTE="commercial"\n', 'clean'],
+  // Multi-line values (Next's dotenv reads these; vercel pull never writes them).
+  ['NEXT_PUBLIC_FEATURES="westEnd,\ncommercial"\nVERCEL="1"\n', 'refused'],
+  ['NEXT_PUBLIC_FEATURES="westEnd,\nX=1,commercial"\n', 'refused'],
+  ['NEXT_PUBLIC_FEATURES="westEnd,\\"\nX=1,commercial"\n', 'refused'],
+  ['NEXT_PUBLIC_FEATURES=\n"commercial"\n', 'refused'],
+  ['NEXT_PUBLIC_FEATURES=commercial\nNOTE="\nNEXT_PUBLIC_FEATURES=westEnd\n"\n', 'refused'],
+  // Real vercel pull output: header, sorted KEY="value" lines, raw $ and a
+  // trailing backslash in other keys. Must not be refused.
+  ['# Created by Vercel CLI\nA_URL="https://x.test/?a=$b"\nNEXT_PUBLIC_FEATURES="westEnd,userAccounts"\nWIN_PATH="C:\\dir\\"\n', 'clean'],
 ];
 
-test('a held feature in the pulled env file is found however the line is formatted', () => {
+test('the guard reads the pulled env file however NEXT_PUBLIC_FEATURES is formatted', () => {
   assert.equal(featuresFromEnvFile('OTHER=1\n'), '');
-  for (const [text, on] of ENV_FIXTURES) {
-    assert.deepEqual(heldIn(text), on ? ['commercial'] : [], JSON.stringify(text));
-  }
+  for (const [text, expected] of ENV_FIXTURES) assert.equal(verdict(text), expected, JSON.stringify(text));
 });
 
-test('the guard never misses what Next.js itself would enable (checked with @next/env)', () => {
-  const dir = mkdtempSync(path.join(os.tmpdir(), 'held-flags-next-'));
+// `vercel build` loads the pulled file with the Vercel CLI's bundled dotenv;
+// `next build` reads the repo's env files with @next/env. Both run in a child
+// process because they write process.env. If the CLI's loader can't be found,
+// the CLI changed how vercel build reads .vercel/.env.production.local:
+// re-check prod-held-flags-guard.js against the new loader before fixing this.
+test('the guard never passes a file either real env loader would enable commercial from', () => {
+  const dir = mkdtempSync(path.join(os.tmpdir(), 'held-flags-loaders-'));
   const dirs = ENV_FIXTURES.map(([text], i) => {
     const d = path.join(dir, String(i));
     mkdirSync(d);
     writeFileSync(path.join(d, '.env.production.local'), text);
     return d;
   });
-  // A child process, because loadEnvConfig rewrites process.env.
-  const script = `const { loadEnvConfig } = require('@next/env');
-    const out = JSON.parse(process.argv[1]).map(d => {
-      const v = loadEnvConfig(d, false, { info() {}, error() {} }, true).combinedEnv.NEXT_PUBLIC_FEATURES || '';
-      return v.split(',').map(s => s.trim()).includes('commercial');
-    });
-    console.log(JSON.stringify(out));`;
+  const script = `
+    const fs = require('fs'), path = require('path');
+    const has = v => String(v || '').split(',').map(s => s.trim()).includes('commercial');
+    (async () => {
+      const buildDir = path.join(process.cwd(), 'node_modules/vercel/dist/commands/build');
+      const src = fs.readFileSync(path.join(buildDir, 'index.js'), 'utf8');
+      const name = (src.match(/var import_dotenv = __toESM\\((\\w+)\\(\\)/) || [])[1];
+      const from = name && [...src.matchAll(/import \\{([^}]*)\\} from "([^"]+)"/g)].find(m => new RegExp('\\\\b' + name + '\\\\b').test(m[1]));
+      if (!from) throw new Error('Vercel CLI env loader not found in commands/build/index.js');
+      const vercelDotenv = (await import(path.join(buildDir, from[2])))[name]();
+      const { loadEnvConfig } = require('@next/env');
+      const out = JSON.parse(process.argv[1]).map(d => {
+        const text = fs.readFileSync(path.join(d, '.env.production.local'), 'utf8');
+        return {
+          vercel: has(vercelDotenv.parse(text).NEXT_PUBLIC_FEATURES),
+          next: has(loadEnvConfig(d, false, { info() {}, error() {} }, true).combinedEnv.NEXT_PUBLIC_FEATURES),
+        };
+      });
+      console.log(JSON.stringify(out));
+    })().catch(e => { console.error(e.message); process.exit(1); });`;
   const env = { ...process.env };
   delete env.NEXT_PUBLIC_FEATURES;
-  const nextSees = JSON.parse(execFileSync(process.execPath, ['-e', script, JSON.stringify(dirs)], { cwd: ROOT, env, encoding: 'utf8' }));
-  ENV_FIXTURES.forEach(([text, on], i) => {
-    assert.equal(nextSees[i], on, `fixture expectation vs @next/env: ${JSON.stringify(text)}`);
-    if (nextSees[i]) assert.deepEqual(heldIn(text), ['commercial'], `guard missed: ${JSON.stringify(text)}`);
+  delete env.NODE_ENV; // NODE_ENV=test makes @next/env skip .env.production.local
+  const seen = JSON.parse(execFileSync(process.execPath, ['-e', script, JSON.stringify(dirs)], { cwd: ROOT, env, encoding: 'utf8' }));
+  ENV_FIXTURES.forEach(([text], i) => {
+    const { vercel, next } = seen[i];
+    if (vercel || next) assert.notEqual(verdict(text), 'clean', `guard passed a file that enables commercial (vercel=${vercel}, next=${next}): ${JSON.stringify(text)}`);
   });
+  // The fixtures must actually exercise both loaders.
+  assert.ok(seen.some(s => s.vercel) && seen.some(s => s.next && !s.vercel), 'fixtures no longer cover both loaders');
+  rmSync(dir, { recursive: true, force: true });
 });
 
 test('held features are matched as whole names only', () => {
@@ -97,20 +138,36 @@ test('held features are matched as whole names only', () => {
 
 test('main(): fails on a held flag in the env file or the shell, passes otherwise, fails without the file', () => {
   const dir = mkdtempSync(path.join(os.tmpdir(), 'held-flags-'));
-  const withHeld = path.join(dir, 'held.env');
-  const clean = path.join(dir, 'clean.env');
-  writeFileSync(withHeld, 'NEXT_PUBLIC_FEATURES="westEnd,commercial"\n');
-  writeFileSync(clean, 'NEXT_PUBLIC_FEATURES="westEnd,tonyPredictions"\n');
+  const file = (name, text) => { const p = path.join(dir, name); writeFileSync(p, text); return p; };
+  const withHeld = file('held.env', 'NEXT_PUBLIC_FEATURES="westEnd,commercial"\n');
+  const clean = file('clean.env', 'NEXT_PUBLIC_FEATURES="westEnd,tonyPredictions"\n');
+  const unset = file('unset.env', '# Created by Vercel CLI\nVERCEL="1"\n');
+  const multiline = file('multi.env', 'API_KEY="sk-secret-one\nsk-secret-two"\nNEXT_PUBLIC_FEATURES="westEnd"\n');
+  const emptyRoot = mkdtempSync(path.join(os.tmpdir(), 'held-flags-root-'));
+  const localRoot = mkdtempSync(path.join(os.tmpdir(), 'held-flags-root-'));
+  writeFileSync(path.join(localRoot, '.env.local'), 'NEXT_PUBLIC_FEATURES=westEnd,commercial\n');
+  const errors = [];
   const quiet = { error: console.error, log: console.log };
-  console.error = console.log = () => {};
+  console.error = (...a) => errors.push(a.join(' '));
+  console.log = () => {};
   try {
-    assert.equal(main([withHeld], {}), 1);
-    assert.equal(main([clean], {}), 0);
-    assert.equal(main([clean], { NEXT_PUBLIC_FEATURES: 'commercial' }), 1);
-    assert.equal(main([path.join(dir, 'missing.env')], {}), 1);
-    assert.equal(main([clean], { NEXT_PUBLIC_FEATURES: '${HELD}' }), 1);
+    assert.equal(main([withHeld], {}, emptyRoot), 1);
+    assert.equal(main([clean], {}, emptyRoot), 0);
+    assert.equal(main([clean], { NEXT_PUBLIC_FEATURES: 'commercial' }, emptyRoot), 1);
+    assert.equal(main([path.join(dir, 'missing.env')], {}, emptyRoot), 1);
+    assert.equal(main([clean], { NEXT_PUBLIC_FEATURES: '${HELD}' }, emptyRoot), 1);
+    // Refused file: fails, and the error names a line, never a value.
+    errors.length = 0;
+    assert.equal(main([multiline], {}, emptyRoot), 1);
+    assert.ok(errors.some(e => /line 2/.test(e)) && !errors.some(e => /sk-secret/.test(e)), errors.join('\n'));
+    // Production doesn't set the key: next build would fall back to the repo's .env files.
+    assert.equal(main([unset], {}, emptyRoot), 0);
+    assert.equal(main([unset], {}, localRoot), 1);
+    assert.equal(main([unset], { NEXT_PUBLIC_FEATURES: 'westEnd' }, localRoot), 0);
+    assert.equal(main([clean], {}, localRoot), 0);
   } finally {
     Object.assign(console, quiet);
+    for (const d of [dir, emptyRoot, localRoot]) rmSync(d, { recursive: true, force: true });
   }
 });
 
