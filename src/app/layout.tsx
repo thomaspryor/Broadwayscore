@@ -139,10 +139,15 @@ export default function RootLayout({
                 <MarketNav stats={marketStats} />
                 {/* gap-1 on mobile: with userAccounts on, this row holds search +
                     avatar + hamburger and overflowed the viewport at gap-3,
-                    clipping the avatar (owner report, 2026-07-17). */}
+                    clipping the avatar (owner report, 2026-07-17).
+                    Tablet widths overflowed too (BRO-4575: 946px of content at
+                    768): Subscribe shows from xl only (the footer has the email
+                    capture), search collapses to its icon below lg, and the
+                    Sign in / My Shows label hides below md. Guard:
+                    scripts/check-header-overflow.mjs. */}
                 <div className="flex items-center shrink-0 gap-1 sm:gap-3">
                   <HeaderSecondaryMarketLink />
-                  <div className="hidden sm:block">
+                  <div className="hidden xl:block">
                     <HeaderSubscribeButton />
                   </div>
                   <HeaderSearch />

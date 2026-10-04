@@ -184,7 +184,7 @@ export default function HeaderSearch() {
   return (
     <div ref={containerRef} className="relative">
       {/* Desktop search input */}
-      <div className="hidden sm:block relative">
+      <div className="hidden lg:block relative">
         <div className="relative">
           <input
             ref={inputRef}
@@ -198,7 +198,7 @@ export default function HeaderSearch() {
             onFocus={() => { ensureData(); query.length >= 1 && setIsOpen(true); }}
             onKeyDown={handleKeyDown}
             placeholder="Search shows..."
-            className="w-48 lg:w-56 px-3 py-1.5 pl-9 text-sm bg-white/5 border border-white/10 rounded-lg
+            className="w-56 px-3 py-1.5 pl-9 text-sm bg-white/5 border border-white/10 rounded-lg
                        text-white placeholder-gray-400
                        focus:outline-none focus:ring-2 focus:ring-brand/50 focus:border-brand/50
                        transition-all duration-200"
@@ -312,7 +312,7 @@ export default function HeaderSearch() {
       {/* Mobile search button */}
       <button
         onClick={() => { ensureData(); setIsMobileOpen(true); }}
-        className="sm:hidden p-1.5 text-gray-400 hover:text-white transition-colors"
+        className="lg:hidden p-1.5 text-gray-400 hover:text-white transition-colors"
         aria-label="Search shows"
       >
         <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -322,7 +322,7 @@ export default function HeaderSearch() {
 
       {/* Mobile search overlay */}
       {isMobileOpen && (
-        <div className="fixed inset-0 z-[100] bg-surface sm:hidden">
+        <div className="fixed inset-0 z-[100] bg-surface lg:hidden">
           <div className="flex flex-col h-full">
             <div className="flex items-center gap-3 p-4 border-b border-white/10">
               <button

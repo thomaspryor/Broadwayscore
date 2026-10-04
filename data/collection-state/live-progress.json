@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-04T15:20:40.834Z",
-  "processed": 51,
-  "failed": 9,
-  "successRate": "85.0%",
+  "updatedAt": "2026-10-04T15:57:24.581Z",
+  "processed": 98,
+  "failed": 52,
+  "successRate": "65.3%",
   "tierBreakdown": {
-    "playwright": 33,
+    "playwright": 64,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 5,
     "directCookies": 0,
-    "scrapingdog": 8,
+    "scrapingdog": 16,
     "scrapingbee": 0,
-    "brightdata": 3,
+    "brightdata": 8,
     "archiveToday": 0,
-    "archive": 6
+    "archive": 9
   },
-  "browserbaseSessions": 3,
+  "browserbaseSessions": 9,
   "recentActivity": [
     {
       "t": "2026-10-04T15:07:13.191Z",
@@ -38,6 +38,62 @@
       "t": "2026-10-04T15:16:29.425Z",
       "event": "bb-cookie-inject",
       "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-04T15:22:11.137Z",
+      "event": "bb-session",
+      "session": "431a8a8b",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-10-04T15:22:11.507Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-04T15:22:21.169Z",
+      "event": "bb-session",
+      "session": "cdcb3ae0",
+      "url": "https://www.thetimes.com/recipes/easy-everyday/dinner/article/jeremy-lees-rabbit"
+    },
+    {
+      "t": "2026-10-04T15:22:21.538Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-04T15:27:33.231Z",
+      "event": "bb-session",
+      "session": "5f476268",
+      "url": "https://www.thetimes.com/culture/theatre-dance/article/burlesque-the-musical-rev"
+    },
+    {
+      "t": "2026-10-04T15:27:33.639Z",
+      "event": "bb-cookie-inject",
+      "domain": "thetimes.com"
+    },
+    {
+      "t": "2026-10-04T15:39:26.320Z",
+      "event": "bb-session",
+      "session": "48ca4fe1",
+      "url": "https://www.thestage.co.uk/reviews/the-seagull-review-barbican-theatre-london-ch"
+    },
+    {
+      "t": "2026-10-04T15:39:26.692Z",
+      "event": "bb-cookie-inject",
+      "domain": "thestage.co.uk"
+    },
+    {
+      "t": "2026-10-04T15:53:33.994Z",
+      "event": "bb-session",
+      "session": "fc926f2b",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
+    },
+    {
+      "t": "2026-10-04T15:53:52.552Z",
+      "event": "bb-session",
+      "session": "bd31ed6f",
+      "url": "https://www.ticketline.co.uk/event/expired/500712062/horrible-histories-barmy-br"
     }
   ]
 }
