@@ -278,13 +278,24 @@ test('London Theatre trailing chrome is stripped at "Originally published on"', 
   assert.equal(out, TRU_REVIEW.trim());
 });
 
+// BRO-4584 made "Tru" count as a show mention (curated properNounTitles), so the
+// Tru text with chrome now passes on its own: a mentioned show's other-show
+// references are not multi-show junk. The strip-and-retry path below is still
+// needed for titles the mention check cannot see; "Da" (2 letters, not curated)
+// stands in for that case.
+const DA_REVIEW = TRU_REVIEW.replace(/\bTru\b/g, 'Da');
+const DA_CHROME = LT_CHROME.replace(/\bTru\b/g, 'Da');
+
 test('stored text with that chrome is still scoreable on its stripped form', () => {
-  const sel = selectScorableText({ showId: 'tru-off-west-end-2026', fullText: TRU_REVIEW + LT_CHROME }, { showTitle: 'Tru' });
+  const sel = selectScorableText({ showId: 'da-1978', fullText: DA_REVIEW + DA_CHROME }, { showTitle: 'Da' });
   assert.ok(sel && sel.isExcerpt === false);
   assert.ok(!sel.text.includes('Latest News'));
   // Text that already passes is returned unchanged.
-  const clean = selectScorableText({ showId: 'tru-off-west-end-2026', fullText: TRU_REVIEW }, { showTitle: 'Tru' });
-  assert.equal(clean.text, TRU_REVIEW);
+  const clean = selectScorableText({ showId: 'da-1978', fullText: DA_REVIEW }, { showTitle: 'Da' });
+  assert.equal(clean.text, DA_REVIEW);
+  // The Tru review itself is scoreable as stored (show mention recognized).
+  const tru = selectScorableText({ showId: 'tru-off-west-end-2026', fullText: TRU_REVIEW + LT_CHROME }, { showTitle: 'Tru' });
+  assert.ok(tru && tru.isExcerpt === false);
 });
 
 // ── Repair route: guarded url edit for execute-approved-fix ──
@@ -361,8 +372,8 @@ test('a TheaterMania cast announcement is a named non-review url; its reviews ar
 
 test('the scorer scores the chrome-stripped text the selection chose', () => {
   const { strippedFullTextSelection } = require('./scorable-text.js');
-  const data = { showId: 'tru-off-west-end-2026', fullText: TRU_REVIEW + LT_CHROME };
-  const sel = selectScorableText(data, { showTitle: 'Tru' });
+  const data = { showId: 'da-1978', fullText: DA_REVIEW + DA_CHROME };
+  const sel = selectScorableText(data, { showTitle: 'Da' });
   assert.equal(strippedFullTextSelection(data, sel.text), sel.text);
   // Raw text selected, or an excerpt: no override.
   assert.equal(strippedFullTextSelection({ fullText: TRU_REVIEW }, TRU_REVIEW), null);
