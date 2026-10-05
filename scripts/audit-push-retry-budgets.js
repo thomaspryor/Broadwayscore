@@ -9,10 +9,10 @@
 // first instead of blanket-raising all ~150 call sites.
 //
 // Usage:
-//   (BRO-2322) add --fail-on-job-timeout to exit 1 on job-timeout-margin-undersized; CI hard gate, all other flags advisory
 //   node scripts/audit-push-retry-budgets.js            # full report
 //   node scripts/audit-push-retry-budgets.js --json      # machine-readable
 //   node scripts/audit-push-retry-budgets.js --top=10    # limit ranked list (default 15)
+//   node scripts/audit-push-retry-budgets.js --fail-on-job-timeout  # BRO-2322: exit 1 on job-timeout-margin-undersized (CI hard gate; other flags advisory)
 'use strict';
 
 const fs = require('fs');
