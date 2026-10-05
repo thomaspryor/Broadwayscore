@@ -6,7 +6,7 @@ const require = createRequire(import.meta.url);
 const {
   filterToplevelTestEntries, siblingSourcePath, findGaps,
   filterTestsDirEntries, toplevelScriptDeps,
-  jobRunsOnPush, parseJobs, findWorkflowRunGaps,
+  jobRunsOnPush, parseJobs, findWorkflowRunGaps, scriptsExecutedBy, joinContinuations,
 } = require('./audit-toplevel-script-test-yml-coverage.js');
 const { relativeSpecifiers, stripComments } = require('./audit-test-yml-lib-deps.js');
 
@@ -106,7 +106,7 @@ test('relativeSpecifiers: is not left stateful by a previous call (/g lastIndex)
   assert.deepEqual(first, ['./one.js', './two.js']);
 });
 
-test('findGaps: the real repo reports all three shapes and currently has none of either', () => {
+test('findGaps: the real repo reports all three shapes and currently has none of any', () => {
   const gaps = findGaps();
   assert.deepEqual(gaps, [], `push-path entries missing for: ${gaps.map((g) => g.source).join(', ')}`);
 });
@@ -270,4 +270,17 @@ test('findWorkflowRunGaps: dropping any BRO-3202 push-path entry on the real tes
     const gaps = findWorkflowRunGaps(yml, entries.filter((e) => e !== rel));
     assert.ok(gaps.some((g) => g.source === rel && g.via === 'workflow-run'), `removing ${rel} must produce a gap`);
   }
+});
+
+test('scriptsExecutedBy: flag values, multiple files, ./ prefix, bash .sh, continuations', () => {
+  assert.deepEqual(scriptsExecutedBy('node --test --test-timeout 60000 scripts/A.test.mjs'), ['scripts/A.test.mjs']);
+  assert.deepEqual(scriptsExecutedBy('node -r dotenv/config scripts/F.js'), ['scripts/F.js']);
+  assert.deepEqual(scriptsExecutedBy('node --test scripts/B.test.mjs scripts/C.test.mjs'), ['scripts/B.test.mjs', 'scripts/C.test.mjs']);
+  assert.deepEqual(scriptsExecutedBy('node ./scripts/D.js'), ['scripts/D.js']);
+  assert.deepEqual(scriptsExecutedBy('cd x && npx tsx scripts/T.ts | tee out'), ['scripts/T.ts']);
+  assert.deepEqual(scriptsExecutedBy('bash scripts/run.test.sh'), ['scripts/run.test.sh']);
+  assert.deepEqual(scriptsExecutedBy('node scripts/x.sh'), [], 'node does not run .sh');
+  assert.deepEqual(scriptsExecutedBy('echo "Run: node scripts/x.js"'), []);
+  assert.deepEqual(scriptsExecutedBy('FOO=1 node scripts/E.js'), ['scripts/E.js']);
+  assert.deepEqual(joinContinuations(['node \\', 'scripts/E.js', 'echo hi']), ['node scripts/E.js', 'echo hi']);
 });

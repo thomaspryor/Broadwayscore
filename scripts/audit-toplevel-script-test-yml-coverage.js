@@ -234,8 +234,42 @@ function parseJobs(yml) {
   return jobs;
 }
 
-// `node scripts/x.js`, `node --flag scripts/x.js`, `npx tsx scripts/x.ts`
-const RUN_SCRIPT_RE = /\b(?:node|tsx)\s+(?:-{1,2}[\w=.:-]+\s+)*(scripts\/[\w./-]+\.(?:js|mjs|cjs|ts))\b/g;
+// Every `scripts/<file>` operand of a node/tsx/bash/sh command segment, so
+// flag values (`--test-timeout 60000`, `-r dotenv/config`), several files after
+// `node --test`, and `./scripts/x.js` are all caught. Segments are split on
+// shell separators and a segment only counts when it starts with the command
+// (optionally `npx`), so `echo "Run: node scripts/x.js"` text is not a step.
+const SEGMENT_SPLIT_RE = /&&|\|\||;|\|/;
+const COMMAND_RE = /^(?:(?:[A-Za-z_][A-Za-z0-9_]*=\S*|timeout\s+\d+\S*|time|npx|sudo)\s+)*(node|tsx|bash|sh)\s+(.*)$/;
+const SCRIPT_OPERAND_RE = /(?:^|\s|=)(?:\.\/)?(scripts\/[\w./-]+\.(?:js|mjs|cjs|ts|sh))(?=\s|$|['"])/g;
+
+/** Pure: repo-relative scripts a run-step body line executes. */
+function scriptsExecutedBy(line) {
+  const out = [];
+  for (const segment of line.split(SEGMENT_SPLIT_RE)) {
+    const m = segment.trim().match(COMMAND_RE);
+    if (!m) continue;
+    const [, cmd, rest] = m;
+    for (const [, rel] of rest.matchAll(SCRIPT_OPERAND_RE)) {
+      if (rel.endsWith('.sh') ? (cmd === 'bash' || cmd === 'sh') : (cmd === 'node' || cmd === 'tsx')) out.push(rel);
+    }
+  }
+  return out;
+}
+
+/** Pure: join backslash-continued shell lines so a command split across lines
+ * is matched as one. */
+function joinContinuations(lines) {
+  const out = [];
+  let cur = null;
+  for (const l of lines) {
+    const piece = cur === null ? l : `${cur} ${l}`;
+    if (piece.endsWith('\\')) cur = piece.slice(0, -1).trimEnd();
+    else { out.push(piece); cur = null; }
+  }
+  if (cur !== null) out.push(cur);
+  return out;
+}
 
 /** Pure: gaps for scripts a push-running job executes but push.paths misses.
  * `exists(rel)` is injected so tests don't need real files. */
@@ -244,11 +278,8 @@ function findWorkflowRunGaps(yml, pathEntries, exists = (rel) => fs.existsSync(p
   const seen = new Set();
   for (const job of parseJobs(yml)) {
     if (!jobRunsOnPush(job.ifExpr)) continue;
-    for (const line of job.runLines) {
-      // Shell comments and echo/printf text only MENTION a command (the
-      // "Run locally: npx tsx scripts/audit-tony-loso.ts" hint is not a step).
-      if (/^(#|echo\b|printf\b)/.test(line)) continue;
-      for (const [, rel] of line.matchAll(RUN_SCRIPT_RE)) {
+    for (const line of joinContinuations(job.runLines)) {
+      for (const rel of scriptsExecutedBy(line)) {
         if (seen.has(rel) || !exists(rel) || isCovered(rel, pathEntries)) continue;
         seen.add(rel);
         gaps.push({
@@ -351,7 +382,7 @@ function main() {
 module.exports = {
   readManifestEntries, filterToplevelTestEntries, siblingSourcePath, findGaps,
   readTestsDirEntries, filterTestsDirEntries, toplevelScriptDeps,
-  jobRunsOnPush, parseJobs, findWorkflowRunGaps,
+  jobRunsOnPush, parseJobs, findWorkflowRunGaps, scriptsExecutedBy, joinContinuations,
 };
 
 if (require.main === module) main();
