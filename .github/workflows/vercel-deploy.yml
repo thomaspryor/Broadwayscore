@@ -103,7 +103,9 @@ jobs:
     # (~16.5 min, see that step's comment) alongside Build's own 720s worst
     # case — normal runs still finish in ~3 min either way, so this only
     # widens the window before a genuinely hung run is caught.
-    timeout-minutes: 35
+    # BRO-2067: 35->45. Worst case is now (upload 240s + wait 480s) + 2x(240+240)
+    # + 30s backoff = ~28.5 min, plus Build's 720s. Normal runs still ~3 min.
+    timeout-minutes: 45
     concurrency:
       # per-run group intended: GH concurrency queue depth is 1, so a shared
       # "vercel-production-deploy" group cancelled 5+ queued deploys on Beaches
@@ -452,17 +454,37 @@ jobs:
           # ever runs, silently disabling the loop on attempt 1 — the exact
           # bug task #1911 fixed the same way in checkout-core-data/action.yml
           # (see that file's "Guarded with `|| DECISION=...`" comment).
+          #
+          # BRO-2067: deploy with --no-wait and poll the deployment state
+          # ourselves (scripts/vercel-wait-deployment.js). A Vercel-side
+          # CANCELED (burst of pushes, "latest wins") is seen within ~10s
+          # instead of hanging to the attempt timeout. CANCELED + newer commit
+          # on main => superseded: exit 0, the next tick deploys HEAD. CANCELED
+          # with HEAD unchanged => retry like any transient failure.
           MAX_RETRIES=3
+          SUPERSEDED=false
           for ATTEMPT in $(seq 1 $MAX_RETRIES); do
             ATTEMPT_TIMEOUT=480
             if [ "$ATTEMPT" -gt 1 ]; then
               ATTEMPT_TIMEOUT=240
             fi
-            URL=$(timeout "$ATTEMPT_TIMEOUT" npx vercel deploy --prebuilt --prod --archive=split-tgz --meta "reviewsBlobSha=$REVIEWS_BLOB_SHA" --meta "showsBlobSha=$SHOWS_BLOB_SHA" --token=$VERCEL_TOKEN) && status=0 || status=$?
+            URL=$(timeout 240 npx vercel deploy --prebuilt --prod --no-wait --archive=split-tgz --meta "reviewsBlobSha=$REVIEWS_BLOB_SHA" --meta "showsBlobSha=$SHOWS_BLOB_SHA" --token=$VERCEL_TOKEN) && status=0 || status=$?
+            if [ "$status" -eq 0 ]; then
+              node scripts/vercel-wait-deployment.js "$URL" --timeout="$ATTEMPT_TIMEOUT" && status=0 || status=$?
+            fi
             if [ "$status" -eq 0 ]; then
               break
             fi
-            if [ "$status" -eq 124 ]; then
+            if [ "$status" -eq 3 ]; then
+              HEAD_SHA=$(git ls-remote origin refs/heads/main | cut -f1) || HEAD_SHA=""
+              if [ -n "$HEAD_SHA" ] && [ "$HEAD_SHA" != "$GITHUB_SHA" ]; then
+                echo "::notice::Vercel canceled this deployment and main moved on ($GITHUB_SHA -> $HEAD_SHA) — superseded, the next tick deploys HEAD (BRO-2067)"
+                SUPERSEDED=true
+                status=0
+                break
+              fi
+              echo "::warning::vercel deployment CANCELED on attempt $ATTEMPT/$MAX_RETRIES with main unchanged — retrying (BRO-2067)"
+            elif [ "$status" -eq 4 ] || [ "$status" -eq 124 ]; then
               echo "::warning::vercel deploy timed out after ${ATTEMPT_TIMEOUT}s on attempt $ATTEMPT/$MAX_RETRIES (card #90 — possible Vercel-side cancellation hang)"
             else
               echo "::warning::vercel deploy failed (exit $status) on attempt $ATTEMPT/$MAX_RETRIES"
@@ -472,12 +494,12 @@ jobs:
             fi
           done
           if [ "$status" -ne 0 ]; then
-            if [ "$status" -eq 124 ]; then
-              echo "::error::vercel deploy timed out on all $MAX_RETRIES attempts (card #90 — possible Vercel-side cancellation hang)"
-            else
-              echo "::error::vercel deploy failed (exit $status) on all $MAX_RETRIES attempts"
-            fi
+            echo "::error::vercel deploy did not reach READY on all $MAX_RETRIES attempts (last exit $status)"
             exit 1
+          fi
+          if [ "$SUPERSEDED" = "true" ]; then
+            echo "superseded=true" >> "$GITHUB_OUTPUT"
+            exit 0
           fi
           echo "Deployed to production: $URL"
           echo "deployed_at=$(date -u +%Y-%m-%dT%H:%M:%SZ)" >> "$GITHUB_OUTPUT"
@@ -522,6 +544,7 @@ jobs:
           fi
 
       - name: Smoke test production
+        if: steps.deploy.outputs.superseded != 'true'
         run: |
           # Poll until pages return 200, up to 60s (typically <10s)
           check_url() {
@@ -564,13 +587,15 @@ jobs:
           [ $FAIL -eq 0 ] && echo "Smoke test passed — production is live" || exit 1
 
       - name: Setup Playwright
+        if: steps.deploy.outputs.superseded != 'true'
         uses: ./.github/actions/setup-playwright
 
       - name: Content smoke test (Playwright)
+        if: steps.deploy.outputs.superseded != 'true'
         run: npx playwright test --project=chromium tests/e2e/smoke.spec.ts
 
       - name: Dispatch async watermark + stage-latency update
-        if: success()
+        if: success() && steps.deploy.outputs.superseded != 'true'
         continue-on-error: true
         env:
           GH_TOKEN: ${{ github.token }}
@@ -598,7 +623,7 @@ jobs:
             || echo "::warning::Watermark dispatch failed (non-critical)"
 
       - name: Notify search engines of updated sitemap
-        if: success()
+        if: success() && steps.deploy.outputs.superseded != 'true'
         continue-on-error: true
         env:
           GOOGLE_INDEXING_KEY: ${{ secrets.GOOGLE_INDEXING_KEY }}
