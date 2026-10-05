@@ -133,6 +133,17 @@ function sdTranscriptToText(payload) {
  * null (unavailable, failed, or unrecognised payload) so the caller falls
  * back to the watch-page route.
  */
+// /youtube/video nests metadata under `video` ({video:{published_time:"Streamed
+// live on May 20, 2026"}, channel:{...}}, per Scrapingdog's docs). BRO-4760:
+// reading data.published_time at the top level missed it for all 66 videos
+// of the first run.
+function sdVideoPublishedText(data) {
+  if (!data || typeof data !== 'object') return null;
+  const v = data.video || {};
+  return v.published_time || v.publish_date || v.upload_date
+    || data.published_time || data.publish_date || data.upload_date || null;
+}
+
 async function viaScrapingdog(videoId, sdYouTube, { needDate }) {
   const t = await sdYouTube('transcripts', videoId, { language: 'en' });
   if (!t) return null;
@@ -148,8 +159,8 @@ async function viaScrapingdog(videoId, sdYouTube, { needDate }) {
   let publishedAt = null;
   if (needDate && transcript) {
     const v = await sdYouTube('video', videoId, {});
-    if (v && v.data) publishedAt = publishedTimeToYmd(v.data.published_time || v.data.publish_date || v.data.upload_date);
-    if (!publishedAt) console.log(`  ⚠️  No upload date for ${videoId} from Scrapingdog /youtube/video (${v ? (v.error || JSON.stringify(v.data && v.data.published_time)) : 'unavailable'})`.slice(0, 220));
+    if (v && v.data) publishedAt = publishedTimeToYmd(sdVideoPublishedText(v.data));
+    if (!publishedAt) console.log(`  ⚠️  No upload date for ${videoId} from Scrapingdog /youtube/video (${v ? (v.error || `keys=${Object.keys(v.data || {}).join(',')} video=${JSON.stringify(v.data && v.data.video && v.data.video.published_time)}`) : 'unavailable'})`.slice(0, 220));
   }
   return { transcript, publishedAt, source: 'scrapingdog-youtube' };
 }
@@ -194,4 +205,4 @@ async function fetchYouTubeTranscript(videoId, fetchers = {}, opts = {}) {
   return { transcript: json3ToText(payload), publishedAt, source: page.source };
 }
 
-module.exports = { parsePlayerResponse, pickCaptionTrack, json3ToText, toYmd, publishedTimeToYmd, sdTranscriptToText, fetchYouTubeTranscript, sliceJsonObject };
+module.exports = { parsePlayerResponse, pickCaptionTrack, json3ToText, toYmd, publishedTimeToYmd, sdTranscriptToText, sdVideoPublishedText, fetchYouTubeTranscript, sliceJsonObject };

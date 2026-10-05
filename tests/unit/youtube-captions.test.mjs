@@ -59,7 +59,7 @@ test('end to end with injected fetchers; bot wall throws an ERROR: message', asy
 });
 
 // BRO-4665: Scrapingdog's /youtube/transcripts API is tried before the watch page.
-const { publishedTimeToYmd, sdTranscriptToText } = require('../../scripts/lib/youtube-captions.js');
+const { publishedTimeToYmd, sdTranscriptToText, sdVideoPublishedText } = require('../../scripts/lib/youtube-captions.js');
 
 test('Scrapingdog published_time variants parse to YYYYMMDD', () => {
   assert.equal(publishedTimeToYmd('May 20, 2026'), '20260520');
@@ -74,6 +74,13 @@ test('Scrapingdog published_time variants parse to YYYYMMDD', () => {
   assert.equal(publishedTimeToYmd(undefined), null);
 });
 
+test('sdVideoPublishedText reads the nested video.published_time (BRO-4760)', () => {
+  assert.equal(sdVideoPublishedText({ video: { published_time: 'May 20, 2026' }, channel: {} }), 'May 20, 2026');
+  assert.equal(sdVideoPublishedText({ published_time: 'May 20, 2026' }), 'May 20, 2026');
+  assert.equal(sdVideoPublishedText({ video: {} }), null);
+  assert.equal(sdVideoPublishedText(null), null);
+});
+
 test('Scrapingdog transcript payload to text decodes entities, drops [Music] and repeats', () => {
   assert.equal(sdTranscriptToText({ transcripts: [{ text: 'it&#39;s [Music] great' }, { text: 'it&#39;s great' }, { text: 'show &amp; tell' }] }), "it's great show & tell");
   assert.equal(sdTranscriptToText({ transcripts: [] }), '');
@@ -86,7 +93,8 @@ test('Scrapingdog route wins, fetching the date only when asked', async () => {
     calls.push(kind);
     return kind === 'transcripts'
       ? { data: { transcripts: [{ text: 'A great show', start: 0, duration: 1 }] } }
-      : { data: { published_time: 'Sep 10, 2026' } };
+      // Documented shape: metadata nests under `video` (BRO-4760).
+      : { data: { video: { title: 'x', published_time: 'Streamed live on Sep 10, 2026' }, channel: {} } };
   };
   const fetchPage = async () => { throw new Error('watch page must not be fetched'); };
   const r = await fetchYouTubeTranscript('abc', { sdYouTube, fetchPage });
