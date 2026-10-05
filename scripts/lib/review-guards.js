@@ -1187,6 +1187,19 @@ function getWrongProductionReasonForBww(review, show) {
  * @returns {boolean}
  */
 function urlTitleWordsPass(lowerUrl, showTitle) {
+  // BRO-4715: a slash-joined title ("Kramer/Fauci") is slugged by outlets as
+  // "kramer-fauci" but the char filter below collapses it to "kramerfauci",
+  // which never matches. Accept either the split or the joined form. The split
+  // form only counts when it still has >=2 meaningful words (so "AC/DC" can't
+  // fail-open to "accept any URL").
+  if (typeof showTitle === 'string' && showTitle.includes('/')) {
+    const meaningful = (t) => t.toLowerCase().normalize('NFD').replace(/\p{Diacritic}/gu, '')
+      .replace(/[^a-z0-9\s-]/g, '').split(/\s+/).filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
+    const split = showTitle.replace(/\//g, ' ');
+    const joined = showTitle.replace(/\//g, '');
+    if (meaningful(split).length >= 2 && urlTitleWordsPass(lowerUrl, split)) return true;
+    return urlTitleWordsPass(lowerUrl, joined);
+  }
   // NFD-normalize + strip diacritics BEFORE the [^a-z0-9\s] filter.
   // Otherwise "Último" tokenizes to ["ltimo"] (the char filter removed the
   // accented Ú leaving a meaningless fragment) and downstream slug matching

@@ -257,29 +257,22 @@ const SITE_SEARCH_ENDPOINTS = {
     name: 'Vulture',
     domain: 'vulture.com',
     requiresJs: true,
-    // Section page lists recent theater articles chronologically.
-    // Review URLs contain /article/theater-review- or /article/review-.
-    // urlLooksLikeReview filters to the polled show via URL title matching.
+    // Section page lists recent theater articles chronologically. Review slugs
+    // are NOT reliably marked "review" (BRO-4715: kramer-fauci-daniel-fish-play-
+    // st-anns-nyc, oneill-the-hairy-ape-irish-rep-oreilly), so extraction keeps
+    // every article link minus obvious non-reviews; urlLooksLikeReview then
+    // title-matches the polled show downstream.
     fetchAndParse: async () => {
-      const html = await fetchWithScrapingBee('https://www.vulture.com/theater/', 45000);
-      // Extract article links — Vulture uses both protocol-relative and absolute URLs
-      const pattern = /href="((?:https?:)?\/\/(?:www\.)?vulture\.com\/article\/[^"]+)"/gi;
-      const urls = [];
-      let m;
-      while ((m = pattern.exec(html)) !== null) {
-        let url = m[1];
-        // Normalize protocol-relative URLs
-        if (url.startsWith('//')) url = 'https:' + url;
-        urls.push(url);
-      }
-      const unique = [...new Set(urls)];
-      // Zero-links guard: detect structural changes early
-      if (unique.length === 0) {
+      // fetchPage (Bright Data -> SB -> ...) rather than a raw SB render: the
+      // SB-only path returned [] silently whenever SB failed or ran out of credits.
+      const { fetchPage } = require('./scraper');
+      const page = await fetchPage('https://www.vulture.com/theater/', { outletId: 'vulture' });
+      const html = (page && page.content) || '';
+      const urls = extractVultureTheaterArticleUrls(html);
+      if (urls.length === 0) {
         console.warn('    Site search [Vulture]: WARNING — section page returned 0 links (possible structural change)');
       }
-      // Filter to review articles — Vulture review URLs contain "theater-review" or "review"
-      const reviewUrls = unique.filter(u => /theater-review|\/review-|\/article\/review/.test(u));
-      return reviewUrls;
+      return urls;
     },
   },
 
@@ -1117,6 +1110,30 @@ function fetchJSON(url, options = {}, timeoutMs = 15000) {
 /**
  * Fetch with ScrapingBee (for JS-rendered search pages)
  */
+/**
+ * Pure: article URLs from the HTML of https://www.vulture.com/theater/.
+ * Accepts protocol-relative/absolute hrefs and bare-URL text, strips query/hash,
+ * dedupes, and drops slugs that are plainly not reviews (interviews, tributes,
+ * schedules, obituaries...). Title matching is the caller's job (urlLooksLikeReview).
+ * @param {string} html
+ * @returns {string[]}
+ */
+function extractVultureTheaterArticleUrls(html) {
+  if (!html || typeof html !== 'string') return [];
+  const NON_REVIEW_SLUG = /interview|questionnaire|first-person|tribute|\bdead\b|-dies-|obituar|schedule|announcement|about-us|podcast|-recap|season-preview|creation-stories/;
+  const out = new Set();
+  const re = /(?:https?:)?\/\/(?:www\.)?vulture\.com\/article\/[a-z0-9][a-z0-9-]*\.html/gi;
+  let m;
+  while ((m = re.exec(html)) !== null) {
+    let url = m[0];
+    if (url.startsWith('//')) url = 'https:' + url;
+    url = url.replace(/^http:/, 'https:');
+    if (NON_REVIEW_SLUG.test(url.toLowerCase())) continue;
+    out.add(url);
+  }
+  return [...out];
+}
+
 function fetchWithScrapingBee(url, timeoutMs = 30000) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_KEY) return reject(new Error('No ScrapingBee key'));
@@ -1353,6 +1370,7 @@ module.exports = {
   searchOutletSite,
   selectApplicableSiteSearchOutlets,
   SITE_SEARCH_ENDPOINTS,
+  extractVultureTheaterArticleUrls,
   urlLooksLikeReview,
   operaTitleWords,
   filterOperaUrls,
