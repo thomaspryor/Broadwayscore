@@ -173,7 +173,7 @@ function isExplicitLink(run, older) {
  */
 function windowRunFor(run, sibling) {
   if (run && typeof run === 'object' && run.openingDate) return run;
-  return { openingDate: ymd(sibling.openingDate), closingDate: ymd(sibling.closingDate) || undefined, venue: sibling.venue };
+  return { openingDate: ymd(sibling.openingDate), closingDate: ymd(sibling.closingDate) || undefined };
 }
 
 /**
