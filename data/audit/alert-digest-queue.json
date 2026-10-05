@@ -699,5 +699,34 @@
       }
     ],
     "queuedAt": "2026-10-05T05:59:40.327Z"
+  },
+  {
+    "conditionKey": "land:land/worktree-bro-4668-e2e-await-deploy",
+    "title": "Landing blocked: rebase red on land/worktree-bro-4668-e2e-await-deploy",
+    "description": "land.yml did not land land/worktree-bro-4668-e2e-await-deploy: the rebase gate went red at b96e45d76f. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/worktree-bro-4668-e2e-await-deploy @ b96e45d76f (origin/land/worktree-bro-4668-e2e-await-deploy) → origin/main @ 6d4a214dea REFUSED: rebase: branch would not rebase cleanly onto origin/main @ 6d4a214dea: Rebasing (1/2) Rebasing (2/2) error: could not apply b96e45d76f1... fix(e2e): judge the whole undeployed diff, survive Vercel blips, widen site paths (BRO-4668 review) hint: Resolve al Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37259496468",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/worktree-bro-4668-e2e-await-deploy"
+      },
+      {
+        "name": "gate",
+        "value": "rebase"
+      },
+      {
+        "name": "tip",
+        "value": "b96e45d76f102c544f9e775477688ba53fb96e44"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37259496468"
+      }
+    ],
+    "queuedAt": "2026-10-05T06:03:55.755Z"
   }
 ]
