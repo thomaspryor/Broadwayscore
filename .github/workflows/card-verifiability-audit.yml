@@ -113,9 +113,9 @@ jobs:
           # broken once already (audit-imageless-scored-shows.yml, 2026-08-31).
           LINEAR_API_KEY: ${{ secrets.LINEAR_API_KEY }}
         run: |
-          node scripts/audit-card-verifiability.js
+          node scripts/audit-card-verifiability.js --source notion
           node scripts/enrich-card-acceptance.js --from-report --source both --limit 25
-          node scripts/audit-card-verifiability.js
+          node scripts/audit-card-verifiability.js --source notion
 
       - name: Commit refreshed report
         if: always()
