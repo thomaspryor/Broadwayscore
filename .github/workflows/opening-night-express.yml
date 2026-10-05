@@ -530,21 +530,27 @@ jobs:
       # on disk and commit just the retry queue so the same-night retry still
       # exists. Idempotent: enqueueRetry never double-queues a show.
       - name: Queue same-night retry after failed run
-        if: failure() && inputs.dry_run != true
+        # cancelled() covers the job's own 90-min timeout (reports "cancelled").
+        # show_meta success skips early aborts (paused orchestrator, bad
+        # checkout, unknown show) where a retry would hit the same abort.
+        if: (failure() || cancelled()) && inputs.dry_run != true && steps.show_meta.outcome == 'success'
         continue-on-error: true
         env:
-          PUSH_DEADLINE_SEC: '300'
+          PUSH_DEADLINE_SEC: '120'
           GIT_NET_TIMEOUT_SEC: '30'
         run: |
           node scripts/express-retry-queue.js evaluate \
             --show="${{ inputs.show_id }}" \
             --market="${{ inputs.market }}" \
             --is-retry="${{ inputs.is_retry }}" \
-            --retry-delay-hours="${{ inputs.retry_delay_hours }}"
+            --retry-delay-hours="${{ inputs.retry_delay_hours }}" \
+            || echo "::warning::BRO-2402 failure-path retry evaluate failed — no same-night retry queued"
           if git status --porcelain data/audit/express-retry-queue.json | grep -q .; then
             git config --local user.email "github-actions[bot]@users.noreply.github.com"
             git config --local user.name "github-actions[bot]"
             git add data/audit/express-retry-queue.json
+            # retry runs route a still-thin digest alert; persist its ledger too
+            git add data/audit/alert-ledger.json data/audit/alert-digest-queue.json 2>/dev/null || true
             git commit -m "data: Express retry queued after failed run — ${{ inputs.show_id }} [skip ci]"
             bash scripts/lib/push-with-retry.sh
           fi

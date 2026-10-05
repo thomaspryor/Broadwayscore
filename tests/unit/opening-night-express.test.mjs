@@ -53,7 +53,8 @@ test('workflow queues the retry even when gather/collect fail (BRO-2402)', () =>
   );
   assert.ok(m, 'failure-path retry step missing from opening-night-express.yml');
   const step = m[1];
-  assert.match(step, /if: failure\(\) && inputs\.dry_run != true/);
+  assert.match(step, /if: \(failure\(\) \|\| cancelled\(\)\) && inputs\.dry_run != true && steps\.show_meta\.outcome == 'success'/);
+  assert.match(step, /alert-ledger\.json/);
   assert.match(step, /express-retry-queue\.js evaluate/);
   assert.match(step, /git add data\/audit\/express-retry-queue\.json/);
   assert.match(step, /push-with-retry\.sh/);
