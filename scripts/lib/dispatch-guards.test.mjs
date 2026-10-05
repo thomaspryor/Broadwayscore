@@ -455,6 +455,7 @@ test('fresh-dispatch callers pass the ledger to findLiveWorkspaceForTask', () =>
 
 // BRO-1703: a dead 🤖 shell must not block its own card's relaunch, but a
 // booting/unmapped/other-task tab must keep blocking (positive proof only).
+const dead0 = () => ({ event: 'dead', taskId: '501', workspaceRef: 'workspace:78', ts: '2026-10-05T10:00:00.000Z' });
 test('findLiveWorkspaceForTask + makeProvablyDeadFn: only provably dead shells stop blocking', () => {
   const isDone = t => t.startsWith('✅');
   const task = { id: '501', subject: 'Lint guard cousin --help flag handling gap' };
@@ -463,7 +464,7 @@ test('findLiveWorkspaceForTask + makeProvablyDeadFn: only provably dead shells s
   const dead = { event: 'dead', taskId: '501', workspaceRef: 'workspace:78', ts: '2026-10-05T10:05:00.000Z' };
   const cmuxDead = () => false;   // claudeAliveIn / terminalSurfaceAliveIn: no
   const cmuxAlive = () => true;
-  const mk = (ledger, c = cmuxDead, s = cmuxDead) => makeProvablyDeadFn({ task, ledgerEntries: ledger, claudeAliveInFn: c, surfaceAliveInFn: s });
+  const mk = (ledger, c = cmuxDead, s = cmuxDead, w = null) => makeProvablyDeadFn({ task, ledgerEntries: ledger, claudeAliveInFn: c, surfaceAliveInFn: s, isWrapperAlive: w });
   const find = (ledger, fn) => findLiveWorkspaceForTask(task, [ws], isDone, ledger, fn);
   // no predicate: legacy behavior, matches
   assert.equal(find([launch, dead]), ws);
@@ -479,6 +480,13 @@ test('findLiveWorkspaceForTask + makeProvablyDeadFn: only provably dead shells s
   // ledger says dead but cmux now shows claude alive => blocks
   assert.equal(find([launch, dead], mk([launch, dead], cmuxAlive, cmuxDead)), ws);
   assert.equal(find([launch, dead], mk([launch, dead], cmuxDead, cmuxAlive)), ws);
+  // wrapper process still running (marker in ps) => blocks, even with ledger death + cmux dead
+  const markedLaunch = { ...launch, marker: 'seed-abc' };
+  assert.equal(find([markedLaunch, dead], mk([markedLaunch, dead], cmuxDead, cmuxDead, m => m === 'seed-abc')), ws);
+  assert.equal(find([markedLaunch, dead], mk([markedLaunch, dead], cmuxDead, cmuxDead, () => false)), null);
+  // an older attempt's death 30s before a newer launch on the same ref must not cover it
+  const newerLaunch = { ...launch, ts: '2026-10-05T10:00:30.000Z' };
+  assert.equal(find([dead0(), newerLaunch], mk([dead0(), newerLaunch])), ws);
   // an old death from a recycled ref's previous occupant does not exempt a newer launch
   const oldDead = { ...dead, ts: '2026-10-01T00:00:00.000Z' };
   assert.equal(find([oldDead, launch], mk([oldDead, launch])), ws);

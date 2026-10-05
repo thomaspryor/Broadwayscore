@@ -165,11 +165,12 @@ function safeIsDead(fn, w) {
 //      latest launch on it, and that launch is for THIS task (deadBreadcrumbs /
 //      failedLaunchEntries only write it after the wrapper-process cross-check,
 //      BRO-2575), and
-//   2. cmux still says dead right now (both signals, checkLiveness).
+//   2. cmux still says dead right now (both signals, checkLiveness), and
+//   3. the launch's wrapper process is not in the OS process table.
 // Unmapped tabs, pre-marker launches, other tasks' occupants, ledger outages
 // and probe throws all stay blocking. Pure given its injected probes.
-const DEAD_BEFORE_LAUNCH_SKEW_MS = 60 * 1000;
-function makeProvablyDeadFn({ task, ledgerEntries, claudeAliveInFn, surfaceAliveInFn, onIgnored = null }) {
+const DEAD_BEFORE_LAUNCH_SKEW_MS = 5 * 1000;
+function makeProvablyDeadFn({ task, ledgerEntries, claudeAliveInFn, surfaceAliveInFn, isWrapperAlive = null, onIgnored = null }) {
   if (!Array.isArray(ledgerEntries) || task == null || task.id == null) return () => false;
   return (w) => {
     const launch = dispatchLedger.launchByRef(w.ref, ledgerEntries);
@@ -186,6 +187,11 @@ function makeProvablyDeadFn({ task, ledgerEntries, claudeAliveInFn, surfaceAlive
     const deadTs = deadRow ? Date.parse(deadRow.ts || '') : NaN;
     if (!Number.isFinite(deadTs) || deadTs < launchTs - DEAD_BEFORE_LAUNCH_SKEW_MS) return false;
     if (!cmuxws.checkLiveness(w.ref, claudeAliveInFn, surfaceAliveInFn).dead) return false;
+    // Third signal (BRO-2575): both cmux probes share one daemon and fail
+    // together in a blackout, and an old false 'dead' row can predate the
+    // wrapper check. A launch wrapper still in the OS process table vouches
+    // for life and keeps the shell blocking.
+    if (dispatchLedger.wrapperVouchesAlive(launch, isWrapperAlive)) return false;
     if (onIgnored) { try { onIgnored(w); } catch { /* reporting must not change the verdict */ } }
     return true;
   };
