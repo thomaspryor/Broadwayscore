@@ -1,66 +1,36 @@
 {
-  "processed": [
-    "hamilton-tour-2024/nytimes--unknown.json",
-    "hamilton-tour-2024/observer--david-cote.json",
-    "hamilton-tour-2024/timeout--unknown.json",
-    "hamilton-tour-2024/broadwayworld--richard-sasanow.json",
-    "hamilton-tour-2024/latimes--unknown.json",
-    "the-lion-king-tour-2021/nytg--unknown.json",
-    "the-lion-king-tour-2021/nytimes--unknown.json",
-    "the-lion-king-tour-2021/thewrap--robert-hofler.json",
-    "the-lion-king-tour-2021/theatrely--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "hamilton-tour-2024/guardian--alexis-soloski.json"
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json"
   ],
   "skipped": [],
   "tierBreakdown": {
-    "playwright": [
-      "hamilton-tour-2024/timeout--unknown.json",
-      "the-lion-king-tour-2021/nytg--unknown.json",
-      "the-lion-king-tour-2021/theatrely--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
-    "scrapingdog": [],
-    "scrapingbee": [],
-    "brightdata": [
-      "hamilton-tour-2024/observer--david-cote.json",
-      "hamilton-tour-2024/broadwayworld--richard-sasanow.json",
-      "the-lion-king-tour-2021/thewrap--robert-hofler.json"
+    "scrapingdog": [
+      "whos-afraid-of-virginia-woolf-west-end-2026/ground--unknown.json"
     ],
+    "scrapingbee": [],
+    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "hamilton-tour-2024/nytimes--unknown.json",
-      "hamilton-tour-2024/latimes--unknown.json",
-      "the-lion-king-tour-2021/nytimes--unknown.json"
-    ]
+    "archive": []
   },
-  "startTime": "2026-10-05T01:05:38.404Z",
-  "lastProcessed": "the-lion-king-tour-2021/theatrely--unknown.json",
+  "startTime": "2026-10-05T01:41:48.379Z",
+  "lastProcessed": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json",
   "log": [
     {
-      "t": "2026-10-05T01:05:47.776Z",
+      "t": "2026-10-05T01:42:09.911Z",
       "event": "bb-session",
-      "session": "19932cc8",
-      "url": "https://www.nytimes.com/2025/01/18/opinion/hamilton-musical-history.html"
+      "session": "37a7d054",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     },
     {
-      "t": "2026-10-05T01:05:48.761Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
-    },
-    {
-      "t": "2026-10-05T01:06:07.272Z",
+      "t": "2026-10-05T01:42:18.338Z",
       "event": "bb-session",
-      "session": "1fe23095",
-      "url": "https://www.nytimes.com/2025/01/18/opinion/hamilton-musical-history.html"
-    },
-    {
-      "t": "2026-10-05T01:06:08.148Z",
-      "event": "bb-cookie-inject",
-      "domain": "nytimes.com"
+      "session": "b75b071b",
+      "url": "https://www.theatrereviews.com/tag/hairy-ape/"
     }
   ]
 }

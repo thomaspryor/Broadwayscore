@@ -1,99 +1,77 @@
 {
-  "runDate": "2026-10-05T01:09:05.503Z",
+  "runDate": "2026-10-05T01:43:38.297Z",
   "config": {
     "batchSize": 10,
     "maxReviews": 100,
     "priority": "all",
-    "showFilter": "hamilton-tour-2024,the-lion-king-tour-2021",
+    "showFilter": "the-hairy-ape-irish-repertory-theatre-off-broadway-2026",
     "aggressive": false,
     "scrapingBeeEnabled": true,
     "brightDataEnabled": true,
     "stealthPluginLoaded": true
   },
   "summary": {
-    "processed": 9,
+    "processed": 0,
     "failed": 1,
     "skipped": 0,
-    "successRate": "90.0%"
+    "successRate": "0%"
   },
   "tierBreakdown": {
-    "playwright": 3,
+    "playwright": 0,
     "amp": 0,
     "browserbase": 0,
     "directCookies": 0,
     "scrapingdog": 0,
     "scrapingbee": 0,
-    "brightdata": 3,
+    "brightdata": 0,
     "archiveToday": 0,
-    "archive": 3
+    "archive": 0
   },
   "statistics": {
-    "tier1Attempts": 3,
-    "tier1Success": 3,
+    "tier1Attempts": 1,
+    "tier1Success": 0,
     "ampAttempts": 0,
     "ampSuccess": 0,
     "tier1_5Attempts": 2,
     "tier1_5Success": 0,
-    "tier1_9Attempts": 0,
+    "tier1_9Attempts": 1,
     "tier1_9Success": 0,
     "tier2Attempts": 1,
     "tier2Success": 0,
-    "tier3Attempts": 3,
-    "tier3Success": 3,
-    "tier3_6Attempts": 0,
+    "tier3Attempts": 1,
+    "tier3Success": 0,
+    "tier3_6Attempts": 1,
     "tier3_6Success": 0,
-    "tier4Attempts": 3,
-    "tier4Success": 3,
+    "tier4Attempts": 1,
+    "tier4Success": 0,
     "totalFailed": 1,
     "scrapingBeePageCredits": 0,
     "scrapingBeeSerpCredits": 0,
     "browserbaseSessionsUsed": 2,
-    "browserbaseMinutesUsed": 1.3,
+    "browserbaseMinutesUsed": 0.6,
     "urlDiscoveryAttempts": 0,
     "urlDiscoverySuccess": 0,
     "urlDiscoveryCapped": 0
   },
-  "processed": [
-    "hamilton-tour-2024/nytimes--unknown.json",
-    "hamilton-tour-2024/observer--david-cote.json",
-    "hamilton-tour-2024/timeout--unknown.json",
-    "hamilton-tour-2024/broadwayworld--richard-sasanow.json",
-    "hamilton-tour-2024/latimes--unknown.json",
-    "the-lion-king-tour-2021/nytg--unknown.json",
-    "the-lion-king-tour-2021/nytimes--unknown.json",
-    "the-lion-king-tour-2021/thewrap--robert-hofler.json",
-    "the-lion-king-tour-2021/theatrely--unknown.json"
-  ],
+  "processed": [],
   "failed": [
-    "hamilton-tour-2024/guardian--alexis-soloski.json"
+    "the-hairy-ape-irish-repertory-theatre-off-broadway-2026/theatre-reviews-limited--unknown.json"
   ],
   "tierDetails": {
-    "playwright": [
-      "hamilton-tour-2024/timeout--unknown.json",
-      "the-lion-king-tour-2021/nytg--unknown.json",
-      "the-lion-king-tour-2021/theatrely--unknown.json"
-    ],
+    "playwright": [],
     "amp": [],
     "browserbase": [],
     "directCookies": [],
     "scrapingdog": [],
     "scrapingbee": [],
-    "brightdata": [
-      "hamilton-tour-2024/observer--david-cote.json",
-      "hamilton-tour-2024/broadwayworld--richard-sasanow.json",
-      "the-lion-king-tour-2021/thewrap--robert-hofler.json"
-    ],
+    "brightdata": [],
     "archiveToday": [],
-    "archive": [
-      "hamilton-tour-2024/nytimes--unknown.json",
-      "hamilton-tour-2024/latimes--unknown.json",
-      "the-lion-king-tour-2021/nytimes--unknown.json"
-    ]
+    "archive": []
   },
   "failuresByOutlet": {
-    "The Guardian": {
+    "Theatre Reviews Limited": {
       "count": 1,
-      "domain": "theguardian.com",
+      "domain": "theatrereviews.com",
       "hasCredentials": false,
       "isPaywalled": false,
       "isKnownBlocked": false
