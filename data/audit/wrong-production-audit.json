@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T18:46:17.922Z",
+  "timestamp": "2026-10-05T19:33:12.074Z",
   "stats": {
-    "totalReviews": 46375,
-    "alreadyFlagged": 18694,
+    "totalReviews": 46376,
+    "alreadyFlagged": 18668,
     "dateGuardCatches": 269,
-    "directorMismatch": 1265,
+    "directorMismatch": 1280,
     "tvFilmSignals": 1344,
     "londonSignals": 1277,
     "offBroadwaySignals": 510,
-    "yearMismatch": 109,
-    "noPublishDate": 4301
+    "yearMismatch": 110,
+    "noPublishDate": 4304
   },
   "findings": [
     {
@@ -172,6 +172,20 @@
       "score": 82,
       "publishDate": "2025-06-25",
       "url": "https://www.broadwayworld.com/phoenix/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Broadway-In-Tucson-20250625",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "patch--nancy-sasso-janis.json",
+      "score": 77,
+      "publishDate": null,
+      "url": "https://patch.com/connecticut/hartford/theater-review-beautiful-noise-tour-bushnell",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -16214,6 +16228,7 @@
     {
       "showId": "into-the-woods-noel-coward-west-end-2026",
       "file": "times-uk--clive-davis.json",
+      "score": 96,
       "publishDate": "2025-12-12",
       "url": null,
       "findings": [
@@ -27363,6 +27378,96 @@
       ]
     },
     {
+      "showId": "spamalot-tour-2025",
+      "file": "albany-times-union--katherine-kiessling.json",
+      "publishDate": "2026-01-07",
+      "url": "https://www.timesunion.com/theater/article/spamalot-review-proctors-21268648.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "chicago-reader--justin-hayford.json",
+      "score": null,
+      "publishDate": "2026-05-21",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/spamalot-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "hartford-courant--christopher-arnott.json",
+      "score": 78,
+      "publishDate": "2025-12-11",
+      "url": "https://www.courant.com/2025/12/11/theater-review-overstuffed-spamalot-at-the-bushnell-tries-anything-to-make-you-laugh/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        },
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"mike nichols\" from spamalot-2005"
+        },
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2005 (2x) more than 2025 (1x). 2005 matches production: spamalot-2005"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "roc-city-mag--david-andreatta.json",
+      "publishDate": "2026-01-14",
+      "url": "https://www.roccitymag.com/arts-entertainment/theater/review-monty-pythons-spamalot-is-not-dead-yet/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "san-jose-mercury-news--jim-harrington.json",
+      "publishDate": "2026-03-07",
+      "url": "https://www.mercurynews.com/2026/03/06/review-new-spamalot-broadway-tour-proves-to-be-a-huge-winner/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
+      "showId": "spamalot-tour-2025",
+      "file": "splash-magazines--beverly-cohn.json",
+      "publishDate": "2026-03-31",
+      "url": "https://splashmags.com/2026/03/spamalot-brings-the-house-down-on-opening-night-at-the-pantages/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"josh rhodes\" from spamalot-2023"
+        }
+      ]
+    },
+    {
       "showId": "spellbound-off-broadway-2026",
       "file": "times-square-chronicles--suzanna-bowling.json",
       "score": 91,
@@ -28081,6 +28186,19 @@
       "score": 86,
       "publishDate": "2026-04-09",
       "url": "https://www.startribune.com/should-women-vote-suffs-shows-a-past-and-current-fight/601664006",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"leigh silverman\" from suffs-2024"
+        }
+      ]
+    },
+    {
+      "showId": "suffs-tour-2025",
+      "file": "san-diego-union-tribune--pam-kragen.json",
+      "publishDate": "2025-10-02",
+      "url": "https://www.sandiegouniontribune.com/2025/10/02/review-beautifully-sung-and-staged-suffs-tour-feels-right-on-time/",
       "findings": [
         {
           "type": "DIRECTOR_MISMATCH",
@@ -31649,6 +31767,20 @@
     },
     {
       "showId": "the-great-gatsby-tour-2026",
+      "file": "austin-american-statesman--michael-barnes.json",
+      "score": 75,
+      "publishDate": "2026-03-12",
+      "url": "https://www.statesman.com/entertainment/arts/article/austin-great-gatsby-musical-broadway-tour-22071169.php",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
       "file": "broadwayworld--david-friscic.json",
       "score": 74,
       "publishDate": "2026-05-19",
@@ -31663,6 +31795,19 @@
           "type": "LONDON_SIGNAL",
           "severity": "MEDIUM",
           "detail": "Mentions London venue: \"national theatre\""
+        }
+      ]
+    },
+    {
+      "showId": "the-great-gatsby-tour-2026",
+      "file": "chicago-reader--kerry-reid.json",
+      "publishDate": "2026-04-29",
+      "url": "https://chicagoreader.com/performing-arts/theater/theater-review/great-gatsby-broadway-in-chicago/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"marc bruni\" from the-great-gatsby-2024"
         }
       ]
     },
@@ -32233,6 +32378,62 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"netflix\""
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "file": "akron-beacon-journal--kerry-clawson.json",
+      "score": 88,
+      "publishDate": "2021-10-07",
+      "url": "https://www.beaconjournal.com/story/entertainment/arts/2021/10/07/joy-of-lion-king-brings-just-the-needed-jolt-to-theatergoers-at-playhouse-square/6020993001/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "file": "dc-theater-arts--constance-beulah.json",
+      "score": null,
+      "publishDate": "2023-06-28",
+      "url": "https://dctheaterarts.org/2025/02/14/phenomenal-the-lion-king-is-pure-joy-at-the-hippodrome-in-baltimore/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "file": "nippertown--bill-kellert.json",
+      "score": 88,
+      "publishDate": "2023-08-05",
+      "url": "https://nippertown.com/2023/08/05/hakuna-matata-means-no-worries-at-proctors-stunning-disneys-the-lion-king/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
+        }
+      ]
+    },
+    {
+      "showId": "the-lion-king-tour-2021",
+      "file": "south-florida-sun-sentinel--stafford-hagwood.json",
+      "score": 73,
+      "publishDate": "2025-03-08",
+      "url": "https://www.sun-sentinel.com/2025/03/08/review-the-lion-king-still-deserves-its-roars/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
         }
       ]
     },

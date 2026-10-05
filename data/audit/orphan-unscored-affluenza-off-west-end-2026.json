@@ -2,26 +2,9 @@
   "version": 1,
   "showId": "affluenza-off-west-end-2026",
   "openingDate": "2026-10-05",
-  "detectedAt": "2026-10-05T18:46:06.598Z",
+  "detectedAt": "2026-10-05T19:33:02.994Z",
   "windowDays": 7,
   "orphans": [
-    {
-      "file": "timeout-london--unknown.json",
-      "outletId": "timeout-london",
-      "criticName": "Unknown",
-      "url": "https://www.timeout.com/london/theatre/affluenza",
-      "fullTextLen": 1799,
-      "dispatchActionable": true,
-      "skipReason": null,
-      "rescoreBlockedReason": null,
-      "humanReviewScore": null,
-      "adjudicatedScore": null,
-      "originalScore": null,
-      "originalScoreNormalized": null,
-      "llmScore": null,
-      "contentTier": "truncated",
-      "eligibilityReason": null
-    },
     {
       "file": "trustpilot--john-taggart.json",
       "outletId": "trustpilot",
@@ -40,10 +23,10 @@
       "eligibilityReason": null
     }
   ],
-  "orphanCount": 2,
-  "dispatchableOrphanCount": 1,
+  "orphanCount": 1,
+  "dispatchableOrphanCount": 0,
   "blockedOrphanCount": 1,
   "blockBroadcast": true,
-  "lastDispatch": "suppressed-cooldown",
+  "lastDispatch": "suppressed-no-actionable-orphans",
   "lastDispatchAt": null
 }
