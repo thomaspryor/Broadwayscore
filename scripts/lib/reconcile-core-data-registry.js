@@ -53,15 +53,18 @@ function main() {
 
       const result = entry.merge(ours, remote);
       const after = JSON.stringify(result.merged, null, 2) + (entry.newline === false ? '' : '\n');
+      // Audit BEFORE the unchanged-bytes early exit: the common production shape
+      // is a clean local file plus a remote-only fossil the merge declines to
+      // carry, which leaves local bytes identical but is still a deletion
+      // decision worth a durable record (BRO-2918). Fail open.
+      try {
+        const tomb = writeTombstones(TOMBSTONE_DIR, buildTombstoneRows(localFile, result.stats));
+        if (tomb) changedFiles.push(tomb);
+      } catch (te) { console.error(`  ::warning::tombstone write failed, deletion evidence is log-only (${String(te.message).slice(0, 120)})`); }
       if (after === before) continue;
 
       fs.writeFileSync(localFile, after);
       changedFiles.push(localFile);
-      // Durable provenance for rows the merge deleted (BRO-2918); fail open.
-      try {
-        const tomb = writeTombstones(TOMBSTONE_DIR, buildTombstoneRows(localFile, result.stats));
-        if (tomb) changedFiles.push(tomb);
-      } catch (te) { console.error(`  ::warning::tombstone write failed (${String(te.message).slice(0, 120)})`); }
       console.error(`  reconciled ${localFile} — ${JSON.stringify(result.stats)}`);
     } catch (e) {
       // Fail OPEN, loudly enough to debug but never blocking.

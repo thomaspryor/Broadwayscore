@@ -25,6 +25,10 @@ function buildTombstoneRows(sourceFile, stats, now = new Date()) {
     outlet: k.outlet,
     url: k.url,
     supersededBy: k.supersededBy,
+    // An attempted reconciliation, not proof the row is absent from the final
+    // pushed state (the push action retries); run/attempt let a reader order them.
+    runId: process.env.GITHUB_RUN_ID || null,
+    runAttempt: process.env.GITHUB_RUN_ATTEMPT || null,
   }));
 }
 

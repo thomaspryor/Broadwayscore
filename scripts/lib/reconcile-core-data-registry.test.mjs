@@ -134,10 +134,13 @@ test('reconcile-core-data-registry: a dropped Unknown-byline fossil leaves a dur
       reviews: [{ ...base, criticName: 'Unknown' }],
     }, null, 2) + '\n');
 
-    // Fossil is only in the remote snapshot; ours already has the bylined row,
-    // so ours is unchanged and no tombstone is written (nothing deleted from ours).
-    const quiet = run(checkout, snapshot).trim();
-    assert.equal(quiet, '');
+    // Fossil only in the remote snapshot: local bytes are unchanged, but the
+    // merge still declined to carry it, so the decision is recorded and
+    // reviews.json is NOT listed as changed.
+    const quiet = run(checkout, snapshot).trim().split('\n');
+    assert.equal(quiet.length, 1);
+    assert.match(quiet[0], /^review-merge-tombstones\/.+\.jsonl$/);
+    assert.equal(JSON.parse(fs.readFileSync(path.join(checkout, quiet[0]), 'utf8').trim()).supersededBy, 'Olivia Garrett');
 
     // Fossil present in ours (local carried the stale identity): merge drops it.
     fs.writeFileSync(path.join(checkout, 'reviews.json'), JSON.stringify({
@@ -145,10 +148,10 @@ test('reconcile-core-data-registry: a dropped Unknown-byline fossil leaves a dur
       reviews: [{ ...base, criticName: 'Olivia Garrett', fullText: 'x'.repeat(500) }, { ...base, criticName: 'Unknown' }],
     }, null, 2) + '\n');
     const out = run(checkout, snapshot).trim().split('\n');
-    assert.equal(out[0], 'reviews.json');
     assert.equal(out.length, 2);
-    assert.match(out[1], /^review-merge-tombstones\/.+\.jsonl$/);
-    const row = JSON.parse(fs.readFileSync(path.join(checkout, out[1]), 'utf8').trim());
+    assert.equal(out[1], 'reviews.json');
+    assert.match(out[0], /^review-merge-tombstones\/.+\.jsonl$/);
+    const row = JSON.parse(fs.readFileSync(path.join(checkout, out[0]), 'utf8').trim());
     assert.equal(row.supersededBy, 'Olivia Garrett');
     assert.equal(row.url, base.url);
   } finally {
