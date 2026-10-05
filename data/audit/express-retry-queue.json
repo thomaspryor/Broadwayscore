@@ -1,59 +1,6 @@
 {
   "entries": [
     {
-      "showId": "hay-fever-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-01T15:53:27.631Z",
-      "dueAt": "2026-10-02T07:53:27.631Z",
-      "attempted": true,
-      "attemptedAt": "2026-10-02T13:14:59.560Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "hay-fever-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-02T00:17:28.864Z",
-      "dueAt": "2026-10-02T01:17:28.864Z",
-      "offsetHours": 1,
-      "outletIds": [
-        "telegraph"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-10-02T06:18:16.352Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "hay-fever-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-02T00:17:28.864Z",
-      "dueAt": "2026-10-02T03:17:28.864Z",
-      "offsetHours": 3,
-      "outletIds": [
-        "telegraph"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-10-02T06:18:16.352Z"
-    },
-    {
-      "kind": "truncated-t1-refetch",
-      "showId": "hay-fever-west-end-2026",
-      "market": "west-end",
-      "queuedAt": "2026-10-02T00:17:28.864Z",
-      "dueAt": "2026-10-02T12:17:28.864Z",
-      "offsetHours": 12,
-      "outletIds": [
-        "telegraph"
-      ],
-      "attempted": true,
-      "skipped": true,
-      "skipReason": "no-truncated-t1",
-      "attemptedAt": "2026-10-02T13:14:59.560Z"
-    },
-    {
       "showId": "a-thousand-natural-shocks-off-broadway-2026",
       "market": "broadway",
       "queuedAt": "2026-10-02T15:00:20.509Z",
@@ -74,7 +21,8 @@
       "market": "broadway",
       "queuedAt": "2026-10-04T14:02:07.596Z",
       "dueAt": "2026-10-05T06:02:07.596Z",
-      "attempted": false
+      "attempted": true,
+      "attemptedAt": "2026-10-05T07:44:16.473Z"
     }
   ]
 }
