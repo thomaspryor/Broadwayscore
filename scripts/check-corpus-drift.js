@@ -342,6 +342,15 @@ const AUDITS = [
     crashCodes: [2],           // 0 under baseline / 1 = new un-baselined hit / 2 = corpus missing
   },
   {
+    name: 'orphaned-wrongprod-provenance',
+    healPathRequired: true, // BRO-2740
+    label: 'review files with wrongProduction provenance but the flag dropped (would score silently; baseline-diff)',
+    healExempt: 'each file is either a real wrong-production (restore the flag) or a false detection (delete provenance); restoring flags changes scoring, so no mechanical --fix (CLAUDE.md 12.7).',
+    script: 'audit-orphaned-wrongprod-provenance.js',
+    args: ['--gate'],
+    crashCodes: [2],           // 0 under baseline / 1 = new un-baselined orphan / 2 = corpus missing or partial
+  },
+  {
     name: 'duplicate-shows',
     healPathRequired: true, // BRO-3535: moved from test.yml's blocking gate
     label: 'duplicate SHOW entries in shows.json (baseline-diff)',
