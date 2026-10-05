@@ -1,3 +1,5 @@
+// TESTS-VS-DERIVED-DATA-EXEMPT: real-data case is structural (siblings exist, window computed), pins no facts beyond ids
+
 // BRO-30: title-keyed Reddit scrapes must not mix sibling productions.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
