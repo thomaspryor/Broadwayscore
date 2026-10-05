@@ -1106,7 +1106,14 @@ function decideInclusion(review, show, guards) {
   }
   // Mirrors rebuild-all-reviews.js's skippedBodylessAggregatorScore (BRO-3135,
   // same predicate).
-  if (typeof guards.isBodylessAggregatorScoreUncorroborated === 'function'
+  // The predicate only ever fires on a record carrying a star/score signal, so
+  // gate the call on the fields it reads (also keeps FLAG_FIELDS honest: each
+  // name below is a real input, per scoring-delta-autoclear-coverage.test.mjs).
+  const bodylessGateInputs = ['aggregatorStars', 'originalScore', 'originalScoreNormalized',
+    'scoreProvenance', 'productionCorroborated', 'originalScoreSource', 'aggregatorStarsSource',
+    'scoreSource', 'humanReviewScore', 'firstSeenAt', 'outletHeadline', 'outletStandfirst'];
+  if (bodylessGateInputs.some((f) => review[f] != null)
+      && typeof guards.isBodylessAggregatorScoreUncorroborated === 'function'
       && guards.isBodylessAggregatorScoreUncorroborated(review, show)) {
     return { included: false, reason: 'bodylessAggregatorScoreUncorroborated' };
   }
