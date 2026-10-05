@@ -539,7 +539,9 @@ function applyPending() {
     // Build the commercial entry (strip research metadata). The sanitizer drops
     // research wording from the page-visible text and holds a loss label until
     // the show has closed, so validate-data's matching rules cannot reject it.
-    const { entry: commercialEntry, changed } = sanitizeForPublicRecord({
+    // Status comes from the show whose slug IS the key (validate-data's lookup).
+    const keyShow = showsBySlug[commercialKey];
+    const { entry: commercialEntry, changed, holdReason } = sanitizeForPublicRecord({
       designation: entry.designation || 'TBD',
       capitalization: entry.capitalization || null,
       capitalizationSource: entry.capitalizationSource || null,
@@ -552,7 +554,12 @@ function applyPending() {
       sources: normalizeSources(entry.sources || []),
       lastUpdated: new Date().toISOString(),
       firstAdded: new Date().toISOString(),
-    }, (scopeShow || resolvedShow || {}).status);
+    }, keyShow && keyShow.slug === commercialKey ? keyShow.status : undefined);
+    if (holdReason) {
+      console.log(`  🛑 "${showId}" — left pending for review: ${holdReason}`);
+      skipped++;
+      continue;
+    }
     if (changed.length) console.log(`  ✂️  "${showId}" — cleared for the public page: ${changed.join(', ')}`);
 
     commercial.shows[commercialKey] = commercialEntry;
