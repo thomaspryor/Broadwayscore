@@ -3077,7 +3077,7 @@ function validateP0ScoreCoverage() {
 function validateTourSweepPending(shows = []) {
   const reviewTextsDir = path.join(DATA_DIR, 'review-texts');
   if (!fs.existsSync(reviewTextsDir)) return;
-  const { planTourSweep, decideTourSweep } = require('./lib/tour-backfill');
+  const { planTourSweep, decideTourSweep, loadSweepContext } = require('./lib/tour-backfill');
   const listFiles = (showId) => {
     const dir = path.join(reviewTextsDir, showId);
     if (!fs.existsSync(dir)) return [];
@@ -3086,7 +3086,7 @@ function validateTourSweepPending(shows = []) {
     });
   };
   let pending = 0;
-  for (const plan of planTourSweep(shows || [])) {
+  for (const plan of planTourSweep(shows || [], loadSweepContext(path.join(DATA_DIR, '..')))) {
     const n = decideTourSweep(plan, listFiles).filter(r => r.key === 'tour-review').length;
     if (n > 0) {
       pending += n;

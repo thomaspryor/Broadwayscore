@@ -84,6 +84,11 @@ const url = getArg('url');
 const outletArg = getArg('outlet');
 const criticArg = getArg('critic');
 const publishDateArg = getArg('publish-date');
+// --date-window=YYYY-MM-DD,YYYY-MM-DD (BRO-4656): skip, before any write, a page
+// whose publish date is missing or outside the window. Tour-stop discovery
+// passes the engagement window so a review of an earlier visit, another
+// production or the film never lands in the tour folder.
+const dateWindow = (getArg('date-window') || '').split(',').filter(Boolean);
 const dryRun = hasFlag('dry-run');
 // --data-dir: override the review-texts root, same flag block-review.js already
 // exposes ("Override data/review-texts root (for tests)"). Flows to BOTH the
@@ -118,12 +123,12 @@ const { hasHelpFlag } = require('./lib/cli-help.js');
 
 // --help must print usage and exit BEFORE any side effect (BRO-1711).
 if (require.main === module && hasHelpFlag(process.argv.slice(2))) {
-  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
+  console.log('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
   process.exit(0);
 }
 
 if (!showId || !url) {
-  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
+  console.error('Usage: node scripts/ingest-review-from-url.js --show=ID --url=URL [--outlet=ID] [--critic=NAME] [--publish-date=YYYY-MM-DD] [--date-window=FROM,TO] [--dry-run] [--data-dir=PATH] [--allow-non-review-url]');
   process.exit(1);
 }
 
@@ -288,6 +293,12 @@ if (!show) {
   // BRO-4431 retry stub: written after outlet resolution (which needs no
   // HTML) so the stub is filed under the right outlet.
   const writeRetryStubAndExit = (reason) => {
+    // A windowed ingest (tour-stop discovery) cannot check an unfetched page's
+    // date, so it never files an undated stub; the caller retries the URL.
+    if (dateWindow.length === 2) {
+      console.error(`❌ Fetch failed (${reason}); no retry stub under --date-window — ${url}`);
+      process.exit(3);
+    }
     const { buildRetryStubFields } = require('./lib/submission-retry-stub');
     const stubResult = createOrMergeReviewFile(showId, {
       outletId,
@@ -371,6 +382,14 @@ if (!show) {
   const publishDate = publishDateArg || extractPublishDate(html, url) || (stageMeta && stageMeta.publishDate) || null;
   if (!publishDateArg && publishDate) {
     console.log(`  → Extracted publishDate from page metadata: ${publishDate}`);
+  }
+
+  if (dateWindow.length === 2) {
+    const d = publishDate ? String(publishDate).slice(0, 10) : null;
+    if (!d || d < dateWindow[0] || d > dateWindow[1]) {
+      console.log(`⏭  Skipped: publish date ${d || 'unknown'} outside --date-window ${dateWindow[0]}..${dateWindow[1]} — ${url}`);
+      process.exit(0);
+    }
   }
 
   console.log(`╔══════════════════════════════════════════════════╗`);

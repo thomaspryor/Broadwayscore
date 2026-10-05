@@ -2,6 +2,7 @@
 // scripts/discover-regional-serp-reviews.js. They live in scripts/lib/ so the
 // colocated test is covered by test.yml's scripts/lib/** trigger (BRO-4509).
 const { calculateDateWindow } = require('./url-discovery');
+const { _parseDomain, lookupOutletForHost } = require('./outlet-canonicalize');
 
 // A show stays in the discovery pool while open, or for ~15 months after
 // closing (or after opening, if closingDate is unknown) — long enough to
@@ -83,4 +84,28 @@ function tourCandidateIsTour(show, candidate) {
   return !BROADWAY_MARKER.test(text);
 }
 
-module.exports = { DISCOVERY_MARKETS, selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, cityFromVenue };
+function normalizeUrl(url) {
+  return (url || '').toLowerCase().replace(/\/$/, '');
+}
+
+// Roundup/aggregation pages (BWW "Review Roundup", Playbill "Read the Reviews")
+// and audience-reaction pieces are not single-critic reviews. The downstream
+// write path (review-file-writer.js isRoundupPageAsReview) already excludes
+// roundup pages from scoring, but skipping them here avoids a wasted fetch and
+// an outlet--critic slot claimed by a page that isn't a review at all.
+const NON_REVIEW_MARKERS = /\b(review roundup|critics? sound off|read the reviews|what critics? (?:are|is) saying|reactions?|reacts? to)\b/i;
+
+function looksLikeAggregationOrReaction(url, title) {
+  return NON_REVIEW_MARKERS.test(title || '') || NON_REVIEW_MARKERS.test(decodeURIComponent(url || ''));
+}
+
+function resolveRegisteredOutlet(url) {
+  const domain = _parseDomain(url);
+  if (!domain) return null;
+  // exactOnly: this automated path ingests whatever it resolves; a parent-domain
+  // match would turn forum.broadwayworld.com threads into BroadwayWorld reviews.
+  return lookupOutletForHost(domain, { exactOnly: true });
+}
+
+
+module.exports = { normalizeUrl, looksLikeAggregationOrReaction, resolveRegisteredOutlet, DISCOVERY_MARKETS, selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, cityFromVenue };
