@@ -114,9 +114,11 @@ const NAME_LOOKAHEAD = `${LEADING_INITIAL}${NAME_WORD}${MIDDLE_INITIAL}${WORD_SE
 // requires letters-only, so a stray number ending the prior quote can't be
 // misread — but see the digit-outlet regression tests for the boundary
 // case of "10 Downing Street:" appearing WITHIN a critic quote.
-// Digits are allowed AFTER the first letter so "NY1" parses (BRO-733); before,
-// "Helen Shaw, NY1:" never matched and its entry vanished.
-const OUTLET = "(?:[0-9]+\\s+)?[A-Za-z][A-Za-z0-9\\s&'.]+";
+// Digits are allowed only glued to the end of a letter ("NY1", BRO-733); before,
+// "Helen Shaw, NY1:" never matched. A space-separated number ("age 35") must
+// stay out, or "Star Daniel Radcliffe, age 35:" inside a quote becomes a fake
+// critic entry and truncates the quote.
+const OUTLET = "(?:[0-9]+\\s+)?[A-Za-z][A-Za-z\\s&'.]+(?:(?<=[A-Za-z])[0-9]{1,2})?";
 // BWW's CMS emits a stray space before the comma on some entries — the live
 // SPIES-2026 body carries "Ryan Gilbey , The Guardian:" and
 // "Holly O'Mahony , The Stage:" alongside comma-tight siblings. The old

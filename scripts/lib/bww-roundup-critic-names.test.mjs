@@ -41,3 +41,15 @@ test('page byline extraction handles accented / apostrophe / hyphen names', () =
     assert.equal(extractAuthorFromHtml(html, 'body', { url: 'https://www.nytheater.com/x' }), name);
   }
 });
+
+test('space-separated number inside a quote does not mint a fake critic', () => {
+  const r = parseArticleBodyReviews(
+    "Let's see what the critics had to say  Jesse Green, New York Times: \"Great show. Star Daniel Radcliffe, age 35: still boyish.\"  Frank Scheck, New York Post: \"Fun.\"  ");
+  assert.deepEqual(r.map((x) => x.criticName), ['Jesse Green', 'Frank Scheck']);
+});
+
+test('page byline does not absorb possessives or trailing punctuation', () => {
+  const ex = (h) => extractAuthorFromHtml(h, 'x', { url: 'https://www.nytheater.com/x' });
+  assert.equal(ex('<p class="byline">By Jane Doe\'s review</p>'), 'Jane Doe');
+  assert.equal(ex('<p class="byline">By Jane Doe-Smith-</p>'), 'Jane Doe-Smith');
+});
