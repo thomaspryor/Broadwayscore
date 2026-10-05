@@ -172,5 +172,34 @@
       }
     ],
     "queuedAt": "2026-10-05T16:24:42.378Z"
+  },
+  {
+    "conditionKey": "land:land/bro-4725-recheck-probe",
+    "title": "Landing blocked: colocated-tests red on land/bro-4725-recheck-probe",
+    "description": "land.yml did not land land/bro-4725-recheck-probe: the colocated-tests gate went red at effad67848. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4725-recheck-probe @ effad67848 (origin/land/bro-4725-recheck-probe) → origin/main @ c7de5009e7 [land] attempt 1/3: rebased onto c7de5009e7, 2 file(s) changed — running checks [land] verified-base: main moved f6f08eb3b0 → c7de5009e7 across 73 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] checks Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37336801197",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-4725-recheck-probe"
+      },
+      {
+        "name": "gate",
+        "value": "colocated-tests"
+      },
+      {
+        "name": "tip",
+        "value": "effad6784884d3bcf7fe7ce275154c769fc6de5c"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37336801197"
+      }
+    ],
+    "queuedAt": "2026-10-05T16:33:06.082Z"
   }
 ]
