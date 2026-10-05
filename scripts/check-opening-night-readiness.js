@@ -149,7 +149,7 @@ async function runChecks() {
     report(PASS, 'Show images', 'hero + poster + thumbnail all present');
   } else {
     const missing = [!hasHero && 'hero', !hasPoster && 'poster', !hasThumbnail && 'thumbnail'].filter(Boolean);
-    report(WARN, 'Show images', `Missing: ${missing.join(', ')}. Run: gh workflow run fetch-all-image-formats.yml -f show=${SHOW_ID}`);
+    report(WARN, 'Show images', `Missing: ${missing.join(', ')}. Run: gh workflow run fetch-all-image-formats.yml -f show_id=${SHOW_ID}`);
   }
 
   // 3. DTLI slug (Broadway only)
