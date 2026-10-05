@@ -82,6 +82,26 @@ describe('extractCostsFromPost', () => {
     assert.equal(entry.cost, 765000);
   });
 
+  it('reads plural, bold, "~" and "thousand" variants', () => {
+    const cases = [
+      ['Weekly Operating Costs: $850k', 850000],
+      ['Weekly Operating Cost: ~$850k', 850000],
+      ['**Estimated Weekly Operating Cost:** $850k/week', 850000],
+      ['Weekly Operating Cost: $850 thousand', 850000],
+      ['Weekly Operating Cost: ~$800k-~$900k', 850000],
+    ];
+    for (const [line, cost] of cases) {
+      assert.deepEqual(extractCostsFromPost(`***X***\n${line}`), [{ showName: 'X', cost }], line);
+    }
+  });
+
+  it('reads a range whose low end has no suffix of its own', () => {
+    // "$950-$1.1M" is $950k to $1.1M; the low end inheriting "M" read $950M.
+    assert.equal(extractCostsFromPost('***X***\nWeekly Operating Cost: $950-$1.1M')[0].cost, 1025000);
+    assert.equal(extractCostsFromPost('***X***\nWeekly Operating Cost: $1-$1.2M')[0].cost, 1100000);
+    assert.equal(extractCostsFromPost('***X***\nWeekly Operating Cost: $650-$700k')[0].cost, 675000);
+  });
+
   it('returns nothing for an empty post or a cost with no heading', () => {
     assert.deepEqual(extractCostsFromPost(''), []);
     assert.deepEqual(extractCostsFromPost(undefined), []);

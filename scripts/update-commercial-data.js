@@ -32,7 +32,9 @@ const fs = require('fs');
 const path = require('path');
 const https = require('https');
 const { isRelevantPost } = require('./lib/reddit-grosses');
-const { isReportedWeeklyCost, WALTZ_METHODOLOGY } = require('./lib/waltz-cost-gap-fill');
+const {
+  isReportedWeeklyCost, costSourceBasis, methodologyForCostSource, mayReplaceReportedCost, REPORTED_COST_METHODOLOGIES,
+} = require('./lib/waltz-cost-gap-fill');
 const { buildGrossesPostResult } = require('./lib/grosses-post-resolver');
 
 const { parseGrossesAnalysisPost } = require('./lib/parse-grosses');
@@ -1096,7 +1098,7 @@ async function gatherSECFilings(shows, commercial) {
     const slug = show.slug || show.id;
     const existing = commercial?.shows?.[slug];
     // Skip if already has SEC-sourced capitalization
-    return !existing?.capitalizationSource?.toLowerCase().includes('sec');
+    return costSourceBasis(existing?.capitalizationSource) !== 'sec';
   });
 
   console.log(`  Searching ${showsToSearch.length} shows for SEC filings...`);
@@ -1451,10 +1453,6 @@ Respond with ONLY valid JSON (no markdown code fences):
  * @param {Object} commercialData - commercial.json data (for Deep Research protection check)
  * @returns {{ applied: Object[], flagged: Object[], skipped: Object[], deepResearchConflicts: Object[] }}
  */
-function isRedditSourced(change) {
-  return Boolean(change.source?.toLowerCase().includes('reddit'));
-}
-
 function filterByConfidence(proposedChanges, commercialData) {
   const applied = [];
   const flagged = [];
@@ -1488,10 +1486,10 @@ function filterByConfidence(proposedChanges, commercialData) {
       }
     }
 
-    // A Reddit estimate never replaces a reported weekly cost (BRO-4666). It
-    // used to, and kept the "trade-reported" label on the Reddit number.
-    if (field === 'weeklyRunningCost' && isRedditSourced(change) && isReportedWeeklyCost(commercialData?.shows?.[slug])) {
-      skipped.push({ ...change, skipReason: `Reddit estimate cannot replace a reported weekly cost (${commercialData.shows[slug].costMethodology})` });
+    // Only a trade or SEC source replaces a reported weekly cost (BRO-4666).
+    // Reddit estimates used to, and kept the "trade-reported" label.
+    if (field === 'weeklyRunningCost' && !mayReplaceReportedCost(change.source) && isReportedWeeklyCost(commercialData?.shows?.[slug])) {
+      skipped.push({ ...change, skipReason: `Only a trade or SEC source may replace a reported weekly cost (${commercialData.shows[slug].costMethodology})` });
       continue;
     }
 
@@ -1611,15 +1609,14 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
     changeCount++;
     console.log(`  [APPLY] ${slug}.${field}: ${JSON.stringify(current)} -> ${JSON.stringify(newValue)}`);
 
-    // For weekly running cost, add isEstimate if from Reddit. The methodology
-    // names this figure's basis, so a Reddit cost never keeps an earlier
-    // "trade-reported" label (BRO-4666).
-    if (field === 'weeklyRunningCost' && isRedditSourced(change)) {
-      if (!commercial.shows[slug].isEstimate) {
-        commercial.shows[slug].isEstimate = {};
-      }
-      commercial.shows[slug].isEstimate.weeklyRunningCost = true;
-      commercial.shows[slug].costMethodology = WALTZ_METHODOLOGY;
+    // A new weekly cost carries its own basis (BRO-4666): the methodology its
+    // source names, the estimate flag unless trade or SEC, and no citation,
+    // since the record's old one described the old figure.
+    if (field === 'weeklyRunningCost' && newValue !== current) {
+      const rec = commercial.shows[slug];
+      rec.costMethodology = methodologyForCostSource(change.source);
+      rec.isEstimate = { ...(rec.isEstimate || {}), weeklyRunningCost: !REPORTED_COST_METHODOLOGIES.has(rec.costMethodology) };
+      rec.weeklyRunningCostSource = null;
     }
 
     // For estimatedRecoupmentPct, add source + date
@@ -1628,23 +1625,14 @@ function applyChanges(applied, newEntries, commercial, showKeyIndex) {
       commercial.shows[slug].estimatedRecoupmentDate = new Date().toISOString().split('T')[0];
     }
 
-    // Sprint 3: For weeklyRunningCost or capitalization, set costMethodology based on source
-    if (['weeklyRunningCost', 'capitalization'].includes(field)) {
+    // Sprint 3: a capitalization change names costMethodology only for a
+    // record with neither a methodology nor a weekly cost, so it never labels
+    // a weekly cost it says nothing about. (Its "sec" substring test once
+    // matched every "Section X:" source.)
+    if (field === 'capitalization') {
       const showData = commercial.shows[slug];
-      let methodology = null;
-
-      if (change.source?.toLowerCase().includes('reddit')) {
-        methodology = 'reddit-standard';
-      } else if (change.source?.toLowerCase().includes('sec')) {
-        methodology = 'sec-filing';
-      } else if (change.source?.toLowerCase().includes('deadline') ||
-                 change.source?.toLowerCase().includes('variety') ||
-                 change.source?.toLowerCase().includes('broadway news')) {
-        methodology = 'trade-reported';
-      }
-
-      if (methodology && !showData.costMethodology) {
-        showData.costMethodology = methodology;
+      if (!showData.costMethodology && showData.weeklyRunningCost == null && costSourceBasis(change.source)) {
+        showData.costMethodology = methodologyForCostSource(change.source);
       }
     }
   }
@@ -2270,7 +2258,7 @@ function validateProposedChanges(proposedChanges, allSources, opts = {}) {
     // legitimate multi-source corroboration (SEC filing, trade press) still
     // overrides this, since that raises supportingCount above 0.
     if (opts.unverifiedFallbackActive && supportingCount === 0 &&
-        (change.source || '').toLowerCase().includes('reddit')) {
+        costSourceBasis(change.source) === 'reddit') {
       validatedConfidence = 'low';
       validationNotes = `${validationNotes || 'No corroborating sources found'}; forced low — unverified-fallback Reddit source with no independent corroboration`;
     }
@@ -2301,14 +2289,16 @@ function extractSourceType(source) {
   if (!source) return 'unknown';
   const sourceLower = source.toLowerCase();
 
-  if (sourceLower.includes('sec') || sourceLower.includes('form d')) return 'SEC Form D';
+  // Sources read "Section X: ...", so Reddit (Sections C-E) and SEC (Section H)
+  // come from costSourceBasis; a bare "sec" substring rated every one an SEC filing.
+  const basis = costSourceBasis(source);
+  if (basis === 'reddit') return /grosses\s+analysis|\bsection\s*c\b/i.test(source) ? 'Reddit Grosses Analysis' : 'Reddit comment';
+  if (basis === 'sec') return 'SEC Form D';
   if (sourceLower.includes('deadline')) return 'Deadline';
   if (sourceLower.includes('variety')) return 'Variety';
   if (sourceLower.includes('nyt') || sourceLower.includes('new york times')) return 'New York Times';
   if (sourceLower.includes('broadway journal')) return 'Broadway Journal';
   if (sourceLower.includes('playbill')) return 'Playbill';
-  if (sourceLower.includes('grosses analysis')) return 'Reddit Grosses Analysis';
-  if (sourceLower.includes('reddit')) return 'Reddit comment';
 
   return 'estimate';
 }
@@ -2654,7 +2644,7 @@ async function main() {
 }
 
 // Exports for unit testing
-module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges, createDeepResearchConflictIssue, applyChanges };
+module.exports = { filterByConfidence, shadowClassifier, buildValidationSources, validateProposedChanges, createDeepResearchConflictIssue, applyChanges, extractSourceType };
 
 // Run only when executed directly (not when require()'d for testing)
 if (require.main === module) {
