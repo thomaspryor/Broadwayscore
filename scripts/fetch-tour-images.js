@@ -149,6 +149,7 @@ async function main() {
   // Point shows.json at own files an earlier run archived but failed to
   // record, before any search (and before backoff can skip the tour).
   let adopted = 0;
+  const adoptedImages = new Map(); // dry run: what targets would see after adoption
   for (const tour of open) {
     const roles = archivedUnreferenced(tour, exists);
     if (!roles.length) continue;
@@ -158,12 +159,13 @@ async function main() {
     if (problems.length) { console.log(`  ${tour.id}: archived ${roles.join('+')} not adopted: ${problems.join('; ')}`); continue; }
     console.log(`  ${tour.id}: adopting archived ${roles.join('+')}`);
     adopted++;
+    adoptedImages.set(tour.id, next);
     if (dryRun) continue;
     tour.images = next;
     saveShows(snapshot);
   }
   if (adopted) console.log(`${adopted} tour(s) ${dryRun ? 'would adopt' : 'adopted'} already-archived art`);
-  const targets = open.filter(t => rolesNeeded(t, exists).length);
+  const targets = open.filter(t => rolesNeeded({ ...t, images: adoptedImages.get(t.id) || t.images }, exists).length);
   console.log(`${targets.length} tour(s) need their own art`);
   if (!targets.length) return;
 
