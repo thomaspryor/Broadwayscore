@@ -968,6 +968,8 @@ on:
       - 'tests/unit/feedback-request-ledger.test.mjs'
       - 'scripts/notify-feedback-outcomes.js'
       - 'scripts/verify-feedback-requests-live.js'
+      # BRO-4719: owner decision email; its test (tests/unit/owner-decision-notify.test.mjs) is manifest-registered.
+      - 'scripts/notify-owner-decisions.js'
       # Colocated test registered in tests/unit-test-manifest.txt (root-level
       # scripts/*.test.mjs files are NOT globbed) — path-listed so a solo edit
       # to the test alone still triggers CI.
