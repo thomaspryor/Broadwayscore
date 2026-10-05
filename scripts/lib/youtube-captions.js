@@ -156,13 +156,57 @@ async function viaScrapingdog(videoId, sdYouTube, { needDate }) {
     console.log(`  ⚠️  Scrapingdog transcripts payload unrecognised for ${videoId}: ${JSON.stringify(t.data).slice(0, 160)}`);
     return null;
   }
-  let publishedAt = null;
-  if (needDate && transcript) {
-    const v = await sdYouTube('video', videoId, {});
-    if (v && v.data) publishedAt = publishedTimeToYmd(sdVideoPublishedText(v.data));
-    if (!publishedAt) console.log(`  ⚠️  No upload date for ${videoId} from Scrapingdog /youtube/video (${v ? (v.error || `keys=${Object.keys(v.data || {}).join(',')} video=${JSON.stringify(v.data && v.data.video && v.data.video.published_time)}`) : 'unavailable'})`.slice(0, 220));
-  }
+  const publishedAt = needDate && transcript ? await fetchYouTubePublishedAt(videoId, sdYouTube) : null;
   return { transcript, publishedAt, source: 'scrapingdog-youtube' };
+}
+
+/** Upload date via Scrapingdog /youtube/video (5 credits) -> "YYYYMMDD", or null. */
+async function fetchYouTubePublishedAt(videoId, sdYouTube = scraper.fetchScrapingdogYouTube) {
+  const v = await sdYouTube('video', videoId, {});
+  const publishedAt = v && v.data ? publishedTimeToYmd(sdVideoPublishedText(v.data)) : null;
+  if (!publishedAt) console.log(`  ⚠️  No upload date for ${videoId} from Scrapingdog /youtube/video (${v ? (v.error || `keys=${Object.keys(v.data || {}).join(',')} video=${JSON.stringify(v.data && v.data.video && v.data.video.published_time)}`) : 'unavailable'})`.slice(0, 220));
+  return publishedAt;
+}
+
+const isDateless = d => !d || d === 'NA';
+
+/**
+ * BRO-4760: published YouTube reviews collected while the date lookup was
+ * broken carry publishedAt "NA", and collect-transcripts skips cached videos,
+ * so nothing would ever re-date them. Fills publishedAt in the per-show
+ * transcript files (and `date` in raw/{videoId}.json) for up to `max` of
+ * them. Idempotent: dated files are never re-fetched.
+ * @returns {Promise<{candidates: number, attempted: number, dated: number}>}
+ */
+async function backfillPublishedDates({ transcriptsDir, creatorFilter = null, max = 250, fetchDate = fetchYouTubePublishedAt, fs = require('fs'), path = require('path') }) {
+  const todo = [];
+  for (const showId of fs.readdirSync(transcriptsDir)) {
+    if (showId === 'raw' || showId === 'classified' || showId.startsWith('.')) continue;
+    const dir = path.join(transcriptsDir, showId);
+    if (!fs.statSync(dir).isDirectory()) continue;
+    for (const f of fs.readdirSync(dir).filter(n => n.endsWith('.json'))) {
+      const file = path.join(dir, f);
+      const t = JSON.parse(fs.readFileSync(file, 'utf8'));
+      if (t.platform !== 'youtube' || !t.videoId || !isDateless(t.publishedAt)) continue;
+      if (creatorFilter && String(t.creatorId).toLowerCase() !== creatorFilter.toLowerCase()) continue;
+      todo.push({ file, t });
+    }
+  }
+  let attempted = 0, dated = 0;
+  for (const { file, t } of todo.slice(0, max)) {
+    attempted++;
+    const ymd = await fetchDate(t.videoId);
+    if (!ymd) continue;
+    t.publishedAt = ymd;
+    fs.writeFileSync(file, JSON.stringify(t, null, 2));
+    const rawFile = path.join(transcriptsDir, 'raw', `${t.videoId}.json`);
+    if (fs.existsSync(rawFile)) {
+      const raw = JSON.parse(fs.readFileSync(rawFile, 'utf8'));
+      if (isDateless(raw.date)) { raw.date = ymd; fs.writeFileSync(rawFile, JSON.stringify(raw, null, 2)); }
+    }
+    dated++;
+  }
+  return { candidates: todo.length, attempted, dated };
 }
 
 /**
@@ -205,4 +249,4 @@ async function fetchYouTubeTranscript(videoId, fetchers = {}, opts = {}) {
   return { transcript: json3ToText(payload), publishedAt, source: page.source };
 }
 
-module.exports = { parsePlayerResponse, pickCaptionTrack, json3ToText, toYmd, publishedTimeToYmd, sdTranscriptToText, sdVideoPublishedText, fetchYouTubeTranscript, sliceJsonObject };
+module.exports = { parsePlayerResponse, pickCaptionTrack, json3ToText, toYmd, publishedTimeToYmd, sdTranscriptToText, sdVideoPublishedText, fetchYouTubePublishedAt, backfillPublishedDates, fetchYouTubeTranscript, sliceJsonObject };

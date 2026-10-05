@@ -118,3 +118,29 @@ test('Scrapingdog failure or unknown payload falls back to the watch page', asyn
     assert.equal(r.transcript, 'from captions');
   }
 });
+
+test('backfillPublishedDates re-dates NA YouTube reviews only (BRO-4760)', async () => {
+  const fs = require('fs'), os = require('os'), path = require('path');
+  const { backfillPublishedDates } = require('../../scripts/lib/youtube-captions.js');
+  const root = fs.mkdtempSync(path.join(os.tmpdir(), 'ytdates-'));
+  const w = (rel, obj) => { fs.mkdirSync(path.dirname(path.join(root, rel)), { recursive: true }); fs.writeFileSync(path.join(root, rel), JSON.stringify(obj)); };
+  w('show-a/mh.json', { platform: 'youtube', videoId: 'v1', creatorId: 'MH', publishedAt: 'NA' });
+  w('show-a/tt.json', { platform: 'tiktok', videoId: 'v2', creatorId: 'TT', publishedAt: null });
+  w('show-b/mh.json', { platform: 'youtube', videoId: 'v3', creatorId: 'MH', publishedAt: '20260101' });
+  w('show-b/mj.json', { platform: 'youtube', videoId: 'v4', creatorId: 'MJ', publishedAt: null });
+  w('raw/v1.json', { videoId: 'v1', date: 'NA' });
+  w('classified/v9.json', { platform: 'youtube', videoId: 'v9', publishedAt: 'NA' });
+  const asked = [];
+  const r = await backfillPublishedDates({ transcriptsDir: root, fetchDate: async id => { asked.push(id); return id === 'v1' ? '20260520' : null; } });
+  assert.deepEqual(asked.sort(), ['v1', 'v4']);
+  assert.deepEqual(r, { candidates: 2, attempted: 2, dated: 1 });
+  const read = rel => JSON.parse(fs.readFileSync(path.join(root, rel), 'utf8'));
+  assert.equal(read('show-a/mh.json').publishedAt, '20260520');
+  assert.equal(read('raw/v1.json').date, '20260520');
+  assert.equal(read('show-b/mj.json').publishedAt, null);
+  const r2 = await backfillPublishedDates({ transcriptsDir: root, creatorFilter: 'mh', fetchDate: async () => { throw new Error('should not fetch'); } });
+  assert.deepEqual(r2, { candidates: 0, attempted: 0, dated: 0 });
+  const r3 = await backfillPublishedDates({ transcriptsDir: root, max: 0, fetchDate: async () => { throw new Error('capped'); } });
+  assert.equal(r3.attempted, 0);
+  fs.rmSync(root, { recursive: true });
+});
