@@ -10,6 +10,13 @@ on:
       # tests/unit/claude-agent-models.test.mjs (spend review 2026-10-01).
       - '.claude/agents/**'
       - '.claude/commands/**'
+      # BRO-4745: tests/unit/codex-parity.test.mjs checks Codex still gets Claude's
+      # skills, hooks and config, so a change on either side must trigger it.
+      - '.claude/skills/**'
+      - '.claude/settings.json'
+      - '.agents/**'
+      - '.codex/**'
+      - 'scripts/codex/**'
       # scripts/lib/** — single push-path glob covering every file under
       # scripts/lib/ (source .js and colocated *.test.mjs alike). Replaces the
       # ~200 individually hand-listed scripts/lib paths that used to live here

@@ -55,6 +55,14 @@ function mergeToml(homeText, repoText) {
     out = idx === -1 ? `${out.replace(/\n*$/, '\n')}${block}` : `${out.slice(0, idx)}${block}\n${out.slice(idx)}`;
   }
   for (const [table, keys] of Object.entries(repo.tables)) {
+    // The owner may set the same table inline (`t = { k = v }`) or with dotted
+    // keys (`t.k = v`). Appending a [t] header then would make the file invalid
+    // TOML, so leave it and report it.
+    const inline = Object.keys(home.top).filter((k) => k === table || k.startsWith(`${table}.`));
+    if (inline.length) {
+      conflicts.push(`[${table}]: home sets it as \`${inline.map((k) => home.top[k]).join('; ')}\`, repo wants ${Object.values(keys).join('; ')}`);
+      continue;
+    }
     const have = home.tables[table];
     if (!have) {
       out = `${out.replace(/\n*$/, '\n')}\n[${table}]\n${Object.values(keys).join('\n')}\n`;

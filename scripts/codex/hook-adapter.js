@@ -24,10 +24,14 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
-const { spawnSync } = require('child_process');
+const { spawn } = require('child_process');
 
 const REPO_ROOT = path.resolve(__dirname, '..', '..');
 const SHADOW_DIR = path.join(os.tmpdir(), 'codex-shadow');
+const SHADOW_MAX_AGE_MS = 2 * 24 * 3600 * 1000;
+// .codex/hooks.json gives the adapter 600s; stop short of it so a slow guard is
+// reported as a timeout (non-blocking, as in Claude) instead of Codex killing us.
+const BUDGET_MS = 570 * 1000;
 
 // apply_patch envelope -> [{ op: 'add'|'update'|'delete', file, added }]
 function parseApplyPatch(text) {
@@ -49,13 +53,16 @@ function parseApplyPatch(text) {
 }
 
 // One Codex tool event -> the Claude-shaped tool events it stands for.
-function toClaudeToolEvents(toolName, toolInput) {
+// apply_patch paths are relative to the session cwd; Claude's Edit/Write always
+// carry absolute paths, and guards such as worktree-enforce.sh rely on that.
+function toClaudeToolEvents(toolName, toolInput, cwd) {
   const input = toolInput || {};
   if (toolName === 'apply_patch') {
     const patch = input.command || input.patch || input.input || '';
+    const abs = (f) => (cwd && !path.isAbsolute(f) ? path.resolve(cwd, f) : f);
     return parseApplyPatch(patch).map((f) => (f.op === 'add'
-      ? { tool_name: 'Write', tool_input: { file_path: f.file, content: f.added.join('\n') } }
-      : { tool_name: 'Edit', tool_input: { file_path: f.file, old_string: '', new_string: f.added.join('\n') } }));
+      ? { tool_name: 'Write', tool_input: { file_path: abs(f.file), content: f.added.join('\n') } }
+      : { tool_name: 'Edit', tool_input: { file_path: abs(f.file), old_string: '', new_string: f.added.join('\n') } }));
   }
   if (toolName === 'exec_command' || toolName === 'shell') {
     const cmd = input.command || input.cmd;
@@ -69,6 +76,30 @@ function toClaudeToolEvents(toolName, toolInput) {
 function matcherMatches(matcher, value) {
   if (!matcher || matcher === '*') return true;
   try { return new RegExp(`^(?:${matcher})$`).test(value || ''); } catch { return matcher === value; }
+}
+
+// Claude runs user-level (~/.claude/settings.json) and project hooks together.
+// On the Mac several project hooks self-skip because a user-level copy exists,
+// so reading only the project file would drop those guards for Codex.
+// Identical commands run once, as Claude dedupes them.
+function loadSettings(files) {
+  const merged = { hooks: {} };
+  const seen = new Set();
+  for (const file of files) {
+    let s; try { s = JSON.parse(fs.readFileSync(file, 'utf8')); } catch { continue; }
+    for (const [event, groups] of Object.entries(s.hooks || {})) {
+      for (const g of groups || []) {
+        const hooks = (g.hooks || []).filter((h) => {
+          const k = `${event}\0${g.matcher || ''}\0${h.command}`;
+          if (seen.has(k)) return false;
+          seen.add(k);
+          return true;
+        });
+        if (hooks.length) (merged.hooks[event] = merged.hooks[event] || []).push({ ...g, hooks });
+      }
+    }
+  }
+  return merged;
 }
 
 function claudeHooksFor(settings, event, matchValue) {
@@ -136,25 +167,38 @@ function buildShadowLines(messages, toolEvents, lastAssistantMessage) {
   return lines;
 }
 
-function recordToolEvents(sidecarPath, payload, claudeEvents) {
+// Sidecar rows for one tool call. PreToolUse only shows the pending call to its
+// hooks; the call is persisted at PostToolUse, so a call a guard denied never
+// appears in later transcripts as if it had run.
+function toolRows(payload, claudeEvents, withResult) {
   const ts = new Date().toISOString();
-  const kind = payload.hook_event_name === 'PreToolUse' ? 'tool_use' : 'tool_result';
-  const rows = claudeEvents.map((ev, i) => {
+  const rows = [];
+  claudeEvents.forEach((ev, i) => {
     const id = `${payload.tool_use_id || 'codex'}#${i}`;
-    return kind === 'tool_use'
-      ? { key: `u:${id}`, kind, ts, id, name: ev.tool_name, input: ev.tool_input }
-      : { key: `r:${id}`, kind, ts, id, content: typeof payload.tool_response === 'string' ? payload.tool_response : JSON.stringify(payload.tool_response || '') };
+    rows.push({ key: `u:${id}`, kind: 'tool_use', ts, id, name: ev.tool_name, input: ev.tool_input });
+    if (withResult) {
+      const content = typeof payload.tool_response === 'string' ? payload.tool_response : JSON.stringify(payload.tool_response || '');
+      rows.push({ key: `r:${id}`, kind: 'tool_result', ts, id, content });
+    }
   });
-  fs.appendFileSync(sidecarPath, rows.map((r) => JSON.stringify(r)).join('\n') + '\n');
+  return rows;
+}
+
+function pruneShadowDir(now = Date.now()) {
+  let names; try { names = fs.readdirSync(SHADOW_DIR); } catch { return; }
+  for (const f of names) {
+    const p = path.join(SHADOW_DIR, f);
+    try { if (now - fs.statSync(p).mtimeMs > SHADOW_MAX_AGE_MS) fs.unlinkSync(p); } catch { /* raced */ }
+  }
 }
 
 function writeShadowTranscript(payload) {
-  const sid = String(payload.session_id || 'unknown').replace(/[^A-Za-z0-9_-]/g, '');
+  const sid = String(payload.session_id || `unknown-${process.ppid}`).replace(/[^A-Za-z0-9_-]/g, '');
   fs.mkdirSync(SHADOW_DIR, { recursive: true });
   const sidecar = path.join(SHADOW_DIR, `${sid}.tools.jsonl`);
   const shadow = path.join(SHADOW_DIR, `${sid}.jsonl`);
-  return { sidecar, shadow, build() {
-    const lines = buildShadowLines(rolloutMessages(payload.transcript_path), readSidecar(sidecar), payload.last_assistant_message);
+  return { sidecar, shadow, build(pending = []) {
+    const lines = buildShadowLines(rolloutMessages(payload.transcript_path), [...readSidecar(sidecar), ...pending], payload.last_assistant_message);
     const tmp = `${shadow}.${process.pid}.tmp`;
     fs.writeFileSync(tmp, lines.map((l) => JSON.stringify(l)).join('\n') + (lines.length ? '\n' : ''));
     fs.renameSync(tmp, shadow);
@@ -187,43 +231,71 @@ function contextText(res) {
   return out;
 }
 
-function runHook(hook, payload, env, cwd) {
-  const timeoutMs = (hook.timeout || 60) * 1000;
-  return spawnSync('bash', ['-c', hook.command], {
-    input: JSON.stringify(payload), cwd, env, encoding: 'utf8', timeout: timeoutMs, maxBuffer: 16 * 1024 * 1024,
+// Resolves to { status, stdout, stderr } like spawnSync. A timeout kills the
+// hook and counts as a non-blocking error, as in Claude.
+function runHook(hook, payload, env, cwd, timeoutMs) {
+  return new Promise((resolve) => {
+    let stdout = '';
+    let stderr = '';
+    let child;
+    try { child = spawn('bash', ['-c', hook.command], { cwd, env, detached: true }); } catch (e) {
+      resolve({ status: 1, stdout: '', stderr: String(e.message) });
+      return;
+    }
+    const timer = setTimeout(() => { try { process.kill(-child.pid, 'SIGKILL'); } catch { child.kill('SIGKILL'); } }, Math.max(1000, timeoutMs));
+    child.stdout.on('data', (d) => { stdout += d; });
+    child.stderr.on('data', (d) => { stderr += d; });
+    child.on('error', (e) => { clearTimeout(timer); resolve({ status: 1, stdout, stderr: stderr + e.message }); });
+    child.on('close', (code) => { clearTimeout(timer); resolve({ status: code, stdout, stderr }); });
+    child.stdin.on('error', () => { /* hook exited without reading stdin */ });
+    child.stdin.end(JSON.stringify(payload));
   });
 }
 
-function main() {
+async function main() {
   const evIdx = process.argv.indexOf('--event');
   const event = evIdx > 0 ? process.argv[evIdx + 1] : null;
   let payload;
   try { payload = JSON.parse(fs.readFileSync(0, 'utf8') || '{}'); } catch { payload = {}; }
   const hookEvent = event || payload.hook_event_name;
   if (!hookEvent) process.exit(0);
+  if (process.env.CODEX_HOOK_ADAPTER_LOG) {
+    try { fs.appendFileSync(process.env.CODEX_HOOK_ADAPTER_LOG, JSON.stringify(payload) + '\n'); } catch { /* debug only */ }
+  }
 
-  let settings;
-  try { settings = JSON.parse(fs.readFileSync(path.join(REPO_ROOT, '.claude', 'settings.json'), 'utf8')); } catch (e) {
-    process.stderr.write(`codex hook-adapter: cannot read .claude/settings.json (${e.message}); guards skipped\n`);
+  const projectSettings = path.join(REPO_ROOT, '.claude', 'settings.json');
+  if (!fs.existsSync(projectSettings)) {
+    process.stderr.write('codex hook-adapter: no .claude/settings.json; guards skipped\n');
     process.exit(0);
   }
+  const settings = loadSettings([path.join(os.homedir(), '.claude', 'settings.json'), projectSettings]);
 
   const cwd = payload.cwd && fs.existsSync(payload.cwd) ? payload.cwd : REPO_ROOT;
   const env = { ...process.env, CLAUDE_PROJECT_DIR: REPO_ROOT, CLAUDE_CODE_SESSION_ID: payload.session_id || '', CODEX_HOOK_ADAPTER: '1' };
+  if (hookEvent === 'SessionStart') pruneShadowDir();
   const shadow = writeShadowTranscript(payload);
 
   const isTool = hookEvent === 'PreToolUse' || hookEvent === 'PostToolUse';
-  const claudeEvents = isTool ? toClaudeToolEvents(payload.tool_name, payload.tool_input) : [null];
-  if (isTool) { try { recordToolEvents(shadow.sidecar, payload, claudeEvents); } catch { /* best effort */ } }
+  const claudeEvents = isTool ? toClaudeToolEvents(payload.tool_name, payload.tool_input, cwd) : [null];
+  let pending = [];
+  if (hookEvent === 'PreToolUse') pending = toolRows(payload, claudeEvents, false);
+  else if (hookEvent === 'PostToolUse') {
+    try { fs.appendFileSync(shadow.sidecar, toolRows(payload, claudeEvents, true).map((r) => JSON.stringify(r)).join('\n') + '\n'); } catch { /* best effort */ }
+  }
   let transcriptPath = payload.transcript_path;
-  try { transcriptPath = shadow.build(); } catch { /* fall back to the rollout path */ }
+  try { transcriptPath = shadow.build(pending); } catch { /* fall back to the rollout path */ }
 
+  const deadline = Date.now() + BUDGET_MS;
   const context = [];
+  // Files of one apply_patch run in order (Claude would see separate calls);
+  // the hooks for one call run in parallel, as Claude runs them.
   for (const ce of claudeEvents) {
     const matchValue = isTool ? ce.tool_name : (hookEvent === 'SessionStart' ? (payload.source || 'startup') : undefined);
     const claudePayload = { ...payload, hook_event_name: hookEvent, transcript_path: transcriptPath, ...(ce || {}) };
-    for (const hook of claudeHooksFor(settings, hookEvent, matchValue)) {
-      const res = runHook(hook, claudePayload, env, cwd);
+    const hooks = claudeHooksFor(settings, hookEvent, matchValue);
+    const results = await Promise.all(hooks.map((hook) => runHook(hook, claudePayload, env, cwd,
+      Math.min((hook.timeout || 60) * 1000, deadline - Date.now()))));
+    for (const res of results) {
       const block = blockingOutput(res);
       if (block) {
         if (hookEvent === 'PreToolUse') {
@@ -231,7 +303,7 @@ function main() {
         } else {
           process.stdout.write(JSON.stringify({ decision: 'block', reason: block.reason }) + '\n');
         }
-        process.exit(0);
+        return; // let stdout drain; process.exit() can truncate a piped write
       }
       const text = contextText(res);
       if (text) context.push(text);
@@ -242,9 +314,10 @@ function main() {
   } else if (context.length) {
     process.stdout.write(JSON.stringify({ systemMessage: context.join('\n\n').slice(0, 4000) }) + '\n');
   }
-  process.exit(0);
 }
 
-if (require.main === module) main();
+if (require.main === module) {
+  main().catch((e) => { process.stderr.write(`codex hook-adapter: ${e.stack || e}\n`); });
+}
 
-module.exports = { parseApplyPatch, toClaudeToolEvents, matcherMatches, claudeHooksFor, buildShadowLines, blockingOutput, contextText };
+module.exports = { parseApplyPatch, toClaudeToolEvents, matcherMatches, loadSettings, claudeHooksFor, buildShadowLines, toolRows, blockingOutput, contextText };

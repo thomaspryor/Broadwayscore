@@ -3,7 +3,8 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
-import { readFileSync } from 'node:fs';
+import { readFileSync, writeFileSync, mkdtempSync } from 'node:fs';
+import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { spawnSync } from 'node:child_process';
@@ -46,6 +47,26 @@ test('apply_patch becomes one Claude Edit/Write event per file', () => {
   const mv = adapter.toClaudeToolEvents('apply_patch', { command: '*** Begin Patch\n*** Update File: x.js\n*** Move to: y.js\n*** End Patch' });
   assert.deepEqual(mv.map((e) => e.tool_input.file_path), ['x.js', 'y.js']);
   assert.deepEqual(adapter.toClaudeToolEvents('Bash', { command: 'ls' }), [{ tool_name: 'Bash', tool_input: { command: 'ls' } }]);
+  // Relative patch paths resolve against the session cwd, as Claude's Edit/Write carry absolute paths.
+  const abs = adapter.toClaudeToolEvents('apply_patch', { command: '*** Begin Patch\n*** Update File: src/a.ts\n*** Update File: /abs/b.ts\n*** End Patch' }, '/repo/wt');
+  assert.deepEqual(abs.map((e) => e.tool_input.file_path), ['/repo/wt/src/a.ts', '/abs/b.ts']);
+});
+
+test('user-level and project Claude hooks both run, identical commands once', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'codex-parity-'));
+  const user = join(dir, 'user.json');
+  const proj = join(dir, 'proj.json');
+  writeFileSync(user, JSON.stringify({ hooks: { Stop: [{ hooks: [{ type: 'command', command: 'user-only.sh' }, { type: 'command', command: 'shared.sh' }] }] } }));
+  writeFileSync(proj, JSON.stringify({ hooks: { Stop: [{ hooks: [{ type: 'command', command: 'shared.sh' }, { type: 'command', command: 'proj-only.sh' }] }] } }));
+  const merged = adapter.loadSettings([user, join(dir, 'missing.json'), proj]);
+  assert.deepEqual(adapter.claudeHooksFor(merged, 'Stop').map((h) => h.command), ['user-only.sh', 'shared.sh', 'proj-only.sh']);
+});
+
+test('a pending call is shown at PreToolUse but only persisted with its result', () => {
+  const payload = { tool_use_id: 'c1', tool_response: 'ok' };
+  const evs = [{ tool_name: 'Edit', tool_input: { file_path: '/x' } }];
+  assert.deepEqual(adapter.toolRows(payload, evs, false).map((r) => r.kind), ['tool_use']);
+  assert.deepEqual(adapter.toolRows(payload, evs, true).map((r) => r.kind), ['tool_use', 'tool_result']);
 });
 
 test('Claude matchers apply to the translated tool name', () => {
@@ -98,6 +119,12 @@ test('install merges into ~/.codex without clobbering hand-set values', () => {
   const handSet = mergeToml('web_search = "cached"\n', repoToml);
   assert.equal(handSet.conflicts.length, 1);
   assert.match(handSet.text, /web_search = "cached"/);
+  // A table set inline or with dotted keys is left alone (adding [t] would break the file).
+  for (const home of ['sandbox_workspace_write.network_access = false\n', 'sandbox_workspace_write = { network_access = false }\n']) {
+    const r = mergeToml(home, repoToml);
+    assert.ok(!r.text.includes('[sandbox_workspace_write]'), home);
+    assert.ok(r.conflicts.some((c) => c.startsWith('[sandbox_workspace_write]')), home);
+  }
   const merged = mergeHooks({ hooks: { Stop: [{ hooks: [{ type: 'command', command: 'mine.sh' }] }] } }, codexHooks);
   assert.ok(merged.hooks.Stop.some((g) => g.hooks.some((h) => h.command === 'mine.sh')));
   assert.equal(JSON.stringify(mergeHooks(merged, codexHooks)), JSON.stringify(merged)); // re-install replaces ours only
