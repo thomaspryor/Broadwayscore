@@ -258,7 +258,12 @@ Reply with JSON only: {"isThisProduction": true|false, "isReview": true|false, "
   const text = (json.content && json.content[0] && json.content[0].text) || '';
   const m = text.match(/\{[\s\S]*\}/);
   if (!m) throw new Error(`LLM response not parseable: ${text.slice(0, 200)}`);
-  return JSON.parse(m[0]);
+  const verdict = JSON.parse(m[0]);
+  // A parseable but malformed verdict (e.g. `{}`) is a verification error, not a rejection (BRO-2432).
+  if (!verdict || typeof verdict.isThisProduction !== 'boolean') {
+    throw new Error(`LLM verdict missing boolean isThisProduction: ${m[0].slice(0, 200)}`);
+  }
+  return verdict;
 }
 
 (async () => {
