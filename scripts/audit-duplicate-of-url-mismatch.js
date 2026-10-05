@@ -36,6 +36,7 @@ const { safeWriteReview } = require('./lib/review-write-guard');
 const { shouldBlockDuplicateOfGate } = require('./lib/duplicate-of-gate');
 const { findDuplicateOfCycle } = require('./lib/duplicate-cycle');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
+const { clearCrossOutletFields } = require('./lib/cascade-clear-duplicate-refs');
 const { isCrossOutletSyndicationPair } = require('./lib/syndication-pairs');
 const registry = require(path.join(__dirname, '..', 'data', 'outlet-registry.json'));
 
@@ -157,6 +158,17 @@ function walkShowDirs(root) {
     .map(e => path.join(root, e.name));
 }
 
+// Same comparator the duplicateOf URL check uses (also used to spot a renamed crossOutlet primary).
+const canonUrl = (u) => canonicalizeHost(stripTrivial(normalizeUrl(u)));
+
+// "<outlet>--<critic>.json": same known critic under a different outlet = likely the
+// same piece re-filed after a rename (amny--matt-windman vs newsday--matt-windman).
+function sameCriticSlug(a, b) {
+  const crit = (n) => (n.replace(/\.json$/, '').split('--')[1] || '');
+  const ca = crit(a);
+  return !!ca && ca !== 'unknown' && ca === crit(b) && a !== b;
+}
+
 function audit() {
   const mismatches = [];
   const showDirs = walkShowDirs(REVIEW_TEXTS_DIR);
@@ -212,6 +224,54 @@ function audit() {
         }
       }
 
+      // crossOutletDuplicate (BRO-3872): explainExclusion treats the flag as
+      // unconditionally exclusionary, so a primary deleted outside the cascade-clear
+      // call sites (manual rm, migration, future script) silently drops a real review
+      // forever. Detector writes crossOutletPrimaryFile as "<showId>/<file>"; resolve
+      // against that show dir (1 of 202 flagged files points cross-dir), bare names
+      // against this one. Missing/non-string pointer is reported but never auto-cleared.
+      if (data.crossOutletDuplicate === true) {
+        const showId = path.basename(showDir);
+        const ptr = data.crossOutletPrimaryFile;
+        if (typeof ptr !== 'string' || !ptr.endsWith('.json')) {
+          mismatches.push({ showId, file, field: 'crossOutletDuplicate', duplicateOf: ptr ?? null, reason: 'pointer-missing', url: data.url || null, siblingUrl: null });
+        } else {
+          const targetShow = ptr.includes('/') ? ptr.split('/')[0] : showId;
+          const targetFile = path.basename(ptr);
+          const sameDir = targetShow === showId;
+          const exists = sameDir
+            ? (targetFile !== file && !!load(targetFile))
+            : fs.existsSync(path.join(REVIEW_TEXTS_DIR, targetShow, targetFile));
+          const base = { showId, file, field: 'crossOutletDuplicate', duplicateOf: ptr, url: data.url || null, siblingUrl: null };
+          if (sameDir && targetFile === file) {
+            // Renamed onto its own pointer target: which file is the real primary
+            // is a judgment call, so report only (never auto-cleared).
+            mismatches.push({ ...base, reason: 'self-reference' });
+          } else if (!exists) {
+            // A missing primary is not proof the review is unique: the primary is
+            // often just RENAMED (outlet--unknown -> outlet--critic, show-dir rename)
+            // and a same-URL or syndication-pair twin still sits next to us. Clearing then would score
+            // the same article twice, so that case is report-only.
+            const mine = canonUrl(data.url);
+            const dirs = new Set([showDir, path.join(REVIEW_TEXTS_DIR, targetShow)]);
+            let twin = null;
+            {
+              for (const dir of dirs) {
+                if (!fs.existsSync(dir)) continue;
+                for (const f of fs.readdirSync(dir)) {
+                  if (!f.endsWith('.json') || f === 'failed-fetches.json' || (dir === showDir && f === file)) continue;
+                  let o;
+                  try { o = dir === showDir ? load(f) : JSON.parse(fs.readFileSync(path.join(dir, f), 'utf-8')); } catch { o = null; }
+                  if (o && ((o.url && mine && canonUrl(o.url) === mine) || isCrossOutletSyndicationPair(data, o, normalizeOutlet) || sameCriticSlug(file, f))) { twin = `${path.basename(dir)}/${f}`; break; }
+                }
+                if (twin) break;
+              }
+            }
+            mismatches.push(twin ? { ...base, reason: 'primary-renamed', siblingUrl: twin } : { ...base, reason: 'sibling-missing' });
+          }
+        }
+      }
+
       if (!data.duplicateOf) continue;
       if (typeof data.duplicateOf !== 'string' || !data.duplicateOf.endsWith('.json')) continue;
 
@@ -258,7 +318,7 @@ function audit() {
       // this, --fix would read the trivially-dirty URL as a DIFFERENT article,
       // clear the duplicateOf, and resurface a real duplicate into scoring. The
       // Sommers/much-ado genuine-stale case still differs by PATH and survives.
-      const canon = (u) => canonicalizeHost(stripTrivial(normalizeUrl(u)));
+      const canon = canonUrl;
       const a = canon(data.url);
       const b = canon(sibling.url);
       // BRO-2406: a cross-outlet syndication pointer (same critic, Tribune-group
@@ -322,6 +382,14 @@ function fix(mismatches) {
     if (m.reason === 'duplicateOf-cycle') continue;
     const filePath = path.join(REVIEW_TEXTS_DIR, m.showId, m.file);
     const data = JSON.parse(fs.readFileSync(filePath, 'utf-8'));
+    if (m.field === 'crossOutletDuplicate') {
+      // pointer-missing has no unambiguous target to verify — report only.
+      if (m.reason !== 'sibling-missing') continue;
+      clearCrossOutletFields(data, `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: crossOutletPrimaryFile ${m.duplicateOf} no longer exists`);
+      safeWriteReview(filePath, data);
+      cleared++;
+      continue;
+    }
     const field = m.field || 'duplicateOf';
     const reason = m.reason === 'self-reference'
       ? `audit-duplicate-of-url-mismatch.js (--fix) on ${new Date().toISOString().slice(0, 10)}: ${field} pointed at this file itself`
@@ -367,13 +435,24 @@ function main() {
     process.exit(0);
   }
 
-  console.log(`Found ${mismatches.length} duplicateOf URL mismatch(es):\n`);
-  for (const m of mismatches) {
+  const dupMismatches = mismatches.filter(m => m.field !== 'crossOutletDuplicate');
+  console.log(`Found ${mismatches.length} duplicateOf/crossOutletDuplicate URL mismatch(es):\n`);
+  for (const m of dupMismatches) {
     console.log(`  ${m.showId}/${m.file}`);
     console.log(`    → duplicateOf: ${m.duplicateOf}  (${m.reason})`);
     console.log(`    → our url:     ${m.url}`);
     console.log(`    → sibling url: ${m.siblingUrl}`);
     if (m.chain) console.log(`    → chain:       ${m.chain.join(' -> ')} -> ...`);
+    console.log('');
+  }
+
+  const crossOutlet = mismatches.filter(m => m.field === 'crossOutletDuplicate');
+  const crossOutletHealable = crossOutlet.filter(m => m.reason === 'sibling-missing');
+  if (crossOutlet.length > 0) {
+    console.log(`crossOutletDuplicate: ${crossOutlet.length} dangling primary pointer(s) (${crossOutletHealable.length} auto-healable, ${crossOutlet.length - crossOutletHealable.length} report-only: renamed primary / self-reference / pointer-missing):\n`);
+    // Capped: the drift digest keeps only the last 40 output lines; --json has the full list.
+    for (const m of crossOutlet.slice(0, 10)) console.log(`  ${m.showId}/${m.file}  → crossOutletPrimaryFile: ${m.duplicateOf}  (${m.reason}${m.reason === 'primary-renamed' ? `: ${m.siblingUrl}` : ''})`);
+    if (crossOutlet.length > 10) console.log(`  … ${crossOutlet.length - 10} more (use --json)`);
     console.log('');
   }
 
@@ -385,14 +464,25 @@ function main() {
   // would let a single uncleared cycle permanently eat headroom off the 25-item
   // floor, eventually blocking --fix or reddening --gate for unrelated, genuinely
   // auto-healable stale flags. Count only the auto-healable reasons against it.
-  const autoHealable = mismatches.filter(m => m.reason !== 'duplicateOf-cycle');
+  // crossOutletDuplicate entries (BRO-3872) are bucketed apart: a pre-existing
+  // backlog (BRO-3870: 37 files / 36 shows at 2026-10-05) already exceeds the floor,
+  // so counting them would redden --gate and make --fix refuse for unrelated flags.
+  // They self-heal under their OWN surge guard below instead.
+  const autoHealable = mismatches.filter(m => m.reason !== 'duplicateOf-cycle' && m.field !== 'crossOutletDuplicate');
 
   if (FIX) {
     if (autoHealable.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
       console.error(`::error::Refusing to auto-clear ${autoHealable.length} stale duplicateOf flags (> ${FIX_SURGE_THRESHOLD}). A spike this large usually means a producer regression, not routine churn — auto-clearing would re-admit a flood of reviews to scoring. Investigate the cause, then re-run with --force-bulk if the clears are legitimate.`);
       process.exit(1);
     }
-    const cleared = fix(mismatches);
+    let toFix = mismatches.filter(m => m.field !== 'crossOutletDuplicate');
+    if (crossOutletHealable.length > FIX_SURGE_THRESHOLD && !FORCE_BULK) {
+      // Skip (exit 0), never fail: rebuild-reviews/rebuild-fast run --fix inline.
+      console.warn(`::warning::Skipping ${crossOutletHealable.length} crossOutletDuplicate sibling-missing clears (> ${FIX_SURGE_THRESHOLD}) — pre-existing backlog (BRO-3870) or a producer regression; re-run with --force-bulk once reviewed.`);
+    } else {
+      toFix = mismatches;
+    }
+    const cleared = fix(toFix);
     console.log(`\nCleared ${cleared} stale duplicateOf flag(s). Re-run rebuild to surface the recovered reviews.`);
     if (cycles.length > 0) {
       console.log(`\n${cycles.length} duplicateOf-cycle mismatch(es) were NOT auto-fixed — choosing which file becomes canonical needs manual review. See the chains above.`);
@@ -410,7 +500,7 @@ function main() {
       console.error(`\n❌ GATE: ${autoHealable.length} auto-healable duplicateOf URL mismatch(es) > floor ${FIX_SURGE_THRESHOLD}. A spike this large signals a producer regression, not routine churn — failing the trunk for manual review before the self-heal re-admits a flood of reviews.`);
       process.exit(1);
     }
-    console.log(`\n✅ GATE: ${autoHealable.length} auto-healable duplicateOf URL mismatch(es) ≤ floor ${FIX_SURGE_THRESHOLD}${cycles.length > 0 ? ` (+ ${cycles.length} duplicateOf-cycle, excluded — needs manual triage, never auto-clears)` : ''}. Auto-healable churn — surfaced above, not blocking the trunk. clear-stale-duplicate-of.yml --fix clears these; full report-mode triage runs daily in check-corpus-drift.yml (→ digest).`);
+    console.log(`\n✅ GATE: ${autoHealable.length} auto-healable duplicateOf URL mismatch(es) ≤ floor ${FIX_SURGE_THRESHOLD}${cycles.length > 0 ? ` (+ ${cycles.length} duplicateOf-cycle, excluded — needs manual triage, never auto-clears)` : ''}${crossOutlet.length > 0 ? ` (+ ${crossOutlet.length} crossOutletDuplicate, excluded — own surge guard in --fix)` : ''}. Auto-healable churn — surfaced above, not blocking the trunk. clear-stale-duplicate-of.yml --fix clears these; full report-mode triage runs daily in check-corpus-drift.yml (→ digest).`);
     process.exit(0);
   }
 

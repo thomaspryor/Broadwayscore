@@ -408,6 +408,7 @@ async function main() {
           const data = JSON.parse(fs.readFileSync(filePath, 'utf8'));
           if (data.crossOutletDuplicate) continue; // Already flagged
           data.crossOutletDuplicate = true;
+          delete data.crossOutletClearReason; // re-flag supersedes an earlier clear breadcrumb (BRO-3872)
           data.crossOutletPrimaryFile = `${d.showId}/${d.primaryFile}`;
           data.crossOutletSimilarity = d.similarity;
           data.crossOutletMethod = d.method;
