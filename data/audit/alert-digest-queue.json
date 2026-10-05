@@ -169,6 +169,35 @@
     "queuedAt": "2026-10-04T22:50:25.332Z"
   },
   {
+    "conditionKey": "test-yml:main-streak-escalation",
+    "title": "main test.yml STILL red — auto-dispatch did not resolve it (still open — BRO-3030)",
+    "description": "Still firing after 120 notifications since it was filed. Tracked at BRO-3030.\n\nmain test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "severity": "error",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37245301809",
+    "decision": true,
+    "decisionPrompt": null,
+    "model": "opus",
+    "fields": [
+      {
+        "name": "This failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37245301809)"
+      },
+      {
+        "name": "Previous failed run",
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37245180305)"
+      },
+      {
+        "name": "Consecutive failures",
+        "value": "4"
+      },
+      {
+        "name": "Currently failing job(s)",
+        "value": "Unit Tests"
+      }
+    ],
+    "queuedAt": "2026-10-05T00:05:43.724Z"
+  },
+  {
     "conditionKey": "land:land/bro-4601-fresh-launch",
     "title": "Landing blocked: race red on land/bro-4601-fresh-launch",
     "description": "land.yml did not land land/bro-4601-fresh-launch: the race gate went red at 0f62c19091. The branch ref was left in place and nothing was pushed to main. First failure: [land] land/bro-4601-fresh-launch @ 0f62c19091 (origin/land/bro-4601-fresh-launch) → origin/main @ 51f40f4c59 [land] attempt 1/3: rebased onto 51f40f4c59, 7 file(s) changed — running checks [land] verified-base: main moved 174122a894 → 51f40f4c59 across 62 file(s), substantive — running the full gauntlet [land] linked 21 gitignored path(s) into the worktree (node_modules/core data) [land] checks:  Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37243689798",
