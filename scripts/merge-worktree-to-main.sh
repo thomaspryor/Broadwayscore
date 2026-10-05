@@ -395,19 +395,35 @@ land_via_landing_branch() {
 
   # ── push the tip to land/<branch> (skipped on resume: ref already there) ──
   push_dir="${src_dir:-$MAIN_DIR}"
+  # BRO-4643: GitHub reads only the pushed TIP commit for [skip ci]; a tip that
+  # carries one (a data-refresh commit) means land.yml never starts and we would
+  # poll the whole wait cap. Push a deterministic empty marker-free child to
+  # land/<branch> instead; land.yml's rebase drops it, the local branch is
+  # untouched, and a re-run recomputes the same sha (resume path stays valid).
+  local push_tip="$tip"   # what land/<branch> gets; differs from $tip only for a skip-marker tip
+  if [ "${LAND_SKIP_CI_TRIGGER_OFF:-}" != "1" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/land-skip-ci-marker.js" ]; then
+    local trig trig_rc
+    trig=$(node "$SCRIPT_DIR/lib/land-skip-ci-marker.js" --sha="$tip" --cwd="$push_dir"); trig_rc=$?
+    if [ "$trig_rc" -eq 10 ] && [ -n "$trig" ]; then
+      log "tip ${tip:0:10} carries a CI-skip marker — GitHub would not start land.yml; pushing empty trigger commit ${trig:0:10} instead (LAND_SKIP_CI_TRIGGER_OFF=1 disables)"
+      push_tip="$trig"
+    elif [ "$trig_rc" -ne 0 ]; then
+      log "  ⚠ skip-marker check could not run (exit $trig_rc) — pushing the tip as-is"
+    fi
+  fi
   local pout remote_land
   remote_land=$(git -C "$push_dir" ls-remote --heads origin "$land_name" 2>/dev/null | awk '{print $1}')
-  if [ "$remote_land" = "$tip" ]; then
-    log "origin/$land_name is already at ${tip:0:10} — resuming the wait for land.yml (no re-push)"
-  elif ! pout=$(git -C "$push_dir" push origin "$tip:refs/heads/$land_name" 2>&1); then
+  if [ "$remote_land" = "$push_tip" ]; then
+    log "origin/$land_name is already at ${push_tip:0:10} — resuming the wait for land.yml (no re-push)"
+  elif ! pout=$(git -C "$push_dir" push origin "$push_tip:refs/heads/$land_name" 2>&1); then
     if grep -qiE 'non-fast-forward|fetch first|\[rejected\]' <<<"$pout"; then
       log "  origin/$land_name exists from an earlier attempt — replacing it"
-      pout=$(git -C "$push_dir" push --force origin "$tip:refs/heads/$land_name" 2>&1) || { echo "$pout" >&2; die "push to $land_name failed"; }
+      pout=$(git -C "$push_dir" push --force origin "$push_tip:refs/heads/$land_name" 2>&1) || { echo "$pout" >&2; die "push to $land_name failed"; }
     else
       echo "$pout" >&2; die "push to $land_name failed (the pre-push hook's audits run here — fix on $BRANCH and re-run)"
     fi
   else
-    log "pushed ${tip:0:10} → origin/$land_name (land.yml takes it from here)"
+    log "pushed ${push_tip:0:10} → origin/$land_name (land.yml takes it from here)"
   fi
 
   # ── wait for land.yml ─────────────────────────────────────────────────────
@@ -417,7 +433,7 @@ land_via_landing_branch() {
     local _i run_json
     for _i in 1 2 3 4 5 6; do
       run_json=$(cd "$push_dir" && gh run list --workflow=land.yml --branch="$land_name" --json databaseId,headSha,url --limit 5 2>/dev/null || true)
-      read -r run_id run_url < <(RJ="$run_json" TIP="$tip" node -e '
+      read -r run_id run_url < <(RJ="$run_json" TIP="$push_tip" node -e '
         let rows = []; try { rows = JSON.parse(process.env.RJ || "[]"); } catch {}
         const r = rows.find(x => x.headSha === process.env.TIP);
         if (r) console.log(`${r.databaseId} ${r.url}`); else console.log("");' 2>/dev/null)
@@ -449,7 +465,7 @@ land_via_landing_branch() {
       local landed_sha="" proof="" _t
       for _t in 1 2 3 4 5; do
         g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null || true
-        landed_sha=$(g show "origin/$DEFAULT_BRANCH:data/audit/landings.jsonl" 2>/dev/null | grep -F "\"tip\":\"$tip\"" | tail -1 | sed -E 's/.*"sha":"([0-9a-f]{40})".*/\1/')
+        landed_sha=$(g show "origin/$DEFAULT_BRANCH:data/audit/landings.jsonl" 2>/dev/null | grep -F -e "\"tip\":\"$tip\"" -e "\"tip\":\"$push_tip\"" | tail -1 | sed -E 's/.*"sha":"([0-9a-f]{40})".*/\1/')
         [ -n "$landed_sha" ] && break
         sleep 30   # the landings.jsonl row is committed by land.yml a step after the push
       done
@@ -478,7 +494,7 @@ land_via_landing_branch() {
       # landing itself before claiming REFUSED (ship-check finding).
       g fetch origin "$DEFAULT_BRANCH" -q 2>/dev/null || true
       local late_sha=""
-      late_sha=$(g show "origin/$DEFAULT_BRANCH:data/audit/landings.jsonl" 2>/dev/null | grep -F "\"tip\":\"$tip\"" | tail -1 | sed -E 's/.*"sha":"([0-9a-f]{40})".*/\1/')
+      late_sha=$(g show "origin/$DEFAULT_BRANCH:data/audit/landings.jsonl" 2>/dev/null | grep -F -e "\"tip\":\"$tip\"" -e "\"tip\":\"$push_tip\"" | tail -1 | sed -E 's/.*"sha":"([0-9a-f]{40})".*/\1/')
       if is_landed "$tip" "$DEFAULT_BRANCH"; then
         log "land run went red but ${tip:0:10} IS on origin/$DEFAULT_BRANCH — treating as landed; inspect ${run_url:-the run} for the red step"
         prove_and_finish "$tip" "$fork" "$tip" "ancestor (run red after the push)" "$land_name" "$run_url" "$t0"
@@ -500,7 +516,7 @@ land_via_landing_branch() {
       if [ "$conclusion" = "cancelled" ] && command -v node >/dev/null 2>&1; then
         local remote_tip decision retry_flag backoff_s why _w st at
         remote_tip=$(git -C "$push_dir" ls-remote origin "refs/heads/$land_name" 2>/dev/null | awk '{print $1}' | head -1)
-        decision=$(LC="$land_c" CC="$checks_c" RT="$remote_tip" TIP="$tip" N="$cancel_retries" node -e '
+        decision=$(LC="$land_c" CC="$checks_c" RT="$remote_tip" TIP="$push_tip" N="$cancel_retries" node -e '
           const { decideCancelledLandRetry } = require(process.argv[1]);
           const d = decideCancelledLandRetry({ landConclusion: process.env.LC, checksConclusion: process.env.CC, remoteTip: process.env.RT, tip: process.env.TIP, retriesUsed: Number(process.env.N) });
           console.log(`${d.retry ? 1 : 0}\t${d.backoffSec}\t${d.reason}`);' "$SCRIPT_DIR/lib/land-branch.js" 2>/dev/null || printf '0\t0\tdecision helper failed')
