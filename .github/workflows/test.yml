@@ -52,6 +52,9 @@ on:
       # scripts/add-verified-tours.test.mjs (manifest) tests this CLI's planVerifiedTours (BRO-4601).
       - 'scripts/add-verified-tours.js'
       - 'scripts/add-verified-tours.test.mjs'
+      # BRO-2410: blog-reviews generator + its manifest-registered test (resolver is under scripts/lib/**).
+      - 'scripts/generate-blog-reviews-for-scoring.js'
+      - 'scripts/generate-blog-reviews-for-scoring.test.mjs'
       # scripts/cmux-auth-stall-watchdog.js (BRO-4056) is the I/O wrapper for
       # scripts/lib/cmux-auth-stall.js (covered by the glob above) — a solo
       # edit to the wrapper (e.g. the read-screen/rename loop) would otherwise
