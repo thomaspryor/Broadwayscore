@@ -71,6 +71,18 @@ const OUTLET_DISPLAY_NAMES = {
 };
 
 const MISMATCHES = [
+  // BRO-973 triage (2026-10-05): 1 file (life-of-pi-tour-2024), outletId=
+  // "nippertown" (nippertown.com) but the URL is dailygazette.com/nippertown/
+  // — Nippertown copy syndicated on the Daily Gazette site. Domain-gated so
+  // real nippertown.com files are untouched. (Registry domainAliases is NOT
+  // the fix: declaring the overlap is pinned to a fixed list by
+  // tests/unit/outlet-registry-domain-collisions.test.mjs.)
+  { from: 'nippertown', to: 'the-daily-gazette', domains: ['dailygazette.com'] },
+  // BRO-973 triage (2026-10-05): 1 file (saint-joan-2018), outletId=
+  // "reclining-standards" (recliningstandards.com, defunct) but the URL is
+  // recliningstandards.org, which the registry files under df-reviews; both
+  // are David Fox's site (criticName=David Fox).
+  { from: 'reclining-standards', to: 'df-reviews', domains: ['recliningstandards.org'] },
   // 138 files: outletId="about-entertainment" (tier 3, theater.about.com) but
   // URL is theater.nytimes.com and criticName is a real NYT critic (Ben
   // Brantley x123, Charles Isherwood x30, Bruce Weber, Jason Zinoman). The 4
