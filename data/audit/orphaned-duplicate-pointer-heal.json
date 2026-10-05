@@ -1,7 +1,7 @@
 {
-  "generated": "2026-10-05T02:37:40.405Z",
+  "generated": "2026-10-05T04:06:41.904Z",
   "note": "Orphaned duplicateOf/duplicateTextOf pointers cleared by heal-orphaned-duplicate-pointers.js --fix (BRO-3250, BRO-3336).",
-  "count": 19,
+  "count": 21,
   "orphans": [
     {
       "showId": "33-variations-2009",
@@ -22,6 +22,13 @@
       "loserFile": "guardian--charles-isherwood.json",
       "targetFile": "guardian--adrian-horton.json",
       "reason": "orphaned-duplicate-heal: guardian--adrian-horton.json was flagged invalid after guardian--charles-isherwood.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "cat-on-a-hot-tin-roof-2013",
+      "loserFile": "about-entertainment--ben-brantley.json",
+      "targetFile": "nytimes--ben-brantley.json",
+      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after about-entertainment--ben-brantley.json was pointed at it",
       "field": "duplicateOf"
     },
     {
@@ -106,6 +113,13 @@
       "loserFile": "financialtimes--unknown.json",
       "targetFile": "financialtimes--louise-levene.json",
       "reason": "orphaned-duplicate-heal: financialtimes--louise-levene.json was flagged invalid after financialtimes--unknown.json was pointed at it",
+      "field": "duplicateOf"
+    },
+    {
+      "showId": "the-lieutenant-of-inishmore-2006",
+      "loserFile": "about-entertainment--ben-brantley.json",
+      "targetFile": "nytimes--ben-brantley.json",
+      "reason": "orphaned-duplicate-heal: nytimes--ben-brantley.json was flagged invalid after about-entertainment--ben-brantley.json was pointed at it",
       "field": "duplicateOf"
     },
     {
