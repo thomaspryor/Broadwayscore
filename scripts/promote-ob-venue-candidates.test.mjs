@@ -117,3 +117,28 @@ test('buildOffBroadwayAggregatorShowEntry: id year follows the publish date year
   assert.equal(e.idYearProvisional, undefined);
   assert.equal(b({ ...BASE }).idYearProvisional, true);
 });
+
+// BRO-2026: promote-ob-historical's id year follows the production's dates.
+const { buildShowEntry: buildHistoricalShowEntry } = require('./promote-ob-historical.js');
+const row = (parsed) => ({ title: 'Some Show', venue: "St. Luke's Theatre", parsed, playbillUrl: 'x' });
+
+test('dates decide the id year over the title-parsed year', () => {
+  const e = buildHistoricalShowEntry(row({ dates: { openingDate: '2019-03-04' }, titleParse: { year: 2020 } }), new Set());
+  assert.match(e.id, /-2019$/);
+  assert.equal(e.idYearProvisional, undefined);
+});
+test('title-parsed year used when no dates', () => {
+  const e = buildHistoricalShowEntry(row({ dates: {}, titleParse: { year: 2018 } }), new Set());
+  assert.match(e.id, /-2018$/);
+  assert.equal(e.idYearProvisional, undefined);
+});
+test('nothing dated: run year, flagged provisional', () => {
+  const e = buildHistoricalShowEntry(row({ dates: {}, titleParse: {} }), new Set());
+  assert.ok(e.id.endsWith(`-${new Date().getFullYear()}`));
+  assert.equal(e.idYearProvisional, true);
+});
+test('closing date alone: closing year, still flagged provisional', () => {
+  const e = buildHistoricalShowEntry(row({ dates: { closingDate: '1998-06-01' }, titleParse: {} }), new Set());
+  assert.match(e.id, /-1998$/);
+  assert.equal(e.idYearProvisional, true);
+});
