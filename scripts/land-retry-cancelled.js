@@ -8,7 +8,8 @@
  *
  *   node scripts/land-retry-cancelled.js --sweep [--dry-run]
  *     Slot free → re-run at most ONE stranded cancelled Land run, oldest
- *     first. Slot busy → do nothing (the next Land completion sweeps again).
+ *     first. Slot busy → wait, except a run stranded >30 min is
+ *     re-run anyway (BRO-4676 aging; still one re-run per sweep).
  *   node scripts/land-retry-cancelled.js --run=<id> [--dry-run]
  *     Targeted retry of one run, same slot rule.
  *
@@ -101,10 +102,6 @@ function runTargeted() {
 
 function runSweep() {
   const slot = slotState();
-  if (slot.busy) {
-    console.log(`landing slot busy (${describe(slot.blockers)}): waiting, no attempt spent`);
-    return;
-  }
   // Cancelled runs only (status filter): the last 24h held ~150 Land runs, so
   // an unfiltered page would drop the oldest stranded ones first.
   const since = encodeURIComponent(`>=${new Date(Date.now() - MAX_AGE_HOURS * 3600 * 1000).toISOString()}`);
@@ -120,7 +117,9 @@ function runSweep() {
     .filter((r) => r.ref.startsWith('refs/heads/land/'))
     .map((r) => [r.ref.replace(/^refs\/heads\//, ''), r.object.sha]));
   const d = decideSweep({ slot, cancelledRuns, refs, now: Date.now() });
+  if (d.action === 'wait') { console.log(`landing slot busy (${describe(d.blockers)}): waiting, no attempt spent`); return; }
   if (d.action !== 'inspect') { console.log(`slot free, ${d.reason}`); return; }
+  if (d.aged) console.log(`landing slot busy (${describe(d.blockers)}) but ${d.candidates.length} run(s) stranded past the aging threshold: re-running the oldest eligible (BRO-4676)`);
   for (const run of d.candidates) {
     const latest = (gh([`repos/${repo}/actions/workflows/land.yml/runs?branch=${encodeURIComponent(run.head_branch)}&per_page=1`]).workflow_runs || [])[0];
     if (supersededByNewerRun(run, latest)) {

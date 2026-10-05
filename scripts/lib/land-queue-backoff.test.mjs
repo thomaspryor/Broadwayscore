@@ -5,7 +5,7 @@ import { createRequire } from 'node:module';
 const require = createRequire(import.meta.url);
 const {
   slotQueries, landJobInSlot, inFlightBlocker, pickStrandedCandidates, supersededByNewerRun,
-  decideSweep, orderForSlotCheck, MAX_INSPECT, STALE_BLOCKER_HOURS, MAX_JOB_LOOKUPS,
+  decideSweep, orderForSlotCheck, MAX_INSPECT, STALE_BLOCKER_HOURS, MAX_JOB_LOOKUPS, AGED_RETRY_MINUTES,
 } = require('./land-queue-backoff.js');
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
 
@@ -92,6 +92,34 @@ test('slot busy → wait, no rerun and no attempt spent', () => {
   assert.equal(decideSweep({ cancelledRuns, refs: refsFor(cancelledRuns), now: NOW }).action, 'wait');
 });
 
+test('BRO-4676: slot busy + stranded run past the aging threshold → re-run it anyway', () => {
+  const busy = { busy: true, blockers: [{ id: 50, branch: 'land/other', status: 'queued', why: 'holds-slot' }] };
+  const old = run({ id: 1, created_at: at(95), updated_at: at(AGED_RETRY_MINUTES + 5) });
+  const young = run({ id: 2, created_at: at(20), updated_at: at(10) });
+  const runs = [young, old];
+  const d = decideSweep({ slot: busy, cancelledRuns: runs, refs: refsFor(runs), now: NOW });
+  assert.equal(d.action, 'inspect');
+  assert.equal(d.aged, true);
+  assert.deepEqual(d.candidates.map((r) => r.id), [1], 'only the aged run; the young one keeps waiting');
+});
+
+test('BRO-4676: slot busy + only young stranded runs → wait', () => {
+  const busy = { busy: true, blockers: [] };
+  const runs = [run({ id: 1, created_at: at(90), updated_at: at(AGED_RETRY_MINUTES - 1) }), run({ id: 2, created_at: at(5) })];
+  assert.equal(decideSweep({ slot: busy, cancelledRuns: runs, refs: refsFor(runs), now: NOW }).action, 'wait');
+});
+
+test('BRO-4676: aging is measured from the latest cancel, and exhausted/landed runs never age in', () => {
+  const busy = { busy: true, blockers: [] };
+  const recancelled = run({ id: 1, created_at: at(300), updated_at: at(5) }); // re-run, evicted again 5 min ago
+  const exhausted = run({ id: 2, created_at: at(200), updated_at: at(100), run_attempt: MAX_ATTEMPTS });
+  const runs = [recancelled, exhausted];
+  assert.equal(decideSweep({ slot: busy, cancelledRuns: runs, refs: refsFor(runs), now: NOW }).action, 'wait');
+  // no slot verdict at all stays a plain wait even with an aged run
+  const old = run({ id: 3, created_at: at(200), updated_at: at(100) });
+  assert.equal(decideSweep({ cancelledRuns: [old], refs: refsFor([old]), now: NOW }).action, 'wait');
+});
+
 test('slot free → the oldest stranded run goes first', () => {
   const cancelledRuns = [
     run({ id: 3, created_at: at(10) }),
@@ -160,7 +188,8 @@ test('wiring: the workflow sweeps when the slot frees and the script spends atte
   // every rerun POST goes through rerun(), reached only after slotState() said free
   assert.equal((js.match(/rerun-failed-jobs/g) || []).length, 1);
   assert.match(js, /const slot = slotState\(runId\);\s*if \(slot\.busy\)[\s\S]*?return;[\s\S]*?rerun\(runId\)/);
-  assert.match(js, /const slot = slotState\(\);\s*if \(slot\.busy\)[\s\S]*?return;/);
+  assert.match(js, /const slot = slotState\(\);[\s\S]*?decideSweep\(/);
+  assert.match(js, /d\.action === 'wait'/);
   assert.match(js, /decideSweep\(\{ slot,/);
   assert.match(js, /supersededByNewerRun\(/);
   assert.match(js, /inFlightBlocker\(/);
