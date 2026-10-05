@@ -171,31 +171,31 @@
   {
     "conditionKey": "test-yml:main-streak-escalation",
     "title": "main test.yml STILL red — auto-dispatch did not resolve it (still open — BRO-3030)",
-    "description": "Still firing after 120 notifications since it was filed. Tracked at BRO-3030.\n\nmain test.yml is STILL red after 4 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
+    "description": "Still firing after 120 notifications since it was filed. Tracked at BRO-3030.\n\nmain test.yml is STILL red after 5 consecutive pushes — the auto-dispatch card(s) filed at the 2nd failure have not resolved it. Currently failing: Unit Tests, Lint Workflows. Direct pushes to main are not gated by required checks, so broken code is landing on the production branch. Investigate and fix now.",
     "severity": "error",
-    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37245301809",
+    "url": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37245555321",
     "decision": true,
     "decisionPrompt": null,
     "model": "opus",
     "fields": [
       {
         "name": "This failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37245301809)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37245555321)"
       },
       {
         "name": "Previous failed run",
-        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37245180305)"
+        "value": "[View logs](https://github.com/thomaspryor/Broadwayscore/actions/runs/37245301809)"
       },
       {
         "name": "Consecutive failures",
-        "value": "4"
+        "value": "5"
       },
       {
         "name": "Currently failing job(s)",
-        "value": "Unit Tests"
+        "value": "Unit Tests, Lint Workflows"
       }
     ],
-    "queuedAt": "2026-10-05T00:05:43.724Z"
+    "queuedAt": "2026-10-05T00:11:57.200Z"
   },
   {
     "conditionKey": "land:land/bro-4601-fresh-launch",
