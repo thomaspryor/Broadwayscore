@@ -50,7 +50,9 @@ function errorText(err) {
 
 function runGhWithFallback(args, { exec, env = process.env, fallbackToken, log = console.error } = {}) {
   const { isRateLimitError } = require('./github-rate-limit-retry.js');
-  const opts = (e) => ({ encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: e });
+  // maxBuffer: a 100-run listing is >1 MB, past execFileSync's 1 MB default
+  // (BRO-4653's sweep hit ENOBUFS on its first live run).
+  const opts = (e) => ({ encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'], env: e, maxBuffer: 64 * 1024 * 1024 });
   try {
     return exec('gh', ['api', ...args], opts(env));
   } catch (err) {

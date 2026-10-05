@@ -510,7 +510,7 @@ land_via_landing_branch() {
           # own local re-run call (which fails "already running" once the server
           # has acted, and used to end in a false REFUSED).
           local grace_s poll_s grace_end resumed=0 wait_verdict
-          read -r grace_s poll_s < <(node -e 'const l = require(process.argv[1]); console.log(l.CANCEL_GRACE_SEC, l.CANCEL_GRACE_POLL_SEC);' "$SCRIPT_DIR/lib/land-branch.js" 2>/dev/null || echo "300 15")
+          read -r grace_s poll_s < <(node -e 'const l = require(process.argv[1]); console.log(l.CANCEL_GRACE_SEC, l.CANCEL_GRACE_POLL_SEC);' "$SCRIPT_DIR/lib/land-branch.js" 2>/dev/null || echo "900 15")
           grace_end=$(( $(date +%s) + grace_s ))
           [ "$grace_end" -le "$budget_deadline" ] || grace_end=$budget_deadline
           log "land run cancelled while pending — $why; waiting up to $(( grace_end - $(date +%s) ))s for the server-side re-trigger (land-retry-cancelled.yml)"

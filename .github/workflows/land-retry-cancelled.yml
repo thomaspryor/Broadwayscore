@@ -1,46 +1,58 @@
 name: Land retry on cancel
 
 # BRO-4246: land.yml's Land job waits in the single-pending `landing`
-# concurrency group; a newer landing queuing behind it cancels it even though
-# Checks passed. When a Land run completes as cancelled, re-run just the
-# cancelled job (bounded by MAX_ATTEMPTS in scripts/lib/land-retry-on-cancel.js).
-# Decision logic + test: scripts/lib/land-retry-on-cancel{,.test}.
+# concurrency group (shared with autonomous-merge.yml); a newer landing queuing
+# behind it cancels it even though Checks passed.
+# BRO-4653: re-running every cancelled Land job at once made the re-runs evict
+# each other and spent the whole attempt budget in one landing burst. Now each
+# firing is a SWEEP: while a Land job or Autonomous Merge run holds or waits
+# for the slot it does nothing (no attempt spent); once the slot is free it
+# re-runs at most ONE stranded cancelled Land job, oldest first. It fires when a Land or Autonomous
+# Merge run completes (the moment the slot frees) and on a cron backstop.
+# Decision logic + tests: scripts/lib/land-retry-on-cancel{,.test} and
+# scripts/lib/land-queue-backoff{,.test}.
 
 on:
   workflow_run:
-    workflows: ['Land']
+    workflows: ['Land', 'Autonomous Merge']
     types: [completed]
+  schedule:
+    # Backstop for a missed or dropped completion event (cron is throttled
+    # under load; the completion trigger does the real work).
+    - cron: '*/10 * * * *'
+  workflow_dispatch:
 
 permissions:
   actions: write
   contents: read
 
 jobs:
-  retry:
-    name: Retry cancelled Land
-    if: github.event.workflow_run.conclusion == 'cancelled'
+  sweep:
+    name: Re-run one stranded Land job
     runs-on: ubuntu-latest
     timeout-minutes: 5
     concurrency:
-      group: land-retry-${{ github.event.workflow_run.id }}
-      # concurrency-cancel-ok: per-run group (unique id), never contended.
+      # One sweep at a time, so two sweeps never both see the slot free and
+      # evict each other's re-run. A newer pending sweep replacing an older
+      # one loses nothing: it makes the same decision.
+      group: land-retry-sweep
       cancel-in-progress: false
     steps:
       - uses: actions/checkout@v5
       - uses: actions/setup-node@v5
         with:
           node-version: '20'
-      - name: Re-run cancelled Land job
+      - name: Sweep for a stranded Land run
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          # BRO-4651: used only when GITHUB_TOKEN's shared quota is spent.
+          # BRO-4651: fallback when GITHUB_TOKEN's quota is exhausted mid-burst.
           GH_FALLBACK_TOKEN: ${{ secrets.REVIEW_TEXTS_TOKEN }}
-        run: node scripts/land-retry-cancelled.js --run=${{ github.event.workflow_run.id }}
+        run: node scripts/land-retry-cancelled.js --sweep
 
       - name: Notify on failure
         if: failure()
         uses: ./.github/actions/notify-failure
         with:
-          title: 'Land retry-on-cancel failed'
-          description: 'run ${{ github.event.workflow_run.id }} — could not re-run the cancelled Land job'
+          title: 'Land retry sweep failed'
+          description: 'sweep after ${{ github.event_name }} could not check or re-run stranded Land jobs'
           severity: 'warning'

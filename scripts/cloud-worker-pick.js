@@ -29,8 +29,9 @@ if (hasHelpFlag(process.argv)) {
 require('./lib/load-env').loadEnv();
 
 const REPO = 'thomaspryor/broadwayscore';
-// Same call land-retry-cancelled.js makes; re-running keeps the run id, so the next pick sees its result.
-const RERUN_LAND = (run) => `gh api -X POST repos/${REPO}/actions/runs/${run.id}/rerun-failed-jobs`;
+// BRO-4653: the slot-aware retry. It re-runs only while the landing slot is free,
+// so a resume never spends an attempt evicting (or being evicted by) another landing.
+const RERUN_LAND = (run) => `node scripts/land-retry-cancelled.js --run=${run.id}`;
 const RESUME_INSTRUCTIONS = (ref, run, kind) => [
   kind === 'evicted'
     ? `RESUME, not a new card: this card is already yours (In Progress) and its landing ${ref} was evicted from the shared landing slot (run ${run.id} cancelled), not refused.`
@@ -38,7 +39,7 @@ const RESUME_INSTRUCTIONS = (ref, run, kind) => [
   'Step 3 claim is a no-op on it. Do NOT start a new branch.',
   'First run the card\'s verify command (pick.verify) on up-to-date origin/main: if it already passes, the work landed another way, so skip to step 7.',
   ...(kind === 'evicted' ? [
-    `Nothing to fix: re-run its cancelled jobs with ${RERUN_LAND(run)} (MCP fallback: re-run the failed jobs of run ${run.id}).`,
+    `Nothing to fix: run ${RERUN_LAND(run)}. "re-run requested" → follow it. "landing slot busy" → spend nothing: land-retry-cancelled.yml re-runs it when the slot frees, so follow the ref. "skip (attempts-exhausted)" → merge origin/main into the ref and push to the SAME ref (a fresh run). Any other skip (already re-running, landed, superseded) → follow the ref, never push on top of a live landing. Without gh: re-run the failed jobs of run ${run.id} through the GitHub MCP tools, only when no other Land run is waiting for the landing slot.`,
   ] : [
   `Check it out: git worktree remove --force .claude/worktrees/resume 2>/dev/null; git fetch origin ${ref} && git worktree add --detach .claude/worktrees/resume FETCH_HEAD.`,
   `Read why Land refused run ${run.id}${run.url ? ` (${run.url})` : ''}: list its failed jobs (gh api repos/${REPO}/actions/runs/${run.id}/jobs --jq '.jobs[] | select(.conclusion=="failure") | .id'), then each job's annotations (gh api repos/${REPO}/check-runs/<job id>/annotations) or log (gh api repos/${REPO}/actions/jobs/<job id>/logs).`,

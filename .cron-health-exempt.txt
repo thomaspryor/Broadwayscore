@@ -259,3 +259,9 @@ drain-self-contradictory-clears.yml
 # owner-facing on the run Summary page only. A missed week costs a report, not
 # a user-facing page; failures surface via notify-failure + the daily digest.
 analyze-traffic-sources.yml
+
+# land-retry-cancelled.yml (BRO-4653): cron is only a backstop; the sweep's real
+# trigger is every Land / Autonomous Merge completion. A missed cron costs a
+# delayed re-run of an evicted landing, which the next completion catches;
+# failures surface via notify-failure + the daily digest.
+land-retry-cancelled.yml
