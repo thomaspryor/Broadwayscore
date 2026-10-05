@@ -401,3 +401,104 @@ test('describeDispatchesPlainly tolerates junk input', () => {
   assert.equal(describeDispatchesPlainly(null), '');
   assert.equal(describeDispatchesPlainly([null, {}, { ok: true }]), '');
 });
+
+// ---------------------------------------------------------------------------
+// Ambiguous-title guard (BRO-4659 cousin, found by a Codex review of the
+// resolveEntryShowId() fix in verify-feedback-requests-live.js): this router
+// resolves a show and bakes the result into a dispatched action's `showId`
+// BEFORE the feedback-request ledger entry exists, so resolveEntryShowId()'s
+// own ambiguity gate never sees a guess made here — it trusts any populated
+// `entry.showId` as manual. Each of this module's three resolve call sites
+// must flag ambiguity itself rather than silently picking a winner.
+// ---------------------------------------------------------------------------
+
+// Mirrors the real #905 shape: a title with multiple same-titled productions.
+// The missing-show checks below (parseRequestedTitles + resolveShowInMarket)
+// use the raw lowercase form-field text ("Book of mormon"), matching the
+// actual dangerous #905 input — resolveShowMatches() is fuzzy on casing/
+// leading articles (resolve-show.test.mjs:138, :152). The sentence-scoped
+// image/review checks use extractShowTitlesFromText() instead, which does
+// literal contiguous-token matching against the full show.title including
+// "The" (resolve-show.js normalizeTitleCore keeps a leading "The"), so those
+// messages below spell the title out in full.
+const BOOK_OF_MORMON_SHOWS = [
+  { id: 'book-of-mormon-2011', slug: 'book-of-mormon', title: 'The Book of Mormon', status: 'open', openingDate: '2011-03-24', category: 'broadway' },
+  { id: 'book-of-mormon-we-2024', slug: 'the-book-of-mormon-west-end', title: 'The Book of Mormon', status: 'open', openingDate: '2013-03-21', category: 'west-end' },
+  { id: 'book-of-mormon-tour-2022', slug: 'book-of-mormon-tour-2022', title: 'The Book of Mormon', status: 'open', openingDate: '2022-09-23', category: 'tour' },
+];
+
+// Same-market revival: two Broadway productions sharing a title — the
+// "cousin" shape the verify-feedback-requests-live.js fix also had to cover.
+const REVIVAL_SHOWS = [
+  { id: 'dolly-1964', slug: 'hello-dolly', title: 'Hello, Dolly!', status: 'closed', openingDate: '1964-01-16', category: 'broadway' },
+  { id: 'dolly-2017', slug: 'hello-dolly-2017', title: 'Hello Dolly', status: 'closed', openingDate: '2017-04-20', category: 'broadway' },
+];
+
+test('missing-image ask: an ambiguous title parks instead of guessing a show', () => {
+  const actions = planContentRequestActions({
+    message: "There's no picture for The Book of Mormon.",
+    show: null,
+    shows: BOOK_OF_MORMON_SHOWS,
+  });
+  assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
+  assert.match(actions[0].reason, /matched 3 shows/);
+  assert.match(actions[0].reason, /book-of-mormon-2011/);
+  assert.match(actions[0].reason, /book-of-mormon-we-2024/);
+  assert.match(actions[0].reason, /book-of-mormon-tour-2022/);
+});
+
+test('missing-reviews ask: a same-market revival parks instead of picking the newer one', () => {
+  const actions = planContentRequestActions({
+    message: 'Please finish the reviews for Hello Dolly.',
+    show: null,
+    shows: REVIVAL_SHOWS,
+  });
+  assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
+  assert.match(actions[0].reason, /matched 2 shows/);
+  assert.match(actions[0].reason, /dolly-1964/);
+  assert.match(actions[0].reason, /dolly-2017/);
+});
+
+test('ambiguous image + review asks for the same title in one message flag once, not twice', () => {
+  const actions = planContentRequestActions({
+    message: "There's no picture for The Book of Mormon. Please also finish the reviews for The Book of Mormon.",
+    show: null,
+    shows: BOOK_OF_MORMON_SHOWS,
+  });
+  assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
+});
+
+test('missing-show check: an ambiguous already-catalogued title parks instead of guessing "already have it"', () => {
+  const actions = planContentRequestActions({
+    message: 'Please add Book of mormon.',
+    show: 'Book of mormon (West End)',
+    shows: BOOK_OF_MORMON_SHOWS,
+  });
+  // Market-scoped to 'west-end', where exactly one production matches —
+  // resolves cleanly despite the title being globally ambiguous. ("Tour" is
+  // not a market word MARKET_TOKEN_RE recognises, so this uses West End.)
+  assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
+  assert.match(actions[0].reason, /already in catalog as book-of-mormon-we-2024/);
+});
+
+test('missing-show check: an unscoped ambiguous title parks with all candidate IDs named', () => {
+  const actions = planContentRequestActions({
+    message: 'Please add Book of mormon.',
+    show: 'Book of mormon',
+    shows: BOOK_OF_MORMON_SHOWS,
+  });
+  assert.deepEqual(actions.map((a) => a.kind), ['unroutable']);
+  assert.match(actions[0].reason, /matched 3 shows/);
+  assert.doesNotMatch(actions[0].reason, /already in catalog/,
+    'must not claim a specific existing show when the match is ambiguous');
+});
+
+test('an unambiguous title still routes normally through resolveShowInMarket', () => {
+  const actions = planContentRequestActions({
+    message: "There's no picture for The Book of Mormon.",
+    show: null,
+    shows: [BOOK_OF_MORMON_SHOWS[0]],
+  });
+  assert.deepEqual(actions.map((a) => a.kind), ['missing-image']);
+  assert.equal(actions[0].showId, 'book-of-mormon-2011');
+});

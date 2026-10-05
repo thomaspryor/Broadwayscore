@@ -40,7 +40,7 @@
  * Colocated test: tests/unit/content-request-routing.test.mjs
  */
 
-const { resolveShow, resolveShowMatches, extractShowTitlesFromText } = require('./resolve-show.js');
+const { resolveShowMatches, extractShowTitlesFromText } = require('./resolve-show.js');
 
 /** Workflows this module is allowed to name. Keep in sync with .github/workflows/. */
 const WORKFLOW_IMAGE = 'fetch-all-image-formats.yml';
@@ -226,22 +226,37 @@ function parseRequestedTitles(raw) {
 }
 
 /**
- * Resolve a title WITHIN a requested market.
+ * Resolve a title to one show WITHIN an optional market, or flag ambiguity
+ * instead of guessing a winner.
  *
- * resolveShow() deliberately ranks Broadway first — right for a user reporting a
- * bug on a show they can see now, wrong for a content request. "The Outsiders
- * (Regional)" asks for the La Jolla tryout; matching it to the Broadway
- * production and concluding "already in catalog" is how #542 was silently
- * refused. When a market is named, only productions in that market count; the
- * Broadway entry existing says nothing about whether the tryout does.
+ * When a market is named, only productions in that market count — matching
+ * "The Outsiders (Regional)" to the Broadway production and concluding
+ * "already in catalog" is how #542 was silently refused. The Broadway entry
+ * existing says nothing about whether the tryout does.
+ *
+ * Multiple matches (within the named market, or across all of them when none
+ * is named) used to get tie-broken silently — newest openingDate in-market,
+ * resolveShow()'s status/category ranking unscoped. That is the #905 shape:
+ * this router resolves a show and bakes the result into a dispatched
+ * action's `showId` BEFORE the feedback-request ledger entry exists, so by
+ * the time resolveEntryShowId() runs its own ambiguity gate
+ * (verify-feedback-requests-live.js), `entry.showId` is already populated
+ * and that gate trusts any populated showId as a manual override, never
+ * re-checking it (caught by a Codex review of BRO-4659's fix there — the
+ * gate only protected the showId-not-yet-set path). So this is the same
+ * "skip, don't guess" treatment, applied where the guess actually happens.
+ *
+ * @returns {{resolved: object|null, ambiguous: boolean, candidateIds: string[]}}
  */
 function resolveShowInMarket(title, market, shows) {
-  if (!market) return resolveShow(title, shows);
-  const matches = resolveShowMatches(title, shows).filter((s) => s && s.category === market);
-  if (matches.length === 0) return null;
-  return [...matches].sort((a, b) =>
-    String(b.openingDate || '').localeCompare(String(a.openingDate || ''))
-  )[0];
+  const matches = market
+    ? resolveShowMatches(title, shows).filter((s) => s && s.category === market)
+    : resolveShowMatches(title, shows);
+  if (matches.length > 1) {
+    return { resolved: null, ambiguous: true, candidateIds: matches.map((s) => s.id) };
+  }
+  if (matches.length === 0) return { resolved: null, ambiguous: false, candidateIds: [] };
+  return { resolved: matches[0], ambiguous: false, candidateIds: [] };
 }
 
 /**
@@ -385,11 +400,30 @@ function planContentRequestActions({
 
   // --- Ask 1: a missing image on a show we already carry -------------------
   // Sentence-scoped so the absence phrase and the title must co-occur.
+  // seenAmbiguousTitles is shared with Ask 1b below: same ambiguity, no need
+  // to flag it twice. Keyed by the sorted candidate-id set, not the literal
+  // extracted title string — extractShowTitlesFromText() can return more than
+  // one distinct title string for the same sentence (e.g. "Hello, Dolly!" and
+  // "Hello Dolly" both matching a two-show catalog), and those all resolve to
+  // the identical ambiguous group.
   const seenImageShowIds = new Set();
+  const seenAmbiguousTitles = new Set();
   for (const sentence of splitSentences(message)) {
     if (!IMAGE_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const resolved = resolveShow(title, allShows);
+      const { resolved, ambiguous, candidateIds } = resolveShowInMarket(title, null, allShows);
+      if (ambiguous) {
+        const ambiguityKey = candidateIds.slice().sort().join('|');
+        if (seenAmbiguousTitles.has(ambiguityKey)) continue;
+        seenAmbiguousTitles.add(ambiguityKey);
+        actions.push({
+          kind: 'unroutable',
+          reason:
+            `title "${title}" matched ${candidateIds.length} shows (${candidateIds.join(', ')}); ` +
+            `ambiguous — needs manual review before dispatching a missing-image fetch`,
+        });
+        continue;
+      }
       if (!resolved || seenImageShowIds.has(resolved.id)) continue;
       seenImageShowIds.add(resolved.id);
       actions.push({
@@ -418,7 +452,19 @@ function planContentRequestActions({
   for (const sentence of splitSentences(message)) {
     if (!REVIEW_ABSENCE_RE.test(sentence)) continue;
     for (const title of extractShowTitlesFromText(sentence, allShows)) {
-      const resolved = resolveShow(title, allShows);
+      const { resolved, ambiguous, candidateIds } = resolveShowInMarket(title, null, allShows);
+      if (ambiguous) {
+        const ambiguityKey = candidateIds.slice().sort().join('|');
+        if (seenAmbiguousTitles.has(ambiguityKey)) continue;
+        seenAmbiguousTitles.add(ambiguityKey);
+        actions.push({
+          kind: 'unroutable',
+          reason:
+            `title "${title}" matched ${candidateIds.length} shows (${candidateIds.join(', ')}); ` +
+            `ambiguous — needs manual review before dispatching a review gather`,
+        });
+        continue;
+      }
       if (!resolved || seenReviewShowIds.has(resolved.id)) continue;
       seenReviewShowIds.add(resolved.id);
       actions.push(planReviewGather(resolved));
@@ -438,7 +484,17 @@ function planContentRequestActions({
 
     // Market-scoped: a Broadway entry does not satisfy a request for the
     // regional tryout of the same title. See resolveShowInMarket().
-    const existing = resolveShowInMarket(requestedTitle, market, allShows);
+    const { resolved: existing, ambiguous, candidateIds } = resolveShowInMarket(requestedTitle, market, allShows);
+    if (ambiguous) {
+      actions.push({
+        kind: 'unroutable',
+        reason:
+          `title "${requestedTitle}"${market ? ` (${market})` : ''} matched ${candidateIds.length} shows ` +
+          `(${candidateIds.join(', ')}); ambiguous — needs manual review to tell whether this title is ` +
+          `already in the catalog`,
+      });
+      continue;
+    }
     if (!existing) {
       const venueHint = extractVenueHintFor(requestedTitle, message, requestedTitles)
         // Only fall back to the message-wide hint for a single-title request,
