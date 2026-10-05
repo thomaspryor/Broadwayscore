@@ -267,7 +267,7 @@ test('summarizeWelcome splits phones from computers and feeds the dashboard and 
   const d = m.buildDashboardData({ now: NOW, accounts, ph: { welcome: rows } });
   assert.equal(d.welcome.all.completed, 4);
   assert.ok(m.weeklySummaryLines(d).includes(
-    'Welcome screen, last 30 days: 7 saw it, 4 saved shows from it, 1 imported from another app, 4 reached the end, 3 closed it early.'));
+    'Welcome screen, last 30 days: 7 saw it, 4 saved shows from it, 1 finished an import from another app, 4 reached the last step, 3 closed it early.'));
   const failed = m.buildDashboardData({ now: NOW, accounts, ph: { welcome: null } });
   assert.equal(failed.welcome, null);
   assert.deepEqual(failed.failed, ['welcome']);
