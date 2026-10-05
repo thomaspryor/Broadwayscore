@@ -292,6 +292,8 @@ BroadwayScorecard/data/theatr-refresh-token.tmp
 # docs/experiments/README.md's setup contract) and must be committed for
 # other sessions to find them — not scratch/local like the rest of /docs/.
 !/docs/experiments/
+# BRO-3018 inventory; scripts/tests/notion-live-write-paths.test.mjs reads it in CI.
+!/docs/notion-linear-residue-sweep.md
 # Task #1218's hit/miss audit of the review process itself — acceptance
 # criteria requires it committed (not scratch), so future sessions/audits
 # can find it without depending on one machine's claude-outputs copy.

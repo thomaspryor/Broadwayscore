@@ -8,12 +8,12 @@
  * (GitHub Actions) — there is no cmux and no bsc-next on that runner, so it
  * cannot itself spawn a session the way scripts/lib/digest-autofix.js does
  * from the Mac. The CI-side half of "auto-dispatch" is filing a
- * self-contained P1 card via notion-brain.js create; the Mac-side
- * P0/P1-auto-dispatch-at-creation path (CLAUDE.md §6: notion-tasks-sync.js
- * pull -> bsc-next.js --list -> bsc-next.js --id N) picks it up from there —
+ * self-contained P1 Linear issue (generate-remediation-plan.js files it via
+ * linear-brain.js create; notion-brain.js create has exited 6 since BRO-377);
+ * the Mac-side P0/P1 dispatch path (linear-next.js --id BRO-N) picks it up —
  * same division of labor as every other "file a card, the standing loop
  * dispatches it" flow in this repo. Pure planner here so the card content is
- * unit-testable without touching the Notion API (CLAUDE.md §15).
+ * unit-testable without touching the board API (CLAUDE.md §15).
  */
 
 'use strict';

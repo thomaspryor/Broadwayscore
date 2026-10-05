@@ -2808,6 +2808,8 @@ on:
       - 'scripts/posthog-friction-analyzer.js'
       - 'scripts/audit-opening-dates.js'
       - 'scripts/tests/notion-write-paths-retired.test.mjs'
+      - 'scripts/tests/notion-live-write-paths.test.mjs'
+      - 'scripts/lib/notion-residue-scan.js'
       # Notion corpus export (Sprint 2, notion→linear cutover). notion-corpus.js
       # holds the overflow-reassembly that notion-brain.js ALSO reads through —
       # 2,183 cards keep most of their text in the page body, so a break here
@@ -4561,6 +4563,17 @@ jobs:
     # a hung TEST must be found, not absorbed — the per-step `timeout 180` and
     # --test-timeout ceilings are what bound those.
     timeout-minutes: 30
+    # BRO-4720: tests build scratch git repos and rm them in t.after; git's
+    # detached auto-maintenance kept writing into .git and the rm hit
+    # ENOTEMPTY (run 37311592322). Off for every git process in this job.
+    env:
+      GIT_CONFIG_COUNT: '3'
+      GIT_CONFIG_KEY_0: gc.auto
+      GIT_CONFIG_VALUE_0: '0'
+      GIT_CONFIG_KEY_1: gc.autoDetach
+      GIT_CONFIG_VALUE_1: 'false'
+      GIT_CONFIG_KEY_2: maintenance.auto
+      GIT_CONFIG_VALUE_2: 'false'
     steps:
       - name: Checkout
         uses: actions/checkout@v5

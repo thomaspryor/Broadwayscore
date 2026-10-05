@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-352",
   "planId": "c4c66a83-864d-4d4a-9751-d117c6cfabac",
-  "status": "pending",
+  "status": "applied",
   "createdAt": "2026-10-05T13:17:50.873Z",
   "submitter": {
     "name": null,
@@ -82,5 +82,48 @@
         "description": "Reason for the flag."
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-05T13:54:37.458Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/stagezine--david-sheward.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "frankie-and-johnny-in-the-clair-de-lune-2019/stagezine--david-sheward.json wrongAttributionReason: null -> \"BRO-352: Cultural Weekly article filed under StageZine; the review is cultural-weekly--david-sheward.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/belleville-news-democrat--mark-kennedy.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "hamilton-2015/belleville-news-democrat--mark-kennedy.json wrongAttributionReason: null -> \"BRO-352: dead bnd.com url, byline unverifiable; AP review is stored as ap--mark-kennedy.json\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/third-coast-review--matthew-nerber.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "miss-saigon-2017/third-coast-review--matthew-nerber.json wrongAttributionReason: null -> \"BRO-352: author-page url, no text; byline matches the Buffalo News critic, not Third Coast Review\""
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweat-2017/reading-eagle--matt-windman.json wrongAttribution: null -> true"
+    },
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "sweat-2017/reading-eagle--matt-windman.json wrongAttributionReason: null -> \"BRO-352: dead readingeagle.com url, byline unverifiable; Windman review is stored as amny--matt-windman.json\""
+    }
+  ]
 }

@@ -21,7 +21,7 @@ import {
   getCommercialModelLastRun,
 } from '@/lib/data-commercial';
 import { getGrossesWeekEnding } from '@/lib/data-grosses';
-import { formatDataDate, formatDevelopmentDate } from '@/lib/biz-format';
+import { formatDataDate, formatDevelopmentDate, sortNewestFirst } from '@/lib/biz-format';
 
 import SeasonStatsCard from '@/components/biz/SeasonStatsCard';
 import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
@@ -56,20 +56,25 @@ export const metadata: Metadata = {
 
 // Generate recent developments from actual data
 function generateRecentDevelopments(): DevelopmentItem[] {
-  const items: DevelopmentItem[] = [];
+  // Past events (recoupments, closings) carry their ISO date so they can be
+  // interleaved newest first; upcoming closings and at-risk rows follow.
+  const past: Array<{ isoDate: string; item: DevelopmentItem }> = [];
 
   // Add recent recoupments (last 12 months)
   const recentRecoupments = getRecentRecoupments(12);
   for (const show of recentRecoupments.slice(0, 4)) {
-    items.push({
-      date: formatDevelopmentDate(show.recoupDate),
-      type: 'recouped',
-      showTitle: show.title,
-      showSlug: show.slug,
-      // Year-only recoupment dates have no week count (calculateWeeksToRecoup → null).
-      description: show.weeksToRecoup === null
-        ? 'recouped'
-        : `recouped about ${show.weeksToRecoup} weeks after opening`,
+    past.push({
+      isoDate: show.recoupDate,
+      item: {
+        date: formatDevelopmentDate(show.recoupDate),
+        type: 'recouped',
+        showTitle: show.title,
+        showSlug: show.slug,
+        // Year-only recoupment dates have no week count (calculateWeeksToRecoup → null).
+        description: show.weeksToRecoup === null
+          ? 'recouped'
+          : `recouped about ${show.weeksToRecoup} weeks after opening`,
+      },
     });
   }
 
@@ -81,14 +86,19 @@ function generateRecentDevelopments(): DevelopmentItem[] {
       : show.designation === 'Fizzle'
         ? 'closed without recouping'
         : 'closed';
-    items.push({
-      date: formatDevelopmentDate(show.closingDate),
-      type: 'closing',
-      showTitle: show.title,
-      showSlug: show.slug,
-      description: desc,
+    past.push({
+      isoDate: show.closingDate,
+      item: {
+        date: formatDevelopmentDate(show.closingDate),
+        type: 'closing',
+        showTitle: show.title,
+        showSlug: show.slug,
+        description: desc,
+      },
     });
   }
+
+  const items: DevelopmentItem[] = sortNewestFirst(past, (p) => p.isoDate).map((p) => p.item);
 
   // Add upcoming closings (announced)
   const upcomingClosings = getUpcomingClosings();

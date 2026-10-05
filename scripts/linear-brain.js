@@ -39,6 +39,7 @@ Usage:
     [--dispatch | --park "<reason>"] [--priority 0-4] [--project-id <id>] \\
     [--model opus|sonnet]
   node scripts/linear-brain.js find "search term"
+  node scripts/linear-brain.js get <BRO-N>
   node scripts/linear-brain.js update <BRO-N> [--state "<name>"] [--comment "<text>"] \\
     [--force "<reason ≥10 chars>"] [--duplicate-of <BRO-N>] [--cancel-reason "<reason ≥20 chars>"]
 
@@ -57,6 +58,10 @@ Usage:
           for digest-autofix's fileCard (BRO-286) — filing the same
           persistent health row daily would otherwise mint one duplicate
           issue per day and reset attempt-memory each time.
+  get:    read-only status read (BRO-3018, parity with notion-brain.js get).
+          Prints {"identifier","title","url","state":{"name","type"},
+          "terminal":bool}; terminal = completed|canceled|duplicate. Exit 2 if
+          the issue does not exist. Lets callers poll an issue they escalated.
   --probe: read-only three-way health verdict for the gate hooks. Prints one
           BOARD_PROBE: line and exits 0 healthy / 3 erroring / 4 unreachable.
   update: moves an issue's workflow state and/or posts a comment. --state takes
@@ -203,6 +208,34 @@ async function main(argv = process.argv.slice(2), deps = {}) {
   // positional dispatch below (which would otherwise print USAGE and exit 1).
   if (args.probe) {
     await runProbe(args);
+    return;
+  }
+
+  if (command === 'get') {
+    const identifier = args._positional[1];
+    if (!identifier) {
+      console.error('Usage: linear-brain get <BRO-N>');
+      process.exit(1);
+    }
+    try {
+      const issue = await getIssueFn(identifier);
+      if (!issue) {
+        console.error(`❌ no such issue: ${identifier}`);
+        process.exit(2);
+      }
+      const { isTerminalStateType } = require('./lib/linear-state-types');
+      const state = issue.state || {};
+      console.log(JSON.stringify({
+        identifier: issue.identifier,
+        title: issue.title,
+        url: issue.url,
+        state: { name: state.name || null, type: state.type || null },
+        terminal: isTerminalStateType(state.type),
+      }, null, 2));
+    } catch (err) {
+      console.error(`\n❌ ${err.message}\n`);
+      process.exit(2);
+    }
     return;
   }
 

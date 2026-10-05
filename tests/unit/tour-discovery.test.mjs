@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { titleKey, titleKeys, slugKey, parentForSlug, runningTourCandidate, dedupeCandidates } = require('../../scripts/lib/tour-discovery.js');
+const { titleKey, titleKeys, slugKey, parentForSlug, runningTourCandidate, dedupeCandidates, upcomingSegments } = require('../../scripts/lib/tour-discovery.js');
 const { decideTourDates, segmentLaunch, segmentTourRows, parseTourSchedule } = require('../../scripts/lib/tour-schedule.js');
 const { openTourCandidates } = require('../../scripts/lib/tour-roundup-candidate.js');
 const { buildTourEntry } = require('../../scripts/lib/tour-entry.js');
@@ -61,7 +61,7 @@ test('a running tour is a candidate; a finished or not-yet-listed one is not', (
     tourScheduleSlug: 'the-wiz', segmentStart: '2025-02-22',
   });
   const ended = page([row('Baltimore, MD', 'Hippodrome', 'February 22-March 2, 2025'), row('Detroit, MI', 'Fisher', 'March 4-16, 2025')]);
-  assert.equal(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: ended, shows: SHOWS, now: NOW }).skip, 'no tour running now');
+  assert.equal(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: ended, shows: SHOWS, now: NOW }).skip, 'no tour running now or booked to launch');
   assert.equal(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: '<p>new layout</p>', shows: SHOWS, now: NOW }).skip, 'schedule parsed to no engagements');
   assert.equal(runningTourCandidate({ slug: 'stomp', scheduleUrl: 'u', html: running, shows: SHOWS, now: NOW }).skip, 'no Broadway show of this title');
 });
@@ -158,7 +158,7 @@ test('ship-check: a segment an existing tour covers is not recorded again; an en
   ]);
   assert.equal(runningTourCandidate({ slug: 'hells-kitchen', scheduleUrl: 'u', html, shows, now: NOW }).skip, 'already tracked as hells-kitchen-tour-2025');
   const ended = page([row('Cleveland, OH', 'Playhouse Square', 'August 1-10, 2026'), row('Detroit, MI', 'Fisher', 'September 1-20, 2026')]);
-  assert.equal(runningTourCandidate({ slug: 'hells-kitchen', scheduleUrl: 'u', html: ended, shows: shows.slice(0, 1), now: NOW }).skip, 'no tour running now');
+  assert.equal(runningTourCandidate({ slug: 'hells-kitchen', scheduleUrl: 'u', html: ended, shows: shows.slice(0, 1), now: NOW }).skip, 'no tour running now or booked to launch');
 });
 
 test('ship-check: another country\'s tour is never launch evidence; a UK sentence nearby does not block', () => {
@@ -202,4 +202,52 @@ test('New-York-only aggregators never take a national tour (BRO-4325: NYC Theatr
   ]);
   assert.deepEqual(out.kept.map(s => s.id), ['maybe-happy-ending-2024', 'oh-mary-2024']);
   assert.deepEqual(out.tours.map(s => s.id), ['maybe-happy-ending-tour-2026']);
+});
+
+test('a tour booked ahead is a candidate before it opens', () => {
+  const booked = page([
+    row('Cerritos, CA', 'Cerritos Center', 'January 19-24, 2027'),
+    row('Phoenix, AZ', 'Orpheum', 'January 26-31, 2027'),
+    row('Denver, CO', 'Buell', 'February 2-14, 2027'),
+  ]);
+  const r = runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: booked, shows: SHOWS, now: NOW });
+  assert.equal(r.candidate.segmentStart, '2027-01-19');
+  assert.equal(r.candidate.upcoming, true);
+  // Beyond UPCOMING_DAYS, or one city only (a sit-down run): not yet.
+  const far = page([row('Cerritos, CA', 'C', 'January 19-24, 2028'), row('Phoenix, AZ', 'O', 'January 26-31, 2028'), row('Denver, CO', 'B', 'February 2-14, 2028')]);
+  assert.match(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: far, shows: SHOWS, now: NOW }).skip, /booked to launch/);
+  const sitDown = page([row('Chicago, IL', 'CIBC', 'January 5-17, 2027'), row('Chicago, IL', 'CIBC', 'January 19-31, 2027'), row('Chicago, IL', 'CIBC', 'February 2-14, 2027')]);
+  assert.match(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: sitDown, shows: SHOWS, now: NOW }).skip, /booked to launch/);
+  assert.equal(upcomingSegments([], NOW).length, 0);
+});
+
+test('a page whose current tour is tracked still yields the next one booked', () => {
+  // Shucked: first tour tracked, closed June 2026; second booked from January 2027.
+  const closedFirst = page([
+    row('Baltimore, MD', 'Hippodrome', 'February 22-March 2, 2025'),
+    row('Detroit, MI', 'Fisher', 'March 4-16, 2025'),
+    row('Boston, MA', 'Citizens Bank', 'June 1-7, 2026'),
+    row('Fort Wayne, IN', 'Embassy', 'January 12, 2027'),
+    row('Toledo, OH', 'Stranahan', 'January 14-16, 2027'),
+    row('Akron, OH', 'EJ Thomas', 'January 19-21, 2027'),
+  ]);
+  const first = { id: 'the-wiz-tour-2025', title: 'The Wiz', category: 'tour', tourOf: 'the-wiz-2024', openingDate: '2025-02-22', closingDate: '2026-06-07', status: 'closed' };
+  const r = runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: closedFirst, shows: [...SHOWS, first], now: NOW });
+  assert.equal(r.candidate && r.candidate.segmentStart, '2027-01-12');
+  assert.equal(r.candidate.upcoming, true);
+  // A running tracked tour, and another booked after a long layoff.
+  const runningThenBooked = page([
+    row('Baltimore, MD', 'Hippodrome', 'February 22-March 2, 2025'),
+    row('Detroit, MI', 'Fisher', 'March 4-16, 2025'),
+    row('Boston, MA', 'Citizens Bank', 'October 1-12, 2026'),
+    row('Tampa, FL', 'Straz', 'May 4-9, 2027'),
+    row('Miami, FL', 'Arsht', 'May 11-16, 2027'),
+    row('Orlando, FL', 'Dr. Phillips', 'May 18-23, 2027'),
+  ]);
+  const running = { ...first, closingDate: '2026-10-12', status: 'open' };
+  const r2 = runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: runningThenBooked, shows: [...SHOWS, running], now: NOW });
+  assert.equal(r2.candidate && r2.candidate.segmentStart, '2027-05-04');
+  // Nothing new when both are tracked.
+  const later = { ...first, id: 'the-wiz-tour-2027', openingDate: '2027-05-04', closingDate: null, status: 'upcoming' };
+  assert.match(runningTourCandidate({ slug: 'the-wiz', scheduleUrl: 'u', html: runningThenBooked, shows: [...SHOWS, running, later], now: NOW }).skip, /already tracked/);
 });
