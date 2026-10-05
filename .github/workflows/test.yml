@@ -1019,6 +1019,8 @@ on:
       # BRO-2129: stale local origin ref must not make foreign lines count as ours
       # in the content-survival check (refine_entry_base).
       - 'tests/unit/push-content-survival-false-positive.test.mjs'
+      # BRO-208: sibling-pipeline supersede must not read as REVERTED (poller false failures).
+      - 'tests/unit/poller-retry-supersede.test.mjs'
       # #394: no-op-rebase root-cause fix (explicit-destination fetch + progress
       # assertion). Pure predicate in push-rebase-progress.js (colocated .test.mjs
       # runs in the scripts/lib/*.test.mjs glob); bash integration reproduces the
