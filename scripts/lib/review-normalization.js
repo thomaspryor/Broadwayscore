@@ -2225,6 +2225,10 @@ function normalizeUrl(url) {
     // strip `/amp` cleanly (otherwise `/amp$` doesn't match while `?utm`
     // is still present).
     u = u.replace(/\/amp$/, '').replace(/[?&]amp=1\b/g, '');
+    // WordPress comment-pagination suffix (BRO-2869): `/article/comment-page-1`
+    // serves the SAME article body as `/article`. Path-final only, so a real
+    // slug that merely contains the words is untouched.
+    u = u.replace(/\/comment-page-\d+$/, '');
     return u;
   } catch (e) {
     return url.toLowerCase().trim();

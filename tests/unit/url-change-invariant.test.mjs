@@ -684,3 +684,27 @@ describe('identity-based wrongAttribution survives a URL change (BRO-4551)', () 
     assert.equal(merged.wrongAttribution, undefined);
   });
 });
+
+describe('BRO-2869: cosmetic url flip is not a wrong_content recovery', () => {
+  const { isDifferentArticleRecovery } = require('../../scripts/lib/url-change-invariant');
+  const BASE = 'https://monstagigz.com/some-show-review';
+  test('/comment-page-1/ strip is not a canonical change', () => {
+    assert.equal(urlCanonicallyChanged(`${BASE}/comment-page-1/`, `${BASE}/`), false);
+    assert.equal(isDifferentArticleRecovery(`${BASE}/comment-page-1/`, `${BASE}/`), false);
+  });
+  test('comment-page strip is path-final only', () => {
+    assert.equal(urlCanonicallyChanged(`${BASE}/comment-page-2/foo`, `${BASE}/foo`), true);
+  });
+  test('genuinely different article is a recovery', () => {
+    assert.equal(isDifferentArticleRecovery(BASE, 'https://monstagigz.com/other-review'), true);
+  });
+  test('missing previous url (no_url recovery) still counts as recovery', () => {
+    assert.equal(isDifferentArticleRecovery('', BASE), true);
+    assert.equal(isDifferentArticleRecovery(undefined, BASE), true);
+  });
+  test('collect-review-texts gates cleanup on _urlCosmeticOnly', () => {
+    const src = fs.readFileSync(path.join(path.dirname(fileURLToPath(import.meta.url)), '../../scripts/collect-review-texts.js'), 'utf8');
+    assert.match(src, /if \(!review\._urlCosmeticOnly\) \{\s+if \(!preserve\.wrongProduction\)/);
+    assert.equal((src.match(/_urlCosmeticOnly = review\._urlCosmeticOnly !== false && !isDifferentArticleRecovery/g) || []).length, 2);
+  });
+});
