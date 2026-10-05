@@ -308,8 +308,9 @@ function archiveCompletedTasks(dir, opts = {}) {
       // would destroy the older archived record — keep the live file, report it.
       if (fs.existsSync(archivePath)) {
         let existing = null;
-        try { existing = JSON.parse(fs.readFileSync(archivePath, 'utf8')); } catch { /* unreadable: treat as foreign */ }
-        if (!existing || existing.subject !== parsed.subject) {
+        try { existing = JSON.parse(fs.readFileSync(archivePath, 'utf8')); } catch { /* corrupt: holds no recoverable record, safe to repair by overwrite */ }
+        const sameTask = existing && existing.subject != null && existing.subject === parsed.subject;
+        if (existing && typeof existing === 'object' && !sameTask) {
           skipped.push({ id, reason: 'archive/ already holds a different task at this id (id reuse) — live copy kept, archive not overwritten' });
           continue;
         }

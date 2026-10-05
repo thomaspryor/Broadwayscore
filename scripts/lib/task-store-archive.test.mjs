@@ -396,3 +396,19 @@ test('archiveCompletedTasks: same task already in archive/ (crash leftover) is s
   assert.deepEqual(result.archived, ['1']);
   assert.equal(fs.existsSync(path.join(dir, '1.json')), false);
 });
+
+test('archiveCompletedTasks: corrupt archive entry is repaired by overwrite; subject-less tasks are not treated as the same (BRO-2003)', () => {
+  const dir = mkTmp();
+  fs.mkdirSync(path.join(dir, 'archive'));
+  fs.writeFileSync(path.join(dir, 'archive', '1.json'), '');
+  fs.writeFileSync(path.join(dir, 'archive', '2.json'), JSON.stringify({ id: '2', status: 'completed' }));
+  for (const id of [1, 2]) {
+    const p = path.join(dir, `${id}.json`);
+    fs.writeFileSync(p, JSON.stringify({ id: String(id), status: 'completed' }));
+    const old = new Date(NOW - 72 * HOUR);
+    fs.utimesSync(p, old, old);
+  }
+  const result = archiveCompletedTasks(dir, { now: NOW, keepTopN: 0 });
+  assert.deepEqual(result.archived, ['1']);
+  assert.match(result.skipped.find((s) => s.id === '2').reason, /id reuse/);
+});
