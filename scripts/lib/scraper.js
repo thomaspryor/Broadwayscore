@@ -517,7 +517,8 @@ async function fetchWithBrightData(url, opts = {}) {
           if (res.statusCode === 200) {
             // BRO-4665: BD answered youtube.com with 200 + an empty body; keep
             // its error headers so the "empty content" log says why.
-            const brdError = res.headers['x-brd-error'] || res.headers['x-luminati-error'] || null;
+            const hdrs = res.headers || {};
+            const brdError = hdrs['x-brd-error'] || hdrs['x-luminati-error'] || null;
             resolve({ data, status: 200, brdError });
           } else {
             const err = new Error(`Bright Data HTTP ${res.statusCode}: ${data.slice(0, 200)}`);
