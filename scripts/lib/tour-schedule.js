@@ -251,6 +251,17 @@ function launchSentences(wikiText) {
   return [...out];
 }
 
+/**
+ * Wikipedia's tour text names a launch, but not in this row's city: the page
+ * lost the real opener (Harry Potter: Tours To You starts at Seattle, the
+ * article says the tour began in Denver). Silence is not a contradiction.
+ */
+function wikiNamesOtherLaunch(wikiText, row) {
+  const city = String((row && row.city) || '').split(',')[0].trim().toLowerCase();
+  const sentences = launchSentences(proseOnly(wikiText));
+  return sentences.length > 0 && !sentences.some(s => s.toLowerCase().includes(city));
+}
+
 const LAUNCH_WORD = /\b(launch|premier|began|begin|start|kick(ed|s)? off|open(ed|s)? (in|at|on))/i;
 
 /**
@@ -416,13 +427,23 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
   const write = {};
   const wikiLaunch = segmentLaunch(seg, wikiText);
   const roundupLaunch = !wikiLaunch && roundupConfirmsLaunch(seg, opts.roundupDate) ? seg.start : null;
-  const launch = wikiLaunch || roundupLaunch;
-  const launchSource = wikiLaunch ? 'wikipedia' : roundupLaunch ? 'bww-roundup' : null;
+  // Opt-in (create-tour-entries only, BRO-4601): a tour whose first listed
+  // engagement is within opts.freshLaunchDays of today is launching now, so
+  // that engagement IS the launch. Never for an older segment: Tours To You
+  // keeps only recent rows, so a long-running tour's first row is not its
+  // launch (Wicked's page starts in 2021, Hamilton's in Sept 2020).
+  const freshLaunch = !wikiLaunch && !roundupLaunch && opts.freshLaunchDays > 0
+    && seg.rows.length >= 3 && Math.abs(seg.start.getTime() - now.getTime()) <= opts.freshLaunchDays * DAY
+    && !wikiNamesOtherLaunch(wikiText, seg.rows[0])
+    ? seg.start : null;
+  const launch = wikiLaunch || roundupLaunch || freshLaunch;
+  const launchSource = wikiLaunch ? 'wikipedia' : roundupLaunch ? 'bww-roundup' : freshLaunch ? 'tourstoyou-fresh' : null;
   const notes = [`segment ${iso(seg.start)}..${iso(seg.end)} (${seg.rows.length} engagements)`];
   if (!tour.openingDate) {
     if (launch) write.openingDate = iso(launch);
     else notes.push('no engagement date in this segment is named by Wikipedia; launch left unset');
     if (roundupLaunch) notes.push(`launch ${iso(roundupLaunch)} confirmed by the BroadwayWorld roundup dated ${String(opts.roundupDate).slice(0, 10)} (Wikipedia silent)`);
+    if (freshLaunch) notes.push(`launch ${iso(freshLaunch)} is the first listed engagement of a tour launching now (within ${opts.freshLaunchDays} days; Wikipedia and roundups silent)`);
   } else if (launch && Math.abs(new Date(`${tour.openingDate}T00:00:00Z`) - launch) / DAY > 14) {
     notes.push(`stored launch ${tour.openingDate} differs from ${iso(launch)} by >14 days`);
   }
@@ -445,7 +466,9 @@ function decideTourDates(tour, scheduleHtml, wikiText, now = new Date(), opts = 
     else if (separateTourStarted) write.closingDate = iso(seg.end);
     else notes.push(`last listed stop ended ${iso(seg.end)} but nothing confirms the tour closed; left open`);
   }
-  return { write, notes, launchSource };
+  // The segment decided on, so a caller can check its engagements against
+  // other tours (duplicateScheduleOf).
+  return { write, notes, launchSource, segmentRows: seg.rows };
 }
 
 /** Tours To You slug guesses for a title ("MJ" is listed as mj-the-musical). */
@@ -456,7 +479,27 @@ function scheduleSlugs(tour) {
   return base ? [base, `${base}-the-musical`] : [];
 }
 
+/**
+ * The tour in `schedules` ({ <id>: { stops: [{city, venue, start}] } }, the
+ * shape of data/tour-schedules.json) whose stops share at least `min`
+ * engagements (same city, venue and start) with `rows`, or null. Tours To You
+ * once showed Operation Mincemeat's 2026 table on the Come From Away page
+ * (BRO-4601); two different shows never play the same house on the same
+ * opening day three times. `rows` may carry Date or YYYY-MM-DD starts.
+ */
+function duplicateScheduleOf(rows, schedules, { exceptId = null, min = 3 } = {}) {
+  const key = r => `${r.city}|${r.venue}|${r.start instanceof Date ? iso(r.start) : String(r.start).slice(0, 10)}`;
+  const mine = new Set((rows || []).map(key));
+  for (const [id, entry] of Object.entries(schedules || {})) {
+    if (id === exceptId) continue;
+    const shared = ((entry && entry.stops) || []).filter(s => mine.has(key(s))).length;
+    if (shared >= min) return id;
+  }
+  return null;
+}
+
 module.exports = {
+  duplicateScheduleOf,
   parseDateRange,
   parseTourSchedule,
   segmentTourRows,

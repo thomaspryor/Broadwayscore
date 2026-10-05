@@ -66,3 +66,27 @@ test('tourStops picks the segment matching the tour launch from a Tours To You t
   assert.equal(got[1].end, '2026-10-04');
   assert.equal(tourStops({ id: 'x-tour-2026', openingDate: '2026-09-19' }, ''), null);
 });
+
+test('opensWith: a duplicated table belongs to the tour that opened with its first stop', () => {
+  const { opensWith } = require('../../scripts/fetch-tour-schedules.js');
+  const table = [{ city: 'Providence, RI', venue: 'PPAC', start: '2026-09-20', end: '2026-09-26' }];
+  assert.equal(opensWith({ openingDate: '2026-09-20' }, table), true);
+  assert.equal(opensWith({ openingDate: '2017-03-12' }, table), false, 'the Broadway-era date of a page carrying a copied table');
+  assert.equal(opensWith(undefined, table), false);
+});
+
+test('tourStops keeps the current era only: after the launch, up to the closing', () => {
+  const row = (city: string, venue: string, dates: string) => `<tr><td>${city}</td><td>${venue}</td><td>${dates}</td></tr>`;
+  const html = `<table>${[
+    row('Fayetteville, AR', 'Walton Arts Center', 'August 16-25, 2024'),
+    row('Tulsa, OK', 'Tulsa PAC', 'August 27-September 8, 2024'),
+    row('Kansas City, MO', 'Starlight', 'October 1-12, 2024'),
+    row('Paducah, KY', 'Carson Center', 'October 30-November 1, 2024'),
+  ].join('')}</table>`;
+  const closed = tourStops({ id: 'x-tour-2024', openingDate: '2024-08-16', closingDate: '2024-10-12' }, html, new Date('2024-10-20T00:00:00Z'));
+  assert.deepEqual(closed.map((s: TourStop) => s.city), ['Fayetteville, AR', 'Tulsa, OK', 'Kansas City, MO'], 'a second company after the closing is not this tour');
+  // Launch before the page's first row: the running segment that began after it.
+  const late = tourStops({ id: 'x-tour-2024', openingDate: '2024-06-01' }, html, new Date('2024-10-05T00:00:00Z'));
+  assert.equal(late[0].city, 'Fayetteville, AR');
+  assert.equal(tourStops({ id: 'x-tour-2019', openingDate: '2019-06-01' }, html, new Date('2024-10-05T00:00:00Z')), null, 'an old tour never takes a new company\'s schedule');
+});
