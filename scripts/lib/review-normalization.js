@@ -2097,6 +2097,38 @@ function isJunkOutlet(outletName) {
   return false;
 }
 
+/**
+ * URL-aware junk check (BRO-2717). isJunkOutlet matches the outlet NAME only,
+ * so a venue listing or PR-firm page whose domain slugifies to a short
+ * plausible id ("southbank", "spincyclenyc") sails through, becomes a NEW
+ * outletId, and reddens audit-outlet-registry --strict. This refuses by URL
+ * SHAPE (blocked domain sets, named non-review host+path pairs, listing-page
+ * and evergreen ticket/what's-on paths) when the outlet is not already a
+ * registered one. Registered outlets are never refused here: their own
+ * guards (rebuild, review-guards) still apply, and a registered outlet
+ * with a listing-shaped URL is a per-file question, not an outlet-identity one.
+ *
+ * @param {string} outletName outletId or outlet display name
+ * @param {string|null} url review URL
+ * @param {{outletKnown?: boolean}} [opts]
+ * @returns {{junk: boolean, reason: string|null}}
+ */
+function classifyJunkOutletForUrl(outletName, url, opts = {}) {
+  if (isJunkOutlet(outletName)) return { junk: true, reason: 'junk-outlet-name' };
+  if (opts.outletKnown || !url || typeof url !== 'string') return { junk: false, reason: null };
+  const { isBlockedReviewUrl } = require('./domain-filters');
+  if (isBlockedReviewUrl(url)) return { junk: true, reason: 'blocked-domain' };
+  const { namedNonReviewReason, listingPageUrlReason } = require('./non-review-url-patterns');
+  const named = namedNonReviewReason(url);
+  if (named) return { junk: true, reason: named };
+  const listing = listingPageUrlReason(url);
+  if (listing) return { junk: true, reason: listing };
+  if (require('./cross-production-guards').isEvergreenListingUrl(url)) {
+    return { junk: true, reason: 'evergreen-listing-url' };
+  }
+  return { junk: false, reason: null };
+}
+
 // Zero-width spaces, LTR/RTL marks, BOM -- some sites (e.g. theatre.reviews) inject
 // these into canonical URLs invisibly, breaking byte-for-byte comparison (see #702).
 const INVISIBLE_UNICODE_RE = /[​-‏‪-‮⁠-⁤﻿]/g;
@@ -2619,6 +2651,7 @@ module.exports = {
   normalizeOutletFull,
   isRegisteredOutlet,
   isJunkOutlet,
+  classifyJunkOutletForUrl,
   isSentinelOutletId,
   normalizeCritic,
   normalizePublishDate,

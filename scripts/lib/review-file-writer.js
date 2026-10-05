@@ -584,6 +584,18 @@ function createOrMergeReviewFile(showId, input, options = {}) {
       input.text || fields.text ||
       EXCERPT_FIELDS.some((f) => input[f] || fields[f])
     );
+    // BRO-2717: an UNREGISTERED outlet on a listing/ticketing/venue/PR-shaped
+    // URL is never a review outlet — refuse before it becomes a new outletId
+    // that turns audit-outlet-registry --strict red. Any source; escape hatch
+    // is the same allowNonReviewUrl flag the submission guard honors.
+    // submit-review-form keeps its own, more specific submitted-non-review-url guard below.
+    if (!outletKnown && input.source !== 'submit-review-form' && !input.allowNonReviewUrl && !(fields && fields.allowNonReviewUrl)) {
+      const junk = require('./review-normalization').classifyJunkOutletForUrl(outletId, input.url, { outletKnown });
+      if (junk.junk) {
+        console.warn(`  ⛔ Skipping unregistered outlet "${outletId}" on non-review URL ${input.url} (${junk.reason})`);
+        return { action: 'skipped', reason: `unregistered-outlet-non-review-url: ${junk.reason}`, guardRefused: true };
+      }
+    }
     if (!outletKnown && !hasText) {
       console.warn(`  ⚠️  Skipping empty stub for unregistered outlet "${outletId}" (showId=${showId}, url=${input.url || 'null'})`);
       return { action: 'skipped', reason: 'unregistered-outlet-empty-stub' };
