@@ -48,7 +48,7 @@ test('gh workflow run -f hints in scripts/ match real workflow inputs', () => {
     const src = fs.readFileSync(file, 'utf8');
     for (const m of src.matchAll(/gh workflow run ([A-Za-z0-9_.-]+\.ya?ml)((?:\s+-f\s+[A-Za-z0-9_-]+=)+)/g)) {
       const wf = path.join(ROOT, '.github/workflows', m[1]);
-      if (!fs.existsSync(wf)) continue;
+      if (!fs.existsSync(wf)) { bad.push(`${path.relative(ROOT, file)}: no workflow file ${m[1]}`); continue; }
       const inputs = dispatchInputs(wf);
       for (const k of m[2].matchAll(/-f\s+([A-Za-z0-9_-]+)=/g)) {
         checked++;
