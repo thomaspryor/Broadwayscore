@@ -5,7 +5,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { readFileSync } from 'node:fs';
 const require = createRequire(import.meta.url);
-const { classifyState, waitForDeployment, exitCodeFor, EXIT } =
+const { classifyState, waitForDeployment, hasNewerLiveDeployment, exitCodeFor, EXIT } =
   require('../../scripts/lib/vercel-deploy-wait.js');
 
 function fakeClock() {
@@ -65,4 +65,20 @@ test('workflow: --no-wait + poll, superseded gates every post-deploy step', () =
     assert.ok(i > 0, name);
     assert.match(y.slice(i, i + 200), /superseded != 'true'/, `${name} gated`);
   }
+});
+
+test('superseded only when a newer non-canceled production deployment exists', () => {
+  const ours = 1000;
+  assert.equal(hasNewerLiveDeployment(ours, [{ createdAt: 2000, readyState: 'BUILDING' }]), true);
+  assert.equal(hasNewerLiveDeployment(ours, [{ createdAt: 2000, readyState: 'READY' }]), true);
+  assert.equal(hasNewerLiveDeployment(ours, [{ createdAt: 2000, readyState: 'CANCELED' }]), false, 'newer but also canceled = burst, keep retrying');
+  assert.equal(hasNewerLiveDeployment(ours, [{ createdAt: 500, readyState: 'READY' }]), false, 'older does not supersede');
+  assert.equal(hasNewerLiveDeployment(ours, []), false);
+  assert.equal(EXIT.CANCELED_SUPERSEDED, 5);
+});
+
+test('workflow: superseded keys off wait-script exit 5, not main moving', () => {
+  const y = readFileSync(new URL('../../.github/workflows/vercel-deploy.yml', import.meta.url), 'utf8');
+  assert.match(y, /"\$status" -eq 5/);
+  assert.doesNotMatch(y, /git ls-remote origin refs\/heads\/main/);
 });

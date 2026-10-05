@@ -2,9 +2,9 @@
 /**
  * Wait for a Vercel deployment to reach a terminal state (BRO-2067).
  * Usage: VERCEL_TOKEN=... node scripts/vercel-wait-deployment.js <url|dpl_id> [--timeout=480]
- * Exit: 0 READY, 1 ERROR/API failure, 3 CANCELED, 4 timeout. Logic: scripts/lib/vercel-deploy-wait.js
+ * Exit: 0 READY, 1 ERROR/API failure, 3 CANCELED, 4 timeout, 5 CANCELED but a newer production deployment exists (superseded). Logic: scripts/lib/vercel-deploy-wait.js
  */
-const { waitForDeployment, exitCodeFor } = require('./lib/vercel-deploy-wait.js');
+const { waitForDeployment, hasNewerLiveDeployment, exitCodeFor, EXIT } = require('./lib/vercel-deploy-wait.js');
 
 const arg = process.argv.slice(2).find(a => !a.startsWith('--'));
 const tArg = process.argv.find(a => a.startsWith('--timeout='));
@@ -16,6 +16,7 @@ if (!arg || !token) {
 }
 // --no-wait should print only the URL; take the last https:// line defensively.
 const urlLine = arg.split(/\s+/).filter(l => /^https?:\/\//.test(l)).pop() || arg.trim();
+if (!urlLine.trim()) { console.error('empty deployment url'); process.exit(1); }
 const id = urlLine.replace(/^https?:\/\//, '');
 
 async function fetchState() {
@@ -29,14 +30,28 @@ async function fetchState() {
     throw e;
   }
   const j = await res.json();
+  meta = { createdAt: j.createdAt, projectId: j.projectId };
   return j.readyState || j.status;
+}
+
+let meta = {};
+async function newerLiveExists() {
+  if (!meta.createdAt || !meta.projectId) return false;
+  const res = await fetch(`https://api.vercel.com/v6/deployments?projectId=${meta.projectId}&target=production&limit=10`, {
+    headers: { Authorization: `Bearer ${token}` },
+  });
+  if (!res.ok) return false;
+  const j = await res.json();
+  return hasNewerLiveDeployment(meta.createdAt, j.deployments);
 }
 
 waitForDeployment({
   fetchState,
   sleep: ms => new Promise(r => setTimeout(r, ms)),
   timeoutMs,
-}).then(r => {
-  console.log(`deployment ${id}: ${r.outcome} (state=${r.state}, polls=${r.polls})`);
-  process.exit(exitCodeFor(r.outcome));
+}).then(async r => {
+  let code = exitCodeFor(r.outcome);
+  if (r.outcome === 'canceled' && await newerLiveExists().catch(() => false)) code = EXIT.CANCELED_SUPERSEDED;
+  console.log(`deployment ${id}: ${r.outcome} (state=${r.state}, polls=${r.polls}, exit=${code})`);
+  process.exit(code);
 });

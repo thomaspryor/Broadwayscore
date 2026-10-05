@@ -8,7 +8,8 @@
  * is seen within one poll interval instead of at the timeout.
  */
 
-const EXIT = { READY: 0, ERROR: 1, CANCELED: 3, TIMEOUT: 4 };
+// CANCELED_SUPERSEDED: canceled AND Vercel has a newer non-canceled production deployment.
+const EXIT = { READY: 0, ERROR: 1, CANCELED: 3, TIMEOUT: 4, CANCELED_SUPERSEDED: 5 };
 
 function classifyState(readyState) {
   switch (String(readyState || '').toUpperCase()) {
@@ -45,6 +46,15 @@ async function waitForDeployment({ fetchState, sleep, now = Date.now, timeoutMs,
   }
 }
 
+/**
+ * A CANCELED deployment is benign only when Vercel is already building/serving
+ * a NEWER production deployment (not merely "main moved": CI bookkeeping commits
+ * move main every few minutes). `list` = Vercel deployments, any order.
+ */
+function hasNewerLiveDeployment(ourCreatedAt, list) {
+  return (list || []).some(d => d && d.createdAt > ourCreatedAt && classifyState(d.readyState || d.state) !== 'canceled' && classifyState(d.readyState || d.state) !== 'error');
+}
+
 function exitCodeFor(outcome) {
   return outcome === 'ready' ? EXIT.READY
     : outcome === 'canceled' ? EXIT.CANCELED
@@ -52,4 +62,4 @@ function exitCodeFor(outcome) {
     : EXIT.ERROR;
 }
 
-module.exports = { EXIT, classifyState, waitForDeployment, exitCodeFor };
+module.exports = { EXIT, classifyState, waitForDeployment, hasNewerLiveDeployment, exitCodeFor };

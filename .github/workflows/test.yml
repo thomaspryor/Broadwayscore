@@ -812,6 +812,7 @@ on:
       - 'scripts/check-push-ledger.js'
       - 'tests/unit/push-ledger.test.mjs'
       - 'tests/unit/vercel-deploy-concurrency.test.mjs'
+      - '.github/workflows/vercel-deploy.yml'
       - 'scripts/vercel-wait-deployment.js'
       - '.github/workflows/check-push-ledger.yml'
       # BRO-2827: probe-shape structural test (tests/unit/ node --test batch, globbed); path-listed so a solo edit triggers CI.

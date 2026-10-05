@@ -458,9 +458,8 @@ jobs:
           # BRO-2067: deploy with --no-wait and poll the deployment state
           # ourselves (scripts/vercel-wait-deployment.js). A Vercel-side
           # CANCELED (burst of pushes, "latest wins") is seen within ~10s
-          # instead of hanging to the attempt timeout. CANCELED + newer commit
-          # on main => superseded: exit 0, the next tick deploys HEAD. CANCELED
-          # with HEAD unchanged => retry like any transient failure.
+          # instead of hanging to the attempt timeout. CANCELED + a newer live
+          # production deployment => superseded: exit 0. CANCELED alone => retry.
           MAX_RETRIES=3
           SUPERSEDED=false
           for ATTEMPT in $(seq 1 $MAX_RETRIES); do
@@ -475,15 +474,17 @@ jobs:
             if [ "$status" -eq 0 ]; then
               break
             fi
-            if [ "$status" -eq 3 ]; then
-              HEAD_SHA=$(git ls-remote origin refs/heads/main | cut -f1) || HEAD_SHA=""
-              if [ -n "$HEAD_SHA" ] && [ "$HEAD_SHA" != "$GITHUB_SHA" ]; then
-                echo "::notice::Vercel canceled this deployment and main moved on ($GITHUB_SHA -> $HEAD_SHA) — superseded, the next tick deploys HEAD (BRO-2067)"
-                SUPERSEDED=true
-                status=0
-                break
-              fi
-              echo "::warning::vercel deployment CANCELED on attempt $ATTEMPT/$MAX_RETRIES with main unchanged — retrying (BRO-2067)"
+            if [ "$status" -eq 5 ]; then
+              # Canceled AND Vercel has a newer non-canceled production deployment
+              # (checked by the wait script). Deliberately NOT "main moved": CI
+              # bookkeeping commits move main every few minutes, which would mask
+              # a loop that never deploys. A lone cancel (exit 3) retries below.
+              echo "::notice::Vercel canceled this deployment in favor of a newer production deployment — superseded (BRO-2067)"
+              SUPERSEDED=true
+              status=0
+              break
+            elif [ "$status" -eq 3 ]; then
+              echo "::warning::vercel deployment CANCELED on attempt $ATTEMPT/$MAX_RETRIES with no newer deployment — retrying (BRO-2067)"
             elif [ "$status" -eq 4 ] || [ "$status" -eq 124 ]; then
               echo "::warning::vercel deploy timed out after ${ATTEMPT_TIMEOUT}s on attempt $ATTEMPT/$MAX_RETRIES (card #90 — possible Vercel-side cancellation hang)"
             else
