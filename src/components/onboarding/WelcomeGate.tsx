@@ -10,6 +10,10 @@
  * server, which returns true for exactly one caller per account. Only then
  * does the sheet open.
  *
+ * Where: straight away on hub pages (home, My Shows, market homes). On any
+ * other page it waits until they move on from the page they landed on, so it
+ * never covers the review they came to read (welcomeCanOpenOn).
+ *
  * Dev preview: ?welcome=preview on localhost opens it without an account
  * (nothing is written or tracked), for visual QA.
  */
@@ -20,7 +24,7 @@ import { usePathname } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 import { getPendingAction } from '@/lib/deferred-auth';
 import { supabaseRestRpc } from '@/lib/supabase-rest';
-import { shouldOfferWelcome, welcomeSeenKey } from '@/lib/welcome-onboarding';
+import { shouldOfferWelcome, welcomeCanOpenOn, welcomeSeenKey } from '@/lib/welcome-onboarding';
 
 const WelcomeSheet = dynamic(() => import('./WelcomeSheet'), { ssr: false });
 /** Same chunk as above; fetched before the claim so a failed download costs nothing. */
@@ -52,6 +56,16 @@ export default function WelcomeGate() {
   const profileLoaded = !!profile;
   const onAuthPage = !!pathname?.startsWith('/auth');
   const mounted = useRef(true);
+  // The page they were on when signed in (outside the sign-in screens).
+  // Keyed to the account: Apple's popup signs in without a page load, so a
+  // path remembered while signed out would be the wrong page.
+  const landingPath = useRef<string | null>(null);
+  const landingFor = useRef<string | null>(null);
+  if (userId && pathname && !onAuthPage && landingFor.current !== userId) {
+    landingFor.current = userId;
+    landingPath.current = pathname;
+  }
+  const canOpenHere = !!pathname && welcomeCanOpenOn({ pathname, landingPath: landingPath.current });
   useEffect(() => () => { mounted.current = false; }, []);
 
   // Signed out (e.g. in another tab) while it is open: close it rather than
@@ -67,7 +81,7 @@ export default function WelcomeGate() {
   }, []);
 
   useEffect(() => {
-    if (!userId || !profileLoaded || onAuthPage || open) return;
+    if (!userId || !profileLoaded || onAuthPage || !canOpenHere || open) return;
     const key = welcomeSeenKey(userId);
     let locallySeen = false;
     try { locallySeen = localStorage.getItem(key) === '1'; } catch { /* private mode */ }
@@ -96,7 +110,7 @@ export default function WelcomeGate() {
       cancelled = true;
       clearTimeout(timer);
     };
-  }, [userId, profileLoaded, seenAt, createdAt, onAuthPage, open]);
+  }, [userId, profileLoaded, seenAt, createdAt, onAuthPage, canOpenHere, open]);
 
   if (!open) return null;
   if (open === 'account' && !userId) return null;

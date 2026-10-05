@@ -77,12 +77,19 @@ export interface WelcomeShow {
   closingDate: string | null;
 }
 
-/** Grid size per group: 18 posters = 6 rows of 3 on a phone, 3 rows of 6 on desktop. */
-export const WELCOME_LONG_RUNNER_COUNT = 8;
-export const WELCOME_RECENT_COUNT = 7;
+/** Grid size: 18 posters = 6 rows of 3 on a phone, 3 rows of 6 on desktop. */
+export const WELCOME_OPEN_COUNT = 15;
 export const WELCOME_CLOSED_COUNT = 3;
+/** The markets the welcome grid has a list for. Everything else uses Broadway's. */
+export const WELCOME_MARKETS = ['broadway', 'west-end'] as const;
+export type WelcomeMarket = typeof WELCOME_MARKETS[number];
 /** A show running at least this long counts as a long-runner. */
 export const WELCOME_LONG_RUNNER_YEARS = 3;
+/**
+ * A show must have been open this long to make the grid: a show that opened
+ * last month has a big review count but almost no audience yet.
+ */
+export const WELCOME_MIN_RUN_DAYS = 180;
 /**
  * Floors that keep stub rows out. Long-runners get a low one: Chicago and
  * The Lion King opened before most of our critic coverage, yet they are the
@@ -110,31 +117,31 @@ const byOpeningThenTitle = (a: WelcomeShowSource, b: WelcomeShowSource) =>
   (a.openingDate || '').localeCompare(b.openingDate || '') || a.title.localeCompare(b.title);
 
 /**
- * The Broadway shows a new member is most likely to have seen: the longest
- * running ones still open (oldest first: Chicago, The Lion King, Wicked...),
- * then the recent hits by critic review count, then the biggest recent
- * closings. One poster per title, so a revival never shows twice.
+ * The shows a new member of one market is most likely to have seen: the
+ * open shows that have run longest (oldest first: Chicago, The Lion King,
+ * Wicked... and on to the recent hits that have run at least six months),
+ * then the biggest recent closings. Running time stands in for audience
+ * size, which we don't have. One poster per title, so a revival never shows
+ * twice.
  */
 export function pickWelcomeShows(
   shows: WelcomeShowSource[],
   today: string,
-  opts: { longRunnerCount?: number; recentCount?: number; closedCount?: number } = {},
+  opts: { openCount?: number; closedCount?: number; category?: WelcomeMarket } = {},
 ): WelcomeShow[] {
-  const longRunnerCount = opts.longRunnerCount ?? WELCOME_LONG_RUNNER_COUNT;
-  const recentCount = opts.recentCount ?? WELCOME_RECENT_COUNT;
+  const openCount = opts.openCount ?? WELCOME_OPEN_COUNT;
   const closedCount = opts.closedCount ?? WELCOME_CLOSED_COUNT;
+  const category = opts.category ?? 'broadway';
   const longRunnerSince = addDays(today, -Math.round(WELCOME_LONG_RUNNER_YEARS * 365.25));
+  const runSince = addDays(today, -WELCOME_MIN_RUN_DAYS);
   const closedSince = addDays(today, -WELCOME_CLOSED_WINDOW_DAYS);
   const eligible = shows.filter(s =>
-    s.category === 'broadway' && !!(s.images?.poster || s.images?.thumbnail));
-  const open = eligible.filter(s => s.status === 'open' && !!s.openingDate && s.openingDate <= today);
+    s.category === category && !!(s.images?.poster || s.images?.thumbnail));
 
-  const longRunners = open
-    .filter(s => (s.openingDate as string) <= longRunnerSince && s.reviewCount >= WELCOME_MIN_REVIEWS_LONG_RUNNER)
+  const open = eligible
+    .filter(s => s.status === 'open' && !!s.openingDate && s.openingDate <= runSince
+      && s.reviewCount >= ((s.openingDate as string) <= longRunnerSince ? WELCOME_MIN_REVIEWS_LONG_RUNNER : WELCOME_MIN_REVIEWS_RECENT))
     .sort(byOpeningThenTitle);
-  const recent = open
-    .filter(s => (s.openingDate as string) > longRunnerSince && s.reviewCount >= WELCOME_MIN_REVIEWS_RECENT)
-    .sort(byReviewsThenTitle);
   const closed = eligible
     .filter(s => s.status === 'closed' && s.reviewCount >= WELCOME_MIN_REVIEWS_CLOSED
       && !!s.closingDate && s.closingDate >= closedSince && s.closingDate <= today)
@@ -154,8 +161,7 @@ export function pickWelcomeShows(
   };
 
   return [
-    ...take(longRunners, longRunnerCount),
-    ...take(recent, recentCount),
+    ...take(open, openCount),
     ...take(closed, closedCount),
   ].map(s => ({
     id: s.id,
@@ -196,4 +202,26 @@ export function welcomeWriteFor(pick: WelcomePick): WelcomeWrite {
  */
 export function welcomeFinishDestination(input: { showsAdded: number; imported: number }): 'my-shows' | 'stay' {
   return input.showsAdded + input.imported > 0 ? 'my-shows' : 'stay';
+}
+
+// ─── Where and when it opens ────────────────────────────────────────────
+
+/** London pages get the West End grid; every other market gets Broadway's. */
+export function welcomeMarketFor(market: string): WelcomeMarket {
+  return market === 'west-end' || market === 'off-west-end' ? 'west-end' : 'broadway';
+}
+
+/** Pages with nothing in particular to read, where the sheet may open at once. */
+export const WELCOME_HUB_PATHS = ['/', '/my-shows', '/west-end', '/off-broadway', '/off-west-end'] as const;
+
+/**
+ * The sheet never covers the page someone signed up from (a show page they
+ * came to read). It opens on a hub page, or once they move on to another page.
+ * landingPath: the first non-sign-in page this visit, null until known.
+ */
+export function welcomeCanOpenOn(input: { pathname: string; landingPath: string | null }): boolean {
+  const path = input.pathname.replace(/\/$/, '') || '/';
+  if ((WELCOME_HUB_PATHS as readonly string[]).includes(path)) return true;
+  if (input.landingPath === null) return false;
+  return path !== (input.landingPath.replace(/\/$/, '') || '/');
 }

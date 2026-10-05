@@ -11,7 +11,9 @@ import {
   nextWelcomeStep,
   pickWelcomeShows,
   shouldOfferWelcome,
+  welcomeCanOpenOn,
   welcomeFinishDestination,
+  welcomeMarketFor,
   welcomeSeenKey,
   welcomeWriteFor,
   type WelcomeShowSource,
@@ -52,14 +54,15 @@ const show = (o: Partial<WelcomeShowSource> & { id: string }): WelcomeShowSource
   images: { poster: `/images/shows/${o.id}/poster.webp` }, reviewCount: 40, closingDate: null, ...o,
 });
 
-test('pickWelcomeShows: long-runners oldest first, then recent hits, then recent closings', () => {
+test('pickWelcomeShows: open shows oldest first, then recent closings', () => {
   const picked = pickWelcomeShows([
-    show({ id: 'small-recent', reviewCount: 21 }),
-    show({ id: 'big-recent', reviewCount: 60 }),
+    show({ id: 'small-recent', openingDate: '2025-03-01', reviewCount: 21 }),
+    show({ id: 'big-recent', openingDate: '2025-01-01', reviewCount: 60 }),
     show({ id: 'thin-recent', reviewCount: 5 }),
     show({ id: 'wicked', openingDate: '2003-10-30', reviewCount: 25 }),
     show({ id: 'chicago', openingDate: '1996-11-14', reviewCount: 9 }),
     show({ id: 'stub-runner', openingDate: '2010-01-01', reviewCount: 2 }),
+    show({ id: 'just-opened', openingDate: '2026-08-01', reviewCount: 80 }),
     show({ id: 'big-closed', status: 'closed', closingDate: '2026-01-01', reviewCount: 45 }),
     show({ id: 'old-closed', status: 'closed', closingDate: '2019-01-01', reviewCount: 90 }),
     show({ id: 'ob', category: 'off-broadway', reviewCount: 99 }),
@@ -72,15 +75,45 @@ test('pickWelcomeShows: long-runners oldest first, then recent hits, then recent
   assert.equal(picked[0].closingDate, null);
 });
 
+test('pickWelcomeShows: a show needs 180 days on the boards, so a weeks-old opening waits', () => {
+  const ids = (openingDate: string) => pickWelcomeShows([show({ id: 'x', openingDate, reviewCount: 50 })], '2026-10-05').map(s => s.id);
+  assert.deepEqual(ids('2026-04-08'), ['x'], '180 days ago');
+  assert.deepEqual(ids('2026-04-09'), [], '179 days ago');
+});
+
 test('pickWelcomeShows: one poster per title and respects the counts', () => {
   const picked = pickWelcomeShows([
     show({ id: 'gypsy-2024', title: 'Gypsy', status: 'closed', closingDate: '2025-08-17', reviewCount: 41 }),
-    show({ id: 'gypsy-2026', title: 'Gypsy', reviewCount: 99 }),
+    show({ id: 'gypsy-2026', title: 'Gypsy', openingDate: '2024-12-01', reviewCount: 99 }),
     ...Array.from({ length: 20 }, (_, i) => show({ id: `o${i}`, reviewCount: 25 + i })),
-  ], '2026-10-05', { longRunnerCount: 2, recentCount: 3, closedCount: 2 });
+  ], '2026-10-05', { openCount: 3, closedCount: 2 });
   assert.equal(picked.filter(s => s.title === 'Gypsy').length, 1);
-  assert.equal(picked.length, 3, 'no long-runners, 3 recent (Gypsy first), the only closing is a duplicate title');
+  assert.equal(picked.length, 3, '3 open (Gypsy oldest), the only closing is a duplicate title');
   assert.equal(picked[0].id, 'gypsy-2026');
+});
+
+test('pickWelcomeShows: West End grid only takes West End shows', () => {
+  const picked = pickWelcomeShows([
+    show({ id: 'mousetrap', category: 'west-end', openingDate: '1952-11-25', reviewCount: 6 }),
+    show({ id: 'wicked', openingDate: '2003-10-30', reviewCount: 25 }),
+  ], '2026-10-05', { category: 'west-end' });
+  assert.deepEqual(picked.map(s => s.id), ['mousetrap']);
+});
+
+test('welcomeMarketFor: London pages get the West End grid, everything else Broadway', () => {
+  assert.equal(welcomeMarketFor('west-end'), 'west-end');
+  assert.equal(welcomeMarketFor('off-west-end'), 'west-end');
+  assert.equal(welcomeMarketFor('nyc'), 'broadway');
+  assert.equal(welcomeMarketFor('off-broadway'), 'broadway');
+});
+
+test('welcomeCanOpenOn: hub pages right away, other pages only after moving on', () => {
+  assert.equal(welcomeCanOpenOn({ pathname: '/', landingPath: '/' }), true);
+  assert.equal(welcomeCanOpenOn({ pathname: '/my-shows/', landingPath: '/my-shows' }), true);
+  assert.equal(welcomeCanOpenOn({ pathname: '/west-end', landingPath: null }), true);
+  assert.equal(welcomeCanOpenOn({ pathname: '/show/six-2021', landingPath: '/show/six-2021/' }), false, 'reading the page they came for');
+  assert.equal(welcomeCanOpenOn({ pathname: '/show/hamilton-2015', landingPath: '/show/six-2021' }), true, 'moved on to another page');
+  assert.equal(welcomeCanOpenOn({ pathname: '/show/six-2021', landingPath: null }), false, 'landing not known yet');
 });
 
 test('pickWelcomeShows on the real catalog: a full grid of Broadway posters with the classics in it', () => {
