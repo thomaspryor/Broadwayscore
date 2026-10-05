@@ -1396,7 +1396,7 @@ function safeWriteReview(filePath, newData, options = {}) {
           if (sibOpenings.length) {
             const { classifyClassAContamination } = require('./cross-market-contamination');
             const xv = classifyClassAContamination(
-              new Date(newData.publishDate),
+              new Date(require('./date-utils').toDateMs(newData.publishDate)),
               show.openingDate ? new Date(show.openingDate) : null,
               sibOpenings
             );

@@ -321,7 +321,7 @@ function isAnticipatoryPreviewPost(publishDate, openingDate, outletId, opts = {}
   }
 
   const opening = new Date(openingDate);
-  const publish = new Date(publishDate);
+  const publish = new Date(require('./date-utils').toDateMs(publishDate));
   if (Number.isNaN(opening.getTime()) || Number.isNaN(publish.getTime())) {
     return { rejected: false };
   }

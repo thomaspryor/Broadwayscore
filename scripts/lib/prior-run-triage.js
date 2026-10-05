@@ -29,7 +29,7 @@ const CONTAMINATION_FLAG_RATIO = 0.5;
  * @returns {number|null} ms since epoch, or null if unparseable
  */
 function parseMs(publishDate) {
-  const ms = new Date(publishDate).getTime();
+  const ms = require('./date-utils').toDateMs(publishDate);
   return Number.isNaN(ms) ? null : ms;
 }
 

@@ -361,6 +361,7 @@ on:
       - 'scripts/check-image-aspect.js'
       - 'scripts/lint-design-tokens.js'
       - 'scripts/test-email-broadcast.js'
+      - 'scripts/test-ordinal-publishdate-guards.js'
       - 'scripts/test-temporal-override-regression.js'
       - 'scripts/validate-archive-productions.js'
       # tests/unit/is-test-email.test.mjs
@@ -4711,6 +4712,9 @@ jobs:
         # a correctness gate, and making it advisory would recreate the same
         # "green while broken" state it exists to prevent.
         run: node scripts/test-temporal-override-regression.js
+
+      - name: Ordinal publishDate guard parity (BRO-2836)
+        run: node scripts/test-ordinal-publishdate-guards.js
 
       - name: Run slow network-dependent unit tests
         # opening-night-checks-skeleton.test.mjs hits bww-rr-discover live and

@@ -321,7 +321,7 @@ function quickDateCheck(showId, url, publishDate, openingDate) {
   // published more than 30 days before opening. Catches wrong-production SERP
   // results (e.g., 2019 review for a 2026 revival) that year-only check misses.
   if (publishDate && openingDate) {
-    const pubDate = new Date(publishDate);
+    const pubDate = new Date(require('./date-utils').toDateMs(publishDate));
     const openDate = new Date(openingDate);
     if (!isNaN(pubDate.getTime()) && !isNaN(openDate.getTime())) {
       const daysBefore = (openDate - pubDate) / (1000 * 60 * 60 * 24);
