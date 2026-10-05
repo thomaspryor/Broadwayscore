@@ -1,7 +1,7 @@
 {
   "issueNumber": "bro-4684",
   "planId": "cbe5db8a-617e-4b5b-8fc7-ad741145f46e",
-  "status": "pending",
+  "status": "applied",
   "submitter": {
     "name": null,
     "email": null
@@ -23,5 +23,13 @@
         "description": "Culture Sauce byline on the page: Author: Thom Geier"
       }
     ]
-  }
+  },
+  "executedAt": "2026-10-05T12:03:00.269Z",
+  "results": [
+    {
+      "action": "review-field-edit",
+      "ok": true,
+      "msg": "slam-frank-off-broadway-2026/culturesauce--unknown.json criticName: \"Unknown\" -> \"Thom Geier\""
+    }
+  ]
 }
