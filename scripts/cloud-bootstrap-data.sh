@@ -50,9 +50,23 @@ ensure_notion_client() {
   fi
 }
 
+# Loud, so a session that needs review texts (audits, recovery) finds out at start
+# rather than halfway through. Cloud only: local checkouts manage their own data.
+warn_if_no_review_texts() {
+  if [ "${CLAUDE_CODE_REMOTE:-}" = "true" ] && [ -s data/shows.json ] && [ ! -d data/review-texts ]; then
+    log "WARN: data/review-texts is missing, so review texts are NOT available this session."
+    if [ -n "${REVIEW_TEXTS_TOKEN:-}" ]; then
+      log "WARN: REVIEW_TEXTS_TOKEN is set but the broadway-review-texts clone failed; check the token has repo scope."
+    else
+      log "WARN: set REVIEW_TEXTS_TOKEN in the environment variables, then start a new session."
+    fi
+  fi
+}
+
 # 1. Real data already resolvable (symlink or file with content)? Nothing to do.
 if [ -s data/shows.json ]; then
   ensure_notion_client
+  warn_if_no_review_texts
   exit 0
 fi
 
@@ -66,9 +80,18 @@ log "data/shows.json missing — bootstrapping cloud dataset"
 # --hard's it — safe in ephemeral cloud, but don't point this at a repo with
 # uncommitted work.
 if [ -n "${REVIEW_TEXTS_TOKEN:-}" ] || command -v gh >/dev/null 2>&1 || [ "${CLAUDE_CODE_REMOTE:-}" = "true" ]; then
-  log "attempting real data via setup-local-data.sh"
-  run_bounded 300 bash "$SCRIPT_DIR/setup-local-data.sh" 2>&1 | sed 's/^/[setup-local-data] /' || true
+  # Review texts (~234 MB, broadway-review-texts) clone only with --all. Opt in via
+  # REVIEW_TEXTS_TOKEN so routines and UI-only sessions without it stay fast.
+  if [ -n "${REVIEW_TEXTS_TOKEN:-}" ]; then
+    log "attempting real data + review texts via setup-local-data.sh --all"
+    run_bounded 300 bash "$SCRIPT_DIR/setup-local-data.sh" --all 2>&1 | sed 's/^/[setup-local-data] /' || true
+  else
+    log "attempting real data via setup-local-data.sh"
+    run_bounded 300 bash "$SCRIPT_DIR/setup-local-data.sh" 2>&1 | sed 's/^/[setup-local-data] /' || true
+  fi
 fi
+
+warn_if_no_review_texts
 
 # 3. Run the stub generator UNCONDITIONALLY as a gap-fill. cloud-stub-data.js
 # skips any path that already exists (symlinks from a real clone included) and
