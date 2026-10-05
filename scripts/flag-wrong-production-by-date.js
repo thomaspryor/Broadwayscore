@@ -19,6 +19,7 @@ const path = require('path');
 const { safeWriteReview, invalidateWrongProductionAutoClear } = require('./lib/review-write-guard');
 const { isWithinPriorRun, isWithinTourLeg, isPreRunForUkClear, namesNonLondonCity } = require('./lib/wrong-production-autoclear');
 const { evaluateDateGuard, evaluateDatelessRevivalGuard, evaluateLlmYearMisdate, guardPublishDate, earliestShowDate, DAYS_AFTER_CLOSE } = require('./lib/date-guard');
+const { detectPriorRunRepublish } = require('./lib/prior-run-republish-guard');
 const { evaluateCurrentRunCorroboration } = require('./lib/wrong-production-corroboration');
 const { isAwaitingUrlCorrectionRefetch } = require('./lib/stale-flag-after-url-correction');
 const { evaluateDatePlausibility } = require('./lib/date-plausibility');
@@ -165,6 +166,24 @@ function run() {
           });
         }
         continue;
+      }
+
+      // Prior-run republish (BRO-4641): body text names an earlier production. Date
+      // guards below cannot catch it (the page was republished with a new date).
+      if (data.humanReviewedWrongProduction !== false && !shouldSkipWrongProductionAudit(data)) {
+        const republish = detectPriorRunRepublish({ text: data.fullText, show });
+        if (republish.flag) {
+          flaggedDetails.push({ showId: showDir, title: show.title, file, date: data.publishDate || '(none)', issue: 'prior_run_republish', diffDays: 0, outlet: data.outlet || '?' });
+          if (!DRY_RUN) {
+            data.wrongProduction = true;
+            invalidateWrongProductionAutoClear(data);
+            data.wrongProductionReason = 'prior-run-republish';
+            data.wrongProductionNote = `Prior-run republish guard: ${republish.reason} — "${republish.evidence}"`;
+            const r = safeWriteReview(filePath, data);
+            if (r.lockedSkipped) lockedSkipCount++;
+          }
+          continue;
+        }
       }
 
       // LLM-guessed dates never sole basis for a stamp (BRO-4473)
