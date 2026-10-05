@@ -12,6 +12,7 @@ import {
   pickWelcomeShows,
   shouldOfferWelcome,
   welcomeCanOpenOn,
+  welcomeDoneMessage,
   welcomeFinishDestination,
   welcomeMarketFor,
   welcomeSeenKey,
@@ -150,6 +151,23 @@ test('welcomeFinishDestination: My Shows only when there is something to see', (
   assert.equal(welcomeFinishDestination({ showsAdded: 0, imported: 0 }), 'stay');
   assert.equal(welcomeFinishDestination({ showsAdded: 2, imported: 0 }), 'my-shows');
   assert.equal(welcomeFinishDestination({ showsAdded: 0, imported: 5 }), 'my-shows');
+});
+
+test('welcomeDoneMessage: To Be Rated only when picks went in without stars', () => {
+  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 0, unratedAdded: 0 }), 'Rate a show from its page any time, and it lands in your diary.');
+  assert.equal(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 0 }), '3 shows added to your diary.');
+  assert.equal(welcomeDoneMessage({ showsAdded: 1, imported: 0, unratedAdded: 0 }), '1 show added to your diary.');
+  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 12, unratedAdded: 0 }), '12 imported to your diary.');
+  assert.equal(welcomeDoneMessage({ showsAdded: 2, imported: 12, unratedAdded: 0 }), '2 shows added, 12 imported to your diary.');
+  assert.match(welcomeDoneMessage({ showsAdded: 1, imported: 0, unratedAdded: 1 }), /^1 show added\. It waits for you under To Be Rated/);
+  assert.match(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 3 }), /^3 shows added\. They wait for you under To Be Rated/);
+  assert.match(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 1 }), /^3 shows added\. The one without stars waits for you under To Be Rated/);
+  assert.match(welcomeDoneMessage({ showsAdded: 3, imported: 0, unratedAdded: 2 }), /^3 shows added\. The 2 without stars wait/);
+  // With imports, "They" would take them in too: the unrated picks are named.
+  assert.match(welcomeDoneMessage({ showsAdded: 2, imported: 5, unratedAdded: 2 }), /^2 shows added, 5 imported\. The 2 without stars wait/);
+  // A bad count never claims more unrated shows than were added.
+  assert.match(welcomeDoneMessage({ showsAdded: 2, imported: 0, unratedAdded: 5 }), /^2 shows added\. They wait/);
+  assert.equal(welcomeDoneMessage({ showsAdded: 0, imported: 4, unratedAdded: 3 }), '4 imported to your diary.');
 });
 
 test('importSourceNames: one list names every import source', () => {

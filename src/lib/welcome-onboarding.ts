@@ -204,6 +204,27 @@ export function welcomeFinishDestination(input: { showsAdded: number; imported: 
   return input.showsAdded + input.imported > 0 ? 'my-shows' : 'stay';
 }
 
+/**
+ * The last step's summary. To Be Rated is mentioned only when some of the
+ * picks went in without stars (seen_unrated); picks with stars are already
+ * in the diary, and imports carry their own ratings.
+ */
+export function welcomeDoneMessage(input: { showsAdded: number; imported: number; unratedAdded: number }): string {
+  const { showsAdded, imported } = input;
+  if (showsAdded + imported <= 0) return 'Rate a show from its page any time, and it lands in your diary.';
+  const counts = [
+    showsAdded > 0 ? `${showsAdded} ${showsAdded === 1 ? 'show' : 'shows'} added` : null,
+    imported > 0 ? `${imported} imported` : null,
+  ].filter(Boolean).join(', ');
+  const unrated = Math.min(Math.max(input.unratedAdded, 0), Math.max(showsAdded, 0));
+  if (unrated === 0) return `${counts} to your diary.`;
+  // "They" would take in the imports too, so name the unrated picks then.
+  const who = unrated === showsAdded && imported === 0
+    ? (showsAdded === 1 ? 'It waits' : 'They wait')
+    : (unrated === 1 ? 'The one without stars waits' : `The ${unrated} without stars wait`);
+  return `${counts}. ${who} for you under To Be Rated, where you can add the date and stars.`;
+}
+
 // ─── Where and when it opens ────────────────────────────────────────────
 
 /** London pages get the West End grid; every other market gets Broadway's. */

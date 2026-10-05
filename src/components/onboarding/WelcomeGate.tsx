@@ -40,10 +40,18 @@ class SheetBoundary extends Component<{ children: ReactNode }, { failed: boolean
 
 const FIRST_CHECK_MS = 1200;
 const BUSY_RETRY_MS = 1500;
+/**
+ * How long a pending sign-in action holds the welcome back: about 30 s. It is
+ * replayed only on its show page and lives up to an hour, so one that is never
+ * replayed (they signed in and went elsewhere) must not cost a new account its
+ * welcome; after that the sheet opens anyway.
+ */
+const MAX_PENDING_RETRIES = 20;
 
-function pageIsBusy(): boolean {
-  if (getPendingAction()) return true;
-  return !!document.querySelector('[role="dialog"][aria-modal="true"], [data-testid="rating-editor"]');
+/** 'modal': something is open on screen, wait however long it takes. */
+function pageBusyReason(): 'modal' | 'pending' | null {
+  if (document.querySelector('[role="dialog"][aria-modal="true"], [data-testid="rating-editor"]')) return 'modal';
+  return getPendingAction() ? 'pending' : null;
 }
 
 export default function WelcomeGate() {
@@ -89,9 +97,11 @@ export default function WelcomeGate() {
 
     let cancelled = false;
     let timer: ReturnType<typeof setTimeout>;
+    let pendingTries = 0;
     const attempt = async () => {
       if (cancelled) return;
-      if (pageIsBusy()) {
+      const busy = pageBusyReason();
+      if (busy === 'modal' || (busy === 'pending' && ++pendingTries <= MAX_PENDING_RETRIES)) {
         timer = setTimeout(attempt, BUSY_RETRY_MS);
         return;
       }
