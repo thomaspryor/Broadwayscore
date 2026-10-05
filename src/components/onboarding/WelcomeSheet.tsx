@@ -1,0 +1,417 @@
+'use client';
+
+/**
+ * One-time welcome for a brand-new account (BRO-4619). Opened by WelcomeGate
+ * after claim_onboarding() succeeds. Three skippable steps:
+ *   shows  — tap the shows you've seen (stars optional)
+ *   import — bring a history over from another app (IMPORT_SOURCES) (ImportShows, embedded)
+ *   done   — where to go next
+ * Decisions live in src/lib/welcome-onboarding.ts.
+ */
+
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useRouter } from 'next/navigation';
+import { Modal, ModalCloseButton } from '@/components/show-cards';
+import ShowImage from '@/components/ShowImage';
+import StarRating from '@/components/user/StarRating';
+import ImportShows from '@/app/my-shows/ImportShows';
+import { getOptimizedImageUrl } from '@/lib/images';
+import { IMPORT_SOURCES, importSourceNames } from '@/lib/import-sources';
+import { supabaseRestInsert, supabaseRestSelect } from '@/lib/supabase-rest';
+import { trackUgc, type UgcProps } from '@/lib/ugc-analytics';
+import {
+  nextWelcomeStep,
+  welcomeFinishDestination,
+  welcomeWriteFor,
+  type WelcomeShow,
+  type WelcomeStep,
+} from '@/lib/welcome-onboarding';
+
+/** Where a show already being in My Shows makes its poster unpickable. */
+const EXISTING_TABLES = ['reviews', 'watchlist', 'seen_unrated'] as const;
+
+interface WelcomeSheetProps {
+  /** null in preview mode (localhost ?welcome=preview): nothing is written or tracked. */
+  userId: string | null;
+  onClose: () => void;
+}
+
+export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
+  const router = useRouter();
+  const preview = userId === null;
+  const [step, setStep] = useState<WelcomeStep>('shows');
+  const [shows, setShows] = useState<WelcomeShow[] | null>(null);
+  const [existing, setExisting] = useState<{ reviews: Set<string>; watchlist: Set<string>; seen: Set<string> }>({ reviews: new Set(), watchlist: new Set(), seen: new Set() });
+  // showId -> stars (null = "seen it", no stars). Map keeps tap order.
+  const [picks, setPicks] = useState<Map<string, number | null>>(new Map());
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
+  const [saveError, setSaveError] = useState<string | null>(null);
+  const [saveFailed, setSaveFailed] = useState(0);
+  const [showsAdded, setShowsAdded] = useState(0);
+  const [imported, setImported] = useState(0);
+  const [importOpen, setImportOpen] = useState(false);
+
+  const track = useCallback((event: string, props: UgcProps = {}) => {
+    if (!preview) trackUgc(event, props);
+  }, [preview]);
+
+  useEffect(() => {
+    track('onboarding_shown');
+  }, [track]);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    fetch('/welcome-shows.json', { signal: controller.signal })
+      .then(r => (r.ok ? r.json() : { shows: [] }))
+      .then((d: { shows?: WelcomeShow[] }) => setShows(Array.isArray(d.shows) ? d.shows : []))
+      .catch(() => { if (!controller.signal.aborted) setShows([]); });
+    return () => controller.abort();
+  }, []);
+
+  // Someone who signed up by rating a show already has it in the diary.
+  useEffect(() => {
+    if (!userId) return;
+    const q = `select=show_id&user_id=eq.${encodeURIComponent(userId)}`;
+    Promise.all(EXISTING_TABLES.map(t => supabaseRestSelect<{ show_id: string }>(t, q)))
+      .then(([r, w, u]) => setExisting({
+        reviews: new Set((r.data || []).map(x => x.show_id)),
+        watchlist: new Set((w.data || []).map(x => x.show_id)),
+        seen: new Set((u.data || []).map(x => x.show_id)),
+      }))
+      .catch(() => {});
+  }, [userId]);
+
+  const showById = useMemo(() => new Map((shows || []).map(s => [s.id, s])), [shows]);
+  const activeShow = activeId ? showById.get(activeId) : undefined;
+  const hasShow = (id: string) => existing.reviews.has(id) || existing.watchlist.has(id) || existing.seen.has(id);
+
+  const togglePick = (id: string) => {
+    const wasPicked = picks.has(id);
+    setPicks(prev => {
+      const next = new Map(prev);
+      if (wasPicked) next.delete(id);
+      else next.set(id, null);
+      return next;
+    });
+    if (!wasPicked) setActiveId(id);
+    else if (activeId === id) setActiveId(null);
+  };
+
+  const setStars = (id: string, rating: number) => {
+    setPicks(prev => new Map(prev).set(id, rating));
+  };
+
+  const go = (to: WelcomeStep, addedNow = showsAdded, importedNow = imported) => {
+    setStep(to);
+    if (to === 'done') {
+      track('onboarding_completed', {
+        shows_added: addedNow,
+        imported: importedNow,
+        destination: welcomeFinishDestination({ showsAdded: addedNow, imported: importedNow }),
+      });
+    }
+  };
+
+  /**
+   * Saves the picks. thenClose: they closed the sheet with picks still
+   * unsaved, so save them on the way out instead of dropping them.
+   */
+  const savePicks = async ({ thenClose = false } = {}) => {
+    const entries = Array.from(picks.entries());
+    const rated = entries.filter(([, r]) => r !== null).length;
+    if (preview) {
+      setShowsAdded(entries.length);
+      track('onboarding_step_completed', { step: 'shows', shows_added: entries.length, rated });
+      if (thenClose) onClose();
+      else go(nextWelcomeStep('shows'), entries.length);
+      return;
+    }
+    setSaving(true);
+    setSaveError(null);
+    // Look again right before writing: the first lookup may have failed, or a
+    // show may have been added since (e.g. a bookmark saved at sign-in).
+    // reviews allows several rows per show, so a second write would duplicate.
+    const ids = entries.map(([id]) => id);
+    const inList = `in.(${ids.map(id => `"${id}"`).join(',')})`;
+    const q = `select=show_id&user_id=eq.${encodeURIComponent(userId as string)}&show_id=${encodeURIComponent(inList)}`;
+    let have: Set<string>;
+    try {
+      const results = await Promise.all(EXISTING_TABLES.map(t => supabaseRestSelect<{ show_id: string }>(t, q)));
+      if (results.some(x => x.error)) throw new Error('lookup failed');
+      have = new Set(results.flatMap(x => x.data || []).map(x => x.show_id));
+    } catch {
+      setSaving(false);
+      if (thenClose) { onClose(); return; }
+      setSaveError('We could not save those just now. Check your connection and try again.');
+      return;
+    }
+    let added = 0;
+    let failed = 0;
+    for (const [showId, rating] of entries) {
+      if (have.has(showId)) { added++; continue; }
+      const write = welcomeWriteFor({ showId, rating });
+      try {
+        const { error } = await supabaseRestInsert(write.table, { user_id: userId, ...write.row });
+        if (!error || error.code === '23505') added++;
+        else failed++;
+      } catch {
+        failed++;
+      }
+    }
+    setSaving(false);
+    if (added === 0 && failed > 0 && !thenClose) {
+      setSaveError('We could not save those just now. Check your connection and try again.');
+      return;
+    }
+    setShowsAdded(added);
+    setSaveFailed(failed);
+    track('onboarding_step_completed', { step: 'shows', shows_added: added, rated, failed });
+    if (thenClose) onClose();
+    else go(nextWelcomeStep('shows'), added);
+  };
+
+  const skip = (via: 'skip' | 'close') => {
+    if (saving) return;
+    track('onboarding_skipped', { step, via });
+    if (via === 'close') {
+      if (step === 'shows' && picks.size > 0) {
+        void savePicks({ thenClose: true });
+        return;
+      }
+      onClose();
+      return;
+    }
+    go(nextWelcomeStep(step));
+  };
+
+  const handleImportClosed = (count: number) => {
+    setImportOpen(false);
+    if (count > 0) {
+      setImported(count);
+      track('onboarding_step_completed', { step: 'import', imported: count });
+      go('done', showsAdded, count);
+    }
+  };
+
+  const finish = (dest: 'my-shows' | 'stay') => {
+    onClose();
+    if (dest !== 'my-shows') return;
+    // Already on My Shows: its lists were loaded before these writes.
+    if (window.location.pathname.replace(/\/$/, '') === '/my-shows') window.location.reload();
+    else router.push('/my-shows');
+  };
+
+  const destination = welcomeFinishDestination({ showsAdded, imported });
+  const pickCount = picks.size;
+  const existingIds = useMemo(() => new Set([...Array.from(existing.reviews), ...Array.from(picks.keys())]), [existing.reviews, picks]);
+
+  return (
+    <>
+      <Modal
+        isOpen
+        onClose={() => (step === 'done' ? onClose() : skip('close'))}
+        maxWidth="xl"
+        bottomSheet
+        closeOnBackdrop={false}
+        ariaLabel="Welcome to Broadway Scorecard"
+      >
+        <div className="flex flex-col overflow-hidden max-h-[85vh]" data-testid="welcome-sheet" data-step={step}>
+          <div className="flex items-start justify-between gap-3 px-5 pt-5 pb-3">
+            <div className="min-w-0">
+              <p className="text-xs font-semibold uppercase tracking-wider text-brand mb-1">
+                {step === 'done' ? 'All set' : `Welcome · Step ${step === 'shows' ? 1 : 2} of 2`}
+              </p>
+              <h2 className="text-xl font-bold text-white leading-tight">
+                {step === 'shows' && 'Which shows have you seen?'}
+                {step === 'import' && 'Bring over your history'}
+                {step === 'done' && (showsAdded + imported > 0 ? 'Your diary is started' : "You're all set")}
+              </h2>
+              {step === 'shows' && (
+                <p className="text-sm text-gray-400 mt-1">Tap any you&apos;ve seen. Stars are optional.</p>
+              )}
+            </div>
+            <ModalCloseButton onClick={() => (step === 'done' ? onClose() : skip('close'))} />
+          </div>
+
+          {step === 'shows' && (
+            <>
+              <div className="flex-1 overflow-y-auto px-5 pt-1 pb-3">
+                {shows === null ? (
+                  <div className="grid grid-cols-3 sm:grid-cols-6 gap-2" aria-hidden="true">
+                    {Array.from({ length: 12 }, (_, i) => (
+                      <div key={i} className="aspect-[2/3] rounded-lg bg-surface-raised animate-pulse" />
+                    ))}
+                  </div>
+                ) : shows.length === 0 ? (
+                  <p className="text-sm text-gray-400 py-6 text-center">Search for any show from the top of the page to add it.</p>
+                ) : (
+                  <ul className="grid grid-cols-3 sm:grid-cols-6 gap-2" data-testid="welcome-grid">
+                    {shows.map(show => {
+                      const already = hasShow(show.id);
+                      const picked = picks.has(show.id);
+                      const stars = picks.get(show.id);
+                      return (
+                        <li key={show.id}>
+                          <button
+                            type="button"
+                            onClick={() => !already && togglePick(show.id)}
+                            disabled={already}
+                            aria-pressed={picked || already}
+                            aria-label={already ? `${show.title}, already in My Shows` : `${show.title}${picked ? ', seen' : ''}`}
+                            className={`relative block w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-raised border transition ${
+                              picked ? 'border-brand ring-2 ring-brand' : 'border-white/10 hover:border-white/20'
+                            } ${already ? 'cursor-default' : ''}`}
+                          >
+                            <ShowImage
+                              sources={[getOptimizedImageUrl(show.image, 'thumbnail')]}
+                              alt=""
+                              ariaHidden
+                              loading="lazy"
+                              className="absolute inset-0 w-full h-full object-cover"
+                              fallback={<span className="absolute inset-0 flex items-center justify-center p-2 text-xs text-gray-300 text-center">{show.title}</span>}
+                            />
+                            {(picked || already) && (
+                              <span className="absolute inset-0 bg-surface/50" aria-hidden="true" />
+                            )}
+                            {(picked || already) && (
+                              <span className="absolute top-1.5 right-1.5 w-6 h-6 rounded-full bg-brand text-surface flex items-center justify-center" aria-hidden="true">
+                                <svg className="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={3}><path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" /></svg>
+                              </span>
+                            )}
+                            {already && (
+                              <span className="absolute bottom-0 inset-x-0 bg-surface/80 text-xs text-white py-1 text-center">In My Shows</span>
+                            )}
+                            {picked && typeof stars === 'number' && (
+                              <span className="absolute bottom-0 inset-x-0 bg-surface/80 text-xs text-white py-1 text-center">★ {stars}</span>
+                            )}
+                          </button>
+                          <p className="mt-1 text-xs text-gray-400 truncate">{show.title}</p>
+                        </li>
+                      );
+                    })}
+                  </ul>
+                )}
+              </div>
+
+              <div className="border-t border-white/10 px-5 py-3 bg-surface-elevated">
+                {activeShow && picks.has(activeShow.id) && (
+                  <div className="flex items-center justify-between gap-3 mb-3" data-testid="welcome-rate-row">
+                    <p className="text-sm text-gray-300 min-w-0 truncate">
+                      Rate <span className="text-white font-medium">{activeShow.title}</span>?
+                    </p>
+                    <StarRating
+                      rating={picks.get(activeShow.id) ?? null}
+                      onRatingChange={r => setStars(activeShow.id, r)}
+                      size="sm"
+                      hideLabel
+                    />
+                  </div>
+                )}
+                {saveError && <p className="text-sm text-score-skip mb-2">{saveError}</p>}
+                <div className="flex items-center justify-between gap-3">
+                  {pickCount === 0 ? (
+                    <button type="button" onClick={() => skip('skip')} className="text-sm text-gray-400 hover:text-white px-2 min-h-[44px]">
+                      Skip
+                    </button>
+                  ) : (
+                    <span className="text-sm text-gray-400">{pickCount} picked</span>
+                  )}
+                  <button
+                    type="button"
+                    onClick={pickCount === 0 ? () => skip('skip') : () => savePicks()}
+                    disabled={saving}
+                    className="btn-primary text-sm disabled:opacity-50"
+                  >
+                    {saving ? 'Saving…' : pickCount === 0 ? 'Next' : `Add ${pickCount} to my diary`}
+                  </button>
+                </div>
+              </div>
+            </>
+          )}
+
+          {step === 'import' && (
+            <>
+              <div className="flex-1 overflow-y-auto px-5 pb-4 space-y-4">
+                {showsAdded > 0 && (
+                  <p className="text-sm text-status-open">Added {showsAdded} {showsAdded === 1 ? 'show' : 'shows'} to your diary.</p>
+                )}
+                {saveFailed > 0 && (
+                  <p className="text-sm text-score-tepid">{saveFailed === 1 ? '1 show' : `${saveFailed} shows`} could not be saved. You can add {saveFailed === 1 ? 'it' : 'them'} from the show page.</p>
+                )}
+                <p className="text-sm text-gray-300">
+                  Kept a theater diary somewhere else? Bring your ratings over from {importSourceNames()} in about a minute.
+                </p>
+                <div className="grid gap-3">
+                  {IMPORT_SOURCES.map(src => (
+                    <div key={src.id} className="card p-4">
+                      <p className="text-sm font-bold text-white mb-1"><span aria-hidden="true">{src.icon} </span>{src.name}</p>
+                      <p className="text-xs text-gray-400">{src.hint}</p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              <div className="border-t border-white/10 px-5 py-3 bg-surface-elevated">
+                <div className="flex items-center justify-between gap-3">
+                  <button type="button" onClick={() => skip('skip')} className="text-sm text-gray-400 hover:text-white px-2 min-h-[44px]">
+                    Not now
+                  </button>
+                  <button type="button" onClick={() => setImportOpen(true)} className="btn-primary text-sm">
+                    Import my shows
+                  </button>
+                </div>
+                <p className="text-xs text-gray-500 mt-2">You can always import later from My Shows.</p>
+              </div>
+            </>
+          )}
+
+          {step === 'done' && (
+            <>
+              <div className="flex-1 overflow-y-auto px-5 pb-4 space-y-3">
+                {showsAdded + imported > 0 ? (
+                  <p className="text-sm text-gray-300">
+                    {[
+                      showsAdded > 0 ? `${showsAdded} ${showsAdded === 1 ? 'show' : 'shows'} added` : null,
+                      imported > 0 ? `${imported} imported` : null,
+                    ].filter(Boolean).join(', ')}. Shows without stars wait for you under To Be Rated, where you can add the date and stars.
+                  </p>
+                ) : (
+                  <p className="text-sm text-gray-300">Rate a show from its page any time, and it lands in your diary.</p>
+                )}
+                <ul className="text-sm text-gray-400 space-y-1.5">
+                  <li>Your diary and watchlist live in My Shows.</li>
+                  {imported === 0 && <li>Import from {importSourceNames()} there whenever you like.</li>}
+                </ul>
+              </div>
+              <div className="border-t border-white/10 px-5 py-3 bg-surface-elevated flex items-center justify-end gap-3">
+                {destination === 'my-shows' ? (
+                  <>
+                    <button type="button" onClick={() => finish('stay')} className="btn-secondary text-sm">Keep browsing</button>
+                    <button type="button" onClick={() => finish('my-shows')} className="btn-primary text-sm">See My Shows</button>
+                  </>
+                ) : (
+                  <>
+                    <button type="button" onClick={() => finish('my-shows')} className="btn-secondary text-sm">Open My Shows</button>
+                    <button type="button" onClick={() => finish('stay')} className="btn-primary text-sm">Start exploring</button>
+                  </>
+                )}
+              </div>
+            </>
+          )}
+        </div>
+      </Modal>
+
+      {importOpen && (
+        <ImportShows
+          userId={userId || ''}
+          existingReviewShowIds={existingIds}
+          existingWatchlistShowIds={existing.watchlist}
+          onImportComplete={() => {}}
+          initialOpen
+          context="onboarding"
+          onClose={handleImportClosed}
+        />
+      )}
+    </>
+  );
+}

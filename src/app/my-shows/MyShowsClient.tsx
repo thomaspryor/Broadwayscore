@@ -11,7 +11,7 @@ import { useUserLists } from '@/hooks/useUserLists';
 import { invalidateRatingsCache } from '@/hooks/useMyRating';
 import StarRating from '@/components/user/StarRating';
 import RatingEditor, { type RatingEditorSaveData } from '@/components/user/RatingEditor';
-import { supabaseRestInsert, supabaseRestUpdate } from '@/lib/supabase-rest';
+import { supabaseRestDelete, supabaseRestInsert, supabaseRestSelect, supabaseRestUpdate } from '@/lib/supabase-rest';
 import { trackUgc } from '@/lib/ugc-analytics';
 import { stubRowFromCandidate, type MezzanineCandidate } from '@/lib/mezzanine-search';
 import SharedDatePicker from '@/components/user/DatePickerButton';
@@ -50,6 +50,10 @@ function ShareIcon() {
 type Tab = 'diary' | 'watchlist' | 'lists';
 type DiarySort = 'date-desc' | 'date-asc' | 'rating-desc';
 type WatchlistSort = 'added-desc' | 'alphabetical' | 'closing-soon';
+/** A welcome-sheet "seen it" pick with no stars and no date (BRO-4619). */
+interface SeenUnratedRow { show_id: string; created_at: string }
+/** A To Be Rated poster: a past-dated watchlist row, or a seen_unrated pick (no date). */
+type ToBeRatedEntry = Pick<WatchlistEntry, 'id' | 'show_id' | 'planned_date'>;
 
 interface ShowMap {
   [showId: string]: ShowLookup;
@@ -194,16 +198,31 @@ export default function MyShowsClient() {
   }, []);
 
   // In mock mode, bypass loading/auth and inject fake data
-  const [mockData, setMockData] = useState<{ reviews: UserReview[]; watchlist: WatchlistEntry[]; showMap: ShowMap } | null>(null);
+  const [mockData, setMockData] = useState<{ reviews: UserReview[]; watchlist: WatchlistEntry[]; seenUnrated: SeenUnratedRow[]; showMap: ShowMap } | null>(null);
   useEffect(() => {
     if (!isMockMode) return;
     import('./__dev-mock-data').then(mod => {
-      setMockData({ reviews: mod.mockReviews, watchlist: mod.mockWatchlist, showMap: mod.mockShowMap });
+      setMockData({ reviews: mod.mockReviews, watchlist: mod.mockWatchlist, seenUnrated: mod.mockSeenUnrated, showMap: mod.mockShowMap });
     });
   }, [isMockMode]);
 
+  // "Seen, date not set" picks from the welcome sheet (BRO-4619). Listed under
+  // To Be Rated as "Date not set"; a failed load (or the table not being
+  // there yet) just shows nothing extra.
+  const [realSeenUnrated, setRealSeenUnrated] = useState<SeenUnratedRow[]>([]);
+  const userId = user?.id ?? null;
+  useEffect(() => {
+    if (isMockMode || !userId) { setRealSeenUnrated([]); return; }
+    let cancelled = false;
+    supabaseRestSelect<SeenUnratedRow>('seen_unrated', `select=show_id,created_at&user_id=eq.${encodeURIComponent(userId)}&order=created_at.desc`)
+      .then(r => { if (!cancelled && !r.error) setRealSeenUnrated(r.data || []); })
+      .catch(() => {});
+    return () => { cancelled = true; };
+  }, [isMockMode, userId]);
+
   const reviews = isMockMode && mockData ? mockData.reviews : realReviews;
   const watchlist = isMockMode && mockData ? mockData.watchlist : realWatchlist;
+  const seenUnrated = isMockMode && mockData ? mockData.seenUnrated : realSeenUnrated;
   const listsCount = isMockMode ? 3 : realLists.length;
   const loading = isMockMode ? !mockData : (authLoading || reviewsLoading || watchlistLoading);
   // Latches after the first successful load so refetches never blank the page.
@@ -243,13 +262,20 @@ export default function MyShowsClient() {
     const showId = reviews.find(r => r.id === reviewId)?.show_id;
     try {
       await effectiveDeleteReview(reviewId);
+      // A welcome "seen it" pick that was rated then deleted should not come
+      // back under To Be Rated: deleting the rating is how it comes off.
+      if (showId && !isMockMode && userId && seenUnrated.some(u => u.show_id === showId)) {
+        void supabaseRestDelete('seen_unrated', `user_id=eq.${encodeURIComponent(userId)}&show_id=eq.${encodeURIComponent(showId)}`)
+          .then(r => { if (!r.error) setRealSeenUnrated(prev => prev.filter(u => u.show_id !== showId)); })
+          .catch(() => {});
+      }
       invalidateRatingsCache(); // browse-card ★chips must not outlive the rating
       trackUgc('rating_deleted', { show_id: showId, source: 'my_shows' });
       showToast?.('Rating deleted.', 'info');
     } catch {
       showToast?.('Delete failed. Please try again.', 'error');
     }
-  }, [effectiveDeleteReview, showToast, reviews]);
+  }, [effectiveDeleteReview, showToast, reviews, isMockMode, userId, seenUnrated]);
   const effectiveRemoveFromWatchlist = isMockMode ? mockRemoveFromWatchlist : removeFromWatchlist;
   // Same rethrow-and-toast shape: a failed remove used to reject unhandled
   // inside the row's onClick, leaving the row in place with no explanation.
@@ -354,7 +380,7 @@ export default function MyShowsClient() {
   const diaryLookupTriedRef = useRef(false);
   useEffect(() => {
     if (isMockMode || !showMapLoaded || diaryLookupTriedRef.current) return;
-    const referenced = new Set([...reviews.map(r => r.show_id), ...watchlist.map(w => w.show_id)]);
+    const referenced = new Set([...reviews.map(r => r.show_id), ...watchlist.map(w => w.show_id), ...seenUnrated.map(u => u.show_id)]);
     const missing = Array.from(referenced).filter(id => !showMap[id]);
     if (missing.length === 0) return;
     diaryLookupTriedRef.current = true;
@@ -395,7 +421,7 @@ export default function MyShowsClient() {
       // best-effort and retries naturally next time missing IDs change.
       if (diaryLookupFailed) diaryLookupTriedRef.current = false;
     })();
-  }, [isMockMode, showMapLoaded, reviews, watchlist, showMap]);
+  }, [isMockMode, showMapLoaded, reviews, watchlist, seenUnrated, showMap]);
 
   // Load user data when authenticated. getLists swallows failures internally
   // (returns []) and nothing retried — one transient error on first load left
@@ -460,13 +486,19 @@ export default function MyShowsClient() {
   }, [watchlist, reviews]);
 
   // Watchlist entries where planned_date <= today AND no review exists ("To be rated")
-  const toBeRatedEntries = useMemo(() => {
+  // plus welcome "seen it" picks with no date, after the dated ones.
+  const toBeRatedEntries = useMemo((): ToBeRatedEntry[] => {
     const today = localToday();
     const reviewedShowIds = new Set(reviews.map(r => r.show_id));
-    return watchlist
+    const dated: ToBeRatedEntry[] = watchlist
       .filter(w => w.planned_date && w.planned_date <= today && !reviewedShowIds.has(w.show_id))
       .sort((a, b) => (b.planned_date || '').localeCompare(a.planned_date || ''));
-  }, [watchlist, reviews]);
+    const listed = new Set(dated.map(e => e.show_id));
+    const undated: ToBeRatedEntry[] = seenUnrated
+      .filter(u => !reviewedShowIds.has(u.show_id) && !listed.has(u.show_id))
+      .map(u => ({ id: `seen-${u.show_id}`, show_id: u.show_id, planned_date: null }));
+    return [...dated, ...undated];
+  }, [watchlist, reviews, seenUnrated]);
 
   // Sorted watchlist
   const sortedWatchlist = useMemo(() => {
@@ -1919,14 +1951,15 @@ function AddShowSearch({
 /**
  * To Be Rated, the app's design (watched.tsx toBeRatedSection): a full-width
  * amber band, "TO BE RATED" + dot + count, and a poster grid. The pill shows
- * the date the user planned to go ("Rate" with none); a tap opens the show
+ * the date the user planned to go ("Date not set" for a welcome "seen it"
+ * pick, which has none); a tap opens the show
  * page's rating editor, which carries that date over. A show they didn't
  * see comes off via the show page's watchlist button or list view's remove
  * (beta feedback 2026-08-02: otherwise a past-dated entry is stuck here
  * forever). Always a grid, as in the app.
  */
 function ToBeRatedSection({ entries, showMap, idPrefix }: {
-  entries: WatchlistEntry[];
+  entries: ToBeRatedEntry[];
   showMap: Record<string, ShowLookup>;
   idPrefix: string;
 }) {
@@ -1951,9 +1984,9 @@ function ToBeRatedSection({ entries, showMap, idPrefix }: {
               key={`rate-${entry.id}`}
               href={`${href}?rate=1`}
               posterUrl={show?.posterUrl}
-              date={entry.planned_date ? formatPillDate(entry.planned_date) : 'Rate'}
+              date={entry.planned_date ? formatPillDate(entry.planned_date) : 'Date not set'}
               title={title}
-              ariaLabel={`Rate ${title}`}
+              ariaLabel={entry.planned_date ? `Rate ${title}` : `Rate ${title}, date not set`}
             />
           );
         })}

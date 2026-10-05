@@ -20,6 +20,7 @@ const EXEMPT = {
   plan_shares: 'ON DELETE CASCADE from profiles, which delete-account removes',
   diary_shares: 'ON DELETE CASCADE from profiles, which delete-account removes',
   welcome_emails: 'ON DELETE CASCADE from auth.users, which delete-account removes; holds only user_id + send status',
+  seen_unrated: 'ON DELETE CASCADE from profiles, which delete-account removes',
 };
 
 function userOwnedTables() {

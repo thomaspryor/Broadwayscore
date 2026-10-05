@@ -122,6 +122,16 @@ test.describe('My Shows — Accessibility', () => {
     await expect(band.getByRole('link', { name: 'Rate Chess' })).toBeVisible();
   });
 
+  test('a welcome "seen it" pick with no date reads "Date not set" and links to the rating editor', async ({ page }) => {
+    await goToMock(page);
+    // BRO-4619: seen_unrated rows have no date; none is made up for them.
+    const band = page.getByTestId('to-be-rated');
+    const link = band.getByRole('link', { name: 'Rate Hadestown, date not set' });
+    await expect(link).toBeVisible();
+    await expect(link).toContainText('Date not set');
+    await expect(link).toHaveAttribute('href', /\/show\/hadestown\?rate=1$/);
+  });
+
   test('grid/list toggle buttons have aria-labels', async ({ page }) => {
     await goToMock(page);
     await expect(page.getByRole('button', { name: 'Grid view' })).toBeVisible();
@@ -379,7 +389,8 @@ test.describe('My Shows — Watchlist', () => {
     await goToMock(page, 'watchlist');
     // Mock has 6 entries, 2 past-dated. Past-dated ones sit in the To Be
     // Rated poster band (BRO-4558, always a grid as in the app); the other 4
-    // are poster cards in grid view and titled rows in list view.
+    // are poster cards in grid view and titled rows in list view. Welcome
+    // picks with no date (seen_unrated) are diary-only, not watchlist rows.
     const posters = page.locator('[role="tabpanel"] .aspect-\\[2\\/3\\]');
     expect(await posters.count()).toBeGreaterThanOrEqual(6);
     const band = page.getByTestId('to-be-rated');

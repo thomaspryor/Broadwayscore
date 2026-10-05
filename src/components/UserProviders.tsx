@@ -4,6 +4,7 @@ import { type ReactNode } from 'react';
 import { featureFlags } from '@/config/feature-flags';
 import { AuthProvider } from '@/contexts/AuthContext';
 import { ToastProvider } from '@/components/ui/Toast';
+import WelcomeGate from '@/components/onboarding/WelcomeGate';
 
 /**
  * Client component wrapper for user account providers.
@@ -23,6 +24,7 @@ export default function UserProviders({ children }: { children: ReactNode }) {
     <AuthProvider>
       <ToastProvider>
         {children}
+        <WelcomeGate />
       </ToastProvider>
     </AuthProvider>
   );

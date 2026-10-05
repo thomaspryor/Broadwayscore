@@ -6,6 +6,8 @@ export interface UserProfile {
   display_name: string;
   avatar_url: string | null;
   default_visibility: 'public' | 'private';
+  /** When the web welcome sheet was shown (BRO-4619). null = not yet; absent = column not in this database. */
+  onboarding_seen_at?: string | null;
   created_at: string;
   updated_at: string;
 }

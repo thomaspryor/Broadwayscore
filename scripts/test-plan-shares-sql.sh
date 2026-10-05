@@ -15,7 +15,9 @@
 #   bash scripts/test-plan-shares-sql.sh --self-test-fail   # must exit 1
 #
 # Needs PostgreSQL server binaries (initdb/pg_ctl). The test file can read the
-# shared parity fixture via the psql variable :'parity_fixture' (raw JSON text).
+# shared parity fixture via the psql variable :'parity_fixture' (raw JSON text),
+# and re-apply the last migration with `\i :last_migration` (a copy the
+# postgres user can read), e.g. to exercise a first-apply-only backfill.
 set -euo pipefail
 
 ROOT="$(cd "$(dirname "$0")/.." && pwd)"
@@ -105,9 +107,12 @@ done
 
 PARITY_JSON="{}"
 [ -f "$PARITY" ] && PARITY_JSON="$(cat "$PARITY")"
+LAST_MIGRATION="$WORK/last-migration.sql"
+cp "${MIGRATIONS[${#MIGRATIONS[@]}-1]}" "$LAST_MIGRATION"
+chmod 644 "$LAST_MIGRATION"
 echo "-- running $(basename "$TESTS")"
 set +e
-run_sql -v parity_fixture="$PARITY_JSON" < "$TESTS" > "$WORK/out.log" 2>&1
+run_sql -v parity_fixture="$PARITY_JSON" -v last_migration="$LAST_MIGRATION" < "$TESTS" > "$WORK/out.log" 2>&1
 status=$?
 set -e
 grep -E 'ok - |ASSERTION|ERROR' "$WORK/out.log" | sed 's/^.*NOTICE:  //'

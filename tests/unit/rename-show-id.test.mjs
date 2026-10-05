@@ -245,7 +245,7 @@ test('dry-run plan lists every key, ref and path and writes nothing', () => {
     for (const t of SUPABASE_SHOW_ID_TABLES) {
       assert.ok(plan.sql.statements.includes(`UPDATE ${t.table} SET ${t.column} = '${NEW}' WHERE ${t.column} = '${OLD}';`));
     }
-    assert.equal(plan.sql.statements.length, 3);
+    assert.equal(plan.sql.statements.length, 4);
     assert.ok(!plan.sql.text.includes('UPDATE unmatched_imports'));
     assert.ok(plan.sql.text.includes('resolved_show_id = diary-shows.json id'));
     const text = formatPlan(plan);
@@ -430,6 +430,7 @@ test('buildSqlMigration emits one UPDATE per confirmed show_id table and documen
     "UPDATE reviews SET show_id = 'its-2027' WHERE show_id = 'it''s-2026';",
     "UPDATE watchlist SET show_id = 'its-2027' WHERE show_id = 'it''s-2026';",
     "UPDATE list_items SET show_id = 'its-2027' WHERE show_id = 'it''s-2026';",
+    "UPDATE seen_unrated SET show_id = 'its-2027' WHERE show_id = 'it''s-2026';",
   ]);
   assert.ok(sql.text.startsWith('-- Supabase migration'));
   assert.ok(sql.text.includes('BEGIN;') && sql.text.includes('COMMIT;'));

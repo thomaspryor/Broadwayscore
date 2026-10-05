@@ -1,0 +1,108 @@
+'use client';
+
+/**
+ * Opens the one-time welcome sheet (BRO-4619) for a brand-new account, once.
+ * Mounted for every page by UserProviders; renders nothing for everyone else.
+ *
+ * Order of checks: shouldOfferWelcome() on the loaded profile (no network),
+ * then wait until nothing else is on screen (a pending rating from before
+ * sign-in, the rating editor, any modal), then claim_onboarding() on the
+ * server, which returns true for exactly one caller per account. Only then
+ * does the sheet open.
+ *
+ * Dev preview: ?welcome=preview on localhost opens it without an account
+ * (nothing is written or tracked), for visual QA.
+ */
+
+import { Component, useEffect, useRef, useState, type ReactNode } from 'react';
+import dynamic from 'next/dynamic';
+import { usePathname } from 'next/navigation';
+import { useAuth } from '@/contexts/AuthContext';
+import { getPendingAction } from '@/lib/deferred-auth';
+import { supabaseRestRpc } from '@/lib/supabase-rest';
+import { shouldOfferWelcome, welcomeSeenKey } from '@/lib/welcome-onboarding';
+
+const WelcomeSheet = dynamic(() => import('./WelcomeSheet'), { ssr: false });
+/** Same chunk as above; fetched before the claim so a failed download costs nothing. */
+const loadSheet = () => import('./WelcomeSheet');
+
+/** The gate wraps every page: a render error in the sheet must not take the page down. */
+class SheetBoundary extends Component<{ children: ReactNode }, { failed: boolean }> {
+  state = { failed: false };
+  static getDerivedStateFromError() { return { failed: true }; }
+  componentDidCatch(error: unknown) { console.error('[welcome] sheet failed to render', error); }
+  render() { return this.state.failed ? null : this.props.children; }
+}
+
+const FIRST_CHECK_MS = 1200;
+const BUSY_RETRY_MS = 1500;
+
+function pageIsBusy(): boolean {
+  if (getPendingAction()) return true;
+  return !!document.querySelector('[role="dialog"][aria-modal="true"], [data-testid="rating-editor"]');
+}
+
+export default function WelcomeGate() {
+  const { user, profile } = useAuth();
+  const pathname = usePathname();
+  const [open, setOpen] = useState<'account' | 'preview' | null>(null);
+  const userId = user?.id ?? null;
+  const seenAt = profile?.onboarding_seen_at;
+  const createdAt = profile?.created_at ?? null;
+  const profileLoaded = !!profile;
+  const onAuthPage = !!pathname?.startsWith('/auth');
+  const mounted = useRef(true);
+  useEffect(() => () => { mounted.current = false; }, []);
+
+  // Signed out (e.g. in another tab) while it is open: close it rather than
+  // let it fall back to preview mode, which writes nothing.
+  useEffect(() => {
+    if (open === 'account' && !userId) setOpen(null);
+  }, [open, userId]);
+
+  useEffect(() => {
+    if (window.location.hostname === 'localhost' && new URLSearchParams(window.location.search).get('welcome') === 'preview') {
+      setOpen('preview');
+    }
+  }, []);
+
+  useEffect(() => {
+    if (!userId || !profileLoaded || onAuthPage || open) return;
+    const key = welcomeSeenKey(userId);
+    let locallySeen = false;
+    try { locallySeen = localStorage.getItem(key) === '1'; } catch { /* private mode */ }
+    if (!shouldOfferWelcome({ profile: { onboarding_seen_at: seenAt, created_at: createdAt }, now: Date.now(), locallySeen })) return;
+
+    let cancelled = false;
+    let timer: ReturnType<typeof setTimeout>;
+    const attempt = async () => {
+      if (cancelled) return;
+      if (pageIsBusy()) {
+        timer = setTimeout(attempt, BUSY_RETRY_MS);
+        return;
+      }
+      // Load the sheet before claiming, so a failed download (e.g. a deploy
+      // replaced the chunk) leaves the welcome unclaimed for the next page.
+      try { await loadSheet(); } catch { return; }
+      if (cancelled) return;
+      const { data, error } = await supabaseRestRpc<boolean>('claim_onboarding');
+      if (error) return; // e.g. the migration is not applied yet: show nothing
+      try { localStorage.setItem(key, '1'); } catch { /* private mode */ }
+      // Once claimed it is spent, so open even if this effect re-ran meanwhile.
+      if (data === true && mounted.current) setOpen('account');
+    };
+    timer = setTimeout(attempt, FIRST_CHECK_MS);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [userId, profileLoaded, seenAt, createdAt, onAuthPage, open]);
+
+  if (!open) return null;
+  if (open === 'account' && !userId) return null;
+  return (
+    <SheetBoundary>
+      <WelcomeSheet userId={open === 'account' ? userId : null} onClose={() => setOpen(null)} />
+    </SheetBoundary>
+  );
+}
