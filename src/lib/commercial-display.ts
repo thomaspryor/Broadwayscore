@@ -251,9 +251,11 @@ export function getWeeklyCostSourceLabel(
 // recoupedSource prose that says outright there was no announcement. Used
 // ONLY to downgrade the label ("Not publicly announced"), never to claim an
 // announcement, so a missed phrase under-claims instead of fabricating one.
-// (Aladdin: "Disney never formally announces recoupment.")
+// (Aladdin: "Disney never formally announces recoupment."; Lion King and
+// Aladdin later read "Disney does not announce recoupments.", which the
+// pattern missed, so both printed as announced: BRO-4722.)
 const NOT_ANNOUNCED_RE =
-  /\bno (?:public |producer |formal )?announcement\b|\bnever (?:formally |publicly )?announce[sd]?\b|\bnot (?:been )?(?:formally |publicly )?announced\b|\beditorial\b/i;
+  /\bno (?:public |producer |formal )?announcement\b|\bnever (?:formally |publicly )?announce[sd]?\b|\bnot (?:been )?(?:formally |publicly )?announced\b|\b(?:does|do|did) not (?:formally |publicly )?announce(?:s|ments?)?\b|\beditorial\b/i;
 
 const NOT_ANNOUNCED_LABEL = 'Not publicly announced';
 
