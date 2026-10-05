@@ -200,12 +200,16 @@ export function toPublicShowCommercial(commercial: ShowCommercial): ShowCommerci
 }
 
 /**
- * True when the capitalization should carry the "~" estimate marker: only when
- * the record flags it. A capitalization is otherwise a reported figure with a
- * named source (BRO-4623), so it prints plain.
+ * True when the capitalization should carry the "~" estimate marker: the
+ * record flags it, or it has no publishable source. A cited capitalization is
+ * a reported figure (BRO-4623) and prints plain; an uncited one cannot read
+ * as reported, the same rule as the weekly cost (BRO-4666).
  */
-export function isEstimatedCapitalization(commercial: Pick<ShowCommercial, 'isEstimate'>): boolean {
-  return commercial.isEstimate?.capitalization === true;
+export function isEstimatedCapitalization(
+  commercial: Pick<ShowCommercial, 'isEstimate' | 'capitalizationSource'>
+): boolean {
+  if (commercial.isEstimate?.capitalization === true) return true;
+  return !publicSourceText(commercial.capitalizationSource);
 }
 
 /** costMethodology values whose weekly running cost is our estimate, not a reported figure. */

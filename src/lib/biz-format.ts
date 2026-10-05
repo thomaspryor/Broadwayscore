@@ -11,10 +11,10 @@ import type { CapitalSummary } from './commercial-metrics';
 export { formatCurrency };
 
 /**
- * One show's capitalization. Every published figure names the outlet or filing
- * that reported it, so it prints plain ("$24.0M"); only a record flagged
- * isEstimate.capitalization gets the "~" estimate mark (isEstimatedCapitalization
- * in commercial-display.ts). BRO-4623: an unconditional "~" made reported
+ * One show's capitalization. A figure that names the outlet or filing that
+ * reported it prints plain ("$24.0M"); one flagged isEstimate.capitalization
+ * or with no publishable source gets the "~" estimate mark
+ * (isEstimatedCapitalization in commercial-display.ts). BRO-4623: an unconditional "~" made reported
  * figures read as our guesses. The flag is a required argument so a caller
  * cannot fall back to marking everything. A missing value renders bare "—",
  * never "~—". Modeled figures (break-even, % recouped) and capital totals

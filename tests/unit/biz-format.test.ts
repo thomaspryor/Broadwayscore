@@ -53,21 +53,34 @@ test('formatCapitalization: only an estimate-flagged figure gets the "~" mark', 
   assert.equal(formatCapitalization(24_000_000, true), '~$24.0M');
 });
 
-test('isEstimatedCapitalization: true only when the record flags capitalization', () => {
-  assert.equal(isEstimatedCapitalization({}), false);
-  assert.equal(isEstimatedCapitalization({ isEstimate: undefined }), false);
-  assert.equal(isEstimatedCapitalization({ isEstimate: {} }), false);
-  assert.equal(isEstimatedCapitalization({ isEstimate: { capitalization: false } }), false);
+const CITED = 'The New York Times, 2024-03-12';
+
+test('isEstimatedCapitalization: a cited figure is reported unless the record flags it', () => {
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: CITED }), false);
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: CITED, isEstimate: {} }), false);
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: CITED, isEstimate: { capitalization: false } }), false);
   // Another field's estimate flag does not mark the capitalization.
-  assert.equal(isEstimatedCapitalization({ isEstimate: { weeklyRunningCost: true } }), false);
-  assert.equal(isEstimatedCapitalization({ isEstimate: { capitalization: true } }), true);
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: CITED, isEstimate: { weeklyRunningCost: true } }), false);
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: CITED, isEstimate: { capitalization: true } }), true);
 });
 
-test('cited vs flagged records end to end: "$24.0M" vs "~$24.0M"', () => {
-  const cited = { isEstimate: { weeklyRunningCost: true } };
-  const flagged = { isEstimate: { capitalization: true } };
+test('isEstimatedCapitalization: an uncited figure reads as an estimate (BRO-4666)', () => {
+  // JSON records can omit the field entirely.
+  assert.equal(isEstimatedCapitalization({} as { capitalizationSource: null }), true);
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: null }), true);
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: '   ' }), true);
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: null, isEstimate: { capitalization: false } }), true);
+  // Source text that is only internal research wording is not a citation.
+  assert.equal(isEstimatedCapitalization({ capitalizationSource: 'Deep research synthesis' }), true);
+});
+
+test('cited vs flagged vs uncited records end to end', () => {
+  const cited = { capitalizationSource: CITED, isEstimate: { weeklyRunningCost: true } };
+  const flagged = { capitalizationSource: CITED, isEstimate: { capitalization: true } };
+  const uncited = { capitalizationSource: null };
   assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(cited)), '$24.0M');
   assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(flagged)), '~$24.0M');
+  assert.equal(formatCapitalization(24_000_000, isEstimatedCapitalization(uncited)), '~$24.0M');
 });
 
 // ── BRO-4623 P0-6 ──────────────────────────────────────────────────────────

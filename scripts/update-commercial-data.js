@@ -1454,8 +1454,10 @@ const DERIVED_FIELD_FIGURES = {
 
 /**
  * True when the record's figure is reported: only trade or SEC evidence may
- * replace it. A capitalization counts when /biz prints it as one, without "~"
- * (producer announcements and press releases are reported too).
+ * replace it. Any capitalization not flagged as an estimate counts (producer
+ * announcements and press releases are reported too). That is deliberately
+ * wider than /biz, which also marks an uncited one "~": a Reddit figure never
+ * overwrites a capitalization someone entered, cited or not.
  */
 function holdsReportedFigure(rec, field) {
   if (field === 'weeklyRunningCost') return isReportedWeeklyCost(rec);
