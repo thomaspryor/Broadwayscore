@@ -21,7 +21,7 @@
  * tests/unit/lint-workflows.test.mjs.
  */
 
-const ARM_FLAG = /(^|[\s"'=])--(strict|gate)(?=$|[\s"'=])/;
+const ARM_FLAG = /(^|[\s"'=])--(strict|gate)(?![\w-])/;
 
 // Split workflow text into steps: { job, name, text }. A step starts at any
 // list item `<indent>- <key>:` that sits at the step indent of the current job
@@ -72,6 +72,12 @@ function stepArmsGate(stepText) {
   return runLines.some(l => ARM_FLAG.test(l));
 }
 
+// Normalised arming run lines, so a rename/move of an existing blocking step is
+// not mistaken for a new gate (review 2026-10-05).
+function armingRunLines(stepText) {
+  return stepText.split('\n').filter(l => !/^\s*#/.test(l) && ARM_FLAG.test(l)).map(l => l.trim().replace(/\s+/g, ' '));
+}
+
 function isBaselineFile(p) {
   return /baseline/i.test(p);
 }
@@ -92,12 +98,15 @@ function baselineBelongsToStep(stepText, baselinePath) {
  * @returns {{violations:{name:string, job:string}[]}}
  */
 function findUnprovenNewGates({ baseText, headText, changedFiles }) {
-  const baseKeys = new Set(parseSteps(baseText).map(s => s.key));
+  const baseSteps = parseSteps(baseText);
+  const baseKeys = new Set(baseSteps.map(s => s.key));
+  const baseArmLines = new Set(baseSteps.flatMap(s => armingRunLines(s.text)));
   const baselines = (changedFiles || []).filter(isBaselineFile);
   const violations = [];
   for (const step of parseSteps(headText)) {
     if (baseKeys.has(step.key)) continue;
     if (!stepArmsGate(step.text)) continue;
+    if (armingRunLines(step.text).every(l => baseArmLines.has(l))) continue; // renamed/moved, not new
     if (/^\s*continue-on-error:\s*true\b/m.test(step.text)) continue;
     if (/#\s*gate-arm-ok:\s*\S/.test(step.text)) continue;
     if (baselines.some(b => baselineBelongsToStep(step.text, b))) continue;

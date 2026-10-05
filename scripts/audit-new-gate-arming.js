@@ -37,7 +37,11 @@ if (tryGit('rev-parse', '--verify', `${base}^{commit}`) === null) {
   console.log(`::warning::new-gate-arming: base '${base}' not resolvable (shallow clone?) — check SKIPPED`);
   process.exit(0);
 }
-const baseText = tryGit('show', `${base}:${WF}`) || '';
+const baseText = tryGit('show', `${base}:${WF}`);
+if (baseText === null) {
+  console.log(`::warning::new-gate-arming: ${WF} missing at base '${base}' — check SKIPPED`);
+  process.exit(0);
+}
 const headText = tryGit('show', `HEAD:${WF}`) || '';
 const changed = (tryGit('diff', '--name-only', base, 'HEAD') || '').split('\n').filter(Boolean);
 const { violations } = findUnprovenNewGates({ baseText, headText, changedFiles: changed });

@@ -65,6 +65,12 @@ test('pre-existing step (same name) is never flagged, including promotion to blo
   const base = wf(step('G', 'continue-on-error: true\nrun: node scripts/a.js --gate'));
   assert.deepEqual(find(wf(step('G', 'run: node scripts/a.js --gate')), undefined, base), []);
 });
+test('renaming an existing blocking gate is not flagged', () => {
+  assert.deepEqual(find(wf(step('Existing (BRO-1)', 'run: node scripts/a.js --strict'))), []);
+});
+test('flag followed by ; or ) is still detected', () => {
+  assert.deepEqual(find(BASE + step('N', 'run: npm run audit:x -- --strict;')), ['N']);
+});
 test('parseSteps separates adjacent steps', () => {
   assert.deepEqual(parseSteps(BASE + step('Two', 'run: x')).map(s => s.name), ['Existing', 'Two']);
 });
