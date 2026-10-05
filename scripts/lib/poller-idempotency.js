@@ -11,6 +11,9 @@
  *   run-name: Opening Night Poller — ${{ inputs.show_id || 'auto' }}
  * which surfaces as `displayTitle` on the gh run list JSON.
  *
+ * NOTE: since BRO-4209 an auto run only counts as coverage for dispatches
+ * WITHOUT an override URL; see findInFlightCoverage below.
+ *
  * A targeted poller (`— ${showId}`) covers exactly that show.
  * An "auto" poller (`— auto`) iterates ALL of today's openings — so it
  * covers any show the watcher might dispatch for. Both are treated as
@@ -104,7 +107,30 @@ function findInFlightPollerForShow(runs, showId) {
   return findInFlightAutoPoller(runs);
 }
 
+/**
+ * Coverage check used by the watcher before dispatching. An auto poller only
+ * covers a show when the watcher has nothing new to hand over. A dispatch that
+ * carries a discovered aggregator URL override (bww_roundup_url) is NOT covered
+ * by an auto run: the auto run polls on its own schedule and never sees the
+ * override, and on multi-show nights an auto poller is active for the whole
+ * orchestrator loop (BRO-4209). Targeted runs use a per-show concurrency group,
+ * so they cannot race the auto group; a same-show targeted run still skips
+ * (the Joe Turner push-storm guard). A targeted run does run in parallel with
+ * an auto run (different concurrency groups); that overlap is accepted per
+ * BRO-4273 and relies on push-with-retry.sh for concurrent writes.
+ *
+ * @param {Array} runs
+ * @param {string} showId
+ * @param {{hasOverrideUrl?: boolean}} [opts]
+ * @returns {object|null}
+ */
+function findInFlightCoverage(runs, showId, opts = {}) {
+  if (opts.hasOverrideUrl) return findInFlightTargetedPollerForShow(runs, showId);
+  return findInFlightPollerForShow(runs, showId);
+}
+
 module.exports = {
+  findInFlightCoverage,
   buildTitleSuffix,
   isActiveStatus,
   isActiveRun,

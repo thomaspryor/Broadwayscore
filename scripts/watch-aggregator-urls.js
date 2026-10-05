@@ -32,7 +32,7 @@ const https = require('https');
 const { spawnSync } = require('child_process');
 const { discoverBwwRoundupUrl, scoreCandidate } = require('./lib/bww-rr-discover');
 const { fetchPage } = require('./lib/scraper');
-const { findInFlightPollerForShow } = require('./lib/poller-idempotency');
+const { findInFlightCoverage } = require('./lib/poller-idempotency');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const FORCED_SHOW = (process.argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
@@ -231,7 +231,7 @@ async function checkBwwRoundup(show) {
 // here prevents the redundant dispatches in the first place; the per-show
 // concurrency group on opening-night-poller.yml is the backstop.
 //
-// findInFlightPollerForShow ALSO matches "Opening Night Poller — auto" runs
+// findInFlightCoverage (without an override URL) ALSO matches "Opening Night Poller — auto" runs
 // (dispatched by update-show-status.yml line 943 and the orchestrator's
 // multi-show branch). An auto run iterates ALL of today's openings via
 // opening-night-poller.js, so it covers every show the watcher might target.
@@ -240,13 +240,18 @@ async function checkBwwRoundup(show) {
 // (Caught in /ship-check 2026-04-26 by both Claude general-purpose and
 // Codex reviewers, independently.)
 //
+// BRO-4209: a dispatch carrying a bww_roundup_url override is exempt from the
+// auto-run skip (the auto run never sees the override). The runs then execute
+// in parallel (different concurrency groups); accepted per BRO-4273, writes
+// rely on push-with-retry.sh. Same-show targeted runs still skip.
+//
 // --limit=50: opening nights with 8+ pollers per orchestrator iteration
 // can push active runs past index 20 once a few finish. limit=50 covers
 // roughly the last 4 hours on the busiest nights.
 //
 // Fail-open: if the gh API hiccups, we still dispatch — better a redundant
 // poller than a missed BWW URL discovery on opening night.
-function pollerInFlightForShow(showId) {
+function pollerInFlightForShow(showId, hasOverrideUrl = false) {
   const result = spawnSync(
     'gh',
     [
@@ -266,11 +271,11 @@ function pollerInFlightForShow(showId) {
   } catch (err) {
     return { error: `parse error: ${err.message}` };
   }
-  return { run: findInFlightPollerForShow(runs, showId) };
+  return { run: findInFlightCoverage(runs, showId, { hasOverrideUrl }) };
 }
 
 function dispatchPoller(showId, overrides) {
-  const inFlight = pollerInFlightForShow(showId);
+  const inFlight = pollerInFlightForShow(showId, Boolean(overrides.bwwRoundupUrl));
   if (inFlight.error) {
     console.log(`  ⚠️  Idempotency check failed (${inFlight.error}) — proceeding with dispatch`);
   } else if (inFlight.run) {
