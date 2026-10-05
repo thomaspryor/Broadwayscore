@@ -1,10 +1,14 @@
 {
-  "updatedAt": "2026-10-05T11:34:54.665Z",
+  "updatedAt": "2026-10-05T15:53:07.433Z",
   "scanned": 2287,
-  "showsWithViolations": 342,
-  "totalViolations": 684,
-  "newSinceLastRun": 0,
-  "newViolationKeys": [],
+  "showsWithViolations": 339,
+  "totalViolations": 683,
+  "newSinceLastRun": 3,
+  "newViolationKeys": [
+    "bernhardthamlet-2018::observer--david-cote.json",
+    "kramerfauci-st-anns-off-broadway-2026::vulture--jackson-mchenry.json",
+    "topdog-underdog-regional-2026::third-coast-review--unknown.json"
+  ],
   "violationKeys": [
     "the-rocky-horror-show-2026::w42st--michael-musto.json",
     "schmigadoon-2026::nytimes--jesse-green.json",
@@ -171,6 +175,7 @@
     "bernhardthamlet-2018::nysr--melissa-rose-bernardo.json",
     "bernhardthamlet-2018::nytimes--ben-brantley.json",
     "bernhardthamlet-2018::nytimes--jesse-green.json",
+    "bernhardthamlet-2018::observer--david-cote.json",
     "bernhardthamlet-2018::scene-on-stage--philip-dorian.json",
     "bernhardthamlet-2018::showbiz411--roger-friedman.json",
     "bernhardthamlet-2018::splash-magazines--c-e-gerber.json",
@@ -500,7 +505,6 @@
     "the-woman-in-white-2005::nytimes--ben-brantley.json",
     "jersey-boys-2005::washpost--peter-marks.json",
     "the-producers-2001::talkinbroadway--matthew-murray.json",
-    "les-miserables-1987::whatsonstage--tanyel-gumushan.json",
     "mamma-mia-2001::broadway-voice--kristen-balzano.json",
     "anything-goes-2002::northjerseycom--robert-feldberg.json",
     "proof-2000::nydailynews--david-kaufman.json",
@@ -515,6 +519,7 @@
     "kramerfauci-st-anns-off-broadway-2026::the-recs--arlene-getz.json",
     "kramerfauci-st-anns-off-broadway-2026::theater-pizzazz--stuart-miller.json",
     "kramerfauci-st-anns-off-broadway-2026::this-week-in-new-york--unknown.json",
+    "kramerfauci-st-anns-off-broadway-2026::vulture--jackson-mchenry.json",
     "avenue-q-west-end-2026::theupcoming--benedetta-mancusi.json",
     "back-to-the-future-west-end-2021::times-uk--clive-davis.json",
     "teeth-n-smiles-west-end-2026::financialtimes--tim-bano.json",
@@ -602,7 +607,6 @@
     "a-month-in-the-country-west-end-2026::standard--nick-curtis.json",
     "a-month-in-the-country-west-end-2026::whatsonstage--alex-wood.json",
     "a-month-in-the-country-west-end-2026::whatsonstage--sarah-crompton.json",
-    "cats-west-end-2026::radio-times--joanna-magill.json",
     "dark-of-the-moon-west-end-2026::artsdesk--unknown.json",
     "evening-all-afternoon-west-end-2026::financialtimes--sarah-hemming.json",
     "evening-all-afternoon-west-end-2026::guardian--arifa-akbar.json",
@@ -672,10 +676,8 @@
     "water-for-elephants-tour-2025::broadwayworld--lucia-serrano.json",
     "water-for-elephants-tour-2025::broadwayworld--michael-rabice.json",
     "suffs-tour-2025::trib-live--alexis-papalia.json",
-    "the-score-regional-2026::london-theatre--theo-bosanquet.json",
     "the-score-regional-2026::standard--tim-bano.json",
     "the-score-regional-2026::times-uk--dominic-maxwell.json",
-    "purpose-regional-2026::nytg--unknown.json",
     "topdog-underdog-regional-2026::around-the-town-chicago--wayne-mell.json",
     "topdog-underdog-regional-2026::broadwayworld--rachel-weinberg.json",
     "topdog-underdog-regional-2026::buzznews--wesley-david.json",
@@ -689,6 +691,7 @@
     "topdog-underdog-regional-2026::rachelweinbergreviews--rachelrweinberg.json",
     "topdog-underdog-regional-2026::splash-magazines--debra-davy.json",
     "topdog-underdog-regional-2026::stageandcinema--emma-s-rund.json",
+    "topdog-underdog-regional-2026::third-coast-review--unknown.json",
     "topdog-underdog-regional-2026::wernerstheatrereviews--unknown.json"
   ],
   "hits": [
@@ -2360,7 +2363,7 @@
       "showId": "bernhardthamlet-2018",
       "title": "Bernhardt/Hamlet",
       "openingDate": "2018-09-25",
-      "message": "amny/Matt Windman (amny--matt-windman.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3847 chars): https://www.amny.com/entertainment/bernhardt-hamlet-review-1.21255829/\nbroadwayworld/Michael Dale (broadwayworld--michael-dale.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5568 chars, textIssues flag set): https://www.broadwayworld.com/article/BWW-Review-Janet-McTeer-Speaks-The-Speeches-Ever-So-Trippingly-in-Theresa-Rebecks-BERNHARDTHAMLET-20180925\nchicagotribune/Chris Jones (chicagotribune--chris-jones.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6397 chars, textIssues flag set): https://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-bernhardt-hamlet-broadway-review-0926-story.html\ncititour/Brian Scott Lipton (cititour--brian-scott-lipton.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4896 chars, textIssues flag set): https://cititour.com/NYC_Broadway/BernhardtHamlet/486\ncity-cabaret/Elizabeth Ahlfors (city-cabaret--elizabeth-ahlfors.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4036 chars, textIssues flag set): https://www.citycabaret.com/bernhardt-hamlet.html\ncurtainup/Elyse Sommer (curtainup--elyse-sommer.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6704 chars): https://www.curtainup.com/bernhardthamlet18.html\ndctheatrescene/Jonathan Mandell (dctheatrescene--jonathan-mandell.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6238 chars, textIssues flag set): https://dctheatrescene.com/2018/09/29/bernhardt-hamlet-review-janet-mcteer-as-sarah-bernhardt-as-hamlet/\ndeadline/Greg Evans (deadline--greg-evans.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3375 chars, textIssues flag set): https://deadline.com/2018/09/bernhardt-hamlet-review-broadway-janet-mcteer-brings-legend-to-life-1202470446/\new/Leah Greenblatt (ew--leah-greenblatt.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4217 chars, textIssues flag set): https://ew.com/theater/2018/09/25/bernhardt-hamlet-review/\ngotham-playgoer/Robert Sholiton (gotham-playgoer--robert-sholiton.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3127 chars, textIssues flag set): https://gotham-playgoer.blogspot.com/2018/09/bernhardthamlet.html\nhollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (8528 chars, textIssues flag set): https://www.hollywoodreporter.com/news/general-news/bernhardt-hamlet-theater-review-1146607/\nmedium/Christian Lewis (medium--christian-lewis.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4955 chars): https://medium.com/@christianlewis_11156/review-bernhardt-hamlet-starring-the-divine-janet-mcteer-5ce8b1b8b838\nnewsday/Barbara Schuler (newsday--barbara-schuler.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3682 chars): https://www.newsday.com/entertainment/theater/bernhardt-hamlet-review-1.21240135\nny1/Roma Torre (ny1--roma-torre.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (2105 chars, textIssues flag set): https://ny1.com/nyc/all-boroughs/news/2018/09/26/roma-torre-theater-review-bernhardt-hamlet-janet-mcteer-portrays-sarah-bernhardt\nnysr/David Finkle (nysr--david-finkle.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5142 chars): https://nystagereview.com/2018/09/25/bernhardt-hamlet-janet-mcteer-in-teresa-rebecks-almost-ready-play/\nnysr/Melissa Rose Bernardo (nysr--melissa-rose-bernardo.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5054 chars): https://nystagereview.com/2018/09/25/bernhardt-hamlet-what-a-piece-of-work/\nnytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6104 chars, textIssues flag set): https://www.nytimes.com/2018/09/25/theater/bernhardt-hamlet-review.html\nnytimes/Jesse Green (nytimes--jesse-green.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6407 chars): https://www.nytimes.com/2018/09/25/theater/bernhardt-hamlet-review.html\nscene-on-stage/Philip Dorian (scene-on-stage--philip-dorian.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6379 chars, textIssues flag set): https://sceneonstage.com/2018/10/bernhardthamletmcteer/\nshowbiz411/Roger Friedman (showbiz411--roger-friedman.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4926 chars, textIssues flag set): https://www.showbiz411.com/2018/09/30/broadway-review-janet-mcteer-soars-in-tony-certain-performance-for-topical-funny-bernhardt-hamlet\nsplash-magazines/C. E. Gerber (splash-magazines--c-e-gerber.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (10396 chars): http://splashmags.com/index.php/2018/09/27/bernhardt-hamlet-review-about-a-stars-turn/\nstage-left/Robert Russo (stage-left--robert-russo.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5521 chars, textIssues flag set): https://www.stageleft.nyc/blog/2018/10/1/review-bernhardthamletbold-and-incoherent\nstage-left/William Wolf (stage-left--william-wolf.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5521 chars, textIssues flag set): https://www.stageleft.nyc/blog/2018/10/1/review-bernhardthamletbold-and-incoherent\nstagezine/David NouNou (stagezine--david-nounou.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4640 chars): http://www.stagezine.com/bernhardt-hamlet-diva-reinterprets-classic/\ntalkinbroadway/Howard Miller (talkinbroadway--howard-miller.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (7788 chars, textIssues flag set): https://www.talkinbroadway.com/page/world/BernhardtHamlet2018.html\nthe-clyde-fitch-report/Martha Wade Steketee (the-clyde-fitch-report--martha-wade-steketee.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6371 chars, textIssues flag set): http://www.clydefitchreport.com/2018/09/bernhardt-hamlet-mcteer-rebeck/\ntheater-life/David Sheward (theater-life--david-sheward.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6739 chars, textIssues flag set): http://theaterlife.com/bernhardt-hamlet-the-nap/\ntheater-life/Isa Goldberg (theater-life--isa-goldberg.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4263 chars): https://theaterlife.com/bernhardt-hamlet-2/\ntheater-life/Paulanne Simmons (theater-life--paulanne-simmons.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3608 chars, textIssues flag set): https://theaterlife.com/bernhardt-hamlet/\ntheater-scene/Victor Gluck (theater-scene--victor-gluck.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (7634 chars, textIssues flag set): https://www.theaterscene.net/plays/broadway-plays/bernhardt-hamlet/victor-gluck/\ntheatermania/Hayley Levitt (theatermania--hayley-levitt.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5320 chars, textIssues flag set): https://www.theatermania.com/broadway/news/in-bernhardt-hamlet-actions-speak-louder_86509.html\ntheatre-reviews-limited/David Roberts (theatre-reviews-limited--david-roberts.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4443 chars): https://www.theatrereviews.com/broadway-review-bernhardt-hamlet-at-roundabout-theatre-companys-american-airlines-theatre/\ntheatres-leiter-side/Samuel L. Leiter (theatres-leiter-side--samuel-l-leiter.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (7360 chars, textIssues flag set): https://slleiter.blogspot.com/2018/09/85-2018-2019-review-bernhardthamlet.html\nthestage/Nicole Serratore (thestage--nicole-serratore.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (2312 chars, textIssues flag set): https://www.thestage.co.uk/reviews/reviews/bernhardthamlet-review-at-american-airlines-theatre-new-york--a-riveting-performance-from-janet-mcteer\nthewrap/Robert Hofler (thewrap--robert-hofler.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (7107 chars, textIssues flag set): https://www.thewrap.com/bernhardt-hamlet-broadway-review-janet-mcteer-theresa-rebeck/\ntimeout/Adam Feldman (timeout--adam-feldman.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4397 chars, textIssues flag set): https://www.timeout.com/newyork/theater/bernhardt-hamlet\nvariety/Marilyn Stasio (variety--marilyn-stasio.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5471 chars, textIssues flag set): https://variety.com/2018/legit/reviews/bernhardt-hamlet-review-janet-mcteer-1202956884/\nvulture/Sara Holdren (vulture--sara-holdren.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (12658 chars, textIssues flag set): https://www.vulture.com/2018/09/theater-review-theresa-rebecks-bernhardt-hamlet.html\nwnyc/Jennifer Vanasco (wnyc--jennifer-vanasco.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (2219 chars, textIssues flag set): https://www.wnyc.org/story/review-bernhardthamlet-flounders/",
+      "message": "amny/Matt Windman (amny--matt-windman.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3847 chars): https://www.amny.com/entertainment/bernhardt-hamlet-review-1.21255829/\nbroadwayworld/Michael Dale (broadwayworld--michael-dale.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5568 chars, textIssues flag set): https://www.broadwayworld.com/article/BWW-Review-Janet-McTeer-Speaks-The-Speeches-Ever-So-Trippingly-in-Theresa-Rebecks-BERNHARDTHAMLET-20180925\nchicagotribune/Chris Jones (chicagotribune--chris-jones.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6397 chars, textIssues flag set): https://www.chicagotribune.com/entertainment/theater/broadway/sc-ent-bernhardt-hamlet-broadway-review-0926-story.html\ncititour/Brian Scott Lipton (cititour--brian-scott-lipton.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4896 chars, textIssues flag set): https://cititour.com/NYC_Broadway/BernhardtHamlet/486\ncity-cabaret/Elizabeth Ahlfors (city-cabaret--elizabeth-ahlfors.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4036 chars, textIssues flag set): https://www.citycabaret.com/bernhardt-hamlet.html\ncurtainup/Elyse Sommer (curtainup--elyse-sommer.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6704 chars): https://www.curtainup.com/bernhardthamlet18.html\ndctheatrescene/Jonathan Mandell (dctheatrescene--jonathan-mandell.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6238 chars, textIssues flag set): https://dctheatrescene.com/2018/09/29/bernhardt-hamlet-review-janet-mcteer-as-sarah-bernhardt-as-hamlet/\ndeadline/Greg Evans (deadline--greg-evans.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3375 chars, textIssues flag set): https://deadline.com/2018/09/bernhardt-hamlet-review-broadway-janet-mcteer-brings-legend-to-life-1202470446/\new/Leah Greenblatt (ew--leah-greenblatt.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4217 chars, textIssues flag set): https://ew.com/theater/2018/09/25/bernhardt-hamlet-review/\ngotham-playgoer/Robert Sholiton (gotham-playgoer--robert-sholiton.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3127 chars, textIssues flag set): https://gotham-playgoer.blogspot.com/2018/09/bernhardthamlet.html\nhollywood-reporter/David Rooney (hollywood-reporter--david-rooney.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (8528 chars, textIssues flag set): https://www.hollywoodreporter.com/news/general-news/bernhardt-hamlet-theater-review-1146607/\nmedium/Christian Lewis (medium--christian-lewis.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4955 chars): https://medium.com/@christianlewis_11156/review-bernhardt-hamlet-starring-the-divine-janet-mcteer-5ce8b1b8b838\nnewsday/Barbara Schuler (newsday--barbara-schuler.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3682 chars): https://www.newsday.com/entertainment/theater/bernhardt-hamlet-review-1.21240135\nny1/Roma Torre (ny1--roma-torre.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (2105 chars, textIssues flag set): https://ny1.com/nyc/all-boroughs/news/2018/09/26/roma-torre-theater-review-bernhardt-hamlet-janet-mcteer-portrays-sarah-bernhardt\nnysr/David Finkle (nysr--david-finkle.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5142 chars): https://nystagereview.com/2018/09/25/bernhardt-hamlet-janet-mcteer-in-teresa-rebecks-almost-ready-play/\nnysr/Melissa Rose Bernardo (nysr--melissa-rose-bernardo.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5054 chars): https://nystagereview.com/2018/09/25/bernhardt-hamlet-what-a-piece-of-work/\nnytimes/Ben Brantley (nytimes--ben-brantley.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6104 chars, textIssues flag set): https://www.nytimes.com/2018/09/25/theater/bernhardt-hamlet-review.html\nnytimes/Jesse Green (nytimes--jesse-green.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6407 chars): https://www.nytimes.com/2018/09/25/theater/bernhardt-hamlet-review.html\nobserver/David Cote (observer--david-cote.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5688 chars): https://observer.com/2018/09/bernhardt-hamlet-review-janet-mcteer-carries-lively-exhausting-new-play/\nscene-on-stage/Philip Dorian (scene-on-stage--philip-dorian.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6379 chars, textIssues flag set): https://sceneonstage.com/2018/10/bernhardthamletmcteer/\nshowbiz411/Roger Friedman (showbiz411--roger-friedman.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4926 chars, textIssues flag set): https://www.showbiz411.com/2018/09/30/broadway-review-janet-mcteer-soars-in-tony-certain-performance-for-topical-funny-bernhardt-hamlet\nsplash-magazines/C. E. Gerber (splash-magazines--c-e-gerber.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (10396 chars): http://splashmags.com/index.php/2018/09/27/bernhardt-hamlet-review-about-a-stars-turn/\nstage-left/Robert Russo (stage-left--robert-russo.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5521 chars, textIssues flag set): https://www.stageleft.nyc/blog/2018/10/1/review-bernhardthamletbold-and-incoherent\nstage-left/William Wolf (stage-left--william-wolf.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5521 chars, textIssues flag set): https://www.stageleft.nyc/blog/2018/10/1/review-bernhardthamletbold-and-incoherent\nstagezine/David NouNou (stagezine--david-nounou.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4640 chars): http://www.stagezine.com/bernhardt-hamlet-diva-reinterprets-classic/\ntalkinbroadway/Howard Miller (talkinbroadway--howard-miller.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (7788 chars, textIssues flag set): https://www.talkinbroadway.com/page/world/BernhardtHamlet2018.html\nthe-clyde-fitch-report/Martha Wade Steketee (the-clyde-fitch-report--martha-wade-steketee.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6371 chars, textIssues flag set): http://www.clydefitchreport.com/2018/09/bernhardt-hamlet-mcteer-rebeck/\ntheater-life/David Sheward (theater-life--david-sheward.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (6739 chars, textIssues flag set): http://theaterlife.com/bernhardt-hamlet-the-nap/\ntheater-life/Isa Goldberg (theater-life--isa-goldberg.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4263 chars): https://theaterlife.com/bernhardt-hamlet-2/\ntheater-life/Paulanne Simmons (theater-life--paulanne-simmons.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (3608 chars, textIssues flag set): https://theaterlife.com/bernhardt-hamlet/\ntheater-scene/Victor Gluck (theater-scene--victor-gluck.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (7634 chars, textIssues flag set): https://www.theaterscene.net/plays/broadway-plays/bernhardt-hamlet/victor-gluck/\ntheatermania/Hayley Levitt (theatermania--hayley-levitt.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5320 chars, textIssues flag set): https://www.theatermania.com/broadway/news/in-bernhardt-hamlet-actions-speak-louder_86509.html\ntheatre-reviews-limited/David Roberts (theatre-reviews-limited--david-roberts.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4443 chars): https://www.theatrereviews.com/broadway-review-bernhardt-hamlet-at-roundabout-theatre-companys-american-airlines-theatre/\ntheatres-leiter-side/Samuel L. Leiter (theatres-leiter-side--samuel-l-leiter.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (7360 chars, textIssues flag set): https://slleiter.blogspot.com/2018/09/85-2018-2019-review-bernhardthamlet.html\nthestage/Nicole Serratore (thestage--nicole-serratore.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (2312 chars, textIssues flag set): https://www.thestage.co.uk/reviews/reviews/bernhardthamlet-review-at-american-airlines-theatre-new-york--a-riveting-performance-from-janet-mcteer\nthewrap/Robert Hofler (thewrap--robert-hofler.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (7107 chars, textIssues flag set): https://www.thewrap.com/bernhardt-hamlet-broadway-review-janet-mcteer-theresa-rebeck/\ntimeout/Adam Feldman (timeout--adam-feldman.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (4397 chars, textIssues flag set): https://www.timeout.com/newyork/theater/bernhardt-hamlet\nvariety/Marilyn Stasio (variety--marilyn-stasio.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (5471 chars, textIssues flag set): https://variety.com/2018/legit/reviews/bernhardt-hamlet-review-janet-mcteer-1202956884/\nvulture/Sara Holdren (vulture--sara-holdren.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (12658 chars, textIssues flag set): https://www.vulture.com/2018/09/theater-review-theresa-rebecks-bernhardt-hamlet.html\nwnyc/Jennifer Vanasco (wnyc--jennifer-vanasco.json) SHIPPED but fullText never mentions 'Bernhardt/Hamlet' (2219 chars, textIssues flag set): https://www.wnyc.org/story/review-bernhardthamlet-flounders/",
       "violations": [
         {
           "filename": "amny--matt-windman.json",
@@ -2504,6 +2507,14 @@
           "outletId": "nytimes",
           "criticName": "Jesse Green",
           "haystackLength": 6407,
+          "textIssuesFlag": false
+        },
+        {
+          "filename": "observer--david-cote.json",
+          "url": "https://observer.com/2018/09/bernhardt-hamlet-review-janet-mcteer-carries-lively-exhausting-new-play/",
+          "outletId": "observer",
+          "criticName": "David Cote",
+          "haystackLength": 5688,
           "textIssuesFlag": false
         },
         {
@@ -6621,22 +6632,6 @@
       ]
     },
     {
-      "showId": "les-miserables-1987",
-      "title": "Les Miserables",
-      "openingDate": "1987-03-12",
-      "message": "whatsonstage/Tanyel Gumushan (whatsonstage--tanyel-gumushan.json) SHIPPED but fullText never mentions 'Les Miserables' (10770 chars, textIssues flag set): https://www.whatsonstage.com/news/stage-by-stage-how-les-miserables-came-to-be_1695308/",
-      "violations": [
-        {
-          "filename": "whatsonstage--tanyel-gumushan.json",
-          "url": "https://www.whatsonstage.com/news/stage-by-stage-how-les-miserables-came-to-be_1695308/",
-          "outletId": "whatsonstage",
-          "criticName": "Tanyel Gumushan",
-          "haystackLength": 10770,
-          "textIssuesFlag": true
-        }
-      ]
-    },
-    {
       "showId": "mamma-mia-2001",
       "title": "Mamma Mia!",
       "openingDate": "2001-10-18",
@@ -6752,7 +6747,7 @@
       "showId": "kramerfauci-st-anns-off-broadway-2026",
       "title": "Kramer/Fauci",
       "openingDate": "2026-10-04",
-      "message": "culturesauce/Thom Geier (culturesauce--thom-geier.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (5876 chars): https://culturesauce.com/kramer-fauci-off-broadway-review/\nnyt-theater/Jonathan Mandell (nyt-theater--jonathan-mandell.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (3611 chars): https://newyorktheater.me/2026/10/04/kramer-fauci-review/\nnyt-theater/Jonathan (nyt-theater--jonathan.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (3611 chars): https://newyorktheater.me/2026/10/04/kramer-fauci-review/\nnytg/Christian Lewis (nytg--christian-lewis.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (8871 chars): https://www.newyorktheatreguide.com/reviews/kramer-fauci-off-broadway-review\nthe-recs/Arlene Getz (the-recs--arlene-getz.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (4908 chars): https://therecs.co.uk/kramer-fauci/\ntheater-pizzazz/Stuart Miller (theater-pizzazz--stuart-miller.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (5273 chars): https://theaterpizzazz.com/kramer-fauci-talks-and-talks-without-enough-illumination/\nthis-week-in-new-york/Unknown (this-week-in-new-york--unknown.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (8999 chars): https://twi-ny.com/2026/09/24/kramer-fauci-daniel-fish-st-anns/",
+      "message": "culturesauce/Thom Geier (culturesauce--thom-geier.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (5876 chars): https://culturesauce.com/kramer-fauci-off-broadway-review/\nnyt-theater/Jonathan Mandell (nyt-theater--jonathan-mandell.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (3611 chars): https://newyorktheater.me/2026/10/04/kramer-fauci-review/\nnyt-theater/Jonathan (nyt-theater--jonathan.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (3611 chars): https://newyorktheater.me/2026/10/04/kramer-fauci-review/\nnytg/Christian Lewis (nytg--christian-lewis.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (8871 chars): https://www.newyorktheatreguide.com/reviews/kramer-fauci-off-broadway-review\nthe-recs/Arlene Getz (the-recs--arlene-getz.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (4908 chars): https://therecs.co.uk/kramer-fauci/\ntheater-pizzazz/Stuart Miller (theater-pizzazz--stuart-miller.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (5273 chars): https://theaterpizzazz.com/kramer-fauci-talks-and-talks-without-enough-illumination/\nthis-week-in-new-york/Unknown (this-week-in-new-york--unknown.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (8999 chars): https://twi-ny.com/2026/09/24/kramer-fauci-daniel-fish-st-anns/\nvulture/Jackson McHenry (vulture--jackson-mchenry.json) SHIPPED but fullText never mentions 'Kramer/Fauci' (8114 chars): https://www.vulture.com/article/kramer-fauci-daniel-fish-play-st-anns-nyc.html",
       "violations": [
         {
           "filename": "culturesauce--thom-geier.json",
@@ -6808,6 +6803,14 @@
           "outletId": "this-week-in-new-york",
           "criticName": "Unknown",
           "haystackLength": 8999,
+          "textIssuesFlag": false
+        },
+        {
+          "filename": "vulture--jackson-mchenry.json",
+          "url": "https://www.vulture.com/article/kramer-fauci-daniel-fish-play-st-anns-nyc.html",
+          "outletId": "vulture",
+          "criticName": "Jackson McHenry",
+          "haystackLength": 8114,
           "textIssuesFlag": false
         }
       ]
@@ -7837,22 +7840,6 @@
       ]
     },
     {
-      "showId": "cats-west-end-2026",
-      "title": "Cats",
-      "openingDate": "2026-08-06",
-      "message": "radio-times/Joanna Magill (radio-times--joanna-magill.json) SHIPPED but fullText never mentions 'Cats' (260 chars): https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/\n⚠️  thestage/Jonathan Mandell (thestage--jonathan-mandell.json) also too short to assess (0 chars): https://www.thestage.co.uk/reviews/cats-review-regents-park-open-air-theatre-london",
-      "violations": [
-        {
-          "filename": "radio-times--joanna-magill.json",
-          "url": "https://www.radiotimes.com/going-out/going-out-reviews/cats-regents-park-review/",
-          "outletId": "radio-times",
-          "criticName": "Joanna Magill",
-          "haystackLength": 260,
-          "textIssuesFlag": false
-        }
-      ]
-    },
-    {
       "showId": "dark-of-the-moon-west-end-2026",
       "title": "Dark of the Moon",
       "openingDate": "2026-05-26",
@@ -8736,16 +8723,8 @@
       "showId": "the-score-regional-2026",
       "title": "The Score",
       "openingDate": "2026-09-16",
-      "message": "london-theatre/Theo Bosanquet (london-theatre--theo-bosanquet.json) SHIPPED but fullText never mentions 'The Score' (773 chars): https://www.londontheatre.co.uk/reviews/the-score-review-theatre-royal-haymarket\nstandard/Tim Bano (standard--tim-bano.json) SHIPPED but fullText never mentions 'The Score' (767 chars): https://www.standard.co.uk/culture/theatre/the-score-theatre-royal-haymarket-review-brian-cox-bach-b1213610.html\ntimes-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED but fullText never mentions 'The Score' (680 chars): https://www.thetimes.com/culture/theatre-dance/article/the-score-review-brian-cox-bath-flcj6cx3f",
+      "message": "standard/Tim Bano (standard--tim-bano.json) SHIPPED but fullText never mentions 'The Score' (767 chars): https://www.standard.co.uk/culture/theatre/the-score-theatre-royal-haymarket-review-brian-cox-bach-b1213610.html\ntimes-uk/Dominic Maxwell (times-uk--dominic-maxwell.json) SHIPPED but fullText never mentions 'The Score' (680 chars): https://www.thetimes.com/culture/theatre-dance/article/the-score-review-brian-cox-bath-flcj6cx3f",
       "violations": [
-        {
-          "filename": "london-theatre--theo-bosanquet.json",
-          "url": "https://www.londontheatre.co.uk/reviews/the-score-review-theatre-royal-haymarket",
-          "outletId": "london-theatre",
-          "criticName": "Theo Bosanquet",
-          "haystackLength": 773,
-          "textIssuesFlag": false
-        },
         {
           "filename": "standard--tim-bano.json",
           "url": "https://www.standard.co.uk/culture/theatre/the-score-theatre-royal-haymarket-review-brian-cox-bach-b1213610.html",
@@ -8765,26 +8744,10 @@
       ]
     },
     {
-      "showId": "purpose-regional-2026",
-      "title": "Purpose",
-      "openingDate": "2026-09-16",
-      "message": "nytg/Unknown (nytg--unknown.json) SHIPPED but fullText never mentions 'Purpose' (262 chars): https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
-      "violations": [
-        {
-          "filename": "nytg--unknown.json",
-          "url": "https://www.newyorktheatreguide.com/reviews/purpose-broadway-review",
-          "outletId": "nytg",
-          "criticName": "Unknown",
-          "haystackLength": 262,
-          "textIssuesFlag": false
-        }
-      ]
-    },
-    {
       "showId": "topdog-underdog-regional-2026",
       "title": "Topdog/Underdog",
       "openingDate": "2026-09-27",
-      "message": "around-the-town-chicago/Wayne Mell (around-the-town-chicago--wayne-mell.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4047 chars): https://aroundthetownchicago.com/theatre-reviews/topdog-underdog-2/\nbroadwayworld/Rachel Weinberg (broadwayworld--rachel-weinberg.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4788 chars): https://www.broadwayworld.com/chicago/article/Review-TOPDOGUNDERDOG-at-Steppenwolf-Theatre-Company-20260928\nbuzznews/Wesley David (buzznews--wesley-david.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (7133 chars): https://www.buzznews.net/theatre/theatre-reviews/item/6729-steppenwolf-s-topdog-underdog-when-history-deals-the-cards.html\nchicago-reader/Kerry Reid (chicago-reader--kerry-reid.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4863 chars): https://chicagoreader.com/performing-arts/theater/theater-review/topdog-underdog-steppenwolf-theatre-company/\nchicago-sun-times/Steven Oxman (chicago-sun-times--steven-oxman.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (5508 chars): https://chicago.suntimes.com/theater/2026/09/29/topdog-underdog-steppenwolf-review-glenn-davis-namir-smallwood\nchicagoonstage/Unknown (chicagoonstage--unknown.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (7360 chars): https://www.chicagoonstage.com/steppenwolfs-topdog-underdog-shows-why-the-play-is-a-classic/\nchicagostageandscreen/Angela Allyn (chicagostageandscreen--angela-allyn.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (2342 chars): https://www.chicagostageandscreen.com/post/heartbreaking-topdog-underdog-at-steppenwolf\nchicagotribune/Chris Jones (chicagotribune--chris-jones.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (6465 chars): https://www.chicagotribune.com/2026/09/28/review-topdog-underdog-steppenwolf/\nnew-city-stage/Amanda Finn (new-city-stage--amanda-finn.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4042 chars): https://www.newcitystage.com/2026/10/01/steppenwolfs-topdog-underdog-reckons-with-the-american-dream/\npicksinsix/Ed Tracy (picksinsix--ed-tracy.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4454 chars): https://www.conversationswithedtracy.com/picksinsix/2026/9/28/picksinsix-review-topdog-underdog-steppenwolf-theatre-company\nrachelweinbergreviews/Rachelrweinberg (rachelweinbergreviews--rachelrweinberg.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (5393 chars): https://rachelweinbergreviews.com/2026/09/28/review-topdog-underdog-at-steppenwolf/\nsplash-magazines/Debra Davy (splash-magazines--debra-davy.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (5061 chars): https://splashmags.com/2026/10/topdog-underdog-review-identity-and-reversals-at-steppenwolf-theatre-company/\nstageandcinema/Emma S. Rund (stageandcinema--emma-s-rund.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (5409 chars): https://stageandcinema.com/2026/09/29/topdog-underdog-steppenwolf/\nwernerstheatrereviews/Unknown (wernerstheatrereviews--unknown.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (3268 chars): https://wernerstheatrereviews.wordpress.com/2026/09/30/topdog-underdog-returns-to-steppenwolf-with-great-success/",
+      "message": "around-the-town-chicago/Wayne Mell (around-the-town-chicago--wayne-mell.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4047 chars): https://aroundthetownchicago.com/theatre-reviews/topdog-underdog-2/\nbroadwayworld/Rachel Weinberg (broadwayworld--rachel-weinberg.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4788 chars): https://www.broadwayworld.com/chicago/article/Review-TOPDOGUNDERDOG-at-Steppenwolf-Theatre-Company-20260928\nbuzznews/Wesley David (buzznews--wesley-david.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (7133 chars): https://www.buzznews.net/theatre/theatre-reviews/item/6729-steppenwolf-s-topdog-underdog-when-history-deals-the-cards.html\nchicago-reader/Kerry Reid (chicago-reader--kerry-reid.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4863 chars): https://chicagoreader.com/performing-arts/theater/theater-review/topdog-underdog-steppenwolf-theatre-company/\nchicago-sun-times/Steven Oxman (chicago-sun-times--steven-oxman.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (5508 chars): https://chicago.suntimes.com/theater/2026/09/29/topdog-underdog-steppenwolf-review-glenn-davis-namir-smallwood\nchicagoonstage/Unknown (chicagoonstage--unknown.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (7360 chars): https://www.chicagoonstage.com/steppenwolfs-topdog-underdog-shows-why-the-play-is-a-classic/\nchicagostageandscreen/Angela Allyn (chicagostageandscreen--angela-allyn.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (2342 chars): https://www.chicagostageandscreen.com/post/heartbreaking-topdog-underdog-at-steppenwolf\nchicagotribune/Chris Jones (chicagotribune--chris-jones.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (6465 chars): https://www.chicagotribune.com/2026/09/28/review-topdog-underdog-steppenwolf/\nnew-city-stage/Amanda Finn (new-city-stage--amanda-finn.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4042 chars): https://www.newcitystage.com/2026/10/01/steppenwolfs-topdog-underdog-reckons-with-the-american-dream/\npicksinsix/Ed Tracy (picksinsix--ed-tracy.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (4454 chars): https://www.conversationswithedtracy.com/picksinsix/2026/9/28/picksinsix-review-topdog-underdog-steppenwolf-theatre-company\nrachelweinbergreviews/Rachelrweinberg (rachelweinbergreviews--rachelrweinberg.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (5393 chars): https://rachelweinbergreviews.com/2026/09/28/review-topdog-underdog-at-steppenwolf/\nsplash-magazines/Debra Davy (splash-magazines--debra-davy.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (5061 chars): https://splashmags.com/2026/10/topdog-underdog-review-identity-and-reversals-at-steppenwolf-theatre-company/\nstageandcinema/Emma S. Rund (stageandcinema--emma-s-rund.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (5409 chars): https://stageandcinema.com/2026/09/29/topdog-underdog-steppenwolf/\nthird-coast-review/Unknown (third-coast-review--unknown.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (5618 chars): https://thirdcoastreview.com/stages/2026/09/28/review-steppenwolf-theatre-topdog-underdog\nwernerstheatrereviews/Unknown (wernerstheatrereviews--unknown.json) SHIPPED but fullText never mentions 'Topdog/Underdog' (3268 chars): https://wernerstheatrereviews.wordpress.com/2026/09/30/topdog-underdog-returns-to-steppenwolf-with-great-success/",
       "violations": [
         {
           "filename": "around-the-town-chicago--wayne-mell.json",
@@ -8888,6 +8851,14 @@
           "outletId": "stageandcinema",
           "criticName": "Emma S. Rund",
           "haystackLength": 5409,
+          "textIssuesFlag": false
+        },
+        {
+          "filename": "third-coast-review--unknown.json",
+          "url": "https://thirdcoastreview.com/stages/2026/09/28/review-steppenwolf-theatre-topdog-underdog",
+          "outletId": "third-coast-review",
+          "criticName": "Unknown",
+          "haystackLength": 5618,
           "textIssuesFlag": false
         },
         {
