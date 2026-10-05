@@ -7289,8 +7289,10 @@ async function processReview(review) {
           delete postData.wrongProduction;
           delete postData.wrongProductionReason;
         }
-        delete postData.wrongShow;
-        delete postData.wrongShowReason;
+        if (!preserve.wrongShow) {
+          delete postData.wrongShow;
+          delete postData.wrongShowReason;
+        }
         delete postData.showNotMentioned;
         delete postData.contentMismatchNote;
         // incompleteReason/incompleteDetail/contentTier are cleared even when
@@ -7314,9 +7316,12 @@ async function processReview(review) {
         if (preserve.wrongProduction) {
           postData.wrongProductionPreservedOnUrlRecoveryAt = new Date().toISOString();
         }
+        if (preserve.wrongShow) {
+          postData.wrongShowPreservedOnUrlRecoveryAt = new Date().toISOString();
+        }
         fs.writeFileSync(review.filePath, JSON.stringify(postData, null, 2) + '\n');
-        console.log(preserve.wrongProduction
-          ? `    ✓ wrong_content recovered — wrongProduction (${postData.wrongProductionReason}) PRESERVED: not a content verdict, re-fetch is no evidence against it`
+        console.log(preserve.wrongProduction || preserve.wrongShow
+          ? `    ✓ wrong_content recovered — ${[preserve.wrongProduction && `wrongProduction (${postData.wrongProductionReason})`, preserve.wrongShow && `wrongShow (${postData.wrongShowReason})`].filter(Boolean).join(' + ')} PRESERVED: not a content verdict, re-fetch is no evidence against it`
           : `    ✓ wrong_content recovered — cleared incompleteReason/contentTier so future collects won't re-skip`);
       } catch (e) {
         // Recovery cleanup failed — preserve original state. Log so we know why next-cycle still skips.

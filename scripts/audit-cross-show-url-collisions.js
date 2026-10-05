@@ -27,6 +27,7 @@ const REPORT_PATH = process.env.REPORT_PATH
 
 const { isLondonMarket, isUkOutletUrl, isBroadwayUrl } = require('./lib/venue-classification');
 const { parseDate } = require('./lib/date-utils');
+const { WRONG_SHOW_ORPHAN_DIR_PREFIX } = require('./lib/wrong-production-autoclear');
 const { shouldSkipWrongProductionAudit, shouldSkipCrossShowUrlFlag, wrongShowCleared } = require('./lib/review-guards');
 const { shouldWithholdStaleExclusionFlag } = require('./lib/stale-flag-after-url-correction');
 const { validateShowMentioned } = require('./lib/content-quality');
@@ -196,7 +197,7 @@ for (const dirId of showDirs) {
 
     if (APPLY) {
       data.wrongShow = true;
-      data.wrongShowReason = `Orphaned generic directory "${dirId}" is not in shows.json — year-suffixed siblings exist`;
+      data.wrongShowReason = `${WRONG_SHOW_ORPHAN_DIR_PREFIX}"${dirId}" is not in shows.json — year-suffixed siblings exist`;
       atomicWriteJSON(filePath, data);
       orphanedDirFlagged++;
       log(`  [ORPHANED DIR] ${dirId}/${file}`);

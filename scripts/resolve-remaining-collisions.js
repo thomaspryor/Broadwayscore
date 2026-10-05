@@ -14,6 +14,7 @@
 const fs = require('fs');
 const path = require('path');
 const { invalidateWrongShowAutoClear } = require('./lib/review-write-guard');
+const { WRONG_SHOW_MANUAL_COLLISION_PREFIX } = require('./lib/wrong-production-autoclear');
 
 // Use main repo for review-texts (gitignored, not present in worktrees)
 const MAIN_REPO = process.env.MAIN_REPO || path.resolve(__dirname, '..');
@@ -131,7 +132,7 @@ for (const [showId, file, belongsTo] of wrongShowFixes) {
     if (data.wrongShow || data.wrongProduction) { skippedCount++; continue; }
     data.wrongShow = true;
     invalidateWrongShowAutoClear(data);
-    data.wrongShowReason = `Cross-show URL collision (manual resolution): review belongs to ${belongsTo}`;
+    data.wrongShowReason = `${WRONG_SHOW_MANUAL_COLLISION_PREFIX}${belongsTo}`;
     writeFix(showId, file, data);
     wrongShowCount++;
     console.log(`  [WRONGSHOW] ${showId}/${file} → belongs to ${belongsTo}`);

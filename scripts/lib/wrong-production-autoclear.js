@@ -832,6 +832,26 @@ function shouldAutoClearAnticipatoryGrace(data, { stillRejected } = {}) {
   return true;
 }
 
+// BRO-2868: wrongShowReason prefixes a re-fetch from a corrected URL cannot
+// disprove. Both are one-shot operator/audit decisions about which show
+// directory a file belongs in (resolve-remaining-collisions.js,
+// audit-cross-show-url-collisions.js, which build their reason strings from
+// these constants so the writer and this registry cannot drift apart).
+// Deliberately NOT listed: the automatic "Cross-show URL collision: ..."
+// variants (derived from URL/score comparisons a corrected URL can invalidate)
+// and every LLM/content reason.
+const WRONG_SHOW_MANUAL_COLLISION_PREFIX = 'Cross-show URL collision (manual resolution): review belongs to ';
+const WRONG_SHOW_ORPHAN_DIR_PREFIX = 'Orphaned generic directory ';
+const WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES = Object.freeze([
+  WRONG_SHOW_MANUAL_COLLISION_PREFIX,
+  WRONG_SHOW_ORPHAN_DIR_PREFIX,
+]);
+
+function isUrlIndependentWrongShowReason(reason) {
+  return typeof reason === 'string'
+    && WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES.some((p) => reason.startsWith(p));
+}
+
 /**
  * Decide whether collect-review-texts.js's "wrong_content recovered" cleanup
  * must LEAVE an exclusion flag in place instead of deleting it.
@@ -881,16 +901,16 @@ function shouldAutoClearAnticipatoryGrace(data, { stillRejected } = {}) {
  * no way to clear the flag at all. The rebuild's re-derivation now passes the
  * same opt through to isAnticipatoryPreviewPost so both exits agree.
  *
- * Only the wrongProduction half is answered here. The same block also deletes
- * wrongShow/wrongShowReason and that side has the same shape of bug (e.g. the
- * one-shot "Cross-show URL collision (manual resolution)" and "Orphaned
- * generic directory" reasons are equally content-independent), but there is
- * no wrongShow equivalent of DATE_ONLY_AUTO_REASONS today and preserving on
- * ANY wrongShowReason would defeat the cleanup's purpose — content-mismatch
- * flags carry reason strings too. Tracked separately rather than guessed at.
+ * wrongShow half (BRO-2868): answered by WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES,
+ * the wrongShow counterpart of DATE_ONLY_AUTO_REASONS. Preserving on ANY
+ * wrongShowReason would defeat the cleanup (content-mismatch flags carry
+ * reason strings too: "Collector LLM: ...", "CV-promoted: ...", "LLM: ..."), so
+ * the registry lists only one-shot operator/audit decisions that are a function
+ * of neither the article body nor the URL. It is an explicit allow-list: an
+ * unlisted reason keeps being cleared, which is the cleanup's default.
  *
  * @param {object} data - the review JSON object, read back after the re-fetch
- * @returns {{ wrongProduction: boolean }}
+ * @returns {{ wrongProduction: boolean, wrongShow: boolean }}
  */
 function shouldPreserveExclusionFlagsOnUrlRecovery(data) {
   const d = data || {};
@@ -899,7 +919,8 @@ function shouldPreserveExclusionFlagsOnUrlRecovery(data) {
     && typeof reason === 'string'
     && DATE_ONLY_AUTO_REASONS.has(reason)
     && d.humanReviewedEarlyPublish !== true;
-  return { wrongProduction };
+  const wrongShow = d.wrongShow === true && isUrlIndependentWrongShowReason(d.wrongShowReason);
+  return { wrongProduction, wrongShow };
 }
 
 // BRO-4476: the UK-URL / UK-outlet auto-clear is a cross-market heuristic. It
@@ -1079,6 +1100,10 @@ module.exports = {
   isDatedGuardNote,
   shouldAutoClearAnticipatoryGrace,
   shouldPreserveExclusionFlagsOnUrlRecovery,
+  WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES,
+  WRONG_SHOW_MANUAL_COLLISION_PREFIX,
+  WRONG_SHOW_ORPHAN_DIR_PREFIX,
+  isUrlIndependentWrongShowReason,
   shouldAutoClearWrongProductionUkDualMarket,
   shouldAutoClearStaleLondonOutletCrossMarket,
 };

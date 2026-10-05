@@ -1402,37 +1402,37 @@ describe('shouldPreserveExclusionFlagsOnUrlRecovery (BRO-2828: URL recovery must
   });
 
   it('preserves the anticipatory flag — a re-fetch is no evidence against a date verdict', () => {
-    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(liveCase()), { wrongProduction: true });
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(liveCase()), { wrongProduction: true, wrongShow: false });
   });
 
   it('honors humanReviewedEarlyPublish, the documented operator opt-out', () => {
     const d = liveCase();
     d.humanReviewedEarlyPublish = true;
-    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false, wrongShow: false });
   });
 
   it('does NOT preserve a content-derived flag — that IS what the recovery answers', () => {
     const d = liveCase();
     d.wrongProductionReason =
       'Collector LLM: wrong production (high) — reviews the 2019 Broadway transfer, not this run';
-    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false, wrongShow: false });
   });
 
   it('does NOT preserve when the reason is missing entirely', () => {
     const d = liveCase();
     delete d.wrongProductionReason;
-    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false, wrongShow: false });
   });
 
   it('does NOT preserve when wrongProduction is not actually set', () => {
     const d = liveCase();
     delete d.wrongProduction;
-    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false });
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: false, wrongShow: false });
   });
 
   it('is null-safe', () => {
-    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(null), { wrongProduction: false });
-    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(undefined), { wrongProduction: false });
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(null), { wrongProduction: false, wrongShow: false });
+    assert.deepEqual(shouldPreserveExclusionFlagsOnUrlRecovery(undefined), { wrongProduction: false, wrongShow: false });
   });
 
   it('stays joined to DATE_ONLY_AUTO_REASONS rather than a private literal', () => {
@@ -1537,7 +1537,7 @@ describe('shouldPreserveExclusionFlagsOnUrlRecovery (BRO-2828: URL recovery must
       const d = liveCase();
       d.wrongProductionReason = reason;
       assert.deepEqual(
-        shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: true },
+        shouldPreserveExclusionFlagsOnUrlRecovery(d), { wrongProduction: true, wrongShow: false },
         `reason "${reason}" is registered as content-independent but is not preserved`,
       );
     }
@@ -1624,5 +1624,45 @@ describe('namesNonLondonCity london carve-out + non-dated-note (BRO-4476)', () =
   });
   it('flagger note is not released by the stale date-guard clear', () => {
     assert.strictEqual(shouldAutoClearStaleDateGuard({ wrongProduction: true, wrongProductionNote: 'Non-London city guard: review x' }, { nowInWindow: true }), false);
+  });
+});
+
+// BRO-2868: wrongShow half of the URL-recovery preserve predicate.
+describe('shouldPreserveExclusionFlagsOnUrlRecovery wrongShow registry (BRO-2868)', () => {
+  const {
+    shouldPreserveExclusionFlagsOnUrlRecovery: preserve,
+    isUrlIndependentWrongShowReason,
+    WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES,
+  } = require('../../scripts/lib/wrong-production-autoclear.js');
+  const flag = (reason) => ({ wrongShow: true, wrongShowReason: reason });
+
+  it('preserves the manual-resolution collision decision', () => {
+    assert.strictEqual(
+      preserve(flag('Cross-show URL collision (manual resolution): review belongs to hamilton-2015')).wrongShow, true);
+  });
+  it('preserves the orphaned-generic-directory audit decision', () => {
+    assert.strictEqual(
+      preserve(flag('Orphaned generic directory "wicked" is not in shows.json — year-suffixed siblings exist')).wrongShow, true);
+  });
+  it('still clears Collector LLM content reasons', () => {
+    assert.strictEqual(preserve(flag('Collector LLM: film/TV content (high) — reviews the movie')).wrongShow, false);
+    assert.strictEqual(preserve(flag('Collector LLM: not a review (listicle, confidence: high) — x')).wrongShow, false);
+  });
+  it('still clears other content/CV reasons and automatic collision variants', () => {
+    for (const r of ['CV-promoted: mismatch', 'LLM (medium): x', 'Cross-show URL collision: review has score/text in x, not here']) {
+      assert.strictEqual(preserve(flag(r)).wrongShow, false, r);
+    }
+  });
+  it('does not preserve without wrongShow=true, with no reason, or on null', () => {
+    assert.strictEqual(preserve({ wrongShowReason: 'Cross-show URL collision (manual resolution): review belongs to x' }).wrongShow, false);
+    assert.strictEqual(preserve({ wrongShow: true }).wrongShow, false);
+    assert.deepEqual(preserve(null), { wrongProduction: false, wrongShow: false });
+  });
+  it('writer scripts build their reasons from the registry constants', () => {
+    const read = (f) => fs.readFileSync(path.join(__dirnameCompat, '..', '..', 'scripts', f), 'utf8');
+    assert.ok(read('resolve-remaining-collisions.js').includes('WRONG_SHOW_MANUAL_COLLISION_PREFIX'));
+    assert.ok(read('audit-cross-show-url-collisions.js').includes('WRONG_SHOW_ORPHAN_DIR_PREFIX'));
+    assert.strictEqual(WRONG_SHOW_URL_INDEPENDENT_REASON_PREFIXES.length, 2);
+    assert.strictEqual(isUrlIndependentWrongShowReason(undefined), false);
   });
 });
