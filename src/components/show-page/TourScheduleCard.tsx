@@ -1,7 +1,9 @@
+import Link from 'next/link';
 import { StatusBadge } from '@/components/show-cards';
 import TicketLink from '@/components/TicketLink';
 import { formatShowDate } from '@/lib/date-utils';
 import { stopKey, type TourStop } from '@/lib/tour-schedule';
+import { citySlug } from '@/lib/tour-cities';
 
 // A national tour's engagements (BRO-4601). Same card chrome as the Critic
 // Scorecard and Quick Facts: eyebrow header, then rows. Shows where the tour
@@ -19,14 +21,18 @@ function range(s: TourStop) {
 
 interface TicketShow { id: string; title: string; slug: string; status: string }
 
-function StopRow({ stop, isNow, past, reviewCount, ticketUrl, show }: {
-  stop: TourStop; isNow: boolean; past: boolean; reviewCount: number; ticketUrl?: string; show?: TicketShow;
+function StopRow({ stop, isNow, past, reviewCount, ticketUrl, show, cityHref }: {
+  stop: TourStop; isNow: boolean; past: boolean; reviewCount: number; ticketUrl?: string; show?: TicketShow; cityHref?: string;
 }) {
   return (
     <li className={`flex items-baseline gap-3 py-2 border-b border-white/5 last:border-b-0 ${past ? 'opacity-60' : ''}`}>
       <span className="w-24 shrink-0 text-xs text-gray-500 tabular-nums">{range(stop)}</span>
       <span className="flex-1 min-w-0">
-        <span className="block text-sm text-white truncate">{stop.city}</span>
+        {cityHref ? (
+          <Link href={cityHref} className="block text-sm text-white underline decoration-white/20 underline-offset-4 hover:text-brand-hover hover:decoration-brand-hover truncate transition-colors">{stop.city}</Link>
+        ) : (
+          <span className="block text-sm text-white truncate">{stop.city}</span>
+        )}
         <span className="block text-xs text-gray-500 truncate">{stop.venue}</span>
       </span>
       {isNow ? <StatusBadge status="open" /> : reviewCount > 0 ? (
@@ -45,7 +51,7 @@ function StopRow({ stop, isNow, past, reviewCount, ticketUrl, show }: {
   );
 }
 
-export default function TourScheduleCard({ stops, today, reviewCounts, source, tickets = {}, show }: {
+export default function TourScheduleCard({ stops, today, reviewCounts, source, tickets = {}, show, cityPages }: {
   stops: TourStop[];
   today: string;
   /** Reviews per stop, keyed by stopKey(). */
@@ -55,6 +61,8 @@ export default function TourScheduleCard({ stops, today, reviewCounts, source, t
   tickets?: Record<string, string>;
   /** For ticket-click tracking. */
   show?: TicketShow;
+  /** Slugs of the /tours/<city> pages that exist: those cities link there. */
+  cityPages?: ReadonlySet<string>;
 }) {
   if (stops.length === 0) return null;
   const nowIdx = stops.findIndex(s => s.start <= today && today <= s.end);
@@ -62,7 +70,7 @@ export default function TourScheduleCard({ stops, today, reviewCounts, source, t
   const ahead = firstAhead === -1 ? [] : stops.slice(firstAhead, firstAhead + UPCOMING_SHOWN);
   const shown = [...(nowIdx >= 0 ? [stops[nowIdx]] : []), ...ahead];
   const row = (s: TourStop) => (
-    <StopRow key={`${s.city}|${s.start}`} stop={s} isNow={s === stops[nowIdx]} past={s.end < today} reviewCount={reviewCounts[stopKey(s)] ?? 0} ticketUrl={tickets[stopKey(s)]} show={show} />
+    <StopRow key={`${s.city}|${s.start}`} stop={s} isNow={s === stops[nowIdx]} past={s.end < today} reviewCount={reviewCounts[stopKey(s)] ?? 0} ticketUrl={tickets[stopKey(s)]} show={show} cityHref={cityPages?.has(citySlug(s.city)) ? `/tours/${citySlug(s.city)}` : undefined} />
   );
 
   return (

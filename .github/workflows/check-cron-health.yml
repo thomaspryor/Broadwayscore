@@ -100,6 +100,9 @@ jobs:
             "fetch-todaytix-showtimes.yml|36|Fetch TodayTix Showtimes"
             # BRO-4601: tour Now/Next lines and Tour Schedule cards go stale if this dies.
             "fetch-tour-schedules.yml|36|Fetch Tour Schedules"
+            # BRO-4723: daily crawl of every tour surface; findings file Linear
+            # cards, so a red run means the audit itself could not run or file.
+            "audit-tour-pages.yml|36|Audit Tour Pages"
             # BRO-4434: the npm advisory gate left test.yml (main = code only). Its
             # findings are Linear cards, and its own failure (exit 2/3) is a plain
             # red run that notify-failure(warning) never emails — this entry is what

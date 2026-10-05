@@ -17,7 +17,9 @@
 //   node scripts/audit-tour-pages.js --base=http://localhost:3000
 //   node scripts/audit-tour-pages.js --json=out.json --summary
 //   node scripts/audit-tour-pages.js --data-only     # data checks, no network
-// Exit: 0 clean (warnings allowed), 1 errors found, 2 could not run.
+//   node scripts/audit-tour-pages.js --alert         # one Linear card per error code (CI)
+// Exit: 0 clean (warnings allowed; with --alert, also when every error has a
+// card), 1 errors found, 2 could not run, 3 --alert could not file a card.
 // Pure checks: scripts/lib/tour-page-audit.js (tests/unit/tour-page-audit.test.js).
 
 const fs = require('fs');
@@ -168,11 +170,12 @@ async function main() {
 
     // 3. City pages the data says exist.
     const expected = A.expectedCities({ tours, schedules, listedIds: new Set(listed.keys()), today });
+    const expectedYesterday = A.expectedCities({ tours, schedules, listedIds: new Set(listed.keys()), today: todays[0] });
     const cityPages = new Set(expected.keys());
     cityCount = expected.size;
     for (const p of sitemap) {
       const m = p.match(/^\/tours\/([^/]+)$/);
-      if (m && !expected.has(m[1])) findings.push({ severity: 'error', code: 'sitemap-city-unexpected', where: p, message: 'city page in sitemap but data gives it no page' });
+      if (m && !expected.has(m[1]) && !expectedYesterday.has(m[1])) findings.push({ severity: 'error', code: 'sitemap-city-unexpected', where: p, message: 'city page in sitemap but data gives it no page' });
     }
     if (list.cityLinks.length) {
       for (const c of list.cityLinks) if (!cityPages.has(c)) findings.push({ severity: 'error', code: 'list-city-dead-link', where: listUrl, message: `links /tours/${c}, which the data gives no page` });
@@ -184,7 +187,14 @@ async function main() {
       const url = `/show/${t.slug || t.id}`;
       const [r, j] = await Promise.all([fetchText(`${BASE}${url}`), fetchText(`${BASE}/data/shows/${t.id}.json`)]);
       pagesChecked++;
-      if (r.status !== 200) { findings.push({ severity: 'error', code: 'page-status', where: url, message: `HTTP ${r.status}` }); return; }
+      if (r.status !== 200) {
+        // A tour added to shows.json after the live build has no page yet:
+        // core-data changes ride the next deploy (up to 6h). Listed or in
+        // the sitemap means the live build knows it, so a miss is real.
+        const known = listed.has(t.id) || sitemap.has(url);
+        findings.push({ severity: known || r.status !== 404 ? 'error' : 'warn', code: 'page-status', where: url, message: `HTTP ${r.status}${known ? '' : ' (not in the live build yet?)'}` });
+        return;
+      }
       let jsonCount = null;
       try { const d = JSON.parse(j.text); jsonCount = Array.isArray(d.rv) ? d.rv.length : null; } catch { /* no public json */ }
       const page = A.parseShowPage(r.text);
@@ -215,7 +225,7 @@ async function main() {
     if (args.mobile) {
       const paths = [listUrl, ...tours.map(t => `/show/${t.slug || t.id}`), ...Array.from(expected.keys()).map(s => `/tours/${s}`)];
       const mo = await mobileOverflow(paths);
-      if (mo.skipped) findings.push({ severity: 'warn', code: 'mobile-skipped', where: 'mobile', message: mo.skipped });
+      if (mo.skipped) findings.push({ severity: 'error', code: 'mobile-skipped', where: 'mobile', message: mo.skipped });
       for (const r of mo.results || []) {
         findings.push(r.error
           ? { severity: 'warn', code: 'mobile-load-failed', where: r.path, message: r.error.slice(0, 160) }
@@ -236,6 +246,15 @@ async function main() {
   if (!args.summary) {
     for (const f of [...errors, ...(args.warnings ? warns : [])]) console.log(`${f.severity.toUpperCase()} ${f.code} ${f.where}: ${f.message}`);
     if (!args.warnings && warns.length) console.log('(add --warnings to list warnings)');
+  }
+  if (args.alert) {
+    const runContext = process.env.GITHUB_RUN_ID ? {
+      runId: process.env.GITHUB_RUN_ID,
+      runUrl: process.env.GITHUB_SERVER_URL && process.env.GITHUB_REPOSITORY ? `${process.env.GITHUB_SERVER_URL}/${process.env.GITHUB_REPOSITORY}/actions/runs/${process.env.GITHUB_RUN_ID}` : null,
+    } : {};
+    const { alerts, alertDispatchFailed } = await A.runAlerts({ findings, router: require('./lib/owner-alert-router'), runContext });
+    for (const a of alerts) console.log(`  [alert] ${a.conditionKey} -> ${a.action}${a.linearIdentifier ? ` (${a.linearIdentifier})` : ''}${a.dispatchOk ? '' : ' DISPATCH FAILED'}`);
+    process.exit(alertDispatchFailed ? 3 : 0);
   }
   process.exit(errors.length ? 1 : 0);
 }

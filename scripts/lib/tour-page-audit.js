@@ -82,13 +82,13 @@ function parseShowPage(html) {
     const $li = $(li);
     const spans = $li.children('span');
     const place = $li.find('span.flex-1').first();
-    const cityEl = place.children('span').eq(0);
+    const cityEl = place.children('span, a').eq(0);
     const ticket = $li.find('a[href]').filter((_, a) => /todaytix|tickets/i.test($(a).text() + $(a).attr('href'))).first();
     return {
       range: spans.first().text().trim(),
       city: cityEl.text().trim(),
       cityHref: cityEl.is('a') ? cityEl.attr('href') : (cityEl.find('a').attr('href') || null),
-      venue: place.children('span').eq(1).text().trim(),
+      venue: place.children('span, a').eq(1).text().trim(),
       now: /now playing/i.test($li.text()),
       ticketHref: ticket.length ? ticket.attr('href') : null,
       past: /opacity-60/.test($li.attr('class') || ''),
@@ -562,9 +562,66 @@ function checkCityPage({ url, page, expected, tours, schedules, tickets, todays,
   return out;
 }
 
+// ---- alert routing ----------------------------------------------------------
+
+const CONDITION_PREFIX = 'tour-page-audit:';
+
+/**
+ * File one Linear card per error code through owner-alert-router.js (the
+ * audit-dependencies.js pattern), and close the cards for codes this run no
+ * longer reports. `router` is injected ({ routeAlert, resolveCondition,
+ * loadLedger }) so the unit test drives the real contract. routeAlert never
+ * throws on a dispatch failure; a missing tracker counts as a failure.
+ * @returns {{ alerts: Array<object>, alertDispatchFailed: boolean }}
+ */
+async function runAlerts({ findings, router, runContext = {}, log = console.error }) {
+  const { routeAlert, resolveCondition, loadLedger } = router;
+  const byCode = new Map();
+  for (const f of findings) {
+    if (f.severity !== 'error') continue;
+    if (!byCode.has(f.code)) byCode.set(f.code, []);
+    byCode.get(f.code).push(f);
+  }
+  const keys = new Set([...byCode.keys()].map(c => CONDITION_PREFIX + c));
+  const ledger = loadLedger();
+  for (const [key, c] of Object.entries((ledger && ledger.conditions) || {})) {
+    if (key.startsWith(CONDITION_PREFIX) && c.status === 'open' && !keys.has(key)) {
+      resolveCondition(key, { reason: 'audit-tour-pages: no longer reported' });
+    }
+  }
+  const dispatchAtFiling = runContext.runId ? { runId: runContext.runId, runUrl: runContext.runUrl || null } : undefined;
+  const alerts = [];
+  let alertDispatchFailed = false;
+  for (const [code, list] of byCode) {
+    const key = CONDITION_PREFIX + code;
+    const sample = list.slice(0, 15).map(f => `- ${f.where}: ${f.message}`).join('\n');
+    try {
+      const result = await routeAlert({
+        conditionKey: key,
+        title: `National tour pages show wrong information: ${list.length} page problem(s) (${code})`,
+        description: `A helper session is assigned to this card automatically; the owner does not need to act. If nothing is done, readers of the national-tour pages keep seeing this.\n\nTechnical: the daily tour page audit (.github/workflows/audit-tour-pages.yml) found ${list.length} "${code}" error(s)${list.length > 15 ? ' (first 15)' : ''}:\n${sample}\n\nFix the root cause (the data pipeline or the page code), never the data by hand. The card closes itself on the first audit that no longer reports ${code}.`,
+        hint: 'Reproduce with `node scripts/audit-tour-pages.js --warnings`; the checks live in scripts/lib/tour-page-audit.js.',
+        severity: 'error',
+        disposition: 'auto',
+        cardAction: 'Fix',
+        dispatchAtFiling,
+        verify: { line: 'VERIFY: node scripts/audit-tour-pages.js --summary', note: 'crawls the live tour pages; exits 0 only when no error remains' },
+      });
+      const failed = result.dispatchOk === false || (['auto', 'silent'].includes(result.action) && !result.linearIdentifier);
+      if (failed) { alertDispatchFailed = true; log(`[alert] dispatch failed for ${key}: ${result.dispatchError || 'no tracker identifier returned'}`); }
+      alerts.push({ conditionKey: key, action: result.action, linearIdentifier: result.linearIdentifier || null, dispatchOk: !failed });
+    } catch (err) {
+      alertDispatchFailed = true;
+      log(`[alert] routeAlert threw for ${key}: ${err.message}`);
+      alerts.push({ conditionKey: key, action: 'error', linearIdentifier: null, dispatchOk: false });
+    }
+  }
+  return { alerts, alertDispatchFailed };
+}
+
 module.exports = {
   citySlug, nowNext, normTitle, addDays, unwrapTicketUrl,
   parseShowPage, parseListPage, parseCityPage, rangeMatchesStop,
   checkTourData, checkShowPage, checkCityPage, expectedCities,
-  validateEvent, eventsIn,
+  validateEvent, eventsIn, runAlerts, CONDITION_PREFIX,
 };
