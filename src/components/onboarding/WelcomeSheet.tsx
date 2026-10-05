@@ -64,6 +64,10 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
   const [saving, setSaving] = useState(false);
   const [saveError, setSaveError] = useState<string | null>(null);
   const [saveFailed, setSaveFailed] = useState(0);
+  // Picks actually written, so the importer can skip them as duplicates.
+  const [savedIds, setSavedIds] = useState<Set<string>>(new Set());
+  // A close-time save failed and they were told; a second close leaves without saving.
+  const [closeAnyway, setCloseAnyway] = useState(false);
   const [showsAdded, setShowsAdded] = useState(0);
   const [imported, setImported] = useState(0);
   const [importSource, setImportSource] = useState<ImportSourceId | null>(null);
@@ -102,11 +106,16 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
       .catch(() => {});
   }, [userId]);
 
+  // The page's market, unless that grid is empty (e.g. an older cached file
+  // with Broadway only): then the first market that has posters.
+  const shownMarket: WelcomeMarket = lists && !(lists[market] || []).length
+    ? (MARKET_OPTIONS.find(o => (lists[o.value] || []).length > 0)?.value ?? market)
+    : market;
   const shows = useMemo(() => {
     if (!lists) return null;
     const ids = new Set(searched.map(s => s.id));
-    return [...searched, ...(lists[market] ?? []).filter(s => !ids.has(s.id))];
-  }, [searched, lists, market]);
+    return [...searched, ...(lists[shownMarket] ?? []).filter(s => !ids.has(s.id))];
+  }, [searched, lists, shownMarket]);
   // Every show a pick can point at, so a pick made under another market still has a title.
   const showById = useMemo(() => {
     const all = [...searched, ...Object.values(lists || {}).flat()];
@@ -198,26 +207,29 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
       have = new Set(results.flatMap(x => x.data || []).map(x => x.show_id));
     } catch {
       setSaving(false);
-      if (thenClose) { onClose(); return; }
-      setSaveError('We could not save those just now. Check your connection and try again.');
+      failSave(thenClose);
       return;
     }
     let added = 0;
     let failed = 0;
+    const saved = new Set<string>();
     for (const [showId, rating] of entries) {
-      if (have.has(showId)) { added++; continue; }
+      if (have.has(showId)) { saved.add(showId); continue; }
       const write = welcomeWriteFor({ showId, rating });
       try {
         const { error } = await supabaseRestInsert(write.table, { user_id: userId, ...write.row });
-        if (!error || error.code === '23505') added++;
+        if (!error || error.code === '23505') { added++; saved.add(showId); }
         else failed++;
       } catch {
         failed++;
       }
     }
     setSaving(false);
-    if (added === 0 && failed > 0 && !thenClose) {
-      setSaveError('We could not save those just now. Check your connection and try again.');
+    setSavedIds(prev => new Set([...Array.from(prev), ...Array.from(saved)]));
+    if (failed > 0 && (added === 0 || thenClose)) {
+      // Only the saved ones are kept off the next try.
+      setPicks(prev => new Map(Array.from(prev).filter(([id]) => !saved.has(id))));
+      failSave(thenClose);
       return;
     }
     setShowsAdded(added);
@@ -227,11 +239,18 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
     else go(nextWelcomeStep('shows'), added);
   };
 
+  const failSave = (onClose: boolean) => {
+    if (onClose) setCloseAnyway(true);
+    setSaveError(onClose
+      ? 'We could not save your picks. Try again, or close again to leave without them.'
+      : 'We could not save those just now. Check your connection and try again.');
+  };
+
   const skip = (via: 'skip' | 'close') => {
     if (saving) return;
     track('onboarding_skipped', { step, via });
     if (via === 'close') {
-      if (step === 'shows' && picks.size > 0) {
+      if (step === 'shows' && picks.size > 0 && !closeAnyway) {
         void savePicks({ thenClose: true });
         return;
       }
@@ -260,7 +279,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
 
   const destination = welcomeFinishDestination({ showsAdded, imported });
   const pickCount = picks.size;
-  const existingIds = useMemo(() => new Set([...Array.from(existing.reviews), ...Array.from(picks.keys())]), [existing.reviews, picks]);
+  const existingIds = useMemo(() => new Set([...Array.from(existing.reviews), ...Array.from(savedIds)]), [existing.reviews, savedIds]);
 
   return (
     <>
@@ -297,18 +316,17 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                   {hasMarketChoice ? (
                     <ToggleBar
                       options={MARKET_OPTIONS}
-                      value={market}
+                      value={shownMarket}
                       onChange={m => { setMarket(m); track('onboarding_market_switch', { market: m }); }}
                       ariaLabel="Which theater scene"
                       variant="pill"
-                      size="compact"
                     />
                   ) : <span />}
                   {!searchOpen && (
                     <button
                       type="button"
                       onClick={() => setSearchOpen(true)}
-                      className="btn-ghost text-sm inline-flex items-center gap-1.5 min-h-[36px] px-1"
+                      className="btn-ghost text-sm inline-flex items-center gap-1.5 min-h-[44px] px-1"
                       data-testid="welcome-search-open"
                     >
                       <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
@@ -351,7 +369,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                           <button
                             type="button"
                             onClick={() => !already && tapPoster(show.id)}
-                            disabled={already}
+                            disabled={already || saving}
                             aria-pressed={picked || already}
                             aria-label={already ? `${show.title}, already in My Shows` : `${show.title}${picked ? (activeId === show.id ? ', seen, rating now' : ', seen, tap to rate') : ''}`}
                             className={`relative block w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-raised border transition ${
@@ -396,7 +414,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                       <p className="text-sm text-gray-300 min-w-0 truncate">
                         Rate <span className="text-white font-medium">{activeShow.title}</span>?
                       </p>
-                      <button type="button" onClick={() => removePick(activeShow.id)} className="btn-ghost text-xs px-1 min-h-[36px] flex-shrink-0">
+                      <button type="button" onClick={() => removePick(activeShow.id)} disabled={saving} className="btn-ghost text-xs px-1 min-h-[44px] flex-shrink-0">
                         Remove
                       </button>
                     </div>
@@ -442,7 +460,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                   <p className="text-sm text-status-open">Added {showsAdded} {showsAdded === 1 ? 'show' : 'shows'} to your diary.</p>
                 )}
                 {saveFailed > 0 && (
-                  <p className="text-sm text-score-tepid">{saveFailed === 1 ? '1 show' : `${saveFailed} shows`} could not be saved. You can add {saveFailed === 1 ? 'it' : 'them'} from the show page.</p>
+                  <p className="text-sm text-score-tepid">{saveFailed === 1 ? '1 show' : `${saveFailed} shows`} could not be saved. You can add {saveFailed === 1 ? 'it' : 'them'} later from My Shows.</p>
                 )}
                 <p className="text-sm text-gray-300">
                   Kept a theater diary somewhere else? Bring your ratings over from {importSourceNames()} in about a minute.

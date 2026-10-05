@@ -56,9 +56,15 @@ export default function WelcomeGate() {
   const profileLoaded = !!profile;
   const onAuthPage = !!pathname?.startsWith('/auth');
   const mounted = useRef(true);
-  // First page they saw outside the sign-in screens.
+  // The page they were on when signed in (outside the sign-in screens).
+  // Keyed to the account: Apple's popup signs in without a page load, so a
+  // path remembered while signed out would be the wrong page.
   const landingPath = useRef<string | null>(null);
-  if (pathname && !onAuthPage && landingPath.current === null) landingPath.current = pathname;
+  const landingFor = useRef<string | null>(null);
+  if (userId && pathname && !onAuthPage && landingFor.current !== userId) {
+    landingFor.current = userId;
+    landingPath.current = pathname;
+  }
   const canOpenHere = !!pathname && welcomeCanOpenOn({ pathname, landingPath: landingPath.current });
   useEffect(() => () => { mounted.current = false; }, []);
 
