@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  slotQueries, landJobInSlot, inFlightBlocker, pickStrandedCandidates, supersededByNewerRun,
+  slotQueries, landJobInSlot, slotHolderKind, inFlightBlocker, pickStrandedCandidates, supersededByNewerRun,
   decideSweep, orderForSlotCheck, MAX_INSPECT, STALE_BLOCKER_HOURS, MAX_JOB_LOOKUPS, AGED_RETRY_MINUTES,
 } = require('./land-queue-backoff.js');
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
@@ -204,4 +204,44 @@ test('wiring: the workflow sweeps when the slot frees and the script spends atte
   assert.match(js, /orderForSlotCheck\(/);
   // the retry decision uses the fresh per-branch run, not the possibly stale listing
   assert.match(js, /decideLandRetry\(\{ run: fresh,/);
+});
+
+test('BRO-4677: slotHolderKind — only an in_progress Land job / autonomous-merge run is "running"', () => {
+  assert.equal(slotHolderKind({ path: LAND }, landRunning), 'running');
+  assert.equal(slotHolderKind({ path: LAND }, landPending), 'pending');
+  assert.equal(slotHolderKind({ path: LAND }, [{ name: 'Checks', status: 'completed' }]), 'pending', 'Checks done, no Land job yet: about to take the slot');
+  assert.equal(slotHolderKind({ path: LAND }, undefined), 'pending');
+  assert.equal(slotHolderKind({ path: MERGE, status: 'in_progress' }), 'running');
+  assert.equal(slotHolderKind({ path: MERGE, status: 'queued' }), 'pending');
+});
+
+test('BRO-4677: slot busy but pending seat empty → oldest stranded run goes now, no aging needed', () => {
+  const held = { busy: true, pending: false, blockers: [{ id: 50, branch: 'land/other', status: 'in_progress', why: 'running' }] };
+  const newer = run({ id: 2, created_at: at(10), updated_at: at(2) });
+  const oldest = run({ id: 1, created_at: at(40), updated_at: at(3) });
+  const runs = [newer, oldest];
+  const d = decideSweep({ slot: held, cancelledRuns: runs, refs: refsFor(runs), now: NOW });
+  assert.deepEqual([d.action, d.reason], ['inspect', 'no-pending-slot-busy']);
+  assert.deepEqual(d.candidates.map((r) => r.id), [1, 2], 'oldest first');
+});
+
+test('BRO-4677: a pending entrant (or unknown) keeps young stranded runs waiting; in-flight re-run still blocks', () => {
+  const runs = [run({ id: 1, created_at: at(40), updated_at: at(3) })];
+  const pending = { busy: true, pending: true, blockers: [] };
+  assert.equal(decideSweep({ slot: pending, cancelledRuns: runs, refs: refsFor(runs), now: NOW }).action, 'wait');
+  const unknown = { busy: true, blockers: [] };
+  assert.equal(decideSweep({ slot: unknown, cancelledRuns: runs, refs: refsFor(runs), now: NOW }).action, 'wait');
+  const rerun = { busy: true, pending: false, rerunInFlight: true, blockers: [] };
+  assert.deepEqual(decideSweep({ slot: rerun, cancelledRuns: runs, refs: refsFor(runs), now: NOW }).reason, 'rerun-in-flight');
+  // running-only but nothing stranded → falls through to wait
+  const none = { busy: true, pending: false, blockers: [] };
+  assert.equal(decideSweep({ slot: none, cancelledRuns: [], refs: new Map(), now: NOW }).action, 'wait');
+});
+
+test('BRO-4677: wiring — sweep scans for a pending entrant and settles after a re-run', async () => {
+  const { readFileSync } = await import('node:fs');
+  const js = readFileSync(new URL('../land-retry-cancelled.js', import.meta.url), 'utf8');
+  assert.match(js, /slotHolderKind\(run, jobs\) === 'pending'/);
+  assert.match(js, /pending: false/);
+  assert.match(js, /ghRaw\(\['-X', 'POST'[\s\S]*?settle\(id\)/);
 });

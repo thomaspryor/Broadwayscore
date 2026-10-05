@@ -88,6 +88,22 @@ function inFlightBlocker(run, { jobs, selfRunId, now = Date.now(), staleHours = 
 }
 
 /**
+ * BRO-4677: a busy slot is either only RUNNING (one job in `landing`, the
+ * pending seat empty) or has a PENDING entrant too. Only a pending entrant can
+ * be evicted, and a re-run joining an empty pending seat evicts nobody, so
+ * "running only" must not make a stranded run wait. Call for a run that
+ * inFlightBlocker called 'busy':
+ *   'running' — Land job in_progress, or an in_progress autonomous-merge run
+ *   'pending' — everything else, including Checks done with no Land job yet (it
+ *               is about to take the slot) and anything unreadable
+ */
+function slotHolderKind(run, jobs) {
+  if (!/(^|\/)land\.yml$/.test((run && run.path) || '')) return run && run.status === 'in_progress' ? 'running' : 'pending';
+  const land = (jobs || []).find((j) => j.name === 'Land');
+  return land && land.status === 'in_progress' ? 'running' : 'pending';
+}
+
+/**
  * Check the likeliest slot holders first, so a busy slot costs few jobs
  * lookups: autonomous-merge runs (no lookup), then land.yml re-runs (they skip
  * straight to the Land job), then runs not yet running, then oldest started.
@@ -157,6 +173,16 @@ function decideSweep({ slot, cancelledRuns, refs, now, maxInspect = MAX_INSPECT 
     // Land completion, and a second re-run would evict the first from the pending
     // slot (spending its attempt) at sweep speed, not every AGED_RETRY_MINUTES.
     if (slot && slot.rerunInFlight) return { action: 'wait', reason: 'rerun-in-flight', blockers };
+    // BRO-4677: busy with NO pending entrant (explicit false; absent = unknown =
+    // conservative) → re-run the oldest stranded run now. It takes the empty
+    // pending seat and competes like a fresh push; one per sweep, and
+    // rerunInFlight above keeps the next sweep from evicting it. Residual race:
+    // a push finishing Checks between the scan and the POST contests the seat
+    // (same lottery a fresh push runs, one attempt at stake).
+    if (slot && slot.pending === false) {
+      const candidates = pickStrandedCandidates(cancelledRuns, { refs, now }).slice(0, maxInspect);
+      if (candidates.length) return { action: 'inspect', reason: 'no-pending-slot-busy', candidates, blockers };
+    }
     const aged = pickAgedCandidates(pickStrandedCandidates(cancelledRuns, { refs, now }), { now }).slice(0, maxInspect);
     if (slot && aged.length) return { action: 'inspect', reason: 'aged-slot-busy', aged: true, candidates: aged, blockers };
     return { action: 'wait', reason: 'slot-busy', blockers };
@@ -168,6 +194,6 @@ function decideSweep({ slot, cancelledRuns, refs, now, maxInspect = MAX_INSPECT 
 
 module.exports = {
   LANDING_WORKFLOWS, IN_FLIGHT_STATUSES, STALE_BLOCKER_HOURS, MAX_AGE_HOURS, MAX_JOB_LOOKUPS, MAX_INSPECT, AGED_RETRY_MINUTES,
-  pickAgedCandidates, slotQueries, landJobInSlot, inFlightBlocker, orderForSlotCheck,
+  pickAgedCandidates, slotQueries, landJobInSlot, slotHolderKind, inFlightBlocker, orderForSlotCheck,
   pickStrandedCandidates, supersededByNewerRun, decideSweep,
 };

@@ -134,3 +134,23 @@ test('BRO-4676 aging: busy slot + stranded run past threshold → re-run; only y
   assert.deepEqual(aged.candidates.map((r) => r.id), [37259496468]);
   assert.equal(decideSweep({ slot: busy, cancelledRuns: [fresh], refs, now }).action, 'wait');
 });
+
+test('BRO-4677: sustained traffic (a Land job always running, none pending) still selects the oldest stranded run', () => {
+  const { decideSweep } = require('./land-queue-backoff.js');
+  const now = Date.parse('2026-10-05T06:00:00Z');
+  const mk = (id, minAgo) => ({
+    id, status: 'completed', conclusion: 'cancelled', run_attempt: 1, head_branch: `land/b${id}`, head_sha: `s${id}`,
+    created_at: new Date(now - (minAgo + 5) * 60000).toISOString(), updated_at: new Date(now - minAgo * 60000).toISOString(),
+  });
+  // evicted 4 and 12 minutes ago: far below the 30-min aging threshold
+  const stranded = [mk(2, 4), mk(1, 12)];
+  const refs = new Map(stranded.map((r) => [r.head_branch, r.head_sha]));
+  const slot = { busy: true, pending: false, blockers: [{ id: 99, branch: 'land/live', status: 'in_progress', why: 'running' }] };
+  const sweep = decideSweep({ slot, cancelledRuns: stranded, refs, now });
+  assert.equal(sweep.action, 'inspect');
+  assert.equal(sweep.candidates[0].id, 1, 'oldest stranded run goes first');
+  const verdict = decideLandRetry({ run: sweep.candidates[0], jobs: jobs(), branchExists: true, branchTip: 's1' });
+  assert.equal(verdict.retry, true);
+  // the same traffic with a pending entrant keeps waiting (the re-run would evict it)
+  assert.equal(decideSweep({ slot: { ...slot, pending: true }, cancelledRuns: stranded, refs, now }).action, 'wait');
+});
