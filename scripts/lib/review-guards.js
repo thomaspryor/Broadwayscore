@@ -3976,14 +3976,22 @@ function bodylessScoreProvenance(data) {
  */
 function bodylessCorroboratedByProduction(data, show) {
   if (data && data.productionCorroborated === true) return true;
-  const excerpts = require('./excerpt-fields').getExcerpts(data || {}).join(' ').toLowerCase();
-  if (!excerpts || !show) return false;
-  const venue = String(show.venue || '').toLowerCase().replace(/\b(theat(re|er)|the)\b/g, '').replace(/\s+/g, ' ').trim();
-  if (venue.length >= 6 && excerpts.includes(venue)) return true;
+  if (!data || !show) return false;
+  // Excerpts plus page-fetched outlet text (walled-page headline/standfirst).
+  const raw = [...require('./excerpt-fields').getExcerpts(data), data.outletHeadline, data.outletStandfirst]
+    .filter((v) => typeof v === 'string').join(' ');
+  // Normalise BOTH sides identically so "Hampstead Theatre Downstairs" matches
+  // prose that says "Hampstead Theatre Downstairs".
+  const norm = (t) => String(t || '').toLowerCase().replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\b(theat(re|er)|the)\b/g, ' ').replace(/\s+/g, ' ').trim();
+  const text = ` ${norm(raw)} `;
+  if (text.trim() === '') return false;
+  const venue = norm(show.venue);
+  if (venue.length >= 6 && text.includes(` ${venue} `)) return true;
   const cast = Array.isArray(show.cast) ? show.cast : [];
   return cast.some((c) => {
-    const name = String((c && (c.name || c.actor)) || c || '').toLowerCase().trim();
-    return name.length >= 6 && excerpts.includes(name);
+    const name = norm((c && (c.name || c.actor)) || c);
+    return name.length >= 6 && text.includes(` ${name} `);
   });
 }
 

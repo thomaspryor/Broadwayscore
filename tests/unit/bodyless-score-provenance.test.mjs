@@ -74,3 +74,11 @@ test('legacy unstamped stub (no firstSeenAt / pre-rollout) is grandfathered; a s
   assert.equal(isBodylessAggregatorScoreUncorroborated({ ...lboTylerStub, firstSeenAt: '2026-05-01T00:00:00Z' }, show), false);
   assert.equal(isBodylessAggregatorScoreUncorroborated({ ...legacy, scoreProvenance: 'aggregator-inherited' }, show), true);
 });
+
+test('venue match normalises both sides; walled-page headline counts as production evidence', () => {
+  const hs = { ...show, venue: 'Hampstead Theatre Downstairs' };
+  const d = { ...lboTylerStub, lboRoundupExcerpt: 'A tense night at Hampstead Theatre Downstairs' };
+  assert.equal(isBodylessAggregatorScoreUncorroborated(d, hs), false);
+  const h = { ...lboTylerStub, lboRoundupExcerpt: undefined, outletHeadline: 'Jane Eyre review, Southwark Playhouse Elephant' };
+  assert.equal(isBodylessAggregatorScoreUncorroborated(h, show), false);
+});
