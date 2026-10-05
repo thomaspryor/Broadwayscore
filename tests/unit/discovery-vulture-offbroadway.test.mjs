@@ -14,8 +14,9 @@ const INDEX_HTML = `
 <a href="https://www.vulture.com/article/kramer-fauci-daniel-fish-play-st-anns-nyc.html">Kramer/Fauci</a>
 <a href="https://www.vulture.com/article/oneill-the-hairy-ape-irish-rep-oreilly.html?utm=x#c">Hairy Ape</a>
 <a href="https://www.vulture.com/article/denee-benton-interview-school-girls-the-gilded-age.html">interview</a>
-<a href="https://www.vulture.com/article/duncan-sheik-dead-spring-awakening-composer.html">obit</a>
-<a href="https://www.vulture.com/article/about-us.html">about</a>`;
+<a href="https://www.vulture.com/article/duncan-sheik-dies-spring-awakening-composer.html">obit</a>
+<a href="https://www.vulture.com/article/about-us.html">about</a>
+<a href="https://www.vulture.com/article/the-dead-1904-play-review.html">title contains "dead"</a>`;
 
 // Stub the scraper chain so no network is touched; fetchPage returns {content}.
 const realScraper = require(scraperPath);
@@ -28,7 +29,8 @@ test('extractor keeps non-"review" slugs, normalizes URLs, drops non-reviews', (
   assert.ok(urls.includes('https://www.vulture.com/article/slam-frank-play-musical-review-orpheum.html'));
   assert.ok(urls.includes('https://www.vulture.com/article/kramer-fauci-daniel-fish-play-st-anns-nyc.html'));
   assert.ok(urls.includes('https://www.vulture.com/article/oneill-the-hairy-ape-irish-rep-oreilly.html'));
-  assert.equal(urls.length, 3, `unexpected: ${urls.join(' ')}`);
+  assert.ok(urls.includes('https://www.vulture.com/article/the-dead-1904-play-review.html'), 'show titles containing dead must not be excluded');
+  assert.equal(urls.length, 4, `unexpected: ${urls.join(' ')}`);
   assert.deepEqual(extractVultureTheaterArticleUrls(''), []);
   assert.deepEqual(extractVultureTheaterArticleUrls(null), []);
 });

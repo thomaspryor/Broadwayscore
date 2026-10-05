@@ -1108,9 +1108,6 @@ function fetchJSON(url, options = {}, timeoutMs = 15000) {
 }
 
 /**
- * Fetch with ScrapingBee (for JS-rendered search pages)
- */
-/**
  * Pure: article URLs from the HTML of https://www.vulture.com/theater/.
  * Accepts protocol-relative/absolute hrefs and bare-URL text, strips query/hash,
  * dedupes, and drops slugs that are plainly not reviews (interviews, tributes,
@@ -1120,7 +1117,7 @@ function fetchJSON(url, options = {}, timeoutMs = 15000) {
  */
 function extractVultureTheaterArticleUrls(html) {
   if (!html || typeof html !== 'string') return [];
-  const NON_REVIEW_SLUG = /interview|questionnaire|first-person|tribute|\bdead\b|-dies-|obituar|schedule|announcement|about-us|podcast|-recap|season-preview|creation-stories/;
+  const NON_REVIEW_SLUG = /interview|questionnaire|first-person|-dies-|obituar|schedule|announcement|about-us|podcast|-recap|season-preview/;
   const out = new Set();
   const re = /(?:https?:)?\/\/(?:www\.)?vulture\.com\/article\/[a-z0-9][a-z0-9-]*\.html/gi;
   let m;
@@ -1134,6 +1131,9 @@ function extractVultureTheaterArticleUrls(html) {
   return [...out];
 }
 
+/**
+ * Fetch with ScrapingBee (for JS-rendered search pages)
+ */
 function fetchWithScrapingBee(url, timeoutMs = 30000) {
   return new Promise((resolve, reject) => {
     if (!SCRAPINGBEE_KEY) return reject(new Error('No ScrapingBee key'));
