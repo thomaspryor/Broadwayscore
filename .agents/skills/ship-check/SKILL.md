@@ -230,7 +230,7 @@ Launch all three reviewers simultaneously. Save the screenshots to files that ca
    - Any design choices that might be surprising
 
 3. **Codex (GPT-5.x with codebase access) — Adversarial design review** — Run via Bash.
-   **Codex check:** Run `command -v codex >/dev/null && echo READY || echo MISSING`.
+   **Codex check:** Run `command -v codex >/dev/null && { node scripts/codex/install.js >/dev/null 2>&1; echo READY; } || echo MISSING` (the install is idempotent and gives Codex the repo guards, BRO-4745).
    - READY (local): **Step 1 — run Codex, writing its filtered output to a private per-run temp file** (never a shared fixed path — this machine routinely runs many parallel Claude Code sessions, and a shared `/tmp` path lets one session's stale or in-flight file be read as another session's result):
      ```bash
      set -o pipefail
