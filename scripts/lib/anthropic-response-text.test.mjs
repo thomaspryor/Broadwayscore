@@ -33,7 +33,9 @@ test('a draft written before the advisor call is not returned', () => {
 test('no tool blocks: all text; odd content: empty string', () => {
   assert.equal(finalResponseText([{ type: 'text', text: 'a' }, { type: 'text', text: 'b' }]), 'a\nb');
   assert.equal(finalResponseText(undefined), '');
-  assert.equal(finalResponseText([{ type: 'text', text: 'pre' }, ...tool]), '');
+  // Answer before the advisor call with nothing after it: fall back to the last text block.
+  assert.equal(finalResponseText([{ type: 'text', text: 'pre' }, ...tool]), 'pre');
+  assert.equal(finalResponseText([...tool]), '');
 });
 
 test('describeResponse names stop_reason and block types', () => {

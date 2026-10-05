@@ -14,11 +14,11 @@ function finalResponseText(content) {
   if (!Array.isArray(content)) return '';
   let start = 0;
   content.forEach((c, i) => { if (c && c.type !== 'text') start = i + 1; });
-  return content
-    .slice(start)
-    .filter(c => c && c.type === 'text' && typeof c.text === 'string')
-    .map(c => c.text)
-    .join('\n');
+  const texts = content.filter(c => c && c.type === 'text' && typeof c.text === 'string');
+  const tail = content.slice(start).filter(c => texts.includes(c)).map(c => c.text).join('\n');
+  // Nothing after the last tool block (answer came first, or a truncated
+  // turn): the last text block is the best remaining candidate.
+  return tail || (texts.length ? texts[texts.length - 1].text : '');
 }
 
 // One-line shape summary for parse-failure errors: stop_reason + block types.
