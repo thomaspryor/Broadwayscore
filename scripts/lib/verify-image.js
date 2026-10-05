@@ -480,6 +480,64 @@ async function verifyImage(imageInput, showTitle, options = {}) {
 // URL HEURISTIC CLASSIFICATION
 // ============================================================
 
+// ============================================================
+// ENGAGEMENT STAMP (national tours, BRO-4726)
+// ============================================================
+
+const ENGAGEMENT_STAMP_PROMPT = `This image will be the key art on a web page for a NATIONAL TOUR that plays many cities. Presenters often re-upload the tour's art with their own engagement printed on it.
+
+Does the image show text that belongs to ONE engagement only?
+- performance dates or a date range (e.g. "JAN 26-31", "October 20 - November 1", "Sept 22 - Oct 11")
+- a specific venue's or presenter's name or logo (e.g. "Segerstrom Center for the Arts", "Broadway in Chicago", "Fox Theatre")
+- a single city name as the place it plays
+
+These do NOT count: the show title, taglines, award mentions ("Tony-winning"), author or star credits, "National Tour", "10th Anniversary", "Disney".
+
+Reply with ONLY this JSON (no markdown fencing):
+{"stamped":true,"text":"the engagement-specific text you see"}
+or
+{"stamped":false,"text":""}`;
+
+/** 'true'/'false' from a stamp reply, or null when it cannot be read. */
+function parseStampResponse(text) {
+  const cleaned = String(text || '').replace(/```(?:json)?/gi, '').trim();
+  try {
+    const parsed = JSON.parse(cleaned.match(/\{[\s\S]*\}/)?.[0] || cleaned);
+    if (typeof parsed.stamped === 'boolean') return { stamped: parsed.stamped, text: String(parsed.text || '') };
+  } catch { /* fall through */ }
+  const m = /"stamped"\s*:\s*(true|false)/i.exec(cleaned);
+  return m ? { stamped: m[1].toLowerCase() === 'true', text: '' } : null;
+}
+
+/**
+ * Does this art carry one engagement's dates, venue or presenter? A tour page
+ * must not show "JAN 26-31 / Segerstrom" art (checked 2026-10-05: TodayTix's
+ * Costa Mesa uploads for 4 tours). Fails CLOSED: {stamped: null} on no key,
+ * API error or an unreadable reply, which callers treat as a rejection.
+ * @param {Buffer} imageData
+ * @returns {Promise<{stamped: boolean|null, text: string}>}
+ */
+async function detectEngagementStamp(imageData, options = {}) {
+  const model = getGeminiModel();
+  if (!model) return { stamped: null, text: 'no GEMINI_API_KEY' };
+  const rateLimiter = options.rateLimiter || new RateLimiter(RPM_LIMIT);
+  for (let attempt = 1; attempt <= MAX_RETRIES; attempt++) {
+    await rateLimiter.wait();
+    try {
+      const result = await model.generateContent([
+        { text: ENGAGEMENT_STAMP_PROMPT },
+        { inlineData: { data: imageData.toString('base64'), mimeType: options.mimeType || 'image/png' } },
+      ]);
+      const parsed = parseStampResponse(result.response.text());
+      return parsed || { stamped: null, text: 'unreadable reply' };
+    } catch (err) {
+      if (attempt === MAX_RETRIES) return { stamped: null, text: `api error: ${err.message}` };
+      await new Promise(r => setTimeout(r, RETRY_BASE_MS * Math.pow(2, attempt - 1)));
+    }
+  }
+  return { stamped: null, text: 'no reply' };
+}
+
 /**
  * Classify image type from URL/filename patterns.
  * Used as a tiebreaker when Gemini classification is uncertain.
@@ -507,6 +565,8 @@ function createRateLimiter(rpm) {
 
 module.exports = {
   verifyImage,
+  detectEngagementStamp,
+  parseStampResponse,
   createRateLimiter,
   classifyImageUrl,
   buildVerificationPrompt,

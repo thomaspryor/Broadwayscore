@@ -2972,11 +2972,12 @@ async function main() {
 
   // National tours never title-search: TodayTix/SERP match on title and hand a
   // tour its Broadway or West End art. They take the parent's archived art
-  // instead (BRO-4262).
+  // instead (BRO-4262), or their own stop-matched art from
+  // fetch-tour-images.js (BRO-4726).
   const tourCount = shows.filter(isTourShow).length;
   if (tourCount) {
     shows = shows.filter(s => !isTourShow(s));
-    console.log(`Skipping ${tourCount} national tour(s): they inherit their Broadway parent's art`);
+    console.log(`Skipping ${tourCount} national tour(s): inherited Broadway art, or their own from fetch-tour-images.js`);
   }
   if (!dryRunMode) {
     const inherited = applyTourInheritance(showsData.shows);
