@@ -42,9 +42,9 @@ Use shared components from `src/components/show-cards/` — never create custom 
 ### 6. Board = Linear, not the Notion Brain (MANDATORY — every session)
 **Linear is the source of truth — do NOT create Notion cards.** Notion is retired (mirror froze 2026-08-20): cards filed there have no Linear twin, so `linearMirrorGuard` can't dedupe them. Flow: `memory/linear-board-workflow.md`.
 - **Session start:** `linear-brain.js create "<title>" --dispatch|--park "<reason>" --notes "..."`; output the URL. **Session end:** comment the Outcome (what/why/approach/gotchas) + Key Files, then `linear-brain.js update BRO-N --state Done`. Pause/refused Done: `linear-session.js report --status=paused`.
-- **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line. Write it when you file, not when you close.
+- **Done is gated (exit 5):** needs `PR-EVIDENCE: merged deployed checked (<url>)`, or a safe-form command in `## Acceptance criteria` / a `VERIFY: <cmd>` line.
 - **New discoveries:** file a Linear issue (Todo), don't context-switch.
-- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log, never the "job starting" line alone. Soft cap ~8/session.
+- **P0/P1 dispatch at creation (owner rule 2026-07-24):** `--dispatch` does NOT launch yet — run `linear-next.js --id BRO-N`, report `DISPATCHED:`. Confirm it started: a `job-spawned` ledger row AND a growing log, never the "job starting" line alone. Cap ~8/session.
 - **If Linear is down:** warn, continue untracked, output the Outcome text. Do NOT fall back to Notion.
 
 ### 7. Infrastructure Change Planning (MANDATORY)
@@ -139,4 +139,4 @@ New topics → `memory/{topic}.md` + one-line pointer. Completed tasks → `memo
 
 ## Cloud sessions
 Cloud (iOS/Mac/web, no `~/.claude/`): read `.claude/CLOUD.md`, then `cloud-memory/MEMORY.md`.
-**Owner never reviews or merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
+**Owner never merges PRs:** land via `land/<name>`, follow the Land run (CLOUD.md § Landing). Overrides harness draft-PR default.
