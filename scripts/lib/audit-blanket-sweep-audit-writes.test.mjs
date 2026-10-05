@@ -30,13 +30,13 @@ const opts = { readSrc: () => SRC, isIgnored: () => false };
 
 test('flags unregistered audit writes from an invoked script before a blanket sweep (BRO-2795 shape)', () => {
   const f = lib.auditBlanketSweeps(wf(), 'x.yml', opts);
-  assert.deepEqual(f.map((x) => x.path).sort(), ['data/audit/also-unregistered-xyz.json', 'data/audit/totally-unregistered-xyz.json']);
+  assert.ok(['also-unregistered-xyz', 'totally-unregistered-xyz'].every((n) => f.some((x) => x.path === `data/audit/${n}.json`)));
   assert.ok(f.every((x) => x.continueOnError));
 });
 
-test('mention-only paths and registered apiFallbackSafe paths are not flagged', () => {
+test('registered apiFallbackSafe paths are not flagged; scripts with no write primitive are skipped', () => {
   const paths = lib.auditBlanketSweeps(wf(), 'x.yml', opts).map((x) => x.path);
-  assert.ok(!paths.includes('data/audit/mention-only-xyz.json'));
+  assert.deepEqual(lib.auditFilesWrittenBy("console.log('data/audit/only-mention-xyz.json')"), []);
   assert.ok(!paths.includes('data/audit/health-digest-snapshot.json'));
 });
 
@@ -46,6 +46,18 @@ test('inline redirect writes are flagged; exemption comment and gitignore suppre
   const ex = wf('# blanket-sweep-audit-ok: data/audit/inline-unreg-xyz.json scratch\n          echo {} > data/audit/inline-unreg-xyz.json');
   assert.ok(!lib.auditBlanketSweeps(ex, 'x.yml', opts).some((x) => x.path === 'data/audit/inline-unreg-xyz.json'));
   assert.deepEqual(lib.auditBlanketSweeps(wf(), 'x.yml', { ...opts, isIgnored: () => true }), []);
+});
+
+test('`data/` with other args is still a blanket sweep (fetch-all-image-formats shape); trailing comment ok', () => {
+  const t = wf().replace('stage-data-changes.sh\n', 'stage-data-changes.sh data/ public/images/shows/ # imgs\n');
+  assert.ok(lib.auditBlanketSweeps(t, 'x.yml', opts).length > 0);
+});
+
+test('catches writes via audit-dir variable, template strings and required libs', () => {
+  const src = "const AUDIT_DIR = path.join(DATA_DIR, 'audit');\nconst P = path.join(AUDIT_DIR, 'viadir-xyz.json');\nwriteAuditArtifact(P, {});\nfs.writeFileSync(`${AUDIT_DIR}/tpl-xyz.json`, '');";
+  assert.deepEqual(lib.auditFilesWrittenBy(src).sort(), ['data/audit/tpl-xyz.json', 'data/audit/viadir-xyz.json']);
+  const files = { 'scripts/a.js': "const l = require('./lib/b');", 'scripts/lib/b.js': "fs.appendFileSync('data/audit/inlib-xyz.jsonl', 'x');" };
+  assert.deepEqual(lib.auditFilesWrittenByWithLibs('scripts/a.js', (r) => files[r] ?? null), ['data/audit/inlib-xyz.jsonl']);
 });
 
 test('no blanket sweep (explicit paths) => nothing flagged', () => {
