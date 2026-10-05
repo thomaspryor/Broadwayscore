@@ -1,1 +1,38 @@
-[]
+[
+  {
+    "conditionKey": "priority-queue:overdue",
+    "title": "Overdue P0/P1 queue: 33 P0 older than 24h, 700 P1 older than 7d",
+    "description": "34 P0 open (33 older than 24h, oldest 35d); 758 P1 open (700 older than 7d); 1628 open issues of any priority.\n\nOldest overdue P0s:\n- BRO-2660 (35d): P0: main Unit Tests red on bsc-next.test.mjs + linear-next.test.mjs - CI-only failure, every visible subtest passes, no named assertion (teardown/resource-contention signature)\n- BRO-2694 (35d): Worktree GC frees 0KB: 26G of merged worktrees pinned by live-process cwd, so the documented disk lever is inert\n- BRO-2706 (34d): P1: Data Validation now TIMES OUT, which reports SUCCESS not failure — and BRO-2627's budget ratchet passes while it happens\n- BRO-2709 (34d): P0: cmux is at its terminal-runtime ceiling — crown succession and ALL auto-dispatch silently fail at launch\n- BRO-2732 (34d): P0: rebuild-reviews.yml push step fails every run - rebuilt reviews.json is DISCARDED, no new review can reach prod\n- BRO-2766 (31d): P0: check-rebuild-staleness gate false-positives on a content-free stub and blocks EVERY rebuild-fast run\n- BRO-2858 (30d): P0: recovered review-texts never reach the data repo — ingest writes to gitignored web-repo path\n- BRO-2951 (27d): push-via-git-api.sh Git Data API fallback times out at 90s cap on every attempt — fallback of last resort is now also failing\n- BRO-3026 (27d): P1: Nothing meters Claude/LLM spend — the fleet billed $34,914 to Anthropic in Jul+Aug 2026 with zero visibility\n- BRO-3028 (27d): P1: Google Cloud (Gemini) is $368/mo and unmetered — three $250 auto-reloads fired in 40 minutes on Aug 12",
+    "severity": "warning",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T10:42:50.237Z"
+  },
+  {
+    "conditionKey": "provider-spend:overspend",
+    "title": "Scraping spend over budget (still open — BRO-3030)",
+    "description": "Still firing after 27 notifications since it was filed. Tracked at BRO-3030.\n\nDay 2026-10-04. Over budget: brightdata $5.23 > $2.5 (108 serp + 3378 unlocker reqs). 2026-10-04 · Browserbase: $0.74 (135 sessions, 33.63min) · 2026-10-04 · Bright Data: $5.23 (108 serp / 3378 unlocker) · ScrapingBee: 0 credits (1000005 this cycle) · ScrapingDog: 21615 credits (99656 this cycle) · Browserbase attribution: 100% attributed — top callers (covers 100% of billed calls): collect-review-texts.js 138 · Bright Data attribution: 88% attributed — top callers (covers 78% of billed calls): opening-night-poller.js 1885, gather-reviews.js 254, replay-pending-bylines.js 225, audit-show-review-gap.js 189, recollect-for-scores.js 156 · ⚠️ Bright Data top-caller coverage low: 78% of billed calls < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight · ScrapingDog attribution: 95% attributed — top callers (covers 75% of billed credits): gather-reviews.js 7866cr, collect-review-texts.js 3542cr, recover-explicit-ratings.js 2472cr, audit-show-review-gap.js 1587cr, collect-outlet-reviews.js 850cr · ⚠️ ScrapingDog top-caller coverage low: 75% of billed credits < 80% threshold — BRO-2961 (uninstrumented direct-caller cleanup) is the fix in flight. Verification streak reset to 0.",
+    "severity": "error",
+    "url": null,
+    "decision": true,
+    "decisionPrompt": "Scraping spend over budget: brightdata $5.23 > $2.5 (108 serp + 3378 unlocker reqs). Should I raise the daily budget, or do you want scraping volume cut to stay within it?",
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T10:48:07.226Z"
+  },
+  {
+    "conditionKey": "corpus-drift:aggregator-archive-integrity",
+    "title": "Corpus drift: cached aggregator HTML whose <title> mismatches its filename showId (baseline-diff)",
+    "description": "check-corpus-drift.js audit \"aggregator-archive-integrity\" (node scripts/audit-aggregator-archive-integrity.js --strict) has been drifting. Latest output:\n\nAggregator-archive integrity:\n  Scanned: 6240 files\n  Skipped (no show in shows.json): 266\n  Bad: 1\n\n❌ NEW bad archives (1):\n   - bww-roundups/richard-ii-off-west-end-2026\n\nEach represents a cached aggregator HTML file whose page title\ndoes not match the showId in the filename — i.e., poisoned cache.\n\nRemediate by re-fetching or quarantining the file, then re-running\nthe audit. To accept these intentionally, run --update-baseline.",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [],
+    "queuedAt": "2026-10-05T11:20:30.124Z"
+  }
+]

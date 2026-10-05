@@ -25,15 +25,23 @@
  * zero-arg / --source notion (default) behavior and REPORT_PATH's contents
  * are byte-for-byte unchanged.
  *
+ * BRO-2720: the zero-arg default used to sweep ONLY Notion — the retired board
+ * — so the one "how much of the backlog is undispatchable" instrument was blind
+ * to the board linear-next.js actually dispatches from. The default is now
+ * `--source all`: both sweeps (each best-effort, one board down never hides the
+ * other) plus a per-board breakdown. Each board still writes its own report
+ * file with an unchanged schema; callers that need the Notion-only behavior
+ * (card-verifiability-audit.yml) pass `--source notion` explicitly.
+ *
  * Usage:
- *   node scripts/audit-card-verifiability.js [--status "Not started,In progress"] [--limit N] [--source notion|linear]
+ *   node scripts/audit-card-verifiability.js [--status "Not started,In progress"] [--limit N] [--source notion|linear|all]
  *
  *   --status   comma-separated Notion Status values to sweep (default: both
  *              backlog statuses — Done cards are irrelevant, Paused cards are
  *              deliberately parked and excluded from the undispatchable count)
  *              — notion source only.
- *   --limit    max cards/issues to fetch (default 300)
- *   --source   notion | linear (default: notion — unchanged from before #1830)
+ *   --limit    max cards/issues to fetch (default 300 for Notion; Linear sweeps every open issue — BRO-2720, a 300 cap hid two thirds of ~890)
+ *   --source   notion | linear | all (default: all — BRO-2720)
  *   --help/-h  show this message, do nothing else
  */
 const fs = require('fs');
@@ -61,8 +69,9 @@ const DEFAULT_LIMIT = 300;
 const USAGE = `audit-card-verifiability.js — count backlog cards bsc-next/linear-next would refuse to dispatch.
 
 Usage:
-  node scripts/audit-card-verifiability.js [--status "Not started,In progress"] [--limit N] [--source notion|linear]
+  node scripts/audit-card-verifiability.js [--status "Not started,In progress"] [--limit N] [--source notion|linear|all]
 
+Default (--source all) sweeps both boards and prints a per-board breakdown.
 Writes ${path.relative(REPO, REPORT_PATH)} for --source notion (default; consumed by
 health-check.js's warn row and by enrich-card-acceptance.js) or
 ${path.relative(REPO, LINEAR_REPORT_PATH)} for --source linear. Read-only w.r.t.
@@ -316,11 +325,18 @@ async function reconcileCheckDefectsBothBuckets({ missing, vacuous }, opts = {})
   return { missing: stillMissing, vacuous: stillVacuous };
 }
 
-async function runLinearAudit(limit) {
+// opts.measureOnly (BRO-2720, the bare `--source all` default): bulk-fetch
+// verdicts only. The check-path pass below re-fetches every flagged issue one
+// by one (~400 round trips on the full ~890 corpus, 429s included), too slow
+// for a bare instrument, and writing a report without those buckets would
+// clobber the full report's missingCheckPaths/vacuousChecks — so measureOnly
+// neither runs the pass nor writes the file. `--source linear` does both.
+async function runLinearAudit(limit, opts = {}) {
   const issues = await fetchLinearOpenIssuesWithDescriptions();
   console.error(`[audit-card-verifiability] linear: ${issues.length} open issue(s) fetched`);
   const evaluated = issues.slice(0, limit).map(evaluateLinearIssue);
   const report = buildReport(evaluated);
+  if (opts.measureOnly) return report;
   const initial = findCardCheckPathDefects(evaluated, { log: console.error });
   const flaggedCount = initial.missing.length + initial.vacuous.length;
   if (flaggedCount) {
@@ -351,7 +367,42 @@ function runNotionAudit(status, limit) {
   return report;
 }
 
-function printReport(label, report, reportPath) {
+const SOURCES = ['notion', 'linear', 'all'];
+const DEFAULT_SOURCE = 'all';
+
+// Pure — which board sweeps a --source value runs, in print order.
+function boardsForSource(source) {
+  return source === 'all' ? ['linear', 'notion'] : [source];
+}
+
+// Pure — per-board armed/refused counts and refused percentage from
+// [{board, report}], so one view answers "what share of each board is
+// undispatchable" without reading two report files (BRO-2720).
+function boardBreakdown(results) {
+  const out = {};
+  for (const { board, report } of results) {
+    const total = report.total || 0;
+    const refused = report.refusedCount || 0;
+    out[board] = {
+      total,
+      armed: report.armedCount || 0,
+      refused,
+      refusedPct: total ? Math.round((refused / total) * 1000) / 10 : 0,
+    };
+  }
+  return out;
+}
+
+function formatBoardBreakdown(breakdown, failures = []) {
+  const lines = ['Per-board verifiability breakdown:'];
+  for (const [board, b] of Object.entries(breakdown)) {
+    lines.push(`  ${board}: total ${b.total}, armed ${b.armed}, refused ${b.refused} (${b.refusedPct}%)`);
+  }
+  for (const f of failures) lines.push(`  ${f.board}: sweep FAILED — ${f.message.slice(0, 160)}`);
+  return lines.join('\n') + '\n';
+}
+
+function printReport(label, report, reportPath, measureOnly = false) {
   console.log(`${label} total checked: ${report.total}`);
   console.log(`${label} armed (dispatchable):    ${report.armedCount}`);
   console.log(`${label} refused (undispatchable): ${report.refusedCount}`);
@@ -363,6 +414,10 @@ function printReport(label, report, reportPath) {
   if (report.refused.length) {
     console.log(`\nFirst 15 ${label.toLowerCase()} refused:`);
     report.refused.slice(0, 15).forEach(c => console.log(`  ${c.id} [${c.priority || '?'}] [${c.kind || 'unknown'}] ${c.name} — ${c.reason}`));
+  }
+  if (measureOnly) { // bucket data absent by design — printing "0" would read as "none found"
+    console.log(`(measure-only: no report written; run --source linear for the full report + check-path buckets)\n`);
+    return;
   }
   const missingCheckPaths = report.missingCheckPaths || [];
   console.log(`${label} armed but naming a check path (node --test/npx tsx --test/test -f) absent from origin/main: ${missingCheckPaths.length}`);
@@ -399,33 +454,53 @@ async function main() {
   if (hasHelpFlag(process.argv.slice(2))) { console.log(USAGE); return; }
   const args = parseArgs(process.argv.slice(2));
   const status = typeof args.status === 'string' ? args.status : DEFAULT_STATUS;
-  const limit = args.limit ? parseInt(args.limit, 10) : DEFAULT_LIMIT;
-  if (!Number.isFinite(limit) || limit <= 0) {
+  const explicitLimit = args.limit ? parseInt(args.limit, 10) : null;
+  if (args.limit && (!Number.isFinite(explicitLimit) || explicitLimit <= 0)) {
     console.error(`--limit must be a positive integer, got ${JSON.stringify(args.limit)}`);
     process.exit(1);
   }
-  const source = typeof args.source === 'string' ? args.source.trim().toLowerCase() : 'notion';
-  if (!['notion', 'linear'].includes(source)) {
-    console.error(`--source must be one of notion, linear — got ${JSON.stringify(args.source)}`);
+  const source = typeof args.source === 'string' ? args.source.trim().toLowerCase() : DEFAULT_SOURCE;
+  if (!SOURCES.includes(source)) {
+    console.error(`--source must be one of ${SOURCES.join(', ')} — got ${JSON.stringify(args.source)}`);
     process.exit(1);
   }
 
-  const report = source === 'linear' ? await runLinearAudit(limit) : runNotionAudit(status, limit);
-  const reportPath = source === 'linear' ? LINEAR_REPORT_PATH : REPORT_PATH;
-  printReport(source === 'linear' ? 'Linear' : 'Notion', report, reportPath);
+  const results = [];
+  const failures = [];
+  for (const board of boardsForSource(source)) {
+    try {
+      const report = board === 'linear' ? await runLinearAudit(explicitLimit || Infinity, { measureOnly: source === 'all' }) : runNotionAudit(status, explicitLimit || DEFAULT_LIMIT);
+      const reportPath = board === 'linear' ? LINEAR_REPORT_PATH : REPORT_PATH;
+      printReport(board === 'linear' ? 'Linear' : 'Notion', report, reportPath, board === 'linear' && source === 'all');
+      results.push({ board, report });
+    } catch (err) {
+      // A single named board failing is fatal (the caller asked for it); under
+      // `all` the other board's numbers are still worth reporting.
+      if (source !== 'all') throw err;
+      failures.push({ board, message: err.message });
+      console.error(`[audit-card-verifiability] ${board} sweep FAILED: ${err.message}`);
+    }
+  }
+  if (!results.length) throw new Error(`every board sweep failed (${failures.map(f => `${f.board}: ${f.message}`).join('; ')})`);
+  if (source === 'all') console.log(formatBoardBreakdown(boardBreakdown(results), failures));
 
-  if (process.env.GITHUB_STEP_SUMMARY) {
+  // A board that failed under `all` must not look like a clean run to a cron.
+  if (failures.length) process.exitCode = 1;
+
+  if (process.env.GITHUB_STEP_SUMMARY) for (const { board, report } of results) {
     const kindEntries = Object.entries(report.byKind || {}).sort((a, b) => b[1] - a[1]);
     const summary = [
-      `## Card Verifiability Audit (${source})`,
+      `## Card Verifiability Audit (${board})`,
       '',
       `| Metric | Count |`,
       `|--------|-------|`,
       `| Total checked | ${report.total} |`,
       `| Armed (dispatchable) | ${report.armedCount} |`,
       `| Refused (undispatchable) | ${report.refusedCount} |`,
-      `| Armed but check path absent from origin/main (can never pass) | ${(report.missingCheckPaths || []).length} |`,
-      `| Armed but check cannot fail (vacuous \`test -f\`) | ${(report.vacuousChecks || []).length} |`,
+      ...(board === 'linear' && source === 'all' ? [] : [
+        `| Armed but check path absent from origin/main (can never pass) | ${(report.missingCheckPaths || []).length} |`,
+        `| Armed but check cannot fail (vacuous \`test -f\`) | ${(report.vacuousChecks || []).length} |`,
+      ]),
       '',
       ...(kindEntries.length ? [
         '### Refused by kind',
@@ -444,6 +519,7 @@ if (require.main === module) main().catch(err => { console.error(`[audit-card-ve
 
 module.exports = {
   parseArgs, notionBrain, fetchCard, fetchPendingCardIds, evaluateCard, buildReport, writeReport,
+  boardsForSource, boardBreakdown, formatBoardBreakdown, SOURCES, DEFAULT_SOURCE, // BRO-2720
   REPORT_PATH, DEFAULT_STATUS, DEFAULT_LIMIT, USAGE,
   // task #1830: Linear audit path — exported for unit coverage.
   evaluateLinearIssue, fetchLinearOpenIssuesWithDescriptions, runLinearAudit, LINEAR_REPORT_PATH,
