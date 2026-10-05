@@ -7,9 +7,10 @@
  * the land script polls its full wait cap with no diagnosis.
  *
  * The fix is to push a synthetic EMPTY child of the tip (same tree, message
- * without any marker) to land/<branch>. land.yml rebases the branch onto main
- * and drops empty commits, so nothing extra reaches main; the branch's own
- * tip commit and local branch ref are untouched.
+ * without any marker) to land/<branch>. land.yml's plain `git rebase` KEEPS
+ * commits that start out empty, so the trigger commit lands on main too: a
+ * tree-neutral no-op that also gives main a non-skip tip for push-triggered CI.
+ * The branch's own tip commit and local branch ref are untouched.
  *
  * The commit is deterministic (author, committer, dates copied from the tip),
  * so a re-run of the land script after a timeout recomputes the SAME sha and
@@ -44,7 +45,7 @@ function ensureTriggerCommit(tip, cwd) {
   if (!hasSkipCiMarker(message)) return null;
   const [an, ae, ad, cn, ce, cd] = git(['log', '-1', '--format=%an%n%ae%n%aI%n%cn%n%ce%n%cI', tip], cwd).split('\n');
   const tree = git(['rev-parse', `${tip}^{tree}`], cwd);
-  return git(['commit-tree', tree, '-p', tip, '-m', triggerMessage(tip)], cwd, {
+  return git(['commit-tree', '--no-gpg-sign', tree, '-p', tip, '-m', triggerMessage(tip)], cwd, {
     GIT_AUTHOR_NAME: an, GIT_AUTHOR_EMAIL: ae, GIT_AUTHOR_DATE: ad,
     GIT_COMMITTER_NAME: cn, GIT_COMMITTER_EMAIL: ce, GIT_COMMITTER_DATE: cd,
   });

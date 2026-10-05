@@ -398,8 +398,8 @@ land_via_landing_branch() {
   # BRO-4643: GitHub reads only the pushed TIP commit for [skip ci]; a tip that
   # carries one (a data-refresh commit) means land.yml never starts and we would
   # poll the whole wait cap. Push a deterministic empty marker-free child to
-  # land/<branch> instead; land.yml's rebase drops it, the local branch is
-  # untouched, and a re-run recomputes the same sha (resume path stays valid).
+  # land/<branch> instead (land.yml's rebase keeps it: a harmless no-op commit
+  # on main); the local branch is untouched, and a re-run recomputes the same sha (resume path stays valid).
   local push_tip="$tip"   # what land/<branch> gets; differs from $tip only for a skip-marker tip
   if [ "${LAND_SKIP_CI_TRIGGER_OFF:-}" != "1" ] && command -v node >/dev/null 2>&1 && [ -f "$SCRIPT_DIR/lib/land-skip-ci-marker.js" ]; then
     local trig trig_rc
@@ -452,7 +452,7 @@ land_via_landing_branch() {
     log "land run $run_url — waiting (wait-for-run.sh: one API call per ≥60s, ${remaining_min} of ${wait_min} min budget left)"
     (cd "$push_dir" && bash "$wait_sh" "$run_id" "$remaining_min"); poll_rc=$?
   else
-    log "no land.yml run visible for ${tip:0:10} (gh unavailable, or the listing lagged) — polling refs/heads/$land_name via git ls-remote every 60s (${wait_min} min cap; land.yml deletes it only after ancestry is verified)"
+    log "no land.yml run visible for ${push_tip:0:10} (gh unavailable, or the listing lagged) — polling refs/heads/$land_name via git ls-remote every 60s (${wait_min} min cap; land.yml deletes it only after ancestry is verified)"
     local deadline; deadline=$(( $(date +%s) + wait_min * 60 )); poll_rc=2
     while [ "$(date +%s)" -lt "$deadline" ]; do
       if ! git -C "$push_dir" ls-remote --exit-code --heads origin "$land_name" >/dev/null 2>&1; then poll_rc=0; break; fi
