@@ -237,7 +237,15 @@ async function main() {
     tour.images = next;
     // A crop is recorded under its own key: archive-show-images.js re-downloads
     // images.<role> sources unchecked, and the banner URL is not the crop.
-    for (const r of written) sources[tour.id] = { ...(sources[tour.id] || {}), [got[r].cropped ? `${r}CroppedFrom` : r]: got[r].url };
+    // The other key goes: a crop that replaces a plain source must not leave
+    // that old URL for archive-show-images.js to restore, and vice versa.
+    for (const r of written) {
+      const entry = { ...(sources[tour.id] || {}) };
+      const [key, other] = got[r].cropped ? [`${r}CroppedFrom`, r] : [r, `${r}CroppedFrom`];
+      delete entry[other];
+      entry[key] = got[r].url;
+      sources[tour.id] = entry;
+    }
     // Saved per tour, right after its files: a kill between the two leaves at
     // most one tour's files unreferenced, which the next run rewrites.
     saveShows(snapshot);

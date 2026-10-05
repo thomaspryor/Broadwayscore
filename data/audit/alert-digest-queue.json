@@ -201,5 +201,34 @@
       }
     ],
     "queuedAt": "2026-10-05T16:38:32.686Z"
+  },
+  {
+    "conditionKey": "land:land/job/linear-BRO-3679-muvg6dit",
+    "title": "Landing blocked: resolve red on land/job/linear-BRO-3679-muvg6dit",
+    "description": "land.yml did not land land/job/linear-BRO-3679-muvg6dit: the resolve gate went red at db666496df. The branch ref was left in place and nothing was pushed to main. First failure: REFUSED: resolve: branch \"land/job/linear-BRO-3679-muvg6dit\" is neither a local branch nor on origin (attempts 0, 0.5s) Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37344086071",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/job/linear-BRO-3679-muvg6dit"
+      },
+      {
+        "name": "gate",
+        "value": "resolve"
+      },
+      {
+        "name": "tip",
+        "value": "db666496df4c5d09786d559ae036ccf14dd9378a"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37344086071"
+      }
+    ],
+    "queuedAt": "2026-10-05T17:25:08.724Z"
   }
 ]
