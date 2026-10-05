@@ -312,9 +312,11 @@ function isAttemptEvent(event) {
   // sweep.js, and linear-next.js's log line are all untouched by this fix.
 }
 
-// BRO-4075: does a LANDED_ACKED/LANDED_BEFORE_DISPATCH row prove that
-// deadAttempt (the task's true latest dispatch attempt, dead-shaped) is not
-// actually dead? Scoped to deadAttempt's OWN jobId, not "any ack for this
+// BRO-4075: does an ack-family row (LANDED_ACK_EVENTS) mean deadAttempt (the
+// task's true latest dispatch attempt, dead-shaped) no longer drives a
+// reopen/redispatch? For LANDED_ACKED it proves the attempt was not really
+// dead; for LANDED_OUTSIDE_DISPATCH (BRO-4662) the attempt DID fail, but the
+// card's work landed by another route, so nothing is left to redispatch. Scoped to deadAttempt's OWN jobId, not "any ack for this
 // taskId" — see isAttemptEvent's comment above for why a taskId-only match
 // would be wrong. ack-landed.js always writes a row's jobId from the
 // ledger's own newest/launch row at ack time (ack-landed-core.js's
@@ -328,7 +330,7 @@ function landedAckOverridesDeath(taskId, deadAttempt, entries) {
   for (const e of entries || []) {
     if (!e || typeof e !== 'object') continue;
     if (String(e.taskId) !== String(taskId)) continue;
-    if (e.event !== JOB_EVENTS.LANDED_ACKED && e.event !== JOB_EVENTS.LANDED_BEFORE_DISPATCH) continue;
+    if (!LANDED_ACK_EVENTS.has(e.event)) continue;
     if (e.jobId !== deadAttempt.jobId) continue;
     const ts = Date.parse(e.ts || '');
     if (Number.isFinite(deadTs) && Number.isFinite(ts) && ts <= deadTs) continue;
@@ -1480,6 +1482,17 @@ const JOB_EVENTS = Object.freeze({
   // LANDED_ACKED: not a `job-` event (foldJobs/openJobs skip it), not in
   // isDeadlikeEvent, not in TERMINAL_JOB_EVENTS.
   LANDED_BEFORE_DISPATCH: 'landed-before-dispatch',
+  // LANDED_OUTSIDE_DISPATCH (+ `sha`, `verifyCmd`, `launchVerifyCmd`,
+  // `reason`, `ackedBy`, `jobId`): BRO-4662 — the third cell. Every dispatch
+  // attempt produced nothing and the card's work landed LATER by a route that
+  // writes no ledger rows (a crowned OWNER tab). Written ONLY by
+  // scripts/ack-landed.js `--landed-elsewhere` (sha names the card, changes a
+  // real path, authored after the earliest launch and outside every
+  // attempt's own window; the card's recorded acceptance command rerun to
+  // exit 0). Distinct from LANDED_ACKED so the failed job stays recorded as
+  // failed while the CARD is recorded satisfied. Same non-membership as
+  // LANDED_ACKED.
+  LANDED_OUTSIDE_DISPATCH: 'landed-outside-dispatch',
   // FANOUT_VERIFIED (+ `refs`, `verifyCmd`, `exitCode`, `reason`, `ackedBy`;
   // taskId 'fanout'): BRO-3939 — a session that dispatched >= 2 children ran
   // a real safe-form check across the COMBINED result after every child
@@ -1488,6 +1501,15 @@ const JOB_EVENTS = Object.freeze({
   // dead-like, not an attempt; it names refs, never a jobId.
   FANOUT_VERIFIED: 'fanout-verified',
 });
+
+// The ack-event family: every row ack-landed.js writes to certify a card's
+// work is on origin/main. ONE list (BRO-4662) — it was hand-copied into five
+// consumers and drifted once already (fanout-verified-core.js header).
+// scripts/tests/ack-landed-landed-elsewhere.test.mjs asserts every consumer,
+// including exit-status-gate.sh's literals, carries each member.
+const LANDED_ACK_EVENTS = Object.freeze(new Set([
+  JOB_EVENTS.LANDED_ACKED, JOB_EVENTS.LANDED_BEFORE_DISPATCH, JOB_EVENTS.LANDED_OUTSIDE_DISPATCH,
+]));
 
 // RETRIED is terminal for the OLD jobId: a retry supersedes it with a brand-new
 // job (its own spawned→done/failed chain). Leaving it open made the old id a
@@ -1678,7 +1700,7 @@ function followRetryChain(entries, taskId, firstJobId) {
 }
 
 module.exports = {
-  LEDGER_PATH, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS,
+  LEDGER_PATH, DEAD_ATTEMPT_LIMIT, INFRA_DEAD_ATTEMPT_LIMIT, JOB_EVENTS, TERMINAL_JOB_EVENTS, LANDED_ACK_EVENTS,
   TERMINAL_LAUNCH_EVENTS, SUCCESSION_DEPTH_CAP, successionDepthForTask,
   appendEntry, readEntries, deadAttemptsForTask, launchByRef, deadBreadcrumbs,
   wrapperVouchesAlive, wrapperCheckDisabled, unreconciledLaunchForRef, lastByRef,

@@ -67,6 +67,15 @@
  * with --job-id — "before ANY dispatch" is ledger-wide, not attempt-scoped.
  * decision logic: scripts/lib/ack-landed-core.js decideAlreadyLanded().
  *
+ * --landed-elsewhere (BRO-4662): the last cell of the matrix. Every attempt
+ * produced nothing and the card's work landed LATER by a route that writes
+ * no ledger rows (a crowned OWNER tab). The sha must name the card, be
+ * authored after the earliest launch, and fall outside every attempt's own
+ * window (so it can't relabel an attempt's work). Writes a distinct
+ * `landed-outside-dispatch` row: the failed job stays recorded as failed,
+ * the card is recorded satisfied. Real case: BRO-4137. decision logic:
+ * ack-landed-core.js decideLandedElsewhere().
+ *
  * Usage:
  *   node scripts/ack-landed.js --id BRO-3535 --sha c88cdf6c126 \
  *     --verify "node scripts/audit-workflow-concurrency.js" \
@@ -112,10 +121,17 @@ Usage:
                      for a card whose work already existed before it was
                      ever (mistakenly) dispatched. Writes a distinct
                      landed-before-dispatch row. Cannot combine with --job-id.
+  --landed-elsewhere every dispatch attempt produced nothing and the card's
+                     work landed LATER by a route that writes no ledger rows
+                     (an owner tab, a hand fix). The sha must name the card
+                     and be authored after the earliest launch but outside
+                     every attempt's own window. Writes a distinct
+                     landed-outside-dispatch row (the failed job stays failed).
+                     Cannot combine with --job-id or --already-landed.
 `;
 
 function parseArgs(argv) {
-  const out = { noLinear: false, alreadyLanded: false };
+  const out = { noLinear: false, alreadyLanded: false, landedElsewhere: false };
   for (let i = 0; i < argv.length; i++) {
     const a = argv[i];
     const eq = a.indexOf('=');
@@ -130,9 +146,13 @@ function parseArgs(argv) {
       case '--job-id': out.jobId = val(); break;
       case '--no-linear': out.noLinear = true; break;
       case '--already-landed': out.alreadyLanded = true; break;
+      case '--landed-elsewhere': out.landedElsewhere = true; break;
       default:
         return { error: `unknown argument: ${a}` };
     }
+  }
+  if (out.landedElsewhere && (out.alreadyLanded || out.jobId)) {
+    return { error: '--landed-elsewhere cannot be combined with --already-landed or --job-id — it judges the sha against EVERY dispatch attempt on the card, not one' };
   }
   if (out.alreadyLanded && out.jobId) {
     return { error: '--already-landed cannot be combined with --job-id — "before ANY dispatch" is ledger-wide, not attempt-scoped' };
@@ -303,6 +323,10 @@ function namingCandidates(ref, launchTs, terminalTs, opts = {}) {
     if (Number.isFinite(before) && at >= before) continue;
     if (Number.isFinite(lo) && Number.isFinite(at) && at <= lo) continue;
     if (Number.isFinite(hi) && Number.isFinite(at) && at > hi + core.COMMIT_AFTER_TERMINAL_GRACE_MS) continue;
+    // --landed-elsewhere: drop shas its own decision would refuse (inside an
+    // attempt window, bookkeeping-only), BEFORE the 5-cap, so a refused newer
+    // commit cannot crowd out a valid older one (ship-check P2).
+    if (typeof opts.accept === 'function' && !opts.accept(sha, at)) continue;
     out.push({ sha, authored, subject });
     if (out.length >= 5) break;
   }
@@ -319,11 +343,29 @@ function candidatesFor(ref, ctx, refusals = [], opts = {}) {
   // unreadable ts, so offering candidates then would only trade refusals.
   const noTiming = ctx.alreadyLanded && (!Number.isFinite(Date.parse(ctx.beforeTs || ''))
     || refusals.some(r => /unreadable ts/.test(String(r))));
-  return noTiming ? undefined : namingCandidates(ref, ctx.launchTs, ctx.terminalTs, { ...opts, beforeTs: ctx.beforeTs });
+  const accept = ctx.landedElsewhere ? (sha, at) => landedElsewhereCandidateOk(sha, at, ctx.windows, opts.cwd) : undefined;
+  return noTiming ? undefined : namingCandidates(ref, ctx.launchTs, ctx.terminalTs, { ...opts, beforeTs: ctx.beforeTs, accept });
+}
+
+// Same window + bookkeeping rules decideLandedElsewhere applies, so a derived
+// or suggested sha is never one the decision then refuses.
+function landedElsewhereCandidateOk(sha, at, windows, cwd) {
+  const inside = (windows || []).some((w) => {
+    const lo = Date.parse(w.launchTs || '');
+    const end = w.endTs == null ? NaN : Date.parse(w.endTs);
+    const hi = Number.isFinite(end) ? end + core.COMMIT_AFTER_TERMINAL_GRACE_MS : Infinity;
+    return Number.isFinite(lo) && at >= lo && at <= hi;
+  });
+  if (inside) return false;
+  const r = spawnSync('git', ['diff-tree', '--no-commit-id', '--name-only', '-r', '--root', '-m', '--first-parent', sha], { cwd: cwd || REPO, encoding: 'utf8', maxBuffer: 64 * 1024 * 1024 });
+  if (r.status !== 0) return false;
+  return r.stdout.split('\n').map((l) => l.trim()).filter(Boolean).some((f) => !core.isBookkeepingPath(f));
 }
 
 function whereFor(ref, ctx) {
-  return ctx.alreadyLanded ? `before ${ref}'s earliest dispatch launch (${ctx.beforeTs})` : "inside this job's window";
+  if (ctx.alreadyLanded) return `before ${ref}'s earliest dispatch launch (${ctx.beforeTs})`;
+  if (ctx.landedElsewhere) return `after ${ref}'s earliest dispatch launch (${ctx.launchTs})`;
+  return "inside this job's window";
 }
 
 function refuse(ref, refusals, ctx = {}) {
@@ -344,11 +386,27 @@ function refuse(ref, refusals, ctx = {}) {
       console.error(`   → no commit on origin/main names ${ref} ${where}. If the work really did land`);
       console.error(ctx.alreadyLanded
         ? '     after a dispatch launched, drop --already-landed (optionally pass --job-id) and ack that attempt instead.'
-        : '     under commits that never mention the card, that is the case --job-id does not cover — say so on the card.');
+        : ctx.landedElsewhere
+          ? '     under commits that never mention the card, --landed-elsewhere cannot certify it (by design) — say so on the card.'
+          : '     after every dispatch attempt ended, by a route outside the ledger, use --landed-elsewhere.');
     }
   }
   console.error('   Nothing was written to the dispatch ledger.');
   process.exit(1);
+}
+
+// The verify command is RUN here and its real exit code — never an assumed
+// 0 — is what the final decision sees. Extracted (BRO-4662) so a test can
+// prove the accepted path actually executes the command, against a throwaway
+// cwd, through the same function main() uses.
+function runVerifyAndDecide(decide, verify, opts = {}) {
+  const run = spawnSync('bash', ['-c', verify.cmd], { cwd: opts.cwd || REPO, encoding: 'utf8', timeout: opts.timeoutMs || VERIFY_TIMEOUT_MS, maxBuffer: 64 * 1024 * 1024 });
+  verify.exitCode = run.status === null ? -1 : run.status;
+  if (verify.exitCode !== 0) {
+    const tail = `${run.stdout || ''}\n${run.stderr || ''}`.trim().split('\n').slice(-15).join('\n   | ');
+    console.error(`   | ${tail}`);
+  }
+  return decide({ verify });
 }
 
 function main() {
@@ -365,13 +423,16 @@ function main() {
   const ackedBy = args.ackedBy || process.env.CLAUDE_CODE_SESSION_ID || 'manual';
   const jobId = args.jobId || null;
   const alreadyLanded = Boolean(args.alreadyLanded);
+  const landedElsewhere = Boolean(args.landedElsewhere);
   // core.decideAck / core.decideAlreadyLanded, picked once up front — the
   // two share every step below except which decision function ultimately
   // runs (BRO-4069: decideAlreadyLanded asserts the OPPOSITE sha timing and
   // never accepts a jobId — see its header in ack-landed-core.js).
-  const decide = (extra) => (alreadyLanded
-    ? core.decideAlreadyLanded({ ref, rows, landing, checkout, reason: args.reason, ackedBy, ...extra })
-    : core.decideAck({ ref, rows, jobId, landing, checkout, reason: args.reason, ackedBy, ...extra }));
+  const decide = (extra) => {
+    if (landedElsewhere) return core.decideLandedElsewhere({ ref, rows, landing, checkout, reason: args.reason, ackedBy, ...extra });
+    if (alreadyLanded) return core.decideAlreadyLanded({ ref, rows, landing, checkout, reason: args.reason, ackedBy, ...extra });
+    return core.decideAck({ ref, rows, jobId, landing, checkout, reason: args.reason, ackedBy, ...extra });
+  };
 
   // 1. Ledger precondition first — cheap, and a plainly un-ackable ref must
   //    not trigger a fetch or a 10-minute verify run. When --job-id is given,
@@ -392,17 +453,22 @@ function main() {
   // corrupt ledger row degrades this informational log line, not a crash;
   // decide() below still refuses cleanly either way (decideAlreadyLanded's
   // own !launch / malformedLaunchTs checks).
-  const earliestLaunchRow = alreadyLanded ? core.earliestLaunch(rows) : null;
-  const earliestLaunchTs = alreadyLanded ? (earliestLaunchRow ? earliestLaunchRow.ts : '(none readable)') : pre.launch.ts;
-  console.error(`→ ledger: newest row for ${ref}${jobId ? ` (job ${jobId})` : ''} is ${pre.newest.event} (${pre.newest.ts}); ${alreadyLanded ? 'earliest launch' : 'launch'} ${earliestLaunchTs}`);
+  const ledgerWide = alreadyLanded || landedElsewhere;
+  const earliestLaunchRow = ledgerWide ? core.earliestLaunch(rows) : null;
+  const earliestLaunchTs = ledgerWide ? (earliestLaunchRow ? earliestLaunchRow.ts : '(none readable)') : pre.launch.ts;
+  console.error(`→ ledger: newest row for ${ref}${jobId ? ` (job ${jobId})` : ''} is ${pre.newest.event} (${pre.newest.ts}); ${ledgerWide ? 'earliest launch' : 'launch'} ${earliestLaunchTs}`);
   // The naming hint's window must mirror the decision that will judge the
   // suggested sha, or a suggestion just trades the naming refusal for a
   // timing one. decideAck: (launch, terminal + grace]. decideAlreadyLanded:
   // strictly before the EARLIEST launch — pre.launch is the latest one here,
   // because --already-landed never scopes rows by jobId.
+  // decideLandedElsewhere: after the EARLIEST launch, no upper bound (its own
+  // per-attempt window check then refuses a sha inside any attempt).
   const hintCtx = alreadyLanded
     ? { alreadyLanded: true, beforeTs: earliestLaunchRow ? earliestLaunchRow.ts : null }
-    : { launchTs: pre.launch.ts, terminalTs: pre.newest.ts };
+    : landedElsewhere
+      ? { landedElsewhere: true, launchTs: earliestLaunchRow ? earliestLaunchRow.ts : null, terminalTs: null, windows: core.attemptWindows(rows) }
+      : { launchTs: pre.launch.ts, terminalTs: pre.newest.ts };
 
   // 2. Fresh origin/main + ancestry (shallow-safe).
   try {
@@ -419,7 +485,7 @@ function main() {
     const where = whereFor(ref, hintCtx);
     if (cands === undefined) refuse(ref, [`--sha not given and it cannot be derived: ${ref}'s dispatch launch timestamps are not all readable, so no sha can satisfy --already-landed's timing check`]);
     if (cands === null) refuse(ref, [`--sha not given and it cannot be derived: searching origin/main for commits naming ${ref} failed (no origin/main, a shallow clone, or git refused the query) — pass --sha explicitly`]);
-    if (!cands.length) refuse(ref, [`--sha not given and no commit on origin/main names ${ref} ${where} — nothing to derive; pass --sha if the work landed under commits that never mention the card`]);
+    if (!cands.length) refuse(ref, [`--sha not given and no commit on origin/main names ${ref} ${where} — nothing to derive${hintCtx.landedElsewhere ? ' (--landed-elsewhere only accepts a commit that names the card, changes a non-bookkeeping path, and falls outside every attempt window)' : '; pass --sha if the work landed under commits that never mention the card'}`]);
     // namingCandidates keeps git log order (newest commit first; --no-merges
     // over land.yml's linear rebases, capped at 5), so [0] is the most
     // recently landed naming commit. Every candidate passes the same naming + window guard,
@@ -440,12 +506,25 @@ function main() {
     landing.commitTs = git(['show', '-s', '--format=%cI', sha]);
     landing.authorTs = git(['show', '-s', '--format=%aI', sha]);
     landing.message = git(['show', '-s', '--format=%B', sha]);
+    // --landed-elsewhere refuses an empty / bookkeeping-only sha (first-parent
+    // diff, so a merge commit reports what it brought in).
+    landing.changedPaths = git(['diff-tree', '--no-commit-id', '--name-only', '-r', '--root', '-m', '--first-parent', sha], { maxBuffer: 64 * 1024 * 1024 })
+      .split('\n').map((l) => l.trim()).filter(Boolean);
   } catch (e) {
     refuse(ref, [`could not read commit ${sha}: ${String(e.stderr || e.message).trim()}`]);
   }
   const tie = computeStrandedTie(sha, pre.stranded && pre.stranded.sha, { cwd: REPO, landed: landing.verdict === 'LANDED' });
   landing.tiedToStranded = tie.tiedToStranded;
   landing.tiedToStrandedByPatch = tie.tiedToStrandedByPatch;
+  if (landedElsewhere) {
+    for (const st of rows.filter((r) => String(r.event) === 'job-stranded' && r.sha)) {
+      if (landing.tiedToStranded || landing.tiedToStrandedByPatch) break;
+      if (pre.stranded && st.sha === pre.stranded.sha) continue;
+      const t = computeStrandedTie(sha, st.sha, { cwd: REPO, landed: landing.verdict === 'LANDED' });
+      landing.tiedToStranded = t.tiedToStranded;
+      landing.tiedToStrandedByPatch = t.tiedToStrandedByPatch;
+    }
+  }
   console.error(`→ git: ${sha.slice(0, 11)} ${landing.verdict} on origin/main; authored ${landing.authorTs}, committed ${landing.commitTs}`);
   if (pre.launchVerifyCmd && pre.launchVerifyCmd !== args.verify.trim()) {
     console.error(`⚠️  --verify differs from the command recorded at dispatch (${pre.launchVerifyCmd}); both are kept on the ledger row`);
@@ -466,17 +545,14 @@ function main() {
   if (!dryRun.ok) refuse(ref, dryRun.refusals, hintCtx);
 
   console.error(`→ running verify in ${REPO}: ${verify.cmd}`);
-  const run = spawnSync('bash', ['-c', verify.cmd], { cwd: REPO, encoding: 'utf8', timeout: VERIFY_TIMEOUT_MS, maxBuffer: 64 * 1024 * 1024 });
-  verify.exitCode = run.status === null ? -1 : run.status;
-  if (verify.exitCode !== 0) {
-    const tail = `${run.stdout || ''}\n${run.stderr || ''}`.trim().split('\n').slice(-15).join('\n   | ');
-    console.error(`   | ${tail}`);
-  }
-
-  const decision = decide({ verify });
+  const decision = runVerifyAndDecide(decide, verify, { cwd: REPO });
   if (!decision.ok) refuse(ref, decision.refusals, hintCtx);
 
   // 5. Write the row. appendEntry self-stamps ts (never backdated).
+  // The verify run can take minutes; a relaunch or another ack landing in that
+  // window would make this row certify a stale picture (Codex ship-check P1).
+  const raced = core.ledgerChangedSince(rows, core.rowsForRef(ledger.readEntries(), ref));
+  if (raced) refuse(ref, [raced]);
   const written = ledger.appendEntry(decision.row);
   console.error(`→ ledger row appended: ${JSON.stringify(written)}`);
 
@@ -493,4 +569,4 @@ function main() {
 
 if (require.main === module) main();
 
-module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor, computeStrandedTie };
+module.exports = { parseArgs, CODE_PATHS, VERIFY_TIMEOUT_MS, namingCandidates, candidatesFor, computeStrandedTie, runVerifyAndDecide };
