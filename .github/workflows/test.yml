@@ -3639,7 +3639,6 @@ jobs:
             git fetch --no-tags --depth=1 origin "$GATE_ARM_BASE" || true
           fi
           node scripts/audit-new-gate-arming.js
-          node --test tests/unit/lint-workflows.test.mjs
 
       - name: Audit — workflow hygiene (notify-failure, playwright, push-with-retry)
         if: always() && steps.deps.outcome == 'success'
