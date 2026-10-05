@@ -47,10 +47,12 @@ function isReportedWeeklyCost(record) {
 // for "sec" matched every "Section".
 const REDDIT_SECTIONS = new Set(['C', 'D', 'E']);
 const REPORTED_SECTIONS = new Set(['F', 'H']);
-// "Section C", "Sections C, D and F", "Sections F/H", "Sections C-E".
-const SECTION_LIST_RE = /\bsections?\s*\(?\s*([a-h](?:\s*(?:,|&|\band\b|\bor\b|\/|-|–)\s*[a-h])*)\b/gi;
-const SECTION_RANGE_RE = /\b([a-h])\s*[-–]\s*([a-h])\b/gi;
-const SECTION_SEPARATOR_RE = /\s*(?:,|&|\band\b|\bor\b|\/|-|–)\s*/i;
+// "Section C", "Sections C, D and F", "Sections F/H", "Sections C-E". The
+// letters are capitals only, so prose after a section ("Section F, e.g.
+// Deadline", "Section F - a Variety piece") adds no sections.
+const SECTION_LIST_RE = /\b[Ss]ections?\s*\(?\s*([A-H](?:\s*(?:,|&|\band\b|\bor\b|\/|-|–)\s*[A-H])*)\b/g;
+const SECTION_RANGE_RE = /\b([A-H])\s*[-–]\s*([A-H])\b/g;
+const SECTION_SEPARATOR_RE = /\s*(?:,|&|\band\b|\bor\b|\/|-|–)\s*/;
 const REDDIT_SOURCE_RE = /\breddit\b|\br\/broadway\b|\bu\/|grosses\s+analysis|boring[\s_]*waltz/i;
 const SEC_SOURCE_RE = /\bsec\b|\bform\s*d\b|\bedgar\b/i;
 const TRADE_SOURCE_RE = /\bdeadline\b|\bvariety\b|broadway\s+news|broadway\s+journal|new\s+york\s+times|\bnyt\b|hollywood\s+reporter|\bforbes\b|\bplaybill\b|theatermania|broadwayworld|wall\s+street\s+journal/i;
@@ -61,10 +63,10 @@ function citedSections(source) {
   if (typeof source !== 'string') return letters;
   for (const m of source.matchAll(SECTION_LIST_RE)) {
     const list = m[1].replace(SECTION_RANGE_RE, (_, a, b) => {
-      const [lo, hi] = [a.toUpperCase().charCodeAt(0), b.toUpperCase().charCodeAt(0)].sort((x, y) => x - y);
+      const [lo, hi] = [a.charCodeAt(0), b.charCodeAt(0)].sort((x, y) => x - y);
       return Array.from({ length: hi - lo + 1 }, (_, i) => String.fromCharCode(lo + i)).join(',');
     });
-    for (const letter of list.split(SECTION_SEPARATOR_RE)) letters.add(letter.trim().toUpperCase());
+    for (const letter of list.split(SECTION_SEPARATOR_RE)) letters.add(letter.trim());
   }
   return letters;
 }
