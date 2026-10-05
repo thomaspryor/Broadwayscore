@@ -3,18 +3,20 @@
 /**
  * One-time welcome for a brand-new account (BRO-4619). Opened by WelcomeGate
  * after claim_onboarding() succeeds. Three skippable steps:
- *   shows  — tap the shows you've seen (stars optional)
- *   import — bring a history over from another app (IMPORT_SOURCES) (ImportShows, embedded)
+ *   shows  — tap the shows you've seen (stars optional), per market, or search
+ *   import — bring a history over from another app (IMPORT_SOURCES): each card
+ *            opens ImportShows at that app
  *   done   — where to go next
  * Decisions live in src/lib/welcome-onboarding.ts.
  */
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import { Modal, ModalCloseButton } from '@/components/show-cards';
+import { Modal, ModalCloseButton, ShowSearchDropdown, ToggleBar } from '@/components/show-cards';
 import ShowImage from '@/components/ShowImage';
 import StarRating from '@/components/user/StarRating';
-import ImportShows from '@/app/my-shows/ImportShows';
+import ImportShows, { type ImportSourceId } from '@/app/my-shows/ImportShows';
+import { useCurrentMarket } from '@/hooks/useCurrentMarket';
 import { getOptimizedImageUrl } from '@/lib/images';
 import { IMPORT_SOURCES, importSourceNames } from '@/lib/import-sources';
 import { supabaseRestInsert, supabaseRestSelect } from '@/lib/supabase-rest';
@@ -22,10 +24,19 @@ import { trackUgc, type UgcProps } from '@/lib/ugc-analytics';
 import {
   nextWelcomeStep,
   welcomeFinishDestination,
+  welcomeMarketFor,
   welcomeWriteFor,
+  type WelcomeMarket,
   type WelcomeShow,
   type WelcomeStep,
 } from '@/lib/welcome-onboarding';
+
+const MARKET_OPTIONS: { value: WelcomeMarket; label: string }[] = [
+  { value: 'broadway', label: 'Broadway' },
+  { value: 'west-end', label: 'West End' },
+];
+
+const STEP_NUMBER: Record<WelcomeStep, number> = { shows: 1, import: 2, done: 3 };
 
 /** Where a show already being in My Shows makes its poster unpickable. */
 const EXISTING_TABLES = ['reviews', 'watchlist', 'seen_unrated'] as const;
@@ -40,7 +51,12 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
   const router = useRouter();
   const preview = userId === null;
   const [step, setStep] = useState<WelcomeStep>('shows');
-  const [shows, setShows] = useState<WelcomeShow[] | null>(null);
+  const pageMarket = useCurrentMarket();
+  const [market, setMarket] = useState<WelcomeMarket>(() => welcomeMarketFor(pageMarket));
+  const [lists, setLists] = useState<Partial<Record<WelcomeMarket, WelcomeShow[]>> | null>(null);
+  // Shows added through search: shown first in the grid, whatever the market.
+  const [searched, setSearched] = useState<WelcomeShow[]>([]);
+  const [searchOpen, setSearchOpen] = useState(false);
   const [existing, setExisting] = useState<{ reviews: Set<string>; watchlist: Set<string>; seen: Set<string> }>({ reviews: new Set(), watchlist: new Set(), seen: new Set() });
   // showId -> stars (null = "seen it", no stars). Map keeps tap order.
   const [picks, setPicks] = useState<Map<string, number | null>>(new Map());
@@ -50,7 +66,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
   const [saveFailed, setSaveFailed] = useState(0);
   const [showsAdded, setShowsAdded] = useState(0);
   const [imported, setImported] = useState(0);
-  const [importOpen, setImportOpen] = useState(false);
+  const [importSource, setImportSource] = useState<ImportSourceId | null>(null);
 
   const track = useCallback((event: string, props: UgcProps = {}) => {
     if (!preview) trackUgc(event, props);
@@ -63,9 +79,13 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
   useEffect(() => {
     const controller = new AbortController();
     fetch('/welcome-shows.json', { signal: controller.signal })
-      .then(r => (r.ok ? r.json() : { shows: [] }))
-      .then((d: { shows?: WelcomeShow[] }) => setShows(Array.isArray(d.shows) ? d.shows : []))
-      .catch(() => { if (!controller.signal.aborted) setShows([]); });
+      .then(r => (r.ok ? r.json() : {}))
+      .then((d: { shows?: WelcomeShow[]; markets?: Partial<Record<WelcomeMarket, WelcomeShow[]>> }) => {
+        // `markets` is per market; a build from before it existed has only Broadway's `shows`.
+        const fromMarkets = d.markets && typeof d.markets === 'object' ? d.markets : {};
+        setLists({ broadway: Array.isArray(d.shows) ? d.shows : [], ...fromMarkets });
+      })
+      .catch(() => { if (!controller.signal.aborted) setLists({}); });
     return () => controller.abort();
   }, []);
 
@@ -82,20 +102,56 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
       .catch(() => {});
   }, [userId]);
 
-  const showById = useMemo(() => new Map((shows || []).map(s => [s.id, s])), [shows]);
+  const shows = useMemo(() => {
+    if (!lists) return null;
+    const ids = new Set(searched.map(s => s.id));
+    return [...searched, ...(lists[market] ?? []).filter(s => !ids.has(s.id))];
+  }, [searched, lists, market]);
+  // Every show a pick can point at, so a pick made under another market still has a title.
+  const showById = useMemo(() => {
+    const all = [...searched, ...Object.values(lists || {}).flat()];
+    return new Map(all.map(s => [s.id, s]));
+  }, [searched, lists]);
+  const hasMarketChoice = !!lists && MARKET_OPTIONS.every(o => (lists[o.value] || []).length > 0);
   const activeShow = activeId ? showById.get(activeId) : undefined;
   const hasShow = (id: string) => existing.reviews.has(id) || existing.watchlist.has(id) || existing.seen.has(id);
 
-  const togglePick = (id: string) => {
-    const wasPicked = picks.has(id);
+  /**
+   * First tap picks a show and opens its star row. Tapping another picked
+   * show moves the star row to it, so every pick can be rated; tapping the
+   * one being rated again removes it (as does Remove in the star row).
+   */
+  const tapPoster = (id: string) => {
+    if (!picks.has(id)) {
+      setPicks(prev => new Map(prev).set(id, null));
+      setActiveId(id);
+    } else if (activeId !== id) {
+      setActiveId(id);
+    } else {
+      removePick(id);
+    }
+  };
+
+  const removePick = (id: string) => {
     setPicks(prev => {
       const next = new Map(prev);
-      if (wasPicked) next.delete(id);
-      else next.set(id, null);
+      next.delete(id);
       return next;
     });
-    if (!wasPicked) setActiveId(id);
-    else if (activeId === id) setActiveId(null);
+    if (activeId === id) setActiveId(null);
+  };
+
+  const addSearched = (found: { id: string; title: string; slug: string; images?: { thumbnail?: string } }) => {
+    setSearchOpen(false);
+    if (hasShow(found.id)) return;
+    if (!showById.has(found.id)) {
+      setSearched(prev => [{ id: found.id, title: found.title, slug: found.slug, image: found.images?.thumbnail || '', closingDate: null }, ...prev]);
+    } else if (!(shows || []).some(s => s.id === found.id)) {
+      setSearched(prev => [showById.get(found.id) as WelcomeShow, ...prev]);
+    }
+    setPicks(prev => (prev.has(found.id) ? prev : new Map(prev).set(found.id, null)));
+    setActiveId(found.id);
+    track('onboarding_search_pick', { market });
   };
 
   const setStars = (id: string, rating: number) => {
@@ -186,7 +242,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
   };
 
   const handleImportClosed = (count: number) => {
-    setImportOpen(false);
+    setImportSource(null);
     if (count > 0) {
       setImported(count);
       track('onboarding_step_completed', { step: 'import', imported: count });
@@ -220,7 +276,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
           <div className="flex items-start justify-between gap-3 px-5 pt-5 pb-3">
             <div className="min-w-0">
               <p className="text-xs font-semibold uppercase tracking-wider text-brand mb-1">
-                {step === 'done' ? 'All set' : `Welcome · Step ${step === 'shows' ? 1 : 2} of 2`}
+                {step === 'done' ? 'All set' : 'Welcome'} · Step {STEP_NUMBER[step]} of 3
               </p>
               <h2 className="text-xl font-bold text-white leading-tight">
                 {step === 'shows' && 'Which shows have you seen?'}
@@ -237,6 +293,45 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
           {step === 'shows' && (
             <>
               <div className="flex-1 overflow-y-auto px-5 pt-1 pb-3">
+                <div className="flex flex-wrap items-center justify-between gap-2 mb-3">
+                  {hasMarketChoice ? (
+                    <ToggleBar
+                      options={MARKET_OPTIONS}
+                      value={market}
+                      onChange={m => { setMarket(m); track('onboarding_market_switch', { market: m }); }}
+                      ariaLabel="Which theater scene"
+                      variant="pill"
+                      size="compact"
+                    />
+                  ) : <span />}
+                  {!searchOpen && (
+                    <button
+                      type="button"
+                      onClick={() => setSearchOpen(true)}
+                      className="btn-ghost text-sm inline-flex items-center gap-1.5 min-h-[36px] px-1"
+                      data-testid="welcome-search-open"
+                    >
+                      <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      </svg>
+                      Don&apos;t see yours?
+                    </button>
+                  )}
+                </div>
+                {searchOpen && (
+                  <div className="mb-3" data-testid="welcome-search">
+                    <ShowSearchDropdown
+                      placeholder="Search any show"
+                      onSelect={addSearched}
+                      onClose={() => setSearchOpen(false)}
+                      includeDiary
+                      isDisabled={found => hasShow(found.id)}
+                      renderAction={found => (hasShow(found.id) || picks.has(found.id)
+                        ? <span className="text-status-open">Added</span>
+                        : <span>+ Add</span>)}
+                    />
+                  </div>
+                )}
                 {shows === null ? (
                   <div className="grid grid-cols-3 sm:grid-cols-6 gap-2" aria-hidden="true">
                     {Array.from({ length: 12 }, (_, i) => (
@@ -244,7 +339,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                     ))}
                   </div>
                 ) : shows.length === 0 ? (
-                  <p className="text-sm text-gray-400 py-6 text-center">Search for any show from the top of the page to add it.</p>
+                  <p className="text-sm text-gray-400 py-6 text-center">Use Don&apos;t see yours? to search for any show.</p>
                 ) : (
                   <ul className="grid grid-cols-3 sm:grid-cols-6 gap-2" data-testid="welcome-grid">
                     {shows.map(show => {
@@ -255,16 +350,16 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                         <li key={show.id}>
                           <button
                             type="button"
-                            onClick={() => !already && togglePick(show.id)}
+                            onClick={() => !already && tapPoster(show.id)}
                             disabled={already}
                             aria-pressed={picked || already}
-                            aria-label={already ? `${show.title}, already in My Shows` : `${show.title}${picked ? ', seen' : ''}`}
+                            aria-label={already ? `${show.title}, already in My Shows` : `${show.title}${picked ? (activeId === show.id ? ', seen, rating now' : ', seen, tap to rate') : ''}`}
                             className={`relative block w-full aspect-[2/3] rounded-lg overflow-hidden bg-surface-raised border transition ${
-                              picked ? 'border-brand ring-2 ring-brand' : 'border-white/10 hover:border-white/20'
+                              picked ? `border-brand ring-2 ring-brand${activeId === show.id ? ' ring-offset-2 ring-offset-surface-elevated' : ''}` : 'border-white/10 hover:border-white/20'
                             } ${already ? 'cursor-default' : ''}`}
                           >
                             <ShowImage
-                              sources={[getOptimizedImageUrl(show.image, 'thumbnail')]}
+                              sources={show.image ? [getOptimizedImageUrl(show.image, 'thumbnail')] : []}
                               alt=""
                               ariaHidden
                               loading="lazy"
@@ -296,10 +391,15 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
 
               <div className="border-t border-white/10 px-5 py-3 bg-surface-elevated">
                 {activeShow && picks.has(activeShow.id) && (
-                  <div className="flex items-center justify-between gap-3 mb-3" data-testid="welcome-rate-row">
-                    <p className="text-sm text-gray-300 min-w-0 truncate">
-                      Rate <span className="text-white font-medium">{activeShow.title}</span>?
-                    </p>
+                  <div className="mb-3" data-testid="welcome-rate-row">
+                    <div className="flex items-center justify-between gap-3">
+                      <p className="text-sm text-gray-300 min-w-0 truncate">
+                        Rate <span className="text-white font-medium">{activeShow.title}</span>?
+                      </p>
+                      <button type="button" onClick={() => removePick(activeShow.id)} className="btn-ghost text-xs px-1 min-h-[36px] flex-shrink-0">
+                        Remove
+                      </button>
+                    </div>
                     <StarRating
                       rating={picks.get(activeShow.id) ?? null}
                       onRatingChange={r => setStars(activeShow.id, r)}
@@ -311,20 +411,25 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                 {saveError && <p className="text-sm text-score-skip mb-2">{saveError}</p>}
                 <div className="flex items-center justify-between gap-3">
                   {pickCount === 0 ? (
-                    <button type="button" onClick={() => skip('skip')} className="text-sm text-gray-400 hover:text-white px-2 min-h-[44px]">
-                      Skip
-                    </button>
+                    <>
+                      <span className="text-sm text-gray-400">Nothing picked yet</span>
+                      <button type="button" onClick={() => skip('skip')} className="btn-secondary text-sm">
+                        Skip
+                      </button>
+                    </>
                   ) : (
-                    <span className="text-sm text-gray-400">{pickCount} picked</span>
+                    <>
+                      <span className="text-sm text-gray-400">{pickCount} picked</span>
+                      <button
+                        type="button"
+                        onClick={() => savePicks()}
+                        disabled={saving}
+                        className="btn-primary text-sm disabled:opacity-50"
+                      >
+                        {saving ? 'Saving…' : `Add ${pickCount} to my diary`}
+                      </button>
+                    </>
                   )}
-                  <button
-                    type="button"
-                    onClick={pickCount === 0 ? () => skip('skip') : () => savePicks()}
-                    disabled={saving}
-                    className="btn-primary text-sm disabled:opacity-50"
-                  >
-                    {saving ? 'Saving…' : pickCount === 0 ? 'Next' : `Add ${pickCount} to my diary`}
-                  </button>
                 </div>
               </div>
             </>
@@ -344,23 +449,31 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
                 </p>
                 <div className="grid gap-3">
                   {IMPORT_SOURCES.map(src => (
-                    <div key={src.id} className="card p-4">
-                      <p className="text-sm font-bold text-white mb-1"><span aria-hidden="true">{src.icon} </span>{src.name}</p>
-                      <p className="text-xs text-gray-400">{src.hint}</p>
-                    </div>
+                    <button
+                      key={src.id}
+                      type="button"
+                      onClick={() => { setImportSource(src.id as ImportSourceId); track('onboarding_import_source', { source: src.id }); }}
+                      className="card-interactive p-4 flex items-center gap-3 text-left w-full"
+                      data-testid={`welcome-import-${src.id}`}
+                    >
+                      <span className="min-w-0 flex-1">
+                        <span className="block text-sm font-bold text-white mb-1"><span aria-hidden="true">{src.icon} </span>Import from {src.name}</span>
+                        <span className="block text-xs text-gray-400">{src.hint}</span>
+                      </span>
+                      <svg className="w-4 h-4 text-gray-400 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2} aria-hidden="true">
+                        <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                      </svg>
+                    </button>
                   ))}
                 </div>
               </div>
               <div className="border-t border-white/10 px-5 py-3 bg-surface-elevated">
                 <div className="flex items-center justify-between gap-3">
-                  <button type="button" onClick={() => skip('skip')} className="text-sm text-gray-400 hover:text-white px-2 min-h-[44px]">
+                  <p className="text-xs text-gray-500">You can always import later from My Shows.</p>
+                  <button type="button" onClick={() => skip('skip')} className="btn-secondary text-sm flex-shrink-0">
                     Not now
                   </button>
-                  <button type="button" onClick={() => setImportOpen(true)} className="btn-primary text-sm">
-                    Import my shows
-                  </button>
                 </div>
-                <p className="text-xs text-gray-500 mt-2">You can always import later from My Shows.</p>
               </div>
             </>
           )}
@@ -401,7 +514,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
         </div>
       </Modal>
 
-      {importOpen && (
+      {importSource && (
         <ImportShows
           userId={userId || ''}
           existingReviewShowIds={existingIds}
@@ -409,6 +522,7 @@ export default function WelcomeSheet({ userId, onClose }: WelcomeSheetProps) {
           onImportComplete={() => {}}
           initialOpen
           context="onboarding"
+          initialSource={importSource}
           onClose={handleImportClosed}
         />
       )}
