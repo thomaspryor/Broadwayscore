@@ -33,22 +33,26 @@
 import { test, describe } from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
-import { readFileSync, writeFileSync, existsSync, copyFileSync, unlinkSync, mkdtempSync, rmSync } from 'node:fs';
+import { readFileSync, writeFileSync, existsSync, copyFileSync, mkdtempSync, rmSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 
 const ROOT = join(import.meta.dirname, '..', '..');
 const VALIDATE = join(ROOT, 'scripts/validate-data.js');
 const REAL_SHOWS_JSON = join(ROOT, 'data/shows.json');
-// Mirror validate-data.js: prefer RUNNER_TEMP, fall back to /tmp.
-const TMP_DIR = process.env.RUNNER_TEMP || '/tmp';
-const SENTINEL = join(TMP_DIR, '.skip-push-core-data');
 
 // Per-test throwaway copy of shows.json — never the real path. mkdtempSync gives
 // each test its own directory so parallel `node --test` runs can't collide.
 let fixtureDir;
+// The child resolves its sentinel under RUNNER_TEMP, which runValidate points at
+// fixtureDir. Using the shared /tmp (or CI's RUNNER_TEMP) instead let any other
+// validate-data.js run on the host (parallel session, CI step, sibling test)
+// plant/clear the sentinel between this test's run and its assert, and also made
+// the test write the real push-gating sentinel (BRO-2167 time-bomb audit flake).
+let SENTINEL;
 function freshFixtureCopy() {
   fixtureDir = mkdtempSync(join(tmpdir(), 'validate-data-sentinel-'));
+  SENTINEL = join(fixtureDir, '.skip-push-core-data');
   const fixturePath = join(fixtureDir, 'shows.json');
   copyFileSync(REAL_SHOWS_JSON, fixturePath);
   return fixturePath;
@@ -90,7 +94,7 @@ function runValidate(fixturePath) {
   try {
     execFileSync('node', [VALIDATE], {
       stdio: 'pipe',
-      env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath },
+      env: { ...process.env, VALIDATE_DATA_SHOWS_JSON: fixturePath, RUNNER_TEMP: fixtureDir },
       // Same ceiling, same reason, as validate-data-venue-complex-wiring.test.mjs:
       // the 1 MiB default killed that sibling with ENOBUFS on main and turned
       // Unit Tests red (run 33989118480). This fixture is a full-corpus copy so
@@ -119,7 +123,6 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
   test('clean shows.json → exit 0, no sentinel written', (t) => {
     const fixturePath = freshFixtureCopy();
     try {
-      if (existsSync(SENTINEL)) unlinkSync(SENTINEL);
       const code = runValidate(fixturePath);
       if (code !== 0) {
         // The live corpus itself currently fails validate-data.js — a real,
@@ -144,7 +147,6 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
     const fixturePath = freshFixtureCopy();
     try {
       plantSyntheticBadRow(fixturePath);
-      if (existsSync(SENTINEL)) unlinkSync(SENTINEL);
       const code = runValidate(fixturePath);
       assert.strictEqual(code, 1, 'expected exit 1 when shows.json has a null-category open show');
       assert.strictEqual(existsSync(SENTINEL), true,
@@ -158,7 +160,6 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
       assert.match(content, /reason:/, 'sentinel missing the reason: prefix that operators key on');
     } finally {
       cleanupFixture();
-      if (existsSync(SENTINEL)) unlinkSync(SENTINEL);
     }
   });
 
@@ -194,7 +195,6 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
     const fixturePath = freshFixtureCopy();
     try {
       writeFileSync(fixturePath, '{not json'); // truncated/invalid
-      if (existsSync(SENTINEL)) unlinkSync(SENTINEL);
       const code = runValidate(fixturePath);
       assert.strictEqual(code, 1, 'expected exit 1 on unparseable shows.json');
       assert.strictEqual(existsSync(SENTINEL), true,
@@ -203,7 +203,6 @@ describe('validate-data.js — push-refusal sentinel contract (Notion 362637c5-4
         'sentinel reason should mention the parse error');
     } finally {
       cleanupFixture();
-      if (existsSync(SENTINEL)) unlinkSync(SENTINEL);
     }
   });
 });
