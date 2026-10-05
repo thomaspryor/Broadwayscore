@@ -1,0 +1,61 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event SessionStart; fi; exit 0",
+            "timeout": 600
+          }
+        ]
+      }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event PreToolUse; fi; exit 0",
+            "timeout": 600
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "PostToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event PostToolUse; fi; exit 0",
+            "timeout": 600
+          }
+        ],
+        "matcher": "*"
+      }
+    ],
+    "PreCompact": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event PreCompact; fi; exit 0",
+            "timeout": 600
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "f=\"$(git rev-parse --show-toplevel 2>/dev/null)/scripts/codex/hook-adapter.js\"; if [ -f \"$f\" ]; then exec node \"$f\" --event Stop; fi; exit 0",
+            "timeout": 600
+          }
+        ]
+      }
+    ]
+  }
+}
