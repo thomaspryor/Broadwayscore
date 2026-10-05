@@ -21,6 +21,7 @@
 //
 // Run: node --test scripts/lib/sync-audit-checkout.test.mjs
 
+import { realNowMs } from '../../tests/helpers/clock-shift.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { execFileSync } from 'node:child_process';
@@ -784,7 +785,7 @@ test('PID reuse cannot strand a backup forever (age fallback)', () => {
     fs.mkdirSync(backupDir, { recursive: true });
     const bak = path.join(backupDir, `${LEDGER.replaceAll('/', '%')}.${process.pid}.bak`);
     fs.writeFileSync(bak, 'a\nb\nc\nstranded-row\n');
-    const twoHoursAgo = new Date(Date.now() - 2 * 60 * 60 * 1000);
+    const twoHoursAgo = new Date(realNowMs() - 2 * 60 * 60 * 1000);
     fs.utimesSync(bak, twoHoursAgo, twoHoursAgo);
 
     const { code, out } = trySync(clone, 'pidreuse');
@@ -847,7 +848,7 @@ test('a day-old backup is parked, not replayed into a rotating ledger', () => {
     fs.mkdirSync(backupDir, { recursive: true });
     const bak = path.join(backupDir, `${LEDGER.replaceAll('/', '%')}.999999.bak`);
     fs.writeFileSync(bak, 'a\nb\nc\nancient-row\n');
-    const twoDaysAgo = new Date(Date.now() - 48 * 60 * 60 * 1000);
+    const twoDaysAgo = new Date(realNowMs() - 48 * 60 * 60 * 1000);
     fs.utimesSync(bak, twoDaysAgo, twoDaysAgo);
 
     const { code, out } = trySync(clone, 'stale');

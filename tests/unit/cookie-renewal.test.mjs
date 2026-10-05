@@ -1,3 +1,4 @@
+// timebomb-audit-exempt: the lock-reclaim test measures lock age as Date.now() minus fs mtime (renew.LOCK_STALE_MS); clock-shift cannot move the filesystem clock, so every fresh lock looks stale
 // tests/unit/cookie-renewal.test.mjs — BRO-4183 automatic cookie renewal.
 //
 // Covers the guards that keep renew-cookies.js from repeating the

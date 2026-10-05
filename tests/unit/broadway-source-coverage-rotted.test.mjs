@@ -6,6 +6,7 @@
 // PLAYBILL_BROADWAY_LAST_SUCCESS_PATH so nothing under data/ is touched.
 
 import { test } from 'node:test';
+import { realNowMs } from '../helpers/clock-shift.mjs';
 import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import { spawnSync } from 'node:child_process';
@@ -46,11 +47,12 @@ test('end-to-end: empty-entries fixture + stale last-success → exit 1, state g
   try {
     const fixture = join(dir, 'fixture.json');
     // Full-size HTML (>= SILENT_ROT_HTML_THRESHOLD of 5000) with 0 parsed
+    // (real clock: the child script is not clock-shifted)
     // entries is the rot signature; a last success 3 days ago is past the
     // 24h grace window, so checkSilentRot() itself returns 'rotted'.
     writeFileSync(fixture, JSON.stringify({ entries: [], html: '<html>' + 'x'.repeat(6000) + '</html>' }));
     const lastSuccess = join(dir, 'last-success.json');
-    writeFileSync(lastSuccess, JSON.stringify({ timestamp: new Date(Date.now() - 3 * 24 * 3600 * 1000).toISOString(), entryCount: 24 }));
+    writeFileSync(lastSuccess, JSON.stringify({ timestamp: new Date(realNowMs() - 3 * 24 * 3600 * 1000).toISOString(), entryCount: 24 }));
     const auditDir = join(dir, 'audit');
     // Pre-existing first-seen ledger must survive the blind write.
     writeFileSync(join(dir, 'state-seed.json'), '');
