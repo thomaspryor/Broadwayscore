@@ -95,7 +95,7 @@ async function main() {
   const account = await fetchSdAccount(apiKey);
   const cycleUsed = account ? account.cycleUsed : null;
 
-  const { dayCredits, status, newState } = computeTodayCredits({
+  const { dayCredits, status, reason, newState } = computeTodayCredits({
     cycleUsed,
     day,
     prevState: prevState && prevState.day ? prevState : null,
@@ -128,6 +128,7 @@ async function main() {
     reservePerShow: resolveOpeningWindowReservePerShowCredits(),
   });
 
+  if (reason) console.warn(`  ⚠️  ${reason} — today is a baseline day (no trip)`);
   const planNote = account && account.limit != null && account.daysToRenewal != null
     ? `; pack ${account.limit} credits, ${account.daysToRenewal}d to renewal`
     : '';
