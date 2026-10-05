@@ -203,6 +203,22 @@ function shouldTripBreaker({ dayCredits, ceiling }) {
 }
 
 /**
+ * Max age of the prior day's last reading (before 00:00 UTC) to still carry as
+ * today's baseline. 6h: the hourly cron runs up to ~3h late (last-write-to-
+ * midnight gaps of 30-185min observed), while the BRO-3020 failure was a
+ * 24h-old reading; worst-case mis-attribution at 6h is ~12K credits.
+ */
+const ROLLOVER_CARRY_MAX_AGE_MS = 6 * 60 * 60 * 1000;
+
+/** ms from prevState.updatedAt to 00:00 UTC of `day`; null if updatedAt missing/unparseable. */
+function rolloverReadingAgeMs(prevState, day) {
+  const at = typeof prevState.updatedAt === 'string' ? Date.parse(prevState.updatedAt) : NaN;
+  const midnight = Date.parse(`${day}T00:00:00Z`);
+  if (!Number.isFinite(at) || !Number.isFinite(midnight)) return null;
+  return midnight - at;
+}
+
+/**
  * Derive today's credit usage from SD's account reading, which (unlike BD's
  * billing API) only exposes CYCLE-cumulative requestUsed
  * (provider-billing.js's parseSdAccount -> cycleUsed), not a per-day figure.
@@ -223,19 +239,9 @@ function shouldTripBreaker({ dayCredits, ceiling }) {
  * @param {{day: string, dayBaseline: number, lastCycleUsed: number}|null} prevState
  *   the persisted state from the last check (any day), or null if none yet
  * @returns {{dayCredits: number|null, status: 'ok'|'baseline'|'unknown',
+ *            reason: string|null (why a rollover degraded to baseline),
  *            newState: {day: string, dayBaseline: number, lastCycleUsed: number}|null}}
  */
-/** Max age of the prior day's last reading (before 00:00 UTC) to still carry as today's baseline. */
-const ROLLOVER_CARRY_MAX_AGE_MS = 3 * 60 * 60 * 1000;
-
-/** ms from prevState.updatedAt to 00:00 UTC of `day`; null if updatedAt missing/unparseable. */
-function rolloverReadingAgeMs(prevState, day) {
-  const at = typeof prevState.updatedAt === 'string' ? Date.parse(prevState.updatedAt) : NaN;
-  const midnight = Date.parse(`${day}T00:00:00Z`);
-  if (!Number.isFinite(at) || !Number.isFinite(midnight)) return null;
-  return midnight - at;
-}
-
 function computeTodayCredits({ cycleUsed, day, prevState }) {
   if (typeof cycleUsed !== 'number' || !Number.isFinite(cycleUsed)) {
     // Unknown reading (billing API unreachable) — leave any prior state

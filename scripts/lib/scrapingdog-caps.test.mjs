@@ -114,11 +114,11 @@ test('computeTodayCredits: BRO-3020 stale prev reading on rollover degrades to b
   assert.match(r.reason, /mis-attribute/);
 });
 
-test('computeTodayCredits: rollover window boundary is inclusive at 3h', () => {
+test('computeTodayCredits: rollover window boundary is inclusive at 6h', () => {
   const mk = (updatedAt) => computeTodayCredits({ cycleUsed: 44300, day: '2026-08-11',
     prevState: { day: '2026-08-10', dayBaseline: 40000, lastCycleUsed: 44000, updatedAt } });
-  assert.equal(mk('2026-08-10T21:00:00.000Z').status, 'ok');
-  assert.equal(mk('2026-08-10T20:59:59.000Z').status, 'baseline');
+  assert.equal(mk('2026-08-10T18:00:00.000Z').status, 'ok');
+  assert.equal(mk('2026-08-10T17:59:59.000Z').status, 'baseline');
 });
 
 test('computeTodayCredits: missing/invalid updatedAt on rollover degrades to baseline', () => {
