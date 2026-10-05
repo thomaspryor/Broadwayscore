@@ -797,7 +797,7 @@ function broadwayOpenings() {
     // production on prior-run reviews (adversarial review, 2026-09-20).
     .filter(e => hasFreshRunCoverage(e.show));
   if (!events.length) return { html: null, list: [], reopeningIds: new Set() };
-  events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id), agg => isGoldTier(agg?.avg, 'broadway')));
+  events.sort((a, b) => compareOpeningStories(aggregateScore(a.show.id), aggregateScore(b.show.id)));
   const reopeningIds = new Set(events.filter(e => e.isReopening).map(e => e.show.id));
   const list = events.map(e => e.show);
   markFeatured(...list.map(s => s.id));
@@ -820,7 +820,7 @@ function offBroadwayOpenings() {
   // Grace window: include OB shows that opened in the last 14 days, not just the
   // strict in-week opening — this catches shows that were added to our DB late.
   // Opera is excluded (it has its own section); only shows with reviews qualify;
-  // the highest-scored show leads as the featured opening.
+  // the most-reviewed show leads as the featured opening.
   const cutoffDate = new Date(weekStartStr + 'T12:00:00'); cutoffDate.setDate(cutoffDate.getDate() - 14);
   const cutoff = cutoffDate.toISOString().slice(0, 10);
   const withScore = shows
@@ -839,11 +839,13 @@ function offBroadwayOpenings() {
       && !excludedShowIds.has(s.id))
     .map(s => ({ s, agg: aggregateScore(s.id) }))
     .filter(x => x.agg && x.agg.count >= minReviews('off-broadway') && hasFreshRunCoverage(x.s))
-    .sort((a, b) => ((b.agg.raw ?? b.agg.avg) - (a.agg.raw ?? a.agg.avg)));
+    // Most-reviewed first, then score — the same lead rule as Broadway and
+    // London (owner decision 2026-10-04, BRO-3921; see opening-story-order.js).
+    .sort((a, b) => compareOpeningStories(a.agg, b.agg));
   // Editorial lead override: NEWSLETTER_OB_LEAD=<showId> floats one opening to
   // the top of this section regardless of score (e.g. a marquee revival the
   // editor wants leading even if a higher-scored show also opened). Off by
-  // default — the scheduled cron sets nothing, so ordering stays score-desc.
+  // default — the scheduled cron sets nothing, so ordering stays most-reviewed-first.
   const obLead = (process.env.NEWSLETTER_OB_LEAD || '').trim();
   if (obLead) {
     const i = withScore.findIndex(x => x.s.id === obLead);

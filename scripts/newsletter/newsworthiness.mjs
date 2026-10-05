@@ -151,6 +151,19 @@ export function scoreCandidates(input) {
   // on Broadway" feed) — below every real West End/Off West End opening, the
   // same relationship weGoldOpenings already has in reverse (see
   // WE_OPENING_SECONDARY_BASE above).
+  // Opening candidates keep their INPUT order (generate.mjs sorts them most-
+  // reviewed-first via scripts/lib/opening-story-order.js — owner decision
+  // 2026-10-04, BRO-3921): openingRankCap lowers any later opening's weight
+  // to just under the previous one, so a gold bump can still lift an opening
+  // above an unrelated story (a closing, a recoupment) but can never let a
+  // thinly reviewed show jump the week's most-reviewed opening. Shared across
+  // the Broadway and Off-Broadway loops so Broadway still leads Off-Broadway.
+  let openingRankCap = Infinity;
+  const capOpeningWeight = (w) => {
+    const capped = w > openingRankCap ? openingRankCap - WEIGHTS.WE_OPENING_RANK_EPSILON : w;
+    openingRankCap = capped;
+    return capped;
+  };
   for (const item of (input.bwOpenings || [])) {
     const s = item.show || item; // backward compat if a bare show is passed
     const isReopen = !!item.isReopening;
@@ -159,7 +172,7 @@ export function scoreCandidates(input) {
     const verdict = tier ? VERDICT_VARIANTS[tier][0] : null;
     const isWeEdition = (input.edition || 'broadway') === 'west-end';
     const goldBump = isGoldTier(score, s.category) ? WEIGHTS.BW_OPENING_GOLD_BUMP : 0;
-    const weight = isWeEdition ? WEIGHTS.BW_OPENING_WE_SECONDARY_BASE : WEIGHTS.BW_OPENING_BASE + goldBump;
+    const weight = isWeEdition ? WEIGHTS.BW_OPENING_WE_SECONDARY_BASE : capOpeningWeight(WEIGHTS.BW_OPENING_BASE + goldBump);
     const verb = isReopen ? 'reopens' : 'opens';
     // "on Broadway" is redundant in the Broadway edition (the whole email IS
     // Broadway) but essential context in the WE edition — mirrors how the
@@ -244,7 +257,7 @@ export function scoreCandidates(input) {
     const headline = verdict
       ? `${s.title} ${verb} ${loc} to ${verdict}`
       : `${s.title} ${verb} ${loc}`;
-    out.push({ kind: isReopen ? 'ob-reopening' : 'ob-opening', weight: WEIGHTS.OB_OPENING_BASE + goldBump, headline, show: s, slug: s.slug,
+    out.push({ kind: isReopen ? 'ob-reopening' : 'ob-opening', weight: capOpeningWeight(WEIGHTS.OB_OPENING_BASE + goldBump), headline, show: s, slug: s.slug,
       verdictTier: tier, verdictPrefix: `${s.title} ${verb} ${loc} to `, openingVenue: isShakespeareInThePark ? 'Free Shakespeare in the Park' : 'off-Broadway' });
   }
 
