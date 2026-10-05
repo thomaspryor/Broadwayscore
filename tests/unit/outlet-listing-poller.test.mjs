@@ -23,6 +23,17 @@ const {
 // ---------------------------------------------------------------------------
 
 describe('findMatchingShows', () => {
+  test('a book review of a novel tied to a show matches nothing (BRO-4656)', () => {
+    const wicked = [{ id: 'wicked-2003', title: 'Wicked', status: 'open' }, { id: 'wicked-tour-2021', title: 'Wicked', status: 'open' }];
+    assert.deepEqual(findMatchingShows("'Galinda: A Charmed Childhood' book review: Wicked's Glinda before the bubble",
+      '/galinda-charmed-childhood-gregory-maguire-review/', wicked), []);
+    // A theatre word keeps it: a stage review that compares the musical with the book.
+    assert.equal(findMatchingShows('Wicked musical review: better than the book review crowd says', '/wicked-review/', wicked).length, 2);
+    assert.equal(findMatchingShows('Review: Wicked still flies at the Fox', '/wicked-review-fox/', wicked).length, 2);
+    const outsiders = [{ id: 'the-outsiders-2024', title: 'The Outsiders', status: 'open' }];
+    assert.deepEqual(findMatchingShows("'Auslander' Review: The Lives of Outsiders", '/arts-culture/books/auslander-review-the-lives-of-outsiders-ae0ce2c2', outsiders), []);
+  });
+
   const shows = [
     { id: 'new-born-off-broadway-2026', title: 'New Born', status: 'open' },
     { id: 'what-happened-was-off-broadway-2026', title: 'What Happened Was', status: 'open' },
