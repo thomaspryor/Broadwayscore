@@ -12,6 +12,7 @@
 const https = require('https');
 const http = require('http');
 const { foldDiacritics } = require('./title-match');
+const { passesGenericTitleIdentity } = require('./generic-title-guard');
 
 // Theater-specific feeds (narrow enough that date-window filtering is safe)
 // NOTE: Guardian Stage is NOT here — it covers all performing arts globally (WE, opera, dance, regional).
@@ -238,6 +239,8 @@ function titleMatchesShow(itemTitle, showTitle) {
     .filter(w => w.length > 1);
 
   if (showWords.length === 0) return false;
+  // BRO-2760: "The Story"-style titles need the article+word phrase, not a lone word.
+  if (!passesGenericTitleIdentity(itemTitle, showTitle)) return false;
 
   const itemLower = normalize(itemTitle);
   // Word-boundary match: prevents "tru" matching "trump" or "bug" matching "debug".

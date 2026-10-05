@@ -16,6 +16,7 @@ const https = require('https');
 const http = require('http');
 const { URL } = require('url');
 const { isLondonMarket } = require('./venue-classification');
+const { passesGenericTitleIdentity } = require('./generic-title-guard');
 const { urlLooksLikeReview } = require('./review-guards');
 const { cleanSearchTitle } = require('./title-normalization');
 const { hasNonMetOperaUrlMarker, isUrlYearOutsideWindow } = require('./content-filters');
@@ -437,7 +438,9 @@ const SITE_SEARCH_ENDPOINTS = {
             .split(/\s+/)
             .filter(w => w.length > 2 && !['the', 'and', 'for'].includes(w));
           const matchCount = showWords.filter(w => titleLower.includes(w)).length;
-          if (matchCount >= Math.ceil(showWords.length * 0.5) &&
+          // BRO-2760: "The Story"-style titles need the full phrase, not substring "story".
+          if (passesGenericTitleIdentity(title, showTitle) &&
+              matchCount >= Math.ceil(showWords.length * 0.5) &&
               (titleLower.includes('review') || titleLower.includes('theatre') || titleLower.includes('west end'))) {
             urls.push(loc);
           }
