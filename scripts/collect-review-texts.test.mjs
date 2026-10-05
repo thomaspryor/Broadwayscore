@@ -12,6 +12,8 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 import fs from 'node:fs';
 import path from 'node:path';
+import os from 'node:os';
+import { execFileSync } from 'node:child_process';
 
 const require = createRequire(import.meta.url);
 // BRO-2381 ship-check finding (Codex): pushReviewTextsCheckpoint() operates on
@@ -183,8 +185,6 @@ test('BRO-2691: degenerate SHOW_FILTER (",") fails closed: matches nothing, not 
 //   3. the mechanism that really duplicates is RETRY_FAILED=true inside ONE
 //      process, which shouldSkipAlreadyAttempted deliberately allows; the
 //      write-time dedupe (dedupeAttemptState, called by saveState) removes it.
-import os from 'node:os';
-import { execFileSync } from 'node:child_process';
 const { shouldSkipAlreadyAttempted, dedupeAttemptState } = require('./lib/collection-attempt-guard.js');
 
 const freshState = () => ({ processed: [], failed: ['r-old'] });
@@ -196,32 +196,37 @@ function procRun(file, reviewId, { retryFailed = false } = {}) {
 }
 const tmp = () => fs.mkdtempSync(path.join(os.tmpdir(), 'bro3059-'));
 
-test('BRO-3059: two concurrent processes on one progress.json file are last-writer-wins, not duplicated', () => {
-  const dir = tmp(); const file = path.join(dir, 'progress.json');
+test('BRO-3059: two concurrent processes on one progress.json file are last-writer-wins, not duplicated', (t) => {
+  const dir = tmp(); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const file = path.join(dir, 'progress.json');
   fs.writeFileSync(file, JSON.stringify(freshState()));
   // Both load the SAME snapshot before either saves (the race window).
-  const a = procRun(file, 'r-new');
-  const b = procRun(file, 'r-new');
+  const same = [procRun(file, 'r-new'), procRun(file, 'r-new')];
+  fs.writeFileSync(file, JSON.stringify(same[0]));
+  fs.writeFileSync(file, JSON.stringify(same[1]));
+  assert.deepEqual(JSON.parse(fs.readFileSync(file, 'utf8')).failed, ['r-old', 'r-new']);
+  // Different ids: the earlier writer's id is LOST, not merged (loss, not duplication).
+  const a = procRun(file, 'r-a');
+  const b = procRun(file, 'r-b');
   fs.writeFileSync(file, JSON.stringify(a));
   fs.writeFileSync(file, JSON.stringify(b));
-  const final = JSON.parse(fs.readFileSync(file, 'utf8'));
-  assert.deepEqual(final.failed, ['r-old', 'r-new']);
-  fs.rmSync(dir, { recursive: true, force: true });
+  const final = JSON.parse(fs.readFileSync(file, 'utf8')).failed;
+  assert.ok(final.includes('r-b') && !final.includes('r-a'));
 });
 
-test('BRO-3059: git line-merge of two processes appending the same failed id collapses to one entry', () => {
-  const dir = tmp();
+test('BRO-3059: git line-merge of two processes appending the same failed id collapses to one entry (identical-append case only)', (t) => {
+  const dir = tmp(); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
   const doc = (ids) => JSON.stringify({ failed: ids, processed: [] }, null, 2) + '\n';
   fs.writeFileSync(path.join(dir, 'base.json'), doc(['r-old']));
   fs.writeFileSync(path.join(dir, 'a.json'), doc(['r-old', 'r-new']));
   fs.writeFileSync(path.join(dir, 'b.json'), doc(['r-old', 'r-new']));
   const merged = execFileSync('git', ['merge-file', '-p', 'a.json', 'base.json', 'b.json'], { cwd: dir, encoding: 'utf8' });
   assert.deepEqual(JSON.parse(merged).failed, ['r-old', 'r-new']);
-  fs.rmSync(dir, { recursive: true, force: true });
 });
 
-test('BRO-3059: RETRY_FAILED in ONE process re-appends the same id (the real duplicate source); write-time dedupe collapses it', () => {
-  const dir = tmp(); const file = path.join(dir, 'progress.json');
+test('BRO-3059: RETRY_FAILED in ONE process re-appends the same id (the real duplicate source); write-time dedupe collapses it', (t) => {
+  const dir = tmp(); t.after(() => fs.rmSync(dir, { recursive: true, force: true }));
+  const file = path.join(dir, 'progress.json');
   fs.writeFileSync(file, JSON.stringify(freshState()));
   // Without retry the in-process guard blocks the repeat attempt.
   assert.equal(shouldSkipAlreadyAttempted(freshState(), 'r-old', false), true);
@@ -231,5 +236,4 @@ test('BRO-3059: RETRY_FAILED in ONE process re-appends the same id (the real dup
   const removed = dedupeAttemptState(st); // what saveState() runs before writing
   assert.equal(removed.failed, 1);
   assert.deepEqual(st.failed, ['r-old']);
-  fs.rmSync(dir, { recursive: true, force: true });
 });
