@@ -9,7 +9,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
-const { classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep } = require('../../scripts/lib/tour-backfill.js');
+const { genericVenuesOf, classifyTourBackfill, prepareTourMove, planTourSweep, decideTourSweep, matchStop, loadSweepContext, sweepLimits, sweepHoldReason, settingCitiesOf, decideTourIntegrity, applyIntegrityFlag } = require('../../scripts/lib/tour-backfill.js');
 
 const tourFlag = { wrongProduction: true, wrongProductionReason: 'BWW regional/tour review (denver)', url: 'https://www.denverpost.com/x' };
 // An undated review moves only to a dated tour it was found after (BRO-4325).
@@ -105,7 +105,10 @@ test('an undated review found before the tour launched belongs to an earlier pro
   // Jersey Boys review from an older tour.
   const ctx = { broadwayOpeningDate: '2016-04-24', tourLaunchDate: '2026-09-18' };
   assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2026-02-09T16:57:58Z', textFetchedAt: '2026-02-13T20:12:58Z' }, ctx).reason, 'undated-before-launch');
-  assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2026-09-14T00:00:00Z' }, ctx).action, 'move', 'a week of slack for first-stop reviews');
+  // Waitress first opened ten years before this tour and toured in 2017: an
+  // undated review can't be placed on the 2026 tour (BRO-4656).
+  assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2026-09-14T00:00:00Z' }, ctx).reason, 'undated-perennial');
+  assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2026-09-14T00:00:00Z' }, { ...ctx, broadwayOpeningDate: '2024-04-24' }).action, 'move', 'a week of slack for first-stop reviews');
   assert.equal(classifyTourBackfill({ ...tourFlag, urlDiscoveredAt: '2026-09-20T00:00:00Z' }, {}).reason, 'undated-before-launch', 'a tour with no launch date takes no undated review');
 });
 
@@ -126,7 +129,9 @@ test('planTourSweep: every Broadway production of the title, never other markets
   const plans = planTourSweep(shows);
   assert.equal(plans.length, 1);
   assert.deepEqual(plans[0].fromIds, ['bj-2019', 'bj-2022']);
-  assert.deepEqual(plans[0].ctx, { broadwayOpeningDate: '2019-04-25', tourLaunchDate: '2022-12-01', tourClosingDate: '2025-09-14', otherToursOfTitle: 0, nextTourLaunchDate: null, siblingTourUndated: false });
+  assert.deepEqual(plans[0].ctx, { broadwayOpeningDate: '2019-04-25', firstBroadwayOpeningDate: '2019-04-25', tourLaunchDate: '2022-12-01', tourClosingDate: '2025-09-14', otherToursOfTitle: 0, nextTourLaunchDate: null, siblingTourUndated: false, stops: null, ukOutlets: null, genericVenues: null });
+  const withStops = planTourSweep(shows, { schedules: { 'bj-tour-2022': { stops: [{ city: 'Denver, CO', venue: 'Buell Theatre', start: '2023-01-03', end: '2023-01-15' }] } } });
+  assert.equal(withStops[0].ctx.stops.length, 1);
   // A second tour with no launch date yet: neither tour can take a review.
   const undated = planTourSweep([...shows, { id: 'bj-tour-2027', title: 'Beetlejuice', category: 'tour', tourOf: 'bj-2022', status: 'open' }]);
   assert.equal(undated.find(p => p.tourId === 'bj-tour-2027').ctx.otherToursOfTitle, 1);
@@ -178,4 +183,155 @@ test('scheduled sweep holds a flood instead of moving it (BRO-4262)', async () =
   assert.match(sweepHoldReason(rows(21), ['wicked-2003'], () => 400), /cap 20/);
   assert.match(sweepHoldReason(rows(5), ['wicked-2003'], () => 30), /> 10%/);
   assert.equal(sweepHoldReason(rows(2), ['tiny-2024'], () => 4), null, 'two moves from a tiny folder is not a flood');
+});
+
+// BRO-4656 regressions, each from the live corpus.
+const SPAMALOT = {
+  broadwayOpeningDate: '2023-11-16', firstBroadwayOpeningDate: '2005-03-17', tourLaunchDate: '2025-12-01',
+  stops: [
+    { city: 'Hartford, CT', venue: 'The Bushnell', start: '2025-12-09', end: '2025-12-14' },
+    { city: 'Rochester, NY', venue: 'Rochester Auditorium Theatre', start: '2026-01-13', end: '2026-01-18' },
+  ],
+};
+
+test('an ambiguous "revival/tour" label is not tour evidence: 2023 Spamalot revival reviews stay off the tour', () => {
+  // cititour / Daily Beast / Theatrely on spamalot-2005: undated, fetched in 2026.
+  const revival = { wrongProduction: true, wrongProductionReason: 'BWW roundup from 2023 but show opened 2005 (18yr gap) — likely revival/tour review', textFetchedAt: '2026-02-25T21:36:53Z',
+    fullText: 'Who am I to judge if Spamalot has a place on Broadway in 2023? The original staging has been recreated at the St. James Theatre.' };
+  assert.equal(classifyTourBackfill(revival, SPAMALOT).reason, 'no-tour-evidence');
+  // Even with tour words nearby, a review that says the show is back on Broadway stays.
+  assert.equal(classifyTourBackfill({ ...revival, wrongProductionReason: 'Tour review', fullText: 'Spamalot returns to Broadway, before the tour.' }, SPAMALOT).reason, 'broadway-production');
+});
+
+test('a flag that never mentions a tour still moves when the text names a stop played on that date (BRO-4656)', () => {
+  // Hartford Courant on spamalot-2023, flagged by the 2026-06-21 contamination audit.
+  const hartford = { wrongProduction: true, wrongProductionReason: 'audit-2026-06-21-prior-production-contamination', publishDate: '2025-12-11',
+    fullText: '"Spamalot" can be a lot. It plays the Bushnell in Hartford through Sunday.' };
+  assert.deepEqual(classifyTourBackfill(hartford, SPAMALOT), { action: 'move', reason: 'tour-review' });
+  assert.equal(matchStop(hartford, SPAMALOT.stops).city, 'Hartford, CT');
+  // Same text a year later: no stop then, no tour words: stays.
+  assert.equal(classifyTourBackfill({ ...hartford, publishDate: '2026-12-11' }, SPAMALOT).reason, 'flag-not-tour');
+  // No flag at all is never touched.
+  assert.equal(classifyTourBackfill({ ...hartford, wrongProduction: false }, SPAMALOT).reason, 'not-flagged');
+  // Tour words alone also count (Wicked's Boston Globe review, empty reason).
+  assert.equal(classifyTourBackfill({ wrongProduction: true, publishDate: '2022-06-10', fullText: 'the current touring production would be as outstanding' },
+    { broadwayOpeningDate: '2003-10-30', tourLaunchDate: '2021-08-03' }).action, 'move');
+});
+
+test('London reviews of a later West End run never move to the US tour (Shucked 2025)', () => {
+  const ctx = { broadwayOpeningDate: '2023-04-04', tourLaunchDate: '2024-10-20', ukOutlets: new Set(['telegraph']) };
+  const london = { wrongProduction: true, wrongProductionReason: 'Date guard: review is 486d after close — likely different production', publishDate: '2025-05-21' };
+  assert.equal(classifyTourBackfill({ ...london, outletId: 'telegraph', fullText: 'This touring cast, er, this new cast at Southwark' }, ctx).reason, 'uk-production');
+  assert.equal(classifyTourBackfill({ ...london, outletId: 'everything-theatre', fullText: 'Shucked opens in London; the tour of corn jokes...' }, ctx).reason, 'uk-production');
+});
+
+test('undated reviews of a title with years of earlier tours stay put (Wicked, The Lion King)', () => {
+  const wicked = { broadwayOpeningDate: '2003-10-30', firstBroadwayOpeningDate: '2003-10-30', tourLaunchDate: '2021-08-03' };
+  const undated = { wrongProduction: true, firstSeenAt: '2026-02-01T00:00:00Z', fullText: 'the touring company of the musical WICKED' };
+  assert.equal(classifyTourBackfill(undated, wicked).reason, 'undated-perennial');
+  assert.equal(classifyTourBackfill({ ...undated, publishDate: '2024-01-30' }, wicked).action, 'move');
+});
+
+test('loadSweepContext reads schedules and London outlets; missing files give nulls', () => {
+  const ctx = loadSweepContext('/nonexistent-root');
+  assert.deepEqual({ ...ctx, genericVenues: [...ctx.genericVenues] }, { schedules: null, ukOutlets: null, genericVenues: [] });
+});
+
+test('a reviewed backlog passes the hard stop only while its approval holds (BRO-4656)', () => {
+  const approvals = { approvals: [{ tourId: 'wicked-tour-2021', maxMoves: 8, expires: '2026-10-19', issue: 'BRO-4656' }] };
+  const now = new Date('2026-10-06T00:00:00Z');
+  const pending = Array.from({ length: 7 }, () => ({ fromId: 'wicked-2003' }));
+  const size = () => 60;
+  assert.match(sweepHoldReason(pending, ['wicked-2003'], size, sweepLimits(null, 'wicked-tour-2021', { now })), /> 10%/);
+  assert.equal(sweepHoldReason(pending, ['wicked-2003'], size, sweepLimits(approvals, 'wicked-tour-2021', { now })), null);
+  // More than reviewed, another tour, or after expiry: held as before.
+  const nine = Array.from({ length: 9 }, () => ({ fromId: 'wicked-2003' }));
+  assert.match(sweepHoldReason(nine, ['wicked-2003'], size, sweepLimits(approvals, 'wicked-tour-2021', { now })), /cap 8/);
+  assert.equal(sweepLimits(approvals, 'six-tour-2022', { now }).approvedBy, undefined);
+  assert.equal(sweepLimits(approvals, 'wicked-tour-2021', { now: new Date('2026-10-20T00:00:00Z') }).approvedBy, undefined);
+});
+
+test("a stop city the show's own reviews keep naming (its setting) matches by venue only", () => {
+  const stops = [{ city: 'Tulsa, OK', venue: 'Tulsa PAC', start: '2025-10-07', end: '2025-10-12' }, { city: 'Austin, TX', venue: 'Bass Concert Hall', start: '2025-10-21', end: '2025-10-26' }];
+  const bway = ['Ponyboy in 1960s Tulsa', 'the Tulsa greasers', 'Tulsa again', 'no city here', 'Broadway'];
+  const setting = settingCitiesOf(stops, bway);
+  assert.deepEqual([...setting], ['Tulsa']);
+  const review = { publishDate: '2025-10-10', fullText: 'The Tulsa setting feels small.' };
+  assert.equal(matchStop(review, stops, setting), null);
+  assert.equal(matchStop({ ...review, fullText: 'rolled into Bass Concert Hall' }, stops, setting).city, 'Austin, TX');
+});
+
+test('tour integrity flags a tour-stop review on Broadway and a UK review on the tour, not look-alikes (BRO-4656)', () => {
+  const stops = [{ city: 'Austin, TX', venue: 'Bass Concert Hall', start: '2025-10-21', end: '2025-10-26' }];
+  const files = {
+    'gatsby-2024': [
+      { file: 'austin-chronicle--a.json', data: { publishDate: '2025-10-23', fullText: 'Gatsby glitters at Bass Concert Hall this week.' } },
+      { file: 'nyt--b.json', data: { publishDate: '2024-04-25', fullText: 'On Broadway at the Broadway Theatre.' } },
+      { file: 'austin-blog--c.json', data: { publishDate: '2025-10-22', fullText: 'Austin readers, see the Broadway show in New York.' } },
+      { file: 'flagged.json', data: { wrongProduction: true, publishDate: '2025-10-23', fullText: 'Bass Concert Hall' } },
+    ],
+    'gatsby-tour-2026': [
+      { file: 'hull--d.json', data: { outletId: 'hull-daily', url: 'https://hulldailymail.co.uk/x', fullText: 'at Hull New Theatre' } },
+      { file: 'sun-times--e.json', data: { outletId: 'chicago-sun-times', url: 'https://suntimes.com/x', fullText: 'A West End hit now in Chicago.' } },
+      { file: 'stage--f.json', data: { outletId: 'the-stage', url: 'https://thestage.com/x', fullText: 'Gatsby' } },
+    ],
+  };
+  const plan = { tourId: 'gatsby-tour-2026', fromIds: ['gatsby-2024'], ctx: { stops, ukOutlets: new Set(['the-stage']) } };
+  const rows = decideTourIntegrity(plan, id => files[id] || []);
+  assert.deepEqual(rows.map(r => `${r.kind}:${r.file}`), ['tour-on-broadway:austin-chronicle--a.json', 'uk-on-tour:hull--d.json', 'uk-on-tour:stage--f.json']);
+  assert.match(rows[0].reason, /Bass Concert Hall, Austin, TX stop \(2025-10-21\)/);
+  const flagged = applyIntegrityFlag({ score: 80 }, rows[0], '2026-10-05T00:00:00Z');
+  assert.equal(flagged.wrongProduction, true);
+  assert.equal(flagged.wrongProductionDetectedBy, 'tour-integrity');
+  assert.equal(flagged.score, 80);
+});
+
+test('stop matching survives the BRO-4656 review cases: London ON, shared venue names, inverted stops', () => {
+  const stops = [
+    { city: 'London, ON', venue: 'Budweiser Gardens', start: '2026-03-01', end: '2026-03-05' },
+    { city: 'Kansas City, MO', venue: 'Music Hall', start: '2026-03-01', end: '2026-03-08' },
+    { city: 'Dallas, TX', venue: 'Music Hall at Fair Park', start: '2026-01-01', end: '2026-01-08' },
+    { city: 'Chicago, IL', venue: 'Cadillac Palace Theatre', start: '2026-03-10', end: '2026-01-14' },
+  ];
+  const generic = new Set(['Music Hall']);
+  const at = (fullText) => ({ publishDate: '2026-03-04', fullText });
+  // A West End review naming London is not the London, ON stop.
+  assert.equal(matchStop(at('A night out in London at the Prince Edward.'), stops, null, generic), null);
+  assert.equal(matchStop(at('Budweiser Gardens hosts the tour.'), stops, null, generic).city, 'London, ON');
+  // "Music Hall" in Dallas text is not the Kansas City stop; with the city it is.
+  assert.equal(matchStop(at('KERA: the Music Hall in Dallas.'), stops, null, generic), null);
+  assert.equal(matchStop(at('At the Music Hall in Kansas City this week.'), stops, null, generic).city, 'Kansas City, MO');
+  // An end before the start never matches.
+  assert.equal(matchStop(at('Cadillac Palace Theatre, Chicago.'), stops, null, generic), null);
+});
+
+test('genericVenuesOf: a venue in two cities or a Broadway house name', () => {
+  const tours = { a: { stops: [{ city: 'Denver, CO', venue: 'Orpheum Theatre' }, { city: 'Omaha, NE', venue: 'Orpheum Theatre' }, { city: 'Austin, TX', venue: 'Bass Concert Hall' }, { city: 'Boston, MA', venue: 'Majestic Theatre' }] } };
+  const shows = { shows: [{ venue: 'Majestic Theatre', category: 'broadway' }] };
+  assert.deepEqual([...genericVenuesOf(tours, shows)].sort(), ['Majestic Theatre', 'Orpheum Theatre']);
+});
+
+test('a London outlet never moves to the tour, even when its text names a stop', () => {
+  const ctx = { stops: [{ city: 'Austin, TX', venue: 'Bass Concert Hall', start: '2025-10-21', end: '2025-10-26' }], ukOutlets: new Set(['the-stage']) };
+  const data = { wrongProduction: true, wrongProductionReason: 'national tour', outletId: 'the-stage', publishDate: '2025-10-23', fullText: 'Bass Concert Hall' };
+  assert.equal(classifyTourBackfill(data, ctx).reason, 'uk-production');
+});
+
+test('tour integrity leaves human-ruled and locked files alone; US Manchester is not UK', () => {
+  const stops = [{ city: 'Austin, TX', venue: 'Bass Concert Hall', start: '2025-10-21', end: '2025-10-26' }];
+  const text = { publishDate: '2025-10-23', fullText: 'Gatsby glitters at Bass Concert Hall this week.' };
+  const files = {
+    'gatsby-2024': [
+      { file: 'a.json', data: { ...text, wrongProductionManualClear: true } },
+      { file: 'b.json', data: { ...text, wrongProductionOverride: true } },
+      { file: 'c.json', data: { ...text, humanReviewedWrongProduction: true } },
+      { file: 'd.json', data: { ...text, _locked: true } },
+    ],
+    'gatsby-tour-2026': [
+      { file: 'nh.json', data: { outletId: 'union-leader', url: 'https://unionleader.com/x', fullText: 'The tour plays Manchester this week.' } },
+      { file: 'hull.json', data: { outletId: 'hull-daily', url: 'https://example.com/x', fullText: 'at Hull New Theatre', _locked: true } },
+    ],
+  };
+  const plan = { tourId: 'gatsby-tour-2026', fromIds: ['gatsby-2024'], ctx: { stops, ukOutlets: new Set() } };
+  assert.deepEqual(decideTourIntegrity(plan, id => files[id] || []), []);
 });

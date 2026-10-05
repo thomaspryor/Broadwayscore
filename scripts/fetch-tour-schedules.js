@@ -91,8 +91,12 @@ async function main() {
   const only = (argv.find(a => a.startsWith('--show=')) || '').split('=')[1] || null;
 
   const shows = JSON.parse(fs.readFileSync(SHOWS_PATH, 'utf8')).shows;
-  const targets = shows.filter(s => s.category === 'tour' && (only ? s.id === only : s.status !== 'closed'));
   const out = fs.existsSync(OUT_PATH) ? JSON.parse(fs.readFileSync(OUT_PATH, 'utf8')) : { tours: {} };
+  // A closed tour is fetched until it has a schedule (BRO-4656): the review
+  // sweep and stop-review discovery date reviews against its stops, and half
+  // the tours (every closed one) had none.
+  const targets = shows.filter(s => s.category === 'tour'
+    && (only ? s.id === only : (s.status !== 'closed' || !(out.tours[s.id] && out.tours[s.id].stops && out.tours[s.id].stops.length))));
 
   let failed = 0;
   let changed = 0;

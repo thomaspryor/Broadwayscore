@@ -44,9 +44,9 @@ const fs = require('fs');
 const path = require('path');
 const { execFileSync } = require('child_process');
 const { serpQuery } = require('./lib/url-discovery');
-const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour } = require('./lib/regional-serp-discovery');
+const { selectDiscoveryShows, buildDiscoveryQuery, buildDiscoveryDateRange, tourCandidateIsTour, normalizeUrl, looksLikeAggregationOrReaction, resolveRegisteredOutlet } = require('./lib/regional-serp-discovery');
 const { urlLooksLikeReview } = require('./lib/review-guards');
-const { _parseDomain, lookupOutletForHost } = require('./lib/outlet-canonicalize');
+const { _parseDomain } = require('./lib/outlet-canonicalize');
 const { validateSerpCandidate } = require('./lib/serp-candidate-validator');
 const { serpCensusPreflight } = require('./lib/serp-census-preflight');
 
@@ -87,30 +87,6 @@ function getExistingUrls(showId) {
   }
   return urls;
 }
-
-function normalizeUrl(url) {
-  return (url || '').toLowerCase().replace(/\/$/, '');
-}
-
-// Roundup/aggregation pages (BWW "Review Roundup", Playbill "Read the Reviews")
-// and audience-reaction pieces are not single-critic reviews. The downstream
-// write path (review-file-writer.js isRoundupPageAsReview) already excludes
-// roundup pages from scoring, but skipping them here avoids a wasted fetch and
-// an outlet--critic slot claimed by a page that isn't a review at all.
-const NON_REVIEW_MARKERS = /\b(review roundup|critics? sound off|read the reviews|what critics? (?:are|is) saying|reactions?|reacts? to)\b/i;
-
-function looksLikeAggregationOrReaction(url, title) {
-  return NON_REVIEW_MARKERS.test(title || '') || NON_REVIEW_MARKERS.test(decodeURIComponent(url || ''));
-}
-
-function resolveRegisteredOutlet(url) {
-  const domain = _parseDomain(url);
-  if (!domain) return null;
-  // exactOnly: this automated path ingests whatever it resolves; a parent-domain
-  // match would turn forum.broadwayworld.com threads into BroadwayWorld reviews.
-  return lookupOutletForHost(domain, { exactOnly: true });
-}
-
 
 function selectRegionalShows() {
   const showsData = require(path.join(ROOT, 'data', 'shows.json'));

@@ -365,11 +365,16 @@ function validateEvent(e, where) {
 /** Every Event node in a page's JSON-LD blocks (top level, @graph, ItemList items). */
 function eventsIn(blocks) {
   const out = [];
-  // jsonLdItems flattens arrays and @graph wrappers (scripts/lib/jsonld.js).
+  // jsonLdItems flattens one level of arrays and @graph wrappers
+  // (scripts/lib/jsonld.js); recurse for deeper nesting (an array element that
+  // is itself an array, a @graph inside a graph node) so no event is skipped.
   const walk = v => {
+    const top = Array.isArray(v) ? v : [v];
     for (const n of jsonLdItems(v)) {
-      if (isEvent(n)) out.push(n);
+      if (Array.isArray(n)) walk(n);
+      else if (isEvent(n)) out.push(n);
       else if (hasJsonLdType(n, 'ItemList')) (n.itemListElement || []).forEach(li => walk(li && (li.item || li)));
+      if (!top.includes(n) && Array.isArray(n['@graph'])) walk(n['@graph']);
     }
   };
   blocks.forEach(b => b.value && walk(b.value));

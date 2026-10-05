@@ -162,6 +162,16 @@ test('eventsIn finds events in @graph, ItemList and array @type, never in other 
   assert.deepEqual(A.eventsIn(blocks).map(e => e.name), ['a', 'b', 'c', 'd']);
 });
 
+test('eventsIn reaches events nested deeper than one level, without double counting', () => {
+  const ev = n => ({ '@type': 'TheaterEvent', name: n });
+  const blocks = [
+    { value: { '@graph': [{ '@type': 'WebPage', '@graph': [ev('deep')] }] } },
+    { value: [[ev('arr')]] },
+    { value: [{ '@graph': [ev('once')] }] },
+  ];
+  assert.deepEqual(A.eventsIn(blocks).map(e => e.name), ['deep', 'arr', 'once']);
+});
+
 // ---- alert routing ----------------------------------------------------------
 
 test('runAlerts files one card per error code and closes codes that cleared', async () => {
