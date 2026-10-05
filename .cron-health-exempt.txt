@@ -271,3 +271,5 @@ main-infra-rerun.yml
 # star-band drift and scoring clobbers in recently opened shows. Self-repairing (the normal
 # drain re-scores), failures surface via notify-failure + the daily digest.
 detect-star-band-regressions.yml
+# BRO-934: auto-expiry checker for the opening-night freeze; a no-op unless a freeze is active.
+automation-freeze.yml

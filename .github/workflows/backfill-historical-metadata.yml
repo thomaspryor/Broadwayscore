@@ -16,6 +16,11 @@ on:
 permissions:
   contents: write
 
+# BRO-934: manual shows.json writer; serialize with the other shows.json writers (lost-update race).
+concurrency:
+  group: shows-json-writer
+  cancel-in-progress: false
+
 jobs:
   backfill:
     runs-on: ubuntu-latest
