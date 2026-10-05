@@ -3,7 +3,8 @@
 // "lyric" (Lyric Hammersmith). Tests the REAL exported matcher per CLAUDE.md
 // §15 — no logic copies. Existing playhouse/cambridge/lyric collision tests
 // live in promote-we-aggregator-auto.test.mjs; this file covers the new ones
-// found by this audit.
+// found by this audit, including scoped collisions for adelphi, duchess,
+// novello and additional regional variants of previously guarded names.
 //
 // coliseum/queens are blanket-excluded (WE_SLUG_GENERIC_EXCLUDE) — evidence
 // showed genuine West End slugs never rely on the bare form. apollo/garrick/
@@ -20,6 +21,31 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const { matchWestEndVenueFromSlug } = require('../../scripts/lib/we-listing-discover.js');
+
+// Additional UK collisions confirmed by the venues' own websites. Cover
+// both location orders and the optional "theatre" token used in slugs.
+for (const venueSlug of [
+  'new-adelphi', 'adelphi-theatre-salford', 'salford-adelphi',
+  'duchess-theatre-long-eaton', 'long-eaton-duchess',
+  'novello-theatre-sunninghill', 'sunninghill-novello', 'novello-picture-house',
+  'hammersmith-apollo', 'apollo-hammersmith', 'eventim-apollo',
+  'stockport-garrick', 'garrick-theatre-stockport',
+  'altrincham-garrick-playhouse', 'garrick-altrincham',
+  'sheffield-lyceum', 'lyceum-theatre-sheffield',
+  'blyth-phoenix', 'phoenix-theatre-blyth',
+  'old-savoy', 'savoy-theatre-northampton', 'northampton-savoy',
+  'national-theatre-of-scotland',
+]) {
+  test(`matchWestEndVenueFromSlug: ${venueSlug} is excluded (non-West-End)`, () => {
+    assert.equal(matchWestEndVenueFromSlug(`review-a-play-${venueSlug}`), null);
+  });
+}
+
+for (const venue of ['adelphi', 'duchess', 'novello', 'national']) {
+  test(`matchWestEndVenueFromSlug: the real West End ${venue} still matches`, () => {
+    assert.equal(matchWestEndVenueFromSlug(`review-a-play-${venue}-theatre`)?.venue, venue);
+  });
+}
 
 test('matchWestEndVenueFromSlug: o2-apollo-manchester is excluded (non-West-End)', () => {
   assert.equal(matchWestEndVenueFromSlug('review-a-gig-o2-apollo-manchester'), null);
