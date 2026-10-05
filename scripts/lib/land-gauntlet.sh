@@ -279,6 +279,7 @@ lint_workflows() {
     audit-unbounded-fetch \
     audit-cmux-spawn-credential \
     audit-reconcile-coverage \
+    audit-blanket-sweep-audit-writes \
     lint-resend-calls \
     lint-wrongproduction-provenance \
     lint-autoclear-invalidate \
