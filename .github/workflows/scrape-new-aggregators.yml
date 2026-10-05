@@ -590,8 +590,9 @@ jobs:
           SCRAPINGBEE_API_KEY: ${{ secrets.SCRAPINGBEE_API_KEY }}
         run: node scripts/create-tour-entries.js --write --time-budget-min=8
 
+      # Also when it only reopened a closed tour back from a layoff (BRO-4724).
       - name: Push core data (new tour entries)
-        if: always() && steps.create_tours.outputs.created != ''
+        if: always() && (steps.create_tours.outputs.created != '' || steps.create_tours.outputs.reopened != '')
         uses: ./.github/actions/push-core-data
         with:
           token: ${{ secrets.REVIEW_TEXTS_TOKEN }}

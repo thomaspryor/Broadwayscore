@@ -39,6 +39,8 @@ import {
   publicSourceText,
   isEstimatedCapitalization,
   isUnannouncedRecoupment,
+  isEstimatedRunningCost,
+  getNonprofitProducer,
 } from './commercial-display';
 import commercialData from '../../data/commercial.json';
 import grossesHistoryData from '../../data/grosses-history.json';
@@ -600,6 +602,10 @@ export function getUpcomingClosings(): UpcomingClosing[] {
   });
 }
 
+function positiveOrNull(value: number | null | undefined): number | null {
+  return typeof value === 'number' && Number.isFinite(value) && value > 0 ? value : null;
+}
+
 /**
  * One /biz table row. Closed shows get no weekly gross and no trend (their
  * recent weeks are empty); only a reported, cited investor multiple is passed
@@ -616,6 +622,12 @@ function toCommercialShowRow(slug: string, show: RawShow, data: ShowCommercial):
     capitalization: data.capitalization,
     capitalizationIsEstimate: isEstimatedCapitalization(data),
     weeklyGross: running ? grossData?.thisWeek?.gross || null : null,
+    // A zero or non-numeric figure is a scrape gap (dark week, partial row), not a real 0% / $0.
+    weeklyCapacity: running ? positiveOrNull(grossData?.thisWeek?.capacity) : null,
+    weeklyAtp: running ? positiveOrNull(grossData?.thisWeek?.atp) : null,
+    weeklyCost: data.weeklyRunningCost || null,
+    weeklyCostIsEstimate: isEstimatedRunningCost(data),
+    nonprofitOrg: getNonprofitProducer(data),
     totalGross: grossData?.allTime?.gross || null,
     modelRecoupmentPct: data.modelRecoupmentPct || null,
     modelMethod: data.modelMethod || null,

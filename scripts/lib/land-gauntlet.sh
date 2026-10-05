@@ -269,7 +269,6 @@ lint_workflows() {
     audit-errexit-unguarded-substitution \
     audit-same-job-breadcrumb-coverage \
     audit-delete-without-breadcrumb \
-    audit-push-retry-budgets \
     audit-linear-issuecreate-chokepoint \
     audit-launchd-stale-sync-guard \
     audit-gate-corpus-guard-coverage \
@@ -282,6 +281,7 @@ lint_workflows() {
     audit-reconcile-coverage \
     lint-resend-calls \
     lint-wrongproduction-provenance \
+    lint-autoclear-invalidate \
     audit-digest-clip-safety \
     lint-committed-pii \
     audit-tests-vs-derived-data \
@@ -289,6 +289,8 @@ lint_workflows() {
     test-data-write-guard; do
     lwgate "$s" node "scripts/$s.js"
   done
+  # --fail-on-job-timeout matches test.yml; without it the job-timeout finding only warns (BRO-4737).
+  lwgate audit-push-retry-budgets node scripts/audit-push-retry-budgets.js --fail-on-job-timeout
   lwgate audit-direct-provider-calls node scripts/audit-direct-provider-calls.js --strict
   lwgate audit-venue-write-guard node scripts/audit-venue-write-guard.js --strict
   lwgate audit-alert-senders node scripts/audit-alert-senders.js --check

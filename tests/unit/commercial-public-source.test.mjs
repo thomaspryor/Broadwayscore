@@ -19,6 +19,7 @@ const {
   getWeeklyCostSourceLabel,
   getRecoupmentAttribution,
   toPublicShowCommercial,
+  getNonprofitProducerLine,
 } = await import('../../src/lib/commercial-display.ts');
 
 test('publicSourceText drops internal research-tooling language', () => {
@@ -261,4 +262,19 @@ test('toPublicShowCommercial keeps the "not announced" reading of an internal re
   // The sanitized label is not repeated as a "Source:" line.
   assert.equal(fromPublic.sourceText, 'Trade press report');
   assert.ok(!JSON.stringify(toPublicShowCommercial(raw)).includes('GPT'));
+});
+
+test('nonprofit producer line (BRO-4721): names the company, survives toPublicShowCommercial, never prints internal text', () => {
+  const base = { capitalization: null, capitalizationSource: null, weeklyRunningCost: null, recouped: null, recoupedDate: null, recoupedWeeks: null };
+  const mtc = { ...base, designation: 'Nonprofit', nonprofitOrg: 'Manhattan Theatre Club' };
+  assert.equal(getNonprofitProducerLine(mtc), 'A Manhattan Theatre Club production (nonprofit)');
+  assert.equal(getNonprofitProducerLine(toPublicShowCommercial(mtc)), 'A Manhattan Theatre Club production (nonprofit)');
+  // A commercial outcome on a nonprofit production (an enhancement) names the producer without calling the show nonprofit.
+  assert.equal(
+    getNonprofitProducerLine({ ...base, designation: 'Easy Winner', nonprofitOrg: 'Lincoln Center Theater' }),
+    'Nonprofit producer: Lincoln Center Theater'
+  );
+  assert.equal(getNonprofitProducerLine({ ...base, designation: 'Windfall' }), null);
+  assert.equal(getNonprofitProducerLine({ ...base, designation: 'Nonprofit', nonprofitOrg: 'Inferred from GPT deep research' }), null);
+  assert.equal(toPublicShowCommercial({ ...base, designation: 'Nonprofit', nonprofitOrg: 'GPT DR batch 2' }).nonprofitOrg, undefined);
 });

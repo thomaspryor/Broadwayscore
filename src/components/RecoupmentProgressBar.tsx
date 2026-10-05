@@ -47,7 +47,8 @@ export default function RecoupmentProgressBar({ estimatedPct, modelMethod, varia
             Est. recoupment
           </span>
           <span className="text-[22px] leading-none font-extrabold tracking-tight text-brand-light tabular-nums">
-            {valueText}
+            {/* "~" like every other estimate on the card ("~ marks an estimate") and the /biz cards. */}
+            ~{valueText}
           </span>
         </div>
         <div className="relative w-full bg-surface-overlay/50 rounded-full h-1.5">

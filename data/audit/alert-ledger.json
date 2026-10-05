@@ -151,13 +151,13 @@
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
       "firstSeen": "2026-07-26T16:10:28.853Z",
       "incidentOpenedAt": "2026-10-05T15:52:35.162Z",
-      "lastSeen": "2026-10-05T16:21:03.543Z",
+      "lastSeen": "2026-10-05T16:41:38.202Z",
       "lastNotifiedAt": "2026-10-05T15:52:35.162Z",
       "lastSurfacedAt": "2026-10-05T00:11:57.199Z",
       "notifyCount": 122,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -6996,9 +6996,9 @@
       "disposition": "auto",
       "title": "main test.yml red: Lint Workflows / Audit — wrongProduction/wrongShow writers must invalidate stale auto-clear breadcrumbs",
       "firstSeen": "2026-09-29T21:43:53.789Z",
-      "incidentOpenedAt": "2026-10-05T15:57:44.394Z",
-      "lastSeen": "2026-10-05T16:21:03.534Z",
-      "lastNotifiedAt": "2026-10-05T15:57:44.394Z",
+      "incidentOpenedAt": "2026-10-05T15:52:34.483Z",
+      "lastSeen": "2026-10-05T16:41:38.197Z",
+      "lastNotifiedAt": "2026-10-05T15:52:34.483Z",
       "lastSurfacedAt": null,
       "notifyCount": 2,
       "cardId": null,
@@ -7009,7 +7009,7 @@
         "runId": "36633606651",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36633606651"
       },
-      "silentRefires": 1
+      "silentRefires": 2
     },
     "land:land/bro-4380-enforce": {
       "status": "open",
@@ -10425,7 +10425,7 @@
       "linearIdentifier": null
     },
     "land:land/bro-4721-biz-ux": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: rebase red on land/bro-4721-biz-ux",
       "firstSeen": "2026-10-05T15:49:13.001Z",
@@ -10435,10 +10435,11 @@
       "lastSurfacedAt": "2026-10-05T15:49:13.001Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-05T16:30:55.224Z"
     },
     "land:land/bro-4724-tour-lifecycle": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "title": "Landing blocked: unit-tests-node red on land/bro-4724-tour-lifecycle",
       "firstSeen": "2026-10-05T15:58:18.636Z",
@@ -10448,7 +10449,8 @@
       "lastSurfacedAt": "2026-10-05T15:58:18.636Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "resolvedAt": "2026-10-05T16:51:03.521Z"
     },
     "land:land/bro-4656-tour-reviews": {
       "status": "open",
@@ -10456,12 +10458,13 @@
       "title": "Landing blocked: scripts-lib-tests red on land/bro-4656-tour-reviews",
       "firstSeen": "2026-10-05T16:04:48.314Z",
       "incidentOpenedAt": "2026-10-05T16:04:48.314Z",
-      "lastSeen": "2026-10-05T16:04:48.314Z",
+      "lastSeen": "2026-10-05T16:48:01.799Z",
       "lastNotifiedAt": "2026-10-05T16:04:48.314Z",
       "lastSurfacedAt": "2026-10-05T16:04:48.314Z",
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": null,
+      "silentRefires": 1
     },
     "land:land/bro-4719-decisions": {
       "status": "open",
@@ -10485,6 +10488,32 @@
       "lastSeen": "2026-10-05T16:24:42.378Z",
       "lastNotifiedAt": "2026-10-05T16:24:42.378Z",
       "lastSurfacedAt": "2026-10-05T16:24:42.378Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-4725-recheck-probe": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: colocated-tests red on land/bro-4725-recheck-probe",
+      "firstSeen": "2026-10-05T16:33:06.082Z",
+      "incidentOpenedAt": "2026-10-05T16:33:06.082Z",
+      "lastSeen": "2026-10-05T16:33:06.082Z",
+      "lastNotifiedAt": "2026-10-05T16:33:06.082Z",
+      "lastSurfacedAt": "2026-10-05T16:33:06.082Z",
+      "notifyCount": 1,
+      "cardId": null,
+      "linearIdentifier": null
+    },
+    "land:land/bro-554-deploy-dedup": {
+      "status": "open",
+      "disposition": "digest",
+      "title": "Landing blocked: unit-tests-node red on land/bro-554-deploy-dedup",
+      "firstSeen": "2026-10-05T16:38:32.686Z",
+      "incidentOpenedAt": "2026-10-05T16:38:32.686Z",
+      "lastSeen": "2026-10-05T16:38:32.686Z",
+      "lastNotifiedAt": "2026-10-05T16:38:32.686Z",
+      "lastSurfacedAt": "2026-10-05T16:38:32.686Z",
       "notifyCount": 1,
       "cardId": null,
       "linearIdentifier": null

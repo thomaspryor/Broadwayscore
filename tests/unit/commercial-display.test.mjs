@@ -381,3 +381,11 @@ test('P1-3: one break-even everywhere: model when it clears the floor, else week
   assert.equal(getBreakEven({ ...withModel, modelBreakeven: null }), 600_000);
   assert.equal(getBreakEven({ modelBreakeven: null, weeklyRunningCost: null }), null);
 });
+
+test('BRO-4721: a Nonprofit production never shows a modeled % recouped (no investors to repay)', () => {
+  const base = { recouped: null, modelRecoupmentPct: [-2, 6.6, 14.8], modelDataQuality: 'medium', modelMethod: 'weekly-model' };
+  assert.equal(getRecoupmentDisplayMode({ ...base, designation: 'Nonprofit', status: 'open' }), 'none');
+  assert.equal(getRecoupmentDisplayMode({ ...base, designation: 'TBD', status: 'open' }), 'model');
+  // A recoupment record still wins for any designation.
+  assert.equal(getRecoupmentDisplayMode({ ...base, designation: 'Nonprofit', recouped: true }), 'announced');
+});

@@ -95,11 +95,7 @@ function computeCompositeForShow(showReviews, showCategory, showType) {
 // ---------------------------------------------------------------------------
 // Show targeting
 // ---------------------------------------------------------------------------
-function isWithinTwoDays(openingDate, now) {
-  if (!openingDate) return false;
-  const diff = Math.abs(new Date(openingDate).getTime() - now.getTime());
-  return diff <= 2 * 24 * 60 * 60 * 1000;
-}
+const { isOpeningNightTarget } = require('./lib/opening-night-target');
 
 function resolveTargetShows(shows, reviewsDoc, now) {
   if (showIdArg) {
@@ -111,7 +107,7 @@ function resolveTargetShows(shows, reviewsDoc, now) {
   }
 
   return shows
-    .filter(s => isWithinTwoDays(s.openingDate, now))
+    .filter(s => isOpeningNightTarget(s, now))
     .map(s => ({
       ...s,
       compositeScore: computeCompositeForShow(reviewsDoc[s.id] || [], s.category),

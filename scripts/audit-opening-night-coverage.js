@@ -764,6 +764,10 @@ async function main() {
       // audit-show-review-gap.js: a live show stuck in previews with a null openingDate (The
       // Winter's Tale, An American Daughter, 2026-08-12) never entered this audit's population.
       if (!['open', 'previews'].includes(s.status)) return false;
+      // A national tour has no Broadway roundup census or T1 floor to miss
+      // (censusMarket would read it as 'broadway'): its launch would only
+      // raise false gap alerts (BRO-4724).
+      if (s.category === 'tour') return false;
       const recencyDate = showRecencyKey(s);
       if (recencyDate === NO_DATE_SENTINEL) return false;
       return recencyDate >= cutoffStr;
