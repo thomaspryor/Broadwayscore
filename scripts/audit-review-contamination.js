@@ -102,7 +102,7 @@ const {
   normalizeShowTitle: normalizeTitle,
 } = require('./lib/cross-market-contamination');
 const { assertCorpusScanned, CorpusNotScannedError } = require('./lib/corpus-scan-guard');
-const { countStrictHits, shouldBlockContaminationGate } = require('./lib/contamination-gate');
+const { countStrictHits, shouldBlockContaminationGate, isAlreadyExcludedFromScoring } = require('./lib/contamination-gate');
 const { buildLiveScoredIndex, isGenuineDoubleCount } = require('./lib/c2-live-scored-check');
 const { olderProductionLiveReason } = require('./lib/older-production-live-guard');
 
@@ -396,7 +396,7 @@ for (const showId of showDirs) {
     const alreadyFlagged = d.wrongProduction || d.wrongShow || d.isRoundupArticle
       || d.wrongAttribution || d.contentVerification?.wrongArticle
       || d.isNonReview || d.nonReviewFlag || d.nonReviewContent
-      || d.duplicateOf; // duplicates are excluded from scoring pipeline. NOTE:
+      || d.duplicateOf // duplicates are excluded from scoring pipeline. NOTE:
       // deliberately NOT d.duplicateTextOf — review-guards.js's explainExclusion
       // documents why: rebuild-all-reviews.js treats duplicateTextOf as a
       // CONDITIONAL exclusion (recovered when the reference is stale, missing,
@@ -406,6 +406,10 @@ for (const showId of showDirs) {
       // unconditional exclusion here could silently hide a real class-A/B/D
       // contamination hit. C2 below instead gates on the live reviews.json
       // ground truth (loadLiveScoredUrls) rather than this field at all.
+      // Anything the canonical rebuild predicate already excludes (ensemble
+      // rejection, "Wrong show" tier, no-text stub) can't reach a score or a
+      // page either — BRO-973. Only A/A2/C/D read this; B/E/F have own gates.
+      || isAlreadyExcludedFromScoring(d);
 
     // ─── A: Cross-market / cross-production contamination ────
     // `_auditAllowCrossMarket` is a manual allowlist for cases the detector can't
@@ -494,7 +498,7 @@ for (const showId of showDirs) {
 
     // ─── E: Unflagged roundup pages ────
     // Must match the same pattern as Guard E in review-file-writer.js
-    if (shouldRunClass('E') && !d.isRoundupArticle && d.url) {
+    if (shouldRunClass('E') && !d.isRoundupArticle && d.url && !isAlreadyExcludedFromScoring(d)) {
       if (/\/article\/Review-Roundup-/i.test(d.url)) {
         hits.E_unflagged_roundup.push({ showId, file: f, url: d.url });
       }
@@ -666,13 +670,16 @@ for (const showId of showDirs) {
 const totalHits = Object.values(hits).reduce((a, b) => a + b.length, 0);
 
 if (JSON_OUT) {
-  console.log(JSON.stringify({
+  // Synchronous write: this script ends in process.exit(), and an async piped
+  // console.log was truncated at the 64KB pipe buffer once G-class hits grew the
+  // payload past it (BRO-973: JSON.parse failure in the live-corpus test).
+  fs.writeSync(1, JSON.stringify({
     scannedShows: showsScanned,
     scannedFiles: filesScanned,
     totalHits,
     classCounts: Object.fromEntries(Object.entries(hits).map(([k, v]) => [k, v.length])),
     hits,
-  }, null, 2));
+  }, null, 2) + '\n');
 } else {
   console.log(`\n=== REVIEW-TEXT CONTAMINATION AUDIT ===`);
   console.log(`Scanned: ${showsScanned} shows, ${filesScanned} files`);

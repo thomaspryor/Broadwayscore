@@ -25,7 +25,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const require = createRequire(import.meta.url);
-const { STRICT_CLASSES, countStrictHits, shouldBlockContaminationGate } = require('./lib/contamination-gate.js');
+const { STRICT_CLASSES, countStrictHits, shouldBlockContaminationGate, isAlreadyExcludedFromScoring } = require('./lib/contamination-gate.js');
 const { normalizeOutlet, normalizeUrl, normalizeCritic } = require('./lib/review-normalization.js');
 const { buildLiveScoredIndex, isGenuineDoubleCount } = require('./lib/c2-live-scored-check.js');
 
@@ -238,3 +238,11 @@ test('live corpus: every C2_url_multi_critic hit is a genuine 2+-critic double-c
         `${h.showId} ${h.file1} (${h.critic1}) vs ${h.file2} (${h.critic2}): reviews.json does not carry BOTH as live distinct critics for this URL — C2 should not have flagged it`);
     }
   });
+
+test('BRO-973: isAlreadyExcludedFromScoring skips ensemble-rejected, no-text stub and "Wrong show" files but not live reviews', () => {
+  const live = { outletId: 'nytimes', criticName: 'A B', url: 'https://www.nytimes.com/2026/01/01/theater/review.html', contentTier: 'complete', isFullReview: true, fullText: 'x '.repeat(400), assignedScore: 80 };
+  assert.equal(isAlreadyExcludedFromScoring(live), false);
+  assert.equal(isAlreadyExcludedFromScoring({ ...live, rejectionReason: 'not_a_review' }), true);
+  assert.equal(isAlreadyExcludedFromScoring({ outletId: 'x', criticName: 'Unknown', url: 'https://x.com/r', contentTier: 'stub', fullText: '' }), true);
+  assert.equal(isAlreadyExcludedFromScoring({ ...live, contentTier: 'invalid', contentTierReason: 'Wrong show', fullText: '' }), true);
+});
