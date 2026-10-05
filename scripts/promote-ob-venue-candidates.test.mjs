@@ -94,3 +94,51 @@ test('buildShowEntry: a placeholder/neighbourhood-blob venue is refused (venue: 
   const e = buildShowEntry({ ...BASE, venue: 'Midtown E' });
   assert.equal(e.venue, null, 'card #994 write-time guard — the promotion loop in main() must skip a null-venue entry');
 });
+
+// BRO-2026: id year comes from the production's own date, never the run year.
+test('buildShowEntry: id year is the opening/previews year, not the current year', () => {
+  const e = buildShowEntry({ ...BASE, previewsStartDate: '2031-01-10', openingDate: '2031-01-25' });
+  assert.equal(e.id, 'some-ob-show-off-broadway-2031');
+  assert.equal(e.idYearProvisional, undefined);
+  // previews in Dec, opening in Jan: the opening year wins (discover-new-shows precedence)
+  assert.equal(buildShowEntry({ ...BASE, previewsStartDate: '2031-12-20', openingDate: '2032-01-12' }).id, 'some-ob-show-off-broadway-2032');
+});
+
+test('buildShowEntry: dateless stub falls back to the run year and is flagged provisional', () => {
+  const e = buildShowEntry({ ...BASE });
+  assert.equal(e.id, `some-ob-show-off-broadway-${new Date().getFullYear()}`);
+  assert.equal(e.idYearProvisional, true);
+});
+
+test('buildOffBroadwayAggregatorShowEntry: id year follows the publish date year', () => {
+  const { buildOffBroadwayAggregatorShowEntry: b } = require('./promote-ob-venue-candidates.js');
+  const e = b({ ...BASE, articlePublishedAt: '2031-03-02T10:00:00Z' });
+  assert.equal(e.id, 'some-ob-show-off-broadway-2031');
+  assert.equal(e.idYearProvisional, undefined);
+  assert.equal(b({ ...BASE }).idYearProvisional, true);
+});
+
+// BRO-2026: promote-ob-historical's id year follows the production's dates.
+const { buildShowEntry: buildHistoricalShowEntry } = require('./promote-ob-historical.js');
+const row = (parsed) => ({ title: 'Some Show', venue: "St. Luke's Theatre", parsed, playbillUrl: 'x' });
+
+test('dates decide the id year over the title-parsed year', () => {
+  const e = buildHistoricalShowEntry(row({ dates: { openingDate: '2019-03-04' }, titleParse: { year: 2020 } }), new Set());
+  assert.match(e.id, /-2019$/);
+  assert.equal(e.idYearProvisional, undefined);
+});
+test('title-parsed year used when no dates', () => {
+  const e = buildHistoricalShowEntry(row({ dates: {}, titleParse: { year: 2018 } }), new Set());
+  assert.match(e.id, /-2018$/);
+  assert.equal(e.idYearProvisional, undefined);
+});
+test('nothing dated: run year, flagged provisional', () => {
+  const e = buildHistoricalShowEntry(row({ dates: {}, titleParse: {} }), new Set());
+  assert.ok(e.id.endsWith(`-${new Date().getFullYear()}`));
+  assert.equal(e.idYearProvisional, true);
+});
+test('closing date alone: closing year, still flagged provisional', () => {
+  const e = buildHistoricalShowEntry(row({ dates: { closingDate: '1998-06-01' }, titleParse: {} }), new Set());
+  assert.match(e.id, /-1998$/);
+  assert.equal(e.idYearProvisional, true);
+});

@@ -25,6 +25,6 @@ Keep the BRO-N from that output; it is the session's card (there is no "list In 
 - Pause / RECHECK-AFTER: Linear has no Paused state. `linear-session.js report --issue=BRO-N --status=paused --summary="RECHECK-AFTER: YYYY-MM-DD ..."` (sets Backlog), or `linear-brain.js update BRO-N --state Backlog --comment "..."`.
 - Done is gated (exit 5) without `PR-EVIDENCE:` or a safe-form `VERIFY:` / `## Acceptance criteria` command. A refused update is not a close-out; the Stop hook (NOWRAPUP) checks for a successful one after the last work.
 
-**P0/P1:** `--dispatch` does not launch. Run `node scripts/linear-next.js --id BRO-N` (Mac) and report `DISPATCHED:`. Cloud cannot launch cmux workers; use `create_session` or say so.
+**P0/P1:** `--dispatch` does not launch. Run `node scripts/linear-next.js --id BRO-N` (Mac) and report `DISPATCHED:`. Cloud cannot launch cmux workers and `create_session` is denied: add a `START-NOW:` line to the card's notes so the hourly cloud worker takes it first.
 
 **Linear down:** warn, continue untracked, print the Outcome text in chat. Do NOT fall back to Notion.

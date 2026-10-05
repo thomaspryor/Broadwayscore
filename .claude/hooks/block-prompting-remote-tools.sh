@@ -13,6 +13,10 @@
 #   add_repo: denied only for thomaspryor/Broadwayscore when the session's
 #     project checkout already is that repo. Every other repo passes through.
 #   list_sessions: always denied; get_session by id is pre-approved.
+#   create_session: always denied (BRO-4664, owner 2026-10-05: "I still want
+#     them to be started. I just don't need to approve them each time"; "don't
+#     rely on the Mac Studio"). The prompt-free route is a P0/P1 card with a
+#     START-NOW: line, which the hourly cloud worker takes first.
 # Fails open (exit 0, no decision) on missing jq or unparseable input.
 # Kill switch: REMOTE_TOOL_BLOCKER_DISABLE=1.
 
@@ -51,6 +55,9 @@ case "$tool" in
     ;;
   mcp__Claude_Code_Remote__list_sessions|mcp__claude-code-remote__list_sessions)
     deny "Blocked: list_sessions puts an approval prompt on the owner's phone in every mode, Auto included (BRO-4635). To check a session you started, call get_session with its session id (pre-approved, no prompt). For card workers, read the Linear card state or check for the land/<name> ref instead. If the owner asks which sessions are running, tell them to open the sessions list in the Claude app."
+    ;;
+  mcp__Claude_Code_Remote__create_session|mcp__claude-code-remote__create_session)
+    deny "Blocked: create_session puts an approval prompt on the owner's phone every time, in every mode, and the owner wants sessions started without approvals (BRO-4664). Queue the work and the cloud worker starts the session: file a self-contained P0/P1 card whose notes carry a line 'START-NOW: <why it should not wait>' and a safe-form VERIFY line: node scripts/linear-brain.js create \"<title>\" --dispatch --priority 2 --notes \"START-NOW: ...\n<handoff>\n## Acceptance criteria\nVERIFY: \`<cmd>\`\". The hourly cloud worker takes START-NOW cards before the rest of the queue. Tell the owner it is queued and usually starts within an hour or two; do not ask them to approve anything, and do not rely on the owner's Mac."
     ;;
 esac
 exit 0

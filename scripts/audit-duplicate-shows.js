@@ -77,6 +77,9 @@ function venueTokens(venue) {
 }
 
 function isStub(show, reviewCount) {
+  // openingDate-guard: intentional (BRO-2033). A missing openingDate IS the
+  // stub signal here (zero reviews + no venue/date = incomplete placeholder),
+  // so the null check is the point, not a blind spot.
   const v = String(show.venue || '').trim().toLowerCase();
   return reviewCount === 0 && (!v || v === 'tba' || !show.openingDate);
 }

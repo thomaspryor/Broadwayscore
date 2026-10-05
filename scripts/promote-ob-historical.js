@@ -51,6 +51,7 @@ const { AtomicWriteShrinkError } = require('./lib/atomic-shows-write');
 const { buildVenueTitlePool, findExactDuplicate, findSubtitleDuplicateTitle } = require('./lib/venue-title-dedup-pool');
 const { sanitizeVenueForWrite } = require('./lib/venue-classification');
 const { withMarketSuffix } = require('./lib/market-slug');
+const { productionIdYear } = require('./lib/todaytix-dates');
 
 const { hasHelpFlag } = require('./lib/cli-help.js');
 const { normalizeShowTitle, buildVenueVocabulary } = require('./lib/show-title-normalize');
@@ -87,14 +88,25 @@ function buildShowEntry(r, venueVocabulary) {
   const normalizedTitle = normalizeShowTitle({ title: r.title, venue: r.venue }, { venueVocabulary }).title;
   const titleSlug = slugify(normalizedTitle);
 
-  const year = String((r.parsed?.titleParse?.year) || new Date().getFullYear());
+  // BRO-2026: the production's own dates decide the id year (same helper and
+  // opening → previews precedence as discover-new-shows.js); the title's
+  // parsed year is next, and only then the run-date year, flagged provisional.
+  const opening = r.parsed?.dates?.openingDate || r.parsed?.dates?.firstPreview || null;
+  const datedYear = productionIdYear({
+    openingDate: r.parsed?.dates?.openingDate,
+    previewsStartDate: r.parsed?.dates?.firstPreview,
+  }) || (/^\d{4}$/.test(String(r.parsed?.titleParse?.year)) ? String(r.parsed.titleParse.year) : null);
+  // A row admitted on a closing date alone (see main()) is closed: its closing
+  // year is a far better guess than the run year, but still provisional.
+  const closingYear = /^(\d{4})-/.exec(String(r.parsed?.dates?.closingDate || ''))?.[1] || null;
+  const year = datedYear || closingYear || String(new Date().getFullYear());
   // withMarketSuffix() is idempotent -- guards against the same doubled-suffix
   // class as BRO-3237 if titleSlug already carries "-off-broadway".
   const id = `${withMarketSuffix(titleSlug, 'off-broadway')}-${year}`;
-  const opening = r.parsed?.dates?.openingDate || r.parsed?.dates?.firstPreview || null;
   const closing = r.parsed?.dates?.closingDate || null;
   return {
     id,
+    ...(datedYear ? {} : { idYearProvisional: true }),
     title: normalizedTitle,
     // validate-data.js requires OB slugs to contain "off-broadway". Use the
     // full id so the slug is unique even across cross-year revivals.

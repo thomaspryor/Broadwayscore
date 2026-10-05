@@ -273,7 +273,7 @@ DISPATCHED: workspace <name> — <task subject>
 
 The issue IS the handoff — linear-next seeds the worker with its full description. Gotchas:
 - **Item isn't carded at all:** file it first (Phase 4 template, `--dispatch`, priority P1), then dispatch.
-- **Cloud session:** linear-next's local launch needs the owner's Mac. Use `create_session` with the issue text, or say so in one line. A dispatch without a card has no context to seed.
+- **Cloud session:** linear-next's local launch needs the owner's Mac. `create_session` is denied (it prompts the owner): put a `START-NOW:` line in the card's notes and the hourly cloud worker takes it first (.claude/CLOUD.md, Starting a worker session). A dispatch without a card has no context to seed.
 - **Launch fails** (Cmux missing/errored): fall back to the DEFERRED + HANDOFF PROMPT format below and say the dispatch failed.
 - The gate verifies a linear-next (or bsc-next) command actually ran this session — a DISPATCHED line without the launch gets blocked.
 

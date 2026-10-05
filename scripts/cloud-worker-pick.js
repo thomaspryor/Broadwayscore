@@ -126,7 +126,7 @@ async function firstUnpaused(queue, nowMs, historySkipped) {
 async function main() {
   const { listOpenIssuesWithDescriptions, listIssueComments } = require('./lib/linear-client.js');
   const { verifyCommand } = require('./lib/linear-drain-parked.js');
-  const { pickCloudCard, skipReason } = require('./lib/cloud-worker-pick.js');
+  const { pickCloudCard, skipReason, isStartNow } = require('./lib/cloud-worker-pick.js');
   const issues = await listOpenIssuesWithDescriptions();
   const nowMs = Date.now();
   // A VERIFY posted as a comment arms a card, and a newer one corrects the
@@ -142,7 +142,7 @@ async function main() {
       console.error(`[cloud-worker-pick] comment VERIFY check skipped: ${err && err.message ? err.message.split('\n')[0] : err}`);
     }
   }
-  const { ordered, eligible, skipped } = pickCloudCard(issues, { nowMs });
+  const { ordered, eligible, skipped, startNowSkipped } = pickCloudCard(issues, { nowMs });
   const queue = [
     ...findResume(issues, nowMs).map((r) => ({ issue: r.issue, resume: r })),
     ...ordered.map((iss) => ({ issue: iss, resume: null })),
@@ -159,6 +159,7 @@ async function main() {
       state: pick.state && pick.state.name,
       url: pick.url,
       verify: verifyCommand(pick),
+      startNow: isStartNow(pick, nowMs),
       ...(resume && {
         resume: {
           landRef: resume.ref,
@@ -171,6 +172,7 @@ async function main() {
     eligible,
     open: issues.length,
     skipped,
+    startNowSkipped,
     // Resume candidates and eligible cards passed over for an earlier pause.
     historySkipped,
   };

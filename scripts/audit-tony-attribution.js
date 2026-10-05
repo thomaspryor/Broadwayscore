@@ -84,6 +84,7 @@ const showsById = new Map();
 for (const sh of shows.shows || []) showsById.set(sh.id, sh);
 
 const findings = [];
+const unverifiableUndated = [];
 
 for (const [showId, awardsEntry] of Object.entries(awards.shows || {})) {
   if (!awardsEntry.tony || !awardsEntry.tony.season) continue;
@@ -92,7 +93,13 @@ for (const [showId, awardsEntry] of Object.entries(awards.shows || {})) {
   const show = showsById.get(showId);
 
   if (!show) continue; // orphan — separate check
-  if (!show.openingDate) continue; // unknown opening — separate check
+  // openingDate-guard: intentional (BRO-2033). Tony eligibility is decided by
+  // the OPENING date, so there is nothing to compare for an undated show (a
+  // previewsStartDate fallback would mis-flag shows whose previews straddle a
+  // season cutoff). Nothing else checks these (validate-data.js only warns on
+  // null openingDate for upcoming/open/previews), so they are counted and
+  // printed below instead of vanishing silently.
+  if (!show.openingDate) { unverifiableUndated.push(showId); continue; }
   if (overrides[showId] && overrides[showId].season === tonySeason) continue;
 
   const expectedSeasons = expectedTonySeasonsForOpening(show.openingDate);
@@ -117,6 +124,9 @@ for (const [showId, awardsEntry] of Object.entries(awards.shows || {})) {
 }
 
 findings.sort((a, b) => b.yearGap - a.yearGap);
+if (!JSON_OUT && unverifiableUndated.length) {
+  console.log(`\nNote: ${unverifiableUndated.length} Tony-attributed show(s) have no openingDate and could not be checked: ${unverifiableUndated.join(', ')}`);
+}
 
 if (JSON_OUT) {
   console.log(JSON.stringify({ count: findings.length, findings }, null, 2));

@@ -24,6 +24,57 @@ function issue(over = {}) {
   };
 }
 
+// BRO-4664: a session that would have called create_session files a START-NOW card.
+const { isStartNow, START_NOW_MIN_AGE_MS, START_NOW_MAX_AGE_MS } = require('./cloud-worker-pick.js');
+const FILED_OK = new Date(NOW - START_NOW_MIN_AGE_MS - 60_000).toISOString();
+const startNowCard = (over = {}) => issue({ identifier: 'BRO-4999', priority: 2, updatedAt: FRESH, createdAt: FILED_OK, description: `START-NOW: owner asked for it\n${BODY}`, ...over });
+
+test('START-NOW card goes first and skips the idle wait', () => {
+  const startNow = startNowCard();
+  assert.equal(skipReason(startNow, NOW), null);
+  const { pick, startNowSkipped } = pickCloudCard([issue({ identifier: 'BRO-10', priority: 1 }), startNow], { nowMs: NOW });
+  assert.equal(pick.identifier, 'BRO-4999');
+  assert.deepEqual(startNowSkipped, {});
+});
+
+test('START-NOW only applies inside its age window and to Todo cards', () => {
+  assert.equal(isStartNow(startNowCard(), NOW), true);
+  // Filed under 10 minutes ago: the filing session may still be editing it.
+  const tooNew = startNowCard({ createdAt: new Date(NOW - 60_000).toISOString() });
+  assert.equal(isStartNow(tooNew, NOW), false);
+  assert.equal(skipReason(tooNew, NOW), 'recent-activity');
+  // Older than 48 hours: the marker is stale, normal idle rules apply.
+  const tooOld = startNowCard({ createdAt: new Date(NOW - START_NOW_MAX_AGE_MS - 60_000).toISOString() });
+  assert.equal(isStartNow(tooOld, NOW), false);
+  assert.equal(skipReason(tooOld, NOW), 'recent-activity');
+  // No createdAt at all fails closed.
+  assert.equal(isStartNow(startNowCard({ createdAt: undefined }), NOW), false);
+  // Backlog (parked) cards are not started early.
+  assert.equal(isStartNow(startNowCard({ state: { name: 'Backlog', type: 'backlog' } }), NOW), false);
+  // Marker on any line, any case.
+  assert.equal(isStartNow(startNowCard({ description: `## Problem\nx\nstart-now: soon\n${BODY}` }), NOW), true);
+});
+
+test('START-NOW cards that cannot run are reported in startNowSkipped', () => {
+  const tooNew = startNowCard({ identifier: 'BRO-5001', createdAt: new Date(NOW - 60_000).toISOString() });
+  const noVerify = startNowCard({ identifier: 'BRO-5002', description: 'START-NOW: x\nno command here' });
+  const ok = startNowCard({ identifier: 'BRO-5003' });
+  const { pick, startNowSkipped } = pickCloudCard([tooNew, noVerify, ok], { nowMs: NOW });
+  assert.equal(pick.identifier, 'BRO-5003');
+  assert.equal(startNowSkipped['BRO-5001'], 'recent-activity');
+  assert.equal(startNowSkipped['BRO-5002'], 'no-safe-verify');
+  assert.equal('BRO-5003' in startNowSkipped, false);
+});
+
+test('START-NOW does not override other skips', () => {
+  const body = `START-NOW: x\n${BODY}`;
+  assert.equal(skipReason(startNowCard({ description: body, state: STARTED_STATE }), NOW), 'state-started');
+  assert.equal(skipReason(startNowCard({ description: body, priority: 3 }), NOW), 'not-p0-p1');
+  assert.equal(skipReason(startNowCard({ description: 'START-NOW: x\nno command here' }), NOW), 'no-safe-verify');
+  // Mentioned mid-line is not the marker.
+  assert.equal(skipReason(startNowCard({ description: `see START-NOW: docs\n${BODY}` }), NOW), 'recent-activity');
+});
+
 test('picks highest priority first, then oldest issue number', () => {
   const { pick, eligible } = pickCloudCard([
     issue({ identifier: 'BRO-50', priority: 2 }),

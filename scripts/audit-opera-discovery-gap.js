@@ -84,6 +84,8 @@ function loadShow(showId) {
   return show;
 }
 
+const { inOpeningWindow } = require('./lib/opening-date-window');
+
 function loadShowsByCategory(category, daysWindow = 60) {
   const shows = loadAllShows();
   const today = new Date();
@@ -98,9 +100,9 @@ function loadShowsByCategory(category, daysWindow = 60) {
       if (s.type === 'opera') return false;
     }
     if (!['open', 'closed'].includes(s.status)) return false;
-    if (!s.openingDate) return false;
-    const diff = Math.abs(today - new Date(s.openingDate));
-    return diff <= windowMs;
+    // Live blind spot (BRO-2033): an open/closed opera with a null openingDate
+    // was silently dropped. Fall back to previewsStartDate like the other audits.
+    return inOpeningWindow(s, today, windowMs);
   });
 }
 
