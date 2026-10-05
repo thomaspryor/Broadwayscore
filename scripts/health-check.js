@@ -3849,6 +3849,7 @@ function neverRunWorkflowResults(report) {
 // reviewTextSweep entries have no age signal, so they sort last) and name
 // the OLDEST candidate, escalating to 'error' once it's stale enough that a
 // single weekly warn line has clearly already failed to get it actioned.
+const { rankByAge } = require('./lib/backlog-digest-age');
 const OB_CLOSING_AGED_DAYS_ERROR = 21; // ~3 missed weekly runs
 function obClosingBacklogResults(report, now = new Date()) {
   if (!report || !report.reviewTextSweep) return [];
@@ -3867,18 +3868,11 @@ function obClosingBacklogResults(report, now = new Date()) {
   }] : [];
   if (candidates.length === 0) return blindResult;
 
-  const withAge = candidates.map(c => ({
-    ...c,
-    ageDays: c.firstMissingDate ? Math.floor((now - new Date(c.firstMissingDate)) / 86400000) : null,
-  }));
-  // Oldest (by age, when known) first; entries with no age signal (reviewTextSweep)
-  // sort after every aged entry but otherwise keep their original relative order.
-  const oldest = withAge.reduce((best, c) => (c.ageDays != null && (best.ageDays == null || c.ageDays > best.ageDays) ? c : best));
+  const { oldest, ageDays, status } = rankByAge(candidates, 'firstMissingDate', OB_CLOSING_AGED_DAYS_ERROR, now);
   const label = oldest.proposedClosingDate
     ? `${oldest.showId} → ${oldest.proposedClosingDate} [${oldest.confidence}]`
-    : `${oldest.showId}${oldest.ageDays != null ? ` (missing ${oldest.ageDays}d)` : ''}`;
+    : `${oldest.showId}${ageDays != null ? ` (missing ${ageDays}d)` : ''}`;
 
-  const status = oldest.ageDays != null && oldest.ageDays >= OB_CLOSING_AGED_DAYS_ERROR ? 'error' : 'warn';
   return [...blindResult, {
     name: 'Data: OB closing candidates awaiting review',
     status,
@@ -4200,15 +4194,17 @@ function uncollectedStrandResults(report) {
 // CRITICAL email only fires for gaps on near-opening shows; everything else
 // lands here so the back-catalogue backlog is visible once a day instead of
 // one email per discovery (2026-07-19 alert-volume fix).
-function silentGapBacklogResults(report) {
+function silentGapBacklogResults(report, now = new Date()) {
   if (!report || !Array.isArray(report.gaps) || report.gaps.length === 0) return [];
   const gaps = report.gaps;
   const t1 = gaps.filter((g) => g.tier === 1).length;
-  const first = gaps[0];
+  // Rank by firstSeen (how long the gap has gone unactioned), not openingDate:
+  // most back-catalogue shows opened long ago, so show age would page on day one.
+  const { oldest, status } = rankByAge(gaps, 'firstSeen', 21, now);
   return [{
     name: 'Data: T1/T2 silent review gaps',
-    status: 'warn',
-    message: `${gaps.length} discovered review(s) not reaching the composite score (${t1} T1). First: ${first.showId} — ${first.outletId} (${first.type})`,
+    status,
+    message: `${gaps.length} discovered review(s) not reaching the composite score (${t1} T1). Oldest: ${oldest.showId} — ${oldest.outletId} (${oldest.type})`,
     hint: 'Each entry in data/audit/t1-silent-gaps.json carries its fix command (run locally — cookie jar). Sweep card: Silent-gap 120d sweep remainder.',
   }];
 }
@@ -4308,13 +4304,13 @@ function progressWatchResults(report) {
 // retries — see OPENING_WINDOW_DAYS in bww-roundup-persistence.js) is
 // exactly the case worth a human look: the roundup may genuinely not be
 // published yet, or discovery may be broken for that show.
-function bwwRoundupMissBacklogResults(summary) {
+function bwwRoundupMissBacklogResults(summary, now = new Date()) {
   if (!summary || summary.length === 0) return [];
-  const first = summary[0];
+  const { oldest, status } = rankByAge(summary, 'lastMissTs', 21, now);
   return [{
     name: 'Data: BWW roundup discovery misses near opening',
-    status: 'warn',
-    message: `${summary.length} show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. First: ${first.showId} (${first.missCount} misses, last ${first.lastMissTs}).`,
+    status,
+    message: `${summary.length} show(s) with 2+ BWW-roundup discovery misses in the trailing 48h, inside their opening window. Oldest: ${oldest.showId} (${oldest.missCount} misses, last ${oldest.lastMissTs}).`,
     hint: 'Check data/audit/bww-roundup-miss-ledger.jsonl. Per CLAUDE.md rule 14, a pre-opening 404 is normal — confirm the roundup genuinely hasn\'t published before treating this as a discovery bug.',
   }];
 }

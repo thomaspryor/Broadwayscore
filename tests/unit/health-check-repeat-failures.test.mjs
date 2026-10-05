@@ -8,7 +8,7 @@ import assert from 'node:assert/strict';
 import { createRequire } from 'module';
 
 const require = createRequire(import.meta.url);
-const { repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
+const { silentGapBacklogResults, bwwRoundupMissBacklogResults, repeatFailureResults, isRepeatFailureSelfHealed, effectiveUrgencyLevel, feedbackBacklogResults, obClosingBacklogResults, neverRunWorkflowResults, cardVerifiabilityBacklogResults, progressWatchResults, getDigestSubject, getPlaybookEntry } = require('../../scripts/health-check.js');
 
 test('repeatFailureResults: skipped summary yields no synthetic checks', () => {
   assert.deepEqual(repeatFailureResults({ skipped: true, repeatFailures: [{ name: 'x.yml', count: 9 }] }), []);
@@ -429,4 +429,50 @@ test('cardVerifiabilityBacklogResults emits the gated row even when the verifiab
 test('cardVerifiabilityBacklogResults is silent when both buckets are empty', () => {
   assert.equal(cardVerifiabilityBacklogResults(null, null).length, 0);
   assert.equal(cardVerifiabilityBacklogResults({ total: 5, refused: [] }, { humanGatedSkips: [] }).length, 0);
+});
+
+// BRO-4288: oldest backlog entries must be named even when listed last.
+for (const [label, digest, wrap, field] of [
+  ['silent gaps', silentGapBacklogResults, items => ({ gaps: items }), 'firstSeen'],
+  ['BWW misses', bwwRoundupMissBacklogResults, items => items, 'lastMissTs'],
+]) {
+  for (const [days, status] of [[20, 'warn'], [21, 'error'], [33, 'error']]) {
+    test(`${label}: names oldest and escalates at ${days} days`, () => {
+      const now = new Date('2026-09-05T00:00:00Z');
+      const olderDate = new Date(now.getTime() - days * 86400000).toISOString();
+      const items = [
+        { showId: 'newer', [field]: '2026-09-04', tier: 1, outletId: 'nyt', type: 'stub', missCount: 2 },
+        { showId: 'oldest', [field]: olderDate, tier: 2, outletId: 'post', type: 'stub', missCount: 3 },
+      ];
+      const before = structuredClone(items);
+      const [row] = digest(wrap(items), now);
+      assert.match(row.message, /Oldest: oldest/);
+      assert.equal(row.status, status);
+      assert.deepEqual(items, before);
+    });
+  }
+  test(`${label}: absent or empty report stays silent`, () => {
+    assert.deepEqual(digest(null), []);
+    assert.deepEqual(digest(wrap([])), []);
+  });
+}
+
+const { rankByAge } = require('../../scripts/lib/backlog-digest-age');
+test('rankByAge: invalid/missing dates sort last, ties are stable, future dates do not escalate', () => {
+  const now = new Date('2026-09-05T00:00:00Z');
+  const items = [{ date: 'bad' }, {}, { date: '2026-09-06' }, { date: '2026-09-01' }, { date: '2026-09-01' }];
+  assert.deepEqual(rankByAge(items, 'date', 21, now), { oldest: items[3], ageDays: 4, status: 'warn' });
+  assert.deepEqual(rankByAge(items.slice(0, 2), 'date', 21, now), { oldest: items[0], ageDays: null, status: 'warn' });
+  assert.equal(rankByAge(items.slice(2, 3), 'date', 21, now).status, 'warn');
+  assert.equal(rankByAge([], 'date'), null);
+});
+
+test('silentGapBacklogResults: real audit report shape', async t => {
+  const { existsSync, readFileSync } = await import('node:fs');
+  const file = new URL('../../data/audit/t1-silent-gaps.json', import.meta.url);
+  if (!existsSync(file)) return t.skip('Audit report unavailable');
+  const report = JSON.parse(readFileSync(file, 'utf8'));
+  const rows = silentGapBacklogResults(report);
+  assert.equal(rows.length, report.gaps.length ? 1 : 0);
+  if (rows.length) assert.match(rows[0].message, /Oldest:/);
 });
