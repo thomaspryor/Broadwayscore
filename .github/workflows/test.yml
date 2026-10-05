@@ -3720,13 +3720,15 @@ jobs:
         # // breadcrumb-delete-ok: <reason> in the script.
         run: node scripts/audit-delete-without-breadcrumb.js
 
-      - name: Audit — push-with-retry.sh budget undersizing (advisory, card #1918)
+      - name: Audit — push-with-retry.sh budget undersizing (advisory; job-timeout flag HARD, BRO-2322)
         if: always() && steps.deps.outcome == 'success'
         # Card #1918 wires card #1910's scripts/audit-push-retry-budgets.js into
         # CI so the #1842/#1891 undersizing class (retries exhausting well
         # before PUSH_DEADLINE_SEC, or a push step's worst-case budget leaving
         # under 15% job-timeout margin) surfaces on every push instead of
-        # waiting for the next live incident. Advisory only (owner-judgment
+        # waiting for the next live incident. BRO-2322: job-timeout-margin-undersized is a
+        # HARD gate (--fail-on-job-timeout; deterministic static check: job ceiling below
+        # summed step budgets); every other flag stays advisory (owner-judgment
         # call, card #1918's acceptance criteria) — no flag severity fails the
         # build: the scan is heuristic (YAML-shape parsing can under-count —
         # see the audit's own under-parsed-file cross-check) and #1910
@@ -3735,7 +3737,7 @@ jobs:
         # the build on "flagged" would block unrelated PRs on pre-existing,
         # already-triaged debt. Script wraps main() in try/catch so a crash
         # can't turn "advisory" into an accidental hard gate (see its header).
-        run: node scripts/audit-push-retry-budgets.js
+        run: node scripts/audit-push-retry-budgets.js --fail-on-job-timeout
 
       - name: Audit — Linear issueCreate chokepoint (task #1310)
         if: always() && steps.deps.outcome == 'success'

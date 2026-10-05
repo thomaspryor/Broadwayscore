@@ -105,7 +105,10 @@ jobs:
     # already undersized on a worst-case run; this audit is what surfaced
     # it, not something the 2 step edits introduced). 100min leaves ~16min
     # (16%) of real margin over the 84min worst case.
-    timeout-minutes: 100
+    # 100->125 (BRO-2322 audit): later steps/budget growth took the audited
+    # worst case to 6240s (5640s other steps + 600s push deadline), -4% vs
+    # the 100min ceiling; 125min = 7500s restores ~17% margin.
+    timeout-minutes: 125
     steps:
       # BRO-4231: this job checks out a blobless partial clone (filter: blob:none
       # on the checkout below), so rebase/diff/show fetch missing blobs over the
@@ -1210,7 +1213,7 @@ jobs:
 
       - name: Notify on failure
         id: notify
-        # BRO-3707: a hang hitting the job's own timeout-minutes: 100 reports
+        # BRO-3707: a hang hitting the job's own timeout-minutes: 125 reports
         # conclusion "cancelled", not "failure" — a bare failure() here would
         # silently drop this critical alert. Guarded against the Express-
         # takeover false positive by check_preemption above.

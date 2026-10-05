@@ -143,7 +143,18 @@ jobs:
     # explicit capped-step sum this comment tracks; 210 keeps real margin
     # above the new total, still nowhere near GitHub Actions' 360-min hard
     # job ceiling.
-    timeout-minutes: 210
+    #
+    # Raised 210->330 (BRO-2322 audit of push-with-retry.sh callers): the
+    # sum model in scripts/audit-push-retry-budgets.js (every OTHER step's
+    # timeout-minutes cap, 15540s, plus the largest push step's 900s
+    # deadline) is 16440s; the 210min ceiling left a -30% margin, i.e. all 10
+    # flagged commit steps could be SIGKILLed by the job timeout before their
+    # own PUSH_DEADLINE_SEC / Git Data API fallback ran (the #1842/#1891
+    # class). 330min = 19800s gives ~17% margin over that sum. Tradeoff: a
+    # truly hung run is detected later; still under GitHub's 360-min cap, and
+    # the concurrency group queues (not cancels) overlapping runs. Now gated
+    # by `audit-push-retry-budgets.js --fail-on-job-timeout` in test.yml.
+    timeout-minutes: 330
     permissions:
       contents: write
       issues: write
@@ -261,7 +272,7 @@ jobs:
       # concurrencyGroup 'data-health-check', in
       # scripts/lib/core-data-merge-registry.js — same registry entries the
       # late step already relied on, just committed sooner. No
-      # timeout-minutes override (inherits the 180min job ceiling), matching
+      # timeout-minutes override (inherits the 330min job ceiling (BRO-2322)), matching
       # "Commit provider spend ledger" and "Commit lifetime sweep snapshots"
       # above/below.
       - name: Commit digest + coverage snapshots (apiFallbackSafe)
@@ -686,7 +697,7 @@ jobs:
         # "didn't update overnight: done-evidence audit" line in the owner's
         # morning email within 36h. continue-on-error is load-bearing here for
         # the same reason it is on the acceptance-recheck step above: this step
-        # sits BEFORE several commit+push steps in a 180-minute job, and a crash
+        # sits BEFORE several commit+push steps in a 330-minute job, and a crash
         # in shadow-mode reporting must never block the health snapshot commit
         # that follows it.
         continue-on-error: true
@@ -873,7 +884,7 @@ jobs:
       # 'wrong-article' verdict keeps the gate red as CONFIRMED. Never edits
       # review data. Capped at 20 suspects/run, 40s per call (13.3 min worst
       # case, under this step's 15-min cap; verdicts are written after each
-      # call so a cap hit loses nothing), inside the 210-min job ceiling. Until 2026-10-04 nothing ran this, so
+      # call so a cap hit loses nothing), inside the 330-min job ceiling. Until 2026-10-04 nothing ran this, so
       # the gate failed whenever new reviews landed (22 unverified that day).
       - name: wrong-article LLM adjudication (Opus, capped)
         if: always()
@@ -1459,7 +1470,7 @@ jobs:
       - name: Notify on failure
         id: notify
         # BRO-3707: a hang in any uncapped step hitting the job's own
-        # timeout-minutes: 180 reports conclusion "cancelled", not "failure" —
+        # timeout-minutes: 330 reports conclusion "cancelled", not "failure" —
         # a bare failure() here would silently drop this critical alert.
         if: failure() || cancelled()
         uses: ./.github/actions/notify-failure

@@ -9,6 +9,7 @@
 // first instead of blanket-raising all ~150 call sites.
 //
 // Usage:
+//   (BRO-2322) add --fail-on-job-timeout to exit 1 on job-timeout-margin-undersized; CI hard gate, all other flags advisory
 //   node scripts/audit-push-retry-budgets.js            # full report
 //   node scripts/audit-push-retry-budgets.js --json      # machine-readable
 //   node scripts/audit-push-retry-budgets.js --top=10    # limit ranked list (default 15)
@@ -27,6 +28,10 @@ function main() {
   const args = process.argv.slice(2);
   const jsonOut = args.includes('--json');
   const topArg = args.find((a) => a.startsWith('--top='));
+  // BRO-2322: hard gate for the one flag that is unambiguous (not heuristic
+  // about contention): the job ceiling is below the summed step budgets, so
+  // the job timeout can SIGKILL a push step before its own deadline/fallback.
+  const failOnJobTimeout = args.includes('--fail-on-job-timeout');
   const topN = topArg ? parseInt(topArg.split('=')[1], 10) : 15;
 
   const files = fs.readdirSync(WORKFLOWS_DIR).filter((f) => /\.ya?ml$/.test(f)).sort();
@@ -56,6 +61,12 @@ function main() {
   const fallbackEarlyTriggerUnreachable = allResults
     .filter((r) => r.flags.includes('fallback-early-trigger-unreachable'))
     .sort((a, b) => (a.fundableAttempts - b.fundableAttempts) || (b.fallbackAfterAttempts - a.fallbackAfterAttempts));
+
+  const jobTimeoutViolations = allResults.filter((r) => r.flags.includes('job-timeout-margin-undersized'));
+  if (failOnJobTimeout && jobTimeoutViolations.length > 0) {
+    process.exitCode = 1;
+    console.error(`::error::${jobTimeoutViolations.length} push-with-retry.sh call site(s) have a job timeout below the summed step budgets (job-timeout-margin-undersized): ${[...new Set(jobTimeoutViolations.map((r) => `${r.file}:${r.job}`))].join(', ')}. Raise the job's timeout-minutes (see node scripts/audit-push-retry-budgets.js).`);
+  }
 
   if (jsonOut) {
     console.log(JSON.stringify({ totalFiles: files.length, filesWithPushCalls, totalCalls: allResults.length, flaggedCount: flagged.length, mixedSafetyBundleCount: mixedBundles.length, fallbackEarlyTriggerUnreachableCount: fallbackEarlyTriggerUnreachable.length, underParsedFiles, ranked }, null, 2));
@@ -166,6 +177,7 @@ if (require.main === module) {
   try {
     main();
   } catch (err) {
+    if (process.argv.includes('--fail-on-job-timeout')) throw err;
     console.log(`ℹ️  push-retry budget audit crashed (advisory, not failing CI): ${err.message}`);
   }
 }
