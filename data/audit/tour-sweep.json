@@ -1,7 +1,9 @@
 {
-  "generatedAt": "2026-10-05T01:13:07.854Z",
-  "moved": 0,
-  "held": [],
+  "generatedAt": "2026-10-05T01:27:00.298Z",
+  "moved": 2,
+  "held": [
+    "spamalot-tour-2025"
+  ],
   "tours": [
     {
       "tourId": "beetlejuice-tour-2022",
@@ -234,6 +236,132 @@
         "non-review": 1,
         "wrong-show": 1
       }
+    },
+    {
+      "tourId": "wicked-tour-2021",
+      "fromIds": [
+        "wicked-2003"
+      ],
+      "held": false,
+      "counts": {
+        "duplicate": 1
+      }
+    },
+    {
+      "tourId": "hadestown-tour-2024",
+      "fromIds": [
+        "hadestown-2019"
+      ],
+      "held": false,
+      "counts": {
+        "already-routed": 1
+      }
+    },
+    {
+      "tourId": "six-tour-2022",
+      "fromIds": [
+        "six-2021"
+      ],
+      "held": false,
+      "counts": {
+        "tryout": 1
+      }
+    },
+    {
+      "tourId": "the-wiz-tour-2026",
+      "fromIds": [
+        "the-wiz-1975",
+        "the-wiz-1984",
+        "the-wiz-2024"
+      ],
+      "held": false,
+      "counts": {
+        "before-tour-launch": 1,
+        "undated-before-launch": 3
+      }
+    },
+    {
+      "tourId": "beauty-and-the-beast-tour-2025",
+      "fromIds": [
+        "beauty-and-the-beast-1994"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "the-sound-of-music-tour-2025",
+      "fromIds": [
+        "the-sound-of-music-1998",
+        "the-sound-of-music-2027"
+      ],
+      "held": false,
+      "counts": {
+        "tour-review": 1
+      }
+    },
+    {
+      "tourId": "spamalot-tour-2025",
+      "fromIds": [
+        "spamalot-2005",
+        "spamalot-2023"
+      ],
+      "held": true,
+      "counts": {
+        "held-over-cap": 4,
+        "undated-before-launch": 3,
+        "before-tour-launch": 1,
+        "tryout": 1
+      }
+    },
+    {
+      "tourId": "the-music-man-tour-2026",
+      "fromIds": [
+        "the-music-man-2000",
+        "the-music-man-2022"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "mamma-mia-tour-2026",
+      "fromIds": [
+        "mamma-mia-2001",
+        "mamma-mia-2025"
+      ],
+      "held": false,
+      "counts": {
+        "before-tour-launch": 1,
+        "tour-review": 1
+      }
+    },
+    {
+      "tourId": "harry-potter-tour-2024",
+      "fromIds": [
+        "harry-potter-2021"
+      ],
+      "held": false,
+      "counts": {}
+    },
+    {
+      "tourId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "fromIds": [
+        "a-beautiful-noise-the-neil-diamond-musical-2022"
+      ],
+      "held": false,
+      "counts": {
+        "non-review": 1,
+        "wrong-show": 4,
+        "duplicate": 2,
+        "no-tour-evidence": 2
+      }
+    },
+    {
+      "tourId": "kinky-boots-tour-2025",
+      "fromIds": [
+        "kinky-boots-2013"
+      ],
+      "held": false,
+      "counts": {}
     }
   ]
 }

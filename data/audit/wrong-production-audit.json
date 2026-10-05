@@ -1,15 +1,15 @@
 {
-  "timestamp": "2026-10-05T01:16:43.638Z",
+  "timestamp": "2026-10-05T01:31:19.892Z",
   "stats": {
-    "totalReviews": 46281,
-    "alreadyFlagged": 18756,
+    "totalReviews": 46283,
+    "alreadyFlagged": 18732,
     "dateGuardCatches": 269,
-    "directorMismatch": 1234,
-    "tvFilmSignals": 1340,
+    "directorMismatch": 1240,
+    "tvFilmSignals": 1341,
     "londonSignals": 1272,
     "offBroadwaySignals": 506,
-    "yearMismatch": 104,
-    "noPublishDate": 4287
+    "yearMismatch": 109,
+    "noPublishDate": 4299
   },
   "findings": [
     {
@@ -93,6 +93,104 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"hulu\""
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-2022",
+      "file": "theatermania--david-gordon.json",
+      "score": 44,
+      "publishDate": "December 4, 2022",
+      "url": "https://www.theatermania.com/broadway/news/review-neil-diamond-musical-a-beautiful-noise_94623.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2024 (2x) more than 2022 (0x). 2024 matches production: a-beautiful-noise-the-neil-diamond-musical-tour-2024"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "broadwayworld--jared-fessler.json",
+      "score": 79,
+      "publishDate": null,
+      "url": "https://www.broadwayworld.com/minneapolis/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Orpheum-Theatre-Minneapolis-20251001",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "broadwayworld--michael-rabice.json",
+      "score": 79,
+      "publishDate": "2025-04-09",
+      "url": "https://www.broadwayworld.com/buffalo/article/Review-NEIL-DIAMOND-A-BEAUTIFUL-NOISE-at-Sheas-Buffalo-Theatre-20250409",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "broadwayworld--scott-rawson.json",
+      "score": 83,
+      "publishDate": "2025-03-19",
+      "url": "https://www.broadwayworld.com/madison/article/Review-THE-NEIL-DIAMOND-MUSICAL-A-BEAUTIFUL-NOISE-at-The-Overture-Center-20250319",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "broadwayworld--zach-wetzel.json",
+      "score": 82,
+      "publishDate": "2025-06-25",
+      "url": "https://www.broadwayworld.com/phoenix/article/Review-A-BEAUTIFUL-NOISE-THE-NEIL-DIAMOND-MUSICAL-at-Broadway-In-Tucson-20250625",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "revue--marin-heinritz.json",
+      "score": 82,
+      "publishDate": null,
+      "url": "https://revuewm.com/arts/review-neil-diamonds-music-dazzles-in-a-beautiful-noise",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"michael mayer\" from a-beautiful-noise-the-neil-diamond-musical-2022"
+        }
+      ]
+    },
+    {
+      "showId": "a-beautiful-noise-the-neil-diamond-musical-tour-2024",
+      "file": "san-jose-mercury-news--jim-harrington.json",
+      "score": 47,
+      "publishDate": "2025-06-06",
+      "url": "https://www.mercurynews.com/2025/06/06/review-neil-diamond-musical-is-not-so-good-so-good-so-good/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"netflix\""
         }
       ]
     },
@@ -17759,6 +17857,20 @@
       ]
     },
     {
+      "showId": "kinky-boots-2013",
+      "file": "latimes--charles-mcnulty.json",
+      "score": 44,
+      "publishDate": "2013-04-04",
+      "url": "https://articles.latimes.com/2013/apr/04/entertainment/la-et-kinky-boots-review-broadway-cyndi-lauper-20130405",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2025 (4x) more than 2013 (1x). 2025 matches production: kinky-boots-tour-2025"
+        }
+      ]
+    },
+    {
       "showId": "kinky-boots-off-broadway-2026",
       "file": "front-row-center--brittany-crowell.json",
       "score": 77,
@@ -19490,6 +19602,20 @@
           "type": "YEAR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions year 2001 (2x) more than 2025 (0x). 2001 matches production: mamma-mia-2001"
+        }
+      ]
+    },
+    {
+      "showId": "mamma-mia-tour-2026",
+      "file": "slantmagazine--unknown.json",
+      "score": 45,
+      "publishDate": null,
+      "url": "https://www.slantmagazine.com/theater/mamma-mia-review-broadway-2025/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"phyllida lloyd\" from mamma-mia-2025"
         }
       ]
     },
@@ -31940,20 +32066,6 @@
       ]
     },
     {
-      "showId": "the-lion-king-tour-2021",
-      "file": "theatrely--kobi-kassal.json",
-      "score": null,
-      "publishDate": null,
-      "url": "https://www.theatrely.com/post/watch-pride-rock-is-once-again-open-for-business-at-the-lion-king-on-broadway",
-      "findings": [
-        {
-          "type": "DIRECTOR_MISMATCH",
-          "severity": "HIGH",
-          "detail": "Mentions director \"julie taymor\" from the-lion-king-1997"
-        }
-      ]
-    },
-    {
       "showId": "the-little-dog-laughed-2006",
       "file": "theater-life--eric-march.json",
       "score": 87,
@@ -32146,6 +32258,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"season 9\""
+        }
+      ]
+    },
+    {
+      "showId": "the-music-man-2022",
+      "file": "washpost--mark-kennedy.json",
+      "score": 85,
+      "publishDate": "February 11th, 2022",
+      "url": "https://www.washingtonpost.com/entertainment/review-hugh-jackman-steals-the-music-man-on-broadway/2022/02/10/15ab0646-8aed-11ec-838f-0cfdf69cce3c_story.html",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (3x) more than 2022 (0x). 2026 matches production: the-music-man-tour-2026"
         }
       ]
     },
@@ -34589,6 +34715,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv show\""
+        }
+      ]
+    },
+    {
+      "showId": "the-wiz-2024",
+      "file": "ew--lester-fabian-brathwaite.json",
+      "score": 45,
+      "publishDate": "April 17, 2024",
+      "url": "https://ew.com/the-wiz-broadway-revival-review-8635100",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2026 (14x) more than 2024 (12x). 2026 matches production: the-wiz-tour-2026"
         }
       ]
     },
@@ -37892,6 +38032,20 @@
     },
     {
       "showId": "wicked-2003",
+      "file": "nyt-theater--jonathan-mandell.json",
+      "score": 78,
+      "publishDate": "September 12, 2025",
+      "url": "https://newyorktheater.me/2025/09/12/wicked-broadway-review/",
+      "findings": [
+        {
+          "type": "YEAR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions year 2021 (12x) more than 2003 (2x). 2021 matches production: wicked-tour-2021"
+        }
+      ]
+    },
+    {
+      "showId": "wicked-2003",
       "file": "variety--charles-isherwood.json",
       "score": 57,
       "publishDate": "October 30, 2003",
@@ -37915,6 +38069,20 @@
           "type": "TV_FILM_SIGNAL",
           "severity": "HIGH",
           "detail": "Contains TV/film keyword: \"tv series\""
+        }
+      ]
+    },
+    {
+      "showId": "wicked-tour-2021",
+      "file": "we-are-green-bay--warren-gerds.json",
+      "score": 87,
+      "publishDate": "2021-10-28",
+      "url": "https://www.wearegreenbay.com/critic-at-large/warren-gerds-critic-at-large-review-wicked-luster-radiates-big-time-again-in-appleton/",
+      "findings": [
+        {
+          "type": "DIRECTOR_MISMATCH",
+          "severity": "HIGH",
+          "detail": "Mentions director \"joe mantello\" from wicked-2003"
         }
       ]
     },
