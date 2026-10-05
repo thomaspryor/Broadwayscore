@@ -24,7 +24,7 @@ const { classifyResendResponse } = require('./discord-notify');
 //   const WELCOME_EMAIL_SEND_FROM = '2026-10-05T09:00:00Z';
 // Only accounts created at or after that moment get the email, so accounts
 // that already exist are never emailed. Back to null turns it off again.
-const WELCOME_EMAIL_SEND_FROM = null;
+const WELCOME_EMAIL_SEND_FROM = '2026-10-05T01:33:00Z';
 
 // An account older than this is never emailed, even if it was missed (cron
 // outage, budget cap). It also bounds retries: a failed send is retried only

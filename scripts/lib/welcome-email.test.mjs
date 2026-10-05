@@ -76,12 +76,14 @@ test('no em dashes or en dashes anywhere in the copy', () => {
   }
 });
 
-test('kill switch: the committed default is OFF', () => {
-  // Turning sending on is a deliberate one-line change; a test pins the default
-  // so it can't flip by accident in an unrelated commit. Update this test in
-  // the same commit that turns sending on.
-  assert.equal(w.WELCOME_EMAIL_SEND_FROM, null);
-  assert.equal(w.windowStart({ sendFrom: w.WELCOME_EMAIL_SEND_FROM }), null);
+test('kill switch: the committed value is ON since 2026-10-05T01:33:00Z', () => {
+  // Turning sending on or off is a deliberate one-line change; a test pins the
+  // committed value so it can't flip by accident in an unrelated commit. Update
+  // this test in the same commit that changes the switch.
+  assert.equal(w.WELCOME_EMAIL_SEND_FROM, '2026-10-05T01:33:00Z');
+  const start = w.windowStart({ sendFrom: w.WELCOME_EMAIL_SEND_FROM });
+  assert.ok(start instanceof Date, 'a committed ON value must parse');
+  assert.ok(start.getTime() >= Date.parse(w.WELCOME_EMAIL_SEND_FROM), 'never reaches back before the switch time');
 });
 
 test('kill switch blocks sends (null, empty and malformed all count as off)', async () => {
