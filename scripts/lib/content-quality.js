@@ -1584,10 +1584,10 @@ function _stripExemptedChromeLines(text) {
       const start = out.lastIndexOf('\n', idx - 1) + 1;
       let end = out.indexOf('\n', idx);
       if (end < 0) end = out.length;
-      // A banner line is mostly the matched phrase; a prose sentence that merely contains it is not
+      // A banner line is mostly (>=40%) the matched phrases; a prose sentence that merely contains it is not
       const line = out.slice(start, end);
       const covered = patterns.reduce((n, re) => { const m = line.match(re); return n + (m ? m[0].length : 0); }, 0);
-      if (line.length > MAX_CHROME_LINE || line.length > covered * 3 + 40) continue;
+      if (line.length > MAX_CHROME_LINE || covered < line.length * 0.4) continue;
       out = (out.slice(0, start) + out.slice(end)).replace(/\n{3,}/g, '\n\n').trim();
       removed = true;
       break;

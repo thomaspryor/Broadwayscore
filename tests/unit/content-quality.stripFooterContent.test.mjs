@@ -94,3 +94,14 @@ test('strip that would flip the text to garbage is abandoned', () => {
   assert.equal(cq.isGarbageContent(out).isGarbage, before === false ? false : cq.isGarbageContent(out).isGarbage);
   if (!before) assert.equal(cq.isGarbageContent(out).isGarbage, false);
 });
+
+test('one-sentence closing prose with a paywall-ish phrase is kept (repro from review)', () => {
+  for (const closing of [
+    'Already a member of the EGOT club, she earns every ovation here.',
+    'Premium content, indeed: this is the best Broadway show of the season.',
+    'Become a member of the club, she sings the finale with real abandon.',
+  ]) {
+    const text = `${body}\n\n${closing}`;
+    assert.ok(cq.stripExemptedChrome(text).includes(closing.slice(0, 20)), closing);
+  }
+});
