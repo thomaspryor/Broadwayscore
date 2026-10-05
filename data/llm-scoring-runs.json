@@ -1,43 +1,5 @@
 [
   {
-    "startedAt": "2026-10-05T01:44:08.403Z",
-    "completedAt": "2026-10-05T01:45:08.039Z",
-    "totalReviews": 46737,
-    "processed": 7,
-    "skipped": 46719,
-    "errors": 1,
-    "tokensUsed": {
-      "input": 86995,
-      "output": 3508,
-      "total": 227663
-    },
-    "costUsd": 0.3419957,
-    "runId": "37252360422",
-    "errorDetails": [
-      {
-        "showId": "affluenza-off-west-end-2026",
-        "outletId": "broadway-baby",
-        "error": "input_validation_failed:body_too_short"
-      }
-    ]
-  },
-  {
-    "startedAt": "2026-10-05T01:45:10.054Z",
-    "completedAt": "2026-10-05T01:45:12.149Z",
-    "totalReviews": 0,
-    "processed": 0,
-    "skipped": 0,
-    "errors": 0,
-    "tokensUsed": {
-      "input": 0,
-      "output": 0,
-      "total": 0
-    },
-    "costUsd": 0,
-    "runId": "37252360422",
-    "errorDetails": []
-  },
-  {
     "startedAt": "2026-10-05T02:25:21.458Z",
     "completedAt": "2026-10-05T02:25:28.777Z",
     "totalReviews": 46736,
@@ -325741,6 +325703,38 @@
     },
     "costUsd": 0,
     "runId": "37313830916",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-05T13:09:54.832Z",
+    "completedAt": "2026-10-05T13:09:57.566Z",
+    "totalReviews": 46751,
+    "processed": 0,
+    "skipped": 46750,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 3638,
+      "output": 103,
+      "total": 11012
+    },
+    "costUsd": 0.012885599999999997,
+    "runId": "37314261842",
+    "errorDetails": []
+  },
+  {
+    "startedAt": "2026-10-05T13:09:59.111Z",
+    "completedAt": "2026-10-05T13:10:00.833Z",
+    "totalReviews": 0,
+    "processed": 0,
+    "skipped": 0,
+    "errors": 0,
+    "tokensUsed": {
+      "input": 0,
+      "output": 0,
+      "total": 0
+    },
+    "costUsd": 0,
+    "runId": "37314261842",
     "errorDetails": []
   }
 ]
