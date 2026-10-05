@@ -2898,18 +2898,20 @@ function extractAuthorFromHtml(html, text, options = {}) {
     if (match && isValidAuthorName(match[1])) return cleanAuthorName(match[1]);
   }
 
+  // Name tokens allow accents, apostrophes and hyphens (José Solís, Sean O'Connor,
+  // Mary-Louise Parker); the old [A-Z][a-z]+ tokens dropped those bylines (BRO-733).
   const bylinePatterns = [
-    /class="[^"]*byline[^"]*"[^>]*>(?:<[^>]+>)*\s*(?:By\s+)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
-    /class="article-byline"[^>]*>\s*(?:By\s+)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
-    /itemprop="author"[^>]*>(?:<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
-    /rel="author"[^>]*>([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    /class="[^"]*byline[^"]*"[^>]*>(?:<[^>]+>)*\s*(?:By\s+)?([A-Z][a-zÀ-ÿ'’\-]+ [A-Z][a-zÀ-ÿ'’\-]+(?:\s+[A-Z][a-zÀ-ÿ'’\-]+)?)/i,
+    /class="article-byline"[^>]*>\s*(?:By\s+)?([A-Z][a-zÀ-ÿ'’\-]+ [A-Z][a-zÀ-ÿ'’\-]+(?:\s+[A-Z][a-zÀ-ÿ'’\-]+)?)/i,
+    /itemprop="author"[^>]*>(?:<[^>]+>)*\s*([A-Z][a-zÀ-ÿ'’\-]+ [A-Z][a-zÀ-ÿ'’\-]+(?:\s+[A-Z][a-zÀ-ÿ'’\-]+)?)/i,
+    /rel="author"[^>]*>([A-Z][a-zÀ-ÿ'’\-]+ [A-Z][a-zÀ-ÿ'’\-]+(?:\s+[A-Z][a-zÀ-ÿ'’\-]+)?)/i,
     // class="author" or class="foo author" — matches Theatrely, other CMS sites
     // Does NOT match class="author-area" or class="authors-box" (hyphen/plural after "author")
-    /class="(?:[^"]*\s)?author"[^>]*>(?:\s*<[^>]+>)*\s*(?:By\s+)?([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    /class="(?:[^"]*\s)?author"[^>]*>(?:\s*<[^>]+>)*\s*(?:By\s+)?([A-Z][a-zÀ-ÿ'’\-]+ [A-Z][a-zÀ-ÿ'’\-]+(?:\s+[A-Z][a-zÀ-ÿ'’\-]+)?)/i,
     // class="author-name" — matches WhatsOnStage, DCTheatreScene
-    /class="[^"]*author-name[^"]*"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    /class="[^"]*author-name[^"]*"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z][a-zÀ-ÿ'’\-]+ [A-Z][a-zÀ-ÿ'’\-]+(?:\s+[A-Z][a-zÀ-ÿ'’\-]+)?)/i,
     // WordPress author vcard microformat
-    /class="author vcard"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z][a-z]+ [A-Z][a-z]+(?:\s+[A-Z][a-z]+)?)/i,
+    /class="author vcard"[^>]*>(?:\s*<[^>]+>)*\s*([A-Z][a-zÀ-ÿ'’\-]+ [A-Z][a-zÀ-ÿ'’\-]+(?:\s+[A-Z][a-zÀ-ÿ'’\-]+)?)/i,
     // Talkin' Broadway: "<p>Theatre Review by <a href="mailto:...">Name</a> - Date</p>"
     // The anchor typically wraps a mailto: link; tolerate bio links and the
     // no-anchor variant. Name charset allows hyphens (Mary-Louise), ASCII and
