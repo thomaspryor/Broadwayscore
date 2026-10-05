@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { marketAlternates, BASE_URL } from '@/lib/seo';
 import { featureFlags } from '@/config/feature-flags';
 import { BuyMeACoffeeWidget } from '@/components/BuyMeACoffeeWidget';
+import { getLegendEntries } from '@/config/commercial';
 
 // Static OG image (API routes don't work with static export)
 const ogImageUrl = `${BASE_URL}/og/home.png`;
@@ -154,6 +155,7 @@ export default function MethodologyPage() {
         <a href="#normalization" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Normalization</a>
         <a href="#audience-grade" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">AudienceGrade</a>
         {featureFlags.boxOffice && <a href="#box-office-data" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Box Office</a>}
+        {featureFlags.commercial && <a href="#commercial" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Investment Data</a>}
         {featureFlags.videoReviews && <a href="#video-reviews" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">VideoScore</a>}
         {featureFlags.awardScoreV2 && <a href="#award-score" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">Award Score</a>}
         <a href="#unique" className="px-3 py-1.5 rounded-full bg-surface-overlay hover:bg-white/10 text-gray-400 hover:text-white transition-colors">What&apos;s Unique</a>
@@ -497,6 +499,113 @@ export default function MethodologyPage() {
             Box office data provides important context for understanding a show&apos;s commercial viability and audience appeal, complementing critical reviews and audience sentiment.
           </p>
         </section>}
+
+        {/* Investment / commercial data (BRO-4623). Linked from /biz, /biz/season and the show-page Commercial Scorecard. */}
+        {featureFlags.commercial && (
+        <section id="commercial" className="card p-5 sm:p-6 scroll-mt-20">
+          <h2 className="text-xl font-bold text-white mb-4">Investment Data</h2>
+          <p className="text-gray-300 text-sm mb-4">
+            The Investment Tracker and each show&apos;s Commercial Scorecard combine two kinds of information: facts that have been publicly reported, and estimates from our own recoupment model. We label every estimate, and we never present an estimate as a reported figure.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Reported facts</h3>
+          <ul className="text-gray-300 space-y-2 text-sm">
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
+                <strong className="text-white">Recouped.</strong> We mark a show as recouped only when a trade publication or an SEC filing reports it, and we link that source. A few long-running hits never announced a date; those are labelled &quot;Not publicly announced&quot; and treated as our editorial judgment, not a reported fact.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
+                <strong className="text-white">Capitalization</strong> comes from SEC Form D filings and trade press. When no figure has been published we show &quot;Undisclosed&quot;, and totals say how many shows are missing (for example &quot;~$40M+&quot; with &quot;3 of 9 undisclosed&quot;). We never count an unknown figure as zero.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
+                <strong className="text-white">Return to investors</strong> appears only when a source reports it. We do not publish modelled investor returns.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
+                <strong className="text-white">Weekly grosses</strong> are The Broadway League&apos;s figures as published by Playbill and BroadwayWorld.
+              </span>
+            </li>
+          </ul>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Estimates</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            A <strong className="text-white">~</strong> before a number means it is an estimate. Estimates come from our recoupment model, which compares a show&apos;s weekly grosses with its estimated weekly running costs and its capitalization.
+          </p>
+          <ul className="text-gray-300 space-y-2 text-sm">
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
+                <strong className="text-white">Estimated % recouped</strong> is shown only for shows without a final outcome (still running, or closed and Undisclosed) and only when the model has enough data. We always show it with a low to high range.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
+                <strong className="text-white">Break-even</strong> is the weekly gross a show needs to cover its running costs. Where no published running cost exists we use an industry-typical estimate, marked with ~.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
+                <strong className="text-white">Approaching recoupment</strong> lists running shows whose low-case estimate is at least 50% recouped. <strong className="text-white">At risk</strong> lists running shows whose average gross over the last 4 weeks is below estimated break-even and whose high-case estimate is under 30% recouped.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
+                <strong className="text-white">Trend</strong> compares the average gross of the last 4 weeks with the 4 weeks before.
+              </span>
+            </li>
+            <li className="flex items-start gap-2">
+              <span className="text-brand">•</span>
+              <span>
+                <strong className="text-white">Weeks to recoup</strong> counts from opening night to the reported recoupment date, using the middle of the month when only the month was reported. When only the year was reported we leave it blank.
+              </span>
+            </li>
+          </ul>
+          <p className="text-gray-400 text-xs mt-3">
+            Once a show closes with a known outcome, we stop showing model estimates for it and show only the outcome and the reported facts behind it. A closed show whose outcome was never announced is marked Undisclosed; any estimate shown for it is labelled as one.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Outcome labels</h3>
+          <div className="bg-surface-overlay rounded-lg p-4 border border-white/5">
+            <ul className="text-gray-300 space-y-2 text-sm">
+              {getLegendEntries().map((entry) => (
+                <li key={entry.name} className="flex items-start gap-2">
+                  <span className={`${entry.color} font-semibold shrink-0`}>{entry.name}</span>
+                  <span className="text-gray-400">{entry.description}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <p className="text-gray-400 text-xs mt-3">
+            Unless a source reports what investors got back, the line between Fizzle and Flop (about 30% returned) is our estimate.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">How often it updates</h3>
+          <p className="text-gray-300 text-sm mb-3">
+            Weekly grosses update each Tuesday after the League reports. Trade press feeds are checked every hour for recoupment and closing news. Recoupment research and the model run once a week. The Investment Tracker shows the date of each.
+          </p>
+
+          <h3 className="text-base font-semibold text-white mt-6 mb-3">Corrections</h3>
+          <p className="text-gray-300 text-sm">
+            If a figure is wrong or a source is missing, please{' '}
+            <Link href="/feedback" className="text-brand hover:text-brand-hover underline">
+              report it
+            </Link>{' '}
+            under &quot;Content Error&quot; with a link to the source. We correct reported facts as soon as we can verify them.
+          </p>
+        </section>
+        )}
 
         {/* VideoScore — Video Reviews */}
         {featureFlags.videoReviews && (

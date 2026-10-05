@@ -1,8 +1,11 @@
+'use client';
+
 /**
  * RecentDevelopmentsList - Timeline of recent commercial events
- * Sprint 2, Task 2.2
+ * Sprint 2, Task 2.2. BRO-4623 P2: "N more updates" expands the list.
  */
 
+import { useState } from 'react';
 import Link from 'next/link';
 
 export interface DevelopmentItem {
@@ -39,7 +42,9 @@ export default function RecentDevelopmentsList({
   items,
   maxItems = 5,
 }: RecentDevelopmentsListProps) {
-  const displayItems = items.slice(0, maxItems);
+  const [expanded, setExpanded] = useState(false);
+  const displayItems = expanded ? items : items.slice(0, maxItems);
+  const hiddenCount = items.length - maxItems;
 
   if (displayItems.length === 0) {
     return (
@@ -79,10 +84,17 @@ export default function RecentDevelopmentsList({
           );
         })}
       </ul>
-      {items.length > maxItems && (
-        <span className="text-gray-500 text-sm mt-3 inline-block">
-          {items.length - maxItems} more update{items.length - maxItems !== 1 ? 's' : ''}
-        </span>
+      {hiddenCount > 0 && (
+        <button
+          type="button"
+          onClick={() => setExpanded(!expanded)}
+          aria-expanded={expanded}
+          className="text-brand hover:text-brand-hover text-sm mt-3 inline-block transition-colors"
+        >
+          {expanded
+            ? 'Show fewer updates'
+            : `${hiddenCount} more update${hiddenCount !== 1 ? 's' : ''}`}
+        </button>
       )}
     </div>
   );

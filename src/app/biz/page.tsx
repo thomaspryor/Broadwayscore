@@ -18,7 +18,10 @@ import {
   getUpcomingClosings,
   getAllOpenShowsWithCommercial,
   getCommercialLastUpdated,
+  getCommercialModelLastRun,
 } from '@/lib/data-commercial';
+import { getGrossesWeekEnding } from '@/lib/data-grosses';
+import { formatDataDate, formatDevelopmentDate } from '@/lib/biz-format';
 
 import SeasonStatsCard from '@/components/biz/SeasonStatsCard';
 import RecentDevelopmentsList, { type DevelopmentItem } from '@/components/biz/RecentDevelopmentsList';
@@ -51,30 +54,6 @@ export const metadata: Metadata = {
   },
 };
 
-// Format date as "Mon YYYY" or "Mon DD"
-function formatDateShort(dateStr: string): string {
-  const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
-
-  // Handle YYYY-MM format (recoup dates)
-  if (/^\d{4}-\d{2}$/.test(dateStr)) {
-    const [year, month] = dateStr.split('-');
-    return `${months[parseInt(month) - 1]} ${year}`;
-  }
-
-  // Handle YYYY-MM-DD format (closing dates)
-  if (/^\d{4}-\d{2}-\d{2}$/.test(dateStr)) {
-    const date = new Date(dateStr);
-    const now = new Date();
-    // If within current year, show "Mon DD"
-    if (date.getFullYear() === now.getFullYear()) {
-      return `${months[date.getMonth()]} ${date.getDate()}`;
-    }
-    return `${months[date.getMonth()]} ${date.getFullYear()}`;
-  }
-
-  return dateStr;
-}
-
 // Generate recent developments from actual data
 function generateRecentDevelopments(): DevelopmentItem[] {
   const items: DevelopmentItem[] = [];
@@ -83,11 +62,14 @@ function generateRecentDevelopments(): DevelopmentItem[] {
   const recentRecoupments = getRecentRecoupments(12);
   for (const show of recentRecoupments.slice(0, 4)) {
     items.push({
-      date: formatDateShort(show.recoupDate),
+      date: formatDevelopmentDate(show.recoupDate),
       type: 'recouped',
       showTitle: show.title,
       showSlug: show.slug,
-      description: `recouped in ~${show.weeksToRecoup} weeks`,
+      // Year-only recoupment dates have no week count (calculateWeeksToRecoup → null).
+      description: show.weeksToRecoup === null
+        ? 'recouped'
+        : `recouped about ${show.weeksToRecoup} weeks after opening`,
     });
   }
 
@@ -100,7 +82,7 @@ function generateRecentDevelopments(): DevelopmentItem[] {
         ? 'closed without recouping'
         : 'closed';
     items.push({
-      date: formatDateShort(show.closingDate),
+      date: formatDevelopmentDate(show.closingDate),
       type: 'closing',
       showTitle: show.title,
       showSlug: show.slug,
@@ -112,7 +94,7 @@ function generateRecentDevelopments(): DevelopmentItem[] {
   const upcomingClosings = getUpcomingClosings();
   for (const show of upcomingClosings.slice(0, 2)) {
     items.push({
-      date: formatDateShort(show.closingDate),
+      date: formatDevelopmentDate(show.closingDate),
       type: 'closing-announced',
       showTitle: show.title,
       showSlug: show.slug,
@@ -128,12 +110,10 @@ function generateRecentDevelopments(): DevelopmentItem[] {
       type: 'at-risk',
       showTitle: show.title,
       showSlug: show.slug,
-      description: 'below break-even',
+      description: '4-week average gross below estimated break-even',
     });
   }
 
-  // Sort by type priority: recouped first, then closings, then at-risk
-  // Within same type, most recent first (already sorted by date from data functions)
   return items.slice(0, 8);
 }
 
@@ -153,7 +133,17 @@ export default function BizDashboard() {
   const allOpenShows = getAllOpenShowsWithCommercial();
 
   const recentDevelopments = generateRecentDevelopments();
+
+  // Freshness: three clocks, stated separately so nobody reads a research
+  // date as the box office date (BRO-4623 P1-1).
+  const grossesWeek = getGrossesWeekEnding();
+  const modelRun = getCommercialModelLastRun();
   const lastUpdated = getCommercialLastUpdated();
+  const freshness = [
+    grossesWeek ? `Box office through week ending ${formatDataDate(grossesWeek) ?? grossesWeek}` : null,
+    modelRun ? `Model run ${formatDataDate(modelRun) ?? modelRun}` : null,
+    lastUpdated ? `Research updated ${formatDataDate(lastUpdated) ?? lastUpdated}` : null,
+  ].filter((part): part is string => !!part);
 
   const breadcrumbSchema = generateBreadcrumbSchema([
     { name: 'Home', url: BASE_URL },
@@ -169,7 +159,7 @@ export default function BizDashboard() {
         name: 'What does it mean for a Broadway show to recoup?',
         acceptedAnswer: {
           '@type': 'Answer',
-          text: 'Recoupment means a Broadway show has earned back its initial investment (capitalization) through ticket sales and other revenue. A show that has recouped is profitable for its investors. Most Broadway shows fail to recoup — only about 25% of shows earn back their investment.',
+          text: 'Recoupment means a Broadway show has earned back its initial investment (capitalization) through ticket sales and other revenue. A show that has recouped is profitable for its investors. Most Broadway shows fail to recoup; only about 25% of shows earn back their investment.',
         },
       },
       {
@@ -190,8 +180,9 @@ export default function BizDashboard() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify([breadcrumbSchema, bizFaqSchema]) }}
       />
     <div className="min-h-screen bg-surface">
-      {/* Track page views for gating */}
-      <BizPageTracker page="biz-dashboard" />
+      {/* Track page views (analytics only: /biz never shows the blocking
+          page-view wall; BRO-4623 P1-15) */}
+      <BizPageTracker page="biz-dashboard" gate={false} />
       <div className="max-w-6xl mx-auto px-4 py-6 sm:py-8">
         {/* Back Link */}
         <Link
@@ -225,10 +216,20 @@ export default function BizDashboard() {
                 Recoupment data and investment metrics for industry insiders
               </p>
               <p className="text-sm text-gray-500 mt-1">
-                Data from SEC filings, trade press · Updated {lastUpdated}
+                Capitalization and recoupment from SEC filings and trade press. Weekly
+                box office from The Broadway League, as published by Playbill and
+                BroadwayWorld. Recoupment estimates are our model.
               </p>
+              {freshness.length > 0 && (
+                <p className="text-xs text-gray-500 mt-1" data-testid="biz-freshness">
+                  {freshness.join(' · ')}
+                </p>
+              )}
               <p className="text-xs text-amber-500/70 mt-1">
-                ~ indicates estimate based on public reporting
+                ~ marks an estimate.{' '}
+                <Link href="/methodology#commercial" className="underline hover:text-amber-400">
+                  How we measure
+                </Link>
               </p>
             </div>
             <GatedDownloadButtons />
@@ -242,7 +243,14 @@ export default function BizDashboard() {
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {seasonStats.map((stats) => (
-              <SeasonStatsCard key={stats.season} {...stats} />
+              <SeasonStatsCard
+                key={stats.season}
+                season={stats.season}
+                capitalAtRisk={stats.capitalAtRisk}
+                recoupedCount={stats.recoupedCount}
+                totalShows={stats.totalShows}
+                recoupedShows={stats.recoupedShows}
+              />
             ))}
           </div>
         </section>
@@ -264,7 +272,8 @@ export default function BizDashboard() {
               Approaching Recoupment
             </h2>
             <p className="text-gray-400 text-sm mb-4">
-              Shows trending toward break-even based on current run rate.
+              Running shows whose model estimate is at least 50% recouped even in the
+              low case. Estimates, not announcements.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {approachingRecoupment.slice(0, 6).map((show) => (
@@ -281,15 +290,12 @@ export default function BizDashboard() {
               Struggling / At Risk
             </h2>
             <p className="text-gray-400 text-sm mb-4">
-              Shows operating below break-even and less than 30% recouped.
+              Running shows whose 4-week average gross is below estimated break-even
+              and whose model estimate is under 30% recouped even in the high case.
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {atRiskShows.slice(0, 6).map((show) => (
-                <AtRiskCard
-                  key={show.slug}
-                  {...show}
-                  breakEven={show.weeklyRunningCost}
-                />
+                <AtRiskCard key={show.slug} {...show} />
               ))}
             </div>
           </section>
@@ -302,7 +308,7 @@ export default function BizDashboard() {
               Recent Recoupments
             </h2>
             <p className="text-gray-400 text-sm mb-4">
-              Shows that recouped in the last 2 years.
+              Shows reported to have recouped in the last 2 years.
             </p>
             <RecoupmentTable shows={recentRecoupments} />
           </section>
@@ -314,7 +320,7 @@ export default function BizDashboard() {
             All Currently Running Shows
           </h2>
           <p className="text-gray-400 text-sm mb-4">
-            Complete commercial data for all open Broadway productions.
+            Commercial data for every open Broadway production we track.
           </p>
           <AllShowsTable shows={allOpenShows} initialLimit={10} />
         </section>
@@ -330,24 +336,23 @@ export default function BizDashboard() {
         {/* Footer */}
         <footer className="text-sm text-gray-500 border-t border-white/5 pt-6">
           <p className="mb-2">
-            <strong className="text-gray-400">Note:</strong> All capitalization,
-            weekly running costs, and recoupment estimates marked with ~ are based
-            on trade press reporting, SEC filings, and industry analysis. Box
-            office grosses are from BroadwayWorld and are actuals.
+            <strong className="text-gray-400">Note:</strong> Figures marked ~ are
+            estimates. Capitalization and recoupment come from SEC filings and trade
+            press (Broadway Journal, Broadway News, Deadline, Variety, Playbill, The
+            New York Times). Percent recouped, ranges and break-even are our model
+            unless a source is cited. Weekly box office grosses are The Broadway
+            League&apos;s reported figures, as published by Playbill and BroadwayWorld.
           </p>
           <p>
-            Data compiled from SEC filings, trade press (Broadway Journal,
-            Broadway News, Deadline, Variety), and industry sources.
+            Spotted an error? Send a correction with a source link through our{' '}
+            <Link href="/feedback" className="text-brand hover:text-brand-hover">
+              feedback form
+            </Link>{' '}
+            (category &ldquo;Content Error&rdquo;).
           </p>
           <div className="flex gap-4 mt-3">
             <Link
-              href="/biz-buzz"
-              className="text-brand hover:text-brand-hover"
-            >
-              Full Commercial Scorecard →
-            </Link>
-            <Link
-              href="/methodology"
+              href="/methodology#commercial"
               className="text-brand hover:text-brand-hover"
             >
               Methodology →

@@ -81,9 +81,9 @@ export const DESIGNATIONS: DesignationConfig[] = [
   {
     name: 'TBD',
     color: 'text-gray-400',
-    description: 'Too early to tell (still running)',
+    description: 'Still running; too early to tell',
     sortOrder: 5,
-    showInLegend: false,
+    showInLegend: true,
     icon: '⏳',
     bgClass: 'bg-gray-500/15',
     borderClass: 'border-white/10',
@@ -91,7 +91,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
   {
     name: 'Fizzle',
     color: 'text-orange-400',
-    description: 'Closed without recouping (~30%+ back)',
+    description: 'Closed without recouping; an estimated 30% or more returned',
     sortOrder: 6,
     showInLegend: true,
     icon: '📉',
@@ -101,7 +101,7 @@ export const DESIGNATIONS: DesignationConfig[] = [
   {
     name: 'Flop',
     color: 'text-red-400',
-    description: 'Closed without recouping (<30% back)',
+    description: 'Closed without recouping; an estimated under 30% returned',
     sortOrder: 7,
     showInLegend: true,
     icon: '💸',
@@ -129,6 +129,21 @@ export const DESIGNATIONS: DesignationConfig[] = [
     borderClass: 'border-white/10',
   },
 ];
+
+/**
+ * Display-only label for a CLOSED show whose stored designation is still TBD:
+ * the run is over but no outcome was announced. Never stored in
+ * commercial.json (the record keeps TBD); see getDesignationDisplay in
+ * src/lib/commercial-display.ts.
+ */
+export const UNDISCLOSED_DESIGNATION = {
+  name: 'Undisclosed',
+  color: 'text-gray-400',
+  description: 'Closed; outcome not announced',
+  icon: '❔',
+  bgClass: 'bg-gray-500/15',
+  borderClass: 'border-white/10',
+} as const;
 
 /** Quick lookup: designation name → config */
 export const DESIGNATION_MAP: Record<string, DesignationConfig> =
@@ -179,6 +194,26 @@ export function getDesignationBadgeStyle(designation: string): {
 /** Get designations to show in the legend */
 export function getLegendDesignations(): DesignationConfig[] {
   return DESIGNATIONS.filter(d => d.showInLegend);
+}
+
+/**
+ * Legend rows for the /biz Designation Guide and the methodology page:
+ * every legend designation plus the display-only "Undisclosed" label,
+ * placed right after TBD.
+ */
+export function getLegendEntries(): Array<{ name: string; color: string; description: string }> {
+  const entries: Array<{ name: string; color: string; description: string }> = [];
+  for (const d of getLegendDesignations()) {
+    entries.push({ name: d.name, color: d.color, description: d.description });
+    if (d.name === 'TBD') {
+      entries.push({
+        name: UNDISCLOSED_DESIGNATION.name,
+        color: UNDISCLOSED_DESIGNATION.color,
+        description: UNDISCLOSED_DESIGNATION.description,
+      });
+    }
+  }
+  return entries;
 }
 
 // ============================================

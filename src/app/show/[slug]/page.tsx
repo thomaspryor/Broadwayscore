@@ -17,6 +17,7 @@ import { getPriorRunLabel } from '../../../../scripts/lib/prior-run-label';
 import { getLotteryRush } from '@/lib/data-lottery';
 import { getShowSchedule, getScheduleCurrentMonday, getShowShowtimeIds } from '@/lib/data-showtimes';
 import { getShowCommercial, getRecoupmentTrend } from '@/lib/data-commercial';
+import { toPublicShowCommercial } from '@/lib/commercial-display';
 import { getCastChanges } from '@/lib/data-cast';
 import { getShowCastFile } from '@/lib/data-cast-obc';
 import { getActorSlugMap } from '@/lib/data-actors';
@@ -322,7 +323,11 @@ export default async function ShowPage({ params }: { params: { slug: string } })
   // anything passed to it lands in the page's RSC payload even when its
   // section is hidden. Gating the render alone leaked capitalization and
   // recoupment figures into every Broadway show page's source.
-  const commercial = featureFlags.commercial ? getShowCommercial(show.slug) : undefined;
+  // Even with the flag on, only the allowlisted, publishable part of the
+  // record is sent (toPublicShowCommercial): raw research notes would
+  // otherwise sit in the page source though the card never prints them.
+  const rawCommercial = featureFlags.commercial ? getShowCommercial(show.slug) : undefined;
+  const commercial = rawCommercial ? toPublicShowCommercial(rawCommercial) : undefined;
   const sortedTicketLinks = show.ticketLinks ? sortTicketLinks(show.ticketLinks) : [];
   const castChangesData = getCastChanges(show.id);
   const castFile = getShowCastFile(show.id);

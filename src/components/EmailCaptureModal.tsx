@@ -12,7 +12,7 @@ import { captureEvent } from '@/lib/posthog-events';
 import { Modal, ModalCloseButton } from '@/components/show-cards';
 import { SUBSCRIBED_KEY_PREFIX } from '@/hooks/useFormspreeSubscribed';
 import { isLondonPath } from '@/hooks/useCurrentMarket';
-import { getTriggerCopy, COPY_VERSION, type GateTrigger } from '@/lib/gate-logic';
+import { getTriggerCopy, getSubmitLabel, COPY_VERSION, type GateTrigger } from '@/lib/gate-logic';
 
 const FORMSPREE_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_SUBSCRIBER_FORM_ID || '';
 const FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID = process.env.NEXT_PUBLIC_FORMSPREE_WESTEND_SUBSCRIBER_FORM_ID || '';
@@ -300,7 +300,7 @@ export default function EmailCaptureModal({
                 Submitting...
               </span>
             ) : (
-              showExtraFields ? 'Get Early Access' : 'Send me opening night scores'
+              getSubmitLabel(trigger)
             )}
           </button>
 

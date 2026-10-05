@@ -488,7 +488,10 @@ export interface ShowCommercial {
 
 export interface SeasonStats {
   season: string;
-  capitalAtRisk: number;
+  /** Running (open/previews), unrecouped commercial shows. Unknown caps are counted as undisclosed, never $0. */
+  capitalAtRisk: import('./commercial-metrics').CapitalSummary;
+  /** Every commercial show in the season (nonprofits and tour stops excluded). */
+  totalCapital: import('./commercial-metrics').CapitalSummary;
   recoupedCount: number;
   totalShows: number;
   recoupedShows: string[];
@@ -499,8 +502,8 @@ export interface ApproachingRecoupmentShow {
   title: string;
   season: string;
   capitalization: number | null;
-  estimatedRecoupmentPct: [number, number];
-  modelRecoupmentPct?: [number, number, number] | null;
+  /** Model [pessimistic, central, optimistic] that cleared the display quality floor; pessimistic >= 50. */
+  modelRecoupmentPct: [number, number, number];
   modelMethod?: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
   trend: import('@/config/commercial').RecoupmentTrend;
   weeklyGross: number | null;
@@ -511,8 +514,12 @@ export interface AtRiskShow {
   title: string;
   season: string;
   capitalization: number | null;
-  weeklyGross: number;
-  weeklyRunningCost: number;
+  /** Trailing 4-week average gross. */
+  avgWeeklyGross: number;
+  /** getBreakEven(): model break-even above the quality floor, else weekly running cost. */
+  breakEven: number;
+  /** Model [pessimistic, central, optimistic]; optimistic < 30. */
+  modelRecoupmentPct: [number, number, number];
   trend: import('@/config/commercial').RecoupmentTrend;
 }
 
@@ -520,9 +527,34 @@ export interface RecentRecoupmentShow {
   slug: string;
   title: string;
   season: string;
-  weeksToRecoup: number;
+  /** null when only the recoupment year is known (calculateWeeksToRecoup). */
+  weeksToRecoup: number | null;
   capitalization: number | null;
   recoupDate: string;
+}
+
+/** One row of the /biz and /biz/season tables (AllShowsTable). */
+export interface CommercialShowRow {
+  slug: string;
+  title: string;
+  /** shows.json status ('open' | 'previews' | 'closed' | ...). */
+  status: string;
+  designation: import('@/config/commercial').CommercialDesignation;
+  capitalization: number | null;
+  /** Latest week's gross; null for closed shows. */
+  weeklyGross: number | null;
+  totalGross: number | null;
+  modelRecoupmentPct: [number, number, number] | null;
+  modelMethod: 'weekly-model' | 'simplified-lifetime' | 'ai-estimated' | null;
+  modelDataQuality?: 'high' | 'medium' | 'low';
+  /** Reported investor multiple from a cited record (getReportedInvestorMultiple); never modeled. */
+  reportedMultiple: number | null;
+  /** recoupedSource after publicSourceText (null when it is internal research text). */
+  recoupedSource: string | null;
+  /** 'unknown' for closed shows. */
+  trend: import('@/config/commercial').RecoupmentTrend;
+  recouped: boolean | null;
+  recoupedWeeks: number | null;
 }
 
 export interface RecentClosing {

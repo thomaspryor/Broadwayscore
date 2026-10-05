@@ -4,7 +4,7 @@
  * Extracted per CLAUDE.md §15 so the cooldown and A/B-variant selection are
  * unit-testable without React (tests/unit/gate-logic.test.mjs, tsx batch).
  *
- * Three concerns live here:
+ * Four concerns live here:
  *  1. Passive-gate dismissal cooldown — a visitor who dismissed the popup is
  *     not re-asked for `cooldownDays` (2026-07 audit: dismissal state was
  *     React-state only, so the same person was re-gated EVERY visit — 2,992
@@ -22,6 +22,10 @@
  *     the 'gate-cold-start' A/B (2026-07-21 to 2026-09-15), concluded in
  *     favor of making this the permanent default — see
  *     docs/experiments/gate-cold-start.md "Conclusion".
+ *  4. Trigger kinds (BRO-4623 P1-15) — which triggers can be dismissed and
+ *     which are exempt from the passive checks. The CSV/JSON download modal
+ *     used to be a blocking wall with no close control, for a feature that
+ *     does not exist yet; it is now a closable waitlist ask.
  */
 
 import { emailCaptureConfig } from '@/config/email-capture';
@@ -40,8 +44,8 @@ export interface MobileGateParams {
 /**
  * True when a prior dismissal is still within the cooldown window and passive
  * gates (exit_intent / scroll_depth / return_visitor / page_view_limit) must
- * stay quiet. Blocking feature gates (csv/json download) are exempt — they
- * gate an action the user just clicked, not an unsolicited ask.
+ * stay quiet. User-initiated gates (csv/json download) are exempt — they
+ * answer an action the user just clicked, not an unsolicited ask.
  *
  * @param dismissedAtRaw localStorage value (ms-epoch string) or null
  * @param nowMs          Date.now()
@@ -113,6 +117,50 @@ export type GateTrigger =
   | 'return_visitor'
   | 'recapture';
 
+// ─────────────────────────────────────────────────────────────────────────────
+// Trigger kinds (BRO-4623 P1-15). Two separate properties that used to be
+// conflated in ProGateContext's single BLOCKING_TRIGGERS list:
+//   - blocking: the modal has no close control, no Escape, no backdrop close.
+//   - user-initiated: the user clicked something that opened the modal, so the
+//     passive checks (cold-start page minimum, dismissal cooldown) do not apply
+//     and dismissing it does not start the passive cooldown.
+// CSV/JSON downloads are user-initiated but NOT blocking: the feature does not
+// exist yet, so the modal must never trap the visitor.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/** Triggers whose modal cannot be dismissed. */
+export const BLOCKING_TRIGGERS: readonly GateTrigger[] = ['page_view_limit'];
+
+/** Triggers opened by an explicit click; exempt from the passive checks. */
+export const USER_INITIATED_TRIGGERS: readonly GateTrigger[] = ['csv_download', 'json_download'];
+
+export function isBlockingTrigger(trigger: GateTrigger): boolean {
+  return BLOCKING_TRIGGERS.includes(trigger);
+}
+
+export function isUserInitiatedTrigger(trigger: GateTrigger): boolean {
+  return USER_INITIATED_TRIGGERS.includes(trigger);
+}
+
+/**
+ * True when the cold-start page minimum and the dismissal cooldown apply.
+ * Blocking and user-initiated triggers are exempt; recapture is already
+ * one-shot via RECAPTURED_KEY in ProGateContext.
+ */
+export function isPassiveTrigger(trigger: GateTrigger): boolean {
+  return !isBlockingTrigger(trigger) && !isUserInitiatedTrigger(trigger) && trigger !== 'recapture';
+}
+
+/**
+ * True when dismissing this trigger's modal should stamp the passive-gate
+ * cooldown. Every non-blocking trigger did before BRO-4623; the new closable
+ * CSV/JSON waitlist ask does not, so closing it on /biz cannot quiet the
+ * exit-intent or scroll asks on other pages.
+ */
+export function dismissStartsCooldown(trigger: GateTrigger): boolean {
+  return !isBlockingTrigger(trigger) && !isUserInitiatedTrigger(trigger);
+}
+
 export interface TriggerCopy {
   heading: string;
   subheading: string;
@@ -139,8 +187,19 @@ export interface TriggerCopy {
  * EXAMPLE_SCORE values are asserted against the live canonical score in
  * tests/unit/email-gate-conversion.test.mjs so a Hamilton rescore fails CI
  * instead of shipping a silently stale number.
+ *
+ * csv_download/json_download (BRO-4623 P1-15): the old copy ("CSV Export
+ * Coming Soon" / "API Access Coming Soon", "Be first to access Pro
+ * features...") implied a Pro tier and an API that do not exist. The copy now
+ * says plainly that downloads are not available yet and that the form is a
+ * waitlist.
  */
 const EXAMPLE_SCORE = { broadway: 92, westEnd: 90 }; // hamilton-2015 cs:91.83, hamilton-west-end-2021 cs:90.07 — kept in sync by the test above
+
+const DOWNLOAD_WAITLIST_COPY: TriggerCopy = {
+  heading: 'Data downloads are coming soon',
+  subheading: 'CSV and JSON exports are not available yet. Join the waitlist and we will email you when they launch.',
+};
 
 /**
  * Stamped as `copyVersion` on gate_modal_shown / email_captured /
@@ -150,21 +209,19 @@ const EXAMPLE_SCORE = { broadway: 92, westEnd: 90 }; // hamilton-2015 cs:91.83, 
  * apart from "traffic mix moved it". Bump this string (new date suffix) on
  * any future getTriggerCopy rewrite so old and new copy segment cleanly in
  * scripts/analyze-email-gate-funnel.js's byCopyVersion breakdown.
+ *
+ * v3-2026-10-04 (BRO-4623): only csv_download/json_download copy changed (and
+ * those modals became closable). exit_intent/scroll_depth/return_visitor copy
+ * is identical to v2, so v2 and v3 rows can be pooled for those triggers.
  */
-export const COPY_VERSION = 'v2-2026-08-10';
+export const COPY_VERSION = 'v3-2026-10-04';
 
 export function getTriggerCopy(trigger: GateTrigger, isWE: boolean): TriggerCopy {
   const market = isWE ? 'West End' : 'Broadway';
   const exampleScore = isWE ? EXAMPLE_SCORE.westEnd : EXAMPLE_SCORE.broadway;
   const copies: Record<GateTrigger, TriggerCopy> = {
-    csv_download: {
-      heading: 'CSV Export Coming Soon',
-      subheading: 'Be first to access Pro features including data exports, alerts, and historical data.',
-    },
-    json_download: {
-      heading: 'API Access Coming Soon',
-      subheading: 'Get early access to our data API for integrations and analysis.',
-    },
+    csv_download: { ...DOWNLOAD_WAITLIST_COPY },
+    json_download: { ...DOWNLOAD_WAITLIST_COPY },
     page_view_limit: {
       heading: 'Want to see more?',
       subheading: `Enter your email for full access to ${market} investment data.`,
@@ -193,3 +250,9 @@ export function getTriggerCopy(trigger: GateTrigger, isWE: boolean): TriggerCopy
   return copies[trigger];
 }
 
+/** Submit-button label for the capture modal (BRO-4623 P1-15). */
+export function getSubmitLabel(trigger: GateTrigger): string {
+  if (isUserInitiatedTrigger(trigger)) return 'Join the waitlist';
+  if (trigger === 'page_view_limit') return 'Get Early Access';
+  return 'Send me opening night scores';
+}

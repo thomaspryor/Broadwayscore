@@ -3,13 +3,18 @@
 import { useState } from 'react';
 import Link from 'next/link';
 import type { ShowCommercial, RecoupmentTrend } from '@/lib/data-types';
-import { getDesignationBadgeStyle, getTrendColor, getTrendIcon } from '@/config/commercial';
+import { getTrendColor, getTrendIcon } from '@/config/commercial';
 import {
   getRecoupmentDisplayMode,
   meetsModelQualityFloor,
-  isEditorialRecoupment,
-  formatRecoupedDate,
+  getBreakEven,
+  getRecoupmentAttribution,
+  getDesignationDisplay,
+  publicSourceText,
+  isEstimatedRunningCost,
+  getWeeklyCostSourceLabel,
 } from '@/lib/commercial-display';
+import { isRunningStatus } from '@/lib/commercial-metrics';
 import RecoupmentProgressBar from './RecoupmentProgressBar';
 
 interface BizBuzzCardProps {
@@ -65,7 +70,7 @@ function RecoupmentBadge({ recouped }: { recouped: boolean | null }) {
   }
   return (
     <span className="inline-flex items-center px-2 py-0.5 rounded-full text-xs font-medium bg-gray-500/15 text-gray-400 border border-white/10">
-      Unknown
+      Not reported
     </span>
   );
 }
@@ -78,18 +83,17 @@ function ChevronDown({ className }: { className?: string }) {
   );
 }
 
-// Trend indicator component
+// Trend indicator component (4-week average gross vs the prior 4 weeks)
 function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
   if (trend === 'unknown') return null;
 
   const colorClass = getTrendColor(trend, false);
   const icon = getTrendIcon(trend, false);
   const labels: Record<string, string> = {
-    improving: 'Trending Up',
-    steady: 'Steady',
-    declining: 'Trending Down',
+    improving: 'Grosses up',
+    steady: 'Grosses steady',
+    declining: 'Grosses down',
   };
-  // Derive bg/border from trend color pattern
   const bgBorderMap: Record<string, { bgClass: string; borderClass: string }> = {
     improving: { bgClass: 'bg-emerald-500/15', borderClass: 'border-emerald-500/25' },
     steady: { bgClass: 'bg-gray-500/15', borderClass: 'border-white/10' },
@@ -98,94 +102,68 @@ function TrendIndicator({ trend }: { trend: RecoupmentTrend }) {
   const { bgClass, borderClass } = bgBorderMap[trend] || { bgClass: 'bg-gray-500/15', borderClass: 'border-white/10' };
 
   return (
-    <span className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${bgClass} ${colorClass} border ${borderClass}`}>
+    <span
+      className={`inline-flex items-center gap-1 px-2 py-0.5 rounded-full text-xs font-medium ${bgClass} ${colorClass} border ${borderClass}`}
+      title="Last 4 weeks' average gross vs the 4 weeks before"
+    >
       <span className="text-sm">{icon}</span>
       {labels[trend] || trend}
     </span>
   );
 }
 
-// Calculate estimated returns since recoupment
-function calculateEstimatedReturns(
-  recouped: boolean | null,
-  recoupedWeeks: number | null,
-  weeklyGross: number | null,
-  weeklyRunningCost: number | null,
-  capitalization: number | null,
-  showStatus: 'open' | 'closed' | 'previews' | 'upcoming' | undefined
-): { yearsOfReturns: number; percentageReturn: number } | null {
-  // Only for recouped shows still running
-  if (!recouped || !recoupedWeeks || showStatus !== 'open') return null;
-  if (!weeklyGross || !weeklyRunningCost || !capitalization) return null;
-
-  // Estimate weekly profit
-  const weeklyProfit = weeklyGross - weeklyRunningCost;
-  if (weeklyProfit <= 0) return null;
-
-  // Rough estimate: weeks running since recoupment * weekly profit
-  // Assuming the show is currently at week = recoupedWeeks + time since
-  // We don't have exact weeks running, so use a rough estimate
-  const weeksOfProfitEstimate = 52; // Use 1 year as a rough running estimate post-recoupment
-  const estimatedTotalReturns = weeklyProfit * weeksOfProfitEstimate;
-  const percentageReturn = Math.round((estimatedTotalReturns / capitalization) * 100);
-
-  return {
-    yearsOfReturns: 1, // Simplified to 1 year estimate
-    percentageReturn,
-  };
-}
-
 export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross, showStatus, allTimeGross }: BizBuzzCardProps) {
   const [isExpanded, setIsExpanded] = useState(false);
-  const style = getDesignationBadgeStyle(commercial.designation);
+  void showTitle;
 
   // Don't render if we have no useful data
   const hasData = commercial.capitalization || commercial.recouped !== null || commercial.designation !== 'TBD';
   if (!hasData) return null;
 
-  // Calculate estimated returns for recouped shows
-  const estimatedReturns = calculateEstimatedReturns(
-    commercial.recouped,
-    commercial.recoupedWeeks,
-    weeklyGross ?? null,
-    commercial.weeklyRunningCost,
-    commercial.capitalization,
-    showStatus
-  );
+  // Closed + TBD reads "Undisclosed" (display only; the record keeps TBD).
+  const designation = getDesignationDisplay(commercial.designation, showStatus);
+  const running = isRunningStatus(showStatus);
 
-  // Show trend for TBD shows that aren't recouped
-  const showTrend = trend && trend !== 'unknown' && commercial.designation === 'TBD' && !commercial.recouped;
+  // Display rules (src/lib/commercial-display.ts, unit-tested):
+  //  - recouped:true → the recoupment record, never the model (Q1).
+  //  - closed show with a final designation → designation + cited facts only:
+  //    no model %, range, break-even or model confidence (BRO-4623 P0-4).
+  //  - otherwise model output above the quality floor, labelled as an estimate.
+  const displayMode = getRecoupmentDisplayMode({ ...commercial, status: showStatus });
+  const attribution = displayMode === 'announced' ? getRecoupmentAttribution(commercial) : null;
 
-  // Q1 conflict rule + quality floor (see src/lib/commercial-display.ts):
-  // announced/curated recoupment suppresses ALL model output; model numbers
-  // below the quality floor stay off the card.
-  const displayMode = getRecoupmentDisplayMode(commercial);
-  const modelQualityOk = meetsModelQualityFloor(commercial);
-  const recoupedDateLabel = formatRecoupedDate(commercial.recoupedDate);
-  const editorialRecoupment = isEditorialRecoupment(commercial);
+  // Source lines print only publishable text: records can carry internal
+  // research notes ("GPT DR Batch 3...", "deep research synthesis"), which
+  // publicSourceText drops. Estimated weekly costs read "Estimate".
+  const capSourceText = publicSourceText(commercial.capitalizationSource);
+  const weeklyCostSourceText = commercial.weeklyRunningCost ? getWeeklyCostSourceLabel(commercial) : null;
+  const notesText = publicSourceText(commercial.notes);
+  const hasDetails = !!(notesText || capSourceText || weeklyCostSourceText);
 
-  // Break-even vs current gross floor (mockup's warning path). Model-derived,
-  // so it obeys the same quality floor and never renders on recouped shows.
+  // Trend only for running, unrecouped shows still waiting on an outcome.
+  const showTrend = !!trend && trend !== 'unknown' && running && commercial.designation === 'TBD' && !commercial.recouped;
+
+  // One break-even figure everywhere (show card and /biz at-risk list):
+  // model break-even above the quality floor, else the recorded weekly cost.
+  const breakEven = displayMode === 'model' ? getBreakEven(commercial) : null;
+  const breakEvenIsModel =
+    breakEven != null && breakEven === commercial.modelBreakeven && meetsModelQualityFloor(commercial);
+
   const breakevenComparison =
-    !commercial.recouped &&
-    displayMode === 'model' &&
-    modelQualityOk &&
-    commercial.modelBreakeven &&
-    weeklyGross != null &&
-    showStatus === 'open'
-      ? { gross: weeklyGross, breakeven: commercial.modelBreakeven, above: weeklyGross >= commercial.modelBreakeven }
+    breakEven && weeklyGross != null && running
+      ? { gross: weeklyGross, breakeven: breakEven, above: weeklyGross >= breakEven }
       : null;
 
-  // Confidence label: producer announcements are facts; model output inherits
-  // the model's own data-quality grade.
+  // Confidence label: the recoupment record's sourcing for recouped shows;
+  // the model's own data-quality grade for model estimates; none otherwise.
   const confidence: { level: 'high' | 'medium' | 'low'; label: string; basis: string } | null =
-    displayMode === 'announced'
-      ? { level: 'high', label: 'High confidence', basis: editorialRecoupment ? 'Scorecard editorial assessment' : 'Producer announcement' }
-      : displayMode === 'model' && modelQualityOk
+    attribution
+      ? attribution.confidence
+      : displayMode === 'model'
         ? {
             level: commercial.modelDataQuality === 'high' ? 'high' : commercial.modelDataQuality === 'low' ? 'low' : 'medium',
             label: `${commercial.modelDataQuality === 'high' ? 'High' : commercial.modelDataQuality === 'low' ? 'Low' : 'Medium'} confidence`,
-            basis: 'Scorecard commercial model',
+            basis: 'Scorecard commercial model (estimate)',
           }
         : null;
   const confidenceStyles: Record<'high' | 'medium' | 'low', { text: string; dot: string }> = {
@@ -196,17 +174,20 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
   return (
     <section className="card p-5 sm:p-6 pb-4 sm:pb-5 mb-5 sm:mb-8" aria-labelledby="commercial-scorecard-heading">
-      {/* Unified scorecard chrome — eyebrow on left, source attribution right */}
+      {/* Unified scorecard chrome: eyebrow on left, source attribution right */}
       <header className="flex items-center justify-between gap-3 mb-1">
         <h2 id="commercial-scorecard-heading" className="text-[11px] font-bold uppercase tracking-[0.12em] text-gray-400 leading-none m-0">
           Commercial Scorecard
         </h2>
         <span className="text-[10px] tracking-[0.06em] text-gray-500 italic shrink-0">
-          source · modelled + press
+          {displayMode === 'model' ? 'source · filings, press + our model' : 'source · filings + press'}
         </span>
       </header>
-      <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 lowercase italic m-0 mb-3">
-        estimates unless noted
+      <p className="text-[11px] font-medium tracking-[0.06em] text-gray-500 italic m-0 mb-3">
+        ~ marks an estimate ·{' '}
+        <Link href="/methodology#commercial" className="underline hover:text-gray-300">
+          how we measure
+        </Link>
       </p>
 
       {/* Status chips: recoupment, trend, break-even position */}
@@ -221,24 +202,23 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                 : 'bg-orange-500/15 text-orange-400 border-orange-500/25'
             }`}
           >
-            {breakevenComparison.above ? 'Above break-even' : '⚠ Under break-even'}
+            {breakevenComparison.above ? 'Above est. break-even' : '⚠ Under est. break-even'}
           </span>
         )}
       </div>
 
       {/* Main Content */}
       <div className="space-y-4">
-        {/* Designation hero (no outer colored frame — emoji + title supply
-            the color, matching the audience card's hero treatment) */}
+        {/* Designation hero */}
         <div>
           <div className="flex flex-wrap items-baseline gap-2">
-            <span className="text-2xl leading-none" aria-hidden="true">{style.icon}</span>
-            <span className={`font-extrabold text-xl sm:text-[1.375rem] uppercase tracking-[0.04em] leading-[1.15] ${style.textClass}`}>
-              {commercial.designation}
+            <span className="text-2xl leading-none" aria-hidden="true">{designation.icon}</span>
+            <span className={`font-extrabold text-xl sm:text-[1.375rem] uppercase tracking-[0.04em] leading-[1.15] ${designation.textClass}`}>
+              {designation.label}
             </span>
           </div>
           <p className="text-[13px] text-gray-400 mt-1.5 leading-[1.4]">
-            {style.description}
+            {designation.description}
           </p>
         </div>
 
@@ -250,7 +230,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           {/* Capitalization */}
           <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
             <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
-              {formatWithEstimate(formatCurrency(commercial.capitalization), commercial.isEstimate?.capitalization ?? false)}
+              {commercial.capitalization == null
+                ? 'Undisclosed'
+                : formatWithEstimate(formatCurrency(commercial.capitalization), commercial.isEstimate?.capitalization ?? false)}
             </div>
             <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
               Capitalization
@@ -261,7 +243,7 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           {commercial.weeklyRunningCost && (
             <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-white tracking-tight">
-                {formatWithEstimate(formatCurrency(commercial.weeklyRunningCost), commercial.isEstimate?.weeklyRunningCost ?? false)}
+                {formatWithEstimate(formatCurrency(commercial.weeklyRunningCost), isEstimatedRunningCost(commercial))}
               </div>
               <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
                 Weekly Cost
@@ -281,15 +263,15 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
             </div>
           )}
 
-          {/* Weekly Breakeven (from model — hidden below the quality floor;
-              redundant when the break-even vs floor bar below shows the same number) */}
-          {commercial.modelBreakeven && !commercial.recouped && modelQualityOk && !breakevenComparison && (
+          {/* Model break-even: only with a model estimate on screen, and
+              redundant when the break-even comparison below shows it */}
+          {breakEvenIsModel && !breakevenComparison && (
             <div className="flex-1 min-w-[calc(50%-0.25rem)] sm:min-w-0 bg-surface-overlay rounded-lg sm:rounded-xl p-2.5 sm:p-4 text-center border border-white/5">
               <div className="text-lg sm:text-2xl lg:text-3xl font-extrabold text-gray-300 tracking-tight">
-                {formatCurrency(commercial.modelBreakeven)}
+                ~{formatCurrency(breakEven)}
               </div>
               <div className="text-[10px] sm:text-xs text-gray-500 uppercase tracking-wide mt-0.5 sm:mt-1 font-medium">
-                Breakeven
+                Est. Break-even
               </div>
             </div>
           )}
@@ -307,9 +289,9 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           )}
         </div>
 
-        {/* Announced/curated recoupment — the announcement IS the display;
-            the model is never quoted on these shows (Q1 sign-off) */}
-        {displayMode === 'announced' && (
+        {/* Recoupment record: neutral wording plus its source; the model is
+            never quoted on these shows (Q1 sign-off) */}
+        {attribution && (
           <div
             className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20"
             data-testid="recoupment-announcement"
@@ -319,22 +301,32 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
                 <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
               </svg>
               <span className="text-sm text-emerald-400 font-medium">
-                {editorialRecoupment
-                  ? `Recouped${recoupedDateLabel ? ` · ${recoupedDateLabel}` : ''} · Scorecard editorial assessment`
-                  : `Producers announced recoupment${recoupedDateLabel ? ` in ${recoupedDateLabel}` : ''}`}
+                {attribution.headline}
+                {attribution.qualifier ? ` · ${attribution.qualifier}` : ''}
               </span>
             </div>
-            {commercial.recoupedSource && (
+            {attribution.sourceText && (
               <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                Source: {commercial.recoupedSource}
+                Source:{' '}
+                {attribution.sourceUrl ? (
+                  <a
+                    href={attribution.sourceUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="underline hover:text-gray-300"
+                  >
+                    {attribution.sourceText}
+                  </a>
+                ) : (
+                  attribution.sourceText
+                )}
               </p>
             )}
           </div>
         )}
 
-        {/* Recoupment Progress — model output only, and only above the
-            quality floor. Renders solely when no announced/curated
-            recoupment state exists (Q1). */}
+        {/* Recoupment estimate: model output only, above the quality floor,
+            never on a recouped show or a closed show with a final outcome. */}
         {displayMode === 'model' && commercial.modelRecoupmentPct && (
           <RecoupmentProgressBar
             estimatedPct={commercial.modelRecoupmentPct}
@@ -343,18 +335,18 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           />
         )}
 
-        {/* Break-even vs current gross floor (mockup warning path) */}
+        {/* Latest week's gross vs estimated break-even */}
         {breakevenComparison && (
           <div className="bg-surface-overlay rounded-lg sm:rounded-xl border border-white/5 px-3.5 py-3">
             <div className="flex items-baseline justify-between gap-3 mb-1.5 flex-wrap">
               <span className="text-[10px] font-bold uppercase tracking-[0.1em] text-gray-500">
-                Break-even vs floor
+                Latest week vs break-even
               </span>
               <span className="text-xs text-gray-300 tabular-nums">
                 <span className={`font-semibold ${breakevenComparison.above ? 'text-emerald-400' : 'text-red-400'}`}>
                   {formatCurrency(breakevenComparison.gross)}
                 </span>{' '}
-                gross · <span className="text-gray-400">{formatCurrency(breakevenComparison.breakeven)}</span> est. break-even
+                gross · <span className="text-gray-400">~{formatCurrency(breakevenComparison.breakeven)}</span> est. break-even
               </span>
             </div>
             <div className="relative w-full bg-white/5 rounded-full h-1.5" aria-hidden="true">
@@ -366,30 +358,15 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
           </div>
         )}
 
-        {/* ROI Indicator (for recouped shows still running) */}
-        {estimatedReturns && (
-          <div className="p-3 rounded-lg bg-emerald-500/10 border border-emerald-500/20">
-            <div className="flex items-center gap-2">
-              <span className="text-emerald-400 text-sm">📈</span>
-              <span className="text-sm text-emerald-400 font-medium">
-                Generating ~{estimatedReturns.percentageReturn}% annual return on investment
-              </span>
-            </div>
-            <p className="text-xs text-gray-500 mt-1">
-              Based on current weekly gross vs running costs
-            </p>
-          </div>
-        )}
-
         {/* Source Attribution (visible without expanding) */}
-        {commercial.capitalizationSource && !commercial.notes && (
+        {capSourceText && !hasDetails && (
           <p className="text-xs text-gray-500">
-            Source: {commercial.capitalizationSource}
+            Source: {capSourceText}
           </p>
         )}
 
         {/* Expandable Details */}
-        {commercial.notes && (
+        {hasDetails && (
           <div>
             <button
               onClick={() => setIsExpanded(!isExpanded)}
@@ -401,41 +378,37 @@ export default function BizBuzzCard({ commercial, showTitle, trend, weeklyGross,
 
             {isExpanded && (
               <div className="mt-3 p-3 rounded-lg bg-surface-overlay border border-white/5">
-                <p className="text-sm text-gray-400 leading-relaxed">
-                  {commercial.notes}
-                </p>
-                {commercial.capitalizationSource && (
-                  <p className="text-xs text-gray-500 mt-2">
-                    Source: {commercial.capitalizationSource}
+                {notesText && (
+                  <p className="text-sm text-gray-400 leading-relaxed mb-2">
+                    {notesText}
                   </p>
                 )}
-                {commercial.recoupedDate && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Recouped: {commercial.recoupedDate}
+                {/* The recoupment date and source print once, in the attribution block above. */}
+                {capSourceText && (
+                  <p className="text-xs text-gray-500">
+                    Capitalization source: {capSourceText}
                   </p>
                 )}
-                {commercial.recouped === true && commercial.recoupedSource && (
+                {weeklyCostSourceText && (
                   <p className="text-xs text-gray-500 mt-1">
-                    Recoupment source: {commercial.recoupedSource}
-                  </p>
-                )}
-                {commercial.weeklyRunningCostSource && (
-                  <p className="text-xs text-gray-500 mt-1">
-                    Weekly cost source: {commercial.weeklyRunningCostSource}
+                    Weekly cost source: {weeklyCostSourceText}
                   </p>
                 )}
               </div>
             )}
           </div>
         )}
-        {/* Confidence label (mockup): how firmly to read the numbers above */}
+        {/* Confidence label: how firmly to read the recoupment line above */}
         {confidence && (
           <div className="flex items-center justify-between gap-3 pt-2.5 border-t border-white/5">
             <span className={`inline-flex items-center gap-1.5 text-[10px] font-semibold uppercase tracking-[0.06em] ${confidenceStyles[confidence.level].text}`}>
               <span className={`w-1.5 h-1.5 rounded-full ${confidenceStyles[confidence.level].dot}`} aria-hidden="true" />
               {confidence.label}
             </span>
-            <span className="text-[11px] text-gray-500 italic text-right">{confidence.basis}</span>
+            {/* The recoupment headline already prints the qualifier ("Not publicly announced"). */}
+            {confidence.basis !== attribution?.qualifier && (
+              <span className="text-[11px] text-gray-500 italic text-right">{confidence.basis}</span>
+            )}
           </div>
         )}
       </div>

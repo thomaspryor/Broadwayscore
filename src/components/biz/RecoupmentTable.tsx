@@ -13,7 +13,8 @@ interface RecoupmentShow {
   slug: string;
   title: string;
   season: string;
-  weeksToRecoup: number;
+  /** null when only the recoupment year is known (see calculateWeeksToRecoup). */
+  weeksToRecoup: number | null;
   capitalization: number | null;
   recoupDate: string;
 }
@@ -24,6 +25,9 @@ interface RecoupmentTableProps {
 
 type SortColumn = 'title' | 'weeks' | 'capitalization' | 'date';
 type SortDirection = 'asc' | 'desc';
+
+const WEEKS_TOOLTIP =
+  'Weeks from opening night to the reported recoupment date (the middle of the month when only the month was reported). Blank when only the year was reported.';
 
 function formatDate(dateStr: string): string {
   // Input: "2025-01", "2024-06", or "2026" (year-only when exact month unknown)
@@ -63,13 +67,18 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
 
   const sortedShows = useMemo(() => {
     return [...shows].sort((a, b) => {
+      // Unknown week counts sort last in either direction.
+      if (sortColumn === 'weeks' && (a.weeksToRecoup === null || b.weeksToRecoup === null)) {
+        if (a.weeksToRecoup === b.weeksToRecoup) return 0;
+        return a.weeksToRecoup === null ? 1 : -1;
+      }
       let comparison = 0;
       switch (sortColumn) {
         case 'title':
           comparison = a.title.localeCompare(b.title);
           break;
         case 'weeks':
-          comparison = a.weeksToRecoup - b.weeksToRecoup;
+          comparison = (a.weeksToRecoup as number) - (b.weeksToRecoup as number);
           break;
         case 'capitalization':
           comparison = (a.capitalization ?? -Infinity) - (b.capitalization ?? -Infinity);
@@ -109,6 +118,7 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                 className="py-3 px-4 font-medium cursor-pointer hover:text-white transition-colors select-none group"
                 onClick={() => handleSort('weeks')}
                 aria-sort={sortColumn === 'weeks' ? (sortDirection === 'asc' ? 'ascending' : 'descending') : 'none'}
+                title={WEEKS_TOOLTIP}
               >
                 Weeks
                 <SortIcon active={sortColumn === 'weeks'} direction={sortDirection} />
@@ -148,8 +158,12 @@ export default function RecoupmentTable({ shows }: RecoupmentTableProps) {
                 <td className="py-3 px-4 text-gray-400 hidden sm:table-cell">
                   {show.season}
                 </td>
-                <td className="py-3 px-4 text-emerald-400 font-semibold">
-                  ~{show.weeksToRecoup}
+                <td className="py-3 px-4">
+                  {show.weeksToRecoup === null ? (
+                    <span className="text-gray-500" title="Only the year of recoupment was reported">—</span>
+                  ) : (
+                    <span className="text-emerald-400 font-semibold">~{show.weeksToRecoup}</span>
+                  )}
                 </td>
                 <td className="py-3 px-4">{formatEstimatedCurrency(show.capitalization)}</td>
                 <td className="py-3 px-4 text-gray-500 hidden sm:table-cell">

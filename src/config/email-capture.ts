@@ -53,8 +53,10 @@ interface EmailCaptureConfig {
   };
   /**
    * Days a passive-gate dismissal stays respected before the popup may ask
-   * again (localStorage, per device). Blocking feature gates (csv/json) are
-   * exempt — they gate an action the user clicked, not an unsolicited ask.
+   * again (localStorage, per device). User-initiated gates (csv/json) are
+   * exempt, and dismissing them does not start this cooldown: they answer an
+   * action the user clicked, not an unsolicited ask (isPassiveTrigger /
+   * dismissStartsCooldown in src/lib/gate-logic.ts).
    */
   passiveGateCooldownDays: number;
   /**
@@ -64,10 +66,11 @@ interface EmailCaptureConfig {
    * trust built — was eligible the instant the dwell timer elapsed. Two prior
    * fixes (dismissal cooldown 2026-07-12, exit-intent dwell gate 2026-07-14)
    * left this untouched; conversion/dismissal were unchanged 6 days later
-   * (2026-07-20 audit, card fhash:4fa87279). Blocking triggers (csv/json/
-   * page_view_limit) and recapture are exempt — same list as
-   * passiveGateCooldownDays; page_view_limit already has its own explicit
-   * view-count threshold via BizPageTracker.
+   * (2026-07-20 audit, card fhash:4fa87279). The blocking trigger
+   * (page_view_limit), user-initiated triggers (csv/json) and recapture are
+   * exempt (isPassiveTrigger in src/lib/gate-logic.ts); page_view_limit has
+   * its own view-count threshold via BizPageTracker, which /biz now turns
+   * off (gate={false}).
    *
    * Ran as the TREATMENT arm of the 'gate-cold-start' A/B (2026-07-21 to
    * 2026-09-15); concluded in favor of this value as the permanent default
