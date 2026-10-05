@@ -44,6 +44,13 @@ test('fixed records no longer carry the stolen score/url', { skip: !have }, () =
   const fences = rd('fences-2010/timeout--adam-feldman.json');
   assert.equal(fences.url, null);
   assert.equal(fences.originalScoreNormalized, null);
-  assert.equal(rd('les-miserables-1987/whatsonstage--unknown.json').url, null);
+  const lm = rd('les-miserables-1987/whatsonstage--unknown.json');
+  assert.equal(lm.url, null);
+  assert.equal(lm.serpDiscoveryAbandoned, true, 'recover-explicit-ratings Phase 0 would re-discover the url');
+  for (const f of ['london-theatre--olivia-rook', 'london-theatre--unknown']) {
+    const d = rd(`black-is-the-color-of-my-voice-west-end-2026/${f}.json`);
+    assert.equal(d.url, null);
+    assert.ok(EXCLUDED(d));
+  }
   assert.equal(rd('moulin-rouge-2019/billboard--mary-j-dimeglio.json').isNonReview, true);
 });
