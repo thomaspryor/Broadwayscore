@@ -631,6 +631,82 @@ exec "$@"
   }
 });
 
+// BRO-2824: the rc=124/137 retry (BRO-2823) made a chronic push timeout run the
+// full MAX_RETRIES at ~400s/attempt with no wall-clock bound of its own.
+// PUSH_API_DEADLINE_SEC (exported by push-with-retry.sh from its remaining
+// PUSH_DEADLINE_SEC) now stops the loop. The shim burns 2s per push so the 1s
+// budget is spent after attempt 1; MAX_RETRIES=6 must NOT be consumed.
+function slowTimeoutShim(tmp, rc) {
+  return installTimeoutShim(tmp, `#!/bin/bash
+shift 2
+shift
+for a in "$@"; do
+  if [ "$a" = "push" ]; then
+    sleep 2
+    exit ${rc}
+  fi
+done
+exec "$@"
+`);
+}
+
+for (const rc of [124, 137]) {
+  test(`BRO-2824: PUSH_API_DEADLINE_SEC stops a chronic rc=${rc} push timeout after the budget, not after MAX_RETRIES`, async () => {
+    const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-deadline-'));
+    try {
+      const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+      const runnerDir = path.join(tmp, 'runner');
+      cloneRepo(originDir, runnerDir);
+      const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+      fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+      sh('git add -A', runnerDir);
+      sh('git commit -q -m "our change"', runnerDir);
+
+      const res = await spawnScriptWithEnv(['main', baseSha, '6'], runnerDir, {
+        PATH: `${slowTimeoutShim(tmp, rc)}:${process.env.PATH}`,
+        PUSH_API_DEADLINE_SEC: '1',
+        PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '0',
+        PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '0',
+      });
+
+      assert.equal(res.code, 3, `timeout-dominated deadline stop must exit 3\n${res.stderr}`);
+      const timeouts = [...res.stderr.matchAll(new RegExp(`push TIMED OUT after \\d+s \\(rc=${rc}`, 'g'))].length;
+      assert.ok(timeouts >= 1 && timeouts < 6, `expected the deadline to cut attempts short of 6, saw ${timeouts} timeouts\n${res.stderr}`);
+      assert.match(res.stderr, /wall-clock deadline 1s reached/, 'deadline stop was not logged');
+      assert.match(res.stderr, /exhausted 6 attempts/, 'load-bearing exhaustion prefix must survive');
+      assert.match(res.stderr, /stopped early at the 1s wall-clock deadline/);
+    } finally {
+      fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+    }
+  });
+}
+
+test('BRO-2824: a spent deadline (0) still runs one attempt, and an unset/garbage deadline imposes no bound', async () => {
+  const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'push-via-git-api-deadline0-'));
+  try {
+    const originDir = setupOriginWithSeed(tmp, { 'data/base.json': '{"a":1}\n' });
+    const runnerDir = path.join(tmp, 'runner');
+    cloneRepo(originDir, runnerDir);
+    const baseSha = sh('git rev-parse HEAD', runnerDir).trim();
+    fs.writeFileSync(path.join(runnerDir, 'data', 'ours.json'), '{"c":3}\n');
+    sh('git add -A', runnerDir);
+    sh('git commit -q -m "our change"', runnerDir);
+    const env = (dl) => ({
+      PATH: `${slowTimeoutShim(tmp, 124)}:${process.env.PATH}`,
+      PUSH_API_DEADLINE_SEC: dl,
+      PUSH_API_TIMEOUT_BACKOFF_BASE_SEC: '0',
+      PUSH_API_TIMEOUT_BACKOFF_MAX_SEC: '0',
+    });
+    const spent = await spawnScriptWithEnv(['main', baseSha, '3'], runnerDir, env('0'));
+    assert.equal([...spent.stderr.matchAll(/push TIMED OUT/g)].length, 1, `deadline 0 must still make exactly 1 attempt\n${spent.stderr}`);
+    const garbage = await spawnScriptWithEnv(['main', baseSha, '3'], runnerDir, env('abc'));
+    assert.equal([...garbage.stderr.matchAll(/push TIMED OUT/g)].length, 3, `non-numeric deadline must be ignored (3 attempts)\n${garbage.stderr}`);
+    assert.doesNotMatch(garbage.stderr, /wall-clock deadline/);
+  } finally {
+    fs.rmSync(tmp, { recursive: true, force: true, maxRetries: 10, retryDelay: 50 });
+  }
+});
+
 // BRO-2951: a TIMEOUT-classified retry used to sleep a near-flat 1-3s
 // regardless of how many times it had already timed out — hammering straight
 // back into an active GitHub-side throttle window (confirmed live: 4/4
