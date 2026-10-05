@@ -2,7 +2,7 @@
 /**
  * wait-for-land.js — wait for a land/<name> ref to land or be refused (BRO-4671).
  *
- *   node scripts/wait-for-land.js land/<name> [timeout-min]     (default 60)
+ *   node scripts/lib/wait-for-land.js land/<name> [timeout-min]     (default 60)
  *
  * Why: CLOUD.md's landing step used to wait on `git ls-remote` alone. The ref
  * disappears when land.yml lands it, but it STAYS when the run is refused (red
@@ -29,10 +29,10 @@
 'use strict';
 
 const { execFileSync } = require('child_process');
-const { runGhWithFallback } = require('./lib/land-retry-on-cancel');
+const { runGhWithFallback } = require('./land-retry-on-cancel');
 
 const repo = process.env.GITHUB_REPOSITORY || 'thomaspryor/Broadwayscore';
-const USAGE = 'usage: node scripts/wait-for-land.js land/<name> [timeout-min]';
+const USAGE = 'usage: node scripts/lib/wait-for-land.js land/<name> [timeout-min]';
 const RED_CONCLUSIONS = new Set(['failure', 'timed_out', 'action_required', 'startup_failure', 'stale']);
 
 const RECENT_LANDING_MS = 6 * 3600_000;
@@ -113,9 +113,11 @@ async function main(argv) {
     let run = null;
     try {
       const refSha = readRefSha(args.ref);
+      // Remember the tip before the API call: if that call fails and the ref
+      // lands before the next good poll, it must still read as landed.
+      if (refSha) lastSha = refSha;
       run = readLatestRun(args.ref);
       v = landVerdict({ refSha, lastSha, run, nowMs: Date.now() });
-      if (refSha) lastSha = refSha;
       errors = 0;
     } catch (err) {
       errors += 1;
@@ -149,7 +151,14 @@ async function main(argv) {
 }
 
 if (require.main === module) {
-  main(process.argv.slice(2)).then((code) => process.exit(code));
+  // Exit 1 means "refused", so an unexpected crash must not reuse it.
+  main(process.argv.slice(2)).then(
+    (code) => process.exit(code),
+    (err) => {
+      console.error(`wait-for-land crashed: ${err && err.stack ? err.stack : err}`);
+      process.exit(3);
+    },
+  );
 }
 
 module.exports = { landVerdict, parseArgs, RED_CONCLUSIONS };

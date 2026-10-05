@@ -18,6 +18,8 @@ test('ref gone after being seen means landed, unless its run went red', () => {
   assert.equal(verdict({ refSha: null, lastSha: TIP, run: null }).verdict, 'landed');
   const byHand = verdict({ refSha: null, lastSha: TIP, run: run({ conclusion: 'failure' }) });
   assert.equal(byHand.verdict, 'unknown', 'deleted after a refusal is not a landing');
+  const olderRed = verdict({ refSha: null, lastSha: TIP, run: run({ head_sha: 'f'.repeat(40), conclusion: 'failure' }) });
+  assert.equal(olderRed.verdict, 'landed', 'a red run for an older tip says nothing about the tip that went');
 });
 
 test('a ref missing from the first poll needs a RECENT green run to count as landed', () => {
@@ -30,7 +32,7 @@ test('a ref missing from the first poll needs a RECENT green run to count as lan
 });
 
 test('a red run for the current tip is a refusal (the case the ref-only loop missed for ~1h)', () => {
-  for (const conclusion of ['failure', 'timed_out', 'startup_failure', 'action_required']) {
+  for (const conclusion of ['failure', 'timed_out', 'startup_failure', 'action_required', 'stale']) {
     const v = verdict({ refSha: TIP, run: run({ conclusion }) });
     assert.equal(v.verdict, 'refused', conclusion);
     assert.match(v.why, new RegExp(conclusion));
