@@ -1,20 +1,20 @@
 {
-  "updatedAt": "2026-10-05T09:49:47.552Z",
-  "processed": 2,
-  "failed": 2,
-  "successRate": "50.0%",
+  "updatedAt": "2026-10-05T12:14:58.963Z",
+  "processed": 54,
+  "failed": 20,
+  "successRate": "73.0%",
   "tierBreakdown": {
-    "playwright": 1,
+    "playwright": 33,
     "amp": 0,
-    "browserbase": 0,
+    "browserbase": 3,
     "directCookies": 0,
-    "scrapingdog": 0,
+    "scrapingdog": 9,
     "scrapingbee": 0,
-    "brightdata": 0,
+    "brightdata": 4,
     "archiveToday": 0,
-    "archive": 1
+    "archive": 8
   },
-  "browserbaseSessions": 2,
+  "browserbaseSessions": 4,
   "recentActivity": [
     {
       "t": "2026-10-05T09:48:25.242Z",
@@ -27,6 +27,40 @@
       "event": "bb-session",
       "session": "fb33cc9d",
       "url": "https://www.theatrereviews.com/tag/hairy-ape/"
+    },
+    {
+      "t": "2026-10-05T11:47:24.930Z",
+      "event": "bb-session",
+      "session": "63c0ab5a",
+      "url": "https://www.jonathanbaz.com/2026/10/hay-fever-review.html"
+    },
+    {
+      "t": "2026-10-05T11:47:44.590Z",
+      "event": "bb-session",
+      "session": "465f8ada",
+      "url": "https://www.jonathanbaz.com/2026/10/hay-fever-review.html"
+    },
+    {
+      "t": "2026-10-05T12:10:03.200Z",
+      "event": "bb-session",
+      "session": "270a6ca1",
+      "url": "https://www.nytimes.com/2026/09/16/theater/in-wanted-outlaw-sisters-pass-for-whi"
+    },
+    {
+      "t": "2026-10-05T12:10:04.157Z",
+      "event": "bb-cookie-inject",
+      "domain": "nytimes.com"
+    },
+    {
+      "t": "2026-10-05T12:10:21.403Z",
+      "event": "bb-session",
+      "session": "b02bfd69",
+      "url": "https://www.wsj.com/articles/the-score-review-brian-cox-is-bach-1a10d858"
+    },
+    {
+      "t": "2026-10-05T12:10:22.179Z",
+      "event": "bb-cookie-inject",
+      "domain": "wsj.com"
     }
   ]
 }
