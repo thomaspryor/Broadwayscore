@@ -168,7 +168,7 @@ test('the Accounts section renders the plain-English lines and skips stale or mi
   const payload = { generatedAt: '2026-10-12T06:00:00Z', accounts: { total: 3, newLast7: 3, withAnything: 2, withRating: 2, withWatchlist: 0, withList: 0 }, active: { dau: 1, wau: 2, mau: 3 }, funnel: null, actions: [] };
   fs.writeFileSync(file, JSON.stringify(payload));
   const sec = loadAccountsSection(file, 'https://x/admin/accounts', now);
-  assert.equal(sec.lines[0], '3 accounts in total, 3 new this past week.');
+  assert.equal(sec.lines[0], '3 real accounts in total, 3 new this past week.');
   fs.writeFileSync(file, JSON.stringify({ ...payload, generatedAt: '2026-10-01T00:00:00Z' }));
   assert.equal(loadAccountsSection(file, 'u', now), null, 'stale numbers are not mailed as this week');
   assert.equal(loadAccountsSection(path.join(dir, 'nope.json'), 'u', now), null);

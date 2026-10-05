@@ -20,19 +20,21 @@
  */
 
 const fs = require('fs');
+const { hasHelpFlag } = require('./lib/cli-help.js');
 const path = require('path');
 const { normalizeOutlet, normalizeCritic, generateReviewFilename, getOutletDisplayName } = require('./lib/review-normalization');
 const { createOrMergeReviewFile } = require('./lib/review-file-writer');
 const { isUrlYearOutsideWindow } = require('./lib/content-filters');
 const { isSerpUrlWrongProductionForOpeningNight } = require('./lib/opening-night-discovery');
-const { OUTLET_DOMAINS: _OUTLET_DOMAINS, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
+const { OUTLET_DOMAINS: _OUTLET_DOMAINS, REGISTRY_DOMAIN_ALIASES: _REGISTRY_DOMAIN_ALIASES, serpQuery, serpNewsQuery } = require('./lib/url-discovery');
 const { isLondonMarket } = require('./lib/venue-classification');
+const { isSyndicationHost, makeRegisteredOutletPredicate, resolveSyndicatedHit } = require('./lib/syndication-canonical');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 const SHOW_ARG = process.argv.find(a => a.startsWith('--show='));
 const TIERS_ARG = process.argv.find(a => a.startsWith('--tiers='));
 
-if (!SHOW_ARG) {
+if (!SHOW_ARG || hasHelpFlag(process.argv.slice(2))) {
   console.log('Usage: node scripts/discover-opening-night-reviews.js --show=SLUG [--dry-run] [--tiers=1,2]');
   process.exit(0);
 }
@@ -214,6 +216,39 @@ function extractCriticFromTitle(title) {
   if (dashMatch) return dashMatch[1];
 
   return 'Unknown';
+}
+
+// BRO-3188: a SERP hit on a syndication host (msn, msnbctv.news, yahoo, aol...)
+// is a reprint, never the review's outlet. Resolve it to the registered-outlet
+// source URL (canonical / og:url / first in-body outlet link) so the review
+// goes through the normal dedupe + guards under its real URL. Unresolvable
+// reprints stay rejected (null).
+const _isRegisteredOutletUrl = makeRegisteredOutletPredicate(_OUTLET_DOMAINS, _REGISTRY_DOMAIN_ALIASES);
+const _syndicationCache = new Map(); // reprint url -> resolved url|null (Strategy 2 and 2b see the same hits)
+async function resolveSerpHitUrl(rawUrl, showTitle) {
+  if (!isSyndicationHost(rawUrl)) return rawUrl;
+  if (!_syndicationCache.has(rawUrl)) _syndicationCache.set(rawUrl, await _resolveSyndicated(rawUrl, showTitle));
+  return _syndicationCache.get(rawUrl);
+}
+async function _resolveSyndicated(rawUrl, showTitle) {
+  const { fetchPage } = require('./lib/scraper');
+  const resolved = await resolveSyndicatedHit(rawUrl, {
+    fetch: async (u) => (await fetchPage(u, { skipVerify: true })).content,
+    isRegisteredOutletUrl: _isRegisteredOutletUrl,
+    isRejectedUrl: (u) => isBlockedReviewUrl(u),
+  });
+  if (!resolved) {
+    console.log(`    [SKIP] Syndicated reprint, no registered-outlet source found: ${rawUrl}`);
+    return null;
+  }
+  // A body-link is the weakest signal (reprint pages carry "related" links to
+  // other reviews): require the target's own slug to name the show.
+  if (resolved.via === 'body-link' && !serpResultMentionsShow('', resolved.url, showTitle)) {
+    console.log(`    [SKIP] Syndicated reprint body-link does not name "${showTitle}": ${resolved.url}`);
+    return null;
+  }
+  console.log(`    [SYNDICATION] ${rawUrl} -> ${resolved.url} (${resolved.via})`);
+  return resolved.url;
 }
 
 function isAggregatorUrl(url) {
@@ -492,7 +527,7 @@ async function main() {
     searched++;
 
     for (const result of results) {
-      const url = result.url || result.link;
+      const url = await resolveSerpHitUrl(result.url || result.link, showTitle);
       if (!url) continue;
 
       // Skip aggregators
@@ -625,7 +660,7 @@ async function main() {
       searched++;
       let gated = 0;
       for (const result of results) {
-        const url = result.url || result.link;
+        const url = await resolveSerpHitUrl(result.url || result.link, showTitle);
         if (!url) continue;
         if (isAggregatorUrl(url)) continue;
         if (existingUrls.has(url.toLowerCase())) { skippedDupe++; continue; }

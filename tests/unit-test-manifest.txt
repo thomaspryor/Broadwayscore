@@ -295,6 +295,7 @@ scripts/tests/session-start-staleness.test.mjs
 scripts/tests/stale-wrongproduction-adjudication.test.mjs
 scripts/tests/stuck-work-linear-reconcile.test.mjs
 scripts/tests/sweep-open-backlog-acceptance-scheduled.test.mjs
+scripts/tests/syndication-canonical-extraction.test.mjs
 scripts/tests/test-data-write-guard.test.mjs
 scripts/tests/tracked-and-ignored-guard.test.mjs
 scripts/tests/trunk-status.test.mjs
@@ -376,6 +377,7 @@ tests/unit/block-review-cli.test.mjs
 tests/unit/board-card-marker.test.mjs
 tests/unit/board-gate-failopen.test.mjs
 tests/unit/board-probe.test.mjs
+tests/unit/bodyless-score-provenance.test.mjs
 tests/unit/branch-protection.test.mjs
 tests/unit/brand-mention-excerpt-dedup.test.mjs
 tests/unit/brand-mention-serp-bd-first.test.mjs
