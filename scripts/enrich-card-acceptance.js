@@ -1397,7 +1397,9 @@ async function runLinearLeg(args, { dryRun, limit }) {
     openIssues = await linear.listOpenIssuesWithDescriptions();
   } catch (e) {
     console.error(`[enrich-card-acceptance] linear: fetch failed, skipping this leg: ${e.message}`);
-    return [];
+    // A failed row (not []): allFailed() would otherwise exit 0 on a Linear
+    // outage and the daily workflow would look healthy (BRO-3018).
+    return [{ id: 'linear-fetch', name: 'Linear open-issue fetch', action: 'failed', detail: `Linear fetch failed: ${e.message}`, source: 'linear' }];
   }
 
   const identifiers = parseIdentifiersArg(args);
