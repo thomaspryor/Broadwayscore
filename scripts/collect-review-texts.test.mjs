@@ -122,3 +122,41 @@ test('pushReviewTextsCheckpoint: passes the gate (does not early-return on the t
     `gate should not have blocked this call, got: ${JSON.stringify(lines)}`
   );
 });
+
+// BRO-2691: SHOW_FILTER must restrict candidates, and the report must not
+// present resumed (progress.json) cross-show state as this run's work.
+const { parseShowFilter, isInShowScope, showIdOfReviewId, summarizeRunScope } = require('./lib/show-scope.js');
+
+test('BRO-2691: parseShowFilter trims, drops empties; empty filter = no restriction', () => {
+  assert.deepEqual([...parseShowFilter(' a-1 , b-2,, ')], ['a-1', 'b-2']);
+  assert.equal(parseShowFilter('').size, 0);
+  assert.equal(isInShowScope('anything', parseShowFilter('')), true);
+});
+
+test('BRO-2691: isInShowScope only admits listed shows', () => {
+  const set = parseShowFilter('romeo-and-juliet-off-broadway-2026,benevolent-off-broadway-2026');
+  assert.equal(isInShowScope('benevolent-off-broadway-2026', set), true);
+  assert.equal(isInShowScope('fly-you-fools-off-broadway-2026', set), false);
+});
+
+test('BRO-2691: summarizeRunScope separates this run from resumed state and flags out-of-scope', () => {
+  const set = parseShowFilter('a-show');
+  const s = summarizeRunScope({
+    runProcessed: ['a-show/x.json'], runFailed: ['a-show/y.json'], filterSet: set,
+    resumedProcessed: 100, resumedFailed: 72,
+  });
+  assert.deepEqual(s.shows, ['a-show']);
+  assert.deepEqual(s.outOfScopeShows, []);
+  assert.deepEqual(s.inheritedFromResume, { processed: 100, failed: 72 });
+  const bad = summarizeRunScope({ runFailed: ['other/z.json'], filterSet: set });
+  assert.deepEqual(bad.outOfScopeShows, ['other']);
+  assert.equal(showIdOfReviewId('a-show/x.json'), 'a-show');
+});
+
+test('BRO-2691: collect-review-texts.js builds its filter from the shared helper and gates the queue + main loop', () => {
+  const src = fs.readFileSync(path.join(process.cwd(), 'scripts', 'collect-review-texts.js'), 'utf8');
+  assert.match(src, /showFilterSet: parseShowFilter\(process\.env\.SHOW_FILTER\)/);
+  assert.match(src, /if \(!isInShowScope\(showId, CONFIG\.showFilterSet\)\) continue;/);
+  assert.match(src, /isInShowScope\(showIdOfReviewId\(review\.reviewId\), CONFIG\.showFilterSet\)/);
+  assert.match(src, /thisRun: summarizeRunScope\(/);
+});

@@ -366,13 +366,15 @@ async function loadDependencies() {
 }
 
 // Configuration
+// BRO-2691: SHOW_FILTER scope helpers (pure, unit-tested)
+const { parseShowFilter, isInShowScope, showIdOfReviewId, summarizeRunScope } = require('./lib/show-scope.js');
 const CONFIG = {
   batchSize: parseInt(process.env.BATCH_SIZE || '10'),
   pushEveryNBatches: parseInt(process.env.PUSH_EVERY_N_BATCHES || '5'), // Push every N batches (default: every 50 reviews)
   maxReviews: parseInt(process.env.MAX_REVIEWS || '1000'),
   priority: process.env.PRIORITY || 'all',
   showFilter: process.env.SHOW_FILTER || '',
-  showFilterSet: new Set((process.env.SHOW_FILTER || '').split(',').map(s => s.trim()).filter(Boolean)),
+  showFilterSet: parseShowFilter(process.env.SHOW_FILTER),
   retryFailed: process.env.RETRY_FAILED === 'true',
   commitEvery: parseInt(process.env.COMMIT_EVERY || '10'), // Git commit after every N reviews
   // BRO-2983: throttles ONLY the public-repo push cadence (data/collection-state/),
@@ -709,6 +711,10 @@ const stats = {
 const timedOutReviews = [];
 
 // State tracking
+// BRO-2691: this-process attempts (state.* is cumulative across resumed runs).
+const runProcessed = [];
+const runFailed = [];
+let resumedCounts = { processed: 0, failed: 0 };
 let state = {
   processed: [],
   failed: [],
@@ -6115,7 +6121,7 @@ function findReviewsToProcess() {
   }
 
   for (const showId of shows) {
-    if (CONFIG.showFilter && !CONFIG.showFilterSet.has(showId)) continue;
+    if (!isInShowScope(showId, CONFIG.showFilterSet)) continue;
     if (CONFIG.marketFilter && !showId.includes(CONFIG.marketFilter)) continue;
 
     const showDir = path.join(CONFIG.reviewTextsDir, showId);
@@ -7648,6 +7654,9 @@ function generateReport() {
       urlDiscoverySuccess: stats.urlDiscoverySuccess,
       urlDiscoveryCapped: stats.urlDiscoveryCapped,
     },
+    // BRO-2691: processed/failed below are the RESUMED cumulative state
+    // (progress.json <24h). thisRun is what THIS process attempted.
+    thisRun: summarizeRunScope({ runProcessed, runFailed, filterSet: CONFIG.showFilterSet, resumedProcessed: resumedCounts.processed, resumedFailed: resumedCounts.failed }),
     processed: state.processed,
     failed: state.failed,
     tierDetails: state.tierBreakdown,
@@ -7813,6 +7822,7 @@ async function main() {
 
   // Load previous state if resuming
   loadState();
+  resumedCounts = { processed: state.processed.length, failed: state.failed.length };
 
   // Load Browserbase usage tracking (for spending limits)
   if (CONFIG.browserbaseEnabled) {
@@ -7843,6 +7853,12 @@ async function main() {
       }
 
       const review = reviews[i];
+
+      // BRO-2691: defense in depth — never spend on a review outside SHOW_FILTER.
+      if (!isInShowScope(showIdOfReviewId(review.reviewId), CONFIG.showFilterSet)) {
+        console.log(`  ⏭ Skipping ${review.reviewId} — outside SHOW_FILTER`);
+        continue;
+      }
 
       // BRO-3024: findReviewsToProcess() only excludes reviews already
       // failed/processed as of when it built the queue — a defensive re-check
@@ -7884,8 +7900,10 @@ async function main() {
 
       if (result.success) {
         state.processed.push(review.reviewId);
+        runProcessed.push(review.reviewId);
       } else {
         state.failed.push(review.reviewId);
+        runFailed.push(review.reviewId);
       }
 
       state.lastProcessed = review.reviewId;
