@@ -87,35 +87,6 @@
     "queuedAt": "2026-10-05T16:04:48.315Z"
   },
   {
-    "conditionKey": "land:land/bro-554-deploy-dedup",
-    "title": "Landing blocked: lint-workflows red on land/bro-554-deploy-dedup",
-    "description": "land.yml did not land land/bro-554-deploy-dedup: the lint-workflows gate went red at 8762fbc3f0. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37333669356",
-    "severity": "error",
-    "url": null,
-    "decision": false,
-    "decisionPrompt": null,
-    "model": null,
-    "fields": [
-      {
-        "name": "branch",
-        "value": "land/bro-554-deploy-dedup"
-      },
-      {
-        "name": "gate",
-        "value": "lint-workflows"
-      },
-      {
-        "name": "tip",
-        "value": "8762fbc3f0392ea0297918051191f25c6b537ede"
-      },
-      {
-        "name": "run",
-        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37333669356"
-      }
-    ],
-    "queuedAt": "2026-10-05T16:04:26.083Z"
-  },
-  {
     "conditionKey": "land:land/bro-4719-decisions",
     "title": "Landing blocked: unit-tests-node red on land/bro-4719-decisions",
     "description": "land.yml did not land land/bro-4719-decisions: the unit-tests-node gate went red at 5498a31e23. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37335663847",
@@ -201,5 +172,34 @@
       }
     ],
     "queuedAt": "2026-10-05T16:33:06.082Z"
+  },
+  {
+    "conditionKey": "land:land/bro-554-deploy-dedup",
+    "title": "Landing blocked: unit-tests-node red on land/bro-554-deploy-dedup",
+    "description": "land.yml did not land land/bro-554-deploy-dedup: the unit-tests-node gate went red at 56c357f801. The branch ref was left in place and nothing was pushed to main. Run: https://github.com/thomaspryor/Broadwayscore/actions/runs/37338279162",
+    "severity": "error",
+    "url": null,
+    "decision": false,
+    "decisionPrompt": null,
+    "model": null,
+    "fields": [
+      {
+        "name": "branch",
+        "value": "land/bro-554-deploy-dedup"
+      },
+      {
+        "name": "gate",
+        "value": "unit-tests-node"
+      },
+      {
+        "name": "tip",
+        "value": "56c357f801e89c5595c1a0ab07ebd64250aa15a0"
+      },
+      {
+        "name": "run",
+        "value": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37338279162"
+      }
+    ],
+    "queuedAt": "2026-10-05T16:38:32.686Z"
   }
 ]
