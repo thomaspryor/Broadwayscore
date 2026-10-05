@@ -24,3 +24,7 @@ test('audit: finds only files carrying the stale reason', () => {
   assert.equal(rows.length, 1);
   assert.equal(rows[0].verdict, 'OK');
 });
+
+test('classify: word boundary, "cats" must not match "indicates"', () => {
+  assert.equal(classify({ fullText: body('this indicates things') }, 'Cats').verdict, 'SUSPECT');
+});
