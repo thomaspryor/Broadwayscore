@@ -1,7 +1,7 @@
 {
   "system": "cron",
   "status": "warn",
-  "lastChecked": "2026-10-04T20:51:56.412Z",
+  "lastChecked": "2026-10-05T10:40:22.915Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,7 +9,7 @@
     {
       "name": "Cron: Update Show Status",
       "status": "pass",
-      "message": "7h ago, success"
+      "message": "21h ago, success"
     },
     {
       "name": "Cron: Rebuild Reviews",
@@ -18,13 +18,13 @@
     },
     {
       "name": "Cron: Collect Review Texts",
-      "status": "warn",
-      "message": "Last run still running (started 2h ago)"
+      "status": "pass",
+      "message": "1h ago, success"
     },
     {
       "name": "Cron: LLM Ensemble Score",
-      "status": "pass",
-      "message": "0h ago, success"
+      "status": "warn",
+      "message": "Last run still running (started 0h ago)"
     },
     {
       "name": "Cron: Test Suite",
@@ -34,42 +34,47 @@
     {
       "name": "Cron: Opening Night Broadcast",
       "status": "pass",
-      "message": "2h ago, success"
+      "message": "0h ago, success"
     },
     {
       "name": "Cron: Update Lottery/Rush",
       "status": "pass",
-      "message": "8h ago, success"
+      "message": "22h ago, success"
     },
     {
-      "name": "Cron: Update Show Score",
-      "status": "pass",
-      "message": "7h ago, success (newest run cancelled — superseded, not a failure)"
-    },
-    {
-      "name": "Cron: Update Mezzanine",
-      "status": "pass",
-      "message": "4h ago, success"
-    },
-    {
-      "name": "Cron: Update Cast Changes",
-      "status": "pass",
-      "message": "1d ago, success"
-    },
-    {
-      "name": "Cron: NYT Critics Picks",
+      "name": "Cron: Weekly Grosses",
       "status": "pass",
       "message": "10h ago, success"
     },
     {
+      "name": "Cron: Update Show Score",
+      "status": "pass",
+      "message": "10h ago, success"
+    },
+    {
+      "name": "Cron: Update Mezzanine",
+      "status": "pass",
+      "message": "10h ago, success"
+    },
+    {
+      "name": "Cron: Update Cast Changes",
+      "status": "pass",
+      "message": "2d ago, success"
+    },
+    {
+      "name": "Cron: NYT Critics Picks",
+      "status": "pass",
+      "message": "24h ago, success"
+    },
+    {
       "name": "Cron: Weekly Video Reviews",
       "status": "pass",
-      "message": "5d ago, success"
+      "message": "4h ago, success"
     },
     {
       "name": "Cron: Reverse Discovery",
       "status": "pass",
-      "message": "1h ago, success"
+      "message": "10h ago, success"
     }
   ]
 }

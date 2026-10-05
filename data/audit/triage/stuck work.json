@@ -1,7 +1,7 @@
 {
   "system": "stuck work",
   "status": "warn",
-  "lastChecked": "2026-10-04T20:51:56.413Z",
+  "lastChecked": "2026-10-05T10:40:22.916Z",
   "lastAlertTimestamp": null,
   "autoFixAttempts": 0,
   "escalationState": "resolved",
@@ -9,17 +9,17 @@
     {
       "name": "Stuck work: paused P0/P1 cards",
       "status": "warn",
-      "message": "43 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: main stays green for 24h after the 2026-08-14 red-streak rec (49d, stamp overdue 46d); BRO-235: The Stage + pages-on-stages stub extraction (49d); P1: task-store-archive.js has no move-time age recheck for c (48d) [18 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "61 P0/P1 card(s) sit Paused — invisible to the loop, the stalling email, and stale checks. Oldest: RECHECK-AFTER 2026-08-18: raise exit_intent dwell 5s-&gt;30s on (56d, stamp overdue 48d); P0: #483 drain cleared 64 provably-correct exclusion flags — (52d, stamp overdue 51d); Main red 2026-08-15: sibling-title misroute audit — diagnosi (51d, stamp overdue 50d)"
     },
     {
       "name": "Stuck work: orphaned in-progress cards",
       "status": "warn",
-      "message": "37 In-progress card(s) untouched >48h — owning session likely dead. Oldest: P1: cmux new-workspace terminals spawn NO shell process — al (73d); P1: headless-claude fallback for the opening-night monitor l (72d); P1: register review-census carriers (audit-aggregator-gap +  (72d) [25 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "62 In-progress card(s) untouched >48h — owning session likely dead. Oldest: Trainspotting: only 4 reviews on site + email said 7 (invest (74d); Trainspotting: only 4 reviews on site + email said 7 (invest (74d); cmux-launch: adopt a late-alive workspace instead of close-a (73d)"
     },
     {
       "name": "Stuck work: paused P2/other cards",
       "status": "warn",
-      "message": "6 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging) [20 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
+      "message": "25 lower-priority card(s) Paused >7d (FYI — close or re-queue when triaging) [1 more excluded: already Done/Canceled in Linear, the source of truth — stale Notion twin]"
     }
   ]
 }
