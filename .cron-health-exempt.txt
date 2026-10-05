@@ -259,3 +259,5 @@ analyze-traffic-sources.yml
 # delayed re-run of an evicted landing, which the next completion catches;
 # failures surface via notify-failure + the daily digest.
 land-retry-cancelled.yml
+# BRO-934: auto-expiry checker for the opening-night freeze; a no-op unless a freeze is active.
+automation-freeze.yml
