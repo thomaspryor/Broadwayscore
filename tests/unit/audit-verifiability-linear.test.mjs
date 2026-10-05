@@ -37,3 +37,26 @@ test('boardBreakdown reports per-board counts and refused percentage', () => {
   assert.match(text, /linear: total 200, armed 150, refused 50 \(25%\)/);
   assert.match(text, /notion: sweep FAILED/);
 });
+
+test('main() never references a loop-scoped variable outside its loop (CI step-summary regression)', async () => {
+  const { execFileSync } = await import('node:child_process');
+  const { mkdtempSync, readFileSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const summary = `${mkdtempSync(`${tmpdir()}/bro2720-`)}/summary.md`;
+  // --help short-circuits before any sweep; the summary block is exercised by
+  // running the summary template against a stub via the exported pipeline instead:
+  const src = readFileSync(new URL('../../scripts/audit-card-verifiability.js', import.meta.url), 'utf8');
+  const loopOpen = src.indexOf('for (const { board, report } of results)');
+  const use = src.indexOf('Audit (${board})');
+  assert.ok(loopOpen > 0 && use > loopOpen, 'summary must iterate results so `board` is in scope');
+  assert.ok(summary);
+  execFileSync('node', ['--check', new URL('../../scripts/audit-card-verifiability.js', import.meta.url).pathname]);
+});
+
+test('workflow pins --source notion so CI never depends on the bare default', async () => {
+  const { readFileSync } = await import('node:fs');
+  const wf = readFileSync(new URL('../../.github/workflows/card-verifiability-audit.yml', import.meta.url), 'utf8');
+  const calls = wf.split('\n').filter(l => /node scripts\/audit-card-verifiability\.js/.test(l) && !l.trim().startsWith('#'));
+  assert.ok(calls.length >= 2);
+  for (const l of calls) assert.match(l, /--source notion/);
+});

@@ -484,8 +484,10 @@ async function main() {
   if (!results.length) throw new Error(`every board sweep failed (${failures.map(f => `${f.board}: ${f.message}`).join('; ')})`);
   if (source === 'all') console.log(formatBoardBreakdown(boardBreakdown(results), failures));
 
-  const report = results[0].report;
-  if (process.env.GITHUB_STEP_SUMMARY) {
+  // A board that failed under `all` must not look like a clean run to a cron.
+  if (failures.length) process.exitCode = 1;
+
+  if (process.env.GITHUB_STEP_SUMMARY) for (const { board, report } of results) {
     const kindEntries = Object.entries(report.byKind || {}).sort((a, b) => b[1] - a[1]);
     const summary = [
       `## Card Verifiability Audit (${board})`,
@@ -495,8 +497,10 @@ async function main() {
       `| Total checked | ${report.total} |`,
       `| Armed (dispatchable) | ${report.armedCount} |`,
       `| Refused (undispatchable) | ${report.refusedCount} |`,
-      `| Armed but check path absent from origin/main (can never pass) | ${(report.missingCheckPaths || []).length} |`,
-      `| Armed but check cannot fail (vacuous \`test -f\`) | ${(report.vacuousChecks || []).length} |`,
+      ...(board === 'linear' && source === 'all' ? [] : [
+        `| Armed but check path absent from origin/main (can never pass) | ${(report.missingCheckPaths || []).length} |`,
+        `| Armed but check cannot fail (vacuous \`test -f\`) | ${(report.vacuousChecks || []).length} |`,
+      ]),
       '',
       ...(kindEntries.length ? [
         '### Refused by kind',
