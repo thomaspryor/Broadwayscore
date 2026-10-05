@@ -145,7 +145,7 @@
       "linearIdentifier": "BRO-345"
     },
     "test-yml:main-streak-escalation": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "digest",
       "requestedDisposition": "human",
       "title": "main test.yml STILL red — auto-dispatch did not resolve it",
@@ -157,7 +157,8 @@
       "notifyCount": 121,
       "cardId": null,
       "linearIdentifier": "BRO-3030",
-      "silentRefires": 2
+      "silentRefires": 2,
+      "resolvedAt": "2026-10-05T02:44:59.652Z"
     },
     "health-check:Quality: star-vs-score mismatch": {
       "status": "open",
@@ -10006,7 +10007,7 @@
       "silentRefires": 1
     },
     "test-yml:red:Unit Tests:e5dd8ab4": {
-      "status": "open",
+      "status": "resolved",
       "disposition": "auto",
       "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every Broadway production of the title links its tour; other shows and markets do not\"",
       "firstSeen": "2026-10-05T00:05:43.346Z",
@@ -10023,7 +10024,9 @@
         "runId": "37244984447",
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37244984447"
       },
-      "silentRefires": 3
+      "silentRefires": 3,
+      "resolvedAt": "2026-10-05T02:45:04.814Z",
+      "resolveReason": "job-green"
     },
     "land:land/bro-4623-commercial-corrections": {
       "status": "resolved",
