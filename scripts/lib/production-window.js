@@ -4,8 +4,10 @@
  * Reddit is searched by title, so a title shared by 2+ productions (revival,
  * transfer, other-market run: Glengarry 2025 Broadway vs 2026 West End) pulls
  * chatter about the sibling. This module scopes posts to THIS production's run
- * window and rejects posts naming only a sibling production's year.
- * Titles with no siblings are untouched (fallback behavior unchanged).
+ * window. The fallback floor applies only when an EARLIER sibling exists and the
+ * ceiling only when a LATER sibling exists; otherwise behavior is unchanged.
+ * (A year-mention filter was tried and dropped: it rejected legit comparisons
+ * like "better than the 2012 revival?" on long-running shows.)
  */
 
 const DAY_MS = 86400 * 1000;
@@ -37,61 +39,47 @@ function findTitleSiblings(show, allShows) {
   return (allShows || []).filter(s => s && s.id !== show.id && titleKey(s.title) === key);
 }
 
-/** Years (opening/previews/closing) this production is live in. */
-function productionYears(show) {
-  const ys = new Set();
-  for (const d of [show.previewsStartDate || show.previewDate, show.openingDate, show.closingDate]) {
-    const y = yearOf(d);
-    if (y) ys.add(y);
-  }
-  return ys;
+function startMs(show) {
+  const p = toMs(show.previewsStartDate || show.previewDate);
+  return p != null ? p : toMs(show.openingDate);
 }
 
 /**
- * @returns {{floorSec:number|null, ceilSec:number|null, otherYears:Set<number>, hasSiblings:boolean}}
- * floorSec: explicit previews start always wins; else (siblings only) opening - 21d.
- * ceilSec: (siblings only) closing + 30d, so a later sibling's chatter is cut.
- * otherYears: sibling years not shared by this production.
+ * @returns {{floorSec:number|null, ceilSec:number|null, hasSiblings:boolean}}
+ * floorSec: explicit previews start always wins; else opening-21d, only if an
+ *   earlier-starting sibling exists (nothing to cut otherwise).
+ * ceilSec: closing+30d, only if a sibling starts after this show closes.
  */
 function computeProductionWindow(show, allShows) {
   const siblings = findTitleSiblings(show, allShows);
   const hasSiblings = siblings.length > 0;
-  const previews = toMs(show.previewsStartDate || show.previewDate);
-  const opening = toMs(show.openingDate);
-  let floorMs = previews;
-  if (floorMs == null && hasSiblings && opening != null) floorMs = opening - PRE_OPENING_FALLBACK_DAYS * DAY_MS;
-  let ceilMs = null;
+  const mineStart = startMs(show);
   const closing = toMs(show.closingDate);
-  if (hasSiblings && closing != null) ceilMs = closing + POST_CLOSING_GRACE_DAYS * DAY_MS;
+  const opening = toMs(show.openingDate);
+  const previews = toMs(show.previewsStartDate || show.previewDate);
 
-  const mine = productionYears(show);
-  const otherYears = new Set();
-  for (const s of siblings) for (const y of productionYears(s)) if (!mine.has(y)) otherYears.add(y);
-
+  let floorMs = previews;
+  if (floorMs == null && opening != null && mineStart != null
+      && siblings.some(s => { const t = startMs(s); return t != null && t < mineStart; })) {
+    floorMs = opening - PRE_OPENING_FALLBACK_DAYS * DAY_MS;
+  }
+  let ceilMs = null;
+  if (closing != null && siblings.some(s => { const t = startMs(s); return t != null && t > closing; })) {
+    ceilMs = closing + POST_CLOSING_GRACE_DAYS * DAY_MS;
+  }
   return {
     floorSec: floorMs == null ? null : floorMs / 1000,
     ceilSec: ceilMs == null ? null : ceilMs / 1000,
-    otherYears,
     hasSiblings,
   };
 }
 
-/** True when text names a sibling-only year and none of this production's years. */
-function mentionsOnlyOtherProductionYear(text, show, window) {
-  if (!window || !window.otherYears || window.otherYears.size === 0) return false;
-  const mine = productionYears(show);
-  const found = (String(text || '').match(/\b(?:19|20)\d{2}\b/g) || []).map(Number);
-  if (found.some(y => mine.has(y))) return false;
-  return found.some(y => window.otherYears.has(y));
-}
-
-/** Decide whether a Reddit post belongs to this production. */
+/** Decide whether a Reddit post belongs to this production's run window. */
 function isPostInProductionWindow(post, show, window) {
   if (!window) return true;
   const t = post.created_utc;
   if (t && window.floorSec != null && t < window.floorSec) return false;
   if (t && window.ceilSec != null && t > window.ceilSec) return false;
-  if (mentionsOnlyOtherProductionYear(`${post.title || ''}`, show, window)) return false;
   return true;
 }
 
@@ -100,7 +88,6 @@ module.exports = {
   findTitleSiblings,
   computeProductionWindow,
   isPostInProductionWindow,
-  mentionsOnlyOtherProductionYear,
   PRE_OPENING_FALLBACK_DAYS,
   POST_CLOSING_GRACE_DAYS,
 };

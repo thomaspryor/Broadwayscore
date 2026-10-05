@@ -8,6 +8,7 @@ const {
   computeProductionWindow, isPostInProductionWindow, findTitleSiblings,
 } = require('../../scripts/lib/production-window.js');
 
+const SHOWS = new URL('../../data/shows.json', import.meta.url).pathname;
 const sec = (d) => Date.parse(d) / 1000;
 const bway = { id: 'glengarry-glen-ross-2025', title: 'Glengarry Glen Ross', category: 'broadway',
   previewsStartDate: '2025-03-10', openingDate: '2025-03-31', closingDate: '2025-06-28' };
@@ -39,10 +40,23 @@ test('missing previewsStartDate falls back to opening-21d when siblings exist', 
   assert.equal(isPostInProductionWindow({ created_utc: sec('2025-04-15'), title: 'x' }, noPrev, w), false);
 });
 
-test('post naming only the sibling year is rejected even inside the window', () => {
-  const w = computeProductionWindow(we, all);
-  assert.equal(isPostInProductionWindow({ created_utc: sec('2026-06-20'), title: 'Glengarry 2025 Broadway cast' }, we, w), false);
-  assert.equal(isPostInProductionWindow({ created_utc: sec('2026-06-20'), title: 'Glengarry 2025 vs 2026' }, we, w), true);
+test('long-running show keeps posts that mention an earlier revival year', () => {
+  const rev = { id: 'dos-2012', title: 'Death of a Salesman', openingDate: '2012-03-15', previewsStartDate: '2012-02-29', closingDate: '2012-06-02' };
+  const cur = { id: 'dos-2022', title: 'Death of a Salesman', openingDate: '2022-10-09', previewsStartDate: '2022-09-17' };
+  const w = computeProductionWindow(cur, [rev, cur]);
+  assert.equal(w.ceilSec, null);
+  assert.equal(isPostInProductionWindow({ created_utc: sec('2023-02-01'), title: 'Better than the 2012 revival?' }, cur, w), true);
+});
+
+test('fallback floor/ceiling only when an earlier/later sibling exists', () => {
+  const first = { ...bway, previewsStartDate: null };
+  const wf = computeProductionWindow(first, all); // sibling is LATER only
+  assert.equal(wf.floorSec, null);
+  assert.ok(wf.ceilSec != null);
+  const later = { ...we, previewsStartDate: null };
+  const wl = computeProductionWindow(later, all); // sibling is EARLIER only
+  assert.ok(wl.floorSec != null);
+  assert.equal(wl.ceilSec, null);
 });
 
 test('no-sibling shows are unchanged (no ceiling, no fallback floor)', () => {
@@ -53,8 +67,8 @@ test('no-sibling shows are unchanged (no ceiling, no fallback floor)', () => {
   assert.equal(isPostInProductionWindow({ created_utc: sec('2020-01-01'), title: 'Hamilton 2019' }, solo, w), true);
 });
 
-test('real data: every 2025/2026 sibling pair gets a floor or ceiling', { skip: !fs.existsSync('data/shows.json') }, () => {
-  const shows = JSON.parse(fs.readFileSync('data/shows.json', 'utf8')).shows;
+test('real data: every 2025/2026 sibling pair gets a floor or ceiling', { skip: !fs.existsSync(SHOWS) }, () => {
+  const shows = JSON.parse(fs.readFileSync(SHOWS, 'utf8')).shows;
   for (const id of ['glengarry-glen-ross-2025', 'glengarry-glen-ross-west-end-2026', 'beetlejuice-2025', 'beetlejuice-west-end-2026']) {
     const s = shows.find(x => x.id === id);
     if (!s) continue;

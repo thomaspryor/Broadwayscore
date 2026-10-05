@@ -229,6 +229,7 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
   const seenIds = new Set();
   let totalSearched = 0;
   let filteredByDate = 0;
+  let filteredBySibling = 0;
   // Volume tracking: count ALL posts/comments before dedup/slicing (for display)
   let rawTotalPosts = 0;
   let rawTotalComments = 0;
@@ -264,7 +265,7 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
         }
 
         if (show && !isPostInProductionWindow(post, show, prodWindow)) {
-          filteredByDate++;
+          filteredBySibling++;
           continue;
         }
 
@@ -285,6 +286,9 @@ async function searchAudiencePosts(subreddit, showTitle, maxPosts = 10000, { cat
     }
   }
 
+  if (filteredBySibling > 0) {
+    console.log(`  Filtered out ${filteredBySibling} posts outside this production's run window (title-sibling collision)`);
+  }
   if (filteredByDate > 0) {
     console.log(`  Filtered out ${filteredByDate} posts older than 2 years`);
   }
