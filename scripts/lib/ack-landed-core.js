@@ -64,7 +64,7 @@ const ACKABLE_TERMINAL_EVENTS = new Set([
   'job-stopped-short', 'job-stranded', 'job-blocked', 'job-failed',
   'job-orphaned', 'prune-closed', 'dead', 'vanished', 'watchdog-park',
 ]);
-const NOTHING_TO_ACK_EVENTS = new Set(['job-done', 'landed-acked', 'landed-before-dispatch']);
+const NOTHING_TO_ACK_EVENTS = new Set(['job-done', 'landed-acked', 'landed-before-dispatch', 'landed-outside-dispatch']);
 const LAUNCH_EVENTS = new Set(['launch', 'job-spawned']);
 
 // Same taskId match Gate O v2 uses (`tid == i or tid.endswith(':' + i)`), in
@@ -487,6 +487,138 @@ function decideAlreadyLanded(input) {
   return { ok, refusals, row, newest, launch };
 }
 
+/**
+ * Every dispatch attempt's [launch, end] authoring window across a ref's
+ * ledger rows, in file order. An attempt opens at a launch/job-spawned row
+ * that is not a continuation of the attempt already open (job-spawned right
+ * after its own launch, or a resume after job-retried — same causal rule as
+ * ledgerPrecondition) and closes at the first later terminal row (any
+ * ACKABLE_TERMINAL_EVENTS member or job-done), or at the next fresh launch if
+ * it never wrote one. The last attempt with no terminal row stays open
+ * (end = null): it could still be authoring.
+ * @returns {{launchTs:string, endTs:string|null, endEvent:string|null}[]}
+ */
+function attemptWindows(rows) {
+  const windows = [];
+  let open = null;
+  let retriedSession = null;
+  for (const r of rows || []) {
+    const e = String((r && r.event) || '');
+    if (e === 'job-retried') { retriedSession = r.sessionId || null; continue; }
+    if (LAUNCH_EVENTS.has(e)) {
+      const continuesOpen = Boolean(open && (
+        (e === 'job-spawned' && open.firstEvent === 'launch' && !open.sawSpawn)
+        || (retriedSession && r.resumed === true && r.resumeOfSession === retriedSession)));
+      if (continuesOpen) { if (e === 'job-spawned') open.sawSpawn = true; retriedSession = null; continue; }
+      // A relaunch supersedes an attempt that never wrote a terminal row:
+      // bound it at the relaunch, or one unterminated cmux launch would make
+      // every later sha read as "inside" forever.
+      if (open && open.endTs == null) { open.endTs = r.ts; open.endEvent = `superseded by ${e}`; }
+      open = { launchTs: r.ts, endTs: null, endEvent: null, firstEvent: e, sawSpawn: e === 'job-spawned' };
+      windows.push(open);
+      retriedSession = null;
+      continue;
+    }
+    if (open && (ACKABLE_TERMINAL_EVENTS.has(e) || e === 'job-done')) {
+      // A job-retried resume reopens the SAME window; the earlier terminal
+      // row (if any) is superseded by the one that follows the resume.
+      open.endTs = r.ts;
+      open.endEvent = e;
+      if (!retriedSession) open = null;
+    }
+  }
+  return windows.map(({ launchTs, endTs, endEvent }) => ({ launchTs, endTs, endEvent }));
+}
+
+/**
+ * BRO-4662 — the third cell of the "who did the work relative to this card's
+ * dispatches" matrix. decideAck: an attempt did it (sha authored inside that
+ * attempt's window). decideAlreadyLanded: nobody needed to (sha authored
+ * before every attempt). decideLandedElsewhere: every attempt produced
+ * nothing and the work landed LATER by a route that writes no ledger rows
+ * (a crowned OWNER tab, a hand-typed fix). Real case: linear:BRO-4137 —
+ * dispatched 2026-09-24 and 2026-09-25, the second job-stranded at an
+ * unrelated housekeeping sha (479367e3f69); the work landed 2026-09-29 as
+ * 73975937bae from a non-ledgered tab, so decideAck's stranded-sha tie could
+ * never pass and the card was permanently unackable.
+ *
+ * The three modes are DISJOINT on purpose: a sha authored before the
+ * earliest launch is refused here (→ --already-landed), and one authored
+ * inside any attempt's window is refused here too (→ the default ack or
+ * --job-id) — so this mode can never be used to record an attempt's own work
+ * under the "nobody's job did it" event, nor to dodge decideAck's
+ * stranded-sha tie for a job that really did author it.
+ *
+ * Otherwise the same guards as decideAlreadyLanded: newest row must be an
+ * ackable bad terminal row, the sha must be on a fresh origin/main AND name
+ * the ref (an arbitrary commit is never accepted — the card's optional
+ * "unnamed sha + reason" variant was deliberately not built), checkout clean
+ * and containing the sha, safe-form --verify exit 0, reason >= 15 chars.
+ * Writes 'landed-outside-dispatch', never 'landed-acked': the ledger keeps
+ * saying the stranded job failed while the CARD is recorded satisfied.
+ *
+ * @param {object} input  same shape as decideAlreadyLanded's (rows UNSCOPED)
+ */
+function decideLandedElsewhere(input) {
+  const { ref, rows, landing = {}, checkout = {}, verify = {}, reason, ackedBy } = input || {};
+  const pre = ledgerPrecondition(rows);
+  const refusals = [...pre.refusals];
+  const { newest, launch: latestLaunch } = pre;
+  const first = earliestLaunch(rows);
+  if ((rows || []).some((r) => LAUNCH_EVENTS.has(String(r && r.event)) && !Number.isFinite(Date.parse((r && r.ts) || '')))) {
+    refusals.push('one or more launch/job-spawned rows on this ref have an unreadable ts — cannot place the sha relative to every dispatch attempt');
+  }
+
+  if (landing.verdict !== 'LANDED') {
+    refusals.push(`${landing.sha || '<sha>'} is not an ancestor of origin/main after a fresh fetch (verdict ${landing.verdict || 'missing'}${landing.reason ? ', ' + landing.reason : ''})`);
+  }
+
+  const workTsRaw = landing.authorTs || landing.commitTs || '';
+  const workTs = Date.parse(workTsRaw);
+  if (!Number.isFinite(workTs)) {
+    refusals.push('could not read the commit timestamp for the sha');
+  } else {
+    const firstTs = Date.parse((first && first.ts) || '');
+    if (Number.isFinite(firstTs) && workTs < firstTs) {
+      refusals.push(`the sha was authored at ${workTsRaw}, BEFORE the ref's earliest dispatch launch (${first.ts}) — that is the --already-landed case, not this one`);
+    }
+    for (const w of attemptWindows(rows)) {
+      const lo = Date.parse(w.launchTs || '');
+      const hi = w.endTs == null ? Infinity : Date.parse(w.endTs) + COMMIT_AFTER_TERMINAL_GRACE_MS;
+      if (Number.isFinite(lo) && workTs >= lo && workTs <= hi) {
+        refusals.push(`the sha was authored at ${workTsRaw}, INSIDE the dispatch attempt launched ${w.launchTs}${w.endTs ? ` (ended ${w.endEvent} ${w.endTs})` : ' (no terminal row)'} — it may be that attempt's own work; ack it with the default mode (optionally --job-id), not --landed-elsewhere`);
+        break;
+      }
+    }
+  }
+
+  if (!messageNamesRef(landing.message, ref)) {
+    refusals.push(`the sha's commit message does not name ${ref} — --landed-elsewhere still requires the card's own landing commit, never an arbitrary one`);
+  }
+
+  refusals.push(...checkoutRefusals(checkout));
+  refusals.push(...verifyRefusals(verify));
+  refusals.push(...reasonRefusals(reason));
+
+  const reasonText = String(reason || '').trim();
+  const ok = refusals.length === 0;
+  const row = ok ? {
+    event: 'landed-outside-dispatch',
+    taskId: (newest && newest.taskId) || `linear:${ref}`,
+    // The dead attempt's jobId, so dispatch-ledger.js landedAckOverridesDeath
+    // stops reading the card as needing a re-dispatch. The event name — not
+    // the jobId — is what records that this job did NOT do the work.
+    jobId: (newest && newest.jobId) || (latestLaunch && latestLaunch.jobId) || null,
+    workspaceRef: (latestLaunch && latestLaunch.workspaceRef) || undefined,
+    sha: landing.sha,
+    verifyCmd: verify.cmd,
+    reason: reasonText,
+    ackedBy: ackedBy || 'manual',
+    priorEvent: newest ? newest.event : null,
+  } : null;
+  return { ok, refusals, row, newest, launch: first };
+}
+
 function formatAckLine(ref, row) {
   return `ACKED: ${ref} — ${row.sha} on origin/main, ${row.verifyCmd} exit 0`;
 }
@@ -494,5 +626,5 @@ function formatAckLine(ref, row) {
 module.exports = {
   MIN_REASON_CHARS, COMMIT_AFTER_TERMINAL_GRACE_MS, ACKABLE_TERMINAL_EVENTS, NOTHING_TO_ACK_EVENTS,
   rowsForRef, rowsForJobId, normalizeRef, ledgerPrecondition, earliestLaunch,
-  decideAck, decideAlreadyLanded, formatAckLine, messageNamesRef,
+  decideAck, decideAlreadyLanded, decideLandedElsewhere, attemptWindows, formatAckLine, messageNamesRef,
 };
