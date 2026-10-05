@@ -48,7 +48,7 @@ test('unresolvable/empty upstream ref: legacy amend', () => {
 });
 
 test('every post-rebase amend site in the push paths goes through the helper', () => {
-  for (const f of ['.github/actions/push-core-data/action.yml', '.github/actions/push-review-texts/action.yml', 'scripts/lib/push-with-retry.sh']) {
+  for (const f of ['.github/actions/push-core-data/action.yml', '.github/actions/push-review-texts/action.yml', 'scripts/lib/push-with-retry.sh', 'scripts/lib/safe-sync-review-texts.sh']) {
     const src = readFileSync(path.resolve(path.dirname(SCRIPT), '../..', f), 'utf8');
     const bare = src.split('\n').filter((l) => /git commit --amend/.test(l) && !/^\s*#/.test(l));
     assert.deepEqual(bare, [], `${f} has a bare git commit --amend (rewrites upstream tip when rebase dropped our commit)`);
