@@ -714,6 +714,9 @@ jobs:
         with:
           node-version: 20
 
+      # audit-secret-gap-ok: ANTHROPIC_API_KEY
+      # (status script only imports readiness helpers from opening-night-poller;
+      # it never reaches the llm-extractor fallback, BRO-2378)
       - name: Send opening night status to Discord
         if: always() && steps.find.outputs.has_shows == 'true'
         env:
