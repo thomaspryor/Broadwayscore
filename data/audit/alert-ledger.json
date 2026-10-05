@@ -3867,7 +3867,7 @@
       "absentRunIds": [
         "37184564354"
       ],
-      "resolvedAt": "2026-10-04T23:56:40.463Z",
+      "resolvedAt": "2026-10-05T00:02:20.390Z",
       "resolveReason": "job-green"
     },
     "test-yml:red:Data Validation:9b5157f4": {
@@ -5996,7 +5996,7 @@
         "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/36656601667"
       },
       "absentRunIds": [],
-      "resolvedAt": "2026-10-04T23:56:40.470Z",
+      "resolvedAt": "2026-10-05T00:02:20.416Z",
       "resolveReason": "job-green"
     },
     "review-gap:opening-window:lost-in-del-valle-return-off-broadway-2026": {
@@ -10000,18 +10000,24 @@
       "cardId": null,
       "linearIdentifier": "BRO-4629"
     },
-    "land:land/bro-4601-fresh-launch": {
+    "test-yml:red:Unit Tests:e5dd8ab4": {
       "status": "open",
-      "disposition": "digest",
-      "title": "Landing blocked: race red on land/bro-4601-fresh-launch",
-      "firstSeen": "2026-10-05T00:02:25.494Z",
-      "incidentOpenedAt": "2026-10-05T00:02:25.494Z",
-      "lastSeen": "2026-10-05T00:02:25.494Z",
-      "lastNotifiedAt": "2026-10-05T00:02:25.494Z",
-      "lastSurfacedAt": "2026-10-05T00:02:25.494Z",
+      "disposition": "auto",
+      "title": "main test.yml red: Unit Tests / Run unit tests (no-data-dependency) — \"every Broadway production of the title links its tour; other shows and markets do not\"",
+      "firstSeen": "2026-10-05T00:02:20.424Z",
+      "incidentOpenedAt": "2026-10-05T00:02:20.424Z",
+      "lastSeen": "2026-10-05T00:02:20.424Z",
+      "lastNotifiedAt": "2026-10-05T00:02:20.424Z",
+      "lastSurfacedAt": null,
       "notifyCount": 1,
       "cardId": null,
-      "linearIdentifier": null
+      "linearIdentifier": "BRO-4644",
+      "dispatch": {
+        "requestedAt": "2026-10-05T00:02:20.424Z",
+        "mode": "dispatch-at-filing",
+        "runId": "37244984447",
+        "runUrl": "https://github.com/thomaspryor/Broadwayscore/actions/runs/37244984447"
+      }
     }
   }
 }
