@@ -8,7 +8,9 @@ interface SourceRow extends Step { source: string; label: string; device: 'mobil
 interface Payload {
   generatedAt: string;
   accounts: {
-    total: number; newToday: number; newLast7: number; newLast30: number;
+    total: number; newToday: number;
+    excluded?: { yours: number; test: number };
+    people?: { joined: string | null; lastSignIn: string | null; provider: string; saved: boolean }[]; newLast7: number; newLast30: number;
     signedInLast7: number; signedInLast30: number; providers: Record<string, number>;
     withRating: number; withWatchlist: number; withList: number; withAnything: number;
     ratings: number; watchlistItems: number; lists: number;
@@ -185,7 +187,16 @@ export default function Dashboard() {
 
       {a && (
         <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-          <Tile label="Accounts" value={fmtN(a.total)} lines={[`${a.newToday} new today (UTC)`, providers]} />
+          <Tile
+            label="Real accounts"
+            value={fmtN(a.total)}
+            lines={[
+              a.excluded && (a.excluded.yours || a.excluded.test)
+                ? `not counting ${[a.excluded.yours ? `${a.excluded.yours} of yours` : '', a.excluded.test ? `${a.excluded.test} test` : ''].filter(Boolean).join(' or ')}`
+                : `${a.newToday} new today (UTC)`,
+              providers,
+            ]}
+          />
           <Tile label="New accounts" value={fmtN(a.newLast7)} lines={['in the last 7 days', `${a.newLast30} in the last 30 days`]} />
           <Tile
             label="Signed-in people"
@@ -197,7 +208,7 @@ export default function Dashboard() {
       )}
 
       {data && data.daily.length > 0 && (
-        <Card title="Last 30 days" note="Days are in UTC. Signed-in people counts anyone who used the site while signed in, including you.">
+        <Card title="Last 30 days" note="Days are in UTC. New accounts are real people only. Signed-in people counts anyone who used the site while signed in, including you.">
           <DailyChart days={data.daily} />
         </Card>
       )}
@@ -265,6 +276,34 @@ export default function Dashboard() {
                       <td className="py-1.5 pr-3 text-right tabular-nums">{x.last7}</td>
                       <td className="py-1.5 pr-3 text-right tabular-nums">{x.last30}</td>
                       <td className="py-1.5 text-right tabular-nums">{x.users30}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            )}
+          </Card>
+        )}
+        {a?.people && (
+          <Card title="Real accounts" note="Newest first. Your own accounts and test sign-ups are left out of every number on this page.">
+            {a.people.length === 0 ? (
+              <p className="text-sm text-gray-400">No real accounts yet.</p>
+            ) : (
+              <table className="w-full text-sm">
+                <thead>
+                  <tr className="text-left text-xs text-gray-500">
+                    <th className="py-1 pr-3 font-medium">Joined</th>
+                    <th className="py-1 pr-3 font-medium">Signed in with</th>
+                    <th className="py-1 pr-3 font-medium">Last signed in</th>
+                    <th className="py-1 font-medium text-right">Saved something</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {a.people.map((p, i) => (
+                    <tr key={i} className="border-t border-white/[0.06] text-gray-300">
+                      <td className="py-1.5 pr-3">{p.joined ? fmtDay(p.joined) : '—'}</td>
+                      <td className="py-1.5 pr-3 text-gray-400">{PROVIDER[p.provider] || p.provider}</td>
+                      <td className="py-1.5 pr-3">{p.lastSignIn ? fmtDay(p.lastSignIn) : '—'}</td>
+                      <td className="py-1.5 text-right">{p.saved ? 'Yes' : 'No'}</td>
                     </tr>
                   ))}
                 </tbody>

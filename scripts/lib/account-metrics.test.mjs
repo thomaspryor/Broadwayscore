@@ -120,7 +120,7 @@ test('buildDashboardData merges signed-in users into the daily series and lists 
 test('weeklySummaryLines reads as plain English', () => {
   const accounts = m.summarizeAccounts(m.slimUsers([{ id: 'a', created_at: iso(1) }]), { ratings: [{ user_id: 'a' }], watchlist: [], lists: [] }, NOW);
   const lines = m.weeklySummaryLines(m.buildDashboardData({ now: NOW, accounts, ph: { active: [{ dau: 1, wau: 1, mau: 1 }] } }));
-  assert.equal(lines[0], '1 account in total, 1 new this past week.');
+  assert.equal(lines[0], '1 real account in total, 1 new this past week.');
   assert.match(lines[1], /^1 signed-in person used the site this week/);
 });
 
@@ -195,4 +195,36 @@ test('only the synthetic Google/Apple check pages; the PostHog signals go to the
 
 test('offline save failures are not counted', () => {
   assert.match(m.buildQueries().health, /rating_save_failed' AND NOT match\(lower\(toString\(properties\.error_message\)\), 'failed to fetch/);
+});
+
+test('classifyAccount sorts owner aliases, fake addresses and real people', () => {
+  const owner = 'Jane.Doe@gmail.com';
+  assert.equal(m.classifyAccount('janedoe+bsc@gmail.com', owner), 'owner');
+  assert.equal(m.classifyAccount('jane.doe@googlemail.com', owner), 'owner');
+  assert.equal(m.classifyAccount('claude-e2e-1759000000@example.com', owner), 'test');
+  assert.equal(m.classifyAccount('someone@mysite.test', owner), 'test');
+  assert.equal(m.classifyAccount('qa1@realdomain.org', owner), 'test');
+  assert.equal(m.classifyAccount('walk-1@broadwayscorecard-test.invalid', owner), 'ci-test');
+  assert.equal(m.classifyAccount('theatrefan@yahoo.com', owner), 'person');
+  assert.equal(m.classifyAccount('testarossa@gmail.com', owner), 'person');
+  assert.equal(m.classifyAccount(undefined, owner), 'person');
+  assert.equal(m.classifyAccount('janedoe@gmail.com', ''), 'person');
+});
+
+test('summarizeAccounts counts real people only and reports what it left out', () => {
+  const users = m.slimUsers([
+    { id: 'o', email: 'jane.doe+x@gmail.com', created_at: iso(1), app_metadata: { provider: 'email' } },
+    { id: 't', email: 'claude-e2e-1@example.com', created_at: iso(2) },
+    { id: 'p', email: 'fan@yahoo.com', created_at: iso(3), last_sign_in_at: iso(1), app_metadata: { provider: 'google' } },
+  ], { ownerEmail: 'janedoe@gmail.com' });
+  const a = m.summarizeAccounts(users, { ratings: [{ user_id: 'p' }, { user_id: 'o' }], watchlist: [], lists: [] }, NOW);
+  assert.equal(a.total, 1);
+  assert.deepEqual(a.excluded, { yours: 1, test: 1 });
+  assert.equal(a.withRating, 1);
+  assert.equal(a.people.length, 1);
+  assert.deepEqual(Object.keys(a.people[0]).sort(), ['joined', 'lastSignIn', 'provider', 'saved']);
+  assert.equal(a.people[0].saved, true);
+  assert.ok(!JSON.stringify(a).includes('@'), 'no email leaves the summary');
+  const line = m.weeklySummaryLines(m.buildDashboardData({ now: NOW, accounts: a, ph: {} }))[0];
+  assert.match(line, /1 real account in total, 1 new this past week \(not counting 1 of yours and 1 test\)/);
 });
