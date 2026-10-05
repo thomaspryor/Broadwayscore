@@ -100,9 +100,10 @@ function getRateLimitHeadroom() {
 }
 
 /**
- * True when remaining core quota is below `threshold` (or the check itself
- * failed — fail CLOSED here since a failed rate_limit call is itself often a
- * symptom of an already-exhausted token). Callers use this to skip
+ * True when remaining core quota is below `threshold`. When the check itself
+ * fails this returns false (fail OPEN: don't block work on a check we could
+ * not make). scripts/lib/github-api-budget.js is the fail-closed variant for
+ * optional CI calls (BRO-4654). Callers use this to skip
  * non-essential bulk GitHub API work gracefully instead of burning the last
  * of a shared, fleet-wide budget.
  */
