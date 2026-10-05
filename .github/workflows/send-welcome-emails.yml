@@ -6,16 +6,22 @@ name: Send Welcome Emails
 # scripts/send-welcome-emails.js.
 #
 # ON/OFF lives in code, not here: WELCOME_EMAIL_SEND_FROM in
-# scripts/lib/welcome-email.js. While it is null every scheduled run exits in
-# about a second without touching Supabase or Resend.
+# scripts/lib/welcome-email.js (ON since 2026-10-05). While it is null every
+# scheduled run exits in about a second without touching Supabase or Resend.
+#
+# Watched by check-cron-health.yml (CRITICAL_CRONS, 13h). Its self-heal
+# redispatches with no inputs, which is why the dispatch default is 'run':
+# the redispatch must do what the schedule does, not a dry run that would
+# only make a dead schedule look healthy. A run that exits 1 (Resend setup
+# error, halted) also counts against that health check.
 #
 # Manual modes (workflow_dispatch):
+#   run        same as the schedule (the default)
 #   dry-run    read-only; with preview_since (UTC, e.g. 2026-10-04T00:00:00Z),
 #              shows who WOULD get the email had sending been switched on then.
 #              Accounts older than MAX_ACCOUNT_AGE_HOURS (20h) are left out,
 #              as in a real run. Never sends, never claims.
 #   test-send  one email to delivered@resend.dev (Resend's test sink), no DB
-#   run        same as the schedule
 
 on:
   schedule:
@@ -25,9 +31,9 @@ on:
       mode:
         description: 'run | dry-run | test-send'
         required: true
-        default: 'dry-run'
+        default: 'run'
         type: choice
-        options: [dry-run, test-send, run]
+        options: [run, dry-run, test-send]
       preview_since:
         description: 'dry-run only: ISO time to preview as if sending had been switched on then'
         required: false
@@ -70,6 +76,13 @@ jobs:
           PREVIEW_SINCE: ${{ inputs.preview_since }}
         run: |
           set -euo pipefail
+          # preview_since only means something to a dry run. With mode=run (the
+          # default) it would be ignored and a real send would go out to someone
+          # who meant to preview, so refuse instead.
+          if [ -n "$PREVIEW_SINCE" ] && [ "$MODE" != dry-run ]; then
+            echo "::error::preview_since needs mode=dry-run (got mode=$MODE); nothing was sent"
+            exit 1
+          fi
           case "$MODE" in
             run)       node scripts/send-welcome-emails.js ;;
             test-send) node scripts/send-welcome-emails.js --test-send ;;
