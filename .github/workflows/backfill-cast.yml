@@ -50,6 +50,9 @@ jobs:
         uses: actions/checkout@v5
         with:
           ref: main
+          # BRO-2388 (task #466 class): depth 300 keeps push-with-retry.sh's shallow boundary an ancestor
+          # of main for this 45-min job's final ledger commit; depth-1 aborted when churn outran it.
+          fetch-depth: 300
 
 
       - name: Checkout core data
