@@ -148,6 +148,22 @@ test('funnel query keeps devices that only finished signing in', () => {
   const q = m.buildQueries().funnel;
   assert.match(q, /WHERE n_shown > 0 OR n_started > 0 OR n_completed > 0/);
   assert.match(q, /'sign_in_started', 'sign_in_completed'\)\) AS dev/);
+  assert.match(q, /'sign_in_started', 'sign_in_completed'\)\) AS src/);
+});
+
+test('summarizeFunnel lists finish-only rows and drops rows with no sign-in step', () => {
+  const f = m.summarizeFunnel([
+    { src: 'app', dev: 'App', shown: 0, started: 0, completed: 3, acted: 0 },
+    { src: 'menu', dev: 'Desktop', shown: 0, started: 0, completed: 0, acted: 1 },
+  ]);
+  assert.deepEqual(f.sources.map((x) => x.source), ['app']);
+});
+
+test('weeklySummaryLines keeps phone or computer sign-ins that skipped the sign-in box', () => {
+  const accounts = m.summarizeAccounts(m.slimUsers([{ id: 'a', created_at: iso(1) }]), { ratings: [], watchlist: [], lists: [] }, NOW);
+  const funnel = [{ src: 'menu', dev: 'Mobile', shown: 0, started: 1, completed: 1, acted: 0 }];
+  const line = m.weeklySummaryLines(m.buildDashboardData({ now: NOW, accounts, ph: { funnel } })).find((l) => l.startsWith('Sign-up funnel'));
+  assert.match(line || '', /Phones: 0 saw the sign-in box, 1 started, 1 finished/);
 });
 
 test('account-metrics.js --simulate=signin-stalled prints the alert and sends nothing', () => {

@@ -96,9 +96,10 @@ function DailyChart({ days }: { days: Payload['daily'] }) {
   );
 }
 
-function FunnelBars({ step, title }: { step: Step; title: string }) {
+function FunnelBars({ step, title, noPrompt }: { step: Step; title: string; noPrompt?: boolean }) {
   const rows: [string, number][] = [
-    ['Saw the sign-in box', step.shown],
+    // The iPhone app has no sign-in box event, so a 0 there would read as a drop-off.
+    ...(noPrompt && !step.shown ? [] : [['Saw the sign-in box', step.shown] as [string, number]]),
     ['Started signing in', step.started],
     ['Finished signing in', step.completed],
     ['Then saved something', step.acted],
@@ -152,7 +153,7 @@ export default function Dashboard() {
 
   const a = data?.accounts;
   const providers = a ? Object.entries(a.providers).sort((x, y) => y[1] - x[1]).map(([k, v]) => `${PROVIDER[k] || k} ${v}`).join(' · ') : '';
-  const sources = (data?.funnel?.sources || []).filter((s) => s.shown > 0 || s.started > 0);
+  const sources = data?.funnel?.sources || [];
 
   return (
     <div className="space-y-4">
@@ -210,7 +211,7 @@ export default function Dashboard() {
             <FunnelBars step={data.funnel.totals.mobile} title="Phones" />
             <FunnelBars step={data.funnel.totals.desktop} title="Computers" />
             {(data.funnel.totals.other.started > 0 || data.funnel.totals.other.completed > 0) && (
-              <FunnelBars step={data.funnel.totals.other} title="iPhone app / other" />
+              <FunnelBars step={data.funnel.totals.other} title="iPhone app / other" noPrompt />
             )}
           </div>
           {sources.length > 0 && (
