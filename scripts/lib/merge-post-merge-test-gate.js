@@ -73,19 +73,19 @@
 //   existing de-dup means the test just runs once either way, which is
 //   correct: it's the same assertion regardless of which source triggered it.
 //
-//   KNOWN LIMIT — same-key masking on AGGREGATE guards. The baseline diff
-//   keys failures by <file>::<test name> (parseTapOutput), so a guard that
-//   makes ONE assertion over MANY inputs reports the same key no matter which
-//   input violated it. workflow-line-length.test.mjs is exactly that shape:
-//   one test over every workflow file. If origin/main is ALREADY failing it,
-//   a NEW violation added by the merge produces the same key, matches the
-//   baseline, and is classified pre-existing — so it does not block. This is
-//   a property of the #1433 baseline design rather than of workflow coverage
-//   specifically, and it degrades gracefully: the floor still catches the
-//   case that actually happened in BRO-2785 (main GREEN on the guard, the
-//   merge breaks it). It is NOT a reason to skip the floor — before this,
-//   that case was not caught either. Tracked separately; do not read a green
-//   floor as proof when main is already red on an aggregate guard.
+//   AGGREGATE GUARDS (BRO-2793). The baseline diff keys failures by
+//   <file>::<test name> (parseTapOutput), so a guard that makes ONE assertion
+//   over MANY inputs reports the same key no matter which input violated it;
+//   workflow-line-length.test.mjs is exactly that shape. Left alone, a NEW
+//   violation added on top of an already-red main matched the baseline key
+//   and read as pre-existing. Guards listed in AGGREGATE_GUARD_FILES are
+//   therefore diffed on their assertion PAYLOAD (the individual violations),
+//   not just the key: the failure is pre-existing only if every violation in
+//   the merged run also appears in the baseline run; any violation the
+//   baseline lacks, or a payload that cannot be read, is NEW. Fixing some of
+//   the baseline's violations still passes. A guard is aggregate only when
+//   listed there — payload text of ordinary tests can be nondeterministic and
+//   would turn pre-existing redness into false blocks.
 //
 //   Guard selection is REQUIRED + DISCOVERED - EXCLUDED (see the three
 //   definitions below listTestFiles). The required list pins the guards that
@@ -376,7 +376,21 @@ function defaultExec(cwd, testFiles) {
 // — iterables of [key, value]) keyed the same way parseTapOutput() keys its
 // `failures` map. No I/O — this is the unit the acceptance criteria's "two
 // fixture failing-sets" test targets directly.
-function diffFailingSets(baselineFailures, mergedFailures) {
+// Aggregate guards (see the AGGREGATE GUARDS header note): repo-relative test
+// files whose single failing test spans many inputs.
+const AGGREGATE_GUARD_FILES = [...REQUIRED_WORKFLOW_GUARDS];
+
+// Pure: the individual violations in a failure payload. Flat `{...}` objects
+// (what JSON.stringify(violations) emits) when present, else the non-empty
+// lines. Order-insensitive, so callers compare as sets.
+function payloadItems(payload) {
+  const text = String(payload || '');
+  const objs = text.match(/\{[^{}]*\}/g);
+  if (objs && objs.length > 0) return objs.map((o) => o.trim());
+  return text.split('\n').map((l) => l.trim()).filter(Boolean);
+}
+
+function diffFailingSets(baselineFailures, mergedFailures, aggregateFiles = AGGREGATE_GUARD_FILES) {
   const baseline = baselineFailures instanceof Map ? baselineFailures : new Map(baselineFailures || []);
   const merged = mergedFailures instanceof Map ? mergedFailures : new Map(mergedFailures || []);
   const newFailures = [];
@@ -390,7 +404,14 @@ function diffFailingSets(baselineFailures, mergedFailures) {
     // origin/main happened to have some unrelated unlocated failure with the
     // same title — a silent false pass (Codex adversarial review, card
     // #1433). Always classify unlocated merged failures as NEW instead.
-    const isNew = key.startsWith('?::') || !baseline.has(key);
+    let isNew = key.startsWith('?::') || !baseline.has(key);
+    if (!isNew && aggregateFiles.includes(value && value.file)) {
+      // Same key is not proof of the same violation (BRO-2793): compare the
+      // violations themselves. Unreadable payload on either side => NEW.
+      const mergedItems = payloadItems(value.payload);
+      const baseItems = new Set(payloadItems(baseline.get(key).payload));
+      isNew = mergedItems.length === 0 || baseItems.size === 0 || mergedItems.some((i) => !baseItems.has(i));
+    }
     (isNew ? newFailures : preExisting).push(value);
   }
   return { newFailures, preExisting };
@@ -652,6 +673,8 @@ module.exports = {
   selectTestFiles,
   runTestGate,
   diffFailingSets,
+  payloadItems,
+  AGGREGATE_GUARD_FILES,
   baselineCheckoutOptions,
 };
 

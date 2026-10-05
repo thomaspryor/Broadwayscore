@@ -10,6 +10,7 @@ import { spawnSync } from 'node:child_process';
 const require = createRequire(import.meta.url);
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const { shouldRunTestGate, listColocatedTestFiles, runTestGate, diffFailingSets, baselineCheckoutOptions } = require('./merge-post-merge-test-gate.js');
+const { parseTapOutput } = require('./tap-failure-parser.js');
 
 // --- baselineCheckoutOptions: pure, no I/O (BRO-3962) ---
 //
@@ -925,4 +926,65 @@ test('listCorrespondingUnitTestFiles: the real repo has at least one live script
     'scripts/lib/landed-but-open-reconciler.js',
   ]);
   assert.ok(found.length > 0, 'correspondence discovery found nothing for two known real files — the mechanism may be silently dead');
+});
+
+// --- BRO-2793: aggregate guards diff on payload, not just file::name ---
+
+const AGG_FILE = path.join('tests', 'unit', 'workflow-line-length.test.mjs');
+const aggEntry = (violations) => ({
+  file: AGG_FILE,
+  name: 'no .github/workflows/*.yml line exceeds 500 chars',
+  payload: `Long lines found: ${JSON.stringify(violations)}`,
+});
+const aggMap = (violations) => new Map([[`${AGG_FILE}::no .github/workflows/*.yml line exceeds 500 chars`, aggEntry(violations)]]);
+const V_OLD = { file: 'old.yml', line: 3, length: 501 };
+const V_NEW = { file: 'new.yml', line: 9, length: 504 };
+
+test('BRO-2793: a NEW violation on an aggregate guard already red on baseline is NEW', () => {
+  const { newFailures, preExisting } = diffFailingSets(aggMap([V_OLD]), aggMap([V_OLD, V_NEW]));
+  assert.equal(newFailures.length, 1);
+  assert.equal(preExisting.length, 0);
+});
+
+test('BRO-2793: same aggregate violations as baseline stay pre-existing, even when only some were fixed', () => {
+  assert.equal(diffFailingSets(aggMap([V_OLD]), aggMap([V_OLD])).newFailures.length, 0);
+  assert.equal(diffFailingSets(aggMap([V_OLD, V_NEW]), aggMap([V_OLD])).newFailures.length, 0);
+});
+
+test('BRO-2793: an aggregate failure with no readable payload is NEW (fail safe)', () => {
+  const noPayload = new Map([[`${AGG_FILE}::x`, { file: AGG_FILE, name: 'x' }]]);
+  assert.equal(diffFailingSets(noPayload, noPayload).newFailures.length, 1);
+});
+
+test('BRO-2793: a non-aggregate failure with different payloads stays pre-existing (key match only)', () => {
+  const mk = (p) => new Map([['a.test.mjs::t', { file: 'a.test.mjs', name: 't', payload: p }]]);
+  assert.equal(diffFailingSets(mk('x 1ms'), mk('x 2ms')).newFailures.length, 0);
+});
+
+test('BRO-2793: parseTapOutput captures payload from REAL node --test output, comparable across checkouts', () => {
+  const run = (violations) => {
+    const root = fs.mkdtempSync(path.join(os.tmpdir(), 'bro2793-'));
+    const f = path.join(root, AGG_FILE);
+    fs.mkdirSync(path.dirname(f), { recursive: true });
+    fs.writeFileSync(
+      f,
+      `import { test } from 'node:test'; import assert from 'node:assert/strict';\n` +
+        `test('no .github/workflows/*.yml line exceeds 500 chars', () => { assert.deepEqual(${JSON.stringify(violations)}, [], 'Long lines found: ' + JSON.stringify(${JSON.stringify(violations)})); });\n`
+    );
+    const r = spawnSync(process.execPath, ['--test', '--test-reporter=tap', f], {
+      cwd: root,
+      encoding: 'utf8',
+      env: { ...process.env, NODE_TEST_CONTEXT: undefined }, // else the child reports to the parent runner, not TAP
+    });
+    return parseTapOutput(r.stdout, fs.realpathSync(root)).failures;
+  };
+  const base = run([V_OLD]);
+  const same = run([V_OLD]);
+  const grown = run([V_OLD, V_NEW]);
+  assert.equal(base.size, 1);
+  assert.ok([...base.values()][0].payload.includes('old.yml'));
+  assert.equal(diffFailingSets(base, same).newFailures.length, 0);
+  const d = diffFailingSets(base, grown);
+  assert.equal(d.newFailures.length, 1, 'new violation must block despite identical key');
+  assert.equal(d.preExisting.length, 0);
 });
