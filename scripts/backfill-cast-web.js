@@ -126,6 +126,22 @@ async function searchCast(title, year, category) {
 // Page fetching via ScrapingBee
 // ============================================================================
 
+// ScrapingBee non-200 (401 = monthly quota exhausted, BRO-2517) must not turn
+// every show into a "transient failure"; fall back to the shared provider chain.
+async function fetchPageTextViaChain(url) {
+  try {
+    const { fetchPage } = require('./lib/scraper');
+    const { stripHtml } = require('./lib/article-extractor');
+    const r = await fetchPage(url);
+    if (!r || !r.content) return null;
+    const text = r.format === 'html' ? stripHtml(r.content) : r.content;
+    return text.replace(/\s+/g, ' ').substring(0, 20000);
+  } catch (e) {
+    console.log(`  Provider-chain fetch failed: ${e.message}`);
+    return null;
+  }
+}
+
 async function fetchPageText(url) {
   const apiKey = process.env.SCRAPINGBEE_API_KEY;
   if (!apiKey) throw new Error('SCRAPINGBEE_API_KEY not set');
@@ -154,7 +170,7 @@ async function fetchPageText(url) {
     throw e;
   }
   recordSbCall({ url, fn: needsJs ? 'render' : 'page', success: result.statusCode === 200, status: result.statusCode, credits: sbBilledCredits(result.statusCode, credits), purpose: 'cast-backfill' });
-  if (result.statusCode !== 200) return null;
+  if (result.statusCode !== 200) return fetchPageTextViaChain(url);
 
   try {
     const data = JSON.parse(result.body);
