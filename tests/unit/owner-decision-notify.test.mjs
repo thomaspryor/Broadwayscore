@@ -24,6 +24,16 @@ test('ignores template placeholders, code, and mid-sentence mentions', () => {
   assert.equal(extractDecisionQuestion(null), null);
 });
 
+test('findOwnerDecisions sorts most urgent first, then oldest; no priority last', () => {
+  const issues = [
+    { identifier: 'BRO-10', description: 'DECISION NEEDED: none?', priority: 0, createdAt: '2026-01-01' },
+    { identifier: 'BRO-11', description: 'DECISION NEEDED: low?', priority: 4, createdAt: '2026-01-02' },
+    { identifier: 'BRO-12', description: 'DECISION NEEDED: urgent new?', priority: 1, createdAt: '2026-03-01' },
+    { identifier: 'BRO-13', description: 'DECISION NEEDED: urgent old?', priority: 1, createdAt: '2026-02-01' },
+  ];
+  assert.deepEqual(findOwnerDecisions(issues).map((d) => d.identifier), ['BRO-13', 'BRO-12', 'BRO-11', 'BRO-10']);
+});
+
 test('findOwnerDecisions takes marked or awaiting-owner cards, oldest first', () => {
   const issues = [
     { identifier: 'BRO-2', title: 'b', description: 'DECISION NEEDED: B?', createdAt: '2026-10-02' },

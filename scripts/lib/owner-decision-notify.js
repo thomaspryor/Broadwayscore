@@ -58,9 +58,12 @@ function labelNames(issue) {
   return nodes.map((l) => l && l.name).filter(Boolean);
 }
 
+// Linear priority: 1 urgent, 2 high, 3 medium, 4 low, 0 none. Rank 0 last.
+function priorityRank(p) { return Number.isInteger(p) && p > 0 ? p : 5; }
+
 // Open issues → [{ identifier, title, url, question, priority }] for every
-// card that is waiting on the owner. Oldest first so the longest-waiting
-// decisions lead the email.
+// card that is waiting on the owner. Most urgent first, then oldest, so the
+// top of a long email is what matters most (the owner reads it on a phone).
 function findOwnerDecisions(issues) {
   const out = [];
   for (const issue of issues || []) {
@@ -77,7 +80,8 @@ function findOwnerDecisions(issues) {
       createdAt: issue.createdAt || null,
     });
   }
-  return out.sort((a, b) => String(a.createdAt || '').localeCompare(String(b.createdAt || '')));
+  return out.sort((a, b) => priorityRank(a.priority) - priorityRank(b.priority)
+    || String(a.createdAt || '').localeCompare(String(b.createdAt || '')));
 }
 
 // Which decisions to email about, and the notified set to store once the
@@ -102,7 +106,7 @@ function formatEmail(plan) {
   const n = plan.fresh.length;
   const title = `${n} new ${plural(n, 'decision is', 'decisions are')} waiting on you`;
   const lines = [
-    `${n === 1 ? 'This card is' : 'These cards are'} paused until you choose. Nothing else needs you.`,
+    `${n === 1 ? 'This card is' : 'These cards are'} paused until you choose${n > 1 ? ', most urgent first' : ''}. Nothing else needs you.`,
     '',
   ];
   for (const d of plan.listed) {
@@ -113,7 +117,7 @@ function formatEmail(plan) {
   if (plan.more > 0) lines.push('', `+${plan.more} more. They will be in the next email.`);
   const others = plan.totalOpen - n;
   if (others > 0) lines.push('', `${others} older ${plural(others, 'decision is', 'decisions are')} still waiting too.`);
-  lines.push('', 'To answer, open the card to read the options, then tell Claude in any chat which card and what you chose.');
+  lines.push('', 'To answer, open the card to read the options, then tell Claude in any chat the card name and the option you picked.');
   return { title, description: lines.join('\n') };
 }
 
