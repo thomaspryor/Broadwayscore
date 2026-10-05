@@ -38,6 +38,7 @@
 const fs = require('fs');
 const os = require('os');
 const path = require('path');
+const v8 = require('v8');
 const { execFileSync } = require('child_process');
 
 // Per-check wall clock. The build is minutes, not seconds — a shared 5min cap
@@ -73,7 +74,19 @@ const BUILD_ENV = Object.freeze({
   SKIP_HEAVY_PREBUILD: 'true',
 });
 
-const CHECKS_GITCONFIG = '[gc]\n\tauto = 0\n\tautoDetach = false\n[maintenance]\n\tauto = false\n[receive]\n\tautogc = false\n';
+// Heap floor for every check. A full-repo `npx tsc --noEmit` uses ~2.7GB
+// (measured 2026-10-05), so a box whose V8 default is 2GB crashed it with a
+// Mark-Compact OOM and refused an innocent Linear close (BRO-4757). A floor,
+// never a cap: max(this, the machine's own default), so a bigger box keeps
+// its headroom. NODE_OPTIONS is not inherited (see KEEP_ENV: `--require`
+// would be an injection path), so the value is set here, not passed in.
+const CHECK_HEAP_MB = 6144;
+
+function checkHeapMb() {
+  return Math.max(CHECK_HEAP_MB, Math.floor(v8.getHeapStatistics().heap_size_limit / (1024 * 1024)));
+}
+
+const CHECKS_GITCONFIG ='[gc]\n\tauto = 0\n\tautoDetach = false\n[maintenance]\n\tauto = false\n[receive]\n\tautogc = false\n';
 
 // `home` lets a caller create ONE throwaway HOME for a whole run and delete it
 // afterwards. Without it every call minted a new temp dir and never removed
@@ -89,6 +102,7 @@ function checksEnv({ env = process.env, build = false, home = null } = {}) {
   const gitconfig = path.join(out.HOME, '.gitconfig');
   if (!fs.existsSync(gitconfig)) fs.writeFileSync(gitconfig, CHECKS_GITCONFIG);
   out.GIT_TERMINAL_PROMPT = '0';
+  out.NODE_OPTIONS = `--max-old-space-size=${checkHeapMb()}`;
   if (build) Object.assign(out, BUILD_ENV);
   return out;
 }
@@ -462,6 +476,7 @@ module.exports = {
   BUILD_TIMEOUT_MS,
   KEEP_ENV,
   BUILD_ENV,
+  CHECK_HEAP_MB,
   UI_PATH_RES,
   checksEnv,
   tierOf,

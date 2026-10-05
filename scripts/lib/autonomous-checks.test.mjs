@@ -239,6 +239,16 @@ test('checksEnv strips secrets, fakes HOME, and disables git prompting', () => {
   assert.equal(env.GIT_TERMINAL_PROMPT, '0');
 });
 
+test('checksEnv gives checks a heap floor that takes effect and never lowers the default (BRO-4757)', () => {
+  const env = checksEnv({ env: { PATH: process.env.PATH, NODE_OPTIONS: '--require /tmp/evil.js' } });
+  assert.doesNotMatch(env.NODE_OPTIONS, /--require/, 'caller NODE_OPTIONS is not inherited');
+  const out = execFileSync(process.execPath, ['-e', 'console.log(require("v8").getHeapStatistics().heap_size_limit)'], { env, encoding: 'utf8' });
+  const childMb = Number(out.trim()) / (1024 * 1024);
+  const ownMb = require('v8').getHeapStatistics().heap_size_limit / (1024 * 1024);
+  assert.ok(childMb >= checks.CHECK_HEAP_MB, `child heap ${childMb}MB below the ${checks.CHECK_HEAP_MB}MB floor`);
+  assert.ok(childMb >= ownMb - 64, `child heap ${childMb}MB lower than this machine's default ${ownMb}MB`);
+});
+
 test('checksEnv HOME turns off git auto-maintenance even for receive-pack in a local bare remote (BRO-4749)', () => {
   const tmp = fs.mkdtempSync(path.join(os.tmpdir(), 'checks-env-gc-'));
   try {
@@ -506,7 +516,7 @@ test('runSafeChecks executes a validated card check', () => {
 test('autonomous-checks.js requires node built-ins only', () => {
   const src = fs.readFileSync(new URL('./autonomous-checks.js', import.meta.url), 'utf8');
   const requires = [...src.matchAll(/require\(['"]([^'"]+)['"]\)/g)].map(m => m[1]);
-  const builtins = new Set(['fs', 'os', 'path', 'child_process', 'crypto', 'util']);
+  const builtins = new Set(['fs', 'os', 'path', 'child_process', 'crypto', 'util', 'v8']);
   for (const r of requires) {
     const bare = r.startsWith('node:') ? r.slice(5) : r;
     assert.ok(builtins.has(bare), `unexpected non-builtin require: ${r} (the shared runner must stay dependency-free)`);
