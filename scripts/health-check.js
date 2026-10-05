@@ -3896,8 +3896,9 @@ function obClosingBacklogResults(report, now = new Date()) {
  * - tours created automatically are reported so the owner sees them land.
  */
 // How long each tour job may go without leaving a report before the digest
-// says it has stopped: the sweep and date jobs run daily, auto-create weekly.
-const TOUR_JOB_MAX_AGE_HOURS = { sweep: 36, dates: 36, autocreate: 9 * 24 };
+// says it has stopped. All three run daily (auto-create rides the daily BWW
+// landing job since BRO-4325; it was weekly before).
+const TOUR_JOB_MAX_AGE_HOURS = { sweep: 36, dates: 36, autocreate: 48 };
 // Before this, a missing report just means the job hasn't had its first run.
 const TOUR_JOBS_EXPECTED_FROM = '2026-10-06';
 
@@ -3906,7 +3907,7 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
   const jobs = [
     ['sweep', sweep, 'daily tour review mover (rebuild-reviews.yml)'],
     ['dates', dates, 'daily tour dates check (update-show-status.yml)'],
-    ['autocreate', autocreate, 'weekly new-tour check (scrape-new-aggregators.yml, BWW landing job)'],
+    ['autocreate', autocreate, 'daily new-tour check (scrape-new-aggregators.yml, BWW landing job)'],
   ];
   const quiet = [];
   for (const [key, report, label] of jobs) {
@@ -3954,6 +3955,22 @@ function tourAutomationResults({ sweep, dates, autocreate } = {}, now = new Date
       message: `Finding national tours on Tours To You failed: ${discovery.error}. New running tours won't be added until it works again.`,
       hint: 'Run node scripts/discover-running-tours.js locally; the Tours To You pages API or page layout may have changed (scripts/lib/tour-discovery.js).',
     });
+  }
+  // Every Broadway-titled Tours To You page should be read every couple of
+  // days (BRO-4725); one that isn't is a tour that could appear late or never.
+  const coverage = discovery && discovery.coverage;
+  if (coverage && Object.keys(coverage).length) {
+    const { stalePages, STALE_DAYS } = require('./lib/tours-to-you-coverage');
+    const stale = stalePages(coverage, now);
+    if (stale.length) {
+      const total = Object.keys(coverage).length;
+      out.push({
+        name: 'Data: Tours To You pages not checked',
+        status: 'warn',
+        message: `${stale.length} of ${total} Tours To You show pages have not been read in over ${STALE_DAYS} days (${stale.slice(0, 8).map(r => r.slug).join(', ')}${stale.length > 8 ? ', ...' : ''}). A tour on one of them can't be added until it is.`,
+        hint: 'See discovery in data/audit/tour-autocreate.json (rateLimited, failed). The daily BWW landing job reads the oldest pages first; repeated 429s mean Tours To You wants a slower pace (GAP_MS in scripts/lib/tours-to-you.js).',
+      });
+    }
   }
   const created = (autocreate && autocreate.created) || [];
   if (created.length) {
