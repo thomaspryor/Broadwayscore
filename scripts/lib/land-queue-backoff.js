@@ -44,6 +44,12 @@ const MAX_INSPECT = 10;
 // pending slot like a fresh push. Measured from the cancel (updated_at), so
 // each aged attempt is spaced AGED_RETRY_MINUTES apart.
 const AGED_RETRY_MINUTES = 30;
+// BRO-4677: the running-only fast path skips aging, but a re-run joining the
+// pending seat can still be evicted by a push finishing Checks (each eviction
+// spends an attempt). So it spends at most FAST_RETRY_MAX_ATTEMPT attempts per
+// run, spaced FAST_RETRY_MINUTES apart; later attempts wait for the aging rule.
+const FAST_RETRY_MINUTES = 3;
+const FAST_RETRY_MAX_ATTEMPT = 3;
 
 /** The status-filtered listings that find in-flight landing runs. */
 function slotQueries(repo) {
@@ -85,6 +91,50 @@ function inFlightBlocker(run, { jobs, selfRunId, now = Date.now(), staleHours = 
   if (!/(^|\/)land\.yml$/.test(run.path || '')) return 'busy';
   if (jobs === undefined) return 'needs-jobs';
   return landJobInSlot(jobs) ? 'busy' : 'clear';
+}
+
+/**
+ * BRO-4677: a busy slot is either only RUNNING (one job in `landing`, the
+ * pending seat empty) or has a PENDING entrant too. Only a pending entrant can
+ * be evicted, and a re-run joining an empty pending seat evicts nobody, so
+ * "running only" must not make a stranded run wait. Call for a run that
+ * inFlightBlocker called 'busy':
+ *   'running' — Land job in_progress, or an in_progress autonomous-merge run
+ *   'pending' — everything else, including Checks done with no Land job yet (it
+ *               is about to take the slot) and anything unreadable
+ */
+function slotHolderKind(run, jobs) {
+  if (!/(^|\/)land\.yml$/.test((run && run.path) || '')) return run && run.status === 'in_progress' ? 'running' : 'pending';
+  const land = (jobs || []).find((j) => j.name === 'Land');
+  return land && land.status === 'in_progress' ? 'running' : 'pending';
+}
+
+/**
+ * The in-flight scan behind the slot verdict (BRO-4677), with jobs lookups
+ * injected so it is testable. Stops early only at a PENDING entrant or when
+ * the lookup cap is hit (both `pending: true`); `pending: false` only after a
+ * full scan that found a running holder; no holder at all → free.
+ */
+function scanSlot(runs, { jobsOf, selfRunId, now, maxLookups = MAX_JOB_LOOKUPS, onStale = () => {} } = {}) {
+  const blocker = (r, why, pending) => ({ busy: true, pending, blockers: [{ id: r.id, branch: r.head_branch, status: r.status, why }] });
+  let lookups = 0;
+  let running = null;
+  for (const run of orderForSlotCheck(runs)) {
+    let jobs;
+    let v = inFlightBlocker(run, { selfRunId, now });
+    if (v === 'needs-jobs') {
+      if (lookups >= maxLookups) return blocker(run, 'lookup-cap', true);
+      lookups += 1;
+      jobs = jobsOf(run.id);
+      v = inFlightBlocker(run, { selfRunId, now, jobs });
+    }
+    if (v === 'busy') {
+      if (slotHolderKind(run, jobs) === 'pending') return blocker(run, 'holds-slot', true);
+      running = running || blocker(run, 'running', false);
+    }
+    if (v === 'stale') onStale(run);
+  }
+  return running || { busy: false, blockers: [] };
 }
 
 /**
@@ -157,6 +207,19 @@ function decideSweep({ slot, cancelledRuns, refs, now, maxInspect = MAX_INSPECT 
     // Land completion, and a second re-run would evict the first from the pending
     // slot (spending its attempt) at sweep speed, not every AGED_RETRY_MINUTES.
     if (slot && slot.rerunInFlight) return { action: 'wait', reason: 'rerun-in-flight', blockers };
+    // BRO-4677: busy with NO pending entrant (explicit false; absent = unknown =
+    // conservative) → re-run the oldest stranded run now. It takes the empty
+    // pending seat and competes like a fresh push; one per sweep, and
+    // rerunInFlight above keeps the next sweep from evicting it. Residual race:
+    // a push finishing Checks between the scan and the POST contests the seat
+    // (same lottery a fresh push runs, one attempt at stake).
+    if (slot && slot.pending === false) {
+      const since = (r) => Date.parse(r.updated_at || r.created_at);
+      const candidates = pickStrandedCandidates(cancelledRuns, { refs, now })
+        .filter((r) => (r.run_attempt || 1) <= FAST_RETRY_MAX_ATTEMPT && now - since(r) > FAST_RETRY_MINUTES * 60000)
+        .slice(0, maxInspect);
+      if (candidates.length) return { action: 'inspect', reason: 'no-pending-slot-busy', candidates, blockers };
+    }
     const aged = pickAgedCandidates(pickStrandedCandidates(cancelledRuns, { refs, now }), { now }).slice(0, maxInspect);
     if (slot && aged.length) return { action: 'inspect', reason: 'aged-slot-busy', aged: true, candidates: aged, blockers };
     return { action: 'wait', reason: 'slot-busy', blockers };
@@ -168,6 +231,6 @@ function decideSweep({ slot, cancelledRuns, refs, now, maxInspect = MAX_INSPECT 
 
 module.exports = {
   LANDING_WORKFLOWS, IN_FLIGHT_STATUSES, STALE_BLOCKER_HOURS, MAX_AGE_HOURS, MAX_JOB_LOOKUPS, MAX_INSPECT, AGED_RETRY_MINUTES,
-  pickAgedCandidates, slotQueries, landJobInSlot, inFlightBlocker, orderForSlotCheck,
+  pickAgedCandidates, scanSlot, FAST_RETRY_MINUTES, FAST_RETRY_MAX_ATTEMPT, slotQueries, landJobInSlot, slotHolderKind, inFlightBlocker, orderForSlotCheck,
   pickStrandedCandidates, supersededByNewerRun, decideSweep,
 };

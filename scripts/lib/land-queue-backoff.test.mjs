@@ -4,7 +4,7 @@ import { createRequire } from 'node:module';
 
 const require = createRequire(import.meta.url);
 const {
-  slotQueries, landJobInSlot, inFlightBlocker, pickStrandedCandidates, supersededByNewerRun,
+  scanSlot, FAST_RETRY_MAX_ATTEMPT, FAST_RETRY_MINUTES, slotQueries, landJobInSlot, slotHolderKind, inFlightBlocker, pickStrandedCandidates, supersededByNewerRun,
   decideSweep, orderForSlotCheck, MAX_INSPECT, STALE_BLOCKER_HOURS, MAX_JOB_LOOKUPS, AGED_RETRY_MINUTES,
 } = require('./land-queue-backoff.js');
 const { MAX_ATTEMPTS } = require('./land-retry-on-cancel.js');
@@ -200,8 +200,76 @@ test('wiring: the workflow sweeps when the slot frees and the script spends atte
   assert.match(js, /d\.action === 'wait'/);
   assert.match(js, /decideSweep\(\{ slot,/);
   assert.match(js, /supersededByNewerRun\(/);
-  assert.match(js, /inFlightBlocker\(/);
-  assert.match(js, /orderForSlotCheck\(/);
+  assert.match(js, /scanSlot\(/);
   // the retry decision uses the fresh per-branch run, not the possibly stale listing
   assert.match(js, /decideLandRetry\(\{ run: fresh,/);
+});
+
+test('BRO-4677: slotHolderKind — only an in_progress Land job / autonomous-merge run is "running"', () => {
+  assert.equal(slotHolderKind({ path: LAND }, landRunning), 'running');
+  assert.equal(slotHolderKind({ path: LAND }, landPending), 'pending');
+  assert.equal(slotHolderKind({ path: LAND }, [{ name: 'Checks', status: 'completed' }]), 'pending', 'Checks done, no Land job yet: about to take the slot');
+  assert.equal(slotHolderKind({ path: LAND }, undefined), 'pending');
+  assert.equal(slotHolderKind({ path: MERGE, status: 'in_progress' }), 'running');
+  assert.equal(slotHolderKind({ path: MERGE, status: 'queued' }), 'pending');
+});
+
+test('BRO-4677: slot busy but pending seat empty → oldest stranded run goes now, no aging needed', () => {
+  const held = { busy: true, pending: false, blockers: [{ id: 50, branch: 'land/other', status: 'in_progress', why: 'running' }] };
+  const newer = run({ id: 2, created_at: at(20), updated_at: at(5) });
+  const oldest = run({ id: 1, created_at: at(40), updated_at: at(8) });
+  const runs = [newer, oldest];
+  const d = decideSweep({ slot: held, cancelledRuns: runs, refs: refsFor(runs), now: NOW });
+  assert.deepEqual([d.action, d.reason], ['inspect', 'no-pending-slot-busy']);
+  assert.deepEqual(d.candidates.map((r) => r.id), [1, 2], 'oldest first');
+});
+
+test('BRO-4677: fast path is throttled: spacing and attempt cap, then aging takes over', () => {
+  const held = { busy: true, pending: false, blockers: [] };
+  const fresh = run({ id: 1, created_at: at(60), updated_at: at(FAST_RETRY_MINUTES - 1) });
+  const spent = run({ id: 2, created_at: at(90), updated_at: at(AGED_RETRY_MINUTES - 5), run_attempt: FAST_RETRY_MAX_ATTEMPT + 1 });
+  const ok = run({ id: 3, created_at: at(90), updated_at: at(FAST_RETRY_MINUTES + 1), run_attempt: FAST_RETRY_MAX_ATTEMPT });
+  const all = [fresh, spent, ok];
+  const d = decideSweep({ slot: held, cancelledRuns: all, refs: refsFor(all), now: NOW });
+  assert.deepEqual(d.candidates.map((r) => r.id), [3]);
+  const only = [fresh, spent];
+  assert.equal(decideSweep({ slot: held, cancelledRuns: only, refs: refsFor(only), now: NOW }).action, 'wait');
+  const aged = run({ id: 4, created_at: at(200), updated_at: at(AGED_RETRY_MINUTES + 1), run_attempt: FAST_RETRY_MAX_ATTEMPT + 1 });
+  assert.equal(decideSweep({ slot: held, cancelledRuns: [aged], refs: refsFor([aged]), now: NOW }).reason, 'aged-slot-busy');
+});
+
+test('BRO-4677: scanSlot — running only → pending:false; later pending → pending:true; cap/free/stale', () => {
+  const mkRun = (id, status, extra = {}) => ({ id, path: LAND, status, head_branch: `land/${id}`, run_started_at: at(5), created_at: at(5), ...extra });
+  const byRun = { 1: landRunning, 2: landPending, 3: inChecks };
+  const jobsOf = (id) => byRun[id];
+  const scan = (runs, o = {}) => scanSlot(runs, { jobsOf, now: NOW, ...o });
+  assert.equal(scan([mkRun(1, 'in_progress'), mkRun(3, 'in_progress')]).pending, false);
+  assert.equal(scan([mkRun(1, 'in_progress'), mkRun(2, 'queued')]).pending, true, 'pending found after a running holder');
+  assert.equal(scan([mkRun(1, 'in_progress'), mkRun(2, 'queued')], { maxLookups: 1 }).pending, true, 'cap reads as pending');
+  assert.equal(scan([mkRun(3, 'in_progress')]).busy, false);
+  assert.equal(scan([]).busy, false);
+  const stale = mkRun(1, 'in_progress', { run_started_at: at(STALE_BLOCKER_HOURS * 60 + 5), created_at: at(STALE_BLOCKER_HOURS * 60 + 5) });
+  assert.equal(scan([stale]).busy, false);
+  assert.equal(scan([{ id: 9, path: MERGE, status: 'in_progress', created_at: at(5) }]).pending, false);
+  assert.equal(scan([{ id: 9, path: MERGE, status: 'queued', created_at: at(5) }]).pending, true);
+});
+
+test('BRO-4677: a pending entrant (or unknown) keeps young stranded runs waiting; in-flight re-run still blocks', () => {
+  const runs = [run({ id: 1, created_at: at(40), updated_at: at(8) })];
+  const pending = { busy: true, pending: true, blockers: [] };
+  assert.equal(decideSweep({ slot: pending, cancelledRuns: runs, refs: refsFor(runs), now: NOW }).action, 'wait');
+  const unknown = { busy: true, blockers: [] };
+  assert.equal(decideSweep({ slot: unknown, cancelledRuns: runs, refs: refsFor(runs), now: NOW }).action, 'wait');
+  const rerun = { busy: true, pending: false, rerunInFlight: true, blockers: [] };
+  assert.deepEqual(decideSweep({ slot: rerun, cancelledRuns: runs, refs: refsFor(runs), now: NOW }).reason, 'rerun-in-flight');
+  // running-only but nothing stranded → falls through to wait
+  const none = { busy: true, pending: false, blockers: [] };
+  assert.equal(decideSweep({ slot: none, cancelledRuns: [], refs: new Map(), now: NOW }).action, 'wait');
+});
+
+test('BRO-4677: wiring — sweep scans for a pending entrant and settles after a re-run', async () => {
+  const { readFileSync } = await import('node:fs');
+  const js = readFileSync(new URL('../land-retry-cancelled.js', import.meta.url), 'utf8');
+  assert.match(js, /scanSlot\(/);
+  assert.match(js, /ghRaw\(\['-X', 'POST'[\s\S]*?settle\(id\)/);
 });

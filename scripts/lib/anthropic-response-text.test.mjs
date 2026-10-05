@@ -36,6 +36,8 @@ test('no tool blocks: all text; odd content: empty string', () => {
   // Answer before the advisor call with nothing after it: fall back to the last text block.
   assert.equal(finalResponseText([{ type: 'text', text: 'pre' }, ...tool]), 'pre');
   assert.equal(finalResponseText([...tool]), '');
+  // Blank trailing blocks do not hide the answer.
+  assert.equal(finalResponseText([{ type: 'text', text: '[{"a":1}]' }, ...tool, { type: 'text', text: '\n' }]), '[{"a":1}]');
 });
 
 test('describeResponse names stop_reason and block types', () => {

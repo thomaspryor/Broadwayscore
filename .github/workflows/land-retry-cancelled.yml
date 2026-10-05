@@ -9,6 +9,11 @@ name: Land retry on cancel
 # for the slot it does nothing (no attempt spent); once the slot is free it
 # re-runs at most ONE stranded cancelled Land job, oldest first. It fires when a Land or Autonomous
 # Merge run completes (the moment the slot frees) and on a cron backstop.
+# BRO-4677: under sustained traffic the slot is never free, so waiting for free
+# starved evicted runs. Now a slot held by ONE running job with nobody pending
+# also gets a re-run (it takes the empty pending seat, evicting nobody); the
+# sweep waits only while a pending entrant exists (then the 30-min aging rule
+# of BRO-4676 applies).
 # Decision logic + tests: scripts/lib/land-retry-on-cancel{,.test} and
 # scripts/lib/land-queue-backoff{,.test}.
 
