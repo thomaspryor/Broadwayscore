@@ -1,11 +1,11 @@
 {
-  "timestamp": "2026-10-05T04:11:22.684Z",
+  "timestamp": "2026-10-05T04:43:49.753Z",
   "stats": {
-    "totalReviews": 46302,
+    "totalReviews": 46303,
     "alreadyFlagged": 18737,
     "dateGuardCatches": 269,
     "directorMismatch": 1254,
-    "tvFilmSignals": 1341,
+    "tvFilmSignals": 1342,
     "londonSignals": 1274,
     "offBroadwaySignals": 509,
     "yearMismatch": 109,
@@ -26427,6 +26427,19 @@
           "type": "DIRECTOR_MISMATCH",
           "severity": "HIGH",
           "detail": "Mentions director \"richard eyre\" from skylight-1996"
+        }
+      ]
+    },
+    {
+      "showId": "slam-frank-off-broadway-2026",
+      "file": "times-square-chronicles--suzanna-bowling.json",
+      "publishDate": "2026-10-05",
+      "url": "https://t2conline.com/slam-frank-brilliant-offensive-confusing-and-impossible-to-stop-talking-about/",
+      "findings": [
+        {
+          "type": "TV_FILM_SIGNAL",
+          "severity": "HIGH",
+          "detail": "Contains TV/film keyword: \"tv show\""
         }
       ]
     },
