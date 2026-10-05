@@ -81,6 +81,10 @@ exec "$@"
     const res = await run(f, 5);
     assert.equal(res.code, 0, res.stderr);
     assert.doesNotMatch(res.stderr, /non-race reason/);
+    // Prove the shim really injected both failures (else this passes vacuously).
+    assert.equal(fs.readFileSync(path.join(f.tmp, 'n'), 'utf8').trim(), '3');
+    assert.match(res.stderr, /TIMED OUT/);
+    assert.match(res.stderr, /ref moved during attempt/);
     assert.match(sh('git log --oneline main', f.origin), /our change/);
     assert.equal(sh('git show main:data/ours.json', f.origin).trim(), '{"c":3}');
   } finally { cleanup(f); }
